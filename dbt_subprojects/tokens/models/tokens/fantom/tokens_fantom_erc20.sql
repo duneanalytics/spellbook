@@ -167,4 +167,6 @@ FROM (VALUES
     , (0x50799f9c292e800780d339d17e1f664eb04ff126, 'oft_fuse_sFUSE', 18)
     , (0x8b6f1c276410d8bac84d8ed587cc0f9d30f52ee2, 'oft_arbitrum_GRAI', 18)
     , (0x777cf5ba9c291a1a8f57ff14836f6f9dc5c0f9dd, 'SOLID', 18)
+    , (0x4f76664105ba7e35dd4904ec70f2042fc17563d9, 'SOLO', 15)
+    , (0x5c725631fd299703d0a74c23f89a55c6b9a0c52f, 'POLTER', 18)
 ) AS temp_table (contract_address, symbol, decimals)

@@ -16,7 +16,7 @@ models:
      - &chain_id
        name: chain_id
        description: "Layerzer's chain id"
-       tests:
+       data_tests:
          - unique
      - &endpoint_address
        name: endpoint_address

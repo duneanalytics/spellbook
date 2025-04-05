@@ -10,7 +10,7 @@ models:
       tags: ['inscriptions', 'deploys', 'ethereum']
     description: >
       Inscription deploys on Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -68,7 +68,7 @@ models:
       tags: ['inscriptions', 'deploys', 'arbitrum']
     description: >
       Inscription deploys on Arbitrum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -99,7 +99,7 @@ models:
       tags: ['inscriptions', 'deploys', 'avalanche_c']
     description: >
       Inscription deploys on Avalanche
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -130,7 +130,7 @@ models:
       tags: ['inscriptions', 'deploys', 'bnb']
     description: >
       Inscription deploys on BNB
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -161,7 +161,7 @@ models:
       tags: ['inscriptions', 'deploys', 'fantom']
     description: >
       Inscription deploys on Fantom
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -192,7 +192,7 @@ models:
       tags: ['inscriptions', 'deploys', 'gnosis']
     description: >
       Inscription deploys on Gnosis
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -223,7 +223,7 @@ models:
       tags: ['inscriptions', 'deploys', 'optimism']
     description: >
       Inscription deploys on Optimism
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -254,7 +254,7 @@ models:
       tags: ['inscriptions', 'deploys', 'polygon']
     description: >
       Inscription deploys on Polygon
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -285,7 +285,7 @@ models:
       tags: ['inscriptions', 'deploys', 'base']
     description: >
       Inscription deploys on Base
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -316,7 +316,7 @@ models:
       tags: ['inscriptions', 'deploys', 'celo']
     description: >
       Inscription deploys on Celo
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -347,7 +347,7 @@ models:
       tags: ['inscriptions', 'deploys', 'zksync']
     description: >
       Inscription deploys on zkSync
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -378,7 +378,7 @@ models:
       tags: ['inscriptions', 'deploys', 'zora']
     description: >
       Inscription deploys on Zora Network
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -409,7 +409,7 @@ models:
       tags: ['inscriptions', 'deploys', 'scroll']
     description: >
       Inscription deploys on Scroll
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -440,7 +440,7 @@ models:
       tags: ['inscriptions', 'deploys', 'goerli']
     description: >
       Inscription deploys on Goerli Testnet
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -471,7 +471,7 @@ models:
       tags: ['inscriptions', 'deploys', 'linea']
     description: >
       Inscription deploys on Linea
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -503,7 +503,7 @@ models:
       tags: ['inscriptions', 'deploys', 'zkevm']
     description: >
       Inscription deploys on Polygon zkEVM
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

@@ -1,11 +1,11 @@
 {{
   config(
-    
+    schema = 'chainlink_ethereum',
     alias='price_feeds_oracle_addresses',
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "chainlink",
-                                \'["linkpool_ryan","linkpool_jon"]\') }}'
+                                \'["linkpool_ryan","linkpool_jon","tomfutago"]\') }}'
   )
 }}
 
@@ -317,6 +317,7 @@ FROM (values
   ('{{msft_usd}}', 8, 0x021Fb44bfeafA0999C7b07C4791cf4B859C3b431, 0x99a9422bdBf888fAd917b3a714103E896D3e2011),
   ('{{metis_healthcheck}}', 8, 0x3425455fe737cdaE8564640df27bbF2eCD56E584, 0x31c8b5A8F0d286a4Bfcf669E18393b18E22B140D),
   ('{{moonbirds_floor_price}}', 18, 0x9cd36E0E8D3C27d630D00406ACFC3463154951Af, 0x8d0003e5c1C8EB67e04023a21291cf01CFd2E4a1),
+  ('{{nexus_weth_reserves}}', 18, 0xCc72039A141c6e34a779eF93AEF5eB4C82A893c7, 0xEA530C83AFa51A66f80935c78aB9BB574d7DdfCb),
   ('{{nexus_weth_reserves}}', 18, 0xCc72039A141c6e34a779eF93AEF5eB4C82A893c7, 0xCA71bBe491079E138927f3f0AB448Ae8782d1DCa),
   ('{{ohm_eth}}', 18, 0x90c2098473852E2F07678Fe1B6d595b1bd9b16Ed, 0x87831da9319260B0B38dD39A73EBD4c2C10C588c),
   ('{{ohm_eth}}', 18, 0x90c2098473852E2F07678Fe1B6d595b1bd9b16Ed, 0x7009033C0d6702fd2dfAD3478d2AE4e3b6aCB966),
@@ -365,6 +366,7 @@ FROM (values
   ('{{ust_usd}}', 8, 0x8b6d9085f310396C6E4f0012783E9f850eaa8a82, 0x01b87e7fF78022A70394d3C6Dd127D0c709e3beA),
   ('{{ust_usd}}', 8, 0x8b6d9085f310396C6E4f0012783E9f850eaa8a82, 0x5EDd5F803b831b47715aD3e11a90dD244F0cD0a9),
   ('{{veefriends_floor_price}}', 18, 0x35bf6767577091E7f04707c0290b3f889e968307, 0xe0552DC960366F67Da00CB3d9DF441F24B5C2AC1),
+  ('{{weeth_eth}}', 18, 0x5c9C449BbC9a6075A2c061dF312a35fd1E05fF22, 0x0F316F6b0c2e2eBE3C3a8b23F6c61009238D51fD),
   ('{{weeth_eth}}', 18, 0x5c9C449BbC9a6075A2c061dF312a35fd1E05fF22, 0x4dF36F726d8059d881294166dB52c1D13e976FE7),
   ('{{wbtc_btc}}', 8, 0xfdFD9C85aD200c506Cf9e21F1FD8dd01932FBB23, 0xD7623f1d24b35c392862fB67C9716564A117C9DE),
   ('{{wbtc_por}}', 8, 0xa81FE04086865e63E12dD3776978E49DEEa2ea4e, 0xB622b7D6d9131cF6A1230EBa91E5da58dbea6F59),

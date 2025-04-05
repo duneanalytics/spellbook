@@ -14,6 +14,7 @@
   set config_sources = [
     {'contract': 'cUSDCv3'},
     {'contract': 'cUSDbCv3Comet'},
+    {'contract': 'cWETHv3'},
   ]
 %}
 

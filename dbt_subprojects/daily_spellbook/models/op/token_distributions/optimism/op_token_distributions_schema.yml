@@ -10,7 +10,7 @@ models:
       tags: ['optimism','op','grants','distributions']
     description: >
         A table containing best guess mappings of OP grants token distributions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - block_date
@@ -43,31 +43,31 @@ models:
         description: "Transaction from address"
       - &from_type
         name: from_type
-        tests:
+        data_tests:
           - not_null
       - &to_type
         name: to_type
-        tests:
+        data_tests:
           - not_null
       - &from_label
         name: from_label
-        tests:
+        data_tests:
           - not_null
       - &to_label
         name: to_label
-        tests:
+        data_tests:
           - not_null
       - &from_name
         name: from_name
-        tests:
+        data_tests:
           - not_null
       - &to_name
         name: to_name
-        tests:
+        data_tests:
           - not_null
       - &op_amount_decimal
         name: op_amount_decimal
-        tests:
+        data_tests:
           - not_null
         description: "OP Amount Transferred"
       - &tx_method
@@ -113,7 +113,7 @@ models:
       tags: ['optimism','op','grants','distributions']
     description: >
         A table containing best guess mappings of OP grants token distributions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - block_date
@@ -153,7 +153,7 @@ models:
       tags: ['optimism','op','grants','distributions']
     description: >
         A table containing mappings of transfer approvals for OP grants token distributions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - block_date
@@ -185,14 +185,14 @@ models:
       tags: ['optimism','op','grants','project']
     description: >
         A table containing mappings from governance proposal names to Dune project names.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - proposal_name
     columns:
       - &proposal_name
         name: proposal_name
-        tests:
+        data_tests:
           - not_null
       - *project_name
   
@@ -205,7 +205,7 @@ models:
       tags: ['optimism','op','grants','project']
     description: >
         A table containing mappings for project wallets that we want to track distributions for
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - address
@@ -214,14 +214,14 @@ models:
     columns:
       - &address
         name: address
-        tests:
+        data_tests:
           - unique
       - &label
         name: label
       - *proposal_name
       - &address_descriptor
         name: address_descriptor
-        tests:
+        data_tests:
           - not_null
       - *project_name
 
@@ -234,7 +234,7 @@ models:
       tags: ['optimism','op','grants','addresses']
     description: >
         A table containing unifying labels for tagged wallets that we want to track distributions for
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - label
@@ -255,7 +255,7 @@ models:
       tags: ['optimism','op','grants','addresses']
     description: >
         A table containing labels for other addresses that we don't want to track distributions for, but we know what they are.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - label
@@ -265,6 +265,6 @@ models:
       - *address
       - &address_name
         name: address_name
-        tests:
+        data_tests:
           - not_null
       

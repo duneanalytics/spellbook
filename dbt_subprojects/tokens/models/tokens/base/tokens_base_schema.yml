@@ -6,14 +6,14 @@ models:
       blockchain: base
       sector: tokens
       project: erc20
-      contributors: hildobby
+      contributors: hildobby, rantum
     config:
       tags: ['table', 'erc20', 'base']
     description: "All ERC20 Token Addresses on Base - with mapped Symbols and Decimals if known."
     columns:
       - name: contract_address
         description: "ERC20 token contract address on Base"
-        tests:
+        data_tests:
           - unique
       - name: symbol
         description: "ERC20 token symbol"
@@ -32,7 +32,7 @@ models:
     columns:
       - name: contract_address
         description: "The contract address is the unique address of where the NFTs are stored on Optimism."
-        tests:
+        data_tests:
           - unique
       - name: name
         description: "NFT Project Name"
@@ -49,12 +49,12 @@ models:
     columns:
       - name: contract_address
         description: "The contract address is the unique address of where the NFTs are stored on Optimism."
-        tests:
+        data_tests:
           - unique
       - name: name
         description: "NFT Project Name"
       - name: standard
-        tests:
+        data_tests:
           - accepted_values:
               values: [ 'erc721', 'erc1155']
         description: >
@@ -74,10 +74,33 @@ models:
     columns:
       - name: contract_address
         description: "the NFT contract address"
-        tests:
+        data_tests:
           - unique
       - name: standard
         description: "The NFT standard erc721/erc1155/..."
-        tests:
+        data_tests:
           - accepted_values:
               values: [ 'erc721', 'erc1155' ]
+
+  - name: tokens_base_erc20_stablecoins
+    meta:
+      blockchain: base
+      sector: stablecoins
+      contributors: synthquest, rantum
+    config:
+      tags: ['tokens', 'base', 'erc20', 'stablecoins']
+    description: >
+        Selection of stablecoin token addresses.
+    columns:
+      - name: blockchain
+        description: "Blockchain name"
+      - name: contract_address
+        description: "Stablecoin contract address"
+      - name: backing
+        description: "Stablecoin backing"
+      - name: symbol
+        description: "Stablecoin symbol"
+      - name: name
+        description: "Stablecoin project name"
+      - name: decimals
+        description: "Number of decimals"

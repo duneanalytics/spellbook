@@ -2,11 +2,8 @@ version: 2
 
 sources:
   - name: gnosis_safe_goerli
-    freshness:
-      warn_after: { count: 12, period: hour }
     tables:
       - name: GnosisSafeProxyFactory_v1_3_0_evt_ProxyCreation
-        loaded_at_field: evt_block_time
         description: "Safe v1.3.0 factory ProxyCreation events"
         columns:
           - &contract_address

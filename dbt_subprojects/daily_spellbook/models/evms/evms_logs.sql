@@ -2,10 +2,36 @@
         schema='evms',
         alias = 'logs',
         unique_key=['blockchain', 'tx_hash'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle"]\',
+        post_hook='{{ expose_spells(\'[
+                                        "abstract",
+                                        "apechain",
+                                        "arbitrum",
+                                        "avalanche_c",
+                                        "b3",
+                                        "base",
+                                        "berachain",
+                                        "blast",
+                                        "bnb",
+                                        "boba",
+                                        "celo",
+                                        "ethereum",
+                                        "fantom",
+                                        "gnosis",
+                                        "kaia",
+                                        "linea",
+                                        "mantle",
+                                        "optimism",
+                                        "polygon",
+                                        "ronin",
+                                        "scroll",
+                                        "sonic",
+                                        "zkevm",
+                                        "zksync",
+                                        "zora"
+                                        ]\',
                                     "sector",
                                     "evms",
-                                    \'["hildobby"]\') }}'
+                                    \'["hildobby","rantum","shogun"]\') }}'
         )
 }}
 
@@ -20,7 +46,6 @@
      , ('arbitrum', source('arbitrum', 'logs'))
      , ('celo', source('celo', 'logs'))
      , ('base', source('base', 'logs'))
-     , ('goerli', source('goerli', 'logs'))
      , ('zksync', source('zksync', 'logs'))
      , ('zora', source('zora', 'logs'))
      , ('scroll', source('scroll', 'logs'))
@@ -28,6 +53,16 @@
      , ('zkevm', source('zkevm', 'logs'))
      , ('blast', source('blast', 'logs'))
      , ('mantle', source('mantle', 'logs'))
+     , ('mode', source('mode', 'logs'))
+     , ('sei', source('sei', 'logs'))
+     , ('ronin', source('ronin', 'logs'))
+     , ('abstract', source('abstract', 'logs'))
+     , ('boba', source('boba', 'logs'))
+     , ('sonic', source('sonic', 'logs'))
+     , ('kaia', source('kaia', 'logs'))
+     , ('apechain', source('apechain', 'logs'))
+     , ('berachain', source('berachain', 'logs'))
+     , ('b3', source('b3', 'logs'))
 ] %}
 
 SELECT *
@@ -47,6 +82,9 @@ FROM (
         , tx_hash
         , index
         , tx_index
+        , block_date
+        , tx_from
+        , tx_to
         FROM {{ logs_model[1] }}
         {% if not loop.last %}
         UNION ALL

@@ -10,7 +10,7 @@ models:
     config:
       tags: ['labels', 'fantom', 'balancer', 'pools']
     description: 'Balancer V2 liquidity pools created on Fantom.'
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address

@@ -19,6 +19,8 @@
     ,ref('magiceden_v2_polygon_base_trades')
     ,ref('opensea_v3_polygon_base_trades')
     ,ref('opensea_v4_polygon_base_trades')
+    ,ref('mooar_polygon_base_trades')
+    ,ref('oneplanet_polygon_base_trades')
 ] %}
 
 with base_union as (

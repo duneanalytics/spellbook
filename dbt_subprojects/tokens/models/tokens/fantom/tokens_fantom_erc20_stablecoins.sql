@@ -1,26 +1,38 @@
 {{ config(
-      alias = 'stablecoins'
+      schema = 'tokens_fantom'
+      , alias = 'erc20_stablecoins'
       , tags=['static']
       , post_hook='{{ expose_spells(\'["fantom"]\',
                                   "sector",
                                   "tokens_fantom",
-                                  \'["Henrystats"]\') }}'
+                                  \'["Henrystats", "synthquest"]\') }}'
+      , unique_key = ['contract_address']
   )
 }}
 
-SELECT contract_address, symbol, decimals, name
+SELECT blockchain, contract_address, backing, symbol, decimals, name
 FROM (VALUES
-          (0xc54A1684fD1bef1f077a336E6be4Bd9a3096a6Ca, '2SHARES', 18, '2SHARE'),
-          (0x04068DA6C83AFCFA0e13ba15A6696662335D5B75, 'USDC', 6,	'USD Coin'),
-          (0x049d68029688eAbF473097a2fC38ef61633A3C7A, 'fUSDT', 6, 'Frapped USDT'), 
-          (0x8D11eC38a3EB5E956B052f67Da8Bdc9bef8Abf3E, 'DAI', 18, 'Dai Stablecoin'),
-          (0xdc301622e621166BD8E82f2cA0A26c13Ad0BE355, 'FRAX', 18, 'Frax'),
-          (0xAd84341756Bf337f5a0164515b1f6F993D194E1f, 'FUSD', 18, 'Fantom Foundation USD'), 
-          (0x7a6e4E3CC2ac9924605DCa4bA31d1831c84b44aE, '2OMB', 18, '2omb Token'), 
-          (0x846e4D51d7E2043C1a87E0Ab7490B93FB940357b, 'UST',	6,	'UST (Wormhole)'), 
-          (0x87a5C9B60A3aaf1064006FE64285018e50e0d020, 'MAGIK', 18, 'Magik'),
-          (0x9879aBDea01a879644185341F7aF7d8343556B7a, 'TUSD', 18, 'TrueUSD'),
-          (0x1D3918043d22de2D799a4d80f72Efd50Db90B5Af, 'sPDO', 18, 'pDollar Share'), 
-          (0x5f0456F728E2D59028b4f5B8Ad8C604100724C6A, 'L3USD', 18, 'L3USD'), 
-          (0xb9D62c829fbF7eAff1EbA4E50F3D0480b66c1748, 'PDO', 18, 'pDollar')
-     ) AS temp_table (contract_address, symbol, decimals, name)
+    ('fantom', 0x5f0456f728e2d59028b4f5b8ad8c604100724c6a, 'Hybrid stablecoin', 'L3USD', 18, 'L3USD'),
+    ('fantom', 0x3129662808bec728a27ab6a6b9afd3cbaca8a43c, 'Crypto-backed stablecoin', 'DOLA', 18, ''),
+    ('fantom', 0x9879abdea01a879644185341f7af7d8343556b7a, 'Fiat-backed stablecoin', 'TUSD', 18, 'TrueUSD'),
+    ('fantom', 0x0def844ed26409c5c46dda124ec28fb064d90d27, 'Hybrid stablecoin', 'CoUSD', 18, ''),
+    ('fantom', 0xb9d62c829fbf7eaff1eba4e50f3d0480b66c1748, 'Hybrid stablecoin', 'PDO', 18, 'pDollar'),
+    ('fantom', 0x7a6e4e3cc2ac9924605dca4ba31d1831c84b44ae, 'Hybrid stablecoin', '2OMB', 18, '2omb Token'),
+    ('fantom', 0x87a5c9b60a3aaf1064006fe64285018e50e0d020, 'Hybrid stablecoin', 'MAGIK', 18, 'Magik'),
+    ('fantom', 0x74e23df9110aa9ea0b6ff2faee01e740ca1c642e, 'Crypto-backed stablecoin', 'TOR', 18, ''),
+    ('fantom', 0xfb98b335551a418cd0737375a2ea0ded62ea213b, 'Crypto-backed stablecoin', 'miMATIC', 18, ''),
+    ('fantom', 0x04068da6c83afcfa0e13ba15a6696662335d5b75, 'Fiat-backed stablecoin', 'USDC', 6, 'USD Coin'),
+    ('fantom', 0x82f0b8b456c1a451378467398982d4834b6829c1, 'Crypto-backed stablecoin', 'MIM', 18, ''),
+    ('fantom', 0xdc301622e621166bd8e82f2ca0a26c13ad0be355, 'Hybrid stablecoin', 'FRAX', 18, 'Frax'),
+    ('fantom', 0xb67fa6defce4042070eb1ae1511dcd6dcc6a532e, 'Crypto-backed stablecoin', 'alUSD', 18, ''),
+    ('fantom', 0x846e4d51d7e2043c1a87e0ab7490b93fb940357b, 'Hybrid stablecoin', 'UST', 6, 'UST (Wormhole)'),
+    ('fantom', 0xad84341756bf337f5a0164515b1f6f993d194e1f, 'Hybrid stablecoin', 'FUSD', 18, 'Fantom Foundation USD'),
+    ('fantom', 0x049d68029688eabf473097a2fc38ef61633a3c7a, 'Fiat-backed stablecoin', 'fUSDT', 6, 'Frapped USDT'),
+    ('fantom', 0xe2d27f06f63d98b8e11b38b5b08a75d0c8dd62b9, 'Algorithmic stablecoin', 'UST', 6, ''),
+    ('fantom', 0x8d11ec38a3eb5e956b052f67da8bdc9bef8abf3e, 'Crypto-backed stablecoin', 'DAI', 18, 'Dai Stablecoin'),
+    ('fantom', 0x6fc9383486c163fa48becdec79d6058f984f62ca, 'Hybrid stablecoin', 'USDB', 18, ''),
+    ('fantom', 0xc54a1684fd1bef1f077a336e6be4bd9a3096a6ca, 'Hybrid stablecoin', '2SHARES', 18, '2SHARE'),
+    ('fantom', 0x1d3918043d22de2d799a4d80f72efd50db90b5af, 'Hybrid stablecoin', 'sPDO', 18, 'pDollar Share')
+
+
+     ) AS temp_table (blockchain, contract_address, backing, symbol, decimals, name)

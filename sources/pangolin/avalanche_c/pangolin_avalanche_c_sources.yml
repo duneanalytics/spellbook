@@ -6,4 +6,3 @@ sources:
       Pangolin avalanche contracts
     tables:
       - name: Airdrop_evt_PngClaimed
-        loaded_at_field: evt_block_time

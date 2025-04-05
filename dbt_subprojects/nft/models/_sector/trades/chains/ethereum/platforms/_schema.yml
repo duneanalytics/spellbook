@@ -10,7 +10,7 @@ models:
     config:
       tags: ['ethereum', 'nft', 'trades', 'archipelago']
     description: "Archipelago base trades"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
@@ -42,7 +42,7 @@ models:
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'superrare' ]
     description: "Superrare base trades"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -71,7 +71,7 @@ models:
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'foundation' ]
     description: "foundation base trades"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -107,7 +107,7 @@ models:
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'cyptopunks' ]
     description: "cyptopunks base trades"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -139,7 +139,7 @@ models:
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'blur' ]
     description: "Blur base trades"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -167,7 +167,7 @@ models:
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'blur' ]
     description: "Blur base trades"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -195,7 +195,7 @@ models:
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'blur' ]
     description: "Blur v2 base trades"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -223,7 +223,7 @@ models:
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'element' ]
     description: "element base trades"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -257,7 +257,7 @@ models:
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'x2y2' ]
     description: "x2y2 base trades"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -288,7 +288,7 @@ models:
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'looksrare' ]
     description: "looksrare v1 base trades"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -320,7 +320,7 @@ models:
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'looksrare' ]
     description: "looksrare v2 base trades"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -352,7 +352,7 @@ models:
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'looksrare' ]
     description: "looksrare's seaport base trades"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -380,7 +380,7 @@ models:
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'zora' ]
     description: "zora v1 base trades"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -408,7 +408,7 @@ models:
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'zora' ]
     description: "zora v2 base trades"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -439,7 +439,7 @@ models:
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'zora' ]
     description: "zora v3 base trades"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -480,7 +480,7 @@ models:
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'sudoswap' ]
     description: "sudoswap base trades"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -511,7 +511,7 @@ models:
     columns:
       - name: pool_address # unique
         description: 'Address of the pool'
-        tests:
+        data_tests:
           - unique
 
   - name: sudoswap_v2_ethereum_base_trades
@@ -523,7 +523,7 @@ models:
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'sudoswap' ]
     description: "sudoswap v2 base trades"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -553,7 +553,7 @@ models:
       collectionswap v1 pools on ethereum
     columns:
       - name: pool_address
-        tests:
+        data_tests:
           - unique
 
 
@@ -566,7 +566,7 @@ models:
     config:
       tags: [ 'ethereum', 'nft', 'trades', 'collectionswap' ]
     description: "collectionswap base trades"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -594,7 +594,7 @@ models:
     config:
       tags: [ 'trove', 'treasure', 'nft', 'trades' ]
     description: "NFT trades on trove on ethereum"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -608,7 +608,7 @@ models:
     config:
       tags: [ 'liquidifty', 'nft', 'trades' ]
     description: "NFT trades on liquidifty on ethereum"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -622,7 +622,7 @@ models:
     config:
       tags: [ 'magiceden', 'nft', 'trades' ]
     description: "NFT trades on Magic Eden on ethereum"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -636,7 +636,7 @@ models:
     config:
       tags: [ 'opensea', 'nft', 'trades' ]
     description: "NFT trades on opensea v1 on ethereum"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -662,7 +662,7 @@ models:
       tags: [ 'opensea','base_trades','seaport' ]
     description: >
       Opensea base trades from seaport (v3)
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -695,7 +695,7 @@ models:
       tags: [ 'opensea','base_trades','seaport' ]
     description: >
       Opensea base trades from seaport (v4)
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

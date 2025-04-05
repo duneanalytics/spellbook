@@ -10,7 +10,7 @@ models:
       tags: ['celo', 'flashloans']
     description: >
       All Uniswap v3 flashloans on Celo
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

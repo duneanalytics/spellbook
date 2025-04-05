@@ -1,0 +1,109 @@
+version: 2
+
+models:
+  - name: ton_jetton_price_daily
+    meta:
+      blockchain: ton
+      contributors: pshuvalov, okhlopkov
+    config:
+      tags: ['ton','prices',' dex']
+    description: >
+      TON tokens (jettons) daily prices derived from on-chain events. Includes prices for all jettons present on DEXs, DEX LPs and StormTrade SLPs.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - blockchain
+              - token_address
+              - timestamp
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain for the token"
+      - &token_address
+        name: token_address
+        description: "Token (Jetton) address in raw format"
+      - &timestamp
+        name: timestamp
+        description: "Start of the day in UTC"
+      - &price_ton
+        name: price_ton
+        description: 'Jetton price in TON (ignoring decimals)'
+      - &price_usd
+        name: price_usd
+        description: 'Jetton price in USD (ignoring decimals)'
+      - &asset_type
+        name: asset_type
+        description: 'Asset type: Jetton (price is based on DEX trades), DEX LP or SLP (StormTrade LP token)'
+  - name: ton_accounts
+    meta:
+      blockchain: ton
+      contributors: pshuvalov
+    config:
+      tags: ['ton','balances', 'interfaces', 'deployments']
+    description: >
+      Contains information about all accounts on TON blockchain including latest balance, interfaces and first/deployment tx information.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - address
+    columns:
+      - &address
+        name: address
+        description: "Account address"
+      - &status
+        name: status
+        description: "Account status - active, nonexist, uninit, frozen"
+      - &last_tx_hash
+        name: last_tx_hash
+        description: "Last transaction hash"
+      - &last_tx_at
+        name: last_tx_at
+        description: "Last transaction time"
+      - &balance
+        name: balance
+        description: "Account balance in nano TON"
+      - &code_hash
+        name: code_hash
+        description: "Account code hash"
+      - &deployment_tx_hash
+        name: deployment_tx_hash
+        description: "Hash of transaction that deployed the smart contract"
+      - &deployment_at
+        name: deployment_at
+        description: "Deployment transaction time"
+      - &deployment_by_external
+        name: deployment_by_external
+        description: "True if deployment was made by external message"
+      - &initial_funding_tx_hash
+        name: initial_funding_tx_hash
+        description: "First transaction hash"
+      - &initial_funding_at
+        name: initial_funding_at
+        description: "First transaction time"
+      - &initial_funding_sender
+        name: initial_funding_sender
+        description: "Senders of funds resulted in first transaction"
+      - &interfaces
+        name: interfaces
+        description: "Array of interfaces"
+        
+  - name: tokens_ton_net_transfers_daily
+    meta:
+      blockchain: ton
+      sector: tokens
+      contributors: krishhh
+    config:
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total transfer amount per day"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+    columns:
+      - name: blockchain
+        description: "The blockchain network"
+      - name: block_date
+        description: "The date of the block"
+      - name: net_transfer_amount_usd
+        description: "The total net transfer amount for the day"

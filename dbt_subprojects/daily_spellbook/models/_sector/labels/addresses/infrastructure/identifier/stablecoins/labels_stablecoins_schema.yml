@@ -10,7 +10,7 @@ models:
     config:
       tags: ['labels', 'stablecoins', 'erc20', 'ethereum', 'bnb', 'polygon', 'solana', 'arbitrum', 'optimism', 'fantom', 'avalanche_c', 'gnosis']
     description: "Stablecoin contract addresses"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address

@@ -1,35 +1,35 @@
 version: 2
 
 models:
-  - name: curvefi_ethereum_pool_details
+  - name: curve_ethereum_pool_details
     meta:
       blockchain: ethereum
-      project: curvefi
+      project: curve
       contributors: [agaperste, yulesa]
     config:
-      tags: ["ethereum", "curvefi", "view"]
+      tags: ["ethereum", "curve", "view"]
     description: >
       a dictionary view of pool details for a lot of regular pools on Curve.fi on Ethereum
     columns:
       - &version_pool
         name: version
         description: "Versions of the pool: Regular, Factory V1 Plain, Factory V1 Meta, Factory V2"
-        tests:
+        data_tests:
           - not_null
       - &name
         name: name
         description: "Pool name"
-        tests:
+        data_tests:
           - not_null
       - &symbol
         name: symbol
         description: "Pool symbol"
-        tests:
+        data_tests:
           - not_null
       - &pool_address
         name: pool_address
         description: "Address for the pool"
-        tests:
+        data_tests:
           - unique
           - not_null
       - &token_address
@@ -66,13 +66,13 @@ models:
         name: undercoin3
         description: "Address for third underlying coin, when applicable"
 
-  - name: curvefi_ethereum_view_pools
+  - name: curve_ethereum_view_pools
     meta:
       blockchain: ethereum
-      project: curvefi
+      project: curve
       contributors: [agaperste, yulesa, ilemi, viniabussafi]
     config:
-      tags: ["ethereum", "curvefi", "view_pools", "view"]
+      tags: ["ethereum", "curve", "view_pools", "view"]
     description: >
       view details of pools for Curve.fi on Ethereum
     columns:

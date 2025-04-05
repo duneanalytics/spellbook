@@ -14,7 +14,7 @@ models:
       - &edition_address
         name: edition_address
         description: "Edition (token) Address"
-        tests:
+        data_tests:
           - unique
       - &created_tx_hash
         name: created_tx_hash

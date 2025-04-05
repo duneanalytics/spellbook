@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: dex_shape_base_trades
+    data_tests:
+      - check_dex_info_relationship
+      - test_acceptable_usd_amount:
+          column_name: amount_usd
+          max_value: 1000000000
+
+  - name: reservoir_swap_shape_base_trades
+    meta:
+      blockchain: shape
+      sector: dex
+      project: uniswap
+      contributors: hosuke
+    config:
+      tags: ['shape', 'dex', 'trades', 'uniswap', 'v3', 'reservoir_swap']
+    description: "reservoir_swap shape base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+            seed_file: ref('reservoir_swap_shape_base_trades_seed')

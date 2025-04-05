@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: prices_sonic_tokens
+    meta:
+      blockchain: sonic
+      sector: tokens
+      contributors: hosuke
+    config:
+      tags: ['tokens', 'sonic', 'prices']
+    description: "Token prices and metadata on Sonic"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - contract_address
+      - test_prices_tokens_against_erc20
+    columns:
+      - name: token_id
+        description: "Unique identifier for the token"
+      - name: blockchain
+        description: "Blockchain where the token is deployed"
+      - name: symbol
+        description: "Token symbol"
+      - name: contract_address
+        description: "Contract address of the token"
+        data_tests:
+          - unique
+      - name: decimals
+        description: "Number of decimal places for the token"

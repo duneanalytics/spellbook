@@ -89,7 +89,7 @@ other_dexs AS (
         WHERE {{ incremental_predicate('evt_block_time') }}
         {% endif %}
         {% if not loop.last %}
-        UNION ALL
+        UNION DISTINCT
         {% endif %}
     {% endfor %}
 ),

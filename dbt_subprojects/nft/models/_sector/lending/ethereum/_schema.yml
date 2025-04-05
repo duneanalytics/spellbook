@@ -127,7 +127,7 @@ models:
       tags: ['ethereum','astaria','v1','lending']
     description: >
         Astaria lending (repay & borrow & liquidation) on ethereum
-    tests:
+    data_tests:
         - dbt_utils.unique_combination_of_columns:
             combination_of_columns:
               - block_date
@@ -215,7 +215,7 @@ models:
       tags: ['ethereum','bend_dao','v1','lending']
     description: >
         bend_dao lending (repay & borrow) on ethereum
-    tests:
+    data_tests:
         - dbt_utils.unique_combination_of_columns:
             combination_of_columns:
               - block_date

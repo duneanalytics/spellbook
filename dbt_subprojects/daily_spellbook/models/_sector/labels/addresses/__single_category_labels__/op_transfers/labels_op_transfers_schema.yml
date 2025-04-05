@@ -10,7 +10,7 @@ models:
     config:
       tags: ['labels', 'optimism', 'transfers']
     description: Addresses that made only erc20 token transfer transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address

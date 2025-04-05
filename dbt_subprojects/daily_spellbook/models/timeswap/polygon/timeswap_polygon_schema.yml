@@ -12,7 +12,7 @@ models:
       tags: ['polygon','timeswap','pools', 'view']
     description: >
         Timeswap pools on polygon
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - pool_pair
@@ -59,7 +59,7 @@ models:
         Timeswap lend transactions on polygon
     config:
       tags: ['polygon','timeswap','lend', 'view']
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_hash
@@ -101,7 +101,7 @@ models:
       Timeswap borrow transactions on polygon
     config:
       tags: ['polygon','timeswap','borrow', 'view']
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_hash

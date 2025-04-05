@@ -11,7 +11,7 @@ models:
       tags: ['optimism','sushiswap','sushi','trades','dex', 'incentives', 'masterchef']
     description: >
         Sushiswap contract deployment constuctor configurations for rewarder contracts
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -43,7 +43,7 @@ models:
       tags: ['optimism','sushiswap','sushi','trades','dex', 'incentives', 'masterchef']
     description: >
         Sushiswap masterchef mapping of pool ids to lp token addresses
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -69,7 +69,7 @@ models:
       tags: ['optimism','sushiswap','sushi','trades','dex', 'incentives', 'masterchef']
     description: >
         Sushiswap mapping of allocation points and token emissions per second by pool and rewarder
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

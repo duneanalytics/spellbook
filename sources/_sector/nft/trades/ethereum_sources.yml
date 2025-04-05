@@ -75,6 +75,7 @@ sources:
     tables:
       - name: X2Y2_r1_evt_EvProfit
       - name: X2Y2_r1_evt_EvInventory
+      - name: X2Y2Drop_evt_Airdrop
 
   - name: zora_ethereum
     tables:

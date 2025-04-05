@@ -9,7 +9,7 @@ models:
       tags: ['bridges','hop_protocol', 'flows', 'cross-chain', 'optimism']
     description: >
         Table aggregating bridge transfers through Hop Protocol.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - block_date
@@ -117,7 +117,7 @@ models:
       tags: ['bridge','hop_protocol','cross-chain']
     description: >
         Table storing address mapping inoformation for Hop's bridge addresses and underlying tokens.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - blockchain

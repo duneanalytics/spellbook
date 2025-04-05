@@ -10,7 +10,7 @@ models:
     config:
       tags: ['transfers', 'polygon', 'erc20']
     description: "ERC20 Token Transfers on polygon. This table is updated every 30 minutes."
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transfer_type
@@ -54,7 +54,7 @@ models:
       contributors: Henrystats
     config:
       tags: ['transfers', 'polygon', 'erc20', 'agg_hour', 'Henrystats']
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_hour
@@ -84,7 +84,7 @@ models:
       contributors: Henrystats
     config:
       tags: ['transfers', 'polygon', 'erc20', 'agg_day', 'Henrystats']
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_day

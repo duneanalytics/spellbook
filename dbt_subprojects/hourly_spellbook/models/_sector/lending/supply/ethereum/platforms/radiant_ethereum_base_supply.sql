@@ -15,6 +15,7 @@
     blockchain = 'ethereum',
     project = 'radiant',
     version = '1',
-    project_decoded_as = 'radiant_capital'
+    project_decoded_as = 'radiant_capital',
+    wrapped_token_gateway_available = false
   )
 }}

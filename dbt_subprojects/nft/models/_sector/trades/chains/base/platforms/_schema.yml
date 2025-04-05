@@ -10,7 +10,7 @@ models:
     config:
       tags: [ 'base', 'nft', 'trades', 'alienswap' ]
     description: "AlienSwap base trades"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -38,7 +38,7 @@ models:
     config:
       tags: [ 'base', 'nft', 'trades', 'element' ]
     description: "element base trades"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -72,7 +72,7 @@ models:
     config:
       tags: [ 'base', 'nft', 'trades', 'zonic' ]
     description: "Zonic base trades on Base"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
@@ -106,7 +106,7 @@ models:
     columns:
       - name: pool_address
         description: 'Address of the pool'
-        tests:
+        data_tests:
           - unique
 
   - name: sudoswap_v2_base_base_trades
@@ -118,7 +118,7 @@ models:
     config:
       tags: [ 'base', 'nft', 'trades', 'sudoswap' ]
     description: "sudoswap v2 base trades"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -146,7 +146,7 @@ models:
     config:
       tags: [ 'magiceden', 'nft', 'trades' ]
     description: "NFT trades on Magic Eden on base"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -160,7 +160,7 @@ models:
       tags: [ 'opensea','base_trades','seaport' ]
     description: >
       Opensea base trades from seaport (v4)
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

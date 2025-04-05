@@ -10,7 +10,7 @@ models:
       tags: ['base', 'flashloans']
     description: >
       All Balancer v2 flashloans on base
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

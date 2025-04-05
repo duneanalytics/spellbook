@@ -11,12 +11,10 @@ sources:
         - name: ElementEx_evt_ERC1155SellOrderFilled
         - name: ElementEx_evt_ERC1155BuyOrderFilled
   - name: zonic_base
-    freshness:
     tables:
       - name: ZonicMarketplace_evt_ZonicBasicOrderFulfilled
 
   - name: sudoswap_v2_base
-    freshness:
     tables:
       - name: LSSVMPairFactory_call_createPairERC721ETH
       - name: LSSVMPairFactory_call_createPairERC1155ETH

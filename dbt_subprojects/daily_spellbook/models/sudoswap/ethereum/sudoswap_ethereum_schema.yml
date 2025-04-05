@@ -14,7 +14,7 @@ models:
     columns:
       - name: pool_address
         description: "Address of the pool"
-        tests:
+        data_tests:
           - unique
       - &nft_contract_address
         name: nft_contract_address
@@ -101,7 +101,7 @@ models:
     columns:
       - name: pool_address # unique
         description: 'Address of the pool'
-        tests:
+        data_tests:
           - unique
       - *nft_contract_address
       - *creator_address
@@ -125,7 +125,7 @@ models:
       tags: ['ethereum','sudoswap','pool_trades_agg_day']
     description: >
         sudoswap pool trades on Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
@@ -156,7 +156,7 @@ models:
       tags: ['ethereum','sudoswap','pool_balance_agg_day']
     description: >
         sudoswap pool balance changes on Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
@@ -181,7 +181,7 @@ models:
     columns:
       - name: pool_address # unique
         description: 'Address of the pool'
-        tests:
+        data_tests:
           - unique
       - *bonding_curve
       - *spot_price

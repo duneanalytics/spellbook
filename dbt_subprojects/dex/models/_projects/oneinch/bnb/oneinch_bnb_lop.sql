@@ -17,8 +17,4 @@
 
 
 
-{{
-    oneinch_lop_macro(
-        blockchain = blockchain
-    )
-}}
+{{ oneinch_lop_macro(blockchain) }}

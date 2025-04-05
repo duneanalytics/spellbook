@@ -20,7 +20,7 @@ models:
       - &name
         name: name
         description: "Name of the space ID"
-        tests:
+        data_tests:
           - unique
       - &label
         name: label

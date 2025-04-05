@@ -20,7 +20,7 @@ models:
         description: "Version of the contract built and deployed by the DEX project"
       - name: pool
         description: "DEX pool smart contract address"
-        tests:
+        data_tests:
           - unique
       - name: fee
         description: "Defined fee"
@@ -46,7 +46,7 @@ models:
       tags: ['dex', 'pools', 'volume', 'fee', 'tvl']
     description: >
       This spell aggregates data from the trades, liquidity and protocol fees spells, by day and pool, while also displaying some basic information about the pool
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date

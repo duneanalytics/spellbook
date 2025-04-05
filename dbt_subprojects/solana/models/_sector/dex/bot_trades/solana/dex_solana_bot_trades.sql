@@ -6,7 +6,7 @@
         post_hook = '{{ expose_spells(
                         blockchains = \'["solana"]\',
                         spell_type = "sector",
-                        spell_name = "bot_trades",
+                        spell_name = "dex_solana",
                         contributors = \'["whale_hunter", "hosuke"]\') }}'
     )
 }}
@@ -26,6 +26,19 @@
     , ref('sol_gun_solana_bot_trades')
     , ref('consortium_key_solana_bot_trades')
     , ref('tirador_solana_bot_trades')
+    , ref('mev_x_solana_bot_trades')
+    , ref('alpha_dex_solana_bot_trades')
+    , ref('pinkpunk_solana_bot_trades')
+    , ref('falcon_solana_bot_trades')
+    , ref('soul_sniper_solana_bot_trades')
+    , ref('jupbot_solana_bot_trades')
+    , ref('looter_solana_bot_trades')
+    , ref('wifbot_solana_bot_trades')
+    , ref('autosnipe_solana_bot_trades')
+    , ref('bitfoot_solana_bot_trades')
+    , ref('tradewiz_solana_bot_trades')
+    , ref('prophetbots_solana_bot_trades')
+    , ref('sanji_solana_bot_trades')
 ] %}
 
 {% for bot in solana_trading_bot %}

@@ -3,7 +3,7 @@
         schema = 'cex',
         alias = 'addresses',
         materialized = 'table',
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "optimism", "arbitrum", "polygon", "bitcoin", "fantom", "aptos", "celo", "zora", "zksync", "zkevm", "linea", "solana", "scroll", "tron", "base"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "optimism", "arbitrum", "polygon", "bitcoin", "fantom", "aptos", "celo", "zora", "zksync", "zkevm", "linea", "solana", "scroll", "tron", "base", "mantle", "worldchain", "sei"]\',
                                     "sector",
                                     "cex",
                                     \'["hildobby"]\') }}')
@@ -39,6 +39,9 @@
  , ref('cex_zkevm_addresses')
  , ref('cex_zksync_addresses')
  , ref('cex_zora_addresses')
+ , ref('cex_worldchain_addresses')
+ , ref('cex_mantle_addresses')
+ , ref('cex_sei_addresses')
 ] %}
 
 SELECT *

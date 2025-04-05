@@ -10,7 +10,7 @@ models:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
       pairs added for trading on tigris on arbitrum  on v1 & v2
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - protocol_version
@@ -36,7 +36,7 @@ models:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
       open position events for tigris events on v1 & v2
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_block_time
@@ -110,7 +110,7 @@ models:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
       add margin events for tigris events on v1
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_block_time
@@ -146,7 +146,7 @@ models:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
       modify margin events for tigris events on v1 & v2
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_block_time
@@ -184,7 +184,7 @@ models:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
       close position events for tigris events on v1 & v2
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_block_time
@@ -220,7 +220,7 @@ models:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
       liquidate position events for tigris events on v1 & v2
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_block_time
@@ -251,7 +251,7 @@ models:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
       limit order events on v1 & v2
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_block_time
@@ -288,7 +288,7 @@ models:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
       tigris trading contracts and their corresponding positions contract
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - trading_contract
@@ -314,7 +314,7 @@ models:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
       limit cancelled events on v1 & v2
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_block_time
@@ -343,7 +343,7 @@ models:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
       options open position across all versions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_block_time
@@ -396,7 +396,7 @@ models:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
       options close position across all versions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_block_time
@@ -438,7 +438,7 @@ models:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
       options limit order across all versions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_block_time
@@ -477,7 +477,7 @@ models:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
       options limit cancel across all versions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_block_time
@@ -516,7 +516,7 @@ models:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
       fees distributed events 
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_block_time
@@ -545,7 +545,7 @@ models:
       tags: [ 'tigris', 'optionss', 'margin' ]
     description: >
       fees distributed events 
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_block_time

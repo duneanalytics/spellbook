@@ -3,8 +3,5 @@ version: 2
 sources:
   - name: aave_v3_optimism
     description: "decoded events and function calls for aave on optimism"
-    freshness:
-      warn_after: { count: 12, period: hour }
     tables:
       - name: RewardsController_evt_RewardsClaimed
-        loaded_at_field: evt_block_time

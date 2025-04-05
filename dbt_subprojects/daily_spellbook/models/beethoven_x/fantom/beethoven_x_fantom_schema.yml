@@ -17,7 +17,7 @@ models:
       - &pool_id
         name: pool_id
         description: 'Unique encoded identifier that refers to each pool'
-        tests:
+        data_tests:
           - not_null
       - &token_address
         name: token_address
@@ -35,7 +35,7 @@ models:
       tags: ['fantom', 'balancer', 'pools', 'liquidity']
     description: >
       Beethoven X pools liquidity by token in fantom.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
@@ -78,7 +78,7 @@ models:
       tags: ['fantom', 'revenue', 'fees']
     description: >
       Daily Protocol Fee collected and Revenue by pool on Beethoven X, an automated portfolio manager and trading platform built on Balancer.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
@@ -102,10 +102,13 @@ models:
         description: "Fee collected in the pool in USD"
       - &treasury_share
         name: treasury_share
-        description: "Share of total fee that is directed to Balancer DAO's treasury, as per BIPs 19, 161 and 371"
-      - &treasury_revenue_usd
+        description: "Share of total fee that is directed to Beethoven DAO's treasury, as per BIPs 19, 161 and 371"
+      - &treasury_fee_usd
         name: treasury_revenue_usd
-        description: "USD value of fee directed to Balancer DAO's treasury"
+        description: "USD value of fee directed to Beethoven X DAO's treasury"
+      - &lp_fee_collected_usd
+        name: lp_fee_collected_usd
+        description: "USD value of the fee returned to liquidity providers" 
         
   - name: beethoven_x_fantom_bpt_supply
     meta:
@@ -115,8 +118,8 @@ models:
     config:
       tags: ['fantom', 'bpt', 'supply']
     description: >
-      Balancer Pool Token (BPT) supply for Beethoven X pools built on Balancer.
-    tests:
+      Balancer Pool Token (BPT) supply for Beethoven X pools built on Beethoven X.
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
@@ -139,7 +142,7 @@ models:
       tags: ['fantom', 'bpt', 'prices']
     description: >
       Balancer Pool Token (BPT) daily price by pool on Beethoven X, an automated portfolio manager and trading platform built on Balancer.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -163,7 +166,7 @@ models:
       tags: ['fantom', 'bpt', 'transfers']
     description: >
       Balancer Pool Token (BPT) transfer logs on Beethoven X, an automated portfolio manager and trading platform built on Balancer.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_tx_hash
@@ -191,7 +194,7 @@ models:
       tags: ['fantom', 'bpt', 'supply', 'changes']
     description: >
       Token Balance Changes on Beethoven X Pools.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -239,7 +242,7 @@ models:
       tags: ['fantom', 'bpt', 'supply', 'changes']
     description: >
       Token Balance Changes on Beethoven X Pools, grouped by day.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -274,7 +277,7 @@ models:
       tags: ['fantom', 'bpt', 'supply', 'changes']
     description: >
       Balancer Pool Token (BPT) supply change events on Beethoven X.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -313,7 +316,7 @@ models:
       tags: ['fantom', 'bpt', 'supply', 'changes']
     description: >
       Balancer Pool Token (BPT) supply change events on Beethoven X, grouped by day
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -328,3 +331,42 @@ models:
       - name: token_address
       - name: daily_delta
         description: "Daily total impact on BPT supply"
+
+  - name: beethoven_x_fantom_pools_metrics_daily
+    meta:
+      blockchain: fantom
+      contributors: viniabussafi, metacrypto
+    config:
+      tags: ['fantom', 'jelly_swap', 'pool', 'stats', 'volume', 'tvl', 'fee']
+    description: >
+      This spell aggregates data from the trades, liquidity and protocol fees spells, by day and pool, while also displaying some basic information about the pool
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - project_contract_address
+    columns:
+      - *blockchain
+      - name: project
+      - name: version
+      - name: block_date
+      - &project_contract_address
+        name: project_contract_address
+        description: "Pool address"
+      - *pool_symbol
+      - name: pool_type
+      - &swap_amount_usd
+        name: swap_amount_usd
+        description: "Daily swap volume on a pool, in USD"
+      - &tvl_usd
+        name: tvl_usd
+        description: "Total Value Locked on a pool, in USD"
+      - &tvl_eth
+        name: tvl_eth
+        description: "Total Value Locked on a pool, in eth"
+      - &fee_amount_usd
+        name: fee_amount_usd
+        description: "Daily fees collected on a pool, in USD"

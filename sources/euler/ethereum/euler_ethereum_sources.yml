@@ -6,6 +6,4 @@ sources:
 
     tables:
       - name: Euler_evt_Borrow
-        loaded_at_field: evt_block_time
       - name: Euler_evt_Repay
-        loaded_at_field: evt_block_time

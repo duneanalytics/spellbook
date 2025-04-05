@@ -3,11 +3,8 @@ version: 2
 sources:
   - name: rubicon_optimism
     description: "Optimism decoded tables related to rubicon's implementation of OasisDEX"
-    freshness:
-      warn_after: { count: 12, period: hour } 
     tables:
       - name: RubiconMarket_evt_LogTake
-        loaded_at_field: evt_block_time
         description: "a table of events triggered when a taker fills an outstanding offer" 
         columns:
           - &buy_gem
@@ -52,7 +49,6 @@ sources:
             description: "the timestamp of the event creation"
 
       - name: RubiconMarket_evt_LogMake
-        loaded_at_field: evt_block_time
         description: "a table of events triggered when a maker creates an offer" 
         columes: 
           - *contract_address
@@ -74,7 +70,6 @@ sources:
           - *timestamp
 
       - name: RubiconMarket_evt_emitOffer
-        loaded_at_field: evt_block_time
         description: "a table of events triggered when a maker creates an offer" 
         columes: 
           - *contract_address
@@ -91,7 +86,6 @@ sources:
           - *buy_amt
           
       - name: RubiconMarket_evt_emitTake
-        loaded_at_field: evt_block_time
         description: "a table of events triggered when a taker fills an outstanding offer" 
         columes: 
           - *contract_address

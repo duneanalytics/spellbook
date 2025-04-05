@@ -2,8 +2,11 @@ version: 2
 
 models:
   - name: dex_zkevm_base_trades
-    tests:
+    data_tests:
       - check_dex_info_relationship
+      - test_acceptable_usd_amount:
+          column_name: amount_usd
+          max_value: 1000000000
 
   - name: balancer_v2_zkevm_base_trades
     meta:
@@ -14,7 +17,7 @@ models:
     config:
       tags: [ 'zkevm', 'dex', 'trades', 'balancer' ]
     description: "Balancer v2 zkevm base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -29,7 +32,7 @@ models:
     config:
       tags: [ 'zkevm', 'dex', 'trades', 'pancakeswap', 'uniswap', 'v2' ]
     description: "Pancakeswap zkevm v2 base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -48,7 +51,7 @@ models:
     config:
       tags: [ 'zkevm', 'dex', 'trades', 'pancakeswap' ]
     description: "Pancakeswap V3 zkevm base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -57,3 +60,73 @@ models:
           seed_file: ref('pancakeswap_zkevm_base_trades_seed')
           filter:
             version: 3
+
+  - name: clipper_zkevm_base_trades
+    meta:
+      blockchain: zkevm
+      sector: dex
+      project: clipper
+      contributors: amalashkevich, 0xTemo
+    config:
+      tags: [ 'zkevm', 'dex', 'trades', 'clipper' ]
+    description: "Clipper zkevm base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('clipper_zkevm_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: sushiswap_v2_zkevm_base_trades
+    meta:
+      blockchain: zkevm
+      sector: dex
+      project: sushiswap
+      contributors: rosaria292
+    config:
+      tags: [ 'polygon', 'dex', 'trades', 'sushiswap', 'v2' ]
+    description: "sushiswap zkevm v2 trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sushiswap_zkevm_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: leetswap_zkevm_base_trades
+    meta:
+      blockchain: zkevm
+      sector: dex
+      project: leetswap
+      contributors: Marin2Tan
+    config:
+      tags: [ 'zkevm', 'dex', 'trades', 'leetswap' ]
+    description: "Leetswap zkevm base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('leetswap_zkevm_base_trades_seed')
+
+  - name: quickswap_v3_zkevm_base_trades
+    meta:
+      blockchain: zkevm
+      sector: dex
+      project: quickswap
+      contributors: sofiat, surfquery
+    config:
+      tags: [ 'zkevm', 'dex', 'trades', 'quickswap' ]
+    description: "Quickswap zkevm base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index

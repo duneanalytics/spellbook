@@ -1,0 +1,3 @@
+blockchain,project,version,block_number,block_time,tx_hash,evt_index,transaction_type,token_address,depositor,amount
+ethereum,aave_lido,3,20454405,2024-08-04 09:50:35.000 UTC,0x42345feb96d2e4e0230b2d272f31ed186c30e0adde9e1ca1aeed5a70da56d08b,362,deposit,0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2,0x702b6770a81f75964ca5d479f369efb31dfa7c32,3.1706e+21
+ethereum,aave_lido,3,20454215,2024-08-04 09:12:35.000 UTC,0xe4924cb7355e0994d2b288acbbe08e4bdaaaad561de9060f64a08924c2493ad4,357,withdraw,0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2,0x702b6770a81f75964ca5d479f369efb31dfa7c32,-7e+18

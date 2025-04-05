@@ -5,10 +5,11 @@ models:
     meta:
       sector: prices
       contributors: hildobby, 0xRob
+      docs_slug: /curated/asset-tracking/prices/prices_latest
     config:
       tags: ['prices', 'usd', 'latest']
-    description: "Latest prices table across blockchains"
-    tests:
+    description: "Latest price data for tokens in USD"
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -36,7 +37,7 @@ models:
     config:
       tags: [ 'prices', 'usd', 'forward_fill' ]
     description: "View on prices that does a forward fill on the last 24h till the current timestamp"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - minute
@@ -61,16 +62,18 @@ models:
         description: "Token decimals"
       - name: price
         description: "USD price of a token"
-        test: not_null
+        data_tests:
+          - not_null
 
   - name: prices_usd_daily
     meta:
       sector: prices
       contributors: aalan3
+      docs_slug: /curated/asset-tracking/prices/prices_daily
     config:
       tags: ['prices', 'usd', 'daily']
     description: "Daily aggregated prices table across blockchains"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day

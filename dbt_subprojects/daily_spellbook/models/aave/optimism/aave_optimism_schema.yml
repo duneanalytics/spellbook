@@ -102,7 +102,7 @@ models:
     config:
       tags: ['optimism', 'aave_v3', 'interest', 'aave', 'lending']
     description: "Hourly aave interest rates on optimism"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - reserve

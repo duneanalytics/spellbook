@@ -66,7 +66,7 @@ AS
 )
 SELECT  a.blockchain
       , '0x API'  as project
-      , cast(null as varchar(10)) as version
+      , cast('1' as varchar(10)) as version
 
       , a.block_date
       , a.block_month

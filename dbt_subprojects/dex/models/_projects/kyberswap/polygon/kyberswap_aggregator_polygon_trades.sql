@@ -36,9 +36,11 @@ WITH meta_router AS
             ,ARRAY[-1]              AS trace_address
         FROM
             {{ source('kyber_polygon', 'MetaAggregationRouterV2_evt_Swapped') }}
-        {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - INTERVAL '7' DAY)
-        {% endif %}
+        WHERE
+            dstToken != 0xd848db988b477efe60ee2ff99f9898990c6fb0cd --bug with MTK token
+            {% if is_incremental() %}
+            AND evt_block_time >= date_trunc('day', now() - INTERVAL '7' DAY)
+            {% endif %}
 )
 SELECT
     'polygon'                                                          AS blockchain

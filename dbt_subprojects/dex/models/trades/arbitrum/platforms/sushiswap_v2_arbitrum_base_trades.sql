@@ -15,7 +15,7 @@
         blockchain = 'arbitrum',
         project = 'sushiswap',
         version = '2',
-        Pair_evt_Swap = source('sushi_v2_arbitrum', 'Pool_evt_Swap'),
-        Factory_evt_PoolCreated = source('sushi_v2_arbitrum', 'Factory_evt_PoolCreated')
+        Pair_evt_Swap = source('sushiswap_v3_pool_arbitrum', 'UniswapV3Pool_evt_Swap'),
+        Factory_evt_PoolCreated = source('sushiswap_arbitrum', 'UniswapV3Factory_evt_PoolCreated')
     )
 }}

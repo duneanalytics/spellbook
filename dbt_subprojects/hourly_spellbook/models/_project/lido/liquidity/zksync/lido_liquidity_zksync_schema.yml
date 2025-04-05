@@ -10,7 +10,7 @@ models:
       tags: ['zksync','lido','liquidity']
     description: 
         Lido wstETH liquidity pools on SyncSwap Zksync
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - pool

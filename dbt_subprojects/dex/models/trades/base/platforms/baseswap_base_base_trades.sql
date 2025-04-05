@@ -14,7 +14,7 @@
     uniswap_compatible_v2_trades(
         blockchain = 'base',
         project = 'baseswap',
-        version = '1',
+        version = '2',
         Pair_evt_Swap = source('baseswap_base', 'PancakePair_evt_Swap'),
         Factory_evt_PairCreated = source('baseswap_base', 'PancakeFactory_evt_PairCreated')
     )

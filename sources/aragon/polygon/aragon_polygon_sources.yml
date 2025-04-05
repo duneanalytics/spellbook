@@ -5,9 +5,7 @@ sources:
     description: "aragon dao deployed decoded event"
     tables:
       - name: dao_factory_evt_DeployDAO
-        loaded_at_field: evt_block_time
   - name: aragon_app_polygon
     description: "aragon dao (app) deployed decoded event"
     tables:
       - name: DAORegistry_evt_DAORegistered
-        loaded_at_field: evt_block_time

@@ -16,6 +16,7 @@ sources:
       - name: usd_latest
       - name: usd_daily
       - name: usd_forward_fill
+      - name: usd_with_native
 
   - name: lending
     tables:
@@ -38,7 +39,52 @@ sources:
   - name: safe_ethereum
     tables:
       - name: safes
+  - name: safe_arbitrum
+    tables:
+      - name: safes
+  - name: safe_avalanche_c
+    tables:
+      - name: safes
+  - name: safe_base
+    tables:
+      - name: safes
+  - name: safe_linea
+    tables:
+      - name: safes
+  - name: safe_optimism
+    tables:
+      - name: safes
+  - name: safe_polygon
+    tables:
+      - name: safes
+  - name: safe_scroll
+    tables:
+      - name: safes
 
   - name: perpetual
     tables:
       - name: trades
+
+  - name: beethoven_x_fantom
+    tables:
+      - name: pools_metrics_daily
+
+  - name: jelly_swap_sei
+    tables:
+      - name: pools_metrics_daily
+
+  - name: account_abstraction_erc4337
+    tables:
+      - name: account_deployed
+
+  - name: gas
+    tables:
+      - name: fees
+
+  - name: gas_celo
+    tables:
+      - name: fees
+
+  - name: evms
+    tables:
+      - name: transaction_metrics

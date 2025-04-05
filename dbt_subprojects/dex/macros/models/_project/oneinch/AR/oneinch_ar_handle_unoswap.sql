@@ -50,7 +50,7 @@ select
     , call_type
     , ordinary
     , transform(pools, x -> map_from_entries(array[
-        ('type', substr(cast(x['pool_type'] as varbinary), 1, 1))
+        ('type', substr(cast(x['pool_type'] as varbinary), 32))
         , ('info', substr(cast(x['pool'] as varbinary), 1, 12))
         , ('unwrap', substr(reverse(cast(x['unwrap'] as varbinary)), 1, 1))
         , ('address', substr(cast(x['pool'] as varbinary), 13))
@@ -104,7 +104,7 @@ from (
         {% if is_incremental() %}
             where {{ incremental_predicate('call_block_time') }}
         {% else %}
-            where call_block_time >= timestamp '{{ start_date }}'
+            where call_block_time >= greatest(timestamp '{{ start_date }}', timestamp {{ oneinch_easy_date() }})
         {% endif %}
     )
 )

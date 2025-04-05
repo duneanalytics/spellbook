@@ -7,7 +7,7 @@ models:
       tags: ['integration_test']
       columns:
         - name: blockchain
-          tests:
+          data_tests:
             - not_null
 
   - name: test_view
@@ -16,5 +16,5 @@ models:
       tags: ['integration_test']
       columns:
         - name: blockchain
-          tests:
+          data_tests:
             - not_null

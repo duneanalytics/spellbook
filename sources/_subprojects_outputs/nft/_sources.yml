@@ -12,6 +12,10 @@ sources:
     tables:
       - name: wash_trades
 
+  - name: nft_blast
+    tables:
+      - name: wash_trades
+
   - name: nft_ethereum
     tables:
       - name: wallet_metrics

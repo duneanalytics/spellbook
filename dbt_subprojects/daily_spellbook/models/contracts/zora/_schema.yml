@@ -10,7 +10,7 @@ models:
     config:
       tags: ['evm', 'zora', 'contracts', 'addresses']
     description: "Mapping of contracts to its creators and names on zora."
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -122,7 +122,7 @@ models:
     config:
       tags: ['evm', 'contracts', 'addresses']
     description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -152,7 +152,7 @@ models:
     config:
       tags: ['evm', 'zora', 'contracts', 'addresses']
     description: "Base Level for mapping of contracts to its creators and names on zora."
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -185,7 +185,7 @@ models:
     config:
       tags: ['evm', 'zora', 'contracts', 'addresses']
     description: "Iterated creators for mapping of contracts to its creators and names on zora."
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

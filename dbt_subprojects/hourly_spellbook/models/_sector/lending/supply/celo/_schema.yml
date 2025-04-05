@@ -10,7 +10,7 @@ models:
     config:
       tags: ['lending', 'supply', 'moola', 'celo']
     description: "All lending supply transactions on Celo"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_type
@@ -21,27 +21,27 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain name"
-        tests:
+        data_tests:
           - not_null
       - &project
         name: project
         description: "Project name"
-        tests:
+        data_tests:
           - not_null
       - &version
         name: version
         description: "Version of the contract built and deployed by the lending project"
-        tests:
+        data_tests:
           - not_null
       - &transaction_type
         name: transaction_type
         description: "Transaction type"
-        tests:
+        data_tests:
           - not_null
       - &token_address
         name: token_address
         description: "Token contract address"
-        tests:
+        data_tests:
           - not_null
       - &depositor
         name: depositor
@@ -64,27 +64,27 @@ models:
       - &block_time
         name: block_time
         description: "Timestamp for block event time in UTC"
-        tests:
+        data_tests:
           - not_null
       - &block_number
         name: block_number
         description: "Event block number"
-        tests:
+        data_tests:
           - not_null
       - &project_contract_address
         name: project_contract_address
         description: "Project contract address"
-        tests:
+        data_tests:
           - not_null
       - &tx_hash
         name: tx_hash
         description: "Transaction hash of the event"
-        tests:
+        data_tests:
           - not_null
       - &evt_index
         name: evt_index
         description: "Event index"
-        tests:
+        data_tests:
           - not_null
 
   - name: moola_celo_base_supply
@@ -96,7 +96,7 @@ models:
     config:
       tags: ['lending', 'supply', 'moola', 'aave_v3', 'celo']
     description: "Moola supply transactions on Celo"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_type
@@ -105,6 +105,42 @@ models:
             - evt_index
       - check_lending_base_supply_seed:
           seed_file: ref('moola_celo_base_supply_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *depositor
+      - *on_behalf_of
+      - *withdrawn_to
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *project_contract_address
+      - *tx_hash
+      - *evt_index
+
+  - name: aave_v3_celo_base_supply
+    meta:
+      blockchain: celo
+      sector: lending
+      project: aave
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'supply', 'aave_', 'celo']
+    description: "Aave v3 supply transactions on Celo"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_supply_seed:
+          seed_file: ref('aave_celo_base_supply_seed')
     columns:
       - *blockchain
       - *project

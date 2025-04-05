@@ -5,7 +5,7 @@
   materialized = 'table',
   post_hook='{{ expose_spells(\'["solana"]\',
                                   "sector",
-                                  "tokens",
+                                  "tokens_solana",
                                   \'["ilemi"]\') }}'
 )
 }}

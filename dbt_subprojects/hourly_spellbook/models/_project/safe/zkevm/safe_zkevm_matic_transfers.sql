@@ -1,13 +1,13 @@
 {{
     config(
-        materialized='incremental',
         schema = 'safe_zkevm',
         alias = 'matic_transfers',
         partition_by = ['block_month'],
-        unique_key = ['block_date', 'address', 'tx_hash', 'trace_address'],
         on_schema_change='fail',
+        materialized='incremental',
         file_format ='delta',
         incremental_strategy='merge',
+        unique_key = ['block_date', 'address', 'tx_hash', 'trace_address'],
         post_hook = '{{ expose_spells(
                         blockchains = \'["zkevm"]\',
                         spell_type = "project",
@@ -18,65 +18,10 @@
 
 {% set project_start_date = '2023-09-01' %}
 
-select
-    t.*,
-    p.price * t.amount_raw / 1e18 AS amount_usd
-
-from (
-    select
-        'zkevm' as blockchain,
-        'MATIC' as symbol,
-        s.address,
-        try_cast(date_trunc('day', et.block_time) as date) as block_date,
-        CAST(date_trunc('month', et.block_time) as DATE) as block_month,
-        et.block_time,
-        -CAST(et.value AS INT256) as amount_raw,
-        et.tx_hash,
-        array_join(et.trace_address, ',') as trace_address
-    from {{ source('zkevm', 'traces') }} et
-    join {{ ref('safe_zkevm_safes') }} s on et."from" = s.address
-        and et."from" != et.to -- exclude calls to self to guarantee unique key property
-        and et.success = true
-        and (lower(et.call_type) not in ('delegatecall', 'callcode', 'staticcall') or et.call_type is null)
-        and et.value > UINT256 '0' -- et.value is uint256 type
-    {% if not is_incremental() %}
-    where et.block_time > TIMESTAMP '{{project_start_date}}' -- for initial query optimisation
-    {% endif %}
-    {% if is_incremental() %}
-    -- to prevent potential counterfactual safe deployment issues we take a bigger interval
-    where et.block_time > date_trunc('day', now() - interval '10' day)
-    {% endif %}
-
-    union all
-
-    select
-        'zkevm' as blockchain,
-        'MATIC' as symbol,
-        s.address,
-        try_cast(date_trunc('day', et.block_time) as date) as block_date,
-        CAST(date_trunc('month', et.block_time) as DATE) as block_month,
-        et.block_time,
-        CAST(et.value AS INT256) as amount_raw,
-        et.tx_hash,
-        array_join(et.trace_address, ',') as trace_address
-    from {{ source('zkevm', 'traces') }} et
-    join {{ ref('safe_zkevm_safes') }} s on et.to = s.address
-        and et."from" != et.to -- exclude calls to self to guarantee unique key property
-        and et.success = true
-        and (lower(et.call_type) not in ('delegatecall', 'callcode', 'staticcall') or et.call_type is null)
-        and et.value > UINT256 '0' -- et.value is uint256 type
-    {% if not is_incremental() %}
-    where et.block_time > TIMESTAMP '{{project_start_date}}' -- for initial query optimisation
-    {% endif %}
-    {% if is_incremental() %}
-    -- to prevent potential counterfactual safe deployment issues we take a bigger interval
-    where et.block_time > date_trunc('day', now() - interval '10' day)
-    {% endif %}
-) t
-
-left join {{ source('prices', 'usd') }} p on p.blockchain is null
-    {% if is_incremental() %}
-    and {{ incremental_predicate('p.minute') }}
-    {% endif %}
-    and p.symbol = t.symbol
-    and p.minute = date_trunc('minute', t.block_time)
+{{
+    safe_native_transfers(
+        blockchain = 'zkevm',
+        native_token_symbol = 'MATIC',
+        project_start_date = project_start_date
+    )
+}}

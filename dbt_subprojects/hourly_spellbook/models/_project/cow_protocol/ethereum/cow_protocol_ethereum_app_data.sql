@@ -44,7 +44,7 @@ with
         referrer,
         partner_fee.bps as partner_fee_bps,
         partner_fee.recipient as partner_recipient,
-        cast(quote.slippageBips as integer) as slippage_bips,
+        cast(quote.slippageBips as double) as slippage_bips,
         utm,
         utm.utmSource as utm_source,
         utm.utmMedium as utm_medium,

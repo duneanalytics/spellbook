@@ -13,7 +13,7 @@ models:
     columns:
       - name: contract_address
         description: "ERC20 token contract address"
-        tests:
+        data_tests:
           - unique
       - name: symbol
         description: "ERC20 token symbol"
@@ -35,7 +35,7 @@ models:
     columns:
       - name: contract_address
         description: "Token contract address"
-        tests:
+        data_tests:
           - unique
       - name: symbol
         description: "Token symbol"
@@ -52,7 +52,7 @@ models:
     columns:
       - name: contract_address
         description: "The contract address is the unique address of where the NFTs are stored."
-        tests:
+        data_tests:
           - unique
       - name: name
         description: "NFT Project Name"
@@ -71,14 +71,14 @@ models:
     columns:
       - name: contract_address
         description: "The contract address is the unique address of where the NFTs are stored."
-        tests:
+        data_tests:
           - unique
       - name: name
         description: "NFT Project Name"
       - name: symbol
         description: "NFT Token Symbol"
       - name: standard
-        tests:
+        data_tests:
           - accepted_values:
               values: [ 'erc721', 'erc1155']
         description: >
@@ -89,23 +89,25 @@ models:
   - name: tokens_fantom_erc20_stablecoins
     meta:
       blockchain: fantom
-      sector: tokens
-      project: erc20
-      contributors: Henrystats
+      sector: stablecoins
+      contributors: synthquest
     config:
-      tags: [ 'table', 'erc20', 'stablecoins' ]
-    description: "ERC20 Stablecoin Token Addresses, Symbols and Decimals"
+      tags: ['tokens', 'fantom', 'erc20', 'stablecoins']
+    description: >
+        Selection of stablecoin token addresses.
     columns:
+      - name: blockchain
+        description: "Blockchain name"
       - name: contract_address
-        description: "ERC20 stablecoin token contract address"
-        tests:
-          - unique
+        description: "Stablecoin contract address"
+      - name: backing
+        description: "Stablecoin backing"
       - name: symbol
-        description: "ERC20 stablecoin token symbol"
-      - name: decimals
-        description: "Number of decimals, refers to how divisible an ERC20 stablecoin token can be"
+        description: "Stablecoin symbol"
       - name: name
-        description: "ERC20 stablecoin token name"
+        description: "Stablecoin project name"
+      - name: decimals
+        description: "Number of decimals"
 
   - name: tokens_fantom_nft_standards
     meta:
@@ -119,10 +121,10 @@ models:
     columns:
       - name: contract_address
         description: "the NFT contract address"
-        tests:
+        data_tests:
           - unique
       - name: standard
         description: "The NFT standard erc721/erc1155/..."
-        tests:
+        data_tests:
           - accepted_values:
               values: [ 'erc721', 'erc1155']

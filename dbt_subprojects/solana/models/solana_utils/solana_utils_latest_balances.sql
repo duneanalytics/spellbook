@@ -21,6 +21,8 @@ WITH
                   , token_mint_address
                   , token_balance
                   , token_balance_owner
+                  , block_time
+                  , block_slot
                   , row_number() OVER (partition by address order by day desc) as latest_balance
             FROM {{ ref('solana_utils_daily_balances') }}
             {% if is_incremental() %}
@@ -31,6 +33,8 @@ WITH
 
 SELECT
       ub.address
+      , ub.block_time
+      , ub.block_slot
       , ub.sol_balance
       , ub.token_balance
       , coalesce(ub.token_mint_address, tk.token_mint_address) as token_mint_address

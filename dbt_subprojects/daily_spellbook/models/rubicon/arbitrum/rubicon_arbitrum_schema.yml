@@ -10,7 +10,7 @@ models:
       tags: ['arbitrum','rubicon','dex']
     description: >
         A table containing all offers of rubicon on arbitrum
-    tests:
+    data_tests:
       - check_seed:
           seed_file: ref('rubicon_arbitrum_offers_seed')
           filter:

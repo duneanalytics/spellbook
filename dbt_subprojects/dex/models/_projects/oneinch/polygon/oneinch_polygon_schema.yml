@@ -10,7 +10,7 @@ models:
       tags: ['oneinch', 'lop', 'calls']
     description: >
         1inch limit order protocol calls
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -18,12 +18,12 @@ models:
             - call_trace_address
     columns:
       - name: blockchain
-        tests:
+        data_tests:
           - not_null
       - name: block_number
       - name: block_time
       - name: tx_hash
-        tests:
+        data_tests:
           - not_null
       - name: tx_from
       - name: tx_to
@@ -38,7 +38,7 @@ models:
       - name: method
       - name: call_selector
       - name: call_trace_address
-        tests:
+        data_tests:
           - not_null
       - name: call_from
       - name: call_to
@@ -56,6 +56,20 @@ models:
       - name: order_hash
       - name: flags
       - name: remains
+      - name: src_escrow
+      - name: hashlock
+      - name: dst_blockchain
+      - name: dst_block_number
+      - name: dst_block_time
+      - name: dst_tx_hash
+      - name: dst_escrow
+      - name: dst_maker
+      - name: dst_taker
+      - name: dst_token
+      - name: dst_amount
+      - name: dst_wrapper
+      - name: dst_creation_call_success
+      - name: args
       - name: minute
       - name: block_month
 
@@ -68,7 +82,7 @@ models:
       tags: ['oneinch', 'ar', 'calls']
     description: >
         1inch aggregation router calls
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -76,12 +90,12 @@ models:
             - call_trace_address
     columns:
       - name: blockchain
-        tests:
+        data_tests:
           - not_null
       - name: block_number
       - name: block_time
       - name: tx_hash
-        tests:
+        data_tests:
           - not_null
       - name: tx_from
       - name: tx_to
@@ -96,7 +110,7 @@ models:
       - name: method
       - name: call_selector
       - name: call_trace_address
-        tests:
+        data_tests:
           - not_null
       - name: call_from
       - name: call_to
@@ -128,34 +142,93 @@ models:
       tags: ['oneinch', 'calls']
     description: >
         1inch transfers within calls
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
             - tx_hash
             - call_trace_address
+            - transfer_blockchain
+            - transfer_tx_hash
             - transfer_trace_address
             - transfer_native
     columns:
       - name: blockchain
-        tests:
+        data_tests:
           - not_null
       - name: block_number
       - name: block_time
       - name: tx_hash
-        tests:
+        data_tests:
           - not_null
       - name: call_trace_address
-        tests:
+        data_tests:
+          - not_null
+      - name: dst_blockchain
+      - name: hashlock
+      - name: result_escrow
+      - name: result_trace_address
+      - name: result_method
+      - name: result_amount
+      - name: transfer_blockchain
+        data_tests:
+          - not_null
+      - name: transfer_block_number
+      - name: transfer_block_time
+      - name: transfer_tx_hash
+        data_tests:
           - not_null
       - name: transfer_trace_address
-        tests:
+        data_tests:
           - not_null
       - name: contract_address
       - name: amount
       - name: transfer_native
+        data_tests:
+          - not_null
       - name: transfer_from
       - name: transfer_to
       - name: transfers_between_players
       - name: minute
+      - name: block_month
+
+  - name: oneinch_polygon_escrow_results
+    meta:
+      blockchain: ['polygon']
+      sector: oneinch
+      contributors: ['max-morrow', 'grkhr']
+    config:
+      tags: ['oneinch', 'cross-chain']
+    description: >
+        escrow results
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - trace_address
+    columns:
+      - name: blockchain
+        data_tests:
+          - not_null
+      - name: block_number
+      - name: block_time
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: trace_address
+        data_tests:
+          - not_null
+      - name: escrow
+      - name: hashlock
+      - name: selector
+      - name: method
+      - name: secret
+      - name: order_hash
+      - name: token
+      - name: amount
+      - name: rescue_token
+      - name: rescue_amount
+      - name: call_success
+      - name: tx_success
       - name: block_month

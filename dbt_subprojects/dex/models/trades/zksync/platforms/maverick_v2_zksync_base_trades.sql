@@ -1,6 +1,5 @@
 {{
     config(
-        tags = ['prod_exclude'],
         schema = 'maverick_v2_zksync',
         alias = 'base_trades',
         materialized = 'incremental',

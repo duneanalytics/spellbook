@@ -79,7 +79,7 @@ models:
       The query contains several measurements between the quoted price on cowswap and 
       the executed price. The price difference between the quote and the actual price 
       is called price improvement and is measured as percentage or in absolute dollars.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - order_uid

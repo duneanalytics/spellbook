@@ -19,6 +19,7 @@
 WITH zeroex_tx AS (
         SELECT
             tr.tx_hash,
+            tr.block_time,
             tr.block_number,
             MAX(CASE
                 WHEN bytearray_position(INPUT, 0x869584cd ) <> 0
@@ -48,7 +49,7 @@ WITH zeroex_tx AS (
                 {% if not is_incremental() %}
                 AND tr.block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
                 {% endif %}
-        GROUP BY tr.tx_hash, tr.block_number
+        GROUP BY tr.tx_hash, tr.block_number, tr.block_time
 ),
 
 v4_rfq_fills_no_bridge AS (
@@ -203,7 +204,7 @@ NewBridgeFill AS (
             logs.block_number as    block_number,
             INDEX                                           AS evt_index,
             logs.contract_address,
-            block_time                                      AS block_time,
+            logs.block_time                                      AS block_time,
             bytearray_substring(DATA, 14, 20)                 AS maker,
             0xdef1c0ded9bec7f1a1670819833240f027b25eff    AS taker,
             bytearray_substring(DATA, 45, 20)                 AS taker_token,
@@ -218,14 +219,15 @@ NewBridgeFill AS (
     INNER JOIN zeroex_tx
         ON zeroex_tx.tx_hash = logs.tx_hash
         AND zeroex_tx.block_number = logs.block_number
+        and zeroex_tx.block_time = logs.block_time 
     WHERE topic0 = 0xe59e71a14fe90157eedc866c4f8c767d3943d6b6b2e8cd64dddcc92ab4c55af8
         AND contract_address = 0xdb6f1920a889355780af7570773609bd8cb1f498
 
         {% if is_incremental() %}
-        AND {{ incremental_predicate('block_time') }}
+        AND {{ incremental_predicate('logs.block_time') }}
         {% endif %}
         {% if not is_incremental() %}
-        AND block_time >= TIMESTAMP '{{zeroex_v4_start_date}}'
+        AND logs.block_time >= TIMESTAMP '{{zeroex_v4_start_date}}'
         {% endif %}
 ),
 
@@ -250,7 +252,7 @@ direct_PLP AS (
     INNER JOIN zeroex_tx
         ON zeroex_tx.tx_hash = plp.evt_tx_hash
         AND zeroex_tx.block_number = plp.evt_block_number
-
+        and zeroex_tx.block_time = plp.evt_block_time 
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
@@ -283,7 +285,7 @@ SELECT
         cast(date_trunc('month', all_tx.block_time) AS date) AS block_month,
         maker,
         CASE
-            WHEN taker = 0xdef1c0ded9bec7f1a1670819833240f027b25eff THEN tx."from"
+            WHEN taker in (0xdef1c0ded9bec7f1a1670819833240f027b25eff,0xdb6f1920a889355780af7570773609bd8cb1f498) THEN tx."from"
             ELSE taker
         END AS taker, -- fix the user masked by ProxyContract issue
         taker_token,
@@ -314,7 +316,7 @@ SELECT
          'arbitrum' AS blockchain
 FROM all_tx
 INNER JOIN {{ source('arbitrum', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
-    AND all_tx.block_number = tx.block_number
+    AND all_tx.block_number = tx.block_number and all_tx.block_time = tx.block_time 
 {% if is_incremental() %}
 AND {{ incremental_predicate('tx.block_time') }}
 {% endif %}

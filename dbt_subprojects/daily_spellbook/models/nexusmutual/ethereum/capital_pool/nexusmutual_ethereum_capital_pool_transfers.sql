@@ -7,10 +7,10 @@
     incremental_strategy = 'merge',
     unique_key = ['block_time', 'transfer_type', 'symbol', 'unique_key', 'tx_hash'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    post_hook = '{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "nexusmutual",
-                                \'["tomfutago"]\') }}'
+    post_hook = '{{ expose_spells(blockchains = \'["ethereum"]\',
+                                  spell_type = "project",
+                                  spell_name = "nexusmutual",
+                                  contributors = \'["tomfutago"]\') }}'
   )
 }}
 
@@ -18,7 +18,8 @@ with
 
 nexusmutual_contracts (contract_address) as (
   values
-  (0xcafeaBED7e0653aFe9674A3ad862b78DB3F36e60), --Pool (active), deployed: Nov-21-2023
+  (0xcafeaf6eA90CB931ae43a8Cf4B25a73a24cF6158), --Pool (active), deployed: Oct-03-2024
+  (0xcafeaBED7e0653aFe9674A3ad862b78DB3F36e60), --Pool, deployed: Nov-21-2023
   (0xcafea112Db32436c2390F5EC988f3aDB96870627), --Pool (Pool V2), deployed: Mar-08-2023
   (0xcafea35ce5a2fc4ced4464da4349f81a122fd12b), --Pool (Pool3), deployed: May-25-2021
   (0xcafea7934490ef8b9d2572eaefeb9d48162ea5d8), --Pool (old), deployed: Jan-26-2021
@@ -27,7 +28,8 @@ nexusmutual_contracts (contract_address) as (
   (0x7cbe5682be6b648cc1100c76d4f6c96997f753d6), --Pool2, deployed: May-23-2019
   (0xcafea8321b5109d22c53ac019d7a449c947701fb), --MCR, deployed: May-25-2021
   (0xcafea92739e411a4D95bbc2275CA61dE6993C9a7), --MCR, deployed: Nov-21-2023
-  (0x51ad1265C8702c9e96Ea61Fe4088C2e22eD4418e)  --Advisory Board multisig
+  (0x51ad1265C8702c9e96Ea61Fe4088C2e22eD4418e), --Advisory Board multisig
+  (0xcafeaed98d7Fce8F355C03c9F3507B90a974f37e)  --SwapOperator
 ),
 
 transfer_in as (
@@ -42,9 +44,9 @@ transfer_in as (
     unique_key,
     tx_hash
   from {{ source('tokens_ethereum','transfers') }}
-  where block_time >= timestamp '2019-05-01'
+  where block_time >= timestamp '2019-05-23'
     and "to" in (select contract_address from nexusmutual_contracts)
-    and symbol in ('ETH', 'DAI', 'stETH', 'rETH', 'USDC')
+    and symbol in ('ETH', 'DAI', 'stETH', 'rETH', 'USDC', 'cbBTC')
     {% if is_incremental() %}
     and {{ incremental_predicate('block_time') }}
     {% endif %}
@@ -62,9 +64,9 @@ transfer_out as (
     unique_key,
     tx_hash
   from {{ source('tokens_ethereum','transfers') }}
-  where block_time >= timestamp '2019-05-01'
+  where block_time >= timestamp '2019-05-23'
     and "from" in (select contract_address from nexusmutual_contracts)
-    and symbol in ('ETH', 'DAI', 'stETH', 'rETH', 'USDC')
+    and symbol in ('ETH', 'DAI', 'stETH', 'rETH', 'USDC', 'cbBTC')
     {% if is_incremental() %}
     and {{ incremental_predicate('block_time') }}
     {% endif %}

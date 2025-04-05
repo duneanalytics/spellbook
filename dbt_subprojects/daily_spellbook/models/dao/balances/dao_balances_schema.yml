@@ -10,7 +10,7 @@ models:
       tags: [ 'ethereum','gnosis', 'polygon', 'base', 'arbitrum', 'zksync', 'dao', 'dao creator tools', 'henrystats' ]
     description: >
       DAO wallet balances
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -57,7 +57,7 @@ models:
       tags: [ 'ethereum', 'steth', 'dao', 'dao creator tools', 'henrystats' ]
     description: >
       DAO wallet balances for steth token (rebase token so using different calculations)
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - dao_creator_tool

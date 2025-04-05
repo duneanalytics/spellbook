@@ -6,4 +6,3 @@ sources:
 
     tables:
       - name: FlashLoanProvider_evt_FlashLoan
-        loaded_at_field: evt_block_time

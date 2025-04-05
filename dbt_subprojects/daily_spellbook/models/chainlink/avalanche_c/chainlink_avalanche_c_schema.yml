@@ -57,7 +57,7 @@ models:
       tags: ["avalanche_c", "chainlink", "oracle"]
     description: >
       Table pulling price updates for known Chainlink oracle addresses, truncated to hourly average price for easier joining with other on-chain tables.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -88,7 +88,7 @@ models:
       tags: ["avalanche_c", "chainlink", "oracle"]
     description: >
       Manually updated table for mapping chainlink feeds to proxy addresses and the aggregator addresses (where updates read to)
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - proxy_address
@@ -111,7 +111,7 @@ models:
       tags: ["chainlink", "ocr", "gas", "transmission", "logs", "avalanche_c"]
     description: >
       Chainlink OCR Gas Transmission Logs
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -162,7 +162,7 @@ models:
       tags: ["chainlink", "ocr", "fulfilled", "transactions", "avalanche_c"]
     description: >
       Chainlink OCR Fulfilled Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -196,7 +196,7 @@ models:
       tags: ["chainlink", "ocr", "reverted", "transactions", "avalanche_c"]
     description: >
       Chainlink OCR Reverted Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -222,7 +222,7 @@ models:
       tags: ["chainlink", "ocr", "gas", "daily", "avalanche_c"]
     description: >
       Chainlink OCR Gas Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -266,7 +266,7 @@ models:
       tags: ["chainlink", "ocr", "request", "daily", "avalanche_c"]
     description: >
       Chainlink OCR Request Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -353,7 +353,7 @@ models:
         ]
     description: >
       Chainlink OCR Reward Event Transfers Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -376,7 +376,7 @@ models:
       tags: ["chainlink", "ocr", "reward", "daily", "avalanche_c"]
     description: >
       Chainlink OCR Reward Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -400,7 +400,7 @@ models:
       tags: ["chainlink", "fm", "gas", "daily", "avalanche_c"]
     description: >
       Chainlink FM Gas Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -428,7 +428,7 @@ models:
       tags: ["chainlink", "fm", "gas", "submission", "logs", "avalanche_c"]
     description: >
       Chainlink FM Gas Transmission Logs
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -459,7 +459,7 @@ models:
       tags: ["chainlink", "fm", "fulfilled", "transactions", "avalanche_c"]
     description: >
       Chainlink FM Fulfilled Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -485,7 +485,7 @@ models:
       tags: ["chainlink", "fm", "request", "daily", "avalanche_c"]
     description: >
       Chainlink FM Request Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -510,7 +510,7 @@ models:
       tags: ["chainlink", "fm", "reverted", "transactions", "avalanche_c"]
     description: >
       Chainlink FM Reverted Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -536,7 +536,7 @@ models:
       tags: ["chainlink", "fm", "reward", "daily", "avalanche_c"]
     description: >
       Chainlink FM Reward Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -577,7 +577,7 @@ models:
         ["chainlink", "fm", "reward", "evt", "transfer", "daily", "avalanche_c"]
     description: >
       Chainlink FM Reward Event Transfers Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -602,7 +602,7 @@ models:
         ["chainlink", "automation", "fulfilled", "transactions", "avalanche_c"]
     description: >
       Chainlink Automation Fulfilled Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -629,7 +629,7 @@ models:
       tags: ["chainlink", "automation", "gas", "daily", "avalanche_c"]
     description: >
       Chainlink Automation Gas Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -666,7 +666,7 @@ models:
         ]
     description: >
       Chainlink Automation Gas Submission Logs
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -701,7 +701,7 @@ models:
       tags: ["chainlink", "automation", "request", "daily", "avalanche_c"]
     description: >
       Chainlink Automation Request Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -728,7 +728,7 @@ models:
         ["chainlink", "automation", "reverted", "transactions", "avalanche_c"]
     description: >
       Chainlink Automation Reverted Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -755,7 +755,7 @@ models:
       tags: ["chainlink", "automation", "reward", "daily", "avalanche_c"]
     description: >
       Chainlink Automation Reward Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -799,7 +799,7 @@ models:
       tags: ["chainlink", "automation", "performed", "daily", "avalanche_c"]
     description: >
       Chainlink Automation Performed Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -822,7 +822,7 @@ models:
       tags: ["chainlink", "vrf", "fulfilled", "transactions", "avalanche_c"]
     description: >
       Chainlink VRF Fulfilled Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -848,7 +848,7 @@ models:
       tags: ["chainlink", "vrf", "gas", "daily", "avalanche_c"]
     description: >
       Chainlink VRF Gas Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -876,7 +876,7 @@ models:
         ["chainlink", "vrf", "v1", "random", "fulfilled", "logs", "avalanche_c"]
     description: >
       Chainlink VRF V1 Randomness Fulfilled Logs
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -909,7 +909,7 @@ models:
         ["chainlink", "vrf", "v1", "random", "request", "logs", "avalanche_c"]
     description: >
       Chainlink VRF V1 Randomness Requested Logs
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -941,7 +941,7 @@ models:
         ["chainlink", "vrf", "v2", "random", "fulfilled", "logs", "avalanche_c"]
     description: >
       Chainlink VRF V2 Randomness Fulfilled Logs
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -973,7 +973,7 @@ models:
       tags: ["chainlink", "vrf", "request", "daily", "avalanche_c"]
     description: >
       Chainlink VRF Request Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -997,7 +997,7 @@ models:
       tags: ["chainlink", "vrf", "reverted", "transactions", "avalanche_c"]
     description: >
       Chainlink Automation Reverted Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1023,7 +1023,7 @@ models:
       tags: ["chainlink", "vrf", "reward", "daily", "avalanche_c"]
     description: >
       Chainlink VRF Reward Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1063,7 +1063,7 @@ models:
       tags: ["chainlink", "vrf", "request", "fulfilled", "daily", "avalanche_c"]
     description: >
       Chainlink VRF Request Fulfilled Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1085,7 +1085,7 @@ models:
       tags: ["chainlink", "read", "requests", "feeds", "daily", "avalanche_c"]
     description: >
       Chainlink Read Requests Feeds Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1154,7 +1154,7 @@ models:
         ["chainlink", "read", "requests", "requester", "daily", "avalanche_c"]
     description: >
       Chainlink Read Requests Requester Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1199,7 +1199,7 @@ models:
       tags: ["chainlink", "ccip", "fulfilled", "transactions", "avalanche_c"]
     description: >
       Chainlink CCIP Fulfilled Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1225,7 +1225,7 @@ models:
       tags: ["chainlink", "ccip", "gas", "daily", "avalanche_c"]
     description: >
       Chainlink CCIP Gas Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1253,7 +1253,7 @@ models:
       tags: ["chainlink", "ccip", "request", "daily", "avalanche_c"]
     description: >
       Chainlink CCIP Request Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1275,7 +1275,7 @@ models:
       tags: ["chainlink", "ccip", "reverted", "transactions", "avalanche_c"]
     description: >
       Chainlink CCIP Reverted Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1299,7 +1299,7 @@ models:
       tags: ["chainlink", "ccip", "reward", "daily", "avalanche_c"]
     description: >
       Chainlink CCIP Reward Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1348,7 +1348,7 @@ models:
       tags: ["chainlink", "ccip", "send", "requested", "daily", "avalanche_c"]
     description: >
       Chainlink CCIP Send Requested Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1411,7 +1411,7 @@ models:
         ["chainlink", "ccip", "tokens", "transferred", "logs", "avalanche_c"]
     description: >
       Chainlink CCIP Tokens Transferred Logs
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1444,7 +1444,7 @@ models:
       tags: ["chainlink", "ccip", "tokens", "transferred", "avalanche_c"]
     description: >
       Chainlink CCIP Tokens Transferred
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1473,7 +1473,7 @@ models:
       tags: ["chainlink", "ccip", "transmitted", "fulfilled", "avalanche_c"]
     description: >
       Chainlink CCIP Transmitted Fulfilled
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1499,7 +1499,7 @@ models:
       tags: ["chainlink", "ccip", "transmitted", "reverted", "avalanche_c"]
     description: >
       Chainlink CCIP Transmitted Reverted
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1578,7 +1578,7 @@ models:
       tags: ["chainlink", "ccip", "nop", "reward", "daily", "avalanche_c"]
     description: >
       Chainlink CCIP Nop Reward Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - date_start

@@ -2,11 +2,7 @@
   config(
     schema = 'aave_polygon',
     alias = 'flashloans',
-    materialized = 'view',
-    post_hook = '{{ expose_spells(\'["polygon"]\',
-                                    "project",
-                                    "aave",
-                                    \'["hildobby", "tomfutago"]\') }}'
+    materialized = 'view'
   )
 }}
 

@@ -58,24 +58,28 @@
             'version': 'Factory V1 Plain',
             'tokens_position': 4 + 1 + 32 * 2,
             'tokens_count': 4,
+            'fee_position': 4 + 1 + 32 * 7,
         },
         '0xd4b9e214': {
             'type': 'curve_compatible',
             'version': 'Factory V1 Plain',
             'tokens_position': 4 + 1 + 32 * 2,
             'tokens_count': 4,
+            'fee_position': 4 + 1 + 32 * 7,
         },
         '0xcd419bb5': {
             'type': 'curve_compatible',
             'version': 'Factory V1 Plain',
             'tokens_position': 4 + 1 + 32 * 2,
             'tokens_count': 4,
+            'fee_position': 4 + 1 + 32 * 7,
         },
         '0x5c16487b': {
             'type': 'curve_compatible',
             'version': 'Factory V1 Plain',
             'tokens_position': 4 + 1 + 32 * 2,
             'tokens_count': 4,
+            'fee_position': 4 + 1 + 32 * 7,
         },
 
         '0xc955fa04': {
@@ -83,6 +87,7 @@
             'version': 'Factory V2',
             'tokens_position': 4 + 1 + 32 * 2,
             'tokens_count': 2,
+            'fee_position': 4 + 1 + 32 * 4,
         },
         '0xaa38b385': {
             'type': 'curve_compatible',
@@ -96,9 +101,8 @@
             'version': 'Factory V1 Plain Stableswap',
             'tokens_position': 4 + 1 + 32 * 16,
             'tokens_count': 8,
+            'fee_position': 4 + 1 + 32 * 4,
         },
-
-        
     }
 %}
 
@@ -157,6 +161,7 @@ uniswap_pool_created_logs as (
                 , substr(data, {{ data.pool_position }}, 20) as pool
                 , substr(topic1, 13) as token0
                 , substr(topic2, 13) as token1
+                , coalesce(bytearray_to_uint256(topic3), uint256 '3000') as fee
                 , block_number
                 , block_time
                 , contract_address
@@ -184,6 +189,7 @@ uniswap_pool_created_logs as (
                 , substr(output, 13, 20) as pool
                 , trace_address
                 , transform(sequence(1, 32 * {{ data.tokens_count }}, 32), x -> substr(substr(substr(input, {{ data.tokens_position }}, 32 * {{ data.tokens_count }}), x, 32), 13)) tokens
+                , {% if data.fee_position %} bytearray_to_uint256(substr(input, {{ data.fee_position }}, 32)) {% else %} cast(null as uint256) {% endif %} as fee
                 , block_number
                 , block_time
                 , "to" as contract_address
@@ -262,6 +268,7 @@ uniswap_pool_created_logs as (
         , token0
         , token1
         , array[token0, token1] as tokens
+        , cast(fee as uint256) as fee
         , creation_block_time
         , creation_block_number
         , contract_address
@@ -281,6 +288,7 @@ uniswap_pool_created_logs as (
         , token0
         , token1
         , array[token0, token1] as tokens
+        , fee
         , block_time
         , block_number
         , contract_address
@@ -297,6 +305,7 @@ uniswap_pool_created_logs as (
         , tokens[1] as token0
         , tokens[2] as token1
         , tokens
+        , fee
         , block_time
         , block_number
         , contract_address
@@ -314,6 +323,7 @@ uniswap_pool_created_logs as (
         , token0
         , token1
         , tokens
+        , fee
         , block_time as creation_block_time
         , block_number as creation_block_number
         , contract_address

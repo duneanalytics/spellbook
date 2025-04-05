@@ -9,5 +9,7 @@
         'gnosis', 
         'fantom', 
         'base', 
+        'zksync',
+        'linea',
     ]) }}
 {% endmacro %}

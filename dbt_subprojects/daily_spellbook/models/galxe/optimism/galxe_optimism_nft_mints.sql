@@ -31,7 +31,7 @@ SELECT
 
 FROM
     {{source('optimism','transactions')}} t
-INNER JOIN {{source('erc721_optimism','evt_transfer')}} tfer 
+INNER JOIN {{source('erc721_optimism','evt_Transfer')}} tfer 
     ON t.hash = tfer.evt_tx_hash
     AND t.block_number = tfer.evt_block_number
     AND tfer."from" = 0x0000000000000000000000000000000000000000 --mint

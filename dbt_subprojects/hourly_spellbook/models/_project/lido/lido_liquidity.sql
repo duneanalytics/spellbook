@@ -52,7 +52,17 @@
  ref('lido_liquidity_zksync_maverick_pools'),
  ref('lido_liquidity_linea_syncswap_pools'),
  ref('lido_liquidity_scroll_syncswap_pools'),
- ref('lido_liquidity_scroll_zebra_pools')
+ ref('lido_liquidity_scroll_zebra_pools'),
+ ref('lido_liquidity_arbitrum_pancakeswap_v3_pools'),
+ ref('lido_liquidity_base_maverick_pools'),
+ ref('lido_liquidity_base_pancakeswap_v3_pools'),
+ ref('lido_liquidity_bnb_pancakeswap_v3_pools'),
+ ref('lido_liquidity_bnb_thena_pools'),
+ ref('lido_liquidity_ethereum_curve_wsteth_pufeth_pool'),
+ ref('lido_liquidity_linea_lynex_pools'),
+ ref('lido_liquidity_scroll_maverick_pools'),
+ ref('lido_liquidity_scroll_nuri_pools'),
+ ref('lido_liquidity_zksync_pancakeswap_v3_pools')
 ] %}
 
 {% set project_start_date =  '2020-12-15'%}

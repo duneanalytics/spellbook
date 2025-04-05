@@ -18,6 +18,7 @@ capital_pool as (
     avg_eth_usd_price,
     avg_dai_usd_price,
     avg_usdc_usd_price,
+    avg_cbbtc_usd_price,
     avg_capital_pool_eth_total  
   from {{ ref('nexusmutual_ethereum_capital_pool_totals') }}
 ),
@@ -35,6 +36,7 @@ nxm_daily_price_pre_ramm as (
     cp.avg_eth_usd_price,
     cp.avg_dai_usd_price,
     cp.avg_usdc_usd_price,
+    cp.avg_cbbtc_usd_price,
     cp.avg_capital_pool_eth_total,
     mcr.mcr_eth_total,
     cast(
@@ -54,11 +56,12 @@ nxm_daily_internal_price_avgs AS (
     cp.avg_eth_usd_price,
     cp.avg_dai_usd_price,
     cp.avg_usdc_usd_price,
+    cp.avg_cbbtc_usd_price,
     avg(cast(ramm.output_internalPrice as double)) / 1e18 as avg_nxm_eth_price
   from capital_pool cp -- just to pull already calculated avg usd prices
     left join {{ source('nexusmutual_ethereum', 'Ramm_call_getInternalPriceAndUpdateTwap') }} ramm on cp.block_date = date_trunc('day', ramm.call_block_time)
   where cp.block_date >= timestamp '2023-11-21'
-  group by 1, 2, 3, 4
+  group by 1, 2, 3, 4, 5
 ),
 
 nxm_filled_null_cnts as (
@@ -67,6 +70,7 @@ nxm_filled_null_cnts as (
     avg_eth_usd_price,
     avg_dai_usd_price,
     avg_usdc_usd_price,
+    avg_cbbtc_usd_price,
     avg_nxm_eth_price,
     count(avg_nxm_eth_price) over (order by block_date) as avg_nxm_eth_price_count
   from nxm_daily_internal_price_avgs
@@ -78,6 +82,7 @@ nxm_daily_price_post_ramm as (
     avg_eth_usd_price,
     avg_dai_usd_price,
     avg_usdc_usd_price,
+    avg_cbbtc_usd_price,
     first_value(avg_nxm_eth_price) over (partition by avg_nxm_eth_price_count order by block_date) as avg_nxm_eth_price
   from nxm_filled_null_cnts
 ),
@@ -88,6 +93,7 @@ nxm_daily_prices as (
     avg_eth_usd_price,
     avg_dai_usd_price,
     avg_usdc_usd_price,
+    avg_cbbtc_usd_price,
     avg_nxm_eth_price,
     avg_nxm_usd_price
   from nxm_daily_price_pre_ramm
@@ -97,6 +103,7 @@ nxm_daily_prices as (
     avg_eth_usd_price,
     avg_dai_usd_price,
     avg_usdc_usd_price,
+    avg_cbbtc_usd_price,
     avg_nxm_eth_price,
     avg_nxm_eth_price * avg_eth_usd_price as avg_nxm_usd_price
   from nxm_daily_price_post_ramm
@@ -107,6 +114,7 @@ select
   avg_eth_usd_price,
   avg_dai_usd_price,
   avg_usdc_usd_price,
+  avg_cbbtc_usd_price,
   coalesce(avg_nxm_eth_price, lag(avg_nxm_eth_price) over (order by block_date)) as avg_nxm_eth_price,
   coalesce(avg_nxm_usd_price, lag(avg_nxm_usd_price) over (order by block_date)) as avg_nxm_usd_price
 from nxm_daily_prices

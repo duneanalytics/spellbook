@@ -10,7 +10,7 @@ models:
       tags: [polygon','0x','dex_aggregator','dex','aggregator']
     description: >
         0x API erc20 swaps raw fills (including multihops) and also native swaps thru 0x exchange contracts (without using 0x API) on polygon
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -91,7 +91,7 @@ models:
       tags: ['polygon','0x','nft']
     description: >
         NFT Swaps enabled by 0x exchange contracts
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -161,7 +161,7 @@ models:
       tags: ['polygon','0x','dex_aggregator','dex','aggregator']
     description: >
         0x API erc20 swaps raw fills (deduped) on polygon
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -210,7 +210,8 @@ models:
       - *contract_address
       - &fills_within
         name: fills_within
-        description: "fills in then multihop, if present"          
+        description: "fills in then multihop, if present" 
+
   - name: zeroex_polygon_native_fills 
     meta:
       blockchain: polygon
@@ -219,8 +220,8 @@ models:
     config:
       tags: ['polygon','0x','dex_aggregator','dex','aggregator']
     description: >
-        0x API erc20 swaps raw fills (including multihops) and also native swaps thru 0x exchange contracts (without using 0x API) on Ethereum
-    tests:
+        0x API erc20 swaps raw fills (including multihops) and also native swaps thru 0x exchange contracts (without using 0x API) on polygon
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_time
@@ -266,3 +267,73 @@ models:
       - &protocol_fee_paid_eth
         name: protocol_fee_paid_eth
         description: "The protocol fee paid in ETH"
+
+  - name: zeroex_v2_polygon_trades 
+    meta:
+      blockchain: polygon
+      project: zeroex
+      contributors: rantum
+    config:
+      tags: ['polygon','0x','dex_aggregator','dex','aggregator']
+    description: >
+        0x API erc20 trades through 0x v2 contracts. No fills, only deduped transactions.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_date
+            - tx_hash
+            - evt_index
+    columns:
+      - *blockchain
+      - *block_date
+      - *block_month
+      - *block_time
+      - *taker_symbol
+      - *maker_symbol
+      - *token_pair
+      - *taker_token_amount
+      - *maker_token_amount
+      - *taker_token_amount_raw
+      - *maker_token_amount_raw
+      - *volume_usd
+      - *taker_token
+      - *maker_token
+      - *taker
+      - *maker
+      - *affiliate_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index
+      - *type
+      - *swap_flag
+      - *contract_address
+      - *fills_within
+
+  - name: zeroex_polygon_settler_addresses
+    meta:
+      blockchain: polygon
+      project: zeroex
+      contributors: hosuke
+    config:
+      tags: ['polygon', '0x', 'settler']
+    description: >
+      0x Protocol settler addresses for Polygon blockchain.
+      This table contains the settler addresses used by the 0x Protocol on Polygon,
+      along with their activation timestamps and token IDs.
+    columns:
+      - name: tx_hash
+        description: "Transaction hash where the settler address was registered"
+      - name: settler_address
+        description: "Address of the 0x Protocol settler contract"
+      - name: token_id
+        description: "Token ID associated with the settler address"
+      - name: begin_block_time
+        description: "Block time when the settler address was activated"
+      - name: begin_block_number
+        description: "Block number when the settler address was activated"
+      - name: end_block_time
+        description: "Block time when the settler address was deactivated (null if still active)"
+      - name: end_block_number
+        description: "Block number when the settler address was deactivated (null if still active)"

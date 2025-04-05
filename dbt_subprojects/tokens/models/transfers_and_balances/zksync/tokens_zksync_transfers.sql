@@ -1,7 +1,7 @@
 {{config(
     schema = 'tokens_zksync',
     alias = 'transfers',
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -20,7 +20,7 @@
         , tokens_erc20_model = source('tokens', 'erc20')
         , prices_model = source('prices', 'usd')
         , evms_info_model = source('evms','info')
-        , transfers_start_date = '2023-02-15'
+        , transfers_start_date = '2023-02-14'
         , blockchain = 'zksync'
     )
 }}

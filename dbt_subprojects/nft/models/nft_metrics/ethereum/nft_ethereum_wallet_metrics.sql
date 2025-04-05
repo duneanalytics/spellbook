@@ -138,6 +138,7 @@ reservoir_floors as (
     from {{source('reservoir', 'collection_floor_ask_events')}}
     where 1 = 1
     and valid_until_dt > current_date
+    and valid_until < 100000000000 -- overflow protection
 ),
 reservoir_floors_latest_avg as
 (

@@ -13,7 +13,7 @@
 {{nft_transfers(
     blockchain='optimism'
     , base_transactions = source('optimism','transactions')
-    , erc721_transfers = source('erc721_optimism','evt_transfer')
-    , erc1155_single = source('erc1155_optimism','evt_transfersingle')
-    , erc1155_batch = source('erc1155_optimism', 'evt_transferbatch')
+    , erc721_transfers = source('erc721_optimism','evt_Transfer')
+    , erc1155_single = source('erc1155_optimism','evt_TransferSingle')
+    , erc1155_batch = source('erc1155_optimism', 'evt_TransferBatch')
 )}}

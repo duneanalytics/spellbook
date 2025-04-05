@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: king_of_destiny_nova
+    tables:
+      - name: MarketplaceV3_DirectListingsLogic_evt_NewSale
+      - name: MarketplaceV3_DirectListingsLogic_evt_NewListing
+      - name: MarketplaceV3_call_GetRoyalty

@@ -1,6 +1,6 @@
 # CI Tests as GH Workflows in Spellbook
 
-Any time a PR is opened in Spellbook, there are a few GH workflows which automatically run on each commit. The `dbt slim ci` workflow kicks off the continuous integration (CI) tests, which are required to pass in order to prepare for final merge into the main branch. The code which runs the CI workflow can be found [here](/.github/workflows/dbt_slim_ci.yml), but in general, the steps included are:
+Any time a PR is opened in Spellbook, there are a few GH workflows which automatically run on each commit. The `dbt slim ci` workflow kicks off the continuous integration (CI) tests, which are required to pass in order to prepare for final merge into the main branch. The code which runs the CI workflow can be found [here](/.github/workflows/dbt_run.yml), but in general, the steps included are:
 
 - Setup environment variables:
   - `GIT_SHA` – unique hash value tied to the commit within a PR, used downstream to name CI output test spells.

@@ -5,10 +5,10 @@
     materialized = 'table',
     tags = ['static'],
     unique_key = ['product_contract_address'],
-    post_hook = '{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "nexusmutual",
-                                \'["guyhowlett","tomfutago"]\') }}'
+    post_hook = '{{ expose_spells(blockchains = \'["ethereum"]\',
+                                  spell_type = "project",
+                                  spell_name = "nexusmutual",
+                                  contributors = \'["guyhowlett","tomfutago"]\') }}'
   )
 }}
 

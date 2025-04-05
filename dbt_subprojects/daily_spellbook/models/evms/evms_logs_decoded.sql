@@ -2,7 +2,7 @@
         schema='evms',
         alias = 'logs_decoded',
         unique_key=['blockchain', 'tx_hash'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle", "ronin"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -20,7 +20,6 @@
      , ('arbitrum', source('arbitrum', 'logs_decoded'))
      , ('celo', source('celo', 'logs_decoded'))
      , ('base', source('base', 'logs_decoded'))
-     , ('goerli', source('goerli', 'logs_decoded'))
      , ('zksync', source('zksync', 'logs_decoded'))
      , ('zora', source('zora', 'logs_decoded'))
      , ('scroll', source('scroll', 'logs_decoded'))
@@ -28,6 +27,8 @@
      , ('zkevm', source('zkevm', 'logs_decoded'))
      , ('blast', source('blast', 'logs_decoded'))
      , ('mantle', source('mantle', 'logs_decoded'))
+     , ('sei', source('sei', 'logs_decoded'))
+     , ('ronin', source('ronin', 'logs_decoded'))
 ] %}
 
 SELECT *

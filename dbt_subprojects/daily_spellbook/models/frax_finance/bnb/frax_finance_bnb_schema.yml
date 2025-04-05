@@ -10,7 +10,7 @@ models:
     config:
       tags: ["bnb", "frax_finance", "view"]
     description: This model shows the amount of bribe frax_finance is paying, at each epoch, to voters on a DEX who vote for frax pools. Since frax also partakes in voting, both for its pools and other pools, this model also tracks the bribes that it receives as reward. 
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - week_start
@@ -20,17 +20,17 @@ models:
       - &week_start
         name: week_start
         description: "The start of the voting week on the dex"
-        tests:
+        data_tests:
           - not_null
       - &week_end
         name: week_end
         description: "The end of the voting week on the dex"
-        tests:
+        data_tests:
           - not_null
       - &week
         name: week
         description: "The number of the week since the start of Frax bribing program on the dex"
-        tests:
+        data_tests:
           - not_null
       - &bribe_last_week
         name: bribe_last_week

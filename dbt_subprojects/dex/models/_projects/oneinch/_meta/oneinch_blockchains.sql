@@ -7,9 +7,25 @@
     )
 }}
 
+{% set
+    blockchains = [
+        'ethereum',
+        'bnb',
+        'polygon',
+        'arbitrum',
+        'optimism',
+        'avalanche_c',
+        'gnosis',
+        'fantom',
+        'base',
+        'zksync',
+        'aurora',
+        'klaytn',
+        'linea',
+    ]
+%}
 
-
-{% for blockchain in oneinch_exposed_blockchains_list() %}
+{% for blockchain in blockchains %}
     {{ oneinch_blockchain_macro(blockchain) }}
     {% if not loop.last %} union all {% endif %}
 {% endfor %}

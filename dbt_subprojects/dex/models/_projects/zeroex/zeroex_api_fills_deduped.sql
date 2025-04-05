@@ -1,7 +1,7 @@
 {{ config(
      schema = 'zeroex'
         , alias = 'api_fills_deduped'
-        , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "celo", "ethereum", "fantom", "optimism", "polygon"]\',
+        , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "celo", "ethereum", "fantom", "optimism", "polygon","scroll", "linea","blast","mantle", "mode", "worldchain", "unichain", "berachain", "ink"]\',
                                 "project",
                                 "zeroex",
                                 \'["rantum","bakabhai993"]\') }}'
@@ -21,12 +21,95 @@
   ,ref('zeroex_bnb_api_fills_deduped')
 ] %}
 
+{% set settler_models = [  
+  ref('zeroex_v2_ethereum_trades')
+  ,ref('zeroex_v2_base_trades')
+  ,ref('zeroex_v2_polygon_trades')
+  ,ref('zeroex_v2_optimism_trades')
+  ,ref('zeroex_v2_bnb_trades')
+  ,ref('zeroex_v2_avalanche_c_trades')
+  ,ref('zeroex_v2_arbitrum_trades')
+  ,ref('zeroex_v2_scroll_trades')
+  ,ref('zeroex_v2_linea_trades')
+  ,ref('zeroex_v2_blast_trades')
+  ,ref('zeroex_v2_mantle_trades')
+  ,ref('zeroex_v2_mode_trades')
+  ,ref('zeroex_v2_unichain_trades')
+  ,ref('zeroex_v2_worldchain_trades')
+  ,ref('zeroex_v2_berachain_trades')
+  ,ref('zeroex_v2_ink_trades')
+] %}
+
 
 SELECT *
 FROM (
     {% for model in zeroex_models %}
     SELECT
-      *
+      blockchain
+      ,version
+      ,block_month
+      ,block_date
+      ,block_time
+      ,maker_symbol
+      ,taker_symbol
+      ,token_pair
+      ,maker_token_amount
+      ,taker_token_amount
+      ,maker_token_amount_raw
+      ,taker_token_amount_raw
+      ,volume_usd
+      ,maker_token
+      ,taker_token
+      ,taker
+      ,maker
+      ,contract_address
+      ,tx_hash
+      ,tx_from
+      ,tx_to
+      ,trace_address
+      ,evt_index
+      ,affiliate_address
+      ,null as zid 
+      ,type 
+    FROM {{ model }}
+    {% if not loop.last %}
+    UNION ALL
+    {% endif %}
+    {% endfor %}
+)
+
+UNION ALL 
+
+SELECT *
+FROM (
+    {% for model in settler_models %}
+    SELECT
+      blockchain
+      ,version
+      ,block_month
+      ,block_date
+      ,block_time
+      ,maker_symbol
+      ,taker_symbol
+      ,token_pair
+      ,maker_token_amount
+      ,taker_token_amount
+      ,maker_token_amount_raw
+      ,taker_token_amount_raw
+      ,volume_usd
+      ,maker_token
+      ,taker_token
+      ,taker
+      ,maker
+      ,contract_address
+      ,tx_hash
+      ,tx_from
+      ,tx_to
+      ,trace_address
+      ,evt_index
+      ,tag as affiliate_address 
+      ,zid
+      ,type
     FROM {{ model }}
     {% if not loop.last %}
     UNION ALL

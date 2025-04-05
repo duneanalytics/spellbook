@@ -15,7 +15,7 @@ with blob_transactions as (
 SELECT *
 FROM {{ source('ethereum','transactions') }}
 WHERE type = '3'
-AND block_number >= 19426587    -- dencun upgrade
+AND block_number >= 19426587 -- dencun upgrade
 {% if is_incremental() %}
 AND {{ incremental_predicate('block_time')}}
 {% endif %}
@@ -31,6 +31,7 @@ SELECT
     , t.value as tx_value
     , t.hash as tx_hash
     , t."from" as blob_submitter
+    , t.to as blob_receiver
     , COALESCE(l.entity, ls.entity) as blob_submitter_label
     , t.index as tx_index
     , t.success as tx_success

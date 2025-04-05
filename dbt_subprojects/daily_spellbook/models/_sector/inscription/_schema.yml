@@ -10,7 +10,7 @@ models:
       tags: ['inscriptions', 'mints']
     description: >
       Inscription mints across chains
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -71,7 +71,7 @@ models:
       tags: ['inscriptions', 'deploys']
     description: >
       Inscription deploys across chains
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -106,7 +106,7 @@ models:
       tags: ['inscriptions', 'all']
     description: >
       All inscriptions across chains
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

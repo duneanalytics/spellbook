@@ -1,10 +1,10 @@
 {{ config(
         alias='native',
         tags=['static'],
-        post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom", "polygon","solana", "celo", "zksync", "mantle","blast"]\',
+        post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom", "polygon","solana", "celo", "zksync", "mantle","blast","scroll","linea"]\',
                                     "sector",
                                     "tokens",
-                                    \'["0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy","lgingerich","angus_1","Henrystats"]\') }}')}}
+                                    \'["0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy","lgingerich","angus_1","Henrystats","rantum"]\') }}')}}
 
 SELECT chain, symbol, price_symbol, price_address, decimals
 FROM (VALUES
@@ -24,4 +24,6 @@ FROM (VALUES
          , ('mantle', 'MNT', 'WMNT', 0x78c1b0c915c4faa5fffa6cabf0219da63d7f4cb8, 18)
          , ('blast', 'ETH', 'WETH', 0x4300000000000000000000000000000000000004, 18)
          , ('mode', 'MODE', 'MODE', 0xdfc7c877a950e49d2610114102175a06c2e3167a, 18)
+         , ('scroll', 'ETH', 'WETH', 0x5300000000000000000000000000000000000004, 18)
+         , ('linea', 'ETH', 'WETH', 0xe5d7c2a44ffddf6b295a15c148167daaaf5cf34f, 18)
      ) AS temp_table (chain, symbol, price_symbol, price_address, decimals)

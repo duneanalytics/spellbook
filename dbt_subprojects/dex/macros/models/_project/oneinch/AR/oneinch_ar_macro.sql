@@ -47,7 +47,7 @@ pools_list as (
                 {% if is_incremental() %}
                     {{ incremental_predicate('block_time') }}
                 {% else %}
-                    block_time >= timestamp '{{ contract_data['start'] }}'
+                    block_time >= greatest(timestamp '{{ contract_data['start'] }}', timestamp {{ oneinch_easy_date() }})
                 {% endif %}
         )
 
@@ -119,7 +119,10 @@ select
     , src_token_amount
     , dst_token_amount
     , dst_token_amount_min
-    , map_from_entries(array[('ordinary', ordinary)]) as flags
+    , map_from_entries(array[
+        ('ordinary', ordinary)
+        , ('direct', call_from = tx_from and call_to = tx_to) -- == cardinality(call_trace_address) = 0, but because of zksync trace structure we switched to this
+    ]) as flags
     , pools
     , router_type
     , concat(cast(length(remains) as bigint), if(length(remains) > 0

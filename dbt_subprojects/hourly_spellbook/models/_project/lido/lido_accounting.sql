@@ -447,6 +447,55 @@ FROM (
 
         UNION ALL
 
+        SELECT  period,
+                evt_tx_hash,
+                '3. Surplus' AS primary_label,
+                '3.2. Operating Performance' AS secondary_label,
+                '3.2.3. Sales & Marketing Incentives' AS account,
+                '3.2.3.2. Deposit Referrals' AS category,
+                -COALESCE(CAST(amount_token AS DOUBLE), 0),
+                token
+        FROM {{ref('lido_accounting_ethereum_steth_referral_payment')}}
+
+        UNION ALL
+
+        SELECT  period,
+                evt_tx_hash,
+                '1. Assets' as primary_label,
+                '1.3. Protocol Assets' as secondary_label,
+                '1.3.1. Protocol Assets' as account,
+                '1.3.1.1. stETH' AS category,
+                -COALESCE(CAST(amount_token AS DOUBLE), 0),
+                token
+        FROM {{ref('lido_accounting_ethereum_steth_referral_payment')}}
+
+        UNION ALL
+
+        SELECT  period,
+                evt_tx_hash,
+                '3. Surplus' AS primary_label,
+                '3.2. Operating Performance' AS secondary_label,
+                '3.2.3. Sales & Marketing Incentives' AS account,
+                '3.2.3.2. Deposit Referrals' AS category,
+                -COALESCE(CAST(amount_token AS DOUBLE), 0),
+                token
+        FROM {{ref('lido_accounting_ethereum_steth_referral_payment')}}
+
+        UNION ALL
+
+        SELECT  period,
+                evt_tx_hash,
+                '1. Assets' as primary_label,
+                '1.3. Protocol Assets' as secondary_label,
+                '1.3.1. Protocol Assets' as account,
+                '1.3.1.1. stETH' AS category,
+                -COALESCE(CAST(amount_token AS DOUBLE), 0),
+                token
+        FROM {{ref('lido_accounting_ethereum_steth_referral_payment')}}
+
+
+        UNION ALL
+
         -- ========================================================= LDO denominated Liquidity Incentives
         -- This only works for LDO denominated expenses.
         -- Hypothetical DAI or stETH expenses in the same category would have to hit the Surplus and need a separate think

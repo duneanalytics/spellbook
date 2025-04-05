@@ -5,4 +5,3 @@ sources:
     description: "aragon dao deployed decoded event"
     tables:
       - name: DAOFactory_evt_DeployDAO
-        loaded_at_field: evt_block_time

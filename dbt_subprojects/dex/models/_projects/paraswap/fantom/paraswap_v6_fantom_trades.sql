@@ -38,8 +38,8 @@ with dexs AS (
                 ELSE from_hex(srcToken)
             END AS token_sold_address,
             projectContractAddress as project_contract_address,
-            txHash AS tx_hash,
-            callTraceAddress AS trace_address,
+            call_tx_hash as tx_hash,
+            call_trace_address AS trace_address,
             CAST(-1 as integer) AS evt_index
         FROM {{ ref('paraswap_v6_fantom_trades_decoded') }}
         {% if is_incremental() %}

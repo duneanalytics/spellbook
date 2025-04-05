@@ -11,7 +11,7 @@ models:
       tags: ['gnosis', 'trades', 'omen', 'dex']
     description: >
       A table containing all trades of Omen on Gnosis
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_day
@@ -75,7 +75,7 @@ models:
       tags: ['gnosis', 'liquidity', 'omen', 'dex']
     description: >
       A table containing all Omen liquidity management on Gnosis
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_time

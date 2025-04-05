@@ -11,7 +11,7 @@ models:
       tags: ['ethereum', 'dex', 'trades', 'tokenlon', 'aggregator', 'izayl', 'metadata']
     description: >
       Tokenlon AMM v1 trades
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -81,7 +81,7 @@ models:
       tags: ['ethereum', 'dex', 'trades', 'tokenlon', 'aggregator', 'izayl']
     description: >
       Tokenlon AMM v2 trades
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -149,7 +149,7 @@ models:
       tags: ['ethereum', 'dex', 'trades', 'tokenlon', 'aggregator', 'izayl']
     description: >
       Tokenlon PMM v5 trades
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -217,7 +217,7 @@ models:
       tags: ['ethereum', 'dex', 'trades', 'tokenlon', 'aggregator', 'izayl']
     description: >
       Tokenlon RFQ v1 trades
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -285,7 +285,7 @@ models:
       tags: [ 'ethereum', 'dex', 'trades', 'tokenlon', 'aggregator', 'keen' ]
     description: >
       Tokenlon RFQ v2 trades
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -353,7 +353,7 @@ models:
       tags: ['ethereum', 'dex', 'trades', 'tokenlon', 'aggregator', 'izayl']
     description: >
       Tokenlon v5 all trades
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date

@@ -26,5 +26,14 @@ FROM
     ('axlusdc-axelar-wrapped-usdc', 'mantle', 'axlUSDC', 0xeb466342c4d449bc9f53a865d5cb90586f405215, 6),
     ('stg-stargatetoken', 'mantle', 'STG', 0x8731d54e9d02c286767d56ac03e8037c07e01e98, 18),
     ('pendle-pendle', 'mantle', 'PENDLE', 0xd27b18915e7acc8fd6ac75db6766a80f8d2f5729, 18),
-    ('ena-ethena', 'mantle', 'ENA', 0x58538e6a46e07434d7e7375bc268d3cb839c0133, 18)
+    ('ena-ethena', 'mantle', 'ENA', 0x58538e6a46e07434d7e7375bc268d3cb839c0133, 18),
+    ('usde-ethena-usde', 'mantle', 'USDe', 0x5d3a1Ff2b6BAb83b63cd9AD0787074081a52ef34, 18),
+    ('puff-puff-token', 'mantle', 'PUFF', 0x26a6b0dcdcfb981362afa56d581e4a7dba3be140, 18),
+    ('moe-merchant-moe', 'mantle', 'MOE', 0x4515A45337F461A11Ff0FE8aBF3c606AE5dC00c9, 18),
+    ('usdy-ondo-us-dollar-yield', 'mantle', 'USDY', 0x5bE26527e817998A7206475496fDE1E68957c5A6, 18),
+    ('svl-slash-vision-labs', 'mantle', 'SVL', 0xabbeed1d173541e0546b38b1c0394975be200000, 18),
+    ('fbtc-ignition-fbtc', 'mantle', 'FBTC', 0xc96de26018a54d51c097160568752c4e3bd6c364, 8),
+    ('cook-meth-protocol', 'mantle', 'COOK', 0x9f0c013016e8656bc256f948cd4b79ab25c7b94d, 18),
+    ('ausd-agora-dollar', 'mantle', 'AUSD', 0x00000000efe302beaa2b3e6e1b18d08d69a9012a, 6),
+    ('ausd-aurelius-usd', 'mantle', 'aUSD', 0xd2b4c9b0d70e3da1fbdd98f469bd02e77e12fc79, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

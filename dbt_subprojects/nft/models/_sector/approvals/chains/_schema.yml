@@ -4,7 +4,7 @@ models:
   # limiting this schema file to a minimal column set that needs any testing.
   # the full schema can be found in the nft_approvals schema file.
   - name: nft_arbitrum_approvals
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -14,30 +14,30 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain"
-        tests:
+        data_tests:
           - not_null
       - &token_standard
         name: token_standard
-        tests:
+        data_tests:
           - accepted_values:
               values: ['erc721', 'erc1155', 'bep721', 'bep1155']
       - &block_month
         name: block_month
         description: " block month date"
-        tests:
+        data_tests:
           - not_null
       - &tx_hash
         name: tx_hash
         description: "transaction hash"
-        tests:
+        data_tests:
           - not_null
       - &evt_index
         name: evt_index
         description: "Event index"
-        tests:
+        data_tests:
           - not_null
   - name: nft_avalanche_c_approvals
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -51,7 +51,7 @@ models:
       - *evt_index
 
   - name: nft_base_approvals
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -65,7 +65,7 @@ models:
       - *evt_index
 
   - name: nft_bnb_approvals
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -79,7 +79,7 @@ models:
       - *evt_index
 
   - name: nft_celo_approvals
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -93,7 +93,7 @@ models:
       - *evt_index
 
   - name: nft_ethereum_approvals
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -107,7 +107,7 @@ models:
       - *evt_index
 
   - name: nft_fantom_approvals
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -121,7 +121,7 @@ models:
       - *evt_index
 
   - name: nft_gnosis_approvals
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -135,7 +135,7 @@ models:
       - *evt_index
 
   - name: nft_goerli_approvals
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -149,7 +149,7 @@ models:
       - *evt_index
 
   - name: nft_optimism_approvals
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -163,7 +163,7 @@ models:
       - *evt_index
 
   - name: nft_polygon_approvals
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -177,7 +177,7 @@ models:
       - *evt_index
 
   - name: nft_scroll_approvals
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

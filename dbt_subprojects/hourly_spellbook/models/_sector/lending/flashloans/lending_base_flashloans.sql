@@ -2,7 +2,7 @@
   config(
     schema = 'lending',
     alias = 'base_flashloans',
-    partition_by = ['blockchain', 'project', 'block_month'],
+    partition_by = ['blockchain', 'project'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -25,7 +25,9 @@
     ref('lending_gnosis_base_flashloans'),
     ref('lending_zksync_base_flashloans'),
     ref('lending_scroll_base_flashloans'),
-    ref('lending_zkevm_base_flashloans')
+    ref('lending_zkevm_base_flashloans'),
+    ref('lending_linea_base_flashloans'),
+    ref('lending_sonic_base_flashloans')
   ]
 %}
 

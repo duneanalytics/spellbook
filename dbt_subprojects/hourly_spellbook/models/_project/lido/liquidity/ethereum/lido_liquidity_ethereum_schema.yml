@@ -10,7 +10,7 @@ models:
       tags: ['ethereum','lido','liquidity']
     description: 
         Lido wstETH liquidity pools on Kyberswap Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - pool
@@ -72,7 +72,7 @@ models:
       tags: ['ethereum','lido','liquidity']
     description: 
         Lido wstETH liquidity pools on Uniswap v3 Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - pool
@@ -104,7 +104,7 @@ models:
       tags: ['ethereum','lido','liquidity']
     description: 
         Lido main stETH liquidity pool on Curve Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - pool
@@ -136,7 +136,7 @@ models:
       tags: ['ethereum','lido','liquidity']
     description: 
         Lido concentrated stETH liquidity pool on Curve Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - pool
@@ -168,7 +168,7 @@ models:
       tags: ['ethereum','lido','liquidity']
     description: 
         Lido stETH NG liquidity pool on Curve Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - pool
@@ -200,7 +200,7 @@ models:
       tags: ['ethereum','lido','liquidity']
     description: 
         Lido stETH-frxETH liquidity pool on Curve Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - pool
@@ -232,7 +232,7 @@ models:
       tags: ['ethereum','lido','liquidity']
     description: 
         Lido wstETH-rETH liquidity pool on Curve Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - pool
@@ -265,7 +265,7 @@ models:
       tags: ['ethereum','lido','liquidity']
     description: 
         Lido wstETH liquidity pools on Maverick Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - pool

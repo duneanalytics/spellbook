@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: labels_dao
-    tests:
+    data_tests:
     - dbt_utils.unique_combination_of_columns:
         combination_of_columns:
           - address
@@ -31,7 +31,7 @@ models:
       - &category
         name: category
         description: "Label category"
-        tests:
+        data_tests:
           - accepted_values:
               values: ['dao']
       - &contributor

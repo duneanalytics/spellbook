@@ -6,13 +6,10 @@ models:
       blockchain: zkevm
       project: safe
       contributors: danielpartida
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'zkevm']
     description: "Safe addresses"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -42,13 +39,10 @@ models:
       blockchain: zkevm
       project: safe
       contributors: danielpartida
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'transfers', 'zkevm']
     description: "MATIC transfers for safes"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -81,9 +75,6 @@ models:
       blockchain: zkevm
       project: safe
       contributors: danielpartida
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'singletons', 'zkevm']
     description: "Singletons addresses used with Safes"
@@ -96,13 +87,10 @@ models:
       blockchain: zkevm
       project: safe
       contributors: danielpartida
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'zkevm']
     description: "Safe transactions"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date

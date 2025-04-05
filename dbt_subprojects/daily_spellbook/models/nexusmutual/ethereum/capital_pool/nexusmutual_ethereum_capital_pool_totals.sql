@@ -7,10 +7,10 @@
     incremental_strategy = 'merge',
     unique_key = ['block_date'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
-    post_hook = '{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "nexusmutual",
-                                \'["tomfutago"]\') }}'
+    post_hook = '{{ expose_spells(blockchains = \'["ethereum"]\',
+                                  spell_type = "project",
+                                  spell_name = "nexusmutual",
+                                  contributors = \'["tomfutago"]\') }}'
   )
 }}
 
@@ -18,6 +18,7 @@ with
 
 transfer_combined as (
   select * from {{ ref('nexusmutual_ethereum_capital_pool_transfers') }}
+  where block_time >= timestamp '2019-05-23'
 ),
 
 lido_oracle as (
@@ -28,6 +29,15 @@ lido_oracle as (
     cast(postTotalPooledEther as double) / cast(totalShares as double) as rebase
   from {{ source('lido_ethereum', 'LegacyOracle_evt_PostTotalShares') }}
   where evt_block_time >= timestamp '2021-05-26'
+    and evt_block_time < timestamp '2023-05-16'
+  union all
+  select
+    1 as anchor,
+    evt_block_time as block_time,
+    date_trunc('day', evt_block_time) as block_date,
+    cast(postTotalEther as double) / cast(postTotalShares as double) as rebase
+  from {{ source('lido_ethereum', 'steth_evt_TokenRebased') }}
+  where evt_block_time >= timestamp '2023-05-16'
 ),
 
 steth_adjusted_date as (
@@ -101,7 +111,8 @@ transfer_totals as (
     sum(case when symbol = 'ETH' then amount end) as eth_total,
     sum(case when symbol = 'DAI' then amount end) as dai_total,
     sum(case when symbol = 'rETH' then amount end) as reth_total,
-    sum(case when symbol = 'USDC' then amount end) as usdc_total
+    sum(case when symbol = 'USDC' then amount end) as usdc_total,
+    sum(case when symbol = 'cbBTC' then amount end) as cbbtc_total
   from transfer_combined
   group by 1
 ),
@@ -246,6 +257,27 @@ daily_avg_usdc_prices as (
   group by 1
 ),
 
+daily_avg_cbbtc_prices as (
+  select
+    date_trunc('day', minute) as block_date,
+    avg(price) as price_usd
+  from {{ source('prices', 'usd') }}
+  where symbol = 'cbBTC'
+    and blockchain = 'ethereum'
+    and contract_address = 0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf
+    and minute >= timestamp '2024-10-21'
+  group by 1
+),
+
+daily_reth_eth_prices as (
+  select
+    date_trunc('day', call_block_time) as block_date,
+    avg(output_0 / 1e18) as avg_reth_eth_price
+  from {{ source('rocketpool_ethereum', 'RocketTokenRETH_call_getExchangeRate') }}
+  where call_block_time >= timestamp '2023-04-18'
+  group by 1
+),
+
 day_sequence as (
   select cast(d.seq_date as timestamp) as block_date
   from (select sequence(date '2019-05-23', current_date, interval '1' day) as days) as days_s
@@ -259,6 +291,7 @@ daily_running_totals as (
     sum(coalesce(tt.dai_total, 0)) over (order by ds.block_date) as dai_total,
     sum(coalesce(tt.reth_total, 0)) over (order by ds.block_date) as reth_total,
     sum(coalesce(tt.usdc_total, 0)) over (order by ds.block_date) as usdc_total,
+    sum(coalesce(tt.cbbtc_total, 0)) over (order by ds.block_date) as cbbtc_total,
     coalesce(
       steth_rt.steth_total,
       lag(steth_rt.steth_total, 1) over (order by ds.block_date),
@@ -295,6 +328,7 @@ daily_running_totals_enriched as (
     coalesce(p_avg_eth.price_usd, 0) as avg_eth_usd_price,
     coalesce(p_avg_dai.price_usd, 0) as avg_dai_usd_price,
     coalesce(p_avg_usdc.price_usd, 0) as avg_usdc_usd_price,
+    coalesce(p_avg_cbbtc.price_usd, 0) as avg_cbbtc_usd_price,
     -- ETH
     coalesce(drt.eth_total, 0) as eth_total,
     coalesce(drt.eth_total * p_avg_eth.price_usd, 0) as avg_eth_usd_total,
@@ -312,11 +346,15 @@ daily_running_totals_enriched as (
     -- rETH
     coalesce(drt.reth_total, 0) as reth_total,
     coalesce(drt.reth_total * p_avg_reth.price_usd, 0) as avg_reth_usd_total,
-    coalesce(drt.reth_total * p_avg_reth.price_usd / p_avg_eth.price_usd, 0) as avg_reth_eth_total,
+    coalesce(drt.reth_total * p_reth_eth.avg_reth_eth_price, 0) as avg_reth_eth_total,
     -- USDC
     coalesce(drt.usdc_total, 0) as usdc_total,
     coalesce(drt.usdc_total * p_avg_usdc.price_usd, 0) as avg_usdc_usd_total,
     coalesce(drt.usdc_total * p_avg_usdc.price_usd / p_avg_eth.price_usd, 0) as avg_usdc_eth_total,
+    -- cbBTC
+    coalesce(drt.cbbtc_total, 0) as cbbtc_total,
+    coalesce(drt.cbbtc_total * p_avg_cbbtc.price_usd, 0) as avg_cbbtc_usd_total,
+    coalesce(drt.cbbtc_total * p_avg_cbbtc.price_usd / p_avg_eth.price_usd, 0) as avg_cbbtc_eth_total,
     -- Cover Re USDC investment
     coalesce(drt.cover_re_usdc_total, 0) as cover_re_usdc_total,
     coalesce(drt.cover_re_usdc_total * p_avg_usdc.price_usd, 0) as avg_cover_re_usdc_usd_total,
@@ -332,6 +370,8 @@ daily_running_totals_enriched as (
     left join daily_avg_dai_prices p_avg_dai on drt.block_date = p_avg_dai.block_date
     left join daily_avg_reth_prices p_avg_reth on drt.block_date = p_avg_reth.block_date
     left join daily_avg_usdc_prices p_avg_usdc on drt.block_date = p_avg_usdc.block_date
+    left join daily_avg_cbbtc_prices p_avg_cbbtc on drt.block_date = p_avg_cbbtc.block_date
+    left join daily_reth_eth_prices p_reth_eth on drt.block_date = p_reth_eth.block_date
 )
 
 select
@@ -339,10 +379,11 @@ select
   avg_eth_usd_price,
   avg_dai_usd_price,
   avg_usdc_usd_price,
+  avg_cbbtc_usd_price,
   -- Capital Pool totals
-  eth_total + nxmty_eth_total + steth_total + avg_dai_eth_total + avg_reth_eth_total + avg_usdc_eth_total
+  eth_total + nxmty_eth_total + steth_total + avg_dai_eth_total + avg_reth_eth_total + avg_usdc_eth_total + avg_cbbtc_eth_total
     + avg_cover_re_usdc_eth_total + aave_collateral_weth_total + avg_aave_debt_usdc_eth_total as avg_capital_pool_eth_total,
-  avg_eth_usd_total + avg_nxmty_usd_total + avg_steth_usd_total + avg_dai_usd_total + avg_reth_usd_total + avg_usdc_usd_total
+  avg_eth_usd_total + avg_nxmty_usd_total + avg_steth_usd_total + avg_dai_usd_total + avg_reth_usd_total + avg_usdc_usd_total + avg_cbbtc_usd_total
     + avg_cover_re_usdc_usd_total + avg_aave_collateral_weth_usd_total + avg_aave_debt_usdc_usd_total as avg_capital_pool_usd_total,
   -- ETH
   eth_total,
@@ -366,6 +407,10 @@ select
   usdc_total,
   avg_usdc_usd_total,
   avg_usdc_eth_total,
+  -- cbBTC
+  cbbtc_total,
+  avg_cbbtc_usd_total,
+  avg_cbbtc_eth_total,
   -- Cover Re USDC investment
   cover_re_usdc_total,
   avg_cover_re_usdc_usd_total,

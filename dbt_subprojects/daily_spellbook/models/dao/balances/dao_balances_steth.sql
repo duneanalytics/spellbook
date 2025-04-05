@@ -1,5 +1,5 @@
 {{ config(
-    
+    tags = ['prod_exclude'],    
     alias = 'balances_steth',
     materialized = 'table',
     file_format = 'delta',

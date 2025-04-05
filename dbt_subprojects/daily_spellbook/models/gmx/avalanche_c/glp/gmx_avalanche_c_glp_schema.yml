@@ -10,7 +10,7 @@ models:
       tags: ['avalanche_c','gmx','glp']
     description: >
         View components used in deriving GLP AUM data.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -19,7 +19,7 @@ models:
       - &minute
         name: minute
         description: "UTC event block time truncated to the minute"
-        tests:
+        data_tests:
           - not_null
       - &block_date
         name: block_date
@@ -27,132 +27,132 @@ models:
       - &usdc_available_assets
         name: usdc_available_assets
         description: "USDC tokens in poolAmounts"
-        tests:
+        data_tests:
           - not_null
       - &usdc_current_price
         name: usdc_current_price
         description: "Current price of USDC as calculated per the GMX smart contract"
-        tests:
+        data_tests:
           - not_null
       - &usdc_e_available_assets
         name: usdc_e_available_assets
         description: "USDC.e tokens in poolAmounts"
-        tests:
+        data_tests:
           - not_null
       - &usdc_e_current_price
         name: usdc_e_current_price
         description: "Current price of USDC.e as calculated per the GMX smart contract"
-        tests:
+        data_tests:
           - not_null
       - &mim_available_assets
         name: mim_available_assets
         description: "MIM tokens in poolAmounts"
-        tests:
+        data_tests:
           - not_null
       - &mim_current_price
         name: mim_current_price
         description: "Current price of MIM as calculated per the GMX smart contract"
-        tests:
+        data_tests:
           - not_null
       - &wavax_available_assets
         name: wavax_available_assets
         description: "WAVAX tokens that are available for taking long positions against the pool, calculated as poolAmounts minus reservedAmounts"
-        tests:
+        data_tests:
           - not_null
       - &wavax_current_price
         name: wavax_current_price
         description: "Current price of WAVAX as calculated per the GMX smart contract"
-        tests:
+        data_tests:
           - not_null
       - &wavax_longs
         name: wavax_longs
         description: "Net value of WAVAX longs in USDG"
-        tests:
+        data_tests:
           - not_null
       - &wavax_shorts_entry_price
         name: wavax_shorts_entry_price
         description: "Average price (volume weighted) of all WAVAX shorts"
-        tests:
+        data_tests:
           - not_null
       - &wavax_shorts_outstanding_notional
         name: wavax_shorts_outstanding_notional
         description: "Sum of all WAVAX shorts in USDG"
-        tests:
+        data_tests:
           - not_null
       - &weth_e_available_assets
         name: weth_e_available_assets
         description: "WETH.e tokens that are available for taking long positions against the pool, calculated as poolAmounts minus reservedAmounts"
-        tests:
+        data_tests:
           - not_null
       - &weth_e_current_price
         name: weth_e_current_price
         description: "Current price of WETH.e as calculated per the GMX smart contract"
-        tests:
+        data_tests:
           - not_null
       - &weth_e_longs
         name: weth_e_longs
         description: "Net value of WETH.e longs in USDG"
-        tests:
+        data_tests:
           - not_null
       - &weth_e_shorts_entry_price
         name: weth_e_shorts_entry_price
         description: "Average price (volume weighted) of all WETH.e shorts"
-        tests:
+        data_tests:
           - not_null
       - &weth_e_shorts_outstanding_notional
         name: weth_e_shorts_outstanding_notional
         description: "Sum of all WETH.e shorts in USDG"
-        tests:
+        data_tests:
           - not_null
       - &wbtc_e_available_assets
         name: wbtc_e_available_assets
         description: "WBTC.e tokens that are available for taking long positions against the pool, calculated as poolAmounts minus reservedAmounts"
-        tests:
+        data_tests:
           - not_null
       - &wbtc_e_current_price
         name: wbtc_e_current_price
         description: "Current price of WBTC.e as calculated per the GMX smart contract"
-        tests:
+        data_tests:
           - not_null
       - &wbtc_e_longs
         name: wbtc_e_longs
         description: "Net value of WBTC.e longs in USDG"
-        tests:
+        data_tests:
           - not_null
       - &wbtc_e_shorts_entry_price
         name: wbtc_e_shorts_entry_price
         description: "Average price (volume weighted) of all WBTC.e shorts"
-        tests:
+        data_tests:
           - not_null
       - &wbtc_e_shorts_outstanding_notional
         name: wbtc_e_shorts_outstanding_notional
         description: "Sum of all WBTC.e shorts in USDG"
-        tests:
+        data_tests:
           - not_null
       - &btc_b_available_assets
         name: btc_b_available_assets
         description: "BTC.b tokens that are available for taking long positions against the pool, calculated as poolAmounts minus reservedAmounts"
-        tests:
+        data_tests:
           - not_null
       - &btc_b_current_price
         name: btc_b_current_price
         description: "Current price of BTC.b as calculated per the GMX smart contract"
-        tests:
+        data_tests:
           - not_null
       - &btc_b_longs
         name: btc_b_longs
         description: "Net value of BTC.b longs in USDG"
-        tests:
+        data_tests:
           - not_null
       - &btc_b_shorts_entry_price
         name: btc_b_shorts_entry_price
         description: "Average price (volume weighted) of all BTC.b shorts"
-        tests:
+        data_tests:
           - not_null
       - &wbtc_b_shorts_outstanding_notional
         name: btc_b_shorts_outstanding_notional
         description: "Sum of all BTC.b shorts in USDG"
-        tests:
+        data_tests:
           - not_null
 
   - name: gmx_avalanche_c_glp_aum
@@ -164,7 +164,7 @@ models:
       tags: ['avalanche_c','gmx','glp']
     description: >
         View GLP net AUM by pools.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -175,35 +175,35 @@ models:
       - &usdc_aum
         name: usdc_aum
         description: "Net asset under management for the USDC pool"
-        tests:
+        data_tests:
           - not_null
       - &usdc_e_aum
         name: usdc_e_aum
         description: "Net asset under management for the USDC.e pool"
-        tests:
+        data_tests:
           - not_null
       - &mim_aum
         name: mim_aum
         description: "Net asset under management for the MIM pool"
-        tests:
+        data_tests:
           - not_null
       - &wavax_aum
         name: wavax_aum
         description: "Net asset under management for the WAVAX pool"
-        tests:
+        data_tests:
           - not_null
       - &weth_e_aum
         name: weth_e_aum
         description: "Net asset under management for the WETH.e pool"
-        tests:
+        data_tests:
           - not_null
       - &wbtc_e_aum
         name: wbtc_e_aum
         description: "Net asset under management for the WBTC.e pool"
-        tests:
+        data_tests:
           - not_null
       - &btc_b_aum
         name: btc_b_aum
         description: "Net asset under management for the BTC.b pool"
-        tests:
+        data_tests:
           - not_null
