@@ -842,6 +842,7 @@ FROM
     ('unistake-unistake', 'ethereum', 'UNISTAKE', 0x9ed8e7c9604790f7ec589f99b94361d8aab64e5e, 18),
     ('uno-uno', 'ethereum', 'UNO', 0x474021845c4643113458ea4414bdb7fb74a01a77, 18),
     ('usds-stablyusd', 'ethereum', 'USDS', 0xa4bdb11dc0a2bec88d24a3aa1e6bb17201112ebe, 6),
+    ('susds-susds', 'ethereum', 'sUSDS', 0xa3931d71877C0E7a3148CB7Eb4463524FEc27fbD, 18),
     ('ethos-ethos', 'ethereum', 'VGX', 0x3c4b6e6e1ea3d4863700d7f76b36b7f3d3f13e3d, 8),
     ('vxl-voxel-x-network', 'ethereum', 'VXL', 0x16cc8367055ae7e9157dbcb9d86fd6ce82522b31, 18),
     ('waif-waifu-token', 'ethereum', 'WAIF', 0xb2279b6769cfba691416f00609b16244c0cf4b20, 18),
