@@ -13,6 +13,7 @@
                                     \'["ilemi"]\') }}')
 }}
 
+-- we'll probably not use this model anymore, but it's kept here for now
 
 {% set start_date = '2025-01-01' %}
 
