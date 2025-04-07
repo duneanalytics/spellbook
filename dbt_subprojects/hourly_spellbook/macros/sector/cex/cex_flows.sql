@@ -1,9 +1,41 @@
 {% macro cex_flows(blockchain, transfers, addresses) %}
 
+WITH cex_addresses AS (
+    SELECT
+        address,
+        cex_name,
+        distinct_name
+    FROM {{addresses}}
+),
+
+transfer_data AS (
+    SELECT
+        block_time,
+        block_number,
+        contract_address,
+        symbol,
+        token_standard,
+        amount,
+        amount_raw,
+        amount_usd,
+        "from",
+        to,
+        tx_from,
+        tx_to,
+        tx_index,
+        tx_hash,
+        evt_index,
+        unique_key
+    FROM {{transfers}}
+    {% if is_incremental() %}
+    WHERE {{incremental_predicate('block_time')}}
+    {% endif %}
+)
+
 SELECT DISTINCT '{{blockchain}}' AS blockchain
-, CAST(date_trunc('month', block_time) AS date) AS block_month
-, block_time
-, block_number
+, CAST(date_trunc('month', t.block_time) AS date) AS block_month
+, t.block_time
+, t.block_number
 , COALESCE(c.cex_name, a.cex_name, d.cex_name, b.cex_name) AS cex_name
 , a.distinct_name
 , t.contract_address AS token_address
@@ -27,14 +59,13 @@ SELECT DISTINCT '{{blockchain}}' AS blockchain
 , t.tx_hash
 , t.evt_index
 , t.unique_key
-FROM {{transfers}} t
-LEFT JOIN {{addresses}} a ON a.address = t."from"
-LEFT JOIN {{addresses}} b ON b.address = t.tx_from
-LEFT JOIN {{addresses}} c ON c.address = t.to
-LEFT JOIN {{addresses}} d ON d.address = t.tx_to
-WHERE COALESCE(a.cex_name, b.cex_name, c.cex_name, d.cex_name) IS NOT NULL
-{% if is_incremental() %}
-AND {{incremental_predicate('block_time')}}
-{% endif %}
-
+FROM transfer_data t
+LEFT JOIN cex_addresses a ON a.address = t."from"
+LEFT JOIN cex_addresses b ON b.address = t.tx_from
+LEFT JOIN cex_addresses c ON c.address = t.to
+LEFT JOIN cex_addresses d ON d.address = t.tx_to
+WHERE a.cex_name IS NOT NULL 
+    OR b.cex_name IS NOT NULL 
+    OR c.cex_name IS NOT NULL 
+    OR d.cex_name IS NOT NULL
 {% endmacro %}
