@@ -8,10 +8,11 @@
         ,incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
         ,file_format = 'delta'
         ,unique_key = ['address', 'name']
-        ,post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "ens",
-                                    \'["sankinyue"]\') }}'
+        ,post_hook='{{ expose_spells(
+                             blockchains = \'["ethereum"]\',
+                             spell_type = "project",
+                             spell_name = "ens",
+                             contributors = \'["sankinyue", "hosuke"]\') }}'
     )
 }}
 
