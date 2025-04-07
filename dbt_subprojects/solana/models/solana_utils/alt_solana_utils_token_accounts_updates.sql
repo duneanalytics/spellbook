@@ -13,18 +13,16 @@ WITH combined_events AS (
   SELECT
     token_account,
     account_owner,
-    -- Calculate account_mint using LAST_VALUE
-    -- When an account is initialized, the mint is carried forward
-    -- When an account owner changes, the mint is carried forward
-    -- When an account closes, the mint resets to NULL
-    CASE
-      WHEN event_type = 'owner_change' THEN
-        LAST_VALUE(account_mint) OVER (
-          PARTITION BY token_account
-          ORDER BY instruction_uniq_id ASC 
-        )
-      ELSE account_mint
-    END AS account_mint,
+    account_mint, -- Keep original mint for later logic
+    
+    -- get the latest non-null account_mint up to this point
+    MAX(CASE WHEN account_mint IS NOT NULL THEN account_mint END)
+      OVER (
+        PARTITION BY token_account
+        ORDER BY instruction_uniq_id ASC
+        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+      ) AS last_non_null_account_mint,
+
     event_time AS valid_from,
     instruction_uniq_id as valid_from_instruction_uniq_id,
     -- the next event time is the valid_to
@@ -40,7 +38,12 @@ WITH combined_events AS (
 SELECT
   token_account,
   account_owner as token_balance_owner,
-  account_mint as token_mint_address,
+
+  CASE
+    WHEN event_type = 'owner_change' THEN last_non_null_account_mint
+    ELSE account_mint
+  END AS token_mint_address,
+  
   event_type,
   valid_from,
   -- constructing a valid_to in the future to avoid nulls to handle joins
