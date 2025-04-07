@@ -39,7 +39,7 @@ WITH meta_router AS
         WHERE
             dstToken != 0xd848db988b477efe60ee2ff99f9898990c6fb0cd --bug with MTK token
             {% if is_incremental() %}
-            AND evt_block_time >= date_trunc('day', now() - INTERVAL '7' DAY)
+            AND {{incremental_predicate('evt_block_time')}}
             {% endif %}
 )
 SELECT
@@ -79,7 +79,7 @@ FROM meta_router
 INNER JOIN {{ source('polygon', 'transactions')}} tx
     ON meta_router.tx_hash = tx.hash
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - INTERVAL '7' DAY)
+    AND {{incremental_predicate('tx.block_time')}}
     {% else %}
     AND tx.block_time >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
