@@ -39,7 +39,7 @@ with
                     when asset_type = 'Jetton' then 1 -- other jettons need to be checked by DEX liquidity
                     else 0 -- DEX LPs and SLPs liquidity is guaranteed by their smart contracts
                 end as is_need_liquidity_limit
-            , jp.timestamp as block_date,
+            , jp.timestamp as block_date
             , avg(price_usd) as price_usd
         from
             {{ ref('ton_jetton_price_daily') }} jp
@@ -66,7 +66,7 @@ with
         select
             block_date
             , destination as address
-            , value as ton_flow,
+            , value as ton_flow
             , '0:0000000000000000000000000000000000000000000000000000000000000000' as token_address -- Native TON token address
             , 'TON' as symbol
         from
@@ -159,11 +159,11 @@ with
         from
             (
                 select
-                    block_date,
-                    pool,
-                    jetton_left,
-                    jetton_right,
-                    avg(tvl_usd) as tvl_usd
+                    block_date
+                    , pool
+                    , jetton_left
+                    , jetton_right
+                    , avg(tvl_usd) as tvl_usd
                 from
                     {{ source('ton', 'dex_pools') }}
                 where
@@ -185,7 +185,7 @@ with
             , token_address
             , address
             , symbol
-            sum(
+            , sum(
                 case
                     when jetton_flow > 0
                     and is_need_liquidity_limit = 0 then jetton_flow * price_usd
@@ -196,8 +196,8 @@ with
                     )
                     else 0
                 end
-            ) as transfer_amount_usd_received,
-            sum(
+            ) as transfer_amount_usd_received
+            , sum(
                 case
                     when jetton_flow < 0
                     and is_need_liquidity_limit = 0 then jetton_flow * price_usd
