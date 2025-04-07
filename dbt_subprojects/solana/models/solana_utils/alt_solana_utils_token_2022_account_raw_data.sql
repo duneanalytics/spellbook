@@ -1,7 +1,7 @@
 {{
   config(
     schema='solana_utils',
-    alias='token_2022_account_initializations',
+    alias='alt_token_2022_account_raw_data',
     materialized='incremental',
     file_format='delta',
     partition_by=['token_account_prefix'],
@@ -21,6 +21,9 @@ SELECT
   DATE_TRUNC('month', call_block_time) AS block_month,
   SUBSTRING(account_accountToInitialize, 1, 2) AS token_account_prefix,
   'init' AS event_type,
+  -- constructing an artificial instruction_uniq_id to order instructions using one string column
+  -- lpads are chosen carefully to be lexicographically sortable
+  -- we can sort the instructions by this column to get the correct order
   CONCAT(
       lpad(cast(call_block_slot as varchar), 12, '0'), '-', 
       lpad(cast(call_tx_index as varchar), 6, '0'), '-', 

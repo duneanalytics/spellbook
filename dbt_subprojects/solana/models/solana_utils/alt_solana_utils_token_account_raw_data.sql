@@ -1,7 +1,7 @@
 {{
   config(
     schema='solana_utils',
-    alias='token_account_initializations',
+    alias='alt_token_account_raw_data',
     materialized='incremental',
     file_format='delta',
     partition_by=['token_account_prefix'],
