@@ -14,12 +14,12 @@
 --Init events contain mint address, and owner address
 --Init v1
 SELECT
-  account_account AS token_account,
+  account_accountToInitialize AS token_account,
   account_owner,
   account_mint,
   call_block_time AS event_time,
   DATE_TRUNC('month', call_block_time) AS block_month,
-  SUBSTRING(account_account, 1, 2) AS token_account_prefix,
+  SUBSTRING(account_accountToInitialize, 1, 2) AS token_account_prefix,
   'init' AS event_type,
   CONCAT(
       lpad(cast(call_block_slot as varchar), 12, '0'), '-', 
@@ -37,12 +37,12 @@ UNION ALL
 
 --Init v2
 SELECT
-  account_account,
+  account_initializeAccount AS token_account,
   owner as account_owner,
-  account_mint,
+  account_associatedMint AS account_mint,
   call_block_time AS event_time,
   DATE_TRUNC('month', call_block_time) AS block_month,
-  SUBSTRING(account_account, 1, 2) AS token_account_prefix,
+  SUBSTRING(account_initializeAccount, 1, 2) AS token_account_prefix,
   'init' AS event_type,
   CONCAT(
       lpad(cast(call_block_slot as varchar), 12, '0'), '-', 
@@ -60,12 +60,12 @@ UNION ALL
 
 --Init v3
 SELECT
-  account_account,
+  account_initializeAccount AS token_account,
   owner as account_owner,
-  account_mint,
+  account_associatedMint AS account_mint,
   call_block_time AS event_time,
   DATE_TRUNC('month', call_block_time) AS block_month,
-  SUBSTRING(account_account, 1, 2) AS token_account_prefix,
+  SUBSTRING(account_initializeAccount, 1, 2) AS token_account_prefix,
   'init' AS event_type,
   CONCAT(
       lpad(cast(call_block_slot as varchar), 12, '0'), '-', 
@@ -84,12 +84,12 @@ UNION ALL
 
 -- Owner Changes: Only owner changes, mint persists, mint address not in data
 SELECT
-  account_owned AS token_account,
-  newAuthority AS account_owner, -- Renamed from next_account_owner
+  account_mint AS token_account, -- this is actually the token account address, the decoding pipeline is wrong here 
+  newAuthority AS account_owner,
   null as account_mint,
   call_block_time AS event_time,
   DATE_TRUNC('month', call_block_time) AS block_month,
-  SUBSTRING(newAuthority, 1, 2) AS token_account_prefix,
+  SUBSTRING(account_mint, 1, 2) AS token_account_prefix,
   'owner_change' AS event_type,
      CONCAT(
       lpad(cast(call_block_slot as varchar), 12, '0'), '-', 
@@ -108,12 +108,12 @@ UNION ALL
 
 --Closure events only contain the token account address
 SELECT
-  account_account AS token_account,
+  account_closeAccount AS token_account,
   null as account_owner,
   null as account_mint,
   call_block_time AS event_time,
   DATE_TRUNC('month', call_block_time) AS block_month,
-  SUBSTRING(account_account, 1, 2) AS token_account_prefix,
+  SUBSTRING(account_closeAccount, 1, 2) AS token_account_prefix,
   'close' AS event_type,
   CONCAT(
       lpad(cast(call_block_slot as varchar), 12, '0'), '-', 
