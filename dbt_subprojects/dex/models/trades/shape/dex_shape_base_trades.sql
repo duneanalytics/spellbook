@@ -7,6 +7,7 @@
 
 {% set base_models = [
     ref('reservoir_swap_shape_base_trades')
+   ,ref('swanswap_shape_base_trades')
 ] %}
 
 WITH base_union AS (
