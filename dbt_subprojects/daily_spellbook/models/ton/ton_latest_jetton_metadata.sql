@@ -33,7 +33,7 @@ WITH ranks AS (
 
 SELECT 
     address,
-    update_time_onchain,
+    update_time_onchain
     , update_time_metadata
     , mintable
     , admin_address
