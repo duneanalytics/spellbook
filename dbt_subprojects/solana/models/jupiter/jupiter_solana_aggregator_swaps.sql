@@ -135,6 +135,8 @@ with
             , toBase58(bytearray_substring(data,1+48,32)) as input_mint
             , CASE 
                 -- Apply the 4-byte fix for 1DEX AMM after August 23rd, 2024
+                -- 1DEX AMM uses the trailing 4 bytes for other msging, they are unique in that
+                -- all other dexes use the full 8 bytes
                 WHEN a.amm = 'DEXYosS6oEGvk8uCDayvwEZz4qEyDJRf9nFgYCaqPMTm' 
                     AND l.block_time >= TIMESTAMP '2024-08-23 00:00:00' 
                     THEN 
