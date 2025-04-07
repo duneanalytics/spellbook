@@ -81,6 +81,23 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('inkyswap_ink_base_trades_seed')
+          
+  - name: dyorswap_ink_base_trades
+    meta:
+      blockchain: ink
+      sector: dex
+      project: dyorswap
+      contributors: sunshinejulia9
+    config:
+      tags: ["ink", "dex", "trades", "dyorswap"]
+    description: "dyorswap ink base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('dyorswap_ink_base_trades_seed')
 
   - name: squidswap_ink_base_trades
     meta:
@@ -98,4 +115,3 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('squidswap_ink_base_trades_seed')
-  
