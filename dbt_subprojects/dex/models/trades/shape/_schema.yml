@@ -24,3 +24,21 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
             seed_file: ref('reservoir_swap_shape_base_trades_seed')
+
+  - name: swanswap_shape_base_trades
+    meta:
+      blockchain: shape
+      sector: dex
+      project: uniswap
+      contributors: sunshinejulia9
+    config:
+      tags: ['shape', 'dex', 'trades', 'swanswap']
+    description: "swanswap shape base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+            seed_file: ref('swanswap_shape_base_trades_seed')
+    
