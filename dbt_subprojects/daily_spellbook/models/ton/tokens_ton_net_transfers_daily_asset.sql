@@ -13,8 +13,8 @@
 with
     ton_prices as ( -- get price of TON for each day to estimate USD value
         select
-            date_trunc('day', minute) as block_date,
-            avg(price) as price
+            date_trunc('day', minute) as block_date
+            , avg(price) as price
         from
             {{ source('prices', 'usd') }}
         where
@@ -29,18 +29,18 @@ with
     ),
     jetton_prices as (
         select
-            jp.token_address,
-            case
-                when jp.token_address = '0:B113A994B5024A16719F69139328EB759596C38A25F59028B146FECDC3621DFE' -- USDT
-                or jp.token_address = '0:BDF3FA8098D129B54B4F73B5BAC5D1E1FD91EB054169C3916DFC8CCD536D1000' -- tsTON
-                or jp.token_address = '0:CD872FA7C5816052ACDF5332260443FAEC9AACC8C21CCA4D92E7F47034D11892' -- stTON
-                or jp.token_address = '0:CF76AF318C0872B58A9F1925FC29C156211782B9FB01F56760D292E56123BF87' -- hTON
-                then 0 -- USDT, and LSDs are liquid and don't need to be limited by liquidity
-                when asset_type = 'Jetton' then 1 -- other jettons need to be checked by DEX liquidity
-                else 0 -- DEX LPs and SLPs liquidity is guaranteed by their smart contracts
-            end as is_need_liquidity_limit,
-            jp.timestamp as block_date,
-            avg(price_usd) as price_usd
+            jp.token_address
+            ,   case
+                    when jp.token_address = '0:B113A994B5024A16719F69139328EB759596C38A25F59028B146FECDC3621DFE' -- USDT
+                    or jp.token_address = '0:BDF3FA8098D129B54B4F73B5BAC5D1E1FD91EB054169C3916DFC8CCD536D1000' -- tsTON
+                    or jp.token_address = '0:CD872FA7C5816052ACDF5332260443FAEC9AACC8C21CCA4D92E7F47034D11892' -- stTON
+                    or jp.token_address = '0:CF76AF318C0872B58A9F1925FC29C156211782B9FB01F56760D292E56123BF87' -- hTON
+                    then 0 -- USDT, and LSDs are liquid and don't need to be limited by liquidity
+                    when asset_type = 'Jetton' then 1 -- other jettons need to be checked by DEX liquidity
+                    else 0 -- DEX LPs and SLPs liquidity is guaranteed by their smart contracts
+                end as is_need_liquidity_limit
+            , jp.timestamp as block_date,
+            , avg(price_usd) as price_usd
         from
             {{ ref('ton_jetton_price_daily') }} jp
         group by
@@ -50,11 +50,11 @@ with
     ),
     ton_flow as (
         select
-            block_date,
-            source as address,
-            -1 * value as ton_flow,
-            '0:0000000000000000000000000000000000000000000000000000000000000000' as token_address, -- Native TON token address
-            'TON' as symbol
+            block_date
+            , source as address
+            , -1 * value as ton_flow
+            , '0:0000000000000000000000000000000000000000000000000000000000000000' as token_address -- Native TON token address
+            , 'TON' as symbol
         from
             {{ source('ton', 'messages') }}
         where
@@ -64,11 +64,11 @@ with
             {% endif %}
         union all
         select
-            block_date,
-            destination as address,
-            value as ton_flow,
-            '0:0000000000000000000000000000000000000000000000000000000000000000' as token_address, -- Native TON token address
-            'TON' as symbol
+            block_date
+            , destination as address
+            , value as ton_flow,
+            , '0:0000000000000000000000000000000000000000000000000000000000000000' as token_address -- Native TON token address
+            , 'TON' as symbol
         from
             {{ source('ton', 'messages') }}
         where
@@ -79,17 +79,17 @@ with
     ),
     transfers_amount_ton as (
         select
-            block_date,
-            token_address,
-            address,
-            symbol,
-            sum(
+            block_date
+            , token_address
+            , address
+            , symbol
+            , sum(
                 case
                     when ton_flow > 0 then ton_flow * price
                     else 0
                 end
-            ) / 1e9 as transfer_amount_usd_received,
-            sum(
+            ) / 1e9 as transfer_amount_usd_received
+            , sum(
                 case
                     when ton_flow < 0 then ton_flow * price
                     else 0
@@ -106,11 +106,11 @@ with
     ),
     jettons_flow as (
         select
-            block_date,
-            jetton_master as token_address,
-            source as address,
-            -1 * amount as jetton_flow,
-            COALESCE(jm.symbol, NULL) as symbol
+            block_date
+            , jetton_master as token_address
+            , source as address
+            , -1 * amount as jetton_flow
+            , COALESCE(jm.symbol, NULL) as symbol
         from
             {{ source('ton', 'jetton_events') }} je
             LEFT JOIN {{ ref('ton_latest_jetton_metadata') }} jm
@@ -129,11 +129,11 @@ with
             {% endif %}
         union all
         select
-            block_date,
-            jetton_master as token_address,
-            destination as address,
-            amount as jetton_flow,
-            COALESCE(jm.symbol, NULL) as symbol
+            block_date
+            , jetton_master as token_address
+            , destination as address
+            , amount as jetton_flow
+            , COALESCE(jm.symbol, NULL) as symbol
         from
             {{ source('ton', 'jetton_events') }} je
             LEFT JOIN {{ ref('ton_latest_jetton_metadata') }} jm
@@ -153,9 +153,9 @@ with
     ),
     daily_liquidity as (
         select
-            block_date,
-            jetton_master as token_address,
-            sum(tvl_usd) as total_token_tvl_usd
+            block_date
+            , jetton_master as token_address
+            , sum(tvl_usd) as total_token_tvl_usd
         from
             (
                 select
@@ -181,10 +181,10 @@ with
     ),
     transfers_amount_jetton as (
         select
-            block_date,
-            token_address,
-            address,
-            symbol,
+            block_date
+            , token_address
+            , address
+            , symbol
             sum(
                 case
                     when jetton_flow > 0
@@ -232,13 +232,13 @@ with
     ),
     net_transfers as (
         select
-            block_date,
-            address,
-            token_address,
-            symbol,
-            sum(coalesce(transfer_amount_usd_received, 0)) as transfer_amount_usd_received,
-            sum(coalesce(transfer_amount_usd_sent, 0)) as transfer_amount_usd_sent,
-            sum(coalesce(transfer_amount_usd_sent, 0)) + sum(coalesce(transfer_amount_usd_received, 0)) as net_transfer_amount_usd
+            block_date
+            , address
+            , token_address
+            , symbol
+            , sum(coalesce(transfer_amount_usd_received, 0)) as transfer_amount_usd_received
+            , sum(coalesce(transfer_amount_usd_sent, 0)) as transfer_amount_usd_sent
+            , sum(coalesce(transfer_amount_usd_sent, 0)) + sum(coalesce(transfer_amount_usd_received, 0)) as net_transfer_amount_usd
         from
             transfers_amount
         group by
@@ -248,11 +248,11 @@ with
             4
     )
 select
-    'ton' as blockchain,
-    block_date,
-    token_address as contract_address,
-    symbol,
-    sum(net_transfer_amount_usd) as net_transfer_amount_usd
+    'ton' as blockchain
+    , block_date
+    , token_address as contract_address  -- Just pass through, no encoding
+    , symbol
+    , sum(net_transfer_amount_usd) as net_transfer_amount_usd
 from
     net_transfers
 where
