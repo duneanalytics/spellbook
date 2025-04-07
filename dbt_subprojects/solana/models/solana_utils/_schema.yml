@@ -37,6 +37,20 @@ models:
             - address
             - valid_from
 
+  - name: solana_utils_combined_token_accounts_updates
+    meta:
+      blockchain: solana
+      contributors: [0xBoxer]
+    config:
+      tags: ['solana','token_accounts']
+    description: >
+        combined token_account_updates, mint_address and owner_address combinations for token 22 and spl tokens
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - token_account
+            - valid_from_instruction_uniq_id
+
   - name: solana_utils_epochs
     meta:
       blockchain: solana

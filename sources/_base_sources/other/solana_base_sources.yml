@@ -200,6 +200,35 @@ sources:
           short_description: ''
         description: ''
 
+  - name: spl_token_2022_solana
+    description: tables in the spl_token_2022_solana schema related to the SPL Token 2022 program
+    tables:
+      - name: spl_token_2022_call_initializeaccount
+        meta:
+          docs_slug: ''
+          short_description: ''
+        description: ''
+      - name: spl_token_2022_call_initializeaccount2
+        meta:
+          docs_slug: ''
+          short_description: ''
+        description: ''
+      - name: spl_token_2022_call_initializeaccount3
+        meta:
+          docs_slug: ''
+          short_description: ''
+        description: ''
+      - name: spl_token_2022_call_setauthority
+        meta:
+          docs_slug: ''
+          short_description: ''
+        description: ''
+      - name: spl_token_2022_call_closeaccount
+        meta:
+          docs_slug: ''
+          short_description: ''
+        description: ''
+
   - name: solana_utils
     description: tables in the solana_utils schema
     tables:
