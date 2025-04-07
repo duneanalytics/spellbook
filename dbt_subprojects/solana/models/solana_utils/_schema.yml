@@ -37,7 +37,7 @@ models:
             - address
             - valid_from
 
-  - name: solana_utils_combined_token_accounts_updates
+  - name: alt_solana_utils_combined_token_accounts_updates
     meta:
       blockchain: solana
       contributors: [0xBoxer]
