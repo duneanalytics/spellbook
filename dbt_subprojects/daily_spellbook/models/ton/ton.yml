@@ -132,3 +132,33 @@ models:
       - name: symbol
       - name: net_transfer_amount_usd
         description: "The total net transfer amount for the day and asset"
+  
+  - name: ton_latest_jetton_metadata
+    meta:
+      blockchain: ton
+      sector: tokens
+      contributors: krishhh
+    config:
+      tags: ['tokens', 'metadata', 'ton']
+    description: "Latest metadata for TON jettons, keeping only the most recent version per token"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - name: address
+        description: "The jetton address"
+        tests:
+          - not_null
+          - unique
+      
+      - name: update_time_onchain
+        description: "On-chain update timestamp"
+      
+      - name: update_time_metadata
+        description: "Metadata update timestamp"
+      
+      - name: symbol
+        description: "Token symbol"
+      
+  

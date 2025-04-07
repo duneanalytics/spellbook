@@ -110,11 +110,11 @@ with
             jetton_master as token_address,
             source as address,
             -1 * amount as jetton_flow,
-            jm.symbol as symbol  -- Get symbol from metadata
+            COALESCE(jm.symbol, NULL) as symbol
         from
             {{ source('ton', 'jetton_events') }} je
-            LEFT JOIN {{ source('ton', 'jetton_metadata') }} jm  -- Add metadata join
-            ON je.jetton_master = jm.address  
+            LEFT JOIN {{ ref('ton_latest_jetton_metadata') }} jm
+                ON je.jetton_master = jm.address
         where
             type = 'transfer'
             and jetton_master != upper(
@@ -133,11 +133,11 @@ with
             jetton_master as token_address,
             destination as address,
             amount as jetton_flow,
-            jm.symbol as symbol  -- Get symbol from metadata
+            COALESCE(jm.symbol, NULL) as symbol
         from
             {{ source('ton', 'jetton_events') }} je
-            LEFT JOIN {{ source('ton', 'jetton_metadata') }} jm  -- Add metadata join
-                ON je.jetton_master = jm.address 
+            LEFT JOIN {{ ref('ton_latest_jetton_metadata') }} jm
+                ON je.jetton_master = jm.address
         where
             type = 'transfer'
             and jetton_master != upper(
