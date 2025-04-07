@@ -194,6 +194,12 @@ WITH base as (
             , 'transfer' as action
             , call_outer_instruction_index
             , call_inner_instruction_index
+            , CONCAT(
+      lpad(cast(call_block_slot as varchar), 12, '0'), '-', 
+      lpad(cast(call_tx_index as varchar), 6, '0'), '-', 
+      lpad(cast(coalesce(call_outer_instruction_index, 0) as varchar), 4, '0'), '-', 
+      lpad(cast(coalesce(call_inner_instruction_index, 0) as varchar), 4, '0')
+    ) AS instruction_uniq_id
             /*
             , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data, 1+2+8+1,8))) as fee
             */
@@ -261,13 +267,14 @@ SELECT
         ELSE p.price * tr.amount / power(10, p.decimals)
       END as amount_usd
     , p.symbol
+    , tr.instruction_uniq_id
 FROM base tr
 LEFT JOIN 
-      {{ ref('solana_utils_token_accounts') }} tk_s 
-      ON tk_s.address = tr.account_source
+      {{ ref('alt_solana_utils_token_2022_accounts_updates') }} tk_s 
+      ON tk_s.token_account = tr.account_source and tk_s.valid_from_instruction_uniq_id <= tr.instruction_uniq_id and tk_s.valid_to_instruction_uniq_id > tr.instruction_uniq_id
 LEFT JOIN 
-      {{ ref('solana_utils_token_accounts') }} tk_d 
-      ON tk_d.address = tr.account_destination
+      {{ ref('alt_solana_utils_token_2022_accounts_updates') }} tk_d 
+      ON tk_d.token_account = tr.account_destination and tk_d.valid_from_instruction_uniq_id <= tr.instruction_uniq_id and tk_d.valid_to_instruction_uniq_id > tr.instruction_uniq_id
 LEFT JOIN 
       {{ ref('solana_utils_token_address_mapping') }} tk_m
     ON tk_m.base58_address = COALESCE(tk_s.token_mint_address, tk_d.token_mint_address)
