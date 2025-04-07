@@ -1269,7 +1269,7 @@ FROM
     ('nest-nest-protocol', 'ethereum', 'NEST', 0x04abeda201850ac0124161f037efd70c74ddc74c, 18),
     ('nsbt-neutrino-system-base-token', 'ethereum', 'NSBT', 0x9d79d5b61de59d882ce90125b18f74af650acb93, 6),
     ('oh-oh-finance', 'ethereum', 'OH', 0x16ba8efe847ebdfef99d399902ec29397d403c30, 18),
-    ('om-mantra-dao', 'ethereum', 'OM', 0x2baecdf43734f22fd5c152db08e3c27233f0c7d2, 18),
+    ('om-mantra-dao', 'ethereum', 'OM', 0x3593d125a4f7849a1b059e64f4517a86dd60c95d, 18),
     ('ousd-origin-dollar', 'ethereum', 'OUSD', 0x2a8e1e676ec238d8a992307b495b45b3feaa5e86, 18),
     ('pin-public-index-network', 'ethereum', 'PIN', 0xc1f976b91217e240885536af8b63bc8b5269a9be, 18),
     ('quad-quadency', 'ethereum', 'QUAD', 0xab2a7b5876d707e0126b3a75ef7781c77c8877ee, 18),

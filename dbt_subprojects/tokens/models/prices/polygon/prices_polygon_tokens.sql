@@ -155,8 +155,11 @@ FROM
     ('sfl1-sunflower-land', 'polygon', 'SFL',0xd1f9c58e33933a993a3891f8acfe05a68e1afc05, 18),
     ('algb-algebra', 'polygon', 'ALGB',0x0169ec1f8f639b32eec6d923e24c2a2ff45b9dd6, 18),
     ('rmv-reality-metaverse', 'polygon', 'RMV',0xf0949dd87d2531d665010d6274f06a357669457a, 18),
-    ('gfi-gravity-finance', 'polygon', 'GFI', 0x874e178A2f3f3F9d34db862453Cd756E7eAb0381, 18)    
-
+    ('gfi-gravity-finance', 'polygon', 'GFI', 0x874e178A2f3f3F9d34db862453Cd756E7eAb0381, 18),   
+    ('om-mantra-dao', 'polygon', 'OM', 0xc3ec80343d2bae2f8e680fdadde7c17e71e114ea, 18),     
+    ('glm-golem', 'polygon', 'GLM', 0x0B220b82F3eA3B7F6d9A1D8ab58930C064A2b5Bf, 18),     
+    ('super-superfarm', 'polygon', 'SUPER', 0xa1428174f516f527fafdd146b883bb4428682737, 18) 
+    
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     0xef938b6da8576a896f6e0321ef80996f4890f9c4 -- DG, bad price feed
