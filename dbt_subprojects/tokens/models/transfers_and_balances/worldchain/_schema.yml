@@ -154,3 +154,67 @@ models:
       - name: symbol
       - name: decimals
       - name: collection_name
+
+  - name: tokens_worldchain_balances_daily_agg_base
+    meta:
+      blockchain: worldchain
+      sector: tokens
+      contributors: aalan3
+    config:
+      tags: ['tokens','balances', 'worldchain']
+    description: "Token balances daily worldchain"
+    columns:
+          - name: day
+          - name: block_number
+          - name: block_time
+          - name: contract_address
+          - name: address
+          - name: token_id
+          - name: amount
+          - name: type
+
+  - name: tokens_worldchain_balances_daily_agg
+    meta:
+      blockchain: worldchain
+      sector: tokens
+      contributors: aalan3
+    config:
+      tags: ['tokens','balances', 'worldchain']
+    description: "Token balances daily enriched"
+    columns:
+      - name: day
+      - name: block_date
+      - name: block_number
+      - name: type
+      - name: token_address
+      - name: wallet_address
+      - name: balance_raw
+      - name: balance
+      - name: balance_usd
+      - name: price_rate
+      - name: symbol
+      - name: decimals
+      - name: collection_name
+
+  - name: tokens_worldchain_balances_daily
+    meta:
+      blockchain: worldchain
+      sector: tokens
+      contributors: 0xRob
+    config:
+      tags: [ 'tokens','balances', 'worldchain' ]
+    description: "Token balances daily enriched"
+    columns:
+      - name: day
+      - name: block_date
+      - name: block_number
+      - name: type
+      - name: token_address
+      - name: wallet_address
+      - name: balance_raw
+      - name: balance
+      - name: balance_usd
+      - name: price_rate
+      - name: symbol
+      - name: decimals
+      - name: collection_name
