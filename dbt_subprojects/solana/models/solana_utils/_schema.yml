@@ -1,6 +1,42 @@
 version: 2
 
 models:
+  - name: solana_utils_token_account_raw_data
+    meta:
+      blockchain: solana
+      contributors: [0xBoxer, 0xRob, jeff-dude]
+    config:
+      tags: ['solana','token_accounts']
+    description: >
+        Model to capture raw token accounts over time, from init to owner_changed and closed
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - token_account
+            - token_account_prefix
+            - event_type
+            - block_slot
+            - tx_index
+            - inner_instruction_index
+            - outer_instruction_index
+  - name: solana_utils_new_token_account_updates
+    meta:
+      blockchain: solana
+      contributors: [0xBoxer, 0xRob, jeff-dude]
+    config:
+      tags: ['solana','token_accounts']
+    description: >
+        Model to capture changes to token accounts over time, use valid_from and valid_to to find the correct record for any address at any point in time
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - token_account
+            - token_account_prefix
+            - event_type
+            - block_slot
+            - tx_index
+            - inner_instruction_index
+            - outer_instruction_index
   - name: solana_utils_token_accounts
     meta:
       blockchain: solana
@@ -22,34 +58,6 @@ models:
         name: account_type
       - &updated_at
         name: updated_at
-
-  - name: solana_utils_token_account_updates
-    meta:
-      blockchain: solana
-      contributors: [0xBoxer, 0xRob]
-    config:
-      tags: ['solana','token_accounts']
-    description: >
-        Model to capture changes to token accounts over time, use valid_from and valid_to to find the correct record for any address at any point in time
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
-            - valid_from
-
-  - name: alt_solana_utils_combined_token_accounts_updates
-    meta:
-      blockchain: solana
-      contributors: [0xBoxer]
-    config:
-      tags: ['solana','token_accounts']
-    description: >
-        combined token_account_updates, mint_address and owner_address combinations for token 22 and spl tokens
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - token_account
-            - valid_from_instruction_uniq_id
 
   - name: solana_utils_epochs
     meta:
