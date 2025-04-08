@@ -6,7 +6,7 @@
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
-    unique_key=['token_account_prefix', 'token_account', 'block_date', 'block_time', 'block_slot', 'tx_index', 'inner_instruction_index', 'outer_instruction_index', 'event_type'],
+    unique_key=['token_account_prefix', 'token_account', 'block_time', 'block_slot', 'tx_index', 'inner_instruction_index', 'outer_instruction_index', 'event_type'],
     incremental_predicates=[incremental_predicate('DBT_INTERNAL_DEST.block_time')]
   )
 }}
@@ -14,8 +14,7 @@
 --Init events contain mint address, and owner address
 --Init v1
 SELECT
-  CAST(DATE_TRUNC('day', call_block_time) as DATE) AS block_date
-  , call_block_time AS block_time
+  call_block_time AS block_time
   , call_block_slot AS block_slot
   , call_tx_index AS tx_index
   , call_inner_instruction_index AS inner_instruction_index
@@ -37,8 +36,7 @@ UNION ALL
 
 --Init v2
 SELECT
-  CAST(DATE_TRUNC('day', call_block_time) as DATE) AS block_date
-  , call_block_time AS block_time
+  call_block_time AS block_time
   , call_block_slot AS block_slot
   , call_tx_index AS tx_index
   , call_inner_instruction_index AS inner_instruction_index
@@ -60,8 +58,7 @@ UNION ALL
 
 --Init v3
 SELECT
-  CAST(DATE_TRUNC('day', call_block_time) as DATE) AS block_date
-  , call_block_time AS block_time
+  call_block_time AS block_time
   , call_block_slot AS block_slot
   , call_tx_index AS tx_index
   , call_inner_instruction_index AS inner_instruction_index
@@ -84,8 +81,7 @@ UNION ALL
 
 -- Owner Changes: Only owner changes, mint persists, mint address not in data
 SELECT
-  CAST(DATE_TRUNC('day', call_block_time) as DATE) AS block_date
-  , call_block_time AS block_time
+  call_block_time AS block_time
   , call_block_slot AS block_slot
   , call_tx_index AS tx_index
   , call_inner_instruction_index AS inner_instruction_index
@@ -108,8 +104,7 @@ UNION ALL
 
 --Closure events only contain the token account address
 SELECT
-  CAST(DATE_TRUNC('day', call_block_time) as DATE) AS block_date
-  , call_block_time AS block_time
+  call_block_time AS block_time
   , call_block_slot AS block_slot
   , call_tx_index AS tx_index
   , call_inner_instruction_index AS inner_instruction_index

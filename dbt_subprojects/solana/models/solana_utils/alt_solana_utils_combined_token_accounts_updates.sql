@@ -21,7 +21,7 @@ SELECT
   valid_to_instruction_uniq_id,
   token_account_prefix,
   'spl_token' as token_program
-FROM {{ ref('alt_solana_utils_token_accounts_updates') }}
+FROM {{ ref('solana_utils_new_token_accounts_updates') }}
 
 UNION ALL
 
