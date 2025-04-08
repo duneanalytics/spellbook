@@ -48,7 +48,7 @@ FROM (
         evt_index
     FROM {{ dex_model }}
     {% if is_incremental() %}
-    WHERE block_date >= date_trunc('day', now() - interval '7' day)
+    WHERE {{incremental_predicate('block_date')}}
     {% endif %}
     {% if not loop.last %}
     UNION ALL

@@ -143,7 +143,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
+    AND {{incremental_predicate('p_bought.minute')}}
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', dexs.block_time)
@@ -153,7 +153,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
+    AND {{incremental_predicate('p_sold.minute')}}
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_eth
     ON p_eth.minute = date_trunc('minute', dexs.block_time)
@@ -163,6 +163,6 @@ LEFT JOIN {{ source('prices', 'usd') }} p_eth
     AND p_eth.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_eth.minute >= date_trunc('day', now() - interval '7' day)
+    AND {{incremental_predicate('p_eth.minute')}}
     {% endif %}
 WHERE dexs.token_bought_address <> dexs.token_sold_address
