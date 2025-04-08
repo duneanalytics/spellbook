@@ -7,8 +7,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['blockchain', 'address'],
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.first_used')],
-        post_hook='{{ expose_spells(blockchains = \'["zora"]\')}}'  
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.first_used')]
         )}}
 
 {{cex_evms(
