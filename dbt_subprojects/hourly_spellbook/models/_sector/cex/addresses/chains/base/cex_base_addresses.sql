@@ -6,8 +6,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['blockchain', 'address'],
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.first_used')]
+        unique_key = ['blockchain', 'address']
         )}}
 
 {{cex_evms(
