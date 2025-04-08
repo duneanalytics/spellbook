@@ -1,29 +1,6 @@
 version: 2
 
 models:
-  - name: pumpswap_solana_pools
-    description: "PumpSwap pools on Solana"
-    columns:
-      - name: pool
-        description: "Pool address"
-        tests:
-          - not_null
-          - unique
-      - name: created_at
-        description: "Pool creation timestamp"
-      - name: created_slot
-        description: "Block slot of pool creation"
-      - name: creation_tx
-        description: "Transaction ID of pool creation"
-      - name: baseMint
-        description: "Base token mint address"
-      - name: quoteMint
-        description: "Quote token mint address"
-      - name: baseMintDecimals
-        description: "Decimals of base token"
-      - name: quoteMintDecimals
-        description: "Decimals of quote token"
-
   - name: pumpswap_solana_base_trades
     description: "PumpSwap base trades on Solana"
     columns:
