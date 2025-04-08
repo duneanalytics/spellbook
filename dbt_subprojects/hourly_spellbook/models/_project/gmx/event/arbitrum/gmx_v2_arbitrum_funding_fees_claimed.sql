@@ -169,15 +169,15 @@ WITH evt_data_1 AS (
 -- full data 
 , full_data AS (
     SELECT 
-        blockchain,
-        block_time,
-        DATE(block_time) AS block_date,
-        block_number,
-        tx_hash,
-        index,
-        contract_address,
-        event_name,
-        msg_sender,
+        ED.blockchain,
+        ED.block_time,
+        DATE(ED.block_time) AS block_date,
+        ED.block_number,
+        ED.tx_hash,
+        ED.index,
+        ED.contract_address,
+        ED.event_name,
+        ED.msg_sender,
 
         ED.market,
         ED.token,
