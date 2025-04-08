@@ -50,7 +50,7 @@ WITH raw_events AS (
   -- Union new raw events with the last known state for each token_account
   SELECT * FROM raw_events
   {% if is_incremental() %}
-  UNION ALL
+  UNION
   SELECT * FROM latest_existing
   {% endif %}
 )
