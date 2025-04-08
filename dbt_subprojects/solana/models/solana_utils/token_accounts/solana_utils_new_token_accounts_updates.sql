@@ -1,5 +1,6 @@
 {{
   config(
+    tags=['prod_exclude'],
     schema='solana_utils',
     alias='new_token_accounts_updates',
     partition_by=['token_account_prefix'],
