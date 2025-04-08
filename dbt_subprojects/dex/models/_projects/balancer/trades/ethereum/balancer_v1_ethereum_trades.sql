@@ -75,7 +75,7 @@ prices AS (
         AND minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-        AND minute >= date_trunc('day', now() - interval '7' day)
+        AND {{incremental_predicate('minute')}}
     {% endif %}
 )
 
