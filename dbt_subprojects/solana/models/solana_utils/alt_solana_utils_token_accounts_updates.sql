@@ -37,7 +37,6 @@ WITH combined_events AS (
     LEAD(outer_instruction_index, 1) OVER (PARTITION BY token_account ORDER BY block_time, block_slot, tx_index, outer_instruction_index, inner_instruction_index ASC) AS valid_to_outer_index,
     LEAD(inner_instruction_index, 1) OVER (PARTITION BY token_account ORDER BY block_time, block_slot, tx_index, outer_instruction_index, inner_instruction_index ASC) AS valid_to_inner_index,
     
-    block_month,
     event_type,
     token_account_prefix
   FROM {{ ref('solana_utils_token_account_raw_data') }}
