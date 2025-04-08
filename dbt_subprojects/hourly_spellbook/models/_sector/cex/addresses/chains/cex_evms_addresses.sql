@@ -2,6 +2,8 @@
         tags = ['static'],
         schema = 'cex_evms',
         alias = 'addresses',
+        materialized = 'table',
+        file_format = 'delta',
         post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "avalanche_c", "bnb", "fantom", "optimism", "polygon", "zksync", "zora", "celo", "base"]\',
                                     "sector",
                                     "cex",

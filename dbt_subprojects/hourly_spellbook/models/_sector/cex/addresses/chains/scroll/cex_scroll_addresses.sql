@@ -2,7 +2,13 @@
 
 {{config(
         schema = 'cex_' + blockchain,
-        alias = 'addresses'
+        alias = 'addresses',
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['blockchain', 'address'],
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.first_used')],
+        post_hook='{{ expose_spells(blockchains = \'["scroll"]\')}}'  
         )}}
 
 {{cex_evms(
