@@ -2,14 +2,16 @@
   config (
     schema='solana_utils',
     alias='token_account_raw_data',
-    partition_by=['block_date'],
+    partition_by=['token_account_prefix'],
     materialized='incremental',
     file_format='delta',
-    incremental_strategy='merge',
-    unique_key=['block_date', 'block_slot', 'tx_index', 'inner_instruction_index', 'outer_instruction_index', 'token_account'],
+    incremental_strategy='delete+insert',
+    unique_key=['token_account', 'block_slot', 'tx_index', 'outer_instruction_index', 'inner_instruction_index'],
     incremental_predicates=[incremental_predicate('DBT_INTERNAL_DEST.block_time')]
   )
 }}
+
+{% set start_time = '2024-04-01' %}
 
 --Init events contain mint address, and owner address
 --Init v1
@@ -26,9 +28,8 @@ SELECT
   , account_owner
   , account_mint
 FROM {{ source('spl_token_solana', 'spl_token_call_initializeaccount') }}
-WHERE
-  1=1
-  and account_account in ('6SvQBmUMrehEb2bLhTVTDM5vAMgK6bD1Zz2VfcbEEHVe', 'G1ohP78e19tP7EJvtNd77Sjs3JnmauWvph32M1oLrPxf', 'YgiU6QrKidVFS6PhwoeTeHZXiSc8Av2UykCk7umyddo', '6oJ2Y4qjZxUogHQsAaVamc6c9URAfxtGyDrnPU9DxcUx')
+WHERE 1=1
+  AND call_block_time >= '{{ start_time }}'
   {% if is_incremental() %}
   AND {{ incremental_predicate('call_block_time') }}
   {% endif %}
@@ -51,7 +52,7 @@ SELECT
 FROM {{ source('spl_token_solana', 'spl_token_call_initializeaccount2') }}
 WHERE
   1=1
-  and account_account in ('6SvQBmUMrehEb2bLhTVTDM5vAMgK6bD1Zz2VfcbEEHVe', 'G1ohP78e19tP7EJvtNd77Sjs3JnmauWvph32M1oLrPxf', 'YgiU6QrKidVFS6PhwoeTeHZXiSc8Av2UykCk7umyddo', '6oJ2Y4qjZxUogHQsAaVamc6c9URAfxtGyDrnPU9DxcUx')
+  AND call_block_time >= '{{ start_time }}'
   {% if is_incremental() %}
   AND {{ incremental_predicate('call_block_time') }}
   {% endif %}
@@ -72,8 +73,8 @@ SELECT
   , owner as account_owner
   , account_mint
 FROM {{ source('spl_token_solana', 'spl_token_call_initializeaccount3') }}
-WHERE
-  1=1
+WHERE 1=1
+  AND call_block_time >= '{{ start_time }}'
   and account_account in ('6SvQBmUMrehEb2bLhTVTDM5vAMgK6bD1Zz2VfcbEEHVe', 'G1ohP78e19tP7EJvtNd77Sjs3JnmauWvph32M1oLrPxf', 'YgiU6QrKidVFS6PhwoeTeHZXiSc8Av2UykCk7umyddo', '6oJ2Y4qjZxUogHQsAaVamc6c9URAfxtGyDrnPU9DxcUx')
   {% if is_incremental() %}
   AND {{ incremental_predicate('call_block_time') }}
@@ -99,7 +100,7 @@ FROM {{ source('spl_token_solana', 'spl_token_call_setauthority') }}
 WHERE
   json_extract_scalar(authorityType, '$.AuthorityType') = 'AccountOwner'
   AND 1=1
-  and account_owned in ('6SvQBmUMrehEb2bLhTVTDM5vAMgK6bD1Zz2VfcbEEHVe', 'G1ohP78e19tP7EJvtNd77Sjs3JnmauWvph32M1oLrPxf', 'YgiU6QrKidVFS6PhwoeTeHZXiSc8Av2UykCk7umyddo', '6oJ2Y4qjZxUogHQsAaVamc6c9URAfxtGyDrnPU9DxcUx')
+  AND call_block_time >= '{{ start_time }}'
   {% if is_incremental() %}
   AND {{ incremental_predicate('call_block_time') }}
   {% endif %}
@@ -120,9 +121,8 @@ SELECT
   , null as account_owner
   , null as account_mint
 FROM {{ source('spl_token_solana', 'spl_token_call_closeaccount') }}
-WHERE 
-  1=1
-  and account_account in ('6SvQBmUMrehEb2bLhTVTDM5vAMgK6bD1Zz2VfcbEEHVe', 'G1ohP78e19tP7EJvtNd77Sjs3JnmauWvph32M1oLrPxf', 'YgiU6QrKidVFS6PhwoeTeHZXiSc8Av2UykCk7umyddo', '6oJ2Y4qjZxUogHQsAaVamc6c9URAfxtGyDrnPU9DxcUx')
+WHERE 1=1
+  AND call_block_time >= '{{ start_time }}'
   {% if is_incremental() %}
   AND {{ incremental_predicate('call_block_time') }}
   {% endif %}

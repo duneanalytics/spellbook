@@ -1,6 +1,5 @@
 {{
   config(
-    tags=['prod_exclude'],
     schema='solana_utils',
     alias='alt_token_accounts_updates',
     materialized='table',
@@ -20,15 +19,24 @@ WITH combined_events AS (
     MAX(CASE WHEN account_mint IS NOT NULL THEN account_mint END)
       OVER (
         PARTITION BY token_account
-        ORDER BY instruction_uniq_id ASC
+        ORDER BY event_time, block_slot, tx_index, outer_instruction_index, inner_instruction_index ASC
         ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
       ) AS last_non_null_account_mint,
 
+    -- Capture start time, slot, and indices
     event_time AS valid_from,
-    instruction_uniq_id as valid_from_instruction_uniq_id,
-    -- the next event time is the valid_to
-    LEAD(event_time, 1) OVER (PARTITION BY token_account ORDER BY event_time ASC) AS valid_to,
-    LEAD(instruction_uniq_id, 1) OVER (PARTITION BY token_account ORDER BY instruction_uniq_id ASC) AS valid_to_instruction_uniq_id,
+    block_slot as valid_from_block_slot,
+    tx_index as valid_from_tx_index,
+    outer_instruction_index as valid_from_outer_index,
+    inner_instruction_index as valid_from_inner_index,
+
+    -- Calculate end time, slot, and indices using granular LEAD
+    LEAD(event_time, 1) OVER (PARTITION BY token_account ORDER BY event_time, block_slot, tx_index, outer_instruction_index, inner_instruction_index ASC) AS valid_to,
+    LEAD(block_slot, 1) OVER (PARTITION BY token_account ORDER BY event_time, block_slot, tx_index, outer_instruction_index, inner_instruction_index ASC) AS valid_to_block_slot,
+    LEAD(tx_index, 1) OVER (PARTITION BY token_account ORDER BY event_time, block_slot, tx_index, outer_instruction_index, inner_instruction_index ASC) AS valid_to_tx_index,
+    LEAD(outer_instruction_index, 1) OVER (PARTITION BY token_account ORDER BY event_time, block_slot, tx_index, outer_instruction_index, inner_instruction_index ASC) AS valid_to_outer_index,
+    LEAD(inner_instruction_index, 1) OVER (PARTITION BY token_account ORDER BY event_time, block_slot, tx_index, outer_instruction_index, inner_instruction_index ASC) AS valid_to_inner_index,
+    
     block_month,
     event_type,
     token_account_prefix
@@ -39,18 +47,25 @@ WITH combined_events AS (
 SELECT
   token_account,
   account_owner as token_balance_owner,
-
   CASE
     WHEN event_type = 'owner_change' THEN last_non_null_account_mint
     ELSE account_mint
   END AS token_mint_address,
-  
   event_type,
+  
+  -- Select start time, slot and indices
   valid_from,
-  -- constructing a valid_to in the future to avoid nulls to handle joins
-  COALESCE(valid_to, TIMESTAMP '9999-12-31 23:59:59') AS valid_to, 
-  valid_from_instruction_uniq_id,
-  -- constructing a valid_to_instruction_uniq_id in the future to avoid nulls to handle joins
-  COALESCE(valid_to_instruction_uniq_id, '999999999-999999-9999-9999') AS valid_to_instruction_uniq_id,
+  valid_from_block_slot,
+  valid_from_tx_index,
+  valid_from_outer_index,
+  valid_from_inner_index,
+  
+  -- Constructing a valid_to in the future to avoid nulls to handle joins
+  -- Note: The corresponding slot/indices will be null for the last event, which is expected.
+  COALESCE(valid_to, TIMESTAMP '9999-12-31 23:59:59') AS valid_to,
+  valid_to_block_slot,
+  valid_to_tx_index, 
+  valid_to_outer_index,
+  valid_to_inner_index,
   token_account_prefix
 FROM combined_events
