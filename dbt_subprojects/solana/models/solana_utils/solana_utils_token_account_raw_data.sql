@@ -2,11 +2,11 @@
   config (
     schema='solana_utils',
     alias='token_account_raw_data',
-    partition_by=['block_date'],
+    partition_by=['token_account_prefix'],
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
-    unique_key=['block_date', 'block_slot', 'tx_index', 'inner_instruction_index', 'outer_instruction_index', 'token_account'],
+    unique_key=['token_account_prefix', 'block_date', 'block_slot', 'tx_index', 'inner_instruction_index', 'outer_instruction_index', 'token_account'],
     incremental_predicates=[incremental_predicate('DBT_INTERNAL_DEST.block_time')]
   )
 }}
