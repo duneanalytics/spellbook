@@ -92,7 +92,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.contract_address = meta_router.token_bought_address
     AND p_bought.blockchain = 'ethereum'
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc('day', now() - INTERVAL '7' DAY)
+    AND {{incremental_predicate('p_bought.minute')}}
     {% else %}
     AND p_bought.minute >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
@@ -101,7 +101,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.contract_address = meta_router.token_sold_address
     AND p_sold.blockchain = 'ethereum'
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc('day', now() - INTERVAL '7' DAY)
+    AND {{incremental_predicate('p_sold.minute')}}
     {% else %}
     AND p_sold.minute >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
@@ -110,7 +110,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_eth
     AND p_eth.blockchain IS NULL
     AND p_eth.symbol = 'ETH'
     {% if is_incremental() %}
-    AND p_eth.minute >= date_trunc('day', now() - INTERVAL '7' DAY)
+    AND {{incremental_predicate('p_eth.minute')}}
     {% else %}
     AND p_eth.minute >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
