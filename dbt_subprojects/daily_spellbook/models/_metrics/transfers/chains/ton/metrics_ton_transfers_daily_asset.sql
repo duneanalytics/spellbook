@@ -8,7 +8,7 @@
 SELECT 
   blockchain
   , block_date
-  , contract_address
+  , cast(contract_address as varbinary) as contract_address
   , symbol
   , net_transfer_amount_usd
 FROM {{ ref('tokens_ton_net_transfers_daily_asset') }}
