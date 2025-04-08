@@ -40,7 +40,7 @@ WITH meta_router AS
             dstToken not in (0x7d3eedb40fbecd9fba383504e066fdf67382a835 --bug with MTK token
                         ,0x2C29c2Bbdcb8c5de36FA3dBe0e7797B5396B0E61) --bug with MyToken token
             {% if is_incremental() %}
-            AND evt_block_time >= date_trunc('day', now() - INTERVAL '7' DAY)
+            AND {{incremental_predicate('evt_block_time')}}
             {% endif %}
 )
 SELECT
@@ -80,7 +80,7 @@ FROM meta_router
 INNER JOIN {{ source('arbitrum', 'transactions')}} tx
     ON meta_router.tx_hash = tx.hash
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - INTERVAL '7' DAY)
+    AND {{incremental_predicate('tx.block_time')}}
     {% else %}
     AND tx.block_time >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
