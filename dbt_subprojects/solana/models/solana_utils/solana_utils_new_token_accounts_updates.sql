@@ -27,6 +27,7 @@ WITH raw_events AS (
   WHERE {{ incremental_predicate('block_time') }}
   {% endif %}
 )
+{% if is_incremental() %}
 , latest_existing AS (
   -- Get most recent active row per token_account from the target table
   SELECT
@@ -44,6 +45,7 @@ WITH raw_events AS (
   WHERE valid_to = TIMESTAMP '9999-12-31 23:59:59' --only include rows that are still active
     AND token_account IN (SELECT DISTINCT token_account FROM raw_events) --only include rows that are in the raw_events
 )
+{% endif %}
 , combined AS (
   -- Union new raw events with the last known state for each token_account
   SELECT * FROM raw_events
