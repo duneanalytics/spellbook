@@ -1,0 +1,57 @@
+version: 2
+
+models:
+  - name: pumpswap_solana_pools
+    description: "PumpSwap pools on Solana"
+    columns:
+      - name: pool
+        description: "Pool address"
+        tests:
+          - not_null
+          - unique
+      - name: created_at
+        description: "Pool creation timestamp"
+      - name: created_slot
+        description: "Block slot of pool creation"
+      - name: creation_tx
+        description: "Transaction ID of pool creation"
+      - name: baseMint
+        description: "Base token mint address"
+      - name: quoteMint
+        description: "Quote token mint address"
+      - name: baseMintDecimals
+        description: "Decimals of base token"
+      - name: quoteMintDecimals
+        description: "Decimals of quote token"
+
+  - name: pumpswap_solana_base_trades
+    description: "PumpSwap base trades on Solana"
+    columns:
+      - name: blockchain
+        description: "Blockchain name (solana)"
+      - name: project
+        description: "Project name (pumpswap)"
+      - name: version
+        description: "Version of the protocol"
+      - name: block_time
+        description: "Timestamp of the block"
+      - name: block_slot
+        description: "Solana block slot"
+      - name: token_bought_amount_raw
+        description: "Raw amount of tokens bought"
+      - name: token_sold_amount_raw
+        description: "Raw amount of tokens sold"
+      - name: token_bought_mint_address
+        description: "Mint address of bought token"
+      - name: token_sold_vault
+        description: "Vault address of sold token"
+      - name: token_bought_vault
+        description: "Vault address of bought token"
+      - name: project_main_id
+        description: "Main program ID of Pumpswap"
+      - name: outer_instruction_index
+        description: "Index of outer instruction"
+      - name: inner_instruction_index
+        description: "Index of inner instruction" 
+
+  
