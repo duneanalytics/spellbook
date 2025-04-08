@@ -125,6 +125,7 @@ WITH evt_data_1 AS (
     SELECT 
         blockchain,
         block_time,
+        DATE(ED.block_time) AS block_date,
         block_number,
         ED.tx_hash,
         ED.index,
