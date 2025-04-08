@@ -165,3 +165,22 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
+
+  - name: swapr_v3_gnosis_base_trades
+    meta:
+      blockchain: gnosis
+      sector: dex
+      project: swapr
+      contributors: mlaegn
+    config:
+      tags: ["gnosis", "dex", "trades", "swapr", "v3"]
+    description: "Swapr V3 trades on Gnosis."
+    data_tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - tx_hash
+          - evt_index
+    - not_null:
+        column_name: fee
+    - check_dex_base_trades_seed:
+          seed_file: ref('swapr_gnosis_base_trades_seed')
