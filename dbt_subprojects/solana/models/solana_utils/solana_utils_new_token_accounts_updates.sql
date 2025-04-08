@@ -30,6 +30,7 @@ WITH raw_events AS (
 {% if is_incremental() %}
 , latest_existing AS (
   -- Get most recent active row per token_account from the target table
+  -- needed for window functions downstream, in case source incremental filter removes token_account
   SELECT
     valid_from AS block_time
     , block_slot
@@ -42,17 +43,43 @@ WITH raw_events AS (
     , token_balance_owner AS account_owner
     , token_mint_address AS account_mint
   FROM {{ this }}
-  WHERE valid_to = TIMESTAMP '9999-12-31 23:59:59' --only include rows that are still active
+  WHERE 
+    valid_to = TIMESTAMP '9999-12-31 23:59:59' --only include rows that are still active
     AND token_account IN (SELECT DISTINCT token_account FROM raw_events) --only include rows that are in the raw_events
 )
 {% endif %}
 , combined AS (
   -- Union new raw events with the last known state for each token_account
-  SELECT * FROM raw_events
+  SELECT *, 'source' as source_type FROM raw_events
   {% if is_incremental() %}
-  UNION
-  SELECT * FROM latest_existing
+  UNION ALL
+  SELECT *, 'target' as source_type FROM latest_existing
   {% endif %}
+)
+, deduplicated AS (
+  -- since account_mint is forward filled in target table, we need to deduplicate the events if exist in both source and target after union
+  SELECT 
+    token_account
+    , token_account_prefix
+    , event_type
+    , account_owner
+    , account_mint
+    , block_time
+    , block_slot
+    , tx_index
+    , inner_instruction_index
+    , outer_instruction_index
+  FROM (
+    SELECT *
+      , ROW_NUMBER() OVER (
+        PARTITION BY token_account, token_account_prefix, event_type, block_slot, tx_index, inner_instruction_index, outer_instruction_index
+        ORDER BY 
+          CASE WHEN source_type = 'source' THEN 1 ELSE 2 END, -- prefer source rows
+          CASE WHEN account_mint IS NULL THEN 1 ELSE 2 END -- prefer null account_mint from source
+      ) as rn
+    FROM combined
+  ) ranked
+  WHERE rn = 1
 )
 , windowed AS (
   -- Apply window functions
@@ -74,7 +101,7 @@ WITH raw_events AS (
     , tx_index
     , inner_instruction_index
     , outer_instruction_index
-  FROM combined
+  FROM deduplicated
 )
 , final AS (
   -- Final output with proper mint logic and closed intervals
