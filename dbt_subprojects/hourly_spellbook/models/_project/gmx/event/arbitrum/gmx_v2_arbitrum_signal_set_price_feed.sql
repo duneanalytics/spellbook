@@ -152,11 +152,11 @@ WITH evt_data_1 AS (
         event_name,
         msg_sender,
 
-        from_hex(ED.token) AS token,
-        from_hex(ED.price_feed) AS price_feed,
-        TRY_CAST(ED.price_feed_multiplier AS DOUBLE) / POWER(10, 30) AS price_feed_multiplier,
-        TRY_CAST(ED.price_feed_heartbeat_duration AS DOUBLE) AS price_feed_heartbeat_duration,
-        TRY_CAST(ED.stable_price AS DOUBLE) / POWER(10, 30 - ERC20.decimals) AS stable_price
+        from_hex(EDP.token) AS token,
+        from_hex(EDP.price_feed) AS price_feed,
+        TRY_CAST(EDP.price_feed_multiplier AS DOUBLE) / POWER(10, 30) AS price_feed_multiplier,
+        TRY_CAST(EDP.price_feed_heartbeat_duration AS DOUBLE) AS price_feed_heartbeat_duration,
+        TRY_CAST(EDP.stable_price AS DOUBLE) / POWER(10, 30 - ERC20.decimals) AS stable_price
 
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP

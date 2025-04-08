@@ -166,9 +166,9 @@ WITH evt_data_1 AS (
         event_name,
         msg_sender,
 
-        from_hex(ED.token) AS token,
-        TRY_CAST(ED.data_stream_multiplier AS DOUBLE) / POWER(10, 30) AS data_stream_multiplier,
-        from_hex(ED.feed_id) AS feed_id
+        from_hex(token) AS token,
+        TRY_CAST(data_stream_multiplier AS DOUBLE) / POWER(10, 30) AS data_stream_multiplier,
+        from_hex(feed_id) AS feed_id
 
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
