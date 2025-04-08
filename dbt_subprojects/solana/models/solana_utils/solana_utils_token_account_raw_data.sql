@@ -11,7 +11,7 @@
   )
 }}
 
-{% set start_time = '2024-04-01' %}
+{% set start_time = TIMESTAMP '2024-04-01' %}
 
 --Init events contain mint address, and owner address
 --Init v1
