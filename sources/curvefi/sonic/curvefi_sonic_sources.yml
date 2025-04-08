@@ -4,9 +4,9 @@ sources:
   - name: curvefi_sonic
     description: "decoded events and function calls for curve.fi on Sonic"
     tables:
-      - name: StableswapFactory_call_deploy_plain_pool
-      - name: StableswapFactory_evt_PlainPoolDeployed
-      - name: StableswapFactory_call_deploy_metapool
-      - name: StableswapFactory_evt_MetaPoolDeployed
-      - name: StableSwap_evt_TokenExchange
-      - name: StableSwap_evt_TokenExchangeUnderlying
+      - name: curvestableswapfactory_call_deploy_plain_pool
+      - name: curvestableswapfactory_evt_PlainPoolDeployed
+      - name: curvestableswapfactory_call_deploy_metapool
+      - name: curvestableswapfactory_evt_MetaPoolDeployed
+      - name: stableswap_evt_TokenExchange
+      - name: stableswap_evt_TokenExchangeUnderlying
