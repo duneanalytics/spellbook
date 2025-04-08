@@ -39,6 +39,7 @@
        , "zkevm"
        , "zksync"
        , "zora"
+       , "ink"
 ] %}
 
 {% set creation_traces_models = [] %}

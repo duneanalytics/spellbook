@@ -26,5 +26,5 @@ SELECT
   contract_address
 FROM {{ source('uniswap_v3_celo', 'UniswapV3Factory_evt_PoolCreated') }}
 {% if is_incremental() %}
-WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+WHERE {{incremental_predicate('evt_block_time')}}
 {% endif %}

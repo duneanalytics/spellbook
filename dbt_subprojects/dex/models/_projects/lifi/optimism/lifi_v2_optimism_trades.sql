@@ -47,7 +47,7 @@ dexs as (
             evt_index
         FROM {{ trade_tables }} p 
         {% if is_incremental() %}
-        WHERE p.evt_block_time >= date_trunc('day', now() - interval '7' Day)
+        WHERE {{incremental_predicate('p.evt_block_time')}}
         {% endif %}
         {% if not loop.last %}
         UNION ALL
@@ -80,5 +80,5 @@ inner join {{ source('optimism', 'transactions') }} tx
     and tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    and tx.block_time >= date_trunc('day', now() - interval '7' Day)
+    and {{incremental_predicate('tx.block_time')}}
     {% endif %}
