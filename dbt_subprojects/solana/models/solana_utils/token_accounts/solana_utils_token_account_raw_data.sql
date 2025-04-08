@@ -27,7 +27,6 @@ SELECT
 FROM {{ source('spl_token_solana', 'spl_token_call_initializeaccount') }}
 WHERE
   1=1
-  and account_account in ('6SvQBmUMrehEb2bLhTVTDM5vAMgK6bD1Zz2VfcbEEHVe', 'G1ohP78e19tP7EJvtNd77Sjs3JnmauWvph32M1oLrPxf', 'YgiU6QrKidVFS6PhwoeTeHZXiSc8Av2UykCk7umyddo', '6oJ2Y4qjZxUogHQsAaVamc6c9URAfxtGyDrnPU9DxcUx')
   {% if is_incremental() %}
   AND {{ incremental_predicate('call_block_time') }}
   {% endif %}
@@ -49,7 +48,6 @@ SELECT
 FROM {{ source('spl_token_solana', 'spl_token_call_initializeaccount2') }}
 WHERE
   1=1
-  and account_account in ('6SvQBmUMrehEb2bLhTVTDM5vAMgK6bD1Zz2VfcbEEHVe', 'G1ohP78e19tP7EJvtNd77Sjs3JnmauWvph32M1oLrPxf', 'YgiU6QrKidVFS6PhwoeTeHZXiSc8Av2UykCk7umyddo', '6oJ2Y4qjZxUogHQsAaVamc6c9URAfxtGyDrnPU9DxcUx')
   {% if is_incremental() %}
   AND {{ incremental_predicate('call_block_time') }}
   {% endif %}
@@ -71,7 +69,6 @@ SELECT
 FROM {{ source('spl_token_solana', 'spl_token_call_initializeaccount3') }}
 WHERE
   1=1
-  and account_account in ('6SvQBmUMrehEb2bLhTVTDM5vAMgK6bD1Zz2VfcbEEHVe', 'G1ohP78e19tP7EJvtNd77Sjs3JnmauWvph32M1oLrPxf', 'YgiU6QrKidVFS6PhwoeTeHZXiSc8Av2UykCk7umyddo', '6oJ2Y4qjZxUogHQsAaVamc6c9URAfxtGyDrnPU9DxcUx')
   {% if is_incremental() %}
   AND {{ incremental_predicate('call_block_time') }}
   {% endif %}
@@ -95,7 +92,6 @@ FROM {{ source('spl_token_solana', 'spl_token_call_setauthority') }}
 WHERE
   json_extract_scalar(authorityType, '$.AuthorityType') = 'AccountOwner'
   AND 1=1
-  and account_owned in ('6SvQBmUMrehEb2bLhTVTDM5vAMgK6bD1Zz2VfcbEEHVe', 'G1ohP78e19tP7EJvtNd77Sjs3JnmauWvph32M1oLrPxf', 'YgiU6QrKidVFS6PhwoeTeHZXiSc8Av2UykCk7umyddo', '6oJ2Y4qjZxUogHQsAaVamc6c9URAfxtGyDrnPU9DxcUx')
   {% if is_incremental() %}
   AND {{ incremental_predicate('call_block_time') }}
   {% endif %}
@@ -117,7 +113,6 @@ SELECT
 FROM {{ source('spl_token_solana', 'spl_token_call_closeaccount') }}
 WHERE 
   1=1
-  and account_account in ('6SvQBmUMrehEb2bLhTVTDM5vAMgK6bD1Zz2VfcbEEHVe', 'G1ohP78e19tP7EJvtNd77Sjs3JnmauWvph32M1oLrPxf', 'YgiU6QrKidVFS6PhwoeTeHZXiSc8Av2UykCk7umyddo', '6oJ2Y4qjZxUogHQsAaVamc6c9URAfxtGyDrnPU9DxcUx')
   {% if is_incremental() %}
   AND {{ incremental_predicate('call_block_time') }}
   {% endif %}
