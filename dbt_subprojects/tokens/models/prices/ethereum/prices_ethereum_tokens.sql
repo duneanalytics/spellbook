@@ -77,6 +77,7 @@ FROM
     ('cel-celsius', 'ethereum', 'CEL', 0xaaaebe6fe48e54f431b0c390cfaf0b017d09d42d, 4),
     ('celr-celer-network', 'ethereum', 'CELR', 0x4f9254c83eb525f9fcf346490bbb3ed28a81c667, 18),
     ('cennz-centrality', 'ethereum', 'CENNZ', 0x1122b6a0e00dce0563082b6e2953f3a943855c1f, 18),
+    ('cfgi-cfgi', 'ethereum', 'CFGI', 0xF75302720787c2a2176C87b1919059c4eAAc8B98, 18),
     ('chr-chromia', 'ethereum', 'CHR', 0x915044526758533dfb918eceb6e44bc21632060d, 6),
     ('chsb-swissborg', 'ethereum', 'CHSB', 0xba9d4199fab4f26efe3551d490e3821486f135ba, 8),
     ('chz-chiliz', 'ethereum', 'CHZ', 0x3506424f91fd33084466f402d5d97f05f8e3b4af, 18),
