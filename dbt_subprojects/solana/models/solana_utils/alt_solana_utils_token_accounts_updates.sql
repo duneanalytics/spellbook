@@ -1,5 +1,6 @@
 {{
   config(
+    tags=['prod_exclude'],
     schema='solana_utils',
     alias='alt_token_accounts_updates',
     materialized='table',
@@ -31,7 +32,7 @@ WITH combined_events AS (
     block_month,
     event_type,
     token_account_prefix
-  FROM {{ ref('alt_solana_utils_token_account_raw_data') }}
+  FROM {{ ref('solana_utils_token_account_raw_data') }}
 )
 
 -- Final selection from the combined CTE

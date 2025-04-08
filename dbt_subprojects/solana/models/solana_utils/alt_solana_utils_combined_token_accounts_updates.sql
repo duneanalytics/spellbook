@@ -1,5 +1,6 @@
 {{
   config(
+    tags=['prod_exclude'],
     schema='solana_utils',
     alias='alt_solana_utils_combined_token_accounts_updates',
     materialized='table',

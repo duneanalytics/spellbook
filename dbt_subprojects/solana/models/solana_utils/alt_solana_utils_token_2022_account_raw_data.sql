@@ -1,5 +1,6 @@
 {{
   config(
+    tags=['prod_exclude'],
     schema='solana_utils',
     alias='alt_token_2022_account_raw_data',
     materialized='incremental',
