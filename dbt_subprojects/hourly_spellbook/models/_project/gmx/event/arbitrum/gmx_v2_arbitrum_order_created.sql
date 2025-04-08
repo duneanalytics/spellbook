@@ -163,6 +163,7 @@ WITH evt_data_1 AS (
         MAX(CASE WHEN key_name = 'uiFeeReceiver' THEN value END) AS ui_fee_receiver,
         MAX(CASE WHEN key_name = 'market' THEN value END) AS market,  
         MAX(CASE WHEN key_name = 'initialCollateralToken' THEN value END) AS initial_collateral_token,
+        MAX(CASE WHEN key_name = 'cancellationReceiver' THEN value END) AS cancellation_receiver,
 
         MAX(CASE WHEN key_name = 'swapPath' THEN value END) AS swap_path,  
         MAX(CASE WHEN key_name = 'orderType' THEN value END) AS order_type,
@@ -183,7 +184,9 @@ WITH evt_data_1 AS (
         MAX(CASE WHEN key_name = 'shouldUnwrapNativeToken' THEN value END) AS should_unwrap_native_token,
         MAX(CASE WHEN key_name = 'autoCancel' THEN value END) AS auto_cancel,
     
-        MAX(CASE WHEN key_name = 'key' THEN value END) AS key
+        MAX(CASE WHEN key_name = 'key' THEN value END) AS key,
+        MAX(CASE WHEN key_name = 'dataList' THEN value END) AS data_list
+
     FROM
         combined
     GROUP BY tx_hash, index
@@ -207,6 +210,7 @@ WITH evt_data_1 AS (
         from_hex(ui_fee_receiver) AS ui_fee_receiver,
         from_hex(market) AS market,
         from_hex(initial_collateral_token) AS initial_collateral_token,
+        from_hex(cancellation_receiver) AS cancellation_receiver,
         
         swap_path,
         TRY_CAST(order_type AS INTEGER) AS order_type,
@@ -224,7 +228,8 @@ WITH evt_data_1 AS (
         TRY_CAST(is_long AS BOOLEAN) AS is_long,
         TRY_CAST(should_unwrap_native_token AS BOOLEAN) AS should_unwrap_native_token,
         TRY_CAST(auto_cancel AS BOOLEAN) AS auto_cancel,
-        from_hex(key) AS key
+        from_hex(key) AS key,
+        data_list
         
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
@@ -251,6 +256,7 @@ WITH evt_data_1 AS (
         ui_fee_receiver,
         ED.market,
         ED.initial_collateral_token,
+        cancellation_receiver,
         swap_path,
         
         CASE 
@@ -301,7 +307,8 @@ WITH evt_data_1 AS (
             WHEN auto_cancel IS NULL THEN false
             ELSE auto_cancel
         END AS auto_cancel,
-        key
+        key,
+        data_list
 
     FROM event_data AS ED
     LEFT JOIN {{ ref('gmx_v2_arbitrum_markets_data') }} AS MD
