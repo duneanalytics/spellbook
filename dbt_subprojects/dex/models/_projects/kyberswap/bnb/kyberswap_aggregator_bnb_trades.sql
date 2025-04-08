@@ -37,7 +37,7 @@ WITH meta_router AS
         FROM
             {{ source('kyber_bnb', 'MetaAggregationRouterV2_evt_Swapped') }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - INTERVAL '7' DAY)
+        WHERE {{incremental_predicate('evt_block_time')}}
         {% endif %}
 )
 SELECT
@@ -77,7 +77,7 @@ FROM meta_router
 INNER JOIN {{ source('bnb', 'transactions')}} tx
     ON meta_router.tx_hash = tx.hash
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - INTERVAL '7' DAY)
+    AND {{incremental_predicate('tx.block_time')}}
     {% else %}
     AND tx.block_time >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
