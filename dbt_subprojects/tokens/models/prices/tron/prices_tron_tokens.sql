@@ -20,7 +20,7 @@ FROM
     VALUES
     ('trx-tron', 'WTRX', 'TNUC9Qb1rRpS5CbWLmNMxXBjyFoydXjWFR', 6)
     , ('usdt-tether', 'USDT', 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t', 6)
-    , ('weth-weth', 'ETHB', 'TRFe3hT5oYhjSZ6f3ji5FJ7YCfrkWnHRvh', 18)
+    , ('weth-weth', 'ETH', 'TRFe3hT5oYhjSZ6f3ji5FJ7YCfrkWnHRvh', 18)
     , ('usdc-usdc', 'USDCOLD', 'TEkxiTehnzSmSe2XqrBj4w32RUN966rdz8', 6)
     , ('doge-dogecoin', 'DOGE', 'THbVQp8kMjStKNnf2iCY6NEzThKMK5aBHg', 8)
     , ('weth-weth', 'WETH', 'TXWkP3jLBqRGojUih1ShzNyDaN5Csnebok', 18)

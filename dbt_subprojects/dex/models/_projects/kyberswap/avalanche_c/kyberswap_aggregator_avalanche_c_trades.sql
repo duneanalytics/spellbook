@@ -40,7 +40,7 @@ WITH meta_router AS
         -- There are 2 weird transactions with this token where the return and spent amounts in the event are not correct
         -- these result in inflated volume, so we'll ignore this token in any trades.
         {% if is_incremental() %}
-        AND evt_block_time >= date_trunc('day', now() - INTERVAL '7' DAY)
+        AND {{incremental_predicate('evt_block_time')}}
         {% endif %}
 )
 SELECT
@@ -80,7 +80,7 @@ FROM meta_router
 INNER JOIN {{ source('avalanche_c', 'transactions')}} tx
     ON meta_router.tx_hash = tx.hash
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - INTERVAL '7' DAY)
+    AND {{incremental_predicate('tx.block_time')}}
     {% else %}
     AND tx.block_time >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
