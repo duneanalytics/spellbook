@@ -25,6 +25,8 @@ WITH raw_events AS (
   FROM {{ ref('solana_utils_token_account_raw_data') }}
   {% if is_incremental() %}
   WHERE {{ incremental_predicate('block_time') }}
+  {% else %}
+  WHERE block_time >= TIMESTAMP '2025-01-01'
   {% endif %}
 )
 {% if is_incremental() %}
