@@ -171,13 +171,13 @@ WITH evt_data_1 AS (
 -- full data 
 , full_data AS (
     SELECT 
-        blockchain,
+        ED.blockchain,
         block_time,
         DATE(block_time) AS block_date,
         block_number,
         tx_hash,
         index,
-        contract_address,
+        ED.contract_address,
         event_name,
         msg_sender,
 
