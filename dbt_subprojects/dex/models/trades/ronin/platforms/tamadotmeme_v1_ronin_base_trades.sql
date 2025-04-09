@@ -56,6 +56,10 @@ buy AS (
   LEFT JOIN ronin_price AS rp
     ON DATE_TRUNC('hour', bet.call_block_time) = rp.hour
   WHERE call_block_time >= TRY_CAST('2025-01-21 14:07' AS TIMESTAMP)
+    {% if is_incremental() %}
+    AND
+        {{ incremental_predicate('bet.call_block_time') }}
+    {% endif %}
   and call_tx_to!=0x9b0a1d03ea99a8b3cf9b7e73e0aa1b805ce45c54 -- edge case where the tx is both a buy and a sell and coincentally the same token has the same event indiex in respective table
   and call_success
 ),
@@ -97,15 +101,20 @@ sell AS (
   LEFT JOIN ronin_price AS rp
     ON DATE_TRUNC('hour', ste.call_block_time) = rp.hour
   WHERE call_block_time >= TRY_CAST('2025-01-21 14:07' AS TIMESTAMP)
+    {% if is_incremental() %}
+    AND
+        {{ incremental_predicate('ste.call_block_time') }}
+    {% endif %}
   and call_tx_to!=0x9b0a1d03ea99a8b3cf9b7e73e0aa1b805ce45c54 -- edge case where the tx is both a buy and a sell and coincentally the same token has the same event indiex in respective table
   and call_success
 )
 
-,combined as 
-(
-(SELECT * FROM buy where rn=1)
-UNION ALL
-(SELECT * FROM sell where rn=1)
+,combined as (
+
+        (SELECT * FROM buy where rn=1)
+        UNION ALL
+        (SELECT * FROM sell where rn=1)
+
 )
 select
   cast (blockchain as varchar) as blockchain
@@ -115,21 +124,21 @@ select
 , cast (block_date as date) as block_date
 , cast (block_time as timestamp) as block_time
 , cast (block_number as uint256) as block_number
--- , cast (token_bought_symbol as varchar) as token_bought_symbol
--- , cast (token_sold_symbol as varchar) as token_sold_symbol
--- , cast (token_pair as varchar) as token_pair
--- , cast (token_bought_amount as double) as token_bought_amount
--- , cast (token_sold_amount as double) as token_sold_amount
+, cast (token_bought_symbol as varchar) as token_bought_symbol
+, cast (token_sold_symbol as varchar) as token_sold_symbol
+, cast (token_pair as varchar) as token_pair
+, cast (token_bought_amount as double) as token_bought_amount
+, cast (token_sold_amount as double) as token_sold_amount
 , cast (token_bought_amount_raw as uint256) as token_bought_amount_raw
 , cast (token_sold_amount_raw as uint256) as token_sold_amount_raw
--- , cast (amount_usd as double) as amount_usd
+, cast (amount_usd as double) as amount_usd
 , cast (token_bought_address as varbinary) as token_bought_address
 , cast (token_sold_address as varbinary) as token_sold_address
 , cast (taker as varbinary) as taker
 , cast (maker as varbinary) as maker
 , cast (project_contract_address as varbinary) as project_contract_address
 , cast (tx_hash as varbinary) as tx_hash
--- , cast (tx_from as varbinary) as tx_from
--- , cast (tx_to as varbinary) as tx_to
+, cast (tx_from as varbinary) as tx_from
+, cast (tx_to as varbinary) as tx_to
 , cast (evt_index as uint256) as evt_index
-from combined 
+from combined
