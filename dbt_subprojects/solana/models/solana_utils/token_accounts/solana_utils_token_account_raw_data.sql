@@ -5,8 +5,8 @@
     partition_by=['token_account_prefix'],
     materialized='incremental',
     file_format='delta',
-    incremental_strategy='merge',
-    unique_key=['token_account_prefix', 'token_account', 'event_type', 'block_time', 'block_slot', 'tx_index', 'inner_instruction_index', 'outer_instruction_index']
+    incremental_strategy='delete+insert',
+    unique_key=['token_account_prefix', 'token_account', 'block_time', 'block_slot', 'tx_index', 'inner_instruction_index', 'outer_instruction_index']
   )
 }}
 
