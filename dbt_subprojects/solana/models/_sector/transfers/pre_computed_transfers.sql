@@ -24,7 +24,7 @@ SELECT
     , call_tx_signer as tx_signer
     , call_tx_id as tx_id
     , call_outer_instruction_index as outer_instruction_index
-    , inner_instruction_index
+    , call_inner_instruction_index as inner_instruction_index
     , call_outer_executing_account as outer_executing_account
 FROM
     {{ source('spl_token_solana', 'spl_token_call_transfer') }} 
