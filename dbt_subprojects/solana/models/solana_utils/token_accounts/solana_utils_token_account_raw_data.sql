@@ -6,8 +6,7 @@
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
-    unique_key=['token_account_prefix', 'token_account', 'event_type', 'block_time', 'block_slot', 'tx_index', 'inner_instruction_index', 'outer_instruction_index'],
-    incremental_predicates=[incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    unique_key=['token_account_prefix', 'token_account', 'event_type', 'block_time', 'block_slot', 'tx_index', 'inner_instruction_index', 'outer_instruction_index']
   )
 }}
 
