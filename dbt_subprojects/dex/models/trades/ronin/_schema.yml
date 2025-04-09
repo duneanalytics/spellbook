@@ -45,3 +45,20 @@ models:
           seed_file: ref('katana_ronin_base_trades_seed')
           filter:
             version: 3
+            
+  - name: tamadotmeme_v1_ronin_base_trades
+    meta:
+      blockchain: ronin
+      sector: dex
+      project: tamadotmeme
+      contributors: 0xsandeshk
+    config:
+      tags: ["ronin", "dex", "trades", "tamadotmeme"]
+    description: "tamadotmeme ronin base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('tamadotmeme_ronin_base_trades_seed')
