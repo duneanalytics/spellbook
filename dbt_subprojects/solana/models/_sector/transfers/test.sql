@@ -28,7 +28,7 @@ WITH base AS (
         {{ source('spl_token_solana', 'spl_token_call_transfer') }} 
     WHERE
         1=1
-        and call_block_time > timestamp('2025-04-08')
+        and call_block_time > TIMESTAMP '2025-04-08'
 )
 
 SELECT
