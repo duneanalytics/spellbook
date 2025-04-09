@@ -33,7 +33,7 @@ buy AS (
     bet.call_block_number AS block_number,
     tc.symbol AS token_bought_symbol, -- Readable token symbol from creation event.
     'WRON' AS token_sold_symbol,       -- WRON represents the wrapped RONIN token.
-    concat(token_bought_symbol, '-', token_sold_symbol) AS token_pair,
+    concat(tc.symbol, '-', 'WRON' ) AS token_pair,
     cast(bet.output_amountOut as double) / POWER(10, 18) AS token_bought_amount,
     cast(bet.amountIn as double) / POWER(10, 18) AS token_sold_amount,
     cast(bet.output_amountOut as double) AS token_bought_amount_raw,
@@ -78,7 +78,7 @@ sell AS (
     ste.call_block_number AS block_number,
     'WRON' AS token_bought_symbol,
     tc.symbol AS token_sold_symbol,   -- Readable token symbol from creation event.
-    concat(token_bought_symbol, '-', token_sold_symbol) AS token_pair,
+    concat('WRON' , '-', tc.symbol) AS token_pair,
     cast(ste.output_amountOut as double) / POWER(10, 18) AS token_bought_amount,
     cast(ste.amountIn as double) / POWER(10, 18) AS token_sold_amount,
     cast(ste.output_amountOut as double) AS token_bought_amount_raw,
@@ -118,14 +118,8 @@ sell AS (
         UNION ALL
         (SELECT * FROM sell where rn=1)
 
-=======
-,combined as 
-(
-(SELECT * FROM buy where rn=1)
-UNION ALL
-(SELECT * FROM sell where rn=1)
->>>>>>> parent of a3808cabc (added incremental code)
 )
+
 -- Select and cast the final output:
 -- This SELECT statement casts the columns to the appropriate data types for the final model.
 select
