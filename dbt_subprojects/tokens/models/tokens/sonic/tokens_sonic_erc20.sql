@@ -93,4 +93,5 @@ FROM (VALUES
     , (0x46eb02b9f47634c4fab3110cc7adc1c6311dfac1, 'PT-wOS-29MAY2025', 18)
     , (0x420df605d062f8611efb3f203bf258159b8fffde, 'PT-stS-29MAY2025', 18)
     , (0xa2161e75edf50d70544e6588788a5732a3105c00, 'PT-wstkscETH-29MAY2025', 18)
+    , (0x871A101Dcf22fE4fE37be7B654098c801CBA1c88, 'beS', 18)
 ) as temp (contract_address, symbol, decimals)
