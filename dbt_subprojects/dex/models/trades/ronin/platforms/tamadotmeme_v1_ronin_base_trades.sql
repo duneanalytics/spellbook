@@ -4,8 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['tx_hash', 'evt_index'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    unique_key = ['tx_hash', 'evt_index']
 ) }}
 
 -- Retrieve hourly Ronin prices for the WRON token.
@@ -18,10 +17,9 @@ WITH ronin_price AS (
 ),
 
 -- Process "buy" transactions:
--- - Normalizes token amounts (dividing by 10^18).
--- - Joins on token creation events to get a readable token symbol.
--- - Computes the USD value using the hourly Ronin price.
--- - Filters out events before the Tama Trade protocol launch.
+-- This CTE identifies and transforms "buy" transactions from the tamadotmeme protocol on Ronin.
+-- It normalizes token amounts, joins on token creation events to get a readable token symbol,
+-- computes the USD value using the hourly Ronin price, and applies a protocol launch filter.
 buy AS (
   SELECT
     'ronin' AS blockchain,
@@ -33,7 +31,7 @@ buy AS (
     bet.call_block_number AS block_number,
     tc.symbol AS token_bought_symbol, -- Readable token symbol from creation event.
     'WRON' AS token_sold_symbol,       -- WRON represents the wrapped RONIN token.
-    concat(tc.symbol, '-', 'WRON') AS token_pair,
+    concat(token_bought_symbol, '-', token_sold_symbol) AS token_pair,
     cast(bet.output_amountOut as double) / POWER(10, 18) AS token_bought_amount,
     cast(bet.amountIn as double) / POWER(10, 18) AS token_sold_amount,
     cast(bet.output_amountOut as double) AS token_bought_amount_raw,
@@ -65,8 +63,8 @@ buy AS (
 ),
 
 -- Process "sell" transactions:
--- Similar to the "buy" section, this CTE normalizes amounts, adds token symbol info,
--- computes USD value, and applies the same protocol launch filter.
+-- This CTE identifies and transforms "sell" transactions from the tamadotmeme protocol on Ronin.
+-- It mirrors the "buy" CTE, but extracts data from the "sell" transaction events.
 sell AS (
   SELECT
     'ronin' AS blockchain,
@@ -78,7 +76,7 @@ sell AS (
     ste.call_block_number AS block_number,
     'WRON' AS token_bought_symbol,
     tc.symbol AS token_sold_symbol,   -- Readable token symbol from creation event.
-    concat(tc.symbol, '-', 'WRON') AS token_pair,
+    concat(token_bought_symbol, '-', token_sold_symbol) AS token_pair,
     cast(ste.output_amountOut as double) / POWER(10, 18) AS token_bought_amount,
     cast(ste.amountIn as double) / POWER(10, 18) AS token_sold_amount,
     cast(ste.output_amountOut as double) AS token_bought_amount_raw,
@@ -109,6 +107,8 @@ sell AS (
   and call_success
 )
 
+-- Combine buy and sell transactions:
+-- This CTE combines the results from the "buy" and "sell" CTEs into a single dataset.
 ,combined as (
 
         (SELECT * FROM buy where rn=1)
@@ -116,6 +116,8 @@ sell AS (
         (SELECT * FROM sell where rn=1)
 
 )
+-- Select and cast the final output:
+-- This SELECT statement casts the columns to the appropriate data types for the final model.
 select
   cast (blockchain as varchar) as blockchain
 , cast (project as varchar) as project
