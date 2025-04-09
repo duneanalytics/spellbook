@@ -21,8 +21,7 @@ WITH ronin_price AS (
 -- It normalizes token amounts, joins on token creation events to get a readable token symbol,
 -- computes the USD value using the hourly Ronin price, and applies a protocol launch filter.
 
--- While we could use the simple marcos table for trade pairs, some of the tokens might not have data, so we instead use contracts data which is more complete
-
+-- While we could use the simple marcos table for trade pairs, some of the tokens might not have data, so we instead use contracts data 
 buy AS (
   SELECT
     'ronin' AS blockchain,
@@ -119,6 +118,13 @@ sell AS (
         UNION ALL
         (SELECT * FROM sell where rn=1)
 
+=======
+,combined as 
+(
+(SELECT * FROM buy where rn=1)
+UNION ALL
+(SELECT * FROM sell where rn=1)
+>>>>>>> parent of a3808cabc (added incremental code)
 )
 -- Select and cast the final output:
 -- This SELECT statement casts the columns to the appropriate data types for the final model.
