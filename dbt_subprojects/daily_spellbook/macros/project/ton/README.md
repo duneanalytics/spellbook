@@ -52,6 +52,10 @@ Loads a reference cell from the current cursor position. Doesn't accept any para
 
 Reads a bit from the current cursor position and if it is 1, loads a reference cell from the current cursor position. Otherwise, returns null.
 
+## ton_skip_maybe_ref
+
+Does the same as ``ton_load_maybe_ref`` but doesn't load the reference cell. Useful when you have multiple maybe ref in a row.
+
 ## ton_restart_parse
 
 This macro is used to restart parsing from the beginning of the bag of cells. It doesn't accept any parameters. It is useful when 
