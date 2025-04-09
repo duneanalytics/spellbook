@@ -125,6 +125,7 @@ FROM
     ('edo-eidoo', 'ethereum', 'EDO', 0xced4e93198734ddaff8492d525bd258d49eb388e, 18),
     ('elf-aelf', 'ethereum', 'ELF', 0xbf2179859fc6d5bee9bf9158632dc51678a4100e, 18),
     ('elon-dogelon-mars', 'ethereum', 'ELON', 0x761d38e5ddf6ccf6cf7c55759d5210750b5d60f3, 18),
+    ('elx-elixir', 'ethereum', 'ELX', 0x89a8c847f41c0dfa6c8b88638bacca8a0b777da7, 18),
     ('eng-enigma', 'ethereum', 'ENG', 0xf0ee6b27b759c9893ce4f094b49ad28fd15a23e4, 8),
     ('enj-enjin-coin', 'ethereum', 'ENJ', 0xf629cbd94d3791c9250152bd8dfbdf380e2a3b9c, 18),
     ('ens-ethereum-name-service', 'ethereum', 'ENS', 0xc18360217d8f7ab5e7c516566761ea12ce7f9d72, 18),
