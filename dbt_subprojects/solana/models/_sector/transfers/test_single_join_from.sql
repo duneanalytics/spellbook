@@ -1,9 +1,9 @@
 {{
   config(
-    schema='tokens_solana', 
-    alias='transfers_test_single_join_from', -- New alias
+    schema='tokens_solana',
+    alias='transfers_test_single_join_from',
     materialized='table',
-    partition_by = ['block_month']
+    partition_by=['block_month']
   )
 }}
 
