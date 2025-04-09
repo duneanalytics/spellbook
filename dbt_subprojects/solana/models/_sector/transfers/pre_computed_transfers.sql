@@ -24,11 +24,10 @@ SELECT
     , call_tx_signer as tx_signer
     , call_tx_id as tx_id
     , call_outer_instruction_index as outer_instruction_index
-    , COALESCE(call_inner_instruction_index,0) as inner_instruction_index
+    , inner_instruction_index
     , call_outer_executing_account as outer_executing_account
 FROM
     {{ source('spl_token_solana', 'spl_token_call_transfer') }} 
 WHERE
     1=1
-    
-    and call_block_time > TIMESTAMP '2025-01-01' 
+    and call_block_time > TIMESTAMP '2025-04-01' 
