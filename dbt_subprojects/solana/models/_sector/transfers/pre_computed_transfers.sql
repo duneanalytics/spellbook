@@ -3,7 +3,7 @@
     schema='tokens_solana', 
     alias='pre_computed_transfers', 
     materialized='table',
-    partition_by = ['block_year', 'token_account_prefix']
+    partition_by = ['block_year', 'from_token_account_prefix']
   )
 }}
 
