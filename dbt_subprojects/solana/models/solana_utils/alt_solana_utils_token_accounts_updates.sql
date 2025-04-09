@@ -9,7 +9,7 @@
 
 
 -- Combine state calculation and interval determination in one CTE
-WITH combined_events AS (
+WITH combined_events AS ( 
   SELECT
     token_account,
     account_owner,
