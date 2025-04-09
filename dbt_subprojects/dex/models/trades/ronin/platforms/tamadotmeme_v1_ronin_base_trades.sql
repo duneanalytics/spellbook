@@ -115,21 +115,21 @@ select
 , cast (block_date as date) as block_date
 , cast (block_time as timestamp) as block_time
 , cast (block_number as uint256) as block_number
-, cast (token_bought_symbol as varchar) as token_bought_symbol
-, cast (token_sold_symbol as varchar) as token_sold_symbol
-, cast (token_pair as varchar) as token_pair
-, cast (token_bought_amount as double) as token_bought_amount
-, cast (token_sold_amount as double) as token_sold_amount
+-- , cast (token_bought_symbol as varchar) as token_bought_symbol
+-- , cast (token_sold_symbol as varchar) as token_sold_symbol
+-- , cast (token_pair as varchar) as token_pair
+-- , cast (token_bought_amount as double) as token_bought_amount
+-- , cast (token_sold_amount as double) as token_sold_amount
 , cast (token_bought_amount_raw as uint256) as token_bought_amount_raw
 , cast (token_sold_amount_raw as uint256) as token_sold_amount_raw
-, cast (amount_usd as double) as amount_usd
+-- , cast (amount_usd as double) as amount_usd
 , cast (token_bought_address as varbinary) as token_bought_address
 , cast (token_sold_address as varbinary) as token_sold_address
 , cast (taker as varbinary) as taker
 , cast (maker as varbinary) as maker
 , cast (project_contract_address as varbinary) as project_contract_address
 , cast (tx_hash as varbinary) as tx_hash
-, cast (tx_from as varbinary) as tx_from
-, cast (tx_to as varbinary) as tx_to
+-- , cast (tx_from as varbinary) as tx_from
+-- , cast (tx_to as varbinary) as tx_to
 , cast (evt_index as uint256) as evt_index
 from combined 
