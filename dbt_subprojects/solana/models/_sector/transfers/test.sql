@@ -25,7 +25,7 @@ SELECT
     , b.inner_instruction_index
     , b.outer_executing_account
     , COALESCE(tk_s.token_mint_address, tk_d.token_mint_address) as token_mint_address
-FROM {{ ref('int_transfers_base') }} b
+FROM {{ ref('pre_computed_transfers') }} b
 LEFT JOIN
     {{ ref('alt_solana_utils_token_accounts_updates') }} tk_s
     ON tk_s.token_account_prefix = b.from_token_account_prefix
