@@ -94,7 +94,7 @@ models:
         data_tests:
           - not_null
           - accepted_values:
-              values: ['MarketSwap','LimitSwap','MarketIncrease','LimitIncrease','MarketDecrease','LimitDecrease','StopLossDecrease','Liquidation']
+              values: ['MarketSwap','LimitSwap','MarketIncrease','LimitIncrease','MarketDecrease','LimitDecrease','StopLossDecrease','Liquidation','StopIncrease']
       - name: decrease_position_swap_type
         description: |
           The type of swap for decreasing position, with possible values:
