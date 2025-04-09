@@ -30,4 +30,4 @@ FROM
     {{ source('spl_token_solana', 'spl_token_call_transfer') }} 
 WHERE
     1=1
-    and call_block_time > TIMESTAMP '2025-04-01' 
+    and call_block_time > TIMESTAMP '2025-01-01' 
