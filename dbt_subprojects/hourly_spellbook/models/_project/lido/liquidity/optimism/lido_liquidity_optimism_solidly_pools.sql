@@ -1,88 +1,32 @@
 {{ config(
-    schema='lido_liquidity_ethereum',
+    schema='lido_liquidity_optimism',
     alias = 'solidly_pools',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['pool', 'time'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.time')],
-    post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
+    post_hook='{{ expose_spells(blockchains = \'["optimism"]\',
                                 spell_type = "project",
                                 spell_name = "lido_liquidity",
                                 contributors = \'["pipistrella"]\') }}'
     )
 }}
 
-{% set project_start_date = '2023-11-02' %}
+{% set project_start_date = '2024-01-30' %}
 
-with
-
-volumes as (
-select u.call_block_time as time,
-cast(output_0 as double) as steth, cast(_wstETHAmount as double) as wsteth
-from  {{source('lido_ethereum','WstETH_call_unwrap')}} u
-where call_success = TRUE
-union all
-select u.call_block_time, cast(_stETHAmount as double) as steth, cast(output_0 as double) as wsteth
-from  {{source('lido_ethereum','WstETH_call_wrap')}} u
-where call_success = TRUE
-)
-
-
-, wsteth_rate as (
-SELECT
-  day, rate as rate0, value_partition, first_value(rate) over (partition by value_partition order by day) as rate,
-  lead(day,1,date_trunc('day', now() + interval '1' day)) over(order by day) as next_day
-
-FROM (
-select day, rate,
-sum(case when rate is null then 0 else 1 end) over (order by day) as value_partition
-from (
-select  date_trunc('day', v.time) as day,
-       sum(cast(steth as double))/sum(cast(wsteth as double))  AS rate
-from  volumes v
-group by 1
-))
-
-)
-, steth_prices_daily AS (
-    SELECT distinct
-        DATE_TRUNC('day', minute) AS time,
-        avg(price) AS price
-    FROM {{source('prices','usd')}} p
-    {% if not is_incremental() %}
-    WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% else %}
-    WHERE {{ incremental_predicate('p.minute') }}
-    {% endif %}
-
-    and date_trunc('day', minute) < current_date
-    and blockchain = 'ethereum'
-    and contract_address = 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84
-    group by 1
-    union all
-    SELECT distinct
-        DATE_TRUNC('day', minute),
-        last_value(price) over (partition by DATE_TRUNC('day', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
-    FROM {{source('prices','usd')}}
-    WHERE date_trunc('day', minute) = current_date
-    and blockchain = 'ethereum'
-    and contract_address = 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84
-
-)
-
-  , pools AS (
+with pools AS (
     SELECT
       pool AS address,
-      'ethereum' AS blockchain,
+      'optimism' AS blockchain,
       'solidly' AS project,
       cast(fee as double) / CAST(10000 AS DOUBLE) AS fee,
       token0, token1
     FROM
-      {{source('solidly_ethereum','SolidlyV3Factory_evt_PoolCreated')}}
+      {{source('solidly_v3_optimism','solidlyv3factory_evt_poolcreated')}}
     WHERE
-      token0 = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
-      OR token1 = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
+      token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb
+      OR token1 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb
   )
 
 
@@ -92,14 +36,14 @@ group by 1
     FROM
       (
         SELECT token1 AS token
-        FROM {{source('solidly_ethereum','SolidlyV3Factory_evt_PoolCreated')}}
-        WHERE token0 = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
+        FROM {{source('solidly_v3_optimism','solidlyv3factory_evt_poolcreated')}}
+        WHERE token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb
         UNION
         SELECT token0
-        FROM {{source('solidly_ethereum','SolidlyV3Factory_evt_PoolCreated')}}
-        WHERE token1 = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
+        FROM {{source('solidly_v3_optimism','solidlyv3factory_evt_poolcreated')}}
+        WHERE token1 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb
         UNION
-        SELECT  0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
+        SELECT  0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb
       ) AS t
 
   )
@@ -120,7 +64,7 @@ group by 1
     WHERE {{ incremental_predicate('p.minute') }}
     {% endif %}
     AND DATE_TRUNC('day', minute) < current_date
-    AND blockchain = 'ethereum'
+    AND blockchain = 'optimism'
     AND contract_address IN (SELECT address  FROM tokens      )
     GROUP BY 1, 2,3,4
     UNION ALL
@@ -141,7 +85,7 @@ group by 1
       {{source('prices','usd')}}
     WHERE
       DATE_TRUNC('day', minute) = current_date
-      AND blockchain = 'ethereum'
+      AND blockchain = 'optimism'
       AND contract_address IN (SELECT address  FROM tokens      )
   ),
 
@@ -167,7 +111,7 @@ group by 1
         {% else %}
         WHERE {{ incremental_predicate('p.minute') }}
         {% endif %}
-        AND blockchain = 'ethereum'
+        AND blockchain = 'optimism'
         AND contract_address IN (SELECT address FROM tokens)
 
   )
@@ -181,8 +125,8 @@ group by 1
       SUM(CAST(amount0 AS DOUBLE)) AS amount0,
       SUM(CAST(amount1 AS DOUBLE)) AS amount1
     FROM
-      {{source('solidly_ethereum','SolidlyV3Pool_evt_Swap')}} AS sw
-      LEFT JOIN {{source('solidly_ethereum','SolidlyV3Factory_evt_PoolCreated')}} AS cr ON sw.contract_address = cr.pool
+      {{source('solidly_v3_optimism','solidlyv3pool_evt_swap')}} AS sw
+      LEFT JOIN {{source('solidly_v3_optimism','solidlyv3factory_evt_poolcreated')}} AS cr ON sw.contract_address = cr.pool
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
     {% else %}
@@ -201,8 +145,8 @@ group by 1
       SUM(CAST(amount0 AS DOUBLE)) AS amount0,
       SUM(CAST(amount1 AS DOUBLE)) AS amount1
     FROM
-      {{source('solidly_ethereum','SolidlyV3Pool_evt_Mint')}} AS mt
-      LEFT JOIN {{source('solidly_ethereum','SolidlyV3Factory_evt_PoolCreated')}} AS cr ON mt.contract_address = cr.pool
+      {{source('solidly_v3_optimism','solidlyv3pool_evt_mint')}} AS mt
+      LEFT JOIN {{source('solidly_v3_optimism','solidlyv3factory_evt_poolcreated')}} AS cr ON mt.contract_address = cr.pool
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', mt.evt_block_time) >= DATE '{{ project_start_date }}'
     {% else %}
@@ -223,8 +167,8 @@ group by 1
       (-1) * CAST(amount1 AS DOUBLE) AS amount1,
       c.evt_tx_hash
     FROM
-      {{source('solidly_ethereum','SolidlyV3Pool_evt_Burn')}} AS c
-      LEFT JOIN {{source('solidly_ethereum','SolidlyV3Factory_evt_PoolCreated')}} AS cr ON c.contract_address = cr.pool
+      {{source('solidly_v3_optimism','solidlyv3pool_evt_burn')}} AS c
+      LEFT JOIN {{source('solidly_v3_optimism','solidlyv3factory_evt_poolcreated')}} AS cr ON c.contract_address = cr.pool
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', c.evt_block_time) >= DATE '{{ project_start_date }}'
     {% else %}
@@ -252,8 +196,7 @@ group by 1
           token1,
           amount0,
           amount1
-        FROM
-          swap_events
+        FROM swap_events
         UNION ALL
         SELECT
           time,
@@ -262,8 +205,7 @@ group by 1
           token1,
           amount0,
           amount1
-        FROM
-          mint_events
+        FROM mint_events
       UNION ALL
         SELECT
           DATE_TRUNC('day', time),
@@ -272,19 +214,10 @@ group by 1
           token1,
           SUM(amount0),
           SUM(amount1)
-        FROM
-          burn_events
-        GROUP BY
-          1,
-          2,
-          3,
-          4
+        FROM burn_events
+        GROUP BY 1, 2, 3, 4
       ) AS balance
-    GROUP BY
-      1,
-      2,
-      3,
-      4
+    GROUP BY 1, 2, 3, 4
 
   )
 
@@ -309,7 +242,7 @@ group by 1
           COALESCE(SUM(CAST(ABS(amount0) AS DOUBLE)), 0) AS amount0,
           COALESCE(SUM(CAST(ABS(amount1) AS DOUBLE)), 0) AS amount1
         FROM
-          {{source('solidly_ethereum','SolidlyV3Pool_evt_Swap')}} AS sw
+          {{source('solidly_v3_optimism','solidlyv3pool_evt_swap')}} AS sw
           inner join pools on sw.contract_address = pools.address
 
         {% if not is_incremental() %}
@@ -344,35 +277,35 @@ group by 1
       pools.fee,
       cast(l.time as date) as time,
       CASE
-        WHEN l.token0 = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0  THEN l.token0
+        WHEN l.token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb  THEN l.token0
         ELSE l.token1
       END AS main_token,
       coalesce(CASE
-        WHEN l.token0 = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0  THEN p0.symbol
+        WHEN l.token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb  THEN p0.symbol
         ELSE p1.symbol
       END, 'wstETH') AS main_token_symbol,
       CASE
-        WHEN l.token0 = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0  THEN l.token1
+        WHEN l.token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb  THEN l.token1
         ELSE l.token0
       END AS paired_token,
       CASE
-        WHEN l.token0 = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0  THEN p1.symbol
+        WHEN l.token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb  THEN p1.symbol
         ELSE p0.symbol
       END AS paired_token_symbol,
       CASE
-        WHEN l.token0 = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0  THEN amount0 / CAST(POWER(10, coalesce(p0.decimals,18)) AS DOUBLE)
+        WHEN l.token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb  THEN amount0 / CAST(POWER(10, coalesce(p0.decimals,18)) AS DOUBLE)
         ELSE amount1 / CAST(POWER(10, coalesce(p1.decimals,18)) AS DOUBLE)
       END AS main_token_reserve,
       CASE
-        WHEN l.token0 = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0  THEN amount1 / CAST(POWER(10, p1.decimals) AS DOUBLE)
+        WHEN l.token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb  THEN amount1 / CAST(POWER(10, p1.decimals) AS DOUBLE)
         ELSE amount0 / CAST(POWER(10, p0.decimals) AS DOUBLE)
       END AS paired_token_reserve,
       CASE
-        WHEN l.token0 = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0  THEN COALESCE(p0.price, steth_prices_daily.price*r.rate)
-        ELSE COALESCE(p1.price, steth_prices_daily.price*r.rate)
+        WHEN l.token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb  THEN p0.price
+        ELSE p1.price
       END AS main_token_usd_price,
       CASE
-        WHEN l.token0 = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0  THEN p1.price
+        WHEN l.token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb  THEN p1.price
         ELSE p0.price
       END AS paired_token_usd_price,
       volume AS trading_volume
@@ -383,8 +316,6 @@ group by 1
       LEFT JOIN tokens AS t1 ON l.token1 = t1.address
       LEFT JOIN tokens_prices_daily AS p0 ON l.time = p0.time   AND l.token0 = p0.token
       LEFT JOIN tokens_prices_daily AS p1 ON l.time = p1.time   AND l.token1 = p1.token
-      LEFT JOIN  wsteth_rate r on l.time >= r.day and l.time < r.next_day
-      LEFT JOIN steth_prices_daily on steth_prices_daily.time = l.time
       LEFT JOIN trading_volume AS tv ON l.time = tv.time AND l.pool = tv.pool
   )
 SELECT blockchain||' '||project||' ' ||COALESCE(paired_token_symbol, 'unknown')||':'||main_token_symbol||' '||format('%,.3f',round(coalesce(fee,0),4)) AS pool_name,

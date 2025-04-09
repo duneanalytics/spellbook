@@ -45,6 +45,20 @@ sources:
       - name: V2Pool_evt_PoolAddLiquidity
       - name: V2Pool_evt_PoolRemoveLiquidity
     
+  - name: balancer_v2_base
+    description: "Base decoded tables related to Balancer v2 contract"
+    tables:
+      - name: weightedpoolfactory_call_create
+      - name: composablestablepoolfactory_call_create
+      - name: vault_evt_swap
+      - name: vault_evt_poolbalancechanged
+      - name: vault_evt_poolbalancemanaged
+
+  - name: gyroscope_base
+    description: "Base decoded tables related to Gyroscope Factory contract"
+    tables:
+      - name: gyroeclppoolfactory_call_create
+    
     
 
 

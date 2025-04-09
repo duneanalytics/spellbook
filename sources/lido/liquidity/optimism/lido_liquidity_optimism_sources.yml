@@ -58,3 +58,10 @@ sources:
       - name: CLPool_evt_Swap     
       - name: CLPool_evt_CollectFees    
        
+  - name: solidly_v3_optimism
+    description: "Optimism decoded tables related to Solidly v3 pools contracts"
+    tables:
+      - name: solidlyv3factory_evt_poolcreated
+      - name: solidlyv3pool_evt_swap          
+      - name: solidlyv3pool_evt_mint          
+      - name: solidlyv3pool_evt_burn 
