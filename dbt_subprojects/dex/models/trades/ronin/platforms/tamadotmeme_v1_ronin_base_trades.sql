@@ -20,6 +20,9 @@ WITH ronin_price AS (
 -- This CTE identifies and transforms "buy" transactions from the tamadotmeme protocol on Ronin.
 -- It normalizes token amounts, joins on token creation events to get a readable token symbol,
 -- computes the USD value using the hourly Ronin price, and applies a protocol launch filter.
+
+-- While we could use the simple marcos table for trade pairs, some of the tokens might not have data, so we instead use contracts data which is more complete
+
 buy AS (
   SELECT
     'ronin' AS blockchain,
