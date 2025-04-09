@@ -2,11 +2,7 @@
 
 {{config(
         schema = 'cex_' + blockchain,
-        alias = 'addresses',
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
-        unique_key = ['blockchain', 'address']
+        alias = 'addresses'
         )}}
 
 {{cex_evms(
