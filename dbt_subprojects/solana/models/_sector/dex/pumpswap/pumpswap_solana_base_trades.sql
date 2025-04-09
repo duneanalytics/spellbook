@@ -20,23 +20,11 @@ WITH pools_raw AS (
         block_time,
         block_slot,
         tx_id AS creation_tx,
-        bytearray_to_uint256(bytearray_reverse(bytearray_substring(data, 17, 4))) AS timestamp,
-        bytearray_to_uint256(bytearray_reverse(bytearray_substring(data, 21, 4))) AS index,
-        to_base58(bytearray_substring(data, 27, 32)) AS creator,
         to_base58(bytearray_substring(data, 59, 32)) AS baseMint,
         to_base58(bytearray_substring(data, 91, 32)) AS quoteMint,
         bytearray_to_uint256(bytearray_reverse(bytearray_substring(data, 123, 1))) AS baseMintDecimals,
         bytearray_to_uint256(bytearray_reverse(bytearray_substring(data, 124, 1))) AS quoteMintDecimals,
-        bytearray_to_uint256(bytearray_reverse(bytearray_substring(data, 125, 8))) AS baseAmountIn,
-        bytearray_to_uint256(bytearray_reverse(bytearray_substring(data, 133, 8))) AS quoteAmountIn,
-        bytearray_to_uint256(bytearray_reverse(bytearray_substring(data, 141, 8))) AS poolBaseAmount,
-        bytearray_to_uint256(bytearray_reverse(bytearray_substring(data, 149, 8))) AS poolQuoteAmount,
-        bytearray_to_uint256(bytearray_reverse(bytearray_substring(data, 157, 8))) AS minimumLiquidity,
-        bytearray_to_uint256(bytearray_reverse(bytearray_substring(data, 165, 8))) AS initialLiquidity,
-        bytearray_to_uint256(bytearray_reverse(bytearray_substring(data, 173, 8))) AS lpTokenAmountOut,
-        bytearray_to_uint256(bytearray_reverse(bytearray_substring(data, 181, 1))) AS poolBump,
         to_base58(bytearray_substring(data, 182, 32)) AS pool,
-        to_base58(bytearray_substring(data, 214, 32)) AS lpMint
     FROM {{ source('solana','instruction_calls') }}
     WHERE varbinary_starts_with(data, 0xe445a52e51cb9a1db1310cd2a076a774)
         AND executing_account = 'pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA'
