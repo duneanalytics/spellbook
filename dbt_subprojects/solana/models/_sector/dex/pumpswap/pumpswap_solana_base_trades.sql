@@ -24,7 +24,7 @@ WITH pools_raw AS (
         to_base58(bytearray_substring(data, 91, 32)) AS quoteMint,
         bytearray_to_uint256(bytearray_reverse(bytearray_substring(data, 123, 1))) AS baseMintDecimals,
         bytearray_to_uint256(bytearray_reverse(bytearray_substring(data, 124, 1))) AS quoteMintDecimals,
-        to_base58(bytearray_substring(data, 182, 32)) AS pool,
+        to_base58(bytearray_substring(data, 182, 32)) AS pool
     FROM {{ source('solana','instruction_calls') }}
     WHERE varbinary_starts_with(data, 0xe445a52e51cb9a1db1310cd2a076a774)
         AND executing_account = 'pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA'
