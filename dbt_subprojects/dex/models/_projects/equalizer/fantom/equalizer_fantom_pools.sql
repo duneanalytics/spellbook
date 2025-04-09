@@ -25,5 +25,5 @@ SELECT 'fantom' AS blockchain
 , contract_address
 FROM {{ source('equalizer_exchange_fantom', 'PairFactory_evt_PairCreated') }}
 {% if is_incremental() %}
-WHERE evt_block_time >= date_trunc('day', now() - interval '7' Day)
+WHERE {{incremental_predicate('evt_block_time')}}
 {% endif %}
