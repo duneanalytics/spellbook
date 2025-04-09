@@ -116,6 +116,12 @@ models:
       - *inner_instruction_index
       - *tx_index
 
-
+  - name: pumpswap_solana_pools
+    meta:
+      blockchain: solana
+      contributors: [krishhh]
+    config:
+      tags: ['solana','dex', 'pumpswap']
+    description: "Pumpswap pools on Solana"
 
   
