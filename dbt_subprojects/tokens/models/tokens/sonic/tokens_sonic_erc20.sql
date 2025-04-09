@@ -98,4 +98,5 @@ FROM (VALUES
     , (0x9144c0f0614dd0ace859c61cc37e5386d2ada43a, 'ewS-2', 18)
     , (0x08c320a84a59c6f533e0dca655cf497594bca1f9, 'bWETH-35', 18)
     , (0x24c74b30d1a4261608e84bf5a618693032681dac, 'bscETH-47', 18)
+    , (0x871A101Dcf22fE4fE37be7B654098c801CBA1c88, 'beS', 18)
 ) as temp (contract_address, symbol, decimals)
