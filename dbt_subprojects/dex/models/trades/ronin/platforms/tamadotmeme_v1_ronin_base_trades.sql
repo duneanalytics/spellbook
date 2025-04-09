@@ -109,6 +109,7 @@ sell AS (
 
 -- Combine buy and sell transactions:
 -- This CTE combines the results from the "buy" and "sell" CTEs into a single dataset.
+-- while also ensuring the last row of each transaction is selected
 ,combined as (
 
         (SELECT * FROM buy where rn=1)
