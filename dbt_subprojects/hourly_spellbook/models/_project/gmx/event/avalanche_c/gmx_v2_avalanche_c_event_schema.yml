@@ -72,7 +72,9 @@ models:
       - name: initial_collateral_token
         description: The token used as initial collateral in the order.
         data_tests:
-          - not_null        
+          - not_null  
+      - name: cancellation_receiver
+        description: The address that will receive remaining collateral if the order is cancelled.      
       - name: swap_path
         description: JSON array of markets through which the swap was routed.
         data_tests:
@@ -156,7 +158,8 @@ models:
         data_tests:
           - not_null
           - unique
-
+      - name: data_list
+        description: An array of encoded bytes used to pass additional metadata for advanced order logic.
 
   - name: gmx_v2_avalanche_c_order_executed
     meta:
