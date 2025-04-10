@@ -27,3 +27,14 @@ models:
           - block_number
           - tx_hash
           - sub_tx_trade_id
+
+ - name: axie_marketplace_ronin_base_trades
+   meta:
+    blockchain: ronin
+    sector: nft
+    project: axie_ronin
+    contributors: ['peterrliem' ]
+   config:
+    tags: [ 'ronin', 'nft', 'trades', 'axie marketplace', 'axie' ]
+   description: "axie marketplace base trades"
+   
