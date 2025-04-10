@@ -33,12 +33,13 @@ with
     )
 select
     tokens.minute,
+    CAST(date_trunc('month', block_time) AS date) AS block_month,
     tokens.blockchain,
-    tokens.contract_address_varbinary,
-    tokens.contract_address_base58,
     prices.symbol,
     prices.price,
-    prices.decimals
+    prices.decimals,
+    tokens.contract_address_varbinary,
+    tokens.contract_address_base58
 from distinct_fee_payment_tokens_per_minute as tokens
 join {{ source("prices", "usd") }} as prices
     on (
