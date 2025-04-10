@@ -6,7 +6,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['pool'],
-    incremental_predicates = [incremental_predicate('block_time')]
+    incremental_predicates = [incremental_predicate('created_at')]
   )
 }}
 
@@ -28,9 +28,9 @@ WITH pool_creation AS (
         AND executing_account = 'pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA'
         AND tx_success = true
     {% if is_incremental() %}
-    AND {{incremental_predicate('block_time')}}
+    AND {{incremental_predicate('created_at')}}
     {% else %}
-    AND block_time >= TIMESTAMP '{{project_start_date}}'
+    AND created_at >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
 )
 SELECT
