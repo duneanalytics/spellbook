@@ -29,12 +29,12 @@ fee_addresses AS (
         balance_change > 0,
         balance_change / 1e9,
         token_balance_change
-      ) AS fee_token_amount,
+      ) AS amount,
       IF(
         balance_change > 0,
         '{{wsol_token}}',
         token_mint_address
-      ) AS fee_token_mint_address,
+      ) AS token_address,
       tx_id
     FROM
       {{ source('solana','account_activity') }} as account_activity
@@ -52,15 +52,17 @@ fee_addresses AS (
   aggregated_fee_payments_by_token_by_tx AS (
     SELECT
       tx_id,
-      fee_token_mint_address,
+      token_address,
+      fee_receiver,
       block_time,
       block_month,
-      SUM(fee_token_amount) AS fee_token_amount
+      SUM(amount) AS amount
     FROM
       fee_payments
     GROUP BY
       tx_id,
-      fee_token_mint_address,
+      token_address,
+      fee_receiver,
       block_time,
       block_month
   )
@@ -68,10 +70,11 @@ SELECT
    tx_id,
    '{{bot_label}}' as bot,
    '{{blockchain}}' as blockchain,
-   fee_token_mint_address,
+   token_address,
+   fee_receiver,
    block_time,
    block_month,
-   fee_token_amount,
-   ROW_NUMBER() OVER (PARTITION BY fee_token_mint_address, tx_id ORDER BY block_time) as index
+   amount,
+   ROW_NUMBER() OVER (PARTITION BY tx_id ORDER BY token_address ASC) as index
 FROM
   aggregated_fee_payments_by_token_by_tx
