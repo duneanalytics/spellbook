@@ -28,7 +28,7 @@ WITH pool_creation AS (
         AND executing_account = 'pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA'
         AND tx_success = true
     {% if is_incremental() %}
-    AND {{incremental_predsicate('block_time')}}
+    AND {{incremental_predicate('block_time')}}
     {% else %}
     AND block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
