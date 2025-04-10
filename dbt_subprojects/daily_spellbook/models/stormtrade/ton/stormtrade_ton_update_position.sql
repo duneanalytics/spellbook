@@ -20,10 +20,10 @@
 -- https://github.com/Tsunami-Exchange/storm-contracts-specs/blob/3da4852/scheme.tlb#L81
 
 WITH valid_amms AS (
-    SELECT DISTINCT amm FROM {{ ref('stormtrade_ton_trade_notification') }}
+    SELECT DISTINCT amm, vault, vault_token FROM {{ ref('stormtrade_ton_trade_notification') }}
 ),
 parsed_boc_update_position AS (
-    SELECT M.block_date, M.tx_hash, M.trace_id, M.tx_now, M.tx_lt, M.destination as user_position, M.source as amm, body_boc
+    SELECT M.block_date, M.tx_hash, M.trace_id, M.tx_now, M.tx_lt, M.destination as user_position, M.source as amm, vault, vault_token, body_boc
     FROM {{ source('ton', 'messages') }} M
     JOIN valid_amms V ON M.source = V.amm
     JOIN {{ source('ton', 'transactions') }} T ON M.block_date = T.block_date AND M.tx_hash = T.hash AND M.direction = 'in'
@@ -34,7 +34,7 @@ parsed_boc_update_position AS (
     AND opcode = 1625278071 -- update_position#60dfc677
     AND T.compute_exit_code = 0 AND T.action_result_code = 0 -- only successful transactions
 ), parsed_boc_update_position_stop_loss AS (
-    SELECT M.block_date, M.tx_hash, M.trace_id, M.tx_now, M.tx_lt, M.destination as user_position, M.source as amm, body_boc
+    SELECT M.block_date, M.tx_hash, M.trace_id, M.tx_now, M.tx_lt, M.destination as user_position, M.source as amm, vault, vault_token, body_boc
     FROM {{ source('ton', 'messages') }} M
     JOIN valid_amms V ON M.source = V.amm
     JOIN {{ source('ton', 'transactions') }} T ON M.block_date = T.block_date AND M.tx_hash = T.hash AND M.direction = 'in'
@@ -116,7 +116,7 @@ select {{ ton_from_boc('body_boc', [
     ]) }} as result, * from parsed_boc_update_position_stop_loss
 )
 SELECT block_date, tx_hash, trace_id, tx_now, tx_lt,
-user_position, amm,
+user_position, vault, vault_token, amm,
 result.direction, result.origin_op, result.oracle_price, null as stop_trigger_price, null as take_trigger_price,
 result.position_size, result.position_direction, result.position_margin, result.position_open_notional,
 result.position_last_updated_cumulative_premium, result.position_fee, result.position_discount, result.position_rebate,
@@ -127,7 +127,7 @@ result.open_interest_long, result.open_interest_short
 FROM parse_output_update_position
 UNION ALL
 SELECT block_date, tx_hash, trace_id, tx_now, tx_lt,
-user_position, amm,
+user_position, vault, vault_token, amm,
 result.direction, result.origin_op, result.oracle_price, result.stop_trigger_price, result.take_trigger_price,
 result.position_size, result.position_direction, result.position_margin, result.position_open_notional,
 result.position_last_updated_cumulative_premium, result.position_fee, result.position_discount, result.position_rebate,
