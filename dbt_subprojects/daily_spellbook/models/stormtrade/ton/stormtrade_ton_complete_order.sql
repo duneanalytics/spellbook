@@ -18,10 +18,10 @@
 -- https://github.com/Tsunami-Exchange/storm-contracts-specs/blob/3da4852/scheme.tlb#L96C16-L96C24
 
 WITH valid_amms AS (
-    SELECT DISTINCT amm FROM {{ ref('stormtrade_ton_trade_notification') }}
+    SELECT DISTINCT amm, vault, vault_token FROM {{ ref('stormtrade_ton_trade_notification') }}
 ),
 parsed_boc AS (
-    SELECT M.block_date, M.tx_hash, M.trace_id, M.tx_now, M.tx_lt, M.destination as user_position, M.source as amm, body_boc
+    SELECT M.block_date, M.tx_hash, M.trace_id, M.tx_now, M.tx_lt, M.destination as user_position, vault, vault_token, M.source as amm, body_boc
     FROM {{ source('ton', 'messages') }} M
     JOIN valid_amms V ON M.source = V.amm
     JOIN {{ source('ton', 'transactions') }} T ON M.block_date = T.block_date AND M.tx_hash = T.hash AND M.direction = 'in'
@@ -69,7 +69,7 @@ select {{ ton_from_boc('body_boc', [
     ]) }} as result, * from parsed_boc
 )
 SELECT block_date, tx_hash, trace_id, tx_now, tx_lt,
-user_position, amm,
+user_position, vault, vault_token, amm,
 CASE
     WHEN result.order_type = 0 THEN 'stop_loss_order' 
     WHEN result.order_type = 1 THEN 'take_profit_order' 

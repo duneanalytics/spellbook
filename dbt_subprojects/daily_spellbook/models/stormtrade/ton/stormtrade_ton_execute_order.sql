@@ -18,10 +18,10 @@
 -- https://github.com/Tsunami-Exchange/storm-contracts-specs/blob/3da4852/scheme.tlb#L153-L155
 
 WITH valid_amms AS (
-    SELECT DISTINCT amm FROM {{ ref('stormtrade_ton_trade_notification') }}
+    SELECT DISTINCT amm, vault, vault_token FROM {{ ref('stormtrade_ton_trade_notification') }}
 ),
 parsed_boc AS (
-    SELECT M.block_date, M.tx_hash, M.trace_id, M.tx_now, M.tx_lt, M.source as user_position, M.destination as amm, body_boc
+    SELECT M.block_date, M.tx_hash, M.trace_id, M.tx_now, M.tx_lt, M.source as user_position, M.destination as amm, vault, vault_token, body_boc
     FROM {{ source('ton', 'messages') }} M
     JOIN valid_amms V ON M.destination = V.amm
     JOIN {{ source('ton', 'transactions') }} T ON M.block_date = T.block_date AND M.tx_hash = T.hash AND M.direction = 'in'
@@ -91,7 +91,7 @@ select {{ ton_from_boc('body_boc', [
     ]) }} as result, * from parsed_boc
 )
 SELECT block_date, tx_hash, trace_id, tx_now, tx_lt,
-user_position, amm, result.direction, result.order_index, result.trader_addr, result.prev_addr, result.ref_addr, result.executor_index,
+user_position, vault, vault_token, amm, result.direction, result.order_index, result.trader_addr, result.prev_addr, result.ref_addr, result.executor_index,
 CASE
     WHEN result.order_type = 0 THEN 'stop_loss_order' 
     WHEN result.order_type = 1 THEN 'take_profit_order' 

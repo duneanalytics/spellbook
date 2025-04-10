@@ -87,6 +87,10 @@ models:
         description: "transaction logical time"
       - name: user_position
         description: "user position"
+      - name: vault
+        description: "vault address"
+      - name: vault_token
+        description: "underlying vault token name"
       - name: amm
         description: "amm address"
       - name: direction
@@ -174,6 +178,10 @@ models:
         description: "transaction logical time"
       - name: user_position
         description: "user position"
+      - name: vault
+        description: "vault address"
+      - name: vault_token
+        description: "underlying vault token name"
       - name: amm
         description: "amm address"
       - name: order_type
@@ -245,6 +253,10 @@ models:
         description: "transaction logical time"
       - name: user_position
         description: "user position"
+      - name: vault
+        description: "vault address"
+      - name: vault_token
+        description: "underlying vault token name"
       - name: amm
         description: "amm address"
       - name: direction
