@@ -5,8 +5,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['pool'],
-    incremental_predicates = [incremental_predicate('created_at')]
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    unique_key = ['pool']
   )
 }}
 
