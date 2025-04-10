@@ -75,6 +75,14 @@ SELECT
    block_time,
    block_month,
    amount,
-   ROW_NUMBER() OVER (PARTITION BY tx_id ORDER BY token_address ASC) as index
+   ROW_NUMBER() OVER (
+       PARTITION BY tx_id 
+       ORDER BY 
+           CASE 
+               WHEN token_address = '{{wsol_token}}' THEN 0 
+               ELSE 1 
+           END,
+           token_address ASC
+   ) as index
 FROM
   aggregated_fee_payments_by_token_by_tx
