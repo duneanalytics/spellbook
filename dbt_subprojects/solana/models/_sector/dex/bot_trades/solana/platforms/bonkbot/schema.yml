@@ -40,3 +40,35 @@ models:
       - unique:
           column_name: "concat(tx_id, fee_token_mint_address)"
           name: "unique_tx_id_and_fee_token"
+
+  - name: bonkbot_solana_fee_token_prices
+    description: "Historical prices of tokens used for fee payments by BonkBot on Solana"
+    columns:
+      - name: minute
+        description: "The minute timestamp for the price data"
+        tests:
+          - not_null
+      - name: blockchain
+        description: "The blockchain (solana)"
+        tests:
+          - not_null
+      - name: contract_address_varbinary
+        description: "The varbinary contract address of the token"
+        tests:
+          - not_null
+      - name: contract_address_base58
+        description: "The base58 mint address of the token"
+        tests:
+          - not_null
+      - name: symbol
+        description: "The symbol of the token"
+        tests:
+          - not_null
+      - name: price
+        description: "The price of the token in USD"
+        tests:
+          - not_null
+    tests:
+      - unique:
+          column_name: "concat(minute, contract_address_varbinary)"
+          name: "unique_minute_and_contract"
