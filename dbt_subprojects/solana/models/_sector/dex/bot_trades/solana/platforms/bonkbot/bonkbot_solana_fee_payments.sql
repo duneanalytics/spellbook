@@ -9,6 +9,8 @@
    )
 }}
 
+{% set bot_label = 'BonkBot' %}
+{% set blockchain = 'solana' %}
 {% set project_start_date = '2023-08-17' %}
 {% set fee_receiver = 'ZG98FUCjb8mJ824Gbs6RsgVmr1FhXb2oNiJHa2dwmPd' %}
 {% set wsol_token = 'So11111111111111111111111111111111111111112' %}
@@ -57,13 +59,14 @@ fee_addresses AS (
     GROUP BY
       tx_id,
       fee_token_mint_address
-
-  ),
+  )
 SELECT 
    tx_id,
-      fee_token_mint_address,
-       block_time,
- fee_token_amount,
- ROW_NUMBER() OVER (PARTITION BY tx_id ORDER BY block_time) as index
+   '{{bot_label}}' as bot,
+   '{{blockchain}}' as blockchain,
+   fee_token_mint_address,
+   block_time,
+   fee_token_amount,
+   ROW_NUMBER() OVER (PARTITION BY fee_token_mint_address, tx_id ORDER BY block_time) as index
 FROM
   aggregated_fee_payments_by_token_by_tx
