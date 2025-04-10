@@ -26,6 +26,7 @@
                                         , "sei"
                                         , "shape"
                                         , "sonic"
+                                        , "opbnb"
                                         , "unichain"
                                         , "viction"
                                         , "worldchain"
