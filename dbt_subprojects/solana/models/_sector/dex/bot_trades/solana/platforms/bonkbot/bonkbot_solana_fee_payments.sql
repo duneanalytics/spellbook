@@ -51,11 +51,11 @@ fee_addresses AS (
   -- Eliminate duplicates (e.g. both SOL + WSOL in a single transaction)
   aggregated_fee_payments_by_token_by_tx AS (
     SELECT
-      tx_id,
-      token_address,
-      fee_receiver,
       block_time,
       block_month,
+      token_address,
+      fee_receiver,
+      tx_id,
       SUM(amount) AS amount
     FROM
       fee_payments
@@ -67,14 +67,14 @@ fee_addresses AS (
       block_month
   )
 SELECT 
-   tx_id,
-   '{{bot_label}}' as bot,
-   '{{blockchain}}' as blockchain,
-   token_address,
-   fee_receiver,
    block_time,
    block_month,
+   '{{bot_label}}' as bot,
+   '{{blockchain}}' as blockchain,
    amount,
+   token_address,
+   fee_receiver,
+   tx_id,
    ROW_NUMBER() OVER (
        PARTITION BY tx_id 
        ORDER BY 

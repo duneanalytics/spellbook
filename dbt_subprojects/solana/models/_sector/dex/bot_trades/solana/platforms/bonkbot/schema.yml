@@ -1,50 +1,6 @@
 version: 2
 
 models:
-  - name: bonkbot_solana_fee_payments
-    description: "Fee payments collected by BonkBot on Solana"
-    columns:
-      - name: tx_id
-        description: "The transaction ID where the fee was paid"
-        tests:
-          - not_null
-      - name: bot
-        description: "The bot name (BonkBot)"
-        tests:
-          - not_null
-      - name: blockchain
-        description: "The blockchain (solana)"
-        tests:
-          - not_null
-      - name: token_address
-        description: "The mint address of the token used to pay the fee. For SOL payments, this will be So11111111111111111111111111111111111111112"
-        tests:
-          - not_null
-      - name: fee_receiver
-        description: "The address that received the fee payment"
-        tests:
-          - not_null
-      - name: block_time
-        description: "The timestamp when the fee was paid"
-        tests:
-          - not_null
-      - name: block_month
-        description: "The month of the block when the fee was paid, used for partitioning"
-        tests:
-          - not_null
-      - name: amount
-        description: "The amount of tokens paid as fee. For SOL, this is in SOL (not lamports)"
-        tests:
-          - not_null
-      - name: index
-        description: "The order of the fee payment within the transaction, with SOL always getting index 1 when present, followed by other tokens in alphabetical order"
-        tests:
-          - not_null
-    tests:
-      - unique:
-          column_name: "concat(tx_id, token_address)"
-          name: "unique_tx_id_and_token"
-
   - name: bonkbot_solana_fee_token_prices
     description: "Historical prices of tokens used for fee payments by BonkBot on Solana"
     columns:
@@ -80,3 +36,47 @@ models:
       - unique:
           column_name: "concat(minute, contract_address_varbinary)"
           name: "unique_minute_and_contract"
+
+  - name: bonkbot_solana_fee_payments
+    description: "Fee payments collected by BonkBot on Solana"
+    columns:
+      - name: block_time
+        description: "The timestamp when the fee was paid"
+        tests:
+          - not_null
+      - name: block_month
+        description: "The month of the block when the fee was paid, used for partitioning"
+        tests:
+          - not_null
+      - name: bot
+        description: "The bot name (BonkBot)"
+        tests:
+          - not_null
+      - name: blockchain
+        description: "The blockchain (solana)"
+        tests:
+          - not_null
+      - name: amount
+        description: "The amount of tokens paid as fee. For SOL, this is in SOL (not lamports)"
+        tests:
+          - not_null
+      - name: token_address
+        description: "The mint address of the token used to pay the fee. For SOL payments, this will be So11111111111111111111111111111111111111112"
+        tests:
+          - not_null
+      - name: fee_receiver
+        description: "The address that received the fee payment"
+        tests:
+          - not_null
+      - name: tx_id
+        description: "The transaction ID where the fee was paid"
+        tests:
+          - not_null
+      - name: index
+        description: "The order of the fee payment within the transaction, with SOL always getting index 1 when present, followed by other tokens in alphabetical order"
+        tests:
+          - not_null
+    tests:
+      - unique:
+          column_name: "concat(tx_id, token_address)"
+          name: "unique_tx_id_and_token"
