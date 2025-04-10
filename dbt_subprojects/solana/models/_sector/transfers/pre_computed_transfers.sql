@@ -3,7 +3,8 @@
     schema='tokens_solana', 
     alias='pre_computed_transfers', 
     materialized='table',
-    partition_by = ['from_token_account_prefix']
+    partition_by = ['from_token_account_prefix'],
+    cluster_by = ['from_token_account_prefix']
   )
 }}
 
@@ -30,4 +31,4 @@ FROM
     {{ source('spl_token_solana', 'spl_token_call_transfer') }} 
 WHERE
     1=1
-    and call_block_time > TIMESTAMP '2025-03-01' 
+    and call_block_time > TIMESTAMP '2025-04-05' 

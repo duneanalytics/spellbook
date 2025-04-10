@@ -3,7 +3,8 @@
     schema='solana_utils',
     alias='alt_token_accounts_updates',
     materialized='table',
-    partition_by=['token_account_prefix']
+    partition_by=['token_account_prefix'],
+    cluster_by=['token_account_prefix']
   )
 }}
 
