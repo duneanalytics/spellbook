@@ -23,6 +23,9 @@ with base_trades as (
     WHERE
         {{incremental_predicate('block_time')}}
     {% endif %}
+    {% if not is_incremental() %}
+    where block_time > TIMESTAMP '2025-04-01'
+    {% endif %}
 )
 
 SELECT bt.blockchain
@@ -100,4 +103,5 @@ LEFT JOIN
     {{ source('prices','trusted_tokens') }} tt_bought
     ON bt.token_bought_mint_address = toBase58(tt_bought.contract_address)
     AND bt.blockchain = tt_bought.blockchain
--- doing a test to see if this is working
+    AND 1=1 
+    
