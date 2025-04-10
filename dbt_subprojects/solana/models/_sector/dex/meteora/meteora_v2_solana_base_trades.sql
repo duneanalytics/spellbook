@@ -45,8 +45,7 @@ WITH
             AND trs_1.block_date = sp.call_block_date
             AND trs_1.block_time = sp.call_block_time
             AND trs_1.outer_instruction_index = sp.call_outer_instruction_index 
-            AND trs_1.inner_instruction_index = COALESCE(sp.call_inner_instruction_index,0) + 1
-            {% if is_incremental() %}
+            AND trs_1.to_owner = sp.account_lbPair
             AND {{incremental_predicate('trs_1.block_time')}}
             {% else %}
             AND trs_1.block_time >= TIMESTAMP '{{project_start_date}}'
@@ -57,8 +56,7 @@ WITH
             AND trs_2.block_date = sp.call_block_date
             AND trs_2.block_time = sp.call_block_time
             AND trs_2.outer_instruction_index = sp.call_outer_instruction_index 
-            AND trs_2.inner_instruction_index = COALESCE(sp.call_inner_instruction_index,0) + 2
-            {% if is_incremental() %}
+            AND trs_2.from_owner = sp.account_lbPair
             AND {{incremental_predicate('trs_2.block_time')}}
             {% else %}
             AND trs_2.block_time >= TIMESTAMP '{{project_start_date}}'
