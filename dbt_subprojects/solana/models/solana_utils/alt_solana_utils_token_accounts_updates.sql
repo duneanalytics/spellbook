@@ -20,24 +20,18 @@ WITH combined_events AS (
     MAX(CASE WHEN account_mint IS NOT NULL THEN account_mint END)
       OVER (
         PARTITION BY token_account
-        ORDER BY block_time, block_slot, tx_index, outer_instruction_index, inner_instruction_index ASC
+        ORDER BY instruction_uniq_id ASC
         ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
       ) AS last_non_null_account_mint,
 
-    -- Capture start time, slot, and indices
+    -- Capture start time and instruction id
     block_time AS valid_from,
-    block_slot as valid_from_block_slot,
-    tx_index as valid_from_tx_index,
-    outer_instruction_index as valid_from_outer_index,
-    inner_instruction_index as valid_from_inner_index,
+    instruction_uniq_id as valid_from_instruction_uniq_id,
 
-    -- Calculate end time, slot, and indices using granular LEAD
-    LEAD(block_time, 1) OVER (PARTITION BY token_account ORDER BY block_time, block_slot, tx_index, outer_instruction_index, inner_instruction_index ASC) AS valid_to,
-    LEAD(block_slot, 1) OVER (PARTITION BY token_account ORDER BY block_time, block_slot, tx_index, outer_instruction_index, inner_instruction_index ASC) AS valid_to_block_slot,
-    LEAD(tx_index, 1) OVER (PARTITION BY token_account ORDER BY block_time, block_slot, tx_index, outer_instruction_index, inner_instruction_index ASC) AS valid_to_tx_index,
-    LEAD(outer_instruction_index, 1) OVER (PARTITION BY token_account ORDER BY block_time, block_slot, tx_index, outer_instruction_index, inner_instruction_index ASC) AS valid_to_outer_index,
-    LEAD(inner_instruction_index, 1) OVER (PARTITION BY token_account ORDER BY block_time, block_slot, tx_index, outer_instruction_index, inner_instruction_index ASC) AS valid_to_inner_index,
-    
+    -- Calculate end time and instruction id using LEAD
+    LEAD(block_time, 1) OVER (PARTITION BY token_account ORDER BY instruction_uniq_id ASC) AS valid_to,
+    LEAD(instruction_uniq_id, 1) OVER (PARTITION BY token_account ORDER BY instruction_uniq_id ASC) AS valid_to_instruction_uniq_id,
+
     event_type,
     token_account_prefix
   FROM {{ ref('solana_utils_token_account_raw_data') }}
@@ -53,19 +47,14 @@ SELECT
   END AS token_mint_address,
   event_type,
   
-  -- Select start time, slot and indices
+  -- Select start time and instruction id
   valid_from,
-  valid_from_block_slot,
-  valid_from_tx_index,
-  valid_from_outer_index,
-  valid_from_inner_index,
+  valid_from_instruction_uniq_id,
   
   -- Constructing a valid_to in the future to avoid nulls to handle joins
-  -- Note: The corresponding slot/indices will be null for the last event, which is expected.
   COALESCE(valid_to, TIMESTAMP '9999-12-31 23:59:59') AS valid_to,
-  valid_to_block_slot,
-  valid_to_tx_index, 
-  valid_to_outer_index,
-  valid_to_inner_index,
+  COALESCE(valid_to_instruction_uniq_id, '999999999-999999-9999-9999') AS valid_to_instruction_uniq_id,
   token_account_prefix
 FROM combined_events
+where account_owner is not null
+and account_mint is not null

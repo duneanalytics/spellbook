@@ -2,7 +2,6 @@
   config(
     schema='tokens_solana',
     alias='transfers_test_single_join_to',
-    pre_hook="SET SESSION hash_join_enabled = false",
     materialized='table',
     partition_by=['block_month']
   )
