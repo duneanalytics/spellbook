@@ -58,4 +58,7 @@ FROM
     , ('frxusd-frax-usd', 'frxUSD', 0x80eede496655fb9047dd39d9f418d5483ed600df, 18)
     , ('frxeth-frax-ether', 'frxETH', 0x2fb960611bdc322a9a4a994252658cae9fe2eea1, 18)
     , ('ws-wrapped-sonic', 'beS', 0x871A101Dcf22fE4fE37be7B654098c801CBA1c88, 18)
+    ,  ('scusd-sonic-usd', 'scUSD', 0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae, 18)
+    ,  ('wos-wrapped-origin-sonic', 'WOS', 0x9f0df7799f6fdad409300080cff680f5a23df4b1, 18)
+    ,  ('sts-staked-sonic', 'STS', 0xe5da20f15420ad15de0fa650600afc998bbe3955, 18) 
 ) as temp (token_id, symbol, contract_address, decimals)
