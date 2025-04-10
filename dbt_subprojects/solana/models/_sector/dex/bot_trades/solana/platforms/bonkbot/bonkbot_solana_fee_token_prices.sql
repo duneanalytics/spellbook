@@ -1,0 +1,52 @@
+{{
+    config(
+        materialized="table",
+        schema="bonkbot_solana",
+        alias="fee_token_prices",
+        partition_by=["block_month"],
+        incremental_strategy="merge",
+        incremental_predicates=[incremental_predicate("DBT_INTERNAL_DEST.minute")],
+        unique_key=["minute", "contract_address"],
+    )
+}}
+
+{% set project_start_date = "2023-08-17" %}
+
+with
+    fee_payments as (
+        select *,
+        date_trunc('minute', block_time) as minute,
+        from_base58(fee_token_mint_address) as contract_address
+        from {{ ref("bonkbot_solana_fee_payments") }}
+        {% if is_incremental() %} where {{ incremental_predicate("block_time") }}
+        {% else %} where block_time >= timestamp '{{project_start_date}}'
+        {% endif %}
+    ),
+    distinct_fee_payment_tokens_per_minute as (
+        select distinct contract_address, minute
+        from fee_payments
+    )
+select
+    minute,
+    fee_payments.block_month,
+    blockchain,
+    contract_address,
+    symbol,
+    price
+from {{ source("prices", "usd") }} as prices
+join fee_payments
+    on (
+        fee_payments.contract_address = prices.contract_address
+        and prices.blockchain = 'solana'
+        and fee_payments.block_month = prices.block_month
+        and fee_payments.minute = prices.minute
+    )
+where
+    fee_payments.block_month = prices.block_month
+    and prices.contract_address = fee_payments.fee_token_mint_address
+    and prices.blockchain = 'solana'
+
+    -- add incremental predicate to prices
+    {% if is_incremental() %} and {{ incremental_predicate("prices.minute") }}
+    {% else %} and prices.minute >= timestamp '{{project_start_date}}'
+    {% endif %}
