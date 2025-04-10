@@ -100,4 +100,3 @@ LEFT JOIN
     {{ source('prices','trusted_tokens') }} tt_bought
     ON bt.token_bought_mint_address = toBase58(tt_bought.contract_address)
     AND bt.blockchain = tt_bought.blockchain
--- doing a test to see if this is working
