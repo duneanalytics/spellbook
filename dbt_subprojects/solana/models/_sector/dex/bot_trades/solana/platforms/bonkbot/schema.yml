@@ -24,6 +24,10 @@ models:
         description: "The timestamp when the fee was paid"
         tests:
           - not_null
+      - name: block_month
+        description: "The month of the block when the fee was paid, used for partitioning"
+        tests:
+          - not_null
       - name: fee_token_amount
         description: "The amount of tokens paid as fee"
         tests:

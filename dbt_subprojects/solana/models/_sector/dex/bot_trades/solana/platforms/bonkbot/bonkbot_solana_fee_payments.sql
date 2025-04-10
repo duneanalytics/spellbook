@@ -23,6 +23,7 @@ fee_addresses AS (
   fee_payments AS (
     SELECT
       block_time,
+      CAST(date_trunc('month', block_time) AS date) AS block_month,
       fee_receiver,
       IF(
         balance_change > 0,
@@ -52,13 +53,16 @@ fee_addresses AS (
     SELECT
       tx_id,
       fee_token_mint_address,
-      MIN(block_time) as block_time,
+      block_time,
+      block_month,
       SUM(fee_token_amount) AS fee_token_amount
     FROM
       fee_payments
     GROUP BY
       tx_id,
-      fee_token_mint_address
+      fee_token_mint_address,
+      block_time,
+      block_month
   )
 SELECT 
    tx_id,
@@ -66,6 +70,7 @@ SELECT
    '{{blockchain}}' as blockchain,
    fee_token_mint_address,
    block_time,
+   block_month,
    fee_token_amount,
    ROW_NUMBER() OVER (PARTITION BY fee_token_mint_address, tx_id ORDER BY block_time) as index
 FROM
