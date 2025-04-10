@@ -1,5 +1,6 @@
 {{
   config(
+    tags = ['prod_exclude'],
     schema='tokens_solana', 
     alias='transfers_test', 
     materialized='table',
