@@ -62,7 +62,7 @@ swaps AS (
             varbinary_starts_with(data, 0xe445a52e51cb9a1d67f4521f2cf57777)
         )
     {% if is_incremental() or true %}
-    AND block_time >= now() - interval '7' day
+    AND {{incremental_predicate('block_time')}}
     {% endif %}
 )
 
