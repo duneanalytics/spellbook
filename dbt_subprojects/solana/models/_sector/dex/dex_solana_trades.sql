@@ -24,7 +24,7 @@ with base_trades as (
         {{incremental_predicate('block_time')}}
     {% endif %}
     {% if not is_incremental() %}
-    where block_time > '2024-04-01'
+    where block_time > TIMESTAMP '2025-04-01'
     {% endif %}
 )
 

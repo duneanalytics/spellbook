@@ -58,6 +58,9 @@ FROM
 WHERE
       {{incremental_predicate('block_time')}}
 {% endif %}
+{% if not is_incremental() %}
+where block_time > TIMESTAMP '2025-04-01'
+{% endif %}
 {% if not loop.last %}
 UNION ALL
 {% endif %}
