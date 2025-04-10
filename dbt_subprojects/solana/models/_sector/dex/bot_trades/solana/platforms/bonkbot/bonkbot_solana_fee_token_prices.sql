@@ -16,8 +16,8 @@ with
     fee_payments as (
         select *,
         date_trunc('minute', block_time) as minute,
-        from_base58(fee_token_mint_address) as contract_address_varbinary,
-        fee_token_mint_address as contract_address_base58
+        from_base58(token_address) as contract_address_varbinary,
+        token_address as contract_address_base58
         from {{ ref("bonkbot_solana_fee_payments") }}
         {% if is_incremental() %} where {{ incremental_predicate("block_time") }}
         {% else %} where block_time >= timestamp '{{project_start_date}}'
@@ -37,7 +37,8 @@ select
     tokens.contract_address_varbinary,
     tokens.contract_address_base58,
     prices.symbol,
-    prices.price
+    prices.price,
+    prices.decimals
 from distinct_fee_payment_tokens_per_minute as tokens
 join {{ source("prices", "usd") }} as prices
     on (

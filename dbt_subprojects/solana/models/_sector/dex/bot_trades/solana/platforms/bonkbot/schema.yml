@@ -72,6 +72,10 @@ models:
         description: "The price of the token in USD"
         tests:
           - not_null
+      - name: decimals
+        description: "The number of decimals of the token"
+        tests:
+          - not_null
     tests:
       - unique:
           column_name: "concat(minute, contract_address_varbinary)"
