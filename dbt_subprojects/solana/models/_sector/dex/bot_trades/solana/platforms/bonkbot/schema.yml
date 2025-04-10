@@ -16,8 +16,12 @@ models:
         description: "The blockchain (solana)"
         tests:
           - not_null
-      - name: fee_token_mint_address
-        description: "The mint address of the token used to pay the fee"
+      - name: token_address
+        description: "The mint address of the token used to pay the fee. For SOL payments, this will be So11111111111111111111111111111111111111112"
+        tests:
+          - not_null
+      - name: fee_receiver
+        description: "The address that received the fee payment"
         tests:
           - not_null
       - name: block_time
@@ -28,18 +32,18 @@ models:
         description: "The month of the block when the fee was paid, used for partitioning"
         tests:
           - not_null
-      - name: fee_token_amount
-        description: "The amount of tokens paid as fee"
+      - name: amount
+        description: "The amount of tokens paid as fee. For SOL, this is in SOL (not lamports)"
         tests:
           - not_null
       - name: index
-        description: "The order of the fee payment within the transaction and token combination"
+        description: "The order of the fee payment within the transaction, with SOL always getting index 1 when present, followed by other tokens in alphabetical order"
         tests:
           - not_null
     tests:
       - unique:
-          column_name: "concat(tx_id, fee_token_mint_address)"
-          name: "unique_tx_id_and_fee_token"
+          column_name: "concat(tx_id, token_address)"
+          name: "unique_tx_id_and_token"
 
   - name: bonkbot_solana_fee_token_prices
     description: "Historical prices of tokens used for fee payments by BonkBot on Solana"
