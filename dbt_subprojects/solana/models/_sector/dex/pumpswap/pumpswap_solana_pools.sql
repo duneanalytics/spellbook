@@ -6,7 +6,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['pool'],
-    incremental_predicates = [incremental_predicate('block_time')]
+    incremental_predicates = [incremental_predicate('created_at')]
   )
 }}
 
