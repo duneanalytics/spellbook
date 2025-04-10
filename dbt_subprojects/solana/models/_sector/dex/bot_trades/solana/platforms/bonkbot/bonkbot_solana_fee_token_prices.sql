@@ -23,30 +23,27 @@ with
         {% endif %}
     ),
     distinct_fee_payment_tokens_per_minute as (
-        select distinct contract_address, minute
+        select distinct 
+            contract_address,
+            blockchain, 
+            minute
         from fee_payments
     )
 select
-    minute,
-    fee_payments.block_month,
-    blockchain,
-    contract_address,
-    symbol,
-    price
-from {{ source("prices", "usd") }} as prices
-join fee_payments
+    tokens.minute,
+    tokens.blockchain,
+    tokens.contract_address,
+    prices.symbol,
+    prices.price
+from distinct_fee_payment_tokens_per_minute as tokens
+join {{ source("prices", "usd") }} as prices
     on (
-        fee_payments.contract_address = prices.contract_address
-        and prices.blockchain = 'solana'
-        and fee_payments.block_month = prices.block_month
-        and fee_payments.minute = prices.minute
+        prices.blockchain = tokens.blockchain
+        and prices.contract_address = tokens.contract_address
+        and prices.minute = tokens.minute
+        {% if is_incremental() %}
+        and {{ incremental_predicate("prices.minute") }}
+        {% else %}
+        and prices.minute >= timestamp '{{project_start_date}}'
+        {% endif %}
     )
-where
-    fee_payments.block_month = prices.block_month
-    and prices.contract_address = fee_payments.fee_token_mint_address
-    and prices.blockchain = 'solana'
-
-    -- add incremental predicate to prices
-    {% if is_incremental() %} and {{ incremental_predicate("prices.minute") }}
-    {% else %} and prices.minute >= timestamp '{{project_start_date}}'
-    {% endif %}
