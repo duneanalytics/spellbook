@@ -34,7 +34,7 @@ with ranked_src as (
 			order by unique_instruction_key desc
 		) as row_num
 	from {{ ref('solana_utils_token_accounts_raw') }}
-	{% if is_incremental() or true -%}
+	{% if is_incremental() -%}
 	where {{ incremental_predicate('block_time') }}
 	{%- endif %}
 )
@@ -51,7 +51,7 @@ with ranked_src as (
 		, row_num = 1 as is_current
 	from ranked_src
 )
-{% if is_incremental() or true -%}
+{% if is_incremental() -%}
 -- Step 2: Active rows from current table
 , dst as (
 	select
