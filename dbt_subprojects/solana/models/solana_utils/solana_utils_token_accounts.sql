@@ -1,7 +1,7 @@
  {{
   config(
         tags = ['prod_exclude'],
-        schema = 'old_solana_utils',
+        schema = 'solana_utils',
         alias = 'token_accounts',
         materialized = 'incremental',
         file_format = 'delta',

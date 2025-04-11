@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: old_solana_utils_token_accounts
+  - name: solana_utils_token_accounts
     meta:
       blockchain: solana
       contributors: [ilemi]
