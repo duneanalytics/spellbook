@@ -39,6 +39,7 @@
     , 'sophon'
     , 'viction'
     , 'worldchain'
+    , 'degen'
     
    
 ] %}

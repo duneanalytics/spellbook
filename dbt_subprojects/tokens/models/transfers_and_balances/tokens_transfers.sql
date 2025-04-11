@@ -13,6 +13,7 @@
                                             ,"boba"
                                             ,"celo"
                                             ,"corn"
+                                            ,"degen"
                                             ,"ethereum"
                                             ,"fantom"
                                             ,"flare"
@@ -54,6 +55,7 @@
     ,'boba'
     ,'celo'
     ,'corn'
+    ,'degen'
     ,'ethereum'
     ,'fantom'
     ,'flare'
