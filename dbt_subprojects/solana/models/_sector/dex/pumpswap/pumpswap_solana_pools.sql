@@ -10,7 +10,7 @@
   )
 }}
 
-{% set project_start_date = '2025-03-15' %}
+{% set project_start_date = '2025-03-14' %}
 
 WITH pool_creation AS (
     -- Pool creation events using the provided decoding pattern
