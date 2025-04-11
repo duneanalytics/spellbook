@@ -27,8 +27,9 @@ SELECT
     event_name,
     msg_sender,
     token,
+    feed_id,
     data_stream_multiplier,
-    feed_id
+    data_stream_spread_reduction_factor
 FROM {{ ref('gmx_v2_' ~ chain ~ '_set_data_stream') }}
 {% if not loop.last %}
 UNION ALL

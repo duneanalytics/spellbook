@@ -146,8 +146,9 @@ WITH evt_data_1 AS (
         tx_hash,
         index,
         MAX(CASE WHEN key_name = 'token' THEN value END) AS token,
+        MAX(CASE WHEN key_name = 'feedId' THEN value END) AS feed_id,
         MAX(CASE WHEN key_name = 'dataStreamMultiplier' THEN value END) AS data_stream_multiplier,
-        MAX(CASE WHEN key_name = 'feedId' THEN value END) AS feed_id
+        MAX(CASE WHEN key_name = 'dataStreamSpreadReductionFactor' THEN value END) AS data_stream_spread_reduction_factor
     FROM
         combined
     GROUP BY tx_hash, index
@@ -165,11 +166,11 @@ WITH evt_data_1 AS (
         ED.contract_address,
         event_name,
         msg_sender,
-
-        from_hex(token) AS token,
-        TRY_CAST(data_stream_multiplier AS DOUBLE) / POWER(10, 30) AS data_stream_multiplier,
-        from_hex(feed_id) AS feed_id
-
+        
+        from_hex(EDP.token) AS token,
+        from_hex(EDP.feed_id) AS feed_id,
+        TRY_CAST(EDP.data_stream_multiplier AS DOUBLE) / POWER(10, 30) AS data_stream_multiplier,
+        TRY_CAST(EDP.data_stream_spread_reduction_factor AS DOUBLE) / POWER(10, 30) AS data_stream_spread_reduction_factor
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
         ON ED.tx_hash = EDP.tx_hash

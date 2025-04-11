@@ -214,17 +214,18 @@ WITH evt_data_1 AS (
         amount_in_after_fees / POWER(10, ERC20_in.decimals) AS amount_in_after_fees,
         amount_out / POWER(10, ERC20_out.decimals) AS amount_out,
         price_impact_usd / POWER(10, 30) AS price_impact_usd,
-        price_impact_amount / POWER(10, MD.index_token_decimals) AS price_impact_amount,
+        CASE
+            WHEN price_impact_amount > 0 THEN price_impact_amount / POWER(10, ERC20_out.decimals)
+            WHEN price_impact_amount < 0 THEN price_impact_amount / POWER(10, ERC20_in.decimals)
+            ELSE price_impact_amount
+        END AS price_impact_amount,
         token_in_price_impact_amount / POWER(10, ERC20_in.decimals) AS token_in_price_impact_amount,
         order_key
-
     FROM event_data AS ED
     LEFT JOIN {{ ref('gmx_v2_arbitrum_erc20') }} AS ERC20_in
         ON ED.token_in = ERC20_in.contract_address
     LEFT JOIN {{ ref('gmx_v2_arbitrum_erc20') }} AS ERC20_out
         ON ED.token_out = ERC20_out.contract_address
-    LEFT JOIN {{ ref('gmx_v2_arbitrum_markets_data') }} AS MD
-        ON ED.market = MD.market
 )
 
 --can be removed once decoded tables are fully denormalized

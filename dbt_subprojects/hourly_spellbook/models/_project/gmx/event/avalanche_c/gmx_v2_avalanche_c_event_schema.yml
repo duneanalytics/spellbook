@@ -2685,6 +2685,8 @@ models:
         description: A multiplier applied to the data stream, used to scale the feed data
       - name: feed_id
         description: Identifier of the data feed used for this token's stream
+      - name: data_stream_spread_reduction_factor
+        description: The proposed factor used to reduce spread in the data stream for the specified token
 
   - name: gmx_v2_avalanche_c_set_oracle_provider_enabled
     description: |
@@ -2933,6 +2935,8 @@ models:
         description: The proposed multiplier to scale the data stream values
       - name: feed_id
         description: The proposed identifier for the new data feed
+      - name: data_stream_spread_reduction_factor
+        description: The proposed factor used to reduce spread in the data stream for the specified token
 
   - name: gmx_v2_avalanche_c_signal_set_oracle_provider_enabled
     description: |
