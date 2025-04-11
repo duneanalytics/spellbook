@@ -15,8 +15,8 @@ models:
           combination_of_columns: ['tx_hash','evt_index']
       - equal_rowcount_with_sources:
           evt_sources:
-            - source('base_ethereum', 'l1standardbridge_evt_erc20bridgefinalized')
-            - source('base_ethereum','l1standardbridge_evt_ethbridgefinalized')
+            - source('base_ethereum', 'l1standardbridge_evt_erc20bridgeinitiated')
+            - source('base_ethereum','l1standardbridge_evt_ethbridgeinitiated')
     columns:
       - &source_blockchain
         name: source_blockchain
@@ -89,8 +89,8 @@ models:
           combination_of_columns: ['tx_hash','evt_index']
       - equal_rowcount_with_sources:
           evt_sources:
-            - source('base_ethereum','l1standardbridge_evt_erc20bridgeinitiated')
-            - source('base_ethereum','l1standardbridge_evt_ethbridgeinitiated')
+            - source('base_ethereum','l1standardbridge_evt_erc20bridgefinalized')
+            - source('base_ethereum','l1standardbridge_evt_ethbridgefinalized')
     columns:
       - *source_blockchain
       - *destination_blockchain
