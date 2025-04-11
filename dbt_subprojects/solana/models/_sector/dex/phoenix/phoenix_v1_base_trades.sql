@@ -45,7 +45,7 @@
         , length(json_extract_scalar(initializeParams, '$.InitializeParams.numQuoteLotsPerQuoteUnit')) - 1 as tokenB_decimals
         , ip.account_quoteMint as tokenB
         , ip.account_quoteVault as tokenBVault
-        , cast(json_extract_scalar(initializeParams, '$.InitializeParams.takerFeeBps') as double)/100 as fee_tier
+        , cast(json_extract_scalar(initializeParams, '$.InitializeParams.takerFeeBps') as double)/10000 as fee_tier
         , ip.account_market as pool_id
         , ip.call_tx_id as init_tx
     FROM {{ source('phoenix_v1_solana','phoenix_v1_call_InitializeMarket') }} ip
@@ -73,7 +73,6 @@
           )
         )
       ) as uint256) AS tokenA_filled,
-      l.call_outer_instruction_index AS index,
       cast(BYTEARRAY_TO_BIGINT (
         BYTEARRAY_REVERSE (
           BYTEARRAY_SUBSTRING (
@@ -121,7 +120,8 @@
     SELECT
       market,
       seq,
-      MAX(index) AS index
+      MAX(call_inner_instruction_index) as call_inner_instruction_index,
+      MAX(call_outer_instruction_index) as call_outer_instruction_index
     FROM
       logs
     GROUP BY
@@ -135,7 +135,8 @@
       logs AS l
       JOIN max_log_index AS m ON l.market = m.market
       AND l.seq = m.seq
-      AND l.index = m.index
+      AND l.call_inner_instruction_index = m.call_inner_instruction_index
+      AND l.call_outer_instruction_index = m.call_outer_instruction_index
   ),
   trades as (
     SELECT
@@ -172,7 +173,13 @@
             else p.tokenBVault
             end as token_sold_vault
         , p.fee_tier
-        , row_number() over (partition by seq order by COALESCE(s.call_inner_instruction_index, 0) desc) as recent_swap -- this ties the log to only the most recent swap call
+        , case when s.side = 1 then p.tokenB_decimals
+            else p.tokenA_decimals
+            end as token_bought_decimal_project_specific
+        , case when s.side = 1 then p.tokenA_decimals
+            else p.tokenB_decimals
+            end as token_sold_decimal_project_specific
+        , row_number() over (partition by seq order by COALESCE(s.call_inner_instruction_index, 0) desc) as recent_swap -- this ties the log to only the most recent swap call, even though we're already filtering for the max instruction indices
     FROM filtered_logs l
     LEFT JOIN (
         SELECT
@@ -203,6 +210,10 @@ SELECT
     , tb.trade_source
     , tb.token_bought_amount_raw
     , tb.token_sold_amount_raw
+    , tb.token_bought_amount_raw / POWER(10, tb.token_bought_decimal_project_specific) as token_bought_amount
+    , tb.token_sold_amount_raw / POWER(10, tb.token_sold_decimal_project_specific) as token_sold_amount
+    , tb.token_bought_decimal_project_specific
+    , tb.token_sold_decimal_project_specific
     , tb.fee_tier as fee_tier
     , tb.token_sold_mint_address
     , tb.token_bought_mint_address
