@@ -5,7 +5,7 @@
     , partition_by=['token_account_prefix']
     , materialized='incremental'
     , file_format='delta'
-    , pre_hook = '{{ set_trino_session_property(true, "task_scale_writers_enabled", "OVERWRITE") }}'
+    , pre_hook = '{{ set_trino_session_property(true, "insert-existing-partitions-behavior", "OVERWRITE") }}'
   )
 }}
 
