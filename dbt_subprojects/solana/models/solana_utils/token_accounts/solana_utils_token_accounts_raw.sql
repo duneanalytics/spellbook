@@ -156,4 +156,4 @@ with init as (
     union all
     select * from close
 )
-select * from raw_events
+select * from raw_events limit 1000
