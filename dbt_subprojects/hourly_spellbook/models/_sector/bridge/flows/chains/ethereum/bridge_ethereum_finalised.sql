@@ -13,7 +13,7 @@
 
 SELECT *
 FROM (
-    {% for chain in chains %}
+    {% for bridge_platform in bridge_platforms %}
     SELECT source_blockchain
     , destination_blockchain
     , project
@@ -33,7 +33,7 @@ FROM (
     , tx_hash
     , evt_index
     , contract_address
-    FROM {{ ref(bridge_platforms) }}
+    FROM {{ ref(bridge_platform) }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
