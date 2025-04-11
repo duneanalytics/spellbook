@@ -8,6 +8,9 @@ models:
     config:
       tags: ['solana','dex', 'pumpswap']
     description: "PumpSwap base trades on Solana"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ block_month, block_slot, tx_index, outer_instruction_index, inner_instruction_index]
     columns:
       - &blockchain
         name: blockchain
@@ -123,5 +126,8 @@ models:
     config:
       tags: ['solana','dex', 'pumpswap']
     description: "Pumpswap pools on Solana"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ pool]
 
   
