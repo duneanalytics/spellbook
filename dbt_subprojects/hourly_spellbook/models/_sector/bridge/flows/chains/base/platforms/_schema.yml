@@ -1,0 +1,113 @@
+version: 2
+
+models:
+  - name: bridge_base_base_bridge_initiated
+    meta:
+      blockchain: base
+      sector: bridge
+      project: base
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'base', 'bridge', 'flows', 'initiated' ]
+    description: "Base bridge initiated events on Base"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']
+      - equal_rowcount_with_sources:
+          evt_sources:
+            - source('base_base','l2standardbridge_evt_erc20bridgeinitiated')
+            - source('base_base','l2standardbridge_evt_ethbridgeinitiated')
+    columns:
+      - &source_blockchain
+        name: source_blockchain
+        description: "Blockchain where the tokens were sent"
+      - &destination_blockchain
+        name: destination_blockchain
+        description: "Blockchain where the tokens were received"
+      - &project
+        name: project
+        description: "Project name of the bridge"
+      - &project_version
+        name: project_version
+        description: "Version of the project"
+      - &event_side
+        name: event_side
+        description: "Blockchain where the event was emitted"
+      - &block_month
+        name: block_month
+        description: "Block month of the bridge transaction"
+      - &block_time
+        name: block_time
+        description: "Block time of the bridge transaction"
+      - &block_number
+        name: block_number
+        description: "Block number of the bridge transaction"
+      - &amount_raw 
+        name: amount_raw
+        description: "Raw amount of tokens"
+      - &source_address 
+        name: source_address
+        description: "Source address"
+      - &destination_address 
+        name: destination_address
+        description: "Destination address"
+      - &source_token_standard  
+        name: source_token_standard
+        description: "Source blockchain token standard"
+      - &destination_token_standard
+        name: remote_token
+        description: "Destination blockchain token standard"
+      - &source_token_address  
+        name: source_token_address
+        description: "Source blockchain token address"
+      - &destination_token_address
+        name: destination_token_address
+        description: "Destination blockchain token address"
+      - &extra_data 
+        name: extra_data
+        description: "Extra data"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash"
+      - &evt_index  
+        name: evt_index
+        description: "Event index"
+      - &contract_address 
+        name: contract_address
+        description: "Contract address used for the bridge tx"
+  - name: bridge_base_base_bridge_finalised
+    meta:
+      blockchain: base
+      sector: bridge
+      project: base
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'base', 'bridge', 'flows', 'finalised' ]
+    description: "Base bridge finalised events on Base"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']
+      - equal_rowcount_with_sources:
+          evt_sources:
+            - source('base_base','l2standardbridge_evt_erc20bridgefinalized')
+            - source('base_base','l2standardbridge_evt_ethbridgefinalized')
+    columns:
+      - *source_blockchain
+      - *destination_blockchain
+      - *project
+      - *project_version
+      - *event_side
+      - *block_month
+      - *block_time
+      - *block_number
+      - *amount_raw
+      - *source_address
+      - *destination_address
+      - *source_token_standard
+      - *destination_token_standard
+      - *source_token_address
+      - *destination_token_address
+      - *extra_data
+      - *tx_hash
+      - *evt_index  
+      - *contract_address 

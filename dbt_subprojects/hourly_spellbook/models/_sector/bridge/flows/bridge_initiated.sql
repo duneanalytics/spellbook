@@ -1,6 +1,6 @@
 {{ config(
     schema = 'bridge',
-    alias = 'raw_flows',
+    alias = 'initiated',
     materialized = 'view',
     unique_key = ['blockchain','tx_hash','evt_index']
 )
@@ -14,23 +14,26 @@
 SELECT *
 FROM (
     {% for chain in chains %}
-    SELECT blockchain
+    SELECT source_blockchain
+    , destination_blockchain
     , project
     , project_version
-    , flows_type
+    , event_side
     , block_month
     , block_time
     , block_number
     , amount_raw
-    , sender
-    , recipient
-    , local_token
-    , remote_token
+    , source_address
+    , destination_address
+    , source_token_standard
+    , destination_token_standard
+    , source_token_address
+    , destination_token_address
     , extra_data
     , tx_hash
     , evt_index
     , contract_address
-    FROM {{ ref('bridge_'~chain~'_flows') }}
+    FROM {{ ref('bridge_'~chain~'_initiated') }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
