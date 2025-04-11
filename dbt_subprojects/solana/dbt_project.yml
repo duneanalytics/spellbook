@@ -55,9 +55,6 @@ dispatch:
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 models:
   solana:
-    +pre_hook:
-      - sql: "{{ set_trino_session_property(model.config.get('tags', 'force_partition_overwrite'), 'insert_existing_partitions_behavior', 'OVERWRITE') }}"
-        transaction: true
     +post-hook:
       - sql: "{{ set_trino_session_property(is_materialized(model), 'writer_scaling_min_data_processed', model.config.get('writer_min_size', '500MB')) }}"
         transaction: true
