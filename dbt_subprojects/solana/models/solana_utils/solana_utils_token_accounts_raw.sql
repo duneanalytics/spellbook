@@ -157,15 +157,3 @@ with init as (
     select * from close
 )
 select * from raw_events
-where token_account_prefix in (
-    '6S'
-    , 'G1'
-    , 'Yg'
-    , '6o'
-    )
-    and token_account in (
-    '6SvQBmUMrehEb2bLhTVTDM5vAMgK6bD1Zz2VfcbEEHVe'
-    , 'G1ohP78e19tP7EJvtNd77Sjs3JnmauWvph32M1oLrPxf'
-    , 'YgiU6QrKidVFS6PhwoeTeHZXiSc8Av2UykCk7umyddo'
-    , '6oJ2Y4qjZxUogHQsAaVamc6c9URAfxtGyDrnPU9DxcUx'
-    )
