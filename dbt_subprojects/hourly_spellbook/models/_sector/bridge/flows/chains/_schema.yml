@@ -1,31 +1,34 @@
 version: 2
 
 models:
-  - name: bridge_ethereum_flows
+  - name: bridge_ethereum_initiated
     meta:
       blockchain: ethereum
       sector: bridge
       project: base
       contributors: [ 'hildobby']
     config:
-      tags: [ 'base', 'ethereum', 'bridge', 'flows' ]
-    description: "Base bridge flows on Ethereum"
+      tags: [ 'bridge', 'flows', 'initiated' ]
+    description: "Bridge initiated events on Ethereum"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['source_blockchain', 'tx_hash', 'evt_index']
+          combination_of_columns: ['tx_hash','evt_index']
     columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain which the DEX is deployed"
+      - &source_blockchain
+        name: source_blockchain
+        description: "Blockchain where the tokens were sent"
+      - &destination_blockchain
+        name: destination_blockchain
+        description: "Blockchain where the tokens were received"
       - &project
         name: project
         description: "Project name of the bridge"
-      - &version
-        name: version
-        description: "Version of the contract built and deployed by the bridge project"
-      - &flows_type
-        name: flows_type
-        description: "Flows type"
+      - &project_version
+        name: project_version
+        description: "Version of the project"
+      - &event_side
+        name: event_side
+        description: "Blockchain where the event was emitted"
       - &block_month
         name: block_month
         description: "Block month of the bridge transaction"
@@ -38,18 +41,24 @@ models:
       - &amount_raw 
         name: amount_raw
         description: "Raw amount of tokens"
-      - &sender 
-        name: sender
-        description: "Sender address"
-      - &recipent 
-        name: recipent
-        description: "Recipent address"
-      - &local_token  
-        name: local_token
-        description: "Local token address"
-      - &remote_token
+      - &source_address 
+        name: source_address
+        description: "Source address"
+      - &destination_address 
+        name: destination_address
+        description: "Destination address"
+      - &source_token_standard  
+        name: source_token_standard
+        description: "Source blockchain token standard"
+      - &destination_token_standard
         name: remote_token
-        description: "Remote token address"
+        description: "Destination blockchain token standard"
+      - &source_token_address  
+        name: source_token_address
+        description: "Source blockchain token address"
+      - &destination_token_address
+        name: destination_token_address
+        description: "Destination blockchain token address"
       - &extra_data 
         name: extra_data
         description: "Extra data"
@@ -62,33 +71,99 @@ models:
       - &contract_address 
         name: contract_address
         description: "Contract address used for the bridge tx"
-
-  - name: bridge_base_flows
+  - name: bridge_ethereum_finalised
+    meta:
+      blockchain: ethereum
+      sector: bridge
+      project: base
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'base', 'bridge', 'flows' , 'finalised' ]
+    description: "Bridge finalised events on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']
+    columns:
+      - *source_blockchain
+      - *destination_blockchain
+      - *project
+      - *project_version
+      - *event_side
+      - *block_month
+      - *block_time
+      - *block_number
+      - *amount_raw
+      - *source_address
+      - *destination_address
+      - *source_token_standard
+      - *destination_token_standard
+      - *source_token_address
+      - *destination_token_address
+      - *extra_data
+      - *tx_hash
+      - *evt_index  
+      - *contract_address 
+  - name: bridge_base_initiated
     meta:
       blockchain: base
       sector: bridge
       project: base
       contributors: [ 'hildobby']
     config:
-      tags: [ 'base', 'bridge', 'flows' ]
-    description: "Base bridge flows on Ethereum"
+      tags: [ 'base', 'bridge', 'flows' , 'initiated' ]
+    description: "Bridge initiated events on Base"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['source_blockchain', 'tx_hash', 'evt_index']
+          combination_of_columns: ['tx_hash','evt_index']
     columns:
-      - *blockchain
+      - *source_blockchain
+      - *destination_blockchain
       - *project
-      - *version
-      - *flows_type
+      - *project_version
+      - *event_side
       - *block_month
       - *block_time
       - *block_number
       - *amount_raw
-      - *sender
-      - *recipent
-      - *local_token
-      - *remote_token
+      - *source_address
+      - *destination_address
+      - *source_token_standard
+      - *destination_token_standard
+      - *source_token_address
+      - *destination_token_address
       - *extra_data
       - *tx_hash
-      - *evt_index
+      - *evt_index  
+      - *contract_address 
+  - name: bridge_base_finalised
+    meta:
+      blockchain: base
+      sector: bridge
+      project: base
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'base', 'bridge', 'flows' , 'finalised' ]
+    description: "Bridge finalised events on Base"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']
+    columns:
+      - *source_blockchain
+      - *destination_blockchain
+      - *project
+      - *project_version
+      - *event_side
+      - *block_month
+      - *block_time
+      - *block_number
+      - *amount_raw
+      - *source_address
+      - *destination_address
+      - *source_token_standard
+      - *destination_token_standard
+      - *source_token_address
+      - *destination_token_address
+      - *extra_data
+      - *tx_hash
+      - *evt_index  
       - *contract_address 

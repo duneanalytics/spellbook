@@ -9,7 +9,7 @@ models:
       contributors: [ 'hildobby']
     config:
       tags: [ 'base', 'bridge', 'flows', 'initiated' ]
-    description: "Base bridge initiated events on Base"
+    description: "Base bridge initiated events on Ethereum"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['tx_hash','evt_index']
@@ -83,7 +83,7 @@ models:
       contributors: [ 'hildobby']
     config:
       tags: [ 'base', 'bridge', 'flows' , 'finalised' ]
-    description: "Base bridge finalised events on Base"
+    description: "Base bridge finalised events on Ethereum"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['tx_hash','evt_index']
