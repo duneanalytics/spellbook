@@ -1,6 +1,7 @@
  {{
   config(
         schema = 'solana_utils',
+        tags = ['prod_exclude'],
         alias = 'token_accounts',
         materialized = 'incremental',
         file_format = 'delta',
@@ -12,6 +13,8 @@
                                     \'["ilemi"]\') }}')
 }}
 
+{% set start_date = '2025-01-01' %}
+
 WITH
       distinct_accounts as (
             SELECT
@@ -20,9 +23,11 @@ WITH
                   , max_by(aa.token_mint_address, aa.block_time) as token_mint_address
             FROM {{ source('solana','account_activity') }} aa
             WHERE aa.token_mint_address is not null
+            and writable = true
             {% if is_incremental() %}
             AND {{incremental_predicate('aa.block_time')}}
             {% endif %}
+            AND aa.block_time >= timestamp '{{start_date}}'
             group by 1
       )
 SELECT
