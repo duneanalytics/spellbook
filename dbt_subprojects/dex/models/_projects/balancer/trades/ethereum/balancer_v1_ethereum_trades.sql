@@ -63,7 +63,7 @@ v1 AS (
         WHERE swaps.evt_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-        WHERE swaps.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE {{incremental_predicate('swaps.evt_block_time')}}
     {% endif %}
 ),
 
@@ -75,7 +75,7 @@ prices AS (
         AND minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-        AND minute >= date_trunc('day', now() - interval '7' day)
+        AND {{incremental_predicate('minute')}}
     {% endif %}
 )
 
@@ -122,7 +122,7 @@ INNER JOIN {{ source('ethereum', 'transactions') }} tx
     AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{incremental_predicate('tx.block_time')}}
     {% endif %}
 LEFT JOIN {{ source('tokens', 'erc20') }} erc20a
     ON trades.token_bought_address = erc20a.contract_address
