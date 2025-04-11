@@ -72,7 +72,9 @@ models:
       - name: initial_collateral_token
         description: The token used as initial collateral in the order.
         data_tests:
-          - not_null        
+          - not_null   
+      - name: cancellation_receiver
+        description: The address that will receive remaining collateral if the order is cancelled.     
       - name: swap_path
         description: JSON array of markets through which the swap was routed.
         data_tests:
@@ -93,7 +95,7 @@ models:
         data_tests:
           - not_null
           - accepted_values:
-              values: ['MarketSwap','LimitSwap','MarketIncrease','LimitIncrease','MarketDecrease','LimitDecrease','StopLossDecrease','Liquidation']
+              values: ['MarketSwap','LimitSwap','MarketIncrease','LimitIncrease','MarketDecrease','LimitDecrease','StopLossDecrease','Liquidation','StopIncrease']
       - name: decrease_position_swap_type
         description: |
           The type of swap for decreasing position, with possible values:
@@ -156,7 +158,8 @@ models:
         data_tests:
           - not_null
           - unique
-
+      - name: data_list
+        description: An array of encoded bytes used to pass additional metadata for advanced order logic.
 
   - name: gmx_v2_arbitrum_order_executed
     meta:
@@ -2376,3 +2379,709 @@ models:
         description: The amount distributed to the impact pool.
       - name: next_position_impact_pool_amount
         description: The updated position impact pool amount after the event.
+
+  - name: gmx_v2_arbitrum_claimable_collateral_updated
+    description: |
+      Combines and standardizes the `ClaimableCollateralUpdated` event logs from the Arbitrum chain. 
+      This model extracts and unifies event-level data about updates to claimable collateral balances for GMX users.
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'claimable_collateral_updated']
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The name of the event, always `ClaimableCollateralUpdated` for this model
+      - *msg_sender
+      - name: market
+        description: The market associated with the collateral update
+      - name: token
+        description: The token for which claimable collateral was updated
+      - name: account
+        description: The user account whose claimable collateral was updated
+      - name: time_key
+        description: A time-based identifier
+      - name: delta
+        description: The change in the amount of claimable collateral
+      - name: next_value
+        description: The new total claimable amount for the user after the update
+      - name: next_pool_value
+        description: The updated value of the pool's total claimable collateral for this token and market
+
+  - name: gmx_v2_arbitrum_claimable_funding_updated
+    description: |
+      Combines and standardizes the `ClaimableFundingUpdated` event logs from the Arbitrum chain.
+      This model extracts and unifies event-level data related to updates in claimable funding amounts for GMX users.
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'claimable_funding_updated']
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The name of the event, always `ClaimableFundingUpdated` for this model
+      - *msg_sender
+      - name: market
+        description: The market associated with the funding update
+      - name: token
+        description: The token for which claimable funding was updated
+      - name: account
+        description: The user account whose claimable funding was updated
+      - name: delta
+        description: The change in the amount of claimable funding
+      - name: next_value
+        description: The new total claimable funding amount for the user after the update
+      - name: next_pool_value
+        description: The updated value of the pool's total claimable funding for this token and market
+
+  - name: gmx_v2_arbitrum_clear_pending_action
+    description: |
+      Combines and standardizes the `ClearPendingAction` event logs from the Arbitrum chain.
+      This model extracts event-level data related to the clearing of pending actions within the GMX protocol,
+      including action identifiers and labels triggered by specific transactions.
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'clear_pending_action']
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The name of the event, always `ClearPendingAction` for this model
+      - *msg_sender
+      - name: action_key
+        description: The unique identifier of the cleared action, represented as a bytes32 value
+      - name: action_label
+        description: A human-readable label or description for the cleared action
+
+  - name: gmx_v2_arbitrum_collateral_claimed
+    description: |
+      Combines and standardizes the `CollateralClaimed` event logs from the Arbitrum chain.
+      This model captures event-level data for user claims of collateral from the GMX protocol,
+      including the claimed token, amount, market, and receiving account.
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'collateral_claimed']
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The name of the event, always `CollateralClaimed` for this model
+      - *msg_sender
+      - name: market
+        description: The market associated with the claimed collateral
+      - name: token
+        description: The token that was claimed as collateral
+      - name: account
+        description: The user account claiming the collateral
+      - name: receiver
+        description: The address that received the claimed collateral
+      - name: time_key
+        description: A time-based key used to group or index the event (e.g., by hour or day)
+      - name: amount
+        description: The amount of collateral claimed by the user
+      - name: next_pool_value
+        description: The updated total pool value for the claimed token and market after this claim
+
+  - name: gmx_v2_arbitrum_funding_fees_claimed
+    description: |
+      Combines and standardizes the `FundingFeesClaimed` event logs from the Arbitrum chain.
+      This model captures event-level data for funding fee claims within the GMX protocol,
+      including the market, token, amount, and receiver information.
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'funding_fees_claimed']
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The name of the event, always `FundingFeesClaimed` for this model
+      - *msg_sender
+      - name: market
+        description: The market associated with the funding fee claim
+      - name: token
+        description: The token in which funding fees were claimed
+      - name: account
+        description: The user account claiming the funding fees
+      - name: receiver
+        description: The address that received the claimed funding fees
+      - name: amount
+        description: The amount of funding fees claimed
+      - name: next_pool_value
+        description: The updated total pool value for the claimed token and market after this claim
+
+  - name: gmx_v2_arbitrum_grant_role
+    description: |
+      Combines and standardizes the `GrantRole` event logs from the Arbitrum chain.
+      This model captures permission changes within the GMX protocol, specifically role grants to accounts 
+      for protocol control and access management.
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'grant_role']
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The name of the event, always `GrantRole` for this model
+      - *msg_sender
+      - name: account
+        description: The address to which the role was granted
+      - name: role_key
+        description: The identifier (usually bytes32) of the role that was granted
+
+  - name: gmx_v2_arbitrum_revoke_role
+    description: |
+      Combines and standardizes the `RevokeRole` event logs from the Arbitrum chain.
+      This model captures permission changes within the GMX protocol, specifically role revocations from accounts
+      that previously had protocol-level access or control permissions.
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'revoke_role']
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The name of the event, always `RevokeRole` for this model
+      - *msg_sender
+      - name: account
+        description: The address from which the role was revoked
+      - name: role_key
+        description: The identifier (usually bytes32) of the role that was revoked
+
+  - name: gmx_v2_arbitrum_set_atomic_oracle_provider
+    description: |
+      Combines and standardizes the `SetAtomicOracleProvider` event logs from the Arbitrum chain.
+      This model captures updates to the atomic oracle provider configuration within the GMX protocol,
+      including provider addresses and corresponding boolean values indicating enablement.
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'set_atomic_oracle_provider']
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The name of the event, always `SetAtomicOracleProvider` for this model
+      - *msg_sender
+      - name: provider
+        description: The oracle provider address being added or removed
+      - name: value
+        description: A boolean indicating whether the oracle provider was enabled (`true`) or disabled (`false`)
+
+  - name: gmx_v2_arbitrum_set_data_stream
+    description: |
+      Combines and standardizes the `SetDataStream` event logs from the Arbitrum chain.
+      This model captures updates to the data stream configuration within the GMX protocol,
+      including token-specific stream multipliers and feed identifiers used for price oracles and analytics.
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'set_data_stream']
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The name of the event, always `SetDataStream` for this model
+      - *msg_sender
+      - name: token
+        description: The token for which the data stream settings are being updated
+      - name: data_stream_multiplier
+        description: A multiplier applied to the data stream, used to scale the feed data
+      - name: feed_id
+        description: Identifier of the data feed used for this token's stream
+      - name: data_stream_spread_reduction_factor
+        description: The proposed factor used to reduce spread in the data stream for the specified token
+
+  - name: gmx_v2_arbitrum_set_oracle_provider_enabled
+    description: |
+      Combines and standardizes the `SetOracleProviderEnabled` event logs from the Arbitrum chain.
+      This model tracks changes to the enablement status of oracle providers within the GMX protocol,
+      including the oracle address and whether it was enabled or disabled.
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'set_oracle_provider_enabled']
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The name of the event, always `SetOracleProviderEnabled` for this model
+      - *msg_sender
+      - name: provider
+        description: The oracle provider address affected by this setting change
+      - name: value
+        description: A boolean indicating whether the oracle provider was enabled (`true`) or disabled (`false`)
+
+  - name: gmx_v2_arbitrum_set_oracle_provider_for_token
+    description: |
+      Combines and standardizes the `SetOracleProviderForToken` event logs from the Arbitrum chain.
+      This model tracks assignments of oracle providers to specific tokens within the GMX protocol,
+      specifying which provider is responsible for price feeds or data streams for each token.
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'set_oracle_provider_for_token']
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The name of the event, always `SetOracleProviderForToken` for this model
+      - *msg_sender
+      - name: token
+        description: The token for which the oracle provider is being set
+      - name: provider
+        description: The oracle provider address assigned to the token
+
+  - name: gmx_v2_arbitrum_set_price_feed
+    description: |
+      Combines and standardizes the `SetPriceFeed` event logs from the Arbitrum chain.
+      This model captures updates to token price feed configurations within the GMX protocol,
+      including new price feed addresses, multipliers, heartbeat durations, and stable price flags.
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'set_price_feed']
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The name of the event, always `SetPriceFeed` for this model
+      - *msg_sender
+      - name: token
+        description: The token for which the price feed was updated
+      - name: price_feed
+        description: The address of the new price feed contract
+      - name: price_feed_multiplier
+        description: Multiplier used to scale the price feed value
+      - name: price_feed_heartbeat_duration
+        description: Duration in seconds representing the acceptable heartbeat for the feed
+      - name: stable_price
+        description: Boolean indicating whether the token is treated as having a stable price
+
+  - name: gmx_v2_arbitrum_signal_grant_role
+    description: |
+      Combines and standardizes the `SignalGrantRole` event logs from the Arbitrum chain.
+      This model tracks role grant signals initiated within the GMX protocol, representing proposed permission changes
+      that may require time delays or multi-step approvals before becoming effective.
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'signal_grant_role']
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The name of the event, always `SignalGrantRole` for this model
+      - *msg_sender
+      - name: account
+        description: The address that is proposed to receive the role
+      - name: role_key
+        description: The identifier (typically bytes32) of the role to be granted
+
+  - name: gmx_v2_arbitrum_signal_pending_action
+    description: |
+      Combines and standardizes the `SignalPendingAction` event logs from the Arbitrum chain.
+      This model captures proposals for pending actions within the GMX protocol, typically representing
+      governance- or timelock-controlled changes that require confirmation or delay before execution.
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'signal_pending_action']
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The name of the event, always `SignalPendingAction` for this model
+      - *msg_sender
+      - name: action_key
+        description: The unique identifier of the pending action, typically a bytes32 hash
+      - name: action_label
+        description: A human-readable label or explanation for the pending action
+
+  - name: gmx_v2_arbitrum_signal_revoke_role
+    description: |
+      Combines and standardizes the `SignalRevokeRole` event logs from the Arbitrum chain.
+      This model captures role revocation signals within the GMX protocol, representing proposals to remove 
+      access or permissions from specific accounts, typically subject to a governance or timelock delay.
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'signal_revoke_role']
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The name of the event, always `SignalRevokeRole` for this model
+      - *msg_sender
+      - name: account
+        description: The address from which the role is proposed to be revoked
+      - name: role_key
+        description: The identifier (typically bytes32) of the role to be revoked
+
+  - name: gmx_v2_arbitrum_signal_set_atomic_oracle_provider
+    description: |
+      Combines and standardizes the `SignalSetAtomicOracleProvider` event logs from the Arbitrum chain.
+      This model captures proposed updates to atomic oracle providers within the GMX protocol, 
+      signaling enablement or disablement actions that typically require governance approval or a time delay.
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'signal_set_atomic_oracle_provider']
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The name of the event, always `SignalSetAtomicOracleProvider` for this model
+      - *msg_sender
+      - name: provider
+        description: The oracle provider address proposed for enablement or disablement
+      - name: value
+        description: A boolean indicating whether the provider is proposed to be enabled (`true`) or disabled (`false`)
+
+  - name: gmx_v2_arbitrum_signal_set_data_stream
+    description: |
+      Combines and standardizes the `SignalSetDataStream` event logs from the Arbitrum chain.
+      This model captures proposed updates to token-specific data stream configurations in the GMX protocol,
+      including stream multipliers and feed identifiers. These changes typically require governance approval.
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'signal_set_data_stream']
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The name of the event, always `SignalSetDataStream` for this model
+      - *msg_sender
+      - name: token
+        description: The token for which the data stream configuration is being proposed
+      - name: data_stream_multiplier
+        description: The proposed multiplier to scale the data stream values
+      - name: feed_id
+        description: The proposed identifier for the new data feed
+      - name: data_stream_spread_reduction_factor
+        description: The proposed factor used to reduce spread in the data stream for the specified token
+
+  - name: gmx_v2_arbitrum_signal_set_oracle_provider_enabled
+    description: |
+      Combines and standardizes the `SignalSetOracleProviderEnabled` event logs from the Arbitrum chain.
+      This model captures proposed changes to the enablement status of oracle providers in the GMX protocol,
+      signaling future activation or deactivation actions pending governance or timelock approval.
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'signal_set_oracle_provider_enabled']
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The name of the event, always `SignalSetOracleProviderEnabled` for this model
+      - *msg_sender
+      - name: provider
+        description: The oracle provider whose status is proposed to be changed
+      - name: value
+        description: A boolean indicating whether the provider is proposed to be enabled (`true`) or disabled (`false`)
+
+  - name: gmx_v2_arbitrum_signal_set_oracle_provider_for_token
+    description: |
+      Combines and standardizes the `SignalSetOracleProviderForToken` event logs from the Arbitrum chain.
+      This model captures proposals to assign or update oracle providers for specific tokens in the GMX protocol.
+      These changes typically require governance or timelock approval before being finalized.
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'signal_set_oracle_provider_for_token']
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The name of the event, always `SignalSetOracleProviderForToken` for this model
+      - *msg_sender
+      - name: token
+        description: The token for which the oracle provider assignment is being proposed
+      - name: provider
+        description: The oracle provider address proposed for the token
+
+  - name: gmx_v2_arbitrum_signal_set_price_feed
+    description: |
+      Combines and standardizes the `SignalSetPriceFeed` event logs from the Arbitrum chain.
+      This model captures proposed updates to token price feed configurations in the GMX protocol, 
+      including feed address, multiplier, heartbeat duration, and stable price status.
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'signal_set_price_feed']
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The name of the event, always `SignalSetPriceFeed` for this model
+      - *msg_sender
+      - name: token
+        description: The token for which the price feed configuration is being proposed
+      - name: price_feed
+        description: The proposed address of the price feed contract
+      - name: price_feed_multiplier
+        description: The proposed multiplier used to scale price values
+      - name: price_feed_heartbeat_duration
+        description: The maximum allowable time in seconds between updates from the price feed
+      - name: stable_price
+        description: Boolean indicating whether the token is considered to have a stable price
+
+  - name: gmx_v2_arbitrum_swap_info
+    description: |
+      Combines and standardizes the `SwapInfo` event logs from the Arbitrum chain.
+      This model captures detailed information about token swaps executed via the GMX protocol, 
+      including pricing, token flow, slippage, and order reference data.
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'swap_info']
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The name of the event, always `SwapInfo` for this model
+      - *msg_sender
+      - name: market
+        description: The market associated with the swap
+      - name: receiver
+        description: The address that received the output tokens
+      - name: token_in
+        description: The token that was input into the swap
+      - name: token_out
+        description: The token that was output from the swap
+      - name: token_in_price
+        description: The price of the input token at the time of the swap
+      - name: token_out_price
+        description: The price of the output token at the time of the swap
+      - name: amount_in
+        description: The total amount of input token provided
+      - name: amount_in_after_fees
+        description: The input token amount remaining after protocol fees were applied
+      - name: amount_out
+        description: The total amount of output token received from the swap
+      - name: price_impact_usd
+        description: The price impact of the swap in USD
+      - name: price_impact_amount
+        description: The absolute value of the price impact in token terms
+      - name: token_in_price_impact_amount
+        description: The amount of the price impact attributed to the input token
+      - name: order_key
+        description: A unique identifier linking this swap to a specific order

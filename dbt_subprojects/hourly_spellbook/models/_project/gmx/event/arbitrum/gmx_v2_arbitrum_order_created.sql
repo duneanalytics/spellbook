@@ -49,13 +49,35 @@ WITH evt_data_1 AS (
     {% endif %}
 )
 
--- unite 2 tables
+, evt_data_3 AS (
+    SELECT 
+        -- Main Variables
+        '{{ blockchain_name }}' AS blockchain,
+        evt_block_time AS block_time,
+        evt_block_number AS block_number, 
+        evt_tx_hash AS tx_hash,
+        evt_index AS index,
+        contract_address,
+        eventName AS event_name,
+        eventData AS data,
+        msgSender AS msg_sender
+    FROM {{ source('gmx_v2_arbitrum','EventEmitter_evt_EventLog')}}
+    WHERE eventName = '{{ event_name }}'
+    {% if is_incremental() %}
+        AND {{ incremental_predicate('evt_block_time') }}
+    {% endif %}
+)
+
+-- unite 3 tables
 , evt_data AS (
     SELECT * 
     FROM evt_data_1
     UNION DISTINCT
     SELECT *
     FROM evt_data_2
+    UNION 
+    SELECT *
+    FROM evt_data_3
 )
 
 , parsed_data AS (
@@ -135,6 +157,19 @@ WITH evt_data_1 AS (
         ) AS t(item)
 )
 
+, bytes32_array_items_parsed AS (
+    SELECT 
+        tx_hash,
+        index,
+        json_extract_scalar(CAST(item AS VARCHAR), '$.key') AS key_name,
+        json_format(json_extract(CAST(item AS VARCHAR), '$.value')) AS value
+    FROM 
+        parsed_data,
+        UNNEST(
+            CAST(json_extract(bytes32_items, '$.arrayItems') AS ARRAY(JSON))
+        ) AS t(item)
+)
+
 , combined AS (
     SELECT *
     FROM address_items_parsed
@@ -150,7 +185,9 @@ WITH evt_data_1 AS (
     UNION ALL
     SELECT *
     FROM bytes32_items_parsed
-
+    UNION ALL
+    SELECT *
+    FROM bytes32_array_items_parsed
 )
 
 , evt_data_parsed AS (
@@ -163,6 +200,7 @@ WITH evt_data_1 AS (
         MAX(CASE WHEN key_name = 'uiFeeReceiver' THEN value END) AS ui_fee_receiver,
         MAX(CASE WHEN key_name = 'market' THEN value END) AS market,  
         MAX(CASE WHEN key_name = 'initialCollateralToken' THEN value END) AS initial_collateral_token,
+        MAX(CASE WHEN key_name = 'cancellationReceiver' THEN value END) AS cancellation_receiver,
 
         MAX(CASE WHEN key_name = 'swapPath' THEN value END) AS swap_path,  
         MAX(CASE WHEN key_name = 'orderType' THEN value END) AS order_type,
@@ -183,7 +221,9 @@ WITH evt_data_1 AS (
         MAX(CASE WHEN key_name = 'shouldUnwrapNativeToken' THEN value END) AS should_unwrap_native_token,
         MAX(CASE WHEN key_name = 'autoCancel' THEN value END) AS auto_cancel,
     
-        MAX(CASE WHEN key_name = 'key' THEN value END) AS key
+        MAX(CASE WHEN key_name = 'key' THEN value END) AS key,
+        MAX(CASE WHEN key_name = 'dataList' THEN value END) AS data_list
+
     FROM
         combined
     GROUP BY tx_hash, index
@@ -207,6 +247,7 @@ WITH evt_data_1 AS (
         from_hex(ui_fee_receiver) AS ui_fee_receiver,
         from_hex(market) AS market,
         from_hex(initial_collateral_token) AS initial_collateral_token,
+        from_hex(cancellation_receiver) AS cancellation_receiver,
         
         swap_path,
         TRY_CAST(order_type AS INTEGER) AS order_type,
@@ -224,7 +265,8 @@ WITH evt_data_1 AS (
         TRY_CAST(is_long AS BOOLEAN) AS is_long,
         TRY_CAST(should_unwrap_native_token AS BOOLEAN) AS should_unwrap_native_token,
         TRY_CAST(auto_cancel AS BOOLEAN) AS auto_cancel,
-        from_hex(key) AS key
+        from_hex(key) AS key,
+        data_list
         
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
@@ -251,6 +293,7 @@ WITH evt_data_1 AS (
         ui_fee_receiver,
         ED.market,
         ED.initial_collateral_token,
+        cancellation_receiver,
         swap_path,
         
         CASE 
@@ -301,7 +344,8 @@ WITH evt_data_1 AS (
             WHEN auto_cancel IS NULL THEN false
             ELSE auto_cancel
         END AS auto_cancel,
-        key
+        key,
+        data_list
 
     FROM event_data AS ED
     LEFT JOIN {{ ref('gmx_v2_arbitrum_markets_data') }} AS MD
