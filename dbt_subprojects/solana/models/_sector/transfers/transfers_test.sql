@@ -29,11 +29,11 @@ LEFT JOIN
     AND tk_s.token_account = b.from_token_account
     AND b.instruction_uniq_id >= tk_s.valid_from_instruction_uniq_id
     AND b.instruction_uniq_id < tk_s.valid_to_instruction_uniq_id
-    AND tk_s.valid_to_month >= b.block_month
+    AND tk_s.valid_to_year >= b.block_year
 LEFT JOIN
     {{ ref('alt_solana_utils_token_accounts_updates') }} tk_d
     ON tk_d.token_account_prefix = b.to_token_account_prefix
     AND tk_d.token_account = b.to_token_account
     AND b.instruction_uniq_id >= tk_d.valid_from_instruction_uniq_id
     AND b.instruction_uniq_id < tk_d.valid_to_instruction_uniq_id
-    AND tk_d.valid_to_month >= b.block_month
+    AND tk_d.valid_to_year >= b.block_year

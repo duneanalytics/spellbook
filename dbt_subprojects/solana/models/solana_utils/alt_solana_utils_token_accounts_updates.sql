@@ -3,7 +3,7 @@
     schema='solana_utils',
     alias='alt_token_accounts_updates',
     materialized='table',
-    partition_by=['token_account_prefix', 'valid_to_month']
+    partition_by=['token_account_prefix', 'valid_to_year']
   )
 }}
 
@@ -52,7 +52,7 @@ SELECT
   -- Constructing a valid_to in the future to avoid nulls to handle joins
   COALESCE(valid_to, TIMESTAMP '9999-12-31 23:59:59') AS valid_to,
   COALESCE(valid_to_instruction_uniq_id, '999999999-999999-9999-9999') AS valid_to_instruction_uniq_id,
-  CAST(COALESCE(date_trunc('month', valid_to), TIMESTAMP '9999-12-31 23:59:59') as date) as valid_to_month,
+  CAST(COALESCE(date_trunc('year', valid_to), TIMESTAMP '9999-12-31 23:59:59') as date) as valid_to_year,
   token_account_prefix
 FROM combined_events
 where account_owner is not null

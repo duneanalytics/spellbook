@@ -11,6 +11,7 @@ SELECT
     call_block_time as block_time
     , cast(date_trunc('day', call_block_time) as date) as block_date
     , cast(date_trunc('month', call_block_time) as date) as block_month
+    , cast(date_trunc('year', call_block_time) as date) as block_year
     , call_block_slot as block_slot
     , call_tx_index as tx_index
     , 'transfer' as action
