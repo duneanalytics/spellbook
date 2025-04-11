@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: curvefi_sonic
+    description: "decoded events and function calls for curve.fi on Sonic"
+    tables:
+      - name: CurveStableSwapFactory_call_deploy_plain_pool
+      - name: CurveStableSwapFactory_evt_PlainPoolDeployed
+      - name: CurveStableSwapFactory_call_deploy_metapool
+      - name: CurveStableSwapFactory_evt_MetaPoolDeployed
+      - name: CurveStableSwap_evt_TokenExchange
+      - name: CurveStableSwap_evt_TokenExchangeUnderlying
