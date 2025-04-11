@@ -2,7 +2,7 @@
         schema='evms',
         alias = 'transactions',
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle", "ronin", "ink"]\',
+        post_hook='{{ expose_spells(\'["abstract","apechain","b3","berachain","boba","kaia","sonic","ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle", "ronin", "ink"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby", "synthquest"]\') }}'
@@ -31,6 +31,13 @@
      , ('sei', source('sei', 'transactions'))
      , ('ronin', source('ronin', 'transactions'))
      , ('ink', source('ink', 'transactions'))
+     , ('abstract', source('abstract', 'transactions'))
+     , ('apechain', source('apechain', 'transactions'))
+     , ('b3', source('b3', 'transactions'))
+     , ('berachain', source('berachain', 'transactions'))
+     , ('boba', source('boba', 'transactions'))
+     , ('kaia', source('kaia', 'transactions'))
+     , ('sonic', source('sonic', 'transactions'))
 ] %}
 
 {% set unstructured_transactions_models = [
