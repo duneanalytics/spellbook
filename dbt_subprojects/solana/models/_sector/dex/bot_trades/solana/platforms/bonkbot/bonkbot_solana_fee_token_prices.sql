@@ -33,7 +33,7 @@ with
     )
 select
     tokens.minute,
-    CAST(date_trunc('month', block_time) AS date) AS block_month,
+    CAST(date_trunc('month', minute) AS date) AS block_month,
     tokens.blockchain,
     prices.symbol,
     prices.price,
