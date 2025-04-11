@@ -61,7 +61,7 @@ swaps AS (
             varbinary_starts_with(data, 0xe445a52e51cb9a1d3e2f370aa503dc2a) OR 
             varbinary_starts_with(data, 0xe445a52e51cb9a1d67f4521f2cf57777)
         )
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
     AND {{incremental_predicate('block_time')}}
     {% endif %}
 )
