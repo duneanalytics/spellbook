@@ -1,7 +1,8 @@
 {{
   config(
-    schema='solana_utils'
-    , alias='token_accounts'
+	tags = ['prod_exclude']
+    , schema='solana_utils'
+    , alias='token_accounts_scd2'
     , partition_by=['token_account_prefix']
     , materialized='incremental'
     , file_format='delta'
