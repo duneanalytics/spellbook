@@ -50,9 +50,9 @@ FROM
     -- join with fee payment
     JOIN {{ ref('bonkbot_solana_fee_payments_usd') }} AS fee_payments ON (
         trades.tx_id = fee_payments.tx_id
-        AND trades.trader_id != fee_payments.fee_receiver
+        AND fee_payments.block_time = trades.block_time
         AND fee_payments.index = 1 -- only get the first fee payment per tx
-        AND fee_payments.minute = date_trunc('minute', trades.block_time)
+        AND trades.trader_id != fee_payments.fee_receiver
     )
 WHERE
     trades.trader_id != '{{fee_receiver}}' -- Exclude trades signed by FeeWallet
