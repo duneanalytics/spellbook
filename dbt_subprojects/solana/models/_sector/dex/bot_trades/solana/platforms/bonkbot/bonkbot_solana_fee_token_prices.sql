@@ -18,7 +18,7 @@ with
         date_trunc('minute', block_time) as minute,
         from_base58(token_address) as contract_address_varbinary,
         token_address as contract_address_base58
-        from {{ ref("bonkbot_solana_fee_payments") }}
+        from {{ ref("bonkbot_solana_fee_payments_raw") }}
         {% if is_incremental() %} where {{ incremental_predicate("block_time") }}
         {% else %} where block_time >= timestamp '{{project_start_date}}'
         {% endif %}
