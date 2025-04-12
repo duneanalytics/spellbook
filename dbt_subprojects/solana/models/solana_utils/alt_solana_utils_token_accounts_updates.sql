@@ -57,6 +57,7 @@ WITH state_calculation AS (
     {% endif %}
 )
 
+, final_selection AS (
 SELECT
   token_account,
   account_owner as token_balance_owner,
@@ -80,5 +81,19 @@ SELECT
   CAST(COALESCE(date_trunc('year', next_block_time), TIMESTAMP '9999-12-31') as date) as valid_to_year, -- Adjusted coalesce for DATE type
   token_account_prefix
 FROM state_calculation
-WHERE account_owner IS NOT NULL
-  AND account_mint IS NOT NULL
+)
+
+Select token_account, 
+       token_mint_address,
+       token_balance_owner,
+       event_type,
+       valid_from,
+       valid_to,
+       valid_from_instruction_uniq_id,
+       valid_to_instruction_uniq_id,
+       valid_from_year,
+       valid_to_year,
+       token_account_prefix
+from final_selection
+where account_owner is not null
+and account_mint is not null
