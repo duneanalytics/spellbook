@@ -46,20 +46,19 @@ WITH state_calculation AS (
 
   FROM
     {% if is_incremental() %}
-      -- Select full history using WHERE EXISTS to filter for affected accounts
+      -- Select full history by INNER JOINing raw data with a subquery identifying affected accounts
       (
           SELECT raw.*
           FROM {{ ref('solana_utils_token_account_raw_data') }} raw
-          WHERE EXISTS (
-              -- Subquery checks if the raw.token_account exists among affected accounts
-              SELECT 1 -- Select a constant value, we only care about existence
+          INNER JOIN (
+              -- Subquery identifies affected accounts using pre-calculated max values
+              SELECT DISTINCT src.token_account
               FROM {{ ref('solana_utils_token_account_raw_data') }} src
               WHERE
                 -- Use Jinja vars - Trino sees these as constants now
-                src.block_year >= DATE '{{ max_year.strftime('%Y-%m-%d') }}' -- Ensure correct date formatting
+                src.block_year >= DATE '{{ max_year.strftime('%Y-%m-%d') }}'
                 AND src.instruction_uniq_id > '{{ max_id }}'
-                AND src.token_account = raw.token_account
-          )
+          ) AS affected_accounts ON raw.token_account = affected_accounts.token_account
       ) AS incremental_source_data
     {% else %}
       {{ ref('solana_utils_token_account_raw_data') }}
