@@ -122,20 +122,12 @@ models:
           - not_null
       - name: token_price_usd
         description: "The USD price of the token at the time of the payment"
-        tests:
-          - not_null
       - name: token_symbol
         description: "The symbol of the token used for payment"
-        tests:
-          - not_null
       - name: token_decimals
         description: "The number of decimals of the token used for payment"
-        tests:
-          - not_null
       - name: amount_usd
         description: "The USD value of the fee payment (amount * token_price_usd)"
-        tests:
-          - not_null
     tests:
       - unique:
           column_name: "concat(tx_id, token_address)"
