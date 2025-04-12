@@ -2,7 +2,7 @@
   config (
     schema='solana_utils',
     alias='token_account_raw_data',
-    partition_by=['token_account_prefix'],
+    partition_by=['token_account_prefix', 'block_year'],
     materialized='incremental',
     file_format='delta',
     incremental_strategy='delete+insert',
@@ -17,6 +17,7 @@
 SELECT
   CAST(DATE_TRUNC('day', call_block_time) as DATE) AS block_date
   , call_block_time AS block_time
+  , CAST(DATE_TRUNC('year', call_block_time) AS DATE) AS block_year
   , account_account AS token_account
   , SUBSTRING(account_account, 1, 2) AS token_account_prefix
   , 'init' AS event_type
@@ -44,6 +45,7 @@ UNION ALL
 SELECT
   CAST(DATE_TRUNC('day', call_block_time) as DATE) AS block_date
   , call_block_time AS block_time
+  , CAST(DATE_TRUNC('year', call_block_time) AS DATE) AS block_year
   , account_account AS token_account
   , SUBSTRING(account_account, 1, 2) AS token_account_prefix
   , 'init' AS event_type
@@ -72,6 +74,7 @@ UNION ALL
 SELECT
   CAST(DATE_TRUNC('day', call_block_time) as DATE) AS block_date
   , call_block_time AS block_time
+  , CAST(DATE_TRUNC('year', call_block_time) AS DATE) AS block_year
   , account_account AS token_account
   , SUBSTRING(account_account, 1, 2) AS token_account_prefix
   , 'init' AS event_type
@@ -100,6 +103,7 @@ UNION ALL
 SELECT
   CAST(DATE_TRUNC('day', call_block_time) as DATE) AS block_date
   , call_block_time AS block_time
+  , CAST(DATE_TRUNC('year', call_block_time) AS DATE) AS block_year
   , account_owned AS token_account
   , SUBSTRING(account_owned, 1, 2) AS token_account_prefix
   , 'owner_change' AS event_type
@@ -129,6 +133,7 @@ UNION ALL
 SELECT
   CAST(DATE_TRUNC('day', call_block_time) as DATE) AS block_date
   , call_block_time AS block_time
+  , CAST(DATE_TRUNC('year', call_block_time) AS DATE) AS block_year
   , account_account AS token_account
   , SUBSTRING(account_account, 1, 2) AS token_account_prefix
   , 'close' AS event_type
