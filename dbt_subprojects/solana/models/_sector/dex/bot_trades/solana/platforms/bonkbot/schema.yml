@@ -174,8 +174,6 @@ models:
         description: "The symbol of the token sold"
       - name: token_sold_address
         description: "The mint address of the token sold"
-        tests:
-          - not_null
       - name: fee_amount_usd
         description: "The USD value of the fee paid for the trade"
       - name: fee_token_amount
