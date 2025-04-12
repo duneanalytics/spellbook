@@ -140,3 +140,111 @@ models:
       - unique:
           column_name: "concat(tx_id, token_address)"
           name: "bonkbot_solana_fee_payments_unique_tx_id_and_token"
+
+  - name: bonkbot_solana_base_trades
+    description: "Base trades executed by BonkBot on Solana, enriched with fee payment information"
+    columns:
+      - name: block_time
+        description: "The timestamp when the trade was executed"
+        tests:
+          - not_null
+      - name: block_date
+        description: "The date when the trade was executed"
+        tests:
+          - not_null
+      - name: block_month
+        description: "The month when the trade was executed, used for partitioning"
+        tests:
+          - not_null
+      - name: blockchain
+        description: "The blockchain (solana)"
+        tests:
+          - not_null
+      - name: amount_usd
+        description: "The total USD value of the trade"
+        tests:
+          - not_null
+      - name: type
+        description: "The type of trade (Buy/Sell), determined by whether SOL was sold"
+        tests:
+          - not_null
+      - name: token_bought_amount
+        description: "The amount of tokens bought in the trade"
+        tests:
+          - not_null
+      - name: token_bought_symbol
+        description: "The symbol of the token bought"
+        tests:
+          - not_null
+      - name: token_bought_address
+        description: "The mint address of the token bought"
+        tests:
+          - not_null
+      - name: token_sold_amount
+        description: "The amount of tokens sold in the trade"
+        tests:
+          - not_null
+      - name: token_sold_symbol
+        description: "The symbol of the token sold"
+        tests:
+          - not_null
+      - name: token_sold_address
+        description: "The mint address of the token sold"
+        tests:
+          - not_null
+      - name: fee_amount_usd
+        description: "The USD value of the fee paid for the trade"
+        tests:
+          - not_null
+      - name: fee_token_amount
+        description: "The amount of tokens paid as fee"
+        tests:
+          - not_null
+      - name: fee_token_symbol
+        description: "The symbol of the token used to pay the fee"
+        tests:
+          - not_null
+      - name: fee_token_address
+        description: "The mint address of the token used to pay the fee"
+        tests:
+          - not_null
+      - name: project
+        description: "The project name of the DEX"
+        tests:
+          - not_null
+      - name: version
+        description: "The version of the contract built and deployed by the DEX project"
+        tests:
+          - not_null
+      - name: token_pair
+        description: "The token symbol pair for each token involved in the trade"
+        tests:
+          - not_null
+      - name: project_contract_address
+        description: "The project contract address which executed the trade on the blockchain"
+        tests:
+          - not_null
+      - name: user
+        description: "The address which initiated the trade"
+        tests:
+          - not_null
+      - name: tx_id
+        description: "The unique transaction hash value tied to each transaction on the DEX"
+        tests:
+          - not_null
+      - name: tx_index
+        description: "The index of the corresponding trade event"
+        tests:
+          - not_null
+      - name: outer_instruction_index
+        description: "The index of the outer instruction in the transaction"
+        tests:
+          - not_null
+      - name: inner_instruction_index
+        description: "The index of the inner instruction in the transaction"
+        tests:
+          - not_null
+    tests:
+      - unique:
+          column_name: "concat(tx_id, outer_instruction_index, inner_instruction_index)"
+          name: "bonkbot_solana_base_trades_unique_tx_and_instructions"
