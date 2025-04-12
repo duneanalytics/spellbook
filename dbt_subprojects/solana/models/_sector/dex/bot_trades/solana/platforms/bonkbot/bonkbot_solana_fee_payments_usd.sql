@@ -34,7 +34,7 @@ select
     fee_payments.blockchain,
     fee_payments.amount,
     fee_token_prices.price as token_price_usd,
-    fee_payments.amount * fee_token_prices.price as amount_usd
+    fee_payments.amount * fee_token_prices.price as amount_usd,
     fee_token_prices.symbol as token_symbol,
     fee_token_prices.decimals as token_decimals,
     fee_payments.token_address,
