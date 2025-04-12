@@ -42,8 +42,9 @@ select
     fee_payments.tx_id,
     fee_payments.index
 from fee_payments
-left join fee_token_prices
+left join
+    fee_token_prices
     on (
         fee_token_prices.contract_address_base58 = fee_payments.token_address
         and fee_token_prices.minute = date_trunc('minute', fee_payments.block_time)
-    ) 
+    )
