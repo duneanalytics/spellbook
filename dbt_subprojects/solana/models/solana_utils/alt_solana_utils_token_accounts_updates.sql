@@ -9,6 +9,18 @@
   )
 }}
 
+{% if is_incremental() %}
+{% set max_vals_query %}
+    SELECT
+        COALESCE(MAX(valid_from_instruction_uniq_id), '0-0-0-0') AS max_id,
+        COALESCE(MAX(valid_from_year), DATE '1970-01-01') AS max_year
+    FROM {{ this }}
+{% endset %}
+{% set max_vals = run_query(max_vals_query).rows[0] %}
+{% set max_id = max_vals['max_id'] %}
+{% set max_year = max_vals['max_year'] %}
+{% endif %}
+
 -- Common Table Expression for calculating state intervals using window functions
 WITH state_calculation AS (
   SELECT
@@ -34,26 +46,23 @@ WITH state_calculation AS (
 
   FROM
     {% if is_incremental() %}
-      -- Select full history by joining raw data with a subquery identifying affected accounts
+      -- Select full history using WHERE EXISTS to filter for affected accounts
       (
           SELECT raw.*
           FROM {{ ref('solana_utils_token_account_raw_data') }} raw
-          INNER JOIN (
-              SELECT DISTINCT src.token_account
+          WHERE EXISTS (
+              -- Subquery checks if the raw.token_account exists among affected accounts
+              SELECT 1 -- Select a constant value, we only care about existence
               FROM {{ ref('solana_utils_token_account_raw_data') }} src
-              CROSS JOIN ( SELECT
-                              -- Reinstate COALESCE for robustness against empty target table
-                              COALESCE(MAX(valid_from_instruction_uniq_id), '0-0-0-0') AS max_id,
-                              COALESCE(MAX(valid_from_year), DATE '1970-01-01') AS max_year
-                           FROM {{ this }}
-                         ) max_info
               WHERE
-                src.block_year >= max_info.max_year
-                AND src.instruction_uniq_id > max_info.max_id
-          ) AS affected_accounts ON raw.token_account = affected_accounts.token_account
+                -- Use Jinja vars - Trino sees these as constants now
+                src.block_year >= DATE '{{ max_year.strftime('%Y-%m-%d') }}' -- Ensure correct date formatting
+                AND src.instruction_uniq_id > '{{ max_id }}'
+                AND src.token_account = raw.token_account
+          )
       ) AS incremental_source_data
     {% else %}
-      {{ ref('solana_utils_token_account_raw_data') }} 
+      {{ ref('solana_utils_token_account_raw_data') }}
     {% endif %}
 )
 
