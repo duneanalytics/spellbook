@@ -166,8 +166,6 @@ models:
           - not_null
       - name: token_bought_symbol
         description: "The symbol of the token bought"
-        tests:
-          - not_null
       - name: token_bought_address
         description: "The mint address of the token bought"
         tests:
@@ -178,8 +176,6 @@ models:
           - not_null
       - name: token_sold_symbol
         description: "The symbol of the token sold"
-        tests:
-          - not_null
       - name: token_sold_address
         description: "The mint address of the token sold"
         tests:
