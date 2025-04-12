@@ -40,9 +40,8 @@ WITH state_calculation AS (
       FROM {{ ref('solana_utils_token_account_raw_data') }} raw
       INNER JOIN (
         -- Subquery to find accounts with events newer than the max processed ID in the target table
-        SELECT DISTINCT token_account
+        SELECT DISTINCT token_account, block_year
         FROM {{ ref('solana_utils_token_account_raw_data') }}
-        -- Use COALESCE for the very first run where the target table doesn't exist yet
         WHERE block_year >= (SELECT MAX(valid_to_year) FROM {{ this }})
       ) affected_accounts ON raw.token_account = affected_accounts.token_account and raw.block_year = affected_accounts.block_year
     ) AS incremental_source_data
