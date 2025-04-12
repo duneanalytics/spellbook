@@ -35,7 +35,7 @@ models:
     tests:
       - unique:
           column_name: "concat(minute, contract_address_varbinary)"
-          name: "unique_minute_and_contract"
+          name: "bonkbot_solana_fee_token_prices_unique_minute_and_contract"
 
   - name: bonkbot_solana_fee_payments
     description: "Fee payments collected by BonkBot on Solana"
@@ -79,7 +79,7 @@ models:
     tests:
       - unique:
           column_name: "concat(tx_id, token_address)"
-          name: "unique_tx_id_and_token"
+          name: "bonkbot_solana_fee_payments_unique_tx_id_and_token"
 
   - name: bonkbot_solana_fee_payments_usd
     description: "Fee payments collected by BonkBot on Solana enriched with USD values"
@@ -139,4 +139,4 @@ models:
     tests:
       - unique:
           column_name: "concat(tx_id, token_address)"
-          name: "unique_tx_id_and_token"
+          name: "bonkbot_solana_fee_payments_unique_tx_id_and_token"
