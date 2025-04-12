@@ -1,7 +1,7 @@
 {{ config(
     materialized = 'table',
     schema = 'bonkbot_solana',
-    alias = 'fee_payments',
+    alias = 'fee_payments_raw',
     partition_by = ['block_month'],
     incremental_strategy = 'merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
@@ -85,4 +85,4 @@ SELECT
            token_address ASC
    ) as index
 FROM
-  aggregated_fee_payments_by_token_by_tx
+  aggregated_fee_payments_by_token_by_tx 

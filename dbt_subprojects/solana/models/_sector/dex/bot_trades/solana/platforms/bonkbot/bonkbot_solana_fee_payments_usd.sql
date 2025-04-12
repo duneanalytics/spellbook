@@ -15,7 +15,7 @@
 with
     fee_payments as (
         select *
-        from {{ ref("bonkbot_solana_fee_payments") }}
+        from {{ ref("bonkbot_solana_fee_payments_raw") }}
         {% if is_incremental() %} where {{ incremental_predicate("block_time") }}
         {% else %} where block_time >= timestamp '{{project_start_date}}'
         {% endif %}
