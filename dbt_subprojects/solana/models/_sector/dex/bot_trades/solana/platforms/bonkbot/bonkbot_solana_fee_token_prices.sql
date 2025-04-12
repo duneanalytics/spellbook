@@ -41,7 +41,7 @@ select
     tokens.contract_address_varbinary,
     tokens.contract_address_base58
 from distinct_fee_payment_tokens_per_minute as tokens
-join {{ source("prices", "usd") }} as prices
+left join {{ source("prices", "usd") }} as prices
     on (
         prices.blockchain = tokens.blockchain
         and prices.contract_address = tokens.contract_address_varbinary
