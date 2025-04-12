@@ -3,6 +3,7 @@
     schema='solana_utils',
     alias='alt_token_accounts_updates',
     materialized='incremental',
+    incremental_strategy='merge',
     partition_by=['token_account_prefix', 'valid_to_year'],
     unique_key=['token_account', 'valid_to_year', 'valid_from_instruction_uniq_id']
   )
@@ -41,8 +42,9 @@ WITH state_calculation AS (
               SELECT DISTINCT src.token_account
               FROM {{ ref('solana_utils_token_account_raw_data') }} src
               CROSS JOIN ( SELECT
-                              MAX(valid_from_instruction_uniq_id) AS max_id,
-                              MAX(valid_from_year) AS max_year
+                              -- Reinstate COALESCE for robustness against empty target table
+                              COALESCE(MAX(valid_from_instruction_uniq_id), '0-0-0-0') AS max_id,
+                              COALESCE(MAX(valid_from_year), DATE '1970-01-01') AS max_year
                            FROM {{ this }}
                          ) max_info
               WHERE
