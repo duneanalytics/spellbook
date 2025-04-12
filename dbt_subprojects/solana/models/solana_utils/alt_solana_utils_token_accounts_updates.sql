@@ -95,5 +95,5 @@ Select token_account,
        valid_to_year,
        token_account_prefix
 from final_selection
-where account_owner is not null
-and account_mint is not null
+where token_balance_owner is not null
+and token_mint_address is not null
