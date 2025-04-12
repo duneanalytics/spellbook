@@ -33,30 +33,28 @@ WITH state_calculation AS (
 
   FROM
     {% if is_incremental() %}
-      WITH affected_accounts AS (
-          SELECT DISTINCT src.token_account
-          FROM {{ ref('solana_utils_token_account_raw_data') }} src
-          CROSS JOIN ( SELECT
-                          MAX(valid_from_instruction_uniq_id) AS max_id,
-                          MAX(valid_from_year) AS max_year
-                       FROM {{ this }}
-                     ) max_info
-          WHERE
-            src.block_year >= max_info.max_year
-            AND src.instruction_uniq_id > max_info.max_id
-      )
-      SELECT raw.*
-      FROM {{ ref('solana_utils_token_account_raw_data') }} raw
-      INNER JOIN affected_accounts ON raw.token_account = affected_accounts.token_account
-
-    ) AS incremental_source_data
+      -- Select full history by joining raw data with a subquery identifying affected accounts
+      (
+          SELECT raw.*
+          FROM {{ ref('solana_utils_token_account_raw_data') }} raw
+          INNER JOIN (
+              SELECT DISTINCT src.token_account
+              FROM {{ ref('solana_utils_token_account_raw_data') }} src
+              CROSS JOIN ( SELECT
+                              MAX(valid_from_instruction_uniq_id) AS max_id,
+                              MAX(valid_from_year) AS max_year
+                           FROM {{ this }}
+                         ) max_info
+              WHERE
+                src.block_year >= max_info.max_year
+                AND src.instruction_uniq_id > max_info.max_id
+          ) AS affected_accounts ON raw.token_account = affected_accounts.token_account
+      ) AS incremental_source_data
     {% else %}
-    -- In a full refresh, process all data from the source table
-    {{ ref('solana_utils_token_account_raw_data') }} AS full_refresh_source_data
+      {{ ref('solana_utils_token_account_raw_data') }} 
     {% endif %}
 )
 
--- Final selection and transformation logic
 SELECT
   token_account,
   account_owner as token_balance_owner,
@@ -79,11 +77,6 @@ SELECT
   -- Calculate the year partition based on the valid_to date
   CAST(COALESCE(date_trunc('year', next_block_time), TIMESTAMP '9999-12-31') as date) as valid_to_year, -- Adjusted coalesce for DATE type
   token_account_prefix
-
 FROM state_calculation
-
--- Apply final filters (ensure these columns are available after window functions)
 WHERE account_owner IS NOT NULL
-  AND account_mint IS NOT NULL -- Filter based on original mint, adjust if needed based on the CASE logic intent
-
--- No additional incremental filter needed here, as the merge strategy handles updates/inserts based on the unique_key
+  AND account_mint IS NOT NULL
