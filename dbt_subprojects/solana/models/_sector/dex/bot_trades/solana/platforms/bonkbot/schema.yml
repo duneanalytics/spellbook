@@ -238,5 +238,5 @@ models:
           - not_null
     tests:
       - unique:
-          column_name: "concat(tx_id, outer_instruction_index, inner_instruction_index)"
-          name: "bonkbot_solana_base_trades_unique_tx_and_instructions"
+          column_name: "concat(tx_id, tx_index, outer_instruction_index, inner_instruction_index)"
+          name: "bonkbot_solana_base_trades_unique_tx_id_tx_index_outer_instruction_index_inner_instruction_index"
