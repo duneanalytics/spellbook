@@ -34,7 +34,7 @@ models:
           - not_null
     tests:
       - unique:
-          column_name: "concat(minute, contract_address_varbinary)"
+          column_name: "concat(cast(minute as varchar), contract_address_base58)"
           name: "bonkbot_solana_fee_token_prices_unique_minute_and_contract"
 
   - name: bonkbot_solana_fee_payments_raw
