@@ -2,7 +2,7 @@
         schema='evms',
         alias = 'erc721_transfers',
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle", "ronin", "ink"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle", "ronin", "opbnb", "ink"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -29,6 +29,7 @@
      , ('mantle', source('erc721_mantle', 'evt_transfer'))
      , ('sei', source('erc721_sei', 'evt_transfer'))
      , ('ronin', source('erc721_ronin', 'evt_transfer'))
+     , ('opbnb', source('erc721_opbnb', 'evt_transfer'))
      , ('ink', source('erc721_ink', 'evt_transfer'))
 ] %}
 
