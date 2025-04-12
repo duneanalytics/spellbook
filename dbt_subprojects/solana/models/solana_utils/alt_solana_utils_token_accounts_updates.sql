@@ -33,17 +33,22 @@ WITH state_calculation AS (
 
   FROM
     {% if is_incremental() %}
-    -- For incremental runs, process only the full history for those accounts that have had a change within YTD
-    -- Since the upstream model is partitioned by year, this will skip 
-    (
+      WITH affected_accounts AS (
+          SELECT DISTINCT src.token_account
+          FROM {{ ref('solana_utils_token_account_raw_data') }} src
+          CROSS JOIN ( SELECT
+                          MAX(valid_from_instruction_uniq_id) AS max_id,
+                          MAX(valid_from_year) AS max_year
+                       FROM {{ this }}
+                     ) max_info
+          WHERE
+            src.block_year >= max_info.max_year
+            AND src.instruction_uniq_id > max_info.max_id
+      )
       SELECT raw.*
       FROM {{ ref('solana_utils_token_account_raw_data') }} raw
-      INNER JOIN (
-        -- Subquery to find accounts with events newer than the max processed ID in the target table
-        SELECT DISTINCT token_account, block_year
-        FROM {{ ref('solana_utils_token_account_raw_data') }}
-        WHERE block_year >= (SELECT MAX(valid_to_year) FROM {{ this }})
-      ) affected_accounts ON raw.token_account = affected_accounts.token_account and raw.block_year = affected_accounts.block_year
+      INNER JOIN affected_accounts ON raw.token_account = affected_accounts.token_account
+
     ) AS incremental_source_data
     {% else %}
     -- In a full refresh, process all data from the source table
@@ -64,8 +69,8 @@ SELECT
 
   -- Use current event's time/ID as the start of the valid interval
   block_time AS valid_from,
-  
   instruction_uniq_id as valid_from_instruction_uniq_id,
+  date_trunc('year', block_time) as valid_from_year,
 
   -- Use the next event's time/ID as the end of the valid interval, defaulting to infinity
   COALESCE(next_block_time, TIMESTAMP '9999-12-31 23:59:59') AS valid_to,
