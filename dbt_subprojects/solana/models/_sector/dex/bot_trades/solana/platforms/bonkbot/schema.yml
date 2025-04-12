@@ -79,7 +79,7 @@ models:
     tests:
       - unique:
           column_name: "concat(tx_id, token_address)"
-          name: "bonkbot_solana_fee_payments_unique_tx_id_and_token"
+          name: "bonkbot_solana_fee_payments_base_unique_tx_id_and_token"
 
   - name: bonkbot_solana_fee_payments_usd
     description: "Fee payments collected by BonkBot on Solana enriched with USD values"
@@ -139,7 +139,7 @@ models:
     tests:
       - unique:
           column_name: "concat(tx_id, token_address)"
-          name: "bonkbot_solana_fee_payments_unique_tx_id_and_token"
+          name: "bonkbot_solana_fee_payments_usd_unique_tx_id_and_token"
 
   - name: bonkbot_solana_base_trades
     description: "Base trades executed by BonkBot on Solana, enriched with fee payment information"
