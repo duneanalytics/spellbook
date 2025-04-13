@@ -5,8 +5,7 @@
     partition_by=['token_account_prefix', 'block_year'],
     materialized='incremental',
     file_format='delta',
-    incremental_strategy='delete+insert',
-    unique_key=['token_account_prefix', 'token_account', 'instruction_uniq_id']
+    incremental_strategy='delete+insert'
   )
 }}
 

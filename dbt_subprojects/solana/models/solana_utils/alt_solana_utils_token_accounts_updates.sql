@@ -3,9 +3,8 @@
     schema='solana_utils',
     alias='alt_token_accounts_updates',
     materialized='incremental',
-    incremental_strategy='merge',
-    partition_by=['token_account_prefix', 'valid_to_year'],
-    unique_key=['token_account', 'valid_from_instruction_uniq_id']
+    incremental_strategy='delete+insert',
+    partition_by=['token_account_prefix', 'valid_from_year']
   )
 }}
 
