@@ -19,3 +19,22 @@ models:
           seed_file: ref('abstractswap_abstract_base_trades_seed')
           filter:
             version: 2
+
+  - name: abstractswap_v3_abstract_base_trades
+    meta:
+      blockchain: abstract
+      sector: dex
+      project: abstractswap
+      contributors: [clizzard]
+    config:
+      tags: ["abstract", "dex", "trades", "abstractswap", "v3"]
+    description: "AbstractSwap abstract v3 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('abstractswap_v3_abstract_base_trades_seed')
+          filter:
+            version: 3

@@ -10,3 +10,10 @@ sources:
     tables:
       - name: UniswapV2Factory_evt_PairCreated
         description: "PairCreated events from AbstractSwap Factory contract"
+      - name: abstractswap_evt_PoolCreated
+        description: "Pool creation events from AbstractSwap V3 Factory contract"
+
+  - name: abstractswap
+    tables:
+      - name: Pair_evt_Swap
+        description: "Swap events from AbstractSwap V3 Pair contracts"
