@@ -16,7 +16,7 @@ Welcome to [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation
     - Make sure to open a draft PR if you will work on your spell for longer than a few days, to avoid duplicated work
   - Do you want to get started building spells and you don't know what to build? Check [Issues](https://github.com/duneanalytics/spellbook/issues) to see what the community needs.
   - Check the Discussions section to see what problems the community is trying to solve (i.e. non-incremental changes) or propose your own!
-- Have questions? Head over to #spellbook on our [discord](https://discord.com/channels/757637422384283659/999683200563564655) and the community will be happy to help out!
+- Have questions? Head over to #spellbook on our [discord](https://discord.com/invite/ErrzwBz) and the community will be happy to help out!
 - Like with most OSS projects, your contributions to Spellbook are your own IP, you can find more details in the [Contributor License Agreement](CLA.md)
 
 ## Table of Contents
