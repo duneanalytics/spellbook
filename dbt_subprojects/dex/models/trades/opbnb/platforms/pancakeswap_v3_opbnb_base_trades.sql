@@ -15,7 +15,7 @@
         blockchain = 'opbnb',
         project = 'pancakeswap',
         version = '3',
-        Pair_evt_Swap = source('pancakeswap_opbnb', 'PancakeV3Pool_evt_Swap'),
-        Factory_evt_PoolCreated = source('pancakeswap_opbnb', 'PancakeV3Factory_evt_PoolCreated')
+        Pair_evt_Swap = source('pancakeswap_v3_opbnb', 'PancakeV3Pool_evt_Swap'),
+        Factory_evt_PoolCreated = source('pancakeswap_v3_opbnb', 'PancakeV3Factory_evt_PoolCreated')
     )
 }}
