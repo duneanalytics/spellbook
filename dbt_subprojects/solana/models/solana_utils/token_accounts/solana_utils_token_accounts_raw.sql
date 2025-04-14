@@ -5,9 +5,8 @@
     , partition_by=['token_account_prefix']
     , materialized='incremental'
     , file_format='delta'
-    , incremental_strategy='delete+insert'
+    , incremental_strategy='append'
     , unique_key=['token_account', 'token_account_prefix', 'unique_instruction_key']
-    , pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
   )
 }}
 
@@ -156,4 +155,19 @@ with init as (
     union all
     select * from close
 )
-select * from raw_events
+, final as (
+    select
+        raw.*
+    from
+        raw_events as raw
+    {% if is_incremental() -%}
+    left join {{ this }} as existing
+        on raw.token_account = existing.token_account
+        and raw.token_account_prefix = existing.token_account_prefix
+        and raw.unique_instruction_key = existing.unique_instruction_key
+        and {{ incremental_predicate('existing.block_time') }}
+    {%- endif %}
+    where
+        existing.token_account is null
+)
+select * from final
