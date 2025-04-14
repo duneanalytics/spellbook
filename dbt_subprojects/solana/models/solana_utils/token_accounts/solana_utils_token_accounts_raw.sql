@@ -166,8 +166,8 @@ with init as (
         and raw.token_account_prefix = existing.token_account_prefix
         and raw.unique_instruction_key = existing.unique_instruction_key
         and {{ incremental_predicate('existing.block_time') }}
-    {%- endif %}
     where
         existing.token_account is null
+    {%- endif %}
 )
 select * from final
