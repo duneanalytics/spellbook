@@ -1,15 +1,15 @@
 {{ config(
-    materialized = 'table',
     schema = 'bonkbot_solana',
     alias = 'base_trades',
     partition_by = ['block_month'],
+    materialized = 'incremental',
     incremental_strategy = 'merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index']
    )
 }}
 
-{% set project_start_date = '2025-04-10' %}  -- TODO: replace with actual start date (2023-08-17)
+{% set project_start_date = '2023-08-17' %}
 {% set fee_receiver = 'ZG98FUCjb8mJ824Gbs6RsgVmr1FhXb2oNiJHa2dwmPd' %}
 {% set wsol_token = 'So11111111111111111111111111111111111111112' %}
 

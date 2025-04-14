@@ -1,9 +1,9 @@
 {{
     config(
-        materialized="table",
         schema="bonkbot_solana",
         alias="fee_token_prices",
         partition_by=["block_month"],
+        materialized="incremental",
         incremental_strategy="merge",
         incremental_predicates=[incremental_predicate("DBT_INTERNAL_DEST.minute")],
         unique_key=["minute", "contract_address_varbinary"],
