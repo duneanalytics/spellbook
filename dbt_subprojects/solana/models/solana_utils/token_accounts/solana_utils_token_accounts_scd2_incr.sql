@@ -6,7 +6,7 @@
     , materialized='incremental'
     , file_format='delta'
     , pre_hook=[
-        set_trino_session_property(true, 'hive.insert_existing_partitions_behavior', 'OVERWRITE')
+        set_trino_session_property(true, 'dune_hive.insert_existing_partitions_behavior', 'OVERWRITE')
     ]
   )
 }}
