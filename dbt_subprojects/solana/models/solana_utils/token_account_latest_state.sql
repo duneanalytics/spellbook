@@ -7,10 +7,40 @@
   )
 }}
 
+-- Get the relation object for the history model's target table
+-- Use the alias defined in the history model's config
+{% set history_model_relation = adapter.get_relation(
+      database=target.database,
+      schema=target.schema,
+      identifier='alt_token_accounts_updates' 
+) %}
+
+-- Select the absolute latest state for each token account
+-- from the output of the main token accounts updates model.
+
 WITH source_updates AS (
-    -- Reference the main model that calculates historical states
+    -- Reference the main model's *target table* directly using the relation object
+    -- This breaks the DAG cycle but ensures reading from the correct table at runtime.
     -- IMPORTANT: Ensure this model runs AFTER alt_solana_utils_token_accounts_updates
-    SELECT * FROM {{ ref('alt_solana_utils_token_accounts_updates') }}
+    {% if history_model_relation %}
+        SELECT * FROM {{ history_model_relation }}
+    {% else %}
+        -- Handle case where the relation doesn't exist yet (e.g., during parsing before first run)
+        -- Manually define the structure to avoid using ref()
+        SELECT 
+            CAST(NULL AS VARCHAR) as token_account,
+            CAST(NULL AS VARCHAR) as token_mint_address,
+            CAST(NULL AS VARCHAR) as token_balance_owner,
+            CAST(NULL AS VARCHAR) as event_type,
+            CAST(NULL AS TIMESTAMP) as valid_from,
+            CAST(NULL AS TIMESTAMP) as valid_to,
+            CAST(NULL AS VARCHAR) as valid_from_instruction_uniq_id,
+            CAST(NULL AS VARCHAR) as valid_to_instruction_uniq_id,
+            CAST(NULL AS DATE) as valid_from_year,
+            CAST(NULL AS DATE) as valid_to_year,
+            CAST(NULL AS VARCHAR) as token_account_prefix
+        WHERE 1=0 -- Ensure no rows are actually selected
+    {% endif %}
 ),
 
 ranked_states AS (
