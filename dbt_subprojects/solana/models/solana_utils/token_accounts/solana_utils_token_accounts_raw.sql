@@ -5,7 +5,7 @@
     , partition_by=['token_account_prefix']
     , materialized='incremental'
     , file_format='delta'
-    , incremental_strategy='merge'
+    , incremental_strategy='delete+insert'
     , unique_key=['token_account', 'token_account_prefix', 'unique_instruction_key']
     , pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
   )
