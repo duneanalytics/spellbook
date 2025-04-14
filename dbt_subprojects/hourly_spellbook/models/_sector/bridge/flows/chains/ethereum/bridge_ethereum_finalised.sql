@@ -19,7 +19,7 @@ FROM (
     , project
     , project_version
     , event_side
-    , block_month
+    , block_date
     , block_time
     , block_number
     , amount_raw

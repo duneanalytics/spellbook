@@ -12,7 +12,7 @@ SELECT 'ethereum' AS source_blockchain
 , 'Base Bridge' AS project
 , '1' AS project_version
 , 'destination' AS event_side
-, date_trunc('month', evt_block_time) AS block_month
+, evt_block_date AS block_date
 , evt_block_time AS block_time
 , evt_block_number AS block_number
 , amount AS amount_raw
@@ -35,7 +35,7 @@ SELECT 'ethereum' AS source_blockchain
 , 'Base Bridge' AS project
 , '1' AS project_version
 , 'destination' AS event_side
-, date_trunc('month', evt_block_time) AS block_month
+, evt_block_date AS block_date
 , evt_block_time AS block_time
 , evt_block_number AS block_number
 , amount AS amount_raw

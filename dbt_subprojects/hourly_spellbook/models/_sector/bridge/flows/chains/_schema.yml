@@ -29,8 +29,8 @@ models:
       - &event_side
         name: event_side
         description: "Blockchain where the event was emitted"
-      - &block_month
-        name: block_month
+      - &block_date
+        name: block_date
         description: "Block month of the bridge transaction"
       - &block_time
         name: block_time
@@ -89,7 +89,7 @@ models:
       - *project
       - *project_version
       - *event_side
-      - *block_month
+      - *block_date
       - *block_time
       - *block_number
       - *amount_raw
@@ -121,7 +121,7 @@ models:
       - *project
       - *project_version
       - *event_side
-      - *block_month
+      - *block_date
       - *block_time
       - *block_number
       - *amount_raw
@@ -153,7 +153,7 @@ models:
       - *project
       - *project_version
       - *event_side
-      - *block_month
+      - *block_date
       - *block_time
       - *block_number
       - *amount_raw
