@@ -1,7 +1,6 @@
 {{
   config(
-    tags=['prod_exclude']
-    , schema='solana_utils'
+    schema='solana_utils'
     , alias='token_accounts_scd2_incr'
     , partition_by=['token_account_prefix']
     , materialized='incremental'
