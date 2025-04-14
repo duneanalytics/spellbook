@@ -11,18 +11,19 @@
   )
 }}
 
+with 
+{%- if is_incremental() %}
 -- Step 1: Identify token accounts with recent changes
-with recent_token_accounts as (
+recent_token_accounts as (
     select distinct 
         token_account
         , token_account_prefix
     from {{ ref('solana_utils_token_accounts_raw') }}
-    {% if is_incremental() -%}
     where {{ incremental_predicate('block_time') }}
-    {%- endif %}
-)
+),
+{%- endif %}
 -- Step 2: Get full history for affected accounts
-, full_history as (
+full_history as (
     select
         t.token_account_prefix
         , t.token_account
@@ -32,9 +33,11 @@ with recent_token_accounts as (
         , t.unique_instruction_key
         , t.block_time
     from {{ ref('solana_utils_token_accounts_raw') }} t
+    {%- if is_incremental() %}
     inner join recent_token_accounts r
         on t.token_account = r.token_account
         and t.token_account_prefix = r.token_account_prefix
+    {%- endif %}
 )
 -- Step 3: Apply SCD2 logic
 , ranked_src as (
