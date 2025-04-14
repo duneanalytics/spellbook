@@ -7,7 +7,7 @@
     , file_format='delta'
     , incremental_strategy='merge'
     , unique_key=['token_account', 'token_account_prefix', 'unique_instruction_key']
-    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    , pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
   )
 }}
 
