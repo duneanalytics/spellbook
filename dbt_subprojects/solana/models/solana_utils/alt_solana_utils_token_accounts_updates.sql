@@ -5,7 +5,11 @@
     materialized='incremental',
     incremental_strategy='merge',
     partition_by=['token_account_prefix', 'valid_from_year'],
-    unique_key=['token_account', 'valid_from_instruction_uniq_id']
+    unique_key=['token_account', 'valid_from_instruction_uniq_id'],
+    post_hook=[
+        "DELETE FROM {{ ref('token_account_latest_state') }}",
+        "INSERT INTO {{ ref('token_account_latest_state') }} SELECT * FROM {{ ref('token_account_latest_state') }}"
+    ]
   )
 }}
 
