@@ -2,8 +2,7 @@
   config(
     schema='solana_utils',
     alias='token_account_latest_state',
-    materialized='table',
-    partition_by='token_account_prefix'
+    materialized='table'
   )
 }}
 
