@@ -41,6 +41,12 @@ models:
 
   - name: bonkbot_solana_fee_payments_raw
     description: "Raw fee payments collected by BonkBot on Solana"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - tx_id
+            - token_address
     columns:
       - name: block_time
         description: "The timestamp when the fee was paid"
