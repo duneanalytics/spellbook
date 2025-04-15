@@ -13,7 +13,7 @@
 
 
 {% set solana_trading_bot = [
-    ref('bonkbot_solana_bot_trades')
+    ref('bonkbot_solana_trades')
     , ref('trojan_solana_bot_trades')
     , ref('banana_gun_solana_bot_trades')
     , ref('sol_trading_bot_solana_bot_trades')
