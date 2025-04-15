@@ -5,14 +5,21 @@
     materialized='incremental',
     incremental_strategy='delete+insert',
     partition_by=['token_account_prefix', 'valid_from_year'],
-    unique_key=['token_account', 'valid_from_instruction_uniq_id'],
-    pre_hook=[
-        set_trino_session_property(true, 'dune_hive.insert_existing_partitions_behavior', 'OVERWRITE')
-    ]
+    unique_key=['token_account', 'valid_from_instruction_uniq_id']
   )
 }}
 
-{% if is_incremental() %}
+
+
+-- this model is used to calculate the state of the token accounts at any point in time
+
+
+
+
+-- this section is used to calculate the max values for the incremental strategy
+-- trino has trouble recognizing these as literalys during query planning if we run them in a CTE 
+-- so we run them during jinja compilation and store the results in max_vals
+-- Trino can then use these max values to plan the query more efficiently
 {% set max_vals_query %}
     SELECT
         COALESCE(MAX(valid_from_instruction_uniq_id), '0-0-0-0') AS max_id,
@@ -36,6 +43,8 @@ WITH state_calculation AS (
     token_account_prefix,
 
     -- get the latest non-null account_mint up to this point
+    -- this is used to carry forward the mint address if the owner address changes
+    -- this can be a giant lookup, but performance is acceptable because of the upstream partitioning
     MAX(CASE WHEN account_mint IS NOT NULL THEN account_mint END)
       OVER (
         PARTITION BY token_account
@@ -50,13 +59,14 @@ WITH state_calculation AS (
   FROM
     {% if is_incremental() %}
       -- Select full history by INNER JOINing raw data with a subquery identifying affected accounts
+      -- we need to always look up the full history of a given account, we cannot filter on any time dimension
       (
           SELECT raw.*
-          FROM {{ ref('solana_utils_token_account_raw_data') }} raw
+          FROM {{ ref('alt_solana_utils_token_account_raw_data') }} raw
           INNER JOIN (
               -- Subquery identifies affected accounts using pre-calculated max values
               SELECT DISTINCT src.token_account
-              FROM {{ ref('solana_utils_token_account_raw_data') }} src
+              FROM {{ ref('alt_solana_utils_token_account_raw_data') }} src
               WHERE
                 -- Use Jinja vars - Trino sees these as constants now
                 src.block_year >= DATE '{{ max_year.strftime('%Y-%m-%d') }}'
@@ -64,7 +74,7 @@ WITH state_calculation AS (
           ) AS affected_accounts ON raw.token_account = affected_accounts.token_account
       ) AS incremental_source_data
     {% else %}
-      {{ ref('solana_utils_token_account_raw_data') }}
+      {{ ref('alt_solana_utils_token_account_raw_data') }}
     {% endif %}
 )
 
@@ -78,23 +88,24 @@ SELECT
     ELSE account_mint
   END AS token_mint_address,
   event_type,
-
   -- Use current event's time/ID as the start of the valid interval
   block_time AS valid_from,
   instruction_uniq_id as valid_from_instruction_uniq_id,
   date_trunc('year', block_time) as valid_from_year,
-
   -- Use the next event's time/ID as the end of the valid interval, defaulting to infinity
   COALESCE(next_block_time, TIMESTAMP '9999-12-31 23:59:59') AS valid_to,
   COALESCE(next_instruction_uniq_id, '999999999-999999-9999-9999') AS valid_to_instruction_uniq_id,
-
-  -- Calculate the year partition based on the valid_to date
   CAST(COALESCE(date_trunc('year', next_block_time), TIMESTAMP '9999-12-31') as date) as valid_to_year, -- Adjusted coalesce for DATE type
   token_account_prefix
 FROM state_calculation
 )
 
-Select token_account, 
+-- we can filter out any rows where the token_balance_owner or token_mint_address is null as they will never have valid matches in the downstream models
+-- we cannot filter these earlier because we need the nulls to close out the account valid_to intervals
+-- what we filter here is the account closing events
+
+Select 
+       token_account, 
        token_mint_address,
        token_balance_owner,
        event_type,
@@ -108,3 +119,4 @@ Select token_account,
 from final_selection
 where token_balance_owner is not null
 and token_mint_address is not null
+

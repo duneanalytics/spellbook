@@ -7,6 +7,8 @@
   )
 }}
 
+--unsure if this is making any performance difference, just preparing the table downstream
+
 SELECT
     call_block_time as block_time
     , cast(date_trunc('day', call_block_time) as date) as block_date
@@ -37,4 +39,4 @@ FROM
     {{ source('spl_token_solana', 'spl_token_call_transfer') }} 
 WHERE
     1=1
-    and call_block_time > TIMESTAMP '2025-03-01' 
+    and call_block_time > TIMESTAMP '2025-04-15' 
