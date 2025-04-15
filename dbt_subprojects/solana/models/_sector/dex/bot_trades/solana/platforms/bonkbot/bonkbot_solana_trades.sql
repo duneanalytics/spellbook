@@ -1,6 +1,6 @@
 {{ config(
     schema = 'bonkbot_solana',
-    alias = 'base_trades',
+    alias = 'trades',
     partition_by = ['block_month'],
     materialized = 'incremental',
     incremental_strategy = 'merge',
