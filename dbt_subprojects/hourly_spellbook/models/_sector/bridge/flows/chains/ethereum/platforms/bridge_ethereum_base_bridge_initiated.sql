@@ -15,7 +15,8 @@ SELECT 'ethereum' AS source_chain
 , evt_block_date AS block_date
 , evt_block_time AS block_time
 , evt_block_number AS block_number
-, amount AS amount_raw
+, amount AS source_amount_raw
+, amount AS destination_amount_raw
 , "from" AS source_address
 , to AS destination_address
 , 'erc20' AS source_token_standard
@@ -26,6 +27,7 @@ SELECT 'ethereum' AS source_chain
 , evt_tx_hash AS tx_hash
 , evt_index
 , contract_address
+, NULL AS bridge_id
 FROM {{ source('base_ethereum', 'l1standardbridge_evt_erc20bridgeinitiated') }}
 
 UNION ALL
@@ -38,7 +40,8 @@ SELECT 'ethereum' AS source_chain
 , evt_block_date AS block_date
 , evt_block_time AS block_time
 , evt_block_number AS block_number
-, amount AS amount_raw
+, amount AS source_amount_raw
+, amount AS destination_amount_raw
 , "from" AS source_address
 , to AS destination_address
 , 'native' AS source_token_standard
@@ -49,4 +52,5 @@ SELECT 'ethereum' AS source_chain
 , evt_tx_hash AS tx_hash
 , evt_index
 , contract_address
+, NULL AS bridge_id
 FROM {{ source('base_ethereum', 'l1standardbridge_evt_ethbridgeinitiated') }}

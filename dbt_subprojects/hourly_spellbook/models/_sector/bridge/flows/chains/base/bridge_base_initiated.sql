@@ -22,7 +22,8 @@ FROM (
     , block_date
     , block_time
     , block_number
-    , amount_raw
+    , source_amount_raw
+    , destination_amount_raw
     , source_address
     , destination_address
     , source_token_standard
@@ -33,6 +34,7 @@ FROM (
     , tx_hash
     , evt_index
     , contract_address
+    , bridge_id
     FROM {{ ref(bridge_platform) }}
     {% if not loop.last %}
     UNION ALL
