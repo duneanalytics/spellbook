@@ -6,7 +6,7 @@
         materialized="incremental",
         incremental_strategy="merge",
         incremental_predicates=[incremental_predicate("DBT_INTERNAL_DEST.minute")],
-        unique_key=["minute", "contract_address_varbinary"],
+        unique_key=["block_month", "minute", "contract_address_varbinary"],
     )
 }}
 
