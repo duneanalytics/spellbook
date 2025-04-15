@@ -5,7 +5,7 @@
     materialized = 'incremental',
     incremental_strategy = 'merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index']
+    unique_key = ['block_month', 'tx_id', 'outer_instruction_index', 'inner_instruction_index']
    )
 }}
 
