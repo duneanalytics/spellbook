@@ -7,8 +7,8 @@
     )
 }}
 
-SELECT 'ethereum' AS source_blockchain
-, 'base' AS destination_blockchain
+SELECT 'ethereum' AS source_chain
+, 'base' AS destination_chain
 , 'Base Bridge' AS project
 , '1' AS project_version
 , 'source' AS event_side
@@ -30,8 +30,8 @@ FROM {{ source('base_ethereum', 'l1standardbridge_evt_erc20bridgeinitiated') }}
 
 UNION ALL
 
-SELECT 'ethereum' AS source_blockchain
-, 'base' AS destination_blockchain
+SELECT 'ethereum' AS source_chain
+, 'base' AS destination_chain
 , 'Base Bridge' AS project
 , '1' AS project_version
 , 'source' AS event_side

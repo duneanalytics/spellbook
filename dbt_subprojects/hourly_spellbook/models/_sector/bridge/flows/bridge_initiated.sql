@@ -14,8 +14,8 @@
 SELECT *
 FROM (
     {% for chain in chains %}
-    SELECT source_blockchain
-    , destination_blockchain
+    SELECT source_chain
+    , destination_chain
     , project
     , project_version
     , event_side

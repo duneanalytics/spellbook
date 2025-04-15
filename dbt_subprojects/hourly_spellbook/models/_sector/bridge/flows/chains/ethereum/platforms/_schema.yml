@@ -18,11 +18,11 @@ models:
             - source('base_ethereum', 'l1standardbridge_evt_erc20bridgeinitiated')
             - source('base_ethereum','l1standardbridge_evt_ethbridgeinitiated')
     columns:
-      - &source_blockchain
-        name: source_blockchain
+      - &source_chain
+        name: source_chain
         description: "Blockchain where the tokens were sent"
-      - &destination_blockchain
-        name: destination_blockchain
+      - &destination_chain
+        name: destination_chain
         description: "Blockchain where the tokens were received"
       - &project
         name: project
@@ -92,8 +92,8 @@ models:
             - source('base_ethereum','l1standardbridge_evt_erc20bridgefinalized')
             - source('base_ethereum','l1standardbridge_evt_ethbridgefinalized')
     columns:
-      - *source_blockchain
-      - *destination_blockchain
+      - *source_chain
+      - *destination_chain
       - *project
       - *project_version
       - *event_side

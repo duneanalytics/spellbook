@@ -2,7 +2,7 @@
     schema = 'bridge',
     alias = 'finalised',
     materialized = 'view',
-    unique_key = ['source_blockchain','tx_hash','evt_index']
+    unique_key = ['source_chain','tx_hash','evt_index']
 )
 }}
 
@@ -14,8 +14,8 @@
 SELECT *
 FROM (
     {% for chain in chains %}
-    SELECT source_blockchain
-    , destination_blockchain
+    SELECT source_chain
+    , destination_chain
     , project
     , project_version
     , event_side
