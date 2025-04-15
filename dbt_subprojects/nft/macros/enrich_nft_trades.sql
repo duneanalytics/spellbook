@@ -69,7 +69,7 @@ WITH prices_patch as (
         ,'RON' as symbol
     FROM {{ source('prices','usd_forward_fill') }}
     WHERE blockchain = 'ronin'
-    AND contract_address = '0xe514d9deb7966c8be0ca922de8a064264ea6bcd4'  -- Use WRON prices
+    AND contract_address = 0xe514d9deb7966c8be0ca922de8a064264ea6bcd4  -- Use WRON prices
     {% if is_incremental() %}
     AND {{incremental_predicate('minute')}}
     {% endif %}
