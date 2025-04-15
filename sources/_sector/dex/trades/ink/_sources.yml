@@ -26,3 +26,7 @@ sources:
     tables:
       - name: squidswapv2pair_evt_swap
       - name: squidswapv2factory_evt_paircreated
+  - name: inkswap_ink
+    tables:
+      - name: uniswapv2pair_evt_swap
+      - name: uniswapv2factory_evt_paircreated
