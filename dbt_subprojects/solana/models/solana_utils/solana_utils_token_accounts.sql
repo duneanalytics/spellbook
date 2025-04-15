@@ -15,6 +15,9 @@
 
 {% set start_date = '2025-01-01' %}
 
+
+-- This is the old model that is used to calculate the token_balance_owner and token_mint_address
+-- it just used the 
 WITH
       distinct_accounts as (
             SELECT
