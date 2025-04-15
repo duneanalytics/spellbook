@@ -6,11 +6,14 @@
     materialized='incremental',
     file_format='delta',
     incremental_strategy='delete+insert',
-    unique_key=['token_account_prefix', 'token_account', 'instruction_uniq_id']
+    unique_key=['token_account_prefix', 'token_account', 'instruction_uniq_id'],
+    pre_hook=[
+        set_trino_session_property(true, 'dune_hive.insert_existing_partitions_behavior', 'OVERWRITE')
+    ]
   )
 }}
 
-{% set start_time = '2021-01-02' %}
+{% set start_time = '2025-04-01' %}
 
 --Init events contain mint address, and owner address
 --Init v1
