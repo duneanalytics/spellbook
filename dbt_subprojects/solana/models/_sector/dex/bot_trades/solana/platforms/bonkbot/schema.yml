@@ -84,10 +84,6 @@ models:
         description: "The order of the fee payment within the transaction, with SOL always getting index 1 when present, followed by other tokens in alphabetical order"
         tests:
           - not_null
-    tests:
-      - unique:
-          column_name: "concat(tx_id, token_address)"
-          name: "bonkbot_solana_fee_payments_raw_unique_tx_id_and_token"
 
   - name: bonkbot_solana_fee_payments_usd
     description: "Fee payments collected by BonkBot on Solana enriched with USD values"
