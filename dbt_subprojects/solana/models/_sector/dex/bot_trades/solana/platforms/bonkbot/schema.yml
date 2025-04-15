@@ -3,6 +3,12 @@ version: 2
 models:
   - name: bonkbot_solana_fee_token_prices
     description: "Historical prices of tokens used for fee payments by BonkBot on Solana"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - minute
+            - contract_address_varbinary
     columns:
       - name: minute
         description: "The minute timestamp for the price data"
