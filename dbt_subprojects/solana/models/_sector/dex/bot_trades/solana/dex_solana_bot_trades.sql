@@ -7,7 +7,7 @@
                         blockchains = \'["solana"]\',
                         spell_type = "sector",
                         spell_name = "dex_solana",
-                        contributors = \'["whale_hunter", "hosuke"]\') }}'
+                        contributors = \'["whale_hunter", "hosuke", "clizzard"]\') }}'
     )
 }}
 
