@@ -5,7 +5,10 @@
     materialized='incremental',
     incremental_strategy='delete+insert',
     partition_by=['token_account_prefix', 'valid_from_year'],
-    unique_key=['token_account', 'valid_from_instruction_uniq_id']
+    unique_key=['token_account', 'valid_from_instruction_uniq_id'],
+    pre_hook=[
+        set_trino_session_property(true, 'dune_hive.insert_existing_partitions_behavior', 'OVERWRITE')
+    ]
   )
 }}
 
