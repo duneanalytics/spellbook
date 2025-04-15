@@ -110,8 +110,12 @@ tbl_all_logs AS (
                 OR logs.contract_address = settler_address
                 OR swap_signatures.signature is not null
         )
-        and  case when cow_rn is not null then (bytearray_substring(logs.topic1, 13,20)  = settler_address 
-              or bytearray_substring(logs.topic2, 13,20) = settler_address ) else 1=1 end 
+        and  case when cow_rn is not null then (
+             bytearray_substring(logs.topic1, 13,20) = settler_address 
+          or bytearray_substring(logs.topic2, 13,20) = settler_address ) 
+          or (bytearray_substring(logs.topic1, 13,20) = st.contract_address
+              and bytearray_substring(logs.topic1, 13,20) = 0x9008D19f58AAbD9eD0D60971565AA8510560ab41 )
+          else 1=1 end 
         AND zid != 0xa00000000000000000000000
 ),
 cow_log_range as (
