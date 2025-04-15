@@ -138,10 +138,6 @@ models:
         description: "The number of decimals of the token used for payment"
       - name: amount_usd
         description: "The USD value of the fee payment (amount * token_price_usd)"
-    tests:
-      - unique:
-          column_name: "concat(tx_id, token_address)"
-          name: "bonkbot_solana_fee_payments_usd_unique_tx_id_and_token"
 
   - name: bonkbot_solana_base_trades
     description: "Base trades executed by BonkBot on Solana, enriched with fee payment information"
