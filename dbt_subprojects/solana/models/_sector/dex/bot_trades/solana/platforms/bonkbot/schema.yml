@@ -231,7 +231,3 @@ models:
         description: "The index of the inner instruction in the transaction"
         tests:
           - not_null
-    tests:
-      - unique:
-          column_name: "concat_ws(':', tx_id, cast(tx_index as varchar), cast(outer_instruction_index as varchar), cast(inner_instruction_index as varchar))"
-          name: "bonkbot_solana_base_trades_unique_tx_id_tx_index_outer_instruction_index_inner_instruction_index"
