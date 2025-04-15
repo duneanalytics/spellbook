@@ -185,13 +185,15 @@ taker_logs as (
                         or (
                             bytearray_substring(logs.topic1,13,20) = settler_address
                              and bytearray_substring(logs.topic1,13,20) = st.contract_address )
-                        or ( bytearray_substring(logs.topic1,13,20) = bytearray_substring(st.topic1,13,20)
-                            and bytearray_substring(logs.topic1,13,20)  = 0x9008D19f58AAbD9eD0D60971565AA8510560ab41
-                            )
+                        
                     )
              )
-             or topic0 = 0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c 
+             or (topic0 = 0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c 
                  and bytearray_substring(logs.topic1,13,20) in (tx_to, settler_address)  
+             )
+             or ( bytearray_substring(logs.topic1,13,20) = bytearray_substring(st.topic1,13,20)
+                            and bytearray_substring(logs.topic1,13,20)  = 0x9008D19f58AAbD9eD0D60971565AA8510560ab41
+                            )
         ) 
     )
     select * 
@@ -242,7 +244,7 @@ maker_logs as (
                     )
                     and (varbinary_position(st.data, varbinary_ltrim(logs.data)) <> 0 
                     or varbinary_position(st.data, ( cast(-1 * varbinary_to_int256(varbinary_substring(logs.data, varbinary_length(logs.data) - 31, 32)) AS VARBINARY))) <> 0 
-                    or POSITION(CAST(varbinary_to_uint256(varbinary_ltrim(logs.data)) AS VARCHAR) IN CAST(amount_out_ AS VARCHAR)) > 0
+                    or POSITION(CAST(varbinary_to_uint256(rpad(varbinary_ltrim(logs.data), 32, 0x00)) AS VARCHAR) IN CAST(amount_out_ AS VARCHAR)) > 0
                     or (logs.topic0 = 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef
                         and bytearray_substring(logs.topic1,13,20) = st.contract_address 
                         and bytearray_substring(logs.topic2,13,20) = settler_address
