@@ -81,6 +81,10 @@ sources:
     tables:
       - name: fees
 
+  - name: gas_celo
+    tables:
+      - name: fees
+
   - name: evms
     tables:
       - name: transaction_metrics

@@ -26,7 +26,20 @@
     , 'zkevm'
     , 'zksync'
     , 'zora'
-   
+    , 'abstract'
+    , 'apechain'
+    , 'berachain'
+    , 'boba'
+    , 'corn'
+    , 'flare'
+    , 'ink'
+    , 'kaia'
+    , 'nova'
+    , 'sonic'
+    , 'sophon'
+    , 'viction'
+    , 'worldchain'
+    , 'degen'
 ] %}
 
 SELECT *

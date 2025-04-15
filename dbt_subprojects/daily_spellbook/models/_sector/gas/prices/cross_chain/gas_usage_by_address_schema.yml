@@ -3,9 +3,9 @@ version: 2
 models:
   - name: gas_usage_by_address
     meta:
-      blockchain: ['ethereum', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'blast', 'bnb', 'celo', 'fantom', 'gnosis', 'linea', 'mantle', 'polygon', 'scroll', 'zkevm', 'zksync', 'zora']
+      blockchain: ethereum, optimism, base, arbitrum, avalanche_c, blast, bnb, celo, fantom, gnosis, linea, mantle, polygon, scroll, zkevm, zksync, zora
       sector: gas
-      contributors: ['gashawk', 'zohjag']
+      contributors: gashawk, zohjag
     config:
       tags: ['gas', 'cross_chain', 'addresses']
     description: "Cross-chain gas usage metrics aggregated by address (optimized version)"

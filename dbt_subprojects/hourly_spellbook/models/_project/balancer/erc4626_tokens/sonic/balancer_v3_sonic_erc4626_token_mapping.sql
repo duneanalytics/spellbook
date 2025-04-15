@@ -30,7 +30,12 @@ FROM (VALUES
      (0xeB5e9B0ae5bb60274786C747A1A2A798c11271E0, 'Wrapped Aave Sonic WETH', 'waSonWETH', 0x50c42dEAcD8Fc9773493ED674b675bE577f2634b, 'WETH', 18),
      (0xda14a41dbda731f03a94cb722191639dd22b35b2, 'Silo Finance Borrowable frxUSD Deposit, SiloId: 37', 'bfrxUSD-37', 0x80Eede496655FB9047dd39d9f418d5483ED600df, 'frxUSD', 18),
      (0xa5cd24d9792f4f131f5976af935a505d19c8db2b, 'EVK Vault eWETH-1', 'eWETH-1', 0x50c42dEAcD8Fc9773493ED674b675bE577f2634b, 'WETH', 18),
-     (0x0806af1762bdd85b167825ab1a64e31cf9497038, 'EVK Vault escETH-2', 'escETH-2', 0x3bcE5CB273F0F148010BbEa2470e7b5df84C7812, 'scETH', 18)
+     (0x0806af1762bdd85b167825ab1a64e31cf9497038, 'EVK Vault escETH-2', 'escETH-2', 0x3bcE5CB273F0F148010BbEa2470e7b5df84C7812, 'scETH', 18),
+     (0x42ce2234fd5a26bf161477a996961c4d01f466a3, 'Silo Finance Borrowable USDC.e Deposit, SiloId: 33', 'bUSDC.e-33', 0x29219dd400f2Bf60E5a23d13Be72B486D4038894, 'USDC.e', 6),
+     (0xe6605932e4a686534d19005bb9db0fba1f101272, 'Silo Finance Borrowable scUSD Deposit, SiloId: 46', 'bscUSD-46', 0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE, 'scUSD', 6),
+     (0x9144c0f0614dd0ace859c61cc37e5386d2ada43a, 'EVK Vault ewS-2', 'ewS-2', 0x039e2fB66102314Ce7b64Ce5Ce3E5183bc94aD38, 'wS', 18),
+     (0x08c320a84a59c6f533e0dca655cf497594bca1f9, 'Silo Finance Borrowable WETH Deposit, SiloId: 35', 'bWETH-35', 0x50c42dEAcD8Fc9773493ED674b675bE577f2634b, 'WETH', 18),
+     (0x24c74b30d1a4261608e84bf5a618693032681dac, 'Silo Finance Borrowable scETH Deposit, SiloId: 47', 'bscETH-47', 0x3bcE5CB273F0F148010BbEa2470e7b5df84C7812, 'scETH', 18)
     ) AS temp_table (erc4626_token, erc4626_token_name, erc4626_token_symbol, underlying_token, underlying_token_symbol, decimals)
 )
 

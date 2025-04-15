@@ -81,7 +81,9 @@ known_solver_metadata (address, environment, name) as (
                 (0x7199cF10CF16b85fb59170d5c83d114Ac11d3afA, 'barn', 'ApeOut_1inch'),
                 (0xDd8a1F39fFBFB77c488054CB18f53aa9A3c4bD9D, 'prod', 'ApeOut_1inch'),
                 (0x312B5D8AbC6b7C8355B86f5F7803E9cD97AE8D75, 'barn', 'Helixbox'),
-                (0x4CdbA844CEB949567eA18b9EF185515fA626c69D, 'prod', 'Helixbox')
+                (0x4CdbA844CEB949567eA18b9EF185515fA626c69D, 'prod', 'Helixbox'),
+                (0x9CF49541f8b94DA501Cd16B60Fa176D856fB1e75, 'prod', 'Sector_Finance'),
+                (0xaf888d387adceed01a736aa3deae75dcf3edd8c1, 'prod', 'Copium_Capital')
     ) as _
 )
 -- Combining the metadata with current activation status for final table

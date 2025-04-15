@@ -39,7 +39,7 @@ WITH meta_router AS
         WHERE
             dstToken != 0xd848db988b477efe60ee2ff99f9898990c6fb0cd --bug with MTK token
             {% if is_incremental() %}
-            AND evt_block_time >= date_trunc('day', now() - INTERVAL '7' DAY)
+            AND {{incremental_predicate('evt_block_time')}}
             {% endif %}
 )
 SELECT
@@ -79,7 +79,7 @@ FROM meta_router
 INNER JOIN {{ source('polygon', 'transactions')}} tx
     ON meta_router.tx_hash = tx.hash
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - INTERVAL '7' DAY)
+    AND {{incremental_predicate('tx.block_time')}}
     {% else %}
     AND tx.block_time >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
@@ -94,7 +94,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.contract_address = meta_router.token_bought_address
     AND p_bought.blockchain = 'polygon'
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc('day', now() - INTERVAL '7' DAY)
+    AND {{incremental_predicate('p_bought.minute')}}
     {% else %}
     AND p_bought.minute >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
@@ -103,7 +103,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.contract_address = meta_router.token_sold_address
     AND p_sold.blockchain = 'polygon'
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc('day', now() - INTERVAL '7' DAY)
+    AND {{incremental_predicate('p_sold.minute')}}
     {% else %}
     AND p_sold.minute >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
@@ -112,7 +112,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_matic
     AND p_matic.blockchain IS NULL
     AND p_matic.symbol = 'MATIC'
     {% if is_incremental() %}
-    AND p_matic.minute >= date_trunc('day', now() - INTERVAL '7' DAY)
+    AND {{incremental_predicate('p_matic.minute')}}
     {% else %}
     AND p_matic.minute >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}

@@ -15,6 +15,7 @@
     blockchain = 'zksync',
     project = 'zerolend',
     version = '1',
-    project_decoded_as = 'zerolend'
+    project_decoded_as = 'zerolend',
+    wrapped_token_gateway_available = false
   )
 }}

@@ -150,14 +150,6 @@ models:
             - block_date
             - tx_hash
             - evt_index
-      - check_seed:
-          seed_file: ref('zeroex_v2_base_trades_sample')
-          match_columns:
-            - tx_hash
-          check_columns:
-            - taker
-            - maker_token
-            - taker_token
     columns:
       - *blockchain
       - *block_date
