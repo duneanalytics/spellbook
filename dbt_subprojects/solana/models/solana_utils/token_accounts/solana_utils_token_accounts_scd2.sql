@@ -33,9 +33,13 @@ with ranked_src as (
 			) as valid_to_unique_instruction_key
 		, row_number() over (partition by token_account_prefix, token_account order by unique_instruction_key desc) as is_current
 	from
-	{{ ref('solana_utils_token_accounts_raw') }}
-	{% if is_incremental() or true %}
-	where {{ incremental_predicate('block_time') }}
+		{{ ref('solana_utils_token_accounts_raw') }}
+	{% if is_incremental() -%}
+	where
+		{{ incremental_predicate('block_time') }}
+	{%- else -%}
+	where
+		block_time >= timestamp '2025-04-01'
 	{%- endif %}
 )
 , src as (
@@ -54,7 +58,7 @@ with ranked_src as (
   from
     ranked_src
 )
-{% if is_incremental() or true -%}
+{% if is_incremental() -%}
 -- Step 2: Active rows from current table
 , dst as (
 	select
