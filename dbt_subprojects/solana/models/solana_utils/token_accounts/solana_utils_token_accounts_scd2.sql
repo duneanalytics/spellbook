@@ -34,7 +34,7 @@ with ranked_src as (
 		, row_number() over (partition by token_account_prefix, token_account order by unique_instruction_key desc) as is_current
 	from
 	{{ ref('solana_utils_token_accounts_raw') }}
-	{% if is_incremental() or true -%}
+	{% if is_incremental() or true %}
 	where {{ incremental_predicate('block_time') }}
 	{%- endif %}
 )
