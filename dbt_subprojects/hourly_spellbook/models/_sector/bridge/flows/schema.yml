@@ -41,27 +41,45 @@ models:
       - &source_amount_raw 
         name: source_amount_raw
         description: "Raw amount of tokens bridged from source chain"
+      - &source_amount
+        name: source_amount
+        description: "Amount of tokens bridged from source chain"
+      - &source_amount_usd
+        name: source_amount_usd
+        description: "USD value of tokens bridged from source chain"
       - &destination_amount_raw 
         name: destination_amount_raw
         description: "Raw amount of tokens bridged to destination chain"
+      - &destination__amount
+        name: destination__amount
+        description: "Amount of tokens bridged to destination chain"
+      - &destination__amount_usd
+        name: destination__amount_usd
+        description: "USD value of tokens bridged to destination chain"
       - &source_address 
         name: source_address
         description: "Source address"
       - &destination_address 
         name: destination_address
         description: "Destination address"
-      - &source_token_standard  
-        name: source_token_standard
-        description: "Source blockchain token standard"
-      - &destination_token_standard
-        name: remote_token
-        description: "Destination blockchain token standard"
       - &source_token_address  
         name: source_token_address
         description: "Source blockchain token address"
+      - &source_token_standard  
+        name: source_token_standard
+        description: "Source blockchain token standard"
+      - &source_token_symbol
+        name: source_token_symbol
+        description: "Source blockchain token symbol"
       - &destination_token_address
         name: destination_token_address
         description: "Destination blockchain token address"
+      - &destination_token_standard
+        name: destination_token_standard
+        description: "Destination blockchain token standard"
+      - &destination_token_symbol
+        name: destination_token_symbol
+        description: "Destination blockchain token symbol"
       - &tx_hash
         name: tx_hash
         description: "Transaction hash"
