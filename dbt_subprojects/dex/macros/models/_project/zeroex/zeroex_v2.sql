@@ -198,7 +198,9 @@ taker_logs as (
              bytearray_substring(logs.topic1, 13,20) = settler_address 
           or bytearray_substring(logs.topic2, 13,20) = settler_address ) 
           or (bytearray_substring(logs.topic2, 13,20) = st.contract_address
-              and bytearray_substring(logs.topic1, 13,20) = 0x9008D19f58AAbD9eD0D60971565AA8510560ab41 )
+              and bytearray_substring(logs.topic1, 13,20) = 0x9008D19f58AAbD9eD0D60971565AA8510560ab41 
+              and bytearray_substring(st.topic1, 13,20) = settler_address
+              )
           else 1=1 end 
     )
     select * 
