@@ -139,7 +139,7 @@ models:
       - name: amount_usd
         description: "The USD value of the fee payment (amount * token_price_usd)"
 
-  - name: bonkbot_solana_trades
+  - name: bonkbot_solana_bot_trades
     description: "Trades executed by BonkBot on Solana, enriched with fee payment information"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
