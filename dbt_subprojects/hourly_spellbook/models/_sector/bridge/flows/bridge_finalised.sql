@@ -71,6 +71,7 @@ FROM (
     , tx_hash
     , evt_index
     , i.contract_address
+    , bridge_id
     FROM grouped_finalised_events i
     INNER JOIN {{ source('prices', 'usd') }} pus ON pus.blockchain=i.source_chain
         AND pus.contract_address=i.source_token_address
@@ -106,6 +107,7 @@ SELECT source_chain
 , tx_hash
 , evt_index
 , i.contract_address
+, bridge_id
 FROM source_filled i
 INNER JOIN {{ source('prices', 'usd') }} pud ON pud.blockchain=i.destination_chain
     AND pud.contract_address=i.destination_token_address
