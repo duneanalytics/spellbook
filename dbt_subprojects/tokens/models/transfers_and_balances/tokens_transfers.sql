@@ -44,7 +44,7 @@
                                         ]\',
                                         spell_type = "sector",
                                         spell_name = "tokens",
-                                        contributors = \'["aalan3", "jeff-dude", "0xBoxer", "hildobby", "0xRob", "hosuke"]\'') }}'
+                                        contributors = \'["aalan3", "jeff-dude", "0xBoxer", "hildobby", "0xRob", "hosuke"]\') }}'
         )
 }}
 
