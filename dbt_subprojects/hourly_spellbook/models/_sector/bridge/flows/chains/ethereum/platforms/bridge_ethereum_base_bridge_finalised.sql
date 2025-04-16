@@ -27,7 +27,7 @@ SELECT 'base' AS source_chain
 , evt_tx_hash AS tx_hash
 , evt_index
 , contract_address
-, NULL AS bridge_id
+, CAST(NULL AS varbinary) AS bridge_id
 FROM {{ source('base_ethereum', 'l1standardbridge_evt_erc20bridgefinalized')}}
 
 UNION ALL
@@ -52,5 +52,5 @@ SELECT 'base' AS source_chain
 , evt_tx_hash AS tx_hash
 , evt_index
 , contract_address
-, NULL AS bridge_id
+, CAST(NULL AS varbinary) AS bridge_id
 FROM {{ source('base_ethereum', 'l1standardbridge_evt_ethbridgefinalized')}}
