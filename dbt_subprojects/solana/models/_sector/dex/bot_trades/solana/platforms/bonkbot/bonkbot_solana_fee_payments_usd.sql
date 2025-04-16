@@ -16,14 +16,14 @@ with
     fee_payments as (
         select *
         from {{ ref("bonkbot_solana_fee_payments_raw") }}
-        {% if is_incremental() or true %} where {{ incremental_predicate("block_time") }}
+        {% if is_incremental() %} where {{ incremental_predicate("block_time") }}
         {% else %} where block_time >= timestamp '{{project_start_date}}'
         {% endif %}
     ),
     fee_token_prices as (
         select *
         from {{ ref("bonkbot_solana_fee_token_prices") }}
-        {% if is_incremental() or true %} where {{ incremental_predicate("minute") }}
+        {% if is_incremental() %} where {{ incremental_predicate("minute") }}
         {% else %} where minute >= timestamp '{{project_start_date}}'
         {% endif %}
     )

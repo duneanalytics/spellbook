@@ -43,7 +43,7 @@ with
                 )
             )
         where
-            {% if is_incremental() or true %} {{ incremental_predicate('block_time') }}
+            {% if is_incremental() %} {{ incremental_predicate('block_time') }}
             {% else %} block_time >= timestamp '{{project_start_date}}'
             {% endif %} and tx_success
     ),
