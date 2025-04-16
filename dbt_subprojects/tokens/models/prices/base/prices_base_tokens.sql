@@ -235,5 +235,7 @@ FROM
     ('cookie-cookie', 'base', 'COOKIE',0xc0041ef357b183448b235a8ea73ce4e4ec8c265f, 18),
     ('anon-super-anon', 'base', 'ANON',0x0db510e79909666d6dec7f5e49370838c16d950f, 18),
     ('gps1-goplus', 'base', 'GPS',0x0C1dC73159e30c4b06170F2593D3118968a0DCa5, 18),
-    ('odos-odos-token', 'base', 'ODOS',0xca73ed1815e5915489570014e024b7EbE65dE679, 18)
+    ('odos-odos-token', 'base', 'ODOS',0xca73ed1815e5915489570014e024b7EbE65dE679, 18),
+    ('ape-apecoin', 'base', 'APE' ,0x44c21f5dcb285d4380462b3fc0d5b4d63b3d5cdd, 18),
+    ('uni-uniswap', 'base', 'UNI' ,0xc3De830EA07524a0761646a6a4e4be0e114a3C83, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
