@@ -31,7 +31,7 @@ SELECT COALESCE(i.source_chain, f.source_chain) AS source_chain
 , COALESCE(i.destination_token_address, f.destination_token_address) AS destination_token_address
 , COALESCE(i.destination_token_standard, f.destination_token_standard) AS destination_token_standard
 , COALESCE(i.destination_token_symbol, f.destination_token_symbol) AS destination_token_symbol
-, i.tx_from AS initiated_tx_from
+, i.tx_from -- tx_from on finalised chain is irrelevant
 , i.tx_hash AS initiated_tx_hash
 , f.tx_hash AS finalised_tx_hash
 FROM {{ ref('bridge_initiated') }} i

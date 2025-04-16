@@ -170,9 +170,13 @@ models:
       - *destination_token_symbol
       - *source_token_address
       - *destination_token_address
-      - *initiated_tx_from
-      - *initiated_tx_hash
-      - *finalised_tx_hash 
+      - *tx_from
+      - &initiated_tx_hash
+        name: initiated_tx_hash
+        description: "Transaction hash of initiated bridge transfer on source chain"
+      - &finalised_tx_hash 
+        name: finalised_tx_hash
+        description: "Transaction hash of finalised bridge transfer on destination chain"
       - *bridge_id 
       - &bridge_miliseconds
         name: bridge_miliseconds
