@@ -97,7 +97,7 @@ models:
         description: "Bridge order identifier"
   - name: bridge_finalised
     meta:
-      blockchain: ethereum
+      blockchain: ethereum, base
       sector: bridge
       project: base
       contributors: [ 'hildobby']
@@ -134,4 +134,48 @@ models:
       - *tx_hash
       - *evt_index  
       - *contract_address 
+      - *bridge_id 
+  - name: bridge_flows
+    meta:
+      blockchain: ethereum, base
+      sector: bridge
+      project: base
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bridge', 'flows' ]
+    description: "Bridge flows"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['source_chain', 'tx_hash','evt_index']
+    columns:
+      - *source_chain
+      - *destination_chain
+      - *project
+      - *project_version
+      - *event_side
+      - *block_date
+      - *block_time
+      - *block_number
+      - *source_amount_raw
+      - *source_amount
+      - *source_amount_usd
+      - *destination_amount_raw
+      - *destination_amount
+      - *destination_amount_usd
+      - *source_address
+      - *destination_address
+      - *source_token_standard
+      - *source_token_symbol
+      - *destination_token_standard
+      - *destination_token_symbol
+      - *source_token_address
+      - *destination_token_address
+      - *initiated_tx_from
+      - *initiated_tx_hash
+      - *initiated_evt_index  
+      - *initiated_contract_address 
+      - *finalised_tx_from
+      - *finalised_tx_hash
+      - *finalised_evt_index  
+      - *finalised_contract_address 
       - *bridge_id 
