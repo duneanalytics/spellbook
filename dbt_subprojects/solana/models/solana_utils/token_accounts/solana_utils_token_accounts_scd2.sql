@@ -5,7 +5,7 @@
     , materialized='incremental'
     , file_format='delta'
     , incremental_strategy='merge'
-	, unique_key=['token_account_prefix', 'token_account', 'unique_instruction_key']
+	, unique_key=['token_account_prefix', 'token_account', 'valid_from_unique_instruction_key']
   )
 }}
 
@@ -34,7 +34,7 @@ with ranked_src as (
 		, row_number() over (partition by token_account_prefix, token_account order by unique_instruction_key desc) as is_current
 	from
 	{{ ref('solana_utils_token_accounts_raw') }}
-	{% if is_incremental() -%}
+	{% if is_incremental() or true -%}
 	where {{ incremental_predicate('block_time') }}
 	{%- endif %}
 )
@@ -54,7 +54,7 @@ with ranked_src as (
   from
     ranked_src
 )
-{% if is_incremental() -%}
+{% if is_incremental() or true -%}
 -- Step 2: Active rows from current table
 , dst as (
 	select
