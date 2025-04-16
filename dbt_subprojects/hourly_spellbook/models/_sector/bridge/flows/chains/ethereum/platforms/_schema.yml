@@ -66,9 +66,6 @@ models:
       - &destination_token_address
         name: destination_token_address
         description: "Destination blockchain token address"
-      - &extra_data 
-        name: extra_data
-        description: "Extra data"
       - &tx_hash
         name: tx_hash
         description: "Transaction hash"
@@ -114,7 +111,6 @@ models:
       - *destination_token_standard
       - *source_token_address
       - *destination_token_address
-      - *extra_data
       - *tx_hash
       - *evt_index  
       - *contract_address 

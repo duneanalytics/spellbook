@@ -23,7 +23,6 @@ SELECT 'ethereum' AS source_chain
 , 'erc20' AS destination_token_standard
 , localtoken AS source_token_address
 , remotetoken AS destination_token_address
-, extraData AS extra_data
 , evt_tx_hash AS tx_hash
 , evt_index
 , contract_address
@@ -48,7 +47,6 @@ SELECT 'ethereum' AS source_chain
 , 'native' AS destination_token_standard
 , NULL AS source_token_address
 , NULL AS destination_token_address
-, extraData AS extra_data
 , evt_tx_hash AS tx_hash
 , evt_index
 , contract_address

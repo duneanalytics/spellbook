@@ -30,7 +30,6 @@ FROM (
     , destination_token_standard
     , source_token_address
     , destination_token_address
-    , extra_data
     , tx_hash
     , evt_index
     , contract_address
