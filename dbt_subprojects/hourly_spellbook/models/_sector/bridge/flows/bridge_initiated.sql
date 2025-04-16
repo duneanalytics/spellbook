@@ -34,7 +34,7 @@ WITH grouped_initiated_events AS (
         , destination_token_standard
         , source_token_address
         , destination_token_address
-    , tx_from
+        , tx_from
         , tx_hash
         , evt_index
         , contract_address
@@ -70,6 +70,7 @@ WITH grouped_initiated_events AS (
     , destination_amount_raw
     , destination_token_address
     , destination_token_standard
+    , tx_from
     , tx_hash
     , evt_index
     , i.contract_address
@@ -104,6 +105,7 @@ SELECT source_chain
 , destination_token_address
 , destination_token_standard
 , pud.symbol AS destination_token_symbol
+, tx_from
 , tx_hash
 , evt_index
 , i.contract_address

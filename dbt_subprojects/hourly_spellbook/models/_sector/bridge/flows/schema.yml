@@ -50,11 +50,11 @@ models:
       - &destination_amount_raw 
         name: destination_amount_raw
         description: "Raw amount of tokens bridged to destination chain"
-      - &destination__amount
-        name: destination__amount
+      - &destination_amount
+        name: destination_amount
         description: "Amount of tokens bridged to destination chain"
-      - &destination__amount_usd
-        name: destination__amount_usd
+      - &destination_amount_usd
+        name: destination_amount_usd
         description: "USD value of tokens bridged to destination chain"
       - &source_address 
         name: source_address
@@ -117,11 +117,17 @@ models:
       - *block_time
       - *block_number
       - *source_amount_raw
+      - *source_amount
+      - *source_amount_usd
       - *destination_amount_raw
+      - *destination_amount
+      - *destination_amount_usd
       - *source_address
       - *destination_address
       - *source_token_standard
+      - *source_token_symbol
       - *destination_token_standard
+      - *destination_token_symbol
       - *source_token_address
       - *destination_token_address
       - *tx_from
