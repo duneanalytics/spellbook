@@ -29,7 +29,7 @@ select
     token_sold_amount,
     token_sold_symbol,
     token_sold_mint_address as token_sold_address,
-    fee_payments.amount_usd as fee_amount_usd,
+    fee_payments.amount_usd as fee_usd,
     fee_payments.amount as fee_token_amount,
     fee_payments.token_symbol as fee_token_symbol,
     fee_payments.token_address as fee_token_address,

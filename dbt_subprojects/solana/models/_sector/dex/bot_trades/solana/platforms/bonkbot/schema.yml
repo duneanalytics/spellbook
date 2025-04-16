@@ -191,7 +191,7 @@ models:
         description: "The symbol of the token sold"
       - name: token_sold_address
         description: "The mint address of the token sold"
-      - name: fee_amount_usd
+      - name: fee_usd
         description: "The USD value of the fee paid for the trade"
       - name: fee_token_amount
         description: "The amount of tokens paid as fee"
