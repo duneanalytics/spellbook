@@ -27,7 +27,7 @@ SELECT 'base' AS source_chain
 , evt_tx_hash AS tx_hash
 , evt_index
 , contract_address
-, CAST(NULL AS varbinary) AS bridge_id
+, {{ dbt_utils.generate_surrogate_key(['Base Bridge', '1', 'source_chain', 'destination_chain', '"from"', 'to', 'localtoken', 'remotetoken', 'amount', 'amount'])}} as bridge_id
 FROM {{ source('base_ethereum', 'l1standardbridge_evt_erc20bridgefinalized')}}
 
 UNION ALL
