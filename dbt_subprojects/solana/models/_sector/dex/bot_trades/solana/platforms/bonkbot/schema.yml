@@ -149,6 +149,14 @@ models:
             - outer_instruction_index
             - inner_instruction_index
     columns:
+      - name: bot
+        description: "The bot name (BonkBot)"
+        tests:
+          - not_null
+      - name: blockchain
+        description: "The blockchain (solana)"
+        tests:
+          - not_null
       - name: block_time
         description: "The timestamp when the trade was executed"
         tests:
@@ -159,10 +167,6 @@ models:
           - not_null
       - name: block_month
         description: "The month when the trade was executed, used for partitioning"
-        tests:
-          - not_null
-      - name: blockchain
-        description: "The blockchain (solana)"
         tests:
           - not_null
       - name: amount_usd

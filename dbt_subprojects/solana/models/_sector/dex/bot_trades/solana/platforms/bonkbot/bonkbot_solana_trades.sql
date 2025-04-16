@@ -9,15 +9,17 @@
    )
 }}
 
+{% set bot_label = 'BonkBot' %}
 {% set project_start_date = '2023-08-17' %}
 {% set fee_receiver = 'ZG98FUCjb8mJ824Gbs6RsgVmr1FhXb2oNiJHa2dwmPd' %}
 {% set wsol_token = 'So11111111111111111111111111111111111111112' %}
 
 select
+    '{{bot_label}}' as bot,
+    'solana' as blockchain,
     trades.block_time,
     cast(date_trunc('day', trades.block_time) as date) as block_date,
     cast(date_trunc('month', trades.block_time) as date) as block_month,
-    'solana' as blockchain,
     trades.amount_usd,
     -- TODO: find a more generic solution for this
     if(token_sold_mint_address = '{{wsol_token}}', 'Buy', 'Sell') as type,
