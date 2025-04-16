@@ -42,8 +42,7 @@ with
             trades.tx_id,
             tx_index,
             outer_instruction_index,
-            inner_instruction_index,
-            true as is_last_trade_in_transaction
+            inner_instruction_index
         from {{ ref('dex_solana_trades') }} as trades
         join
             {{ ref('bonkbot_solana_fee_payments_usd') }} as fee_payments
@@ -79,7 +78,7 @@ select
         inner_instruction_index = highest_inner_instruction_index, true, false
     ) as is_last_trade_in_transaction
 from trades
-left join
+join
     highest_inner_instruction_index_for_each_trade
     on (
         trades.tx_id = highest_inner_instruction_index_for_each_trade.tx_id
