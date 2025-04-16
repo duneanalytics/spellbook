@@ -24,8 +24,8 @@ FROM (
     , block_number
     , source_amount_raw
     , destination_amount_raw
-    , source_address
-    , destination_address
+    , sender
+    , recipient
     , source_token_standard
     , destination_token_standard
     , source_token_address

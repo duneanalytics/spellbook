@@ -56,11 +56,11 @@ models:
       - &destination_amount_usd
         name: destination_amount_usd
         description: "USD value of tokens bridged to destination chain"
-      - &source_address 
-        name: source_address
+      - &sender 
+        name: sender
         description: "Source address"
-      - &destination_address 
-        name: destination_address
+      - &recipient 
+        name: recipient
         description: "Destination address"
       - &source_token_address  
         name: source_token_address
@@ -122,8 +122,8 @@ models:
       - *destination_amount_raw
       - *destination_amount
       - *destination_amount_usd
-      - *source_address
-      - *destination_address
+      - *sender
+      - *recipient
       - *source_token_standard
       - *source_token_symbol
       - *destination_token_standard
@@ -162,8 +162,8 @@ models:
       - *destination_amount_raw
       - *destination_amount
       - *destination_amount_usd
-      - *source_address
-      - *destination_address
+      - *sender
+      - *recipient
       - *source_token_standard
       - *source_token_symbol
       - *destination_token_standard
@@ -172,10 +172,11 @@ models:
       - *destination_token_address
       - *initiated_tx_from
       - *initiated_tx_hash
-      - *initiated_evt_index  
-      - *initiated_contract_address 
-      - *finalised_tx_from
-      - *finalised_tx_hash
-      - *finalised_evt_index  
-      - *finalised_contract_address 
+      - *finalised_tx_hash 
       - *bridge_id 
+      - &bridge_miliseconds
+        name: bridge_miliseconds
+        description: "Time in miliseconds between initiated and finalised transactions"
+      - &bridge_miliseconds_2
+        name: bridge_miliseconds_2
+        description: "Time in miliseconds between initiated and finalised transactions"

@@ -16,8 +16,10 @@ SELECT COALESCE(i.source_chain, f.source_chain) AS source_chain
 , COALESCE(i.block_date, f.block_date) AS block_date
 , COALESCE(i.block_time, f.block_time) AS block_time
 , COALESCE(i.block_number, f.block_number) AS block_number
-, COALESCE(i.source_address, f.source_address) AS source_address
-, COALESCE(i.destination_address, f.destination_address) AS destination_address
+, date_diff('milisecond', i.block_time, f.block_time) AS bridge_miliseconds
+, 1000 * (f.block_time - i.block_time) AS bridge_miliseconds_2
+, COALESCE(i.sender, f.sender) AS sender
+, COALESCE(i.recipient, f.recipient) AS recipient
 , COALESCE(i.source_amount_raw, f.source_amount_raw) AS source_amount_raw
 , COALESCE(i.source_amount, f.source_amount) AS source_amount
 , COALESCE(i.source_amount_usd, f.source_amount_usd) AS source_amount_usd
@@ -30,12 +32,7 @@ SELECT COALESCE(i.source_chain, f.source_chain) AS source_chain
 , COALESCE(i.destination_token_standard, f.destination_token_standard) AS destination_token_standard
 , COALESCE(i.destination_token_symbol, f.destination_token_symbol) AS destination_token_symbol
 , i.tx_from AS initiated_tx_from
-, f.tx_from AS finalised_tx_from
 , i.tx_hash AS initiated_tx_hash
 , f.tx_hash AS finalised_tx_hash
-, i.evt_index AS initiated_evt_index
-, f.evt_index AS finalised_evt_index
-, i.contract_address AS initiated_contract_address
-, f.contract_address AS finalised_contract_address
 FROM {{ ref('bridge_initiated') }} i
 FULL OUTER JOIN {{ ref('bridge_finalised') }} f USING (bridge_id)

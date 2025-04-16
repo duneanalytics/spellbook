@@ -44,11 +44,11 @@ models:
       - &destination_amount_raw 
         name: destination_amount_raw
         description: "Raw amount of tokens bridged to destination chain"
-      - &source_address 
-        name: source_address
+      - &sender 
+        name: sender
         description: "Source address"
-      - &destination_address 
-        name: destination_address
+      - &recipient 
+        name: recipient
         description: "Destination address"
       - &source_token_standard  
         name: source_token_standard
@@ -100,8 +100,8 @@ models:
       - *block_number
       - *source_amount_raw
       - *destination_amount_raw
-      - *source_address
-      - *destination_address
+      - *sender
+      - *recipient
       - *source_token_standard
       - *destination_token_standard
       - *source_token_address
@@ -134,8 +134,8 @@ models:
       - *block_number
       - *source_amount_raw 
       - *destination_amount_raw 
-      - *source_address
-      - *destination_address
+      - *sender
+      - *recipient
       - *source_token_standard
       - *destination_token_standard
       - *source_token_address
@@ -168,8 +168,8 @@ models:
       - *block_number
       - *source_amount_raw 
       - *destination_amount_raw 
-      - *source_address
-      - *destination_address
+      - *sender
+      - *recipient
       - *source_token_standard
       - *destination_token_standard
       - *source_token_address

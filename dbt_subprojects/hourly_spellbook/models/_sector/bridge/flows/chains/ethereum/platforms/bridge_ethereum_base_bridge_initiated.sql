@@ -17,8 +17,8 @@ SELECT 'ethereum' AS source_chain
 , evt_block_number AS block_number
 , amount AS source_amount_raw
 , amount AS destination_amount_raw
-, "from" AS source_address
-, to AS destination_address
+, "from" AS sender
+, to AS recipient
 , 'erc20' AS source_token_standard
 , 'erc20' AS destination_token_standard
 , localtoken AS source_token_address
@@ -42,8 +42,8 @@ SELECT 'ethereum' AS source_chain
 , evt_block_number AS block_number
 , amount AS source_amount_raw
 , amount AS destination_amount_raw
-, "from" AS source_address
-, to AS destination_address
+, "from" AS sender
+, to AS recipient
 , 'native' AS source_token_standard
 , 'native' AS destination_token_standard
 , NULL AS source_token_address

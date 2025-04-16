@@ -28,8 +28,8 @@ WITH grouped_initiated_events AS (
         , block_number
         , source_amount_raw
         , destination_amount_raw
-        , source_address
-        , destination_address
+        , sender
+        , recipient
         , source_token_standard
         , destination_token_standard
         , source_token_address
@@ -59,8 +59,8 @@ WITH grouped_initiated_events AS (
     , block_date
     , block_time
     , block_number
-    , source_address
-    , destination_address
+    , sender
+    , recipient
     , source_amount_raw
     , source_amount_raw/POWER(10, pus.decimals) AS source_amount
     , pus.price*source_amount_raw/POWER(10, pus.decimals) AS source_amount_usd
@@ -91,8 +91,8 @@ SELECT source_chain
 , block_date
 , block_time
 , block_number
-, source_address
-, destination_address
+, sender
+, recipient
 , source_amount_raw
 , source_amount
 , source_amount_usd
