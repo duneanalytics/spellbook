@@ -20,7 +20,7 @@ with
             from_base58(token_address) as contract_address_varbinary,
             token_address as contract_address_base58
         from {{ ref("bonkbot_solana_fee_payments_raw") }}
-        {% if is_incremental() %} where {{ incremental_predicate("block_time") }}
+        {% if is_incremental() or true %} where {{ incremental_predicate("block_time") }}
         {% else %} where block_time >= timestamp '{{project_start_date}}'
         {% endif %}
     ),
@@ -45,7 +45,7 @@ join
         prices.blockchain = tokens.blockchain
         and prices.contract_address = tokens.contract_address_varbinary
         and prices.minute = tokens.minute
-        {% if is_incremental() %} and {{ incremental_predicate("prices.minute") }}
+        {% if is_incremental() or true %} and {{ incremental_predicate("prices.minute") }}
         {% else %} and prices.minute >= timestamp '{{project_start_date}}'
         {% endif %}
     )
