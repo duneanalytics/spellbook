@@ -34,6 +34,7 @@ WITH grouped_initiated_events AS (
         , destination_token_standard
         , source_token_address
         , destination_token_address
+    , tx_from
         , tx_hash
         , evt_index
         , contract_address

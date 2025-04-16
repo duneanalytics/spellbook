@@ -80,6 +80,9 @@ models:
       - &destination_token_symbol
         name: destination_token_symbol
         description: "Destination blockchain token symbol"
+      - &tx_from
+        name: tx_from
+        description: "Address that initiated the transaction"
       - &tx_hash
         name: tx_hash
         description: "Transaction hash"
@@ -121,6 +124,7 @@ models:
       - *destination_token_standard
       - *source_token_address
       - *destination_token_address
+      - *tx_from
       - *tx_hash
       - *evt_index  
       - *contract_address 
