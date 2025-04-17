@@ -12,5 +12,3 @@
 
 -- macros/models/sector/nft
 {{ enrich_nft_trades(ref('nft_base_trades'))}}
-
---triggering the model, to remove after the test
