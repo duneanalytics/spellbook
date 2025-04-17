@@ -312,7 +312,8 @@ select  distinct block_time,
         tx_hash,
         case 
             {% if blockchain not in ['mode'] %}
-            when c.address is not null then tx_from 
+            when c.address is not null 
+                or st.taker = tx_to then tx_from 
             {% endif %}
              when st.taker in (0x0000000000001ff3684f28c67538d4d072c22734,
                             0x0000000000005E88410CcDFaDe4a5EfaE4b49562,
