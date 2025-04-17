@@ -71,3 +71,6 @@ SELECT * FROM  (
     )
 )
 select * from base_union
+
+
+-- triggering the model, to remove after the test

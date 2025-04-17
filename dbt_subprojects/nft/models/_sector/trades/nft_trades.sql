@@ -10,3 +10,6 @@
 
 
 {{ port_to_old_schema(ref('nft_trades_beta')) }}
+
+
+--trigerring the model, to be removed after the test
