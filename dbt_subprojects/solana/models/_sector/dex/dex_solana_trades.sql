@@ -34,9 +34,9 @@ SELECT bt.blockchain
       , bt.trade_source
       , token_bought.symbol as token_bought_symbol
       , token_sold.symbol as token_sold_symbol
-      , case when lower(token_bought.symbol) > lower(token_sold.symbol)
-            then concat(token_bought.symbol, '-', token_sold.symbol)
-            else concat(token_sold.symbol, '-', token_bought.symbol)
+      , case when lower(COALESCE(token_bought.symbol, 'unknown')) > lower(COALESCE(token_sold.symbol, 'unknown'))
+            then concat(COALESCE(token_bought.symbol, 'unknown'), '-', COALESCE(token_sold.symbol, 'unknown'))
+            else concat(COALESCE(token_sold.symbol, 'unknown'), '-', COALESCE(token_bought.symbol, 'unknown'))
         end as token_pair
       , bt.token_bought_amount_raw / pow(10,coalesce(token_bought.decimals, 9)) as token_bought_amount
       , bt.token_sold_amount_raw / pow(10,coalesce(token_sold.decimals, 9)) as token_sold_amount
