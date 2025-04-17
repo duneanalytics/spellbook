@@ -36,5 +36,7 @@ FROM (VALUES
     (0x58538e6a46e07434d7e7375bc268d3cb839c0133, 'ENA', 18),
     (0x7da14988e4f390c2e34ed41df1814467d3ade0c3, 'PEPE', 18),
     (0x99ad925c1dc14ac7cc6ca1244eef8043c74e99d5, 'SHIB', 18),
-    (0x4186bfc76e2e237523cbc30fd220fe055156b41f, 'rsETH', 18)
+    (0x4186bfc76e2e237523cbc30fd220fe055156b41f, 'rsETH', 18),
+    (0x303c4F39EA359155C698807168e9Dc3aA1dF2b95, 'ALCX', 18),
+    (0xaC73C5f3d110Bb051100cfD8Afa4aC4339f239E7, 'VolatileV1 AMM - USDC/ALCX', 18)
 ) AS temp_table (contract_address, symbol, decimals)
