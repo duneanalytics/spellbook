@@ -32,6 +32,7 @@ SELECT
     ui_fee_receiver,
     market,
     initial_collateral_token,
+    cancellation_receiver,
     swap_path,
     order_type,
     decrease_position_swap_type,    
@@ -50,7 +51,8 @@ SELECT
     is_long,
     should_unwrap_native_token,
     auto_cancel,
-    key
+    key,
+    data_list
 FROM {{ ref('gmx_v2_' ~ chain ~ '_order_created') }}
 {% if not loop.last %}
 UNION ALL
