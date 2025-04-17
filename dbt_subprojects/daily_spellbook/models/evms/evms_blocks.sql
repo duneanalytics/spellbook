@@ -3,68 +3,74 @@
         alias = 'blocks',
         unique_key=['blockchain', 'number'],
         post_hook='{{ expose_spells(\'[
-                                        "abstract",
-                                        "apechain",
-                                        "arbitrum",
-                                        "avalanche_c",
-                                        "b3",
-                                        "base",
-                                        "berachain",
-                                        "blast",
-                                        "bnb",
-                                        "boba",
-                                        "celo",
-                                        "ethereum",
-                                        "fantom",
-                                        "gnosis",
-                                        "kaia",
-                                        "linea",
-                                        "mantle",
-                                        "optimism",
-                                        "polygon",
-                                        "ronin",
-                                        "scroll",
-                                        "sonic",
-                                        "zkevm",
-                                        "zksync",
-                                        "zora",
-                                        "ink"
+                                        "arbitrum"
+                                        , "avalanche_c"
+                                        , "base"
+                                        , "blast"
+                                        , "bnb"
+                                        , "boba"
+                                        , "celo"
+                                        , "corn"
+                                        , "ethereum"
+                                        , "fantom"
+                                        , "flare"
+                                        , "gnosis"
+                                        , "ink"
+                                        , "kaia"
+                                        , "linea"
+                                        , "nova"
+                                        , "optimism"
+                                        , "polygon"
+                                        , "ronin"
+                                        , "scroll"
+                                        , "sei"
+                                        , "shape"
+                                        , "sonic"
+                                        , "opbnb"
+                                        , "unichain"
+                                        , "viction"
+                                        , "worldchain"
+                                        , "zksync"
+                                        , "zkevm"
+                                        , "zora"
                                         ]\',
                                     "sector",
                                     "evms",
-                                    \'["hildobby", "shogun"]\') }}'
+                                    \'["hildobby", "shogun", "allelosi" ]\') }}'
         )
 }}
 
 {% set blocks_models = [
-     ('ethereum', source('ethereum', 'blocks'))
-     , ('polygon', source('polygon', 'blocks'))
-     , ('bnb', source('bnb', 'blocks'))
+     ('arbitrum', source('arbitrum', 'blocks'))
      , ('avalanche_c', source('avalanche_c', 'blocks'))
-     , ('gnosis', source('gnosis', 'blocks'))
-     , ('fantom', source('fantom', 'blocks'))
-     , ('optimism', source('optimism', 'blocks'))
-     , ('arbitrum', source('arbitrum', 'blocks'))
-     , ('celo', source('celo', 'blocks'))
      , ('base', source('base', 'blocks'))
+     , ('blast', source('blast', 'blocks'))
+     , ('bnb', source('bnb', 'blocks'))
+     , ('boba', source('boba', 'blocks'))
+     , ('celo', source('celo', 'blocks'))
+     , ('corn', source('corn', 'blocks'))
+     , ('ethereum', source('ethereum', 'blocks'))
+     , ('fantom', source('fantom', 'blocks'))
+     , ('flare', source('flare', 'blocks'))
+     , ('gnosis', source('gnosis', 'blocks'))
+     , ('ink', source('ink', 'blocks'))
+     , ('kaia', source('kaia', 'blocks'))
+     , ('linea', source('linea', 'blocks'))
+     , ('nova', source('nova', 'blocks'))
+     , ('optimism', source('optimism', 'blocks'))
+     , ('opbnb', source('opbnb', 'blocks'))
+     , ('polygon', source('polygon', 'blocks'))
+     , ('ronin', source('ronin', 'blocks'))
+     , ('scroll', source('scroll', 'blocks'))
+     , ('sei', source('sei', 'blocks'))
+     , ('shape', source('shape', 'blocks'))
+     , ('sonic', source('sonic', 'blocks'))
+     , ('unichain', source('unichain', 'blocks'))
+     , ('viction', source('viction', 'blocks'))
+     , ('worldchain', source('worldchain', 'blocks'))
+     , ('zkevm', source('zkevm', 'blocks'))
      , ('zksync', source('zksync', 'blocks'))
      , ('zora', source('zora', 'blocks'))
-     , ('scroll', source('scroll', 'blocks'))
-     , ('linea', source('linea', 'blocks'))
-     , ('zkevm', source('zkevm', 'blocks'))
-     , ('blast', source('blast', 'blocks'))
-     , ('mantle', source('mantle', 'blocks'))
-     , ('mode', source('mode', 'blocks'))
-     , ('sei', source('sei', 'blocks'))
-     , ('ronin', source('ronin', 'blocks'))
-     , ('abstract', source('abstract', 'blocks'))
-     , ('boba', source('boba', 'blocks'))
-     , ('sonic', source('sonic', 'blocks'))
-     , ('kaia', source('kaia', 'blocks'))
-     , ('apechain', source('apechain', 'blocks'))
-     , ('berachain', source('berachain', 'blocks'))
-     , ('b3', source('b3', 'blocks'))
-     , ('ink', source('ink', 'blocks'))
 ] %}
 
 SELECT *
