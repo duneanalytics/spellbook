@@ -17,5 +17,4 @@ FROM (VALUES
     , (0x8f187aa05619a017077f5308904739877ce9ea21, 'UNI', 18)
     , (0x20cab320a855b39f724131c69424240519573f81, 'DAI', 18)
     , (0xc02fe7317d4eb8753a02c35fe019786854a92001, 'wstETH', 18) 
-    , (0x9151434b16b9763660705744891fa906f660ecc5, 'USDT0', 6)
 ) AS temp_table (contract_address, symbol, decimals) 
