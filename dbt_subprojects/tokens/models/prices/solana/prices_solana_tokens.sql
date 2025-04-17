@@ -743,5 +743,6 @@ FROM
         ('ldo-lido-dao','solana','LDO','HZRCwxP2Vq9PCpPXooayhJ2bxTpo5xfpQrwB1svh332p',8),
         ('dbr-debridge','solana','DBR','DBRiDgJAMsM95moTzJs7M9LnkGErpbv9v6CUR1DXnUu5',6),
         ('grt-the-graph','solana','GRT','HGsLG4PnZ28L8A4R5nPqKgZd86zUUdmfnkTRnuFJ5dAX',8),
-        ('mana-decentraland','solana','MANA','7dgHoN8wBZCc5wbnQ2C47TDnBMAxG4Q5L3KjP67z8kNi',8)
+        ('mana-decentraland','solana','MANA','7dgHoN8wBZCc5wbnQ2C47TDnBMAxG4Q5L3KjP67z8kNi',8),
+        ('rfc-retard-finder-coin','solana','RFC','C3DwDjT17gDvvCYC2nsdGHxDHVmQRdhKfpAdqQ29pump',6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
