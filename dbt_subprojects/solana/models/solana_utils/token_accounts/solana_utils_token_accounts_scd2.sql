@@ -110,7 +110,7 @@ with ranked_src as (
 			else d.is_current
 		end as is_current
 	from dst as d
-	left join to_expire as e
+	join to_expire as e
 		on d.token_account = e.token_account
 		and d.token_account_prefix = e.token_account_prefix
 		and d.valid_from_unique_instruction_key = e.valid_from_unique_instruction_key
@@ -123,7 +123,6 @@ with ranked_src as (
 	left join updated_dst as d
 		on s.token_account = d.token_account
 		and s.token_account_prefix = d.token_account_prefix
-		and s.valid_from_unique_instruction_key = d.valid_from_unique_instruction_key
   	where
     	d.token_account is null
 )
