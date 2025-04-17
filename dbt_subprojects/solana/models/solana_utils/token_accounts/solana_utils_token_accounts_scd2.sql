@@ -37,9 +37,6 @@ with ranked_src as (
 	{% if is_incremental() -%}
 	where
 		{{ incremental_predicate('block_time') }}
-	{%- else -%}
-	where
-		block_time >= timestamp '2025-04-01'
 	{%- endif %}
 )
 , src as (
