@@ -5,6 +5,7 @@
     , materialized='incremental'
     , file_format='delta'
     , incremental_strategy='merge'
+	, partition_by=['token_account_prefix']
 	, unique_key=['token_account_prefix', 'token_account', 'valid_from_unique_instruction_key']
   )
 }}
