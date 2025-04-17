@@ -18,7 +18,7 @@ base_pools as ( -- this gets the base pools deployed on ellipsis
         {{ source('ellipsis_finance_bnb', 'FactoryPool_call_add_base_pool') }}
         WHERE call_success = true 
         {% if is_incremental() %}
-        AND call_block_time >= date_trunc('day', now() - interval '7' day)
+        AND {{incremental_predicate('call_block_time')}}
         {% endif %}
 
         
@@ -31,7 +31,7 @@ base_pools as ( -- this gets the base pools deployed on ellipsis
         {{ source('ellipsis_finance_bnb', 'FactoryPool_v2_call_add_base_pool') }}
         WHERE call_success = true 
         {% if is_incremental() %}
-        AND call_block_time >= date_trunc('day', now() - interval '7' day)
+        AND {{incremental_predicate('call_block_time')}}
         {% endif %}
 
         UNION ALL -- manually importanting base pools that weren't created by the factory (no events emitted for them)
@@ -156,7 +156,7 @@ plain_pools as ( -- getting plain pools data
             CROSS JOIN UNNEST (coins)
             WITH ORDINALITY AS _u (token_address, token_id)
             {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+            WHERE {{incremental_predicate('evt_block_time')}}
             {% endif %}
 
             UNION ALL
@@ -171,7 +171,7 @@ plain_pools as ( -- getting plain pools data
             CROSS JOIN UNNEST (coins)
             WITH ORDINALITY AS _u (token_address, token_id)
             {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+            WHERE {{incremental_predicate('evt_block_time')}}
             {% endif %}
         ) x 
 ), 
@@ -203,7 +203,7 @@ meta_pools as ( -- getting meta pools and their base pools
             CROSS JOIN UNNEST (coins)
             WITH ORDINALITY AS _u (token_address, token_id)
             {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+            WHERE {{incremental_predicate('evt_block_time')}}
             {% endif %}
 
             UNION ALL
@@ -218,7 +218,7 @@ meta_pools as ( -- getting meta pools and their base pools
             CROSS JOIN UNNEST (coins)
             WITH ORDINALITY AS _u (token_address, token_id)
             {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+            WHERE {{incremental_predicate('evt_block_time')}}
             {% endif %}
         ) x 
 ), 
@@ -338,7 +338,7 @@ crypto_pools as ( -- getting crypto pools
             CROSS JOIN UNNEST (coins)
             WITH ORDINALITY AS _u (token_address, token_id)
             {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+            WHERE {{incremental_predicate('evt_block_time')}}
             {% endif %}
 
             UNION ALL
@@ -353,7 +353,7 @@ crypto_pools as ( -- getting crypto pools
             CROSS JOIN UNNEST (coins)
             WITH ORDINALITY AS _u (token_address, token_id)
             {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+            WHERE {{incremental_predicate('evt_block_time')}}
             {% endif %}
         ) x 
 ), 
