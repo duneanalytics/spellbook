@@ -4774,4 +4774,9 @@ FROM (VALUES
     , ( 0xdd629e5241cbc5919847783e6c96b2de4754e438, 'mTBILL', 18)
     , ( 0x136471a34f6ef19fe571effc1ca711fdb8e49f2b, 'USYC', 6)
     , ( 0x89a8c847f41c0dfa6c8b88638bacca8a0b777da7, 'ELX', 18)
+    , ( 0x93Dede06AE3B5590aF1d4c111BC54C3f717E4b35, 'gALCX', 18)
+    , ( 0x8B227E3D50117E80a02cd0c67Cd6F89A8b7B46d7, 'aura20WETH-80ALCX-vault', 18)
+    , ( 0x9E90aD4810C9eaE0ADFc15801838Dc53cC6ed48a, 'mooAuraALCX-ETH', 18)
+    , ( 0xC3f279090a47e80990Fe3a9c30d24Cb117EF91a8, 'SLP', 18)
+    
 ) AS temp_table (contract_address, symbol, decimals)
