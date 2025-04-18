@@ -40,6 +40,7 @@
                                         ,"sophon"
                                         ,"berachain"
                                         ,"apechain"
+                                        ,"opbnb"
                                         ,"unichain"
                                     ]\',
                                     "sector",
@@ -92,6 +93,7 @@
     ,'tokens_abstract': {'blockchain': 'abstract', 'model': ref('tokens_abstract_erc20')}
     ,'tokens_berachain': {'blockchain': 'berachain', 'model': ref('tokens_berachain_erc20')}
     ,'tokens_apechain': {'blockchain': 'apechain', 'model': ref('tokens_apechain_erc20')}
+    ,'tokens_opbnb': {'blockchain': 'opbnb', 'model': ref('tokens_opbnb_erc20')}
     ,'tokens_unichain': {'blockchain': 'unichain', 'model': ref('tokens_unichain_erc20')}
 } %}
 
@@ -144,9 +146,11 @@ with automated_source as (
         automated_source
     where
         contract_address not in (
-            --incorrect decimal assignment in raw source
+            -- incorrect decimal assignment in raw source
             0xeb9951021698b42e4399f9cbb6267aa35f82d59d
             , 0x0ba45a8b5d5575935b8158a88c631e9f9c95a2e5
+            -- incorrect naming of raw source
+            , 0x136471a34f6ef19fe571effc1ca711fdb8e49f2b -- USYC
         )
 ), static_source as (
     {% for key, value in static_models.items() %}

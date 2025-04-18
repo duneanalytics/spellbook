@@ -11,7 +11,8 @@
     ref('agave_gnosis_base_supply'),
     ref('aave_v3_gnosis_base_supply'),
     ref('realt_rmm_v1_gnosis_base_supply'),
-    ref('realt_rmm_v2_gnosis_base_supply')
+    ref('realt_rmm_v2_gnosis_base_supply'),
+    ref('spark_gnosis_base_supply')
   ]
 %}
 

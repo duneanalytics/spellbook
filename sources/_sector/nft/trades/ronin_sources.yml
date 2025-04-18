@@ -4,4 +4,8 @@ sources:
   - name: mavis_marketplace_ronin
     tables:
       - name: MavisMarketPlace_evt_OrderMatched
-  
+
+  - name: seaport_ronin
+    tables:
+      - name: seaport_evt_OrderFulfilled
+      - name: seaport_evt_OrdersMatched

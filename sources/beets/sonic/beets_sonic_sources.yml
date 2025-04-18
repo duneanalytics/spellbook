@@ -13,6 +13,9 @@ sources:
       - name: ComposableStablePoolFactory_call_create
       - name: Vault_evt_FlashLoan
       - name: Vault_evt_TokensRegistered
+      - name: ChildChainGaugeFactory_evt_GaugeCreated       
+      - name: ChildLiquidityGauge_call_initialize            
+      - name: ChildLiquidityGauge_call_killGauge
 
   - name: beethoven_x_v3_sonic
     description: >
@@ -35,3 +38,4 @@ sources:
       - name: Vault_evt_SwapFeePercentageChanged            
       - name: ProtocolFeeController_evt_GlobalProtocolSwapFeePercentageChanged
       - name: ProtocolFeeController_evt_PoolCreatorSwapFeePercentageChanged
+      - name: GyroECLPPoolFactory_call_create  
