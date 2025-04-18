@@ -12,6 +12,11 @@ sources:
       - name: spl_token_call_mintToChecked
       - name: spl_token_call_burn
       - name: spl_token_call_burnChecked
+      - name: spl_token_call_initializeaccount
+      - name: spl_token_call_initializeaccount2
+      - name: spl_token_call_initializeaccount3
+      - name: spl_token_call_setauthority
+      - name: spl_token_call_closeaccount
 
   - name: spl_token_2022_solana
     description: "spl_token 2022 decoded tables"
@@ -24,6 +29,11 @@ sources:
       - name: spl_token_2022_call_mintToChecked
       - name: spl_token_2022_call_burn
       - name: spl_token_2022_call_burnChecked
+      - name: spl_token_2022_call_initializeaccount
+      - name: spl_token_2022_call_initializeaccount2
+      - name: spl_token_2022_call_initializeaccount3
+      - name: spl_token_2022_call_setauthority
+      - name: spl_token_2022_call_closeaccount
 
   - name: mpl_token_metadata_solana
     description: "mpl metadata decoded tables"

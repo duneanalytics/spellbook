@@ -1,24 +1,6 @@
 version: 2
 
 models:
-  - name: solana_utils_token_accounts
-    meta:
-      blockchain: solana
-      contributors: [ilemi]
-    config:
-      tags: ['solana','token_accounts']
-    description: >
-        unique token_mint_address and address pairs from solana.account_activity
-    columns:
-      - &token_mint_address
-        name: token_mint_address
-      - &address
-        name: address
-      - &account_type
-        name: account_type
-      - &updated_at
-        name: updated_at
-
   - name: solana_utils_epochs
     meta:
       blockchain: solana
@@ -49,15 +31,18 @@ models:
     columns:
       - &day
         name: day
-      - *token_mint_address
-      - *address
+      - &token_mint_address
+        name: token_mint_address
+      - &address
+        name: address
       - &sol_balance 
         name: sol_balance
       - &token_balance
         name: token_balance
       - &token_balance_owner
         name: token_balance_owner
-      - *updated_at
+      - &updated_at
+        name: updated_at
 
   - name: solana_utils_latest_balances
     meta:
