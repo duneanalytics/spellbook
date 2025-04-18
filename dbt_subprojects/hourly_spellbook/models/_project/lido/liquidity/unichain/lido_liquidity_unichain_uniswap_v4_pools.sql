@@ -280,5 +280,6 @@ SELECT blockchain||' '||project||' '||COALESCE(paired_token_symbol, 'unknown')||
   *
 FROM
   all_metrics
+WHERE main_token_usd_price is not null
 
 
