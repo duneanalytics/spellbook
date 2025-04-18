@@ -17,7 +17,7 @@ FROM
     VALUES
     ('weth-weth','zkevm','WETH',0x4f9a0e7fd2bf6067db6994cf12e4495df938e6e9,18)
     , ('reth-rocket-pool-eth','zkevm','rETH',0xb23c20efce6e24acca0cef9b7b7aa196b84ec942,18)
-    , ('usdc-usdc','zkevm','USDC',0x37eaa0ef3549a5bb7d431be78a3d99bd360d19e5,6)
+    , ('usdc-usd-coin','zkevm','USDC.e',0x37eaa0ef3549a5bb7d431be78a3d99bd360d19e5,6)
     , ('dai-dai','zkevm','DAI',0x744c5860ba161b5316f7e80d9ec415e2727e5bd5,18)
     , ('rseth-rseth','zkevm','rsETH',0x8c7d118b5c47a5bcbd47cc51789558b98dad17c5,18)
     , ('aura-aura-finance','zkevm','AURA',0x1509706a6c66ca549ff0cb464de88231ddbe213b,18)
