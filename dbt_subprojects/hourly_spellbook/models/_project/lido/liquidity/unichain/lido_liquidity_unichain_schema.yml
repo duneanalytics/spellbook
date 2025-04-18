@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: lido_liquidity_uniswap_v4_pools
+  - name: lido_liquidity_unichain_uniswap_v4_pools
     meta:
       blockchain: unichain
       project: lido
