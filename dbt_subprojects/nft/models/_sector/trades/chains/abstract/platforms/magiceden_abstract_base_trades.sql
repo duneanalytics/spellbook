@@ -23,6 +23,9 @@ WITH fee_wallets as (
      ,fee_wallet_list_cte = 'fee_wallets'
      ,start_date = '2024-11-12'
      ,native_currency_contract = '0x0000000000000000000000000000000000000000'
+     ,Seaport_order_contracts = [
+        '0xdf3969a315e3fc15b89a2752d0915cc76a5bd82d'
+     ]
     )
   }}
 )
