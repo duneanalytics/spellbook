@@ -5,11 +5,11 @@ models:
    meta:
      blockchain: abstract
      project: magiceden
-     contributors: springzh
+     contributors: hildobby
    config:
      tags: [ 'magiceden','abstract','events' ]
    description: >
-     Magic Eden events on Polygon
+     Magic Eden events on Abstract
    data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
