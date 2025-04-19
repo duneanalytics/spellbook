@@ -26,6 +26,8 @@ WITH fee_wallets as (
      ,Seaport_order_contracts = [
         '0xdf3969a315e3fc15b89a2752d0915cc76a5bd82d'
      ]
+     ,project = 'magiceden'
+     ,project_version = 'v1'
     )
   }}
 )
