@@ -27,7 +27,7 @@ WITH fee_wallets as (
         '0xdf3969a315e3fc15b89a2752d0915cc76a5bd82d'
      ]
      ,project = 'magiceden'
-     ,project_version = 'v1'
+     ,version = 'v1'
     )
   }}
 )
