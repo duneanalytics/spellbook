@@ -28,6 +28,7 @@
                                         "zkevm",
                                         "zksync",
                                         "zora",
+                                        "opbnb",
                                         "ink"
                                         ]\',
                                     "sector",
@@ -63,6 +64,7 @@
      , ('apechain', source('erc20_apechain', 'evt_transfer'))
      , ('berachain', source('erc20_berachain', 'evt_transfer'))
      , ('b3', source('erc20_b3', 'evt_transfer'))
+     , ('opbnb', source('erc20_opbnb', 'evt_transfer'))
      , ('ink', source('erc20_ink', 'evt_transfer'))
 ] %}
 
