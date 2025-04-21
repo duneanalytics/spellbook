@@ -34,7 +34,6 @@ FROM
     ('amp-amp', 'ethereum', 'AMP', 0xff20817765cb7f73d4bde2e66e067e58d11095c2, 18),
     ('ampl-ampleforth', 'ethereum', 'AMPL', 0xd46ba6d942050d489dbd938a2c909a5d5039a161, 9),
     ('ankr-ankr-network', 'ethereum', 'ANKR', 0x8290333cef9e6d528dd5618fb97a76f268f3edd4, 18),
-    ('ant-aragon', 'ethereum', 'ANT', 0x960b236a07cf122663c4303350609a66a7b288c0, 18),
     ('ant-aragon', 'ethereum', 'ANT', 0xa117000000f279d81a1d3cc75430faa017fa5a2e, 18),
     ('aoa-aurora', 'ethereum', 'AOA', 0x9ab165d795019b6d8b3e971dda91071421305e5a, 18),
     ('ape-apecoin', 'ethereum', 'APE', 0x4d224452801aced8b2f0aebe155379bb5d594381, 18),
