@@ -23,6 +23,7 @@ sources:
       - name: borrow
       - name: supply
       - name: flashloans
+      - name: reserve
 
   - name: balancer
     tables:
