@@ -29,7 +29,7 @@ WITH transfers AS (
         {{ source('system_program_solana', 'system_program_call_Transfer') }} as t
     where
         1=1
-        {% if is_incremental() -%}
+        {% if is_incremental() or true -%}
         and {{incremental_predicate('call_block_time')}}
         {% else -%}
         and call_block_time >= {{start_date}}
@@ -48,7 +48,7 @@ WITH transfers AS (
         blockchain = 'solana'
         and contract_address =  0x069b8857feab8184fb687f634618c035dac439dc1aeb3b5598a0f00000000001 -- SOL address
         and minute >= TIMESTAMP '2020-10-02 00:00' --solana start date
-        {% if is_incremental() -%}
+        {% if is_incremental() or true -%}
         and {{incremental_predicate('minute')}}
         {% else -%}
         and minute >= {{start_date}}
