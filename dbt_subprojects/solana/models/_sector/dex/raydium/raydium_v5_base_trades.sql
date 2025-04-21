@@ -49,9 +49,7 @@
             ON trs_1.tx_id = sp.call_tx_id
             AND trs_1.block_time = sp.call_block_time
             AND trs_1.outer_instruction_index = sp.call_outer_instruction_index
-            AND ((sp.call_is_inner = false AND (trs_1.inner_instruction_index = 1 OR trs_1.inner_instruction_index = 2))
-                OR (sp.call_is_inner = true AND (trs_1.inner_instruction_index = sp.call_inner_instruction_index + 1 OR trs_1.inner_instruction_index = sp.call_inner_instruction_index + 2))
-                )
+            AND trs_1.inner_instruction_index = 1 
             AND trs_1.token_version = 'spl_token'
             {% if is_incremental() %}
             AND {{incremental_predicate('trs_1.block_time')}}
@@ -62,9 +60,7 @@
             ON trs_2.tx_id = sp.call_tx_id
             AND trs_2.block_time = sp.call_block_time
             AND trs_2.outer_instruction_index = sp.call_outer_instruction_index
-            AND ((sp.call_is_inner = false AND (trs_2.inner_instruction_index = 2 OR trs_2.inner_instruction_index = 3))
-                OR (sp.call_is_inner = true AND (trs_2.inner_instruction_index = sp.call_inner_instruction_index + 2 OR trs_2.inner_instruction_index = sp.call_inner_instruction_index + 3))
-                )
+            AND trs_2.inner_instruction_index = 2 
             AND trs_2.token_version = 'spl_token'
             {% if is_incremental() %}
             AND {{incremental_predicate('trs_2.block_time')}}
