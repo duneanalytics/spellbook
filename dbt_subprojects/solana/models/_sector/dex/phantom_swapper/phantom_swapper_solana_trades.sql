@@ -51,8 +51,12 @@ WITH fee_accounts AS (
     , token_mint_address AS fee_token_mint_address
     FROM {{ source('solana','account_activity') }} a
     INNER JOIN fee_accounts f ON f.fee_receiver = a.address
-    WHERE block_time >= TIMESTAMP '2021-05-23' 
-    AND tx_success
+    WHERE tx_success
+    {% if is_incremental() %} 
+    AND {{ incremental_predicate('a.block_time') }} 
+    {% else %}
+    AND a.block_time >= TIMESTAMP '2024-10-01' -- Query times out if I go back farther
+    {% endif %}
     AND (balance_change > 0 OR token_balance_change > 0) -- Phantom accepts fees in both SOL and alt tokens
 )
    
@@ -83,7 +87,7 @@ FROM {{ ref('dex_solana_trades') }} t
     {% if is_incremental() %} 
     AND {{ incremental_predicate('tx.block_time') }} 
     {% else %}
-    AND tx.block_time >= TIMESTAMP '2021-05-23'
+    AND tx.block_time >= TIMESTAMP '2024-10-01'
     {% endif %}
     LEFT JOIN fee_accounts fa1 ON fa1.fee_receiver = t.trader_id
     LEFT JOIN fee_accounts fa2 ON fa2.fee_receiver = tx.signer
@@ -92,5 +96,5 @@ WHERE fa1.fee_receiver IS NULL -- Exclude trades signed by FeeWallet
    {% if is_incremental() %} 
    AND {{ incremental_predicate('t.block_time') }} 
    {% else %}
-   AND t.block_time >= TIMESTAMP '2021-05-23'
+   AND t.block_time >= TIMESTAMP '2024-10-01'
    {% endif %}
