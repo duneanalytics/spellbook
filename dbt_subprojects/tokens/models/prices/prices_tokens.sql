@@ -15,6 +15,7 @@
                                         , "cardano"
                                         , "celo"
                                         , "corn"
+                                        , "degen"
                                         , "ethereum"
                                         , "fantom"
                                         , "flare"
@@ -32,6 +33,7 @@
                                         , "solana"
                                         , "sonic"
                                         , "sophon"
+                                        , "opbnb"
                                         , "unichain"
                                         , "viction"
                                         , "worldchain"
@@ -45,6 +47,8 @@
                                     \'["aalan3", "jeff-dude", "umer_h_adil", "0xBoxer", "rantum", "lgingerich", "hildobby", "cryptokoryo", "0xRob", "hosuke", "Henrystats"]\') }}'
         )
 }}
+
+-- stamp 1
 
 {% set prices_models = [
 ref('prices_native_tokens')
@@ -81,11 +85,13 @@ ref('prices_native_tokens')
 ,ref('prices_sonic_tokens')
 ,ref('prices_ink_tokens')
 ,ref('prices_sophon_tokens')
+,ref('prices_opbnb_tokens')
 ,ref('prices_unichain_tokens')
 ,ref('prices_abstract_tokens')
 ,ref('prices_berachain_tokens')
 ,ref('prices_apechain_tokens')
 ,ref('prices_shape_tokens')
+,ref('prices_degen_tokens')
 ] %}
 
 

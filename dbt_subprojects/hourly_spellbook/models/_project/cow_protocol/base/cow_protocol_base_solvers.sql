@@ -68,7 +68,8 @@ known_solver_metadata (address, environment, name) as (
                 (0xe321609c56aD89711EfB69c248ebe94922902F81, 'prod', 'Gnosis_ParaSwap'),
                 (0xbBcCE072fb1Bd2C096667E257322f47693D3dc96, 'prod', 'Gnosis_0x'),
                 (0x983aC485620E265730e367B2C7BCBf6Eb9d62A21, 'prod', 'Gnosis_BalancerSOR'),
-                (0x1A422923290fd16C2ED00ED16B4203cF4bb35d82, 'prod', 'Laita')
+                (0x1A422923290fd16C2ED00ED16B4203cF4bb35d82, 'prod', 'Laita'),
+                (0x09E5CdfEEaC1866103E17e1debf4aad61c1904eF, 'prod', 'Sector_Finance')
     ) as _
 )
 -- Combining the metadata with current activation status for final table

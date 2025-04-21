@@ -84,6 +84,7 @@ models:
             - day
             - pool_id
             - token_address
+            - fee_type
     columns:
       - name: day
       - name: pool_id

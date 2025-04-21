@@ -51,8 +51,7 @@ select
     b.token_id,
     b.balance,
     b.balance_usd,
-    b.last_updated,
-    b.next_update
+    b.last_updated
 from balances b
 -- left join tokens t
 --     on b.token_address = t.token_address

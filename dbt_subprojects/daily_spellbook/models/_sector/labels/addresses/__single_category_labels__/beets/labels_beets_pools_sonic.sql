@@ -159,6 +159,19 @@ v3_pools AS(
       INNER JOIN {{ source('beethoven_x_v3_sonic', 'StablePoolFactory_call_create') }} cc
         ON c.pool = cc.output_pool
       CROSS JOIN UNNEST(c.tokens) AS t(tokens)
+
+      UNION ALL
+
+      SELECT
+        c.pool AS pool_id,
+        t.tokens,
+        0 AS weights,
+        cc.symbol,
+        'stable' AS pool_type
+      FROM token_data c
+      INNER JOIN {{ source('beethoven_x_v3_sonic', 'GyroECLPPoolFactory_call_create') }} cc
+        ON c.pool = cc.output_pool
+      CROSS JOIN UNNEST(c.tokens) AS t(tokens)
     ) zip 
           ),
 
@@ -177,7 +190,7 @@ v3_pools AS(
 SELECT 
   'sonic' AS blockchain,
   bytearray_substring(pool_id, 1, 20) AS address,
-  CASE WHEN pool_type IN ('stable') 
+  CASE WHEN pool_type IN ('stable', 'ECLP') 
   THEN lower(pool_symbol)
     ELSE lower(concat(array_join(array_agg(token_symbol ORDER BY token_symbol), '/'), ' ', 
     array_join(array_agg(cast(norm_weight AS varchar) ORDER BY token_symbol), '/')))

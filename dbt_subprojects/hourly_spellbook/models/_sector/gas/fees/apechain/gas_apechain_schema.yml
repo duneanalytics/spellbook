@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: gas_apechain_fees
+    meta:
+      blockchain: apechain
+      sector: gas
+      contributors: jeff-dude
+    config:
+      tags: ['apechain', 'gas', 'fees']
+    description: >
+        Gas Fees on Apechain
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - tx_hash
+      - check_seed:
+          seed_file: ref('evm_gas_fees')
+          filter:
+            blockchain: apechain
+          match_columns:
+            - blockchain
+            - tx_hash
+          check_columns:
+            - tx_fee_raw
+      - dbt_utils.expression_is_true:
+          expression: "tx_fee_raw = reduce(map_values(tx_fee_breakdown_raw),uint256 '0',(s, x) -> s + x,s -> s)"
+          config:
+            where: "block_time > now() - interval '7' day"
