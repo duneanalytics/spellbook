@@ -29,7 +29,7 @@ SELECT bt.blockchain
       , bt.project
       , bt.version
       , bt.block_month
-      , date_trunc('day', bt.block_time) as block_date
+      , cast(date_trunc('day', bt.block_time) as date) as block_date
       , bt.block_time
       , bt.block_slot
       , bt.trade_source
