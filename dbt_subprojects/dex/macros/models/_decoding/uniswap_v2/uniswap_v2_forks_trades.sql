@@ -24,29 +24,24 @@ WITH evt_swap AS (
         , tx_to
         , tx_index
     FROM {{ Pair_evt_Swap }}
-    {% if is_incremental()  %}
-    WHERE {{ incremental_predicate('block_time') }}
-    {% endif %}
 )
-
 -- filtering out bogus factory deployments
-
-, factory_events AS (
-    SELECT *
-    FROM {{ Factory_evt_PairCreated }}
-)
-
 , factory_event_counts AS (
     SELECT 
         contract_address,
         pair,
         blockchain,
         COUNT(*) as event_count
-    FROM factory_events
+    FROM {{ Factory_evt_PairCreated }}
     GROUP BY pair, blockchain, contract_address
     HAVING COUNT(*) = 1 -- Only keep pairs with exactly one factory event
 )
-
+, latest_creation_traces AS (
+    SELECT 
+        *
+    FROM
+        {{ ref('evms_latest_creation_trace') }}
+)
 , dexs AS
 (
     SELECT
@@ -72,30 +67,19 @@ WITH evt_swap AS (
     FROM
         evt_swap t
     INNER JOIN
-        factory_events f
-        ON f.pair = t.contract_address 
+        {{ Factory_evt_PairCreated }} f
+        ON f.pair = t.contract_address
         AND f.blockchain = t.blockchain
     INNER JOIN
         factory_event_counts fec
         ON  fec.pair = f.pair
         AND fec.blockchain = f.blockchain
         AND fec.contract_address = f.contract_address
-    INNER JOIN (
-        SELECT 
-            address
-            , "from"
-            , blockchain
-            , MAX(block_number) as latest_block
-        FROM 
-            {{ source('evms', 'creation_traces') }}
-        GROUP BY 
-            address
-            , "from"
-            , blockchain
-    ) ct
-        ON f.pair = ct.address
-        AND f.contract_address = ct."from"
-        AND ct.blockchain = t.blockchain
+    INNER JOIN latest_creation_traces ct
+        ON ct.address = f.pair
+        AND ct."from" = f.contract_address
+        AND ct.blockchain = f.blockchain
+        AND ct.block_month = f.block_month
 )
 
 SELECT

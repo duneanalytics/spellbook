@@ -12,17 +12,25 @@
 
 {%- set Pair_evt_Swap -%}
 (
-    select * from {{ ref('uniswap_v3_forks_old_chains_decoded_swap_events') }}
-    union all 
-    select * from {{ ref('uniswap_v3_forks_new_chains_decoded_swap_events') }}
+        select *
+        from {{ ref('uniswap_v3_forks_old_chains_decoded_swap_events') }}
+        {% if is_incremental() -%}
+        WHERE {{ incremental_predicate('block_time') }}
+        {%- endif %}
+        union all 
+        select *
+        from {{ ref('uniswap_v3_forks_new_chains_decoded_swap_events') }}
+        {% if is_incremental() -%}
+        WHERE {{ incremental_predicate('block_time') }}
+        {%- endif %}
 )
 {%- endset -%}
 
 {%- set Factory_evt_PoolCreated -%}
 (
-    select * from {{ ref('uniswap_v3_forks_old_chains_decoded_factory_events') }}
-    union all 
-    select * from {{ ref('uniswap_v3_forks_new_chains_decoded_factory_events') }}
+        select * from {{ ref('uniswap_v3_forks_old_chains_decoded_factory_events') }}
+        union all 
+        select * from {{ ref('uniswap_v3_forks_new_chains_decoded_factory_events') }}
 )
 {%- endset -%}
 

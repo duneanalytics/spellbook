@@ -380,7 +380,7 @@ WITH raw_token_list AS (
     ,(0x747e42Eb0591547a0ab429B3627816208c734EA7, 'T', 18, 'underlying')
     ,(0x1509706a6c66CA549ff0cB464de88231DDBe213B, 'AURA', 18, 'underlying')
     ,(0x0346c32E5d7e98bD57100b6F7002a0Ae17188048, 'BWLD', 18, 'underlying')
-    ,(0x8a6039fc7a479928b1d73f88040362e9c50db275, 'BITCOIN (hpos10i)', 8, 'underlying')
+    ,(0x8a6039fc7a479928b1d73f88040362e9c50db275, 'BITCOIN', 18, 'underlying')
     ,(0xe7BC9b3A936F122f08AAC3b1fac3C3eC29A78874, 'ECO', 18, 'underlying')
     ,(0x88a89866439F4C2830986B79cbe6f69d1Bd548BB, 'BIKE', 18, 'underlying')
     ,(0x2dad3a13ef0c6366220f989157009e501e7938f8, 'EXTRA', 18, 'underlying')
