@@ -1,10 +1,7 @@
 {{ config(
     schema = 'rocketpool_ethereum',
     alias = 'minipool_deposit_vacant',
-    materialized = 'table',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['minipool','call_block_time']
+    materialized = 'table'
 )
 }}
 
@@ -33,6 +30,7 @@ promoted as (
                 deposits
         )
         and success = true
+        and block_time > cast('2023-04-17' as timestamp)
 )
 
 select

@@ -1,7 +1,7 @@
 {{ config(
     schema = 'rocketpool_ethereum',
     alias = 'minipool_bond_reduction',
-    materialized = 'table',
+    materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['minipool','evt_block_time']

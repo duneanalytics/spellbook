@@ -1,10 +1,7 @@
 {{ config(
     schema = 'rocketpool_ethereum',
     alias = 'minipool_created_destroyed',
-    materialized = 'table',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['minipool']
+    materialized = 'table'
     )
 }}
 

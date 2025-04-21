@@ -1,10 +1,7 @@
 {{ config(
     schema = 'rocketpool_ethereum',
     alias = 'node_rpl_staking',
-    materialized = 'table',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['node_address','evt_block_time','amount','cat']
+    materialized = 'table'
     )
 }}
 

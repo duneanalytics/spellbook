@@ -1,7 +1,7 @@
 {{ config(
     schema = 'rocketpool_ethereum',
     alias = 'node_operators',
-    materialized = 'table',
+    materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['node_address']

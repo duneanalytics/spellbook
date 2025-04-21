@@ -1,10 +1,7 @@
 {{ config(
     schema = 'rocketpool_ethereum',
     alias = 'minipool_beacon_deposit',
-    materialized = 'table',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['minipool']
+    materialized = 'table'
     )
 }}
 
@@ -37,8 +34,8 @@ select
         bytearray_to_uint256(bytearray_reverse(dep.amount)) / 1e9
     ) as beacon_amount_deposited
 from
-    pub_key
-inner join {{ source('eth2_ethereum','DepositContract_evt_DepositEvent') }} as dep
+    {{ source('eth2_ethereum','DepositContract_evt_DepositEvent') }} as dep
+right join pub_key
     on pub_key.pubkey = dep.pubkey
 group by
     1,

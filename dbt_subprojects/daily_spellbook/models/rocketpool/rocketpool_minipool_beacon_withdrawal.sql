@@ -1,10 +1,7 @@
 {{ config(
     schema = 'rocketpool_ethereum',
     alias = 'minipool_beacon_withdrawal',
-    materialized = 'table',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['minipool']
+    materialized = 'table'
 )
 }}
 
@@ -25,9 +22,8 @@ withdrawals as (
         wth.amount / 1e9 as amount,
         pky.minipool,
         pky.pubkey
-    from
-        pub_key as pky
-    inner join {{ source('ethereum','withdrawals') }} as wth
+    from {{ source('ethereum','withdrawals') }} as wth
+    right join pub_key as pky
         on pky.validator_index = wth.validator_index
 )
 
