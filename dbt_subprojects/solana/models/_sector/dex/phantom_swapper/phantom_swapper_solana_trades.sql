@@ -29,7 +29,7 @@ WITH fee_accounts AS (
         account_arguments[1] AS creator
         , account_arguments[3] AS referralaccount
         , account_arguments[4] AS referraltokenaccount
-        FROM solana.instruction_calls
+        FROM {{ source('solana','instruction_calls') }}
         WHERE executing_account = 'REFER4ZgmyYx9c6He5XfaTMiGfdLwRnkV4RPp9t9iF3'
         AND account_arguments[2] = '45ruCyfdRkWpRNGEqWzjCiXRHkZs8WXCLQ67Pnpye7Hp'
         AND TRY_CAST(data AS VARCHAR) like '%7d12465f%'
@@ -49,7 +49,7 @@ WITH fee_accounts AS (
     SELECT
     tx_id
     , token_mint_address AS fee_token_mint_address
-    FROM solana.account_activity a
+    FROM {{ source('solana','account_activity') }} a
     INNER JOIN fee_accounts f ON f.fee_receiver = a.address
     WHERE block_time >= TIMESTAMP '2021-05-23' 
     AND tx_success
@@ -77,9 +77,9 @@ SELECT
     , tx_index
     , outer_instruction_index
     , inner_instruction_index
-FROM dex_solana.trades t
+FROM {{ ref('dex_solana_trades') }} t
     INNER JOIN allFeePayments fp ON t.tx_id = fp.tx_id
-    INNER JOIN solana.transactions tx ON t.tx_id = tx.id 
+    INNER JOIN {{ source('solana', 'transactions') }} tx ON t.tx_id = tx.id 
     {% if is_incremental() %} 
     AND {{ incremental_predicate('tx.block_time') }} 
     {% else %}
