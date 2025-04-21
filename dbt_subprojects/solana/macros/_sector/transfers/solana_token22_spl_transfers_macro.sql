@@ -5,13 +5,14 @@
       when the upstream model is fixed, we can revisit and add fee logic back in here
 */
 
-WITH base as (
+WITH transfers_raw as (
       --token2022. Most mint and account extensions still use the parent transferChecked instruction, hooks are excecuted after and interest-bearing is precalculated.
       SELECT
             account_source
             , account_destination
             , amount
             , call_tx_id
+            , call_tx_index
             , call_block_time
             , call_block_slot
             , call_outer_executing_account
@@ -29,6 +30,7 @@ WITH base as (
                   , account_destination
                   , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
                   , call_tx_id
+                  , call_tx_index
                   , call_block_time
                   , call_block_slot
                   , call_outer_executing_account
@@ -74,6 +76,7 @@ WITH base as (
             , account_mintTo as account_destination
             , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
             , call_tx_id
+            , call_tx_index
             , call_block_time
             , call_block_slot
             , call_outer_executing_account
@@ -103,6 +106,7 @@ WITH base as (
             , account_mintTo as account_destination
             , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
             , call_tx_id
+            , call_tx_index
             , call_block_time
             , call_block_slot
             , call_outer_executing_account
@@ -131,6 +135,7 @@ WITH base as (
             account_burnAccount as account_source, null as account_destination
             , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
             , call_tx_id
+            , call_tx_index
             , call_block_time
             , call_block_slot
             , call_outer_executing_account
@@ -159,6 +164,7 @@ WITH base as (
             account_burnAccount as account_source, null as account_destination
             , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
             , call_tx_id
+            , call_tx_index
             , call_block_time
             , call_block_slot
             , call_outer_executing_account
@@ -187,6 +193,7 @@ WITH base as (
             call_account_arguments[1] as account_source, call_account_arguments[3] as account_destination
             , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,1+2,8))) as amount
             , call_tx_id
+            , call_tx_index
             , call_block_time
             , call_block_slot
             , call_outer_executing_account
@@ -208,6 +215,31 @@ WITH base as (
             AND call_block_time >= {{start_date}}
             AND call_block_time < {{end_date}}
             {% endif %}
+)
+, transfers AS (
+      SELECT
+            substring(account_source, 1, 2) as from_token_account_prefix
+            , account_source as from_token_account
+            , substring(account_destination, 1, 2) as to_token_account_prefix
+            , account_destination as to_token_account
+            , amount
+            , call_tx_id
+            , call_tx_index
+            , call_block_time
+            , call_block_slot
+            , call_outer_executing_account
+            , call_tx_signer
+            , action
+            , call_outer_instruction_index
+            , call_inner_instruction_index
+            , token_version
+            , concat(
+                  lpad(cast(call_block_slot as varchar), 12, '0'), '-',
+                  lpad(cast(call_tx_index as varchar), 6, '0'), '-',
+                  lpad(cast(call_outer_instruction_index as varchar), 4, '0'), '-',
+                  lpad(cast(call_inner_instruction_index as varchar), 4, '0')
+            ) as unique_instruction_key --block time is not granular enough, build unique key from block_slot, tx_index, outer_instruction_index, inner_instruction_index
+      FROM transfers_raw
 )
 , prices AS (
     SELECT
@@ -243,8 +275,8 @@ SELECT
     /*
     , tr.fee
     */
-    , tr.account_source as from_token_account
-    , tr.account_destination as to_token_account
+    , tr.from_token_account
+    , tr.to_token_account
     , tk_s.token_balance_owner as from_owner
     , tk_d.token_balance_owner as to_owner
     , tr.token_version
@@ -261,18 +293,23 @@ SELECT
         ELSE p.price * tr.amount / power(10, p.decimals)
       END as amount_usd
     , p.symbol
-FROM base tr
+FROM transfers as tr
 LEFT JOIN 
-      {{ ref('solana_utils_token_accounts') }} tk_s 
-      ON tk_s.address = tr.account_source
+      {{ ref('solana_utils_token_accounts') }} tk_s
+      ON tr.from_token_account_prefix = tk_s.address_prefix
+      AND tr.from_token_account = tk_s.address
+      AND tr.unique_instruction_key >= tk_s.valid_from_unique_instruction_key
+      AND tr.unique_instruction_key < tk_s.valid_to_unique_instruction_key
 LEFT JOIN 
       {{ ref('solana_utils_token_accounts') }} tk_d 
-      ON tk_d.address = tr.account_destination
+      ON tr.to_token_account_prefix = tk_d.address_prefix
+      AND tr.to_token_account = tk_d.address
+      AND tr.unique_instruction_key >= tk_d.valid_from_unique_instruction_key
+      AND tr.unique_instruction_key < tk_d.valid_to_unique_instruction_key
 LEFT JOIN 
       {{ ref('solana_utils_token_address_mapping') }} tk_m
-    ON tk_m.base58_address = COALESCE(tk_s.token_mint_address, tk_d.token_mint_address)
+      ON tk_m.base58_address = COALESCE(tk_s.token_mint_address, tk_d.token_mint_address)
 LEFT JOIN prices p
     ON p.contract_address = tk_m.binary_address
     AND p.minute = date_trunc('minute', tr.call_block_time)
-
-{% endmacro %} 
+{% endmacro %}
