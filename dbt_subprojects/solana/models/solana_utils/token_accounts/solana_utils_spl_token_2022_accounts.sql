@@ -2,10 +2,10 @@
   config(
     schema='solana_utils'
     , alias='spl_token_2022_accounts'
-    , partition_by=['token_account_prefix']
+    , partition_by=['address_prefix']
     , materialized='table'
     , file_format='delta'
-    , unique_key=['token_account_prefix', 'token_account', 'unique_instruction_key']
+    , unique_key=['address_prefix', 'address', 'unique_instruction_key']
   )
 }}
 
@@ -18,8 +18,8 @@ with nft as (
       account_mint is not null
 )
 select
-    t22.token_account_prefix
-    , t22.token_account
+    t22.address_prefix
+    , t22.address
     , t22.event_type
     , t22.token_balance_owner
     , t22.token_mint_address

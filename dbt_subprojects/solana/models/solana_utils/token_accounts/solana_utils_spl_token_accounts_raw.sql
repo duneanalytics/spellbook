@@ -6,7 +6,7 @@
     , materialized='incremental'
     , file_format='delta'
     , incremental_strategy='append'
-    , unique_key=['block_date', 'token_account', 'token_account_prefix', 'unique_instruction_key']
+    , unique_key=['block_date', 'address', 'address_prefix', 'unique_instruction_key']
   )
 }}
 
@@ -15,11 +15,11 @@ with init as (
     SELECT
         CAST(DATE_TRUNC('day', call_block_time) as DATE) AS block_date
         , call_block_time AS block_time
-        , account_account AS token_account
-        , SUBSTRING(account_account, 1, 2) AS token_account_prefix
+        , account_account AS address
+        , SUBSTRING(account_account, 1, 2) AS address_prefix
         , 'init' AS event_type
-        , account_owner
-        , account_mint
+        , account_owner as token_balance_owner
+        , account_mint as token_mint_address
         , CONCAT(
             lpad(cast(call_block_slot as varchar), 12, '0'), '-',
             lpad(cast(call_tx_index as varchar), 6, '0'), '-',
@@ -44,11 +44,11 @@ with init as (
     SELECT
         CAST(DATE_TRUNC('day', call_block_time) as DATE) AS block_date
         , call_block_time AS block_time
-        , account_account AS token_account
-        , SUBSTRING(account_account, 1, 2) AS token_account_prefix
+        , account_account AS address
+        , SUBSTRING(account_account, 1, 2) AS address_prefix
         , 'init' AS event_type
-        , owner as account_owner
-        , account_mint
+        , owner as token_balance_owner
+        , account_mint as token_mint_address
         , CONCAT(
             lpad(cast(call_block_slot as varchar), 12, '0'), '-',
             lpad(cast(call_tx_index as varchar), 6, '0'), '-',
@@ -72,11 +72,11 @@ with init as (
     SELECT
         CAST(DATE_TRUNC('day', call_block_time) as DATE) AS block_date
         , call_block_time AS block_time
-        , account_account AS token_account
-        , SUBSTRING(account_account, 1, 2) AS token_account_prefix
+        , account_account AS address
+        , SUBSTRING(account_account, 1, 2) AS address_prefix
         , 'init' AS event_type
-        , owner as account_owner
-        , account_mint
+        , owner as token_balance_owner
+        , account_mint as token_mint_address
         , CONCAT(
             lpad(cast(call_block_slot as varchar), 12, '0'), '-',
             lpad(cast(call_tx_index as varchar), 6, '0'), '-',
@@ -99,11 +99,11 @@ with init as (
     SELECT
         CAST(DATE_TRUNC('day', call_block_time) as DATE) AS block_date
         , call_block_time AS block_time
-        , account_owned AS token_account
-        , SUBSTRING(account_owned, 1, 2) AS token_account_prefix
+        , account_owned AS address
+        , SUBSTRING(account_owned, 1, 2) AS address_prefix
         , 'owner_change' AS event_type
-        , newAuthority as account_owner
-        , null as account_mint
+        , newAuthority as token_balance_owner
+        , null as token_mint_address
         , CONCAT(
             lpad(cast(call_block_slot as varchar), 12, '0'), '-',
             lpad(cast(call_tx_index as varchar), 6, '0'), '-',
@@ -126,11 +126,11 @@ with init as (
     SELECT
         CAST(DATE_TRUNC('day', call_block_time) as DATE) AS block_date
         , call_block_time AS block_time
-        , account_account AS token_account
-        , SUBSTRING(account_account, 1, 2) AS token_account_prefix
+        , account_account AS address
+        , SUBSTRING(account_account, 1, 2) AS address_prefix
         , 'close' AS event_type
-        , null as account_owner
-        , null as account_mint
+        , null as token_balance_owner
+        , null as token_mint_address
         , CONCAT(
             lpad(cast(call_block_slot as varchar), 12, '0'), '-',
             lpad(cast(call_tx_index as varchar), 6, '0'), '-',
@@ -163,12 +163,12 @@ with init as (
     {% if is_incremental() -%}
     left join {{ this }} as existing
         on raw.block_date = existing.block_date
-        and raw.token_account = existing.token_account
-        and raw.token_account_prefix = existing.token_account_prefix
+        and raw.address = existing.address
+        and raw.address_prefix = existing.address_prefix
         and raw.unique_instruction_key = existing.unique_instruction_key
         and {{ incremental_predicate('existing.block_time') }}
     where
-        existing.token_account is null
+        existing.address is null
     {%- endif %}
 )
 select * from final

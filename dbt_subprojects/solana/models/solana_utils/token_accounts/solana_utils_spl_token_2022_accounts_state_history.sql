@@ -5,54 +5,54 @@
     , partition_by=['block_date']
     , materialized='table'
     , file_format='delta'
-    , unique_key=['block_date', 'token_account', 'token_account_prefix', 'unique_instruction_key']
+    , unique_key=['block_date', 'address', 'address_prefix', 'unique_instruction_key']
   )
 }}
 
 with full_history as (
     select
-        token_account_prefix
-        , token_account
+        address_prefix
+        , address
         , event_type
-        , account_owner
-        , account_mint
+        , token_balance_owner
+        , token_mint_address
         , block_date
         , unique_instruction_key
     from {{ ref('solana_utils_spl_token_2022_accounts_raw') }}
 )
 , ranked_src as (
     select
-        token_account_prefix
-        , token_account
+        address_prefix
+        , address
         , event_type
-        , account_owner
-        , account_mint -- Keep original mint for later logic
-        , max(case when account_mint is not null then account_mint end)
+        , token_balance_owner
+        , token_mint_address -- Keep original mint for later logic
+        , max(case when token_mint_address is not null then token_mint_address end)
             over (
-                partition by token_account_prefix, token_account
+                partition by address_prefix, address
                 order by unique_instruction_key asc
                 rows between unbounded preceding and current row
-        ) as last_non_null_account_mint -- get the latest non-null account_mint up to this point
+        ) as last_non_null_token_mint_address -- get the latest non-null token_mint_address up to this point
         , block_date
         , unique_instruction_key as valid_from_unique_instruction_key
         , lead(unique_instruction_key) over (
-            partition by token_account_prefix, token_account
+            partition by address_prefix, address
             order by unique_instruction_key asc
         ) as valid_to_unique_instruction_key
         , row_number() over (
-            partition by token_account_prefix, token_account
+            partition by address_prefix, address
             order by unique_instruction_key desc
         ) as rn
     from full_history
 )
 select
-    token_account_prefix
-    , token_account
+    address_prefix
+    , address
     , event_type
-    , account_owner as token_balance_owner
+    , token_balance_owner
     , CASE
-        WHEN event_type = 'owner_change' THEN last_non_null_account_mint
-        ELSE account_mint
+        WHEN event_type = 'owner_change' THEN last_non_null_token_mint_address
+        ELSE token_mint_address
     END AS token_mint_address
     , block_date
     , valid_from_unique_instruction_key
