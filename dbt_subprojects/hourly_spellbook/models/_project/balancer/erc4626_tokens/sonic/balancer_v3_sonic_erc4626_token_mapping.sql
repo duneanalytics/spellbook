@@ -35,7 +35,8 @@ FROM (VALUES
      (0xe6605932e4a686534d19005bb9db0fba1f101272, 'Silo Finance Borrowable scUSD Deposit, SiloId: 46', 'bscUSD-46', 0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE, 'scUSD', 6),
      (0x9144c0f0614dd0ace859c61cc37e5386d2ada43a, 'EVK Vault ewS-2', 'ewS-2', 0x039e2fB66102314Ce7b64Ce5Ce3E5183bc94aD38, 'wS', 18),
      (0x08c320a84a59c6f533e0dca655cf497594bca1f9, 'Silo Finance Borrowable WETH Deposit, SiloId: 35', 'bWETH-35', 0x50c42dEAcD8Fc9773493ED674b675bE577f2634b, 'WETH', 18),
-     (0x24c74b30d1a4261608e84bf5a618693032681dac, 'Silo Finance Borrowable scETH Deposit, SiloId: 47', 'bscETH-47', 0x3bcE5CB273F0F148010BbEa2470e7b5df84C7812, 'scETH', 18)
+     (0x24c74b30d1a4261608e84bf5a618693032681dac, 'Silo Finance Borrowable scETH Deposit, SiloId: 47', 'bscETH-47', 0x3bcE5CB273F0F148010BbEa2470e7b5df84C7812, 'scETH', 18),
+     (0x90a804D316A06E00755444D56b9eF52e5C4F4D73, 'EVK Vault ewS-5', 'ewS-5', 0x039e2fB66102314Ce7b64Ce5Ce3E5183bc94aD38, 'wS', 18)
     ) AS temp_table (erc4626_token, erc4626_token_name, erc4626_token_symbol, underlying_token, underlying_token_symbol, decimals)
 )
 
