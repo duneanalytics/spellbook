@@ -57,12 +57,12 @@ WITH transfers_raw as (
             */
             WHERE 
                   1=1
-                  {% if is_incremental() %}
+                  {% if is_incremental() or true -%}
                   AND {{incremental_predicate('tr.call_block_time')}}
-                  {% else %}
+                  {% else -%}
                   AND tr.call_block_time >= {{start_date}}
                   AND tr.call_block_time < {{end_date}}
-                  {% endif %}
+                  {% endif -%}
       )
       /*
       WHERE 
@@ -92,12 +92,12 @@ WITH transfers_raw as (
             {{ source('spl_token_2022_solana','spl_token_2022_call_mintTo') }}
       WHERE
             1=1
-            {% if is_incremental() %}
+            {% if is_incremental() or true -%}
             AND {{incremental_predicate('call_block_time')}}
-            {% else %}
+            {% else -%}
             AND call_block_time >= {{start_date}}
             AND call_block_time < {{end_date}}
-            {% endif %}
+            {% endif -%}
 
       UNION ALL
 
@@ -122,12 +122,12 @@ WITH transfers_raw as (
             {{ source('spl_token_2022_solana','spl_token_2022_call_mintToChecked') }}
       WHERE 
             1=1
-            {% if is_incremental() %}
+            {% if is_incremental() or true -%}
             AND {{incremental_predicate('call_block_time')}}
-            {% else %}
+            {% else -%}
             AND call_block_time >= {{start_date}}
             AND call_block_time < {{end_date}}
-            {% endif %}
+            {% endif -%}
 
       UNION ALL
 
@@ -151,12 +151,12 @@ WITH transfers_raw as (
             {{ source('spl_token_2022_solana','spl_token_2022_call_burn') }}
       WHERE 
             1=1
-            {% if is_incremental() %}
+            {% if is_incremental() or true -%}
             AND {{incremental_predicate('call_block_time')}}
-            {% else %}
+            {% else -%}
             AND call_block_time >= {{start_date}}
             AND call_block_time < {{end_date}}
-            {% endif %}
+            {% endif -%}
 
       UNION ALL
 
@@ -180,12 +180,12 @@ WITH transfers_raw as (
             {{ source('spl_token_2022_solana','spl_token_2022_call_burnChecked') }}
       WHERE 
             1=1
-            {% if is_incremental() %}
+            {% if is_incremental() or true -%}
             AND {{incremental_predicate('call_block_time')}}
-            {% else %}
+            {% else -%}
             AND call_block_time >= {{start_date}}
             AND call_block_time < {{end_date}}
-            {% endif %}
+            {% endif -%}
 
       UNION ALL
 
@@ -209,12 +209,12 @@ WITH transfers_raw as (
             {{ source('spl_token_2022_solana','spl_token_2022_call_transferFeeExtension') }}
       WHERE 
             bytearray_substring(call_data,1,2) = 0x1a01
-            {% if is_incremental() %}
+            {% if is_incremental() or true -%}
             AND {{incremental_predicate('call_block_time')}}
-            {% else %}
+            {% else -%}
             AND call_block_time >= {{start_date}}
             AND call_block_time < {{end_date}}
-            {% endif %}
+            {% endif -%}
 )
 , transfers AS (
       SELECT
@@ -253,12 +253,12 @@ WITH transfers_raw as (
     WHERE 
         blockchain = 'solana'
         AND minute >= TIMESTAMP '2020-10-02 00:00' --solana start date
-        {% if is_incremental() %}
+        {% if is_incremental() or true -%}
         AND {{incremental_predicate('minute')}}
-        {% else %}
+        {% else -%}
         AND minute >= {{start_date}}
         AND minute < {{end_date}}
-        {% endif %}
+        {% endif -%}
 )
 SELECT
     cast(date_trunc('month', tr.call_block_time) as date) as block_month

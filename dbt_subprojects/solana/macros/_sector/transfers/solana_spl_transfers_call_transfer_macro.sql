@@ -26,7 +26,7 @@ WITH transfers AS (
         {{ source('spl_token_solana','spl_token_call_transfer') }}
     WHERE 
         1=1
-        {% if is_incremental() -%}
+        {% if is_incremental() or true -%}
         AND {{incremental_predicate('call_block_time')}}
         {% else -%}
         AND call_block_time >= {{start_date}}
@@ -45,7 +45,7 @@ WITH transfers AS (
     WHERE 
         blockchain = 'solana'
         AND minute >= TIMESTAMP '2020-10-02 00:00' --solana start date
-        {% if is_incremental() -%}
+        {% if is_incremental() or true -%}
         AND {{incremental_predicate('minute')}}
         {% else -%}
         AND minute >= {{start_date}}
