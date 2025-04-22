@@ -2,11 +2,11 @@
   config (
     schema='solana_utils'
     , alias='spl_token_2022_accounts_raw'
-    , partition_by=['block_date']
+    , partition_by=['address_prefix']
     , materialized='incremental'
     , file_format='delta'
     , incremental_strategy='append'
-    , unique_key=['block_date', 'address', 'address_prefix', 'unique_instruction_key']
+    , unique_key=['address', 'address_prefix', 'unique_instruction_key']
   )
 }}
 
@@ -162,8 +162,7 @@ with init as (
         raw_events as raw
     {% if is_incremental() -%}
     left join {{ this }} as existing
-        on raw.block_date = existing.block_date
-        and raw.address = existing.address
+        on raw.address = existing.address
         and raw.address_prefix = existing.address_prefix
         and raw.unique_instruction_key = existing.unique_instruction_key
         and {{ incremental_predicate('existing.block_time') }}

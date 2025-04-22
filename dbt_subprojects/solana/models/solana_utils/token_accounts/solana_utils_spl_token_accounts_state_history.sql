@@ -2,10 +2,10 @@
   config(
     schema='solana_utils'
     , alias='spl_token_accounts_state_history'
-    , partition_by=['block_date']
+    , partition_by=['address_prefix']
     , materialized='table'
     , file_format='delta'
-    , unique_key=['block_date', 'address', 'address_prefix', 'unique_instruction_key']
+    , unique_key=['address', 'address_prefix', 'unique_instruction_key']
   )
 }}
 
