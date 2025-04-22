@@ -72,7 +72,6 @@
             AND trs_2.block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
         LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_2 ON tk_2.address = trs_2.from_token_account
-            AND tk_2.account_type = 'fungible'
         WHERE 1=1
         and trs_1.token_mint_address != trs_2.token_mint_address --gets rid of dupes from the OR statement in transfer joins
         and tk_2.token_balance_owner = 'GpMZbSM2GgvTKHJirzeGfMFoaZ8UR2X7F4v8vHTvxFbL' --raydium pool v4 authority. makes sure we don't accidently catch some fee transfer or something after the swap. should add for lifinity too later.
