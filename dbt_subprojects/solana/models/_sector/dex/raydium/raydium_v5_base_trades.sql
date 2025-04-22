@@ -28,7 +28,7 @@ with swap_out as (
         , call_tx_index
     from
         {{ source('raydium_cp_solana', 'raydium_cp_swap_call_swapBaseOutput') }}
-    {% if is_incremental() -%}
+    {% if is_incremental() or true -%}
     where
         {{incremental_predicate('call_block_time')}}
     {% else -%}
@@ -50,7 +50,7 @@ with swap_out as (
         , call_tx_index
     from
         {{ source('raydium_cp_solana', 'raydium_cp_swap_call_swapBaseInput') }}
-    {% if is_incremental() -%}
+    {% if is_incremental() or true -%}
     where
         {{incremental_predicate('call_block_time')}}
     {% else -%}
@@ -79,7 +79,7 @@ with swap_out as (
     where
         token_version = 'spl_token'
         and token_balance_owner = 'GpMZbSM2GgvTKHJirzeGfMFoaZ8UR2X7F4v8vHTvxFbL' --raydium pool v4 authority. makes sure we don't accidently catch some fee transfer or something after the swap. should add for lifinity too later
-        {% if is_incremental() -%}
+        {% if is_incremental() or true -%}
         and {{incremental_predicate('block_time')}}
         {% else -%}
         and block_time >= TIMESTAMP '{{project_start_date}}'
