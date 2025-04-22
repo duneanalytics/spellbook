@@ -282,6 +282,7 @@ SELECT
     , tr.token_version
     , tr.call_tx_signer as tx_signer
     , tr.call_tx_id as tx_id
+    , tr.call_tx_index as tx_index
     , tr.call_outer_instruction_index as outer_instruction_index
     , COALESCE(tr.call_inner_instruction_index,0) as inner_instruction_index
     , tr.call_outer_executing_account as outer_executing_account

@@ -210,6 +210,7 @@ SELECT
     , t.token_version
     , t.tx_signer
     , t.tx_id
+    , t.tx_index
     , t.outer_instruction_index
     , t.inner_instruction_index
     , t.outer_executing_account

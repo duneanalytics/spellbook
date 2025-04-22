@@ -13,6 +13,7 @@ WITH transfers AS (
         , account_destination as to_token_account
         , call_tx_signer as tx_signer
         , call_tx_id as tx_id
+        , call_tx_index as tx_index
         , call_outer_instruction_index as outer_instruction_index
         , COALESCE(call_inner_instruction_index,0) as inner_instruction_index
         , call_outer_executing_account as outer_executing_account
@@ -71,6 +72,7 @@ SELECT
     , 'spl_token' as token_version
     , t.tx_signer
     , t.tx_id
+    , t.tx_index
     , t.outer_instruction_index
     , t.inner_instruction_index
     , t.outer_executing_account
