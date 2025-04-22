@@ -89,7 +89,7 @@ with swap_out as (
     select
         *
     from
-        {{ ref('solana_utils_token_accounts') }}
+        {{ ref('solana_utils_token_accounts_state_history') }}
     where
         account_type = 'fungible'
 )

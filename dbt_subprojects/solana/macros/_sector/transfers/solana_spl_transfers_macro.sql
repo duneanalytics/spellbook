@@ -224,13 +224,13 @@ SELECT
     , p.symbol as symbol
 FROM transfers as t
 LEFT JOIN 
-    {{ ref('solana_utils_token_accounts') }} tk_s 
+    {{ ref('solana_utils_token_accounts_state_history') }} tk_s 
     ON t.from_token_account_prefix = tk_s.address_prefix
     and t.from_token_account = tk_s.address
     and t.unique_instruction_key >= tk_s.valid_from_unique_instruction_key
     and t.unique_instruction_key < tk_s.valid_to_unique_instruction_key
 LEFT JOIN 
-    {{ ref('solana_utils_token_accounts') }} tk_d 
+    {{ ref('solana_utils_token_accounts_state_history') }} tk_d 
     ON t.to_token_account_prefix = tk_d.address_prefix
     and t.to_token_account = tk_d.address
     and t.unique_instruction_key >= tk_d.valid_from_unique_instruction_key
