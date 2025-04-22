@@ -14,75 +14,135 @@
 
 {% set project_start_date = '2021-03-21' %} --grabbed program deployed at time (account created at).
 
-  WITH
-    --we aren't tracking using pool inits because there are a hundred or so pools from 2021 that did not use a consistent pattern.
-    all_swaps as (
-        SELECT
-            sp.call_block_time as block_time
-            , sp.call_block_slot as block_slot
-            , 'raydium' as project
-            , 4 as version
-            , 'solana' as blockchain
-            , case when sp.call_is_inner = False then 'direct'
-                else sp.call_outer_executing_account
-                end as trade_source
-            -- -- token bought is always the second instruction (transfer) in the inner instructions
-            , trs_2.amount as token_bought_amount_raw
-            , trs_1.amount as token_sold_amount_raw
-            , account_amm as pool_id --p.pool_id
-            , sp.call_tx_signer as trader_id
-            , sp.call_tx_id as tx_id
-            , sp.call_outer_instruction_index as outer_instruction_index
-            , COALESCE(sp.call_inner_instruction_index, 0) as inner_instruction_index
-            , sp.call_tx_index as tx_index
-            , COALESCE(trs_2.token_mint_address, cast(null as varchar)) as token_bought_mint_address
-            , COALESCE(trs_1.token_mint_address, cast(null as varchar)) as token_sold_mint_address
-            , trs_2.from_token_account as token_bought_vault
-            , trs_1.to_token_account as token_sold_vault
-        FROM (
-            SELECT account_serumMarket, account_amm, call_is_inner, call_outer_instruction_index, call_inner_instruction_index, call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer, call_tx_index
-            FROM {{ source('raydium_amm_solana', 'raydium_amm_call_swapBaseOut') }}
-            UNION ALL
-            SELECT account_serumMarket, account_amm, call_is_inner, call_outer_instruction_index, call_inner_instruction_index, call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer, call_tx_index
-            FROM {{ source('raydium_amm_solana', 'raydium_amm_call_swapBaseIn') }}
-        ) sp
-        INNER JOIN {{ ref('tokens_solana_transfers') }} trs_1
-            ON trs_1.tx_id = sp.call_tx_id
-            AND trs_1.block_time = sp.call_block_time
-            AND trs_1.outer_instruction_index = sp.call_outer_instruction_index
-            AND ((sp.call_is_inner = false AND (trs_1.inner_instruction_index = 1 OR trs_1.inner_instruction_index = 2))
-                OR (sp.call_is_inner = true AND (trs_1.inner_instruction_index = sp.call_inner_instruction_index + 1 OR trs_1.inner_instruction_index = sp.call_inner_instruction_index + 2))
-                )
-            AND trs_1.token_version = 'spl_token'
-            {% if is_incremental() %}
-            AND {{incremental_predicate('trs_1.block_time')}}
-            {% else %}
-            AND trs_1.block_time >= TIMESTAMP '{{project_start_date}}'
-            {% endif %}
-        INNER JOIN {{ ref('tokens_solana_transfers') }} trs_2
-            ON trs_2.tx_id = sp.call_tx_id
-            AND trs_2.block_time = sp.call_block_time
-            AND trs_2.outer_instruction_index = sp.call_outer_instruction_index
-            AND ((sp.call_is_inner = false AND (trs_2.inner_instruction_index = 2 OR trs_2.inner_instruction_index = 3))
-                OR (sp.call_is_inner = true AND (trs_2.inner_instruction_index = sp.call_inner_instruction_index + 2 OR trs_2.inner_instruction_index = sp.call_inner_instruction_index + 3))
-                )
-            AND trs_2.token_version = 'spl_token'
-            {% if is_incremental() %}
-            AND {{incremental_predicate('trs_2.block_time')}}
-            {% else %}
-            AND trs_2.block_time >= TIMESTAMP '{{project_start_date}}'
-            {% endif %}
-        LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_2 ON tk_2.address = trs_2.from_token_account
-            AND tk_2.account_type = 'fungible'
-        WHERE 1=1
+with swap_out as (
+    select
+        account_serumMarket
+        , account_amm
+        , call_is_inner
+        , call_outer_instruction_index
+        , call_inner_instruction_index
+        , call_tx_id
+        , call_block_time
+        , call_block_slot
+        , call_outer_executing_account
+        , call_tx_signer
+        , call_tx_index
+    from
+        {{ source('raydium_amm_solana', 'raydium_amm_call_swapBaseOut') }}
+    {% if is_incremental() -%}
+    where
+        {{incremental_predicate('call_block_time')}}
+    {% else -%}
+    where
+        call_block_time >= TIMESTAMP '{{project_start_date}}'
+    {% endif -%}
+)
+, swap_in as (
+    select
+        account_serumMarket
+        , account_amm
+        , call_is_inner
+        , call_outer_instruction_index
+        , call_inner_instruction_index
+        , call_tx_id
+        , call_block_time
+        , call_block_slot
+        , call_outer_executing_account
+        , call_tx_signer
+        , call_tx_index
+    from
+        {{ source('raydium_amm_solana', 'raydium_amm_call_swapBaseIn') }}
+    {% if is_incremental() -%}
+    where
+        {{incremental_predicate('call_block_time')}}
+    {% else -%}
+    where
+        call_block_time >= TIMESTAMP '{{project_start_date}}'
+    {% endif -%}
+)
+, swaps as (
+    select * from swap_out
+    union all
+    select * from swap_in
+)
+, transfers as (
+    select
+        *
+        , substring(from_token_account, 1, 2) as from_token_account_prefix
+        , substring(to_token_account, 1, 2) as to_token_account_prefix
+        , CONCAT(
+            lpad(cast(block_slot as varchar), 12, '0'), '-',
+            lpad(cast(tx_index as varchar), 6, '0'), '-',
+            lpad(cast(coalesce(outer_instruction_index, 0) as varchar), 4, '0'), '-',
+            lpad(cast(coalesce(inner_instruction_index, 0) as varchar), 4, '0')
+        ) AS unique_instruction_key
+    from
+        {{ ref('tokens_solana_transfers') }}
+    where
+        token_version = 'spl_token'
+        and token_balance_owner = '5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1' --raydium pool v4 authority. makes sure we don't accidently catch some fee transfer or something after the swap. should add for lifinity too later
+        {% if is_incremental() -%}
+        and {{incremental_predicate('block_time')}}
+        {% else -%}
+        and block_time >= TIMESTAMP '{{project_start_date}}'
+        {% endif -%}
+)
+, token_accounts as (
+    select
+        *
+    from
+        {{ ref('solana_utils_token_accounts') }}
+    where
+        account_type = 'fungible'
+)
+, all_swaps as (
+    SELECT
+        sp.call_block_time as block_time
+        , sp.call_block_slot as block_slot
+        , 'raydium' as project
+        , 4 as version
+        , 'solana' as blockchain
+        , case when sp.call_is_inner = False then 'direct'
+            else sp.call_outer_executing_account
+            end as trade_source
+        -- -- token bought is always the second instruction (transfer) in the inner instructions
+        , trs_2.amount as token_bought_amount_raw
+        , trs_1.amount as token_sold_amount_raw
+        , account_amm as pool_id --p.pool_id
+        , sp.call_tx_signer as trader_id
+        , sp.call_tx_id as tx_id
+        , sp.call_outer_instruction_index as outer_instruction_index
+        , COALESCE(sp.call_inner_instruction_index, 0) as inner_instruction_index
+        , sp.call_tx_index as tx_index
+        , COALESCE(trs_2.token_mint_address, cast(null as varchar)) as token_bought_mint_address
+        , COALESCE(trs_1.token_mint_address, cast(null as varchar)) as token_sold_mint_address
+        , trs_2.from_token_account as token_bought_vault
+        , trs_1.to_token_account as token_sold_vault
+    FROM swaps as sp
+    INNER JOIN transfers as trs_1
+        ON trs_1.tx_id = sp.call_tx_id
+        AND trs_1.block_time = sp.call_block_time
+        AND trs_1.outer_instruction_index = sp.call_outer_instruction_index
+        AND (
+            (sp.call_is_inner = false AND (trs_1.inner_instruction_index = 1 OR trs_1.inner_instruction_index = 2))
+            OR (sp.call_is_inner = true AND (trs_1.inner_instruction_index = sp.call_inner_instruction_index + 1 OR trs_1.inner_instruction_index = sp.call_inner_instruction_index + 2))
+            )        
+    INNER JOIN transfers as trs_2
+        ON trs_2.tx_id = sp.call_tx_id
+        AND trs_2.block_time = sp.call_block_time
+        AND trs_2.outer_instruction_index = sp.call_outer_instruction_index
+        AND (
+            (sp.call_is_inner = false AND (trs_2.inner_instruction_index = 2 OR trs_2.inner_instruction_index = 3))
+            OR (sp.call_is_inner = true AND (trs_2.inner_instruction_index = sp.call_inner_instruction_index + 2 OR trs_2.inner_instruction_index = sp.call_inner_instruction_index + 3))
+            )
+    LEFT JOIN token_accounts as tk_2
+        ON trs_2.from_token_account_prefix = tk_2.address_prefix
+        AND trs_2.from_token_account = tk_2.address
+        AND trs_2.unique_instruction_key >= tk_2.valid_from_unique_instruction_key
+        AND trs_2.unique_instruction_key < tk_2.valid_to_unique_instruction_key
+    WHERE 1=1
         and trs_1.token_mint_address != trs_2.token_mint_address --gets rid of dupes from the OR statement in transfer joins
-        and tk_2.token_balance_owner = '5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1' --raydium pool v4 authority. makes sure we don't accidently catch some fee transfer or something after the swap. should add for lifinity too later.
-        {% if is_incremental() %}
-        AND {{incremental_predicate('sp.call_block_time')}}
-        {% else %}
-        AND sp.call_block_time >= TIMESTAMP '{{project_start_date}}'
-        {% endif %}
-    )
+)
 
 SELECT
     tb.blockchain
