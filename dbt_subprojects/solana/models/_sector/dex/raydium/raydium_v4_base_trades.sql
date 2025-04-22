@@ -135,11 +135,6 @@ with swap_out as (
             (sp.call_is_inner = false AND (trs_2.inner_instruction_index = 2 OR trs_2.inner_instruction_index = 3))
             OR (sp.call_is_inner = true AND (trs_2.inner_instruction_index = sp.call_inner_instruction_index + 2 OR trs_2.inner_instruction_index = sp.call_inner_instruction_index + 3))
             )
-    LEFT JOIN token_accounts as tk_2
-        ON trs_2.from_token_account_prefix = tk_2.address_prefix
-        AND trs_2.from_token_account = tk_2.address
-        AND trs_2.unique_instruction_key >= tk_2.valid_from_unique_instruction_key
-        AND trs_2.unique_instruction_key < tk_2.valid_to_unique_instruction_key
     WHERE 1=1
         and trs_1.token_mint_address != trs_2.token_mint_address --gets rid of dupes from the OR statement in transfer joins
 )
