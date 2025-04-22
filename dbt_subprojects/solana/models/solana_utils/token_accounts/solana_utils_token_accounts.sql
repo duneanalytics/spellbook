@@ -9,9 +9,6 @@
 select
     *
 from
-    {{ ref('solana_utils_spl_token_accounts')}}
-union all
-select
-    *
-from
-    {{ ref('solana_utils_spl_token_2022_accounts')}}
+    {{ ref('solana_utils_token_accounts_state_history')}}
+where
+    is_active = 1

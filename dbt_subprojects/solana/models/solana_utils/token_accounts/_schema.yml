@@ -56,32 +56,6 @@ models:
       - name: valid_to_unique_instruction_key
       - name: is_active
 
-  - name: solana_utils_spl_token_accounts
-    meta:
-      blockchain: solana
-      contributors: [jeff-dude, 0xBoxer, ilemi]
-    config:
-      tags: ['solana','token_accounts']
-    description: >
-        final token account table, partioned by token account prefix for downstream join performance.
-    dbt_tests:
-        - unique_combination_of_columns:
-            combination_of_columns:
-                - token_account
-                - token_account_prefix
-                - unique_instruction_key
-    columns:
-      - name: token_account
-      - name: token_account_prefix
-      - name: event_type
-      - name: token_balance_owner
-      - name: token_mint_address
-      - name: block_date
-      - name: valid_from_unique_instruction_key
-      - name: valid_to_unique_instruction_key
-      - name: is_active
-      - name: account_type
-
   - name: solana_utils_spl_token_2022_accounts_raw
     meta:
       blockchain: solana
@@ -137,20 +111,14 @@ models:
       - name: valid_to_unique_instruction_key
       - name: is_active
 
-  - name: solana_utils_spl_token_2022_accounts
+  - name: solana_utils_token_accounts_state_history
     meta:
       blockchain: solana
       contributors: [jeff-dude, 0xBoxer, ilemi]
     config:
       tags: ['solana','token_accounts']
     description: >
-        final token account table, partioned by token account prefix for downstream join performance.
-    dbt_tests:
-        - unique_combination_of_columns:
-            combination_of_columns:
-                - token_account
-                - token_account_prefix
-                - unique_instruction_key
+        final token account view of state history, union of spl_token and spl_token_2022.
     columns:
       - name: token_account
       - name: token_account_prefix
@@ -170,7 +138,7 @@ models:
     config:
       tags: ['solana','token_accounts']
     description: >
-        final token account view, union of spl_token and spl_token_2022.
+        final token account view, with only active accounts. kept for backwards compatibility to avoid breaking queries.
     columns:
       - name: token_account
       - name: token_account_prefix

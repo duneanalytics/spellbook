@@ -45,17 +45,32 @@ with full_history as (
         ) as rn
     from full_history
 )
+, nft as (
+    select distinct
+      account_mint
+    from
+      {{ ref('tokens_solana_nft')}}
+    where
+      account_mint is not null
+)
 select
-    address_prefix
-    , address
-    , event_type
-    , token_balance_owner
+    ranked_src.address_prefix
+    , ranked_src.address
+    , ranked_src.event_type
+    , ranked_src.token_balance_owner
     , CASE
-        WHEN event_type = 'owner_change' THEN last_non_null_token_mint_address
-        ELSE token_mint_address
+        WHEN ranked_src.event_type = 'owner_change' THEN ranked_src.last_non_null_token_mint_address
+        ELSE ranked_src.token_mint_address
     END AS token_mint_address
-    , block_date
-    , valid_from_unique_instruction_key
-    , coalesce(valid_to_unique_instruction_key, '999999999-999999-9999-9999') as valid_to_unique_instruction_key
-    , if(rn = 1, 1, 0) as is_active
+    , case when nft.account_mint is not null
+      then 'nft'
+      else 'fungible'
+    end as account_type
+    , ranked_src.block_date
+    , ranked_src.valid_from_unique_instruction_key
+    , coalesce(ranked_src.valid_to_unique_instruction_key, '999999999-999999-9999-9999') as valid_to_unique_instruction_key
+    , if(ranked_src.rn = 1, 1, 0) as is_active
 from ranked_src
+left join
+  nft 
+  on ranked_src.token_mint_address = nft.account_mint
