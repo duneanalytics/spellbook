@@ -2,7 +2,6 @@
   config (
     schema='solana_utils'
     , alias='spl_token_accounts_raw'
-    , partition_by=['address_prefix']
     , materialized='incremental'
     , file_format='delta'
     , incremental_strategy='append'
