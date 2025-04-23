@@ -27,9 +27,14 @@ select
   evt_index,
   tx_hash
 from {{ source('lending', 'borrow') }}
-where (blockchain = '{{ blockchain }}' or blockchain = 'multichain')
+where 1 = 1
+  {% if blockchain != 'multichain' %}
+  and blockchain = '{{ blockchain }}'
+  {% endif %}
   and project = '{{ project }}'
-  and (version = '{{ version }}' or version = 'all')
+  {% if version != 'all' %}
+  and version = '{{ version }}'
+  {% endif %}
 
 {% endmacro %}
 
@@ -60,9 +65,14 @@ select
   evt_index,
   tx_hash
 from {{ source('lending', 'flashloans') }}
-where (blockchain = '{{ blockchain }}' or blockchain = 'multichain')
+where 1 = 1
+  {% if blockchain != 'multichain' %}
+  and blockchain = '{{ blockchain }}'
+  {% endif %}
   and project = '{{ project }}'
-  and (version = '{{ version }}' or version = 'all')
+  {% if version != 'all' %}
+  and version = '{{ version }}'
+  {% endif %}
 
 {% endmacro %}
 
@@ -96,9 +106,14 @@ select
   evt_index,
   tx_hash
 from {{ source('lending', 'supply') }}
-where (blockchain = '{{ blockchain }}' or blockchain = 'multichain')
+where 1 = 1
+  {% if blockchain != 'multichain' %}
+  and blockchain = '{{ blockchain }}'
+  {% endif %}
   and project = '{{ project }}'
-  and (version = '{{ version }}' or version = 'all')
+  {% if version != 'all' %}
+  and version = '{{ version }}'
+  {% endif %}
 
 {% endmacro %}
 
@@ -131,9 +146,14 @@ select
   evt_index,
   tx_hash
 from {{ ref('lending', 'market') }}
-where (blockchain = '{{ blockchain }}' or blockchain = 'multichain')
+where 1 = 1
+  {% if blockchain != 'multichain' %}
+  and blockchain = '{{ blockchain }}'
+  {% endif %}
   and project = '{{ project }}'
-  and (version = '{{ version }}' or version = 'all')
+  {% if version != 'all' %}
+  and version = '{{ version }}'
+  {% endif %}
 
 {% endmacro %}
 
@@ -160,8 +180,13 @@ select
   stable_borrow_rate,
   variable_borrow_rate
 from {{ ref('lending', 'market_hourly_agg') }}
-where (blockchain = '{{ blockchain }}' or blockchain = 'multichain')
+where 1 = 1
+  {% if blockchain != 'multichain' %}
+  and blockchain = '{{ blockchain }}'
+  {% endif %}
   and project = '{{ project }}'
-  and (version = '{{ version }}' or version = 'all')
+  {% if version != 'all' %}
+  and version = '{{ version }}'
+  {% endif %}
 
 {% endmacro %}

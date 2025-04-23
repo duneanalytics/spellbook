@@ -3,28 +3,28 @@
     schema = 'aave',
     alias = 'flashloans',
     materialized = 'view',
-    post_hook = '{{ expose_spells(\'["optimism"]\',
-                                    "project",
-                                    "aave",
-                                    \'["tomfutago","hildobby"]\') }}'
+    post_hook = '{{ expose_spells(blockchains = \'[
+                                    "arbitrum",
+                                    "avalanche_c",
+                                    "base",
+                                    "bnb",
+                                    "celo",
+                                    "ethereum",
+                                    "fantom",
+                                    "gnosis",
+                                    "linea",
+                                    "optimism",
+                                    "polygon",
+                                    "scroll",
+                                    "sonic",
+                                    "zksync"
+                                  ]\',
+                                  spell_type = "project",
+                                  spell_name = "aave",
+                                  contributors = \'["hildobby", "tomfutago"]\') }}'
   )
 }}
 
-select
-  blockchain,
-  project,
-  version,
-  recipient,
-  amount,
-  amount_usd,
-  fee,
-  symbol as currency_symbol,
-  token_address as currency_contract,
-  project_contract_address as contract_address,
-  block_month,
-  block_time,
-  block_number,
-  tx_hash,
-  evt_index
-from {{ source('lending','flashloans') }}
-where project = 'aave'
+{{
+  lending_aave_compatible_flashloans_view()
+}}
