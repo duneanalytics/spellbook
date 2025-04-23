@@ -1,7 +1,7 @@
 {{
   config(
     schema = 'aave_v3_arbitrum',
-    alias = 'base_reserve',
+    alias = 'base_market',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -11,10 +11,8 @@
 }}
 
 {{
-  lending_aave_v3_compatible_reserve(
+  lending_aave_v3_compatible_market(
     blockchain = 'arbitrum',
-    project = 'aave',
-    version = '3',
     decoded_contract_name = 'L2Pool'
   )
 }}

@@ -1,14 +1,14 @@
 {{
   config(
     schema = 'lending_arbitrum',
-    alias = 'base_reserve',
+    alias = 'base_market_hourly_agg',
     materialized = 'view'
   )
 }}
 
 {%
   set models = [
-    ref('aave_v3_arbitrum_base_reserve')
+    ref('aave_v3_arbitrum_base_market_hourly_agg')
   ]
 %}
 
@@ -17,20 +17,14 @@ select
   blockchain,
   project,
   version,
-  block_time,
-  block_date,
-  block_month,
-  block_number,
+  block_hour,
   token_address,
-  token_symbol,
+  symbol,
   liquidity_index,
   variable_borrow_index,
   deposit_rate,
   stable_borrow_rate,
-  variable_borrow_rate,
-  project_contract_address,
-  evt_index,
-  tx_hash
+  variable_borrow_rate
 from {{ model }}
 {% if not loop.last %}
 union all

@@ -1,14 +1,14 @@
 version: 2
 
 models:
-  - name: lending_reserve
+  - name: lending_market
     meta:
       blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom, gnosis, scroll, zksync, linea, sonic
       sector: lending
       contributors: tomfutago
     config:
-      tags: ['lending', 'reserve', 'aave', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom', 'gnosis', 'scroll', 'zksync', 'linea', 'sonic']
-    description: "All lending transactions involving borrow transactions"
+      tags: ['lending', 'market', 'aave', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom', 'gnosis', 'scroll', 'zksync', 'linea', 'sonic']
+    description: "All lending market transactions"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -40,9 +40,9 @@ models:
         description: "Timestamp for block event time in UTC"
         data_tests:
           - not_null
-      - &block_date
-        name: block_date
-        description: "Block event date"
+      - &block_hour
+        name: block_hour
+        description: "Block event hour"
         data_tests:
           - not_null
       - &block_month
@@ -60,8 +60,8 @@ models:
         description: "Token contract address"
         data_tests:
           - not_null
-      - &token_symbol
-        name: token_symbol
+      - &symbol
+        name: symbol
         description: "Token symbol"
       - &liquidity_index
         name: liquidity_index
@@ -93,3 +93,31 @@ models:
         description: "Transaction hash of the event"
         data_tests:
           - not_null
+
+  - name: lending_market_hourly_agg
+    meta:
+      blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom, gnosis, scroll, zksync, linea, sonic
+      sector: lending
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'market', 'aave', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom', 'gnosis', 'scroll', 'zksync', 'linea', 'sonic']
+    description: "Hourly aggregated lending market transactions"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - project
+            - version
+            - block_hour
+            - token_address
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_hour
+      - *token_address
+      - *symbol
+      - *liquidity_index
+      - *variable_borrow_index
+      - *deposit_rate
+      - *stable_borrow_rate

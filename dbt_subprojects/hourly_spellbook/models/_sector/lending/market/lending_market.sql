@@ -1,23 +1,19 @@
 {{
   config(
     schema = 'lending',
-    alias = 'reserve',
+    alias = 'market',
     partition_by = ['blockchain', 'project', 'block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['blockchain', 'project', 'version', 'block_time', 'token_address', 'tx_hash', 'evt_index'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    post_hook = '{{ expose_spells(blockchains = \'["arbitrum", "avalanche_c", "base", "bnb", "celo", "ethereum", "fantom", "gnosis", "linea", "optimism", "polygon", "scroll", "sonic", "zksync"]\',
-                                  spell_type = "sector",
-                                  spell_name = "lending",
-                                  contributors = \'["tomfutago"]\') }}'
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
   )
 }}
 
 {%
   set models = [
-    ref('lending_arbitrum_base_reserve')
+    ref('lending_arbitrum_base_market')
   ]
 %}
 
@@ -27,7 +23,7 @@ select
   project,
   version,
   block_time,
-  block_date,
+  block_hour,
   block_month,
   block_number,
   token_address,

@@ -1,14 +1,14 @@
 version: 2
 
 models:
-  - name: lending_arbitrum_base_reserve
+  - name: lending_arbitrum_base_market
     meta:
       blockchain: arbitrum
       sector: lending
       contributors: tomfutago
     config:
-      tags: ['lending', 'reserve', 'arbitrum']
-    description: "All lending reserve transactions on Arbitrum"
+      tags: ['lending', 'market', 'arbitrum']
+    description: "All lending market transactions on Arbitrum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -37,9 +37,9 @@ models:
         description: "Timestamp for block event time in UTC"
         data_tests:
           - not_null
-      - &block_date
-        name: block_date
-        description: "Block event date"
+      - &block_hour
+        name: block_hour
+        description: "Block event hour"
         data_tests:
           - not_null
       - &block_month
@@ -57,8 +57,8 @@ models:
         description: "Token contract address"
         data_tests:
           - not_null
-      - &token_symbol
-        name: token_symbol
+      - &symbol
+        name: symbol
         description: "Token symbol"
       - &liquidity_index
         name: liquidity_index
@@ -91,14 +91,40 @@ models:
         data_tests:
           - not_null
 
-  - name: aave_v3_arbitrum_base_reserve
+  - name: lending_arbitrum_base_market_hourly_agg
     meta:
       blockchain: arbitrum
       sector: lending
       contributors: tomfutago
     config:
-      tags: ['lending', 'reserve', 'arbitrum']
-    description: "Aave v3 reserve transactions on Arbitrum"
+      tags: ['lending', 'market', 'arbitrum']
+    description: "Hourly aggregated lending market on Arbitrum"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_hour
+            - token_address
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_hour
+      - *token_address
+      - *symbol
+      - *liquidity_index
+      - *variable_borrow_index
+      - *deposit_rate
+      - *stable_borrow_rate
+      - *variable_borrow_rate
+
+  - name: aave_v3_arbitrum_base_market
+    meta:
+      blockchain: arbitrum
+      sector: lending
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'market', 'arbitrum']
+    description: "Aave v3 market transactions on Arbitrum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -111,11 +137,11 @@ models:
       - *project
       - *version
       - *block_time
-      - *block_date
+      - *block_hour
       - *block_month
       - *block_number
       - *token_address
-      - *token_symbol
+      - *symbol
       - *liquidity_index
       - *variable_borrow_index
       - *deposit_rate
@@ -124,3 +150,29 @@ models:
       - *project_contract_address
       - *evt_index
       - *tx_hash
+
+  - name: aave_v3_arbitrum_base_market_hourly_agg
+    meta:
+      blockchain: arbitrum
+      sector: lending
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'market', 'arbitrum']
+    description: "Hourly aggregated Aave v3 market on Arbitrum"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_hour
+            - token_address
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_hour
+      - *token_address
+      - *symbol
+      - *liquidity_index
+      - *variable_borrow_index
+      - *deposit_rate
+      - *stable_borrow_rate
+      - *variable_borrow_rate

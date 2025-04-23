@@ -1,8 +1,8 @@
 {%
-  macro lending_aave_v3_compatible_reserve(
+  macro lending_aave_v3_compatible_market(
     blockchain,
-    project,
-    version,
+    project = 'aave',
+    version = 'v3',
     project_decoded_as = 'aave_v3',
     decoded_contract_name = 'Pool'
   )
@@ -13,10 +13,10 @@ with
 reserve_data as (
   select
     r.evt_block_time as block_time,
-    r.evt_block_date as block_date,
+    date_trunc('hour', r.evt_block_time) as block_hour,
     r.evt_block_number as block_number,
     r.reserve as token_address,
-    t.symbol as token_symbol,
+    t.symbol,
     r.liquidityIndex as liquidity_index,
     r.variableBorrowIndex as variable_borrow_index,
     r.liquidityRate as deposit_rate,
@@ -38,11 +38,11 @@ select
   '{{ project }}' as project,
   '{{ version }}' as version,
   block_time,
-  block_date,
-  cast(date_trunc('month', block_date) as date) as block_month,
+  block_hour,
+  cast(date_trunc('month', block_time) as date) as block_month,
   block_number,
   token_address,
-  token_symbol,
+  symbol,
   liquidity_index,
   variable_borrow_index,
   deposit_rate,
@@ -52,5 +52,45 @@ select
   evt_index,
   tx_hash
 from reserve_data
+
+{% endmacro %}
+
+{# ######################################################################### #}
+
+{%
+  macro lending_aave_v3_compatible_market_hourly_agg(
+    blockchain,
+    project = 'aave',
+    version = 'v3'
+  )
+%}
+
+with
+
+reserve_data as (
+  select *
+  from {{ ref('lending_' ~ blockchain ~ '_base_market') }}
+  where blockchain = '{{ blockchain }}'
+    and project = '{{ project }}'
+    and version = '{{ version }}'
+    {% if is_incremental() %}
+    and {{ incremental_predicate('block_time') }}
+    {% endif %}
+)
+
+select
+  blockchain,
+  project,
+  version,
+  block_hour,
+  token_address,
+  symbol,
+  max_by(liquidity_index, block_hour) as liquidity_index,
+  max_by(variable_borrow_index, block_hour) as variable_borrow_index,
+  avg(cast(deposit_rate as double)) / 1e27 as deposit_rate,
+  avg(cast(stable_borrow_rate as double)) / 1e27 as stable_borrow_rate,
+  avg(cast(variable_borrow_rate as double)) / 1e27 as variable_borrow_rate
+from reserve_data
+group by 1,2,3,4,5,6
 
 {% endmacro %}
