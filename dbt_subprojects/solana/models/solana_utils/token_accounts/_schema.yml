@@ -129,7 +129,6 @@ models:
       - name: valid_from_unique_instruction_key
       - name: valid_to_unique_instruction_key
       - name: is_active
-      - name: account_type
 
   - name: solana_utils_token_accounts
     meta:
@@ -149,4 +148,3 @@ models:
       - name: valid_from_unique_instruction_key
       - name: valid_to_unique_instruction_key
       - name: is_active
-      - name: account_type

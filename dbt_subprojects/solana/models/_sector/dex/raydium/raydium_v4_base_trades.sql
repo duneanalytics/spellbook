@@ -87,14 +87,6 @@ with swap_out as (
         and block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif -%}
 )
-, token_accounts as (
-    select
-        *
-    from
-        {{ ref('solana_utils_token_accounts_state_history') }}
-    where
-        account_type = 'fungible'
-)
 , all_swaps as (
     SELECT
         sp.call_block_time as block_time
