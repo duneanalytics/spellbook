@@ -15,7 +15,7 @@
         blockchain = 'sei',
         project = 'sailor_finance',
         version = '3',
-        Pair_evt_Swap = source('sailor_finance_sei', 'SailorV3Pool_evt_Swap'),
-        Factory_evt_PoolCreated = source('sailor_finance_sei', 'SailorV3Factory_evt_PoolCreated')
+        Pair_evt_Swap = source('sailor_finance_sei', 'UniswapV3Pool_evt_Swap'),
+        Factory_evt_PoolCreated = source('sailor_finance_sei', 'UniswapV3Factory_evt_PoolCreated')
     )
 }}

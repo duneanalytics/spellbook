@@ -33,5 +33,5 @@ sources:
       - name: PairFactory_evt_PairCreated
   - name: sailor_finance_sei
     tables:
-      - name: SailorV3Pool_evt_Swap
-      - name: SailorV3Factory_evt_PoolCreated
+      - name: UniswapV3Pool_evt_Swap
+      - name: UniswapV3Factory_evt_PoolCreated
