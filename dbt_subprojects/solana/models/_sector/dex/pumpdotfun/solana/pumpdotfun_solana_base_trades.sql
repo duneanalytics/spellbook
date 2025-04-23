@@ -159,13 +159,24 @@ with
             COALESCE(r.sol_reserves_raw, 0) as sol_reserves
         FROM swaps_with_impact s
         LEFT JOIN (
-            SELECT DISTINCT ON (pool_address, tx_id)  -- Take only one record per pool and tx
+            SELECT 
                 pool_address,
                 tx_id,
-                token_reserves_raw,
-                sol_reserves_raw
-            FROM running_reserves
-            ORDER BY pool_address, tx_id, event_time DESC, event_order DESC  -- Take the latest state
+                MAX(CASE WHEN rn = 1 THEN token_reserves_raw END) as token_reserves_raw,
+                MAX(CASE WHEN rn = 1 THEN sol_reserves_raw END) as sol_reserves_raw
+            FROM (
+                SELECT 
+                    pool_address,
+                    tx_id,
+                    token_reserves_raw,
+                    sol_reserves_raw,
+                    ROW_NUMBER() OVER (
+                        PARTITION BY pool_address, tx_id 
+                        ORDER BY event_time DESC, event_order DESC
+                    ) as rn
+                FROM running_reserves
+            )
+            GROUP BY pool_address, tx_id
         ) r ON s.pool_address = r.pool_address AND s.tx_id = r.tx_id
     )
 
