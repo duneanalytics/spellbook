@@ -199,9 +199,9 @@ SELECT
     , t.action
     , t.amount
     , CASE  
-        WHEN p.decimals is null THEN null
-        WHEN p.decimals = 0 THEN t.amount
-        ELSE t.amount / power(10, p.decimals)
+        WHEN tk_f.decimals is null THEN null
+        WHEN tk_f.decimals = 0 THEN t.amount
+        ELSE t.amount / power(10, tk_f.decimals)
       END as amount_display
     , t.from_token_account
     , t.to_token_account
@@ -217,11 +217,11 @@ SELECT
     , COALESCE(tk_s.token_mint_address, tk_d.token_mint_address) as token_mint_address
     , p.price as price_usd
     , CASE 
-        WHEN p.decimals is null THEN null
-        WHEN p.decimals = 0 THEN p.price * t.amount
-        ELSE p.price * t.amount / power(10, p.decimals)
+        WHEN tk_f.decimals is null THEN null
+        WHEN tk_f.decimals = 0 THEN p.price * t.amount
+        ELSE p.price * t.amount / power(10, tk_f.decimals)
       END as amount_usd
-    , p.symbol as symbol
+    , tk_f.symbol as symbol
 FROM transfers as t
 LEFT JOIN 
     {{ ref('solana_utils_token_accounts_state_history') }} tk_s 
@@ -241,4 +241,7 @@ LEFT JOIN
 LEFT JOIN prices p
     ON p.contract_address = tk_m.binary_address
     AND p.minute = date_trunc('minute', t.block_time)
+LEFT JOIN 
+    {{ ref('tokens_solana_fungible') }} tk_f
+    ON COALESCE(tk_s.token_mint_address, tk_d.token_mint_address) = tk_f.token_mint_address
 {%- endmacro %}
