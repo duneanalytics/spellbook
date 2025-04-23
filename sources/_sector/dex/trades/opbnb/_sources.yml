@@ -9,7 +9,3 @@ sources:
     tables:
       - name: PancakePair_evt_Swap
       - name: PancakeFactory_evt_PairCreated
-      - name: PancakeSwapMMPool_evt_Swap
-      - name: PancakeStableSwap_evt_TokenExchange
-      - name: PancakeStableSwapTwoPool_evt_TokenExchange
-      - name: PancakeStableSwapFactory_evt_NewStableSwapPair
