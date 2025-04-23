@@ -153,14 +153,20 @@ with
 
     -- Join swaps with the latest reserves value
     , swaps_with_reserves as (
-        SELECT DISTINCT
+        SELECT      
             s.*,
             COALESCE(r.token_reserves_raw, 0) as token_reserves,
             COALESCE(r.sol_reserves_raw, 0) as sol_reserves
         FROM swaps_with_impact s
-        LEFT JOIN running_reserves r ON 
-            s.pool_address = r.pool_address AND
-            s.tx_id = r.tx_id
+        LEFT JOIN (
+            SELECT DISTINCT ON (pool_address, tx_id)  -- Take only one record per pool and tx
+                pool_address,
+                tx_id,
+                token_reserves_raw,
+                sol_reserves_raw
+            FROM running_reserves
+            ORDER BY pool_address, tx_id, event_time DESC, event_order DESC  -- Take the latest state
+        ) r ON s.pool_address = r.pool_address AND s.tx_id = r.tx_id
     )
 
     , trades_base as (
