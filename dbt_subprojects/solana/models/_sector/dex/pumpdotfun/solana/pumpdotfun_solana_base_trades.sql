@@ -153,7 +153,7 @@ with
 
     -- Join swaps with the latest reserves value
     , swaps_with_reserves as (
-        SELECT
+        SELECT DISTINCT
             s.*,
             COALESCE(r.token_reserves_raw, 0) as token_reserves,
             COALESCE(r.sol_reserves_raw, 0) as sol_reserves
