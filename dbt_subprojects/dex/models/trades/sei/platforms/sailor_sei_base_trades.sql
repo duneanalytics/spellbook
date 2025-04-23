@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'sailor_sei',
+        schema = 'sailor_finance_sei',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -13,9 +13,9 @@
 {{
     uniswap_compatible_v3_trades(
         blockchain = 'sei',
-        project = 'sailor',
+        project = 'sailor_finance',
         version = '3',
-        Pair_evt_Swap = source('sailor_sei', 'SailorV3Pool_evt_Swap'),
-        Factory_evt_PoolCreated = source('sailor_sei', 'SailorV3Factory_evt_PoolCreated')
+        Pair_evt_Swap = source('sailor_finance_sei', 'SailorV3Pool_evt_Swap'),
+        Factory_evt_PoolCreated = source('sailor_finance_sei', 'SailorV3Factory_evt_PoolCreated')
     )
 }}
