@@ -1,4 +1,4 @@
- {{
+{{
   config(
         schema = 'pumpdotfun_solana',
         alias = 'base_trades',
@@ -11,59 +11,156 @@
         pre_hook='{{ enforce_join_distribution("PARTITIONED") }}')
 }}
 
-
 {% set project_start_date = '2024-01-14' %} --grabbed program deployed at time (account created at)
 
 with
     bonding_curves as (
         SELECT
-            account_arguments[1] as token_mint_address
-            , account_arguments[3] as bonding_curve
-            , account_arguments[4] as bonding_curve_vault
-        FROM {{ source('solana','instruction_calls') }}
-        WHERE executing_account = '6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P'
-            AND bytearray_substring(data,1,8) = 0x181ec828051c0777 --Create https://solscan.io/tx/2Vfq4gS9nq2jvpmZSxVXJ3uHGeheENXetwUus6KnhBzFu23Brqbt5EoNiTLds6jr72yZYGJ9YbMDG1BYKMRe3hSQ
-            and tx_success = true
+            account_base_mint as token_mint_address
+            , account_pool as bonding_curve
+            , account_pool_base_token_account as bonding_curve_vault
+            , base_amount_in as initial_token_reserves_raw 
+            , quote_amount_in as initial_sol_reserves_raw 
+            , call_block_time as block_time
+            , call_tx_id as tx_id
+        FROM {{ source('pumpdotfun_solana', 'pump_amm_call_create_pool') }}
+        WHERE 1=1
         {% if is_incremental() %}
-        AND {{incremental_predicate('block_time')}}
+        AND {{incremental_predicate('call_block_time')}}
         {% else %}
-        AND block_time >= TIMESTAMP '{{project_start_date}}'
-        -- and block_time >= now() - interval '7' day
+        --AND call_block_time >= TIMESTAMP '{{project_start_date}}'
+        AND call_block_time >= now() - interval '7' day  -- add this line
         {% endif %}
     )
 
-    , swaps as (
+    , buy_swaps as (
         SELECT
-            to_base58(bytearray_substring(data,1+16,32)) as token_mint_address
-            , bytearray_to_uint256(bytearray_reverse(bytearray_substring(data,1+16+32,8))) as sol_amount
-            , bytearray_to_uint256(bytearray_reverse(bytearray_substring(data,1+16+32+8,8))) as token_amount
-            , bytearray_to_uint256(bytearray_reverse(bytearray_substring(data,1+16+32+8+8,1))) as is_buy
-            , to_base58(bytearray_substring(data,1+16+32+8+8+1,32)) as user
-            , bytearray_to_int256(bytearray_reverse(bytearray_substring(data,1+16+32+8+8+1+32,8))) as trade_timestamp
-            , bytearray_to_uint256(bytearray_reverse(bytearray_substring(data,1+16+32+8+8+1+32+8,8))) as sol_reserves
-            , bytearray_to_uint256(bytearray_reverse(bytearray_substring(data,1+16+32+8+8+1+32+8+8,8))) as token_reserves
-            , data
-            , tx_id
-            , tx_index
-            , block_time
-            , block_slot
-            , outer_instruction_index
-            , inner_instruction_index
-            , outer_executing_account
-        FROM {{ source('solana','instruction_calls') }}
-        WHERE executing_account = '6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P'
-        AND bytearray_substring(data,1,16) = 0xe445a52e51cb9a1dbddb7fd34ee661ee --SwapEvent
-        and tx_success = true
+            account_base_mint as token_mint_address
+            , max_quote_amount_in as sol_amount
+            , base_amount_out as token_amount
+            , account_user as user
+            , account_pool as pool_address
+            , call_block_time as trade_timestamp
+            , call_tx_id as tx_id
+            , call_tx_index as tx_index
+            , call_block_time as block_time
+            , call_block_slot as block_slot
+            , call_outer_instruction_index as outer_instruction_index
+            , call_inner_instruction_index as inner_instruction_index
+            , call_outer_executing_account as outer_executing_account
+            , 1 as is_buy
+        FROM {{ source('pumpdotfun_solana', 'pump_amm_call_buy') }}
+        WHERE 1=1
         {% if is_incremental() %}
-        AND {{incremental_predicate('block_time')}}
+        AND {{incremental_predicate('call_block_time')}}
         {% else %}
-        AND block_time >= TIMESTAMP '{{project_start_date}}'
-        -- and block_time >= now() - interval '7' day
+        --AND call_block_time >= TIMESTAMP '{{project_start_date}}'
+        AND call_block_time >= now() - interval '7' day  -- add this line
         {% endif %}
-        -- AND tx_id = '5782i58ZHCKSANgTi3WXL5vjFAWEVJuPMGAr6gjx2qqcRP6LLNRH2g6pb61tk44H7PC9ohFNCUKQVUAMd5vYeUns'
-        -- and block_slot = 269850397
-        --buy https://solscan.io/tx/5782i58ZHCKSANgTi3WXL5vjFAWEVJuPMGAr6gjx2qqcRP6LLNRH2g6pb61tk44H7PC9ohFNCUKQVUAMd5vYeUns
-        --sell https://solscan.io/tx/4thHCu9SX166TP2cnjgwJ7mDSSMn5MBe8xLsTYzRLJmE7jPgwQatXh4ehh3At4xvVcgUefFzzsYVBaVwYyS1bA6v
+    )
+
+    , sell_swaps as (
+        SELECT
+            account_base_mint as token_mint_address
+            , min_quote_amount_out as sol_amount
+            , base_amount_in as token_amount
+            , account_user as user
+            , account_pool as pool_address
+            , call_block_time as trade_timestamp
+            , call_tx_id as tx_id
+            , call_tx_index as tx_index
+            , call_block_time as block_time
+            , call_block_slot as block_slot
+            , call_outer_instruction_index as outer_instruction_index
+            , call_inner_instruction_index as inner_instruction_index
+            , call_outer_executing_account as outer_executing_account
+            , 0 as is_buy
+        FROM {{ source('pumpdotfun_solana', 'pump_amm_call_sell') }}
+        WHERE 1=1
+        {% if is_incremental() %}
+        AND {{incremental_predicate('call_block_time')}}
+        {% else %}
+        --AND call_block_time >= TIMESTAMP '{{project_start_date}}'
+        AND call_block_time >= now() - interval '7' day  -- add this line
+        {% endif %}
+    )
+
+    -- Track impact of each trade on reserves
+    , swaps_with_impact as (
+        SELECT 
+            *,
+            CASE 
+                WHEN is_buy = 1 THEN token_amount -- Buy: token reserves decrease
+                ELSE -token_amount  -- Sell: token reserves increase (negative for impact)
+            END AS token_reserves_impact,
+            CASE 
+                WHEN is_buy = 1 THEN sol_amount -- Buy: SOL reserves increase
+                ELSE -sol_amount    -- Sell: SOL reserves decrease (negative for impact)
+            END AS sol_reserves_impact
+        FROM (
+            SELECT * FROM buy_swaps
+            UNION ALL
+            SELECT * FROM sell_swaps
+        )
+    )
+
+-- Combine initial states with trades for reserves calculation
+    , reserve_events as (
+        -- Initial pool creation events
+        SELECT
+            token_mint_address,
+            bonding_curve as pool_address,
+            block_time as event_time,
+            tx_id,
+            initial_token_reserves_raw as token_reserves_change,
+            initial_sol_reserves_raw as sol_reserves_change,
+            0 as event_order -- Pool creation comes first for same timestamp
+        FROM bonding_curves
+
+        UNION ALL
+
+        -- Trade events
+        SELECT
+            token_mint_address,
+            pool_address,
+            trade_timestamp as event_time,
+            tx_id,
+            token_reserves_impact as token_reserves_change,
+            sol_reserves_impact as sol_reserves_change,
+            1 as event_order -- Trades come after pool creation for same timestamp
+        FROM swaps_with_impact
+    )
+
+    -- Calculate running totals for reserves
+    , running_reserves as (
+        SELECT
+            token_mint_address,
+            pool_address,
+            event_time,
+            tx_id,
+            SUM(token_reserves_change) OVER (
+                PARTITION BY pool_address 
+                ORDER BY event_time, event_order, tx_id
+                ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+            ) as token_reserves_raw,
+            SUM(sol_reserves_change) OVER (
+                PARTITION BY pool_address 
+                ORDER BY event_time, event_order, tx_id
+                ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+            ) as sol_reserves_raw
+        FROM reserve_events
+    )
+
+    -- Join swaps with the latest reserves value
+    , swaps_with_reserves as (
+        SELECT
+            s.*,
+            COALESCE(r.token_reserves_raw, 0) as token_reserves,
+            COALESCE(r.sol_reserves_raw, 0) as sol_reserves
+        FROM swaps_with_impact s
+        LEFT JOIN running_reserves r ON 
+            s.pool_address = r.pool_address AND
+            s.tx_id = r.tx_id
     )
 
     , trades_base as (
@@ -107,7 +204,7 @@ with
             , cast(case when is_buy = 0 then bc.bonding_curve --sol is just held on the curve account
                 else bonding_curve_vault
                 end as varchar) as token_sold_vault
-        FROM swaps sp
+        FROM swaps_with_reserves sp
         LEFT JOIN {{ ref('tokens_solana_fungible') }} tk ON tk.token_mint_address = sp.token_mint_address
         LEFT JOIN {{ ref('tokens_solana_fungible') }} tk_sol ON tk_sol.token_mint_address = 'So11111111111111111111111111111111111111112'
         LEFT JOIN bonding_curves bc ON bc.token_mint_address = sp.token_mint_address
