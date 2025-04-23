@@ -6,7 +6,8 @@
 }}
 
 {% set base_models = [
-    ref('pancakeswap_v3_opbnb_base_trades')
+    ref('pancakeswap_v3_opbnb_base_trades'),
+    ref('pancakeswap_v2_opbnb_base_trades')
 ] %}
 
 WITH base_union AS (
