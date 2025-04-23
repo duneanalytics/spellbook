@@ -28,6 +28,7 @@ SELECT
     , token_version
     , tx_signer
     , tx_id
+    , tx_index
     , outer_instruction_index
     , inner_instruction_index
     , outer_executing_account
@@ -55,6 +56,7 @@ SELECT
     , token_version
     , tx_signer
     , tx_id
+    , tx_index
     , outer_instruction_index
     , inner_instruction_index
     , outer_executing_account
@@ -82,6 +84,7 @@ SELECT
     , token_version
     , tx_signer
     , tx_id
+    , tx_index
     , outer_instruction_index
     , inner_instruction_index
     , outer_executing_account
@@ -109,6 +112,7 @@ SELECT
     , token_version
     , tx_signer
     , tx_id
+    , tx_index
     , outer_instruction_index
     , inner_instruction_index
     , outer_executing_account
