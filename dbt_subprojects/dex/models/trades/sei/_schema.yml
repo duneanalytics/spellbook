@@ -117,7 +117,7 @@ models:
       blockchain: sei
       sector: dex
       project: sailor
-      contributors: capybaralabs-xyz
+      contributors: richardsxu92
     config:
       tags: [ 'sei', 'dex', 'trades', 'sailor', 'v3' ]
     description: "Sailor sei base trades"
