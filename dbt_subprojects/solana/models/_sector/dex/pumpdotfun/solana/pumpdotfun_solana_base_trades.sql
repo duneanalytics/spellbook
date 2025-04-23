@@ -138,6 +138,7 @@ with
             pool_address,
             event_time,
             tx_id,
+            event_order,
             SUM(token_reserves_change) OVER (
                 PARTITION BY pool_address 
                 ORDER BY event_time, event_order, tx_id
