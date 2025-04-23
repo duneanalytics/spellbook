@@ -67,8 +67,8 @@ select
     , coalesce(t.inner_instruction_index, 0) as key_inner_instruction_index
     , t.outer_instruction_index
     , t.tx_signer
-    , COALESCE(tk_from.token_balance_owner, call_account_arguments[1]) AS from_owner -- if the token account exists, use the owner of that, otherwise it should be an account
-    , COALESCE(tk_to.token_balance_owner, call_account_arguments[2]) AS to_owner
+    , COALESCE(tk_from.token_balance_owner, t.from_token_account) AS from_owner -- if the token account exists, use the owner of that, otherwise it should be an account
+    , COALESCE(tk_to.token_balance_owner, t.to_token_account) AS to_owner
     , tk_from.address as from_token_account -- if the token account exists, use the address of that, otherwise no token accounts are involved
     , tk_to.address as to_token_account
     , 'So11111111111111111111111111111111111111112' as token_mint_address
