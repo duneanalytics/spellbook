@@ -5,13 +5,12 @@
     , materialized='view'
   )
 }}
-/*
+
 select
     *
 from
     {{ ref('solana_utils_spl_token_accounts_state_history')}}
 union all
-*/
 select
     *
 from

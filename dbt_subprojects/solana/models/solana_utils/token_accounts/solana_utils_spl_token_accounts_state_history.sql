@@ -1,7 +1,6 @@
 {{
   config(
-    tags=['prod_exclude']
-    , schema='solana_utils'
+    schema='solana_utils'
     , alias='spl_token_accounts_state_history'
     , partition_by=['address_prefix']
     , materialized='table'
