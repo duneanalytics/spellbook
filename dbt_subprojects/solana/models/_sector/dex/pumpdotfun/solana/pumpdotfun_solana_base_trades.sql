@@ -90,12 +90,12 @@ with
         SELECT 
             *,
             CASE 
-                WHEN is_buy = 1 THEN token_amount -- Buy: token reserves decrease
-                ELSE -token_amount  -- Sell: token reserves increase (negative for impact)
+                WHEN is_buy = 1 THEN -token_amount -- Buy: token reserves decrease
+                ELSE token_amount  -- Sell: token reserves increase
             END AS token_reserves_impact,
             CASE 
                 WHEN is_buy = 1 THEN sol_amount -- Buy: SOL reserves increase
-                ELSE -sol_amount    -- Sell: SOL reserves decrease (negative for impact)
+                ELSE -sol_amount    -- Sell: SOL reserves decrease
             END AS sol_reserves_impact
         FROM (
             SELECT * FROM buy_swaps
@@ -207,9 +207,9 @@ with
             , cast(bc.bonding_curve as varchar) as pool_id
             , '6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P' as project_main_id
             , sp.sol_reserves as sol_reserves_raw
-            , sp.sol_reserves/pow(10,tk_sol.decimals) as sol_reserves
+            , sp.sol_reserves/pow(10,COALESCE(tk_sol.decimals, 9)) as sol_reserves
             , sp.token_reserves as token_reserves_raw
-            , sp.token_reserves/pow(10,tk.decimals) as token_reserves
+            , sp.token_reserves/pow(10,COALESCE(tk.decimals, 0)) as token_reserves
             , sp.user as trader_id
             , sp.tx_id
             , sp.outer_instruction_index
