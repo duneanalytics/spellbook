@@ -38,10 +38,10 @@ WITH transfers AS (
 )
 , prices AS (
     select
-        contract_address,
-        minute,
-        price,
-        decimals
+        contract_address
+        , minute
+        , price
+        , decimals
     from
         {{ source('prices', 'usd_forward_fill') }}
     where
@@ -69,7 +69,7 @@ select
     , t.tx_signer
     , COALESCE(tk_from.token_balance_owner, call_account_arguments[1]) AS from_owner -- if the token account exists, use the owner of that, otherwise it should be an account
     , COALESCE(tk_to.token_balance_owner, call_account_arguments[2]) AS to_owner
-    , tk_from.address as from_token_account, -- if the token account exists, use the address of that, otherwise no token accounts are involved
+    , tk_from.address as from_token_account -- if the token account exists, use the address of that, otherwise no token accounts are involved
     , tk_to.address as to_token_account
     , 'So11111111111111111111111111111111111111112' as token_mint_address
     , 'SOL' as symbol
