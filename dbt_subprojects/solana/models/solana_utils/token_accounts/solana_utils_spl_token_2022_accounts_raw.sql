@@ -4,6 +4,7 @@
     , alias='spl_token_2022_accounts_raw'
     , materialized='incremental'
     , file_format='delta'
+    , tags = ['prod_exclude']
     , incremental_strategy='append'
     , unique_key=['address', 'address_prefix', 'unique_instruction_key']
   )

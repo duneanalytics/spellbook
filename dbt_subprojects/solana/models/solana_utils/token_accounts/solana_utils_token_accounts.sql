@@ -3,6 +3,7 @@
     schema='solana_utils'
     , alias='token_accounts'
     , materialized='view'
+    , tags = ['prod_exclude']
   )
 }}
 

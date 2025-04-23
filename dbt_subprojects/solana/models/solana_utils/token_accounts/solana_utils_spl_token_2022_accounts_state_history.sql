@@ -4,6 +4,7 @@
     , alias='spl_token_2022_accounts_state_history'
     , partition_by=['address_prefix']
     , materialized='table'
+    , tags=['prod_exclude']
     , file_format='delta'
     , unique_key=['address', 'address_prefix', 'unique_instruction_key']
   )
