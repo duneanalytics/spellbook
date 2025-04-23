@@ -7,7 +7,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index','block_month'],
+        unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'block_month'],
         pre_hook='{{ enforce_join_distribution("PARTITIONED") }}')
 }}
 
@@ -90,12 +90,12 @@ with
         SELECT 
             *,
             CASE 
-                WHEN is_buy = 1 THEN token_amount -- Buy: token reserves decrease
-                ELSE -token_amount  -- Sell: token reserves increase (negative for impact)
+                WHEN is_buy = 1 THEN -token_amount -- Buy: token reserves decrease
+                ELSE token_amount  -- Sell: token reserves increase
             END AS token_reserves_impact,
             CASE 
                 WHEN is_buy = 1 THEN sol_amount -- Buy: SOL reserves increase
-                ELSE -sol_amount    -- Sell: SOL reserves decrease (negative for impact)
+                ELSE -sol_amount    -- Sell: SOL reserves decrease
             END AS sol_reserves_impact
         FROM (
             SELECT * FROM buy_swaps
@@ -138,6 +138,7 @@ with
             pool_address,
             event_time,
             tx_id,
+            event_order,
             SUM(token_reserves_change) OVER (
                 PARTITION BY pool_address 
                 ORDER BY event_time, event_order, tx_id
@@ -153,14 +154,20 @@ with
 
     -- Join swaps with the latest reserves value
     , swaps_with_reserves as (
-        SELECT DISTINCT
+        SELECT      
             s.*,
             COALESCE(r.token_reserves_raw, 0) as token_reserves,
             COALESCE(r.sol_reserves_raw, 0) as sol_reserves
         FROM swaps_with_impact s
-        LEFT JOIN running_reserves r ON 
-            s.pool_address = r.pool_address AND
-            s.tx_id = r.tx_id
+        LEFT JOIN (
+            SELECT DISTINCT ON (pool_address, tx_id)  -- Take only one record per pool and tx
+                pool_address,
+                tx_id,
+                token_reserves_raw,
+                sol_reserves_raw
+            FROM running_reserves
+            ORDER BY pool_address, tx_id, event_time DESC, event_order DESC  -- Take the latest state
+        ) r ON s.pool_address = r.pool_address AND s.tx_id = r.tx_id
     )
 
     , trades_base as (
@@ -189,9 +196,9 @@ with
             , cast(bc.bonding_curve as varchar) as pool_id
             , '6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P' as project_main_id
             , sp.sol_reserves as sol_reserves_raw
-            , sp.sol_reserves/pow(10,tk_sol.decimals) as sol_reserves
+            , sp.sol_reserves/pow(10,COALESCE(tk_sol.decimals, 9)) as sol_reserves
             , sp.token_reserves as token_reserves_raw
-            , sp.token_reserves/pow(10,tk.decimals) as token_reserves
+            , sp.token_reserves/pow(10,COALESCE(tk.decimals, 0)) as token_reserves
             , sp.user as trader_id
             , sp.tx_id
             , sp.outer_instruction_index
@@ -204,6 +211,16 @@ with
             , cast(case when is_buy = 0 then bc.bonding_curve --sol is just held on the curve account
                 else bonding_curve_vault
                 end as varchar) as token_sold_vault
+            , ROW_NUMBER() OVER (
+                PARTITION BY 
+                    sp.tx_id, 
+                    sp.outer_instruction_index, 
+                    COALESCE(sp.inner_instruction_index, 0), 
+                    CAST(date_trunc('month', sp.block_time) AS DATE)
+                ORDER BY 
+                    sp.block_time,
+                    sp.block_slot
+            ) as row_num
         FROM swaps_with_reserves sp
         LEFT JOIN {{ ref('tokens_solana_fungible') }} tk ON tk.token_mint_address = sp.token_mint_address
         LEFT JOIN {{ ref('tokens_solana_fungible') }} tk_sol ON tk_sol.token_mint_address = 'So11111111111111111111111111111111111111112'
@@ -237,3 +254,4 @@ SELECT
     , tb.inner_instruction_index
     , tb.tx_index
 FROM trades_base tb
+WHERE tb.row_num = 1  -- Only keep the first row of each duplicate group

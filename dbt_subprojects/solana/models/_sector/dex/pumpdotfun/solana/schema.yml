@@ -12,7 +12,7 @@ models:
     data_tests:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
+          combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'block_month' ]
 
 
   - name: pumpdotfun_solana_trades
