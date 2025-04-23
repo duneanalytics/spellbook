@@ -21,7 +21,7 @@ SELECT
   , call_block_time AS block_time
   , CAST(DATE_TRUNC('year', call_block_time) AS DATE) AS block_year
   , account_account AS address
-  , SUBSTRING(account_account, 1, 3) AS address_prefix
+  , SUBSTRING(account_account, 1, 2) AS address_prefix
   , 'init' AS event_type
   , account_owner AS token_balance_owner
   , account_mint AS token_mint_address
@@ -49,7 +49,7 @@ SELECT
   , call_block_time AS block_time
   , CAST(DATE_TRUNC('year', call_block_time) AS DATE) AS block_year
   , account_account AS address
-  , SUBSTRING(account_account, 1, 3) AS address_prefix
+  , SUBSTRING(account_account, 1, 2) AS address_prefix
   , 'init' AS event_type
   , owner as token_balance_owner
   , account_mint AS token_mint_address
@@ -78,7 +78,7 @@ SELECT
   , call_block_time AS block_time
   , CAST(DATE_TRUNC('year', call_block_time) AS DATE) AS block_year
   , account_account AS address
-  , SUBSTRING(account_account, 1, 3) AS address_prefix
+  , SUBSTRING(account_account, 1, 2) AS address_prefix
   , 'init' AS event_type
   , owner as token_balance_owner
   , account_mint AS token_mint_address
@@ -107,7 +107,7 @@ SELECT
   , call_block_time AS block_time
   , CAST(DATE_TRUNC('year', call_block_time) AS DATE) AS block_year
   , account_owned AS address
-  , SUBSTRING(account_owned, 1, 3) AS address_prefix
+  , SUBSTRING(account_owned, 1, 2) AS address_prefix
   , 'owner_change' AS event_type
   , newAuthority as token_balance_owner
   , null as token_mint_address
@@ -137,7 +137,7 @@ SELECT
   , call_block_time AS block_time
   , CAST(DATE_TRUNC('year', call_block_time) AS DATE) AS block_year
   , account_account AS address
-  , SUBSTRING(account_account, 1, 3) AS address_prefix
+  , SUBSTRING(account_account, 1, 2) AS address_prefix
   , 'close' AS event_type
   , null as token_balance_owner
   , null as token_mint_address
