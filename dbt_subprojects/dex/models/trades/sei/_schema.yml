@@ -117,10 +117,10 @@ models:
       blockchain: sei
       sector: dex
       project: sailor
-      contributors: richards
+      contributors: capybaralabs-xyz
     config:
-      tags: [ 'sei', 'dex', 'trades', 'sailor_finance' ]
-    description: "Sailor Finance base trades"
+      tags: [ 'sei', 'dex', 'trades', 'sailor', 'v3' ]
+    description: "Sailor sei base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
