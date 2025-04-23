@@ -80,7 +80,7 @@ with swap_out as (
         {{ ref('tokens_solana_transfers') }}
     where
         token_version = 'spl_token'
-        and token_balance_owner = '5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1' --raydium pool v4 authority. makes sure we don't accidently catch some fee transfer or something after the swap. should add for lifinity too later
+        and from_owner = '5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1' --raydium pool v4 authority. makes sure we don't accidently catch some fee transfer or something after the swap. should add for lifinity too later
         {% if is_incremental() or true -%}
         and {{incremental_predicate('block_time')}}
         {% else -%}
