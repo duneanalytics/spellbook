@@ -223,8 +223,15 @@ with
                 else bonding_curve_vault
                 end as varchar) as token_sold_vault
             , ROW_NUMBER() OVER (
-                PARTITION BY sp.tx_id, sp.outer_instruction_index, sp.inner_instruction_index, sp.tx_index, CAST(date_trunc('month', sp.block_time) AS DATE)
-                ORDER BY sp.block_time
+                PARTITION BY 
+                    sp.tx_id, 
+                    sp.outer_instruction_index, 
+                    sp.inner_instruction_index, 
+                    sp.tx_index, 
+                    CAST(date_trunc('month', sp.block_time) AS DATE)
+                ORDER BY 
+                    sp.block_time,
+                    sp.block_slot  -- Add block slot for additional ordering
             ) as row_num
         FROM swaps_with_reserves sp
         LEFT JOIN {{ ref('tokens_solana_fungible') }} tk ON tk.token_mint_address = sp.token_mint_address
