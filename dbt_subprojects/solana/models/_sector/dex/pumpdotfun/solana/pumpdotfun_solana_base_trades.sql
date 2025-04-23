@@ -222,6 +222,10 @@ with
             , cast(case when is_buy = 0 then bc.bonding_curve --sol is just held on the curve account
                 else bonding_curve_vault
                 end as varchar) as token_sold_vault
+            , ROW_NUMBER() OVER (
+                PARTITION BY sp.tx_id, sp.outer_instruction_index, sp.inner_instruction_index, sp.tx_index, CAST(date_trunc('month', sp.block_time) AS DATE)
+                ORDER BY sp.block_time
+            ) as row_num
         FROM swaps_with_reserves sp
         LEFT JOIN {{ ref('tokens_solana_fungible') }} tk ON tk.token_mint_address = sp.token_mint_address
         LEFT JOIN {{ ref('tokens_solana_fungible') }} tk_sol ON tk_sol.token_mint_address = 'So11111111111111111111111111111111111111112'
@@ -255,3 +259,4 @@ SELECT
     , tb.inner_instruction_index
     , tb.tx_index
 FROM trades_base tb
+WHERE tb.row_num = 1  -- Only keep the first row of each duplicate group
