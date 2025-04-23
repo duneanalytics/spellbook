@@ -35,7 +35,7 @@ models:
       contributors: chef_butterbeer
     config:
       tags: ["opbnb", "dex", "trades", "pancakeswap", "v2"]
-    description: "PancakeSwap opBNB v3 base trades"
+    description: "PancakeSwap opBNB v2 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -44,7 +44,4 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('pancakeswap_opbnb_base_trades_seed')
           filter:
-            version:
-              - 2
-              - mmpool
-              - pcsx
+            version: 2
