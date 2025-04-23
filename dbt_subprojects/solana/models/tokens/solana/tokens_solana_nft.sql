@@ -2,7 +2,7 @@
 (        
   schema = 'tokens_solana',
   alias = 'nft',
-  
+  partition_by = ['account_mint_prefix'],
   materialized='table',
   post_hook='{{ expose_spells(\'["solana"]\',
                                   "sector",
@@ -16,10 +16,12 @@ with
     token_metadata as (
         SELECT
             joined_m.account_mintAuthority as account_mint_authority
+            , SUBSTRING(joined_m.account_mintAuthority, 1, 2) as account_mint_authority_prefix
             , joined_m.account_masterEdition as account_master_edition
             , joined_m.account_metadata
             , joined_m.account_payer
             , joined_m.account_mint
+            , SUBSTRING(joined_m.account_mint, 1, 2) as account_mint_prefix
             , joined_m.version
             , json_value(args, 'strict $.tokenStandard.TokenStandard') as token_standard 
             , json_value(args, 'strict $.name') as token_name 
@@ -33,6 +35,7 @@ with
             , json_query(args, 'strict $.creators') as creators_struct
             , joined_m.call_tx_id
             , joined_m.call_block_time
+            , CAST(date_trunc('month', joined_m.call_block_time) AS DATE) as block_month
             , joined_m.call_block_slot
             , COALESCE(v.call_block_time, joined_m.call_block_time) as verify_block_time
             , joined_m.call_tx_signer
@@ -138,6 +141,7 @@ with
                 , account_leafOwner
                 , call_block_slot
                 , call_block_time
+                , CAST(date_trunc('month', call_block_time) AS DATE) as block_month
                 , call_outer_instruction_index
                 , call_inner_instruction_index
                 , call_tx_id
@@ -161,6 +165,7 @@ with
                 , account_leafOwner
                 , call_block_slot
                 , call_block_time
+                , CAST(date_trunc('month', call_block_time) AS DATE) as block_month
                 , call_outer_instruction_index
                 , call_inner_instruction_index
                 , call_tx_id
@@ -183,11 +188,13 @@ with
   
 SELECT
     account_mint_authority
+    , account_mint_authority_prefix
     , cast(null as bigint) as leaf_id
     , cast(null as varchar) as account_merkle_tree
     , account_master_edition
     , account_metadata
     , account_mint
+    , account_mint_prefix
     , account_payer as minter
     , version
     , token_standard 
@@ -200,6 +207,7 @@ SELECT
     , creators_struct
     , call_tx_id
     , call_block_time
+    , block_month
     , call_block_slot
     , call_tx_signer
 FROM token_metadata tk 
@@ -209,11 +217,13 @@ UNION ALL
 
 SELECT 
     cast(null as varchar) as account_mint_authority
+    , cast(null as varchar) as account_mint_authority_prefix
     , cast(leaf_id as bigint) as leaf_id
     , account_merkleTree as account_merkle_tree
     , cast(null as varchar) as account_master_edition
     , cast(null as varchar) as account_metadata
     , cast(null as varchar) as account_mint
+    , cast(null as varchar) as account_mint_prefix
     , account_leafOwner as minter
     , 'cNFT' as version
     , token_standard 
@@ -226,6 +236,7 @@ SELECT
     , creators_struct
     , call_tx_id
     , call_block_time
+    , block_month
     , call_block_slot
     , call_tx_signer
 FROM cnfts 
