@@ -1,4 +1,5 @@
 {{ config(
+    tags=['prod_exclude'],
     schema = 'tokens_solana',
     alias = 'spl_transfers',
     materialized = 'view'
