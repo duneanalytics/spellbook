@@ -213,4 +213,5 @@ FROM (VALUES
     , ('inkyswap', 'InkySwap', 'Direct', 'inkyswap')
     , ('squidswap', 'SquidSwap', 'Direct', 'squidswap_ink')
     , ('swanswap', 'SwanSwap', 'Direct', 'swan_swap')
+    , ('sailor', 'SAILOR', 'Direct', 'SailorFi')
 ) AS temp_table (project, name, marketplace_type, x_username)
