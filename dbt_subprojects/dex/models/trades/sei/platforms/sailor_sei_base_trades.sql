@@ -16,6 +16,6 @@
         project = 'sailor',
         version = '3',
         Pair_evt_Swap = source('sailor_sei', 'SailorV3Pool_evt_Swap'),
-        Factory_evt_PairCreated = source('sailor_sei', 'SailorV3Factory_evt_PoolCreated')
+        Factory_evt_PoolCreated = source('sailor_sei', 'SailorV3Factory_evt_PoolCreated')
     )
 }}
