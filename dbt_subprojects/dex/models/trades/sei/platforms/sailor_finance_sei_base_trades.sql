@@ -10,6 +10,7 @@
     )
 }}
 
+
 {{
     uniswap_compatible_v3_trades(
         blockchain = 'sei',
