@@ -2,16 +2,16 @@
   config(
     schema = 'aave_arbitrum',
     alias = 'interest_rates',
-    materialized = 'view',
-    post_hook = '{{ expose_spells(blockchains = \'["arbitrum"]\',
-                                  spell_type = "project",
-                                  spell_name = "aave",
-                                  contributors = \'["tomfutago"]\') }}'
+    materialized = 'view'
   )
 }}
 
+/*
 {{
   lending_aave_compatible_interest_rates_view(
     blockchain = 'arbitrum'
   )
 }}
+*/
+
+select 1 as dummy_placeholder
