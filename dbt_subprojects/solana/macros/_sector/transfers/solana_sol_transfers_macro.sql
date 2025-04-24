@@ -12,15 +12,12 @@ WITH transfers AS (
         , call_outer_instruction_index as outer_instruction_index
         , call_tx_signer as tx_signer
         , lamports as amount
-        , lamports / 1e9 as amount_display
         , call_outer_executing_account as outer_executing_account
         , call_inner_executing_account as inner_executing_account
         , substring(call_account_arguments[1], 1, 2) as from_token_account_prefix
         , call_account_arguments[1] as from_token_account
         , substring(call_account_arguments[2], 1, 2) as to_token_account_prefix
         , call_account_arguments[2] as to_token_account
-        , 'So11111111111111111111111111111111111111112' as token_mint_address
-        , 'SOL' as symbol
         , 'native' as token_version
         , CONCAT(
             lpad(cast(call_block_slot as varchar), 12, '0'), '-',
