@@ -10,8 +10,7 @@
 
 with base_spl_transfers as (
     select
-        blockchain
-        , block_date
+        block_date
         , block_time
         , block_slot
         , tx_id
