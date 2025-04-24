@@ -2,9 +2,8 @@
 
 WITH transfers AS (
     select
-        call_block_time as block_time
-        , cast(date_trunc('day', call_block_time) AS date) AS block_date
-        , cast(date_trunc('month', call_block_time) AS date) AS block_month
+        cast(date_trunc('day', call_block_time) AS date) AS block_date
+        , call_block_time as block_time
         , call_block_slot as block_slot
         , call_tx_id as tx_id
         , call_tx_index as tx_index
@@ -54,48 +53,57 @@ WITH transfers AS (
         and minute >= {{start_date}}
         and minute < {{end_date}}
         {% endif -%}
+), transfer_amounts AS (
+    select
+        'solana' as blockchain
+        , t.block_date
+        , t.block_time
+        , t.block_slot
+        , t.tx_id
+        , t.tx_index
+        , t.inner_instruction_index
+        , t.outer_instruction_index
+        , t.unique_instruction_key
+        , t.outer_executing_account
+        , t.inner_executing_account
+        , t.from_token_account_prefix
+        , t.from_token_account
+        , t.to_token_account_prefix
+        , t.to_token_account
+        , t.tx_signer
+        , 'So11111111111111111111111111111111111111112' as token_mint_address
+        , 'SOL' as symbol
+        , 'native' as token_version
+        , t.amount_display
+        , t.amount
+        , p.price as price_usd
+        , p.price * (t.amount_display) as amount_usd
+    from
+        transfers as t
+    left join
+        prices as p
+        on p.minute = date_trunc('minute', t.block_time)
+)
+, final AS (
+    select
+        transfer_amounts.*
+    from
+        transfer_amounts
+    {% if is_incremental() -%}
+    left join
+        {{ this }} as existing
+        on existing.block_date = transfer_amounts.block_date
+        and existing.block_slot = transfer_amounts.block_slot
+        and existing.tx_index = transfer_amounts.tx_index
+        and existing.inner_instruction_index = transfer_amounts.inner_instruction_index
+        and existing.outer_instruction_index = transfer_amounts.outer_instruction_index
+        and {{incremental_predicate('existing.block_time')}}
+    where
+        existing.block_date is null -- only insert new rows
+    {% endif -%}
 )
 select
-    'solana' as blockchain
-    , t.block_month
-    , t.block_date
-    , t.block_time
-    , t.block_slot
-    , t.tx_id
-    , t.tx_index
-    , t.inner_instruction_index
-    , coalesce(t.inner_instruction_index, 0) as key_inner_instruction_index
-    , t.outer_instruction_index
-    , t.tx_signer
-    , COALESCE(tk_from.token_balance_owner, t.from_token_account) AS from_owner -- if the token account exists, use the owner of that, otherwise it should be an account
-    , COALESCE(tk_to.token_balance_owner, t.to_token_account) AS to_owner
-    , tk_from.address as from_token_account -- if the token account exists, use the address of that, otherwise no token accounts are involved
-    , tk_to.address as to_token_account
-    , 'So11111111111111111111111111111111111111112' as token_mint_address
-    , 'SOL' as symbol
-    , t.amount_display
-    , t.amount
-    , p.price * (t.amount_display) as amount_usd
-    , p.price as price_usd
-    , CASE WHEN tk_to.address IS NOT NULL THEN 'wrap' ELSE 'transfer' END as action -- if the token account exists, it's a wrap, otherwise it's a transfer
-    , t.outer_executing_account
-    , t.inner_executing_account
-    , 'native' as token_version
+    *
 from
-    transfers as t
-left join 
-    {{ ref('solana_utils_token_accounts_state_history') }} as tk_from    
-    on t.from_token_account_prefix = tk_from.address_prefix
-    and t.from_token_account = tk_from.address
-    and t.unique_instruction_key >= tk_from.valid_from_unique_instruction_key
-    and t.unique_instruction_key < tk_from.valid_to_unique_instruction_key
-left join 
-    {{ ref('solana_utils_token_accounts_state_history') }} as tk_to 
-    on t.to_token_account_prefix = tk_to.address_prefix
-    and t.to_token_account = tk_to.address
-    and t.unique_instruction_key >= tk_to.valid_from_unique_instruction_key
-    and t.unique_instruction_key < tk_to.valid_to_unique_instruction_key
-left join
-    prices as p
-    on p.minute = date_trunc('minute', t.block_time)
+    final
 {% endmacro %}
