@@ -2,8 +2,7 @@
 
 WITH transfers AS (
     SELECT
-        'solana' as blockchain
-        , cast(date_trunc('day', call_block_time) as date) as block_date
+        cast(date_trunc('day', call_block_time) as date) as block_date
         , call_block_time as block_time
         , call_block_slot as block_slot
         , call_tx_id as tx_id

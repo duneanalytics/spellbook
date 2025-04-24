@@ -10,8 +10,7 @@
 
 {%- for model in models %}
 SELECT 
-    blockchain
-    , block_date
+    block_date
     , block_time
     , block_slot
     , tx_id
