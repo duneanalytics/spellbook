@@ -13,7 +13,20 @@
 
 {%
   set models = [
-    ref('lending_arbitrum_base_market_hourly_agg')
+    ref('lending_arbitrum_base_market_hourly_agg'),
+    ref('lending_avalanche_c_base_market_hourly_agg'),
+    ref('lending_base_base_market_hourly_agg'),
+    ref('lending_bnb_base_market_hourly_agg'),
+    ref('lending_celo_base_market_hourly_agg'),
+    ref('lending_ethereum_base_market_hourly_agg'),
+    ref('lending_fantom_base_market_hourly_agg'),
+    ref('lending_gnosis_base_market_hourly_agg'),
+    ref('lending_linea_base_market_hourly_agg'),
+    ref('lending_optimism_base_market_hourly_agg'),
+    ref('lending_polygon_base_market_hourly_agg'),
+    ref('lending_scroll_base_market_hourly_agg'),
+    ref('lending_sonic_base_market_hourly_agg'),
+    ref('lending_zksync_base_market_hourly_agg')
   ]
 %}
 

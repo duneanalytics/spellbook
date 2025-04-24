@@ -1,0 +1,107 @@
+version: 2
+
+models:
+  - name: aave_v3_polygon_market_hourly_agg
+    meta:
+      blockchain: polygon
+      sector: lending
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'market', 'polygon', 'aave_v3']
+    description: "Hourly aggregated Aave V3 market data on Polygon"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - project
+            - version
+            - block_hour
+            - token_address
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain name"
+        data_tests:
+          - not_null
+      - &project
+        name: project
+        description: "Project name"
+        data_tests:
+          - not_null
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the lending project"
+        data_tests:
+          - not_null
+      - &block_hour
+        name: block_hour
+        description: "Block hour"
+        data_tests:
+          - not_null
+      - &token_address
+        name: token_address
+        description: "Token contract address"
+        data_tests:
+          - not_null
+      - &symbol
+        name: symbol
+        description: "Token symbol"
+        data_tests:
+          - not_null
+      - &liquidity_index
+        name: liquidity_index
+        description: "Average liquidity index for the hour"
+        data_tests:
+          - not_null
+      - &variable_borrow_index
+        name: variable_borrow_index
+        description: "Average variable borrow index for the hour"
+        data_tests:
+          - not_null
+      - &deposit_rate
+        name: deposit_rate
+        description: "Average deposit rate for the hour"
+        data_tests:
+          - not_null
+      - &stable_borrow_rate
+        name: stable_borrow_rate
+        description: "Average stable borrow rate for the hour"
+        data_tests:
+          - not_null
+      - &variable_borrow_rate
+        name: variable_borrow_rate
+        description: "Average variable borrow rate for the hour"
+        data_tests:
+          - not_null
+      - &project_contract_address
+        name: project_contract_address
+        description: "Project contract address"
+        data_tests:
+          - not_null
+
+  - name: aave_v3_polygon_base_market_hourly_agg
+    meta:
+      blockchain: polygon
+      sector: lending
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'market', 'polygon']
+    description: "Hourly aggregated Aave v3 market on Polygon"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_hour
+            - token_address
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_month
+      - *block_hour
+      - *token_address
+      - *symbol
+      - *liquidity_index
+      - *variable_borrow_index
+      - *deposit_rate
+      - *stable_borrow_rate
+      - *variable_borrow_rate
