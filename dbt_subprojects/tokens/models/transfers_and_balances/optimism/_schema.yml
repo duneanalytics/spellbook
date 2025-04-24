@@ -135,6 +135,11 @@ models:
     config:
       tags: ['tokens','balances', 'optimism']
     description: "Token balances daily base"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - unique_key
     columns:
           - name: day
           - name: block_number
