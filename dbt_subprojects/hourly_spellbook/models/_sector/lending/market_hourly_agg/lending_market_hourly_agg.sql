@@ -33,7 +33,7 @@ select
   variable_borrow_rate
 from {{ model }}
 {% if is_incremental() %}
-where {{ incremental_predicate('block_time') }}
+where {{ incremental_predicate('block_hour') }}
 {% endif %}
 {% if not loop.last %}
 union all
