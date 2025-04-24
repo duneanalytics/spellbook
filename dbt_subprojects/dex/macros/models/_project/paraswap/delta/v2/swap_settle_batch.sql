@@ -207,6 +207,7 @@ from delta_v2_swap_settle_batch_withWrapped w
 -- partnerFee uint256   
 ), delta_v2_swapSettleBatch as (  
 SELECT 
+    '{{blockchain}}' as blockchain,
     method,
     order_index,
     call_trace_address,

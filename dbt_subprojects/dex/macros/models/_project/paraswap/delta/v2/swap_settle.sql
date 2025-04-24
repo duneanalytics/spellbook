@@ -104,6 +104,7 @@ select
     AND s.minute = DATE_TRUNC('minute', w.call_block_time)
 ), delta_v2_swapSettle as (  
 SELECT 
+    '{{blockchain}}' as blockchain,
     method,
     0 as order_index,
     call_trace_address,
