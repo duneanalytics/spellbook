@@ -9,9 +9,9 @@
 ) }}
 
 SELECT
-    block_month
+    cast(date_trunc('month', block_time) as date) as block_month
     , block_date
-    , date_trunc('hour', block_time) as block_hour
+    , cast(date_trunc('hour', block_time) as timestamp) as block_hour
     , block_time
     , block_slot
     , action
@@ -37,9 +37,9 @@ FROM {{ ref('tokens_solana_spl_transfers') }}
 UNION ALL
 
 SELECT
-    block_month
+    cast(date_trunc('month', block_time) as date) as block_month
     , block_date
-    , date_trunc('hour', block_time) as block_hour
+    , cast(date_trunc('hour', block_time) as timestamp) as block_hour
     , block_time
     , block_slot
     , action
@@ -65,9 +65,9 @@ FROM {{ ref('tokens_solana_token22_spl_transfers') }}
 UNION ALL
 
 SELECT
-    block_month
+    cast(date_trunc('month', block_time) as date) as block_month
     , block_date
-    , date_trunc('hour', block_time) as block_hour
+    , cast(date_trunc('hour', block_time) as timestamp) as block_hour
     , block_time
     , block_slot
     , action
@@ -93,9 +93,9 @@ FROM {{ ref('tokens_solana_spl_transfers_call_transfer') }}
 UNION ALL
 
 SELECT
-    block_month
+    cast(date_trunc('month', block_time) as date) as block_month
     , block_date
-    , date_trunc('hour', block_time) as block_hour
+    , cast(date_trunc('hour', block_time) as timestamp) as block_hour
     , block_time
     , block_slot
     , action
