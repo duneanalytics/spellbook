@@ -162,7 +162,8 @@ with init as (
         raw_events as raw
     {% if is_incremental() -%}
     left join {{ this }} as existing
-        on raw.address = existing.address
+        on raw.block_date = existing.block_date
+        and raw.address = existing.address
         and raw.address_prefix = existing.address_prefix
         and raw.unique_instruction_key = existing.unique_instruction_key
         and {{ incremental_predicate('existing.block_time') }}
