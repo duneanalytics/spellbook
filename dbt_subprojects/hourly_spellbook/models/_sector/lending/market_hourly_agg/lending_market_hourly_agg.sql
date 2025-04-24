@@ -6,8 +6,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['blockchain', 'project', 'version', 'block_time', 'token_address', 'tx_hash', 'evt_index'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    unique_key = ['blockchain', 'project', 'version', 'block_hour', 'token_address'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_hour')]
   )
 }}
 
@@ -29,8 +29,7 @@ select
   variable_borrow_index,
   deposit_rate,
   stable_borrow_rate,
-  variable_borrow_rate,
-  project_contract_address
+  variable_borrow_rate
 from {{ model }}
 {% if is_incremental() %}
 where {{ incremental_predicate('block_time') }}
