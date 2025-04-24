@@ -1,6 +1,6 @@
 {{ config(
     schema = 'tokens_solana',
-    alias = 'sol_transfers',
+    alias = 'base_sol_transfers',
     materialized = 'view'
 ) }}
 

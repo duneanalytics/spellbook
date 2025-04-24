@@ -1,11 +1,11 @@
 {{ config(
     schema = 'tokens_solana',
-    alias = 'sol_transfers',
+    alias = 'base_spl_transfers_call_transfer',
     materialized = 'view'
 ) }}
 
 {%- set models = [
-    'tokens_solana_sol_transfers_current'
+    'tokens_solana_spl_transfers_call_transfer_current'
 ] -%}
 
 {%- for model in models %}
@@ -17,4 +17,3 @@ FROM
 UNION ALL
 {%- endif %}
 {%- endfor %}
-
