@@ -27,7 +27,7 @@ select
   block_month,
   block_number,
   token_address,
-  token_symbol,
+  symbol,
   liquidity_index,
   variable_borrow_index,
   deposit_rate,
