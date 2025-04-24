@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'lending_polygon',
+    schema = 'lending_optimism',
     alias = 'base_market_hourly_agg',
     materialized = 'view'
   )
@@ -8,7 +8,7 @@
 
 {%
   set models = [
-    ref('aave_v3_polygon_base_market_hourly_agg')
+    ref('aave_v3_optimism_base_market_hourly_agg')
   ]
 %}
 
