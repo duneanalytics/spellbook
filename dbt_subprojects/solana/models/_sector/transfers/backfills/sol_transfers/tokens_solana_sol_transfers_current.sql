@@ -1,6 +1,6 @@
 {{ config(
     schema = 'tokens_solana',
-    alias = 'sol_transfers_current',
+    alias = 'base_sol_transfers_current',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

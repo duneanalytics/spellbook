@@ -1,6 +1,6 @@
 {{ config(
     schema = 'tokens_solana',
-    alias = 'sol_transfers_2022_q4',
+    alias = 'base_sol_transfers_2022_q4',
     tags = ['static', 'prod_exclude'],
     partition_by = ['block_date'],
     materialized = 'table',
