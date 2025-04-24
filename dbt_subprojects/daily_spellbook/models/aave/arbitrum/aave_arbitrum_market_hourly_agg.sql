@@ -1,18 +1,17 @@
 {{
   config(
-    schema = 'aave_v3_arbitrum',
-    alias = 'flashloans',
+    schema = 'aave_arbitrum',
+    alias = 'market_hourly_agg',
     materialized = 'view',
     post_hook = '{{ expose_spells(blockchains = \'["arbitrum"]\',
                                   spell_type = "project",
                                   spell_name = "aave",
-                                  contributors = \'["hildobby", "tomfutago"]\') }}'
+                                  contributors = \'["tomfutago"]\') }}'
   )
 }}
 
 {{
-  lending_aave_compatible_flashloans_view(
-    blockchain = 'arbitrum',
-    version = '3'
+  lending_aave_compatible_market_hourly_agg(
+    blockchain = 'arbitrum'
   )
 }}

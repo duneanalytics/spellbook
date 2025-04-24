@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'aave_v2_arbitrum',
+    schema = 'aave_arbitrum',
     alias = 'flashloans',
     materialized = 'view',
     post_hook = '{{ expose_spells(blockchains = \'["arbitrum"]\',
@@ -12,7 +12,6 @@
 
 {{
   lending_aave_compatible_flashloans_view(
-    blockchain = 'arbitrum',
-    version = '2'
+    blockchain = 'arbitrum'
   )
 }}

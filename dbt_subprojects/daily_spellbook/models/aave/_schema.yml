@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: aave_arbitrum_borrow
+  - name: aave_borrow
     meta:
-      blockchain: arbitrum
+      blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom, gnosis, zksync, zksync, linea, sonic
       sector: lending
       project: aave
       contributors: tomfutago
     config:
-      tags: ['lending', 'borrow', 'aave', 'arbitrum']
-    description: "All Aave transactions involving borrow transactions on Arbitrum"
+      tags: ['lending', 'borrow', 'aave', 'compound', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom', 'gnosis', 'scroll', 'zksync', 'linea', 'sonic']
+    description: "All Aave transactions involving borrow transactions"
     columns:
       - &blockchain
         name: blockchain
@@ -66,15 +66,15 @@ models:
         name: tx_hash
         description: "Transaction hash of the event"
 
-  - name: aave_arbitrum_flashloans
+  - name: aave_flashloans
     meta:
-      blockchain: arbitrum
+      blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom, gnosis, zksync, zksync, linea, sonic
       sector: lending
       project: aave
       contributors: hildobby, tomfutago
     config:
-      tags: ['lending', 'flashloans', 'aave', 'arbitrum']
-    description: "All Aave transactions involving flashloans transactions on Arbitrum"
+      tags: ['lending', 'flashloans', 'aave', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom', 'gnosis', 'zksync', 'zksync', 'linea', 'sonic']
+    description: "All Aave transactions involving flashloans transactions"
     columns:
       - *blockchain
       - *project
@@ -98,15 +98,15 @@ models:
       - *evt_index
       - *tx_hash
 
-  - name: aave_arbitrum_supply
+  - name: aave_supply
     meta:
-      blockchain: arbitrum
+      blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom, gnosis, zksync, zksync, linea, sonic
       sector: lending
       project: aave
       contributors: tomfutago
     config:
-      tags: ['lending', 'supply', 'aave', 'arbitrum']
-    description: "All Aave transactions involving supply transactions on Arbitrum"
+      tags: ['lending', 'supply', 'aave', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom', 'gnosis', 'zksync', 'zksync', 'linea', 'sonic']
+    description: "All Aave transactions involving supply transactions"
     columns:
       - *blockchain
       - *project
@@ -131,15 +131,15 @@ models:
       - *evt_index
       - *tx_hash
 
-  - name: aave_arbitrum_market
+  - name: aave_market
     meta:
-      blockchain: arbitrum
+      blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom, gnosis, zksync, zksync, linea, sonic
       sector: lending
       project: aave
       contributors: tomfutago
     config:
-      tags: ['lending', 'market', 'aave', 'arbitrum']
-    description: "All Aave market transactions on Arbitrum"
+      tags: ['lending', 'market', 'aave', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom', 'gnosis', 'zksync', 'zksync', 'linea', 'sonic']
+    description: "All Aave market transactions"
     columns:
       - *blockchain
       - *project
@@ -171,14 +171,14 @@ models:
       - *evt_index
       - *tx_hash
 
-  - name: aave_arbitrum_market_hourly_agg
+  - name: aave_market_hourly_agg
     meta:
-      blockchain: arbitrum
+      blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom, gnosis, zksync, zksync, linea, sonic
       sector: lending
       project: aave
       contributors: tomfutago
     config:
-      tags: ['lending', 'market', 'aave', 'arbitrum']
+      tags: ['lending', 'market', 'aave', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom', 'gnosis', 'zksync', 'zksync', 'linea', 'sonic']
     description: "Hourly aggregated lending market transactions"
     columns:
       - *blockchain
@@ -196,14 +196,14 @@ models:
       - *evt_index
       - *tx_hash
 
-  - name: aave_arbitrum_interest_rates
+  - name: aave_interest_rates
     meta:
-      blockchain: arbitrum
+      blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom, gnosis, zksync, zksync, linea, sonic
       sector: lending
       project: aave
       contributors: tomfutago
     config:
-      tags: ['lending', 'interest_rates', 'aave', 'arbitrum']
+      tags: ['lending', 'interest_rates', 'aave', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom', 'gnosis', 'zksync', 'zksync', 'linea', 'sonic']
     description: "Hourly aggregated lending market interest rates"
     columns:
       - *blockchain
