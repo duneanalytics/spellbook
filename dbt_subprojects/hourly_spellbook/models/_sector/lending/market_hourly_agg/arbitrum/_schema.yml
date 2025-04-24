@@ -1,21 +1,19 @@
 version: 2
 
 models:
-  - name: lending_arbitrum_base_market
+  - name: lending_arbitrum_base_market_hourly_agg
     meta:
       blockchain: arbitrum
       sector: lending
       contributors: tomfutago
     config:
       tags: ['lending', 'market', 'arbitrum']
-    description: "All lending market transactions on Arbitrum"
+    description: "Hourly aggregated lending market on Arbitrum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_time
+            - block_hour
             - token_address
-            - tx_hash
-            - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -32,24 +30,9 @@ models:
         description: "Version of the contract built and deployed by the lending project"
         data_tests:
           - not_null
-      - &block_time
-        name: block_time
-        description: "Timestamp for block event time in UTC"
-        data_tests:
-          - not_null
       - &block_hour
         name: block_hour
         description: "Block event hour"
-        data_tests:
-          - not_null
-      - &block_month
-        name: block_month
-        description: "Block Month column used to partition data in this table"
-        data_tests:
-          - not_null
-      - &block_number
-        name: block_number
-        description: "Event block number"
         data_tests:
           - not_null
       - &token_address
@@ -75,45 +58,25 @@ models:
       - &variable_borrow_rate
         name: variable_borrow_rate
         description: "Variable borrow rate"
-      - &project_contract_address
-        name: project_contract_address
-        description: "Project contract address"
-        data_tests:
-          - not_null
-      - &evt_index
-        name: evt_index
-        description: "Event index"
-        data_tests:
-          - not_null
-      - &tx_hash
-        name: tx_hash
-        description: "Transaction hash of the event"
-        data_tests:
-          - not_null
 
-  - name: aave_v3_arbitrum_base_market
+  - name: aave_v3_arbitrum_base_market_hourly_agg
     meta:
       blockchain: arbitrum
       sector: lending
       contributors: tomfutago
     config:
       tags: ['lending', 'market', 'arbitrum']
-    description: "Aave v3 market transactions on Arbitrum"
+    description: "Hourly aggregated Aave v3 market on Arbitrum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_time
+            - block_hour
             - token_address
-            - tx_hash
-            - evt_index
     columns:
       - *blockchain
       - *project
       - *version
-      - *block_time
       - *block_hour
-      - *block_month
-      - *block_number
       - *token_address
       - *symbol
       - *liquidity_index
@@ -121,6 +84,3 @@ models:
       - *deposit_rate
       - *stable_borrow_rate
       - *variable_borrow_rate
-      - *project_contract_address
-      - *evt_index
-      - *tx_hash

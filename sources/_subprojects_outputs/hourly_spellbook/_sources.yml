@@ -24,6 +24,7 @@ sources:
       - name: supply
       - name: flashloans
       - name: market
+      - name: market_hourly_agg
 
   - name: balancer
     tables:
