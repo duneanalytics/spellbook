@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'pancakeswap_opbnb',
+        schema = 'pancakeswap_v2_opbnb',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
