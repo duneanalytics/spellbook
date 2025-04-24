@@ -145,7 +145,7 @@ select
   project_contract_address,
   evt_index,
   tx_hash
-from {{ ref('lending', 'market') }}
+from {{ source('lending', 'market') }}
 where 1 = 1
   {% if blockchain != 'multichain' %}
   and blockchain = '{{ blockchain }}'
@@ -179,7 +179,39 @@ select
   deposit_rate,
   stable_borrow_rate,
   variable_borrow_rate
-from {{ ref('lending', 'market_hourly_agg') }}
+from {{ source('lending', 'market_hourly_agg') }}
+where 1 = 1
+  {% if blockchain != 'multichain' %}
+  and blockchain = '{{ blockchain }}'
+  {% endif %}
+  and project = '{{ project }}'
+  {% if version != 'all' %}
+  and version = '{{ version }}'
+  {% endif %}
+
+{% endmacro %}
+
+{# ######################################################################### #}
+
+{%
+  macro lending_aave_compatible_interest_rates(
+    blockchain = 'multichain',
+    project = 'aave',
+    version = 'all'
+  )
+%}
+
+select
+  blockchain,
+  project,
+  version,
+  block_hour,
+  token_address,
+  symbol,
+  deposit_rate,
+  stable_borrow_rate,
+  variable_borrow_rate
+from {{ source('lending', 'market_hourly_agg') }}
 where 1 = 1
   {% if blockchain != 'multichain' %}
   and blockchain = '{{ blockchain }}'
