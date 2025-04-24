@@ -117,5 +117,5 @@ models:
           seed_file: ref('velodrome_unichain_base_trades_seed')
           filter:
             version:
-              - 1
               - 2
+              - 2_cl
