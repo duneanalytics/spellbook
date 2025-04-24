@@ -32,7 +32,7 @@ dexs_v2_cl AS (
             project = 'velodrome',
             version = '2_cl',
             Pair_evt_Swap = source('velodrome_unichain', 'clpool_evt_swap'),
-            Factory_evt_PoolCreated = source('velodrome_unichain', 'clfactory_evt_poolcreated')
+            Factory_evt_PoolCreated = source('velodrome_unichain', 'clfactory_evt_poolcreated'),
             optional_columns = []
         )
     }}
