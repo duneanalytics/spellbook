@@ -92,6 +92,6 @@ select
   avg(cast(stable_borrow_rate as double)) / 1e27 as stable_borrow_rate,
   avg(cast(variable_borrow_rate as double)) / 1e27 as variable_borrow_rate
 from reserve_data
-group by 1,2,3,4,5,6
+group by 1,2,3,4,5,6,7
 
 {% endmacro %}
