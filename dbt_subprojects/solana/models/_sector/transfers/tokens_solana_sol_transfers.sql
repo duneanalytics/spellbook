@@ -21,7 +21,6 @@ with base_sol_transfers as (
         , tx_signer
         , amount
         , outer_executing_account
-        , inner_executing_account
         , from_token_account_prefix
         , from_token_account
         , to_token_account_prefix
