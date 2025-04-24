@@ -2,11 +2,11 @@
   config (
     schema='solana_utils'
     , alias='spl_token_2022_accounts_raw'
-    , partition_by=['address_prefix']
+    , partition_by=['block_date']
     , materialized='incremental'
     , file_format='delta'
     , incremental_strategy='append'
-    , unique_key=['address', 'address_prefix', 'unique_instruction_key']
+    , unique_key=['block_date', 'address', 'address_prefix', 'unique_instruction_key']
   )
 }}
 
