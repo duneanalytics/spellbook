@@ -100,4 +100,6 @@ FROM (VALUES
     , (0x24c74b30d1a4261608e84bf5a618693032681dac, 'bscETH-47', 18)
     , (0x871A101Dcf22fE4fE37be7B654098c801CBA1c88, 'beS', 18)
     , (0x90a804D316A06E00755444D56b9eF52e5C4F4D73, 'ewS-5', 18)
+    , (0x3333b97138d4b086720b5ae8a7844b1345a33333, 'SHADOW', 18)
+    , (0x2fb960611bdc322a9a4a994252658cae9fe2eea1, 'UNI', 18)
 ) as temp (contract_address, symbol, decimals)
