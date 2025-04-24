@@ -13,17 +13,17 @@ models:
         - unique_combination_of_columns:
             combination_of_columns:
                 - block_date
-                - token_account
-                - token_account_prefix
+                - address
+                - address_prefix
                 - unique_instruction_key
     columns:
       - name: block_date
       - name: block_time
-      - name: token_account
-      - name: token_account_prefix
+      - name: address
+      - name: address_prefix
       - name: event_type
-      - name: account_owner
-      - name: account_mint
+      - name: token_balance_owner
+      - name: token_mint_address
       - name: unique_instruction_key
       - name: block_slot
       - name: tx_index
@@ -41,18 +41,20 @@ models:
     dbt_tests:
         - unique_combination_of_columns:
             combination_of_columns:
-                - block_date
-                - token_account
-                - token_account_prefix
+                - address
+                - address_prefix
                 - unique_instruction_key
     columns:
-      - name: token_account
-      - name: token_account_prefix
+      - name: address
+      - name: address_prefix
       - name: event_type
       - name: token_balance_owner
       - name: token_mint_address
-      - name: block_date
+      - name: valid_from_block_date
+      - name: valid_from_block_time
       - name: valid_from_unique_instruction_key
+      - name: valid_to_block_date
+      - name: valid_to_block_time
       - name: valid_to_unique_instruction_key
       - name: is_active
 
@@ -68,17 +70,17 @@ models:
         - unique_combination_of_columns:
             combination_of_columns:
                 - block_date
-                - token_account
-                - token_account_prefix
+                - address
+                - address_prefix
                 - unique_instruction_key
     columns:
       - name: block_date
       - name: block_time
-      - name: token_account
-      - name: token_account_prefix
+      - name: address
+      - name: address_prefix
       - name: event_type
-      - name: account_owner
-      - name: account_mint
+      - name: token_balance_owner
+      - name: token_mint_address
       - name: unique_instruction_key
       - name: block_slot
       - name: tx_index
@@ -96,18 +98,20 @@ models:
     dbt_tests:
         - unique_combination_of_columns:
             combination_of_columns:
-                - block_date
-                - token_account
-                - token_account_prefix
+                - address
+                - address_prefix
                 - unique_instruction_key
     columns:
-      - name: token_account
-      - name: token_account_prefix
+      - name: address
+      - name: address_prefix
       - name: event_type
       - name: token_balance_owner
       - name: token_mint_address
-      - name: block_date
+      - name: valid_from_block_date
+      - name: valid_from_block_time
       - name: valid_from_unique_instruction_key
+      - name: valid_to_block_date
+      - name: valid_to_block_time
       - name: valid_to_unique_instruction_key
       - name: is_active
 
@@ -120,13 +124,16 @@ models:
     description: >
         final token account view of state history, union of spl_token and spl_token_2022.
     columns:
-      - name: token_account
-      - name: token_account_prefix
+      - name: address
+      - name: address_prefix
       - name: event_type
       - name: token_balance_owner
       - name: token_mint_address
-      - name: block_date
+      - name: valid_from_block_date
+      - name: valid_from_block_time
       - name: valid_from_unique_instruction_key
+      - name: valid_to_block_date
+      - name: valid_to_block_time
       - name: valid_to_unique_instruction_key
       - name: is_active
 
@@ -139,12 +146,15 @@ models:
     description: >
         final token account view, with only active accounts. kept for backwards compatibility to avoid breaking queries.
     columns:
-      - name: token_account
-      - name: token_account_prefix
+      - name: address
+      - name: address_prefix
       - name: event_type
       - name: token_balance_owner
       - name: token_mint_address
-      - name: block_date
+      - name: valid_from_block_date
+      - name: valid_from_block_time
       - name: valid_from_unique_instruction_key
+      - name: valid_to_block_date
+      - name: valid_to_block_time
       - name: valid_to_unique_instruction_key
       - name: is_active
