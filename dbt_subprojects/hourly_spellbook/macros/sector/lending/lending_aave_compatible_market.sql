@@ -82,6 +82,7 @@ select
   blockchain,
   project,
   version,
+  block_month,
   block_hour,
   token_address,
   symbol,

@@ -30,6 +30,11 @@ models:
         description: "Version of the contract built and deployed by the lending project"
         data_tests:
           - not_null
+      - &block_month
+        name: block_month
+        description: "Block event month"
+        data_tests:
+          - not_null
       - &block_hour
         name: block_hour
         description: "Block event hour"
@@ -76,6 +81,7 @@ models:
       - *blockchain
       - *project
       - *version
+      - *block_month
       - *block_hour
       - *token_address
       - *symbol
