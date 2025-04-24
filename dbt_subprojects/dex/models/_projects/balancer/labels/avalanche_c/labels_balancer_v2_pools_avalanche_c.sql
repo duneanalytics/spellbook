@@ -126,7 +126,7 @@ WITH pools AS (
   CROSS JOIN UNNEST(
         CAST(json_extract(settingsParams, '$.tokens') AS ARRAY(VARCHAR))
     ) AS t (tokens)
-  /*
+
   UNION ALL
 
   SELECT
@@ -138,9 +138,8 @@ WITH pools AS (
   FROM {{ source('balancer_v2_avalanche_c', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('gyroscope_avalanche_c', 'GyroECLPPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
-    AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
-  CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
-  */
+    AND bytearray_substring(c.poolId, 1, 20) = coalesce(cc.output_0, 0x)
+  CROSS JOIN UNNEST(cc.tokens_array_binary) AS t(tokens)
 ),
 
 settings AS (
