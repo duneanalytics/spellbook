@@ -26,5 +26,5 @@
 }}
 
 {{
-  lending_aave_compatible_interest_rates()
+  lending_aave_compatible_interest_rates_view()
 }}

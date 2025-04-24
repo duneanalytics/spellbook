@@ -7,5 +7,5 @@
 }}
 
 {{
-  lending_aave_compatible_market_hourly_agg()
+  lending_aave_compatible_market_hourly_agg_view()
 }}

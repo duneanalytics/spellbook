@@ -160,7 +160,7 @@ where 1 = 1
 {# ######################################################################### #}
 
 {%
-  macro lending_aave_compatible_market_hourly_agg(
+  macro lending_aave_compatible_market_hourly_agg_view(
     blockchain = 'multichain',
     project = 'aave',
     version = 'all'
@@ -195,7 +195,7 @@ where 1 = 1
 {# ######################################################################### #}
 
 {%
-  macro lending_aave_compatible_interest_rates(
+  macro lending_aave_compatible_interest_rates_view(
     blockchain = 'multichain',
     project = 'aave',
     version = 'all'
