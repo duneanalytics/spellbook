@@ -18,8 +18,8 @@ dexs_v2 AS (
             blockchain = 'unichain',
             project = 'velodrome',
             version = '2',
-            Pair_evt_Swap = source('velodrome_unichain', 'pool_evt_swap'),
-            Factory_evt_PairCreated = source('velodrome_unichain', 'poolfactory_evt_poolcreated'),
+            Pair_evt_Swap = source('velodrome_unichain', 'Pool_evt_Swap'),
+            Factory_evt_PairCreated = source('velodrome_unichain', 'PoolFactory_evt_PoolCreated'),
             pair_column_name = 'pool'
         )
     }}
@@ -31,8 +31,8 @@ dexs_v2_cl AS (
             blockchain = 'unichain',
             project = 'velodrome',
             version = '2_cl',
-            Pair_evt_Swap = source('velodrome_unichain', 'clpool_evt_swap'),
-            Factory_evt_PoolCreated = source('velodrome_unichain', 'clfactory_evt_poolcreated'),
+            Pair_evt_Swap = source('velodrome_unichain', 'CLpool_evt_Swap'),
+            Factory_evt_PoolCreated = source('velodrome_unichain', 'CLfactory_evt_PoolCreated'),
             optional_columns = []
         )
     }}
