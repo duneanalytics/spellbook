@@ -99,6 +99,9 @@ AS {{ ton_boc_state_type() }})
     WHEN step[1] = {{ ton_action_load_ref() }} THEN {{ ton_load_ref_impl() }}
     WHEN step[1] = {{ ton_action_skip_ref() }} THEN {{ ton_skip_refs_impl('CAST(step[4] AS bigint)') }}
     WHEN step[1] = {{ ton_action_restart_parse() }} THEN {{ ton_restart_parse_impl() }}
+    WHEN step[1] = {{ ton_action_load_maybe_ref() }} THEN {{ ton_load_maybe_ref_impl() }}
+    WHEN step[1] = {{ ton_action_load_coins() }} THEN {{ ton_load_coins_impl('step[2]') }}
+    WHEN step[1] = {{ ton_action_skip_maybe_ref() }} THEN {{ ton_skip_maybe_ref_impl() }}
 END,
 s -> CAST(ROW(
     {#- prepare list of fields to be returned -#}
