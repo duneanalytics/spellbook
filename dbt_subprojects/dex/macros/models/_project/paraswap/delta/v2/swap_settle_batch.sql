@@ -137,15 +137,12 @@ from
 select 
     'swapSettleBatch' as method,
     COALESCE(CAST(s.price AS DECIMAL(38,18)), 0) AS src_token_price_usd,
-    COALESCE(CAST(d.price AS DECIMAL(38,18)), 0) AS dest_token_price_usd, 
+    COALESCE(CAST(d.price AS DECIMAL(38,18)), 0) AS dest_token_price_usd,     
     COALESCE( 
-        d.price * w.executorFeeAmount / POWER(10, d.decimals),        
-        0
-    )  AS gas_fee_usd,
-    COALESCE( 
+        d.price * w.executorFeeAmount / POWER(10, d.decimals),
         s.price *  w.srcAmount / POWER(10, s.decimals) * CAST (w.executorFeeAmount AS DECIMAL) / (CAST (w.destAmount AS DECIMAL)),
         0
-    )  AS gas_fee_usd_from_src_token,
+    )  AS gas_fee_usd,
     s.price *  w.srcAmount / POWER(10, s.decimals)  AS src_token_order_usd,
     d.price *  w.destAmount / POWER(10, d.decimals)  AS dest_token_order_usd,
     w.destToken AS fee_token,
@@ -213,8 +210,7 @@ SELECT
     fee_token,
     src_token_price_usd,
     dest_token_price_usd,
-    gas_fee_usd,
-    gas_fee_usd_from_src_token,
+    gas_fee_usd,    
     src_token_order_usd,
     dest_token_order_usd,
     contract_address
