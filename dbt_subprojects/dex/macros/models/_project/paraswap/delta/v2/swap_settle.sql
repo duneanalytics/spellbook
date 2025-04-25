@@ -62,7 +62,7 @@ select
         0
     )  AS gas_fee_usd,
     COALESCE( 
-        s.price *  w.srcAmount / POWER(10, s.decimals) * CAST (w.feeAmount AS DECIMAL) / (CAST (w.dest_amount AS DECIMAL), 
+        s.price *  w.srcAmount / POWER(10, s.decimals) * CAST (w.executorFeeAmount AS DECIMAL) / (CAST (w.destAmount AS DECIMAL)), 
         0
     )  AS gas_fee_usd_from_src_token,
     s.price *  w.srcAmount / POWER(10, s.decimals)  AS src_token_order_usd,
