@@ -56,10 +56,6 @@ models:
         description: "The month of the block when the fee was paid, used for partitioning"
         tests:
           - not_null
-      - name: bot
-        description: "The bot name (BonkBot)"
-        tests:
-          - not_null
       - name: blockchain
         description: "The blockchain (solana)"
         tests:
@@ -102,10 +98,6 @@ models:
         description: "The month of the block when the fee was paid, used for partitioning"
         tests:
           - not_null
-      - name: bot
-        description: "The bot name (BonkBot)"
-        tests:
-          - not_null
       - name: blockchain
         description: "The blockchain (solana)"
         tests:
@@ -139,7 +131,7 @@ models:
       - name: amount_usd
         description: "The USD value of the fee payment (amount * token_price_usd)"
 
-  - name: phantom_swapper_solana_bot_trades
+  - name: phantom_swapper_solana_trades
     description: "Trades executed by Phantom Swapper on Solana, enriched with fee payment information"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -149,10 +141,6 @@ models:
             - outer_instruction_index
             - inner_instruction_index
     columns:
-      - name: bot
-        description: "The bot name (BonkBot)"
-        tests:
-          - not_null
       - name: blockchain
         description: "The blockchain (solana)"
         tests:
