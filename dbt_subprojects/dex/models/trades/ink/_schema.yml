@@ -121,7 +121,7 @@ models:
     meta:
       blockchain: ink
       sector: dex
-      project: uniswap
+      project: inkswap
       contributors: sunshinejulia9
     config:
       tags: ["ink", "dex", "trades", "inkswap"]
