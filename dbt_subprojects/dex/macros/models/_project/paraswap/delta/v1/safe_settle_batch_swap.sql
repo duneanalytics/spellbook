@@ -45,16 +45,10 @@ safe_settle_batch_swap_ExpandedOrders AS (
     JSON_EXTRACT_SCALAR(JSON_PARSE(TRY_CAST("order" AS VARCHAR)), '$.destAmount')  AS "dest_amount",
     *
   FROM safe_settle_batch_swap_unparsedOrders
-), safe_settle_batch_swap_withUSDs AS (
+), safe_settle_batch_swap_wrapped_native AS (
   SELECT
-    CASE 
-        WHEN dest_token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 
-        ELSE dest_token 
-    END AS dest_token_for_joining,
-    CASE 
-        WHEN src_token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 
-        ELSE src_token 
-    END AS src_token_for_joining,
+    {{to_wrapped_native_token(blockchain, 'dest_token', 'dest_token_for_joining')}},
+  {{to_wrapped_native_token(blockchain, 'src_token', 'src_token_for_joining')}},
     *
   FROM safe_settle_batch_swap_parsedOrders
 ), delta_v1_safe_settle_batch_swap_model as (
@@ -74,7 +68,7 @@ SELECT
     s.price *  CAST (w.src_amount AS uint256) / POWER(10, s.decimals)  AS src_token_order_usd,
     d.price *  CAST (w.dest_amount AS uint256) / POWER(10, d.decimals)  AS dest_token_order_usd
     
-FROM safe_settle_batch_swap_withUSDs w 
+FROM safe_settle_batch_swap_wrapped_native w 
 LEFT JOIN {{ source('prices', 'usd') }} d
   ON d.blockchain = '{{blockchain}}'
   AND d.minute > TIMESTAMP '2024-06-01'
