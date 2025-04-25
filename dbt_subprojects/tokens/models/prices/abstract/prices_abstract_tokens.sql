@@ -22,4 +22,5 @@ FROM
     , ('usdc-usd-coin', 'USDC.e', 0x84a71ccd554cc1b02749b35d22f684cc8ec987e1, 6)
     , ('pengu-pudgy-penguins', 'PENGU', 0x9ebe3a824ca958e4b3da772d2065518f009cba62, 18)
     , ('eth-ethereum', 'ETH', 0x000000000000000000000000000000000000800a, 18)
+    , ('usdt-tether', 'USDT', 0x0709F39376dEEe2A2dfC94A58EdEb2Eb9DF012bD, 6)
 ) as temp (token_id, symbol, contract_address, decimals) 
