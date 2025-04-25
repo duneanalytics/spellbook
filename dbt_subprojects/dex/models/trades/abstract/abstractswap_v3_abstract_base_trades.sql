@@ -14,7 +14,7 @@
         blockchain = 'abstract'
         , project = 'abstractswap'
         , version = '3'
-        , Pair_evt_Swap = source('abstractswap', 'Pair_evt_Swap')
-        , Factory_evt_PoolCreated = source('uniswap_abstract', 'abstractswap_evt_PoolCreated')
+        , Pair_evt_Swap = source('abstractswap_abstract', 'uniswapv3pool_evt_swap')
+        , Factory_evt_PoolCreated = source('abstractswap_abstract', 'uniswapv3factory_evt_poolcreated')
     )
 }} 
