@@ -81,6 +81,7 @@ select
     AND s.minute = DATE_TRUNC('minute', w.call_block_time)
 ), delta_v2_swapSettle as (  
 SELECT 
+    -- NB: columns mapping must match accross all the methods, since they're uninoned into one in master macro
     '{{blockchain}}' as blockchain,
     method,
     0 as order_index,
