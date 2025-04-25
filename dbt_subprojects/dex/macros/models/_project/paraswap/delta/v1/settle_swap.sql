@@ -1,6 +1,3 @@
-{% 
--- ref: dbt_subprojects/dex/macros/models/_project/paraswap/v6/paraswap_v6_trades_master.sql 
-%}
 {% macro delta_settle_swap(blockchain) %}
 settle_swap_withParsedOrderData AS (
     SELECT         
