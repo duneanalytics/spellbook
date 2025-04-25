@@ -57,8 +57,8 @@ SELECT
     CAST(s.price AS DECIMAL(38,18)) AS src_token_price_usd,
     CAST(d.price AS DECIMAL(38,18)) AS dest_token_price_usd, 
     COALESCE( 
-        d.price *  CAST (w.feeAmount AS uint256) / POWER(10, d.decimals), -- compte directly if USD price is available        
-        (s.price *  CAST (w.src_amount AS uint256) / POWER(10, s.decimals)) -- otehrwise, fallback to src token price (pro rata)
+        d.price *  CAST (w.feeAmount AS uint256) / POWER(10, d.decimals), -- compute directly if USD price is available        
+        (s.price *  CAST (w.src_amount AS uint256) / POWER(10, s.decimals)) -- otherwise, fallback to src token price (pro rata)
         * CAST (w.feeAmount AS uint256) / CAST (w.dest_amount AS uint256)
         
     )  AS gas_fee_usd,
