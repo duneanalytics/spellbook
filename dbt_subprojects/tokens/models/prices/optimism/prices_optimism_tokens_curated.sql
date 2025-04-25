@@ -142,5 +142,6 @@ FROM
     ('bitcoin-hpos10i-bitcoin-hpos10i', 'BITCOIN (hpos10i)', 0x8a6039fC7A479928B1d73f88040362e9C50Db275,18),
     ('sarco-sarcophagus', 'SACRO', 0x7d342726b69c28d942ad8bfe6ac81b972349d524,18),
     ('tbtc-tbtc', 'tBTC', 0x6c84a8f1c29108f47a79964b5fe888d4f4d0de40,18),
-    ('crvusd-curvefi-usd-stablecoin', 'crvUSD', 0xC52D7F23a2e460248Db6eE192Cb23dD12bDDCbf6,18)
+    ('crvusd-curvefi-usd-stablecoin', 'crvUSD', 0xC52D7F23a2e460248Db6eE192Cb23dD12bDDCbf6,18),
+    ('wct-walletconnect-token', 'WCT', 0xeF4461891DfB3AC8572cCf7C794664A8DD927945,18)
 ) as temp (token_id, symbol, contract_address, decimals)
