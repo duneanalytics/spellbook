@@ -741,5 +741,11 @@ FROM
         ('link-chainlink','solana','LINK','CWE8jPTUYhdCTZYWPTe1o5DFqfdjzWKc9WKz6rSjQUdG',6),
         ('virtual-virtual-protocol','solana','VIRTUAL','3iQL8BFS2vE7mww4ehAqQHAsbmRNCrPxizWAT2Zfyr9y',9),
         ('ldo-lido-dao','solana','LDO','HZRCwxP2Vq9PCpPXooayhJ2bxTpo5xfpQrwB1svh332p',8),
-        ('dbr-debridge','solana','DBR','DBRiDgJAMsM95moTzJs7M9LnkGErpbv9v6CUR1DXnUu5',6)
+        ('dbr-debridge','solana','DBR','DBRiDgJAMsM95moTzJs7M9LnkGErpbv9v6CUR1DXnUu5',6),
+        ('grt-the-graph','solana','GRT','HGsLG4PnZ28L8A4R5nPqKgZd86zUUdmfnkTRnuFJ5dAX',8),
+        ('mana-decentraland','solana','MANA','7dgHoN8wBZCc5wbnQ2C47TDnBMAxG4Q5L3KjP67z8kNi',8),
+        ('tnsr-tensor', 'solana', 'TNSR', 'TNSRxcUxoT9xBG3de7PiJyTDYu7kskLqcpddxnEJAS6', 9),
+        ('usde-ethena-usde', 'solana', 'USDe', 'DEkqHyPN7GMRJ5cArtQFAWefqbZb33Hyf6s5iCwjEonT', 9),
+        ('sos-solana-swap', 'solana', 'SOS', 'HDa3zJc12ahykSsBRvgiWzr6WLEByf36yzKKbVvy4gnF', 6),
+        ('euroc-euro-coin', 'solana', 'EURC', 'HzwqbKZw8HxMN6bF2yFZNrht3c2iXXzpKcFu7uBEDKtr', 6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
