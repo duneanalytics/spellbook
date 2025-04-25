@@ -41,22 +41,7 @@ v2_swap_settle_parsedOrders AS (
     JSON_EXTRACT_SCALAR("order", '$.deadline') as deadline,
     JSON_EXTRACT_SCALAR("order", '$.nonce') as nonce,
     JSON_EXTRACT_SCALAR("order", '$.partnerAndFee') as partnerAndFee,
-    JSON_EXTRACT_SCALAR("order", '$.permit') as permit,    
-    -- NB: at the time of writting the only ExecutorData shape known is following. On adding new executors needs to be-reconsidered 
-    -- struct ExecutorData {
---         // The address of the src token
---         address srcToken;
---         // The address of the dest token
---         address destToken;
---         // The amount of fee to be paid for the swap 
---         uint256 feeAmount;                                                                   <- the field in question
---         // The calldata to execute the swap
---         bytes calldataToExecute;
---         // The address to execute the swap
---         address executionAddress;
---         // The address to receive the fee, if not set the tx.origin will receive the fee
---         address feeRecipient;
---     }
+    JSON_EXTRACT_SCALAR("order", '$.permit') as permit,       
     {{executor_fee_amount()}},    
     * 
   FROM v2_swap_settle_unparsedOrders
