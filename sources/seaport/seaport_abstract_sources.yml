@@ -1,0 +1,9 @@
+version: 2
+
+sources: 
+  - name: opensea_abstract
+    tables:
+      - name: Seaport_evt_OrderFulfilled
+      - name: Seaport_call_matchAdvancedOrders
+      - name: Seaport_call_matchOrders
+      - name: Seaport_evt_OrdersMatched
