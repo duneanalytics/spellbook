@@ -81,6 +81,7 @@ TON_STATES AS (
   SELECT DISTINCT nft_item_address, 'nft_item' AS interface FROM {{ source('ton', 'nft_events') }}
 ), NFT_SALES AS (
   SELECT DISTINCT sale_contract, 'nft_sale' AS interface FROM {{ source('ton', 'nft_events') }}
+  WHERE sale_contract IS NOT NULL
 ), NFT_COLLECTIONS AS (
   SELECT DISTINCT collection_address, 'nft_collection' AS interface FROM {{ source('ton', 'nft_events') }}
   WHERE collection_address IS NOT NULL
@@ -106,9 +107,9 @@ TON_STATES AS (
   WHERE I.interface IS NOT NULL
   GROUP BY 1
 ), JETTON_SENDERS AS (
-  SELECT trace_id, destination, MIN_BY(source, lt) AS source FROM {{ source('ton', 'jetton_events') }} -- pre-aggregated to avoid duplicates
-  WHERE aborted = FALSE
-  GROUP BY 1
+  SELECT trace_id, destination, MIN_BY(source, tx_lt) AS source FROM {{ source('ton', 'jetton_events') }} -- pre-aggregated to avoid duplicates
+  WHERE tx_aborted = FALSE
+  GROUP BY 1, 2
 )
 SELECT T.address, T.status, T.last_tx_hash, T.last_tx_at, T.balance, T.code_hash, T.deployment_tx_hash, T.deployment_at, T.deployment_by_external,
 T.initial_funding_tx_hash, T.initial_funding_at, COALESCE(J.source, M.source) AS first_tx_sender,
