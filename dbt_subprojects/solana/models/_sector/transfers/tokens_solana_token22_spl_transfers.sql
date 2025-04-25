@@ -87,16 +87,16 @@ from
     base_transfers as t
 LEFT JOIN 
       {{ ref('solana_utils_token_accounts_state_history') }} tk_s
-      ON tr.from_token_account_prefix = tk_s.address_prefix
-      AND tr.from_token_account = tk_s.address
-      AND tr.unique_instruction_key >= tk_s.valid_from_unique_instruction_key
-      AND tr.unique_instruction_key < tk_s.valid_to_unique_instruction_key
+      ON t.from_token_account_prefix = tk_s.address_prefix
+      AND t.from_token_account = tk_s.address
+      AND t.unique_instruction_key >= tk_s.valid_from_unique_instruction_key
+      AND t.unique_instruction_key < tk_s.valid_to_unique_instruction_key
 LEFT JOIN 
       {{ ref('solana_utils_token_accounts_state_history') }} tk_d 
-      ON tr.to_token_account_prefix = tk_d.address_prefix
-      AND tr.to_token_account = tk_d.address
-      AND tr.unique_instruction_key >= tk_d.valid_from_unique_instruction_key
-      AND tr.unique_instruction_key < tk_d.valid_to_unique_instruction_key
+      ON t.to_token_account_prefix = tk_d.address_prefix
+      AND t.to_token_account = tk_d.address
+      AND t.unique_instruction_key >= tk_d.valid_from_unique_instruction_key
+      AND t.unique_instruction_key < tk_d.valid_to_unique_instruction_key
 LEFT JOIN 
       {{ ref('solana_utils_token_address_mapping') }} tk_m
       ON tk_m.base58_address = COALESCE(tk_s.token_mint_address, tk_d.token_mint_address)
@@ -105,4 +105,4 @@ LEFT JOIN
       ON COALESCE(tk_s.token_mint_address, tk_d.token_mint_address) = tk_f.token_mint_address
 LEFT JOIN prices p
     ON p.contract_address = tk_m.binary_address
-    AND p.minute = date_trunc('minute', tr.call_block_time)
+    AND p.minute = date_trunc('minute', t.block_time)
