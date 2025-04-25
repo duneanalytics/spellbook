@@ -60,7 +60,7 @@ v2_swap_settle_parsedOrders AS (
     * 
   FROM v2_swap_settle_unparsedOrders
 ),
-v2_swap_settle_withUSDs AS (
+v2_swap_settle_with_wrapped_native AS (
   SELECT
 {{to_wrapped_native_token(blockchain, 'destToken', 'dest_token_for_joining')}},
 {{to_wrapped_native_token(blockchain, 'srcToken', 'src_token_for_joining')}},
@@ -85,7 +85,7 @@ select
     d.price *  w.destAmount / POWER(10, d.decimals)  AS dest_token_order_usd,
     w.destToken AS fee_token,
     w.*
-    FROM v2_swap_settle_withUSDs w 
+    FROM v2_swap_settle_with_wrapped_native w 
     LEFT JOIN {{ source('prices', 'usd') }} d
     ON d.blockchain = '{{blockchain}}'
     AND d.minute > TIMESTAMP '2024-06-01'
