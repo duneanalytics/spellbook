@@ -13,6 +13,7 @@ SELECT
     block_date
     , block_time
     , block_slot
+    , action
     , tx_id
     , tx_index
     , inner_instruction_index
