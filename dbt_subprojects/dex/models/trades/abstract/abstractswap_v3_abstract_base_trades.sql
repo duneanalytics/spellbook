@@ -17,4 +17,4 @@
         , Pair_evt_Swap = source('abstractswap', 'Pair_evt_Swap')
         , Factory_evt_PoolCreated = source('uniswap_abstract', 'abstractswap_evt_PoolCreated')
     )
-}}
+}} 
