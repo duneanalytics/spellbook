@@ -7,6 +7,7 @@ v2_swap_settle_withParsedOrderData AS (
         call_block_number, 
         call_tx_hash, 
         orderWithSig,
+        executor,
         executorData,
         contract_address    
     FROM {{ source("paraswapdelta_"+ blockchain, "ParaswapDeltav2_call_swapSettle") }}        
@@ -113,6 +114,7 @@ SELECT
     call_tx_hash,
     executorFeeAmount as fee_amount,
     -- orderWithSig as order_with_sig,
+    executor,
     executorData as calldata_to_execute,
     -- "order",
     signature,

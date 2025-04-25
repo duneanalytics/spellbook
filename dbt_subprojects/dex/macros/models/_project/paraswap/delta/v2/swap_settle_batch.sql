@@ -216,6 +216,7 @@ SELECT
     call_tx_hash,
     executorFeeAmount as fee_amount,
     -- orderWithSig as order_with_sig,
+    executor,
     executorData as calldata_to_execute,
     -- "order",
     signature,
