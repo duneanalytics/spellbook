@@ -253,11 +253,12 @@ WITH transfers_raw as (
     {% if is_incremental() -%}
     left join
         {{ this }} as existing
-        on existing.block_date = transfers.block_date
-        and existing.block_slot = transfers.block_slot
-        and existing.tx_index = transfers.tx_index
-        and existing.inner_instruction_index = transfers.inner_instruction_index
-        and existing.outer_instruction_index = transfers.outer_instruction_index
+        -- typically only inner_instruction_index is null, but coalesce all to be safe
+        on coalesce(existing.block_date, date '9999-12-31') = coalesce(transfers.block_date, date '9999-12-31')
+        and coalesce(existing.block_slot, 0) = coalesce(transfers.block_slot, 0)
+        and coalesce(existing.tx_index, 0) = coalesce(transfers.tx_index, 0)
+        and coalesce(existing.inner_instruction_index, 0) = coalesce(transfers.inner_instruction_index, 0)
+        and coalesce(existing.outer_instruction_index, 0) = coalesce(transfers.outer_instruction_index, 0)
         and {{incremental_predicate('existing.block_time')}}
     where
         existing.block_date is null -- only insert new rows
