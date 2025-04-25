@@ -15,19 +15,4 @@
     )
 }}
 
-{% set project_start_date = '2024-05-01' %}
-
-with
-{{ delta_v2_swap_settle('base') }},
-{{ delta_v2_swap_settle_batch('base') }}
-select
-    date_trunc('month', call_block_time) AS block_month,        
-    *
-from delta_v2_swapSettle
-
-union all   
-
-select 
-    date_trunc('month', call_block_time) AS block_month,        
-    *
-from delta_v2_swapSettleBatch
+{{ delta_v2_master('base') }}
