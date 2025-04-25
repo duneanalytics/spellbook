@@ -1,26 +1,17 @@
-{{ config(
-    schema = 'aave_base'
-    , alias = 'interest_rates'
-    , post_hook='{{ expose_spells(blockchains = \'["base"]\',
-                                  spell_type = "project",
-                                  spell_name = "aave",
-                                  contributors = \'["mikeghen1","batwayne", "chuxin"]\') }}'
+{{
+  config(
+    schema = 'aave_base',
+    alias = 'interest_rates',
+    materialized = 'view'
   )
 }}
 
-SELECT *
-FROM 
-(
-      SELECT
-            reserve,
-            symbol,
-            hour,
-            deposit_apy,
-            stable_borrow_apy,
-            variable_borrow_apy
-      FROM {{ ref('aave_v3_base_interest_rates') }}
-      /*
-      UNION ALL
-      < add new version as needed
-      */
-)
+/*
+{{
+  lending_aave_compatible_interest_rates_view(
+    blockchain = 'base'
+  )
+}}
+*/
+
+select 1 as dummy_placeholder 

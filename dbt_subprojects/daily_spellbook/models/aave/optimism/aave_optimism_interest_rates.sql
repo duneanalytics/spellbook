@@ -1,26 +1,17 @@
-{{ config(
-    schema = 'aave_optimism'
-    , alias = 'interest_rates'
-    , post_hook='{{ expose_spells(\'["optimism"]\',
-                                  "project",
-                                  "aave",
-                                  \'["batwayne", "chuxin"]\') }}'
+{{
+  config(
+    schema = 'aave_optimism',
+    alias = 'interest_rates',
+    materialized = 'view'
   )
 }}
 
-SELECT *
-FROM 
-(
-      SELECT
-            reserve,
-            symbol,
-            hour,
-            deposit_apy,
-            stable_borrow_apy,
-            variable_borrow_apy
-      FROM {{ ref('aave_v3_optimism_interest_rates') }}
-      /*
-      UNION ALL
-      < add new version as needed
-      */
-)
+/*
+{{
+  lending_aave_compatible_interest_rates_view(
+    blockchain = 'optimism'
+  )
+}}
+*/
+
+select 1 as dummy_placeholder 
