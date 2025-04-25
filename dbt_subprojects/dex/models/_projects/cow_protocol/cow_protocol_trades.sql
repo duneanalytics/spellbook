@@ -126,7 +126,6 @@ FROM
             trace_address,
             evt_index
         FROM {{ ref('cow_protocol_base_trades') }}
-)
 
         UNION ALL
 
