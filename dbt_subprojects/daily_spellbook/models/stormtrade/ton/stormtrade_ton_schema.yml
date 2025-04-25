@@ -1,0 +1,303 @@
+version: 2
+
+models:
+  - name: stormtrade_ton_trade_notification
+    meta:
+      blockchain: ton
+      sector: dex
+      contributors: pshuvalov
+    config:
+      tags: ['ton', 'stormtrade', 'perpetual']
+    description: >
+      StormTrade trade notification events
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - block_date
+    columns:
+      - name: block_date
+        description: "block_date of the transaction"
+      - name: tx_hash
+        description: "transaction hash"
+      - name: trace_id
+        description: "trace id"
+      - name: tx_now
+        description: "transaction timestamp"
+      - name: tx_lt
+        description: "transaction logical time"
+      - name: vault
+        description: "vault address"
+      - name: vault_token
+        description: "underlying vault token name"
+      - name: amm
+        description: "amm address"
+      - name: asset_id
+        description: "asset id"
+      - name: free_amount
+        description: "free amount"
+      - name: locked_amount
+        description: "locked amount"
+      - name: exchange_amount
+        description: "exchange amount"
+      - name: withdraw_locked_amount
+        description: "withdraw locked amount"
+      - name: fee_to_stakers
+        description: "fee to stakers"
+      - name: withdraw_amount
+        description: "withdraw amount"
+      - name: trader_addr
+        description: "trader address"
+      - name: origin_addr
+        description: "origin address"
+      - name: referral_amount
+        description: "referral amount"
+      - name: referral_addr
+        description: "referral address"
+      - name: split_executor_reward
+        description: "split executor reward"
+      - name: executor_amount
+        description: "executor amount"
+      - name: executor_index
+        description: "executor index"
+  - name: stormtrade_ton_execute_order
+    meta:
+      blockchain: ton
+      sector: dex
+      contributors: pshuvalov
+    config:
+      tags: ['ton', 'stormtrade', 'perpetual']
+    description: >
+      StormTrade execute order events
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - block_date
+    columns:
+      - name: block_date
+        description: "block_date of the transaction"
+      - name: tx_hash
+        description: "transaction hash"
+      - name: trace_id
+        description: "trace id"
+      - name: tx_now
+        description: "transaction timestamp"
+      - name: tx_lt
+        description: "transaction logical time"
+      - name: user_position
+        description: "user position"
+      - name: vault
+        description: "vault address"
+      - name: vault_token
+        description: "underlying vault token name"
+      - name: amm
+        description: "amm address"
+      - name: direction
+        description: "direction"
+      - name: order_index
+        description: "order index"
+      - name: trader_addr
+        description: "trader address"
+      - name: prev_addr
+        description: "prev address"
+      - name: ref_addr
+        description: "ref address"
+      - name: executor_index
+        description: "executor index"
+      - name: order_type
+        description: "order type"
+      - name: order_expiration
+        description: "order expiration"
+      - name: order_direction
+        description: "order direction"
+      - name: order_amount
+        description: "order amount"
+      - name: order_triger_price
+        description: "order triger price (only for stop_loss_order and take_profit_order)"
+      - name: order_leverage
+        description: "order leverage (only for market_order and stop_limit_order)"
+      - name: order_limit_price
+        description: "order limit price (only for market_order and stop_limit_order)"
+      - name: order_stop_price
+        description: "order stop price (only for market_order and stop_limit_order)"
+      - name: order_stop_triger_price
+        description: "order stop triger price (only for market_order and stop_limit_order)"
+      - name: order_take_triger_price
+        description: "order take triger price (only for market_order and stop_limit_order)"
+      - name: position_size
+        description: "position size"
+      - name: position_direction
+        description: "position direction"
+      - name: position_margin
+        description: "position margin"
+      - name: position_open_notional
+        description: "position open notional"
+      - name: position_last_updated_cumulative_premium
+        description: "position last updated cumulative premium"
+      - name: position_fee
+        description: "position fee"
+      - name: position_discount
+        description: "position discount"
+      - name: position_rebate
+        description: "position rebate"
+      - name: position_last_updated_timestamp
+        description: "position last updated timestamp"
+      - name: oracle_price
+        description: "oracle price"
+      - name: oracle_spread
+        description: "oracle spread"
+      - name: oracle_timestamp
+        description: "oracle timestamp"
+      - name: oracle_asset_id
+        description: "oracle asset id"
+  - name: stormtrade_ton_complete_order
+    meta:
+      blockchain: ton
+      sector: dex
+      contributors: pshuvalov
+    config:
+      tags: ['ton', 'stormtrade', 'perpetual']
+    description: >
+      StormTrade complete order events
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - block_date
+    columns:
+      - name: block_date
+        description: "block_date of the transaction"
+      - name: tx_hash
+        description: "transaction hash"
+      - name: trace_id
+        description: "trace id"
+      - name: tx_now
+        description: "transaction timestamp"
+      - name: tx_lt
+        description: "transaction logical time"
+      - name: user_position
+        description: "user position"
+      - name: vault
+        description: "vault address"
+      - name: vault_token
+        description: "underlying vault token name"
+      - name: amm
+        description: "amm address"
+      - name: order_type
+        description: "order type"
+      - name: order_index
+        description: "order index"
+      - name: direction
+        description: "direction"
+      - name: origin_op
+        description: "origin op"
+      - name: oracle_price
+        description: "oracle price"
+      - name: position_size
+        description: "position size"
+      - name: position_direction
+        description: "position direction"
+      - name: position_margin
+        description: "position margin"
+      - name: position_open_notional
+        description: "position open notional"
+      - name: position_last_updated_cumulative_premium
+        description: "position last updated cumulative premium"
+      - name: position_fee
+        description: "position fee"
+      - name: position_discount
+        description: "position discount"
+      - name: position_rebate
+        description: "position rebate"
+      - name: position_last_updated_timestamp
+        description: "position last updated timestamp"
+      - name: quote_asset_reserve
+        description: "quote asset reserve"
+      - name: quote_asset_weight
+        description: "quote asset weight"
+      - name: base_asset_reserve
+        description: "base asset reserve"
+      - name: total_long_position_size
+        description: "total long position size"
+      - name: total_short_position_size
+        description: "total short position size"
+      - name: open_interest_long
+        description: "open interest long"
+      - name: open_interest_short
+        description: "open interest short"
+  - name: stormtrade_ton_update_position
+    meta:
+      blockchain: ton
+      sector: dex
+      contributors: pshuvalov
+    config:
+      tags: ['ton', 'stormtrade', 'perpetual']
+    description: >
+      StormTrade update position events
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - block_date
+    columns:
+      - name: block_date
+        description: "block_date of the transaction"
+      - name: tx_hash
+        description: "transaction hash"
+      - name: trace_id
+        description: "trace id"
+      - name: tx_now
+        description: "transaction timestamp"
+      - name: tx_lt
+        description: "transaction logical time"
+      - name: user_position
+        description: "user position"
+      - name: vault
+        description: "vault address"
+      - name: vault_token
+        description: "underlying vault token name"
+      - name: amm
+        description: "amm address"
+      - name: direction
+        description: "direction"
+      - name: origin_op
+        description: "origin op"
+      - name: oracle_price
+        description: "oracle price"
+      - name: stop_trigger_price
+        description: "stop trigger price"
+      - name: take_trigger_price
+        description: "take trigger price"
+      - name: position_size
+        description: "position size"
+      - name: position_direction
+        description: "position direction"
+      - name: position_margin
+        description: "position margin"
+      - name: position_open_notional
+        description: "position open notional"
+      - name: position_last_updated_cumulative_premium
+        description: "position last updated cumulative premium"
+      - name: position_fee
+        description: "position fee"
+      - name: position_discount
+        description: "position discount"
+      - name: position_rebate
+        description: "position rebate"
+      - name: position_last_updated_timestamp
+        description: "position last updated timestamp"
+      - name: quote_asset_reserve
+        description: "quote asset reserve"
+      - name: quote_asset_weight
+        description: "quote asset weight"
+      - name: base_asset_reserve
+        description: "base asset reserve"
+      - name: total_long_position_size
+        description: "total long position size"
+      - name: total_short_position_size
+        description: "total short position size"
+      - name: open_interest_long
+        description: "open interest long"
+      - name: open_interest_short
+        description: "open interest short"
