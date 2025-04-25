@@ -34,7 +34,7 @@ with init as (
         {{ source('spl_token_solana', 'spl_token_call_initializeaccount') }}
     WHERE
         1=1
-        {% if is_incremental() or true %}
+        {% if is_incremental() %}
         AND {{ incremental_predicate('call_block_time') }}
         {% endif %}
 
@@ -62,7 +62,7 @@ with init as (
     FROM {{ source('spl_token_solana', 'spl_token_call_initializeaccount2') }}
     WHERE
         1=1
-        {% if is_incremental() or true %}
+        {% if is_incremental() %}
         AND {{ incremental_predicate('call_block_time') }}
         {% endif %}
 
@@ -90,7 +90,7 @@ with init as (
     FROM {{ source('spl_token_solana', 'spl_token_call_initializeaccount3') }}
     WHERE 
         1=1
-        {% if is_incremental() or true %}
+        {% if is_incremental() %}
         AND {{ incremental_predicate('call_block_time') }}
         {% endif %}
 )
@@ -117,7 +117,7 @@ with init as (
     FROM {{ source('spl_token_solana', 'spl_token_call_setauthority') }}
     WHERE
         json_extract_scalar(authorityType, '$.AuthorityType') = 'AccountOwner'
-        {% if is_incremental() or true %}
+        {% if is_incremental() %}
         AND {{ incremental_predicate('call_block_time') }}
         {% endif %}
 )
@@ -144,7 +144,7 @@ with init as (
     FROM {{ source('spl_token_solana', 'spl_token_call_closeaccount') }}
     WHERE
         1=1
-        {% if is_incremental() or true %}
+        {% if is_incremental() %}
         AND {{ incremental_predicate('call_block_time') }}
         {% endif %}
 )
