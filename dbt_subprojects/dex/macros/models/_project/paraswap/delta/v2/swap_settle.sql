@@ -58,15 +58,13 @@ select
     COALESCE(CAST(s.price AS DECIMAL(38,18)), 0) AS src_token_price_usd,
     COALESCE(CAST(d.price AS DECIMAL(38,18)), 0) AS dest_token_price_usd, 
     COALESCE( 
-        d.price * w.executorFeeAmount / POWER(10, d.decimals),
-        -- src cost 
-        
-        -- TODO: not sure about this calc, needs verifying 
-        -- used to have this fallback but maybe it shouldn't be here, and it might have been wrong
-        -- (s.price *  CAST (w.src_amount AS uint256) / POWER(10, s.decimals))
-        -- * CAST (w.feeAmount AS DECIMAL) / (CAST (w.dest_amount AS DECIMAL)+ CAST (w.feeAmount AS DECIMAL)),
+        d.price * w.executorFeeAmount / POWER(10, d.decimals),        
         0
     )  AS gas_fee_usd,
+    COALESCE( 
+        s.price *  w.srcAmount / POWER(10, s.decimals) * CAST (w.feeAmount AS DECIMAL) / (CAST (w.dest_amount AS DECIMAL)         
+        0
+    )  AS gas_fee_usd_from_src_token,
     s.price *  w.srcAmount / POWER(10, s.decimals)  AS src_token_order_usd,
     d.price *  w.destAmount / POWER(10, d.decimals)  AS dest_token_order_usd,
     w.destToken AS fee_token,
@@ -114,6 +112,7 @@ SELECT
     src_token_price_usd,
     dest_token_price_usd,
     gas_fee_usd,
+    gas_fee_usd_from_src_token,
     src_token_order_usd,
     dest_token_order_usd,
     contract_address
