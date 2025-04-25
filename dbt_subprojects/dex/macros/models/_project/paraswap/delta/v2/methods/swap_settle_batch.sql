@@ -1,99 +1,58 @@
 {% macro delta_v2_swap_settle_batch(blockchain) %}
-
--- standard fields:
--- contract_address varbinary
--- call_success boolean
--- call_tx_hash varbinary
--- call_tx_from varbinary
--- call_tx_to varbinary
--- call_trace_address array(bigint)
--- call_block_time timestamp
--- call_block_number bigint
-
--- usefull payload:
--- ordersWithSigs array(varchar)
--- executorData array(varbinary)
--- executor varbinary
-
--- util payload:
--- call_trace_address - should be explicitely sorted by this field, if there's a call that combines multiple calls 
--- evt_index - matching events should be sorted by evt_index correspondingly
-
--- useful utils & info
---- explode an array:                 SEQUENCE(1, CARDINALITY(output_successfulOrders))
---- access data: JSON_EXTRACT / JSON_EXTRACT_SCALAR 
-
-    delta_v2_swap_settle_batch_ExpandedOrders as (
-        select            
-            ROW_NUMBER() OVER (ORDER BY call_block_time, call_tx_hash, call_trace_address, order_index) AS rn,
-            * from 
-            (
-                  SELECT 
-                  order_index,
-                  contract_address, -- varbinary
-                  -- call_success, -- boolean
-                  call_tx_hash, -- varbinary
-                  -- call_tx_from, -- varbinary
-                  -- call_tx_to, -- varbinary
-                  call_trace_address, -- array(bigint)
-                  call_block_time, -- timestamp
-                  call_block_number, -- bigint
-                  -- ordersWithSigs[order_index] as extractedOrderWithSig,
-                  -- JSON_EXTRACT(JSON_PARSE(TRY_CAST(ordersWithSigs[order_index] AS VARCHAR)), '$.order') AS "order", -- kinda works, but returns a string
-                  
-                  JSON_EXTRACT_SCALAR(ordersWithSigs[order_index], '$.order') as "order", -- works best, returns json
-                  JSON_EXTRACT_SCALAR(ordersWithSigs[order_index], '$.signature') as signature, -- works best, returns json            
-                  -- JSON_EXTRACT_SCALAR(JSON_EXTRACT_SCALAR(ordersWithSigs[order_index], '$.order'), '$.owner') as owner,
-                  
-                  executor,
-                  executorData[order_index] as executorData                     
-                FROM {{ source("paraswapdelta_"+ blockchain, "ParaswapDeltav2_call_swapSettleBatch") }}                    
-                  CROSS JOIN UNNEST (
-                      -- SQL array indices start at 1
-                      -- also NB: if one order fails -- whole batch fails
-                      -- also NB: edge case: a multi-tx call, where some other method emits event with similar signature --> not valid as it won't end up in the table
-                      SEQUENCE(1, CARDINALITY(ordersWithSigs) )
-                  ) AS t (order_index)        
-              WHERE 
-                call_success = true
-                {% if is_incremental() %}
-                  AND {{ incremental_predicate('call_block_time') }}
-                {% endif %}        
-            )
-    ),
-    delta_v2_swap_settle_batch_OrderSettledEvents as (
-      SELECT 
-        -- TODO: need a sample tx to make sure this ordering and then joining by the order down below is correct
-        ROW_NUMBER() OVER (ORDER BY evt_block_time, evt_tx_hash, evt_index) AS rn,
-        *
-      FROM 
-      
-      (
-        SELECT * FROM {{ source("paraswapdelta_"+ blockchain, "ParaswapDeltav2_evt_OrderSettled") }}
-        -- important conditional - since OrderSettled is emitted by multilple methods
-        -- this filtering still not 100% fix -- as theoretically multiple methods can be combined in on call
-        -- consider case when settleSwap and settleBatchSwap are combined in one call
-        WHERE evt_tx_hash in (select call_tx_hash from delta_v2_swap_settle_batch_ExpandedOrders)
-        {% if is_incremental() %}
-            AND {{ incremental_predicate('evt_block_time') }}
-          {% endif %}        
-      )
-    ),
+delta_v2_swap_settle_batch_ExpandedOrders as (
+    select            
+        ROW_NUMBER() OVER (ORDER BY call_block_time, call_tx_hash, call_trace_address, order_index) AS rn,
+        * from 
+        (
+              SELECT 
+              order_index,
+              contract_address, -- varbinary
+              -- call_success, -- boolean
+              call_tx_hash, -- varbinary
+              -- call_tx_from, -- varbinary
+              -- call_tx_to, -- varbinary
+              call_trace_address, -- array(bigint)
+              call_block_time, -- timestamp
+              call_block_number, -- bigint
+              -- ordersWithSigs[order_index] as extractedOrderWithSig,              
+              JSON_EXTRACT_SCALAR(ordersWithSigs[order_index], '$.order') as "order", -- returns json
+              JSON_EXTRACT_SCALAR(ordersWithSigs[order_index], '$.signature') as signature,                            
+              executor,
+              executorData[order_index] as executorData                     
+            FROM {{ source("paraswapdelta_"+ blockchain, "ParaswapDeltav2_call_swapSettleBatch") }}                    
+              CROSS JOIN UNNEST (
+                  -- SQL array indices start at 1
+                  -- also NB: if one order fails -- whole batch fails
+                  -- also NB: edge case: a multi-tx call, where some other method emits event with similar signature --> not valid as it won't end up in the table
+                  SEQUENCE(1, CARDINALITY(ordersWithSigs) )
+              ) AS t (order_index)        
+          WHERE 
+            call_success = true
+            {% if is_incremental() %}
+              AND {{ incremental_predicate('call_block_time') }}
+            {% endif %}        
+        )
+),
+delta_v2_swap_settle_batch_OrderSettledEvents as (
+  SELECT 
+    -- TODO: need a sample tx to make sure this ordering and then joining by the order down below is correct
+    ROW_NUMBER() OVER (ORDER BY evt_block_time, evt_tx_hash, evt_index) AS rn,
+    *
+  FROM 
+  
+  (
+    SELECT * FROM {{ source("paraswapdelta_"+ blockchain, "ParaswapDeltav2_evt_OrderSettled") }}
+    -- important conditional - since OrderSettled is emitted by multilple methods
+    -- this filtering still not 100% fix -- as theoretically multiple methods can be combined in on call
+    -- consider case when settleSwap and settleBatchSwap are combined in one call
+    WHERE evt_tx_hash in (select call_tx_hash from delta_v2_swap_settle_batch_ExpandedOrders)
+    {% if is_incremental() %}
+        AND {{ incremental_predicate('evt_block_time') }}
+      {% endif %}        
+  )
+),
 delta_v2_swap_settle_batch_parsed_orders as (
   select
--- {
---   "owner": "0xb0326588271f2531fbfc9a13d52d3da45be1d956",
---   "beneficiary": "0xb0326588271f2531fbfc9a13d52d3da45be1d956",
---   "srcToken": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
---   "destToken": "0x940181a94a35a4569e4529a3cdfb74e38fd98631",
---   "srcAmount": 500000,
---   "destAmount": 245364045719396700,
---   "expectedDestAmount": 258277942862522850,
---   "deadline": 1733555737,
---   "nonce": 140,
---   "partnerAndFee": 0,
---   "permit": "0x"
--- }
     from_hex(JSON_EXTRACT_SCALAR("order", '$.owner')) as owner,
     from_hex(JSON_EXTRACT_SCALAR("order", '$.beneficiary')) as beneficiary,
     from_hex(JSON_EXTRACT_SCALAR("order", '$.srcToken')) as srcToken,
@@ -110,8 +69,7 @@ delta_v2_swap_settle_batch_parsed_orders as (
 from
     delta_v2_swap_settle_batch_ExpandedOrders    
 ), delta_v2_swap_settle_batch_withWrapped as (
-  SELECT 
-  -- TODO: 2. native to wrapped conversion before joining with USD
+  SELECT     
     {{to_wrapped_native_token(blockchain, 'orders.destToken', 'dest_token_for_joining')}},
     {{to_wrapped_native_token(blockchain, 'orders.srcToken', 'src_token_for_joining')}},
     events.returnAmount,
