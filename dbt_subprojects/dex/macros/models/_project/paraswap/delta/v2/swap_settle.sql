@@ -57,7 +57,7 @@ v2_swap_settle_parsedOrders AS (
 --         // The address to receive the fee, if not set the tx.origin will receive the fee
 --         address feeRecipient;
 --     }
-    varbinary_to_uint256(varbinary_substring(executorData,  161, 32)) as "executorFeeAmount",
+    {{executor_fee_amount()}},    
     * 
   FROM v2_swap_settle_unparsedOrders
 ),

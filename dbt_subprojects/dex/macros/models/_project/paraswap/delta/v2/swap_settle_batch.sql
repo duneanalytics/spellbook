@@ -120,7 +120,7 @@ delta_v2_swap_settle_batch_parsed_orders as (
 --         // The address to receive the fee, if not set the tx.origin will receive the fee
 --         address feeRecipient;
 --     }
-    varbinary_to_uint256(varbinary_substring(executorData,  161, 32)) as "executorFeeAmount",
+    {{executor_fee_amount()}},    
     * 
 from
     delta_v2_swap_settle_batch_ExpandedOrders    
