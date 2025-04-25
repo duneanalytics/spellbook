@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: cow_protocol_sepolia_solvers
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    meta:
+      blockchain: sepolia
+      project: cow_protocol
+      contributors: harisang
+    config:
+      tags: ['sepolia_chain','cow_protocol','solver']
+    description: >
+      CoW Protocol solvers list on sepolia Chain
+
+  - name: cow_protocol_sepolia_batches
+    meta:
+      blockchain: sepolia
+      project: cow_protocol
+      contributors: harisang
+    config:
+      tags: ['sepolia','cow_protocol','trades', 'dex', 'aggregator', 'auction']
+    description: >
+      CoW Protocol enriched batches table on sepolia Chain
+    data_tests:
+      - unique:
+          column_name: tx_hash
