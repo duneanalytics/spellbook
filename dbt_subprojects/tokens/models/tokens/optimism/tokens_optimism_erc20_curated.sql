@@ -405,7 +405,7 @@ WITH raw_token_list AS (
     ,(0x5976d4c3bcfc1c5f90ab1419d7f3ddf109cea35a, 'GNODE', 18, 'underlying')
     ,(0x1e925de1c68ef83bd98ee3e130ef14a50309c01b, 'EXA', 18, 'underlying')
     ,(0xeb466342c4d449bc9f53a865d5cb90586f405215, 'axlUSDC', 6, 'underlying')
-    ,(0x58b9cB810A68a7f3e1E4f8Cb45D1B9B3c79705E8, 'NEXT', 18, 'underlying')
+    ,(0x58b9cB810A68a7f3e1E4f8Cb45D1B9B3c79705E8, 'CLEAR', 18, 'underlying')
     ,(0x28b42698caf46b4b012cf38b6c75867e0762186d, 'UNIDX', 18, 'underlying')
     ,(0x9dabae7274d28a45f0b65bf8ed201a5731492ca0, 'msUSD', 18, 'underlying')
     ,(0x8901cb2e82cc95c01e42206f8d1f417fe53e7af0, 'YFX', 18, 'receipt')
