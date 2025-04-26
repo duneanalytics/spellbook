@@ -1895,7 +1895,9 @@ FROM
     ('pin-pinlink', 'ethereum', 'PIN', 0x2e44f3f609ff5aa4819b323fd74690f07c3607c4, 18),
     ('nitro3-nitro', 'ethereum', 'NITRO', 0x76887cb94cf29ec539b3219ba62104be04f26a5c, 18),
     ('vertai-vertical-ai', 'ethereum', 'VERTAI', 0xcdbddbdefb0ee3ef03a89afcd714aa4ef310d567, 18),
-    ('white-whiterock', 'ethereum', 'WHITE', 0x9cdf242ef7975d8c68d5c1f5b6905801699b1940, 18)
+    ('white-whiterock', 'ethereum', 'WHITE', 0x9cdf242ef7975d8c68d5c1f5b6905801699b1940, 18),
+    ('next-connext-eth', 'ethereum', 'CLEAR', 0x58b9cB810A68a7f3e1E4f8Cb45D1B9B3c79705E8, 18)
+
    ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
