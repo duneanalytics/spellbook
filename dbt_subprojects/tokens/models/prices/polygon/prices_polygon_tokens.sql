@@ -135,7 +135,7 @@ FROM
     ('dfx-dfx-finance', 'polygon', 'DFX', 0x27f485b62c4a7e635f561a87560adf5090239e93, 18),
     ('usdv-verified-usd', 'polygon', 'USDV', 0x323665443cef804a3b5206103304bd4872ea4253, 6),
     ('zro-layerzero', 'polygon', 'ZRO', 0x6985884c4392d348587b19cb9eaaf157f13271cd, 18),
-    ('next-connext-eth', 'polygon', 'NEXT', 0x58b9cb810a68a7f3e1e4f8cb45d1b9b3c79705e8, 18),
+    ('next-connext-eth', 'polygon', 'CLEAR', 0x58b9cb810a68a7f3e1e4f8cb45d1b9b3c79705e8, 18),
     ('usdm-mountain-protocol-usd', 'polygon', 'wUSDM', 0x57f5e098cad7a3d1eed53991d4d66c45c9af7812, 18),
     ('crowd-crowdswap', 'polygon', 'CROWD', 0x483dd3425278c1f79f377f1034d9d2cae55648b6, 18),
     ('trb-tellor', 'polygon', 'TRB', 0xe3322702bedaaed36cddab233360b939775ae5f1, 18),
