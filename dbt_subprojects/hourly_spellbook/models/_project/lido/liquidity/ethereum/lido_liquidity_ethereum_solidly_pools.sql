@@ -213,7 +213,7 @@ group by 1
 
   )
 
-  , collect_events AS (
+  , burn_events AS (
     SELECT
       c.evt_block_time AS time,
       c.contract_address AS pool,
@@ -223,7 +223,7 @@ group by 1
       (-1) * CAST(amount1 AS DOUBLE) AS amount1,
       c.evt_tx_hash
     FROM
-      {{source('solidly_ethereum','SolidlyV3Pool_evt_Collect')}} AS c
+      {{source('solidly_ethereum','SolidlyV3Pool_evt_Burn')}} AS c
       LEFT JOIN {{source('solidly_ethereum','SolidlyV3Factory_evt_PoolCreated')}} AS cr ON c.contract_address = cr.pool
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', c.evt_block_time) >= DATE '{{ project_start_date }}'
@@ -273,7 +273,7 @@ group by 1
           SUM(amount0),
           SUM(amount1)
         FROM
-          collect_events
+          burn_events
         GROUP BY
           1,
           2,
