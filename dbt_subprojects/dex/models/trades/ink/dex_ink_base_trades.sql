@@ -12,6 +12,7 @@
     , ref('inkyswap_ink_base_trades')
     , ref('dyorswap_ink_base_trades')
     , ref('squidswap_ink_base_trades')
+    , ref('inkswap_ink_base_trades')
 ] %}
 
 WITH base_union AS (
