@@ -1,11 +1,14 @@
 {{ config(
     schema = 'rocketpool_ethereum',
     alias = 'minipool_balance_distribution',
-    materialized = 'table'
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = 'minipool'
     )
 }}
 
-select
+select distinct
     trans.to as minipool,
     true as is_distributed
 from
