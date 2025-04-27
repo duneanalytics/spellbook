@@ -6,12 +6,8 @@
   )
 }}
 
-/*
 {{
   lending_aave_compatible_market_view(
     blockchain = 'polygon'
   )
 }}
-*/
-
-select 1 as dummy_placeholder 

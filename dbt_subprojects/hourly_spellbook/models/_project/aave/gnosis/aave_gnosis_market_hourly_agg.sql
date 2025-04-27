@@ -6,12 +6,8 @@
   )
 }}
 
-/*
 {{
   lending_aave_compatible_market_hourly_agg_view(
     blockchain = 'gnosis'
   )
 }}
-*/
-
-select 1 as dummy_placeholder 

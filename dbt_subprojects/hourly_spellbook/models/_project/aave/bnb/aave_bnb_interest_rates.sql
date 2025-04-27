@@ -6,12 +6,8 @@
   )
 }}
 
-/*
 {{
   lending_aave_compatible_interest_rates_view(
     blockchain = 'bnb'
   )
 }}
-*/
-
-select 1 as dummy_placeholder 
