@@ -26,7 +26,7 @@ select
   project_contract_address,
   evt_index,
   tx_hash
-from {{ source('lending', 'borrow') }}
+from {{ ref('lending_borrow') }}
 where 1 = 1
   {% if blockchain != 'multichain' %}
   and blockchain = '{{ blockchain }}'
@@ -64,7 +64,7 @@ select
   project_contract_address as contract_address,
   evt_index,
   tx_hash
-from {{ source('lending', 'flashloans') }}
+from {{ ref('lending_flashloans') }}
 where 1 = 1
   {% if blockchain != 'multichain' %}
   and blockchain = '{{ blockchain }}'
@@ -105,7 +105,7 @@ select
   project_contract_address,
   evt_index,
   tx_hash
-from {{ source('lending', 'supply') }}
+from {{ ref('lending_supply') }}
 where 1 = 1
   {% if blockchain != 'multichain' %}
   and blockchain = '{{ blockchain }}'
@@ -145,7 +145,7 @@ select
   project_contract_address,
   evt_index,
   tx_hash
-from {{ source('lending', 'market') }}
+from {{ ref('lending_market') }}
 where 1 = 1
   {% if blockchain != 'multichain' %}
   and blockchain = '{{ blockchain }}'
@@ -180,7 +180,7 @@ select
   deposit_rate,
   stable_borrow_rate,
   variable_borrow_rate
-from {{ source('lending', 'market_hourly_agg') }}
+from {{ ref('lending_market_hourly_agg') }}
 where 1 = 1
   {% if blockchain != 'multichain' %}
   and blockchain = '{{ blockchain }}'
@@ -212,7 +212,7 @@ select
   deposit_rate,
   stable_borrow_rate,
   variable_borrow_rate
-from {{ source('lending', 'market_hourly_agg') }}
+from {{ ref('lending_market_hourly_agg') }}
 where 1 = 1
   {% if blockchain != 'multichain' %}
   and blockchain = '{{ blockchain }}'
