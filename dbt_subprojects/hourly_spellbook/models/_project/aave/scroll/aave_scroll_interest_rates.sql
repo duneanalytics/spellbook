@@ -2,7 +2,11 @@
   config(
     schema = 'aave_scroll',
     alias = 'interest_rates',
-    materialized = 'view'
+    materialized = 'view',
+    post_hook = '{{ expose_spells(blockchains = \'["scroll"]\',
+                                  spell_type = "project",
+                                  spell_name = "aave",
+                                  contributors = \'["tomfutago"]\') }}'
   )
 }}
 

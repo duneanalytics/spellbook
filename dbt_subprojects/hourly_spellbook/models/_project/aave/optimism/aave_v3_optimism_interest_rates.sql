@@ -1,28 +1,31 @@
-{{ config(
-   schema = 'aave_v3_optimism'
-  , materialized = 'incremental'
-  , file_format = 'delta'
-  , incremental_strategy = 'merge'
-  , unique_key = ['reserve', 'symbol', 'hour']
-  , alias = 'interest'
-  , post_hook='{{ expose_spells(\'["optimism"]\',
-                                  "project",
-                                  "aave_v3",
-                                  \'["batwayne", "chuxin"]\') }}'
+{{
+  config(
+    schema = 'aave_v3_optimism',
+    alias = 'interest_rates',
+    materialized = 'view',
+    post_hook = '{{ expose_spells(blockchains = \'["optimism"]\',
+                                  spell_type = "project",
+                                  spell_name = "aave",
+                                  contributors = \'["batwayne", "chuxin", "tomfutago"]\') }}'
   )
 }}
 
+with aave_v3_optimism_interest_rates as (
+  {{
+    lending_aave_compatible_interest_rates_view(
+      blockchain = 'optimism',
+      version = '3'
+    )
+  }}
+)
 select 
-  a.reserve, 
-  t.symbol,
-  date_trunc('hour',a.evt_block_time) as hour, 
-  avg(CAST(a.liquidityRate AS DOUBLE)) / 1e27 as deposit_apy, 
-  avg(CAST(a.stableBorrowRate AS DOUBLE)) / 1e27 as stable_borrow_apy, 
-  avg(CAST(a.variableBorrowRate AS DOUBLE)) / 1e27 as variable_borrow_apy
-from {{ source('aave_v3_optimism', 'Pool_evt_ReserveDataUpdated') }} a
-left join {{ source('tokens_optimism', 'erc20') }} t
-on a.reserve = t.contract_address
-{% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
-{% endif %}
-group by 1,2,3
+  blockchain,
+  project,
+  version,
+  block_hour as hour,
+  token_address as reserve,
+  symbol,
+  deposit_rate as deposit_apy,
+  stable_borrow_rate as stable_borrow_apy,
+  variable_borrow_rate as variable_borrow_apy
+from aave_v3_optimism_interest_rates

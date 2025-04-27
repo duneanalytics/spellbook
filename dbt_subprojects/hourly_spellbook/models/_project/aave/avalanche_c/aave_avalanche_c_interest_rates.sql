@@ -2,7 +2,11 @@
   config(
     schema = 'aave_avalanche_c',
     alias = 'interest_rates',
-    materialized = 'view'
+    materialized = 'view',
+    post_hook = '{{ expose_spells(blockchains = \'["avalanche_c"]\',
+                                  spell_type = "project",
+                                  spell_name = "aave",
+                                  contributors = \'["tomfutago"]\') }}'
   )
 }}
 
