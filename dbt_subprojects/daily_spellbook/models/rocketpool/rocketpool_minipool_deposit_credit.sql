@@ -1,7 +1,10 @@
 {{ config(
     schema = 'rocketpool_ethereum',
     alias = 'minipool_deposit_credit',
-    materialized = 'table'
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['minipool','call_block_time']
 )
 }}
 
