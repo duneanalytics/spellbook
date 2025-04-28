@@ -150,5 +150,6 @@ SELECT
     tb.tx_id,
     tb.outer_instruction_index,
     tb.inner_instruction_index,
-    tb.tx_index
+    tb.tx_index,
+    tb.trade_id
 FROM trades_base tb
