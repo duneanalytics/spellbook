@@ -411,7 +411,7 @@ models:
 
   - name: cow_protocol_sepolia_trades
     meta:
-      blockchain: base
+      blockchain: sepolia
       project: cow_protocol
       contributors: harisang
     config:
