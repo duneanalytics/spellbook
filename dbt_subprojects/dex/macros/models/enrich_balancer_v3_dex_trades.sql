@@ -111,8 +111,26 @@ SELECT
         token_sold_symbol) AS token_sold_symbol
     , CONCAT(COALESCE(erc4626a.underlying_token_symbol, token_bought_symbol), '-', 
         COALESCE(erc4626b.underlying_token_symbol, token_sold_symbol)) AS token_pair
-    , token_bought_amount
-    , token_sold_amount
+    , CASE 
+        -- When the token is being replaced with an underlying token, recalculate the amount
+        WHEN erc4626a.underlying_token IS NOT NULL THEN 
+            -- Get the decimals for the underlying token
+            token_bought_amount_raw / power(10, 
+                (SELECT decimals FROM tokens_metadata 
+                 WHERE contract_address = erc4626a.underlying_token 
+                 AND blockchain = dexs.blockchain))
+        ELSE token_bought_amount
+      END AS token_bought_amount
+    , CASE 
+        -- When the token is being replaced with an underlying token, recalculate the amount
+        WHEN erc4626b.underlying_token IS NOT NULL THEN 
+            -- Get the decimals for the underlying token
+            token_sold_amount_raw / power(10, 
+                (SELECT decimals FROM tokens_metadata 
+                 WHERE contract_address = erc4626b.underlying_token 
+                 AND blockchain = dexs.blockchain))
+        ELSE token_sold_amount
+      END AS token_sold_amount
     , token_bought_amount_raw
     , token_sold_amount_raw
     , COALESCE(
