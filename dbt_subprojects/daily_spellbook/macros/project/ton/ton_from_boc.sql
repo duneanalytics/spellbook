@@ -95,7 +95,7 @@ AS {{ ton_boc_state_type() }})
     WHEN step[1] = {{ ton_action_load_uint() }} THEN {{ ton_load_uint_impl('CAST(step[4] AS bigint)', 'step[2]') }}
     WHEN step[1] = {{ ton_action_load_uint_large() }} THEN {{ ton_load_uint_large_impl('CAST(step[4] AS bigint)', 'step[2]') }}
     WHEN step[1] = {{ ton_action_load_int() }} THEN {{ ton_load_int_impl('CAST(step[4] AS bigint)', 'step[2]') }}
-    WHEN step[1] = {{ ton_action_load_address() }} THEN {{ ton_load_address_impl('step[2]') }}
+    WHEN step[1] = {{ ton_action_load_address() }} THEN {{ ton_load_address_impl('step[2]', 'CAST(step[4] as boolean)') }}
     WHEN step[1] = {{ ton_action_load_ref() }} THEN {{ ton_load_ref_impl() }}
     WHEN step[1] = {{ ton_action_skip_ref() }} THEN {{ ton_skip_refs_impl('CAST(step[4] AS bigint)') }}
     WHEN step[1] = {{ ton_action_restart_parse() }} THEN {{ ton_restart_parse_impl() }}

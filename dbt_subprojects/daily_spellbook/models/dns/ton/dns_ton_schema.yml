@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: dns_ton_wallet_updates
+  - name: wallet_delegation_updates
     meta:
       blockchain: ton
       sector: infrastructure
@@ -25,8 +25,10 @@ models:
         description: "trace id"
       - name: domain
         description: ".ton domain"
-      - name: nft_item_address
+      - name: dns_nft_item_address
         description: "address of .ton domain nft item"
-      - name: wallet
-        description: "address to which .ton domain reffers"
+      - name: dns_nft_item_owner
+        description: "address of who owns .ton domain nft item"
+      - name: delegated_to_wallet
+        description: "address to which .ton domain reffers. null value means delete of dns record"
   
