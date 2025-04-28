@@ -54,8 +54,7 @@ with
             )
         where
             trades.trader_id != '{{fee_receiver}}'  -- Exclude trades signed by FeeWallet
-            -- TODO: find a efficient solution for this AND transactions.signer != '{{fee_receiver}}' -- Exclude trades signed by FeeWallet
-            -- TODO: to filtering for signer in 2nd stage/cte
+          
             {% if is_incremental() %}
                 and {{ incremental_predicate('trades.block_time') }}
                 and {{ incremental_predicate('fee_payments.block_time') }}
