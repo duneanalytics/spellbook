@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: abstractswap_abstract_base_trades
+  - name: abstractswap_v2_abstract_base_trades
     meta:
       blockchain: abstract
       sector: dex
