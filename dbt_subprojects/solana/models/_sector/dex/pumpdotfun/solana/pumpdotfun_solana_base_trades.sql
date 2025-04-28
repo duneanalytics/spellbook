@@ -7,7 +7,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index','block_month'],
+        unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'block_slot', 'token_bought_mint_address', 'token_sold_mint_address'],
         pre_hook='{{ enforce_join_distribution("PARTITIONED") }}')
 }}
 
@@ -123,7 +123,10 @@ with
             {{ dbt_utils.generate_surrogate_key([
                 'sp.tx_id',
                 'sp.outer_instruction_index',
-                'COALESCE(sp.inner_instruction_index, 0)'
+                'COALESCE(sp.inner_instruction_index, 0)',
+                'sp.block_slot',
+                'sp.token_bought_mint_address',
+                'sp.token_sold_mint_address'
             ]) }} as trade_id
         FROM swaps sp
         LEFT JOIN bonding_curves bc ON bc.token_mint_address = sp.token_mint_address
