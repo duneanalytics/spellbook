@@ -91,7 +91,7 @@ known_solver_metadata (address, environment, name) as (
                 (0xEa77cB08FBf7ef0CaF615dcE37A159D56B2B867f, 'barn', 'Wraxyn'),
                 (0x09498CF3414616c1d58979FCE65438473C998c47, 'prod', 'Wraxyn'),
                 (0x301994d1A89578e9933E44982eb969B9f38d7097, 'barn', 'Unizen'),
-                (0x4D72B179b7706A768C0bA378D78E1dD2d5c618a2, 'prod', 'Unizen'),
+                (0x4D72B179b7706A768C0bA378D78E1dD2d5c618a2, 'prod', 'Unizen')
     ) as _
 )
 -- Combining the metadata with current activation status for final table
