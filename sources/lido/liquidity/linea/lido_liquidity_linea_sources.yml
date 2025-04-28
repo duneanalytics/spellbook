@@ -14,3 +14,13 @@ sources:
     tables:
       - name: AlgebraPool_evt_Mint
       - name: AlgebraPool_evt_Burn
+
+  - name: pancakeswap_v3_linea
+    description: "Linea decoded tables related to Pancakeswap v3 contract"
+    tables:
+      - name: pancakev3factory_evt_poolcreated
+      - name: pancakev3pool_evt_mint
+      - name: pancakev3pool_evt_burn
+      - name: pancakev3pool_evt_collect
+      - name: pancakev3pool_evt_swap
+
