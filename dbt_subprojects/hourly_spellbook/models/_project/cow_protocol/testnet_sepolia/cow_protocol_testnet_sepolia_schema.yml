@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: cow_protocol_sepolia_solvers
+  - name: cow_protocol_testnet_sepolia_solvers
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -15,7 +15,7 @@ models:
     description: >
       CoW Protocol solvers list on sepolia Chain
 
-  - name: cow_protocol_sepolia_batches
+  - name: cow_protocol_testnet_sepolia_batches
     meta:
       blockchain: sepolia
       project: cow_protocol

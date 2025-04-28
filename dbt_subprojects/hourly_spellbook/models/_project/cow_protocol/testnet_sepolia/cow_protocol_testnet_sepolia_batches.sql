@@ -1,5 +1,5 @@
 {{  config(
-        schema = 'cow_protocol_sepolia',
+        schema = 'cow_protocol_testnet_sepolia',
         alias = 'batches',
         materialized='incremental',
         partition_by = ['block_date'],
@@ -32,13 +32,13 @@ batch_counts as (
                 end)                                                as dex_swaps,
            sum(case when selector = 0x2e1a7d4d then 1 else 0 end) as unwraps,
            sum(case when selector = 0x095ea7b3 then 1 else 0 end) as token_approvals
-    from {{ source('gnosis_protocol_v2_sepolia', 'GPv2Settlement_evt_Settlement') }} s
+    from {{ source('gnosis_protocol_v2_testnet_sepolia', 'GPv2Settlement_evt_Settlement') }} s
         left outer join {{ source('gnosis_protocol_v2_sepolia', 'GPv2Settlement_evt_Interaction') }} i
             on i.evt_tx_hash = s.evt_tx_hash
             {% if is_incremental() %}
             AND {{ incremental_predicate('i.evt_block_time') }}
             {% endif %}
-        join {{ ref('cow_protocol_sepolia_solvers') }}
+        join {{ ref('cow_protocol_testnet_sepolia_solvers') }}
             on solver = address
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('s.evt_block_time') }}
@@ -53,7 +53,7 @@ batch_values as (
         sum(usd_value)  as batch_value,
         sum(fee_usd)    as fee_value,
         price           as eth_price
-    from  {{ source('cow_protocol_sepolia', 'trades') }}
+    from  {{ source('cow_protocol_testnet_sepolia', 'trades') }}
         left outer join {{ source('prices', 'usd') }} as p
             on p.contract_address = 0xfff9976782d46cc05630d1f6ebab18b2324d6b14
             {% if is_incremental() %}

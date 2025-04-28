@@ -155,5 +155,5 @@ FROM
             receiver AS tx_to,
             trace_address,
             evt_index
-        FROM {{ ref('cow_protocol_sepolia_trades') }}
+        FROM {{ ref('cow_protocol_testnet_sepolia_trades') }}
 )

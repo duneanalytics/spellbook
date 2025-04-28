@@ -1,7 +1,7 @@
 {{ config(
-        schema = 'cow_protocol_sepolia',
+        schema = 'cow_protocol_testnet_sepolia',
         alias='solvers',
-        post_hook='{{ expose_spells(blockchains = \'["sepolia"]\',
+        post_hook='{{ expose_spells(blockchains = \'["testnet_sepolia"]\',
                                     spell_type = "project",
                                     spell_name = "cow_protocol",
                                     contributors = \'["harisang"]\') }}'

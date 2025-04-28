@@ -409,7 +409,7 @@ models:
       - name: surplus_usd
         description: "USD value of surplus (difference between limit and executed price)"
 
-  - name: cow_protocol_sepolia_trades
+  - name: cow_protocol_testnet_sepolia_trades
     meta:
       blockchain: sepolia
       project: cow_protocol
