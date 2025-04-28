@@ -1,7 +1,7 @@
 {{ config(
         alias = 'batches',
         
-        post_hook='{{ expose_spells(\'["ethereum", "gnosis"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "gnosis", "arbitrum", "base", "sepolia"]\',
                                     "project",
                                     "cow_protocol",
                                     \'["bh2smith", "gentrexha", "olgafetisova"]\') }}'
@@ -95,4 +95,26 @@ FROM
             unwraps,
             token_approvals
         FROM {{ ref('cow_protocol_base_batches') }}
+
+         UNION ALL
+
+        SELECT
+            'sepolia' AS blockchain,
+            'cow_protocol' AS project,
+            '1' AS version,
+            block_date,
+            block_time,
+            num_trades,
+            dex_swaps,
+            batch_value,
+            solver_address,
+            tx_hash,
+            gas_price,
+            gas_used,
+            tx_cost_usd,
+            fee_value,
+            call_data_size,
+            unwraps,
+            token_approvals
+        FROM {{ ref('cow_protocol_sepolia_batches') }}
 )
