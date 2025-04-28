@@ -34,6 +34,11 @@ from
 right join deposit_with_credit_calls as dep 
     on dep.tx_hash = trans.hash
     and dep.call_block_time = trans.block_time
+    {% if is_incremental() -%}
+    and {{ incremental_predicate('dep.call_block_time') }}
+    {% else -%}
+    and dep.call_block_time > timestamp '2023-04-16'
+    {% endif -%}
 where 
     trans.block_time > cast('2023-04-16' as timestamp)
     and trans.value <= dep.bond_amount
