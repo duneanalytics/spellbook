@@ -13,3 +13,6 @@ select
     evt_block_time
 from
     {{ source('rocketpool_ethereum', 'rocketnodemanager_evt_noderegistered') }}
+{% if is_incremental() -%}
+where {{ incremental_predicate('evt_block_time') }}
+{% endif -%}
