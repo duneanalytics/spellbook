@@ -30,3 +30,7 @@ sources:
     tables:
       - name: uniswapv2pair_evt_swap
       - name: uniswapv2factory_evt_paircreated
+  - name: reservoir_swap_ink
+    tables:
+      - name: uniswapv2pair_evt_swap
+      - name: uniswapv2factory_evt_paircreated
