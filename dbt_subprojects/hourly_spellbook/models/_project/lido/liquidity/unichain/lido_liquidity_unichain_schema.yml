@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: lido_liquidity_linea_syncswap_pools
+  - name: lido_liquidity_unichain_uniswap_v4_pools
     meta:
-      blockchain: linea
+      blockchain: unichain
       project: lido
       contributors: pipistrella
     config:
-      tags: ['linea','lido','liquidity']
+      tags: ['unichain','lido','liquidity']
     description: 
-        Lido wstETH liquidity pools on SyncSwap Linea
+        Lido wstETH liquidity pools on Uniswap v4 Unichain
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -58,71 +58,7 @@ models:
         description: "Price of the main token in the pool in USD"
       - &paired_token_usd_price
         name: paired_token_usd_price
-        description: "Price of the paired token in the pool in USD"
+        description: "Price of the paired token in the pool"
       - &trading_volume
         name: trading_volume
         description: "USD value of the trade"
-
-  - name: lido_liquidity_linea_lynex_pools
-    meta:
-      blockchain: linea
-      project: lido
-      contributors: ppclunghe
-    config:
-      tags: ['linea','lido','liquidity']
-    description: 
-        Lido wstETH liquidity pools on Lynex Linea
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pool
-            - blockchain
-            - time
-    columns:
-      - *pool_name
-      - *pool
-      - *blockchain
-      - *project
-      - *fee
-      - *time
-      - *main_token
-      - *main_token_symbol
-      - *paired_token
-      - *paired_token_symbol
-      - *main_token_reserve
-      - *paired_token_reserve
-      - *main_token_usd_price
-      - *paired_token_usd_price
-      - *trading_volume
-
-  - name: lido_liquidity_linea_pancakeswap_v3_pools
-    meta:
-      blockchain: linea
-      project: lido
-      contributors: ppclunghe
-    config:
-      tags: ['linea','lido','liquidity']
-    description: 
-        Lido wstETH liquidity pools on PancakeSwap v3 Linea
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - pool
-            - blockchain
-            - time
-    columns:
-      - *pool_name
-      - *pool
-      - *blockchain
-      - *project
-      - *fee
-      - *time
-      - *main_token
-      - *main_token_symbol
-      - *paired_token
-      - *paired_token_symbol
-      - *main_token_reserve
-      - *paired_token_reserve
-      - *main_token_usd_price
-      - *paired_token_usd_price
-      - *trading_volume
