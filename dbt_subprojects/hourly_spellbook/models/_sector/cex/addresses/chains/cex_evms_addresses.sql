@@ -310,6 +310,7 @@ FROM (VALUES
     , (0xe1597df1f0e1920f7a296cef27babb40baeeabfc, 'Coinbase', 'Coinbase Gas Supplier 16', 'hildobby', date '2024-04-04')
     , (0x4a797a6fa930118b9bc267911751241b8c514faa, 'Coinbase', 'Coinbase Gas Supplier 17', 'hildobby', date '2024-05-25')
     , (0x1846deb34cc19c11e7ddf0de48b13fd1f231ca7f, 'Coinbase', 'Coinbase Gas Supplier 18', 'hildobby', date '2024-10-06')
+    , (0xc5c10e7f6d31e3979d4466a099e2df4af8fa0208, 'Coinbase', 'Coinbase Gas Supplier 19', 'hildobby', date '2025-04-28')
     , (0x6f52730dba7b02beefcaf0d6998c9ae901ea04f9, 'Coinbase', 'Coinbase Cold 1', 'hildobby', date '2023-11-19')
     , (0xeba20d0f74ecc13130579d21bb53d63c96258652, 'Coinbase', 'Coinbase Cold 2', 'hildobby', date '2023-11-19')
     , (0x281055afc982d96fab65b3a49cac8b878184cb16, 'Coinbase', 'Coinbase Cold 3', 'hildobby', date '2023-11-19')
@@ -1282,6 +1283,7 @@ FROM (VALUES
     , (0x29d5527caa78f1946a409fa6acaf14a0a4a0274b, 'Bitso', 'Bitso 2', 'hildobby', date '2023-09-12')
     , (0x20beea119e70255a8c36e4009c94aedb1f8b8eea, 'Bitso', 'Bitso 3', 'hildobby', date '2024-05-04')
     , (0xa01aa2196724a39290f465b3925e5dcafe7f2256, 'Bitso', 'Bitso 4', 'hildobby', date '2024-06-03')
+    , (0x10f76b23ec27d4d7faa53de69c79d0788933601e, 'Bitso', 'Bitso 5', 'hildobby', date '2025-04-28')
     , (0xf9d2d8d90b4b35aada5aed2f46fcd15da0608b4e, 'Bitso', 'Bitso Gas Supplier 1', 'hildobby', date '2024-10-06')
     , (0xf24c621e5108607f4ec60e9c4f91719a76c7b3c9, 'Bitso', 'Bitso Deployer 1', 'hildobby', date '2025-04-28')
     -- Stake.com
@@ -2006,6 +2008,7 @@ FROM (VALUES
     , (0x1562bd4f90eb997611b5d7579ab38e5a23acb33e, 'Coinhako', 'Coinhako 7', 'hildobby', date '2024-10-06')
     , (0x54a63836e920850f29eee0c98d1a2f851349451a, 'Coinhako', 'Coinhako 8', 'hildobby', date '2025-04-28')
     , (0x19d97aa29cd33bd966d52e2bc9dfc719f2bb9ae1, 'Coinhako', 'Coinhako Deployer', 'hildobby', date '2024-10-06')
+    , (0x6e965a153aafd74840f0415d09ea61f505c4cbe1, 'Coinhako', 'Coinhako Gas Supplier 1', 'hildobby', date '2025-04-28')
     -- Bitbuy
     , (0xe9bdb4219706914441178bc8357e8551b53d8cbf, 'Bitbuy', 'Bitbuy MultiSig 1', 'hildobby', date '2023-11-24')
     -- Bitberry
@@ -2077,6 +2080,7 @@ FROM (VALUES
     -- Bitci
     , (0xe954b098b80d43fd66af4a58400c05e62b087b72, 'Bitci', 'Bitci 1', 'hildobby', date '2023-11-23')
     , (0x7a91a362d4f2c9c4627688d5b7090bbb12e5715f, 'Bitci', 'Bitci 2', 'hildobby', date '2024-06-03')
+    , (0xc2ee8b9e0a28986be0c798bf96246ca0f43296ec, 'Bitci', 'Bitci Gas Supplier 1', 'hildobby', date '2025-04-28')
     -- GMO Coin
     , (0x9c4fa4ee466dff080adccb12d39b99e83cdb1077, 'GMO Coin', 'GMO Coin 1', 'hildobby', date '2023-11-23')
     , (0xc39bdf685f289b1f261ee9b0b1b2bf9eae4c1980, 'GMO Coin', 'GMO Coin 2', 'hildobby', date '2023-11-23')
@@ -2561,6 +2565,7 @@ FROM (VALUES
     , (0xc1712944c5a544ef1287d6959068eae6090b89aa, 'Zero Hash', 'Zero Hash 4', 'hildobby', date '2024-04-04')
     , (0xb02a9b7400545925746d8b9b985bc74a0601fb8d, 'Zero Hash', 'Zero Hash 5', 'hildobby', date '2024-04-04')
     , (0x9d3de545f58c696946b4cf2c884fcf4f7914cb53, 'Zero Hash', 'Zero Hash Deployer 1', 'hildobby', date '2025-04-28')
+    , (0xd4699a7683bfe83caabd0696a433db989e510b5b, 'Zero Hash', 'Zero Hash Gas Supplier 1', 'hildobby', date '2025-04-28')
     -- HashKey Exchange
     , (0xffe15ff598e719d29dfe5e1d60be1a5521a779ae, 'HashKey Exchange', 'HashKey Exchange 1', 'hildobby', date '2024-04-04')
     , (0xdf899a960ad64c2ddcb59ebf0a30c2104841cd53, 'HashKey Exchange', 'HashKey Exchange 2', 'hildobby', date '2025-04-28')
@@ -2843,6 +2848,7 @@ FROM (VALUES
     -- FastEx
     , (0x85e1de87a7575c6581f7930f857a3813b66a14d8, 'FastEx', 'FastEx 1', 'hildobby', date '2023-11-23')
     , (0xc21a1d213f64fedea3415737cce2be37eb59be81, 'FastEx', 'FastEx 2', 'hildobby', date '2023-11-23')
+    , (0xc687717cf730a983b550c0dfc18fe0afd8530f24, 'FastEx', 'FastEx Gas Supplier 1', 'hildobby', date '2025-04-28')
     -- PointPay
     , (0x95aa5d2dbd3c16ee3fdea82d5c6ec3e38ce3314f, 'PointPay', 'PointPay PXP Token', 'hildobby', date '2023-11-23')
     -- Coins.ph
@@ -2871,8 +2877,10 @@ FROM (VALUES
     , (0x352e0242a58c4f43dc40f3ee9a2ea14ccc6bb2ea, 'Prime Trust', 'Prime Trust 2', 'hildobby', date '2024-01-04')
     , (0xddbb8d8b5da3dfaf65d4f8fa846127acd6a844b1, 'Prime Trust', 'Prime Trust Celsuis Lawsuit Payout 1', 'hildobby', date '2024-01-04')
     , (0xf4e11b89519eccd988a56749f1c64ad9bfe0298f, 'Prime Trust', 'Prime Trust Legacy MultiSig 1', 'hildobby', date '2024-01-04')
+    , (0x506c082ae6caabba8a37bd5a8b671aeac4f68164, 'Prime Trust', 'Prime Trust Forwarder Deployer 1', 'hildobby', date '2025-04-28')
     , (0x33fe7ad77394281e43cc82d86ad0cbb5b9e9575d, 'Prime Trust', 'Prime Trust Gas Supplier 1', 'hildobby', date '2024-01-04')
     , (0xd8b81f6849dfbbe7b8f3c32bbb3a15ad2adb6898, 'Prime Trust', 'Prime Trust Gas Supplier 2', 'hildobby', date '2024-10-06')
+    
     -- Digital Surge
     , (0xfb75b231c307738ce506c242babad2fd2e77b0bf, 'Digital Surge', 'Digital Surge 1', 'hildobby', date '2024-01-04')
     -- Thodex
