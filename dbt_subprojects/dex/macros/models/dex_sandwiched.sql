@@ -52,7 +52,8 @@ INNER JOIN sandwich_bounds sb ON sb.block_time=dt.block_time
     AND sb.project_contract_address=dt.project_contract_address
     AND sb.token_bought_address=dt.token_bought_address
     AND sb.token_sold_address=dt.token_sold_address
-    AND dt.evt_index BETWEEN sb.min_evt_index AND sb.max_evt_index
+    AND dt.evt_index > sb.min_evt_index
+    AND dt.evt_index < sb.max_evt_index
 INNER JOIN {{transactions}} txs ON txs.block_time=dt.block_time
     AND txs.hash=dt.tx_hash
     {% if is_incremental() %}
