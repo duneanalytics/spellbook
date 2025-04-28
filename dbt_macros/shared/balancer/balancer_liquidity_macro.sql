@@ -338,7 +338,6 @@ WITH pool_labels AS (
         FROM {{ source('prices', 'hour') }}
         WHERE blockchain = '{{blockchain}}'
         GROUP BY 1, 2
-        HAVING SUM(volume) > 100
     ),
 
     dex_prices_2 AS(
