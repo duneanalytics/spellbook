@@ -83,7 +83,7 @@ with
             1 as version,
             'solana' as blockchain,
             case 
-                when sp.outer_executing_account = 'pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA' then 'direct'
+                when sp.outer_executing_account = '6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P' then 'direct'
                 else sp.outer_executing_account
             end as trade_source,
             --bought
@@ -119,7 +119,12 @@ with
             cast(case 
                 when is_buy = 1 then bc.pool_id
                 else bc.bonding_curve_vault
-            end as varchar) as token_bought_vault
+            end as varchar) as token_bought_vault,
+            {{ dbt_utils.generate_surrogate_key([
+                'sp.tx_id',
+                'sp.outer_instruction_index',
+                'COALESCE(sp.inner_instruction_index, 0)'
+            ]) }} as trade_id
         FROM swaps sp
         LEFT JOIN bonding_curves bc ON bc.token_mint_address = sp.token_mint_address
     )
