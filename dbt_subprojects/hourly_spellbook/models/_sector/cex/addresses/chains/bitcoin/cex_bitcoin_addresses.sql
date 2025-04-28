@@ -795,5 +795,9 @@ FROM (VALUES
     , ('bitcoin', 'bc1qu2dq8w8lv8v3l7lr2c5tvx3yltv22r3nhkx7w0', 'eXch.sc', 'eXch.sc 1', 'hildobby', date '2024-09-06')
 
     , ('bitcoin', 'bc1qlnkyrrupehgw5evu43erlgkhhagv0uj3yyhacvc65n3ud6qeas0sa958ps', 'Arkham', 'Arkham 1', 'hildobby', date '2024-12-13')
+
+    , ('bitcoin', 'bc1qyvppkaa74d9jvtz664a6uxmj09hf0eyg3uhx4h', 'HashKey Exchange', 'HashKey Exchange 1', 'hildobby', date '2025-04-28')
+    , ('bitcoin', '1DywJMqHHMWuP7xyfkRqJZCEe7GdEKFRcp', 'HashKey Exchange', 'HashKey Exchange 2', 'hildobby', date '2025-04-28')
+    , ('bitcoin', '1NfJSiqBw4fb74KgVQrPsk5W5aqitAD1Xv', 'HashKey Exchange', 'HashKey Exchange 3', 'hildobby', date '2025-04-28')
     
     ) AS x (blockchain, address, cex_name, distinct_name, added_by, added_date)
