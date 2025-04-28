@@ -10,7 +10,7 @@
     )
 }}
 
-{% set project_start_date = "2024-10-01" %}
+{% set project_start_date = "2024-11-01" %}
 
 with
     fee_payments as (

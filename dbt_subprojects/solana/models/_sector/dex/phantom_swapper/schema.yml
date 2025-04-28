@@ -211,6 +211,10 @@ models:
         description: "The unique transaction hash value tied to each transaction on the DEX"
         tests:
           - not_null
+      - name: block_slot
+        description: "The block slot of the DEX transaction"
+        tests:
+          - not_null
       - name: tx_index
         description: "The index of the corresponding trade event"
         tests:

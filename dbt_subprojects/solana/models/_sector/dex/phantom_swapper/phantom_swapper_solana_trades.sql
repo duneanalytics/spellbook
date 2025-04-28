@@ -5,11 +5,11 @@
     materialized = 'incremental',
     incremental_strategy = 'merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    unique_key = ['block_month', 'tx_id', 'outer_instruction_index', 'inner_instruction_index']
+    unique_key = ['block_month', 'block_slot', 'tx_index', 'outer_instruction_index', 'inner_instruction_index']
    )
 }}
 
-{% set project_start_date = '2024-10-01' %}
+{% set project_start_date = '2024-11-01' %}
 {% set wsol_token = 'So11111111111111111111111111111111111111112' %}
 
 with
@@ -72,6 +72,7 @@ with
             project_program_id as project_contract_address,
             trader_id as user,
             trades.tx_id,
+            trades.block_slot,
             tx_index,
             outer_instruction_index,
             inner_instruction_index
