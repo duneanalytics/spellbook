@@ -65,6 +65,7 @@ WITH
             {% endif %}
         WHERE 
             1=1
+            AND sp.call_block_time >= CAST('2025-04-01' AS TIMESTAMP)
     )
     
 SELECT
