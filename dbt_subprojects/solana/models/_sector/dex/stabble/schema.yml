@@ -1,7 +1,7 @@
 version: 1
 
 models:
-  - name: stabble_base_trades
+  - name: stabble_solana_base_trades
     meta:
       blockchain: solana
       contributors: []
@@ -14,10 +14,10 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month']
 
-  - name: stabble_trades
+  - name: stabble_solana_trades
     meta:
       blockchain: solana
-      contributors: [your_name_here]
+      contributors: []
     config:
       tags: ['solana', 'dex']
     description: >
