@@ -155,3 +155,5 @@ WITH curve AS (
     UNION ALL
     {% endif %}
 {% endfor %}
+
+--trigger run here, to be removed after testing

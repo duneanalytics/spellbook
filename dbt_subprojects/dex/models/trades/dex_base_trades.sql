@@ -88,3 +88,5 @@ select
     *
 from
     base_union
+
+--trigger run here, to be removed after testing

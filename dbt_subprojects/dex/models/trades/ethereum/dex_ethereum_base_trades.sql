@@ -81,3 +81,5 @@ WITH base_union AS (
         , columns = ['from', 'to', 'index']
     )
 }}
+
+--trigger run here, to be removed after testing
