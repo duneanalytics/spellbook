@@ -284,11 +284,11 @@ models:
       - name: trader
         description: "Owner of the order being traded (aka trader)"
       - name: sell_token_address
-        description: "Ethereum address of sellToken"
+        description: "Gnosis Chain address of sellToken"
       - name: sell_token
         description: "Symbol of sellToken"
       - name: buy_token_address
-        description: "Ethereum address of buyToken"
+        description: "Gnosis Chain address of buyToken"
       - name: buy_token
         description: "Symbol of buyToken"
       - name: token_pair
@@ -361,11 +361,11 @@ models:
       - name: trader
         description: "Owner of the order being traded (aka trader)"
       - name: sell_token_address
-        description: "Ethereum address of sellToken"
+        description: "Base address of sellToken"
       - name: sell_token
         description: "Symbol of sellToken"
       - name: buy_token_address
-        description: "Ethereum address of buyToken"
+        description: "Base address of buyToken"
       - name: buy_token
         description: "Symbol of buyToken"
       - name: token_pair
@@ -438,11 +438,11 @@ models:
       - name: trader
         description: "Owner of the order being traded (aka trader)"
       - name: sell_token_address
-        description: "Ethereum address of sellToken"
+        description: "Sepolia address of sellToken"
       - name: sell_token
         description: "Symbol of sellToken"
       - name: buy_token_address
-        description: "Ethereum address of buyToken"
+        description: "Sepolia address of buyToken"
       - name: buy_token
         description: "Symbol of buyToken"
       - name: token_pair
