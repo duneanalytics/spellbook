@@ -1,4 +1,5 @@
 {{ config(
+    tags = ['prod_exclude'],
     schema = 'tokens_solana',
     alias = 'base_sol_transfers_current',
     partition_by = ['block_date'],

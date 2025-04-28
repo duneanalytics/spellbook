@@ -7,7 +7,7 @@
                                 "tokens_solana",
                                 \'["ilemi", "0xBoxer"]\') }}'
 ) }}
-
+/*
 SELECT
     cast(date_trunc('month', block_time) as date) as block_month
     , block_date
@@ -35,7 +35,7 @@ SELECT
 FROM {{ ref('tokens_solana_spl_transfers') }}
 
 UNION ALL
-
+*/
 SELECT
     cast(date_trunc('month', block_time) as date) as block_month
     , block_date
@@ -61,7 +61,7 @@ SELECT
     , inner_instruction_index
     , outer_executing_account
 FROM {{ ref('tokens_solana_token22_spl_transfers') }}
-
+/*
 UNION ALL
 
 SELECT
@@ -117,3 +117,4 @@ SELECT
     , inner_instruction_index
     , outer_executing_account
 FROM {{ ref('tokens_solana_sol_transfers') }}
+*/

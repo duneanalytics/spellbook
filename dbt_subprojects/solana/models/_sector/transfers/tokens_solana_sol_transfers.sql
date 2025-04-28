@@ -1,5 +1,6 @@
 {{ config(
-    schema = 'tokens_solana'
+    tags = ['prod_exclude']
+    ,schema = 'tokens_solana'
     , alias = 'sol_transfers'
     , partition_by = ['block_date']
     , materialized = 'incremental'
