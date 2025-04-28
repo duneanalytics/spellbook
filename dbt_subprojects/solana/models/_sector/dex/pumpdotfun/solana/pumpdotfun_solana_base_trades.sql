@@ -20,11 +20,11 @@ with
             account_base_mint as token_mint_address,
             account_pool_base_token_account as bonding_curve_vault
         FROM {{ source('pumpdotfun_solana', 'pump_amm_call_create_pool') }}
-        WHERE 
+        WHERE call_block_time >= now() - interval '14' day
         {% if is_incremental() %}
         AND {{incremental_predicate('call_block_time')}}
-        {% else %}
-        call_block_time >= TIMESTAMP '{{project_start_date}}'
+        -- {% else %}
+        -- call_block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
     )
 
@@ -44,11 +44,11 @@ with
             call_outer_executing_account as outer_executing_account,
             1 as is_buy -- Buy operation
         FROM {{ source('pumpdotfun_solana', 'pump_amm_call_buy') }}
-        WHERE
+        WHERE call_block_time >= now() - interval '14' day
         {% if is_incremental() %}
         AND {{incremental_predicate('call_block_time')}}
-        {% else %}
-        call_block_time >= TIMESTAMP '{{project_start_date}}'
+        --{% else %}
+        --call_block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
 
         UNION ALL
@@ -68,11 +68,11 @@ with
             call_outer_executing_account as outer_executing_account,
             0 as is_buy -- Sell operation
         FROM {{ source('pumpdotfun_solana', 'pump_amm_call_sell') }}
-        WHERE
+        WHERE call_block_time >= now() - interval '14' day
         {% if is_incremental() %}
         AND {{incremental_predicate('call_block_time')}}
-        {% else %}
-        call_block_time >= TIMESTAMP '{{project_start_date}}'
+        -- {% else %}
+        -- call_block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
     )
 
