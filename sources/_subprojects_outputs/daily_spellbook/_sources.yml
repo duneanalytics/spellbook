@@ -55,3 +55,14 @@ sources:
       - name: days
       - name: hours
       - name: minutes
+
+  - name: aave
+    tables:
+      - name: flashloans
+
+  - name: aave_ethereum
+    tables:
+      - name: proposals
+      - name: votes
+      - name: supply
+      - name: borrow
