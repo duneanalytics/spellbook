@@ -1,0 +1,237 @@
+version: 2
+
+models:
+  - name: aave_optimism_borrow
+    meta:
+      blockchain: optimism
+      sector: lending
+      project: aave
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'borrow', 'aave', 'optimism']
+    description: "All Aave transactions involving borrow transactions on Optimism"
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain name"
+      - &project
+        name: project
+        description: "Project name"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the lending project"
+      - &transaction_type
+        name: transaction_type
+        description: "Transaction type"
+      - &symbol
+        name: symbol
+        description: "Token symbol"
+      - &token_address
+        name: token_address
+        description: "Token contract address"
+      - &borrower
+        name: borrower
+        description: "Borrower wallet address"
+      - &on_behalf_of
+        name: on_behalf_of
+        description: "Wallet address tx was executed on behalf of"
+      - &repayer
+        name: repayer
+        description: "Repayer wallet address"
+      - &liquidator
+        name: liquidator
+        description: "Liquidator wallet address"
+      - &amount
+        name: amount
+        description: "Token amount present in the transaction"
+      - &usd_amount
+        name: usd_amount
+        description: "Token amount in USD"
+      - &block_month
+        name: block_month
+        description: "Block Month column used to partition data in this table"
+      - &block_time
+        name: block_time
+        description: "Timestamp for block event time in UTC"
+      - &block_number
+        name: block_number
+        description: "Event block number"
+      - &project_contract_address
+        name: project_contract_address
+        description: "Project contract address"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash of the event"
+
+  - name: aave_optimism_flashloans
+    meta:
+      blockchain: optimism
+      sector: lending
+      project: aave
+      contributors: hildobby, tomfutago
+    config:
+      tags: ['lending', 'flashloans', 'aave', 'optimism']
+    description: "All Aave transactions involving flashloans transactions on Optimism"
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_month
+      - *block_time
+      - *block_number
+      - &recipient
+        name: recipient
+        description: "recipient wallet address"
+      - *amount
+      - *usd_amount
+      - &fee
+        name: fee
+        description: "Flashloan fee"
+      - *symbol
+      - *token_address
+      - &contract_address
+        name: contract_address
+        description: "Contract address"
+      - *evt_index
+      - *tx_hash
+
+  - name: aave_optimism_supply
+    meta:
+      blockchain: optimism
+      sector: lending
+      project: aave
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'supply', 'aave', 'optimism']
+    description: "All Aave transactions involving supply transactions on Optimism"
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_month
+      - *block_time
+      - *block_number
+      - *transaction_type
+      - *symbol
+      - *token_address
+      - &depositor
+        name: depositor
+        description: "Depositor wallet address"
+      - *on_behalf_of
+      - &withdrawn_to
+        name: withdrawn_to
+        description: "Withdrawn to wallet address"
+      - *liquidator
+      - *amount
+      - *usd_amount
+      - *project_contract_address
+      - *evt_index
+      - *tx_hash
+
+  - name: aave_optimism_market
+    meta:
+      blockchain: optimism
+      sector: lending
+      project: aave
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'market', 'aave', 'optimism']
+    description: "All Aave market transactions on Optimism"
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - &block_hour
+        name: block_hour
+        description: "Block event hour"
+      - *block_month
+      - *block_number
+      - *token_address
+      - *symbol
+      - &liquidity_index
+        name: liquidity_index
+        description: "Liquidity index"
+      - &variable_borrow_index
+        name: variable_borrow_index
+        description: "Variable borrow index"
+      - &deposit_rate
+        name: deposit_rate
+        description: "Deposit rate"
+      - &stable_borrow_rate
+        name: stable_borrow_rate
+        description: "Stable borrow rate"
+      - &variable_borrow_rate
+        name: variable_borrow_rate
+        description: "Variable borrow rate"
+      - *project_contract_address
+      - *evt_index
+      - *tx_hash
+
+  - name: aave_optimism_market_hourly_agg
+    meta:
+      blockchain: optimism
+      sector: lending
+      project: aave
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'market', 'aave', 'optimism']
+    description: "Hourly aggregated lending market transactions"
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_hour
+      - *token_address
+      - *symbol
+      - *liquidity_index
+      - *variable_borrow_index
+      - *deposit_rate
+      - *stable_borrow_rate
+      - *variable_borrow_rate
+      - *project_contract_address
+      - *evt_index
+      - *tx_hash
+
+  - name: aave_optimism_interest_rates
+    meta:
+      blockchain: optimism
+      sector: lending
+      project: aave
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'interest_rates', 'aave', 'optimism']
+    description: "Hourly aggregated lending market interest rates"
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_hour
+      - *token_address
+      - *symbol
+      - *deposit_rate
+      - *stable_borrow_rate
+      - *variable_borrow_rate
+
+  - name: aave_v3_optimism_interest_rates
+    meta:
+      blockchain: optimism
+      sector: lending
+      project: aave
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'interest_rates', 'aave', 'optimism']
+    description: "Hourly aggregated lending market interest rates"
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_hour
+      - *token_address
+      - *symbol
+      - *deposit_rate
+      - *stable_borrow_rate
+      - *variable_borrow_rate

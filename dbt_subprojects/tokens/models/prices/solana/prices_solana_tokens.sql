@@ -747,5 +747,11 @@ FROM
         ('tnsr-tensor', 'solana', 'TNSR', 'TNSRxcUxoT9xBG3de7PiJyTDYu7kskLqcpddxnEJAS6', 9),
         ('usde-ethena-usde', 'solana', 'USDe', 'DEkqHyPN7GMRJ5cArtQFAWefqbZb33Hyf6s5iCwjEonT', 9),
         ('sos-solana-swap', 'solana', 'SOS', 'HDa3zJc12ahykSsBRvgiWzr6WLEByf36yzKKbVvy4gnF', 6),
-        ('euroc-euro-coin', 'solana', 'EURC', 'HzwqbKZw8HxMN6bF2yFZNrht3c2iXXzpKcFu7uBEDKtr', 6)
+        ('euroc-euro-coin', 'solana', 'EURC', 'HzwqbKZw8HxMN6bF2yFZNrht3c2iXXzpKcFu7uBEDKtr', 6),
+        ('pnut-peanut-the-squirrel', 'solana', 'PNUT', '2qEHjDLDLbuBgRYvsxhc5D6uDWAivNFZGan56P1tpump', 6),
+        ('cbbtc-coinbase-wrapped-btc', 'solana', 'cbBTC', 'cbbtcf3aa214zXHbiAZQwf4122FBYbraNdFqgw4iMij', 8),
+        ('bansol-comedian', 'solana', 'ban', '9PR7nCP9DpcUotnDPVLUBUZKu5WAYkwrCUx9wDnSpump', 6),
+        ('jellyjelly-jelly-my-jelly', 'solana', 'jellyjelly', 'FeR8VBqNRSUD5NtXAj2n3j1dAHkZHfyDktKuLXD4pump', 6),
+        ('fred3-first-convicted-raccon', 'solana', 'FRED', 'CNvitvFnSM5ed6K28RUNSaAjqqz5tX1rA5HgaBN9pump', 6),
+        ('sonic-sonic-svm', 'solana', 'SONIC', 'SonicxvLud67EceaEzCLRnMTBqzYUUYNr93DBkBdDES', 9)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
