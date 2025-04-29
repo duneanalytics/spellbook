@@ -28,7 +28,6 @@ FROM
     , ('wbtc-wrapped-bitcoin', 'WBTC', 0x927B51f251480a681271180DA4de28D44EC4AfB8, 8)
     , ('weeth-wrapped-eeth', 'weETH', 0x7DCC39B4d1C53CB31e1aBc0e358b43987FEF80f7, 18)
     , ('ezeth-renzo-restaked-eth', 'ezETH', 0x2416092f143378750bb29b79eD961ab195CcEea5, 18)
-    , ('wsteth-wrapped-liquid-staked-ether-20', 'wstETH', 0xc02fE7317D4eb8753a02c35fe019786854A92001, 18)
     , ('rseth-rseth', 'rsETH', 0xc3eACf0612346366Db554C991D7858716db09f58, 18)
     , ('comp-compoundd', 'COMP', 0xdf78e4F0A8279942ca68046476919A90f2288656, 18)
 ) as temp (token_id, symbol, contract_address, decimals) 
