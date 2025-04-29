@@ -28,8 +28,8 @@ SELECT '{{blockchain}}' AS blockchain
 , d.address
 , d.cex_name
 , d.token_standard
-, d.block_time AS deposit_block_time
-, d.block_number AS deposit_block_number
+, d.block_time AS consolidation_block_time
+, d.block_number AS consolidation_block_number
 , ffb.block_time AS funded_block_time
 , ffb.block_number AS funded_block_number
 , ffb.first_funded_by
