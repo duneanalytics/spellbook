@@ -2,6 +2,10 @@ version: 2
 
 models:
   - name: cow_protocol_arbitrum_solvers
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
     meta:
       blockchain: arbitrum
       project: cow_protocol
@@ -23,3 +27,16 @@ models:
     data_tests:
       - unique:
           column_name: tx_hash
+
+  - name: cow_protocol_arbitrum_eth_flow_orders
+    meta:
+      blockchain: arbitrum
+      project: cow_protocol
+      contributors: cowprotocol
+    config:
+      tags: [ 'arbitrum','cow_protocol','eth-flow', "orders" ]
+    description: >
+      ETHFlow enables the sale of Native ETH via CoW Protocol. This works essentially by placing an (onchain) order, 
+      through the ETHFlow contract (https://github.com/cowprotocol/ethflowcontract) sending native which then wraps 
+      the asset as an ERC20. The order is filled through this intermediary contract that uses ERC1271 signature 
+      verification to place the order on the user's behalf.

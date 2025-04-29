@@ -332,15 +332,12 @@ WITH pool_labels AS (
 
     dex_prices_1 AS (
         SELECT
-            date_trunc('day', HOUR) AS DAY,
+            date_trunc('day', timestamp) AS DAY,
             contract_address AS token,
-            approx_percentile(median_price, 0.5) AS price,
-            sum(sample_size) AS sample_size
-        FROM {{ source('dex', 'prices') }}
+            approx_percentile(price, 0.5) AS price
+        FROM {{ source('prices', 'hour') }}
         WHERE blockchain = '{{blockchain}}'
-        AND contract_address NOT IN (0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38, 0xde1e704dae0b4051e80dabb26ab6ad6c12262da0, 0x5ddb92a5340fd0ead3987d3661afcd6104c3b757) 
         GROUP BY 1, 2
-        HAVING sum(sample_size) > 3
     ),
 
     dex_prices_2 AS(
@@ -398,7 +395,8 @@ WITH pool_labels AS (
     global_fees AS (
         SELECT
             evt_block_time,
-            swapFeePercentage / 1e18 AS global_swap_fee
+            swapFeePercentage / 1e18 AS global_swap_fee,
+            ROW_NUMBER() OVER (ORDER BY evt_block_time DESC) AS rn
         FROM {{ source(project_decoded_as + '_' + blockchain, 'ProtocolFeeController_evt_GlobalProtocolSwapFeePercentageChanged') }}
     ),
 
@@ -406,7 +404,8 @@ WITH pool_labels AS (
         SELECT
             evt_block_time,
             pool,
-            poolCreatorSwapFeePercentage / 1e18 AS pool_creator_swap_fee
+            poolCreatorSwapFeePercentage / 1e18 AS pool_creator_swap_fee,
+            ROW_NUMBER() OVER (PARTITION BY pool ORDER BY evt_block_time DESC) AS rn
         FROM {{ source(project_decoded_as + '_' + blockchain, 'ProtocolFeeController_evt_PoolCreatorSwapFeePercentageChanged') }}
     ),
 
@@ -425,7 +424,9 @@ WITH pool_labels AS (
                     CAST(swap.amountIn AS INT256) - (CAST(swap.swapFeeAmount AS INT256) * (g.global_swap_fee + COALESCE(pc.pool_creator_swap_fee, 0))) AS delta
                 FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }} swap
                 CROSS JOIN global_fees g
-                LEFT JOIN pool_creator_fees pc ON swap.pool = pc.pool
+                LEFT JOIN pool_creator_fees pc ON swap.pool = pc.pool AND pc.rn = 1
+                WHERE g.rn = 1
+
 
                 UNION ALL
 

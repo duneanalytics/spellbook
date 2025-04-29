@@ -134,3 +134,21 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('carbonhood_celo_base_trades_seed')
+
+
+  - name: carbon_defi_celo_base_trades
+    meta:
+      blockchain: celo
+      sector: dex
+      project: carbon_defi
+      contributors: tiagofilipenunes
+    config:
+      tags: ["celo", "dex", "trades", "carbon_defi"]
+    description: "Carbon_defi celo base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('carbon_defi_celo_base_trades_seed')

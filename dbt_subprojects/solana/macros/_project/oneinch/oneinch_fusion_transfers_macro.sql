@@ -5,15 +5,19 @@ select
         tx_id
         , block_time
         , block_slot
+        , true as fusion -- TODO: make flags
         , taker as resolver -- Check if this is correct logic
         , maker as user -- Check
         , order_hash
         , tx_success
         , call_trace_address
-        , token_mint_address as {{ direction }}_token_address
-        , symbol as {{ direction }}_token_symbol
-        , amount as {{ direction }}_token_amount
-        , amount_usd as {{ direction }}_token_amount_usd
+        , token_mint_address
+        , symbol 
+        , amount 
+        , amount_usd 
+        , from_owner
+        , to_owner
+        , array[coalesce(outer_instruction_index, -1), coalesce(inner_instruction_index, -1)] as transfer_trace_address
         -- , CALLTRACEADDRESs
 
     -- , outer_executing_account
@@ -35,9 +39,9 @@ from (
         , taker
         , maker
         , order_hash
-        , {{ direction }}_mint as token_mint_address
         , tx_success
-        , array[outer_instruction_index, inner_instruction_index] as call_trace_address
+        , outer_instruction_index
+        , call_trace_address
     from {{ ref('oneinch_solana_fusion_calls') }}
     where 
         instruction_type = 'fill'
@@ -54,7 +58,7 @@ left join (
         {% else %}
             where block_time >= date('{{ oneinch_cfg_macro("project_start_date") }}')
         {% endif %}
-) using(tx_id, token_mint_address, block_time, block_slot)
+) using(tx_id, block_time, block_slot, outer_instruction_index)
 where 
     action = 'transfer' -- There are also mint/burn, maybe we need it? So guess no.
     -- TODO: evaluate if we need this condition or not? 

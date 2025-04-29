@@ -12,6 +12,4 @@
     )
 }}
 
-{{
-    gas_fees(blockchain = blockchain)
-}}
+{{ evm_l1_gas_fees(blockchain) }}

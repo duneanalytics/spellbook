@@ -53,6 +53,12 @@ sources:
   - name: addresses_events_linea
     tables:
       - name: first_funded_by
+  - name: addresses_events_ronin
+    tables:
+      - name: first_funded_by
+  - name: addresses_events_nova
+    tables:
+      - name: first_funded_by
   - name: addresses_events_mantle
     tables:
       - name: first_funded_by
@@ -63,6 +69,9 @@ sources:
     tables:
       - name: first_funded_by
   - name: addresses_events_mode
+    tables:
+      - name: first_funded_by
+  - name: addresses_events_abstract
     tables:
       - name: first_funded_by
   - name: bridge_optimism

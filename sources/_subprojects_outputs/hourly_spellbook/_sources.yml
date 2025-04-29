@@ -23,6 +23,8 @@ sources:
       - name: borrow
       - name: supply
       - name: flashloans
+      - name: market
+      - name: market_hourly_agg
 
   - name: balancer
     tables:
@@ -35,6 +37,7 @@ sources:
   - name: staking_ethereum
     tables:
       - name: entities
+      - name: deposits
 
   - name: safe_ethereum
     tables:
@@ -78,6 +81,10 @@ sources:
       - name: account_deployed
 
   - name: gas
+    tables:
+      - name: fees
+
+  - name: gas_celo
     tables:
       - name: fees
 

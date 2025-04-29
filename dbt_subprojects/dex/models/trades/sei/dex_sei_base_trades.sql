@@ -12,6 +12,7 @@
     , ref('xei_finance_sei_base_trades')
     , ref('carbon_defi_sei_base_trades')
     , ref('yaka_sei_base_trades')
+    , ref('sailor_finance_sei_base_trades')
 ] %}
 
 WITH base_union AS (
