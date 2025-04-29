@@ -44,6 +44,7 @@ WITH
             ON trs_1.tx_id = sp.call_tx_id 
             AND trs_1.block_date = sp.call_block_date
             AND trs_1.block_time = sp.call_block_time
+            AND trs_1.inner_instruction_index = sp.call_inner_instruction_index
             AND trs_1.outer_instruction_index = sp.call_outer_instruction_index 
             AND trs_1.to_owner = sp.account_lbPair
             AND trs_1.block_time > CAST('2025-04-01' AS TIMESTAMP)
@@ -57,6 +58,7 @@ WITH
             ON trs_2.tx_id = sp.call_tx_id 
             AND trs_2.block_date = sp.call_block_date
             AND trs_2.block_time = sp.call_block_time
+            AND trs_2.inner_instruction_index = sp.call_inner_instruction_index
             AND trs_2.outer_instruction_index = sp.call_outer_instruction_index 
             AND trs_2.from_owner = sp.account_lbPair
             AND trs_2.block_time > CAST('2025-04-01' AS TIMESTAMP)
