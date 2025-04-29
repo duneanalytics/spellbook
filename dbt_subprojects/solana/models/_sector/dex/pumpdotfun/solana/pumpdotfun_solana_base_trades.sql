@@ -23,13 +23,11 @@ with
         WHERE call_block_time >= now() - interval '14' day
         {% if is_incremental() %}
         AND {{incremental_predicate('call_block_time')}}
-        -- {% else %}
-        -- call_block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
     )
 
     , swaps as (
-        SELECT
+        SELECT DISTINCT
             call_block_time as block_time,
             call_block_slot as block_slot,
             base_amount_out as token_amount, -- The amount of token the user receives
@@ -47,13 +45,11 @@ with
         WHERE call_block_time >= now() - interval '14' day
         {% if is_incremental() %}
         AND {{incremental_predicate('call_block_time')}}
-        --{% else %}
-        --call_block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
 
         UNION ALL
 
-        SELECT
+        SELECT DISTINCT
             call_block_time as block_time,
             call_block_slot as block_slot,
             base_amount_in as token_amount, -- The amount of token the user sells
@@ -71,8 +67,6 @@ with
         WHERE call_block_time >= now() - interval '14' day
         {% if is_incremental() %}
         AND {{incremental_predicate('call_block_time')}}
-        -- {% else %}
-        -- call_block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
     )
 
@@ -113,23 +107,32 @@ with
             sp.tx_index,
             sp.block_slot,
             cast(case 
-                when is_buy = 0 then bc.pool_id
+                when is_buy = 0 then sp.bonding_curve
                 else bc.bonding_curve_vault
             end as varchar) as token_sold_vault,
             cast(case 
-                when is_buy = 1 then bc.pool_id
+                when is_buy = 1 then sp.bonding_curve
                 else bc.bonding_curve_vault
-            end as varchar) as token_bought_vault,
-            {{ dbt_utils.generate_surrogate_key([
-                'sp.tx_id',
-                'sp.outer_instruction_index',
-                'COALESCE(sp.inner_instruction_index, 0)',
-                'sp.block_slot',
-                'sp.token_bought_mint_address',
-                'sp.token_sold_mint_address'
-            ]) }} as trade_id
+            end as varchar) as token_bought_vault
         FROM swaps sp
-        LEFT JOIN bonding_curves bc ON bc.token_mint_address = sp.token_mint_address
+        LEFT JOIN bonding_curves bc 
+            ON bc.token_mint_address = sp.token_mint_address 
+            AND bc.pool_id = sp.bonding_curve  -- This ensures we get the correct bonding curve for this specific pool
+    )
+
+    , trades_with_id as (
+        SELECT 
+            *,
+            {{ dbt_utils.generate_surrogate_key([
+                'tx_id',
+                'outer_instruction_index',
+                'inner_instruction_index',
+                'block_slot',
+                'token_bought_mint_address',
+                'token_sold_mint_address',
+                'tx_index'
+            ]) }} as trade_id
+        FROM trades_base
     )
 
 SELECT
@@ -155,4 +158,4 @@ SELECT
     tb.inner_instruction_index,
     tb.tx_index,
     tb.trade_id
-FROM trades_base tb
+FROM trades_with_id tb
