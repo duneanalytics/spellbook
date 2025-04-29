@@ -3,6 +3,7 @@
     , filter = null
     , curve_ethereum = null
     , curve_optimism = null
+    , curve_sonic = null
     , tokens_erc20_model = null
     )
 %}
@@ -55,6 +56,8 @@ WITH base_trades as (
         , case
             when curve_optimism.pool_type is not null
                 then base_trades.token_bought_amount_raw / power(10 , case when curve_optimism.pool_type = 'meta' and curve_optimism.bought_id = INT256 '0' then 18 else erc20_bought.decimals end)
+            when curve_sonic.pool_type is not null
+                then base_trades.token_bought_amount_raw / power(10 , case when curve_sonic.pool_type = 'meta' and curve_sonic.bought_id = INT256 '0' then 18 else erc20_bought.decimals end)
             else base_trades.token_bought_amount_raw / power(10, erc20_bought.decimals)
         end AS token_bought_amount
         , case
@@ -62,6 +65,8 @@ WITH base_trades as (
                 then base_trades.token_sold_amount_raw / power(10, case when curve_ethereum.swap_type = 'underlying_exchange_base' then 18 else erc20_sold.decimals end)
             when curve_optimism.pool_type is not null
                 then base_trades.token_sold_amount_raw / power(10 , case when curve_optimism.pool_type = 'meta' and curve_optimism.bought_id = INT256 '0' then erc20_bought.decimals else erc20_sold.decimals end)
+            when curve_sonic.pool_type is not null
+                then base_trades.token_sold_amount_raw / power(10 , case when curve_sonic.pool_type = 'meta' and curve_sonic.bought_id = INT256 '0' then erc20_bought.decimals else erc20_sold.decimals end)
             else base_trades.token_sold_amount_raw / power(10, erc20_sold.decimals)
         end as token_sold_amount        
         , base_trades.token_bought_amount_raw
@@ -91,6 +96,13 @@ WITH base_trades as (
         AND curve_optimism.version = base_trades.version
         AND curve_optimism.tx_hash = base_trades.tx_hash
         AND curve_optimism.evt_index = base_trades.evt_index
+    LEFT JOIN
+        {{ curve_sonic }} as curve_sonic
+        ON curve_sonic.blockchain = base_trades.blockchain
+        AND curve_sonic.project = base_trades.project
+        AND curve_sonic.version = base_trades.version
+        AND curve_sonic.tx_hash = base_trades.tx_hash
+        AND curve_sonic.evt_index = base_trades.evt_index
     LEFT JOIN
         tokens_metadata as erc20_bought
         ON erc20_bought.contract_address = base_trades.token_bought_address
