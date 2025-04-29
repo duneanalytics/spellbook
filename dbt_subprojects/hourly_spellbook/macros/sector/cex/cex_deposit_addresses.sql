@@ -43,7 +43,7 @@ INNER JOIN isolate_unique iu ON iu.address=d.address
 -- check that the address was first funded on same chain and recently
 INNER JOIN {{crosschain_first_funded_by}} ffb ON ffb.blockchain='{{blockchain}}'
     AND ffb.address=d.address
-    AND ffb.block_time BETWEEN d.block_time - interval '24' hour AND d.block_time
+    AND ffb.block_time BETWEEN d.block_time - interval '1' month AND d.block_time
 WHERE d.deposit_index = 1
 
 {% endmacro %}
