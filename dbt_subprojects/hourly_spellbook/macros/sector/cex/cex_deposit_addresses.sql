@@ -37,7 +37,7 @@ SELECT d.address
 , d.hash AS tx_hash
 FROM deposits d
 INNER JOIN isolate_unique iu ON iu.address=d.address
-    AND iu.token_standard=d.token_standard 
+    --AND iu.token_standard=d.token_standard 
 -- check that the address was first funded on same chain and recently
 INNER JOIN {{crosschain_first_funded_by}} ffb ON ffb.blockchain='{{blockchain}}'
     AND ffb.address=d.address
