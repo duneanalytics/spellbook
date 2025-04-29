@@ -9,7 +9,7 @@
    )
 }}
 
-{% set project_start_date = '2024-11-01' %}
+{% set project_start_date = '2025-02-01' %}
 {% set wsol_token = 'So11111111111111111111111111111111111111112' %}
 
 with
