@@ -50,6 +50,7 @@ WITH transfers AS (
     left join
         {{ this }} as existing
         -- typically only inner_instruction_index is null, but coalesce all to be safe
+        -- since we're building unique_instruction_key in this model, use individual fields for lookup
         on coalesce(existing.block_date, date '9999-12-31') = coalesce(transfers.block_date, date '9999-12-31')
         and coalesce(existing.block_slot, 0) = coalesce(transfers.block_slot, 0)
         and coalesce(existing.tx_index, 0) = coalesce(transfers.tx_index, 0)

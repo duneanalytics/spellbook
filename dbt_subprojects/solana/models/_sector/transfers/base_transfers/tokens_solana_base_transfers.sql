@@ -38,7 +38,7 @@ with base_transfers as (
         , replace('{{model}}', 'tokens_solana_base_', '') as source
     FROM 
         {{ ref(model) }}
-    {% if is_incremental() or true -%}
+    {% if is_incremental() -%}
     WHERE
         {{incremental_predicate('block_time')}}
     {% endif -%}

@@ -230,8 +230,8 @@ WITH transfers_raw as (
             , concat(
                   lpad(cast(call_block_slot as varchar), 12, '0'), '-',
                   lpad(cast(call_tx_index as varchar), 6, '0'), '-',
-                  lpad(cast(call_outer_instruction_index as varchar), 4, '0'), '-',
-                  lpad(cast(call_inner_instruction_index as varchar), 4, '0')
+                  lpad(cast(coalesce(call_outer_instruction_index, 0) as varchar), 4, '0'), '-',
+                  lpad(cast(coalesce(call_inner_instruction_index, 0) as varchar), 4, '0')
             ) as unique_instruction_key --block time is not granular enough, build unique key from block_slot, tx_index, outer_instruction_index, inner_instruction_index
       FROM transfers_raw
 )
@@ -244,6 +244,7 @@ WITH transfers_raw as (
     left join
         {{ this }} as existing
         -- typically only inner_instruction_index is null, but coalesce all to be safe
+        -- since we're building unique_instruction_key in this model, use individual fields for lookup
         on coalesce(existing.block_date, date '9999-12-31') = coalesce(transfers.block_date, date '9999-12-31')
         and coalesce(existing.block_slot, 0) = coalesce(transfers.block_slot, 0)
         and coalesce(existing.tx_index, 0) = coalesce(transfers.tx_index, 0)
