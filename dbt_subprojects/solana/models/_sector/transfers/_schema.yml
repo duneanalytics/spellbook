@@ -75,7 +75,7 @@ models:
       - name: net_transfer_amount_usd
         description: "The total net transfer amount for the day and asset"
 
-  - name: tokens_solana_sol_transfers
+  - name: tokens_solana_base_sol_transfers
     meta:
       blockchain: solana
       sector: tokens
@@ -89,7 +89,7 @@ models:
             - block_date
             - unique_instruction_key
 
-  - name: tokens_solana_spl_transfers
+  - name: tokens_solana_base_spl_transfers
     meta:
       blockchain: solana
       sector: tokens
@@ -103,7 +103,7 @@ models:
             - block_date
             - unique_instruction_key
 
-  - name: tokens_solana_spl_transfers_call_transfer
+  - name: tokens_solana_base_spl_transfers_call_transfer
     meta:
       blockchain: solana
       sector: tokens
@@ -116,7 +116,7 @@ models:
             - block_date
             - unique_instruction_key
 
-  - name: tokens_solana_token22_spl_transfers
+  - name: tokens_solana_base_token22_spl_transfers
     meta:
       blockchain: solana
       sector: tokens
@@ -129,44 +129,26 @@ models:
             - block_date
             - unique_instruction_key
 
-  - name: tokens_solana_sol_transfers_current
+  - name: tokens_solana_base_transfers_token_account_history
     meta:
       blockchain: solana
       sector: tokens
       contributors: [jeff-dude, 0xBoxer]
+    config:
+      tags: ['solana', 'transfers', 'token_account_history']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
             - unique_instruction_key
 
-  - name: tokens_solana_spl_transfers_current
+  - name: tokens_solana_base_transfers
     meta:
       blockchain: solana
       sector: tokens
       contributors: [jeff-dude, 0xBoxer]
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - unique_instruction_key
-
-  - name: tokens_solana_spl_transfers_call_transfer_current
-    meta:
-      blockchain: solana
-      sector: tokens
-      contributors: [jeff-dude, 0xBoxer]
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - unique_instruction_key
-
-  - name: tokens_solana_token22_spl_transfers_current
-    meta:
-      blockchain: solana
-      sector: tokens
-      contributors: [jeff-dude, 0xBoxer]
+    config:
+      tags: ['solana', 'transfers']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
