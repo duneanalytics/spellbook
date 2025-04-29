@@ -8,6 +8,7 @@ WITH deposits AS (
     , MIN(f.block_time) AS block_time
     , MIN(f.block_number) AS block_number
     , MIN_BY(f.tx_hash, f.block_number) AS hash
+    , ROW_NUMBER() OVER (PARTITION BY f."from" ORDER BY MIN(f.block_time)) AS deposit_index
     FROM {{cex_local_flows}} f
     WHERE f.flow_type = 'Inflow'
         {% if is_incremental() %}
@@ -46,5 +47,6 @@ INNER JOIN {{crosschain_first_funded_by}} ffb ON ffb.blockchain='{{blockchain}}'
     {% if is_incremental() %}
     AND {{ incremental_predicate("ffb.block_time - interval '6' hour") }}
     {% endif %}
+WHERE d.deposit_index = 1
 
 {% endmacro %}
