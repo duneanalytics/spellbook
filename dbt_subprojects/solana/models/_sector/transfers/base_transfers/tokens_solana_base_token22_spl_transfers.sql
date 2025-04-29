@@ -225,7 +225,7 @@ WITH transfers_raw as (
             , call_tx_signer as tx_signer
             , action
             , call_outer_instruction_index as outer_instruction_index
-            , COALESCE(call_inner_instruction_index,0) as inner_instruction_index
+            , call_inner_instruction_index as inner_instruction_index
             , token_version
             , concat(
                   lpad(cast(call_block_slot as varchar), 12, '0'), '-',
