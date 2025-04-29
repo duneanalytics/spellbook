@@ -68,7 +68,7 @@
                 account_poolState , call_is_inner, call_outer_instruction_index, call_inner_instruction_index, call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer, call_tx_index
             FROM {{ source('raydium_clmm_solana', 'amm_v3_call_swap') }}
             WHERE 1=1
-                {% if is_incremental() %}
+                {% if is_incremental() or true %}
                 AND {{incremental_predicate('call_block_time')}}
                 {% else %}
                 AND call_block_time >= TIMESTAMP '{{project_start_date}}'
@@ -78,7 +78,7 @@
                 account_poolState , call_is_inner, call_outer_instruction_index, call_inner_instruction_index, call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer, call_tx_index
             FROM {{ source('raydium_clmm_solana', 'amm_v3_call_swapV2') }}
             WHERE 1=1
-                {% if is_incremental() %}
+                {% if is_incremental() or true %}
                 AND {{incremental_predicate('call_block_time')}}
                 {% else %}
                 AND call_block_time >= TIMESTAMP '{{project_start_date}}'
@@ -93,7 +93,7 @@
             AND tr_1.outer_instruction_index = sp.call_outer_instruction_index
             AND ((sp.call_is_inner = false AND tr_1.inner_instruction_index = 1)
                 OR (sp.call_is_inner = true AND tr_1.inner_instruction_index = sp.call_inner_instruction_index + 1))
-            {% if is_incremental() %}
+            {% if is_incremental() or true %}
             AND {{incremental_predicate('tr_1.block_time')}}
             {% else %}
             AND tr_1.block_time >= TIMESTAMP '{{project_start_date}}'
@@ -104,7 +104,7 @@
             AND tr_2.outer_instruction_index = sp.call_outer_instruction_index
             AND ((sp.call_is_inner = false AND tr_2.inner_instruction_index = 2)
                 OR (sp.call_is_inner = true AND tr_2.inner_instruction_index = sp.call_inner_instruction_index + 2))
-            {% if is_incremental() %}
+            {% if is_incremental() or true %}
             AND {{incremental_predicate('tr_2.block_time')}}
             {% else %}
             AND tr_2.block_time >= TIMESTAMP '{{project_start_date}}'
