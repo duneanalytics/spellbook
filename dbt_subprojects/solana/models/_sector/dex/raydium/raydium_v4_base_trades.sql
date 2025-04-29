@@ -7,7 +7,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index','block_month'],
+        unique_key = ['block_month', 'block_slot', 'tx_index', 'outer_instruction_index', 'inner_instruction_index'],
         pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
         )
 }}
@@ -67,15 +67,14 @@ with swap_out as (
 )
 , transfers as (
     select
-        *
-        , substring(from_token_account, 1, 2) as from_token_account_prefix
-        , substring(to_token_account, 1, 2) as to_token_account_prefix
-        , CONCAT(
-            lpad(cast(block_slot as varchar), 12, '0'), '-',
-            lpad(cast(tx_index as varchar), 6, '0'), '-',
-            lpad(cast(coalesce(outer_instruction_index, 0) as varchar), 4, '0'), '-',
-            lpad(cast(coalesce(inner_instruction_index, 0) as varchar), 4, '0')
-        ) AS unique_instruction_key
+        block_slot
+        , tx_index
+        , outer_instruction_index
+        , inner_instruction_index
+        , token_mint_address
+        , from_token_account
+        , to_token_account
+        , amount
     from
         {{ ref('tokens_solana_transfers') }}
     where
@@ -112,23 +111,21 @@ with swap_out as (
         , trs_1.to_token_account as token_sold_vault
     FROM swaps as sp
     INNER JOIN transfers as trs_1
-        ON trs_1.tx_id = sp.call_tx_id
-        AND trs_1.block_time = sp.call_block_time
+        ON trs_1.tx_index = sp.call_tx_index
+        AND trs_1.block_slot = sp.call_block_slot
         AND trs_1.outer_instruction_index = sp.call_outer_instruction_index
         AND (
             (sp.call_is_inner = false AND (trs_1.inner_instruction_index = 1 OR trs_1.inner_instruction_index = 2))
             OR (sp.call_is_inner = true AND (trs_1.inner_instruction_index = sp.call_inner_instruction_index + 1 OR trs_1.inner_instruction_index = sp.call_inner_instruction_index + 2))
             )        
     INNER JOIN transfers as trs_2
-        ON trs_2.tx_id = sp.call_tx_id
-        AND trs_2.block_time = sp.call_block_time
+        ON trs_2.tx_index = sp.call_tx_index
+        AND trs_2.block_slot = sp.call_block_slot
         AND trs_2.outer_instruction_index = sp.call_outer_instruction_index
         AND (
             (sp.call_is_inner = false AND (trs_2.inner_instruction_index = 2 OR trs_2.inner_instruction_index = 3))
             OR (sp.call_is_inner = true AND (trs_2.inner_instruction_index = sp.call_inner_instruction_index + 2 OR trs_2.inner_instruction_index = sp.call_inner_instruction_index + 3))
             )
-    WHERE 1=1
-        and trs_1.token_mint_address != trs_2.token_mint_address --gets rid of dupes from the OR statement in transfer joins
 )
 
 SELECT
