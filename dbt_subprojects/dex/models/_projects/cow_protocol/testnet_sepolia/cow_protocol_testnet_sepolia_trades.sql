@@ -11,7 +11,7 @@
     post_hook='{{ expose_spells(\'["testnet_sepolia"]\',
                                 "project",
                                 "cow_protocol",
-                                \'["olgafetisova"]\') }}'
+                                \'["harisang"]\') }}'
     )
 }}
 
@@ -48,7 +48,7 @@ trades_with_prices AS (
                              ON pb.contract_address = (
                                  CASE
                                      WHEN buyToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                                         THEN 0x82af49447d8a07e3bd95bd0d56f35241523fbab1
+                                         THEN 0xfff9976782d46cc05630d1f6ebab18b2324d6b14
                                      ELSE buyToken
                                      END)
                                  AND pb.minute = date_trunc('minute', evt_block_time)
@@ -98,7 +98,7 @@ trades_with_token_units as (
                              ON tb.blockchain='testnet_sepolia' AND tb.contract_address =
                                 (CASE
                                      WHEN buy_token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                                         THEN 0x82af49447d8a07e3bd95bd0d56f35241523fbab1
+                                         THEN 0xfff9976782d46cc05630d1f6ebab18b2324d6b14
                                      ELSE buy_token
                                     END)
 ),

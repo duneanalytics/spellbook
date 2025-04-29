@@ -411,11 +411,11 @@ models:
 
   - name: cow_protocol_testnet_sepolia_trades
     meta:
-      blockchain: sepolia
+      blockchain: testnet_sepolia
       project: cow_protocol
       contributors: harisang
     config:
-      tags: ["sepolia", "cow_protocol", "trades", "dex", "aggregator"]
+      tags: ["testnet_sepolia", "cow_protocol", "trades", "dex", "aggregator"]
     description: >
       CoW Protocol enriched trades list on Sepolia
     data_tests:
