@@ -167,8 +167,8 @@ eth_flow_senders as (
             ),
             0xffffffff
         ) AS order_uid
-    from {{ source('cow_protocol_testnet_sepolia', 'CoWSwapEthFlow_evt_OrderPlacement') }} event
-    inner join {{ source('cow_protocol_testnet_sepolia', 'CoWSwapEthFlow_call_createOrder') }} call
+    from {{ source('cow_protocol_sepolia', 'CoWSwapEthFlow_evt_OrderPlacement') }} event
+    inner join {{ source('cow_protocol_sepolia', 'CoWSwapEthFlow_call_createOrder') }} call
         on call_block_number = evt_block_number
         and call_tx_hash = evt_tx_hash
     {% if is_incremental() %}
