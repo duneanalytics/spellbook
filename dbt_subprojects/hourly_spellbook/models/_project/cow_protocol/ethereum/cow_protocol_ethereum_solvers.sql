@@ -122,6 +122,10 @@ known_solver_metadata (address, environment, name) as (
                  (0x04B89dBce06e7Aa2F4BBA78969ADD4576eB94788, 'prod', 'ApeOut_1inch'),
                  (0xbada5552a3e5e2fb57db982e29257821a2cf192d, 'prod', 'Project_Blanc'),
                  (0x34717040928D7fd8154d4612f3228EFf14521023, 'prod', 'Laita'),
+                 (0xdcE5B9574C9A18B4f1713C80BfC53623c007e7e1, 'prod', 'OKX'),
+                 (0x42cb97c2695cF6227C3a1323A1942089ABc9716B, 'prod', 'Elfomo'),
+                 (0x6b8Dc2Dd45bBF6A71a987b61cC4Dbbdf7C601c20, 'barn', 'Elfomo'),
+                 (0xD2E90778eE3F480d305FF535bE88f5AF9F2ac85c, 'barn', 'OKX'),
                  (0xBab555BaBEe5d867983902bC8db8F707157245Be, 'barn', 'Project_Blanc'),
                  (0x854490ef1d402D4f6fce05aBefE1C676eB0DCD74, 'barn', 'ApeOut_1inch'),
                  (0xBB765c920f86e2A2654c4B82deB5BC2E092fF93b, 'barn', 'Portus'),
@@ -214,7 +218,9 @@ known_solver_metadata (address, environment, name) as (
                  (0x84e5c8518c248de590d5302fd7c32d2ae6b0123c, 'service', 'Withdraw'),
                  (0xa03be496e67ec29bc62f01a428683d7f9c204930, 'service', 'Withdraw'),
                  (0x2caef7f0ee82fb0abf1ab0dcd3a093803002e705, 'test', 'Test Solver 1'),
-                 (0x56d4ed5e49539ebb1366c7d6b8f2530f1e4fe753, 'test', 'Test Solver 2')
+                 (0x56d4ed5e49539ebb1366c7d6b8f2530f1e4fe753, 'test', 'Test Solver 2'),
+                 (0x83919ba112Fae537d4889e7932a64bE9ECB25dF8, 'barn', 'Apollo'),
+                 (0xD2ADF24253056D45731a8561749fC9b2ffa4Fe19, 'prod', 'Apollo')
     ) as _
 )
 -- Combining the metadata with current activation status for final table

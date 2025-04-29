@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: uniswap_v4_unichain
+    tables:
+      - name: PoolManager_call_Swap
+
+  - name: velodrome_unichain
+    tables: 
+      - name: Pool_evt_Swap
+      - name: PoolFactory_evt_PoolCreated
+      - name: CLpool_evt_Swap
+      - name: CLfactory_evt_PoolCreated

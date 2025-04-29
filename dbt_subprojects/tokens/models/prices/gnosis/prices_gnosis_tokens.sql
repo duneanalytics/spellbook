@@ -31,15 +31,17 @@ FROM
     ('crv-curve-dao-token', 'gnosis', 'CRV', 0x712b3d230f3c1c19db860d80619288b1f0bdd0bd, 18),
     ('link-chainlink', 'gnosis', 'LINK', 0xe2e73a1c69ecf83f464efce6a5be353a37ca09b2, 18),
     ('sushi-sushi', 'gnosis', 'SUSHI', 0x2995d1317dcd4f0ab89f4ae60f3f020a4f17c7ce, 18),
-    ('wsteth-wrapped-liquid-staked-ether-20', 'gnosis', 'WSTETH', 0x6c76971f98945ae98dd7d4dfca8711ebea946ea6, 18),
-    ('sdai-savings-dai', 'gnosis', 'SDAI',0xaf204776c7245bF4147c2612BF6e5972Ee483701,18),
+    ('wsteth-wrapped-liquid-staked-ether-20', 'gnosis', 'wstETH', 0x6c76971f98945ae98dd7d4dfca8711ebea946ea6, 18),
+    ('sdai-savings-dai', 'gnosis', 'sDAI',0xaf204776c7245bF4147c2612BF6e5972Ee483701,18),
     ('eure-monerium-eur-emoney', 'gnosis', 'EURe', 0xcB444e90D8198415266c6a2724b7900fb12FC56E, 18),
     ('olas-autonolas', 'gnosis', 'OLAS', 0xcE11e14225575945b8E6Dc0D4F2dD4C570f79d9f, 18),
     ('steth-lido-staked-ether', 'gnosis', 'stETH', 0x3C037849a8ffcf19886e2f5B04f293B7847D0377, 18),
-    ('crvusd-curvefi-usd-stablecoin', 'gnosis', 'CRVUSD', 0xaBEf652195F98A91E490f047A5006B71c85f058d, 18),
+    ('crvusd-curvefi-usd-stablecoin', 'gnosis', 'crvUSD', 0xaBEf652195F98A91E490f047A5006B71c85f058d, 18),
     ('safe-safe', 'gnosis', 'SAFE', 0x4d18815d14fe5c3304e87b3fa18318baa5c23820, 18),
     ('giv-giv', 'gnosis', 'GIV', 0x4f4F9b8D5B4d0Dc10506e5551B0513B61fD59e75, 18),
     ('usdc-usd-coin', 'gnosis', 'USDC.e', 0x2a22f9c3b484c3629090feed35f17ff8f88f76f0, 6),
     ('ageur-ageur', 'gnosis', 'agEUR', 0x4b1e2c2762667331bc91648052f646d1b0d35984, 18),
-    ('brla-brla-digital-brla', 'gnosis', 'BRLA', 0xFECB3F7c54E2CAAE9dC6Ac9060A822D47E053760, 18)
+    ('brla-brla-digital-brla', 'gnosis', 'BRLA', 0xFECB3F7c54E2CAAE9dC6Ac9060A822D47E053760, 18),
+    ('gyd-gyro-dollar','gnosis','GYD',0xca5d8f8a8d49439357d3cf46ca2e720702f132b8, 18),
+    ('reth-rocket-pool-eth', 'gnosis', 'rETH', 0xc791240d1f2def5938e2031364ff4ed887133c3d, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

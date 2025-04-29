@@ -166,12 +166,16 @@ tokens as (
         , second_side
 
         -- what the user actually gave and received, judging by the transfers
-        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ src_condition }} and transfer_from = user) as _src_token_address_true
+        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ src_condition }} and transfer_from = user) as _src_token_address_from_user
+        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ src_condition }} and transfer_from = call_from) as _src_token_address_from_caller -- when there were no transfers inside the AR indirect call from the user (tx_from <> caller), but there were from the caller
         , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ dst_condition }} and transfer_to = user) as _dst_token_address_to_user
         , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ dst_condition }} and transfer_to = receiver) as _dst_token_address_to_receiver
-        , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ src_condition }} and transfer_from = user) as _src_token_symbol_true
+        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ dst_condition }} and transfer_to = call_from) as _dst_token_address_to_caller  -- when there were no transfers inside the AR indirect call to the user (tx_from <> caller), but there were to the caller
+        , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ src_condition }} and transfer_from = user) as _src_token_symbol_from_user
+        , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ src_condition }} and transfer_from = call_from) as _src_token_symbol_from_caller
         , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ dst_condition }} and transfer_to = user) as _dst_token_symbol_to_user
         , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ dst_condition }} and transfer_to = receiver) as _dst_token_symbol_to_receiver
+        , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ dst_condition }} and transfer_to = call_from) as _dst_token_symbol_to_caller
         , any_value({{ decimals }}) filter(where {{ src_condition }}) as src_token_decimals
         , any_value({{ decimals }}) filter(where {{ dst_condition }}) as dst_token_decimals
 
@@ -253,8 +257,8 @@ select
         , ('cross_chain', hashlock is not null)
     ])) as flags
     , remains
-    , coalesce(_src_token_address_true, if(_src_token_native, {{ true_native_address }}, _src_token_address)) as src_token_address
-    , coalesce(_src_token_symbol_true, _src_token_symbol) as src_token_symbol
+    , coalesce(_src_token_address_from_user, _src_token_address_from_caller, if(_src_token_native, {{ true_native_address }}, _src_token_address)) as src_token_address
+    , coalesce(_src_token_symbol_from_user, _src_token_symbol_from_caller, _src_token_symbol) as src_token_symbol
     , src_token_decimals
     , coalesce(_src_token_amount_true, src_token_amount) as src_token_amount
     , src_escrow
@@ -263,8 +267,8 @@ select
     , dst_block_number
     , dst_block_time
     , dst_tx_hash
-    , coalesce(_dst_token_address_to_user, _dst_token_address_to_receiver, if(_dst_token_native, {{ true_native_address }}, _dst_token_address)) as dst_token_address
-    , coalesce(_dst_token_symbol_to_user, _dst_token_symbol_to_receiver, _dst_token_symbol) as dst_token_symbol
+    , coalesce(_dst_token_address_to_user, _dst_token_address_to_receiver, _dst_token_address_to_caller, if(_dst_token_native, {{ true_native_address }}, _dst_token_address)) as dst_token_address
+    , coalesce(_dst_token_symbol_to_user, _dst_token_symbol_to_receiver, _dst_token_symbol_to_caller, _dst_token_symbol) as dst_token_symbol
     , dst_token_decimals
     , coalesce(_dst_token_amount_true, dst_token_amount) as dst_token_amount
     , coalesce(sources_amount_usd_trusted, sources_amount_usd, transfers_amount_usd_trusted, transfers_amount_usd) as amount_usd -- sources $ amount first if found prices, then $ amount of connector tokens

@@ -1,6 +1,11 @@
 version: 2
 
 sources:
+  - name: uniswap_v4_avalanche_c
+    tables:
+      - name: PoolManager_evt_Swap
+      - name: PoolManager_evt_Initialize
+      - name: PoolManager_call_Swap
   - name: uniswap_v3_avalanche_c
   - name: airswap_avalanche_c
     tables:

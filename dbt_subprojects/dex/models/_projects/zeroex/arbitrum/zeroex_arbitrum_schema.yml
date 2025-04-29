@@ -206,7 +206,7 @@ models:
         name: protocol_fee_paid_eth
         description: "The protocol fee paid in ETH"
 
-  - name: zeroex_arbitrum_settler_trades
+  - name: zeroex_v2_arbitrum_trades
     meta:
       blockchain: arbitrum
       project: zeroex
@@ -222,14 +222,6 @@ models:
             - block_date
             - tx_hash
             - evt_index
-      - check_seed:
-          seed_file: ref('zeroex_arbitrum_settler_trades_sample')
-          match_columns:
-            - tx_hash
-          check_columns:
-            - taker
-            - maker_token
-            - taker_token
     columns:
       - *blockchain
       - *block_date
@@ -256,3 +248,35 @@ models:
       - *swap_flag
       - *contract_address
       - *fills_within
+
+  - name: zeroex_arbitrum_settler_addresses
+    meta:
+      blockchain: arbitrum
+      project: zeroex
+      contributors: hosuke
+    config:
+      tags: ['arbitrum', '0x', 'settler']
+    description: >
+      0x Protocol settler addresses for Arbitrum blockchain.
+      This table contains the settler addresses used by the 0x Protocol on Arbitrum,
+      along with their activation timestamps and token IDs.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - settler_address
+            - token_id
+    columns:
+      - name: tx_hash
+        description: "Transaction hash where the settler address was registered"
+      - name: settler_address
+        description: "Address of the 0x Protocol settler contract"
+      - name: token_id
+        description: "Token ID associated with the settler address"
+      - name: begin_block_time
+        description: "Block time when the settler address was activated"
+      - name: begin_block_number
+        description: "Block number when the settler address was activated"
+      - name: end_block_time
+        description: "Block time when the settler address was deactivated (null if still active)"
+      - name: end_block_number
+        description: "Block number when the settler address was deactivated (null if still active)"

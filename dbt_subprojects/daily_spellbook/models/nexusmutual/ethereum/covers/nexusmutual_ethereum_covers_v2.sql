@@ -38,6 +38,7 @@ cover_sales as (
   from {{ source('nexusmutual_ethereum', 'Cover_call_buyCover') }} c
     cross join unnest(c.poolAllocationRequests) as t(pool_allocation)
   where c.call_success
+    and c.contract_address = 0xcafeac0fF5dA0A2777d915531bfA6B29d282Ee62 -- proxy
 ),
 
 staking_product_premiums as (
@@ -64,7 +65,8 @@ staking_product_premiums as (
     call_tx_hash as tx_hash
   from {{ source('nexusmutual_ethereum', 'StakingProducts_call_getPremium') }}
   where call_success
-    and contract_address = 0xcafea573fbd815b5f59e8049e71e554bde3477e4
+    --and contract_address = 0xcafea573fbd815b5f59e8049e71e554bde3477e4
+    and contract_address <> 0xcafea524e89514e131ee9f8462536793d49d8738
 ),
 
 cover_premiums as (
@@ -80,8 +82,8 @@ cover_premiums as (
     p.premium / 1e18 as premium,
     p.premium_period_ratio,
     c.commission_ratio / 10000.0 as commission_ratio,
-    (c.commission_ratio / 10000.0) * p.premium / 1e18 as commission,
-    (1.0 + (c.commission_ratio / 10000.0)) * p.premium / 1e18 as premium_incl_commission,
+    p.premium / 1e18 / (1.0 - (c.commission_ratio / 10000.0)) - p.premium / 1e18 as commission,
+    p.premium / 1e18 / (1.0 - (c.commission_ratio / 10000.0)) as premium_incl_commission,
     case c.cover_asset
       when 0 then 'ETH'
       when 1 then 'DAI'

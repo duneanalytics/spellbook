@@ -31,10 +31,8 @@ WITH pool_labels AS (
             approx_percentile(median_price, 0.5) AS price,
             sum(sample_size) AS sample_size
         FROM {{ source('dex', 'prices') }}
-        WHERE
-        ('{{blockchain}}' != 'fantom' OR
-        ('{{blockchain}}' = 'fantom' AND contract_address NOT IN (0xde1e704dae0b4051e80dabb26ab6ad6c12262da0, 0x5ddb92a5340fd0ead3987d3661afcd6104c3b757))) --broken price feeds
-        AND blockchain = '{{blockchain}}'
+        WHERE blockchain = '{{blockchain}}'
+        AND contract_address NOT IN (0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38, 0xde1e704dae0b4051e80dabb26ab6ad6c12262da0, 0x5ddb92a5340fd0ead3987d3661afcd6104c3b757) 
         GROUP BY 1, 2
         HAVING sum(sample_size) > 3
     ),
@@ -84,7 +82,7 @@ WITH pool_labels AS (
             token_address,
             decimals,
             price
-        FROM {{ source('gyroscope','gyro_tokens') }}
+        FROM {{ source('gyroscope', 'gyro_tokens') }}
         WHERE blockchain = '{{blockchain}}'
     ),
 
@@ -243,7 +241,7 @@ WITH pool_labels AS (
         LEFT JOIN {{ ref(base_spells_namespace + '_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
         AND b.token = w.token_address
         AND b.pool_liquidity_usd > 0
-        LEFT JOIN {{ source('balancer','token_whitelist') }} q ON b.token = q.address
+        LEFT JOIN {{ source('balancer', 'token_whitelist') }} q ON b.token = q.address
         AND b.blockchain = q.chain
         LEFT JOIN pool_labels p ON p.pool_id = BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
         WHERE q.name IS NOT NULL
@@ -334,17 +332,12 @@ WITH pool_labels AS (
 
     dex_prices_1 AS (
         SELECT
-            date_trunc('day', HOUR) AS DAY,
+            date_trunc('day', timestamp) AS DAY,
             contract_address AS token,
-            approx_percentile(median_price, 0.5) AS price,
-            sum(sample_size) AS sample_size
-        FROM {{ source('dex', 'prices') }}
-        WHERE
-        ('{{blockchain}}' != 'fantom' OR
-        ('{{blockchain}}' = 'fantom' AND contract_address NOT IN (0xde1e704dae0b4051e80dabb26ab6ad6c12262da0, 0x5ddb92a5340fd0ead3987d3661afcd6104c3b757))) --broken price feeds
-        AND blockchain = '{{blockchain}}'
+            approx_percentile(price, 0.5) AS price
+        FROM {{ source('prices', 'hour') }}
+        WHERE blockchain = '{{blockchain}}'
         GROUP BY 1, 2
-        HAVING sum(sample_size) > 3
     ),
 
     dex_prices_2 AS(
@@ -387,16 +380,33 @@ WITH pool_labels AS (
         GROUP BY 1
     ),
 
-    erc4626_prices AS(
+    erc4626_prices AS (
         SELECT
-            date_trunc('day', minute) AS day,
+            DATE_TRUNC('day', minute) AS day,
             wrapped_token AS token,
             decimals,
             APPROX_PERCENTILE(median_price, 0.5) AS price,
-            DATE_TRUNC ('day', next_change) AS next_change
-        FROM {{ ref('balancer_v3_erc4626_token_prices') }}
+            LEAD(DATE_TRUNC('day', minute), 1, CURRENT_DATE + INTERVAL '1' day) OVER (PARTITION BY wrapped_token ORDER BY date_trunc('day', minute)) AS next_change
+        FROM {{ source('balancer_v3', 'erc4626_token_prices') }}
         WHERE blockchain = '{{blockchain}}'
-        GROUP BY 1, 2, 3, 5
+        GROUP BY 1, 2, 3
+    ),
+
+    global_fees AS (
+        SELECT
+            evt_block_time,
+            swapFeePercentage / 1e18 AS global_swap_fee,
+            ROW_NUMBER() OVER (ORDER BY evt_block_time DESC) AS rn
+        FROM {{ source(project_decoded_as + '_' + blockchain, 'ProtocolFeeController_evt_GlobalProtocolSwapFeePercentageChanged') }}
+    ),
+
+    pool_creator_fees AS (
+        SELECT
+            evt_block_time,
+            pool,
+            poolCreatorSwapFeePercentage / 1e18 AS pool_creator_swap_fee,
+            ROW_NUMBER() OVER (PARTITION BY pool ORDER BY evt_block_time DESC) AS rn
+        FROM {{ source(project_decoded_as + '_' + blockchain, 'ProtocolFeeController_evt_PoolCreatorSwapFeePercentageChanged') }}
     ),
 
     swaps_changes AS (
@@ -408,11 +418,15 @@ WITH pool_labels AS (
         FROM
             (
                 SELECT
-                    date_trunc('day', evt_block_time) AS day,
-                    pool AS pool_id,
-                    tokenIn AS token,
-                    CAST(amountIn AS INT256) AS delta
-                FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }}
+                    date_trunc('day', swap.evt_block_time) AS day,
+                    swap.pool AS pool_id,
+                    swap.tokenIn AS token,
+                    CAST(swap.amountIn AS INT256) - (CAST(swap.swapFeeAmount AS INT256) * (g.global_swap_fee + COALESCE(pc.pool_creator_swap_fee, 0))) AS delta
+                FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }} swap
+                CROSS JOIN global_fees g
+                LEFT JOIN pool_creator_fees pc ON swap.pool = pc.pool AND pc.rn = 1
+                WHERE g.rn = 1
+
 
                 UNION ALL
 
@@ -572,7 +586,7 @@ WITH pool_labels AS (
         LEFT JOIN {{ ref(base_spells_namespace + '_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
         AND b.token = w.token_address
         AND b.pool_liquidity_usd > 0
-        LEFT JOIN {{ source('balancer','token_whitelist') }} q ON b.token = q.address
+        LEFT JOIN {{ source('balancer', 'token_whitelist') }} q ON b.token = q.address
         AND b.blockchain = q.chain
         LEFT JOIN pool_labels p ON p.pool_id = BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
         WHERE q.name IS NOT NULL

@@ -13,7 +13,7 @@ ref('uniswap_v3_ethereum_votes')
 , ref('compound_v2_ethereum_votes')
 , ref('gitcoin_ethereum_votes')
 , ref('ens_ethereum_votes')
-, ref('aave_ethereum_votes')
+, source('aave_ethereum', 'votes')
 , ref('dydx_ethereum_votes')
 ] %}
 

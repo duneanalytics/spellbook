@@ -41,4 +41,28 @@ sources:
   - name: ethereum
     tables:
       - name: blobs_submissions
-      
+
+  - name: beets
+    tables:
+      - name: pools_metrics_daily
+      - name: trades      
+
+  - name: utils
+    tables:
+      - name: days_table
+      - name: hours_table
+      - name: minutes_table
+      - name: days
+      - name: hours
+      - name: minutes
+
+  - name: aave
+    tables:
+      - name: flashloans
+
+  - name: aave_ethereum
+    tables:
+      - name: proposals
+      - name: votes
+      - name: supply
+      - name: borrow

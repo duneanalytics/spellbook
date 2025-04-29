@@ -49,6 +49,14 @@ known_solver_metadata (address, environment, name) as (
                 (0xBB765c920f86e2A2654c4B82deB5BC2E092fF93b, 'barn', 'Portus'),
                 (0xDF580073E21fFd7968F317B5359B934Eb6d58804, 'barn', 'Barter'),
                 (0x9775be2Bb0B72d4eA98Bfd38024EF733dc048a30, 'barn', 'Apollo'),
+                (0xe0b25FA3EA727Dc34708D026ba122625B98A94FB, 'barn', 'GlueX_Protocol'),
+                (0x707Dfa95835542A6528fD077c351446f497276CF, 'barn', 'Rizzolver'),
+                (0x4eAD087d78C21Fd95D30411928A2Ade7456f56F4, 'barn', 'OKX'),
+                (0x07caD32e40A92a86E7F2E7b373BAaf4704d92c5b, 'barn', 'Elfomo'),
+                (0x2C975c34D54AD06607f8ea14519c36f91275349d, 'prod', 'Elfomo'),
+                (0xd875cd50B179a046512C80edF6CB2C1Fc3F3072D, 'prod', 'OKX'),
+                (0x914db7338ACAe3f3866B79DcEfFcFBCC554F18ed, 'prod', 'Rizzolver'),
+                (0xc1b0bB599c578a846b51EE5dcE3d9FAD69528613, 'prod', 'GlueX_Protocol'),
                 (0x41f387db8470c99b7f376212075e2E289f085Ce9, 'prod', 'Apollo'),
                 (0x36Fd8A0C24B08F7bb4af8d6eaA6245C3884fC682, 'prod', 'Barter'),
                 (0x1a72876ebE781E42aB2Ee4278B539688D8B80E2D, 'prod', 'ApeOut_1inch'),
@@ -60,7 +68,9 @@ known_solver_metadata (address, environment, name) as (
                 (0xe321609c56aD89711EfB69c248ebe94922902F81, 'prod', 'Gnosis_ParaSwap'),
                 (0xbBcCE072fb1Bd2C096667E257322f47693D3dc96, 'prod', 'Gnosis_0x'),
                 (0x983aC485620E265730e367B2C7BCBf6Eb9d62A21, 'prod', 'Gnosis_BalancerSOR'),
-                (0x1A422923290fd16C2ED00ED16B4203cF4bb35d82, 'prod', 'Laita')
+                (0x1A422923290fd16C2ED00ED16B4203cF4bb35d82, 'prod', 'Laita'),
+                (0x09E5CdfEEaC1866103E17e1debf4aad61c1904eF, 'prod', 'Sector_Finance'),
+                (0xAf888d387aDcEed01a736aA3dEaE75Dcf3eDD8c1, 'prod', 'Copium_Capital')
     ) as _
 )
 -- Combining the metadata with current activation status for final table

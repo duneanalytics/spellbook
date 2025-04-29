@@ -38,6 +38,22 @@ models:
         description: "Transfer type: in/out (inflow/outflow)"
         data_tests:
           - not_null
+      - &from_address
+        name: from_address
+        description: "Address initiating the transfer"
+        data_tests:
+          - not_null
+      - &to_address
+        name: to_address
+        description: "Address receiving the transfer"
+        data_tests:
+          - not_null
+      - &from_address_type
+        name: from_address_type
+        description: "Type of the address initiating the transfer (e.g., capital pool, swap operator)"
+      - &to_address_type
+        name: to_address_type
+        description: "Type of the address receiving the transfer (e.g., capital pool, swap operator)"
       - &symbol
         name: symbol
         description: "Token symbol for transferred token"
@@ -46,8 +62,8 @@ models:
       - &amount
         name: amount
         description: "Token amount for transferred token"
-      - &contract_address
-        name: contract_address
+      - &token_contract_address
+        name: token_contract_address
         description: "Contract address of the transferred token"
       - &unique_key
         name: unique_key
@@ -269,3 +285,71 @@ models:
       - &avg_nxm_usd_price
         name: avg_nxm_usd_price
         description: "Daily average NXM/USD price"
+
+  - name: nexusmutual_ethereum_swap_order_placed
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "swaps"]
+    description: "swap/limit orders placed"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - order_id
+    columns:
+      - *block_time
+      - *block_date
+      - *block_number
+      - &capital_pool_contract
+        name: capital_pool_contract
+      - &swap_operator_contract
+        name: swap_operator_contract
+      - &sell_token_symbol
+        name: sell_token_symbol
+      - &buy_token_symbol
+        name: buy_token_symbol
+      - &sell_amount
+        name: sell_amount
+      - &buy_amount
+        name: buy_amount
+      - &fee_amount_raw
+        name: fee_amount_raw
+      - &partially_fillable
+        name: partially_fillable
+      - &order_id
+        name: order_id
+      - *tx_hash
+
+  - name: nexusmutual_ethereum_swap_order_closed
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "swaps"]
+    description: "swap/limit orders closed"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - fill_type
+            - tx_hash
+    columns:
+      - *block_time
+      - *block_date
+      - *block_number
+      - &fill_type
+        name: fill_type
+      - *swap_operator_contract
+      - *capital_pool_contract
+      - *sell_token_symbol
+      - *buy_token_symbol
+      - *sell_amount
+      - *buy_amount
+      - &fill_amount
+        name: fill_amount
+      - *partially_fillable
+      - *tx_hash

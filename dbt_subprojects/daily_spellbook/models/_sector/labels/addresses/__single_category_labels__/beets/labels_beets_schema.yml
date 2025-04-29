@@ -52,3 +52,35 @@ models:
       - &label_type
         name: label_type
         description: "Type of label (see labels overall readme)"
+
+  - name: labels_beets_gauges_sonic
+    meta:
+      blockchain: sonic
+      sector: labels
+      project: beets
+      contributors: viniabussafi
+    config:
+      tags: ['labels', 'sonic', 'polygon', 'gauges']
+    description: 'Beets gauge labels.'
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - &pool_address
+        name: pool_address
+        description: "Address of the pool to which a Gauge belongs"
+      - *name
+      - &status
+        name: status
+        description: "Flag for whether a gauge is active or inactive"
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type

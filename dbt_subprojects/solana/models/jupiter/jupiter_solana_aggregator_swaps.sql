@@ -20,8 +20,9 @@ with
         SELECT
         *
         FROM (
-            --use this api https://station.jup.ag/api-v6/get-program-id-to-label
+            --use this api https://api.jup.ag/swap/v1/program-id-to-label
             values
+                ('Perena', 'NUMERUNsFCP3kuNmWZuXtm1AaQCPj9uw6Guv2Ekoi5P'),
                 ('stabble Stable Swap', 'swapNyd8XiQwJ6ianp9snpu4brUqFxadzvHebnAXjJZ'),
                 ('stabble Weighted Swap', 'swapFpHZwjELNnjvThjajtiVmkz3yPQEHjLtka2fwHW'),
                 ('Invariant', 'HyaB3W9q6XdA5xwpU4XnSZV94htfmbmqJXZcEbRaJutt'),
@@ -71,7 +72,11 @@ with
                 ('1DEX', 'DEXYosS6oEGvk8uCDayvwEZz4qEyDJRf9nFgYCaqPMTm'),
                 ('Obric V2', 'obriQD1zbpyLz95G5n7nJe6a4DPjpFwa5XYPoNm113y'),
                 ('Mooshot', 'MoonCVVNZFSYkqNXP6bxHLPL6QQJiMagDL3qcqUQTrG'),
-                ('Fox', 'HyhpEq587ANShDdbx1mP4dTmDZC44CXWft29oYQXDb53')
+                ('Fox', 'HyhpEq587ANShDdbx1mP4dTmDZC44CXWft29oYQXDb53'),
+                ('Solayer', 'endoLNCKTqDn8gSVnN2hDdpgACUPWHZTwoYnnMybpAT'),
+                ('Token Mill', 'JoeaRXgtME3jAoz5WuFXGEndfv4NPH9nBxsLq44hk9J'),
+                ('Daos.fun', '5jnapfrAN47UYkLkEf7HnprPPBCQLvkYWGZDeKkaP5hv'),
+                ('ZeroFi', 'ZERor4xhbUycZ6gb9ntrhqscUcZmAbQDjEAtCf4hbZY')
             ) as v(amm_name, amm)
     )
 

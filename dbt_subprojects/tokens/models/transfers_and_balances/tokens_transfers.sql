@@ -1,50 +1,90 @@
 {{ config(
         schema = 'tokens'
         , alias = 'transfers'
-        , post_hook='{{ expose_spells(\'[
-                                            "arbitrum"
+        , post_hook='{{ expose_spells(blockchains = \'[
+                                            "abstract"
+                                            ,"apechain"
+                                            ,"arbitrum"
                                             ,"avalanche_c"
+                                            ,"b3"
                                             ,"base"
+                                            ,"berachain"
                                             ,"blast"
                                             ,"bnb"
+                                            ,"bob"
+                                            ,"boba"
                                             ,"celo"
+                                            ,"corn"
+                                            ,"degen"
                                             ,"ethereum"
                                             ,"fantom"
+                                            ,"flare"
                                             ,"gnosis"
+                                            ,"ink"
+                                            ,"kaia"
                                             ,"linea"
                                             ,"mantle"
+                                            ,"nova"
+                                            ,"opbnb"
                                             ,"optimism"
                                             ,"polygon"
+                                            ,"ronin"
                                             ,"scroll"
                                             ,"sei"
+                                            ,"shape"
+                                            ,"sonic"
+                                            ,"sophon"
+                                            ,"tron"
+                                            ,"unichain"
+                                            ,"viction"
+                                            ,"worldchain"
                                             ,"zkevm"
                                             ,"zksync"
                                             ,"zora"
                                         ]\',
-                                        "sector",
-                                        "tokens",
-                                        \'["aalan3", "jeff-dude", "0xBoxer", "hildobby", "0xRob"]\') }}'
+                                        spell_type = "sector",
+                                        spell_name = "tokens",
+                                        contributors = \'["aalan3", "jeff-dude", "0xBoxer", "hildobby", "0xRob", "hosuke"]\') }}'
         )
 }}
 
 {% set chains = [
-     'arbitrum'
+    'abstract'
+    ,'apechain'
+    ,'arbitrum'
     ,'avalanche_c'
+    ,'b3'
     ,'base'
+    ,'berachain'
     ,'blast'
     ,'bnb'
+    ,'bob'
+    ,'boba'
     ,'celo'
+    ,'corn'
+    ,'degen'
     ,'ethereum'
     ,'fantom'
+    ,'flare'
     ,'gnosis'
+    ,'ink'
+    ,'kaia'
     ,'linea'
     ,'mantle'
+    ,'nova'
+    ,'opbnb'
     ,'optimism'
     ,'polygon'
     ,'ronin'
     ,'scroll'
     ,'sei'
+    ,'shape'
+    ,'sonic'
+    ,'sophon'
     ,'tron'
+    ,'unichain'
+    ,'viction'
+    ,'worldchain'
     ,'zkevm'
     ,'zksync'
     ,'zora'

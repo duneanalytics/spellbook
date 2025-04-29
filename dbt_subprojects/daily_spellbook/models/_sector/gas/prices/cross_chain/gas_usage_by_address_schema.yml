@@ -1,0 +1,85 @@
+version: 2
+
+models:
+  - name: gas_usage_by_address
+    meta:
+      blockchain: ethereum, optimism, base, arbitrum, avalanche_c, blast, bnb, celo, fantom, gnosis, linea, mantle, polygon, scroll, zkevm, zksync, zora
+      sector: gas
+      contributors: gashawk, zohjag
+    config:
+      tags: ['gas', 'cross_chain', 'addresses']
+    description: "Cross-chain gas usage metrics aggregated by address (optimized version)"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - blockchain
+            - currency_symbol
+    columns:
+      - name: address
+        description: "The wallet address"
+        tests:
+          - not_null
+      - name: address_prefix
+        description: "The prefix of the address"
+        tests:
+          - not_null
+      - name: blockchain
+        description: "The blockchain name"
+        tests:
+          - not_null
+      - name: currency_symbol
+        description: "Native currency symbol of the chain"
+      - name: number_of_txs
+        description: "Total number of transactions by this address"
+        tests:
+          - not_null
+      - name: gas_spent_usd_total
+        description: "Total USD value of gas spent"
+        tests:
+          - not_null
+      - name: gas_spent_usd_24_hours
+        description: "USD value of gas spent in last 24 hours"
+        tests:
+          - not_null
+      - name: gas_spent_usd_7_days
+        description: "USD value of gas spent in last 7 days"
+        tests:
+          - not_null
+      - name: gas_spent_usd_30_days
+        description: "USD value of gas spent in last 30 days"
+        tests:
+          - not_null
+      - name: gas_spent_usd_6_months
+        description: "USD value of gas spent in last 6 months"
+        tests:
+          - not_null
+      - name: gas_spent_usd_1_year
+        description: "USD value of gas spent in last year"
+        tests:
+          - not_null
+      - name: gas_spent_native_total
+        description: "Total amount of gas spent in native currency"
+        tests:
+          - not_null
+      - name: gas_spent_native_24_hours
+        description: "Amount of gas spent in native currency in last 24 hours"
+        tests:
+          - not_null
+      - name: gas_spent_native_7_days
+        description: "Amount of gas spent in native currency in last 7 days"
+        tests:
+          - not_null
+      - name: gas_spent_native_30_days
+        description: "Amount of gas spent in native currency in last 30 days"
+        tests:
+          - not_null
+      - name: gas_spent_native_6_months
+        description: "Amount of gas spent in native currency in last 6 months"
+        tests:
+          - not_null
+      - name: gas_spent_native_1_year
+        description: "Amount of gas spent in native currency in last year"
+        tests:
+          - not_null
+

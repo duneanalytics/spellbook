@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: camelot_apechain
+    tables:
+      - name: camelotpair_evt_swap
+      - name: camelotfactory_evt_paircreated
