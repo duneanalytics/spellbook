@@ -8,7 +8,7 @@
         file_format ='delta',
         incremental_strategy='merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        post_hook='{{ expose_spells(blockchains = \'["sepolia"]\',
+        post_hook='{{ expose_spells(blockchains = \'["testnet_sepolia"]\',
                                     spell_type = "project",
                                     spell_name = "cow_protocol",
                                     contributors = \'["harisang"]\') }}'
@@ -33,7 +33,7 @@ batch_counts as (
            sum(case when selector = 0x2e1a7d4d then 1 else 0 end) as unwraps,
            sum(case when selector = 0x095ea7b3 then 1 else 0 end) as token_approvals
     from {{ source('gnosis_protocol_v2_testnet_sepolia', 'GPv2Settlement_evt_Settlement') }} s
-        left outer join {{ source('gnosis_protocol_v2_sepolia', 'GPv2Settlement_evt_Interaction') }} i
+        left outer join {{ source('gnosis_protocol_v2_testnet_sepolia', 'GPv2Settlement_evt_Interaction') }} i
             on i.evt_tx_hash = s.evt_tx_hash
             {% if is_incremental() %}
             AND {{ incremental_predicate('i.evt_block_time') }}
@@ -60,7 +60,7 @@ batch_values as (
             and {{ incremental_predicate('minute') }}
             {% endif %}
             and p.minute = date_trunc('minute', block_time)
-            and blockchain = 'sepolia'
+            and blockchain = 'testnet_sepolia'
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('block_time') }}
     {% endif %}
@@ -87,7 +87,7 @@ combined_batch_info as (
     from batch_counts b
         join batch_values t
             on b.evt_tx_hash = t.tx_hash
-        inner join {{ source('sepolia', 'transactions') }} tx
+        inner join {{ source('testnet_sepolia', 'transactions') }} tx
             on evt_tx_hash = hash
             and evt_block_number = block_number
             {% if is_incremental() %}
