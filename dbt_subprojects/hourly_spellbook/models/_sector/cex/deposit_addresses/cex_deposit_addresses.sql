@@ -31,29 +31,31 @@
 
 {% if not is_incremental() %}
 
-SELECT address
-, MAX(cex_name) AS cex_name
-, array_agg(blockchain) AS blockchains
-, MIN_BY(blockchain, creation_block_time) AS first_used_blockchain
-, MIN(creation_block_time) AS creation_block_time
-, MIN(creation_block_number) AS creation_block_number
-, MIN_BY(funded_by_same_cex, creation_block_time) AS funded_by_same_cex
-, MIN_BY(first_funded_by, creation_block_time) AS first_funded_by
-, MIN_BY(is_smart_contract, creation_block_time) AS is_smart_contract
+SELECT MIN_BY(blockchain, funded_block_time) AS blockchain
+, address
+, MIN(cex_name) AS cex_name
+, MIN_BY(token_standard, funded_block_time) AS token_standard
+, MIN(consolidation_block_time) AS consolidation_block_time
+, MIN(consolidation_block_number) AS consolidation_block_number
+, MIN(funded_block_time) AS funded_block_time
+, MIN(funded_block_number) AS funded_block_number
+, MIN_BY(first_funded_by, funded_block_time) AS first_funded_by
+, MIN_BY(self_executed, funded_block_time) AS self_executed
+, MIN_BY(tx_hash, funded_block_time) AS tx_hash
 FROM (
     {% for cex_model in cex_models %}
     SELECT blockchain
     , address
     , cex_name
-    , creation_block_time
-    , creation_block_number
-    , funded_by_same_cex
+    , token_standard
+    , consolidation_block_time
+    , consolidation_block_number
+    , funded_block_time
+    , funded_block_number
     , first_funded_by
-    , is_smart_contract 
+    , self_executed
+    , tx_hash
     FROM {{ cex_model }}
-    {% if is_incremental() %}
-    WHERE {{incremental_predicate('creation_block_time')}}
-    {% endif %}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
@@ -65,51 +67,44 @@ HAVING COUNT(DISTINCT cex_name) = 1
 
 {% else %}
 
-WITH new AS (
-    SELECT address
-    , MAX(cex_name) AS cex_name
-    , array_agg(blockchain) AS blockchains
-    , MIN_BY(blockchain, creation_block_time) AS first_used_blockchain
-    , MIN(creation_block_time) AS creation_block_time
-    , MIN(creation_block_number) AS creation_block_number
-    , MIN_BY(funded_by_same_cex, creation_block_time) AS funded_by_same_cex
-    , MIN_BY(first_funded_by, creation_block_time) AS first_funded_by
-    , MIN_BY(is_smart_contract, creation_block_time) AS is_smart_contract
-    FROM (
-        {% for cex_model in cex_models %}
-        SELECT cm.blockchain
-        , cm.address
-        , cm.cex_name
-        , cm.creation_block_time
-        , cm.creation_block_number
-        , cm.funded_by_same_cex
-        , cm.first_funded_by
-        , cm.is_smart_contract 
-        FROM {{ cex_model }} cm
-        LEFT JOIN {{this}} t ON cm.address=t.address
-            AND contains(t.blockchains, cm.blockchain) = FALSE
-        {% if is_incremental() %}
-        WHERE {{incremental_predicate('cm.creation_block_time')}}
-        {% endif %}
-        {% if not loop.last %}
-        UNION ALL
-        {% endif %}
-        {% endfor %}
-        )
-    GROUP BY address
-    HAVING COUNT(DISTINCT cex_name) = 1
-    )
 
-SELECT n.address
-, n.cex_name AS cex_name
-, array_union(t.blockchains, n.blockchains) AS blockchains
-, COALESCE(t.first_used_blockchain, n.first_used_blockchain) AS first_used_blockchain
-, COALESCE(t.creation_block_time, n.creation_block_time) AS creation_block_time
-, COALESCE(t.creation_block_number, n.creation_block_number) AS creation_block_number
-, COALESCE(t.funded_by_same_cex, n.funded_by_same_cex) AS funded_by_same_cex
-, COALESCE(t.first_funded_by, n.first_funded_by) AS first_funded_by
-, COALESCE(t.is_smart_contract, n.is_smart_contract) AS is_smart_contract
-FROM new n
-LEFT JOIN {{this}} t ON t.address=n.address AND t.cex_name=n.cex_name
+
+SELECT MIN_BY(blockchain, funded_block_time) AS blockchain
+, address
+, MIN(cex_name) AS cex_name
+, MIN_BY(token_standard, funded_block_time) AS token_standard
+, MIN(consolidation_block_time) AS consolidation_block_time
+, MIN(consolidation_block_number) AS consolidation_block_number
+, MIN(funded_block_time) AS funded_block_time
+, MIN(funded_block_number) AS funded_block_number
+, MIN_BY(first_funded_by, funded_block_time) AS first_funded_by
+, MIN_BY(self_executed, funded_block_time) AS self_executed
+, MIN_BY(tx_hash, funded_block_time) AS tx_hash
+FROM (
+    {% for cex_model in cex_models %}
+    SELECT cm.blockchain
+    , cm.address
+    , cm.cex_name
+    , cm.token_standard
+    , cm.consolidation_block_time
+    , cm.consolidation_block_number
+    , cm.funded_block_time
+    , cm.funded_block_number
+    , cm.first_funded_by
+    , cm.self_executed
+    , cm.tx_hash
+    FROM {{ cex_model }} cm
+    LEFT JOIN {{this}} t ON cm.address=t.address
+        AND cm.cex_name IS NULL
+    {% if is_incremental() %}
+    WHERE {{incremental_predicate('cm.consolidation_block_number')}}
+    {% endif %}
+    {% if not loop.last %}
+    UNION ALL
+    {% endif %}
+    {% endfor %}
+    )
+GROUP BY address
+HAVING COUNT(DISTINCT cex_name) = 1
 
 {% endif %}

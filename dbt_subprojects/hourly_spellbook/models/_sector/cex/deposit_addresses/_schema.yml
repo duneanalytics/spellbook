@@ -14,30 +14,36 @@ models:
           combination_of_columns:
             - address
     columns:
-      - &blockchains
-        name: blockchains
-        description: "Blockchains"
-      - &first_used_blockchain
-        name: first_used_blockchain
-        description: "First blockchain this deposit address was used on"
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
       - &address
-        name: block_month
-        description: "Block month"
+        name: address
+        description: "Address"
       - &cex_name
         name: cex_name
         description: "CEX name"
-      - &creation_block_time
-        name: creation_block_time
-        description: "Name of centralised exchange"
-      - &creation_block_number
-        name: creation_block_number
-        description: "Distinct name of centralised exchange address"
-      - &funded_by_same_cex
-        name: funded_by_same_cex
-        description: "Is it funded by an address identified as belonging to the same CEX"
+      - &token_standard
+        name: token_standard
+        description: "Token standard"
+      - &consolidation_block_time
+        name: consolidation_block_time
+        description: "Time at which the CEX consolidated funds into one of their addresses"
+      - &consolidation_block_number
+        name: consolidation_block_number
+        description: "Block number at which the CEX consolidated funds into one of their addresses"
+      - &funded_block_time
+        name: funded_block_time
+        description: "Time at which the address was funded in its chain's native token"
+      - &funded_block_number
+        name: funded_block_number
+        description: "Block number at which the address was funded in its chain's native token"
       - &first_funded_by
         name: first_funded_by
         description: "First address to fund this address"
-      - &is_smart_contract 
-        name: is_smart_contract
-        description: "Is the address a smart contract"
+      - &self_executed 
+        name: self_executed
+        description: "Was the consolidation transaction executed by the deposit address"
+      - &tx_hash 
+        name: tx_hash
+        description: "Transaction hash of the deposit consolidation tx"
