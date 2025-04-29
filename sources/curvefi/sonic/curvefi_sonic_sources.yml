@@ -8,5 +8,5 @@ sources:
       - name: curvestableswapfactory_evt_PlainPoolDeployed
       - name: curvestableswapfactory_call_deploy_metapool
       - name: curvestableswapfactory_evt_MetaPoolDeployed
-      - name: stableswap_evt_TokenExchange
-      - name: stableswap_evt_TokenExchangeUnderlying
+      - name: curvestableswap_evt_TokenExchange
+      - name: curvestableswap_evt_TokenExchangeUnderlying
