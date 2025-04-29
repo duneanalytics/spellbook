@@ -5,12 +5,12 @@ WITH test_data AS (
         -- condition is not met
         (
             0xb5ee9c7201010101000e0000180000007b000001c90000002a,
-            ROW(123, 457, 42)
+            ROW(123, 457, null)
         ),
         -- condition is met
         (
             0xb5ee9c7201010101000e0000180000007b000001c80000002a,
-            ROW(123, 456, null)
+            ROW(123, 456, 42)
         )
     )
     AS temp (boc, expected)

@@ -78,7 +78,7 @@ pass not equal condition for previously parsed field and break the parsing loop 
     ton_begin_parse(),
     ton_load_uint(1, 'status'),
     ton_return_if_neq('status', 1),
-    ton_load_address('owneaddressr_address')
+    ton_load_address('address')
     ]) }} as result 
 ```
 

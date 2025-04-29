@@ -2,7 +2,7 @@
 -%}
 CAST(
 CASE
-    WHEN CAST(state.output[{{ value }}]  AS VARCHAR) = {{ expected }} THEN
+    WHEN CAST(state.output[{{ value }}]  AS VARCHAR) != {{ expected }} THEN
     ROW(
         state.has_idx, state.size, state.original_cell_data, state.cell_pointer,
         state.refs, state.exotic, state.level_,
