@@ -34,4 +34,5 @@ FROM
     , ('jani-janitooor', 'JANI', 0x8f06863df59a042bcc2c86cc8ca1709ec1ee316b, 18)
     , ('yeet3-yeet', 'YEET', 0x08a38caa631de329ff2dad1656ce789f31af3142, 18)
     , ('ibgt-infrared-bgt', 'iBGT', 0xac03caba51e17c86c921e1f6cbfbdc91f8bb2e6b, 18)
+    , ('usdbr-usdbr', 'USDBr', 0x6d4223dae2a8744a85a6d44e97f3f61679f87ee6, 18)
 ) as temp (token_id, symbol, contract_address, decimals) 

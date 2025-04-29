@@ -119,3 +119,4 @@ SELECT
     sp.tx_index
 FROM swaps sp
 LEFT JOIN pools p ON p.pool = sp.pool
+where sp.block_time < CAST('2025-04-24 09:00:00' AS TIMESTAMP)
