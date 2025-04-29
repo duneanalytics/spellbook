@@ -1,13 +1,5 @@
 version: 2
 
-sources:
-  - name: pumpdotfun_solana
-    database: solana
-    schema: pumpdotfun
-    tables:
-      - name: pump_amm_call_buy
-      - name: pump_amm_call_sell
-
 models:
   - name: pumpswap_solana_base_trades
     meta:
