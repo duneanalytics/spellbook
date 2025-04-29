@@ -89,6 +89,7 @@ AS {{ ton_boc_state_type() }})
          [1]                  [2]               [3]           [4][5]...
     [action op code, output value name, output value type, arguments...]
     #}
+    WHEN CAST(element_at(state.output, {{ ton_action_return_flag() }}) AS boolean) = true THEN state
     WHEN step[1] = {{ ton_action_begin_parse() }} THEN {{ ton_begin_parse_impl() }}
 
     WHEN step[1] = {{ ton_action_skip_bits() }} THEN {{ ton_skip_bits_impl('CAST(step[4] AS bigint)') }}
@@ -102,6 +103,7 @@ AS {{ ton_boc_state_type() }})
     WHEN step[1] = {{ ton_action_load_maybe_ref() }} THEN {{ ton_load_maybe_ref_impl() }}
     WHEN step[1] = {{ ton_action_load_coins() }} THEN {{ ton_load_coins_impl('step[2]') }}
     WHEN step[1] = {{ ton_action_skip_maybe_ref() }} THEN {{ ton_skip_maybe_ref_impl() }}
+    WHEN step[1] = {{ ton_action_return_if_neq() }} THEN {{ ton_return_if_neq_impl('step[4]', 'step[5]') }}
 END,
 s -> CAST(ROW(
     {#- prepare list of fields to be returned -#}
@@ -122,9 +124,9 @@ s -> CAST(ROW(
             {%- set output_field_type = action.strip()[6:-1].split(',')[2].strip() -%}
             {%- set counter.value = counter.value + 1 -%}
             {% if output_field_type | replace("'", "") == 'UINT256' or output_field_type | replace("'", "") == 'INT256' %}
-                CAST(CAST(s.output[{{ output_field_name }}] AS varchar) AS {{ output_field_type | replace("'", "") }}) {% if counter.value < fields | length %},{% endif %}
+                CAST(CAST(element_at(s.output, {{ output_field_name }}) AS varchar) AS {{ output_field_type | replace("'", "") }}) {% if counter.value < fields | length %},{% endif %}
             {% else %}
-                CAST(s.output[{{ output_field_name }}] AS {{ output_field_type | replace("'", "") }}) {% if counter.value < fields | length %},{% endif %}
+                CAST(element_at(s.output, {{ output_field_name }}) AS {{ output_field_type | replace("'", "") }}) {% if counter.value < fields | length %},{% endif %}
             {% endif %}
         {%- endif %}
     {%- endfor %}
