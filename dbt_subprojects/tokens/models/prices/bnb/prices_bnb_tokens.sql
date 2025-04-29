@@ -299,7 +299,8 @@ FROM
     ('maga-trump', 'bnb', 'MAGA', 0x8479b19c5a3c43e024b2543582af0fc2fef2e6a8, 9),
     ('thc-thetan-coin', 'bnb', 'THC', 0x24802247bd157d771b7effa205237d8e9269ba8a, 18),
     ('hare-hare-token', 'bnb', 'HARE', 0x4afc8c2be6a0783ea16e16066fde140d15979296, 9),
-    ('vinu-vita-inu', 'bnb', 'VINU', 0xfebe8c1ed424dbf688551d4e2267e7a53698f0aa, 18)   
+    ('vinu-vita-inu', 'bnb', 'VINU', 0xfebe8c1ed424dbf688551d4e2267e7a53698f0aa, 18),
+    ('sign-sign2', 'bnb', 'SIGN', 0x868fced65edbf0056c4163515dd840e9f287a4c3, 18)   
 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
