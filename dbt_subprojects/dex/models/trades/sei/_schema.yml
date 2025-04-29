@@ -111,3 +111,20 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('yaka_sei_base_trades_seed')
+
+  - name: sailor_finance_sei_base_trades
+    meta:
+      blockchain: sei
+      sector: dex
+      project: sailor_finance
+      contributors: richardsxu92
+    config:
+      tags: [ 'sei', 'dex', 'trades', 'sailor_finance', 'v3' ]
+    description: "SailorFinance sei base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sailor_finance_sei_base_trades_seed')
