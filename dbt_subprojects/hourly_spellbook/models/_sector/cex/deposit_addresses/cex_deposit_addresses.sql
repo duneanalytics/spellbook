@@ -6,7 +6,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['address'],
-        merge_update_columns = ['cex_name', 'blockchains', 'first_used_blockchain', 'creation_block_number', 'funded_by_same_cex', 'first_funded_by', 'is_smart_contract'],
+        merge_update_columns = ['blockchain', 'cex_name', 'token_standard', 'consolidation_block_time', 'consolidation_block_number', 'funded_block_time', 'funded_block_number', 'first_funded_by', 'self_executed', 'tx_hash'],
         post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "base", "celo", "scroll", "zora"]\',
                                     "sector",
                                     "cex",
@@ -30,6 +30,7 @@
 
 
 {% if not is_incremental() %}
+
 
 SELECT MIN_BY(blockchain, funded_block_time) AS blockchain
 , address
@@ -66,7 +67,6 @@ HAVING COUNT(DISTINCT cex_name) = 1
 
 
 {% else %}
-
 
 
 SELECT MIN_BY(blockchain, funded_block_time) AS blockchain
@@ -106,5 +106,6 @@ FROM (
     )
 GROUP BY address
 HAVING COUNT(DISTINCT cex_name) = 1
+
 
 {% endif %}
