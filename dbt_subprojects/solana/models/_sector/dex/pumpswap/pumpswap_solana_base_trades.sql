@@ -24,71 +24,77 @@ WITH pools AS (
     FROM {{ ref('pumpswap_solana_pools') }}
 ),
 
+-- Add block_month early and deduplicate
 swaps_base AS (
-    -- Buy operations
     SELECT
-        call_block_time as block_time,
-        call_block_slot as block_slot,
-        'buy' as trade_type,
-        base_amount_out as base_amount,
-        max_quote_amount_in as max_min_sol_amount,
-        account_pool as pool,
-        account_user as user,
-        account_user_base_token_account as user_base_token_account,
-        account_user_quote_token_account as user_quote_token_account,
-        account_pool_quote_token_account as pool_quote_token_account,
-        account_protocol_fee_recipient as protocol_fee_recipient,
-        account_protocol_fee_recipient_token_account as protocol_fee_recipient_token_account,
-        call_outer_executing_account as outer_executing_account,
-        call_tx_id as tx_id,
-        call_outer_instruction_index as outer_instruction_index,
-        COALESCE(call_inner_instruction_index, 0) as inner_instruction_index,
-        call_tx_index as tx_index,
-        1 as is_buy,
-        account_pool_quote_token_account as sol_target_account,
-        NULL as sol_source_account,
-        NULL as sol_dest_account
-    FROM {{ source('pumpdotfun_solana', 'pump_amm_call_buy') }}
-    {% if is_incremental() %}
-    WHERE {{incremental_predicate('call_block_time')}}
-    {% else %}
-    WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
-    {% endif %}
-    
-    UNION ALL
-    
-    -- Sell operations
-    SELECT
-        call_block_time as block_time,
-        call_block_slot as block_slot,
-        'sell' as trade_type,
-        base_amount_in as base_amount,
-        min_quote_amount_out as max_min_sol_amount,
-        account_pool as pool,
-        account_user as user,
-        account_user_base_token_account as user_base_token_account,
-        account_user_quote_token_account as user_quote_token_account,
-        account_pool_quote_token_account as pool_quote_token_account,
-        account_protocol_fee_recipient as protocol_fee_recipient,
-        account_protocol_fee_recipient_token_account as protocol_fee_recipient_token_account,
-        call_outer_executing_account as outer_executing_account,
-        call_tx_id as tx_id,
-        call_outer_instruction_index as outer_instruction_index,
-        COALESCE(call_inner_instruction_index, 0) as inner_instruction_index,
-        call_tx_index as tx_index,
-        0 as is_buy,
-        NULL as sol_target_account,
-        account_pool_quote_token_account as sol_source_account,
-        account_user_quote_token_account as sol_dest_account
-    FROM {{ source('pumpdotfun_solana', 'pump_amm_call_sell') }}
-    {% if is_incremental() %}
-    WHERE {{incremental_predicate('call_block_time')}}
-    {% else %}
-    WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
-    {% endif %}
+        *,
+        CAST(date_trunc('month', block_time) AS DATE) as block_month
+    FROM (
+        -- Buy operations
+        SELECT
+            call_block_time as block_time,
+            call_block_slot as block_slot,
+            'buy' as trade_type,
+            base_amount_out as base_amount,
+            max_quote_amount_in as max_min_sol_amount,
+            account_pool as pool,
+            account_user as user,
+            account_user_base_token_account as user_base_token_account,
+            account_user_quote_token_account as user_quote_token_account,
+            account_pool_quote_token_account as pool_quote_token_account,
+            account_protocol_fee_recipient as protocol_fee_recipient,
+            account_protocol_fee_recipient_token_account as protocol_fee_recipient_token_account,
+            call_outer_executing_account as outer_executing_account,
+            call_tx_id as tx_id,
+            call_outer_instruction_index as outer_instruction_index,
+            COALESCE(call_inner_instruction_index, 0) as inner_instruction_index,
+            call_tx_index as tx_index,
+            1 as is_buy,
+            account_pool_quote_token_account as sol_target_account,
+            NULL as sol_source_account,
+            NULL as sol_dest_account
+        FROM {{ source('pumpdotfun_solana', 'pump_amm_call_buy') }}
+        {% if is_incremental() %}
+        WHERE {{incremental_predicate('call_block_time')}}
+        {% else %}
+        WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
+        {% endif %}
+        
+        UNION ALL
+        
+        -- Sell operations
+        SELECT
+            call_block_time as block_time,
+            call_block_slot as block_slot,
+            'sell' as trade_type,
+            base_amount_in as base_amount,
+            min_quote_amount_out as max_min_sol_amount,
+            account_pool as pool,
+            account_user as user,
+            account_user_base_token_account as user_base_token_account,
+            account_user_quote_token_account as user_quote_token_account,
+            account_pool_quote_token_account as pool_quote_token_account,
+            account_protocol_fee_recipient as protocol_fee_recipient,
+            account_protocol_fee_recipient_token_account as protocol_fee_recipient_token_account,
+            call_outer_executing_account as outer_executing_account,
+            call_tx_id as tx_id,
+            call_outer_instruction_index as outer_instruction_index,
+            COALESCE(call_inner_instruction_index, 0) as inner_instruction_index,
+            call_tx_index as tx_index,
+            0 as is_buy,
+            NULL as sol_target_account,
+            account_pool_quote_token_account as sol_source_account,
+            account_user_quote_token_account as sol_dest_account
+        FROM {{ source('pumpdotfun_solana', 'pump_amm_call_sell') }}
+        {% if is_incremental() %}
+        WHERE {{incremental_predicate('call_block_time')}}
+        {% else %}
+        WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
+        {% endif %}
+    )
 ),
 
--- Deduplicate early
+-- Deduplicate early using block_month
 swaps_deduplicated AS (
     SELECT *
     FROM (
@@ -100,7 +106,7 @@ swaps_deduplicated AS (
                     outer_instruction_index, 
                     inner_instruction_index, 
                     tx_index, 
-                    CAST(date_trunc('month', block_time) AS DATE)
+                    block_month
                 ORDER BY block_time DESC
             ) as row_num
         FROM swaps_base
@@ -176,13 +182,14 @@ trades_base as (
             when is_buy = 1 then sp.user_base_token_account
             else sp.user_quote_token_account
         end as varchar) as token_bought_vault,
+        sp.block_month,
         -- Create surrogate key for internal use
         {{ dbt_utils.generate_surrogate_key([
             'sp.tx_id',
             'sp.outer_instruction_index',
             'sp.inner_instruction_index',
             'sp.tx_index',
-            'cast(date_trunc(\'month\', sp.block_time) as varchar)'
+            'cast(sp.block_month as varchar)'
         ]) }} as trade_id
     FROM swaps_with_transfers sp
     LEFT JOIN pools p ON p.pool = sp.pool
@@ -192,7 +199,7 @@ SELECT
     tb.blockchain,
     tb.project,
     tb.version,
-    CAST(date_trunc('month', tb.block_time) AS DATE) as block_month,
+    tb.block_month,
     tb.block_time,
     tb.block_slot,
     tb.trade_source,
