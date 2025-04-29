@@ -52,7 +52,7 @@ WITH
             {% else %}
             AND trs_1.block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
-        INNER JOIN 
+        INNER JOIN  
             {{ ref('tokens_solana_transfers') }} trs_2 
             ON trs_2.tx_id = sp.call_tx_id 
             AND trs_2.block_date = sp.call_block_date
