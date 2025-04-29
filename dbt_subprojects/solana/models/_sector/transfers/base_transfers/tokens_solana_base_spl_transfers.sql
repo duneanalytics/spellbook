@@ -28,7 +28,7 @@ WITH transfers_raw AS (
         {{ source('spl_token_solana','spl_token_call_transferChecked') }}
     WHERE 
         1=1
-        {% if is_incremental() or true -%}
+        {% if is_incremental() -%}
         AND {{incremental_predicate('call_block_time')}}
         {% endif -%}
 
@@ -53,7 +53,7 @@ WITH transfers_raw AS (
         {{ source('spl_token_solana','spl_token_call_mintTo') }}
     WHERE 
         1=1
-        {% if is_incremental() or true -%}
+        {% if is_incremental() -%}
         AND {{incremental_predicate('call_block_time')}}
         {% endif -%}
 
@@ -78,7 +78,7 @@ WITH transfers_raw AS (
         {{ source('spl_token_solana','spl_token_call_mintToChecked') }}
     WHERE 
         1=1
-        {% if is_incremental() or true -%}
+        {% if is_incremental() -%}
         AND {{incremental_predicate('call_block_time')}}
         {% endif -%}
 
@@ -103,7 +103,7 @@ WITH transfers_raw AS (
         {{ source('spl_token_solana','spl_token_call_burn') }}
     WHERE 
         1=1
-        {% if is_incremental() or true -%}
+        {% if is_incremental() -%}
         AND {{incremental_predicate('call_block_time')}}
         {% endif -%}
 
@@ -128,7 +128,7 @@ WITH transfers_raw AS (
         {{ source('spl_token_solana','spl_token_call_burnChecked') }}
     WHERE 
         1=1
-        {% if is_incremental() or true -%}
+        {% if is_incremental() -%}
         AND {{incremental_predicate('call_block_time')}}
         {% endif -%}
 )

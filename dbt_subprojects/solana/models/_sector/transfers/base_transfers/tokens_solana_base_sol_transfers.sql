@@ -37,7 +37,7 @@ WITH transfers AS (
         {{ source('system_program_solana', 'system_program_call_Transfer') }} as t
     where
         1=1
-        {% if is_incremental() or true -%}
+        {% if is_incremental() -%}
         and {{incremental_predicate('call_block_time')}}
         {% endif -%}
 )

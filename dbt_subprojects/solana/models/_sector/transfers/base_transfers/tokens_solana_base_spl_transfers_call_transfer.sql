@@ -37,7 +37,7 @@ WITH transfers AS (
         {{ source('spl_token_solana','spl_token_call_transfer') }}
     WHERE 
         1=1
-        {% if is_incremental() or true -%}
+        {% if is_incremental() -%}
         AND {{incremental_predicate('call_block_time')}}
         {% endif -%}
 )

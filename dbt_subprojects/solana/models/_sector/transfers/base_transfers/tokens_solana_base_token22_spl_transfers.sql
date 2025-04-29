@@ -65,7 +65,7 @@ WITH transfers_raw as (
             */
             WHERE 
                   1=1
-                  {% if is_incremental() or true -%}
+                  {% if is_incremental() -%}
                   AND {{incremental_predicate('tr.call_block_time')}}
                   {% endif -%}
       )
@@ -97,7 +97,7 @@ WITH transfers_raw as (
             {{ source('spl_token_2022_solana','spl_token_2022_call_mintTo') }}
       WHERE
             1=1
-            {% if is_incremental() or true -%}
+            {% if is_incremental() -%}
             AND {{incremental_predicate('call_block_time')}}
             {% endif -%}
 
@@ -124,7 +124,7 @@ WITH transfers_raw as (
             {{ source('spl_token_2022_solana','spl_token_2022_call_mintToChecked') }}
       WHERE 
             1=1
-            {% if is_incremental() or true -%}
+            {% if is_incremental() -%}
             AND {{incremental_predicate('call_block_time')}}
             {% endif -%}
 
@@ -150,7 +150,7 @@ WITH transfers_raw as (
             {{ source('spl_token_2022_solana','spl_token_2022_call_burn') }}
       WHERE 
             1=1
-            {% if is_incremental() or true -%}
+            {% if is_incremental() -%}
             AND {{incremental_predicate('call_block_time')}}
             {% endif -%}
 
@@ -176,7 +176,7 @@ WITH transfers_raw as (
             {{ source('spl_token_2022_solana','spl_token_2022_call_burnChecked') }}
       WHERE 
             1=1
-            {% if is_incremental() or true -%}
+            {% if is_incremental() -%}
             AND {{incremental_predicate('call_block_time')}}
             {% endif -%}
 
@@ -202,7 +202,7 @@ WITH transfers_raw as (
             {{ source('spl_token_2022_solana','spl_token_2022_call_transferFeeExtension') }}
       WHERE 
             bytearray_substring(call_data,1,2) = 0x1a01
-            {% if is_incremental() or true -%}
+            {% if is_incremental() -%}
             AND {{incremental_predicate('call_block_time')}}
             {% endif -%}
 )
