@@ -44,9 +44,6 @@ INNER JOIN isolate_unique iu ON iu.address=d.address
 INNER JOIN {{crosschain_first_funded_by}} ffb ON ffb.blockchain='{{blockchain}}'
     AND ffb.address=d.address
     AND ffb.block_time BETWEEN d.block_time - interval '24' hour AND d.block_time
-    {% if is_incremental() %}
-    AND {{ incremental_predicate("ffb.block_time - interval '24' hour") }}
-    {% endif %}
 WHERE d.deposit_index = 1
 
 {% endmacro %}
