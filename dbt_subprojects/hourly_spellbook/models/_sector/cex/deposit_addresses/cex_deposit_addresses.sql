@@ -97,7 +97,7 @@ FROM (
     LEFT JOIN {{this}} t ON cm.address=t.address
         AND cm.cex_name IS NULL
     {% if is_incremental() %}
-    WHERE {{incremental_predicate('cm.consolidation_block_number')}}
+    WHERE {{incremental_predicate('cm.consolidation_block_time')}}
     {% endif %}
     {% if not loop.last %}
     UNION ALL
