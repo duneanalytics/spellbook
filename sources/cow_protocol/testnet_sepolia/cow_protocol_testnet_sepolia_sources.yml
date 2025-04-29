@@ -1,8 +1,8 @@
 version: 2
 
 sources:
-  - name: gnosis_protocol_v2_arbitrum
-    description: "Arbitrum Chain decoded tables related to CoW Protocol contract"
+  - name: gnosis_protocol_v2_testnet_sepolia
+    description: "Testnet Sepolia decoded tables related to CoW Protocol contract"
     tables:
       - name: GPv2AllowListAuthentication_evt_SolverAdded
         description: "GPv2AllowListAuthentication list of events when a Solver was added"
@@ -12,7 +12,7 @@ sources:
             description: "Solver wallet address"
           - &contract_address
             name: contract_address
-            description: "Arbitrum address of contract emitting the event"
+            description: "Sepolia address of contract emitting the event"
           - &evt_block_number
             name: evt_block_number
             description: "Block number which processed the unique transaction hash"
@@ -122,8 +122,8 @@ sources:
           - &value
             name: value
             description: ETH amount (in WEI) being passed into contract interaction
-  - name: cow_protocol_arbitrum
-    description: "Arbitrum decoded tables related to CoW Protocol contract's"
+  - name: cow_protocol_testnet_sepolia
+    description: "Sepolia decoded tables related to CoW Protocol contract's"
     tables:
       - name: CoWSwapEthFlow_evt_OrderPlacement
         description: "CoWSwapEthFlow Order Placement Events"
