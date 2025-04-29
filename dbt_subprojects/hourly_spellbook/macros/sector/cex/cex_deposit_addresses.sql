@@ -24,7 +24,8 @@ WITH deposits AS (
     HAVING COUNT(DISTINCT cex_name) = 1
     )
 
-SELECT d.address
+SELECT '{{blockchain}}' AS blockchain
+, d.address
 , d.cex_name
 , d.token_standard
 , d.block_time AS deposit_block_time
