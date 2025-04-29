@@ -10,7 +10,7 @@ models:
       tags: ['optimism','rubicon','dex']
     description: >
         A table containing all offers of rubicon on optimism
-    tests:
+    data_tests:
       - check_seed:
           seed_file: ref('dex_offers_seed')
           filter:

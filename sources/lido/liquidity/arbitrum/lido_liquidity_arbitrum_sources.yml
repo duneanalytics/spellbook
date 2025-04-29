@@ -54,5 +54,11 @@ sources:
     tables:
       - name: RamsesV2Pool_evt_Mint
       - name: RamsesV2Pool_evt_Collect
-            
+
+  - name: pancakeswap_v3_arbitrum
+    description: "Arbitrum decoded tables related to Pancake v3 DEX pools contracts"
+    tables:
+      - name: PancakeV3Pool_evt_Mint
+      - name: PancakeV3Pool_evt_Collect            
+      - name: PancakeV3Pool_evt_Burn            
           

@@ -10,7 +10,7 @@ models:
     config:
       tags: ['transfers', 'bnb', 'bep20']
     description: "bep20 Token Transfers on bnb. This table is updated every 30 minutes."
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transfer_type
@@ -54,7 +54,7 @@ models:
       contributors: hosuke
     config:
       tags: ['transfers', 'bnb', 'bep20', 'agg_hour', 'hosuke']
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - hour
@@ -84,7 +84,7 @@ models:
       contributors: hosuke
     config:
       tags: ['transfers', 'bnb', 'bep20', 'agg_day', 'hosuke']
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day

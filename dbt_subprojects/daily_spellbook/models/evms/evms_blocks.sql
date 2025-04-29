@@ -2,10 +2,37 @@
         schema='evms',
         alias = 'blocks',
         unique_key=['blockchain', 'number'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle"]\',
+        post_hook='{{ expose_spells(\'[
+                                        "abstract",
+                                        "apechain",
+                                        "arbitrum",
+                                        "avalanche_c",
+                                        "b3",
+                                        "base",
+                                        "berachain",
+                                        "blast",
+                                        "bnb",
+                                        "boba",
+                                        "celo",
+                                        "ethereum",
+                                        "fantom",
+                                        "gnosis",
+                                        "kaia",
+                                        "linea",
+                                        "mantle",
+                                        "optimism",
+                                        "polygon",
+                                        "ronin",
+                                        "scroll",
+                                        "sonic",
+                                        "zkevm",
+                                        "zksync",
+                                        "zora",
+                                        "ink"
+                                        ]\',
                                     "sector",
                                     "evms",
-                                    \'["hildobby"]\') }}'
+                                    \'["hildobby", "shogun"]\') }}'
         )
 }}
 
@@ -20,7 +47,6 @@
      , ('arbitrum', source('arbitrum', 'blocks'))
      , ('celo', source('celo', 'blocks'))
      , ('base', source('base', 'blocks'))
-     , ('goerli', source('goerli', 'blocks'))
      , ('zksync', source('zksync', 'blocks'))
      , ('zora', source('zora', 'blocks'))
      , ('scroll', source('scroll', 'blocks'))
@@ -30,6 +56,15 @@
      , ('mantle', source('mantle', 'blocks'))
      , ('mode', source('mode', 'blocks'))
      , ('sei', source('sei', 'blocks'))
+     , ('ronin', source('ronin', 'blocks'))
+     , ('abstract', source('abstract', 'blocks'))
+     , ('boba', source('boba', 'blocks'))
+     , ('sonic', source('sonic', 'blocks'))
+     , ('kaia', source('kaia', 'blocks'))
+     , ('apechain', source('apechain', 'blocks'))
+     , ('berachain', source('berachain', 'blocks'))
+     , ('b3', source('b3', 'blocks'))
+     , ('ink', source('ink', 'blocks'))
 ] %}
 
 SELECT *

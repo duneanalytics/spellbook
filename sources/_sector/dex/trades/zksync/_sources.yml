@@ -60,6 +60,10 @@ sources:
     tables:
       - name: ZFPair_evt_Swap
       - name: Factory_evt_PairCreated
+  - name: zkswap_finance_v3_zksync
+    tables:
+      - name: ZFV3Pool_evt_Swap
+      - name: ZFV3Factory_evt_PoolCreated
   - name: gemswap_zksync
     tables:
       - name: ZGemPair_evt_Swap

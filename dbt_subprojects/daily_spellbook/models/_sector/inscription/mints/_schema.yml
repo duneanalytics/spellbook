@@ -10,7 +10,7 @@ models:
       tags: ['inscriptions', 'mints', 'ethereum']
     description: >
       Inscription mints on Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -71,7 +71,7 @@ models:
       tags: ['inscriptions', 'mints', 'arbitrum']
     description: >
       Inscription mints on Arbitrum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -103,7 +103,7 @@ models:
       tags: ['inscriptions', 'mints', 'avalanche_c']
     description: >
       Inscription mints on Avalanche
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -135,7 +135,7 @@ models:
       tags: ['inscriptions', 'mints', 'bnb']
     description: >
       Inscription mints on BNB
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -167,7 +167,7 @@ models:
       tags: ['inscriptions', 'mints', 'fantom']
     description: >
       Inscription mints on Fantom
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -199,7 +199,7 @@ models:
       tags: ['inscriptions', 'mints', 'gnosis']
     description: >
       Inscription mints on Gnosis
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -231,7 +231,7 @@ models:
       tags: ['inscriptions', 'mints', 'optimism']
     description: >
       Inscription mints on Optimism
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -263,7 +263,7 @@ models:
       tags: ['inscriptions', 'mints', 'polygon']
     description: >
       Inscription mints on Polygon
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -295,7 +295,7 @@ models:
       tags: ['inscriptions', 'mints', 'base']
     description: >
       Inscription mints on Base
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -327,7 +327,7 @@ models:
       tags: ['inscriptions', 'mints', 'celo']
     description: >
       Inscription mints on Celo
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -359,7 +359,7 @@ models:
       tags: ['inscriptions', 'mints', 'zksync']
     description: >
       Inscription mints on zkSync
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -391,7 +391,7 @@ models:
       tags: ['inscriptions', 'mints', 'zora']
     description: >
       Inscription mints on Zora Network
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -423,7 +423,7 @@ models:
       tags: ['inscriptions', 'mints', 'scroll']
     description: >
       Inscription mints on Scroll
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -455,7 +455,7 @@ models:
       tags: ['inscriptions', 'mints', 'goerli']
     description: >
       Inscription mints on Goerli Testnet
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -487,7 +487,7 @@ models:
       tags: ['inscriptions', 'mints', 'linea']
     description: >
       Inscription mints on Linea
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -519,7 +519,7 @@ models:
       tags: ['inscriptions', 'mints', 'zkevm']
     description: >
       Inscription mints on Polygon zkEVM
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

@@ -140,13 +140,22 @@ tokens as (
     from calls
     where
         protocol = 'LOP'
-        and cardinality(call_trace_address) = 0
+        and flags['direct']
+)
+
+, trusted_tokens as (
+    select
+        blockchain as transfer_blockchain
+        , contract_address
+        , true as trusted
+    from {{ source('prices', 'trusted_tokens') }}
+    group by 1, 2, 3
 )
 
 {% set src_condition = 'contract_address = _src_token_address' %}
 {% set dst_condition = 'contract_address = _dst_token_address' %}
 {% set symbol = 'coalesce(symbol, token_symbol)' %}
-{% set decimals = 'coalesce(decimals, token_decimals)' %}
+{% set decimals = 'coalesce(token_decimals, decimals)' %}
 
 , amounts as (
     select
@@ -157,12 +166,16 @@ tokens as (
         , second_side
 
         -- what the user actually gave and received, judging by the transfers
-        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ src_condition }} and transfer_from = user) as _src_token_address_true
+        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ src_condition }} and transfer_from = user) as _src_token_address_from_user
+        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ src_condition }} and transfer_from = call_from) as _src_token_address_from_caller -- when there were no transfers inside the AR indirect call from the user (tx_from <> caller), but there were from the caller
         , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ dst_condition }} and transfer_to = user) as _dst_token_address_to_user
         , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ dst_condition }} and transfer_to = receiver) as _dst_token_address_to_receiver
-        , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ src_condition }} and transfer_from = user) as _src_token_symbol_true
+        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ dst_condition }} and transfer_to = call_from) as _dst_token_address_to_caller  -- when there were no transfers inside the AR indirect call to the user (tx_from <> caller), but there were to the caller
+        , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ src_condition }} and transfer_from = user) as _src_token_symbol_from_user
+        , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ src_condition }} and transfer_from = call_from) as _src_token_symbol_from_caller
         , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ dst_condition }} and transfer_to = user) as _dst_token_symbol_to_user
         , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ dst_condition }} and transfer_to = receiver) as _dst_token_symbol_to_receiver
+        , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ dst_condition }} and transfer_to = call_from) as _dst_token_symbol_to_caller
         , any_value({{ decimals }}) filter(where {{ src_condition }}) as src_token_decimals
         , any_value({{ decimals }}) filter(where {{ dst_condition }}) as dst_token_decimals
 
@@ -172,29 +185,31 @@ tokens as (
 
         , max(amount) filter(where {{ src_condition }} and amount <= src_token_amount) as _src_token_amount_true -- take only src token amounts less than in the call
         , max(amount) filter(where {{ dst_condition }} and amount <= dst_token_amount) as _dst_token_amount_true -- take only dst token amounts less than in the call
-        , max(amount * price / pow(10, decimals)) filter(where {{ src_condition }} and amount <= src_token_amount or {{ dst_condition }} and amount <= dst_token_amount) as sources_amount_usd
-        , max(amount * price / pow(10, decimals)) as transfers_amount_usd
+        , max(amount * price / pow(10, {{ decimals }})) filter(where {{ src_condition }} and amount <= src_token_amount or {{ dst_condition }} and amount <= dst_token_amount) as sources_amount_usd
+        , max(amount * price / pow(10, {{ decimals }})) filter(where ({{ src_condition }} and amount <= src_token_amount or {{ dst_condition }} and amount <= dst_token_amount) and trusted) as sources_amount_usd_trusted
+        , max(amount * price / pow(10, {{ decimals }})) as transfers_amount_usd
+        , max(amount * price / pow(10, {{ decimals }})) filter(where trusted) as transfers_amount_usd_trusted
 
         -- src $ amount from user
-        , sum(amount * if(user = transfer_from, price, -price) / pow(10, decimals)) filter(where {{ src_condition }} and user in (transfer_from, transfer_to)) as _amount_usd_from_user
+        , sum(amount * if(user = transfer_from, price, -price) / pow(10, {{ decimals }})) filter(where {{ src_condition }} and user in (transfer_from, transfer_to)) as _amount_usd_from_user
         -- dst $ amount to user
-        , sum(amount * if(user = transfer_to, price, -price) / pow(10, decimals)) filter(where {{ dst_condition }} and user in (transfer_from, transfer_to)) as _amount_usd_to_user
+        , sum(amount * if(user = transfer_to, price, -price) / pow(10, {{ decimals }})) filter(where {{ dst_condition }} and user in (transfer_from, transfer_to)) as _amount_usd_to_user
         -- dst $ amount to receiver
-        , sum(amount * if(receiver = transfer_to, price, -price) / pow(10, decimals)) filter(where {{ dst_condition }} and receiver in (transfer_from, transfer_to)) as _amount_usd_to_receiver
+        , sum(amount * if(receiver = transfer_to, price, -price) / pow(10, {{ decimals }})) filter(where {{ dst_condition }} and receiver in (transfer_from, transfer_to)) as _amount_usd_to_receiver
 
         -- escrow results
         , sum(amount) filter(where result_escrow = src_escrow and result_method = 'withdraw') as src_withdraw_amount
         , sum(amount) filter(where result_escrow = src_escrow and result_method = 'cancel') as src_cancel_amount
         , sum(amount) filter(where result_escrow = src_escrow and result_method = 'rescueFunds') as src_rescue_amount
-        , sum(amount * price / pow(10, decimals)) filter(where result_escrow = src_escrow and result_method = 'withdraw') as src_withdraw_amount_usd
-        , sum(amount * price / pow(10, decimals)) filter(where result_escrow = src_escrow and result_method = 'cancel') as src_cancel_amount_usd
-        , sum(amount * price / pow(10, decimals)) filter(where result_escrow = src_escrow and result_method = 'rescueFunds') as src_rescue_amount_usd
+        , sum(amount * price / pow(10, {{ decimals }})) filter(where result_escrow = src_escrow and result_method = 'withdraw') as src_withdraw_amount_usd
+        , sum(amount * price / pow(10, {{ decimals }})) filter(where result_escrow = src_escrow and result_method = 'cancel') as src_cancel_amount_usd
+        , sum(amount * price / pow(10, {{ decimals }})) filter(where result_escrow = src_escrow and result_method = 'rescueFunds') as src_rescue_amount_usd
         , sum(amount) filter(where result_escrow = dst_escrow and result_method = 'withdraw') as dst_withdraw_amount
         , sum(amount) filter(where result_escrow = dst_escrow and result_method = 'cancel') as dst_cancel_amount
         , sum(amount) filter(where result_escrow = dst_escrow and result_method = 'rescueFunds') as dst_rescue_amount
-        , sum(amount * price / pow(10, decimals)) filter(where result_escrow = dst_escrow and result_method = 'withdraw') as dst_withdraw_amount_usd
-        , sum(amount * price / pow(10, decimals)) filter(where result_escrow = dst_escrow and result_method = 'cancel') as dst_cancel_amount_usd
-        , sum(amount * price / pow(10, decimals)) filter(where result_escrow = dst_escrow and result_method = 'rescueFunds') as dst_rescue_amount_usd
+        , sum(amount * price / pow(10, {{ decimals }})) filter(where result_escrow = dst_escrow and result_method = 'withdraw') as dst_withdraw_amount_usd
+        , sum(amount * price / pow(10, {{ decimals }})) filter(where result_escrow = dst_escrow and result_method = 'cancel') as dst_cancel_amount_usd
+        , sum(amount * price / pow(10, {{ decimals }})) filter(where result_escrow = dst_escrow and result_method = 'rescueFunds') as dst_rescue_amount_usd
 
         , count(distinct (contract_address, transfer_native)) as tokens -- count distinct tokens in transfers
         , count(*) as transfers -- count transfers
@@ -207,6 +222,7 @@ tokens as (
     ) using(blockchain, block_number, tx_hash, call_trace_address) -- block_number is needed for performance
     left join prices using(transfer_blockchain, contract_address, minute)
     left join tokens using(transfer_blockchain, contract_address)
+    left join trusted_tokens using(transfer_blockchain, contract_address)
     group by 1, 2, 3, 4, 5
 )
 
@@ -236,14 +252,13 @@ select
     , receiver
     , order_hash
     , map_concat(flags, map_from_entries(array[
-        ('direct', cardinality(call_trace_address) = 0)
-        , ('second_side', second_side)
+        ('second_side', second_side)
         , ('contracts_only', contracts_only)
         , ('cross_chain', hashlock is not null)
     ])) as flags
     , remains
-    , coalesce(_src_token_address_true, if(_src_token_native, {{ true_native_address }}, _src_token_address)) as src_token_address
-    , coalesce(_src_token_symbol_true, _src_token_symbol) as src_token_symbol
+    , coalesce(_src_token_address_from_user, _src_token_address_from_caller, if(_src_token_native, {{ true_native_address }}, _src_token_address)) as src_token_address
+    , coalesce(_src_token_symbol_from_user, _src_token_symbol_from_caller, _src_token_symbol) as src_token_symbol
     , src_token_decimals
     , coalesce(_src_token_amount_true, src_token_amount) as src_token_amount
     , src_escrow
@@ -252,11 +267,11 @@ select
     , dst_block_number
     , dst_block_time
     , dst_tx_hash
-    , coalesce(_dst_token_address_to_user, _dst_token_address_to_receiver, if(_dst_token_native, {{ true_native_address }}, _dst_token_address)) as dst_token_address
-    , coalesce(_dst_token_symbol_to_user, _dst_token_symbol_to_receiver, _dst_token_symbol) as dst_token_symbol
+    , coalesce(_dst_token_address_to_user, _dst_token_address_to_receiver, _dst_token_address_to_caller, if(_dst_token_native, {{ true_native_address }}, _dst_token_address)) as dst_token_address
+    , coalesce(_dst_token_symbol_to_user, _dst_token_symbol_to_receiver, _dst_token_symbol_to_caller, _dst_token_symbol) as dst_token_symbol
     , dst_token_decimals
     , coalesce(_dst_token_amount_true, dst_token_amount) as dst_token_amount
-    , coalesce(sources_amount_usd, transfers_amount_usd) as amount_usd -- sources $ amount first if found prices, then $ amount of connector tokens
+    , coalesce(sources_amount_usd_trusted, sources_amount_usd, transfers_amount_usd_trusted, transfers_amount_usd) as amount_usd -- sources $ amount first if found prices, then $ amount of connector tokens
     , sources_amount_usd
     , transfers_amount_usd
     , greatest(coalesce(_amount_usd_from_user, 0), coalesce(_amount_usd_to_user, _amount_usd_to_receiver, 0)) as user_amount_usd -- actual user $ amount

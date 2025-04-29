@@ -3,13 +3,40 @@ sources:
   - name: tokens_ethereum
     tables:
       - name: balances_daily_agg
+      - name: balances_daily_agg_base
   - name: tokens_optimism
     tables:
       - name: balances_daily_agg
+      - name: balances_daily_agg_base
   - name: tokens_polygon
     tables:
       - name: balances_daily_agg
+      - name: balances_daily_agg_base
   - name: tokens_base
     tables:
       - name: balances_daily_agg
-  
+      - name: balances_daily_agg_base
+  - name: tokens_arbitrum
+    tables:
+      - name: balances_daily_agg
+      - name: balances_daily_agg_base
+  - name: tokens_avalanche_c
+    tables:
+      - name: balances_daily_agg
+      - name: balances_daily_agg_base
+  - name: tokens_fantom
+    tables:
+      - name: balances_daily_agg
+      - name: balances_daily_agg_base
+  - name: tokens_gnosis
+    tables:
+      - name: balances_daily_agg
+      - name: balances_daily_agg_base
+  - name: tokens_linea
+    tables:
+      - name: balances_daily_agg
+      - name: balances_daily_agg_base
+  - name: tokens_scroll
+    tables:
+      - name: balances_daily_agg
+      - name: balances_daily_agg_base

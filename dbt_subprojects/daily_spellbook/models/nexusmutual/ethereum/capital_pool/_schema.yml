@@ -9,7 +9,7 @@ models:
     config:
       tags: ["ethereum", "nexusmutual", "capital_pool"]
     description: "Token transfers in the Nexus Mutual Capital Pool"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_time
@@ -21,33 +21,49 @@ models:
       - &block_time
         name: block_time
         description: "UTC event block time of each transfer"
-        tests:
+        data_tests:
           - not_null
       - &block_number
         name: block_number
         description: "Block number of each transfer"
-        tests:
+        data_tests:
           - not_null
       - &block_date
         name: block_date
         description: "UTC event block date of each transfer"
-        tests:
+        data_tests:
           - not_null
       - &transfer_type
         name: transfer_type
         description: "Transfer type: in/out (inflow/outflow)"
-        tests:
+        data_tests:
           - not_null
+      - &from_address
+        name: from_address
+        description: "Address initiating the transfer"
+        data_tests:
+          - not_null
+      - &to_address
+        name: to_address
+        description: "Address receiving the transfer"
+        data_tests:
+          - not_null
+      - &from_address_type
+        name: from_address_type
+        description: "Type of the address initiating the transfer (e.g., capital pool, swap operator)"
+      - &to_address_type
+        name: to_address_type
+        description: "Type of the address receiving the transfer (e.g., capital pool, swap operator)"
       - &symbol
         name: symbol
         description: "Token symbol for transferred token"
-        tests:
+        data_tests:
           - not_null
       - &amount
         name: amount
         description: "Token amount for transferred token"
-      - &contract_address
-        name: contract_address
+      - &token_contract_address
+        name: token_contract_address
         description: "Contract address of the transferred token"
       - &unique_key
         name: unique_key
@@ -55,7 +71,7 @@ models:
       - &tx_hash
         name: tx_hash
         description: "unique transaction hash value tied to each token transfer"
-        tests:
+        data_tests:
           - not_null
 
   - name: nexusmutual_ethereum_capital_pool_totals
@@ -66,7 +82,7 @@ models:
     config:
       tags: ["ethereum", "nexusmutual", "capital_pool"]
     description: "Daily running totals for core tokens in the Nexus Mutual Capital Pool"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -81,6 +97,9 @@ models:
       - &avg_usdc_usd_price
         name: avg_usdc_usd_price
         description: "Daily average USDC/USD price"
+      - &avg_cbbtc_usd_price
+        name: avg_cbbtc_usd_price
+        description: "Daily average cbBTC/USD price"
       - &avg_capital_pool_eth_total
         name: avg_capital_pool_eth_total
         description: "Daily average Capital Pool total expressed in ETH"
@@ -135,6 +154,15 @@ models:
       - &avg_usdc_eth_total
         name: avg_usdc_eth_total
         description: "Daily average USDC total in the Capital Pool expressed in ETH"
+      - &cbbtc_total
+        name: cbbtc_total
+        description: "Daily cbBTC total in the Capital Pool"
+      - &avg_cbbtc_usd_total
+        name: avg_cbbtc_usd_total
+        description: "Daily average cbBTC total in the Capital Pool expressed in USD"
+      - &avg_cbbtc_eth_total
+        name: avg_cbbtc_eth_total
+        description: "Daily average cbBTC total in the Capital Pool expressed in ETH"
       - &cover_re_usdc_total
         name: cover_re_usdc_total
         description: "Daily Cover Re USDC Investment total"
@@ -168,7 +196,7 @@ models:
     config:
       tags: ["ethereum", "nexusmutual", "capital_pool"]
     description: "Latest totals for core tokens in the Nexus Mutual Capital Pool"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -177,6 +205,7 @@ models:
       - *avg_eth_usd_price
       - *avg_dai_usd_price
       - *avg_usdc_usd_price
+      - *avg_cbbtc_usd_price
       - *avg_capital_pool_eth_total
       - *avg_capital_pool_usd_total
       - *eth_total
@@ -195,6 +224,9 @@ models:
       - *usdc_total
       - *avg_usdc_usd_total
       - *avg_usdc_eth_total
+      - *cbbtc_total
+      - *avg_cbbtc_usd_total
+      - *avg_cbbtc_eth_total
       - *cover_re_usdc_total
       - *avg_cover_re_usdc_usd_total
       - *avg_cover_re_usdc_eth_total
@@ -212,7 +244,7 @@ models:
     config:
       tags: ["ethereum", "nexusmutual", "capital_pool"]
     description: "Minimum Capital Requirement (MCR) in the Nexus Mutual Capital Pool"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -236,8 +268,8 @@ models:
       contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "capital_pool"]
-    description: "Combined daily avg prices for base assets: ETH, DAI, USDC and NXM"
-    tests:
+    description: "Combined daily avg prices for base assets: ETH, DAI, USDC, cbBTC and NXM"
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -246,6 +278,7 @@ models:
       - *avg_eth_usd_price
       - *avg_dai_usd_price
       - *avg_usdc_usd_price
+      - *avg_cbbtc_usd_price
       - &avg_nxm_eth_price
         name: avg_nxm_eth_price
         description: "Daily average NXM/ETH price"
@@ -253,26 +286,70 @@ models:
         name: avg_nxm_usd_price
         description: "Daily average NXM/USD price"
 
-
-  # to be deprecated:
-  - name: nexusmutual_ethereum_capital_pool_eth_daily_transaction_summary
+  - name: nexusmutual_ethereum_swap_order_placed
     meta:
       blockchain: ethereum
       project: nexusmutual
-      contributors: [guyhow]
+      contributors: tomfutago
     config:
-      tags: ["ethereum","nexusmutual","trades"]
-    description: >
-        Daily summary for ethereum entering and leaving the nexus mutual capital pool contracts
+      tags: ["ethereum", "nexusmutual", "swaps"]
+    description: "swap/limit orders placed"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - order_id
     columns:
-      - &day
-        name: day
-        description: "Table primary key: day of summarised transctions"
-        tests:
-          - unique
-      - &eth_ingress
-        name: ingress ethereum
-        description: "Sum of incoming transctions over the time covered by day"
-      - &eth_egress
-        name: egress ethereum
-        description: "Sum of outgoing transctions over the time covered by day"
+      - *block_time
+      - *block_date
+      - *block_number
+      - &capital_pool_contract
+        name: capital_pool_contract
+      - &swap_operator_contract
+        name: swap_operator_contract
+      - &sell_token_symbol
+        name: sell_token_symbol
+      - &buy_token_symbol
+        name: buy_token_symbol
+      - &sell_amount
+        name: sell_amount
+      - &buy_amount
+        name: buy_amount
+      - &fee_amount_raw
+        name: fee_amount_raw
+      - &partially_fillable
+        name: partially_fillable
+      - &order_id
+        name: order_id
+      - *tx_hash
+
+  - name: nexusmutual_ethereum_swap_order_closed
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "swaps"]
+    description: "swap/limit orders closed"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - fill_type
+            - tx_hash
+    columns:
+      - *block_time
+      - *block_date
+      - *block_number
+      - &fill_type
+        name: fill_type
+      - *swap_operator_contract
+      - *capital_pool_contract
+      - *sell_token_symbol
+      - *buy_token_symbol
+      - *sell_amount
+      - *buy_amount
+      - &fill_amount
+        name: fill_amount
+      - *partially_fillable
+      - *tx_hash

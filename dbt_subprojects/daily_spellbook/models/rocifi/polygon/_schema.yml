@@ -12,5 +12,5 @@ models:
     columns:
       - name: address
         description: "Test addresses used to test in Production"
-        tests:
+        data_tests:
           - unique

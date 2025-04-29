@@ -31,6 +31,6 @@ models:
       - &unique_signature_id
         name: unique_signature_id
         description:  unique signature id
-        tests:
+        data_tests:
           - unique
           - not_null

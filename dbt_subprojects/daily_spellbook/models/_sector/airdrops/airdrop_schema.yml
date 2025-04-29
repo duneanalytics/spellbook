@@ -10,7 +10,7 @@ models:
     config:
       tags: ['table', 'airdrop', 'ethereum', 'optimism', 'arbitrum', 'avalanche_c', 'bnb', 'gnosis', 'zksync', 'claim']
     description: "List of claim transactions for all airdrops"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -30,7 +30,7 @@ models:
       - &project
         name: project
         description: "Project name"
-        tests:
+        data_tests:
           - relationships:
               to: ref('airdrop_info')
               field: project
@@ -74,7 +74,7 @@ models:
       tags: ['airdrop', 'ethereum', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'zksync', 'info']
     description: >
         Airdrop info
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project

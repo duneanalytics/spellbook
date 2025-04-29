@@ -6,11 +6,11 @@ models:
       blockchain: ethereum
       sector: labels
       project: balancer_v1
-      contributors: balancerlabs
+      contributors: balancerlabs, viniabussafi
     config:
       tags: ['labels', 'ethereum', 'balancer', 'pools']
     description: "Balancer V1 liquidity pools created on Ethereum. "
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -51,7 +51,7 @@ models:
       blockchain: ethereum
       sector: labels
       project: balancer_v1
-      contributors: balancerlabs
+      contributors: balancerlabs, viniabussafi
     config:
       tags: ['labels', 'ethereum', 'balancer', 'pools']
     description: "Balancer V1 liquidity pools created across blockchains."
@@ -76,7 +76,7 @@ models:
     config:
       tags: ['labels', 'ethereum', 'balancer', 'pools']
     description: 'Balancer V2 liquidity pools created on Ethereum. '
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -105,7 +105,7 @@ models:
     config:
       tags: ['labels', 'polygon', 'balancer', 'pools']
     description: 'Balancer V2 liquidity pools created on Polygon.'
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -130,7 +130,7 @@ models:
     config:
       tags: ['labels', 'gnosis', 'balancer', 'pools']
     description: 'Balancer V2 liquidity pools created on Gnosis.'
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -155,7 +155,7 @@ models:
     config:
       tags: ['labels', 'avalanche_c', 'balancer', 'pools']
     description: 'Balancer V2 liquidity pools created on Avalanche Chain.'
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -180,7 +180,7 @@ models:
     config:
       tags: ['labels', 'base', 'balancer', 'pools']
     description: 'Balancer V2 liquidity pools created on Base Chain.'
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -205,7 +205,7 @@ models:
     config:
       tags: ['labels', 'arbitrum', 'balancer', 'pools']
     description: 'Balancer V2 liquidity pools created on Arbitrum.'
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -230,7 +230,7 @@ models:
     config:
       tags: ['labels', 'optimism', 'balancer', 'pools']
     description: 'Balancer V2 liquidity pools created on Optimism.'
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -255,7 +255,7 @@ models:
     config:
       tags: ['labels', 'zkevm', 'balancer', 'pools']
     description: 'Balancer V2 liquidity pools created on Polygon zkevm.'
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -305,3 +305,124 @@ models:
       - *updated_at
       - *model_name
       - *label_type
+
+  - name: labels_balancer_v3_pools_ethereum
+    meta:
+      blockchain: ethereum
+      sector: labels
+      project: balancer_v3
+      contributors: balancerlabs, viniabussafi
+    config:
+      tags: ['labels', 'ethereum', 'balancer', 'pools']
+    description: 'Balancer V3 liquidity pools created on Ethereum.'
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
+  - name: labels_balancer_v3_pools_gnosis
+    meta:
+      blockchain: gnosis
+      sector: labels
+      project: balancer_v3
+      contributors: balancerlabs, viniabussafi
+    config:
+      tags: ['labels', 'gnosis', 'balancer', 'pools']
+    description: 'Balancer V3 liquidity pools created on Gnosis.'
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
+  - name: labels_balancer_v3_pools_arbitrum
+    meta:
+      blockchain: arbitrum
+      sector: labels
+      project: balancer_v3
+      contributors: balancerlabs, viniabussafi
+    config:
+      tags: ['labels', 'arbitrum', 'balancer', 'pools']
+    description: 'Balancer V3 liquidity pools created on Arbitrum.'
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
+  - name: labels_balancer_v3_pools_base
+    meta:
+      blockchain: base
+      sector: labels
+      project: balancer_v3
+      contributors: balancerlabs, viniabussafi
+    config:
+      tags: ['labels', 'base', 'balancer', 'pools']
+    description: 'Balancer V3 liquidity pools created on Base.'
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
+  - name: labels_balancer_v3_pools
+    meta:
+      blockchain: ethereum, gnosis
+      sector: labels
+      project: balancer_v3
+      contributors: balancerlabs, viniabussafi
+    config:
+      tags: ['labels', 'ethereum', 'gnosis', 'balancer', 'pools']
+    description: 'Balancer V3 liquidity pools created across blockchains.'
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type      

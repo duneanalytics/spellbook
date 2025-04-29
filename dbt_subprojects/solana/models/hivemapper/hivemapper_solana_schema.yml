@@ -8,7 +8,7 @@ models:
       contributors: [ilemi, alexus98]
     config:
       tags: ['hivemapper', 'solana', 'reward', 'honey']
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_id
@@ -25,7 +25,7 @@ models:
       - name: block_slot
       - name: action
       - name: amount
-        tests:
+        data_tests:
           - dbt_utils.accepted_range:
               max_value: 1000000000000000 # maximum reward of 1 million HONEY * 1e9 (9 decimal places)
               min_value: 0

@@ -12,3 +12,15 @@ sources:
     tables:
       - name: ZebraV2Pool_evt_Mint
       - name: ZebraV2Pool_evt_Burn
+
+  - name: maverick_v2_scroll
+    description: "Scroll decoded tables related to Maveric v2 contract"
+    tables:
+      - name: V2Pool_evt_PoolAddLiquidity
+      - name: V2Pool_evt_PoolRemoveLiquidity
+
+  - name: nuri_scroll
+    description: "Scroll decoded tables related to Nuri DEX contract"
+    tables:
+      - name: ClPool_evt_Mint
+      - name: ClPool_evt_Collect

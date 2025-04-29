@@ -15,32 +15,32 @@ models:
       - &symbol
         name: symbol
         description: "The symbol of the itoken"
-        tests:
+        data_tests:
           - not_null
       - &contract_address
         name: contract_address
         description: "The contract address of the itoken"
-        tests:
+        data_tests:
           - not_null
       - &decimals
         name: decimals
         description: "The decimals of the itoken"
-        tests:
+        data_tests:
           - not_null
       - &underlying_token_address
         name: underlying_token_address
         description: "The underlying address of the itoken"
-        tests:
+        data_tests:
           - not_null
       - &underlying_decimals
         name: underlying_decimals
         description: "The underlying decimals of the itoken"
-        tests:
+        data_tests:
           - not_null
       - &underlying_symbol
         name: underlying_symbol
         description: "The underlying symbol of the itoken"
-        tests:
+        data_tests:
           - not_null
   - name: ironbank_ethereum_borrow
     meta:

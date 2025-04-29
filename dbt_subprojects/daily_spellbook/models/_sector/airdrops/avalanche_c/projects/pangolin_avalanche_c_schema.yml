@@ -10,7 +10,7 @@ models:
     config:
       tags: ['table', 'airdrop', 'avalanche_c', 'claim', 'pangolin']
     description: "List of claim transactions for the $PNG airdrop"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash

@@ -10,7 +10,7 @@ models:
     config:
       tags: ['lending', 'flashloans', 'aave', 'ethereum']
     description: "All lending flashloans transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -19,27 +19,27 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain name"
-        tests:
+        data_tests:
           - not_null
       - &project
         name: project
         description: "Project name"
-        tests:
+        data_tests:
           - not_null
       - &version
         name: version
         description: "Version of the contract built and deployed by the lending project"
-        tests:
+        data_tests:
           - not_null
       - &recipient
         name: recipient
         description: "recipient wallet address"
-        tests:
+        data_tests:
           - not_null
       - &amount
         name: amount
         description: "Token amount present in the transaction"
-        tests:
+        data_tests:
           - not_null
       - &fee
         name: fee
@@ -50,27 +50,27 @@ models:
         name: token_address
       - &project_contract_address
         name: project_contract_address
-        tests:
+        data_tests:
           - not_null
       - &block_time
         name: block_time
         description: "Timestamp for block event time in UTC"
-        tests:
+        data_tests:
           - not_null
       - &block_number
         name: block_number
         description: "Event block number"
-        tests:
+        data_tests:
           - not_null
       - &tx_hash
         name: tx_hash
         description: "Transaction hash of the event"
-        tests:
+        data_tests:
           - not_null
       - &evt_index
         name: evt_index
         description: "Event index"
-        tests:
+        data_tests:
           - not_null
 
   - name: aave_v1_ethereum_base_flashloans
@@ -82,7 +82,7 @@ models:
     config:
       tags: ['lending', 'flashloans', 'aave', 'ethereum']
     description: "Aave v1 flashloans transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -115,7 +115,7 @@ models:
     config:
       tags: ['lending', 'flashloans', 'aave', 'ethereum']
     description: "Aave v2 flashloans transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -148,7 +148,7 @@ models:
     config:
       tags: ['lending', 'flashloans', 'aave', 'ethereum']
     description: "Aave v3 flashloans transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -181,13 +181,46 @@ models:
     config:
       tags: ['lending', 'flashloans', 'aave', 'lido', 'ethereum']
     description: "Aave v3 flashloans transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
             - evt_index
       - check_lending_base_flashloans_seed:
           seed_file: ref('aave_lido_ethereum_base_flashloans_seed')
+          filter:
+            version: 3
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *recipient
+      - *amount
+      - *fee
+      - *token_address
+      - *project_contract_address
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+
+  - name: aave_etherfi_v3_ethereum_base_flashloans
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: aave_etherfi
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'flashloans', 'aave', 'etherfi', 'ethereum']
+    description: "Aave v3 flashloans transactions on Ethereum"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_lending_base_flashloans_seed:
+          seed_file: ref('aave_etherfi_ethereum_base_flashloans_seed')
           filter:
             version: 3
     columns:
@@ -214,7 +247,7 @@ models:
     config:
       tags: ['lending', 'flashloans', 'aave', 'radiant', 'ethereum']
     description: "Radiant flashloans transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -245,7 +278,7 @@ models:
     config:
       tags: ['lending', 'flashloans', 'aave', 'uwulend', 'ethereum']
     description: "Uwulend flashloans transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -276,7 +309,7 @@ models:
     config:
       tags: ['lending', 'flashloans', 'aave', 'spark', 'ethereum']
     description: "Spark Protocol flashloans transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -307,7 +340,7 @@ models:
     config:
       tags: ['lending', 'flashloans', 'aave', 'granary', 'ethereum']
     description: "Granary flashloans transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -338,7 +371,7 @@ models:
     config:
       tags: ['lending', 'flashloans', 'balancer', 'ethereum']
     description: "Balancer flashloans transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -367,7 +400,7 @@ models:
     config:
       tags: ['lending', 'flashloans', 'morpho', 'ethereum']
     description: "Morpho flashloans transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash

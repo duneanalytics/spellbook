@@ -10,7 +10,7 @@ models:
       tags: ['dex', 'mev', 'sandwiches', 'solana']
     description: >
       DEX MEV Sandwich Trades on Solana
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -103,7 +103,7 @@ models:
       tags: ['dex', 'mev', 'sandwiched', 'solana']
     description: >
       DEX MEV Sandwiched Trades on Solana
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

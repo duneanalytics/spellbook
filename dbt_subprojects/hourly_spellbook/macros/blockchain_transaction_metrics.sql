@@ -10,8 +10,9 @@ from (
     time
     ,lag(time) over (order by "time" asc) as lag_time
     from {{source(blockchain,'blocks')}}
+    where number > 0 --some chains have a genesis block with number 0 and dummy timestamp
     {% if is_incremental() %}
-    where {{ incremental_predicate('time') }}
+    and {{ incremental_predicate('time') }}
     {% endif %}
 )
 group by 1,2

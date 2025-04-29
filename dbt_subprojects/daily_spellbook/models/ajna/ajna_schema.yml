@@ -9,7 +9,7 @@ models:
     config:
       tag: ['ajna', 'cross-chain', 'borrowing', 'lending']
       description: 'All deployed ERC-20 pools across all chains on Ajna'
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

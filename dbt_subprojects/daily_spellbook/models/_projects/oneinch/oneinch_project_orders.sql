@@ -17,6 +17,8 @@
         'block_number',
         'block_time',
         'tx_hash',
+        'tx_from',
+        'tx_to',
         'method',
         'call_selector',
         'call_trace_address',
@@ -125,6 +127,8 @@ meta as (
         , coalesce(order_hash, concat(tx_hash, to_big_endian_32(cast(counter as int)))) as order_hash
         , call_trade
         , any_value(block_time) as block_time
+        , any_value(tx_from) as tx_from
+        , any_value(tx_to) as tx_to
         , any_value(project) as project
         , any_value(call_selector) as call_selector
         , any_value(call_from) as call_from
@@ -160,6 +164,8 @@ select
     , block_number
     , block_time
     , tx_hash
+    , tx_from
+    , tx_to
     , project
     , call_trace_address
     , call_selector

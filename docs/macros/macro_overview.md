@@ -28,7 +28,7 @@ Following [this](/dbt_subprojects/dex/macros/models/_project/uniswap_compatible_
 - **Multiple Macros in One File**
   - It's common to have multiple macros within a single file, such as various versions of the uniswap contract code. Group similar macros together logically.
 
-Within models, such as uniswap v2, call macro code with [this approach](/dbt_subprojects/dex/target/compiled/dex/models/trades/ethereum/platforms/uniswap_v2_ethereum_base_trades.sql).
+Within models, such as uniswap v2, call macro code with [this approach](/dbt_subprojects/dex/models/trades/ethereum/platforms/uniswap_v2_ethereum_base_trades.sql).
 
 ## When to Use a Macro
 

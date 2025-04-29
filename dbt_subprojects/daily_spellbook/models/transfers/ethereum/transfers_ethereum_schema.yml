@@ -10,7 +10,7 @@ models:
     config:
       tags: ["transfers", "ethereum", "eth"]
     description: "Events of native ETH transfers on Ethereum."
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -33,7 +33,7 @@ models:
       - &tx_hash
         name: tx_hash
         description: "Primary key of the transaction"
-        tests:
+        data_tests:
           - not_null
       - name: trace_address
         description: "All returned traces, gives the exact location in the call trace"

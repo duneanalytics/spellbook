@@ -17,7 +17,7 @@ models:
       - &account_address
         name: account_address
         description: "Worldcoin user account (Safe) address"
-        tests:
+        data_tests:
           - unique
       - &created_time
         name: created_time

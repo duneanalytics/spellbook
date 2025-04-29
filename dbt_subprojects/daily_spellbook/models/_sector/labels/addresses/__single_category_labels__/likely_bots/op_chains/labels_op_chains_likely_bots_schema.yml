@@ -10,7 +10,7 @@ models:
     config:
       tags: ['labels', 'optimism','base','op chain','bots']
     description: "Likely bot contract labels"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -22,12 +22,12 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain"
-        tests:
+        data_tests:
           - not_null
       - &address
         name: address
         description: "Address"
-        tests:
+        data_tests:
           - not_null
       - &name
         name: name
@@ -63,7 +63,7 @@ models:
     config:
       tags: ['labels', 'optimism','base','op chain','bots']
     description: "Likely bot address labels"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address

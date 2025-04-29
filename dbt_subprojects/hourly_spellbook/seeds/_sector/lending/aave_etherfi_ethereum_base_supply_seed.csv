@@ -1,0 +1,3 @@
+blockchain,project,version,block_number,block_time,tx_hash,evt_index,transaction_type,token_address,depositor,amount
+ethereum,aave_etherfi,3,20752986,2024-09-15 02:19:59.000 UTC,0x65e3cb2d48b81de680b62714f663e144e9ee04927f9321c810f40602b329238c,202,deposit,0xcd5fe23c85820f7b72d0926fc9b05b43e359b7ee,0x9dbc5e35a2f1a6dc214bdb7ed7a8c706d77f0a74,9.54280867878683e+18
+ethereum,aave_etherfi,3,20740462,2024-09-13 08:20:23.000 UTC,0xab48c34bc87037ef9780b365dcb25d9800a6b3a847f1148d9b3dbd4c5f92b475,152,withdraw,0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48,0x829bfb482331b9dc2becb5483eca79c0578c3a45,-1.63586567e+08

@@ -1,16 +1,17 @@
 {{ config(
         schema = 'odos',
         alias = 'trades',
-        post_hook='{{ expose_spells(\'["optimism", "ethereum"]\',
+        post_hook='{{ expose_spells(\'["optimism", "ethereum", "base", "arbitrum"]\',
                                 "project",
                                 "odos",
-                                \'["Henrystats", "amalashkevich"]\') }}'
+                                \'["Henrystats", "amalashkevich","lequangphu"]\') }}'
         )
 }}
 
 {% set odos_models = [
   ref('odos_ethereum_trades'),
   ref('odos_optimism_trades'),
+  ref('odos_arbitrum_trades'),
   ref('odos_base_trades')
 ] %}
 

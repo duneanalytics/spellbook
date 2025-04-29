@@ -57,7 +57,7 @@ models:
       tags: ["optimism", "chainlink", "oracle"]
     description: >
       Table pulling price updates for known Chainlink oracle addresses, truncated to hourly average price for easier joining with other on-chain tables.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -88,7 +88,7 @@ models:
       tags: ["optimism", "chainlink", "oracle"]
     description: >
       Manually updated table for mapping chainlink feeds to proxy addresses and the aggregator addresses (where updates read to)
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - proxy_address
@@ -111,7 +111,7 @@ models:
       tags: ["chainlink", "ocr", "gas", "transmission", "logs", "optimism"]
     description: >
       Chainlink OCR Gas Transmission Logs
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -162,7 +162,7 @@ models:
       tags: ["chainlink", "ocr", "fulfilled", "transactions", "optimism"]
     description: >
       Chainlink OCR Fulfilled Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -196,7 +196,7 @@ models:
       tags: ["chainlink", "ocr", "reverted", "transactions", "optimism"]
     description: >
       Chainlink OCR Reverted Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -222,7 +222,7 @@ models:
       tags: ["chainlink", "ocr", "gas", "daily", "optimism"]
     description: >
       Chainlink OCR Gas Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -266,7 +266,7 @@ models:
       tags: ["chainlink", "ocr", "request", "daily", "optimism"]
     description: >
       Chainlink OCR Request Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -344,7 +344,7 @@ models:
         ["chainlink", "ocr", "reward", "evt", "transfer", "daily", "optimism"]
     description: >
       Chainlink OCR Reward Event Transfers Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -367,7 +367,7 @@ models:
       tags: ["chainlink", "ocr", "reward", "daily", "optimism"]
     description: >
       Chainlink OCR Reward Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -391,7 +391,7 @@ models:
       tags: ["chainlink", "fm", "gas", "daily", "optimism"]
     description: >
       Chainlink FM Gas Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -419,7 +419,7 @@ models:
       tags: ["chainlink", "fm", "gas", "submission", "logs", "optimism"]
     description: >
       Chainlink FM Gas Transmission Logs
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -450,7 +450,7 @@ models:
       tags: ["chainlink", "fm", "fulfilled", "transactions", "optimism"]
     description: >
       Chainlink FM Fulfilled Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -476,7 +476,7 @@ models:
       tags: ["chainlink", "fm", "request", "daily", "optimism"]
     description: >
       Chainlink FM Request Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -501,7 +501,7 @@ models:
       tags: ["chainlink", "fm", "reverted", "transactions", "optimism"]
     description: >
       Chainlink FM Reverted Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -527,7 +527,7 @@ models:
       tags: ["chainlink", "fm", "reward", "daily", "optimism"]
     description: >
       Chainlink FM Reward Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -568,7 +568,7 @@ models:
         ["chainlink", "fm", "reward", "evt", "transfer", "daily", "optimism"]
     description: >
       Chainlink FM Reward Event Transfers Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -591,7 +591,7 @@ models:
       tags: ["chainlink", "read", "requests", "feeds", "daily", "optimism"]
     description: >
       Chainlink Read Requests Feeds Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -659,7 +659,7 @@ models:
       tags: ["chainlink", "read", "requests", "requester", "daily", "optimism"]
     description: >
       Chainlink Read Requests Requester Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -704,7 +704,7 @@ models:
       tags: ["chainlink", "ccip", "fulfilled", "transactions", "optimism"]
     description: >
       Chainlink CCIP Fulfilled Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -730,7 +730,7 @@ models:
       tags: ["chainlink", "ccip", "gas", "daily", "optimism"]
     description: >
       Chainlink CCIP Gas Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -758,7 +758,7 @@ models:
       tags: ["chainlink", "ccip", "request", "daily", "optimism"]
     description: >
       Chainlink CCIP Request Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -780,7 +780,7 @@ models:
       tags: ["chainlink", "ccip", "reverted", "transactions", "optimism"]
     description: >
       Chainlink CCIP Reverted Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -804,7 +804,7 @@ models:
       tags: ["chainlink", "ccip", "reward", "daily", "optimism"]
     description: >
       Chainlink CCIP Reward Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -853,7 +853,7 @@ models:
       tags: ["chainlink", "ccip", "send", "requested", "daily", "optimism"]
     description: >
       Chainlink CCIP Send Requested Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -915,7 +915,7 @@ models:
       tags: ["chainlink", "ccip", "tokens", "locked", "logs", "optimism"]
     description: >
       Chainlink CCIP Tokens Transferred Logs
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -948,7 +948,7 @@ models:
       tags: ["chainlink", "ccip", "tokens", "transferred", "optimism"]
     description: >
       Chainlink CCIP Tokens Transferred
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -977,7 +977,7 @@ models:
       tags: ["chainlink", "ccip", "transmitted", "fulfilled", "optimism"]
     description: >
       Chainlink CCIP Transmitted Fulfilled
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1003,7 +1003,7 @@ models:
       tags: ["chainlink", "ccip", "transmitted", "reverted", "optimism"]
     description: >
       Chainlink CCIP Transmitted Reverted
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1082,7 +1082,7 @@ models:
       tags: ["chainlink", "ccip", "nop", "reward", "daily", "optimism"]
     description: >
       Chainlink CCIP Nop Reward Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - date_start

@@ -9,7 +9,7 @@ models:
       tags: ['bridges','hop_protocol', 'flows', 'cross-chain', 'optimism']
     description: >
         Table aggregating bridge flows through Hop Protocol.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - block_date

@@ -10,7 +10,7 @@ models:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
       combined leverage data to get up to get most recent on v1 & v2
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_block_time
@@ -49,7 +49,7 @@ models:
       tags: [ 'tigris', 'perps', 'margin' ]
     description:
       "data on close posititions that includes margin on v1 & v2"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_tx_hash
@@ -104,7 +104,7 @@ models:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
       margin change data on v1 & v2
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_block_time
@@ -129,7 +129,7 @@ models:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
       liquidation data on v1 & v2
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_block_time

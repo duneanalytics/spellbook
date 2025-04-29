@@ -1,10 +1,11 @@
-
 version: 2
 
 sources:
   - name: prices
     description: "Prices tables across blockchains"
     tables:
+      - name: usd_0003
+        description: "raw, versioned USD prices table"
       - name: usd
         description: "USD prices across blockchains"
         meta:

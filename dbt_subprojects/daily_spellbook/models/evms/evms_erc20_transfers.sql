@@ -2,7 +2,35 @@
         schema='evms',
         alias = 'erc20_transfers',
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle"]\',
+        post_hook='{{ expose_spells(\'[
+                                        "abstract",
+                                        "apechain",
+                                        "arbitrum",
+                                        "avalanche_c",
+                                        "b3",
+                                        "base",
+                                        "berachain",
+                                        "blast",
+                                        "bnb",
+                                        "boba",
+                                        "celo",
+                                        "ethereum",
+                                        "fantom",
+                                        "gnosis",
+                                        "kaia",
+                                        "linea",
+                                        "mantle",
+                                        "optimism",
+                                        "polygon",
+                                        "ronin",
+                                        "scroll",
+                                        "sonic",
+                                        "zkevm",
+                                        "zksync",
+                                        "zora",
+                                        "opbnb",
+                                        "ink"
+                                        ]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -20,7 +48,6 @@
      , ('arbitrum', source('erc20_arbitrum', 'evt_transfer'))
      , ('celo', source('erc20_celo', 'evt_transfer'))
      , ('base', source('erc20_base', 'evt_transfer'))
-     , ('goerli', source('erc20_goerli', 'evt_transfer'))
      , ('zksync', source('erc20_zksync', 'evt_transfer'))
      , ('zora', source('erc20_zora', 'evt_transfer'))
      , ('scroll', source('erc20_scroll', 'evt_transfer'))
@@ -29,6 +56,16 @@
      , ('blast', source('erc20_blast', 'evt_transfer'))
      , ('mantle', source('erc20_mantle', 'evt_transfer'))
      , ('sei', source('erc20_sei', 'evt_transfer'))
+     , ('ronin', source('erc20_ronin', 'evt_transfer'))
+     , ('abstract', source('erc20_abstract', 'evt_transfer'))
+     , ('boba', source('erc20_boba', 'evt_transfer'))
+     , ('sonic', source('erc20_sonic', 'evt_transfer'))
+     , ('kaia', source('erc20_kaia', 'evt_transfer'))
+     , ('apechain', source('erc20_apechain', 'evt_transfer'))
+     , ('berachain', source('erc20_berachain', 'evt_transfer'))
+     , ('b3', source('erc20_b3', 'evt_transfer'))
+     , ('opbnb', source('erc20_opbnb', 'evt_transfer'))
+     , ('ink', source('erc20_ink', 'evt_transfer'))
 ] %}
 
 SELECT *

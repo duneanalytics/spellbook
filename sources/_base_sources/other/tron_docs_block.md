@@ -36,3 +36,33 @@ The `tron.logs` table contains event logs emitted by smart contracts on the Tron
 This table is used for tracking contract events and state changes on the Tron network, enabling detailed analysis of smart contract interactions and decentralized application (DApp) activity.
 {% enddocs %}
 
+{% docs erc20_tron_evt_transfer_doc %}
+
+The `erc20_tron.evt_transfer` table contains Transfer events for ERC20 tokens on the tron blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- From and to addresses
+- Amount transferred
+
+This table is used for tracking ERC20 token movements on the tron network.
+
+Please be aware that this table is the raw ERC20 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use `tokens.transfers` for a more complete and curated view of token transfers.
+
+{% enddocs %}
+
+{% docs erc20_tron_evt_approval_doc %}
+
+The `erc20_tron.evt_approval` table contains Approval events for ERC20 tokens on the tron blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- Owner and spender addresses
+- Approved amount
+
+This table is used for analyzing ERC20 token approvals and spending permissions on the tron network.
+
+{% enddocs %}
+

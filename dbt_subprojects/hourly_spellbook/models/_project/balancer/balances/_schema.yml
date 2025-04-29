@@ -9,7 +9,7 @@ models:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'bpt', 'supply', 'changes']
     description: >
       Token Balance Changes on Balancer Pools.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -71,7 +71,7 @@ models:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'bpt', 'supply', 'changes']
     description: >
       Token Balance Changes on Balancer Pools, grouped by day.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date

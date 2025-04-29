@@ -1,6 +1,6 @@
 {{ config
 (
-    
+
     schema = 'kyberswap_aggregator_arbitrum',
     alias = 'trades',
     partition_by = ['block_month'],
@@ -36,9 +36,12 @@ WITH meta_router AS
             ,ARRAY[-1]              AS trace_address
         FROM
             {{ source('kyber_arbitrum', 'MetaAggregationRouterV2_evt_Swapped') }}
-        {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - INTERVAL '7' DAY)
-        {% endif %}
+        WHERE
+            dstToken not in (0x7d3eedb40fbecd9fba383504e066fdf67382a835 --bug with MTK token
+                        ,0x2C29c2Bbdcb8c5de36FA3dBe0e7797B5396B0E61) --bug with MyToken token
+            {% if is_incremental() %}
+            AND {{incremental_predicate('evt_block_time')}}
+            {% endif %}
 )
 SELECT
     'arbitrum'                                                          AS blockchain
@@ -77,7 +80,7 @@ FROM meta_router
 INNER JOIN {{ source('arbitrum', 'transactions')}} tx
     ON meta_router.tx_hash = tx.hash
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - INTERVAL '7' DAY)
+    AND {{incremental_predicate('tx.block_time')}}
     {% else %}
     AND tx.block_time >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
@@ -92,7 +95,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.contract_address = meta_router.token_bought_address
     AND p_bought.blockchain = 'arbitrum'
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc('day', now() - INTERVAL '7' DAY)
+    AND {{incremental_predicate('p_bought.minute')}}
     {% else %}
     AND p_bought.minute >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
@@ -101,7 +104,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.contract_address = meta_router.token_sold_address
     AND p_sold.blockchain = 'arbitrum'
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc('day', now() - INTERVAL '7' DAY)
+    AND {{incremental_predicate('p_sold.minute')}}
     {% else %}
     AND p_sold.minute >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
@@ -110,7 +113,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_eth
     AND p_eth.blockchain IS NULL
     AND p_eth.symbol = 'ETH'
     {% if is_incremental() %}
-    AND p_eth.minute >= date_trunc('day', now() - INTERVAL '7' DAY)
+    AND {{incremental_predicate('p_eth.minute')}}
     {% else %}
     AND p_eth.minute >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}

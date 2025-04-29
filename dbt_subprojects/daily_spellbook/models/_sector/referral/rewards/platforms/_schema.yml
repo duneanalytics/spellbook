@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: zora_ethereum_rewards
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project
@@ -12,23 +12,23 @@ models:
       - &project
         name: project
         description: "Project"
-        tests:
+        data_tests:
           - not_null
       - &tx_hash
         name: tx_hash
         description: "transaction hash"
-        tests:
+        data_tests:
           - not_null
       - &category
         name:  category
         description: "project category (NFT/AMM/Staking/...)"
-        tests:
+        data_tests:
           - accepted_values:
                 values: [ 'NFT', 'AMM', 'Quest', 'Staking' ]
       - &referrer_address
         name:  referrer_address
         description: "address of the person making the referral"
-        tests:
+        data_tests:
           - not_null
       - &referee_address
         name:  referee_address
@@ -36,31 +36,31 @@ models:
       - &currency_contract
         name:  currency_contract
         description: "contract address of the currency"
-        tests:
+        data_tests:
           - not_null
       - &reward_amount_raw
         name:  reward_amount_raw
         description: "raw reward amount"
-        tests:
+        data_tests:
           - not_null
       - &sub_tx_id
         name: sub_tx_id
         description: "id to distinguish multiple rewards in 1 transaction. Often the event index"
-        tests:
+        data_tests:
           - not_null
       - &tx_from
         name: tx_from
         description: "transaction from address"
-        tests:
+        data_tests:
           - not_null
       - &tx_to
         name: tx_to
         description: "transaction to address"
-        tests:
+        data_tests:
           - not_null
 
   - name: zora_base_rewards
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project
@@ -80,7 +80,7 @@ models:
 
 
   - name: zora_optimism_rewards
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project
@@ -99,7 +99,7 @@ models:
       - *tx_to
 
   - name: zora_zora_rewards
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project
@@ -119,7 +119,7 @@ models:
 
 
   - name: rabbithole_arbitrum_rewards
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project
@@ -139,7 +139,7 @@ models:
 
 
   - name: rabbithole_base_rewards
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project
@@ -159,7 +159,7 @@ models:
 
 
   - name: rabbithole_optimism_rewards
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project
@@ -179,7 +179,7 @@ models:
 
 
   - name: rabbithole_polygon_rewards
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project
@@ -199,7 +199,7 @@ models:
 
 
   - name: soundxyz_v1_ethereum_rewards
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project
@@ -219,7 +219,7 @@ models:
 
 
   - name: soundxyz_v1_optimism_rewards
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project
@@ -238,7 +238,7 @@ models:
       - *tx_to
 
   - name: soundxyz_v2_ethereum_rewards
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project
@@ -265,7 +265,7 @@ models:
       - *tx_to
 
   - name: soundxyz_v2_optimism_rewards
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project
@@ -292,7 +292,7 @@ models:
       - *tx_to
 
   - name: soundxyz_v2_base_rewards
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project
@@ -319,7 +319,7 @@ models:
       - *tx_to
 
   - name: slugs_optimism_rewards
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project
@@ -346,7 +346,7 @@ models:
       - *tx_to
 
   - name: mintfun_ethereum_rewards
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project
@@ -365,7 +365,7 @@ models:
       - *tx_to
 
   - name: mintfun_optimism_rewards
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project
@@ -384,7 +384,7 @@ models:
       - *tx_to
 
   - name: mintfun_base_rewards
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project
@@ -403,7 +403,7 @@ models:
       - *tx_to
 
   - name: mintfun_zora_rewards
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project
@@ -422,7 +422,7 @@ models:
       - *tx_to
 
   - name: mirror_optimism_rewards
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project
@@ -449,7 +449,7 @@ models:
       - *tx_to
 
   - name: mirror_base_rewards
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project
@@ -476,7 +476,7 @@ models:
       - *tx_to
 
   - name: paragraph_optimism_rewards
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project
@@ -503,7 +503,7 @@ models:
       - *tx_to
 
   - name: paragraph_base_rewards
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project
@@ -530,7 +530,7 @@ models:
       - *tx_to
 
   - name: paragraph_zora_rewards
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project
@@ -557,7 +557,7 @@ models:
       - *tx_to
 
   - name: paragraph_polygon_rewards
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project
@@ -584,7 +584,7 @@ models:
       - *tx_to
 
   - name: fabric_base_rewards
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project
@@ -603,7 +603,7 @@ models:
       - *tx_to
 
   - name: fabric_ethereum_rewards
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project
@@ -622,7 +622,7 @@ models:
       - *tx_to
 
   - name: fabric_optimism_rewards
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project
@@ -641,7 +641,7 @@ models:
       - *tx_to
 
   - name: fabric_zora_rewards
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project
@@ -660,7 +660,7 @@ models:
       - *tx_to
 
   - name: basepaint_base_rewards
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project

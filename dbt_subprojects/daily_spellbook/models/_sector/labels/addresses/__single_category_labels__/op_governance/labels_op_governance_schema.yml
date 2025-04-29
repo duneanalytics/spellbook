@@ -10,7 +10,7 @@ models:
     config:
       tags: ['labels', 'optimism', 'voters', 'governance']
     description: '{{ doc("op_address_archetype_labels_description") }}'
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -59,7 +59,7 @@ models:
     config:
       tags: ['labels', 'optimism', 'delegators', 'governance']
     description: '{{ doc("op_address_archetype_labels_description") }}'
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -88,7 +88,7 @@ models:
     config:
       tags: ['labels', 'optimism', 'retropgf', 'proposal submitters', 'governance']
     description: '{{ doc("op_address_archetype_labels_description") }}'
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -118,7 +118,7 @@ models:
     config:
       tags: ['labels', 'optimism', 'retropgf', 'voters', 'governance']
     description: '{{ doc("op_address_archetype_labels_description") }}'
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -148,7 +148,7 @@ models:
     config:
       tags: ['labels', 'optimism', 'derived archetype', 'governance']
     description: '{{ doc("op_address_archetype_labels_description") }}'
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address

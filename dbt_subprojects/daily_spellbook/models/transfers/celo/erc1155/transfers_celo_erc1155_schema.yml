@@ -10,7 +10,7 @@ models:
     config:
       tags: ['transfers', 'celo', 'erc1155']
     description: "ERC1155 Token Transfers on Celo. This table is updated every 30 minutes."
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -35,12 +35,12 @@ models:
       - &block_month
         name: block_month
         description: "Block Month column used to partition data in this table"
-        tests:
+        data_tests:
           - not_null
       - &block_time
         name: block_time
         description: "Timestamp for block event time in UTC"
-        tests:
+        data_tests:
           - not_null
       - &token_id
         name: token_id
@@ -51,7 +51,7 @@ models:
       - &tx_hash
         name: tx_hash
         description: "Transaction hash"
-        tests:
+        data_tests:
           - not_null
 
   - name: transfers_celo_erc1155_agg_hour
@@ -63,7 +63,7 @@ models:
     config:
       tags: ['transfers', 'celo', 'erc1155', 'agg_hour', 'soispoke', 'dot2dotseurat', 'tomfutago']
     description: "A helper table to construct erc1155 balances"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - wallet_address
@@ -114,7 +114,7 @@ models:
     config:
       tags: ['transfers', 'celo', 'erc1155', 'agg_day', 'soispoke', 'dot2dotseurat', 'tomfutago']
     description: "A helper table to construct erc1155 balances"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - wallet_address

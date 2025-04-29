@@ -9,7 +9,7 @@ models:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'zkevm']
     description: >
       These tokens are whitelisted to be used as pricing assets on liquidity calculations for weighted pools, due to the trustability of their data.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -34,7 +34,7 @@ models:
       tags: ['ethereum', 'gauges']
     description: >
       These gauges are deployed by the SingleRecipientGauge contract and this mapping manually links each gauge to it's correspondent pool and project
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - gauge_address

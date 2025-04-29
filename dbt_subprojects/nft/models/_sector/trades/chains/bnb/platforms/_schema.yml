@@ -10,7 +10,7 @@ models:
       tags: [ 'bnb','tofu','v1','events' ]
     description: >
       Tofu v1 events on BSC
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -24,7 +24,7 @@ models:
     config:
       tags: [ 'liquidifty', 'nft', 'trades' ]
     description: "NFT trades on liquidifty on BNB blockchain"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -38,7 +38,7 @@ models:
       tags: [ 'bnb','nftb','v1','events' ]
     description: >
       nftb v1 events on bnb
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -52,7 +52,7 @@ models:
       tags: [ 'bnb','nftrade','v1','events' ]
     description: >
       nftrade v1 events on bnb
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]

@@ -10,7 +10,7 @@ models:
      tags: [ 'optimism','tofu','v1','trades' ]
    description: >
      Tofu v1 trades on Optimism
-   tests:
+   data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -24,7 +24,7 @@ models:
      tags: [ 'optimism','zonic', 'trades' ]
    description: >
      Zonic events on Optimism
-   tests:
+   data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -38,7 +38,7 @@ models:
      tags: [ 'optimism','quix', 'trades' ]
    description: >
      Quix trades on Optimism
-   tests:
+   data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -52,7 +52,7 @@ models:
      tags: [ 'optimism','quix', 'trades' ]
    description: >
      Quix trades on Optimism
-   tests:
+   data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -66,7 +66,7 @@ models:
      tags: [ 'optimism','quix', 'trades' ]
    description: >
      Quix trades on Optimism
-   tests:
+   data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -80,7 +80,7 @@ models:
      tags: [ 'optimism','quix', 'trades' ]
    description: >
      Quix trades on Optimism
-   tests:
+   data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -94,7 +94,7 @@ models:
      tags: [ 'optimism','quix', 'trades' ]
    description: >
      Quix trades on Optimism
-   tests:
+   data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -108,7 +108,7 @@ models:
    config:
      tags: [ 'optimism', 'nft', 'trades', 'element' ]
    description: "element base trades"
-   tests:
+   data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -142,7 +142,7 @@ models:
      tags: [ 'opensea','base_trades','seaport' ]
    description: >
      Opensea base trades from seaport (v3)
-   tests:
+   data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns:
@@ -175,7 +175,7 @@ models:
      tags: [ 'opensea','base_trades','seaport' ]
    description: >
      Opensea base trades from seaport (v4)
-   tests:
+   data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns:
@@ -208,7 +208,7 @@ models:
      tags: [ 'optimism','seaport','events','chuxin' ]
    description: >
      Quix Seaport events on Optimism
-   tests:
+   data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns:
@@ -222,7 +222,7 @@ models:
      project: nftearth
    config:
      tags: [ 'optimism','nftearth','trades' ]
-   tests:
+   data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns:

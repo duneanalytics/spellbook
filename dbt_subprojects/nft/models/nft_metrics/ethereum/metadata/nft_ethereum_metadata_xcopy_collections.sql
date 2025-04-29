@@ -18,7 +18,12 @@ from
 (
 select title, art_type, platform, edition_count, blockchain, token_standard, contract_address, min_token_id, max_token_id, category, link, mint_date
 from (VALUES
-        ('SH_MASH_MA', 'Edition', 'Manifold', 250, 'Ethereum', 'erc1155', 0x3e34ff1790bf0a13efd7d77e75870cb525687338, 7, 7, 'DAMAGE CONTROL', 'https://opensea.io/assets/ethereum/0x3e34ff1790bf0a13efd7d77e75870cb525687338/7','2024-07-25')
+        ('EMPIRE THINGS', 'Edition', 'Manifold', 42, 'Ethereum', 'erc1155', 0xbb6eefd83daab02fa1a697eb9d8495eec9f9b384, 3, 3, 'FRESH HELL', 'https://opensea.io/assets/ethereum/0xbb6eefd83daab02fa1a697eb9d8495eec9f9b384/3','2025-03-14')
+        , ('ICXN', 'Generative', 'Art Blocks', 500, 'Ethereum', 'erc721', 0xc04e0000726ed7c5b9f0045bc0c4806321bc6c65, 0, 499, '', 'https://opensea.io/collection/xcore-2', '2024-11-21')
+        , ('HEAVY', 'Edition', 'Manifold', 250, 'Ethereum', 'erc1155', 0x3e34ff1790bf0a13efd7d77e75870cb525687338, 10, 10, 'DAMAGE CONTROL', 'https://opensea.io/assets/ethereum/0x3e34ff1790bf0a13efd7d77e75870cb525687338/10','2024-11-08')
+        , ('REIGN', 'Edition', 'Manifold', 500, 'Ethereum', 'erc1155', 0x3e34ff1790bf0a13efd7d77e75870cb525687338, 9, 9, 'DAMAGE CONTROL', 'https://opensea.io/assets/ethereum/0x3e34ff1790bf0a13efd7d77e75870cb525687338/9','2024-11-07')
+        , ('BOT_ROT', 'Edition', 'Manifold', 250, 'Ethereum', 'erc1155', 0x3e34ff1790bf0a13efd7d77e75870cb525687338, 8, 8, 'DAMAGE CONTROL', 'https://opensea.io/assets/ethereum/0x3e34ff1790bf0a13efd7d77e75870cb525687338/8','2024-09-11')
+        , ('SH_MASH_MA', 'Edition', 'Manifold', 250, 'Ethereum', 'erc1155', 0x3e34ff1790bf0a13efd7d77e75870cb525687338, 7, 7, 'DAMAGE CONTROL', 'https://opensea.io/assets/ethereum/0x3e34ff1790bf0a13efd7d77e75870cb525687338/7','2024-07-25')
         , ('XOMBO', 'Edition', 'Manifold', 500, 'Ethereum', 'erc1155', 0x3e34ff1790bf0a13efd7d77e75870cb525687338, 6, 6, 'DAMAGE CONTROL', 'https://opensea.io/assets/ethereum/0x3e34ff1790bf0a13efd7d77e75870cb525687338/6','2024-07-25')
         , ('CRAWLER', 'Edition', 'Manifold', 500, 'Ethereum', 'erc1155', 0x3e34ff1790bf0a13efd7d77e75870cb525687338, 5, 5, 'DAMAGE CONTROL', 'https://opensea.io/assets/ethereum/0x3e34ff1790bf0a13efd7d77e75870cb525687338/5','2024-02-11')
         , ('CHURN', 'Edition', 'Manifold', 250, 'Ethereum', 'erc1155', 0x3e34ff1790bf0a13efd7d77e75870cb525687338, 4, 4, 'DAMAGE CONTROL', 'https://opensea.io/assets/ethereum/0x3e34ff1790bf0a13efd7d77e75870cb525687338/4','2024-01-15')
@@ -122,9 +127,12 @@ from (VALUES
         , ('E X P O S U R E', 'Edition', 'KnownOrigin', 25, 'Ethereum', 'erc721', 0xFBeef911Dc5821886e1dda71586d90eD28174B7d, 119326, 119350, '', 'https://opensea.io/collection/xcopy-knownorigin?search[stringTraits][0][name]=Tag&search[stringTraits][0][values][0]=exposure&search[sortAscending]=true&search[sortBy]=UNIT_PRICE','2020-01-20')
         , ('BLOOD BUBBLE', 'Edition', 'KnownOrigin', 25, 'Ethereum', 'erc721', 0xFBeef911Dc5821886e1dda71586d90eD28174B7d, 115026, 115050, '', 'https://opensea.io/collection/xcopy-knownorigin?search[collections][0]=xcopy-knownorigin&search[query]=blood%20bubble','2020-01-12')
         , ('BLOOD RUN', 'Unique', 'SuperRare', 1, 'Ethereum', 'erc721', 0xb932a70a57673d89f4acffbe830e8ed7f75fb9e0, 7009, 7009, '', 'https://superrare.com/artwork/eth/0xb932a70a57673d89f4acffbe830e8ed7f75fb9e0/7009','2020-01-11')
-        , ('THE RABBLE', 'Layer', 'Async Art', 44, 'Ethereum', 'erc721', 0xb6dAe651468E9593E4581705a09c10A76AC1e0c8, 432, 475, '', 'https://xcopy.art/works/the-rabble','2020-01-01')
+        , ('THE RABBLE 1/1', 'Unique', 'Async Art', 1, 'Ethereum', 'erc721', 0xb6dAe651468E9593E4581705a09c10A76AC1e0c8, 432, 432, '', 'https://xcopy.art/works/the-rabble','2020-01-01')
+        , ('BANKSTA 1/1', 'Unique', 'Async Art', 1, 'Ethereum', 'erc721', 0x6c424C25e9F1ffF9642cB5B7750b0Db7312c29ad, 28, 28, '', 'https://xcopy.art/works/banksta','2020-01-01')
+        , ('DOOM PARTY 1/1', 'Unique', 'Async Art', 1, 'Ethereum', 'erc721', 0xb6dAe651468E9593E4581705a09c10A76AC1e0c8, 199, 199, '', 'https://xcopy.art/works/doom-party','2020-01-01')
+        , ('THE RABBLE', 'Layer', 'Async Art', 43, 'Ethereum', 'erc721', 0xb6dAe651468E9593E4581705a09c10A76AC1e0c8, 433, 475, '', 'https://xcopy.art/works/the-rabble','2020-01-01')
         , ('BANKSTA', 'Layer', 'Async Art', 8, 'Ethereum', 'erc721', 0x6c424C25e9F1ffF9642cB5B7750b0Db7312c29ad, 29, 36, '', 'https://xcopy.art/works/banksta','2020-01-01')
-        , ('DOOM PARTY', 'Layer', 'Async Art', 12, 'Ethereum', 'erc721', 0xb6dAe651468E9593E4581705a09c10A76AC1e0c8, 199, 210, '', 'https://xcopy.art/works/doom-party','2020-01-01')
+        , ('DOOM PARTY', 'Layer', 'Async Art', 11, 'Ethereum', 'erc721', 0xb6dAe651468E9593E4581705a09c10A76AC1e0c8, 200, 210, '', 'https://xcopy.art/works/doom-party','2020-01-01')
         , ('RESIST', 'Edition', 'KnownOrigin', 25, 'Ethereum', 'erc721', 0xFBeef911Dc5821886e1dda71586d90eD28174B7d, 109251, 109275, '', 'https://opensea.io/collection/xcopy-knownorigin?search[collections][0]=xcopy-knownorigin&search[query]=resist','2019-12-31')
         , ('FOMO', 'Unique', 'SuperRare', 1, 'Ethereum', 'erc721', 0xb932a70a57673d89f4acffbe830e8ed7f75fb9e0, 6708, 6708, '', 'https://superrare.com/artwork/eth/0xb932a70a57673d89f4acffbe830e8ed7f75fb9e0/6708','2019-12-31')
         , ('THE DAMAGE', 'Edition', 'KnownOrigin', 25, 'Ethereum', 'erc721', 0xFBeef911Dc5821886e1dda71586d90eD28174B7d, 108701, 108725, '', 'https://opensea.io/collection/xcopy-knownorigin?search[collections][0]=xcopy-knownorigin&search[query]=the%20damage','2019-12-30')

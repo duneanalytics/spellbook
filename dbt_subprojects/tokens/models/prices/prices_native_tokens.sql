@@ -6,7 +6,7 @@
         tags = ['static']
         )
 }}
-SELECT 
+SELECT
     token_id
     , CAST(blockchain as VARCHAR) as blockchain
     , symbol
@@ -25,6 +25,7 @@ FROM
     ('avax-avalanche', null, 'AVAX', null, null),
     ('bch-bitcoin-cash', null, 'BCH', null, null),
     ('bnb-binance-coin', null, 'BNB', null, null),
+    ('boba-boba-network', null, 'BOBA', null, null),
     ('bsv-bitcoin-sv', null, 'BSV', null, null),
     ('btc-bitcoin', null, 'BTC', null, null),
     ('celo-celo', null, 'CELO', null, null),
@@ -58,7 +59,9 @@ FROM
     ('tia-celestia', null, 'TIA', null, null),
     ('tomo-tomochain', null, 'TOMO', null, null),
     ('trx-tron', null, 'TRX', null, null),
-    ('xdai-xdai', null, 'XDAI', null, null),
+    ('dai-dai', null, 'XDAI', null, null),    -- maintain all caps spelling for legacy queries, coinpaprika xdai only goes back to 2023
+    ('dai-dai', null, 'xDAI', null, null),    -- xDAI is the proper spelling, coinpaprika xdai only goes back to 2023
+    ('wld-worldcoin', null, 'WLD', null, null),
     ('xem-nem', null, 'XEM', null, null),
     ('xlm-stellar', null, 'XLM', null, null),
     ('xmr-monero', null, 'XMR', null, null),
@@ -76,12 +79,17 @@ FROM
     ('flr-flare-network', null, 'FLR', null, null),
     ('ar-arweave', null, 'AR', null, null),
     ('glmr-moonbeam', null, 'GLMR', null, null),
-    ('klay-klaytn', null, 'KLAY', null, null),
+    ('klay-klaytn', null, 'KLAY', null, null), --old symbol was KLAY, new symbol is KAIA, keep for existing queries downstream
+    ('kaia-kaia', null, 'KAIA', null, null),
     ('fuse-fuse-network', null, 'FUSE', null, null),
     ('zel-zelcash', null, 'FLUX', null, null),
     ('myria-myria', null, 'MYRIA', null, null),
     ('mode-mode', null, 'MODE', null,null),
     ('ton-toncoin', null, 'TON', null,null),
     ('strk-starknet', null, 'STRK', null,null),
-    ('kda-kadena', null, 'KDA', null, null)
+    ('kda-kadena', null, 'KDA', null, null),
+    ('ron-ronin-token', null, 'RON', null, null),
+    ('hype-hyperliquid', null, 'HYPE', null, null),
+    ('bera-berachain', null, 'BERA', null, null),
+    ('ape-apecoin', null, 'APE', null, null)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

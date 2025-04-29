@@ -10,7 +10,7 @@ models:
     config:
       tags: ['arbitrum', 'nft', 'trades', 'tofu']
     description: "Tofu base trades"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
@@ -24,7 +24,7 @@ models:
       tags: [ 'arbitrum','stealcam','v1','trades' ]
     description: >
       Stealcam v1 trades on Arbitrum
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -38,7 +38,7 @@ models:
     config:
       tags: [ 'trove', 'treasure', 'nft', 'trades' ]
     description: "NFT trades on trove v1 on arbitrum blockchain"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -52,7 +52,7 @@ models:
     config:
       tags: [ 'trove', 'treasure', 'nft', 'trades' ]
     description: "NFT trades on trove v2 on arbitrum blockchain"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -66,7 +66,7 @@ models:
     config:
       tags: [ 'element', 'nft', 'trades' ]
     description: "NFT trades on Element v1 on arbitrum blockchain"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -103,7 +103,7 @@ models:
     columns:
       - name: pool_address
         description: 'Address of the pool'
-        tests:
+        data_tests:
           - unique
 
   - name: sudoswap_v2_arbitrum_base_trades
@@ -115,7 +115,7 @@ models:
     config:
       tags: [ 'arbitrum', 'nft', 'trades', 'sudoswap' ]
     description: "sudoswap v2 base trades"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -143,7 +143,7 @@ models:
     config:
       tags: [ 'arbitrum', 'nft', 'trades', 'zonic' ]
     description: "zonic base trades"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -171,7 +171,7 @@ models:
       tags: [ 'opensea','base_trades','seaport' ]
     description: >
       Opensea base trades from seaport (v3)
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -204,7 +204,7 @@ models:
       tags: [ 'opensea','base_trades','seaport' ]
     description: >
       Opensea base trades from seaport (v4)
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

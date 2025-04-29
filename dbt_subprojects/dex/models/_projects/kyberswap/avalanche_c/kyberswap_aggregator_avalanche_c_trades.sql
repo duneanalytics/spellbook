@@ -1,6 +1,6 @@
 {{ config
 (
-    
+
     schema = 'kyberswap_aggregator_avalanche_c',
     alias = 'trades',
     partition_by = ['block_month'],
@@ -36,8 +36,11 @@ WITH meta_router AS
             ,ARRAY[-1]              AS trace_address
         FROM
             {{ source('kyber_avalanche_c', 'MetaAggregationRouterV2_evt_Swapped') }}
+        WHERE 0x250f8f7750735e3ab5dc9db3a542f6b71999ed38 not in (dstToken, srcToken)
+        -- There are 2 weird transactions with this token where the return and spent amounts in the event are not correct
+        -- these result in inflated volume, so we'll ignore this token in any trades.
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - INTERVAL '7' DAY)
+        AND {{incremental_predicate('evt_block_time')}}
         {% endif %}
 )
 SELECT
@@ -77,7 +80,7 @@ FROM meta_router
 INNER JOIN {{ source('avalanche_c', 'transactions')}} tx
     ON meta_router.tx_hash = tx.hash
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - INTERVAL '7' DAY)
+    AND {{incremental_predicate('tx.block_time')}}
     {% else %}
     AND tx.block_time >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
@@ -92,7 +95,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.contract_address = meta_router.token_bought_address
     AND p_bought.blockchain = 'avalanche_c'
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc('day', now() - INTERVAL '7' DAY)
+    AND {{incremental_predicate('p_bought.minute')}}
     {% else %}
     AND p_bought.minute >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
@@ -101,7 +104,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.contract_address = meta_router.token_sold_address
     AND p_sold.blockchain = 'avalanche_c'
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc('day', now() - INTERVAL '7' DAY)
+    AND {{incremental_predicate('p_sold.minute')}}
     {% else %}
     AND p_sold.minute >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
@@ -110,7 +113,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_avax
     AND p_avax.blockchain IS NULL
     AND p_avax.symbol = 'AVAX'
     {% if is_incremental() %}
-    AND p_avax.minute >= date_trunc('day', now() - INTERVAL '7' DAY)
+    AND {{incremental_predicate('p_avax.minute')}}
     {% else %}
     AND p_avax.minute >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}

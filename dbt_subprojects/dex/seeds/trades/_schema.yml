@@ -525,6 +525,21 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
+  - name: carbon_defi_celo_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
   - name: clipper_arbitrum_base_trades_seed
     config:
       column_types:
@@ -601,6 +616,21 @@ seeds:
         block_date: timestamp
 
   - name: clipper_zkevm_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: clipper_mantle_base_trades_seed
     config:
       column_types:
         blockchain: varchar
@@ -840,6 +870,21 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
+  - name: equalizer_sonic_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
   - name: fraxswap_avalanche_c_base_trades_seed
     config:
       column_types:
@@ -1064,7 +1109,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-    
+
   - name: iziswap_scroll_base_trades_seed
     config:
       column_types:
@@ -2025,6 +2070,21 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
+  - name: uniswap_ink_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
   - name: uniswap_optimism_base_trades_seed
     config:
       column_types:
@@ -2083,9 +2143,24 @@ seeds:
         token_sold_address: varbinary
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
-        block_date: timestamp        
+        block_date: timestamp
 
   - name: velodrome_optimism_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: velodrome_unichain_base_trades_seed
     config:
       column_types:
         blockchain: varchar
@@ -2249,7 +2324,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-      
+
   - name: xchange_base_base_trades_seed
     config:
       column_types:
@@ -2324,7 +2399,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-    
+
   - name: hashflow_optimism_base_trades_seed
     config:
       column_types:
@@ -2354,7 +2429,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: baseswap_base_base_trades_seed
     config:
       column_types:
@@ -2399,7 +2474,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: smardex_base_base_trades_seed
     config:
       column_types:
@@ -2417,18 +2492,18 @@ seeds:
 
   - name: dackieswap_base_base_trades_seed
     config:
-        column_types:
-          blockchain: varchar
-          project: varchar
-          version: varchar
-          tx_hash: varbinary
-          evt_index: uint256
-          block_number: uint256
-          token_bought_address: varbinary
-          token_sold_address: varbinary
-          token_bought_amount_raw: uint256
-          token_sold_amount_raw: uint256
-          block_date: timestamp
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
 
   - name: ramses_arbitrum_base_trades_seed
     config:
@@ -2444,7 +2519,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-    
+
   - name: chainhop_optimism_base_trades_seed
     config:
       column_types:
@@ -2459,7 +2534,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-  
+
   - name: fraxswap_arbitrum_base_trades_seed
     config:
       column_types:
@@ -2519,7 +2594,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-  
+
   - name: apeswap_arbitrum_base_trades_seed
     config:
       column_types:
@@ -2549,7 +2624,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-  
+
   - name: smardex_arbitrum_base_trades_seed
     config:
       column_types:
@@ -2594,7 +2669,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-  
+
   - name: swaap_arbitrum_base_trades_seed
     config:
       column_types:
@@ -2624,7 +2699,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-  
+
   - name: woofi_arbitrum_base_trades_seed
     config:
       column_types:
@@ -2699,7 +2774,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: plantbaseswap_base_base_trades_seed
     config:
       column_types:
@@ -2729,7 +2804,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: derpdex_base_base_trades_seed
     config:
       column_types:
@@ -2744,7 +2819,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-    
+
   - name: torus_base_base_trades_seed
     config:
       column_types:
@@ -2759,7 +2834,6 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-
 
   - name: gridex_optimism_base_trades_seed
     config:
@@ -2940,7 +3014,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-  
+
   - name: autotronic_base_base_trades_seed
     config:
       column_types:
@@ -3000,7 +3074,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-  
+
   - name: sharkyswap_arbitrum_base_trades_seed
     config:
       column_types:
@@ -3060,7 +3134,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-  
+
   - name: auragi_arbitrum_base_trades_seed
     config:
       column_types:
@@ -3120,7 +3194,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: oasisswap_base_base_trades_seed
     config:
       column_types:
@@ -3135,7 +3209,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: leetswap_v2_base_base_trades_seed
     config:
       column_types:
@@ -3180,7 +3254,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: openocean_base_base_trades_seed
     config:
       column_types:
@@ -3225,7 +3299,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: alienbase_base_base_trades_seed
     config:
       column_types:
@@ -3240,7 +3314,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: swapbased_base_base_trades_seed
     config:
       column_types:
@@ -3255,7 +3329,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: gridex_base_base_trades_seed
     config:
       column_types:
@@ -3300,7 +3374,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: solidly_base_base_trades_seed
     config:
       column_types:
@@ -3315,7 +3389,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: energon_base_base_trades_seed
     config:
       column_types:
@@ -3330,7 +3404,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: voltswap_base_base_trades_seed
     config:
       column_types:
@@ -3345,7 +3419,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: crescentswap_base_base_trades_seed
     config:
       column_types:
@@ -3390,7 +3464,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: uniswap_zksync_base_trades_seed
     config:
       column_types:
@@ -3405,7 +3479,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: uniswap_zora_base_trades_seed
     config:
       column_types:
@@ -3420,7 +3494,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: syncswap_zksync_base_trades_seed
     config:
       column_types:
@@ -3465,7 +3539,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: mute_zksync_base_trades_seed
     config:
       column_types:
@@ -3525,7 +3599,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: zkswap_finance_zksync_base_trades_seed
     config:
       column_types:
@@ -3540,7 +3614,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: gemswap_zksync_base_trades_seed
     config:
       column_types:
@@ -3555,7 +3629,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: vesync_zksync_base_trades_seed
     config:
       column_types:
@@ -3570,7 +3644,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: dracula_finance_zksync_base_trades_seed
     config:
       column_types:
@@ -3720,7 +3794,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: smardex_polygon_base_trades_seed
     config:
       column_types:
@@ -3750,7 +3824,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: horizondex_linea_base_trades_seed
     config:
       column_types:
@@ -3765,7 +3839,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: dackieswap_v3_arbitrum_base_trades_seed
     config:
       column_types:
@@ -3780,7 +3854,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: dackieswap_v2_arbitrum_base_trades_seed
     config:
       column_types:
@@ -3795,7 +3869,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: thruster_blast_base_trades_seed
     config:
       column_types:
@@ -4035,7 +4109,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-  
+
   - name: swaap_linea_base_trades_seed
     config:
       column_types:
@@ -4050,7 +4124,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-  
+
   - name: swaap_mantle_base_trades_seed
     config:
       column_types:
@@ -4065,8 +4139,988 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-  
+
   - name: swaap_scroll_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: leetswap_scroll_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: dackieswap_v2_blast_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: spartadex_arbitrum_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: spacefi_scroll_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: uniswap_mantle_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: uniswap_worldchain_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: sushiswap_zkevm_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: tropicalswap_mantle_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: leetswap_linea_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: sushiswap_blast_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: dackieswap_v3_blast_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: dfyn_polygon_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: swapblast_blast_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: leetswap_zkevm_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: yoshiexchange_fantom_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: dyorswap_blast_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: punkswap_scroll_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: icecreamswap_v2_blast_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: yaka_sei_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: dragon_swap_kaia_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: klay_swap_kaia_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: neopin_kaia_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: defi_kingdoms_kaia_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: hyperjump_bnb_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: timeswap_v2_optimism_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+        
+  - name: infusion_base_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: flashliquidity_base_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: stablebase_base_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: saddle_finance_optimism_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: akronswap_base_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: katana_ronin_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: jetswap_polygon_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: elk_finance_gnosis_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: bridgers_optimism_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: levinswap_gnosis_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: sparkdex_flare_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: gravity_finance_polygon_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: fluid_ethereum_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+        
+  - name: otsea_base_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+        
+  - name: jojo_base_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+        
+  - name: beets_sonic_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: blazeswap_flare_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: icecreamswap_boba_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+        taker: varbinary
+        maker: varbinary
+        project_contract_address: varbinary
+        block_month: timestamp
+        block_time: timestamp
+
+  - name: oku_corn_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: camelot_corn_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: wagmi_sonic_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: silverswap_sonic_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: camelot_apechain_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: shadow_sonic_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: kodiak_berachain_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: uniswap_unichain_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: dyorswap_unichain_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: unichainswap_unichain_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: beraswap_berachain_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: burrbear_berachain_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: reservoir_swap_shape_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: inkyswap_ink_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: dyorswap_ink_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+        
+  - name: squidswap_ink_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+        
+  - name: swanswap_shape_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: swapr_gnosis_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: pancakeswap_opbnb_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: inkswap_ink_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: reservoir_swap_ink_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+        
+  - name: sailor_finance_sei_base_trades_seed
     config:
       column_types:
         blockchain: varchar

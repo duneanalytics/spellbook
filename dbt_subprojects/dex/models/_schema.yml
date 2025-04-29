@@ -10,7 +10,7 @@ models:
       tags: ['dex', 'ethereum', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'solana', 'info']
     description: >
         DEXs info
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project

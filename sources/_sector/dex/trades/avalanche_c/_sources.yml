@@ -1,6 +1,11 @@
 version: 2
 
 sources:
+  - name: uniswap_v4_avalanche_c
+    tables:
+      - name: PoolManager_evt_Swap
+      - name: PoolManager_evt_Initialize
+      - name: PoolManager_call_Swap
   - name: uniswap_v3_avalanche_c
   - name: airswap_avalanche_c
     tables:
@@ -61,7 +66,11 @@ sources:
   - name: curvefi_avalanche_c
     tables:
       - name: 3pool_evt_TokenExchange
+        quoting:
+          identifier: true # override source defaults
       - name: 3poolV2_evt_TokenExchange
+        quoting:
+          identifier: true # override source defaults
       - name: AavePool_evt_TokenExchange
       - name: AavePool_evt_TokenExchangeUnderlying
       - name: aave_v3_evt_TokenExchangeUnderlying

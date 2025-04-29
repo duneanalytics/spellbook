@@ -10,7 +10,7 @@ models:
       tags: ['inscriptions', 'all', 'ethereum']
     description: >
       All inscriptions on Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -53,7 +53,7 @@ models:
       tags: ['inscriptions', 'all', 'arbitrum']
     description: >
       All inscriptions on Arbitrum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -78,7 +78,7 @@ models:
       tags: ['inscriptions', 'all', 'avalanche_c']
     description: >
       All inscriptions on Avalanche
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -103,7 +103,7 @@ models:
       tags: ['inscriptions', 'all', 'bnb']
     description: >
       All inscriptions on BNB
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -128,7 +128,7 @@ models:
       tags: ['inscriptions', 'all', 'fantom']
     description: >
       All inscriptions on Fantom
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -153,7 +153,7 @@ models:
       tags: ['inscriptions', 'all', 'gnosis']
     description: >
       All inscriptions on Gnosis
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -178,7 +178,7 @@ models:
       tags: ['inscriptions', 'all', 'optimism']
     description: >
       All inscriptions on Optimism
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -203,7 +203,7 @@ models:
       tags: ['inscriptions', 'all', 'polygon']
     description: >
       All inscriptions on Polygon
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -228,7 +228,7 @@ models:
       tags: ['inscriptions', 'all', 'base']
     description: >
       All inscriptions on Base
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -253,7 +253,7 @@ models:
       tags: ['inscriptions', 'all', 'celo']
     description: >
       All inscriptions on Celo
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -278,7 +278,7 @@ models:
       tags: ['inscriptions', 'all', 'zksync']
     description: >
       All inscriptions on zkSync
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -303,7 +303,7 @@ models:
       tags: ['inscriptions', 'all', 'zora']
     description: >
       All inscriptions on Zora Network
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -328,7 +328,7 @@ models:
       tags: ['inscriptions', 'all', 'scroll']
     description: >
       All inscriptions on Scroll
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -353,7 +353,7 @@ models:
       tags: ['inscriptions', 'all', 'goerli']
     description: >
       All inscriptions on Goerli Testnet
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -378,7 +378,7 @@ models:
       tags: ['inscriptions', 'all', 'linea']
     description: >
       All inscriptions on Linea
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -403,7 +403,7 @@ models:
       tags: ['inscriptions', 'all', 'zkevm']
     description: >
       All inscriptions on Polygon zkEVM
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

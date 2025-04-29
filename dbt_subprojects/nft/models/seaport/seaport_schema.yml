@@ -10,7 +10,7 @@ models:
       tags: ['seaport', 'arbitrum', 'avalanche_c', 'base', 'bnb', 'ethereum', 'optimism', 'polygon', 'traces']
     description: >
         Seaport emitted event traces across chains
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -30,7 +30,7 @@ models:
       - name: block_number
         description: "Block number in which the transaction was executed"
       - name: trace_side
-        tests:
+        data_tests:
           - accepted_values:
               values: ['consideration', 'offer']
         description: "Side of the trace"
@@ -39,7 +39,7 @@ models:
       - name: tx_hash
         description: "Transaction hash"
       - name: token_standard
-        tests:
+        data_tests:
           - accepted_values:
               values: ['native', 'erc20', 'erc721', 'erc1155', 'bep20', 'bep721', 'bep1155']
         description: "Token standard"
@@ -73,7 +73,7 @@ models:
       tags: ['seaport', 'arbitrum', 'avalanche_c', 'base', 'bnb', 'ethereum', 'optimism', 'polygon', 'tagging']
     description: >
         Seaport tagging to identify the different protocols using Seaport across chains
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -84,7 +84,7 @@ models:
         description: "Blockchain"
       - name: tagging_method
         description: "Identification method"
-        tests:
+        data_tests:
           - accepted_values:
               values: ['zone', 'fee_recipient', 'tx_data_salt']
       - name: identifier

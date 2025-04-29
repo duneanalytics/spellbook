@@ -3,12 +3,12 @@ version: 2
 models:
   - name: odos_trades
     meta:
-      blockchain: optimism, ethereum
+      blockchain: optimism, ethereum, base, arbitrum
       sector: dex
       project: odos
       contributors: Henrystats
     config:
-      tags: ['avalanche_c', 'odos','trades', 'dex', 'aggregator']
+      tags: ['odos','trades', 'dex', 'aggregator']
     description: >
         odos trades on all chains across all contracts and versions. This table will load odos aggregator trades downstream.
     columns:

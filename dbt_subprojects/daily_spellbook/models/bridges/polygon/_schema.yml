@@ -15,7 +15,7 @@ models:
         description: "Name of blockchain"
       - name: address
         description: "Address of known Bridges"
-        tests:
+        data_tests:
           - unique
       - name: bridge_name
         description: "Name of protocol behind the bridge"

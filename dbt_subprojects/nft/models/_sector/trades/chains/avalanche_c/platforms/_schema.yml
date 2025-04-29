@@ -10,7 +10,7 @@ models:
     config:
       tags: ['avalanche', 'nft', 'trades', 'chikn']
     description: "chikn base trades"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
@@ -36,7 +36,7 @@ models:
     config:
       tags: ['avalanche', 'nft', 'trades', 'campfore']
     description: "Campfire base trades"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
@@ -62,7 +62,7 @@ models:
     config:
       tags: ['avalanche', 'nft', 'trades', 'campfore']
     description: "hyperspace base trades"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
@@ -88,7 +88,7 @@ models:
     config:
       tags: ['avalanche', 'nft', 'trades', 'joepegs']
     description: "Joepegs base trades"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
@@ -115,7 +115,7 @@ models:
       tags: [ 'avalanche_c','element','trades' ]
     description: >
       Element events on Avalanche
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -129,7 +129,7 @@ models:
       tags: [ 'opensea','base_trades','seaport' ]
     description: >
       Opensea base trades from seaport (v3)
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -162,7 +162,7 @@ models:
       tags: [ 'opensea','base_trades','seaport' ]
     description: >
       Opensea base trades from seaport (v4)
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -195,7 +195,7 @@ models:
     config:
       tags: ['avalanche', 'nft', 'trades', 'salvor']
     description: "Salvor base trades"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
@@ -222,7 +222,7 @@ models:
     config:
       tags: ['avalanche', 'nft', 'trades', 'superchief']
     description: "Superchief base trades"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']

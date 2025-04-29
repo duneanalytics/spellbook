@@ -1,0 +1,157 @@
+version: 2
+
+sources:
+  - name: prices
+    description: "Price data from various sources and time granularities"
+    tables:
+      - name: day
+        description: "Daily token prices aggregated from various sources"
+        columns:
+          - name: blockchain
+            description: "Native blockchain of the token"
+            type: varchar
+          - name: contract_address
+            description: "Contract address of the token"
+            type: varbinary
+          - name: symbol
+            description: "Token symbol"
+            type: varchar
+          - name: timestamp
+            description: "UTC timestamp for the day"
+            type: "timestamp(3) with time zone"
+          - name: price
+            description: "USD price of a token"
+            type: double
+          - name: decimals
+            description: "Number of decimals for the token contract"
+            type: bigint
+          - name: volume
+            description: "Trading volume in USD"
+            type: double
+          - name: source
+            description: "Source of the price data"
+            type: varchar
+          - name: source_timestamp
+            description: "Original timestamp from the source"
+            type: "timestamp(3) with time zone"
+
+      - name: hour
+        description: "Hourly token prices aggregated from various sources"
+        columns:
+          - name: blockchain
+            description: "Native blockchain of the token"
+            type: varchar
+          - name: contract_address
+            description: "Contract address of the token"
+            type: varbinary
+          - name: symbol
+            description: "Token symbol"
+            type: varchar
+          - name: timestamp
+            description: "UTC timestamp for the hour"
+            type: "timestamp(3) with time zone"
+          - name: price
+            description: "USD price of a token"
+            type: double
+          - name: decimals
+            description: "Number of decimals for the token contract"
+            type: bigint
+          - name: volume
+            description: "Trading volume in USD"
+            type: double
+          - name: source
+            description: "Source of the price data"
+            type: varchar
+          - name: source_timestamp
+            description: "Original timestamp from the source"
+            type: "timestamp(3) with time zone"
+
+      - name: minute
+        description: "Minute-level token prices aggregated from various sources"
+        columns:
+          - name: blockchain
+            description: "Native blockchain of the token"
+            type: varchar
+          - name: contract_address
+            description: "Contract address of the token"
+            type: varbinary
+          - name: symbol
+            description: "Token symbol"
+            type: varchar
+          - name: timestamp
+            description: "UTC timestamp for the minute"
+            type: "timestamp(3) with time zone"
+          - name: price
+            description: "USD price of a token"
+            type: double
+          - name: decimals
+            description: "Number of decimals for the token contract"
+            type: bigint
+          - name: volume
+            description: "Trading volume in USD"
+            type: double
+          - name: source
+            description: "Source of the price data"
+            type: varchar
+          - name: source_timestamp
+            description: "Original timestamp from the source"
+            type: "timestamp(3) with time zone"
+
+      - name: latest
+        description: "Latest available token prices from various sources"
+        columns:
+          - name: blockchain
+            description: "Native blockchain of the token"
+            type: varchar
+          - name: contract_address
+            description: "Contract address of the token"
+            type: varbinary
+          - name: symbol
+            description: "Token symbol"
+            type: varchar
+          - name: price
+            description: "USD price of a token"
+            type: double
+          - name: decimals
+            description: "Number of decimals for the token contract"
+            type: bigint
+          - name: timestamp
+            description: "UTC timestamp of the latest price"
+            type: "timestamp(3) with time zone"
+          - name: volume
+            description: "Trading volume in USD"
+            type: double
+          - name: source
+            description: "Source of the price data"
+            type: varchar
+
+      - name: minute_updates
+        description: "Minute-level token price updates from various sources"
+        columns:
+          - name: blockchain
+            description: "Native blockchain of the token"
+            type: varchar
+          - name: contract_address
+            description: "Contract address of the token"
+            type: varbinary
+          - name: symbol
+            description: "Token symbol"
+            type: varchar
+          - name: timestamp
+            description: "UTC timestamp of the price update"
+            type: "timestamp(3) with time zone"
+          - name: price
+            description: "USD price of a token"
+            type: double
+          - name: decimals
+            description: "Number of decimals for the token contract"
+            type: bigint
+          - name: volume
+            description: "Trading volume in USD"
+            type: double
+          - name: source
+            description: "Source of the price data (e.g., 'dex.trades')"
+            type: varchar
+          - name: next_update
+            description: "Expected timestamp of the next price update"
+            type: "timestamp(3) with time zone"

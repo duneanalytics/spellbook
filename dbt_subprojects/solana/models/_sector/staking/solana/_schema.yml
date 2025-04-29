@@ -9,7 +9,7 @@ models:
     config:
       tags: ['solana', 'staking', 'actions']
     description: Solana Stake11111 program actions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_time
@@ -22,7 +22,7 @@ models:
     columns:
       - name: stake
         description: amount in stake moved
-        tests:
+        data_tests:
           - not_null
       - name: action
         description: withdraw, merge, or split stake
@@ -45,7 +45,7 @@ models:
     config:
       tags: ['solana', 'staking', 'delegate']
     description: Solana stake account vote delegations over time
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_time
@@ -68,7 +68,7 @@ models:
     config:
       tags: ['solana', 'staking', 'delegate']
     description: Solana validator stake accounts delegated for each epoch (includes only accounts delegated BEFORE epoch started)
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - epoch
@@ -93,7 +93,7 @@ models:
     config:
       tags: ['solana', 'staking', 'delegate']
     description: Solana validator stake accounts delegated for each epoch (includes only accounts delegated BEFORE epoch started)
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - epoch

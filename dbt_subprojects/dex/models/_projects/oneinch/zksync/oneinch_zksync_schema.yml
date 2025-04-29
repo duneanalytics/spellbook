@@ -10,7 +10,7 @@ models:
       tags: ['oneinch', 'lop', 'calls']
     description: >
         1inch limit order protocol calls
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -18,12 +18,12 @@ models:
             - call_trace_address
     columns:
       - name: blockchain
-        tests:
+        data_tests:
           - not_null
       - name: block_number
       - name: block_time
       - name: tx_hash
-        tests:
+        data_tests:
           - not_null
       - name: tx_from
       - name: tx_to
@@ -38,7 +38,7 @@ models:
       - name: method
       - name: call_selector
       - name: call_trace_address
-        tests:
+        data_tests:
           - not_null
       - name: call_from
       - name: call_to
@@ -82,7 +82,7 @@ models:
       tags: ['oneinch', 'ar', 'calls']
     description: >
         1inch aggregation router calls
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -90,12 +90,12 @@ models:
             - call_trace_address
     columns:
       - name: blockchain
-        tests:
+        data_tests:
           - not_null
       - name: block_number
       - name: block_time
       - name: tx_hash
-        tests:
+        data_tests:
           - not_null
       - name: tx_from
       - name: tx_to
@@ -110,7 +110,7 @@ models:
       - name: method
       - name: call_selector
       - name: call_trace_address
-        tests:
+        data_tests:
           - not_null
       - name: call_from
       - name: call_to
@@ -142,7 +142,7 @@ models:
       tags: ['oneinch', 'calls']
     description: >
         1inch transfers within calls
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -154,15 +154,15 @@ models:
             - transfer_native
     columns:
       - name: blockchain
-        tests:
+        data_tests:
           - not_null
       - name: block_number
       - name: block_time
       - name: tx_hash
-        tests:
+        data_tests:
           - not_null
       - name: call_trace_address
-        tests:
+        data_tests:
           - not_null
       - name: dst_blockchain
       - name: hashlock
@@ -171,20 +171,20 @@ models:
       - name: result_method
       - name: result_amount
       - name: transfer_blockchain
-        tests:
+        data_tests:
           - not_null
       - name: transfer_block_number
       - name: transfer_block_time
       - name: transfer_tx_hash
-        tests:
+        data_tests:
           - not_null
       - name: transfer_trace_address
-        tests:
+        data_tests:
           - not_null
       - name: contract_address
       - name: amount
       - name: transfer_native
-        tests:
+        data_tests:
           - not_null
       - name: transfer_from
       - name: transfer_to
@@ -201,7 +201,7 @@ models:
       tags: ['oneinch', 'cross-chain']
     description: >
         escrow results
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -209,15 +209,15 @@ models:
             - trace_address
     columns:
       - name: blockchain
-        tests:
+        data_tests:
           - not_null
       - name: block_number
       - name: block_time
       - name: tx_hash
-        tests:
+        data_tests:
           - not_null
       - name: trace_address
-        tests:
+        data_tests:
           - not_null
       - name: escrow
       - name: hashlock

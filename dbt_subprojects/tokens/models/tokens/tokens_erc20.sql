@@ -3,10 +3,49 @@
         schema = 'tokens'
         ,alias = 'erc20'
         ,materialized = 'table'
-        ,post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","base","bnb","celo","ethereum","fantom","fuse","gnosis","goerli","mantle","optimism","polygon","scroll","zkevm","zksync","zora","blast","sepolia","sei","nova"]\',
-                        "sector",
-                        "tokens",
-                        \'["bh2smith","0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy","lgingerich","0xRob","jeff-dude","viniabussafi","IrishLatte19","angus_1","Henrystats"]\') }}'
+        ,partition_by = ['blockchain']
+        ,post_hook='{{ expose_spells(\'[
+                                        "arbitrum"
+                                        ,"avalanche_c"
+                                        ,"base"
+                                        ,"blast"
+                                        ,"bnb"
+                                        ,"boba"
+                                        ,"celo"
+                                        ,"corn"
+                                        ,"ethereum"
+                                        ,"fantom"
+                                        ,"fuse"
+                                        ,"gnosis"
+                                        ,"goerli"
+                                        ,"ink"
+                                        ,"abstract"
+                                        ,"kaia"
+                                        ,"linea"
+                                        ,"mantle"
+                                        ,"nova"
+                                        ,"optimism"
+                                        ,"ronin"
+                                        ,"polygon"
+                                        ,"scroll"
+                                        ,"sei"
+                                        ,"sepolia"
+                                        ,"shape"
+                                        ,"worldchain"
+                                        ,"zkevm"
+                                        ,"zksync"
+                                        ,"zora"
+                                        ,"bob"
+                                        ,"sonic"
+                                        ,"sophon"
+                                        ,"berachain"
+                                        ,"apechain"
+                                        ,"opbnb"
+                                        ,"unichain"
+                                    ]\',
+                                    "sector",
+                                    "tokens",
+                                    \'["bh2smith","0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy","lgingerich","0xRob","jeff-dude","viniabussafi","IrishLatte19","angus_1","Henrystats","rantum", "IrishLatte19"]\') }}'
     )
 }}
 
@@ -30,6 +69,7 @@
     ,'tokens_optimism': {'blockchain': 'optimism', 'model': ref('tokens_optimism_erc20')}
     ,'tokens_polygon': {'blockchain': 'polygon', 'model': ref('tokens_polygon_erc20')}
     ,'tokens_scroll': {'blockchain': 'scroll', 'model': ref('tokens_scroll_erc20')}
+    ,'tokens_shape': {'blockchain': 'shape', 'model': ref('tokens_shape_erc20')}
     ,'tokens_zkevm': {'blockchain': 'zkevm', 'model': ref('tokens_zkevm_erc20')}
     ,'tokens_zksync': {'blockchain': 'zksync', 'model': ref('tokens_zksync_erc20')}
     ,'tokens_zora': {'blockchain': 'zora', 'model': ref('tokens_zora_erc20')}
@@ -37,15 +77,47 @@
     ,'tokens_sepolia': {'blockchain': 'sepolia', 'model': ref('tokens_sepolia_erc20')}
     ,'tokens_sei': {'blockchain': 'sei', 'model': ref('tokens_sei_erc20')}
     ,'tokens_nova': {'blockchain': 'nova', 'model': ref('tokens_nova_erc20')}
+    ,'tokens_linea': {'blockchain': 'linea', 'model': ref('tokens_linea_erc20')}
+    ,'tokens_worldchain': {'blockchain': 'worldchain', 'model': ref('tokens_worldchain_erc20')}
+    ,'tokens_kaia': {'blockchain': 'kaia', 'model': ref('tokens_kaia_erc20')}
+    ,'tokens_tron': {'blockchain': 'tron', 'model': ref('tokens_tron_erc20')}
+    ,'tokens_ronin': {'blockchain': 'ronin', 'model': ref('tokens_ronin_erc20')}
+    ,'tokens_bob': {'blockchain': 'bob', 'model': ref('tokens_bob_erc20')}
+    ,'tokens_flare': {'blockchain': 'flare', 'model': ref('tokens_flare_erc20')}
+    ,'tokens_boba': {'blockchain': 'boba', 'model': ref('tokens_boba_erc20')}
+    ,'tokens_viction': {'blockchain': 'viction', 'model': ref('tokens_viction_erc20')}
+    ,'tokens_sonic': {'blockchain': 'sonic', 'model': ref('tokens_sonic_erc20')}
+    ,'tokens_corn': {'blockchain': 'corn', 'model': ref('tokens_corn_erc20')}
+    ,'tokens_ink': {'blockchain': 'ink', 'model': ref('tokens_ink_erc20')}
+    ,'tokens_sophon': {'blockchain': 'sophon', 'model': ref('tokens_sophon_erc20')}
+    ,'tokens_abstract': {'blockchain': 'abstract', 'model': ref('tokens_abstract_erc20')}
+    ,'tokens_berachain': {'blockchain': 'berachain', 'model': ref('tokens_berachain_erc20')}
+    ,'tokens_apechain': {'blockchain': 'apechain', 'model': ref('tokens_apechain_erc20')}
+    ,'tokens_opbnb': {'blockchain': 'opbnb', 'model': ref('tokens_opbnb_erc20')}
+    ,'tokens_unichain': {'blockchain': 'unichain', 'model': ref('tokens_unichain_erc20')}
 } %}
 
-with
-  automated_source as (
-    with raw_source as (
+with automated_source as (
+    with evms_info as (
+        select
+            blockchain
+            , case
+                when blockchain = 'sei' then 531 -- the automated erc20 source below (definedfi) has a bug on networkid value for SEI EVM chain
+                else chain_id
+            end as chain_id
+        from
+            {{ source('evms', 'info') }}
+    ), raw_source as (
         select
             i.blockchain
             , t.address as contract_address
-            , t.symbol
+            , case
+                when (
+                    t.address = 0x0000000000000000000000000000000000001010
+                    and i.blockchain = 'polygon'
+                ) then 'POL' -- source has incorrect symbol for POL on polygon post-migration
+                else t.symbol
+            end as symbol
             , t.decimals
             , row_number() over (
                 partition by
@@ -56,7 +128,7 @@ with
             ) as rn
         from
             {{ source("definedfi", "dataset_tokens", database="dune") }} as t
-            join {{ source('evms', 'info') }} as i on t.networkid = i.chain_id
+            join evms_info as i on t.networkid = i.chain_id
     )
     select
         blockchain
@@ -74,9 +146,11 @@ with
         automated_source
     where
         contract_address not in (
-            --incorrect decimal assignment in raw source
+            -- incorrect decimal assignment in raw source
             0xeb9951021698b42e4399f9cbb6267aa35f82d59d
             , 0x0ba45a8b5d5575935b8158a88c631e9f9c95a2e5
+            -- incorrect naming of raw source
+            , 0x136471a34f6ef19fe571effc1ca711fdb8e49f2b -- USYC
         )
 ), static_source as (
     {% for key, value in static_models.items() %}

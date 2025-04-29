@@ -10,7 +10,7 @@ models:
    config:
      tags: ['polygon', 'nft', 'trades', 'aurem']
    description: "Aurem base trades"
-   tests:
+   data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
@@ -39,7 +39,7 @@ models:
    config:
      tags: ['polygon', 'nft', 'trades', 'dew']
    description: "Dew base trades"
-   tests:
+   data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
@@ -68,7 +68,7 @@ models:
      tags: [ 'polygon','decentraland','base_trades' ]
    description: >
      decentraland events on Polygon
-   tests:
+   data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
@@ -82,7 +82,7 @@ models:
      tags: [ 'polygon','aavegotchi','base_trades' ]
    description: >
      Aavegotchi events on Polygon
-   tests:
+   data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -96,7 +96,7 @@ models:
      tags: [ 'polygon','element','base_trades' ]
    description: >
      Element events on polygon
-   tests:
+   data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -110,7 +110,7 @@ models:
      tags: [ 'polygon','fractal','base_trades' ]
    description: >
      Fractal events on Polygon
-   tests:
+   data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -124,7 +124,7 @@ models:
      tags: [ 'polygon','rarible','base_trades' ]
    description: >
      Rarible events on Polygon
-   tests:
+   data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -138,7 +138,7 @@ models:
      tags: [ 'polygon','tofu','v1','base_trades' ]
    description: >
      Tofu v1 base_trades on Polygon
-   tests:
+   data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -152,7 +152,7 @@ models:
      tags: [ 'magiceden','polygon','events' ]
    description: >
      Magic Eden events on Polygon
-   tests:
+   data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -166,7 +166,7 @@ models:
    config:
      tags: [ 'magiceden', 'nft', 'trades' ]
    description: "NFT trades on Magic Eden on polygon"
-   tests:
+   data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -180,7 +180,7 @@ models:
      tags: [ 'opensea','base_trades','seaport' ]
    description: >
      Opensea base trades from seaport (v3)
-   tests:
+   data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns:
@@ -213,7 +213,7 @@ models:
      tags: [ 'opensea','base_trades','seaport' ]
    description: >
      Opensea base trades from seaport (v4)
-   tests:
+   data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns:
@@ -246,7 +246,7 @@ models:
    config:
      tags: [ 'opensea', 'nft', 'trades' ]
    description: "NFT trades on opensea on polygon"
-   tests:
+   data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -271,7 +271,7 @@ models:
      tags: [ 'polygon','mooar','events','springzh' ]
    description: >
      Mooar events on Polygon
-   tests:
+   data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -285,7 +285,7 @@ models:
      tags: [ 'polygon','oneplanet','events','springzh' ]
    description: >
      OnePlanet events on Polygon
-   tests:
+   data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]

@@ -27,7 +27,7 @@ sources:
           - &evt_tx_hash
             name: evt_tx_hash
             description: "Primary key of the transaction"
-            tests:
+            data_tests:
               - not_null
           - &evt_block_number
             name: evt_block_number

@@ -6,11 +6,18 @@
 }}
 
 {% set base_models = [
-    ref('uniswap_v3_blast_base_trades')
+    ref('uniswap_v4_blast_base_trades')
+    , ref('uniswap_v3_blast_base_trades')
     , ref('uniswap_v2_blast_base_trades')
-    , ref('thruster_blast_base_trades')
     , ref('blasterswap_blast_base_trades')
+    , ref('thruster_blast_base_trades')
     , ref('fenix_blast_base_trades')
+    , ref('dackieswap_v2_blast_base_trades')
+    , ref('sushiswap_v2_blast_base_trades')
+    , ref('dackieswap_v3_blast_base_trades')
+    , ref('swapblast_blast_base_trades')
+    , ref('dyorswap_blast_base_trades')
+    , ref('icecreamswap_v2_blast_base_trades')
 ] %}
 
 WITH base_union AS (

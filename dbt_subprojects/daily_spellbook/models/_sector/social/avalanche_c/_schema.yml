@@ -10,7 +10,7 @@ models:
     config:
       tags: ['table', 'social', 'avalanche_c', 'trades', 'stars_arena']
     description: "Stars Arena basic trades info"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -79,7 +79,7 @@ models:
     config:
       tags: ['table', 'social', 'avalanche_c', 'trades', 'stars_arena']
     description: "social trades on Avalanche"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash

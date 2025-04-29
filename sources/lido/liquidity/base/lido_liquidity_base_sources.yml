@@ -32,6 +32,33 @@ sources:
       - name: UniswapV3Pool_evt_Collect
       - name: UniswapV3Pool_evt_Burn  
 
+  - name: pancakeswap_v3_base
+    description: "Base decoded tables related to Pancake v3 contract"
+    tables:
+      - name: PancakeV3Pool_evt_Mint
+      - name: PancakeV3Pool_evt_Collect
+      - name: PancakeV3Pool_evt_Burn  
+
+  - name: maverick_v2_base
+    description: "Base decoded tables related to Maverick v2 contract"
+    tables:
+      - name: V2Pool_evt_PoolAddLiquidity
+      - name: V2Pool_evt_PoolRemoveLiquidity
+    
+  - name: balancer_v2_base
+    description: "Base decoded tables related to Balancer v2 contract"
+    tables:
+      - name: weightedpoolfactory_call_create
+      - name: composablestablepoolfactory_call_create
+      - name: vault_evt_swap
+      - name: vault_evt_poolbalancechanged
+      - name: vault_evt_poolbalancemanaged
+
+  - name: gyroscope_base
+    description: "Base decoded tables related to Gyroscope Factory contract"
+    tables:
+      - name: gyroeclppoolfactory_call_create
+    
     
 
 

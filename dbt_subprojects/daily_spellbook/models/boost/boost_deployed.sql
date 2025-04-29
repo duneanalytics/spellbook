@@ -32,7 +32,7 @@ select
     TRY(from_unixtime(end_time)) as end_time,
     reward_amount_raw,
     reward_token_address,
-    cast(max_participants as int) as max_participants,
+    max_participants,
     creation_time,
     creator as creator_address
 from
@@ -49,7 +49,7 @@ from
     {% endif %}
     {% endfor %}
 )
-where 
+where
     creator <> 0xa4c8bb4658bc44bac430699c8b7b13dab28e0f4e
     and start_time > 0
     and end_time < 1e11

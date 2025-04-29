@@ -11,7 +11,7 @@ models:
       tags: [ 'nft','ethereum' ]
     description: >
       NFT native (i.e., non-platform) mints
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -22,27 +22,27 @@ models:
       - &tx_hash
         name: tx_hash
         description: "tx_hash"
-        tests:
+        data_tests:
           - not_null
       - &evt_index
         name: evt_index
         description: "evt_index"
-        tests:
+        data_tests:
           - not_null
       - &token_id
         name: token_id
         description: "token_id version"
-        tests:
+        data_tests:
           - not_null
       - &number_of_items
         name: number_of_items
         description: "number_of_items"
-        tests:
+        data_tests:
           - not_null
       - &amount_usd
         name: amount_usd
         description:  "USD value of the trade at time of execution"
-        tests:
+        data_tests:
           - dbt_utils.accepted_range:
               max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
 
@@ -55,7 +55,7 @@ models:
       tags: [ 'nft','optimism' ]
     description: >
       NFT native (i.e., non-platform) mints
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -78,7 +78,7 @@ models:
       tags: [ 'nft','base' ]
     description: >
       NFT native (i.e., non-platform) mints
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -101,7 +101,7 @@ models:
       tags: [ 'nft','zora' ]
     description: >
       NFT native (i.e., non-platform) mints
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -124,7 +124,7 @@ models:
       tags: [ 'nft','zksync' ]
     description: >
       NFT native (i.e., non-platform) mints
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash

@@ -12,7 +12,7 @@ models:
     columns:
       - name: contract_address
         description: "contract address of the dapp/project"
-        tests:
+        data_tests:
           - unique
       - name: project_name
         description: "name of the dapp/project"
@@ -27,7 +27,7 @@ models:
     config:
       tags: ['evm', 'bnb', 'contracts', 'addresses']
     description: "Mapping of contracts to its creators and names on bnb."
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -140,7 +140,7 @@ models:
     config:
       tags: ['evm', 'contracts', 'addresses']
     description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -170,7 +170,7 @@ models:
     config:
       tags: ['evm', 'bnb', 'contracts', 'addresses']
     description: "Base Level for mapping of contracts to its creators and names on bnb."
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -204,7 +204,7 @@ models:
     config:
       tags: ['evm', 'bnb', 'contracts', 'addresses']
     description: "Iterated creators for mapping of contracts to its creators and names on bnb."
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

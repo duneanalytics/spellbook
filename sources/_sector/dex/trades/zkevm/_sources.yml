@@ -12,3 +12,15 @@ sources:
   - name: clipper_zkevm
     tables:
       - name: ClipperPackedOracleVerifiedExchange_evt_Swapped
+  - name: sushiswap_v2_zkevm
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated
+  - name: leetswap_zkevm
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated
+  - name: quickswap_zkevm
+    tables:
+      - name: algebra_pool_zkevm_evt_Swap
+      - name: algebra_factory_zkevm_evt_Pool

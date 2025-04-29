@@ -2,8 +2,11 @@ version: 2
 
 models:
   - name: dex_celo_base_trades
-    tests:
+    data_tests:
       - check_dex_info_relationship
+      - test_acceptable_usd_amount:
+          column_name: amount_usd
+          max_value: 1000000000
 
   - name: uniswap_v3_celo_base_trades
     meta:
@@ -14,7 +17,7 @@ models:
     config:
       tags: [ 'celo', 'dex', 'trades', 'uniswap', 'v3' ]
     description: "uniswap celo v3 base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -32,7 +35,7 @@ models:
     config:
       tags: ['celo', 'dex', 'trades', 'mento']
     description: "Mento trades on Celo"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -51,7 +54,7 @@ models:
     config:
       tags: ['celo', 'dex', 'trades', 'mento']
     description: "Mento trades on Celo"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -70,7 +73,7 @@ models:
     config:
       tags: ['celo', 'dex', 'trades', 'curvefi']
     description: "Curvefi Celo base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -88,7 +91,7 @@ models:
     config:
       tags: ['celo', 'dex', 'trades', 'sushiswap']
     description: "Sushiswap Celo base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -106,7 +109,7 @@ models:
     config:
       tags: ['celo', 'dex', 'trades', 'ubeswap']
     description: "Ubeswap Celo base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -124,10 +127,28 @@ models:
     config:
       tags: ['celo', 'dex', 'trades', 'carbonhood']
     description: "Carbonhood trades on Celo"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('carbonhood_celo_base_trades_seed')
+
+
+  - name: carbon_defi_celo_base_trades
+    meta:
+      blockchain: celo
+      sector: dex
+      project: carbon_defi
+      contributors: tiagofilipenunes
+    config:
+      tags: ["celo", "dex", "trades", "carbon_defi"]
+    description: "Carbon_defi celo base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('carbon_defi_celo_base_trades_seed')

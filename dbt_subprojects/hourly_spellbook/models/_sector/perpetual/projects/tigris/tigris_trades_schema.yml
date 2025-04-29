@@ -205,7 +205,7 @@ models:
       tags: ['polygon', 'arbitrum', 'tigris', 'trades', 'perps', 'dex']
     description: >
         tigirstrades pnl on arbitrum & polygon
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_block_time

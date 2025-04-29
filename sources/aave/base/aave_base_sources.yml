@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: aave_v3_base
+    description: "Decoded contracts for aave v3 on Base"
+    tables:
+      - name: StataToken_evt_Initialized
+      - name: StataTokenFactory_call_createDeterministic

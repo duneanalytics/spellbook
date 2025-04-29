@@ -115,13 +115,13 @@ models:
     columns:
       - name: address
         description: "The ETH address"
-        tests:
+        data_tests:
           - unique
       - name: name
         description: "The reverse ENS name"
       - name: address_node
         description: "The node (namehash) of the address reverse record"
-        tests:
+        data_tests:
           - unique
       - name: latest_tx_hash
         description: "Latest transaction hash setting the reverse ENS"
@@ -140,7 +140,7 @@ models:
     columns:
       - name: node
         description: "The node, the namehash of the ENS name"
-        tests:
+        data_tests:
           - unique
       - name: name
         description: "The ENS name"
@@ -194,11 +194,11 @@ models:
     columns:
       - name: name
         description: "The ENS name"
-        tests:
+        data_tests:
           - unique
       - name: node
         description: "The node, the namehash of the ENS name"
-        tests:
+        data_tests:
           - unique
       - name: address
         description: "The resolver address of the ENS name"
@@ -217,7 +217,7 @@ models:
     config:
       tags: ['ethereum','ens','ethereum_name_service','ethereumnameservice','setname','latest']
     description: "View the latest ENS set name records"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address

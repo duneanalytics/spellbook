@@ -14,7 +14,7 @@ models:
         description: "Blockchain"
       - name: address
         description: "Concerned OP Mainnet address"
-        tests:
+        data_tests:
           - unique
       - name: first_active_time
         description: "The block time on which the address made it's first OP Mainnet transaction"

@@ -10,12 +10,25 @@
   );
 {% endmacro %}
 
+{# temp fix to get latest dbt-trino version 1.8.3 working in dbt cloud #}
+{% macro dune_properties(properties) %}
+  {%- if properties is not none -%}
+      WITH (
+          {%- for key, value in properties.items() -%}
+            {{ key }} = {{ value }}
+            {%- if not loop.last -%}{{ ',\n  ' }}{%- endif -%}
+          {%- endfor -%}
+      )
+  {%- endif -%}
+{%- endmacro -%}
+
 {% macro create_table_properties(_properties, relation) %}
   {%- set modified_identifier = relation.identifier | replace("__dbt_tmp", "") -%}
   {%- set unique_location = modified_identifier ~ '_' ~ time_salted_md5_prefix() -%}
   {%- set location= 's3a://%s/%s/%s' % (s3_bucket(), relation.schema, unique_location) -%}
   {%- do _properties.update({'location': "'" + location + "'"}) -%}
-    {{ properties(_properties) }} {# properties is a macro within the trino adapter #}
+    {# temp fix to get latest dbt-trino version 1.8.3 working in dbt cloud #}
+    {{ dune_properties(_properties) }} {# properties is a macro within the trino adapter #}
 {%- endmacro -%}
 
 {% macro time_salted_md5_prefix(input_string=None) -%}

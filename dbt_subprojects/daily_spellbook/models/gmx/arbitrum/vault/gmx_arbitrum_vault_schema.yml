@@ -10,7 +10,7 @@ models:
       tags: ['arbitrum','gmx','glp']
     description: >
         View balances of tokens in the GMX vault
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -19,7 +19,7 @@ models:
       - &minute
         name: minute
         description: "UTC event block time truncated to the minute"
-        tests: 
+        data_tests: 
           - unique
           - not_null
       - &block_date
@@ -28,40 +28,40 @@ models:
       - &frax_balance
         name: frax_balance
         description: "Balance of FRAX tokens in the GMX vault"
-        tests: 
+        data_tests: 
           - not_null
       - &usdt_balance
         name: usdt_balance
         description: "Balance of USDT tokens in the GMX vault"
-        tests: 
+        data_tests: 
           - not_null
       - &wbtc_balance
         name: wbtc_balance
         description: "Balance of WBTC tokens in the GMX vault"
-        tests: 
+        data_tests: 
           - not_null
       - &usdc_balance
         name: usdc_balance
         description: "Balance of USDC tokens in the GMX vault"
-        tests: 
+        data_tests: 
           - not_null
       - &uni_balance
         name: uni_balance
         description: "Balance of UNI tokens in the GMX vault"
-        tests: 
+        data_tests: 
           - not_null
       - &link_balance
         name: link_balance
         description: "Balance of LINK tokens in the GMX vault"
-        tests: 
+        data_tests: 
           - not_null
       - &weth_balance
         name: weth_balance
         description: "Balance of WETH tokens in the GMX vault"
-        tests: 
+        data_tests: 
           - not_null
       - &dai_balance
         name: dai_balance
         description: "Balance of DAI tokens in the GMX vault"
-        tests: 
+        data_tests: 
           - not_null

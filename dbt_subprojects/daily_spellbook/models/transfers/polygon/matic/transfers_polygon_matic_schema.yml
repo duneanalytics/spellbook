@@ -10,7 +10,7 @@ models:
     config:
       tags: ['transfers', 'polygon', 'matic']
     description: "matic Transfers on polygon. This table is updated every 30 minutes."
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transfer_type
@@ -55,7 +55,7 @@ models:
       contributors: Henrystats
     config:
       tags: ['transfers', 'polygon', 'matic', 'agg_hour', 'Henrystats']
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - hour
@@ -85,7 +85,7 @@ models:
       contributors: Henrystats
     config:
       tags: ['transfers', 'polygon', 'matic', 'agg_day', 'Henrystats']
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day

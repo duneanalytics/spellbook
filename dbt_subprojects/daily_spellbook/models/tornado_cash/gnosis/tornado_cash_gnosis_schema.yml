@@ -11,7 +11,7 @@ models:
     config:
       tags: ['tornado_cash', 'deposits', 'gnosis']
     description: "Tornado Cash Deposits on Gnosis"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -29,13 +29,13 @@ models:
         description: "Symbol of currency deposited/withdrawn from Tornado Cash"
       - &blockchain
         name: blockchain
-        tests:
+        data_tests:
           - accepted_values:
               values: ['gnosis']
         description: "Blockchain"
       - &tornado_version
         name: tornado_version
-        tests:
+        data_tests:
           - accepted_values:
               values: ['classic', 'nova']
         description: "Version of Tornado Cash used for this transaction"
@@ -59,7 +59,7 @@ models:
     config:
       tags: ['tornado_cash', 'withdrawals', 'gnosis']
     description: "Tornado Cash Withdrawals on Gnosis"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date

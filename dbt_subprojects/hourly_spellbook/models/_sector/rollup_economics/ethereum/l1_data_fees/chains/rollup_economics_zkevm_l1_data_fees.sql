@@ -9,7 +9,7 @@
 )}}
 
 SELECT
-    'zkevm' AS name
+    'polygon zkevm' AS name
     , cast(date_trunc('month', t.block_time) AS date) AS block_month
     , cast(date_trunc('day', t.block_time) AS date) AS block_date
     , t.block_time

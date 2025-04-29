@@ -10,7 +10,7 @@ models:
       tags: ['ethereum', 'flashloans']
     description: >
       All Equalizer flashloans on Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

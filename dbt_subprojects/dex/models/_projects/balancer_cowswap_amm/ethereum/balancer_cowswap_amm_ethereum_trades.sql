@@ -21,7 +21,7 @@
     , trade.evt_block_time AS block_time
     , trade.evt_block_number block_number
     , tb.symbol AS token_bought_symbol
-    , tb.symbol AS token_sold_symbol
+    , ts.symbol AS token_sold_symbol 
     , CONCAT(ts.symbol, '-', tb.symbol) AS token_pair
     , (trade.buyAmount / POWER(10, COALESCE(pb.decimals, tb.decimals))) AS token_bought_amount
     , ((trade.sellAmount - trade.feeAmount) / POWER(10, COALESCE(ps.decimals, ts.decimals))) AS token_sold_amount

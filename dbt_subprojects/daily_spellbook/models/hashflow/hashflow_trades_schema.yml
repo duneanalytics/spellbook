@@ -11,7 +11,7 @@ models:
       tags: ['avalanche_c', 'bnb', 'ethereum', 'hashflow','trades','dex','BroderickBonelli']
     description: >
         Table of Hashflow cross chain trades. Includes unique data for cross chain trades such as source and destination chains for further analysis of Hashflow's cross chain activity.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date

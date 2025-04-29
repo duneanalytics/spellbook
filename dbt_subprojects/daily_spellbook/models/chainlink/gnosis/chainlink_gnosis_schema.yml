@@ -57,7 +57,7 @@ models:
       tags: ["gnosis", "chainlink", "oracle"]
     description: >
       Table pulling price updates for known Chainlink oracle addresses, truncated to hourly average price for easier joining with other on-chain tables.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -88,7 +88,7 @@ models:
       tags: ["gnosis", "chainlink", "oracle"]
     description: >
       Manually updated table for mapping chainlink feeds to proxy addresses and the aggregator addresses (where updates read to)
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - proxy_address
@@ -111,7 +111,7 @@ models:
       tags: ["chainlink", "ocr", "gas", "transmission", "logs", "gnosis"]
     description: >
       Chainlink OCR Gas Transmission Logs
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -162,7 +162,7 @@ models:
       tags: ["chainlink", "ocr", "fulfilled", "transactions", "gnosis"]
     description: >
       Chainlink OCR Fulfilled Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -196,7 +196,7 @@ models:
       tags: ["chainlink", "ocr", "reverted", "transactions", "gnosis"]
     description: >
       Chainlink OCR Reverted Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -222,7 +222,7 @@ models:
       tags: ["chainlink", "ocr", "gas", "daily", "gnosis"]
     description: >
       Chainlink OCR Gas Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -266,7 +266,7 @@ models:
       tags: ["chainlink", "ocr", "request", "daily", "gnosis"]
     description: >
       Chainlink OCR Request Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -343,7 +343,7 @@ models:
       tags: ["chainlink", "ocr", "reward", "evt", "transfer", "daily", "gnosis"]
     description: >
       Chainlink OCR Reward Event Transfers Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -366,7 +366,7 @@ models:
       tags: ["chainlink", "ocr", "reward", "daily", "gnosis"]
     description: >
       Chainlink OCR Reward Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -390,7 +390,7 @@ models:
       tags: ["chainlink", "fm", "gas", "daily", "gnosis"]
     description: >
       Chainlink FM Gas Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -418,7 +418,7 @@ models:
       tags: ["chainlink", "fm", "gas", "submission", "logs", "gnosis"]
     description: >
       Chainlink FM Gas Transmission Logs
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -449,7 +449,7 @@ models:
       tags: ["chainlink", "fm", "fulfilled", "transactions", "gnosis"]
     description: >
       Chainlink FM Fulfilled Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -475,7 +475,7 @@ models:
       tags: ["chainlink", "fm", "request", "daily", "gnosis"]
     description: >
       Chainlink FM Request Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -500,7 +500,7 @@ models:
       tags: ["chainlink", "fm", "reverted", "transactions", "gnosis"]
     description: >
       Chainlink FM Reverted Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -526,7 +526,7 @@ models:
       tags: ["chainlink", "fm", "reward", "daily", "gnosis"]
     description: >
       Chainlink FM Reward Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -566,7 +566,7 @@ models:
       tags: ["chainlink", "fm", "reward", "evt", "transfer", "daily", "gnosis"]
     description: >
       Chainlink FM Reward Event Transfers Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

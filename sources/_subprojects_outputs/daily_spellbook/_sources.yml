@@ -16,6 +16,7 @@ sources:
     tables:
       - name: disperse_contracts
       - name: contract_creator_project_mapping
+      - name: contract_mapping
       
   - name: labels
     tables:
@@ -29,11 +30,39 @@ sources:
         description: "Blockchain metadata for all EVM compatible chains"
       - name: evm_smart_account_method_ids
       - name: base_evm_smart_account_method_ids
+      - name: contracts
+      - name: blocks
+      - name: creation_traces
+      - name: traces
+      - name: traces_decoded
+      - name: transactions
+      - name: logs
 
   - name: ethereum
     tables:
       - name: blobs_submissions
-      
-  - name: gas
+
+  - name: beets
     tables:
-      - name: fees
+      - name: pools_metrics_daily
+      - name: trades      
+
+  - name: utils
+    tables:
+      - name: days_table
+      - name: hours_table
+      - name: minutes_table
+      - name: days
+      - name: hours
+      - name: minutes
+
+  - name: aave
+    tables:
+      - name: flashloans
+
+  - name: aave_ethereum
+    tables:
+      - name: proposals
+      - name: votes
+      - name: supply
+      - name: borrow

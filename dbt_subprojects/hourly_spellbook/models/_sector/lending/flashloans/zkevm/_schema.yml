@@ -9,7 +9,7 @@ models:
     config:
       tags: ['lending', 'flashloans', 'zkevm']
     description: "All lending flashloans transactions on zkevm"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -18,27 +18,27 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain name"
-        tests:
+        data_tests:
           - not_null
       - &project
         name: project
         description: "Project name"
-        tests:
+        data_tests:
           - not_null
       - &version
         name: version
         description: "Version of the contract built and deployed by the lending project"
-        tests:
+        data_tests:
           - not_null
       - &recipient
         name: recipient
         description: "recipient wallet address"
-        tests:
+        data_tests:
           - not_null
       - &amount
         name: amount
         description: "Token amount present in the transaction"
-        tests:
+        data_tests:
           - not_null
       - &fee
         name: fee
@@ -49,27 +49,27 @@ models:
         name: token_address
       - &project_contract_address
         name: project_contract_address
-        tests:
+        data_tests:
           - not_null
       - &block_time
         name: block_time
         description: "Timestamp for block event time in UTC"
-        tests:
+        data_tests:
           - not_null
       - &block_number
         name: block_number
         description: "Event block number"
-        tests:
+        data_tests:
           - not_null
       - &tx_hash
         name: tx_hash
         description: "Transaction hash of the event"
-        tests:
+        data_tests:
           - not_null
       - &evt_index
         name: evt_index
         description: "Event index"
-        tests:
+        data_tests:
           - not_null
 
   - name: balancer_v2_zkevm_base_flashloans
@@ -81,7 +81,7 @@ models:
     config:
       tags: ['lending', 'flashloans', 'balancer', 'zkevm']
     description: "Balancer flashloans transactions on zkevm"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash

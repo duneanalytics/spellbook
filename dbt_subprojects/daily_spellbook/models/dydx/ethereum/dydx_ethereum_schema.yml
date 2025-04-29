@@ -10,7 +10,7 @@ models:
       tags:   ['ethereum', 'votes', 'dao']
     description: >
       DAO votes on all chains across all contracts and versions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
          combination_of_columns:
            - tx_hash
@@ -50,7 +50,7 @@ models:
       - &support
         name: support
         description: "0 = Against, 1 = For, 2 = Abstain votes"
-        tests:
+        data_tests:
         - accepted_values:
             values: ['for', 'against', 'abstain']
       - &reason
@@ -66,7 +66,7 @@ models:
       tags: ['ethereum', 'proposals', 'dao']
     description: >
       DAO proposals on all chains across all contracts and versions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - blockchain
@@ -86,7 +86,7 @@ models:
       - *dao_name
       - *dao_address
       - name: proposal_id
-        tests:
+        data_tests:
           - unique
       - &votes_for
         name: votes_for
@@ -103,7 +103,7 @@ models:
       - &status
         name: status
         description: "Proposal status: Pending, Queued, Active, Executed, Canceled or Defeated"
-        tests:
+        data_tests:
           - accepted_values:
               values: ['Pending', 'Queued', 'Active', 'Executed', 'Canceled','Defeated']
       - &description
@@ -119,7 +119,7 @@ models:
       tags: ['ethereum', 'flashloans']
     description: >
       All dYdX flashloans
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

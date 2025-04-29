@@ -4,7 +4,7 @@ Within Spellbook, there are two main spells which are considered the most popula
 
 **Note**: not all sectors are up-to-date in the new structure, but will be considered moving forward
 
-Since these sector-level spells will have their own dedicated `readme` within their directory with specifics, this will remain a high-level overview. Example dex readme [here](/models/_sector/dex/readme.md).
+Since these sector-level spells will have their own dedicated `readme` within their directory with specifics, this will remain a high-level overview. Example dex readme [here](/dbt_subprojects/dex/README.md).
 
 ## Model level of granularity
 

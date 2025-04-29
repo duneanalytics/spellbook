@@ -22,6 +22,12 @@ sources:
       - name: LidoPool_evt_Repay
       - name: LidoPool_evt_LiquidationCall
 
+  - name: aave_v3_etherfi_ethereum
+    tables:
+      - name: PoolInstance_evt_Borrow
+      - name: PoolInstance_evt_Repay
+      - name: PoolInstance_evt_LiquidationCall
+
   - name: compound_v1_ethereum
     tables:
       - name: MoneyMarket_evt_BorrowTaken

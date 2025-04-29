@@ -2,7 +2,7 @@
         schema='evms',
         alias = 'erc1155_transferssingle',
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle", "ronin", "opbnb", "ink"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -20,7 +20,6 @@
      , ('arbitrum', source('erc1155_arbitrum', 'evt_transfersingle'))
      , ('celo', source('erc1155_celo', 'evt_transfersingle'))
      , ('base', source('erc1155_base', 'evt_transfersingle'))
-     , ('goerli', source('erc1155_goerli', 'evt_transfersingle'))
      , ('zksync', source('erc1155_zksync', 'evt_transfersingle'))
      , ('zora', source('erc1155_zora', 'evt_transfersingle'))
      , ('scroll', source('erc1155_scroll', 'evt_transfersingle'))
@@ -29,6 +28,9 @@
      , ('blast', source('erc1155_blast', 'evt_transfersingle'))
      , ('mantle', source('erc1155_mantle', 'evt_transfersingle'))
      , ('sei', source('erc1155_sei', 'evt_transfersingle'))
+     , ('ronin', source('erc1155_ronin', 'evt_transfersingle'))
+     , ('opbnb', source('erc1155_opbnb', 'evt_transfersingle'))
+     , ('ink', source('erc1155_ink', 'evt_transfersingle'))
 ] %}
 
 SELECT *

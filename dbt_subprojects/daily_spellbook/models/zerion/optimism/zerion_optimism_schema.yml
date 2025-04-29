@@ -11,7 +11,7 @@ models:
       tags: ['optimism', 'zerion', 'zerion', 'trades', 'dex']
     description: >
         Zerion DEX trades on Optimism
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

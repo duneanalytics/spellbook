@@ -30,7 +30,7 @@ sources:
           - &evt_tx_hash
             name: evt_tx_hash
             description: "Primary key of the transaction"
-            tests:
+            data_tests:
               - not_null
           - &sender
             name: sender

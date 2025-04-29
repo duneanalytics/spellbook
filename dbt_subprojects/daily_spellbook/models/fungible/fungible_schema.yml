@@ -32,7 +32,7 @@ models:
       - name: decimals
         description: "The number of decimals of the fungible token"
       - name: token_standard
-        tests:
+        data_tests:
           - accepted_values:
               values: ['native', 'erc20', 'bep20']
         description: "Token standard"

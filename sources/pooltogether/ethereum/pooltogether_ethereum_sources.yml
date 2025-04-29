@@ -22,7 +22,7 @@ sources:
           - &call_tx_hash
             name: call_tx_hash
             description: "Primary key of the transaction"
-            tests:
+            data_tests:
               - not_null
           - &contract_address
             name: contract_address
@@ -50,7 +50,7 @@ sources:
           - &evt_tx_hash
             name: evt_tx_hash
             description: "Primary key of the transaction"
-            tests:
+            data_tests:
               - not_null
           - &prizeDistrubution
             name: prizeDistrubution

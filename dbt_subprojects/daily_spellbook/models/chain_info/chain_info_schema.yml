@@ -10,7 +10,7 @@ models:
       tags: ['chains','cross-chain']
     description: >
         Table mapping chain IDs to names
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - chain_id
@@ -47,7 +47,7 @@ models:
       tags: ['chains','cross-chain']
     description: >
         Table mapping chain IDs to names. Compatible/joinable with `prices` project.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - chain_id

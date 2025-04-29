@@ -16,7 +16,7 @@ models:
         description: "Blockchain"   
       - name: address
         description: "Address of $OP receiver"
-        tests:
+        data_tests:
           - unique
       - name: name
         description: "Label name: '$OP Airdrop 1 Receiver'"
@@ -50,7 +50,7 @@ models:
         description: "Blockchain"
       - name: address
         description: "Address of $OP receiver"
-        tests:
+        data_tests:
           - unique
       - name: name
         description: "Label name: '$OP Airdrop 2 Receiver'"
@@ -84,7 +84,7 @@ models:
         description: "Blockchain"
       - name: address
         description: "Address of $OP receiver"
-        tests:
+        data_tests:
           - unique
       - name: name
         description: "Label name: '$OP Airdrop 3 Receiver'"

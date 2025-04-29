@@ -6,9 +6,6 @@ models:
       blockchain: goerli
       project: safe
       contributors: tschubotz
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'singletons', 'goerli']
     description: "Singletons addresses used with Safes"
@@ -16,7 +13,7 @@ models:
       - &address
         name: address
         description: "Safe contract address"
-        tests:
+        data_tests:
           - unique
           - not_null
 
@@ -25,9 +22,6 @@ models:
       blockchain: goerli
       project: safe
       contributors: tschubotz
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'goerli']
     description: "Safe addresses"
@@ -54,9 +48,6 @@ models:
       blockchain: goerli
       project: safe
       contributors: tschubotz, danielpartida
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'goerli']
     description: "Safe transactions"
@@ -118,13 +109,10 @@ models:
       blockchain: goerli
       project: safe
       contributors: tschubotz
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'transfers', 'goerli']
     description: "ETH transfers into or out of Safes"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date

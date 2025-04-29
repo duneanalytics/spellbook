@@ -10,7 +10,7 @@ models:
     config:
       tags: ['rollup', 'l2']
     description: Fees spent by Arbitrum for calldata gas on Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - name
@@ -62,7 +62,7 @@ models:
     config:
       tags: ['rollup', 'l2']
     description: Fees spent by IMX for calldata gas on Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - name
@@ -90,7 +90,7 @@ models:
     config:
       tags: ['rollup', 'l2']
     description: Fees spent by Linea for calldata gas on Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - name
@@ -118,7 +118,7 @@ models:
     config:
       tags: ['rollup', 'l2']
     description: Fees spent by Loopring for calldata gas on Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - name
@@ -146,7 +146,7 @@ models:
     config:
       tags: ['rollup', 'l2']
     description: Fees spent by Mantle for calldata gas on Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - name
@@ -174,7 +174,7 @@ models:
     config:
       tags: ['rollup', 'l2']
     description: Fees spent by Optimism for calldata gas on Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - name
@@ -202,7 +202,7 @@ models:
     config:
       tags: ['rollup', 'l2']
     description: Fees spent by Scroll for calldata gas on Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - name
@@ -230,7 +230,7 @@ models:
     config:
       tags: ['rollup', 'l2']
     description: Fees spent by Starknet for calldata gas on Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - name
@@ -258,7 +258,7 @@ models:
     config:
       tags: ['rollup', 'l2']
     description: Fees spent by Polygon zkEVM for calldata gas on Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - name
@@ -286,7 +286,7 @@ models:
     config:
       tags: ['rollup', 'l2']
     description: Fees spent by ZKsync Era for calldata gas on Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - name
@@ -314,7 +314,7 @@ models:
     config:
       tags: ['rollup', 'l2']
     description: Fees spent by ZKsync Lite for calldata gas on Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - name

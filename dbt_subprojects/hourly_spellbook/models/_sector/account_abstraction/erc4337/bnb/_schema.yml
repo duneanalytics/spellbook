@@ -58,7 +58,7 @@ models:
     config:
       tags: ["bnb", "erc4337", "account", "abstraction", "entrypoint"]
     description: "erc4337 user operation on bnb"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - userop_hash
@@ -139,7 +139,7 @@ models:
     config:
       tags: ["bnb", "erc4337", "account", "abstraction", "entrypoint"]
     description: "erc4337 account deployed on bnb"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - userop_hash

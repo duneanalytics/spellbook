@@ -11,7 +11,7 @@ models:
     description: >
       Daily balances of veBAL per wallet
       Depends on veBAL_call_create_lock, veBAL_evt_Deposit and veBAL_evt_Withdraw
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
@@ -37,7 +37,7 @@ models:
     description: >
       Slope and bias of veBAL per wallet after each balance update
       Depends on veBAL_call_create_lock, veBAL_evt_Deposit and veBAL_evt_Withdraw
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_number
@@ -70,7 +70,7 @@ models:
     description: >
       Records of votes for Balancer gauges by provider at each voting round
       Depends on GaugeController_evt_VoteForGauge and the vebal_slopes spell
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - round_id

@@ -119,7 +119,8 @@ from base_supply
     blockchain,
     project,
     version,
-    project_decoded_as = 'aave_v2'
+    project_decoded_as = 'aave_v2',
+    wrapped_token_gateway_available = true
   )
 %}
 
@@ -140,6 +141,16 @@ src_LendingPool_evt_Withdraw as (
   where {{ incremental_predicate('evt_block_time') }}
   {% endif %}
 ),
+
+{% if wrapped_token_gateway_available %}
+src_WrappedTokenGatewayV2_call_withdrawETH as (
+  select *
+  from {{ source(project_decoded_as ~ '_' ~ blockchain, 'WrappedTokenGatewayV2_call_withdrawETH') }}
+  {% if is_incremental() %}
+  where {{ incremental_predicate('call_block_time') }}
+  {% endif %}
+),
+{% endif %}
 
 src_LendingPool_evt_LiquidationCall as (
   select *
@@ -167,18 +178,30 @@ base_supply as (
   union all
   select
     'withdraw' as transaction_type,
-    reserve as token_address,
-    user as depositor,
-    cast(null as varbinary) as on_behalf_of,
-    to as withdrawn_to,
+    w.reserve as token_address,
+    w.user as depositor,
+    {% if wrapped_token_gateway_available %}
+      cast(wrap.to as varbinary)
+    {% else %}
+      cast(null as varbinary)
+    {% endif %} as on_behalf_of,
+    w.to as withdrawn_to,
     cast(null as varbinary) as liquidator,
-    -1 * cast(amount as double) as amount,
-    contract_address,
-    evt_tx_hash,
-    evt_index,
-    evt_block_time,
-    evt_block_number
-  from src_LendingPool_evt_Withdraw
+    -1 * cast(w.amount as double) as amount,
+    w.contract_address,
+    w.evt_tx_hash,
+    w.evt_index,
+    w.evt_block_time,
+    w.evt_block_number
+  from src_LendingPool_evt_Withdraw w
+  {% if wrapped_token_gateway_available %}
+    left join src_WrappedTokenGatewayV2_call_withdrawETH wrap
+      on w.evt_block_number = wrap.call_block_number
+      and w.evt_tx_hash = wrap.call_tx_hash
+      and w.to = wrap.contract_address
+      and w.amount = wrap.amount
+      and wrap.call_success
+  {% endif %}
   union all
   select
     'deposit_liquidation' as transaction_type,
@@ -225,7 +248,9 @@ from base_supply
     project,
     version,
     project_decoded_as = 'aave_v3',
-    decoded_contract_name = 'Pool'
+    decoded_contract_name = 'Pool',
+    wrapped_token_gateway_available = true,
+    decoded_wrapped_token_gateway_name = 'WrappedTokenGatewayV3'
   )
 %}
 
@@ -246,6 +271,16 @@ src_LendingPool_evt_Withdraw as (
   where {{ incremental_predicate('evt_block_time') }}
   {% endif %}
 ),
+
+{% if wrapped_token_gateway_available %}
+src_WrappedTokenGatewayV3_call_withdrawETH as (
+  select *
+  from {{ source(project_decoded_as ~ '_' ~ blockchain, decoded_wrapped_token_gateway_name ~ '_call_withdrawETH') }}
+  {% if is_incremental() %}
+  where {{ incremental_predicate('call_block_time') }}
+  {% endif %}
+),
+{% endif %}
 
 src_LendingPool_evt_Repay as (
   select *
@@ -282,18 +317,30 @@ base_supply as (
   union all
   select
     'withdraw' as transaction_type,
-    reserve as token_address,
-    user as depositor,
-    cast(null as varbinary) as on_behalf_of,
-    to as withdrawn_to,
+    w.reserve as token_address,
+    w.user as depositor,
+    {% if wrapped_token_gateway_available %}
+      cast(wrap.to as varbinary)
+    {% else %}
+      cast(null as varbinary)
+    {% endif %} as on_behalf_of,
+    w.to as withdrawn_to,
     cast(null as varbinary) as liquidator,
-    -1 * cast(amount as double) as amount,
-    contract_address,
-    evt_tx_hash,
-    evt_index,
-    evt_block_time,
-    evt_block_number
-  from src_LendingPool_evt_Withdraw
+    -1 * cast(w.amount as double) as amount,
+    w.contract_address,
+    w.evt_tx_hash,
+    w.evt_index,
+    w.evt_block_time,
+    w.evt_block_number
+  from src_LendingPool_evt_Withdraw w
+  {% if wrapped_token_gateway_available %}
+    left join src_WrappedTokenGatewayV3_call_withdrawETH wrap
+      on w.evt_block_number = wrap.call_block_number
+      and w.evt_tx_hash = wrap.call_tx_hash
+      and w.to = wrap.contract_address
+      and w.amount = wrap.amount
+      and wrap.call_success
+  {% endif %}
   union all
   select
     'repay_with_atokens' as transaction_type,

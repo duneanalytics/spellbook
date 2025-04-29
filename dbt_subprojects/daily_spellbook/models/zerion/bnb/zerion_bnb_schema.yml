@@ -11,7 +11,7 @@ models:
       tags: ['bnb', 'zerion', 'zerion', 'trades', 'dex']
     description: >
         Zerion DEX trades on BNB
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

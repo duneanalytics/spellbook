@@ -25,7 +25,7 @@ sources:
           - &evt_tx_hash
             name: evt_tx_hash
             description: "Primary key of the transaction"
-            tests:
+            data_tests:
               - not_null
       - name: GPv2AllowListAuthentication_evt_SolverRemoved
         description: "GPv2AllowListAuthentication list of events when a solver was removed"

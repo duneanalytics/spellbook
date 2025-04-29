@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: ape_store_ethereum
+    tables:
+      - name: Router_evt_CreateToken
+  - name: ape_store_ethereum
+    tables:
+      - name: Router_evt_swap

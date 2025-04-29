@@ -13,7 +13,7 @@ models:
       - &contract_address
         name: contract_address
         description: "ERC20 token contract address"
-        tests:
+        data_tests:
           - unique
       - &symbol
         name: symbol

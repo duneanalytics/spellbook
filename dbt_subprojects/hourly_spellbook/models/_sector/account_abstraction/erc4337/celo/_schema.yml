@@ -58,7 +58,7 @@ models:
     config:
       tags: ["celo", "erc4337", "account", "abstraction", "entrypoint"]
     description: "erc4337 user operation on celo"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - userop_hash
@@ -139,7 +139,7 @@ models:
     config:
       tags: ["celo", "erc4337", "account", "abstraction", "entrypoint"]
     description: "erc4337 account deployed on celo"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - userop_hash

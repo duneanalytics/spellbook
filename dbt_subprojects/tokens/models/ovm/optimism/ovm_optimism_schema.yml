@@ -11,7 +11,7 @@ models:
     config:
       tags: ['cross-chain', 'optimism', 'tokens']
     description: "Tokens created by Optimism's L2 Token Factory"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - l1_token
