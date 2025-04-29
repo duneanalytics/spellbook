@@ -41,9 +41,9 @@ sources:
       - name: bubblegum_call_mintV1
       - name: bubblegum_call_mintToCollectionV1
 
-  - name: pumpswap_solana
+  - name: pumpdotfun_solana
     description: "pumpswap protocol decoded tables"
-    schema: pumpswap_solana
+    schema: pumpdotfun_solana
     tables:
       - name: pump_amm_call_buy
       - name: pump_amm_call_sell
