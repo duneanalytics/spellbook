@@ -75,6 +75,8 @@ models:
       - &tx_index
         name: tx_index
         description: "Index of the transaction in the block slot"
+      - name: trade_id
+        description: "Internal surrogate key for deduplication and reference"
 
   - name: pumpswap_solana_trades
     meta:

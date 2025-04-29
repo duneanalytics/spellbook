@@ -88,6 +88,26 @@ swaps_base AS (
     {% endif %}
 ),
 
+-- Deduplicate early
+swaps_deduplicated AS (
+    SELECT *
+    FROM (
+        SELECT 
+            *,
+            ROW_NUMBER() OVER (
+                PARTITION BY 
+                    tx_id, 
+                    outer_instruction_index, 
+                    inner_instruction_index, 
+                    tx_index, 
+                    CAST(date_trunc('month', block_time) AS DATE)
+                ORDER BY block_time DESC
+            ) as row_num
+        FROM swaps_base
+    ) s
+    WHERE s.row_num = 1
+),
+
 swaps_with_transfers AS (
     SELECT
         s.*,
@@ -96,7 +116,7 @@ swaps_with_transfers AS (
             WHEN s.is_buy = 0 AND t.from_token_account = s.sol_source_account AND t.to_token_account = s.sol_dest_account THEN t.amount
             ELSE s.max_min_sol_amount
         END as sol_amount
-    FROM swaps_base s
+    FROM swaps_deduplicated s
     LEFT JOIN {{ ref('tokens_solana_transfers') }} t
         ON t.tx_id = s.tx_id 
         AND t.action = 'transfer'
@@ -155,7 +175,15 @@ trades_base as (
         cast(case 
             when is_buy = 1 then sp.user_base_token_account
             else sp.user_quote_token_account
-        end as varchar) as token_bought_vault
+        end as varchar) as token_bought_vault,
+        -- Create surrogate key for internal use
+        {{ dbt_utils.generate_surrogate_key([
+            'sp.tx_id',
+            'sp.outer_instruction_index',
+            'sp.inner_instruction_index',
+            'sp.tx_index',
+            'cast(date_trunc(\'month\', sp.block_time) as varchar)'
+        ]) }} as trade_id
     FROM swaps_with_transfers sp
     LEFT JOIN pools p ON p.pool = sp.pool
 )
@@ -181,5 +209,6 @@ SELECT
     tb.tx_id,
     tb.outer_instruction_index,
     tb.inner_instruction_index,
-    tb.tx_index
+    tb.tx_index,
+    tb.trade_id
 FROM trades_base tb
