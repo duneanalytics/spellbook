@@ -49,3 +49,4 @@ sources:
       - name: pump_amm_call_sell
       - name: pump_amm_call_create_pool
       - name: pump_amm_call_create_config
+      - name: pump_amm_call_update_fee_config

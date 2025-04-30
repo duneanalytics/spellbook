@@ -24,6 +24,23 @@ WITH pools AS (
     FROM {{ ref('pumpswap_solana_pools') }}
 ),
 
+-- Get the latest fee configuration before the start date
+latest_fee_config AS (
+    SELECT 
+        lp_fee_basis_points,
+        protocol_fee_basis_points,
+        -- Calculate the total fee rate as a decimal
+        (lp_fee_basis_points + protocol_fee_basis_points) / 10000.0 AS total_fee_rate
+    FROM {{ source('pumpdotfun_solana', 'pump_amm_call_update_fee_config') }}
+    {% if is_incremental() %}
+    WHERE {{incremental_predicate('call_block_time')}}
+    {% else %}
+    WHERE call_block_time <= TIMESTAMP '{{project_start_date}}'
+    {% endif %}
+    ORDER BY call_block_time DESC
+    LIMIT 1
+),
+
 swaps_base AS (
     -- Buy operations
     SELECT
@@ -116,12 +133,14 @@ transfers_aggregated AS (
 swaps_with_transfers AS (
     SELECT
         s.*,
+        f.total_fee_rate,
         CASE
             WHEN s.is_buy = 1 AND t.to_token_account = s.sol_target_account THEN t.amount
             WHEN s.is_buy = 0 AND t.from_token_account = s.sol_source_account AND t.to_token_account = s.sol_dest_account THEN t.amount
             ELSE s.max_min_sol_amount
         END as sol_amount
     FROM swaps_base s
+    CROSS JOIN latest_fee_config f
     LEFT JOIN transfers_aggregated t
         ON t.tx_id = s.tx_id 
         AND t.outer_instruction_index = s.outer_instruction_index
@@ -142,22 +161,23 @@ trades_base as (
         end as trade_source,
         --bought
         case 
-            when is_buy = 1 then p.baseMint
-            else 'So11111111111111111111111111111111111111112'
+            when is_buy = 1 then p.baseMint  -- For buys, base token is bought
+            else 'So11111111111111111111111111111111111111112'  -- For sells, SOL is bought
         end as token_bought_mint_address,
         case 
-            when is_buy = 1 then base_amount
-            else sol_amount
+            when is_buy = 1 then CEIL(base_amount)  -- For buys, use base token amount
+            else CEIL(sol_amount / (1 - sp.total_fee_rate))  -- For sells, calculate pre-fee SOL amount
         end as token_bought_amount_raw,
         --sold
         case 
-            when is_buy = 0 then p.baseMint
-            else 'So11111111111111111111111111111111111111112'
+            when is_buy = 0 then p.baseMint  -- For sells, base token is sold
+            else 'So11111111111111111111111111111111111111112'  -- For buys, SOL is sold
         end as token_sold_mint_address,
         case 
-            when is_buy = 0 then base_amount
-            else sol_amount
+            when is_buy = 0 then base_amount  -- For sells, use base token amount
+            else CAST(sol_amount * (1 - 0.0025) AS BIGINT)  -- For buys, calculate pre-fee SOL amount
         end as token_sold_amount_raw,
+        cast(0.01 as double) as fee_tier,
         cast(sp.pool as varchar) as pool_id,
         'pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA' as project_main_id,
         sp.user as trader_id,
@@ -193,7 +213,7 @@ SELECT
     tb.trade_source,
     tb.token_bought_amount_raw,
     tb.token_sold_amount_raw,
-    cast(0.01 as double) as fee_tier,
+    tb.fee_tier,
     tb.token_sold_mint_address,
     tb.token_bought_mint_address,
     tb.token_sold_vault,
