@@ -396,6 +396,7 @@ sources:
             description: "Address receiving the tokens"
           - name: value
             description: "Amount of tokens transferred"
+      - name: evt_approval
 
   - name: erc721_lens
     description: "Transfer events for ERC721 tokens on lens"
@@ -422,6 +423,8 @@ sources:
             description: "Address receiving the NFT"
           - name: tokenId
             description: "Unique identifier of the transferred NFT"
+      - name: evt_ApprovalForAll
+      - name: evt_Approval
 
   - name: erc1155_lens
     description: "Transfer events for ERC1155 tokens on lens"
@@ -452,7 +455,8 @@ sources:
             description: "Token type identifier"
           - name: value
             description: "Amount of tokens transferred"
-
+      - name: evt_ApprovalForAll
+      
       - name: evt_transferbatch
         meta:
           docs_slug: /evm/lens/decoded/erc1155_evt_transferbatch
