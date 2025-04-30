@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: contracts_scroll_contract_mapping
+    meta:
+      blockchain: scroll
+      sector: contracts
+      contributors: [msilb7, chuxin, tomfutago]
+    config:
+      tags: ['scroll', 'contracts', 'mapping', 'decoder']
+    description: >
+      Mapping for scroll contracts      
+    tests:
+    columns:
+      - &contract_address
+        name: contract_address
+        description: "Address of the contract"
+      - &contract_project
+        name: contract_project
+        description: "Project name of the contract"
+      - &creator_address
+        name: creator_address
+        description: "Address that created the contract"
+      - &created_time
+        name: created_time
+        description: "Time the contract was created" 
