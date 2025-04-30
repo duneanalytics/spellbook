@@ -95,20 +95,20 @@ SELECT *
 FROM (
         {% for contracts_model in contracts_models %}
         SELECT
-            '{{ contracts_model[0] }}' AS blockchain
-            , abi_id
-            , abi
-            , address
-            , "from"
-            , code
-            , name
-            , namespace
-            , dynamic
-            , base
-            , factory
-            , detection_source
-            , created_at
-            , row_number() over (partition by address order by created_at desc) as duplicates_rank
+        '{{ contracts_model[0] }}' AS blockchain
+        , abi_id
+        , abi
+        , address
+        , "from"
+        , code
+        , name
+        , namespace
+        , dynamic
+        , base
+        , factory
+        , detection_source
+        , created_at
+        , row_number() over (partition by address order by created_at desc) as duplicates_rank
         FROM {{ contracts_model[1] }}
         {% if not loop.last %}
         {% if is_incremental() %}
