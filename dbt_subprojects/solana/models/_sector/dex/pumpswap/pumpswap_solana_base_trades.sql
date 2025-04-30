@@ -88,7 +88,7 @@ swaps_base AS (
     {% endif %}
 ),
 
--- Get only one transfer amount per swap
+-- Get all transfers for both SOL and base tokens
 transfers_aggregated AS (
     SELECT
         tx_id,
@@ -98,7 +98,10 @@ transfers_aggregated AS (
         from_token_account,
         MAX(amount) as amount  -- Just take the largest amount if there are multiple
     FROM {{ ref('tokens_solana_transfers') }}
-    WHERE token_mint_address = 'So11111111111111111111111111111111111111112'
+    WHERE (
+        token_mint_address = 'So11111111111111111111111111111111111111112' OR
+        token_mint_address IN (SELECT baseMint FROM pools)
+    )
     AND token_version = 'spl_token'
     {% if is_incremental() %}
     AND {{incremental_predicate('block_time')}}
@@ -113,21 +116,58 @@ transfers_aggregated AS (
         from_token_account
 ),
 
+-- SOL transfers specific CTE (for clarity)
+sol_transfers AS (
+    SELECT
+        tx_id,
+        outer_instruction_index,
+        to_token_account,
+        from_token_account,
+        amount as sol_amount
+    FROM transfers_aggregated 
+    WHERE token_mint_address = 'So11111111111111111111111111111111111111112'
+),
+
+-- Base token transfers specific CTE
+base_token_transfers AS (
+    SELECT
+        t.tx_id,
+        t.outer_instruction_index,
+        t.to_token_account,
+        t.from_token_account,
+        t.amount as base_amount,
+        t.token_mint_address as baseMint
+    FROM transfers_aggregated t
+    JOIN pools p ON t.token_mint_address = p.baseMint
+),
+
+-- Join swaps with both SOL and base token transfers
 swaps_with_transfers AS (
     SELECT
         s.*,
+        -- For SOL amount (quote amount)
         CASE
-            WHEN s.is_buy = 1 AND t.to_token_account = s.sol_target_account THEN t.amount
-            WHEN s.is_buy = 0 AND t.from_token_account = s.sol_source_account AND t.to_token_account = s.sol_dest_account THEN t.amount
+            WHEN s.is_buy = 1 AND st.to_token_account = s.sol_target_account THEN st.sol_amount
+            WHEN s.is_buy = 0 AND st.from_token_account = s.sol_source_account AND st.to_token_account = s.sol_dest_account THEN st.sol_amount
             ELSE s.max_min_sol_amount
-        END as sol_amount
+        END as sol_amount,
+        -- For base token amount
+        CASE
+            WHEN s.is_buy = 1 AND bt.to_token_account = s.user_base_token_account THEN bt.base_amount
+            WHEN s.is_buy = 0 AND bt.from_token_account = s.user_base_token_account THEN bt.base_amount
+            ELSE s.base_amount
+        END as actual_base_amount
     FROM swaps_base s
-    LEFT JOIN transfers_aggregated t
-        ON t.tx_id = s.tx_id 
-        AND t.outer_instruction_index = s.outer_instruction_index
-        AND t.token_mint_address = 'So11111111111111111111111111111111111111112'
-        AND ((s.is_buy = 1 AND t.to_token_account = s.sol_target_account) OR
-             (s.is_buy = 0 AND t.from_token_account = s.sol_source_account AND t.to_token_account = s.sol_dest_account))
+    LEFT JOIN sol_transfers st
+        ON st.tx_id = s.tx_id 
+        AND st.outer_instruction_index = s.outer_instruction_index
+        AND ((s.is_buy = 1 AND st.to_token_account = s.sol_target_account) OR
+             (s.is_buy = 0 AND st.from_token_account = s.sol_source_account AND st.to_token_account = s.sol_dest_account))
+    LEFT JOIN base_token_transfers bt
+        ON bt.tx_id = s.tx_id
+        AND bt.outer_instruction_index = s.outer_instruction_index
+        AND ((s.is_buy = 1 AND bt.to_token_account = s.user_base_token_account) OR
+             (s.is_buy = 0 AND bt.from_token_account = s.user_base_token_account))
 ),
 
 trades_base as (
@@ -146,7 +186,7 @@ trades_base as (
             else 'So11111111111111111111111111111111111111112'
         end as token_bought_mint_address,
         case 
-            when is_buy = 1 then base_amount
+            when is_buy = 1 then actual_base_amount  -- Use actual transferred amount
             else sol_amount
         end as token_bought_amount_raw,
         --sold
@@ -155,7 +195,7 @@ trades_base as (
             else 'So11111111111111111111111111111111111111112'
         end as token_sold_mint_address,
         case 
-            when is_buy = 0 then base_amount
+            when is_buy = 0 then actual_base_amount  -- Use actual transferred amount
             else sol_amount
         end as token_sold_amount_raw,
         cast(sp.pool as varchar) as pool_id,
