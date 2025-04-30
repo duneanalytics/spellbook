@@ -1,4 +1,4 @@
-{% set blockchain = 'sei' %}
+{% set blockchain = 'sonic' %}
 
 {{ config(
     schema = 'gas_' + blockchain
