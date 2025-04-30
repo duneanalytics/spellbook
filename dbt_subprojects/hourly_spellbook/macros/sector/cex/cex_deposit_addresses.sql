@@ -11,6 +11,7 @@ WITH deposits AS (
     , ROW_NUMBER() OVER (PARTITION BY f."from" ORDER BY MIN(f.block_time)) AS deposit_index
     FROM {{cex_local_flows}} f
     WHERE f.flow_type = 'Inflow'
+        AND f.block_time < date('2025-04-30') -- REMOVE BEFORE MERGING, FOR TESTING ONLY
         {% if is_incremental() %}
         AND {{ incremental_predicate('block_time') }}
         {% endif %}
@@ -43,7 +44,7 @@ INNER JOIN isolate_unique iu ON iu.address=d.address
 -- check that the address was first funded on same chain and recently
 INNER JOIN {{crosschain_first_funded_by}} ffb ON ffb.blockchain='{{blockchain}}'
     AND ffb.address=d.address
-    AND ffb.block_time BETWEEN d.block_time - interval '3' hour AND d.block_time
+    AND ffb.block_time BETWEEN d.block_time - interval '9' hour AND d.block_time
 WHERE d.deposit_index = 1
 
 {% endmacro %}
