@@ -86,8 +86,8 @@ with
                 and trades.trader_id != fee_payments.fee_receiver
             )
         join {{ source('solana', 'transactions') }} tx ON trades.tx_id = tx.id 
-        left join fee_accounts fa1 ON fa1.fee_receiver = trades.trader_id
-        left join fee_accounts fa2 ON fa2.fee_receiver = tx.signer
+        left join fee_addresses fa1 ON fa1.fee_receiver = trades.trader_id
+        left join fee_addresses fa2 ON fa2.fee_receiver = tx.signer
         where
             fa1.fee_receiver IS NULL -- Exclude trades where FeeWallet is trader
             and fa2.fee_receiver IS NULL -- Exclude transactions signed by FeeWallet 
