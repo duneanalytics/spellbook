@@ -1,14 +1,14 @@
 version: 2
 
 models:
-  - name: prices_unichain_tokens
+  - name: prices_lens_tokens
     meta:
-      blockchain: unichain
+      blockchain: lens
       sector: prices
-      contributors: hosuke
+      contributors: jeff-dude
     config:
-      tags: ['prices', 'tokens', 'usd', 'unichain']
-    description: "Price tokens on unichain chain"
+      tags: ['prices', 'tokens', 'usd', 'lens']
+    description: "Price tokens on lens chain"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -21,7 +21,7 @@ models:
         description: "Native blockchain of the token, if any"
         data_tests:
           - accepted_values:
-              values: [ "unichain" ]
+              values: [ "lens" ]
       - name: contract_address
         description: "Contract address of the token, if any"
       - name: symbol
