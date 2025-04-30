@@ -28,6 +28,7 @@
      , (ref('dex_zksync_sandwiches'))
      , (ref('dex_scroll_sandwiches'))
      , (ref('dex_zora_sandwiches'))
+     , (ref('dex_unichain_sandwiches'))
      , (ref('dex_sei_sandwiches'))
 ] %}
 
