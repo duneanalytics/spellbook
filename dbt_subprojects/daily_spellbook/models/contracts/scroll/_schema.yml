@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: scroll
       sector: contracts
-      contributors: [msilb7, chuxin, tomfutago]
+      contributors: [msilb7, chuxin, tomfutago, DeVikingMark]
     config:
       tags: ['scroll', 'contracts', 'mapping', 'decoder']
     description: >
