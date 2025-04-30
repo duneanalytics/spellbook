@@ -236,5 +236,6 @@ FROM
     ('anon-super-anon', 'base', 'ANON',0x0db510e79909666d6dec7f5e49370838c16d950f, 18),
     ('gps1-goplus', 'base', 'GPS',0x0C1dC73159e30c4b06170F2593D3118968a0DCa5, 18),
     ('odos-odos-token', 'base', 'ODOS',0xca73ed1815e5915489570014e024b7EbE65dE679, 18),
-    ('sign-sign2', 'base', 'SIGN',0x868fced65edbf0056c4163515dd840e9f287a4c3, 18)
+    ('sign-sign2', 'base', 'SIGN',0x868fced65edbf0056c4163515dd840e9f287a4c3, 18),
+    ('hyper-hyperlane', 'base', 'HYPER',0xc9d23ed2adb0f551369946bd377f8644ce1ca5c4, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
