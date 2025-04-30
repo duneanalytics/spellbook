@@ -42,3 +42,56 @@ models:
         description: "Stablecoin project name"
       - name: decimals
         description: "Number of decimals"
+
+  - name: tokens_scroll_nft_standards
+    meta:
+      blockchain: scroll
+      sector: nft
+      contributors: msilb7
+    config:
+      tags: ['tokens', 'scroll', 'nft', 'erc721', 'erc1155']
+    description: >
+        NFT token standards from transfers.
+    columns:
+      - name: contract_address
+        description: "The contract address of the NFT"
+        data_tests:
+          - unique
+      - name: standard
+        description: "NFT Standard (ERC721 or ERC1155)"
+
+  - name: tokens_scroll_nft_curated
+    meta:
+      blockchain: scroll
+      sector: nft
+      contributors: msilb7
+    config:
+      tags: ['tokens', 'scroll', 'nft', 'erc721', 'erc1155']
+    description: >
+        Selection of NFT token addresses.
+    columns:
+      - name: contract_address
+        description: "The contract address is the unique address of where the NFTs are stored on Scroll."
+      - name: name
+        description: "NFT Project Name"
+      - name: symbol
+        description: "NFT Project Symbol"
+
+  - name: tokens_scroll_nft
+    meta:
+      blockchain: scroll
+      sector: nft
+      contributors: msilb7
+    config:
+      tags: ['tokens', 'scroll', 'nft', 'erc721', 'erc1155']
+    description: >
+        NFT (ERC721 and ERC1155) tokens on Scroll.
+    columns:
+      - name: contract_address
+        description: "The contract address is the unique address of where the NFTs are stored on Scroll."
+      - name: name
+        description: "NFT Project Name"
+      - name: symbol
+        description: "NFT Project Symbol"
+      - name: standard
+        description: "NFT Standard (ERC721 or ERC1155)"
