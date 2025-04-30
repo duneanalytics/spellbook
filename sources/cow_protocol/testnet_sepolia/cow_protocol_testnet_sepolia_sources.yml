@@ -122,7 +122,7 @@ sources:
           - &value
             name: value
             description: ETH amount (in WEI) being passed into contract interaction
-  - name: cow_protocol_testnet_sepolia
+  - name: cow_protocol_sepolia
     description: "Sepolia decoded tables related to CoW Protocol contract's"
     tables:
       - name: CoWSwapEthFlow_evt_OrderPlacement
