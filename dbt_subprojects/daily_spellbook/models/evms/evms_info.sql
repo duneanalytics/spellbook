@@ -17,6 +17,7 @@
                                         , "gnosis"
                                         , "ink"
                                         , "kaia"
+                                        , "lens"
                                         , "linea"
                                         , "nova"
                                         , "optimism"
@@ -111,4 +112,5 @@ FROM (
         , (80094, 'berachain', 'Berachain', 'Layer 1', NULL, 'BERA', NULL, 'https://berascan.com/', timestamp '2024-01-20 14:14:11', NULL, NULL, NULL, true, NULL)
         , (33139, 'apechain', 'ApeChain', 'Layer 3', 'Optimistic Rollup', 'APE', 0x48b62137edfa95a428d35c09e44256a739f6b557, 'https://apescan.io/', timestamp '2024-08-28 16:45:22', 'Arbitrum Orbit', 'AnyTrust', 'Arbitrum One', true, 'Arbitrum Orbit')
         , (130, 'unichain', 'Unichain', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://uniscan.xyz/', timestamp '2024-11-04 19:26', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, 'Superchain')
+        , (232, 'lens', 'Lens', 'Layer 2', 'ZK Rollup', 'GHO', 0x000000000000000000000000000000000000800a, 'https://explorer.lens.xyz', timestamp '2025-02-21 07:26', 'ZK Stack', 'Ethereum Blobs', 'Ethereum', true, 'Elastic Network')
 ) AS temp_table (chain_id, blockchain, name, chain_type, rollup_type, native_token_symbol, wrapped_native_token_address, explorer_link, first_block_time, codebase, data_availability, settlement, is_on_dune, ecosystem)

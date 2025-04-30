@@ -2,7 +2,7 @@
         schema='evms',
         alias = 'transactions',
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle", "ronin", "ink"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle", "ronin", "ink", "lens"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby", "synthquest"]\') }}'
@@ -31,6 +31,7 @@
      , ('sei', source('sei', 'transactions'))
      , ('ronin', source('ronin', 'transactions'))
      , ('ink', source('ink', 'transactions'))
+     , ('lens', source('lens', 'transactions'))
 ] %}
 
 {% set unstructured_transactions_models = [

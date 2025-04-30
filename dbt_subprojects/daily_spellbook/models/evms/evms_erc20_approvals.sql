@@ -18,6 +18,7 @@
                                         "fantom",
                                         "gnosis",
                                         "kaia",
+                                        "lens",
                                         "linea",
                                         "mantle",
                                         "optimism",
@@ -63,6 +64,7 @@
      , ('berachain', source('erc20_berachain', 'evt_approval'))
      , ('b3', source('erc20_b3', 'evt_approval'))
      , ('ink', source('erc20_ink', 'evt_approval'))
+     , ('lens', source('erc20_lens', 'evt_approval'))
 ] %}
 
 SELECT *
