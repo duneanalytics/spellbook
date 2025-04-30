@@ -173,12 +173,16 @@ trades_base as (
         cast(case 
             when is_buy = 1 then sp.user_base_token_account
             else sp.user_quote_token_account
-        end as varchar) as token_bought_vault
+        end as varchar) as token_bought_vault,
+        row_number() OVER (
+            PARTITION BY sp.tx_id, sp.outer_instruction_index, sp.inner_instruction_index, sp.tx_index, 
+                       date_trunc('month', sp.block_time)
+            ORDER BY sp.block_time DESC
+        ) as recent_swap
     FROM swaps_with_transfers sp
     LEFT JOIN pools p ON p.pool = sp.pool
 )
 
--- Add deduplication in the final selection
 SELECT
     tb.blockchain,
     tb.project,
@@ -201,14 +205,5 @@ SELECT
     tb.outer_instruction_index,
     tb.inner_instruction_index,
     tb.tx_index
-FROM (
-    SELECT
-        *,
-        ROW_NUMBER() OVER (
-            PARTITION BY tx_id, outer_instruction_index, inner_instruction_index, tx_index, 
-                      CAST(date_trunc('month', block_time) AS DATE)
-            ORDER BY block_time DESC
-        ) AS rn
-    FROM trades_base
-) tb
-WHERE rn = 1
+FROM trades_base tb
+WHERE recent_swap = 1
