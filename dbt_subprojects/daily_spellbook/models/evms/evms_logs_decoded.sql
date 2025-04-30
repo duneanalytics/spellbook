@@ -30,6 +30,7 @@
      , ('sei', source('sei', 'logs_decoded'))
      , ('ronin', source('ronin', 'logs_decoded'))
      , ('ink', source('ink', 'logs_decoded'))
+     , ('lens', source('lens', 'logs_decoded'))
 ] %}
 
 SELECT *

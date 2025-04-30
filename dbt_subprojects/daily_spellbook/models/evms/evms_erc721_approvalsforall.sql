@@ -30,6 +30,7 @@
      , ('sei', source('erc721_sei', 'evt_ApprovalForAll'))
      , ('ronin', source('erc721_ronin', 'evt_ApprovalForAll'))
      , ('ink', source('erc721_ink', 'evt_ApprovalForAll'))
+     , ('lens', source('erc721_lens', 'evt_ApprovalForAll'))
 ] %}
 
 SELECT *
