@@ -1,0 +1,26 @@
+version: 2
+
+models: 
+  - name: pyth_entropy_blast_request
+    meta:
+      blockchain: blast
+      project: pyth
+    config:
+      tags: ['blast', 'pyth', 'entropy', 'request', 'vrf']
+    description: "Pyth Entropy request on Blast"
+    columns:
+      - name: blockchain
+      - name: tx_hash
+        tests:
+          - unique
+          - not_null
+      - name: fee
+        tests:
+          - not_null
+      - name: symbol
+      - name: provider
+        tests:
+          - not_null
+      - name: block_time
+      - name: block_date
+      - name: caller

@@ -1,0 +1,26 @@
+version: 2
+
+models: 
+  - name: pyth_entropy_kaia_request
+    meta:
+      blockchain: kaia
+      project: pyth
+    config:
+      tags: ['kaia', 'pyth', 'entropy', 'request', 'vrf']
+    description: "Pyth Entropy request on kaia"
+    columns:
+      - name: blockchain
+      - name: tx_hash
+        tests:
+          - unique
+          - not_null
+      - name: fee
+        tests:
+          - not_null
+      - name: symbol
+      - name: provider
+        tests:
+          - not_null
+      - name: block_time
+      - name: block_date
+      - name: caller
