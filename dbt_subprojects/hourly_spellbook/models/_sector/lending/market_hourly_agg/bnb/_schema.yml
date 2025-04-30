@@ -1,0 +1,92 @@
+version: 2
+
+models:
+  - name: lending_bnb_base_market_hourly_agg
+    meta:
+      blockchain: bnb
+      sector: lending
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'market', 'bnb']
+    description: "Hourly aggregated lending market on BNB"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_hour
+            - token_address
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain name"
+        data_tests:
+          - not_null
+      - &project
+        name: project
+        description: "Project name"
+        data_tests:
+          - not_null
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the lending project"
+        data_tests:
+          - not_null
+      - &block_month
+        name: block_month
+        description: "Block event month"
+        data_tests:
+          - not_null
+      - &block_hour
+        name: block_hour
+        description: "Block event hour"
+        data_tests:
+          - not_null
+      - &token_address
+        name: token_address
+        description: "Token contract address"
+        data_tests:
+          - not_null
+      - &symbol
+        name: symbol
+        description: "Token symbol"
+      - &liquidity_index
+        name: liquidity_index
+        description: "Liquidity index"
+      - &variable_borrow_index
+        name: variable_borrow_index
+        description: "Variable borrow index"
+      - &deposit_rate
+        name: deposit_rate
+        description: "Deposit rate"
+      - &stable_borrow_rate
+        name: stable_borrow_rate
+        description: "Stable borrow rate"
+      - &variable_borrow_rate
+        name: variable_borrow_rate
+        description: "Variable borrow rate"
+
+  - name: aave_v3_bnb_base_market_hourly_agg
+    meta:
+      blockchain: bnb
+      sector: lending
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'market', 'bnb']
+    description: "Hourly aggregated Aave v3 market on BNB"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_hour
+            - token_address
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_month
+      - *block_hour
+      - *token_address
+      - *symbol
+      - *liquidity_index
+      - *variable_borrow_index
+      - *deposit_rate
+      - *stable_borrow_rate
+      - *variable_borrow_rate
