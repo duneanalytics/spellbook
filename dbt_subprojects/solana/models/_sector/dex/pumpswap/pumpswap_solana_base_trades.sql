@@ -35,9 +35,9 @@ latest_fee_config AS (
     {% if is_incremental() %}
     WHERE {{incremental_predicate('call_block_time')}}
     {% else %}
-    WHERE call_block_time <= TIMESTAMP '{{project_start_date}}'
+    WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
-    ORDER BY call_block_time DESC
+    ORDER BY call_block_time ASC
     LIMIT 1
 ),
 
