@@ -66,9 +66,8 @@ swaps_base AS (
         NULL as sol_source_account,
         NULL as sol_dest_account
     FROM {{ source('pumpdotfun_solana', 'pump_amm_call_buy') }}
-    WHERE call_block_time >= current_timestamp - interval '14' day
     {% if is_incremental() %}
-    AND {{incremental_predicate('call_block_time')}}
+    WHERE {{incremental_predicate('call_block_time')}}
     {% else %}
     AND call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
@@ -99,9 +98,8 @@ swaps_base AS (
         account_pool_quote_token_account as sol_source_account,
         account_user_quote_token_account as sol_dest_account
     FROM {{ source('pumpdotfun_solana', 'pump_amm_call_sell') }}
-    WHERE call_block_time >= current_timestamp - interval '14' day
     {% if is_incremental() %}
-    AND {{incremental_predicate('call_block_time')}}
+    WHERE {{incremental_predicate('call_block_time')}}
     {% else %}
     AND call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
