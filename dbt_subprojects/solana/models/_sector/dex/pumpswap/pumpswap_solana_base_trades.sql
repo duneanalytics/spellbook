@@ -168,7 +168,7 @@ trades_base as (
         end as token_bought_mint_address,
         case 
             when is_buy = 1 then CEIL(base_amount)  -- For buys, use base token amount
-            else CEIL(sol_amount / (1 - sp.total_fee_rate))  -- For sells, calculate pre-fee SOL amount
+            else CAST(CEIL(sol_amount / (1 - sp.total_fee_rate)) AS DECIMAL(38,0))  -- For sells, calculate pre-fee SOL amount
         end as token_bought_amount_raw,
         --sold
         case 
@@ -177,7 +177,7 @@ trades_base as (
         end as token_sold_mint_address,
         case 
             when is_buy = 0 then base_amount  -- For sells, use base token amount
-            else CAST(sol_amount * (1 - 0.0025) AS BIGINT)  -- For buys, calculate pre-fee SOL amount
+            else CAST(sol_amount * (1 - 0.0025) AS DECIMAL(38,0)) -- For buys, calculate pre-fee SOL amount
         end as token_sold_amount_raw,
         cast(0.01 as double) as fee_tier,
         cast(sp.pool as varchar) as pool_id,
