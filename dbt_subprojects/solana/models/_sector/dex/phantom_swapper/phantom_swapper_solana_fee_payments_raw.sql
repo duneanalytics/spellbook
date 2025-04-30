@@ -105,7 +105,7 @@ with
             tx_id,
             sum(amount) as amount
         from fee_payments
-        group by tx_id, token_address, fee_receiver, block_time, block_month
+        group by 1,2,3,4,5
     )
 select
     block_time,
