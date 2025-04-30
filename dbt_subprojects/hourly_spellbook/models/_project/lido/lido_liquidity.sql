@@ -62,7 +62,11 @@
  ref('lido_liquidity_linea_lynex_pools'),
  ref('lido_liquidity_scroll_maverick_pools'),
  ref('lido_liquidity_scroll_nuri_pools'),
- ref('lido_liquidity_zksync_pancakeswap_v3_pools')
+ ref('lido_liquidity_zksync_pancakeswap_v3_pools'),
+ ref('lido_liquidity_optimism_solidly_pools'),
+ ref('lido_liquidity_base_balancer_pools'),
+ ref('lido_liquidity_linea_pancakeswap_v3_pools'),
+ ref('lido_liquidity_unichain_uniswap_v4_pools')
 ] %}
 
 {% set project_start_date =  '2020-12-15'%}

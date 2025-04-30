@@ -6,10 +6,12 @@
                                             ,"apechain"
                                             ,"arbitrum"
                                             ,"avalanche_c"
+                                            ,"b3"
                                             ,"base"
                                             ,"berachain"
                                             ,"blast"
                                             ,"bnb"
+                                            ,"bob"
                                             ,"boba"
                                             ,"celo"
                                             ,"corn"
@@ -23,14 +25,17 @@
                                             ,"linea"
                                             ,"mantle"
                                             ,"nova"
+                                            ,"opbnb"
                                             ,"optimism"
                                             ,"polygon"
                                             ,"ronin"
                                             ,"scroll"
                                             ,"sei"
+                                            ,"shape"
                                             ,"sonic"
                                             ,"sophon"
                                             ,"tron"
+                                            ,"unichain"
                                             ,"viction"
                                             ,"worldchain"
                                             ,"zkevm"
@@ -48,10 +53,12 @@
     ,'apechain'
     ,'arbitrum'
     ,'avalanche_c'
+    ,'b3'
     ,'base'
     ,'berachain'
     ,'blast'
     ,'bnb'
+    ,'bob'
     ,'boba'
     ,'celo'
     ,'corn'
@@ -65,14 +72,17 @@
     ,'linea'
     ,'mantle'
     ,'nova'
+    ,'opbnb'
     ,'optimism'
     ,'polygon'
     ,'ronin'
     ,'scroll'
     ,'sei'
+    ,'shape'
     ,'sonic'
     ,'sophon'
     ,'tron'
+    ,'unichain'
     ,'viction'
     ,'worldchain'
     ,'zkevm'

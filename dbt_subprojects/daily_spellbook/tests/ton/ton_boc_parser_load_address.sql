@@ -46,6 +46,15 @@ WITH test_data AS (
                 UPPER('0:170725394aa56136fbd27d0ce31d8a98e0f8ae72a4d2379b5dde83e211a2d5fa')
             ),
             0
+        ),
+        -- convert null to addr_none
+        (
+            0xb5ee9c72010101010002000000,
+            ROW(
+                'addr_none',
+                'addr_none'
+            ),
+            0
         )
         -- TODO addr_std + anycast
         -- TODO addr_var
