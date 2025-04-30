@@ -69,7 +69,7 @@ swaps_base AS (
     {% if is_incremental() %}
     WHERE {{incremental_predicate('call_block_time')}}
     {% else %}
-    AND call_block_time >= TIMESTAMP '{{project_start_date}}'
+    WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     
     UNION ALL
@@ -101,7 +101,7 @@ swaps_base AS (
     {% if is_incremental() %}
     WHERE {{incremental_predicate('call_block_time')}}
     {% else %}
-    AND call_block_time >= TIMESTAMP '{{project_start_date}}'
+    WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
 ),
 
