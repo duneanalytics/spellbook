@@ -1,5 +1,5 @@
 {{ config( alias = 'nft',
-        post_hook='{{ expose_spells(\'["avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom","arbitrum","polygon","base","celo","zora","zksync"]\',
+        post_hook='{{ expose_spells(\'["avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom","arbitrum","polygon","base","celo","zora","zksync","scroll"]\',
                                     "sector",
                                     "tokens",
                                     \'["0xRob"]\') }}')}}
@@ -18,6 +18,7 @@
     ,('celo',       ref('tokens_celo_nft'))
     ,('zora',       ref('tokens_zora_nft'))
     ,('zksync',     ref('tokens_zksync_nft'))
+    ,('scroll',     ref('tokens_scroll_nft'))
 ] %}
 
 SELECT *
