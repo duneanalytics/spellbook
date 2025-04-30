@@ -3,68 +3,92 @@
         alias = 'logs',
         unique_key=['blockchain', 'tx_hash'],
         post_hook='{{ expose_spells(\'[
-                                        "abstract",
-                                        "apechain",
-                                        "arbitrum",
-                                        "avalanche_c",
-                                        "b3",
-                                        "base",
-                                        "berachain",
-                                        "blast",
-                                        "bnb",
-                                        "boba",
-                                        "celo",
-                                        "ethereum",
-                                        "fantom",
-                                        "gnosis",
-                                        "kaia",
-                                        "linea",
-                                        "mantle",
-                                        "optimism",
-                                        "polygon",
-                                        "ronin",
-                                        "scroll",
-                                        "sonic",
-                                        "zkevm",
-                                        "zksync",
-                                        "zora",
-                                        "ink"
+                                        "abstract"
+                                        , "apechain"
+                                        , "arbitrum"
+                                        , "avalanche_c"
+                                        , "b3"
+                                        , "base"
+                                        , "berachain"
+                                        , "blast"
+                                        , "bnb"
+                                        , "bob"
+                                        , "boba"
+                                        , "celo"
+                                        , "corn"
+                                        , "degen"
+                                        , "ethereum"
+                                        , "fantom"
+                                        , "flare"
+                                        , "gnosis"
+                                        , "ink"
+                                        , "kaia"
+                                        , "lens"
+                                        , "linea"
+                                        , "mantle"
+                                        , "nova"
+                                        , "opbnb"
+                                        , "optimism"
+                                        , "polygon"
+                                        , "ronin"
+                                        , "scroll"
+                                        , "sei"
+                                        , "shape"
+                                        , "sonic"
+                                        , "sophon"
+                                        , "unichain"
+                                        , "viction"
+                                        , "worldchain"
+                                        , "zkevm"
+                                        , "zksync"
+                                        , "zora"
                                         ]\',
                                     "sector",
                                     "evms",
-                                    \'["hildobby","rantum","shogun"]\') }}'
+                                    \'["hildobby", "shogun", "allelosi"]\') }}'
         )
 }}
 
 {% set logs_models = [
-     ('ethereum', source('ethereum', 'logs'))
-     , ('polygon', source('polygon', 'logs'))
-     , ('bnb', source('bnb', 'logs'))
-     , ('avalanche_c', source('avalanche_c', 'logs'))
-     , ('gnosis', source('gnosis', 'logs'))
-     , ('fantom', source('fantom', 'logs'))
-     , ('optimism', source('optimism', 'logs'))
+     ('abstract', source('abstract', 'logs'))
+     , ('apechain', source('apechain', 'logs'))
      , ('arbitrum', source('arbitrum', 'logs'))
-     , ('celo', source('celo', 'logs'))
+     , ('avalanche_c', source('avalanche_c', 'logs'))
+     , ('b3', source('b3', 'logs'))
      , ('base', source('base', 'logs'))
+     , ('berachain', source('berachain', 'logs'))
+     , ('blast', source('blast', 'logs'))
+     , ('bnb', source('bnb', 'logs'))
+     , ('bob', source('bob', 'logs'))
+     , ('boba', source('boba', 'logs'))
+     , ('celo', source('celo', 'logs'))
+     , ('corn', source('corn', 'logs'))
+     , ('degen', source('degen', 'logs'))
+     , ('ethereum', source('ethereum', 'logs'))
+     , ('fantom', source('fantom', 'logs'))
+     , ('flare', source('flare', 'logs'))
+     , ('gnosis', source('gnosis', 'logs'))
+     , ('ink', source('ink', 'logs'))
+     , ('kaia', source('kaia', 'logs'))
+     , ('lens', source('lens', 'logs'))
+     , ('linea', source('linea', 'logs'))
+     , ('mantle', source('mantle', 'logs'))
+     , ('nova', source('nova', 'logs'))
+     , ('opbnb', source('opbnb', 'logs'))
+     , ('optimism', source('optimism', 'logs'))
+     , ('polygon', source('polygon', 'logs'))
+     , ('ronin', source('ronin', 'logs'))
+     , ('scroll', source('scroll', 'logs'))
+     , ('sei', source('sei', 'logs'))
+     , ('shape', source('shape', 'logs'))
+     , ('sonic', source('sonic', 'logs'))
+     , ('sophon', source('sophon', 'logs'))
+     , ('unichain', source('unichain', 'logs'))
+     , ('viction', source('viction', 'logs'))
+     , ('worldchain', source('worldchain', 'logs'))
+     , ('zkevm', source('zkevm', 'logs'))
      , ('zksync', source('zksync', 'logs'))
      , ('zora', source('zora', 'logs'))
-     , ('scroll', source('scroll', 'logs'))
-     , ('linea', source('linea', 'logs'))
-     , ('zkevm', source('zkevm', 'logs'))
-     , ('blast', source('blast', 'logs'))
-     , ('mantle', source('mantle', 'logs'))
-     , ('mode', source('mode', 'logs'))
-     , ('sei', source('sei', 'logs'))
-     , ('ronin', source('ronin', 'logs'))
-     , ('abstract', source('abstract', 'logs'))
-     , ('boba', source('boba', 'logs'))
-     , ('sonic', source('sonic', 'logs'))
-     , ('kaia', source('kaia', 'logs'))
-     , ('apechain', source('apechain', 'logs'))
-     , ('berachain', source('berachain', 'logs'))
-     , ('b3', source('b3', 'logs'))
-     , ('ink', source('ink', 'logs'))
 ] %}
 
 SELECT *

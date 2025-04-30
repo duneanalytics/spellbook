@@ -2,35 +2,85 @@
         schema='evms',
         alias = 'creation_traces',
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle", "ronin"]\',
+        post_hook='{{ expose_spells(\'[
+                                        "abstract"
+                                        , "apechain"
+                                        , "arbitrum"
+                                        , "avalanche_c"
+                                        , "b3"
+                                        , "base"
+                                        , "berachain"
+                                        , "blast"
+                                        , "bnb"
+                                        , "bob"
+                                        , "boba"
+                                        , "celo"
+                                        , "corn"
+                                        , "degen"
+                                        , "ethereum"
+                                        , "fantom"
+                                        , "flare"
+                                        , "gnosis"
+                                        , "ink"
+                                        , "kaia"
+                                        , "lens"
+                                        , "linea"
+                                        , "mantle"
+                                        , "nova"
+                                        , "opbnb"
+                                        , "optimism"
+                                        , "polygon"
+                                        , "ronin"
+                                        , "scroll"
+                                        , "sei"
+                                        , "shape"
+                                        , "sonic"
+                                        , "sophon"
+                                        , "unichain"
+                                        , "viction"
+                                        , "worldchain"
+                                        , "zkevm"
+                                        , "zksync"
+                                        , "zora"
+                                        ]\',
                                     "sector",
                                     "evms",
-                                    \'["hildobby"]\') }}'
+                                    \'["hildobby", "allelosi"]\') }}'
         )
 }}
 
 {% set blockchains = [
-       "avalanche_c"
-       ,"arbitrum"
+       "abstract"
+       , "apechain"
+       , "arbitrum"
+       , "avalanche_c"
+       , "b3"
        , "base"
+       , "berachain"
        , "blast"
        , "bnb"
        , "bob"
        , "boba"
        , "celo"
+       , "corn"
+       , "degen"
        , "ethereum"
        , "fantom"
        , "flare"
        , "gnosis"
+       , "ink"
        , "kaia"
+       , "lens"
        , "linea"
        , "mantle"
        , "nova"
+       , "opbnb"
        , "optimism"
        , "polygon"
        , "ronin"
        , "scroll"
        , "sei"
+       , "shape"
        , "sonic"
        , "sophon"
        , "unichain"
@@ -39,7 +89,6 @@
        , "zkevm"
        , "zksync"
        , "zora"
-       , "ink"
 ] %}
 
 {% set creation_traces_models = [] %}

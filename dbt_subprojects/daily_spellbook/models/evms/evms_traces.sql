@@ -3,68 +3,92 @@
         alias = 'traces',
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
         post_hook='{{ expose_spells(\'[
-                                        "abstract",
-                                        "apechain",
-                                        "arbitrum",
-                                        "avalanche_c",
-                                        "b3",
-                                        "base",
-                                        "berachain",
-                                        "blast",
-                                        "bnb",
-                                        "boba",
-                                        "celo",
-                                        "ethereum",
-                                        "fantom",
-                                        "gnosis",
-                                        "kaia",
-                                        "linea",
-                                        "mantle",
-                                        "optimism",
-                                        "polygon",
-                                        "ronin",
-                                        "scroll",
-                                        "sonic",
-                                        "zkevm",
-                                        "zksync",
-                                        "zora",
-                                        "ink"
+                                        "abstract"
+                                        , "apechain"
+                                        , "arbitrum"
+                                        , "avalanche_c"
+                                        , "b3"
+                                        , "base"
+                                        , "berachain"
+                                        , "blast"
+                                        , "bnb"
+                                        , "bob"
+                                        , "boba"
+                                        , "celo"
+                                        , "corn"
+                                        , "degen"
+                                        , "ethereum"
+                                        , "fantom"
+                                        , "flare"
+                                        , "gnosis"
+                                        , "ink"
+                                        , "kaia"
+                                        , "lens"
+                                        , "linea"
+                                        , "mantle"
+                                        , "nova"
+                                        , "opbnb"
+                                        , "optimism"
+                                        , "polygon"
+                                        , "ronin"
+                                        , "scroll"
+                                        , "sei"
+                                        , "shape"
+                                        , "sonic"
+                                        , "sophon"
+                                        , "unichain"
+                                        , "viction"
+                                        , "worldchain"
+                                        , "zkevm"
+                                        , "zksync"
+                                        , "zora"
                                         ]\',
                                     "sector",
                                     "evms",
-                                    \'["hildobby"]\') }}'
+                                    \'["hildobby", "allelosi"]\') }}'
         )
 }}
 
 {% set traces_models = [
-     ('ethereum', source('ethereum', 'traces'))
-     , ('polygon', source('polygon', 'traces'))
-     , ('bnb', source('bnb', 'traces'))
-     , ('avalanche_c', source('avalanche_c', 'traces'))
-     , ('gnosis', source('gnosis', 'traces'))
-     , ('fantom', source('fantom', 'traces'))
-     , ('optimism', source('optimism', 'traces'))
+     ('abstract', source('abstract', 'traces'))
+     , ('apechain', source('apechain', 'traces'))
      , ('arbitrum', source('arbitrum', 'traces'))
-     , ('celo', source('celo', 'traces'))
+     , ('avalanche_c', source('avalanche_c', 'traces'))
+     , ('b3', source('b3', 'traces'))
      , ('base', source('base', 'traces'))
+     , ('berachain', source('berachain', 'traces'))
+     , ('blast', source('blast', 'traces'))
+     , ('bnb', source('bnb', 'traces'))
+     , ('bob', source('bob', 'traces'))
+     , ('boba', source('boba', 'traces'))
+     , ('celo', source('celo', 'traces'))
+     , ('corn', source('corn', 'traces'))
+     , ('degen', source('degen', 'traces'))
+     , ('ethereum', source('ethereum', 'traces'))
+     , ('fantom', source('fantom', 'traces'))
+     , ('flare', source('flare', 'traces'))
+     , ('gnosis', source('gnosis', 'traces'))
+     , ('ink', source('ink', 'traces'))
+     , ('kaia', source('kaia', 'traces'))
+     , ('lens', source('lens', 'traces'))
+     , ('linea', source('linea', 'traces'))
+     , ('mantle', source('mantle', 'traces'))
+     , ('nova', source('nova', 'traces'))
+     , ('opbnb', source('opbnb', 'traces'))
+     , ('optimism', source('optimism', 'traces'))
+     , ('polygon', source('polygon', 'traces'))
+     , ('ronin', source('ronin', 'traces'))
+     , ('scroll', source('scroll', 'traces'))
+     , ('sei', source('sei', 'traces'))
+     , ('shape', source('shape', 'traces'))
+     , ('sonic', source('sonic', 'traces'))
+     , ('sophon', source('sophon', 'traces'))
+     , ('unichain', source('unichain', 'traces'))
+     , ('viction', source('viction', 'traces'))
+     , ('worldchain', source('worldchain', 'traces'))
+     , ('zkevm', source('zkevm', 'traces'))
      , ('zksync', source('zksync', 'traces'))
      , ('zora', source('zora', 'traces'))
-     , ('scroll', source('scroll', 'traces'))
-     , ('linea', source('linea', 'traces'))
-     , ('zkevm', source('zkevm', 'traces'))
-     , ('blast', source('blast', 'traces'))
-     , ('mantle', source('mantle', 'traces'))
-     , ('mode', source('mode', 'traces'))
-     , ('sei', source('sei', 'traces'))
-     , ('ronin', source('ronin', 'traces'))
-     , ('abstract', source('abstract', 'traces'))
-     , ('boba', source('boba', 'traces'))
-     , ('sonic', source('sonic', 'traces'))
-     , ('kaia', source('kaia', 'traces'))
-     , ('apechain', source('apechain', 'traces'))
-     , ('berachain', source('berachain', 'traces'))
-     , ('b3', source('b3', 'traces'))
-     , ('ink', source('ink', 'traces'))
 ] %}
 
 SELECT *

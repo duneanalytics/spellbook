@@ -2,35 +2,94 @@
         schema='evms',
         alias = 'transactions',
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle", "ronin", "ink"]\',
+        post_hook='{{ expose_spells(\'[
+                                        "abstract"
+                                        , "apechain"
+                                        , "arbitrum"
+                                        , "avalanche_c"
+                                        , "b3"
+                                        , "base"
+                                        , "berachain"
+                                        , "blast"
+                                        , "bnb"
+                                        , "bob"
+                                        , "boba"
+                                        , "celo"
+                                        , "corn"
+                                        , "degen"
+                                        , "ethereum"
+                                        , "fantom"
+                                        , "flare"
+                                        , "gnosis"
+                                        , "ink"
+                                        , "kaia"
+                                        , "lens"
+                                        , "linea"
+                                        , "mantle"
+                                        , "nova"
+                                        , "opbnb"
+                                        , "optimism"
+                                        , "polygon"
+                                        , "ronin"
+                                        , "scroll"
+                                        , "sei"
+                                        , "shape"
+                                        , "sonic"
+                                        , "sophon"
+                                        , "unichain"
+                                        , "viction"
+                                        , "worldchain"
+                                        , "zkevm"
+                                        , "zksync"
+                                        , "zora"
+                                        ]\',
                                     "sector",
                                     "evms",
-                                    \'["hildobby", "synthquest"]\') }}'
+                                    \'["hildobby", "synthquest", "allelosi"]\') }}'
         )
 }}
 
 -- include non-L2s in models, since we want to control for L1 Gas Used
 {% set transactions_models = [
-     ('ethereum', source('ethereum', 'transactions'))
-     , ('polygon', source('polygon', 'transactions'))
-     , ('bnb', source('bnb', 'transactions'))
-     , ('avalanche_c', source('avalanche_c', 'transactions'))
-     , ('gnosis', source('gnosis', 'transactions'))
-     , ('fantom', source('fantom', 'transactions'))
+     ('abstract', source('abstract', 'transactions'))
+     , ('apechain', source('apechain', 'transactions'))
      , ('arbitrum', source('arbitrum', 'transactions'))
-     , ('optimism', source('optimism', 'transactions'))
-     , ('celo', source('celo', 'transactions'))
+     , ('avalanche_c', source('avalanche_c', 'transactions'))
+     , ('b3', source('b3', 'transactions'))
      , ('base', source('base', 'transactions'))
+     , ('berachain', source('berachain', 'transactions'))
+     , ('blast', source('blast', 'transactions'))
+     , ('bnb', source('bnb', 'transactions'))
+     , ('bob', source('bob', 'transactions'))
+     , ('boba', source('boba', 'transactions'))
+     , ('celo', source('celo', 'transactions'))
+     , ('corn', source('corn', 'transactions'))
+     , ('degen', source('degen', 'transactions'))
+     , ('ethereum', source('ethereum', 'transactions'))
+     , ('fantom', source('fantom', 'transactions'))
+     , ('flare', source('flare', 'transactions'))
+     , ('gnosis', source('gnosis', 'transactions'))
+     , ('ink', source('ink', 'transactions'))
+     , ('kaia', source('kaia', 'transactions'))
+     , ('lens', source('lens', 'transactions'))
+     , ('linea', source('linea', 'transactions'))
+     , ('mantle', source('mantle', 'transactions'))
+     , ('nova', source('nova', 'transactions'))
+     , ('opbnb', source('opbnb', 'transactions'))
+     , ('optimism', source('optimism', 'transactions'))
+     , ('polygon', source('polygon', 'transactions'))
+     , ('ronin', source('ronin', 'transactions'))
+     , ('scroll', source('scroll', 'transactions'))
+     , ('sei', source('sei', 'transactions'))
+     , ('shape', source('shape', 'transactions'))
+     , ('sonic', source('sonic', 'transactions'))
+     , ('sophon', source('sophon', 'transactions'))
+     , ('unichain', source('unichain', 'transactions'))
+     , ('viction', source('viction', 'transactions'))
+     , ('worldchain', source('worldchain', 'transactions'))
+     , ('zkevm', source('zkevm', 'transactions'))
      , ('zksync', source('zksync', 'transactions'))
      , ('zora', source('zora', 'transactions'))
-     , ('scroll', source('scroll', 'transactions'))
-     , ('linea', source('linea', 'transactions'))
-     , ('zkevm', source('zkevm', 'transactions'))
-     , ('blast', source('blast', 'transactions'))
-     , ('mantle', source('mantle', 'transactions'))
-     , ('sei', source('sei', 'transactions'))
-     , ('ronin', source('ronin', 'transactions'))
-     , ('ink', source('ink', 'transactions'))
 ] %}
 
 {% set unstructured_transactions_models = [
