@@ -10,7 +10,6 @@ models:
       tags: ['scroll', 'contracts', 'mapping', 'decoder']
     description: >
       Mapping for scroll contracts      
-    tests:
     columns:
       - &contract_address
         name: contract_address
