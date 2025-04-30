@@ -10,7 +10,7 @@
     )
 }}
 
-{% set project_start_date = "2025-02-01" %}
+{% set project_start_date = "2025-03-01" %}
 
 with
     fee_payments as (
@@ -30,7 +30,6 @@ with
 select
     fee_payments.block_time,
     fee_payments.block_month,
-    fee_payments.bot,
     fee_payments.blockchain,
     fee_payments.amount,
     fee_token_prices.price as token_price_usd,
