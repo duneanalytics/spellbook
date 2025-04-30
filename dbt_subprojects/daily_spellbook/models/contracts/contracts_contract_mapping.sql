@@ -1,8 +1,8 @@
- {{
+{{
   config(     
         schema = 'contracts',
         alias = 'contract_mapping',
-        post_hook='{{ expose_spells(\'["ethereum", "base", "optimism", "zora", "arbitrum", "celo", "polygon", "bnb", "avalanche_c", "fantom", "gnosis", "goerli","zksync"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "base", "optimism", "zora", "arbitrum", "celo", "polygon", "bnb", "avalanche_c", "fantom", "gnosis", "goerli","zksync", "scroll"]\',
                                     "sector",
                                     "contracts",
                                     \'["msilb7", "chuxin", "tomfutago"]\') }}'
@@ -24,8 +24,16 @@
  , ref('contracts_gnosis_contract_mapping')
  , ref('contracts_goerli_contract_mapping')
  , ref('contracts_zksync_contract_mapping')
+ , ref('contracts_scroll_contract_mapping')
 ] %}
--- todo: add chains for all EVMs in Dune
+-- TODO: add support for additional EVMs in Dune
+-- The following chains should be added (each requires its own directory and contract_mapping file):
+-- linea, blast, mantle, mode, sei, bob, nova, degen, abstract, berachain, sonic, kaia, etc.
+-- For each chain, create:
+-- 1. A directory: dbt_subprojects/daily_spellbook/models/contracts/{chain_name}/
+-- 2. A contract mapping file: contracts_{chain_name}_contract_mapping.sql
+-- 3. Add ref('contracts_{chain_name}_contract_mapping') to the chain_models list above
+-- 4. Add the chain to the expose_spells list in the config
 
 SELECT *
 FROM (
