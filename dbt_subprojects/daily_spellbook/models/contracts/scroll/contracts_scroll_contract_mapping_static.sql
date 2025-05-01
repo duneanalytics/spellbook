@@ -1,7 +1,7 @@
 {{
   config(     
         schema = 'contracts_scroll',
-        alias = 'contract_mapping',
+        alias = 'contract_mapping_static',
         materialized ='table',
         partition_by =['created_month']
   )
