@@ -8,5 +8,5 @@
 }}
 
 {{contracts_contract_mapping(
-    chain='scroll'
+    chain='scroll', standard_name = 'erc'
 )}} 
