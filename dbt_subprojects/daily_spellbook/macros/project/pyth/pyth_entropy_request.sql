@@ -2,6 +2,7 @@
 SELECT
     '{{ blockchain }}' as blockchain,
     tx_hash,
+    from_big_endian_64(substr(output, 25, 8)) as assigned_sequence_number,
     cast(value as decimal(38, 0)) / 1e18 as fee,
     '{{ symbol }} 'as symbol,
     substr(input, 17, 20) as provider,
@@ -18,7 +19,9 @@ WHERE
         ],
         substr(input, 1, 4)
     )
-    and tx_success = true
+    and tx_success
+    and call_type = 'call'
+    and success
     and to = {{ entropy_address }}
 {% if is_incremental() %}
     AND {{ incremental_predicate('block_date') }}

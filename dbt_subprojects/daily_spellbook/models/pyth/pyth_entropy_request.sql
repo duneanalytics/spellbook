@@ -30,6 +30,7 @@ FROM (
         blockchain
         , tx_hash
         , fee
+        , assigned_sequence_number
         , symbol
         , provider
         , block_time

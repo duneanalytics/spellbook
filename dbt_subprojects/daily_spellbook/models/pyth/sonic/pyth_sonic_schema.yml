@@ -8,11 +8,18 @@ models:
     config:
       tags: ['sonic', 'pyth', 'entropy', 'request', 'vrf']
     description: "Pyth Entropy request on Sonic"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - assigned_sequence_number
     columns:
       - name: blockchain
       - name: tx_hash
         tests:
-          - unique
+          - not_null
+      - name: assigned_sequence_number
+        tests:
           - not_null
       - name: fee
         tests:

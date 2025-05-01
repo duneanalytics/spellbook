@@ -14,6 +14,7 @@ models:
           combination_of_columns:
             - blockchain
             - tx_hash
+            - assigned_sequence_number
     columns:
       - &blockchain
         name: blockchain
@@ -21,6 +22,9 @@ models:
       - &tx_hash
         name: tx_hash
         description: "Transaction hash"
+      - &assigned_sequence_number
+        name: assigned_sequence_number
+        description: "Assigned sequence number of the request"
       - &fee
         name: fee
         description: "Fee paid for the request in native token"
