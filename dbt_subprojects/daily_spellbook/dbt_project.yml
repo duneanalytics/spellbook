@@ -349,6 +349,11 @@ models:
       optimism:
         +schema: worldcoin_optimism
 
+    contracts:
+      +schema: contracts
+      scroll:
+        +schema: contracts_scroll
+        
     aerodrome:
       +schema: aerodrome
       base:
