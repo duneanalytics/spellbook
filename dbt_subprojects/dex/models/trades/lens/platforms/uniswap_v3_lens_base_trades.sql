@@ -9,6 +9,26 @@
     )
 }}
 
+Select 
+            NULL AS blockchain
+            , NULL AS project
+            , NULL AS version
+            , NULL AS block_month
+            , NULL AS block_date
+            , NULL AS block_time
+            , NULL AS block_number
+            , NULL AS token_bought_amount_raw
+            , NULL AS token_sold_amount_raw
+            , NULL AS token_bought_address
+            , NULL AS token_sold_address
+            , NULL AS taker
+            , NULL AS maker
+            , NULL AS project_contract_address
+            , NULL AS tx_hash
+            , NULL AS evt_index
+
+/*
+temp disable while uniswap_v3_lens is not properly decoded
 {{
     uniswap_compatible_v3_trades(
         blockchain = 'lens'
@@ -19,3 +39,4 @@
     )
 }}
 
+*/
