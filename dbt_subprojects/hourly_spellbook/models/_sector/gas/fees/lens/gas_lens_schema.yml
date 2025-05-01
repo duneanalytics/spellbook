@@ -9,7 +9,7 @@ models:
     config:
       tags: ['lens', 'gas', 'fees']
     description: >
-        Gas Fees on Ethereum
+        Gas Fees on Lens
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
