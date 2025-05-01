@@ -2,6 +2,7 @@
     schema = 'dex_lens'
     , alias = 'base_trades'
     , materialized = 'view'
+    , tags = ['prod_exclude']
     )
 }}
 
