@@ -48,7 +48,7 @@ WITH base_union AS (
     FROM (
         {% for base_model in base_models %}
         SELECT
-            blockchain --test
+            blockchain
             , project
             , version
             , block_month
