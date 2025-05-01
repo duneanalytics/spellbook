@@ -22,7 +22,7 @@ WITH sample_data AS (
       cast(NULL as varbinary) as creator_address,
       cast(NULL as varbinary) as trace_deployer_address,
       current_timestamp as created_time,
-      false as is_self_destruct,
+      cast(false as boolean) as is_self_destruct,
       cast(NULL as varbinary) as created_tx_hash,
       cast(0 as bigint) as created_block_number,
       cast(NULL as varbinary) as created_tx_from,
