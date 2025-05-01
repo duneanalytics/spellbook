@@ -1,16 +1,17 @@
 {{ config(
     schema = 'tokens_solana'
     , alias = 'base_transfers_token_account_history'
-    , partition_by = ['block_date']
+    , partition_by = ['block_month']
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'append'
-    , unique_key = ['block_date', 'unique_instruction_key']
+    , unique_key = ['block_month', 'unique_instruction_key']
 ) }}
 
 with base_transfers as (
     select
-        block_date
+        block_month
+        , block_date
         , block_time
         , block_slot
         , action
@@ -37,7 +38,8 @@ with base_transfers as (
 )
 , transfers as (
 select
-    t.block_date
+    t.block_month
+    , t.block_date
     , t.block_time
     , t.block_slot
     , case
@@ -91,11 +93,11 @@ left join
     {% if is_incremental() -%}
     left join
         {{ this }} as existing
-        on existing.block_date = t.block_date
+        on existing.block_month = t.block_month
         and existing.unique_instruction_key = t.unique_instruction_key
         and {{ incremental_predicate('existing.block_time') }}
     where
-        existing.block_date is null -- only insert new rows
+        existing.block_month is null -- only insert new rows
     {% endif -%}
 )
 select

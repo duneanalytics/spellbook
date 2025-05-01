@@ -1,11 +1,11 @@
 {{ config(
     schema = 'tokens_solana',
     alias = 'transfers',
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'append',
-    unique_key = ['block_date', 'unique_instruction_key'],
+    unique_key = ['block_month', 'unique_instruction_key'],
     post_hook='{{ expose_spells(\'["solana"]\',
                                 "sector",
                                 "tokens_solana",
@@ -14,7 +14,8 @@
 
 with base_transfers as (
     select
-        block_date
+        block_month
+        , block_date
         , block_time
         , block_slot
         , action
@@ -59,7 +60,7 @@ with base_transfers as (
 )
 , transfers as (
     select
-        cast(date_trunc('month', t.block_time) as date) as block_month
+        t.block_month
         , t.block_date
         , cast(date_trunc('hour', t.block_time) as timestamp) as block_hour
         , t.block_time
@@ -128,11 +129,11 @@ with base_transfers as (
     {% if is_incremental() -%}
     left join
         {{ this }} as existing
-        on existing.block_date = t.block_date
+        on existing.block_month = t.block_month
         and existing.unique_instruction_key = t.unique_instruction_key
         and {{ incremental_predicate('existing.block_time') }}
     where
-        existing.block_date is null -- only insert new rows
+        existing.block_month is null -- only insert new rows
     {% endif -%}
 )
 select

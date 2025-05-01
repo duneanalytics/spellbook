@@ -1,11 +1,11 @@
 {{ config(
     schema = 'tokens_solana',
     alias = 'base_spl_transfers',
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'append',
-    unique_key = ['block_date', 'unique_instruction_key']
+    unique_key = ['block_month', 'unique_instruction_key']
 ) }}
 
 WITH transfers_raw AS (
@@ -136,6 +136,7 @@ WITH transfers_raw AS (
     SELECT
         block_time
         , block_date
+        , cast(date_trunc('month', block_time) as date) as block_month
         , block_slot
         , action
         , amount
@@ -169,14 +170,14 @@ WITH transfers_raw AS (
         {{ this }} as existing
         -- typically only inner_instruction_index is null, but coalesce all to be safe
         -- since we're building unique_instruction_key in this model, use individual fields for lookup
-        on coalesce(existing.block_date, date '9999-12-31') = coalesce(transfers.block_date, date '9999-12-31')
+        on coalesce(existing.block_month, date '9999-12-31') = coalesce(transfers.block_month, date '9999-12-31')
         and coalesce(existing.block_slot, 0) = coalesce(transfers.block_slot, 0)
         and coalesce(existing.tx_index, 0) = coalesce(transfers.tx_index, 0)
         and coalesce(existing.inner_instruction_index, 0) = coalesce(transfers.inner_instruction_index, 0)
         and coalesce(existing.outer_instruction_index, 0) = coalesce(transfers.outer_instruction_index, 0)
         and {{incremental_predicate('existing.block_time')}}
     where
-        existing.block_date is null -- only insert new rows
+        existing.block_month is null -- only insert new rows
     {% endif -%}
 )
 select

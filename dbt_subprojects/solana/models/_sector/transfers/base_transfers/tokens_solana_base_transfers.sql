@@ -1,11 +1,11 @@
 {{ config(
     schema = 'tokens_solana',
     alias = 'base_transfers',
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'append',
-    unique_key = ['block_date', 'unique_instruction_key']
+    unique_key = ['block_month', 'unique_instruction_key']
 ) }}
 
 {%- set models = [
@@ -18,7 +18,8 @@
 with base_transfers as (
     {% for model in models -%}
     SELECT
-        block_date
+        block_month
+        , block_date
         , block_time
         , block_slot
         , action
@@ -41,6 +42,9 @@ with base_transfers as (
     {% if is_incremental() -%}
     WHERE
         {{incremental_predicate('block_time')}}
+    {% else -%}
+    WHERE
+        block_time >= date '2025-01-01'
     {% endif -%}
     {% if not loop.last -%}
     UNION ALL
@@ -55,11 +59,11 @@ with base_transfers as (
     {% if is_incremental() -%}
     left join
         {{ this }} as existing
-        on existing.block_date = t.block_date
+        on existing.block_month = t.block_month
         and existing.unique_instruction_key = t.unique_instruction_key
         and {{incremental_predicate('existing.block_time')}}
     where
-        existing.block_date is null -- only insert new rows
+        existing.block_month is null -- only insert new rows
     {% endif -%}
 )
 select
