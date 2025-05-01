@@ -1,5 +1,6 @@
 {{ config(
         alias = 'nft_curated',
+        schema = 'tokens_scroll',
         materialized = 'view',
         post_hook='{{ expose_spells(\'["scroll"]\',
                                 "sector",
