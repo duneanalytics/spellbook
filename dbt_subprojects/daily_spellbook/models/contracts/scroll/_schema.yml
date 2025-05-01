@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: contracts_scroll_contract_mapping
+  - name: contracts_scroll_contract_mapping_static
     meta:
       blockchain: scroll
       sector: contracts
@@ -9,7 +9,7 @@ models:
     config:
       tags: ['scroll', 'contracts', 'mapping', 'decoder']
     description: >
-      Mapping for scroll contracts      
+      Static mapping for scroll contracts (temporary solution)      
     columns:
       - &contract_address
         name: contract_address
@@ -22,19 +22,4 @@ models:
         description: "Address that created the contract"
       - &created_time
         name: created_time
-        description: "Time the contract was created"
-        
-  - name: contracts_scroll_contract_mapping_static
-    meta:
-      blockchain: scroll
-      sector: contracts
-      contributors: [msilb7, chuxin, tomfutago]
-    config:
-      tags: ['scroll', 'contracts', 'mapping', 'decoder']
-    description: >
-      Static mapping for scroll contracts (temporary solution)      
-    columns:
-      - *contract_address
-      - *contract_project
-      - *creator_address
-      - *created_time 
+        description: "Time the contract was created" 
