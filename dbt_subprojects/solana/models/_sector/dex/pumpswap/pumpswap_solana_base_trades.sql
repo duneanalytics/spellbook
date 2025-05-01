@@ -174,8 +174,8 @@ trades_base as (
             else 'So11111111111111111111111111111111111111112'  -- For buys, SOL is sold
         end as token_sold_mint_address,
         case 
-            when is_buy = 0 then base_amount  -- For sells, use base token amount
-            else CAST(sol_amount * (1 - 0.0025) AS DECIMAL(38,0))  -- For buys, calculate pre-fee SOL amount
+            when is_buy = 0 then base_amount  -- For sells, base token is sold
+            else sol_amount  -- For buys, SOL is sold
         end as token_sold_amount_raw,
         cast(0.01 as double) as fee_tier,
         cast(sp.pool as varchar) as pool_id,
