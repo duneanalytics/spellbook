@@ -64,7 +64,7 @@ skip the first ref with ``ton_skip_refs`` and then call ``ton_load_ref`` again t
 
 ## ton_return_if_neq
 
-Sometimes we need to have conditional parsing. Image we have a structure like this:
+Imagine we have a structure like this:
 ```
 ok$0 = MessageResponse;
 error$1 address:MsgAddress = MessageResponse;

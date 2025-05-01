@@ -23,7 +23,7 @@ parsed_boc AS (
     FROM {{ source('ton', 'messages') }} M
     JOIN factorial_ton_pools ON M.source = pool_address
     WHERE M.direction = 'out'
-    AND M.block_date >= TIMESTAMP '2025-01-01' -- protocol launch
+    AND M.block_date >= TIMESTAMP '2025-01-19' -- protocol launch
     {% if is_incremental() %}
         AND {{ incremental_predicate('M.block_date') }}
     {% endif %}
@@ -35,7 +35,7 @@ parsed_boc AS (
     ton_skip_bits(32),
     ton_load_uint(64, 'query_id'),
     ton_load_uint(32, 'action_op'),
-    ton_return_if_neq('action_op', -809350940),
+    ton_return_if_neq('action_op', 3485616356),
     ton_load_uint(16, 'error_code'),
     ton_return_if_neq('error_code', 0),
     ton_load_address('asset'),
@@ -46,4 +46,4 @@ parsed_boc AS (
 SELECT block_date, tx_hash, trace_id, tx_now, tx_lt, pool_address, pool_name,
 owner_address, result.asset, result.amount, result.share
 FROM parse_output
-WHERE result.action_op = -809350940 AND result.error_code = 0
+WHERE result.action_op = 3485616356 AND result.error_code = 0
