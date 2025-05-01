@@ -8,25 +8,6 @@ models:
           column_name: amount_usd
           max_value: 1000000000
 
-  - name: uniswap_v4_lens_base_trades
-    meta:
-      blockchain: lens
-      sector: dex
-      project: uniswap
-      contributors: agaperste
-    config:
-      tags: [ 'lens', 'dex', 'trades', 'uniswap', 'v4' ]
-    description: "uniswap lens v4 base trades"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-      - check_dex_base_trades_seed:
-          seed_file: ref('uniswap_lens_base_trades_seed')
-          filter:
-            version: 4
-
   - name: uniswap_v3_lens_base_trades
     meta:
       blockchain: lens

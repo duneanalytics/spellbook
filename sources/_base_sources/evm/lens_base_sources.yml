@@ -388,6 +388,11 @@ sources:
           - name: parent_beacon_block_root
             description: "Root hash of the parent beacon block"
             data_type: varbinary
+    
+      - name: contracts
+        meta:
+          docs_slug: "/evm/lens/raw/contracts"
+          short_description: "The lens.contracts table contains information about all contracts on the Lens blockchain."    
 
   - name: erc20_lens
     description: "Transfer events for ERC20 tokens on Lens blockchain"
@@ -603,3 +608,5 @@ sources:
           - name: operator
             description: "The address being granted or revoked permission to operate all tokens"
             data_type: varbinary 
+
+      

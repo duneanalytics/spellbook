@@ -20,7 +20,7 @@
         , tokens_erc20_model = source('tokens', 'erc20')
         , prices_model = source('prices', 'usd')
         , evms_info_model = source('evms','info')
-        , transfers_start_date = '2022-05-18' -- Lens Protocol launch date
+        , transfers_start_date = '2022-05-18'
         , blockchain = 'lens'
     )
 }} 
