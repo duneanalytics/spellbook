@@ -4,7 +4,7 @@
     schema = 'contracts',
     alias = 'deterministic_contract_creators',
     unique_key='creator_address',
-    post_hook='{{ expose_spells(\'["ethereum", "base", "optimism", "zora"]\',
+    post_hook='{{ expose_spells(\'["ethereum", "base", "optimism", "zora", "scroll"]\',
                               "sector",
                               "contracts",
                               \'["msilb7"]\') }}'
