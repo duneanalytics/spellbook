@@ -76,3 +76,4 @@ select
     , coalesce(valid_to_unique_instruction_key, '999999999-999999-9999-9999') as valid_to_unique_instruction_key
     , if(rn = 1, 1, 0) as is_active
 from ranked_src
+where event_type != 'close'
