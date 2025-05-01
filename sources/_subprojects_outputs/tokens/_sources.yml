@@ -532,6 +532,7 @@ sources:
             data_type: varchar
           - name: decimals
             data_type: integer
+      - name: nft
       - name: erc20_stablecoins
         columns:
           - name: blockchain
