@@ -24,7 +24,7 @@
  , ref('contracts_gnosis_contract_mapping')
  , ref('contracts_goerli_contract_mapping')
  , ref('contracts_zksync_contract_mapping')
- , ref('contracts_scroll_contract_mapping')
+ , ref('contracts_scroll_contract_mapping_static')
 ] %}
 -- todo: add chains for all EVMs in Dune
 
