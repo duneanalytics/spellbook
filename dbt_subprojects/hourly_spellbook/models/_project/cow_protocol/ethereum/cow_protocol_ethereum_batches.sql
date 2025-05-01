@@ -22,7 +22,7 @@ batch_counts as (
            s.evt_block_number,
            s.evt_block_time,
            s.evt_tx_hash,
-           solver,
+           coalesce(fs.solver, s.solver) as solver,
            name,
            sum(
                case
@@ -34,17 +34,19 @@ batch_counts as (
            sum(case when selector = 0x2e1a7d4d then 1 else 0 end) as unwraps,
            sum(case when selector = 0x095ea7b3 then 1 else 0 end) as token_approvals
     from {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Settlement') }} s
+        left outer join {{ source('cow_protocol_ethereum', 'FlashLoanRouter_evt_Settlement') }} fs
+            on s.evt_tx_hash = fs.evt_tx_hash
         left outer join {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Interaction') }} i
             on i.evt_tx_hash = s.evt_tx_hash
             {% if is_incremental() %}
             AND {{ incremental_predicate('i.evt_block_time') }}
             {% endif %}
         join {{ ref('cow_protocol_ethereum_solvers') }}
-            on solver = address
+            on coalesce(fs.solver, s.solver) = address
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('s.evt_block_time') }}
     {% endif %}
-    group by s.evt_block_number, s.evt_block_time, s.evt_tx_hash, solver, name
+    group by s.evt_block_number, s.evt_block_time, s.evt_tx_hash, coalesce(fs.solver, s.solver), name
 ),
 
 batch_values as (
