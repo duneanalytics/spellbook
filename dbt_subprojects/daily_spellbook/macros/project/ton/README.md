@@ -79,7 +79,7 @@ pass not equal condition for previously parsed field and break the parsing loop 
     ton_load_uint(1, 'status'),
     ton_return_if_neq('status', 1),
     ton_load_address('address')
-    ]) }} as result 
+    ]) }} AS result 
 ```
 
 # Usage examples
