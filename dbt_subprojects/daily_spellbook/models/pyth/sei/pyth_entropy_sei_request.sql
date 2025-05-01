@@ -12,5 +12,5 @@
 {{pyth_entropy_request(
     blockchain='sei',
     symbol='SEI',
-    entropy_address=0x98046Bd286715D3B0BC227Dd7a956b83D8978603
+    entropy_address='0x98046Bd286715D3B0BC227Dd7a956b83D8978603'
 )}}

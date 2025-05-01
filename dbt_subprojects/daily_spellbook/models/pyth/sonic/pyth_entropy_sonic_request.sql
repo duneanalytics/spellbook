@@ -12,5 +12,5 @@
 {{pyth_entropy_request(
     blockchain='sonic',
     symbol='S',
-    entropy_address=0x36825bf3fbdf5a29e2d5148bfe7dcf7b5639e320
+    entropy_address='0x36825bf3fbdf5a29e2d5148bfe7dcf7b5639e320'
 )}}

@@ -12,5 +12,5 @@
 {{pyth_entropy_request(
     blockchain='optimism',
     symbol='ETH',
-    entropy_address=0xdF21D137Aadc95588205586636710ca2890538d5
+    entropy_address='0xdF21D137Aadc95588205586636710ca2890538d5'
 )}}

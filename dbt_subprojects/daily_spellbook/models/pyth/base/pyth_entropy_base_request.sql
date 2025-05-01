@@ -12,5 +12,5 @@
 {{pyth_entropy_request(
     blockchain='base',
     symbol='ETH',
-    entropy_address=0x6E7D74FA7d5c90FEF9F0512987605a6d546181Bb
+    entropy_address='0x6E7D74FA7d5c90FEF9F0512987605a6d546181Bb'
 )}}
