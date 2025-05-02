@@ -13,9 +13,9 @@
 WITH
 
 dexs_clamm AS (
-    -- PancakeSwap Infinity CLAMM
+    -- PancakeSwap Infinity CLAMM (Concentrated Liquidity AMM)
     {{
-        pancakeswap_compatible_v4_trades(
+        pancakeswap_compatible_infinity_cl_trades(
             blockchain = 'bnb'
             , project = 'pancakeswap'
             , version = 'infinity_cl'
@@ -23,7 +23,20 @@ dexs_clamm AS (
             , PoolManager_evt_Swap = source('pancakeswap_infinity_bnb', 'ClPoolManager_evt_Swap') 
         )
     }}
+), 
+dexs_lbamm AS (
+    -- PancakeSwap Infinity LBAMM (Liquidity Book AMM)
+    {{
+        pancakeswap_compatible_infinity_lb_trades(
+            blockchain = 'bnb'
+            , project = 'pancakeswap'
+            , version = 'infinity_lb'
+            , PoolManager_call_Swap = source('pancakeswap_infinity_bnb', 'BinPoolManager_call_Swap') 
+            , PoolManager_evt_Swap = source('pancakeswap_infinity_bnb', 'BinPoolManager_evt_Swap') 
+        )
+    }}
 )
+
 
 SELECT
     dexs_clamm.blockchain,
@@ -43,3 +56,24 @@ SELECT
     dexs_clamm.tx_hash,
     dexs_clamm.evt_index
 FROM dexs_clamm
+
+UNION ALL
+
+SELECT
+    dexs_lbamm.blockchain,
+    dexs_lbamm.project,
+    dexs_lbamm.version,
+    dexs_lbamm.block_month,
+    dexs_lbamm.block_date,
+    dexs_lbamm.block_time,
+    dexs_lbamm.block_number,
+    dexs_lbamm.token_bought_amount_raw,
+    dexs_lbamm.token_sold_amount_raw,
+    dexs_lbamm.token_bought_address,
+    dexs_lbamm.token_sold_address,
+    dexs_lbamm.taker,
+    dexs_lbamm.maker,
+    dexs_lbamm.project_contract_address,
+    dexs_lbamm.tx_hash,
+    dexs_lbamm.evt_index
+FROM dexs_lbamm
