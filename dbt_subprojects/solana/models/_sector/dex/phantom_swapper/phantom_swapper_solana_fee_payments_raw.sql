@@ -50,12 +50,12 @@ with
     ),
     sol_payments as (
         select
-            block_time,
-            cast(date_trunc('month', block_time) as date) as block_month,
-            fee_receiver,
-            balance_change / 1e9 as amount,
+            account_activity.block_time,
+            cast(date_trunc('month', account_activity.block_time) as date) as block_month,
+            fee_addresses.fee_receiver,
+            account_activity.balance_change / 1e9 as amount,
             '{{wsol_token}}' token_address,
-            tx_id
+            account_activity.tx_id
         from {{ source('solana','account_activity') }} as account_activity
         join
             fee_addresses
@@ -73,12 +73,12 @@ with
     ),
     token_payments as (
         select
-            block_time,
-            cast(date_trunc('month', block_time) as date) as block_month,
-            fee_receiver,
-            token_balance_change as amount,
-            token_mint_address as token_address,
-            tx_id
+            account_activity.block_time,
+            cast(date_trunc('month', account_activity.block_time) as date) as block_month,
+            fee_addresses.fee_receiver,
+            account_activity.token_balance_change as amount,
+            account_activity.token_mint_address as token_address,
+            account_activity.tx_id
         from {{ source('solana','account_activity') }} as account_activity
         join
             fee_addresses
