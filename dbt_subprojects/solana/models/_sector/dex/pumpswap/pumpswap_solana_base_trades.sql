@@ -101,16 +101,15 @@ WITH pools AS (
 , swaps_with_fees AS (
     SELECT
         s.*
-        , COALESCE(
-            (
-                SELECT total_fee_rate
-                FROM fee_configs f
-                WHERE f.call_block_time <= s.block_time
-                ORDER BY f.call_block_time DESC
-                LIMIT 1
-            ), 0.0025
-        ) as total_fee_rate  -- Default to 0.25% if no config found
+        , COALESCE(f.total_fee_rate, 0.0025) AS total_fee_rate
     FROM swaps_base s
+    CROSS JOIN LATERAL (
+        SELECT total_fee_rate
+        FROM fee_configs f
+        WHERE f.call_block_time <= s.block_time
+        ORDER BY f.call_block_time DESC
+        LIMIT 1
+    ) f
 )
 -- Get transfer amount per swap
 ,    transfers_aggregated AS (
