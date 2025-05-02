@@ -67,6 +67,9 @@ WITH transfers_raw as (
                   1=1
                   {% if is_incremental() -%}
                   AND {{incremental_predicate('tr.call_block_time')}}
+                  {% else -%}
+                  and
+                        call_block_time between date '2025-01-01' and date '2025-04-01'
                   {% endif -%}
       )
       /*
@@ -99,6 +102,9 @@ WITH transfers_raw as (
             1=1
             {% if is_incremental() -%}
             AND {{incremental_predicate('call_block_time')}}
+            {% else -%}
+            and
+                  call_block_time between date '2025-01-01' and date '2025-04-01'
             {% endif -%}
 
       UNION ALL
@@ -126,6 +132,9 @@ WITH transfers_raw as (
             1=1
             {% if is_incremental() -%}
             AND {{incremental_predicate('call_block_time')}}
+            {% else -%}
+            and
+                  call_block_time between date '2025-01-01' and date '2025-04-01'
             {% endif -%}
 
       UNION ALL
@@ -152,6 +161,9 @@ WITH transfers_raw as (
             1=1
             {% if is_incremental() -%}
             AND {{incremental_predicate('call_block_time')}}
+            {% else -%}
+            and
+                  call_block_time between date '2025-01-01' and date '2025-04-01'
             {% endif -%}
 
       UNION ALL
@@ -178,6 +190,9 @@ WITH transfers_raw as (
             1=1
             {% if is_incremental() -%}
             AND {{incremental_predicate('call_block_time')}}
+            {% else -%}
+            and
+                  call_block_time between date '2025-01-01' and date '2025-04-01'
             {% endif -%}
 
       UNION ALL
@@ -204,13 +219,16 @@ WITH transfers_raw as (
             bytearray_substring(call_data,1,2) = 0x1a01
             {% if is_incremental() -%}
             AND {{incremental_predicate('call_block_time')}}
+            {% else -%}
+            and
+                  call_block_time between date '2025-01-01' and date '2025-04-01'
             {% endif -%}
 )
 , transfers AS (
       SELECT
-            substring(account_source, 1, 2) as from_token_account_prefix
+            lower(substring(account_source, 1, 1)) as from_token_account_prefix
             , account_source as from_token_account
-            , substring(account_destination, 1, 2) as to_token_account_prefix
+            , lower(substring(account_destination, 1, 1)) as to_token_account_prefix
             , account_destination as to_token_account
             , amount
             /*

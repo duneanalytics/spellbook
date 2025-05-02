@@ -30,6 +30,9 @@ WITH transfers_raw AS (
         1=1
         {% if is_incremental() -%}
         AND {{incremental_predicate('call_block_time')}}
+        {% else -%}
+        and
+            call_block_time between date '2025-01-01' and date '2025-04-01'
         {% endif -%}
 
     UNION ALL
@@ -55,6 +58,9 @@ WITH transfers_raw AS (
         1=1
         {% if is_incremental() -%}
         AND {{incremental_predicate('call_block_time')}}
+        {% else -%}
+        and
+            call_block_time between date '2025-01-01' and date '2025-04-01'
         {% endif -%}
 
     UNION ALL
@@ -80,6 +86,9 @@ WITH transfers_raw AS (
         1=1
         {% if is_incremental() -%}
         AND {{incremental_predicate('call_block_time')}}
+        {% else -%}
+        and
+            call_block_time between date '2025-01-01' and date '2025-04-01'
         {% endif -%}
 
     UNION ALL
@@ -105,6 +114,9 @@ WITH transfers_raw AS (
         1=1
         {% if is_incremental() -%}
         AND {{incremental_predicate('call_block_time')}}
+        {% else -%}
+        and
+            call_block_time between date '2025-01-01' and date '2025-04-01'
         {% endif -%}
 
     UNION ALL
@@ -130,6 +142,9 @@ WITH transfers_raw AS (
         1=1
         {% if is_incremental() -%}
         AND {{incremental_predicate('call_block_time')}}
+        {% else -%}
+        and
+            call_block_time between date '2025-01-01' and date '2025-04-01'
         {% endif -%}
 )
 , transfers AS (
@@ -140,9 +155,9 @@ WITH transfers_raw AS (
         , block_slot
         , action
         , amount
-        , substring(from_token_account, 1, 2) as from_token_account_prefix
+        , lower(substring(from_token_account, 1, 1)) as from_token_account_prefix
         , from_token_account
-        , substring(to_token_account, 1, 2) as to_token_account_prefix
+        , lower(substring(to_token_account, 1, 1)) as to_token_account_prefix
         , to_token_account
         , token_version
         , tx_signer

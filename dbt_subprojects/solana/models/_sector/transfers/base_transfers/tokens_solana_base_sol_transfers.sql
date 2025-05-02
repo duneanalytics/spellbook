@@ -23,9 +23,9 @@ WITH transfers AS (
         , lamports as amount
         , call_outer_executing_account as outer_executing_account
         , call_inner_executing_account as inner_executing_account
-        , substring(call_account_arguments[1], 1, 2) as from_token_account_prefix
+        , lower(substring(call_account_arguments[1], 1, 1)) as from_token_account_prefix
         , call_account_arguments[1] as from_token_account
-        , substring(call_account_arguments[2], 1, 2) as to_token_account_prefix
+        , lower(substring(call_account_arguments[2], 1, 1)) as to_token_account_prefix
         , call_account_arguments[2] as to_token_account
         , 'native' as token_version
         , CONCAT(
@@ -40,6 +40,9 @@ WITH transfers AS (
         1=1
         {% if is_incremental() -%}
         and {{incremental_predicate('call_block_time')}}
+        {% else -%}
+        and
+            call_block_time between date '2025-01-01' and date '2025-04-01'
         {% endif -%}
 )
 , final AS (
