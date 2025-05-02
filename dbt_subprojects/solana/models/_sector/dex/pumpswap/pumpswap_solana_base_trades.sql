@@ -7,7 +7,7 @@
     , file_format = 'delta'
     , incremental_strategy = 'merge'
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
-    , unique_key = ['tx_id', 'outer_instruction_index', 'swap_inner_index', 'tx_index','block_month']
+    , unique_key = ['block_month', 'surrogate_key']
     , pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
   )
 }}
@@ -218,4 +218,5 @@ SELECT
     , tb.outer_instruction_index
     , tb.swap_inner_index
     , tb.tx_index
+    , {{ dbt_utils.generate_surrogate_key(['tx_id', 'tx_index', 'outer_instruction_index', 'swap_inner_index']) }} as surrogate_key
 FROM trades_base tb
