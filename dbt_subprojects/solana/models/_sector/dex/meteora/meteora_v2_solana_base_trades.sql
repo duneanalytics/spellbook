@@ -11,7 +11,7 @@
         )
 }}
 
-{% set project_start_date = '2023-11-01' %} --grabbed program deployed at time (account created at).
+{% set project_start_date = '2025-04-01' %} --grabbed program deployed at time (account created at).
 
 WITH
     all_swaps as (
@@ -44,20 +44,22 @@ WITH
             ON trs_1.tx_id = sp.call_tx_id 
             AND trs_1.block_date = sp.call_block_date
             AND trs_1.block_time = sp.call_block_time
-            AND trs_1.outer_instruction_index = sp.call_outer_instruction_index 
-            AND trs_1.inner_instruction_index = COALESCE(sp.call_inner_instruction_index,0) + 1
+            AND trs_1.outer_instruction_index = sp.call_outer_instruction_index
+            AND trs_1.inner_instruction_index IN (sp.call_inner_instruction_index + 1, sp.call_inner_instruction_index + 2)
+            AND trs_1.to_owner = sp.account_lbPair
             {% if is_incremental() %}
             AND {{incremental_predicate('trs_1.block_time')}}
             {% else %}
             AND trs_1.block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
-        INNER JOIN 
+        INNER JOIN  
             {{ ref('tokens_solana_transfers') }} trs_2 
             ON trs_2.tx_id = sp.call_tx_id 
             AND trs_2.block_date = sp.call_block_date
             AND trs_2.block_time = sp.call_block_time
-            AND trs_2.outer_instruction_index = sp.call_outer_instruction_index 
-            AND trs_2.inner_instruction_index = COALESCE(sp.call_inner_instruction_index,0) + 2
+            AND trs_2.outer_instruction_index = sp.call_outer_instruction_index
+            AND trs_2.inner_instruction_index IN (sp.call_inner_instruction_index + 1, sp.call_inner_instruction_index + 2)
+            AND trs_2.from_owner = sp.account_lbPair
             {% if is_incremental() %}
             AND {{incremental_predicate('trs_2.block_time')}}
             {% else %}
