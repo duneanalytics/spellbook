@@ -31,6 +31,7 @@
      , ('sei', source('sei', 'transactions'))
      , ('ronin', source('ronin', 'transactions'))
      , ('ink', source('ink', 'transactions'))
+     , ('unichain', source('unichain', 'transactions'))
      , ('lens', source('lens', 'transactions'))
 ] %}
 

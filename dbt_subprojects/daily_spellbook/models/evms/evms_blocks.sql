@@ -28,7 +28,8 @@
                                         "zkevm",
                                         "zksync",
                                         "zora",
-                                        "ink"
+                                        "ink",
+                                        "unichain"
                                         ]\',
                                     "sector",
                                     "evms",

@@ -30,6 +30,7 @@
      , ('sei', source('sei', 'traces_decoded'))
      , ('ronin', source('ronin', 'traces_decoded'))
      , ('ink', source('ink', 'traces_decoded'))
+     , ('unichain', source('unichain', 'traces_decoded'))
      , ('lens', source('lens', 'traces_decoded'))
 ] %}
 
