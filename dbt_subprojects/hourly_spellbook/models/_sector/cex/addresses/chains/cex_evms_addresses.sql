@@ -100,6 +100,7 @@ FROM (VALUES
     , (0x25681ab599b4e2ceea31f8b498052c53fc2d74db, 'Binance', 'Binance 90', 'hildobby', date '2024-10-06')
     , (0x29fe6c66097f7972d8e47c4f691576327fcf9a12, 'Binance', 'Binance 91', 'hildobby', date '2024-10-14')
     , (0xfdd2ba77db02caa6a9869735dac577d809cadd11, 'Binance', 'Binance 92', 'hildobby', date '2024-11-08')
+    , (0x9bf4001d307dfd62b26a2f1307ee0c0307632d59, 'Binance', 'Binance 93', 'hildobby', date '2025-05-02')
     , (0xef7fb88f709ac6148c07d070bc71d252e8e13b92, 'Binance', 'Binance Internal', 'hildobby', date '2023-11-22')
     , (0x8b99f3660622e21f2910ecca7fbe51d654a1517d, 'Binance', 'Binance Charity', 'hildobby', date '2022-08-28')
     , (0xab83d182f3485cf1d6ccdd34c7cfef95b4c08da4, 'Binance', 'Binance JEX', 'hildobby', date '2022-08-28')
@@ -525,6 +526,7 @@ FROM (VALUES
     , (0x3f83fd98d5fa84f3cbf8b275d6a10dfc5605cda2, 'OKX', 'OKX 146', 'hildobby', date '2024-10-06')
     , (0x9e64afc7bca5f2c6607a5b8c378bcf1ec3531c97, 'OKX', 'OKX 147', 'hildobby', date '2024-10-06')
     , (0x8d0abeb725fa260521ed54985a5f793141329ae9, 'OKX', 'OKX 148', 'hildobby', date '2024-10-06')
+    , (0x2ce910fbba65b454bbaf6a18c952a70f3bcd8299, 'OKX', 'OKX Internal 1', 'hildobby', date '2025-05-02')
     , (0x3b3ae790df4f312e745d270119c6052904fb6790, 'OKX', 'OKX DEX Aggregation Router', 'hildobby', date '2023-08-31')
     , (0xc5a93444cc4da6efb9e6fc6e5d3cb55a53b52396, 'OKX', 'OKX Gas Supplier 1', 'hildobby', date '2023-08-31')
     , (0x24c654f6b143dc5cae3c02fbb527ca63aa555dbc, 'OKX', 'OKX Gas Supplier 2', 'hildobby', date '2023-08-31')
@@ -718,6 +720,7 @@ FROM (VALUES
     , (0x5f477d105efa3bcc2f74f0e9a008bcaa988a8e8a, 'HTX', 'HTX Gas Supplier 31', 'hildobby', date '2024-10-06')
     , (0x80e63d2735789fa1f676b7644236d501133986dd, 'HTX', 'HTX Gas Supplier 32', 'hildobby', date '2024-10-06')
     , (0xbc53b706b165d2b7e98f254095d9d342e845e5ac, 'HTX', 'HTX Bridge 1', 'hildobby', date '2024-05-25')
+    , (0x24d48513eac38449ec7c310a79584f87785f856f, 'HTX', 'HTX Locking Multisig 1', 'hildobby', date '2025-05-02')
     -- LBank
     , (0x356dc48d74f107cfbfd61790b0808cda6a0d364f, 'LBank', 'LBank 1', 'hildobby', date '2023-09-12')
     , (0xc06e0513a150a021104fdcdd20ce362fa593ba1f, 'LBank', 'LBank 2', 'hildobby', date '2023-09-12')
@@ -748,6 +751,7 @@ FROM (VALUES
     , (0x7222de11e132c6f315789eeb5c0182cabd4a9530, 'Robinhood', 'Robinhood Gas Supplier 2', 'hildobby', date '2024-04-04')
     , (0x4a5b84fb4c7666692c49f2e11664710aa4d0d2a0, 'Robinhood', 'Robinhood Deprecated 1', 'hildobby', date '2023-11-16')
     , (0xa0116a92a032d17a9ce431eabe75c5b5f29e2d5e, 'Robinhood', 'Robinhood Deprecated 2', 'hildobby', date '2023-11-24')
+    , (0x0716a17fbaee714f1e6ab0f9d59edbc5f09815c0, 'Robinhood', 'Robinhood Deprecated 3', 'hildobby', date '2025-05-02')
     -- CoinList
     , (0xd1669ac6044269b59fa12c5822439f609ca54f41, 'CoinList', 'CoinList 1', 'hildobby', date '2023-09-08')
     , (0x8d1f2ebfaccf1136db76fdd1b86f1dede2d23852, 'CoinList', 'CoinList 2', 'hildobby', date '2023-09-08')
@@ -947,6 +951,7 @@ FROM (VALUES
     , (0xac972a4c5d82e8c42fa13ee338708c9a3f5d5a93, 'Kraken', 'Kraken 171', 'hildobby', date '2025-04-28')
     , (0x6c92e0e6a9984c0f44677f678e8fc10bebe3de64, 'Kraken', 'Kraken 172', 'hildobby', date '2025-04-28')
     , (0xfd387b7ddea5880beeee5664d547cd2da614df8d, 'Kraken', 'Kraken 173', 'hildobby', date '2025-04-28')
+    , (0x210b3cb99fa1de0a64085fa80e18c22fe4722a1b, 'Kraken', 'Kraken 174', 'hildobby', date '2025-05-02')
     , (0xe6a02eefc2612b13f2b3b914009576ce5495ec0e, 'Kraken', 'Kraken Withdrawals 1', 'hildobby', date '2023-11-20')
     , (0xe9f7ecae3a53d2a67105292894676b00d1fab785, 'Kraken', 'Kraken Hot Wallet', 'hildobby', date '2022-08-28')
     , (0xd4039ecc40aeda0582036437cf3ec02845da4c13, 'Kraken', 'Kraken ETH Staking 1', 'hildobby', date '2023-11-20')
@@ -1268,6 +1273,7 @@ FROM (VALUES
     , (0xefb2e870b14d7e555a31b392541acf002dae6ae9, 'Bithumb', 'Bithumb 27', 'hildobby', date '2024-10-06')
     , (0xd5a11a51fd0cda5f119b78d87eaeaa970d77c55e, 'Bithumb', 'Bithumb 28', 'hildobby', date '2024-10-06')
     , (0xd341dd814eb0937caf3517ff2203c6d26f306898, 'Bithumb', 'Bithumb 29', 'hildobby', date '2024-10-06')
+    , (0xc257274276a4e539741ca11b590b9447b26a8051, 'Bithumb', 'Bithumb 30', 'hildobby', date '2025-05-02')
     , (0x560e389a2b032319e742a59ae8bafa62671089fe, 'Bithumb', 'Bithumb Contract', 'hildobby', date '2023-11-16')
     , (0xbb5a0408fa54287b9074a2f47ab54c855e95ef82, 'Bithumb', 'Bithumb Old Address 1', 'hildobby', date '2022-08-28')
     , (0x5521a68d4f8253fc44bfb1490249369b3e299a4a, 'Bithumb', 'Bithumb Old Address 2', 'hildobby', date '2022-08-28')
@@ -1576,6 +1582,7 @@ FROM (VALUES
     , (0x264bd8291fae1d75db2c5f573b07faa6715997b5, 'Paxos', 'Paxos 4', 'hildobby', date '2023-11-15')
     , (0x7d766b06e7164be4196ee62e6036c9fcff68107d, 'Paxos', 'Paxos 5', 'hildobby', date '2023-11-15')
     , (0x41b309236c87b1bc6fa8eb865833e44158fa991a, 'Paxos', 'Paxos 6', 'hildobby', date '2024-05-04')
+    , (0xc5a8859c44ac8aa2169afacf45b87c08593bec10, 'Paxos', 'Paxos 7', 'hildobby', date '2025-05-02')
     , (0x5195427ca88df768c298721da791b93ad11eca65, 'Paxos', 'Paxos Treasury 1', 'hildobby', date '2024-05-04')
     , (0x8a89e016750479dc1d7ad32ecffcecd76e118697, 'Paxos', 'Paxos Gas Supplier 1', 'hildobby', date '2023-11-23')
 
@@ -2578,6 +2585,7 @@ FROM (VALUES
     , (0xee1bf4d7c53af2beafc7dc1dcea222a8c6d87ad9, 'HashKey Exchange', 'HashKey Exchange 7', 'hildobby', date '2025-04-28')
     , (0xcbea7739929cc6a2b4e46a1f6d26841d8d668b9e, 'HashKey Exchange', 'HashKey Exchange 8', 'hildobby', date '2025-04-28')
     , (0x25a58cee7928b3d6c1d392ebe1a97318aa5ff2f2, 'HashKey Exchange', 'HashKey Exchange 9', 'hildobby', date '2025-04-28')
+    , (0x7ffbafdc1e4f0a4b97130b075fb4a25f807a1807, 'HashKey Exchange', 'HashKey Exchange 10', 'hildobby', date '2025-05-02')
     -- Mercuryo
     , (0x8c8d7c46219d9205f056f28fee5950ad564d7465, 'Mercuryo', 'Mercuryo 1', 'hildobby', date '2023-03-13')
     -- Coinify
