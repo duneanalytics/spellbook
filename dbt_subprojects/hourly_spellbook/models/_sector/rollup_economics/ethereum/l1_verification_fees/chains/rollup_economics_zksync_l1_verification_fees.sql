@@ -37,11 +37,13 @@ WITH data AS (
         , 0xa0425d71cB1D6fb80E65a5361a04096E0672De03 -- L1 transactions settle here post-Boojum
         , 0xa8CB082A5a689E0d594d7da1E2d72A3D63aDc1bD -- L1 transactions settle here post-EIP4844
         , 0x5D8ba173Dc6C3c90C8f7C04C9288BeF5FDbAd06E -- L1 transactions settle here post v24 upgrade (shared bridge)
+        , 0x32400084C286CF3E17e7B677ea9583e60a000324 -- Diamond Proxy 
     )
     AND bytearray_substring(t.data, 1, 4) IN (
         0x7739cbe7 -- Prove Block, pre-Boojum
         , 0x7f61885c -- Prove Batches, post-Boojum
         , 0xc37533bb -- Prove Batches, post v24 upgrade (shared bridge)
+        , 0xe12a6137 -- proveBatchesSharedBridge (Diamond Proxy)
     )
     AND t.block_time >= TIMESTAMP '2023-02-14'
     {% if is_incremental() %}

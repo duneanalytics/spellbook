@@ -218,6 +218,7 @@ models:
           filter:
             version:
               - infinity_cl
+              - infinity_lb
 
   - name: fraxswap_bnb_base_trades
     meta:
