@@ -85,7 +85,7 @@ FROM
     ('fungi-fungi', 'base', 'FUNGI', 0x7d9ce55d54ff3feddb611fc63ff63ec01f26d15f, 9),
     ('dog-the-doge-nft', 'base', 'DOG', 0xafb89a09d82fbde58f18ac6437b3fc81724e4df6, 18),
     ('higher-higher', 'base', 'HIGHER', 0x0578d8a44db98b23bf096a382e016e29a5ce0ffe, 18),
-    --('stg-stargate-finance', 'base', 'STG', 0xe3b53af74a4bf62ae5511055290838050bf764df, 18), -- token_id not found in API
+    ('stg-stargatetoken', 'base', 'STG', 0xe3b53af74a4bf62ae5511055290838050bf764df, 18),
     ('keycat-keyboard-cat-base', 'base', 'KEYCAT', 0x9a26f5433671751c3276a065f57e5a02d2817973, 18),
     ('briun-briun-armstrung', 'base', 'BRIUN', 0x8c81b4c816d66d36c4bf348bdec01dbcbc70e987, 18),
     ('benji-basenji', 'base', 'BENJI', 0xbc45647ea894030a4e9801ec03479739fa2485f0, 18),
@@ -211,7 +211,7 @@ FROM
     ('b3-b3', 'base', 'B3', 0xb3b32f9f8827d4634fe7d973fa1034ec9fddb3b3, 18),
     ('morpho-morpho', 'base', 'MORPHO', 0xBAa5CC21fd487B8Fcc2F632f3F4E8D37262a0842, 18),
     ('talent-talent-protocol', 'base', 'TALENT', 0x9a33406165f562E16C3abD82fd1185482E01b49a, 18),
-    --('well-moonwell' ,'base', 'WELL', 0xa88594d404727625a9437c3f886c7643872296ae, 18)
+    ('well-moonwell' ,'base', 'WELL', 0xa88594d404727625a9437c3f886c7643872296ae, 18)
     ('idrx-idrx', 'base', 'IDRX',0x18Bc5bcC660cf2B9cE3cd51a404aFe1a0cBD3C22, 2),
     ('nars-nars', 'base', 'nARS',0x5e40f26E89213660514c51Fb61b2d357DBf63C85, 18),
     -- ('cadc-cad-coin', 'base', 'CADC',0x043eB4B75d0805c43D7C834902E335621983Cf03, 18),
