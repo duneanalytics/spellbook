@@ -7,7 +7,7 @@
     , file_format = 'delta'
     , incremental_strategy = 'merge'
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
-    , unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index','block_month']
+    , unique_key = ['tx_id', 'outer_instruction_index', 'swap_inner_index', 'tx_index','block_month']
     , pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
   )
 }}
@@ -42,7 +42,7 @@ WITH pools AS (
         , call_outer_executing_account as outer_executing_account
         , call_tx_id as tx_id
         , call_outer_instruction_index as outer_instruction_index
-        , COALESCE(call_inner_instruction_index, 0) as inner_instruction_index
+        , call_inner_instruction_index as swap_inner_index
         , call_tx_index as tx_index
         , 1 as is_buy
         , account_pool_quote_token_account as sol_target_account
@@ -74,7 +74,7 @@ WITH pools AS (
         , call_outer_executing_account as outer_executing_account
         , call_tx_id as tx_id
         , call_outer_instruction_index as outer_instruction_index
-        , COALESCE(call_inner_instruction_index, 0) as inner_instruction_index
+        , call_inner_instruction_index as swap_inner_index
         , call_tx_index as tx_index
         , 0 as is_buy
         , NULL as sol_target_account
@@ -113,41 +113,37 @@ WITH pools AS (
         ON s.block_time >= f.start_time
         AND s.block_time < f.end_time
 )
--- Get transfer amount per swap
-,    transfers_aggregated AS (
-        SELECT
-            tx_id,
-            outer_instruction_index,
-            COALESCE(inner_instruction_index, 0) as inner_instruction_index,
-            token_mint_address,
-            to_token_account,
-            from_token_account,
-            amount  
-        FROM {{ ref('tokens_solana_transfers') }}
-        WHERE token_mint_address = 'So11111111111111111111111111111111111111112'
-        AND token_version = 'spl_token'
-        {% if is_incremental() %}
-        AND {{incremental_predicate('block_time')}}
-        {% else %}
-        AND block_time >= TIMESTAMP '{{project_start_date}}'
-        {% endif %}
-),
 
-swaps_with_transfers AS (
+, swaps_with_transfers AS (
     SELECT
         sf.*,
         CASE
             WHEN sf.is_buy = 1 AND t.to_token_account = sf.sol_target_account THEN t.amount
             WHEN sf.is_buy = 0 AND t.from_token_account = sf.sol_source_account AND t.to_token_account = sf.sol_dest_account THEN t.amount
-            ELSE sf.max_min_sol_amount
+            ELSE null
         END as sol_amount
     FROM swaps_with_fees sf
-    LEFT JOIN transfers_aggregated t
-        ON t.tx_id = sf.tx_id 
+    LEFT JOIN {{ ref('tokens_solana_transfers') }} t
+        ON t.tx_id = sf.tx_id
+        AND t.block_slot = sf.block_slot
         AND t.outer_instruction_index = sf.outer_instruction_index
-        AND ((sf.is_buy = 1 AND t.inner_instruction_index IN (sf.inner_instruction_index + 1, sf.inner_instruction_index + 2) AND t.to_token_account = sf.sol_target_account) OR
-             (sf.is_buy = 0 AND t.inner_instruction_index IN (sf.inner_instruction_index + 1, sf.inner_instruction_index + 2) AND t.from_token_account = sf.sol_source_account AND t.to_token_account = sf.sol_dest_account))
+        AND (
+            (sf.swap_inner_index IS NULL AND (
+                (sf.is_buy = 1 AND t.inner_instruction_index IN (1, 2, 3) AND t.to_token_account = sf.sol_target_account) OR
+                (sf.is_buy = 0 AND t.inner_instruction_index IN (1, 2, 3) AND t.from_token_account = sf.sol_source_account AND t.to_token_account = sf.sol_dest_account)
+            )) OR
+            (sf.swap_inner_index IS NOT NULL AND (
+                (sf.is_buy = 1 AND t.inner_instruction_index IN (sf.swap_inner_index + 1, sf.swap_inner_index + 2, sf.swap_inner_index + 3) AND t.to_token_account = sf.sol_target_account) OR
+                (sf.is_buy = 0 AND t.inner_instruction_index IN (sf.swap_inner_index + 1, sf.swap_inner_index + 2, sf.swap_inner_index + 3) AND t.from_token_account = sf.sol_source_account AND t.to_token_account = sf.sol_dest_account)
+            ))
+        )
         AND t.token_mint_address = 'So11111111111111111111111111111111111111112'
+        AND t.token_version = 'spl_token'
+        {% if is_incremental() %}
+        AND {{incremental_predicate('t.block_time')}}
+        {% else %}
+        AND t.block_time >= TIMESTAMP '{{project_start_date}}'
+        {% endif %}
 )
 
 , trades_base as (
@@ -184,7 +180,7 @@ swaps_with_transfers AS (
         , sp.user as trader_id
         , sp.tx_id
         , sp.outer_instruction_index
-        , sp.inner_instruction_index
+        , sp.swap_inner_index
         , sp.tx_index
         , sp.block_slot
         , cast(case 
@@ -220,6 +216,6 @@ SELECT
     , tb.trader_id
     , tb.tx_id
     , tb.outer_instruction_index
-    , tb.inner_instruction_index
+    , tb.swap_inner_index
     , tb.tx_index
 FROM trades_base tb
