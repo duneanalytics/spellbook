@@ -88,28 +88,30 @@ WITH pools AS (
     {% endif %}
 )
 
-, fee_configs AS (
+, fee_configs_with_time_ranges AS (
     SELECT 
-        call_block_time
-        , lp_fee_basis_points
-        , protocol_fee_basis_points
-        , (lp_fee_basis_points + protocol_fee_basis_points) / 10000.0 AS total_fee_rate
+        call_block_time as start_time,
+        LEAD(call_block_time) OVER (ORDER BY call_block_time) as end_time,
+        (lp_fee_basis_points + protocol_fee_basis_points) / 10000.0 AS total_fee_rate
     FROM {{ source('pumpdotfun_solana', 'pump_amm_call_update_fee_config') }}
-    WHERE call_block_time <= current_timestamp() -- Include all fee updates up to now
+)
+
+, fee_configs_with_nulls_handled AS (
+    SELECT
+        start_time,
+        COALESCE(end_time, TIMESTAMP '2099-12-31') as end_time,
+        total_fee_rate
+    FROM fee_configs_with_time_ranges
 )
 
 , swaps_with_fees AS (
     SELECT
-        s.*
-        , COALESCE(f.total_fee_rate, 0.0025) AS total_fee_rate
+        s.*,
+        COALESCE(f.total_fee_rate, 0.0025) as total_fee_rate
     FROM swaps_base s
-    CROSS JOIN LATERAL (
-        SELECT total_fee_rate
-        FROM fee_configs f
-        WHERE f.call_block_time <= s.block_time
-        ORDER BY f.call_block_time DESC
-        LIMIT 1
-    ) f
+    LEFT JOIN fee_configs_with_nulls_handled f
+        ON s.block_time >= f.start_time
+        AND s.block_time < f.end_time
 )
 -- Get transfer amount per swap
 ,    transfers_aggregated AS (
