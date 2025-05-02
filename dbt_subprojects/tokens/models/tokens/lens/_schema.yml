@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: lens_erc20
+    description: "Static table for Lens related ERC20 token details (symbol, decimals) on Polygon. Contains WETH initially."
+    columns:
+      - name: contract_address
+        description: "Token contract address"
+        tests:
+          - unique
+          - not_null
+      - name: symbol
+        description: "Token symbol"
+        tests:
+          - not_null
+      - name: decimals
+        description: "Token decimals"
+        tests:
+          - not_null 
