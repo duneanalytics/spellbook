@@ -31,6 +31,7 @@
      , ('ronin', source('erc721_ronin', 'evt_Approval'))
      , ('ink', source('erc721_ink', 'evt_Approval'))
      , ('unichain', source('erc721_unichain', 'evt_Approval'))
+     , ('lens', source('erc721_lens', 'evt_Approval'))
 ] %}
 
 SELECT *

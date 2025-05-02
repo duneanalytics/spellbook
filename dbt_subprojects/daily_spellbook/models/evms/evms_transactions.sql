@@ -32,6 +32,7 @@
      , ('ronin', source('ronin', 'transactions'))
      , ('ink', source('ink', 'transactions'))
      , ('unichain', source('unichain', 'transactions'))
+     , ('lens', source('lens', 'transactions'))
 ] %}
 
 {% set unstructured_transactions_models = [

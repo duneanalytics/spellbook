@@ -32,6 +32,7 @@
      , ('opbnb', source('erc1155_opbnb', 'evt_transferbatch'))
      , ('ink', source('erc1155_ink', 'evt_transferbatch'))
      , ('unichain', source('erc1155_unichain', 'evt_transferbatch'))
+     , ('lens', source('erc1155_lens', 'evt_transferbatch'))
 ] %}
 
 SELECT *

@@ -31,6 +31,7 @@
      , ('ronin', source('ronin', 'logs_decoded'))
      , ('ink', source('ink', 'logs_decoded'))
      , ('unichain', source('unichain', 'logs_decoded'))
+     , ('lens', source('lens', 'logs_decoded'))
 ] %}
 
 SELECT *

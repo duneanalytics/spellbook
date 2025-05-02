@@ -16,6 +16,7 @@
 ,ref('zonic_arbitrum_base_trades')
 ,ref('opensea_v3_arbitrum_base_trades')
 ,ref('opensea_v4_arbitrum_base_trades')
+,ref('magic_eden_arbitrum_base_trades')
 ] %}
 
 

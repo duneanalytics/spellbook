@@ -66,6 +66,7 @@
      , ('b3', source('b3', 'traces'))
      , ('ink', source('ink', 'traces'))
      , ('unichain', source('unichain', 'traces'))
+     , ('lens', source('lens', 'traces'))
 ] %}
 
 SELECT *
