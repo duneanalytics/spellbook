@@ -65,8 +65,8 @@ with
             )
         join {{ source('solana', 'transactions') }} tx ON account_activity.tx_id = tx.id 
         where
-            {% if is_incremental() %} {{ incremental_predicate('block_time') }}
-            {% else %} block_time >= timestamp '{{project_start_date}}'
+            {% if is_incremental() %} {{ incremental_predicate('account_activity.block_time') }}
+            {% else %} account_activity.block_time >= timestamp '{{project_start_date}}'
             {% endif %} 
             and tx_success
             and tx.signer != fee_addresses.fee_receiver
@@ -88,8 +88,8 @@ with
             )
         join {{ source('solana', 'transactions') }} tx ON account_activity.tx_id = tx.id 
         where
-            {% if is_incremental() %} {{ incremental_predicate('block_time') }}
-            {% else %} block_time >= timestamp '{{project_start_date}}'
+            {% if is_incremental() %} {{ incremental_predicate('account_activity.block_time') }}
+            {% else %} account_activity.block_time >= timestamp '{{project_start_date}}'
             {% endif %} 
             and tx_success
             and tx.signer != fee_addresses.fee_receiver
