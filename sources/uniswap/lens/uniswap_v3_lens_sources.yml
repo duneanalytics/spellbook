@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: uniswap_v3_lens
+    description: "Raw event tables for Uniswap V3 on Lens" # Placeholder description
+    tables:
+      - name: Pair_evt_Swap
+        description: "Swap events from Uniswap V3 pairs on Lens" # Placeholder description
+        
+      - name: Factory_evt_PoolCreated
+        description: "Pool creation events from Uniswap V3 factory on Lens" # Placeholder description
