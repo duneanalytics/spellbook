@@ -6,7 +6,7 @@
         ,materialized = 'table'
     )
 }}
-
+ 
 SELECT
     contract_address
     , symbol
