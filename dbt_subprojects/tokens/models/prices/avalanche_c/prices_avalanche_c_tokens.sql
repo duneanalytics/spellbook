@@ -106,7 +106,7 @@ FROM
     ('zro-layerzero', 'avalanche_c', 'ZRO', 0x6985884c4392d348587b19cb9eaaf157f13271cd, 18),
     ('beam-beam-eth', 'avalanche_c', 'BEAM', 0x62d0a8458ed7719fdaf978fe5929c6d342b0bfce, 18),
     ('ggp-gogopool', 'avalanche_c', 'GGP', 0x69260B9483F9871ca57f81A90D91E2F96c2Cd11d, 18),
-    --('joe-lfj', 'avalanche_c', 'JOE', 0x6e84a6216ea6dacc71ee8e6b0a5b7322eebc0fdd, 18),
+    ('joe-trader-joe', 'avalanche_c', 'JOE', 0x6e84a6216ea6dacc71ee8e6b0a5b7322eebc0fdd, 18),
     ('egg-chikn-egg', 'avalanche_c', 'EGG', 0x7761e2338b35bceb6bda6ce477ef012bde7ae611, 18),
     ('cra-crabada', 'avalanche_c', 'CRA', 0xa32608e873f9ddef944b24798db69d80bbb4d1ed, 18),
     ('ket-ket2', 'avalanche_c', 'KET', 0xffff003a6bad9b743d658048742935fffe2b6ed7, 18)
