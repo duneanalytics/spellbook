@@ -2,18 +2,19 @@
   config (
     schema='solana_utils'
     , alias='spl_token_2022_accounts_raw'
-    , partition_by=['block_date']
+    , partition_by=['block_month']
     , materialized='incremental'
     , file_format='delta'
     , incremental_strategy='append'
-    , unique_key=['block_date', 'address', 'address_prefix', 'unique_instruction_key']
+    , unique_key=['block_month', 'address', 'address_prefix', 'unique_instruction_key']
   )
 }}
 
 with init as (
     --Init v1: events contain mint address and owner address
     SELECT
-        CAST(DATE_TRUNC('day', call_block_time) as DATE) AS block_date
+        CAST(DATE_TRUNC('month', call_block_time) as DATE) AS block_month
+        , CAST(DATE_TRUNC('day', call_block_time) as DATE) AS block_date
         , call_block_time AS block_time
         , account_accountToInitialize AS address
         , SUBSTRING(account_accountToInitialize, 1, 2) AS address_prefix
@@ -42,7 +43,8 @@ with init as (
 
     --Init v2
     SELECT
-        CAST(DATE_TRUNC('day', call_block_time) as DATE) AS block_date
+        CAST(DATE_TRUNC('month', call_block_time) as DATE) AS block_month
+        , CAST(DATE_TRUNC('day', call_block_time) as DATE) AS block_date
         , call_block_time AS block_time
         , account_initializeAccount AS address
         , SUBSTRING(account_initializeAccount, 1, 2) AS address_prefix
@@ -70,7 +72,8 @@ with init as (
 
     --Init v3
     SELECT
-        CAST(DATE_TRUNC('day', call_block_time) as DATE) AS block_date
+        CAST(DATE_TRUNC('month', call_block_time) as DATE) AS block_month
+        , CAST(DATE_TRUNC('day', call_block_time) as DATE) AS block_date
         , call_block_time AS block_time
         , account_initializeAccount AS address
         , SUBSTRING(account_initializeAccount, 1, 2) AS address_prefix
@@ -97,7 +100,8 @@ with init as (
 , owner_change as (
     -- Owner Changes: Only owner changes, mint persists, mint address not in data
     SELECT
-        CAST(DATE_TRUNC('day', call_block_time) as DATE) AS block_date
+        CAST(DATE_TRUNC('month', call_block_time) as DATE) AS block_month
+        , CAST(DATE_TRUNC('day', call_block_time) as DATE) AS block_date
         , call_block_time AS block_time
         , account_mint AS address -- this is actually the token account address, the decoding pipeline is wrong here
         , SUBSTRING(account_mint, 1, 2) AS address_prefix -- this is actually the token account address, the decoding pipeline is wrong here
@@ -124,7 +128,8 @@ with init as (
 , close as (
     --Closure events only contain the token account address
     SELECT
-        CAST(DATE_TRUNC('day', call_block_time) as DATE) AS block_date
+        CAST(DATE_TRUNC('month', call_block_time) as DATE) AS block_month
+        , CAST(DATE_TRUNC('day', call_block_time) as DATE) AS block_date
         , call_block_time AS block_time
         , account_closeAccount AS address
         , SUBSTRING(account_closeAccount, 1, 2) AS address_prefix
@@ -162,7 +167,7 @@ with init as (
         raw_events as raw
     {% if is_incremental() -%}
     left join {{ this }} as existing
-        on raw.block_date = existing.block_date
+        on raw.block_month = existing.block_month
         and raw.address = existing.address
         and raw.address_prefix = existing.address_prefix
         and raw.unique_instruction_key = existing.unique_instruction_key
