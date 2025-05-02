@@ -209,7 +209,7 @@ FROM
     ('ata-automata', 'bnb', 'ATA', 0xA2120b9e674d3fC3875f415A7DF52e382F141225, 18),
     ('bonk-bonk', 'bnb', 'Bonk', 0xa697e272a73744b343528c3bc4702f2565b2f422, 5),
     ('pepe-pepe', 'bnb', 'PEPE', 0x25d887ce7a35172c62febfd67a1856f20faebb00,18),
-    --('beam-beam-token', 'bnb', 'BEAM', 0x62d0a8458ed7719fdaf978fe5929c6d342b0bfce,18), --not found in api 
+    ('beam-beam-eth', 'bnb', 'BEAM', 0x62d0a8458ed7719fdaf978fe5929c6d342b0bfce,18),
     ('weth-wrapped-ether-wormhole', 'bnb', 'WETH', 0x4db5a66e937a9f4473fa95b1caf1d1e1d62e29ea,18),
     ('ageur-ageur', 'bnb', 'agEUR', 0x12f31b73d812c6bb0d735a218c086d44d5fe5f89,18),
     ('sol-wrapped-sol-wormhole', 'bnb', 'SOL', 0xfa54ff1a158b5189ebba6ae130ced6bbd3aea76e,9),
@@ -260,11 +260,11 @@ FROM
     ('sis-symbiosis-finance', 'bnb', 'SIS', 0xF98b660AdF2ed7d9d9D9dAACC2fb0CAce4F21835,18),
     ('rdnt-radiant-capital', 'bnb', 'RDNT', 0xf7de7e8a6bd59ed41a4b5fe50278b3b7f31384df,18),
     ('cyber-cyberconnect', 'bnb', 'CYBER', 0x14778860e937f509e651192a90589de711fb88a9,18),
-    --('cgpt-chaingpt', 'bnb', 'CGPT', 0x9840652dc04fb9db2c43853633f0f62be6f00f98,18), --not found in api 
+    ('cgpt-chaingpt-bsc', 'bnb', 'CGPT', 0x9840652dc04fb9db2c43853633f0f62be6f00f98,18),
     ('ai-sleepless-ai', 'bnb', 'AI', 0xbda011d7f8ec00f66c1923b049b94c67d148d8b2,18),
     ('usdv-verified-usd', 'bnb', 'USDV', 0x323665443cef804a3b5206103304bd4872ea4253,6),
     -- ('defi-defi-eth', 'bnb', 'DEFI', 0x6d106c0b8d2f47c5465bdbd58d1be253762cbbc1,18), --DEFI does not match CoinPaprika source: DEFI  
-    --('dofn-openfabric', 'bnb', 'OFN', 0x8899ec96ed8c96b5c86c23c3f069c3def75b6d97,18),--not found in api 
+    ('ofn-openfabric', 'bnb', 'OFN', 0x8899ec96ed8c96b5c86c23c3f069c3def75b6d97,18),
     ('xpe-xpense', 'bnb', 'XPE', 0x88691f292b76bf4d2caa5678a54515fae77c33af,18),
     ('trump-maga', 'bnb', 'TRUMP', 0x4ea98c1999575aaadfb38237dd015c5e773f75a2,9),
     ('wsm-wall-street-memes', 'bnb', 'WSM', 0xb62e45c3df611dce236a6ddc7a493d79f9dfadef, 18),
