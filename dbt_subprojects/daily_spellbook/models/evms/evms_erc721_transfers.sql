@@ -31,6 +31,7 @@
      , ('ronin', source('erc721_ronin', 'evt_transfer'))
      , ('opbnb', source('erc721_opbnb', 'evt_transfer'))
      , ('ink', source('erc721_ink', 'evt_transfer'))
+     , ('lens', source('erc721_lens', 'evt_transfer'))
 ] %}
 
 SELECT *
