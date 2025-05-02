@@ -63,13 +63,13 @@ with
                 fee_addresses.fee_receiver = account_activity.address
                 and balance_change > 0
             )
-        join {{ source('solana', 'transactions') }} tx ON account_activity.tx_id = tx.id 
         where
-            {% if is_incremental() %} {{ incremental_predicate('account_activity.block_time') }}
-            {% else %} account_activity.block_time >= timestamp '{{project_start_date}}'
+            {% if is_incremental() %} 
+                {{ incremental_predicate('account_activity.block_time') }}
+            {% else %} 
+                account_activity.block_time >= timestamp '{{project_start_date}}'
             {% endif %} 
             and tx_success
-            and tx.signer != fee_addresses.fee_receiver
     ),
     token_payments as (
         select
@@ -86,13 +86,13 @@ with
                 token_balance_owner = fee_addresses.fee_receiver
                 and token_balance_change > 0
             )
-        join {{ source('solana', 'transactions') }} tx ON account_activity.tx_id = tx.id 
         where
-            {% if is_incremental() %} {{ incremental_predicate('account_activity.block_time') }}
-            {% else %} account_activity.block_time >= timestamp '{{project_start_date}}'
+            {% if is_incremental() %} 
+                {{ incremental_predicate('account_activity.block_time') }}
+            {% else %} 
+                account_activity.block_time >= timestamp '{{project_start_date}}'
             {% endif %} 
             and tx_success
-            and tx.signer != fee_addresses.fee_receiver
     ),
     fee_payments as (
         select *
@@ -111,6 +111,10 @@ with
             tx_id,
             sum(amount) as amount
         from fee_payments
+        join {{ source('solana', 'transactions') }} tx 
+        ON fee_payments.tx_id = tx.id 
+        AND tx.signer != fee_payments.fee_receiver
+        AND tx.block_date = date_trunc('day', fee_payments.block_time)
         group by 1,2,3,4,5
     )
 select
