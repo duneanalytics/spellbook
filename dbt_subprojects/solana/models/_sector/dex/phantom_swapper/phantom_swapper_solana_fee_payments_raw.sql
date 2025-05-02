@@ -104,12 +104,12 @@ with
     -- Eliminate duplicates (e.g. both SOL + WSOL in a single transaction)
     aggregated_fee_payments_by_token_by_tx as (
         select
-            block_time,
-            block_month,
-            token_address,
-            fee_receiver,
-            tx_id,
-            sum(amount) as amount
+            fee_payments.block_time,
+            fee_payments.block_month,
+            fee_payments.token_address,
+            fee_payments.fee_receiver,
+            fee_payments.tx_id,
+            sum(fee_payments.amount) as amount
         from fee_payments
         join {{ source('solana', 'transactions') }} tx 
         ON fee_payments.tx_id = tx.id 
