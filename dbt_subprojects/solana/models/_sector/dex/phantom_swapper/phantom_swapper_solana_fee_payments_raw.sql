@@ -63,10 +63,13 @@ with
                 fee_addresses.fee_receiver = account_activity.address
                 and balance_change > 0
             )
+        join {{ source('solana', 'transactions') }} tx ON account_activity.tx_id = tx.id 
         where
             {% if is_incremental() %} {{ incremental_predicate('block_time') }}
             {% else %} block_time >= timestamp '{{project_start_date}}'
-            {% endif %} and tx_success
+            {% endif %} 
+            and tx_success
+            and tx.signer != fee_addresses.fee_receiver
     ),
     token_payments as (
         select
@@ -83,10 +86,13 @@ with
                 token_balance_owner = fee_addresses.fee_receiver
                 and token_balance_change > 0
             )
+        join {{ source('solana', 'transactions') }} tx ON account_activity.tx_id = tx.id 
         where
             {% if is_incremental() %} {{ incremental_predicate('block_time') }}
             {% else %} block_time >= timestamp '{{project_start_date}}'
-            {% endif %} and tx_success
+            {% endif %} 
+            and tx_success
+            and tx.signer != fee_addresses.fee_receiver
     ),
     fee_payments as (
         select *
