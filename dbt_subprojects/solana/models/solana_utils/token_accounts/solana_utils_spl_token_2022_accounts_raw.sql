@@ -17,7 +17,7 @@ with init as (
         , CAST(DATE_TRUNC('day', call_block_time) as DATE) AS block_date
         , call_block_time AS block_time
         , account_accountToInitialize AS address
-        , SUBSTRING(account_accountToInitialize, 1, 2) AS address_prefix
+        , LOWER(SUBSTRING(account_accountToInitialize, 1, 1)) AS address_prefix
         , 'init' AS event_type
         , account_owner as token_balance_owner
         , account_mint as token_mint_address
@@ -47,7 +47,7 @@ with init as (
         , CAST(DATE_TRUNC('day', call_block_time) as DATE) AS block_date
         , call_block_time AS block_time
         , account_initializeAccount AS address
-        , SUBSTRING(account_initializeAccount, 1, 2) AS address_prefix
+        , LOWER(SUBSTRING(account_initializeAccount, 1, 1)) AS address_prefix
         , 'init' AS event_type
         , owner as token_balance_owner
         , account_associatedMint as token_mint_address
@@ -76,7 +76,7 @@ with init as (
         , CAST(DATE_TRUNC('day', call_block_time) as DATE) AS block_date
         , call_block_time AS block_time
         , account_initializeAccount AS address
-        , SUBSTRING(account_initializeAccount, 1, 2) AS address_prefix
+        , LOWER(SUBSTRING(account_initializeAccount, 1, 1)) AS address_prefix
         , 'init' AS event_type
         , owner as token_balance_owner
         , account_associatedMint as token_mint_address
@@ -104,7 +104,7 @@ with init as (
         , CAST(DATE_TRUNC('day', call_block_time) as DATE) AS block_date
         , call_block_time AS block_time
         , account_mint AS address -- this is actually the token account address, the decoding pipeline is wrong here
-        , SUBSTRING(account_mint, 1, 2) AS address_prefix -- this is actually the token account address, the decoding pipeline is wrong here
+        , LOWER(SUBSTRING(account_mint, 1, 1)) AS address_prefix -- this is actually the token account address, the decoding pipeline is wrong here
         , 'owner_change' AS event_type
         , newAuthority as token_balance_owner
         , null as token_mint_address
@@ -132,7 +132,7 @@ with init as (
         , CAST(DATE_TRUNC('day', call_block_time) as DATE) AS block_date
         , call_block_time AS block_time
         , account_closeAccount AS address
-        , SUBSTRING(account_closeAccount, 1, 2) AS address_prefix
+        , LOWER(SUBSTRING(account_closeAccount, 1, 1)) AS address_prefix
         , 'close' AS event_type
         , null as token_balance_owner
         , null as token_mint_address
