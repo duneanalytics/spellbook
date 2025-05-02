@@ -29,7 +29,8 @@
                                         "zksync",
                                         "zora",
                                         "opbnb",
-                                        "ink"
+                                        "ink",
+                                        "unichain"
                                         ]\',
                                     "sector",
                                     "evms",
