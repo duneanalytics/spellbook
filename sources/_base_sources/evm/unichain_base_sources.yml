@@ -475,7 +475,7 @@ sources:
         meta:
           docs_slug: /evm/unichain/decoded/erc1155_evt_transfersingle
           short_description: The evt_transfersingle table contains single ERC1155 token transfer events on the Unichain network.
-        description: ''
+        description: '{{ doc("erc1155_unichain_evt_transfersingle_doc") }}'
         columns:
           - name: contract_address
             description: "Address of the ERC1155 token contract"
