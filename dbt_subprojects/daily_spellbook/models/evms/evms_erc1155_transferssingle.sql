@@ -31,6 +31,7 @@
      , ('ronin', source('erc1155_ronin', 'evt_transfersingle'))
      , ('opbnb', source('erc1155_opbnb', 'evt_transfersingle'))
      , ('ink', source('erc1155_ink', 'evt_transfersingle'))
+     , ('lens', source('erc1155_lens', 'evt_transfersingle'))
 ] %}
 
 SELECT *
