@@ -115,12 +115,13 @@ WITH pools AS (
 )
 
 , swaps_with_transfers AS (
+    -- something in the join condition or case statement is wrong that makes transfer joins sometimes not bite
+    -- e.g. 2CAM3boMJGwKRRGB2X8RdaqtoasvB34ZXBx67YkuAbf7Ubqdpx3S7BsH3p8A1jqDTrPDzM83YyKyYEuxkPvffoAF
     SELECT
         sf.*,
         CASE
             WHEN sf.is_buy = 1 AND t.to_token_account = sf.sol_target_account THEN t.amount
             WHEN sf.is_buy = 0 AND t.from_token_account = sf.sol_source_account AND t.to_token_account = sf.sol_dest_account THEN t.amount
-            ELSE null
         END as sol_amount
     FROM swaps_with_fees sf
     LEFT JOIN {{ ref('tokens_solana_transfers') }} t
@@ -161,10 +162,15 @@ WITH pools AS (
             when is_buy = 1 then p.baseMint  -- For buys, base token is bought
             else 'So11111111111111111111111111111111111111112'  -- For sells, SOL is bought
           end as token_bought_mint_address
+          -- we think we are missing +-1 lamport of SOL on the buys, not sure why exactly
+          -- theory to check is whether we should be adding the amount of SOL that was taken as a fee to the amount of SOL that was bought
         , case 
             when is_buy = 1 then CEIL(base_amount)  -- For buys, use base token amount
-            else CAST(CEIL(sol_amount / (1 - sp.total_fee_rate)) AS DECIMAL(38,0))  -- For sells, calculate pre-fee SOL amount
+            else sol_amount 
+          --  else CAST(CEIL(sol_amount / (1 - sp.total_fee_rate)) AS DECIMAL(38,0))  -- For sells, calculate pre-fee SOL amount
           end as token_bought_amount_raw
+
+          
         --sold
         , case 
             when is_buy = 0 then p.baseMint  -- For sells, base token is sold
