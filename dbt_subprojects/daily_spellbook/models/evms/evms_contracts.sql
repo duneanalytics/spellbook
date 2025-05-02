@@ -29,6 +29,7 @@
                                         "zksync",
                                         "zora",
                                         "ink",
+                                        "unichain",
                                         "lens"
                                         ]\',
                                     "sector",
