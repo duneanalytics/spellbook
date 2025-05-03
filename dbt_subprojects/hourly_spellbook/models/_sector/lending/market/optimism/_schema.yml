@@ -1,0 +1,126 @@
+version: 2
+
+models:
+  - name: lending_optimism_base_market
+    meta:
+      blockchain: optimism
+      sector: lending
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'market', 'optimism']
+    description: "All lending market transactions on Optimism"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - token_address
+            - tx_hash
+            - evt_index
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain name"
+        data_tests:
+          - not_null
+      - &project
+        name: project
+        description: "Project name"
+        data_tests:
+          - not_null
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the lending project"
+        data_tests:
+          - not_null
+      - &block_time
+        name: block_time
+        description: "Timestamp for block event time in UTC"
+        data_tests:
+          - not_null
+      - &block_hour
+        name: block_hour
+        description: "Block event hour"
+        data_tests:
+          - not_null
+      - &block_month
+        name: block_month
+        description: "Block Month column used to partition data in this table"
+        data_tests:
+          - not_null
+      - &block_number
+        name: block_number
+        description: "Event block number"
+        data_tests:
+          - not_null
+      - &token_address
+        name: token_address
+        description: "Token contract address"
+        data_tests:
+          - not_null
+      - &symbol
+        name: symbol
+        description: "Token symbol"
+      - &liquidity_index
+        name: liquidity_index
+        description: "Liquidity index"
+      - &variable_borrow_index
+        name: variable_borrow_index
+        description: "Variable borrow index"
+      - &deposit_rate
+        name: deposit_rate
+        description: "Deposit rate"
+      - &stable_borrow_rate
+        name: stable_borrow_rate
+        description: "Stable borrow rate"
+      - &variable_borrow_rate
+        name: variable_borrow_rate
+        description: "Variable borrow rate"
+      - &project_contract_address
+        name: project_contract_address
+        description: "Project contract address"
+        data_tests:
+          - not_null
+      - &evt_index
+        name: evt_index
+        description: "Event index"
+        data_tests:
+          - not_null
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash of the event"
+        data_tests:
+          - not_null
+
+  - name: aave_v3_optimism_base_market
+    meta:
+      blockchain: optimism
+      sector: lending
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'market', 'optimism']
+    description: "Aave v3 market transactions on Optimism"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - token_address
+            - tx_hash
+            - evt_index
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_hour
+      - *block_month
+      - *block_number
+      - *token_address
+      - *symbol
+      - *liquidity_index
+      - *variable_borrow_index
+      - *deposit_rate
+      - *stable_borrow_rate
+      - *variable_borrow_rate
+      - *project_contract_address
+      - *evt_index
+      - *tx_hash

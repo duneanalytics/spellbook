@@ -22,7 +22,6 @@
        , "polygon"
        , "ronin"
        , "scroll"
-       , "sei"
        , "sonic"
        , "sophon"
        , "unichain"
@@ -43,3 +42,7 @@
        
     ]) }}
 {% endmacro %} 
+
+
+-- temp disabled
+-- , "sei"
