@@ -108,7 +108,7 @@ We need to split the onboarding process into multiple PRs because of the way we 
     -   **What:** Add the `dex_<blockchain>_base_trades` view to the main [`dex.trades`](./dbt_subprojects/dex/models/trades/dex_trades.sql) union if the chain is intended for cross-chain DEX analysis.
     -   **Why:** Includes the new chain\'s DEX activity in the top-level `dex.trades` table used by many dashboards and queries.
 
--Example PR:* [Sonic DEX PR](https://github.com/duneanalytics/spellbook/pull/7510/files)
+- **Example PR:** [Sonic DEX PR](https://github.com/duneanalytics/spellbook/pull/7510/files)
 
 ## Post-Merge: Metrics Pipeline Integration
 
