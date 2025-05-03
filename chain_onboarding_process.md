@@ -81,7 +81,8 @@ We need to split the onboarding process into multiple PRs because of the way we 
     -   **What:**
         -   Create a `gas_<blockchain>_fees.sql` model in `dbt_subprojects/hourly_spellbook/models/_sector/gas/fees/<blockchain>/`. Adapt the standard EVM gas fee logic, potentially modifying the `evm_gas_fees` macro if the chain has unique fee mechanisms (e.g., OP Stack L1 fees, ZK rollups specificities).
         -   Add the new blockchain to the union in the main [`gas_fees.sql`](./dbt_subprojects/hourly_spellbook/models/_sector/gas/fees/gas_fees.sql) model.
-    -   **Why:** Provides a standardized view of transaction costs on the new chain. This is often the **most complex** part, requiring chain-specific research into how fees (base, priority, L1 data/blob fees for L2s) are calculated and recorded. Collaboration with GTM/chain experts is often necessary.
+        -   Add a few example transactions (including different tx types if applicable) for the new blockchain to the [`evm_gas_fees.csv`](./dbt_subprojects/hourly_spellbook/seeds/_sector/gas/evm_gas_fees.csv) seed file.
+    -   **Why:** Provides a standardized view of transaction costs on the new chain. This is often the **most complex** part, requiring chain-specific research into how fees (base, priority, L1 data/blob fees for L2s) are calculated and recorded. Collaboration with GTM/chain experts is often necessary. The seed file ensures the `check_seed` data test passes.
     -   *Example PR:* [Base Gas Fees PR](https://github.com/duneanalytics/spellbook/pull/7635/files)
 
 ### PR 3: DEX Integration
@@ -102,7 +103,8 @@ We need to split the onboarding process into multiple PRs because of the way we 
         -   Use existing macros like [`uniswap_compatible_v3_trades`](./dbt_subprojects/dex/macros/models/_project/uniswap_compatible_v3_trades.sql) or [`uniswap_compatible_v2_trades`](./dbt_subprojects/dex/macros/models/_project/uniswap_compatible_v2_trades.sql) if the DEX is a known fork (e.g., Uniswap V2/V3).
         -   If it's a novel DEX design, significant custom modeling work might be required, often needing input from the DEX team via GTM.
         -   Add the new base model to the union in `dex_<blockchain>_base_trades.sql`.
-    -   **Why:** Translates the raw DEX events into the standardized `dex.trades` schema columns. Reusing macros for known forks saves significant effort.
+        -   Create or update the corresponding DEX seed file (e.g., [`uniswap_lens_base_trades_seed.csv`](./dbt_subprojects/dex/seeds/trades/uniswap_lens_base_trades_seed.csv)) in [`dbt_subprojects/dex/seeds/trades/`](./dbt_subprojects/dex/seeds/trades/) with a few example trades.
+    -   **Why:** Translates the raw DEX events into the standardized `dex.trades` schema columns. Reusing macros for known forks saves significant effort. The seed file ensures the `check_dex_base_trades_seed` data test passes.
 
 3.  **Add to Aggregate `dex.trades`:**
     -   **What:** Add the `dex_<blockchain>_base_trades` view to the main [`dex.trades`](./dbt_subprojects/dex/models/trades/dex_trades.sql) union if the chain is intended for cross-chain DEX analysis.
