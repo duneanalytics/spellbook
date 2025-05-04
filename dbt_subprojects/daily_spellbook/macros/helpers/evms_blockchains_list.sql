@@ -32,7 +32,6 @@
         "ronin",
         "scroll",
         "sei",
-        "sepolia",
         "shape",
         "sonic",
         "sophon",
