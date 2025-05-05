@@ -269,7 +269,7 @@ WITH pools AS (
         -- token sold mint address
         , case 
             when is_buy = 0 then p.baseMint  -- For sells, base token is sold
-            else 'So11111111111111111111111111111111111111112'  -- For buys, WSOL is sold (hardcoded since WSOL is always quote)
+            else p.quoteMint  
           end as token_sold_mint_address
         , cast(case 
             when is_buy = 0 then sp.user_base_token_account
