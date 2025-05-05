@@ -38,12 +38,12 @@ batch_counts as (
         left outer join {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Interaction') }} i
             on i.evt_tx_hash = s.evt_tx_hash
             {% if is_incremental() %}
-            AND {{ incremental_predicate('i.evt_block_time') }}
+            and {{ incremental_predicate('i.evt_block_time') }}
             {% endif %}
         join lateral (
             select
                 t."from" as solver,
-                solvers.name as name,
+                solvers.name as name
             from {{ source('ethereum', 'traces') }} t
                 inner join {{ ref('cow_protocol_ethereum_solvers') }} solvers on t."from" = solvers.address
             where t.tx_hash = s.evt_tx_hash
@@ -80,18 +80,18 @@ batch_values as (
 combined_batch_info as (
     select
         b.block_date,
-        evt_block_number                               as block_number,
-        evt_block_time                                 as block_time,
+        evt_block_number as block_number,
+        evt_block_time as block_time,
         num_trades,
         dex_swaps,
         batch_value,
-        solver                                           as solver_address,
-        evt_tx_hash                                      as tx_hash,
+        solver as solver_address,
+        evt_tx_hash as tx_hash,
         gas_price,
         gas_used,
         ((gas_price / pow(10, 9)) * gas_used * eth_price) / pow(10, 9) as tx_cost_usd,
         fee_value,
-        2 * bytearray_length(data) / 1024                     as call_data_size,
+        2 * bytearray_length(data) / 1024 as call_data_size,
         unwraps,
         token_approvals
     from batch_counts b
@@ -101,7 +101,7 @@ combined_batch_info as (
             on evt_tx_hash = hash
             and evt_block_number = block_number
             {% if is_incremental() %}
-            AND {{ incremental_predicate('block_time') }}
+            and {{ incremental_predicate('block_time') }}
             {% endif %}
     where num_trades > 0 --! Exclude Withdraw Batches
 )
