@@ -169,9 +169,3 @@ sources:
           - &output_orderHash
             name: output_orderHash
             description: "ETH Flow Order Hash corresponds directly to a GPv2 Order Uid by concatenation with owner = contract_address and validTo = `ffffffff`"
-      - name: CowProtocolVirtualToken_evt_Claimed
-      - name: FlashLoanRouter_evt_Settlement
-        description: "Settlement events emitted by the FlashLoans Router"
-        columns:
-          - *evt_tx_hash
-          - *solver
