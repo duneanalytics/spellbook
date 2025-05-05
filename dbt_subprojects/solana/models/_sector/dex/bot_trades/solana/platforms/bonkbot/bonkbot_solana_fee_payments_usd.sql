@@ -27,6 +27,7 @@ with
         {% else %} where minute >= timestamp '{{project_start_date}}'
         {% endif %}
     )
+-- TODO: remove this comment
 select
     fee_payments.block_time,
     fee_payments.block_month,

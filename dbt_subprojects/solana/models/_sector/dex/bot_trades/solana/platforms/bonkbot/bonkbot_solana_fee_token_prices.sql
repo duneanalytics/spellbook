@@ -29,6 +29,7 @@ with
             contract_address_varbinary, contract_address_base58, blockchain, minute
         from fee_payments
     )
+-- TODO: remove this comment
 select
     tokens.minute,
     cast(date_trunc('month', tokens.minute) as date) as block_month,
