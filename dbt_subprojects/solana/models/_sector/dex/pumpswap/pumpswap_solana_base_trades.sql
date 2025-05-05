@@ -12,7 +12,7 @@
   )
 }}
 
-{% set project_start_date = '2025-03-14' %}
+{% set project_start_date = '2025-02-20' %}
 
 WITH pools AS (
     SELECT
@@ -125,63 +125,36 @@ WITH pools AS (
         t.amount,
         t.token_mint_address
     FROM tokens_solana.transfers t
-    WHERE t.block_time >= TIMESTAMP '2025-03-14'
+    WHERE t.block_time >= TIMESTAMP '2025-02-20'
+)
+
+, expected_instruction_indices AS (
+    SELECT 
+        tx_id,
+        outer_instruction_index,
+        CASE WHEN swap_inner_index IS NULL THEN 1 ELSE swap_inner_index + 1 END as base_inner_index,
+        CASE WHEN swap_inner_index IS NULL THEN 2 ELSE swap_inner_index + 2 END as quote_inner_index
+    FROM swaps_with_fees
 )
 
 , swaps_with_transfers AS (
     SELECT
         sf.*,
-        -- For buy ops: base token transfer (WSOL received)
-        (SELECT bt.amount 
-         FROM base_token_transfers bt
-         WHERE bt.tx_id = sf.tx_id
-         AND bt.outer_instruction_index = sf.outer_instruction_index
-         AND bt.inner_instruction_index = 1  -- First inner instruction is typically the pool→user transfer
-         AND bt.from_token_account = sf.pool_quote_token_account) 
-        as base_transfer_amount,
-        
-        -- For all ops: quote token transfer amount (token other than WSOL)
-        (SELECT bt.amount 
-         FROM base_token_transfers bt
-         WHERE bt.tx_id = sf.tx_id
-         AND bt.outer_instruction_index = sf.outer_instruction_index
-         AND bt.inner_instruction_index = 2  -- Second inner instruction is typically the user→pool transfer
-         AND bt.to_token_account = sf.pool_quote_token_account)
-        as quote_transfer_amount
+        bt1.amount as base_transfer_amount,
+        bt2.amount as quote_transfer_amount
     FROM swaps_with_fees sf
+    LEFT JOIN expected_instruction_indices ei
+        ON ei.tx_id = sf.tx_id
+        AND ei.outer_instruction_index = sf.outer_instruction_index
+    LEFT JOIN base_token_transfers bt1
+        ON bt1.tx_id = sf.tx_id
+        AND bt1.outer_instruction_index = sf.outer_instruction_index
+        AND bt1.inner_instruction_index = ei.base_inner_index
+    LEFT JOIN base_token_transfers bt2
+        ON bt2.tx_id = sf.tx_id
+        AND bt2.outer_instruction_index = sf.outer_instruction_index
+        AND bt2.inner_instruction_index = ei.quote_inner_index
 )
--- , swaps_with_transfers AS (
---     -- something in the join condition or case statement is wrong that makes transfer joins sometimes not bite
---     -- e.g. 2CAM3boMJGwKRRGB2X8RdaqtoasvB34ZXBx67YkuAbf7Ubqdpx3S7BsH3p8A1jqDTrPDzM83YyKyYEuxkPvffoAF
---     SELECT
---         sf.*,
---         CASE
---             WHEN sf.is_buy = 1 AND t.to_token_account = sf.sol_target_account THEN t.amount
---             WHEN sf.is_buy = 0 AND t.from_token_account = sf.sol_source_account AND t.to_token_account = sf.sol_dest_account THEN t.amount
---         END as sol_amount
---     FROM swaps_with_fees sf
---     LEFT JOIN {{ ref('tokens_solana_transfers') }} t
---         ON t.tx_id = sf.tx_id
---         AND t.block_slot = sf.block_slot
---         AND t.outer_instruction_index = sf.outer_instruction_index
---         AND (
---             (sf.swap_inner_index IS NULL AND (
---                 (sf.is_buy = 1 AND t.inner_instruction_index IN (1, 2, 3) AND t.to_token_account = sf.sol_target_account) OR
---                 (sf.is_buy = 0 AND t.inner_instruction_index IN (1, 2, 3) AND t.from_token_account = sf.sol_source_account AND t.to_token_account = sf.sol_dest_account)
---             )) OR
---             (sf.swap_inner_index IS NOT NULL AND (
---                 (sf.is_buy = 1 AND t.inner_instruction_index IN (sf.swap_inner_index + 1, sf.swap_inner_index + 2, sf.swap_inner_index + 3) AND t.to_token_account = sf.sol_target_account) OR
---                 (sf.is_buy = 0 AND t.inner_instruction_index IN (sf.swap_inner_index + 1, sf.swap_inner_index + 2, sf.swap_inner_index + 3) AND t.from_token_account = sf.sol_source_account AND t.to_token_account = sf.sol_dest_account)
---             ))
---         )
---         AND t.token_mint_address = 'So11111111111111111111111111111111111111112'
---         AND t.token_version = 'spl_token'
---         {% if is_incremental() %}
---         AND {{incremental_predicate('t.block_time')}}
---         {% else %}
---         AND t.block_time >= TIMESTAMP '{{project_start_date}}'
---         {% endif %}
--- )
 
 , trades_base as (
     SELECT
@@ -196,24 +169,24 @@ WITH pools AS (
           end as trade_source
         -- token bought amount
         , case 
-            when is_buy = 1 then COALESCE(base_transfer_amount, CEIL(base_amount))  -- For buys: WSOL or base token received
+            when is_buy = 1 then COALESCE(base_transfer_amount, CEIL(base_amount))  -- For buys: Crack token received
             else quote_transfer_amount  -- For sells: non-WSOL token received
           end as token_bought_amount_raw
         -- token sold amount
         , case 
             when is_buy = 0 then CEIL(base_amount)  -- For sells: base token sold
-            else quote_transfer_amount  -- For buys: non-WSOL token sold
+            else quote_transfer_amount  -- For buys: WSOL token sold
           end as token_sold_amount_raw
         , cast(sp.total_fee_rate as double) as fee_tier
         -- token bought mint address
         , case 
-            when is_buy = 1 then p.baseMint  -- For buys, base token is bought
+            when is_buy = 1 then p.baseMint  -- For buys, Crack token is bought
             else p.quoteMint  -- For sells, quote token is bought
           end as token_bought_mint_address
         -- token sold mint address
         , case 
             when is_buy = 0 then p.baseMint  -- For sells, base token is sold
-            else p.quoteMint  -- For buys, SOL is sold
+            else 'So11111111111111111111111111111111111111112'  -- For buys, WSOL is sold (hardcoded since WSOL is always quote)
           end as token_sold_mint_address
         , cast(case 
             when is_buy = 0 then sp.user_base_token_account
@@ -233,7 +206,6 @@ WITH pools AS (
     FROM swaps_with_transfers sp
     LEFT JOIN pools p ON p.pool = sp.pool
 )
-
 
 SELECT
     tb.blockchain
