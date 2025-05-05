@@ -13,7 +13,7 @@ ref('uniswap_v3_ethereum_proposals')
 , ref('compound_v2_ethereum_proposals')
 , ref('gitcoin_ethereum_proposals')
 , ref('ens_ethereum_proposals')
-, ref('aave_ethereum_proposals')
+, source('aave_ethereum', 'proposals')
 , ref('dydx_ethereum_proposals')
 ] %}
 
