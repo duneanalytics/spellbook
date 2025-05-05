@@ -293,4 +293,5 @@ The `erc721_polygon.evt_ApprovalForAll` table contains ApprovalForAll events for
 - Approved status (boolean)
 
 This table is used for analyzing blanket approvals for ERC721 token collections on the polygon network.
-{% enddocs %} 
+{% enddocs %}
+

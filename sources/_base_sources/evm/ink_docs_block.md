@@ -293,4 +293,5 @@ The `erc721_ink.evt_ApprovalForAll` table contains ApprovalForAll events for ERC
 - Approved status (boolean)
 
 This table is used for analyzing blanket approvals for ERC721 token collections on the ink network.
-{% enddocs %} 
+{% enddocs %}
+

@@ -1,7 +1,6 @@
+{% docs abstract_blocks_doc %}
 
-{% docs {{ chain_name }}_blocks_doc %}
-
-The `{{ chain_name }}.blocks` table contains information about blocks on the {{ chain_name }} blockchain. It includes:
+The `abstract.blocks` table contains information about blocks on the abstract blockchain. It includes:
 
 - Block identifiers: number, hash, time, date
 - Gas metrics: gas_limit, gas_used, blob_gas_used, excess_blob_gas
@@ -20,9 +19,9 @@ This table is fundamental for analyzing:
 
 {% enddocs %}
 
-{% docs {{ chain_name }}_transactions_doc %}
+{% docs abstract_transactions_doc %}
 
-The `{{ chain_name }}.transactions` table contains detailed information about transactions on the {{ chain_name }} blockchain. It includes:
+The `abstract.transactions` table contains detailed information about transactions on the abstract blockchain. It includes:
 
 - Block information: block_time, block_number, block_hash, block_date
 - Transaction details: hash, from, to, value
@@ -43,9 +42,9 @@ This table is used for analyzing:
 
 {% enddocs %}
 
-{% docs {{ chain_name }}_logs_doc %}
+{% docs abstract_logs_doc %}
 
-The `{{ chain_name }}.logs` table contains event logs emitted by smart contracts on the {{ chain_name }} blockchain. It includes:
+The `abstract.logs` table contains event logs emitted by smart contracts on the abstract blockchain. It includes:
 
 - Block information: block_time, block_number, block_hash, block_date
 - Transaction details: tx_hash, tx_index, tx_from, tx_to
@@ -63,9 +62,9 @@ This table is crucial for:
 
 {% enddocs %}
 
-{% docs {{ chain_name }}_traces_doc %}
+{% docs abstract_traces_doc %}
 
-The `{{ chain_name }}.traces` table contains records of execution steps for transactions on the {{ chain_name }} blockchain. Each trace represents an atomic operation that modifies the blockchain state. Key components include:
+The `abstract.traces` table contains records of execution steps for transactions on the abstract blockchain. Each trace represents an atomic operation that modifies the blockchain state. Key components include:
 
 - Block information: block_time, block_number, block_hash, block_date
 - Transaction context: tx_hash, tx_index, tx_from, tx_to
@@ -85,9 +84,9 @@ This table is essential for:
 
 {% enddocs %}
 
-{% docs {{ chain_name }}_creation_traces_doc %}
+{% docs abstract_creation_traces_doc %}
 
-The `{{ chain_name }}.creation_traces` table contains data about contract creation events on the {{ chain_name }} blockchain. It includes:
+The `abstract.creation_traces` table contains data about contract creation events on the abstract blockchain. It includes:
 
 - Block information: block_time, block_number, block_month
 - Transaction details: tx_hash
@@ -101,9 +100,9 @@ This table is used for:
 
 {% enddocs %}
 
-{% docs {{ chain_name }}_contracts_doc %}
+{% docs abstract_contracts_doc %}
 
-The `{{ chain_name }}.contracts` table contains information about verified smart contracts on the {{ chain_name }} blockchain. It includes:
+The `abstract.contracts` table contains information about verified smart contracts on the abstract blockchain. It includes:
 
 - Contract identification: address, name, namespace
 - Contract code and ABI
@@ -120,9 +119,9 @@ This table is essential for:
 
 {% enddocs %}
 
-{% docs {{ chain_name }}_contracts_submitted_doc %}
+{% docs abstract_contracts_submitted_doc %}
 
-The `{{ chain_name }}.contracts_submitted` table contains information about manually submitted contract verifications on the {{ chain_name }} blockchain. It includes:
+The `abstract.contracts_submitted` table contains information about manually submitted contract verifications on the abstract blockchain. It includes:
 
 - Contract identification: address, name, namespace
 - Contract code and ABI
@@ -137,9 +136,9 @@ This table is used for:
 
 {% enddocs %}
 
-{% docs {{ chain_name }}_traces_decoded_doc %}
+{% docs abstract_traces_decoded_doc %}
 
-The `{{ chain_name }}.traces_decoded` table contains decoded traces with additional information based on submitted smart contracts and their ABIs. It includes:
+The `abstract.traces_decoded` table contains decoded traces with additional information based on submitted smart contracts and their ABIs. It includes:
 
 - Block information: block_date, block_time, block_number
 - Contract details: namespace, contract_name
@@ -156,9 +155,9 @@ This table is used for:
 
 {% enddocs %}
 
-{% docs {{ chain_name }}_logs_decoded_doc %}
+{% docs abstract_logs_decoded_doc %}
 
-The `{{ chain_name }}.logs_decoded` table contains decoded event logs with additional information based on submitted smart contracts and their ABIs. It includes:
+The `abstract.logs_decoded` table contains decoded event logs with additional information based on submitted smart contracts and their ABIs. It includes:
 
 - Block information: block_date, block_time, block_number
 - Contract details: namespace, contract_name, contract_address
@@ -175,9 +174,9 @@ This table is used for:
 
 {% enddocs %}
 
-{% docs erc20_{{ chain_name }}_evt_Transfer_doc %}
+{% docs erc20_abstract_evt_Transfer_doc %}
 
-The `erc20_{{ chain_name }}.evt_transfer` table contains Transfer events for ERC20 tokens on the {{ chain_name }} blockchain. It includes:
+The `erc20_abstract.evt_transfer` table contains Transfer events for ERC20 tokens on the abstract blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -185,15 +184,15 @@ The `erc20_{{ chain_name }}.evt_transfer` table contains Transfer events for ERC
 - From and to addresses
 - Amount transferred
 
-This table is used for tracking ERC20 token movements on the {{ chain_name }} network.
+This table is used for tracking ERC20 token movements on the abstract network.
 
 Please be aware that this table is the raw ERC20 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use `tokens.transfers` for a more complete and curated view of token transfers.
 
 {% enddocs %}
 
-{% docs erc20_{{ chain_name }}_evt_Approval_doc %}
+{% docs erc20_abstract_evt_Approval_doc %}
 
-The `erc20_{{ chain_name }}.evt_Approval` table contains Approval events for ERC20 tokens on the {{ chain_name }} blockchain. It includes:
+The `erc20_abstract.evt_Approval` table contains Approval events for ERC20 tokens on the abstract blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -201,13 +200,13 @@ The `erc20_{{ chain_name }}.evt_Approval` table contains Approval events for ERC
 - Owner and spender addresses
 - Approved amount
 
-This table is used for analyzing ERC20 token approvals and spending permissions on the {{ chain_name }} network.
+This table is used for analyzing ERC20 token approvals and spending permissions on the abstract network.
 
 {% enddocs %}
 
-{% docs erc1155_{{ chain_name }}_evt_TransferSingle_doc %}
+{% docs erc1155_abstract_evt_TransferSingle_doc %}
 
-The `erc1155_{{ chain_name }}.evt_TransferSingle` table contains TransferSingle events for ERC1155 tokens on the {{ chain_name }} blockchain. It includes:
+The `erc1155_abstract.evt_TransferSingle` table contains TransferSingle events for ERC1155 tokens on the abstract blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -216,15 +215,15 @@ The `erc1155_{{ chain_name }}.evt_TransferSingle` table contains TransferSingle 
 - Token ID
 - Amount transferred
 
-This table is used for tracking individual ERC1155 token transfers on the {{ chain_name }} network.
+This table is used for tracking individual ERC1155 token transfers on the abstract network.
 
 Please be aware that this table is the raw ERC1155 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use `nft.transfers` for a more complete and curated view of NFT transfers.
 
 {% enddocs %}
 
-{% docs erc1155_{{ chain_name }}_evt_TransferBatch_doc %}
+{% docs erc1155_abstract_evt_TransferBatch_doc %}
 
-The `erc1155_{{ chain_name }}.evt_TransferBatch` table contains TransferBatch events for ERC1155 tokens on the {{ chain_name }} blockchain. It includes:
+The `erc1155_abstract.evt_TransferBatch` table contains TransferBatch events for ERC1155 tokens on the abstract blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -233,15 +232,15 @@ The `erc1155_{{ chain_name }}.evt_TransferBatch` table contains TransferBatch ev
 - Array of token IDs
 - Array of amounts transferred
 
-This table is used for tracking batch transfers of multiple ERC1155 tokens on the {{ chain_name }} network.
+This table is used for tracking batch transfers of multiple ERC1155 tokens on the abstract network.
 
 Please be aware that this table is the raw ERC1155 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use nft.transfers for a more complete and curated view of NFT transfers.
 
 {% enddocs %}
 
-{% docs erc1155_{{ chain_name }}_evt_ApprovalForAll_doc %}
+{% docs erc1155_abstract_evt_ApprovalForAll_doc %}
 
-The `erc1155_{{ chain_name }}.evt_ApprovalForAll` table contains ApprovalForAll events for ERC1155 tokens on the {{ chain_name }} blockchain. It includes:
+The `erc1155_abstract.evt_ApprovalForAll` table contains ApprovalForAll events for ERC1155 tokens on the abstract blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -249,13 +248,13 @@ The `erc1155_{{ chain_name }}.evt_ApprovalForAll` table contains ApprovalForAll 
 - Account and operator addresses
 - Approved status (boolean)
 
-This table is used for analyzing blanket approvals for ERC1155 token collections on the {{ chain_name }} network.
+This table is used for analyzing blanket approvals for ERC1155 token collections on the abstract network.
 
 {% enddocs %}
 
-{% docs erc721_{{ chain_name }}_evt_Transfer_doc %}
+{% docs erc721_abstract_evt_Transfer_doc %}
 
-The `erc721_{{ chain_name }}.evt_Transfer` table contains Transfer events for ERC721 tokens on the {{ chain_name }} blockchain. It includes:
+The `erc721_abstract.evt_Transfer` table contains Transfer events for ERC721 tokens on the abstract blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -263,15 +262,15 @@ The `erc721_{{ chain_name }}.evt_Transfer` table contains Transfer events for ER
 - From and to addresses
 - Token ID
 
-This table is used for tracking ERC721 token (NFT) transfers on the {{ chain_name }} network.
+This table is used for tracking ERC721 token (NFT) transfers on the abstract network.
 
 Please be aware that this table is the raw ERC721 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use `nft.transfers` for a more complete and curated view of NFT transfers.
 
 {% enddocs %}
 
-{% docs erc721_{{ chain_name }}_evt_Approval_doc %}
+{% docs erc721_abstract_evt_Approval_doc %}
 
-The `erc721_{{ chain_name }}.evt_Approval` table contains Approval events for ERC721 tokens on the {{ chain_name }} blockchain. It includes:
+The `erc721_abstract.evt_Approval` table contains Approval events for ERC721 tokens on the abstract blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -279,13 +278,13 @@ The `erc721_{{ chain_name }}.evt_Approval` table contains Approval events for ER
 - Owner and approved addresses
 - Token ID
 
-This table is used for analyzing approvals for individual ERC721 tokens (NFTs) on the {{ chain_name }} network.
+This table is used for analyzing approvals for individual ERC721 tokens (NFTs) on the abstract network.
 
 {% enddocs %}
 
-{% docs erc721_{{ chain_name }}_evt_ApprovalForAll_doc %}
+{% docs erc721_abstract_evt_ApprovalForAll_doc %}
 
-The `erc721_{{ chain_name }}.evt_ApprovalForAll` table contains ApprovalForAll events for ERC721 tokens on the {{ chain_name }} blockchain. It includes:
+The `erc721_abstract.evt_ApprovalForAll` table contains ApprovalForAll events for ERC721 tokens on the abstract blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -293,6 +292,6 @@ The `erc721_{{ chain_name }}.evt_ApprovalForAll` table contains ApprovalForAll e
 - Owner and operator addresses
 - Approved status (boolean)
 
-This table is used for analyzing blanket approvals for ERC721 token collections on the {{ chain_name }} network.
+This table is used for analyzing blanket approvals for ERC721 token collections on the abstract network.
 {% enddocs %}
- 
+

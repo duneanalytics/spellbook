@@ -293,4 +293,5 @@ The `erc721_base.evt_ApprovalForAll` table contains ApprovalForAll events for ER
 - Approved status (boolean)
 
 This table is used for analyzing blanket approvals for ERC721 token collections on the base network.
-{% enddocs %} 
+{% enddocs %}
+

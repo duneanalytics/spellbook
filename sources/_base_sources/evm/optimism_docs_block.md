@@ -293,4 +293,5 @@ The `erc721_optimism.evt_ApprovalForAll` table contains ApprovalForAll events fo
 - Approved status (boolean)
 
 This table is used for analyzing blanket approvals for ERC721 token collections on the optimism network.
-{% enddocs %} 
+{% enddocs %}
+

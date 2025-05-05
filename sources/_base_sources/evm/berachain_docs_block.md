@@ -293,4 +293,5 @@ The `erc721_berachain.evt_ApprovalForAll` table contains ApprovalForAll events f
 - Approved status (boolean)
 
 This table is used for analyzing blanket approvals for ERC721 token collections on the berachain network.
-{% enddocs %} 
+{% enddocs %}
+

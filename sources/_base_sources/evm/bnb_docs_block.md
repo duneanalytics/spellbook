@@ -293,4 +293,5 @@ The `erc721_bnb.evt_ApprovalForAll` table contains ApprovalForAll events for ERC
 - Approved status (boolean)
 
 This table is used for analyzing blanket approvals for ERC721 token collections on the bnb network.
-{% enddocs %} 
+{% enddocs %}
+

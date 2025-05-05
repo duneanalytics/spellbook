@@ -293,4 +293,5 @@ The `erc721_scroll.evt_ApprovalForAll` table contains ApprovalForAll events for 
 - Approved status (boolean)
 
 This table is used for analyzing blanket approvals for ERC721 token collections on the scroll network.
-{% enddocs %} 
+{% enddocs %}
+

@@ -293,4 +293,5 @@ The `erc721_mantle.evt_ApprovalForAll` table contains ApprovalForAll events for 
 - Approved status (boolean)
 
 This table is used for analyzing blanket approvals for ERC721 token collections on the mantle network.
-{% enddocs %} 
+{% enddocs %}
+

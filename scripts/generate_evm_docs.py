@@ -1,4 +1,5 @@
 import os
+from jinja2 import Environment, FileSystemLoader
 
 # --- Configuration ---
 # Assumes the script is run from the workspace root
@@ -8,8 +9,27 @@ OUTPUT_DIR = "sources/_base_sources/evm"
 OUTPUT_FILENAME_SUFFIX = "_docs_block.md" # Output markdown files
 # ---------------------
 
+# --- Ethereum specific withdrawal doc block ---
+# (Copied from the template, kept separate for conditional inclusion)
+ETH_WITHDRAWALS_DOC = """
+{% docs ethereum_withdrawals_doc %}
+
+The `ethereum.withdrawals` table contains information about withdrawals on the ethereum blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- From address
+- To address
+- Amount
+- Index
+
+This table is used for analyzing withdrawals from the becaon chain on the ethereum network.
+
+{% enddocs %}
+"""
+
 def main():
-    print("Starting EVM documentation file generation (using string replacement)...")
+    print("Starting EVM documentation file generation...")
 
     # Ensure output directory exists
     if not os.path.exists(OUTPUT_DIR):
@@ -27,25 +47,29 @@ def main():
     ]
     print(f"Using hardcoded list of {len(chains)} chains.")
 
-    # --- Read Template Content ---    
-    template_path = os.path.join(TEMPLATE_DIR, TEMPLATE_NAME)
+    # --- Setup Jinja ---    
     try:
-        with open(template_path, 'r') as f:
-            template_content = f.read()
-        print(f"Loaded template content from: {template_path}")
+        template_loader = FileSystemLoader(searchpath=TEMPLATE_DIR)
+        env = Environment(loader=template_loader, trim_blocks=True, lstrip_blocks=True)
+        template = env.get_template(TEMPLATE_NAME)
+        print(f"Loaded template: {os.path.join(TEMPLATE_DIR, TEMPLATE_NAME)}")
     except Exception as e:
-        print(f"Error reading template file {template_path}: {e}")
+        print(f"Error loading Jinja template {TEMPLATE_NAME} from {TEMPLATE_DIR}: {e}")
         return
 
-    # --- Generate Files using String Replacement ---    
+    # --- Generate Files ---    
     generated_count = 0
     errors_count = 0
     for chain in chains:
         try:
             print(f"  Generating documentation file for: {chain}...")
-            # Use simple string replacement
-            output_content = template_content.replace("{{ chain_name }}", chain)
+            output_content = template.render(chain_name=chain)
             
+            # Conditionally add the Ethereum withdrawal block
+            if chain == 'ethereum':
+                output_content += "\n\n" + ETH_WITHDRAWALS_DOC # Add spacing before appending
+                print(f"    -> Appending Ethereum specific withdrawal docs.")
+
             output_filename = f"{chain}{OUTPUT_FILENAME_SUFFIX}"
             output_path = os.path.join(OUTPUT_DIR, output_filename)
             

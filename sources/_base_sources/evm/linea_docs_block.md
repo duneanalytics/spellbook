@@ -293,4 +293,5 @@ The `erc721_linea.evt_ApprovalForAll` table contains ApprovalForAll events for E
 - Approved status (boolean)
 
 This table is used for analyzing blanket approvals for ERC721 token collections on the linea network.
-{% enddocs %} 
+{% enddocs %}
+

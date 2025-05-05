@@ -293,4 +293,5 @@ The `erc721_avalanche_c.evt_ApprovalForAll` table contains ApprovalForAll events
 - Approved status (boolean)
 
 This table is used for analyzing blanket approvals for ERC721 token collections on the avalanche_c network.
-{% enddocs %} 
+{% enddocs %}
+

@@ -293,4 +293,5 @@ The `erc721_b3.evt_ApprovalForAll` table contains ApprovalForAll events for ERC7
 - Approved status (boolean)
 
 This table is used for analyzing blanket approvals for ERC721 token collections on the b3 network.
-{% enddocs %} 
+{% enddocs %}
+

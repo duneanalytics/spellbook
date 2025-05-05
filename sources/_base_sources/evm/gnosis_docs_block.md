@@ -293,4 +293,5 @@ The `erc721_gnosis.evt_ApprovalForAll` table contains ApprovalForAll events for 
 - Approved status (boolean)
 
 This table is used for analyzing blanket approvals for ERC721 token collections on the gnosis network.
-{% enddocs %} 
+{% enddocs %}
+

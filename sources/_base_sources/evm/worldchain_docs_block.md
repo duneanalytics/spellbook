@@ -293,4 +293,5 @@ The `erc721_worldchain.evt_ApprovalForAll` table contains ApprovalForAll events 
 - Approved status (boolean)
 
 This table is used for analyzing blanket approvals for ERC721 token collections on the worldchain network.
-{% enddocs %} 
+{% enddocs %}
+

@@ -293,9 +293,9 @@ The `erc721_ethereum.evt_ApprovalForAll` table contains ApprovalForAll events fo
 - Approved status (boolean)
 
 This table is used for analyzing blanket approvals for ERC721 token collections on the ethereum network.
-{% enddocs %} 
+{% enddocs %}
 
-{%docs ethereum_withdrawals_doc %}
+{% docs ethereum_withdrawals_doc %}
 
 The `ethereum.withdrawals` table contains information about withdrawals on the ethereum blockchain. It includes:
 
@@ -309,5 +309,3 @@ The `ethereum.withdrawals` table contains information about withdrawals on the e
 This table is used for analyzing withdrawals from the becaon chain on the ethereum network.
 
 {% enddocs %}
-
-
