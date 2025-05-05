@@ -19,6 +19,6 @@
         base_transactions=source("ronin", "transactions"),
         erc721_transfers=source("erc721_ronin", "evt_Transfer"),
         erc1155_single=source("erc1155_ronin", "evt_TransferSingle"),
-        erc1155_batch=source("erc1155_ronin", "evt_transferbatch"),
+        erc1155_batch=source("erc1155_ronin", "evt_TransferBatch"),
     )
 }}

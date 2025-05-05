@@ -24,7 +24,7 @@ def main():
         "berachain", "blast", "bnb", "bob", "boba", "celo", "corn", "degen",
         "ethereum", "fantom", "flare", "gnosis", "goerli", "ink", "kaia", "lens", "linea",
         "mantle", "mode", "opbnb", "optimism", "polygon", "zkevm", "ronin",
-        "scroll", "sei", "shape", "sonic", "sophon", "unichain", "viction",
+        "scroll", "sei", "shape", "sepolia", "sonic", "sophon", "unichain", "viction",
         "worldchain", "zksync", "zora"
     ]
     print(f"Using hardcoded list of {len(chains)} chains.")
