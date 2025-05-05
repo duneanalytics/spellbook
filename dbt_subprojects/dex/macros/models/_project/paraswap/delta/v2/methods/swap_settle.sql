@@ -93,7 +93,7 @@ SELECT
     call_tx_hash,
     call_tx_from,
     call_tx_to,
-    NULL as evt_index, -- TODO
+    cast(NULL as bigint) as evt_index, -- TODO
     executorFeeAmount as fee_amount,
     -- orderWithSig as order_with_sig,
     executor,
