@@ -28,7 +28,9 @@
                                         "zkevm",
                                         "zksync",
                                         "zora",
-                                        "ink"
+                                        "ink",
+                                        "unichain",
+                                        "lens"
                                         ]\',
                                     "sector",
                                     "evms",
@@ -63,6 +65,7 @@
      , ('berachain', source('berachain', 'contracts'))
      , ('b3', source('b3', 'contracts'))
      , ('ink', source('ink', 'contracts'))
+     , ('lens', source('lens', 'contracts'))
 ] %}
 
 SELECT *

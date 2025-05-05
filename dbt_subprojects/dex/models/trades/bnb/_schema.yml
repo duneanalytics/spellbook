@@ -15,7 +15,7 @@ models:
       project: uniswap
       contributors: agaperste
     config:
-      tags: [ 'bnb', 'dex', 'trades', 'uniswap', 'v4' ]
+      tags: ["bnb", "dex", "trades", "uniswap", "v4"]
     description: "uniswap bnb v4 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -34,7 +34,7 @@ models:
       project: uniswap
       contributors: chrispearcx
     config:
-      tags: [ 'bnb', 'dex', 'trades', 'uniswap', 'v3' ]
+      tags: ["bnb", "dex", "trades", "uniswap", "v3"]
     description: "uniswap bnb v3 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -46,7 +46,6 @@ models:
           filter:
             version: 3
 
-
   - name: airswap_bnb_base_trades
     meta:
       blockchain: bnb
@@ -54,7 +53,7 @@ models:
       project: airswap
       contributors: tomfutago
     config:
-      tags: [ 'bnb', 'dex', 'trades', 'airswap' ]
+      tags: ["bnb", "dex", "trades", "airswap"]
     description: "Airswap bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -64,7 +63,6 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('airswap_bnb_base_trades_seed')
 
-
   - name: sushiswap_v1_bnb_base_trades
     meta:
       blockchain: bnb
@@ -72,7 +70,7 @@ models:
       project: sushiswap
       contributors: chrispearcx, tomfutago
     config:
-      tags: [ 'bnb', 'dex', 'trades', 'sushiswap', 'v1' ]
+      tags: ["bnb", "dex", "trades", "sushiswap", "v1"]
     description: "sushiswap bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -84,7 +82,6 @@ models:
           filter:
             version: 1
 
-
   - name: sushiswap_v2_bnb_base_trades
     meta:
       blockchain: bnb
@@ -92,7 +89,7 @@ models:
       project: sushiswap
       contributors: tomfutago
     config:
-      tags: [ 'bnb', 'dex', 'trades', 'sushiswap', 'v2' ]
+      tags: ["bnb", "dex", "trades", "sushiswap", "v2"]
     description: "sushiswap bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -104,7 +101,6 @@ models:
           filter:
             version: 2
 
-
   - name: trader_joe_v2_bnb_base_trades
     meta:
       blockchain: bnb
@@ -112,7 +108,7 @@ models:
       project: trader_joe
       contributors: hsrvc, hosuke
     config:
-      tags: [ 'bnb', 'dex', 'trades', 'trader_joe', 'v2' ]
+      tags: ["bnb", "dex", "trades", "trader_joe", "v2"]
     description: "Trader Joe bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -124,7 +120,6 @@ models:
           filter:
             version: 2
 
-
   - name: trader_joe_v2_1_bnb_base_trades
     meta:
       blockchain: bnb
@@ -132,7 +127,7 @@ models:
       project: trader_joe
       contributors: chef_seaweed
     config:
-      tags: [ 'bnb', 'dex', 'trades', 'trader_joe', 'v2.1' ]
+      tags: ["bnb", "dex", "trades", "trader_joe", "v2.1"]
     description: "Trader Joe bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -144,7 +139,6 @@ models:
           filter:
             version: 2.1
 
-
   - name: apeswap_bnb_base_trades
     meta:
       blockchain: bnb
@@ -152,7 +146,7 @@ models:
       project: apeswap
       contributors: hosuke
     config:
-      tags: [ 'bnb', 'dex', 'trades', 'apeswap' ]
+      tags: ["bnb", "dex", "trades", "apeswap"]
     description: apeswap base trades
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -171,7 +165,7 @@ models:
       project: pancakeswap
       contributors: hosuke, chef_seaweed, tomfutago
     config:
-      tags: [ 'bnb', 'dex', 'trades', 'pancakeswap', 'uniswap', 'v2' ]
+      tags: ["bnb", "dex", "trades", "pancakeswap", "uniswap", "v2"]
     description: "Pancakeswap BNB v2 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -186,7 +180,6 @@ models:
               - mmpool
               - stableswap
 
-
   - name: pancakeswap_v3_bnb_base_trades
     meta:
       blockchain: bnb
@@ -194,7 +187,7 @@ models:
       project: pancakeswap
       contributors: chef_seaweed, tomfutago
     config:
-      tags: [ 'bnb', 'dex', 'trades', 'pancakeswap', 'uniswap', 'v3' ]
+      tags: ["bnb", "dex", "trades", "pancakeswap", "uniswap", "v3"]
     description: "Pancakeswap BNB v3 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -206,6 +199,26 @@ models:
           filter:
             version: 3
 
+  - name: pancakeswap_infinity_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: pancakeswap
+      contributors: chef_butterbeer
+    config:
+      tags: ["bnb", "dex", "trades", "pancakeswap", "infinity"]
+    description: "Pancakeswap BNB Infinity base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('pancakeswap_bnb_base_trades_seed')
+          filter:
+            version:
+              - infinity_cl
+              - infinity_lb
 
   - name: fraxswap_bnb_base_trades
     meta:
@@ -214,7 +227,7 @@ models:
       project: fraxswap
       contributors: kndlexi, tomfutago
     config:
-      tags: ['bnb', 'dex', 'trades', 'fraxswap', 'uniswap', 'v2']
+      tags: ["bnb", "dex", "trades", "fraxswap", "uniswap", "v2"]
     description: "Fraxswap bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -224,7 +237,6 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('fraxswap_bnb_base_trades_seed')
 
-
   - name: biswap_v2_bnb_base_trades
     meta:
       blockchain: bnb
@@ -232,7 +244,7 @@ models:
       project: biswap
       contributors: codingsh, tomfutago
     config:
-      tags: [ 'bnb', 'dex', 'trades', 'biswap', 'uniswap', 'v2' ]
+      tags: ["bnb", "dex", "trades", "biswap", "uniswap", "v2"]
     description: "biswap bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -244,7 +256,6 @@ models:
           filter:
             version: 2
 
-
   - name: biswap_v3_bnb_base_trades
     meta:
       blockchain: bnb
@@ -252,7 +263,7 @@ models:
       project: biswap
       contributors: chef_seaweed, tomfutago
     config:
-      tags: [ 'bnb', 'dex', 'trades', 'biswap', 'v3' ]
+      tags: ["bnb", "dex", "trades", "biswap", "v3"]
     description: "biswap bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -264,7 +275,6 @@ models:
           filter:
             version: 3
 
-
   - name: babyswap_bnb_base_trades
     meta:
       blockchain: bnb
@@ -272,7 +282,7 @@ models:
       project: babyswap
       contributors: codingsh, tomfutago
     config:
-      tags: [ 'bnb', 'dex', 'trades', 'babyswap', 'uniswap', 'v2' ]
+      tags: ["bnb", "dex", "trades", "babyswap", "uniswap", "v2"]
     description: "babyswap bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -291,7 +301,7 @@ models:
       project: mdex
       contributors: codingsh, tomfutago
     config:
-      tags: [ 'bnb', 'dex', 'trades', 'mdex', 'uniswap', 'v2' ]
+      tags: ["bnb", "dex", "trades", "mdex", "uniswap", "v2"]
     description: "mdex bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -310,7 +320,7 @@ models:
       project: wombat
       contributors: umer_h_adil, hosuke, tomfutago
     config:
-      tags: [ 'bnb', 'dex', 'trades', 'wombat' ]
+      tags: ["bnb", "dex", "trades", "wombat"]
     description: "Wombat bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -329,7 +339,7 @@ models:
       project: dodo
       contributors: owen05, scoffie, tomfutago
     config:
-      tags: [ 'bnb', 'dex', 'trades', 'dodo' ]
+      tags: ["bnb", "dex", "trades", "dodo"]
     description: "Dodo bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -352,7 +362,7 @@ models:
       project: iziswap
       contributors: umer_h_adil, hosuke, tomfutago
     config:
-      tags: [ 'bnb', 'dex', 'trades', 'iziswap' ]
+      tags: ["bnb", "dex", "trades", "iziswap"]
     description: "iziswap bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -369,7 +379,7 @@ models:
       project: maverick
       contributors: chef_seaweed, tomfutago
     config:
-      tags: [ 'bnb', 'dex', 'trades', 'maverick' ]
+      tags: ["bnb", "dex", "trades", "maverick"]
     description: "Maverick bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -388,7 +398,7 @@ models:
       project: maverick
       contributors: get620v
     config:
-      tags: [ 'bnb', 'dex', 'trades', 'maverick' ]
+      tags: ["bnb", "dex", "trades", "maverick"]
     description: "Maverick bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -407,7 +417,7 @@ models:
       project: nomiswap
       contributors: codingsh, tomfutago
     config:
-      tags: [ 'bnb', 'dex', 'trades', 'nomiswap', 'uniswap', 'v2' ]
+      tags: ["bnb", "dex", "trades", "nomiswap", "uniswap", "v2"]
     description: "NomiSwap bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -424,7 +434,7 @@ models:
       project: kyberswap
       contributors: nhd98z, tomfutago
     config:
-      tags: [ 'bnb', 'dex', 'trades', 'kyberswap', 'uniswap', 'v2' ]
+      tags: ["bnb", "dex", "trades", "kyberswap", "uniswap", "v2"]
     description: "kyberswap bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -445,7 +455,7 @@ models:
       project: xchange
       contributors: mike-x7f, tomfutago
     config:
-      tags: [ 'bnb', 'dex', 'trades', 'xchange', 'uniswap', 'v2' ]
+      tags: ["bnb", "dex", "trades", "xchange", "uniswap", "v2"]
     description: "xchange bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -462,7 +472,7 @@ models:
       project: thena
       contributors: hsrvc, tomfutago
     config:
-      tags: [ 'bnb', 'dex', 'trades', 'thena' ]
+      tags: ["bnb", "dex", "trades", "thena"]
     description: "thena bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -483,7 +493,7 @@ models:
       project: ellipsis_finance
       contributors: Henrystats, 0xRob, tomfutago
     config:
-      tags: [ 'bnb', 'dex', 'trades', 'ellipsis_finance' ]
+      tags: ["bnb", "dex", "trades", "ellipsis_finance"]
     description: "ellipsis_finance bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -500,7 +510,7 @@ models:
       project: onepunchswap
       contributors: sunopar, tomfutago
     config:
-      tags: [ 'bnb', 'dex', 'trades', 'onepunchswap' ]
+      tags: ["bnb", "dex", "trades", "onepunchswap"]
     description: "onepunchswap bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -517,7 +527,7 @@ models:
       project: woofi
       contributors: scoffie, tomfutago
     config:
-      tags: [ 'bnb', 'dex', 'trades', 'woofi' ]
+      tags: ["bnb", "dex", "trades", "woofi"]
     description: "woofi bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -534,7 +544,7 @@ models:
       project: hashflow
       contributors: Henrystats, hosuke
     config:
-      tags: [ 'bnb','hashflow','trades','dex', 'Henrystats']
+      tags: ["bnb", "hashflow", "trades", "dex", "Henrystats"]
     description: >
       Hashflow contract trades on Binance Smart Chain
     data_tests:
@@ -552,7 +562,7 @@ models:
       project: uniswap
       contributors: Henrystats
     config:
-      tags: [ 'bnb', 'dex', 'trades', 'uniswap', 'v2' ]
+      tags: ["bnb", "dex", "trades", "uniswap", "v2"]
     description: "uniswap bnb v2 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -571,7 +581,7 @@ models:
       project: swaap
       contributors: borelien
     config:
-      tags: [ 'bnb', 'dex', 'trades', 'swaap', 'v2']
+      tags: ["bnb", "dex", "trades", "swaap", "v2"]
     description: "swaap v2 bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -590,7 +600,7 @@ models:
       project: hyperjump
       contributors: bertastr
     config:
-      tags: [ 'bnb', 'dex', 'trades', 'hyperjump' ]
+      tags: ["bnb", "dex", "trades", "hyperjump"]
     description: "hyperjump bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:

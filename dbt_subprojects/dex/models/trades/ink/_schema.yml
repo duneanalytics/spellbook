@@ -133,3 +133,20 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('inkswap_ink_base_trades_seed')
+
+  - name: reservoir_swap_ink_base_trades
+    meta:
+      blockchain: ink
+      sector: dex
+      project: reservoir_swap
+      contributors: sunshinejulia9
+    config:
+      tags: ["ink", "dex", "trades", "reservoir swap"]
+    description: "reservoir swap ink base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('reservoir_swap_ink_base_trades_seed')
