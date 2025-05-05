@@ -13,6 +13,7 @@
 {% set models = [
     ref('dex_arbitrum_base_trades')
     , ref('dex_avalanche_c_base_trades')
+    , ref('dex_abstract_base_trades')
     , ref('dex_base_base_trades')
     , ref('dex_berachain_base_trades')
     , ref('dex_blast_base_trades')
@@ -81,10 +82,5 @@ with base_union as (
         {% endif %}
         {% endfor %}
     )
-    WHERE
-        duplicates_rank = 1
-)
-select
-    *
-from
-    base_union
+select *
+from base_union

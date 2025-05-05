@@ -1,6 +1,12 @@
 version: 2
 
 models:
+  - name: dex_abstract_base_trades
+    data_tests:
+      - check_dex_info_relationship
+      - test_acceptable_usd_amount:
+          column_name: amount_usd
+          max_value: 1000000000
   - name: abstractswap_v3_abstract_base_trades
     meta:
       blockchain: abstract
