@@ -18,8 +18,6 @@ with
         )
     )
     select 
-
--- SELECT
         delta_v2_master.blockchain,
         'velora_delta' as project,
         'v2' as version,
@@ -46,11 +44,10 @@ with
         call_tx_hash as tx_hash,
         call_tx_from as tx_from,
         call_tx_to as tx_to,
-        call_trace_address as trace_address, -- TODO: add order_index? is the intent to constitute a key?
+        call_trace_address as trace_address,
         evt_index,
         order_index,
         method
---     FROM {{ dex_model }}
     from delta_v2_master  
         LEFT JOIN 
         {{ source('tokens', 'erc20') }} t_src_token 
