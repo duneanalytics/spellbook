@@ -310,7 +310,7 @@ SELECT
     , tb.trader_id
     , tb.tx_id
     , tb.outer_instruction_index
-    , tb.swap_inner_index
+    , tb.swap_inner_index as inner_instruction_index
     , tb.tx_index
     , {{ dbt_utils.generate_surrogate_key(['tx_id', 'tx_index', 'outer_instruction_index', 'swap_inner_index']) }} as surrogate_key
 FROM trades_base tb
