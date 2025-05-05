@@ -113,7 +113,17 @@ WITH pools AS (
         ON s.block_time >= f.start_time
         AND s.block_time < f.end_time
 )
-
+, swaps_with_safe_indices AS (
+    SELECT 
+        *,
+        -- For direct calls, set swap_inner_index to outer_instruction_index
+        CASE 
+            WHEN outer_executing_account = 'pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA' 
+            THEN outer_instruction_index
+            ELSE swap_inner_index
+        END as safe_swap_index
+    FROM swaps_with_fees
+)
 , base_token_transfers AS (
     SELECT
         t.tx_id,
@@ -127,35 +137,95 @@ WITH pools AS (
     FROM tokens_solana.transfers t
     WHERE t.block_time >= TIMESTAMP '2025-02-20'
 )
+, transfers_with_context AS (
+    SELECT 
+        t.*,
+        CASE 
+            WHEN t.token_mint_address = 'So11111111111111111111111111111111111111112' THEN 'quote'
+            ELSE 'base'
+        END as token_type,
+        -- Flag fee transfers by checking if to_token_account matches protocol fee recipient
+        CASE 
+            WHEN EXISTS (
+                SELECT 1 
+                FROM swaps_with_fees sf 
+                WHERE sf.tx_id = t.tx_id 
+                AND sf.outer_instruction_index = t.outer_instruction_index 
+                AND sf.protocol_fee_recipient_token_account = t.to_token_account
+            ) THEN 1
+            ELSE 0
+        END as is_fee
+    FROM base_token_transfers t
+)
 
-, expected_instruction_indices AS (
+, transfers_ranked AS (
+    SELECT 
+        *,
+        ROW_NUMBER() OVER (
+            PARTITION BY tx_id, outer_instruction_index, token_type
+            ORDER BY inner_instruction_index ASC
+        ) as rank_by_token_type
+    FROM transfers_with_context
+    WHERE is_fee = 0  -- Exclude fee transfers
+)
+
+, transfer_swap_mapping AS (
+    SELECT 
+        t.tx_id,
+        t.outer_instruction_index,
+        t.inner_instruction_index,
+        t.token_type,
+        t.amount,
+        -- Find which swap this transfer belongs to
+        MAX(sf.safe_swap_index) as associated_swap_index
+    FROM transfers_ranked t
+    JOIN swaps_with_safe_indices sf
+        ON sf.tx_id = t.tx_id
+        AND sf.outer_instruction_index = t.outer_instruction_index
+        -- For direct calls, transfers are nested within the same instruction
+        -- For nested calls, transfers must come after the instruction
+        AND (
+            (sf.outer_executing_account = 'pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA' AND t.outer_instruction_index = sf.safe_swap_index)
+            OR 
+            (sf.outer_executing_account != 'pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA' AND t.inner_instruction_index > sf.safe_swap_index)
+        )
+    GROUP BY t.tx_id, t.outer_instruction_index, t.inner_instruction_index, t.token_type, t.amount
+)
+, transfer_by_swap AS (
     SELECT 
         tx_id,
         outer_instruction_index,
-        CASE WHEN swap_inner_index IS NULL THEN 1 ELSE swap_inner_index + 1 END as base_inner_index,
-        CASE WHEN swap_inner_index IS NULL THEN 2 ELSE swap_inner_index + 2 END as quote_inner_index
-    FROM swaps_with_fees
+        associated_swap_index,
+        token_type,
+        -- Get first transfer of each type after each swap
+        FIRST_VALUE(amount) OVER (
+            PARTITION BY tx_id, outer_instruction_index, associated_swap_index, token_type
+            ORDER BY inner_instruction_index ASC
+        ) as transfer_amount
+    FROM transfer_swap_mapping
 )
 
 , swaps_with_transfers AS (
-    SELECT
+    SELECT 
         sf.*,
-        bt1.amount as base_transfer_amount,
-        bt2.amount as quote_transfer_amount
-    FROM swaps_with_fees sf
-    LEFT JOIN expected_instruction_indices ei
-        ON ei.tx_id = sf.tx_id
-        AND ei.outer_instruction_index = sf.outer_instruction_index
-    LEFT JOIN base_token_transfers bt1
-        ON bt1.tx_id = sf.tx_id
-        AND bt1.outer_instruction_index = sf.outer_instruction_index
-        AND bt1.inner_instruction_index = ei.base_inner_index
-    LEFT JOIN base_token_transfers bt2
-        ON bt2.tx_id = sf.tx_id
-        AND bt2.outer_instruction_index = sf.outer_instruction_index
-        AND bt2.inner_instruction_index = ei.quote_inner_index
+        bt.transfer_amount as base_transfer_amount,
+        qt.transfer_amount as quote_transfer_amount
+    FROM swaps_with_safe_indices sf  -- Changed from swaps_with_fees
+    LEFT JOIN (
+        SELECT DISTINCT tx_id, outer_instruction_index, associated_swap_index, transfer_amount
+        FROM transfer_by_swap
+        WHERE token_type = 'base'
+    ) bt ON bt.tx_id = sf.tx_id
+        AND bt.outer_instruction_index = sf.outer_instruction_index
+        AND bt.associated_swap_index = sf.safe_swap_index  -- Changed from swap_inner_index
+    LEFT JOIN (
+        SELECT DISTINCT tx_id, outer_instruction_index, associated_swap_index, transfer_amount
+        FROM transfer_by_swap
+        WHERE token_type = 'quote'
+    ) qt ON qt.tx_id = sf.tx_id
+        AND qt.outer_instruction_index = sf.outer_instruction_index
+        AND qt.associated_swap_index = sf.safe_swap_index  -- Changed from swap_inner_index
 )
-
 , trades_base as (
     SELECT
         sp.block_time
@@ -163,19 +233,32 @@ WITH pools AS (
         , 'pumpswap' as project
         , 1 as version
         , 'solana' as blockchain
+        , sp.outer_executing_account as trade_source
+        -- token bought amount - use only actual transfers, no fallback for direct calls
         , case 
-            when sp.outer_executing_account = 'pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA' then 'direct'
-            else sp.outer_executing_account
-          end as trade_source
-        -- token bought amount
-        , case 
-            when is_buy = 1 then COALESCE(base_transfer_amount, CEIL(base_amount))  -- For buys: Crack token received
-            else quote_transfer_amount  -- For sells: non-WSOL token received
+            when is_buy = 1 then 
+                CASE 
+                    WHEN sp.outer_executing_account = 'pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA' THEN base_transfer_amount  -- Direct calls must have actual transfer
+                    ELSE COALESCE(base_transfer_amount, CAST(base_amount as bigint))  -- Nested can fallback
+                END
+            else 
+                CASE 
+                    WHEN sp.outer_executing_account = 'pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA' THEN quote_transfer_amount  -- Direct calls must have actual transfer
+                    ELSE COALESCE(quote_transfer_amount, CAST(sp.max_min_sol_amount as bigint))  -- Nested can fallback
+                END
           end as token_bought_amount_raw
-        -- token sold amount
+        -- token sold amount - use only actual transfers, no fallback for direct calls  
         , case 
-            when is_buy = 0 then CEIL(base_amount)  -- For sells: base token sold
-            else quote_transfer_amount  -- For buys: WSOL token sold
+            when is_buy = 0 then 
+                CASE 
+                    WHEN sp.outer_executing_account = 'pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA' THEN base_transfer_amount  -- Direct calls must have actual transfer
+                    ELSE COALESCE(base_transfer_amount, CAST(base_amount as bigint))  -- Nested can fallback
+                END
+            else 
+                CASE 
+                    WHEN sp.outer_executing_account = 'pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA' THEN quote_transfer_amount  -- Direct calls must have actual transfer
+                    ELSE COALESCE(quote_transfer_amount, CAST(sp.max_min_sol_amount as bigint))  -- Nested can fallback
+                END
           end as token_sold_amount_raw
         , cast(sp.total_fee_rate as double) as fee_tier
         -- token bought mint address
@@ -201,7 +284,7 @@ WITH pools AS (
         , sp.user as trader_id
         , sp.tx_id
         , sp.outer_instruction_index
-        , sp.swap_inner_index
+        , sp.safe_swap_index as swap_inner_index
         , sp.tx_index
     FROM swaps_with_transfers sp
     LEFT JOIN pools p ON p.pool = sp.pool
