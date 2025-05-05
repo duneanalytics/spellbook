@@ -120,7 +120,7 @@ You can watch the video version of this if you scroll down a bit.
 Navigate to the spellbook repo within your CLI (Command line interface).
 
 ```console
-cd user\directory\github\spellbook
+cd user/directory/github/spellbook
 # Change this to wherever spellbook is stored locally on your machine.
 ```
 
