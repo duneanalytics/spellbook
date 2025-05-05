@@ -69,8 +69,8 @@ models:
       - &outer_instruction_index
         name: outer_instruction_index
         description: "Index of outer instruction"
-      - &swap_inner_index
-        name: swap_inner_index
+      - &inner_instruction_index
+        name: inner_instruction_index
         description: "Index of inner instruction (NULL if outer)"
       - &tx_index
         name: tx_index
