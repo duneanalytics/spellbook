@@ -239,12 +239,12 @@ WITH pools AS (
             when is_buy = 1 then 
                 CASE 
                     WHEN sp.outer_executing_account = 'pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA' THEN base_transfer_amount  -- Direct calls must have actual transfer
-                    ELSE COALESCE(base_transfer_amount, CAST(base_amount as bigint))  -- Nested can fallback
+                    ELSE COALESCE(base_transfer_amount, base_amount)  -- Nested can fallback
                 END
             else 
                 CASE 
                     WHEN sp.outer_executing_account = 'pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA' THEN quote_transfer_amount  -- Direct calls must have actual transfer
-                    ELSE COALESCE(quote_transfer_amount, CAST(sp.max_min_sol_amount as bigint))  -- Nested can fallback
+                    ELSE COALESCE(quote_transfer_amount, sp.max_min_sol_amount)   -- Nested can fallback
                 END
           end as token_bought_amount_raw
         -- token sold amount - use only actual transfers, no fallback for direct calls  
@@ -252,12 +252,12 @@ WITH pools AS (
             when is_buy = 0 then 
                 CASE 
                     WHEN sp.outer_executing_account = 'pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA' THEN base_transfer_amount  -- Direct calls must have actual transfer
-                    ELSE COALESCE(base_transfer_amount, CAST(base_amount as bigint))  -- Nested can fallback
+                    ELSE COALESCE(base_transfer_amount, base_amount)  -- Nested can fallback
                 END
             else 
                 CASE 
                     WHEN sp.outer_executing_account = 'pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA' THEN quote_transfer_amount  -- Direct calls must have actual transfer
-                    ELSE COALESCE(quote_transfer_amount, CAST(sp.max_min_sol_amount as bigint))  -- Nested can fallback
+                    ELSE COALESCE(quote_transfer_amount, sp.max_min_sol_amount)   -- Nested can fallback
                 END
           end as token_sold_amount_raw
         , cast(sp.total_fee_rate as double) as fee_tier
