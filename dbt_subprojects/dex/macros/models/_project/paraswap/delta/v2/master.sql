@@ -44,7 +44,8 @@ with
         call_tx_to as tx_to,
         call_trace_address as trace_address, -- TODO: add order_index? is the intent to constitute a key?
         evt_index,
-        order_index
+        order_index,
+        method
 --     FROM {{ dex_model }}
     from delta_v2_master  
         LEFT JOIN 
