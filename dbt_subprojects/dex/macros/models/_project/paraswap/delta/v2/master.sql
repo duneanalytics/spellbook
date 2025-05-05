@@ -3,11 +3,11 @@ with
     {{ delta_v2_swap_settle(blockchain) }},
     {{ delta_v2_swap_settle_batch(blockchain) }},
     delta_v2_master as (
-        select
+        (select
             date_trunc('month', call_block_time) AS block_month,        
             *
         from delta_v2_swapSettle
-        limit 1
+        limit 1)
             union all   
         select 
             date_trunc('month', call_block_time) AS block_month,        
@@ -35,12 +35,13 @@ with
         src_amount as token_sold_amount_raw,
         COALESCE(dest_token_order_usd, src_token_order_usd) as amount_usd,
         dest_token as token_bought_address,
-        src_token as token_sold_address
-        -- taker,
-        -- maker,
-        -- project_contract_address,
-        -- tx_hash,
-        -- tx_from,
+        src_token as token_sold_address,
+        owner as taker,        
+        CAST(NULL AS VARBINARY) AS maker, -- TODO: consider `executor as maker`,
+        delta_v2_master.contract_address as project_contract_address,
+        call_tx_hash as tx_hash,
+        call_tx_from as tx_from,
+        call_tx_to as tx_to
         -- tx_to,
         -- trace_address,
         -- evt_index

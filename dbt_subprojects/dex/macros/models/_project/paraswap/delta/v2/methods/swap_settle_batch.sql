@@ -9,8 +9,8 @@ delta_v2_swap_settle_batch_ExpandedOrders as (
               contract_address, -- varbinary
               -- call_success, -- boolean
               call_tx_hash, -- varbinary
-              -- call_tx_from, -- varbinary
-              -- call_tx_to, -- varbinary
+              call_tx_from, -- varbinary
+              call_tx_to, -- varbinary
               call_trace_address, -- array(bigint)
               call_block_time, -- timestamp
               call_block_number, -- bigint
@@ -149,6 +149,8 @@ SELECT
     call_block_number,
     call_block_time,    
     call_tx_hash,
+    call_tx_from,
+    call_tx_to,
     executorFeeAmount as fee_amount,
     -- orderWithSig as order_with_sig,
     executor,
