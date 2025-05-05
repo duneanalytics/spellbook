@@ -40,6 +40,7 @@
        , "zksync"
        , "zora"
        , "ink"
+       , "lens"
 ] %}
 
 {% set creation_traces_models = [] %}
