@@ -12,15 +12,13 @@ SELECT *
 FROM (
         {% for blockchain in structured_blockchains %}
         SELECT
-        '{{ blockchain }}' AS blockchain
-        , contract_address
-        , evt_tx_hash
-        , evt_index
-        , evt_block_time
-        , evt_block_number
-        , approved
-        , account
-        , operator
+        '{{ blockchain }}' AS blockchain,
+        contract_address,
+        evt_tx_hash,
+        evt_index,
+        evt_block_time,
+        evt_block_number,
+        operator
         FROM {{ source('erc1155_' + blockchain, 'evt_ApprovalForAll') }}
         {% if not loop.last %}
         UNION ALL

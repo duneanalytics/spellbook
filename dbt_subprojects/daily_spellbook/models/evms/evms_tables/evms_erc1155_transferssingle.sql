@@ -23,7 +23,7 @@ FROM (
         , to
         , id
         , value
-        FROM {{ source('erc1155_' + blockchain, 'evt_transfersingle') }}
+        FROM {{ source('erc1155_' + blockchain, 'evt_TransferSingle') }}
         {% if not loop.last %}
         UNION ALL
         {% endif %}

@@ -21,7 +21,7 @@ FROM (
         , owner
         , spender
         , value
-        FROM {{ source('erc20_' + blockchain, 'evt_approval') }}
+        FROM {{ source('erc20_' + blockchain, 'evt_Approval') }}
         {% if not loop.last %}
         UNION ALL
         {% endif %}

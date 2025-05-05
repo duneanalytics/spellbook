@@ -21,7 +21,7 @@ FROM (
         , "from"
         , to
         , tokenId
-        FROM {{ source('erc721_' + blockchain, 'evt_transfer') }}
+        FROM {{ source('erc721_' + blockchain, 'evt_Transfer') }}
         {% if not loop.last %}
         UNION ALL
         {% endif %}
