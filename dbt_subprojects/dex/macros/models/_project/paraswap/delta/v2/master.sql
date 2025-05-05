@@ -7,11 +7,13 @@ with
             date_trunc('month', call_block_time) AS block_month,        
             *
         from delta_v2_swapSettle
+        limit 1
             union all   
         select 
             date_trunc('month', call_block_time) AS block_month,        
             *
         from delta_v2_swapSettleBatch
+        limit 1
     )
     select 
 
@@ -28,12 +30,12 @@ with
             ELSE concat(t_dest_token.symbol, '-', t_src_token.symbol)
         END as token_pair,
         dest_amount / power(10, t_dest_token.decimals) as token_bought_amount,
-        src_amount / power(10, t_src_token.decimals) as token_sold_amount        
-        -- token_bought_amount_raw,
-        -- token_sold_amount_raw,
-        -- amount_usd,
-        -- token_bought_address,
-        -- token_sold_address,
+        src_amount / power(10, t_src_token.decimals) as token_sold_amount,
+        dest_amount as token_bought_amount_raw,
+        src_amount as token_sold_amount_raw,
+        COALESCE(dest_token_order_usd, src_token_order_usd) as amount_usd,
+        dest_token as token_bought_address,
+        src_token as token_sold_address
         -- taker,
         -- maker,
         -- project_contract_address,
