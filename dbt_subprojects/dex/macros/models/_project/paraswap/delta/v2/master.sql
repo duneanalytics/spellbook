@@ -23,7 +23,9 @@ with
         'v2' as version,
         block_month,
         DATE_TRUNC('day', call_block_time) as block_date,
-        call_block_time as block_time,        
+        call_block_time as block_time,
+        t_dest_token.symbol as token_bought_symbol,
+        t_src_token.symbol as token_sold_symbol,
         CASE
             WHEN lower(t_dest_token.symbol) > lower(t_src_token.symbol)
             THEN concat(t_src_token.symbol, '-', t_dest_token.symbol)
