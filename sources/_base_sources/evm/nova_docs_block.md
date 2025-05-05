@@ -1,6 +1,6 @@
-{% docs zora_blocks_doc %}
+{% docs nova_blocks_doc %}
 
-The `zora.blocks` table contains information about blocks on the zora blockchain. It includes:
+The `nova.blocks` table contains information about blocks on the nova blockchain. It includes:
 
 - Block identifiers: number, hash, time, date
 - Gas metrics: gas_limit, gas_used, blob_gas_used, excess_blob_gas
@@ -19,9 +19,9 @@ This table is fundamental for analyzing:
 
 {% enddocs %}
 
-{% docs zora_transactions_doc %}
+{% docs nova_transactions_doc %}
 
-The `zora.transactions` table contains detailed information about transactions on the zora blockchain. It includes:
+The `nova.transactions` table contains detailed information about transactions on the nova blockchain. It includes:
 
 - Block information: block_time, block_number, block_hash, block_date
 - Transaction details: hash, from, to, value
@@ -42,9 +42,9 @@ This table is used for analyzing:
 
 {% enddocs %}
 
-{% docs zora_logs_doc %}
+{% docs nova_logs_doc %}
 
-The `zora.logs` table contains event logs emitted by smart contracts on the zora blockchain. It includes:
+The `nova.logs` table contains event logs emitted by smart contracts on the nova blockchain. It includes:
 
 - Block information: block_time, block_number, block_hash, block_date
 - Transaction details: tx_hash, tx_index, tx_from, tx_to
@@ -62,9 +62,9 @@ This table is crucial for:
 
 {% enddocs %}
 
-{% docs zora_traces_doc %}
+{% docs nova_traces_doc %}
 
-The `zora.traces` table contains records of execution steps for transactions on the zora blockchain. Each trace represents an atomic operation that modifies the blockchain state. Key components include:
+The `nova.traces` table contains records of execution steps for transactions on the nova blockchain. Each trace represents an atomic operation that modifies the blockchain state. Key components include:
 
 - Block information: block_time, block_number, block_hash, block_date
 - Transaction context: tx_hash, tx_index, tx_from, tx_to
@@ -84,9 +84,9 @@ This table is essential for:
 
 {% enddocs %}
 
-{% docs zora_creation_traces_doc %}
+{% docs nova_creation_traces_doc %}
 
-The `zora.creation_traces` table contains data about contract creation events on the zora blockchain. It includes:
+The `nova.creation_traces` table contains data about contract creation events on the nova blockchain. It includes:
 
 - Block information: block_time, block_number, block_month
 - Transaction details: tx_hash
@@ -100,9 +100,9 @@ This table is used for:
 
 {% enddocs %}
 
-{% docs zora_contracts_doc %}
+{% docs nova_contracts_doc %}
 
-The `zora.contracts` table contains information about verified smart contracts on the zora blockchain. It includes:
+The `nova.contracts` table contains information about verified smart contracts on the nova blockchain. It includes:
 
 - Contract identification: address, name, namespace
 - Contract code and ABI
@@ -119,9 +119,9 @@ This table is essential for:
 
 {% enddocs %}
 
-{% docs zora_contracts_submitted_doc %}
+{% docs nova_contracts_submitted_doc %}
 
-The `zora.contracts_submitted` table contains information about manually submitted contract verifications on the zora blockchain. It includes:
+The `nova.contracts_submitted` table contains information about manually submitted contract verifications on the nova blockchain. It includes:
 
 - Contract identification: address, name, namespace
 - Contract code and ABI
@@ -136,9 +136,9 @@ This table is used for:
 
 {% enddocs %}
 
-{% docs zora_traces_decoded_doc %}
+{% docs nova_traces_decoded_doc %}
 
-The `zora.traces_decoded` table contains decoded traces with additional information based on submitted smart contracts and their ABIs. It includes:
+The `nova.traces_decoded` table contains decoded traces with additional information based on submitted smart contracts and their ABIs. It includes:
 
 - Block information: block_date, block_time, block_number
 - Contract details: namespace, contract_name
@@ -155,9 +155,9 @@ This table is used for:
 
 {% enddocs %}
 
-{% docs zora_logs_decoded_doc %}
+{% docs nova_logs_decoded_doc %}
 
-The `zora.logs_decoded` table contains decoded event logs with additional information based on submitted smart contracts and their ABIs. It includes:
+The `nova.logs_decoded` table contains decoded event logs with additional information based on submitted smart contracts and their ABIs. It includes:
 
 - Block information: block_date, block_time, block_number
 - Contract details: namespace, contract_name, contract_address
@@ -174,9 +174,9 @@ This table is used for:
 
 {% enddocs %}
 
-{% docs erc20_zora_evt_Transfer_doc %}
+{% docs erc20_nova_evt_Transfer_doc %}
 
-The `erc20_zora.evt_transfer` table contains Transfer events for ERC20 tokens on the zora blockchain. It includes:
+The `erc20_nova.evt_transfer` table contains Transfer events for ERC20 tokens on the nova blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -184,15 +184,15 @@ The `erc20_zora.evt_transfer` table contains Transfer events for ERC20 tokens on
 - From and to addresses
 - Amount transferred
 
-This table is used for tracking ERC20 token movements on the zora network.
+This table is used for tracking ERC20 token movements on the nova network.
 
 Please be aware that this table is the raw ERC20 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use `tokens.transfers` for a more complete and curated view of token transfers.
 
 {% enddocs %}
 
-{% docs erc20_zora_evt_Approval_doc %}
+{% docs erc20_nova_evt_Approval_doc %}
 
-The `erc20_zora.evt_Approval` table contains Approval events for ERC20 tokens on the zora blockchain. It includes:
+The `erc20_nova.evt_Approval` table contains Approval events for ERC20 tokens on the nova blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -200,13 +200,13 @@ The `erc20_zora.evt_Approval` table contains Approval events for ERC20 tokens on
 - Owner and spender addresses
 - Approved amount
 
-This table is used for analyzing ERC20 token approvals and spending permissions on the zora network.
+This table is used for analyzing ERC20 token approvals and spending permissions on the nova network.
 
 {% enddocs %}
 
-{% docs erc1155_zora_evt_TransferSingle_doc %}
+{% docs erc1155_nova_evt_TransferSingle_doc %}
 
-The `erc1155_zora.evt_TransferSingle` table contains TransferSingle events for ERC1155 tokens on the zora blockchain. It includes:
+The `erc1155_nova.evt_TransferSingle` table contains TransferSingle events for ERC1155 tokens on the nova blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -215,15 +215,15 @@ The `erc1155_zora.evt_TransferSingle` table contains TransferSingle events for E
 - Token ID
 - Amount transferred
 
-This table is used for tracking individual ERC1155 token transfers on the zora network.
+This table is used for tracking individual ERC1155 token transfers on the nova network.
 
 Please be aware that this table is the raw ERC1155 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use `nft.transfers` for a more complete and curated view of NFT transfers.
 
 {% enddocs %}
 
-{% docs erc1155_zora_evt_TransferBatch_doc %}
+{% docs erc1155_nova_evt_TransferBatch_doc %}
 
-The `erc1155_zora.evt_TransferBatch` table contains TransferBatch events for ERC1155 tokens on the zora blockchain. It includes:
+The `erc1155_nova.evt_TransferBatch` table contains TransferBatch events for ERC1155 tokens on the nova blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -232,15 +232,15 @@ The `erc1155_zora.evt_TransferBatch` table contains TransferBatch events for ERC
 - Array of token IDs
 - Array of amounts transferred
 
-This table is used for tracking batch transfers of multiple ERC1155 tokens on the zora network.
+This table is used for tracking batch transfers of multiple ERC1155 tokens on the nova network.
 
 Please be aware that this table is the raw ERC1155 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use nft.transfers for a more complete and curated view of NFT transfers.
 
 {% enddocs %}
 
-{% docs erc1155_zora_evt_ApprovalForAll_doc %}
+{% docs erc1155_nova_evt_ApprovalForAll_doc %}
 
-The `erc1155_zora.evt_ApprovalForAll` table contains ApprovalForAll events for ERC1155 tokens on the zora blockchain. It includes:
+The `erc1155_nova.evt_ApprovalForAll` table contains ApprovalForAll events for ERC1155 tokens on the nova blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -248,13 +248,13 @@ The `erc1155_zora.evt_ApprovalForAll` table contains ApprovalForAll events for E
 - Account and operator addresses
 - Approved status (boolean)
 
-This table is used for analyzing blanket approvals for ERC1155 token collections on the zora network.
+This table is used for analyzing blanket approvals for ERC1155 token collections on the nova network.
 
 {% enddocs %}
 
-{% docs erc721_zora_evt_Transfer_doc %}
+{% docs erc721_nova_evt_Transfer_doc %}
 
-The `erc721_zora.evt_Transfer` table contains Transfer events for ERC721 tokens on the zora blockchain. It includes:
+The `erc721_nova.evt_Transfer` table contains Transfer events for ERC721 tokens on the nova blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -262,15 +262,15 @@ The `erc721_zora.evt_Transfer` table contains Transfer events for ERC721 tokens 
 - From and to addresses
 - Token ID
 
-This table is used for tracking ERC721 token (NFT) transfers on the zora network.
+This table is used for tracking ERC721 token (NFT) transfers on the nova network.
 
 Please be aware that this table is the raw ERC721 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use `nft.transfers` for a more complete and curated view of NFT transfers.
 
 {% enddocs %}
 
-{% docs erc721_zora_evt_Approval_doc %}
+{% docs erc721_nova_evt_Approval_doc %}
 
-The `erc721_zora.evt_Approval` table contains Approval events for ERC721 tokens on the zora blockchain. It includes:
+The `erc721_nova.evt_Approval` table contains Approval events for ERC721 tokens on the nova blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -278,13 +278,13 @@ The `erc721_zora.evt_Approval` table contains Approval events for ERC721 tokens 
 - Owner and approved addresses
 - Token ID
 
-This table is used for analyzing approvals for individual ERC721 tokens (NFTs) on the zora network.
+This table is used for analyzing approvals for individual ERC721 tokens (NFTs) on the nova network.
 
 {% enddocs %}
 
-{% docs erc721_zora_evt_ApprovalForAll_doc %}
+{% docs erc721_nova_evt_ApprovalForAll_doc %}
 
-The `erc721_zora.evt_ApprovalForAll` table contains ApprovalForAll events for ERC721 tokens on the zora blockchain. It includes:
+The `erc721_nova.evt_ApprovalForAll` table contains ApprovalForAll events for ERC721 tokens on the nova blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -292,5 +292,5 @@ The `erc721_zora.evt_ApprovalForAll` table contains ApprovalForAll events for ER
 - Owner and operator addresses
 - Approved status (boolean)
 
-This table is used for analyzing blanket approvals for ERC721 token collections on the zora network.
+This table is used for analyzing blanket approvals for ERC721 token collections on the nova network.
 {% enddocs %} 
