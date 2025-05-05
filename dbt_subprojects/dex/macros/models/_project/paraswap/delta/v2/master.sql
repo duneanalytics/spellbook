@@ -26,9 +26,9 @@ with
             WHEN lower(t_dest_token.symbol) > lower(t_src_token.symbol)
             THEN concat(t_src_token.symbol, '-', t_dest_token.symbol)
             ELSE concat(t_dest_token.symbol, '-', t_src_token.symbol)
-        END as token_pair
-        -- token_bought_amount,
-        -- token_sold_amount,
+        END as token_pair,
+        dest_amount / power(10, t_dest_token.decimals) as token_bought_amount,
+        src_amount / power(10, t_src_token.decimals) as token_sold_amount        
         -- token_bought_amount_raw,
         -- token_sold_amount_raw,
         -- amount_usd,
