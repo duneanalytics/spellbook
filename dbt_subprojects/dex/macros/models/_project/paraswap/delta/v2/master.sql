@@ -41,10 +41,10 @@ with
         delta_v2_master.contract_address as project_contract_address,
         call_tx_hash as tx_hash,
         call_tx_from as tx_from,
-        call_tx_to as tx_to
-        -- tx_to,
-        -- trace_address,
-        -- evt_index
+        call_tx_to as tx_to,
+        call_trace_address as trace_address, -- TODO: add order_index? is the intent to constitute a key?
+        NULL as evt_index, -- TODO: add where applicable
+        order_index
 --     FROM {{ dex_model }}
     from delta_v2_master  
         LEFT JOIN 
