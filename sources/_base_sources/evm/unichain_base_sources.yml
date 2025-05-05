@@ -422,6 +422,51 @@ sources:
             description: "Address receiving the NFT"
           - name: tokenId
             description: "Unique identifier of the transferred NFT"
+      - name: evt_Approval
+        meta:
+          docs_slug: /evm/unichain/decoded/interfaces/erc721/evt_Approval
+          short_description: "Approval events for ERC721 tokens on this network"
+        description: ''
+        columns:
+          - name: contract_address
+            description: "Contract address of the ERC721 token contract"
+          - name: evt_tx_hash
+            description: "The transaction hash of the approval event"
+          - name: evt_index
+            description: "The index of this event within the transaction"
+          - name: evt_block_time
+            description: "The timestamp of the block containing this approval"
+          - name: evt_block_number
+            description: "The block number containing this approval"
+          - name: approved
+            description: "The address being granted or revoked permission to operate all tokens"
+          - name: owner
+            description: "The address of the token owner granting approval"
+          - name: tokenId
+            description: "Unique identifier of the ERC721 token (NFT) for which approval is granted or revoked"
+      - name: evt_ApprovalForAll
+        meta:
+          docs_slug: /evm/unichain/decoded/interfaces/erc721/evt_ApprovalForAll
+          short_description: The `unichain.evt_ApprovalForAll` table contains approval events for all tokens of an ERC721 contract on the unichain blockchain.
+        description: ''
+        columns:
+          - name: contract_address
+            description: "Address of the ERC721 token contract"
+          - name: evt_tx_hash
+            description: "The transaction hash of the approval event"
+          - name: evt_index
+            description: "The index of this event within the transaction"
+          - name: evt_block_time
+            description: "The timestamp of the block containing this approval"
+          - name: evt_block_number
+            description: "The block number containing this approval"
+          - name: approved
+            description: "The address being granted or revoked permission to operate all tokens"
+          - name: owner
+            description: "The address of the token owner granting approval"
+          - name: operator
+            description: "The address being granted or revoked permission to operate all tokens"
+
 
   - name: erc1155_unichain
     description: "Transfer events for ERC1155 tokens on Unichain"
@@ -479,3 +524,25 @@ sources:
             description: "Array of token type identifiers"
           - name: values
             description: "Array of amounts transferred for each token type"
+      - name: evt_ApprovalForAll
+        meta:
+          docs_slug: /evm/ink/decoded/interfaces/erc1155/evt_ApprovalForAll
+          short_description: This table contains approval events for all tokens of an ERC1155 contract on this network.
+        description: ''
+        columns:
+          - name: contract_address
+            description: "ink address of the ERC1155 token contract"
+          - name: evt_tx_hash
+            description: "The transaction hash of the approval event"
+          - name: evt_index
+            description: "The index of this event within the transaction"
+          - name: evt_block_time
+            description: "The timestamp of the block containing this approval"
+          - name: evt_block_number
+            description: "The block number containing this approval"
+          - name: approved
+            description: "Boolean indicating whether approval is granted (true) or revoked (false)"
+          - name: owner
+            description: "ink address of the token owner granting or revoking approval"
+          - name: operator
+            description: "ink address being granted or revoked permission to operate all tokens"
