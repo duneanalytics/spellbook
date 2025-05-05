@@ -31,7 +31,7 @@ batch_counts as (
                        then 1
                    else 0
                 end
-                ) as dex_swaps,
+            ) as dex_swaps,
            sum(case when selector = 0x2e1a7d4d then 1 else 0 end) as unwraps,
            sum(case when selector = 0x095ea7b3 then 1 else 0 end) as token_approvals
     from {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Settlement') }} s
