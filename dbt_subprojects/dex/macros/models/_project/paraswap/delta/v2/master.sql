@@ -43,7 +43,7 @@ with
         call_tx_from as tx_from,
         call_tx_to as tx_to,
         call_trace_address as trace_address, -- TODO: add order_index? is the intent to constitute a key?
-        NULL as evt_index, -- TODO: add where applicable
+        evt_index,
         order_index
 --     FROM {{ dex_model }}
     from delta_v2_master  
