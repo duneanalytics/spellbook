@@ -3,17 +3,19 @@ with
     {{ delta_v2_swap_settle(blockchain) }},
     {{ delta_v2_swap_settle_batch(blockchain) }},
     delta_v2_master as (
-        (select
-            date_trunc('month', call_block_time) AS block_month,        
-            *
-        from delta_v2_swapSettle
-        limit 1)
+        (
+            select
+                date_trunc('month', call_block_time) AS block_month,        
+                *
+            from delta_v2_swapSettle
+        )
             union all   
-        select 
-            date_trunc('month', call_block_time) AS block_month,        
-            *
-        from delta_v2_swapSettleBatch
-        limit 1
+        (
+            select 
+                date_trunc('month', call_block_time) AS block_month,        
+                *
+            from delta_v2_swapSettleBatch
+        )
     )
     select 
 
@@ -58,7 +60,4 @@ with
         {{ source('tokens', 'erc20') }} t_dest_token
             ON t_dest_token.blockchain = '{{blockchain}}'
             AND t_dest_token.contract_address = dest_token
-    
-    order by block_time desc
-    limit 1 
 {% endmacro %}
