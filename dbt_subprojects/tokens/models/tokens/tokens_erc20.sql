@@ -21,6 +21,7 @@
                                         ,"ink"
                                         ,"abstract"
                                         ,"kaia"
+                                        ,"lens"
                                         ,"linea"
                                         ,"mantle"
                                         ,"nova"
@@ -95,6 +96,7 @@
     ,'tokens_apechain': {'blockchain': 'apechain', 'model': ref('tokens_apechain_erc20')}
     ,'tokens_opbnb': {'blockchain': 'opbnb', 'model': ref('tokens_opbnb_erc20')}
     ,'tokens_unichain': {'blockchain': 'unichain', 'model': ref('tokens_unichain_erc20')}
+    ,'tokens_lens': {'blockchain': 'lens', 'model': ref('tokens_lens_erc20')}
 } %}
 
 with automated_source as (
