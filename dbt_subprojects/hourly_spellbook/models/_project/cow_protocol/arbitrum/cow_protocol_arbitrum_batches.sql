@@ -46,6 +46,8 @@ batch_counts as (
             from {{ source('arbitrum', 'traces') }} t
                 inner join {{ ref('cow_protocol_arbitrum_solvers') }} solvers on t."from" = solvers.address
             where t.tx_hash = s.evt_tx_hash
+                and t.block_date = s.evt_block_date
+                and t.block_number = s.evt_block_number
             order by t.trace_address asc nulls first
             limit 1
         ) solver_info on true
