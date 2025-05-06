@@ -14,8 +14,8 @@
         blockchain = 'lens'
         , project = 'uniswap'
         , version = '3'
-        , Pair_evt_Swap = source('uniswap_v3_lens', 'Pair_evt_Swap')
-        , Factory_evt_PoolCreated = source('uniswap_v3_lens', 'Factory_evt_PoolCreated')
+        , Pair_evt_Swap = source('uniswap_v3_lens', 'uniswapv3pair_evt_swap')
+        , Factory_evt_PoolCreated = source('uniswap_v3_lens', 'uniswapv3factory_evt_poolcreated')
     )
 }}
 

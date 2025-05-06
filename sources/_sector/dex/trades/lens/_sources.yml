@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: uniswap_v3_lens
+    tables:
+      - name: uniswapv3pair_evt_swap
+      - name: uniswapv3factory_evt_poolcreated
