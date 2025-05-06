@@ -12,7 +12,7 @@
   )
 }}
 
-{% set project_start_date = '2025-03-14' %}
+{% set project_start_date = '2025-02-20' %}
 
 WITH pools AS (
     SELECT
@@ -210,5 +210,3 @@ SELECT
     , tb.tx_index
     , {{ dbt_utils.generate_surrogate_key(['tx_id', 'tx_index', 'outer_instruction_index', 'inner_instruction_index']) }} as surrogate_key
 FROM trades_base tb
---temp debug
-where block_time >= now() - interval '1' day
