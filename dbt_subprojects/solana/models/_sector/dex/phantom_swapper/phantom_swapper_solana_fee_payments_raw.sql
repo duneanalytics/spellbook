@@ -101,6 +101,19 @@ with
         select *
         from token_payments
     ),
+    filtered_transactions as (
+        select 
+            id, 
+            signer,
+            block_date
+        from {{ source('solana', 'transactions') }}
+        where
+            {% if is_incremental() %} 
+                {{ incremental_predicate('block_date') }}
+            {% else %} 
+                block_date >= timestamp '{{project_start_date}}'
+            {% endif %} 
+    ),
     -- Eliminate duplicates (e.g. both SOL + WSOL in a single transaction)
     aggregated_fee_payments_by_token_by_tx as (
         select
@@ -111,7 +124,7 @@ with
             fee_payments.tx_id,
             sum(fee_payments.amount) as amount
         from fee_payments
-        join {{ source('solana', 'transactions') }} tx 
+        join filtered_transactions tx 
         ON fee_payments.tx_id = tx.id 
         AND tx.signer != fee_payments.fee_receiver
         AND tx.block_date = date_trunc('day', fee_payments.block_time)
