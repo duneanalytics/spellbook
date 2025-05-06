@@ -10,21 +10,21 @@
     )
 }}
 
-{% set project_start_date = "2025-03-01" %}
+{% set query_start_date = "2025-05-01" %}
 
 with
     fee_payments as (
         select *
         from {{ ref("phantom_swapper_solana_fee_payments_raw") }}
         {% if is_incremental() %} where {{ incremental_predicate("block_time") }}
-        {% else %} where block_time >= timestamp '{{project_start_date}}'
+        {% else %} where block_time >= timestamp '{{query_start_date}}'
         {% endif %}
     ),
     fee_token_prices as (
         select *
         from {{ ref("phantom_swapper_solana_fee_token_prices") }}
         {% if is_incremental() %} where {{ incremental_predicate("minute") }}
-        {% else %} where minute >= timestamp '{{project_start_date}}'
+        {% else %} where minute >= timestamp '{{query_start_date}}'
         {% endif %}
     )
 select

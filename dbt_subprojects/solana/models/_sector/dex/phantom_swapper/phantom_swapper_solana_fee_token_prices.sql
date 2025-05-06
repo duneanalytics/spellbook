@@ -10,7 +10,7 @@
     )
 }}
 
-{% set project_start_date = '2025-03-01' %}
+{% set query_start_date = '2025-05-01' %}
 
 with
     fee_payments as (
@@ -21,7 +21,7 @@ with
             token_address as contract_address_base58
         from {{ ref("phantom_swapper_solana_fee_payments_raw") }}
         {% if is_incremental() %} where {{ incremental_predicate("block_time") }}
-        {% else %} where block_time >= timestamp '{{project_start_date}}'
+        {% else %} where block_time >= timestamp '{{query_start_date}}'
         {% endif %}
     ),
     distinct_fee_payment_tokens_per_minute as (
@@ -46,6 +46,6 @@ join
         and prices.contract_address = tokens.contract_address_varbinary
         and prices.minute = tokens.minute
         {% if is_incremental() %} and {{ incremental_predicate("prices.minute") }}
-        {% else %} and prices.minute >= timestamp '{{project_start_date}}'
+        {% else %} and prices.minute >= timestamp '{{query_start_date}}'
         {% endif %}
     )

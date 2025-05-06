@@ -9,45 +9,22 @@
    )
 }}
 
-{% set project_start_date = '2025-03-01' %}
+{% set query_start_date = '2025-05-01' %}
 {% set wsol_token = 'So11111111111111111111111111111111111111112' %}
 
-with
-    fee_addresses as (
-        -- Jupiter AND OKX transfer partner fee directly to a tokenaccount owned by 25mY,9Yj,tzv or 8ps
-        SELECT fee_receiver
-        FROM (
-            VALUES
-            ('25mYnjJ2MXHZH6NvTTdA63JvjgRVcuiaj6MRiEQNs1Dq')
-            , ('9yj3zvLS3fDMqi1F8zhkaWfq8TZpZWHe6cz1Sgt7djXf')
-            , ('tzvXws1qhmfdPkPcprezULCDQPAJqzPhbZ3SMrqRPNE')
-            , ('8psNvWTrdNTiVRNzAgsou9kETXNJm2SXZyaKuJraVRtf')
-        ) AS x (fee_receiver)
-        UNION ALL 
-
-        -- Jupiter transfers partner fee to a ReferralTokenAccount owned by a ReferralAccount owned by 25mY
-        SELECT referraltokenaccount AS fee_receiver
-        FROM (
-            SELECT
-            account_arguments[1] AS creator
-            , account_arguments[3] AS referralaccount
-            , account_arguments[4] AS referraltokenaccount
-            FROM {{ source('solana','instruction_calls') }}
-            WHERE executing_account = 'REFER4ZgmyYx9c6He5XfaTMiGfdLwRnkV4RPp9t9iF3'
-            AND account_arguments[2] = '45ruCyfdRkWpRNGEqWzjCiXRHkZs8WXCLQ67Pnpye7Hp'
-            AND TRY_CAST(data AS VARCHAR) like '%7d12465f%'
-            AND block_time >= TIMESTAMP '2023-11-30' -- First date phantom ReferralTokenAccount created
-            AND block_time < TIMESTAMP '2025-02-12' -- Last date phantom ReferralTokenAccount created
-            )
-        WHERE referralaccount IN (
-            'CnmA6Zb8hLrG33AT4RTzKdGv1vKwRBKQQr8iNckvv8Yg'
-            , '2rQZb9xqQGwoCMDkpabbzDB9wyPTjSPj9WNhJodTaRHm'
-            , '9gnLg6NtVxaASvxtADLFKZ9s8yHft1jXb1Vu6gVKvh1J'
-            , 'wtpXRqKLdGc7vpReogsRugv6EFCw4HBHcxm8pFcR84a'
-            , 'D1NJy3Qq3RKBG29EDRj28ozbGwnhmM5yBUp8PonSYUnm'
-        )
+with filtered_transactions as (
+        select 
+            id, 
+            signer,
+            block_date
+        from {{ source('solana', 'transactions') }}
+        where
+            {% if is_incremental() %} 
+                {{ incremental_predicate('block_date') }}
+            {% else %} 
+                block_date >= timestamp '{{query_start_date}}'
+            {% endif %} 
     ),
-
     trades as (
         select
             'solana' as blockchain,
@@ -85,9 +62,9 @@ with
                 and fee_payments.index = 1  -- only get the first fee payment per tx
                 and trades.trader_id != fee_payments.fee_receiver
             )
-        join {{ source('solana', 'transactions') }} tx ON trades.tx_id = tx.id 
-        left join fee_addresses fa1 ON fa1.fee_receiver = trades.trader_id
-        left join fee_addresses fa2 ON fa2.fee_receiver = tx.signer
+        join filtered_transactions as tx ON trades.tx_id = tx.id 
+        left join {{ ref("phantom_swapper_solana_fee_addresses") }} as fa1 ON fa1.fee_receiver = trades.trader_id
+        left join {{ ref("phantom_swapper_solana_fee_addresses") }} as fa2 ON fa2.fee_receiver = tx.signer
         where
             fa1.fee_receiver IS NULL -- Exclude trades where FeeWallet is trader
             and fa2.fee_receiver IS NULL -- Exclude transactions signed by FeeWallet 
@@ -96,8 +73,8 @@ with
                 and {{ incremental_predicate('trades.block_time') }}
                 and {{ incremental_predicate('fee_payments.block_time') }}
             {% else %}
-                and trades.block_time >= timestamp '{{project_start_date}}'
-                and fee_payments.block_time >= timestamp '{{project_start_date}}'
+                and trades.block_time >= timestamp '{{query_start_date}}'
+                and fee_payments.block_time >= timestamp '{{query_start_date}}'
             {% endif %}
     ),
     highest_inner_instruction_index_for_each_trade as (

@@ -231,3 +231,11 @@ models:
         description: "Whether the trade is the last hop of the trade transaction, in case of a multi-hop trade"
         tests:
           - not_null
+
+  - name: phantom_swapper_solana_fee_addresses
+    description: "Accounts Phantom uses to receive swap fees"
+    columns:
+      - name: fee_receiver
+        description: "Address of the fee receiving wallet"
+        tests:
+          - not_null
