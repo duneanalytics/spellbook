@@ -42,7 +42,7 @@ WITH transfers AS (
         AND {{incremental_predicate('call_block_time')}}
         {% else -%}
         and
-            call_block_time between date '2023-01-01' and date '2023-04-01'
+            call_block_time between date '2025-01-01' and date '2025-04-01'
         {% endif -%}
 )
 , final AS (
