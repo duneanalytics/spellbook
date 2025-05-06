@@ -59,7 +59,7 @@ WHERE
     and call_type = 'call'
     and success
     and to = {{ entropy_address }}
-    and slice(trace_address, -1, 1) = 0
+    and element_at(trace_address, -1) = 0
 {% if is_incremental() %}
     AND {{ incremental_predicate('block_date') }}
 {% endif %}
