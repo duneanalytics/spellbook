@@ -111,18 +111,16 @@ WITH pools AS (
 )
 
 , swaps_with_transfers AS (
-    -- something in the join condition or case statement is wrong that makes transfer joins sometimes not bite
-    -- e.g. 2CAM3boMJGwKRRGB2X8RdaqtoasvB34ZXBx67YkuAbf7Ubqdpx3S7BsH3p8A1jqDTrPDzM83YyKyYEuxkPvffoAF
     SELECT
         sf.*,
-        sf.base_amount as base_token_amount, -- Amount of the pool's base token
-        t.amount as quote_token_amount     -- Amount of the quote token (SOL) from transfer
+        sf.base_amount as base_token_amount, 
+        t.amount as quote_token_amount  
     FROM swaps_with_fees sf
     LEFT JOIN {{ ref('tokens_solana_transfers') }} t
         ON t.tx_id = sf.tx_id
         AND t.block_slot = sf.block_slot
         AND t.outer_instruction_index = sf.outer_instruction_index
-        AND t.to_token_account != sf.account_protocol_fee_recipient_token_account -- New: Exclude transfers to protocol fee recipient token account
+        AND t.to_token_account != sf.account_protocol_fee_recipient_token_account
         AND (
                 (
                 sf.swap_inner_index IS NULL 
@@ -176,12 +174,12 @@ WITH pools AS (
         , sp.tx_index
         , sp.block_slot
         , case
-            when sp.is_buy = 1 then p.account_pool_base_token_account
-            else p.account_pool_quote_token_account
+            when sp.is_buy = 1 then sp.account_pool_base_token_account
+            else sp.account_pool_quote_token_account
           end as token_bought_vault
         , case
-            when sp.is_buy = 1 then p.account_pool_quote_token_account
-            else p.account_pool_base_token_account
+            when sp.is_buy = 1 then sp.account_pool_quote_token_account
+            else sp.account_pool_base_token_account
           end as token_sold_vault
     FROM swaps_with_transfers sp
     LEFT JOIN pools p ON p.pool = sp.pool
@@ -210,5 +208,5 @@ SELECT
     , tb.outer_instruction_index
     , tb.inner_instruction_index
     , tb.tx_index
-    , {{ dbt_utils.generate_surrogate_key(['tx_id', 'tx_index', 'outer_instruction_index', 'swap_inner_index']) }} as surrogate_key
+    , {{ dbt_utils.generate_surrogate_key(['tx_id', 'tx_index', 'outer_instruction_index', 'inner_instruction_index']) }} as surrogate_key
 FROM trades_base tb
