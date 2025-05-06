@@ -19,9 +19,4 @@
 
 {% set project_start_date = '2024-05-01' %}
 
-with
-{{ delta_settle_swap('ethereum') }}
-,{{ delta_safe_settle_batch_swap('ethereum') }}
-select * from delta_v1_settleSwap
-union all
-select * from delta_v1_safeSettleBatch
+{{ delta_v1_master('ethereum') }}

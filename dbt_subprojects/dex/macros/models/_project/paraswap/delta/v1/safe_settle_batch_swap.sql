@@ -4,7 +4,9 @@ safe_settle_batch_swap_ExpandedOrders AS (
     call_trace_address,
     call_block_time,
     call_block_number,
-    call_tx_hash,
+    call_tx_hash,       
+    call_tx_from, -- varbinary
+    call_tx_to, -- varbinary
     output_successfulOrders,
     JSON_EXTRACT(data, '$.ordersData') AS parsed_orders,
     contract_address
@@ -37,11 +39,11 @@ safe_settle_batch_swap_ExpandedOrders AS (
   FROM safe_settle_batch_swap_parsedOrdersWithSig 
 ), safe_settle_batch_swap_parsedOrders AS (
   SELECT
-    from_hex(JSON_EXTRACT_SCALAR(JSON_PARSE(TRY_CAST("order" AS VARCHAR)), '$.owner')) AS "order_owner",
+    from_hex(JSON_EXTRACT_SCALAR(JSON_PARSE(TRY_CAST("order" AS VARCHAR)), '$.owner')) AS "owner",
     FROM_HEX(JSON_EXTRACT_SCALAR(JSON_PARSE(TRY_CAST("order" AS VARCHAR)), '$.srcToken')) AS "src_token",
     FROM_HEX(JSON_EXTRACT_SCALAR(JSON_PARSE(TRY_CAST("order" AS VARCHAR)), '$.destToken')) AS "dest_token",
-    JSON_EXTRACT_SCALAR(JSON_PARSE(TRY_CAST("order" AS VARCHAR)), '$.srcAmount')  AS "src_amount",
-    JSON_EXTRACT_SCALAR(JSON_PARSE(TRY_CAST("order" AS VARCHAR)), '$.destAmount')  AS "dest_amount",
+    cast(JSON_EXTRACT_SCALAR(JSON_PARSE(TRY_CAST("order" AS VARCHAR)), '$.srcAmount') as uint256) AS "src_amount",
+    cast(JSON_EXTRACT_SCALAR(JSON_PARSE(TRY_CAST("order" AS VARCHAR)), '$.destAmount') as uint256) AS "dest_amount",
     *
   FROM safe_settle_batch_swap_unparsedOrders
 ), safe_settle_batch_swap_wrapped_native AS (
@@ -86,20 +88,23 @@ ORDER BY
   CARDINALITY(w.output_successfulOrders)
 ), delta_v1_safeSettleBatch as (  
   SELECT
+    '{{blockchain}}' as blockchain,
     'delta_v1_safe_settle_batch_swap_model' as method,
     order_index,
     call_trace_address,
     call_block_number,
     call_block_time,
-    date_trunc('month', call_block_time) AS block_month,
     call_tx_hash,
+    call_tx_from, -- varbinary
+    call_tx_to, -- varbinary
+    cast(NULL as bigint) as evt_index, -- no events in delta v1
     -- parsed_order_data,
     feeAmount as fee_amount,
     -- orderWithSig as order_with_sig,
     calldataToExecute as calldata_to_execute,
     -- "order",
     signature,
-    order_owner,
+    owner,
     src_token,
     dest_token,
     src_amount,
