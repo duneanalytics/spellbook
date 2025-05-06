@@ -47,7 +47,7 @@ WITH pools AS (
         , call_tx_index as tx_index
         , 1 as is_buy
     FROM {{ source('pumpdotfun_solana', 'pump_amm_call_buy') }}
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
     WHERE {{incremental_predicate('call_block_time')}}
     {% else %}
     WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
@@ -77,7 +77,7 @@ WITH pools AS (
         , call_tx_index as tx_index
         , 0 as is_buy
     FROM {{ source('pumpdotfun_solana', 'pump_amm_call_sell') }}
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
     WHERE {{incremental_predicate('call_block_time')}}
     {% else %}
     WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
@@ -135,7 +135,7 @@ WITH pools AS (
                 )
             )
         
-        {% if is_incremental() or true %}
+        {% if is_incremental() %}
         AND {{incremental_predicate('t.block_time')}}
         {% else %}
         AND t.block_time >= TIMESTAMP '{{project_start_date}}'
