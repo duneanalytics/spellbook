@@ -302,7 +302,7 @@ FROM
     ('vinu-vita-inu', 'bnb', 'VINU', 0xfebe8c1ed424dbf688551d4e2267e7a53698f0aa, 18),
     ('sign-sign2', 'bnb', 'SIGN', 0x868fced65edbf0056c4163515dd840e9f287a4c3, 18),
     ('hyper-hyperlane', 'bnb', 'HYPER', 0xc9d23ed2adb0f551369946bd377f8644ce1ca5c4, 18),
-    ('fhe-mind-networke', 'bnb', 'FHE', 0xd55C9fB62E176a8Eb6968f32958FeFDD0962727E, 18)
+    ('fhe-mind-network', 'bnb', 'FHE', 0xd55C9fB62E176a8Eb6968f32958FeFDD0962727E, 18)
 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
