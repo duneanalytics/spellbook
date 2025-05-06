@@ -84,5 +84,35 @@ LEFT JOIN {{ source('prices', 'usd') }} s
   AND s.minute = DATE_TRUNC('minute', w.call_block_time)
 ORDER BY
   CARDINALITY(w.output_successfulOrders)
+), delta_v1_safeSettleBatch as (  
+  SELECT
+    'delta_v1_safe_settle_batch_swap_model' as method,
+    order_index,
+    call_trace_address,
+    call_block_number,
+    call_block_time,
+    date_trunc('month', call_block_time) AS block_month,
+    call_tx_hash,
+    -- parsed_order_data,
+    feeAmount as fee_amount,
+    -- orderWithSig as order_with_sig,
+    calldataToExecute as calldata_to_execute,
+    -- "order",
+    signature,
+    order_owner,
+    src_token,
+    dest_token,
+    src_amount,
+    dest_amount,
+    src_token_for_joining,
+    dest_token_for_joining,
+    fee_token,
+    src_token_price_usd,
+    dest_token_price_usd,
+    gas_fee_usd,
+    src_token_order_usd,
+    dest_token_order_usd,
+    contract_address
+  from delta_v1_safe_settle_batch_swap_model
 )
 {% endmacro %}
