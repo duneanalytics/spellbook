@@ -30,6 +30,7 @@
      , ('sei', source('erc1155_sei', 'evt_ApprovalForAll'))
      , ('ronin', source('erc1155_ronin', 'evt_ApprovalForAll'))
      , ('ink', source('erc1155_ink', 'evt_ApprovalForAll'))
+     , ('unichain', source('erc1155_unichain', 'evt_ApprovalForAll'))
      , ('lens', source('erc1155_lens', 'evt_ApprovalForAll'))
 ] %}
 
