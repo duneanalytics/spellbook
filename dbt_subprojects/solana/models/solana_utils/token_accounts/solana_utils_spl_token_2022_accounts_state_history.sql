@@ -2,10 +2,10 @@
   config(
     schema='solana_utils'
     , alias='spl_token_2022_accounts_state_history'
-    , partition_by=['address_prefix']
+    , partition_by=['valid_from_block_month', 'address_prefix']
     , materialized='table'
     , file_format='delta'
-    , unique_key=['address', 'address_prefix', 'unique_instruction_key']
+    , unique_key=['valid_from_block_month', 'address', 'address_prefix', 'unique_instruction_key']
   )
 }}
 
@@ -68,9 +68,11 @@ select
         WHEN event_type = 'owner_change' THEN last_non_null_token_mint_address
         ELSE token_mint_address
     END AS token_mint_address
+    , cast(date_trunc('month', valid_from_block_date) as date) as valid_from_block_month -- for partitioning
     , valid_from_block_date
     , valid_from_block_time
     , valid_from_unique_instruction_key
+    , coalesce(cast(date_trunc('month', valid_to_block_date) as date), date '9999-12-01') as valid_to_block_month
     , coalesce(valid_to_block_date, date '9999-12-31') as valid_to_block_date
     , coalesce(valid_to_block_time, timestamp '9999-12-31 23:59:59') as valid_to_block_time
     , coalesce(valid_to_unique_instruction_key, '999999999-999999-9999-9999') as valid_to_unique_instruction_key
