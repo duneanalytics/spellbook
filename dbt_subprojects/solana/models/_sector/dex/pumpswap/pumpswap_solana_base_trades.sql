@@ -206,9 +206,9 @@ SELECT
     , tb.trader_id
     , tb.tx_id
     , tb.outer_instruction_index
-    , tb.inner_instruction_index
+    , coalesce(tb.inner_instruction_index, 0) as inner_instruction_index --coalesce to 0 to avoid null uniqueness error
     , tb.tx_index
     , {{ dbt_utils.generate_surrogate_key(['tx_id', 'tx_index', 'outer_instruction_index', 'inner_instruction_index']) }} as surrogate_key
 FROM trades_base tb
 --temp debug
-where block_time >= now() - interval '7' day
+where block_time >= now() - interval '1' day
