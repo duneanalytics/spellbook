@@ -11,6 +11,7 @@
     , ref('equalizer_sonic_base_trades')
     , ref('shadow_sonic_base_trades')
     , ref('silverswap_sonic_base_trades')
+    , ref('uniswap_v3_sonic_base_trades')
 ] %}
 
 WITH base_union AS (

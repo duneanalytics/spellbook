@@ -14,3 +14,6 @@ level_ bigint, current_cell_data varbinary, refs_indexes varbinary, cursor_bit_o
 {%- macro ton_action_load_maybe_ref() -%}'9'{%- endmacro -%}
 {%- macro ton_action_load_coins() -%}'a'{%- endmacro -%}
 {%- macro ton_action_skip_maybe_ref() -%}'b'{%- endmacro -%}
+{%- macro ton_action_return_if_neq() -%}'c'{%- endmacro -%}
+
+{%- macro ton_action_return_flag() -%}'__ton_return_flag'{%- endmacro -%}

@@ -65,8 +65,7 @@ staking_product_premiums as (
     call_tx_hash as tx_hash
   from {{ source('nexusmutual_ethereum', 'StakingProducts_call_getPremium') }}
   where call_success
-    --and contract_address = 0xcafea573fbd815b5f59e8049e71e554bde3477e4
-    and contract_address <> 0xcafea524e89514e131ee9f8462536793d49d8738
+    and contract_address = 0xcafea573fbd815b5f59e8049e71e554bde3477e4 -- proxy
 ),
 
 cover_premiums as (

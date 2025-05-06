@@ -30,4 +30,5 @@ FROM
     , ('ezeth-renzo-restaked-eth', 'ezETH', 0x2416092f143378750bb29b79eD961ab195CcEea5, 18)
     , ('rseth-rseth', 'rsETH', 0xc3eACf0612346366Db554C991D7858716db09f58, 18)
     , ('comp-compoundd', 'COMP', 0xdf78e4F0A8279942ca68046476919A90f2288656, 18)
+    , ('wbtc-wrapped-bitcoin', 'kBTC', 0x73e0c0d45e048d25fc26fa3159b0aa04bfa4db98, 8)
 ) as temp (token_id, symbol, contract_address, decimals) 

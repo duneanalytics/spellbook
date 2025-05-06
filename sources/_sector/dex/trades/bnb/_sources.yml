@@ -44,6 +44,10 @@ sources:
       - name: ClPoolManager_evt_Swap
       - name: ClPoolManager_evt_Initialize
       - name: ClPoolManager_call_Swap
+      - name: BinPoolManager_evt_Swap
+      - name: BinPoolManager_evt_Initialize
+      - name: BinPoolManager_call_Swap
+
   - name: biswap_bnb
     tables:
       - name: BiswapPair_evt_Swap

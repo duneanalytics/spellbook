@@ -5,3 +5,4 @@ sources:
     tables:
       - name: ubischemev2_evt_ubicalculated
       - name: ubischemev2_evt_ubiclaimed
+      - name: MentoBroker_evt_Swap

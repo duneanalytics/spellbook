@@ -753,5 +753,6 @@ FROM
         ('bansol-comedian', 'solana', 'ban', '9PR7nCP9DpcUotnDPVLUBUZKu5WAYkwrCUx9wDnSpump', 6),
         ('jellyjelly-jelly-my-jelly', 'solana', 'jellyjelly', 'FeR8VBqNRSUD5NtXAj2n3j1dAHkZHfyDktKuLXD4pump', 6),
         ('fred3-first-convicted-raccon', 'solana', 'FRED', 'CNvitvFnSM5ed6K28RUNSaAjqqz5tX1rA5HgaBN9pump', 6),
-        ('sonic-sonic-svm', 'solana', 'SONIC', 'SonicxvLud67EceaEzCLRnMTBqzYUUYNr93DBkBdDES', 9)
+        ('sonic-sonic-svm', 'solana', 'SONIC', 'SonicxvLud67EceaEzCLRnMTBqzYUUYNr93DBkBdDES', 9),
+        ('usdg-global-dollar', 'solana', 'USDG', '2u1tszSeqZ3qBWF3uNGPFc8TzMk2tdiwknnRMWGWjGWH', 6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
