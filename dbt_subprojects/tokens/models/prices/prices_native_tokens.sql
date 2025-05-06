@@ -91,5 +91,6 @@ FROM
     ('ron-ronin-token', null, 'RON', null, null),
     ('hype-hyperliquid', null, 'HYPE', null, null),
     ('bera-berachain', null, 'BERA', null, null),
-    ('ape-apecoin', null, 'APE', null, null)
+    ('ape-apecoin', null, 'APE', null, null),
+    ('gho-gho', null, 'GHO', null, null)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
