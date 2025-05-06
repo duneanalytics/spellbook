@@ -1,0 +1,168 @@
+version: 2
+
+models:
+  - name: gooddollar_celo_ubi_claims
+    meta:
+      blockchain: celo
+      project: gooddollar
+      contributors: tomfutago
+    config:
+      tags: ["celo", "gooddollar", "ubi"]
+    description: "GoodDollar daily UBI claims"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - tx_hash
+    columns:
+      - &block_time
+        name: block_time
+        description: "UTC event block time"
+        data_tests:
+          - not_null
+      - &block_date
+        name: block_date
+        description: "event block date"
+        data_tests:
+          - not_null
+      - &block_number
+        name: block_number
+        description: "block number"
+        data_tests:
+          - not_null
+      - &claimer
+        name: claimer
+        description: "claimer address"
+        data_tests:
+          - not_null
+      - &amount
+        name: amount
+        description: "claimed amount"
+      - &amount_usd
+        name: amount_usd
+        description: "claimed amount in USD"
+      - &amount_raw
+        name: amount_raw
+        description: "claimed amount raw"
+        data_tests:
+          - not_null
+      - &gas_price
+        name: gas_price
+        description: "gas price at the time of claim"
+      - &gas_used
+        name: gas_used
+        description: "gas used"
+      - &tx_fee
+        name: tx_fee
+        description: "tx fee amount"
+      - &tx_fee_usd
+        name: tx_fee_usd
+        description: "tx fee amount in USD"
+      - &tx_fee_currency_symbol
+        name: tx_fee_currency_symbol
+        description: "tx fee currency symbol"
+      - &tx_fee_currency
+        name: tx_fee_currency
+        description: "tx fee currency contract address"
+      - &project_contract_address
+        name: project_contract_address
+        description: "deployed project contract address"
+        data_tests:
+          - not_null
+      - &tx_hash
+        name: tx_hash
+        description: "unique transaction hash value"
+        data_tests:
+          - not_null
+
+  - name: gooddollar_celo_ubi_claims_daily_agg
+    meta:
+      blockchain: celo
+      project: gooddollar
+      contributors: tomfutago
+    config:
+      tags: ["celo", "gooddollar", "ubi"]
+    description: "GoodDollar daily UBI claims aggregates"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+    columns:
+      - *block_date
+      - name: unique_claimers
+        description: "unique claimers"
+      - &claim_count
+        name: claim_count
+        description: "daily claim count"
+      - *amount
+      - name: avg_amount
+        description: "avg daily UBI amount"
+      - *amount_usd
+      - name: avg_amount_usd
+        description: "avg daily UBI amount in USD"
+      - name: day_oridinal
+        description: "incremental day ordinal"
+      - name: daily_ubi
+        description: "daily UBI amount (changes at approx 12:00)"
+      - name: daily_ubi_raw
+        description: "daily UBI amount raw (changes at approx 12:00)"
+      - name: fee_to_claim_ratio
+        description: "fee to claim ratio (based on USD amounts)"
+
+  - name: gooddollar_celo_ubi_claimers_agg
+    meta:
+      blockchain: celo
+      project: gooddollar
+      contributors: tomfutago
+    config:
+      tags: ["celo", "gooddollar", "ubi"]
+    description: "GoodDollar claimer aggregates"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - claimer
+    columns:
+      - *claimer
+      - *claim_count
+      - *amount
+      - *amount_usd
+      - *tx_fee_usd
+      - name: fee_currency_symbols
+        description: "list (array) of fee currency symbols (if claimer used ERC-20 as gas currency)"
+      - name: fee_amounts_by_currency
+        description: "list (array) of fee amounts by corresponding currency (same order as per fee_currency_symbols)"
+
+  - name: gooddollar_celo_ubi_claimer_streaks
+    meta:
+      blockchain: celo
+      project: gooddollar
+      contributors: tomfutago
+    config:
+      tags: ["celo", "gooddollar", "ubi"]
+    description: "GoodDollar claimer streak stats"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - claimer
+    columns:
+      - *claimer
+      - name: longest_daily_streak
+        description: "longest consecutive claim days"
+      - name: current_streak
+        description: "current consecutive claim days"
+      - name: total_claim_days
+        description: "total number of days a user has claimed UBI"
+      - name: total_days_span
+        description: "period between first and last claim (inclusive)"
+      - name: claim_rate_pct
+        description: "what percentage of days the user claimed UBI since their first claim"
+      - name: first_claim_date
+        description: "date when the user started claiming"
+      - name: last_claim_date
+        description: "date of most recent claim"
+      - name: days_since_last_claim
+        description: "how many days have passed since their most recent claim"
+      - name: total_streaks
+        description: "number of separate streaks the user has had (indicates consistency)"
+      - name: claims_last_30_days
+        description: "recent activity metric showing engagement in the last 30 days"

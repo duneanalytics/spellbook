@@ -137,28 +137,28 @@ models:
           - not_null  
 
 
-  - name: gmx_v2_avalanche_c_glv_markets_data
+  - name: gmx_v2_avalanche_c_glvs_data
     meta:
       blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['avalanche_c', 'gmx', 'markets', 'glv_markets_data']
+      tags: ['avalanche_c', 'gmx', 'pools', 'glvs_data']
     description: |
-      Processes decoded market data for GLV markets on the GMX platform in the Avalanche blockchain.
-      This model extracts key details such as market names, token symbols, and decimals, enabling
-      comprehensive analysis of GLV markets.
+      Processes decoded data for GLV pools on the GMX platform in the Avalanche blockchain.
+      This model extracts key details such as pool names, token symbols, and decimals, enabling
+      comprehensive analysis of GLV pools.
 
     columns:
       - name: glv
-        description: The identifier of the GLV market.
-      - name: glv_market_name
-        description: The name of the GLV market.
-      - name: market_token_symbol
-        description: The symbol of the market token.
-      - name: market_token_decimals
-        description: The decimal precision of the market token.
+        description: The identifier of the GLV pool.
+      - name: glv_name
+        description: The name of the GLV pool.
+      - name: glv_token_symbol
+        description: The symbol of the glv token.
+      - name: glv_token_decimals
+        description: The decimal precision of the glv token.
       - name: long_token
         description: The contract address of the long token.
       - name: long_token_symbol

@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: swapr_pools
+    meta:
+      blockchain: gnosis
+      sector: dex
+      contributors: mlaegn
+    config:
+      tags: ['gnosis', 'swapr', 'pools']
+    description: >
+      Swapr DEX pools on the Gnosis chain.
+      This unified model combines both Swapr V2 and Swapr V3 pools.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - pool
+            - creation_block_number
+    columns:
+      - name: blockchain
+        description: "Blockchain on which the DEX is deployed"
+      - name: project
+        description: "Project name of the DEX (swapr)"
+      - name: version
+        description: "Version of the pool creation standard (v2)"
+      - name: pool
+        description: "DEX pool smart contract address"
+      - name: fee
+        description: "The current fee for the pool, updated dynamically if available, otherwise default depending on each one's factory contract."
+      - name: token0
+        description: "First token in the pool"
+      - name: token1
+        description: "Second token in the pool"
+      - name: creation_block_time
+        description: "Block time when the pool was created"
+      - name: creation_block_number
+        description: "Block number when the pool was created"
+      - name: contract_address
+        description: "Factory contract address used to create the pool"

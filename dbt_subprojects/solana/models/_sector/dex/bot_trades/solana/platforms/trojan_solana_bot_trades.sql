@@ -60,7 +60,7 @@ WITH
       IF(feeTokenType = 'SOL', 'SOL', symbol) AS fee_token_symbol,
       fee_token_mint_address AS fee_token_address,
       project,
-      version,
+      trades.version,
       token_pair,
       project_program_id AS project_contract_address,
       trader_id AS user,

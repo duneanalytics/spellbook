@@ -68,6 +68,8 @@ known_solver_metadata (address, environment, name) as (
                  (0xBB765c920f86e2A2654c4B82deB5BC2E092fF93b, 'barn', 'Portus'),
                  (0x01B278ab345Fc427B9Efd112928ACd6b7403c298, 'barn', 'GlueX_Protocol'),
                  (0x911D92D6c905b1DFf68A6De64b9058C941BEC6A1, 'barn', 'ApeOut_1inch'),
+                 (0xB073F89C5BFDdD973b42A5629ab96891fAD74118, 'barn', 'Laita'),
+                 (0x606Ce11E72BC77363cE0Dc74A2ed2b4244968143, 'prod', 'Laita'),
                  (0xE8b92BCd54DAb0c833Bd9ebEcd6770BAae075863, 'prod', 'ApeOut_1inch'),
                  (0x490F34C46cF271B288d1833571f5D47B7e068163, 'prod', 'GlueX_Protocol'),
                  (0x6bf97aFe2D2C790999cDEd2a8523009eB8a0823f, 'prod', 'Portus'),

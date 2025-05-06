@@ -112,11 +112,11 @@ models:
 
   - name: dex_pools
     meta:
-      blockchain: ethereum, arbitrum, polygon
+      blockchain: ethereum, arbitrum, polygon, gnosis
       sector: dex
       contributors: hildobby
     config:
-      tags: ['ethereum', 'arbitrum', 'polygon', 'dex', 'cross-chain', 'pools']
+      tags: ['ethereum', 'arbitrum', 'polygon', 'gnosis', 'dex', 'cross-chain', 'pools']
     description: >
       DEX pools on all chains across all contracts and versions
     data_tests:

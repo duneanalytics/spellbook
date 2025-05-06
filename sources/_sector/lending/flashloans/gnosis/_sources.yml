@@ -16,3 +16,7 @@ sources:
   - name: real_rmm_v2_gnosis
     tables:
       - name: Pool_evt_FlashLoan
+
+  - name: spark_protocol_gnosis
+    tables:
+      - name: Pool_evt_FlashLoan

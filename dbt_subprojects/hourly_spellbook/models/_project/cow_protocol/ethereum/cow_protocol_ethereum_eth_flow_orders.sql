@@ -1,9 +1,9 @@
 {{  config(
         alias='eth_flow_orders',
-
+        schema='cow_protocol_ethereum',
         materialized='incremental',
-        partition_by = ['block_date'],
-        unique_key = ['tx_hash', 'order_uid'],
+        partition_by = ['block_month'],
+        unique_key = ['block_month', 'tx_hash', 'order_uid'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
         incremental_strategy='merge',
@@ -20,15 +20,19 @@ with
 eth_flow_orders as (
     select
         sender,
-        cast(date_trunc('day', evt_block_time) as date) as block_date,
+        cast(date_trunc('month', evt_block_time) as date) as block_month,
         evt_block_time as block_time,
         evt_block_number as block_number,
         evt_tx_hash as tx_hash,
         case
-            when event.contract_address = 0x40a50cf069e992aa4536211b23f286ef88752187
-                then 'prod'
-            when event.contract_address = 0xd02de8da0b71e1b59489794f423fabba2adc4d93
-                then 'barn'
+            when event.contract_address in (
+                0x40A50cf069e992AA4536211B23F286eF88752187,
+                0xba3cb449bd2b4adddbc894d8697f5170800eadec
+            ) then 'prod'
+            when event.contract_address in (
+                0xD02De8Da0B71E1B59489794F423FaBBa2AdC4d93,
+                0x04501b9b1d52e67f6862d157e00d13419d2d6e95
+            ) then 'barn'
         end as environment,
         date_format(
             from_unixtime(bytearray_to_decimal(from_hex(substring(cast(data as varchar), 19, 8)))),

@@ -1,6 +1,5 @@
 {{ config(
     schema = 'addresses_events_optimism'
-
     , alias = 'first_path'
     , materialized = 'incremental'
     , file_format = 'delta'
@@ -150,6 +149,6 @@ LEFT JOIN (
 ) sig
     ON sig.id = f.function
 LEFT JOIN
-{{ source('contracts_optimism', 'contract_mapping') }} cm
+{{ source('contracts_optimism', 'contract_creator_project_mapping') }} cm
     ON f.to_address = cm.contract_address
 GROUP BY 1, 2

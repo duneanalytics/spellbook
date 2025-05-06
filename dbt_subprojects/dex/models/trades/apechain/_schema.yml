@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: dex_apechain_base_trades
+    data_tests:
+      - check_dex_info_relationship
+      - test_acceptable_usd_amount:
+          column_name: amount_usd
+          max_value: 1000000000
+
+  - name: camelot_apechain_base_trades
+    meta:
+      blockchain: apechain
+      sector: dex
+      project: camelot
+      contributors: hosuke
+    config:
+      tags: ["apechain", "dex", "trades", "camelot"]
+    description: "Camelot apechain base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('camelot_apechain_base_trades_seed')
+          filter:
+            version: 1

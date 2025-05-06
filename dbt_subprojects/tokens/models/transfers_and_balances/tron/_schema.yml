@@ -102,3 +102,33 @@ models:
         description: "The USD price used to calculate the amount_usd"
       - name: amount_usd
         description: "The USD amount of the transfer"
+
+  - name: tokens_tron_net_transfers_daily
+    meta:
+      blockchain: tron
+      sector: tokens
+      contributors: 0xRob, krishhh
+    config:
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total transfer amount per day"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+
+  - name: tokens_tron_net_transfers_daily_asset
+    meta:
+      blockchain: tron
+      sector: tokens
+      contributors: 0xRob, krishhh
+    config:
+      tags: ['tokens', 'net_transfers']
+    description: "Total transfer amount per day per asset"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - contract_address
+  

@@ -57,7 +57,7 @@ with
                blockchain,
                token_sold_address,
                token_bought_address,
-               evt_index
+               CAST(evt_index AS INT256) as evt_index
         FROM {{ source('dex', 'trades') }}
 
         UNION ALL
@@ -67,7 +67,7 @@ with
                blockchain,
                token_sold_address,
                token_bought_address,
-               evt_index
+               CAST(evt_index AS INT256) as evt_index
         FROM {{ source('dex_aggregator', 'trades') }} --{{ source('dex', 'trades') }}
       ) t1
       INNER JOIN

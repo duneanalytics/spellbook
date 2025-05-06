@@ -5,6 +5,7 @@ sources:
     tables:
       - name: PoolManager_evt_Swap
       - name: PoolManager_evt_Initialize
+      - name: PoolManager_call_Swap
   - name: uniswap_v3_blast
     tables:
       - name: UniswapV3Pool_evt_Swap

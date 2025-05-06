@@ -176,3 +176,133 @@ models:
       - &daily_delta   
         name: daily_delta
         description: "Daily total impact on BPT supply"
+
+  - name: balancer_v3_base_transfers_bpt
+    meta:
+      blockchain: base
+      project: balancer_v3
+      contributors: viniabussafi
+    config:
+      tags: ['base', 'bpt', 'transfers']
+    description: >
+      Balancer Pool Token (BPT) transfer logs on Balancer, an automated portfolio manager and trading platform, on base.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_tx_hash
+            - evt_index
+            - block_date
+    columns:
+      - *blockchain
+      - *version
+      - *contract_address
+      - *block_date
+      - *block_month
+      - *evt_tx_hash
+      - *evt_index
+      - *evt_block_time
+      - *evt_block_number
+      - *from
+      - *to
+      - *value
+
+  - name: balancer_v3_base_bpt_prices
+    meta:
+      blockchain: base
+      project: balancer_v3
+      contributors: viniabussafi
+    config:
+      tags: ['base', 'bpt', 'prices']
+    description: >
+      Balancer Pool Token (BPT) daily price by pool on Balancer, an automated portfolio manager and trading platform.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - day
+            - contract_address
+    columns:
+      - *blockchain
+      - *day
+      - *version
+      - *decimals
+      - *contract_address
+      - *bpt_price
+
+  - name: balancer_v3_base_bpt_supply
+    meta:
+      blockchain: base
+      project: balancer_v3
+      contributors: viniabussafi
+    config:
+      tags: ['base', 'bpt', 'supply']
+    description: >
+      Balancer Pool Token (BPT) supply by pool on Balancer, an automated portfolio manager and trading platform.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - blockchain
+            - token_address
+    columns:
+      - *day
+      - *pool_type
+      - *version
+      - *blockchain
+      - *token_address
+      - *supply
+
+  - name: balancer_v3_base_bpt_supply_changes
+    meta:
+      blockchain: base
+      project: balancer_v3
+      contributors: viniabussafi
+    config:
+      tags: ['base', 'bpt', 'supply', 'changes']
+    description: >
+      Balancer Pool Token (BPT) supply change events.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - evt_tx_hash
+            - evt_index
+            - label
+    columns:
+      - *block_date
+      - *evt_block_time
+      - *evt_block_number
+      - *blockchain
+      - *evt_tx_hash
+      - *evt_index
+      - *pool_type
+      - *pool_symbol
+      - *version
+      - *label
+      - *token_address
+      - *delta_amount_raw
+      - *delta_amount
+
+  - name: balancer_v3_base_bpt_supply_changes_daily
+    meta:
+      blockchain: base
+      project: balancer_v3
+      contributors: viniabussafi
+    config:
+      tags: ['base', 'bpt', 'supply', 'changes']
+    description: >
+      Balancer Pool Token (BPT) supply change events. grouped by day
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - token_address
+    columns:
+      - *block_date
+      - *blockchain
+      - *pool_type
+      - *pool_symbol   
+      - *version 
+      - *token_address
+      - *daily_delta   

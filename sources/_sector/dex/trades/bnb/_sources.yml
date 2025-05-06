@@ -5,6 +5,7 @@ sources:
     tables:
       - name: PoolManager_evt_Swap
       - name: PoolManager_evt_Initialize
+      - name: PoolManager_call_Swap
   - name: uniswap_v3_blast
   - name: uniswap_v3_bnb
   - name: airswap_bnb
@@ -38,6 +39,15 @@ sources:
     tables:
       - name: PancakeV3Pool_evt_Swap
       - name: PancakeV3Factory_evt_PoolCreated
+  - name: pancakeswap_infinity_bnb
+    tables:
+      - name: ClPoolManager_evt_Swap
+      - name: ClPoolManager_evt_Initialize
+      - name: ClPoolManager_call_Swap
+      - name: BinPoolManager_evt_Swap
+      - name: BinPoolManager_evt_Initialize
+      - name: BinPoolManager_call_Swap
+
   - name: biswap_bnb
     tables:
       - name: BiswapPair_evt_Swap

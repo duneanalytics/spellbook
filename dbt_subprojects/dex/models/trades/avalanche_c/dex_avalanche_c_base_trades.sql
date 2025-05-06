@@ -6,8 +6,9 @@
 }}
 
 {% set base_models = [
-    ref('uniswap_v3_avalanche_c_base_trades')
-    , ref('uniswap_v4_avalanche_c_base_trades')
+    ref('uniswap_v4_avalanche_c_base_trades')
+    , ref('uniswap_v3_avalanche_c_base_trades')
+    , ref('uniswap_v2_avalanche_c_base_trades')
     , ref('airswap_avalanche_c_base_trades')
     , ref('sushiswap_v1_avalanche_c_base_trades')
     , ref('sushiswap_v2_avalanche_c_base_trades')
@@ -27,7 +28,6 @@
     , ref('woofi_avalanche_c_base_trades')
     , ref('curvefi_avalanche_c_base_trades')
     , ref('hashflow_avalanche_c_base_trades')
-    , ref('uniswap_v2_avalanche_c_base_trades')
     , ref('elk_finance_avalanche_c_base_trades')
 ] %}
 

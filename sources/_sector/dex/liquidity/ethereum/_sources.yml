@@ -1,0 +1,6 @@
+version: 2
+
+sources:
+  - name: uniswap_v4_ethereum
+    tables:
+      - name: PoolManager_evt_ModifyLiquidity

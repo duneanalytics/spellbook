@@ -124,51 +124,145 @@ FROM
     blockchain = null
     , project = 'uniswap'
     , version = '4'
+    , PoolManager_call_Swap = null
     , PoolManager_evt_Swap = null
-    , PoolManager_evt_Initialize = null
     , taker_column_name = null
-    , maker_column_name = 'id'
-    , swap_optional_columns = ['fee']
-    , initialize_optional_columns = ['hooks']
-    , pair_column_name = 'id'
+    , maker_column_name = null
     )
 %}
 WITH dexs AS
 (
-    SELECT
-        t.evt_block_number AS block_number
-        , t.evt_block_time AS block_time
-        , {% if taker_column_name -%} t.{{ taker_column_name }} {% else -%} cast(null as varbinary) {% endif -%} as taker
-        -- In v4, the maker (i.e. what sold the token) is the pool's virtual address. We also pass the pool ID, making it easier to join with Initialize() and retrieve hooked pool metrics.
-        , {% if maker_column_name -%} t.{{ maker_column_name }} {% else -%} cast(null as varbinary) {% endif -%} as maker      
-        -- in v4, when amount is negative, then user are selling the token (so things are done from the perspective of the user instead of the pool)
-        , CASE WHEN t.amount0 < INT256 '0' THEN abs(t.amount1) ELSE abs(t.amount0) END AS token_bought_amount_raw 
-        , CASE WHEN t.amount0 < INT256 '0' THEN abs(t.amount0) ELSE abs(t.amount1) END AS token_sold_amount_raw
-        , CASE WHEN t.amount0 < INT256 '0' THEN f.currency1 ELSE f.currency0 END AS token_bought_address
-        , CASE WHEN t.amount0 < INT256 '0' THEN f.currency0 ELSE f.currency1 END AS token_sold_address
-        , t.contract_address as project_contract_address
-        , t.sender 
-        , t.evt_tx_hash AS tx_hash
-        , t.evt_index
-        {%- if swap_optional_columns %}
-        {%- for optional_column in swap_optional_columns %}
-        , t.{{ optional_column }}
-        {%- endfor %}
+    WITH clean_swaps AS (
+        WITH raw AS (
+            SELECT 
+                call_block_number
+            , call_block_time 
+            , call_tx_hash 
+            , contract_address
+            , call_trace_address
+            , FROM_HEX(JSON_EXTRACT_SCALAR(JSON_PARSE("key"), '$.currency0')) AS currency0
+            , FROM_HEX(JSON_EXTRACT_SCALAR(JSON_PARSE("key"), '$.currency1')) AS currency1
+            , FROM_HEX(JSON_EXTRACT_SCALAR(JSON_PARSE("key"), '$.hooks')) AS hooks
+            , CAST(output_swapDelta AS VARBINARY) AS swapDelta_varbinary
+            
+            FROM {{ PoolManager_call_Swap }}
+            WHERE call_success
+                {%- if is_incremental() %}
+                AND {{ incremental_predicate('call_block_time') }}
+                {%- endif %}
+        )
+
+        , wrangled AS (
+            SELECT *
+            /* Calculate amount0 and amount1 with formula; signage is from user's perspective */
+            -- The top 16 bytes
+            , CASE 
+                WHEN BITWISE_AND(
+                    VARBINARY_TO_BIGINT(VARBINARY_SUBSTRING(swapDelta_varbinary, 1, 1))
+                    , FROM_BASE('80', 16) -- 0x80 as decimal 128
+                ) = FROM_BASE('80', 16)
+                THEN VARBINARY_TO_INT256(
+                    VARBINARY_CONCAT(
+                        FROM_HEX('0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF') -- 16 bytes of 0xFF
+                        , VARBINARY_SUBSTRING(swapDelta_varbinary, 1, 16)           
+                    )
+                )
+                ELSE VARBINARY_TO_INT256(
+                    VARBINARY_CONCAT(
+                        FROM_HEX('0x00000000000000000000000000000000') -- 16 bytes of 0x00
+                        , VARBINARY_SUBSTRING(swapDelta_varbinary, 1, 16)
+                    )
+                )
+            END AS amount0
+            
+            -- The bottom 16 bytes
+            , CASE 
+                WHEN BITWISE_AND(
+                    VARBINARY_TO_BIGINT(VARBINARY_SUBSTRING(swapDelta_varbinary, 17, 1))
+                    , FROM_BASE('80', 16)
+                ) = FROM_BASE('80', 16)
+                THEN VARBINARY_TO_INT256(
+                    VARBINARY_CONCAT(
+                        FROM_HEX('0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF') -- 16 bytes of 0xFF
+                        , VARBINARY_SUBSTRING(swapDelta_varbinary, 17, 16)          
+                    )
+                )
+                ELSE VARBINARY_TO_INT256(
+                    VARBINARY_CONCAT(
+                        FROM_HEX('0x00000000000000000000000000000000') -- 16 bytes of 0x00
+                        , VARBINARY_SUBSTRING(swapDelta_varbinary, 17, 16)
+                    )
+                )
+            END AS amount1
+            
+            FROM raw
+        )
+
+        SELECT 
+            call_block_number
+        , call_block_time
+        , contract_address
+        , call_tx_hash
+        , amount0
+        , amount1
+        , currency0
+        , currency1
+        , hooks
+        , call_trace_address
+        , row_number() over(partition by call_tx_hash order by call_trace_address) as call_rn
+
+        FROM wrangled
+    )
+
+    , swap_evt as (
+    select contract_address
+        , evt_tx_hash
+        , evt_block_time
+        , evt_index
+        , row_number() over(partition by evt_tx_hash order by evt_index) as evt_rn
+        , evt_block_number
+        , amount0
+        , amount1
+        , fee
+        , id
+        , liquidity
+        , sender -- router 
+        , sqrtPriceX96
+        , tick
+    FROM {{ PoolManager_evt_Swap }}
+    WHERE 1=1
+        {%- if is_incremental() %}
+        AND {{ incremental_predicate('evt_block_time') }}
         {%- endif %}
-        {%- if initialize_optional_columns %}
-        {%- for optional_column in initialize_optional_columns %}
-        , f.{{ optional_column }}
-        {%- endfor %}
-        {%- endif %}
-    FROM
-        {{ PoolManager_evt_Swap }} t
-    INNER JOIN
-        {{ PoolManager_evt_Initialize }} f
-        ON f.{{ pair_column_name }} = t.id
-    {%- if is_incremental() %}
-    WHERE
-        {{ incremental_predicate('t.evt_block_time') }}
-    {%- endif %}
+
+)
+
+    SELECT 
+        e.evt_block_number AS block_number
+    , e.evt_block_time AS block_time
+    , {% if taker_column_name -%} t.{{ taker_column_name }} {% else -%} cast(null as varbinary) {% endif -%} as taker
+    , e.id as maker -- In v4, the maker (i.e. what sold the token) is the pool's virtual address. We also pass the pool ID, making it easier to join with Initialize() and retrieve hooked pool metrics.
+    , CASE WHEN c.amount0 < INT256 '0' THEN ABS(c.amount1) ELSE ABS(c.amount0) END AS token_bought_amount_raw 
+    , CASE WHEN c.amount0 < INT256 '0' THEN ABS(c.amount0) ELSE ABS(c.amount1) END AS token_sold_amount_raw
+    , CASE WHEN c.amount0 < INT256 '0' THEN c.currency1 ELSE currency0 END AS token_bought_address
+    , CASE WHEN c.amount0 < INT256 '0' THEN c.currency0 ELSE currency1 END AS token_sold_address
+    , e.contract_address AS project_contract_address
+    , e.evt_tx_hash AS tx_hash
+    , e.evt_index
+
+    , e.sender -- router
+    , c.hooks
+    , e.fee
+    , e.liquidity
+    , e.sqrtPriceX96
+    , e.tick
+    , c.call_trace_address
+
+    FROM clean_swaps c 
+    JOIN swap_evt e on c.call_block_number = e.evt_block_number 
+        and c.call_tx_hash = e.evt_tx_hash
+        and c.call_rn = e.evt_rn 
+
 )
 
 SELECT
@@ -183,22 +277,19 @@ SELECT
     , CAST(dexs.token_sold_amount_raw AS UINT256) AS token_sold_amount_raw
     , dexs.token_bought_address
     , dexs.token_sold_address
-    , dexs.sender as router
     , dexs.taker
     , dexs.maker
     , dexs.project_contract_address
     , dexs.tx_hash
     , dexs.evt_index
-    {%- if swap_optional_columns %}  
-    {%- for optional_column in swap_optional_columns %}  
-    , dexs.{{ optional_column }}  
-    {%- endfor %}  
-    {%- endif %}  
-    {%- if initialize_optional_columns %}
-    {%- for optional_column in initialize_optional_columns %}
-    , dexs.{{ optional_column }}
-    {%- endfor %}
-    {%- endif %}
+
+    , dexs.sender
+    , dexs.hooks
+    , dexs.fee
+    , dexs.liquidity
+    , dexs.sqrtPriceX96
+    , dexs.tick
+    , dexs.call_trace_address
 FROM
     dexs
 {% endmacro %}

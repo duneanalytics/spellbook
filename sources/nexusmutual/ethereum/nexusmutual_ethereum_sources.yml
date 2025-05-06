@@ -42,3 +42,11 @@ sources:
       - name: IndividualClaims_call_submitClaimFor
       - name: IndividualClaims_call_submitClaim
       - name: IndividualClaims_call_redeemClaimPayout
+      - name: swapoperator_evt_swapped
+
+  - name: nexusmutual_ethereum_ethereum # messed up naming during decding - ideally to be merged into nexusmutual_ethereum
+    tables:
+      - name: swapoperator_evt_swapped  # ideally to be merged with nexusmutual_ethereum.swapoperator_evt_swapped
+      - name: swapoperator_evt_orderplaced
+      - name: swapoperator_call_placeorder
+      - name: swapoperator_evt_orderclosed

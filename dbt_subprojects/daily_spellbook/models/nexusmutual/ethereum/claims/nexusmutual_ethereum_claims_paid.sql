@@ -90,18 +90,16 @@ claims_paid as (
     or (cl.version = 2 and cp.claim_id is not null)
 ),
 
-prices as (
+daily_avg_prices as (
   select
-    date_trunc('day', minute) as block_date,
-    symbol,
-    avg(price) as avg_price_usd
-  from {{ source('prices', 'usd') }}
-  where minute > timestamp '2019-05-01'
-    and ((symbol = 'ETH' and blockchain is null and contract_address is null)
-      or (symbol = 'DAI' and blockchain = 'ethereum' and contract_address = 0x6b175474e89094c44da98b954eedeac495271d0f)
-      or (symbol = 'USDC' and blockchain = 'ethereum' and contract_address = 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48)
-      or (symbol = 'cbBTC' and blockchain = 'ethereum' and contract_address = 0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf))
-  group by 1, 2
+    block_date,
+    avg_eth_usd_price,
+    avg_dai_usd_price,
+    avg_usdc_usd_price,
+    avg_cbbtc_usd_price,
+    avg_nxm_eth_price,
+    avg_nxm_usd_price
+  from {{ ref('nexusmutual_ethereum_capital_pool_prices') }}
 )
 
 select
@@ -114,15 +112,15 @@ select
   cp.product_name,
   --ETH
   cp.eth_claim_amount as eth_eth_claim_amount,
-  cp.eth_claim_amount * p.avg_price_usd as eth_usd_claim_amount,
+  cp.eth_claim_amount * p.avg_eth_usd_price as eth_usd_claim_amount,
   --DAI
-  cp.dai_claim_amount * p.avg_price_usd / p.avg_price_usd as dai_eth_claim_amount,
-  cp.dai_claim_amount * p.avg_price_usd as dai_usd_claim_amount,
+  cp.dai_claim_amount * p.avg_dai_usd_price / p.avg_eth_usd_price as dai_eth_claim_amount,
+  cp.dai_claim_amount * p.avg_dai_usd_price as dai_usd_claim_amount,
   --USDC
-  cp.usdc_claim_amount * p.avg_price_usd / p.avg_price_usd as usdc_eth_claim_amount,
-  cp.usdc_claim_amount * p.avg_price_usd as usdc_usd_claim_amount,
+  cp.usdc_claim_amount * p.avg_usdc_usd_price / p.avg_eth_usd_price as usdc_eth_claim_amount,
+  cp.usdc_claim_amount * p.avg_usdc_usd_price as usdc_usd_claim_amount,
   --cbBTC
-  cp.cbbtc_claim_amount * p.avg_price_usd / p.avg_price_usd as cbbtc_eth_claim_amount,
-  cp.cbbtc_claim_amount * p.avg_price_usd as cbbtc_usd_claim_amount
+  cp.cbbtc_claim_amount * p.avg_cbbtc_usd_price / p.avg_eth_usd_price as cbbtc_eth_claim_amount,
+  cp.cbbtc_claim_amount * p.avg_cbbtc_usd_price as cbbtc_usd_claim_amount
 from claims_paid cp
-  inner join prices p on coalesce(cp.claim_payout_date, cp.claim_date) = p.block_date and cp.cover_asset = p.symbol
+  inner join daily_avg_prices p on coalesce(cp.claim_payout_date, cp.claim_date) = p.block_date

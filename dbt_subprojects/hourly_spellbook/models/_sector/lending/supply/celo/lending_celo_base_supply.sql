@@ -8,7 +8,8 @@
 
 {%
   set models = [
-    ref('moola_celo_base_supply')
+    ref('moola_celo_base_supply'),
+    ref('aave_v3_celo_base_supply')
   ]
 %}
 

@@ -10,3 +10,20 @@ models:
    config:
      tags: [ 'ronin', 'nft', 'trades', 'mavis' ]
    description: "mavis marketplace base trades"
+
+ - name: opensea_v4_ronin_base_trades
+   meta:
+    blockchain: ronin
+    sector: nft
+    project: opensea_ronin
+    contributors: ['peterrliem' ]
+   config:
+    tags: [ 'ronin', 'nft', 'trades', 'opensea' ]
+   description: "opensea base trades"
+   data_tests:
+    - check_columns_nft_base_trades
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - block_number
+          - tx_hash
+          - sub_tx_trade_id

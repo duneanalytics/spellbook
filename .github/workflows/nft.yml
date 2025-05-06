@@ -5,6 +5,7 @@ on:
   pull_request:
     paths:
       - dbt_subprojects/nft/**
+      - dbt_macros/shared/**
       - .github/workflows/nft.yml
       - .github/workflows/dbt_run.yml
 

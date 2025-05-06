@@ -40,7 +40,29 @@ forward_fill AS (
     LEFT JOIN changed_prices lp
         ON d.day >= lp.day
         AND (lp.next_update_day IS NULL OR d.day < lp.next_update_day)
+),
+
+-- Join with market details to get market end time and token outcome information
+price_correction AS (
+    SELECT
+        ff.day,
+        ff.condition_id,
+        ff.token_id,
+        CASE 
+            WHEN ff.day <= TRY_CAST(SUBSTRING(md.market_end_time FROM 1 FOR 19) AS timestamp) THEN ff.price
+            WHEN ff.day > TRY_CAST(SUBSTRING(md.market_end_time FROM 1 FOR 19) AS timestamp) THEN
+                CASE 
+                    WHEN md.token_outcome = 'Yes' AND md.outcome = 'yes' THEN 1
+                    WHEN md.token_outcome = 'Yes' AND md.outcome = 'no' THEN 0
+                    WHEN md.token_outcome = 'No' AND md.outcome = 'yes' THEN 0
+                    WHEN md.token_outcome = 'No' AND md.outcome = 'no' THEN 1
+                    ELSE ff.price
+                END
+            ELSE ff.price
+        END AS price
+    FROM forward_fill ff
+    LEFT JOIN {{ ref('polymarket_polygon_market_details') }} md ON ff.token_id = md.token_id
 )
 
-SELECT * FROM forward_fill
+SELECT * FROM price_correction
 WHERE price > 0

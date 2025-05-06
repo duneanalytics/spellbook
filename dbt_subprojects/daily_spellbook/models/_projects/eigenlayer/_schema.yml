@@ -1,0 +1,324 @@
+version: 2
+
+models:
+  - name: eigenlayer_ethereum_withdrawal_queued_v2_flattened
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags:   ['eigenlayer', 'restaking', 'withdrawal']
+    description: >
+      Flattened withdrawal queued V2 events
+    columns:
+      - &evt_block_time
+        name: evt_block_time
+        description: 'Block time in UTC'
+      - &evt_block_number
+        name: evt_block_number
+        description: 'Block Number'
+      - &evt_tx_hash
+        name: evt_tx_hash
+        description: 'Tx Hash'
+      - &evt_index
+        name: evt_index
+        description: "Event index"
+      - &withdrawalRoot
+        name: withdrawalRoot
+        description: "Withdrawal hash root"
+      - &strategy
+        name: strategy
+        description: "Strategy to withdraw from"
+        type: varbinary
+      - &shares
+        name: shares
+        description: "Shares of strategy of the withdrawal"
+  - name: eigenlayer_ethereum_withdrawal_completed_v2_enriched
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: [ 'eigenlayer', 'restaking', 'withdrawal']
+    description: >
+      Withdrawal completed V2 events, enriched with withdrawal queued strategy and share breakdowns
+    columns:
+      - *evt_block_time
+      - *evt_block_number
+      - *evt_tx_hash
+      - *evt_index
+      - *withdrawalRoot
+      - *strategy
+      - *shares
+  - name: eigenlayer_ethereum_strategy_shares_inflow_by_day
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: [ 'eigenlayer', 'restaking', 'deposit' ]
+    description: >
+        Inflow completed aggregated by day
+    columns:
+      - *strategy
+      - *shares
+      - &date
+        name: date
+        description: "Date in UTC"
+  - name: eigenlayer_ethereum_strategy_shares_outflow_by_day
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: [ 'eigenlayer', 'restaking', 'withdrawal' ]
+    description: >
+        Outflow completed aggregated by day
+    columns:
+      - *strategy
+      - *shares
+      - *date
+  - name: eigenlayer_ethereum_strategy_shares_netflow_by_day
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: [ 'eigenlayer', 'restaking', 'netflow' ]
+    description: >
+        Netflow aggregated by day
+    columns:
+      - *strategy
+      - *shares
+      - *date
+  - name: eigenlayer_ethereum_strategy_category
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'strategy']
+    description: >
+      Strategy category
+    columns:
+      - *strategy
+      - &token
+        name: token
+        description: "ERC20 Token"
+        type: varbinary
+      - &category
+        name: category
+        description: "Category of the strategy"
+      - &name
+        name: name
+        description: "Name of the strategy"
+  - name: eigenlayer_ethereum_avs_operator_registration_status_latest
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'avs', 'operator']
+    description: >
+      Latest AVS and Operator Mappings
+    columns:
+      - &avs
+        name: avs
+        description: "AVS"
+      - &operator
+        name: operator
+        description: "Operator"
+      - &status
+        name: status
+        description: "Registration status between AVS and Operator, 1 for registered, 0 for unregistered"
+  - name: eigenlayer_ethereum_avs_metadata_uri_latest
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'avs', 'metadata']
+    description: >
+      Latest metadata URI of AVSs
+    columns:
+      - *avs
+      - &metadataURI
+        name: metadataURI
+        description: "Metadata URI"
+  - name: eigenlayer_ethereum_operator_metadata_uri_latest
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'operator', 'metadata']
+    description: >
+      Latest metadata URI of Operators in EigenLayer
+    columns:
+      - *operator
+      - *metadataURI
+  - name: eigenlayer_ethereum_rewards_v1_flattened
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'rewards']
+    description: >
+      Flattened rewards V1 events
+    columns:
+      - *avs
+      - *token
+      - &amount
+        name: amount
+        description: "Amount of ERC20 token, in respective decimals"
+  - name: eigenlayer_ethereum_rewards_v1_by_day
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'rewards']
+    description: >
+        Rewards V1 aggregated by day
+    columns:
+      - *token
+      - *amount
+      - *date
+  - name: eigenlayer_ethereum_programmatic_incentive_flattened
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'programmatic incentive']
+    description: >
+      Flattened programmatic incentive events
+    columns:
+      - *token
+      - *amount
+  - name: eigenlayer_ethereum_programmatic_incentive_by_day
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'programmatic incentive']
+    description: >
+        Programmatic incentive aggregated by day
+    columns:
+      - *token
+      - *amount
+      - *date
+  - name: eigenlayer_ethereum_operator_shares_change_by_day
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'delegated shares']
+    description: >
+        Operator shares change aggregated by day
+    columns:
+      - *operator
+      - *strategy
+      - *shares
+      - *date
+  - name: eigenlayer_ethereum_operator_shares_cumulative_by_day
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'delegated shares']
+    description: >
+        Operator shares cumulative aggregated by day
+    columns:
+      - *operator
+      - *strategy
+      - *date
+      - name: cumulative_daily_shares
+        description: "Cumulative daily shares"
+  - name: eigenlayer_ethereum_avs_paid_rewards
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'rewards']
+    description: >
+      AVSs who have paid rewards
+    columns:
+      - *avs
+      - *metadataURI
+  - name: eigenlayer_ethereum_whitelisted_strategy_latest
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'strategy']
+    description: >
+        Latest whitelisted strategies
+    columns:
+      - *strategy
+  - name: eigenlayer_ethereum_underlying_token_exchange_rate
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: [ 'eigenlayer', 'restaking', 'exchange rate' ]
+    description: >
+      Exchange rate of underlying tokens
+    columns:
+      - *strategy
+      - &exchange_rate
+        name: exchange_rate
+        description: "Exchange rate of the strategy shares to underlying tokens"
+  - name: eigenlayer_ethereum_underlying_token_exchange_rate_latest
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'exchange rate']
+    description: >
+        Latest exchange rate of underlying tokens
+    columns:
+      - *strategy
+      - *exchange_rate
+  - name: eigenlayer_ethereum_pod_shares_updated_enriched
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'beacon strategy', 'native eth']
+    description: >
+        Enriched eigenpod shares changed
+    columns:
+      - *evt_tx_hash
+      - *evt_index
+      - *evt_block_time
+      - *evt_block_number
+      - *strategy
+      - *shares
+  - name: eigenlayer_ethereum_strategy_and_token_metadata_latest
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'strategy', 'metadata']
+    description: >
+        Latest strategy and token metadata
+    columns:
+      - *strategy
+      - *token
+      - &symbol
+        name: symbol
+        description: "Symbol of the token"
+      - &decimals
+        name: decimals
+        description: "Decimals of the token"

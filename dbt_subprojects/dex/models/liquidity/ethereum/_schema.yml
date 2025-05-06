@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: dex_ethereum_base_liquidity
+    description: "dex ethereum base liquidity"
+  
+  - name: uniswap_v4_ethereum_base_liquidity
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: uniswap
+      contributors: irishlatte19
+    config:
+      tags: [ 'ethereum', 'dex', 'liquidity', 'uniswap', 'v4' ]
+    description: "uniswap ethereum v4 base liquidity"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_liquidity_seed:
+          seed_file: ref('uniswap_ethereum_base_liquidity_seed')
+          filter:
+            version: 4
+
+ 

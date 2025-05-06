@@ -60,4 +60,5 @@ FROM (VALUES
     , (0xfe596d8f73ae03e3720db419c6320e944838a073, 'MGOLD', 18)
     , (0xCA5d8F8a8d49439357d3CF46Ca2e720702F132b8, 'GYD', 18)
     , (0xb3d5af0a52a35692d3fcbe37669b3b8c31ddde7d, 'stataPolWETH', 18)    
+    , (0x0000000000000000000000000000000000001010, 'POL', 18)    
 ) AS temp_table (contract_address, symbol, decimals)

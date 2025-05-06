@@ -44,7 +44,7 @@ with
             'SOL' as fee_token_symbol,
             '{{wsol_token}}' as fee_token_address,
             project,
-            version,
+            trades.version,
             token_pair,
             project_program_id as project_contract_address,
             trader_id as user,

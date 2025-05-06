@@ -112,4 +112,33 @@ models:
       - name: transfer_type
         description: "Type of transfer such as 'gas_fee', 'reward', or 'standard'."
 
+  - name: tokens_gnosis_net_transfers_daily
+    meta:
+      blockchain: gnosis
+      sector: tokens
+      contributors: 0xRob, krishhh
+    config:
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total transfer amount per day"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+
+  - name: tokens_gnosis_net_transfers_daily_asset
+    meta:
+      blockchain: gnosis
+      sector: tokens
+      contributors: 0xRob, krishhh
+    config:
+      tags: ['tokens', 'net_transfers']
+    description: "Total transfer amount per day per asset"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - contract_address
+
 

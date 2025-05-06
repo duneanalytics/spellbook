@@ -180,6 +180,20 @@ This table is essential for:
 
 {% enddocs %}
 
+{% docs erc20_boba_evt_approval_doc %}
+
+The `erc20_boba.evt_approval` table contains Approval events for ERC20 tokens on the boba blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- Owner and spender addresses
+- Approved amount
+
+This table is used for analyzing ERC20 token approvals and spending permissions on the boba network.
+
+{% enddocs %}
+
 {% docs erc721_boba_evt_transfer_doc %}
 
 The `erc721_boba.evt_transfer` table contains Transfer events from ERC721 (NFT) token contracts on the Boba blockchain. Each record represents an NFT transfer and includes:

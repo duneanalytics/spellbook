@@ -28,3 +28,49 @@ models:
       - name: outer_instruction_index
       - name: inner_instruction_index
       - name: outer_executing_account
+
+  - name: tokens_solana_net_transfers_daily
+    meta:
+      blockchain: solana
+      sector: tokens
+      contributors: krishhh
+    config:
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total transfer amount per day"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+    columns:
+      - name: blockchain
+        description: "The blockchain network"
+      - name: block_date
+        description: "The date of the block"
+      - name: net_transfer_amount_usd
+        description: "The total net transfer amount for the day"
+
+  - name: tokens_solana_net_transfers_daily_asset
+    meta:
+      blockchain: solana
+      sector: tokens
+      contributors: [0xRob, krishhh]
+    config:
+      tags: ['tokens', 'net_transfers']
+    description: "Total transfer amount per day per asset"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - contract_address
+    columns:
+      - name: blockchain
+        description: "The blockchain network"
+      - name: block_date
+        description: "The date of the block"
+      - name: contract_address
+        description: "The contract address of the asset"
+      - name: symbol
+      - name: net_transfer_amount_usd
+        description: "The total net transfer amount for the day and asset"

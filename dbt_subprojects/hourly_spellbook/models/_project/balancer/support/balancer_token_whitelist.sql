@@ -47,6 +47,7 @@ WITH whitelist_token as (
     (0x039e2fB66102314Ce7b64Ce5Ce3E5183bc94aD38, 'wS', 'sonic'),
     (0xe5da20f15420ad15de0fa650600afc998bbe3955, 'stS', 'sonic'),
     (0x1e5fe95fb90ac0530f581c617272cd0864626795, 'BEETS', 'sonic'),    
+    (0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE, 'scUSD', 'sonic'),    
     (0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270, 'WMATIC', 'polygon'),
     (0x7ceb23fd6bc0add59e62ac25578270cff1b9f619, 'WETH', 'polygon'),
     (0x37eaa0ef3549a5bb7d431be78a3d99bd360d19e5, 'USDC', 'zkevm'),

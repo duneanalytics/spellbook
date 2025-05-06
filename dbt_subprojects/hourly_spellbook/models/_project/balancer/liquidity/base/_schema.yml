@@ -44,15 +44,53 @@ models:
       - &token_symbol
         name: token_symbol
         description: "Token symbol"
-      - name: token_balance_raw
+      - &token_balance_raw
+        name: token_balance_raw
         description: 'Raw balance of the token in the pool in the original currency'
-      - name: token_balance
+      - &token_balance
+        name: token_balance
         description: 'Scaled balance of the token in the pool in the original currency'
-      - name: protocol_liquidity_usd
+      - &protocol_liquidity_usd
+        name: protocol_liquidity_usd
         description: 'Liquidity of the token in the pool in USD, except BPTs'
-      - name: protocol_liquidity_eth
+      - &protocol_liquidity_eth
+        name: protocol_liquidity_eth
         description: 'Liquidity of the token in the pool in ETH, except BPTs'
-      - name: pool_liquidity_usd
+      - &pool_liquidity_usd
+        name: pool_liquidity_usd
         description: 'Liquidity of the token in the pool in USD, including BPTs'
-      - name: pool_liquidity_eth
+      - &pool_liquidity_eth
+        name: pool_liquidity_eth
         description: 'Liquidity of the token in the pool in ETH, including BPTs'
+
+  - name: balancer_v3_base_liquidity
+    meta:
+      blockchain: base
+      project: balancer_v3
+      contributors: viniabussafi
+    config:
+      tags: ['base', 'balancer', 'pools', 'liquidity']
+    description: >
+      Balancer v3 pools liquidity by token in base.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - pool_id
+            - token_address
+    columns:
+      - *day
+      - *pool_id
+      - *pool_address
+      - *pool_symbol
+      - *version
+      - *blockchain
+      - *pool_type 
+      - *token_address
+      - *token_symbol
+      - *token_balance_raw
+      - *token_balance
+      - *protocol_liquidity_usd
+      - *protocol_liquidity_eth
+      - *pool_liquidity_usd
+      - *pool_liquidity_eth      

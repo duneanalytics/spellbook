@@ -18,7 +18,9 @@
     ref('balancer_v2_polygon_protocol_fee'),
     ref('balancer_v2_zkevm_protocol_fee'),
     ref('balancer_v3_ethereum_protocol_fee'),
-    ref('balancer_v3_gnosis_protocol_fee') 
+    ref('balancer_v3_gnosis_protocol_fee'),
+    ref('balancer_v3_arbitrum_protocol_fee'),
+    ref('balancer_v3_base_protocol_fee')  
 ] %}
 
 SELECT *

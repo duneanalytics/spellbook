@@ -359,6 +359,28 @@ sources:
             description: "The timestamp of the block containing this transfer"
           - name: evt_block_number
             description: "The block number containing this transfer"
+      - name: evt_approval
+        meta:
+          docs_slug: /evm/boba/decoded/interfaces/erc20/evt_approval
+          short_description: The `boba.evt_approval` table contains approval events for ERC20 tokens on boba, allowing an address to spend tokens on behalf of the owner.
+        description: '{{ doc("erc20_boba_evt_approval_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC20 token contract"
+          - name: evt_tx_hash
+            description: "The transaction hash of the approval event"
+          - name: evt_index
+            description: "The index of this event within the transaction"
+          - name: evt_block_time
+            description: "The timestamp of the block containing this approval"
+          - name: evt_block_number
+            description: "The block number containing this approval"
+          - name: owner
+            description: "address of the token owner granting approval"
+          - name: spender
+            description: "address being granted permission to spend tokens"
+          - name: value
+            description: "Amount of ERC20 tokens approved for spending, in the token's smallest unit"
 
   - name: erc721_boba
     description: "Transfer events for ERC721 tokens on Boba blockchain"

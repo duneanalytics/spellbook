@@ -143,7 +143,7 @@ with
 select
     block_time,
     date_trunc('day', bot_trades.block_time) as block_date,
-    date_trunc('month', bot_trades.block_time) as block_month,
+    cast(date_trunc('month', bot_trades.block_time) as date) as block_month,
     '{{project_name}}' as bot,
     block_number,
     '{{blockchain}}' as blockchain,

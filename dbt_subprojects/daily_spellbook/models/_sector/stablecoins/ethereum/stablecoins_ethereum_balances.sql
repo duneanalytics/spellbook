@@ -10,6 +10,8 @@
   )
 }}
 
+-- trigger CI
+
 with
 stablecoin_tokens_total as (
   select distinct

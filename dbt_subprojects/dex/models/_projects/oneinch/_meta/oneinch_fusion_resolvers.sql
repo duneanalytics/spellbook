@@ -43,6 +43,8 @@ names(
         , (0x74c629c4096e234029c78c7760dc0aadb717adb0, ''               , false )
         , (0x7c7047337995c338c1682f12bc38d4e4108309bb, ''               , false )
         , (0x685018ea5c682c5e6d9e4116193f02018f306255, ''               , false )
+        , (0xdeb65e00cc96af530e2ae2407eaa73f6a345687c, 'GSR'            , true  )
+        , (0x9cb8d9bae84830b7f5f11ee5048c04a80b8514ba, 'SwapNet'        , true  )
 )
 
 , registrations as (

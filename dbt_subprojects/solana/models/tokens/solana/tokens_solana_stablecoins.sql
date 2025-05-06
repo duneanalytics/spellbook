@@ -14,6 +14,7 @@ from (Values
       ('solana', 'USDC','EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', 6, 'Fiat Stablecoin', 'Circle')
     , ('solana', 'USDT','Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB', 6,'Fiat Stablecoin', 'Tether')
     , ('solana', 'PYUSD','2b1kV6DkPAnxd5ixfnxCpjxmKwqjjaYmCZfHsFu24GXo', 6,'Fiat Stablecoin', 'Paxos')
+    , ('solana', 'USDG','2u1tszSeqZ3qBWF3uNGPFc8TzMk2tdiwknnRMWGWjGWH', 6,'Fiat Stablecoin', 'Global Dollar')
     , ('solana', 'USDH','USDH1SM1ojwWUga67PGrgFWUHibbjqMvuMaDkRJTgkX', 6,'Crypto Stablecoin', 'Hubble')
     , ('solana', 'UXD','7kbnvuGBxxj8AG9qp8Scn56muWGaRaFqxg1FsRp3PaFT', 6,'Dollar-Pegged', 'UXD Protocol')
     , ('solana', 'sUSDe','Eh6XEPhSwoLv5wFApukmnaVSHQ6sAnoD9BmgmwQoN2sN', 9,'Dollar-Pegged', 'Ethena')

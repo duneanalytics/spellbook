@@ -14,7 +14,6 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_month
-            - block_number
             - tx_hash
       - check_seed:
           seed_file: ref('evm_gas_fees')

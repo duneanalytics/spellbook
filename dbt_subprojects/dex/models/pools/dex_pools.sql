@@ -5,7 +5,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['blockchain', 'pool'],
-        post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "polygon"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "polygon", "gnosis"]\',
                                 "sector",
                                 "dex",
                                 \'["hildobby"]\') }}'
@@ -15,6 +15,10 @@
 
 {% set dex_pool_models = [
  ref('uniswap_pools')
+ ,ref('honeyswap_pools')
+ ,ref('sushiswap_pools')
+ ,ref('levinswap_pools')
+ ,ref('elk_finance_pools')
  ,ref('spiritswap_fantom_pools')
  ,ref('spookyswap_fantom_pools')
  ,ref('equalizer_fantom_pools')
@@ -41,7 +45,7 @@ FROM (
     FROM {{ dex_pool_model }}
     {% if not loop.last %}
     {% if is_incremental() %}
-    WHERE creation_block_time >= date_trunc('day', now() - interval '7' Day)
+    WHERE {{incremental_predicate('creation_block_time')}}
     {% endif %}
     UNION ALL
     {% endif %}

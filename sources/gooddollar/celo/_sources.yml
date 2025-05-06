@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: gooddollar_celo
+    tables:
+      - name: ubischemev2_evt_ubicalculated
+      - name: ubischemev2_evt_ubiclaimed
+      - name: MentoBroker_evt_Swap

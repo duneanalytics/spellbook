@@ -31,7 +31,7 @@
             "router_type":          "unoswap",
         },
         "unoswap v6": {
-            "src_token_address":    "substr(cast(token as varbinary), 13)",
+            "src_token_address":    "substr(cast(if(token <> 0, token) as varbinary), 13)",
             "src_token_amount":     "amount",
             "dst_token_amount":     "output_returnAmount",
             "dst_token_amount_min": "minReturn",
@@ -187,7 +187,7 @@
         },
         "AggregationRouterV6": {
             "version": "6",
-            "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync"],
+            "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea"],
             "start": "2024-02-12",
             "methods": {
                 "swap":          dict(samples["swap"], src_token_amount="output_spentAmount"),

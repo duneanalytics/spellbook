@@ -12,5 +12,6 @@ sources:
   - name: gmx_v2_avalanche_c
     description: Tables with all decoded events for GMX v2 on the Avalanche blockchain
     tables:
+      - name: EventEmitter_evt_EventLog
       - name: EventEmitter_evt_EventLog1
       - name: EventEmitter_evt_EventLog2    

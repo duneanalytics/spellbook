@@ -21,31 +21,16 @@ WITH zeroex_tx AS (
         )
     }}
 ),
-zeroex_v2_trades_direct AS (
+zeroex_v2_trades AS (
     {{
-        zeroex_v2_trades_direct(
+        zeroex_v2_trades(
             blockchain = blockchain,
             start_date = zeroex_settler_start_date
             
         )
     }}
 ),
-zeroex_v2_trades_indirect AS (
-    {{
-        zeroex_v2_trades_indirect(
-            blockchain = blockchain,
-            start_date = zeroex_settler_start_date
-            
-        )
-    }}
-),
-tbl_trades AS (
-    SELECT *
-    FROM zeroex_v2_trades_direct
-    UNION ALL
-    SELECT *
-    FROM zeroex_v2_trades_indirect
-),
+
 trade_details as (
     {{
         zeroex_v2_trades_detail(

@@ -11,7 +11,4 @@
     ,incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
-
-{{
-    gas_fees(blockchain = blockchain)
-}}
+{{ op_stack_gas_fees(blockchain) }}

@@ -17,7 +17,7 @@ product_events as (
   select
     evt_block_time as block_time,
     evt_block_number as block_number,
-    id as product_id,
+    cast(id as int) as product_id,
     ipfsMetadata as evt_product_ipfs_metadata,
     evt_index,
     evt_tx_hash as tx_hash
@@ -26,7 +26,7 @@ product_events as (
   select
     evt_block_time as block_time,
     evt_block_number as block_number,
-    id as product_id,
+    cast(id as int) as product_id,
     cast(null as varchar) as evt_product_ipfs_metadata,
     evt_index,
     evt_tx_hash as tx_hash
@@ -76,10 +76,10 @@ product_data as (
     block_time,
     block_number,
     product_id,
-    case
+    cast(case
       when product_id > 1000000 then row_number() over (partition by if(product_id < 1000000, 0, 1) order by block_time, product_ordinality) - 1
       else product_id
-    end as product_id_rn,
+    end as int) as product_id_rn,
     product_name,
     cast(json_extract_scalar(product_json, '$.productType') as int) as product_type_id,
     try_cast(json_extract_scalar(product_json, '$.capacityReductionRatio') as int) as capacity_reduction_ratio,

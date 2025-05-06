@@ -93,28 +93,6 @@ models:
           name: is_last_trade_in_transaction
           description: "Wether the trade is the last hop of the trade transaction, in case of a multi-hop trade"
 
-  - name: bonkbot_solana_bot_trades
-    meta:
-      blockchain: solana
-      sector: dex
-      project: bonkbot
-      contributors: whale_hunter
-    config:
-      tags: ["solana", "dex", "bonkbot", "trades"]
-    description: >
-      Bonkbot trades on Solana
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_id
-            - tx_index
-            - outer_instruction_index
-            - inner_instruction_index
-      - check_bot_trades_seed:
-          seed_file: ref('bonkbot_solana_trades_seed')
-          blockchain: solana
-
   - name: trojan_solana_bot_trades
     meta:
       blockchain: solana
@@ -689,7 +667,6 @@ models:
           seed_file: ref('tradewiz_solana_trades_seed')
           blockchain: solana
 
-
   - name: cswap_solana_bot_trades
     meta:
       blockchain: solana
@@ -711,7 +688,7 @@ models:
       - check_bot_trades_seed:
           seed_file: ref('cswap_solana_trades_seed')
           blockchain: solana
-      
+
   - name: prophetbots_solana_bot_trades
     meta:
       blockchain: solana
@@ -755,7 +732,7 @@ models:
       - check_bot_trades_seed:
           seed_file: ref('nova_solana_trades_seed')
           blockchain: solana
-      
+
   - name: sanji_solana_bot_trades
     meta:
       blockchain: solana

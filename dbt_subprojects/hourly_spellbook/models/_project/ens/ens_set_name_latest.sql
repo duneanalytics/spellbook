@@ -3,13 +3,15 @@
         schema = 'ens'
         ,alias = 'set_name_latest'
         
-        ,materialized = 'table'
+        ,materialized = 'incremental'
+        ,incremental_strategy = 'merge'
         ,file_format = 'delta'
         ,unique_key = ['address', 'name']
-        ,post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "ens",
-                                    \'["sankinyue"]\') }}'
+        ,post_hook='{{ expose_spells(
+                             blockchains = \'["ethereum"]\',
+                             spell_type = "project",
+                             spell_name = "ens",
+                             contributors = \'["sankinyue", "hosuke"]\') }}'
     )
 }}
 
@@ -27,6 +29,9 @@ with
     from {{source('ethereum', 'traces')}}
     where block_date >= date '2017-05-29' -- ENS: Old Reverse Registrar Creat Time
         and block_number >= 3787060       -- ENS: Old Reverse Registrar Creat Block Number
+        {% if is_incremental() %}
+        and {{ incremental_predicate('block_time') }}
+        {% endif %}
         and to in (
               0x9062c0a6dbd6108336bcbe4593a3d1ce05512069 -- ENS: Old Reverse Registrar
             , 0x084b1c3c81545d370f3634392de611caabff8148 -- ENS: Old Reverse Registrar 2
@@ -50,6 +55,9 @@ with
     from {{source('ethereum', 'transactions')}}
     where block_date >= date '2023-03-28'  -- ENS: Reverse Registrar Creat Time
         and block_number >= 16925606       -- ENS: Reverse Registrar Creat Block Number
+        {% if is_incremental() %}
+        and {{ incremental_predicate('block_time') }}
+        {% endif %}
         and to = 0xa58e81fe9b61b5c3fe2afd33cf304c454abfc7cb -- ENS: Reverse Registrar
         and substr(data, 1, 4) = 0x7a806d6b -- setNameForAddr
         and substr(from_utf8(bytearray_rtrim(substr(data, 5 + 5 * 32))), -4) = '.eth'

@@ -9,3 +9,4 @@ sources:
       - name: Minter_evt_Mint
       - name: Minter_evt_LevelUp
       - name: Minter_evt_BurnToDraw
+      - name: minter_evt_batchburn

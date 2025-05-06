@@ -1,0 +1,55 @@
+version: 2
+
+sources:
+  - name: unichainswap_unichain
+    description: "Unichainswap contracts on unichain (Uniswap v2 compatible)"
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: PancakeFactory_evt_PairCreated
+        loaded_at_field: evt_block_time
+        description: "Pair created events from the Unichainswap factory contract"
+        columns:
+          - name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - name: evt_block_number
+            description: "Block number"
+          - name: evt_index
+            description: "Event index"
+          - name: evt_tx_hash
+            description: "Transaction hash"
+          - name: contract_address
+            description: "Factory contract address"
+          - name: pair
+            description: "Pair contract address"
+          - name: token0
+            description: "Token0 address"
+          - name: token1
+            description: "Token1 address"
+
+      - name: PancakePair_evt_Swap
+        loaded_at_field: evt_block_time
+        description: "Swap events from Unichainswap pair contracts"
+        columns:
+          - name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - name: evt_block_number
+            description: "Block number"
+          - name: evt_index
+            description: "Event index"
+          - name: evt_tx_hash
+            description: "Transaction hash"
+          - name: contract_address
+            description: "Pair contract address"
+          - name: amount0In
+            description: "Amount of token0 in"
+          - name: amount1In
+            description: "Amount of token1 in"
+          - name: amount0Out
+            description: "Amount of token0 out"
+          - name: amount1Out
+            description: "Amount of token1 out"
+          - name: sender
+            description: "Sender address"
+          - name: to
+            description: "Recipient address" 

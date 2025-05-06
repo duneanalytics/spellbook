@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: zeroex_mantle_settler_trades 
+  - name: zeroex_v2_mantle_trades 
     meta:
       blockchain: mantle
       project: zeroex
@@ -17,14 +17,6 @@ models:
             - block_date
             - tx_hash
             - evt_index
-      - check_seed:
-          seed_file: ref('zeroex_mantle_settler_trades_sample')
-          match_columns:
-            - tx_hash
-          check_columns:
-            - taker
-            - maker_token
-            - taker_token
     columns:
       - &blockchain
         name: blockchain
@@ -102,6 +94,37 @@ models:
         name: fills_within
         description: "fills in then multihop, if present"   
 
+  - name: zeroex_mantle_settler_addresses
+    meta:
+      blockchain: mantle
+      project: zeroex
+      contributors: hosuke
+    config:
+      tags: ['mantle', '0x', 'settler']
+    description: >
+      0x Protocol settler addresses for Mantle blockchain.
+      This table contains the settler addresses used by the 0x Protocol on Mantle,
+      along with their activation timestamps and token IDs.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - settler_address
+            - token_id
+    columns:
+      - name: tx_hash
+        description: "Transaction hash where the settler address was registered"
+      - name: settler_address
+        description: "Address of the 0x Protocol settler contract"
+      - name: token_id
+        description: "Token ID associated with the settler address"
+      - name: begin_block_time
+        description: "Block time when the settler address was activated"
+      - name: begin_block_number
+        description: "Block number when the settler address was activated"
+      - name: end_block_time
+        description: "Block time when the settler address was deactivated (null if still active)"
+      - name: end_block_number
+        description: "Block number when the settler address was deactivated (null if still active)"
 
       
       

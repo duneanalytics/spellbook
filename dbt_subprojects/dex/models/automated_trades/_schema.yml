@@ -4,20 +4,19 @@ models:
   - name: dex_automated_trades
     meta:
       docs_slug: /curated/trading/DEX/dex-trades
-      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, optimism, polygon, scroll, zksync, linea, blast, sei
-      sector: dex
-      short_description: The `dex.trades` table captures detailed data on trades executed via decentralized exchanges (DEXs). This table contains a detailed breakdown of trade execution containing one or many trades per transaction. 
-      contributors: 0xBoxer, hosuke
+      blockchain: &supported_chains  avalanche_c, arbitrum, base, blast, bnb, bob, boba, celo, ethereum, fantom, flare, gnosis, kaia, linea, mantle, nova, optimism, polygon, ronin, scroll, sei, sonic, sophon, unichain, viction, worldchain, zkevm, zksync, zora
+      sector: &sector dex
+      contributors: &contributors 0xBoxer, hosuke, jeff-dude
     config:
-      tags: [ 'dex', 'trades']
-    description: '{{ doc("dex_trades_doc") }}'
-    data_tests:
+      tags: &tags [ 'dex', 'trades']
+    description: &trades_description This table generates all trades from all dex protocols.
+    data_tests: &unique_trade_test
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
-            - project
-            - version
-            - tx_hash
+            - block_month
+            - block_number
+            - tx_index
             - evt_index
     columns:
       - &blockchain
@@ -26,13 +25,12 @@ models:
       - &project
         name: project
         description: "Name of the dex on which the trade occurred"
-#        data_tests:
-#          - relationships:
-#              to: ref('dex_info')
-#              field: project
       - &version
         name: version
         description: "Version of the DEX protocol/contract"
+      - &dex_type
+        name: dex_type
+        description: "Type of DEX (e.g. uni-v2, uni-v3)"
       - &block_month
         name: block_month
         description: "UTC event block month"
@@ -66,8 +64,7 @@ models:
       - &token_sold_amount_raw
         name: token_sold_amount_raw
         description: "Amount of the token sold in the base unit"
-      - &amount_usd
-        name: amount_usd
+      - name: amount_usd
         description: "USD value of the trade at time of execution. Can be null if we don't have enough data to calculate the value."
         data_tests:
           - dbt_utils.accepted_range:
@@ -87,6 +84,18 @@ models:
       - &project_contract_address
         name: project_contract_address
         description: "Smart contract address which emitted the event associated with this trade. Can be the a Pool Contract, Router Contract, or other contract associated with the DEX."
+      - &pool_topic0
+        name: pool_topic0
+        description: "Topic0 hash of the pool event"
+      - &factory_address
+        name: factory_address
+        description: "Factory contract address of the DEX"
+      - &factory_topic0
+        name: factory_topic0
+        description: "Topic0 hash of the factory event"
+      - &factory_info
+        name: factory_info
+        description: "Additional information about the factory"
       - &tx_hash
         name: tx_hash
         description: "The hash of the transaction that this trade was included in"
@@ -99,22 +108,17 @@ models:
       - &evt_index
         name: evt_index
         description: "Index of the event in the transaction. Can be used to uniquely identify the order of trades within in a transaction"
+      - &tx_index
+        name: tx_index
+        description: "Index of the transaction in the block"
 
   - name: dex_automated_base_trades
     meta:
-      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, optimism, polygon, scroll, zksync, linea, blast, sei
-      sector: dex
-      contributors: 0xBoxer, hosuke
+      blockchain: *supported_chains
+      sector: *sector
+      contributors: *contributors
     config:
       tags: [ 'dex' ]
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
     columns:
       - *blockchain
       - *project
@@ -134,3 +138,64 @@ models:
       - *evt_index
       - *tx_from
       - *tx_to
+
+  - name: dex_mapping
+    description: "Mapping of DEX factory addresses to their respective projects and blockchains"
+    config:
+      tags: ['dex', 'mapping']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - factory
+    columns:
+      - name: src
+        description: "Source of the mapping data"
+        data_type: varchar
+      - *dex_type
+      - *blockchain
+      - name: factory
+        description: "Factory contract address of the DEX"
+        data_type: varbinary
+      - *project
+
+  - name: dex_automated_trades_unmapped
+    meta:
+      blockchain: *supported_chains
+      sector: *sector
+      contributors: *contributors
+    config:
+      tags: *tags
+    description: "This table contains all DEX trades that could not be mapped to known DEX projects, we use this table to identify new projects and add them to the mapping table"
+    data_tests: *unique_trade_test
+
+  - name: uniswap_v2_forks_automated_base_trades
+    meta:
+      blockchain: *supported_chains
+      sector: *sector
+      contributors: *contributors
+    config:
+      tags: *tags
+    data_tests: *unique_trade_test
+
+  - name: uniswap_v3_forks_automated_base_trades
+    meta:
+      blockchain: *supported_chains
+      sector: *sector
+      contributors: *contributors
+    config:
+      tags: *tags
+    data_tests: *unique_trade_test
+
+  - name: evms_latest_creation_trace
+    meta:
+      blockchain: *supported_chains
+      sector: *sector
+      contributors: *contributors
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_month
+            - address
+            - '"from"'

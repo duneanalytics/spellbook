@@ -15,6 +15,7 @@ WITH
             SUM(delta_amount) AS daily_amount
         FROM {{ ref(base_spells_namespace + '_bpt_supply_changes') }}
         WHERE blockchain = '{{blockchain}}'
+        AND version = '{{version}}'
         GROUP BY 1, 2, 3, 4, 5
     ),
 
@@ -65,7 +66,7 @@ WITH
         FROM unnest(sequence(date('2024-12-01'), date(now()), interval '1' day)) as t(date_sequence)
     )
 
-        SELECT
+        SELECT DISTINCT
             c.day AS block_date,
             '{{blockchain}}' as blockchain,
             '{{version}}' AS version,

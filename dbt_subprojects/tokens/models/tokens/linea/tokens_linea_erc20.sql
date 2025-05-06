@@ -31,5 +31,10 @@ FROM (VALUES
     (0xeb466342c4d449bc9f53a865d5cb90586f405215, 'axlUSDC', 6),
     (0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34, 'USDe', 18),
     (0x59846bfc18fc21df6bed378748f99ea38f44d50a, 'lzIT', 6),
-    (0x1a51b19ce03dbe0cb44c1528e34a7edd7771e9af, 'LYNX', 18)
+    (0x1a51b19ce03dbe0cb44c1528e34a7edd7771e9af, 'LYNX', 18),
+    (0x2442bd7ae83b51f6664de408a385375fe4a84f52, 'MKR', 18),
+    (0x58538e6a46e07434d7e7375bc268d3cb839c0133, 'ENA', 18),
+    (0x7da14988e4f390c2e34ed41df1814467d3ade0c3, 'PEPE', 18),
+    (0x99ad925c1dc14ac7cc6ca1244eef8043c74e99d5, 'SHIB', 18),
+    (0x4186bfc76e2e237523cbc30fd220fe055156b41f, 'rsETH', 18)
 ) AS temp_table (contract_address, symbol, decimals)

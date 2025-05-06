@@ -28,7 +28,7 @@
         FROM {{ source('erc20_' + blockchain, 'evt_transfer') }} transfer
         INNER JOIN registered_pools p ON p.pool_address = transfer.contract_address
             {% if not is_incremental() %}
-            WHERE transfer.evt_block_time >= TIMESTAMP '2021-08-26'
+            WHERE transfer.evt_block_time >= TIMESTAMP '2021-01-01'
             {% endif %}
             {% if is_incremental() %}
             WHERE {{ incremental_predicate('evt_block_time') }}

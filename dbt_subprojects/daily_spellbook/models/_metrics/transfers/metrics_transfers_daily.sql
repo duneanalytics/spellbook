@@ -24,6 +24,7 @@
     , 'scroll'
     , 'sei'
     , 'solana'
+    , 'ton'
     , 'tron'
     , 'zkevm'
     , 'zksync'
@@ -36,9 +37,6 @@ FROM (
         SELECT
         blockchain
         , block_date
-        , transfer_amount_usd_sent
-        , transfer_amount_usd_received
-        , transfer_amount_usd
         , net_transfer_amount_usd
         FROM {{ ref('metrics_' + blockchain + '_transfers_daily') }}
         {% if not loop.last %}

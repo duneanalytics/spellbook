@@ -493,3 +493,47 @@ models:
       - *token_standard
       - *transfer_type
       - *unique_transfer_id
+
+  - name: nft_worldchain_transfers
+    meta:
+      blockchain: worldchain
+      sector: nft
+      contributors: aalan3
+    config:
+      tags: [ 'nft', 'transfers' ]
+    description: >
+      NFT transfers
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - amount
+    columns:
+      # only listing columns that have tests here for simplicity
+      - *token_standard
+      - *transfer_type
+      - *unique_transfer_id
+
+  - name: nft_kaia_transfers
+    meta:
+      blockchain: kaia
+      sector: nft
+      contributors: aalan3
+    config:
+      tags: [ 'nft', 'transfers' ]
+    description: >
+      NFT transfers
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - amount
+    columns:
+      # only listing columns that have tests here for simplicity
+      - *token_standard
+      - *transfer_type
+      - *unique_transfer_id

@@ -58,6 +58,3 @@ models:
     - &last_updated
       name: last_updated
       description: "UTC timestamp when balance was last updated"
-    - &next_update
-      name: next_update
-      description: "UTC timestamp when balance is next updated"

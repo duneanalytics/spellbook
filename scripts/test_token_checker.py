@@ -61,8 +61,3 @@ def test_valid_token5():
 def test_valid_token6():
     test_line = "('bets-betswirl', 'polygon', 'BETS', 0x9246a5f10a79a5a939b0c2a75a3ad196aafdb43b, 18),"
     checker.validate_token(test_line)
-
-def test_valid_token7():
-    test_line = "('grain-granary', 'fantom', 'GRAIN', 0x02838746d9e1413e07ee064fcbada57055417f21, 18),"
-    # grain-granary is active now: https://api.coinpaprika.com/v1/coins/grain-granary
-    checker.validate_token(test_line)

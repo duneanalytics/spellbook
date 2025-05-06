@@ -1,0 +1,169 @@
+version: 2
+
+sources:
+  - name: uniswap_v2_unichain
+    description: "unichain decoded tables related to Uniswap v2 contract"
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+        description: "Swap events emitted by Uniswap v2 pair contracts on UniChain"
+        columns:
+          - name: contract_address
+            description: "Address of the Uniswap v2 pair contract"
+          - name: evt_tx_hash
+            description: "Transaction hash"
+          - name: evt_index
+            description: "Event index within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block"
+          - name: evt_block_number
+            description: "Block number"
+          - name: sender
+            description: "Address initiating the swap"
+          - name: to
+            description: "Recipient address of the swap output"
+          - name: amount0In
+            description: "Amount of token0 being sold"
+          - name: amount1In
+            description: "Amount of token1 being sold"
+          - name: amount0Out
+            description: "Amount of token0 being bought"
+          - name: amount1Out
+            description: "Amount of token1 being bought"
+
+      - name: UniswapV2Factory_evt_PairCreated
+        description: "Events emitted when new trading pairs are created through the Uniswap v2 factory on UniChain"
+        columns:
+          - name: contract_address
+            description: "Address of the Uniswap v2 factory contract"
+          - name: evt_tx_hash
+            description: "Transaction hash"
+          - name: evt_index
+            description: "Event index within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block"
+          - name: evt_block_number
+            description: "Block number"
+          - name: token0
+            description: "Address of the first token in the pair"
+          - name: token1
+            description: "Address of the second token in the pair"
+          - name: pair
+            description: "Address of the created pair contract"
+        
+  - name: uniswap_v3_unichain
+    description: "unichain decoded tables related to Uniswap v3 contract"
+    tables:
+      - name: UniswapV3Pool_evt_Swap
+        description: "Swap events emitted by Uniswap v3 pool contracts on UniChain"
+        columns:
+          - name: contract_address
+            description: "Address of the Uniswap v3 pool contract"
+          - name: evt_tx_hash
+            description: "Transaction hash"
+          - name: evt_index
+            description: "Event index within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block"
+          - name: evt_block_number
+            description: "Block number"
+          - name: sender
+            description: "Address initiating the swap"
+          - name: recipient
+            description: "Address receiving the tokens"
+          - name: amount0
+            description: "Delta of token0 (negative for tokens sold, positive for tokens bought)"
+          - name: amount1
+            description: "Delta of token1 (negative for tokens sold, positive for tokens bought)"
+          - name: sqrtPriceX96
+            description: "Square root price after the swap, multiplied by 2^96"
+          - name: liquidity
+            description: "Pool liquidity at the time of the swap"
+          - name: tick
+            description: "Pool tick after the swap"
+
+      - name: UniswapV3Factory_evt_PoolCreated
+        description: "Events emitted when new pools are created through the Uniswap v3 factory on UniChain"
+        columns:
+          - name: contract_address
+            description: "Address of the Uniswap v3 factory contract"
+          - name: evt_tx_hash
+            description: "Transaction hash"
+          - name: evt_index
+            description: "Event index within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block"
+          - name: evt_block_number
+            description: "Block number"
+          - name: token0
+            description: "Address of the first token in the pool"
+          - name: token1
+            description: "Address of the second token in the pool"
+          - name: fee
+            description: "Trading fee tier in hundredths of a bip (0.01%)"
+          - name: tickSpacing
+            description: "Minimum tick spacing for the pool"
+          - name: pool
+            description: "Address of the created pool contract"
+
+  - name: uniswap_v4_unichain
+    description: "unichain decoded tables related to Uniswap v4 contract"
+    tables:
+      - name: PoolManager_evt_Swap
+        description: "Swap events emitted by Uniswap v4 pool manager contract on UniChain"
+        columns:
+          - name: contract_address
+            description: "Address of the Uniswap v4 pool manager contract"
+          - name: evt_tx_hash
+            description: "Transaction hash"
+          - name: evt_index
+            description: "Event index within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block"
+          - name: evt_block_number
+            description: "Block number"
+          - name: id
+            description: "Pool ID"
+          - name: sender
+            description: "Address initiating the swap"
+          - name: amount0
+            description: "Delta of token0 (negative for tokens sold, positive for tokens bought)"
+          - name: amount1
+            description: "Delta of token1 (negative for tokens sold, positive for tokens bought)"
+          - name: sqrtPriceX96
+            description: "Square root price after the swap, multiplied by 2^96"
+          - name: liquidity
+            description: "Pool liquidity at the time of the swap"
+          - name: tick
+            description: "Pool tick after the swap"
+          - name: fee
+            description: "Trading fee in hundredths of a bip (0.01%)"
+        
+      - name: PoolManager_evt_Initialize
+        description: "Events emitted when new pools are initialized in Uniswap v4 on UniChain"
+        columns:
+          - name: contract_address
+            description: "Address of the Uniswap v4 pool manager contract"
+          - name: evt_tx_hash
+            description: "Transaction hash"
+          - name: evt_index
+            description: "Event index within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block"
+          - name: evt_block_number
+            description: "Block number"
+          - name: id
+            description: "Pool ID"
+          - name: currency0
+            description: "Address of the first token in the pool"
+          - name: currency1
+            description: "Address of the second token in the pool"
+          - name: fee
+            description: "Trading fee in hundredths of a bip (0.01%)"
+          - name: tickSpacing
+            description: "Minimum tick spacing for the pool"
+          - name: hooks
+            description: "Address of the hooks contract"
+          - name: sqrtPriceX96
+            description: "Initial square root price, multiplied by 2^96"
+          - name: tick
+            description: "Initial tick"

@@ -22,5 +22,10 @@ FROM
     ('blast-blast-token','blast','BLAST',0xb1a5700fa2358173fe465e6ea4ff52e36e88e2ad,18),
     ('bag-bagwin','blast','BAG',0xb9dfcd4cf589bb8090569cb52fac1b88dbe4981f,18),
     ('usdz-anzen-usdz','blast','USDz',0x52056ed29fe015f4ba2e3b079d10c0b87f46e8c6,18),
-    ('bpepe-blastin-pepes','blast','bPEPE',0xb6e0d8a730c6e5c85c637b1cf7ad6fd07927b965,18)
+    --('bpepe-blastin-pepes','blast','bPEPE',0xb6e0d8a730c6e5c85c637b1cf7ad6fd07927b965,18),
+    ('ezeth-renzo-restaked-eth','blast','ezETH',0x2416092f143378750bb29b79ed961ab195cceea5,18),
+    ('usde-ethena-usde','blast','USDe',0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34,18),
+    ('thrust-thruster','blast','THRUST',0xe36072dd051ce26261bf50cd966311cab62c596e,18),
+    ('axlusdc-axelar-wrapped-usdc','blast','axlUSDC',0xeb466342c4d449bc9f53a865d5cb90586f405215,6),
+    ('wbtc-wrapped-bitcoin','blast','WBTC',0xf7bc58b8d8f97adc129cfc4c9f45ce3c0e1d2692,8)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

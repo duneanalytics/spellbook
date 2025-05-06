@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: metamorpho_factory_base
+    description: "Decoded contracts for Morpho on Base"
+
+    tables:
+      - name: MetaMorphoV1_1Factory_evt_CreateMetaMorpho

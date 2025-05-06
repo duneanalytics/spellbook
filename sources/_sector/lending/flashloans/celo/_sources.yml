@@ -5,3 +5,6 @@ sources:
     description: "Decoded contracts for Moola on Celo"
     tables:
       - name: LendingPool_evt_FlashLoan
+  - name: aave_v3_celo
+    tables:
+      - name: Pool_evt_FlashLoan

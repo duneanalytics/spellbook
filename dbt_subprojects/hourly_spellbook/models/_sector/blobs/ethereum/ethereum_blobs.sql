@@ -13,7 +13,7 @@
 
 WITH blobs as (
 SELECT
-    -- this contains most columns from beacon.blobs expect "blob" which contains the raw data
+    -- this contains most columns from beacon.blobs expect "blob" which contains the raw data 
     b.block_epoch AS beacon_epoch
     , b.block_slot AS beacon_slot_number
     , b.block_time as beacon_slot_time

@@ -210,7 +210,8 @@ models:
       - *contract_address
       - &fills_within
         name: fills_within
-        description: "fills in then multihop, if present"          
+        description: "fills in then multihop, if present" 
+
   - name: zeroex_polygon_native_fills 
     meta:
       blockchain: polygon
@@ -275,7 +276,7 @@ models:
     config:
       tags: ['polygon','0x','dex_aggregator','dex','aggregator']
     description: >
-        0x API erc20 trades through 0x Settler contracts. No fills, only deduped transactions.
+        0x API erc20 trades through 0x v2 contracts. No fills, only deduped transactions.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -285,12 +286,6 @@ models:
             - evt_index
     columns:
       - *blockchain
-      - &project
-        name: project
-        description: "name of the project"
-      - &version
-        name: version
-        description: "version of the project"
       - *block_date
       - *block_month
       - *block_time
@@ -306,20 +301,39 @@ models:
       - *maker_token
       - *taker
       - *maker
-      - &tag
-        name: tag
-        description: "tag of the trade"
-      - &zid 
-        name: zid
-        description: "0x order id"
+      - *affiliate_address
       - *tx_hash
       - *tx_from
       - *tx_to
       - *evt_index
-      - &trace_address
-        name: trace_address
-        description: "trace address of the transaction"
       - *type
       - *swap_flag
       - *contract_address
       - *fills_within
+
+  - name: zeroex_polygon_settler_addresses
+    meta:
+      blockchain: polygon
+      project: zeroex
+      contributors: hosuke
+    config:
+      tags: ['polygon', '0x', 'settler']
+    description: >
+      0x Protocol settler addresses for Polygon blockchain.
+      This table contains the settler addresses used by the 0x Protocol on Polygon,
+      along with their activation timestamps and token IDs.
+    columns:
+      - name: tx_hash
+        description: "Transaction hash where the settler address was registered"
+      - name: settler_address
+        description: "Address of the 0x Protocol settler contract"
+      - name: token_id
+        description: "Token ID associated with the settler address"
+      - name: begin_block_time
+        description: "Block time when the settler address was activated"
+      - name: begin_block_number
+        description: "Block number when the settler address was activated"
+      - name: end_block_time
+        description: "Block time when the settler address was deactivated (null if still active)"
+      - name: end_block_number
+        description: "Block number when the settler address was deactivated (null if still active)"

@@ -21,6 +21,7 @@
         'zksync',
         'aurora',
         'klaytn',
+        'linea',
     ]
 %}
 

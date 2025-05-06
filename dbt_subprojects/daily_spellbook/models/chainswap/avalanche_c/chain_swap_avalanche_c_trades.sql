@@ -117,7 +117,7 @@ with
 select distinct
     block_time,
     date_trunc('day', block_time) as block_date,
-    date_trunc('month', block_time) as block_month,
+    cast(date_trunc('month', block_time) as date) as block_month,
     '{{blockchain}}' as blockchain,
     -- Trade
     amount_usd,

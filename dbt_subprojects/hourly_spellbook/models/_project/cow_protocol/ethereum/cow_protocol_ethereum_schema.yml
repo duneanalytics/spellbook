@@ -2,6 +2,10 @@ version: 2
 
 models:
   - name: cow_protocol_ethereum_solvers
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
     meta:
       blockchain: ethereum
       project: cow_protocol

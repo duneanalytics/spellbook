@@ -16,6 +16,7 @@
     project = 'seamlessprotocol',
     version = '1',
     project_decoded_as = 'seamlessprotocol',
-    decoded_contract_name = 'L2Pool'
+    decoded_contract_name = 'L2Pool',
+    wrapped_token_gateway_available = false
   )
 }}

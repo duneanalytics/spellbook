@@ -10,9 +10,7 @@
     )
 }}
 
-WITH
-
-dexs_v1 AS (
+WITH dexs_v1 AS (
     {{
         uniswap_compatible_v2_trades(
             blockchain = 'base',

@@ -3,11 +3,11 @@ version: 2
 models:
   - name: balancer_v3_erc4626_token_mapping
     meta:
-      blockchain: ethereum, gnosis, sonic
+      blockchain: ethereum, gnosis, sonic, arbitrum, base
       project: balancer
       contributors: viniabussafi
     config:
-      tags: ['ethereum', 'gnosis', 'token', 'mapping']
+      tags: ['ethereum', 'gnosis', 'sonic', 'arbitrum', 'base', 'token', 'mapping']
     description: >
       Mapping of ERC4626 tokens, including aTokens and MetaMorpho tokens, and their corresponding underlying tokens.
     data_tests:
@@ -32,11 +32,11 @@ models:
 
   - name: balancer_v3_erc4626_token_prices
     meta:
-      blockchain: ethereum, gnosis, sonic
+      blockchain: ethereum, gnosis, sonic, arbitrum, base
       project: balancer
       contributors: viniabussafi
     config:
-      tags: ['ethereum', 'gnosis', 'token', 'pricing']
+      tags: ['ethereum', 'gnosis', 'sonic', 'arbitrum', 'base', 'token', 'pricing']
     description: >
       Pricing information for ERC4626 tokens. Prices are derived from the ratio of underlying tokens deposited or withdrawn to shares issued or burned, multiplied by the underlying token price.
     data_tests:

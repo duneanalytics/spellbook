@@ -7,9 +7,9 @@ models:
       project: balancer_v2
       contributors: viniabussafi
     config:
-      tags: ['arbitrum', 'protocol', 'fees']
+      tags: ['arbitrum', 'revenue', 'fees']
     description: >
-      Daily Protocol Fee collected and Treasury Revenue by pool on Balancer, an automated portfolio manager and trading platform.
+      Daily Protocol Fee collected and Revenue by pool on Balancer, an automated portfolio manager and trading platform.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -37,7 +37,10 @@ models:
         description: "Blockchain"
       - &pool_type
         name: pool_type
-        description: "Pool attributes, determined by the pool's factory"              
+        description: "Pool attributes, determined by the pool's factory"            
+      - &fee_type
+        name: fee_type
+        description: "Labels whether fee comes from swaps or yield for V3. V2 fees are labeled as 'v2'."           
       - &token_address
         name: token_address
         description: "Contract address of the token in which protocol fees were collected"
@@ -57,8 +60,42 @@ models:
         name: treasury_share
         description: "Share of total fee that is directed to Balancer DAO's treasury, as per BIPs 19, 161 and 371"
       - &treasury_fee_usd
-        name: treasury_fee_usd
+        name: treasury_revenue_usd
         description: "USD value of fee directed to Balancer DAO's treasury"
       - &lp_fee_collected_usd
         name: lp_fee_collected_usd
-        description: "USD value of the fee returned to liquidity providers"        
+        description: "USD value of the fee returned to liquidity providers" 
+
+  - name: balancer_v3_arbitrum_protocol_fee
+    meta:
+      blockchain: arbitrum
+      project: balancer_v3
+      contributors: viniabussafi
+    config:
+      tags: ['arbitrum', 'revenue', 'fees']
+    description: >
+      Daily Protocol Fee collected and Revenue by pool on Balancer, an automated portfolio manager and trading platform.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - pool_id
+            - fee_type
+            - token_address
+    columns:
+      - *day
+      - *pool_id
+      - *pool_address
+      - *pool_symbol
+      - *version
+      - *blockchain
+      - *pool_type        
+      - *fee_type
+      - *token_address
+      - *token_symbol
+      - *token_amount_raw
+      - *token_amount
+      - *protocol_fee_collected_usd
+      - *treasury_share
+      - *treasury_fee_usd
+      - *lp_fee_collected_usd            

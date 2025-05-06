@@ -5,6 +5,7 @@ on:
   pull_request:
     paths:
       - dbt_subprojects/dex/**
+      - dbt_macros/shared/**
       - .github/workflows/dex.yml
       - .github/workflows/dbt_run.yml
 

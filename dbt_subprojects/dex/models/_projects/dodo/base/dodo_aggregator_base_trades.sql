@@ -37,7 +37,7 @@ WITH dexs AS
         FROM
             {{ source('dodo_base','DODOFeeRouteProxy_evt_OrderHistory')}}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE {{incremental_predicate('evt_block_time')}}
         {% endif %}
 
         UNION ALL
@@ -61,7 +61,7 @@ WITH dexs AS
         FROM
             {{ source('dodo_base','DODOFeeRouteProxy_widget_evt_OrderHistory')}}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE {{incremental_predicate('evt_block_time')}}
         {% endif %}
 )
 SELECT
@@ -103,7 +103,7 @@ INNER JOIN {{ source('base', 'transactions')}} tx
     AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{incremental_predicate('tx.block_time')}}
     {% endif %}
 LEFT JOIN {{ source('tokens', 'erc20') }} erc20a
     ON erc20a.contract_address = dexs.token_bought_address
@@ -119,7 +119,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
+    AND {{incremental_predicate('p_bought.minute')}}
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', dexs.block_time)
@@ -129,7 +129,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
+    AND {{incremental_predicate('p_sold.minute')}}
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_eth
     ON p_eth.minute = date_trunc('minute', dexs.block_time)
@@ -139,6 +139,6 @@ LEFT JOIN {{ source('prices', 'usd') }} p_eth
     AND p_eth.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_eth.minute >= date_trunc('day', now() - interval '7' day)
+    AND {{incremental_predicate('p_eth.minute')}}
     {% endif %}
 WHERE dexs.token_bought_address <> dexs.token_sold_address
