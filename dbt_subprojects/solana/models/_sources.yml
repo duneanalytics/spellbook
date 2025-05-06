@@ -40,3 +40,13 @@ sources:
     tables:
       - name: bubblegum_call_mintV1
       - name: bubblegum_call_mintToCollectionV1
+
+  - name: pumpdotfun_solana
+    description: "pumpswap protocol decoded tables"
+    schema: pumpdotfun_solana
+    tables:
+      - name: pump_amm_call_buy
+      - name: pump_amm_call_sell
+      - name: pump_amm_call_create_pool
+      - name: pump_amm_call_create_config
+      - name: pump_amm_call_update_fee_config

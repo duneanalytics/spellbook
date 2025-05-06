@@ -10,7 +10,7 @@ models:
     description: "PumpSwap base trades on Solana"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [tx_id, outer_instruction_index, inner_instruction_index, tx_index,block_month]
+          combination_of_columns: [block_month, surrogate_key]
     columns:
       - &blockchain
         name: blockchain
@@ -69,12 +69,16 @@ models:
       - &outer_instruction_index
         name: outer_instruction_index
         description: "Index of outer instruction"
-      - &inner_instruction_index
-        name: inner_instruction_index
-        description: "Index of inner instruction"
+      - &swap_inner_index
+        name: swap_inner_index
+        description: "Index of inner instruction (NULL if outer)"
       - &tx_index
         name: tx_index
         description: "Index of the transaction in the block slot"
+      - name: trade_id
+        description: "Internal surrogate key for deduplication and reference"
+      - name: surrogate_key
+        description: "Internal surrogate key for determining uniqueness of trades"
 
   - name: pumpswap_solana_trades
     meta:
@@ -116,7 +120,7 @@ models:
       - *trader_id
       - *tx_id
       - *outer_instruction_index
-      - *inner_instruction_index
+      - *swap_inner_index
       - *tx_index
 
   - name: pumpswap_solana_pools
