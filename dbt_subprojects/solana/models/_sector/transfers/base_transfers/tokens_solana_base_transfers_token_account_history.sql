@@ -76,12 +76,14 @@ left join
     {{ ref('solana_utils_token_accounts_state_history') }} as tk_from    
     on t.from_token_account_prefix = tk_from.address_prefix
     and t.from_token_account = tk_from.address
+    and t.block_month >= tk_from.valid_from_block_month
     and t.unique_instruction_key >= tk_from.valid_from_unique_instruction_key
     and t.unique_instruction_key < tk_from.valid_to_unique_instruction_key
 left join 
     {{ ref('solana_utils_token_accounts_state_history') }} as tk_to 
     on t.to_token_account_prefix = tk_to.address_prefix
     and t.to_token_account = tk_to.address
+    and t.block_month >= tk_to.valid_from_block_month
     and t.unique_instruction_key >= tk_to.valid_from_unique_instruction_key
     and t.unique_instruction_key < tk_to.valid_to_unique_instruction_key
 )
