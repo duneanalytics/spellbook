@@ -118,7 +118,7 @@ models:
       - *trader_id
       - *tx_id
       - *outer_instruction_index
-      - *swap_inner_index
+      - *inner_instruction_index
       - *tx_index
 
   - name: pumpswap_solana_pools
