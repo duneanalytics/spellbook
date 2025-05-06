@@ -9,7 +9,7 @@
    )
 }}
 
-{% set query_start_date = '2025-05-01' %}
+{% set query_start_date = '2025-04-01' %}
 {% set wsol_token = 'So11111111111111111111111111111111111111112' %}
 
 with filtered_transactions as (
