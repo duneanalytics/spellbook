@@ -211,4 +211,4 @@ SELECT
     , {{ dbt_utils.generate_surrogate_key(['tx_id', 'tx_index', 'outer_instruction_index', 'inner_instruction_index']) }} as surrogate_key
 FROM trades_base tb
 --temp debug
-where block_time >= now() - interval '7 day'
+where block_time >= now() - interval '7' day
