@@ -16,6 +16,20 @@
 }}
 
 with
+solvers_ranked as (
+    select
+        t.tx_hash,
+        t."from" as solver,
+        solvers.name,
+        row_number() over (partition by t.tx_hash order by t.trace_address asc nulls first) as rn
+    from {{ source('base', 'traces') }} t
+        inner join {{ ref('cow_protocol_base_solvers') }} solvers
+            on t."from" = solvers.address
+    {% if is_incremental() %}
+    where {{ incremental_predicate('block_time') }}
+    {% endif %}
+),
+
 batch_counts as (
     select try_cast(date_trunc('day', s.evt_block_time) as date) as block_date,
            s.evt_block_number,
@@ -39,18 +53,9 @@ batch_counts as (
             {% if is_incremental() %}
             and {{ incremental_predicate('i.evt_block_time') }}
             {% endif %}
-        join lateral (
-            select
-                t."from" as solver,
-                solvers.name as name
-            from {{ source('base', 'traces') }} t
-                inner join {{ ref('cow_protocol_base_solvers') }} solvers on t."from" = solvers.address
-            where t.tx_hash = s.evt_tx_hash
-                and t.block_date = s.evt_block_date
-                and t.block_number = s.evt_block_number
-            order by t.trace_address asc nulls first
-            limit 1
-        ) solver_info on true
+        left join solvers_ranked solver_info
+            on s.evt_tx_hash = solver_info.tx_hash
+                and solver_info.rn = 1
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('s.evt_block_time') }}
     {% endif %}
