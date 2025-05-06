@@ -14,8 +14,11 @@ FROM
 WHERE
     contains(
         array[
-            0x93cbf217, -- request(address,bytes32,bool)
-            0x19cb825f -- requestWithCallback(address,bytes32)
+            0x93cbf217   -- request(address,bytes32,bool)
+            , 0x19cb825f -- requestWithCallback(address,bytes32)
+            , 0x7b43155d -- requestV2()
+            , 0x0bed189f -- requestV2(uint32 gasLimit)
+            , 0x0e33da29 -- requestV2(address provider, uint32 gasLimit)
         ],
         substr(input, 1, 4)
     )
