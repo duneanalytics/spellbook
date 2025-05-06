@@ -36,8 +36,8 @@ batch_counts as (
            s.evt_block_number,
            s.evt_block_time,
            s.evt_tx_hash,
-           solver_info.solver,
-           solver_info.name,
+           sr.solver,
+           sr.name,
            sum(
                case
                    when selector != 0x2e1a7d4d -- unwrap
@@ -54,13 +54,13 @@ batch_counts as (
             {% if is_incremental() %}
             and {{ incremental_predicate('i.evt_block_time') }}
             {% endif %}
-        left join solvers_ranked solver_info
-            on s.evt_tx_hash = solver_info.tx_hash
-                and solver_info.rn = 1
+        left join solvers_ranked sr
+            on s.evt_tx_hash = sr.tx_hash
+                and sr.rn = 1
     {% if is_incremental() %}
     where {{ incremental_predicate('s.evt_block_time') }}
     {% endif %}
-    group by s.evt_block_number, s.evt_block_time, s.evt_tx_hash, solver_info.solver, solver_info.name
+    group by s.evt_block_number, s.evt_block_time, s.evt_tx_hash, sr.solver, sr.name
 ),
 
 batch_values as (
