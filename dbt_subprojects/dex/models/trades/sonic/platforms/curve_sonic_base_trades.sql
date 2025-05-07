@@ -35,8 +35,16 @@ dexs as (
     select
         t.block_number,
         t.block_time,
-        p.coins[CAST(t.bought_id AS INT) + 1] as token_bought_address,
-        p.coins[CAST(t.sold_id AS INT) + 1] as token_sold_address,
+        CASE
+            WHEN CAST(t.bought_id AS INT) <= 3 AND CAST(t.bought_id AS INT) >= 0 -- Ensure bought_id is 0, 1, 2, or 3
+            THEN p.coins[CAST(t.bought_id AS INT) + 1]
+            ELSE NULL
+        END as token_bought_address,
+        CASE
+            WHEN CAST(t.sold_id AS INT) <= 3 AND CAST(t.sold_id AS INT) >= 0   -- Ensure sold_id is 0, 1, 2, or 3
+            THEN p.coins[CAST(t.sold_id AS INT) + 1]
+            ELSE NULL
+        END as token_sold_address,
 		t.token_bought_amount_raw,
 		t.token_sold_amount_raw,
         t.taker,
