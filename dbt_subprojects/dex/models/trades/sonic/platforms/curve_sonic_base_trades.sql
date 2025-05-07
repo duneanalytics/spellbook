@@ -35,6 +35,8 @@ dexs as (
     select
         t.block_number,
         t.block_time,
+        t.bought_id,
+        t.sold_id,
         CASE
             WHEN CAST(t.bought_id AS INT) <= 3 AND CAST(t.bought_id AS INT) >= 0 -- Ensure bought_id is 0, 1, 2, or 3
             THEN p.coins[CAST(t.bought_id AS INT) + 1]
@@ -67,6 +69,8 @@ select
     CAST(date_trunc('day', dexs.block_time) as date) as block_date,
     dexs.block_time,
     dexs.block_number,
+    dexs.bought_id,
+    dexs.sold_id,
     dexs.token_bought_amount_raw,
     dexs.token_sold_amount_raw,
     dexs.token_bought_address,
