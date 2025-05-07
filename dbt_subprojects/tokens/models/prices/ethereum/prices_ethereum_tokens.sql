@@ -1900,7 +1900,8 @@ FROM
     ('l3-layer3', 'ethereum', 'L3', 0x88909d489678dd17aa6d9609f89b0419bf78fd9a, 18),
     ('hyper-hyperlane', 'ethereum', 'HYPER', 0x93A2Db22B7c736B341C32Ff666307F4a9ED910F5, 18),
     ('wct-walletconnect-token', 'ethereum', 'WCT', 0xeF4461891DfB3AC8572cCf7C794664A8DD927945, 18),
-    ('prompt-wayfinder', 'ethereum', 'PROMPT', 0x28d38df637db75533bd3f71426f3410a82041544, 18)
+    ('prompt-wayfinder', 'ethereum', 'PROMPT', 0x28d38df637db75533bd3f71426f3410a82041544, 18),
+    ('obol-obol-technologies', 'ethereum', 'OBOL', 0x0B010000b7624eb9B3DfBC279673C76E9D29D5F7, 18)
    ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
