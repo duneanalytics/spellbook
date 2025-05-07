@@ -1898,7 +1898,9 @@ FROM
     ('white-whiterock', 'ethereum', 'WHITE', 0x9cdf242ef7975d8c68d5c1f5b6905801699b1940, 18),
     ('sign-sign2', 'ethereum', 'SIGN', 0x868fced65edbf0056c4163515dd840e9f287a4c3, 18),
     ('l3-layer3', 'ethereum', 'L3', 0x88909d489678dd17aa6d9609f89b0419bf78fd9a, 18),
-    ('hyper-hyperlane', 'ethereum', 'HYPER', 0x93A2Db22B7c736B341C32Ff666307F4a9ED910F5, 18)
+    ('hyper-hyperlane', 'ethereum', 'HYPER', 0x93A2Db22B7c736B341C32Ff666307F4a9ED910F5, 18),
+    ('wct-walletconnect-token', 'ethereum', 'WCT', 0xeF4461891DfB3AC8572cCf7C794664A8DD927945, 18),
+    ('prompt-wayfinder', 'ethereum', 'PROMPT', 0x28d38df637db75533bd3f71426f3410a82041544, 18)
    ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
