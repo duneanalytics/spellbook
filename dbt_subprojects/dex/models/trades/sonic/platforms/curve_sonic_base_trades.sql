@@ -35,8 +35,8 @@ dexs as (
     select
         t.block_number,
         t.block_time,
-        pt_bought.token_address as token_bought_address,
-        pt_sold.token_address as token_sold_address,
+        p.coins[CAST(t.bought_id AS INT) + 1] as token_bought_address,
+        p.coins[CAST(t.sold_id AS INT) + 1] as token_sold_address,
 		t.token_bought_amount_raw,
 		t.token_sold_amount_raw,
         t.taker,
@@ -45,14 +45,8 @@ dexs as (
         t.tx_hash,
         t.evt_index
     from exchange_evt_all t
-    inner join {{ ref('curve_sonic_pools') }} pt_bought
-        on t.bought_id = cast(pt_bought.token_id as int256)
-        and t.project_contract_address = pt_bought.pool
-        and pt_bought.token_type = 'pool_token'
-    inner join {{ ref('curve_sonic_pools') }} pt_sold
-        on t.sold_id = cast(pt_sold.token_id as int256)
-        and t.project_contract_address = pt_sold.pool
-        and pt_sold.token_type = 'pool_token'
+    inner join {{ ref('curve_sonic_pools') }} p
+        on t.project_contract_address = p.pool_address
 )
 
 select
