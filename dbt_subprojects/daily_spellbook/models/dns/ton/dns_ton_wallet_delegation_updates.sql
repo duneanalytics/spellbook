@@ -49,7 +49,7 @@ _change_dns_msgs as (
         m.tx_hash,
         m.trace_id,
         m.body_boc,
-        m.source as nft_item_owner,
+        m.source as delegation_initiator,
         m.direction as msg_direction,
         m.destination as nft_item_address,
         (cast(json_extract(metadata.content_onchain, '$.domain') as varchar) || '.ton') as domain
@@ -91,7 +91,7 @@ _result_update as (
     from 
         _dns_ton_change_record_messages_key
     where 
-        to_hex(cast(pre_result.key as varbinary)) = 'E8D44050873DBA865AA7C170AB4CCE64D90839A34DCFD6CF71D14E0205443B1B'
+        pre_result.key = varbinary_to_uint256(from_hex(lower('E8D44050873DBA865AA7C170AB4CCE64D90839A34DCFD6CF71D14E0205443B1B')))
 ),
 _result as (
     select 
@@ -100,7 +100,7 @@ _result as (
         trace_id, 
         domain,
         nft_item_address as dns_nft_item_address,
-        nft_item_owner as dns_nft_item_owner,
+        delegation_initiator as delegation_initiator,
         case
             when r.result.wallet = 'addr_none' then null
             else r.result.wallet
