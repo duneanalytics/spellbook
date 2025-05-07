@@ -24,6 +24,7 @@
     ,'base'
     ,'celo'
     , 'ronin'
+    , 'unichain'
     ] %}
 
 WITH aggrregate_methods AS (

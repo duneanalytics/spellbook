@@ -1,0 +1,6 @@
+version: 2
+
+sources:
+  - name: aave_v3_bnb
+    tables:
+      - name: Pool_evt_ReserveDataUpdated
