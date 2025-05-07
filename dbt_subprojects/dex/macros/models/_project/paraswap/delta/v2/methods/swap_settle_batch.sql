@@ -9,8 +9,8 @@ delta_v2_swap_settle_batch_ExpandedOrders as (
               contract_address, -- varbinary
               -- call_success, -- boolean
               call_tx_hash, -- varbinary
-              -- call_tx_from, -- varbinary
-              -- call_tx_to, -- varbinary
+              call_tx_from, -- varbinary
+              call_tx_to, -- varbinary
               call_trace_address, -- array(bigint)
               call_block_time, -- timestamp
               call_block_number, -- bigint
@@ -75,6 +75,7 @@ from
     events.returnAmount,
     events.protocolFee,
     events.partnerFee,
+    events.evt_index,
     orders.*    
   FROM delta_v2_swap_settle_batch_parsed_orders orders
   --- NB: sourcing from calls and joining events, not the opposite, because some methods emit different events (*fill* -> OrderSettled / OrderPartiallyFilled). Sorting them by evt_index would make them match orders sorted by their index in array + call_trace_address -> source of truth bettr be calls
@@ -149,6 +150,9 @@ SELECT
     call_block_number,
     call_block_time,    
     call_tx_hash,
+    call_tx_from,
+    call_tx_to,
+    evt_index,
     executorFeeAmount as fee_amount,
     -- orderWithSig as order_with_sig,
     executor,
