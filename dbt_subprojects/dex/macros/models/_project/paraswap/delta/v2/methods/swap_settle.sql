@@ -1,5 +1,7 @@
 {% macro delta_v2_swap_settle(blockchain) %}
 -- since this call always is a whole-order-at-once fulfillment, can source it from method calls and no need to join with events as all data is in the call
+-- {% set method_start_date = '2024-10-01' %}
+{% set method_start_date = '2025-05-01' %}
 v2_swap_settle_withParsedOrderData AS (
     SELECT
         call_trace_address,
@@ -42,7 +44,7 @@ v2_swap_settle_parsedOrders AS (
     cast(JSON_EXTRACT_SCALAR("order", '$.expectedDestAmount') as uint256) as expectedDestAmount,
     JSON_EXTRACT_SCALAR("order", '$.deadline') as deadline,
     JSON_EXTRACT_SCALAR("order", '$.nonce') as nonce,
-    JSON_EXTRACT_SCALAR("order", '$.partnerAndFee') as partnerAndFee,
+    cast(JSON_EXTRACT_SCALAR("order", '$.partnerAndFee') as uint256) as partnerAndFee,
     JSON_EXTRACT_SCALAR("order", '$.permit') as permit,       
     {{executor_fee_amount()}},    
     * 
@@ -66,16 +68,16 @@ select
     w.*
     FROM v2_swap_settle_with_wrapped_native w 
     LEFT JOIN {{ source('prices', 'usd') }} d
-    ON d.blockchain = '{{blockchain}}'
-    AND d.minute > TIMESTAMP '2024-06-01'
+    ON d.minute > TIMESTAMP '{{method_start_date}}'
+    AND d.blockchain = '{{blockchain}}'
     {% if is_incremental() %}
       AND {{ incremental_predicate('d.minute') }}
     {% endif %}
     AND d.contract_address = w.dest_token_for_joining
     AND d.minute = DATE_TRUNC('minute', w.call_block_time)
     LEFT JOIN {{ source('prices', 'usd') }} s
-    ON s.blockchain = '{{blockchain}}'
-    AND s.minute > TIMESTAMP '2024-06-01'
+    ON s.minute > TIMESTAMP '{{method_start_date}}'
+    AND s.blockchain = '{{blockchain}}'
     {% if is_incremental() %}
       AND {{ incremental_predicate('s.minute') }}
     {% endif %}
@@ -113,7 +115,8 @@ SELECT
     gas_fee_usd,    
     src_token_order_usd,
     dest_token_order_usd,
-    contract_address
+    contract_address,
+    partnerAndFee
   FROM delta_v2_swapSettle_master
 )
 {% endmacro %}

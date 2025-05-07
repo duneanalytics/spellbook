@@ -29,7 +29,15 @@ select
         call_trace_address as trace_address,
         evt_index,
         order_index,
-        method
+        method,
+        from_hex(regexp_replace(
+                try_cast(
+                  TRY_CAST(
+                    BITWISE_RIGHT_SHIFT(partnerAndFee, 96) AS VARBINARY
+                  ) as VARCHAR
+                ),
+                '0x(00){12}'
+              )) AS partnerAddress
     from {{from_alias}}  
         LEFT JOIN 
         {{ source('tokens', 'erc20') }} t_src_token 
