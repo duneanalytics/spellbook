@@ -51,7 +51,8 @@ dexs as (
         t.maker,
         t.project_contract_address,
         t.tx_hash,
-        t.evt_index
+        t.evt_index,
+        p.version as pool_version
     from exchange_evt_all t
     inner join {{ ref('curve_sonic_pools') }} p
         on t.project_contract_address = p.pool_address
@@ -61,6 +62,7 @@ select
     'sonic' as blockchain,
     'curve' as project,
     '2' as version,
+    CASE WHEN lower(dexs.pool_version) like '%stableswap%' THEN 'stable' ELSE NULL END as pool_type,
     CAST(date_trunc('month', dexs.block_time) as date) as block_month,
     CAST(date_trunc('day', dexs.block_time) as date) as block_date,
     dexs.block_time,
