@@ -7,10 +7,9 @@
                         blockchains = \'["solana"]\',
                         spell_type = "sector",
                         spell_name = "dex_solana",
-                        contributors = \'["whale_hunter", "hosuke"]\') }}'
+                        contributors = \'["whale_hunter", "hosuke", "clizzard"]\') }}'
     )
 }}
-
 
 
 {% set solana_trading_bot = [
@@ -42,35 +41,36 @@
 ] %}
 
 {% for bot in solana_trading_bot %}
-SELECT block_time,
-       block_date,
-       block_month,
-       bot,
-       blockchain,
-       amount_usd,
-       type,
-       token_bought_amount,
-       token_bought_symbol,
-       token_bought_address,
-       token_sold_amount,
-       token_sold_symbol,
-       token_sold_address,
-       fee_usd,
-       fee_token_amount,
-       fee_token_symbol,
-       fee_token_address,
-       project,
-       version,
-       token_pair,
-       project_contract_address,
-       user,
-       tx_id,
-       tx_index,
-       outer_instruction_index,
-       inner_instruction_index,
-       is_last_trade_in_transaction
-FROM {{ bot }}
-{% if not loop.last %}
-UNION ALL
-{% endif %}
+    select
+        block_time,
+        block_date,
+        block_month,
+        bot,
+        blockchain,
+        amount_usd,
+        type,
+        token_bought_amount,
+        token_bought_symbol,
+        token_bought_address,
+        token_sold_amount,
+        token_sold_symbol,
+        token_sold_address,
+        fee_usd,
+        fee_token_amount,
+        fee_token_symbol,
+        fee_token_address,
+        project,
+        version,
+        token_pair,
+        project_contract_address,
+        user,
+        tx_id,
+        tx_index,
+        outer_instruction_index,
+        inner_instruction_index,
+        is_last_trade_in_transaction
+    from {{ bot }}
+    {% if not loop.last %}
+        union all
+    {% endif %}
 {% endfor %}

@@ -1,0 +1,16 @@
+version: 2
+
+models:
+ - name: magiceden_abstract_base_trades
+   meta:
+     blockchain: abstract
+     project: magiceden
+     contributors: hildobby
+   config:
+     tags: [ 'magiceden','abstract','events' ]
+   description: >
+     Magic Eden events on Abstract
+   data_tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]

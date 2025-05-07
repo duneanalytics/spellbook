@@ -33,3 +33,8 @@ sources:
     tables:
       - name: uniswapv3pool_evt_swap
       - name: uniswapv3factory_evt_poolcreated
+  - name: swaprv3_gnosis
+    tables:
+      - name: SwaprV3Factory_evt_Pool
+      - name: AlgebraPool_evt_Fee
+      - name: AlgebraPool_evt_Swap

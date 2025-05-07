@@ -1,0 +1,449 @@
+version: 2
+
+sources:
+  - name: opbnb
+    description: "opBNB is a Layer 2 solution based on Optimism OP Stack that enhances the performance and scalability of the BNB Smart Chain (BSC) network."
+    tables:
+      - name: blocks
+        description: >
+          The blocks table contains information about each block in the opBNB blockchain.
+        columns:
+          - name: time
+            description: "Timestamp of when the block was mined"
+            data_type: timestamp
+          - name: number
+            description: "Block number"
+            data_type: bigint
+          - name: gas_limit
+            description: "Maximum gas allowed in the block"
+            data_type: decimal(38,0)
+          - name: gas_used
+            description: "Total gas used by all transactions in the block"
+            data_type: decimal(38,0)
+          - name: difficulty
+            description: "Block difficulty for PoW consensus"
+            data_type: bigint
+          - name: total_difficulty
+            description: "Total chain difficulty up to this block"
+            data_type: decimal(38,0)
+          - name: size
+            description: "Block size in bytes"
+            data_type: bigint
+          - name: base_fee_per_gas
+            description: "Base fee per gas in the block (post-EIP-1559)"
+            data_type: bigint
+          - name: hash
+            description: "Block hash"
+            data_type: varbinary
+          - name: parent_hash
+            description: "Parent block hash"
+            data_type: varbinary
+          - name: miner
+            description: "Miner/validator address that produced the block"
+            data_type: varbinary
+          - name: nonce
+            description: "Block nonce used in mining"
+            data_type: varbinary
+          - name: state_root
+            description: "Root hash of the state trie"
+            data_type: varbinary
+          - name: transactions_root
+            description: "Root hash of the transactions trie"
+            data_type: varbinary
+          - name: receipts_root
+            description: "Root hash of the receipts trie"
+            data_type: varbinary
+          - name: date
+            description: "Date of the block (derived from time)"
+            data_type: date
+          - name: blob_gas_used
+            description: "Total blob gas used in the block (EIP-4844)"
+            data_type: bigint
+          - name: excess_blob_gas
+            description: "Excess blob gas in the block (EIP-4844)"
+            data_type: bigint
+          - name: parent_beacon_block_root
+            description: "Parent beacon block root hash"
+            data_type: varbinary
+
+      - name: creation_traces
+        description: >
+          The creation_traces table contains information about contract creation events on the opBNB blockchain.
+        columns:
+          - name: block_time
+            description: "Timestamp of when the block was mined"
+            data_type: timestamp
+          - name: block_number
+            description: "Block number"
+            data_type: bigint
+          - name: tx_hash
+            description: "Transaction hash"
+            data_type: varbinary
+          - name: address
+            description: "Address of the created contract"
+            data_type: varbinary
+          - name: from
+            description: "Address that created the contract"
+            data_type: varbinary
+          - name: code
+            description: "Contract bytecode"
+            data_type: varbinary
+          - name: block_month
+            description: "Month of the block (derived from block_time)"
+            data_type: date
+
+      - name: logs
+        description: >
+          The logs table contains event logs emitted by smart contracts on the opBNB blockchain.
+        columns:
+          - name: block_time
+            description: "Timestamp of when the block was mined"
+            data_type: timestamp
+          - name: block_number
+            description: "Block number"
+            data_type: bigint
+          - name: block_hash
+            description: "Block hash"
+            data_type: varbinary
+          - name: contract_address
+            description: "Address of the contract that emitted the event"
+            data_type: varbinary
+          - name: topic0
+            description: "Event signature hash (first topic)"
+            data_type: varbinary
+          - name: topic1
+            description: "First indexed parameter (second topic)"
+            data_type: varbinary
+          - name: topic2
+            description: "Second indexed parameter (third topic)"
+            data_type: varbinary
+          - name: topic3
+            description: "Third indexed parameter (fourth topic)"
+            data_type: varbinary
+          - name: data
+            description: "Non-indexed event parameters"
+            data_type: varbinary
+          - name: tx_hash
+            description: "Transaction hash"
+            data_type: varbinary
+          - name: index
+            description: "Log index within the block"
+            data_type: integer
+          - name: tx_index
+            description: "Transaction index within the block"
+            data_type: integer
+          - name: block_date
+            description: "Date of the block (derived from block_time)"
+            data_type: date
+          - name: tx_from
+            description: "Address that sent the transaction"
+            data_type: varbinary
+          - name: tx_to
+            description: "Address that received the transaction"
+            data_type: varbinary
+
+      - name: traces
+        description: >
+          The traces table contains execution traces of transactions on the opBNB blockchain.
+        columns:
+          - name: block_time
+            description: "Timestamp of when the block was mined"
+            data_type: timestamp
+          - name: block_number
+            description: "Block number"
+            data_type: bigint
+          - name: value
+            description: "Value transferred in the trace (in wei)"
+            data_type: uint256
+          - name: gas
+            description: "Gas provided for the trace execution"
+            data_type: bigint
+          - name: gas_used
+            description: "Gas used by the trace execution"
+            data_type: bigint
+          - name: block_hash
+            description: "Block hash"
+            data_type: varbinary
+          - name: success
+            description: "Whether the trace execution was successful"
+            data_type: boolean
+          - name: tx_index
+            description: "Transaction index within the block"
+            data_type: integer
+          - name: tx_from
+            description: "Address that sent the transaction"
+            data_type: varbinary
+          - name: tx_to
+            description: "Address that received the transaction"
+            data_type: varbinary
+          - name: sub_traces
+            description: "Number of sub-traces"
+            data_type: bigint
+          - name: error
+            description: "Error message if the trace failed"
+            data_type: varchar
+          - name: tx_success
+            description: "Whether the transaction was successful"
+            data_type: boolean
+          - name: tx_hash
+            description: "Transaction hash"
+            data_type: varbinary
+          - name: from
+            description: "Address that initiated the trace"
+            data_type: varbinary
+          - name: to
+            description: "Address that received the trace call"
+            data_type: varbinary
+          - name: trace_address
+            description: "Path of the trace in the call tree"
+            data_type: array(bigint)
+          - name: type
+            description: "Type of the trace (call, create, suicide, reward)"
+            data_type: varchar
+          - name: address
+            description: "Address relevant to the trace type"
+            data_type: varbinary
+          - name: code
+            description: "Contract bytecode for create traces"
+            data_type: varbinary
+          - name: call_type
+            description: "Type of call (call, delegatecall, staticcall, callcode)"
+            data_type: varchar
+          - name: input
+            description: "Input data for the trace"
+            data_type: varbinary
+          - name: output
+            description: "Output data from the trace"
+            data_type: varbinary
+          - name: refund_address
+            description: "Address that received the refund"
+            data_type: varbinary
+          - name: revert_reason
+            description: "Reason for revert if the trace failed"
+            data_type: varchar
+          - name: block_date
+            description: "Date of the block (derived from block_time)"
+            data_type: date
+
+      - name: transactions
+        description: >
+          The transactions table contains information about transactions on the opBNB blockchain.
+        columns:
+          - name: block_time
+            description: "Timestamp of when the block was mined"
+            data_type: timestamp
+          - name: block_number
+            description: "Block number"
+            data_type: bigint
+          - name: value
+            description: "Value transferred in the transaction (in wei)"
+            data_type: uint256
+          - name: gas_limit
+            description: "Gas limit set by the transaction sender"
+            data_type: bigint
+          - name: gas_price
+            description: "Gas price in wei"
+            data_type: uint256
+          - name: gas_used
+            description: "Gas used by the transaction"
+            data_type: bigint
+          - name: max_fee_per_gas
+            description: "Maximum fee per gas (EIP-1559)"
+            data_type: bigint
+          - name: max_priority_fee_per_gas
+            description: "Maximum priority fee per gas (EIP-1559)"
+            data_type: bigint
+          - name: priority_fee_per_gas
+            description: "Effective priority fee per gas paid (EIP-1559)"
+            data_type: bigint
+          - name: nonce
+            description: "Transaction nonce"
+            data_type: bigint
+          - name: index
+            description: "Transaction index within the block"
+            data_type: bigint
+          - name: success
+            description: "Whether the transaction was successful"
+            data_type: boolean
+          - name: from
+            description: "Address that sent the transaction"
+            data_type: varbinary
+          - name: to
+            description: "Address that received the transaction"
+            data_type: varbinary
+          - name: block_hash
+            description: "Block hash"
+            data_type: varbinary
+          - name: data
+            description: "Transaction input data"
+            data_type: varbinary
+          - name: hash
+            description: "Transaction hash"
+            data_type: varbinary
+          - name: type
+            description: "Transaction type (legacy, access list, dynamic fee)"
+            data_type: varchar
+          - name: access_list
+            description: "EIP-2930 access list"
+            data_type: array(row(address varbinary, storageKeys array(varbinary)))
+          - name: chain_id
+            description: "Chain ID specified in the transaction"
+            data_type: varchar
+          - name: block_date
+            description: "Date of the block (derived from block_time)"
+            data_type: date
+          - name: l1_gas_used
+            description: "L1 gas used for the transaction (specific to L2 chains)"
+            data_type: bigint
+          - name: l1_gas_price
+            description: "L1 gas price at the time of the transaction (specific to L2 chains)"
+            data_type: bigint
+          - name: l1_fee
+            description: "L1 fee paid for the transaction (specific to L2 chains)"
+            data_type: bigint
+          - name: l1_fee_scalar
+            description: "L1 fee scalar used in fee calculation (specific to L2 chains)"
+            data_type: double
+          - name: l1_block_number
+            description: "L1 block number referenced by this transaction (specific to L2 chains)"
+            data_type: bigint
+          - name: l1_timestamp
+            description: "L1 block timestamp referenced by this transaction (specific to L2 chains)"
+            data_type: bigint
+          - name: l1_tx_origin
+            description: "L1 transaction origin address (specific to L2 chains)"
+            data_type: varbinary
+
+  # ERC Transfer Tables
+  - name: erc20_opbnb
+    description: "Transfer events for ERC20 tokens on opBNB"
+    tables:
+      - name: evt_transfer
+        description: "ERC20 Transfer events on the opBNB blockchain"
+        columns:
+          - name: contract_address
+            description: "Address of the ERC20 token contract that emitted this event"
+            data_type: varbinary
+          - name: evt_tx_hash
+            description: "Hash of the transaction containing this event"
+            data_type: varbinary
+          - name: evt_index
+            description: "Index position of this event within the transaction"
+            data_type: integer
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+            data_type: timestamp
+          - name: evt_block_number
+            description: "The block number containing this event"
+            data_type: bigint
+          - name: from
+            description: "Address sending the tokens"
+            data_type: varbinary
+          - name: to
+            description: "Address receiving the tokens"
+            data_type: varbinary
+          - name: value
+            description: "Amount of ERC20 tokens transferred, in the token's base unit"
+            data_type: uint256
+
+  - name: erc721_opbnb
+    description: "Transfer events for ERC721 tokens on opBNB"
+    tables:
+      - name: evt_transfer
+        description: "ERC721 Transfer events on the opBNB blockchain"
+        columns:
+          - name: contract_address
+            description: "Address of the NFT contract that emitted this event"
+            data_type: varbinary
+          - name: evt_tx_hash
+            description: "Hash of the transaction containing this event"
+            data_type: varbinary
+          - name: evt_index
+            description: "Index position of this event within the transaction"
+            data_type: integer
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+            data_type: timestamp
+          - name: evt_block_number
+            description: "The block number containing this event"
+            data_type: bigint
+          - name: from
+            description: "Address sending the NFT"
+            data_type: varbinary
+          - name: to
+            description: "Address receiving the NFT"
+            data_type: varbinary
+          - name: tokenId
+            description: "ID of the NFT being transferred"
+            data_type: uint256
+
+  - name: erc1155_opbnb
+    description: "Events related to ERC1155 tokens on opBNB"
+    tables:
+      - name: evt_transfersingle
+        description: "ERC1155 TransferSingle events on the opBNB blockchain"
+        columns:
+          - name: contract_address
+            description: "Address of the ERC1155 token contract"
+            data_type: varbinary
+          - name: evt_tx_hash
+            description: "Hash of the transaction containing this event"
+            data_type: varbinary
+          - name: evt_index
+            description: "Index position of this event within the transaction"
+            data_type: integer
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+            data_type: timestamp
+          - name: evt_block_number
+            description: "The block number containing this event"
+            data_type: bigint
+          - name: operator
+            description: "Address that initiated the transfer"
+            data_type: varbinary
+          - name: from
+            description: "Address sending the tokens"
+            data_type: varbinary
+          - name: to
+            description: "Address receiving the tokens"
+            data_type: varbinary
+          - name: id
+            description: "ID of the token being transferred"
+            data_type: uint256
+          - name: value
+            description: "Amount of tokens transferred"
+            data_type: uint256
+
+      - name: evt_transferbatch
+        description: "ERC1155 TransferBatch events on the opBNB blockchain"
+        columns:
+          - name: contract_address
+            description: "Address of the ERC1155 token contract"
+            data_type: varbinary
+          - name: evt_tx_hash
+            description: "Hash of the transaction containing this event"
+            data_type: varbinary
+          - name: evt_index
+            description: "Index position of this event within the transaction"
+            data_type: integer
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+            data_type: timestamp
+          - name: evt_block_number
+            description: "The block number containing this event"
+            data_type: bigint
+          - name: operator
+            description: "Address that initiated the transfer"
+            data_type: varbinary
+          - name: from
+            description: "Address sending the tokens"
+            data_type: varbinary
+          - name: to
+            description: "Address receiving the tokens"
+            data_type: varbinary
+          - name: ids
+            description: "Array of token IDs being transferred"
+            data_type: array(uint256)
+          - name: values
+            description: "Array of amounts of tokens transferred"
+            data_type: array(uint256)

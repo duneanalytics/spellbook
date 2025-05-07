@@ -16,7 +16,11 @@ with ton_prices as ( -- get price of TON for each day to estimate USD value
         , avg(price) as price
     from {{ source('prices', 'usd') }}
     where true
-        and symbol = 'TON' and blockchain is null
+        and symbol = 'TON' 
+        and blockchain is null
+        {% if is_incremental() %}
+        and {{ incremental_predicate('date_trunc(\'day\', minute)') }}
+        {% endif %}
         group by 1
 ), jetton_prices as (
    select jp.token_address as jetton_master,

@@ -30,6 +30,6 @@ FROM
     , ('htx-htx', 'HTX', 'TUPM7K8REVzD2UdV4R5fe5M8XbnR2DdoJ6', 18)
     , ('jst-just', 'JST', 'TCFLL5dx5ZJdKnWuesXxi1VPwjLVmWZZy9', 18)
     , ('wbt-whitebit-coin', 'WBT', 'TFptbWaARrWTX5Yvy3gNG5Lm8BmhPx82Bt', 8)
-    , ('btt-bittorrent', 'BTT', 'TAFjULxiVgT4qWk6UZwjqwZXTSaGaqnVp4', 18)
+    , ('bttc-bittorrent-chain', 'BTT', 'TAFjULxiVgT4qWk6UZwjqwZXTSaGaqnVp4', 18)
     , ('usdd-usdd', 'USDD', 'TPYmHEhy5n8TCEfYGqW2rPxsghSfzghPDn', 18)
 ) as temp (token_id, symbol, contract_address, decimals)

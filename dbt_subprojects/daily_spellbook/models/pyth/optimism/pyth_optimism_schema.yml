@@ -1,0 +1,33 @@
+version: 2
+
+models: 
+  - name: pyth_entropy_optimism_request
+    meta:
+      blockchain: optimism
+      project: pyth
+    config:
+      tags: ['optimism', 'pyth', 'entropy', 'request', 'vrf']
+    description: "Pyth Entropy request on optimism"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - assigned_sequence_number
+    columns:
+      - name: blockchain
+      - name: tx_hash
+        tests:
+          - not_null
+      - name: assigned_sequence_number
+        tests:
+          - not_null
+      - name: fee
+        tests:
+          - not_null
+      - name: symbol
+      - name: provider
+        tests:
+          - not_null
+      - name: block_time
+      - name: block_date
+      - name: caller
