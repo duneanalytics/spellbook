@@ -16,8 +16,8 @@ exchange_evt_all as (
     select
         t.evt_block_number as block_number,
         t.evt_block_time as block_time,
-        coalesce(cast(t.bought_id_uint256 as int256), t.bought_id_int256) as bought_id,
-		coalesce(cast(t.sold_id_uint256 as int256), t.sold_id_int256) as sold_id,
+        bought_id,
+		sold_id,
 		t.tokens_bought AS token_bought_amount_raw,
 		t.tokens_sold AS token_sold_amount_raw,
         t.buyer as taker,
