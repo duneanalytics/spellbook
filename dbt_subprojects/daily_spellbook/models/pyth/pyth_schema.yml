@@ -1,0 +1,46 @@
+version: 2
+
+models:
+  - name: pyth_entropy_request
+    meta:
+      blockchain: abstract, apechain. arbitrum, b3, base, berachain, blast, kaia, mode, optimism, sei, sonic
+      project: pyth
+      contributors: gunboats
+    config:
+      tags: ['pyth', 'entropy', 'request', 'vrf']
+    description: "Pyth Entropy request"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - assigned_sequence_number
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain that requested the randomness"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash"
+      - &assigned_sequence_number
+        name: assigned_sequence_number
+        description: "Assigned sequence number of the request"
+      - &fee
+        name: fee
+        description: "Fee paid for the request in native token"
+      - &symbol
+        name: symbol
+        description: "Symbol of the token used to pay the fee"
+      - &provider
+        name: provider
+        description: "Provider of the randomness"
+      - &block_time
+        name: block_time
+        description: "UTC call block time"
+      - &block_date
+        name: block_date
+        description: "UTC call block date"
+      - &caller
+        name: caller
+        description: "Address that will consume the randomness"
+    
