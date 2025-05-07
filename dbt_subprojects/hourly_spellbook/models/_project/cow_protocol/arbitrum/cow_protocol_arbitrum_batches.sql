@@ -18,6 +18,8 @@
 with
 solvers_ranked as (
     select
+        t.block_date,
+        t.block_number,
         t.tx_hash,
         t."from" as solver,
         solvers.name,
@@ -55,7 +57,9 @@ batch_counts as (
             {% endif %}
         left join solvers_ranked sr
             on s.evt_tx_hash = sr.tx_hash
-                and sr.rn = 1
+            and s.evt_block_date = sr.block_date
+            and s.evt_block_number = sr.block_number
+            and sr.rn = 1
     {% if is_incremental() %}
     where {{ incremental_predicate('s.evt_block_time') }}
     {% endif %}
