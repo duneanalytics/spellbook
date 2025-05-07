@@ -7,7 +7,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['blockchain', 'tx_hash', 'project_contract_address', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "fantom", "polygon", "base", "celo", "zksync", "scroll", "zora", "sei"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "fantom", "polygon", "base", "celo", "zksync", "scroll", "zora", "sei", "mantle"]\',
                                 "sector",
                                 "dex",
                                 \'["hildobby"]\') }}'
@@ -28,7 +28,9 @@
      , (ref('dex_zksync_sandwiches'))
      , (ref('dex_scroll_sandwiches'))
      , (ref('dex_zora_sandwiches'))
+     , (ref('dex_unichain_sandwiches'))
      , (ref('dex_sei_sandwiches'))
+     , (ref('dex_mantle_sandwiches'))
 ] %}
 
 SELECT *
@@ -60,7 +62,7 @@ FROM (
         , evt_index
         FROM {{ sandwiches_model }}
         {% if is_incremental() %}
-        WHERE block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE {{incremental_predicate('block_time')}}
         {% endif %}
         {% if not loop.last %}
         UNION ALL

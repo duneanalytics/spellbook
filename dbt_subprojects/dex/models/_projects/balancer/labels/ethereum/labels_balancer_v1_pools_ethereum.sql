@@ -21,7 +21,7 @@ WITH events AS (
     FROM {{ source('balancer_v1_ethereum', 'BPool_call_bind') }}
     WHERE call_success
     {% if is_incremental() %}
-        AND call_block_time >= date_trunc('day', now() - interval '7' day)
+        AND {{incremental_predicate('call_block_time')}}
     {% endif %}
 
     UNION all
@@ -34,7 +34,7 @@ WITH events AS (
     FROM {{ source('balancer_v1_ethereum', 'BPool_call_rebind') }}
     WHERE call_success
     {% if is_incremental() %}
-        AND call_block_time >= date_trunc('day', now() - interval '7' day)
+        AND {{incremental_predicate('call_block_time')}}
     {% endif %}
 
     UNION all
@@ -47,7 +47,7 @@ WITH events AS (
     FROM {{ source('balancer_v1_ethereum', 'BPool_call_unbind') }}
     WHERE call_success
     {% if is_incremental() %}
-        AND call_block_time >= date_trunc('day', now() - interval '7' day)
+        AND {{incremental_predicate('call_block_time')}}
     {% endif %}
 ),
 

@@ -38,6 +38,22 @@ models:
         description: "Transfer type: in/out (inflow/outflow)"
         data_tests:
           - not_null
+      - &from_address
+        name: from_address
+        description: "Address initiating the transfer"
+        data_tests:
+          - not_null
+      - &to_address
+        name: to_address
+        description: "Address receiving the transfer"
+        data_tests:
+          - not_null
+      - &from_address_type
+        name: from_address_type
+        description: "Type of the address initiating the transfer (e.g., capital pool, swap operator)"
+      - &to_address_type
+        name: to_address_type
+        description: "Type of the address receiving the transfer (e.g., capital pool, swap operator)"
       - &symbol
         name: symbol
         description: "Token symbol for transferred token"
@@ -46,8 +62,8 @@ models:
       - &amount
         name: amount
         description: "Token amount for transferred token"
-      - &contract_address
-        name: contract_address
+      - &token_contract_address
+        name: token_contract_address
         description: "Contract address of the transferred token"
       - &unique_key
         name: unique_key

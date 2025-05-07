@@ -30,6 +30,11 @@ This macro is used to parse an address from the cell according to [the specifica
 It accepts only one parameter - ``as`` (field name). The result is added to the output row with the name ``as`` and ``varchar`` type.
 Note that only ``addr_std`` is supported at the moment and ``Anycast`` is not supported yet.
 
+## ton_load_coins
+
+This macro is used to parse a coins value from the cell according to [the specification](https://github.com/ton-blockchain/ton/blob/master/crypto/block/block.tlb#L112-L118).
+It accepts only one parameter - ``as`` (field name). The result is added to the output row with the name ``as`` and ``UINT256`` type.
+
 ## ton_skip_bits
 
 Allows to skip a certain number of bits in the cell without parsing them. Usefull when we don't need some fields (for example, one can skip the first 32 bits
@@ -43,11 +48,39 @@ The same as ``ton_skip_bits`` but for reference cells.
 
 Loads a reference cell from the current cursor position. Doesn't accept any parameters. Note that after loading a reference cell, one need to call ``ton_begin_parse`` again to start parsing the new cell.
 
+## ton_load_maybe_ref
+
+Reads a bit from the current cursor position and if it is 1, loads a reference cell from the current cursor position. Otherwise, returns null.
+
+## ton_skip_maybe_ref
+
+Does the same as ``ton_load_maybe_ref`` but doesn't load the reference cell. Useful when you have multiple maybe ref in a row.
+
 ## ton_restart_parse
 
 This macro is used to restart parsing from the beginning of the bag of cells. It doesn't accept any parameters. It is useful when 
 you are working with multiple reference cells and after parsing the first cell you need to switch to the next one - in this case you need to call ``ton_restart_parse``,
 skip the first ref with ``ton_skip_refs`` and then call ``ton_load_ref`` again to start parsing the next cell.
+
+## ton_return_if_neq
+
+Imagine we have a structure like this:
+```
+ok$0 = MessageResponse;
+error$1 address:MsgAddress = MessageResponse;
+``` 
+We need to load first bit and load ``address`` only if the first bit is ``1``. We can read ``error_code`` regardless of the first bit 
+but we will get ``addr_none`` in both cases. To simplify such cases the ``ton_return_if_neq`` macro is introduced. It allows to
+pass not equal condition for previously parsed field and break the parsing loop (immidiately return):
+```sql
+    SELECT {{ ton_from_boc('boc', 
+    [
+    ton_begin_parse(),
+    ton_load_uint(1, 'status'),
+    ton_return_if_neq('status', 1),
+    ton_load_address('address')
+    ]) }} AS result 
+```
 
 # Usage examples
 

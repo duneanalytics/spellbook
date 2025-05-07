@@ -42,7 +42,8 @@ lido_oracle as (
 
 steth_adjusted_date as (
   select
-    date_add('day', case when t.block_time < lo.block_time then -1 else 0 end, t.block_date) as block_date,
+    t.block_date,
+    date_add('day', case when t.block_time < lo.block_time then -1 else 0 end, t.block_date) as block_oracle_date,
     t.amount as steth_amount
   from lido_oracle lo
     inner join transfer_combined t on lo.block_date = t.block_date
@@ -52,15 +53,15 @@ steth_adjusted_date as (
 steth_net_staking as (
   select
     1 as anchor,
-    lo.block_date,
+    sd.block_date,
     sd.steth_amount,
     lo.rebase as rebase2
   from lido_oracle lo
     inner join (
-      select block_date, sum(steth_amount) as steth_amount
+      select block_date, block_oracle_date, sum(steth_amount) as steth_amount
       from steth_adjusted_date
-      group by 1
-     ) sd on lo.block_date = sd.block_date
+      group by 1, 2
+     ) sd on lo.block_date = sd.block_oracle_date
 ),
 
 steth_expanded_rebase as (
@@ -160,7 +161,7 @@ aave_supplied as (
     date_trunc('day', s.block_time) as block_date,
     s.symbol,
     sum(s.amount / u.liquidityIndex * power(10, 27)) as atoken_amount
-  from {{ ref('aave_ethereum_supply') }} s
+  from {{ source('aave_ethereum', 'supply') }} s
     inner join {{ source('aave_v3_ethereum', 'Pool_evt_ReserveDataUpdated') }} u
        on u.evt_block_number = s.block_number
       and u.evt_index < s.evt_index
@@ -187,7 +188,7 @@ aave_borrowed as (
     date_trunc('day', b.block_time) as block_date,
     b.symbol,
     sum(b.amount / u.variableBorrowIndex * power(10, 27)) as atoken_amount
-  from {{ ref('aave_ethereum_borrow') }} b
+  from {{ source('aave_ethereum', 'borrow') }} b
     inner join {{ source('aave_v3_ethereum', 'Pool_evt_ReserveDataUpdated') }} u
        on u.evt_block_number = b.block_number
       and u.evt_index < b.evt_index

@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: pancakeswap_v3_opbnb
+    tables:
+      - name: PancakeV3Pool_evt_Swap
+      - name: PancakeV3Factory_evt_PoolCreated
+  - name: pancakeswap_v2_opbnb
+    tables:
+      - name: PancakePair_evt_Swap
+      - name: PancakeFactory_evt_PairCreated

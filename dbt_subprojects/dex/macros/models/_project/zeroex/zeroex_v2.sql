@@ -7,7 +7,8 @@ WITH base_filtered_logs AS (
         zid, 
         taker, 
         method_id,
-        tag
+        tag,
+        cow_rn
     FROM
         zeroex_tx
     JOIN
@@ -64,7 +65,10 @@ swap_signatures as (
         (0x54787c404bb33c88e86f4baf88183a3b0141d0a848e6a9f7a13b66ae3a9b73d1),
         (0x6ac6c02c73a1841cb185dff1fe5282ff4499ce709efd387f7fc6de10a5124320),
         (0x1f5359759208315a45fc3fa86af1948560d8b87afdcaf1702a110ce0fbc305f3),
-        (0x40e9cecb9f5f1f1c5b9c97dec2917b7ee92e57ba5563708daca94dd84ad7112f)
+        (0x40e9cecb9f5f1f1c5b9c97dec2917b7ee92e57ba5563708daca94dd84ad7112f),
+        (0xa07a543ab8a018198e99ca0184c93fe9050a79400a0a723441f84de1d972cc17),
+        (0x0e8e403c2d36126272b08c75823e988381d9dc47f2f0a9a080d95f891d95c469),
+        (0x73adcdbf2d8fee0c1221daefef436a92c3c640e97ff2941e744bf5eef1ab346f)
     ) AS t(signature)
 ),
 
@@ -90,7 +94,8 @@ tbl_all_logs AS (
         case when topic0 = signature or logs.contract_address = settler_address then 'swap' end as log_type,
         data,
         row_number() over (partition by tx_hash order by index) rn,
-        case when tx_cnt > 1 then 1 else 0 end as bundled_tx
+        case when tx_cnt > 1 then 1 else 0 end as bundled_tx,
+        cow_rn
     FROM
         base_filtered_logs AS logs
     JOIN bundled_tx_check btx using (block_time, block_number, tx_hash)
@@ -100,14 +105,25 @@ tbl_all_logs AS (
                 topic0 IN (0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65,
                    0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef,
                    0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c,
-                   0xe59fdd36d0d223c0c7d996db7ad796880f45e1936cb0bb7ac102e7082e031487)
+                   0xe59fdd36d0d223c0c7d996db7ad796880f45e1936cb0bb7ac102e7082e031487,
+                   0xed99827efb37016f2275f98c4bcf71c7551c75d59e9b450f79fa32e60be672c2)
                 OR logs.contract_address = settler_address
                 OR swap_signatures.signature is not null
         )
-    
         AND zid != 0xa00000000000000000000000
 ),
-
+cow_log_range as (
+    select 
+            tx_hash,
+            block_time,
+            block_number,
+            min(index) min_index, 
+            max(index) max_index
+        from tbl_all_logs
+        where topic0 = 0xed99827efb37016f2275f98c4bcf71c7551c75d59e9b450f79fa32e60be672c2
+            AND bytearray_substring(topic1,13,20) != 0xDef1C0ded9bec7F1a1670819833240f027b25EfF
+        group by 1,2,3
+),
 swap_logs as (
     select  
         block_time, 
@@ -123,8 +139,12 @@ swap_logs as (
         rn,
         varbinary_to_uint256(varbinary_substring(data,85,12)) amount_out_
     from tbl_all_logs st 
+    left join cow_log_range cow using (block_time, block_number, tx_hash)
     WHERE   
        log_type = 'swap'
+       
+       AND CASE WHEN cow_rn is not null then st.index < cow.max_index
+           else 1=1 end 
        
 ),
 
@@ -161,11 +181,27 @@ taker_logs as (
                         or (
                             bytearray_substring(logs.topic2,13,20) = taker 
                         and taker = tx_to and bytearray_substring(logs.topic1,13,20) != st.contract_address ) 
+                        or (
+                            bytearray_substring(logs.topic1,13,20) = settler_address
+                             and bytearray_substring(logs.topic1,13,20) = st.contract_address )
+                        
                     )
              )
-             or topic0 = 0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c 
+             or (topic0 = 0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c 
                  and bytearray_substring(logs.topic1,13,20) in (tx_to, settler_address)  
+             )
+             or ( bytearray_substring(logs.topic1,13,20) = bytearray_substring(st.topic1,13,20)
+                            and bytearray_substring(logs.topic1,13,20)  = 0x9008D19f58AAbD9eD0D60971565AA8510560ab41
+                            )
         ) 
+           and  case when cow_rn is not null then (
+             bytearray_substring(logs.topic1, 13,20) = settler_address 
+          or bytearray_substring(logs.topic2, 13,20) = settler_address ) 
+          or (bytearray_substring(logs.topic2, 13,20) = st.contract_address
+              and bytearray_substring(logs.topic1, 13,20) = 0x9008D19f58AAbD9eD0D60971565AA8510560ab41 
+              and bytearray_substring(st.topic1, 13,20) = settler_address
+              )
+          else 1=1 end 
     )
     select * 
     from tbl_base
@@ -215,13 +251,16 @@ maker_logs as (
                     )
                     and (varbinary_position(st.data, varbinary_ltrim(logs.data)) <> 0 
                     or varbinary_position(st.data, ( cast(-1 * varbinary_to_int256(varbinary_substring(logs.data, varbinary_length(logs.data) - 31, 32)) AS VARBINARY))) <> 0 
-                    or POSITION(CAST(varbinary_to_uint256(varbinary_ltrim(logs.data)) AS VARCHAR) IN CAST(amount_out_ AS VARCHAR)) > 0
-
+                    or POSITION(CAST(varbinary_to_uint256(rpad(varbinary_ltrim(logs.data), 32, 0x00)) AS VARCHAR) IN CAST(amount_out_ AS VARCHAR)) > 0
+                    or (logs.topic0 = 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef
+                        and bytearray_substring(logs.topic1,13,20) = st.contract_address 
+                        and bytearray_substring(logs.topic2,13,20) = settler_address
+                        )
                     ) 
                 
                         )  
                         or (bytearray_substring(logs.topic1,13,20) in (settler_address, st.contract_address)  
-                        and (bytearray_substring(logs.topic2,13,20) in (taker))
+                        and (bytearray_substring(logs.topic2,13,20) in (taker, 0x0000000000000000000000000000000000000000))
                         )   
                     )
             )
@@ -273,7 +312,8 @@ select  distinct block_time,
         tx_hash,
         case 
             {% if blockchain not in ['mode'] %}
-            when c.address is not null then tx_from 
+            when c.address is not null 
+                or st.taker = tx_to then tx_from 
             {% endif %}
              when st.taker in (0x0000000000001ff3684f28c67538d4d072c22734,
                             0x0000000000005E88410CcDFaDe4a5EfaE4b49562,

@@ -198,6 +198,69 @@ sources:
           - name: excess_blob_gas
             description: "A running total of blob gas consumed in excess of the target, prior to the block. This is used to set blob gas pricing(not in use for b3)." 
           
+      - name: transactions
+        meta:
+          docs_slug: /evm/b3/raw/transactions
+          short_description: The `b3.transactions` table contains information about transactions on the B3 network.
+        description: '{{ doc("b3_transactions_doc") }}'
+        columns:
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this transaction was added to the chain"
+          - name: block_number
+            description: "The sequential number of the block containing this transaction"
+          - name: value
+            description: "Amount of native tokens transferred in this transaction"
+          - name: gas_limit
+            description: "Maximum amount of gas allocated for this transaction's execution"
+          - name: gas_price
+            description: "Price per unit of gas in wei that the sender is willing to pay"
+          - name: gas_used
+            description: "Actual amount of gas consumed by this transaction"
+          - name: max_fee_per_gas
+            description: "Maximum fee per gas unit the sender is willing to pay (EIP-1559)"
+          - name: max_priority_fee_per_gas
+            description: "Maximum priority fee per gas unit the sender is willing to pay (EIP-1559)"
+          - name: priority_fee_per_gas
+            description: "Actual priority fee per gas unit paid in this transaction (EIP-1559)"
+          - name: nonce
+            description: "Sequential transaction counter for the sender address"
+          - name: index
+            description: "Position of this transaction within the block"
+          - name: success
+            description: "Boolean indicating whether this transaction executed successfully"
+          - name: from
+            description: "Address that initiated this transaction"
+          - name: to
+            description: "Recipient address of this transaction"
+          - name: block_hash
+            description: "Hash of the block containing this transaction"
+          - name: data
+            description: "Input data provided to this transaction"
+          - name: hash
+            description: "Unique 256-bit identifier (hash) of this transaction"
+          - name: type
+            description: "Transaction type (legacy, EIP-2930, EIP-1559, etc.)"
+          - name: access_list
+            description: "List of addresses and storage keys that the transaction plans to access (EIP-2930)"
+          - name: chain_id
+            description: "Chain identifier to prevent replay attacks"
+          - name: block_date
+            description: "The UTC date of the block containing this transaction"
+          - name: l1_gas_used
+            description: "Amount of gas used on the L1 chain for this L2 transaction"
+          - name: l1_gas_price
+            description: "Gas price on the L1 chain at the time of this L2 transaction"
+          - name: l1_fee
+            description: "Fee paid on the L1 chain for this L2 transaction"
+          - name: l1_fee_scalar
+            description: "Scaling factor applied to the L1 fee calculation"
+          - name: l1_block_number
+            description: "Block number on the L1 chain associated with this L2 transaction"
+          - name: l1_timestamp
+            description: "Timestamp on the L1 chain associated with this L2 transaction"
+          - name: l1_tx_origin
+            description: "Original sender address on the L1 chain for this L2 transaction"
+          
 
       - name: contracts
         meta:

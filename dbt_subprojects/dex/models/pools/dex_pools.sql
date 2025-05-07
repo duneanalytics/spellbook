@@ -45,7 +45,7 @@ FROM (
     FROM {{ dex_pool_model }}
     {% if not loop.last %}
     {% if is_incremental() %}
-    WHERE creation_block_time >= date_trunc('day', now() - interval '7' Day)
+    WHERE {{incremental_predicate('creation_block_time')}}
     {% endif %}
     UNION ALL
     {% endif %}
