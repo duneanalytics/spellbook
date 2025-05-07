@@ -61,4 +61,4 @@ WHERE
 {% if not loop.last %}
 UNION ALL
 {% endif %}
-{% endfor %}
+{% endfor %} 

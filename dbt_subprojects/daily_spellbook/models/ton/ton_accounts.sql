@@ -63,6 +63,7 @@ TON_STATES AS (
         MAX_BY(hash = trace_id, lt) FILTER (WHERE end_status = 'active' AND orig_status != 'active') deployment_by_external,
 
         MIN_BY(hash, lt) initial_funding_tx_hash,
+        MIN_BY(trace_id, lt) initial_funding_trace_id,
         MIN_BY(block_time, lt) initial_funding_at,
         MIN_BY(block_date, lt) initial_funding_date
     FROM {{ source('ton', 'transactions') }} T
@@ -76,6 +77,14 @@ TON_STATES AS (
   SELECT DISTINCT pool_address, 'dex_pool' AS interface FROM {{ source('ton', 'dex_trades') }}
 ), DEX_ROUTERS AS (
   SELECT DISTINCT router_address, 'dex_router' AS interface FROM {{ source('ton', 'dex_trades') }}
+), NFT_ITEMS AS (
+  SELECT DISTINCT nft_item_address, 'nft_item' AS interface FROM {{ source('ton', 'nft_events') }}
+), NFT_SALES AS (
+  SELECT DISTINCT sale_contract, 'nft_sale' AS interface FROM {{ source('ton', 'nft_events') }}
+  WHERE sale_contract IS NOT NULL
+), NFT_COLLECTIONS AS (
+  SELECT DISTINCT collection_address, 'nft_collection' AS interface FROM {{ source('ton', 'nft_events') }}
+  WHERE collection_address IS NOT NULL
 ), UNIQUE_CODE_ACCOUNTS AS (
   -- To avoid situation when some jetton wallet is updated to the code_hash of an existing contract of a different type
   SELECT account, MAX(account_state_code_hash_after) as code_hash
@@ -91,13 +100,21 @@ TON_STATES AS (
   LEFT JOIN JETTON_MASTERS JM ON JM.jetton_master = account
   LEFT JOIN DEX_POOLS DP ON DP.pool_address = account
   LEFT JOIN DEX_ROUTERS DR ON DR.router_address = account
-  CROSS JOIN UNNEST(ARRAY[JW.interface, JM.interface, DP.interface, DR.interface]) AS I(interface)
+  LEFT JOIN NFT_ITEMS NI ON NI.nft_item_address = account
+  LEFT JOIN NFT_COLLECTIONS NC ON NC.collection_address = account
+  LEFT JOIN NFT_SALES NS ON NS.sale_contract = account
+  CROSS JOIN UNNEST(ARRAY[JW.interface, JM.interface, DP.interface, DR.interface, NI.interface, NC.interface, NS.interface]) AS I(interface)
   WHERE I.interface IS NOT NULL
   GROUP BY 1
+), JETTON_SENDERS AS (
+  SELECT trace_id, destination, MIN_BY(source, tx_lt) AS source FROM {{ source('ton', 'jetton_events') }} -- pre-aggregated to avoid duplicates
+  WHERE tx_aborted = FALSE
+  GROUP BY 1, 2
 )
 SELECT T.address, T.status, T.last_tx_hash, T.last_tx_at, T.balance, T.code_hash, T.deployment_tx_hash, T.deployment_at, T.deployment_by_external,
-T.initial_funding_tx_hash, T.initial_funding_at, M.source AS first_tx_sender,
+T.initial_funding_tx_hash, T.initial_funding_at, COALESCE(J.source, M.source) AS first_tx_sender,
 array_union(COALESCE(J.interfaces, ARRAY[]), CASE WHEN I.interface IS NOT NULL THEN ARRAY[I.interface] ELSE ARRAY[] END) AS interfaces FROM TON_STATES T 
 LEFT JOIN {{ source('ton', 'messages') }} M ON T.initial_funding_tx_hash = M.tx_hash and M.direction ='in' and M.block_date = T.initial_funding_date
+LEFT JOIN JETTON_SENDERS J ON T.initial_funding_trace_id = J.trace_id AND T.address = J.destination
 LEFT JOIN JETTON_RELATED_CODE_HASHES J on T.code_hash = J.code_hash
 LEFT JOIN INTERFACES I on T.code_hash = I.code_hash

@@ -29,7 +29,8 @@
                                         "zksync",
                                         "zora",
                                         "opbnb",
-                                        "ink"
+                                        "ink",
+                                        "unichain"
                                         ]\',
                                     "sector",
                                     "evms",
@@ -66,6 +67,7 @@
      , ('b3', source('erc20_b3', 'evt_transfer'))
      , ('opbnb', source('erc20_opbnb', 'evt_transfer'))
      , ('ink', source('erc20_ink', 'evt_transfer'))
+     , ('lens', source('erc20_lens', 'evt_transfer'))
 ] %}
 
 SELECT *
