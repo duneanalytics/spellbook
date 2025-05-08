@@ -69,7 +69,7 @@ WITH transfers_raw as (
                   AND {{incremental_predicate('tr.call_block_time')}}
                   {% else -%}
                   and
-                        call_block_time between date '2025-01-01' and date '2025-04-01'
+                        call_block_time between date '2025-01-01' and date '2025-02-01'
                   {% endif -%}
       )
       /*
@@ -104,7 +104,7 @@ WITH transfers_raw as (
             AND {{incremental_predicate('call_block_time')}}
             {% else -%}
             and
-                  call_block_time between date '2025-01-01' and date '2025-04-01'
+                  call_block_time between date '2025-01-01' and date '2025-02-01'
             {% endif -%}
 
       UNION ALL
@@ -134,7 +134,7 @@ WITH transfers_raw as (
             AND {{incremental_predicate('call_block_time')}}
             {% else -%}
             and
-                  call_block_time between date '2025-01-01' and date '2025-04-01'
+                  call_block_time between date '2025-01-01' and date '2025-02-01'
             {% endif -%}
 
       UNION ALL
@@ -163,7 +163,7 @@ WITH transfers_raw as (
             AND {{incremental_predicate('call_block_time')}}
             {% else -%}
             and
-                  call_block_time between date '2025-01-01' and date '2025-04-01'
+                  call_block_time between date '2025-01-01' and date '2025-02-01'
             {% endif -%}
 
       UNION ALL
@@ -192,7 +192,7 @@ WITH transfers_raw as (
             AND {{incremental_predicate('call_block_time')}}
             {% else -%}
             and
-                  call_block_time between date '2025-01-01' and date '2025-04-01'
+                  call_block_time between date '2025-01-01' and date '2025-02-01'
             {% endif -%}
 
       UNION ALL
@@ -221,7 +221,7 @@ WITH transfers_raw as (
             AND {{incremental_predicate('call_block_time')}}
             {% else -%}
             and
-                  call_block_time between date '2025-01-01' and date '2025-04-01'
+                  call_block_time between date '2025-01-01' and date '2025-02-01'
             {% endif -%}
 )
 , transfers AS (
