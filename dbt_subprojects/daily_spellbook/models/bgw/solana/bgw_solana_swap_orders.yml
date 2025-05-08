@@ -1,0 +1,43 @@
+version: 2
+
+models:
+  - name: bgw_solana_swap_orders
+    description: "This model processes and analyzes Solana transaction data for specific conditions."
+    config:
+      materialized: incremental
+      partition_by: block_date
+    columns:
+      - name: tx_id
+        description: "Transaction ID for each trade."
+      - name: trade_source
+        description: "Destination account or trade source."
+      - name: blockchain
+        description: "Specifies the blockchain associated with the transaction."
+      - name: block_time
+        description: "The time at which the block was mined."
+      - name: block_date
+        description: "The date extracted from block_time for partitioning."
+      - name: trader_id
+        description: "Trader ID or source account."
+      - name: amount_usd
+        description: "The equivalent amount in USD for the transaction."
+      - name: ref
+    tests:
+      - unique: [tx_id]
+      - not_null: [tx_id, trade_source, trader_id]
+
+sources:
+  - name: solana
+    tables:
+      - name: transactions
+        description: "Stores Solana blockchain transaction data."
+      - name: instruction_calls
+        description: "Instruction calls associated with transactions."
+  - name: dex_solana
+    tables:
+      - name: trades
+        description: "Dex trades data related to Solana transactions."
+  - name: solana
+    tables:
+      - name: instruction_calls
+        description: "instruction_calls."
