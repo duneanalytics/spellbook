@@ -93,6 +93,7 @@ with
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('meta.call_block_time') }}
         {% endif %}
+        
     )
 
     , token2022_metadata as (
@@ -145,16 +146,48 @@ with
         {% if is_incremental() %}
         AND {{ incremental_predicate('block_time') }}
         {% endif %}
+        union all
+        select
+            from_utf8(bytearray_substring(data, 9, bytearray_to_bigint(bytearray_reverse(bytearray_substring(data, 2, 4))))) as name
+            , from_utf8(bytearray_substring(data, 
+                        9 + bytearray_to_bigint(bytearray_reverse(bytearray_substring(data, 2, 4))) + 4, 
+                        bytearray_to_bigint(bytearray_reverse(bytearray_substring(data, 
+                                            9 + bytearray_to_bigint(bytearray_reverse(bytearray_substring(data, 2, 4))), 
+                                            4))))) as symbol
+            , from_utf8(bytearray_substring(data, 
+                        9 + bytearray_to_bigint(bytearray_reverse(bytearray_substring(data, 2, 4))) + 
+                        4 + bytearray_to_bigint(bytearray_reverse(bytearray_substring(data, 
+                                                9 + bytearray_to_bigint(bytearray_reverse(bytearray_substring(data, 2, 4))), 
+                                                4))) + 4,
+                        bytearray_to_bigint(bytearray_reverse(bytearray_substring(data, 
+                                            9 + bytearray_to_bigint(bytearray_reverse(bytearray_substring(data, 2, 4))) + 
+                                            4 + bytearray_to_bigint(bytearray_reverse(bytearray_substring(data, 
+                                                                9 + bytearray_to_bigint(bytearray_reverse(bytearray_substring(data, 2, 4))), 
+                                                                4))), 
+                                            4))))) as uri
+            , i.tx_id as metadata_tx
+            , t.account_mint
+            , i.block_time
+            , i.executing_account as metadata_program
+            , row_number() over (partition by t.account_mint order by i.block_time desc) as latest
+        FROM {{ source('solana','instruction_calls') }} i
+        JOIN tokens t ON i.tx_id = t.call_tx_id
+        WHERE i.executing_account = 'metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s' 
+        AND i.is_inner = true
+        AND bytearray_substring(i.data, 1, 1) = 0x2a
+        AND i.tx_success
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('i.block_time') }}
+        {% endif %}
     )
-
 SELECT
     tk.account_mint as token_mint_address
     , tk.decimals
-    , coalesce(m22.name,mo.name,trim(json_value(args, 'strict $.name'))) as name
-    , coalesce(m22.symbol,mo.symbol,trim(json_value(args, 'strict $.symbol'))) as symbol
-    , coalesce(m22.uri,mo.uri,trim(json_value(args, 'strict $.uri'))) as token_uri
+    , coalesce(m22.name, mo.name, trim(json_value(args, 'strict $.name'))) as name
+    , coalesce(m22.symbol, mo.symbol, trim(json_value(args, 'strict $.symbol'))) as symbol
+    , coalesce(m22.uri, mo.uri, trim(json_value(args, 'strict $.uri'))) as token_uri
     , tk.call_block_time as created_at
-    , coalesce(m22.metadata_program,mo.metadata_program,m.metadata_program) as metadata_program
+    , coalesce(m22.metadata_program, mo.metadata_program, m.metadata_program) as metadata_program
     , tk.token_version
     , tk.call_tx_id as init_tx
 FROM tokens tk
