@@ -19,3 +19,7 @@ sources:
     tables:
       - name: uniswapv3factory_evt_poolcreated
       - name: uniswapv3pool_evt_swap
+  - name: dyorswap_sonic
+    tables:
+      - name: uniswapv2factory_evt_paircreated
+      - name: dyorpair_evt_swap
