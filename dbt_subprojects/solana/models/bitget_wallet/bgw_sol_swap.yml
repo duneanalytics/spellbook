@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: bgw_solana_swap_orders
+  - name: bgw_solana_swap
     meta:
         blockchain: solana
     description: "This model processes and analyzes Solana transaction data for specific conditions."
