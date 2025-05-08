@@ -114,6 +114,7 @@ all_pools AS (
 )
 
 SELECT
+distinct
     version,
     name,
     symbol,
