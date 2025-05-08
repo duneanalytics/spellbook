@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: bgw_solana_swap_orders
+    meta:
+        blockchain: solana
+    description: "This model processes and analyzes Solana transaction data for specific conditions."
+    columns:
+      - &tx_id
+        name: tx_id
+        description: "Transaction ID for each trade."
+      - &trade_source
+        name: trade_source
+        description: "Destination account or trade source."
+      - &blockchain
+        name: blockchain
+        description: "Specifies the blockchain associated with the transaction."
+      - &block_time
+        name: block_time
+        description: "The time at which the block was mined."
+      - &block_date
+        name: block_date
+        description: "The date extracted from block_time for partitioning."
+      - &trader_id
+        name: trader_id
+        description: "Trader ID or source account."
+      - &amount_usd
+        name: amount_usd
+        description: "The equivalent amount in USD for the transaction."
