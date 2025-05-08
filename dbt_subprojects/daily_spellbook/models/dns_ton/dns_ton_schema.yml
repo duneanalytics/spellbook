@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: dns_ton_wallet_delegation_updates
+  - name: dns_ton_delegation_updates
     meta:
       blockchain: ton
       sector: infrastructure
@@ -17,6 +17,8 @@ models:
             - tx_hash
             - domain
     columns:
+      - name: block_date
+        description: "block date"
       - name: block_time
         description: "block_time of the transaction"
       - name: tx_hash

@@ -1,6 +1,6 @@
 {{ config(
        schema = 'dns_ton'
-       , alias = 'wallet_delegation_updates'
+       , alias = 'delegation_updates'
        , materialized = 'incremental'
        , file_format = 'delta'
        , incremental_strategy = 'merge'
@@ -9,94 +9,77 @@
    )
  }}
 
+{#
+https://github.com/ton-blockchain/dns-contract/blob/main/func/nft-item.fc#L204 - implementation of op::change_dns_record
+#}
 with 
 _config as (
     select
-        upper(ton_address_user_friendly_to_raw('EQC3dNlesgVD8YbAazcauIrXBPfiVhMMr5YYk2in0Mtsz0Bz')) as collection_address
+        '0:B774D95EB20543F186C06B371AB88AD704F7E256130CAF96189368A7D0CB6CCF' as collection_address
 ),
 _dns_mint_events as (
     select
         *
     from
-        ton.nft_events
+        {{ source('ton', 'nft_events') }}
     where
         collection_address = (select collection_address from _config)
         and "type" = 'mint'
 ),
 _dns_items_address as (
     select
-        nft_item_address
+        nft_item_address, max(cast(json_extract(content_onchain, '$.domain') as varchar) || '.ton') as domain
     from
         _dns_mint_events
     group by
         1
 ),
-_latest_metadata as (
-    select
-        address,
-        max_by(name, update_time_onchain) as name,
-        max_by(content_onchain, update_time_onchain) as content_onchain,
-        max_by(description, update_time_onchain) as description,
-        max_by(image, update_time_onchain) as image
-    from
-        ton.nft_metadata NM
-    group by
-        1
-),
 _change_dns_msgs as (
     select
+        t.block_date,
         m.block_time,
         m.tx_hash,
+        m.tx_lt,
         m.trace_id,
         m.body_boc,
         m.source as delegation_initiator,
         m.direction as msg_direction,
         m.destination as nft_item_address,
-        (cast(json_extract(metadata.content_onchain, '$.domain') as varchar) || '.ton') as domain
+        domain
     from
-        ton.messages m
+        {{ source('ton', 'messages') }} m
     join
         _dns_items_address dns_items on m.destination = dns_items.nft_item_address
     join
-        _latest_metadata metadata on m.destination = metadata.address
+        {{ source('ton', 'transactions') }} t on t.hash = m.tx_hash and t.block_date = m.block_date and m.direction = 'in'
     where
-        m.opcode = from_base(substr('0x4eb1f0f9', 3), 16)
-        and m.direction = 'out'
+        m.opcode = from_base(substr('0x4eb1f0f9', 3), 16) -- op::change_dns_record
+        and t.compute_exit_code = 0 and t.action_result_code = 0 -- check that transaction is successful
         {% if is_incremental() %}
         AND {{ incremental_predicate('m.block_date') }}
         {% endif %}
 ),
-_dns_ton_change_record_messages_key as (
-    select {{ ton_from_boc('body_boc', [
+_result_update as (
+    select try({{ ton_from_boc('body_boc', [
         ton_begin_parse(),
         ton_load_uint(32, 'op_id'),
         ton_load_uint(64, 'query_id'),
         ton_load_uint(256, 'key'),
-        ]) }} as pre_result, * 
+        ton_return_if_neq('key', 105311596331855300602201538317979276640056460191511695660591596829410056223515),
+        ton_load_ref(),
+        ton_begin_parse(),
+        ton_skip_bits(16),
+        ton_load_address('wallet')
+        ]) }}) as result, * 
     from 
         _change_dns_msgs
 ),
-_result_update as (
-    select {{ ton_from_boc('body_boc', [
-        ton_begin_parse(),
-        ton_load_uint(32, 'op_id'),
-        ton_load_uint(64, 'query_id'),
-        ton_load_uint(256, 'key'),
-        ton_load_ref(),
-        ton_begin_parse(),
-        ton_load_uint(8, 'byte0'),
-        ton_load_uint(8, 'byte1'),
-        ton_load_address('wallet', false)
-        ]) }} as result, * 
-    from 
-        _dns_ton_change_record_messages_key
-    where 
-        pre_result.key = varbinary_to_uint256(from_hex(lower('E8D44050873DBA865AA7C170AB4CCE64D90839A34DCFD6CF71D14E0205443B1B')))
-),
 _result as (
     select 
+        block_date,
         block_time, 
         tx_hash, 
+        tx_lt,
         trace_id, 
         domain,
         nft_item_address as dns_nft_item_address,
@@ -107,8 +90,9 @@ _result as (
         end as delegated_to_wallet
     from 
         _result_update r
-    WHERE
-        r.result.wallet != 'address format is not supported'
+    where
+        r.result is not null
+        and r.result.key = CAST('105311596331855300602201538317979276640056460191511695660591596829410056223515' AS UINT256)
 )
 select 
     *

@@ -1,4 +1,4 @@
-{%- macro ton_load_address_impl(field_name, raise_on_error)
+{%- macro ton_load_address_impl(field_name)
 -%}
 CAST(
 CASE
@@ -32,12 +32,7 @@ CASE
       state.refs_indexes,
       state.cursor_bit_offset + {{ 3 + 8 + 256 }}, state.cursor_ref_offset,
       map_concat(state.output,
-      CASE
-        WHEN {{ raise_on_error }} THEN 
-          map_from_entries(ARRAY[({{ field_name }}, CAST(CAST('address format is not supported' AS bigint) AS JSON))])
-        ELSE
-          map_from_entries(ARRAY[({{ field_name }}, CAST(CAST('address format is not supported' AS varchar) AS JSON))])
-      END)
+      map_from_entries(ARRAY[({{ field_name }}, CAST(CAST('address format is not supported' AS BIGINT) AS JSON))]))
     )
 END
 AS {{ ton_boc_state_type() }})
