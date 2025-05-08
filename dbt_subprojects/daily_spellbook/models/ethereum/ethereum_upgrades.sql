@@ -1,7 +1,7 @@
 {{ config(
         schema = 'ethereum',
         tags = ['static'],
-        alias = 'upgrades',
+        alias = 'network_upgrades',
         post_hook = '{{ expose_spells(\'[
                                         "ethereum"
                                         ]\',
