@@ -235,7 +235,7 @@ with
     {% endif %}
 
     )
-SELECT
+SELECT DISTINCT
     tk.account_mint as token_mint_address
     , tk.decimals
     , coalesce(m22.name, mo.name, trim(json_value(args, 'strict $.name'))) as name
