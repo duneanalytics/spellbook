@@ -449,3 +449,50 @@ models:
       - &amountOut
         name: amountOut
         description: "Number of output tokens"
+
+  - name: tesseract_avalanche_c_cell_initiated
+    meta:
+      blockchain: avalanche_c
+      project: tesseract
+      contributors: angus_1
+    config:
+      tags: ['avalanche_c', 'tesseract', 'icm', 'ictt', 'teleporter', 'cross-chain', 'interop', 'cell']
+    description: >
+        Initiated events for Tesseract Cell contracts (all types) deployed on the Avalanche c-chain, combined into a single view.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_number
+            - evt_index
+    columns:
+      - *blockchain
+      - *contract_address
+      - *evt_tx_hash
+      - *evt_index
+      - *evt_block_time
+      - *evt_block_number
+      - *evt_block_date
+      - *cell_type
+      - *tesseractID
+      - &sourceID
+        name: sourceID
+        description: "Unique identifier for the source frontend"
+      - &origin
+        name: origin
+        description: "Address initiating the operation"
+      - &sender
+        name: sender
+        description: "Msg.sender initiating the operation"
+      - &receiver
+        name: receiver
+        description: "Final receiver of the tokens"
+      - &token
+        name: token
+        description: "Address of input token"
+      - *amount
+      - &nativeFeeAmount
+        name: nativeFeeAmount
+        description: "Amount of native fee"
+      - &baseFeeAmount
+        name: baseFeeAmount
+        description: "Amount of base fee"
