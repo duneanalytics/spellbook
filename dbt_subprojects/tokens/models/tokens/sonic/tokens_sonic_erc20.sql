@@ -103,4 +103,6 @@ FROM (VALUES
     , (0x6832F3090867449c058e1e3088E552E12AB18F9E, 'estS-5', 18)
     , (0x3333b97138d4b086720b5ae8a7844b1345a33333, 'SHADOW', 18)
     , (0x2fb960611bdc322a9a4a994252658cae9fe2eea1, 'UNI', 18)
+    , (0x451812019238785086cfac408d8a64f06898f6f5, 'sbUSD', 18)
+    , (0xd2901d474b351bc6ee7b119f9c920863b0f781b2, 'YT-scUSD', 18)
 ) as temp (contract_address, symbol, decimals)

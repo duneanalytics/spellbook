@@ -98,3 +98,24 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
+
+  - name: velodrome_unichain_base_trades
+    meta:
+      blockchain: unichain
+      sector: dex
+      project: velodrome
+      contributors: paulapivat
+    config:
+      tags: [ 'unichain', 'dex', 'trades', 'velodrome', 'uniswap', 'v2' ]
+    description: "velodrome unichain base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('velodrome_unichain_base_trades_seed')
+          filter:
+            version:
+              - '2'
+              - '2_cl'

@@ -161,7 +161,7 @@ aave_supplied as (
     date_trunc('day', s.block_time) as block_date,
     s.symbol,
     sum(s.amount / u.liquidityIndex * power(10, 27)) as atoken_amount
-  from {{ ref('aave_ethereum_supply') }} s
+  from {{ source('aave_ethereum', 'supply') }} s
     inner join {{ source('aave_v3_ethereum', 'Pool_evt_ReserveDataUpdated') }} u
        on u.evt_block_number = s.block_number
       and u.evt_index < s.evt_index
@@ -188,7 +188,7 @@ aave_borrowed as (
     date_trunc('day', b.block_time) as block_date,
     b.symbol,
     sum(b.amount / u.variableBorrowIndex * power(10, 27)) as atoken_amount
-  from {{ ref('aave_ethereum_borrow') }} b
+  from {{ source('aave_ethereum', 'borrow') }} b
     inner join {{ source('aave_v3_ethereum', 'Pool_evt_ReserveDataUpdated') }} u
        on u.evt_block_number = b.block_number
       and u.evt_index < b.evt_index

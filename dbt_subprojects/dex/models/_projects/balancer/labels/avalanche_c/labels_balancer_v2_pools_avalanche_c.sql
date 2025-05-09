@@ -139,7 +139,7 @@ WITH pools AS (
   INNER JOIN {{ source('gyroscope_avalanche_c', 'GyroECLPPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
     AND bytearray_substring(c.poolId, 1, 20) = coalesce(cc.output_0, 0x)
-  CROSS JOIN UNNEST(cc.tokens_array_binary) AS t(tokens)
+  CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
 ),
 
 settings AS (

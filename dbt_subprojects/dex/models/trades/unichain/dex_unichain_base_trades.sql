@@ -11,6 +11,7 @@
     , ref('uniswap_v4_unichain_base_trades')
     , ref('dyorswap_unichain_base_trades')
     , ref('unichainswap_unichain_base_trades')
+    , ref('velodrome_unichain_base_trades')
 ] %}
 
 WITH base_union AS ( 
