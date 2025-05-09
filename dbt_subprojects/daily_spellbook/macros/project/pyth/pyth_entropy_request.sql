@@ -4,7 +4,7 @@ SELECT
     tx_hash,
     from_big_endian_64(substr(output, 25, 8)) as assigned_sequence_number,
     cast(value as decimal(38, 0)) / 1e18 as fee,
-    '{{ symbol }} 'as symbol,
+    '{{ symbol }}' as symbol,
     substr(input, 17, 20) as provider,
     block_time,
     block_date,

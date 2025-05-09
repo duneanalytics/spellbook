@@ -8,3 +8,6 @@ sources:
   - name: tokens_solana
     tables:
       - name: transfers
+  - name: dex_solana
+    tables:
+      - name: trades

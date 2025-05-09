@@ -145,3 +145,30 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
+
+  - name: ton_latest_balances
+    meta:
+      blockchain: ton
+      sector: tokens
+      contributors: [pshuvalov]
+    config:
+      tags: ['balances', 'tokens']
+    description: "Latest balances for native TON and all jettons"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - asset
+    columns:
+      - name: address
+        description: "The address of the account"
+      - name: asset
+        description: "The asset"
+      - name: amount
+        description: "The amount of the asset (without decimals)"
+      - name: mintless_claimed
+        description: "Flag for mintless jettons that mintless part was claimed"
+      - name: last_change_timestamp
+        description: "The timestamp of the last change"
+      - name: last_change_lt
+        description: "The lt of the last change"
