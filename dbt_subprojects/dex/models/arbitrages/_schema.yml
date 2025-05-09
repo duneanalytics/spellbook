@@ -3,9 +3,9 @@ version: 2
 models:
   - name: dex_atomic_arbitrages
     meta: 
-      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, polygon, base, celo, zksync, scroll, zora, sei
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, polygon, base, celo, zksync, scroll, zora, sei, mantle, unichain
       sector: dex
-      contributors: hildobby
+      contributors: hildobby, agaperste
     config:
       tags: ['dex', 'mev', 'atomic', 'arbitrages']
     description: >
