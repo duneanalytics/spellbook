@@ -114,7 +114,9 @@ select
     gas_fee_usd,
     src_token_order_usd,
     dest_token_order_usd,
-    contract_address
+    contract_address,
+    cast(0 as uint256) as partnerAndFee, -- v1 didn't have partnerAndFee
+    0x00 as computed_order_hash -- TODO
  from delta_v1_settle_swap_model
 )
 {% endmacro %}
