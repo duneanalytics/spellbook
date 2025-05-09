@@ -148,37 +148,92 @@ with
         {% endif %}
         union all
         select
-            from_utf8(bytearray_substring(data, 9, bytearray_to_bigint(bytearray_reverse(bytearray_substring(data, 2, 4))))) as name
-            , from_utf8(bytearray_substring(data, 
-                        9 + bytearray_to_bigint(bytearray_reverse(bytearray_substring(data, 2, 4))) + 4, 
-                        bytearray_to_bigint(bytearray_reverse(bytearray_substring(data, 
-                                            9 + bytearray_to_bigint(bytearray_reverse(bytearray_substring(data, 2, 4))), 
-                                            4))))) as symbol
-            , from_utf8(bytearray_substring(data, 
-                        9 + bytearray_to_bigint(bytearray_reverse(bytearray_substring(data, 2, 4))) + 
-                        4 + bytearray_to_bigint(bytearray_reverse(bytearray_substring(data, 
-                                                9 + bytearray_to_bigint(bytearray_reverse(bytearray_substring(data, 2, 4))), 
-                                                4))) + 4,
-                        bytearray_to_bigint(bytearray_reverse(bytearray_substring(data, 
-                                            9 + bytearray_to_bigint(bytearray_reverse(bytearray_substring(data, 2, 4))) + 
-                                            4 + bytearray_to_bigint(bytearray_reverse(bytearray_substring(data, 
-                                                                9 + bytearray_to_bigint(bytearray_reverse(bytearray_substring(data, 2, 4))), 
-                                                                4))), 
-                                            4))))) as uri
-            , i.tx_id as metadata_tx
-            , t.account_mint
-            , i.block_time
-            , i.executing_account as metadata_program
-            , row_number() over (partition by t.account_mint order by i.block_time desc) as latest
-        FROM {{ source('solana','instruction_calls') }} i
-        JOIN tokens t ON i.tx_id = t.call_tx_id
-        WHERE i.executing_account = 'metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s' 
-        AND i.is_inner = true
-        AND bytearray_substring(i.data, 1, 1) = 0x2a
-        AND i.tx_success
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('i.block_time') }}
-        {% endif %}
+        -- Extract name based on whether it's inner or outer
+        CASE WHEN i.is_inner THEN
+            from_utf8(bytearray_substring(i.data, 9, bytearray_to_bigint(bytearray_reverse(bytearray_substring(i.data, 2, 4)))))
+        ELSE
+            from_utf8(bytearray_substring(i.data, 6, bytearray_to_bigint(bytearray_reverse(bytearray_substring(i.data, 2, 4)))))
+        END as name,
+        
+        -- Extract symbol based on whether it's inner or outer
+        CASE WHEN i.is_inner THEN
+            from_utf8(bytearray_substring(i.data, 
+                9 + bytearray_to_bigint(bytearray_reverse(bytearray_substring(i.data, 2, 4))) + 4, 
+                bytearray_to_bigint(bytearray_reverse(bytearray_substring(i.data, 
+                                    9 + bytearray_to_bigint(bytearray_reverse(bytearray_substring(i.data, 2, 4))), 
+                                    4)))))
+        ELSE
+            from_utf8(bytearray_substring(i.data, 
+                6 + bytearray_to_bigint(bytearray_reverse(bytearray_substring(i.data, 2, 4))) + 4, 
+                bytearray_to_bigint(bytearray_reverse(bytearray_substring(i.data, 
+                                    6 + bytearray_to_bigint(bytearray_reverse(bytearray_substring(i.data, 2, 4))), 
+                                    4)))))
+        END as symbol,
+        
+        -- Extract URI based on whether it's inner or outer
+        CASE WHEN i.is_inner THEN
+            from_utf8(bytearray_substring(i.data, 
+                9 + bytearray_to_bigint(bytearray_reverse(bytearray_substring(i.data, 2, 4))) + 
+                4 + bytearray_to_bigint(bytearray_reverse(bytearray_substring(i.data, 
+                                        9 + bytearray_to_bigint(bytearray_reverse(bytearray_substring(i.data, 2, 4))), 
+                                        4))) + 4,
+                bytearray_to_bigint(bytearray_reverse(bytearray_substring(i.data, 
+                                    9 + bytearray_to_bigint(bytearray_reverse(bytearray_substring(i.data, 2, 4))) + 
+                                    4 + bytearray_to_bigint(bytearray_reverse(bytearray_substring(i.data, 
+                                                        9 + bytearray_to_bigint(bytearray_reverse(bytearray_substring(i.data, 2, 4))), 
+                                                        4))), 
+                                    4)))))
+        ELSE
+            from_utf8(bytearray_substring(i.data, 
+                6 + bytearray_to_bigint(bytearray_reverse(bytearray_substring(i.data, 2, 4))) + 
+                4 + bytearray_to_bigint(bytearray_reverse(bytearray_substring(i.data, 
+                                        6 + bytearray_to_bigint(bytearray_reverse(bytearray_substring(i.data, 2, 4))), 
+                                        4))) + 4,
+                bytearray_to_bigint(bytearray_reverse(bytearray_substring(i.data, 
+                                    6 + bytearray_to_bigint(bytearray_reverse(bytearray_substring(i.data, 2, 4))) + 
+                                    4 + bytearray_to_bigint(bytearray_reverse(bytearray_substring(i.data, 
+                                                        6 + bytearray_to_bigint(bytearray_reverse(bytearray_substring(i.data, 2, 4))), 
+                                                        4))), 
+                                    4)))))
+        END as uri,
+        
+        i.tx_id as metadata_tx,
+        
+        -- Use the appropriate account_mint based on inner vs outer and opcode
+        CASE 
+            WHEN i.is_inner THEN t.account_mint
+            WHEN bytearray_substring(i.data, 1, 1) = 0x2A THEN account_arguments[3]
+            WHEN bytearray_substring(i.data, 1, 1) = 0x2B THEN account_arguments[6]
+            WHEN bytearray_substring(i.data, 1, 1) IN (0x0B, 0x32, 0x34, 0x2E, 0x1A, 0x0D) THEN account_arguments[4]
+            ELSE NULL
+        END as account_mint,
+        
+        i.block_time,
+        i.executing_account as metadata_program,
+        row_number() over (partition by 
+            CASE 
+                WHEN i.is_inner THEN t.account_mint
+                WHEN bytearray_substring(i.data, 1, 1) = 0x2A THEN account_arguments[3]
+                ELSE NULL
+            END 
+            order by i.block_time desc) as latest
+    FROM {{ source('solana','instruction_calls') }} i
+    LEFT JOIN tokens t ON i.tx_id = t.call_tx_id AND i.is_inner = true
+    WHERE i.executing_account = 'metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s' 
+    AND bytearray_substring(i.data, 1, 1) = 0x2a
+    AND i.tx_success
+    AND (
+        (i.is_inner = true AND t.account_mint IS NOT NULL) OR
+        (i.is_inner = false AND (
+        (bytearray_substring(i.data, 1, 1) = 0x2A AND account_arguments[3] IS NOT NULL) OR
+        (bytearray_substring(i.data, 1, 1) = 0x2B AND account_arguments[6] IS NOT NULL) OR
+        (bytearray_substring(i.data, 1, 1) IN (0x0B, 0x32, 0x34, 0x2E, 0x1A, 0x0D) AND account_arguments[4] IS NOT NULL)
+    ))
+    )
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('i.block_time') }}
+    {% endif %}
+
     )
 SELECT
     tk.account_mint as token_mint_address
