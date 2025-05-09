@@ -493,8 +493,7 @@ models:
       - &origin
         name: origin
         description: "Address initiating the operation"
-      - &sender
-        name: sender
+      - name: sender
         description: "Msg.sender initiating the operation"
       - &receiver
         name: receiver

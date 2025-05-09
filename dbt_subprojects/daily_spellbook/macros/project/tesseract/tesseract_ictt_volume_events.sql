@@ -51,7 +51,7 @@ FROM (
         AND c.name IN ('{{ tesseract_cell_types(blockchain) | join("', '") }}')
     {%- endif %}
     {%- if event_name in ["TokensRouted", "TokensAndCallRouted", "TokensWithdrawn", "CallSucceeded", "CallFailed"] %}
-    INNER JOIN {{ source('avalanche_teleporter_' + blockchain, 'teleportermessenger_evt_receivecrosschainmessage') }} r -- This join assumes one message per transaction, which has been the case so far
+    INNER JOIN {{ source('avalanche_teleporter_' + blockchain, 'TeleporterMessenger_evt_ReceiveCrossChainMessage') }} r -- This join assumes one message per transaction, which has been the case so far
         ON r.evt_tx_hash = e.evt_tx_hash
         {% if is_incremental() -%}
         AND {{ incremental_predicate('r.evt_block_time') }}
@@ -63,6 +63,7 @@ FROM (
     {%- endif -%}
     {% if not loop.last -%}
     UNION ALL
+    {%- endif -%}
     {%- endfor %}
 )
 

@@ -16,7 +16,7 @@ WITH combined_info AS (
         , MIN(evt_block_time) AS earliest_icm_interaction
         , NULL AS latest_icm_interaction
         , NULL AS sample_message_id
-    FROM {{ source(namespace_blockchain, 'teleportermessenger_evt_blockchainidinitialized')}}
+    FROM {{ source(namespace_blockchain, 'TeleporterMessenger_evt_BlockchainIDInitialized')}}
     {% endif -%}
     UNION ALL
     SELECT
@@ -24,7 +24,7 @@ WITH combined_info AS (
         , MIN(evt_block_time) AS earliest_icm_interaction
         , MAX(evt_block_time) AS latest_icm_interaction
         , ANY_VALUE(messageID) AS sample_message_id
-    FROM {{ source(namespace_blockchain, 'teleportermessenger_evt_sendcrosschainmessage') }}
+    FROM {{ source(namespace_blockchain, 'TeleporterMessenger_evt_SendCrossChainMessage') }}
     {% if is_incremental() -%}
     WHERE
         {{ incremental_predicate('evt_block_time') }}
@@ -36,7 +36,7 @@ WITH combined_info AS (
         , MIN(evt_block_time) AS earliest_icm_interaction
         , MAX(evt_block_time) AS latest_icm_interaction
         , ANY_VALUE(messageID) AS sample_message_id
-    FROM {{ source(namespace_blockchain, 'teleportermessenger_evt_receivecrosschainmessage') }}
+    FROM {{ source(namespace_blockchain, 'TeleporterMessenger_evt_ReceiveCrossChainMessage') }}
     {% if is_incremental() -%}
     WHERE
         {{ incremental_predicate('evt_block_time') }}

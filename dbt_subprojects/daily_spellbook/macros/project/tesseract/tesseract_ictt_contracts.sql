@@ -9,7 +9,7 @@ WITH
 current_chain_id AS (
     SELECT
         ANY_VALUE(blockchainID) AS blockchain_id
-    FROM {{ source('avalanche_teleporter_' + blockchain, 'teleportermessenger_evt_blockchainidinitialized')}}
+    FROM {{ source('avalanche_teleporter_' + blockchain, 'TeleporterMessenger_evt_BlockchainIDInitialized')}}
 ),
 distinct_ictt_contracts AS (
     SELECT

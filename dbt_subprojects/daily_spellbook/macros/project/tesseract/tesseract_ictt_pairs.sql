@@ -9,7 +9,7 @@ WITH
 current_chain_id AS (
     SELECT
         ANY_VALUE(blockchainID) AS blockchain_id
-    FROM {{ source(namespace_blockchain, 'teleportermessenger_evt_blockchainidinitialized')}}
+    FROM {{ source(namespace_blockchain, 'TeleporterMessenger_evt_BlockchainIDInitialized')}}
 ),
 new_token_home_links AS (
     SELECT
@@ -39,7 +39,7 @@ new_token_remote_links AS (
         , s.evt_block_time AS block_time
         , s.evt_block_number AS block_number
     FROM current_chain c
-    CROSS JOIN {{ source(namespace_blockchain, 'teleportermessenger_evt_sendcrosschainmessage') }} s
+    CROSS JOIN {{ source(namespace_blockchain, 'TeleporterMessenger_evt_SendCrossChainMessage') }} s
     INNER JOIN {{ source(blockchain, 'traces')}} t
         ON t.block_time = s.evt_block_time
         AND t.block_number = s.evt_block_number
