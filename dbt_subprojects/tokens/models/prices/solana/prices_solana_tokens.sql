@@ -754,5 +754,10 @@ FROM
         ('jellyjelly-jelly-my-jelly', 'solana', 'jellyjelly', 'FeR8VBqNRSUD5NtXAj2n3j1dAHkZHfyDktKuLXD4pump', 6),
         ('fred3-first-convicted-raccon', 'solana', 'FRED', 'CNvitvFnSM5ed6K28RUNSaAjqqz5tX1rA5HgaBN9pump', 6),
         ('sonic-sonic-svm', 'solana', 'SONIC', 'SonicxvLud67EceaEzCLRnMTBqzYUUYNr93DBkBdDES', 9),
-        ('usdg-global-dollar', 'solana', 'USDG', '2u1tszSeqZ3qBWF3uNGPFc8TzMk2tdiwknnRMWGWjGWH', 6)
+        ('usdg-global-dollar', 'solana', 'USDG', '2u1tszSeqZ3qBWF3uNGPFc8TzMk2tdiwknnRMWGWjGWH', 6),
+        ('fdusd-first-digital-usd', 'solana', 'FDUSD', '9zNQRsGLjNKwCUU5Gq5LR8beUCPzQMVMqKAi3SSZh54u', 6),
+        ('bnsol-binance-staked-sol', 'solana', 'BNSOL', 'BNso1VUJnh4zcfpZa6986Ea66P6TCp59hvtNJ8b1X85', 9),
+        ('msol-marinade-staked-sol', 'solana', 'MSOL', 'mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So', 9),
+        ('rsr-reserve-rights', 'solana', 'RSR', 'DkbE8U4gSRuGHcVMA1LwyZPYUjYbfEbjW8DMR3iSXBzr', 8)
+
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
