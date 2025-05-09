@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: ethereum_upgrades
+  - name: ethereum_network_upgrades
     meta:
       blockchain: ethereum
       sector: ethereum
@@ -22,6 +22,9 @@ models:
       - &block_number
         name: block_number
         description: "The block number at which the upgrade was merged, it is set to -1 for planned upgrades"
+      - &block_time
+        name: block_time
+        description: "The block time at which the upgrade was merged"
       - &eips
         name: eips
         description: "All the EIPs included in the upgrade"
