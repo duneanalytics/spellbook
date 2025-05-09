@@ -10,12 +10,7 @@ CASE
         ELSE {{from_column_name}}
     END AS {{to_column_name}}
 
-{% elif blockchain == 'base' %}
-CASE 
-        WHEN {{from_column_name}} = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x4200000000000000000000000000000000000006 
-        ELSE {{from_column_name}}
-    END AS {{to_column_name}}
-{% elif blockchain == 'optimism' %}
+{% elif blockchain in ('optimism', 'base') %}
 CASE 
         WHEN {{from_column_name}} = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x4200000000000000000000000000000000000006 
         ELSE {{from_column_name}}
