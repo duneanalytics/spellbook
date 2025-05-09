@@ -1,7 +1,7 @@
 {% macro delta_v2_swap_settle_batch(blockchain) %}
 
 -- {% set method_start_date = '2024-10-01' %}
-{% set method_start_date = '2025-05-01' %}
+{% set method_start_date = '2025-05-07' %}
 
 delta_v2_swap_settle_batch_ExpandedOrders as (
     select            
@@ -30,8 +30,8 @@ delta_v2_swap_settle_batch_ExpandedOrders as (
                   -- also NB: edge case: a multi-tx call, where some other method emits event with similar signature --> not valid as it won't end up in the table
                   SEQUENCE(1, CARDINALITY(ordersWithSigs) )
               ) AS t (order_index)        
-          WHERE 
-            call_success = true
+          WHERE call_block_time > TIMESTAMP '{{method_start_date}}'
+            AND call_success = true        
             {% if is_incremental() %}
               AND {{ incremental_predicate('call_block_time') }}
             {% endif %}        
@@ -67,12 +67,19 @@ delta_v2_swap_settle_batch_parsed_orders as (
     JSON_EXTRACT_SCALAR("order", '$.deadline') as deadline,
     JSON_EXTRACT_SCALAR("order", '$.nonce') as nonce,
     cast(JSON_EXTRACT_SCALAR("order", '$.partnerAndFee') as uint256) as partnerAndFee,
-    JSON_EXTRACT_SCALAR("order", '$.permit') as permit,        
+    cast(JSON_EXTRACT_SCALAR("order", '$.permit') as varbinary) as permit,
     {{executor_fee_amount()}},    
     * 
 from
     delta_v2_swap_settle_batch_ExpandedOrders    
-), delta_v2_swap_settle_batch_withWrapped as (
+), 
+delta_v2_swap_settle_batch_parsed_orders_with_orderhash as (
+  select 
+    *,
+    {{ compute_order_hash(blockchain) }} as computed_order_hash 
+  from delta_v2_swap_settle_batch_parsed_orders
+),
+delta_v2_swap_settle_batch_withWrapped as (
   SELECT     
     {{to_wrapped_native_token(blockchain, 'orders.destToken', 'dest_token_for_joining')}},
     {{to_wrapped_native_token(blockchain, 'orders.srcToken', 'src_token_for_joining')}},
@@ -81,7 +88,7 @@ from
     events.partnerFee,
     events.evt_index,
     orders.*    
-  FROM delta_v2_swap_settle_batch_parsed_orders orders
+  FROM delta_v2_swap_settle_batch_parsed_orders_with_orderhash orders
   --- NB: sourcing from calls and joining events, not the opposite, because some methods emit different events (*fill* -> OrderSettled / OrderPartiallyFilled). Sorting them by evt_index would make them match orders sorted by their index in array + call_trace_address -> source of truth bettr be calls
   LEFT JOIN delta_v2_swap_settle_batch_OrderSettledEvents events 
     ON orders.rn = events.rn 
@@ -146,7 +153,7 @@ from delta_v2_swap_settle_batch_withWrapped w
 -- partnerFee uint256     -- TODO: add this field to the model
 ), delta_v2_swapSettleBatch as (  
 SELECT
-    -- NB: columns mapping must match accross all the methods, since they're uninoned into one in master macro
+    -- NB: columns mapping must match accross all the methods, since they're unioned into one in master macro
     '{{blockchain}}' as blockchain,
     method,
     order_index,
@@ -177,7 +184,8 @@ SELECT
     src_token_order_usd,
     dest_token_order_usd,
     contract_address,
-    partnerAndFee
+    partnerAndFee,
+    computed_order_hash
   FROM delta_v2_swapSettleBatch_master
 )
 {% endmacro %}

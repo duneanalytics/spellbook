@@ -37,7 +37,8 @@ select
                   ) as VARCHAR
                 ),
                 '0x(00){12}'
-              )) AS partnerAddress
+              )) AS partnerAddress,
+        computed_order_hash
     from {{from_alias}}  
         LEFT JOIN 
         {{ source('tokens', 'erc20') }} t_src_token 
