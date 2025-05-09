@@ -3,9 +3,9 @@ version: 2
 sources:
   - name: avalanche_teleporter_avalanche_c
     tables:
-      - name: AvalancheTeleporter_evt_SendCrossChainMessage
-      - name: AvalancheTeleporter_evt_ReceiveCrossChainMessage
-      - name: AvalancheTeleporter_evt_BlockchainIDInitialized
+      - name: TeleporterMessenger_evt_SendCrossChainMessage
+      - name: TeleporterMessenger_evt_ReceiveCrossChainMessage
+      - name: TeleporterMessenger_evt_BlockchainIDInitialized
   - name: tesseract_avalanche_c
     tables:
       - name: YakSwapCell_evt_Initiated
