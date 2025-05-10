@@ -69,7 +69,7 @@ WITH
       outer_instruction_index,
       inner_instruction_index
     FROM
-      {{ ref('dex_solana_trades') }} AS trades
+      {{ source('dex_solana', 'trades') }} AS trades
       JOIN allFeePayments AS feePayments ON trades.tx_id = feePayments.tx_id
       LEFT JOIN {{ source('prices', 'usd') }} AS feeTokenPrices ON (
         feeTokenPrices.blockchain = 'solana'
