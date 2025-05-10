@@ -1,5 +1,6 @@
 {{ config
 (        
+  tags=[ 'static'],
   schema = 'phantom_swapper_solana',
   alias = 'fee_addresses',
   materialized='table'
