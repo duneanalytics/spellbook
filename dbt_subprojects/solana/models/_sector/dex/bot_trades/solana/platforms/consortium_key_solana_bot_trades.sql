@@ -52,7 +52,7 @@ with
             tx_index,
             outer_instruction_index,
             inner_instruction_index
-        from {{ ref("dex_solana_trades") }} as trades
+        from {{ source('dex_solana', 'trades') }} as trades
         join users on trader_id = user
         where
             {% if is_incremental() %} {{ incremental_predicate("trades.block_time") }}
