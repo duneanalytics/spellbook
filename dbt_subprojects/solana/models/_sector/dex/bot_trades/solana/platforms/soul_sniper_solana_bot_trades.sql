@@ -52,7 +52,7 @@ with
             tx_index,
             outer_instruction_index,
             inner_instruction_index
-        from {{ ref('dex_solana_trades') }} as trades
+        from {{ source('dex_solana', 'trades') }} as trades
         join all_fee_payments on trades.trader_id = all_fee_payments.user
         join
             {{ source('solana', 'transactions') }} as transactions

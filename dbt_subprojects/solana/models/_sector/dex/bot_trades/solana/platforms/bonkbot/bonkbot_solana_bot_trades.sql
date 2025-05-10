@@ -43,7 +43,7 @@ with
             tx_index,
             outer_instruction_index,
             inner_instruction_index
-        from {{ ref('dex_solana_trades') }} as trades
+        from {{ source('dex_solana', 'trades') }} as trades
         join
             {{ ref('bonkbot_solana_fee_payments_usd') }} as fee_payments
             on (
