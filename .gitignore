@@ -150,3 +150,5 @@ logs/
 !target/sources.json
 
 dbt_subprojects/dex/spellbook-env/
+
+.cursor/
