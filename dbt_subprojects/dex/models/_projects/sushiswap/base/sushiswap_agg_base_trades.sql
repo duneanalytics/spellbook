@@ -1,8 +1,8 @@
 {% set chain = 'base' %}
 
 {{ config(
-  schema = 'sushiswap_' ~ chain,
-  alias  = 'sushiswap_agg_' ~ chain ~ '_trades',
+  schema = 'sushiswap_agg_' ~ chain ~ '_trades',
+  alias  = 'trades',
   materialized = 'incremental',
   partition_by = ['block_month'],
   file_format = 'delta',
