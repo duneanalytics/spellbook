@@ -37,10 +37,13 @@ with buy AS (
   FROM  {{ source('tamadotmeme_ronin', 'maincontract_call_buytokenswitheth') }} AS bet
   LEFT JOIN  {{ source('tamadotmeme_ronin', 'maincontract_evt_tokencreated') }} AS tc
     ON bet.token = tc.token
-  WHERE bet.call_block_time >= TRY_CAST('2025-01-21 14:07' AS TIMESTAMP)
-    
-  and bet.call_tx_to!=0x9b0a1d03ea99a8b3cf9b7e73e0aa1b805ce45c54 -- edge case where the tx is both a buy and a sell and coincentally the same token has the same event indiex in respective table
-  and bet.call_success
+  WHERE call_block_time >= TRY_CAST('2025-01-21 14:07' AS TIMESTAMP)
+    {% if is_incremental() %}
+    AND
+        {{ incremental_predicate('bet.call_block_time') }}
+    {% endif %}
+  and call_tx_to!=0x9b0a1d03ea99a8b3cf9b7e73e0aa1b805ce45c54 -- edge case where the tx is both a buy and a sell and coincentally the same token has the same event indiex in respective table
+  and call_success
 ),
 
 -- Process "sell" transactions:
@@ -71,10 +74,13 @@ sell AS (
   FROM  {{ source('tamadotmeme_ronin', 'maincontract_call_selltokensforeth') }} AS ste
   LEFT JOIN  {{ source('tamadotmeme_ronin', 'maincontract_evt_tokencreated') }} AS tc
     ON ste.token = tc.token
-  WHERE ste.call_block_time >= TRY_CAST('2025-01-21 14:07' AS TIMESTAMP)
-    
-  and ste.call_tx_to!=0x9b0a1d03ea99a8b3cf9b7e73e0aa1b805ce45c54 -- edge case where the tx is both a buy and a sell and coincentally the same token has the same event indiex in respective table
-  and ste.call_success
+  WHERE call_block_time >= TRY_CAST('2025-01-21 14:07' AS TIMESTAMP)
+    {% if is_incremental() %}
+    AND
+        {{ incremental_predicate('ste.call_block_time') }}
+    {% endif %}
+  and call_tx_to!=0x9b0a1d03ea99a8b3cf9b7e73e0aa1b805ce45c54 -- edge case where the tx is both a buy and a sell and coincentally the same token has the same event indiex in respective table
+  and call_success
 )
 
 ,combined as (
