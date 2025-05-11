@@ -122,32 +122,36 @@ with
         {% endif %}
     )
 
-    , token_metadata_other as (
-        --some other metadata program (idk the owner)
-        SELECT
-            from_utf8(bytearray_substring(data,1+1+4,bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1,4))))) as name
-            , from_utf8(bytearray_substring(data,1+1+4+bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1,4))) + 4 --start from end of name and end of length of symbol
-                , bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1+4+bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1,4))),4))) --get length of symbol from end of name
-                )) as symbol
-            , from_utf8(bytearray_substring(data,1+1+4+bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1,4))) + 4 --end of name and end of length of symbol
-                    + bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1+4+bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1,4))),4))) + 4 --start from end of symbol and end of length of uri
-                , bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1+4+bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1,4))) + 4
-                    + bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1+4+bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1,4))),4))),4))) --get length of uri from end of symbol
-                )) as uri
-            , tx_id as metadata_tx
-            , account_arguments[2] as account_mint
-            , block_time
-            , executing_account as metadata_program
-            , row_number() over (partition by account_arguments[2] order by block_time desc) as latest
-        FROM {{ source('solana','instruction_calls') }}
-        WHERE executing_account = 'META4s4fSmpkTbZoUsgC1oBnWB31vQcmnN8giPw51Zu'
-        AND bytearray_substring(data,1,1) = 0x21
-        AND tx_success
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('block_time') }}
-        {% endif %}
-        union all
-        select
+    , token_metadata_meta4 as (
+    --some other metadata program (idk the owner)
+    -- META4 program metadata 
+    SELECT
+        from_utf8(bytearray_substring(data,1+1+4,bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1,4))))) as name
+        , from_utf8(bytearray_substring(data,1+1+4+bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1,4))) + 4 --start from end of name and end of length of symbol
+            , bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1+4+bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1,4))),4))) --get length of symbol from end of name
+            )) as symbol
+        , from_utf8(bytearray_substring(data,1+1+4+bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1,4))) + 4 --end of name and end of length of symbol
+                + bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1+4+bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1,4))),4))) + 4 --start from end of symbol and end of length of uri
+            , bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1+4+bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1,4))) + 4
+                + bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1+4+bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1,4))),4))),4))) --get length of uri from end of symbol
+            )) as uri
+        , tx_id as metadata_tx
+        , account_arguments[2] as account_mint
+        , block_time
+        , executing_account as metadata_program
+        , row_number() over (partition by account_arguments[2] order by block_time desc) as latest
+    FROM {{ source('solana','instruction_calls') }}
+    WHERE executing_account = 'META4s4fSmpkTbZoUsgC1oBnWB31vQcmnN8giPw51Zu'
+    AND bytearray_substring(data,1,1) = 0x21
+    AND tx_success
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('block_time') }}
+    {% endif %}
+)
+
+, token_metadata_other as (
+    -- Metaplex program metadata 
+    select
         -- Extract name based on whether it's inner or outer
         CASE WHEN i.is_inner THEN
             from_utf8(bytearray_substring(i.data, 9, bytearray_to_bigint(bytearray_reverse(bytearray_substring(i.data, 2, 4)))))
@@ -155,7 +159,7 @@ with
             from_utf8(bytearray_substring(i.data, 6, bytearray_to_bigint(bytearray_reverse(bytearray_substring(i.data, 2, 4)))))
         END as name,
         
-        -- Extract symbol based on whether it's inner or outer
+        -- Extract symbol based on whether it's inner or outer  
         CASE WHEN i.is_inner THEN
             from_utf8(bytearray_substring(i.data, 
                 9 + bytearray_to_bigint(bytearray_reverse(bytearray_substring(i.data, 2, 4))) + 4, 
@@ -214,6 +218,8 @@ with
             CASE 
                 WHEN i.is_inner THEN t.account_mint
                 WHEN bytearray_substring(i.data, 1, 1) = 0x2A THEN account_arguments[3]
+                WHEN bytearray_substring(i.data, 1, 1) = 0x2B THEN account_arguments[6]
+                WHEN bytearray_substring(i.data, 1, 1) IN (0x0B, 0x32, 0x34, 0x2E, 0x1A, 0x0D) THEN account_arguments[4]
                 ELSE NULL
             END 
             order by i.block_time desc) as latest
@@ -225,33 +231,32 @@ with
     AND (
         (i.is_inner = true AND t.account_mint IS NOT NULL) OR
         (i.is_inner = false AND (
-        (bytearray_substring(i.data, 1, 1) = 0x2A AND account_arguments[3] IS NOT NULL) OR
-        (bytearray_substring(i.data, 1, 1) = 0x2B AND account_arguments[6] IS NOT NULL) OR
-        (bytearray_substring(i.data, 1, 1) IN (0x0B, 0x32, 0x34, 0x2E, 0x1A, 0x0D) AND account_arguments[4] IS NOT NULL)
-    ))
+            (bytearray_substring(i.data, 1, 1) = 0x2A AND account_arguments[3] IS NOT NULL) OR
+            (bytearray_substring(i.data, 1, 1) = 0x2B AND account_arguments[6] IS NOT NULL) OR
+            (bytearray_substring(i.data, 1, 1) IN (0x0B, 0x32, 0x34, 0x2E, 0x1A, 0x0D) AND account_arguments[4] IS NOT NULL)
+        ))
     )
     {% if is_incremental() %}
     AND {{ incremental_predicate('i.block_time') }}
     {% endif %}
-
-    )
-SELECT DISTINCT
+)
+SELECT
     tk.account_mint as token_mint_address
     , tk.decimals
-    , coalesce(m22.name, mo.name, trim(json_value(args, 'strict $.name'))) as name
-    , coalesce(m22.symbol, mo.symbol, trim(json_value(args, 'strict $.symbol'))) as symbol
-    , coalesce(m22.uri, mo.uri, trim(json_value(args, 'strict $.uri'))) as token_uri
+    , coalesce(m22.name, mo.name, m4.name, trim(json_value(args, 'strict $.name'))) as name
+    , coalesce(m22.symbol, mo.symbol, m4.symbol, trim(json_value(args, 'strict $.symbol'))) as symbol
+    , coalesce(m22.uri, mo.uri, m4.uri, trim(json_value(args, 'strict $.uri'))) as token_uri
     , tk.call_block_time as created_at
-    , coalesce(m22.metadata_program, mo.metadata_program, m.metadata_program) as metadata_program
+    , coalesce(m22.metadata_program, mo.metadata_program, m4.metadata_program, m.metadata_program) as metadata_program
     , tk.token_version
     , tk.call_tx_id as init_tx
 FROM tokens tk
 LEFT JOIN token2022_metadata m22 ON tk.account_mint = m22.account_mint AND m22.latest = 1
 LEFT JOIN token_metadata_other mo ON tk.account_mint = mo.account_mint AND mo.latest = 1
+LEFT JOIN token_metadata_meta4 m4 ON tk.account_mint = m4.account_mint AND m4.latest = 1
 LEFT JOIN metadata m ON tk.account_mint = m.account_mint AND m.latest = 1
 WHERE m.master_edition is null
 AND tk.latest = 1
-
 UNION ALL
 
 --token2022 wrapped sol https://solscan.io/tx/2L1o7sDMCMJ6PYqfNrnY6ozJC1DEx61pRYiLdfCCggxw81naQXsmHKDLn6EhJXmDmDSQ2eCKjUMjZAQuUsyNnYUv
