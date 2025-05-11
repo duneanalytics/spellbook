@@ -104,7 +104,7 @@
       amountIn       as token_sold_amount_raw,
       output_amountOut as token_bought_amount_raw,
       call_tx_to     as project_contract_address
-    from {{ schema }}.{{ fn }}
+    FROM {{ source('sushiswap_' ~ chain, fn )}} 
     where call_success = true
       {% if is_incremental() %}
         and {{ incremental_predicate('call_block_time') }}

@@ -1,7 +1,7 @@
 {% set chain = 'nova' %}
 
 {{ config(
-  schema = 'sushiswap_agg_' ~ chain ~ '_trades',
+  schema = 'sushiswap_' ~ chain,
   alias  = 'trades',
   materialized = 'incremental',
   partition_by = ['block_month'],

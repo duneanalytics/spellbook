@@ -1,10 +1,13 @@
 version: 2
 sources:
-- name: sushiswap_optimism
-  schema: sushiswap_optimism
+- name: sushiswap_arbitrum
+  schema: sushiswap_arbitrum
   tables:
-  - name: routeprocessor3_2_call_processRoute
-  - name: routeprocessor3_2_call_transferValueAndprocessRoute
+  - name: routeprocessor_call_processRoute
+  - name: routeprocessor_call_transferValueAndprocessRoute
+  - name: routeprocessor2_call_processRoute
+  - name: routeprocessor2_call_transferValueAndprocessRoute
+  - name: routeprocessor3_1_call_processRoute
   - name: routeprocessor4_call_processRoute
   - name: routeprocessor4_call_transferValueAndprocessRoute
   - name: routeprocessor5_call_processRoute
@@ -23,6 +26,3 @@ sources:
   - name: routeprocessor7_call_transferValueAndprocessRoute
   - name: routeprocessor7_call_processRouteWithTransferValueOutput
   - name: routeprocessor7_call_processRouteWithTransferValueInput
-  - name: MiniChefV2_evt_LogPoolAddition
-  - name: MiniChefV2_evt_LogSetPool
-  - name: MiniChefV2_evt_LogSushiPerSecond
