@@ -1,3 +1,12 @@
+{{ config(
+    schema = 'tamadotmeme_v1_ronin',
+    alias = 'base_trades',
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['tx_hash', 'evt_index']
+) }}
+
 -- Process "buy" transactions:
 -- - Normalizes token amounts (dividing by 10^18).
 -- - Joins on token creation events to get a readable token symbol.
