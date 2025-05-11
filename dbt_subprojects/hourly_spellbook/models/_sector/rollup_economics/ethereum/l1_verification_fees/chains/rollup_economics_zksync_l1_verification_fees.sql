@@ -38,6 +38,7 @@ WITH data AS (
         , 0xa8CB082A5a689E0d594d7da1E2d72A3D63aDc1bD -- L1 transactions settle here post-EIP4844
         , 0x5D8ba173Dc6C3c90C8f7C04C9288BeF5FDbAd06E -- L1 transactions settle here post v24 upgrade (shared bridge)
         , 0x3527439923a63F8C13CF72b8Fe80a77f6e572092 -- Validator
+        , 0x8c0Bfc04AdA21fd496c55B8C50331f904306F564 -- ValidatorTimelock
     )
     AND bytearray_substring(t.data, 1, 4) IN (
         0x7739cbe7 -- Prove Block, pre-Boojum
