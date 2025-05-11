@@ -45,7 +45,7 @@ with
         call_tx_from as tx_from,
         call_tx_to as tx_to,
         case when CARDINALITY(call_trace_address) > 0 then call_trace_address else ARRAY[-1] end as trace_address,
-        COALESCE(evt_index, 0), -- TMP: after joining envents in swapSettle can remove it
+        COALESCE(evt_index, 0) as evt_index, -- TMP: after joining envents in swapSettle can remove it
         order_index,
         method
     from delta_v2_master  
