@@ -18,7 +18,7 @@ FROM (
         , e.evt_block_time
         , e.evt_block_number
         , e.evt_block_date
-        , {{ event_name }} AS evt_name
+        , '{{ event_name }}' AS evt_name
         , e.amount
         {%- if event_name in ["TokensSent", "TokensAndCallSent"] %}
         , CASE WHEN cr.contract_address IS NOT NULL THEN TRUE ELSE FALSE END AS used_tesseract

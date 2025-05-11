@@ -17,7 +17,7 @@ FROM (
         , evt_block_time
         , evt_block_number
         , evt_block_date
-        , {{ cell_type }} AS cell_type
+        , '{{ cell_type }}' AS cell_type
         , tesseractID
         , messageID
         , CASE action

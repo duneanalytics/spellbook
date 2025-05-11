@@ -17,6 +17,7 @@ WITH combined_info AS (
         , NULL AS latest_icm_interaction
         , NULL AS sample_message_id
     FROM {{ source(namespace_blockchain, 'TeleporterMessenger_evt_BlockchainIDInitialized')}}
+    GROUP BY blockchainID
     {% endif -%}
     UNION ALL
     SELECT

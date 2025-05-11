@@ -17,7 +17,7 @@
     , l.topic1 AS {{ topic1_name }}
     {%- endif %}
     {%- if event_name in ["TokensWithdrawn", "CallSucceeded", "CallFailed"] %}
-    , TRY(varbinary_to_uint256(l.data)) AS amount -- We wrap this in a TRY just in case the ABI uses different indexing (very unlikely)
+    , TRY(varbinary_to_uint256(l.data)) AS amount -- We wrap this in a TRY just in case there is an ABI which uses different indexing (very unlikely)
     {%- else %}
         {%- if event_name in ["TokensSent", "TokensAndCallSent"] %}
     , varbinary_substring(l.topic2, 13) AS sender

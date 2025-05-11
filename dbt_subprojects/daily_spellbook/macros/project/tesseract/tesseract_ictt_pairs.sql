@@ -38,7 +38,7 @@ new_token_remote_links AS (
         , from_hex(json_extract_scalar(s.message, '$.originSenderAddress')) AS token_remote_address
         , s.evt_block_time AS block_time
         , s.evt_block_number AS block_number
-    FROM current_chain c
+    FROM current_chain_id c
     CROSS JOIN {{ source(namespace_blockchain, 'TeleporterMessenger_evt_SendCrossChainMessage') }} s
     INNER JOIN {{ source(blockchain, 'traces')}} t
         ON t.block_time = s.evt_block_time
