@@ -5,55 +5,32 @@
 
 delta_v2_swap_settle_batch_ExpandedOrders as (
     select            
-        ROW_NUMBER() OVER (ORDER BY call_block_time, call_tx_hash, call_trace_address, order_index) AS rn,
-        * from 
-        (
-              SELECT 
-              order_index,
-              contract_address, -- varbinary
-              -- call_success, -- boolean
-              call_tx_hash, -- varbinary
-              call_tx_from, -- varbinary
-              call_tx_to, -- varbinary
-              call_trace_address, -- array(bigint)
-              call_block_time, -- timestamp
-              call_block_number, -- bigint
-              -- ordersWithSigs[order_index] as extractedOrderWithSig,              
-              JSON_EXTRACT_SCALAR(ordersWithSigs[order_index], '$.order') as "order", -- returns json
-              JSON_EXTRACT_SCALAR(ordersWithSigs[order_index], '$.signature') as signature,                            
-              executor,
-              executorData[order_index] as executorData                     
-            FROM {{ source("paraswapdelta_"+ blockchain, "ParaswapDeltav2_call_swapSettleBatch") }}                    
-              CROSS JOIN UNNEST (
-                  -- SQL array indices start at 1
-                  -- also NB: if one order fails -- whole batch fails
-                  -- also NB: edge case: a multi-tx call, where some other method emits event with similar signature --> not valid as it won't end up in the table
-                  SEQUENCE(1, CARDINALITY(ordersWithSigs) )
-              ) AS t (order_index)        
-          WHERE call_block_time > TIMESTAMP '{{method_start_date}}'
-            AND call_success = true        
-            {% if is_incremental() %}
-              AND {{ incremental_predicate('call_block_time') }}
-            {% endif %}        
-        )
-),
-delta_v2_swap_settle_batch_OrderSettledEvents as (
-  SELECT 
-    -- TODO: need a sample tx to make sure this ordering and then joining by the order down below is correct
-    ROW_NUMBER() OVER (ORDER BY evt_block_time, evt_tx_hash, evt_index) AS rn,
-    *
-  FROM 
-  
-  (
-    SELECT * FROM {{ source("paraswapdelta_"+ blockchain, "ParaswapDeltav2_evt_OrderSettled") }}
-    -- important conditional - since OrderSettled is emitted by multilple methods
-    -- this filtering still not 100% fix -- as theoretically multiple methods can be combined in on call
-    -- consider case when settleSwap and settleBatchSwap are combined in one call
-    WHERE evt_tx_hash in (select call_tx_hash from delta_v2_swap_settle_batch_ExpandedOrders)
+      order_index,
+      contract_address, -- varbinary
+      -- call_success, -- boolean
+      call_tx_hash, -- varbinary
+      call_tx_from, -- varbinary
+      call_tx_to, -- varbinary
+      call_trace_address, -- array(bigint)
+      call_block_time, -- timestamp
+      call_block_number, -- bigint
+      -- ordersWithSigs[order_index] as extractedOrderWithSig,              
+      JSON_EXTRACT_SCALAR(ordersWithSigs[order_index], '$.order') as "order", -- returns json
+      JSON_EXTRACT_SCALAR(ordersWithSigs[order_index], '$.signature') as signature,                            
+      executor,
+      executorData[order_index] as executorData                     
+    FROM {{ source("paraswapdelta_"+ blockchain, "ParaswapDeltav2_call_swapSettleBatch") }}                    
+      CROSS JOIN UNNEST (
+          -- SQL array indices start at 1
+          -- also NB: if one order fails -- whole batch fails
+          -- also NB: edge case: a multi-tx call, where some other method emits event with similar signature --> not valid as it won't end up in the table
+          SEQUENCE(1, CARDINALITY(ordersWithSigs) )
+      ) AS t (order_index)        
+  WHERE call_block_time > TIMESTAMP '{{method_start_date}}'
+    AND call_success = true        
     {% if is_incremental() %}
-        AND {{ incremental_predicate('evt_block_time') }}
-      {% endif %}        
-  )
+      AND {{ incremental_predicate('call_block_time') }}
+    {% endif %}        
 ),
 delta_v2_swap_settle_batch_parsed_orders as (
   select
@@ -90,18 +67,12 @@ delta_v2_swap_settle_batch_withWrapped as (
     orders.*    
   FROM delta_v2_swap_settle_batch_parsed_orders_with_orderhash orders
   --- NB: sourcing from calls and joining events, not the opposite, because some methods emit different events (*fill* -> OrderSettled / OrderPartiallyFilled). Sorting them by evt_index would make them match orders sorted by their index in array + call_trace_address -> source of truth bettr be calls
-  LEFT JOIN delta_v2_swap_settle_batch_OrderSettledEvents events 
-    ON orders.rn = events.rn 
+  LEFT JOIN {{ source("paraswapdelta_"+ blockchain, "ParaswapDeltav2_evt_OrderSettled") }} events 
+    ON
+      evt_block_time = call_block_time  
+    -- suffices for fill-all-at-once methods (unlike partials, because with partials there's an edge case when you can mismatch still, although very unlikely to happen in real life)
+    AND computed_order_hash = events.orderHash    
     AND orders.call_tx_hash = events.evt_tx_hash
-    -- TODO: compute hash and join by orderHash instead -- that would be sufficiently strict for fill-all-at-once methods (unlike partials, because with partials there's an edge case when you can mismatch still, although very unlikely to happen in real life)
-    -- but for "full-single-fulfillment" methods, -- this template will work
-    -- https://paraswap.slack.com/archives/C073CNPHUS2/p1736331626761619?thread_ts=1736325828.398779&cid=C073CNPHUS2
-    AND orders.owner = events.owner
-    AND orders.beneficiary = events.beneficiary    
-    AND orders.srcToken = events.srcToken
-    AND orders.destToken = events.destToken
-    AND orders.srcAmount = events.srcAmount
-    AND orders.destAmount = events.destAmount
 ), delta_v2_swapSettleBatch_master as (
 
 select 
@@ -185,7 +156,7 @@ SELECT
     dest_token_order_usd,
     contract_address,
     partnerAndFee,
-    computed_order_hash
+    computed_order_hash    
   FROM delta_v2_swapSettleBatch_master
 )
 {% endmacro %}
