@@ -3,6 +3,7 @@
     schema = 'gooddollar_celo',
     alias = 'reserve_movement',
     materialized = 'view',
+    unique_key = ['block_date'],
     post_hook = '{{ expose_spells(blockchains = \'["celo"]\',
                                   spell_type = "project",
                                   spell_name = "gooddollar",
