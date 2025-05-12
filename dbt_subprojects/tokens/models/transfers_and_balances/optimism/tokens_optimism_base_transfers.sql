@@ -14,7 +14,7 @@
     blockchain='optimism',
     traces = source('optimism','traces'),
     transactions = source('optimism','transactions'),
-    erc20_transfers = source('erc20_optimism','evt_transfer'),
+    erc20_transfers = source('erc20_optimism','evt_Transfer'),
     native_contract_address = null
 )
 }}

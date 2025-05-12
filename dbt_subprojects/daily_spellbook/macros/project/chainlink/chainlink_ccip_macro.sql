@@ -28,7 +28,7 @@ FROM
     {% if is_incremental() %}
         AND {{ incremental_predicate('sr.evt_block_time') }}
     {% endif %}
-    INNER JOIN  {{ source('erc20_' ~ blockchain, 'evt_transfer') }} te ON le.contract_address = te.to
+    INNER JOIN  {{ source('erc20_' ~ blockchain, 'evt_Transfer') }} te ON le.contract_address = te.to
     AND te.evt_tx_hash = le.tx_hash
     AND te.evt_block_time = le.block_time
     {% if is_incremental() %}

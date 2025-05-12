@@ -1,44 +1,44 @@
+{% docs gnosis_blocks_doc %}
+
+The `gnosis.blocks` table contains information about blocks on the gnosis blockchain. It includes:
+
+- Block identifiers: number, hash, time, date
+- Gas metrics: gas_limit, gas_used, blob_gas_used, excess_blob_gas
+- Block characteristics: size, base_fee_per_gas
+- Block roots: state_root, transactions_root, receipts_root, parent_beacon_block_root
+- Consensus data: difficulty, total_difficulty, nonce
+- Block producer: miner
+- Parent block: parent_hash
+
+This table is fundamental for analyzing:
+- Block production and timing
+- Network capacity and usage
+- Chain structure and growth
+- Network performance metrics
+- Blob gas usage patterns
+
+{% enddocs %}
+
 {% docs gnosis_transactions_doc %}
 
 The `gnosis.transactions` table contains detailed information about transactions on the gnosis blockchain. It includes:
 
-- Block information: number, timestamp, hash
-- Transaction details: hash, from_address, to_address, value
-- Gas data: gas_price, gas_limit, gas_used
-- Status: success or failure
-- Input data for contract interactions
-- Nonce
-- Transaction type
+- Block information: block_time, block_number, block_hash, block_date
+- Transaction details: hash, from, to, value
+- Gas metrics: gas_price, gas_limit, gas_used
+- EIP-1559 fee parameters: max_fee_per_gas, max_priority_fee_per_gas, priority_fee_per_gas
+- Transaction metadata: nonce, index, success
+- Smart contract interaction: data
+- Transaction type and access list
+- Chain identification: chain_id
+- L1 related data: l1_gas_used, l1_gas_price, l1_fee, l1_fee_scalar, l1_block_number, l1_timestamp, l1_tx_origin
 
-This table is used for analyzing transaction patterns, gas usage, value transfers, and overall network activity on gnosis.
-
-{% enddocs %}
-
-{% docs gnosis_traces_doc %}
-
-The `gnosis.traces` table contains records of execution steps for transactions on the gnosis blockchain. Each trace represents an atomic operation that modifies the state of the Ethereum Virtual Machine (EVM). Key components include:
-
-- Transaction hash
-- Block number and timestamp
-- From and to addresses
-- Value transferred
-- Input data
-- Gas used
-- Error information (if applicable)
-
-This table is used for analyzing transaction execution paths, internal contract calls, and state changes within the gnosis network.
-
-{% enddocs %}
-
-{% docs gnosis_traces_decoded_doc %}
-
-The `gnosis.traces_decoded` table contains a subset of decoded traces from the gnosis blockchain dependent on submitted smart contracts and their ABIs. It includes:
-
-- All fields from the `gnosis.traces` table
-- Decoded function names and signature (first four bytes of the calldata)
-- the contract name and schema name we have decoded the function call to
-
-This table is used for high level analysis of smart contract interactions. For fully decoded function calls and parameters, refer to decoded tables such as `uniswap_v3_gnosis.UniswapV3Pool_call_Swap`. 
+This table is used for analyzing:
+- Transaction patterns and volume
+- Gas usage and fee trends
+- Smart contract interactions
+- Network activity and usage
+- L1/L2 interactions and costs
 
 {% enddocs %}
 
@@ -46,40 +46,41 @@ This table is used for high level analysis of smart contract interactions. For f
 
 The `gnosis.logs` table contains event logs emitted by smart contracts on the gnosis blockchain. It includes:
 
-- Block number and timestamp
-- Transaction hash
+- Block information: block_time, block_number, block_hash, block_date
+- Transaction details: tx_hash, tx_index, tx_from, tx_to
 - Contract address
-- Topic hashes
-- Raw data
+- Event topics: topic0 (event signature), topic1, topic2, topic3
+- Event data
+- Log position: index
 
-This table is used for tracking contract events and state changes on the gnosis network.
-
-{% enddocs %}
-
-{% docs gnosis_logs_decoded_doc %}
-
-The `gnosis.logs_decoded` table contains a subset of decoded logs from the gnosis blockchain dependent on submitted smart contracts and their ABIs. It includes:
-
-- All fields from the `gnosis.logs` table
-- Decoded event names and signature (topic0 of the log)
-- the contract name and schema name we have decoded the event to
-
-This table is used for high level analysis of smart contract events. For fully decoded events and parameters, refer to decoded tables such as `erc20_gnosis.UniswapV3Pool_evt_Swap`.
+This table is crucial for:
+- Tracking on-chain events
+- Monitoring contract activity
+- Analyzing token transfers
+- Following protocol-specific events
+- Understanding smart contract interactions
 
 {% enddocs %}
 
-{% docs gnosis_blocks_doc %}
+{% docs gnosis_traces_doc %}
 
-The `gnosis.blocks` table contains information about gnosis blocks. It provides essential data about each block in the gnosis blockchain, including timestamps, gas metrics, and block identifiers. This table is fundamental for analyzing blockchain structure, block production rates, and overall network performance.
+The `gnosis.traces` table contains records of execution steps for transactions on the gnosis blockchain. Each trace represents an atomic operation that modifies the blockchain state. Key components include:
 
-{% enddocs %}
+- Block information: block_time, block_number, block_hash, block_date
+- Transaction context: tx_hash, tx_index, tx_from, tx_to
+- Value transfer details
+- Gas metrics: gas, gas_used
+- Input and output data
+- Call type (CALL, DELEGATECALL, CREATE)
+- Error information and revert reasons
+- Trace address for nested calls
+- Contract creation data: address, code
 
-{% docs gnosis_contracts_doc %}
-
-The `gnosis.contracts` table tracks all contracts that have been submitted to Dune for decoding. It includes:
-
-- metadata about the contract, including its name and namespace
-- the contract address
+This table is essential for:
+- Analyzing internal transactions
+- Debugging smart contract interactions
+- Tracking value flows through complex transactions
+- Understanding contract creation and deployment
 
 {% enddocs %}
 
@@ -87,18 +88,93 @@ The `gnosis.contracts` table tracks all contracts that have been submitted to Du
 
 The `gnosis.creation_traces` table contains data about contract creation events on the gnosis blockchain. It includes:
 
-- Block number and timestamp
-- Transaction hash
-- Creator's address
-- Created contract address
-- deployed contract bytecode
-- Gas used for deployment
+- Block information: block_time, block_number, block_month
+- Transaction details: tx_hash
+- Contract details: address, from, code
 
-This table is used for analyzing contract deployment patterns and tracking the origin of smart contracts on the gnosis network. It's essentially a filtered version of the `gnosis.traces` table for the condition that `type = create`.
+This table is used for:
+- Analyzing contract deployment patterns
+- Tracking smart contract origins
+- Monitoring protocol deployments
+- Understanding contract creation
 
 {% enddocs %}
 
-{% docs erc20_gnosis_evt_transfer_doc %}
+{% docs gnosis_contracts_doc %}
+
+The `gnosis.contracts` table contains information about verified smart contracts on the gnosis blockchain. It includes:
+
+- Contract identification: address, name, namespace
+- Contract code and ABI
+- Deployment information: from, created_at
+- Contract type flags: dynamic, base, factory
+- Verification metadata: abi_id, detection_source
+
+This table is essential for:
+- Smart contract analysis
+- Protocol tracking
+- Contract verification status
+- Understanding contract relationships
+- Contract deployment monitoring
+
+{% enddocs %}
+
+{% docs gnosis_contracts_submitted_doc %}
+
+The `gnosis.contracts_submitted` table contains information about manually submitted contract verifications on the gnosis blockchain. It includes:
+
+- Contract identification: address, name, namespace
+- Contract code and ABI
+- Deployment information: from, created_at
+- Contract type flags: dynamic, factory
+
+This table is used for:
+- Tracking manual contract verifications
+- Contract deployment analysis
+- Contract code verification
+- Protocol monitoring
+
+{% enddocs %}
+
+{% docs gnosis_traces_decoded_doc %}
+
+The `gnosis.traces_decoded` table contains decoded traces with additional information based on submitted smart contracts and their ABIs. It includes:
+
+- Block information: block_date, block_time, block_number
+- Contract details: namespace, contract_name
+- Transaction context: tx_hash, tx_from, tx_to
+- Function details: signature, function_name
+- Trace location: trace_address
+
+This table is used for:
+- Analyzing smart contract interactions
+- Monitoring protocol operations
+- Debugging contract calls
+- Understanding function call patterns
+- Tracking internal transactions
+
+{% enddocs %}
+
+{% docs gnosis_logs_decoded_doc %}
+
+The `gnosis.logs_decoded` table contains decoded event logs with additional information based on submitted smart contracts and their ABIs. It includes:
+
+- Block information: block_date, block_time, block_number
+- Contract details: namespace, contract_name, contract_address
+- Transaction context: tx_hash, tx_from, tx_to
+- Event details: signature, event_name
+- Log position: index
+
+This table is used for:
+- Analyzing decoded smart contract events
+- Monitoring protocol operations
+- Tracking token transfers with human-readable event names
+- Understanding contract interactions
+- Protocol-specific event analysis
+
+{% enddocs %}
+
+{% docs erc20_gnosis_evt_Transfer_doc %}
 
 The `erc20_gnosis.evt_transfer` table contains Transfer events for ERC20 tokens on the gnosis blockchain. It includes:
 
@@ -114,9 +190,9 @@ Please be aware that this table is the raw ERC20 event data, and does not includ
 
 {% enddocs %}
 
-{% docs erc20_gnosis_evt_approval_doc %}
+{% docs erc20_gnosis_evt_Approval_doc %}
 
-The `erc20_gnosis.evt_approval` table contains Approval events for ERC20 tokens on the gnosis blockchain. It includes:
+The `erc20_gnosis.evt_Approval` table contains Approval events for ERC20 tokens on the gnosis blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -128,9 +204,9 @@ This table is used for analyzing ERC20 token approvals and spending permissions 
 
 {% enddocs %}
 
-{% docs erc1155_gnosis_evt_transfersingle_doc %}
+{% docs erc1155_gnosis_evt_TransferSingle_doc %}
 
-The `erc1155_gnosis.evt_transfersingle` table contains TransferSingle events for ERC1155 tokens on the gnosis blockchain. It includes:
+The `erc1155_gnosis.evt_TransferSingle` table contains TransferSingle events for ERC1155 tokens on the gnosis blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -145,9 +221,9 @@ Please be aware that this table is the raw ERC1155 event data, and does not incl
 
 {% enddocs %}
 
-{% docs erc1155_gnosis_evt_transferbatch_doc %}
+{% docs erc1155_gnosis_evt_TransferBatch_doc %}
 
-The `erc1155_gnosis.evt_transferbatch` table contains TransferBatch events for ERC1155 tokens on the gnosis blockchain. It includes:
+The `erc1155_gnosis.evt_TransferBatch` table contains TransferBatch events for ERC1155 tokens on the gnosis blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -176,9 +252,9 @@ This table is used for analyzing blanket approvals for ERC1155 token collections
 
 {% enddocs %}
 
-{% docs erc721_gnosis_evt_transfer_doc %}
+{% docs erc721_gnosis_evt_Transfer_doc %}
 
-The `erc721_gnosis.evt_transfer` table contains Transfer events for ERC721 tokens on the gnosis blockchain. It includes:
+The `erc721_gnosis.evt_Transfer` table contains Transfer events for ERC721 tokens on the gnosis blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -217,5 +293,5 @@ The `erc721_gnosis.evt_ApprovalForAll` table contains ApprovalForAll events for 
 - Approved status (boolean)
 
 This table is used for analyzing blanket approvals for ERC721 token collections on the gnosis network.
-
 {% enddocs %}
+

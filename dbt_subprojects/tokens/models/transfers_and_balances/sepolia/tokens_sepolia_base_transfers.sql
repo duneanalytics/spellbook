@@ -14,7 +14,7 @@
     blockchain='sepolia',
     traces = source('sepolia','traces'),
     transactions = source('sepolia','transactions'),
-    erc20_transfers = source('erc20_sepolia','evt_transfer'),
+    erc20_transfers = source('erc20_sepolia','evt_Transfer'),
     native_contract_address = null
 )
 }}

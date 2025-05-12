@@ -167,7 +167,7 @@ trade_amount_detail as (
         e.evt_tx_hash,
         e.value AS price_raw,
         row_number() OVER (PARTITION BY e.evt_tx_hash ORDER BY e.evt_index) AS item_index
-    FROM {{ source('erc20_polygon', 'evt_transfer') }} e
+    FROM {{ source('erc20_polygon', 'evt_Transfer') }} e
     INNER JOIN trades t ON e.evt_block_number = t.evt_block_number
         AND e.evt_tx_hash = t.evt_tx_hash
         {% if not is_incremental() %}
