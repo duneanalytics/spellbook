@@ -26,6 +26,7 @@
 {% for bot in evm_trading_bots %}
 SELECT block_time,
        block_date,
+       block_date as second_block_date,
        block_month,
        bot,
        block_number,
