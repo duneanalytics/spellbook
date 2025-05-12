@@ -40,7 +40,6 @@ from (
       blockchain,
       project,
       version,
-      function_name,
       block_month,
       block_date,
       block_time,
