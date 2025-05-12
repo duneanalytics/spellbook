@@ -41,10 +41,10 @@ delta_v2_swap_settle_batch_parsed_orders as (
     cast(JSON_EXTRACT_SCALAR("order", '$.srcAmount') as uint256) as srcAmount,
     cast(JSON_EXTRACT_SCALAR("order", '$.destAmount') as uint256) as destAmount,
     cast(JSON_EXTRACT_SCALAR("order", '$.expectedDestAmount') as uint256) as expectedDestAmount,
-    JSON_EXTRACT_SCALAR("order", '$.deadline') as deadline,
-    JSON_EXTRACT_SCALAR("order", '$.nonce') as nonce,
+    cast(JSON_EXTRACT_SCALAR("order", '$.deadline') as uint256) as deadline,
+    cast(JSON_EXTRACT_SCALAR("order", '$.nonce') as uint256) as nonce,
     cast(JSON_EXTRACT_SCALAR("order", '$.partnerAndFee') as uint256) as partnerAndFee,
-    cast(JSON_EXTRACT_SCALAR("order", '$.permit') as varbinary) as permit,
+    from_hex(JSON_EXTRACT_SCALAR("order", '$.permit')) as permit,
     {{executor_fee_amount()}},    
     * 
 from
@@ -53,7 +53,7 @@ from
 delta_v2_swap_settle_batch_parsed_orders_with_orderhash as (
   select 
     *,
-    {{ compute_order_hash(blockchain) }} as computed_order_hash 
+    {{ compute_order_hash_with_bridge(blockchain) }} as computed_order_hash 
   from delta_v2_swap_settle_batch_parsed_orders
 ),
 delta_v2_swap_settle_batch_withWrapped as (
