@@ -64,7 +64,7 @@ fundraising_txs AS (
         value,
         evt_tx_hash,
         contract_address
-    FROM {{source('erc20_ethereum','evt_transfer')}}
+    FROM {{source('erc20_ethereum','evt_Transfer')}}
     WHERE contract_address IN (SELECT address FROM tokens)
     AND to IN (
         SELECT

@@ -27,7 +27,7 @@ sent_transfers as (
         tokenId as token_id,
         1 as amount,
         evt_tx_hash as tx_hash
-    from {{ source('erc721_celo', 'evt_transfer') }}
+    from {{ source('erc721_celo', 'evt_Transfer') }}
     where 1=1
         {% if is_incremental() %} -- this filter will only be applied on an incremental run
         and {{ incremental_predicate('evt_block_time') }}
@@ -44,7 +44,7 @@ received_transfers as (
         tokenId as token_id,
         -1 as amount,
         evt_tx_hash as tx_hash
-    from {{ source('erc721_celo', 'evt_transfer') }}
+    from {{ source('erc721_celo', 'evt_Transfer') }}
     where 1=1
         {% if is_incremental() %} -- this filter will only be applied on an incremental run
         and {{ incremental_predicate('evt_block_time') }}
