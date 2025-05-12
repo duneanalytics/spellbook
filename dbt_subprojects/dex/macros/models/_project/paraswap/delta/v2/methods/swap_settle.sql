@@ -90,7 +90,11 @@ v2_swap_settle_with_wrapped_native AS (
 ), v2_swap_settle_with_wrapped_native_with_orderhash as (
   select 
     *,
-    {{ compute_order_hash_with_bridge(blockchain) }} as computed_order_hash 
+    CASE WHEN bridge IS NULL THEN
+      {{ compute_order_hash(blockchain) }}
+    ELSE
+      {{ compute_order_hash_with_bridge(blockchain) }}
+    END as computed_order_hash     
   from v2_swap_settle_with_wrapped_native
 ),
 delta_v2_swapSettle_master as (
