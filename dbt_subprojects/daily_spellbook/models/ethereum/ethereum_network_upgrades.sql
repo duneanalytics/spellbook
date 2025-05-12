@@ -55,5 +55,5 @@ SELECT upgrade_number
 , blob_target
 , blob_limit
 FROM upgrades
-LEFT JOIN ethereum.blocks ON block_number=number
+LEFT JOIN {{ source('ethereum', 'blocks') }} ON block_number=number
 ORDER BY upgrade_number DESC
