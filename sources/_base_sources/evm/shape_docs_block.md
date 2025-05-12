@@ -1,6 +1,6 @@
 {% docs shape_blocks_doc %}
 
-The `shape.blocks` table contains information about blocks on the Shape blockchain. It includes:
+The `shape.blocks` table contains information about blocks on the shape blockchain. It includes:
 
 - Block identifiers: number, hash, time, date
 - Gas metrics: gas_limit, gas_used, blob_gas_used, excess_blob_gas
@@ -17,13 +17,11 @@ This table is fundamental for analyzing:
 - Network performance metrics
 - Blob gas usage patterns
 
-As Shape is a culture-first Ethereum L2 focused on NFTs, this table provides essential data for understanding the underlying blockchain infrastructure that powers the NFT ecosystem on Shape.
-
 {% enddocs %}
 
 {% docs shape_transactions_doc %}
 
-The `shape.transactions` table contains detailed information about transactions on the Shape blockchain. It includes:
+The `shape.transactions` table contains detailed information about transactions on the shape blockchain. It includes:
 
 - Block information: block_time, block_number, block_hash, block_date
 - Transaction details: hash, from, to, value
@@ -42,13 +40,31 @@ This table is used for analyzing:
 - Network activity and usage
 - L1/L2 interactions and costs
 
-Shape's Gasback feature allows contract owners to claim back 80% of the sequencer fees generated from onchain activity, making transaction analysis particularly valuable for understanding creator rewards and network economics.
+{% enddocs %}
+
+{% docs shape_logs_doc %}
+
+The `shape.logs` table contains event logs emitted by smart contracts on the shape blockchain. It includes:
+
+- Block information: block_time, block_number, block_hash, block_date
+- Transaction details: tx_hash, tx_index, tx_from, tx_to
+- Contract address
+- Event topics: topic0 (event signature), topic1, topic2, topic3
+- Event data
+- Log position: index
+
+This table is crucial for:
+- Tracking on-chain events
+- Monitoring contract activity
+- Analyzing token transfers
+- Following protocol-specific events
+- Understanding smart contract interactions
 
 {% enddocs %}
 
 {% docs shape_traces_doc %}
 
-The `shape.traces` table contains records of execution steps for transactions on the Shape blockchain. Each trace represents an atomic operation that modifies the blockchain state. Key components include:
+The `shape.traces` table contains records of execution steps for transactions on the shape blockchain. Each trace represents an atomic operation that modifies the blockchain state. Key components include:
 
 - Block information: block_time, block_number, block_hash, block_date
 - Transaction context: tx_hash, tx_index, tx_from, tx_to
@@ -65,9 +81,58 @@ This table is essential for:
 - Debugging smart contract interactions
 - Tracking value flows through complex transactions
 - Understanding contract creation and deployment
-- Monitoring NFT-related operations at a granular level
 
-As Shape focuses on creating a web of NFTs that can seamlessly interact with each other, this traces table provides deep insights into the programmatic interactions between digital objects on the network.
+{% enddocs %}
+
+{% docs shape_creation_traces_doc %}
+
+The `shape.creation_traces` table contains data about contract creation events on the shape blockchain. It includes:
+
+- Block information: block_time, block_number, block_month
+- Transaction details: tx_hash
+- Contract details: address, from, code
+
+This table is used for:
+- Analyzing contract deployment patterns
+- Tracking smart contract origins
+- Monitoring protocol deployments
+- Understanding contract creation
+
+{% enddocs %}
+
+{% docs shape_contracts_doc %}
+
+The `shape.contracts` table contains information about verified smart contracts on the shape blockchain. It includes:
+
+- Contract identification: address, name, namespace
+- Contract code and ABI
+- Deployment information: from, created_at
+- Contract type flags: dynamic, base, factory
+- Verification metadata: abi_id, detection_source
+
+This table is essential for:
+- Smart contract analysis
+- Protocol tracking
+- Contract verification status
+- Understanding contract relationships
+- Contract deployment monitoring
+
+{% enddocs %}
+
+{% docs shape_contracts_submitted_doc %}
+
+The `shape.contracts_submitted` table contains information about manually submitted contract verifications on the shape blockchain. It includes:
+
+- Contract identification: address, name, namespace
+- Contract code and ABI
+- Deployment information: from, created_at
+- Contract type flags: dynamic, factory
+
+This table is used for:
+- Tracking manual contract verifications
+- Contract deployment analysis
+- Contract code verification
+- Protocol monitoring
 
 {% enddocs %}
 
@@ -88,48 +153,6 @@ This table is used for:
 - Understanding function call patterns
 - Tracking internal transactions
 
-For Shape's NFT ecosystem, this table provides valuable insights into how NFT contracts interact with each other, helping developers and analysts understand the web of NFTs that form the backbone of Shape's digital economy.
-
-{% enddocs %}
-
-{% docs shape_creation_traces_doc %}
-
-The `shape.creation_traces` table contains data about contract creation events on the Shape blockchain. It includes:
-
-- Block information: block_time, block_number, block_month
-- Transaction details: tx_hash
-- Contract details: address, from, code
-
-This table is used for:
-- Analyzing contract deployment patterns
-- Tracking smart contract origins
-- Monitoring NFT contract deployments
-- Understanding contract creation on Shape's NFT-focused ecosystem
-
-Shape's emphasis on NFTs and creator economy makes this table particularly valuable for tracking the deployment of NFT contracts and other creative applications on the network.
-
-{% enddocs %}
-
-{% docs shape_logs_doc %}
-
-The `shape.logs` table contains event logs emitted by smart contracts on the Shape blockchain. It includes:
-
-- Block information: block_time, block_number, block_hash, block_date
-- Transaction details: tx_hash, tx_index, tx_from, tx_to
-- Contract address
-- Event topics: topic0 (event signature), topic1, topic2, topic3
-- Event data
-- Log position: index
-
-This table is crucial for:
-- Tracking on-chain events
-- Monitoring NFT contract activity
-- Analyzing token transfers
-- Following protocol-specific events
-- Understanding smart contract interactions
-
-As Shape is designed to be "The NFT chain" where digital objects can seamlessly interact with each other, this logs table provides essential data for analyzing the web of NFT interactions and creator activity on the network.
-
 {% enddocs %}
 
 {% docs shape_logs_decoded_doc %}
@@ -145,17 +168,15 @@ The `shape.logs_decoded` table contains decoded event logs with additional infor
 This table is used for:
 - Analyzing decoded smart contract events
 - Monitoring protocol operations
-- Tracking NFT transfers with human-readable event names
+- Tracking token transfers with human-readable event names
 - Understanding contract interactions
 - Protocol-specific event analysis
 
-Shape's focus on creating a web of NFTs that can programmatically interact with each other makes this table particularly valuable for understanding the complex interactions between digital objects on the network.
-
 {% enddocs %}
 
-{% docs erc20_shape_evt_transfer_doc %}
+{% docs erc20_shape_evt_Transfer_doc %}
 
-The `erc20_shape.evt_transfer` table contains Transfer events for ERC20 tokens on the Shape blockchain. It includes:
+The `erc20_shape.evt_transfer` table contains Transfer events for ERC20 tokens on the shape blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -163,15 +184,15 @@ The `erc20_shape.evt_transfer` table contains Transfer events for ERC20 tokens o
 - From and to addresses
 - Amount transferred
 
-This table is used for tracking ERC20 token movements on the Shape network, which may include utility tokens that support the NFT ecosystem.
+This table is used for tracking ERC20 token movements on the shape network.
 
 Please be aware that this table is the raw ERC20 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use `tokens.transfers` for a more complete and curated view of token transfers.
 
 {% enddocs %}
 
-{% docs erc20_shape_evt_approval_doc %}
+{% docs erc20_shape_evt_Approval_doc %}
 
-The `erc20_shape.evt_approval` table contains Approval events for ERC20 tokens on the Shape blockchain. It includes:
+The `erc20_shape.evt_Approval` table contains Approval events for ERC20 tokens on the shape blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -179,89 +200,47 @@ The `erc20_shape.evt_approval` table contains Approval events for ERC20 tokens o
 - Owner and spender addresses
 - Approved amount
 
-This table is used for analyzing ERC20 token approvals and spending permissions on the Shape network, which may be relevant for understanding token utility within the NFT ecosystem.
+This table is used for analyzing ERC20 token approvals and spending permissions on the shape network.
 
 {% enddocs %}
 
-{% docs erc721_shape_evt_transfer_doc %}
+{% docs erc1155_shape_evt_TransferSingle_doc %}
 
-The `erc721_shape.evt_transfer` table contains Transfer events for ERC721 tokens (NFTs) on the Shape blockchain. It includes:
-
-- Block number and timestamp
-- Transaction hash
-- Contract address
-- From and to addresses
-- Token ID
-
-This table is especially important on Shape as it is designed to be "The NFT chain" and is used for tracking NFT transfers and ownership changes. Shape's Gasback feature allows contract owners to claim back 80% of the sequencer fees generated from onchain activity, making NFT transfers particularly significant for creators.
-
-Please be aware that this table is the raw ERC721 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use `nft.transfers` for a more complete and curated view of NFT transfers.
-
-{% enddocs %}
-
-{% docs erc721_shape_evt_approval_doc %}
-
-The `erc721_shape.evt_approval` table contains Approval events for ERC721 tokens (NFTs) on the Shape blockchain. It includes:
-
-- Block number and timestamp
-- Transaction hash
-- Contract address
-- Owner, approved addresses
-- Token ID
-
-This table is used for analyzing NFT approvals for individual tokens on the Shape network, which is relevant for understanding NFT marketplace interactions and permissions.
-
-{% enddocs %}
-
-{% docs erc721_shape_evt_ApprovalForAll_doc %}
-
-The `erc721_shape.evt_ApprovalForAll` table contains ApprovalForAll events for ERC721 tokens (NFTs) on the Shape blockchain. It includes:
-
-- Block number and timestamp
-- Transaction hash
-- Contract address
-- Owner and operator addresses
-- Approved status (boolean)
-
-This table is used for analyzing blanket approvals for NFT collections on the Shape network, which is particularly relevant for marketplace integrations and collection-wide permissions in Shape's creator-focused ecosystem.
-
-{% enddocs %}
-
-{% docs erc1155_shape_evt_transfersingle_doc %}
-
-The `erc1155_shape.evt_transfersingle` table contains TransferSingle events for ERC1155 tokens on the Shape blockchain. It includes:
+The `erc1155_shape.evt_TransferSingle` table contains TransferSingle events for ERC1155 tokens on the shape blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
 - Contract address
 - Operator, from, and to addresses
-- Token ID and value
+- Token ID
+- Amount transferred
 
-This table is used for tracking individual ERC1155 token transfers on the Shape network, which may represent semi-fungible assets within the NFT ecosystem.
+This table is used for tracking individual ERC1155 token transfers on the shape network.
 
 Please be aware that this table is the raw ERC1155 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use `nft.transfers` for a more complete and curated view of NFT transfers.
 
 {% enddocs %}
 
-{% docs erc1155_shape_evt_transferbatch_doc %}
+{% docs erc1155_shape_evt_TransferBatch_doc %}
 
-The `erc1155_shape.evt_transferbatch` table contains TransferBatch events for ERC1155 tokens on the Shape blockchain. It includes:
+The `erc1155_shape.evt_TransferBatch` table contains TransferBatch events for ERC1155 tokens on the shape blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
 - Contract address
 - Operator, from, and to addresses
-- Array of token IDs and values
+- Array of token IDs
+- Array of amounts transferred
 
-This table is used for tracking batch transfers of multiple ERC1155 tokens on the Shape network, which is relevant for understanding complex NFT transactions and collection movements.
+This table is used for tracking batch transfers of multiple ERC1155 tokens on the shape network.
 
-Please be aware that this table is the raw ERC1155 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use `nft.transfers` for a more complete and curated view of NFT transfers.
+Please be aware that this table is the raw ERC1155 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use nft.transfers for a more complete and curated view of NFT transfers.
 
 {% enddocs %}
 
 {% docs erc1155_shape_evt_ApprovalForAll_doc %}
 
-The `erc1155_shape.evt_ApprovalForAll` table contains ApprovalForAll events for ERC1155 tokens on the Shape blockchain. It includes:
+The `erc1155_shape.evt_ApprovalForAll` table contains ApprovalForAll events for ERC1155 tokens on the shape blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -269,6 +248,50 @@ The `erc1155_shape.evt_ApprovalForAll` table contains ApprovalForAll events for 
 - Account and operator addresses
 - Approved status (boolean)
 
-This table is used for analyzing blanket approvals for ERC1155 token collections on the Shape network, which is relevant for marketplace integrations and permissions in Shape's NFT ecosystem.
+This table is used for analyzing blanket approvals for ERC1155 token collections on the shape network.
 
 {% enddocs %}
+
+{% docs erc721_shape_evt_Transfer_doc %}
+
+The `erc721_shape.evt_Transfer` table contains Transfer events for ERC721 tokens on the shape blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- From and to addresses
+- Token ID
+
+This table is used for tracking ERC721 token (NFT) transfers on the shape network.
+
+Please be aware that this table is the raw ERC721 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use `nft.transfers` for a more complete and curated view of NFT transfers.
+
+{% enddocs %}
+
+{% docs erc721_shape_evt_Approval_doc %}
+
+The `erc721_shape.evt_Approval` table contains Approval events for ERC721 tokens on the shape blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- Owner and approved addresses
+- Token ID
+
+This table is used for analyzing approvals for individual ERC721 tokens (NFTs) on the shape network.
+
+{% enddocs %}
+
+{% docs erc721_shape_evt_ApprovalForAll_doc %}
+
+The `erc721_shape.evt_ApprovalForAll` table contains ApprovalForAll events for ERC721 tokens on the shape blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- Owner and operator addresses
+- Approved status (boolean)
+
+This table is used for analyzing blanket approvals for ERC721 token collections on the shape network.
+{% enddocs %}
+

@@ -92,7 +92,7 @@ lox_incentives_txns AS (
         "from",
         contract_address,
         'polygon' as blockchain
-    FROM {{source('erc20_polygon','evt_transfer')}}
+    FROM {{source('erc20_polygon','evt_Transfer')}}
     WHERE  "from" IN (
         SELECT
             address
@@ -111,7 +111,7 @@ lox_incentives_txns AS (
         "from",
         contract_address,
         'polygon' as blockchain
-    FROM {{source('erc20_polygon','evt_transfer')}}
+    FROM {{source('erc20_polygon','evt_Transfer')}}
     WHERE to IN (
         SELECT
             address
@@ -130,7 +130,7 @@ lox_incentives_txns AS (
         "from",
         contract_address,
         'ethereum' as blockchain
-    FROM {{source('erc20_ethereum','evt_transfer')}}
+    FROM {{source('erc20_ethereum','evt_Transfer')}}
     WHERE to IN (
         SELECT
             address
@@ -149,7 +149,7 @@ lox_incentives_txns AS (
         "from",
         contract_address,
         'ethereum' as blockchain
-    FROM {{source('erc20_ethereum','evt_transfer')}}
+    FROM {{source('erc20_ethereum','evt_Transfer')}}
     WHERE "from" IN (
         SELECT
             address
@@ -170,7 +170,7 @@ lox_incentives_txns AS (
         "from",
         contract_address,
         'ethereum' as blockchain
-    FROM {{source('erc20_ethereum','evt_transfer')}}
+    FROM {{source('erc20_ethereum','evt_Transfer')}}
     WHERE "from" IN (
         SELECT
             address
@@ -192,7 +192,7 @@ lox_incentives_txns AS (
         "from",
         contract_address,
         'ethereum' as blockchain
-    FROM {{source('erc20_ethereum','evt_transfer')}}
+    FROM {{source('erc20_ethereum','evt_Transfer')}}
     WHERE to IN (
         SELECT
             address
@@ -215,7 +215,7 @@ lox_incentives_txns AS (
         "from",
         contract_address,
         'ethereum' as blockchain
-    FROM {{source('erc20_ethereum','evt_transfer')}}
+    FROM {{source('erc20_ethereum','evt_Transfer')}}
     WHERE "from" IN (
         SELECT
             address
@@ -237,7 +237,7 @@ lox_incentives_txns AS (
         "from",
         contract_address,
         'ethereum' as blockchain
-    FROM {{source('erc20_ethereum','evt_transfer')}}
+    FROM {{source('erc20_ethereum','evt_Transfer')}}
     WHERE to IN (
         SELECT
             address
