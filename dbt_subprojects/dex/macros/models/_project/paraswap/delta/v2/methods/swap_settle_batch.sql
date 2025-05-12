@@ -1,7 +1,6 @@
 {% macro delta_v2_swap_settle_batch(blockchain) %}
 
--- {% set method_start_date = '2024-10-01' %}
-{% set method_start_date = '2025-05-10' %}
+{% set method_start_date = '2024-10-01' %}
 
 delta_v2_swap_settle_batch_ExpandedOrders as (
     select            
@@ -34,6 +33,7 @@ delta_v2_swap_settle_batch_ExpandedOrders as (
 ),
 delta_v2_swap_settle_batch_parsed_orders as (
   select
+    JSON_EXTRACT_SCALAR(JSON_PARSE(TRY_CAST("order" AS VARCHAR)), '$.bridge') AS "bridge",
     from_hex(JSON_EXTRACT_SCALAR("order", '$.owner')) as owner,
     from_hex(JSON_EXTRACT_SCALAR("order", '$.beneficiary')) as beneficiary,
     from_hex(JSON_EXTRACT_SCALAR("order", '$.srcToken')) as srcToken,
@@ -53,28 +53,43 @@ from
 delta_v2_swap_settle_batch_parsed_orders_with_orderhash as (
   select 
     *,
-    {{ compute_order_hash_with_bridge(blockchain) }} as computed_order_hash 
+    from_hex(JSON_EXTRACT_SCALAR("bridge", '$.multiCallHandler')) as bridgeMultiCallHandler,
+    from_hex(JSON_EXTRACT_SCALAR("bridge", '$.outputToken')) as bridgeOutputToken,
+    cast(JSON_EXTRACT_SCALAR("bridge", '$.maxRelayerFee') as uint256) as bridgeMaxRelayerFee,
+    cast(JSON_EXTRACT_SCALAR("bridge", '$.destinationChainId') as uint256) as bridgeDestinationChainId    
   from delta_v2_swap_settle_batch_parsed_orders
 ),
 delta_v2_swap_settle_batch_withWrapped as (
   SELECT     
+    CASE WHEN bridge IS NULL THEN
+      {{ compute_order_hash(blockchain) }}
+    ELSE
+      {{ compute_order_hash_with_bridge(blockchain) }}
+    END as computed_order_hash,
     {{to_wrapped_native_token(blockchain, 'orders.destToken', 'dest_token_for_joining')}},
-    {{to_wrapped_native_token(blockchain, 'orders.srcToken', 'src_token_for_joining')}},    
+    {{to_wrapped_native_token(blockchain, 'orders.srcToken', 'src_token_for_joining')}},
+    orders.*
+  FROM delta_v2_swap_settle_batch_parsed_orders_with_orderhash orders
+),
+delta_v2_swap_settle_batch_withEvents as (
+  select   
     events.evt_index,
     events.orderHash as evt_order_hash,
     events.returnAmount as evt_return_amount,
     events.protocolFee as evt_protocol_fee,
     events.partnerFee as evt_partner_fee,
-    orders.*    
-  FROM delta_v2_swap_settle_batch_parsed_orders_with_orderhash orders
-  --- NB: sourcing from calls and joining events, not the opposite, because some methods emit different events (*fill* -> OrderSettled / OrderPartiallyFilled). Sorting them by evt_index would make them match orders sorted by their index in array + call_trace_address -> source of truth bettr be calls
+    withWrapped.*     
+   from delta_v2_swap_settle_batch_withWrapped withWrapped
+     --- NB: sourcing from calls and joining events, not the opposite, because some methods emit different events (*fill* -> OrderSettled / OrderPartiallyFilled). Sorting them by evt_index would make them match orders sorted by their index in array + call_trace_address -> source of truth bettr be calls
   LEFT JOIN {{ source("paraswapdelta_"+ blockchain, "ParaswapDeltav2_evt_OrderSettled") }} events 
     ON
       evt_block_time = call_block_time  
     -- suffices for fill-all-at-once methods (unlike partials, because with partials there's an edge case when you can mismatch still, although very unlikely to happen in real life)
     AND computed_order_hash = events.orderHash    
-    AND orders.call_tx_hash = events.evt_tx_hash
-), delta_v2_swapSettleBatch_master as (
+    AND call_tx_hash = events.evt_tx_hash
+  
+),
+ delta_v2_swapSettleBatch_master as (
 
 select 
     'swapSettleBatch' as method,
@@ -85,7 +100,7 @@ select
     d.price *  w.destAmount / POWER(10, d.decimals)  AS dest_token_order_usd,
     w.destToken AS fee_token,
     w.*
-from delta_v2_swap_settle_batch_withWrapped w
+from delta_v2_swap_settle_batch_withEvents w
 
  LEFT JOIN {{ source('prices', 'usd') }} d
     ON d.minute > TIMESTAMP '{{method_start_date}}'
@@ -161,7 +176,13 @@ SELECT
     evt_order_hash,
     evt_return_amount,
     evt_protocol_fee,
-    evt_partner_fee
+    evt_partner_fee,
+    bridgeMultiCallHandler,
+    bridgeOutputToken,
+    bridgeMaxRelayerFee,
+    bridgeDestinationChainId,
+    bridge,
+    "order"
   FROM delta_v2_swapSettleBatch_master
 )
 {% endmacro %}
