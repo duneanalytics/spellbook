@@ -14,7 +14,7 @@
     blockchain='sonic'
     , traces = source('sonic','traces')
     , transactions = source('sonic','transactions')
-    , erc20_transfers = source('erc20_sonic','evt_transfer')
+    , erc20_transfers = source('erc20_sonic','evt_Transfer')
     , native_contract_address = var('ETH_ERC20_ADDRESS')
 )
 }} 

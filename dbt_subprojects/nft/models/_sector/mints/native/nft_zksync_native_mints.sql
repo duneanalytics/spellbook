@@ -14,7 +14,7 @@
     blockchain='zksync'
     , base_contracts = source('zksync','contracts')
     , base_traces = source('zksync','traces')
-    , erc20_transfer = source('erc20_zksync','evt_transfer')
+    , erc20_transfer = source('erc20_zksync','evt_Transfer')
     , base_transactions = source('zksync','transactions')
     , eth_currency_contract = '0x000000000000000000000000000000000000800A'
 )}}

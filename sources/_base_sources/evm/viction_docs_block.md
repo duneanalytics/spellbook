@@ -1,141 +1,297 @@
 {% docs viction_blocks_doc %}
-This table contains block-level data from the Viction blockchain. Each row represents a single block and includes details such as the timestamp, block number, hash, gas metrics, and other block-specific information.
 
-Key use cases:
-- Analyzing block production and network activity over time
-- Monitoring gas usage and block size trends
-- Tracking miner/validator behavior
+The `viction.blocks` table contains information about blocks on the viction blockchain. It includes:
+
+- Block identifiers: number, hash, time, date
+- Gas metrics: gas_limit, gas_used, blob_gas_used, excess_blob_gas
+- Block characteristics: size, base_fee_per_gas
+- Block roots: state_root, transactions_root, receipts_root, parent_beacon_block_root
+- Consensus data: difficulty, total_difficulty, nonce
+- Block producer: miner
+- Parent block: parent_hash
+
+This table is fundamental for analyzing:
+- Block production and timing
+- Network capacity and usage
+- Chain structure and growth
+- Network performance metrics
+- Blob gas usage patterns
 
 {% enddocs %}
 
 {% docs viction_transactions_doc %}
-This table contains transaction-level data from the Viction blockchain. Each row represents a single transaction and includes details such as the sender, receiver, value transferred, gas usage, and transaction status.
 
-Key use cases:
-- Analyzing transaction patterns and network usage
-- Monitoring gas prices and fees
-- Tracking specific address activities
-- Investigating transaction success/failure rates
+The `viction.transactions` table contains detailed information about transactions on the viction blockchain. It includes:
 
-{% enddocs %}
+- Block information: block_time, block_number, block_hash, block_date
+- Transaction details: hash, from, to, value
+- Gas metrics: gas_price, gas_limit, gas_used
+- EIP-1559 fee parameters: max_fee_per_gas, max_priority_fee_per_gas, priority_fee_per_gas
+- Transaction metadata: nonce, index, success
+- Smart contract interaction: data
+- Transaction type and access list
+- Chain identification: chain_id
+- L1 related data: l1_gas_used, l1_gas_price, l1_fee, l1_fee_scalar, l1_block_number, l1_timestamp, l1_tx_origin
 
-{% docs viction_traces_doc %}
-This table contains internal transaction traces from the Viction blockchain. Each row represents an internal call made during transaction execution, providing detailed information about contract interactions and value transfers.
-
-Key use cases:
-- Analyzing complex contract interactions
-- Tracking internal value transfers
-- Debugging failed transactions
-- Understanding contract execution flows
+This table is used for analyzing:
+- Transaction patterns and volume
+- Gas usage and fee trends
+- Smart contract interactions
+- Network activity and usage
+- L1/L2 interactions and costs
 
 {% enddocs %}
 
 {% docs viction_logs_doc %}
-This table contains event logs emitted by smart contracts on the Viction blockchain. Each row represents a single event log and includes the emitting contract address, indexed topics, and event data.
 
-Key use cases:
-- Tracking specific contract events
-- Monitoring token transfers and approvals
-- Analyzing contract usage patterns
-- Building event-based metrics and analytics
+The `viction.logs` table contains event logs emitted by smart contracts on the viction blockchain. It includes:
+
+- Block information: block_time, block_number, block_hash, block_date
+- Transaction details: tx_hash, tx_index, tx_from, tx_to
+- Contract address
+- Event topics: topic0 (event signature), topic1, topic2, topic3
+- Event data
+- Log position: index
+
+This table is crucial for:
+- Tracking on-chain events
+- Monitoring contract activity
+- Analyzing token transfers
+- Following protocol-specific events
+- Understanding smart contract interactions
+
+{% enddocs %}
+
+{% docs viction_traces_doc %}
+
+The `viction.traces` table contains records of execution steps for transactions on the viction blockchain. Each trace represents an atomic operation that modifies the blockchain state. Key components include:
+
+- Block information: block_time, block_number, block_hash, block_date
+- Transaction context: tx_hash, tx_index, tx_from, tx_to
+- Value transfer details
+- Gas metrics: gas, gas_used
+- Input and output data
+- Call type (CALL, DELEGATECALL, CREATE)
+- Error information and revert reasons
+- Trace address for nested calls
+- Contract creation data: address, code
+
+This table is essential for:
+- Analyzing internal transactions
+- Debugging smart contract interactions
+- Tracking value flows through complex transactions
+- Understanding contract creation and deployment
 
 {% enddocs %}
 
 {% docs viction_creation_traces_doc %}
-This table contains information about contract creation events on the Viction blockchain. Each row represents a contract deployment transaction and includes details about the creator, created contract, and deployment parameters.
 
-Key use cases:
-- Tracking new contract deployments
-- Analyzing contract creation patterns
-- Monitoring smart contract ecosystem growth
-- Investigating contract creators and factory patterns
+The `viction.creation_traces` table contains data about contract creation events on the viction blockchain. It includes:
 
-{% enddocs %}
+- Block information: block_time, block_number, block_month
+- Transaction details: tx_hash
+- Contract details: address, from, code
 
-{% docs erc20_viction_evt_transfer_doc %}
-This table contains Transfer events from ERC20 token contracts on the Viction blockchain. Each row represents a token transfer and includes the sender, receiver, and amount transferred.
-
-Key use cases:
-- Tracking token transfers and holder activity
-- Analyzing token circulation and velocity
-- Monitoring specific address token flows
-- Building token-specific metrics
+This table is used for:
+- Analyzing contract deployment patterns
+- Tracking smart contract origins
+- Monitoring protocol deployments
+- Understanding contract creation
 
 {% enddocs %}
 
-{% docs erc20_viction_evt_approval_doc %}
-This table contains Approval events from ERC20 token contracts on the Viction blockchain. Each row represents an approval for token spending and includes the token owner, approved spender, and approved amount.
+{% docs viction_contracts_doc %}
 
-Key use cases:
-- Tracking token approvals and delegated spending rights
-- Monitoring DEX and protocol integrations
-- Analyzing user interaction patterns with token contracts
-- Identifying potential security risks from large approvals
+The `viction.contracts` table contains information about verified smart contracts on the viction blockchain. It includes:
 
-{% enddocs %}
+- Contract identification: address, name, namespace
+- Contract code and ABI
+- Deployment information: from, created_at
+- Contract type flags: dynamic, base, factory
+- Verification metadata: abi_id, detection_source
 
-{% docs erc1155_viction_evt_transfersingle_doc %}
-This table contains TransferSingle events from ERC1155 token contracts on the Viction blockchain. Each row represents a single token transfer and includes the operator, sender, receiver, token ID, and amount.
-
-Key use cases:
-- Tracking individual token transfers
-- Monitoring NFT and multi-token activities
-- Analyzing gaming asset movements
-- Building token-specific metrics
+This table is essential for:
+- Smart contract analysis
+- Protocol tracking
+- Contract verification status
+- Understanding contract relationships
+- Contract deployment monitoring
 
 {% enddocs %}
 
-{% docs erc1155_viction_evt_transferbatch_doc %}
-This table contains TransferBatch events from ERC1155 token contracts on the Viction blockchain. Each row represents a batch token transfer and includes the operator, sender, receiver, token IDs, and amounts.
+{% docs viction_contracts_submitted_doc %}
 
-Key use cases:
-- Tracking bulk token transfers
-- Monitoring large-scale token operations
-- Analyzing gaming asset movements
-- Building token-specific metrics
+The `viction.contracts_submitted` table contains information about manually submitted contract verifications on the viction blockchain. It includes:
 
-{% enddocs %}
+- Contract identification: address, name, namespace
+- Contract code and ABI
+- Deployment information: from, created_at
+- Contract type flags: dynamic, factory
 
-{% docs erc1155_viction_evt_approvalforall_doc %}
-This table contains ApprovalForAll events from ERC1155 token contracts on the Viction blockchain. Each row represents an operator approval for all tokens of a contract.
-
-Key use cases:
-- Tracking operator approvals for token management
-- Monitoring marketplace integrations
-- Analyzing user interaction patterns
-- Identifying potential security risks
+This table is used for:
+- Tracking manual contract verifications
+- Contract deployment analysis
+- Contract code verification
+- Protocol monitoring
 
 {% enddocs %}
 
-{% docs erc721_viction_evt_transfer_doc %}
-This table contains Transfer events from ERC721 token contracts on the Viction blockchain. Each row represents an NFT transfer and includes the sender, receiver, and token ID.
+{% docs viction_traces_decoded_doc %}
 
-Key use cases:
-- Tracking NFT ownership changes
-- Analyzing NFT trading patterns
-- Monitoring specific collection activity
-- Building NFT-specific metrics
+The `viction.traces_decoded` table contains decoded traces with additional information based on submitted smart contracts and their ABIs. It includes:
 
-{% enddocs %}
+- Block information: block_date, block_time, block_number
+- Contract details: namespace, contract_name
+- Transaction context: tx_hash, tx_from, tx_to
+- Function details: signature, function_name
+- Trace location: trace_address
 
-{% docs erc721_viction_evt_approval_doc %}
-This table contains Approval events from ERC721 token contracts on the Viction blockchain. Each row represents an approval for a specific NFT and includes the owner, approved address, and token ID.
-
-Key use cases:
-- Tracking NFT approvals and marketplace listings
-- Monitoring NFT trading patterns
-- Analyzing marketplace integration activity
-- Identifying potential security risks
+This table is used for:
+- Analyzing smart contract interactions
+- Monitoring protocol operations
+- Debugging contract calls
+- Understanding function call patterns
+- Tracking internal transactions
 
 {% enddocs %}
 
-{% docs erc721_viction_evt_approvalforall_doc %}
-This table contains ApprovalForAll events from ERC721 token contracts on the Viction blockchain. Each row represents an operator approval for all NFTs of a contract.
+{% docs viction_logs_decoded_doc %}
 
-Key use cases:
-- Tracking operator approvals for NFT management
-- Monitoring marketplace integrations
-- Analyzing user interaction patterns
-- Identifying potential security risks
+The `viction.logs_decoded` table contains decoded event logs with additional information based on submitted smart contracts and their ABIs. It includes:
+
+- Block information: block_date, block_time, block_number
+- Contract details: namespace, contract_name, contract_address
+- Transaction context: tx_hash, tx_from, tx_to
+- Event details: signature, event_name
+- Log position: index
+
+This table is used for:
+- Analyzing decoded smart contract events
+- Monitoring protocol operations
+- Tracking token transfers with human-readable event names
+- Understanding contract interactions
+- Protocol-specific event analysis
 
 {% enddocs %}
+
+{% docs erc20_viction_evt_Transfer_doc %}
+
+The `erc20_viction.evt_transfer` table contains Transfer events for ERC20 tokens on the viction blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- From and to addresses
+- Amount transferred
+
+This table is used for tracking ERC20 token movements on the viction network.
+
+Please be aware that this table is the raw ERC20 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use `tokens.transfers` for a more complete and curated view of token transfers.
+
+{% enddocs %}
+
+{% docs erc20_viction_evt_Approval_doc %}
+
+The `erc20_viction.evt_Approval` table contains Approval events for ERC20 tokens on the viction blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- Owner and spender addresses
+- Approved amount
+
+This table is used for analyzing ERC20 token approvals and spending permissions on the viction network.
+
+{% enddocs %}
+
+{% docs erc1155_viction_evt_TransferSingle_doc %}
+
+The `erc1155_viction.evt_TransferSingle` table contains TransferSingle events for ERC1155 tokens on the viction blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- Operator, from, and to addresses
+- Token ID
+- Amount transferred
+
+This table is used for tracking individual ERC1155 token transfers on the viction network.
+
+Please be aware that this table is the raw ERC1155 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use `nft.transfers` for a more complete and curated view of NFT transfers.
+
+{% enddocs %}
+
+{% docs erc1155_viction_evt_TransferBatch_doc %}
+
+The `erc1155_viction.evt_TransferBatch` table contains TransferBatch events for ERC1155 tokens on the viction blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- Operator, from, and to addresses
+- Array of token IDs
+- Array of amounts transferred
+
+This table is used for tracking batch transfers of multiple ERC1155 tokens on the viction network.
+
+Please be aware that this table is the raw ERC1155 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use nft.transfers for a more complete and curated view of NFT transfers.
+
+{% enddocs %}
+
+{% docs erc1155_viction_evt_ApprovalForAll_doc %}
+
+The `erc1155_viction.evt_ApprovalForAll` table contains ApprovalForAll events for ERC1155 tokens on the viction blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- Account and operator addresses
+- Approved status (boolean)
+
+This table is used for analyzing blanket approvals for ERC1155 token collections on the viction network.
+
+{% enddocs %}
+
+{% docs erc721_viction_evt_Transfer_doc %}
+
+The `erc721_viction.evt_Transfer` table contains Transfer events for ERC721 tokens on the viction blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- From and to addresses
+- Token ID
+
+This table is used for tracking ERC721 token (NFT) transfers on the viction network.
+
+Please be aware that this table is the raw ERC721 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use `nft.transfers` for a more complete and curated view of NFT transfers.
+
+{% enddocs %}
+
+{% docs erc721_viction_evt_Approval_doc %}
+
+The `erc721_viction.evt_Approval` table contains Approval events for ERC721 tokens on the viction blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- Owner and approved addresses
+- Token ID
+
+This table is used for analyzing approvals for individual ERC721 tokens (NFTs) on the viction network.
+
+{% enddocs %}
+
+{% docs erc721_viction_evt_ApprovalForAll_doc %}
+
+The `erc721_viction.evt_ApprovalForAll` table contains ApprovalForAll events for ERC721 tokens on the viction blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- Owner and operator addresses
+- Approved status (boolean)
+
+This table is used for analyzing blanket approvals for ERC721 token collections on the viction network.
+{% enddocs %}
+
