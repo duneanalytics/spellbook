@@ -1,5 +1,5 @@
 name: "CLA Assistant"
-# Trigger testt
+# Trigger test
 on:
   issue_comment:
     types: [created]
