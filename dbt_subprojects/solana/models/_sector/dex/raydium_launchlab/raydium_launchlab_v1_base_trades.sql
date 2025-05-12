@@ -1,6 +1,6 @@
 {{
   config(
-        schema = 'launchlab_v1',
+        schema = 'raydium_launchlab_v1',
         alias = 'base_trades',
         partition_by = ['block_month'],
         materialized = 'incremental',
@@ -35,7 +35,7 @@ with buy_exact_in as (
     -- where
     --     call_block_time >= TIMESTAMP '{{project_start_date}}'
     -- {% endif -%}
-    where call_block_time >= CURRENT_DATE - INTERVAL '7 days'
+    where call_block_time >= CURRENT_DATE - INTERVAL '7' DAY
 
 )
 , buy_exact_out as (
@@ -59,7 +59,7 @@ with buy_exact_in as (
     -- where
     --     call_block_time >= TIMESTAMP '{{project_start_date}}'
     --{% endif -%}?
-    where call_block_time >= CURRENT_DATE - INTERVAL '7 days'
+    where call_block_time >= CURRENT_DATE - INTERVAL '7' DAY
 
 )
 , sell_exact_in as (
@@ -83,7 +83,7 @@ with buy_exact_in as (
     -- where
     --     call_block_time >= TIMESTAMP '{{project_start_date}}'
     -- {% endif -%}
-    where call_block_time >= CURRENT_DATE - INTERVAL '7 days'
+    where call_block_time >= CURRENT_DATE - INTERVAL '7' DAY
 )
 , sell_exact_out as (
     select
@@ -106,7 +106,7 @@ with buy_exact_in as (
     -- where
     --     call_block_time >= TIMESTAMP '{{project_start_date}}'
     -- {% endif -%}
-    where call_block_time >= CURRENT_DATE - INTERVAL '7 days'
+    where call_block_time >= CURRENT_DATE - INTERVAL '7' DAY
 )
 , calls as (
     select * from buy_exact_in
@@ -133,7 +133,7 @@ with buy_exact_in as (
         -- {% else -%}
         -- where block_time >= TIMESTAMP '{{project_start_date}}'
         -- {% endif -%}
-    where block_time >= CURRENT_DATE - INTERVAL '7 days'
+    where block_time >= CURRENT_DATE - INTERVAL '7' DAY
 )
 , all_swaps as (
     SELECT
