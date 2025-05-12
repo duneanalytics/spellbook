@@ -10,7 +10,6 @@
 )
 }}
 
-
 with
     tokens as (
         SELECT
@@ -93,7 +92,6 @@ with
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('meta.call_block_time') }}
         {% endif %}
-        
     )
 
     , token2022_metadata as (
@@ -206,9 +204,20 @@ with
         -- Use the appropriate account_mint based on inner vs outer and opcode
         CASE 
             WHEN i.is_inner THEN t.account_mint
-            WHEN bytearray_substring(i.data, 1, 1) = 0x2A THEN account_arguments[3]
-            WHEN bytearray_substring(i.data, 1, 1) = 0x2B THEN account_arguments[6]
-            WHEN bytearray_substring(i.data, 1, 1) IN (0x0B, 0x32, 0x34, 0x2E, 0x1A, 0x0D) THEN account_arguments[4]
+            WHEN bytearray_substring(i.data, 1, 1) = 0x2A AND array_length(account_arguments) >= 3 THEN account_arguments[3]
+            WHEN bytearray_substring(i.data, 1, 1) = 0x2B AND array_length(account_arguments) >= 6 THEN account_arguments[6]
+            WHEN bytearray_substring(i.data, 1, 1) IN (0x0B, 0x32, 0x34, 0x2E, 0x1A, 0x0D) AND array_length(account_arguments) >= 4 THEN account_arguments[4]
+            WHEN bytearray_substring(i.data, 1, 1) = 0x37 AND array_length(account_arguments) >= 3 THEN account_arguments[3]
+            WHEN bytearray_substring(i.data, 1, 1) = 0x22 AND array_length(account_arguments) >= 3 THEN account_arguments[3]
+            WHEN bytearray_substring(i.data, 1, 1) = 0x24 AND array_length(account_arguments) >= 3 THEN account_arguments[3]
+            WHEN bytearray_substring(i.data, 1, 1) = 0x31 AND array_length(account_arguments) >= 5 THEN account_arguments[5]
+            WHEN bytearray_substring(i.data, 1, 1) = 0x17 AND array_length(account_arguments) >= 6 THEN account_arguments[6]
+            WHEN bytearray_substring(i.data, 1, 1) = 0x02 AND array_length(account_arguments) >= 4 THEN account_arguments[4]
+            WHEN bytearray_substring(i.data, 1, 1) = 0x02 AND array_length(account_arguments) >= 3 THEN account_arguments[3]
+            WHEN bytearray_substring(i.data, 1, 1) = 0x03 AND array_length(account_arguments) >= 4 THEN account_arguments[4]
+            WHEN bytearray_substring(i.data, 1, 1) = 0x2C AND array_length(account_arguments) >= 6 THEN account_arguments[6]
+            WHEN bytearray_substring(i.data, 1, 1) = 0x11 AND array_length(account_arguments) >= 2 THEN account_arguments[2]
+            WHEN bytearray_substring(i.data, 1, 1) = 0x1E AND array_length(account_arguments) >= 4 THEN account_arguments[4]
             ELSE NULL
         END as account_mint,
         
@@ -217,29 +226,55 @@ with
         row_number() over (partition by 
             CASE 
                 WHEN i.is_inner THEN t.account_mint
-                WHEN bytearray_substring(i.data, 1, 1) = 0x2A THEN account_arguments[3]
-                WHEN bytearray_substring(i.data, 1, 1) = 0x2B THEN account_arguments[6]
-                WHEN bytearray_substring(i.data, 1, 1) IN (0x0B, 0x32, 0x34, 0x2E, 0x1A, 0x0D) THEN account_arguments[4]
+                WHEN bytearray_substring(i.data, 1, 1) = 0x2A AND array_length(account_arguments) >= 3 THEN account_arguments[3]
+                WHEN bytearray_substring(i.data, 1, 1) = 0x2B AND array_length(account_arguments) >= 6 THEN account_arguments[6]
+                WHEN bytearray_substring(i.data, 1, 1) IN (0x0B, 0x32, 0x34, 0x2E, 0x1A, 0x0D) AND array_length(account_arguments) >= 4 THEN account_arguments[4]
+                WHEN bytearray_substring(i.data, 1, 1) = 0x37 AND array_length(account_arguments) >= 3 THEN account_arguments[3]
+                WHEN bytearray_substring(i.data, 1, 1) = 0x22 AND array_length(account_arguments) >= 3 THEN account_arguments[3]
+                WHEN bytearray_substring(i.data, 1, 1) = 0x24 AND array_length(account_arguments) >= 3 THEN account_arguments[3]
+                WHEN bytearray_substring(i.data, 1, 1) = 0x31 AND array_length(account_arguments) >= 5 THEN account_arguments[5]
+                WHEN bytearray_substring(i.data, 1, 1) = 0x17 AND array_length(account_arguments) >= 6 THEN account_arguments[6]
+                WHEN bytearray_substring(i.data, 1, 1) = 0x02 AND array_length(account_arguments) >= 4 THEN account_arguments[4]
+                WHEN bytearray_substring(i.data, 1, 1) = 0x02 AND array_length(account_arguments) >= 3 THEN account_arguments[3]
+                WHEN bytearray_substring(i.data, 1, 1) = 0x03 AND array_length(account_arguments) >= 4 THEN account_arguments[4]
+                WHEN bytearray_substring(i.data, 1, 1) = 0x2C AND array_length(account_arguments) >= 6 THEN account_arguments[6]
+                WHEN bytearray_substring(i.data, 1, 1) = 0x11 AND array_length(account_arguments) >= 2 THEN account_arguments[2]
+                WHEN bytearray_substring(i.data, 1, 1) = 0x1E AND array_length(account_arguments) >= 4 THEN account_arguments[4]
                 ELSE NULL
             END 
             order by i.block_time desc) as latest
     FROM {{ source('solana','instruction_calls') }} i
     LEFT JOIN tokens t ON i.tx_id = t.call_tx_id AND i.is_inner = true
     WHERE i.executing_account = 'metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s' 
-    AND bytearray_substring(i.data, 1, 1) = 0x2a
+    AND bytearray_substring(i.data, 1, 1) IN (
+    0x2A, 0x2B, 0x0B, 0x32, 0x34, 0x2E, 0x1A, 0x0D, 
+    0x37, 0x22, 0x24, 0x31, 0x17, 0x02, 0x03, 0x2C, 0x11, 0x1E
+    )
     AND i.tx_success
     AND (
         (i.is_inner = true AND t.account_mint IS NOT NULL) OR
         (i.is_inner = false AND (
-            (bytearray_substring(i.data, 1, 1) = 0x2A AND account_arguments[3] IS NOT NULL) OR
-            (bytearray_substring(i.data, 1, 1) = 0x2B AND account_arguments[6] IS NOT NULL) OR
-            (bytearray_substring(i.data, 1, 1) IN (0x0B, 0x32, 0x34, 0x2E, 0x1A, 0x0D) AND account_arguments[4] IS NOT NULL)
+            (bytearray_substring(i.data, 1, 1) = 0x2A AND array_length(account_arguments) >= 3 AND account_arguments[3] IS NOT NULL) OR
+            (bytearray_substring(i.data, 1, 1) = 0x2B AND array_length(account_arguments) >= 6 AND account_arguments[6] IS NOT NULL) OR
+            (bytearray_substring(i.data, 1, 1) IN (0x0B, 0x32, 0x34, 0x2E, 0x1A, 0x0D) AND array_length(account_arguments) >= 4 AND account_arguments[4] IS NOT NULL) OR
+            (bytearray_substring(i.data, 1, 1) = 0x37 AND array_length(account_arguments) >= 3 AND account_arguments[3] IS NOT NULL) OR
+            (bytearray_substring(i.data, 1, 1) = 0x22 AND array_length(account_arguments) >= 3 AND account_arguments[3] IS NOT NULL) OR
+            (bytearray_substring(i.data, 1, 1) = 0x24 AND array_length(account_arguments) >= 3 AND account_arguments[3] IS NOT NULL) OR
+            (bytearray_substring(i.data, 1, 1) = 0x31 AND array_length(account_arguments) >= 5 AND account_arguments[5] IS NOT NULL) OR
+            (bytearray_substring(i.data, 1, 1) = 0x17 AND array_length(account_arguments) >= 6 AND account_arguments[6] IS NOT NULL) OR
+            (bytearray_substring(i.data, 1, 1) = 0x02 AND array_length(account_arguments) >= 4 AND account_arguments[4] IS NOT NULL) OR
+            (bytearray_substring(i.data, 1, 1) = 0x02 AND array_length(account_arguments) >= 3 AND account_arguments[3] IS NOT NULL) OR
+            (bytearray_substring(i.data, 1, 1) = 0x03 AND array_length(account_arguments) >= 4 AND account_arguments[4] IS NOT NULL) OR
+            (bytearray_substring(i.data, 1, 1) = 0x2C AND array_length(account_arguments) >= 6 AND account_arguments[6] IS NOT NULL) OR
+            (bytearray_substring(i.data, 1, 1) = 0x11 AND array_length(account_arguments) >= 2 AND account_arguments[2] IS NOT NULL) OR
+            (bytearray_substring(i.data, 1, 1) = 0x1E AND array_length(account_arguments) >= 4 AND account_arguments[4] IS NOT NULL)
         ))
     )
     {% if is_incremental() %}
     AND {{ incremental_predicate('i.block_time') }}
     {% endif %}
 )
+
 SELECT
     tk.account_mint as token_mint_address
     , tk.decimals
@@ -257,6 +292,7 @@ LEFT JOIN token_metadata_meta4 m4 ON tk.account_mint = m4.account_mint AND m4.la
 LEFT JOIN metadata m ON tk.account_mint = m.account_mint AND m.latest = 1
 WHERE m.master_edition is null
 AND tk.latest = 1
+
 UNION ALL
 
 --token2022 wrapped sol https://solscan.io/tx/2L1o7sDMCMJ6PYqfNrnY6ozJC1DEx61pRYiLdfCCggxw81naQXsmHKDLn6EhJXmDmDSQ2eCKjUMjZAQuUsyNnYUv
