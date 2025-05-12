@@ -29,7 +29,7 @@ WITH
             tx_index as call_tx_index,
             log_messages
         FROM
-            solana.instruction_calls
+            {{ source('solana', 'instruction_calls') }}
         WHERE
             executing_account = 'LanMV9sAd7wArD4vJFi2qDdfnVhFxYSUg6eADduJ3uj'
             AND (
