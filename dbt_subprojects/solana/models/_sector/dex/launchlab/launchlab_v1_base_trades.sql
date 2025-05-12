@@ -20,7 +20,7 @@ WITH
         SELECT
             sp.call_block_time as block_time
             , sp.call_block_slot as block_slot
-            , 'raydium' as project
+            , 'launchlab' as project
             , 1 as version  -- Changed to match the v1 in schema name
             , 'solana' as blockchain
             , case when sp.call_is_inner = False then 'direct'
