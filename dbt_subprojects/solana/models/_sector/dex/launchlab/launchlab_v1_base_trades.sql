@@ -12,95 +12,169 @@
         )
 }}
 
-{% set project_start_date = '2025-05-05' %}
+{% set project_start_date = '2025-03-17' %} 
 
-WITH
-    --Collect all Launchlab swap calls
-    all_swaps as (
-        SELECT
-            sp.call_block_time as block_time
-            , sp.call_block_slot as block_slot
-            , 'launchlab' as project
-            , 1 as version  -- Changed to match the v1 in schema name
-            , 'solana' as blockchain
-            , case when sp.call_is_inner = False then 'direct'
-                else sp.call_outer_executing_account
-                end as trade_source
-            -- token bought is always the second instruction (transfer) in the inner instructions
-            , trs_2.amount as token_bought_amount_raw
-            , trs_1.amount as token_sold_amount_raw
-            , sp.account_pool_state as pool_id
-            , sp.call_tx_signer as trader_id
-            , sp.call_tx_id as tx_id
-            , sp.call_outer_instruction_index as outer_instruction_index
-            , COALESCE(sp.call_inner_instruction_index, 0) as inner_instruction_index
-            , sp.call_tx_index as tx_index
-            , COALESCE(trs_2.token_mint_address, cast(null as varchar)) as token_bought_mint_address
-            , COALESCE(trs_1.token_mint_address, cast(null as varchar)) as token_sold_mint_address
-            , trs_2.from_token_account as token_bought_vault
-            , trs_1.to_token_account as token_sold_vault
-        FROM (
-            -- Combine all Launchlab swap function calls
-            SELECT 
-                account_pool_state, call_is_inner, call_outer_instruction_index, call_inner_instruction_index, 
-                call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer, call_tx_index
-            FROM {{ source('raydium_solana', 'raydium_launchpad_call_buy_exact_in') }}
-            
-            UNION ALL
-            
-            SELECT 
-                account_pool_state, call_is_inner, call_outer_instruction_index, call_inner_instruction_index, 
-                call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer, call_tx_index
-            FROM {{ source('raydium_solana', 'raydium_launchpad_call_buy_exact_out') }}
-            
-            UNION ALL
-            
-            SELECT 
-                account_pool_state, call_is_inner, call_outer_instruction_index, call_inner_instruction_index, 
-                call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer, call_tx_index
-            FROM {{ source('raydium_solana', 'raydium_launchpad_call_sell_exact_in') }}
-            
-            UNION ALL
-            
-            SELECT 
-                account_pool_state, call_is_inner, call_outer_instruction_index, call_inner_instruction_index, 
-                call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer, call_tx_index
-            FROM {{ source('raydium_solana', 'raydium_launchpad_call_sell_exact_out') }}
-        ) sp
-        INNER JOIN {{ ref('tokens_solana_transfers') }} trs_1
-            ON trs_1.tx_id = sp.call_tx_id
-            AND trs_1.block_time = sp.call_block_time
-            AND trs_1.outer_instruction_index = sp.call_outer_instruction_index
-            AND ((sp.call_is_inner = false AND (trs_1.inner_instruction_index = 1 OR trs_1.inner_instruction_index = 2))
-                OR (sp.call_is_inner = true AND (trs_1.inner_instruction_index = sp.call_inner_instruction_index + 1 OR trs_1.inner_instruction_index = sp.call_inner_instruction_index + 2))
-                )
-            AND trs_1.token_version = 'spl_token'
-            {% if is_incremental() %}
-            AND {{incremental_predicate('trs_1.block_time')}}
-            {% else %}
-            AND trs_1.block_time >= TIMESTAMP '{{project_start_date}}'
-            {% endif %}
-        INNER JOIN {{ ref('tokens_solana_transfers') }} trs_2
-            ON trs_2.tx_id = sp.call_tx_id
-            AND trs_2.block_time = sp.call_block_time
-            AND trs_2.outer_instruction_index = sp.call_outer_instruction_index
-            AND ((sp.call_is_inner = false AND (trs_2.inner_instruction_index = 2 OR trs_2.inner_instruction_index = 3))
-                OR (sp.call_is_inner = true AND (trs_2.inner_instruction_index = sp.call_inner_instruction_index + 2 OR trs_2.inner_instruction_index = sp.call_inner_instruction_index + 3))
-                )
-            AND trs_2.token_version = 'spl_token'
-            {% if is_incremental() %}
-            AND {{incremental_predicate('trs_2.block_time')}}
-            {% else %}
-            AND trs_2.block_time >= TIMESTAMP '{{project_start_date}}'
-            {% endif %}
-        WHERE 1=1
-        AND trs_1.token_mint_address != trs_2.token_mint_address --gets rid of dupes from the OR statement in transfer joins
-        {% if is_incremental() %}
-        AND {{incremental_predicate('sp.call_block_time')}}
-        {% else %}
-        AND sp.call_block_time >= TIMESTAMP '{{project_start_date}}'
-        {% endif %}
-    )
+with buy_exact_in as (
+    select
+        account_pool_state
+        , call_is_inner
+        , call_outer_instruction_index
+        , call_inner_instruction_index
+        , call_tx_id
+        , call_block_time
+        , call_block_slot
+        , call_outer_executing_account
+        , call_tx_signer
+        , call_tx_index
+    from
+        {{ source('raydium_solana', 'raydium_launchpad_call_buy_exact_in') }}
+    -- {% if is_incremental() -%}
+    -- where
+    --     {{incremental_predicate('call_block_time')}}
+    -- {% else -%}
+    -- where
+    --     call_block_time >= TIMESTAMP '{{project_start_date}}'
+    -- {% endif -%}
+    where call_block_time >= CURRENT_DATE - INTERVAL '7 days'
+
+)
+, buy_exact_out as (
+    select
+        account_pool_state
+        , call_is_inner
+        , call_outer_instruction_index
+        , call_inner_instruction_index
+        , call_tx_id
+        , call_block_time
+        , call_block_slot
+        , call_outer_executing_account
+        , call_tx_signer
+        , call_tx_index
+    from
+        {{ source('raydium_solana', 'raydium_launchpad_call_buy_exact_out') }}
+    -- {% if is_incremental() -%}
+    -- where
+    --     {{incremental_predicate('call_block_time')}}
+    -- {% else -%}
+    -- where
+    --     call_block_time >= TIMESTAMP '{{project_start_date}}'
+    --{% endif -%}?
+    where call_block_time >= CURRENT_DATE - INTERVAL '7 days'
+
+)
+, sell_exact_in as (
+    select
+        account_pool_state
+        , call_is_inner
+        , call_outer_instruction_index
+        , call_inner_instruction_index
+        , call_tx_id
+        , call_block_time
+        , call_block_slot
+        , call_outer_executing_account
+        , call_tx_signer
+        , call_tx_index
+    from
+        {{ source('raydium_solana', 'raydium_launchpad_call_sell_exact_in') }}
+    -- {% if is_incremental() -%}
+    -- where
+    --     {{incremental_predicate('call_block_time')}}
+    -- {% else -%}
+    -- where
+    --     call_block_time >= TIMESTAMP '{{project_start_date}}'
+    -- {% endif -%}
+    where call_block_time >= CURRENT_DATE - INTERVAL '7 days'
+)
+, sell_exact_out as (
+    select
+        account_pool_state
+        , call_is_inner
+        , call_outer_instruction_index
+        , call_inner_instruction_index
+        , call_tx_id
+        , call_block_time
+        , call_block_slot
+        , call_outer_executing_account
+        , call_tx_signer
+        , call_tx_index
+    from
+        {{ source('raydium_solana', 'raydium_launchpad_call_sell_exact_out') }}
+    -- {% if is_incremental() -%}
+    -- where
+    --     {{incremental_predicate('call_block_time')}}
+    -- {% else -%}
+    -- where
+    --     call_block_time >= TIMESTAMP '{{project_start_date}}'
+    -- {% endif -%}
+    where call_block_time >= CURRENT_DATE - INTERVAL '7 days'
+)
+, calls as (
+    select * from buy_exact_in
+    union all
+    select * from buy_exact_out
+    union all
+    select * from sell_exact_in
+    union all
+    select * from sell_exact_out
+)
+, transfers as (
+    select
+        block_slot
+        , outer_instruction_index
+        , inner_instruction_index
+        , token_mint_address
+        , from_token_account
+        , to_token_account
+        , amount
+    from
+        {{ ref('tokens_solana_transfers') }}
+        -- {% if is_incremental() -%}
+        -- where {{incremental_predicate('block_time')}}
+        -- {% else -%}
+        -- where block_time >= TIMESTAMP '{{project_start_date}}'
+        -- {% endif -%}
+    where block_time >= CURRENT_DATE - INTERVAL '7 days'
+)
+, all_swaps as (
+    SELECT
+        sp.call_block_time as block_time
+        , sp.call_block_slot as block_slot
+        , 'launchlab' as project
+        , 1 as version
+        , 'solana' as blockchain
+        , case when sp.call_is_inner = False then 'direct'
+            else sp.call_outer_executing_account
+            end as trade_source
+        -- -- token bought is always the second instruction (transfer) in the inner instructions
+        , trs_2.amount as token_bought_amount_raw
+        , trs_1.amount as token_sold_amount_raw
+        , account_pool_state as pool_id
+        , sp.call_tx_signer as trader_id
+        , sp.call_tx_id as tx_id
+        , sp.call_outer_instruction_index as outer_instruction_index
+        , COALESCE(sp.call_inner_instruction_index, 0) as inner_instruction_index
+        , sp.call_tx_index as tx_index
+        , COALESCE(trs_2.token_mint_address, cast(null as varchar)) as token_bought_mint_address
+        , COALESCE(trs_1.token_mint_address, cast(null as varchar)) as token_sold_mint_address
+        , trs_2.from_token_account as token_bought_vault
+        , trs_1.to_token_account as token_sold_vault
+    FROM calls as sp
+    INNER JOIN transfers as trs_1
+        ON trs_1.block_slot = sp.call_block_slot
+        AND trs_1.outer_instruction_index = sp.call_outer_instruction_index
+        AND (
+            (sp.call_is_inner = false AND (trs_1.inner_instruction_index = 1 OR trs_1.inner_instruction_index = 2))
+            OR (sp.call_is_inner = true AND (trs_1.inner_instruction_index = sp.call_inner_instruction_index + 1 OR trs_1.inner_instruction_index = sp.call_inner_instruction_index + 2))
+            )        
+    INNER JOIN transfers as trs_2
+        ON trs_2.block_slot = sp.call_block_slot
+        AND trs_2.outer_instruction_index = sp.call_outer_instruction_index
+        AND (
+            (sp.call_is_inner = false AND (trs_2.inner_instruction_index = 2 OR trs_2.inner_instruction_index = 3))
+            OR (sp.call_is_inner = true AND (trs_2.inner_instruction_index = sp.call_inner_instruction_index + 2 OR trs_2.inner_instruction_index = sp.call_inner_instruction_index + 3))
+            )
+    WHERE trs_1.token_mint_address != trs_2.token_mint_address
+)
 
 SELECT
     tb.blockchain
