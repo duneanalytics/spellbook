@@ -61,6 +61,7 @@ v2_swap_settle_unparsedOrders AS (
 ),
 v2_swap_settle_parsedOrders AS (
   SELECT
+    JSON_EXTRACT_SCALAR(JSON_PARSE(TRY_CAST("order" AS VARCHAR)), '$.bridge') AS "bridge",
     from_hex(JSON_EXTRACT_SCALAR("order", '$.owner')) as owner,
     from_hex(JSON_EXTRACT_SCALAR("order", '$.beneficiary')) as beneficiary,
     from_hex(JSON_EXTRACT_SCALAR("order", '$.srcToken')) as srcToken,
@@ -78,6 +79,10 @@ v2_swap_settle_parsedOrders AS (
 ),
 v2_swap_settle_with_wrapped_native AS (
   SELECT
+  from_hex(JSON_EXTRACT_SCALAR("bridge", '$.multiCallHandler')) as bridgeMultiCallHandler,
+  from_hex(JSON_EXTRACT_SCALAR("bridge", '$.outputToken')) as bridgeOutputToken,
+  cast(JSON_EXTRACT_SCALAR("bridge", '$.maxRelayerFee') as uint256) as bridgeMaxRelayerFee,
+  cast(JSON_EXTRACT_SCALAR("bridge", '$.destinationChainId') as uint256) as bridgeDestinationChainId,
 {{to_wrapped_native_token(blockchain, 'destToken', 'dest_token_for_joining')}},
 {{to_wrapped_native_token(blockchain, 'srcToken', 'src_token_for_joining')}},
     *
@@ -165,7 +170,14 @@ SELECT
     evt_order_hash,
     evt_return_amount,
     evt_protocol_fee,
-    evt_partner_fee
+    evt_partner_fee,
+    bridgeMultiCallHandler,
+    bridgeOutputToken,
+    bridgeMaxRelayerFee,
+    bridgeDestinationChainId,
+    bridge,
+    "order"
+    
   FROM delta_v2_swapSettle_master
 )
 {% endmacro %}

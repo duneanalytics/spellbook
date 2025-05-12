@@ -39,7 +39,13 @@ select
                 '0x(00){12}'
               )) AS partnerAddress,
         computed_order_hash,
-        evt_order_hash
+        evt_order_hash,
+        bridgeMultiCallHandler,
+        bridgeOutputToken,
+        bridgeMaxRelayerFee,
+        bridgeDestinationChainId,
+        bridge,
+        "order"
     from {{from_alias}}  
         LEFT JOIN 
         {{ source('tokens', 'erc20') }} t_src_token 

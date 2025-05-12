@@ -60,10 +60,10 @@
           keccak(
             concat(
               keccak(to_utf8('Bridge(uint256 maxRelayerFee,uint256 destinationChainId,address outputToken,address multiCallHandler)')),
-              lpad(cast(cast(0 as uint256) AS varbinary), 32, X'00'),
-              lpad(cast(cast(0 as uint256) AS varbinary), 32, X'00'),
-              lpad(from_hex('0000000000000000000000000000000000000000'), 32, X'00'),
-              lpad(from_hex('0000000000000000000000000000000000000000'), 32, X'00')
+              lpad(cast(cast(bridgeMaxRelayerFee as uint256) AS varbinary), 32, X'00'),
+              lpad(cast(cast(bridgeDestinationChainId as uint256) AS varbinary), 32, X'00'),
+              lpad(bridgeOutputToken, 32, X'00'),
+              lpad(bridgeMultiCallHandler, 32, X'00')
             )
           )
         )
