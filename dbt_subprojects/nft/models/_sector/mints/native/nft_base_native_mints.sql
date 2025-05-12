@@ -14,7 +14,7 @@
     blockchain='base'
     , base_contracts = source('base','contracts')
     , base_traces = source('base','traces')
-    , erc20_transfer = source('erc20_base','evt_transfer')
+    , erc20_transfer = source('erc20_base','evt_Transfer')
     , base_transactions = source('base','transactions')
     , eth_currency_contract = '0x4200000000000000000000000000000000000006'
 )}}

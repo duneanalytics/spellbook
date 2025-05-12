@@ -39,7 +39,7 @@ SELECT 'ethereum' AS blockchain
 , {{forth_token_address}} AS token_address
 , 'FORTH' AS token_symbol
 , t.evt_index
-FROM {{ source('erc20_ethereum', 'evt_transfer') }} t
+FROM {{ source('erc20_ethereum', 'evt_Transfer') }} t
 LEFT JOIN {{ source('prices','usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address= {{forth_token_address}}
     AND pu.minute=date_trunc('minute', t.evt_block_time)

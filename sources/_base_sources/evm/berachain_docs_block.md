@@ -1,6 +1,6 @@
 {% docs berachain_blocks_doc %}
 
-The `berachain.blocks` table contains information about blocks on the Berachain blockchain. It includes:
+The `berachain.blocks` table contains information about blocks on the berachain blockchain. It includes:
 
 - Block identifiers: number, hash, time, date
 - Gas metrics: gas_limit, gas_used, blob_gas_used, excess_blob_gas
@@ -21,7 +21,7 @@ This table is fundamental for analyzing:
 
 {% docs berachain_transactions_doc %}
 
-The `berachain.transactions` table contains detailed information about transactions on the Berachain blockchain. It includes:
+The `berachain.transactions` table contains detailed information about transactions on the berachain blockchain. It includes:
 
 - Block information: block_time, block_number, block_hash, block_date
 - Transaction details: hash, from, to, value
@@ -44,7 +44,7 @@ This table is used for analyzing:
 
 {% docs berachain_logs_doc %}
 
-The `berachain.logs` table contains event logs emitted by smart contracts on the Berachain blockchain. It includes:
+The `berachain.logs` table contains event logs emitted by smart contracts on the berachain blockchain. It includes:
 
 - Block information: block_time, block_number, block_hash, block_date
 - Transaction details: tx_hash, tx_index, tx_from, tx_to
@@ -64,7 +64,7 @@ This table is crucial for:
 
 {% docs berachain_traces_doc %}
 
-The `berachain.traces` table contains records of execution steps for transactions on the Berachain blockchain. Each trace represents an atomic operation that modifies the blockchain state. Key components include:
+The `berachain.traces` table contains records of execution steps for transactions on the berachain blockchain. Each trace represents an atomic operation that modifies the blockchain state. Key components include:
 
 - Block information: block_time, block_number, block_hash, block_date
 - Transaction context: tx_hash, tx_index, tx_from, tx_to
@@ -86,7 +86,7 @@ This table is essential for:
 
 {% docs berachain_creation_traces_doc %}
 
-The `berachain.creation_traces` table contains data about contract creation events on the Berachain blockchain. It includes:
+The `berachain.creation_traces` table contains data about contract creation events on the berachain blockchain. It includes:
 
 - Block information: block_time, block_number, block_month
 - Transaction details: tx_hash
@@ -102,7 +102,7 @@ This table is used for:
 
 {% docs berachain_contracts_doc %}
 
-The `berachain.contracts` table contains information about verified smart contracts on the Berachain blockchain. It includes:
+The `berachain.contracts` table contains information about verified smart contracts on the berachain blockchain. It includes:
 
 - Contract identification: address, name, namespace
 - Contract code and ABI
@@ -121,7 +121,7 @@ This table is essential for:
 
 {% docs berachain_contracts_submitted_doc %}
 
-The `berachain.contracts_submitted` table contains information about manually submitted contract verifications on the Berachain blockchain. It includes:
+The `berachain.contracts_submitted` table contains information about manually submitted contract verifications on the berachain blockchain. It includes:
 
 - Contract identification: address, name, namespace
 - Contract code and ABI
@@ -174,7 +174,7 @@ This table is used for:
 
 {% enddocs %}
 
-{% docs erc20_berachain_evt_transfer_doc %}
+{% docs erc20_berachain_evt_Transfer_doc %}
 
 The `erc20_berachain.evt_transfer` table contains Transfer events for ERC20 tokens on the berachain blockchain. It includes:
 
@@ -190,9 +190,9 @@ Please be aware that this table is the raw ERC20 event data, and does not includ
 
 {% enddocs %}
 
-{% docs erc20_berachain_evt_approval_doc %}
+{% docs erc20_berachain_evt_Approval_doc %}
 
-The `erc20_berachain.evt_approval` table contains Approval events for ERC20 tokens on the berachain blockchain. It includes:
+The `erc20_berachain.evt_Approval` table contains Approval events for ERC20 tokens on the berachain blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -204,9 +204,9 @@ This table is used for analyzing ERC20 token approvals and spending permissions 
 
 {% enddocs %}
 
-{% docs erc1155_berachain_evt_transfersingle_doc %}
+{% docs erc1155_berachain_evt_TransferSingle_doc %}
 
-The `erc1155_berachain.evt_transfersingle` table contains TransferSingle events for ERC1155 tokens on the berachain blockchain. It includes:
+The `erc1155_berachain.evt_TransferSingle` table contains TransferSingle events for ERC1155 tokens on the berachain blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -221,9 +221,9 @@ Please be aware that this table is the raw ERC1155 event data, and does not incl
 
 {% enddocs %}
 
-{% docs erc1155_berachain_evt_transferbatch_doc %}
+{% docs erc1155_berachain_evt_TransferBatch_doc %}
 
-The `erc1155_berachain.evt_transferbatch` table contains TransferBatch events for ERC1155 tokens on the berachain blockchain. It includes:
+The `erc1155_berachain.evt_TransferBatch` table contains TransferBatch events for ERC1155 tokens on the berachain blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -252,9 +252,9 @@ This table is used for analyzing blanket approvals for ERC1155 token collections
 
 {% enddocs %}
 
-{% docs erc721_berachain_evt_transfer_doc %}
+{% docs erc721_berachain_evt_Transfer_doc %}
 
-The `erc721_berachain.evt_transfer` table contains Transfer events for ERC721 tokens on the berachain blockchain. It includes:
+The `erc721_berachain.evt_Transfer` table contains Transfer events for ERC721 tokens on the berachain blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -293,4 +293,5 @@ The `erc721_berachain.evt_ApprovalForAll` table contains ApprovalForAll events f
 - Approved status (boolean)
 
 This table is used for analyzing blanket approvals for ERC721 token collections on the berachain network.
-{% enddocs %} 
+{% enddocs %}
+
