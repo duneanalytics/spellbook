@@ -1,7 +1,7 @@
 {% macro delta_v2_swap_settle(blockchain) %}
 -- since this call always is a whole-order-at-once fulfillment, can source it from method calls and no need to join with events as all data is in the call
 -- {% set method_start_date = '2024-10-01' %}
-{% set method_start_date = '2025-05-07' %}
+{% set method_start_date = '2025-05-10' %}
 
 -- order_hash_computed
 
@@ -97,7 +97,12 @@ select
     s.price *  w.srcAmount / POWER(10, s.decimals)  AS src_token_order_usd,
     d.price *  w.destAmount / POWER(10, d.decimals)  AS dest_token_order_usd,
     w.destToken AS fee_token,
-    w.*
+    w.*,
+    events.evt_index,    
+    events.returnAmount as evt_return_amount,
+    events.protocolFee as evt_protocol_fee,
+    events.partnerFee as evt_partner_fee,
+    events.orderHash as evt_order_hash    
     FROM v2_swap_settle_with_wrapped_native_with_orderhash w 
     LEFT JOIN {{ source('prices', 'usd') }} d
     ON d.minute > TIMESTAMP '{{method_start_date}}'
@@ -115,6 +120,13 @@ select
     {% endif %}
     AND s.contract_address = w.src_token_for_joining
     AND s.minute = DATE_TRUNC('minute', w.call_block_time)
+    
+    LEFT JOIN {{ source("paraswapdelta_"+ blockchain, "ParaswapDeltav2_evt_OrderSettled") }} events 
+      ON
+        evt_block_time = call_block_time  
+      -- suffices for fill-all-at-once methods (unlike partials, because with partials there's an edge case when you can mismatch still, although very unlikely to happen in real life)
+      AND computed_order_hash = events.orderHash    
+      AND call_tx_hash = events.evt_tx_hash
 ), delta_v2_swapSettle as (  
 SELECT 
     -- NB: columns mapping must match accross all the methods, since they're uninoned into one in master macro
@@ -127,7 +139,7 @@ SELECT
     call_tx_hash,
     call_tx_from,
     call_tx_to,
-    cast(NULL as bigint) as evt_index, -- TODO
+    evt_index,
     executorFeeAmount as fee_amount,
     -- orderWithSig as order_with_sig,
     executor,
@@ -149,7 +161,11 @@ SELECT
     dest_token_order_usd,
     contract_address,
     partnerAndFee,
-    computed_order_hash
+    computed_order_hash,
+    evt_order_hash,
+    evt_return_amount,
+    evt_protocol_fee,
+    evt_partner_fee
   FROM delta_v2_swapSettle_master
 )
 {% endmacro %}

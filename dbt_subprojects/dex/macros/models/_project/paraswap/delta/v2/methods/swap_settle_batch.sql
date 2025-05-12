@@ -1,7 +1,7 @@
 {% macro delta_v2_swap_settle_batch(blockchain) %}
 
 -- {% set method_start_date = '2024-10-01' %}
-{% set method_start_date = '2025-05-07' %}
+{% set method_start_date = '2025-05-10' %}
 
 delta_v2_swap_settle_batch_ExpandedOrders as (
     select            
@@ -59,11 +59,12 @@ delta_v2_swap_settle_batch_parsed_orders_with_orderhash as (
 delta_v2_swap_settle_batch_withWrapped as (
   SELECT     
     {{to_wrapped_native_token(blockchain, 'orders.destToken', 'dest_token_for_joining')}},
-    {{to_wrapped_native_token(blockchain, 'orders.srcToken', 'src_token_for_joining')}},
-    events.returnAmount,
-    events.protocolFee,
-    events.partnerFee,
+    {{to_wrapped_native_token(blockchain, 'orders.srcToken', 'src_token_for_joining')}},    
     events.evt_index,
+    events.orderHash as evt_order_hash,
+    events.returnAmount as evt_return_amount,
+    events.protocolFee as evt_protocol_fee,
+    events.partnerFee as evt_partner_fee,
     orders.*    
   FROM delta_v2_swap_settle_batch_parsed_orders_with_orderhash orders
   --- NB: sourcing from calls and joining events, not the opposite, because some methods emit different events (*fill* -> OrderSettled / OrderPartiallyFilled). Sorting them by evt_index would make them match orders sorted by their index in array + call_trace_address -> source of truth bettr be calls
@@ -156,7 +157,11 @@ SELECT
     dest_token_order_usd,
     contract_address,
     partnerAndFee,
-    computed_order_hash    
+    computed_order_hash,
+    evt_order_hash,
+    evt_return_amount,
+    evt_protocol_fee,
+    evt_partner_fee
   FROM delta_v2_swapSettleBatch_master
 )
 {% endmacro %}
