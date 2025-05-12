@@ -35,7 +35,7 @@ FROM (
         , tokenOut
         , amountOut
     FROM {{ source(namespace_blockchain, cell_type + '_evt_CellRouted') }}
-    {% if not loop.last -%}
+    {%- if not loop.last %}
     UNION ALL
     {%- endif -%}
     {%- endfor %}

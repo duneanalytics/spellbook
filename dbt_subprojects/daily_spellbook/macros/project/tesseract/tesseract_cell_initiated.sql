@@ -28,7 +28,7 @@ FROM (
         , nativeFeeAmount
         , baseFeeAmount
     FROM {{ source(namespace_blockchain, cell_type + '_evt_Initiated') }}
-    {% if not loop.last -%}
+    {%- if not loop.last %}
     UNION ALL
     {%- endif -%}
     {%- endfor %}

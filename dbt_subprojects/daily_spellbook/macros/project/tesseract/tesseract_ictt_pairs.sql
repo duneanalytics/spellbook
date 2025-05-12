@@ -26,9 +26,9 @@ new_token_home_links AS (
         -- Hard-coded for efficiency
         l.topic0 = 0xf229b02a51a4c8d5ef03a096ae0dd727d7b48b710d21b50ebebb560eef739b90
         AND l.block_time > TIMESTAMP '2024-01-01' -- Safe to use this to reduce the size of the logs table
-        {% if is_incremental() -%}
+        {%- if is_incremental() %}
         AND {{ incremental_predicate('l.block_time') }}
-        {% endif -%}
+        {%- endif %}
 ),
 new_token_remote_links AS (
     SELECT
@@ -36,8 +36,8 @@ new_token_remote_links AS (
         , from_hex(json_extract_scalar(s.message, '$.destinationAddress')) AS token_home_address
         , c.blockchain_id AS token_remote_blockchain_id
         , from_hex(json_extract_scalar(s.message, '$.originSenderAddress')) AS token_remote_address
-        , s.evt_block_time AS block_time
-        , s.evt_block_number AS block_number
+        , MIN(s.evt_block_time) AS block_time
+        , MIN(s.evt_block_number) AS block_number
     FROM current_chain_id c
     CROSS JOIN {{ source(namespace_blockchain, 'TeleporterMessenger_evt_SendCrossChainMessage') }} s
     INNER JOIN {{ source(blockchain, 'traces')}} t
@@ -49,10 +49,11 @@ new_token_remote_links AS (
         -- Hard-coded for efficiency
         VARBINARY_SUBSTRING(t.input, 1, 4) = 0xb8a46d02
         AND t.block_time > TIMESTAMP '2024-01-01' -- Safe to use this to reduce the size of the traces table
-        {% if is_incremental() -%}
+        {%- if is_incremental() %}
         AND {{ incremental_predicate('t.block_time') }}
         AND {{ incremental_predicate('s.evt_block_time') }}
-        {% endif -%}
+        {%- endif %}
+    GROUP BY 1, 2, 3, 4
 )
 SELECT
     '{{ blockchain }}' AS blockchain
@@ -65,7 +66,15 @@ SELECT
 FROM (
     SELECT * FROM new_token_home_links
     UNION ALL
-    SELECT * FROM new_token_remote_links
+    SELECT * FROM new_token_remote_links n
+    {%- if is_incremental() %}
+    LEFT JOIN {{ this }} t
+        ON n.token_home_blockchain_id = t.token_home_blockchain_id
+        AND n.token_home_address = t.token_home_address
+        AND n.token_remote_blockchain_id = t.token_remote_blockchain_id
+        AND n.token_remote_address = t.token_remote_address
+    WHERE t.block_time IS NULL -- ensuring there are not already duplicate records for the registerWithHome calls (which is possible as it can be called however many times)
+    {%- endif %}
 )
 
 {%- endmacro -%}

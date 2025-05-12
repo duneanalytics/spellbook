@@ -29,7 +29,7 @@ FROM (
         , block_time
         , block_number
     FROM {{ model }}
-    {% if not loop.last -%}
+    {%- if not loop.last %}
     UNION ALL
     {%- endif -%}
     {%- endfor %}

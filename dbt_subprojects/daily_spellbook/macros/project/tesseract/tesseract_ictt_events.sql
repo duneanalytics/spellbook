@@ -11,9 +11,9 @@
 {%- set log_fields = ["tx_hash", "index", "block_time", "block_number", "block_date"] -%}
 
 {%- set additional_columns -%}
-    {%- if topic1_type == 'address' %}
+    {%- if topic1_type == 'address' -%}
     , varbinary_substring(l.topic1, 13) AS {{ topic1_name }}
-    {%- else %}
+    {%- else -%}
     , l.topic1 AS {{ topic1_name }}
     {%- endif %}
     {%- if event_name in ["TokensWithdrawn", "CallSucceeded", "CallFailed"] %}
@@ -45,8 +45,8 @@
     , TRY(varbinary_to_uint256(varbinary_substring(l.data, 353, 32))) AS primaryFee
     , TRY(varbinary_to_uint256(varbinary_substring(l.data, 385, 32))) AS secondaryFee
     , TRY(varbinary_to_uint256(varbinary_substring(l.data, 33, 32))) AS amount
-        {%- endif %}
-    {%- endif %}
+        {%- endif -%}
+    {%- endif -%}
 {%- endset -%}
 
 SELECT
@@ -62,8 +62,8 @@ INNER JOIN {{ source(blockchain, 'logs') }} l
 WHERE
     topic0 = {{ topic0_filter }}
     AND l.block_time > TIMESTAMP '2024-01-01' -- Safe to use this to reduce the size of the logs table
-    {% if is_incremental() -%}
+    {%- if is_incremental() %}
     AND {{ incremental_predicate('l.block_time') }}
-    {% endif -%}
+    {%- endif -%}
 
 {%- endmacro -%}

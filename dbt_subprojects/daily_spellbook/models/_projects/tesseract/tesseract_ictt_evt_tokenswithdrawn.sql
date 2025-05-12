@@ -31,7 +31,7 @@ FROM (
         , recipient
         , amount
     FROM {{ model }}
-    {% if not loop.last -%}
+    {%- if not loop.last %}
     UNION ALL
     {%- endif -%}
     {%- endfor %}

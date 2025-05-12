@@ -18,10 +18,10 @@ distinct_ictt_contracts AS (
         , CASE WHEN p.token_home_blockchain_id = c.blockchain_id THEN TRUE ELSE FALSE END AS is_token_home
     FROM {{ ref( namespace_blockchain + '_ictt_pairs') }} p
     CROSS JOIN current_chain_id c
-    {% if is_incremental() -%}
+    {%- if is_incremental() %}
     WHERE
         {{ incremental_predicate('p.block_time') }}
-    {% endif -%}
+    {%- endif %}
 )
 SELECT
     '{{ blockchain }}' AS blockchain

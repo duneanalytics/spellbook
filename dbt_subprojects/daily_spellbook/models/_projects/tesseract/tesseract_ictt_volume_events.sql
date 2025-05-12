@@ -34,7 +34,7 @@ FROM (
         , source_blockchain_id
         , destination_blockchain_id
     FROM {{ model }}
-    {% if not loop.last -%}
+    {%- if not loop.last %}
     UNION ALL
     {%- endif -%}
     {%- endfor %}

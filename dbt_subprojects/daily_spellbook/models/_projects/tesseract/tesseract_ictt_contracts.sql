@@ -28,7 +28,7 @@ FROM (
         , creation_block_number
         , creation_tx_hash
     FROM {{ model }}
-    {% if not loop.last -%}
+    {%- if not loop.last %}
     UNION ALL
     {%- endif -%}
     {%- endfor %}
