@@ -113,7 +113,7 @@ call_swap_without_event AS (
                 t.evt_index,
                 row_number() over (partition by t.evt_tx_hash order by t.evt_index) as row_num
             FROM no_event_call_transaction c
-            INNER JOIN {{ source('erc20_ethereum','evt_transfer') }} t ON c.call_block_number = t.evt_block_number
+            INNER JOIN {{ source('erc20_ethereum','evt_Transfer') }} t ON c.call_block_number = t.evt_block_number
                 AND c.call_tx_hash = t.evt_tx_hash
                 AND t."from" = c."from"
                 AND t.evt_block_number >= {{ trade_call_start_block_number }}
@@ -178,7 +178,7 @@ call_swap_without_event AS (
                 t.evt_index,
                 row_number() over (partition by t.evt_tx_hash order by t.evt_index) AS row_num
             FROM no_event_call_transaction c
-            INNER JOIN {{ source('erc20_ethereum','evt_transfer') }} t ON c.call_block_number = t.evt_block_number
+            INNER JOIN {{ source('erc20_ethereum','evt_Transfer') }} t ON c.call_block_number = t.evt_block_number
                 AND c.call_tx_hash = t.evt_tx_hash
                 AND t."to" = c."from"
                 AND t.evt_block_number >= {{ trade_call_start_block_number }}

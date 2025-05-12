@@ -139,7 +139,7 @@ event_with_row_number AS (
             ORDER BY evt_index ASC
         ) AS evt_row_num
         
-    FROM {{ source('erc20_ethereum', 'evt_transfer') }}
+    FROM {{ source('erc20_ethereum', 'evt_Transfer') }}
     
     WHERE evt_block_number >= {{ trade_call_start_block_number }}
         {% if is_incremental() %}
