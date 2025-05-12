@@ -1,5 +1,5 @@
 name: "CLA Assistant"
-# This is a test 1
+# This is a test 1 - 2
 on:
   issue_comment:
     types: [created]
