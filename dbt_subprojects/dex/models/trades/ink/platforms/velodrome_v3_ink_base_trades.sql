@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'velodrome_v3_ink'
+    schema = 'velodrome_ink'
     , alias = 'base_trades'
     , materialized = 'incremental'
     , file_format = 'delta'
