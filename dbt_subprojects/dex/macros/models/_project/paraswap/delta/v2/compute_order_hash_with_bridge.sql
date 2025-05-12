@@ -51,11 +51,11 @@
           lpad(cast(partnerAndFee AS varbinary), 32, X'00'), -- partnerAndFee
 
           -- Permit (empty: 0x, not 0x00)
-          lpad(keccak(from_hex('')), 32, X'00'),
-          -- lpad( 
-          --   keccak(permit),
-          --   32, X'00'
-          -- ),
+          -- lpad(keccak(from_hex('')), 32, X'00'),
+          lpad( 
+            keccak(permit),
+            32, X'00'
+          ),
           -- Bridge struct hash (inlined)          
           keccak(
             concat(
