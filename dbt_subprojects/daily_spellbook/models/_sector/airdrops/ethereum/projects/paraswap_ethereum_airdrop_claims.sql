@@ -45,7 +45,7 @@ SELECT 'ethereum' AS blockchain
 , {{psp_token_address}} AS token_address
 , 'PSP' AS token_symbol
 , t.evt_index
-FROM {{ source('erc20_ethereum', 'evt_transfer') }} t
+FROM {{ source('erc20_ethereum', 'evt_Transfer') }} t
 LEFT JOIN {{ source('dex', 'prices') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address= {{psp_token_address}}
     AND pu.hour = date_trunc('hour', t.evt_block_time)

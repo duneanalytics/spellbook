@@ -14,7 +14,7 @@
     blockchain='gnosis',
     traces = source('gnosis','traces'),
     transactions = source('gnosis','transactions'),
-    erc20_transfers = source('erc20_gnosis','evt_transfer'),
+    erc20_transfers = source('erc20_gnosis','evt_Transfer'),
     native_contract_address = null
 )
 }}

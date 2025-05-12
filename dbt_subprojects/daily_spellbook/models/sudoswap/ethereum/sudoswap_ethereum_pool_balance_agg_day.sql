@@ -29,7 +29,7 @@ WITH
       pool_address,
       SUM(CASE WHEN et.to = p.pool_address THEN 1 ELSE -1 END) AS nft_balance_change
     FROM
-      {{ source('erc721_ethereum','evt_transfer') }} et
+      {{ source('erc721_ethereum','evt_Transfer') }} et
       INNER JOIN pools p ON p.nft_contract_address = et.contract_address
       AND (et.to = p.pool_address OR et."from" = p.pool_address)
     {% if not is_incremental() %}

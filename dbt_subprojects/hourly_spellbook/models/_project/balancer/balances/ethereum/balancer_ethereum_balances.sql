@@ -18,24 +18,24 @@ WITH pools AS (
 
 joins AS (
     SELECT p.pools as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, SUM(CAST(value AS int256)) AS amount
-    FROM {{ source('erc20_ethereum', 'evt_transfer') }} e
+    FROM {{ source('erc20_ethereum', 'evt_Transfer') }} e
     INNER JOIN pools p ON e."to" = p.pools
     GROUP BY 1, 2, 3
     UNION ALL
     SELECT e."to" as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, SUM(CAST(value as int256)) AS amount
-    FROM {{ source('erc20_ethereum', 'evt_transfer') }} e
+    FROM {{ source('erc20_ethereum', 'evt_Transfer') }} e
     WHERE e."to" = {{balancer_contract}}
     GROUP BY 1, 2, 3
 ),
 
 exits AS (
     SELECT p.pools as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, -SUM(CAST(value as int256)) AS amount
-    FROM {{ source('erc20_ethereum', 'evt_transfer') }} e
+    FROM {{ source('erc20_ethereum', 'evt_Transfer') }} e
     INNER JOIN pools p ON e."from" = p.pools   
     GROUP BY 1, 2, 3
     UNION ALL
     SELECT e."from" as pool, date_trunc('day', e.evt_block_time) AS day, e.contract_address AS token, -SUM(CAST(value as int256)) AS amount
-    FROM {{ source('erc20_ethereum', 'evt_transfer') }} e
+    FROM {{ source('erc20_ethereum', 'evt_Transfer') }} e
     WHERE e."from" = {{balancer_contract}}
     GROUP BY 1, 2, 3
 ),

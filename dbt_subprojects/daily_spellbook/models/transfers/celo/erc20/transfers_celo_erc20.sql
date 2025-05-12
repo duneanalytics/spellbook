@@ -26,7 +26,7 @@ with
             evt_index,
             evt_tx_hash as tx_hash
         from
-            {{ source('erc20_celo', 'evt_transfer') }}
+            {{ source('erc20_celo', 'evt_Transfer') }}
         where 1=1
             {% if is_incremental() %} -- this filter will only be applied on an incremental run
             and {{ incremental_predicate('evt_block_time') }}
@@ -44,7 +44,7 @@ with
             evt_index,
             evt_tx_hash as tx_hash
         from
-            {{ source('erc20_celo', 'evt_transfer') }}
+            {{ source('erc20_celo', 'evt_Transfer') }}
         where 1=1
             {% if is_incremental() %} -- this filter will only be applied on an incremental run
             and {{ incremental_predicate('evt_block_time') }}

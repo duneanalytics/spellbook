@@ -14,7 +14,7 @@
      blockchain='shape'
      , traces = source('shape','traces')
      , transactions = source('shape','transactions')
-     , erc20_transfers = source('erc20_shape','evt_transfer')
+     , erc20_transfers = source('erc20_shape','evt_Transfer')
      , native_contract_address = var('ETH_ERC20_ADDRESS')
 )
 }}

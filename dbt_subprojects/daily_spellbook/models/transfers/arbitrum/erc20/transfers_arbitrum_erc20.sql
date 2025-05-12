@@ -24,7 +24,7 @@ erc20_transfers  as (
             contract_address as token_address,
             CAST(value as double) as amount_raw
         FROM
-        {{ source('erc20_arbitrum', 'evt_transfer') }}
+        {{ source('erc20_arbitrum', 'evt_Transfer') }}
         {% if is_incremental() %}
             WHERE {{ incremental_predicate('evt_block_time') }}
         {% endif %}
@@ -40,7 +40,7 @@ erc20_transfers  as (
             contract_address as token_address,
             -CAST(value as double) as amount_raw
         FROM
-        {{ source('erc20_arbitrum', 'evt_transfer') }}
+        {{ source('erc20_arbitrum', 'evt_Transfer') }}
         {% if is_incremental() %}
             WHERE {{ incremental_predicate('evt_block_time') }}
         {% endif %}

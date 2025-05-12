@@ -38,7 +38,7 @@ transactions as (
             "from" as address_interacted_with,
             CAST(NULL as array<bigint>) as trace_address
         FROM 
-        {{ source('erc20_zksync', 'evt_transfer') }}
+        {{ source('erc20_zksync', 'evt_Transfer') }}
         {% if not is_incremental() %}
         WHERE evt_block_time >= DATE '{{transactions_start_date}}'
         {% endif %}
@@ -61,7 +61,7 @@ transactions as (
             "to" as address_interacted_with,
             CAST(NULL as array<bigint>) as trace_address
         FROM 
-        {{ source('erc20_zksync', 'evt_transfer') }}
+        {{ source('erc20_zksync', 'evt_Transfer') }}
         {% if not is_incremental() %}
         WHERE evt_block_time >=  DATE'{{transactions_start_date}}'
         {% endif %}
