@@ -4,3 +4,19 @@ sources:
   - name: rocketpool_ethereum
     tables:
       - name: RocketTokenRETH_call_getExchangeRate
+      - name: rocketnodemanager_evt_noderegistered
+      - name: rocketnodemanager_evt_nodesmoothingpoolstatechanged
+      - name: RocketNodeStaking_evt_RPLStaked
+      - name: RocketNodeStaking_evt_RPLWithdrawn
+      - name: RocketNodeStaking_evt_RPLSlashed
+      - name: rocketminipoolmanager_evt_minipoolcreated
+      - name: rocketminipoolmanager_evt_minipooldestroyed
+      - name: RocketNodeDeposit_call_deposit
+      - name: RocketNodeDeposit_call_depositWithCredit
+      - name: rocketnodedeposit_call_createvacantminipool
+      - name: RocketMinipoolBondReducer_evt_BeginBondReduction
+      - name: RocketMinipoolQueue_evt_MinipoolEnqueued
+      - name: RocketMinipoolQueue_evt_MinipoolDequeued
+      - name: RocketMinipoolQueue_evt_MinipoolRemoved
+      - name: DepositContract_evt_DepositEvent
+      - name: RocketMinipoolDelegate_call_distributeBalance
