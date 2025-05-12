@@ -12,7 +12,7 @@
         )
 }}
 
-{% set project_start_date = '2025-03-17' %}
+{% set project_start_date = '2025-05-05' %}
 
 WITH
     --Collect all Launchlab swap calls
