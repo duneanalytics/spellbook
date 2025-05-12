@@ -41,6 +41,7 @@
                                         , "zkevm"
                                         , "zora"
                                         , "abstract"
+                                        , "lens"
                                     ]\',
                                     "sector",
                                     "prices",
@@ -92,6 +93,7 @@ ref('prices_native_tokens')
 ,ref('prices_apechain_tokens')
 ,ref('prices_shape_tokens')
 ,ref('prices_degen_tokens')
+,ref('prices_lens_tokens')
 ] %}
 
 

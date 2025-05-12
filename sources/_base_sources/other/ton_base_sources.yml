@@ -1050,3 +1050,47 @@ sources:
           - name: ingested_at
             description: "Time at which the metadata was ingested"
             data_type: timestamp
+
+      - name: balances_history
+        loaded_at_field: ingested_at
+        description: "TON and jettonsbalances history"
+        columns:
+          - name: block_time
+            description: "Block timestamp"
+            data_type: timestamp
+          
+          - name: block_date
+            description: "Block date"
+            data_type: date
+
+          - name: address
+            description: "Address"
+            data_type: varchar
+
+          - name: asset
+            description: "Asset"
+            data_type: varchar
+          
+          - name: amount
+            description: "Amount (without decimals)"
+            data_type: decimal(38,0)
+  
+          - name: mintless_claimed
+            description: "Mintless claimed flag"
+            data_type: boolean
+
+          - name: timestamp
+            description: "Tx timestamp"
+            data_type: bigint
+          
+          - name: lt
+            description: "Tx lt"
+            data_type: bigint
+          
+          - name: updated_at
+            description: "Last update timestamp"
+            data_type: timestamp
+          
+          - name: ingested_at
+            description: "Time at which the metadata was ingested"
+            data_type: timestamp
