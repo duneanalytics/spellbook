@@ -20,7 +20,7 @@ with
             evt_block_time,
             cast(value as double) as amount_raw
         from
-            {{ source('erc20_base', 'evt_transfer') }}
+            {{ source('erc20_base', 'evt_Transfer') }}
             where 1=1
             {% if is_incremental() %} -- this filter will only be applied on an incremental run
             and {{ incremental_predicate('evt_block_time') }}
@@ -36,7 +36,7 @@ with
         evt_block_time,
         (-1) * CAST(value AS double) as amount_raw
         from
-            {{ source('erc20_base', 'evt_transfer') }}
+            {{ source('erc20_base', 'evt_Transfer') }}
             where 1=1
             {% if is_incremental() %} -- this filter will only be applied on an incremental run
             and {{ incremental_predicate('evt_block_time') }}

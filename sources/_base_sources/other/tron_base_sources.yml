@@ -124,7 +124,7 @@ sources:
   - name: erc20_tron
     description: "Transfer events for ERC20 tokens on tron"
     tables:
-      - name: evt_transfer
+      - name: evt_Transfer
         meta:
           docs_slug: /evm/tron/decoded/interfaces/erc20/evt_transfer
           short_description: This table contains individual transfer events for ERC20 tokens on the tron blockchain. Each row represents a single token transfer event.
@@ -149,7 +149,7 @@ sources:
           - name: value
             description: "Amount of ERC20 tokens transferred, in the token's tron unit"
 
-      - name: evt_approval
+      - name: evt_Approval
         meta:
           docs_slug: /evm/tron/decoded/interfaces/erc20/evt_approval
           short_description: The `tron.evt_approval` table contains approval events for ERC20 tokens on tron, allowing an address to spend tokens on behalf of the owner.

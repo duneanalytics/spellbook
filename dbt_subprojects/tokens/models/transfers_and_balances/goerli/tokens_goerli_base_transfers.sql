@@ -14,7 +14,7 @@
     blockchain='goerli',
     traces = source('goerli','traces'),
     transactions = source('goerli','transactions'),
-    erc20_transfers = source('erc20_goerli','evt_transfer'),
+    erc20_transfers = source('erc20_goerli','evt_Transfer'),
     native_contract_address = null
 )
 }}
