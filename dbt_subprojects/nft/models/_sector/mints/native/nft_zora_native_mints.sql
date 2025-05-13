@@ -14,7 +14,7 @@
     blockchain='zora'
     , base_contracts = source('zora','contracts')
     , base_traces = source('zora','traces')
-    , erc20_transfer = source('erc20_zora','evt_transfer')
+    , erc20_transfer = source('erc20_zora','evt_Transfer')
     , base_transactions = source('zora','transactions')
     , eth_currency_contract = '0x4200000000000000000000000000000000000006'
 )}}
