@@ -14,7 +14,7 @@
     blockchain='ink'
     , traces = source('ink','traces')
     , transactions = source('ink','transactions')
-    , erc20_transfers = source('erc20_ink','evt_transfer')
+    , erc20_transfers = source('erc20_ink','evt_Transfer')
     , native_contract_address = var('ETH_ERC20_ADDRESS')
 )
 }} 

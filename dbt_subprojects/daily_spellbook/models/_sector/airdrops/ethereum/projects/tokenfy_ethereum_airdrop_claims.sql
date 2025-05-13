@@ -39,7 +39,7 @@ SELECT 'ethereum' AS blockchain
 , {{tknfy_token_address}} AS token_address
 , 'TKNFY' AS token_symbol
 , t.evt_index
-FROM {{ source('erc20_ethereum', 'evt_transfer') }} t
+FROM {{ source('erc20_ethereum', 'evt_Transfer') }} t
 INNER JOIN {{source( 'tokenfy_ethereum', 'Tokenfy_call_claim' ) }} c ON c.call_block_number=t.evt_block_number
     AND c.call_tx_hash=t.evt_tx_hash
 LEFT JOIN {{ source('prices','usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
