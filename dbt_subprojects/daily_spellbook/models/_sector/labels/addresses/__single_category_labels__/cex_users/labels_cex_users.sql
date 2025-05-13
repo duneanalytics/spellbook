@@ -35,7 +35,7 @@ FROM (
         now() as updated_at,
         'cex_users_withdrawals' model_name,
         'persona' as label_type
-    FROM {{source('erc20_' + chain, 'evt_transfer')}} t
+    FROM {{source('erc20_' + chain, 'evt_Transfer')}} t
     INNER JOIN {{source('cex','addresses')}} c ON '{{chain}}' = c.blockchain
         AND t."from" = c.address
 

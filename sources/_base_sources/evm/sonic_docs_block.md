@@ -1,254 +1,297 @@
+{% docs sonic_blocks_doc %}
+
+The `sonic.blocks` table contains information about blocks on the sonic blockchain. It includes:
+
+- Block identifiers: number, hash, time, date
+- Gas metrics: gas_limit, gas_used, blob_gas_used, excess_blob_gas
+- Block characteristics: size, base_fee_per_gas
+- Block roots: state_root, transactions_root, receipts_root, parent_beacon_block_root
+- Consensus data: difficulty, total_difficulty, nonce
+- Block producer: miner
+- Parent block: parent_hash
+
+This table is fundamental for analyzing:
+- Block production and timing
+- Network capacity and usage
+- Chain structure and growth
+- Network performance metrics
+- Blob gas usage patterns
+
+{% enddocs %}
+
 {% docs sonic_transactions_doc %}
 
-The `sonic.transactions` table contains detailed information about transactions on the Sonic blockchain. It includes:
+The `sonic.transactions` table contains detailed information about transactions on the sonic blockchain. It includes:
 
-- Block information: number, timestamp, hash
-- Transaction details: hash, from_address, to_address, value
-- Gas data: gas_price, gas_limit, gas_used, max_fee_per_gas, priority_fee_per_gas
-- Status: success or failure
-- Input data for contract interactions
-- Nonce and chain_id
+- Block information: block_time, block_number, block_hash, block_date
+- Transaction details: hash, from, to, value
+- Gas metrics: gas_price, gas_limit, gas_used
+- EIP-1559 fee parameters: max_fee_per_gas, max_priority_fee_per_gas, priority_fee_per_gas
+- Transaction metadata: nonce, index, success
+- Smart contract interaction: data
 - Transaction type and access list
+- Chain identification: chain_id
+- L1 related data: l1_gas_used, l1_gas_price, l1_fee, l1_fee_scalar, l1_block_number, l1_timestamp, l1_tx_origin
 
-This table is used for analyzing transaction patterns, gas usage, value transfers, and overall network activity on Sonic.
-
-{% enddocs %}
-
-{% docs sonic_traces_doc %}
-
-The `sonic.traces` table contains records of execution steps for transactions on the Sonic blockchain. Each trace represents an atomic operation that modifies the state of the Ethereum Virtual Machine (EVM). Key components include:
-
-- Transaction hash and block information
-- From and to addresses
-- Value transferred
-- Gas metrics (gas, gas_used)
-- Input and output data
-- Call type (e.g., CALL, DELEGATECALL, CREATE)
-- Error information and revert reasons
-- Trace address for nested calls
-
-This table is essential for:
-- Analyzing internal transactions
-- Debugging smart contract interactions
-- Tracking value flows through complex transactions
-- Understanding contract creation and deployment
-- Monitoring protocol operations
-- Analyzing cross-chain operations
-
-{% enddocs %}
-
-{% docs sonic_traces_decoded_doc %}
-
-The `sonic.traces_decoded` table contains a subset of decoded traces from the Sonic blockchain dependent on submitted smart contracts and their ABIs. It includes:
-
-- Block information and transaction details
-- Contract name and namespace
-- Decoded function names and signatures
-- Trace address for execution path tracking
-- Transaction origin and destination
-- Function parameters (when available)
-
-This table is used for high level analysis of smart contract interactions and protocol operations. For fully decoded function calls and parameters, refer to protocol-specific decoded tables.
+This table is used for analyzing:
+- Transaction patterns and volume
+- Gas usage and fee trends
+- Smart contract interactions
+- Network activity and usage
+- L1/L2 interactions and costs
 
 {% enddocs %}
 
 {% docs sonic_logs_doc %}
 
-The `sonic.logs` table contains event logs emitted by smart contracts on the Sonic blockchain. It includes:
+The `sonic.logs` table contains event logs emitted by smart contracts on the sonic blockchain. It includes:
 
-- Block information: number, timestamp, hash
-- Transaction details: hash, index, from, to
-- Contract address (emitting the event)
-- Topic0 (event signature)
-- Additional topics (indexed parameters)
-- Data field (non-indexed parameters)
-- Log index and transaction index
+- Block information: block_time, block_number, block_hash, block_date
+- Transaction details: tx_hash, tx_index, tx_from, tx_to
+- Contract address
+- Event topics: topic0 (event signature), topic1, topic2, topic3
+- Event data
+- Log position: index
 
 This table is crucial for:
 - Tracking on-chain events
 - Monitoring contract activity
 - Analyzing token transfers
 - Following protocol-specific events
-- Tracking cross-chain operations
-- Monitoring protocol state changes
+- Understanding smart contract interactions
 
 {% enddocs %}
 
-{% docs sonic_logs_decoded_doc %}
+{% docs sonic_traces_doc %}
 
-The `sonic.logs_decoded` table contains a subset of decoded logs from the Sonic blockchain dependent on submitted smart contracts and their ABIs. It includes:
+The `sonic.traces` table contains records of execution steps for transactions on the sonic blockchain. Each trace represents an atomic operation that modifies the blockchain state. Key components include:
 
-- Block and transaction information
-- Contract details (name, namespace, address)
-- Decoded event names and signatures
-- Transaction origin and destination
-- Event parameters (when available)
+- Block information: block_time, block_number, block_hash, block_date
+- Transaction context: tx_hash, tx_index, tx_from, tx_to
+- Value transfer details
+- Gas metrics: gas, gas_used
+- Input and output data
+- Call type (CALL, DELEGATECALL, CREATE)
+- Error information and revert reasons
+- Trace address for nested calls
+- Contract creation data: address, code
 
-This table is used for high level analysis of smart contract events, particularly useful for monitoring protocol activities. For fully decoded events and parameters, refer to protocol-specific decoded tables.
-
-{% enddocs %}
-
-{% docs sonic_blocks_doc %}
-
-The `sonic.blocks` table contains information about Sonic blocks. It provides essential data about each block in the Sonic blockchain, including:
-
-- Block identifiers and timestamps
-- Gas metrics and size
-- Consensus information (difficulty, nonce)
-- State roots and receipts
-- Parent block information
-- Base fee per gas
-- Blob gas metrics
-- Parent beacon block root
-
-This table is fundamental for:
-- Analyzing block production and timing
-- Monitoring network performance
-- Tracking gas usage patterns
-- Understanding network upgrades
-- Analyzing consensus metrics
-- Studying blockchain structure
+This table is essential for:
+- Analyzing internal transactions
+- Debugging smart contract interactions
+- Tracking value flows through complex transactions
+- Understanding contract creation and deployment
 
 {% enddocs %}
 
 {% docs sonic_creation_traces_doc %}
 
-The `sonic.creation_traces` table contains information about contract deployments on the Sonic blockchain. It includes:
+The `sonic.creation_traces` table contains data about contract creation events on the sonic blockchain. It includes:
 
-- Block information and timestamps
-- Transaction details
-- Contract addresses
-- Creator addresses
-- Contract bytecode
-
-This table is essential for:
-- Tracking smart contract deployments
-- Analyzing contract creation patterns
-- Monitoring new protocol deployments
-- Auditing contract creation history
-- Understanding contract deployment costs
-
-{% enddocs %}
-
-{% docs erc20_sonic_evt_transfer_doc %}
-
-The `erc20_sonic.evt_transfer` table contains ERC20 token transfer events on the Sonic blockchain. Each record represents a token transfer and includes:
-
-- Block information and timestamps
-- Transaction details
-- Token contract address
-- Sender and receiver addresses
-- Transfer amount
-- Event index and transaction index
-
-This table is essential for:
-- Tracking token transfers and flows
-- Analyzing token holder behavior
-- Monitoring token activity
-- Understanding token economics
-- Tracking cross-chain token movements
-
-{% enddocs %}
-
-{% docs erc721_sonic_evt_transfer_doc %}
-
-The `erc721_sonic.evt_transfer` table contains ERC721 (NFT) transfer events on the Sonic blockchain. Each record represents an NFT transfer and includes:
-
-- Block information and timestamps
-- Transaction details
-- NFT contract address
-- Sender and receiver addresses
-- Token ID
-- Event index and transaction index
-
-This table is crucial for:
-- Tracking NFT ownership changes
-- Analyzing NFT trading patterns
-- Monitoring NFT market activity
-- Understanding NFT collections
-- Tracking cross-chain NFT movements
-
-{% enddocs %}
-
-{% docs erc1155_sonic_evt_transfer_doc %}
-
-The `erc1155_sonic.evt_transfer` table contains ERC1155 multi-token transfer events on the Sonic blockchain. Each record represents a token transfer and includes:
-
-- Block information and timestamps
-- Transaction details
-- Token contract address
-- Sender and receiver addresses
-- Token ID and amount
-- Event index and transaction index
+- Block information: block_time, block_number, block_month
+- Transaction details: tx_hash
+- Contract details: address, from, code
 
 This table is used for:
-- Tracking multi-token transfers
-- Analyzing token usage patterns
-- Monitoring protocol activity
-- Understanding multi-token operations
-- Tracking DeFi integrations
+- Analyzing contract deployment patterns
+- Tracking smart contract origins
+- Monitoring protocol deployments
+- Understanding contract creation
 
 {% enddocs %}
 
-{% docs erc20_sonic_evt_approval_doc %}
+{% docs sonic_contracts_doc %}
 
-The `erc20_sonic.evt_approval` table contains approval events for ERC20 tokens on the Sonic blockchain. Each record represents a token approval and includes:
+The `sonic.contracts` table contains information about verified smart contracts on the sonic blockchain. It includes:
 
-- Block information and timestamps
-- Transaction details
-- Token contract address
-- Owner address
-- Spender address
+- Contract identification: address, name, namespace
+- Contract code and ABI
+- Deployment information: from, created_at
+- Contract type flags: dynamic, base, factory
+- Verification metadata: abi_id, detection_source
+
+This table is essential for:
+- Smart contract analysis
+- Protocol tracking
+- Contract verification status
+- Understanding contract relationships
+- Contract deployment monitoring
+
+{% enddocs %}
+
+{% docs sonic_contracts_submitted_doc %}
+
+The `sonic.contracts_submitted` table contains information about manually submitted contract verifications on the sonic blockchain. It includes:
+
+- Contract identification: address, name, namespace
+- Contract code and ABI
+- Deployment information: from, created_at
+- Contract type flags: dynamic, factory
+
+This table is used for:
+- Tracking manual contract verifications
+- Contract deployment analysis
+- Contract code verification
+- Protocol monitoring
+
+{% enddocs %}
+
+{% docs sonic_traces_decoded_doc %}
+
+The `sonic.traces_decoded` table contains decoded traces with additional information based on submitted smart contracts and their ABIs. It includes:
+
+- Block information: block_date, block_time, block_number
+- Contract details: namespace, contract_name
+- Transaction context: tx_hash, tx_from, tx_to
+- Function details: signature, function_name
+- Trace location: trace_address
+
+This table is used for:
+- Analyzing smart contract interactions
+- Monitoring protocol operations
+- Debugging contract calls
+- Understanding function call patterns
+- Tracking internal transactions
+
+{% enddocs %}
+
+{% docs sonic_logs_decoded_doc %}
+
+The `sonic.logs_decoded` table contains decoded event logs with additional information based on submitted smart contracts and their ABIs. It includes:
+
+- Block information: block_date, block_time, block_number
+- Contract details: namespace, contract_name, contract_address
+- Transaction context: tx_hash, tx_from, tx_to
+- Event details: signature, event_name
+- Log position: index
+
+This table is used for:
+- Analyzing decoded smart contract events
+- Monitoring protocol operations
+- Tracking token transfers with human-readable event names
+- Understanding contract interactions
+- Protocol-specific event analysis
+
+{% enddocs %}
+
+{% docs erc20_sonic_evt_Transfer_doc %}
+
+The `erc20_sonic.evt_transfer` table contains Transfer events for ERC20 tokens on the sonic blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- From and to addresses
+- Amount transferred
+
+This table is used for tracking ERC20 token movements on the sonic network.
+
+Please be aware that this table is the raw ERC20 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use `tokens.transfers` for a more complete and curated view of token transfers.
+
+{% enddocs %}
+
+{% docs erc20_sonic_evt_Approval_doc %}
+
+The `erc20_sonic.evt_Approval` table contains Approval events for ERC20 tokens on the sonic blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- Owner and spender addresses
 - Approved amount
-- Event index and transaction index
 
-This table is essential for:
-- Tracking token approvals
-- Monitoring DeFi allowances
-- Analyzing smart contract permissions
-- Understanding protocol integrations
-- Tracking liquidity provisions
+This table is used for analyzing ERC20 token approvals and spending permissions on the sonic network.
 
 {% enddocs %}
 
-{% docs erc1155_sonic_evt_transfersingle_doc %}
+{% docs erc1155_sonic_evt_TransferSingle_doc %}
 
-The `erc1155_sonic.evt_transfersingle` table contains single transfer events for ERC1155 tokens on the Sonic blockchain. Each record represents a single token transfer and includes:
+The `erc1155_sonic.evt_TransferSingle` table contains TransferSingle events for ERC1155 tokens on the sonic blockchain. It includes:
 
-- Block information and timestamps
-- Transaction details
-- Token contract address
-- Operator address
-- Sender and receiver addresses
-- Token ID and amount
-- Event index and transaction index
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- Operator, from, and to addresses
+- Token ID
+- Amount transferred
 
-This table is used for:
-- Tracking individual token transfers
-- Analyzing token usage patterns
-- Monitoring protocol activity
-- Understanding multi-token operations
-- Tracking DeFi integrations
+This table is used for tracking individual ERC1155 token transfers on the sonic network.
+
+Please be aware that this table is the raw ERC1155 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use `nft.transfers` for a more complete and curated view of NFT transfers.
 
 {% enddocs %}
 
-{% docs erc1155_sonic_evt_transferbatch_doc %}
+{% docs erc1155_sonic_evt_TransferBatch_doc %}
 
-The `erc1155_sonic.evt_transferbatch` table contains batch transfer events for ERC1155 tokens on the Sonic blockchain. Each record represents a batch token transfer and includes:
+The `erc1155_sonic.evt_TransferBatch` table contains TransferBatch events for ERC1155 tokens on the sonic blockchain. It includes:
 
-- Block information and timestamps
-- Transaction details
-- Token contract address
-- Operator address
-- Sender and receiver addresses
-- Array of token IDs and amounts
-- Event index and transaction index
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- Operator, from, and to addresses
+- Array of token IDs
+- Array of amounts transferred
 
-This table is crucial for:
-- Tracking bulk token transfers
-- Analyzing batch operations
-- Monitoring large-scale movements
-- Understanding protocol migrations
-- Tracking multi-token operations
+This table is used for tracking batch transfers of multiple ERC1155 tokens on the sonic network.
+
+Please be aware that this table is the raw ERC1155 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use nft.transfers for a more complete and curated view of NFT transfers.
 
 {% enddocs %}
+
+{% docs erc1155_sonic_evt_ApprovalForAll_doc %}
+
+The `erc1155_sonic.evt_ApprovalForAll` table contains ApprovalForAll events for ERC1155 tokens on the sonic blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- Account and operator addresses
+- Approved status (boolean)
+
+This table is used for analyzing blanket approvals for ERC1155 token collections on the sonic network.
+
+{% enddocs %}
+
+{% docs erc721_sonic_evt_Transfer_doc %}
+
+The `erc721_sonic.evt_Transfer` table contains Transfer events for ERC721 tokens on the sonic blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- From and to addresses
+- Token ID
+
+This table is used for tracking ERC721 token (NFT) transfers on the sonic network.
+
+Please be aware that this table is the raw ERC721 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use `nft.transfers` for a more complete and curated view of NFT transfers.
+
+{% enddocs %}
+
+{% docs erc721_sonic_evt_Approval_doc %}
+
+The `erc721_sonic.evt_Approval` table contains Approval events for ERC721 tokens on the sonic blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- Owner and approved addresses
+- Token ID
+
+This table is used for analyzing approvals for individual ERC721 tokens (NFTs) on the sonic network.
+
+{% enddocs %}
+
+{% docs erc721_sonic_evt_ApprovalForAll_doc %}
+
+The `erc721_sonic.evt_ApprovalForAll` table contains ApprovalForAll events for ERC721 tokens on the sonic blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- Owner and operator addresses
+- Approved status (boolean)
+
+This table is used for analyzing blanket approvals for ERC721 token collections on the sonic network.
+{% enddocs %}
+

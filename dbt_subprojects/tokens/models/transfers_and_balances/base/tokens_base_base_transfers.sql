@@ -14,7 +14,7 @@
     blockchain='base',
     traces = source('base','traces'),
     transactions = source('base','transactions'),
-    erc20_transfers = source('erc20_base','evt_transfer'),
+    erc20_transfers = source('erc20_base','evt_Transfer'),
     native_contract_address = null
 )
 }}
