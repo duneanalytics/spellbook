@@ -7,7 +7,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index','block_month'],
+        unique_key = ['block_month', 'block_slot', 'tx_index', 'outer_instruction_index', 'inner_instruction_index'],
         pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
         )
 }}
@@ -28,15 +28,13 @@ with buy_exact_in as (
         , call_tx_index
     from
         {{ source('raydium_solana', 'raydium_launchpad_call_buy_exact_in') }}
-    -- {% if is_incremental() -%}
-    -- where
-    --     {{incremental_predicate('call_block_time')}}
-    -- {% else -%}
-    -- where
-    --     call_block_time >= TIMESTAMP '{{project_start_date}}'
-    -- {% endif -%}
-    where call_block_time >= CURRENT_DATE - INTERVAL '7' DAY
-
+    {% if is_incremental() -%}
+        where
+            {{incremental_predicate('call_block_time')}}
+    {% else -%}
+        where
+            call_block_time >= TIMESTAMP '{{project_start_date}}'
+    {% endif -%}
 )
 , buy_exact_out as (
     select
@@ -52,14 +50,13 @@ with buy_exact_in as (
         , call_tx_index
     from
         {{ source('raydium_solana', 'raydium_launchpad_call_buy_exact_out') }}
-    -- {% if is_incremental() -%}
-    -- where
-    --     {{incremental_predicate('call_block_time')}}
-    -- {% else -%}
-    -- where
-    --     call_block_time >= TIMESTAMP '{{project_start_date}}'
-    --{% endif -%}?
-    where call_block_time >= CURRENT_DATE - INTERVAL '7' DAY
+    {% if is_incremental() -%}
+        where
+            {{incremental_predicate('call_block_time')}}
+    {% else -%}
+        where
+            call_block_time >= TIMESTAMP '{{project_start_date}}'
+    {% endif -%}
 
 )
 , sell_exact_in as (
@@ -76,14 +73,13 @@ with buy_exact_in as (
         , call_tx_index
     from
         {{ source('raydium_solana', 'raydium_launchpad_call_sell_exact_in') }}
-    -- {% if is_incremental() -%}
-    -- where
-    --     {{incremental_predicate('call_block_time')}}
-    -- {% else -%}
-    -- where
-    --     call_block_time >= TIMESTAMP '{{project_start_date}}'
-    -- {% endif -%}
-    where call_block_time >= CURRENT_DATE - INTERVAL '7' DAY
+    {% if is_incremental() -%}
+        where
+            {{incremental_predicate('call_block_time')}}
+    {% else -%}
+        where
+            call_block_time >= TIMESTAMP '{{project_start_date}}'
+    {% endif -%}
 )
 , sell_exact_out as (
     select
@@ -99,14 +95,13 @@ with buy_exact_in as (
         , call_tx_index
     from
         {{ source('raydium_solana', 'raydium_launchpad_call_sell_exact_out') }}
-    -- {% if is_incremental() -%}
-    -- where
-    --     {{incremental_predicate('call_block_time')}}
-    -- {% else -%}
-    -- where
-    --     call_block_time >= TIMESTAMP '{{project_start_date}}'
-    -- {% endif -%}
-    where call_block_time >= CURRENT_DATE - INTERVAL '7' DAY
+    {% if is_incremental() -%}
+        where
+            {{incremental_predicate('call_block_time')}}
+    {% else -%}
+        where
+            call_block_time >= TIMESTAMP '{{project_start_date}}'
+    {% endif -%}
 )
 , calls as (
     select * from buy_exact_in
@@ -122,18 +117,19 @@ with buy_exact_in as (
         block_slot
         , outer_instruction_index
         , inner_instruction_index
+        , tx_id
         , token_mint_address
         , from_token_account
         , to_token_account
         , amount
     from
         {{ ref('tokens_solana_transfers') }}
-        -- {% if is_incremental() -%}
-        -- where {{incremental_predicate('block_time')}}
-        -- {% else -%}
-        -- where block_time >= TIMESTAMP '{{project_start_date}}'
-        -- {% endif -%}
-    where block_time >= CURRENT_DATE - INTERVAL '7' DAY
+    {% if is_incremental() -%}
+        where {{incremental_predicate('block_time')}}
+    {% else -%}
+        where block_time >= TIMESTAMP '{{project_start_date}}'
+    {% endif -%}
+    and from_owner = 'WLHv2UAZm6z4KyaaELi5pjdbJh6RESMva1Rnn8pJVVh' -- Launchlab pool authority
 )
 , all_swaps as (
     SELECT
@@ -160,19 +156,20 @@ with buy_exact_in as (
         , trs_1.to_token_account as token_sold_vault
     FROM calls as sp
     INNER JOIN transfers as trs_1
-        ON trs_1.block_slot = sp.call_block_slot
+        ON trs_1.tx_id = sp.call_tx_id 
+        AND trs_1.block_slot = sp.call_block_slot
         AND trs_1.outer_instruction_index = sp.call_outer_instruction_index
         AND (
             (sp.call_is_inner = false AND (trs_1.inner_instruction_index = 1 OR trs_1.inner_instruction_index = 2))
-            OR (sp.call_is_inner = true AND (trs_1.inner_instruction_index = sp.call_inner_instruction_index + 1 OR trs_1.inner_instruction_index = sp.call_inner_instruction_index + 2))
-            )        
+            OR (sp.call_is_inner = true AND (trs_1.inner_instruction_index = sp.call_inner_instruction_index + 2 OR trs_1.inner_instruction_index = sp.call_inner_instruction_index + 3))
+        )      
     INNER JOIN transfers as trs_2
         ON trs_2.block_slot = sp.call_block_slot
         AND trs_2.outer_instruction_index = sp.call_outer_instruction_index
         AND (
-            (sp.call_is_inner = false AND (trs_2.inner_instruction_index = 2 OR trs_2.inner_instruction_index = 3))
-            OR (sp.call_is_inner = true AND (trs_2.inner_instruction_index = sp.call_inner_instruction_index + 2 OR trs_2.inner_instruction_index = sp.call_inner_instruction_index + 3))
-            )
+        (sp.call_is_inner = false AND (trs_2.inner_instruction_index = 2 OR trs_2.inner_instruction_index = 3))
+        OR (sp.call_is_inner = true AND (trs_2.inner_instruction_index = sp.call_inner_instruction_index + 2 OR trs_2.inner_instruction_index = sp.call_inner_instruction_index + 3))
+        )
     WHERE trs_1.token_mint_address != trs_2.token_mint_address
 )
 
