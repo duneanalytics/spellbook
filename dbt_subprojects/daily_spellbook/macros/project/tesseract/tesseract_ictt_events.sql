@@ -61,7 +61,7 @@ INNER JOIN {{ source(blockchain, 'logs') }} l
     ON l.contract_address = c.contract_address
 WHERE
     topic0 = {{ topic0_filter }}
-    AND l.block_time > TIMESTAMP '2024-01-01' -- Safe to use this to reduce the size of the logs table
+    AND l.block_time > TIMESTAMP '2024-01-01' -- Safe to use this to reduce the size of the logs table as there weren't any ICTT contracts before this
     {%- if is_incremental() %}
     AND {{ incremental_predicate('l.block_time') }}
     {%- endif -%}
