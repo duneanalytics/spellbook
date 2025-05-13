@@ -144,13 +144,13 @@ price_data as (
           then concat(t_sold.symbol,'-',t_bought.symbol)
           else concat(t_bought.symbol,'-',t_sold.symbol)
         end as token_pair,
-        tm.token_bought_amount_raw / power(10, coalesce(t_bought.decimals,0)) as token_bought_amount,
-        tm.token_sold_amount_raw / power(10, coalesce(t_sold.decimals,0)) as token_sold_amount,
+        tm.token_bought_amount_raw / power(10, coalesce(t_bought.decimals,18)) as token_bought_amount,
+        tm.token_sold_amount_raw / power(10, coalesce(t_sold.decimals,18)) as token_sold_amount,
         tm.token_bought_amount_raw,
         tm.token_sold_amount_raw,
         coalesce(
-          (tm.token_bought_amount_raw / power(10, coalesce(t_bought.decimals,0))) * p_bought.price,
-          (tm.token_sold_amount_raw / power(10, coalesce(t_sold.decimals,0))) * p_sold.price
+          (tm.token_bought_amount_raw / power(10, coalesce(t_bought.decimals,18))) * p_bought.price,
+          (tm.token_sold_amount_raw / power(10, coalesce(t_sold.decimals,18))) * p_sold.price
         ) as amount_usd,
         tm.token_bought_adjusted as token_bought_address,
         tm.token_sold_adjusted as token_sold_address,
