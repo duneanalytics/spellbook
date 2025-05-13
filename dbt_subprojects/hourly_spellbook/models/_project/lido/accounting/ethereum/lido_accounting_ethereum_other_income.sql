@@ -140,7 +140,7 @@ with tokens AS (
 
 , stonks_orders_txns as (
     select tr.evt_block_time, tr.evt_tx_hash, s.token_out, s.token_in, s.namespace, s.stonk_contract
-    from {{source('erc20_ethereum','evt_transfer')}} tr
+    from {{ source('erc20_ethereum', 'evt_Transfer') }} tr
     join stonks_orders s on tr."from" = s.order_addr and tr.contract_address = s.token_out
     and to in (select address from cow_settlement)
     order by 1 desc
@@ -148,7 +148,7 @@ with tokens AS (
 
 , stonks_to_treasury as (
     SELECT tr.evt_tx_hash
-    FROM  {{source('erc20_ethereum','evt_transfer')}} tr
+    FROM {{ source('erc20_ethereum', 'evt_Transfer') }} tr
     JOIN stonks_orders_txns s on tr.evt_tx_hash = s.evt_tx_hash and tr.contract_address = s.token_in and tr.contract_address IN (SELECT address FROM tokens)
     WHERE 
      to IN ( SELECT address
@@ -166,7 +166,7 @@ with tokens AS (
         evt_tx_hash,
         contract_address,
         'ethereum' as blockchain
-    FROM  {{source('erc20_ethereum','evt_transfer')}}
+    FROM  {{ source('erc20_ethereum', 'evt_Transfer') }}
     WHERE contract_address IN (SELECT address FROM tokens)
     AND to IN (
         SELECT
@@ -197,7 +197,7 @@ with tokens AS (
         t.evt_tx_hash,
         t.contract_address,
         'ethereum' as blockchain
-    FROM  {{source('erc20_ethereum','evt_transfer')}} t
+    FROM  {{ source('erc20_ethereum', 'evt_Transfer') }} t
     join  {{source('lido_ethereum','steth_evt_Submitted')}} s on t.evt_tx_hash = s.evt_tx_hash
     WHERE t.contract_address = 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84
     AND t.to in (select address from multisigs_list where chain = 'Ethereum' and name ='Aragon')
