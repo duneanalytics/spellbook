@@ -26,6 +26,8 @@ with buy_exact_in as (
         , call_outer_executing_account
         , call_tx_signer
         , call_tx_index
+        , account_base_token_mint
+        , account_quote_token_mint
     from
         {{ source('raydium_solana', 'raydium_launchpad_call_buy_exact_in') }}
     {% if is_incremental() -%}
@@ -48,6 +50,8 @@ with buy_exact_in as (
         , call_outer_executing_account
         , call_tx_signer
         , call_tx_index
+        , account_base_token_mint
+        , account_quote_token_mint
     from
         {{ source('raydium_solana', 'raydium_launchpad_call_buy_exact_out') }}
     {% if is_incremental() -%}
@@ -71,6 +75,8 @@ with buy_exact_in as (
         , call_outer_executing_account
         , call_tx_signer
         , call_tx_index
+        , account_base_token_mint
+        , account_quote_token_mint
     from
         {{ source('raydium_solana', 'raydium_launchpad_call_sell_exact_in') }}
     {% if is_incremental() -%}
@@ -93,6 +99,8 @@ with buy_exact_in as (
         , call_outer_executing_account
         , call_tx_signer
         , call_tx_index
+        , account_base_token_mint
+        , account_quote_token_mint
     from
         {{ source('raydium_solana', 'raydium_launchpad_call_sell_exact_out') }}
     {% if is_incremental() -%}
@@ -129,7 +137,6 @@ with buy_exact_in as (
     {% else -%}
         where block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif -%}
-    and from_owner = 'WLHv2UAZm6z4KyaaELi5pjdbJh6RESMva1Rnn8pJVVh' -- Launchlab pool authority
 )
 , all_swaps as (
     SELECT
@@ -142,35 +149,37 @@ with buy_exact_in as (
             else sp.call_outer_executing_account
             end as trade_source
         -- -- token bought is always the second instruction (transfer) in the inner instructions
-        , trs_2.amount as token_bought_amount_raw
-        , trs_1.amount as token_sold_amount_raw
+        , trs_base.amount as token_bought_amount_raw
+        , trs_quote.amount as token_sold_amount_raw
         , account_pool_state as pool_id
         , sp.call_tx_signer as trader_id
         , sp.call_tx_id as tx_id
         , sp.call_outer_instruction_index as outer_instruction_index
         , COALESCE(sp.call_inner_instruction_index, 0) as inner_instruction_index
         , sp.call_tx_index as tx_index
-        , COALESCE(trs_2.token_mint_address, cast(null as varchar)) as token_bought_mint_address
-        , COALESCE(trs_1.token_mint_address, cast(null as varchar)) as token_sold_mint_address
-        , trs_2.from_token_account as token_bought_vault
-        , trs_1.to_token_account as token_sold_vault
+        , COALESCE(trs_base.token_mint_address, cast(null as varchar)) as token_bought_mint_address
+        , COALESCE(trs_quote.token_mint_address, cast(null as varchar)) as token_sold_mint_address
+        , trs_base.from_token_account as token_bought_vault
+        , trs_quote.to_token_account as token_sold_vault
     FROM calls as sp
-    INNER JOIN transfers as trs_1
-        ON trs_1.tx_id = sp.call_tx_id 
-        AND trs_1.block_slot = sp.call_block_slot
-        AND trs_1.outer_instruction_index = sp.call_outer_instruction_index
+    INNER JOIN transfers as trs_base
+        ON trs_base.tx_id = sp.call_tx_id 
+        AND trs_base.block_slot = sp.call_block_slot
+        AND trs_base.outer_instruction_index = sp.call_outer_instruction_index
+        AND trs_base.token_mint_address = sp.account_base_token_mint
         AND (
-            (sp.call_is_inner = false AND (trs_1.inner_instruction_index = 1 OR trs_1.inner_instruction_index = 2))
-            OR (sp.call_is_inner = true AND (trs_1.inner_instruction_index = sp.call_inner_instruction_index + 2 OR trs_1.inner_instruction_index = sp.call_inner_instruction_index + 3))
+            (sp.call_is_inner = false AND trs_base.inner_instruction_index IN (1, 2, 3))
+            OR (sp.call_is_inner = true AND trs_base.inner_instruction_index IN (sp.call_inner_instruction_index + 1, sp.call_inner_instruction_index + 2))
         )      
-    INNER JOIN transfers as trs_2
-        ON trs_2.block_slot = sp.call_block_slot
-        AND trs_2.outer_instruction_index = sp.call_outer_instruction_index
+    INNER JOIN transfers as trs_quote
+        ON trs_quote.tx_id = sp.call_tx_id 
+        AND trs_quote.block_slot = sp.call_block_slot
+        AND trs_quote.outer_instruction_index = sp.call_outer_instruction_index
+        AND trs_quote.token_mint_address = sp.account_quote_token_mint
         AND (
-        (sp.call_is_inner = false AND (trs_2.inner_instruction_index = 2 OR trs_2.inner_instruction_index = 3))
-        OR (sp.call_is_inner = true AND (trs_2.inner_instruction_index = sp.call_inner_instruction_index + 2 OR trs_2.inner_instruction_index = sp.call_inner_instruction_index + 3))
+            (sp.call_is_inner = false AND trs_quote.inner_instruction_index IN (2, 3))
+            OR (sp.call_is_inner = true AND trs_quote.inner_instruction_index IN (sp.call_inner_instruction_index + 2, sp.call_inner_instruction_index + 3))
         )
-    WHERE trs_1.token_mint_address != trs_2.token_mint_address
 )
 
 SELECT
