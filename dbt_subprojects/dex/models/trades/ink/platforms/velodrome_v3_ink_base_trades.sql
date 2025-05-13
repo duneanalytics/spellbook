@@ -17,6 +17,7 @@ WITH v3 as (
         , version = '3'
         , Pair_evt_Swap = source('velodrome_ink', 'clpool_evt_swap')
         , Factory_evt_PoolCreated = source('velodrome_ink', 'clfactory_evt_poolcreated')
+        ,optional_columns = []
     )
 }}
 )
