@@ -66,7 +66,7 @@ SELECT
 FROM (
     SELECT * FROM new_token_home_links
     UNION ALL
-    SELECT * FROM new_token_remote_links n
+    SELECT n.* FROM new_token_remote_links n
     {%- if is_incremental() %}
     LEFT JOIN {{ this }} t
         ON n.token_home_blockchain_id = t.token_home_blockchain_id
