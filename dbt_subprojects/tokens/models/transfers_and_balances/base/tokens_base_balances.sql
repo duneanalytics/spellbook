@@ -16,6 +16,6 @@ with balances_raw as (
 
 {{
     balances_enrich(
-        balances_raw = 'balances_raw',
+        balances_raw = 'balances_raw' ,
     )
 }}
