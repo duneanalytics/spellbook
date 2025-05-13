@@ -245,7 +245,7 @@ maker_logs as (
                         or (bytearray_substring(logs.topic2,13,20) = taker and taker = tx_to ) 
                         or (bytearray_substring(logs.topic2,13,20) = st.contract_address 
                             and bytearray_substring(logs.topic1,13,20) = tx_to 
-                            and bytearray_substring(logs.topic1,13,20) not in (bytearray_substring(st.topic1,13,20), tx_to ) 
+                            and bytearray_substring(logs.topic2,13,20) not in (bytearray_substring(st.topic1,13,20), tx_to ) 
                         )
                         
                     )
