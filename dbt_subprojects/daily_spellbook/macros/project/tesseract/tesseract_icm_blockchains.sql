@@ -8,7 +8,10 @@
 WITH combined_info AS (
     {% if is_incremental() -%}
     SELECT
-        *
+        blockchain_id
+        , earliest_icm_interaction
+        , latest_icm_interaction
+        , sample_message_id
     FROM {{ this }}
     {% else -%}
     SELECT
