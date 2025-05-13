@@ -9,7 +9,7 @@
    )
 }}
 
-{% set query_start_date = '2025-04-01' %} -- Not the true start date but queries time out if I go back farther
+{% set query_start_date = '2024-01-01' %}
 {% set blockchain = 'solana' %}
 {% set wsol_token = 'So11111111111111111111111111111111111111112' %}
 
