@@ -155,3 +155,10 @@ sources:
           - name: next_update
             description: "Expected timestamp of the next price update"
             type: "timestamp(3) with time zone"
+            
+  - name: tokens_solana
+    tables:
+      - name: fungible
+  - name: solana_utils
+    tables:
+      - name: token_address_mapping
