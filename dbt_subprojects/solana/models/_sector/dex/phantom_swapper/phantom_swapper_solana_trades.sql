@@ -53,7 +53,7 @@ with filtered_transactions as (
             tx_index,
             outer_instruction_index,
             inner_instruction_index
-        from {{ source('dex_solana_trades') }} as trades
+        from {{ source('dex_solana', 'trades') }} as trades
         join
             {{ ref('phantom_swapper_solana_fee_payments_usd') }} as fee_payments
             on (
