@@ -145,7 +145,7 @@ token_hourly_sequence as (
     rts.token_address,
     h.timestamp as block_hour
   from reserve_token_start rts
-    inner join utils.hours h on rts.block_hour_start <= h.timestamp
+    inner join {{ source('utils', 'hours') }} h on rts.block_hour_start <= h.timestamp
 ),
 
 forward_fill as (
