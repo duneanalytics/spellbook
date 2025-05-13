@@ -92,7 +92,7 @@
     {% for fn in fns %}
     select
       '{{ version_map[fn] }}' as version,
-      call_block_time,
+      call_block_time as block_time,
       call_block_number,
       call_tx_hash   as tx_hash,
       call_tx_index  as evt_index,
@@ -106,9 +106,6 @@
       call_tx_to     as project_contract_address
     FROM {{ source('sushiswap_' ~ chain, fn )}} 
     where call_success = true
-      {% if is_incremental() %}
-        and {{ incremental_predicate('call_block_time') }}
-      {% endif %}
     {% if not loop.last %}union all{% endif %}
     {% endfor %}
   ),
@@ -131,9 +128,9 @@
   
 price_data as (
     select
-        date_trunc('day', call_block_time) as block_date,
-        date_trunc('month', call_block_time) as block_month,
-        call_block_time as block_time,
+        date_trunc('day', block_time) as block_date,
+        date_trunc('month', block_time) as block_month,
+        block_time AS block_time,
         '{{ chain }}' as blockchain,
         'sushiswap' as project,
         version,
@@ -171,13 +168,11 @@ price_data as (
     left join {{ source('prices','usd') }} p_bought
       on p_bought.contract_address = tm.token_bought_adjusted
       and p_bought.blockchain = '{{ chain }}'
-      and p_bought.minute = date_trunc('minute', tm.call_block_time)
-      {% if is_incremental() %} and {{ incremental_predicate('p_bought.minute') }} {% endif %}
+      and p_bought.minute = date_trunc('minute', tm.block_time)
     left join {{ source('prices','usd') }} p_sold
       on p_sold.contract_address = tm.token_sold_adjusted
       and p_sold.blockchain = '{{ chain }}'
-      and p_sold.minute = date_trunc('minute', tm.call_block_time)
-      {% if is_incremental() %} and {{ incremental_predicate('p_sold.minute') }} {% endif %}
+      and p_sold.minute = date_trunc('minute', tm.block_time)
 )
 select
   '{{ chain }}'    as blockchain,
