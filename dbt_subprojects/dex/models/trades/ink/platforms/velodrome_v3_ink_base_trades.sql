@@ -9,6 +9,7 @@
     )
 }}
 
+WITH v3 as (
 {{
     uniswap_compatible_v3_trades(
         blockchain = 'ink'
@@ -18,3 +19,22 @@
         , Factory_evt_PoolCreated = source('velodrome_ink', 'clfactory_evt_poolcreated')
     )
 }}
+)
+SELECT
+    v3.blockchain,
+    v3.project,
+    v3.version,
+    v3.block_month,
+    v3.block_date,
+    v3.block_time,
+    v3.block_number,
+    v3.token_bought_amount_raw,
+    v3.token_sold_amount_raw,
+    v3.token_bought_address,
+    v3.token_sold_address,
+    v3.taker,
+    v3.maker,
+    v3.project_contract_address,
+    v3.tx_hash,
+    v3.evt_index
+FROM v3
