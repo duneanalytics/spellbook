@@ -103,7 +103,7 @@ trans_detail AS (
         INNER JOIN destination_gas_summary dgs ON dgs.block_number = s.block_number
             AND dgs.tx_hash = s.tx_hash
             AND dgs.amount_destination_gas = s.transaction_value
-        INNER JOIN {{ source('erc20_optimism', 'evt_transfer') }} et on et.evt_block_number = s.block_number
+        INNER JOIN {{ source('erc20_optimism', 'evt_Transfer') }} et on et.evt_block_number = s.block_number
             AND et.evt_tx_hash = s.tx_hash
             {% if not is_incremental() %}
             AND et.evt_block_time >= TIMESTAMP '{{transaction_start_date}}'

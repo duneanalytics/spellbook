@@ -14,7 +14,7 @@
 {{nft_transfers(
     blockchain='fantom'
     , base_transactions = source('fantom','transactions')
-    , erc721_transfers = source('erc721_fantom','evt_transfer')
-    , erc1155_single = source('erc1155_fantom','evt_transfersingle')
-    , erc1155_batch = source('erc1155_fantom', 'evt_transferbatch')
+    , erc721_transfers = source('erc721_fantom','evt_Transfer')
+    , erc1155_single = source('erc1155_fantom','evt_TransferSingle')
+    , erc1155_batch = source('erc1155_fantom', 'evt_TransferBatch')
 )}}

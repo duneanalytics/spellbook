@@ -86,7 +86,7 @@ with
             evt_tx_hash,
             value as fee_token_amount,
             contract_address as fee_token_address
-        from {{ source('erc20_polygon', 'evt_transfer') }}
+        from {{ source('erc20_polygon', 'evt_Transfer') }}
         where
             (to = {{ fee_recipient_1 }} or to = {{ fee_recipient_2 }})
             and value > 0
