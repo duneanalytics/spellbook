@@ -138,37 +138,14 @@ reserve_token_start as (
 ),
 
 token_hourly_sequence as (
-  with
-
-  years as (
-    select
-      rts.blockchain,
-      rts.project,
-      rts.version,
-      rts.token_address,
-      s.block_year
-    from reserve_token_start rts
-      cross join unnest (
-        sequence(
-          cast(rts.block_hour_start as timestamp),
-          cast(now() as timestamp),
-          interval '1' year
-        )
-      ) as s(block_year)
-  )
-  
   select
-    y.blockchain,
-    y.project,
-    y.version,
-    y.token_address,
-    date_add('hour', s.n, y.block_year) as block_hour
-  from years y
-    -- long enough sequence to catch all hours even in a leap year (8784)
-    -- and staying within 10000 limit for sequence
-    cross join unnest(sequence(0, 9000)) s(n)
-  where s.n < date_diff('hour', y.block_year, y.block_year + interval '1' year)
-    and date_add('hour', s.n, y.block_year) < date_trunc('hour', now())
+    rts.blockchain,
+    rts.project,
+    rts.version,
+    rts.token_address,
+    h.timestamp as block_hour
+  from reserve_token_start rts
+    inner join utils.hours h on rts.block_hour_start <= h.timestamp
 ),
 
 forward_fill as (
