@@ -14,7 +14,7 @@
 {{nft_transfers(
     blockchain='zora'
     , base_transactions = source('zora','transactions')
-    , erc721_transfers = source('erc721_zora','evt_transfer')
-    , erc1155_single = source('erc1155_zora','evt_transfersingle')
-    , erc1155_batch = source('erc1155_zora', 'evt_transferbatch')
+    , erc721_transfers = source('erc721_zora','evt_Transfer')
+    , erc1155_single = source('erc1155_zora','evt_TransferSingle')
+    , erc1155_batch = source('erc1155_zora', 'evt_TransferBatch')
 )}}

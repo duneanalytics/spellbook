@@ -185,7 +185,7 @@ SELECT
     cast(NULL as varbinary) as platform_fee_address,
     sub_tx_trade_id
 from all_superrare_sales a
-left join {{ source('erc721_ethereum','evt_transfer') }} minter on minter.contract_address = a.contract_address
+left join {{ source('erc721_ethereum','evt_Transfer') }} minter on minter.contract_address = a.contract_address
     and minter.tokenId = a.nft_token_id
     and minter."from" = 0x0000000000000000000000000000000000000000
     {% if is_incremental() %}
@@ -194,7 +194,7 @@ left join {{ source('erc721_ethereum','evt_transfer') }} minter on minter.contra
     and minter.evt_block_time >= {{ project_start_date }}
     {% endif %}
 
-left join {{ source('erc20_ethereum','evt_transfer') }} minter_superrare on minter_superrare.contract_address = a.contract_address
+left join {{ source('erc20_ethereum','evt_Transfer') }} minter_superrare on minter_superrare.contract_address = a.contract_address
     and minter_superrare.value = a.nft_token_id
     and minter_superrare."from" = 0x0000000000000000000000000000000000000000
     {% if is_incremental() %}

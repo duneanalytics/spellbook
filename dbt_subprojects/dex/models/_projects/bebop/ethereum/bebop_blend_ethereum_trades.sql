@@ -1,4 +1,5 @@
 {{ config(
+    tags = ['prod_exclude'],
     schema = 'bebop_blend_ethereum',
     alias = 'trades',
     partition_by = ['block_month'],
@@ -7,6 +8,11 @@
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address']
 )}}
+
+/*
+    due to prod issues on may 12 2025, exclude from prod
+    check git history for model changes and context
+*/
 
 {% set project_start_date = '2024-05-01' %}
 

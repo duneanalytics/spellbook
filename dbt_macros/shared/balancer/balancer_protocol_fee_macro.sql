@@ -114,7 +114,7 @@ WITH pool_labels AS (
             b.poolAddress AS token_address,
             sum(value) AS protocol_fee_amount_raw
         FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_PoolRegistered') }} b
-        INNER JOIN {{ source('erc20_' + blockchain, 'evt_transfer') }} t
+        INNER JOIN {{ source('erc20_' + blockchain, 'evt_Transfer') }} t
             ON t.contract_address = b.poolAddress
             AND t."from" = 0x0000000000000000000000000000000000000000
             AND t."to" =
