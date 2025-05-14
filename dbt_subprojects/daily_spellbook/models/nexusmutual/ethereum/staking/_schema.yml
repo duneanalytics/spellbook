@@ -158,6 +158,9 @@ models:
       - &block_date
         name: block_date
         description: "event block date"
+      - &block_number
+        name: block_number
+        description: "event block number"
       - *pool_address
       - &token_id
         name: token_id
