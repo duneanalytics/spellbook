@@ -12,8 +12,6 @@
         )
 }}
 
-{% set project_start_date = '2025-03-17' %} 
-
 with calls as (
     select
         account_pool_state
@@ -35,7 +33,7 @@ with calls as (
             {{incremental_predicate('call_block_time')}}
     {% else -%}
         where
-            call_block_time >= TIMESTAMP '{{project_start_date}}'
+            call_block_time >= CURRENT_TIMESTAMP - interval '7' day
     {% endif -%}
     union all
     select
@@ -58,7 +56,7 @@ with calls as (
             {{incremental_predicate('call_block_time')}}
     {% else -%}
         where
-            call_block_time >= TIMESTAMP '{{project_start_date}}'
+            call_block_time >= CURRENT_TIMESTAMP - interval '7' day
     {% endif -%}
     union all
     select
@@ -81,7 +79,7 @@ with calls as (
             {{incremental_predicate('call_block_time')}}
     {% else -%}
         where
-            call_block_time >= TIMESTAMP '{{project_start_date}}'
+            call_block_time >= CURRENT_TIMESTAMP - interval '7' day
     {% endif -%}
     union all
     select
@@ -104,7 +102,7 @@ with calls as (
             {{incremental_predicate('call_block_time')}}
     {% else -%}
         where
-            call_block_time >= TIMESTAMP '{{project_start_date}}'
+            call_block_time >= CURRENT_TIMESTAMP - interval '7' day
     {% endif -%}
 )
 
@@ -141,7 +139,7 @@ with calls as (
             (sp.call_is_inner = false AND trs_base.inner_instruction_index IN (1, 2, 3))
             OR (sp.call_is_inner = true AND trs_base.inner_instruction_index IN (sp.call_inner_instruction_index + 1, sp.call_inner_instruction_index + 2))
         )
-        AND trs_base.block_time >= TIMESTAMP '{{project_start_date}}'
+        AND trs_base.block_time >= CURRENT_TIMESTAMP - interval '7' day
     INNER JOIN {{ ref('tokens_solana_transfers') }} as trs_quote
         ON trs_quote.tx_id = sp.call_tx_id 
         AND trs_quote.block_slot = sp.call_block_slot
@@ -151,7 +149,7 @@ with calls as (
             (sp.call_is_inner = false AND trs_quote.inner_instruction_index IN (2, 3))
             OR (sp.call_is_inner = true AND trs_quote.inner_instruction_index IN (sp.call_inner_instruction_index + 2, sp.call_inner_instruction_index + 3))
         )
-        AND trs_quote.block_time >= TIMESTAMP '{{project_start_date}}'
+        AND trs_quote.block_time >= CURRENT_TIMESTAMP - interval '7' day
 )
 
 SELECT
