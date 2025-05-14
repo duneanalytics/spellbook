@@ -14,7 +14,7 @@
 
 {% set project_start_date = '2025-03-17' %} 
 
-with buy_exact_in as (
+, calls as (
     select
         account_pool_state
         , call_is_inner
@@ -37,8 +37,7 @@ with buy_exact_in as (
         where
             call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif -%}
-)
-, buy_exact_out as (
+    union all
     select
         account_pool_state
         , call_is_inner
@@ -61,9 +60,7 @@ with buy_exact_in as (
         where
             call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif -%}
-
-)
-, sell_exact_in as (
+    union all
     select
         account_pool_state
         , call_is_inner
@@ -86,8 +83,7 @@ with buy_exact_in as (
         where
             call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif -%}
-)
-, sell_exact_out as (
+    union all
     select
         account_pool_state
         , call_is_inner
@@ -111,33 +107,7 @@ with buy_exact_in as (
             call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif -%}
 )
-, calls as (
-    select * from buy_exact_in
-    union all
-    select * from buy_exact_out
-    union all
-    select * from sell_exact_in
-    union all
-    select * from sell_exact_out
-)
-, transfers as (
-    select
-        block_slot
-        , outer_instruction_index
-        , inner_instruction_index
-        , tx_id
-        , token_mint_address
-        , from_token_account
-        , to_token_account
-        , amount
-    from
-        {{ ref('tokens_solana_transfers') }}
-    {% if is_incremental() -%}
-        where {{incremental_predicate('block_time')}}
-    {% else -%}
-        where block_time >= TIMESTAMP '{{project_start_date}}'
-    {% endif -%}
-)
+
 , all_swaps as (
     SELECT
         sp.call_block_time as block_time
@@ -162,7 +132,7 @@ with buy_exact_in as (
         , trs_base.from_token_account as token_bought_vault
         , trs_quote.to_token_account as token_sold_vault
     FROM calls as sp
-    INNER JOIN transfers as trs_base
+    INNER JOIN {{ ref('tokens_solana_transfers') }} as trs_base
         ON trs_base.tx_id = sp.call_tx_id 
         AND trs_base.block_slot = sp.call_block_slot
         AND trs_base.outer_instruction_index = sp.call_outer_instruction_index
@@ -170,8 +140,9 @@ with buy_exact_in as (
         AND (
             (sp.call_is_inner = false AND trs_base.inner_instruction_index IN (1, 2, 3))
             OR (sp.call_is_inner = true AND trs_base.inner_instruction_index IN (sp.call_inner_instruction_index + 1, sp.call_inner_instruction_index + 2))
-        )      
-    INNER JOIN transfers as trs_quote
+        )
+        AND trs_base.block_time >= TIMESTAMP '{{project_start_date}}'
+    INNER JOIN {{ ref('tokens_solana_transfers') }} as trs_quote
         ON trs_quote.tx_id = sp.call_tx_id 
         AND trs_quote.block_slot = sp.call_block_slot
         AND trs_quote.outer_instruction_index = sp.call_outer_instruction_index
@@ -180,6 +151,7 @@ with buy_exact_in as (
             (sp.call_is_inner = false AND trs_quote.inner_instruction_index IN (2, 3))
             OR (sp.call_is_inner = true AND trs_quote.inner_instruction_index IN (sp.call_inner_instruction_index + 2, sp.call_inner_instruction_index + 3))
         )
+        AND trs_quote.block_time >= TIMESTAMP '{{project_start_date}}'
 )
 
 SELECT
