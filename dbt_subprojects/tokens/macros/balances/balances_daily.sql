@@ -13,16 +13,6 @@ with changed_balances as (
     ,balance_raw
     ,lead(cast(day as timestamp)) over (partition by token_address,address,token_id order by day asc) as next_update_day
     from {{balances_daily_agg}}
-    where balance_raw > 0
-    {% if var('address_param', 'all') != 'all' %}
-    AND address = LOWER('{{ var('address_param') }}')
-    {% endif %}
-    {% if var('token_address_param', 'all') != 'all' %}
-    AND token_address = LOWER('{{ var('token_address_param') }}')
-    {% endif %}
-    {% if var('blockchain_param', 'all') != 'all' %}
-    AND blockchain = LOWER('{{ var('blockchain_param') }}')
-    {% endif %}
 )
 
 ,days_range as (
