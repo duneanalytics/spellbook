@@ -196,7 +196,7 @@ LEFT JOIN
     {{ ref('solana_utils_token_accounts') }} tk_d 
     ON tk_d.address = b.to_token_account
 LEFT JOIN 
-    {{ ref('solana_utils_token_address_mapping') }} tk_m
+    {{ source('solana_utils','token_address_mapping') }} tk_m
     ON tk_m.base58_address = COALESCE(tk_s.token_mint_address, tk_d.token_mint_address)
 LEFT JOIN prices p
     ON p.contract_address = tk_m.binary_address
