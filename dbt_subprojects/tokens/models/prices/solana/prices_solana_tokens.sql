@@ -754,5 +754,7 @@ FROM
         ('jellyjelly-jelly-my-jelly', 'solana', 'jellyjelly', 'FeR8VBqNRSUD5NtXAj2n3j1dAHkZHfyDktKuLXD4pump', 6),
         ('fred3-first-convicted-raccon', 'solana', 'FRED', 'CNvitvFnSM5ed6K28RUNSaAjqqz5tX1rA5HgaBN9pump', 6),
         ('sonic-sonic-svm', 'solana', 'SONIC', 'SonicxvLud67EceaEzCLRnMTBqzYUUYNr93DBkBdDES', 9),
-        ('usdg-global-dollar', 'solana', 'USDG', '2u1tszSeqZ3qBWF3uNGPFc8TzMk2tdiwknnRMWGWjGWH', 6)
+        ('usdg-global-dollar', 'solana', 'USDG', '2u1tszSeqZ3qBWF3uNGPFc8TzMk2tdiwknnRMWGWjGWH', 6),
+        ('dark-dark-eclipse', 'solana', 'DARK', '8BtoThi2ZoXnF7QQK1Wjmh2JuBw9FjVvhnGMVZ2vpump', 6),
+        ('alch-alchemist-ai', 'solana', 'ALCH', 'HNg5PYJmtqcmzXrv6S9zP1CDKk5BgDuyFBxbvNApump', 6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
