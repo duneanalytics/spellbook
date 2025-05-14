@@ -14,7 +14,7 @@
 
 {% set project_start_date = '2025-03-17' %} 
 
-, calls as (
+with calls as (
     select
         account_pool_state
         , call_is_inner
