@@ -24,7 +24,6 @@
         "lens",
         "linea",
         "mantle",
-        "mode",
         "opbnb",
         "optimism",
         "polygon",
