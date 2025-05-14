@@ -16,12 +16,12 @@ WITH plain_pools AS (
         'Factory V1 Stableswap Plain' AS version,
         p._name AS name,
         p._symbol AS symbol,
-        dp.pool AS pool_address,
+        coalesce(dp.pool,p.output_0) AS pool_address,
         p._A AS amplification_param,
         p._fee AS mid_fee,
         p._fee AS out_fee,
-        dp.pool AS token_address,
-        dp.pool AS deposit_contract,
+        coalesce(dp.pool,p.output_0) AS token_address,
+        coalesce(dp.pool,p.output_0) AS deposit_contract,
         p._coins[1] AS coin0,
         p._coins[2] AS coin1,
         COALESCE(try(p._coins[3]),CAST(NULL as varbinary)) as coin2,
@@ -36,6 +36,7 @@ WITH plain_pools AS (
         ON p.call_block_time = dp.evt_block_time
         AND p.call_tx_hash = dp.evt_tx_hash
         AND p._coins = dp.coins
+    WHERE p.call_success
 ),
 
 ---------------------------------------------------------------- Stableswap Meta Pools ----------------------------------------------------------------
@@ -64,6 +65,7 @@ meta_pools AS (
         ON mc.call_block_time = mp.evt_block_time
         AND mc.call_tx_hash = mp.evt_tx_hash
         LEFT JOIN plain_pools r ON r.pool_address = mc._base_pool
+    WHERE mc.call_success
 ),
 
 ---------------------------------------------------------------- Combine All Pools ----------------------------------------------------------------
