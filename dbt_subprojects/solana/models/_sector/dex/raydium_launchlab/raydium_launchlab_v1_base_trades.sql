@@ -175,3 +175,4 @@ SELECT
     , tb.inner_instruction_index
     , tb.tx_index
 FROM all_swaps tb
+

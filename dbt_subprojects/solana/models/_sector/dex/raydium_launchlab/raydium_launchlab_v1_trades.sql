@@ -41,3 +41,5 @@ select
       , tx_index
 from {{ref('dex_solana_trades')}}
 where project = 'raydium_launchlab' and version = 1
+
+
