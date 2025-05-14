@@ -36,3 +36,11 @@ sources:
         loaded_at_field: call_block_time  
       - name: AugustusV6_2_call_swapExactAmountInOutOnMakerPSM
         loaded_at_field: call_block_time  
+        
+  - name: paraswapdelta_optimism
+    description: >
+      Delta V2 calls and events tables
+    tables:      
+      - name: ParaswapDeltav2_call_swapSettle
+      - name: ParaswapDeltav2_call_swapSettleBatch
+      - name: ParaswapDeltav2_evt_OrderSettled
