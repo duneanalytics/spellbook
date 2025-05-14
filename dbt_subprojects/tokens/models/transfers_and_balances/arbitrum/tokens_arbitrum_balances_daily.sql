@@ -13,6 +13,6 @@
 {{
 balances_daily(
     balances_daily_agg = ref('tokens_arbitrum_balances_daily_agg'),
-    start_date = '2021-05-28',
+    start_date = '2021-05-27',
 )
 }}
