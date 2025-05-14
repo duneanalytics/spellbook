@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: uniswap_abstract
+    tables:
+      - name: uniswapv2factory_evt_paircreated
+        description: "PairCreated events from AbstractSwap Factory contract"
+      - name: Pair_evt_Swap
+        description: "Swap events from AbstractSwap Pair contracts"
+
+  - name: abstractswap_abstract
+    tables:
+      - name: uniswapv3pool_evt_swap
+        description: "Swap events from AbstractSwap V3 Pair contracts"
+      - name: uniswapv3factory_evt_poolcreated
+        description: "PoolCreated events from AbstractSwap V3 Factory contract"
