@@ -1,381 +1,423 @@
 version: 2
 
 sources:
-  # Base Tables
+  # ===========================================
+  # Base EVM Source (transactions, blocks etc.)
+  # ===========================================
   - name: nova
-    description: "Nova raw tables including transactions, traces and logs"
+    description: "Raw EVM tables for the nova chain. This source provides access to fundamental blockchain data like blocks, transactions, logs, and traces."
     tables:
       - name: transactions
-        description: "A Nova transaction refers to an action initiated by an externally-owned account (i.e., an account managed by a human, not a contract)."
+        # description: "Contains detailed information about each transaction executed on the nova network. Includes sender, receiver, value, gas details, status, input data, and potentially L2-specific L1 submission info."
+        description: "{{ doc('nova_transactions_doc') }}"
         columns:
-          - &block_time
-            name: block_time
-            description: "Timestamp for block event time in UTC"
-          - &block_number
-            name: block_number
-          - &value
-            name: value
-            description: "Amount of asset transferred from sender to recipient"
-          - name: gas_limit
-            description: "Maximum amount of gas units that can be consumed by the transaction"
-          - name: gas_price
-            description: "Gas price denoted in gwei, which itself is a denomination of ETH - each gwei is equal to 10-9 ETH"
-          - name: gas_used
-            description: "Number of gas units consumed by the transaction"
-          - name: max_fee_per_gas
-            description: "Maximum amount of gas willing to be paid for the transaction"
-          - name: max_priority_fee_per_gas
-            description: "Maximum amount of gas to be included as a tip to the miner"
-          - name: priority_fee_per_gas
-            description: "Market price for gas"
-          - name: nonce
-            description: "Number of confirmed transactions previously sent by this account"
-          - name: index
-            description: "Transaction index"
-          - &success
-            name: success
-            description: "Whether the transaction was completed successfully"
-          - &from
-            name: from
-            description: "Wallet address that initiated the transaction"
-          - &to
-            name: to
-            description: "Wallet address that received the transaction"
-          - &block_hash
-            name: block_hash
-            description: "Primary key of the block"
-          - name: data
-            description: "Any binary data payload"
-          - name: hash
-            description: "Primary key of the transaction"
-            data_tests:
-              - unique
-              - not_null
-          - name: type
-            description: "Transaction type"
-          - name: access_list
-            description: "Specifies a list of addresses and storage keys"
-          - name: chain_id
           - &block_date
             name: block_date
-            description: "Block event date in UTC"
+            description: "The UTC date of the block in which this transaction was included"
+          - &block_time
+            name: block_time
+            description: "The exact UTC timestamp when the block containing this transaction was mined/sequenced"
+          - &value
+            name: value
+            description: "Amount of native currency (e.g., ETH, MATIC) sent from sender to recipient, measured in wei (1 native = 10^18 wei)"
+          - &block_number
+            name: block_number
+            description: "The sequential number (height) of the block containing this transaction"
+          - name: gas_limit
+            description: "Maximum number of gas units this transaction was allowed to consume"
+          - name: gas_price
+            description: "Price per unit of gas for this transaction (legacy or pre-EIP-1559), denominated in wei"
+          - name: gas_used
+            description: "Actual amount of gas units consumed by this transaction's execution"
+          - name: max_fee_per_gas
+            description: "Maximum total fee per gas unit the sender was willing to pay (base fee + priority fee) (post-EIP-1559)"
+          - name: max_priority_fee_per_gas
+            description: "Maximum tip per gas unit the sender was willing to pay to the miner/validator (post-EIP-1559)"
+          - name: base_fee_per_gas
+            description: "The network base fee per gas unit for the block containing this transaction (post-EIP-1559)"
+          - name: nonce
+            description: "Sequential number for transactions sent from the sender's address, preventing replays"
+          - name: index
+            description: "Integer position of this transaction within the list of transactions in its block"
+          - &success
+            name: success
+            description: "Boolean flag indicating if the transaction executed successfully (true) or failed/reverted (false)"
+          - &from
+            name: from
+            description: "Address of the account that initiated and signed this transaction"
+          - &to
+            name: to
+            description: "Address of the recipient account or contract; null for contract creation transactions"
+          - &block_hash
+            name: block_hash
+            description: "Unique 256-bit identifier (hash) of the block containing this transaction"
+          - name: data
+            description: "Input data payload for the transaction, often containing function selectors and arguments for contract calls"
+          - name: hash
+            description: "Unique 256-bit identifier (hash) of this specific transaction"
+          - name: type
+            description: "Numeric type of the transaction (e.g., 0 for legacy, 1 for EIP-2930, 2 for EIP-1559) indicating its format and fee mechanism"
+          - name: access_list
+            description: "List of addresses and storage keys the transaction preemptively specified access to (EIP-2930 and later types)"
+          - name: effective_gas_price
+            description: "The actual price per gas unit paid for this transaction after execution (base fee + priority fee)"
+          - name: l1_block_number
+            description: "For L2s: The block number on the L1 chain (e.g., Ethereum) where this L2 transaction's batch data was included"
+          - name: l1_fee
+            description: "For L2s: Estimated or actual fee paid on L1 for data submission related to this L2 transaction"
+          - name: l1_fee_scalar
+            description: "For L2s: Scalar value applied to L1 gas price/costs for L2 fee calculation"
+          - name: l1_gas_price
+            description: "For L2s: Gas price on L1 at the time relevant to this L2 transaction's L1 submission"
+          - name: l1_gas_used
+            description: "For L2s: Amount of gas consumed on L1 for submitting data related to this L2 transaction"
+          - name: l1_timestamp
+            description: "For L2s: Timestamp associated with the L1 block where this L2 transaction's batch was included"
+          - name: l1_tx_origin
+            description: "For L2s: If applicable, the original EOA address that initiated the corresponding transaction on L1"
 
       - name: traces
-        description: "A Nova trace is a small atomic action that modify the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide."
+        # description: "Represents internal operations or execution steps within a transaction (e.g., contract calls, creations). Traces form a tree structure for each transaction."
+        description: "{{ doc('nova_traces_doc') }}"
         columns:
+          - *block_date
           - *block_time
           - *block_number
-          - *value
+          - *value # Value transferred during this specific trace step
           - name: gas
-            description: "Amount of gas consumed by the trace"
+            description: "Amount of gas allocated for this trace's execution (may include gas for sub-traces)"
           - name: gas_used
-            description: "Number of gas units used by the trace"
+            description: "Actual amount of gas consumed by this specific trace step"
           - *block_hash
           - name: success
-            description: "Whether the trace was completed successfully"
+            description: "Boolean flag indicating if this specific trace step executed successfully (true) or reverted (false)"
           - &tx_index
             name: tx_index
-          - &tx_from
-            name: tx_from
-          - &tx_to
-            name: tx_to
+            description: "Index of the parent transaction within its containing block"
           - name: subtraces
-            description: "Number of subtraces (i.e, number of calls at a particular level within a transaction)"
+            description: "Number of direct child traces initiated by this trace"
           - name: error
-            description: "Error log"
+            description: "Error message or reason if this trace step failed/reverted"
           - name: tx_success
-            description: "Whether the transaction was completed successfully"
+            description: "Boolean flag indicating the success status of the parent transaction"
           - &tx_hash
             name: tx_hash
-            description: "Primary key of the transaction"
+            description: "Unique 256-bit identifier (hash) of the parent transaction"
           - name: from
-            description: "Wallet address that initiated the trace"
+            description: "Address initiating this trace step (caller)"
           - name: to
-            description: "Wallet address that received the trace"
+            description: "Address receiving this trace step (callee)"
           - name: trace_address
-            description: "All returned traces, gives the exact location in the call trace"
+            description: "Array representing the path from the root trace (transaction) to this trace within the execution tree (e.g., [], [0], [0, 1])"
           - name: type
-            description: "Type of trace (e.g., call, create, suicide)"
-          - name: address
-            description: "Address of the trace creator"
-          - name: code
-            description: "Raw EVM code for the trace"
-          - name: call_type
-            description: "Hexadecimal representations of the trace's call type"
+            description: "Type of trace action (e.g., 'call', 'staticcall', 'delegatecall', 'create', 'suicide')"
+          - name: address # Often populated for 'create' or 'suicide' types
+            description: "Address associated with the trace action (e.g., newly created contract address, recipient of suicide refund)"
+          - name: code # Populated for 'create' type
+            description: "Bytecode of the contract being created"
+          - name: call_type # Populated for 'call' types
+            description: "Specific type of call operation (e.g., 'call', 'delegatecall', 'staticcall')"
           - name: input
-            description: "Input data for the trace"
+            description: "Input data provided for this trace step (e.g., function arguments for a call)"
           - name: output
-            description: "Output data for the trace"
-          - name: refund_address
-          - name: revert_reason
+            description: "Output data returned by this trace step"
+          - name: refund_address # Populated for 'suicide' type
+            description: "Address designated to receive the contract balance upon self-destruction"
+
+      # Decoded traces might not be available for all chains or need specific schemas
+      - name: traces_decoded
+        description: "{{ doc('nova_traces_decoded_doc') }}"
+        columns:
           - *block_date
+          - *block_time
+          - *block_number
+          - *tx_hash
+          - name: contract_name
+            description: "Human-readable name of the smart contract involved in this trace"
+          - name: function_name
+            description: "Name of the specific contract function called in this trace"
+          - name: namespace
+            description: "Categorical grouping or project name associated with the contract"
+          - name: signature
+            description: "8 byte function signature used to identify the function"
+          - name: to
+            description: "address of the contract or account receiving this trace"
+          - name: trace_address
+            description: "Array indicating the exact position of this trace within the trace tree of the transaction"
 
       - name: logs
-        description: "A Base log can be used to describe an event within a smart contract, like a token transfer or a change of ownership."
+        # description: "Contains event logs emitted by smart contracts during transaction execution. Essential for tracking contract state changes and activities."
+        description: "{{ doc('nova_logs_doc') }}"
         columns:
+          - *block_date
           - *block_time
           - *block_number
           - *block_hash
+          - *tx_index
+          - *tx_hash
           - name: contract_address
-            description: "Address of the Base smart contract generating the log"
+            description: "Address of the smart contract that emitted this event log"
           - name: topic0
-            description: "Topics are 32-byte (256 bit) “words” that are used to describe what’s going on in an event. The first topic usually consists of the signature of the name of the event that occurred, including the types (uint256, string, etc.) of its parameters."
+            description: "First indexed topic (32 bytes), typically the hash of the event signature (e.g., keccak256('Transfer(address,address,uint256)'))"
           - name: topic1
-            description: "Second topic"
+            description: "Second indexed topic (32 bytes), often used for indexed event parameters like addresses"
           - name: topic2
-            description: "Third topic"
+            description: "Third indexed topic (32 bytes), used for additional indexed event parameters"
           - name: topic3
-            description: "Fourth topic"
+            description: "Fourth indexed topic (32 bytes), used for further indexed event parameters"
           - name: data
-            description: "Additional data for the log. Data is not searchable (while topics are), but is a lot cheaper and can include large or complicated data like arrays or strings."
+            description: "Non-indexed event parameters, ABI-encoded into a single data payload"
+          - name: index # Log index within the block
+            description: "Integer position of this log within the list of all logs in the block"
+
+      - name: logs_decoded
+        description: "{{ doc('nova_logs_decoded_doc') }}"
+        columns:
+          - *block_date
+          - *block_time
+          - *block_number
           - *tx_hash
           - name: index
-            description: "Log index"
-          - *tx_index
-          - *block_date
-          - *tx_from
-          - *tx_to
+            description: "Position of this log within the block"
+          - name: contract_address
+            description: "Address of the smart contract that emitted this log"
+          - name: namespace
+            description: "Categorical grouping or project name associated with the contract"
+          - name: contract_name
+            description: "Name of the smart contract that emitted this log"
+          - name: event_name
+            description: "Name of the event emitted in this log"
+          - name: signature
+            description: "Topic0 hash of the event signature"
 
       - name: blocks
-        description: "Blocks are batches of transactions with a hash of the previous block in the chain. This links blocks together (in a chain) because hashes are cryptographically derived from the block data."
+        # description: "Contains metadata about each block mined or sequenced on the nova network."
+        description: "{{ doc('nova_blocks_doc') }}"
         columns:
-          - name: time
-          - name: number
-          - name: gas_limit
-          - name: gas_used
-          - name: difficulty
-          - name: total_difficulty
-          - name: size
           - name: base_fee_per_gas
+            description: "The network base fee per gas unit for this block (post-EIP-1559)"
+          - name: difficulty
+            description: "Difficulty level required to mine this block (relevant for PoW chains, pre-Merge for Ethereum)"
+          - name: total_difficulty
+            description: "Cumulative difficulty of the chain up to and including this block (relevant for PoW chains, pre-Merge for Ethereum)"
+          - name: gas_limit
+            description: "Total gas limit for the block, constraining the computation resources available"
+          - name: gas_used
+            description: "Total amount of gas consumed by all transactions included in this block"
           - name: hash
-          - name: parent_hash
-          - name: miner
+            description: "Unique 256-bit identifier (hash) of this block"
+          - name: miner # Or proposer/sequencer depending on consensus
+            description: "Address of the account that mined/proposed/sequenced this block and received rewards/fees"
           - name: nonce
-          - name: state_root
-          - name: transactions_root
-          - name: receipts_root
-          - name: date
+            description: "Nonce value used in the block header, typically for PoW consensus mechanism"
+          - name: number
+            description: "Sequential block number (height) of this block in the blockchain"
+          - name: parent_hash
+            description: "Hash of the preceding block in the chain"
+          - name: size
+            description: "Size of the block data in bytes"
+          - name: time
+            description: "Timestamp (UTC) when the block was mined/sequenced"
+          - name: blob_gas_used
+            description: "Total amount of blob gas consumed by transactions in this block (post-EIP-4844)"
+          - name: excess_blob_gas
+            description: "Running total of blob gas consumed in excess of the target, influencing future blob base fees (post-EIP-4844)"
+          - name: parent_beacon_block_root
+            description: "Root hash of the parent beacon chain block (relevant post-Merge for Ethereum and potentially L2s)"
 
       - name: contracts
-        description: "A view keeping track of what contracts are decoded on Dune on Nova; contains information associated with the decoded contract such as namespace, name, address, ABI."
+        # description: "Tracks contracts deployed on nova, often enriched with metadata from decoding efforts (e.g., ABI, name)."
+        description: "{{ doc('nova_contracts_doc') }}"
         columns:
           - name: abi_id
+            description: "Unique identifier potentially linking to a known contract ABI repository"
           - name: abi
-            description: "ABI of the decoded contract"
+            description: "JSON representation of the contract's Application Binary Interface (ABI), if available"
           - name: address
-            description: "Address of the decoded contract"
-          - name: from
-            description: "Address that created/deployed this contract"
-          - name: code
-            description: "Code for contract creation"
+            description: "Address where the contract is deployed"
+          - name: from # Creator address from git history version
+            description: "Address that deployed this contract. Can be a contract or EOA."
+          - name: code # Renamed from bytecode to match git history version
+            description: "Bytecode of the contract at the time of creation"
           - name: name
-            description: "Name of the decoded contract"
+            description: "Human-readable name assigned to the contract (often from decoding or verification sources)"
           - name: namespace
-            description: "Namesapce of the decoded contract"
+            description: "Categorical namespace or project associated with the contract (e.g., 'Uniswap V3')"
           - name: dynamic
-            description: "Boolean indicating whether the contract is dynamic or not"
-          - name: base
-            description: "Boolean indicating whether the contract is the Nova contract or not"
+            description: "Boolean indicating if this contract was submitted to Dune with the 'dynamic' flag enabled."
+          - name: ethereum # Column name from git history
+            description: "Boolean indicating if this is a manual individual submission of a contract."
           - name: factory
-            description: "Boolean indicating whether the contract is a factory contract or not"
+            description: "Boolean indicating if this submission was submitted to Dune with the 'factory' flag enabled."
           - name: detection_source
-            description: "Detection source: 'factory', 'base', or 'dynamic'"
-            data_tests:
-              - accepted_values:
-                  values: ["factory", "base", "dynamic"]
-          - name: created_at
-            description: "Timestamp for contract creation"
+            description: "Method used to detect and decode this contract: 'factory', 'ethereum', or 'dynamic'. "
+          - name: created_at # Dune timestamp from git history
+            description: "Timestamp of when this contract was first decoded on Dune. This is not the contract creation timestamp."
 
-      - name: creation_traces
-        description: "Nova creation traces"
+      - name: creation_traces # Added from original file
+        description: "{{ doc('nova_creation_traces_doc') }}"
         columns:
           - *block_time
           - *block_number
           - *tx_hash
           - name: address
-            description: "Contract address created"
-          - name: from
-            description: "Contract creator address"
+            description: "Address of the contract created"
+          - name: from # Creator address
+            description: "Address that created this contract. Can be a contract or EOA."
           - name: code
-            description: "Contract code"
-          - name: block_month
+            description: "Deployed bytecode of the contract"
 
-  # ERC Transfer Tables
+
+  # ===========================================
+  # ERC20 Source
+  # ===========================================
   - name: erc20_nova
-    description: "Transfers events for ERC20 tokens on Nova."
+    description: "Standard ERC20 Fungible Token event tables for nova"
     tables:
-      - name: evt_transfer
-        description: "Transfers events for ERC20 tokens on Nova."
+      - name: evt_Transfer
+        description: "{{ doc('erc20_nova_evt_Transfer_doc') }}"
         columns:
           - name: contract_address
-            description: "ERC20 token contract address"
+            description: "Address of the ERC20 token contract that emitted this event"
           - &evt_tx_hash
             name: evt_tx_hash
-            description: "Transaction hash of the event"
-          - &evt_tx_from
-            name: evt_tx_from
-          - &evt_tx_to
-            name: evt_tx_to
-          - &evt_tx_index
-            name: evt_tx_index
+            description: "Hash of the transaction containing this event"
           - &evt_index
             name: evt_index
+            description: "Index position of this event within the transaction"
           - &evt_block_time
             name: evt_block_time
-            description: "Timestamp for block event time in UTC"
+            description: "Timestamp of the block containing this event"
           - &evt_block_number
             name: evt_block_number
-          - &evt_block_date
-            name: evt_block_date
-          - *from
-          - *to
-          - name: value
-            description: "Amount of ERC20 token transferred"
+            description: "The block number containing this event"
+          - *from # Sender of tokens
+          - *to   # Recipient of tokens
+          - name: value # Amount transferred, in token's minimal unit (raw)
+            description: "Amount of ERC20 tokens transferred, in the token's native decimal representation (raw value)"
 
-      - name: evt_approval
-        description: "Approval events for ERC20 tokens on Nova."
+      - name: evt_Approval
+        description: "{{ doc('erc20_nova_evt_Approval_doc') }}"
         columns:
           - name: contract_address
-            description: "ERC20 token contract address"
+            description: "Address of the ERC20 token contract"
           - *evt_tx_hash
-          - *evt_tx_from
-          - *evt_tx_to
-          - *evt_tx_index
           - *evt_index
           - *evt_block_time
           - *evt_block_number
-          - *evt_block_date
+          - name: owner
+            description: "Address of the token owner granting approval"
+          - name: spender
+            description: "Address being granted permission to spend tokens"
+          - name: value # Amount approved, in token's minimal unit (raw)
+            description: "Amount of ERC20 tokens approved for spending, in the token's native decimal representation (raw value)"
+
+  # ===========================================
+  # ERC721 Source
+  # ===========================================
+  - name: erc721_nova
+    description: "Standard ERC721 NFT event tables for nova"
+    tables:
+      - name: evt_Transfer
+        description: "{{ doc('erc721_nova_evt_Transfer_doc') }}"
+        columns:
+          - name: contract_address
+            description: "Address of the ERC721 token contract"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *from # Previous owner
+          - *to   # New owner
+          - name: tokenId
+            description: "Unique identifier of the specific ERC721 token (NFT) being transferred"
+
+      - name: evt_Approval
+        description: "{{ doc('erc721_nova_evt_Approval_doc') }}"
+        columns:
+          - name: contract_address
+            description: "Address of the ERC721 token contract"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - &approved # Address approved for this specific token ID
+            name: approved
+            description: "Address approved to manage the specific tokenId"
           - &owner
             name: owner
-          - &spender
-            name: spender
-          - *value
-
-  - name: erc1155_nova
-    description: "Transfers events for ERC1155 tokens on Nova."
-    tables:
-      - name: evt_transfersingle
-        description: "Single transfers events for ERC1155 tokens on Nova."
-        columns:
-          - name: contract_address
-            description: "ERC1155 token contract address"
-          - *evt_tx_hash
-          - *evt_tx_from
-          - *evt_tx_to
-          - *evt_tx_index
-          - *evt_index
-          - *evt_index
-          - *evt_block_time
-          - *evt_block_number
-          - *evt_block_date
-          - *from
-          - name: id
-            description: "ERC1155 token ID"
-          - name: operator
-            description: "Addresses authorized (or approved) by a NFT owner to spend all of his token IDs."
-          - *to
-          - name: value
-            description: "Amount of ERC1155 token transferred"
-
-      - name: evt_transferbatch
-        description: "Batch transfers events for ERC1155 tokens on Nova."
-        columns:
-          - name: contract_address
-            description: "ERC1155 token contract address"
-          - *evt_tx_hash
-          - *evt_tx_from
-          - *evt_tx_to
-          - *evt_tx_index
-          - *evt_index
-          - *evt_index
-          - *evt_block_time
-          - *evt_block_number
-          - *evt_block_date
-          - *from
-          - name: ids
-            description: "ERC1155 token IDs"
-          - name: operator
-            description: "Addresses authorized (or approved) by a NFT owner to spend all of his token IDs."
-          - *to
-          - name: values
-            description: "Amounts of ERC1155 token transferred"
+            description: "Address of the token owner"
+          - name: tokenId
+            description: "Unique identifier of the specific ERC721 token (NFT) for which approval is granted/revoked"
 
       - name: evt_ApprovalForAll
-        description: "Approval for all events for ERC1155 tokens on Nova."
+        description: "{{ doc('erc721_nova_evt_ApprovalForAll_doc') }}"
         columns:
           - name: contract_address
-            description: "ERC1155 token contract address"
+            description: "Address of the ERC721 token contract"
           - *evt_tx_hash
-          - *evt_tx_from
-          - *evt_tx_to
-          - *evt_tx_index
-          - *evt_index
           - *evt_index
           - *evt_block_time
           - *evt_block_number
-          - *evt_block_date
-          - name: account
-            description: "Account"
-          - &approved
+          - &approved_flag
             name: approved
-            description: "Is approved"
-          - &operator
-            name: operator
-            description: "Operator"
+            description: "Boolean indicating whether the operator is approved for all tokens (true) or revoked (false)"
+          - *owner
+          - name: operator
+            description: "Address granted or revoked permission to manage all of the owner's tokens"
 
-  - name: erc721_nova
-    description: "Transfers events for ERC721 tokens on Nova."
+  # ===========================================
+  # ERC1155 Source
+  # ===========================================
+  - name: erc1155_nova
+    description: "Standard ERC1155 multi-token standard event tables for nova"
     tables:
-      - name: evt_transfer
-        description: "Transfers events for ERC721 tokens on Nova."
+      - name: evt_TransferSingle
+        description: "{{ doc('erc1155_nova_evt_TransferSingle_doc') }}"
         columns:
           - name: contract_address
-            description: "ERC721 token contract address"
+            description: "Address of the ERC1155 token contract"
           - *evt_tx_hash
-          - *evt_tx_from
-          - *evt_tx_to
-          - *evt_tx_index
-          - *evt_index
           - *evt_index
           - *evt_block_time
           - *evt_block_number
-          - *evt_block_date
+          - name: operator
+            description: "Address that initiated the transfer (may be owner or approved operator)"
           - *from
           - *to
-          - name: tokenId
-            description: "ERC721 token ID."
+          - name: id # Token ID being transferred
+            description: "Identifier of the specific ERC1155 token type being transferred"
+          - name: value # Amount of the token ID transferred
+            description: "Quantity of the specific ERC1155 token type transferred"
 
-      - name: evt_approval
-        description: "Approval events for ERC721 tokens on Nova."
+      - name: evt_TransferBatch
+        description: "{{ doc('erc1155_nova_evt_TransferBatch_doc') }}"
         columns:
           - name: contract_address
-            description: "ERC721 token contract address"
+            description: "Address of the ERC1155 token contract"
           - *evt_tx_hash
-          - *evt_tx_from
-          - *evt_tx_to
-          - *evt_tx_index
-          - *evt_index
           - *evt_index
           - *evt_block_time
           - *evt_block_number
-          - *evt_block_date
-          - *approved
-          - *owner
-          - name: tokenId
-            description: "ERC721 token ID."
+          - name: operator
+            description: "Address that initiated the batch transfer"
+          - *from
+          - *to
+          - name: ids # Array of token IDs transferred
+            description: "Array of identifiers for the ERC1155 token types transferred in the batch"
+          - name: values # Array of amounts transferred
+            description: "Array of quantities for each ERC1155 token type transferred, corresponding to the ids array"
 
       - name: evt_ApprovalForAll
-        description: "Approval for all events for ERC721 tokens on Nova."
+        description: "{{ doc('erc1155_nova_evt_ApprovalForAll_doc') }}"
         columns:
           - name: contract_address
-            description: "ERC721 token contract address"
+            description: "Address of the ERC1155 token contract"
           - *evt_tx_hash
-          - *evt_tx_from
-          - *evt_tx_to
-          - *evt_tx_index
           - *evt_index
           - *evt_block_time
           - *evt_block_number
-          - *evt_block_date
-          - *approved
-          - *operator
+          - *approved_flag
+          - *owner
+          - name: operator
+            description: "Address granted or revoked permission to manage all of the owner's tokens" 

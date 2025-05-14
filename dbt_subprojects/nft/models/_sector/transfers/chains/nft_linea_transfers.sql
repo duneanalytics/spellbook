@@ -17,8 +17,8 @@
     nft_transfers(
         blockchain="linea",
         base_transactions=source("linea", "transactions"),
-        erc721_transfers=source("erc721_linea", "evt_transfer"),
-        erc1155_single=source("erc1155_linea", "evt_transfersingle"),
-        erc1155_batch=source("erc1155_linea", "evt_transferbatch"),
+        erc721_transfers=source("erc721_linea", "evt_Transfer"),
+        erc1155_single=source("erc1155_linea", "evt_TransferSingle"),
+        erc1155_batch=source("erc1155_linea", "evt_TransferBatch"),
     )
 }}
