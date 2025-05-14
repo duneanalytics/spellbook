@@ -6,7 +6,7 @@
 %}
 
 WITH base_trades as (
-    SELECT
+    SELEC
         *
     FROM
         {{ base_trades }}
