@@ -1,7 +1,7 @@
 {{ config(
         schema = 'tokens_arbitrum',
         alias = 'balances_daily_agg',
-        materialized = 'view'
+        materialized = 'ephemeral'
         )
 }}
 

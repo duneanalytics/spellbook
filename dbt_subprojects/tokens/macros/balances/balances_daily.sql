@@ -10,18 +10,38 @@ with changed_balances as (
     ,token_standard
     ,token_id
     ,balance
+    ,balance_raw
     ,lead(cast(day as timestamp)) over (partition by token_address,address,token_id order by day asc) as next_update_day
     from {{balances_daily_agg}}
+    where balance_raw > 0
+    {% if var('address_param', 'all') != 'all' %}
+    AND address = LOWER('{{ var('address_param') }}')
+    {% endif %}
+    {% if var('token_address_param', 'all') != 'all' %}
+    AND token_address = LOWER('{{ var('token_address_param') }}')
+    {% endif %}
+    {% if var('blockchain_param', 'all') != 'all' %}
+    AND blockchain = LOWER('{{ var('blockchain_param') }}')
+    {% endif %}
+)
+
+,days_range as (
+    select
+        min(day) as min_day,
+        coalesce(max(next_update_day) - interval '1' day, date(date_trunc('day',now()))) as max_day
+    from changed_balances
 )
 
 ,days as (
-    select *
-    from unnest(
-         sequence(cast('{{start_date}}' as date)
-                , date(date_trunc('day',now()))
-                , interval '1' day
+    select day_val as day
+    from days_range dr
+    CROSS JOIN unnest(
+         sequence( dr.min_day
+                 , dr.max_day
+                 , interval '1' day
                 )
-         ) as foo(day)
+         ) as foo(day_val)
+    WHERE dr.min_day IS NOT NULL AND dr.max_day IS NOT NULL AND dr.min_day <= dr.max_day
 )
 
 , forward_fill as (

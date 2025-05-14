@@ -1,7 +1,7 @@
 {{ config(
         schema = 'tokens_arbitrum',
         alias = 'balances_daily',
-        materialized = 'view',
+        materialized = 'ephemeral',
         post_hook = '{{ expose_spells(
                         blockchains = \'["arbitrum"]\',
                         spell_type = "sector",
