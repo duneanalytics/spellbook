@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ton
       sector: infrastructure
-      contributors: markysha
+      contributors: markysha, pshuvalov
     config:
       tags: ['ton', 'dns', 'infrastructure']
     description: >
@@ -37,7 +37,7 @@ models:
     meta:
       blockchain: ton
       sector: infrastructure
-      contributors: markysha
+      contributors: markysha, pshuvalov
     config:
       tags: ['ton', 'dns', 'infrastructure']
     description: >
@@ -62,4 +62,24 @@ models:
         description: "address to which .ton domain reffers. null value means delete of dns record"
       - name: delegate_initiator
         description: "address who initiated latest delegate of this dns"
-  
+  - name: dns_ton_address_book
+    meta:
+      blockchain: ton
+      sector: infrastructure
+      contributors: pshuvalov
+    config:
+      tags: ['ton', 'dns', 'infrastructure']
+    description: >
+      Mapping between addresses and their best matching .ton domain
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - domain
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - name: domain
+        description: ".ton domain"
+      - name: address
+        description: "Owner address"
