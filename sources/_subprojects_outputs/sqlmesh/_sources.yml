@@ -155,3 +155,26 @@ sources:
           - name: next_update
             description: "Expected timestamp of the next price update"
             type: "timestamp(3) with time zone"
+
+  - name: tokens_solana
+    tables:
+      - name: fungible
+        description: "Fungible Token Program Mint Addresses, Symbols and Decimals"
+        columns:
+          - name: token_mint_address
+            description: "fungible token mint address on Solana"
+          - name: symbol
+            description: "token symbol"
+          - name: decimals
+            description: "Number of decimals, refers to how divisible a token can be"
+          - name: metadata_program
+            description: program used for creating token metadata
+          - name: token_version
+            description: version of the token program used (spl_token, token2022)
+          - name: created_at
+            description: token mint created at
+          - name: init_tx
+            description: "transaction that initialized the mint"
+  - name: solana_utils
+    tables:
+      - name: token_address_mapping
