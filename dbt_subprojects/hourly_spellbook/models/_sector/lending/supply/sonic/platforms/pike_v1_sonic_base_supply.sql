@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'pike_v1_arbitrum',
+    schema = 'pike_v1_sonic',
     alias = 'base_supply',
     materialized = 'incremental',
     file_format = 'delta',
@@ -12,7 +12,7 @@
 
 {{
   lending_pike_v1_compatible_supply(
-    blockchain = 'arbitrum',
+    blockchain = 'sonic',
     project = 'pike',
     version = '1'
   )

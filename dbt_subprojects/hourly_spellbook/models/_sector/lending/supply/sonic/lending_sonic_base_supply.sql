@@ -8,7 +8,8 @@
 
 {%
   set models = [
-    ref('aave_v3_sonic_base_supply')
+    ref('aave_v3_sonic_base_supply'),
+    ref('pike_v1_sonic_base_supply')
   ]
 %}
 

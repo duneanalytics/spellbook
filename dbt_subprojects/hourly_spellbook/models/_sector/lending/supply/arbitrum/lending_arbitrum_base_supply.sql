@@ -13,8 +13,7 @@
     ref('radiant_arbitrum_base_supply'),
     ref('lodestar_v0_arbitrum_base_supply'),
     ref('lodestar_v1_arbitrum_base_supply'),
-    ref('granary_arbitrum_base_supply'),
-    ref('pike_v1_arbitrum_base_supply')
+    ref('granary_arbitrum_base_supply')
   ]
 %}
 
