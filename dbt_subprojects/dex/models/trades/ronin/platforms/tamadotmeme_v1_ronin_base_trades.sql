@@ -7,11 +7,9 @@
     unique_key = ['tx_hash', 'evt_index']
 ) }}
 
-{% set 
-  project_start_date = '2025-01-21 14:07',
-  wron_token_address = '0xe514d9deb7966c8be0ca922de8a064264ea6bcd4',
-  edge_case_tx_address = '0x9b0a1d03ea99a8b3cf9b7e73e0aa1b805ce45c54'
- %}
+{% set project_start_date = '2025-01-21 14:07' %}
+{% set wron_token_address = '0xe514d9deb7966c8be0ca922de8a064264ea6bcd4' %}
+{% set edge_case_tx_address = '0x9b0a1d03ea99a8b3cf9b7e73e0aa1b805ce45c54' %}
 
 
 -- Process "buy" transactions:
