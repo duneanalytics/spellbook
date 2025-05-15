@@ -1,0 +1,241 @@
+version: 2
+
+models:
+  - name: phantom_swapper_solana_fee_token_prices
+    description: "Historical prices of tokens used for fee payments by Phantom Swapper on Solana"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - minute
+            - contract_address_varbinary
+    columns:
+      - name: minute
+        description: "The minute timestamp for the price data"
+        tests:
+          - not_null
+      - name: blockchain
+        description: "The blockchain (solana)"
+        tests:
+          - not_null
+      - name: contract_address_varbinary
+        description: "The varbinary contract address of the token"
+        tests:
+          - not_null
+      - name: contract_address_base58
+        description: "The base58 mint address of the token"
+        tests:
+          - not_null
+      - name: symbol
+        description: "The symbol of the token"
+        tests:
+          - not_null
+      - name: price
+        description: "The price of the token in USD"
+        tests:
+          - not_null
+      - name: decimals
+        description: "The number of decimals of the token"
+        tests:
+          - not_null
+
+  - name: phantom_swapper_solana_fee_payments_raw
+    description: "Raw fee payments collected by Phantom Swapper on Solana"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - tx_id
+            - token_address
+    columns:
+      - name: block_time
+        description: "The timestamp when the fee was paid"
+        tests:
+          - not_null
+      - name: block_month
+        description: "The month of the block when the fee was paid, used for partitioning"
+        tests:
+          - not_null
+      - name: blockchain
+        description: "The blockchain (solana)"
+        tests:
+          - not_null
+      - name: amount
+        description: "The amount of tokens paid as fee. For SOL, this is in SOL (not lamports)"
+        tests:
+          - not_null
+      - name: token_address
+        description: "The mint address of the token used to pay the fee. For SOL payments, this will be So11111111111111111111111111111111111111112"
+        tests:
+          - not_null
+      - name: fee_receiver
+        description: "The address that received the fee payment"
+        tests:
+          - not_null
+      - name: tx_id
+        description: "The transaction ID where the fee was paid"
+        tests:
+          - not_null
+      - name: index
+        description: "The order of the fee payment within the transaction, with SOL always getting index 1 when present, followed by other tokens in alphabetical order"
+        tests:
+          - not_null
+
+  - name: phantom_swapper_solana_fee_payments_usd
+    description: "Fee payments collected by Phantom Swapper on Solana enriched with USD values"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - tx_id
+            - token_address
+    columns:
+      - name: block_time
+        description: "The timestamp when the fee was paid"
+        tests:
+          - not_null
+      - name: block_month
+        description: "The month of the block when the fee was paid, used for partitioning"
+        tests:
+          - not_null
+      - name: blockchain
+        description: "The blockchain (solana)"
+        tests:
+          - not_null
+      - name: amount
+        description: "The amount of tokens paid as fee. For SOL, this is in SOL (not lamports)"
+        tests:
+          - not_null
+      - name: token_address
+        description: "The mint address of the token used to pay the fee. For SOL payments, this will be So11111111111111111111111111111111111111112"
+        tests:
+          - not_null
+      - name: fee_receiver
+        description: "The address that received the fee payment"
+        tests:
+          - not_null
+      - name: tx_id
+        description: "The transaction ID where the fee was paid"
+        tests:
+          - not_null
+      - name: index
+        description: "The order of the fee payment within the transaction, with SOL always getting index 1 when present, followed by other tokens in alphabetical order"
+        tests:
+          - not_null
+      - name: token_price_usd
+        description: "The USD price of the token at the time of the payment"
+      - name: token_symbol
+        description: "The symbol of the token used for payment"
+      - name: token_decimals
+        description: "The number of decimals of the token used for payment"
+      - name: amount_usd
+        description: "The USD value of the fee payment (amount * token_price_usd)"
+
+  - name: phantom_swapper_solana_trades
+    description: "Trades executed by Phantom Swapper on Solana, enriched with fee payment information"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - tx_id
+            - outer_instruction_index
+            - inner_instruction_index
+    columns:
+      - name: blockchain
+        description: "The blockchain (solana)"
+        tests:
+          - not_null
+      - name: block_time
+        description: "The timestamp when the trade was executed"
+        tests:
+          - not_null
+      - name: block_date
+        description: "The date when the trade was executed"
+        tests:
+          - not_null
+      - name: block_month
+        description: "The month when the trade was executed, used for partitioning"
+        tests:
+          - not_null
+      - name: amount_usd
+        description: "The total USD value of the trade"
+      - name: type
+        description: "The type of trade (Buy/Sell), determined by whether SOL was sold"
+        tests:
+          - not_null
+      - name: token_bought_amount
+        description: "The amount of tokens bought in the trade"
+        tests:
+          - not_null
+      - name: token_bought_symbol
+        description: "The symbol of the token bought"
+      - name: token_bought_address
+        description: "The mint address of the token bought"
+      - name: token_sold_amount
+        description: "The amount of tokens sold in the trade"
+        tests:
+          - not_null
+      - name: token_sold_symbol
+        description: "The symbol of the token sold"
+      - name: token_sold_address
+        description: "The mint address of the token sold"
+      - name: fee_usd
+        description: "The USD value of the fee paid for the trade"
+      - name: fee_token_amount
+        description: "The amount of tokens paid as fee"
+        tests:
+          - not_null
+      - name: fee_token_symbol
+        description: "The symbol of the token used to pay the fee"
+      - name: fee_token_address
+        description: "The mint address of the token used to pay the fee"
+        tests:
+          - not_null
+      - name: project
+        description: "The project name of the DEX"
+        tests:
+          - not_null
+      - name: version
+        description: "The version of the contract built and deployed by the DEX project"
+        tests:
+          - not_null
+      - name: token_pair
+        description: "The token symbol pair for each token involved in the trade"
+      - name: project_contract_address
+        description: "The project contract address which executed the trade on the blockchain"
+      - name: user
+        description: "The address which initiated the trade"
+        tests:
+          - not_null
+      - name: tx_id
+        description: "The unique transaction hash value tied to each transaction on the DEX"
+        tests:
+          - not_null
+      - name: block_slot
+        description: "The block slot of the DEX transaction"
+        tests:
+          - not_null
+      - name: tx_index
+        description: "The index of the corresponding trade event"
+        tests:
+          - not_null
+      - name: outer_instruction_index
+        description: "The index of the outer instruction in the transaction"
+        tests:
+          - not_null
+      - name: inner_instruction_index
+        description: "The index of the inner instruction in the transaction"
+        tests:
+          - not_null
+      - name: is_last_trade_in_transaction
+        description: "Whether the trade is the last hop of the trade transaction, in case of a multi-hop trade"
+        tests:
+          - not_null
+
+  - name: phantom_swapper_solana_fee_addresses
+    description: "Accounts Phantom uses to receive swap fees"
+    columns:
+      - name: fee_receiver
+        description: "Address of the fee receiving wallet"
+        tests:
+          - not_null
