@@ -36,9 +36,9 @@ with _domains as (
   -- only one domain delegated to the address
   when cardinality(delegated_domains) = 1 then delegated_domains[1]
   -- multiple domains delegated to the address, choose the shortest one
-  when cardinality(delegated_domains) > 1 then array_sort(delegated_domains, (x, y) -> IF(length(x) > length(y), 1, IF(length(x) = length(y), 0, -1)))[1]
+  when cardinality(delegated_domains) > 1 then array_sort(delegated_domains, (x, y) -> IF(length(x) > length(y), 1, IF(length(x) = length(y), IF(x > y, 1, -1), -1)))[1]
   -- no domains delegated to the address, choose the shortest one from all domains
-  when cardinality(delegated_domains) = 0 then array_sort(domains, (x, y) -> IF(length(x) > length(y), 1, IF(length(x) = length(y), 0, -1)))[1]
+  when cardinality(delegated_domains) = 0 then array_sort(domains, (x, y) -> IF(length(x) > length(y), 1, IF(length(x) = length(y), IF(x > y, 1, -1), -1)))[1]
   else null
   end as domain
   from _out
