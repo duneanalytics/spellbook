@@ -11,7 +11,7 @@
         pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
         )
 }}
-
+{% set project_start_date = '2025-03-17' %}
 with calls as (
     select
         account_pool_state
