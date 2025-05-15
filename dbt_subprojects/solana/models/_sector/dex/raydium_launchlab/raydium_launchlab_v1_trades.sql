@@ -55,3 +55,5 @@ and dex_trades.block_time >= TIMESTAMP '{{project_start_date}}'
 {% if is_incremental() -%}
  and {{incremental_predicate('dex_trades.block_time')}}
 {% endif -%}
+
+
