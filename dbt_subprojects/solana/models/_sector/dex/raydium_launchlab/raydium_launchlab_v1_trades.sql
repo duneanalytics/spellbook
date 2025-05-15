@@ -2,11 +2,11 @@
   config(
         schema = 'raydium_launchlab_v1',
         alias = 'trades',
-        materialized = 'view',
+        materialized = 'incremental',
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "project",
                                     "raydium_launchlab_v1",
-                                    \'["ilemi"]\') }}')
+                                    \'["krishhh"]\') }}')
 }}
 
 select
@@ -39,7 +39,17 @@ select
       , outer_instruction_index
       , inner_instruction_index
       , tx_index
-from {{ref('dex_solana_trades')}}
+      , account_platform_config
+from {{ref('dex_solana_trades')}} as dex_trades
+left join {{ref('raydium_launchlab_v1_base_trades')}} as base
+      on dex_trades.tx_id = base.tx_id 
+      and dex_trades.outer_instruction_index = base.outer_instruction_index
+      and dex_trades.inner_instruction_index = base.inner_instruction_index
+      and dex_trades.tx_index = base.tx_index
+      and dex_trades.block_slot = base.block_slot
+      and dex_trades.block_time = base.block_time
 where project = 'raydium_launchlab' and version = 1
-
-
+and dex_trades.block_time >= TIMESTAMP '{{project_start_date}}'
+{% if is_incremental() -%}
+    and {{incremental_predicate('dex_trades.block_time')}}
+{% endif -%}

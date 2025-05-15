@@ -7,7 +7,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['block_month', 'block_slot', 'tx_index', 'outer_instruction_index', 'inner_instruction_index'],
+        unique_key = ['block_month', 'block_slot', 'tx_index', 'outer_instruction_index', 'inner_instruction_index', 'token_bought_vault', 'token_sold_vault'],
         pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
         )
 }}
@@ -26,6 +26,9 @@ with calls as (
         , call_tx_index
         , account_base_token_mint
         , account_quote_token_mint
+        ,account_platform_config
+        ,account_base_vault
+        ,account_quote_vault
     from
         {{ source('raydium_solana', 'raydium_launchpad_call_buy_exact_in') }}
     {% if is_incremental() -%}
@@ -33,7 +36,8 @@ with calls as (
             {{incremental_predicate('call_block_time')}}
     {% else -%}
         where
-            call_block_time >= CURRENT_TIMESTAMP - interval '7' day
+            call_block_time >= TIMESTAMP '{{project_start_date}}'
+
     {% endif -%}
     union all
     select
@@ -49,6 +53,9 @@ with calls as (
         , call_tx_index
         , account_base_token_mint
         , account_quote_token_mint
+        , account_platform_config
+        ,account_base_vault
+        ,account_quote_vault
     from
         {{ source('raydium_solana', 'raydium_launchpad_call_buy_exact_out') }}
     {% if is_incremental() -%}
@@ -56,7 +63,7 @@ with calls as (
             {{incremental_predicate('call_block_time')}}
     {% else -%}
         where
-            call_block_time >= CURRENT_TIMESTAMP - interval '7' day
+            call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif -%}
     union all
     select
@@ -72,6 +79,9 @@ with calls as (
         , call_tx_index
         , account_base_token_mint
         , account_quote_token_mint
+        , account_platform_config
+        ,account_base_vault
+        ,account_quote_vault
     from
         {{ source('raydium_solana', 'raydium_launchpad_call_sell_exact_in') }}
     {% if is_incremental() -%}
@@ -79,7 +89,7 @@ with calls as (
             {{incremental_predicate('call_block_time')}}
     {% else -%}
         where
-            call_block_time >= CURRENT_TIMESTAMP - interval '7' day
+            call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif -%}
     union all
     select
@@ -95,6 +105,9 @@ with calls as (
         , call_tx_index
         , account_base_token_mint
         , account_quote_token_mint
+        , account_platform_config
+        ,account_base_vault
+        ,account_quote_vault
     from
         {{ source('raydium_solana', 'raydium_launchpad_call_sell_exact_out') }}
     {% if is_incremental() -%}
@@ -102,7 +115,7 @@ with calls as (
             {{incremental_predicate('call_block_time')}}
     {% else -%}
         where
-            call_block_time >= CURRENT_TIMESTAMP - interval '7' day
+            call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif -%}
 )
 
@@ -110,12 +123,13 @@ with calls as (
     SELECT
         sp.call_block_time as block_time
         , sp.call_block_slot as block_slot
-        , 'launchlab' as project
+        , 'raydium_launchlab' as project
         , 1 as version
         , 'solana' as blockchain
         , case when sp.call_is_inner = False then 'direct'
             else sp.call_outer_executing_account
             end as trade_source
+        , sp.account_platform_config as account_platform_config
         -- -- token bought is always the second instruction (transfer) in the inner instructions
         , trs_base.amount as token_bought_amount_raw
         , trs_quote.amount as token_sold_amount_raw
@@ -135,21 +149,23 @@ with calls as (
         AND trs_base.block_slot = sp.call_block_slot
         AND trs_base.outer_instruction_index = sp.call_outer_instruction_index
         AND trs_base.token_mint_address = sp.account_base_token_mint
+        AND trs_base.to_token_account = sp.account_base_vault
         AND (
-            (sp.call_is_inner = false AND trs_base.inner_instruction_index IN (1, 2, 3))
-            OR (sp.call_is_inner = true AND trs_base.inner_instruction_index IN (sp.call_inner_instruction_index + 1, sp.call_inner_instruction_index + 2))
+            (sp.call_is_inner = false AND trs_base.inner_instruction_index BETWEEN 1 AND 24)
+            OR (sp.call_is_inner = true AND trs_base.inner_instruction_index BETWEEN sp.call_inner_instruction_index + 1 AND sp.call_inner_instruction_index + 24)
         )
-        AND trs_base.block_time >= CURRENT_TIMESTAMP - interval '7' day
+        AND trs_base.block_time >= TIMESTAMP '{{project_start_date}}'
     INNER JOIN {{ ref('tokens_solana_transfers') }} as trs_quote
         ON trs_quote.tx_id = sp.call_tx_id 
         AND trs_quote.block_slot = sp.call_block_slot
         AND trs_quote.outer_instruction_index = sp.call_outer_instruction_index
         AND trs_quote.token_mint_address = sp.account_quote_token_mint
+        AND trs_quote.to_token_account = sp.account_quote_vault
         AND (
-            (sp.call_is_inner = false AND trs_quote.inner_instruction_index IN (2, 3))
-            OR (sp.call_is_inner = true AND trs_quote.inner_instruction_index IN (sp.call_inner_instruction_index + 2, sp.call_inner_instruction_index + 3))
+            (sp.call_is_inner = false AND trs_quote.inner_instruction_index BETWEEN 1 AND 24)
+            OR (sp.call_is_inner = true AND trs_quote.inner_instruction_index BETWEEN sp.call_inner_instruction_index + 1 AND sp.call_inner_instruction_index + 24)
         )
-        AND trs_quote.block_time >= CURRENT_TIMESTAMP - interval '7' day
+        AND trs_quote.block_time >= TIMESTAMP '{{project_start_date}}'
 )
 
 SELECT
@@ -174,5 +190,6 @@ SELECT
     , tb.outer_instruction_index
     , tb.inner_instruction_index
     , tb.tx_index
+    , tb.account_platform_config
 FROM all_swaps tb
 
