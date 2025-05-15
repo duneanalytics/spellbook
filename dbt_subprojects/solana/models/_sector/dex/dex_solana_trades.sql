@@ -100,6 +100,3 @@ LEFT JOIN
     ON bt.token_bought_mint_address = toBase58(tt_bought.contract_address)
     AND bt.blockchain = tt_bought.blockchain 
  WHERE 1=1
-
-
- 

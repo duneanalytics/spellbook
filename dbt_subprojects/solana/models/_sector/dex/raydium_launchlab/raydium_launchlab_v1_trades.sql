@@ -1,4 +1,4 @@
- {{
+{{
   config(
         schema = 'raydium_launchlab_v1',
         alias = 'trades',
@@ -50,10 +50,8 @@ left join {{ref('raydium_launchlab_v1_base_trades')}} as base
       and dex_trades.tx_index = base.tx_index
       and dex_trades.block_slot = base.block_slot
       and dex_trades.block_time = base.block_time
-where project = 'raydium_launchlab' and version = 1
+where dex_trades.project = 'raydium_launchlab' and dex_trades.version = 1
 and dex_trades.block_time >= TIMESTAMP '{{project_start_date}}'
 {% if is_incremental() -%}
  and {{incremental_predicate('dex_trades.block_time')}}
 {% endif -%}
-
-

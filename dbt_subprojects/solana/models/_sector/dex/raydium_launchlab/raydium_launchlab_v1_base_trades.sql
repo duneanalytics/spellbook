@@ -207,3 +207,5 @@ SELECT
     , tb.account_platform_config
 FROM all_swaps tb
 
+
+
