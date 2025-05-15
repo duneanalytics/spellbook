@@ -52,6 +52,7 @@ WITH curve AS (
             , filter = "project = 'curve'"
             , curve_ethereum = ref('curve_ethereum_base_trades')
             , curve_optimism = ref('curve_optimism_base_trades')
+            , curve_sonic = ref('curve_sonic_base_trades')
             , tokens_erc20_model = source('tokens', 'erc20')
         )
     }}
