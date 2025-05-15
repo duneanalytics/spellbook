@@ -73,10 +73,10 @@ SELECT bt.blockchain
 FROM
     base_trades bt
 LEFT JOIN
-    {{ ref('tokens_solana_fungible') }} token_bought
+    {{ source('tokens_solana','fungible') }} token_bought
     ON token_bought.token_mint_address = bt.token_bought_mint_address
 LEFT JOIN 
-    {{ ref('tokens_solana_fungible') }} token_sold 
+    {{ source('tokens_solana','fungible') }} token_sold 
     ON token_sold.token_mint_address = bt.token_sold_mint_address
 LEFT JOIN 
     {{ source('prices', 'usd') }} p_bought
