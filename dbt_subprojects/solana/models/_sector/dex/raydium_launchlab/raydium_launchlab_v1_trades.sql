@@ -9,6 +9,8 @@
                                     \'["krishhh"]\') }}')
 }}
 
+{% set project_start_date = '2025-03-17' %}
+
 select
       blockchain
       , project
@@ -44,12 +46,12 @@ from {{ref('dex_solana_trades')}} as dex_trades
 left join {{ref('raydium_launchlab_v1_base_trades')}} as base
       on dex_trades.tx_id = base.tx_id 
       and dex_trades.outer_instruction_index = base.outer_instruction_index
-      and dex_trades.inner_instruction_index = base.inner_instruction_index
+      and COALESCE(dex_trades.inner_instruction_index, 0) = COALESCE(base.inner_instruction_index, 0)
       and dex_trades.tx_index = base.tx_index
       and dex_trades.block_slot = base.block_slot
       and dex_trades.block_time = base.block_time
 where project = 'raydium_launchlab' and version = 1
 and dex_trades.block_time >= TIMESTAMP '{{project_start_date}}'
 {% if is_incremental() -%}
-    and {{incremental_predicate('dex_trades.block_time')}}
+ and {{incremental_predicate('dex_trades.block_time')}}
 {% endif -%}
