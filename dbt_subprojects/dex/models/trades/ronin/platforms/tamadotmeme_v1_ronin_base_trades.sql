@@ -7,6 +7,13 @@
     unique_key = ['tx_hash', 'evt_index']
 ) }}
 
+{% set 
+  project_start_date = '2025-01-21 14:07',
+  wron_token_address = '0xe514d9deb7966c8be0ca922de8a064264ea6bcd4',
+  edge_case_tx_address = '0x9b0a1d03ea99a8b3cf9b7e73e0aa1b805ce45c54'
+ %}
+
+
 -- Process "buy" transactions:
 -- - Normalizes token amounts (dividing by 10^18).
 -- - Joins on token creation events to get a readable token symbol.
@@ -24,7 +31,7 @@ with buy AS (
     cast(bet.output_amountOut as double) AS token_bought_amount_raw,
     cast(bet.amountIn as double) AS token_sold_amount_raw,
     bet.token AS token_bought_address,
-    0xe514d9deb7966c8be0ca922de8a064264ea6bcd4 AS token_sold_address, -- All tokens on tamadot meme are bought using RONIN
+    '{{wron_token_address}}' AS token_sold_address, -- All tokens on tamadot meme are bought using RONIN
     bet.call_tx_from AS taker,
     bet.contract_address AS maker,
     bet.contract_address AS project_contract_address,
@@ -37,12 +44,12 @@ with buy AS (
   FROM  {{ source('tamadotmeme_ronin', 'maincontract_call_buytokenswitheth') }} AS bet
   LEFT JOIN  {{ source('tamadotmeme_ronin', 'maincontract_evt_tokencreated') }} AS tc
     ON bet.token = tc.token
-  WHERE call_block_time >= TRY_CAST('2025-01-21 14:07' AS TIMESTAMP)
+  WHERE call_block_time >= TRY_CAST('{{project_start_date}}' AS TIMESTAMP)
     {% if is_incremental() %}
     AND
         {{ incremental_predicate('bet.call_block_time') }}
     {% endif %}
-  and call_tx_to!=0x9b0a1d03ea99a8b3cf9b7e73e0aa1b805ce45c54 -- edge case where the tx is both a buy and a sell and coincentally the same token has the same event indiex in respective table
+  and call_tx_to!='{{edge_case_tx_address}}' -- edge case where the tx is both a buy and a sell and coincentally the same token has the same event indiex in respective table
   and call_success
 ),
 
@@ -60,7 +67,7 @@ sell AS (
     ste.call_block_number AS block_number,
     cast(ste.output_amountOut as double) AS token_bought_amount_raw,
     cast(ste.amountIn as double) AS token_sold_amount_raw,
-    0xe514d9deb7966c8be0ca922de8a064264ea6bcd4 AS token_bought_address,  -- All tokens on tamadot meme are sold for RONIN
+    '{{wron_token_address}}' AS token_bought_address,  -- All tokens on tamadot meme are sold for RONIN
     ste.token AS token_sold_address,
     ste.call_tx_from AS taker,
     ste.call_tx_to AS maker,
@@ -74,12 +81,12 @@ sell AS (
   FROM  {{ source('tamadotmeme_ronin', 'maincontract_call_selltokensforeth') }} AS ste
   LEFT JOIN  {{ source('tamadotmeme_ronin', 'maincontract_evt_tokencreated') }} AS tc
     ON ste.token = tc.token
-  WHERE call_block_time >= TRY_CAST('2025-01-21 14:07' AS TIMESTAMP)
+  WHERE call_block_time >= TRY_CAST('{{project_start_date}}' AS TIMESTAMP)
     {% if is_incremental() %}
     AND
         {{ incremental_predicate('ste.call_block_time') }}
     {% endif %}
-  and call_tx_to!=0x9b0a1d03ea99a8b3cf9b7e73e0aa1b805ce45c54 -- edge case where the tx is both a buy and a sell and coincentally the same token has the same event indiex in respective table
+  and call_tx_to!='{{edge_case_tx_address}}' -- edge case where the tx is both a buy and a sell and coincentally the same token has the same event indiex in respective table
   and call_success
 )
 
