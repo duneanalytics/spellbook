@@ -63,7 +63,7 @@ with celo_transfers as (
         ,substring(to_hex(t.data), 1, 10) as tx_method_id
         ,t.to AS tx_to
         ,t."from" AS tx_from
-    from {{ source('erc20_celo', 'evt_transfer') }} as r
+    from {{ source('erc20_celo', 'evt_Transfer') }} as r
     join {{ source('celo', 'transactions') }} as t
         on r.evt_tx_hash = t.hash
         and r.evt_block_time = t.block_time

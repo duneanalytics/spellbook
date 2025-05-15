@@ -167,7 +167,9 @@ with tokens AS (
         evt_tx_hash,
         contract_address,
         'ethereum' as blockchain
-    FROM  {{ source('erc20_ethereum', 'evt_Transfer') }}
+
+    FROM  {{source('erc20_ethereum','evt_Transfer')}}
+
     WHERE contract_address IN (SELECT address FROM tokens)
     AND to IN (
         SELECT
@@ -198,7 +200,9 @@ with tokens AS (
         t.evt_tx_hash,
         t.contract_address,
         'ethereum' as blockchain
-    FROM  {{ source('erc20_ethereum', 'evt_Transfer') }} t
+
+    FROM  {{source('erc20_ethereum','evt_Transfer')}} t
+
     join  {{source('lido_ethereum','steth_evt_Submitted')}} s on t.evt_tx_hash = s.evt_tx_hash
     WHERE t.contract_address = 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84
     AND t.to in (select address from multisigs_list where chain = 'Ethereum' and name ='Aragon')

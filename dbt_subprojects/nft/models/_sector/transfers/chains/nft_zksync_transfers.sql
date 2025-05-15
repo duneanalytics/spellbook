@@ -14,7 +14,7 @@
 {{nft_transfers(
     blockchain='zksync'
     , base_transactions = source('zksync','transactions')
-    , erc721_transfers = source('erc721_zksync','evt_transfer')
-    , erc1155_single = source('erc1155_zksync','evt_transfersingle')
-    , erc1155_batch = source('erc1155_zksync', 'evt_transferbatch')
+    , erc721_transfers = source('erc721_zksync','evt_Transfer')
+    , erc1155_single = source('erc1155_zksync','evt_TransferSingle')
+    , erc1155_batch = source('erc1155_zksync', 'evt_TransferBatch')
 )}}

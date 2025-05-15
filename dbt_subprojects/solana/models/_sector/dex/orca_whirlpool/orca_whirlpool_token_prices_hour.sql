@@ -92,7 +92,7 @@ SELECT t1.token_mint as contract_address,
     CAST(DATE_TRUNC('month', t1.hour) as date) as block_month
 FROM all_trades t1
     JOIN
-        {{ ref('tokens_solana_fungible') }}  t2 ON t1.token_mint = t2.token_mint_address
+        {{ source('tokens_solana','fungible') }}  t2 ON t1.token_mint = t2.token_mint_address
 GROUP BY 1,
     2,
     3,
