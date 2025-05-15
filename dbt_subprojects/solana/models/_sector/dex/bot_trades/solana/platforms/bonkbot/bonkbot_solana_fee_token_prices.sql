@@ -10,7 +10,7 @@
     )
 }}
 
-{% set project_start_date = "2023-08-17" %}
+{% set project_start_date = '2024-01-01' %}
 
 with
     fee_payments as (
@@ -29,6 +29,7 @@ with
             contract_address_varbinary, contract_address_base58, blockchain, minute
         from fee_payments
     )
+-- TODO: remove this comment
 select
     tokens.minute,
     cast(date_trunc('month', tokens.minute) as date) as block_month,
