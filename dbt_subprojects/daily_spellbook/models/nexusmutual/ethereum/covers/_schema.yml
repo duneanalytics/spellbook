@@ -250,6 +250,125 @@ models:
       - name: trace_address
       - *tx_hash
 
+  - name: nexusmutual_ethereum_covers_full_list
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "covers"]
+    description: "Nexus Mutual Covers Full List"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - version
+            - cover_id
+            - staking_pool
+    columns:
+      - *block_time 
+      - *block_date
+      - *block_number
+      - &version
+        name: version
+        description: "cover version (1/2)"
+      - *cover_id
+      - *cover_start_time
+      - *cover_end_time
+      - *cover_start_date
+      - *cover_end_date
+      - *is_migrated
+      - &cover_period
+        name: cover_period
+        description: "cover period (in days)"
+      - *staking_pool
+      - *product_id
+      - *product_type
+      - *product_name
+      - *cover_owner
+      - *cover_asset
+      - *sum_assured
+      - &cover_amount
+        name: cover_amount
+        description: "cover amount per staking pool"
+      - *tx_hash
+      - &eth_cover_amount
+        name: eth_cover_amount
+        description: "ETH cover amount"
+      - &dai_cover_amount
+        name: dai_cover_amount
+        description: "DAI cover amount"
+      - &usdc_cover_amount
+        name: usdc_cover_amount
+        description: "USDC cover amount"
+      - &cbbtc_cover_amount
+        name: cbbtc_cover_amount
+        description: "cbBTC cover amount"
+      - &eth_eth_cover
+        name: eth_eth_cover
+        description: "ETH cover (in ETH)"
+      - &eth_usd_cover
+        name: eth_usd_cover
+        description: "ETH cover (in USD)"
+      - &dai_eth_cover
+        name: dai_eth_cover
+        description: "DAI cover (in ETH)"
+      - &dai_usd_cover
+        name: dai_usd_cover
+        description: "DAI cover (in USD)"
+      - &usdc_eth_cover
+        name: usdc_eth_cover
+        description: "USDC cover (in ETH)"
+      - &usdc_usd_cover
+        name: usdc_usd_cover
+        description: "USDC cover (in USD)"
+      - &cbbtc_eth_cover
+        name: cbbtc_eth_cover
+        description: "cbBTC cover (in ETH)"
+      - &cbbtc_usd_cover
+        name: cbbtc_usd_cover
+        description: "cbBTC cover (in USD)"
+      - *premium_asset
+      - *premium
+      - &eth_premium_amount
+        name: eth_premium_amount
+        description: "ETH premium amount"
+      - &dai_premium_amount
+        name: dai_premium_amount
+        description: "DAI premium amount"
+      - &nxm_premium_amount
+        name: nxm_premium_amount
+        description: "NXM premium amount"
+      - &eth_eth_premium
+        name: eth_eth_premium
+        description: "ETH premium (in ETH)"
+      - &eth_usd_premium
+        name: eth_usd_premium
+        description: "ETH premium (in USD)"
+      - &dai_eth_premium
+        name: dai_eth_premium
+        description: "DAI premium (in ETH)"
+      - &dai_usd_premium
+        name: dai_usd_premium
+        description: "DAI premium (in USD)"
+      - &usdc_eth_premium
+        name: usdc_eth_premium
+        description: "USDC premium (in ETH)"
+      - &usdc_usd_premium
+        name: usdc_usd_premium
+        description: "USDC premium (in USD)"
+      - &cbbtc_eth_premium
+        name: cbbtc_eth_premium
+        description: "cbBTC premium (in ETH)"
+      - &cbbtc_usd_premium
+        name: cbbtc_usd_premium
+        description: "cbBTC premium (in USD)"
+      - &nxm_eth_premium
+        name: nxm_eth_premium
+        description: "NXM premium (in ETH)"
+      - &nxm_usd_premium
+        name: nxm_usd_premium
+        description: "NXM premium (in USD)"
+
   - name: nexusmutual_ethereum_active_covers
     meta:
       blockchain: ethereum
@@ -278,7 +397,7 @@ models:
       - *sum_assured
       - *partial_cover_amount
       - name: total_cover_amount
-      - name: eth_cover_amount
+      - *eth_cover_amount
       - name: eth_usd_cover_amount
       - name: dai_eth_cover_amount
       - name: dai_usd_cover_amount
