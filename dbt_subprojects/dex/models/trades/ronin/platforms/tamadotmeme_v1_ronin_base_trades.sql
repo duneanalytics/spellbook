@@ -29,7 +29,7 @@ with buy AS (
     cast(bet.output_amountOut as double) AS token_bought_amount_raw,
     cast(bet.amountIn as double) AS token_sold_amount_raw,
     bet.token AS token_bought_address,
-    '{{wron_token_address}}' AS token_sold_address, -- All tokens on tamadot meme are bought using RONIN
+    {{wron_token_address}} AS token_sold_address, -- All tokens on tamadot meme are bought using RONIN
     bet.call_tx_from AS taker,
     bet.contract_address AS maker,
     bet.contract_address AS project_contract_address,
@@ -47,7 +47,7 @@ with buy AS (
     AND
         {{ incremental_predicate('bet.call_block_time') }}
     {% endif %}
-  and call_tx_to!='{{edge_case_tx_address}}' -- edge case where the tx is both a buy and a sell and coincentally the same token has the same event indiex in respective table
+  and call_tx_to!={{edge_case_tx_address}} -- edge case where the tx is both a buy and a sell and coincentally the same token has the same event indiex in respective table
   and call_success
 ),
 
@@ -65,7 +65,7 @@ sell AS (
     ste.call_block_number AS block_number,
     cast(ste.output_amountOut as double) AS token_bought_amount_raw,
     cast(ste.amountIn as double) AS token_sold_amount_raw,
-    '{{wron_token_address}}' AS token_bought_address,  -- All tokens on tamadot meme are sold for RONIN
+    {{wron_token_address}} AS token_bought_address,  -- All tokens on tamadot meme are sold for RONIN
     ste.token AS token_sold_address,
     ste.call_tx_from AS taker,
     ste.call_tx_to AS maker,
@@ -84,7 +84,7 @@ sell AS (
     AND
         {{ incremental_predicate('ste.call_block_time') }}
     {% endif %}
-  and call_tx_to!='{{edge_case_tx_address}}' -- edge case where the tx is both a buy and a sell and coincentally the same token has the same event indiex in respective table
+  and call_tx_to!={{edge_case_tx_address}} -- edge case where the tx is both a buy and a sell and coincentally the same token has the same event indiex in respective table
   and call_success
 )
 
