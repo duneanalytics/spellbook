@@ -180,6 +180,7 @@ models:
       - &block_number
         name: block_number
         description: "event block number"
+      - *pool_id
       - *pool_address
       - &token_id
         name: token_id

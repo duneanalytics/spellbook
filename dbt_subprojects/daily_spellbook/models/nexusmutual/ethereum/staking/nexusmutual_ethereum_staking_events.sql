@@ -16,7 +16,7 @@
 
 with
 
-staked_nxm_history as (
+staking_events as (
   select
     'deposit' as flow_type,
     sd.evt_block_time as block_time,
@@ -108,20 +108,22 @@ staked_nxm_history as (
 )
 
 select
-  flow_type,
-  block_time,
-  date_trunc('day', block_time) as block_date,
-  block_number,
-  pool_address,
-  token_id,
-  tranche_id,
-  init_tranche_id,
-  new_tranche_id,
-  tranche_expiry_date,
-  if(tranche_expiry_date > current_date, true, false) as is_active,
-  amount,
-  topup_amount,
-  user,
-  evt_index,
-  tx_hash
-from staked_nxm_history
+  se.flow_type,
+  se.block_time,
+  date_trunc('day', se.block_time) as block_date,
+  se.block_number,
+  spl.pool_id,
+  se.pool_address,
+  se.token_id,
+  se.tranche_id,
+  se.init_tranche_id,
+  se.new_tranche_id,
+  se.tranche_expiry_date,
+  if(se.tranche_expiry_date > current_date, true, false) as is_active,
+  se.amount,
+  se.topup_amount,
+  se.user,
+  se.evt_index,
+  se.tx_hash
+from staking_events se
+  inner join {{ ref('nexusmutual_ethereum_staking_pools_list') }} spl on se.pool_address = spl.pool_address
