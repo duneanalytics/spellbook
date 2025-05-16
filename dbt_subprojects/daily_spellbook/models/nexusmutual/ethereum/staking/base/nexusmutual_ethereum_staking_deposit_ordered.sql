@@ -27,13 +27,13 @@ deposits as (
     user,
     evt_index,
     tx_hash,
-    lead(block_date, 1) over (partition by pool_address, token_id order by coalesce(tranche_id, init_tranche_id), block_time) as next_block_date,
-    lag(flow_type, 1) over (partition by pool_address, token_id order by coalesce(tranche_id, init_tranche_id), block_time) as prev_flow_type,
-    lead(flow_type, 1) over (partition by pool_address, token_id order by coalesce(tranche_id, init_tranche_id), block_time) as next_flow_type,
-    lag(token_id, 1) over (partition by pool_address, token_id order by coalesce(tranche_id, init_tranche_id), block_time) as prev_token_id,
-    lag(tranche_id, 1) over (partition by pool_address, token_id order by coalesce(tranche_id, init_tranche_id), block_time) as prev_tranche_id,
-    lead(tranche_id, 1) over (partition by pool_address, token_id order by coalesce(tranche_id, init_tranche_id), block_time) as next_tranche_id,
-    row_number() over (partition by pool_address, token_id order by coalesce(tranche_id, init_tranche_id), block_time) as deposit_rn
+    lead(block_date, 1) over (partition by pool_id, token_id order by coalesce(tranche_id, init_tranche_id), block_time) as next_block_date,
+    lag(flow_type, 1) over (partition by pool_id, token_id order by coalesce(tranche_id, init_tranche_id), block_time) as prev_flow_type,
+    lead(flow_type, 1) over (partition by pool_id, token_id order by coalesce(tranche_id, init_tranche_id), block_time) as next_flow_type,
+    lag(token_id, 1) over (partition by pool_id, token_id order by coalesce(tranche_id, init_tranche_id), block_time) as prev_token_id,
+    lag(tranche_id, 1) over (partition by pool_id, token_id order by coalesce(tranche_id, init_tranche_id), block_time) as prev_tranche_id,
+    lead(tranche_id, 1) over (partition by pool_id, token_id order by coalesce(tranche_id, init_tranche_id), block_time) as next_tranche_id,
+    row_number() over (partition by pool_id, token_id order by coalesce(tranche_id, init_tranche_id), block_time) as deposit_rn
   from {{ ref('nexusmutual_ethereum_staking_events') }}
   where flow_type in ('deposit', 'deposit extended')
 )
