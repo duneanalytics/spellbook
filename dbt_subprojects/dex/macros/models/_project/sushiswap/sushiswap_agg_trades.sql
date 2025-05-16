@@ -99,6 +99,7 @@
       call_trace_address as trace_address,
       call_tx_from   as tx_from,
       call_tx_to     as tx_to,
+      '{{ fn }}' as method,
       tokenIn        as token_sold_address,
       tokenOut       as token_bought_address,
       amountIn       as token_sold_amount_raw,
@@ -157,13 +158,14 @@ price_data as (
         tm.tx_to as maker,
         tm.project_contract_address,
         tm.tx_hash,
+        tm.method,
         CASE
           WHEN tm.trace_address IS NULL
             OR cardinality(tm.trace_address) = 0
           THEN cast(ARRAY[-1] AS array<bigint>)
           ELSE tm.trace_address
         END AS trace_address,
-        tm.evt_index,
+        CAST(-1 as integer) AS evt_index,
         'Single' as trade_type
     from tokens_mapped tm
     left join {{ source('tokens','erc20') }} t_bought on t_bought.contract_address = tm.token_bought_adjusted
@@ -183,6 +185,7 @@ select
   '{{ chain }}'    as blockchain,
   'sushiswap'      as project,
   version,
+  method,
   block_date,
   block_time,
   token_bought_symbol,
