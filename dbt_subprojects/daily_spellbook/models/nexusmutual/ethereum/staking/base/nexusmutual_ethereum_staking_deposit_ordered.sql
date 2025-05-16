@@ -14,6 +14,7 @@ deposits as (
     flow_type,
     block_time,
     block_date,
+    pool_id,
     pool_address,
     token_id,
     tranche_id,
@@ -51,6 +52,7 @@ select
     when next_block_date > tranche_expiry_date then tranche_expiry_date
     else coalesce(next_block_date, tranche_expiry_date)
   end as stake_end_date,
+  pool_id,
   pool_address,
   token_id,
   tranche_id,

@@ -16,7 +16,7 @@
 
 select
   evt_block_time as block_time,
-  poolId as pool_id,
+  cast(poolId as int) as pool_id,
   stakingPoolAddress as pool_address,
   evt_tx_hash as tx_hash
 from {{ source('nexusmutual_ethereum', 'StakingPoolFactory_evt_StakingPoolCreated') }}
