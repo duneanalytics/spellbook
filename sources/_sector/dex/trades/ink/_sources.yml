@@ -34,3 +34,7 @@ sources:
     tables:
       - name: uniswapv2pair_evt_swap
       - name: uniswapv2factory_evt_paircreated
+  - name: velodrome_ink
+    tables:
+      - name: clpool_evt_swap
+      - name: clfactory_evt_poolcreated
