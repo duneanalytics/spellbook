@@ -93,8 +93,10 @@ SELECT w.block_time
 , w."address" AS withdrawal_address
 , NULL AS withdrawal_credentials_type
 , NULL AS withdrawal_credentials
-, CASE WHEN w.amount/1e9 BETWEEN 20 AND 32 THEN w.amount/1e9 WHEN w.amount/1e9 > 32 THEN 32 END AS amount_full_withdrawn
-, CASE WHEN w.amount/1e9 < 20 THEN w.amount/1e9 WHEN w.amount/1e9 > 32 THEN (w.amount/1e9)-32 END AS amount_partial_withdrawn
+, CASE WHEN w.amount/1e9 BETWEEN 20 AND 32 THEN w.amount/1e9 WHEN w.amount/1e9 > 32 THEN w.amount/1e9 - (w.amount/1e9 % 32)
+    END AS amount_full_withdrawn
+, CASE WHEN w.amount/1e9 < 20 THEN w.amount/1e9 WHEN w.amount/1e9 > 32 THEN amount/1e9 % 32
+    END AS amount_partial_withdrawn
 , NULL AS tx_hash
 , NULL AS evt_index
 FROM {{source('ethereum', 'withdrawals')}} w

@@ -77,8 +77,10 @@ intermediate_addresses AS (
     (0x0914d4ccc4154ca864637b0b653bc5fd5e1d3ecf, 'AnySwap bridge (Polkadot, Kusama)'),
     (0x3ee18b2214aff97000d974cf647e7c347e8fa585, 'Wormhole bridge'), --Solana, Terra
     (0x9ee91F9f426fA633d227f7a9b000E28b9dfd8599, 'stMatic Contract'),
+
     (0xd0A61F2963622e992e6534bde4D52fd0a89F39E0, 'Spark PSM'),
     (0x37305B1cD40574E4C5Ce33f8e8306Be057fD7341, 'Sky PSM')
+
     ) as list(address, name)
 ),
 
