@@ -25,6 +25,7 @@
    , ref('goosefx_ssl_v2_solana_base_trades')
    , ref('pumpdotfun_solana_base_trades')
    , ref('pumpswap_solana_base_trades')    
+   , ref('stabble_solana_base_trades')
 ] %}
 
 -- excluded:    , ref('sanctum_router_base_trades')
