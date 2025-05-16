@@ -40,6 +40,13 @@ SELECT
       , trade_source
       , token_bought_amount_raw
       , token_sold_amount_raw
+      {% if dex == ref('phoenix_v1_base_trades') %}
+      , token_bought_decimal_project_specific
+      , token_sold_decimal_project_specific
+      {% else %}
+      , CAST(NULL AS BIGINT) as token_bought_decimal_project_specific
+      , CAST(NULL AS BIGINT) as token_sold_decimal_project_specific
+      {% endif %}
       , fee_tier
       , token_bought_mint_address
       , token_sold_mint_address
@@ -55,8 +62,7 @@ SELECT
 FROM
       {{ dex }}
 {% if is_incremental() %}
-WHERE
-      {{incremental_predicate('block_time')}}
+      WHERE {{incremental_predicate('block_time')}}
 {% endif %}
 {% if not loop.last %}
 UNION ALL

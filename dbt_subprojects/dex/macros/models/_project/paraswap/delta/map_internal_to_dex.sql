@@ -3,7 +3,7 @@ select
         {{from_alias}}.blockchain,
         'velora_delta' as project,
         '{{version}}' as version,
-        date_trunc('month', call_block_time) AS block_month,
+        block_month,
         DATE_TRUNC('day', call_block_time) as block_date,
         call_block_time as block_time,
         t_dest_token.symbol as token_bought_symbol,
@@ -26,8 +26,8 @@ select
         call_tx_hash as tx_hash,
         call_tx_from as tx_from,
         call_tx_to as tx_to,
-        call_trace_address as trace_address,
-        evt_index,
+        case when CARDINALITY(call_trace_address) > 0 then call_trace_address else ARRAY[-1] end as trace_address,
+        COALESCE(evt_index, 0) as evt_index, -- TMP: after joining envents in swapSettle can remove it
         order_index,
         method
     from {{from_alias}}  

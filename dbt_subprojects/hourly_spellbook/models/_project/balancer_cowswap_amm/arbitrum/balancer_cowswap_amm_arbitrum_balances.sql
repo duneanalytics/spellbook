@@ -19,7 +19,7 @@ joins AS (
         DATE_TRUNC('day', e.evt_block_time) AS day, 
         e.contract_address AS token, 
         SUM(CAST(value AS int256)) AS amount
-    FROM {{ source('erc20_arbitrum', 'evt_transfer') }} e
+    FROM {{ source('erc20_arbitrum', 'evt_Transfer') }} e
     INNER JOIN pools p ON e."to" = p.pools
     GROUP BY 1, 2, 3
 ),
@@ -30,7 +30,7 @@ exits AS (
         DATE_TRUNC('day', e.evt_block_time) AS day, 
         e.contract_address AS token, 
         - SUM(CAST(value AS int256)) AS amount
-    FROM {{ source('erc20_arbitrum', 'evt_transfer') }} e
+    FROM {{ source('erc20_arbitrum', 'evt_Transfer') }} e
     INNER JOIN pools p ON e."from" = p.pools   
     GROUP BY 1, 2, 3
 ),

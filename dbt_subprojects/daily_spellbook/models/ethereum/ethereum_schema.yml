@@ -1,0 +1,48 @@
+version: 2
+
+models:
+  - name: ethereum_network_upgrades
+    meta:
+      blockchain: ethereum
+      sector: ethereum
+      contributors: [hildobby]
+    config:
+      tags: ["ethereum", "upgrades"]
+    description: "A table with info on all Ethereum upgrades"
+    columns:
+      - &upgrade_number
+        name: upgrade_number
+        description: "The number of the upgrade"
+      - &release
+        name: release
+        description: "The name of the release"
+      - &upgrade
+        name: upgrade
+        description: "The name of the network upgrade"
+      - &block_number
+        name: block_number
+        description: "The block number at which the upgrade was merged, it is set to -1 for planned upgrades"
+      - &block_time
+        name: block_time
+        description: "The block time at which the upgrade was merged"
+      - &eips
+        name: eips
+        description: "Array of all EIPs included in respective upgrade"
+      - &description
+        name: description
+        description: "A short description of the upgrade"
+      - &more_details
+        name: more_details
+        description: "A link to more details on the upgrade"
+      - &live
+        name: live
+        description: "Is the upgrade live?"
+      - &planned
+        name: planned
+        description: "If planned, this is the ETA"
+      - &blob_target
+        name: blob_target
+        description: "The defined blob target"
+      - &blob_limit
+        name: blob_limit
+        description: "The defined blob limit"

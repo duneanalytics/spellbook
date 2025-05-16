@@ -14,7 +14,7 @@
      blockchain='bob'
      , traces = source('bob','traces')
      , transactions = source('bob','transactions')
-     , erc20_transfers = source('erc20_bob','evt_transfer')
+     , erc20_transfers = source('erc20_bob','evt_Transfer')
      , native_contract_address = var('ETH_ERC20_ADDRESS')
 )
 }}

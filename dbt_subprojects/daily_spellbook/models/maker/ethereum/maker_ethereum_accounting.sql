@@ -912,7 +912,7 @@ WITH dao_wallet AS (
          , evt.evt_tx_hash                       hash
          , t.token
          , SUM(evt.value / pow(10, decimals)) AS value
-    FROM {{ source('erc20_ethereum', 'evt_transfer') }} evt
+    FROM {{ source('erc20_ethereum', 'evt_Transfer') }} evt
     JOIN treasury_erc20s t
         ON evt.contract_address = t.contract_address
     WHERE evt.to = 0xbe8e3e3618f7474f8cb1d074a26affef007e98fb
@@ -927,7 +927,7 @@ WITH dao_wallet AS (
             , evt.evt_tx_hash hash
             , t.token
             , -SUM(evt.value/pow(10, decimals)) AS value
-    FROM {{ source('erc20_ethereum', 'evt_transfer') }} evt
+    FROM {{ source('erc20_ethereum', 'evt_Transfer') }} evt
     JOIN treasury_erc20s t
         ON evt.contract_address = t.contract_address
     WHERE evt."from" = 0xbe8e3e3618f7474f8cb1d074a26affef007e98fb
