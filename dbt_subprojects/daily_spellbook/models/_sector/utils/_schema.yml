@@ -32,6 +32,7 @@ models:
       tags: [ 'utils', 'weeks' ]
     description: >
       Utility model to have a table of weeks from bitcoin genesis to current timestamp
+      
   - name: utils_months
     meta:
       contributors: 0xRob, hildobby
@@ -39,6 +40,14 @@ models:
       tags: [ 'utils', 'months' ]
     description: >
       Utility model to have a table of months from bitcoin genesis to current timestamp
+      
+  - name: utils_years
+    meta:
+      contributors: 0xRob, hildobby
+    config:
+      tags: [ 'utils', 'years' ]
+    description: >
+      Utility model to have a table of years from bitcoin genesis to current timestamp
 
   - name: utils_days_table
     description: >
@@ -75,7 +84,7 @@ models:
 
   - name: utils_weeks_table
     description: >
-      materialized model of weeks, including some weeks in the future
+      materialized model of weeks
     columns:
       - name: timestamp
         data_tests:
@@ -86,7 +95,7 @@ models:
 
   - name: utils_months_table
     description: >
-      materialized model of months, including some months in the future
+      materialized model of months
     columns:
       - name: timestamp
         data_tests:
@@ -94,3 +103,14 @@ models:
           - dbt_utils.sequential_values:
               interval: 1
               datepart: 'month'
+
+  - name: utils_years_table
+    description: >
+      materialized model of years
+    columns:
+      - name: timestamp
+        data_tests:
+          - unique
+          - dbt_utils.sequential_values:
+              interval: 1
+              datepart: 'year'
