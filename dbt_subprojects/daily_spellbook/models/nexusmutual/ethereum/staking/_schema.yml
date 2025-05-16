@@ -287,6 +287,31 @@ models:
       - *evt_index
       - *tx_hash
 
+  - name: nexusmutual_ethereum_active_stake_daily
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "staking"]
+    description: "Staking active stake daily"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_id
+            - block_date
+    columns:
+      - *pool_id
+      - *pool_address
+      - *block_date
+      - &active_stake
+        name: active_stake
+        description: "latest daily active stake"
+      - &stake_shares_supply
+        name: stake_shares_supply
+        description: "latest daily stake shares supply"
+      - *tx_hash
+
   - name: nexusmutual_ethereum_staking_rewards
     meta:
       blockchain: ethereum
