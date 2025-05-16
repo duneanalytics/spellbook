@@ -10,6 +10,7 @@
     ,ref('paraswap_v5_ethereum_trades')
     ,ref('paraswap_v6_ethereum_trades')
     ,ref('paraswap_delta_v2_ethereum_trades')
+    ,ref('paraswap_delta_v1_ethereum_trades')
 ] %}
 
 
