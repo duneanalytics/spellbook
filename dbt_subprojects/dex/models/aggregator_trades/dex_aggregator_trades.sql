@@ -23,6 +23,7 @@
     ,ref('tokenlon_trades')
     ,ref('oneinch_ar_trades')
     ,ref('odos_trades')
+    ,ref('sushiswap_agg_trades')
 ] %}
 
 WITH enriched_aggregator_base_trades AS (
