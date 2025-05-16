@@ -1,6 +1,33 @@
 version: 2
 
 models:
+  - name: nexusmutual_ethereum_staking_pools_list
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "staking"]
+    description: "Staking pools list"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_id
+            - pool_address
+    columns:
+      - &block_time
+        name: block_time
+        description: "UTC event block time"
+      - &pool_id
+        name: pool_id
+        description: "pool id"
+      - &pool_address
+        name: pool_address
+        description: "pool contract deployment address"
+      - &tx_hash
+        name: tx_hash
+        description: "unique transaction hash value"
+
   - name: nexusmutual_ethereum_base_staking_pools
     meta:
       blockchain: ethereum
@@ -29,14 +56,8 @@ models:
         name: block_time_updated
         data_tests:
           - not_null
-      - &pool_id
-        name: pool_id
-        description: "pool id"
-        data_tests:
-          - not_null
-      - &pool_address
-        name: pool_address
-        description: "pool contract deployment address"
+      - *pool_id
+      - *pool_address
       - &manager_address
         name: manager_address
         description: "manager address"
@@ -152,9 +173,7 @@ models:
       - &flow_type
         name: flow_type
         description: "flow event type: deposit, deposit extended, withdraw or stake burn"
-      - &block_time
-        name: block_time
-        description: "UTC event block time"
+      - *block_time
       - &block_date
         name: block_date
         description: "event block date"
@@ -192,9 +211,7 @@ models:
       - &evt_index
         name: evt_index
         description: "event index"
-      - &tx_hash
-        name: tx_hash
-        description: "unique transaction hash value"
+      - *tx_hash
 
   - name: nexusmutual_ethereum_staking_deposit_ordered
     meta:
