@@ -157,7 +157,12 @@ price_data as (
         tm.tx_to as maker,
         tm.project_contract_address,
         tm.tx_hash,
-        coalesce(tm.trace_address, cast(ARRAY[-1] AS array<bigint>)) as trace_address,
+        CASE
+          WHEN tm.trace_address IS NULL
+            OR cardinality(tm.trace_address) = 0
+          THEN cast(ARRAY[-1] AS array<bigint>)
+          ELSE tm.trace_address
+        END AS trace_address,
         tm.evt_index,
         'Single' as trade_type
     from tokens_mapped tm
