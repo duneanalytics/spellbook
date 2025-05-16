@@ -1,6 +1,6 @@
 {% macro delta_v2_swap_settle_batch(blockchain) %}
 
-{% set method_start_date = '2024-10-01' %}
+{% set method_start_date = '2025-04-01' %}
 
 delta_v2_swap_settle_batch_ExpandedOrders as (
     select            
@@ -16,20 +16,27 @@ delta_v2_swap_settle_batch_ExpandedOrders as (
       -- ordersWithSigs[order_index] as extractedOrderWithSig,              
       JSON_EXTRACT_SCALAR(ordersWithSigs[order_index], '$.order') as "order", -- returns json
       JSON_EXTRACT_SCALAR(ordersWithSigs[order_index], '$.signature') as signature,                            
+      1 as ordersCount, -- TODO
       executor,
-      executorData[order_index] as executorData                     
-    FROM {{ source("paraswapdelta_"+ blockchain, "ParaswapDeltav2_call_swapSettleBatch") }}                    
+      executorData[order_index] as executorData,
+      raw_txs.gas_used as raw_tx_gas_used,
+      raw_txs.gas_price as raw_tx_gas_price
+  FROM {{ source("paraswapdelta_"+ blockchain, "ParaswapDeltav2_call_swapSettleBatch") }} ssb                   
+  left join {{blockchain}}.transactions  raw_txs 
+     on block_time > TIMESTAMP '{{method_start_date}}' 
+      AND raw_txs.hash = ssb.call_tx_hash
       CROSS JOIN UNNEST (
           -- SQL array indices start at 1
           -- also NB: if one order fails -- whole batch fails
           -- also NB: edge case: a multi-tx call, where some other method emits event with similar signature --> not valid as it won't end up in the table
           SEQUENCE(1, CARDINALITY(ordersWithSigs) )
-      ) AS t (order_index)        
+      ) AS t (order_index)
   WHERE call_block_time > TIMESTAMP '{{method_start_date}}'
     AND call_success = true        
     {% if is_incremental() %}
       AND {{ incremental_predicate('call_block_time') }}
     {% endif %}        
+     
 ),
 delta_v2_swap_settle_batch_parsed_orders as (
   select
@@ -93,12 +100,15 @@ delta_v2_swap_settle_batch_withEvents as (
 
 select 
     'swapSettleBatch' as method,
+    --
     COALESCE(CAST(s.price AS DECIMAL(38,18)), 0) AS src_token_price_usd,
-    COALESCE(CAST(d.price AS DECIMAL(38,18)), 0) AS dest_token_price_usd,     
-    {{ gas_fee_usd() }},
+    COALESCE(CAST(d.price AS DECIMAL(38,18)), 0) AS dest_token_price_usd,         
     s.price *  w.srcAmount / POWER(10, s.decimals)  AS src_token_order_usd,
     d.price *  w.destAmount / POWER(10, d.decimals)  AS dest_token_order_usd,
     w.destToken AS fee_token,
+    wrapped_native_token_address,
+    COALESCE(CAST(wnt_usd.price AS DECIMAL(38,18)), 0) AS wnt_price_usd, 
+    {{ gas_fee_usd() }},    
     w.*
 from delta_v2_swap_settle_batch_withEvents w
 
@@ -110,6 +120,15 @@ from delta_v2_swap_settle_batch_withEvents w
     {% endif %}
     AND d.contract_address = w.dest_token_for_joining
     AND d.minute = DATE_TRUNC('minute', w.call_block_time)
+    left join {{ source('evms','info') }} evm_info on evm_info.blockchain='{{blockchain}}'
+    LEFT JOIN {{ source('prices', 'usd') }} wnt_usd
+    ON wnt_usd.minute > TIMESTAMP '{{method_start_date}}'
+    AND wnt_usd.blockchain = '{{blockchain}}'
+    {% if is_incremental() %}
+      AND {{ incremental_predicate('wnt_usd.minute') }}
+    {% endif %}
+    AND wnt_usd.contract_address =  evm_info.wrapped_native_token_address
+    AND wnt_usd.minute = DATE_TRUNC('minute', w.call_block_time)
     LEFT JOIN {{ source('prices', 'usd') }} s
     ON s.minute > TIMESTAMP '{{method_start_date}}'
     AND s.blockchain = '{{blockchain}}'
@@ -141,7 +160,7 @@ from delta_v2_swap_settle_batch_withEvents w
 ), delta_v2_swapSettleBatch as (  
 SELECT
     -- NB: columns mapping must match accross all the methods, since they're unioned into one in master macro
-    '{{blockchain}}' as blockchain,
+    '{{blockchain}}' as blockchain,    
     method,
     order_index,
     call_trace_address,
@@ -151,7 +170,7 @@ SELECT
     call_tx_from,
     call_tx_to,
     evt_index,
-    executorFeeAmount as fee_amount,
+    executorFeeAmount as executor_fee_amount,
     -- orderWithSig as order_with_sig,
     executor,
     executorData as calldata_to_execute,
@@ -167,7 +186,11 @@ SELECT
     fee_token,
     src_token_price_usd,
     dest_token_price_usd,
-    gas_fee_usd,    
+    gas_fee_usd,       
+    raw_tx_gas_used,
+    raw_tx_gas_price, 
+    wnt_price_usd,
+    ordersCount,
     src_token_order_usd,
     dest_token_order_usd,
     contract_address,
@@ -182,7 +205,8 @@ SELECT
     bridgeMaxRelayerFee,
     bridgeDestinationChainId,
     bridge,
-    "order"
+    "order",
+    wrapped_native_token_address
   FROM delta_v2_swapSettleBatch_master
 )
 {% endmacro %}

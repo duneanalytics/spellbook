@@ -1,6 +1,6 @@
 {% macro map_internal_to_dex(blockchain, version, from_alias) %}
 select 
-        {{from_alias}}.blockchain,
+        src.blockchain,
         'velora_delta' as project,
         '{{version}}' as version,
         date_trunc('month', call_block_time) AS block_month,
@@ -22,7 +22,7 @@ select
         src_token as token_sold_address,
         owner as taker,        
         CAST(NULL AS VARBINARY) AS maker, -- TODO: consider `executor as maker`,
-        {{from_alias}}.contract_address as project_contract_address,
+        src.contract_address as project_contract_address,
         call_tx_hash as tx_hash,
         call_tx_from as tx_from,
         call_tx_to as tx_to,
@@ -45,8 +45,16 @@ select
         bridgeMaxRelayerFee,
         bridgeDestinationChainId,
         bridge,
-        "order"
-    from {{from_alias}}  
+        "order",
+        "owner",
+        ordersCount,
+        call_block_number as block_number,        
+        raw_tx_gas_used,
+        raw_tx_gas_price,
+        src.gas_fee_usd,        
+        wnt_price_usd,
+        executor
+    from {{from_alias}} src
         LEFT JOIN 
         {{ source('tokens', 'erc20') }} t_src_token 
             ON t_src_token.blockchain = '{{blockchain}}'

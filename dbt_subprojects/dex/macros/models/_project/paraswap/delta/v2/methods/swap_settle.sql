@@ -1,6 +1,6 @@
 {% macro delta_v2_swap_settle(blockchain) %}
 -- since this call always is a whole-order-at-once fulfillment, can source it from method calls and no need to join with events as all data is in the call
-{% set method_start_date = '2024-10-01' %}
+{% set method_start_date = '2025-04-01' %}
 -- order_hash_computed
 
 
@@ -36,9 +36,14 @@ v2_swap_settle_withParsedOrderData AS (
         orderWithSig,
         executor,
         executorData,
-        contract_address    
-    FROM {{ source("paraswapdelta_"+ blockchain, "ParaswapDeltav2_call_swapSettle") }}        
-        WHERE call_block_time > TIMESTAMP '{{method_start_date}}'
+        contract_address,
+        raw_txs.gas_used as raw_tx_gas_used,
+        raw_txs.gas_price as raw_tx_gas_price
+    FROM {{ source("paraswapdelta_"+ blockchain, "ParaswapDeltav2_call_swapSettle") }} ss        
+  left join {{blockchain}}.transactions  raw_txs 
+     on block_time > TIMESTAMP '{{method_start_date}}' 
+      AND raw_txs.hash = ss.call_tx_hash
+     WHERE call_block_time > TIMESTAMP '{{method_start_date}}'
         AND call_success = true        
         {% if is_incremental() %}
             AND {{ incremental_predicate('call_block_time') }}
@@ -103,6 +108,8 @@ select
     {{ gas_fee_usd() }},
     s.price *  w.srcAmount / POWER(10, s.decimals)  AS src_token_order_usd,
     d.price *  w.destAmount / POWER(10, d.decimals)  AS dest_token_order_usd,
+    wrapped_native_token_address,
+    COALESCE(CAST(wnt_usd.price AS DECIMAL(38,18)), 0) AS wnt_price_usd, 
     w.destToken AS fee_token,
     w.*,
     events.evt_index,    
@@ -111,6 +118,15 @@ select
     events.partnerFee as evt_partner_fee,
     events.orderHash as evt_order_hash    
     FROM v2_swap_settle_with_wrapped_native_with_orderhash w 
+     left join {{ source('evms','info') }} evm_info on evm_info.blockchain='{{blockchain}}'
+    LEFT JOIN {{ source('prices', 'usd') }} wnt_usd
+    ON wnt_usd.minute > TIMESTAMP '{{method_start_date}}'
+    AND wnt_usd.blockchain = '{{blockchain}}'
+    {% if is_incremental() %}
+      AND {{ incremental_predicate('wnt_usd.minute') }}
+    {% endif %}
+    AND wnt_usd.contract_address =  evm_info.wrapped_native_token_address
+    AND wnt_usd.minute = DATE_TRUNC('minute', w.call_block_time)
     LEFT JOIN {{ source('prices', 'usd') }} d
     ON d.minute > TIMESTAMP '{{method_start_date}}'
     AND d.blockchain = '{{blockchain}}'
@@ -147,7 +163,7 @@ SELECT
     call_tx_from,
     call_tx_to,
     evt_index,
-    executorFeeAmount as fee_amount,
+    executorFeeAmount as executor_fee_amount,
     -- orderWithSig as order_with_sig,
     executor,
     executorData as calldata_to_execute,
@@ -163,7 +179,11 @@ SELECT
     fee_token,
     src_token_price_usd,
     dest_token_price_usd,
-    gas_fee_usd,    
+    gas_fee_usd,   
+    raw_tx_gas_used, 
+    raw_tx_gas_price,
+    wnt_price_usd,
+    1 as ordersCount,
     src_token_order_usd,
     dest_token_order_usd,
     contract_address,
@@ -178,7 +198,8 @@ SELECT
     bridgeMaxRelayerFee,
     bridgeDestinationChainId,
     bridge,
-    "order"
+    "order",
+    wrapped_native_token_address
     
   FROM delta_v2_swapSettle_master
 )
