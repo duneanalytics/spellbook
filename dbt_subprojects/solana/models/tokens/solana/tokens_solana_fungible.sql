@@ -204,25 +204,11 @@ with
         -- Use the appropriate account_mint based on inner vs outer and opcode
         CASE 
             WHEN i.is_inner THEN t.account_mint
-            WHEN bytearray_substring(i.data, 1, 1) = 0x0B AND cardinality(account_arguments) >= 5 THEN account_arguments[4]
-            WHEN bytearray_substring(i.data, 1, 1) = 0x32 AND cardinality(account_arguments) >= 5 THEN account_arguments[4]
-            WHEN bytearray_substring(i.data, 1, 1) = 0x34 AND cardinality(account_arguments) >= 5 THEN account_arguments[4]
-            WHEN bytearray_substring(i.data, 1, 1) = 0x2E AND cardinality(account_arguments) >= 5 THEN account_arguments[4]
-            WHEN bytearray_substring(i.data, 1, 1) = 0x1A AND cardinality(account_arguments) >= 5 THEN account_arguments[4]
-            WHEN bytearray_substring(i.data, 1, 1) = 0x0D AND cardinality(account_arguments) >= 5 THEN account_arguments[4]
-            WHEN bytearray_substring(i.data, 1, 1) = 0x37 AND cardinality(account_arguments) >= 4 THEN account_arguments[3]
-            WHEN bytearray_substring(i.data, 1, 1) = 0x22 AND cardinality(account_arguments) >= 4 THEN account_arguments[3]
-            WHEN bytearray_substring(i.data, 1, 1) = 0x24 AND cardinality(account_arguments) >= 4 THEN account_arguments[3]
-            WHEN bytearray_substring(i.data, 1, 1) = 0x02 AND cardinality(account_arguments) >= 5 THEN account_arguments[4]
-            WHEN bytearray_substring(i.data, 1, 1) = 0x02 AND cardinality(account_arguments) >= 4 THEN account_arguments[3]
-            WHEN bytearray_substring(i.data, 1, 1) = 0x03 AND cardinality(account_arguments) >= 5 THEN account_arguments[4]
-            WHEN bytearray_substring(i.data, 1, 1) = 0x2C AND cardinality(account_arguments) >= 7 THEN account_arguments[6]
-            WHEN bytearray_substring(i.data, 1, 1) = 0x2A AND cardinality(account_arguments) >= 4 THEN account_arguments[3]
-            WHEN bytearray_substring(i.data, 1, 1) = 0x2B AND cardinality(account_arguments) >= 7 THEN account_arguments[6]
-            WHEN bytearray_substring(i.data, 1, 1) = 0x31 AND cardinality(account_arguments) >= 6 THEN account_arguments[5]
-            WHEN bytearray_substring(i.data, 1, 1) = 0x17 AND cardinality(account_arguments) >= 7 THEN account_arguments[6]
-            WHEN bytearray_substring(i.data, 1, 1) = 0x11 AND cardinality(account_arguments) >= 3 THEN account_arguments[2]
-            WHEN bytearray_substring(i.data, 1, 1) = 0x1E AND cardinality(account_arguments) >= 5 THEN account_arguments[4]
+            WHEN bytearray_substring(i.data, 1, 1) IN (0x0B, 0x32, 0x34, 0x2E, 0x1A, 0x0D, 0x02, 0x03, 0x1E) THEN element_at(account_arguments, 5)
+            WHEN bytearray_substring(i.data, 1, 1) IN (0x37, 0x22, 0x24, 0x2A) THEN element_at(account_arguments, 4)
+            WHEN bytearray_substring(i.data, 1, 1) IN (0x2C, 0x2B, 0x17) THEN element_at(account_arguments, 7)
+            WHEN bytearray_substring(i.data, 1, 1) = 0x31 THEN element_at(account_arguments, 6)
+            WHEN bytearray_substring(i.data, 1, 1) = 0x11 THEN element_at(account_arguments, 3)
             ELSE NULL
         END as account_mint,
         
@@ -231,25 +217,11 @@ with
         row_number() over (partition by 
             CASE 
                 WHEN i.is_inner THEN t.account_mint
-                WHEN bytearray_substring(i.data, 1, 1) = 0x0B AND cardinality(account_arguments) >= 5 THEN account_arguments[4]
-                WHEN bytearray_substring(i.data, 1, 1) = 0x32 AND cardinality(account_arguments) >= 5 THEN account_arguments[4]
-                WHEN bytearray_substring(i.data, 1, 1) = 0x34 AND cardinality(account_arguments) >= 5 THEN account_arguments[4]
-                WHEN bytearray_substring(i.data, 1, 1) = 0x2E AND cardinality(account_arguments) >= 5 THEN account_arguments[4]
-                WHEN bytearray_substring(i.data, 1, 1) = 0x1A AND cardinality(account_arguments) >= 5 THEN account_arguments[4]
-                WHEN bytearray_substring(i.data, 1, 1) = 0x0D AND cardinality(account_arguments) >= 5 THEN account_arguments[4]
-                WHEN bytearray_substring(i.data, 1, 1) = 0x37 AND cardinality(account_arguments) >= 4 THEN account_arguments[3]
-                WHEN bytearray_substring(i.data, 1, 1) = 0x22 AND cardinality(account_arguments) >= 4 THEN account_arguments[3]
-                WHEN bytearray_substring(i.data, 1, 1) = 0x24 AND cardinality(account_arguments) >= 4 THEN account_arguments[3]
-                WHEN bytearray_substring(i.data, 1, 1) = 0x02 AND cardinality(account_arguments) >= 5 THEN account_arguments[4]
-                WHEN bytearray_substring(i.data, 1, 1) = 0x02 AND cardinality(account_arguments) >= 4 THEN account_arguments[3]
-                WHEN bytearray_substring(i.data, 1, 1) = 0x03 AND cardinality(account_arguments) >= 5 THEN account_arguments[4]
-                WHEN bytearray_substring(i.data, 1, 1) = 0x2C AND cardinality(account_arguments) >= 7 THEN account_arguments[6]
-                WHEN bytearray_substring(i.data, 1, 1) = 0x2A AND cardinality(account_arguments) >= 4 THEN account_arguments[3]
-                WHEN bytearray_substring(i.data, 1, 1) = 0x2B AND cardinality(account_arguments) >= 7 THEN account_arguments[6]
-                WHEN bytearray_substring(i.data, 1, 1) = 0x31 AND cardinality(account_arguments) >= 6 THEN account_arguments[5]
-                WHEN bytearray_substring(i.data, 1, 1) = 0x17 AND cardinality(account_arguments) >= 7 THEN account_arguments[6]
-                WHEN bytearray_substring(i.data, 1, 1) = 0x11 AND cardinality(account_arguments) >= 3 THEN account_arguments[2]
-                WHEN bytearray_substring(i.data, 1, 1) = 0x1E AND cardinality(account_arguments) >= 5 THEN account_arguments[4]
+                WHEN bytearray_substring(i.data, 1, 1) IN (0x0B, 0x32, 0x34, 0x2E, 0x1A, 0x0D, 0x02, 0x03, 0x1E) THEN element_at(account_arguments, 5)
+                WHEN bytearray_substring(i.data, 1, 1) IN (0x37, 0x22, 0x24, 0x2A) THEN element_at(account_arguments, 4)
+                WHEN bytearray_substring(i.data, 1, 1) IN (0x2C, 0x2B, 0x17) THEN element_at(account_arguments, 7)
+                WHEN bytearray_substring(i.data, 1, 1) = 0x31 THEN element_at(account_arguments, 6)
+                WHEN bytearray_substring(i.data, 1, 1) = 0x11 THEN element_at(account_arguments, 3)
                 ELSE NULL
             END 
             order by i.block_time desc) as latest
@@ -264,25 +236,11 @@ with
     AND (
         (i.is_inner = true AND t.account_mint IS NOT NULL) OR
         (i.is_inner = false AND (
-            (bytearray_substring(i.data, 1, 1) = 0x0B AND cardinality(account_arguments) >= 5 AND account_arguments[4] IS NOT NULL) OR
-            (bytearray_substring(i.data, 1, 1) = 0x32 AND cardinality(account_arguments) >= 5 AND account_arguments[4] IS NOT NULL) OR
-            (bytearray_substring(i.data, 1, 1) = 0x34 AND cardinality(account_arguments) >= 5 AND account_arguments[4] IS NOT NULL) OR
-            (bytearray_substring(i.data, 1, 1) = 0x2E AND cardinality(account_arguments) >= 5 AND account_arguments[4] IS NOT NULL) OR
-            (bytearray_substring(i.data, 1, 1) = 0x1A AND cardinality(account_arguments) >= 5 AND account_arguments[4] IS NOT NULL) OR
-            (bytearray_substring(i.data, 1, 1) = 0x0D AND cardinality(account_arguments) >= 5 AND account_arguments[4] IS NOT NULL) OR
-            (bytearray_substring(i.data, 1, 1) = 0x37 AND cardinality(account_arguments) >= 4 AND account_arguments[3] IS NOT NULL) OR
-            (bytearray_substring(i.data, 1, 1) = 0x22 AND cardinality(account_arguments) >= 4 AND account_arguments[3] IS NOT NULL) OR
-            (bytearray_substring(i.data, 1, 1) = 0x24 AND cardinality(account_arguments) >= 4 AND account_arguments[3] IS NOT NULL) OR
-            (bytearray_substring(i.data, 1, 1) = 0x02 AND cardinality(account_arguments) >= 5 AND account_arguments[4] IS NOT NULL) OR
-            (bytearray_substring(i.data, 1, 1) = 0x02 AND cardinality(account_arguments) >= 4 AND account_arguments[3] IS NOT NULL) OR
-            (bytearray_substring(i.data, 1, 1) = 0x03 AND cardinality(account_arguments) >= 5 AND account_arguments[4] IS NOT NULL) OR
-            (bytearray_substring(i.data, 1, 1) = 0x2C AND cardinality(account_arguments) >= 7 AND account_arguments[6] IS NOT NULL) OR
-            (bytearray_substring(i.data, 1, 1) = 0x2A AND cardinality(account_arguments) >= 4 AND account_arguments[3] IS NOT NULL) OR
-            (bytearray_substring(i.data, 1, 1) = 0x2B AND cardinality(account_arguments) >= 7 AND account_arguments[6] IS NOT NULL) OR
-            (bytearray_substring(i.data, 1, 1) = 0x31 AND cardinality(account_arguments) >= 6 AND account_arguments[5] IS NOT NULL) OR
-            (bytearray_substring(i.data, 1, 1) = 0x17 AND cardinality(account_arguments) >= 7 AND account_arguments[6] IS NOT NULL) OR
-            (bytearray_substring(i.data, 1, 1) = 0x11 AND cardinality(account_arguments) >= 3 AND account_arguments[2] IS NOT NULL) OR
-            (bytearray_substring(i.data, 1, 1) = 0x1E AND cardinality(account_arguments) >= 5 AND account_arguments[4] IS NOT NULL)
+            (bytearray_substring(i.data, 1, 1) IN (0x0B, 0x32, 0x34, 0x2E, 0x1A, 0x0D, 0x02, 0x03, 0x1E) AND element_at(account_arguments, 5) IS NOT NULL) OR
+            (bytearray_substring(i.data, 1, 1) IN (0x37, 0x22, 0x24, 0x2A) AND element_at(account_arguments, 4) IS NOT NULL) OR
+            (bytearray_substring(i.data, 1, 1) IN (0x2C, 0x2B, 0x17) AND element_at(account_arguments, 7) IS NOT NULL) OR
+            (bytearray_substring(i.data, 1, 1) = 0x31 AND element_at(account_arguments, 6) IS NOT NULL) OR
+            (bytearray_substring(i.data, 1, 1) = 0x11 AND element_at(account_arguments, 3) IS NOT NULL)
         ))
     )
     {% if is_incremental() %}
