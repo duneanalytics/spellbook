@@ -36,7 +36,7 @@ active_stake_updated as (
   from {{ source('nexusmutual_ethereum', 'StakingPool_evt_ActiveStakeUpdated') }} asu
     inner join staking_pools sp on asu.contract_address = sp.pool_address
   {% if is_incremental() %}
-  where {{ incremental_predicate('block_time') }}
+  where {{ incremental_predicate('asu.evt_block_time') }}
   {% endif %}
 ),
 
