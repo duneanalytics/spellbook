@@ -21,5 +21,5 @@ select
   evt_tx_hash as tx_hash
 from {{ source('nexusmutual_ethereum', 'StakingPoolFactory_evt_StakingPoolCreated') }}
 {% if is_incremental() %}
-where {{ incremental_predicate('block_time') }}
+where {{ incremental_predicate('evt_block_time') }}
 {% endif %}
