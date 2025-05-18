@@ -1,0 +1,31 @@
+version: 2
+
+models:
+ - name: magiceden_apechain_base_trades
+   meta:
+     blockchain: apechain
+     project: magiceden
+     contributors: 0xr3x
+   config:version: 2
+
+models:
+ - name: magiceden_apechain_base_trades
+   meta:
+     blockchain: apechain
+     project: magiceden
+     contributors: hildobby
+   config:
+     tags: [ 'magiceden','apechain','events' ]
+   description: >
+     Magic Eden events on Apechain
+   data_tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+     tags: [ 'magiceden','apechain','events' ]
+   description: >
+     Magic Eden events on apechain
+   data_tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
