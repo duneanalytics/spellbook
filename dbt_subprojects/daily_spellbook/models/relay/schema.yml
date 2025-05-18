@@ -4,8 +4,6 @@ sources:
   - name: evms
     description: "EVM transaction and token transfer data"
     tables:
-      - name: transactions
-        description: "Raw EVM transaction data across chains"
       - name: erc20_transfers
         description: "ERC-20 token transfer events across chains"
 
