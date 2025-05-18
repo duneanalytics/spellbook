@@ -253,37 +253,60 @@ excluded_addresses AS (
   ) AS t(address)
 ),
 
- 
-txs AS (SELECT  block_time,
-blockchain,
-        hash,
-        block_number 
-    FROM {{ source('evms', 'transactions') }}
-    WHERE "from" = 0xf70da97812CB96acDF810712Aa562db8dfA3dbEF
-    AND success = TRUE),
+txs AS (
+  SELECT block_time, blockchain, hash, block_number
+  FROM {{ source('evms', 'transactions') }}
+  WHERE "from" = 0xf70da97812CB96acDF810712Aa562db8dfA3dbEF
+    AND success = TRUE
+),
 
 eth_transfers AS (
-  SELECT  blockchain, hash AS evt_tx_hash, block_time AS evt_block_time, "to", 'ETH' AS symbol, value / 1e18 AS amount
-  FROM {{ source('evms', 'transactions') }}
-  WHERE 
-    "from" IN (
+  SELECT
+    DATE_TRUNC('day', e.block_time) AS day,
+    e.blockchain,
+    e.hash AS evt_tx_hash,
+    e.block_time AS evt_block_time,
+    e."to",
+    'ETH' AS symbol,
+    e.value / 1e18 AS value,
+    p.price,
+    (e.value / 1e18) * p.price AS amount
+  FROM {{ source('evms', 'transactions') }} e
+  LEFT JOIN {{ source('prices', 'day') }} p
+    ON DATE_TRUNC('day', e.block_time) = p.timestamp
+    AND p.blockchain = 'ethereum'
+    AND p.symbol = 'ETH'
+    AND p.contract_address = 0x0000000000000000000000000000000000000000
+  WHERE e."from" IN (
       0xf70da97812CB96acDF810712Aa562db8dfA3dbEF,
       0xeeeeee9eC4769A09a76A83C7bC42b185872860eE
     )
-    AND "to" NOT IN (SELECT address FROM excluded_addresses)
-    AND success = TRUE
-    AND value > 0
+    AND e."to" NOT IN (SELECT address FROM excluded_addresses)
+    AND e.success = TRUE
+    AND e.value > 0
 ),
 
 erc20_transfers AS (
-  SELECT  e.blockchain, e.evt_tx_hash, e.evt_block_time, e."to", t.symbol, e.value / POWER(10, t.decimals) AS amount
+  SELECT
+    DATE_TRUNC('day', e.evt_block_time) AS day,
+    e.blockchain,
+    e.evt_tx_hash,
+    e.evt_block_time,
+    e."to",
+    t.symbol,
+    e.value / POWER(10, t.decimals) AS value,
+    p.price,
+    (e.value / POWER(10, t.decimals)) * p.price AS amount
   FROM {{ source('evms', 'erc20_transfers') }} e
-  INNER JOIN relay_tokens t 
+  INNER JOIN relay_tokens t
     ON e.contract_address = t.contract_address AND e.blockchain = t.blockchain
- INNER JOIN txs tx 
- on e.evt_tx_hash = tx.hash AND e.blockchain = tx.blockchain 
-  WHERE 
-    e."from" IN (
+  INNER JOIN txs tx
+    ON e.evt_tx_hash = tx.hash AND e.blockchain = tx.blockchain
+  LEFT JOIN {{ source('prices', 'day') }} p
+    ON e.blockchain = p.blockchain
+    AND DATE_TRUNC('day', e.evt_block_time) = p.timestamp
+    AND e.contract_address = p.contract_address
+  WHERE e."from" IN (
       0xf70da97812CB96acDF810712Aa562db8dfA3dbEF,
       0xeeeeee9eC4769A09a76A83C7bC42b185872860eE
     )
@@ -291,7 +314,9 @@ erc20_transfers AS (
     AND e.value > 0
 )
 
-select DISTINCT  *
-from (SELECT * FROM erc20_transfers
-UNION ALL
-SELECT * FROM eth_transfers) combined_transfers
+SELECT DISTINCT *
+FROM (
+  SELECT * FROM erc20_transfers
+  UNION ALL
+  SELECT * FROM eth_transfers
+) combined_transfers
