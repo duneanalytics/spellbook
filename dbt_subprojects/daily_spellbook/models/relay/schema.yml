@@ -1,10 +1,20 @@
 version: 2
 
+sources:
+  - name: evms
+    tables:
+      - name: transactions
+      - name: erc20_transfers
+
+  - name: prices
+    tables:
+      - name: day
+
 models:
   - name: relay_token_transfers
     description: >
       Combined ETH and selected ERC-20 token transfers from specific addresses across multiple chains.
-      This model filters by known relay tokens and excludes specific non-user addresses. Also includes daily price and amount in USD.
+      This model filters by known relay tokens and excludes specific non-user addresses.
     meta:
       project: relay_token_monitoring
       contributors: [outputlayer]
@@ -15,43 +25,33 @@ models:
         description: "Date of the transfer (truncated to day)"
         tests:
           - not_null
-
       - name: evt_tx_hash
         description: "Transaction hash associated with the transfer"
         tests:
           - not_null
-
       - name: evt_block_time
         description: "Timestamp when the transaction was confirmed"
         tests:
           - not_null
-
       - name: blockchain
         description: "Blockchain where the transfer occurred (e.g. ethereum, optimism)"
         tests:
           - not_null
-
       - name: to
         description: "Recipient address of the transfer"
         tests:
           - not_null
-
       - name: symbol
         description: "Symbol of the transferred token (e.g. ETH, USDC, DAI)"
         tests:
           - not_null
-
       - name: value
-        description: "Raw token amount before multiplying by price"
+        description: "Raw token amount (not price-adjusted)"
         tests:
           - not_null
-
       - name: price
-        description: "Daily USD price of the token on the date of transfer"
-        tests:
-          - not_null
-
+        description: "Token price on the transfer date (from prices.day)"
       - name: amount
-        description: "Token value in USD (normalized value * price)"
+        description: "USD-equivalent value of the transfer"
         tests:
           - not_null
