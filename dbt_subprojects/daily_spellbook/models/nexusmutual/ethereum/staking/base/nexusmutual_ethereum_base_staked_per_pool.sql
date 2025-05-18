@@ -98,7 +98,7 @@ staked_nxm_per_pool as (
   group by 1, 2, 3
 ),
 
-staked_nxn_per_pool_combined as (
+staked_nxm_per_pool_combined as (
   select
     block_date,
     pool_id,
