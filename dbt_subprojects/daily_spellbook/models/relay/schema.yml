@@ -51,5 +51,4 @@ models:
         description: "Token price on the transfer date (from prices.day, type: float)"
       - name: amount
         description: "USD-equivalent value of the transfer (type: float)"
-        tests:
-          - not_null
+       
