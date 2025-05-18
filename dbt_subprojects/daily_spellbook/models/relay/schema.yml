@@ -1,5 +1,20 @@
 version: 2
 
+sources:
+  - name: evms
+    description: "EVM transaction and token transfer data"
+    tables:
+      - name: transactions
+        description: "Raw EVM transaction data across chains"
+      - name: erc20_transfers
+        description: "ERC-20 token transfer events across chains"
+
+  - name: prices
+    description: "Token price data"
+    tables:
+      - name: day
+        description: "Daily token price per blockchain and contract"
+
 models:
   - name: relay_token_transfers
     description: >
