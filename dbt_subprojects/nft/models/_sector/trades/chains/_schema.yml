@@ -92,7 +92,7 @@ models:
      - *tx_data_marker
      - *currency_contract
 
- - name: nft_abstract_base_trades
+ - name: nft_apechain_base_trades
    meta:
      blockchain: apechain
      sector: nft
