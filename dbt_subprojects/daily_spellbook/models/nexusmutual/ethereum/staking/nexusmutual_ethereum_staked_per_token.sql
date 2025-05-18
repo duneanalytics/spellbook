@@ -62,7 +62,7 @@ staked_nxm_per_pool_n_token as (
         sum(se.amount) as total_amount,
         max(se.stake_end_date) as stake_expiry_date
       from staking_pool_day_sequence d
-        left join {{ ref('nexusmutual_ethereum_staking_deposit_extensions') }} se
+        left join {{ ref('nexusmutual_ethereum_base_staking_deposit_extensions') }} se
           on d.pool_address = se.pool_address
          and d.block_date >= se.stake_start_date
          and d.block_date < se.stake_end_date
