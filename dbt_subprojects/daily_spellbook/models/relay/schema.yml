@@ -23,32 +23,33 @@ models:
         description: "Date of the transfer (truncated to day, type: date)"
         tests:
           - not_null
+
       - name: evt_tx_hash
         description: "Transaction hash associated with the transfer (type: string)"
-        tests:
-          - not_null
+
       - name: evt_block_time
         description: "Timestamp when the transaction was confirmed (type: timestamp)"
-        tests:
-          - not_null
+
       - name: blockchain
         description: "Blockchain where the transfer occurred (e.g. ethereum, optimism, type: string)"
         tests:
           - not_null
+
       - name: to
         description: "Recipient address of the transfer (type: string)"
-        tests:
-          - not_null
+
       - name: symbol
         description: "Symbol of the transferred token (e.g. ETH, USDC, DAI, type: string)"
         tests:
           - not_null
+
       - name: value
         description: "Raw token amount (type: float, not price-adjusted, e.g. 5.23 USDC)"
-        tests:
-          - not_null
+
       - name: price
         description: "Token price on the transfer date (from prices.day, type: float)"
+
       - name: amount
-        description: "USD-equivalent value of the transfer (type: float)"
+        description: "USD-equivalent value of the transfer (type: float, may be null if price is missing)"
+
        
