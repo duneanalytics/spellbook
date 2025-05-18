@@ -1,0 +1,16 @@
+version: 2
+
+models:
+  - name: relay_token_transfers
+    description: "Transfers of ETH and selected ERC20 tokens across chains from specific wallets, excluding known non-user addresses."
+    columns:
+      - name: evt_tx_hash
+        description: "Transaction hash"
+      - name: evt_block_time
+        description: "Block timestamp"
+      - name: to
+        description: "Recipient address"
+      - name: symbol
+        description: "Token symbol"
+      - name: amount
+        description: "Amount of token transferred" 
