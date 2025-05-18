@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'nft_abstract',
+    schema = 'nft_apechain',
     alias = 'base_trades',
     materialized = 'view'
     )
