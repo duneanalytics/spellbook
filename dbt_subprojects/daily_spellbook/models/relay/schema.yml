@@ -7,11 +7,6 @@ sources:
       - name: erc20_transfers
         description: "ERC-20 token transfer events across chains"
 
-  - name: prices
-    description: "Token price data"
-    tables:
-      - name: day
-        description: "Daily token price per blockchain and contract"
 
 models:
   - name: relay_token_transfers
