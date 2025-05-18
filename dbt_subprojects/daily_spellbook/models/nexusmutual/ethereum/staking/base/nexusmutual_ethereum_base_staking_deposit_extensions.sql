@@ -1,7 +1,7 @@
 {{
   config(
     schema = 'nexusmutual_ethereum',
-    alias = 'staking_deposit_extensions',
+    alias = 'base_staking_deposit_extensions',
     materialized = 'view',
     unique_key = ['pool_id', 'token_id', 'init_tranche_id', 'current_tranche_id', 'stake_start_date', 'stake_end_date']
   )
@@ -25,7 +25,7 @@ with recursive deposit_chain (
     tx_hash,
     deposit_rn,
     1 as chain_level
-  from {{ ref('nexusmutual_ethereum_staking_deposit_ordered') }}
+  from {{ ref('nexusmutual_ethereum_base_staking_deposit_ordered') }}
   where flow_type = 'deposit'
   
   union all
@@ -46,7 +46,7 @@ with recursive deposit_chain (
     d.deposit_rn,
     dc.chain_level + 1 as chain_level
   from deposit_chain dc
-    inner join {{ ref('nexusmutual_ethereum_staking_deposit_ordered') }} d on dc.pool_id = d.pool_id and dc.token_id = d.token_id
+    inner join {{ ref('nexusmutual_ethereum_base_staking_deposit_ordered') }} d on dc.pool_id = d.pool_id and dc.token_id = d.token_id
   where dc.deposit_rn = d.deposit_rn - 1
     and ((d.flow_type = 'deposit extended' and dc.new_tranche_id = d.init_tranche_id)
       or (d.flow_type = 'deposit addon' and dc.new_tranche_id = d.tranche_id))

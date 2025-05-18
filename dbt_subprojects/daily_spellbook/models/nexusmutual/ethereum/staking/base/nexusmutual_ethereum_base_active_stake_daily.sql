@@ -1,7 +1,7 @@
 {{
   config(
     schema = 'nexusmutual_ethereum',
-    alias = 'active_stake_daily',
+    alias = 'base_active_stake_daily',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

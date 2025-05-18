@@ -214,7 +214,7 @@ models:
         description: "event index"
       - *tx_hash
 
-  - name: nexusmutual_ethereum_staking_deposit_ordered
+  - name: nexusmutual_ethereum_base_staking_deposit_ordered
     meta:
       blockchain: ethereum
       project: nexusmutual
@@ -250,7 +250,7 @@ models:
       - *tx_hash
       - name: deposit_rn
 
-  - name: nexusmutual_ethereum_staking_deposit_extensions
+  - name: nexusmutual_ethereum_base_staking_deposit_extensions
     meta:
       blockchain: ethereum
       project: nexusmutual
@@ -287,7 +287,7 @@ models:
       - *evt_index
       - *tx_hash
 
-  - name: nexusmutual_ethereum_active_stake_daily
+  - name: nexusmutual_ethereum_base_active_stake_daily
     meta:
       blockchain: ethereum
       project: nexusmutual
@@ -339,14 +339,14 @@ models:
       - name: reward_amount_per_day
       - *tx_hash
 
-  - name: nexusmutual_ethereum_staked_per_pool
+  - name: nexusmutual_ethereum_base_staked_per_pool
     meta:
       blockchain: ethereum
       project: nexusmutual
       contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
-    description: "Staking rewards minted at cover buy event - to be streamed over cover period"
+    description: "Staked NXM per pool - base model"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -358,6 +358,26 @@ models:
       - *pool_address
       - &total_staked_nxm
         name: total_staked_nxm
+        description: "total staked NXM"
+
+  - name: nexusmutual_ethereum_staked_per_pool
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "staking"]
+    description: "Staked NXM per pool - final view"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - pool_id
+    columns:
+      - *block_date
+      - *pool_id
+      - *pool_address
+      - *total_staked_nxm
       - name: pool_date_rn
 
   - name: nexusmutual_ethereum_staked_per_token
@@ -367,7 +387,7 @@ models:
       contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
-    description: "Staking rewards minted at cover buy event - to be streamed over cover period"
+    description: "Staked NXM per token - final view"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

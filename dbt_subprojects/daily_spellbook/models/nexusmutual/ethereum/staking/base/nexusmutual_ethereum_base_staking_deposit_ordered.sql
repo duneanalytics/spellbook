@@ -1,7 +1,7 @@
 {{
   config(
     schema = 'nexusmutual_ethereum',
-    alias = 'staking_deposit_ordered',
+    alias = 'base_staking_deposit_ordered',
     materialized = 'view',
     unique_key = ['flow_type', 'block_time', 'evt_index', 'tx_hash']
   )
