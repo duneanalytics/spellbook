@@ -12,7 +12,13 @@
 }}
 
 {% set solana_dexes = [
-     ref('raydium_v3_base_trades')
+      
+   , ref('raydium_launchlab_v1_base_trades')
+] %}
+
+/*
+-- excluded:    , ref('sanctum_router_base_trades')
+  ref('raydium_v3_base_trades')
    , ref('raydium_v4_base_trades')
    , ref('raydium_v5_base_trades')
    , ref('orca_whirlpool_base_trades')
@@ -24,12 +30,8 @@
    , ref('meteora_v2_solana_base_trades')
    , ref('goosefx_ssl_v2_solana_base_trades')
    , ref('pumpdotfun_solana_base_trades')
-   , ref('pumpswap_solana_base_trades')    
-   , ref('raydium_launchlab_v1_base_trades')
-   , ref('raydium_launchlab_v1_base_trades')
-] %}
-
--- excluded:    , ref('sanctum_router_base_trades')
+   , ref('pumpswap_solana_base_trades') 
+*/
 
 {% for dex in solana_dexes %}
 SELECT
