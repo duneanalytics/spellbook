@@ -21,7 +21,7 @@ models:
     config:
       tags: ['solana', 'dex']
     description: >
-      Raydium Launchlab v1 DEX trades on Solana, including USD values and token symbols.
+      Raydium Launchlab v1 DEX trades on Solana, including USD values and token symbols. Also includes the launchpad platform info for each trade.
     columns:
       - &blockchain
         name: blockchain
@@ -110,5 +110,11 @@ models:
       - &account_platform_config
         name: account_platform_config
         description: "Platform config account for the DEX"
+      - &platform_name
+        name: platform_name
+        description: "Name of the launchpad platform"
+      - &platform_params
+        name: platform_params
+        description: "JSON object containing platform parameters"
 
         
