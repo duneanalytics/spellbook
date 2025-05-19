@@ -29,6 +29,7 @@
  ,ref('nft_nova_base_trades')
  ,ref('nft_ronin_base_trades')
  ,ref('nft_abstract_base_trades')
+ ,ref('nft_apechain_base_trades')
 ] %}
 
 with base_union as (
