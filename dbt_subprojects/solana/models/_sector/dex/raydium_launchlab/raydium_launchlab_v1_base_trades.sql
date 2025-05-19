@@ -199,4 +199,8 @@ SELECT
     , tb.inner_instruction_index
     , tb.tx_index
     , tb.account_platform_config
+    , json_extract_scalar(pc.platform_params, '$.PlatformParams.name') AS platform_name
+    , pc.platform_params
 FROM all_swaps tb
+LEFT JOIN {{source('raydium_solana', 'raydium_launchpad_call_create_platform_config')}} pc 
+    ON tb.account_platform_config = pc.account_platform_config
