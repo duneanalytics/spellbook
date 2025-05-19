@@ -18,8 +18,8 @@ WITH fee_wallets as (
     {{ seaport_v4_trades(
      blockchain = 'apechain'
      ,source_transactions = source('apechain','transactions')
-     ,Seaport_evt_OrderFulfilled = source('seaport_apechain','Seaport_evt_OrderFulfilled')
-     ,Seaport_evt_OrdersMatched = source('seaport_apechain','Seaport_evt_OrdersMatched')
+     ,Seaport_evt_OrderFulfilled = source('opensea_apechain','Seaport_evt_OrderFulfilled')
+     ,Seaport_evt_OrdersMatched = source('opensea_apechain','Seaport_evt_OrdersMatched')
      ,fee_wallet_list_cte = 'fee_wallets'
      ,start_date = '2025-03-01'
     )
