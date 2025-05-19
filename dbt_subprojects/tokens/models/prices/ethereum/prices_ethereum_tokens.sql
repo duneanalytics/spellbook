@@ -1902,7 +1902,7 @@ FROM
     ('wct-walletconnect-token', 'ethereum', 'WCT', 0xeF4461891DfB3AC8572cCf7C794664A8DD927945, 18),
     ('prompt-wayfinder', 'ethereum', 'PROMPT', 0x28d38df637db75533bd3f71426f3410a82041544, 18),
     ('usd1-usd1', 'ethereum', 'USD1', 0x8d0d000ee44948fc98c9b98a4fa4921476f08b0d, 18),
-    ('fuel-fuel-network', 'ethereum', 'FUEL', 0x675B68AA4d9c2d3BB3F0397048e62E6B7192079c, 18)
+    ('fuel-fuel-network', 'ethereum', 'FUEL', 0x675B68AA4d9c2d3BB3F0397048e62E6B7192079c, 9)
    ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
