@@ -186,6 +186,9 @@ price_data as (
       on p_sold.contract_address = tm.token_sold_adjusted
       and p_sold.blockchain = '{{ chain }}'
       and p_sold.minute = date_trunc('minute', tm.block_time)
+      {% if is_incremental() %}
+      and {{incremental_predicate('p_sold.minute')}}
+      {% endif %}
 )
 select
   '{{ chain }}'    as blockchain,
