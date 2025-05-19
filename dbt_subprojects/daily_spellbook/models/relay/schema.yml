@@ -1,13 +1,5 @@
 version: 2
 
-sources:
-  - name: evms
-    description: "EVM transaction and token transfer data"
-    tables:
-      - name: erc20_transfers
-        description: "ERC-20 token transfer events across chains"
-
-
 models:
   - name: relay_token_transfers
     description: >
