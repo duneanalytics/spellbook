@@ -179,6 +179,9 @@ price_data as (
       on p_bought.contract_address = tm.token_bought_adjusted
       and p_bought.blockchain = '{{ chain }}'
       and p_bought.minute = date_trunc('minute', tm.block_time)
+      {% if is_incremental() %}
+      and {{incremental_predicate('p_bought.minute')}}
+      {% endif %}
     left join {{ source('prices','usd') }} p_sold
       on p_sold.contract_address = tm.token_sold_adjusted
       and p_sold.blockchain = '{{ chain }}'
