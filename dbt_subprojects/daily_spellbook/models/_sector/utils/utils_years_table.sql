@@ -1,6 +1,6 @@
 {{ config(
     schema = 'utils',
-    alias = 'year_table',
+    alias = 'years_table',
     materialized = 'table',
     file_format = 'delta'
     )
@@ -11,7 +11,7 @@ SELECT timestamp
 FROM unnest(
     sequence(
         timestamp '2009-01-01'
-        , cast(date_trunc('year', now()) as timestamp)+ interval '3' day  -- add some padding to account for materialization lag
+        , cast(date_trunc('year', now() + interval '3' day) as timestamp)  -- add some padding to account for materialization lag
         , interval '1' year
         )
     ) as foo(timestamp)

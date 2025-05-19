@@ -1,6 +1,6 @@
 {{ config(
     schema = 'utils',
-    alias = 'months_table',
+    alias = 'quarter_table',
     materialized = 'table',
     file_format = 'delta'
     )
@@ -11,8 +11,8 @@ SELECT timestamp
 FROM unnest(
     sequence(
         timestamp '2009-01-01'
-        , cast(date_trunc('month', now() + interval '3' day) as timestamp)  -- add some padding to account for materialization lag
-        , interval '1' month
+        , cast(date_trunc('quarter', now() + interval '3' day) as timestamp)  -- add some padding to account for materialization lag
+        , interval '1' year
         )
     ) as foo(timestamp)
 order by timestamp asc
