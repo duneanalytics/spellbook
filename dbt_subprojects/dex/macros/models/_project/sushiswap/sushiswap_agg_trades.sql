@@ -107,6 +107,9 @@
       call_tx_to     as project_contract_address
     FROM {{ source('sushiswap_' ~ chain, fn )}} 
     where call_success = true
+        {% if is_incremental() %}
+        and {{incremental_predicate('call_block_time')}}
+        {% endif %}
     {% if not loop.last %}union all{% endif %}
     {% endfor %}
   ),
