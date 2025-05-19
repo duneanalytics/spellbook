@@ -1,7 +1,7 @@
 {{ config(
-    alias='relay_token_transfers',
-    materialized='view',
-    schema='relay' 
+    schema='relay',
+    alias='token_transfers',
+    materialized='view'
 ) }}
 
 WITH  relay_tokens (symbol, contract_address, decimals, blockchain) as (values 
