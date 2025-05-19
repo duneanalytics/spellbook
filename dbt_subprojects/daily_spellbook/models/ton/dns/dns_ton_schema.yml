@@ -1,0 +1,85 @@
+version: 2
+
+models:
+  - name: dns_ton_delegation_updates
+    meta:
+      blockchain: ton
+      sector: infrastructure
+      contributors: markysha, pshuvalov
+    config:
+      tags: ['ton', 'dns', 'infrastructure']
+    description: >
+      TON Domains delegation updates info
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - tx_hash
+            - domain
+    columns:
+      - name: block_date
+        description: "block date"
+      - name: block_time
+        description: "block_time of the transaction"
+      - name: tx_hash
+        description: "transaction hash"
+      - name: trace_id
+        description: "trace id"
+      - name: domain
+        description: ".ton domain"
+      - name: nft_item_address
+        description: "address of .ton domain nft item"
+      - name: delegation_initiator
+        description: "address of who initiated dns delegation"
+      - name: delegated_to_wallet
+        description: "address to which .ton domain reffers. null value means delete of dns record"
+  - name: dns_ton_domain_latest_info
+    meta:
+      blockchain: ton
+      sector: infrastructure
+      contributors: markysha, pshuvalov
+    config:
+      tags: ['ton', 'dns', 'infrastructure']
+    description: >
+      TON Domains latest info: owner, minter, delegate
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - domain
+            - dns_nft_item_address
+    columns:
+      - name: domain
+        description: ".ton domain"
+      - name: dns_nft_item_address
+        description: "address of .ton domain nft item"
+      - name: dns_nft_item_owner
+        description: "address of who owns .ton domain nft item"
+      - name: own_type
+        description: "type how item was owned: mint, sale, transfer"
+      - name: dns_nft_item_minter
+        description: "address of who minted .ton domain nft item"
+      - name: delegated_to_wallet
+        description: "address to which .ton domain reffers. null value means delete of dns record"
+      - name: delegate_initiator
+        description: "address who initiated latest delegate of this dns"
+  - name: dns_ton_address_book
+    meta:
+      blockchain: ton
+      sector: infrastructure
+      contributors: pshuvalov
+    config:
+      tags: ['ton', 'dns', 'infrastructure']
+    description: >
+      Mapping between addresses and their best matching .ton domain
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - domain
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - name: domain
+        description: ".ton domain"
+      - name: address
+        description: "Owner address"
