@@ -1,8 +1,8 @@
 {% set chain = 'avalanche_c' %}
 
 {{ config(
-  schema = 'sushiswap_' ~ chain,
-  alias  = 'trades',
+  schema = 'sushiswap_agg_' + chain,
+  alias = 'aggregator_trades',
   materialized = 'incremental',
   partition_by = ['block_month'],
   file_format = 'delta',

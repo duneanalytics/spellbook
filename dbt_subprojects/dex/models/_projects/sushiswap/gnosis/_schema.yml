@@ -12,10 +12,7 @@ models:
     description: Sushiswap Route Aggregator contract on gnosis - formatted for dex.trades
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-            combination_of_columns:
-            - tx_hash
-            - method
-            - trace_address
+            combination_of_columns: ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'method', 'trace_address']
       - check_dex_aggregator_seed:
           blockchain: gnosis
           project: sushiswap
