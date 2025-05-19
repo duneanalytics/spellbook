@@ -13,7 +13,7 @@
 
 {% set solana_dexes = [
       
-   , ref('raydium_launchlab_v1_base_trades')
+  ref('raydium_launchlab_v1_base_trades')
 ] %}
 
 /*
