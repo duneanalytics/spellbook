@@ -58,4 +58,5 @@ FROM
     , ('frxusd-frax-usd', 'frxUSD', 0x80eede496655fb9047dd39d9f418d5483ed600df, 18)
     , ('frxeth-frax-ether', 'frxETH', 0x2fb960611bdc322a9a4a994252658cae9fe2eea1, 18)
     , ('ws-wrapped-sonic', 'beS', 0x871A101Dcf22fE4fE37be7B654098c801CBA1c88, 18)
+    , ('ludwig-ludwig', 'LUDWIG', 0xe6cc4d855b4fd4a9d02f46b9adae4c5efb1764b5, 18)
 ) as temp (token_id, symbol, contract_address, decimals)
