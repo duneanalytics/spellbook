@@ -82,7 +82,7 @@ daily_sequence as (
     s.pool_id,
     s.pool_address,
     d.timestamp as block_date
-  from utils.days d
+  from {{ source('utils', 'days') }} d
     inner join pool_start_dates s on d.timestamp >= s.block_date_start
   where d.timestamp <= current_date
 ),
@@ -110,3 +110,6 @@ select
   stake_shares_supply,
   tx_hash
 from forward_fill
+{% if is_incremental() %}
+where {{ incremental_predicate('block_date') }}
+{% endif %}
