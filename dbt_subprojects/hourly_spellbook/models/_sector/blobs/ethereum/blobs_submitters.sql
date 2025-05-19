@@ -97,4 +97,5 @@ SELECT address
         , (0x4cfaa5f421714eae1645dd3276a89b15c9bcf70c, 'pegglecoin', '')
         , (0xeb18ea5dedee42e7af378991dfeb719d21c17b4c, 'Swellchain', 'swellchain')
         , (0xd0b4c3ac8a50b6f1b3949adaf55cc9805620eb57, 'Settlus', 'Settlusofficial')
+        , (0xfbc0dcd6c3518cb529bc1b585db992a7d40005fa, 'Lighter', 'Lighter_xyz')
         ) AS x(address, entity, x_username)

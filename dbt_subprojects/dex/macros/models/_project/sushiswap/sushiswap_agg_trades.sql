@@ -107,6 +107,9 @@
       call_tx_to     as project_contract_address
     FROM {{ source('sushiswap_' ~ chain, fn )}} 
     where call_success = true
+        {% if is_incremental() %}
+        and {{incremental_predicate('call_block_time')}}
+        {% endif %}
     {% if not loop.last %}union all{% endif %}
     {% endfor %}
   ),
@@ -176,10 +179,16 @@ price_data as (
       on p_bought.contract_address = tm.token_bought_adjusted
       and p_bought.blockchain = '{{ chain }}'
       and p_bought.minute = date_trunc('minute', tm.block_time)
+      {% if is_incremental() %}
+      and {{incremental_predicate('p_bought.minute')}}
+      {% endif %}
     left join {{ source('prices','usd') }} p_sold
       on p_sold.contract_address = tm.token_sold_adjusted
       and p_sold.blockchain = '{{ chain }}'
       and p_sold.minute = date_trunc('minute', tm.block_time)
+      {% if is_incremental() %}
+      and {{incremental_predicate('p_sold.minute')}}
+      {% endif %}
 )
 select
   '{{ chain }}'    as blockchain,
