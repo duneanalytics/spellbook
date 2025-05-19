@@ -54,7 +54,7 @@ left join {{ref('raydium_launchlab_v1_base_trades')}} as base
       and dex_trades.tx_index = base.tx_index
       and dex_trades.block_slot = base.block_slot
       and dex_trades.block_time = base.block_time
-left join raydium_solana.raydium_launchpad_call_create_platform_config pc on base.account_platform_config = pc.account_platform_config
+left join {{source('raydium_solana', 'raydium_launchpad_call_create_platform_config')}} pc on base.account_platform_config = pc.account_platform_config
 where dex_trades.project = 'raydium_launchlab' and dex_trades.version = 1
 and dex_trades.block_time >= TIMESTAMP '{{project_start_date}}'
 {% if is_incremental() -%}
