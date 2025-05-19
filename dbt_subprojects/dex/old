@@ -1,0 +1,45 @@
+with deltaOrdersCreatedByStakersInTheEpoch as (
+select
+  1 as chain_id,
+  *
+from   
+   test_schema.git_dunesql_406dbea_paraswap_delta_v2_ethereum_trades as delta_orders
+  inner join query_4987256 as stakers on stakers.staker = delta_orders.owner
+where
+  call_block_time >= to_timestamp('2025-03-17 12:00:00', 'yyyy-mm-dd hh24:mi:ss')
+  and call_block_time <= to_timestamp('2025-04-14 12:00:00', 'yyyy-mm-dd hh24:mi:ss')         
+
+),
+unique_tx_hashes AS (
+  SELECT call_tx_hash
+  FROM deltaOrdersCreatedByStakersInTheEpoch
+  GROUP BY call_tx_hash
+  HAVING COUNT(*) = 1
+),
+overridden_txns AS (
+  SELECT * FROM (
+    VALUES
+    -- this is how to override missing gas
+      (0x1231231231231231231231231231231231231232132132131231231231231231, 0.1)
+      
+    --  , (0x1231231231231231231231231231231231231232132132131231231231231231, 0.1)
+      
+  ) AS t (call_tx_hash, overridden_fee)
+)
+SELECT
+  -- 'delta-v2-single' AS source,
+  method AS source,
+  chain_id,
+  call_block_time,
+  call_block_number,
+  q.call_tx_hash,
+  COALESCE(t.overridden_fee, gas_fee_usd) AS gas_fee_usd,
+  -- dest_token,
+  -- dest_token_price_usd,
+  staker,
+  CASE WHEN t.overridden_fee IS NOT NULL THEN true ELSE false END AS is_gas_usd_overridden,
+  contract_address
+FROM
+  deltaOrdersCreatedByStakersInTheEpoch q
+  LEFT JOIN overridden_txns t ON q.call_tx_hash = t.call_tx_hash
+  AND t.call_tx_hash IN (SELECT call_tx_hash FROM unique_tx_hashes)touc
