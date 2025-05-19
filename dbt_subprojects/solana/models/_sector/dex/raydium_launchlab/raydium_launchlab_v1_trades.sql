@@ -9,6 +9,8 @@
                                     \'["krishhh"]\') }}')
 }}
 
+-- this model allows to resolve the launchlab trades with their respective launchpad config
+
 {% set project_start_date = '2025-03-17' %}
 
 select
@@ -42,6 +44,8 @@ select
       , dex_trades.inner_instruction_index
       , dex_trades.tx_index
       , base.account_platform_config
+      , json_extract_scalar(pc.platform_params, '$.PlatformParams.name') AS platform_name
+      , pc.platform_params
 from {{ref('dex_solana_trades')}} as dex_trades
 left join {{ref('raydium_launchlab_v1_base_trades')}} as base
       on dex_trades.tx_id = base.tx_id 
@@ -50,6 +54,7 @@ left join {{ref('raydium_launchlab_v1_base_trades')}} as base
       and dex_trades.tx_index = base.tx_index
       and dex_trades.block_slot = base.block_slot
       and dex_trades.block_time = base.block_time
+left join raydium_solana.raydium_launchpad_call_create_platform_config pc on base.account_platform_config = pc.account_platform_config
 where dex_trades.project = 'raydium_launchlab' and dex_trades.version = 1
 and dex_trades.block_time >= TIMESTAMP '{{project_start_date}}'
 {% if is_incremental() -%}
