@@ -20,7 +20,7 @@ models:
       blockchain: apechain
       sector: nft
       project: opensea_apechain
-      contributors: ["0xlheras"]
+      contributors: 0xlheras
     config:
       tags: ["apechain", "nft", "trades", "opensea"]
     description: "opensea base trades"
