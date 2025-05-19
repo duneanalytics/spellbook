@@ -9,8 +9,6 @@
                                     \'["krishhh"]\') }}')
 }}
 
-{% set project_start_date = '2025-03-17' %}
-
 select
       blockchain
       , project
