@@ -9,7 +9,5 @@ sources:
       - name: KatanaV3Factory_evt_PoolCreated
       
   - name: tamadotmeme_ronin
-    tables: 
-      - name: maincontract_call_buytokenswitheth
-      - name: maincontract_evt_tokencreated
-      - name: maincontract_call_selltokensforeth
+    tables:
+      - name: maincontract_evt_trade
