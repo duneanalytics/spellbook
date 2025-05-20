@@ -92,5 +92,6 @@ FROM
     ('hype-hyperliquid', null, 'HYPE', null, null),
     ('bera-berachain', null, 'BERA', null, null),
     ('ape-apecoin', null, 'APE', null, null),
-    ('gho-gho', null, 'GHO', null, null)
+    ('gho-gho', null, 'GHO', null, null),
+    ('plume-plume', null, 'PLUME', null, null)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
