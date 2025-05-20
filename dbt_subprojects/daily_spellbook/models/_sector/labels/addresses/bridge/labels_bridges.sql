@@ -29,7 +29,7 @@ FROM (
     {% for bridges_model in bridges_models %}
     SELECT
         blockchain
-        , CAST(address AS varbinary) AS address
+        , address
         , name
         , category
         , contributor
