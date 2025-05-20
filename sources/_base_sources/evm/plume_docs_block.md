@@ -292,6 +292,6 @@ The `erc721_plume.evt_ApprovalForAll` table contains ApprovalForAll events for E
 - Owner and operator addresses
 - Approved status (boolean)
 
-This table is used for analyzing blanket approvals for ERC721 token collections on the plume chain.
+This table is used for analyzing blanket approvals for ERC721 token collections on the plume network.
 {% enddocs %}
 
