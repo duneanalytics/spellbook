@@ -71,6 +71,7 @@ with swap_out as (
         , outer_instruction_index
         , inner_instruction_index
         , token_mint_address
+        , from_owner
         , from_token_account
         , to_token_account
         , amount
