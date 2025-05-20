@@ -66,7 +66,8 @@ with swap_out as (
 , transfers as (
     select
         block_slot
-        , tx_index
+        --, tx_index
+        , tx_id
         , outer_instruction_index
         , inner_instruction_index
         , token_mint_address
