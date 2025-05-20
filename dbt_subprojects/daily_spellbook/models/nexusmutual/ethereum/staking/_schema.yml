@@ -309,6 +309,30 @@ models:
         description: "latest daily active stake"
       - *tx_hash
 
+  - name: nexusmutual_ethereum_base_deposit_updates_daily
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "staking"]
+    description: "Staking deposit updates daily (base model)"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_id
+            - token_id
+            - block_date
+    columns:
+      - *block_date
+      - *pool_id
+      - *pool_address
+      - *token_id
+      - &token_stake
+        name: token_stake
+        description: "amount staked per token"
+      - *tranche_expiry_date
+
   - name: nexusmutual_ethereum_staking_rewards
     meta:
       blockchain: ethereum
@@ -377,6 +401,30 @@ models:
       - *total_staked_nxm
       - name: pool_date_rn
 
+  - name: nexusmutual_ethereum_base_staked_per_token
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "staking"]
+    description: "Staked NXM per token (base model)"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - pool_id
+            - token_id
+    columns:
+      - *block_date
+      - *pool_id
+      - *pool_address
+      - *token_id
+      - *total_staked_nxm
+      - &stake_expiry_date
+        name: stake_expiry_date
+        description: "stake expiry date"
+
   - name: nexusmutual_ethereum_staked_per_token
     meta:
       blockchain: ethereum
@@ -397,5 +445,5 @@ models:
       - *pool_address
       - *token_id
       - *total_staked_nxm
-      - name: stake_expiry_date
+      - *stake_expiry_date
       - name: token_date_rn
