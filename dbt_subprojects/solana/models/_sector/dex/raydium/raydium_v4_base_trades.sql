@@ -79,7 +79,7 @@ with swap_out as (
     from
         {{ ref('tokens_solana_transfers') }}
     where
-        from_owner = '5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1' --raydium pool v4 authority. makes sure we don't accidently catch some fee transfer or something after the swap. should add for lifinity too later
+        1 = 1
         {% if is_incremental() or true -%}
         and {{incremental_predicate('block_time')}}
         {% else -%}
@@ -126,6 +126,7 @@ with swap_out as (
             (sp.call_is_inner = false AND (trs_2.inner_instruction_index = 2 OR trs_2.inner_instruction_index = 3))
             OR (sp.call_is_inner = true AND (trs_2.inner_instruction_index = sp.call_inner_instruction_index + 2 OR trs_2.inner_instruction_index = sp.call_inner_instruction_index + 3))
             )
+        AND trs_2.from_owner = '5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1' --raydium pool v4 authority. makes sure we don't accidently catch some fee transfer or something after the swap. should add for lifinity too later
 )
 
 SELECT
