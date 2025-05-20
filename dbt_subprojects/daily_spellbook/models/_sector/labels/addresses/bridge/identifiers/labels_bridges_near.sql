@@ -5,7 +5,7 @@
                                     "labels",
                                     \'["Sector920"]\') }}')}}
 
-SELECT blockchain, from_hex(address) as address, name, category, contributor, source, created_at, updated_at, model_name, label_type
+SELECT blockchain, to_utf8(address) as address, name, category, contributor, source, created_at, updated_at, model_name, label_type
 FROM (VALUES
   ('near', 'adb098304d446a7fdf3760a3678fefbe95301d85c952c111c9439fcd26e7c939', 'rainbow bridge 1', 'bridge', 'Sector920', 'static', DATE '2025-05-20', now(), 'bridges_near', 'identifier'),
   ('near', 'aurora', 'aurora', 'bridge', 'Sector920', 'static', DATE '2025-05-20', now(), 'bridges_near', 'identifier'),
