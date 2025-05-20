@@ -14,7 +14,7 @@
      blockchain='unichain'
      , traces = source('unichain','traces')
      , transactions = source('unichain','transactions')
-     , erc20_transfers = source('erc20_unichain','evt_transfer')
+     , erc20_transfers = source('erc20_unichain','evt_Transfer')
      , native_contract_address = var('ETH_ERC20_ADDRESS')
 )
 }}

@@ -51,7 +51,7 @@ trade_amount_detail as (
         e.value AS amount_raw,
         e.to AS receive_address,
         row_number() OVER (PARTITION BY e.evt_tx_hash ORDER BY e.evt_index) AS item_index
-    FROM {{ source('erc20_polygon', 'evt_transfer') }} e
+    FROM {{ source('erc20_polygon', 'evt_Transfer') }} e
     INNER JOIN trades t ON e.evt_block_number = t.block_number
         AND e."from" = 0xf715beb51ec8f63317d66f491e37e7bb048fcc2d
         AND e.evt_tx_hash = t.tx_hash

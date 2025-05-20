@@ -14,7 +14,7 @@
     blockchain='optimism'
     , base_contracts = source('optimism','contracts')
     , base_traces = source('optimism','traces')
-    , erc20_transfer = source('erc20_optimism','evt_transfer')
+    , erc20_transfer = source('erc20_optimism','evt_Transfer')
     , base_transactions = source('optimism','transactions')
     , eth_currency_contract = '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'
 )}}

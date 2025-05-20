@@ -68,7 +68,7 @@ erc20_tfers as (
         SELECT 
             * 
         FROM 
-        {{ source('erc20_ethereum', 'evt_transfer') }}
+        {{ source('erc20_ethereum', 'evt_Transfer') }}
         {% if not is_incremental() %}
         WHERE evt_block_time >= TIMESTAMP '{{first_transfer_date}}'
         {% endif %}
@@ -82,7 +82,7 @@ erc20_tfers as (
         SELECT 
             * 
         FROM 
-        {{ source('erc20_ethereum', 'evt_transfer') }}
+        {{ source('erc20_ethereum', 'evt_Transfer') }}
         {% if not is_incremental() %}
         WHERE evt_block_time >= TIMESTAMP '{{first_transfer_date}}'
         {% endif %}

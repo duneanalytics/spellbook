@@ -54,7 +54,7 @@ payment_detail as (
     SELECT t.contract_address as currency_contract
         , d.tx_hash
         , d.sub_tx_trade_id
-    FROM {{ source('erc20_polygon', 'evt_transfer') }} t
+    FROM {{ source('erc20_polygon', 'evt_Transfer') }} t
     INNER JOIN trade_detail d ON t.evt_tx_hash = d.tx_hash
         AND t."from" = d.buyer
         AND t."to" = 0x547eb9ab69f2e4438845839fd08792c326995ea6 -- Aurem Exchange
