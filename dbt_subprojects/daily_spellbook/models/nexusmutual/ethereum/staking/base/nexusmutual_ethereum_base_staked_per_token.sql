@@ -104,7 +104,7 @@ staked_nxm_per_pool_n_token as (
         inner join {{ ref('nexusmutual_ethereum_staking_events') }} se
           on d.pool_id = se.pool_id
           and d.token_id = se.token_id
-          and d.block_date >= date_trunc('day', se.block_time)
+          and d.block_date >= se.block_date
           and d.block_date < coalesce(se.tranche_expiry_date, current_date)
       where se.flow_type in ('withdraw', 'stake burn')
         and d.is_pre_deposit_update_events
@@ -147,3 +147,6 @@ select
   total_staked_nxm,
   stake_expiry_date
 from staked_nxm_per_pool_n_token_combined
+{% if is_incremental() %}
+where {{ incremental_predicate('block_date') }}
+{% endif %}
