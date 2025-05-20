@@ -26,6 +26,7 @@
                                         ,"nova"
                                         ,"optimism"
                                         ,"ronin"
+                                        ,"plume"
                                         ,"polygon"
                                         ,"scroll"
                                         ,"sei"
@@ -45,7 +46,7 @@
                                     ]\',
                                     "sector",
                                     "tokens",
-                                    \'["bh2smith","0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy","lgingerich","0xRob","jeff-dude","viniabussafi","IrishLatte19","angus_1","Henrystats","rantum", "IrishLatte19"]\') }}'
+                                    \'["bh2smith","0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy","lgingerich","0xRob","jeff-dude","viniabussafi","IrishLatte19","angus_1","Henrystats","rantum", "IrishLatte19", "captncrunch"]\') }}'
     )
 }}
 
