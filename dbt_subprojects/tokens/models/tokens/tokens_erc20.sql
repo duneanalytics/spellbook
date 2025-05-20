@@ -42,6 +42,7 @@
                                         ,"apechain"
                                         ,"opbnb"
                                         ,"unichain"
+                                        , "plume"
                                     ]\',
                                     "sector",
                                     "tokens",
