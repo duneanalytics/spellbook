@@ -3,7 +3,7 @@ select
         {{from_alias}}.blockchain,
         'velora_delta' as project,
         '{{version}}' as version,
-        block_month,
+        date_trunc('month', call_block_time) AS block_month,
         DATE_TRUNC('day', call_block_time) as block_date,
         call_block_time as block_time,
         t_dest_token.symbol as token_bought_symbol,
