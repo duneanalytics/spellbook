@@ -214,8 +214,8 @@ LEFT JOIN {{ source('prices', 'day') }} p
         ELSE 'ETH'
     END
 WHERE e."from" IN (
-    '0xf70da97812CB96acDF810712Aa562db8dfA3dbEF',
-    '0xeeeeee9eC4769A09a76A83C7bC42b185872860eE'
+    0xf70da97812CB96acDF810712Aa562db8dfA3dbEF,
+    0xeeeeee9eC4769A09a76A83C7bC42b185872860eE
 )
 AND e."to" NOT IN (SELECT address FROM excluded_addresses)
 AND e.success = TRUE
