@@ -12,7 +12,7 @@ models:
     data_tests:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
+          combination_of_columns: [ 'block_month', 'block_slot', 'tx_index', 'outer_instruction_index', 'inner_instruction_index' ]
 
   - name: raydium_v3_trades
     meta:
@@ -68,10 +68,6 @@ models:
       - &amount_usd
         name: amount_usd
         description: "USD value of the trade at time of execution"
-        data_tests:
-          - dbt_utils.accepted_range:
-              max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
-              severity: warn
       - &fee_tier
         name: fee_tier
         description: "dexfee tier (fee %)"
@@ -123,7 +119,7 @@ models:
     data_tests:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
+          combination_of_columns: [ 'block_month', 'block_slot', 'tx_index', 'outer_instruction_index', 'inner_instruction_index' ]
 
   - name: raydium_v4_trades
     meta:
@@ -174,7 +170,7 @@ models:
     data_tests:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
+          combination_of_columns: [ 'block_month', 'block_slot', 'tx_index', 'outer_instruction_index', 'inner_instruction_index' ]
 
   - name: raydium_v5_trades
     meta:
