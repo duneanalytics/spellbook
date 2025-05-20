@@ -48,7 +48,7 @@ token_day_sequence as (
   select
     sp.pool_id,
     sp.pool_address,
-    sp.token_id,
+    coalesce(sp.token_id, du.token_id) as token_id,
     d.timestamp as block_date,
     if(du.block_date is null, true, false) as is_pre_deposit_update_events
   from {{ source('utils', 'days') }} d
@@ -58,9 +58,10 @@ token_day_sequence as (
       and sp.token_id = du.token_id
       and du.deposit_update_event_rn = 1
       and d.timestamp >= du.block_date
-  {% if is_incremental() %}
-  where {{ incremental_predicate('d.timestamp') }}
-  {% endif %}
+  where coalesce(sp.token_id, du.token_id) is not null
+    {% if is_incremental() %}
+    and {{ incremental_predicate('d.timestamp') }}
+    {% endif %}
 ),
 
 staked_nxm_per_pool_n_token as (
@@ -81,7 +82,7 @@ staked_nxm_per_pool_n_token as (
         sum(se.amount) as total_amount,
         max(se.stake_end_date) as stake_expiry_date
       from token_day_sequence d
-        left join {{ ref('nexusmutual_ethereum_base_staking_deposit_extensions') }} se
+        inner join {{ ref('nexusmutual_ethereum_base_staking_deposit_extensions') }} se
           on d.pool_id = se.pool_id
           and d.token_id = se.token_id
           and d.block_date >= se.stake_start_date
