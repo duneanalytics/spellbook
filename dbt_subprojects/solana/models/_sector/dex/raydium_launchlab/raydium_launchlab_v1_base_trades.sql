@@ -34,7 +34,7 @@ with calls as (
         , 1 as is_buy
     from
         {{ source('raydium_solana', 'raydium_launchpad_call_buy_exact_in') }}
-    {% if is_incremental() or true -%}
+    {% if is_incremental() -%}
         where
             {{incremental_predicate('call_block_time')}}
     {% else -%}
@@ -61,7 +61,7 @@ with calls as (
         , 1 as is_buy
     from
         {{ source('raydium_solana', 'raydium_launchpad_call_buy_exact_out') }}
-    {% if is_incremental() or true -%}
+    {% if is_incremental() -%}
         where
             {{incremental_predicate('call_block_time')}}
     {% else -%}
@@ -88,7 +88,7 @@ with calls as (
         , 0 as is_buy
     from
         {{ source('raydium_solana', 'raydium_launchpad_call_sell_exact_in') }}
-    {% if is_incremental() or true -%}
+    {% if is_incremental() -%}
         where
             {{incremental_predicate('call_block_time')}}
     {% else -%}
@@ -115,7 +115,7 @@ with calls as (
         , 0 as is_buy
     from
         {{ source('raydium_solana', 'raydium_launchpad_call_sell_exact_out') }}
-    {% if is_incremental() or true -%}
+    {% if is_incremental() -%}
         where
             {{incremental_predicate('call_block_time')}}
     {% else -%}
@@ -161,7 +161,7 @@ with calls as (
             (sp.call_is_inner = false AND trs_base.inner_instruction_index BETWEEN 1 AND 3) OR
             (sp.call_is_inner = true AND trs_base.inner_instruction_index BETWEEN sp.call_inner_instruction_index + 1 AND sp.call_inner_instruction_index + 3)
         )
-        {% if is_incremental() or true -%}
+        {% if is_incremental() -%}
         AND {{incremental_predicate('trs_base.block_time')}}
         {% else -%}
         AND trs_base.block_time >= TIMESTAMP '{{project_start_date}}'
@@ -179,7 +179,7 @@ with calls as (
             (sp.call_is_inner = false AND trs_quote.inner_instruction_index BETWEEN 1 AND 3) OR
             (sp.call_is_inner = true AND trs_quote.inner_instruction_index BETWEEN sp.call_inner_instruction_index + 2 AND sp.call_inner_instruction_index + 3)
         )
-        {% if is_incremental() or true -%}
+        {% if is_incremental() -%}
         AND {{incremental_predicate('trs_quote.block_time')}}
         {% else -%}
         AND trs_quote.block_time >= TIMESTAMP '{{project_start_date}}'
