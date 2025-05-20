@@ -19,7 +19,7 @@ with staked_per_pool_n_token as (
     total_staked_nxm,
     stake_expiry_date,
     row_number() over (partition by pool_id, token_id order by block_date desc) as token_date_rn
-  from staked_nxm_per_pool_n_token_combined
+  from {{ ref('nexusmutual_ethereum_base_staked_per_token') }}
 )
 
 select
