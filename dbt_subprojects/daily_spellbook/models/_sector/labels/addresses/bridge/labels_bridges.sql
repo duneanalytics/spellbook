@@ -5,7 +5,7 @@
     post_hook='{{ expose_spells(\'["ethereum", "fantom","base","arbitrum","polygon","optimism","bnb"]\',
                                 "sector",
                                 "labels",
-                                \'["ilemi","rantum", "kaiblade"]\') }}')
+                                \'["ilemi","rantum", "kaiblade", "Sector920"]\') }}')
 
 }}
 
@@ -20,6 +20,7 @@
  , ref('labels_bridges_optimism')
  , ref('labels_op_bridge_users')
  , ref('labels_op_bridge_derived_archetype')
+ , ref('labels_bridges_near')
 
 ] %}
 
@@ -28,7 +29,7 @@ FROM (
     {% for bridges_model in bridges_models %}
     SELECT
         blockchain
-        , address
+        , CAST(address AS varbinary) AS address
         , name
         , category
         , contributor
