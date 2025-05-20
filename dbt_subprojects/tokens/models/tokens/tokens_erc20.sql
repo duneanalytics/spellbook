@@ -65,6 +65,6 @@ select
     ,symbol as name
     ,decimals
 from (
-    select * from {{source('tokens_v1', 'erc20')}}
+    select * from {{ref('tokens_v1_erc20')}}
     where blockchain not in (select distinct blockchain from {{source('tokens_v2', 'erc20')}})
 )
