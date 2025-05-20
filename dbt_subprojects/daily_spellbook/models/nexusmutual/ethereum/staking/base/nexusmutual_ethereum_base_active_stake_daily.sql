@@ -35,14 +35,13 @@ active_stake_updates as (
 
 daily_snapshots as (
   select
+    block_date,
     pool_id,
     pool_address,
-    block_date,
-    max_by(active_stake, block_time) as active_stake,
-    max_by(stake_shares_supply, block_time) as stake_shares_supply,
-    max_by(tx_hash, block_time) as tx_hash
+    active_stake,
+    tx_hash,
+    row_number() over (partition by pool_id, block_date order by block_time desc) as pool_date_rn
   from active_stake_updates
-  group by 1, 2, 3
 ),
 
 daily_snapshots_with_next as (
@@ -50,21 +49,22 @@ daily_snapshots_with_next as (
     *,
     lead(block_date) over (partition by pool_id order by block_date) as next_update_date
   from (
-    select * from daily_snapshots
-    {% if is_incremental() %}
-    where {{ incremental_predicate('block_date') }}
-    {% endif %}
-    union all
-    select
-      pool_id,
-      pool_address,
-      max(block_date) as block_date,
-      max_by(active_stake, block_date) as active_stake,
-      max_by(stake_shares_supply, block_date) as stake_shares_supply,
-      max_by(tx_hash, block_date) as tx_hash
+    -- regular incremental load
+    select *, cast(null as bigint) as rn
     from daily_snapshots
-    where not {{ incremental_predicate('block_date') }}
-    group by 1, 2
+    where pool_date_rn = 1
+      {% if is_incremental() %}
+      and {{ incremental_predicate('block_date') }}
+      {% endif %}
+    union all
+    -- find last snapshot for each pool pre incremental load window
+    select *
+    from (
+      select *, row_number() over (partition by pool_id order by block_date desc) as rn
+      from daily_snapshots
+      where not {{ incremental_predicate('block_date') }}
+    )
+    where rn = 1
   ) t
 ),
 
@@ -93,7 +93,6 @@ forward_fill as (
     s.pool_address,
     s.block_date,
     dc.active_stake,
-    dc.stake_shares_supply,
     dc.tx_hash
   from daily_sequence s
     left join daily_snapshots_with_next dc
@@ -103,11 +102,10 @@ forward_fill as (
 )
 
 select
+  block_date,
   pool_id,
   pool_address,
-  block_date,
   active_stake,
-  stake_shares_supply,
   tx_hash
 from forward_fill
 {% if is_incremental() %}

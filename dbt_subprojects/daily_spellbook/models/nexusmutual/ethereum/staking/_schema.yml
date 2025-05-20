@@ -35,7 +35,7 @@ models:
       contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
-    description: "Staking pools base data (helper view)"
+    description: "Staking pools base data (base model)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -221,7 +221,7 @@ models:
       contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
-    description: "Staking pools deposit ordered"
+    description: "Staking pools deposit ordered (base model)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -257,7 +257,7 @@ models:
       contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
-    description: "Staking pools deposit extensions"
+    description: "Staking pools deposit extensions (base model)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -294,22 +294,19 @@ models:
       contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
-    description: "Staking active stake daily"
+    description: "Staking active stake daily (base model)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - pool_id
             - block_date
     columns:
+      - *block_date
       - *pool_id
       - *pool_address
-      - *block_date
       - &active_stake
         name: active_stake
         description: "latest daily active stake"
-      - &stake_shares_supply
-        name: stake_shares_supply
-        description: "latest daily stake shares supply"
       - *tx_hash
 
   - name: nexusmutual_ethereum_staking_rewards
@@ -346,7 +343,7 @@ models:
       contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
-    description: "Staked NXM per pool - base model"
+    description: "Staked NXM per pool (base model)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
