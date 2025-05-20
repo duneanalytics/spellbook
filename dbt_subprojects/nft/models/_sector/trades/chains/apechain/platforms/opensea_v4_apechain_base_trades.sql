@@ -21,7 +21,13 @@ WITH fee_wallets as (
      ,Seaport_evt_OrderFulfilled = source('opensea_apechain','Seaport_evt_OrderFulfilled')
      ,Seaport_evt_OrdersMatched = source('opensea_apechain','Seaport_evt_OrdersMatched')
      ,fee_wallet_list_cte = 'fee_wallets'
-     ,start_date = '2025-03-01'
+     ,start_date = '2024-09-02'
+     ,native_currency_contract = '0x48b62137edfa95a428d35c09e44256a739f6b557'
+     ,Seaport_order_contracts = [
+        '0x0000000000000068f116a894984e2db1123eb395'
+     ]
+     ,project = 'opensea'
+     ,version = 'v4'
     )
   }}
 )
