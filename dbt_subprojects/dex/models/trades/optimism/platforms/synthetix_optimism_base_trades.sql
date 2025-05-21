@@ -29,6 +29,13 @@ WITH dexs AS (
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('t.evt_block_time') }}
     {% endif %}
+),
+
+currency_keys as (
+select 
+    currencyKey, synth as synth_address, evt_block_time as valid_from
+    ,lead(evt_block_time) over (partition by currencyKey order by evt_block_time) as valid_to
+from {{ source('synthetix_optimism', 'issuer_evt_synthadded') }}
 )
 
 SELECT
@@ -49,9 +56,12 @@ SELECT
     dexs.tx_hash,
     dexs.evt_index
 FROM dexs
+INNER JOIN currency_keys
+    ON currency_keys.currencyKey = dexs.token_bought_symbol
+    AND dexs.block_time between currency_keys.valid_from and currency_keys.valid_to
 LEFT JOIN {{ source('tokens', 'erc20') }} erc20_bought
-    ON erc20_bought.symbol = dexs.token_bought_symbol
+    ON erc20_bought.contract_address = currency_keys.synth_address
     AND erc20_bought.blockchain = 'optimism'
 LEFT JOIN {{ source('tokens', 'erc20') }} erc20_sold
-    ON erc20_sold.symbol = dexs.token_sold_symbol
+    ON erc20_sold.contract_address = currency_keys.synth_address
     AND erc20_sold.blockchain = 'optimism'
