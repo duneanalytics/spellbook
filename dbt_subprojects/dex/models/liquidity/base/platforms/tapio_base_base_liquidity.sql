@@ -1,0 +1,27 @@
+
+{{
+    config(
+        schema = 'tapio_base',
+        alias = 'liquidity',
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['day', 'pool_address', 'token_address'],
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
+        post_hook = '{{ expose_spells(\'["base"]\',
+                                    "project",
+                                    "tapio",
+                                    \'["brunota20"]\') }}'
+    )
+}}
+
+{{ 
+    tapio_compatible_liquidity_macro(
+        blockchain = 'base',
+        project = 'tapio',
+        version = '1',
+        factory_create_pool_function = 'selfpeggingassetfactory_call_createpool',
+        factory_create_pool_evt = 'selfpeggingassetfactory_evt_poolcreated',
+        spa_token_swapped_evt = 'selfpeggingasset_evt_tokenswapped'
+    )
+}}

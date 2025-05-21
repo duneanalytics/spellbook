@@ -1,0 +1,24 @@
+version: 2
+
+models:
+  - name: dex_sonic_base_liquidity
+    description: "dex sonic base liquidity"
+
+  - name: tapio_sonic_base_liquidity
+    meta:
+      blockchain: sonic
+      sector: dex
+      project: tapio
+      contributors: brunota20
+    config:
+      tags: ["sonic", "dex", "liquidity", "tapio"]
+    description: "tapio sonic base liquidity"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_liquidity_seed:
+          seed_file: ref('tapio_sonic_base_liquidity_seed')
+          filter:
+            version: 1
