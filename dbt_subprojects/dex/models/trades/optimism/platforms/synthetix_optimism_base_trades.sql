@@ -20,8 +20,8 @@ WITH dexs AS (
         t.fromAmount AS token_sold_amount_raw,
         CAST(NULL AS VARBINARY) AS token_bought_address,
         CAST(NULL AS VARBINARY) AS token_sold_address,
-        from_utf8(bytearray_rtrim(t.toCurrencyKey)) AS token_bought_symbol,
-        from_utf8(bytearray_rtrim(t.fromCurrencyKey)) AS token_sold_symbol,
+        t.toCurrencyKey AS token_bought_key,
+        t.fromCurrencyKey AS token_sold_key,
         t.contract_address AS project_contract_address,
         t.evt_tx_hash AS tx_hash,
         t.evt_index
@@ -56,12 +56,15 @@ SELECT
     dexs.tx_hash,
     dexs.evt_index
 FROM dexs
-INNER JOIN currency_keys
-    ON currency_keys.currencyKey = dexs.token_bought_symbol
-    AND dexs.block_time between currency_keys.valid_from and coalesce(currency_keys.valid_to, now())
+INNER JOIN currency_key_bought
+    ON currency_key_bought.currencyKey = dexs.token_bought_key
+    AND dexs.block_time between currency_key_bought.valid_from and coalesce(currency_key_bought.valid_to, now())
+INNER JOIN currency_key_sold
+    ON currency_key_sold.currencyKey = dexs.token_sold_key
+    AND dexs.block_time between currency_key_sold.valid_from and coalesce(currency_key_sold.valid_to, now())
 LEFT JOIN {{ source('tokens', 'erc20') }} erc20_bought
-    ON erc20_bought.contract_address = currency_keys.synth_address
+    ON erc20_bought.contract_address = currency_key_bought.synth_address
     AND erc20_bought.blockchain = 'optimism'
 LEFT JOIN {{ source('tokens', 'erc20') }} erc20_sold
-    ON erc20_sold.contract_address = currency_keys.synth_address
+    ON erc20_sold.contract_address = currency_key_sold.synth_address
     AND erc20_sold.blockchain = 'optimism'
