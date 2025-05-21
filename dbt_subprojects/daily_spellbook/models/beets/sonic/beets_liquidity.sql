@@ -16,7 +16,7 @@ WITH v2 AS(
         version = '2',        
         project_decoded_as = 'beethoven_x_v2',
         base_spells_namespace = 'beets',
-        pool_labels_spell = ref('labels_beets_pools_sonic')
+        pool_labels_model = 'beets_pools_sonic'
     )
 }}),
 
@@ -27,7 +27,7 @@ v3 AS(
         version = '3',        
         project_decoded_as = 'beethoven_x_v3',
         base_spells_namespace = 'beets',
-        pool_labels_spell = ref('labels_beets_pools_sonic')
+        pool_labels_model = 'beets_pools_sonic'
     )
 }})
 

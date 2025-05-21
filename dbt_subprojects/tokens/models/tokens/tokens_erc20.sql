@@ -51,4 +51,21 @@
 }}
 
 
-select * from {{ref('tokens_v1_erc20')}}
+select 
+    blockchain
+    ,contract_address
+    ,symbol
+    ,name
+    ,decimals   
+from {{source('tokens_v2', 'erc20')}}
+union all
+select 
+    blockchain
+    ,contract_address
+    ,symbol
+    ,symbol as name
+    ,decimals
+from (
+    select * from {{ref('tokens_v1_erc20')}}
+    where blockchain not in (select distinct blockchain from {{source('tokens_v2', 'erc20')}})
+)
