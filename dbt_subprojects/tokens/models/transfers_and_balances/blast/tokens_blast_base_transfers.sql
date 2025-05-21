@@ -15,6 +15,6 @@
     traces = source('blast','traces'),
     transactions = source('blast','transactions'),
     erc20_transfers = source('erc20_blast','evt_Transfer'),
-    native_contract_address = null
+    native_contract_address = var('ETH_ERC20_ADDRESS')
 )
 }}
