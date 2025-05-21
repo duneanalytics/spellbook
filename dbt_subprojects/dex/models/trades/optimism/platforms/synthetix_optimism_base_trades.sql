@@ -57,7 +57,7 @@ SELECT
     dexs.evt_index
 FROM dexs
 LEFT JOIN synths synth_bought
-    ON currency_key_bought.currencyKey = dexs.token_bought_key
+    ON synth_bought.currencyKey = dexs.token_bought_key
     AND dexs.block_time between synth_bought.valid_from and coalesce(synth_bought.valid_to, now())
 LEFT JOIN synths synth_sold
     ON synth_sold.currencyKey = dexs.token_sold_key
