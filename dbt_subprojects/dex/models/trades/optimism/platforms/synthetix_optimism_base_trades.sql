@@ -35,7 +35,7 @@ currency_keys as (
 select 
     currencyKey, synth as synth_address, evt_block_time as valid_from
     ,lead(evt_block_time) over (partition by currencyKey order by evt_block_time) as valid_to
-from {{ source('synthetix_optimism', 'issuer_evt_synthadded') }}
+from {{ source('synthetix_optimism', 'Issuer_evt_SynthAdded') }}
 )
 
 SELECT
@@ -58,7 +58,7 @@ SELECT
 FROM dexs
 INNER JOIN currency_keys
     ON currency_keys.currencyKey = dexs.token_bought_symbol
-    AND dexs.block_time between currency_keys.valid_from and currency_keys.valid_to
+    AND dexs.block_time between currency_keys.valid_from and coalesce(currency_keys.valid_to, now())
 LEFT JOIN {{ source('tokens', 'erc20') }} erc20_bought
     ON erc20_bought.contract_address = currency_keys.synth_address
     AND erc20_bought.blockchain = 'optimism'
