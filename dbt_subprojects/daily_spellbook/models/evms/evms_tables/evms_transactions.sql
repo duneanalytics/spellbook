@@ -36,7 +36,7 @@ FROM (
         {% if blockchain in ('ethereum', 'arbitrum', 'base', 'optimism', 'polygon', 'zkevm', 'bnb', 'gnosis', 'scroll', 'zora', 'mantle', 'berachain', 'unichain', 'worldchain', 'ink', 'nova', 'opbnb') %}
         , authorization_list
         {% else %}
-        , CAST(NULL AS JSON) AS authorization_list
+        , CAST(NULL AS array(row(chainid bigint, address varbinary, nonce bigint, r varchar, s varchar, yparity varchar))) AS authorization_list
         {% endif %}
         
         --Logic for L2s
