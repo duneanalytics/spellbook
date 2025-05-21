@@ -16,7 +16,7 @@ SELECT
 FROM
     {{ source('evms','info') }} AS ei
 LEFT JOIN
-    {{ ref('tokens_erc20') }} AS erc20
+    {{ source('tokens','erc20') }} AS erc20
 ON
     ei.wrapped_native_token_address = erc20.contract_address
     AND ei.blockchain = erc20.blockchain
