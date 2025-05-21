@@ -33,6 +33,7 @@ FROM (
         , success
         , "type"
         , CAST(value AS double) AS value
+        , try(authorization_list) AS authorization_list
         --Logic for L2s
                 {% if blockchain in all_op_chains() + ('scroll','mantle','blast') %}
                 , l1_tx_origin
