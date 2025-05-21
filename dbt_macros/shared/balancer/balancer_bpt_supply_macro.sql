@@ -1,6 +1,6 @@
 {% macro 
     balancer_v2_compatible_bpt_supply_macro(
-        blockchain, version, project_decoded_as, base_spells_namespace, pool_labels_spell
+        blockchain, version, project_decoded_as, pool_labels_spell, transfers_spell
     ) 
 %}
 
@@ -24,7 +24,7 @@ WITH pool_labels AS (
             contract_address AS token,
             COALESCE(SUM(CASE WHEN t."from" = 0x0000000000000000000000000000000000000000 THEN value / POWER(10, 18) ELSE 0 END), 0) AS mints,
             COALESCE(SUM(CASE WHEN t.to = 0x0000000000000000000000000000000000000000 THEN value / POWER(10, 18) ELSE 0 END), 0) AS burns
-        FROM  {{ ref(base_spells_namespace + '_' + version + +'_'+ blockchain +'_transfers_bpt') }} t
+        FROM  {{ transfers_spell }} t
         WHERE blockchain = '{{blockchain}}'   
         AND version = '{{version}}'
         GROUP BY 1, 2
@@ -143,7 +143,7 @@ WITH pool_labels AS (
 
 {% macro 
     balancer_v3_compatible_bpt_supply_macro(
-        blockchain, version, project_decoded_as, base_spells_namespace, pool_labels_spell
+        blockchain, version, project_decoded_as, pool_labels_spell, transfers_spell
     ) 
 %}
 
@@ -167,7 +167,7 @@ WITH pool_labels AS (
             contract_address AS token,
             COALESCE(SUM(CASE WHEN t."from" = 0x0000000000000000000000000000000000000000 THEN value / POWER(10, 18) ELSE 0 END), 0) AS mints,
             COALESCE(SUM(CASE WHEN t.to = 0x0000000000000000000000000000000000000000 THEN value / POWER(10, 18) ELSE 0 END), 0) AS burns
-        FROM  {{ ref(base_spells_namespace + '_' + version + +'_'+ blockchain +'_transfers_bpt') }} t
+        FROM  {{ transfers_spell }} t
         WHERE blockchain = '{{blockchain}}'   
         AND version = '{{version}}'
         GROUP BY 1, 2
