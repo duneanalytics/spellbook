@@ -2,7 +2,9 @@
         blockchain = '',
         project = '',
         version = '',
-        project_decoded_as = 'tapio'
+        factory_create_pool_function = '',
+        factory_create_pool_evt = '',
+        spa_token_swapped_evt = '',
     )
 %}
 
@@ -23,8 +25,7 @@ pool_creation_calls AS (
         -- Extract token types
         CAST(json_extract_scalar(argument, '$.tokenAType') AS integer) AS tokenAType,
         CAST(json_extract_scalar(argument, '$.tokenBType') AS integer) AS tokenBType
-    FROM {{ source(project_decoded_as ~ '_multichain', 'selfpeggingassetfactory_call_createpool') }}
-    WHERE chain = '{{ blockchain }}'
+    FROM {{ source(project ~ '_' ~ blockchain, factory_create_pool_function) }}
     AND call_success = true
 ),
 
@@ -37,8 +38,7 @@ pool_creation_events AS (
         evt_block_number,
         contract_address AS factory_address,
         selfPeggingAsset AS pool_address -- This is the actual pool contract
-    FROM {{ source(project_decoded_as ~ '_multichain', 'selfpeggingassetfactory_evt_poolcreated') }}
-    WHERE chain = '{{ blockchain }}'
+    FROM {{ source(project ~ '_' ~ blockchain, factory_create_pool_evt) }}
 ),
 
 -- Combine call and event data to map pool addresses to tokens
@@ -98,8 +98,7 @@ swap_events AS (
         element_at(amounts, 2) AS amount1,
         swapAmount,
         feeAmount
-    FROM {{ source(project_decoded_as ~ '_multichain', 'selfpegginasset_evt_tokenswapped') }}
-    WHERE chain = '{{ blockchain }}'
+    FROM {{ source(project ~ '_' ~ blockchain, spa_token_swapped_evt) }}
     {% if is_incremental() %}
     AND {{ incremental_predicate('evt_block_time') }}
     {% endif %}
