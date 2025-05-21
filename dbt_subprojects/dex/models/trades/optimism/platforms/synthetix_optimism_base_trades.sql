@@ -48,8 +48,8 @@ SELECT
     dexs.block_number,
     dexs.token_bought_amount_raw,
     dexs.token_sold_amount_raw,
-    erc20_bought.contract_address AS token_bought_address,
-    erc20_sold.contract_address AS token_sold_address,
+    currency_key_bought.synth_address AS token_bought_address,
+    currency_key_sold.synth_address AS token_sold_address,
     dexs.taker,
     dexs.maker,
     dexs.project_contract_address,
@@ -62,9 +62,3 @@ INNER JOIN currency_key_bought
 INNER JOIN currency_key_sold
     ON currency_key_sold.currencyKey = dexs.token_sold_key
     AND dexs.block_time between currency_key_sold.valid_from and coalesce(currency_key_sold.valid_to, now())
-LEFT JOIN {{ source('tokens', 'erc20') }} erc20_bought
-    ON erc20_bought.contract_address = currency_key_bought.synth_address
-    AND erc20_bought.blockchain = 'optimism'
-LEFT JOIN {{ source('tokens', 'erc20') }} erc20_sold
-    ON erc20_sold.contract_address = currency_key_sold.synth_address
-    AND erc20_sold.blockchain = 'optimism'
