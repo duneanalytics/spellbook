@@ -9,7 +9,7 @@ WITH pool_labels AS (
             address AS pool_id,
             name AS pool_symbol,
             pool_type
-        FROM {{ source('labels', 'addresses') }}
+        FROM {{ source('labels', pool_labels_model) }}
         WHERE blockchain = '{{blockchain}}'
         AND source = 'query'
         AND model_name = '{{pool_labels_model}}'
@@ -302,7 +302,7 @@ WITH pool_labels AS (
             address AS pool_id,
             name AS pool_symbol,
             pool_type
-        FROM {{ source('labels', 'addresses') }}
+        FROM {{ source('labels', pool_labels_model) }}
         WHERE blockchain = '{{blockchain}}'
         AND source = 'query'
         AND model_name = '{{pool_labels_model}}'
