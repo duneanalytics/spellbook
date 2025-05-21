@@ -12,7 +12,7 @@ WITH pool_labels AS (
         FROM {{ source('labels', 'addresses') }}
         WHERE blockchain = '{{blockchain}}'
         AND source = 'query'
-        AND model = '{{pool_labels_model}}'
+        AND model_name = '{{pool_labels_model}}'
     ),
 
 -- liquidity formulation, with a few simplifications, compared to liquidity spell
@@ -368,7 +368,7 @@ WITH pool_labels AS (
         FROM {{ source('labels', 'addresses') }}
         WHERE blockchain = '{{blockchain}}'
         AND source = 'query'
-        AND model = '{{pool_labels_model}}'
+        AND model_name = '{{pool_labels_model}}'
     ),
 
     token_data AS (
