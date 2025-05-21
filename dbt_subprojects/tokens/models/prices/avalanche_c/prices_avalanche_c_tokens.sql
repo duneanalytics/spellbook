@@ -109,6 +109,7 @@ FROM
     --('joe-lfj', 'avalanche_c', 'JOE', 0x6e84a6216ea6dacc71ee8e6b0a5b7322eebc0fdd, 18),
     ('egg-chikn-egg', 'avalanche_c', 'EGG', 0x7761e2338b35bceb6bda6ce477ef012bde7ae611, 18),
     ('cra-crabada', 'avalanche_c', 'CRA', 0xa32608e873f9ddef944b24798db69d80bbb4d1ed, 18),
-    ('ket-ket2', 'avalanche_c', 'KET', 0xffff003a6bad9b743d658048742935fffe2b6ed7, 18)
+    ('ket-ket2', 'avalanche_c', 'KET', 0xffff003a6bad9b743d658048742935fffe2b6ed7, 18),
+    ('nxpc-nexpace', 'avalanche_c', 'NXPC', 0x5E0E90E268BC247Cc850c789A0DB0d5c7621fb59, 18)
 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
