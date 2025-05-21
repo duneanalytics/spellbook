@@ -14,7 +14,7 @@ SELECT
     ei.wrapped_native_token_address AS price_address,
     erc20.decimals AS decimals
 FROM
-    {{ ref('evms_info') }} AS ei
+    {{ source('evms','info') }} AS ei
 LEFT JOIN
     {{ ref('tokens_erc20') }} AS erc20
 ON
