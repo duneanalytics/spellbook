@@ -1,6 +1,6 @@
 {% macro 
     balancer_v2_compatible_bpt_supply_macro(
-        blockchain, version, project_decoded_as, pool_labels_spell, transfers_spell
+        blockchain, version, project_decoded_as, pool_labels_model, transfers_spell
     ) 
 %}
 
@@ -11,8 +11,10 @@ WITH pool_labels AS (
                 name,
                 pool_type,
                 ROW_NUMBER() OVER (PARTITION BY address ORDER BY MAX(updated_at) DESC) AS num
-            FROM {{ pool_labels_spell }}
+            FROM {{ source('labels', 'addresses') }}
             WHERE blockchain = '{{blockchain}}'
+            and source = 'query'
+            and model_name = '{{pool_labels_model}}'
             GROUP BY 1, 2, 3) 
         WHERE num = 1
     ),
@@ -143,7 +145,7 @@ WITH pool_labels AS (
 
 {% macro 
     balancer_v3_compatible_bpt_supply_macro(
-        blockchain, version, project_decoded_as, pool_labels_spell, transfers_spell
+        blockchain, version, project_decoded_as, pool_labels_model, transfers_spell
     ) 
 %}
 
@@ -154,8 +156,10 @@ WITH pool_labels AS (
                 name,
                 pool_type,
                 ROW_NUMBER() OVER (PARTITION BY address ORDER BY MAX(updated_at) DESC) AS num
-            FROM {{ pool_labels_spell }}
+            FROM {{ source('labels', 'addresses') }}
             WHERE blockchain = '{{blockchain}}'
+            and source = 'query'
+            and model = '{{pool_labels_model}}'
             GROUP BY 1, 2, 3) 
         WHERE num = 1
     ),

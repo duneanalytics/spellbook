@@ -12,7 +12,7 @@ WITH v2 AS(
         blockchain = 'sonic',
         version = '2',        
         project_decoded_as = 'beethoven_x_v2',
-        pool_labels_spell = ref('labels_beets_pools_sonic'),
+        pool_labels_model = 'beets_pools_sonic',
         transfers_spell = ref('beets_transfers_bpt')
     )
 }}),
@@ -22,7 +22,7 @@ v3 AS({{
         blockchain = 'sonic',
         version = '3',        
         project_decoded_as = 'beethoven_x_v3',
-        pool_labels_spell = ref('labels_beets_pools_sonic'),
+        pool_labels_model = 'beets_pools_sonic',
         transfers_spell = ref('beets_transfers_bpt')
     )
 }})

@@ -11,6 +11,7 @@ WITH pool_labels AS (
             pool_type
         FROM {{ pool_labels_spell }}
         WHERE blockchain = '{{blockchain}}'
+        AND 
     ),
 
 -- liquidity formulation, with a few simplifications, compared to liquidity spell
