@@ -31,7 +31,7 @@ WITH dexs AS (
     {% endif %}
 ),
 
-currency_keys as (
+synths as (
 select 
     currencyKey, synth as synth_address, evt_block_time as valid_from
     ,lead(evt_block_time) over (partition by currencyKey order by evt_block_time) as valid_to
@@ -48,17 +48,17 @@ SELECT
     dexs.block_number,
     dexs.token_bought_amount_raw,
     dexs.token_sold_amount_raw,
-    currency_key_bought.synth_address AS token_bought_address,
-    currency_key_sold.synth_address AS token_sold_address,
+    synth_bought.synth_address AS token_bought_address,
+    synth_sold.synth_address AS token_sold_address,
     dexs.taker,
     dexs.maker,
     dexs.project_contract_address,
     dexs.tx_hash,
     dexs.evt_index
 FROM dexs
-LEFT JOIN currency_key_bought
+LEFT JOIN synths synth_bought
     ON currency_key_bought.currencyKey = dexs.token_bought_key
-    AND dexs.block_time between currency_key_bought.valid_from and coalesce(currency_key_bought.valid_to, now())
-LEFT JOIN currency_key_sold
-    ON currency_key_sold.currencyKey = dexs.token_sold_key
-    AND dexs.block_time between currency_key_sold.valid_from and coalesce(currency_key_sold.valid_to, now())
+    AND dexs.block_time between synth_bought.valid_from and coalesce(synth_bought.valid_to, now())
+LEFT JOIN synths synth_sold
+    ON synth_sold.currencyKey = dexs.token_sold_key
+    AND dexs.block_time between synth_sold.valid_from and coalesce(synth_sold.valid_to, now())
