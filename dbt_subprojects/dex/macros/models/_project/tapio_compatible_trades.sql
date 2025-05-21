@@ -24,7 +24,7 @@ pool_creation_calls AS (
         CAST(json_extract_scalar(argument, '$.tokenAType') AS integer) AS tokenAType,
         CAST(json_extract_scalar(argument, '$.tokenBType') AS integer) AS tokenBType
     FROM {{ source(project ~ '_' ~ blockchain, factory_create_pool_function) }}
-    AND call_success = true
+    WHERE call_success = true
 ),
 
 -- Get pool addresses from pool creation events
@@ -79,7 +79,7 @@ swap_events AS (
         feeAmount
     FROM {{ source(project ~ '_' ~ blockchain, spa_token_swapped_evt) }}
     {% if is_incremental() %}
-    AND {{ incremental_predicate('evt_block_time') }}
+    WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
 ),
 
