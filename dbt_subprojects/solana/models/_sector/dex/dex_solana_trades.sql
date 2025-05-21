@@ -11,7 +11,7 @@
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
                                     "dex_solana",
-                                    \'["ilemi","0xRob","jeff-dude"]\') }}')
+                                    \'["ilemi","0xRob","jeff-dude","0xBoxer","krishhh"]\') }}')
 }}
 
 with base_trades as (
@@ -98,4 +98,4 @@ LEFT JOIN
 LEFT JOIN 
     {{ source('prices','trusted_tokens') }} tt_bought
     ON bt.token_bought_mint_address = toBase58(tt_bought.contract_address)
-    AND bt.blockchain = tt_bought.blockchain 
+    AND bt.blockchain = tt_bought.blockchain

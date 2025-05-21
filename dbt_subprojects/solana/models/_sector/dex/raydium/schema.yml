@@ -213,4 +213,3 @@ models:
       - *outer_instruction_index
       - *inner_instruction_index
       - *tx_index
-
