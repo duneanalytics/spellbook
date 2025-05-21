@@ -20,7 +20,9 @@ sources:
       
   - name: labels
     tables:
-      - name: jelly_swap_pools_sei     
+      - name: jelly_swap_pools_sei   
+      - name: beethoven_x_pools_fantom
+      - name: beets_pools_sonic
       - name: addresses
       
   - name: evms
