@@ -56,9 +56,9 @@ SELECT
     dexs.tx_hash,
     dexs.evt_index
 FROM dexs
-INNER JOIN currency_key_bought
+LEFT JOIN currency_key_bought
     ON currency_key_bought.currencyKey = dexs.token_bought_key
     AND dexs.block_time between currency_key_bought.valid_from and coalesce(currency_key_bought.valid_to, now())
-INNER JOIN currency_key_sold
+LEFT JOIN currency_key_sold
     ON currency_key_sold.currencyKey = dexs.token_sold_key
     AND dexs.block_time between currency_key_sold.valid_from and coalesce(currency_key_sold.valid_to, now())
