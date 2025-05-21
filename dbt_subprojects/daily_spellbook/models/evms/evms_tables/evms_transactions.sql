@@ -33,7 +33,12 @@ FROM (
         , success
         , "type"
         , CAST(value AS double) AS value
-        , try(authorization_list) AS authorization_list
+        {% if blockchain in ('ethereum', 'arbitrum', 'base', 'optimism', 'polygon', 'zkevm', 'bnb', 'gnosis', 'scroll', 'zora', 'mantle', 'berachain', 'unichain', 'worldchain', 'ink', 'nova', 'opbnb') %}
+        , authorization_list
+        {% else %}
+        , CAST(NULL AS JSON) AS authorization_list
+        {% endif %}
+        
         --Logic for L2s
                 {% if blockchain in all_op_chains() + ('scroll','mantle','blast') %}
                 , l1_tx_origin
