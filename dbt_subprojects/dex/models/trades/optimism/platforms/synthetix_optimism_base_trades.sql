@@ -58,7 +58,8 @@ SELECT
 FROM dexs
 LEFT JOIN synths synth_bought
     ON synth_bought.currencyKey = dexs.token_bought_key
-    AND dexs.block_time between synth_bought.valid_from and coalesce(synth_bought.valid_to, now())
+    AND dexs.block_time >= synth_bought.valid_from 
+    AND dexs.block_time <= coalesce(synth_bought.valid_to, now())
 LEFT JOIN synths synth_sold
     ON synth_sold.currencyKey = dexs.token_sold_key
     AND dexs.block_time >= synth_sold.valid_from 
