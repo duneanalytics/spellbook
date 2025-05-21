@@ -159,7 +159,7 @@ WITH pool_labels AS (
             FROM {{ source('labels', 'addresses') }}
             WHERE blockchain = '{{blockchain}}'
             and source = 'query'
-            and model = '{{pool_labels_model}}'
+            and model_name = '{{pool_labels_model}}'
             GROUP BY 1, 2, 3) 
         WHERE num = 1
     ),
