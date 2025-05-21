@@ -2,9 +2,9 @@
         blockchain = '',
         project = '',
         version = '',
-        factory_create_pool_function = '',
-        factory_create_pool_evt = '',
-        spa_token_swapped_evt = '',
+        factory_create_pool_function = null,
+        factory_create_pool_evt = null,
+        spa_token_swapped_evt = null
     )
 %}
 
@@ -13,12 +13,10 @@ WITH
 -- Extract pool creation information from factory calls
 pool_creation_calls AS (
     SELECT
-        chain,
         call_tx_hash,
         call_block_time,
         call_block_number,
         contract_address AS factory_address,
-        output_0 AS pool_address, -- Contract address of created pool
         -- Extract token addresses
         CAST(from_hex(json_extract_scalar(argument, '$.tokenA')) AS varbinary) AS tokenA,
         CAST(from_hex(json_extract_scalar(argument, '$.tokenB')) AS varbinary) AS tokenB,
@@ -32,7 +30,6 @@ pool_creation_calls AS (
 -- Get pool addresses from pool creation events
 pool_creation_events AS (
     SELECT
-        chain,
         evt_tx_hash,
         evt_block_time,
         evt_block_number,
@@ -43,7 +40,6 @@ pool_creation_events AS (
 
 -- Combine call and event data to map pool addresses to tokens
 pool_tokens AS (
-    -- Match factory calls with creation events by transaction hash
     SELECT
         e.pool_address AS contract_address,
         c.tokenA AS token0,
@@ -54,23 +50,6 @@ pool_tokens AS (
     JOIN pool_creation_calls c
         ON e.evt_tx_hash = c.call_tx_hash
         AND e.factory_address = c.factory_address
-    
-    UNION ALL
-    
-    -- Include calls without matching events as fallback
-    SELECT
-        c.pool_address AS contract_address,
-        c.tokenA AS token0,
-        c.tokenB AS token1,
-        c.tokenAType AS token0Type,
-        c.tokenBType AS token1Type
-    FROM pool_creation_calls c
-    WHERE NOT EXISTS (
-        SELECT 1 
-        FROM pool_creation_events e 
-        WHERE e.evt_tx_hash = c.call_tx_hash
-        AND e.factory_address = c.factory_address
-    )
 ),
 
 -- Deduplicate pool token information
