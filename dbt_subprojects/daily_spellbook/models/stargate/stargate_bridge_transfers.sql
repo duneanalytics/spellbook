@@ -198,8 +198,8 @@ bridges as (
         concat(t.blockchain, ' -> ', a1.chain) as pathway,
         p.price,
         case 
-            when a.token in ('USDC','USDT','m.USDT','USDC.e') then amount
-            when a.token in ('ETH','WETH','mETH') then amount * p.price
+            when a.token in ('USDC','USDT','m.USDT','USDC.e') then  t.amount_raw / power(10, a.decimals)
+            when a.token in ('ETH','WETH','mETH') then ( t.amount_raw / power(10, a.decimals)) * p.price
             else null
         end as amount_usd
     from tx t
