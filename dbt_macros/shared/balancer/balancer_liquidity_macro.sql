@@ -1,6 +1,6 @@
 {% macro
     balancer_v2_compatible_liquidity_macro(
-        blockchain, version, project_decoded_as, base_spells_namespace, pool_labels_spell
+        blockchain, version, project_decoded_as, base_spells_namespace, pool_labels_model
     )
 %}
 
@@ -9,8 +9,10 @@ WITH pool_labels AS (
             address AS pool_id,
             name AS pool_symbol,
             pool_type
-        FROM {{ pool_labels_spell }}
+        FROM {{ source('labels', pool_labels_model) }}
         WHERE blockchain = '{{blockchain}}'
+        AND source = 'query'
+        AND model_name = '{{pool_labels_model}}'
     ),
 
     prices AS (
@@ -291,7 +293,7 @@ WITH pool_labels AS (
 
 {% macro
     balancer_v3_compatible_liquidity_macro(
-        blockchain, version, project_decoded_as, base_spells_namespace, pool_labels_spell
+        blockchain, version, project_decoded_as, base_spells_namespace, pool_labels_model
     )
 %}
 
@@ -300,8 +302,10 @@ WITH pool_labels AS (
             address AS pool_id,
             name AS pool_symbol,
             pool_type
-        FROM {{ pool_labels_spell }}
+        FROM {{ source('labels', pool_labels_model) }}
         WHERE blockchain = '{{blockchain}}'
+        AND source = 'query'
+        AND model_name = '{{pool_labels_model}}'
     ),
 
     token_data AS (

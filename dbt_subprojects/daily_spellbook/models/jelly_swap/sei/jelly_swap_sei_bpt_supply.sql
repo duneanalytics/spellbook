@@ -13,7 +13,7 @@
         blockchain = blockchain,
         version = '2',        
         project_decoded_as = 'jelly_swap',
-        base_spells_namespace = 'jelly_swap_sei',
-        pool_labels_spell = ref('labels_jelly_swap_pools_sei')
+        pool_labels_model = 'jelly_swap_pools_sei',
+        transfers_spell = ref('jelly_swap_sei_transfers_bpt')
     )
 }}

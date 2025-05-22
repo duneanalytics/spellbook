@@ -1,0 +1,47 @@
+version: 2
+
+models:
+  - name: relay_token_transfers
+    description: >
+      Combined ETH and selected ERC-20 token transfers from specific addresses across multiple chains.
+      This model filters by known relay tokens and excludes specific non-user addresses.
+    meta:
+      project: relay_token_monitoring
+      contributors: [outputlayer]
+    config:
+      tags: ['relay', 'cross-chain', 'erc20', 'eth', 'token-transfers']
+    columns:
+      - name: day
+        description: "Date of the transfer (truncated to day, type: date)"
+        tests:
+          - not_null
+
+      - name: evt_tx_hash
+        description: "Transaction hash associated with the transfer (type: string)"
+
+      - name: evt_block_time
+        description: "Timestamp when the transaction was confirmed (type: timestamp)"
+
+      - name: blockchain
+        description: "Blockchain where the transfer occurred (e.g. ethereum, optimism, type: string)"
+        tests:
+          - not_null
+
+      - name: to
+        description: "Recipient address of the transfer (type: string)"
+
+      - name: symbol
+        description: "Symbol of the transferred token (e.g. ETH, USDC, DAI, type: string)"
+        tests:
+          - not_null
+
+      - name: value
+        description: "Raw token amount (type: float, not price-adjusted, e.g. 5.23 USDC)"
+
+      - name: price
+        description: "Token price on the transfer date (from prices.day, type: float)"
+
+      - name: amount
+        description: "USD-equivalent value of the transfer (type: float, may be null if price is missing)"
+
+       
