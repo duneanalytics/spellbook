@@ -257,9 +257,9 @@ next_tx AS (
     ON o.user = i.user
     AND o.blockchain = i.blockchain
     AND o.block_number > i.bridge_block_number
-)
+),
 
-SELECT 
+pre_post as (SELECT 
   i.user,
   i.blockchain,
 
@@ -280,4 +280,6 @@ SELECT
 
 FROM input_tx i
 LEFT JOIN prev_tx p ON p.bridge_tx_hash = i.bridge_tx_hash AND p.rn = 1
-LEFT JOIN next_tx n ON n.bridge_tx_hash = i.bridge_tx_hash AND n.rn = 1
+LEFT JOIN next_tx n ON n.bridge_tx_hash = i.bridge_tx_hash AND n.rn = 1)
+
+select distinct * from pre_post
