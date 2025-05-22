@@ -15,6 +15,5 @@
      , traces = source('apechain','traces')
      , transactions = source('apechain','transactions')
      , erc20_transfers = source('erc20_apechain','evt_Transfer')
-     , native_contract_address = '0x7f9fbf9bdd3f4105c478b996b648fe6e828a1e98'
 )
 }}

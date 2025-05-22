@@ -14,7 +14,6 @@
     blockchain='zkevm',
     traces = source('zkevm','traces'),
     transactions = source('zkevm','transactions'),
-    erc20_transfers = source('erc20_zkevm','evt_Transfer'),
-    native_contract_address = var('ETH_ERC20_ADDRESS')
+    erc20_transfers = source('erc20_zkevm','evt_Transfer')
 )
 }}

@@ -14,7 +14,6 @@
     blockchain='arbitrum',
     traces = source('arbitrum','traces'),
     transactions = source('arbitrum','transactions'),
-    erc20_transfers = source('erc20_arbitrum','evt_Transfer'),
-    native_contract_address = var('ETH_ERC20_ADDRESS')
+    erc20_transfers = source('erc20_arbitrum','evt_Transfer')
 )
 }}

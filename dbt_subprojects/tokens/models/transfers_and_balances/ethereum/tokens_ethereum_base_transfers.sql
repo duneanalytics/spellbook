@@ -14,8 +14,7 @@
     blockchain='ethereum',
     traces = source('ethereum','traces'),
     transactions = source('ethereum','transactions'),
-    erc20_transfers = source('erc20_ethereum','evt_Transfer'),
-    native_contract_address = var('ETH_ERC20_ADDRESS')
+    erc20_transfers = source('erc20_ethereum','evt_Transfer')
 )}}
 
 UNION ALL

@@ -14,7 +14,6 @@
     blockchain='celo',
     traces = source('celo','traces'),
     transactions = source('celo','transactions'),
-    erc20_transfers = source('erc20_celo','evt_Transfer'),
-    native_contract_address = '0x471ece3750da237f93b8e339c536989b8978a438'
+    erc20_transfers = source('erc20_celo','evt_Transfer')
 )
 }}

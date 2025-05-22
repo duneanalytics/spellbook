@@ -14,7 +14,6 @@
     blockchain='sei',
     traces = source('sei','traces'),
     transactions = source('sei','transactions'),
-    erc20_transfers = source('erc20_sei','evt_Transfer'),
-    native_contract_address = var('ETH_ERC20_ADDRESS')
+    erc20_transfers = source('erc20_sei','evt_Transfer')
 )
 }}

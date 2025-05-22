@@ -14,7 +14,6 @@
     blockchain='avalanche_c',
     traces = source('avalanche_c','traces'),
     transactions = source('avalanche_c','transactions'),
-    erc20_transfers = source('erc20_avalanche_c','evt_Transfer'),
-    native_contract_address = var('ETH_ERC20_ADDRESS')
+    erc20_transfers = source('erc20_avalanche_c','evt_Transfer')
 )
 }}
