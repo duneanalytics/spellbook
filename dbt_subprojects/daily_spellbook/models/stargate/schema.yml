@@ -1,0 +1,92 @@
+version: 2
+
+models:
+  - name: stargate_bridge_transfers
+    meta:
+      blockchain: ethereum, bnb, avalanche_c, polygon, arbitrum, optimism, metis, linea, mantle, base, kava, scroll, aurora, core, sonic, unichain, gnosis, soneium, kaia, iota, taiko, rari, sei, flare, gravity, lightlink, abstract, peaq, flow, goat, berachain, rootstock, hemi, vana, ink, glue, fuse, superposition, degen, codex, story, apechain, telos, plume, xdc
+      project: stargate
+      contributors: outputlayer
+    config:
+      tags: ['stargate', 'bridge', 'cross-chain', 'transfers']
+    description: "Bridge transfers via Stargate protocol across EVM chains."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - blockchain
+    columns:
+      - name: tx_hash
+        description: "Unique transaction hash"
+        tests:
+          - not_null
+
+      - name: block_time
+        description: "Timestamp of transaction block"
+        tests:
+          - not_null
+
+      - name: block_number
+        description: "Block number of the transaction"
+        tests:
+          - not_null
+
+      - name: pool_name
+        description: "Address of the Stargate pool contract"
+        tests:
+          - not_null
+
+      - name: user
+        description: "User initiating the bridge transfer"
+        tests:
+          - not_null
+
+      - name: dest
+        description: "Destination endpoint ID used in bridge event"
+        tests:
+          - not_null
+
+      - name: amount_raw
+        description: "Raw transfer amount (not adjusted for token decimals)"
+        tests:
+          - not_null
+
+      - name: blockchain
+        description: "Chain where the bridge transaction originated"
+        tests:
+          - not_null
+
+      - name: token
+        description: "Token symbol (e.g., USDC, ETH)"
+        tests:
+          - not_null
+
+      - name: amount
+        description: "Human-readable token amount adjusted for decimals"
+        tests:
+          - not_null
+
+      - name: decimals
+        description: "Token decimal precision"
+        tests:
+          - not_null
+
+      - name: from_chain
+        description: "Originating chain name"
+        tests:
+          - not_null
+
+      - name: to_chain
+        description: "Destination chain name"
+        tests:
+          - not_null
+
+      - name: pathway
+        description: "Path: from_chain -> to_chain"
+        tests:
+          - not_null
+
+      - name: price
+        description: "Price of the token (ETH-based tokens use ETH price)"
+
+      - name: amount_usd
+        description: "USD value of the transferred amount" 
