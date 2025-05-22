@@ -196,7 +196,11 @@ bridges as (
             ' -> ',
            COALESCE(a1.chain, CAST(t.dest AS varchar))
         ) as pathway,
-        p.price,
+        case 
+            when a.token in ('USDC','USDT','m.USDT','USDC.e') then  1
+            when a.token in ('ETH','WETH','mETH') then p.price
+            else null
+        end as price,
         case 
             when a.token in ('USDC','USDT','m.USDT','USDC.e') then  t.amount_raw / power(10, a.decimals)
             when a.token in ('ETH','WETH','mETH') then ( t.amount_raw / power(10, a.decimals)) * p.price
