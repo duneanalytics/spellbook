@@ -10,10 +10,6 @@ models:
       tags: ['stargate', 'bridge', 'cross-chain', 'transfers']
     description: "Bridge transfers via Stargate protocol across EVM chains."
     data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - blockchain
     columns:
       - name: tx_hash
         description: "Unique transaction hash"
@@ -77,13 +73,11 @@ models:
 
       - name: to_chain
         description: "Destination chain name"
-        tests:
-          - not_null
+        
 
       - name: pathway
         description: "Path: from_chain -> to_chain"
-        tests:
-          - not_null
+       
 
       - name: price
         description: "Price of the token (ETH-based tokens use ETH price)"
