@@ -91,3 +91,7 @@ sources:
   - name: evms
     tables:
       - name: transaction_metrics
+
+  - name: dune
+    tables:
+      - name: blockchains

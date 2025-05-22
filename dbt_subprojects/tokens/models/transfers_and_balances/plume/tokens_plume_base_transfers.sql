@@ -1,5 +1,5 @@
 {{config(
-    schema = 'tokens_celo',
+    schema = 'tokens_plume',
     alias = 'base_transfers',
     partition_by = ['block_month'],
     materialized = 'incremental',
@@ -11,9 +11,9 @@
 }}
 
 {{transfers_base(
-    blockchain='celo',
-    traces = source('celo','traces'),
-    transactions = source('celo','transactions'),
-    erc20_transfers = source('erc20_celo','evt_Transfer')
+    blockchain='plume',
+    traces = source('plume','traces'),
+    transactions = source('plume','transactions'),
+    erc20_transfers = source('erc20_plume','evt_Transfer')
 )
 }}
