@@ -40,3 +40,11 @@ sources:
     tables:
       - name: bubblegum_call_mintV1
       - name: bubblegum_call_mintToCollectionV1
+
+  - name: stable_swap_solana
+    description: "Stable Swap decoded tables"
+    tables:
+      - name: stable_swap_call_swap
+      - name: stable_swap_call_swap_v2
+      - name: weighted_swap_call_swap
+      - name: weighted_swap_call_swap_v2

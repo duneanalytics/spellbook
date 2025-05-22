@@ -36,6 +36,9 @@ WITH all_swaps AS (
         account_vault_token_out AS token_bought_vault
     FROM {{ source('stable_swap_solana', 'stable_swap_call_swap') }}
     WHERE call_block_time >= TIMESTAMP '{{ project_start_date }}'
+    {% if is_incremental() %}
+    AND {{incremental_predicate('block_time')}}
+    {% endif %}
 
     UNION ALL
 
@@ -61,6 +64,9 @@ WITH all_swaps AS (
         account_vault_token_out
     FROM {{ source('stable_swap_solana', 'stable_swap_call_swap_v2') }}
     WHERE call_block_time >= TIMESTAMP '{{ project_start_date }}'
+    {% if is_incremental() %}
+    AND {{incremental_predicate('block_time')}}
+    {% endif %}
 
     UNION ALL
 
@@ -86,6 +92,9 @@ WITH all_swaps AS (
         account_vault_token_out
     FROM {{ source('stable_swap_solana', 'weighted_swap_call_swap') }}
     WHERE call_block_time >= TIMESTAMP '{{ project_start_date }}'
+    {% if is_incremental() %}
+    AND {{incremental_predicate('block_time')}}
+    {% endif %}
 
     UNION ALL
 
@@ -111,6 +120,9 @@ WITH all_swaps AS (
         account_vault_token_out
     FROM {{ source('stable_swap_solana', 'weighted_swap_call_swap_v2') }}
     WHERE call_block_time >= TIMESTAMP '{{ project_start_date }}'
+    {% if is_incremental() %}
+    AND {{incremental_predicate('block_time')}}
+    {% endif %}
 )
 
 SELECT
