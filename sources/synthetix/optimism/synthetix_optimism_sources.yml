@@ -10,6 +10,8 @@ sources:
         description: "Details the asset markets"
       - name: FuturesMarket_evt_FuturesTracking
         description: "Provides details on the app or protocol where the trade was executed"
+      - name: Issuer_evt_SynthAdded
+        description: "Details the synth tokens added to the system"
   - name: synthetix_futuresmarket_optimism
     description: Optimism decoded tables related to Synthetix PerpsV2
     tables:

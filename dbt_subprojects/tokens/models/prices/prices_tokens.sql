@@ -42,6 +42,7 @@
                                         , "zora"
                                         , "abstract"
                                         , "lens"
+                                        , "plume"
                                     ]\',
                                     "sector",
                                     "prices",
@@ -94,6 +95,7 @@ ref('prices_native_tokens')
 ,ref('prices_shape_tokens')
 ,ref('prices_degen_tokens')
 ,ref('prices_lens_tokens')
+,ref('prices_plume_tokens')
 ] %}
 
 
