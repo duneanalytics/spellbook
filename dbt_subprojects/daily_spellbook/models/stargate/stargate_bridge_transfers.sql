@@ -208,7 +208,7 @@ bridges as (
       and t.blockchain = a.chain
     left join assets a1 
       on t.dest = a1.endpointID
-    left join {{ ref('prices_day') }} p 
+    left join {{ source('prices', 'day') }} p
       on date_trunc('day', t.block_time) = p.timestamp
      and p.blockchain = 'ethereum'
      and p.contract_address = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
