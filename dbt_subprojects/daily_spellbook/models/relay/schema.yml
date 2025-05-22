@@ -44,4 +44,3 @@ models:
       - name: amount
         description: "USD-equivalent value of the transfer (type: float, may be null if price is missing)"
 
-        
