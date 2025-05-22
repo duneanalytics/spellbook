@@ -84,7 +84,7 @@ models:
       - name: amount_usd
         description: "USD value of the transferred amount" 
 
-models:
+
   - name: latest_bridgers_context
     meta:
       blockchain: ethereum, bnb, avalanche_c, polygon, arbitrum, optimism, metis, linea, mantle, base, kava, scroll, aurora, core, sonic, unichain, gnosis, soneium, kaia, iota, taiko, rari, sei, flare, gravity, lightlink, abstract, peaq, flow, goat, berachain, rootstock, hemi, vana, ink, glue, fuse, superposition, degen, codex, story, apechain, telos, plume, xdc
