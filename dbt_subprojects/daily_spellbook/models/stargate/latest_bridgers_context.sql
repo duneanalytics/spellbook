@@ -1,13 +1,13 @@
 {{ config(
-    alias='stargate_bridge_transfers',
+    alias='latest_bridgers_context',
     materialized='incremental',
-    unique_key='tx_hash',
-    schema='stargate'
+    unique_key='bridge_tx_hash',
+    schema='bridge_user_tracking'
 ) }}
 
-with assets as (
-    select * from (values
- ('ETH', 18, 'ethereum', 30101, 0x77b2043768d28E9C9aB44E1aBfC95944bcE57931, 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2),
+with assets (token, decimals, chain,  endpointID, pool, contract) as (values 
+
+('ETH', 18, 'ethereum', 30101, 0x77b2043768d28E9C9aB44E1aBfC95944bcE57931, 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2),
 ('USDC', 6, 'ethereum', 30101, 0xc026395860Db2d07ee33e05fE50ed7bD583189C7, 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48),
 ('USDT', 6, 'ethereum', 30101, 0x933597a323Eb81cAe705C5bC29985172fd5A3973, 0xdAC17F958D2ee523a2206206994597C13D831ec7),
 ('mETH', 18, 'ethereum', 30101,  0x268Ca24DAefF1FaC2ed883c598200CcbB79E931D ,  0xd5f7838f5c461feff7fe49ea5ebaf7728bb0adfa ),
@@ -166,56 +166,120 @@ with assets as (
 ('USDC', 6, 'xdc', 30365,  0x8E2E38711080bF8AAb9C74f434d2bae70e67ae44 ,  0xCc0587aeBDa397146cc828b445dB130a94486e74 ),
 ('USDT', 6, 'xdc', 30365,  0xA4272ad93AC5d2FF048DD6419c88Eb4C1002Ec6b ,  0xcdA5b77E2E2268D9E09c874c1b9A4c3F07b37555 ),
 ('WETH', 18, 'xdc', 30365,  0xB0d27478A40223e427697Da523c6A3DAF29AaFfB ,  0xa7348290de5cf01772479c48D50dec791c3fC212 )
-    ) as t (token, decimals, chain, endpointID, pool, contract)
 ),
 
-tx as (
-    select 
-        block_time, 
-        block_number, 
-        contract_address as pool_name,
-        varbinary_substring(topic2, 13, 20) as user,
-        varbinary_to_uint256(varbinary_substring(data, 1, 32)) as dest,
-        varbinary_to_uint256(varbinary_substring(data, 65, 32)) as amount_raw,
-        tx_hash,
-        blockchain
-    from {{ source('evms', 'logs') }}
-    where topic0 = 0x85496b760a4b7f8d66384b9df21b381f5d1b1e79f229a47aaf4c232edc2fe59a
+
+logs as (
+  SELECT
+    e.block_time,
+    e.block_number,
+    e.contract_address AS pool_name,
+    varbinary_substring(e.topic2, 13, 20) AS user,
+    e.tx_hash,
+    e.blockchain AS to_chain
+  FROM {{ source('evms', 'logs') }} e
+  JOIN assets a 
+  ON e.contract_address = a.pool AND e.blockchain = a.chain
+  WHERE topic0 = 0xefed6d3500546b29533b128a29e3a94d70788727f0507505ac12eaf2e578fd9c
+   AND block_time > now() - interval '3' month),
+
+user_tx_counts AS (
+  SELECT
+    t.blockchain,
+    t."from" AS user,
+    COUNT(*) AS tx_count_last_30_days
+  FROM  {{ source('evms', 'transactions') }} t
+  WHERE t.block_time >= CURRENT_DATE - INTERVAL '100' DAY
+  GROUP BY t.blockchain, t."from"
 ),
 
-bridges as (
-    select 
-        t.*,
-        a.token,
-        t.amount_raw / power(10, a.decimals) as amount,
-        a.decimals,
-        t.blockchain as from_chain,
-        COALESCE(a1.chain, CAST(t.dest AS varchar)) as to_chain,
-         concat(
-            CAST(t.blockchain AS varchar),
-            ' -> ',
-           COALESCE(a1.chain, CAST(t.dest AS varchar))
-        ) as pathway,
-        case 
-            when a.token in ('USDC','USDT','m.USDT','USDC.e') then  1
-            when a.token in ('ETH','WETH','mETH') then p.price
-            else null
-        end as price,
-        case 
-            when a.token in ('USDC','USDT','m.USDT','USDC.e') then  t.amount_raw / power(10, a.decimals)
-            when a.token in ('ETH','WETH','mETH') then ( t.amount_raw / power(10, a.decimals)) * p.price
-            else null
-        end as amount_usd
-    from tx t
-    join assets a 
-      on t.pool_name = a.pool
-      and t.blockchain = a.chain
-    left join assets a1 
-      on t.dest = a1.endpointID
-    left join {{ source('prices', 'day') }} p
-      on date_trunc('day', t.block_time) = p.timestamp
-     and p.blockchain = 'ethereum'
-     and p.contract_address = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
-)
+eligible_users AS (
+  SELECT DISTINCT q.user, q.to_chain AS blockchain
+  FROM logs q
+  JOIN user_tx_counts c
+    ON q.user = c.user AND q.to_chain = c.blockchain
+  WHERE c.tx_count_last_30_days <= 1500
+),
 
-select distinct * from bridges 
+input_tx AS (
+  SELECT
+    q.user,
+    q.to_chain AS blockchain,
+    q.tx_hash AS bridge_tx_hash,
+    q.block_number AS bridge_block_number,
+    q.block_time AS bridge_block_time
+  FROM logs q
+  JOIN eligible_users e
+    ON q.user = e.user AND q.to_chain = e.blockchain
+),
+
+outgoing_transactions AS (
+  SELECT
+    t.blockchain,
+    t."from" AS user,
+    t.hash,
+    t.block_number,
+    t.index,
+    t.block_time,
+    t.data
+  FROM {{ source('evms', 'transactions') }} t
+  WHERE t.block_time >= CURRENT_DATE - INTERVAL '100' DAY
+    AND (t.blockchain, t."from") IN (
+      SELECT blockchain, user FROM eligible_users
+    )
+),
+
+prev_tx AS (
+  SELECT
+    o.*,
+    i.bridge_tx_hash,
+    ROW_NUMBER() OVER (
+      PARTITION BY i.bridge_tx_hash
+      ORDER BY o.block_number DESC
+    ) AS rn
+  FROM input_tx i
+  JOIN outgoing_transactions o
+    ON o.user = i.user
+    AND o.blockchain = i.blockchain
+    AND o.block_number < i.bridge_block_number
+),
+
+next_tx AS (
+  SELECT
+    o.*,
+    i.bridge_tx_hash,
+    ROW_NUMBER() OVER (
+      PARTITION BY i.bridge_tx_hash
+      ORDER BY o.block_number ASC
+    ) AS rn
+  FROM input_tx i
+  JOIN outgoing_transactions o
+    ON o.user = i.user
+    AND o.blockchain = i.blockchain
+    AND o.block_number > i.bridge_block_number
+),
+
+pre_post as (SELECT 
+  i.user,
+  i.blockchain,
+
+  i.bridge_tx_hash,
+  i.bridge_block_number,
+  i.bridge_block_time,
+
+  -- previous tx
+  p.hash AS prev_tx_hash,
+  p.block_number AS prev_block_number,
+  p.block_time AS prev_block_time,
+  p.data AS prev_data,
+  -- next tx
+  n.hash AS next_tx_hash,
+  n.block_number AS next_block_number,
+  n.block_time AS next_block_time,
+  n.data AS next_data
+
+FROM input_tx i
+LEFT JOIN prev_tx p ON p.bridge_tx_hash = i.bridge_tx_hash AND p.rn = 1
+LEFT JOIN next_tx n ON n.bridge_tx_hash = i.bridge_tx_hash AND n.rn = 1)
+
+select distinct * from pre_post
