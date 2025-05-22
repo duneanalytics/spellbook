@@ -15,16 +15,18 @@ with tokens AS (
     select * from (values
     (0x5A98FcBEA516Cf06857215779Fd812CA3beF1B32), --LDO
     (0x6B175474E89094C44Da98b954EedeAC495271d0F), --DAI
+    (0xdC035D45d973E3EC169d2276DDab16f1e407384F), --USDS
+    (0xa3931d71877C0E7a3148CB7Eb4463524FEc27fbD), --Savings USDS (sUSDS)
     (0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48), --USDC
     (0xdAC17F958D2ee523a2206206994597C13D831ec7), -- USDT
     (0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2), --WETH
     (0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0), --MATIC
     (0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84), --stETH
     (0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0)  --wstETH
-    ) as tokens(address)),
+    ) as tokens(address))
 
 
-multisigs_list AS (
+, multisigs_list AS (
     select * from (values
     (0x3e40d73eb977dc6a537af587d48316fee66e9c8c, 'Ethereum', 'Aragon'),
     (0x48F300bD3C52c7dA6aAbDE4B683dEB27d38B9ABb, 'Ethereum', 'FinanceOpsMsig'),
@@ -45,20 +47,22 @@ multisigs_list AS (
     (0x17F6b2C738a63a8D3A113a228cfd0b373244633D,  'Ethereum',  'PMLMsig'),
     (0xde06d17db9295fa8c4082d4f73ff81592a3ac437,  'Ethereum',  'RCCMsig'),
     (0x834560f580764bc2e0b16925f8bf229bb00cb759,  'Ethereum',  'TRPMsig'),
-    (0x606f77BF3dd6Ed9790D9771C7003f269a385D942,  'Ethereum',  'AllianceMsig')
+    (0x606f77BF3dd6Ed9790D9771C7003f269a385D942,  'Ethereum',  'AllianceMsig'),
+    (0x55897893c19e4B0c52731a3b7C689eC417005Ad6,  'Ethereum',  'EcosystemBORGMsig'),
+    (0x95B521B4F55a447DB89f6a27f951713fC2035f3F,  'Ethereum',  'LabsBORGMsig')
     ) as list(address, chain, name)
 
-),
+)
 
-diversifications_addresses AS (
+, diversifications_addresses AS (
     select * from  (values
     (0x489f04eeff0ba8441d42736549a1f1d6cca74775, '1round_1'),
     (0x689e03565e36b034eccf12d182c3dc38b2bb7d33, '1round_2'),
     (0xA9b2F5ce3aAE7374a62313473a74C98baa7fa70E, '2round')
     ) as list(address, name)
-),
+)
 
-intermediate_addresses AS (
+, intermediate_addresses AS (
     select * from  (values
     (0xe3224542066d3bbc02bc3d70b641be4bc6f40e36, 'Jumpgate(Solana)'),
     (0x40ec5b33f54e0e8a33a975908c5ba1c14e5bbbdf, 'Polygon bridge'),
@@ -72,11 +76,15 @@ intermediate_addresses AS (
     (0x6625C6332c9F91F2D27c304E729B86db87A3f504, 'Scroll bridge'),
     (0x0914d4ccc4154ca864637b0b653bc5fd5e1d3ecf, 'AnySwap bridge (Polkadot, Kusama)'),
     (0x3ee18b2214aff97000d974cf647e7c347e8fa585, 'Wormhole bridge'), --Solana, Terra
-    (0x9ee91F9f426fA633d227f7a9b000E28b9dfd8599, 'stMatic Contract')
-    ) as list(address, name)
-),
+    (0x9ee91F9f426fA633d227f7a9b000E28b9dfd8599, 'stMatic Contract'),
 
-ldo_referral_payments_addr AS (
+    (0xd0A61F2963622e992e6534bde4D52fd0a89F39E0, 'Spark PSM'),
+    (0x37305B1cD40574E4C5Ce33f8e8306Be057fD7341, 'Sky PSM')
+
+    ) as list(address, name)
+)
+
+, ldo_referral_payments_addr AS (
     select * from  (values
     (0x558247e365be655f9144e1a0140d793984372ef3),
     (0x6DC9657C2D90D57cADfFB64239242d06e6103E43),
@@ -91,59 +99,79 @@ ldo_referral_payments_addr AS (
     (0x9e2b6378ee8ad2A4A95Fe481d63CAba8FB0EBBF9),
     (0xaf8aE6955d07776aB690e565Ba6Fbc79B8dE3a5d) --rhino
     ) as list(address)
-),
+)
 
 
-dai_referral_payments_addr AS (
+, dai_referral_payments_addr AS (
     SELECT _recipient AS address FROM  {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientAdded')}}
     UNION ALL
     SELECT 0xaf8aE6955d07776aB690e565Ba6Fbc79B8dE3a5d --rhino
-),
+)
 
-steth_referral_payments_addr AS (
+, steth_referral_payments_addr AS (
     SELECT _recipient AS address FROM {{source('lido_ethereum','AllowedRecipientsRegistry_RevShare_evt_RecipientAdded')}}
-),
+)
 
-stonks as (
+, stonks as (
     select * from (values 
-    ('STETH→DAI', 0x3e2D251275A92a8169A3B17A2C49016e2de492a7),
-    ('STETH→USDC', 0xf4F6A03E3dbf0aA22083be80fDD340943d275Ea5),
-    ('STETH→USDT', 0x7C2a1E25cA6D778eCaEBC8549371062487846aAF),
-    ('DAI→USDC', 0x79f5E20996abE9f6a48AF6f9b13f1E55AED6f06D),
-    ('DAI→USDT', 0x8Ba6D367D15Ebc52f3eBBdb4a8710948C0918d42),
-    ('USDT→USDC', 0x281e6BB6F26A94250aCEb24396a8E4190726C97e),
-    ('USDT→DAI', 0x64B6aF9A108dCdF470E48e4c0147127F26221A7C),
-    ('USDC→USDT', 0x278f7B6CBB3Cc37374e6a40bDFEBfff08f65A5C7),
-    ('USDC→DAI', 0x2B5a3944A654439379B206DE999639508bA2e850)
-    ) as list(namespace, address)
-),
+    ('STETH→DAI', 0x3e2D251275A92a8169A3B17A2C49016e2de492a7, 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84, 0x6B175474E89094C44Da98b954EedeAC495271d0F),
+    ('STETH→USDC', 0xf4F6A03E3dbf0aA22083be80fDD340943d275Ea5, 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84, 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48),
+    ('STETH→USDT', 0x7C2a1E25cA6D778eCaEBC8549371062487846aAF, 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84, 0xdAC17F958D2ee523a2206206994597C13D831ec7),
+    ('DAI→USDC', 0x79f5E20996abE9f6a48AF6f9b13f1E55AED6f06D, 0x6B175474E89094C44Da98b954EedeAC495271d0F, 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48),
+    ('DAI→USDT', 0x8Ba6D367D15Ebc52f3eBBdb4a8710948C0918d42, 0x6B175474E89094C44Da98b954EedeAC495271d0F, 0xdAC17F958D2ee523a2206206994597C13D831ec7),
+    ('USDT→USDC', 0x281e6BB6F26A94250aCEb24396a8E4190726C97e, 0xdAC17F958D2ee523a2206206994597C13D831ec7, 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48),
+    ('USDT→DAI', 0x64B6aF9A108dCdF470E48e4c0147127F26221A7C, 0xdAC17F958D2ee523a2206206994597C13D831ec7, 0x6B175474E89094C44Da98b954EedeAC495271d0F),
+    ('USDC→USDT', 0x278f7B6CBB3Cc37374e6a40bDFEBfff08f65A5C7, 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48, 0xdAC17F958D2ee523a2206206994597C13D831ec7),
+    ('USDC→DAI', 0x2B5a3944A654439379B206DE999639508bA2e850, 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48, 0x6B175474E89094C44Da98b954EedeAC495271d0F)
+    ) as list(namespace, address, token_out, token_in)
+)
 
-cow_settlement as (
+
+, cow_settlement as (
     select * from (values 
     (0x9008D19f58AAbD9eD0D60971565AA8510560ab41)
     ) as list(address)    
-),
+)
 
-stonks_orders_txns as (
-    select evt_tx_hash
-    from {{source('lido_ethereum', 'steth_evt_Transfer')}}
-    where "from" in (
-            select cast(replace(topic1, 0x000000000000000000000000, 0x) as varbinary) as order_addr
-            from {{source('ethereum', 'logs')}} l
-            join stonks s on l.contract_address = s.address 
-             and l.topic0 = 0x96a6d5477fba36522dca4102be8b3785435baf902ef6c4edebcb99850630c75f -- Stonks Deployed
-            ) 
+, stonks_orders as (
+    select cast(replace(topic1, 0x000000000000000000000000, 0x) as varbinary) as order_addr, s.token_out, s.token_in, s.namespace, s.address as stonk_contract
+    from {{source('ethereum', 'logs')}} l
+    join stonks s on l.contract_address = s.address 
+    and l.topic0 = 0x96a6d5477fba36522dca4102be8b3785435baf902ef6c4edebcb99850630c75f -- Stonks Deployed
+
+)
+
+, stonks_orders_txns as (
+    select tr.evt_block_time, tr.evt_tx_hash, s.token_out, s.token_in, s.namespace, s.stonk_contract
+    from {{ source('erc20_ethereum', 'evt_Transfer') }} tr
+    join stonks_orders s on tr."from" = s.order_addr and tr.contract_address = s.token_out
     and to in (select address from cow_settlement)
-),
+    order by 1 desc
+)
 
-other_income_txns AS (
+, stonks_to_treasury as (
+    SELECT tr.evt_tx_hash
+    FROM {{ source('erc20_ethereum', 'evt_Transfer') }} tr
+    JOIN stonks_orders_txns s on tr.evt_tx_hash = s.evt_tx_hash and tr.contract_address = s.token_in and tr.contract_address IN (SELECT address FROM tokens)
+    WHERE 
+     to IN ( SELECT address
+                FROM multisigs_list
+                WHERE name IN ('Aragon') AND chain = 'Ethereum' )
+    AND "from"  IN (SELECT address FROM cow_settlement)
+    ORDER BY 1 desc
+  )
+
+
+, other_income_txns AS (
     SELECT
         evt_block_time,
         CAST(value AS DOUBLE) AS value,
         evt_tx_hash,
         contract_address,
         'ethereum' as blockchain
-    FROM  {{source('erc20_ethereum','evt_transfer')}}
+
+    FROM  {{source('erc20_ethereum','evt_Transfer')}}
+
     WHERE contract_address IN (SELECT address FROM tokens)
     AND to IN (
         SELECT
@@ -164,7 +192,7 @@ other_income_txns AS (
         UNION ALL
         SELECT address FROM diversifications_addresses    
     )    
-    AND evt_tx_hash NOT IN (select evt_tx_hash from stonks_orders_txns)   
+    AND evt_tx_hash NOT IN (select evt_tx_hash from stonks_to_treasury)   
     
     UNION ALL
     --ETH staked by DAO
@@ -174,16 +202,18 @@ other_income_txns AS (
         t.evt_tx_hash,
         t.contract_address,
         'ethereum' as blockchain
-    FROM  {{source('erc20_ethereum','evt_transfer')}} t
+
+    FROM  {{source('erc20_ethereum','evt_Transfer')}} t
+
     join  {{source('lido_ethereum','steth_evt_Submitted')}} s on t.evt_tx_hash = s.evt_tx_hash
     WHERE t.contract_address = 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84
     AND t.to in (select address from multisigs_list where chain = 'Ethereum' and name ='Aragon')
     AND t."from" = 0x0000000000000000000000000000000000000000
-),
+)
 
 --Solana stSOL income--
 
-stsol_income_txs AS (
+, stsol_income_txs AS (
     select
         tx_id,
         block_time AS period,
@@ -198,9 +228,9 @@ stsol_income_txs AS (
     AND address =  'CYpYPtwY9QVmZsjCmguAud1ctQjXWKpWD7xeL5mnpcXk'
     AND token_balance_change > 0
     ORDER BY block_time DESC
-),
+)
 
-stsol_income AS (
+, stsol_income AS (
     SELECT
             i.period AS period,
             '7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj' AS token,

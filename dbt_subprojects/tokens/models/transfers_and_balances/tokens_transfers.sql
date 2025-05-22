@@ -41,6 +41,7 @@
                                             ,"zkevm"
                                             ,"zksync"
                                             ,"zora"
+                                            ,"lens"
                                         ]\',
                                         spell_type = "sector",
                                         spell_name = "tokens",
@@ -88,6 +89,7 @@
     ,'zkevm'
     ,'zksync'
     ,'zora'
+    ,'lens'
 ] %}
 
 SELECT *

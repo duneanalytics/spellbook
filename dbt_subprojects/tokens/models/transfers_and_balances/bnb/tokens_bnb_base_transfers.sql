@@ -14,8 +14,7 @@
     blockchain='bnb',
     traces = source('bnb','traces'),
     transactions = source('bnb','transactions'),
-    erc20_transfers = source('erc20_bnb','evt_transfer'),
-    native_contract_address = null
+    erc20_transfers = source('erc20_bnb','evt_Transfer')
 )
 }}
 

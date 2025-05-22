@@ -14,7 +14,6 @@
      blockchain='apechain'
      , traces = source('apechain','traces')
      , transactions = source('apechain','transactions')
-     , erc20_transfers = source('erc20_apechain','evt_transfer')
-     , native_contract_address = var('ETH_ERC20_ADDRESS')
+     , erc20_transfers = source('erc20_apechain','evt_Transfer')
 )
 }}

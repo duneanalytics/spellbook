@@ -108,8 +108,8 @@ with
                 else bonding_curve_vault
                 end as varchar) as token_sold_vault
         FROM swaps sp
-        LEFT JOIN {{ ref('tokens_solana_fungible') }} tk ON tk.token_mint_address = sp.token_mint_address
-        LEFT JOIN {{ ref('tokens_solana_fungible') }} tk_sol ON tk_sol.token_mint_address = 'So11111111111111111111111111111111111111112'
+        LEFT JOIN {{ source('tokens_solana','fungible') }} tk ON tk.token_mint_address = sp.token_mint_address
+        LEFT JOIN {{ source('tokens_solana','fungible') }} tk_sol ON tk_sol.token_mint_address = 'So11111111111111111111111111111111111111112'
         LEFT JOIN bonding_curves bc ON bc.token_mint_address = sp.token_mint_address
     )
 

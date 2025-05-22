@@ -14,7 +14,6 @@
     blockchain='zora',
     traces = source('zora','traces'),
     transactions = source('zora','transactions'),
-    erc20_transfers = source('erc20_zora','evt_transfer'),
-    native_contract_address = null
+    erc20_transfers = source('erc20_zora','evt_Transfer')
 )
 }}

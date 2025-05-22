@@ -13,7 +13,7 @@
 {{nft_transfers(
     blockchain='scroll'
     , base_transactions = source('scroll','transactions')
-    , erc721_transfers = source('erc721_scroll','evt_transfer')
-    , erc1155_single = source('erc1155_scroll','evt_transfersingle')
-    , erc1155_batch = source('erc1155_scroll', 'evt_transferbatch')
+    , erc721_transfers = source('erc721_scroll','evt_Transfer')
+    , erc1155_single = source('erc1155_scroll','evt_TransferSingle')
+    , erc1155_batch = source('erc1155_scroll', 'evt_TransferBatch')
 )}}

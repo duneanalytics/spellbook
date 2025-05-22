@@ -80,7 +80,7 @@ WITH all_labels AS (
 
                 bytearray_substring(tx.data, 1, 4) AS tx_method
 
-            FROM {{source('erc20_optimism','evt_transfer') }} tf
+            FROM {{source('erc20_optimism','evt_Transfer') }} tf
             -- We want either the send or receiver to be the foundation or a project (also includes utility transfers)
             INNER JOIN all_labels lbl_from
                 ON lbl_from.address = tf."from"

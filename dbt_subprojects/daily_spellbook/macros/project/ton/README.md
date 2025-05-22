@@ -62,6 +62,26 @@ This macro is used to restart parsing from the beginning of the bag of cells. It
 you are working with multiple reference cells and after parsing the first cell you need to switch to the next one - in this case you need to call ``ton_restart_parse``,
 skip the first ref with ``ton_skip_refs`` and then call ``ton_load_ref`` again to start parsing the next cell.
 
+## ton_return_if_neq
+
+Imagine we have a structure like this:
+```
+ok$0 = MessageResponse;
+error$1 address:MsgAddress = MessageResponse;
+``` 
+We need to load first bit and load ``address`` only if the first bit is ``1``. We can read ``error_code`` regardless of the first bit 
+but we will get ``addr_none`` in both cases. To simplify such cases the ``ton_return_if_neq`` macro is introduced. It allows to
+pass not equal condition for previously parsed field and break the parsing loop (immidiately return):
+```sql
+    SELECT {{ ton_from_boc('boc', 
+    [
+    ton_begin_parse(),
+    ton_load_uint(1, 'status'),
+    ton_return_if_neq('status', 1),
+    ton_load_address('address')
+    ]) }} AS result 
+```
+
 # Usage examples
 
 Typical usage should be like this:

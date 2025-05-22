@@ -61,7 +61,7 @@ with eth_transfers as (
         ,cast(r.evt_tx_hash as varchar) || '-' || cast(r.evt_index as varchar) as unique_transfer_id
         ,t.to AS tx_to
         ,t."from" AS tx_from
-    from {{ source('erc20_base', 'evt_transfer') }} as r
+    from {{ source('erc20_base', 'evt_Transfer') }} as r
     join {{ source('base', 'transactions') }} as t
         on r.evt_tx_hash = t.hash
         and r.evt_block_number = t.block_number
