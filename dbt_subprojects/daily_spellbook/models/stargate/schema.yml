@@ -9,7 +9,6 @@ models:
     config:
       tags: ['stargate', 'bridge', 'cross-chain', 'transfers']
     description: "Bridge transfers via Stargate protocol across EVM chains."
-    data_tests:
     columns:
       - name: tx_hash
         description: "Unique transaction hash"
