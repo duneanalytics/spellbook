@@ -190,11 +190,11 @@ bridges as (
         t.amount_raw / power(10, a.decimals) as amount,
         a.decimals,
         t.blockchain as from_chain,
-        CAST(COALESCE(a1.chain, t.dest) AS VARCHAR) as to_chain,
+        COALESCE(a1.chain, CAST(t.dest AS varchar)) as to_chain,
          concat(
             CAST(t.blockchain AS varchar),
             ' -> ',
-            CAST(COALESCE(a1.chain, t.dest) AS varchar)
+           COALESCE(a1.chain, CAST(t.dest AS varchar))
         ) as pathway,
         p.price,
         case 
