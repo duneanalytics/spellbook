@@ -44,7 +44,7 @@ WITH all_swaps AS (
 
     -- Stable Swap V2
     SELECT
-        call_block_time,
+        call_block_time AS block_time,
         call_block_slot,
         'stabble',
         1,
@@ -72,7 +72,7 @@ WITH all_swaps AS (
 
     -- Weighted Swap V1
     SELECT
-        call_block_time,
+        call_block_time AS block_time,
         call_block_slot,
         'stabble',
         1,
@@ -100,7 +100,7 @@ WITH all_swaps AS (
 
     -- Weighted Swap V2
     SELECT
-        call_block_time,
+        call_block_time AS block_time,
         call_block_slot,
         'stabble',
         1,
