@@ -181,10 +181,6 @@ tx as (
         blockchain
     from {{ source('evms', 'logs') }}
     where topic0 = 0x85496b760a4b7f8d66384b9df21b381f5d1b1e79f229a47aaf4c232edc2fe59a
-
-    {% if is_incremental() %}
-      and block_time > (select max(block_time) from {{ this }})
-    {% endif %}
 ),
 
 bridges as (
