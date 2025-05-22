@@ -37,7 +37,7 @@ WITH all_swaps AS (
     FROM {{ source('stable_swap_solana', 'stable_swap_call_swap') }}
     WHERE call_block_time >= CURRENT_TIMESTAMP - INTERVAL '7' DAY
     {% if is_incremental() %}
-    AND {{incremental_predicate('block_time')}}
+    AND {{incremental_predicate('call_block_time')}}
     {% endif %}
 
     UNION ALL
@@ -65,7 +65,7 @@ WITH all_swaps AS (
     FROM {{ source('stable_swap_solana', 'stable_swap_call_swap_v2') }}
     WHERE call_block_time >= CURRENT_TIMESTAMP - INTERVAL '7' DAY
     {% if is_incremental() %}
-    AND {{incremental_predicate('block_time')}}
+    AND {{incremental_predicate('call_block_time')}}
     {% endif %}
 
     UNION ALL
@@ -93,7 +93,7 @@ WITH all_swaps AS (
     FROM {{ source('stable_swap_solana', 'weighted_swap_call_swap') }}
     WHERE call_block_time >= CURRENT_TIMESTAMP - INTERVAL '7' DAY
     {% if is_incremental() %}
-    AND {{incremental_predicate('block_time')}}
+    AND {{incremental_predicate('call_block_time')}}
     {% endif %}
 
     UNION ALL
@@ -121,7 +121,7 @@ WITH all_swaps AS (
     FROM {{ source('stable_swap_solana', 'weighted_swap_call_swap_v2') }}
     WHERE call_block_time >= CURRENT_TIMESTAMP - INTERVAL '7' DAY
     {% if is_incremental() %}
-    AND {{incremental_predicate('block_time')}}
+    AND {{incremental_predicate('call_block_time')}}
     {% endif %}
 )
 
