@@ -111,3 +111,4 @@ models:
       - &tx_index
         name: tx_index
         description: "Index of the transaction inside the block"
+
