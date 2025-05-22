@@ -15,6 +15,5 @@
     , traces = source('flare','traces')
     , transactions = source('flare','transactions')
     , erc20_transfers = source('erc20_flare','evt_Transfer')
-    , native_contract_address = var('ETH_ERC20_ADDRESS')
 )
 }} 
