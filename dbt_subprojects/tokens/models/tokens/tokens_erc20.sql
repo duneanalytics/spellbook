@@ -2,7 +2,7 @@
     config(
         schema = 'tokens'
         ,alias = 'erc20'
-        ,materialized = 'view'
+        ,materialized = 'table'
         ,post_hook='{{ expose_spells(\'[
                                         "arbitrum"
                                         ,"avalanche_c"
