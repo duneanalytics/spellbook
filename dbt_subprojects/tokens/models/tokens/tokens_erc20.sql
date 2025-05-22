@@ -6,7 +6,7 @@
         ,incremental_strategy = 'append'
         ,unique_key = ['blockchain', 'contract_address']
         ,file_format = 'delta'
-        ,partition_by = 'blockchain'
+        ,partition_by = ['blockchain']
         ,post_hook='{{ expose_spells(\'[
                                         "arbitrum"
                                         ,"avalanche_c"
