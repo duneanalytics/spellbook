@@ -14,7 +14,6 @@
     blockchain='plume',
     traces = source('plume','traces'),
     transactions = source('plume','transactions'),
-    erc20_transfers = source('erc20_plume','evt_Transfer'),
-    native_contract_address = var('ETH_ERC20_ADDRESS')
+    erc20_transfers = source('erc20_plume','evt_Transfer')
 )
 }}
