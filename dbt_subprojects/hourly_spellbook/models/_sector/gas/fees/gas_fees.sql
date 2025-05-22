@@ -85,7 +85,6 @@
     , "zkevm"
     , "zksync"
     , "zora"
-    , "plume"
 ] %}
 
 
