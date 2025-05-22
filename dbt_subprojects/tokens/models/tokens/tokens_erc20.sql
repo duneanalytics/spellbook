@@ -75,7 +75,7 @@ with t as (
     )
 )
 select
-    *
+    t.*
 from t
 {% if is_incremental() -%}
 left join {{this}} as target
