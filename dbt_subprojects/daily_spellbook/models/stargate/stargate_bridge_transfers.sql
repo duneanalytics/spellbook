@@ -191,7 +191,7 @@ bridges as (
         a.decimals,
         t.blockchain as from_chain,
         COALESCE(a1.chain, t.dest) as to_chain,
-        concat(t.blockchain, ' -> ', COALESCE(a1.chain, t.dest)) as pathway,
+        concat(t.blockchain, ' -> ', CAST(COALESCE(a1.chain, t.dest) AS VARCHAR)) as pathway,
         p.price,
         case 
             when a.token in ('USDC','USDT','m.USDT','USDC.e') then  t.amount_raw / power(10, a.decimals)
