@@ -7,14 +7,8 @@
 -- Map the pool id (pid) to the underlying pool address
 -- We can only get this from contract reads (for now)
 
-SELECT blockchain, contract_address, pid, lp_address
-
-FROM (
-    SELECT
-        chain as blockchain, contract_address, pid, lpToken AS lp_address
-        FROM {{ source('sushi_multichain','minichefv2_evt_logpooladdition') }}
-        WHERE chain = 'optimism'
-        GROUP BY 1,2,3,4
-
-
-) a (contract_address, pid, lp_address)
+SELECT
+    chain as blockchain, contract_address, pid, lpToken AS lp_address
+FROM {{ source('sushi_multichain','minichefv2_evt_logpooladdition') }}
+WHERE chain = 'optimism'
+GROUP BY 1,2,3,4
