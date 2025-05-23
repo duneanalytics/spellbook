@@ -31,6 +31,7 @@
 , (ref('addresses_events_ronin_first_funded_by'), 'RON')
 , (ref('addresses_events_nova_first_funded_by'), 'ETH')
 , (ref('addresses_events_abstract_first_funded_by'), 'ETH')
+, (ref('addresses_events_apechain_first_funded_by'), 'APE')
 ] %}
 
 WITH joined_data AS (
