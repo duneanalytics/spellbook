@@ -1,0 +1,80 @@
+version: 2
+
+models:
+  - name: pre_post_bridge_scroll
+    description: "Pre and post transaction context around Stargate bridge usage on Scroll."
+    columns:
+      - name: user
+        description: "Address of the user initiating the bridge transaction."
+        tests: [not_null]
+      - name: bridge_tx_hash
+        description: "Transaction hash of the Stargate bridge interaction."
+        tests: [not_null]
+      - name: bridge_block_number
+        description: "Block number at which the bridge transaction occurred."
+        tests: [not_null]
+      - name: bridge_block_time
+        description: "Timestamp of the bridge transaction block."
+        tests: [not_null]
+      - name: prev_tx_hash
+        description: "Hash of the transaction before the bridge interaction."
+      - name: next_tx_hash
+        description: "Hash of the transaction after the bridge interaction."
+      - name: prev_data
+        description: "Serialized event or transaction data before bridge tx."
+      - name: next_data
+        description: "Serialized event or transaction data after bridge tx."
+      - name: from_chain
+        description: "Source blockchain of the bridge transaction."
+      - name: to_chain
+        description: "Destination blockchain of the bridge transaction."
+      - name: pathway
+        description: "String representation of the bridging route, e.g., 'scroll -> arbitrum'."
+      - name: token
+        description: "Token used in the bridge transaction."
+      - name: amount
+        description: "Token amount bridged (adjusted for decimals)."
+      - name: amount_usd
+        description: "USD value of the bridged token amount."
+
+  - name: stargate_bridge_transfers_scroll
+    description: "Raw Stargate bridge transfers on Scroll extracted from evms.logs."
+    columns:
+      - name: block_time
+        description: "Timestamp of the block containing the bridge transaction."
+        tests: [not_null]
+      - name: block_number
+        description: "Number of the block containing the bridge transaction."
+        tests: [not_null]
+      - name: pool_name
+        description: "Address of the pool used in the bridge interaction."
+      - name: user
+        description: "User address extracted from the transaction log."
+        tests: [not_null]
+      - name: dest
+        description: "Destination endpoint ID or address."
+        tests: [not_null]
+      - name: amount_raw
+        description: "Raw token amount transferred, before applying decimals."
+        tests: [not_null]
+      - name: tx_hash
+        description: "Transaction hash."
+        tests: [not_null]
+      - name: blockchain
+        description: "Name of the blockchain (should be 'scroll')."
+      - name: token
+        description: "Token symbol of the asset bridged."
+      - name: amount
+        description: "Token amount after adjusting for decimals."
+      - name: decimals
+        description: "Number of decimals for the token."
+      - name: from_chain
+        description: "Source chain of the transfer."
+      - name: to_chain
+        description: "Destination chain resolved from endpoint ID."
+      - name: pathway
+        description: "String like 'scroll -> arbitrum'."
+      - name: price
+        description: "Token price in USD at the time of the transaction."
+      - name: amount_usd
+        description: "USD value of the transferred token." 
