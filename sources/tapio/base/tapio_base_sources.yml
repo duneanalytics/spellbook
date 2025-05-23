@@ -13,3 +13,7 @@ sources:
         description: "Mint events on Base"
       - name: selfpeggingasset_evt_redeemed
         description: "Redeem events on Base"
+      - name: selfpeggingasset_evt_tokenswapped
+        description: "Swap events on Base"
+      - name: selfpeggingasset_evt_donated
+        description: "Donate events on Base"

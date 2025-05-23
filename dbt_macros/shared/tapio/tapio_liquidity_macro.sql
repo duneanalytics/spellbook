@@ -7,6 +7,8 @@
         factory_create_pool_evt = null,
         spa_minted_evt = null,
         spa_redeemed_evt = null,
+        spa_swapped_evt = null,
+        spa_donated_evt = null,
         start_date = "date('2025-01-01')"
     )
 %}
@@ -78,8 +80,61 @@ pool_tokens AS (
         ON e.evt_tx_hash = c.call_tx_hash
 ),
 
+-- Get swap events with proper direction handling
+swap_events AS (
+    SELECT
+        buyer,
+        contract_address,
+        evt_block_number,
+        evt_block_time,
+        evt_tx_hash,
+        evt_index,
+        element_at(amounts, 1) AS amount0,
+        element_at(amounts, 2) AS amount1,
+        swapAmount,
+        feeAmount
+    FROM {{ source(project ~ '_' ~ blockchain, spa_swapped_evt) }}
+    WHERE evt_block_date >= date('2025-01-01')
+),
+-- Determine swap direction based on swap amount and amounts array
+swap_direction AS (
+    SELECT
+        s.*,
+        -- If swapAmount equals abs(amount0), then token0 is being sold (token0 = tokenIn)
+        -- Otherwise, token1 is being sold (token1 = tokenIn)
+        CASE
+            WHEN ABS(amount0) = swapAmount THEN 0  -- token0 is being sold
+            ELSE 1                                 -- token1 is being sold
+        END AS tokenIn,
+        CASE
+            WHEN ABS(amount0) = swapAmount THEN 1  -- token1 is being bought
+            ELSE 0                                 -- token0 is being bought
+        END AS tokenOut,
+        -- Determine the absolute amounts
+        ABS(amount0) AS amount0_abs,
+        ABS(amount1) AS amount1_abs
+    FROM swap_events s
+),
+
 -- Get all liquidity events (mints and redeems only)
 all_liquidity_events AS (
+     -- Swaps - use proper direction logic
+    SELECT
+        date_trunc('day', evt_block_time) AS day,
+        contract_address AS pool_address,
+        -- If token0 is being sold (tokenIn=0), pool loses token0 (negative), gains token1 (positive)
+        -- If token1 is being sold (tokenIn=1), pool gains token0 (positive), loses token1 (negative)
+        CASE
+            WHEN tokenIn = 0 THEN -CAST(amount0_abs AS bigint)  -- token0 being sold, pool loses token0
+            ELSE CAST(amount0_abs AS bigint)                    -- token1 being sold, pool gains token0
+        END AS amount0_delta,
+        CASE
+            WHEN tokenIn = 1 THEN -CAST(amount1_abs AS bigint)  -- token1 being sold, pool loses token1
+            ELSE CAST(amount1_abs AS bigint)                    -- token0 being sold, pool gains token1
+        END AS amount1_delta
+    FROM swap_direction
+
+    UNION ALL
     -- Mints - tokens enter the pool (positive)
     SELECT
         date_trunc('day', evt_block_time) AS day,
@@ -91,9 +146,8 @@ all_liquidity_events AS (
     {% if is_incremental() %}
     AND {{ incremental_predicate('evt_block_time') }}
     {% endif %}
-    
+
     UNION ALL
-    
     -- Redeems - tokens leave the pool (negative)
     SELECT
         date_trunc('day', evt_block_time) AS day,
@@ -101,6 +155,19 @@ all_liquidity_events AS (
         -CAST(element_at(amounts, 1) AS bigint) AS amount0_delta,
         -CAST(element_at(amounts, 2) AS bigint) AS amount1_delta
     FROM {{ source(project ~ '_' ~ blockchain, spa_redeemed_evt) }}
+    WHERE evt_block_date >= {{ start_date }}
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('evt_block_time') }}
+    {% endif %}
+
+    UNION ALL
+    -- Donates - tokens enter the pool (positive)
+    SELECT
+        date_trunc('day', evt_block_time) AS day,
+        contract_address AS pool_address,
+        CAST(element_at(amounts, 1) AS bigint) AS amount0_delta,
+        CAST(element_at(amounts, 2) AS bigint) AS amount1_delta
+    FROM {{ source(project ~ '_' ~ blockchain, spa_donated_evt) }}
     WHERE evt_block_date >= {{ start_date }}
     {% if is_incremental() %}
     AND {{ incremental_predicate('evt_block_time') }}
