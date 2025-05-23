@@ -57,9 +57,15 @@ models:
       - name: pathway
       - name: price
       - name: amount_usd
-      
+
   - name: stargate_bridge_token_mapping
     description: "Mapping of Stargate bridge tokens across chains."
+    meta:
+      blockchain: ethereum, arbitrum, polygon
+      project: stargate
+      contributors: outputlayer
+    config:
+      tags: ['stargate', 'bridge', 'cross-chain', 'tokens']
     columns:
       - name: token
         description: "Symbol of the token (e.g., USDC, ETH)."
