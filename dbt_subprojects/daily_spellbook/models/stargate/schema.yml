@@ -1,143 +1,59 @@
 version: 2
 
 models:
-  - name: stargate_bridge_transfers
+  - name: pre_post_bridge_all
+    description: "Union of pre/post Stargate bridge transactions across Ethereum, Arbitrum, and Polygon."
     meta:
-      blockchain: ethereum, bnb, avalanche_c, polygon, arbitrum, optimism, metis, linea, mantle, base, kava, scroll, aurora, core, sonic, unichain, gnosis, soneium, kaia, iota, taiko, rari, sei, flare, gravity, lightlink, abstract, peaq, flow, goat, berachain, rootstock, hemi, vana, ink, glue, fuse, superposition, degen, codex, story, apechain, telos, plume, xdc
+      blockchain: ethereum, arbitrum, polygon
+      project: stargate
+      contributors: outputlayer
+    config:
+      tags: ['stargate', 'bridge', 'cross-chain', 'pre-post']
+    columns:
+      - name: user
+        tests: [not_null]
+      - name: bridge_tx_hash
+        tests: [not_null]
+      - name: bridge_block_number
+        tests: [not_null]
+      - name: bridge_block_time
+        tests: [not_null]
+      - name: prev_tx_hash
+      - name: next_tx_hash
+      - name: prev_data
+      - name: next_data
+      - name: pathway
+      - name: from_chain
+      - name: to_chain
+
+  - name: stargate_bridge_transfers_all
+    description: "Union of Stargate bridge transfers across Ethereum, Arbitrum, and Polygon."
+    meta:
+      blockchain: ethereum, arbitrum, polygon
       project: stargate
       contributors: outputlayer
     config:
       tags: ['stargate', 'bridge', 'cross-chain', 'transfers']
-    description: "Bridge transfers via Stargate protocol across EVM chains."
     columns:
-      - name: tx_hash
-        description: "Unique transaction hash"
-        tests:
-          - not_null
-
       - name: block_time
-        description: "Timestamp of transaction block"
-        tests:
-          - not_null
-
+        tests: [not_null]
       - name: block_number
-        description: "Block number of the transaction"
-        tests:
-          - not_null
-
+        tests: [not_null]
       - name: pool_name
-        description: "Address of the Stargate pool contract"
-        tests:
-          - not_null
-
       - name: user
-        description: "User initiating the bridge transfer"
-        tests:
-          - not_null
-
+        tests: [not_null]
       - name: dest
-        description: "Destination endpoint ID used in bridge event"
-        tests:
-          - not_null
-
+        tests: [not_null]
       - name: amount_raw
-        description: "Raw transfer amount (not adjusted for token decimals)"
-        tests:
-          - not_null
-
+        tests: [not_null]
+      - name: tx_hash
+        tests: [not_null]
       - name: blockchain
-        description: "Chain where the bridge transaction originated"
-        tests:
-          - not_null
-
       - name: token
-        description: "Token symbol (e.g., USDC, ETH)"
-        tests:
-          - not_null
-
       - name: amount
-        description: "Human-readable token amount adjusted for decimals"
-        tests:
-          - not_null
-
       - name: decimals
-        description: "Token decimal precision"
-        tests:
-          - not_null
-
       - name: from_chain
-        description: "Originating chain name"
-        tests:
-          - not_null
-
       - name: to_chain
-        description: "Destination chain name"
-        
-
       - name: pathway
-        description: "Path: from_chain -> to_chain"
-       
-
       - name: price
-        description: "Price of the token (ETH-based tokens use ETH price)"
-
       - name: amount_usd
-        description: "USD value of the transferred amount" 
-
-
-  - name: latest_bridgers_context
-    meta:
-      blockchain: ethereum, bnb, avalanche_c, polygon, arbitrum, optimism, metis, linea, mantle, base, kava, scroll, aurora, core, sonic, unichain, gnosis, soneium, kaia, iota, taiko, rari, sei, flare, gravity, lightlink, abstract, peaq, flow, goat, berachain, rootstock, hemi, vana, ink, glue, fuse, superposition, degen, codex, story, apechain, telos, plume, xdc
-      project: stargate
-      contributors: outputlayer  
-    config:
-      tags: ['bridge', 'cross-chain', 'user-analysis', 'tx-sequencing']
-    description: >
-      Identifies users who bridged assets and inspects their EVM transactions before and after the bridge.
-      Filters out users with more than 1500 transactions in the past 100 days on the destination chain.
-
-    columns:
-      - name: user
-        description: "User wallet address who initiated the bridge transaction"
-        tests:
-          - not_null
-
-      - name: blockchain
-        description: "Chain where the user bridged to (destination chain)"
-        tests:
-          - not_null
-
-      - name: bridge_tx_hash
-        description: "Hash of the bridge transaction"
-        tests:
-          - not_null
-
-      - name: bridge_block_number
-        description: "Block number of the bridge transaction"
-
-      - name: bridge_block_time
-        description: "Timestamp of the bridge transaction"
-
-      - name: prev_tx_hash
-        description: "Previous transaction hash before the bridge tx by the same user on the same chain"
-
-      - name: prev_block_number
-        description: "Block number of the previous tx"
-
-      - name: prev_block_time
-        description: "Timestamp of the previous tx"
-
-      - name: prev_data
-        description: "Raw calldata of the previous tx"
-
-      - name: next_tx_hash
-        description: "Next transaction hash after the bridge tx by the same user on the same chain"
-
-      - name: next_block_number
-        description: "Block number of the next tx"
-
-      - name: next_block_time
-        description: "Timestamp of the next tx"
-
-      - name: next_data
-        description: "Raw calldata of the next tx"
