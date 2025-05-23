@@ -120,7 +120,7 @@ swap_direction AS (
 all_liquidity_events AS (
      -- Swaps - use proper direction logic
     SELECT
-        date_trunc('day', evt_block_time) AS day,
+        CAST(date_trunc('day', evt_block_time) AS DATE) AS day,
         contract_address AS pool_address,
         -- If token0 is being sold (tokenIn=0), pool loses token0 (negative), gains token1 (positive)
         -- If token1 is being sold (tokenIn=1), pool gains token0 (positive), loses token1 (negative)
@@ -137,7 +137,7 @@ all_liquidity_events AS (
     UNION ALL
     -- Mints - tokens enter the pool (positive)
     SELECT
-        date_trunc('day', evt_block_time) AS day,
+        CAST(date_trunc('day', evt_block_time) AS DATE) AS day,
         contract_address AS pool_address,
         CAST(element_at(amounts, 1) AS DECIMAL(38,0)) AS amount0_delta,  -- Changed from bigint to DECIMAL(38,0)
         CAST(element_at(amounts, 2) AS DECIMAL(38,0)) AS amount1_delta   -- Changed from bigint to DECIMAL(38,0)
@@ -150,7 +150,7 @@ all_liquidity_events AS (
     UNION ALL
     -- Redeems - tokens leave the pool (negative)
     SELECT
-        date_trunc('day', evt_block_time) AS day,
+        CAST(date_trunc('day', evt_block_time) AS DATE) AS day,
         contract_address AS pool_address,
         -CAST(element_at(amounts, 1) AS DECIMAL(38,0)) AS amount0_delta,  -- Changed from bigint to DECIMAL(38,0)
         -CAST(element_at(amounts, 2) AS DECIMAL(38,0)) AS amount1_delta   -- Changed from bigint to DECIMAL(38,0)
@@ -163,7 +163,7 @@ all_liquidity_events AS (
     UNION ALL
     -- Donates - tokens enter the pool (positive)
     SELECT
-        date_trunc('day', evt_block_time) AS day,
+        CAST(date_trunc('day', evt_block_time) AS DATE) AS day,
         contract_address AS pool_address,
         CAST(element_at(amounts, 1) AS DECIMAL(38,0)) AS amount0_delta,  -- Changed from bigint to DECIMAL(38,0)
         CAST(element_at(amounts, 2) AS DECIMAL(38,0)) AS amount1_delta   -- Changed from bigint to DECIMAL(38,0)
@@ -255,8 +255,8 @@ calendar AS (
     FROM unnest(
         sequence(
             GREATEST(
-                (SELECT MIN(day) FROM daily_delta_balance),
-                CURRENT_DATE - INTERVAL '7' day  -- Look back 7 days to ensure continuity
+                CAST((SELECT MIN(day) FROM daily_delta_balance) AS DATE),
+                CURRENT_DATE - INTERVAL '7' day
             ), 
             CURRENT_DATE, 
             interval '1' day
