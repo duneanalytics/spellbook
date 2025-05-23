@@ -16,7 +16,6 @@
     traces = source('sophon','traces'),
     transactions = source('sophon','transactions'),
     erc20_transfers = source('erc20_sophon','evt_Transfer'),
-    native_contract_address = '0x000000000000000000000000000000000000800a',
     include_traces = false
   ) 
 }}

@@ -50,3 +50,17 @@ sources:
       - name: pump_amm_call_create_pool
       - name: pump_amm_call_create_config
       - name: pump_amm_call_update_fee_config
+
+  - name: raydium_solana
+    description: "Raydium protocol decoded tables"
+    tables:
+      - name: raydium_launchpad_call_buy_exact_in
+        description: "Raydium Launchpad buy exact in calls"
+      - name: raydium_launchpad_call_buy_exact_out
+        description: "Raydium Launchpad buy exact out calls"
+      - name: raydium_launchpad_call_sell_exact_in
+        description: "Raydium Launchpad sell exact in calls"
+      - name: raydium_launchpad_call_sell_exact_out
+        description: "Raydium Launchpad sell exact out calls"
+      - name: raydium_launchpad_call_create_platform_config
+        description: "Raydium Launchpad create platform config calls"

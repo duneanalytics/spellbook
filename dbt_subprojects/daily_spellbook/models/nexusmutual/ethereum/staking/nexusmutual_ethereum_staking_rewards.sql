@@ -2,8 +2,11 @@
   config(
     schema = 'nexusmutual_ethereum',
     alias = 'staking_rewards',
-    materialized = 'view',
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
     unique_key = ['pool_id', 'cover_id'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     post_hook = '{{ expose_spells(blockchains = \'["ethereum"]\',
                                   spell_type = "project",
                                   spell_name = "nexusmutual",
@@ -15,6 +18,7 @@ with
 
 covers as (
   select
+    block_time,
     cover_id,
     cover_start_date,
     cover_end_date,
@@ -31,6 +35,9 @@ covers as (
     trace_address,
     tx_hash
   from {{ ref("nexusmutual_ethereum_covers_v2") }}
+  {% if is_incremental() %}
+  where {{ incremental_predicate('block_time') }}
+  {% endif %}
 )
 
 select
@@ -53,3 +60,6 @@ where mr.call_success
   and mr.poolId = c.staking_pool_id
   and (c.trace_address is null
     or slice(mr.call_trace_address, 1, cardinality(c.trace_address)) = c.trace_address)
+  {% if is_incremental() %}
+  and {{ incremental_predicate('mr.call_block_time') }}
+  {% endif %}
