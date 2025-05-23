@@ -1,3 +1,11 @@
+{{ config(
+  materialized='view',
+  schema='stargate',
+  alias='stargate_bridge_token_mapping'
+) }}
+
+  
+
 SELECT *
 FROM (VALUES
 ('ETH', 18, 'ethereum', 30101, 0x77b2043768d28E9C9aB44E1aBfC95944bcE57931, 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2),
