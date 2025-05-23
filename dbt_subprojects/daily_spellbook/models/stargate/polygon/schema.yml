@@ -1,8 +1,8 @@
 version: 2
 
 models:
-  - name: pre_post_bridge_arbitrum
-    description: "Pre and post transaction context around Stargate bridge usage on Arbitrum."
+  - name: pre_post_bridge_polygon
+    description: "Pre and post transaction context around Stargate bridge usage on Polygon."
     columns:
       - name: user
         tests: [not_null]
