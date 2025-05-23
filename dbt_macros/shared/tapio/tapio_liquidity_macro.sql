@@ -1,8 +1,8 @@
 {% macro
     tapio_compatible_liquidity_macro(
-        blockchain, 
-        project, 
-        version,
+        blockchain = '', 
+        project = '', 
+        version = '',
         factory_create_pool_function = null,
         factory_create_pool_evt = null,
         spa_minted_evt = null,
