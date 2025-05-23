@@ -12,3 +12,39 @@ models:
         tests: [not_null]
       - name: bridge_block_time
         tests: [not_null]
+      - name: prev_tx_hash
+      - name: next_tx_hash
+      - name: prev_data
+      - name: next_data
+      - name: from_chain
+      - name: to_chain
+      - name: pathway
+      - name: token
+      - name: amount
+      - name: amount_usd
+
+  - name: stargate_bridge_transfers_arbitrum
+    description: "Raw Stargate bridge transfers on Arbitrum extracted from evms.logs."
+    columns:
+      - name: block_time
+        tests: [not_null]
+      - name: block_number
+        tests: [not_null]
+      - name: pool_name
+      - name: user
+        tests: [not_null]
+      - name: dest
+        tests: [not_null]
+      - name: amount_raw
+        tests: [not_null]
+      - name: tx_hash
+        tests: [not_null]
+      - name: blockchain
+      - name: token
+      - name: amount
+      - name: decimals
+      - name: from_chain
+      - name: to_chain
+      - name: pathway
+      - name: price
+      - name: amount_usd
