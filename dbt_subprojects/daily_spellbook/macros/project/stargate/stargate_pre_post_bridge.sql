@@ -9,7 +9,7 @@ logs AS (
     e.contract_address AS pool_name,
     varbinary_substring(e.topic2, 13, 20) AS user,
     e.tx_hash,
-    e.blockchain AS to_chain
+     '{{ blockchain }}'  AS to_chain
   FROM {{ source(blockchain, 'logs') }} e
   JOIN assets a 
     ON e.contract_address = a.pool AND e.blockchain = a.chain
