@@ -57,3 +57,19 @@ models:
       - name: pathway
       - name: price
       - name: amount_usd
+      
+  - name: stargate_bridge_token_mapping
+    description: "Mapping of Stargate bridge tokens across chains."
+    columns:
+      - name: token
+        description: "Symbol of the token (e.g., USDC, ETH)."
+      - name: decimals
+        description: "Decimals of the token."
+      - name: chain
+        description: "Chain name (e.g., ethereum, arbitrum)."
+      - name: endpointID
+        description: "Stargate endpoint ID for the destination chain."
+      - name: pool
+        description: "Pool address on the source chain."
+      - name: contract
+        description: "Canonical token contract address on the destination chain."
