@@ -10,6 +10,8 @@
     )
 }}
 
+-- stamp 1 (increase to trigger CI)
+
 {% set models = [
     ref('dex_arbitrum_base_trades')
     , ref('dex_avalanche_c_base_trades')
