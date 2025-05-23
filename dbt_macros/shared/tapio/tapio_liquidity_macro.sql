@@ -7,7 +7,7 @@
         factory_create_pool_evt = null,
         spa_minted_evt = null,
         spa_redeemed_evt = null,
-        start_date = null
+        start_date = "date('2025-01-01')"
     )
 %}
 
@@ -40,7 +40,7 @@ latest_prices AS (
         {% if is_incremental() %}
         AND {{ incremental_predicate('minute') }}
         {% else %}
-        AND minute >= date('2025-01-01')
+        AND minute >= {{ start_date }}
         {% endif %}
     ) ranked_prices
     WHERE rn = 1
@@ -141,6 +141,7 @@ previous_balances AS (
         token_address,
         token_balance_raw
     FROM {{ this }}
+    WHERE day < (SELECT MIN(day) FROM daily_delta_balance)
 ),
 
 -- Combine new balance changes with existing balances
@@ -154,21 +155,14 @@ combined_daily_delta AS (
     
     UNION ALL
     
-    -- Add a zero amount for each existing day/pool/token combination
-    -- This ensures we maintain the full history
+    -- Add previous balances as baseline for cumulative calculation
     SELECT
         pb.day,
         pb.pool_address,
         pb.token_address,
         CAST(0 AS DECIMAL(38,0)) AS amount
     FROM previous_balances pb
-    LEFT JOIN daily_delta_balance ddb
-        ON pb.day = ddb.day
-        AND pb.pool_address = ddb.pool_address
-        AND pb.token_address = ddb.token_address
-    WHERE ddb.day IS NULL
 ),
-{% endif %}
 
 -- Calculate cumulative balances over time
 cumulative_balance AS (
@@ -185,12 +179,55 @@ cumulative_balance AS (
             ORDER BY day 
             ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
         ) AS cumulative_amount
-    FROM 
-    {% if is_incremental() %}
-        combined_daily_delta
-    {% else %}
-        daily_delta_balance
-    {% endif %}
+    FROM combined_daily_delta
+),
+
+-- Generate a complete calendar for continuous data (only new dates for incremental)
+calendar AS (
+    SELECT date_sequence AS day
+    FROM unnest(
+        sequence(
+            GREATEST(
+                (SELECT MIN(day) FROM daily_delta_balance),
+                CURRENT_DATE - INTERVAL '7' day  -- Look back 7 days to ensure continuity
+            ), 
+            CURRENT_DATE, 
+            interval '1' day
+        )
+    ) AS t(date_sequence)
+),
+
+-- Join calendar with balances for complete daily series
+daily_balances AS (
+    SELECT
+        c.day,
+        b.pool_address,
+        b.token_address,
+        b.cumulative_amount AS token_balance_raw
+    FROM calendar c
+    LEFT JOIN cumulative_balance b 
+        ON b.day <= c.day AND c.day < b.day_of_next_change
+    WHERE b.pool_address IS NOT NULL
+)
+
+{% else %}
+
+-- Calculate cumulative balances over time
+cumulative_balance AS (
+    SELECT
+        day,
+        pool_address,
+        token_address,
+        LEAD(day, 1, CURRENT_DATE + INTERVAL '1' day) OVER (
+            PARTITION BY token_address, pool_address 
+            ORDER BY day
+        ) AS day_of_next_change,
+        SUM(amount) OVER (
+            PARTITION BY pool_address, token_address 
+            ORDER BY day 
+            ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+        ) AS cumulative_amount
+    FROM daily_delta_balance
 ),
 
 -- Generate a complete calendar for continuous data
@@ -218,6 +255,8 @@ daily_balances AS (
     WHERE b.pool_address IS NOT NULL
 )
 
+{% endif %}
+
 -- Final output with token details and USD values using latest prices
 SELECT
     d.day,
@@ -234,7 +273,7 @@ SELECT
     lp.price AS latest_price,
     d.token_balance_raw / POWER(10, COALESCE(t.decimals, lp.decimals, 18)) AS token_balance,
     (d.token_balance_raw / POWER(10, COALESCE(t.decimals, lp.decimals, 18))) * COALESCE(lp.price, 0) AS token_balance_usd,
-    CAST({{ blockchain }} AS varchar) AS blockchain,
+    '{{ blockchain }}' AS blockchain,
     '{{ project }}' AS project,
     '{{ version }}' AS version
 FROM daily_balances d
