@@ -18,9 +18,9 @@ logs AS (
 ),
 user_tx_counts AS (
   SELECT
-    t.blockchain,
+    '{{ blockchain }}' as blockchain,
     t."from" AS user,
-    COUNT(*) AS tx_count_last_30_days
+    COUNT(*) AS tx_count_last_90_days
   FROM {{ source(blockchain, 'transactions') }} t
   WHERE t.block_time >= CURRENT_DATE - INTERVAL '100' DAY
   GROUP BY t.blockchain, t."from"
@@ -29,7 +29,7 @@ eligible_users AS (
   SELECT DISTINCT q.user, q.to_chain AS blockchain
   FROM logs q
   JOIN user_tx_counts c ON q.user = c.user AND q.to_chain = c.blockchain
-  WHERE c.tx_count_last_30_days <= 1500
+  WHERE c.tx_count_last_90_days <= 1500
 ),
 input_tx AS (
   SELECT
@@ -43,7 +43,7 @@ input_tx AS (
 ),
 outgoing_transactions AS (
   SELECT
-    t.blockchain,
+    '{{ blockchain }}' as blockchain,
     t."from" AS user,
     t.hash,
     t.block_number,
