@@ -125,12 +125,12 @@ all_liquidity_events AS (
         -- If token0 is being sold (tokenIn=0), pool loses token0 (negative), gains token1 (positive)
         -- If token1 is being sold (tokenIn=1), pool gains token0 (positive), loses token1 (negative)
         CASE
-            WHEN tokenIn = 0 THEN -CAST(amount0_abs AS bigint)  -- token0 being sold, pool loses token0
-            ELSE CAST(amount0_abs AS bigint)                    -- token1 being sold, pool gains token0
+            WHEN tokenIn = 0 THEN -CAST(amount0_abs AS DECIMAL(38,0))  -- Changed from bigint to DECIMAL(38,0)
+            ELSE CAST(amount0_abs AS DECIMAL(38,0))                    -- Changed from bigint to DECIMAL(38,0)
         END AS amount0_delta,
         CASE
-            WHEN tokenIn = 1 THEN -CAST(amount1_abs AS bigint)  -- token1 being sold, pool loses token1
-            ELSE CAST(amount1_abs AS bigint)                    -- token0 being sold, pool gains token1
+            WHEN tokenIn = 1 THEN -CAST(amount1_abs AS DECIMAL(38,0))  -- Changed from bigint to DECIMAL(38,0)
+            ELSE CAST(amount1_abs AS DECIMAL(38,0))                    -- Changed from bigint to DECIMAL(38,0)
         END AS amount1_delta
     FROM swap_direction
 
@@ -139,8 +139,8 @@ all_liquidity_events AS (
     SELECT
         date_trunc('day', evt_block_time) AS day,
         contract_address AS pool_address,
-        CAST(element_at(amounts, 1) AS bigint) AS amount0_delta,
-        CAST(element_at(amounts, 2) AS bigint) AS amount1_delta
+        CAST(element_at(amounts, 1) AS DECIMAL(38,0)) AS amount0_delta,  -- Changed from bigint to DECIMAL(38,0)
+        CAST(element_at(amounts, 2) AS DECIMAL(38,0)) AS amount1_delta   -- Changed from bigint to DECIMAL(38,0)
     FROM {{ source(project ~ '_' ~ blockchain, spa_minted_evt) }}
     WHERE evt_block_date >= {{ start_date }}
     {% if is_incremental() %}
@@ -152,8 +152,8 @@ all_liquidity_events AS (
     SELECT
         date_trunc('day', evt_block_time) AS day,
         contract_address AS pool_address,
-        -CAST(element_at(amounts, 1) AS bigint) AS amount0_delta,
-        -CAST(element_at(amounts, 2) AS bigint) AS amount1_delta
+        -CAST(element_at(amounts, 1) AS DECIMAL(38,0)) AS amount0_delta,  -- Changed from bigint to DECIMAL(38,0)
+        -CAST(element_at(amounts, 2) AS DECIMAL(38,0)) AS amount1_delta   -- Changed from bigint to DECIMAL(38,0)
     FROM {{ source(project ~ '_' ~ blockchain, spa_redeemed_evt) }}
     WHERE evt_block_date >= {{ start_date }}
     {% if is_incremental() %}
@@ -165,8 +165,8 @@ all_liquidity_events AS (
     SELECT
         date_trunc('day', evt_block_time) AS day,
         contract_address AS pool_address,
-        CAST(element_at(amounts, 1) AS bigint) AS amount0_delta,
-        CAST(element_at(amounts, 2) AS bigint) AS amount1_delta
+        CAST(element_at(amounts, 1) AS DECIMAL(38,0)) AS amount0_delta,  -- Changed from bigint to DECIMAL(38,0)
+        CAST(element_at(amounts, 2) AS DECIMAL(38,0)) AS amount1_delta   -- Changed from bigint to DECIMAL(38,0)
     FROM {{ source(project ~ '_' ~ blockchain, spa_donated_evt) }}
     WHERE evt_block_date >= {{ start_date }}
     {% if is_incremental() %}
