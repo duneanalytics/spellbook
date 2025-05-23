@@ -25,29 +25,6 @@ relevant_tokens AS (
     WHERE blockchain = '{{ blockchain }}'
 ),
 
--- Get latest prices for each token
-latest_prices AS (
-    SELECT
-        contract_address AS token,
-        price,
-        decimals
-    FROM (
-        SELECT
-            contract_address,
-            price,
-            decimals,
-            ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY minute DESC) AS rn
-        FROM {{ source('prices', 'usd') }}
-        WHERE blockchain = '{{ blockchain }}'
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('minute') }}
-        {% else %}
-        AND minute >= {{ start_date }}
-        {% endif %}
-    ) ranked_prices
-    WHERE rn = 1
-),
-
 -- Get pool addresses from pool creation events
 pool_creation_events AS (
     SELECT
@@ -125,12 +102,12 @@ all_liquidity_events AS (
         -- If token0 is being sold (tokenIn=0), pool loses token0 (negative), gains token1 (positive)
         -- If token1 is being sold (tokenIn=1), pool gains token0 (positive), loses token1 (negative)
         CASE
-            WHEN tokenIn = 0 THEN -CAST(amount0_abs AS DECIMAL(38,0))  -- Changed from bigint to DECIMAL(38,0)
-            ELSE CAST(amount0_abs AS DECIMAL(38,0))                    -- Changed from bigint to DECIMAL(38,0)
+            WHEN tokenIn = 0 THEN -CAST(amount0_abs AS DECIMAL(38,0))
+            ELSE CAST(amount0_abs AS DECIMAL(38,0))                  
         END AS amount0_delta,
         CASE
-            WHEN tokenIn = 1 THEN -CAST(amount1_abs AS DECIMAL(38,0))  -- Changed from bigint to DECIMAL(38,0)
-            ELSE CAST(amount1_abs AS DECIMAL(38,0))                    -- Changed from bigint to DECIMAL(38,0)
+            WHEN tokenIn = 1 THEN -CAST(amount1_abs AS DECIMAL(38,0))
+            ELSE CAST(amount1_abs AS DECIMAL(38,0))                  
         END AS amount1_delta
     FROM swap_direction
 
@@ -139,8 +116,8 @@ all_liquidity_events AS (
     SELECT
         CAST(date_trunc('day', evt_block_time) AS DATE) AS day,
         contract_address AS pool_address,
-        CAST(element_at(amounts, 1) AS DECIMAL(38,0)) AS amount0_delta,  -- Changed from bigint to DECIMAL(38,0)
-        CAST(element_at(amounts, 2) AS DECIMAL(38,0)) AS amount1_delta   -- Changed from bigint to DECIMAL(38,0)
+        CAST(element_at(amounts, 1) AS DECIMAL(38,0)) AS amount0_delta,
+        CAST(element_at(amounts, 2) AS DECIMAL(38,0)) AS amount1_delta
     FROM {{ source(project ~ '_' ~ blockchain, spa_minted_evt) }}
     WHERE evt_block_date >= {{ start_date }}
     {% if is_incremental() %}
@@ -152,8 +129,8 @@ all_liquidity_events AS (
     SELECT
         CAST(date_trunc('day', evt_block_time) AS DATE) AS day,
         contract_address AS pool_address,
-        -CAST(element_at(amounts, 1) AS DECIMAL(38,0)) AS amount0_delta,  -- Changed from bigint to DECIMAL(38,0)
-        -CAST(element_at(amounts, 2) AS DECIMAL(38,0)) AS amount1_delta   -- Changed from bigint to DECIMAL(38,0)
+        -CAST(element_at(amounts, 1) AS DECIMAL(38,0)) AS amount0_delta,
+        -CAST(element_at(amounts, 2) AS DECIMAL(38,0)) AS amount1_delta
     FROM {{ source(project ~ '_' ~ blockchain, spa_redeemed_evt) }}
     WHERE evt_block_date >= {{ start_date }}
     {% if is_incremental() %}
@@ -165,8 +142,8 @@ all_liquidity_events AS (
     SELECT
         CAST(date_trunc('day', evt_block_time) AS DATE) AS day,
         contract_address AS pool_address,
-        CAST(element_at(amounts, 1) AS DECIMAL(38,0)) AS amount0_delta,  -- Changed from bigint to DECIMAL(38,0)
-        CAST(element_at(amounts, 2) AS DECIMAL(38,0)) AS amount1_delta   -- Changed from bigint to DECIMAL(38,0)
+        CAST(element_at(amounts, 1) AS DECIMAL(38,0)) AS amount0_delta,
+        CAST(element_at(amounts, 2) AS DECIMAL(38,0)) AS amount1_delta 
     FROM {{ source(project ~ '_' ~ blockchain, spa_donated_evt) }}
     WHERE evt_block_date >= {{ start_date }}
     {% if is_incremental() %}
@@ -230,6 +207,7 @@ combined_daily_delta AS (
         CAST(0 AS DECIMAL(38,0)) AS amount
     FROM previous_balances pb
 ),
+{% endif %}
 
 -- Calculate cumulative balances over time
 cumulative_balance AS (
@@ -246,55 +224,12 @@ cumulative_balance AS (
             ORDER BY day 
             ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
         ) AS cumulative_amount
-    FROM combined_daily_delta
-),
-
--- Generate a complete calendar for continuous data (only new dates for incremental)
-calendar AS (
-    SELECT date_sequence AS day
-    FROM unnest(
-        sequence(
-            GREATEST(
-                CAST((SELECT MIN(day) FROM daily_delta_balance) AS DATE),
-                CURRENT_DATE - INTERVAL '7' day
-            ), 
-            CURRENT_DATE, 
-            interval '1' day
-        )
-    ) AS t(date_sequence)
-),
-
--- Join calendar with balances for complete daily series
-daily_balances AS (
-    SELECT
-        c.day,
-        b.pool_address,
-        b.token_address,
-        b.cumulative_amount AS token_balance_raw
-    FROM calendar c
-    LEFT JOIN cumulative_balance b 
-        ON b.day <= c.day AND c.day < b.day_of_next_change
-    WHERE b.pool_address IS NOT NULL
-)
-
-{% else %}
-
--- Calculate cumulative balances over time
-cumulative_balance AS (
-    SELECT
-        day,
-        pool_address,
-        token_address,
-        LEAD(day, 1, CURRENT_DATE + INTERVAL '1' day) OVER (
-            PARTITION BY token_address, pool_address 
-            ORDER BY day
-        ) AS day_of_next_change,
-        SUM(amount) OVER (
-            PARTITION BY pool_address, token_address 
-            ORDER BY day 
-            ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
-        ) AS cumulative_amount
-    FROM daily_delta_balance
+    FROM 
+    {% if is_incremental() %}
+        combined_daily_delta
+    {% else %}
+        daily_delta_balance
+    {% endif %}
 ),
 
 -- Generate a complete calendar for continuous data
@@ -302,7 +237,14 @@ calendar AS (
     SELECT date_sequence AS day
     FROM unnest(
         sequence(
+            {% if is_incremental() %}
+            GREATEST(
+                CAST((SELECT MIN(day) FROM daily_delta_balance) AS DATE),
+                CURRENT_DATE - INTERVAL '7' day
+            ), 
+            {% else %}
             {{ start_date }}, 
+            {% endif %}
             CURRENT_DATE, 
             interval '1' day
         )
@@ -320,11 +262,55 @@ daily_balances AS (
     LEFT JOIN cumulative_balance b 
         ON b.day <= c.day AND c.day < b.day_of_next_change
     WHERE b.pool_address IS NOT NULL
+),
+
+-- Get unique tokens used in pools to limit price queries
+pool_tokens_list AS (
+    SELECT DISTINCT token_address
+    FROM daily_balances
+    WHERE token_balance_raw IS NOT NULL
+),
+
+-- Get daily prices for tokens that are actually used in pools
+daily_prices AS (
+    SELECT
+        CAST(date_trunc('day', minute) AS DATE) AS day,
+        contract_address AS token,
+        AVG(price) AS price,  -- Average price for the day
+        MAX(decimals) AS decimals
+    FROM {{ source('prices', 'usd') }}
+    WHERE blockchain = '{{ blockchain }}'
+    AND contract_address IN (SELECT token_address FROM pool_tokens_list)
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('minute') }}
+    {% else %}
+    AND minute >= {{ start_date }}
+    {% endif %}
+    GROUP BY 1, 2, decimals
+),
+
+-- Fill missing price days with forward-fill logic
+prices_with_calendar AS (
+    SELECT
+        c.day,
+        pt.token_address,
+        MAX_BY(dp.price, c.day) OVER (
+            PARTITION BY pt.token_address 
+            ORDER BY c.day 
+            ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+        ) AS price,
+        MAX_BY(dp.decimals, c.day) OVER (
+            PARTITION BY pt.token_address 
+            ORDER BY c.day 
+            ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+        ) AS decimals
+    FROM calendar c
+    CROSS JOIN pool_tokens_list pt
+    LEFT JOIN daily_prices dp 
+        ON c.day = dp.day AND pt.token_address = dp.token
 )
 
-{% endif %}
-
--- Final output with token details and USD values using latest prices
+-- Final output with token details and USD values using daily prices
 SELECT
     '{{ blockchain }}' AS blockchain,
     '{{ project }}' AS project,
@@ -340,14 +326,14 @@ SELECT
         COALESCE(t1.symbol, 'UNKNOWN')
     ) AS pool_name,
     d.token_balance_raw,
-    lp.price AS latest_price,
-    d.token_balance_raw / POWER(10, COALESCE(t.decimals, lp.decimals, 18)) AS token_balance,
-    (d.token_balance_raw / POWER(10, COALESCE(t.decimals, lp.decimals, 18))) * COALESCE(lp.price, 0) AS token_balance_usd
+    pwc.price AS price,
+    d.token_balance_raw / POWER(10, COALESCE(t.decimals, pwc.decimals, 18)) AS token_balance,
+    (d.token_balance_raw / POWER(10, COALESCE(t.decimals, pwc.decimals, 18))) * COALESCE(pwc.price, 0) AS token_balance_usd
 FROM daily_balances d
 LEFT JOIN relevant_tokens t 
     ON t.contract_address = d.token_address
-LEFT JOIN latest_prices lp 
-    ON lp.token = d.token_address
+LEFT JOIN prices_with_calendar pwc 
+    ON pwc.day = d.day AND pwc.token_address = d.token_address
 -- Join pool_tokens to get both token addresses for the pool name
 LEFT JOIN pool_tokens pt ON d.pool_address = pt.pool_address
 -- Join to get token0 symbol
