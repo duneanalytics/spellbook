@@ -7,7 +7,6 @@
 
 {% set base_models = [
     ref('uniswap_v4_base_base_liquidity')
-    , ref('tapio_base_base_liquidity')
 ] %}
 
 WITH base_union AS (

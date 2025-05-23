@@ -1,4 +1,3 @@
-
 {{
     config(
         schema = 'tapio_base',
@@ -22,6 +21,8 @@
         version = '1',
         factory_create_pool_function = 'selfpeggingassetfactory_call_createpool',
         factory_create_pool_evt = 'selfpeggingassetfactory_evt_poolcreated',
-        spa_token_swapped_evt = 'selfpeggingasset_evt_tokenswapped'
+        spa_minted_evt = 'selfpeggingasset_evt_minted',
+        spa_redeemed_evt = 'selfpeggingasset_evt_redeemed',
+        start_date = '2025-01-01'
     )
 }}

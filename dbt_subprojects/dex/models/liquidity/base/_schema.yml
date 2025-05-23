@@ -23,23 +23,4 @@ models:
           filter:
             version: 4
 
-  - name: tapio_base_base_liquidity
-    meta:
-      blockchain: base
-      sector: dex
-      project: tapio
-      contributors: brunota20
-    config:
-      tags: [ 'base', 'dex', 'liquidity', 'tapio' ]
-    description: "tapio base base liquidity"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-      - check_dex_base_liquidity_seed:
-          seed_file: ref('tapio_base_base_liquidity_seed')
-          filter:
-            version: 1
-
  
