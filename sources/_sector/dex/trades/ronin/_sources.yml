@@ -7,3 +7,7 @@ sources:
       - name: KatanaFactory_evt_PairCreated
       - name: KatanaV3Pool_evt_Swap
       - name: KatanaV3Factory_evt_PoolCreated
+      
+  - name: tamadotmeme_ronin
+    tables:
+      - name: maincontract_evt_trade
