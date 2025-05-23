@@ -9,12 +9,12 @@ logs AS (
     e.contract_address AS pool_name,
     varbinary_substring(e.topic2, 13, 20) AS user,
     e.tx_hash,
-     '{{ blockchain }}'  AS to_chain
+    '{{ blockchain }}' AS blockchain
   FROM {{ source(blockchain, 'logs') }} e
   JOIN assets a 
-    ON e.contract_address = a.pool AND e.blockchain = a.chain
-  WHERE topic0 = 0xefed6d3500546b29533b128a29e3a94d70788727f0507505ac12eaf2e578fd9c
-    AND block_time > now() - interval '3' month
+    ON e.contract_address = a.pool AND '{{ blockchain }}' = a.chain
+  WHERE e.topic0 = 0xefed6d3500546b29533b128a29e3a94d70788727f0507505ac12eaf2e578fd9c
+    AND e.block_time > now() - interval '3' month
 ),
 user_tx_counts AS (
   SELECT
