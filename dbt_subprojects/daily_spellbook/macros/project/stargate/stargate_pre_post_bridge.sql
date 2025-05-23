@@ -23,7 +23,7 @@ user_tx_counts AS (
     COUNT(*) AS tx_count_last_90_days
   FROM {{ source(blockchain, 'transactions') }} t
   WHERE t.block_time >= CURRENT_DATE - INTERVAL '100' DAY
-  GROUP BY t.blockchain, t."from"
+  GROUP BY t."from"
 ),
 eligible_users AS (
   SELECT DISTINCT q.user, q.to_chain AS blockchain
@@ -43,7 +43,7 @@ input_tx AS (
 ),
 outgoing_transactions AS (
   SELECT
-    '{{ blockchain }}' as blockchain,
+    '{{ blockchain }}' AS blockchain,
     t."from" AS user,
     t.hash,
     t.block_number,
@@ -52,7 +52,7 @@ outgoing_transactions AS (
     t.data
   FROM {{ source(blockchain, 'transactions') }} t
   WHERE t.block_time >= CURRENT_DATE - INTERVAL '100' DAY
-    AND (t.blockchain, t."from") IN (SELECT blockchain, user FROM eligible_users)
+    AND ( '{{ blockchain }}', t."from" ) IN (SELECT blockchain, user FROM eligible_users)
 ),
 prev_tx AS (
   SELECT
