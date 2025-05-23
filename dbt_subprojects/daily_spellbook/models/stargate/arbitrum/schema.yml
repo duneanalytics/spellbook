@@ -1,0 +1,14 @@
+version: 2
+
+models:
+  - name: pre_post_bridge_arbitrum
+    description: "Pre and post transaction context around Stargate bridge usage on Arbitrum."
+    columns:
+      - name: user
+        tests: [not_null]
+      - name: bridge_tx_hash
+        tests: [not_null]
+      - name: bridge_block_number
+        tests: [not_null]
+      - name: bridge_block_time
+        tests: [not_null]
