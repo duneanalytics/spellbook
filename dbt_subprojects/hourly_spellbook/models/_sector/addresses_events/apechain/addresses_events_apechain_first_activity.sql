@@ -11,5 +11,5 @@
 
 {{addresses_events_first_activity(
     blockchain='apechain',
-    native_symbol = 'eth'
+    native_symbol = 'APE'
 )}}
