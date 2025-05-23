@@ -7,6 +7,7 @@
 -- (project, project_version, model)
 {% set nft_models = [
      ref('magiceden_apechain_base_trades')
+     ,ref('opensea_v4_apechain_base_trades')
 ] %}
 
 with base_union as (

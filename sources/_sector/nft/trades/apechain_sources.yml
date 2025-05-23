@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: mavis_marketplace_apechain
+    tables:
+      - name: MavisMarketPlace_evt_OrderMatched
+
+  - name: seaport_apechain
+    tables:
+      - name: seaport_evt_OrderFulfilled
+      - name: seaport_evt_OrdersMatched
