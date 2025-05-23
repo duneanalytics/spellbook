@@ -1,8 +1,8 @@
 {% macro
     tapio_compatible_liquidity_macro(
-        blockchain = '', 
-        project = '', 
-        version = '',
+        blockchain, 
+        project, 
+        version,
         factory_create_pool_function = null,
         factory_create_pool_evt = null,
         spa_minted_evt = null,
@@ -20,7 +20,7 @@ relevant_tokens AS (
         symbol,
         decimals
     FROM {{ source('tokens', 'erc20') }}
-    WHERE blockchain = '{{blockchain}}'
+    WHERE blockchain = {{ blockchain }}
 ),
 
 -- Get latest prices for each token
@@ -36,7 +36,7 @@ latest_prices AS (
             decimals,
             ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY minute DESC) AS rn
         FROM {{ source('prices', 'usd') }}
-        WHERE blockchain = '{{blockchain}}'
+        WHERE blockchain = {{ blockchain }}
         {% if is_incremental() %}
         AND {{ incremental_predicate('minute') }}
         {% else %}
@@ -273,7 +273,7 @@ SELECT
     lp.price AS latest_price,
     d.token_balance_raw / POWER(10, COALESCE(t.decimals, lp.decimals, 18)) AS token_balance,
     (d.token_balance_raw / POWER(10, COALESCE(t.decimals, lp.decimals, 18))) * COALESCE(lp.price, 0) AS token_balance_usd,
-    ''{{blockchain}}'' AS blockchain,
+    '{{ blockchain }}' AS blockchain,
     '{{ project }}' AS project,
     '{{ version }}' AS version
 FROM daily_balances d
