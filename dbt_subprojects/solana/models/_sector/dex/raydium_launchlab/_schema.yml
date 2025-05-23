@@ -1,0 +1,120 @@
+version: 3
+
+models:
+  - name: raydium_launchlab_v1_base_trades
+    meta:
+      blockchain: solana
+      contributors: [krishhh]
+    config:
+      tags: ['solana', 'dex']
+    description: >
+      all raw raydium launchlab dex trades on Solana
+    data_tests:
+      - check_columns_solana_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['block_month', 'block_slot', 'tx_index', 'outer_instruction_index', 'inner_instruction_index']
+
+  - name: raydium_launchlab_v1_trades
+    meta:
+      blockchain: solana
+      contributors: [krishhh]
+    config:
+      tags: ['solana', 'dex']
+    description: >
+      Raydium Launchlab v1 DEX trades on Solana, including USD values and token symbols. Also includes the launchpad platform info for each trade.
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the DEX is deployed"
+      - &project
+        name: project
+        description: "Project name of the DEX"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the DEX project"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
+      - &block_time
+        name: block_time
+        description: "UTC event block time of each DEX trade"
+      - &block_slot
+        name: block_slot
+        description: "Block slot of each DEX trade"
+      - &trade_source
+        name: trade_source
+        description: "Was the trade a direct call to the DEX or did it go through another program like Jupiter (Dex Aggregator)"
+      - &token_bought_symbol
+        name: token_bought_symbol
+        description: "Token symbol for token bought in the trade"
+      - &token_sold_symbol
+        name: token_sold_symbol
+        description: "Token symbol for token sold in the trade"
+      - &token_pair
+        name: token_pair
+        description: "Token symbol pair for each token involved in the trade"
+      - &token_bought_amount
+        name: token_bought_amount
+        description: "Value of the token bought at time of execution in the original currency (adjusted for decimals)"
+      - &token_sold_amount
+        name: token_sold_amount
+        description: "Value of the token sold at time of execution in the original currency (adjusted for decimals)"
+      - &token_bought_amount_raw
+        name: token_bought_amount_raw
+        description: "Raw value of the token bought at time of execution in the original currency"
+      - &token_sold_amount_raw
+        name: token_sold_amount_raw
+        description: "Raw value of the token sold at time of execution in the original currency"
+      - &amount_usd
+        name: amount_usd
+        description: "USD value of the trade at time of execution"
+      - &fee_tier
+        name: fee_tier
+        description: "DEX fee tier (fee %)"
+      - &fee_usd
+        name: fee_usd
+        description: "DEX fee USD paid on swap"
+      - &token_bought_mint_address # Anchor for the mint address
+        name: token_bought_address # Actual column name for the trades table
+        description: "Token mint address of the token bought"
+      - &token_sold_mint_address # Anchor for the mint address
+        name: token_sold_address # Actual column name for the trades table
+        description: "Token mint address of the token sold"
+      - &token_bought_vault
+        name: token_bought_vault
+        description: "Token associated address for the DEX, of the token bought"
+      - &token_sold_vault
+        name: token_sold_vault
+        description: "Token associated address for the DEX, of the token sold"
+      - &project_program_id
+        name: project_program_id
+        description: "Pool program ID of the project"
+      - &project_main_id
+        name: project_main_id
+        description: "Main program ID of the project"
+      - &trader_id
+        name: trader_id
+        description: "ID (address) of trader who executed the trade"
+      - &tx_id
+        name: tx_id
+        description: "Unique transaction ID value tied to each transaction on the DEX"
+      - &outer_instruction_index
+        name: outer_instruction_index
+        description: "Top level instruction index for a given transaction ID"
+      - &inner_instruction_index
+        name: inner_instruction_index
+        description: "Inner instruction index for a given transaction ID"
+      - &tx_index
+        name: tx_index
+        description: "Index of the transaction in the block slot" 
+      - &account_platform_config
+        name: account_platform_config
+        description: "Platform config account for the DEX"
+      - &platform_name
+        name: platform_name
+        description: "Name of the launchpad platform"
+      - &platform_params
+        name: platform_params
+        description: "JSON object containing platform parameters"
+
+        
