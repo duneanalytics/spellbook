@@ -13,7 +13,7 @@ tx as (
         varbinary_to_uint256(varbinary_substring(e.data, 1, 32)) as dest,
         varbinary_to_uint256(varbinary_substring(e.data, 65, 32)) as amount_raw,
         e.tx_hash,
-        e.blockchain
+         '{{ blockchain }}' as blockchain
     from {{ source(blockchain, 'logs') }} e
     where e.topic0 = 0x85496b760a4b7f8d66384b9df21b381f5d1b1e79f229a47aaf4c232edc2fe59a
 ),
