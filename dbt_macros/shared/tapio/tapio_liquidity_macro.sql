@@ -20,7 +20,7 @@ relevant_tokens AS (
         symbol,
         decimals
     FROM {{ source('tokens', 'erc20') }}
-    WHERE blockchain = {{ blockchain }}
+    WHERE blockchain = '{{ blockchain }}'
 ),
 
 -- Get latest prices for each token
@@ -36,7 +36,7 @@ latest_prices AS (
             decimals,
             ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY minute DESC) AS rn
         FROM {{ source('prices', 'usd') }}
-        WHERE blockchain = {{ blockchain }}
+        WHERE blockchain = '{{ blockchain }}'
         {% if is_incremental() %}
         AND {{ incremental_predicate('minute') }}
         {% else %}
@@ -62,7 +62,7 @@ pool_creation_calls AS (
         call_block_time,
         CAST(from_hex(json_extract_scalar(argument, '$.tokenA')) AS varbinary) AS tokenA,
         CAST(from_hex(json_extract_scalar(argument, '$.tokenB')) AS varbinary) AS tokenB
-    FROM {{ source(project + '_' + blockchain, factory_create_pool_function) }}
+    FROM {{ source(project ~ '_' ~ blockchain, factory_create_pool_function) }}
     WHERE call_success = true
 ),
 
@@ -86,7 +86,7 @@ all_liquidity_events AS (
         contract_address AS pool_address,
         CAST(element_at(amounts, 1) AS bigint) AS amount0_delta,
         CAST(element_at(amounts, 2) AS bigint) AS amount1_delta
-    FROM {{ source(project + '_' + blockchain, spa_minted_evt) }}
+    FROM {{ source(project ~ '_' ~ blockchain, spa_minted_evt) }}
     WHERE evt_block_date >= {{ start_date }}
     {% if is_incremental() %}
     AND {{ incremental_predicate('evt_block_time') }}
@@ -100,7 +100,7 @@ all_liquidity_events AS (
         contract_address AS pool_address,
         -CAST(element_at(amounts, 1) AS bigint) AS amount0_delta,
         -CAST(element_at(amounts, 2) AS bigint) AS amount1_delta
-    FROM {{ source(project + '_' + blockchain, spa_redeemed_evt) }}
+    FROM {{ source(project ~ '_' ~ blockchain, spa_redeemed_evt) }}
     WHERE evt_block_date >= {{ start_date }}
     {% if is_incremental() %}
     AND {{ incremental_predicate('evt_block_time') }}
@@ -259,6 +259,9 @@ daily_balances AS (
 
 -- Final output with token details and USD values using latest prices
 SELECT
+    '{{ blockchain }}' AS blockchain,
+    '{{ project }}' AS project,
+    '{{ version }}' AS version,
     d.day,
     d.pool_address,
     d.token_address,
@@ -272,10 +275,7 @@ SELECT
     d.token_balance_raw,
     lp.price AS latest_price,
     d.token_balance_raw / POWER(10, COALESCE(t.decimals, lp.decimals, 18)) AS token_balance,
-    (d.token_balance_raw / POWER(10, COALESCE(t.decimals, lp.decimals, 18))) * COALESCE(lp.price, 0) AS token_balance_usd,
-    '{{ blockchain }}' AS blockchain,
-    '{{ project }}' AS project,
-    '{{ version }}' AS version
+    (d.token_balance_raw / POWER(10, COALESCE(t.decimals, lp.decimals, 18))) * COALESCE(lp.price, 0) AS token_balance_usd
 FROM daily_balances d
 LEFT JOIN relevant_tokens t 
     ON t.contract_address = d.token_address

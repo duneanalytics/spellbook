@@ -4,8 +4,6 @@ sources:
   - name: tapio_base
     tags: ["base", "tapio", "dex"]
     description: "Tapio protocol on Base"
-    database: base
-    schema: tapio
     tables:
       - name: selfpeggingassetfactory_call_createpool
         description: "Calls to SelfPeggingAssetFactory.createPool on Base"

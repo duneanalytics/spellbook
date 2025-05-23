@@ -4,8 +4,6 @@ sources:
   - name: tapio_sonic
     tags: ["sonic", "tapio", "dex"]
     description: "Tapio protocol on Sonic"
-    database: sonic
-    schema: tapio
     tables:
       - name: selfpeggingassetfactory_call_createpool
         description: "Calls to SelfPeggingAssetFactory.createPool on Sonic"

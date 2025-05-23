@@ -16,16 +16,16 @@
 SELECT * FROM (
     {% for liquidity_model in tapio_models %}
     SELECT
+        blockchain,
+        project,
+        version,
         day,
         pool_address,
         token_address,
         token_symbol,
         token_balance_raw,
         token_balance,
-        token_balance_usd,
-        blockchain,
-        project,
-        version
+        token_balance_usd
     FROM {{ liquidity_model }}
     {% if not loop.last %}
     UNION ALL

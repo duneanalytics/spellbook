@@ -1,3 +1,5 @@
+{% set blockchain = 'base' %}
+
 {{
     config(
         schema = 'tapio_base',
@@ -16,7 +18,7 @@
 
 {{ 
     tapio_compatible_liquidity_macro(
-        blockchain = 'base',
+        blockchain = blockchain,
         project = 'tapio',
         version = '1',
         factory_create_pool_function = 'selfpeggingassetfactory_call_createpool',

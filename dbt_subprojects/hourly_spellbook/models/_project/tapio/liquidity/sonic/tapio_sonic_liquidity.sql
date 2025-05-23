@@ -1,3 +1,5 @@
+{% set blockchain = 'sonic' %}
+
 {{
     config(
         schema = 'tapio_sonic',
@@ -16,7 +18,7 @@
 
 {{ 
     tapio_compatible_liquidity_macro(
-        blockchain = 'sonic',
+        blockchain = blockchain,
         project = 'tapio',
         version = '1',
         factory_create_pool_function = 'selfpeggingassetfactory_call_createpool',
