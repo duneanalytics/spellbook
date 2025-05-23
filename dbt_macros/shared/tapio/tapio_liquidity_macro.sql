@@ -62,7 +62,7 @@ pool_creation_calls AS (
         call_block_time,
         CAST(from_hex(json_extract_scalar(argument, '$.tokenA')) AS varbinary) AS tokenA,
         CAST(from_hex(json_extract_scalar(argument, '$.tokenB')) AS varbinary) AS tokenB
-    FROM {{ source(project ~ '_' ~ blockchain, factory_create_pool_function) }}
+    FROM {{ source(project + '_' + blockchain, factory_create_pool_function) }}
     WHERE call_success = true
 ),
 
@@ -86,7 +86,7 @@ all_liquidity_events AS (
         contract_address AS pool_address,
         CAST(element_at(amounts, 1) AS bigint) AS amount0_delta,
         CAST(element_at(amounts, 2) AS bigint) AS amount1_delta
-    FROM {{ source(project ~ '_' ~ blockchain, spa_minted_evt) }}
+    FROM {{ source(project + '_' + blockchain, spa_minted_evt) }}
     WHERE evt_block_date >= {{ start_date }}
     {% if is_incremental() %}
     AND {{ incremental_predicate('evt_block_time') }}
@@ -100,7 +100,7 @@ all_liquidity_events AS (
         contract_address AS pool_address,
         -CAST(element_at(amounts, 1) AS bigint) AS amount0_delta,
         -CAST(element_at(amounts, 2) AS bigint) AS amount1_delta
-    FROM {{ source(project ~ '_' ~ blockchain, spa_redeemed_evt) }}
+    FROM {{ source(project + '_' + blockchain, spa_redeemed_evt) }}
     WHERE evt_block_date >= {{ start_date }}
     {% if is_incremental() %}
     AND {{ incremental_predicate('evt_block_time') }}
