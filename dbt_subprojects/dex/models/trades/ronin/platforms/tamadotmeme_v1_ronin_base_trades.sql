@@ -21,12 +21,8 @@ with trades AS (
     CAST(DATE_TRUNC('day', evt_block_time) as date) AS block_date, -- Extract day from block time
     evt_block_time AS block_time, -- Keep original block time
     evt_block_number AS block_number, -- Keep block number
-    case when isBuy=True then cast(amountOut as uint256)  -- If it's a buy, amountOut is the bought amount
-         else cast(amountIn as uint256)                 -- Otherwise, amountIn is the bought amount
-    end AS token_bought_amount_raw,
-    case when isBuy=True then cast(amountIn as uint256)  -- If it's a buy, amountIn is the sold amount
-         else cast(amountOut as uint256)                 -- Otherwise, amountOut is the sold amount
-    end AS token_sold_amount_raw,
+    amountIn as token_sold_amount_raw,
+    amountOut as token_bought_amount_raw,
     case when isBuy=True then token                    -- If it's a buy, the 'token' column holds bought token
          else {{wron_token_address}}                  -- Otherwise, it's wRON
     end as token_bought_address, 
