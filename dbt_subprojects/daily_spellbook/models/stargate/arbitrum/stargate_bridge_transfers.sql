@@ -4,3 +4,5 @@
   schema='stargate',
   alias='stargate_bridge_transfers_arbitrum'
 ) }}
+
+{{ stargate_bridge_transfers('arbitrum') }}
