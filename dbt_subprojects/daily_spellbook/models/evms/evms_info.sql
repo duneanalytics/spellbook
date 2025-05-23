@@ -33,6 +33,7 @@
                                         , "zksync"
                                         , "zkevm"
                                         , "zora"
+                                        , "plume"
                                         ]\',
                                         "sector",
                                         "evms",
@@ -73,7 +74,7 @@ FROM (
         , (1101, 'zkevm', 'Polygon zkEVM', 'Layer 2', 'ZK Rollup', 'ETH', 0x4f9a0e7fd2bf6067db6994cf12e4495df938e6e9, 'https://zkevm.polygonscan.com/', timestamp '2023-03-24 05:30', 'Polygon', 'Ethereum', 'Ethereum', true, NULL)
         , (1088, 'metis_andromeda', 'Metis Andromeda', NULL, NULL, NULL, NULL, 'https://andromeda-explorer.metis.io/', timestamp '2021-11-18 22:19', 'Optimistic Virtual Machine', 'Ethereum', 'Ethereum', false, NULL)
         , (59144, 'linea', 'Linea', 'Layer 2', 'ZK Rollup', 'ETH', 0xe5d7c2a44ffddf6b295a15c148167daaaf5cf34f, 'https://lineascan.build/', timestamp '2023-07-06 13:15', NULL, 'Ethereum Blobs', 'Ethereum', true, NULL)
-        , (288, 'boba', 'Boba Network', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://bobascan.com/', timestamp '2021-10-28 05:03', 'OP Stack', 'Ethereum', 'Ethereum', true, NULL)
+        , (288, 'boba', 'Boba Network', 'Layer 2', 'Optimistic Rollup', 'ETH', 0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000, 'https://bobascan.com/', timestamp '2021-10-28 05:03', 'OP Stack', 'Ethereum', 'Ethereum', true, NULL)
         , (7700, 'canto', 'Canto', 'Layer 2', NULL, 'ETH', NULL, 'https://evm.explorer.canto.io/', timestamp '2022-07-26 19:27', NULL, 'Ethereum', 'Ethereum', false, NULL)
         , (420, 'optimism_goerli', 'Optimism Goerli', 'Testnet', 'Optimistic Rollup', 'GTH', 0x4200000000000000000000000000000000000006, 'https://optimism-goerli.blockscout.com/', timestamp '2022-06-09 16:55', 'OP Stack', 'Goerli', 'Goerli', false, NULL)
         , (1313161554, 'aurora', 'Aurora', 'Layer 2', NULL, 'ETH', 0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB, 'https://explorer.aurora.dev/', timestamp '2020-07-21 21:50:11', NULL, NULL, NULL, false, NULL)
@@ -112,4 +113,5 @@ FROM (
         , (33139, 'apechain', 'ApeChain', 'Layer 3', 'Optimistic Rollup', 'APE', 0x48b62137edfa95a428d35c09e44256a739f6b557, 'https://apescan.io/', timestamp '2024-08-28 16:45:22', 'Arbitrum Orbit', 'AnyTrust', 'Arbitrum One', true, 'Arbitrum Orbit')
         , (130, 'unichain', 'Unichain', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://uniscan.xyz/', timestamp '2024-11-04 19:26', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, 'Superchain')
         , (232, 'lens', 'Lens', 'Layer 2', 'ZK Rollup', 'GHO', 0x6bDc36E20D267Ff0dd6097799f82e78907105e2F, 'https://explorer.lens.xyz', timestamp '2025-04-24 00:00',  'zkSync', 'Ethereum Blobs', 'Ethereum', true, 'Elastic Network')
+        , (98867, 'plume', 'Plume', 'Layer 2', 'Optimistic Rollup', 'PLUME', 0xEa237441c92CAe6FC17Caaf9a7acB3f953be4bd1, 'https://explorer.plume.org/', timestamp '2025-02-20 10:39', 'Arbitrum Orbit', 'Ethereum Blobs', 'Ethereum', true, 'Arbitrum Orbit')
 ) AS temp_table (chain_id, blockchain, name, chain_type, rollup_type, native_token_symbol, wrapped_native_token_address, explorer_link, first_block_time, codebase, data_availability, settlement, is_on_dune, ecosystem)
