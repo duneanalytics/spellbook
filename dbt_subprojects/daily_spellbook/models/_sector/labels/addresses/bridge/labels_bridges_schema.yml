@@ -11,12 +11,12 @@ models:
           - model_name
           - blockchain
     meta:
-      blockchain: ethereum, fantom, base, arbitrum, bnb, optimism, polygon
+      blockchain: ethereum, fantom, base, arbitrum, bnb, optimism, polygon, near
       sector: labels
       project: bridges
-      contributors: hildobby, Henrystats, rantum
+      contributors: hildobby, Henrystats, rantum, Sector920
     config:
-      tags: ['labels', 'ethereum', 'fantom', 'bridges', 'base']
+      tags: ['labels', 'ethereum', 'fantom', 'bridges', 'base', 'near']
     description: "Known bridges addresses across chains"
     columns:
       - &blockchain
@@ -243,3 +243,24 @@ models:
       - *updated_at
       - *model_name
       - *label_type  
+
+  - name: labels_bridges_near
+    meta:
+      blockchain: near
+      sector: labels
+      project: bridges
+      contributors: Sector920
+    config:
+      tags: ['labels', 'near', 'bridges']
+    description: "Known bridges addresses on near"
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
