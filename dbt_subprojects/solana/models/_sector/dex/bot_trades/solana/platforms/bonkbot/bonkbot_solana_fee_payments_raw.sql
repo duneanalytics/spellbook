@@ -11,41 +11,58 @@
 
 {% set bot_label = 'BonkBot' %}
 {% set blockchain = 'solana' %}
-{% set project_start_date = '2023-08-17' %}
+{% set project_start_date = '2024-01-01' %}
 {% set fee_receiver = 'ZG98FUCjb8mJ824Gbs6RsgVmr1FhXb2oNiJHa2dwmPd' %}
 {% set wsol_token = 'So11111111111111111111111111111111111111112' %}
 
 with
     fee_addresses as (select '{{fee_receiver}}' as fee_receiver),
-    fee_payments as (
+    sol_payments as (
         select
             block_time,
             cast(date_trunc('month', block_time) as date) as block_month,
             fee_receiver,
-            if(
-                balance_change > 0, balance_change / 1e9, token_balance_change
-            ) as amount,
-            if(
-                balance_change > 0, '{{wsol_token}}', token_mint_address
-            ) as token_address,
+            balance_change / 1e9 as amount,
+            '{{wsol_token}}' token_address,
             tx_id
         from {{ source('solana','account_activity') }} as account_activity
         join
             fee_addresses
             on (
-                (
-                    fee_addresses.fee_receiver = account_activity.address
-                    and balance_change > 0
-                )
-                or (
-                    token_balance_owner = fee_addresses.fee_receiver
-                    and token_balance_change > 0
-                )
+                fee_addresses.fee_receiver = account_activity.address
+                and balance_change > 0
             )
         where
             {% if is_incremental() %} {{ incremental_predicate('block_time') }}
             {% else %} block_time >= timestamp '{{project_start_date}}'
             {% endif %} and tx_success
+    ),
+    token_payments as (
+        select
+            block_time,
+            cast(date_trunc('month', block_time) as date) as block_month,
+            fee_receiver,
+            token_balance_change as amount,
+            token_mint_address as token_address,
+            tx_id
+        from {{ source('solana','account_activity') }} as account_activity
+        join
+            fee_addresses
+            on (
+                token_balance_owner = fee_addresses.fee_receiver
+                and token_balance_change > 0
+            )
+        where
+            {% if is_incremental() %} {{ incremental_predicate('block_time') }}
+            {% else %} block_time >= timestamp '{{project_start_date}}'
+            {% endif %} and tx_success
+    ),
+    fee_payments as (
+        select *
+        from sol_payments
+        union all
+        select *
+        from token_payments
     ),
     -- Eliminate duplicates (e.g. both SOL + WSOL in a single transaction)
     aggregated_fee_payments_by_token_by_tx as (

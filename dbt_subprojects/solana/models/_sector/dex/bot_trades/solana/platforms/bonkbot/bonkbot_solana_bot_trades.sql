@@ -10,7 +10,7 @@
 }}
 
 {% set bot_label = 'BonkBot' %}
-{% set project_start_date = '2023-08-17' %}
+{% set project_start_date = '2024-01-01' %}
 {% set fee_receiver = 'ZG98FUCjb8mJ824Gbs6RsgVmr1FhXb2oNiJHa2dwmPd' %}
 {% set wsol_token = 'So11111111111111111111111111111111111111112' %}
 with
@@ -54,8 +54,7 @@ with
             )
         where
             trades.trader_id != '{{fee_receiver}}'  -- Exclude trades signed by FeeWallet
-            -- TODO: find a efficient solution for this AND transactions.signer != '{{fee_receiver}}' -- Exclude trades signed by FeeWallet
-            -- TODO: to filtering for signer in 2nd stage/cte
+
             {% if is_incremental() %}
                 and {{ incremental_predicate('trades.block_time') }}
                 and {{ incremental_predicate('fee_payments.block_time') }}
