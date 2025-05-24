@@ -103,6 +103,8 @@ eth_transfers AS (
         p.price,
         (e.value / 1e18) * p.price AS amount
     FROM {{ source(blockchain, 'transactions') }} e
+    INNER JOIN txs tx
+            ON e.hash = tx.hash
     LEFT JOIN {{ source('prices', 'day') }} p
         ON DATE_TRUNC('day', e.block_time) = p.timestamp
         AND '{{ blockchain }}' = p.blockchain
