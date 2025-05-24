@@ -23,7 +23,6 @@ excluded_addresses AS (
 (0x57732abcad29648c977c18a39bdf474436bba973),
 (0xe377e13256002ab260e8ab59478652710a79ac5c),
 (0x836caf2409d91df0bda01bc9f3cec524ba1c571d),
-            (0xeeeeee9eC4769A09a76A83C7bC42b185872860eE),
             (0x000000000000000000000000000000000000800a),
             (0x0000000000000000000000000000000000008001),
             (0x0000000000000000000000000000000000000000)
@@ -31,12 +30,23 @@ excluded_addresses AS (
     ) AS t(address)
 ),
 
+contract_address
 txs AS (
     SELECT block_time, '{{ blockchain }}' AS blockchain, hash, block_number
     FROM {{ source(blockchain, 'transactions') }}
     WHERE "from" = 0xf70da97812CB96acDF810712Aa562db8dfA3dbEF
       AND success = TRUE
 ),
+
+txs_erc20 AS (
+    SELECT block_time, '{{ blockchain }}' AS blockchain, hash, block_number
+    FROM {{ source(blockchain, 'transactions') }}
+    WHERE "from" = 0xf70da97812CB96acDF810712Aa562db8dfA3dbEF
+    AND "to" in ( SELECT contract_address FROM {{ ref('relay_token_metadata') }} WHERE blockchain = '{{ blockchain }}')
+    AND "to" in (SELECT address FROM excluded_addresses)
+      AND success = TRUE
+),
+
 
 eth_transfers AS (
     SELECT
@@ -94,7 +104,7 @@ erc20_transfers AS (
     FROM {{ source('erc20_' ~ blockchain, 'evt_Transfer') }} e
     INNER JOIN relay_tokens t
         ON e.contract_address = t.contract_address AND '{{ blockchain }}' = t.blockchain
-    INNER JOIN txs tx
+    INNER JOIN txs_erc20 tx
         ON e.evt_tx_hash = tx.hash
     LEFT JOIN {{ source('prices', 'day') }} p
         ON '{{ blockchain }}' = p.blockchain
