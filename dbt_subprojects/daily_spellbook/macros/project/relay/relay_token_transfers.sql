@@ -73,8 +73,8 @@ erc20_transfers AS (
         t.symbol,
         e.value / POWER(10, t.decimals) AS value,
         p.price,
-        (e.value / POWER(10, t.decimals)) * p.price AS amount
-    FROM {{ source('erc20_' ~ blockchain, 'evt_transfer') }} e
+        (e.value / POWER(10, t.decimals)) * p.price AS amount 
+    FROM {{ source('erc20_' ~ blockchain, 'evt_Transfer') }} e
     INNER JOIN relay_tokens t
         ON e.contract_address = t.contract_address AND '{{ blockchain }}' = t.blockchain
     INNER JOIN txs tx
