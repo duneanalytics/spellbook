@@ -1,0 +1,186 @@
+version: 2
+
+models:
+  - name: bridge_initiated
+    meta:
+      blockchain: ethereum, base
+      sector: bridge
+      project: base
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bridge', 'flows', 'initiated' ]
+    description: "Bridge initiated events"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['source_chain', 'tx_hash','evt_index']
+    columns:
+      - &source_chain
+        name: source_chain
+        description: "Blockchain where the tokens were sent"
+      - &destination_chain
+        name: destination_chain
+        description: "Blockchain where the tokens were received"
+      - &project
+        name: project
+        description: "Project name of the bridge"
+      - &project_version
+        name: project_version
+        description: "Version of the project"
+      - &event_side
+        name: event_side
+        description: "Blockchain where the event was emitted"
+      - &block_date
+        name: block_date
+        description: "Block date of the bridge transaction"
+      - &block_time
+        name: block_time
+        description: "Block time of the bridge transaction"
+      - &block_number
+        name: block_number
+        description: "Block number of the bridge transaction"
+      - &source_amount_raw 
+        name: source_amount_raw
+        description: "Raw amount of tokens bridged from source chain"
+      - &source_amount
+        name: source_amount
+        description: "Amount of tokens bridged from source chain"
+      - &source_amount_usd
+        name: source_amount_usd
+        description: "USD value of tokens bridged from source chain"
+      - &destination_amount_raw 
+        name: destination_amount_raw
+        description: "Raw amount of tokens bridged to destination chain"
+      - &destination_amount
+        name: destination_amount
+        description: "Amount of tokens bridged to destination chain"
+      - &destination_amount_usd
+        name: destination_amount_usd
+        description: "USD value of tokens bridged to destination chain"
+      - &sender 
+        name: sender
+        description: "Source address"
+      - &recipient 
+        name: recipient
+        description: "Destination address"
+      - &source_token_address  
+        name: source_token_address
+        description: "Source blockchain token address"
+      - &source_token_standard  
+        name: source_token_standard
+        description: "Source blockchain token standard"
+      - &source_token_symbol
+        name: source_token_symbol
+        description: "Source blockchain token symbol"
+      - &destination_token_address
+        name: destination_token_address
+        description: "Destination blockchain token address"
+      - &destination_token_standard
+        name: destination_token_standard
+        description: "Destination blockchain token standard"
+      - &destination_token_symbol
+        name: destination_token_symbol
+        description: "Destination blockchain token symbol"
+      - &tx_from
+        name: tx_from
+        description: "Address that initiated the transaction"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash"
+      - &evt_index  
+        name: evt_index
+        description: "Event index"
+      - &contract_address 
+        name: contract_address
+        description: "Contract address used for the bridge tx"
+      - &bridge_id 
+        name: bridge_id
+        description: "Bridge order identifier"
+  - name: bridge_finalised
+    meta:
+      blockchain: ethereum, base
+      sector: bridge
+      project: base
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bridge', 'flows', 'finalised' ]
+    description: "Bridge finalised events"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['source_chain', 'tx_hash','evt_index']
+    columns:
+      - *source_chain
+      - *destination_chain
+      - *project
+      - *project_version
+      - *event_side
+      - *block_date
+      - *block_time
+      - *block_number
+      - *source_amount_raw
+      - *source_amount
+      - *source_amount_usd
+      - *destination_amount_raw
+      - *destination_amount
+      - *destination_amount_usd
+      - *sender
+      - *recipient
+      - *source_token_standard
+      - *source_token_symbol
+      - *destination_token_standard
+      - *destination_token_symbol
+      - *source_token_address
+      - *destination_token_address
+      - *tx_from
+      - *tx_hash
+      - *evt_index  
+      - *contract_address 
+      - *bridge_id 
+  - name: bridge_flows
+    meta:
+      blockchain: ethereum, base
+      sector: bridge
+      project: base
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bridge', 'flows' ]
+    description: "Bridge flows"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['source_chain', 'tx_hash','evt_index']
+    columns:
+      - *source_chain
+      - *destination_chain
+      - *project
+      - *project_version
+      - *event_side
+      - *block_date
+      - *block_time
+      - *block_number
+      - *source_amount_raw
+      - *source_amount
+      - *source_amount_usd
+      - *destination_amount_raw
+      - *destination_amount
+      - *destination_amount_usd
+      - *sender
+      - *recipient
+      - *source_token_standard
+      - *source_token_symbol
+      - *destination_token_standard
+      - *destination_token_symbol
+      - *source_token_address
+      - *destination_token_address
+      - *tx_from
+      - &initiated_tx_hash
+        name: initiated_tx_hash
+        description: "Transaction hash of initiated bridge transfer on source chain"
+      - &finalised_tx_hash 
+        name: finalised_tx_hash
+        description: "Transaction hash of finalised bridge transfer on destination chain"
+      - *bridge_id 
+      - &bridge_miliseconds
+        name: bridge_miliseconds
+        description: "Time in miliseconds between initiated and finalised transactions"
+      - &bridge_miliseconds_2
+        name: bridge_miliseconds_2
+        description: "Time in miliseconds between initiated and finalised transactions"
