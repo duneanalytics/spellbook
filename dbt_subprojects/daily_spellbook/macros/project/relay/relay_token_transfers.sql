@@ -97,7 +97,7 @@ WHEN '{{ blockchain }}' = 'celo' THEN 0xE452E6Ea2dDeB012e20dB73bf5d3863A3Ac8d77a
 WHEN '{{ blockchain }}' = 'berachain' THEN 0x6969696969696969696969696969696969696969
 WHEN '{{ blockchain }}' = 'corn' THEN 0xda5dDd7270381A7C2717aD10D1c0ecB19e3CDFb2
 WHEN '{{ blockchain }}' = 'degen' THEN 0xEb54dACB4C2ccb64F8074eceEa33b5eBb38E5387
-    ELSE '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2' 
+    ELSE 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
         END
     WHERE e."from" = 0xf70da97812CB96acDF810712Aa562db8dfA3dbEF
       AND e."to" NOT IN (SELECT address FROM excluded_addresses)
