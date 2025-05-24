@@ -106,7 +106,16 @@ eth_transfers AS (
 ),
 
 erc20_transfers AS (
-    SELECT *
+    SELECT
+        day,
+        blockchain,
+        evt_tx_hash,
+        evt_block_time,
+        "to",
+        symbol,
+        value,
+        price,
+        amount
     FROM (
         SELECT
             DATE_TRUNC('day', e.evt_block_time) AS day,
