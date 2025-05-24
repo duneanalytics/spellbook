@@ -1,0 +1,497 @@
+version: 2
+
+models:
+  - name: tesseract_avalanche_c_icm_blockchains
+    meta:
+      blockchain: avalanche_c
+      project: tesseract
+      contributors: angus_1
+    config:
+      tags: ['avalanche_c', 'tesseract', 'icm', 'teleporter', 'cross-chain', 'interop']
+    description: >
+        Avalanche L1 blockchains which have used ICM (Teleporter) to communicate with this blockchain
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain_id
+    columns:
+      - name: blockchain
+        description: "Blockchain on which TeleporterMessenger contract is deployed which has had this contact with other chains through ICM"
+      - &blockchain_id
+        name: blockchain_id
+        description: "Hexadecimal representation of the Avalanche blockchain ID"
+      - &blockchain_id_base58
+        name: blockchain_id_base58
+        description: "Avalanche blockchain ID, which corresponds to the transaction ID on the p-chain when the L1 was created"
+      - &earliest_icm_interaction
+        name: earliest_icm_interaction
+        description: "Earliest timestamp when the TeleporterMessenger contract has sent or received a message to/from this L1 (initialisation time for the L1 on which the Teleporter contract is deployed)"
+      - &latest_icm_interaction
+        name: latest_icm_interaction
+        description: "Latest timestamp when the TeleporterMessenger contract has sent or received a message to/from this L1 (NULL for the L1 on which the Teleporter contract is deployed)"
+      - &sample_message_id
+        name: sample_message_id
+        description: "A sample message ID that has been sent/received to/from this L1 (NULL for the L1 on which the Teleporter contract is deployed)"
+
+  - name: tesseract_avalanche_c_ictt_pairs
+    meta:
+      blockchain: avalanche_c
+      project: tesseract
+      contributors: angus_1
+    config:
+      tags: ['avalanche_c', 'tesseract', 'icm', 'ictt', 'teleporter', 'cross-chain', 'interop']
+    description: >
+        Pairs of ICTT TokenHome and TokenRemote contracts where either the home or remote is deployed on the Avalanche C-Chain
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - token_home_blockchain_id
+            - token_home_address
+            - token_remote_blockchain_id
+            - token_remote_address
+    columns:
+      - name: blockchain
+        description: "Blockchain on which the events / calls to identify these pairs were made"
+      - &token_home_blockchain_id
+        name: token_home_blockchain_id
+        description: "Hexadecimal ID for the Avalanche L1 where the TokenHome contract is deployed"
+      - &token_home_address
+        name: token_home_address
+        description: "Address of the TokenHome contract"
+      - &token_remote_blockchain_id
+        name: token_remote_blockchain_id
+        description: "Hexadecimal ID for the Avalanche L1 where the TokenRemote contract is deployed"
+      - &token_remote_address
+        name: token_remote_address
+        description: "Address of the TokenRemote contract"
+      - name: block_time
+        description: "UTC time of either the RemoteRegistered event or registerWithHome call"
+      - name: block_number
+        description: "Block number of either the RemoteRegistered event or registerWithHome call"
+
+  - name: tesseract_avalanche_c_ictt_contracts
+    meta:
+      blockchain: avalanche_c
+      project: tesseract
+      contributors: angus_1
+    config:
+      tags: ['avalanche_c', 'tesseract', 'icm', 'ictt', 'teleporter', 'cross-chain', 'interop']
+    description: >
+        Unique list of ICTT contracts (either TokenHome or TokenRemote) deployed on the c-chain
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - contract_address
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain on which the contract is deployed"
+      - &contract_address
+        name: contract_address
+        description: "Address of the contract"
+      - &is_token_home
+        name: is_token_home
+        description: "Boolean indicating whether this contract is a TokenHome contract (true) or TokenRemote contract (false)"
+      - &creation_block_time
+        name: creation_block_time
+        description: "UTC time at which the contract was created"
+      - &creation_block_number
+        name: creation_block_number
+        description: "Block number at which the contract was created"
+      - &creation_tx_hash
+        name: creation_tx_hash
+        description: "Transaction hash of the transaction which created this contract"
+
+  - name: tesseract_avalanche_c_ictt_evt_tokensandcallsent
+    meta:
+      blockchain: avalanche_c
+      project: tesseract
+      contributors: angus_1
+    config:
+      tags: ['avalanche_c', 'tesseract', 'icm', 'ictt', 'teleporter', 'cross-chain', 'interop']
+    description: >
+        TokensAndCallSent events for all ICTT contracts (either TokenHome or TokenRemote) deployed on the c-chain
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_number
+            - evt_index
+    columns:
+      - *blockchain
+      - *contract_address
+      - &evt_tx_hash
+        name: evt_tx_hash
+        description: "Transaction hash of the event"
+      - &evt_index
+        name: evt_index
+        description: "Event index in the transaction"
+      - &evt_block_time
+        name: evt_block_time
+        description: "UTC time of the event"
+      - &evt_block_number
+        name: evt_block_number
+        description: "Block number of the event"
+      - &evt_block_date
+        name: evt_block_date
+        description: "Date of the event"
+      - &teleporterMessageID
+        name: teleporterMessageID
+        description: "Message ID of the message that was sent through the TeleporterMessenger contract as part of this event"
+      - &sender
+        name: sender
+        description: "Sender of the message"
+      - &destinationBlockchainID
+        name: destinationBlockchainID
+        description: "Hexadecimal ID of the destination Avalanche L1"
+      - &destinationTokenTransferrerAddress
+        name: destinationTokenTransferrerAddress
+        description: "Address of the destination ICTT contract on the destination L1"
+      - &recipientContract
+        name: recipientContract
+        description: "Address of the contract on the destination L1 which will receive the payload and be called"
+      - &recipientPayload
+        name: recipientPayload
+        description: "Encoded payload of the message which will be provided to the recipient contract"
+      - &requiredGasLimit
+        name: requiredGasLimit
+        description: "The required amount of gas needed to deliver the message on its destination chain, including token operations and the call to the recipient contract"
+      - &recipientGasLimit
+        name: recipientGasLimit
+        description: "The amount of gas that will provided to the recipient contract on the destination chain, which must be less than the requiredGasLimit of the message as a whole"
+      - &multiHopFallback
+        name: multiHopFallback
+        description: "In the case of a multi-hop transfer, the address where the tokens are sent on the home chain if the transfer is unable to be routed to its final destination"
+      - &fallbackRecipient
+        name: fallbackRecipient
+        description: "Address on the destination L1 where the transferred tokens are sent to if the call to the recipient contract fails"
+      - &primaryFeeTokenAddress
+        name: primaryFeeTokenAddress
+        description: "Address of the ERC20 contract to optionally pay a Teleporter message fee"
+      - &primaryFee
+        name: primaryFee
+        description: "Amount of tokens to pay as the optional Teleporter message fee"
+      - &secondaryFee
+        name: secondaryFee
+        description: "Amount of tokens to pay for Teleporter fee if a multi-hop is needed"
+      - &amount
+        name: amount
+        description: "Amount of tokens being sent"
+
+  - name: tesseract_avalanche_c_ictt_evt_tokensandcallrouted
+    meta:
+      blockchain: avalanche_c
+      project: tesseract
+      contributors: angus_1
+    config:
+      tags: ['avalanche_c', 'tesseract', 'icm', 'ictt', 'teleporter', 'cross-chain', 'interop']
+    description: >
+        TokensAndCallRouted events for all ICTT TokenHome contracts deployed on the c-chain
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_number
+            - evt_index
+    columns:
+      - *blockchain
+      - *contract_address
+      - *evt_tx_hash
+      - *evt_index
+      - *evt_block_time
+      - *evt_block_number
+      - *evt_block_date
+      - *teleporterMessageID
+      - *destinationBlockchainID
+      - *destinationTokenTransferrerAddress
+      - *recipientContract
+      - *recipientPayload
+      - *requiredGasLimit
+      - *recipientGasLimit
+      - *multiHopFallback
+      - *fallbackRecipient
+      - *primaryFeeTokenAddress
+      - *primaryFee
+      - *secondaryFee
+      - *amount
+
+  - name: tesseract_avalanche_c_ictt_evt_tokenssent
+    meta:
+      blockchain: avalanche_c
+      project: tesseract
+      contributors: angus_1
+    config:
+      tags: ['avalanche_c', 'tesseract', 'icm', 'ictt', 'teleporter', 'cross-chain', 'interop']
+    description: >
+        TokensSent events for all ICTT contracts (either TokenHome or TokenRemote) deployed on the c-chain
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_number
+            - evt_index
+    columns:
+      - *blockchain
+      - *contract_address
+      - *evt_tx_hash
+      - *evt_index
+      - *evt_block_time
+      - *evt_block_number
+      - *evt_block_date
+      - *teleporterMessageID
+      - *sender
+      - *destinationBlockchainID
+      - *destinationTokenTransferrerAddress
+      - &recipient
+        name: recipient
+        description: "Address of the recipient on the destination L1"
+      - *primaryFeeTokenAddress
+      - *primaryFee
+      - *secondaryFee
+      - *requiredGasLimit
+      - *multiHopFallback
+      - *amount
+
+  - name: tesseract_avalanche_c_ictt_evt_tokensrouted
+    meta:
+      blockchain: avalanche_c
+      project: tesseract
+      contributors: angus_1
+    config:
+      tags: ['avalanche_c', 'tesseract', 'icm', 'ictt', 'teleporter', 'cross-chain', 'interop']
+    description: >
+        TokensRouted events for all ICTT TokenHome contracts deployed on the c-chain
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_number
+            - evt_index
+    columns:
+      - *blockchain
+      - *contract_address
+      - *evt_tx_hash
+      - *evt_index
+      - *evt_block_time
+      - *evt_block_number
+      - *evt_block_date
+      - *teleporterMessageID
+      - *destinationBlockchainID
+      - *destinationTokenTransferrerAddress
+      - *recipient
+      - *primaryFeeTokenAddress
+      - *primaryFee
+      - *secondaryFee
+      - *requiredGasLimit
+      - *multiHopFallback
+      - *amount
+      
+  - name: tesseract_avalanche_c_ictt_evt_tokenswithdrawn
+    meta:
+      blockchain: avalanche_c
+      project: tesseract
+      contributors: angus_1
+    config:
+      tags: ['avalanche_c', 'tesseract', 'icm', 'ictt', 'teleporter', 'cross-chain', 'interop']
+    description: >
+        TokensWithdrawn events for all ICTT contracts (either TokenHome or TokenRemote) deployed on the c-chain
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_number
+            - evt_index
+    columns:
+      - *blockchain
+      - *contract_address
+      - *evt_tx_hash
+      - *evt_index
+      - *evt_block_time
+      - *evt_block_number
+      - *evt_block_date
+      - *recipient
+      - *amount
+
+  - name: tesseract_avalanche_c_ictt_evt_callsucceeded
+    meta:
+      blockchain: avalanche_c
+      project: tesseract
+      contributors: angus_1
+    config:
+      tags: ['avalanche_c', 'tesseract', 'icm', 'ictt', 'teleporter', 'cross-chain', 'interop']
+    description: >
+        CallSucceeded events for all ICTT contracts (either TokenHome or TokenRemote) deployed on the c-chain
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_number
+            - evt_index
+    columns:
+      - *blockchain
+      - *contract_address
+      - *evt_tx_hash
+      - *evt_index
+      - *evt_block_time
+      - *evt_block_number
+      - *evt_block_date
+      - *recipientContract
+      - *amount
+
+  - name: tesseract_avalanche_c_ictt_evt_callfailed
+    meta:
+      blockchain: avalanche_c
+      project: tesseract
+      contributors: angus_1
+    config:
+      tags: ['avalanche_c', 'tesseract', 'icm', 'ictt', 'teleporter', 'cross-chain', 'interop']
+    description: >
+        CallFailed events for all ICTT contracts (either TokenHome or TokenRemote) deployed on the c-chain
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_number
+            - evt_index
+    columns:
+      - *blockchain
+      - *contract_address
+      - *evt_tx_hash
+      - *evt_index
+      - *evt_block_time
+      - *evt_block_number
+      - *evt_block_date
+      - *recipientContract
+      - *amount
+
+  - name: tesseract_avalanche_c_ictt_volume_events
+    meta:
+      blockchain: avalanche_c
+      project: tesseract
+      contributors: angus_1
+    config:
+      tags: ['avalanche_c', 'tesseract', 'icm', 'ictt', 'teleporter', 'cross-chain', 'interop']
+    description: >
+        All volume-generating events (involving the transfer of tokens) for all ICTT contracts (either TokenHome or TokenRemote) deployed on the c-chain
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_number
+            - evt_index
+    columns:
+      - *blockchain
+      - *contract_address
+      - *evt_tx_hash
+      - *evt_index
+      - *evt_block_time
+      - *evt_block_number
+      - *evt_block_date
+      - &evt_name
+        name: evt_name
+        description: "Name of the event (e.g. TokensSent, TokensAndCallSent, TokensRouted, TokensAndCallRouted, TokensWithdrawn, CallSucceeded, CallFailed)"
+      - *amount
+      - &used_tesseract
+        name: used_tesseract
+        description: "Boolean indicating whether the tokens were sent using Tesseract (true) or not (false). If NULL then it means we can't know for sure."
+      - &source_blockchain_id
+        name: source_blockchain_id
+        description: "Hexadecimal ID of the source Avalanche L1 (NULL if not applicable)"
+      - &destination_blockchain_id
+        name: destination_blockchain_id
+        description: "Hexadecimal ID of the destination Avalanche L1 (NULL if not applicable)"
+
+  - name: tesseract_avalanche_c_cell_routed
+    meta:
+      blockchain: avalanche_c
+      project: tesseract
+      contributors: angus_1
+    config:
+      tags: ['avalanche_c', 'tesseract', 'icm', 'ictt', 'teleporter', 'cross-chain', 'interop', 'cell']
+    description: >
+        CellRouted events for Tesseract Cell contracts (all types) deployed on the Avalanche c-chain, combined into a single view.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_number
+            - evt_index
+    columns:
+      - *blockchain
+      - *contract_address
+      - *evt_tx_hash
+      - *evt_index
+      - *evt_block_time
+      - *evt_block_number
+      - *evt_block_date
+      - &cell_type
+        name: cell_type
+        description: "Type of the cell (e.g. YakSwapCell, DexalotSimpleSwapCell)"
+      - &tesseractID
+        name: tesseractID
+        description: "Unique ID of the combination of transactions initiated by a Tesseract Cell on some Avalanche L1"
+      - &messageID
+        name: messageID
+        description: "Message ID of the message that was sent through the TeleporterMessenger contract as part of this event"
+      - &action
+        name: action
+        description: "Describes the action that was taken by the cell (i.e. 'Hop', 'HopAndCall', 'SwapAndHop' or 'SwapAndTransfer')"
+      - &transferrer
+        name: transferrer
+        description: "Address of the ICTT contract through which the tokens are being sent to the destination L1"
+      - *destinationBlockchainID
+      - &destinationCell
+        name: destinationCell
+        description: "Address of the Tesseract Cell contract on the destination L1 which takes the next action (if applicable)"
+      - &destinationTransferrer
+        name: destinationTransferrer
+        description: "Address of the ICTT contract on the destination L1"
+      - &tokenIn
+        name: tokenIn
+        description: "Address of the input token"
+      - &amountIn
+        name: amountIn
+        description: "Number of input tokens"
+      - &tokenOut
+        name: tokenOut
+        description: "Address of the output token"
+      - &amountOut
+        name: amountOut
+        description: "Number of output tokens"
+
+  - name: tesseract_avalanche_c_cell_initiated
+    meta:
+      blockchain: avalanche_c
+      project: tesseract
+      contributors: angus_1
+    config:
+      tags: ['avalanche_c', 'tesseract', 'icm', 'ictt', 'teleporter', 'cross-chain', 'interop', 'cell']
+    description: >
+        Initiated events for Tesseract Cell contracts (all types) deployed on the Avalanche c-chain, combined into a single view.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_number
+            - evt_index
+    columns:
+      - *blockchain
+      - *contract_address
+      - *evt_tx_hash
+      - *evt_index
+      - *evt_block_time
+      - *evt_block_number
+      - *evt_block_date
+      - *cell_type
+      - *tesseractID
+      - &sourceID
+        name: sourceID
+        description: "Unique identifier for the source frontend"
+      - &origin
+        name: origin
+        description: "Address initiating the operation"
+      - name: sender
+        description: "Msg.sender initiating the operation"
+      - &receiver
+        name: receiver
+        description: "Final receiver of the tokens"
+      - &token
+        name: token
+        description: "Address of input token"
+      - *amount
+      - &nativeFeeAmount
+        name: nativeFeeAmount
+        description: "Amount of native fee"
+      - &baseFeeAmount
+        name: baseFeeAmount
+        description: "Amount of base fee"

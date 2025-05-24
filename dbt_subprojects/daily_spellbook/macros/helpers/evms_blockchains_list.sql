@@ -26,6 +26,7 @@
         "mantle",
         "opbnb",
         "optimism",
+        "plume",
         "polygon",
         "zkevm",
         "ronin",

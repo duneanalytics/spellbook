@@ -15,7 +15,7 @@
         blockchain = blockchain,
         version = '3',        
         project_decoded_as = 'balancer_v3',
-        base_spells_namespace = 'balancer',
-        pool_labels_spell =  source('labels', 'balancer_v3_pools') 
+        pool_labels_model = 'balancer_v3_pools_gnosis',
+        transfers_spell = ref('balancer_v3_gnosis_transfers_bpt')
     )
 }}
