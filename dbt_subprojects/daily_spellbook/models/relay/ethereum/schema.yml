@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: relay_token_transfers_ethereum
+    description: "Token transfers tracked on Ethereum for Relay address set."
+    meta:
+      blockchain: ethereum
+      project: relay
+      contributors: outputlayer
+    config:
+      tags: ['relay', 'transfers', 'ethereum']
+    columns:
+      - name: evt_tx_hash
+        description: "Transaction hash of the event."
+        tests: [not_null]
+      - name: evt_block_time
+        description: "Timestamp of the block the event occurred in."
+        tests: [not_null]
+      - name: to
+        description: "Recipient address of the token transfer."
+        tests: [not_null]
+      - name: symbol
+        description: "Symbol of the transferred token."
+        tests: [not_null]
+      - name: value
+        description: "Amount of tokens transferred."
+        tests: [not_null]
