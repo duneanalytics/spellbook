@@ -4,11 +4,8 @@
     config(
         schema = 'tapio_base',
         alias = 'liquidity',
-        materialized = 'incremental',
+        materialized = 'view',
         file_format = 'delta',
-        incremental_strategy = 'merge',
-        unique_key = ['day', 'pool_address', 'token_address'],
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
         post_hook = '{{ expose_spells(\'["base"]\',
                                     "project",
                                     "tapio",

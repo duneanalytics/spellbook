@@ -71,8 +71,9 @@ swap_events AS (
         swapAmount,
         feeAmount
     FROM {{ source(project ~ '_' ~ blockchain, spa_swapped_evt) }}
-    WHERE evt_block_date >= date('2025-01-01')
+    WHERE evt_block_date >= {{ start_date }}
 ),
+
 -- Determine swap direction based on swap amount and amounts array
 swap_direction AS (
     SELECT
@@ -93,9 +94,9 @@ swap_direction AS (
     FROM swap_events s
 ),
 
--- Get all liquidity events (mints and redeems only)
+-- Get all liquidity events
 all_liquidity_events AS (
-     -- Swaps - use proper direction logic
+    -- Swaps - use proper direction logic
     SELECT
         CAST(date_trunc('day', evt_block_time) AS DATE) AS day,
         contract_address AS pool_address,
@@ -120,9 +121,6 @@ all_liquidity_events AS (
         CAST(element_at(amounts, 2) AS DECIMAL(38,0)) AS amount1_delta
     FROM {{ source(project ~ '_' ~ blockchain, spa_minted_evt) }}
     WHERE evt_block_date >= {{ start_date }}
-    {% if is_incremental() %}
-    AND {{ incremental_predicate('evt_block_time') }}
-    {% endif %}
 
     UNION ALL
     -- Redeems - tokens leave the pool (negative)
@@ -133,9 +131,6 @@ all_liquidity_events AS (
         -CAST(element_at(amounts, 2) AS DECIMAL(38,0)) AS amount1_delta
     FROM {{ source(project ~ '_' ~ blockchain, spa_redeemed_evt) }}
     WHERE evt_block_date >= {{ start_date }}
-    {% if is_incremental() %}
-    AND {{ incremental_predicate('evt_block_time') }}
-    {% endif %}
 
     UNION ALL
     -- Donates - tokens enter the pool (positive)
@@ -146,9 +141,6 @@ all_liquidity_events AS (
         CAST(element_at(amounts, 2) AS DECIMAL(38,0)) AS amount1_delta 
     FROM {{ source(project ~ '_' ~ blockchain, spa_donated_evt) }}
     WHERE evt_block_date >= {{ start_date }}
-    {% if is_incremental() %}
-    AND {{ incremental_predicate('evt_block_time') }}
-    {% endif %}
 ),
 
 -- Calculate daily token balances from liquidity events
@@ -176,41 +168,6 @@ daily_delta_balance AS (
     GROUP BY 1, 2, 3
 ),
 
-{% if is_incremental() %}
--- Get the most recent balance for each pool/token before the incremental window
-previous_balances AS (
-    SELECT DISTINCT
-        pool_address,
-        token_address,
-        FIRST_VALUE(token_balance_raw) OVER (
-            PARTITION BY pool_address, token_address 
-            ORDER BY day DESC
-        ) as token_balance_raw
-    FROM {{ this }}
-    WHERE day < (SELECT MIN(day) FROM daily_delta_balance)
-),
-
--- Combine with an adjustment record to set the correct starting balance
-combined_daily_delta AS (
-    SELECT
-        day,
-        pool_address,
-        token_address,
-        amount
-    FROM daily_delta_balance
-    
-    UNION ALL
-    
-    -- Add the previous balance as a starting point
-    SELECT
-        (SELECT MIN(day) FROM daily_delta_balance) AS day,
-        pb.pool_address,
-        pb.token_address,
-        pb.token_balance_raw AS amount
-    FROM previous_balances pb
-),
-{% endif %}
-
 -- Calculate cumulative balances over time
 cumulative_balance AS (
     SELECT
@@ -226,12 +183,7 @@ cumulative_balance AS (
             ORDER BY day 
             ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
         ) AS cumulative_amount
-    FROM 
-    {% if is_incremental() %}
-        combined_daily_delta
-    {% else %}
-        daily_delta_balance
-    {% endif %}
+    FROM daily_delta_balance
 ),
 
 -- Generate a complete calendar for continuous data
@@ -239,14 +191,7 @@ calendar AS (
     SELECT date_sequence AS day
     FROM unnest(
         sequence(
-            {% if is_incremental() %}
-            GREATEST(
-                CAST((SELECT MIN(day) FROM daily_delta_balance) AS DATE),
-                CURRENT_DATE - INTERVAL '7' day
-            ), 
-            {% else %}
             {{ start_date }}, 
-            {% endif %}
             CURRENT_DATE, 
             interval '1' day
         )
@@ -283,11 +228,7 @@ daily_prices AS (
     FROM {{ source('prices', 'usd') }}
     WHERE blockchain = '{{ blockchain }}'
     AND contract_address IN (SELECT token_address FROM pool_tokens_list)
-    {% if is_incremental() %}
-    AND {{ incremental_predicate('minute') }}
-    {% else %}
     AND minute >= {{ start_date }}
-    {% endif %}
     GROUP BY 1, 2, decimals
 ),
 
