@@ -149,7 +149,7 @@ erc20_transfers AS (
         AND e.value > 0
     ) with_ranks
     WHERE rn = 1
-    AND with_ranks."to" NOT IN (SELECT address FROM excluded_addresses)
+    AND "to" NOT IN (SELECT address FROM excluded_addresses)
 )
 
 
