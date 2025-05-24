@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: relay_token_transfers_avalanche_c
+    description: "Token transfers from the Relay address on Avalanche C-Chain. Includes AVAX and ERC-20 transfers."
+    meta:
+      blockchain: avalanche_c
+      project: relay
+      contributors: outputlayer
+    config:
+      tags: ['relay', 'token', 'transfers']
+    columns:
+      - name: evt_tx_hash
+        tests: [not_null]
+      - name: evt_block_time
+        tests: [not_null]
+      - name: to
+        tests: [not_null]
+      - name: symbol
+        tests: [not_null]
+      - name: value
+        tests: [not_null] 
