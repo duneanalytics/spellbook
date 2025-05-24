@@ -1,13 +1,8 @@
 version: 2
 
-sources:
-  - name: erc20_ethereum
-    tables:
-      - name: evt_transfer
-
 models:
   - name: relay_token_transfers_ethereum
-    description: "Token transfers from the Relay address on Ethereum."
+    description: "Token transfers from the Relay address on Ethereum. Includes ETH and ERC-20 transfers."
     meta:
       blockchain: ethereum
       project: relay
@@ -19,6 +14,9 @@ models:
         tests: [not_null]
       - name: evt_block_time
         tests: [not_null]
-      - name: "to"
+      - name: to
+        tests: [not_null]
       - name: symbol
+        tests: [not_null]
       - name: value
+        tests: [not_null]
