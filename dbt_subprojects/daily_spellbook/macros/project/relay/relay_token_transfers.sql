@@ -55,15 +55,19 @@ eth_transfers AS (
         e.block_time AS evt_block_time,
         e."to",
         CASE
-            WHEN '{{ blockchain }}' = 'polygon' THEN 'MATIC'
-            WHEN '{{ blockchain }}' = 'avalanche_c' THEN 'AVAX'
-            WHEN '{{ blockchain }}' = 'gnosis' THEN 'xDAI'
-            WHEN '{{ blockchain }}' = 'bnb' THEN 'BNB'
-            WHEN '{{ blockchain }}' = 'fantom' THEN 'FTM'
-            WHEN '{{ blockchain }}' = 'celo' THEN 'CELO'
-            WHEN '{{ blockchain }}' = 'mantle' THEN 'MNT'
-            WHEN '{{ blockchain }}' = 'mode' THEN 'MODE'
-            ELSE 'ETH'
+ WHEN '{{ blockchain }}' = 'bnb' THEN 'BNB'
+WHEN '{{ blockchain }}' = 'gnosis' THEN 'xDAI'
+WHEN '{{ blockchain }}' = 'polygon' THEN 'POL'
+WHEN '{{ blockchain }}' = 'sonic' THEN 'S'
+WHEN '{{ blockchain }}' = 'sei' THEN 'SEI'
+WHEN '{{ blockchain }}' = 'ronin' THEN 'RON'
+WHEN '{{ blockchain }}' = 'mantle' THEN 'MNT'
+WHEN '{{ blockchain }}' = 'apechain' THEN 'APE'
+WHEN '{{ blockchain }}' = 'celo' THEN 'CELO'
+WHEN '{{ blockchain }}' = 'berachain' THEN 'BERA'
+WHEN '{{ blockchain }}' = 'corn' THEN 'BTCN'
+WHEN '{{ blockchain }}' = 'degen' THEN 'DEGEN'
+    ELSE 'ETH'
         END AS symbol,
         e.value / 1e18 AS value,
         p.price,
@@ -73,17 +77,27 @@ eth_transfers AS (
             ON e.hash = tx.hash
     LEFT JOIN {{ source('prices', 'day') }} p
         ON DATE_TRUNC('day', e.block_time) = p.timestamp
-        AND '{{ blockchain }}' = p.blockchain
-        AND p.symbol = CASE
-            WHEN '{{ blockchain }}' = 'polygon' THEN 'MATIC'
-            WHEN '{{ blockchain }}' = 'avalanche_c' THEN 'AVAX'
-            WHEN '{{ blockchain }}' = 'gnosis' THEN 'xDAI'
-            WHEN '{{ blockchain }}' = 'bnb' THEN 'BNB'
-            WHEN '{{ blockchain }}' = 'fantom' THEN 'FTM'
-            WHEN '{{ blockchain }}' = 'celo' THEN 'CELO'
-            WHEN '{{ blockchain }}' = 'mantle' THEN 'MNT'
-            WHEN '{{ blockchain }}' = 'mode' THEN 'MODE'
-            ELSE 'ETH'
+        AND p.blockchain = CASE
+WHEN '{{ blockchain }}' = 'ronin' THEN 'ronin'
+WHEN '{{ blockchain }}' = 'berachain' THEN 'berachain'
+WHEN '{{ blockchain }}' = 'corn' THEN 'corn'
+WHEN '{{ blockchain }}' = 'degen' THEN 'degen'
+    ELSE 'ethereum'
+        END
+        AND p.contract_address = CASE
+WHEN '{{ blockchain }}' = 'bnb' THEN 0xB8c77482e45F1F44dE1745F52C74426C631bDD52
+WHEN '{{ blockchain }}' = 'gnosis' THEN 0x6b175474e89094c44da98b954eedeac495271d0f
+WHEN '{{ blockchain }}' = 'polygon' THEN 0x455e53cbb86018ac2b8092fdcd39d8444affc3f6
+WHEN '{{ blockchain }}' = 'sonic' THEN 0x4E15361FD6b4BB609Fa63C81A2be19d873717870
+WHEN '{{ blockchain }}' = 'sei' THEN 0xbdF43ecAdC5ceF51B7D1772F722E40596BC1788B
+WHEN '{{ blockchain }}' = 'ronin' THEN 0xe514d9deb7966c8be0ca922de8a064264ea6bcd4
+WHEN '{{ blockchain }}' = 'mantle' THEN 0x3c3a81e81dc49a522a592e7622a7e711c06bf354
+WHEN '{{ blockchain }}' = 'apechain' THEN 0x4d224452801aced8b2f0aebe155379bb5d594381
+WHEN '{{ blockchain }}' = 'celo' THEN 0xE452E6Ea2dDeB012e20dB73bf5d3863A3Ac8d77a
+WHEN '{{ blockchain }}' = 'berachain' THEN 0x6969696969696969696969696969696969696969
+WHEN '{{ blockchain }}' = 'corn' THEN 0xda5dDd7270381A7C2717aD10D1c0ecB19e3CDFb2
+WHEN '{{ blockchain }}' = 'degen' THEN 0xEb54dACB4C2ccb64F8074eceEa33b5eBb38E5387
+    ELSE '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2' 
         END
     WHERE e."from" = 0xf70da97812CB96acDF810712Aa562db8dfA3dbEF
       AND e."to" NOT IN (SELECT address FROM excluded_addresses)
