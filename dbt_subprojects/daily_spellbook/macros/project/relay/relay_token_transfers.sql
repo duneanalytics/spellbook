@@ -142,8 +142,8 @@ erc20_transfers AS (
 
 
 SELECT DISTINCT * FROM (
- -- SELECT * FROM erc20_transfers
-  --UNION ALL
+SELECT * FROM erc20_transfers
+UNION ALL
  SELECT * FROM eth_transfers
 ) combined_transfers
 
