@@ -35,6 +35,7 @@ txs AS (
     FROM {{ source(blockchain, 'transactions') }}
     WHERE "from" = 0xf70da97812CB96acDF810712Aa562db8dfA3dbEF
       AND success = TRUE
+      AND value > 0
        AND "to" not in (
         0xf70da97812CB96acDF810712Aa562db8dfA3dbEF,
         0xeeeeee9eC4769A09a76A83C7bC42b185872860eE,
@@ -78,6 +79,7 @@ txs_erc20 AS (
         0x836caf2409d91df0bda01bc9f3cec524ba1c571d
     )
       AND success = TRUE
+    AND value < 0
 ),
 
 
@@ -121,8 +123,6 @@ eth_transfers AS (
         END
     WHERE e."from" = 0xf70da97812CB96acDF810712Aa562db8dfA3dbEF
       AND e."to" NOT IN (SELECT address FROM excluded_addresses)
-      AND e.success = TRUE
-      AND e.value > 0
 ),
 
 erc20_transfers AS (
@@ -157,7 +157,6 @@ erc20_transfers AS (
             ON '{{ blockchain }}' = p.blockchain
             AND DATE_TRUNC('day', e.evt_block_time) = p.timestamp
             AND e.contract_address = p.contract_address
-        WHERE  e.value > 0
     ) with_ranks
     WHERE rn = 1
     AND "to" NOT IN (SELECT address FROM excluded_addresses)
@@ -166,7 +165,7 @@ erc20_transfers AS (
 
 SELECT DISTINCT * FROM (
   SELECT * FROM erc20_transfers
-  UNION ALL
+  --UNION ALL
  -- SELECT * FROM eth_transfers
 ) combined_transfers
 
