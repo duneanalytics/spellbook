@@ -126,7 +126,7 @@ eth_transfers AS (
 ),
 
 erc20_transfers AS (
-    SELECT
+    SELECT DISTINCT
         day,
         blockchain,
         evt_tx_hash,
