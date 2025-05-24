@@ -179,18 +179,15 @@ daily_delta_balance AS (
 {% if is_incremental() %}
 -- Get the most recent balance for each pool/token before the incremental window
 previous_balances AS (
-    SELECT
+    SELECT DISTINCT
         pool_address,
         token_address,
-        token_balance_raw
+        FIRST_VALUE(token_balance_raw) OVER (
+            PARTITION BY pool_address, token_address 
+            ORDER BY day DESC
+        ) as token_balance_raw
     FROM {{ this }}
-    WHERE day = (
-        SELECT MAX(day) 
-        FROM {{ this }} t2 
-        WHERE t2.pool_address = {{ this }}.pool_address 
-        AND t2.token_address = {{ this }}.token_address
-        AND day < (SELECT MIN(day) FROM daily_delta_balance)
-    )
+    WHERE day < (SELECT MIN(day) FROM daily_delta_balance)
 ),
 
 -- Combine with an adjustment record to set the correct starting balance
@@ -204,7 +201,7 @@ combined_daily_delta AS (
     
     UNION ALL
     
-    -- Add adjustment to set correct starting balance
+    -- Add the previous balance as a starting point
     SELECT
         (SELECT MIN(day) FROM daily_delta_balance) AS day,
         pb.pool_address,
