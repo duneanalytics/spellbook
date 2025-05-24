@@ -14,6 +14,12 @@ SELECT * FROM {{ ref('relay_token_transfers_abstract') }}
 UNION ALL
 SELECT * FROM {{ ref('relay_token_transfers_apechain') }}
 UNION ALL
+SELECT * FROM {{ ref('relay_token_transfers_arbitrum') }}
+UNION ALL
+SELECT * FROM {{ ref('relay_token_transfers_avalanche_c') }}
+UNION ALL
+SELECT * FROM {{ ref('relay_token_transfers_base') }}
+UNION ALL
 SELECT * FROM {{ ref('relay_token_transfers_nova') }}
 UNION ALL
 SELECT * FROM {{ ref('relay_token_transfers_b3') }}
