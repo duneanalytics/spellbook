@@ -2,7 +2,7 @@
   macro lending_aave_v3_compatible_market(
     blockchain,
     project = 'aave',
-    version = 'v3',
+    version = '3',
     project_decoded_as = 'aave_v3',
     decoded_contract_name = 'Pool'
   )
@@ -61,7 +61,7 @@ from reserve_data
   macro lending_aave_v3_compatible_market_hourly_agg(
     blockchain,
     project = 'aave',
-    version = 'v3'
+    version = '3'
   )
 %}
 
