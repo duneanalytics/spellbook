@@ -69,13 +69,10 @@ with
 
 reserve_data as (
   select *
-  from {{ ref('lending_' ~ blockchain ~ '_base_market') }}
-  where blockchain = '{{ blockchain }}'
-    and project = '{{ project }}'
-    and version = '{{ version }}'
-    {% if is_incremental() %}
-    and {{ incremental_predicate('block_time') }}
-    {% endif %}
+  from {{ ref(project ~ '_v' ~ version ~ '_' ~ blockchain ~ '_base_market') }}
+  {% if is_incremental() %}
+  where {{ incremental_predicate('block_time') }}
+  {% endif %}
 )
 
 select
