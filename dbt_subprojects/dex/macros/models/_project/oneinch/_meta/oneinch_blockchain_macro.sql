@@ -16,6 +16,8 @@
             "aurora":        "1313161554",
             "klaytn":        "8217",
             "linea":         "59144",
+            "sonic":         "146",
+            "unichain":      "130",
         },
         "native_token_symbol": {
             "ethereum":      "'ETH'",
@@ -30,7 +32,9 @@
             "zksync":        "'ETH'",
             "aurora":        "'ETH'",
             "klaytn":        "'ETH'",
-            "linea":        "'ETH'",
+            "linea":         "'ETH'",
+            "sonic":         "'SONIC'",
+            "unichain":      "'ETH'",
         },
         "wrapped_native_token_address": {
             "ethereum":      "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
@@ -46,6 +50,8 @@
             "aurora":        "0xc9bdeed33cd01541e1eed10f90519d2c06fe3feb",
             "klaytn":        "0x",
             "linea":         "0xe5d7c2a44ffddf6b295a15c148167daaaf5cf34f",
+            "sonic":         "0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38",
+            "unichain":      "0x4200000000000000000000000000000000000006",
         },
         "explorer_link": {
             "ethereum":      "'https://etherscan.io'",
@@ -61,6 +67,8 @@
             "aurora":        "'https://explorer.aurora.dev'",
             "klaytn":        "'https://klaytnscope.com'",
             "linea":         "'https://lineascan.build/'",
+            "sonic":         "'https://sonicscan.org/'",
+            "unichain":      "'https://uniscan.xyz/'",
         },
         "first_deploy_at": {
             "ethereum":      "timestamp '2019-06-03 20:11'",
@@ -76,6 +84,8 @@
             "aurora":        "timestamp '2022-05-25 16:14'",
             "klaytn":        "timestamp '2022-08-02 09:39'",
             "linea":         "timestamp '2025-02-12 00:00'",
+            "sonic":         "timestamp '2025-05-22 00:00",
+            "unichain":      "timestamp '2025-05-22 00:00",
         },
         "fusion_settlement_addresses": {
             "ethereum":      "array[0xa88800cd213da5ae406ce248380802bd53b47647, 0xfb2809a5314473e1165f6b58018e20ed8f07b840, 0xabd4e5fb590aa132749bbf2a04ea57efbaac399e]",
@@ -91,6 +101,8 @@
             "aurora":        "array[0xd41b24bba51fac0e4827b6f94c0d6ddeb183cd64, 0xfb2809a5314473e1165f6b58018e20ed8f07b840, 0xabd4e5fb590aa132749bbf2a04ea57efbaac399e]",
             "klaytn":        "array[0xa218543cc21ee9388fa1e509f950fd127ca82155, 0xfb2809a5314473e1165f6b58018e20ed8f07b840, 0xabd4e5fb590aa132749bbf2a04ea57efbaac399e]",
             "linea":         "array[0xfb2809a5314473e1165f6b58018e20ed8f07b840, 0xabd4e5fb590aa132749bbf2a04ea57efbaac399e]",
+            "sonic":         "array[0xabd4e5fb590aa132749bbf2a04ea57efbaac399e]",
+            "unichain":      "array[0xabd4e5fb590aa132749bbf2a04ea57efbaac399e]",
         },
         "escrow_factory_addresses": {
             "ethereum":      "array[0xa7bcb4eac8964306f9e3764f67db6a7af6ddf99a]",
@@ -106,6 +118,8 @@
             "aurora":        "array[]",
             "klaytn":        "array[]",
             "linea":         "array[0xa7bcb4eac8964306f9e3764f67db6a7af6ddf99a]",
+            "sonic":         "array[0xa7bcb4eac8964306f9e3764f67db6a7af6ddf99a]",
+            "unichain":      "array[0xa7bcb4eac8964306f9e3764f67db6a7af6ddf99a]",
         },
     }
 %}
