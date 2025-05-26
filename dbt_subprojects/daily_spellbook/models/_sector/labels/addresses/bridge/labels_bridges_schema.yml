@@ -244,6 +244,27 @@ models:
       - *model_name
       - *label_type  
 
+  - name: labels_bridges_near_native
+    meta:
+      blockchain: near
+      sector: labels
+      project: bridges
+      contributors: Sector920
+    config:
+      tags: ['labels', 'near', 'bridges']
+    description: "Known bridges addresses on near, raw, no varbinary casting for ease of use"
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
   - name: labels_bridges_near
     meta:
       blockchain: near
@@ -252,7 +273,7 @@ models:
       contributors: Sector920
     config:
       tags: ['labels', 'near', 'bridges']
-    description: "Known bridges addresses on near"
+    description: "Known bridges addresses on near, addresses cast to UTF8/Varbinary for downstream joins"
     columns:
       - *blockchain
       - *address
