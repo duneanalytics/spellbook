@@ -1,6 +1,6 @@
 {{config(
         materialized = 'view',
-        alias = 'bridges_near',
+        alias = 'labels_bridges_near',
         post_hook='{{ expose_spells(\'["near"]\',
                                     "sector",
                                     "labels",
@@ -16,4 +16,4 @@ SELECT
     , updated_at
     , model_name
     , label_type
-FROM {{ ref('bridges_near_native')}}
+FROM {{ ref('labels_bridges_near_native')}}

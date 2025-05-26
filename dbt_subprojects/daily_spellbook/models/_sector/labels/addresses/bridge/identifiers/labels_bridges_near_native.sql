@@ -1,6 +1,6 @@
 {{config(
         materialized = 'table',
-        alias = 'bridges_near_native',
+        alias = 'labels_bridges_near_native',
         post_hook='{{ expose_spells(\'["near"]\',
                                     "sector",
                                     "labels",
