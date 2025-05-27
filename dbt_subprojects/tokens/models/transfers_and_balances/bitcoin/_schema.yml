@@ -6,7 +6,6 @@ sources:
     schema: tokens_bitcoin
     tables:
       - name: balances_daily_agg_base
-        description: "Token balances daily base for Bitcoin"
         columns:
           - name: day
           - name: block_number
@@ -18,21 +17,22 @@ sources:
           - name: balance_raw
           - name: unique_key
 
-  - name: bitcoin
-    database: bitcoin
-    schema: bitcoin
+  - name: transfers_bitcoin
+    database: transfers_bitcoin
+    schema: transfers_bitcoin
     tables:
-      - name: transfers
-        description: "Bitcoin transfers data"
+      - name: satoshi
         columns:
-          - name: block_time
-            description: "The block time"
-          - name: block_number
-            description: "The block number"
+          - name: type
+          - name: tx_id
+          - name: index
+          - name: blockchain
           - name: wallet_address
-            description: "Wallet address involved in the transfer"
+          - name: block_time
+          - name: block_date
+          - name: block_height
           - name: amount_raw
-            description: "Amount of satoshis transferred"
+          - name: amount_transfer_usd
 
 models:
   - name: tokens_bitcoin_balances_daily_agg_base
