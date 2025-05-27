@@ -14,13 +14,13 @@ with balances_raw as (
     select
         'bitcoin' as blockchain,
         block_time,
-        block_number,
+        block_height as block_number,
         wallet_address as address,
         null as token_address,
         'native' as token_standard,
         null as token_id,
         amount_raw as balance_raw
-    from {{ source('bitcoin', 'transfers') }}
+    from {{ source('transfers_bitcoin', 'satoshi') }}
     where amount_raw > 0
 )
 
