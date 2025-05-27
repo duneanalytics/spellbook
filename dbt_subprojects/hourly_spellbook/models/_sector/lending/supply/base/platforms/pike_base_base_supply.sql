@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'pike_v1_sonic',
+    schema = 'pike_base',
     alias = 'base_supply',
     materialized = 'incremental',
     file_format = 'delta',
@@ -11,9 +11,11 @@
 }}
 
 {{
-  lending_pike_v1_compatible_supply(
-    blockchain = 'sonic',
+  lending_pike_compatible_supply(
+    blockchain = 'base',
     project = 'pike',
-    version = '1'
+    version = '1',
+    deploy_market_table = 'factory_call_deploymarket',
+    evt_transfer_table = 'ptoken_evt_transfer'
   )
 }}

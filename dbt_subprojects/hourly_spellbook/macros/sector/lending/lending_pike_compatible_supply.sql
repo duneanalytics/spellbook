@@ -1,11 +1,11 @@
-{% macro lending_pike_v1_compatible_supply(blockchain, project, version) %}
+{% macro lending_pike_compatible_supply(blockchain, project, version, deploy_market_table, evt_transfer_table) %}
 
 WITH deployed_markets AS (
   SELECT
     output_pToken AS ptoken_address,
     JSON_EXTRACT_SCALAR(setupParams, '$.underlying') AS token_address,
     JSON_EXTRACT_SCALAR(setupParams, '$.symbol') AS symbol
-  FROM {{project}}_{{blockchain}}.factory_call_deploymarket
+  FROM {{ source(project ~ '_' ~ blockchain, deploy_market_table) }}
 ),
 
     /* First, find all transactions where pTokens are minted */  
@@ -13,7 +13,7 @@ WITH deployed_markets AS (
        SELECT DISTINCT
          evt_tx_hash,
          contract_address AS ptoken_address
-       FROM {{project}}_{{blockchain}}.evt_transfer
+       FROM {{ source(project ~ '_' ~ blockchain, evt_transfer_table) }}
        WHERE
          "from" = 0x0000000000000000000000000000000000000000
          AND contract_address IN (
@@ -35,10 +35,10 @@ WITH deployed_markets AS (
         t.value AS ptoken_amount,
         dm.token_address as token_address,
         dm.symbol
-      FROM {{project}}_{{blockchain}}.evt_transfer AS t
-      JOIN supply_txs AS st
+      FROM {{ source(project ~ '_' ~ blockchain, evt_transfer_table) }} t
+      JOIN supply_txs st
         ON t.evt_tx_hash = st.evt_tx_hash AND t.contract_address = st.ptoken_address
-      JOIN deployed_markets AS dm
+      JOIN deployed_markets dm
         ON t.contract_address = dm.ptoken_address
       WHERE
         t."from" = 0x0000000000000000000000000000000000000000
@@ -52,10 +52,9 @@ WITH deployed_markets AS (
         t."from" AS sender,
         SUM(t.value) AS amount
       FROM mint_details AS md
-      JOIN {{project}}_{{blockchain}}.evt_transfer AS t
+      JOIN {{source(project ~ '_' ~ blockchain, evt_transfer_table) }} t
         ON md.evt_tx_hash = t.evt_tx_hash
-        AND t."to" = md.ptoken_address
-        AND t.contract_address = FROM_HEX(SUBSTRING(md.token_address, 3))
+        AND t.contract_address = md.ptoken_address
       GROUP BY
         md.evt_tx_hash,
         md.ptoken_address,
@@ -63,9 +62,9 @@ WITH deployed_markets AS (
     )
 
 SELECT 
-    {{ blockchain }} AS blockchain,
-    {{ protocol }} AS project,
-    {{ version }} AS version,
+    '{{ blockchain }}' AS blockchain,
+    '{{ project }}' AS project,
+    '{{ version }}' AS version,
     'supply' AS transaction_type,
     md.symbol,
     md.token_address,
