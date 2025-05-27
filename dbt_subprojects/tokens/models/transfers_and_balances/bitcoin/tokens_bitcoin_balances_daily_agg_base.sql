@@ -1,5 +1,5 @@
 {{ config(
-        schema = 'tokens_bitcoin',
+        schema = 'balances_bitcoin',
         alias = 'balances_daily_agg_base',
         file_format = 'delta',
         materialized='incremental',
