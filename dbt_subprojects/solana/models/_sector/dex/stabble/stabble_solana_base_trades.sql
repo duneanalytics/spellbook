@@ -37,9 +37,10 @@ WITH all_swaps AS (
         account_vault_token_in AS token_sold_vault,
         account_vault_token_out AS token_bought_vault
     FROM {{ source('stable_swap_solana', 'stable_swap_call_swap') }}
-    WHERE call_block_time >= CURRENT_TIMESTAMP - INTERVAL '7' DAY
     {% if is_incremental() %}
-    AND {{incremental_predicate('call_block_time')}}
+    WHERE {{incremental_predicate('call_block_time')}}
+    {% else %}
+    WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
 
     UNION ALL
@@ -67,9 +68,10 @@ WITH all_swaps AS (
         account_vault_token_in AS token_sold_vault,
         account_vault_token_out AS token_bought_vault
     FROM {{ source('stable_swap_solana', 'stable_swap_call_swap_v2') }}
-    WHERE call_block_time >= CURRENT_TIMESTAMP - INTERVAL '7' DAY
     {% if is_incremental() %}
-    AND {{incremental_predicate('call_block_time')}}
+    WHERE {{incremental_predicate('call_block_time')}}
+    {% else %}
+    WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
 
     UNION ALL
@@ -97,9 +99,10 @@ WITH all_swaps AS (
         account_vault_token_in AS token_sold_vault,
         account_vault_token_out AS token_bought_vault
     FROM {{ source('stable_swap_solana', 'weighted_swap_call_swap') }}
-    WHERE call_block_time >= CURRENT_TIMESTAMP - INTERVAL '7' DAY
     {% if is_incremental() %}
-    AND {{incremental_predicate('call_block_time')}}
+    WHERE {{incremental_predicate('call_block_time')}}
+    {% else %}
+    WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
 
     UNION ALL
@@ -127,14 +130,15 @@ WITH all_swaps AS (
         account_vault_token_in AS token_sold_vault,
         account_vault_token_out AS token_bought_vault
     FROM {{ source('stable_swap_solana', 'weighted_swap_call_swap_v2') }}
-    WHERE call_block_time >= CURRENT_TIMESTAMP - INTERVAL '7' DAY
     {% if is_incremental() %}
-    AND {{incremental_predicate('call_block_time')}}
+    WHERE {{incremental_predicate('call_block_time')}}
+    {% else %}
+    WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
 )
 
 , transfers AS (
-    SELECT DISTINCT
+    SELECT
         s.tx_id,
         s.block_slot,
         s.outer_instruction_index,
@@ -155,9 +159,10 @@ WITH all_swaps AS (
             s.inner_instruction_index + 3,
             s.inner_instruction_index + 4
         )
-    WHERE t.block_time >= CURRENT_TIMESTAMP - INTERVAL '7' DAY
     {% if is_incremental() %}
-    AND {{incremental_predicate('t.block_time')}}
+    WHERE {{incremental_predicate('t.block_time')}}
+    {% else %}
+    WHERE t.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
 )
 

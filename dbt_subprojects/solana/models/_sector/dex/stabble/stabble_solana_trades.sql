@@ -7,5 +7,3 @@
 
 select * from {{ref('dex_solana_trades')}}
 where project = 'stabble'
-
-
