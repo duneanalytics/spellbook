@@ -143,5 +143,7 @@ FROM (VALUES
     , (0x296a0b8847bd4ed9af71a9ef238fa5be0778b611, 'ATA', 18)
     , (0xd56734d7f9979dd94fae3d67c7e928234e71cd4c, 'TIAN', 6)
     , (0x306fd3e7b169aa4ee19412323e1a5995b8c1a1f4, 'FTW', 18)
-    , (0xc3abc47863524ced8daf3ef98d74dd881e131c38, 'LUA', 18)  
+    , (0xc3abc47863524ced8daf3ef98d74dd881e131c38, 'LUA', 18)
+    , (0x5402b5f40310bded796c7d0f3ff6683f5c0cffdf, 'sGLP', 18)
+    , (0xd07d35368e04a839dee335e213302b21ef14bb4a, 'CRYSTAL', 18)
 ) AS temp_table (contract_address, symbol, decimals)
