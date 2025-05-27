@@ -6,7 +6,7 @@
 }}
 
 {% set base_models = [
-    , ref('rooster_protocol_plume_base_trades')
+    ref('rooster_protocol_plume_base_trades')
 ] %}
 
 WITH base_union AS (
