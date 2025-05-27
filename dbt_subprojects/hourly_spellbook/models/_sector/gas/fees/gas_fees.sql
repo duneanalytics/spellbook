@@ -24,6 +24,7 @@
                                     , "linea"
                                     , "mantle"
                                     , "nova"
+                                    , "opbnb"
                                     , "optimism"
                                     , "plume"
                                     , "polygon"
@@ -42,7 +43,7 @@
                                 ]\',
                                 "sector",
                                 "gas",
-                                \'["soispoke", "ilemi", "0xRob", "jeff-dude"]\'
+                                \'["soispoke", "ilemi", "0xRob", "jeff-dude", "krishhh"]\'
                             )
                         }}'
         )
@@ -71,6 +72,7 @@
     , "lens"
     , "mantle"
     , "nova"
+    , "opbnb"
     , "optimism"
     , "plume"
     , "polygon"
