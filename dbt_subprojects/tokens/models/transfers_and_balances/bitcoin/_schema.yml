@@ -17,23 +17,6 @@ sources:
           - name: balance_raw
           - name: unique_key
 
-  - name: transfers_bitcoin
-    database: transfers_bitcoin
-    schema: transfers_bitcoin
-    tables:
-      - name: satoshi
-        columns:
-          - name: type
-          - name: tx_id
-          - name: index
-          - name: blockchain
-          - name: wallet_address
-          - name: block_time
-          - name: block_date
-          - name: block_height
-          - name: amount_raw
-          - name: amount_transfer_usd
-
 models:
   - name: tokens_bitcoin_balances_daily_agg_base
     meta:
