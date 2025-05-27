@@ -27,13 +27,13 @@ with balances as (
 SELECT
     'bitcoin' as blockchain,
     b.day,
-    b.wallet_address,
-    b.amount_raw,
-    b.amount,
+    b.address as wallet_address,
+    b.balance_raw as amount_raw,
+    b.balance as amount,
     p.price as price_btc,
-    b.amount_transfer_usd as profit,
-    b.amount * p.price as amount_usd,
-    b.amount * p.price + b.amount_transfer_usd as total_asset,
+    b.balance_usd as profit,
+    b.balance * p.price as amount_usd,
+    b.balance * p.price + b.balance_usd as total_asset,
     now() as updated_at
 FROM balances b
 LEFT JOIN {{ source('prices', 'usd') }} p
