@@ -66,19 +66,28 @@ models:
       contributors: gandalf
     config:
       tags: ['latest', 'balances', 'bitcoin', 'satoshi', 'day', 'gandalf']
-    description: >
-      Latest token balances of Satoshi Bitcoin per wallet
+    description: "Latest token balances of Satoshi Bitcoin per wallet"
     columns:
-      - *blockchain
-      - *day
-      - *wallet_address
-      - *amount_raw
-      - *amount
-      - *price_btc
-      - *profit
-      - *amount_usd
-      - *total_asset
-      - *updated_at
+      - name: blockchain
+        description: "Chain name"
+      - name: day
+        description: "UTC event block time truncated to the day mark"
+      - name: wallet_address
+        description: "Wallet address of sender or receiver. If amount is negative, wallet address is the sender's."
+      - name: amount_raw
+        description: "The number of Satoshis in the wallet"
+      - name: amount
+        description: "The number of Bitcoins in the wallet"
+      - name: price_btc
+        description: "Price of btc at day"
+      - name: profit
+        description: "Profit by USD of the wallet"
+      - name: amount_usd
+        description: "USD balance of the wallet"
+      - name: total_asset
+        description: "Total asset by USD of the wallet"
+      - name: updated_at
+        description: "When the balances were last updated"
 
   - name: tokens_bitcoin_net_transfers_daily
     meta:
@@ -148,16 +157,17 @@ models:
       - name: index
       - name: blockchain
         description: "Chain name"
-      - *wallet_address
+      - name: wallet_address
+        description: "Wallet address of sender or receiver"
       - name: block_time
         description: "The block time"
       - name: block_date
         description: "The block date"
       - name: block_height
         description: "The block number"
-      - *amount_raw
-      - &amount_transfer_usd
-        name: amount_transfer_usd
+      - name: amount_raw
+        description: "The number of Satoshis in the wallet"
+      - name: amount_transfer_usd
         description: "Amount of the transfer by usd"
 
   - name: transfers_bitcoin_satoshi_agg_day
@@ -175,11 +185,16 @@ models:
             - day
             - wallet_address
     columns:
-      - *blockchain
-      - *day
-      - *wallet_address
-      - *amount_raw
-      - *amount_transfer_usd
+      - name: blockchain
+        description: "Chain name"
+      - name: day
+        description: "UTC event block time truncated to the day mark"
+      - name: wallet_address
+        description: "Wallet address of sender or receiver"
+      - name: amount_raw
+        description: "The number of Satoshis in the wallet"
+      - name: amount_transfer_usd
+        description: "Amount of the transfer by usd"
 
   - name: transfers_bitcoin_satoshi_rolling_day
     meta:
@@ -191,11 +206,16 @@ models:
     config:
       tags: ['transfers', 'bitcoin', 'satoshi', 'rolling_day', 'longnhbkhn']
     columns:
-      - *blockchain
-      - *day
-      - *wallet_address
-      - *amount_raw
-      - *amount_transfer_usd
+      - name: blockchain
+        description: "Chain name"
+      - name: day
+        description: "UTC event block time truncated to the day mark"
+      - name: wallet_address
+        description: "Wallet address of sender or receiver"
+      - name: amount_raw
+        description: "The number of Satoshis in the wallet"
+      - name: amount_transfer_usd
+        description: "Amount of the transfer by usd"
       - name: last_updated
         description: "UTC timestamp when table was last updated"
       - name: recency_index
