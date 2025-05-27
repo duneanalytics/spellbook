@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'pike_v1_arbitrum',
+    schema = 'pike_base',
     alias = 'base_borrow',
     materialized = 'incremental',
     file_format = 'delta',
@@ -11,9 +11,11 @@
 }}
 
 {{
-  lending_pike_v1_compatible_borrow(
-    blockchain = 'arbitrum',
+  lending_pike_compatible_borrow(
+    blockchain = 'base',
     project = 'pike',
     version = '1',
+    borrow_table = 'ptoken_evt_borrow',
+    deploy_market_table = 'factory_call_deploymarket',
   )
 }}
