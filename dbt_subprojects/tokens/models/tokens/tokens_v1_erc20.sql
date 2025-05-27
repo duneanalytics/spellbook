@@ -26,8 +26,9 @@
                                         ,"mantle"
                                         ,"nova"
                                         ,"optimism"
-                                        ,"ronin"
+                                        ,"plume"
                                         ,"polygon"
+                                        ,"ronin"
                                         ,"scroll"
                                         ,"sei"
                                         ,"sepolia"
@@ -46,7 +47,7 @@
                                     ]\',
                                     "sector",
                                     "tokens",
-                                    \'["bh2smith","0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy","lgingerich","0xRob","jeff-dude","viniabussafi","IrishLatte19","angus_1","Henrystats","rantum", "IrishLatte19"]\') }}'
+                                    \'["bh2smith","0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy","lgingerich","0xRob","jeff-dude","viniabussafi","IrishLatte19","angus_1","Henrystats","rantum", "IrishLatte19", "captncrunch"]\') }}'
     )
 }}
 
@@ -97,6 +98,7 @@
     ,'tokens_opbnb': {'blockchain': 'opbnb', 'model': ref('tokens_opbnb_erc20')}
     ,'tokens_unichain': {'blockchain': 'unichain', 'model': ref('tokens_unichain_erc20')}
     ,'tokens_lens': {'blockchain': 'lens', 'model': ref('tokens_lens_erc20')}
+    ,'tokens_plume': {'blockchain': 'plume', 'model': ref('tokens_plume_erc20')}
 } %}
 
 with automated_source as (

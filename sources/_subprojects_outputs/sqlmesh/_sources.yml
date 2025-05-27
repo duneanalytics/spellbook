@@ -155,7 +155,10 @@ sources:
           - name: next_update
             description: "Expected timestamp of the next price update"
             type: "timestamp(3) with time zone"
-
+  - name: tokens_v2
+    tables:
+      - name: erc20
+        description: "ERC20 tokens"
   - name: tokens_solana
     tables:
       - name: fungible

@@ -363,21 +363,23 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - method
-            - call_tx_hash
-            - call_trace_address  
+            - tx_hash
+            - trace_address  
             - order_index
     columns:
       - name: method
         description: "Call Method"
+      - name: evt_index
+        description: "Event Index (if applicable)"
       - name: order_index
         description: "Index of the Order in Batch (0 if single order swap)"
-      - name: call_trace_address
+      - name: trace_address
         description: "Call Trace Address"
-      - name: call_block_number
+      - name: block_number
         description: "Call Block Number"
-      - name: call_block_time
+      - name: block_time
         description: "Call Block Time"
-      - name: call_tx_hash
+      - name: tx_hash
         description: "Call Transaction Hash"
       - name: fee_amount
         description: "Fee Amount"      
