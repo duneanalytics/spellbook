@@ -502,6 +502,7 @@ models:
             - chain_id
             - resolver_address
             - resolver_executor
+            - mode
     columns:
       - name: resolver_address
         data_tests:
