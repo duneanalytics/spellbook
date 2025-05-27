@@ -18,6 +18,22 @@ sources:
           - name: balance_raw
           - name: unique_key
 
+  - name: bitcoin
+    database: bitcoin
+    schema: bitcoin
+    tables:
+      - name: transfers
+        description: "Bitcoin transfers data"
+        columns:
+          - name: block_time
+            description: "The block time"
+          - name: block_number
+            description: "The block number"
+          - name: wallet_address
+            description: "Wallet address involved in the transfer"
+          - name: amount_raw
+            description: "Amount of satoshis transferred"
+
 models:
   - name: tokens_bitcoin_balances_daily_agg_base
     meta:
