@@ -101,3 +101,4 @@ LEFT JOIN
     AND bt.blockchain = tt_bought.blockchain
 
 
+-- test for stabble
