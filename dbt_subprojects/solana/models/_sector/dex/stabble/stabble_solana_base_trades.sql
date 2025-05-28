@@ -44,6 +44,7 @@ WITH all_swaps AS (
     {% else %}
     WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
+    AND call_block_time >= CURRENT_TIMESTAMP - INTERVAL '7' DAY
 
     UNION ALL
 
@@ -75,6 +76,7 @@ WITH all_swaps AS (
     {% else %}
     WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
+    AND call_block_time >= CURRENT_TIMESTAMP - INTERVAL '7' DAY
 
     UNION ALL
 
@@ -106,6 +108,7 @@ WITH all_swaps AS (
     {% else %}
     WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
+    AND call_block_time >= CURRENT_TIMESTAMP - INTERVAL '7' DAY
 
     UNION ALL
 
@@ -137,6 +140,7 @@ WITH all_swaps AS (
     {% else %}
     WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
+    AND call_block_time >= CURRENT_TIMESTAMP - INTERVAL '7' DAY
 )
 
 , transfers AS (
@@ -179,6 +183,7 @@ WITH all_swaps AS (
         {% else %}
         AND t.block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
+        AND t.block_time >= CURRENT_TIMESTAMP - INTERVAL '7' DAY
 )
 
 SELECT
