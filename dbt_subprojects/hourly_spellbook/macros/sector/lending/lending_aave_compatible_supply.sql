@@ -393,3 +393,63 @@ select
 from base_supply
 
 {% endmacro %}
+
+{# ######################################################################### #}
+
+{%
+  macro lending_aave_v3_compatible_supply_scaled(
+    blockchain,
+    project,
+    version
+  )
+%}
+
+with
+
+current_market as (
+  select
+    blockchain,
+    project,
+    version,
+    block_time,
+    block_hour,
+    token_address,
+    symbol,
+    liquidity_index,
+    variable_borrow_index
+  from {{ ref(project ~ '_v' ~ version ~ '_' ~ blockchain ~ '_base_market_hourly_agg') }}
+),
+
+supplied as (
+  select
+    s.blockchain,
+    s.project,
+    s.version,
+    date_trunc('hour', s.block_time) as block_hour,
+    coalesce(s.on_behalf_of, s.depositor) as user,
+    s.token_address,
+    s.symbol,
+    sum(s.amount / m.liquidity_index * power(10, 27)) as atoken_amount
+  from {{ ref('aave_' ~ blockchain ~ '_supply')}} s
+    inner join {{ ref(project ~ '_v' ~ version ~ '_' ~ blockchain ~ '_base_market') }} m
+      on s.block_number = m.block_number
+      and s.tx_hash = m.evt_tx_hash
+      and s.token_address = m.token_address
+      and s.evt_index > m.evt_index
+  where s.version = '3'
+  group by 1, 2, 3, 4, 5, 6, 7
+)
+
+select
+  cm.blockchain,
+  cm.project,
+  cm.version,
+  cm.block_hour,
+  cm.token_address,
+  cm.symbol,
+  s.user,
+  sum(s.atoken_amount) over (order by cm.block_hour) * cm.liquidity_index / power(10, 27) as supplied_amount
+from current_market cm
+  left join supplied s on cm.block_hour = s.block_hour and cm.token_address = s.token_address
+
+{% endmacro %}
