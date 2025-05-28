@@ -1,0 +1,59 @@
+models:
+  - name: stablecoins_solana_p2p_usdc
+
+    meta:
+      blockchain: solana
+      sector: stablecoins
+      project: p2p_transfers
+      contributors: sofiat
+
+    config:
+      tags: ['solana', 'stablecoins', 'p2p', 'usdc', 'peer-to-peer', 'transfers']
+    
+    description: "Pure peer-to-peer USDC transfers on Solana, excluding DEX trades and DeFi interactions. Only includes transactions containing solely USDC transfers between different owners using the standard token program."
+    
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - from_owner
+            - to_owner
+            - block_time
+    
+    columns:
+    - &blockchain
+      name: blockchain
+      description: "Blockchain which the transaction happened"
+    - &tx_hash
+      name: tx_hash
+      description: "Transaction hash/signature"
+    - &block_time
+      name: block_time
+      description: "UTC timestamp when the transaction was processed"
+    - &block_slot
+      name: block_slot
+      description: "Solana slot number when the transaction was processed"
+    - &from_owner
+      name: from_owner
+      description: "Address of the USDC sender"
+    - &to_owner
+      name: to_owner
+      description: "Address of the USDC receiver"
+    - &amount_raw
+      name: amount_raw
+      description: "Raw amount of USDC transferred (in smallest unit)"
+    - &amount
+      name: amount
+      description: "Amount of USDC transferred (decimal adjusted)"
+    - &amount_usd
+      name: amount_usd
+      description: "USD value of USDC transferred"
+    - &token_mint_address
+      name: token_mint_address
+      description: "USDC token mint address (EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v)"
+    - &tx_signer
+      name: tx_signer
+      description: "Address that signed the transaction"
+    - &is_sender_initiated
+      name: is_sender_initiated
+      description: "Boolean indicating if the sender initiated the transaction"
