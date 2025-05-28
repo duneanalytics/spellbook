@@ -20,8 +20,6 @@ WITH all_swaps AS (
         , 'stabble' AS project
         , 1 AS version
         , 'solana' AS blockchain
-        , 'stable_swap_solana' AS project_program_id
-        , 'vo1tWgqZMjG61Z2T9qUaMYKqZ75CYzMuaZ2LZP1n7HV' AS project_main_id
         , call_block_time AS block_time
         , call_block_slot AS block_slot
         , CASE WHEN call_is_inner = FALSE THEN 'direct' ELSE call_outer_executing_account END AS trade_source
