@@ -463,7 +463,7 @@ hourly_market_user as (
     hm.variable_borrow_index,
     fs.user
   from hourly_market hm
-    left join first_supplied fs on hm.token_address = fs.token_address and hm.block_hour >= fs.first_block_hour
+    inner join first_supplied fs on hm.token_address = fs.token_address and hm.block_hour >= fs.first_block_hour
 )
 
 select
