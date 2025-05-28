@@ -3,7 +3,7 @@
 WITH deployed_markets AS (
   SELECT
     output_pToken AS ptoken_address,
-    JSON_EXTRACT_SCALAR(setupParams, '$.underlying') AS token_address,
+    from_hex(JSON_EXTRACT_SCALAR(setupParams, '$.underlying')) AS token_address,
     JSON_EXTRACT_SCALAR(setupParams, '$.symbol') AS symbol
   FROM {{ source(project ~ '_' ~ blockchain, 'factory_call_deploymarket') }}
 ),
@@ -66,7 +66,7 @@ SELECT
     '{{ project }}' AS project,
     '{{ version }}' AS version,
     'supply' AS transaction_type,
-    CAST(md.token_address as varchar) as token_address,
+    md.token_address,
     tt.sender AS depositor,
     md.receiver AS on_behalf_of,
     CAST(NULL AS varbinary) AS withdrawn_to,

@@ -16,7 +16,7 @@ WITH borrow_events AS (
         b.borrower,
         b.onBehalfOf,
         b.totalBorrows,
-        json_extract_scalar(dm.setupParams, '$.underlying') AS token_address
+        from_hex(json_extract_scalar(dm.setupParams, '$.underlying')) AS token_address
     FROM {{source(project ~ '_' ~ blockchain, borrow_table)}} b
     JOIN {{source(project ~ '_' ~ blockchain, 'factory_call_deploymarket')}} dm 
         ON b.contract_address = dm.output_pToken
@@ -31,7 +31,7 @@ SELECT
     '{{ version }}' as version,
     'borrow' AS transaction_type,
     'borrow' AS loan_type,
-    CAST(token_address as varchar) as token_address,
+    token_address,
     borrower,
     onBehalfOf as on_behalf_of,
     CAST(NULL AS varbinary) as repayer,
