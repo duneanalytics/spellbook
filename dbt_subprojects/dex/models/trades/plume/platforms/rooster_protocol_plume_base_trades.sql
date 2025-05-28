@@ -15,7 +15,7 @@
         blockchain = 'plume',
         project = 'rooster_protocol',
         version = '2',
-        source_evt_swap = source('rooster_protocol', 'maverickv2factory_evt_poolswap'),
-        source_evt_pool = source('rooster_protocol', 'maverickv2pool_evt_poolcreated')
+        source_evt_swap = source('rooster_protocol_plume', 'maverickv2pool_evt_poolswap'),
+        source_evt_pool = source('rooster_protocol_plume', 'maverickv2factory_evt_poolcreated')
     )
 }}
