@@ -406,12 +406,11 @@ from base_supply
 
 with
 
-current_market as (
+hourly_market as (
   select
     blockchain,
     project,
     version,
-    block_time,
     block_hour,
     token_address,
     symbol,
@@ -433,23 +432,54 @@ supplied as (
   from {{ ref('aave_' ~ blockchain ~ '_supply')}} s
     inner join {{ ref(project ~ '_v' ~ version ~ '_' ~ blockchain ~ '_base_market') }} m
       on s.block_number = m.block_number
-      and s.tx_hash = m.evt_tx_hash
+      and s.tx_hash = m.tx_hash
       and s.token_address = m.token_address
       and s.evt_index > m.evt_index
   where s.version = '3'
   group by 1, 2, 3, 4, 5, 6, 7
+),
+
+first_supplied as (
+  select
+    blockchain,
+    project,
+    version,
+    token_address,
+    user,
+    min(block_hour) as first_block_hour
+  from supplied
+  group by 1, 2, 3, 4, 5
+),
+
+hourly_market_user as (
+  select
+    hm.blockchain,
+    hm.project,
+    hm.version,
+    hm.block_hour,
+    hm.token_address,
+    hm.symbol,
+    hm.liquidity_index,
+    hm.variable_borrow_index,
+    fs.user
+  from hourly_market hm
+    left join first_supplied fs on hm.token_address = fs.token_address and hm.block_hour >= fs.first_block_hour
 )
 
 select
-  cm.blockchain,
-  cm.project,
-  cm.version,
-  cm.block_hour,
-  cm.token_address,
-  cm.symbol,
-  s.user,
-  sum(s.atoken_amount) over (order by cm.block_hour) * cm.liquidity_index / power(10, 27) as supplied_amount
-from current_market cm
-  left join supplied s on cm.block_hour = s.block_hour and cm.token_address = s.token_address
+  hmu.blockchain,
+  hmu.project,
+  hmu.version,
+  cast(date_trunc('month', hmu.block_hour) as date) as block_month,
+  hmu.block_hour,
+  hmu.token_address,
+  hmu.symbol,
+  hmu.user,
+  sum(s.atoken_amount) over (order by hmu.block_hour) * hmu.liquidity_index / power(10, 27) as amount
+from hourly_market_user hmu
+  left join supplied s
+    on hmu.user = s.user
+    and hmu.token_address = s.token_address
+    and hmu.block_hour = s.block_hour
 
 {% endmacro %}
