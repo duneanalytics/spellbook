@@ -1719,6 +1719,7 @@ seeds:
         block_time: timestamp
         tx_hash: varbinary
         evt_index: bigint
+        transaction_type: varchar
         token_address: varbinary
-        recipient: varbinary
+        depositor: varbinary
         amount: double
