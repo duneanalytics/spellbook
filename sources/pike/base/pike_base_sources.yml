@@ -1,0 +1,6 @@
+version: 1
+
+sources:
+  - name: pike_base
+    tables:
+      - name: factory_call_deploymarket
