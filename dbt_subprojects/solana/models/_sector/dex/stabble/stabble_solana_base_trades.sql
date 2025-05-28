@@ -17,11 +17,11 @@ WITH all_swaps AS (
     -- Stable Swap V1
     SELECT
         'stable_swap_v1' AS swap_type
+        , call_block_time AS block_time
+        , call_block_slot AS block_slot
         , 'stabble' AS project
         , 1 AS version
         , 'solana' AS blockchain
-        , call_block_time AS block_time
-        , call_block_slot AS block_slot
         , CASE WHEN call_is_inner = FALSE THEN 'direct' ELSE call_outer_executing_account END AS trade_source
         , amount_in AS token_sold_amount_raw
         , account_pool AS pool_id
@@ -54,7 +54,7 @@ WITH all_swaps AS (
         , 'stabble' AS project
         , 1 AS version
         , 'solana' AS blockchain
-        , CASE WHEN call_is_inner = FALSE THEN 'direct' ELSE call_outer_executing_account END
+        , CASE WHEN call_is_inner = FALSE THEN 'direct' ELSE call_outer_executing_account END as trade_source
         , amount_in AS token_sold_amount_raw
         , account_pool AS pool_id
         , call_tx_signer AS trader_id
@@ -206,4 +206,4 @@ SELECT
     , outer_instruction_index
     , inner_instruction_index
     , tx_index
-FROM transfers s
+FROM transfers 
