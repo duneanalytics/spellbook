@@ -147,7 +147,7 @@ WITH all_swaps AS (
         t.amount,
         t.token_mint_address
     FROM all_swaps s
-    INNER JOIN tokens_solana.transfers t
+    INNER JOIN {{ ref('tokens_solana_transfers') }} t
         ON t.tx_id = s.tx_id 
         AND t.block_slot = s.block_slot
         AND t.outer_instruction_index = s.outer_instruction_index
