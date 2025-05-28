@@ -15,6 +15,5 @@
      , traces = source('degen','traces')
      , transactions = source('degen','transactions')
      , erc20_transfers = source('erc20_degen','evt_Transfer')
-     , native_contract_address = var('ETH_ERC20_ADDRESS')
 )
 }} 
