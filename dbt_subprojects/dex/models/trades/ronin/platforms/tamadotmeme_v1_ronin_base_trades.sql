@@ -8,38 +8,43 @@
 ) }}
 
 {% set project_start_date = '2025-01-21 14:07' %}
-{% set wron_token_address = '0xe514d9deb7966c8be0ca922de8a064264ea6bcd4' %}
-{% set edge_case_tx_address = '0x9b0a1d03ea99a8b3cf9b7e73e0aa1b805ce45c54' %}
+{% set wron_token_address = '0x0000000000000000000000000000000000000000' %}
+
 
 
 with trades AS (
     select 
-    'ronin' AS blockchain, -- Tag the blockchain
-    'tamadotmeme' AS project, -- Tag the project
-    '1' AS version, -- Set a version
-    CAST(DATE_TRUNC('month', evt_block_time) as date) AS block_month, -- Extract month from block time
-    CAST(DATE_TRUNC('day', evt_block_time) as date) AS block_date, -- Extract day from block time
+    'ronin' AS blockchain, 
+    'tamadotmeme' AS project, 
+    '1' AS version, 
+    CAST(DATE_TRUNC('month', evt_block_time) as date) AS block_month, 
+    CAST(DATE_TRUNC('day', evt_block_time) as date) AS block_date, 
     evt_block_time AS block_time, -- Keep original block time
-    evt_block_number AS block_number, -- Keep block number
+    evt_block_number AS block_number, 
     amountIn as token_sold_amount_raw,
     amountOut as token_bought_amount_raw,
-    case when isBuy=True then token                    -- If it's a buy, the 'token' column holds bought token
-         else {{wron_token_address}}                  -- Otherwise, it's wRON
+    -- If it's a buy, the 'token' column holds bought token. If it's a sell order, Native ron is bought
+    case when isBuy=True then token                    
+         else {{wron_token_address}}                  
     end as token_bought_address, 
-    case when isBuy=True then {{wron_token_address}}      -- If it's a buy, wRON is the sold token
-         else token                                    -- Otherwise, the 'token' column holds sold token
-    end as token_sold_address, -- All tokens on tamadot meme are bought using RONIN
-    case when isBuy=True then sender                   -- If buy, sender is taker
-         else to                                       -- Otherwise, receiver is taker
+    -- If it's a buy, native RON is the sold token. It it's a sell, then the token column holds the token sold address
+    case when isBuy=True then {{wron_token_address}}      
+         else token                                    
+    end as token_sold_address, 
+     -- If it's a buy, sender is taker. If it's a sell order then the project, 0xa54b0184d12349cf65281c6f965a74828ddd9e8f is the taker
+    case when isBuy=True then sender                   
+         else contract_address                                       
     end as taker,
-    case when isBuy=True then to                       -- If buy, receiver is maker
-         else sender                                   -- Otherwise, sender is maker
+     -- If it's a buy, then the project 0xa54b0184d12349cf65281c6f965a74828ddd9e8f is maker. If it's a sell order then the user, sender is the taker
+    case when isBuy=True then contract_address                      
+         else sender                                   
     end as maker,
-    contract_address AS project_contract_address, -- Keep contract address
-    evt_tx_hash AS tx_hash, -- Keep transaction hash
-    evt_index, -- Keep event index
-    evt_tx_from AS tx_from, -- Keep transaction sender
-    evt_tx_to AS tx_to  -- Keep transaction receiver
+    contract_address AS project_contract_address, 
+    evt_tx_hash AS tx_hash, 
+    evt_index, 
+    evt_tx_from AS tx_from, 
+    evt_tx_to AS tx_to  
+
   FROM  {{ source('tamadotmeme_ronin', 'maincontract_evt_trade') }} -- Source table
   WHERE evt_block_time >= TRY_CAST('{{project_start_date}}' AS TIMESTAMP) -- Filter by project start date
     {% if is_incremental() %}
