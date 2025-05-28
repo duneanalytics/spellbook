@@ -1709,7 +1709,7 @@ seeds:
         token_address: varbinary
         recipient: varbinary
         amount: double
-  - name: pike_base_base_borrow_seed
+  - name: pike_base_base_supply_seed
     config:
       column_types:
         blockchain: varchar
