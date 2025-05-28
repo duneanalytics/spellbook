@@ -66,14 +66,12 @@ SELECT
     '{{ project }}' AS project,
     '{{ version }}' AS version,
     'supply' AS transaction_type,
-    md.symbol,
     md.token_address,
     tt.sender AS depositor,
     md.receiver AS on_behalf_of,
     CAST(NULL AS varbinary) AS withdrawn_to,
     CAST(NULL AS varbinary) AS liquidator,
     tt.amount,
-    md.ptoken_amount AS pTokens_minted,
     DATE_TRUNC('month', md.evt_block_time) AS block_month,
     md.evt_block_time AS block_time,
     md.evt_block_number AS block_number,
@@ -84,5 +82,4 @@ FROM mint_details md
 JOIN token_transfers tt 
 ON md.evt_tx_hash = tt.evt_tx_hash 
 AND md.ptoken_address = tt.ptoken_address
-
 {% endmacro %}
