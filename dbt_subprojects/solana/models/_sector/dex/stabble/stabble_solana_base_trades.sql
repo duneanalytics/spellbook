@@ -159,11 +159,11 @@ WITH all_swaps AS (
             s.inner_instruction_index + 3,
             s.inner_instruction_index + 4
         )
-    {% if is_incremental() %}
-    WHERE {{incremental_predicate('t.block_time')}}
-    {% else %}
-    WHERE t.block_time >= TIMESTAMP '{{project_start_date}}'
-    {% endif %}
+        {% if is_incremental() %}
+        AND {{incremental_predicate('t.block_time')}}
+        {% else %}
+        AND t.block_time >= TIMESTAMP '{{project_start_date}}'
+        {% endif %}
 )
 
 SELECT
