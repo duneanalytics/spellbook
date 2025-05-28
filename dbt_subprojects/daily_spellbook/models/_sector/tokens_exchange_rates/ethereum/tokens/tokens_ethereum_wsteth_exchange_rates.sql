@@ -31,7 +31,7 @@ get_rates as (
     {{source('lido_ethereum','LegacyOracle_evt_PostTotalShares')}}
     WHERE evt_block_time <= date('2023-05-16')
     {% if is_incremental() %}
-    AND {{ incremental_predicate('block_time') }}
+    AND {{ incremental_predicate('evt_block_time') }}
     {% endif %}
 
     UNION ALL 
@@ -46,7 +46,7 @@ get_rates as (
     {{source('lido_ethereum','steth_evt_TokenRebased')}}
     WHERE 1 = 1 
     {% if is_incremental() %}
-    AND {{ incremental_predicate('block_time') }}
+    AND {{ incremental_predicate('evt_block_time') }}
     {% endif %}
 )
 
@@ -72,5 +72,5 @@ LEFT JOIN
     AND p.blockchain = 'ethereum'
     AND p.minute = date_trunc('minute', gr.block_time)
     {% if is_incremental() %}
-    AND {{ incremental_predicate('block_time') }}
+    AND {{ incremental_predicate('minute') }}
     {% endif %}
