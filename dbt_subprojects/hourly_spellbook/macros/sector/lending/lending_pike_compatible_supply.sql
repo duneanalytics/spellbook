@@ -1,85 +1,82 @@
-{% macro lending_pike_compatible_supply(blockchain, project, version, evt_transfer_table) %}
+{% macro lending_pike_compatible_supply(blockchain, project, version, evt_deposit_table, evt_withdraw_table, evt_liquidation_borrow_table, deploy_market_table) %}
 
 WITH deployed_markets AS (
   SELECT
     output_pToken AS ptoken_address,
-    from_hex(JSON_EXTRACT_SCALAR(setupParams, '$.underlying')) AS token_address,
+    FROM_HEX(JSON_EXTRACT_SCALAR(setupParams, '$.underlying')) AS token_address,
     JSON_EXTRACT_SCALAR(setupParams, '$.symbol') AS symbol
-  FROM {{ source(project ~ '_' ~ blockchain, 'factory_call_deploymarket') }}
+  FROM {{ source(project ~ '_' ~ blockchain, deploy_market_table) }}
 ),
 
-    /* First, find all transactions where pTokens are minted */  
-    supply_txs AS (
-       SELECT DISTINCT
-         evt_tx_hash,
-         contract_address AS ptoken_address
-       FROM {{ source(project ~ '_' ~ blockchain, evt_transfer_table) }}
-       WHERE
-         "from" = 0x0000000000000000000000000000000000000000
-         AND contract_address IN (
-           SELECT
-             ptoken_address
-           FROM deployed_markets
-         )
-     ),
+deposits AS (
+    SELECT 
+        'base' AS blockchain,
+        'pike' AS project,
+        '1' AS version,
+        'deposit' AS transaction_type,
+        dm.token_address,
+        d.sender AS depositor,
+        d.owner AS on_behalf_of,
+        CAST(NULL AS varbinary) AS withdrawn_to,
+        CAST(NULL AS varbinary) AS liquidator,
+        d.assets AS amount,
+        DATE_TRUNC('month', d.evt_block_time) AS block_month,
+        d.evt_block_time AS block_time,
+        d.evt_block_number AS block_number,
+        d.contract_address AS project_contract_address,
+        d.evt_tx_hash AS tx_hash,
+        d.evt_index
+    FROM {{ source(project ~ '_' ~ blockchain, evt_deposit_table) }} d
+    JOIN deployed_markets dm ON d.contract_address = dm.ptoken_address
+),
 
-    /* Get all the pToken mints that happened in these supply transactions */ 
-    mint_details AS (
-      SELECT
-        t.evt_block_time,
-        t.evt_block_number,
-        t.evt_tx_hash,
-        t.evt_index,
-        t.contract_address AS ptoken_address,
-        t."to" AS receiver,
-        t.value AS ptoken_amount,
-        dm.token_address as token_address,
-        dm.symbol
-      FROM {{ source(project ~ '_' ~ blockchain, evt_transfer_table) }} t
-      JOIN supply_txs st
-        ON t.evt_tx_hash = st.evt_tx_hash AND t.contract_address = st.ptoken_address
-      JOIN deployed_markets dm
-        ON t.contract_address = dm.ptoken_address
-      WHERE
-        t."from" = 0x0000000000000000000000000000000000000000
-    ),
+withdrawals AS (
+    SELECT 
+        'base' AS blockchain,
+        'pike' AS project,
+        '1' AS version,
+        'withdraw' AS transaction_type,
+        dm.token_address,
+        w.sender AS depositor,
+        w.owner AS on_behalf_of,
+        w.receiver AS withdrawn_to,
+        CAST(NULL AS varbinary) AS liquidator,
+        -w.assets AS amount,
+        DATE_TRUNC('month', w.evt_block_time) AS block_month,
+        w.evt_block_time AS block_time,
+        w.evt_block_number AS block_number,
+        w.contract_address AS project_contract_address,
+        w.evt_tx_hash AS tx_hash,
+        w.evt_index
+    FROM {{ source(project ~ '_' ~ blockchain, evt_withdraw_table) }} w
+    JOIN deployed_markets dm ON w.contract_address = dm.ptoken_address
+),
 
-    /* Get all the underlying token transfers to the pToken contract in these transactions */ 
-    token_transfers AS (
-      SELECT
-        md.evt_tx_hash,
-        md.ptoken_address,
-        t."from" AS sender,
-        SUM(t.value) AS amount
-      FROM mint_details AS md
-      JOIN {{source(project ~ '_' ~ blockchain, evt_transfer_table) }} t
-        ON md.evt_tx_hash = t.evt_tx_hash
-        AND t.contract_address = md.ptoken_address
-      GROUP BY
-        md.evt_tx_hash,
-        md.ptoken_address,
-        t."from"
-    )
+liquidations_supply AS (
+    SELECT 
+        'base' AS blockchain,
+        'pike' AS project,
+        '1' AS version,
+        'liquidation' AS transaction_type,
+        dm.token_address,
+        l.borrower AS depositor,
+        l.borrower AS on_behalf_of,
+        l.liquidator AS withdrawn_to,
+        l.liquidator,
+        -l.repayAmount AS amount,
+        DATE_TRUNC('month', l.evt_block_time) AS block_month,
+        l.evt_block_time AS block_time,
+        l.evt_block_number AS block_number,
+        l.pTokenCollateral AS project_contract_address,
+        l.evt_tx_hash AS tx_hash,
+        l.evt_index
+    FROM {{ source(project ~ '_' ~ blockchain, evt_liquidation_borrow_table) }} l
+    JOIN deployed_markets dm ON l.pTokenCollateral = dm.ptoken_address
+)
 
-SELECT 
-    '{{ blockchain }}' AS blockchain,
-    '{{ project }}' AS project,
-    '{{ version }}' AS version,
-    'supply' AS transaction_type,
-    md.token_address,
-    tt.sender AS depositor,
-    md.receiver AS on_behalf_of,
-    CAST(NULL AS varbinary) AS withdrawn_to,
-    CAST(NULL AS varbinary) AS liquidator,
-    tt.amount,
-    DATE_TRUNC('month', md.evt_block_time) AS block_month,
-    md.evt_block_time AS block_time,
-    md.evt_block_number AS block_number,
-    md.ptoken_address AS project_contract_address,
-    md.evt_tx_hash AS tx_hash,
-    md.evt_index
-FROM mint_details md
-JOIN token_transfers tt 
-ON md.evt_tx_hash = tt.evt_tx_hash 
-AND md.ptoken_address = tt.ptoken_address
+SELECT * FROM deposits
+UNION ALL
+SELECT * FROM withdrawals
+UNION ALL  
+SELECT * FROM liquidations_supply;
 {% endmacro %}

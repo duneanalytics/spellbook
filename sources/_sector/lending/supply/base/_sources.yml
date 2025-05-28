@@ -68,4 +68,5 @@ sources:
 
   - name: pike_base
     tables:
-      - name: ptoken_evt_transfer
+      - name: ptoken_evt_withdraw
+      - name: ptoken_evt_deposit

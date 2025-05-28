@@ -15,6 +15,9 @@
     blockchain = 'base',
     project = 'pike',
     version = '1',
-    borrow_table = 'ptoken_evt_borrow',
+    evt_borrow_table = 'ptoken_evt_borrow',
+    evt_repay_table = 'ptoken_evt_repayborrow',
+    evt_liquidation_borrow_table = 'ptoken_evt_liquidationborrow',
+    deploy_market_table = 'factory_call_deploymarket'
   )
 }}

@@ -1,48 +1,87 @@
-{% macro lending_pike_compatible_borrow(blockchain, project, version, borrow_table) %}
+{% macro lending_pike_compatible_borrow(blockchain, project, version, evt_borrow_table, evt_repay_table, evt_liquidation_borrow_table, deploy_market_table) %}
 
-WITH borrow_events AS (
-    SELECT 
-        b.contract_address,
-        b.evt_tx_hash,
-        b.evt_tx_from,
-        b.evt_tx_to,
-        b.evt_tx_index,
-        b.evt_index,
-        b.evt_block_time,
-        b.evt_block_number,
-        b.evt_block_date,
-        b.accountBorrows,
-        b.borrowAmount,
+WITH deployed_markets AS (
+  SELECT
+    output_pToken AS ptoken_address,
+    from_hex(JSON_EXTRACT_SCALAR(setupParams, '$.underlying')) AS token_address,
+    JSON_EXTRACT_SCALAR(setupParams, '$.symbol') AS symbol
+  FROM {{ source(project ~ '_' ~ blockchain, deploy_market_table) }}
+),
+
+borrows AS (
+    SELECT
+        'base' AS blockchain,
+        'pike' AS project,
+        '1' AS version,
+        'borrow' AS transaction_type,
+        'borrow' AS loan_type,
+        dm.token_address,
         b.borrower,
-        b.onBehalfOf,
-        b.totalBorrows,
-        from_hex(json_extract_scalar(dm.setupParams, '$.underlying')) AS token_address
-    FROM {{source(project ~ '_' ~ blockchain, borrow_table)}} b
-    JOIN {{source(project ~ '_' ~ blockchain, 'factory_call_deploymarket')}} dm 
-        ON b.contract_address = dm.output_pToken
-    {% if is_incremental() %}
-    WHERE {{ incremental_predicate('evt_block_time') }}
-    {% endif %}
+        COALESCE(b.onBehalfOf, b.borrower) AS on_behalf_of,
+        CAST(NULL AS varbinary) AS repayer,
+        CAST(NULL AS varbinary) AS liquidator,
+        b.borrowAmount AS amount,
+        DATE_TRUNC('month', b.evt_block_time) AS block_month,
+        b.evt_block_time AS block_time,
+        b.evt_block_number AS block_number,
+        b.contract_address AS project_contract_address,
+        b.evt_tx_hash AS tx_hash,
+        b.evt_index
+    FROM {{ source(project ~ '_' ~ blockchain, evt_borrow_table) }} b
+    JOIN deployed_markets dm ON b.contract_address = dm.ptoken_address
+),
+
+-- Repays
+repays AS (
+    SELECT
+        'base' AS blockchain,
+        'pike' AS project,
+        '1' AS version,
+        'repay' AS transaction_type,
+        'borrow' AS loan_type,
+        dm.token_address,
+        r.onBehalfOf AS borrower,
+        r.onBehalfOf AS on_behalf_of,
+        r.payer AS repayer,
+        CAST(NULL AS varbinary) AS liquidator,
+        -r.repayAmount AS amount,
+        DATE_TRUNC('month', r.evt_block_time) AS block_month,
+        r.evt_block_time AS block_time,
+        r.evt_block_number AS block_number,
+        r.contract_address AS project_contract_address,
+        r.evt_tx_hash AS tx_hash,
+        r.evt_index
+    FROM {{ source(project ~ '_' ~ blockchain, evt_repay_table) }} r
+    JOIN deployed_markets dm ON r.contract_address = dm.ptoken_address
+),
+
+liquidations_borrow AS (
+    SELECT
+        'base' AS blockchain,
+        'pike' AS project,
+        '1' AS version,
+        'liquidation' AS transaction_type,
+        'borrow' AS loan_type,
+        dm.token_address,
+        l.borrower,
+        l.borrower AS on_behalf_of,
+        l.liquidator AS repayer,
+        l.liquidator,
+        -l.repayAmount AS amount,
+        DATE_TRUNC('month', l.evt_block_time) AS block_month,
+        l.evt_block_time AS block_time,
+        l.evt_block_number AS block_number,
+        l.pTokenBorrowed AS project_contract_address,
+        l.evt_tx_hash AS tx_hash,
+        l.evt_index
+    FROM {{ source(project ~ '_' ~ blockchain, evt_liquidation_borrow_table) }} l
+    JOIN deployed_markets dm ON l.pTokenBorrowed = dm.ptoken_address
 )
 
-SELECT
-    '{{ blockchain }}' as blockchain,
-    '{{ project }}' as project,
-    '{{ version }}' as version,
-    'borrow' AS transaction_type,
-    'borrow' AS loan_type,
-    token_address,
-    borrower,
-    onBehalfOf as on_behalf_of,
-    CAST(NULL AS varbinary) as repayer,
-    CAST(NULL AS varbinary) as liquidator,
-    borrowAmount as amount,
-    cast(date_trunc('month', evt_block_time) as date) as block_month,
-    evt_block_time as block_time,
-    evt_block_number as block_number,
-    contract_address as project_contract_address,
-    evt_tx_hash as tx_hash,
-    evt_index
-FROM borrow_events
+SELECT * FROM borrows
+UNION ALL
+SELECT * FROM repays
+UNION ALL
+SELECT * FROM liquidations_borrow;
 
 {% endmacro %}

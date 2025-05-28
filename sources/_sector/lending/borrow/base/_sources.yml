@@ -86,3 +86,4 @@ sources:
   - name: pike_base
     tables:
       - name: ptoken_evt_borrow
+      - name: ptoken_evt_repayborrow
