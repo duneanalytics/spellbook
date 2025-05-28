@@ -66,7 +66,7 @@ SELECT
     '{{ project }}' AS project,
     '{{ version }}' AS version,
     'supply' AS transaction_type,
-    md.token_address,
+    CAST(md.token_address as varchar) as token_address,
     tt.sender AS depositor,
     md.receiver AS on_behalf_of,
     CAST(NULL AS varbinary) AS withdrawn_to,

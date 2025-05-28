@@ -31,7 +31,7 @@ SELECT
     '{{ version }}' as version,
     'borrow' AS transaction_type,
     'borrow' AS loan_type,
-    token_address,
+    CAST(token_address as varchar) as token_address,
     borrower,
     onBehalfOf as on_behalf_of,
     CAST(NULL AS varbinary) as repayer,
