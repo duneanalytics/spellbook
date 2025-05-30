@@ -78,5 +78,5 @@ SELECT * FROM deposits
 UNION ALL
 SELECT * FROM withdrawals
 UNION ALL  
-SELECT * FROM liquidations_supply;
+SELECT * FROM liquidations_supply
 {% endmacro %}

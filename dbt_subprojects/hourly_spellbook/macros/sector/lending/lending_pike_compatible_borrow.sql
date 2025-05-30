@@ -82,6 +82,6 @@ SELECT * FROM borrows
 UNION ALL
 SELECT * FROM repays
 UNION ALL
-SELECT * FROM liquidations_borrow;
+SELECT * FROM liquidations_borrow
 
 {% endmacro %}
