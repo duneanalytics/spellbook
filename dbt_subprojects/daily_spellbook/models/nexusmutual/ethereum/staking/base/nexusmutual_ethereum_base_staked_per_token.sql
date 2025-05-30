@@ -115,6 +115,7 @@ staked_nxm_per_pool_n_token as (
         {% endif %}
       group by 1, 2, 3, 4
     ) t
+  where token_id is not null
   group by 1, 2, 3, 4
 ),
 
