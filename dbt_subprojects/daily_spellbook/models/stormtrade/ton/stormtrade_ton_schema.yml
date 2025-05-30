@@ -151,6 +151,18 @@ models:
         description: "oracle timestamp"
       - name: oracle_asset_id
         description: "oracle asset id"
+      - name: oracle_pause_at
+        description: "oracle pause at"
+      - name: oracle_unpause_at
+        description: "oracle unpause at"
+      - name: oracle_vpi_spread
+        description: "oracle virtual price impact spread"
+      - name: oracle_vpi_market_depth_long
+        description: "oracle virtual price impact market depth long"
+      - name: oracle_vpi_market_depth_short
+        description: "oracle virtual price impact market depth short"
+      - name: oracle_vpi_k
+        description: "oracle virtual price impact coefficient"
   - name: stormtrade_ton_complete_order
     meta:
       blockchain: ton
@@ -194,6 +206,8 @@ models:
         description: "origin op"
       - name: oracle_price
         description: "oracle price"
+      - name: settlement_oracle_price
+        description: "settlement oracle price (for non-USDT collateral)"
       - name: position_size
         description: "position size"
       - name: position_direction
@@ -265,6 +279,8 @@ models:
         description: "origin op"
       - name: oracle_price
         description: "oracle price"
+      - name: settlement_oracle_price
+        description: "settlement oracle price (for non-USDT collateral)"
       - name: stop_trigger_price
         description: "stop trigger price"
       - name: take_trigger_price
