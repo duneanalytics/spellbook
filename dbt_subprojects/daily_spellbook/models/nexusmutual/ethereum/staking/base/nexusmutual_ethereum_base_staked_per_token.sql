@@ -52,7 +52,7 @@ token_day_sequence as (
     d.timestamp as block_date,
     if(du.block_date is null, true, false) as is_pre_deposit_update_events
   from {{ source('utils', 'days') }} d
-    left join tokens sp on d.timestamp >=sp.first_stake_event_date
+    inner join tokens sp on d.timestamp >=sp.first_stake_event_date
     left join deposit_updates_daily du
       on sp.pool_id = du.pool_id
       and sp.token_id = du.token_id
@@ -82,12 +82,13 @@ staked_nxm_per_pool_n_token as (
         sum(se.amount) as total_amount,
         max(se.stake_end_date) as stake_expiry_date
       from token_day_sequence d
-        inner join {{ ref('nexusmutual_ethereum_base_staking_deposit_extensions') }} se
+        left join {{ ref('nexusmutual_ethereum_base_staking_deposit_extensions') }} se
           on d.pool_id = se.pool_id
           and d.token_id = se.token_id
           and d.block_date >= se.stake_start_date
           and d.block_date < se.stake_end_date
-      where d.is_pre_deposit_update_events
+      where 1=1
+        --and d.is_pre_deposit_update_events -- as per ** comment below
         {% if is_incremental() %}
         and {{ incremental_predicate('d.block_date') }}
         {% endif %}
@@ -108,12 +109,13 @@ staked_nxm_per_pool_n_token as (
           and d.block_date >= se.block_date
           and d.block_date < coalesce(se.tranche_expiry_date, current_date)
       where se.flow_type in ('withdraw', 'stake burn')
-        and d.is_pre_deposit_update_events
+        --and d.is_pre_deposit_update_events -- as per ** comment below
         {% if is_incremental() %}
         and {{ incremental_predicate('d.block_date') }}
         {% endif %}
       group by 1, 2, 3, 4
     ) t
+  where token_id is not null
   group by 1, 2, 3, 4
 ),
 
@@ -126,6 +128,8 @@ staked_nxm_per_pool_n_token_combined as (
     total_staked_nxm,
     stake_expiry_date
   from staked_nxm_per_pool_n_token
+  /*
+  -- ** commented out until deposit updates cover all active tranches for all tokens
   union all
   select
     block_date,
@@ -138,6 +142,7 @@ staked_nxm_per_pool_n_token_combined as (
   {% if is_incremental() %}
   where {{ incremental_predicate('block_date') }}
   {% endif %}
+  */
 )
 
 select
