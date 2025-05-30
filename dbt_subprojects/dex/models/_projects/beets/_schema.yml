@@ -121,27 +121,19 @@ models:
     description: >
       DEX trades on beets v2 on sonic
     columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain"
+      - *blockchain
       - &project
         name: project
         description: "Project name (balancer)"
-      - &version
-        name: version
-        description: "Version of the project"
+      - *version
       - &block_month
         name: block_month
         description: "Block month in UTC"
       - &block_date
         name: block_date
         description: "Block date in UTC"
-      - &block_time
-        name: block_time
-        description: 'Block time in UTC'
-      - &block_number
-        name: block_number
-        description: 'Block number'
+      - *block_time
+      - *block_number
       - &token_bought_symbol
         name: token_bought_symbol
         description: "Token symbol for token bought in the trade"
@@ -193,9 +185,7 @@ models:
       - &pool_type
         name: pool_type
         description: "Pool attributes, determined by the pool's factory"
-      - &tx_hash
-        name: tx_hash
-        description: "Tx. Hash"
+      - *tx_hash
       - &tx_from
         name: tx_from
         description: "transaction.from"
