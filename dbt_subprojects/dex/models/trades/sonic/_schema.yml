@@ -8,7 +8,7 @@ models:
           column_name: amount_usd
           max_value: 1000000000
 
-  - name: beets_sonic_base_trades
+  - name: beets_v2_sonic_base_trades
     meta:
       blockchain: sonic
       sector: dex
@@ -16,7 +16,7 @@ models:
       contributors: viniabussafi
     config:
       tags: ['sonic', 'dex', 'trades', 'beets']
-    description: "beets sonic base trades"
+    description: "beets v2 sonic base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -24,6 +24,25 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('beets_sonic_base_trades_seed')
+
+  - name: beets_v3_sonic_base_trades
+    meta:
+      blockchain: sonic
+      sector: dex
+      project: beets
+      contributors: franz
+    config:
+      tags: ['sonic', 'dex', 'trades', 'beets']
+    description: "beets v3 sonic base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('beets_sonic_base_trades_seed')
+          filter:
+            version: 3
 
   - name: equalizer_sonic_base_trades
     meta:
