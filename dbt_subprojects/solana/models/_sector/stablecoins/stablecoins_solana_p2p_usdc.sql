@@ -54,7 +54,6 @@ SELECT
   t.block_slot,
   t.from_owner,
   t.to_owner,
-  t.amount_raw,
   t.amount,
   t.amount_usd,
   t.token_mint_address,

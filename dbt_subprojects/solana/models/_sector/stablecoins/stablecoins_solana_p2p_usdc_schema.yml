@@ -39,9 +39,6 @@ models:
     - &to_owner
       name: to_owner
       description: "Address of the USDC receiver"
-    - &amount_raw
-      name: amount_raw
-      description: "Raw amount of USDC transferred (in smallest unit)"
     - &amount
       name: amount
       description: "Amount of USDC transferred (decimal adjusted)"
