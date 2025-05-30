@@ -3,7 +3,7 @@
     schema = 'nexusmutual_ethereum',
     alias = 'base_staking_deposit_extensions',
     materialized = 'view',
-    unique_key = ['pool_id', 'token_id', 'init_tranche_id', 'current_tranche_id', 'stake_start_date', 'stake_end_date']
+    unique_key = ['pool_id', 'token_id', 'init_tranche_id', 'current_tranche_id', 'chain_level', 'stake_start_date', 'stake_end_date']
   )
 }}
 
