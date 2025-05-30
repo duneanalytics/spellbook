@@ -1,0 +1,113 @@
+version: 1
+
+models:
+  - name: stabble_solana_base_trades
+    meta:
+      blockchain: solana
+      contributors: []
+    config:
+      tags: ['solana', 'dex']
+    description: >
+      All raw stabble DEX trades on Solana, including stable swap and weighted swap.
+    data_tests:
+      - check_columns_solana_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month']
+
+  - name: stabble_solana_trades
+    meta:
+      blockchain: solana
+      contributors: []
+    config:
+      tags: ['solana', 'dex']
+    description: >
+      All processed stabble DEX trades on Solana (normalized and enriched).
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain where the DEX is deployed"
+      - &project
+        name: project
+        description: "Project name of the DEX"
+      - &version
+        name: version
+        description: "Version number of the DEX smart contract"
+      - &block_month
+        name: block_month
+        description: "UTC event block month for the swap"
+      - &block_time
+        name: block_time
+        description: "UTC event block time for the swap"
+      - &block_slot
+        name: block_slot
+        description: "Block slot number of the swap"
+      - &trade_source
+        name: trade_source
+        description: "Direct or aggregator source of the trade"
+      - &token_bought_symbol
+        name: token_bought_symbol
+        description: "Symbol of the token bought"
+      - &token_sold_symbol
+        name: token_sold_symbol
+        description: "Symbol of the token sold"
+      - &token_pair
+        name: token_pair
+        description: "Symbol pair (sold/bought) for the swap"
+      - &token_bought_amount
+        name: token_bought_amount
+        description: "Amount of the token bought (formatted)"
+      - &token_sold_amount
+        name: token_sold_amount
+        description: "Amount of the token sold (formatted)"
+      - &token_bought_amount_raw
+        name: token_bought_amount_raw
+        description: "Raw amount of the token bought (unformatted)"
+      - &token_sold_amount_raw
+        name: token_sold_amount_raw
+        description: "Raw amount of the token sold (unformatted)"
+      - &amount_usd
+        name: amount_usd
+        description: "USD value of the trade at time of swap"
+        data_tests:
+          - dbt_utils.accepted_range:
+              max_value: 1000000000
+              severity: warn
+      - &fee_tier
+        name: fee_tier
+        description: "DEX fee tier (percentage)"
+      - &fee_usd
+        name: fee_usd
+        description: "USD value of fee paid for the swap"
+      - &token_bought_mint_address
+        name: token_bought_address
+        description: "Mint address of the token bought"
+      - &token_sold_mint_address
+        name: token_sold_address
+        description: "Mint address of the token sold"
+      - &token_bought_vault
+        name: token_bought_vault
+        description: "Vault address of the bought token"
+      - &token_sold_vault
+        name: token_sold_vault
+        description: "Vault address of the sold token"
+      - &project_program_id
+        name: project_program_id
+        description: "Pool program ID of the project"
+      - &project_main_id
+        name: project_main_id
+        description: "Main program ID of the DEX"
+      - &trader_id
+        name: trader_id
+        description: "Address of the trader who executed the swap"
+      - &tx_id
+        name: tx_id
+        description: "Transaction ID for the swap"
+      - &outer_instruction_index
+        name: outer_instruction_index
+        description: "Outer instruction index of the swap"
+      - &inner_instruction_index
+        name: inner_instruction_index
+        description: "Inner instruction index of the swap"
+      - &tx_index
+        name: tx_index
+        description: "Index of the transaction inside the block"
