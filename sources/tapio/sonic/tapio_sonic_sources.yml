@@ -1,0 +1,19 @@
+version: 1
+
+sources:
+  - name: tapio_sonic
+    tags: ["sonic", "tapio", "dex"]
+    description: "Tapio protocol on Sonic"
+    tables:
+      - name: selfpeggingassetfactory_call_createpool
+        description: "Calls to SelfPeggingAssetFactory.createPool on Sonic"
+      - name: selfpeggingassetfactory_evt_poolcreated
+        description: "Pool creation events on Sonic"
+      - name: selfpeggingasset_evt_minted
+        description: "Mint events on Sonic"
+      - name: selfpeggingasset_evt_redeemed
+        description: "Redeem events on Sonic"
+      - name: selfpeggingasset_evt_tokenswapped
+        description: "Swap events on Sonic"
+      - name: selfpeggingasset_evt_donated
+        description: "Donate events on Sonic"

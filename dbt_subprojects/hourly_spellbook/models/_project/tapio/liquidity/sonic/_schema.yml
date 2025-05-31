@@ -1,0 +1,59 @@
+version: 1
+
+models:
+  - name: tapio_sonic_liquidity
+    meta:
+      blockchain: sonic
+      project: tapio
+      contributors: brunota20
+    config:
+      tags: ["sonic", "tapio", "liquidity", "dex"]
+    description: >
+      Tapio daily liquidity on Sonic
+    columns:
+      - name: day
+        description: "Calendar day of the balances"
+        data_type: date
+        tests:
+          - not_null
+      - name: pool_address
+        description: "Pool contract address"
+        data_type: varbinary
+        tests:
+          - not_null
+      - name: token_address
+        description: "Token contract address"
+        data_type: varbinary
+        tests:
+          - not_null
+      - name: token_symbol
+        description: "Token symbol"
+        data_type: varchar
+      - name: token_balance_raw
+        description: "Raw token balance (not adjusted for decimals)"
+        data_type: uint256
+        tests:
+          - not_null
+      - name: token_balance
+        description: "Token balance adjusted for decimals"
+        data_type: double
+        tests:
+          - not_null
+      - name: token_balance_usd
+        description: "USD value of the token balance"
+        data_type: double
+      - name: blockchain
+        description: "Blockchain"
+        data_type: varchar
+        tests:
+          - not_null
+      - name: project
+        description: "Project name"
+        data_type: varchar
+        tests:
+          - not_null
+      - name: version
+        description: "Project version"
+        data_type: varchar
+        tests:
+          - not_null
