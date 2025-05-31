@@ -8,6 +8,6 @@
 {{
     balances_enrich(
         balances_raw = ref('tokens_arbitrum_balances_daily_agg_base'),
-        daily=true,
+        daily=true ,
     )
 }}

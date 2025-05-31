@@ -16,6 +16,6 @@ with balances_raw as (
 
 {{
     balances_daily_agg(
-        balances_raw = 'balances_raw'
+        balances_raw = 'balances_raw' 
     )
 }}
