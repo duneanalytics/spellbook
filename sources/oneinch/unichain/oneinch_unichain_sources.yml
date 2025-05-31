@@ -1,0 +1,28 @@
+version: 2
+
+sources:
+  - name: oneinch_unichain
+    tables:
+      - name: AggregationRouterV6_call_swap
+      - name: AggregationRouterV6_call_clipperSwap
+      - name: AggregationRouterV6_call_clipperSwapTo
+      - name: AggregationRouterV6_call_unoswap
+      - name: AggregationRouterV6_call_unoswap2
+      - name: AggregationRouterV6_call_unoswap3
+      - name: AggregationRouterV6_call_unoswapTo
+      - name: AggregationRouterV6_call_unoswapTo2
+      - name: AggregationRouterV6_call_unoswapTo3
+      - name: AggregationRouterV6_call_ethUnoswap
+      - name: AggregationRouterV6_call_ethUnoswap2
+      - name: AggregationRouterV6_call_ethUnoswap3
+      - name: AggregationRouterV6_call_ethUnoswapTo
+      - name: AggregationRouterV6_call_ethUnoswapTo2
+      - name: AggregationRouterV6_call_ethUnoswapTo3
+      - name: AggregationRouterV6_call_fillOrder
+      - name: AggregationRouterV6_call_fillOrderArgs
+      - name: AggregationRouterV6_call_fillContractOrder
+      - name: AggregationRouterV6_call_fillContractOrderArgs
+      - name: EscrowFactoryV1_call_createDstEscrow
+      - name: EscrowFactoryV1_evt_SrcEscrowCreated
+      - name: lop
+      - name: ar
