@@ -1,7 +1,11 @@
 {{ config(
         schema = 'transfers_bitcoin',
         alias = 'satoshi_rolling_day',
-        
+        materialized='incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
+        unique_key = ['wallet_address', 'day']
 )}}
 
 select
@@ -17,3 +21,6 @@ select
         partition by wallet_address order by day
     ) as amount_transfer_usd
 from {{ ref('transfers_bitcoin_satoshi_agg_day') }}
+{% if is_incremental() %}
+where {{ incremental_predicate('day') }}
+{% endif %}
