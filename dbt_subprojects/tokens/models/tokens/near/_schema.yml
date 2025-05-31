@@ -1,0 +1,24 @@
+version: 1
+
+models:
+  - name: tokens_near
+    meta:
+      blockchain: near
+      sector: tokens
+      contributors: danzipie, Sector920
+    config:
+      tags: ['table', 'near']
+    description: "Token Addresses, Symbols and Decimals on NEAR Network"
+    columns:
+      - name: Blockchain
+        description: "blockchain token address is on"
+      - name: contract_address
+        description: "token contract address"
+        data_tests:
+          - unique
+      - name: symbol
+        description: "Token symbol"
+      - name: name
+        description: "the name of the token"
+      - name: decimals
+        description: "Number of decimals, refers to how divisible a token can be"
