@@ -520,7 +520,10 @@ select
   hmu.token_address,
   hmu.symbol,
   hmu.user,
-  sum(s.atoken_amount) over (order by hmu.block_hour) * hmu.liquidity_index / power(10, 27) as amount
+  sum(s.atoken_amount) over (
+    partition by hmu.token_address, hmu.user 
+    order by hmu.block_hour
+  ) * hmu.liquidity_index / power(10, 27) as amount
 from hourly_market_user hmu
   left join supplied s
     on hmu.block_hour = s.block_hour
