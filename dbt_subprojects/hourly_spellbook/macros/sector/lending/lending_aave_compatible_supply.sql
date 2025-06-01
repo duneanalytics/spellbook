@@ -417,6 +417,49 @@ hourly_market as (
     liquidity_index,
     variable_borrow_index
   from {{ ref(project ~ '_v' ~ version ~ '_' ~ blockchain ~ '_base_market_hourly_agg') }}
+  {% if is_incremental() %}
+  where {{ incremental_predicate('block_hour') }}
+  {% endif %}
+),
+
+market_ordered as (
+  select
+    blockchain,
+    project,
+    version,
+    block_time,
+    block_hour,
+    block_number,
+    token_address,
+    symbol,
+    liquidity_index,
+    variable_borrow_index,
+    tx_hash,
+    row_number() over (partition by block_time, tx_hash, token_address order by evt_index) as event_order
+  from {{ ref(project ~ '_v' ~ version ~ '_' ~ blockchain ~ '_base_market') }}
+  {% if is_incremental() %}
+  where {{ incremental_predicate('block_time') }}
+  {% endif %}
+),
+
+supply_ordered as (
+  select
+    blockchain,
+    project,
+    version,
+    block_time,
+    block_number,
+    coalesce(on_behalf_of, depositor) as user,
+    token_address,
+    symbol,
+    amount,
+    tx_hash,
+    row_number() over (partition by block_time, tx_hash, token_address order by evt_index) as event_order
+  from {{ ref('aave_' ~ blockchain ~ '_supply')}}
+  where version = '3'
+  {% if is_incremental() %}
+  and {{ incremental_predicate('block_time') }}
+  {% endif %}
 ),
 
 supplied as (
@@ -424,18 +467,18 @@ supplied as (
     s.blockchain,
     s.project,
     s.version,
-    date_trunc('hour', s.block_time) as block_hour,
-    coalesce(s.on_behalf_of, s.depositor) as user,
+    m.block_hour,
+    s.user,
     s.token_address,
     s.symbol,
     sum(s.amount / m.liquidity_index * power(10, 27)) as atoken_amount
-  from {{ ref('aave_' ~ blockchain ~ '_supply')}} s
-    inner join {{ ref(project ~ '_v' ~ version ~ '_' ~ blockchain ~ '_base_market') }} m
+  from supply_ordered s
+    inner join market_ordered m
       on s.block_number = m.block_number
+      and s.block_time = m.block_time
+      and s.event_order = m.event_order
       and s.tx_hash = m.tx_hash
       and s.token_address = m.token_address
-      and s.evt_index > m.evt_index
-  where s.version = '3'
   group by 1, 2, 3, 4, 5, 6, 7
 ),
 
@@ -463,7 +506,9 @@ hourly_market_user as (
     hm.variable_borrow_index,
     fs.user
   from hourly_market hm
-    inner join first_supplied fs on hm.token_address = fs.token_address and hm.block_hour >= fs.first_block_hour
+    inner join first_supplied fs
+      on hm.block_hour >= fs.first_block_hour
+      and hm.token_address = fs.token_address
 )
 
 select
@@ -478,8 +523,8 @@ select
   sum(s.atoken_amount) over (order by hmu.block_hour) * hmu.liquidity_index / power(10, 27) as amount
 from hourly_market_user hmu
   left join supplied s
-    on hmu.user = s.user
+    on hmu.block_hour = s.block_hour
     and hmu.token_address = s.token_address
-    and hmu.block_hour = s.block_hour
+    and hmu.user = s.user
 
 {% endmacro %}
