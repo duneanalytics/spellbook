@@ -757,5 +757,8 @@ FROM
         ('usdg-global-dollar', 'solana', 'USDG', '2u1tszSeqZ3qBWF3uNGPFc8TzMk2tdiwknnRMWGWjGWH', 6),
         ('dood-doodles2','solana','DOOD','DvjbEsdca43oQcw2h3HW1CT7N3x5vRcr3QrvTUHnXvgV',9),
         ('dark-dark-eclipse', 'solana', 'DARK', '8BtoThi2ZoXnF7QQK1Wjmh2JuBw9FjVvhnGMVZ2vpump', 6),
-        ('alch-alchemist-ai', 'solana', 'ALCH', 'HNg5PYJmtqcmzXrv6S9zP1CDKk5BgDuyFBxbvNApump', 6)
+        ('alch-alchemist-ai', 'solana', 'ALCH', 'HNg5PYJmtqcmzXrv6S9zP1CDKk5BgDuyFBxbvNApump', 6),
+        ('ghibli-ghiblification', 'solana', 'GHIBLI', '4TBi66vi32S7J8X1A6eWfaLHYmUXu7CStcEmsJQdpump', 6),
+        ('gork-new-xai-gork', 'solana', 'GORK', '38PgzpJYu2HkiYvV8qePFakB8tuobPdGm2FFEn7Dpump', 6),
+        ('house-housecoin', 'solana', 'HOUSE', 'DitHyRMQiSDhn5cnKMJV2CDDt6sVct96YrECiM49pump', 6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
