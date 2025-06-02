@@ -1,13 +1,28 @@
 version: 2
-
 sources:
-  - name: sushi_optimism
-    description: "optimism decoded tables related to Sushiswap Trident contracts"
-    tables:
-      - name: MiniChefV2_evt_LogPoolAddition
-      
-      - name: MiniChefV2_evt_LogSetPool
-      
-      - name: MiniChefV2_evt_LogSushiPerSecond
-
-      
+- name: sushiswap_optimism
+  schema: sushiswap_optimism
+  tables:
+  - name: routeprocessor3_2_call_processRoute
+  - name: routeprocessor3_2_call_transferValueAndprocessRoute
+  - name: routeprocessor4_call_processRoute
+  - name: routeprocessor4_call_transferValueAndprocessRoute
+  - name: routeprocessor5_call_processRoute
+  - name: routeprocessor5_call_transferValueAndprocessRoute
+  - name: routeprocessor5_call_processRouteWithTransferValueOutput
+  - name: routeprocessor5_call_processRouteWithTransferValueInput
+  - name: routeprocessor6_call_processRoute
+  - name: routeprocessor6_call_transferValueAndprocessRoute
+  - name: routeprocessor6_call_processRouteWithTransferValueOutput
+  - name: routeprocessor6_call_processRouteWithTransferValueInput
+  - name: routeprocessor6_1_call_processRoute
+  - name: routeprocessor6_1_call_transferValueAndprocessRoute
+  - name: routeprocessor6_1_call_processRouteWithTransferValueOutput
+  - name: routeprocessor6_1_call_processRouteWithTransferValueInput
+  - name: routeprocessor7_call_processRoute
+  - name: routeprocessor7_call_transferValueAndprocessRoute
+  - name: routeprocessor7_call_processRouteWithTransferValueOutput
+  - name: routeprocessor7_call_processRouteWithTransferValueInput
+  - name: MiniChefV2_evt_LogPoolAddition
+  - name: MiniChefV2_evt_LogSetPool
+  - name: MiniChefV2_evt_LogSushiPerSecond

@@ -16,10 +16,11 @@
 
 with
 
-staked_nxm_history as (
+staking_events as (
   select
     'deposit' as flow_type,
     sd.evt_block_time as block_time,
+    sd.evt_block_number as block_number,
     sd.contract_address as pool_address,
     sd.tokenId as token_id,
     sd.trancheId as tranche_id,
@@ -41,6 +42,7 @@ staked_nxm_history as (
   select
     'deposit extended' as flow_type,
     de.evt_block_time as block_time,
+    de.evt_block_number as block_number,
     de.contract_address as pool_address,
     de.tokenId as token_id,
     cast(null as uint256) as tranche_id,
@@ -62,6 +64,7 @@ staked_nxm_history as (
   select
     'withdraw' as flow_type,
     w.evt_block_time as block_time,
+    w.evt_block_number as block_number,
     w.contract_address as pool_address,
     w.tokenId as token_id,
     w.tranche as tranche_id,
@@ -84,6 +87,7 @@ staked_nxm_history as (
   select
     'stake burn' as flow_type,
     eb.evt_block_time as block_time,
+    eb.evt_block_number as block_number,
     eb.contract_address as pool_address,
     cast(null as uint256) as token_id,
     cast(floor(date_diff('day', from_unixtime(0), eb.evt_block_time) / 91.0) as uint256) as tranche_id,
@@ -104,19 +108,22 @@ staked_nxm_history as (
 )
 
 select
-  flow_type,
-  block_time,
-  date_trunc('day', block_time) as block_date,
-  pool_address,
-  token_id,
-  tranche_id,
-  init_tranche_id,
-  new_tranche_id,
-  tranche_expiry_date,
-  if(tranche_expiry_date > current_date, true, false) as is_active,
-  amount,
-  topup_amount,
-  user,
-  evt_index,
-  tx_hash
-from staked_nxm_history
+  se.flow_type,
+  se.block_time,
+  date_trunc('day', se.block_time) as block_date,
+  se.block_number,
+  spl.pool_id,
+  se.pool_address,
+  se.token_id,
+  se.tranche_id,
+  se.init_tranche_id,
+  se.new_tranche_id,
+  se.tranche_expiry_date,
+  if(se.tranche_expiry_date > current_date, true, false) as is_active,
+  se.amount,
+  se.topup_amount,
+  se.user,
+  se.evt_index,
+  se.tx_hash
+from staking_events se
+  inner join {{ ref('nexusmutual_ethereum_staking_pools_list') }} spl on se.pool_address = spl.pool_address
