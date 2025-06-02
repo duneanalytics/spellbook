@@ -67,7 +67,6 @@ FROM (VALUES
     (0x1ffba0f56dd1350b99d370fdb8b9ffae10a4d689, 'UNI-V2', 18),
     (0xd44a6ce0a65ce6bc3b1d677cc1fd80b9ad7f467c, 'FSFS', 18),
     (0xa59a1b9d600c466d48c516c013bbc12f4e0f4447, 'UNI-V2', 18),
-    (0x6417431ce7382bfacb311fc526faaa6ff63030d8, 'M&M's', 9),
     (0x7ab9bde19f0583e4f4f529ca2f334c6dcde4ea98, 'UNI-V2', 18),
     (0x8f1a2a1e5ac164c74990c2645dcd8a22064ff5de, 'UNI-V2', 18),
     (0x73e52e11866d8ca99a5bd56634cf30fe8e2d8a98, 'UNI-V2', 18),
