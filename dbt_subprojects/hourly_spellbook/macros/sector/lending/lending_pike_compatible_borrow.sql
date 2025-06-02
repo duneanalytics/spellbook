@@ -59,7 +59,7 @@ liquidations_borrow AS (
         'base' AS blockchain,
         'pike' AS project,
         '1' AS version,
-        'liquidation' AS transaction_type,
+        'liquidation_borrow' AS transaction_type,
         'borrow' AS loan_type,
         dm.token_address,
         l.borrower,

@@ -57,7 +57,7 @@ liquidations_supply AS (
         'base' AS blockchain,
         'pike' AS project,
         '1' AS version,
-        'liquidation' AS transaction_type,
+        'liquidation_supply' AS transaction_type,
         dm.token_address,
         l.borrower AS depositor,
         l.borrower AS on_behalf_of,
