@@ -74,7 +74,7 @@ liquidations_borrow AS (
         l.evt_tx_hash AS tx_hash,
         l.evt_index
     FROM {{ source(project ~ '_' ~ blockchain, evt_liquidation_borrow_table) }} l
-    JOIN deployed_markets dm ON l.pTokenBorrowed = dm.ptoken_address
+    JOIN deployed_markets dm ON l.pTokenCollateral = dm.ptoken_address
 )
 
 SELECT * FROM borrows
