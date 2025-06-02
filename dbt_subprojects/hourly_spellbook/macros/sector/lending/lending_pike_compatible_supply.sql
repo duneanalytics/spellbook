@@ -28,6 +28,9 @@ deposits AS (
         d.evt_index
     FROM {{ source(project ~ '_' ~ blockchain, evt_deposit_table) }} d
     JOIN deployed_markets dm ON d.contract_address = dm.ptoken_address
+    {% if is_incremental() %}
+    WHERE {{ incremental_predicate('d.evt_block_time') }}
+    {% endif %}
 ),
 
 withdrawals AS (
@@ -50,6 +53,9 @@ withdrawals AS (
         w.evt_index
     FROM {{ source(project ~ '_' ~ blockchain, evt_withdraw_table) }} w
     JOIN deployed_markets dm ON w.contract_address = dm.ptoken_address
+    {% if is_incremental() %}
+    WHERE {{ incremental_predicate('w.evt_block_time') }}
+    {% endif %}
 ),
 
 liquidations_supply AS (
@@ -72,6 +78,9 @@ liquidations_supply AS (
         l.evt_index
     FROM {{ source(project ~ '_' ~ blockchain, evt_liquidation_borrow_table) }} l
     JOIN deployed_markets dm ON l.pTokenCollateral = dm.ptoken_address
+    {% if is_incremental() %}
+    WHERE {{ incremental_predicate('l.evt_block_time') }}
+    {% endif %}
 )
 
 SELECT * FROM deposits
@@ -79,4 +88,5 @@ UNION ALL
 SELECT * FROM withdrawals
 UNION ALL  
 SELECT * FROM liquidations_supply
+
 {% endmacro %}

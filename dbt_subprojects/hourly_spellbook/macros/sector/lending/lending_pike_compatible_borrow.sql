@@ -29,6 +29,9 @@ borrows AS (
         b.evt_index
     FROM {{ source(project ~ '_' ~ blockchain, evt_borrow_table) }} b
     JOIN deployed_markets dm ON b.contract_address = dm.ptoken_address
+    {% if is_incremental() %}
+    WHERE {{ incremental_predicate('b.evt_block_time') }}
+    {% endif %}
 ),
 
 repays AS (
@@ -52,6 +55,9 @@ repays AS (
         r.evt_index
     FROM {{ source(project ~ '_' ~ blockchain, evt_repay_table) }} r
     JOIN deployed_markets dm ON r.contract_address = dm.ptoken_address
+    {% if is_incremental() %}
+    WHERE {{ incremental_predicate('r.evt_block_time') }}
+    {% endif %}
 ),
 
 liquidations_borrow AS (
@@ -75,6 +81,9 @@ liquidations_borrow AS (
         l.evt_index
     FROM {{ source(project ~ '_' ~ blockchain, evt_liquidation_borrow_table) }} l
     JOIN deployed_markets dm ON l.pTokenCollateral = dm.ptoken_address
+    {% if is_incremental() %}
+    WHERE {{ incremental_predicate('l.evt_block_time') }}
+    {% endif %}
 )
 
 SELECT * FROM borrows
