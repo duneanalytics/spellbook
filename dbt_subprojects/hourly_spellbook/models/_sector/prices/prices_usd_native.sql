@@ -8,12 +8,12 @@
 
 WITH native_tokens as (
     SELECT
-        b.name AS blockchain,
-        b.token_symbol AS symbol,
-        b.token_address AS contract_address,
-        b.token_decimals AS decimals
+        name AS blockchain,
+        token_symbol AS symbol,
+        token_address AS contract_address,
+        token_decimals AS decimals
     FROM {{ source('dune', 'blockchains') }}
-    WHERE is_evm = true
+    WHERE protocol = 'evm'
 )
 
 SELECT
