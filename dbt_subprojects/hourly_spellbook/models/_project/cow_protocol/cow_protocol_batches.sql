@@ -96,6 +96,8 @@ FROM
             token_approvals
         FROM {{ ref('cow_protocol_base_batches') }}
 
+         UNION ALL
+
         SELECT
             'avalanche' AS blockchain,
             'cow_protocol' AS project,
@@ -115,6 +117,8 @@ FROM
             unwraps,
             token_approvals
         FROM {{ ref('cow_protocol_avalanche_batches') }}
+
+         UNION ALL
 
         SELECT
             'polygon' AS blockchain,
