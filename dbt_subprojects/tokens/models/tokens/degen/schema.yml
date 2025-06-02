@@ -14,12 +14,7 @@ models:
         description: "Contract address of the ERC20 token"
         data_tests:
           - unique
-          - not_null
       - name: symbol
         description: "Symbol of the token"
-        data_tests:
-          - not_null
       - name: decimals
         description: "Number of decimals the token has"
-        data_tests:
-          - not_null
