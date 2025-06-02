@@ -6,24 +6,28 @@
 -- this is a TEMPORARY spell that should be incorporated in the general prices models.
 -- more discussion here: https://github.com/duneanalytics/spellbook/issues/6577
 
-WITH native_tokens as (
-    SELECT
-        name AS blockchain,
-        token_symbol AS symbol,
-        token_address AS contract_address,
-        token_decimals AS decimals
-    FROM {{ source('dune', 'blockchains') }}
-    WHERE protocol = 'evm'
+with native_prices as (
+    select
+        *
+    from
+        {{ source('prices', 'usd') }}
+    where
+        blockchain is null
 )
 
-SELECT
-    t.blockchain,
-    t.contract_address,
-    t.decimals,
-    t.symbol,
-    p.timestamp,
-    p.price
-FROM {{ source('prices', 'minute') }} p
-INNER JOIN native_tokens t
-ON t.blockchain = p.blockchain
-and t.contract_address = p.contract_address
+, native_tokens as (
+    select
+        *
+    FROM {{ source('dune', 'blockchains') }}
+)
+
+select
+    t.name as blockchain
+    , t.token_address as contract_address
+    , t.token_symbol as symbol
+    , t.token_decimals as decimals
+    , max(p.minute) as minutes
+    , max(p.price) as price
+from native_tokens as t
+left join native_prices as p
+    on t.token_symbol = p.symbol
