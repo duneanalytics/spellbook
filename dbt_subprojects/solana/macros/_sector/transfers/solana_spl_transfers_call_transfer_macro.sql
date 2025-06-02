@@ -84,11 +84,8 @@ LEFT JOIN
 LEFT JOIN 
     {{ ref('solana_utils_token_accounts') }} tk_d 
     ON tk_d.address = b.to_token_account
-LEFT JOIN 
-    {{ ref('solana_utils_token_address_mapping') }} tk_m
-    ON tk_m.base58_address = COALESCE(tk_s.token_mint_address, tk_d.token_mint_address)
 LEFT JOIN prices p
-    ON p.contract_address = tk_m.binary_address
+    ON p.contract_address = from_base58(COALESCE(tk_s.token_mint_address, tk_d.token_mint_address))
     AND p.minute = date_trunc('minute', b.block_time)
 
 {% endmacro %} 

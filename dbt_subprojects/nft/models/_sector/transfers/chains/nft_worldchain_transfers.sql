@@ -14,7 +14,7 @@
 {{nft_transfers(
     blockchain='worldchain'
     , base_transactions = source('worldchain','transactions')
-    , erc721_transfers = source('erc721_worldchain','evt_transfer')
-    , erc1155_single = source('erc1155_worldchain','evt_transfersingle')
-    , erc1155_batch = source('erc1155_worldchain', 'evt_transferbatch')
+    , erc721_transfers = source('erc721_worldchain','evt_Transfer')
+    , erc1155_single = source('erc1155_worldchain','evt_TransferSingle')
+    , erc1155_batch = source('erc1155_worldchain', 'evt_TransferBatch')
 )}}

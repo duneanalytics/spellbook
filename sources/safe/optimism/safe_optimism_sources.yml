@@ -62,24 +62,4 @@ sources:
           - *proxy
           - *singleton
 
-  - name: erc20_optimism
-    tables:
-      - name: evt_Transfer
-        description: "ERC20 transfer events on Optimism"
-        columns:
-          - *contract_address
-          - *evt_block_number
-          - *evt_block_time
-          - *evt_index
-          - *evt_tx_hash
-          - &from
-            name: from
-            description: "Sender address"
-          - &to
-            name: to
-            description: "Recipient address"
-          - &value
-            name: value
-            description: "Amount transferred"
-
   

@@ -14,7 +14,6 @@
     blockchain='viction'
     , traces = source('viction','traces')
     , transactions = source('viction','transactions')
-    , erc20_transfers = source('erc20_viction','evt_transfer')
-    , native_contract_address = var('ETH_ERC20_ADDRESS')
+    , erc20_transfers = source('erc20_viction','evt_Transfer')
 )
 }} 

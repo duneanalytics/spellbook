@@ -20,8 +20,8 @@ WITH dexs AS (
         t.fromAmount AS token_sold_amount_raw,
         CAST(NULL AS VARBINARY) AS token_bought_address,
         CAST(NULL AS VARBINARY) AS token_sold_address,
-        from_utf8(bytearray_rtrim(t.toCurrencyKey)) AS token_bought_symbol,
-        from_utf8(bytearray_rtrim(t.fromCurrencyKey)) AS token_sold_symbol,
+        t.toCurrencyKey AS token_bought_key,
+        t.fromCurrencyKey AS token_sold_key,
         t.contract_address AS project_contract_address,
         t.evt_tx_hash AS tx_hash,
         t.evt_index
@@ -29,6 +29,13 @@ WITH dexs AS (
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('t.evt_block_time') }}
     {% endif %}
+),
+
+synths as (
+select 
+    currencyKey, synth as synth_address, evt_block_time as valid_from
+    ,lead(evt_block_time) over (partition by currencyKey order by evt_block_time) as valid_to
+from {{ source('synthetix_optimism', 'Issuer_evt_SynthAdded') }}
 )
 
 SELECT
@@ -41,17 +48,19 @@ SELECT
     dexs.block_number,
     dexs.token_bought_amount_raw,
     dexs.token_sold_amount_raw,
-    erc20_bought.contract_address AS token_bought_address,
-    erc20_sold.contract_address AS token_sold_address,
+    synth_bought.synth_address AS token_bought_address,
+    synth_sold.synth_address AS token_sold_address,
     dexs.taker,
     dexs.maker,
     dexs.project_contract_address,
     dexs.tx_hash,
     dexs.evt_index
 FROM dexs
-LEFT JOIN {{ source('tokens', 'erc20') }} erc20_bought
-    ON erc20_bought.symbol = dexs.token_bought_symbol
-    AND erc20_bought.blockchain = 'optimism'
-LEFT JOIN {{ source('tokens', 'erc20') }} erc20_sold
-    ON erc20_sold.symbol = dexs.token_sold_symbol
-    AND erc20_sold.blockchain = 'optimism'
+LEFT JOIN synths synth_bought
+    ON synth_bought.currencyKey = dexs.token_bought_key
+    AND dexs.block_time >= synth_bought.valid_from 
+    AND dexs.block_time < coalesce(synth_bought.valid_to, now())
+LEFT JOIN synths synth_sold
+    ON synth_sold.currencyKey = dexs.token_sold_key
+    AND dexs.block_time >= synth_sold.valid_from 
+    AND dexs.block_time < coalesce(synth_sold.valid_to, now())

@@ -1,6 +1,6 @@
 {% macro 
     balancer_v2_compatible_bpt_supply_macro(
-        blockchain, version, project_decoded_as, base_spells_namespace, pool_labels_spell
+        blockchain, version, project_decoded_as, pool_labels_model, transfers_spell
     ) 
 %}
 
@@ -11,8 +11,10 @@ WITH pool_labels AS (
                 name,
                 pool_type,
                 ROW_NUMBER() OVER (PARTITION BY address ORDER BY MAX(updated_at) DESC) AS num
-            FROM {{ pool_labels_spell }}
+            FROM {{ source('labels', pool_labels_model) }}
             WHERE blockchain = '{{blockchain}}'
+            and source = 'query'
+            and model_name = '{{pool_labels_model}}'
             GROUP BY 1, 2, 3) 
         WHERE num = 1
     ),
@@ -24,7 +26,7 @@ WITH pool_labels AS (
             contract_address AS token,
             COALESCE(SUM(CASE WHEN t."from" = 0x0000000000000000000000000000000000000000 THEN value / POWER(10, 18) ELSE 0 END), 0) AS mints,
             COALESCE(SUM(CASE WHEN t.to = 0x0000000000000000000000000000000000000000 THEN value / POWER(10, 18) ELSE 0 END), 0) AS burns
-        FROM  {{ ref(base_spells_namespace + '_transfers_bpt') }} t
+        FROM  {{ transfers_spell }} t
         WHERE blockchain = '{{blockchain}}'   
         AND version = '{{version}}'
         GROUP BY 1, 2
@@ -143,7 +145,7 @@ WITH pool_labels AS (
 
 {% macro 
     balancer_v3_compatible_bpt_supply_macro(
-        blockchain, version, project_decoded_as, base_spells_namespace, pool_labels_spell
+        blockchain, version, project_decoded_as, pool_labels_model, transfers_spell
     ) 
 %}
 
@@ -154,8 +156,10 @@ WITH pool_labels AS (
                 name,
                 pool_type,
                 ROW_NUMBER() OVER (PARTITION BY address ORDER BY MAX(updated_at) DESC) AS num
-            FROM {{ pool_labels_spell }}
+            FROM {{ source('labels', pool_labels_model) }}
             WHERE blockchain = '{{blockchain}}'
+            and source = 'query'
+            and model_name = '{{pool_labels_model}}'
             GROUP BY 1, 2, 3) 
         WHERE num = 1
     ),
@@ -167,7 +171,7 @@ WITH pool_labels AS (
             contract_address AS token,
             COALESCE(SUM(CASE WHEN t."from" = 0x0000000000000000000000000000000000000000 THEN value / POWER(10, 18) ELSE 0 END), 0) AS mints,
             COALESCE(SUM(CASE WHEN t.to = 0x0000000000000000000000000000000000000000 THEN value / POWER(10, 18) ELSE 0 END), 0) AS burns
-        FROM  {{ ref(base_spells_namespace + '_transfers_bpt') }} t
+        FROM  {{ transfers_spell }} t
         WHERE blockchain = '{{blockchain}}'   
         AND version = '{{version}}'
         GROUP BY 1, 2
