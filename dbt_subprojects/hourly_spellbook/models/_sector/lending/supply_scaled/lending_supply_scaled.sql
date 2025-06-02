@@ -2,12 +2,7 @@
   config(
     schema = 'lending',
     alias = 'supply_scaled',
-    partition_by = ['blockchain', 'project', 'block_month'],
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['blockchain', 'project', 'version', 'block_hour', 'token_address', 'user'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_hour')],
+    materialized = 'view',
     post_hook = '{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "celo", "ethereum", "fantom", "gnosis", "linea", "optimism", "polygon", "scroll", "sonic", "zksync"]\',
                                 "sector",
                                 "lending",
@@ -46,9 +41,6 @@ select
   user,
   amount
 from {{ model }}
-{% if is_incremental() %}
-where {{ incremental_predicate('block_hour') }}
-{% endif %}
 {% if not loop.last %}
 union all
 {% endif %}

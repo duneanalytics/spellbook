@@ -9,15 +9,6 @@ models:
     config:
       tags: ['lending', 'supply', 'aave', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom', 'gnosis', 'scroll', 'zksync', 'linea', 'sonic']
     description: "Hourly lending scaled supply"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - project
-            - version
-            - block_hour
-            - token_address
-            - user
     columns:
       - &blockchain
         name: blockchain

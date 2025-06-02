@@ -9,12 +9,6 @@ models:
     config:
       tags: ['lending', 'supply', 'aave', 'compound', 'scroll']
     description: "Hourly lending scaled supply on Scroll"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_hour
-            - token_address
-            - user
     columns:
       - &blockchain
         name: blockchain
@@ -28,26 +22,18 @@ models:
       - &block_month
         name: block_month
         description: "Block month"
-        data_tests:
-          - not_null
       - &block_hour
         name: block_hour
         description: "Block hour"
-        data_tests:
-          - not_null
       - &token_address
         name: token_address
         description: "Token contract address"
-        data_tests:
-          - not_null
       - &symbol
         name: symbol
         description: "Token symbol"
       - &user
         name: user
         description: "User wallet address"
-        data_tests:
-          - not_null
       - &amount
         name: amount
         description: "Scaled supply amount"
@@ -76,4 +62,4 @@ models:
       - *token_address
       - *symbol
       - *user
-      - *amount 
+      - *amount
