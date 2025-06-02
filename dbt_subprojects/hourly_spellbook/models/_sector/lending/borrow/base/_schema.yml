@@ -5,10 +5,10 @@ models:
     meta:
       blockchain: base
       sector: lending
-      project: aave, compound
-      contributors: tomfutago, maybeYonas, pyor_xyz
+      project: aave, compound, pike
+      contributors: tomfutago, maybeYonas, pyor_xyz, brunota20
     config:
-      tags: ["lending", "borrow", "aave", "compound", "base"]
+      tags: ["lending", "borrow", "aave", "compound", "pike", "base"]
     description: "All lending borrow transactions on Base"
     data_tests:
       - dbt_utils.unique_combination_of_columns:

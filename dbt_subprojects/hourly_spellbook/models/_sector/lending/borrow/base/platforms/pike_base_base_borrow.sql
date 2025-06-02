@@ -17,7 +17,7 @@
     version = '1',
     evt_borrow_table = 'ptoken_evt_borrow',
     evt_repay_table = 'ptoken_evt_repayborrow',
-    evt_liquidation_borrow_table = 'ptoken_evt_liquidationborrow',
+    evt_liquidation_borrow_table = 'ptoken_evt_liquidateborrow',
     deploy_market_table = 'factory_call_deploymarket'
   )
 }}

@@ -31,7 +31,6 @@ borrows AS (
     JOIN deployed_markets dm ON b.contract_address = dm.ptoken_address
 ),
 
--- Repays
 repays AS (
     SELECT
         'base' AS blockchain,
@@ -71,7 +70,7 @@ liquidations_borrow AS (
         DATE_TRUNC('month', l.evt_block_time) AS block_month,
         l.evt_block_time AS block_time,
         l.evt_block_number AS block_number,
-        l.pTokenBorrowed AS project_contract_address,
+        l.pTokenCollateral AS project_contract_address,
         l.evt_tx_hash AS tx_hash,
         l.evt_index
     FROM {{ source(project ~ '_' ~ blockchain, evt_liquidation_borrow_table) }} l
