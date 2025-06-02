@@ -1,19 +1,76 @@
 {{
     config(
-        schema = 'tokens_corn'
-        ,alias = 'erc20'
-        ,tags = ['static']
-        ,materialized = 'table'
+        schema = 'tokens_corn',
+        alias = 'erc20',
+        tags = ['static'],
+        materialized = 'table'
     )
 }}
 
 SELECT
-    contract_address
-    , symbol
-    , decimals
+    contract_address,
+    symbol,
+    decimals
 FROM (VALUES
-    (0xda5ddd7270381a7c2717ad10d1c0ecb19e3cdfb2, 'wBTCN', 18)
-    , (0xecAc9C5F704e954931349Da37F60E39f515c11c1, 'LBTC', 8)
-    , (0xDF0B24095e15044538866576754F3C964e902Ee6, 'USDC.e', 6)
-    , (0xF469fBD2abcd6B9de8E169d128226C0Fc90a012e, 'pumpBTC', 8)
-) as temp (contract_address, symbol, decimals)
+    ('0xda5ddd7270381a7c2717ad10d1c0ecb19e3cdfb2', 'wBTCN', 18),
+    ('0xecAc9C5F704e954931349Da37F60E39f515c11c1', 'LBTC', 8),
+    ('0xDF0B24095e15044538866576754F3C964e902Ee6', 'USDC.e', 6),
+    ('0xF469fBD2abcd6B9de8E169d128226C0Fc90a012e', 'pumpBTC', 8),
+    ('0xebe423b5466f9675669b2a4521b6e9f852dd1f52', 'BTC-Fi', 18),
+    ('0xc77478b0e4eecee34ebe2fc4be7ec9bba20a5ccd', 'LBTCwBTCN', 18),
+    ('0x5362ee087d5543e393832980c23494146c42c879', 'pyt-HG-BTC-Fi-31JAN25', 18),
+    ('0x6b00d96982bdddabc6c8b77c7f927fc36f52956f', 'aPumpBTCPUMPBTC', 8),
+    ('0x75c2354b9076795169aab4fef124b571214963d1', 'aCornWBTCN', 18),
+    ('0xa3c9049581b40cc7e603d8bf5b88e556e4d13c6c', 'lwBTCn', 18),
+    ('0x8b9d192d55fe91b91eb2fb782d8bbd702b9a8a25', 'HUSK', 18),
+    ('0xf49e64c72421cf712afc982db2329f9efaadb818', 'variableDebtCornUSDA', 18),
+    ('0xd74955c4a97fa56dc8b78b563b19f38aa1403515', 'TK1', 18),
+    ('0x2305d944c7e7f89f0f5259d4c4e099a57888cfc7', 'LBTC', 18),
+    ('0xbc596c5794c12ea9d41922a5d13cc1fadbe4b37f', 'z0LBTC', 8),
+    ('0x80d515b3c537896a8e2f5800bc9e55ff8cc4a377', 'aCornUSDC', 6),
+    ('0xc5368340937a95544ab0b596afb93dbaaee44847', 'ct-HG-BTC-Fi-26MAR25', 18),
+    ('0x5978639485022ecc7583ea1364ef8a64087a8b1a', 'pyt-HG-weETHWETH-31JAN25', 18),
+    ('0x6d291a7fb9b6f6c68050ab7fd0c11f350af17f87', '000', 18),
+    ('0xb27d447cf1d211ca60676728ac28060ecfb90800', 'waBTCwBTCN', 18),
+    ('0x68c4facc802bafcee59613484d92e0e84ba23b94', 'solvBTCBBN-gauge', 18),
+    ('0x72e4345589956618a61669a7516ee48251464f39', 'satwaBTC', 18),
+    ('0xf34a494e2e148d3227a2e8eea70d58bcbe88b188', 'weETHWETH', 18),
+    ('0xb8ce59fc3717ada4c02eadf9682a9e934f625ebb', 'USD₮0', 6),
+    ('0xca9ac8902302c1bcf95588947443bd5360279f77', 'LIMPwBTCN', 18),
+    ('0x997e19b4e2385fe36646aaf672c5edb84713d4ae', 'z0LBTC', 8),
+    ('0x68965cee0cc40b79a1626489b0d49b4164760d0e', 'CORN_Mock', 18),
+    ('0x2dc6783d0ef6176d9e7d146a1c68321ae0daf11d', 'wBTCNUSDC', 18),
+    ('0xe752fc9fce801ee3809b58c10b4c12645c33d1db', 'HAY', 18),
+    ('0xa7ba08cfc37e7cc67404d4996ffbb3e977490115', 'bbqBTCN', 18),
+    ('0x56a0019eae0fb988173b47ba09c42c5c060cb392', 'USDCwBTCN-gauge', 18),
+    ('0xfad13d1cdcfbb9042fbec263194d7f48f870e35a', 'z0eBTC', 8),
+    ('0xabbb41172bce0226a3d3c686f747273848bdb85c', 'TMT', 18),
+    ('0x8f4118c4a978c7a2434f5fd79ac5dc1215c11f56', 'aCornUSDCE', 6),
+    ('0x4b6d20acfc764ef6b60f0339e7cbad83284e7d6e', 'YBTC', 8),
+    ('0x9c94d6da78a2cc690de21af641f756ff621424db', 'ROY-0', 18),
+    ('0x967916d3b842944cafd0ef4a03bfe3fbeef87f09', 'variableDebtz0eBTC', 8),
+    ('0xf501e9153e4a14e2eb314c6383027179c9516db1', 'aCornWBTCN', 18),
+    ('0x91e59126365118a2bfe13560a3a575c6d42bf59f', 'ROY-1', 18),
+    ('0x396e510d9ae71f6ebb77b49232a5317214420250', 'stTEST', 18),
+    ('0x85adfa60ddf86b67e6fd493bd2c774b2ed772d14', 'weETH', 18),
+    ('0xe60c701701c76e8a61963903542d7241a2eac7d3', 'FUSDC', 18),
+    ('0xa9f9eec1e4fa98a4e34e1ca55ba567d2a884d7d1', 'HAY', 18),
+    ('0x9c73abc63e2fe42fdab66f65d6a20e63a32f5623', 'test', 18),
+    ('0x1ef9db43da99b9d6a8c6e96beb760c9e03e889b8', 'Zzz', 18),
+    ('0x3660dc59faf8cbfbe308a547c4312882fcf503c5', 'testBTCN', 18),
+    ('0xb010b5c66c1268e9d8a66a1e4b6ca4c9de8b7966', 'CORN_Mock', 18),
+    ('0x1c0e090319797284d30e346f18a56389d52a4825', 'aCornWBTCN', 18),
+    ('0xb32431caadcbfa812f7b7d3f3ce0f144513ab94c', 'pyt-HG-weETHWETH-26MAR25', 18),
+    ('0xf6718b2701d4a6498ef77d7c152b2137ab28b8a3', 'stBTC', 18),
+    ('0xe658aeeba03e85ee7aa9b13fd865c60240df8b83', 'satLBTC', 8),
+    ('0x25c91c795803db39c191ca4f04e7e1b837399135', 'UUSDT', 18),
+    ('0xd09e270fca3e0bdb97af31a5a2029f5bcb8b876e', 'satwaBTC', 18),
+    ('0x4cc57e5758dadd992edf2bdeeb6bc85713f9e251', 'aCornWBTCN', 18),
+    ('0x83ed698d553f3047a13b5e3c0e8a1782eec9f14d', 'aPumpBTCPUMPBTC', 8),
+    ('0x102dacee5d0e98705f56af494e196a00506a1b61', 'aCornWBTCN', 18),
+    ('0x0d28beee01e974d04db3f31cc9c8a96b36af79b8', 'aCornWBTCN', 18),
+    ('0x7b1d6ad5f37903405fa0d70779320f06437c98e7', 'satLBTC', 8),
+    ('0x6b9202e628a4007d7ae49aa83f6c71bfde5b8924', 'lp-HG-weETHWETH-31JAN25', 18),
+    ('0x0e89ddc825fd22858e8392a3aabf50e8d7995bb0', 'lp-HG-BTC-Fi-31JAN25', 18),
+    ('0xe41f373c402c972f436ca7e6f6ff68eb56e81212', 'lp-HG-BTC-Fi-26MAR25', 18)
+) AS temp (contract_address, symbol, decimals)
