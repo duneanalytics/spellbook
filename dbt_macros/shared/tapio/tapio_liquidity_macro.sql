@@ -223,7 +223,7 @@ daily_prices AS (
     SELECT
         CAST(date_trunc('day', minute) AS DATE) AS day,
         contract_address AS token,
-        AVG(price) AS price,  -- Average price for the day
+        AVG(price) AS price,
         MAX(decimals) AS decimals
     FROM {{ source('prices', 'usd') }}
     WHERE blockchain = '{{ blockchain }}'
@@ -262,7 +262,6 @@ SELECT
     d.pool_address,
     d.token_address,
     t.symbol AS token_symbol,
-    -- Create pool name with token-token pattern
     CONCAT(
         COALESCE(t0.symbol, 'UNKNOWN'), 
         '-', 
@@ -277,11 +276,8 @@ LEFT JOIN relevant_tokens t
     ON t.contract_address = d.token_address
 LEFT JOIN prices_with_calendar pwc 
     ON pwc.day = d.day AND pwc.token_address = d.token_address
--- Join pool_tokens to get both token addresses for the pool name
 LEFT JOIN pool_tokens pt ON d.pool_address = pt.pool_address
--- Join to get token0 symbol
 LEFT JOIN relevant_tokens t0 ON pt.token0 = t0.contract_address
--- Join to get token1 symbol  
 LEFT JOIN relevant_tokens t1 ON pt.token1 = t1.contract_address
 WHERE d.token_balance_raw IS NOT NULL
 ORDER BY d.day, d.pool_address, d.token_address
