@@ -2,12 +2,14 @@
 
 This directory contains models for token metadata.
 
-Token metadata is stored in `tokens.erc20` table in dune. We derive that token metadata directly from onchain calls to the token contract. 
+Token metadata is stored in the `tokens.erc20` table in Dune. This data is derived directly from on-chain calls to token contracts and is generated outside of dbt. It combines data from individual chain models in the `tokens` subproject and our automated approach.
 
-Everything that lives in the models inside of this reposiotry are either historical artifacts from when we didn't automatcially pull metadata or manual overrides/additions. 
+Models within this repository are primarily historical artifacts from before we automatically pulled metadata, or they consist of manual overrides and additions.
 
-We will only accept contributions to this directory if they are:
-- in their entirety not contained within the `tokens.erc20` table in dune
-- strictly necessary for the project to function
+Contributions to this directory will only be accepted if they meet the following criteria:
+- The data is not already present in Dune's `tokens.erc20` table.
+- The data is strictly necessary for the project to function.
 
-If you need any additional token metadata for any non standard longtail tokens inside of Dune, consider just uploading the token metadata to a table in dune and joining that into your query instead.
+**A strong justification is required for adding new models to this directory; otherwise, pull requests will not be accepted.**
+
+For additional metadata related to non-standard or long-tail tokens in Dune, consider uploading the metadata to a separate table in Dune and joining it into your queries.
