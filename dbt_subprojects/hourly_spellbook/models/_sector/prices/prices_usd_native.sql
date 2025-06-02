@@ -24,10 +24,10 @@ with native_prices as (
 select
     t.name as blockchain
     , t.token_address as contract_address
-    , t.token_symbol as symbol
     , t.token_decimals as decimals
-    , max(p.minute) as minutes
-    , max(p.price) as price
+    , t.token_symbol as symbol
+    , p.minute
+    , p.price
 from native_tokens as t
-left join native_prices as p
+inner join native_prices as p
     on t.token_symbol = p.symbol
