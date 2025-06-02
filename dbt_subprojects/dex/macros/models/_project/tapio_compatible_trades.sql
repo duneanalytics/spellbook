@@ -106,7 +106,6 @@ swap_direction AS (
 -- Map the swap events to token information
 dexs AS (
     SELECT
-        -- Map tokenIn/tokenOut to actual token addresses
         CASE 
             WHEN s.tokenIn = 0 THEN p.token0 
             WHEN s.tokenIn = 1 THEN p.token1
