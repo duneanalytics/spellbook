@@ -94,10 +94,9 @@ FROM
     ('ape-apecoin', null, 'APE', null, null),
     ('gho-gho', null, 'GHO', null, null),
     ('plume-plume', null, 'PLUME', null, null),
-    ('gho-lens-protocol', null, 'GHO', null, null),
-    ('degen-degen', null, 'DEGEN', null, null),
+    ('degen-degen-base', null, 'DEGEN', null, null),
     ('soph-sophon', null, 'SOPH', null, null),
-    ('btcn-corn', null, 'BTCN', null, null),
-    ('vic-viction', null, 'VIC', null, null),
+    ('corn-corn2', null, 'BTCN', null, null),
+    ('tomo-tomochain', null, 'VIC', null, null),
     ('s-sonic', null, 'S', null, null)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
