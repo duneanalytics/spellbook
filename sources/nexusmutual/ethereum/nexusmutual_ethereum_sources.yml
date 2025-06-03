@@ -43,6 +43,8 @@ sources:
       - name: IndividualClaims_call_submitClaim
       - name: IndividualClaims_call_redeemClaimPayout
       - name: swapoperator_evt_swapped
+      - name: StakingPool_evt_ActiveStakeUpdated
+      - name: StakingPool_evt_DepositUpdated
 
   - name: nexusmutual_ethereum_ethereum # messed up naming during decding - ideally to be merged into nexusmutual_ethereum
     tables:
