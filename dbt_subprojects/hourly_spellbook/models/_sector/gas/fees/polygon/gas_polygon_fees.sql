@@ -34,7 +34,7 @@ WITH base_model as (
                             )
             end
         ) as tx_fee_breakdown_raw
-        ,{{var('ETH_ERC20_ADDRESS')}} as tx_fee_currency
+        ,'0x0000000000000000000000000000000000001010' as tx_fee_currency
         ,blocks.miner AS block_proposer
         ,txns.max_fee_per_gas
         ,txns.priority_fee_per_gas
