@@ -23,14 +23,6 @@ WITH base_liquidity as (
         , decimals
     from
         {{ tokens_erc20_model }}
-    union all
-    --native tokens
-    select
-        blockchain
-        , {{var('ETH_ERC20_ADDRESS')}} as contract_address -- 0x00..00
-        , native_token_symbol as symbol
-        , 18 as decimals
-    from {{ source('evms','info') }}
 )
 , prices AS (
     SELECT
