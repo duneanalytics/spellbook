@@ -307,6 +307,9 @@ models:
       - &evt_block_time
         name: evt_block_time
         description: "Timestamp for block event time in UTC"
+      - &evt_block_number
+        name: evt_block_number
+        description: "Event block number"
       - &evt_block_date
         name: evt_block_date
         description: "Date of block event in UTC"
