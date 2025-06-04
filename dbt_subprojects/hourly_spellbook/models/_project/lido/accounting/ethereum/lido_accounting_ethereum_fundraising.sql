@@ -7,7 +7,7 @@
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "lido_accounting",
-                                \'["pipistrella", "adcv", "zergil1397"]\') }}'
+                                \'["pipistrella", "adcv", "zergil1397", "hosuke"]\') }}'
         )
 }}
 
@@ -58,49 +58,59 @@ diversifications_addresses AS (
 ),
 
 
+filtered_multisigs AS (
+    SELECT DISTINCT address
+    FROM multisigs_list
+    WHERE name IN ('Aragon','FinanceOpsMsig')
+    AND chain = 'Ethereum'
+),
+
+filtered_tokens AS (
+    SELECT address
+    FROM tokens
+    WHERE address != 0x5A98FcBEA516Cf06857215779Fd812CA3beF1B32
+),
+
 fundraising_txs AS (
-    select
+    SELECT
         evt_block_time,
         value,
         evt_tx_hash,
         contract_address
-    FROM {{source('erc20_ethereum','evt_Transfer')}}
-    WHERE contract_address IN (SELECT address FROM tokens)
-    AND to IN (
-        SELECT
-            address
-        FROM multisigs_list
-        WHERE name IN ('Aragon','FinanceOpsMsig') AND chain = 'Ethereum'
-    )
-    AND "from" IN (SELECT address FROM diversifications_addresses)
-    AND  contract_address != 0x5A98FcBEA516Cf06857215779Fd812CA3beF1B32
+    FROM {{source('erc20_ethereum','evt_Transfer')}} evt
+    INNER JOIN filtered_tokens t
+        ON evt.contract_address = t.address
+    INNER JOIN filtered_multisigs m
+        ON evt.to = m.address
+    WHERE evt."from" IN (SELECT address FROM diversifications_addresses)
+),
+
+eth_traces AS (
+    SELECT DISTINCT address
+    FROM multisigs_list
+    WHERE name IN ('Aragon','FinanceOpsMsig')
+    AND chain = 'Ethereum'
 )
 
+SELECT
+    evt_block_time AS period,
+    contract_address AS token,
+    value AS amount_token,
+    evt_tx_hash
+FROM fundraising_txs
 
-    SELECT
-        evt_block_time AS period,
-        contract_address AS token,
-        value AS amount_token,
-        evt_tx_hash
-    FROM fundraising_txs
+UNION ALL
 
-
-    UNION ALL
-    --ETH inflow
-    SELECT
-        block_time AS period,
-        0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 AS token,
-        tr.value,
-        tx_hash
-    FROM {{source('ethereum','traces')}} tr
-    WHERE tr.success = True
-    AND tr.to IN (
-        SELECT
-            address
-        FROM multisigs_list
-        WHERE name IN ('Aragon','FinanceOpsMsig') AND chain = 'Ethereum'
-    )
-    AND tr."from" IN ( SELECT address FROM diversifications_addresses    )
-    AND tr.type='call'
-    AND (tr.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR tr.call_type IS NULL)
-
+SELECT
+    tr.block_time AS period,
+    0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 AS token,
+    tr.value,
+    tr.tx_hash
+FROM {{source('ethereum','traces')}} tr
+INNER JOIN eth_traces et
+    ON tr.to = et.address
+WHERE tr.success = True
+    AND tr."from" IN (SELECT address FROM diversifications_addresses)
+    AND tr.type = 'call'
+    AND (tr.call_type NOT IN ('delegatecall', 'callcode', 'staticcall')
+         OR tr.call_type IS NULL)
