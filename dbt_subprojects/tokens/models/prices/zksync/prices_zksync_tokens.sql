@@ -17,7 +17,6 @@ FROM
     VALUES
 
     ('busd-binance-usd', 'zksync', 'BUSD', 0x2039bb4116b4efc145ec4f0e2ea75012d6c0f181, 18),
-    ('eth-ethereum', 'zksync', 'ETH', 0x000000000000000000000000000000000000800a, 18),
     ('izi-izumi-finance', 'zksync', 'iZi', 0x16a9494e257703797d747540f01683952547ee5b, 18),
     ('mav-maverick-token', 'zksync', 'MAV', 0x787c09494ec8bcb24dcaf8659e7d5d69979ee508, 18),
     ('mute-mute', 'zksync', 'MUTE', 0x0e97c7a0f8b2c9885c8ac9fc6136e829cbc21d42, 18),
