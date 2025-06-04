@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: corn
       sector: tokens
-      contributors: hosuke
+      contributors: hosuke, principatel
     config:
       tags: ['tokens', 'corn', 'erc20']
     description: "Known CORN ERC20 tokens"
