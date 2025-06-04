@@ -413,7 +413,7 @@ models:
     meta:
       blockchain: avalanche
       project: cow_protocol
-      contributors: bram
+      contributors: felix
     config:
       tags: ["avalanche", "cow_protocol", "trades", "dex", "aggregator"]
     description: >
@@ -490,7 +490,7 @@ models:
     meta:
       blockchain: avalanche
       project: cow_protocol
-      contributors: bram
+      contributors: felix
     config:
       tags: ["polygon", "cow_protocol", "trades", "dex", "aggregator"]
     description: >
