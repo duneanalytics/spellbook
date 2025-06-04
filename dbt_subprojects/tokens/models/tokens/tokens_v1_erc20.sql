@@ -4,53 +4,6 @@
         ,alias = 'erc20'
         ,materialized = 'table'
         ,partition_by = ['blockchain']
-        ,post_hook='{{ expose_spells(\'[
-                                        "abstract"
-                                        ,"apechain"
-                                        ,"arbitrum"
-                                        ,"avalanche_c"
-                                        ,"base"
-                                        ,"berachain"
-                                        ,"blast"
-                                        ,"bnb"
-                                        ,"bob"
-                                        ,"boba"
-                                        ,"celo"
-                                        ,"corn"
-                                        ,"ethereum"
-                                        ,"fantom"
-                                        ,"flare"
-                                        ,"fuse"
-                                        ,"gnosis"
-                                        ,"goerli"
-                                        ,"ink"
-                                        ,"kaia"
-                                        ,"lens"
-                                        ,"linea"
-                                        ,"mantle"
-                                        ,"nova"
-                                        ,"opbnb"
-                                        ,"optimism"
-                                        ,"plume"
-                                        ,"polygon"
-                                        ,"ronin"
-                                        ,"scroll"
-                                        ,"sei"
-                                        ,"sepolia"
-                                        ,"shape"
-                                        ,"sonic"
-                                        ,"sophon"
-                                        ,"tron"
-                                        ,"unichain"
-                                        ,"viction"
-                                        ,"worldchain"
-                                        ,"zkevm"
-                                        ,"zksync"
-                                        ,"zora"
-                                    ]\',
-                                    "sector",
-                                    "tokens",
-                                    \'["bh2smith","0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy","lgingerich","0xRob","jeff-dude","viniabussafi","IrishLatte19","angus_1","Henrystats","rantum", "IrishLatte19", "captncrunch"]\') }}'
     )
 }}
 
