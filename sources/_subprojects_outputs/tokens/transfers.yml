@@ -185,7 +185,6 @@ sources:
 
   - name: tokens_solana
     tables:
-      - name: transfers
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
 
@@ -193,11 +192,6 @@ sources:
     tables:
       - name: transfers
       - name: net_transfers_daily
-
-  - name: tokens_solana
-    tables:
-      - name: net_transfers_daily
-      - name: net_transfers_daily_asset
 
   - name: tokens_sonic
     tables:
