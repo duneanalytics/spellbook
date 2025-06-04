@@ -77,19 +77,12 @@ fundraising_txs AS (
         value,
         evt_tx_hash,
         contract_address
-    FROM {{source('erc20_ethereum','evt_Transfer')}} evt
+    FROM {{ source('erc20_ethereum','evt_Transfer') }} evt
     INNER JOIN filtered_tokens t
         ON evt.contract_address = t.address
     INNER JOIN filtered_multisigs m
         ON evt.to = m.address
     WHERE evt."from" IN (SELECT address FROM diversifications_addresses)
-),
-
-eth_traces AS (
-    SELECT DISTINCT address
-    FROM multisigs_list
-    WHERE name IN ('Aragon','FinanceOpsMsig')
-    AND chain = 'Ethereum'
 )
 
 SELECT
@@ -106,8 +99,8 @@ SELECT
     0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 AS token,
     tr.value,
     tr.tx_hash
-FROM {{source('ethereum','traces')}} tr
-INNER JOIN eth_traces et
+FROM {{ source('ethereum','traces') }} tr
+INNER JOIN filtered_multisigs et
     ON tr.to = et.address
 WHERE tr.success = True
     AND tr."from" IN (SELECT address FROM diversifications_addresses)
