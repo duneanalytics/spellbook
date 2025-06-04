@@ -37,7 +37,10 @@ FROM (VALUES
      (0x08c320a84a59c6f533e0dca655cf497594bca1f9, 'Silo Finance Borrowable WETH Deposit, SiloId: 35', 'bWETH-35', 0x50c42dEAcD8Fc9773493ED674b675bE577f2634b, 'WETH', 18),
      (0x24c74b30d1a4261608e84bf5a618693032681dac, 'Silo Finance Borrowable scETH Deposit, SiloId: 47', 'bscETH-47', 0x3bcE5CB273F0F148010BbEa2470e7b5df84C7812, 'scETH', 18),
      (0x90a804D316A06E00755444D56b9eF52e5C4F4D73, 'EVK Vault ewS-5', 'ewS-5', 0x039e2fB66102314Ce7b64Ce5Ce3E5183bc94aD38, 'wS', 18),
-     (0x6832F3090867449c058e1e3088E552E12AB18F9E, 'EVK Vault estS-5', 'estS-5', 0xE5DA20F15420aD15DE0fa650600aFc998bbE3955, 'stS', 18)
+     (0x6832F3090867449c058e1e3088E552E12AB18F9E, 'EVK Vault estS-5', 'estS-5', 0xE5DA20F15420aD15DE0fa650600aFc998bbE3955, 'stS', 18),
+     (0xf6f87073cf8929c206a77b0694619dc776f89885, 'Varlamore USDC Growth', 'vgUSDC', 0x29219dd400f2Bf60E5a23d13Be72B486D4038894, 'USDC.e', 6),
+     (0xb6a23cb29e512df41876b28d7a848bd831f9c5ba, 'Varlamore scUSD', 'vscUSD', 0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE, 'scUSD', 6),
+     (0xded4ac8645619334186f28b8798e07ca354cfa0e, 'Varlamore S', 'vS', 0x039e2fB66102314Ce7b64Ce5Ce3E5183bc94aD38, 'wS', 18)
     ) AS temp_table (erc4626_token, erc4626_token_name, erc4626_token_symbol, underlying_token, underlying_token_symbol, decimals)
 )
 
