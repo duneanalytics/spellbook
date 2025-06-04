@@ -12,16 +12,17 @@
 }}
 
 with tokens AS (
-select * from (values
-    (0x5A98FcBEA516Cf06857215779Fd812CA3beF1B32), --LDO
-    (0x6B175474E89094C44Da98b954EedeAC495271d0F),   --DAI
-    (0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48),   --USDC
-    (0xdAC17F958D2ee523a2206206994597C13D831ec7), -- USDT
-    (0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2),   --WETH
-    (0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0),   --MATIC
-    (0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84),  --stETH
-    (0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0) --wstETH
-) as tokens(address)),
+    select * from (values
+        (0x5A98FcBEA516Cf06857215779Fd812CA3beF1B32), --LDO
+        (0x6B175474E89094C44Da98b954EedeAC495271d0F),   --DAI
+        (0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48),   --USDC
+        (0xdAC17F958D2ee523a2206206994597C13D831ec7), -- USDT
+        (0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2),   --WETH
+        (0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0),   --MATIC
+        (0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84),  --stETH
+        (0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0) --wstETH
+    ) as tokens(address)
+),
 
 multisigs_list AS (
     select * from (values
