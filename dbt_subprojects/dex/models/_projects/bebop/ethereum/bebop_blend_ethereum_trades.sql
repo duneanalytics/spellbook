@@ -151,8 +151,8 @@ raw_bebop_aggregate_trade AS (
     FROM
         raw_call_and_event_data
     WHERE fun_type = 'Aggregate'
-    AND json_array_length(json_extract((JSON_EXTRACT(ex."order", '$.maker_tokens')), '$[0]')) > 0
-    AND json_array_length(json_extract((JSON_EXTRACT(ex."order", '$.taker_tokens')), '$[0]')) > 0
+    AND json_array_length(json_extract((JSON_EXTRACT("order", '$.maker_tokens')), '$[0]')) > 0
+    AND json_array_length(json_extract((JSON_EXTRACT("order", '$.taker_tokens')), '$[0]')) > 0
 ),
 unnested_aggregate_orders AS (
     SELECT
