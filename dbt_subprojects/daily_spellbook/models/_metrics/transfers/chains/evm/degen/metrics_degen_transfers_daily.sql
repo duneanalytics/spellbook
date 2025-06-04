@@ -1,4 +1,4 @@
-{% set blockchain = 'boba' %}
+{% set blockchain = 'degeb' %}
 
 {{ config(
         schema = 'metrics_' + blockchain
@@ -8,4 +8,4 @@
 }}
 
 SELECT *
-FROM {{ source('tokens_boba', 'net_transfers_daily') }}
+FROM {{ source('tokens_degen', 'net_transfers_daily') }}
