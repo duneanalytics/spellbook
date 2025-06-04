@@ -14,7 +14,6 @@
      blockchain='opbnb'
      , traces = source('opbnb','traces')
      , transactions = source('opbnb','transactions')
-     , erc20_transfers = source('erc20_opbnb','evt_transfer')
-     , native_contract_address = var('ETH_ERC20_ADDRESS')
+     , erc20_transfers = source('erc20_opbnb','evt_Transfer')
 )
 }}

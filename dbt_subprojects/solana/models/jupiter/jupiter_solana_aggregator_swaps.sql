@@ -199,8 +199,8 @@ FROM (
     SELECT * FROM jup6_logs
 ) l
 --tokens
-LEFT JOIN {{ ref('tokens_solana_fungible') }} tk_1 ON tk_1.token_mint_address = l.input_mint
-LEFT JOIN {{ ref('tokens_solana_fungible') }} tk_2 ON tk_2.token_mint_address = l.output_mint
+LEFT JOIN {{ source('tokens_solana','fungible') }} tk_1 ON tk_1.token_mint_address = l.input_mint
+LEFT JOIN {{ source('tokens_solana','fungible') }} tk_2 ON tk_2.token_mint_address = l.output_mint
 LEFT JOIN {{ source('prices','usd_forward_fill') }} p_1 ON p_1.blockchain = 'solana'
     AND date_trunc('minute', l.block_time) = p_1.minute
     AND l.input_mint = toBase58(p_1.contract_address)

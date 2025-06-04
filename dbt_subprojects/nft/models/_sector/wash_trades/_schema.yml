@@ -3,7 +3,7 @@ version: 2
 models:
   - name: nft_wash_trades
     meta:
-      blockchain: arbitrum, avalanche_c, bnb, ethereum, gnosis, optimism, polygon, zksync, base, scroll, zora, blast, fantom, ronin, linea, nova, abstract
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, gnosis, optimism, polygon, zksync, base, scroll, zora, blast, fantom, ronin, linea, nova, abstract, apechain
       sector: nft
       contributors: hildobby
       docs_slug: /curated/trading/NFT/nft-wash-trades
@@ -267,6 +267,18 @@ models:
       blockchain: abstract
       sector: nft
       contributors: hildobby
+    config:
+      tags: [ 'nft', 'wash_trades' ]
+    description: >
+      NFT wash trades labelling
+    columns:
+      # only listing columns that have tests here for simplicity
+      - *unique_trade_id
+  - name: nft_apechain_wash_trades
+    meta:
+      blockchain: apechain
+      sector: nft
+      contributors: 0xr3x
     config:
       tags: [ 'nft', 'wash_trades' ]
     description: >

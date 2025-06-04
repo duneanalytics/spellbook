@@ -70,7 +70,17 @@ known_solver_metadata (address, environment, name) as (
                 (0x983aC485620E265730e367B2C7BCBf6Eb9d62A21, 'prod', 'Gnosis_BalancerSOR'),
                 (0x1A422923290fd16C2ED00ED16B4203cF4bb35d82, 'prod', 'Laita'),
                 (0x09E5CdfEEaC1866103E17e1debf4aad61c1904eF, 'prod', 'Sector_Finance'),
-                (0xAf888d387aDcEed01a736aA3dEaE75Dcf3eDD8c1, 'prod', 'Copium_Capital')
+                (0xAf888d387aDcEed01a736aA3dEaE75Dcf3eDD8c1, 'prod', 'Copium_Capital'),
+                (0xEa63214dF12a74d6Fb86426ca4fc93cdAe5Bd2Ec, 'prod', 'ExtQuasimodo'),
+                (0xe4ba487d80717bf198dc5900218f1b1bd8325474, 'barn', 'ExtQuasimodo'),
+                (0xffd98b05962fca73cdfd22ed73198dfb2e5241eb, 'prod', 'Helixbox'),
+                (0x2ee19d575d58ddfde8086078323e50f34f0d7a70, 'barn', 'Helixbox'),
+                (0x08c66af0be1a32211bd88e269a801f70e3696a46, 'prod', 'Unizen'),
+                (0xf849c932dbaba5bfca49fb5c11fa0159c3813115, 'barn', 'Unizen'),
+                (0xa2e28dedaab59d732ae375832fb855510aa7fe57, 'prod', 'Wraxyn'),
+                (0x0c4aef2fc24529b08dad1bcabf4537cb1e0b5157, 'barn', 'Wraxyn'),
+                (0xa370940c2024cc029a87a821ee775560ad39dfbe, 'prod', 'Tsolver'),
+                (0xac73db8296f6be1836288da8a57c0f29379741e2, 'barn', 'Tsolver')
     ) as _
 )
 -- Combining the metadata with current activation status for final table

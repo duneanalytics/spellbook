@@ -23,8 +23,8 @@ WITH deposit_events AS (
     , bytearray_to_bigint(reverse(d.index)) AS deposit_index
     , d.pubkey
     , d.signature
-    , CASE WHEN bytearray_position(d.withdrawal_credentials, from_hex('0x01')) = 1 THEN from_hex('0x01') ELSE from_hex('0x00') END AS withdrawal_credentials_type
-    , CASE WHEN bytearray_position(d.withdrawal_credentials, from_hex('0x01')) = 1 THEN bytearray_substring(d.withdrawal_credentials, 13)
+    , bytearray_substring(d.withdrawal_credentials, 1, 1) AS withdrawal_credentials_type
+    , CASE WHEN bytearray_substring(d.withdrawal_credentials, 1, 1) IN (0x01, 0x02) THEN bytearray_substring(d.withdrawal_credentials, 13)
         ELSE NULL
         END AS withdrawal_address
     , d.withdrawal_credentials

@@ -11,7 +11,7 @@
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
                                     "dex_solana",
-                                    \'["ilemi","0xRob","jeff-dude"]\') }}')
+                                    \'["ilemi","0xRob","jeff-dude","0xBoxer","krishhh"]\') }}')
 }}
 
 with base_trades as (
@@ -73,10 +73,10 @@ SELECT bt.blockchain
 FROM
     base_trades bt
 LEFT JOIN
-    {{ ref('tokens_solana_fungible') }} token_bought
+    {{ source('tokens_solana','fungible') }} token_bought
     ON token_bought.token_mint_address = bt.token_bought_mint_address
 LEFT JOIN 
-    {{ ref('tokens_solana_fungible') }} token_sold 
+    {{ source('tokens_solana','fungible') }} token_sold 
     ON token_sold.token_mint_address = bt.token_sold_mint_address
 LEFT JOIN 
     {{ source('prices', 'usd') }} p_bought
@@ -98,4 +98,4 @@ LEFT JOIN
 LEFT JOIN 
     {{ source('prices','trusted_tokens') }} tt_bought
     ON bt.token_bought_mint_address = toBase58(tt_bought.contract_address)
-    AND bt.blockchain = tt_bought.blockchain 
+    AND bt.blockchain = tt_bought.blockchain

@@ -1,0 +1,7 @@
+version: 2
+sources:
+- name: sushi_multichain
+  tables:
+  - name: minichefv2_evt_logpooladdition
+  - name: minichefv2_evt_logsetpool
+  - name: minichefv2_evt_logsushipersecond
