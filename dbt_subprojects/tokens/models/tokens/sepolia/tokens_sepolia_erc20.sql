@@ -11,7 +11,10 @@ SELECT
     contract_address
     , symbol
     , decimals
-FROM (VALUES
+FROM 
+(
+    VALUES
+    -- placeholder rows to give example of format, sepolia not included in tokens.erc20
     (0xb19382073c7a0addbb56ac6af1808fa49e377b75, 'BAL', 18)
     , (0x4300000000000000000000000000000000000003, 'USDB', 18)
     , (0x990c8eab51d9ecb365bf9b3de09d121af007db68, 'scUSD', 18)
