@@ -1,0 +1,2 @@
+blockchain,project,version,block_date,tx_hash,evt_index,token_bought_address,token_sold_address,block_number,token_bought_amount_raw,token_sold_amount_raw
+arbitrum,elk_finance,1,2023-06-13 00:00,0x5570f6016ffd29c66d221f585c3d86878402855997b026dd1de7a1eccc688b8d,36,NULL,NULL,100679421,119920,100000000000000000
