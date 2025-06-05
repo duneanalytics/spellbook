@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: tapio_base_trades
+  - name: tapio_sonic_trades
     meta:
-      blockchain: base
+      blockchain: sonic
       sector: dex
       contributors: brunota20
     config:
-      tags: ["tapio", "base", "trades", "dex"]
+      tags: ["tapio", "sonic", "trades", "dex"]
     description: >
-      DEX trades on tapio on base
+      DEX trades on tapio on sonic
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
