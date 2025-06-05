@@ -10,33 +10,53 @@
 
 WITH token_swaps AS (
     SELECT
-        evt_block_number AS block_number,
-        CAST(evt_block_time AS timestamp(3) WITH time zone) AS block_time,
-        evt_tx_from AS maker,
-        to AS taker,
-        -- Calculate token amounts
+        s.evt_block_number AS block_number,
+        CAST(s.evt_block_time AS timestamp(3) WITH time zone) AS block_time,
+        s.evt_tx_from AS maker,
+        s.to AS taker,
+
+        -- Raw amounts
+        s.amount0In,
+        s.amount0Out,
+        s.amount1In,
+        s.amount1Out,
+
+        -- Determine sold and bought amounts based on input/output values
         CASE 
-            WHEN amount0In > 0 THEN amount0In 
-            ELSE amount1In 
+            WHEN s.amount0In > 0 THEN s.amount0In 
+            ELSE s.amount1In 
         END AS token_sold_amount_raw,
-        
+
         CASE 
-            WHEN amount0Out > 0 THEN amount0Out 
-            ELSE amount1Out 
+            WHEN s.amount0Out > 0 THEN s.amount0Out 
+            ELSE s.amount1Out 
         END AS token_bought_amount_raw,
 
-        -- We assume token0 is sold and token1 is bought or vice versa
-        NULL AS token_sold_address,  -- Not available from event data
-        NULL AS token_bought_address,  -- Not available from event data
-        
-        CAST(contract_address AS varbinary) AS project_contract_address,
-        evt_tx_hash AS tx_hash,
-        evt_index AS evt_index
+        -- We'll assign token addresses after the join
+        f.token0,
+        f.token1,
+
+        CASE 
+            WHEN s.amount0In > 0 THEN f.token0
+            ELSE f.token1
+        END AS token_sold_address,
+
+        CASE 
+            WHEN s.amount0Out > 0 THEN f.token0
+            ELSE f.token1
+        END AS token_bought_address,
+
+        CAST(s.contract_address AS varbinary) AS project_contract_address,
+        s.evt_tx_hash AS tx_hash,
+        s.evt_index AS evt_index
     FROM 
-        {{ source('elk_finance_arbitrum', 'ElkPair_evt_Swap') }}
+        {{ source('elk_finance', 'ElkPair_evt_Swap') }} s
+    LEFT JOIN 
+        {{ source('elk_finance', 'ElkFactory_evt_PairCreated') }} f
+        ON s.contract_address = f.pair
     {% if is_incremental() %}
     WHERE 
-        {{ incremental_predicate('evt_block_time') }}
+        {{ incremental_predicate('s.evt_block_time') }}
     {% endif %}
 )
 

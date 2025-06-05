@@ -178,4 +178,5 @@ sources:
   - name: elk_finance_arbitrum
     tables:
       - name: ElkPair_evt_Swap
+      - name: ElkFactory_evt_PairCreated
   
