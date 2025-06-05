@@ -115,7 +115,7 @@ with automated_source as (
         '{{ value.blockchain }}' as blockchain
         , contract_address
         , symbol
-        , decimals
+        , cast(decimals as integer) as decimals
     from
         {{ value.model }}
     {% if value.blockchain == 'optimism' %}
@@ -131,7 +131,7 @@ with automated_source as (
         s.blockchain,
         s.contract_address,
         s.symbol,
-        s.decimals
+        cast(s.decimals as integer) as decimals
     from
         static_source as s
         left join automated_source as a on s.blockchain = a.blockchain
