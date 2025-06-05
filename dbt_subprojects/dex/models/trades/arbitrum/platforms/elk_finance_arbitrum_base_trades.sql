@@ -50,9 +50,9 @@ WITH token_swaps AS (
         s.evt_tx_hash AS tx_hash,
         s.evt_index AS evt_index
     FROM 
-        {{ source('elk_finance', 'ElkPair_evt_Swap') }} s
+        {{ source('elk_finance_arbitrum', 'ElkPair_evt_Swap') }} s
     LEFT JOIN 
-        {{ source('elk_finance', 'ElkFactory_evt_PairCreated') }} f
+        {{ source('elk_finance_arbitrum', 'ElkFactory_evt_PairCreated') }} f
         ON s.contract_address = f.pair
     {% if is_incremental() %}
     WHERE 
