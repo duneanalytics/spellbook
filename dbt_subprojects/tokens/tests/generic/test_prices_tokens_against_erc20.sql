@@ -13,7 +13,7 @@ select
   ,erc20.decimals as erc20_decimals
   ,(t.decimals = erc20.decimals) as equal_decimals
 from {{ model }} t
-inner join {{ref('tokens_erc20')}} erc20 using (blockchain, contract_address)
+inner join {{source('tokens','erc20')}} erc20 using (blockchain, contract_address)
 )
 
 select * from comparison
