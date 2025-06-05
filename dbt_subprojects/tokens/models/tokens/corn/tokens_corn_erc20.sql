@@ -74,3 +74,4 @@ FROM (VALUES
     ('0x0e89ddc825fd22858e8392a3aabf50e8d7995bb0', 'lp-HG-BTC-Fi-31JAN25', 18),
     ('0xe41f373c402c972f436ca7e6f6ff68eb56e81212', 'lp-HG-BTC-Fi-26MAR25', 18)
 ) AS temp (contract_address, symbol, decimals)
+ 
