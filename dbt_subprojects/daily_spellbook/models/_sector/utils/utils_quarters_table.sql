@@ -11,7 +11,9 @@ SELECT timestamp
 FROM unnest(
     sequence(
           timestamp '2009-01-01'
-        , cast(date_trunc('quarter', now() + interval '3' day) as timestamp)
+        , cast(
+            date_trunc('quarter', now() + interval '3' day)
+            as timestamp
           )
         , interval '3' month
         )
