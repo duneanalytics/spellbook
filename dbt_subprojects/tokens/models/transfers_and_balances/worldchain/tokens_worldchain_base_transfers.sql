@@ -15,6 +15,5 @@
     , traces = source('worldchain','traces')
     , transactions = source('worldchain','transactions')
     , erc20_transfers = source('erc20_worldchain','evt_Transfer')
-    , native_contract_address = var('ETH_ERC20_ADDRESS')
 )
 }} 

@@ -1,0 +1,27 @@
+version: 2
+sources:
+- name: sushiswap_avalanche_c
+  schema: sushiswap_avalanche_c
+  tables:
+  - name: routeprocessor_call_processRoute
+  - name: routeprocessor_call_transferValueAndprocessRoute
+  - name: routeprocessor2_call_processRoute
+  - name: routeprocessor2_call_transferValueAndprocessRoute
+  - name: routeprocessor4_call_processRoute
+  - name: routeprocessor4_call_transferValueAndprocessRoute
+  - name: routeprocessor5_call_processRoute
+  - name: routeprocessor5_call_transferValueAndprocessRoute
+  - name: routeprocessor5_call_processRouteWithTransferValueOutput
+  - name: routeprocessor5_call_processRouteWithTransferValueInput
+  - name: routeprocessor6_call_processRoute
+  - name: routeprocessor6_call_transferValueAndprocessRoute
+  - name: routeprocessor6_call_processRouteWithTransferValueOutput
+  - name: routeprocessor6_call_processRouteWithTransferValueInput
+  - name: routeprocessor6_1_call_processRoute
+  - name: routeprocessor6_1_call_transferValueAndprocessRoute
+  - name: routeprocessor6_1_call_processRouteWithTransferValueOutput
+  - name: routeprocessor6_1_call_processRouteWithTransferValueInput
+  - name: routeprocessor7_call_processRoute
+  - name: routeprocessor7_call_transferValueAndprocessRoute
+  - name: routeprocessor7_call_processRouteWithTransferValueOutput
+  - name: routeprocessor7_call_processRouteWithTransferValueInput

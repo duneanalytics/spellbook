@@ -16,7 +16,6 @@ SELECT
 FROM
 (
     VALUES
-    ('celo-celo', 'celo', 'CELO', 0x471ece3750da237f93b8e339c536989b8978a438, 18), 
     ('cusd-celo-dollar', 'celo', 'cUSD', 0x765de816845861e75a25fca122bb6898b8b1282a, 18),
     ('ceur-celo-euro', 'celo', 'cEUR', 0xd8763cba276a3738e6de85b4b3bf5fded6d6ca73, 18), --requested add to coinPaprika 2023-08-10
     ('creal-celo-brazilian-real', 'celo', 'cREAL', 0xe8537a3d056DA446677B9E9d6c5dB704EaAb4787, 18),

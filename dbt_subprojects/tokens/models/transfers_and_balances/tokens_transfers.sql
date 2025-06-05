@@ -27,6 +27,7 @@
                                             ,"nova"
                                             ,"opbnb"
                                             ,"optimism"
+                                            ,"plume"
                                             ,"polygon"
                                             ,"ronin"
                                             ,"scroll"
@@ -75,6 +76,7 @@
     ,'nova'
     ,'opbnb'
     ,'optimism'
+    ,'plume'
     ,'polygon'
     ,'ronin'
     ,'scroll'

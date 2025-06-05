@@ -16,15 +16,17 @@ WITH last_block AS (
         SELECT
         evt_block_time, evt_block_number, evt_index,
         contract_address, rewarder AS rewarder_address, pid, allocPoint AS alloc_points
-        FROM {{ source('sushi_optimism','MiniChefV2_evt_LogPoolAddition') }}
+        FROM {{ source('sushi_multichain','minichefv2_evt_logpooladdition') }}
+        WHERE chain = 'optimism'
 
         UNION ALL
 
         SELECT
         evt_block_time, evt_block_number, evt_index,
         contract_address, rewarder AS rewarder_address, pid, allocPoint AS alloc_points
-        FROM {{ source('sushi_optimism','MiniChefV2_evt_LogSetPool') }}
-        WHERE overwrite
+        FROM {{ source('sushi_multichain','minichefv2_evt_logsetpool') }}
+        WHERE chain = 'optimism'
+        AND overwrite
 
 )
 
@@ -38,7 +40,8 @@ WITH last_block AS (
 
                lead(evt_block_number, 1, (SELECT MAX_BT FROM LAST_BLOCK))
                     OVER (PARTITION BY contract_address ORDER BY evt_block_number ASC) AS next_evt_number
-        FROM {{ source('sushi_optimism','MiniChefV2_evt_LogSushiPerSecond') }}
+        FROM {{ source('sushi_multichain','minichefv2_evt_logsushipersecond') }}
+        WHERE chain = 'optimism'
 )
 
 , pool_updates AS (
