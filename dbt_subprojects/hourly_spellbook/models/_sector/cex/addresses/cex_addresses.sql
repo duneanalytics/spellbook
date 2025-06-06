@@ -42,6 +42,7 @@
  , ref('cex_worldchain_addresses')
  , ref('cex_mantle_addresses')
  , ref('cex_sei_addresses')
+  , ref('cex_near_addresses')
 ] %}
 
 SELECT *
