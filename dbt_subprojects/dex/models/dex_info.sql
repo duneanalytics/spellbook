@@ -217,4 +217,5 @@ FROM (VALUES
     , ('sailor_finance', 'SailorFinance', 'Direct', 'SailorFi')
     , ('gooddollar_reserve', 'GoodDollar Reserve', 'Direct', 'gooddollar_reserve')
     , ('tapio', 'Tapio', 'Direct', 'Tapio')
+    , ('tamadotmeme', 'tamadotmeme', 'Direct', 'tamadotmeme')
 ) AS temp_table (project, name, marketplace_type, x_username)
