@@ -175,3 +175,7 @@ sources:
     tables:
       - name: SpartaDexPair_evt_Swap
       - name: SpartaDexFactory_evt_PairCreated
+  - name: akronswap_arbitrum
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated
