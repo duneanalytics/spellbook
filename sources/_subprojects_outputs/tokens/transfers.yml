@@ -133,6 +133,12 @@ sources:
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
 
+  - name: tokens_apechain
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
+      - name: net_transfers_daily_asset
+
   - name: tokens_mode
     tables:
       - name: transfers
