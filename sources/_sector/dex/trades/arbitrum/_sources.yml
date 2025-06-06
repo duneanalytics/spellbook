@@ -175,3 +175,8 @@ sources:
     tables:
       - name: SpartaDexPair_evt_Swap
       - name: SpartaDexFactory_evt_PairCreated
+  - name: solunea_arbitrum
+    tables:
+      - name: SoluneaPair_evt_Swap
+      - name: SoluneaFactory_evt_PairCreated
+
