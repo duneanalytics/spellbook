@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: prices_plume_tokens
+    meta:
+      blockchain: plume
+      sector: prices
+      contributors: captncrunch
+    config:
+      tags: ['prices', 'tokens', 'usd', 'plume']
+    description: "Price tokens on plume chain"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - contract_address
+      - test_prices_tokens_against_erc20
+    columns:
+      - name: token_id
+        description: "Id of the token at coinpaprika. This id is required to pull the price feed data. NOTE: Not all tokens are listed at coinpaprika - consider using price data from DEX sources in this case or submit a listing request at coinpaprika."
+      - name: blockchain
+        description: "Native blockchain of the token, if any"
+        data_tests:
+          - accepted_values:
+              values: [ "plume" ]
+      - name: contract_address
+        description: "Contract address of the token, if any"
+      - name: symbol
+        description: "Token symbol"
+      - name: decimals
+        description: "Number of decimals for the token contract"
