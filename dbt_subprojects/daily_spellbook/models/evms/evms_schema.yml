@@ -38,6 +38,8 @@ models:
         description: "Number of confirmed transactions previously sent by this account"
       - name: index
         description: "Transaction index"
+      - name: authorization_list
+        description: "Authorization list, if there's one"
       - &success
         name: success
         description: "Whether the transaction was completed successfully"
