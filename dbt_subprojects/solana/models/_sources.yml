@@ -64,3 +64,12 @@ sources:
         description: "Raydium Launchpad sell exact out calls"
       - name: raydium_launchpad_call_create_platform_config
         description: "Raydium Launchpad create platform config calls"
+        
+  - name: stable_swap_solana
+    description: "Stable Swap decoded tables"
+    tables:
+      - name: stable_swap_call_swap
+      - name: stable_swap_call_swap_v2
+      - name: weighted_swap_call_swap
+      - name: weighted_swap_call_swap_v2
+
