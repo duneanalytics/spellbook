@@ -50,9 +50,9 @@ WITH token_swaps AS (
         s.evt_tx_hash AS tx_hash,
         s.evt_index AS evt_index
     FROM 
-        {{ source('solunea_arbitrum', 'Swap') }} s
+        {{ source('solunea_arbitrum', 'SoluneaPair_evt_Swap') }} s
     LEFT JOIN 
-        {{ source('solunea_arbitrum', 'PairCreated') }} p
+        {{ source('solunea_arbitrum', 'SoluneaFactory_evt_PairCreated') }} p
         ON s.contract_address = p.pair
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('s.evt_block_time') }}
