@@ -16,7 +16,6 @@ SELECT
 FROM
 (
     VALUES
-    ('mnt-mantle', 'mantle', 'MNT', 0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000, 18),
     ('mnt-mantle', 'mantle', 'WMNT', 0x78c1b0c915c4faa5fffa6cabf0219da63d7f4cb8, 18),
     ('joe-trader-joe', 'mantle', 'JOE', 0x371c7ec6d8039ff7933a2aa28eb827ffe1f52f07, 18),
     ('usdc-usd-coin', 'mantle', 'USDC', 0x09bc4e0d864854c6afb6eb9a9cdf58ac190d0df9, 6),

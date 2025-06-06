@@ -760,5 +760,7 @@ FROM
         ('alch-alchemist-ai', 'solana', 'ALCH', 'HNg5PYJmtqcmzXrv6S9zP1CDKk5BgDuyFBxbvNApump', 6),
         ('ghibli-ghiblification', 'solana', 'GHIBLI', '4TBi66vi32S7J8X1A6eWfaLHYmUXu7CStcEmsJQdpump', 6),
         ('gork-new-xai-gork', 'solana', 'GORK', '38PgzpJYu2HkiYvV8qePFakB8tuobPdGm2FFEn7Dpump', 6),
-        ('house-housecoin', 'solana', 'HOUSE', 'DitHyRMQiSDhn5cnKMJV2CDDt6sVct96YrECiM49pump', 6)
+        ('house-housecoin', 'solana', 'HOUSE', 'DitHyRMQiSDhn5cnKMJV2CDDt6sVct96YrECiM49pump', 6),
+        ('zbcn-zebec-network', 'solana', 'ZBCN', 'ZBCNpuD7YMXzTHB2fhGkGi78MNsHGLRXUhRewNRm9RU', 6),
+        ('huma-finance', 'solana', 'HUMA', 'HUMA1821qVDKta3u2ovmfDQeW2fSQouSKE8fkF44wvGw', 6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
