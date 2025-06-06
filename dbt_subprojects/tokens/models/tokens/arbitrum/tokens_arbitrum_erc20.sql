@@ -14,8 +14,9 @@ SELECT
 FROM
 (
     VALUES
-    -- placeholder rows to give example of format, tokens already exist in tokens.erc20
-    (0xa98c94d67d9df259bee2e7b519df75ab00e3e2a8, 'bwAJNA', 18)
-    , (0xda492c29d88ffe9b7cbfa6dc068c2f9befae851b, 'CUSDCLP', 18)
+    -- tokens which don't appear in automated source, edge cases only
+    (0xc3abc47863524ced8daf3ef98d74dd881e131c38, 'LUA', 18)
+    , (0x5402b5f40310bded796c7d0f3ff6683f5c0cffdf, 'sGLP', 18)
+    , (0xd07d35368e04a839dee335e213302b21ef14bb4a, 'CRYSTAL', 18)
 )
 AS temp_table (contract_address, symbol, decimals)
