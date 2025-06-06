@@ -16,6 +16,10 @@ FROM (
         , contract_address
         , evt_tx_hash
         , evt_index
+        , evt_block_date
+        , evt_tx_from
+        , evt_tx_to
+        , evt_tx_index
         , evt_block_time
         , evt_block_number
         , "from"
