@@ -5195,7 +5195,7 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
-  - name: tapio_sonic_base_trades_seed
+  - name: elk_finance_arbitrum_base_trades_seed
     config:
       column_types:
         blockchain: varchar
@@ -5206,8 +5206,8 @@ seeds:
         block_number: uint256
         token_bought_address: varbinary
         token_sold_address: varbinary
-        token_bought_amount_raw: uint256
-        token_sold_amount_raw: uint256
+        token_bought_amount_raw: decimal(38, 0)
+        token_sold_amount_raw: decimal(38, 0)
         block_date: timestamp
   
   - name: tamadotmeme_ronin_base_trades_seed
@@ -5225,7 +5225,7 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
-  - name: elk_finance_arbitrum_base_trades_seed
+  - name: tapio_sonic_base_trades_seed
     config:
       column_types:
         blockchain: varchar
@@ -5236,6 +5236,6 @@ seeds:
         block_number: uint256
         token_bought_address: varbinary
         token_sold_address: varbinary
-        token_bought_amount_raw: decimal(38, 0)
-        token_sold_amount_raw: decimal(38, 0)
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
         block_date: timestamp
