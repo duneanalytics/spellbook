@@ -15,7 +15,7 @@
 
 
 -- complete_order#cf90d618 is sent from the AMM smart contract to the user position
--- https://github.com/Tsunami-Exchange/storm-contracts-specs/blob/3da4852/scheme.tlb#L96C16-L96C24
+-- https://github.com/Tsunami-Exchange/storm-contracts-specs/blob/59aefe4/scheme.tlb#L96
 
 WITH valid_amms AS (
     SELECT DISTINCT amm, vault, vault_token FROM {{ ref('stormtrade_ton_trade_notification') }}
@@ -40,6 +40,7 @@ select {{ ton_from_boc('body_boc', [
     ton_load_uint(1, 'direction'),
     ton_load_uint(32, 'origin_op'),
     ton_load_coins('oracle_price'),
+    ton_load_coins('settlement_oracle_price'),
     
     ton_load_ref(),
     ton_begin_parse(),
@@ -76,7 +77,7 @@ CASE
     WHEN result.order_type = 2 THEN 'stop_limit_order' 
     WHEN result.order_type = 3 THEN 'market_order' 
     ELSE 'unknown_order_type' END as order_type,
-result.order_index, result.direction, result.origin_op, result.oracle_price,
+result.order_index, result.direction, result.origin_op, result.oracle_price, result.settlement_oracle_price,
 result.position_size, result.position_direction, result.position_margin, result.position_open_notional,
 result.position_last_updated_cumulative_premium, result.position_fee, result.position_discount, result.position_rebate,
 result.position_last_updated_timestamp,

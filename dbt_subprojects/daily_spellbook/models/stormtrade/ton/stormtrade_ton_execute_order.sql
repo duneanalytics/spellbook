@@ -15,7 +15,7 @@
 
 
 -- execute_order#de1ddbcc is sent from the user position smart contract to the AMM
--- https://github.com/Tsunami-Exchange/storm-contracts-specs/blob/3da4852/scheme.tlb#L153-L155
+-- https://github.com/Tsunami-Exchange/storm-contracts-specs/blob/59aefe4/scheme.tlb#L153-L155
 
 WITH valid_amms AS (
     SELECT DISTINCT amm, vault, vault_token FROM {{ ref('stormtrade_ton_trade_notification') }}
@@ -55,6 +55,7 @@ select {{ ton_from_boc('body_boc', [
     ton_load_ref(),
     ton_begin_parse(),
     ton_skip_bits(4 + 32 + 1),
+    ton_load_coins('order_amount_tmp'),
     ton_load_uint(64, 'order_leverage'),
     ton_load_coins('order_limit_price'),
     ton_load_coins('order_stop_price'),
@@ -86,8 +87,13 @@ select {{ ton_from_boc('body_boc', [
     ton_load_coins('oracle_price'),
     ton_load_coins('oracle_spread'),
     ton_load_uint(32, 'oracle_timestamp'),
-    ton_load_uint(16, 'oracle_asset_id')
-
+    ton_load_uint(16, 'oracle_asset_id'),
+    ton_load_uint(32, 'oracle_pause_at'),
+    ton_load_uint(32, 'oracle_unpause_at'),
+    ton_load_coins('oracle_vpi_spread'),
+    ton_load_coins('oracle_vpi_market_depth_long'),
+    ton_load_coins('oracle_vpi_market_depth_short'),
+    ton_load_uint(64, 'oracle_vpi_k')
     ]) }} as result, * from parsed_boc
 )
 SELECT block_date, tx_hash, trace_id, tx_now, tx_lt,
@@ -107,5 +113,7 @@ CASE WHEN result.order_type >= 2 THEN result.order_stop_triger_price ELSE NULL E
 CASE WHEN result.order_type >= 2 THEN result.order_take_triger_price ELSE NULL END as order_take_triger_price,
 result.position_size, result.position_direction, result.position_margin, result.position_open_notional, result.position_last_updated_cumulative_premium,
 result.position_fee, result.position_discount, result.position_rebate, result.position_last_updated_timestamp,
-result.oracle_price, result.oracle_spread, result.oracle_timestamp, result.oracle_asset_id
+result.oracle_price, result.oracle_spread, result.oracle_timestamp, result.oracle_asset_id,
+result.oracle_pause_at, result.oracle_unpause_at, result.oracle_vpi_spread, result.oracle_vpi_market_depth_long,
+result.oracle_vpi_market_depth_short, result.oracle_vpi_k
 FROM parse_output
