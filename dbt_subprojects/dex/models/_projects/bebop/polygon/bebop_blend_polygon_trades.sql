@@ -111,6 +111,7 @@ bebop_single_trade AS (
     FROM
         raw_call_and_event_data
     WHERE fun_type = 'Single'
+    AND CAST(JSON_EXTRACT_SCALAR("order", '$.maker_amount') AS VARCHAR) != '0'
 ),
 raw_bebop_multi_trade AS (
     SELECT
@@ -149,6 +150,8 @@ raw_bebop_aggregate_trade AS (
     FROM
         raw_call_and_event_data
     WHERE fun_type = 'Aggregate'
+    AND json_array_length(json_extract((JSON_EXTRACT("order", '$.maker_tokens')), '$[0]')) > 0
+    AND json_array_length(json_extract((JSON_EXTRACT("order", '$.taker_tokens')), '$[0]')) > 0
 ),
 unnested_aggregate_orders AS (
     SELECT
