@@ -43,7 +43,7 @@ WITH
   )
 
 SELECT
-    'arbiturm' AS blockchain
+    'arbitrum' AS blockchain
     , 'fluid' AS project
     , dexs.version
     , CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
