@@ -459,7 +459,7 @@ models:
       project: fluid
       contributors: maybeYonas, pyor_xyz, thetroyharris
     config:
-      tags: ["ethereum", "dex", "trades", "fluid"]
+      tags: ["[polygon", "dex", "trades", "fluid"]
     description: "fluid dex polygon base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
