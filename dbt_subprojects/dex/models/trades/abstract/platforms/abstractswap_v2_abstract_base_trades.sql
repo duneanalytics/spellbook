@@ -18,8 +18,8 @@ with
         blockchain = 'abstract'
         , project = 'abstractswap'
         , version = '2'
-        , Pair_evt_Swap = source('uniswap_abstract', 'Pair_evt_Swap')
-        , Factory_evt_PairCreated = source('uniswap_abstract', 'uniswapv2factory_evt_paircreated')
+        , Pair_evt_Swap = source('uniswap_abstract', 'pair_evt_swap')
+        , Factory_evt_PairCreated = source('reservoir_swap_multichain', 'uniswapv2factory_evt_paircreated')
     )
     }}
     )
