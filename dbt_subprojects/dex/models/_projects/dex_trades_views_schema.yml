@@ -47,6 +47,7 @@ models:
   - name: sushiswap_trades
   - name: swapr_trades
   - name: synthetix_trades
+  - name: tapio_trades
   - name: thena_trades
   - name: trader_joe_trades
   - name: ubeswap_trades
