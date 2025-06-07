@@ -205,8 +205,8 @@ SELECT nftt.block_time
 , nftt.currency_contract AS token_address
 , nftt.amount_original AS token_amount
 , nftt.amount_usd AS price_usd
-, royalty_fee_amount AS heroes_revenue
-, royalty_fee_amount_usd AS heroes_revenue_usd
+, CASE WHEN nftt.block_number < 18397361 THEN nftt.royalty_fee_amount ELSE 0.8181818182*nftt.royalty_fee_amount END AS heroes_revenue
+, CASE WHEN nftt.block_number < 18397361 THEN nftt.royalty_fee_amount_usd ELSE 0.8181818182*nftt.royalty_fee_amount_usd END AS heroes_revenue_usd
 , platform_fee_amount AS to_fantasy_treasury
 , platform_fee_amount_usd AS to_fantasy_treasury_usd
 , 0 AS tactics_bought
@@ -245,8 +245,8 @@ SELECT block_time
 , contract_address AS token_address
 , amount AS token_amount
 , amount_usd AS price_usd
-, 0.015*amount AS heroes_revenue
-, 0.015*amount_usd AS heroes_revenue_usd
+, CASE WHEN block_number < 18397361 THEN 0.015*amount ELSE 0 END AS heroes_revenue
+, CASE WHEN block_number < 18397361 THEN 0.015*amount_usd ELSE 0 END AS heroes_revenue_usd
 , 0.06*amount AS to_fantasy_treasury
 , 0.06*amount_usd AS to_fantasy_treasury_usd
 , ROUND(amount_usd/19.99) AS tactics_bought
