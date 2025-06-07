@@ -10,7 +10,7 @@
     )
 }}
 
-{% set project_start_date = "2023-08-17" %}
+{% set project_start_date = '2024-01-01' %}
 
 with
     fee_payments as (
@@ -27,6 +27,7 @@ with
         {% else %} where minute >= timestamp '{{project_start_date}}'
         {% endif %}
     )
+-- TODO: remove this comment
 select
     fee_payments.block_time,
     fee_payments.block_month,
