@@ -218,4 +218,5 @@ FROM (VALUES
     , ('gooddollar_reserve', 'GoodDollar Reserve', 'Direct', 'gooddollar_reserve')
     , ('abstractswap', 'Abstract Swap', 'Direct', 'AbstractChain')
     , ('tamadotmeme', 'tamadotmeme', 'Direct', 'tamadotmeme') 
-) AS temp_table (project, name, marketplace_type, x_username)
+    , ('tapio', 'Tapio', 'Direct', 'Tapio')
+    ) AS temp_table (project, name, marketplace_type, x_username)
