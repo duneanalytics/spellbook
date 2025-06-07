@@ -35,8 +35,8 @@ WITH
           , t.evt_tx_hash AS tx_hash
           , t.evt_index
       FROM {{ source('fluid_arbitrum', 'FluidDexT1_evt_Swap') }} t
-      INNER JOIN {{ source('fluid_arbitrum', 'fluiddexfactory_call_deploydex') }} p
-          ON t.contract_address = p.output_dex_
+      INNER JOIN {{ source('fluid_arbitrum', 'FluidDexFactory_evt_LogDexDeployed') }} p
+          ON t.contract_address = p.dex
       {% IF is_incremental() %}
       WHERE {{ incremental_predicate('t.evt_block_time') }}
       {% endif %}
