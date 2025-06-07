@@ -839,7 +839,7 @@ models:
       contributors: maybeYonas, pyor_xyz, thetroyharris
     config:
       tags: ["ethereum", "dex", "trades", "fluid"]
-    description: "fluid dex ethereum base trades"
+    description: "fluid dex arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
