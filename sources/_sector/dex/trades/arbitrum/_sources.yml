@@ -175,3 +175,8 @@ sources:
     tables:
       - name: SpartaDexPair_evt_Swap
       - name: SpartaDexFactory_evt_PairCreated
+  - name: gammaswap_multichain
+    tables:
+      - name: deltaswappair_evt_swap
+      - name: deltaswapfactory_evt_paircreated
+    
