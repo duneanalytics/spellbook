@@ -25,6 +25,38 @@ models:
     description: >
       Utility model to have a table of minutes from bitcoin genesis to current timestamp
 
+  - name: utils_weeks
+    meta:
+      contributors: 0xRob, hildobby
+    config:
+      tags: [ 'utils', 'weeks' ]
+    description: >
+      Utility model to have a table of weeks from bitcoin genesis to current timestamp
+      
+  - name: utils_months
+    meta:
+      contributors: 0xRob, hildobby
+    config:
+      tags: [ 'utils', 'months' ]
+    description: >
+      Utility model to have a table of months from bitcoin genesis to current timestamp
+      
+  - name: utils_years
+    meta:
+      contributors: 0xRob, hildobby
+    config:
+      tags: [ 'utils', 'years' ]
+    description: >
+      Utility model to have a table of years from bitcoin genesis to current timestamp
+      
+  - name: utils_quarters
+    meta:
+      contributors: 0xRob, hildobby
+    config:
+      tags: [ 'utils', 'quarters' ]
+    description: >
+      Utility model to have a table of quarters from bitcoin genesis to current timestamp
+
   - name: utils_days_table
     description: >
       materialized model of days, including some days in the future
@@ -57,3 +89,47 @@ models:
           - dbt_utils.sequential_values:
               interval: 1
               datepart: 'minute'
+
+  - name: utils_weeks_table
+    description: >
+      materialized model of weeks
+    columns:
+      - name: timestamp
+        data_tests:
+          - unique
+          - dbt_utils.sequential_values:
+              interval: 1
+              datepart: 'week'
+
+  - name: utils_months_table
+    description: >
+      materialized model of months
+    columns:
+      - name: timestamp
+        data_tests:
+          - unique
+          - dbt_utils.sequential_values:
+              interval: 1
+              datepart: 'month'
+
+  - name: utils_years_table
+    description: >
+      materialized model of years
+    columns:
+      - name: timestamp
+        data_tests:
+          - unique
+          - dbt_utils.sequential_values:
+              interval: 1
+              datepart: 'year'
+
+  - name: utils_quarters_table
+    description: >
+      materialized model of quarters
+    columns:
+      - name: timestamp
+        data_tests:
+          - unique
+          - dbt_utils.sequential_values:
+              interval: 1
+              datepart: 'quarter'
