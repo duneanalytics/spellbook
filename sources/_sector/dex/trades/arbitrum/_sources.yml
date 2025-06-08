@@ -176,6 +176,6 @@ sources:
       - name: SpartaDexPair_evt_Swap
       - name: SpartaDexFactory_evt_PairCreated
   - name: fluid_arbitrum
-    tables: 
+    tables:
       - name: FluidDexT1_evt_Swap
       - name: FluidDexFactory_evt_LogDexDeployed
