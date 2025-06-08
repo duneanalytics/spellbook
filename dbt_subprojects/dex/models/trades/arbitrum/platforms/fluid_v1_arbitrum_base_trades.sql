@@ -22,21 +22,21 @@ WITH
           , t.amountIn AS token_sold_amount_raw
           , CASE 
               WHEN swap0to1 
-              THEN p.borrow_token
-              ELSE p.supply_token 
+              THEN p.bytearray_substring(dexDeploymentData_, 49, 20)
+              ELSE p.bytearray_substring(dexDeploymentData_, 17, 20) 
           END AS token_bought_address
           , CASE 
               WHEN 
               NOT(swap0to1) 
-              THEN p.borrow_token
-              ELSE p.supply_token 
+              THEN p.bytearray_substring(dexDeploymentData_, 49, 20)
+              ELSE p.bytearray_substring(dexDeploymentData_, 17, 20) 
           END AS token_sold_address
           , t.contract_address AS project_contract_address
           , t.evt_tx_hash AS tx_hash
           , t.evt_index
       FROM {{ source('fluid_arbitrum', 'FluidDexT1_evt_Swap') }} t
-      INNER JOIN {{ source('fluid_arbitrum', 'FluidDexFactory_evt_LogDexDeployed') }} p
-          ON t.contract_address = p.dex
+      INNER JOIN {{ source('fluid_arbitrum', 'fluiddexfactory_call_deploydex') }} p
+          ON t.contract_address = p.output_dex_
       {% if is_incremental() %}
       WHERE {{ incremental_predicate('t.evt_block_time') }}
       {% endif %}
