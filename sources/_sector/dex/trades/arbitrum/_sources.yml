@@ -178,4 +178,4 @@ sources:
   - name: fluid_arbitrum
     tables:
       - name: FluidDexT1_evt_Swap
-      - name: FluidDexFactory_evt_LogDexDeployed
+      - name: fluiddexfactory_call_deploydex
