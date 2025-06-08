@@ -22,14 +22,14 @@ WITH
           , t.amountIn AS token_sold_amount_raw
           , CASE 
               WHEN swap0to1 
-              THEN p.bytearray_substring(dexDeploymentData_, 49, 20)
-              ELSE p.bytearray_substring(dexDeploymentData_, 17, 20) 
+              THEN bytearray_substring(p.dexDeploymentData_, 49, 20)
+              ELSE bytearray_substring(p.dexDeploymentData_, 17, 20) 
           END AS token_bought_address
           , CASE 
               WHEN 
               NOT(swap0to1) 
-              THEN p.bytearray_substring(dexDeploymentData_, 49, 20)
-              ELSE p.bytearray_substring(dexDeploymentData_, 17, 20) 
+              THEN bytearray_substring(p.dexDeploymentData_, 49, 20)
+              ELSE bytearray_substring(p.dexDeploymentData_, 17, 20) 
           END AS token_sold_address
           , t.contract_address AS project_contract_address
           , t.evt_tx_hash AS tx_hash
