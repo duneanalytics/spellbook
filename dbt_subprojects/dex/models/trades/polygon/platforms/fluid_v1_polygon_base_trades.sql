@@ -9,7 +9,9 @@
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
-
+    
+{% set native_address = '0x0000000000000000000000000000000000001010' %}
+    
 WITH 
   decoded_events AS (
       SELECT
@@ -52,8 +54,8 @@ SELECT
     , dexs.block_number
     , dexs.token_bought_amount_raw
     , dexs.token_sold_amount_raw
-    , dexs.token_bought_address
-    , dexs.token_sold_address
+    , IF(dexs.token_bought_address = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, {{native_address}}, dexs.token_bought_address) AS token_bought_address
+    , IF(dexs.token_sold_address = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, {{native_address}}, dexs.token_sold_address) AS token_sold_address
     , dexs.taker
     , dexs.maker
     , dexs.project_contract_address
