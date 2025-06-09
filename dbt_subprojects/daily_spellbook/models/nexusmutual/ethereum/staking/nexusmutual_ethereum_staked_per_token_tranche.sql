@@ -16,6 +16,7 @@ with staked_per_pool_token_tranche as (
     pool_id,
     pool_address,
     token_id,
+    tranche_id,
     total_staked_nxm,
     stake_expiry_date,
     row_number() over (partition by pool_id, token_id, tranche_id order by block_date desc) as token_tranche_rn
