@@ -831,6 +831,7 @@ models:
           seed_file: ref('balancer_arbitrum_base_trades_seed')
           filter:
             version: 3
+
   - name: fluid_v1_arbitrum_base_trades
     meta:
       blockchain: arbitrum
