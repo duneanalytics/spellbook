@@ -5,7 +5,7 @@ sources:
     tables:
       - name: uniswapv2factory_evt_paircreated
         description: "PairCreated events from AbstractSwap Factory contract"
-      - name: Pair_evt_Swap
+      - name: pair_evt_swap
         description: "Swap events from AbstractSwap Pair contracts"
 
   - name: abstractswap_abstract
