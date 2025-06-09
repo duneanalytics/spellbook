@@ -3,10 +3,15 @@ version: 2
 sources:
   - name: uniswap_abstract
     tables:
-      - name: uniswapv2factory_evt_paircreated
-        description: "PairCreated events from AbstractSwap Factory contract"
       - name: pair_evt_swap
         description: "Swap events from AbstractSwap Pair contracts"
+
+sources:
+  - name: reservoir_swap_abstract
+    tables:
+      - name: uniswapv2factory_evt_paircreated
+        description: "PairCreated events from AbstractSwap Factory contract"
+
 
   - name: abstractswap_abstract
     tables:
