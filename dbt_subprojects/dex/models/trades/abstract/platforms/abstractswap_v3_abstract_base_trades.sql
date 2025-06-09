@@ -15,6 +15,6 @@
         , project = 'abstractswap'
         , version = '3'
         , Pair_evt_Swap = source('abstractswap_abstract', 'uniswapv3pool_evt_swap')
-        , Factory_evt_PoolCreated = source('reservoir_swap_abstract', 'uniswapv3factory_evt_poolcreated')
+        , Factory_evt_PoolCreated = source('abstractswap_abstract', 'uniswapv3factory_evt_poolcreated')
     )
 }}  
