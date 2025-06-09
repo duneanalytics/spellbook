@@ -41,6 +41,8 @@ transactions as (
         and {{ incremental_predicate('block_date') }}
         {% endif %}
 )
+
+--test run
 ,transfers as (
     select
         blockchain
@@ -69,3 +71,4 @@ select
 from fees
 left join transfers using (blockchain, block_date)
 left join transactions using (blockchain, block_date)
+
