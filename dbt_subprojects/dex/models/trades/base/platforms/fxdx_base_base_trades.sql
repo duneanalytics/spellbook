@@ -21,7 +21,7 @@ WITH swaps AS (
         s.feeBasisPoints,
         s.tokenIn,
         s.tokenOut,
-        s.contract_address AS project_contract_address,
+        s.contract_address,
         s.evt_tx_hash AS tx_hash,
         s.evt_index
     FROM {{ source('fxdx_base', 'vault_evt_swap') }} s
@@ -43,7 +43,7 @@ SELECT
     swaps.tokenIn AS token_sold_address,
     swaps.tokenOut AS token_bought_address,
     swaps.account AS taker,
-    swaps.project_contract_address AS maker,
+    swaps.contract_address AS maker,
     swaps.tx_hash,
     swaps.evt_index
 FROM swaps
