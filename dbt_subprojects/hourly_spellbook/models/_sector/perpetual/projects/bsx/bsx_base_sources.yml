@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: bsx_base
+    description: Base decoded tables related to bsx protocol
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: bsx1000x_evt_closeposition
+        loaded_at_field: evt_block_time
+      - name: bsx1000x_evt_openposition
+        loaded_at_field: evt_block_time
