@@ -36,7 +36,7 @@ SELECT
     '1' AS version,
     CAST(date_trunc('month', swaps.block_time) AS date) AS block_month,
     CAST(date_trunc('day', swaps.block_time) AS date) AS block_date,
-    swaps.block_time,
+    swaps.block_time AS evt_block_time,
     swaps.block_number,
     swaps.amountIn AS token_sold_amount_raw,
     swaps.amountOut AS token_bought_amount_raw,
