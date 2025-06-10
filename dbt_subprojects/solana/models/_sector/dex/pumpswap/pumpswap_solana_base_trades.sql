@@ -122,19 +122,14 @@ WITH pools AS (
         AND t.outer_instruction_index = sf.outer_instruction_index
         AND t.to_token_account != sf.account_protocol_fee_recipient_token_account
         AND (
-                (
-                sf.swap_inner_index IS NULL 
-                AND t.inner_instruction_index IN (1, 2, 3) 
-                AND (t.from_token_account = sf.account_user_quote_token_account OR t.from_token_account = sf.account_pool_quote_token_account)
-                )
+            (sf.is_buy = 1 
+            AND t.from_token_account = sf.account_user_quote_token_account 
+            AND t.to_token_account = sf.account_pool_quote_token_account)
             OR
-                (
-                sf.swap_inner_index IS NOT NULL
-                AND t.inner_instruction_index IN (sf.swap_inner_index + 1, sf.swap_inner_index + 2, sf.swap_inner_index + 3) 
-                AND (t.from_token_account = sf.account_user_quote_token_account OR t.from_token_account = sf.account_pool_quote_token_account)
-                )
-            )
-        
+            (sf.is_buy = 0 
+            AND t.from_token_account = sf.account_pool_quote_token_account 
+            AND t.to_token_account = sf.account_user_quote_token_account)
+        )
         {% if is_incremental() %}
         AND {{incremental_predicate('t.block_time')}}
         {% else %}
