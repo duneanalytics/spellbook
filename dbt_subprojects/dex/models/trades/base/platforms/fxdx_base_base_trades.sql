@@ -23,7 +23,9 @@ WITH swaps AS (
         s.tokenOut,
         s.contract_address,
         s.evt_tx_hash AS tx_hash,
-        s.evt_index
+        s.evt_tx_hash,
+s.evt_index,
+
     FROM {{ source('fxdx_base', 'vault_evt_swap') }} s
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('s.evt_block_time') }}
