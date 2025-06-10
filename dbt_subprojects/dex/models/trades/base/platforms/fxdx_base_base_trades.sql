@@ -38,8 +38,7 @@ SELECT
     '1' AS version,
     CAST(date_trunc('month', swaps.block_time) AS date) AS block_month,
     CAST(date_trunc('day', swaps.block_time) AS date) AS block_date,
-    swaps.block_time AS evt_block_time,
-    swaps.block_time AS block_time,
+    swaps.block_time,
     swaps.block_number,
     swaps.amountIn AS token_sold_amount_raw,
     swaps.amountOut AS token_bought_amount_raw,
@@ -48,6 +47,6 @@ SELECT
     swaps.account AS taker,
     swaps.contract_address AS maker,
     swaps.contract_address AS project_contract_address,
-    swaps.tx_hash,
+    swaps.evt_tx_hash,
     swaps.evt_index
 FROM swaps
