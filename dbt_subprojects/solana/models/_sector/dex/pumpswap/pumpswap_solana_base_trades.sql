@@ -52,6 +52,7 @@ WITH pools AS (
     {% else %}
     WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
+    AND call_block_time BETWEEN now() - interval '72' hour AND now() - interval '24' hour
     
     UNION ALL
     
@@ -82,6 +83,7 @@ WITH pools AS (
     {% else %}
     WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
+    AND call_block_time BETWEEN now() - interval '72' hour AND now() - interval '24' hour
 )
 
 , fee_configs_with_time_ranges AS (
@@ -135,6 +137,7 @@ WITH pools AS (
         {% else %}
         AND t.block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
+        AND t.block_time BETWEEN now() - interval '72' hour AND now() - interval '24' hour
 )
 
 , trades_base as (
@@ -205,3 +208,4 @@ SELECT
     , tb.tx_index
     , {{ dbt_utils.generate_surrogate_key(['tx_id', 'tx_index', 'outer_instruction_index', 'inner_instruction_index']) }} as surrogate_key
 FROM trades_base tb
+WHERE block_time BETWEEN now() - interval '72' hour AND now() - interval '24' hour
