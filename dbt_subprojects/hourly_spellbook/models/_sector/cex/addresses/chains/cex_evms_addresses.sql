@@ -3165,6 +3165,8 @@ FROM (VALUES
     , (0x154af3e01ec56bc55fd585622e33e3dfb8a248d8, 'Iconomi', 'Iconomi 1', 'hildobby', date '2024-01-04')
     , (0x4f003663ab7c6ccad2b14688b1d1f8332763f0a9, 'Iconomi', 'Iconomi 2', 'hildobby', date '2024-01-04')
     , (0x376c3e5547c68bc26240d8dcc6729fff665a4448, 'Iconomi', 'Iconomi MultiSig 1', 'hildobby', date '2024-01-04')
+    -- Nonco
+    , (0xca6d701c1665bfb9eaed95bea2706a322e34393a, 'Nonco', 'Nonco 1', 'hildobby', date '2025-06-09')
     -- COSS Exchange
     , (0x6fa0a717c1073402a963e38ac8cb0d52c271b36e, 'COSS Exchange', 'COSS Exchange 1', 'hildobby', date '2024-01-04')
     , (0xd1560b3984b7481cd9a8f40435a53c860187174d, 'COSS Exchange', 'COSS Exchange 2', 'hildobby', date '2022-08-28')
