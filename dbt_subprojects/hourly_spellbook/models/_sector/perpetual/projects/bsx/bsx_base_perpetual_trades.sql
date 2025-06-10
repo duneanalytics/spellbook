@@ -1,12 +1,14 @@
 {{ config(
-    schema = 'bsx_base_perpetual_trades',
     alias = 'perpetual_trades',
-    post_hook='{{ expose_spells(blockchains = \'["base"]\',
-                                    spell_type = "project",
-                                    spell_name = "bsx",
-                                    contributors = \'["Smriti-08"]\') }}'
-        )
+    schema = 'bsx_base',
+    partition_by = ['block_month'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
+    )
 }}
+
 WITH perp_events AS (
     -- Open Position events
     SELECT 
