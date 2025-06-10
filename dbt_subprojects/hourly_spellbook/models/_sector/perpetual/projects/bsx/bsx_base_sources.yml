@@ -11,15 +11,3 @@ sources:
         loaded_at_field: evt_block_time
       - name: bsx1000x_evt_closeposition
         loaded_at_field: evt_block_time
-
-  - name: base
-    description: Base blockchain core tables
-    database: delta_prod
-    schema: base
-    freshness:
-      warn_after: { count: 1, period: hour }
-      error_after: { count: 3, period: hour }
-    tables:
-      - name: transactions
-        loaded_at_field: block_time
-        description: "Base blockchain transactions table"
