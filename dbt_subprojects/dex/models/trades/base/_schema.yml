@@ -1135,3 +1135,22 @@ models:
           seed_file: ref('tapio_base_base_trades_seed')
           filter:
             version: 1
+
+  - name: fxdx_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: fxdx
+      contributors: princi
+    config:
+      tags: ["base", "dex", "trades", "fxdx"]
+    description: "fxdx base base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('fxdx_base_base_trades_seed')
+          filter:
+            version: 1

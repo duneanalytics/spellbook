@@ -1,0 +1,2 @@
+blockchain,project,version,block_date,tx_hash,evt_index,token_bought_address,token_sold_address,block_number,token_bought_amount_raw,token_sold_amount_raw
+base,fxdx,1,2024-02-29 00:00,0x5be29bf0bafb47eba6832a73b0888102b7a165d2f970af0c54235fa43c8250cb,8,0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca,0x833589fcd6edb6e08f4c7c32d4f71b54bda02913,11215555,16384000000,16384000000
