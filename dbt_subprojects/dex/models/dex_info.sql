@@ -216,4 +216,5 @@ FROM (VALUES
     , ('inkswap', 'InkSwap', 'Direct', 'inswap_')
     , ('sailor_finance', 'SailorFinance', 'Direct', 'SailorFi')
     , ('gooddollar_reserve', 'GoodDollar Reserve', 'Direct', 'gooddollar_reserve')
+    , ('rooster_protocol', 'Rooster Protocol', 'Direct', 'roosterprotocol')
 ) AS temp_table (project, name, marketplace_type, x_username)
