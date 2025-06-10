@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: bsx_base
+  - name: bsx_base_perpetual_trades
     description: Base decoded tables related to bsx protocol
     freshness:
       warn_after: { count: 12, period: hour }
