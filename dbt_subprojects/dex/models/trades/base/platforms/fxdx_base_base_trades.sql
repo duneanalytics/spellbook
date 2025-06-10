@@ -6,7 +6,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['evt_tx_hash', 'evt_index'],
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.evt_block_time')]
+        incremental_predicates = [incremental_predicate('s.evt_block_time')]
     )
 }}
 
@@ -23,12 +23,10 @@ WITH swaps AS (
         s.tokenOut,
         s.contract_address,
         s.evt_tx_hash AS tx_hash,
-        s.evt_tx_hash,
-s.evt_index,
-
+        s.evt_index
     FROM {{ source('fxdx_base', 'vault_evt_swap') }} s
     {% if is_incremental() %}
-    WHERE {{ incremental_predicate('s.evt_block_time') }}
+        WHERE {{ incremental_predicate('s.evt_block_time') }}
     {% endif %}
 )
 
@@ -47,6 +45,6 @@ SELECT
     swaps.account AS taker,
     swaps.contract_address AS maker,
     swaps.contract_address AS project_contract_address,
-    swaps.evt_tx_hash,
+    swaps.tx_hash,
     swaps.evt_index
 FROM swaps
