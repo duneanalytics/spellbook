@@ -5,9 +5,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index']
-    )
-}}
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
+) }}
 
 WITH perp_events AS (
     -- Open Position events
@@ -23,7 +22,7 @@ WITH perp_events AS (
         CAST(fee AS DOUBLE) AS fee_usd,
         NULL AS volume_usd,
         NULL AS margin_usd
-    FROM "bsx_base"."bsx1000x_evt_openposition"
+    FROM {{ source('bsx_base', 'bsx1000x_evt_openposition') }}
     WHERE evt_block_time >= DATE '2023-01-01'
 
     UNION ALL
@@ -41,7 +40,7 @@ WITH perp_events AS (
         CAST(fee AS DOUBLE) AS fee_usd,
         NULL AS volume_usd,
         NULL AS margin_usd
-    FROM "bsx_base"."bsx1000x_evt_closeposition"
+    FROM {{ source('bsx_base', 'bsx1000x_evt_closeposition') }}
     WHERE evt_block_time >= DATE '2023-01-01'
 )
 
@@ -72,7 +71,7 @@ SELECT
     pe.evt_index,
     CAST(NULL AS DOUBLE) AS pnl
 FROM perp_events pe
-INNER JOIN "delta_prod"."base"."transactions" txns 
+INNER JOIN {{ source('base', 'transactions') }} txns 
     ON pe.tx_hash = txns.hash 
     AND pe.block_number = txns.block_number
     AND txns.block_time >= DATE '2023-01-01'
