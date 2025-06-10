@@ -2,7 +2,7 @@
 """
 Enhanced cleanup workflow that:
 1. Generates all subproject manifests
-2. Queries database for tables with 0 or 1 query usages in last 6 months
+2. Queries database for tables with configurable query usage threshold in last 6 months
 3. Maps tables to subprojects using spell_metadata
 4. Validates model files exist and raises errors if not found
 5. Analyzes dependencies (children/sources) across subprojects
@@ -37,6 +37,8 @@ try:
 except ImportError:
     DOTENV_AVAILABLE = False
 
+# Configuration constants
+DEFAULT_MAX_REFERENCE_COUNT = 5
 
 class DatabaseQuery:
     """Database query handler for postgres connections."""
@@ -79,9 +81,9 @@ class DatabaseQuery:
             conn.close()
 
 
-def get_unused_spells_query() -> str:
-    """Get the SQL query for finding tables with 0 or 1 query usages in last 6 months."""
-    return """
+def get_unused_spells_query(max_reference_count: int = DEFAULT_MAX_REFERENCE_COUNT) -> str:
+    """Get the SQL query for finding tables with configurable query usage threshold in last 6 months."""
+    return f"""
     SELECT
         CASE 
             WHEN at.catalog_name IS NULL OR at.catalog_name = '' 
@@ -116,7 +118,7 @@ def get_unused_spells_query() -> str:
         at.created_at,
         at.updated_at,
         at.table_metadata 
-    HAVING COUNT(tqr.query_id) <= 5
+    HAVING COUNT(tqr.query_id) <= {max_reference_count}
     ORDER BY
         reference_count ASC,
         last_referenced_at ASC NULLS FIRST;
@@ -126,9 +128,10 @@ def get_unused_spells_query() -> str:
 class CleanupWorkflow:
     """Enhanced cleanup workflow for table analysis."""
     
-    def __init__(self, spellbook_root: str = ".", env_file: str = ".env"):
+    def __init__(self, spellbook_root: str = ".", env_file: str = ".env", max_reference_count: int = DEFAULT_MAX_REFERENCE_COUNT):
         self.spellbook_root = Path(spellbook_root)
         self.env_file = env_file
+        self.max_reference_count = max_reference_count
         self.subprojects_dir = self.spellbook_root / "dbt_subprojects"
         self.manifests_dir = self.subprojects_dir / "manifests"
         self.db_query = None
@@ -237,9 +240,9 @@ class CleanupWorkflow:
         return loaded_count > 0
     
     def query_unused_tables(self, limit: Optional[int] = None) -> List[Dict]:
-        """Query database for tables with 0 or 1 query usages in last 6 months."""
+        """Query database for tables with configurable query usage threshold in last 6 months."""
         print("\n" + "=" * 60)
-        print("STEP 2: Querying database for lightly used tables (≤1 references)")
+        print(f"STEP 2: Querying database for lightly used tables (≤{self.max_reference_count} references)")
         print("=" * 60)
         
         if not self.db_query:
@@ -247,15 +250,15 @@ class CleanupWorkflow:
             return []
         
         try:
-            query = get_unused_spells_query()
-            print("🔍 Executing query for tables with ≤1 references in last 6 months...")
+            query = get_unused_spells_query(self.max_reference_count)
+            print(f"🔍 Executing query for tables with ≤{self.max_reference_count} references in last 6 months...")
             results = self.db_query.execute_query(query)
             
             if not results:
                 print("ℹ️  No lightly used tables found in database")
                 return []
             
-            print(f"✅ Found {len(results)} tables with ≤1 references")
+            print(f"✅ Found {len(results)} tables with ≤{self.max_reference_count} references")
             
             # Debug: Show first few results to verify reference counts
             print("🔍 Sample of reference counts from query:")
@@ -453,7 +456,7 @@ class CleanupWorkflow:
     def output_results(self, results: List[Dict], output_format: str = 'summary'):
         """Output results in the specified format."""
         print("\n" + "=" * 60)
-        print("CLEANUP CANDIDATES - Tables with ≤1 references and no dependencies")
+        print(f"CLEANUP CANDIDATES - Tables with ≤{self.max_reference_count} references and no dependencies")
         print("=" * 60)
         
         if not results:
@@ -523,7 +526,7 @@ class CleanupWorkflow:
                     skip_manifests: bool = False,
                     output_format: str = 'summary') -> bool:
         """Run the complete cleanup workflow."""
-        print("🧹 Enhanced Cleanup Workflow - Finding tables with ≤1 references and no dependencies")
+        print(f"🧹 Enhanced Cleanup Workflow - Finding tables with ≤{self.max_reference_count} references and no dependencies")
         print("=" * 80)
         
         # Setup database connection
@@ -566,10 +569,15 @@ def main():
     parser.add_argument('--format', choices=['summary', 'csv', 'json'], 
                        default='summary', help='Output format')
     parser.add_argument('--env-file', default='.env', help='Environment file path')
+    parser.add_argument('--max-reference-count', type=int, default=DEFAULT_MAX_REFERENCE_COUNT,
+                       help=f'Maximum reference count threshold for tables to be considered for cleanup (default: {DEFAULT_MAX_REFERENCE_COUNT})')
     
     args = parser.parse_args()
     
-    workflow = CleanupWorkflow(env_file=args.env_file)
+    workflow = CleanupWorkflow(
+        env_file=args.env_file,
+        max_reference_count=args.max_reference_count
+    )
     success = workflow.run_workflow(
         limit=args.limit,
         skip_manifests=args.skip_manifests,
