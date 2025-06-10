@@ -1,3 +1,12 @@
+{{ config(
+    schema = 'bsx_base',
+    alias = 'perpetual_trades',
+    post_hook='{{ expose_spells(blockchains = \'["base"]\',
+                                    spell_type = "project",
+                                    spell_name = "bsx",
+                                    contributors = \'["Smriti-08"]\') }}'
+        )
+}}
 WITH perp_events AS (
     -- Open Position events
     SELECT 
