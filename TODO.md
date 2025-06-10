@@ -142,3 +142,115 @@ python scripts/cleanup_workflow.py --skip-manifests --format csv
 # Test with smaller sample
 python scripts/cleanup_workflow.py --skip-manifests --limit 20
 ```
+
+## Enhance Cleanup Workflow with Usage Analytics ✅ COMPLETE
+- [x] Enhance `get_unused_spells_query` to include query links, dashboard links, and user/team information
+- [x] Add query links as `https://dune.com/queries/{query_id}`
+- [x] Add dashboard links as `https://dune.com/{team_or_user_name}/{slug}`
+- [x] Include distinct set of user names/teams that use the table
+- [x] Update output functions to display new fields
+- [x] Test enhanced query and output formats
+- [x] Add query owners to show who owns the queries that reference tables
+- [x] Add markdown output format for better readability
+
+### **✅ IMPLEMENTATION COMPLETE**
+
+Enhanced the cleanup workflow to provide comprehensive usage analytics:
+
+#### **SQL Query Enhancements**
+- Added joins with queries, visualizations, visualization_widgets, dashboards, users, and teams tables
+- Aggregates unique query IDs into comma-separated query links
+- Collects query owners (users/teams who own the queries)
+- Builds dashboard links using user.name or team.name (not handles)
+- Collects distinct dashboard owners that own dashboards
+- Uses DISTINCT COUNT for reference_count to handle multiple joins correctly
+
+#### **Data Validation**
+- Added validation for dashboard ownership (raises error if dashboard exists without valid user/team)
+- Maintains existing model file validation and dependency analysis
+- Enhanced error handling and logging
+
+#### **Output Enhancements**
+- **Summary format**: Shows bulleted lists of query/dashboard links, comma-separated owners
+- **CSV format**: Includes all new fields as comma-separated strings
+- **JSON format**: Converts comma-separated strings to proper arrays
+- **Markdown format**: Creates formatted .md files with clickable links and structured layout
+
+#### **Usage Examples**
+```bash
+# Get enhanced analytics with all usage information
+python scripts/cleanup_workflow.py --skip-manifests
+
+# Export with full analytics as CSV
+python scripts/cleanup_workflow.py --skip-manifests --format csv
+
+# Generate markdown report with clickable links
+python scripts/cleanup_workflow.py --skip-manifests --format markdown
+```
+
+#### **New Output Fields**
+- `query_links`: Comma-separated URLs like "https://dune.com/queries/123,https://dune.com/queries/456"
+- `query_owners`: Comma-separated names like "Query Owner 1,Query Owner 2"
+- `dashboard_links`: Comma-separated URLs like "https://dune.com/User Name/dashboard-slug,https://dune.com/Team Name/another-dash"
+- `dashboard_owners`: Comma-separated names like "Dashboard Owner 1,Dashboard Owner 2"
+
+## Spell Usage Analytics Script ✅ COMPLETE
+- [x] Create new script for comprehensive spell usage analytics
+- [x] Analyze model dependency counts and lists for each spell
+- [x] Count unique queries that reference each spell
+- [x] Calculate total execution counts for queries using each spell
+- [x] Support multiple output formats (CSV, JSON, markdown)
+- [x] Test script with database connection
+
+### **✅ IMPLEMENTATION COMPLETE**
+
+Created comprehensive spell usage analytics script that provides:
+
+#### **Core Analytics Features**
+- **Model Dependencies**: Analyzes dbt manifests to find which models reference each spell
+- **Query Usage**: Counts unique queries that reference each spell (configurable time period)
+- **Execution Analytics**: Sums total executions of all queries that use each spell
+- **Comprehensive Reporting**: Multiple output formats with detailed statistics
+
+#### **SQL Query Features**
+- CTE-based query for performance optimization
+- Joins `aggregated_tables`, `table_query_references`, and `query_executions`
+- Configurable time period analysis (default: 180 days)
+- Aggregates query IDs and execution counts per spell
+- Orders results by total executions (most used spells first)
+
+#### **Analysis Capabilities**
+- **Model Reference Analysis**: Uses dbt manifests to find model dependencies across all subprojects
+- **Usage Statistics**: Query count, execution count, and referencing models per spell
+- **Subproject Mapping**: Maps spells to their originating dbt subprojects
+- **Performance Metrics**: Total execution counts show actual usage intensity
+
+#### **Output Formats**
+- **Summary**: Console output with top 20 spells, summary statistics by subproject
+- **CSV**: Full data export with comma-separated model lists for spreadsheet analysis
+- **JSON**: Structured data with proper arrays for programmatic use
+- **Markdown**: Beautiful formatted reports with tables and detailed breakdowns
+
+#### **Usage Examples**
+```bash
+# Analyze all spells with summary output
+python scripts/spell_usage_analytics.py
+
+# Generate comprehensive markdown report
+python scripts/spell_usage_analytics.py --format markdown
+
+# Analyze last 30 days only
+python scripts/spell_usage_analytics.py --days-back 30
+
+# Export top 100 spells as CSV
+python scripts/spell_usage_analytics.py --limit 100 --format csv
+```
+
+#### **Key Output Fields**
+- `full_table_name`: Complete table identifier (schema.table)
+- `subproject`: dbt subproject that owns the spell
+- `model_reference_count`: Number of models that reference this spell
+- `referencing_models`: Array of model names that depend on this spell
+- `unique_query_count`: Number of distinct queries that use this spell
+- `total_executions`: Total execution count of all queries using this spell
+- `query_ids`: List of query IDs for further analysis

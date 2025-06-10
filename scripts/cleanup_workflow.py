@@ -93,17 +93,55 @@ def get_unused_spells_query(max_reference_count: int = DEFAULT_MAX_REFERENCE_COU
         at.schema_name,
         at.table_name,
         at.source as table_type,
-        COUNT(tqr.query_id) AS reference_count,
+        COUNT(DISTINCT tqr.query_id) AS reference_count,
         MAX(tqr.referenced_at) AS last_referenced_at,
         at.created_at,
         at.updated_at,
-        at.table_metadata ->> 'spell_metadata' as spell_metadata
+        at.table_metadata ->> 'spell_metadata' as spell_metadata,
+        STRING_AGG(DISTINCT 'https://dune.com/queries/' || tqr.query_id::text, ',') AS query_links,
+        STRING_AGG(DISTINCT 
+            CASE 
+                WHEN q.user_id IS NOT NULL AND qu.name IS NOT NULL THEN qu.name
+                WHEN q.team_id IS NOT NULL AND qt.name IS NOT NULL THEN qt.name
+                ELSE NULL
+            END, ','
+        ) FILTER (WHERE tqr.query_id IS NOT NULL) AS query_owners,
+        STRING_AGG(DISTINCT 
+            CASE 
+                WHEN d.user_id IS NOT NULL AND u.name IS NOT NULL THEN 'https://dune.com/' || u.name || '/' || d.slug
+                WHEN d.team_id IS NOT NULL AND t.name IS NOT NULL THEN 'https://dune.com/' || t.name || '/' || d.slug
+                ELSE NULL
+            END, ','
+        ) FILTER (WHERE d.id IS NOT NULL) AS dashboard_links,
+        STRING_AGG(DISTINCT 
+            CASE 
+                WHEN d.user_id IS NOT NULL AND u.name IS NOT NULL THEN u.name
+                WHEN d.team_id IS NOT NULL AND t.name IS NOT NULL THEN t.name
+                ELSE NULL
+            END, ','
+        ) FILTER (WHERE d.id IS NOT NULL) AS dashboard_owners
     FROM
         aggregated_tables at
     LEFT JOIN
         table_query_references tqr
         ON concat('delta_prod', '.', at.schema_name, '.', at.table_name) = tqr.table_name
         AND tqr.referenced_at >= NOW() - INTERVAL '180 days'
+    LEFT JOIN
+        queries q ON tqr.query_id = q.id
+    LEFT JOIN
+        users qu ON q.user_id = qu.id
+    LEFT JOIN
+        teams qt ON q.team_id = qt.id
+    LEFT JOIN
+        visualizations v ON tqr.query_id = v.query_id
+    LEFT JOIN
+        visualization_widgets vw ON v.id = vw.visualization_id
+    LEFT JOIN
+        dashboards d ON vw.dashboard_id = d.id
+    LEFT JOIN
+        users u ON d.user_id = u.id
+    LEFT JOIN
+        teams t ON d.team_id = t.id
     WHERE
         at.table_metadata ->> 'explorer_category' = 'spell'
     GROUP BY
@@ -118,7 +156,7 @@ def get_unused_spells_query(max_reference_count: int = DEFAULT_MAX_REFERENCE_COU
         at.created_at,
         at.updated_at,
         at.table_metadata 
-    HAVING COUNT(tqr.query_id) <= {max_reference_count}
+    HAVING COUNT(DISTINCT tqr.query_id) <= {max_reference_count}
     ORDER BY
         reference_count ASC,
         last_referenced_at ASC NULLS FIRST;
@@ -378,6 +416,18 @@ class CleanupWorkflow:
         
         return 'unknown'
     
+    def validate_dashboard_ownership(self, dashboard_links: str, dashboard_owners: str, table_name: str) -> None:
+        """Validate that dashboards have valid ownership (user or team name)."""
+        if not dashboard_links:
+            return  # No dashboards to validate
+        
+        # Check for dashboard links without corresponding users_teams
+        dashboard_count = len([link for link in dashboard_links.split(',') if link.strip()])
+        dashboard_owner_count = len([name for name in dashboard_owners.split(',') if name.strip()])
+        
+        if dashboard_count > 0 and dashboard_owner_count == 0:
+            raise ValueError(f"Table {table_name} has dashboards without valid user or team ownership")
+    
     def analyze_tables(self, unused_tables: List[Dict]) -> List[Dict]:
         """Analyze tables for subproject mapping, dependencies, and validation."""
         print("\n" + "=" * 60)
@@ -393,12 +443,33 @@ class CleanupWorkflow:
             schema_name = table_info['schema_name']
             spell_metadata = table_info.get('spell_metadata', '')
             reference_count = table_info.get('reference_count', 'Unknown')
+            query_links = table_info.get('query_links', '')
+            query_owners = table_info.get('query_owners', '')
+            dashboard_links = table_info.get('dashboard_links', '')
+            dashboard_owners = table_info.get('dashboard_owners', '')
             full_table_name = f"{schema_name}.{table_name}"
             
             print(f"\n📋 [{i}/{total_tables}] Analyzing: {full_table_name}")
             print(f"   🔢 Reference count: {reference_count}")
             
+            # Show usage analytics if available
+            if query_links:
+                query_count = len([link for link in query_links.split(',') if link.strip()])
+                print(f"   🔗 Query links: {query_count} queries")
+            if query_owners:
+                query_owner_count = len([name for name in query_owners.split(',') if name.strip()])
+                print(f"   👤 Query owners: {query_owner_count} owners")
+            if dashboard_links:
+                dashboard_count = len([link for link in dashboard_links.split(',') if link.strip()])
+                print(f"   📊 Dashboard links: {dashboard_count} dashboards")
+            if dashboard_owners:
+                dashboard_owner_count = len([name for name in dashboard_owners.split(',') if name.strip()])
+                print(f"   👥 Dashboard owners: {dashboard_owner_count} owners")
+            
             try:
+                # Validate dashboard ownership
+                self.validate_dashboard_ownership(dashboard_links, dashboard_owners, full_table_name)
+                
                 # Extract subproject from metadata
                 subproject = self.extract_subproject_from_metadata(spell_metadata)
                 if not subproject:
@@ -435,7 +506,11 @@ class CleanupWorkflow:
                     'materialization': materialization,
                     'reference_count': table_info.get('reference_count', 0),
                     'last_referenced_at': table_info.get('last_referenced_at'),
-                    'model_file_path': model_file_path
+                    'model_file_path': model_file_path,
+                    'query_links': query_links or '',
+                    'query_owners': query_owners or '',
+                    'dashboard_links': dashboard_links or '',
+                    'dashboard_owners': dashboard_owners or ''
                 })
                 
             except Exception as e:
@@ -467,8 +542,67 @@ class CleanupWorkflow:
             self._output_csv(results)
         elif output_format == 'json':
             self._output_json(results)
+        elif output_format == 'markdown':
+            self._output_markdown(results)
         else:
             self._output_summary(results)
+    
+    def _output_markdown(self, results: List[Dict]):
+        """Output results in Markdown format."""
+        filename = f"cleanup_candidates_{datetime.now().strftime('%Y%m%d_%H%M%S')}.md"
+        
+        with open(filename, 'w') as mdfile:
+            mdfile.write(f"# Cleanup Candidates\n\n")
+            mdfile.write(f"Tables with ≤{self.max_reference_count} references and no dependencies\n\n")
+            mdfile.write(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
+            mdfile.write(f"**Total tables found:** {len(results)}\n\n")
+            
+            # Summary by subproject
+            subproject_counts = {}
+            for result in results:
+                subproject = result['dbt_subproject']
+                subproject_counts[subproject] = subproject_counts.get(subproject, 0) + 1
+            
+            mdfile.write("## Summary by Subproject\n\n")
+            for subproject, count in sorted(subproject_counts.items()):
+                mdfile.write(f"- **{subproject}**: {count} tables\n")
+            mdfile.write("\n")
+            
+            # Detailed table information
+            mdfile.write("## Detailed Results\n\n")
+            
+            for i, result in enumerate(results, 1):
+                mdfile.write(f"### {i}. {result['table_name']}\n\n")
+                mdfile.write(f"- **Subproject:** {result['dbt_subproject']}\n")
+                mdfile.write(f"- **Materialization:** {result['materialization']}\n")
+                mdfile.write(f"- **References:** {result['reference_count']}\n")
+                mdfile.write(f"- **Last used:** {result.get('last_referenced_at', 'Never')}\n")
+                
+                # Query information
+                if result.get('query_links'):
+                    query_links = [link.strip() for link in result['query_links'].split(',') if link.strip()]
+                    mdfile.write(f"\n**Query Links ({len(query_links)}):**\n")
+                    for link in query_links:
+                        mdfile.write(f"- [{link}]({link})\n")
+                
+                if result.get('query_owners'):
+                    query_owners = [name.strip() for name in result['query_owners'].split(',') if name.strip()]
+                    mdfile.write(f"\n**Query Owners ({len(query_owners)}):** {', '.join(query_owners)}\n")
+                
+                # Dashboard information  
+                if result.get('dashboard_links'):
+                    dashboard_links = [link.strip() for link in result['dashboard_links'].split(',') if link.strip()]
+                    mdfile.write(f"\n**Dashboard Links ({len(dashboard_links)}):**\n")
+                    for link in dashboard_links:
+                        mdfile.write(f"- [{link}]({link})\n")
+                
+                if result.get('dashboard_owners'):
+                    dashboard_owners = [name.strip() for name in result['dashboard_owners'].split(',') if name.strip()]
+                    mdfile.write(f"\n**Dashboard Owners ({len(dashboard_owners)}):** {', '.join(dashboard_owners)}\n")
+                
+                mdfile.write("\n---\n\n")
+        
+        print(f"✅ Results exported to: {filename}")
     
     def _output_summary(self, results: List[Dict]):
         """Output results in summary format."""
@@ -480,6 +614,28 @@ class CleanupWorkflow:
             print(f"     Materialization: {result['materialization']}")
             print(f"     References: {result['reference_count']}")
             print(f"     Last used: {result.get('last_referenced_at', 'Never')}")
+            
+            # Show usage analytics
+            if result.get('query_links'):
+                query_links = [link.strip() for link in result['query_links'].split(',') if link.strip()]
+                print(f"     Query links ({len(query_links)}):")
+                for link in query_links:
+                    print(f"       - {link}")
+            
+            if result.get('dashboard_links'):
+                dashboard_links = [link.strip() for link in result['dashboard_links'].split(',') if link.strip()]
+                print(f"     Dashboard links ({len(dashboard_links)}):")
+                for link in dashboard_links:
+                    print(f"       - {link}")
+            
+            if result.get('query_owners'):
+                query_owners = [name.strip() for name in result['query_owners'].split(',') if name.strip()]
+                print(f"     Query owners ({len(query_owners)}): {', '.join(query_owners)}")
+            
+            if result.get('dashboard_owners'):
+                dashboard_owners = [name.strip() for name in result['dashboard_owners'].split(',') if name.strip()]
+                print(f"     Dashboard owners ({len(dashboard_owners)}): {', '.join(dashboard_owners)}")
+            
             print()
         
         # Summary by subproject
@@ -494,7 +650,7 @@ class CleanupWorkflow:
     
     def _output_csv(self, results: List[Dict]):
         """Output results in CSV format."""
-        fieldnames = ['table_name', 'dbt_subproject', 'materialization', 'reference_count', 'last_referenced_at']
+        fieldnames = ['table_name', 'dbt_subproject', 'materialization', 'reference_count', 'last_referenced_at', 'query_links', 'query_owners', 'dashboard_links', 'dashboard_owners']
         
         filename = f"cleanup_candidates_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
         with open(filename, 'w', newline='') as csvfile:
@@ -507,7 +663,11 @@ class CleanupWorkflow:
                     'dbt_subproject': result['dbt_subproject'],
                     'materialization': result['materialization'],
                     'reference_count': result['reference_count'],
-                    'last_referenced_at': result.get('last_referenced_at', '')
+                    'last_referenced_at': result.get('last_referenced_at', ''),
+                    'query_links': result.get('query_links', ''),
+                    'query_owners': result.get('query_owners', ''),
+                    'dashboard_links': result.get('dashboard_links', ''),
+                    'dashboard_owners': result.get('dashboard_owners', '')
                 })
         
         print(f"✅ Results exported to: {filename}")
@@ -516,8 +676,36 @@ class CleanupWorkflow:
         """Output results in JSON format."""
         filename = f"cleanup_candidates_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
         
+        # Process results to split comma-separated strings into arrays for JSON
+        processed_results = []
+        for result in results:
+            processed_result = result.copy()
+            
+            # Convert comma-separated strings to arrays
+            if result.get('query_links'):
+                processed_result['query_links'] = [link.strip() for link in result['query_links'].split(',') if link.strip()]
+            else:
+                processed_result['query_links'] = []
+                
+            if result.get('query_owners'):
+                processed_result['query_owners'] = [name.strip() for name in result['query_owners'].split(',') if name.strip()]
+            else:
+                processed_result['query_owners'] = []
+                
+            if result.get('dashboard_links'):
+                processed_result['dashboard_links'] = [link.strip() for link in result['dashboard_links'].split(',') if link.strip()]
+            else:
+                processed_result['dashboard_links'] = []
+                
+            if result.get('dashboard_owners'):
+                processed_result['dashboard_owners'] = [name.strip() for name in result['dashboard_owners'].split(',') if name.strip()]
+            else:
+                processed_result['dashboard_owners'] = []
+                
+            processed_results.append(processed_result)
+        
         with open(filename, 'w') as jsonfile:
-            json.dump(results, jsonfile, indent=2, default=str)
+            json.dump(processed_results, jsonfile, indent=2, default=str)
         
         print(f"✅ Results exported to: {filename}")
     
@@ -566,7 +754,7 @@ def main():
     parser.add_argument('--limit', type=int, help='Limit number of tables to analyze')
     parser.add_argument('--skip-manifests', action='store_true', 
                        help='Skip manifest generation (use existing manifests)')
-    parser.add_argument('--format', choices=['summary', 'csv', 'json'], 
+    parser.add_argument('--format', choices=['summary', 'csv', 'json', 'markdown'], 
                        default='summary', help='Output format')
     parser.add_argument('--env-file', default='.env', help='Environment file path')
     parser.add_argument('--max-reference-count', type=int, default=DEFAULT_MAX_REFERENCE_COUNT,
