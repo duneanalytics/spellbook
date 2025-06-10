@@ -18,8 +18,7 @@
     transfers_enrich(
         base_transfers = ref('tokens_base_base_transfers')
         , tokens_erc20_model = source('tokens', 'erc20')
-        , prices_model = source('prices', 'usd')
-        , evms_info_model = source('evms','info')
+        , prices_model = source('prices', 'hour')
         , transfers_start_date = '2023-06-15'
         , blockchain = 'base'
     )
