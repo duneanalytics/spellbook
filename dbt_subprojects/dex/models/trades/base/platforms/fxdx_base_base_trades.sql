@@ -44,6 +44,7 @@ SELECT
     swaps.tokenOut AS token_bought_address,
     swaps.account AS taker,
     swaps.contract_address AS maker,
+    swaps.contract_address AS project_contract_address,
     swaps.tx_hash,
     swaps.evt_index
 FROM swaps
