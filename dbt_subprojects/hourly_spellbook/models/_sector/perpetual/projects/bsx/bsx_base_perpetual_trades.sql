@@ -20,8 +20,8 @@ WITH perp_events AS (
         evt_index,
         evt_tx_hash AS tx_hash,
         CAST(fee AS DOUBLE) AS fee_usd,
-        NULL AS volume_usd,
-        NULL AS margin_usd
+       CAST(NULL AS DOUBLE) AS volume_usd,
+    CAST(NULL AS DOUBLE) AS margin_usd
     FROM {{ source('bsx_base', 'bsx1000x_evt_openposition') }}
     WHERE evt_block_time >= DATE '2023-01-01'
 
@@ -38,8 +38,8 @@ WITH perp_events AS (
         evt_index,
         evt_tx_hash AS tx_hash,
         CAST(fee AS DOUBLE) AS fee_usd,
-        NULL AS volume_usd,
-        NULL AS margin_usd
+        CAST(NULL AS DOUBLE) AS volume_usd,
+        CAST(NULL AS DOUBLE) AS margin_usd
     FROM {{ source('bsx_base', 'bsx1000x_evt_closeposition') }}
     WHERE evt_block_time >= DATE '2023-01-01'
 )
