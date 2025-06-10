@@ -11,7 +11,6 @@
 }}
 
 {% set models = [
-    ref('dex_arbitrum_base_trades')
     , ref('dex_plume_base_trades')
 ] %}
 
