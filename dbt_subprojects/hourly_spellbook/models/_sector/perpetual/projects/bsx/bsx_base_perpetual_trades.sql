@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index']
     )
 }}
 
@@ -75,4 +75,4 @@ FROM perp_events pe
 INNER JOIN "delta_prod"."base"."transactions" txns 
     ON pe.tx_hash = txns.hash 
     AND pe.block_number = txns.block_number
-    AND txns.block_time >= DATE '2023-01-01';
+    AND txns.block_time >= DATE '2023-01-01'
