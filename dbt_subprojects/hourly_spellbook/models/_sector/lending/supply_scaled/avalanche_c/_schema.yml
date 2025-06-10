@@ -25,15 +25,21 @@ models:
       - &block_hour
         name: block_hour
         description: "Block hour"
+        data_tests:
+          - not_null
       - &token_address
         name: token_address
         description: "Token contract address"
+        data_tests:
+          - not_null
       - &symbol
         name: symbol
         description: "Token symbol"
       - &user
         name: user
         description: "User wallet address"
+        data_tests:
+          - not_null
       - &amount
         name: amount
         description: "Scaled supply amount"
