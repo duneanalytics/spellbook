@@ -6,7 +6,7 @@ sources:
       - name: pair_evt_swap
         description: "Swap events from AbstractSwap Pair contracts"
 
-sources:
+
   - name: reservoir_swap_abstract
     tables:
       - name: uniswapv2factory_evt_paircreated
