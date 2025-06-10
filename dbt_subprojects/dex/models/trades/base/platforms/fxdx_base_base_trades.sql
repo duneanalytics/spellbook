@@ -6,7 +6,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['evt_tx_hash', 'evt_index'],
-        incremental_predicates = [incremental_predicate('s.evt_block_time')]
+        incremental_predicates = [incremental_predicate('evt_block_time')]
     )
 }}
 
@@ -26,7 +26,7 @@ WITH swaps AS (
         s.evt_index
     FROM {{ source('fxdx_base', 'vault_evt_swap') }} s
     {% if is_incremental() %}
-        WHERE {{ incremental_predicate('s.evt_block_time') }}
+        WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
 )
 
