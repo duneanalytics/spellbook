@@ -4,8 +4,8 @@
 Removing 94 unused/lightly used models from the dbt project based on cleanup_candidates_20250610_163555.md
 
 **Total models to remove:** 91 (adjusted: 3 models restored due to dependencies/active maintenance)
-**Models processed:** 69 (3 restored due to dependencies/active maintenance)
-**Models remaining:** 22
+**Models processed:** 79 (3 restored due to dependencies/active maintenance)
+**Models remaining:** 12
 
 ## ⚠️ Model Restoration Notices
 
@@ -405,13 +405,49 @@ cd ../daily_spellbook && dbt --warn-error compile
   - File: `dbt_subprojects/daily_spellbook/models/chainlink/chainlink_read_requests_logs.sql` - DELETED
   - Schema: `dbt_subprojects/daily_spellbook/models/chainlink/chainlink_schema.yml` (lines 1749-1785) - REMOVED
 
+- [x] **ens.view_registries** (hourly_spellbook)
+  - File: `dbt_subprojects/hourly_spellbook/models/_project/ens/ens_view_registries.sql` - DELETED
+  - Schema: `dbt_subprojects/hourly_spellbook/models/_project/ens/ens_ethereum_schema.yml` (lines 87-100) - REMOVED
+
+- [x] **ens.view_renewals** (hourly_spellbook)
+  - File: `dbt_subprojects/hourly_spellbook/models/_project/ens/ens_view_renewals.sql` - DELETED
+  - Schema: `dbt_subprojects/hourly_spellbook/models/_project/ens/ens_ethereum_schema.yml` (lines 61-86) - REMOVED
+
+- [x] **op_token_distributions_optimism.transfer_mapping** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/op/token_distributions/optimism/op_token_distributions_optimism_transfer_mapping.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/op/token_distributions/optimism/op_token_distributions_schema.yml` (lines 3-85) - REMOVED
+
+- [x] **cow_protocol_arbitrum.eth_flow_orders** (hourly_spellbook)
+  - File: `dbt_subprojects/hourly_spellbook/models/_project/cow_protocol/arbitrum/cow_protocol_arbitrum_eth_flow_orders.sql` - DELETED
+  - Schema: `dbt_subprojects/hourly_spellbook/models/_project/cow_protocol/arbitrum/cow_protocol_arbitrum_schema.yml` (lines 30-43) - REMOVED
+
+- [x] **chainlink.chainlink_read_requests_feeds** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/chainlink/chainlink_read_requests_feeds.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/chainlink/chainlink_schema.yml` (lines 1720-1742) - REMOVED
+
+- [x] **addresses_ethereum.safe_airdrop** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/addresses/ethereum/addresses_ethereum_safe_airdrop.sql` - DELETED
+  - Schema: No schema entry found - NONE TO REMOVE
+
+- [x] **keep3r_network.keeper_work** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/keep3r_network/keep3r_network_keeper_work.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/keep3r_network/keep3r_network_schema.yml` (lines 21-44) - REMOVED
+
+- [x] **cow_protocol_base.eth_flow_orders** (hourly_spellbook)
+  - File: `dbt_subprojects/hourly_spellbook/models/_project/cow_protocol/base/cow_protocol_base_eth_flow_orders.sql` - DELETED
+  - Schema: `dbt_subprojects/hourly_spellbook/models/_project/cow_protocol/base/cow_protocol_base_schema.yml` (lines 30-43) - REMOVED
+
+- [x] **dex.incentive_mappings** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/dex/dex_incentive_mappings.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/dex/dex_schema.yml` (lines 3-42) - REMOVED
+
 ### 🔄 Currently Processing
 
 *Ready for next batch...*
 
 ### ⏳ Pending Removals (0 references - highest priority)
 
-*22 models remaining to be processed...*
+*12 models remaining to be processed...*
 
 ## Rollback Commands
 
