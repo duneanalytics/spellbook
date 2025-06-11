@@ -16,8 +16,8 @@ WITH token_swaps AS (
         to AS taker,
         amountIn AS token_sold_amount_raw,
         amountOut AS token_bought_amount_raw,
-        NULL AS token_sold_address,
-        NULL AS token_bought_address,
+        CAST(NULL AS varbinary) as token_sold_address,
+        CAST(NULL AS varbinary) as token_bought_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
         evt_index AS evt_index
