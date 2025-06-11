@@ -770,19 +770,6 @@ models:
             - blockchain
             - block_date
 
-  - name: metrics_viction_transfers_daily
-    meta:
-      sector: metrics
-      contributors: jeff-dude, 0xRob , krishhh
-    config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-
   - name: metrics_worldchain_transfers_daily
     meta:
       sector: metrics
