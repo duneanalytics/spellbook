@@ -51,7 +51,7 @@ We need to split the onboarding process into multiple PRs because of the way we 
 4.  **Define Raw Data Sources:**
     -   **What:** Add the new blockchain\'s raw tables (`transactions`, `logs`, `traces`, `blocks`, `creation_traces`) as sources in a new YAML file within [`sources/_base_sources/evm/`](./sources/_base_sources/evm/) (e.g., [`lens_base_sources.yml`](./sources/_base_sources/evm/lens_base_sources.yml)). Also, create a corresponding `<blockchain>_docs_block.md` file (e.g., [`lens_docs_block.md`](./sources/_base_sources/evm/lens_docs_block.md)) in the same directory to document these sources.
     -   **How:** 
-        - You can either copy and replace an existing source file and docs and replace occurences or create a new one.
+        - You can either copy and replace an existing source file and docs and replace occurrences or create a new one.
         - You can also use the script `scripts/generate_evm_sources.py` and `scripts/generate_evm_docs.py` to generate the source file and docs. Simply replace the chain name in the script and run it.
     -   **Why:** Makes the raw data accessible within the dbt project, allowing models to reference them using the `source()` function.
 
