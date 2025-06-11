@@ -126,14 +126,14 @@ WITH pools AS (
         AND (
                 (
                 sf.swap_inner_index IS NULL 
-                AND t.inner_instruction_index IN (1, 2, 3, 6) 
+                AND t.inner_instruction_index IN (1, 2, 3, 4) 
                 AND (t.from_token_account = sf.account_user_quote_token_account OR t.from_token_account = sf.account_pool_quote_token_account)
                 )
             OR
                 (
                 sf.swap_inner_index IS NOT NULL
                 AND t.inner_instruction_index IN (sf.swap_inner_index + 1, sf.swap_inner_index + 2, sf.swap_inner_index + 3, 
-                                                  sf.swap_inner_index + 6) 
+                                                  sf.swap_inner_index + 4) 
                 AND (t.from_token_account = sf.account_user_quote_token_account OR t.from_token_account = sf.account_pool_quote_token_account)
                 )
             )
