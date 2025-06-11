@@ -39,7 +39,6 @@
                                     , "sophon"
                                     , "tron"
                                     , "unichain"
-                                    , "viction"
                                     , "worldchain"
                                     , "zkevm"
                                     , "zksync"
