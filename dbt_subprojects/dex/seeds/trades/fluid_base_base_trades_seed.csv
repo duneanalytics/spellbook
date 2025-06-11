@@ -1,2 +1,2 @@
 blockchain,project,version,block_date,tx_hash,evt_index,token_bought_address,token_sold_address,block_number,token_bought_amount_raw,token_sold_amount_raw
-base, fluiddex, 1, 2025-06-11 00:00, 0xae86d67725ac61cb9109d361274c8611d5b8854b2e19a8f43fad77a91c134d8c, 245, , ,31407409, 2583083424668000000, 809121055061702
+base, fluiddex, 1, 2025-06-11, 0xae86d67725ac61cb9109d361274c8611d5b8854b2e19a8f43fad77a91c134d8c, 245, , ,31407409, 2583083424668000000, 809121055061702
