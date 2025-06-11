@@ -188,8 +188,6 @@ models:
         name: avg_aave_debt_usdc_eth_total
         description: "Daily average AAVE USDC debt expressed in ETH"
 
-  - name: nexusmutual_ethereum_capital_pool_latest
-
   - name: nexusmutual_ethereum_capital_pool_mcr
     meta:
       blockchain: ethereum

@@ -1,4 +1,4 @@
- # Spellbook Model Cleanup Progress
+# Spellbook Model Cleanup Progress
 
 ## Summary
 Removing 94 unused/lightly used models from the dbt project based on cleanup_candidates_20250610_163555.md
@@ -12,6 +12,27 @@ Removing 94 unused/lightly used models from the dbt project based on cleanup_can
 - **hourly_spellbook**: 26 tables  
 - **dex**: 2 tables
 - **nft**: 2 tables
+
+## Database Cleanup
+✅ **SQL Drop Transaction Created**: `drop_unused_models.sql`
+- Contains DROP statements for all 10 completed model deletions
+- Uses transactions with IF EXISTS for safety
+- Includes both TABLE and VIEW drop statements
+- Ready for database execution
+
+## Compilation Status
+✅ **All subprojects compile successfully** (tested 2024-12-20)
+- **daily_spellbook**: ✅ PASS
+- **hourly_spellbook**: ✅ PASS  
+- **dex**: ✅ PASS
+- **nft**: ✅ PASS
+
+## Issue Resolution
+⚠️ **Restoration Required**: `lido_liquidity_zksync_maverick_pools.sql` 
+- Issue: Model had dependent references in `lido_liquidity.sql`
+- Resolution: Restored from main branch using `git checkout main -- <filepath>`
+- Note: `git restore` did not work - needed checkout from main
+- Note: `nexusmutual_ethereum_capital_pool_latest` had child dependencies
 
 ## Progress Tracking
 
