@@ -75,40 +75,6 @@ models:
         data_tests:
           - not_null
 
-  - name: gooddollar_celo_ubi_claims_daily_agg
-    meta:
-      blockchain: celo
-      project: gooddollar
-      contributors: tomfutago
-    config:
-      tags: ["celo", "gooddollar", "ubi"]
-    description: "GoodDollar daily UBI claims aggregates"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-    columns:
-      - *block_date
-      - name: unique_claimers
-        description: "unique claimers"
-      - &claim_count
-        name: claim_count
-        description: "daily claim count"
-      - *amount
-      - name: avg_amount
-        description: "avg daily UBI amount"
-      - *amount_usd
-      - name: avg_amount_usd
-        description: "avg daily UBI amount in USD"
-      - name: day_oridinal
-        description: "incremental day ordinal"
-      - name: daily_ubi
-        description: "daily UBI amount (changes at approx 12:00)"
-      - name: daily_ubi_raw
-        description: "daily UBI amount raw (changes at approx 12:00)"
-      - name: fee_to_claim_ratio
-        description: "fee to claim ratio (based on USD amounts)"
-
   - name: gooddollar_celo_ubi_claimer_streaks
     meta:
       blockchain: celo

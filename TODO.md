@@ -4,8 +4,8 @@
 Removing 94 unused/lightly used models from the dbt project based on cleanup_candidates_20250610_163555.md
 
 **Total models to remove:** 91 (adjusted: 3 models restored due to dependencies/active maintenance)
-**Models processed:** 59 (3 restored due to dependencies/active maintenance)
-**Models remaining:** 32
+**Models processed:** 69 (3 restored due to dependencies/active maintenance)
+**Models remaining:** 22
 
 ## ⚠️ Model Restoration Notices
 
@@ -365,13 +365,53 @@ cd ../daily_spellbook && dbt --warn-error compile
   - File: `dbt_subprojects/daily_spellbook/models/evms/evms_tables/evms_erc721_approvalsforall.sql` - DELETED
   - Schema: No schema entry found - NONE TO REMOVE
 
+- [x] **evms.erc721_approvals** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/evms/evms_tables/evms_erc721_approvals.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/evms/evms_schema.yml` (lines 480-502) - REMOVED
+
+- [x] **aave_sonic.interest_rates** (hourly_spellbook)
+  - File: `dbt_subprojects/hourly_spellbook/models/_project/aave/sonic/aave_sonic_interest_rates.sql` - DELETED
+  - Schema: `dbt_subprojects/hourly_spellbook/models/_project/aave/sonic/_schema.yml` (lines 198-217) - REMOVED
+
+- [x] **aave_arbitrum.interest_rates** (hourly_spellbook)
+  - File: `dbt_subprojects/hourly_spellbook/models/_project/aave/arbitrum/aave_arbitrum_interest_rates.sql` - DELETED
+  - Schema: `dbt_subprojects/hourly_spellbook/models/_project/aave/arbitrum/_schema.yml` (lines 198-218) - REMOVED
+
+- [x] **safe_berachain.bera_transfers** (hourly_spellbook)
+  - File: `dbt_subprojects/hourly_spellbook/models/_project/safe/berachain/safe_berachain_bera_transfers.sql` - DELETED
+  - Schema: `dbt_subprojects/hourly_spellbook/models/_project/safe/berachain/safe_berachain_schema.yml` (lines 36-75) - REMOVED
+
+- [x] **cow_protocol.tx_hash_labels_all** (hourly_spellbook)
+  - File: `dbt_subprojects/hourly_spellbook/models/_project/cow_protocol/tx_hash_labels/cow_protocol_tx_hash_labels_all.sql` - DELETED
+  - Schema: `dbt_subprojects/hourly_spellbook/models/_project/cow_protocol/tx_hash_labels/cow_protocol_tx_hash_labels_all_schema.yml` (entire file) - DELETED
+
+- [x] **nft_ethereum.top_minters** (nft)
+  - File: `dbt_subprojects/nft/models/nft_metrics/ethereum/nft_ethereum_top_minters.sql` - DELETED
+  - Schema: `dbt_subprojects/nft/models/nft_metrics/ethereum/nft_ethereum_schema.yml` (lines 4-26) - REMOVED
+
+- [x] **gooddollar_celo.ubi_claims_daily_agg** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/gooddollar/celo/gooddollar_celo_ubi_claims_daily_agg.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/gooddollar/celo/_schema.yml` (lines 77-110) - REMOVED
+
+- [x] **keep3r_network.liquidity_credits_reward** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/keep3r_network/keep3r_network_liquidity_credits_reward.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/keep3r_network/keep3r_network_schema.yml` (lines 63-86) - REMOVED
+
+- [x] **keep3r_network.job_migration** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/keep3r_network/keep3r_network_job_migration.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/keep3r_network/keep3r_network_schema.yml` (lines 4-20) - REMOVED
+
+- [x] **chainlink.chainlink_read_requests_logs** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/chainlink/chainlink_read_requests_logs.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/chainlink/chainlink_schema.yml` (lines 1749-1785) - REMOVED
+
 ### 🔄 Currently Processing
 
 *Ready for next batch...*
 
 ### ⏳ Pending Removals (0 references - highest priority)
 
-*34 models remaining to be processed...*
+*22 models remaining to be processed...*
 
 ## Rollback Commands
 
