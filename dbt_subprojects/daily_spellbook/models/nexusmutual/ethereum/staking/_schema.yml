@@ -265,6 +265,7 @@ models:
             - token_id
             - init_tranche_id
             - current_tranche_id
+            - chain_level
             - stake_start_date
             - stake_end_date
     columns:
@@ -447,3 +448,52 @@ models:
       - *total_staked_nxm
       - *stake_expiry_date
       - name: token_date_rn
+
+  - name: nexusmutual_ethereum_base_staked_per_token_tranche
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "staking"]
+    description: "Staked NXM per token & tranche (base model)"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - pool_id
+            - token_id
+            - tranche_id
+    columns:
+      - *block_date
+      - *pool_id
+      - *pool_address
+      - *token_id
+      - *tranche_id
+      - *total_staked_nxm
+      - *stake_expiry_date
+
+  - name: nexusmutual_ethereum_staked_per_token_tranche
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "staking"]
+    description: "Staked NXM per token & tranche - final view"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - pool_id
+            - token_id
+            - tranche_id
+    columns:
+      - *block_date
+      - *pool_id
+      - *pool_address
+      - *token_id
+      - *tranche_id
+      - *total_staked_nxm
+      - *stake_expiry_date
+      - name: token_tranche_rn

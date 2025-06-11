@@ -1,6 +1,6 @@
 {{ config(
         schema='evms',
-        alias = 'erc1155_transferssingle',
+        alias = 'erc721_approvalsforall',
         materialized = 'view',
         post_hook='{{ expose_spells(evms_structured_blockchains_list() | tojson, "sector", "evms", \'[]\') }}'
         )
@@ -22,12 +22,10 @@ FROM (
         , evt_tx_from
         , evt_tx_to
         , evt_tx_index
+        , approved
+        , owner
         , operator
-        , "from"
-        , to
-        , id
-        , value
-        FROM {{ source('erc1155_' + blockchain, 'evt_TransferSingle') }}
+        FROM {{ source('erc721_' + blockchain, 'evt_ApprovalForAll') }}
         {% if not loop.last %}
         UNION ALL
         {% endif %}
