@@ -197,19 +197,6 @@ models:
     columns:
       - *token
       - *amount
-  - name: eigenlayer_ethereum_programmatic_incentive_by_day
-    meta:
-      blockchain: ethereum
-      sector: restaking
-      contributors: bowenli
-    config:
-      tags: ['eigenlayer', 'restaking', 'programmatic incentive']
-    description: >
-        Programmatic incentive aggregated by day
-    columns:
-      - *token
-      - *amount
-      - *date
   - name: eigenlayer_ethereum_operator_shares_change_by_day
     meta:
       blockchain: ethereum

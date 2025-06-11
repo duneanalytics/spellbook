@@ -20,25 +20,6 @@ models:
       - name: attribute_list
         description: "Attribute list"
 
-  - name: cryptopunks_ethereum_current_listings
-    meta:
-      blockchain: ethereum
-      project: cryptopunks
-      contributors: [cat]
-    config:
-      tags: ['ethereum', 'cryptopunks', 'listings']
-    description: > 
-        CryptoPunks currently open listings
-    columns:
-      - name: punk_id
-        description: "CryptoPunk ID #"
-      - name: listed_price_eth
-        description: "Listed price (ETH)"
-      - name: listed_price_current_usd
-        description: "Listed price at current USD value"
-      - name: listing_created_at
-        description: "Time listings was created"
-
   - name: cryptopunks_ethereum_current_owners_per_token
     meta:
       blockchain: ethereum
@@ -123,23 +104,6 @@ models:
           - unique
       - name: unique_wallets
         description: "# unique Punk wallets that day"
-
-  - name: cryptopunks_ethereum_floor_price_over_time
-    meta:
-      blockchain: ethereum
-      project: cryptopunks
-      contributors: [cat]
-    config:
-      tags: ['ethereum', 'cryptopunks', 'floor']
-    description: > 
-        CryptoPunks floor price per day over time
-    columns:
-      - name: day
-        description: "Day"
-      - name: floor_price_eth
-        description: "Floor price in ETH that day"
-      - name: floor_price_usd
-        description: "Floor price in $ that day"
 
   - name: cryptopunks_ethereum_punk_bid_events
     meta:

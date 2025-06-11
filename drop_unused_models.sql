@@ -87,6 +87,86 @@ DROP VIEW IF EXISTS aztec_v2_ethereum.daily_estimated_rollup_tvl;
 DROP TABLE IF EXISTS aztec_v2_ethereum.deposit_assets;
 DROP VIEW IF EXISTS aztec_v2_ethereum.deposit_assets;
 
+-- 21. balances_polygon.erc20_hour
+DROP TABLE IF EXISTS balances_polygon.erc20_hour;
+DROP VIEW IF EXISTS balances_polygon.erc20_hour;
+
+-- 22. balances_polygon.matic_hour
+DROP TABLE IF EXISTS balances_polygon.matic_hour;
+DROP VIEW IF EXISTS balances_polygon.matic_hour;
+
+-- 23. transfers_celo.erc721_rolling_hour
+DROP TABLE IF EXISTS transfers_celo.erc721_rolling_hour;
+DROP VIEW IF EXISTS transfers_celo.erc721_rolling_hour;
+
+-- 24. transfers_celo.erc721_rolling_day
+DROP TABLE IF EXISTS transfers_celo.erc721_rolling_day;
+DROP VIEW IF EXISTS transfers_celo.erc721_rolling_day;
+
+-- 25. transfers_celo.erc1155_rolling_hour
+DROP TABLE IF EXISTS transfers_celo.erc1155_rolling_hour;
+DROP VIEW IF EXISTS transfers_celo.erc1155_rolling_hour;
+
+-- 26. transfers_celo.erc1155_rolling_day
+DROP TABLE IF EXISTS transfers_celo.erc1155_rolling_day;
+DROP VIEW IF EXISTS transfers_celo.erc1155_rolling_day;
+
+-- 27. chainlink.chainlink_read_requests_feeds_daily
+DROP TABLE IF EXISTS chainlink.chainlink_read_requests_feeds_daily;
+DROP VIEW IF EXISTS chainlink.chainlink_read_requests_feeds_daily;
+
+-- 28. chainlink.chainlink_read_requests_requester
+DROP TABLE IF EXISTS chainlink.chainlink_read_requests_requester;
+DROP VIEW IF EXISTS chainlink.chainlink_read_requests_requester;
+
+-- 29. chainlink.chainlink_read_requests_requester_daily
+DROP TABLE IF EXISTS chainlink.chainlink_read_requests_requester_daily;
+DROP VIEW IF EXISTS chainlink.chainlink_read_requests_requester_daily;
+
+-- 30. tokemak_ethereum.tokemak_lookup_reactors
+DROP TABLE IF EXISTS tokemak_ethereum.tokemak_lookup_reactors;
+DROP VIEW IF EXISTS tokemak_ethereum.tokemak_lookup_reactors;
+
+-- 31. tokemak_ethereum.tokemak_addresses
+DROP TABLE IF EXISTS tokemak_ethereum.tokemak_addresses;
+DROP VIEW IF EXISTS tokemak_ethereum.tokemak_addresses;
+
+-- 32. tokemak_ethereum.lookup_tokens
+DROP TABLE IF EXISTS tokemak_ethereum.lookup_tokens;
+DROP VIEW IF EXISTS tokemak_ethereum.lookup_tokens;
+
+-- 33. cow_protocol_gnosis.eth_flow_orders
+DROP TABLE IF EXISTS cow_protocol_gnosis.eth_flow_orders;
+DROP VIEW IF EXISTS cow_protocol_gnosis.eth_flow_orders;
+
+-- 34. cryptopunks_ethereum.current_listings
+DROP TABLE IF EXISTS cryptopunks_ethereum.current_listings;
+DROP VIEW IF EXISTS cryptopunks_ethereum.current_listings;
+
+-- 35. cryptopunks_ethereum.floor_price_over_time
+DROP TABLE IF EXISTS cryptopunks_ethereum.floor_price_over_time;
+DROP VIEW IF EXISTS cryptopunks_ethereum.floor_price_over_time;
+
+-- 36. tessera_ethereum.bids
+DROP TABLE IF EXISTS tessera_ethereum.bids;
+DROP VIEW IF EXISTS tessera_ethereum.bids;
+
+-- 37. eigenlayer_ethereum.programmatic_incentive_by_day
+DROP TABLE IF EXISTS eigenlayer_ethereum.programmatic_incentive_by_day;
+DROP VIEW IF EXISTS eigenlayer_ethereum.programmatic_incentive_by_day;
+
+-- 38. sudoswap_ethereum.pool_balance_changes (file not found - may not exist)
+DROP TABLE IF EXISTS sudoswap_ethereum.pool_balance_changes;
+DROP VIEW IF EXISTS sudoswap_ethereum.pool_balance_changes;
+
+-- 39. evms.erc1155_approvalsforall
+DROP TABLE IF EXISTS evms.erc1155_approvalsforall;
+DROP VIEW IF EXISTS evms.erc1155_approvalsforall;
+
+-- 40. gmx_arbitrum.glp_aum
+DROP TABLE IF EXISTS gmx_arbitrum.glp_aum;
+DROP VIEW IF EXISTS gmx_arbitrum.glp_aum;
+
 COMMIT TRANSACTION;
 
 -- Rollback command if needed:

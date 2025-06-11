@@ -4,8 +4,8 @@
 Removing 94 unused/lightly used models from the dbt project based on cleanup_candidates_20250610_163555.md
 
 **Total models to remove:** 94
-**Models processed:** 30
-**Models remaining:** 64
+**Models processed:** 40
+**Models remaining:** 54
 
 ## Subproject breakdown:
 - **daily_spellbook**: 64 tables
@@ -15,7 +15,7 @@ Removing 94 unused/lightly used models from the dbt project based on cleanup_can
 
 ## Database Cleanup
 ✅ **SQL Drop Transaction Created**: `drop_unused_models.sql`
-- Contains DROP statements for all 30 completed model deletions
+- Contains DROP statements for all 40 completed model deletions
 - Uses transactions with IF EXISTS for safety
 - Includes both TABLE and VIEW drop statements
 - Ready for database execution
@@ -24,14 +24,20 @@ Removing 94 unused/lightly used models from the dbt project based on cleanup_can
 
 ### ✅ All Subprojects Compiling Successfully
 
-**Latest validation results:** All 6 subprojects compile without errors or warnings.
+**Latest validation results (Post-Models 31-40 cleanup):** All 6 subprojects compile without errors or warnings.
 
 ✅ **tokens**: Compiled successfully (389 models, 508 data tests, 7192 sources)
 ✅ **solana**: Compiled successfully (225 models, 328 data tests, 37 seeds, 7251 sources)  
 ✅ **nft**: Compiled successfully (302 models, 681 data tests, 48 seeds, 7200 sources)
-✅ **hourly_spellbook**: Compiled successfully (1361 models, 4734 data tests, 134 seeds, 7209 sources)
+✅ **hourly_spellbook**: Compiled successfully (1360 models, 4734 data tests, 134 seeds, 7209 sources)
 ✅ **dex**: Compiled successfully (1038 models, 411 seeds, 1903 data tests, 7192 sources)
-✅ **daily_spellbook**: Compiled successfully (1841 models, 2329 data tests, 47 seeds, 7202 sources) - YAML syntax fixed
+✅ **daily_spellbook**: Compiled successfully (1833 models, 2303 data tests, 47 seeds, 7202 sources)
+
+### Fixes Applied During Validation:
+- **tokemak_ethereum_schema.yml**: Removed empty schema file causing parsing errors
+- **evms_schema.yml**: Fixed YAML syntax error in topic0 description (quote escaping)
+- **evms_schema.yml**: Fixed undefined alias `*approved` by adding proper field definition
+- **dbt_project.yml**: Removed unused tokemak configuration paths
 
 ### How to Validate Changes with dbt --warn-error compile
 
@@ -93,8 +99,8 @@ cd ../daily_spellbook && dbt --warn-error compile
 ✅ **nft**: Compiled successfully (302 models, 681 data tests, 48 seeds)  
 ✅ **solana**: Compiled successfully (225 models, 328 data tests, 37 seeds)
 ✅ **tokens**: Compiled successfully (389 models, 508 data tests)
-✅ **hourly_spellbook**: Compiled successfully (1361 models, 4734 data tests, 134 seeds) - FIXED
-✅ **daily_spellbook**: Compiled successfully (1851 models, 2341 data tests, 47 seeds) - FIXED YAML syntax
+✅ **hourly_spellbook**: Compiled successfully (1360 models, 4734 data tests, 134 seeds) - FIXED
+✅ **daily_spellbook**: Compiled successfully (1833 models, 2303 data tests, 47 seeds) - FIXED YAML syntax
 
 ## Issue Resolution
 ⚠️ **Restoration Required**: `lido_liquidity_zksync_maverick_pools.sql` 
@@ -228,13 +234,53 @@ cd ../daily_spellbook && dbt --warn-error compile
   - File: `dbt_subprojects/daily_spellbook/models/tokemak/ethereum/tokemak_ethereum_tokemak_lookup_reactors.sql` - DELETED
   - Schema: `dbt_subprojects/daily_spellbook/models/tokemak/ethereum/tokemak_ethereum_schema.yml` (lines 71-102) - REMOVED
 
+- [x] **tokemak_ethereum.tokemak_addresses** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/tokemak/ethereum/tokemak_ethereum_tokemak_addresses.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/tokemak/ethereum/tokemak_ethereum_schema.yml` (lines 45-70) - REMOVED
+
+- [x] **tokemak_ethereum.lookup_tokens** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/tokemak/ethereum/tokemak_ethereum_lookup_tokens.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/tokemak/ethereum/tokemak_ethereum_schema.yml` (lines 3-44) - REMOVED
+
+- [x] **cow_protocol_gnosis.eth_flow_orders** (hourly_spellbook)
+  - File: `dbt_subprojects/hourly_spellbook/models/_project/cow_protocol/gnosis/cow_protocol_gnosis_eth_flow_orders.sql` - DELETED
+  - Schema: `dbt_subprojects/hourly_spellbook/models/_project/cow_protocol/gnosis/cow_protocol_gnosis_schema.yml` (lines 27-40) - REMOVED
+
+- [x] **cryptopunks_ethereum.current_listings** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/cryptopunks/ethereum/cryptopunks_ethereum_current_listings.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/cryptopunks/ethereum/cryptopunks_ethereum_schema.yml` (lines 19-36) - REMOVED
+
+- [x] **cryptopunks_ethereum.floor_price_over_time** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/cryptopunks/ethereum/cryptopunks_ethereum_floor_price_over_time.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/cryptopunks/ethereum/cryptopunks_ethereum_schema.yml` (lines 108-120) - REMOVED
+
+- [x] **tessera_ethereum.bids** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/tessera/ethereum/tessera_ethereum_bids.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/tessera/ethereum/tessera_ethereum_schema.yml` (lines 65-87) - REMOVED
+
+- [x] **eigenlayer_ethereum.programmatic_incentive_by_day** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/_projects/eigenlayer/ethereum/eigenlayer_ethereum_programmatic_incentive_by_day.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/_projects/eigenlayer/_schema.yml` (lines 199-210) - REMOVED
+
+- [x] **sudoswap_ethereum.pool_balance_changes** (daily_spellbook)
+  - File: Model file not found - may not exist in current codebase
+  - Schema: No schema entry found - NONE TO REMOVE
+
+- [x] **evms.erc1155_approvalsforall** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/evms/evms_tables/evms_erc1155_approvalsforall.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/evms/evms_schema.yml` (lines 392-413) - REMOVED
+
+- [x] **gmx_arbitrum.glp_aum** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/gmx/arbitrum/glp/gmx_arbitrum_glp_aum.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/gmx/arbitrum/glp/gmx_arbitrum_glp_schema.yml` (lines 214-280) - REMOVED
+
 ### 🔄 Currently Processing
 
 *Ready for next batch...*
 
 ### ⏳ Pending Removals (0 references - highest priority)
 
-*64 models remaining to be processed...*
+*54 models remaining to be processed...*
 
 ## Rollback Commands
 
