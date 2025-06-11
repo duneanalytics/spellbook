@@ -214,4 +214,3 @@ SELECT
     , tb.tx_index
     , {{ dbt_utils.generate_surrogate_key(['tx_id', 'tx_index', 'outer_instruction_index', 'inner_instruction_index']) }} as surrogate_key
 FROM trades_base tb
-WHERE block_time BETWEEN now() - interval '72' hour AND now() - interval '24' hour
