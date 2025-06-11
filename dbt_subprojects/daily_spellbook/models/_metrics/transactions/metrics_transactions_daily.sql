@@ -46,7 +46,6 @@
     , 'ton'
     , 'tron'
     , 'unichain'
-    , 'viction'
     , 'worldchain'
     , 'zkevm'
     , 'zksync'
