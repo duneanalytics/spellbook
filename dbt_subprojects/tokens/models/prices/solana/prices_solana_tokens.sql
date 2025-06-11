@@ -760,6 +760,6 @@ FROM
         ('alch-alchemist-ai', 'solana', 'ALCH', 'HNg5PYJmtqcmzXrv6S9zP1CDKk5BgDuyFBxbvNApump', 6),
         ('zbcn-zebec-network', 'solana', 'ZBCN', 'ZBCNpuD7YMXzTHB2fhGkGi78MNsHGLRXUhRewNRm9RU', 6),
         ('huma-finance', 'solana', 'HUMA', 'HUMA1821qVDKta3u2ovmfDQeW2fSQouSKE8fkF44wvGw', 6),
-        ('wen', 'solana', 'WEN', 'WENWENvqqNya429ubCdR81ZmD69brwQaaBYY6p3LCpk', 5),
-        ('zeus', 'solana', 'ZEUS', 'ZEUS1aR7aX8DFFJf5QjWj2ftDDdNTroMNGo8YoQm3Gq', 6)
+        ('wen4-wen', 'solana', 'WEN', 'WENWENvqqNya429ubCdR81ZmD69brwQaaBYY6p3LCpk', 5),
+        ('zeus-zeus-network1', 'solana', 'ZEUS', 'ZEUS1aR7aX8DFFJf5QjWj2ftDDdNTroMNGo8YoQm3Gq', 6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
