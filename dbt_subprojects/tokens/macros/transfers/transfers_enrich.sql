@@ -17,6 +17,9 @@ WITH base_transfers as (
     {% if is_incremental() %}
     WHERE
         {{ incremental_predicate('block_date') }}
+    {% else %}
+    WHERE
+        block_date >= TIMESTAMP '{{ transfers_start_date }}'
     {% endif %}
 )
 , prices AS (
@@ -93,11 +96,14 @@ SELECT
     , amount_raw
     , amount
     , price_usd
+    , amount_usd
+    /*
     , CASE
         WHEN amount_usd >= {{ usd_amount_threshold }}
             THEN CAST(NULL as double)
             ELSE amount_usd -- Select only transfers where USD amount is less than the threshold
         END AS amount_usd
+    */
 FROM
     transfers
 {%- endmacro %}
