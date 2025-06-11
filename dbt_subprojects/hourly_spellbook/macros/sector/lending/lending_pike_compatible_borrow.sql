@@ -1,4 +1,13 @@
-{% macro lending_pike_compatible_borrow(blockchain, project, version, evt_borrow_table, evt_repay_table, evt_liquidation_borrow_table, deploy_market_table) %}
+{% macro lending_pike_compatible_borrow(
+    blockchain,
+    project,
+    version,
+    evt_borrow_table,
+    evt_repay_table,
+    evt_liquidation_borrow_table,
+    deploy_market_table
+    ) 
+%}
 
 WITH deployed_markets AS (
   SELECT
