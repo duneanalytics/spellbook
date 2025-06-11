@@ -2,46 +2,6 @@ version: 2
 
 models:
   
-  - name: keep3r_network_liquidity_addition
-    meta:
-      blockchain: ethereum, optimism, polygon
-      project: keep3r_network
-      contributors: 0xr3x
-
-    config:
-      tags: ['ethereum', 'optimisim', 'polygon', 'liquidity', '0xr3x','cross-chain']
-    description: >
-      List of Keep3r network liquidity additions on ethereum, optimism and polygon.
-    columns:
-      - name: evt_block_time,
-      - name: evt_tx_hash,
-      - name: evt_index,
-      - name: contract_address,
-      - name: _job,
-      - name: _liquidity,
-      - name: _amount,
-      - name: blockchain
-
-  - name: keep3r_network_liquidity_withdrawal
-    meta:
-      blockchain: ethereum, optimism, polygon
-      project: keep3r_network
-      contributors: 0xr3x
-
-    config:
-      tags: ['ethereum', 'optimisim', 'polygon', 'liquidity', '0xr3x','cross-chain']
-    description: >
-      List of Keep3r network liquidity withdrawal on ethereum, optimism and polygon.
-    columns:
-      - name: evt_block_time,
-      - name: evt_tx_hash,
-      - name: evt_index,
-      - name: contract_address,
-      - name: _job,
-      - name: _liquidity,
-      - name: _amount,
-      - name: blockchain
-
   - name: keep3r_network_job_migration
     meta:
       blockchain: ethereum, optimism, polygon
