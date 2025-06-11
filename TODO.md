@@ -3,22 +3,31 @@
 ## Summary
 Removing 94 unused/lightly used models from the dbt project based on cleanup_candidates_20250610_163555.md
 
-**Total models to remove:** 94
-**Models processed:** 40
-**Models remaining:** 54
+**Total models to remove:** 91 (adjusted: 3 models restored due to dependencies/active maintenance)
+**Models processed:** 59 (3 restored due to dependencies/active maintenance)
+**Models remaining:** 32
+
+## ⚠️ Model Restoration Notices
+
+### **labels.ofac_sanctioned_ethereum** - RESTORED (not eligible for removal)
+- **Reason**: Referenced by `labels_addresses.sql` - has active dependencies
+- **Files restored**:
+  - `dbt_subprojects/daily_spellbook/models/_sector/labels/addresses/__single_category_labels__/ofac_sanctionned/labels_ofac_sanctionned_ethereum.sql`
+  - `dbt_subprojects/daily_spellbook/models/_sector/labels/addresses/__single_category_labels__/ofac_sanctionned/labels_ofac_sanctionned_ethereum_schema.yml`
+
+### **evms.erc1155_approvalsforall & evms.erc721_approvalsforall** - RESTORED (not eligible for removal)
+- **Reason**: Models were actively modified in main branch, indicating ongoing maintenance and usage
+- **Files restored**:
+  - `dbt_subprojects/daily_spellbook/models/evms/evms_tables/evms_erc1155_approvalsforall.sql`
+  - `dbt_subprojects/daily_spellbook/models/evms/evms_tables/evms_erc721_approvalsforall.sql`
+  - Schema entries in `dbt_subprojects/daily_spellbook/models/evms/evms_schema.yml`
+- **Merge Resolution**: Resolved conflicts by accepting main branch versions during merge with origin/main
 
 ## Subproject breakdown:
-- **daily_spellbook**: 64 tables
+- **daily_spellbook**: 63 tables (3 restored)
 - **hourly_spellbook**: 26 tables  
 - **dex**: 2 tables
 - **nft**: 2 tables
-
-## Database Cleanup
-✅ **SQL Drop Transaction Created**: `drop_unused_models.sql`
-- Contains DROP statements for all 40 completed model deletions
-- Uses transactions with IF EXISTS for safety
-- Includes both TABLE and VIEW drop statements
-- Ready for database execution
 
 ## Compilation Validation
 
@@ -274,13 +283,95 @@ cd ../daily_spellbook && dbt --warn-error compile
   - File: `dbt_subprojects/daily_spellbook/models/gmx/arbitrum/glp/gmx_arbitrum_glp_aum.sql` - DELETED
   - Schema: `dbt_subprojects/daily_spellbook/models/gmx/arbitrum/glp/gmx_arbitrum_glp_schema.yml` (lines 214-280) - REMOVED
 
+- [x] **gmx_arbitrum.glp_fees** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/gmx/arbitrum/glp/gmx_arbitrum_glp_fees.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/gmx/arbitrum/glp/gmx_arbitrum_glp_schema.yml` (lines 214-242) - REMOVED
+
+- [x] **gmx_arbitrum.glp_float** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/gmx/arbitrum/glp/gmx_arbitrum_glp_float.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/gmx/arbitrum/glp/gmx_arbitrum_glp_schema.yml` (lines 243-270) - REMOVED
+
+- [x] **gmx_arbitrum.vault_balances** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/gmx/arbitrum/vault/gmx_arbitrum_vault_balances.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/gmx/arbitrum/vault/gmx_arbitrum_vault_schema.yml` (entire file) - DELETED
+
+- [x] **gmx_avalanche_c.glp_aum** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/gmx/avalanche_c/glp/gmx_avalanche_c_glp_aum.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/gmx/avalanche_c/glp/gmx_avalanche_c_glp_schema.yml` (lines 157-210) - REMOVED
+  - Test: `dbt_subprojects/daily_spellbook/tests/gmx/avalanche_c/gmx_avalanche_c_glp_aum_assert.sql` - DELETED
+
+- [x] **gooddollar_celo.reserve_movement** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/gooddollar/celo/gooddollar_celo_reserve_movement.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/gooddollar/celo/_schema.yml` (lines 225-264) - REMOVED
+
+- [x] **gooddollar_celo.ubi_claimers_agg** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/gooddollar/celo/gooddollar_celo_ubi_claimers_agg.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/gooddollar/celo/_schema.yml` (lines 111-130) - REMOVED
+
+- [x] **keep3r_network.liquidity_addition** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/keep3r_network/keep3r_network_liquidity_addition.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/keep3r_network/keep3r_network_schema.yml` (lines 4-23) - REMOVED
+
+- [x] **keep3r_network.liquidity_withdrawal** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/keep3r_network/keep3r_network_liquidity_withdrawal.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/keep3r_network/keep3r_network_schema.yml` (lines 24-43) - REMOVED
+
+- [x] **labels.beraswap_pools_berachain** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/_sector/labels/addresses/__single_category_labels__/beraswap/labels_beraswap_pools_berachain.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/_sector/labels/addresses/__single_category_labels__/beraswap/labels_beraswap_schema.yml` (entire file) - DELETED
+
+- [x] **labels.burrbear_pools_berachain** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/_sector/labels/addresses/__single_category_labels__/burrbear/labels_burrbear_pools_berachain.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/_sector/labels/addresses/__single_category_labels__/burrbear/labels_burrbear_schema.yml` (entire file) - DELETED
+
+- [x] **labels.ofac_sanctioned_ethereum** (daily_spellbook) - **RESTORED** ⚠️
+  - **Reason**: Referenced by `labels_addresses.sql` - has active dependencies, not eligible for removal
+  - File: `dbt_subprojects/daily_spellbook/models/_sector/labels/addresses/__single_category_labels__/ofac_sanctionned/labels_ofac_sanctionned_ethereum.sql` - RESTORED
+  - Schema: `dbt_subprojects/daily_spellbook/models/_sector/labels/addresses/__single_category_labels__/ofac_sanctionned/labels_ofac_sanctionned_ethereum_schema.yml` - RESTORED
+
+- [x] **nomad_ethereum.view_bridge_transactions** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/nomad/ethereum/nomad_ethereum_view_bridge_transactions.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/nomad/ethereum/nomad_ethereum_schema.yml` (entire model entry) - REMOVED
+
+- [x] **labels.worldcoin_accounts** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/_sector/labels/addresses/__single_category_labels__/worldcoin/labels_worldcoin_accounts.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/_sector/labels/addresses/__single_category_labels__/worldcoin/labels_worldcoin_accounts_schema.yml` - DELETED
+
+- [x] **cryptopunks_ethereum.current_bids** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/cryptopunks/ethereum/cryptopunks_ethereum_current_bids.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/cryptopunks/ethereum/cryptopunks_ethereum_schema.yml` (lines 144-167) - REMOVED
+
+- [x] **balances_bnb.bnb_hour** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/balances/bnb/bnb/balances_bnb_bnb_hour.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/balances/bnb/bnb/balances_bnb_bnb_schema.yml` (lines 3-36) - REMOVED
+
+- [x] **aave_optimism.interest_rates** (hourly_spellbook)
+  - File: `dbt_subprojects/hourly_spellbook/models/_project/aave/optimism/aave_optimism_interest_rates.sql` - DELETED
+  - Schema: `dbt_subprojects/hourly_spellbook/models/_project/aave/optimism/_schema.yml` (lines 198-217) - REMOVED
+
+- [x] **nft_ethereum.top_sales** (nft)
+  - File: `dbt_subprojects/nft/models/nft_metrics/ethereum/nft_ethereum_top_sales.sql` - DELETED
+  - Schema: `dbt_subprojects/nft/models/nft_metrics/ethereum/nft_ethereum_schema.yml` (lines 4-22) - REMOVED
+
+- [x] **cryptopunks_ethereum.listings_over_time** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/cryptopunks/ethereum/cryptopunks_ethereum_listings_over_time.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/cryptopunks/ethereum/cryptopunks_ethereum_schema.yml` (lines 75-85) - REMOVED
+
+- [x] **zeroex_ethereum.nft_fills** (dex)
+  - File: `dbt_subprojects/dex/models/_projects/zeroex/ethereum/zeroex_ethereum_nft_fills.sql` - DELETED
+  - Schema: `dbt_subprojects/dex/models/_projects/zeroex/ethereum/zeroex_ethereum_schema.yml` (lines 153-207) - REMOVED
+
+- [x] **evms.erc721_approvalsforall** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/evms/evms_tables/evms_erc721_approvalsforall.sql` - DELETED
+  - Schema: No schema entry found - NONE TO REMOVE
+
 ### 🔄 Currently Processing
 
 *Ready for next batch...*
 
 ### ⏳ Pending Removals (0 references - highest priority)
 
-*54 models remaining to be processed...*
+*34 models remaining to be processed...*
 
 ## Rollback Commands
 
