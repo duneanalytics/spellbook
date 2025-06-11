@@ -1,10 +1,8 @@
 {{config(
         materialized = 'table',
-        alias = 'labels_bridges_near_native',
-        post_hook='{{ expose_spells(\'["near"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["Sector920"]\') }}')}}
+        tags=['static'],
+        schema='labels',
+        alias = 'bridges_near_native',)}}
 
 SELECT blockchain, address as address, name, category, contributor, source, created_at, updated_at, model_name, label_type
 FROM (VALUES

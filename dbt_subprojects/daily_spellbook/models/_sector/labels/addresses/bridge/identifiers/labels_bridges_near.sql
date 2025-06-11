@@ -1,10 +1,8 @@
 {{config(
         materialized = 'view',
-        alias = 'labels_bridges_near',
-        post_hook='{{ expose_spells(\'["near"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["Sector920"]\') }}')}}
+        schema = 'labels',
+        alias = 'bridges_near',
+)}}
 
 SELECT 
     blockchain
