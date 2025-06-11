@@ -4,8 +4,8 @@
 Removing 94 unused/lightly used models from the dbt project based on cleanup_candidates_20250610_163555.md
 
 **Total models to remove:** 94
-**Models processed:** 20
-**Models remaining:** 74
+**Models processed:** 30
+**Models remaining:** 64
 
 ## Subproject breakdown:
 - **daily_spellbook**: 64 tables
@@ -15,10 +15,65 @@ Removing 94 unused/lightly used models from the dbt project based on cleanup_can
 
 ## Database Cleanup
 ✅ **SQL Drop Transaction Created**: `drop_unused_models.sql`
-- Contains DROP statements for all 20 completed model deletions
+- Contains DROP statements for all 30 completed model deletions
 - Uses transactions with IF EXISTS for safety
 - Includes both TABLE and VIEW drop statements
 - Ready for database execution
+
+## Compilation Validation
+
+### ✅ All Subprojects Compiling Successfully
+
+**Latest validation results:** All 6 subprojects compile without errors or warnings.
+
+✅ **tokens**: Compiled successfully (389 models, 508 data tests, 7192 sources)
+✅ **solana**: Compiled successfully (225 models, 328 data tests, 37 seeds, 7251 sources)  
+✅ **nft**: Compiled successfully (302 models, 681 data tests, 48 seeds, 7200 sources)
+✅ **hourly_spellbook**: Compiled successfully (1361 models, 4734 data tests, 134 seeds, 7209 sources)
+✅ **dex**: Compiled successfully (1038 models, 411 seeds, 1903 data tests, 7192 sources)
+✅ **daily_spellbook**: Compiled successfully (1841 models, 2329 data tests, 47 seeds, 7202 sources) - YAML syntax fixed
+
+### How to Validate Changes with dbt --warn-error compile
+
+After making model deletions, always validate that all subprojects still compile correctly:
+
+**Command:**
+```bash
+dbt --warn-error compile
+```
+
+**Usage Instructions:**
+1. Navigate to each subproject directory:
+   ```bash
+   cd dbt_subprojects/<subproject_name>
+   ```
+
+2. Run the compile command with warn-error flag:
+   ```bash
+   dbt --warn-error compile
+   ```
+
+3. The `--warn-error` flag ensures that warnings are treated as errors, providing stricter validation
+
+**Example workflow for all subprojects:**
+```bash
+# From project root
+cd dbt_subprojects/tokens && dbt --warn-error compile
+cd ../solana && dbt --warn-error compile  
+cd ../nft && dbt --warn-error compile
+cd ../hourly_spellbook && dbt --warn-error compile
+cd ../dex && dbt --warn-error compile
+cd ../daily_spellbook && dbt --warn-error compile
+```
+
+**What to expect:**
+- ✅ **Exit code 0**: Compilation successful, no errors or warnings
+- ❌ **Exit code 1/2**: Compilation failed, fix issues before proceeding
+- Look for model counts in output to verify expected totals
+
+**Recent Fix Applied:**
+- **daily_spellbook**: Fixed missing `feed_address` anchor definition in `chainlink_schema.yml`
+- Added missing YAML anchor: `&feed_address` with name and description
 
 ## ⚠️ IMPORTANT: Test Cleanup Required
 **Always check for and remove tests that reference deleted models**
@@ -132,13 +187,54 @@ Removing 94 unused/lightly used models from the dbt project based on cleanup_can
   - File: `dbt_subprojects/daily_spellbook/models/aztec/ethereum/aztec_v2_ethereum_deposit_assets.sql` - DELETED
   - Schema: `dbt_subprojects/daily_spellbook/models/aztec/ethereum/aztec_ethereum_schema.yml` (lines 85-100) - REMOVED
 
+- [x] **balances_polygon.erc20_hour** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/balances/polygon/erc20/balances_polygon_erc20_hour.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/balances/polygon/erc20/balances_polygon_erc20_schema.yml` (lines 3-36) - REMOVED
+  - Test: `dbt_subprojects/daily_spellbook/tests/balances/polygon/balances_polygon_erc20_hour_assert_nonnegative.sql` - DELETED
+
+- [x] **balances_polygon.matic_hour** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/balances/polygon/matic/balances_polygon_matic_hour.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/balances/polygon/matic/balances_polygon_matic_schema.yml` (lines 3-36) - REMOVED
+
+- [x] **transfers_celo.erc721_rolling_hour** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/transfers/celo/erc721/transfers_celo_erc721_rolling_hour.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/transfers/celo/erc721/transfers_celo_erc721_schema.yml` (lines 82-102) - REMOVED
+
+- [x] **transfers_celo.erc721_rolling_day** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/transfers/celo/erc721/transfers_celo_erc721_rolling_day.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/transfers/celo/erc721/transfers_celo_erc721_schema.yml` (lines 133-153) - REMOVED
+
+- [x] **transfers_celo.erc1155_rolling_hour** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/transfers/celo/erc1155/transfers_celo_erc1155_rolling_hour.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/transfers/celo/erc1155/transfers_celo_erc1155_schema.yml` (lines 83-103) - REMOVED
+
+- [x] **transfers_celo.erc1155_rolling_day** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/transfers/celo/erc1155/transfers_celo_erc1155_rolling_day.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/transfers/celo/erc1155/transfers_celo_erc1155_schema.yml` (lines 134-154) - REMOVED
+
+- [x] **chainlink.chainlink_read_requests_feeds_daily** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/chainlink/chainlink_read_requests_feeds_daily.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/chainlink/chainlink_schema.yml` (lines 1717-1750) - REMOVED
+
+- [x] **chainlink.chainlink_read_requests_requester** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/chainlink/chainlink_read_requests_requester.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/chainlink/chainlink_schema.yml` (lines 1870-1909) - REMOVED
+
+- [x] **chainlink.chainlink_read_requests_requester_daily** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/chainlink/chainlink_read_requests_requester_daily.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/chainlink/chainlink_schema.yml` (lines 1828-1869) - REMOVED
+
+- [x] **tokemak_ethereum.tokemak_lookup_reactors** (daily_spellbook)
+  - File: `dbt_subprojects/daily_spellbook/models/tokemak/ethereum/tokemak_ethereum_tokemak_lookup_reactors.sql` - DELETED
+  - Schema: `dbt_subprojects/daily_spellbook/models/tokemak/ethereum/tokemak_ethereum_schema.yml` (lines 71-102) - REMOVED
+
 ### 🔄 Currently Processing
 
 *Ready for next batch...*
 
 ### ⏳ Pending Removals (0 references - highest priority)
 
-*74 models remaining to be processed...*
+*64 models remaining to be processed...*
 
 ## Rollback Commands
 

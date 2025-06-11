@@ -30,6 +30,9 @@ models:
       - &feed_name
         name: feed_name
         description: "Feed name from Chainlink docs"
+      - &feed_address
+        name: feed_address
+        description: "Feed Address"
       - &oracle_price
         name: oracle_price
         description: "Price returned by Chainlink oracle update"
@@ -1715,46 +1718,6 @@ models:
       - *operator_address
       - *token_value
 
-  - name: chainlink_read_requests_feeds_daily
-    meta:
-      blockchain:
-        ["arbitrum", "avalanche_c", "bnb", "ethereum", "optimism", "polygon"]
-      sector: oracle
-      project: chainlink
-      contributors: ["linkpool_jon"]
-    config:
-      tags:
-        [
-          "chainlink",
-          "read",
-          "requests",
-          "feeds",
-          "daily",
-          "arbitrum",
-          "avalanche_c",
-          "bnb",
-          "ethereum",
-          "optimism",
-          "polygon",
-        ]
-    description: >
-      Chainlink Read Requests Feeds Daily
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - date_start
-            - feed_address
-    columns:
-      - *blockchain
-      - *date_start
-      - *date_month
-      - &feed_address
-        name: feed_address
-        description: "Feed Address"
-      - *feed_name
-      - *total_requests
-
   - name: chainlink_read_requests_feeds
     meta:
       blockchain:
@@ -1825,80 +1788,6 @@ models:
       - &output
         name: output
         description: "Output"
-
-  - name: chainlink_read_requests_requester_daily
-    meta:
-      blockchain:
-        ["arbitrum", "avalanche_c", "bnb", "ethereum", "optimism", "polygon"]
-      sector: oracle
-      project: chainlink
-      contributors: ["linkpool_jon"]
-    config:
-      tags:
-        [
-          "chainlink",
-          "read",
-          "requests",
-          "requester",
-          "daily",
-          "arbitrum",
-          "avalanche_c",
-          "bnb",
-          "ethereum",
-          "optimism",
-          "polygon",
-        ]
-    description: >
-      Chainlink Read Requests Requester Daily
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - date_start
-            - requester_address
-    columns:
-      - *blockchain
-      - *date_start
-      - *date_month
-      - &requester_address
-        name: requester_address
-        description: "Requester Address"
-      - &requester_name
-        name: requester_name
-        description: "Requester Name"
-      - *total_requests
-
-  - name: chainlink_read_requests_requester
-    meta:
-      blockchain:
-        ["arbitrum", "avalanche_c", "bnb", "ethereum", "optimism", "polygon"]
-      sector: oracle
-      project: chainlink
-      contributors: ["linkpool_jon"]
-    config:
-      tags:
-        [
-          "chainlink",
-          "read",
-          "requests",
-          "requester",
-          "arbitrum",
-          "avalanche_c",
-          "bnb",
-          "ethereum",
-          "optimism",
-          "polygon",
-        ]
-    description: >
-      Chainlink Read Requests Requester
-    columns:
-      - *blockchain
-      - *date_start
-      - *date_month
-      - *feed_address
-      - *feed_name
-      - *requester_address
-      - *requester_name
 
   - name: chainlink_ccip_fulfilled_transactions
     meta:
