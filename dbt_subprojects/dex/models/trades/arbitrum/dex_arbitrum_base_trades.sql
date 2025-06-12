@@ -51,6 +51,7 @@
     , ref('maverick_v2_arbitrum_base_trades')
     , ref('valantis_hot_arbitrum_base_trades')
     , ref('spartadex_arbitrum_base_trades')
+    , ref('mindgames_arbitrum_base_trades')
     , ref('fluid_v1_arbitrum_base_trades')
 ] %}
 

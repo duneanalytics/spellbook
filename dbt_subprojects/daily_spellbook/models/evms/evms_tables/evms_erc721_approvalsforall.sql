@@ -18,6 +18,10 @@ FROM (
         , evt_index
         , evt_block_time
         , evt_block_number
+        , evt_block_date
+        , evt_tx_from
+        , evt_tx_to
+        , evt_tx_index
         , approved
         , owner
         , operator
