@@ -1,6 +1,6 @@
 {{ 
     config(
-        schema = 'graphene_multichain',
+        schema = 'graphene_arbitrum',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -12,8 +12,8 @@
 
 WITH dexs AS (
     SELECT
-        'graphene' AS blockchain,
-        'carbon' AS project,
+        'arbitrum' AS blockchain,
+        'graphene' AS project,
         '1' AS version,
         CAST(DATE_TRUNC('month', evt_block_time) AS DATE) AS block_month,
         CAST(DATE_TRUNC('day', evt_block_time) AS DATE) AS block_date,
@@ -28,7 +28,7 @@ WITH dexs AS (
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
         evt_index
-    FROM {{ source('graphene_multichain', 'carboncontroller_evt_tokenstraded') }}
+    FROM {{ source('graphene_arbitrum', 'carboncontroller_evt_tokenstraded') }}
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
