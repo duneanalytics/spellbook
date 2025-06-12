@@ -95,6 +95,6 @@ sources:
   - name: beethoven_x
     tables:
       - name: trades
-  - name: graphene_multichain
+  - name: graphene_arbitrum
     tables:
       - name: carboncontroller_evt_tokenstraded
