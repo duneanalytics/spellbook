@@ -758,6 +758,11 @@ FROM
         ('dood-doodles2','solana','DOOD','DvjbEsdca43oQcw2h3HW1CT7N3x5vRcr3QrvTUHnXvgV',9),
         ('dark-dark-eclipse', 'solana', 'DARK', '8BtoThi2ZoXnF7QQK1Wjmh2JuBw9FjVvhnGMVZ2vpump', 6),
         ('alch-alchemist-ai', 'solana', 'ALCH', 'HNg5PYJmtqcmzXrv6S9zP1CDKk5BgDuyFBxbvNApump', 6),
+        ('ghibli-ghiblification', 'solana', 'GHIBLI', '4TBi66vi32S7J8X1A6eWfaLHYmUXu7CStcEmsJQdpump', 6),
+        ('gork-new-xai-gork', 'solana', 'GORK', '38PgzpJYu2HkiYvV8qePFakB8tuobPdGm2FFEn7Dpump', 6),
+        ('house-housecoin', 'solana', 'HOUSE', 'DitHyRMQiSDhn5cnKMJV2CDDt6sVct96YrECiM49pump', 6),
         ('zbcn-zebec-network', 'solana', 'ZBCN', 'ZBCNpuD7YMXzTHB2fhGkGi78MNsHGLRXUhRewNRm9RU', 6),
-        ('huma-finance', 'solana', 'HUMA', 'HUMA1821qVDKta3u2ovmfDQeW2fSQouSKE8fkF44wvGw', 6)
+        ('huma-finance', 'solana', 'HUMA', 'HUMA1821qVDKta3u2ovmfDQeW2fSQouSKE8fkF44wvGw', 6),
+        ('wen4-wen', 'solana', 'WEN', 'WENWENvqqNya429ubCdR81ZmD69brwQaaBYY6p3LCpk', 5),
+        ('zeus-zeus-network1', 'solana', 'ZEUS', 'ZEUS1aR7aX8DFFJf5QjWj2ftDDdNTroMNGo8YoQm3Gq', 6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
