@@ -175,3 +175,6 @@ sources:
     tables:
       - name: SpartaDexPair_evt_Swap
       - name: SpartaDexFactory_evt_PairCreated
+  - name: wardenswap_arbitrum
+    tables:
+      - name: wardenrouterv2_evt_trade
