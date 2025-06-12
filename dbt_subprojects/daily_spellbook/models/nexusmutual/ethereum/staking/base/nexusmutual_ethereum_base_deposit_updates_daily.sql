@@ -27,8 +27,8 @@ active_stake_updates as (
     asu.evt_block_date as block_date,
     asu.activeStake / 1e18 as active_stake,
     asu.evt_index,
-    asu.evt_tx_hash as tx_hash
-    --row_number() over (partition by asu.evt_block_time, asu.evt_tx_hash order by asu.evt_index desc) as rn
+    asu.evt_tx_hash as tx_hash,
+    row_number() over (partition by asu.evt_block_time, asu.evt_tx_hash order by asu.evt_index desc) as active_stake_rn
   from {{ source('nexusmutual_ethereum', 'StakingPool_evt_ActiveStakeUpdated') }} asu
     inner join staking_pools sp on asu.contract_address = sp.pool_address
 ),
@@ -44,9 +44,11 @@ deposit_updates as (
     du.stakeShares as stake_shares,
     du.stakeSharesSupply as stake_shares_supply,
     du.evt_index,
-    du.evt_tx_hash as tx_hash
+    du.evt_tx_hash as tx_hash,
+    count(*) over (partition by du.evt_block_time, du.evt_tx_hash) as deposit_count
   from {{ source('nexusmutual_ethereum', 'StakingPool_evt_DepositUpdated') }} du
     inner join staking_pools sp on du.contract_address = sp.pool_address
+  where du.stakeShares > 0
 ),
 
 updates_combined as (
@@ -69,9 +71,8 @@ updates_combined as (
       on du.pool_id = asu.pool_id
       and du.block_time = asu.block_time
       and du.tx_hash = asu.tx_hash
-      and du.evt_index > asu.evt_index - 6
-      and du.evt_index < asu.evt_index
-      --and asu.rn = 1
+  where (du.deposit_count = 1 and asu.active_stake_rn = 1)
+    or (du.deposit_count > 1 and du.evt_index between asu.evt_index - 6 and asu.evt_index)
 ),
 
 daily_snapshots as (
