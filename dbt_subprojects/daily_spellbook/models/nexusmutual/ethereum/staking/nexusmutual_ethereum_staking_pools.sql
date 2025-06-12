@@ -2,17 +2,19 @@
   config(
     schema = 'nexusmutual_ethereum',
     alias = 'staking_pools',
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
+    materialized = 'view',
     unique_key = ['pool_id', 'product_id'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time_updated')],
     post_hook = '{{ expose_spells(blockchains = \'["ethereum"]\',
                                   spell_type = "project",
                                   spell_name = "nexusmutual",
                                   contributors = \'["tomfutago"]\') }}'
   )
 }}
+
+with staking_pools as (
+  select *, row_number() over (partition by pool_id, product_id order by block_time_updated desc) as rn
+  from {{ ref('nexusmutual_ethereum_base_staking_pools') }}
+)
 
 select
   block_time_created,
@@ -37,7 +39,5 @@ select
   product_added_time,
   tx_hash_created,
   tx_hash_updated
-from {{ ref('nexusmutual_ethereum_base_staking_pools') }}
-{% if is_incremental() %}
-where {{ incremental_predicate('block_time_updated') }}
-{% endif %}
+from staking_pools
+where rn = 1

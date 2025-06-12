@@ -312,6 +312,18 @@ models:
       - &evt_block_number
         name: evt_block_number
         description: "Event block number"
+      - &evt_block_date
+        name: evt_block_date
+        description: "Date of block event in UTC"
+      - &evt_tx_from
+        name: evt_tx_from
+        description: "Address initiating the transaction"
+      - &evt_tx_to
+        name: evt_tx_to
+        description: "To address of the transaction"
+      - &evt_tx_index
+        name: evt_tx_index
+        description: "Index of the transaction in the block"
       - *from
       - *to
       - name: value
@@ -333,6 +345,10 @@ models:
       - *evt_index
       - *evt_block_time
       - *evt_block_number
+      - *evt_block_date
+      - *evt_tx_from
+      - *evt_tx_to
+      - *evt_tx_index
       - name: owner
         description: "Owner"
       - name: spender
@@ -356,6 +372,10 @@ models:
       - *evt_index
       - *evt_block_time
       - *evt_block_number
+      - *evt_block_date
+      - *evt_tx_from
+      - *evt_tx_to
+      - *evt_tx_index
       - name: operator
         description: "Addresses authorized (or approved) by a NFT owner to spend all of his token IDs."
       - *from
@@ -381,6 +401,10 @@ models:
       - *evt_index
       - *evt_block_time
       - *evt_block_number
+      - *evt_block_date
+      - *evt_tx_from
+      - *evt_tx_to
+      - *evt_tx_index
       - name: operator
         description: "Addresses authorized (or approved) by a NFT owner to spend all of his token IDs."
       - *from
@@ -406,6 +430,10 @@ models:
       - *evt_index
       - *evt_block_time
       - *evt_block_number
+      - *evt_block_date
+      - *evt_tx_from
+      - *evt_tx_to
+      - *evt_tx_index
       - &approved
         name: approved
         description: "Is approved"
@@ -431,6 +459,10 @@ models:
       - *evt_index
       - *evt_block_time
       - *evt_block_number
+      - *evt_block_date
+      - *evt_tx_from
+      - *evt_tx_to
+      - *evt_tx_index
       - *from
       - *to
       - name: tokenId
@@ -452,6 +484,10 @@ models:
       - *evt_index
       - *evt_block_time
       - *evt_block_number
+      - *evt_block_date
+      - *evt_tx_from
+      - *evt_tx_to
+      - *evt_tx_index
       - *approved
       - &owner
         name: owner
@@ -475,6 +511,10 @@ models:
       - *evt_index
       - *evt_block_time
       - *evt_block_number
+      - *evt_block_date
+      - *evt_tx_from
+      - *evt_tx_to
+      - *evt_tx_index
       - *approved
       - *owner
       - *operator
