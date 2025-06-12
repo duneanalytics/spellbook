@@ -111,6 +111,10 @@ sources:
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
 
+  - name: tokens_goerli
+    tables:
+      - name: transfers
+
   - name: tokens_ink
     tables:
       - name: transfers
@@ -193,6 +197,10 @@ sources:
       - name: transfers
       - name: net_transfers_daily
 
+  - name: tokens_sepolia
+    tables:
+      - name: transfers
+
   - name: tokens_sonic
     tables:
       - name: transfers
@@ -201,6 +209,10 @@ sources:
   - name: tokens_sophon
     tables:
       - name: transfers
+      - name: net_transfers_daily
+        
+  - name: tokens_ton
+    tables:
       - name: net_transfers_daily
 
   - name: tokens_tron
