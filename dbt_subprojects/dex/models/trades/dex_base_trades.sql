@@ -38,6 +38,7 @@
     , ref('dex_sei_base_trades')
     , ref('dex_shape_base_trades')
     , ref('dex_sonic_base_trades')
+    , ref('dex_sophon_base_trades')
     , ref('dex_unichain_base_trades')
     , ref('dex_worldchain_base_trades')
     , ref('dex_zkevm_base_trades')

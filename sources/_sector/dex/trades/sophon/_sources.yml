@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: syncswap_v2_sophon
+    tables:
+      - name: SyncSwapClassicPoolFactory_evt_PoolCreated
+      - name: SyncSwapClassicPool_evt_Swap
+
