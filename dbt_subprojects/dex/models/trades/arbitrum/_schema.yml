@@ -850,3 +850,22 @@ models:
           seed_file: ref('akronswap_arbitrum_base_trades_seed')
           filter:
             version: 2
+            
+  - name: mindgames_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: mindgames
+      contributors: principatel
+    config:
+      tags: ["arbitrum", "dex", "trades", "mindgames"]
+    description: "mindgames arbitrum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('mindgames_arbitrum_base_trades_seed')
+          filter:
+            version: 1
