@@ -5255,6 +5255,7 @@ seeds:
         block_date: timestamp
 
   - name: gammaswap_arbitrum_base_trades_seed
+    config:
       column_types:
         blockchain: varchar
         project: varchar
