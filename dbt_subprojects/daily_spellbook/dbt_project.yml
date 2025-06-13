@@ -336,11 +336,6 @@ models:
       base:
         +schema: layerzero_base
 
-    tokemak:
-      +schema: tokemak
-      ethereum:
-        +schema: tokemak_ethereum
-
     quests:
       +schema: quests
 

@@ -188,54 +188,6 @@ models:
         name: avg_aave_debt_usdc_eth_total
         description: "Daily average AAVE USDC debt expressed in ETH"
 
-  - name: nexusmutual_ethereum_capital_pool_latest
-    meta:
-      blockchain: ethereum
-      project: nexusmutual
-      contributors: tomfutago
-    config:
-      tags: ["ethereum", "nexusmutual", "capital_pool"]
-    description: "Latest totals for core tokens in the Nexus Mutual Capital Pool"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-    columns:
-      - *block_date
-      - *avg_eth_usd_price
-      - *avg_dai_usd_price
-      - *avg_usdc_usd_price
-      - *avg_cbbtc_usd_price
-      - *avg_capital_pool_eth_total
-      - *avg_capital_pool_usd_total
-      - *eth_total
-      - *avg_eth_usd_total
-      - *dai_total
-      - *avg_dai_usd_total
-      - *avg_dai_eth_total
-      - *nxmty_total
-      - *nxmty_eth_total
-      - *avg_nxmty_usd_total
-      - *steth_total
-      - *avg_steth_usd_total
-      - *reth_total
-      - *avg_reth_usd_total
-      - *avg_reth_eth_total
-      - *usdc_total
-      - *avg_usdc_usd_total
-      - *avg_usdc_eth_total
-      - *cbbtc_total
-      - *avg_cbbtc_usd_total
-      - *avg_cbbtc_eth_total
-      - *cover_re_usdc_total
-      - *avg_cover_re_usdc_usd_total
-      - *avg_cover_re_usdc_eth_total
-      - *aave_collateral_weth_total
-      - *avg_aave_collateral_weth_usd_total
-      - *aave_debt_usdc_total
-      - *avg_aave_debt_usdc_usd_total
-      - *avg_aave_debt_usdc_eth_total
-
   - name: nexusmutual_ethereum_capital_pool_mcr
     meta:
       blockchain: ethereum

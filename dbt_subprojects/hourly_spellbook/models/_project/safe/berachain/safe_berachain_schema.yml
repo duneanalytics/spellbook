@@ -34,42 +34,6 @@ models:
       - &tx_hash
         name: tx_hash
 
-  - name: safe_berachain_bera_transfers
-    meta:
-      blockchain: berachain
-      project: safe
-      contributors: petertherock
-    config:
-      tags: ['safe', 'transfers', 'berachain']
-    description: "BERA transfers for safes"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - address
-            - tx_hash
-            - trace_address
-    columns:
-      - *blockchain
-      - &symbol
-        name: symbol
-        description: "Symbol of native gas token: ETH"
-      - *address
-      - *block_date
-      - *block_month
-      - &block_time
-        name: block_time
-        description: "Date of ETH transfer"
-      - &amount_raw
-        name: amount_raw
-        description: "Raw amount of transferred ETH"
-      - *tx_hash
-      - &trace_address
-        name: trace_address
-      - &amount_usd
-        name: amount_usd
-        description: "USD amount of transferred ETH"
-
   - name: safe_berachain_singletons
     meta:
       blockchain: berachain
@@ -100,7 +64,9 @@ models:
       - *blockchain
       - *block_date
       - *block_month
-      - *block_time
+      - &block_time
+        name: block_time
+        description: "Date/time of block"
       - &block_number
         name: block_number
         description: "Number of block"
@@ -128,7 +94,9 @@ models:
       - &sub_traces
         name: sub_traces
         description: "Number of sub traces"
-      - *trace_address
+      - &trace_address
+        name: trace_address
+        description: "Trace address"
       - &success
         name: success
         description: "Success state of transaction"

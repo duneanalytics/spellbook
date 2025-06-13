@@ -169,7 +169,7 @@ models:
       - name: contract_address
         description: "Address of the ethereum smart contract generating the log"
       - name: topic0
-        description: "Topics are 32-byte (256 bit) “words” that are used to describe what’s going on in an event. The first topic usually consists of the signature of the name of the event that occurred, including the types (uint256, string, etc.) of its parameters."
+        description: "Topics are 32-byte (256 bit) 'words' that are used to describe what's going on in an event. The first topic usually consists of the signature of the name of the event that occurred, including the types (uint256, string, etc.) of its parameters."
       - name: topic1
         description: "Second topic"
       - name: topic2
@@ -468,33 +468,6 @@ models:
       - name: tokenId
         description: "ERC721 token ID."
 
-  - name: evms_erc721_approvals
-    meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei, ronin, ink
-      sector: evms
-      contributors: [hildobby, synthquest]
-    config:
-      tags: ["evms", "erc721", "approvals"]
-    description: "Approval events for ERC721 tokens on EVM chains."
-    columns:
-      - *blockchain
-      - name: contract_address
-        description: "ERC721 token contract address"
-      - *evt_tx_hash
-      - *evt_index
-      - *evt_block_time
-      - *evt_block_number
-      - *evt_block_date
-      - *evt_tx_from
-      - *evt_tx_to
-      - *evt_tx_index
-      - *approved
-      - &owner
-        name: owner
-        description: "Owner"
-      - name: tokenId
-        description: "ERC721 token ID."
-
   - name: evms_erc721_approvalsforall
     meta:
       blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei, ronin, ink
@@ -516,7 +489,9 @@ models:
       - *evt_tx_to
       - *evt_tx_index
       - *approved
-      - *owner
+      - &owner
+        name: owner
+        description: "Owner"
       - *operator
 
   - name: evms_info
