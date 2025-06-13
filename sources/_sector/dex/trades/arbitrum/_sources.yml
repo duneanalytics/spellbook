@@ -179,3 +179,6 @@ sources:
     tables:
       - name: lp_crx_gmx_evt_swap
       - name: uniswapv2factory_evt_paircreated
+  - name: skate_fi_arbitrum
+    tables:
+      - name: skatevertexvault_evt_swapped
