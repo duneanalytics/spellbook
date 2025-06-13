@@ -832,6 +832,23 @@ models:
           filter:
             version: 3
 
+  - name: graphene_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: graphene
+      contributors: urvi-bala
+    config:
+      tags: ["arbitrum", "dex", "trades", "graphene"]
+    description: "graphene Arbitrum  base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('graphene_arbitrum_base_trades_seed')
+
   - name: mindgames_arbitrum_base_trades
     meta:
       blockchain: arbitrum
