@@ -88,3 +88,7 @@ sources:
     tables:
       - name: UniswapV2Pair_evt_Swap
       - name: UniswapV2Factory_evt_PairCreated
+  - name: fluid_polygon
+    tables: 
+      - name: FluidDexT1_evt_Swap
+      - name: fluiddexfactory_call_deploydex
