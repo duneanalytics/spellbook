@@ -59,9 +59,9 @@ final AS (
         CAST(date_trunc('month', evt_block_time) AS date) AS block_month,
         evt_block_time AS block_time,
         contract_address AS market_address,
-        NULL AS market,
-        NULL AS virtual_asset,
-        CAST(assets / 1e18 AS DOUBLE) AS volume_usd, -- Assuming 18 decimals
+        CAST(NULL AS VARCHAR) AS market,
+        CAST(NULL AS VARCHAR) AS virtual_asset,
+        CAST(assets / 1e18 AS DOUBLE) AS volume_usd, 
         CAST(NULL AS DOUBLE) AS fee_usd,
         CAST(NULL AS DOUBLE) AS margin_usd,
         trade_type,
