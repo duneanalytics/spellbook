@@ -1,0 +1,14 @@
+version: 1
+
+sources:
+  - name: lemma_finance_optimism
+    description: Optimism decoded tables related to lemma_finance protocol
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: xlemmasynth_evt_deposit
+        loaded_at_field: evt_block_time
+      - name: xlemmasynth_evt_withdraw
+        loaded_at_field: evt_block_time
+      
