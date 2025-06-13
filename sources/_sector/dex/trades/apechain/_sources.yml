@@ -5,3 +5,6 @@ sources:
     tables:
       - name: camelotpair_evt_swap
       - name: camelotfactory_evt_paircreated
+  - name: saru_apechain
+    tables:
+      - name: sarupair_evt_swap
