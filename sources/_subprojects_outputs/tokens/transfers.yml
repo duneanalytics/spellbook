@@ -3,6 +3,16 @@ sources:
   - name: tokens
     tables:
       - name: transfers
+  - name: tokens_abstract
+    tables:
+      - name: transfers 
+      - name: net_transfers_daily
+
+  - name: tokens_apechain
+    tables:
+      - name: transfers     
+      - name: net_transfers_daily
+
   - name: tokens_arbitrum
     tables:
       - name: transfers
@@ -15,7 +25,32 @@ sources:
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
 
+  - name: tokens_b3
+    tables:
+      - name: transfers
+      - name: net_transfers_daily 
+          
   - name: tokens_base
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
+      - name: net_transfers_daily_asset
+
+  - name: tokens_berachain
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
+
+  - name: transfers_bitcoin
+    tables:
+      - name: satoshi
+  
+  - name: tokens_bitcoin
+    tables:
+      - name: net_transfers_daily
+      - name: net_transfers_daily_asset
+
+  - name: tokens_blast
     tables:
       - name: transfers
       - name: net_transfers_daily
@@ -27,11 +62,31 @@ sources:
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
 
+  - name: tokens_bob
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
+
+  - name: tokens_boba
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
+
   - name: tokens_celo
     tables:
       - name: transfers
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
+
+  - name: tokens_corn
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
+
+  - name: tokens_degen
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
 
   - name: tokens_ethereum
     tables:
@@ -45,13 +100,43 @@ sources:
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
 
+  - name: tokens_flare
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
+
   - name: tokens_gnosis
     tables:
       - name: transfers
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
 
+  - name: tokens_goerli
+    tables:
+      - name: transfers
+
+  - name: tokens_ink
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
+
+  - name: tokens_kaia
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
+
+  - name: tokens_lens
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
+
   - name: tokens_linea
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
+      - name: net_transfers_daily_asset
+
+  - name: tokens_mantle
     tables:
       - name: transfers
       - name: net_transfers_daily
@@ -60,6 +145,12 @@ sources:
   - name: tokens_nova
     tables:
       - name: transfers
+      - name: net_transfers_daily
+
+  - name: tokens_opbnb
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
 
   - name: tokens_optimism
     tables:
@@ -67,7 +158,18 @@ sources:
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
 
+  - name: tokens_plume
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
+
   - name: tokens_polygon
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
+      - name: net_transfers_daily_asset
+      
+  - name: tokens_ronin
     tables:
       - name: transfers
       - name: net_transfers_daily
@@ -78,6 +180,61 @@ sources:
       - name: transfers
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
+
+  - name: tokens_sei
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
+      - name: net_transfers_daily_asset
+
+  - name: tokens_solana
+    tables:
+      - name: net_transfers_daily
+      - name: net_transfers_daily_asset
+
+  - name: tokens_shape
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
+
+  - name: tokens_sepolia
+    tables:
+      - name: transfers
+
+  - name: tokens_sonic
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
+
+  - name: tokens_sophon
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
+        
+  - name: tokens_ton
+    tables:
+      - name: net_transfers_daily
+
+  - name: tokens_tron
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
+      - name: net_transfers_daily_asset
+
+  - name: tokens_unichain
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
+
+  - name: tokens_viction
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
+
+  - name: tokens_worldchain
+    tables:   
+      - name: transfers
+      - name: net_transfers_daily
 
   - name: tokens_zkevm
     tables:
@@ -96,83 +253,3 @@ sources:
       - name: transfers
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
-  
-  - name: tokens_ronin
-    tables:
-      - name: transfers
-      - name: net_transfers_daily
-      - name: net_transfers_daily_asset
-  
-  - name: tokens_tron
-    tables:
-      - name: transfers
-      - name: net_transfers_daily
-      - name: net_transfers_daily_asset
-
-  - name: tokens_blast
-    tables:
-      - name: transfers
-      - name: net_transfers_daily
-      - name: net_transfers_daily_asset
-
-  - name: tokens_mantle
-    tables:
-      - name: transfers
-      - name: net_transfers_daily
-      - name: net_transfers_daily_asset
-
-  - name: tokens_sei
-    tables:
-      - name: transfers
-      - name: net_transfers_daily
-      - name: net_transfers_daily_asset
-
-  - name: tokens_abstract
-    tables:
-      - name: transfers
-      - name: net_transfers_daily
-      - name: net_transfers_daily_asset
-
-  - name: tokens_apechain
-    tables:
-      - name: transfers
-      - name: net_transfers_daily
-      - name: net_transfers_daily_asset
-
-  - name: tokens_mode
-    tables:
-      - name: transfers
-
-  - name: tokens_goerli
-    tables:
-      - name: transfers
-
-  - name: tokens_sepolia
-    tables:
-      - name: transfers
-
-  - name: tokens_bob
-    tables:
-      - name: transfers
-
-  - name: tokens_degen
-    tables:
-      - name: transfers
-
-  - name: transfers_bitcoin
-    tables:
-      - name: satoshi
-  
-  - name: tokens_bitcoin
-    tables:
-      - name: net_transfers_daily
-      - name: net_transfers_daily_asset
-      
-  - name: tokens_solana
-    tables:
-      - name: net_transfers_daily
-      - name: net_transfers_daily_asset
-  
-  - name: tokens_ton
-    tables:
-      - name: net_transfers_daily
