@@ -12,34 +12,34 @@ WITH sender_transfer_rates AS (
         MIN(block_time) as first_tx,
         MAX(block_time) as last_tx,
         COUNT(DISTINCT CASE WHEN EXISTS (
-            SELECT 1 FROM {{ source('erc20_' ~ chain, 'evt_Transfer') }} r 
-            WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number
+            SELECT 1 FROM {{ source('tokens', 'transfers') }} r 
+            WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number AND r.blockchain = '{{ chain }}'
         ) THEN t.hash END) as num_erc20_tfer_txs,
         COUNT(DISTINCT CASE WHEN EXISTS (
             SELECT 1 FROM {{ source('nft', 'transfers') }} r 
-            WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = chain
+            WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = '{{ chain }}'
         ) THEN t.hash END) as num_nft_tfer_txs,
         COUNT(DISTINCT CASE WHEN EXISTS (
-            SELECT 1 FROM {{ source('erc20_' ~ chain, 'evt_Transfer') }} r 
-            WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number
+            SELECT 1 FROM {{ source('tokens', 'transfers') }} r 
+            WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number AND r.blockchain = '{{ chain }}'
         ) OR EXISTS (
             SELECT 1 FROM {{ source('nft', 'transfers') }} r 
-            WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = chain
+            WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = '{{ chain }}'
         ) THEN t.hash END) as num_token_tfer_txs,
         cast(COUNT(DISTINCT CASE WHEN EXISTS (
-            SELECT 1 FROM {{ source('erc20_' ~ chain, 'evt_Transfer') }} r 
-            WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number
+            SELECT 1 FROM {{ source('tokens', 'transfers') }} r 
+            WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number AND r.blockchain = '{{ chain }}'
         ) THEN t.hash END) as double) / cast(COUNT(*) as double) as pct_erc20_tfer_txs,
         cast(COUNT(DISTINCT CASE WHEN EXISTS (
             SELECT 1 FROM {{ source('nft', 'transfers') }} r 
-            WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = chain
+            WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = '{{ chain }}'
         ) THEN t.hash END) as double) / cast(COUNT(*) as double) as pct_nft_tfer_txs,
         cast(COUNT(DISTINCT CASE WHEN EXISTS (
-            SELECT 1 FROM {{ source('erc20_' ~ chain, 'evt_Transfer') }} r 
-            WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number
+            SELECT 1 FROM {{ source('tokens', 'transfers') }} r 
+            WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number AND r.blockchain = '{{ chain }}'
         ) OR EXISTS (
             SELECT 1 FROM {{ source('nft', 'transfers') }} r 
-            WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = chain
+            WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = '{{ chain }}'
         ) THEN t.hash END) as double) / cast(COUNT(*) as double) as pct_token_tfer_txs,
         -- Future bot types (commented out until upstream models are migrated)
         0 as num_dex_trade_txs,
@@ -65,7 +65,7 @@ WITH sender_transfer_rates AS (
 )
 
 SELECT 
-    chain as blockchain,
+    '{{ chain }}' as blockchain,
     sender as address,
     'likely bots' as category,
     CASE
@@ -124,14 +124,14 @@ WITH sender_transfer_rates AS (
         ) THEN t.hash END) as num_erc20_tfer_txs,
         COUNT(DISTINCT CASE WHEN EXISTS (
             SELECT 1 FROM {{ source('nft', 'transfers') }} r 
-            WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = chain
+            WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = '{{ chain }}'
         ) THEN t.hash END) as num_nft_tfer_txs,
         COUNT(DISTINCT CASE WHEN EXISTS (
             SELECT 1 FROM {{ source('erc20_' ~ chain, 'evt_Transfer') }} r 
             WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number
         ) OR EXISTS (
             SELECT 1 FROM {{ source('nft', 'transfers') }} r 
-            WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = chain
+            WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = '{{ chain }}'
         ) THEN t.hash END) as num_token_tfer_txs,
         cast(COUNT(DISTINCT CASE WHEN EXISTS (
             SELECT 1 FROM {{ source('erc20_' ~ chain, 'evt_Transfer') }} r 
@@ -139,14 +139,14 @@ WITH sender_transfer_rates AS (
         ) THEN t.hash END) as double) / cast(COUNT(*) as double) as pct_erc20_tfer_txs,
         cast(COUNT(DISTINCT CASE WHEN EXISTS (
             SELECT 1 FROM {{ source('nft', 'transfers') }} r 
-            WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = chain
+            WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = '{{ chain }}'
         ) THEN t.hash END) as double) / cast(COUNT(*) as double) as pct_nft_tfer_txs,
         cast(COUNT(DISTINCT CASE WHEN EXISTS (
             SELECT 1 FROM {{ source('erc20_' ~ chain, 'evt_Transfer') }} r 
             WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number
         ) OR EXISTS (
             SELECT 1 FROM {{ source('nft', 'transfers') }} r 
-            WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = chain
+            WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = '{{ chain }}'
         ) THEN t.hash END) as double) / cast(COUNT(*) as double) as pct_token_tfer_txs,
         -- Future bot types (commented out until upstream models are migrated)
         0 as num_dex_trade_txs,
@@ -172,7 +172,7 @@ WITH sender_transfer_rates AS (
 )
 
 SELECT 
-    chain as blockchain,
+    '{{ chain }}' as blockchain,
     contract as address,
     'likely bots' as category,
     CASE
