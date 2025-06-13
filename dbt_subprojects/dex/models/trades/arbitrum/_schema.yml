@@ -849,7 +849,7 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('graphene_arbitrum_base_trades_seed')
 
-- name: mindgames_arbitrum_base_trades
+  - name: mindgames_arbitrum_base_trades
     meta:
       blockchain: arbitrum
       sector: dex
