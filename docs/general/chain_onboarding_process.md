@@ -40,6 +40,9 @@ We need to split the onboarding process into multiple PRs because of the way we 
     -   *Future State Note:* The dependency on CoinPaprika for *all* tokens is being reduced, but the `prices_trusted_tokens` pipeline will likely remain.
 
 3.  **Configure ERC20 Metadata (`tokens` project):**
+
+*Note: This step is not required for all chains. It is only required for chains we could not generate amp coverage for.*
+
     -   **What:**
         -   Create a new `tokens_<blockchain>_erc20` model (e.g., [`tokens_lens_erc20.sql`](./dbt_subprojects/tokens/models/tokens/lens/tokens_lens_erc20.sql)) in `dbt_subprojects/tokens/models/tokens/<blockchain>/`. Add the same tokens listed in the blockchain-specific prices model.
         -   Add this new model to the union in [`tokens_erc20.sql`](./dbt_subprojects/tokens/models/tokens/tokens_erc20.sql).
@@ -47,15 +50,13 @@ We need to split the onboarding process into multiple PRs because of the way we 
 
 4.  **Define Raw Data Sources:**
     -   **What:** Add the new blockchain\'s raw tables (`transactions`, `logs`, `traces`, `blocks`, `creation_traces`) as sources in a new YAML file within [`sources/_base_sources/evm/`](./sources/_base_sources/evm/) (e.g., [`lens_base_sources.yml`](./sources/_base_sources/evm/lens_base_sources.yml)). Also, create a corresponding `<blockchain>_docs_block.md` file (e.g., [`lens_docs_block.md`](./sources/_base_sources/evm/lens_docs_block.md)) in the same directory to document these sources.
+    -   **How:** 
+        - You can either copy and replace an existing source file and docs and replace occurrences or create a new one.
+        - You can also use the script `scripts/generate_evm_sources.py` and `scripts/generate_evm_docs.py` to generate the source file and docs. Simply replace the chain name in the script and run it.
     -   **Why:** Makes the raw data accessible within the dbt project, allowing models to reference them using the `source()` function.
 
 5.  **Integrate into Aggregate EVM Models (`daily_spellbook`):**
-    -   **What:** Update the blockchain lists within the core EVM aggregate models in [`dbt_subprojects/daily_spellbook/models/evms/`](./dbt_subprojects/daily_spellbook/models/evms/). This typically involves adding the new blockchain name to the `{% set blockchains = [...] %}` list in models like:
-        - [`evms_blocks.sql`](./dbt_subprojects/daily_spellbook/models/evms/evms_blocks.sql)
-        - [`evms_transactions.sql`](./dbt_subprojects/daily_spellbook/models/evms/evms_transactions.sql)
-        - [`evms_logs.sql`](./dbt_subprojects/daily_spellbook/models/evms/evms_logs.sql)
-        - [`evms_traces.sql`](./dbt_subprojects/daily_spellbook/models/evms/evms_traces.sql)
-        - ... and other relevant `evms_*` models (e.g., those dealing with decoded logs, specific ERC standards, etc.).
+    -   **What:** Update the `blockchains` list [here](../../dbt_subprojects/daily_spellbook/macros/helpers/evms_blockchains_list.sql)
     -   **Why:** Incorporates the new chain's base data (blocks, transactions, logs, etc.) into the primary cross-chain EVM tables used throughout Spellbook and Dune.
 
 ### PR 2: Core Transfer and Fee Models
