@@ -219,7 +219,6 @@ FROM (VALUES
     , ('abstractswap', 'Abstract Swap', 'Direct', 'AbstractChain')
     , ('tamadotmeme', 'tamadotmeme', 'Direct', 'tamadotmeme') 
     , ('tapio', 'Tapio', 'Direct', 'Tapio')
-    , ('tamadotmeme', 'tamadotmeme', 'Direct', 'tamadotmeme')
     , ('spectra', 'Spectra', 'Direct', 'SpectraFinance')
     , ('rooster_protocol', 'Rooster Protocol', 'Direct', 'roosterprotocol')
     , ('mindgames', 'Mindgames', 'Direct', 'mindgames_io')
