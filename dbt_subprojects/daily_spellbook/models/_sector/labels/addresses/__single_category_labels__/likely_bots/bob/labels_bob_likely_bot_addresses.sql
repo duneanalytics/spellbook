@@ -1,6 +1,6 @@
 {{
     config(
-        alias = 'likely_bot_addresses',
+        alias = 'likely_bot_addresses_bob',
         post_hook='{{ expose_spells(\'["bob"]\',
         "sector",
         "labels",

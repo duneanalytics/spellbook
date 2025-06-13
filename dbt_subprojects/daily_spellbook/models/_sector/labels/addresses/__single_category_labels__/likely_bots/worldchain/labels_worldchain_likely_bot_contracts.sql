@@ -1,6 +1,6 @@
 {{
     config(
-        alias = 'likely_bot_contracts',
+        alias = 'likely_bot_contracts_worldchain',
         post_hook='{{ expose_spells(\'["worldchain"]\',
         "sector",
         "labels",

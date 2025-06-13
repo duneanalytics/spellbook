@@ -1,6 +1,6 @@
 {{
     config(
-        alias = 'likely_bot_addresses',
+        alias = 'likely_bot_addresses_ink',
         post_hook='{{ expose_spells(\'["ink"]\',
         "sector",
         "labels",

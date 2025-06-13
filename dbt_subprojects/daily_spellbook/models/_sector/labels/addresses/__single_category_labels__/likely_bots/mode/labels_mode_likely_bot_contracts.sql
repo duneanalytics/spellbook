@@ -1,6 +1,6 @@
 {{
     config(
-        alias = 'likely_bot_contracts',
+        alias = 'likely_bot_contracts_mode',
         post_hook='{{ expose_spells(\'["mode"]\',
         "sector",
         "labels",

@@ -1,6 +1,6 @@
 {{
     config(
-        alias = 'likely_bot_contracts',
+        alias = 'likely_bot_contracts_unichain',
         post_hook='{{ expose_spells(\'["unichain"]\',
         "sector",
         "labels",
