@@ -22,7 +22,8 @@ WITH all_events AS (
         receiver,
         assets,
         shares,
-        'Open Long' AS trade_type
+        'Open Long' AS trade_type,
+        'Open Long' AS trade
     FROM {{ source('lemma_finance_optimism', 'xlemmasynth_evt_deposit') }}
     {% if not is_incremental() %}
         WHERE evt_block_time >= DATE '{{ project_start_date }}'
@@ -43,7 +44,8 @@ WITH all_events AS (
         receiver,
         assets,
         shares,
-        'Close Long' AS trade_type
+        'Close Long' AS trade_type,
+        'Close Long' AS trade
     FROM {{ source('lemma_finance_optimism', 'xlemmasynth_evt_withdraw') }}
     {% if not is_incremental() %}
         WHERE evt_block_time >= DATE '{{ project_start_date }}'
@@ -77,6 +79,7 @@ final AS (
         CAST(NULL AS DOUBLE) AS fee_usd,
         CAST(NULL AS DOUBLE) AS margin_usd,
         trade_type,
+        trade,
         'lemma_finance' AS project,
         'v1' AS version,
         'lemma_finance' AS frontend,
