@@ -1,277 +1,215 @@
 {% macro get_likely_bot_addresses(chain) %}
 
 WITH sender_transfer_rates AS (
-    -- For each transaction sender, get their hourly transaction data
-    SELECT "from" AS sender, DATE_TRUNC('hour',block_time) AS hr
-            , MIN(block_time) AS min_block_time
-            , MAX(block_time) AS max_block_time
-            , COUNT(*) AS hr_txs
-            , SUM(CASE WHEN to IN (SELECT address FROM {{ ref('labels_' ~ chain ~ '_likely_bot_contracts') }} WHERE name != 'chain ops bot') THEN 1 ELSE 0 END) AS bot_concentration_txs
-
-            , SUM(CASE WHEN EXISTS (SELECT 1 FROM {{ source('erc20_' ~ chain,'evt_Transfer') }} r WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number) THEN 1 ELSE 0 END) AS num_erc20_tfer_txs
-            , SUM(CASE WHEN EXISTS (SELECT 1 FROM {{ source('nft', 'transfers') }} r WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = '{{ chain }}') THEN 1 ELSE 0 END) AS num_nft_tfer_txs
-
-            , SUM(CASE WHEN EXISTS (SELECT 1 FROM {{ source('erc20_' ~ chain,'evt_Transfer') }} r WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number) THEN 1
-                    WHEN EXISTS (SELECT 1 FROM {{ source('nft', 'transfers') }} r WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = '{{ chain }}') THEN 1
-                ELSE 0 END) AS num_token_tfer_txs
-
-            , 0 /*SUM(CASE WHEN EXISTS (SELECT 1 FROM [[ dex_trades ]] r WHERE t.hash = r.tx_hash AND t.block_time = r.block_time AND blockchain = '{{ chain }}') THEN 1 ELSE 0 END)*/ AS num_dex_trade_txs
-            , 0 /*SUM(CASE WHEN EXISTS (SELECT 1 FROM [[ perpetual_trades ]] r WHERE t.hash = r.tx_hash AND t.block_time = r.block_time AND blockchain = '{{ chain }}') THEN 1 ELSE 0 END)*/ AS num_perp_trade_txs
-            , 0 /*SUM(CASE WHEN EXISTS (SELECT 1 FROM [[ nft_trades ]] r WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = '{{ chain }}') THEN 1 ELSE 0 END)*/ AS num_nft_trade_txs
-
-            FROM {{ source(chain,'transactions') }} t
-
-        GROUP BY 1,2
-
-)
-
-, first_pass_throughput_filter AS
-(
-    -- Filter down this list a bit to help with later mappings
-    SELECT sender, DATE_TRUNC('week',hr) AS wk, SUM(hr_txs) AS wk_txs, MAX(hr_txs) AS max_hr_txs, SUM(bot_concentration_txs) AS bot_concentration_txs,
-        cast(COUNT(*) as double) /cast(7.0*24.0 as double) AS pct_weekly_hours_active,
-        MIN(min_block_time) AS min_block_time,
-        MAX(max_block_time) AS max_block_time,
-
-        SUM(num_erc20_tfer_txs) AS num_erc20_tfer_txs,
-        SUM(num_nft_tfer_txs) AS num_nft_tfer_txs,
-        SUM(num_token_tfer_txs) AS num_token_tfer_txs,
-        SUM(num_dex_trade_txs) AS num_dex_trade_txs,
-        SUM(num_perp_trade_txs) AS num_perp_trade_txs,
-        SUM(num_nft_trade_txs) AS num_nft_trade_txs
-        FROM sender_transfer_rates e
-        GROUP BY 1,2
-        HAVING MAX(hr_txs) >= 20 --had some high-ish frequency - gte 20 txs per hour at least once
+    SELECT 
+        "from" as sender,
+        COUNT(*) as num_txs,
+        COUNT(DISTINCT "to") as num_recipients,
+        COUNT(*)/COUNT(DISTINCT "to") as txs_per_recipient,
+        COUNT(DISTINCT "from") as num_senders,
+        COUNT(*)/COUNT(DISTINCT "from") as txs_per_sender,
+        COUNT(*) / (cast(date_diff('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0)) as txs_per_hour,
+        MIN(block_time) as first_tx,
+        MAX(block_time) as last_tx,
+        COUNT(DISTINCT CASE WHEN EXISTS (
+            SELECT 1 FROM {{ source('erc20_' ~ chain, 'evt_Transfer') }} r 
+            WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number
+        ) THEN t.hash END) as num_erc20_tfer_txs,
+        COUNT(DISTINCT CASE WHEN EXISTS (
+            SELECT 1 FROM {{ source('nft', 'transfers') }} r 
+            WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = chain
+        ) THEN t.hash END) as num_nft_tfer_txs,
+        COUNT(DISTINCT CASE WHEN EXISTS (
+            SELECT 1 FROM {{ source('erc20_' ~ chain, 'evt_Transfer') }} r 
+            WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number
+        ) OR EXISTS (
+            SELECT 1 FROM {{ source('nft', 'transfers') }} r 
+            WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = chain
+        ) THEN t.hash END) as num_token_tfer_txs,
+        cast(COUNT(DISTINCT CASE WHEN EXISTS (
+            SELECT 1 FROM {{ source('erc20_' ~ chain, 'evt_Transfer') }} r 
+            WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number
+        ) THEN t.hash END) as double) / cast(COUNT(*) as double) as pct_erc20_tfer_txs,
+        cast(COUNT(DISTINCT CASE WHEN EXISTS (
+            SELECT 1 FROM {{ source('nft', 'transfers') }} r 
+            WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = chain
+        ) THEN t.hash END) as double) / cast(COUNT(*) as double) as pct_nft_tfer_txs,
+        cast(COUNT(DISTINCT CASE WHEN EXISTS (
+            SELECT 1 FROM {{ source('erc20_' ~ chain, 'evt_Transfer') }} r 
+            WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number
+        ) OR EXISTS (
+            SELECT 1 FROM {{ source('nft', 'transfers') }} r 
+            WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = chain
+        ) THEN t.hash END) as double) / cast(COUNT(*) as double) as pct_token_tfer_txs,
+        -- Future bot types (commented out until upstream models are migrated)
+        0 as num_dex_trade_txs,
+        0 as num_perp_trade_txs,
+        0 as num_nft_trade_txs,
+        0.0 as pct_dex_trade_txs,
+        0.0 as pct_perp_trade_txs,
+        0.0 as pct_nft_trade_txs
+    FROM {{ source(chain, 'transactions') }} t
+    GROUP BY 1
+    HAVING 
+        -- Early bots: > 25 txs / hour per address
+        (COUNT(*) >= 100 AND
+        COUNT(*)/COUNT(DISTINCT "from") / (cast(date_diff('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0)) >= 25)
         OR
-        SUM(bot_concentration_txs) >= 0 --had a tx to a bot address
-
+        -- Established bots: less than 30 senders & > 2.5k txs & > 0.5 txs / hr
+        (COUNT(*) >= 2500 AND COUNT(DISTINCT "from") <= 30
+        AND COUNT(*) / (cast(date_diff('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0)) >= 0.5)
+        OR
+        -- Wider distribution bots: > 2.5k txs and > 1k txs per sender & > 0.5 txs / hr
+        (COUNT(*) >= 2500 AND COUNT(*)/COUNT(DISTINCT "from") >= 1000
+        AND COUNT(*) / (cast(date_diff('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0)) >= 0.5)
 )
 
-
-,  bot_addresses AS (
-SELECT *,
-    cast(num_erc20_tfer_txs as double) / cast( num_txs as double) AS pct_erc20_tfer_txs,
-    cast(num_nft_tfer_txs as double) / cast( num_txs as double) AS pct_nft_tfer_txs,
-    cast(num_token_tfer_txs as double) / cast( num_txs as double) AS pct_token_tfer_txs,
-    cast(num_dex_trade_txs as double) / cast( num_txs as double) AS pct_dex_trade_txs,
-    cast(num_perp_trade_txs as double) / cast( num_txs as double) AS pct_perp_trade_txs, -- perpetual.trades has some dunesql incompatability
-    cast(num_nft_trade_txs as double) / cast( num_txs as double) AS pct_nft_trade_txs
-
-FROM (
-        SELECT sender, MAX(wk_txs) AS max_wk_txs, MAX(max_hr_txs) AS max_hr_txs, AVG(wk_txs) AS avg_wk_txs
-            ,MIN(min_block_time) AS min_block_time
-            ,MAX(max_block_time) AS max_block_time
-            ,MAX(pct_weekly_hours_active) AS max_pct_weekly_hours_active
-            ,AVG(pct_weekly_hours_active) AS avg_pct_weekly_hours_active
-            ,SUM(wk_txs) AS num_txs
-            ,SUM(bot_concentration_txs) AS bot_concentration_txs
-
-            ,cast(SUM(bot_concentration_txs) as double) / cast(SUM(wk_txs) as double) AS pct_bot_concentration_txs
-            ,( cast( date_DIFF('second', MIN(min_block_time), MAX(max_block_time)) as double) / (60.0*60.0) ) AS txs_per_hour
-
-            ,SUM(num_erc20_tfer_txs) AS num_erc20_tfer_txs
-            ,SUM(num_nft_tfer_txs) AS num_nft_tfer_txs
-            ,SUM(num_token_tfer_txs) AS num_token_tfer_txs
-            ,SUM(num_dex_trade_txs) AS num_dex_trade_txs
-            ,SUM(num_perp_trade_txs) AS num_perp_trade_txs
-            ,SUM(num_nft_trade_txs) AS num_nft_trade_txs
-
-        FROM first_pass_throughput_filter f
-            GROUP BY 1
-            -- various cases to detect bots
-            HAVING (MAX(wk_txs) >= 2000 AND MAX(max_hr_txs) >= 100) --frequency (gt 2k txs in one week and gt 100 txs in one hour)
-                OR (MAX(wk_txs) >= 4000 AND MAX(max_hr_txs) >= 50) --frequency (gt 4k txs in one week and gt 50 txs in one hour)
-                OR AVG(wk_txs) >= 1000 --frequency (avg 1k txs per week)
-                OR
-                    (
-                    cast(COUNT(*) as double) /
-                        ( cast( date_DIFF('second', MIN(min_block_time), MAX(max_block_time)) as double) / (60.0*60.0) ) >= 25
-                    AND SUM(wk_txs) >= 100
-                    ) --frequency gt 25 txs per hour
-                OR AVG(pct_weekly_hours_active) > 0.5 -- aliveness: transacting at least 50% of hours per week
-                OR MAX(pct_weekly_hours_active) > 0.95 -- aliveness: at peack, transacted at least 95% of hours in a week
-                OR (cast(SUM(bot_concentration_txs) as double) / cast(SUM(wk_txs) as double) > 0.5) --at least half txs go to bots
-        ) ff
-
-)
-
-select
-  '{{ chain }}' as blockchain,
-  address,
-  name,
-  category,
-  'msilb7' AS contributor,
-  'query' AS source,
-  timestamp '2023-03-11' as created_at,
-  now() as updated_at,
-  'likely_bot_addresses' as model_name,
-  'persona' as label_type
-
-  FROM (
-    -- show ther entire list as one label
-    SELECT
-    sender AS address,
-    'likely bots' AS category,
-    'likely bot addresses' AS name
-
-    from bot_addresses
-
-  UNION ALL
-    -- create another set of labels, cohorted by "type"
-    SELECT
-    sender AS address,
-    'likely bot types' AS category,
+SELECT 
+    chain as blockchain,
+    sender as address,
+    'likely bots' as category,
     CASE
-      WHEN pct_dex_trade_txs >= 0.5 THEN 'dex trade bot address'
-      WHEN pct_nft_trade_txs >= 0.5 THEN 'nft trade bot address'
-      WHEN pct_perp_trade_txs >= 0.5 THEN 'perp trade bot address'
-      WHEN pct_erc20_tfer_txs >= 0.5 THEN 'erc20 transfer bot address'
-      WHEN pct_nft_tfer_txs >= 0.5 THEN 'nft transfer bot address'
-      WHEN pct_token_tfer_txs >= 0.5 THEN 'other token transfer bot address'
-    ELSE 'non-token bot address'
-    END AS name
+        WHEN pct_erc20_tfer_txs >= 0.5 THEN 'erc20 transfer bot address'
+        WHEN pct_nft_tfer_txs >= 0.5 THEN 'nft transfer bot address'
+        WHEN pct_token_tfer_txs >= 0.5 THEN 'other token transfer bot address'
+        ELSE 'non-token bot address'
+    END as name,
+    'msilb7' as contributor,
+    'query' as source,
+    timestamp '2023-03-11' as created_at,
+    now() as updated_at,
+    'likely_bot_addresses' as model_name,
+    'persona' as label_type
+FROM sender_transfer_rates
 
-  from bot_addresses
-
-    ) a 
+-- Future bot types (commented out until upstream models are migrated)
+-- UNION ALL
+-- SELECT 
+--     chain as blockchain,
+--     sender as address,
+--     'likely bot types' as category,
+--     CASE
+--         WHEN pct_dex_trade_txs >= 0.5 THEN 'dex trade bot address'
+--         WHEN pct_nft_trade_txs >= 0.5 THEN 'nft trade bot address'
+--         WHEN pct_perp_trade_txs >= 0.5 THEN 'perp trade bot address'
+--         WHEN pct_erc20_tfer_txs >= 0.5 THEN 'erc20 transfer bot address'
+--         WHEN pct_nft_tfer_txs >= 0.5 THEN 'nft transfer bot address'
+--         WHEN pct_token_tfer_txs >= 0.5 THEN 'other token transfer bot address'
+--         ELSE 'non-token bot address'
+--     END as name,
+--     'msilb7' as contributor,
+--     'query' as source,
+--     timestamp '2023-03-11' as created_at,
+--     now() as updated_at,
+--     'likely_bot_addresses' as model_name,
+--     'persona' as label_type
+-- FROM sender_transfer_rates
 
 {% endmacro %}
 
 {% macro get_likely_bot_contracts(chain) %}
 
 WITH sender_transfer_rates AS (
-    -- For each transaction sender, get their hourly transaction data
-    SELECT "from" AS sender, DATE_TRUNC('hour',block_time) AS hr
-            , MIN(block_time) AS min_block_time
-            , MAX(block_time) AS max_block_time
-            , COUNT(*) AS hr_txs
-            , SUM(CASE WHEN to IN (SELECT address FROM {{ ref('labels_' ~ chain ~ '_likely_bot_contracts') }} WHERE name != 'chain ops bot') THEN 1 ELSE 0 END) AS bot_concentration_txs
-
-            , SUM(CASE WHEN EXISTS (SELECT 1 FROM {{ source('erc20_' ~ chain,'evt_Transfer') }} r WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number) THEN 1 ELSE 0 END) AS num_erc20_tfer_txs
-            , SUM(CASE WHEN EXISTS (SELECT 1 FROM {{ source('nft', 'transfers') }} r WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = '{{ chain }}') THEN 1 ELSE 0 END) AS num_nft_tfer_txs
-
-            , SUM(CASE WHEN EXISTS (SELECT 1 FROM {{ source('erc20_' ~ chain,'evt_Transfer') }} r WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number) THEN 1
-                    WHEN EXISTS (SELECT 1 FROM {{ source('nft', 'transfers') }} r WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = '{{ chain }}') THEN 1
-                ELSE 0 END) AS num_token_tfer_txs
-
-            , 0 /*SUM(CASE WHEN EXISTS (SELECT 1 FROM [[ dex_trades ]] r WHERE t.hash = r.tx_hash AND t.block_time = r.block_time AND blockchain = '{{ chain }}') THEN 1 ELSE 0 END)*/ AS num_dex_trade_txs
-            , 0 /*SUM(CASE WHEN EXISTS (SELECT 1 FROM [[ perpetual_trades ]] r WHERE t.hash = r.tx_hash AND t.block_time = r.block_time AND blockchain = '{{ chain }}') THEN 1 ELSE 0 END)*/ AS num_perp_trade_txs
-            , 0 /*SUM(CASE WHEN EXISTS (SELECT 1 FROM [[ nft_trades ]] r WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = '{{ chain }}') THEN 1 ELSE 0 END)*/ AS num_nft_trade_txs
-
-            FROM {{ source(chain,'transactions') }} t
-
-        GROUP BY 1,2
-
-)
-
-, first_pass_throughput_filter AS
-(
-    -- Filter down this list a bit to help with later mappings
-    SELECT sender, DATE_TRUNC('week',hr) AS wk, SUM(hr_txs) AS wk_txs, MAX(hr_txs) AS max_hr_txs, SUM(bot_concentration_txs) AS bot_concentration_txs,
-        cast(COUNT(*) as double) /cast(7.0*24.0 as double) AS pct_weekly_hours_active,
-        MIN(min_block_time) AS min_block_time,
-        MAX(max_block_time) AS max_block_time,
-
-        SUM(num_erc20_tfer_txs) AS num_erc20_tfer_txs,
-        SUM(num_nft_tfer_txs) AS num_nft_tfer_txs,
-        SUM(num_token_tfer_txs) AS num_token_tfer_txs,
-        SUM(num_dex_trade_txs) AS num_dex_trade_txs,
-        SUM(num_perp_trade_txs) AS num_perp_trade_txs,
-        SUM(num_nft_trade_txs) AS num_nft_trade_txs
-        FROM sender_transfer_rates e
-        GROUP BY 1,2
-        HAVING MAX(hr_txs) >= 20 --had some high-ish frequency - gte 20 txs per hour at least once
+    SELECT 
+        "to" as contract,
+        COUNT(*) as num_txs,
+        COUNT(DISTINCT "from") as num_senders,
+        COUNT(*)/COUNT(DISTINCT "from") as txs_per_sender,
+        COUNT(*) / (cast(date_diff('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0)) as txs_per_hour,
+        MIN(block_time) as first_tx,
+        MAX(block_time) as last_tx,
+        COUNT(DISTINCT CASE WHEN EXISTS (
+            SELECT 1 FROM {{ source('erc20_' ~ chain, 'evt_Transfer') }} r 
+            WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number
+        ) THEN t.hash END) as num_erc20_tfer_txs,
+        COUNT(DISTINCT CASE WHEN EXISTS (
+            SELECT 1 FROM {{ source('nft', 'transfers') }} r 
+            WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = chain
+        ) THEN t.hash END) as num_nft_tfer_txs,
+        COUNT(DISTINCT CASE WHEN EXISTS (
+            SELECT 1 FROM {{ source('erc20_' ~ chain, 'evt_Transfer') }} r 
+            WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number
+        ) OR EXISTS (
+            SELECT 1 FROM {{ source('nft', 'transfers') }} r 
+            WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = chain
+        ) THEN t.hash END) as num_token_tfer_txs,
+        cast(COUNT(DISTINCT CASE WHEN EXISTS (
+            SELECT 1 FROM {{ source('erc20_' ~ chain, 'evt_Transfer') }} r 
+            WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number
+        ) THEN t.hash END) as double) / cast(COUNT(*) as double) as pct_erc20_tfer_txs,
+        cast(COUNT(DISTINCT CASE WHEN EXISTS (
+            SELECT 1 FROM {{ source('nft', 'transfers') }} r 
+            WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = chain
+        ) THEN t.hash END) as double) / cast(COUNT(*) as double) as pct_nft_tfer_txs,
+        cast(COUNT(DISTINCT CASE WHEN EXISTS (
+            SELECT 1 FROM {{ source('erc20_' ~ chain, 'evt_Transfer') }} r 
+            WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number
+        ) OR EXISTS (
+            SELECT 1 FROM {{ source('nft', 'transfers') }} r 
+            WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = chain
+        ) THEN t.hash END) as double) / cast(COUNT(*) as double) as pct_token_tfer_txs,
+        -- Future bot types (commented out until upstream models are migrated)
+        0 as num_dex_trade_txs,
+        0 as num_perp_trade_txs,
+        0 as num_nft_trade_txs,
+        0.0 as pct_dex_trade_txs,
+        0.0 as pct_perp_trade_txs,
+        0.0 as pct_nft_trade_txs
+    FROM {{ source(chain, 'transactions') }} t
+    GROUP BY 1
+    HAVING 
+        -- Early bots: > 25 txs / hour per address
+        (COUNT(*) >= 100 AND
+        COUNT(*)/COUNT(DISTINCT "from") / (cast(date_diff('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0)) >= 25)
         OR
-        SUM(bot_concentration_txs) >= 0 --had a tx to a bot address
-
+        -- Established bots: less than 30 senders & > 2.5k txs & > 0.5 txs / hr
+        (COUNT(*) >= 2500 AND COUNT(DISTINCT "from") <= 30
+        AND COUNT(*) / (cast(date_diff('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0)) >= 0.5)
+        OR
+        -- Wider distribution bots: > 2.5k txs and > 1k txs per sender & > 0.5 txs / hr
+        (COUNT(*) >= 2500 AND COUNT(*)/COUNT(DISTINCT "from") >= 1000
+        AND COUNT(*) / (cast(date_diff('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0)) >= 0.5)
 )
 
-
-,  bot_addresses AS (
-SELECT *,
-    cast(num_erc20_tfer_txs as double) / cast( num_txs as double) AS pct_erc20_tfer_txs,
-    cast(num_nft_tfer_txs as double) / cast( num_txs as double) AS pct_nft_tfer_txs,
-    cast(num_token_tfer_txs as double) / cast( num_txs as double) AS pct_token_tfer_txs,
-    cast(num_dex_trade_txs as double) / cast( num_txs as double) AS pct_dex_trade_txs,
-    cast(num_perp_trade_txs as double) / cast( num_txs as double) AS pct_perp_trade_txs, -- perpetual.trades has some dunesql incompatability
-    cast(num_nft_trade_txs as double) / cast( num_txs as double) AS pct_nft_trade_txs
-
-FROM (
-        SELECT sender, MAX(wk_txs) AS max_wk_txs, MAX(max_hr_txs) AS max_hr_txs, AVG(wk_txs) AS avg_wk_txs
-            ,MIN(min_block_time) AS min_block_time
-            ,MAX(max_block_time) AS max_block_time
-            ,MAX(pct_weekly_hours_active) AS max_pct_weekly_hours_active
-            ,AVG(pct_weekly_hours_active) AS avg_pct_weekly_hours_active
-            ,SUM(wk_txs) AS num_txs
-            ,SUM(bot_concentration_txs) AS bot_concentration_txs
-
-            ,cast(SUM(bot_concentration_txs) as double) / cast(SUM(wk_txs) as double) AS pct_bot_concentration_txs
-            ,( cast( date_DIFF('second', MIN(min_block_time), MAX(max_block_time)) as double) / (60.0*60.0) ) AS txs_per_hour
-
-            ,SUM(num_erc20_tfer_txs) AS num_erc20_tfer_txs
-            ,SUM(num_nft_tfer_txs) AS num_nft_tfer_txs
-            ,SUM(num_token_tfer_txs) AS num_token_tfer_txs
-            ,SUM(num_dex_trade_txs) AS num_dex_trade_txs
-            ,SUM(num_perp_trade_txs) AS num_perp_trade_txs
-            ,SUM(num_nft_trade_txs) AS num_nft_trade_txs
-
-        FROM first_pass_throughput_filter f
-            GROUP BY 1
-            -- various cases to detect bots
-            HAVING (MAX(wk_txs) >= 2000 AND MAX(max_hr_txs) >= 100) --frequency (gt 2k txs in one week and gt 100 txs in one hour)
-                OR (MAX(wk_txs) >= 4000 AND MAX(max_hr_txs) >= 50) --frequency (gt 4k txs in one week and gt 50 txs in one hour)
-                OR AVG(wk_txs) >= 1000 --frequency (avg 1k txs per week)
-                OR
-                    (
-                    cast(COUNT(*) as double) /
-                        ( cast( date_DIFF('second', MIN(min_block_time), MAX(max_block_time)) as double) / (60.0*60.0) ) >= 25
-                    AND SUM(wk_txs) >= 100
-                    ) --frequency gt 25 txs per hour
-                OR AVG(pct_weekly_hours_active) > 0.5 -- aliveness: transacting at least 50% of hours per week
-                OR MAX(pct_weekly_hours_active) > 0.95 -- aliveness: at peack, transacted at least 95% of hours in a week
-                OR (cast(SUM(bot_concentration_txs) as double) / cast(SUM(wk_txs) as double) > 0.5) --at least half txs go to bots
-        ) ff
-
-)
-
-select
-  '{{ chain }}' as blockchain,
-  address,
-  name,
-  category,
-  'msilb7' AS contributor,
-  'query' AS source,
-  timestamp '2023-03-11' as created_at,
-  now() as updated_at,
-  'likely_bot_contracts' as model_name,
-  'persona' as label_type
-
-  FROM (
-    -- show ther entire list as one label
-    SELECT
-    sender AS address,
-    'likely bots' AS category,
-    'likely bot contracts' AS name
-
-    from bot_addresses
-
-  UNION ALL
-    -- create another set of labels, cohorted by "type"
-    SELECT
-    sender AS address,
-    'likely bot types' AS category,
+SELECT 
+    chain as blockchain,
+    contract as address,
+    'likely bots' as category,
     CASE
-      WHEN pct_dex_trade_txs >= 0.5 THEN 'dex trade bot contract'
-      WHEN pct_nft_trade_txs >= 0.5 THEN 'nft trade bot contract'
-      WHEN pct_perp_trade_txs >= 0.5 THEN 'perp trade bot contract'
-      WHEN pct_erc20_tfer_txs >= 0.5 THEN 'erc20 transfer bot contract'
-      WHEN pct_nft_tfer_txs >= 0.5 THEN 'nft transfer bot contract'
-      WHEN pct_token_tfer_txs >= 0.5 THEN 'other token transfer bot contract'
-    ELSE 'non-token bot contract'
-    END AS name
+        WHEN pct_erc20_tfer_txs >= 0.5 THEN 'erc20 transfer bot contract'
+        WHEN pct_nft_tfer_txs >= 0.5 THEN 'nft transfer bot contract'
+        WHEN pct_token_tfer_txs >= 0.5 THEN 'other token transfer bot contract'
+        ELSE 'non-token bot contract'
+    END as name,
+    'msilb7' as contributor,
+    'query' as source,
+    timestamp '2023-03-11' as created_at,
+    now() as updated_at,
+    'likely_bot_contracts' as model_name,
+    'persona' as label_type
+FROM sender_transfer_rates
 
-  from bot_addresses
-
-    ) a 
+-- Future bot types (commented out until upstream models are migrated)
+-- UNION ALL
+-- SELECT 
+--     chain as blockchain,
+--     contract as address,
+--     'likely bot types' as category,
+--     CASE
+--         WHEN pct_dex_trade_txs >= 0.5 THEN 'dex trade bot contract'
+--         WHEN pct_nft_trade_txs >= 0.5 THEN 'nft trade bot contract'
+--         WHEN pct_perp_trade_txs >= 0.5 THEN 'perp trade bot contract'
+--         WHEN pct_erc20_tfer_txs >= 0.5 THEN 'erc20 transfer bot contract'
+--         WHEN pct_nft_tfer_txs >= 0.5 THEN 'nft transfer bot contract'
+--         WHEN pct_token_tfer_txs >= 0.5 THEN 'other token transfer bot contract'
+--         ELSE 'non-token bot contract'
+--     END as name,
+--     'msilb7' as contributor,
+--     'query' as source,
+--     timestamp '2023-03-11' as created_at,
+--     now() as updated_at,
+--     'likely_bot_contracts' as model_name,
+--     'persona' as label_type
+-- FROM sender_transfer_rates
 
 {% endmacro %} 
