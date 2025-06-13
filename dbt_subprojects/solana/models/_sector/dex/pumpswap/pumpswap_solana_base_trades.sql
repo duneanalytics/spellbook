@@ -114,7 +114,11 @@ WITH pools AS (
     SELECT
         sf.*,
         sf.base_amount as base_token_amount, 
-        t.amount as quote_token_amount  
+        t.amount as quote_token_amount ,
+        ROW_NUMBER() OVER (
+                    PARTITION BY sf.tx_id, sf.outer_instruction_index, sf.swap_inner_index
+                    ORDER BY t.amount DESC 
+                ) as rn
     FROM swaps_with_fees sf
     INNER JOIN {{ ref('tokens_solana_transfers') }} t
         ON t.tx_id = sf.tx_id
@@ -122,19 +126,15 @@ WITH pools AS (
         AND t.outer_instruction_index = sf.outer_instruction_index
         AND t.to_token_account != sf.account_protocol_fee_recipient_token_account
         AND (
-                (
-                sf.swap_inner_index IS NULL 
-                AND t.inner_instruction_index IN (1, 2, 3) 
-                AND (t.from_token_account = sf.account_user_quote_token_account OR t.from_token_account = sf.account_pool_quote_token_account)
-                )
-            OR
-                (
-                sf.swap_inner_index IS NOT NULL
-                AND t.inner_instruction_index IN (sf.swap_inner_index + 1, sf.swap_inner_index + 2, sf.swap_inner_index + 3) 
-                AND (t.from_token_account = sf.account_user_quote_token_account OR t.from_token_account = sf.account_pool_quote_token_account)
-                )
+                (sf.swap_inner_index IS NULL AND t.inner_instruction_index IN (1,2,3,4,5,6,7,8,9,10,11,12)) 
+                OR
+                (sf.swap_inner_index IS NOT NULL AND t.inner_instruction_index IN (
+                    sf.swap_inner_index + 1, sf.swap_inner_index + 2, sf.swap_inner_index + 3,
+                    sf.swap_inner_index + 4, sf.swap_inner_index + 5, sf.swap_inner_index + 6,
+                    sf.swap_inner_index + 7, sf.swap_inner_index + 8, sf.swap_inner_index + 9,
+                    sf.swap_inner_index + 10, sf.swap_inner_index + 11, sf.swap_inner_index + 12
+                ))
             )
-        
         {% if is_incremental() %}
         AND {{incremental_predicate('t.block_time')}}
         {% else %}
@@ -183,6 +183,7 @@ WITH pools AS (
           end as token_sold_vault
     FROM swaps_with_transfers sp
     LEFT JOIN pools p ON p.pool = sp.pool
+    WHERE sp.rn = 1 
 )
 
 
