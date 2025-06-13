@@ -1,0 +1,2 @@
+blockchain,project,version,block_date,tx_hash,evt_index,token_bought_address,token_sold_address,block_number,token_bought_amount_raw,token_sold_amount_raw
+arbitrum,spectra,1,2024-10-22 00:00,0xcbc6f532e6fce81ed4eef9b0e5c6405f5893be08d969a29c08ad840a207017b0,7,,,266544988,129998711,109686303
