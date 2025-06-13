@@ -178,3 +178,7 @@ sources:
   - name: wardenswap_arbitrum
     tables:
       - name: wardenrouterv2_evt_trade
+  - name: mindgames_arbitrum
+    tables:
+      - name: lp_crx_gmx_evt_swap
+      - name: uniswapv2factory_evt_paircreated
