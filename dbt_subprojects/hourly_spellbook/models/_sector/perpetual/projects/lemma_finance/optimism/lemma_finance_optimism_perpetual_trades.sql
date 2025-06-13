@@ -72,6 +72,7 @@ final AS (
         contract_address AS market_address,
         CAST(NULL AS VARCHAR) AS market,
         asset_symbol AS virtual_asset,
+        asset_symbol AS underlying_asset,
         CAST(assets / pow(10, COALESCE(decimals, 18)) AS DOUBLE) AS volume_usd,
         CAST(NULL AS DOUBLE) AS fee_usd,
         CAST(NULL AS DOUBLE) AS margin_usd,
