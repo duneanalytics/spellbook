@@ -1,11 +1,10 @@
 {{
     config(
         alias = 'likely_bot_contracts',
-
-        post_hook='{{ expose_spells('["mode"]',
+        post_hook='{{ expose_spells(\'["mode"]\',
         "sector",
         "labels",
-        '["msilb7"]') }}'
+        \'["msilb7"]\') }}'
     )
 }}
 
@@ -146,3 +145,5 @@ select
   from bot_addresses
 
     ) a 
+
+{{ get_likely_bot_contracts('mode') }} 

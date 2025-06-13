@@ -1,14 +1,14 @@
 {{
     config(
         alias = 'likely_bot_addresses',
-
-        post_hook='{{ expose_spells('["unichain"]',
+        post_hook='{{ expose_spells(\'["unichain"]\',
         "sector",
         "labels",
-        '["msilb7"]') }}'
+        \'["msilb7"]\') }}'
     )
 }}
 
+{{ get_likely_bot_addresses('unichain') }}
 
 -- This could/should become a spell with some kind of modular logic approach so that we can plug in new detection logic over time (i.e. many of X method, or Y project's contracts)
 -- the core of this logic is on transaction frequency and sender concentration The "sender concentration" piece will get tested by mutlisigs / smart contract wallets.

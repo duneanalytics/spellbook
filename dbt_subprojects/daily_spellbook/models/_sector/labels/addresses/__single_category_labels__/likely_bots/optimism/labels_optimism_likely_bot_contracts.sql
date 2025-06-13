@@ -1,11 +1,10 @@
 {{
     config(
         alias = 'likely_bot_contracts',
-
-        post_hook='{{ expose_spells('["optimism"]',
+        post_hook='{{ expose_spells(\'["optimism"]\',
         "sector",
         "labels",
-        '["msilb7"]') }}'
+        \'["msilb7"]\') }}'
     )
 }}
 
