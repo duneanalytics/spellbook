@@ -39,6 +39,7 @@
     ,ref('voodoo_trade_base_perpetual_trades')
     ,ref('bmx_base_perpetual_trades')
     ,ref('nether_fi_base_perpetual_trades')
+    ,ref('bsx_base_perpetual_trades')
 ] %}
 
 SELECT *
