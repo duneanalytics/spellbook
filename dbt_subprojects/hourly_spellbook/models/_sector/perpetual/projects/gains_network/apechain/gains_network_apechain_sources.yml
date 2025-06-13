@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: gains_network_apechain
+    description: apechain decoded tables related to Gains Network
+    tables:
+      - name: gnsmulticollatdiamond_evt_positionsizeincreaseexecuted
+        description: "Details the new positions opened"
+      - name: gnsmulticollatdiamond_evt_positionsizedecreaseexecuted
+        description: "Details the swaps to close existing positions"
