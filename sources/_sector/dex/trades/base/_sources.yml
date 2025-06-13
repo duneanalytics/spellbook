@@ -218,3 +218,6 @@ sources:
       - name: selfpeggingassetfactory_call_createpool
       - name: selfpeggingassetfactory_evt_poolcreated
       - name: selfpeggingasset_evt_tokenswapped
+  - name: fluid_base
+    tables:
+      - name: fluiddext1_evt_swap
