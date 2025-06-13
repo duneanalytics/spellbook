@@ -52,6 +52,17 @@ WITH all_events AS (
     {% endif %}
 ),
 
+with_token_info AS (
+    SELECT
+        e.*,
+        t.symbol AS asset_symbol,
+        t.decimals
+    FROM all_events e
+    LEFT JOIN {{ source('tokens', 'erc20') }} t
+        ON e.contract_address = t.contract_address
+        AND t.blockchain = 'optimism'
+),
+
 final AS (
     SELECT
         'optimism' AS blockchain,
@@ -60,8 +71,8 @@ final AS (
         evt_block_time AS block_time,
         contract_address AS market_address,
         CAST(NULL AS VARCHAR) AS market,
-        CAST(NULL AS VARCHAR) AS virtual_asset,
-        CAST(assets / 1e18 AS DOUBLE) AS volume_usd, 
+        asset_symbol AS virtual_asset,
+        CAST(assets / pow(10, COALESCE(decimals, 18)) AS DOUBLE) AS volume_usd,
         CAST(NULL AS DOUBLE) AS fee_usd,
         CAST(NULL AS DOUBLE) AS margin_usd,
         trade_type,
@@ -74,7 +85,7 @@ final AS (
         sender AS tx_from,
         receiver AS tx_to,
         evt_index
-    FROM all_events
+    FROM with_token_info
 )
 
 SELECT * FROM final
