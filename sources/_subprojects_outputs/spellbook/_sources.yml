@@ -134,6 +134,9 @@ sources:
   - name: balancer_v3_base
     tables:
       - name: bpt_prices
+  - name: beets
+    tables:
+      - name: bpt_prices
   - name: balancer_v3
     tables:
       - name: erc4626_token_prices

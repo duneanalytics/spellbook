@@ -6,7 +6,8 @@
 }}
 
 {% set base_models = [
-    ref('beets_sonic_base_trades')
+    ref('beets_v2_sonic_base_trades')
+    , ref('beets_v3_sonic_base_trades')
     , ref('wagmi_sonic_base_trades')
     , ref('equalizer_sonic_base_trades')
     , ref('shadow_sonic_base_trades')
