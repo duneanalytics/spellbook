@@ -1,0 +1,81 @@
+version: 2
+
+models:
+  - name: pre_post_bridge_all
+    description: "Union of pre/post Stargate bridge transactions across Ethereum, Arbitrum, and Polygon."
+    meta:
+      blockchain: ethereum, arbitrum, polygon
+      project: stargate
+      contributors: outputlayer
+    config:
+      tags: ['stargate', 'bridge', 'cross-chain', 'pre-post']
+    columns:
+      - name: user
+        tests: [not_null]
+      - name: bridge_tx_hash
+        tests: [not_null]
+      - name: bridge_block_number
+        tests: [not_null]
+      - name: bridge_block_time
+        tests: [not_null]
+      - name: prev_tx_hash
+      - name: next_tx_hash
+      - name: prev_data
+      - name: next_data
+      - name: pathway
+      - name: from_chain
+      - name: to_chain
+
+  - name: stargate_bridge_transfers_all
+    description: "Union of Stargate bridge transfers across Ethereum, Arbitrum, and Polygon."
+    meta:
+      blockchain: ethereum, arbitrum, polygon
+      project: stargate
+      contributors: outputlayer
+    config:
+      tags: ['stargate', 'bridge', 'cross-chain', 'transfers']
+    columns:
+      - name: block_time
+        tests: [not_null]
+      - name: block_number
+        tests: [not_null]
+      - name: pool_name
+      - name: user
+        tests: [not_null]
+      - name: dest
+        tests: [not_null]
+      - name: amount_raw
+        tests: [not_null]
+      - name: tx_hash
+        tests: [not_null]
+      - name: blockchain
+      - name: token
+      - name: amount
+      - name: decimals
+      - name: from_chain
+      - name: to_chain
+      - name: pathway
+      - name: price
+      - name: amount_usd
+
+  - name: stargate_bridge_token_mapping
+    description: "Mapping of Stargate bridge tokens across chains."
+    meta:
+      blockchain: ethereum, arbitrum, polygon
+      project: stargate
+      contributors: outputlayer
+    config:
+      tags: ['stargate', 'bridge', 'cross-chain', 'tokens']
+    columns:
+      - name: token
+        description: "Symbol of the token (e.g., USDC, ETH)."
+      - name: decimals
+        description: "Decimals of the token."
+      - name: chain
+        description: "Chain name (e.g., ethereum, arbitrum)."
+      - name: endpointID
+        description: "Stargate endpoint ID for the destination chain."
+      - name: pool
+        description: "Pool address on the source chain."
+      - name: contract
+        description: "Canonical token contract address on the destination chain."
