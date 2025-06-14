@@ -1164,6 +1164,7 @@ FROM (VALUES
     , (0xce2cc46682e9c6d5f174af598fb4931a9c0be68e, 'Crypto.com', 'Crypto.com 22', 'hildobby', date '2025-05-04')
     , (0xb428523cdda53640a62e9f26c2d8613a9159b282, 'Crypto.com', 'Crypto.com 23', 'hildobby', date '2025-05-04')
     , (0x17e49502febdf7b3bd3a9842a325036d729b7654, 'Crypto.com', 'Crypto.com 24', 'hildobby', date '2025-05-04')
+    , (0x8bc87020028a07e5ed17824b4fe0e2afcd823b2e, 'Crypto.com', 'Crypto.com 25', 'hildobby', date '2025-06-14')
     , (0x546553718b1b255742566f10a34d86fc22f02b1f, 'Crypto.com', 'Crypto.com Deployer', 'hildobby', date '2024-06-03')
     , (0xae45a8240147e6179ec7c9f92c5a18f9a97b3fca, 'Crypto.com', 'Crypto.com Gas Supplier 1', 'hildobby', date '2023-11-15')
     , (0x18ae7a92f5261208bb5366fa213c966d65988c95, 'Crypto.com', 'Crypto.com Gas Supplier 2', 'hildobby', date '2024-08-13')
@@ -1318,6 +1319,7 @@ FROM (VALUES
     , (0xd341dd814eb0937caf3517ff2203c6d26f306898, 'Bithumb', 'Bithumb 29', 'hildobby', date '2024-10-06')
     , (0xc257274276a4e539741ca11b590b9447b26a8051, 'Bithumb', 'Bithumb 30', 'hildobby', date '2025-05-02')
     , (0xc7bc2c957a6465332135ea14518df766a476a1c3, 'Bithumb', 'Bithumb 31', 'hildobby', date '2025-06-14')
+    , (0x3d7fa68469da832a7cb4ed80c9ed26584e0e1aa2, 'Bithumb', 'Bithumb 32', 'hildobby', date '2025-06-14')
     , (0x560e389a2b032319e742a59ae8bafa62671089fe, 'Bithumb', 'Bithumb Contract', 'hildobby', date '2023-11-16')
     , (0xbb5a0408fa54287b9074a2f47ab54c855e95ef82, 'Bithumb', 'Bithumb Old Address 1', 'hildobby', date '2022-08-28')
     , (0x5521a68d4f8253fc44bfb1490249369b3e299a4a, 'Bithumb', 'Bithumb Old Address 2', 'hildobby', date '2022-08-28')
@@ -3206,6 +3208,7 @@ FROM (VALUES
     , (0x2957ea6d4f06bc2badfb2958c65fc7d1be5461b1, 'LCX', 'LCX 1', 'hildobby', date '2024-01-04')
     , (0x4631018f63d5e31680fb53c11c9e1b11f1503e6f, 'LCX', 'LCX 2', 'hildobby', date '2024-01-04')
     , (0xc0c704bfc375b3fc657bc378b1cfee009194e2b3, 'LCX', 'LCX 3', 'hildobby', date '2024-01-04')
+    , (0x1570c66fec9862f1295f07fe74eda2196a93f34f, 'LCX', 'LCX 4', 'hildobby', date '2025-06-14')
     , (0xc90970dd648415756681163f69eaeb7eb9c28a9c, 'LCX', 'LCX Company Reserve 1', 'hildobby', date '2024-01-04')
     , (0x037a54aab062628c9bbae1fdb1583c195585fe41, 'LCX', 'LCX LCX Token', 'hildobby', date '2024-01-04')
     -- Orionx
