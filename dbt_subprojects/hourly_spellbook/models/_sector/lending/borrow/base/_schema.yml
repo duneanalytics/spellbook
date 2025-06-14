@@ -5,10 +5,10 @@ models:
     meta:
       blockchain: base
       sector: lending
-      project: aave, compound
-      contributors: tomfutago, maybeYonas, pyor_xyz
+      project: aave, compound, pike
+      contributors: tomfutago, maybeYonas, pyor_xyz, brunota20
     config:
-      tags: ['lending', 'borrow', 'aave', 'compound', 'base']
+      tags: ["lending", "borrow", "aave", "compound", "pike", "base"]
     description: "All lending borrow transactions on Base"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -94,7 +94,7 @@ models:
       project: aave
       contributors: batwayne, chuxin, tomfutago
     config:
-      tags: ['lending', 'borrow', 'aave', 'base']
+      tags: ["lending", "borrow", "aave", "base"]
     description: "Aave v3 borrow transactions on Base"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -130,7 +130,7 @@ models:
       project: compound
       contributors: tomfutago, maybeYonas, pyor_xyz
     config:
-      tags: ['lending', 'borrow', 'compound', 'base']
+      tags: ["lending", "borrow", "compound", "base"]
     description: "Compound v3 borrow transactions on Base"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -168,7 +168,7 @@ models:
       project: seamlessprotocol
       contributors: tomfutago
     config:
-      tags: ['lending', 'borrow', 'aave', 'seamlessprotocol', 'base']
+      tags: ["lending", "borrow", "aave", "seamlessprotocol", "base"]
     description: "Seamless Protocol borrow transactions on Base"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -204,7 +204,7 @@ models:
       project: moonwell
       contributors: tomfutago
     config:
-      tags: ['lending', 'borrow', 'compound', 'moonwell', 'base']
+      tags: ["lending", "borrow", "compound", "moonwell", "base"]
     description: "Moonwell borrow transactions on Base"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -240,7 +240,7 @@ models:
       project: sonne_finance
       contributors: tomfutago
     config:
-      tags: ['lending', 'borrow', 'compound', 'sonne_finance', 'base']
+      tags: ["lending", "borrow", "compound", "sonne_finance", "base"]
     description: "Sonne Finance borrow transactions on Base"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -276,7 +276,7 @@ models:
       project: granary
       contributors: tomfutago
     config:
-      tags: ['lending', 'borrow', 'aave', 'granary', 'base']
+      tags: ["lending", "borrow", "aave", "granary", "base"]
     description: "Granary borrow transactions on Base"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -312,7 +312,7 @@ models:
       project: Morpho
       contributors: 0xDataWolf
     config:
-      tags: ['lending', 'borrow', 'Morpho', 'base']
+      tags: ["lending", "borrow", "Morpho", "base"]
     description: "Morpho borrow transactions on Base"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -323,6 +323,42 @@ models:
             - evt_index
       - check_lending_base_borrow_seed:
           seed_file: ref('morpho_base_base_borrow_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *borrower
+      - *on_behalf_of
+      - *repayer
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *project_contract_address
+      - *tx_hash
+      - *evt_index
+
+  - name: pike_base_base_borrow
+    meta:
+      blockchain: base
+      sector: lending
+      project: Pike
+      contributors: brunota20
+    config:
+      tags: ["lending", "borrow", "pike", "base"]
+    description: "Pike borrow transactions on Base"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_borrow_seed:
+          seed_file: ref('pike_base_base_borrow_seed')
     columns:
       - *blockchain
       - *project

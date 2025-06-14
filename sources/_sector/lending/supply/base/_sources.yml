@@ -65,3 +65,8 @@ sources:
     tables:
       - name: MorphoBlue_evt_Supply
       - name: MorphoBlue_evt_Withdraw
+
+  - name: pike_base
+    tables:
+      - name: ptoken_evt_withdraw
+      - name: ptoken_evt_deposit
