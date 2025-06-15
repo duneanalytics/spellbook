@@ -2,7 +2,7 @@ version: 2
 
 sources:
   - name: gnosis_protocol_v2_avalanche_c
-    description: "Avalance C-Chain decoded tables related to CoW Protocol contract"
+    description: "Avalanche C-Chain decoded tables related to CoW Protocol contract"
     tables:
       - name: GPv2AllowListAuthentication_evt_SolverAdded
         description: "GPv2AllowListAuthentication list of events when a Solver was added"
@@ -12,7 +12,7 @@ sources:
             description: "Solver wallet address"
           - &contract_address
             name: contract_address
-            description: "Avalance address of contract emitting the event"
+            description: "Avalanche address of contract emitting the event"
           - &evt_block_number
             name: evt_block_number
             description: "Block number which processed the unique transaction hash"
@@ -123,7 +123,7 @@ sources:
             name: value
             description: ETH amount (in WEI) being passed into contract interaction
   - name: cow_protocol_avalanche_c
-    description: "Avalance decoded tables related to CoW Protocol contract's"
+    description: "Avalanche decoded tables related to CoW Protocol contract's"
     tables:
       - name: CoWSwapEthFlow_evt_OrderPlacement
         description: "CoWSwapEthFlow Order Placement Events"

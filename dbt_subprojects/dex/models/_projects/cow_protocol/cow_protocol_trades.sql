@@ -131,7 +131,7 @@ FROM
 
 
         SELECT
-            'avalance_c' AS blockchain,
+            'avalanche_c' AS blockchain,
             'cow_protocol' AS project,
             '1' AS version,
             block_date,
@@ -155,5 +155,5 @@ FROM
             receiver AS tx_to,
             trace_address,
             evt_index
-        FROM {{ ref('cow_protocol_avalance_c_trades') }}
+        FROM {{ ref('cow_protocol_avalanche_c_trades') }}
 )
