@@ -21,7 +21,11 @@ select
         dest_token as token_bought_address,
         src_token as token_sold_address,
         owner as taker,        
-        CAST(NULL AS VARBINARY) AS maker, -- TODO: consider `executor as maker`,
+        {% if version == 'v2' %}
+            {{from_alias}}.executor as maker,
+        {% else %}
+            CAST(NULL AS VARBINARY) as maker,
+        {% endif %}
         {{from_alias}}.contract_address as project_contract_address,
         call_tx_hash as tx_hash,
         call_tx_from as tx_from,
