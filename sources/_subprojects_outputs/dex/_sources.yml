@@ -89,6 +89,9 @@ sources:
   - name: cow_protocol_base
     tables:
       - name: trades
+  - name: cow_protocol_avalanche_c
+    tables:
+      - name: trades
   - name: jelly_swap
     tables:
       - name: trades
