@@ -2529,7 +2529,7 @@ FROM (VALUES
     , (0x9b0c45d46d386cedd98873168c36efd0dcba8d46, 'Revolut', 'Revolut 3', 'hildobby', date '2023-11-22')
     , (0x2b3fed49557bd88f78b898684f82fbb355305dbb, 'Revolut', 'Revolut 4', 'hildobby', date '2024-10-06')
     , (0xf7c8da79da4cb294c4f55dfebb1b404e3e38d921, 'Revolut', 'Revolut 5', 'hildobby', date '2025-05-04')
-    0x09c30cdcdd971423cb3ba757a47d56c35d06d818
+    , (0x09c30cdcdd971423cb3ba757a47d56c35d06d818, 'Revolut', 'Revolut 6', 'hildobby', date '2025-06-15')
     -- Paxful
     , (0x17f1a51da68d27c94d2a51d92b27b5bd4718b986, 'Paxful', 'Paxful 1', 'hildobby', date '2024-04-04')
     , (0x7a20527ba5a749b3b054a821950bfcc2c01b959f, 'Paxful', 'Paxful 2', 'hildobby', date '2024-04-04')
