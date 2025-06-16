@@ -5,7 +5,7 @@
     , file_format = 'delta'
     , incremental_strategy = 'merge'
     , unique_key = ['id', 'blockchain']
-    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.creation_block_time')]
     )
 }}
 
