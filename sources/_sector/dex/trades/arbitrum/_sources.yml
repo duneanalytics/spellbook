@@ -183,3 +183,7 @@ sources:
     tables:
       - name: lp_crx_gmx_evt_swap
       - name: uniswapv2factory_evt_paircreated
+  - name: elk_finance_arbitrum
+    tables:
+      - name: ElkPair_evt_Swap
+      - name: ElkFactory_evt_PairCreated
