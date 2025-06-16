@@ -765,5 +765,7 @@ FROM
         ('huma-finance', 'solana', 'HUMA', 'HUMA1821qVDKta3u2ovmfDQeW2fSQouSKE8fkF44wvGw', 6),
         ('wen4-wen', 'solana', 'WEN', 'WENWENvqqNya429ubCdR81ZmD69brwQaaBYY6p3LCpk', 5),
         ('zeus-zeus-network1', 'solana', 'ZEUS', 'ZEUS1aR7aX8DFFJf5QjWj2ftDDdNTroMNGo8YoQm3Gq', 6),
+        ('sigma3-sigma', 'solana', 'SIGMA', '5SVG3T9CNQsm2kEwzbRq6hASqh1oGfjqTtLXYUibpump', 6),
+        ('troll-troll2', 'solana', 'TROLL', '5UUH9RTDiSpq6HKS6bp4NdU9PNJpXRXuiw6ShBTBhgH2', 6),
         ('fdusd-first-digital-usd', 'solana', 'FDUSD', '9zNQRsGLjNKwCUU5Gq5LR8beUCPzQMVMqKAi3SSZh54u', 6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
