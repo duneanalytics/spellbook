@@ -222,4 +222,5 @@ FROM (VALUES
     , ('rooster_protocol', 'Rooster Protocol', 'Direct', 'roosterprotocol')
     , ('mindgames', 'Mindgames', 'Direct', 'mindgames_io')
     , ('solunea', 'Solunea', 'Direct', 'SoluneaDex')
+    , ('gammaswap', 'GammaSwap', 'Direct', 'gammaswap')
 ) AS temp_table (project, name, marketplace_type, x_username)
