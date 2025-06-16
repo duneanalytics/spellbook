@@ -13,7 +13,7 @@ WITH sender_transfer_rates AS (
         MAX(block_time) as last_tx,
         COUNT(DISTINCT CASE WHEN EXISTS (
             SELECT 1 FROM {{ source('tokens', 'transfers') }} r 
-            WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number AND r.blockchain = '{{ chain }}' AND token_standard = 'erc20' 
+            WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND r.blockchain = '{{ chain }}' AND token_standard = 'erc20' 
         ) THEN t.hash END) as num_erc20_tfer_txs,
         COUNT(DISTINCT CASE WHEN EXISTS (
             SELECT 1 FROM {{ source('nft', 'transfers') }} r 
@@ -21,14 +21,14 @@ WITH sender_transfer_rates AS (
         ) THEN t.hash END) as num_nft_tfer_txs,
         COUNT(DISTINCT CASE WHEN EXISTS (
             SELECT 1 FROM {{ source('tokens', 'transfers') }} r 
-            WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number AND r.blockchain = '{{ chain }}' AND token_standard = 'erc20'
+            WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND r.blockchain = '{{ chain }}' AND token_standard = 'erc20'
         ) OR EXISTS (
             SELECT 1 FROM {{ source('nft', 'transfers') }} r 
             WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = '{{ chain }}'
         ) THEN t.hash END) as num_token_tfer_txs,
         cast(COUNT(DISTINCT CASE WHEN EXISTS (
             SELECT 1 FROM {{ source('tokens', 'transfers') }} r 
-            WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number AND r.blockchain = '{{ chain }}' AND token_standard = 'erc20'
+            WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND r.blockchain = '{{ chain }}' AND token_standard = 'erc20'
         ) THEN t.hash END) as double) / cast(COUNT(*) as double) as pct_erc20_tfer_txs,
         cast(COUNT(DISTINCT CASE WHEN EXISTS (
             SELECT 1 FROM {{ source('nft', 'transfers') }} r 
@@ -36,7 +36,7 @@ WITH sender_transfer_rates AS (
         ) THEN t.hash END) as double) / cast(COUNT(*) as double) as pct_nft_tfer_txs,
         cast(COUNT(DISTINCT CASE WHEN EXISTS (
             SELECT 1 FROM {{ source('tokens', 'transfers') }} r 
-            WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number AND r.blockchain = '{{ chain }}' AND token_standard = 'erc20'
+            WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND r.blockchain = '{{ chain }}' AND token_standard = 'erc20'
         ) OR EXISTS (
             SELECT 1 FROM {{ source('nft', 'transfers') }} r 
             WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = '{{ chain }}'
@@ -119,31 +119,31 @@ WITH sender_transfer_rates AS (
         MIN(block_time) as first_tx,
         MAX(block_time) as last_tx,
         COUNT(DISTINCT CASE WHEN EXISTS (
-            SELECT 1 FROM {{ source('erc20_' ~ chain, 'evt_Transfer') }} r 
-            WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number
+            SELECT 1 FROM {{ source('tokens', 'transfers') }} r 
+            WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND r.blockchain = '{{ chain }}' AND token_standard = 'erc20'
         ) THEN t.hash END) as num_erc20_tfer_txs,
         COUNT(DISTINCT CASE WHEN EXISTS (
             SELECT 1 FROM {{ source('nft', 'transfers') }} r 
             WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = '{{ chain }}'
         ) THEN t.hash END) as num_nft_tfer_txs,
         COUNT(DISTINCT CASE WHEN EXISTS (
-            SELECT 1 FROM {{ source('erc20_' ~ chain, 'evt_Transfer') }} r 
-            WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number
+            SELECT 1 FROM {{ source('tokens', 'transfers') }} r 
+            WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND r.blockchain = '{{ chain }}' AND token_standard = 'erc20'
         ) OR EXISTS (
             SELECT 1 FROM {{ source('nft', 'transfers') }} r 
             WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = '{{ chain }}'
         ) THEN t.hash END) as num_token_tfer_txs,
         cast(COUNT(DISTINCT CASE WHEN EXISTS (
-            SELECT 1 FROM {{ source('erc20_' ~ chain, 'evt_Transfer') }} r 
-            WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number
+            SELECT 1 FROM {{ source('tokens', 'transfers') }} r 
+            WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND r.blockchain = '{{ chain }}' AND token_standard = 'erc20'
         ) THEN t.hash END) as double) / cast(COUNT(*) as double) as pct_erc20_tfer_txs,
         cast(COUNT(DISTINCT CASE WHEN EXISTS (
             SELECT 1 FROM {{ source('nft', 'transfers') }} r 
             WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = '{{ chain }}'
         ) THEN t.hash END) as double) / cast(COUNT(*) as double) as pct_nft_tfer_txs,
         cast(COUNT(DISTINCT CASE WHEN EXISTS (
-            SELECT 1 FROM {{ source('erc20_' ~ chain, 'evt_Transfer') }} r 
-            WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number
+            SELECT 1 FROM {{ source('tokens', 'transfers') }} r 
+            WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND r.blockchain = '{{ chain }}' AND token_standard = 'erc20'
         ) OR EXISTS (
             SELECT 1 FROM {{ source('nft', 'transfers') }} r 
             WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = '{{ chain }}'
