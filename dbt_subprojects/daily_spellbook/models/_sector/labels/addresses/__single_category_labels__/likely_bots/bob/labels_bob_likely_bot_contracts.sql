@@ -1,11 +1,14 @@
 {{
     config(
         alias = 'likely_bot_contracts_bob',
-        post_hook='{{ expose_spells(\'["bob"]\',
-        "sector",
-        "labels",
-        \'["msilb7"]\') }}'
+        materialized = 'incremental',
+        unique_key = ['blockchain', 'address'],
+        incremental_strategy = 'merge',
+        post_hook = '{{ expose_spells(\'["bob"]\',
+                                    "sector",
+                                    "labels",
+                                    \'["msilb7"]\') }}'
     )
 }}
 
-{{ get_likely_bot_contracts('bob') }} 
+{{ get_likely_bot_contracts('{{ chain }}') }} 

@@ -1,11 +1,14 @@
 {{
     config(
         alias = 'likely_bot_addresses_shape',
-        post_hook='{{ expose_spells(\'["shape"]\',
-        "sector",
-        "labels",
-        \'["msilb7"]\') }}'
+        materialized = 'incremental',
+        unique_key = ['blockchain', 'address'],
+        incremental_strategy = 'merge',
+        post_hook = '{{ expose_spells(\'["shape"]\',
+                                    "sector",
+                                    "labels",
+                                    \'["msilb7"]\') }}'
     )
 }}
 
-{{ get_likely_bot_addresses('shape') }} 
+{{ get_likely_bot_addresses('{{ chain }}', 90) }} 
