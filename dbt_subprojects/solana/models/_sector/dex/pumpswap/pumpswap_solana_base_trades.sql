@@ -116,7 +116,7 @@ WITH pools AS (
     SELECT
         sf.*,
         sf.base_amount as base_token_amount, 
-        t.amount as quote_token_amount ,
+        t.amount as quote_token_amount,
         ROW_NUMBER() OVER (
                     PARTITION BY sf.tx_id, sf.outer_instruction_index, sf.swap_inner_index
                     ORDER BY t.amount DESC 
@@ -126,8 +126,8 @@ WITH pools AS (
         ON t.tx_id = sf.tx_id
         AND t.block_slot = sf.block_slot
         AND t.outer_instruction_index = sf.outer_instruction_index
-        AND t.token_mint_address = (SELECT quoteMint FROM pools WHERE pool = sf.pool)
         AND t.to_token_account != sf.account_protocol_fee_recipient_token_account
+        AND t.token_mint_address = 'So11111111111111111111111111111111111111112'
         AND (
                 (sf.swap_inner_index IS NULL AND t.inner_instruction_index IN (1,2,3,4,5,6,7,8,9,10,11,12)) 
                 OR
