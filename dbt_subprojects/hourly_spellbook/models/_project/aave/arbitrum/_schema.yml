@@ -195,3 +195,23 @@ models:
       - *project_contract_address
       - *evt_index
       - *tx_hash
+
+  - name: aave_arbitrum_interest_rates
+    meta:
+      blockchain: arbitrum
+      sector: lending
+      project: aave
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'interest_rates', 'aave', 'arbitrum']
+    description: "Hourly aggregated lending market interest rates"
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_hour
+      - *token_address
+      - *symbol
+      - *deposit_rate
+      - *stable_borrow_rate
+      - *variable_borrow_rate

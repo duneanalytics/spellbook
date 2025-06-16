@@ -194,4 +194,24 @@ models:
       - *variable_borrow_rate
       - *project_contract_address
       - *evt_index
-      - *tx_hash 
+      - *tx_hash
+
+  - name: aave_bnb_interest_rates
+    meta:
+      blockchain: bnb
+      sector: lending
+      project: aave
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'interest_rates', 'aave', 'bnb']
+    description: "Hourly aggregated lending market interest rates"
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_hour
+      - *token_address
+      - *symbol
+      - *deposit_rate
+      - *stable_borrow_rate
+      - *variable_borrow_rate 
