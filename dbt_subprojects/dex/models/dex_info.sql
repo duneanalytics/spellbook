@@ -222,5 +222,5 @@ FROM (VALUES
     , ('rooster_protocol', 'Rooster Protocol', 'Direct', 'roosterprotocol')
     , ('mindgames', 'Mindgames', 'Direct', 'mindgames_io')
     , ('bmx', 'BMX', 'Direct', 'BMXDefi')
-    , ('fluid', 'Fluid DEX', 'Direct', '0xfluid')
+    , ('fluiddex', 'Fluid DEX', 'Direct', '0xfluid')
 ) AS temp_table (project, name, marketplace_type, x_username)
