@@ -39,6 +39,8 @@
     ,ref('voodoo_trade_base_perpetual_trades')
     ,ref('bmx_base_perpetual_trades')
     ,ref('nether_fi_base_perpetual_trades')
+    ,ref('lemma_finance_optimism_perpetual_trades')
+    ,ref('lyra_optimism_perpetual_trades')
 ] %}
 
 SELECT *
