@@ -927,3 +927,79 @@ models:
           seed_file: ref('gammaswap_arbitrum_base_trades_seed')
           filter:
             version: 1
+            
+  - name: spectra_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: spectra
+      contributors: principatel
+    config:
+      tags: ["arbitrum", "dex", "trades", "spectra"]
+    description: "spectra arbitrum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('spectra_arbitrum_base_trades_seed')
+          filter:
+            version: 1
+            
+  - name: wardenswap_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: wardenswap
+      contributors: principatel
+    config:
+      tags: ["arbitrum", "dex", "trades", "wardenswap"]
+    description: "wardenswap arbitrum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('wardenswap_arbitrum_base_trades_seed')
+          filter:
+            version: 1
+            
+  - name: graphene_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: graphene
+      contributors: principatel
+    config:
+      tags: ["arbitrum", "dex", "trades", "graphene"]
+    description: "graphene arbitrum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('graphene_arbitrum_base_trades_seed')
+          filter:
+            version: 1
+            
+  - name: skate_fi_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: skate_fi
+      contributors: principatel
+    config:
+      tags: ["arbitrum", "dex", "trades", "skate_fi"]
+    description: "skate_fi arbitrum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('skate_fi_arbitrum_base_trades_seed')
+          filter:
+            version: 1

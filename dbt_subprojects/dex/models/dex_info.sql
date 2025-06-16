@@ -223,4 +223,7 @@ FROM (VALUES
     , ('mindgames', 'Mindgames', 'Direct', 'mindgames_io')
     , ('solunea', 'Solunea', 'Direct', 'SoluneaDex')
     , ('gammaswap', 'GammaSwap', 'Direct', 'gammaswap')
+    , ('spectra', 'Spectra', 'Direct', 'SpectraFinance')
+    , ('graphene', 'Graphene', 'Direct', 'GetGraphene')
+    , ('skate_fi', 'SkateFi', 'Direct', 'skate_fi')
 ) AS temp_table (project, name, marketplace_type, x_username)

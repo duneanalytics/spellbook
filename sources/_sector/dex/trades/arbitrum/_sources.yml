@@ -195,3 +195,16 @@ sources:
     tables:
       - name: deltaswappair_evt_swap
       - name: deltaswapfactory_evt_paircreated
+  - name: spectra_multichain
+    tables:
+      - name: vyper_contract_evt_tokenexchange
+  - name: wardenswap_arbitrum
+    tables:
+      - name: wardenrouterv2_evt_trade
+  - name: graphene_arbitrum
+    tables:
+      - name: carboncontroller_evt_tokenstraded
+  - name: skate_fi_arbitrum
+    tables:
+      - name: skatevertexvault_evt_swapped
+
