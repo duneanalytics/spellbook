@@ -51,8 +51,9 @@ WITH pools AS (
     WHERE {{incremental_predicate('call_block_time')}}
     {% else %}
     WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
-    {% endif %}
     
+    {% endif %}
+    AND call_block_time >= now() - interval '5' day
     UNION ALL
     
     -- Sell operations
@@ -82,6 +83,7 @@ WITH pools AS (
     {% else %}
     WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
+    AND call_block_time >= now() - interval '5' day
 )
 
 , fee_configs_with_time_ranges AS (
@@ -141,6 +143,8 @@ WITH pools AS (
         {% else %}
         AND t.block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
+        AND t.block_time >= now() - interval '5' day
+
 )
 
 , trades_base as (
