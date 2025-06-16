@@ -11,4 +11,4 @@
     )
 }}
 
-{{ get_likely_bot_addresses('{{ chain }}', 90) }} 
+{{ get_likely_bot_addresses('shape') }} 

@@ -11,4 +11,4 @@
     )
 }}
 
-{{ get_likely_bot_contracts('{{ chain }}') }} 
+{{ get_likely_bot_contracts('ink') }} 

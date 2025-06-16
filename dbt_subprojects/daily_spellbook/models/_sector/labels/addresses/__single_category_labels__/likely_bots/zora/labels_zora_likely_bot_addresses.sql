@@ -11,4 +11,4 @@
     )
 }}
 
-{{ get_likely_bot_addresses('{{ chain }}') }} 
+{{ get_likely_bot_addresses('zora') }} 
