@@ -130,4 +130,22 @@ models:
           seed_file: ref('uniswap_sonic_base_trades_seed')
           filter:
             version: 3
-  
+
+  - name: tapio_sonic_base_trades
+    meta:
+      blockchain: sonic
+      sector: dex
+      project: tapio
+      contributors: brunota20
+    config:
+      tags: ["sonic", "dex", "trades", "tapio"]
+    description: "Tapio sonic base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('tapio_sonic_base_trades_seed')
+          filter:
+            version: 1
