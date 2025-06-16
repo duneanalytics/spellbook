@@ -52,6 +52,7 @@ WITH pools AS (
     {% else %}
     WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
+    where call_block_time >= now() - interval '5' day
     
     UNION ALL
     
@@ -82,6 +83,7 @@ WITH pools AS (
     {% else %}
     WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
+    where call_block_time >= now() - interval '5' day
 )
 
 , fee_configs_with_time_ranges AS (
@@ -124,23 +126,30 @@ WITH pools AS (
         ON t.tx_id = sf.tx_id
         AND t.block_slot = sf.block_slot
         AND t.outer_instruction_index = sf.outer_instruction_index
-        AND t.token_mint_address = (SELECT quoteMint FROM pools WHERE pool = sf.pool)
         AND t.to_token_account != sf.account_protocol_fee_recipient_token_account
         AND (
-                (sf.swap_inner_index IS NULL AND t.inner_instruction_index IN (1,2,3,4,5,6,7,8,9,10,11,12)) 
-                OR
-                (sf.swap_inner_index IS NOT NULL AND t.inner_instruction_index IN (
-                    sf.swap_inner_index + 1, sf.swap_inner_index + 2, sf.swap_inner_index + 3,
-                    sf.swap_inner_index + 4, sf.swap_inner_index + 5, sf.swap_inner_index + 6,
-                    sf.swap_inner_index + 7, sf.swap_inner_index + 8, sf.swap_inner_index + 9,
-                    sf.swap_inner_index + 10, sf.swap_inner_index + 11, sf.swap_inner_index + 12
-                ))
+            (sf.swap_inner_index IS NULL 
+            AND t.inner_instruction_index IN (1,2,3,4,5,6,7,8,9,10,11,12)
+            AND (t.from_token_account = sf.account_user_quote_token_account 
+                OR t.from_token_account = sf.account_pool_quote_token_account) 
+            ) 
+            OR
+            (sf.swap_inner_index IS NOT NULL 
+            AND t.inner_instruction_index IN (
+                sf.swap_inner_index + 1, sf.swap_inner_index + 2, sf.swap_inner_index + 3,
+                sf.swap_inner_index + 4, sf.swap_inner_index + 5, sf.swap_inner_index + 6,
+                sf.swap_inner_index + 7, sf.swap_inner_index + 8, sf.swap_inner_index + 9,
+                sf.swap_inner_index + 10, sf.swap_inner_index + 11, sf.swap_inner_index + 12)
+            AND (t.from_token_account = sf.account_user_quote_token_account 
+                OR t.from_token_account = sf.account_pool_quote_token_account)
             )
+        )
         {% if is_incremental() %}
         AND {{incremental_predicate('t.block_time')}}
         {% else %}
         AND t.block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
+        and t.block_time >= now() - interval '5' day
 )
 
 , trades_base as (
