@@ -187,3 +187,7 @@ sources:
     tables:
       - name: ElkPair_evt_Swap
       - name: ElkFactory_evt_PairCreated
+  - name: solunea_arbitrum
+    tables:
+      - name: SoluneaPair_evt_Swap
+      - name: SoluneaFactory_evt_PairCreated

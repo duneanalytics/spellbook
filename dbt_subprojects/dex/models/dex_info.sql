@@ -221,4 +221,5 @@ FROM (VALUES
     , ('tapio', 'Tapio', 'Direct', 'Tapio')
     , ('rooster_protocol', 'Rooster Protocol', 'Direct', 'roosterprotocol')
     , ('mindgames', 'Mindgames', 'Direct', 'mindgames_io')
+    , ('solunea', 'Solunea', 'Direct', 'SoluneaDex')
 ) AS temp_table (project, name, marketplace_type, x_username)

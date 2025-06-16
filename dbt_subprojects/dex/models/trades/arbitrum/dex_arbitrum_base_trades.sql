@@ -54,6 +54,7 @@
     , ref('akronswap_arbitrum_base_trades')
     , ref('mindgames_arbitrum_base_trades')
     , ref('elk_finance_arbitrum_base_trades')
+    , ref('solunea_arbitrum_base_trades')
 ] %}
 
 WITH base_union AS (
