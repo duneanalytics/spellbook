@@ -44,3 +44,41 @@ models:
           seed_file: ref('abstractswap_v3_abstract_base_trades_seed')
           filter:
             version: 3
+
+  - name: reservoir_swap_v2_abstract_base_trades
+    meta:
+      blockchain: abstract
+      sector: dex
+      project: reservoir_swap
+      contributors: [captncrunch]
+    config:
+      tags: ["abstract", "dex", "trades", "reservoir swap", "v3"]
+    description: "Reservoir swap abstract v2 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('reservoir_swap_v2_abstract_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: reservoir_swap_v3_abstract_base_trades
+    meta:
+      blockchain: abstract
+      sector: dex
+      project: reservoir_swap
+      contributors: [captncrunch]
+    config:
+      tags: ["abstract", "dex", "trades", "reservoir swap", "v3"]
+    description: "Reservoir swap abstract v3 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('reservoir_swap_v3_abstract_base_trades_seed')
+          filter:
+            version: 3
