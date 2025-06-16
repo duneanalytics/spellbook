@@ -59,6 +59,8 @@
     , ref('jojo_base_base_trades')
     , ref('otsea_base_base_trades')
     , ref('tapio_base_base_trades')
+    , ref('fluid_base_base_trades')
+    , ref('bmx_base_base_trades')
 ] %}
 
 WITH base_union AS (

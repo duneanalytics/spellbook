@@ -1135,3 +1135,41 @@ models:
           seed_file: ref('tapio_base_base_trades_seed')
           filter:
             version: 1
+
+  - name: fluid_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: fluid
+      contributors: principatel
+    config:
+      tags: ["base", "dex", "trades", "fluid"]
+    description: "fluid base base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('fluid_base_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: bmx_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: bmx
+      contributors: principatel
+    config:
+      tags: ["base", "dex", "trades", "bmx"]
+    description: "bmx base base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('bmx_base_base_trades_seed')
+          filter:
+            version: 1
