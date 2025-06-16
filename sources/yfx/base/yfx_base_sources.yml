@@ -1,0 +1,10 @@
+version: 4
+
+sources:
+  - name: yfx_v4_base
+    description: Base decoded tables related to YFX V4
+    tables:
+      - name: Pool_evt_OpenUpdate
+        description: "Details the new positions opened"
+      - name: Pool_evt_CloseUpdate
+        description: "Details the swaps to close existing positions"
