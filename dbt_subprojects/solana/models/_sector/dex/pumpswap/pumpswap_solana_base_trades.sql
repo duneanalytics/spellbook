@@ -124,6 +124,7 @@ WITH pools AS (
         ON t.tx_id = sf.tx_id
         AND t.block_slot = sf.block_slot
         AND t.outer_instruction_index = sf.outer_instruction_index
+        AND t.token_mint_address = (SELECT quoteMint FROM pools WHERE pool = sf.pool)
         AND t.to_token_account != sf.account_protocol_fee_recipient_token_account
         AND (
                 (sf.swap_inner_index IS NULL AND t.inner_instruction_index IN (1,2,3,4,5,6,7,8,9,10,11,12)) 
