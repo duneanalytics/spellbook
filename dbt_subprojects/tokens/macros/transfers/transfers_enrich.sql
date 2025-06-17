@@ -2,7 +2,6 @@
     base_transfers = null
     , tokens_erc20_model = null
     , prices_model = null
-    , evms_info_model = null
     , transfers_start_date = '2000-01-01'
     , blockchain = null
     , usd_amount_threshold = 25000000000
