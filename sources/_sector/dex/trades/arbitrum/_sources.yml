@@ -207,4 +207,7 @@ sources:
   - name: skate_fi_arbitrum
     tables:
       - name: skatevertexvault_evt_swapped
-
+  - name: fluid_arbitrum
+    tables:
+      - name: FluidDexT1_evt_Swap
+      - name: fluiddexfactory_call_deploydex

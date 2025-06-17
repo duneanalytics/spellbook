@@ -60,6 +60,7 @@
     , ref('wardenswap_arbitrum_base_trades')
     , ref('graphene_arbitrum_base_trades')
     , ref('skate_fi_arbitrum_base_trades')
+    , ref('fluid_v1_arbitrum_base_trades')
 ] %}
 
 WITH base_union AS (
