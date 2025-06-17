@@ -3,7 +3,7 @@
         alias = 'fundraising',
         materialized = 'incremental',
         file_format = 'delta',
-        unique_key='evt_tx_hash',
+        unique_key= ['token', 'evt_tx_hash']
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "lido_accounting",
