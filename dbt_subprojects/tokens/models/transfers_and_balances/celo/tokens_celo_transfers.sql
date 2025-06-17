@@ -18,7 +18,7 @@
     transfers_enrich(
         base_transfers = ref('tokens_celo_base_transfers')
         , tokens_erc20_model = source('tokens', 'erc20')
-        , prices_model = source('prices', 'usd')
+        , prices_model = source('prices', 'hour')
         , transfers_start_date = '2020-04-22'
         , blockchain = 'celo'
     )

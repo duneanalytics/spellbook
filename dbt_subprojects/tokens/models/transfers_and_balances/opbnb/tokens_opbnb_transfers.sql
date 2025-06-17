@@ -18,7 +18,7 @@
      transfers_enrich(
          base_transfers = ref('tokens_opbnb_base_transfers')
          , tokens_erc20_model = source('tokens', 'erc20')
-         , prices_model = source('prices', 'usd')
+         , prices_model = source('prices', 'hour')
          , transfers_start_date = '2023-09-13'
          , blockchain = 'opbnb'
      )
