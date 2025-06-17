@@ -42,7 +42,6 @@ WITH all_swaps AS (
     {% else %}
     WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
-    and call_block_time >= now() - interval '8' day
 
     UNION ALL
 
@@ -74,7 +73,6 @@ WITH all_swaps AS (
     {% else %}
     WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
-    and call_block_time >= now() - interval '8' day
 
     UNION ALL
 
@@ -106,7 +104,6 @@ WITH all_swaps AS (
     {% else %}
     WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
-    and call_block_time >= now() - interval '8' day
 
     UNION ALL
 
@@ -138,7 +135,6 @@ WITH all_swaps AS (
     {% else %}
     WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
-    and call_block_time >= now() - interval '8' day
 
 )
 
@@ -165,7 +161,7 @@ WITH all_swaps AS (
         , s.inner_instruction_index
         , s.tx_index
     FROM all_swaps s
-    -- JOIN 1: Get the "buy" transfer (vault → user) - REQUIRED
+    -- Get the "buy" transfer (vault → user)
     INNER JOIN {{ ref('tokens_solana_transfers') }} t_buy
         ON t_buy.tx_id = s.tx_id 
         AND t_buy.block_slot = s.block_slot
@@ -183,9 +179,8 @@ WITH all_swaps AS (
         {% else %}
         AND t_buy.block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
-        AND t_buy.block_time >= NOW() - INTERVAL '8' DAY
     
-    -- JOIN 2: Get the "sell" transfer (user → vault) - OPTIONAL for V1, REQUIRED for V2
+    -- Get the "sell" transfer (user → vault) - OPTIONAL for V1, REQUIRED for V2
     LEFT JOIN {{ ref('tokens_solana_transfers') }} t_sell
         ON t_sell.tx_id = s.tx_id 
         AND t_sell.block_slot = s.block_slot
@@ -203,7 +198,6 @@ WITH all_swaps AS (
         {% else %}
         AND t_sell.block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
-        AND t_sell.block_time >= NOW() - INTERVAL '8' DAY
 )
 
 SELECT
