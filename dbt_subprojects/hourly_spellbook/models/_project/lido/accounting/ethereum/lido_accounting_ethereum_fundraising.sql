@@ -84,6 +84,9 @@ fundraising_txs AS (
     INNER JOIN filtered_multisigs m
         ON evt.to = m.address
     WHERE evt."from" IN (SELECT address FROM diversifications_addresses)
+    {% if is_incremental() %}
+        AND {{incremental_predicate('evt_block_time')}}
+    {% endif %}
 )
 
 SELECT
@@ -108,3 +111,6 @@ WHERE tr.success = True
     AND tr.type = 'call'
     AND (tr.call_type NOT IN ('delegatecall', 'callcode', 'staticcall')
          OR tr.call_type IS NULL)
+    {% if is_incremental() %}
+    AND {{incremental_predicate('tr.block_time')}}
+    {% endif %}
