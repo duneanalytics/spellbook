@@ -175,3 +175,15 @@ sources:
     tables:
       - name: SpartaDexPair_evt_Swap
       - name: SpartaDexFactory_evt_PairCreated
+  - name: akronswap_arbitrum
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated
+  - name: mindgames_arbitrum
+    tables:
+      - name: lp_crx_gmx_evt_swap
+      - name: uniswapv2factory_evt_paircreated
+  - name: fluid_arbitrum
+    tables:
+      - name: FluidDexT1_evt_Swap
+      - name: fluiddexfactory_call_deploydex
