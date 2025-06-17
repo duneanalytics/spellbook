@@ -1,9 +1,9 @@
 {{ config(
         schema='lido_accounting_ethereum',
         alias = 'fundraising',
-
-        materialized = 'table',
+        materialized = 'incremental',
         file_format = 'delta',
+        unique_key='evt_tx_hash',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "lido_accounting",
