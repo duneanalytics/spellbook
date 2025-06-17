@@ -191,7 +191,7 @@ sources:
     tables:
       - name: SoluneaPair_evt_Swap
       - name: SoluneaFactory_evt_PairCreated
-  - name: gammaswap_multichain
+  - name: gammaswap_arbitrum
     tables:
       - name: deltaswappair_evt_swap
       - name: deltaswapfactory_evt_paircreated

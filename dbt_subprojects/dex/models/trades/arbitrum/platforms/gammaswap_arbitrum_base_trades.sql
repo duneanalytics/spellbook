@@ -15,7 +15,7 @@
         blockchain = 'arbitrum',
         project = 'gammaswap',
         version = '2',
-        Pair_evt_Swap = source('gammaswap_multichain', 'deltaswappair_evt_swap'),
-        Factory_evt_PairCreated = source('gammaswap_multichain', 'deltaswapfactory_evt_paircreated')
+        Pair_evt_Swap = source('gammaswap_arbitrum', 'deltaswappair_evt_swap'),
+        Factory_evt_PairCreated = source('gammaswap_arbitrum', 'deltaswapfactory_evt_paircreated')
     )
 }}

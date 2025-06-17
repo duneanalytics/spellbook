@@ -1007,7 +1007,7 @@ models:
   - name: fluid_v1_arbitrum_base_trades
     meta:
       blockchain: arbitrum
-      sector: dex
+      sector: dex      
       project: fluid
       contributors: maybeYonas, pyor_xyz, thetroyharris
     config:
