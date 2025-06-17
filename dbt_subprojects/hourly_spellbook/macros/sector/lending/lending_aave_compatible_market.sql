@@ -2,7 +2,7 @@
   macro lending_aave_v3_compatible_market(
     blockchain,
     project = 'aave',
-    version = 'v3',
+    version = '3',
     project_decoded_as = 'aave_v3',
     decoded_contract_name = 'Pool'
   )
@@ -61,37 +61,117 @@ from reserve_data
   macro lending_aave_v3_compatible_market_hourly_agg(
     blockchain,
     project = 'aave',
-    version = 'v3'
+    version = '3'
   )
 %}
 
 with
 
-reserve_data as (
-  select *
-  from {{ ref('lending_' ~ blockchain ~ '_base_market') }}
-  where blockchain = '{{ blockchain }}'
-    and project = '{{ project }}'
-    and version = '{{ version }}'
+reserve_data_base as (
+  select * from {{ ref(project ~ '_v' ~ version ~ '_' ~ blockchain ~ '_base_market') }}
+),
+
+reserve_data_hourly_agg as (
+  select
+    blockchain,
+    project,
+    version,
+    block_month,
+    block_hour,
+    token_address,
+    symbol,
+    max_by(liquidity_index, block_hour) as liquidity_index,
+    max_by(variable_borrow_index, block_hour) as variable_borrow_index,
+    avg(cast(deposit_rate as double)) / 1e27 as deposit_rate,
+    avg(cast(stable_borrow_rate as double)) / 1e27 as stable_borrow_rate,
+    avg(cast(variable_borrow_rate as double)) / 1e27 as variable_borrow_rate
+  from reserve_data_base
+  group by 1,2,3,4,5,6,7
+),
+
+reserve_data_hourly_changes as (
+  select
+    *,
+    lead(block_hour) over (partition by token_address order by block_hour) as next_update_block_hour
+  from (
+    -- straight up incremental
+    select * from reserve_data_hourly_agg
     {% if is_incremental() %}
-    and {{ incremental_predicate('block_time') }}
+    where {{ incremental_predicate('block_hour') }}
     {% endif %}
+    -- retrieve last known hourly agg update from before the current window to correctly populate the forward fill
+    {% if is_incremental() %}
+    union all
+    select
+      blockchain,
+      project,
+      version,
+      max(block_month) as block_month,
+      max(block_hour) as block_hour,
+      token_address,
+      symbol,
+      max(liquidity_index) as liquidity_index,
+      max(variable_borrow_index) as variable_borrow_index,
+      max(deposit_rate) as deposit_rate,
+      max(stable_borrow_rate) as stable_borrow_rate,
+      max(variable_borrow_rate) as variable_borrow_rate
+    from reserve_data_hourly_agg
+    where not {{ incremental_predicate('block_hour') }}
+    group by 1,2,3,6,7
+    {% endif %}
+  ) t
+),
+
+reserve_token_start as (
+  select
+    blockchain,
+    project,
+    version,
+    token_address,
+    min(block_hour) as block_hour_start
+  from reserve_data_hourly_changes
+  group by 1,2,3,4
+),
+
+token_hourly_sequence as (
+  select
+    rts.blockchain,
+    rts.project,
+    rts.version,
+    rts.token_address,
+    h.timestamp as block_hour
+  from reserve_token_start rts
+    inner join {{ source('utils', 'hours') }} h on rts.block_hour_start <= h.timestamp
+),
+
+forward_fill as (
+  select
+    ths.blockchain,
+    ths.project,
+    ths.version,
+    cast(date_trunc('month', ths.block_hour) as date) as block_month,
+    ths.block_hour,
+    ths.token_address,
+    rdhc.symbol,
+    rdhc.liquidity_index,
+    rdhc.variable_borrow_index,
+    rdhc.deposit_rate,
+    rdhc.stable_borrow_rate,
+    rdhc.variable_borrow_rate
+  from token_hourly_sequence ths
+    left join reserve_data_hourly_changes rdhc
+      on ths.blockchain = rdhc.blockchain
+      and ths.project = rdhc.project
+      and ths.version = rdhc.version
+      and ths.token_address = rdhc.token_address
+      and ths.block_hour >= rdhc.block_hour
+      and (ths.block_hour < rdhc.next_update_block_hour or rdhc.next_update_block_hour is null)
 )
 
-select
-  blockchain,
-  project,
-  version,
-  block_month,
-  block_hour,
-  token_address,
-  symbol,
-  max_by(liquidity_index, block_hour) as liquidity_index,
-  max_by(variable_borrow_index, block_hour) as variable_borrow_index,
-  avg(cast(deposit_rate as double)) / 1e27 as deposit_rate,
-  avg(cast(stable_borrow_rate as double)) / 1e27 as stable_borrow_rate,
-  avg(cast(variable_borrow_rate as double)) / 1e27 as variable_borrow_rate
-from reserve_data
-group by 1,2,3,4,5,6,7
+select *
+from forward_fill
+{% if is_incremental() %}
+where {{ incremental_predicate('block_hour') }}
+{% endif %}
 
 {% endmacro %}
