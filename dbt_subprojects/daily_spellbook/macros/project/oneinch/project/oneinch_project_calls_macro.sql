@@ -13,17 +13,9 @@ with
 
 static as (
     select
-          array['swap', 'settle', 'change', 'exact', 'batch', 'trade', 'sell', 'buy', 'fill', 'route', 'zap', 'symbiosis', 'aggregate', 'multicall', 'execute', 'wrap', 'transform', 'bridge', 'outboundtransfer', 'deposit', 'start', 'transfer'] as suitables
-        , array['add', 'remove', 'mint', 'increase', 'decrease', 'cancel', 'destroy', 'claim', 'rescue', 'withdraw', 'simulate', 'join', 'exit', 'interaction', '721', '1155', 'nft', 'create', 'finalize'] as exceptions
+          array['swap', 'settle', 'change', 'exact', 'batch', 'trade', 'sell', 'buy', 'fill', 'route', 'zap', 'symbiosis', 'aggregate', 'call', 'execute', 'wrap', 'transform', 'bridge', 'outboundtransfer', 'deposit', 'start', 'transfer'] as suitables
+        , array['add', 'remove', 'mint', 'increase', 'decrease', 'cancel', 'destroy', 'claim', 'rescue', 'withdraw', 'simulate', 'join', 'exit', 'interaction', '721', '1155', 'nft', 'create', 'finalize', 'lock'] as exceptions
         , array['bridge', 'outboundtransfer', 'deposit', 'start', 'transfer'] as cross_chain_suitables
-)
-
-, meta as (
-    select
-        wrapped_native_token_address
-        , native_token_symbol as native_symbol
-    from {{ source('oneinch', 'blockchains') }}
-    where blockchain = '{{blockchain}}'
 )
 
 , contracts as (
@@ -82,7 +74,6 @@ static as (
     )
     join contracts using(call_to)
     join signatures using(selector)
-    join meta on true
     join (
         select
             block_number
