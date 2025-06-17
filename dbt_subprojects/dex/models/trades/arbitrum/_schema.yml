@@ -869,7 +869,6 @@ models:
           seed_file: ref('mindgames_arbitrum_base_trades_seed')
           filter:
             version: 1
-<<<<<<< HEAD
             
   - name: elk_finance_arbitrum_base_trades
     meta:
@@ -881,25 +880,12 @@ models:
     config:
       tags: ["arbitrum", "dex", "trades", "elk_finance"]
     description: "elk_finance arbitrum base trades"
-=======
-
-  - name: fluid_v1_arbitrum_base_trades
-    meta:
-      blockchain: arbitrum
-      sector: dex
-      project: fluid
-      contributors: maybeYonas, pyor_xyz, thetroyharris
-    config:
-      tags: ["arbitrum", "dex", "trades", "fluid"]
-    description: "fluid dex arbitrum base trades"
->>>>>>> 8ae99d6e60a84400470399545e3bf62fae8a94c1
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
             - evt_index
       - check_dex_base_trades_seed:
-<<<<<<< HEAD
           seed_file: ref('elk_finance_arbitrum_base_trades_seed')
           filter:
             version: 1
@@ -1017,8 +1003,20 @@ models:
           seed_file: ref('skate_fi_arbitrum_base_trades_seed')
           filter:
             version: 1
-=======
+
+  - name: fluid_v1_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: fluid
+      contributors: maybeYonas, pyor_xyz, thetroyharris
+    config:
+      tags: ["arbitrum", "dex", "trades", "fluid"]
+    description: "fluid dex arbitrum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
           seed_file: ref('fluid_arbitrum_base_trades_seed')
-          filter:
-            version: 1
->>>>>>> 8ae99d6e60a84400470399545e3bf62fae8a94c1
