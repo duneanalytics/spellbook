@@ -71,7 +71,7 @@ WITH base_transfers as (
         AND tokens_erc20.contract_address = t.contract_address
     LEFT JOIN
         prices
-        ON date_trunc('minute', t.block_time) = prices.timestamp
+        ON date_trunc('hour', t.block_time) = prices.timestamp
         AND t.blockchain = prices.blockchain
         AND t.contract_address = prices.contract_address
 )
