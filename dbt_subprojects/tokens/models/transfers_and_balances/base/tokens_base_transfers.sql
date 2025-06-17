@@ -1,6 +1,6 @@
 {{config(
-    schema = 'test_schema',
-    alias = 'jeff_test_tokens_base_transfers_minute',
+    schema = 'tokens_base',
+    alias = 'transfers',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -18,8 +18,8 @@
     transfers_enrich(
         base_transfers = ref('tokens_base_base_transfers')
         , tokens_erc20_model = source('tokens', 'erc20')
-        , prices_model = source('prices', 'minute')
-        , transfers_start_date = '2025-05-01'
+        , prices_model = source('prices', 'hour')
+        , transfers_start_date = '2023-06-15'
         , blockchain = 'base'
     )
 }}
