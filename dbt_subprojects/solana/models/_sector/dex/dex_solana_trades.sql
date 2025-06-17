@@ -70,6 +70,7 @@ SELECT bt.blockchain
       , bt.outer_instruction_index
       , bt.inner_instruction_index
       , bt.tx_index
+      -- trigger run
 FROM
     base_trades bt
 LEFT JOIN

@@ -38,3 +38,5 @@ select
   , tx_index
 from {{ref('dex_solana_trades')}}
 where project = 'stabble'
+
+--trigger run
