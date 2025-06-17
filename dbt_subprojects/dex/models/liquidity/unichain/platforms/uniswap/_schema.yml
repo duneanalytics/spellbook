@@ -26,7 +26,8 @@ models:
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"
-      - name: id
+      - &id
+        name: id
         description: "DEX pool smart contract address"
       - &token0
         name: token0
@@ -40,3 +41,40 @@ models:
         description: "Block number of pool creation"
       - name: contract_address
         description: "Contract address used to create the pool"
+
+  - name: uniswap_v4_unichain_sqrtpricex96
+    meta:
+      blockchain: unichain
+      sector: dex
+      project: uniswap
+      contributors: Henrystats
+    config:
+      tags: ['unichain', 'pools', 'liquidity', 'uniswap', 'sqrtpricex96']
+    description: >
+      Retrieves the most recent price (sqrtPriceX96) for each pool ID, reflecting the current price after the latest swap or liquidity modification.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - id
+            - block_index_sum
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *id
+      - name: block_time
+        description: "Block time of Price event"
+      - name: block_number
+        description: "Block number of Price event"
+      - name: evt_index
+        description: "Event Index of Price event"
+      - &block_index_sum
+        name: block_index_sum
+        description: "A sum of block_number and evt_index/1e6, necessary to avoid using window functions twice"
+      - &previous_block_index_sum
+        name: previous_block_index_sum
+        description: "Last value of block_index_sum"
+      - &sqrtpricex96
+        name: sqrtpricex96
+        description: "Pool Price"
