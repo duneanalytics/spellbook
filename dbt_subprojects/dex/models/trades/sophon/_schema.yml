@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: dex_sophon_base_trades
+    data_tests:
+      - check_dex_info_relationship
+      - test_acceptable_usd_amount:
+          column_name: amount_usd
+          max_value: 1000000000
+
+  - name: syncswap_v2_sophon_base_trades
+    meta:
+      blockchain: sophon
+      sector: dex
+      project: syncswap
+      contributors: lgingerich
+    config:
+      tags: [ 'sophon', 'dex', 'trades', 'syncswap' ]
+    description: "SyncSwap V2 sophon base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('syncswap_sophon_base_trades_seed')
+          filter:
+            version: 2

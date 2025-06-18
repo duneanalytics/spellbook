@@ -799,5 +799,7 @@ FROM (VALUES
     , ('bitcoin', 'bc1qyvppkaa74d9jvtz664a6uxmj09hf0eyg3uhx4h', 'HashKey Exchange', 'HashKey Exchange 1', 'hildobby', date '2025-04-28')
     , ('bitcoin', '1DywJMqHHMWuP7xyfkRqJZCEe7GdEKFRcp', 'HashKey Exchange', 'HashKey Exchange 2', 'hildobby', date '2025-04-28')
     , ('bitcoin', '1NfJSiqBw4fb74KgVQrPsk5W5aqitAD1Xv', 'HashKey Exchange', 'HashKey Exchange 3', 'hildobby', date '2025-04-28')
+
+    , ('bitcoin', 'bc1q2dyp7355r2ahkrxngq3y56mulsan3y42sjdsuv', 'Paybis', 'Paybis 1', 'hildobby', date '2025-06-14')
     
     ) AS x (blockchain, address, cex_name, distinct_name, added_by, added_date)

@@ -831,3 +831,60 @@ models:
           seed_file: ref('balancer_arbitrum_base_trades_seed')
           filter:
             version: 3
+
+  - name: akronswap_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: akronswap
+      contributors: principatel
+    config:
+      tags: ["arbitrum", "dex", "trades", "akronswap"]
+    description: "akronswap arbitrum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('akronswap_arbitrum_base_trades_seed')
+          filter:
+            version: 2
+            
+  - name: mindgames_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: mindgames
+      contributors: principatel
+    config:
+      tags: ["arbitrum", "dex", "trades", "mindgames"]
+    description: "mindgames arbitrum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('mindgames_arbitrum_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: fluid_v1_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: fluid
+      contributors: maybeYonas, pyor_xyz, thetroyharris
+    config:
+      tags: ["arbitrum", "dex", "trades", "fluid"]
+    description: "fluid dex arbitrum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('fluid_arbitrum_base_trades_seed')
+          filter:
+            version: 1

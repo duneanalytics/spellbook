@@ -154,4 +154,5 @@ FROM (VALUES
     , ('tron', 'TJGyzWET16gyChHtnF5xPdhdp3RRN14QCY', 'Dex-Trade', 'Dex-Trade 1', 'hildobby', date '2024-06-03')
     , ('tron', 'TUXdvJvxdt1WvXC8gJATFSqRCh5WDo6DP6', 'AAX', 'AAX 1', 'hildobby', date '2024-06-03')
     , ('tron', 'THyNKgEdAKHia1XgA2nwnbL1FhABTqY1f3', 'AAX', 'AAX 2', 'hildobby', date '2024-06-03')
+    , ('tron', 'TP2WFdcT15WpkK1VVsetCT3pibs54TFKMV', 'Stex', 'Stex 1', 'hildobby', date '2025-06-14')
     ) AS x (blockchain, address, cex_name, distinct_name, added_by, added_date)
