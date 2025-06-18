@@ -19,4 +19,4 @@ sources:
   - name: reservoir_swap_abstract
     tables:
       - name: uniswapv3pool_evt_swap
-        description: "PoolCreated events from AbstractSwap V3 Factory contract"
+        description: "PoolCreated events from Reservoir Swap V3 Factory contract"
