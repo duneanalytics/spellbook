@@ -131,29 +131,21 @@ WITH pools AS (
             (sf.swap_inner_index IS NULL 
             AND t.inner_instruction_index BETWEEN 1 AND 12
             AND (
-                CASE 
-                    WHEN sf.is_buy = 1 THEN 
-                        t.from_token_account = sf.account_user_quote_token_account 
-                        AND t.to_token_account = sf.account_pool_quote_token_account
-                    ELSE 
-                        t.from_token_account = sf.account_pool_quote_token_account
-                        AND t.to_token_account = sf.account_user_quote_token_account
-                END
-            ) 
+                        CASE 
+                            WHEN sf.is_buy = 1 THEN t.from_token_account = sf.account_user_quote_token_account
+                            ELSE t.from_token_account = sf.account_pool_quote_token_account
+                        END
+                    )   
             ) 
             OR
             (sf.swap_inner_index IS NOT NULL 
             AND t.inner_instruction_index BETWEEN sf.swap_inner_index + 1 AND sf.swap_inner_index + 12
             AND (
-                CASE 
-                    WHEN sf.is_buy = 1 THEN 
-                        t.from_token_account = sf.account_user_quote_token_account 
-                        AND t.to_token_account = sf.account_pool_quote_token_account
-                    ELSE 
-                        t.from_token_account = sf.account_pool_quote_token_account
-                        AND t.to_token_account = sf.account_user_quote_token_account
-                END
-            )
+                        CASE 
+                            WHEN sf.is_buy = 1 THEN t.from_token_account = sf.account_user_quote_token_account
+                            ELSE t.from_token_account = sf.account_pool_quote_token_account
+                        END
+                    )  
             )
         )
         {% if is_incremental() %}
