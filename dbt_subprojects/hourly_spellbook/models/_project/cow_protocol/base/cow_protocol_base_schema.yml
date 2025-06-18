@@ -27,3 +27,16 @@ models:
     data_tests:
       - unique:
           column_name: tx_hash
+
+  - name: cow_protocol_base_eth_flow_orders
+    meta:
+      blockchain: base
+      project: cow_protocol
+      contributors: cowprotocol
+    config:
+      tags: [ 'base','cow_protocol','eth-flow', "orders" ]
+    description: >
+      ETHFlow enables the sale of Native ETH via CoW Protocol. This works essentially by placing an (onchain) order, 
+      through the ETHFlow contract (https://github.com/cowprotocol/ethflowcontract) sending native which then wraps 
+      the asset as an ERC20. The order is filled through this intermediary contract that uses ERC1271 signature 
+      verification to place the order on the user's behalf.
