@@ -52,7 +52,6 @@ WITH pools AS (
     {% else %}
     WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
-    
     UNION ALL
     
     -- Sell operations
@@ -82,6 +81,7 @@ WITH pools AS (
     {% else %}
     WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
+    
 )
 
 , fee_configs_with_time_ranges AS (
@@ -114,7 +114,11 @@ WITH pools AS (
     SELECT
         sf.*,
         sf.base_amount as base_token_amount, 
-        t.amount as quote_token_amount  
+        t.amount as quote_token_amount ,
+        ROW_NUMBER() OVER (
+                    PARTITION BY sf.tx_id, sf.outer_instruction_index, sf.swap_inner_index
+                    ORDER BY t.amount DESC 
+                ) as rn
     FROM swaps_with_fees sf
     INNER JOIN {{ ref('tokens_solana_transfers') }} t
         ON t.tx_id = sf.tx_id
@@ -122,19 +126,26 @@ WITH pools AS (
         AND t.outer_instruction_index = sf.outer_instruction_index
         AND t.to_token_account != sf.account_protocol_fee_recipient_token_account
         AND (
-                (
-                sf.swap_inner_index IS NULL 
-                AND t.inner_instruction_index IN (1, 2, 3) 
-                AND (t.from_token_account = sf.account_user_quote_token_account OR t.from_token_account = sf.account_pool_quote_token_account)
-                )
+            (sf.swap_inner_index IS NULL 
+            AND t.inner_instruction_index BETWEEN 1 AND 12
+            AND (
+                        CASE 
+                            WHEN sf.is_buy = 1 THEN t.from_token_account = sf.account_user_quote_token_account
+                            ELSE t.from_token_account = sf.account_pool_quote_token_account
+                        END
+                    )   
+            ) 
             OR
-                (
-                sf.swap_inner_index IS NOT NULL
-                AND t.inner_instruction_index IN (sf.swap_inner_index + 1, sf.swap_inner_index + 2, sf.swap_inner_index + 3) 
-                AND (t.from_token_account = sf.account_user_quote_token_account OR t.from_token_account = sf.account_pool_quote_token_account)
-                )
+            (sf.swap_inner_index IS NOT NULL 
+            AND t.inner_instruction_index BETWEEN sf.swap_inner_index + 1 AND sf.swap_inner_index + 12
+            AND (
+                        CASE 
+                            WHEN sf.is_buy = 1 THEN t.from_token_account = sf.account_user_quote_token_account
+                            ELSE t.from_token_account = sf.account_pool_quote_token_account
+                        END
+                    )  
             )
-        
+        )
         {% if is_incremental() %}
         AND {{incremental_predicate('t.block_time')}}
         {% else %}
@@ -183,6 +194,7 @@ WITH pools AS (
           end as token_sold_vault
     FROM swaps_with_transfers sp
     LEFT JOIN pools p ON p.pool = sp.pool
+    WHERE sp.rn = 1 
 )
 
 
