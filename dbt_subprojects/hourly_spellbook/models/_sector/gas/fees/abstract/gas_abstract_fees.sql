@@ -44,13 +44,13 @@ WITH native_token_prices as (
     FROM {{ source(blockchain, 'transactions') }} txns
     INNER JOIN {{ source(blockchain, 'blocks') }} blocks
         ON txns.block_number = blocks.number
-        {% if is_incremental or true() %}
+        {% if is_incremental() %}
         AND {{ incremental_predicate('blocks.time') }}
         {% endif %}
     {% if test_short_ci %}
     WHERE {{ incremental_predicate('txns.block_time') }}
     OR txns.hash in (select tx_hash from {{ref('evm_gas_fees')}})
-    {% elif is_incremental or true() %}
+    {% elif is_incremental() %}
     WHERE {{ incremental_predicate('txns.block_time') }}
     {% endif %}
 )
