@@ -52,7 +52,6 @@ WITH pools AS (
     {% else %}
     WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
-    and call_block_time >= now() - interval '12' day
     UNION ALL
     
     -- Sell operations
@@ -82,7 +81,6 @@ WITH pools AS (
     {% else %}
     WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
-     AND call_block_time >= now() - interval '12' day
     
 )
 
@@ -153,7 +151,6 @@ WITH pools AS (
         {% else %}
         AND t.block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
-        and t.block_time >= now() - interval '12' day
 )
 
 , trades_base as (
