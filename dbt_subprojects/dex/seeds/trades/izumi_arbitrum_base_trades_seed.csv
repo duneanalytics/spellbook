@@ -1,0 +1,2 @@
+blockchain,project,version,block_date,tx_hash,evt_index,token_bought_address,token_sold_address,block_number,token_bought_amount_raw,token_sold_amount_raw
+arbitrum,izumi,1,2024-08-12 00:00,0x04914c9eeb478e769faacfd66d42ad10614d3c46355932eea653df782e6bd1d4,3,0xff970a61a04b1ca14834a43f5de4533ebddb5cc8,0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9,242236482,994000,1000000

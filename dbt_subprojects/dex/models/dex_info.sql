@@ -227,4 +227,5 @@ FROM (VALUES
     , ('graphene', 'Graphene', 'Direct', 'GetGraphene')
     , ('skate_fi', 'SkateFi', 'Direct', 'skate_fi')
     , ('xy_finance', 'XY Finance', 'Direct', 'xyfinance')
+    , ('izumi', 'Izumi', 'Direct', 'izumi_finance')
 ) AS temp_table (project, name, marketplace_type, x_username)

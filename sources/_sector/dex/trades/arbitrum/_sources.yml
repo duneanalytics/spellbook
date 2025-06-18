@@ -215,3 +215,6 @@ sources:
   - name: xy_finance_arbitrum
     tables:
       - name: xswapper_evt_swappedforuser
+  - name: izumi_multichain
+    tables:
+      - name: iziswappool_evt_swap
