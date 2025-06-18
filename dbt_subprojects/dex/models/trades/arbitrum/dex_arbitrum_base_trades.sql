@@ -43,7 +43,6 @@
     , ref('gridex_arbitrum_base_trades')
     , ref('sterling_finance_arbitrum_base_trades')
     , ref('sharkyswap_arbitrum_base_trades')
-    
     , ref('auragi_arbitrum_base_trades')
     , ref('wombat_exchange_arbitrum_base_trades')
     , ref('solidly_v3_arbitrum_base_trades')
@@ -62,6 +61,7 @@
     , ref('graphene_arbitrum_base_trades')
     , ref('skate_fi_arbitrum_base_trades')
     , ref('fluid_v1_arbitrum_base_trades')
+    , ref('xy_finance_arbitrum_base_trades')
 ] %}
 
 WITH base_union AS (

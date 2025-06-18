@@ -212,3 +212,6 @@ sources:
     tables:
       - name: FluidDexT1_evt_Swap
       - name: fluiddexfactory_call_deploydex
+  - name: xy_finance_arbitrum
+    tables:
+      - name: xswapper_evt_swappedforuser
