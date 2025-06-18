@@ -18,7 +18,7 @@ WITH token_swaps AS (
         tokens_bought AS token_bought_amount_raw,
         sold_id,
         bought_id,
-        contract_address AS contract_address,  -- Rename for clarity
+        contract_address AS project_contract_address,  -- Rename for clarity
         evt_tx_hash AS tx_hash,
         evt_index AS evt_index
     FROM
@@ -59,16 +59,16 @@ SELECT
     bought_coins.token_address AS token_bought_address,  -- Resolved from coins
     ts.maker,
     ts.taker,
-    ts.contract_address,
+    ts.project_contract_address,
     ts.tx_hash,
     ts.evt_index
 FROM
     token_swaps ts
 LEFT JOIN
     coin_mapping sold_coins
-    ON ts.contract_address = sold_coins.pool_address
+    ON ts.project_contract_address = sold_coins.pool_address
     AND ts.sold_id = sold_coins.token_index
 LEFT JOIN
     coin_mapping bought_coins
-    ON ts.contract_address = bought_coins.pool_address
+    ON ts.project_contract_address = bought_coins.pool_address
     AND ts.bought_id = bought_coins.token_index
