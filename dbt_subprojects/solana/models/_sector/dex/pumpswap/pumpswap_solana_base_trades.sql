@@ -52,7 +52,7 @@ WITH pools AS (
     {% else %}
     WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
-    
+    and call_block_time >= now() - interval '12' day
     UNION ALL
     
     -- Sell operations
@@ -82,6 +82,8 @@ WITH pools AS (
     {% else %}
     WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
+     AND call_block_time >= now() - interval '12' day
+    
 )
 
 , fee_configs_with_time_ranges AS (
@@ -127,19 +129,31 @@ WITH pools AS (
         AND t.to_token_account != sf.account_protocol_fee_recipient_token_account
         AND (
             (sf.swap_inner_index IS NULL 
-            AND t.inner_instruction_index IN (1,2,3,4,5,6,7,8,9,10,11,12)
-            AND (t.from_token_account = sf.account_user_quote_token_account 
-                OR t.from_token_account = sf.account_pool_quote_token_account) 
+            AND t.inner_instruction_index BETWEEN 1 AND 12
+            AND (
+                CASE 
+                    WHEN sf.is_buy = 1 THEN 
+                        t.from_token_account = sf.account_user_quote_token_account 
+                        AND t.to_token_account = sf.account_pool_quote_token_account
+                    ELSE 
+                        t.from_token_account = sf.account_pool_quote_token_account
+                        AND t.to_token_account = sf.account_user_quote_token_account
+                END
+            ) 
             ) 
             OR
             (sf.swap_inner_index IS NOT NULL 
-            AND t.inner_instruction_index IN (
-                sf.swap_inner_index + 1, sf.swap_inner_index + 2, sf.swap_inner_index + 3,
-                sf.swap_inner_index + 4, sf.swap_inner_index + 5, sf.swap_inner_index + 6,
-                sf.swap_inner_index + 7, sf.swap_inner_index + 8, sf.swap_inner_index + 9,
-                sf.swap_inner_index + 10, sf.swap_inner_index + 11, sf.swap_inner_index + 12)
-            AND (t.from_token_account = sf.account_user_quote_token_account 
-                OR t.from_token_account = sf.account_pool_quote_token_account)
+            AND t.inner_instruction_index BETWEEN sf.swap_inner_index + 1 AND sf.swap_inner_index + 12
+            AND (
+                CASE 
+                    WHEN sf.is_buy = 1 THEN 
+                        t.from_token_account = sf.account_user_quote_token_account 
+                        AND t.to_token_account = sf.account_pool_quote_token_account
+                    ELSE 
+                        t.from_token_account = sf.account_pool_quote_token_account
+                        AND t.to_token_account = sf.account_user_quote_token_account
+                END
+            )
             )
         )
         {% if is_incremental() %}
@@ -147,6 +161,7 @@ WITH pools AS (
         {% else %}
         AND t.block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
+        and t.block_time >= now() - interval '12' day
 )
 
 , trades_base as (
