@@ -8,3 +8,5 @@ sources:
   - name: saru_apechain
     tables:
       - name: sarupair_evt_swap
+      - name: sarupair_call_token0
+      - name: sarupair_call_token1
