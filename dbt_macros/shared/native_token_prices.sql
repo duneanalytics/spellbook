@@ -23,7 +23,7 @@ INNER JOIN
     AND b.token_address = p.contract_address
 WHERE
     b.name = '{{blockchain}}'
-    {% if is_incremental or true() -%}
+    {% if is_incremental() -%}
     AND {{incremental_predicate('p.timestamp')}}
     {%- endif %}
 {%- endmacro %}
