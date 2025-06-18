@@ -8,7 +8,8 @@
     unique_key = ['tx_hash', 'evt_index']
 ) }}
 
-WITH token0_calls /* Latest successful token0() calls per pool */ AS (
+WITH token0_calls 
+ AS (
   SELECT
     contract_address AS pool_address,
     output_0 AS token0_address,
@@ -63,6 +64,7 @@ WITH token0_calls /* Latest successful token0() calls per pool */ AS (
     evt_tx_hash AS tx_hash,
     evt_index AS evt_index
   FROM "delta_prod"."saru_apechain"."sarupair_evt_swap"
+
 )
 SELECT
   'apechain' AS blockchain,
