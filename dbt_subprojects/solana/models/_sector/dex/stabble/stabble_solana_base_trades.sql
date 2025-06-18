@@ -135,6 +135,7 @@ WITH all_swaps AS (
     {% else %}
     WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
+
 )
 
 , transfers AS (
@@ -145,11 +146,11 @@ WITH all_swaps AS (
         , s.block_time
         , s.block_slot
         , s.trade_source
-        , t.amount AS token_bought_amount_raw
+        , t_buy.amount AS token_bought_amount_raw
         , s.token_sold_amount_raw
         , CAST(NULL AS DOUBLE) AS fee_tier
-        , COALESCE(s.token_sold_mint_address, t.token_mint_address) AS token_sold_mint_address
-        , COALESCE(s.token_bought_mint_address, t.token_mint_address) AS token_bought_mint_address
+        , COALESCE(s.token_sold_mint_address, t_sell.token_mint_address) AS token_sold_mint_address
+        , t_buy.token_mint_address AS token_bought_mint_address 
         , s.token_sold_vault
         , s.token_bought_vault
         , s.pool_id AS project_program_id
@@ -160,22 +161,42 @@ WITH all_swaps AS (
         , s.inner_instruction_index
         , s.tx_index
     FROM all_swaps s
-    INNER JOIN {{ ref('tokens_solana_transfers') }} t
-        ON t.tx_id = s.tx_id 
-        AND t.block_slot = s.block_slot
-        AND t.outer_instruction_index = s.outer_instruction_index
-        AND t.from_token_account = s.token_bought_vault
-        AND t.to_token_account = s.account_user_token_out
-        AND t.inner_instruction_index IN (
+    -- Get the "buy" transfer (vault → user)
+    INNER JOIN {{ ref('tokens_solana_transfers') }} t_buy
+        ON t_buy.tx_id = s.tx_id 
+        AND t_buy.block_slot = s.block_slot
+        AND t_buy.outer_instruction_index = s.outer_instruction_index
+        AND t_buy.from_token_account = s.token_bought_vault 
+        AND t_buy.to_token_account = s.account_user_token_out
+        AND t_buy.inner_instruction_index IN (
             s.inner_instruction_index + 1,
             s.inner_instruction_index + 2,
             s.inner_instruction_index + 3,
             s.inner_instruction_index + 4
         )
         {% if is_incremental() %}
-        AND {{incremental_predicate('t.block_time')}}
+        AND {{incremental_predicate('t_buy.block_time')}}
         {% else %}
-        AND t.block_time >= TIMESTAMP '{{project_start_date}}'
+        AND t_buy.block_time >= TIMESTAMP '{{project_start_date}}'
+        {% endif %}
+    
+    -- Get the "sell" transfer (user → vault) - OPTIONAL for V1, REQUIRED for V2
+    LEFT JOIN {{ ref('tokens_solana_transfers') }} t_sell
+        ON t_sell.tx_id = s.tx_id 
+        AND t_sell.block_slot = s.block_slot
+        AND t_sell.outer_instruction_index = s.outer_instruction_index
+        AND t_sell.from_token_account = s.account_user_token_in 
+        AND t_sell.to_token_account = s.token_sold_vault
+        AND t_sell.inner_instruction_index IN (
+            s.inner_instruction_index + 1,
+            s.inner_instruction_index + 2,
+            s.inner_instruction_index + 3,
+            s.inner_instruction_index + 4
+        )
+        {% if is_incremental() %}
+        AND {{incremental_predicate('t_sell.block_time')}}
+        {% else %}
+        AND t_sell.block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
 )
 
