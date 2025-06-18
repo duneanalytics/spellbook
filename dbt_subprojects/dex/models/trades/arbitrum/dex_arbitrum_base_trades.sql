@@ -63,6 +63,7 @@
     , ref('fluid_v1_arbitrum_base_trades')
     , ref('xy_finance_arbitrum_base_trades')
     , ref('izumi_arbitrum_base_trades')
+    , ref('treasure_magicswap_arbitrum_base_trades')
 ] %}
 
 WITH base_union AS (
