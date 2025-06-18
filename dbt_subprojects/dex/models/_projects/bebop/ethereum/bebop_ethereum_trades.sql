@@ -11,14 +11,10 @@
 
 {% set bebop_models = [
     ref('bebop_rfq_ethereum_trades'),
-    ref('bebop_jam_ethereum_trades')
+    ref('bebop_jam_ethereum_trades'),
+    ref('bebop_blend_ethereum_trades')
 ] %}
 
-/*
-,ref('bebop_blend_ethereum_trades')
-due to prod issues on may 12 2025, exclude from prod
-check git history for model changes and context
-*/
 
 SELECT *
 FROM (

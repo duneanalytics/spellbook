@@ -3,7 +3,7 @@
         schema = 'oneinch',
         alias = 'fusion_executors',
         materialized = 'table',
-        unique_key = ['resolver_address', 'resolver_executor', 'chain_id']
+        unique_key = ['resolver_address', 'resolver_executor', 'chain_id', 'mode']
     )
 }}
 
