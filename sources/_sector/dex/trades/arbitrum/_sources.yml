@@ -198,6 +198,7 @@ sources:
   - name: spectra_multichain
     tables:
       - name: vyper_contract_evt_tokenexchange
+      - name: vyper_contract_call_coins
   - name: wardenswap_arbitrum
     tables:
       - name: wardenrouterv2_evt_trade
