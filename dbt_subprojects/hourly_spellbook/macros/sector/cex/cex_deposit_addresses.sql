@@ -54,7 +54,7 @@ WITH unique_inflows AS (
     {% endif %}
     GROUP BY 1, 2, 3
 
-    {% if blockchain='ethereum' %}
+    {% if blockchain == 'ethereum' %}
     UNION ALL
 
     SELECT i.suspected_deposit_address
