@@ -48,6 +48,12 @@ models:
         description: "The adjustment recipient address"
       - name: adjustment_flow_rate
         description: "The adjustment flow rate in nominal token amount per second"
+      - &start_block_time
+        name: start_block_time
+        description: "The start of the event"
+      - &end_block_time
+        name: end_block_time
+        description: "The end of the event based on the next event or the current timestamp if the next event is not available"
 
   - name: superfluid_multichain_flow_updated_events
     meta:
@@ -70,6 +76,8 @@ models:
         description: "The receiver address for the event"
       - name: flow_rate
         description: "The new flow rate in nominal token amount per second"
+      - *start_block_time
+      - *end_block_time
 
   - name: superfluid_multichain_index_updated_events
     meta:
@@ -142,6 +150,8 @@ models:
         description: TBC
       - name: connected
         description: TBC
+      - *start_block_time
+      - *end_block_time
 
   - name: superfluid_multichain_supertoken_created_events
     meta:
