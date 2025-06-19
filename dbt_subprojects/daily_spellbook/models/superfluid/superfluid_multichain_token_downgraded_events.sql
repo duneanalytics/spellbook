@@ -11,10 +11,10 @@
 
 SELECT
     blockchain,
-    evt_block_time AS block_time,
-    evt_block_date AS block_date,
-    evt_tx_hash AS tx_hash,
-    evt_index AS index,
+    block_time,
+    block_date,
+    tx_hash,
+    index,
     contract_address AS token,
     bytearray_substring(topic1, 13, 20) AS account,
     bytearray_to_int256(data) AS amount

@@ -20,5 +20,5 @@ SELECT
     "value"
 FROM {{ ref('evms_erc20_transfers') }} transfers
 WHERE (blockchain, contract_address) IN (
-    SELECT blockchain, token_address AS contract_address FROM {{ ref('superfluid_multichain_supertoken_created_events') }}
+    SELECT blockchain, token AS contract_address FROM {{ ref('superfluid_multichain_supertoken_created_events') }}
 )
