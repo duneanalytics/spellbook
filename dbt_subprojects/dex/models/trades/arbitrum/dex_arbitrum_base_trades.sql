@@ -64,6 +64,7 @@
     , ref('xy_finance_arbitrum_base_trades')
     , ref('izumi_arbitrum_base_trades')
     , ref('swapfish_arbitrum_base_trades')
+    , ref('sushi_arbitrum_base_trades')
     , ref('treasure_magicswap_arbitrum_base_trades')
 ] %}
 
