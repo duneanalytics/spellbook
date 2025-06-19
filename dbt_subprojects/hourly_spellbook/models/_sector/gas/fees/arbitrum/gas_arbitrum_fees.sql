@@ -91,5 +91,5 @@ SELECT
     ,b.effective_gas_price
     ,b.gas_used_for_l1
 FROM base_model as b
-INNER JOIN native_token_prices as p
+LEFT JOIN native_token_prices as p
     ON p.timestamp = date_trunc('hour', b.block_time)
