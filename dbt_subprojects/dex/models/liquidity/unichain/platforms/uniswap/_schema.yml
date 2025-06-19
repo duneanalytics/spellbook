@@ -78,3 +78,53 @@ models:
       - &sqrtpricex96
         name: sqrtpricex96
         description: "Pool Price"
+
+  - name: uniswap_v4_unichain_liquidity
+    meta:
+      blockchain: unichain
+      sector: dex
+      project: uniswap
+      contributors: Henrystats
+    config:
+      tags: ['unichain', 'pools', 'liquidity', 'uniswap']
+    description: >
+      "uniswap unichain v4 base liquidity"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *id
+      - &block_month
+        name: block_month
+        description: "UTC event block month"
+      - &block_date
+        name: block_date
+        description: "UTC event block date"
+      - &block_time
+        name: block_time
+        description: "UTC event block time"
+      - &block_number
+        name: block_number
+        description: "Block number of the block in which the trade occurred"
+      - &tx_hash
+        name: tx_hash
+        description: "The hash of the transaction"
+      - &evt_index
+        name: evt_index
+        description: "Index of the event in the transaction. Can be used to uniquely identify the order of events within a transaction"
+      - &event_type
+        name: event_type
+        description: "Transaction event type"
+      - *token0
+      - *token1
+      - &amount0_raw
+        name: amount0_raw
+        description: "Liquidity amount of token0 in units"
+      - &amount1_raw
+        name: amount1_raw
+        description: "Liquidity amount of token1 in units"
