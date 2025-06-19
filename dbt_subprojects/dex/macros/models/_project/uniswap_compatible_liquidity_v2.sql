@@ -309,7 +309,7 @@ modify_liquidity_events as (
             else liquidityDelta * (sqrtPrice - sqrtRatioL)
           end as amount1
     from 
-    modify_liquidity_events
+    prep_for_calculations
 ),
 
 swap_events as (
