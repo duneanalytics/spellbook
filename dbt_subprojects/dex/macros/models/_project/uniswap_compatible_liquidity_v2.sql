@@ -369,8 +369,8 @@ liquidity_change_base as (
           '{{blockchain}}' as blockchain
         , '{{project}}'  as project
         , '{{version}}' as version
-        , cast(date_trunc('month', base.block_time) as date) as block_month
-        , cast(date_trunc('day', base.block_time) as date) as block_date
+        , cast(date_trunc('month', block_time) as date) as block_month
+        , cast(date_trunc('day', block_time) as date) as block_date
         , date_trunc('minute', block_time) as block_time -- for prices
         , block_number
         , id
