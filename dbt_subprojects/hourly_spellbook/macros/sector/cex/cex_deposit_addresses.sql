@@ -1,50 +1,67 @@
 {% macro cex_deposit_addresses(blockchain, cex_local_flows, crosschain_first_funded_by) %}
 
-WITH deposits AS (
-    SELECT f."from" AS address
-    , f.cex_name
-    , f.token_standard
-    , CASE WHEN f."from"=f.tx_from THEN true ELSE false END AS self_executed
-    , MIN(f.block_time) AS block_time
-    , MIN(f.block_number) AS block_number
-    , MIN_BY(f.tx_hash, f.block_number) AS hash
-    , ROW_NUMBER() OVER (PARTITION BY f."from" ORDER BY MIN(f.block_time)) AS deposit_index
-    FROM {{cex_local_flows}} f
-    WHERE f.flow_type = 'Inflow'
-        AND f.block_time < date('2025-04-30') -- REMOVE BEFORE MERGING, FOR TESTING ONLY
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('block_time') }}
-        {% endif %}
-    GROUP BY 1, 2, 3, 4
-    HAVING COUNT(DISTINCT f.cex_name) = 1
-    )
-
-, isolate_unique AS (
-    SELECT address
-    FROM deposits
-    GROUP BY address
+WITH unique_inflows AS (
+    SELECT "from" AS suspected_deposit_address
+    , MIN(block_number) AS block_number
+    , MIN_BY(unique_key, block_number) AS unique_key
+    FROM {{cex_local_flows}}
+    {% if is_incremental() %}
+    -- LEFT JOIN ON ITSELF TO REMOVE EXISTING ADDRESSES
+    -- OR INNER JOIN TO ONLY KEEP RECENTLY CREATED ADDRESS ACROSS CHAINS
+    WHERE {{ incremental_predicate('block_time') }}
+    AND flow_type IN ('Inflow') --, 'Executed', 'Executed Contract')
+    {% else %}
+    WHERE flow_type IN ('Inflow') --, 'Executed', 'Executed Contract')
+    {% endif %}
+    AND block_time > NOW() - interval '4' month 
+    AND varbinary_substring("from", 1, 18) <> 0x000000000000000000000000000000000000 -- removing last 3 bytes, often used to identify null or system addresses
+    GROUP BY 1
     HAVING COUNT(DISTINCT cex_name) = 1
     )
 
-SELECT '{{blockchain}}' AS blockchain
-, d.address
-, d.cex_name
-, d.token_standard
-, d.block_time AS consolidation_block_time
-, d.block_number AS consolidation_block_number
-, ffb.block_time AS funded_block_time
-, ffb.block_number AS funded_block_number
-, ffb.first_funded_by
-, ffb.first_funding_executed_by
-, d.self_executed
-, d.hash AS tx_hash
-FROM deposits d
-INNER JOIN isolate_unique iu ON iu.address=d.address
-    --AND iu.token_standard=d.token_standard 
--- check that the address was first funded on same chain and recently
-INNER JOIN {{crosschain_first_funded_by}} ffb ON ffb.blockchain='{{blockchain}}'
-    AND ffb.address=d.address
-    AND ffb.block_time BETWEEN d.block_time - interval '15' hour AND d.block_time
-WHERE d.deposit_index = 1
+, unique_inflows_expanded AS (
+    SELECT block_number
+    , cf.block_time
+    , suspected_deposit_address 
+    , cf.token_standard
+    , cf.token_address
+    , CASE WHEN token_standard = 'native' THEN amount+(f.tx_fee) ELSE amount END AS amount
+    FROM {{cex_local_flows}} cf
+    INNER JOIN unique_inflows ui USING (block_number, unique_key)
+    INNER JOIN gas_ethereum.fees f USING (block_number, tx_hash)
+    {% if is_incremental() %}
+    WHERE {{ incremental_predicate('cf.block_time') }}
+    AND {{ incremental_predicate('cf.block_time') }}
+    {% endif %}
+    )
+
+, in_and_out AS (
+    SELECT i.suspected_deposit_address
+    , i.amount AS amount_consolidated
+    , i.block_time AS consolidation_block_time
+    , SUM(t.amount) AS amount_deposited
+    , MIN(t.block_time) AS deposit_first_block_time
+    , MAX(t.block_time) AS deposit_last_block_time
+    FROM {{ source('tokens_'~blockchain,'transfers') }} t
+    INNER JOIN unique_inflows_expanded i ON t.block_number<i.block_number
+        AND t.to=i.suspected_deposit_address
+        AND t.token_standard=i.token_standard
+        AND t.contract_address=i.token_address
+        AND t.block_time BETWEEN i.block_time - interval '1' day AND i.block_time
+        --AND i.amount_raw BETWEEN t.amount_raw*0.9 AND t.amount_raw*1.1
+    {% if is_incremental() %}
+    WHERE {{ incremental_predicate('t.block_time') }}
+    {% endif %}
+    GROUP BY 1, 2
+    )
+
+SELECT suspected_deposit_address
+, amount_consolidated
+, consolidation_block_time
+, amount_deposited
+, deposit_first_block_time
+, deposit_last_block_time
+FROM in_and_out
+WHERE amount_consolidated < amount_deposited*1.1
 
 {% endmacro %}
