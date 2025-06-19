@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: oneinch_solana
+    tables:
+      - name: fusion_swap_call_create
+      - name: fusion_swap_call_cancel
+      - name: fusion_swap_call_cancel_by_resolver
+      - name: fusion_swap_call_fill
