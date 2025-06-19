@@ -226,3 +226,36 @@ sources:
       - name: magicelmpair_evt_swap
       - name: magicelmpair_call_token1
       - name: magicelmpair_call_token0
+  - name: swapfish_arbitrum
+    tables:
+      - name: uniswapv2pair_wsteth_weth_call_token0
+      - name: uniswapv2pair_wsteth_weth_call_token1
+      - name: uniswapv2pair_wsteth_weth_evt_swap
+      - name: uniswapv2pair_weth_usdc_call_token0
+      - name: uniswapv2pair_weth_usdc_call_token1
+      - name: uniswapv2pair_weth_usdc_evt_swap
+      - name: uniswapv2pair_wbtc_weth_call_token0
+      - name: uniswapv2pair_wbtc_weth_call_token1
+      - name: uniswapv2pair_wbtc_weth_evt_swap
+      - name: uniswapv2pair_vst_usdc_call_token0
+      - name: uniswapv2pair_vst_usdc_call_token1
+      - name: uniswapv2pair_vst_usdc_evt_swap
+      - name: uniswapv2pair_usdt_usdc_call_token0
+      - name: uniswapv2pair_usdt_usdc_call_token1
+      - name: uniswapv2pair_usdt_usdc_evt_swap
+      - name: uniswapv2pair_mim_usdc_call_token0
+      - name: uniswapv2pair_mim_usdc_call_token1
+      - name: uniswapv2pair_mim_usdc_evt_swap
+      - name: uniswapv2pair_gmx_usdc_call_token0
+      - name: uniswapv2pair_gmx_usdc_call_token1
+      - name: uniswapv2pair_gmx_usdc_evt_swap
+      - name: uniswapv2pair_fish_usdc_call_token0
+      - name: uniswapv2pair_fish_usdc_call_token1
+      - name: uniswapv2pair_fish_usdc_evt_swap
+      - name: uniswapv2pair_dai_usdc_call_token0
+      - name: uniswapv2pair_dai_usdc_call_token1
+      - name: uniswapv2pair_dai_usdc_evt_swap
+      - name: uniswapv2pair_aave_weth_call_token0
+      - name: uniswapv2pair_aave_weth_call_token1
+      - name: uniswapv2pair_aave_weth_evt_swap
+
