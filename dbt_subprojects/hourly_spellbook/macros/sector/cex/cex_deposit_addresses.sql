@@ -52,7 +52,7 @@ WITH unique_inflows AS (
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('t.block_time') }}
     {% endif %}
-    GROUP BY 1, 2
+    GROUP BY 1, 2, 3
 
     {% if blockchain='ethereum' %}
     UNION ALL
@@ -72,7 +72,7 @@ WITH unique_inflows AS (
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('t.block_time') }}
     {% endif %}
-    GROUP BY 1, 2
+    GROUP BY 1, 2, 3
     {% endif %}
     )
 
