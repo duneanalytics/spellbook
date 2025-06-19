@@ -104,5 +104,5 @@ SELECT
     ,b.blob_gas_used
     ,b.max_fee_per_blob_gas
 FROM base_model as b
-INNER JOIN native_token_prices as p
+LEFT JOIN native_token_prices as p
     ON p.timestamp = date_trunc('hour', b.block_time)

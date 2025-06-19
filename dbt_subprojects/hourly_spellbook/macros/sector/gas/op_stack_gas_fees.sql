@@ -85,6 +85,6 @@ SELECT
     ,b.l1_gas_price
     ,b.l1_fee_scalar
 FROM base_model as b
-INNER JOIN native_token_prices as p
+LEFT JOIN native_token_prices as p
     ON p.timestamp = date_trunc('hour', b.block_time)
 {%- endmacro %}
