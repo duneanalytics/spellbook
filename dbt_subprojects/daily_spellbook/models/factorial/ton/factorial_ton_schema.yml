@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: factorial_ton_supply
+  - name: affluent_ton_supply
     meta:
       blockchain: ton
       sector: lending
-      contributors: pshuvalov
+      contributors: pshuvalov, okhlopkov
     config:
-      tags: ['ton', 'factorial', 'lending']
+      tags: ['ton', 'affluent', 'lending']
     description: >
-      Factorial protocol supply events
+      Affluent protocol supply events
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -27,9 +27,9 @@ models:
       - name: tx_lt
         description: "transaction logical time"
       - name: pool_address
-        description: "Factorial pool address"
+        description: "Affluent pool address"
       - name: pool_name
-        description: "Factorial pool name"
+        description: "Affluent pool name"
       - name: owner_address
         description: "Owner address"
       - name: asset
@@ -38,15 +38,15 @@ models:
         description: "Amount of asset"
       - name: share
         description: "Share of asset"
-  - name: factorial_ton_withdraw
+  - name: affluent_ton_withdraw
     meta:
       blockchain: ton
       sector: lending
-      contributors: pshuvalov
+      contributors: pshuvalov, okhlopkov
     config:
-      tags: ['ton', 'factorial', 'lending']
+      tags: ['ton', 'affluent', 'lending']
     description: >
-      Factorial protocol withdraw events
+      Affluent protocol withdraw events
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -64,47 +64,9 @@ models:
       - name: tx_lt
         description: "transaction logical time"
       - name: pool_address
-        description: "Factorial pool address"
+        description: "Affluent pool address"
       - name: pool_name
-        description: "Factorial pool name"
-      - name: owner_address
-        description: "Owner address"
-      - name: asset
-        description: "Asset address"
-      - name: amount
-        description: "Amount of asset"
-      - name: share
-        description: "Share of asset"
-
-  - name: factorial_ton_borrow
-    meta:
-      blockchain: ton
-      sector: lending
-      contributors: pshuvalov
-    config:
-      tags: ['ton', 'factorial', 'lending']
-    description: >
-      Factorial protocol borrow events
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - block_date
-    columns:
-      - name: block_date
-        description: "block_date of the transaction"
-      - name: tx_hash
-        description: "transaction hash"
-      - name: trace_id
-        description: "trace id"
-      - name: tx_now
-        description: "transaction timestamp"
-      - name: tx_lt
-        description: "transaction logical time"
-      - name: pool_address
-        description: "Factorial pool address"
-      - name: pool_name
-        description: "Factorial pool name"
+        description: "Affluent pool name"
       - name: owner_address
         description: "Owner address"
       - name: asset
@@ -114,15 +76,15 @@ models:
       - name: share
         description: "Share of asset"
 
-  - name: factorial_ton_repay
+  - name: affluent_ton_borrow
     meta:
       blockchain: ton
       sector: lending
-      contributors: pshuvalov
+      contributors: pshuvalov, okhlopkov
     config:
-      tags: ['ton', 'factorial', 'lending']
+      tags: ['ton', 'affluent', 'lending', 'factorial']
     description: >
-      Factorial protocol repay events
+      Affluent protocol borrow events
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -140,9 +102,47 @@ models:
       - name: tx_lt
         description: "transaction logical time"
       - name: pool_address
-        description: "Factorial pool address"
+        description: "Affluent pool address"
       - name: pool_name
-        description: "Factorial pool name"
+        description: "Affluent pool name"
+      - name: owner_address
+        description: "Owner address"
+      - name: asset
+        description: "Asset address"
+      - name: amount
+        description: "Amount of asset"
+      - name: share
+        description: "Share of asset"
+
+  - name: affluent_ton_repay
+    meta:
+      blockchain: ton
+      sector: lending
+      contributors: pshuvalov, okhlopkov
+    config:
+      tags: ['ton', 'affluent', 'lending', 'factorial']
+    description: >
+      Affluent protocol repay events
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - block_date
+    columns:
+      - name: block_date
+        description: "block_date of the transaction"
+      - name: tx_hash
+        description: "transaction hash"
+      - name: trace_id
+        description: "trace id"
+      - name: tx_now
+        description: "transaction timestamp"
+      - name: tx_lt
+        description: "transaction logical time"
+      - name: pool_address
+        description: "Affluent pool address"
+      - name: pool_name
+        description: "Affluent pool name"
       - name: owner_address
         description: "Owner address"
       - name: asset
@@ -155,15 +155,15 @@ models:
         description: "Over repaid amount"
 
 
-  - name: factorial_ton_liquidate
+  - name: affluent_ton_liquidate
     meta:
       blockchain: ton
       sector: lending
-      contributors: pshuvalov
+      contributors: pshuvalov, okhlopkov
     config:
-      tags: ['ton', 'factorial', 'lending']
+      tags: ['ton', 'affluent', 'lending', 'factorial']
     description: >
-      Factorial protocol liquidate events
+      Affluent protocol liquidate events
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -181,9 +181,9 @@ models:
       - name: tx_lt
         description: "transaction logical time"
       - name: pool_address
-        description: "Factorial pool address"
+        description: "Affluent pool address"
       - name: pool_name
-        description: "Factorial pool name"
+        description: "Affluent pool name"
       - name: owner_address
         description: "Owner address"
       - name: repay_asset

@@ -1,5 +1,5 @@
 {{ config(
-       schema = 'factorial_ton'
+       schema = 'affluent_ton'
        , alias = 'borrow'
        , materialized = 'incremental'
        , file_format = 'delta'
@@ -8,20 +8,20 @@
        , unique_key = ['tx_hash', 'block_date']
        , post_hook='{{ expose_spells(\'["ton"]\',
                                    "project",
-                                   "factorial",
-                                   \'["pshuvalov"]\') }}'
+                                   "affluent",
+                                   \'["pshuvalov", "okhlopkov"]\') }}'
    )
  }}
 
 -- based on reference implementation: https://github.com/factorial-finance/action-notification-parser/blob/main/src/index.ts
 
-WITH factorial_ton_pools AS (
-    {{ factorial_ton_pools() }}
+WITH affluent_ton_pools AS (
+    {{ affluent_ton_pools() }}
 ),
 parsed_boc AS (
     SELECT M.block_date, M.tx_hash, M.trace_id, M.tx_now, M.tx_lt, pool_address, pool_name, M.destination as owner_address, body_boc
     FROM {{ source('ton', 'messages') }} M
-    JOIN factorial_ton_pools ON M.source = pool_address
+    JOIN affluent_ton_pools ON M.source = pool_address
     WHERE M.direction = 'out'
     AND M.block_date >= TIMESTAMP '2025-01-19' -- protocol launch
     {% if is_incremental() %}
