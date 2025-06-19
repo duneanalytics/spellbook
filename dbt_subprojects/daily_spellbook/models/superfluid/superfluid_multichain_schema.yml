@@ -7,6 +7,12 @@ models:
       contributors: [aho, superfluidhq]
     config:
       tags: ['defi', 'superfluid']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - index
     columns:
       - &blockchain
         name: blockchain
@@ -62,6 +68,12 @@ models:
       contributors: [aho, superfluidhq]
     config:
       tags: ['defi', 'superfluid']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -86,6 +98,12 @@ models:
       contributors: [aho, superfluidhq]
     config:
       tags: ['defi', 'superfluid']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -114,6 +132,12 @@ models:
       contributors: [aho, superfluidhq]
     config:
       tags: ['defi', 'superfluid']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -137,6 +161,12 @@ models:
       contributors: [aho, superfluidhq]
     config:
       tags: ['defi', 'superfluid']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -160,6 +190,12 @@ models:
       contributors: [aho, superfluidhq]
     config:
       tags: ['defi', 'superfluid']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -177,6 +213,12 @@ models:
       contributors: [aho, superfluidhq]
     config:
       tags: ['defi', 'superfluid']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -196,6 +238,12 @@ models:
       contributors: [aho, superfluidhq]
     config:
       tags: ['defi', 'superfluid']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -215,6 +263,12 @@ models:
       contributors: [aho, superfluidhq]
     config:
       tags: ['defi', 'superfluid']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
