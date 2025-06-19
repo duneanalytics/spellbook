@@ -1,0 +1,220 @@
+version: 2
+models:
+  - name: superfluid_multichain_flow_distribution_updated_events
+    meta:
+      project: superfluid
+      sector: defi
+      contributors: [aho, superfluidhq]
+    config:
+      tags: ['defi', 'superfluid']
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Event blockchain"
+      - &block_time
+        name: block_time
+        description: "Event UTC block time"
+      - &block_date
+        name: block_date
+        description: "Event UTC block date"
+      - &tx_hash
+        name: tx_hash
+        description: "Unique transaction hash value tied to each transaction"
+      - &index
+        name: index
+        description: "Index of the log event in the block"
+      - &contract_address
+        name: contract_address
+        description: "The contract address interacted for the event"
+      - &token
+        name: token
+        description: "The Supertoken address for the event"
+      - &pool
+        name: pool
+        description: "The distribution pool address"
+      - &distributor
+        name: distributor
+        description: "The distributor address"
+      - &operator
+        name: operator
+        description: "The operator address"
+      - name: old_flow_rate
+        description: "The old flow rate in nominal token amount per second"
+      - name: new_distributor_to_pool_flow_rate
+        description: "The new flow rate in nominal token amount per second"
+      - name: new_total_distribution_flow_rate
+        description: "The new adjusted distribution flow rate in nominal token amount per second"
+      - name: adjustment_flow_recipient
+        description: "The adjustment recipient address"
+      - name: adjustment_flow_rate
+        description: "The adjustment flow rate in nominal token amount per second"
+
+  - name: superfluid_multichain_flow_updated_events
+    meta:
+      project: superfluid
+      sector: defi
+      contributors: [aho, superfluidhq]
+    config:
+      tags: ['defi', 'superfluid']
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *token
+      - name: sender
+        description: "The sender address for the event"
+      - name: receiver
+        description: "The receiver address for the event"
+      - name: flow_rate
+        description: "The new flow rate in nominal token amount per second"
+
+  - name: superfluid_multichain_index_updated_events
+    meta:
+      project: superfluid
+      sector: defi
+      contributors: [aho, superfluidhq]
+    config:
+      tags: ['defi', 'superfluid']
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *token
+      - name: publisher
+        description: "The publisher address"
+      - name: index_id
+        description: "The index id"
+      - name: old_index_value
+        description: "The old index value"
+      - name: new_index_value
+        description: "The new index value"
+      - name: total_units_pending
+        description: "The total number of index units pending"
+      - name: total_units_approved
+        description: "The total number of index units approved"
+
+  - name: superfluid_multichain_instant_distribution_updated_events
+    meta:
+      project: superfluid
+      sector: defi
+      contributors: [aho, superfluidhq]
+    config:
+      tags: ['defi', 'superfluid']
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *token
+      - *pool
+      - *distributor
+      - *operator
+      - name: requested_amount
+        description: "The requested amount in nominal token amount"
+      - name: actual_amount
+        description: "The actual amount in nominal token amount"
+
+  - name: superfluid_multichain_pool_connection_updated_events
+    meta:
+      project: superfluid
+      sector: defi
+      contributors: [aho, superfluidhq]
+    config:
+      tags: ['defi', 'superfluid']
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *token
+      - *pool
+      - name: account
+        description: TBC
+      - name: connected
+        description: TBC
+
+  - name: superfluid_multichain_supertoken_created_events
+    meta:
+      project: superfluid
+      sector: defi
+      contributors: [aho, superfluidhq]
+    config:
+      tags: ['defi', 'superfluid']
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *tx_hash
+      - *index
+      - name: token_type
+        description: The type of Supertoken created
+      - *token
+
+  - name: superfluid_multichain_token_downgraded_events
+    meta:
+      project: superfluid
+      sector: defi
+      contributors: [aho, superfluidhq]
+    config:
+      tags: ['defi', 'superfluid']
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *tx_hash
+      - *index
+      - *token
+      - name: account
+        description: "The account address that the token was downgraded to"
+      - name: amount
+        description: "The nominal amount of tokens that were downgraded"
+
+  - name: superfluid_multichain_token_upgraded_events
+    meta:
+      project: superfluid
+      sector: defi
+      contributors: [aho, superfluidhq]
+    config:
+      tags: ['defi', 'superfluid']
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *tx_hash
+      - *index
+      - *token
+      - name: account
+        description: "The account address that the token was upgraded to"
+      - name: amount
+        description: "The nominal amount of tokens that were upgraded"
+
+  - name: superfluid_multichain_transfer_events
+    meta:
+      project: superfluid
+      sector: defi
+      contributors: [aho, superfluidhq]
+    config:
+      tags: ['defi', 'superfluid']
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *tx_hash
+      - *index
+      - *token
+      - name: from
+        description: Origin address
+      - name: to
+        description: Destination address
+      - name: value
+        description: Amount of tokens transferred
