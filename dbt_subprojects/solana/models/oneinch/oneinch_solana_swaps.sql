@@ -59,7 +59,7 @@ orders as (
         , max(if(src_mint = token_mint_address, symbol)) as src_symbol
         , max(if(dst_mint = token_mint_address, symbol)) as dst_symbol
     from transfers as t -- {{ ref('oneinch_solana_transfers') }}
-    join orders as o on t.order_id = o.order_id
+    join orders as o on t.order_hash = o.order_hash and t.block_month = o.block_month
     group by 1, 2, 3, 4, 5
 )
 --test_schema.git_dunesql_b75674d_oneinch_solana_fusion_created_orders
