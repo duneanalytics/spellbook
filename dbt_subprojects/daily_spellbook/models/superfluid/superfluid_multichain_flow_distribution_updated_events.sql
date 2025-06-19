@@ -12,15 +12,13 @@ SELECT
     blockchain,
     block_time,
     block_date,
-    block_number,
-    block_hash,
-    contract_address,
     tx_hash,
     index,
-    varbinary_substring(topic1, 13) as token,
-    varbinary_substring(topic2, 13) as pool,
-    varbinary_substring(topic3, 13) as distributor,
-    varbinary_to_int256(varbinary_substring(data, 97, 32)) as new_total_distribution_flow_rate
+    contract_address,
+    varbinary_substring(topic1, 13) AS token,
+    varbinary_substring(topic2, 13) AS pool,
+    varbinary_substring(topic3, 13) AS distributor,
+    varbinary_to_int256(varbinary_substring(data, 97, 32)) AS new_total_distribution_flow_rate
 FROM {{ ref('evms_logs') }}
 WHERE 
     blockchain IN (

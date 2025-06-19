@@ -1,6 +1,6 @@
 {{ config(
     schema = 'superfluid_multichain',
-    alias = 'flow_updated_events',
+    alias = 'pool_connection_updated_events',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -16,11 +16,11 @@ SELECT
     index,
     contract_address,
     varbinary_substring(topic1, 13) AS token,
-    varbinary_substring(topic2, 13) AS sender,
-    varbinary_substring(topic3, 13) AS receiver,
-    varbinary_to_int256(varbinary_substring(data, 1, 32)) AS flow_rate
+    varbinary_substring(topic2, 13) AS pool,
+    varbinary_substring(topic3, 13) AS account,
+    if(varbinary_to_uint256(varbinary_substring(data, 1, 32)) = 1, true, false) AS connected
 FROM {{ ref('evms_logs') }}
-WHERE 
+WHERE
     blockchain IN (
         'arbitrum',
         'avalanche_c',
@@ -32,4 +32,5 @@ WHERE
         'optimism',
         'polygon',
         'scroll'
-    ) AND topic0 = 0x57269d2ebcccecdcc0d9d2c0a0b80ead95f344e28ec20f50f709811f209d4e0e
+    ) AND
+    topic0 = 0xf357a2e6919da4efedb0301baf1caaed2bca70b115b913f9add41bbefc75c9b3
