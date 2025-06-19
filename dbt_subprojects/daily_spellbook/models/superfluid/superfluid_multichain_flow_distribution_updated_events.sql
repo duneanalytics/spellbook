@@ -18,7 +18,12 @@ SELECT
     varbinary_substring(topic1, 13) AS token,
     varbinary_substring(topic2, 13) AS pool,
     varbinary_substring(topic3, 13) AS distributor,
-    varbinary_to_int256(varbinary_substring(data, 97, 32)) AS new_total_distribution_flow_rate
+    varbinary_substring(data, 13, 20) AS operator,
+    varbinary_to_int256(varbinary_substring(data, 33, 32)) AS old_flow_rate,
+    varbinary_to_int256(varbinary_substring(data, 65, 32)) AS new_distributor_to_pool_flow_rate,
+    varbinary_to_int256(varbinary_substring(data, 97, 32)) AS new_total_distribution_flow_rate,
+    varbinary_substring(data, 141, 20) AS adjustment_flow_recipient,
+    varbinary_to_int256(varbinary_substring(data, 161, 32)) AS adjustment_flow_rate
 FROM {{ ref('evms_logs') }}
 WHERE 
     blockchain IN (

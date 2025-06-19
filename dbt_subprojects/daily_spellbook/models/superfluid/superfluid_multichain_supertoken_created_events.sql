@@ -1,6 +1,6 @@
 {{ config(
     schema = 'superfluid_multichain',
-    alias = 'supertoken_addresses',
+    alias = 'supertoken_created_events',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
