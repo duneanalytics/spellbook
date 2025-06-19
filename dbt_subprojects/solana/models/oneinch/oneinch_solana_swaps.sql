@@ -49,7 +49,7 @@ orders as (
     select 
         t.tx_id
         , t.block_slot
-        , t.order_id
+        , t.order_hash
         , t.call_trace_address
         , t.taker
         , sum(if(src_mint = token_mint_address, amount)) as src_amount
@@ -102,5 +102,5 @@ select
     , {{dbt_utils.generate_surrogate_key(["blockchain", "order_hash", "array_join(call_trace_address, ',')"])}} as unique_key
     , cast(date_trunc('month', tx.block_time) as date) as block_month
 from orders as o
-join amounts using(order_id)
+join amounts using(order_hash)
 join transactions as tx on amounts.tx_id = tx.id and amounts.block_slot = tx.block_slot
