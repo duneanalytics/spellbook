@@ -24,16 +24,14 @@ SELECT
 FROM {{ ref('evms_logs') }}
 WHERE 
     blockchain IN (
-        'gnosis',
-        'polygon',
-        'optimism',
         'arbitrum',
         'avalanche_c',
-        'bnb',
-        'ethereum',
-        'celo',
         'base',
+        'bnb',
+        'celo',
+        'ethereum',
+        'gnosis',
+        'optimism',
+        'polygon',
         'scroll'
     ) AND topic0 = 0xc4bd0e4bfe3a83cbd5a7a71bb33bcb6bed9e0c24d710f3fb51c85caf1cd3af36
-
-LIMIT 100

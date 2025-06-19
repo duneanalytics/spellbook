@@ -35,5 +35,3 @@ WHERE
         'polygon',
         'scroll'
     ) AND topic0 = 0x6e8348961b299f365797c30cd18a91284b046858689eeb6150a5ba432fe6583e
-
-LIMIT 100
