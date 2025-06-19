@@ -1144,7 +1144,7 @@ models:
       contributors: principatel
     config:
       tags: ["base", "dex", "trades", "fxdx"]
-    description: "fxdx base base trades"
+    description: "FXDX base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -1152,7 +1152,7 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('fxdx_base_base_trades_seed')
-           filter:
+          filter:
             version: 1
     
   - name: fluid_v1_base_base_trades
