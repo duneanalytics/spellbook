@@ -1,4 +1,4 @@
-{%- macro factorial_ton_pools()
+{%- macro affluent_ton_pools()
 -%}
 {# Contains pool addresses #}
 
