@@ -83,77 +83,6 @@ models:
           name: trace_address
           description: "trace address from traces table, empty for erc20 txs"
 
-  - name: aztec_v2_ethereum_deposit_assets 
-    meta:
-      blockchain: ethereum
-      project: aztec_v2
-      contributors: jackie, Henrystats
-    config:
-      tags: ['ethereum','aztec']
-    description: "List of assets added"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - asset_id
-            - asset_address
-            - asset_gas_limit
-            - date_added
-    columns:
-        - &asset_id
-          name: asset_id 
-        - &asset_address
-          name: asset_address
-        - &asset_gas_limit
-          name: asset_gas_limit
-        - &date_added
-          name: date_added 
-
-  - name: aztec_v2_ethereum_daily_bridge_activity
-    meta:
-      blockchain: ethereum
-      project: aztec_v2
-      contributors: jackie, Henrystats
-    config:
-      tags: ['ethereum','aztec']
-    description: "View aztec rollup bridge daily bridge activity summary"
-    columns:
-        - &date 
-          name: date
-          description: "Summary Date"
-        - *bridge_protocol
-        - *bridge_address
-        - &token_address
-          name: token_address
-          description: "token contract address"
-        - *symbol
-        - &num_rollups
-          name: num_rollups
-          description: "daily number of rollups"
-        - &num_tfers
-          name: num_tfers
-          description: " daily number of transfers"
-        - &abs_value_norm
-          name: abs_value_norm
-          description: "daily value of token transferred in token's unit"
-        - &abs_volume_usd
-          name: abs_volume_usd
-          description: "daily token volume in usd"
-        - &abs_volume_eth
-          name: abs_volume_eth
-          description: "daily token volume in eth"
-        - &input_volume_usd
-          name: input_volume_usd
-          description: "daily input volume in usd"
-        - &input_volume_eth
-          name: input_volume_eth
-          description: "daily input volume in eth"
-        - &output_volume_usd
-          name: output_volume_usd
-          description: "daily output volume in usd"
-        - &output_volume_eth
-          name: output_volume_eth
-          description: "daily output volume in eth"
-
   - name: aztec_v2_ethereum_daily_deposits
     meta:
       blockchain: ethereum
@@ -163,14 +92,22 @@ models:
       tags: ['ethereum','aztec']
     description: "View aztec daily deposits grouped by token"
     columns:
-        - *date 
-        - *token_address
-        - *symbol
-        - *num_rollups
-        - *num_tfers
-        - *abs_value_norm
-        - *abs_volume_usd
-        - *abs_volume_eth
+        - name: date
+          description: "date of the rollup/transfer activity"
+        - name: token_address
+          description: "token contract address"
+        - name: symbol
+          description: "token symbol"
+        - name: num_rollups
+          description: "number of rollups"
+        - name: num_tfers
+          description: "number of transfers"
+        - name: abs_value_norm
+          description: "absolute normalized value"
+        - name: abs_volume_usd
+          description: "absolute volume in USD"
+        - name: abs_volume_eth
+          description: "absolute volume in ETH"
         - &user_deposits_usd
           name: user_deposits_usd
           description: "daily user deposits in usd"
@@ -183,28 +120,6 @@ models:
         - &user_withdrawals_eth
           name: user_withdrawals_eth
           description: "daily user withdrawals in eth"
-
-  - name: aztec_v2_ethereum_daily_estimated_rollup_tvl
-    meta:
-      blockchain: ethereum
-      project: aztec_v2
-      contributors: jackie, Henrystats
-    config:
-      tags: ['ethereum','aztec']
-    description: "View daily rollup tvl grouped by token"
-    columns:
-        - *date 
-        - *symbol
-        - *token_address
-        - &balance
-          name: balance
-          description: "token balance"
-        - &tvl_usd
-          name: tvl_usd
-          description: "tvl in usd"
-        - &tvl_eth
-          name: tvl_eth
-          description: "tvl in eth"
 
   - name: aztec_v2_ethereum_bridges
     meta:
