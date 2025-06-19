@@ -21,6 +21,7 @@ ALL_TRADES AS (
         amount_raw,
         volume_usd,
         volume_ton,
+        block_date,
         block_time,
         trader_address
     FROM {{ source('ton', 'dex_trades') }}
@@ -29,27 +30,47 @@ ALL_TRADES AS (
       ROW(token_sold_address, amount_sold_raw)
       ]) AS T(token_address, amount_raw)
 )
+
+
+, LIQUID_TOKENS AS (
+    SELECT DISTINCT 
+        block_date,
+        token_address
+    FROM {{ source('ton', 'dex_pools') }} DP
+    CROSS JOIN UNNEST (ARRAY[
+        ROW(jetton_left, reserves_left), 
+        ROW(jetton_right, reserves_right)
+        ]) AS T(token_address, reserves_raw)
+    WHERE 1=1
+        AND tvl_usd >= 100_000 -- highly liquid pools
+)
+
+
+
 , PRICES_FROM_DEX_TRADES AS (
     SELECT
-        token_address,
-        DATE_TRUNC('day', block_time) AS ts,
+        T.token_address,
+        DATE_TRUNC('day', T.block_time) AS ts,
         CASE
-          WHEN token_address = '0:0000000000000000000000000000000000000000000000000000000000000000' THEN 1e-9
-          ELSE SUM(volume_ton) / SUM(CAST(amount_raw AS DOUBLE))
+          WHEN T.token_address = '0:0000000000000000000000000000000000000000000000000000000000000000' THEN 1e-9
+          ELSE SUM(T.volume_ton) / SUM(CAST(T.amount_raw AS DOUBLE))
         END AS price_ton,
         
         CASE
-          WHEN token_address = '0:B113A994B5024A16719F69139328EB759596C38A25F59028B146FECDC3621DFE' THEN 1e-6
-          ELSE SUM(volume_usd) / SUM(CAST(amount_raw AS DOUBLE))
+          WHEN T.token_address = '0:B113A994B5024A16719F69139328EB759596C38A25F59028B146FECDC3621DFE' THEN 1e-6
+          ELSE SUM(T.volume_usd) / SUM(CAST(T.amount_raw AS DOUBLE))
         END AS price_usd,
         'Jetton' AS asset_type
-    FROM ALL_TRADES
+    FROM ALL_TRADES AS T
+    LEFT JOIN LIQUID_TOKENS
+        ON LIQUID_TOKENS.token_address = T.token_address
+        AND LIQUID_TOKENS.block_date = T.block_date
     GROUP BY 1, 2
     HAVING 1=1 -- threshold for inclusion token into the price table
         AND COUNT(*) >= 100  -- 100 trades / day
-        AND SUM(volume_usd) >= 100  -- 100$ volume per day
-        AND COUNT(DISTINCT trader_address) >= 10 -- 10 traders / day
-        
+        AND SUM(T.volume_usd) >= 100  -- 100$ volume per day
+        AND COUNT(DISTINCT T.trader_address) >= 10 -- 10 traders / day
+        OR COUNT(LIQUID_TOKENS.token_address) > 0
 )
 
 ------------------------------------------

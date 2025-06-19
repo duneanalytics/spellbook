@@ -221,4 +221,7 @@ sources:
   - name: fxdx_base
     tables:
       - name: vault_evt_swap
-
+  - name: fluid_base
+    tables: 
+      - name: FluidDexT1_evt_Swap
+      - name: fluiddexfactory_call_deploydex
