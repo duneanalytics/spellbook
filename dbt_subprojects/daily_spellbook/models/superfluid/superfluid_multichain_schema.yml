@@ -4,7 +4,7 @@ models:
     meta:
       project: superfluid
       sector: defi
-      contributors: [aho, superfluidhq]
+      contributors: [cincauhangus, superfluidhq]
     config:
       tags: ['defi', 'superfluid']
     data_tests:
@@ -65,7 +65,7 @@ models:
     meta:
       project: superfluid
       sector: defi
-      contributors: [aho, superfluidhq]
+      contributors: [cincauhangus, superfluidhq]
     config:
       tags: ['defi', 'superfluid']
     data_tests:
@@ -95,7 +95,7 @@ models:
     meta:
       project: superfluid
       sector: defi
-      contributors: [aho, superfluidhq]
+      contributors: [cincauhangus, superfluidhq]
     config:
       tags: ['defi', 'superfluid']
     data_tests:
@@ -129,7 +129,7 @@ models:
     meta:
       project: superfluid
       sector: defi
-      contributors: [aho, superfluidhq]
+      contributors: [cincauhangus, superfluidhq]
     config:
       tags: ['defi', 'superfluid']
     data_tests:
@@ -158,7 +158,7 @@ models:
     meta:
       project: superfluid
       sector: defi
-      contributors: [aho, superfluidhq]
+      contributors: [cincauhangus, superfluidhq]
     config:
       tags: ['defi', 'superfluid']
     data_tests:
@@ -187,7 +187,7 @@ models:
     meta:
       project: superfluid
       sector: defi
-      contributors: [aho, superfluidhq]
+      contributors: [cincauhangus, superfluidhq]
     config:
       tags: ['defi', 'superfluid']
     data_tests:
@@ -210,7 +210,7 @@ models:
     meta:
       project: superfluid
       sector: defi
-      contributors: [aho, superfluidhq]
+      contributors: [cincauhangus, superfluidhq]
     config:
       tags: ['defi', 'superfluid']
     data_tests:
@@ -235,7 +235,7 @@ models:
     meta:
       project: superfluid
       sector: defi
-      contributors: [aho, superfluidhq]
+      contributors: [cincauhangus, superfluidhq]
     config:
       tags: ['defi', 'superfluid']
     data_tests:
@@ -260,7 +260,7 @@ models:
     meta:
       project: superfluid
       sector: defi
-      contributors: [aho, superfluidhq]
+      contributors: [cincauhangus, superfluidhq]
     config:
       tags: ['defi', 'superfluid']
     data_tests:
