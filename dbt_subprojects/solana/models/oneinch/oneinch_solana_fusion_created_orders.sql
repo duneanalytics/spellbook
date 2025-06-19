@@ -47,7 +47,6 @@ select
     , account_escrow_src_ata as escrow_src_ata
     , account_maker as maker
     , account_maker_src_ata as maker_src_ata
-    , account_taker as taker
     , account_dst_mint as dst_mint
     , account_maker_receiver as maker_receiver
     , account_associated_token_program as associated_token_program

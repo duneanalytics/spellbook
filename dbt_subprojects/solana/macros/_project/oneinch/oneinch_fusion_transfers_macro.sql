@@ -5,13 +5,11 @@ select
         tx_id
         , block_time
         , block_slot
-        -- , true as fusion -- TODO: make flags
-        -- , taker as resolver -- Check if this is correct logic
-        -- , maker as user -- Check
         , order_hash
         , order_hash_base58
         , order_id
         , token_mint_address
+        , taker
         , symbol 
         , amount 
         , amount_usd 
@@ -24,8 +22,7 @@ from (
         call_tx_id as tx_id
         , call_block_time as block_time
         , call_block_slot as block_slot
-        -- , account_taker as taker
-        -- , account_maker as maker
+        , account_taker as taker
         , {{ oneinch_order_hash_macro() }} as order_hash
         , to_base58({{ oneinch_order_hash_macro() }}) as order_hash_base58
         , cast(json_value("order", 'lax $.OrderConfig.id') as uint256) as order_id
