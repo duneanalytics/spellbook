@@ -62,7 +62,7 @@ SELECT
     new_distributor_to_pool_flow_rate,
     new_total_distribution_flow_rate,
     adjustment_flow_recipient,
-    adjustment_flow_rate
+    adjustment_flow_rate,
     block_time AS start_block_time,
     COALESCE(
         LEAD(block_time) OVER (PARTITION BY blockchain, token, distributor, pool ORDER BY block_number, index),
