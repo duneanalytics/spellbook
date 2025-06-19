@@ -7,7 +7,7 @@ models:
       sector: lending
       contributors: pshuvalov, okhlopkov
     config:
-      tags: ['ton', 'affluent', 'lending']
+      tags: ['ton', 'affluent', 'lending', 'factorial']
     description: >
       Affluent protocol supply events
     data_tests:
@@ -44,7 +44,7 @@ models:
       sector: lending
       contributors: pshuvalov, okhlopkov
     config:
-      tags: ['ton', 'affluent', 'lending']
+      tags: ['ton', 'affluent', 'lending', 'factorial']
     description: >
       Affluent protocol withdraw events
     data_tests:
