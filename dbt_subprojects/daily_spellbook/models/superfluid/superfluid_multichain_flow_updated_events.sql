@@ -21,18 +21,18 @@ SELECT
     varbinary_substring(topic2, 13) as sender,
     varbinary_substring(topic3, 13) as receiver,
     varbinary_to_int256(varbinary_substring(data, 1, 32)) as flow_rate
-FROM {{ source('evms','logs') }}
+FROM {{ ref('evms_logs') }}
 WHERE 
     blockchain IN (
-        'gnosis',
-        'polygon',
-        'optimism',
         'arbitrum',
         'avalanche_c',
-        'bnb',
-        'ethereum',
-        'celo',
         'base',
+        'bnb',
+        'celo',
+        'ethereum',
+        'gnosis',
+        'optimism',
+        'polygon',
         'scroll'
     ) AND topic0 = 0x57269d2ebcccecdcc0d9d2c0a0b80ead95f344e28ec20f50f709811f209d4e0e
 

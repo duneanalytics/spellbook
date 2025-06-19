@@ -24,18 +24,18 @@ SELECT
     varbinary_to_int256(varbinary_substring(data, 33, 32)) as new_index_value,
     varbinary_to_int256(varbinary_substring(data, 65, 32)) as total_units_pending,
     varbinary_to_int256(varbinary_substring(data, 97, 32)) as total_units_approved
-FROM {{ source('evms','logs') }}
+FROM {{ ref('evms_logs') }}
 WHERE 
     blockchain IN (
-        'gnosis',
-        'polygon',
-        'optimism',
         'arbitrum',
         'avalanche_c',
-        'bnb',
-        'ethereum',
-        'celo',
         'base',
+        'bnb',
+        'celo',
+        'ethereum',
+        'gnosis',
+        'optimism',
+        'polygon',
         'scroll'
     ) AND topic0 = 0x81e37f3d9f16cbf29a62d6a1c21d79b23ef29b54124ec44af43a50fffb9304f3
 

@@ -21,7 +21,7 @@ SELECT
     varbinary_substring(topic2, 13) as pool,
     varbinary_substring(topic3, 13) as distributor,
     varbinary_to_int256(varbinary_substring(data, 97, 32)) as new_total_distribution_flow_rate
-FROM {{ source('evms','logs') }}
+FROM {{ ref('evms_logs') }}
 WHERE 
     blockchain IN (
         'gnosis',
