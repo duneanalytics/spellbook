@@ -40,7 +40,6 @@ select
     , from_unixtime(cast(json_value("order", 'lax $.OrderConfig.expiration_time') as bigint)) as order_expiration_time
     , cast(json_value("order", 'lax $.OrderConfig.src_asset_is_native') as boolean) as order_src_asset_is_native
     , cast(json_value("order", 'lax $.OrderConfig.dst_asset_is_native') as boolean) as order_dst_asset_is_native
-    , cast(json_value("order", 'lax $.OrderConfig.min_dst_amount') as uint256) as order_min_dst_amount
     , account_system_program as system_program
     , account_escrow as escrow
     , account_src_mint as src_mint
@@ -48,6 +47,7 @@ select
     , account_escrow_src_ata as escrow_src_ata
     , account_maker as maker
     , account_maker_src_ata as maker_src_ata
+    , account_taker as taker
     , account_dst_mint as dst_mint
     , account_maker_receiver as maker_receiver
     , account_associated_token_program as associated_token_program

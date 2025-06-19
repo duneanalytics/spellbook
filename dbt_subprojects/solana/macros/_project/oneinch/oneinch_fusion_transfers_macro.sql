@@ -9,6 +9,8 @@ select
         -- , taker as resolver -- Check if this is correct logic
         -- , maker as user -- Check
         , order_hash
+        , order_hash_base58
+        , order_id
         , token_mint_address
         , symbol 
         , amount 
@@ -17,16 +19,16 @@ select
         , to_owner
         , call_trace_address
         , array[coalesce(outer_instruction_index, -1), coalesce(inner_instruction_index, -1)] as transfer_trace_address
-        -- , CALLTRACEADDRESs
 from (
     select 
         call_tx_id as tx_id
         , call_block_time as block_time
         , call_block_slot as block_slot
-        , account_taker as taker
-        , account_maker as maker
+        -- , account_taker as taker
+        -- , account_maker as maker
         , {{ oneinch_order_hash_macro() }} as order_hash
         , to_base58({{ oneinch_order_hash_macro() }}) as order_hash_base58
+        , cast(json_value("order", 'lax $.OrderConfig.id') as uint256) as order_id
         , call_outer_instruction_index as outer_instruction_index
         , array[coalesce(call_outer_instruction_index, -1), coalesce(call_inner_instruction_index, -1)] call_trace_address
     from {{ source('oneinch_solana', 'fusion_swap_call_fill') }}
