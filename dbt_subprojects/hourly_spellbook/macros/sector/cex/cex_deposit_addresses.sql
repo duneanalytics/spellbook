@@ -31,8 +31,12 @@ WITH unique_inflows AS (
     INNER JOIN gas_ethereum.fees f USING (block_number, tx_hash)
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('cf.block_time') }}
-    AND {{ incremental_predicate('cf.block_time') }}
+    AND {{ incremental_predicate('f.block_time') }}
+    {% else %}
+    WHERE cf.block_time > NOW() - interval '1' month
+    AND f.block_time > NOW() - interval '1' month 
     {% endif %}
+    
     )
 
 , in_and_out AS (
@@ -49,7 +53,7 @@ WITH unique_inflows AS (
         AND t.block_time BETWEEN i.block_time - interval '1' day AND i.block_time
         --AND t.block_number<i.block_number
         --AND i.amount_raw BETWEEN t.amount_raw*0.9 AND t.amount_raw*1.1
-    WHERE block_time > NOW() - interval '1' month 
+    WHERE t.block_time > NOW() - interval '1' month 
     {% if is_incremental() %}
     AND {{ incremental_predicate('t.block_time') }}
     {% endif %}
