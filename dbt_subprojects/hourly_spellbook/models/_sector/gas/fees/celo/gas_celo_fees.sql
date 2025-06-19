@@ -12,17 +12,14 @@
     )
 }}
 
-{% set test_short_ci = false %}
+{% set test_short_ci = true %}
 
-WITH
-
-fee_currency_wrapper_map (fee_currency_wrapper_contract, wrapped_token_contract, symbol, decimals) AS (
+WITH fee_currency_wrapper_map (fee_currency_wrapper_contract, wrapped_token_contract, symbol, decimals) AS (
     values
     (0x0e2a3e05bc9a16f5292a6170456a710cb89c6f72, 0x48065fbBE25f71C9282ddf5e1cD6D6A887483D5e, 'USDT', 18),
     (0x2f25deb3848c207fc8e0c34035b3ba7fc157602b, 0xcebA9300f2b948710d2653dD7B07f33A8B32118C, 'USDC', 18)
-),
-
-base_model AS (
+)
+, base_model AS (
     SELECT
         txns.block_time
         ,txns.block_number
@@ -60,7 +57,8 @@ base_model AS (
         {% if is_incremental() %}
         AND {{ incremental_predicate('blocks.time') }}
         {% endif %}
-    LEFT JOIN fee_currency_wrapper_map fcwp on txns.fee_currency = fcwp.fee_currency_wrapper_contract
+    LEFT JOIN fee_currency_wrapper_map as fcwp
+        ON txns.fee_currency = fcwp.fee_currency_wrapper_contract
     {% if test_short_ci %}
     WHERE {{ incremental_predicate('txns.block_time') }}
     OR txns.hash in (select tx_hash from {{ref('evm_gas_fees')}})
@@ -70,38 +68,38 @@ base_model AS (
 )
 SELECT
     '{{blockchain}}' as blockchain
-    ,CAST(date_trunc('month', block_time) AS DATE) AS block_month
-    ,CAST(date_trunc('day', block_time) AS DATE) AS block_date
-    ,block_time
-    ,block_number
-    ,tx_hash
-    ,tx_from
-    ,tx_to
-    ,gas_price
-    ,gas_used
+    ,CAST(date_trunc('month', b.block_time) AS DATE) AS block_month
+    ,CAST(date_trunc('day', b.block_time) AS DATE) AS block_date
+    ,b.block_time
+    ,b.block_number
+    ,b.tx_hash
+    ,b.tx_from
+    ,b.tx_to
+    ,b.gas_price
+    ,b.gas_used
     ,p.symbol as currency_symbol
-    ,coalesce(tx_fee_raw, 0) as tx_fee_raw
-    ,coalesce(tx_fee_raw, 0) / pow(10, coalesce(tx_fee_currency_decimals, p.decimals)) as tx_fee
-    ,coalesce(tx_fee_raw, 0) / pow(10, coalesce(tx_fee_currency_decimals, p.decimals)) * p.price as tx_fee_usd
-    ,transform_values(tx_fee_breakdown_raw,
+    ,coalesce(b.tx_fee_raw, 0) as tx_fee_raw
+    ,coalesce(b.tx_fee_raw, 0) / pow(10, coalesce(b.tx_fee_currency_decimals, p.decimals)) as tx_fee
+    ,coalesce(b.tx_fee_raw, 0) / pow(10, coalesce(b.tx_fee_currency_decimals, p.decimals)) * p.price as tx_fee_usd
+    ,transform_values(b.tx_fee_breakdown_raw,
             (k,v) -> coalesce(v,0)) as tx_fee_breakdown_raw
-    ,transform_values(tx_fee_breakdown_raw,
-            (k,v) -> coalesce(v, 0) / pow(10, coalesce(tx_fee_currency_decimals, p.decimals)) ) as tx_fee_breakdown
-    ,transform_values(tx_fee_breakdown_raw,
-            (k,v) -> coalesce(v, 0) / pow(10, coalesce(tx_fee_currency_decimals, p.decimals)) * p.price) as tx_fee_breakdown_usd
-    ,tx_fee_currency
-    ,block_proposer
-    ,max_fee_per_gas
-    ,priority_fee_per_gas
-    ,max_priority_fee_per_gas
-    ,base_fee_per_gas
-    ,gas_limit
-    ,gas_limit_usage
-FROM base_model
-LEFT JOIN {{ ref('prices_usd_with_native') }} p
-    ON p.blockchain = '{{blockchain}}'
-    AND p.contract_address = tx_fee_currency
-    AND p.minute = date_trunc('minute', block_time)
+    ,transform_values(b.tx_fee_breakdown_raw,
+            (k,v) -> coalesce(v, 0) / pow(10, coalesce(b.tx_fee_currency_decimals, p.decimals)) ) as tx_fee_breakdown
+    ,transform_values(b.tx_fee_breakdown_raw,
+            (k,v) -> coalesce(v, 0) / pow(10, coalesce(b.tx_fee_currency_decimals, p.decimals)) * p.price) as tx_fee_breakdown_usd
+    ,b.tx_fee_currency
+    ,b.block_proposer
+    ,b.max_fee_per_gas
+    ,b.priority_fee_per_gas
+    ,b.max_priority_fee_per_gas
+    ,b.base_fee_per_gas
+    ,b.gas_limit
+    ,b.gas_limit_usage
+FROM base_model as b
+LEFT JOIN {{ source('prices', 'hour') }} as p --celo can pay gas with various tokens, can't use macro for native token prices only
+    ON p.timestamp = date_trunc('hour', b.block_time)
+    AND p.blockchain = '{{blockchain}}'
+    AND p.contract_address = b.tx_fee_currency
     {% if is_incremental() %}
-    AND {{ incremental_predicate('p.minute') }}
+    AND {{ incremental_predicate('p.timestamp') }}
     {% endif %}
