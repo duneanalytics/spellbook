@@ -14,5 +14,5 @@
 {{cex_deposit_addresses(
         blockchain = blockchain
         , cex_local_flows = ref('cex_' + blockchain + '_flows')
-        , crosschain_first_funded_by = ref('addresses_events_first_funded_by')
+        , local_gas_fees = ref('gas_' + blockchain + '_fees')
 )}}

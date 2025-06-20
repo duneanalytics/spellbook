@@ -1,4 +1,4 @@
-{% macro cex_deposit_addresses(blockchain, cex_local_flows, crosschain_first_funded_by) %}
+{% macro cex_deposit_addresses(blockchain, cex_local_flows, local_gas_fees) %}
 
 WITH unique_inflows AS (
     SELECT "from" AS suspected_deposit_address
@@ -28,7 +28,7 @@ WITH unique_inflows AS (
     , CASE WHEN cf.token_standard = 'native' THEN cf.amount+(f.tx_fee) ELSE cf.amount END AS amount
     FROM {{cex_local_flows}} cf
     INNER JOIN unique_inflows ui USING (block_number, unique_key)
-    INNER JOIN {{ ref('gas_'~blockchain~'_fees') }} f USING (block_number, tx_hash)
+    INNER JOIN {{local_gas_fees}} f USING (block_number, tx_hash)
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('cf.block_time') }}
     AND {{ incremental_predicate('f.block_time') }}
