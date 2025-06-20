@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: ve_locked
+    description: >
+      vePENDLE locked positions by provider from VotingEscrow contract.
+    meta:
+      blockchain: ethereum
+      protocol: pendle
+      category: staking
+    config:
+      tags: ['pendle', 'vePENDLE', 'staking']
+    columns:
+      - name: block_time
+        description: Timestamp of the lock event
+      - name: tx_hash
+        description: Transaction hash
+      - name: log_index
+        description: Log index in the transaction
+      - name: contract_address
+        description: VotingEscrow contract address
+      - name: provider
+        description: Address locking tokens
+      - name: value
+        description: Amount locked
+      - name: locktime
+        description: Unlock time
