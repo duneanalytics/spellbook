@@ -28,7 +28,7 @@ WITH unique_inflows AS (
     , CASE WHEN token_standard = 'native' THEN amount+(f.tx_fee) ELSE amount END AS amount
     FROM {{cex_local_flows}} cf
     INNER JOIN unique_inflows ui USING (block_number, unique_key)
-    INNER JOIN gas_ethereum.fees f USING (block_number, tx_hash)
+    INNER JOIN {{ ref('gas_'~blockchain~'_fees') }} f USING (block_number, tx_hash)
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('cf.block_time') }}
     AND {{ incremental_predicate('f.block_time') }}
