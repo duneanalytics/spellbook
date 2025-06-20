@@ -10,13 +10,13 @@
 }}
 
 {{
-    uniswap_compatible_v4_liquidity(
+    uniswap_compatible_v4_base_liquidity(
           blockchain = 'unichain'
         , project = 'uniswap'
         , version = '4'
         , PoolManager_evt_ModifyLiquidity = source ('uniswap_v4_unichain', 'PoolManager_evt_ModifyLiquidity')
         , PoolManager_evt_Swap = source('uniswap_v4_unichain', 'PoolManager_evt_Swap') 
-        , PoolManager_call_Swap = source('uniswap_v4_unichain', 'PoolManager_call_Swap') 
-        , PoolManager_evt_Initialize = source('uniswap_v4_unichain', 'PoolManager_evt_Initialize')
+        , liquidity_pools = ref('uniswap_v4_unichain_pools')
+        , liquidity_sqrtpricex96 = ref('uniswap_v4_unichain_sqrtpricex96')
     )
 }}

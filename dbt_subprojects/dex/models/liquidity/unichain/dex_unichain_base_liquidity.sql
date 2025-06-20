@@ -24,6 +24,7 @@ WITH base_union AS (
                 , id
                 , tx_hash
                 , evt_index
+                , event_type
                 , token0
                 , token1
                 , amount0_raw

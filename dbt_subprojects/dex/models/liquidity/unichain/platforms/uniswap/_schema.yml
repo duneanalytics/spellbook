@@ -79,12 +79,12 @@ models:
         name: sqrtpricex96
         description: "Pool Price"
 
-  - name: uniswap_v4_unichain_liquidity
+  - name: uniswap_v4_unichain_base_liquidity
     meta:
       blockchain: unichain
       sector: dex
       project: uniswap
-      contributors: Henrystats
+      contributors: irishlatte19, Henrystats
     config:
       tags: ['unichain', 'pools', 'liquidity', 'uniswap']
     description: >
@@ -94,6 +94,10 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
+      - check_dex_base_liquidity_seed:
+          seed_file: ref('uniswap_unichain_base_liquidity_seed')
+          filter:
+            version: 4
     columns:
       - *blockchain
       - *project
