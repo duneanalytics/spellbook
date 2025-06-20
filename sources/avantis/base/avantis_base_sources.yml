@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: avantis_base
+    description: base decoded tables related to Avantis
+    tables:
+      - name: Trading_evt_OpenLimitPlaced
+        description: "Details the new positions opened"
+      - name: Trading_evt_MarginUpdated
+        description: "Details the swaps to close existing positions"
