@@ -25,7 +25,7 @@ WITH unique_inflows AS (
     , suspected_deposit_address 
     , cf.token_standard
     , cf.token_address
-    , CASE WHEN token_standard = 'native' THEN amount+(f.tx_fee) ELSE amount END AS amount
+    , CASE WHEN cf.token_standard = 'native' THEN cf.amount+(f.tx_fee) ELSE cf.amount END AS amount
     FROM {{cex_local_flows}} cf
     INNER JOIN unique_inflows ui USING (block_number, unique_key)
     INNER JOIN {{ ref('gas_'~blockchain~'_fees') }} f USING (block_number, tx_hash)
