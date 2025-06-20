@@ -14,7 +14,6 @@ WITH unique_inflows AS (
     WHERE flow_type IN ('Inflow') --, 'Executed', 'Executed Contract')
     {% endif %}
     AND block_time > NOW() - interval '1' month 
-    {% if is_incremental() %}
     AND varbinary_substring("from", 1, 16) <> 0x00000000000000000000000000000000 -- removing last 5 bytes, often used to identify null or system addresses
     GROUP BY 1
     HAVING COUNT(DISTINCT cex_name) = 1
