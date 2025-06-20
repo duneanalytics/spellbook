@@ -14,36 +14,27 @@ models:
           combination_of_columns:
             - address
     columns:
+      - &address
+        name: address
+        description: "Deposit address"
       - &blockchain
         name: blockchain
         description: "Blockchain"
-      - &address
-        name: address
-        description: "Address"
       - &cex_name
         name: cex_name
         description: "CEX name"
-      - &token_standard
-        name: token_standard
-        description: "Token standard"
+      - &amount_consolidated
+        name: amount_consolidated
+        description: "Amount consolidated by CEX"
       - &consolidation_block_time
         name: consolidation_block_time
-        description: "Time at which the CEX consolidated funds into one of their addresses"
-      - &consolidation_block_number
-        name: consolidation_block_number
-        description: "Block number at which the CEX consolidated funds into one of their addresses"
-      - &funded_block_time
-        name: funded_block_time
-        description: "Time at which the address was funded in its chain's native token"
-      - &funded_block_number
-        name: funded_block_number
-        description: "Block number at which the address was funded in its chain's native token"
-      - &first_funded_by
-        name: first_funded_by
-        description: "First address to fund this address"
-      - &self_executed 
-        name: self_executed
-        description: "Was the consolidation transaction executed by the deposit address"
-      - &tx_hash 
-        name: tx_hash
-        description: "Transaction hash of the deposit consolidation tx"
+        description: "Time at which the CEX consolidated funds"
+      - &amount_deposited
+        name: amount_deposited
+        description: "Total amount deposited to this address"
+      - &deposit_first_block_time
+        name: deposit_first_block_time
+        description: "Time of first deposit to this address"
+      - &deposit_last_block_time
+        name: deposit_last_block_time
+        description: "Time of last deposit to this address"

@@ -26,6 +26,7 @@ WITH unique_inflows AS (
     , cf.token_standard
     , cf.token_address
     , CASE WHEN cf.token_standard = 'native' THEN cf.amount+(f.tx_fee) ELSE cf.amount END AS amount
+    , cex_name
     FROM {{cex_local_flows}} cf
     INNER JOIN unique_inflows ui USING (block_number, unique_key)
     INNER JOIN {{local_gas_fees}} f USING (block_number, tx_hash)
@@ -41,6 +42,7 @@ WITH unique_inflows AS (
 
 , in_and_out AS (
     SELECT i.suspected_deposit_address
+    , i.cex_name
     , i.amount AS amount_consolidated
     , i.block_time AS consolidation_block_time
     , SUM(t.amount) AS amount_deposited
@@ -57,12 +59,13 @@ WITH unique_inflows AS (
     {% if is_incremental() %}
     AND {{ incremental_predicate('t.block_time') }}
     {% endif %}
-    GROUP BY 1, 2, 3
+    GROUP BY 1, 2, 3, 4
 
     {% if blockchain == 'ethereum' %}
     UNION ALL
 
     SELECT i.suspected_deposit_address
+    , i.cex_name
     , i.amount AS amount_consolidated
     , i.block_time AS consolidation_block_time
     , SUM(w.amount/1e9) AS amount_deposited
@@ -78,11 +81,13 @@ WITH unique_inflows AS (
     {% if is_incremental() %}
     AND {{ incremental_predicate('w.block_time') }}
     {% endif %}
-    GROUP BY 1, 2, 3
+    GROUP BY 1, 2, 3, 4
     {% endif %}
     )
 
 SELECT suspected_deposit_address AS address
+, '{{blockchain}}' AS blockchain
+, cex_name
 , amount_consolidated
 , consolidation_block_time
 , amount_deposited
