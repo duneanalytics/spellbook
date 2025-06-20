@@ -20,10 +20,13 @@ WITH perp_events AS (
         evt_index,
         evt_tx_hash AS tx_hash,
         CAST(fee AS DOUBLE) AS fee_usd,
-       CAST(NULL AS DOUBLE) AS volume_usd,
-    CAST(NULL AS DOUBLE) AS margin_usd
+        CAST(NULL AS DOUBLE) AS volume_usd,
+        CAST(NULL AS DOUBLE) AS margin_usd
     FROM {{ source('bsx_base', 'bsx1000x_evt_openposition') }}
     WHERE evt_block_time >= DATE '2023-01-01'
+      {% if is_incremental() %}
+        AND evt_block_time > (SELECT MAX(block_time) FROM {{ this }})
+      {% endif %}
 
     UNION ALL
 
@@ -42,6 +45,9 @@ WITH perp_events AS (
         CAST(NULL AS DOUBLE) AS margin_usd
     FROM {{ source('bsx_base', 'bsx1000x_evt_closeposition') }}
     WHERE evt_block_time >= DATE '2023-01-01'
+      {% if is_incremental() %}
+        AND evt_block_time > (SELECT MAX(block_time) FROM {{ this }})
+      {% endif %}
 )
 
 SELECT 
@@ -75,3 +81,6 @@ INNER JOIN {{ source('base', 'transactions') }} txns
     ON pe.tx_hash = txns.hash 
     AND pe.block_number = txns.block_number
     AND txns.block_time >= DATE '2023-01-01'
+    {% if is_incremental() %}
+      AND txns.block_time > (SELECT MAX(block_time) FROM {{ this }})
+    {% endif %}
