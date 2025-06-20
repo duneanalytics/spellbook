@@ -14,27 +14,19 @@ models:
           combination_of_columns:
             - address
     columns:
-      - &address
-        name: address
+      - name: address
         description: "Deposit address"
-      - &blockchain
-        name: blockchain
+      - name: blockchain
         description: "Blockchain"
-      - &cex_name
-        name: cex_name
+      - name: cex_name
         description: "CEX name"
-      - &amount_consolidated
-        name: amount_consolidated
+      - name: amount_consolidated
         description: "Amount consolidated by CEX"
-      - &consolidation_block_time
-        name: consolidation_block_time
+      - name: consolidation_block_time
         description: "Time at which the CEX consolidated funds"
-      - &amount_deposited
-        name: amount_deposited
+      - name: amount_deposited
         description: "Total amount deposited to this address"
-      - &deposit_first_block_time
-        name: deposit_first_block_time
+      - name: deposit_first_block_time
         description: "Time of first deposit to this address"
-      - &deposit_last_block_time
-        name: deposit_last_block_time
+      - name: deposit_last_block_time
         description: "Time of last deposit to this address"
