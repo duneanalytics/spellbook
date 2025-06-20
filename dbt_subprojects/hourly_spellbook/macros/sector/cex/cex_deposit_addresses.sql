@@ -7,8 +7,6 @@ WITH unique_inflows AS (
     FROM {{cex_local_flows}} cf
     {% if is_incremental() %}
     LEFT JOIN {{this}} t ON cf."from"=t.address
-    -- LEFT JOIN ON ITSELF TO REMOVE EXISTING ADDRESSES
-    -- OR INNER JOIN TO ONLY KEEP RECENTLY CREATED ADDRESS ACROSS CHAINS
     WHERE {{ incremental_predicate('block_time') }}
     AND flow_type IN ('Inflow') --, 'Executed', 'Executed Contract')
     AND t.address IS NULL
