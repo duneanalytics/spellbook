@@ -64,6 +64,7 @@ SELECT
     adjustment_flow_recipient,
     adjustment_flow_rate,
     block_time AS start_block_time,
+    LEAD(block_time) OVER (PARTITION BY blockchain, token, distributor, pool ORDER BY block_number, index) AS end_block_time_or_null,
     COALESCE(
         LEAD(block_time) OVER (PARTITION BY blockchain, token, distributor, pool ORDER BY block_number, index),
         current_timestamp
