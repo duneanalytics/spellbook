@@ -328,7 +328,7 @@ pure_fee_collection as (
 
     get_traces as (
         select 
-            ml.evt_block_time,
+            ml.evt_block_time
             , ml.evt_block_number
             , ml.id 
             , ml.evt_tx_hash 
