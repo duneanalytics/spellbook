@@ -275,8 +275,12 @@ modify_liquidity_events as (
 
     add_latest_price as (
         select 
+            ab.*,
+            gp.sqrtpricex96
+        from (
+        select 
             ge.*
-            , gp.sqrtpricex96
+            , gp.previous_block_index_sum
         from 
         get_events ge 
         left join 
@@ -284,6 +288,11 @@ modify_liquidity_events as (
             on ge.id = gp.id 
             and ge.block_index_sum >= gp.previous_block_index_sum
             and ge.block_index_sum < gp.block_index_sum 
+        ) ab 
+        inner join 
+        get_prices gp 
+            on ab.id = gp.id
+            and ab.previous_block_index_sum = gp.block_index_sum 
     ),
 
     prep_for_calculations as (
