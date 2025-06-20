@@ -6,11 +6,12 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['tx_hash', 'evt_index']
-)}}
+) }}
 
 {% set project_start_date = '2023-01-01' %}
 
 WITH perp_events AS (
+
     -- Increase Position events
     SELECT 
         evt_block_time AS block_time,
@@ -35,9 +36,12 @@ WITH perp_events AS (
         CAST(NULL AS DOUBLE) AS reserve_amount
     FROM {{ source('fxdx_base', 'Vault_evt_IncreasePosition') }}
     WHERE evt_block_time >= DATE '{{ project_start_date }}'
-    
+      {% if is_incremental() %}
+        AND {{ incremental_predicate('evt_block_time') }}
+      {% endif %}
+
     UNION ALL
-    
+
     -- Decrease Position events
     SELECT 
         evt_block_time AS block_time,
@@ -62,9 +66,12 @@ WITH perp_events AS (
         CAST(NULL AS DOUBLE) AS reserve_amount
     FROM {{ source('fxdx_base', 'Vault_evt_DecreasePosition') }}
     WHERE evt_block_time >= DATE '{{ project_start_date }}'
-    
+      {% if is_incremental() %}
+        AND {{ incremental_predicate('evt_block_time') }}
+      {% endif %}
+
     UNION ALL
-    
+
     -- Liquidate Position events
     SELECT 
         evt_block_time AS block_time,
@@ -77,9 +84,9 @@ WITH perp_events AS (
         evt_tx_hash AS tx_hash,
         evt_tx_from AS tx_from,
         evt_tx_to AS tx_to,
-        CAST(0 AS DOUBLE) AS fee_usd, -- No explicit fee field in liquidation
+        CAST(0 AS DOUBLE) AS fee_usd,
         CAST(size AS DOUBLE)/1e30 AS volume_usd,
-        CAST(0 AS DOUBLE) AS margin_usd, -- Using collateral separately
+        CAST(0 AS DOUBLE) AS margin_usd,
         CAST(markPrice AS DOUBLE)/1e30 AS price,
         collateralToken,
         indexToken,
@@ -89,6 +96,9 @@ WITH perp_events AS (
         CAST(reserveAmount AS DOUBLE)/1e30 AS reserve_amount
     FROM {{ source('fxdx_base', 'Vault_evt_LiquidatePosition') }}
     WHERE evt_block_time >= DATE '{{ project_start_date }}'
+      {% if is_incremental() %}
+        AND {{ incremental_predicate('evt_block_time') }}
+      {% endif %}
 )
 
 SELECT 
@@ -117,7 +127,6 @@ SELECT
         WHEN LOWER(CAST(pe.collateralToken AS VARCHAR)) = '0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca' THEN 'USDbc'
         ELSE CAST(pe.collateralToken AS VARCHAR)
     END AS market,
-    -- pe.position_id AS market,
     pe.market_address,
     pe.volume_usd,
     pe.fee_usd,
@@ -141,10 +150,6 @@ SELECT
     pe.tx_from,
     pe.evt_index,
     pe.pnl_usd AS pnl,
-    -- Additional FXDX specific fields
     pe.collateral_value,
     pe.reserve_amount
 FROM perp_events pe
-{% if is_incremental() %}
-    WHERE pe.block_time > (SELECT MAX(block_time) FROM {{ this }})
-{% endif %}
