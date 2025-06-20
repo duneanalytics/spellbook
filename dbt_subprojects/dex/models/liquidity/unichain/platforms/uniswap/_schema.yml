@@ -94,6 +94,7 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
+            - event_type
       - check_dex_base_liquidity_seed:
           seed_file: ref('uniswap_unichain_base_liquidity_seed')
           filter:
