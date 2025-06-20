@@ -89,6 +89,6 @@ SELECT suspected_deposit_address AS address
 , deposit_first_block_time
 , deposit_last_block_time
 FROM in_and_out
-WHERE amount_consolidated < amount_deposited*1.1
+WHERE amount_deposited > amount_consolidated
 
 {% endmacro %}
