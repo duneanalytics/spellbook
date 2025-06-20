@@ -4,17 +4,20 @@ WITH unique_inflows AS (
     SELECT "from" AS suspected_deposit_address
     , MIN(block_number) AS block_number
     , MIN_BY(unique_key, block_number) AS unique_key
-    FROM {{cex_local_flows}}
+    FROM {{cex_local_flows}} cf
     {% if is_incremental() %}
+    LEFT JOIN {{this}} t ON cf."from"=t.address
     -- LEFT JOIN ON ITSELF TO REMOVE EXISTING ADDRESSES
     -- OR INNER JOIN TO ONLY KEEP RECENTLY CREATED ADDRESS ACROSS CHAINS
     WHERE {{ incremental_predicate('block_time') }}
     AND flow_type IN ('Inflow') --, 'Executed', 'Executed Contract')
+    AND t.address IS NULL
     {% else %}
     WHERE flow_type IN ('Inflow') --, 'Executed', 'Executed Contract')
     {% endif %}
     AND block_time > NOW() - interval '1' month 
-    AND varbinary_substring("from", 1, 18) <> 0x000000000000000000000000000000000000 -- removing last 3 bytes, often used to identify null or system addresses
+    {% if is_incremental() %}
+    AND varbinary_substring("from", 1, 16) <> 0x00000000000000000000000000000000 -- removing last 5 bytes, often used to identify null or system addresses
     GROUP BY 1
     HAVING COUNT(DISTINCT cex_name) = 1
     )
@@ -82,7 +85,7 @@ WITH unique_inflows AS (
     {% endif %}
     )
 
-SELECT suspected_deposit_address
+SELECT suspected_deposit_address AS address
 , amount_consolidated
 , consolidation_block_time
 , amount_deposited
