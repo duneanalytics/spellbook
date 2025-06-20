@@ -212,7 +212,7 @@ FROM (VALUES
     , ('reservoir_swap', 'Reservoir Swap', 'Direct', 'reservoir0x')
     , ('inkyswap', 'InkySwap', 'Direct', 'inkyswap')
     , ('squidswap', 'SquidSwap', 'Direct', 'squidswap_ink')
-    , ('swanswap', 'SwanSwap', 'Direct', 'swan_swap')
+    , ('swanswap', 'SwanSwap', 'Direct', 'swan_swap')1
     , ('inkswap', 'InkSwap', 'Direct', 'inswap_')
     , ('sailor_finance', 'SailorFinance', 'Direct', 'SailorFi')
     , ('gooddollar_reserve', 'GoodDollar Reserve', 'Direct', 'gooddollar_reserve')
