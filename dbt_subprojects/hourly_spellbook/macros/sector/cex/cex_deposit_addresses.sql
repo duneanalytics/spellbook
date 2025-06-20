@@ -13,7 +13,6 @@ WITH unique_inflows AS (
     {% else %}
     WHERE flow_type IN ('Inflow') --, 'Executed', 'Executed Contract')
     {% endif %}
-    AND block_time > NOW() - interval '1' month 
     AND varbinary_substring("from", 1, 16) <> 0x00000000000000000000000000000000 -- removing last 5 bytes, often used to identify null or system addresses
     GROUP BY 1
     HAVING COUNT(DISTINCT cex_name) = 1
@@ -33,9 +32,6 @@ WITH unique_inflows AS (
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('cf.block_time') }}
     AND {{ incremental_predicate('f.block_time') }}
-    {% else %}
-    WHERE cf.block_time > NOW() - interval '1' month
-    AND f.block_time > NOW() - interval '1' month 
     {% endif %}
     
     )
@@ -55,9 +51,8 @@ WITH unique_inflows AS (
         AND t.block_time BETWEEN i.block_time - interval '1' day AND i.block_time
         --AND t.block_number<i.block_number
         --AND i.amount_raw BETWEEN t.amount_raw*0.9 AND t.amount_raw*1.1
-    WHERE t.block_time > NOW() - interval '1' month 
     {% if is_incremental() %}
-    AND {{ incremental_predicate('t.block_time') }}
+    WHERE {{ incremental_predicate('t.block_time') }}
     {% endif %}
     GROUP BY 1, 2, 3, 4
 
@@ -76,10 +71,8 @@ WITH unique_inflows AS (
         AND w.address=i.suspected_deposit_address
         AND i.token_standard = 'native'
         AND w.block_time BETWEEN i.block_time - interval '1' day AND i.block_time
-        --AND i.amount_raw BETWEEN t.amount_raw*0.9 AND t.amount_raw*1.1
-    WHERE w.block_time > NOW() - interval '1' month 
     {% if is_incremental() %}
-    AND {{ incremental_predicate('w.block_time') }}
+    WHERE {{ incremental_predicate('w.block_time') }}
     {% endif %}
     GROUP BY 1, 2, 3, 4
     {% endif %}
