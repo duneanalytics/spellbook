@@ -230,5 +230,6 @@ FROM (VALUES
     , ('xy_finance', 'XY Finance', 'Direct', 'xyfinance')
     , ('izumi', 'Izumi', 'Direct', 'izumi_finance')
     , ('swapfish', 'SwapFish', 'Direct', 'SwapFishFi')
+    , ('defi_money', 'Defi_Money', 'Direct', 'defidotmoney')
     , ('treasure_magicswap', 'Treasure Magicswap', 'Direct', 'N/A')
 ) AS temp_table (project, name, marketplace_type, x_username)
