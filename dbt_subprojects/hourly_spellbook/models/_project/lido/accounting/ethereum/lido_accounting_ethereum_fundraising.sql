@@ -1,27 +1,29 @@
 {{ config(
         schema='lido_accounting_ethereum',
         alias = 'fundraising',
-
-        materialized = 'table',
+        materialized = 'incremental',
+        incremental_strategy = 'merge',
         file_format = 'delta',
+        unique_key= ['token', 'evt_tx_hash'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "lido_accounting",
-                                \'["pipistrella", "adcv", "zergil1397"]\') }}'
+                                \'["pipistrella", "adcv", "zergil1397", "hosuke"]\') }}'
         )
 }}
 
 with tokens AS (
-select * from (values
-    (0x5A98FcBEA516Cf06857215779Fd812CA3beF1B32), --LDO
-    (0x6B175474E89094C44Da98b954EedeAC495271d0F),   --DAI
-    (0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48),   --USDC
-    (0xdAC17F958D2ee523a2206206994597C13D831ec7), -- USDT
-    (0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2),   --WETH
-    (0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0),   --MATIC
-    (0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84),  --stETH
-    (0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0) --wstETH
-) as tokens(address)),
+    select * from (values
+        (0x5A98FcBEA516Cf06857215779Fd812CA3beF1B32), --LDO
+        (0x6B175474E89094C44Da98b954EedeAC495271d0F),   --DAI
+        (0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48),   --USDC
+        (0xdAC17F958D2ee523a2206206994597C13D831ec7), -- USDT
+        (0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2),   --WETH
+        (0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0),   --MATIC
+        (0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84),  --stETH
+        (0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0) --wstETH
+    ) as tokens(address)
+),
 
 multisigs_list AS (
     select * from (values
@@ -58,49 +60,58 @@ diversifications_addresses AS (
 ),
 
 
+filtered_multisigs AS (
+    SELECT DISTINCT address
+    FROM multisigs_list
+    WHERE name IN ('Aragon','FinanceOpsMsig')
+    AND chain = 'Ethereum'
+),
+
+filtered_tokens AS (
+    SELECT address
+    FROM tokens
+    WHERE address != 0x5A98FcBEA516Cf06857215779Fd812CA3beF1B32
+),
+
 fundraising_txs AS (
-    select
+    SELECT
         evt_block_time,
         value,
         evt_tx_hash,
         contract_address
-    FROM {{source('erc20_ethereum','evt_Transfer')}}
-    WHERE contract_address IN (SELECT address FROM tokens)
-    AND to IN (
-        SELECT
-            address
-        FROM multisigs_list
-        WHERE name IN ('Aragon','FinanceOpsMsig') AND chain = 'Ethereum'
-    )
-    AND "from" IN (SELECT address FROM diversifications_addresses)
-    AND  contract_address != 0x5A98FcBEA516Cf06857215779Fd812CA3beF1B32
+    FROM {{ source('erc20_ethereum','evt_Transfer') }} evt
+    INNER JOIN filtered_tokens t
+        ON evt.contract_address = t.address
+    INNER JOIN filtered_multisigs m
+        ON evt.to = m.address
+    WHERE evt."from" IN (SELECT address FROM diversifications_addresses)
+    {% if is_incremental() %}
+        AND {{incremental_predicate('evt_block_time')}}
+    {% endif %}
 )
 
+SELECT
+    evt_block_time AS period,
+    contract_address AS token,
+    value AS amount_token,
+    evt_tx_hash
+FROM fundraising_txs
 
-    SELECT
-        evt_block_time AS period,
-        contract_address AS token,
-        value AS amount_token,
-        evt_tx_hash
-    FROM fundraising_txs
+UNION ALL
 
-
-    UNION ALL
-    --ETH inflow
-    SELECT
-        block_time AS period,
-        0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 AS token,
-        tr.value,
-        tx_hash
-    FROM {{source('ethereum','traces')}} tr
-    WHERE tr.success = True
-    AND tr.to IN (
-        SELECT
-            address
-        FROM multisigs_list
-        WHERE name IN ('Aragon','FinanceOpsMsig') AND chain = 'Ethereum'
-    )
-    AND tr."from" IN ( SELECT address FROM diversifications_addresses    )
-    AND tr.type='call'
-    AND (tr.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR tr.call_type IS NULL)
-
+SELECT
+    tr.block_time AS period,
+    0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 AS token,
+    tr.value,
+    tr.tx_hash
+FROM {{ source('ethereum','traces') }} tr
+INNER JOIN filtered_multisigs et
+    ON tr.to = et.address
+WHERE tr.success = True
+    AND tr."from" IN (SELECT address FROM diversifications_addresses)
+    AND tr.type = 'call'
+    AND (tr.call_type NOT IN ('delegatecall', 'callcode', 'staticcall')
+         OR tr.call_type IS NULL)
+    {% if is_incremental() %}
+    AND {{incremental_predicate('tr.block_time')}}
+    {% endif %}

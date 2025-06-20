@@ -29,7 +29,7 @@
     ,ref('avt_optimism_perpetual_trades')
     ,ref('minerva_money_optimism_perpetual_trades')
     ,ref('immortalx_perpetual_trades')
-    ,ref('unidex_perpetual_trades')
+    ,ref('unidex_perpetual_trades')        
     ,ref('vela_exchange_perpetual_trades')
     ,ref('mux_protocol_optimism_perpetual_trades')
     ,ref('basemax_finance_base_perpetual_trades')
@@ -41,6 +41,7 @@
     ,ref('nether_fi_base_perpetual_trades')
     ,ref('lemma_finance_optimism_perpetual_trades')
     ,ref('lyra_optimism_perpetual_trades')
+    ,ref('gains_network_apechain_perpetual_trades')
 ] %}
 
 SELECT *
