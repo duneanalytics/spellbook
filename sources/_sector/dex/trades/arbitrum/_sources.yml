@@ -263,10 +263,4 @@ sources:
     tables:
       - name: arb_amm_evt_tokenexchange
       - name: arb_amm_call_coins
-      - name: curvestableswapng_evt_tokenexchange
-      - name: curvestableswapng_call_coins
-      - name: wbtc_amm_evt_tokenexchange
-      - name: wbtc_amm_call_coins
-      - name: weth_amm_evt_tokenexchange
-      - name: weth_amm_call_coins
 
