@@ -33,11 +33,11 @@ If spells within a PR reference (i.e. dbt ref usage) another spell which isn’t
 
 The CI tests tied to PRs were created in order to bypass giving each and every user direct access to the databases. In other DBT setups, users can typically set up their local environments to connect directly with a DBT profile, but that proposes too many risks in the open-source Spellbook. The end goal of CI tests attached to PRs is to provide each user with their “local” development environment to test out building new spells.
 
-Within each PR, either in the ‘Checks’ tab at the top or in the final review box at the bottom, users can navigate into the ‘dbt slim ci’ GH workflow associated with current PR. If you click into the details, GH will navigate to the specific workflow run in the ‘Actions’ section. Each step of the CI process is listed, with expandable sections to see the logs associated with all the steps.
+Within each PR, either in the ‘Checks’ tab at the top or in the final review box at the bottom, users can navigate into the ‘dbt slim ci’ GH workflow associated with the current PR. If you click into the details, GH will navigate to the specific workflow run in the ‘Actions’ section. Each step of the CI process is listed, with expandable sections to see the logs associated with all the steps.
 
 ### The Key Things to Navigate To and Use:
 
-- Under `dbt seed` – find any seeds which ran and built on Dune, if applicable to given PR.
+- Under `dbt seed` – find any seeds which ran and built on Dune, if applicable to the given PR.
 - Under `dbt run initial model(s)` – find all spells from the PR, with unique CI table names, that are built on Dune.
   - **Note**: these can be queried on Dune & are highly encouraged, in order to ensure highest data quality!
   - Each set of CI tables persist for ~24 hours on Dune, before being automatically cleaned up.
