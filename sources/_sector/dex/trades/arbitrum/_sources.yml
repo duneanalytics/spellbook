@@ -23,6 +23,7 @@ sources:
     tables:
       - name: Pair_evt_Swap
       - name: Factory_evt_PairCreated
+      - name: routeprocessor3_2_evt_route
   - name: sushiswap_arbitrum
     tables:
       - name: UniswapV3Factory_evt_PoolCreated
@@ -183,7 +184,83 @@ sources:
     tables:
       - name: lp_crx_gmx_evt_swap
       - name: uniswapv2factory_evt_paircreated
+  - name: elk_finance_arbitrum
+    tables:
+      - name: ElkPair_evt_Swap
+      - name: ElkFactory_evt_PairCreated
+  - name: solunea_arbitrum
+    tables:
+      - name: SoluneaPair_evt_Swap
+      - name: SoluneaFactory_evt_PairCreated
+  - name: gammaswap_arbitrum
+    tables:
+      - name: deltaswappair_evt_swap
+      - name: deltaswapfactory_evt_paircreated
+  - name: spectra_multichain
+    tables:
+      - name: vyper_contract_evt_tokenexchange
+      - name: vyper_contract_call_coins
+  - name: wardenswap_arbitrum
+    tables:
+      - name: wardenrouterv2_evt_trade
+  - name: graphene_arbitrum
+    tables:
+      - name: carboncontroller_evt_tokenstraded
+  - name: skate_fi_arbitrum
+    tables:
+      - name: skatevertexvault_evt_swapped
   - name: fluid_arbitrum
     tables:
       - name: FluidDexT1_evt_Swap
       - name: fluiddexfactory_call_deploydex
+  - name: xy_finance_arbitrum
+    tables:
+      - name: xswapper_evt_swappedforuser
+  - name: izumi_multichain
+    tables:
+      - name: iziswappool_evt_swap
+  - name: treasure_magicswap_arbitrum
+    tables:
+      - name: magicgflypair_call_token0
+      - name: magicgflypair_call_token1
+      - name: magicgflypair_evt_swap
+      - name: magicelmpair_evt_swap
+      - name: magicelmpair_call_token1
+      - name: magicelmpair_call_token0
+  - name: swapfish_arbitrum
+    tables:
+      - name: uniswapv2pair_wsteth_weth_call_token0
+      - name: uniswapv2pair_wsteth_weth_call_token1
+      - name: uniswapv2pair_wsteth_weth_evt_swap
+      - name: uniswapv2pair_weth_usdc_call_token0
+      - name: uniswapv2pair_weth_usdc_call_token1
+      - name: uniswapv2pair_weth_usdc_evt_swap
+      - name: uniswapv2pair_wbtc_weth_call_token0
+      - name: uniswapv2pair_wbtc_weth_call_token1
+      - name: uniswapv2pair_wbtc_weth_evt_swap
+      - name: uniswapv2pair_vst_usdc_call_token0
+      - name: uniswapv2pair_vst_usdc_call_token1
+      - name: uniswapv2pair_vst_usdc_evt_swap
+      - name: uniswapv2pair_usdt_usdc_call_token0
+      - name: uniswapv2pair_usdt_usdc_call_token1
+      - name: uniswapv2pair_usdt_usdc_evt_swap
+      - name: uniswapv2pair_mim_usdc_call_token0
+      - name: uniswapv2pair_mim_usdc_call_token1
+      - name: uniswapv2pair_mim_usdc_evt_swap
+      - name: uniswapv2pair_gmx_usdc_call_token0
+      - name: uniswapv2pair_gmx_usdc_call_token1
+      - name: uniswapv2pair_gmx_usdc_evt_swap
+      - name: uniswapv2pair_fish_usdc_call_token0
+      - name: uniswapv2pair_fish_usdc_call_token1
+      - name: uniswapv2pair_fish_usdc_evt_swap
+      - name: uniswapv2pair_dai_usdc_call_token0
+      - name: uniswapv2pair_dai_usdc_call_token1
+      - name: uniswapv2pair_dai_usdc_evt_swap
+      - name: uniswapv2pair_aave_weth_call_token0
+      - name: uniswapv2pair_aave_weth_call_token1
+      - name: uniswapv2pair_aave_weth_evt_swap
+  - name: defi_money_arbitrum
+    tables:
+      - name: arb_amm_evt_tokenexchange
+      - name: arb_amm_call_coins
+

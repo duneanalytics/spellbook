@@ -869,11 +869,259 @@ models:
           seed_file: ref('mindgames_arbitrum_base_trades_seed')
           filter:
             version: 1
+            
+  - name: elk_finance_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: elk_finance
+      
+      contributors: principatel
+    config:
+      tags: ["arbitrum", "dex", "trades", "elk_finance"]
+    description: "elk_finance arbitrum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('elk_finance_arbitrum_base_trades_seed')
+          filter:
+            version: 1
+            
+  - name: solunea_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: solunea
+      contributors: principatel
+    config:
+      tags: ["arbitrum", "dex", "trades", "solunea"]
+    description: "solunea arbitrum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('solunea_arbitrum_base_trades_seed')
+          filter:
+            version: 1
+            
+  - name: gammaswap_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gammaswap
+      contributors: principatel
+    config:
+      tags: ["arbitrum", "dex", "trades", "gammaswap"]
+    description: "gammaswap arbitrum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('gammaswap_arbitrum_base_trades_seed')
+          filter:
+            version: 1
+            
+  - name: spectra_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: spectra
+      contributors: principatel
+    config:
+      tags: ["arbitrum", "dex", "trades", "spectra"]
+    description: "spectra arbitrum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('spectra_arbitrum_base_trades_seed')
+          filter:
+            version: 1
+            
+  - name: wardenswap_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: wardenswap
+      contributors: principatel
+    config:
+      tags: ["arbitrum", "dex", "trades", "wardenswap"]
+    description: "wardenswap arbitrum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('wardenswap_arbitrum_base_trades_seed')
+          filter:
+            version: 1
+            
+  - name: graphene_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: graphene
+      contributors: principatel
+    config:
+      tags: ["arbitrum", "dex", "trades", "graphene"]
+    description: "graphene arbitrum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('graphene_arbitrum_base_trades_seed')
+          filter:
+            version: 1
+            
+  - name: skate_fi_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: skate_fi
+      contributors: principatel
+    config:
+      tags: ["arbitrum", "dex", "trades", "skate_fi"]
+    description: "skate_fi arbitrum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('skate_fi_arbitrum_base_trades_seed')
+          filter:
+            version: 1
+            
+  - name: xy_finance_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: xy_finance
+      contributors: principatel
+    config:
+      tags: ["arbitrum", "dex", "trades", "xy_finance"]
+    description: "xy_finance arbitrum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('xy_finance_arbitrum_base_trades_seed')
+          filter:
+            version: 1
+            
+  - name: izumi_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: izumi
+      contributors: principatel
+    config:
+      tags: ["arbitrum", "dex", "trades", "izumi"]
+    description: "izumi arbitrum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('izumi_arbitrum_base_trades_seed')
+          filter:
+            version: 1
+            
+  - name: treasure_magicswap_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: treasure_magicswap
+      contributors: principatel
+    config:
+      tags: ["arbitrum", "dex", "trades", "treasure_magicswap"]
+    description: "treasure_magicswap arbitrum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('treasure_magicswap_arbitrum_base_trades_seed')
+          filter:
+            version: 1
+            
+  - name: swapfish_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: swapfish
+      contributors: principatel
+    config:
+      tags: ["arbitrum", "dex", "trades", "swapfish"]
+    description: "swapfish arbitrum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('swapfish_arbitrum_base_trades_seed')
+          filter:
+            version: 1
+            
+  - name: sushi_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: sushi
+      contributors: principatel
+    config:
+      tags: ["arbitrum", "dex", "trades", "sushi"]
+    description: "sushi arbitrum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sushi_arbitrum_base_trades_seed')
+          filter:
+            version: 1
+            
+  - name: defi_money_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: defi_money
+      contributors: principatel
+    config:
+      tags: ["arbitrum", "dex", "trades", "defi_money"]
+    description: "Defi Money arbitrum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('defi_money_arbitrum_base_trades_seed')
+          filter:
+            version: 1
 
   - name: fluid_v1_arbitrum_base_trades
     meta:
       blockchain: arbitrum
-      sector: dex
+      sector: dex      
       project: fluid
       contributors: maybeYonas, pyor_xyz, thetroyharris
     config:

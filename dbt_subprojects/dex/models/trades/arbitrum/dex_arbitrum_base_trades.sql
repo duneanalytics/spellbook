@@ -53,7 +53,20 @@
     , ref('spartadex_arbitrum_base_trades')
     , ref('akronswap_arbitrum_base_trades')
     , ref('mindgames_arbitrum_base_trades')
+    , ref('elk_finance_arbitrum_base_trades')
+    , ref('solunea_arbitrum_base_trades')
+    , ref('gammaswap_arbitrum_base_trades')
+    , ref('spectra_arbitrum_base_trades')
+    , ref('wardenswap_arbitrum_base_trades')
+    , ref('graphene_arbitrum_base_trades')
+    , ref('skate_fi_arbitrum_base_trades')
     , ref('fluid_v1_arbitrum_base_trades')
+    , ref('xy_finance_arbitrum_base_trades')
+    , ref('izumi_arbitrum_base_trades')
+    , ref('swapfish_arbitrum_base_trades')
+    , ref('sushi_arbitrum_base_trades')
+    , ref('defi_money_arbitrum_base_trades')
+    , ref('treasure_magicswap_arbitrum_base_trades')
 ] %}
 
 WITH base_union AS (

@@ -1,0 +1,2 @@
+blockchain,project,version,block_date,tx_hash,evt_index,token_bought_address,token_sold_address,block_number,token_bought_amount_raw,token_sold_amount_raw
+arbitrum,xy_finance,1,2025-06-18 00:00,0x82d8dc301fbcd3b3a4029f17177f04bbd8e16fc02687f8c61a691ea204cb2cbc,25,0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9,0xff970a61a04b1ca14834a43f5de4533ebddb5cc8,348564563,999202746,999527558
