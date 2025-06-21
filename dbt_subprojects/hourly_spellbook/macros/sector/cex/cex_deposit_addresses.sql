@@ -15,7 +15,7 @@ WITH unique_inflows AS (
     {% endif %}
     AND varbinary_substring("from", 1, 16) <> 0x00000000000000000000000000000000 -- removing last 5 bytes, often used to identify null or system addresses
     GROUP BY 1
-    HAVING COUNT(DISTINCT cex_name) = 1
+    HAVING COUNT(DISTINCT cf.cex_name) = 1
     )
 
 , unique_inflows_expanded AS (
@@ -25,7 +25,7 @@ WITH unique_inflows AS (
     , cf.token_standard
     , cf.token_address
     , CASE WHEN cf.token_standard = 'native' THEN cf.amount+(f.tx_fee) ELSE cf.amount END AS amount
-    , cex_name
+    , cf.cex_name
     FROM {{cex_local_flows}} cf
     INNER JOIN unique_inflows ui USING (block_number, unique_key)
     INNER JOIN {{local_gas_fees}} f USING (block_number, tx_hash)
