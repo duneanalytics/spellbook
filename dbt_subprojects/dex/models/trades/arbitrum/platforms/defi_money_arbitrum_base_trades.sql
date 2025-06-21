@@ -1,3 +1,5 @@
+{% if source('defi_money_arbitrum', 'arb_amm_evt_tokenexchange') is not none %}
+
 {{ config(
   schema = 'defi_money_arbitrum',
   alias = 'base_trades',
@@ -11,25 +13,18 @@
 -- Step 1: Combine all `coins()` calls to map pool + index -> token_address
 WITH coins_calls AS (
 
-  -- ✅ Confirmed: has column `i`
   SELECT contract_address AS pool_address, i, output_0 AS token_address, call_block_number, call_block_time
-  FROM defi_money_arbitrum.arb_amm_call_coins
-  WHERE call_success = TRUE
-
-  -- 🔒 Uncomment below only after verifying `i` column exists
-  -- UNION ALL
-  -- SELECT contract_address, i, output_0, call_block_number, call_block_time
-  -- FROM defi_money_arbitrum.curvestableswapng_call_coins
-  -- WHERE call_success = TRUE
-
-  UNION ALL
-  SELECT contract_address, i, output_0, call_block_number, call_block_time
-  FROM defi_money_arbitrum.wbtc_amm_call_coins
+  FROM {{ source('defi_money_arbitrum', 'arb_amm_call_coins') }}
   WHERE call_success = TRUE
 
   UNION ALL
   SELECT contract_address, i, output_0, call_block_number, call_block_time
-  FROM defi_money_arbitrum.weth_amm_call_coins
+  FROM {{ source('defi_money_arbitrum', 'wbtc_amm_call_coins') }}
+  WHERE call_success = TRUE
+
+  UNION ALL
+  SELECT contract_address, i, output_0, call_block_number, call_block_time
+  FROM {{ source('defi_money_arbitrum', 'weth_amm_call_coins') }}
   WHERE call_success = TRUE
 ),
 
@@ -54,26 +49,19 @@ coins_mapping AS (
 -- Step 2: Combine all TokenExchange swap events
 swap_events AS (
 
-  SELECT * FROM defi_money_arbitrum.arb_amm_evt_tokenexchange
-  {% if is_incremental() %}
-  WHERE {{ incremental_predicate('evt_block_time') }}
-  {% endif %}
-
-  -- 🔒 Uncomment only after confirming the table is correct
-  -- UNION ALL
-  -- SELECT * FROM defi_money_arbitrum.curvestableswapng_evt_tokenexchange
-  -- {% if is_incremental() %}
-  -- WHERE {{ incremental_predicate('evt_block_time') }}
-  -- {% endif %}
-
-  UNION ALL
-  SELECT * FROM defi_money_arbitrum.wbtc_amm_evt_tokenexchange
+  SELECT * FROM {{ source('defi_money_arbitrum', 'arb_amm_evt_tokenexchange') }}
   {% if is_incremental() %}
   WHERE {{ incremental_predicate('evt_block_time') }}
   {% endif %}
 
   UNION ALL
-  SELECT * FROM defi_money_arbitrum.weth_amm_evt_tokenexchange
+  SELECT * FROM {{ source('defi_money_arbitrum', 'wbtc_amm_evt_tokenexchange') }}
+  {% if is_incremental() %}
+  WHERE {{ incremental_predicate('evt_block_time') }}
+  {% endif %}
+
+  UNION ALL
+  SELECT * FROM {{ source('defi_money_arbitrum', 'weth_amm_evt_tokenexchange') }}
   {% if is_incremental() %}
   WHERE {{ incremental_predicate('evt_block_time') }}
   {% endif %}
@@ -101,3 +89,29 @@ SELECT
   evt_index
 FROM swap_events
 JOIN coins_mapping cm ON swap_events.contract_address = cm.pool_address
+
+{% else %}
+
+-- Fallback when schema is missing
+SELECT
+  'arbitrum' AS blockchain,
+  'defi_money' AS project,
+  '1' AS version,
+  CURRENT_DATE AS block_month,
+  CURRENT_DATE AS block_date,
+  CURRENT_TIMESTAMP AS block_time,
+  NULL AS block_number,
+  NULL AS token0_sold_amount_raw,
+  NULL AS token1_sold_amount_raw,
+  NULL AS token0_bought_amount_raw,
+  NULL AS token1_bought_amount_raw,
+  NULL AS token_sold_address,
+  NULL AS token_bought_address,
+  NULL AS maker,
+  NULL AS taker,
+  NULL AS project_contract_address,
+  NULL AS tx_hash,
+  NULL AS evt_index
+LIMIT 0
+
+{% endif %}
