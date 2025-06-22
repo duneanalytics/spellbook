@@ -27,4 +27,23 @@ models:
           filter:
             version: 2
 
+  - name: stratus_plume_base_trades
+    meta:
+      blockchain: plume
+      sector: dex
+      project: stratus
+      contributors: principatel
+    config:
+      tags: ["plume", "dex", "trades", "stratus"]
+    description: "Stratus Plume base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('stratus_plume_base_trades_seed')
+          filter:
+            version: 1
+
 
