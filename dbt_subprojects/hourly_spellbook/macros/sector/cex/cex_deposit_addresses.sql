@@ -62,7 +62,6 @@ WITH unique_inflows_raw AS (
     SELECT suspected_deposit_address
     , cex_name
     , amount_consolidated
-    , consolidation_block_time
     , consolidation_first_block_time
     , consolidation_last_block_time
     , consolidation_count
