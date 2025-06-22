@@ -6,7 +6,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['address'],
-        merge_update_columns = ['blockchain', 'cex_name', 'amount_consolidated', 'consolidation_first_block_time', 'consolidation_last_block_time', 'consolidation_count', 'amount_deposited', 'deposit_first_block_time', 'deposit_last_block_time', 'deposit_count'],
+        merge_update_columns = ['blockchain', 'cex_name', 'token_standard', 'token_address', 'amount_consolidated', 'consolidation_first_block_time', 'consolidation_last_block_time', 'consolidation_count', 'amount_deposited', 'deposit_first_block_time', 'deposit_last_block_time', 'deposit_count'],
         post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "base", "celo", "scroll", "zora"]\',
                                     "sector",
                                     "cex",
@@ -35,6 +35,8 @@
 SELECT MIN_BY(blockchain, consolidation_first_block_time) AS blockchain
 , address
 , MIN(cex_name) AS cex_name
+, MIN_BY(token_standard, consolidation_first_block_time) AS token_standard
+, MIN_BY(token_address, consolidation_first_block_time) AS token_address
 , MIN(amount_consolidated) AS amount_consolidated
 , MIN(consolidation_first_block_time) AS consolidation_first_block_time
 , MAX(consolidation_last_block_time) AS consolidation_last_block_time
@@ -48,6 +50,8 @@ FROM (
     SELECT blockchain
     , address
     , cex_name
+    , token_standard
+    , token_address
     , amount_consolidated
     , consolidation_first_block_time
     , consolidation_last_block_time
@@ -72,6 +76,8 @@ HAVING COUNT(DISTINCT cex_name) = 1
 SELECT MIN_BY(blockchain, consolidation_first_block_time) AS blockchain
 , address
 , MIN(cex_name) AS cex_name
+, MIN_BY(token_standard, consolidation_first_block_time) AS token_standard
+, MIN_BY(token_address, consolidation_first_block_time) AS token_address
 , MIN(amount_consolidated) AS amount_consolidated
 , MIN(consolidation_first_block_time) AS consolidation_first_block_time
 , MAX(consolidation_last_block_time) AS consolidation_last_block_time
@@ -85,6 +91,8 @@ FROM (
     SELECT cm.blockchain
     , cm.address
     , cm.cex_name
+    , cm.token_standard
+    , cm.token_address
     , cm.amount_consolidated
     , cm.consolidation_first_block_time
     , cm.consolidation_last_block_time
