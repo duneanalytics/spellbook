@@ -14,9 +14,6 @@ models:
           combination_of_columns:
             - address
     columns:
-      - &address
-        name: address
-        description: "Deposit address"
       - &blockchain
         name: blockchain
         description: "Blockchain"
@@ -26,9 +23,15 @@ models:
       - &amount_consolidated
         name: amount_consolidated
         description: "Amount consolidated by CEX"
-      - &consolidation_block_time
-        name: consolidation_block_time
-        description: "Time at which the CEX consolidated funds"
+      - &consolidation_first_block_time
+        name: consolidation_first_block_time
+        description: "Time of first consolidation by CEX"
+      - &consolidation_last_block_time
+        name: consolidation_last_block_time
+        description: "Time of last consolidation by CEX"
+      - &consolidation_count
+        name: consolidation_count
+        description: "Number of consolidation transactions"
       - &amount_deposited
         name: amount_deposited
         description: "Total amount deposited to this address"
@@ -38,6 +41,9 @@ models:
       - &deposit_last_block_time
         name: deposit_last_block_time
         description: "Time of last deposit to this address"
+      - &deposit_count
+        name: deposit_count
+        description: "Number of deposit transactions"
 
   - name: cex_avalanche_c_deposit_addresses
     meta:
@@ -52,14 +58,16 @@ models:
           combination_of_columns:
             - address
     columns:
-      - *address
       - *blockchain
       - *cex_name
       - *amount_consolidated
-      - *consolidation_block_time
+      - *consolidation_first_block_time
+      - *consolidation_last_block_time
+      - *consolidation_count
       - *amount_deposited
       - *deposit_first_block_time
       - *deposit_last_block_time
+      - *deposit_count
 
   - name: cex_base_deposit_addresses
     meta:
@@ -74,14 +82,16 @@ models:
           combination_of_columns:
             - address
     columns:
-      - *address
       - *blockchain
       - *cex_name
       - *amount_consolidated
-      - *consolidation_block_time
+      - *consolidation_first_block_time
+      - *consolidation_last_block_time
+      - *consolidation_count
       - *amount_deposited
       - *deposit_first_block_time
       - *deposit_last_block_time
+      - *deposit_count
 
   - name: cex_bnb_deposit_addresses
     meta:
@@ -96,14 +106,16 @@ models:
           combination_of_columns:
             - address
     columns:
-      - *address
       - *blockchain
       - *cex_name
       - *amount_consolidated
-      - *consolidation_block_time
+      - *consolidation_first_block_time
+      - *consolidation_last_block_time
+      - *consolidation_count
       - *amount_deposited
       - *deposit_first_block_time
       - *deposit_last_block_time
+      - *deposit_count
 
   - name: cex_celo_deposit_addresses
     meta:
@@ -118,14 +130,16 @@ models:
           combination_of_columns:
             - address
     columns:
-      - *address
       - *blockchain
       - *cex_name
       - *amount_consolidated
-      - *consolidation_block_time
+      - *consolidation_first_block_time
+      - *consolidation_last_block_time
+      - *consolidation_count
       - *amount_deposited
       - *deposit_first_block_time
       - *deposit_last_block_time
+      - *deposit_count
 
   - name: cex_ethereum_deposit_addresses
     meta:
@@ -140,14 +154,16 @@ models:
           combination_of_columns:
             - address
     columns:
-      - *address
       - *blockchain
       - *cex_name
       - *amount_consolidated
-      - *consolidation_block_time
+      - *consolidation_first_block_time
+      - *consolidation_last_block_time
+      - *consolidation_count
       - *amount_deposited
       - *deposit_first_block_time
       - *deposit_last_block_time
+      - *deposit_count
 
   - name: cex_gnosis_deposit_addresses
     meta:
@@ -162,14 +178,16 @@ models:
           combination_of_columns:
             - address
     columns:
-      - *address
       - *blockchain
       - *cex_name
       - *amount_consolidated
-      - *consolidation_block_time
+      - *consolidation_first_block_time
+      - *consolidation_last_block_time
+      - *consolidation_count
       - *amount_deposited
       - *deposit_first_block_time
       - *deposit_last_block_time
+      - *deposit_count
 
   - name: cex_optimism_deposit_addresses
     meta:
@@ -184,14 +202,16 @@ models:
           combination_of_columns:
             - address
     columns:
-      - *address
       - *blockchain
       - *cex_name
       - *amount_consolidated
-      - *consolidation_block_time
+      - *consolidation_first_block_time
+      - *consolidation_last_block_time
+      - *consolidation_count
       - *amount_deposited
       - *deposit_first_block_time
       - *deposit_last_block_time
+      - *deposit_count
 
   - name: cex_polygon_deposit_addresses
     meta:
@@ -206,14 +226,16 @@ models:
           combination_of_columns:
             - address
     columns:
-      - *address
       - *blockchain
       - *cex_name
       - *amount_consolidated
-      - *consolidation_block_time
+      - *consolidation_first_block_time
+      - *consolidation_last_block_time
+      - *consolidation_count
       - *amount_deposited
       - *deposit_first_block_time
       - *deposit_last_block_time
+      - *deposit_count
 
   - name: cex_scroll_deposit_addresses
     meta:
@@ -228,14 +250,16 @@ models:
           combination_of_columns:
             - address
     columns:
-      - *address
       - *blockchain
       - *cex_name
       - *amount_consolidated
-      - *consolidation_block_time
+      - *consolidation_first_block_time
+      - *consolidation_last_block_time
+      - *consolidation_count
       - *amount_deposited
       - *deposit_first_block_time
       - *deposit_last_block_time
+      - *deposit_count
 
   - name: cex_zora_deposit_addresses
     meta:
@@ -250,11 +274,13 @@ models:
           combination_of_columns:
             - address
     columns:
-      - *address
       - *blockchain
       - *cex_name
       - *amount_consolidated
-      - *consolidation_block_time
+      - *consolidation_first_block_time
+      - *consolidation_last_block_time
+      - *consolidation_count
       - *amount_deposited
       - *deposit_first_block_time
       - *deposit_last_block_time
+      - *deposit_count
