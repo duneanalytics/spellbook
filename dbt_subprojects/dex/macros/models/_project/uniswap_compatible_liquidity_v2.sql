@@ -334,8 +334,12 @@ pure_fee_collection as (
             , ml.evt_tx_hash 
             , ml.evt_index 
             , 'pure_fee_collection' as event_type
-            , varbinary_ltrim(varbinary_substring(varbinary_substring(input, 5, 256), 1, 32))  AS fee_currency
-            , varbinary_to_uint256(varbinary_substring(varbinary_substring(input, 5, 256), 65, 32)) AS fee_amount
+            , case 
+                when varbinary_ltrim(varbinary_substring(varbinary_substring(input, 5, 256), 1, 32)) = 0x 
+                then 0x0000000000000000000000000000000000000000
+                else varbinary_ltrim(varbinary_substring(varbinary_substring(input, 5, 256), 1, 32))  
+              end as fee_currency -- fix for ETH
+            , varbinary_to_uint256(varbinary_substring(varbinary_substring(input, 5, 256), 65, 32)) as fee_amount
         from 
         {{ liquidity_traces }} lt 
         inner join 
@@ -376,6 +380,86 @@ pure_fee_collection as (
     from 
     join_with_pools  
     group by 1, 2, 3, 4, 5, 6, 7, 8 
+),
+
+bundled_fee_collection as (
+    with 
+
+    get_traces as (
+        select 
+            ml.evt_block_time
+            , ml.evt_block_number
+            , ml.id 
+            , ml.evt_tx_hash 
+            , ml.amount0 
+            , ml.amount1
+            , lt.tx_index as evt_index
+            , 'bundled_fee_collection' as event_type
+            , case 
+                when varbinary_ltrim(varbinary_substring(varbinary_substring(input, 5, 256), 1, 32)) = 0x 
+                then 0x0000000000000000000000000000000000000000
+                else varbinary_ltrim(varbinary_substring(varbinary_substring(input, 5, 256), 1, 32))  
+              end as fee_currency -- fix for ETH
+            , varbinary_to_uint256(varbinary_substring(varbinary_substring(input, 5, 256), 65, 32)) as fee_amount
+        from 
+        {{ liquidity_traces }} lt 
+        inner join 
+        modify_liquidity_events ml 
+            on ml.evt_block_number = lt.block_number
+            and ml.evt_index = lt.tx_index + 2 
+            and ml.evt_tx_hash = lt.tx_hash
+        where varbinary_substring(lt.input, 1, 4) = 0x0b0d9c09 -- take func sig
+        {%- if is_incremental() %}
+        and {{ incremental_predicate('block_time') }}
+        {%- endif %} 
+    ), 
+
+    join_with_pools as (
+        select 
+            gt.*,
+            gp.token0,
+            gp.token1
+        from 
+        get_traces gt 
+        inner join 
+        get_pools gp 
+            on gt.id = gp.id 
+    ),
+
+    get_amounts as (
+        select 
+            id 
+            , evt_block_time as block_time 
+            , evt_block_number as block_number 
+            , evt_tx_hash as tx_hash 
+            , evt_index 
+            , event_type 
+            , token0 
+            , token1 
+            , -amount0 as modify_amount0 
+            , -amount1 as modify_amount1
+            , sum(case when fee_currency = token0 then fee_amount else 0 end) as amount0 
+            , sum(case when fee_currency = token1 then fee_amount else 0 end) as amount1
+        from 
+        join_with_pools 
+        group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 
+    )
+    
+    select 
+        id
+        , evt_block_time as block_time 
+        , evt_block_number as block_number 
+        , evt_tx_hash as tx_hash 
+        , evt_index 
+        , event_type 
+        , token0 
+        , token1 
+        , amount0 - modify_amount0 as amount0 -- subtract modify liquidity amount from amount logged in take()
+        , amount1 - modify_amount1 as amount1
+    from 
+    get_amounts
+    where amount0 > modifyamount0 -- ensure amount in take() is larger
+    and amount1 > modify_amount1 
 ),
 
 swap_events as (
@@ -442,10 +526,26 @@ liquidity_change_base as (
         , event_type 
         , token0 
         , token1 
-        , amount0 
-        , amount1 
+        , -amount0 as amount0
+        , -amount1 as amount1
     from 
     pure_fee_collection
+
+    union all 
+
+    select 
+        id
+        , block_time
+        , block_number 
+        , tx_hash 
+        , evt_index 
+        , event_type 
+        , token0 
+        , token1 
+        , -amount0 as amount0
+        , -amount1 as amount1
+    from 
+    bundled_fee_collection
 )
 
     select 
