@@ -65,6 +65,8 @@ WITH unique_inflows_raw AS (
     , consolidation_first_block_time
     , consolidation_last_block_time
     , consolidation_count
+    , token_standard
+    , token_address
     , SUM(amount_deposited) AS amount_deposited
     , MIN(deposit_first_block_time) AS deposit_first_block_time
     , MAX(deposit_last_block_time) AS deposit_last_block_time
@@ -76,6 +78,8 @@ WITH unique_inflows_raw AS (
         , i.consolidation_first_block_time
         , i.consolidation_last_block_time
         , i.consolidation_count
+        , i.token_standard
+        , i.token_address
         , SUM(t.amount) AS amount_deposited
         , MIN(t.block_time) AS deposit_first_block_time
         , MAX(t.block_time) AS deposit_last_block_time
@@ -88,7 +92,7 @@ WITH unique_inflows_raw AS (
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('t.block_time') }}
         {% endif %}
-        GROUP BY 1, 2, 3, 4, 5, 6
+        GROUP BY 1, 2, 3, 4, 5, 6, 7, 8
 
         UNION ALL
 
@@ -98,6 +102,8 @@ WITH unique_inflows_raw AS (
         , i.consolidation_first_block_time
         , i.consolidation_last_block_time
         , i.consolidation_count
+        , i.token_standard
+        , i.token_address
         , SUM(w.amount/1e9) AS amount_deposited
         , MIN(w.block_time) AS deposit_first_block_time
         , MAX(w.block_time) AS deposit_last_block_time
@@ -110,9 +116,9 @@ WITH unique_inflows_raw AS (
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('w.block_time') }}
         {% endif %}
-        GROUP BY 1, 2, 3, 4, 5, 6
+        GROUP BY 1, 2, 3, 4, 5, 6, 7, 8
         )
-    GROUP BY 1, 2, 3, 4, 5, 6
+    GROUP BY 1, 2, 3, 4, 5, 6, 7, 8
 
     {% else %}
 
@@ -122,6 +128,8 @@ WITH unique_inflows_raw AS (
     , i.consolidation_first_block_time
     , i.consolidation_last_block_time
     , i.consolidation_count
+    , i.token_standard
+    , i.token_address
     , SUM(t.amount) AS amount_deposited
     , MIN(t.block_time) AS deposit_first_block_time
     , MAX(t.block_time) AS deposit_last_block_time
@@ -136,7 +144,7 @@ WITH unique_inflows_raw AS (
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('t.block_time') }}
     {% endif %}
-    GROUP BY 1, 2, 3, 4, 5, 6
+    GROUP BY 1, 2, 3, 4, 5, 6, 7, 8
 
     {% endif %}
     )
@@ -148,6 +156,8 @@ SELECT suspected_deposit_address AS address
 , consolidation_first_block_time
 , consolidation_last_block_time
 , consolidation_count
+, token_standard
+, token_address
 , amount_deposited
 , deposit_first_block_time
 , deposit_last_block_time
