@@ -447,9 +447,9 @@ bundled_fee_collection as (
     
     select 
         id
-        , evt_block_time as block_time 
-        , evt_block_number as block_number 
-        , evt_tx_hash as tx_hash 
+        , block_time 
+        , block_number 
+        , tx_hash 
         , evt_index 
         , event_type 
         , token0 
