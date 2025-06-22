@@ -59,8 +59,8 @@ WITH perp_events AS (
         evt_index,
         evt_tx_hash AS tx_hash,
         TRY_CAST(NULL AS DOUBLE) AS fee_usd,
-        TRY_CAST(sizeDelta AS DOUBLE) AS volume_usd,
-        TRY_CAST(collateralDelta AS DOUBLE) AS margin_usd
+        TRY_CAST(NULL AS DOUBLE) AS volume_usd,
+        TRY_CAST(NULL AS DOUBLE) AS margin_usd
     FROM {{ source('print_3r_base', 'vault_evt_liquidateposition') }}
     WHERE evt_block_time >= DATE '2023-01-01'
       {% if is_incremental() %}
