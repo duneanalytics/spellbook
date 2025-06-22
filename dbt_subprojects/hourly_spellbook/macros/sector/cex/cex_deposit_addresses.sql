@@ -131,7 +131,7 @@ WITH unique_inflows_raw AS (
     INNER JOIN unique_inflows_expanded i ON t.to=i.suspected_deposit_address
         AND t.token_standard=i.token_standard
         AND t.contract_address=i.token_address
-        AND t.block_time BETWEEN i.block_time - interval '1' day AND i.block_time
+        AND t.block_time BETWEEN i.consolidation_first_block_time - interval '1' day AND i.consolidation_first_block_time
         --AND t.block_number<i.block_number
         --AND i.amount_raw BETWEEN t.amount_raw*0.9 AND t.amount_raw*1.1
     {% if is_incremental() %}
