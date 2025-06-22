@@ -458,7 +458,7 @@ bundled_fee_collection as (
         , amount1 - modify_amount1 as amount1
     from 
     get_amounts
-    where amount0 > modifyamount0 -- ensure amount in take() is larger
+    where amount0 > modify_amount0 -- ensure amount in take() is larger
     and amount1 > modify_amount1 
 ),
 
