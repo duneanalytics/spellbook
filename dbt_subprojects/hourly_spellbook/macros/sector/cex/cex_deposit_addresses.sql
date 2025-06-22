@@ -47,7 +47,7 @@ WITH unique_inflows_raw AS (
     , SUM(cf.amount) AS amount
     , COUNT(*) AS consolidation_count
     FROM {{cex_local_flows}} cf
-    INNER JOIN unique_inflows uie ON uie.suspected_deposit_address=cfe."from"
+    INNER JOIN unique_inflows uie ON uie.suspected_deposit_address=cf."from"
         AND uie.token_standard=cf.token_standard
         AND uie.token_address=cf.token_address
         AND uie.cex_name=cf.cex_name
