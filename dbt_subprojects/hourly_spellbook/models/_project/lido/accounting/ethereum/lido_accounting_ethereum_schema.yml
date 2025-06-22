@@ -53,6 +53,11 @@ models:
     config:
       tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
     description: "Fundraised Lido funds"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - token
+            - evt_tx_hash
     columns:
       - name: period
         description: "Timestamp of the accounting entry"
