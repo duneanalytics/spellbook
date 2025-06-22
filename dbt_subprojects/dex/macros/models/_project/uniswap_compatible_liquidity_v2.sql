@@ -348,6 +348,7 @@ pure_fee_collection as (
             and ml.evt_index = lt.tx_index
             and ml.evt_tx_hash = lt.tx_hash
             and ml.sender = lt."from"
+            and ml.liquidityDelta = int256 '0'
         where varbinary_substring(lt.input, 1, 4) = 0x0b0d9c09 -- take func sig
         {%- if is_incremental() %}
         and {{ incremental_predicate('block_time') }}
