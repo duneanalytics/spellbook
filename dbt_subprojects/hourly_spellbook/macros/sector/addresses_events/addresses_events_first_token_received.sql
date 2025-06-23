@@ -3,18 +3,18 @@
 
 SELECT '{{blockchain}}' as blockchain
 , tt.to AS address
-, MIN_BY(tt."from", (tt.block_number, tt.tx_index, COALESCE(tt.trace_address, ARRAY[evt_index]))) AS first_receive_from
+, MIN_BY(tt."from", (tt.block_number, tt.tx_index, COALESCE(tt.trace_address, ARRAY[COALESCE(evt_index, -1)]))) AS first_receive_from
 , MIN_BY(tt.tx_from, (tt.block_number, tt.tx_index)) AS first_receive_executed_by
-, MIN_BY(tt.amount, (tt.block_number, tt.tx_index, COALESCE(tt.trace_address, ARRAY[evt_index]))) AS amount
-, MIN_BY(tt.amount_usd, (tt.block_number, tt.tx_index, COALESCE(tt.trace_address, ARRAY[evt_index]))) AS amount_usd
-, MIN_BY(tt.token_standard, (tt.block_number, tt.tx_index, COALESCE(tt.trace_address, ARRAY[evt_index]))) AS token_standard
-, MIN_BY(tt.contract_address, (tt.block_number, tt.tx_index, COALESCE(tt.trace_address, ARRAY[evt_index]))) AS token_address
+, MIN_BY(tt.amount, (tt.block_number, tt.tx_index, COALESCE(tt.trace_address, ARRAY[COALESCE(evt_index, -1)]))) AS amount
+, MIN_BY(tt.amount_usd, (tt.block_number, tt.tx_index, COALESCE(tt.trace_address, ARRAY[COALESCE(evt_index, -1)]))) AS amount_usd
+, MIN_BY(tt.token_standard, (tt.block_number, tt.tx_index, COALESCE(tt.trace_address, ARRAY[COALESCE(evt_index, -1)]))) AS token_standard
+, MIN_BY(tt.contract_address, (tt.block_number, tt.tx_index, COALESCE(tt.trace_address, ARRAY[COALESCE(evt_index, -1)]))) AS token_address
 , MIN(tt.block_time) AS block_time
 , MIN(tt.block_number) AS block_number
 , MIN_BY(tt.tx_hash, (tt.block_number, tt.tx_index)) AS tx_hash
 , MIN_BY(tt.tx_index, (tt.block_number, tt.tx_index)) AS tx_index
-, MIN_BY(tt.trace_address, (tt.block_number, tt.tx_index, COALESCE(tt.trace_address, ARRAY[evt_index]))) AS trace_address
-, MIN_BY(tt.unique_key, (tt.block_number, tt.tx_index, COALESCE(tt.trace_address, ARRAY[evt_index]))) AS unique_key
+, MIN_BY(tt.trace_address, (tt.block_number, tt.tx_index, COALESCE(tt.trace_address, ARRAY[COALESCE(evt_index, -1)]))) AS trace_address
+, MIN_BY(tt.unique_key, (tt.block_number, tt.tx_index, COALESCE(tt.trace_address, ARRAY[COALESCE(evt_index, -1)]))) AS unique_key
 FROM {{token_transfers}} tt
 {% if is_incremental() %}
 WHERE {{ incremental_predicate('tt.block_time') }}
