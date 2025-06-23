@@ -2958,7 +2958,6 @@ models:
       This model pulls from each chain-specific source and unifies them into a single 
       table tracking how many times each subaccount performed each action.
     columns:
-      # ← inherit every shared column via your anchors:
       - *blockchain
       - *block_time
       - *block_date

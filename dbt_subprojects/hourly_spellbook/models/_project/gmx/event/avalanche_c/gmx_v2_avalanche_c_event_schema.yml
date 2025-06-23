@@ -3209,7 +3209,6 @@ models:
             - tx_hash
             - index
     columns:
-      # ← inherit every shared column via your anchors:
       - *blockchain
       - *block_time
       - *block_date
