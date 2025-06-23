@@ -5,7 +5,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['tx_hash', 'evt_index'],
+        unique_key = ['tx_hash', 'evt_index', 'version'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
@@ -53,11 +53,27 @@ dexs_pcsx AS (
     
     FROM {{ source('pancakeswap_ethereum', 'ExclusiveDutchOrderReactor_evt_Fill') }} a 
 
-    LEFT JOIN transfer AS send 
-    ON a.evt_tx_hash = send.tx_hash AND a.swapper = send."from"
+    LEFT JOIN (
+        SELECT DISTINCT
+            tx_hash,
+            "from",
+            amount_raw,
+            contract_address,
+            ROW_NUMBER() OVER (PARTITION BY tx_hash, "from" ORDER BY evt_index) as rn
+        FROM transfer
+    ) AS send 
+    ON a.evt_tx_hash = send.tx_hash AND a.swapper = send."from" AND send.rn = 1
 
-    LEFT JOIN transfer AS receive 
-    on a.evt_tx_hash = receive.tx_hash AND a.swapper = receive."to"
+    LEFT JOIN (
+        SELECT DISTINCT
+            tx_hash,
+            "to",
+            amount_raw,
+            contract_address,
+            ROW_NUMBER() OVER (PARTITION BY tx_hash, "to" ORDER BY evt_index) as rn
+        FROM transfer
+    ) AS receive 
+    ON a.evt_tx_hash = receive.tx_hash AND a.swapper = receive."to" AND receive.rn = 1
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('a.evt_block_time') }}
     {% endif %}
@@ -111,80 +127,99 @@ dexs_ss AS (
 
 
 
-SELECT
-    dexs_macro.blockchain,
-    dexs_macro.project,
-    dexs_macro.version,
-    dexs_macro.block_month,
-    dexs_macro.block_date,
-    dexs_macro.block_time,
-    dexs_macro.block_number,
-    dexs_macro.token_bought_amount_raw,
-    dexs_macro.token_sold_amount_raw,
-    dexs_macro.token_bought_address,
-    dexs_macro.token_sold_address,
-    dexs_macro.taker,
-    dexs_macro.maker,
-    dexs_macro.project_contract_address,
-    dexs_macro.tx_hash,
-    dexs_macro.evt_index
-FROM dexs_macro
-UNION ALL
-SELECT
-    'ethereum' AS blockchain,
-    'pancakeswap' AS project,
-    dexs_mm.version,
-    CAST(date_trunc('month', dexs_mm.block_time) AS date) AS block_month,
-    CAST(date_trunc('day', dexs_mm.block_time) AS date) AS block_date,
-    dexs_mm.block_time,
-    dexs_mm.block_number,
-    dexs_mm.token_bought_amount_raw,
-    dexs_mm.token_sold_amount_raw,
-    dexs_mm.token_bought_address,
-    dexs_mm.token_sold_address,
-    dexs_mm.taker,
-    dexs_mm.maker,
-    dexs_mm.project_contract_address,
-    dexs_mm.tx_hash,
-    dexs_mm.evt_index
-FROM dexs_mm
-UNION ALL
-SELECT
-    'ethereum' AS blockchain,
-    'pancakeswap' AS project,
-    dexs_ss.version,
-    CAST(date_trunc('month', dexs_ss.block_time) AS date) AS block_month,
-    CAST(date_trunc('day', dexs_ss.block_time) AS date) AS block_date,
-    dexs_ss.block_time,
-    dexs_ss.block_number,
-    dexs_ss.token_bought_amount_raw,
-    dexs_ss.token_sold_amount_raw,
-    dexs_ss.token_bought_address,
-    dexs_ss.token_sold_address,
-    dexs_ss.taker,
-    dexs_ss.maker,
-    dexs_ss.project_contract_address,
-    dexs_ss.tx_hash,
-    dexs_ss.evt_index
-FROM dexs_ss
-UNION ALL
-SELECT
-    'ethereum' AS blockchain,
-    'pancakeswap' AS project,
-    dexs_pcsx.version,
-    CAST(date_trunc('month', dexs_pcsx.block_time) AS date) AS block_month,
-    CAST(date_trunc('day', dexs_pcsx.block_time) AS date) AS block_date,
-    dexs_pcsx.block_time,
-    dexs_pcsx.block_number,
-    dexs_pcsx.token_bought_amount_raw,
-    dexs_pcsx.token_sold_amount_raw,
-    dexs_pcsx.token_bought_address,
-    dexs_pcsx.token_sold_address,
-    dexs_pcsx.taker,
-    dexs_pcsx.maker,
-    dexs_pcsx.project_contract_address,
-    dexs_pcsx.tx_hash,
-    dexs_pcsx.evt_index
-FROM dexs_pcsx
-WHERE token_sold_amount_raw > 0
-AND token_bought_amount_raw > 0
+SELECT DISTINCT
+    blockchain,
+    project,
+    version,
+    block_month,
+    block_date,
+    block_time,
+    block_number,
+    token_bought_amount_raw,
+    token_sold_amount_raw,
+    token_bought_address,
+    token_sold_address,
+    taker,
+    maker,
+    project_contract_address,
+    tx_hash,
+    evt_index
+FROM (
+    SELECT
+        dexs_macro.blockchain,
+        dexs_macro.project,
+        dexs_macro.version,
+        dexs_macro.block_month,
+        dexs_macro.block_date,
+        dexs_macro.block_time,
+        dexs_macro.block_number,
+        dexs_macro.token_bought_amount_raw,
+        dexs_macro.token_sold_amount_raw,
+        dexs_macro.token_bought_address,
+        dexs_macro.token_sold_address,
+        dexs_macro.taker,
+        dexs_macro.maker,
+        dexs_macro.project_contract_address,
+        dexs_macro.tx_hash,
+        dexs_macro.evt_index
+    FROM dexs_macro
+    UNION ALL
+    SELECT
+        'ethereum' AS blockchain,
+        'pancakeswap' AS project,
+        dexs_mm.version,
+        CAST(date_trunc('month', dexs_mm.block_time) AS date) AS block_month,
+        CAST(date_trunc('day', dexs_mm.block_time) AS date) AS block_date,
+        dexs_mm.block_time,
+        dexs_mm.block_number,
+        dexs_mm.token_bought_amount_raw,
+        dexs_mm.token_sold_amount_raw,
+        dexs_mm.token_bought_address,
+        dexs_mm.token_sold_address,
+        dexs_mm.taker,
+        dexs_mm.maker,
+        dexs_mm.project_contract_address,
+        dexs_mm.tx_hash,
+        dexs_mm.evt_index
+    FROM dexs_mm
+    UNION ALL
+    SELECT
+        'ethereum' AS blockchain,
+        'pancakeswap' AS project,
+        dexs_ss.version,
+        CAST(date_trunc('month', dexs_ss.block_time) AS date) AS block_month,
+        CAST(date_trunc('day', dexs_ss.block_time) AS date) AS block_date,
+        dexs_ss.block_time,
+        dexs_ss.block_number,
+        dexs_ss.token_bought_amount_raw,
+        dexs_ss.token_sold_amount_raw,
+        dexs_ss.token_bought_address,
+        dexs_ss.token_sold_address,
+        dexs_ss.taker,
+        dexs_ss.maker,
+        dexs_ss.project_contract_address,
+        dexs_ss.tx_hash,
+        dexs_ss.evt_index
+    FROM dexs_ss
+    UNION ALL
+    SELECT
+        'ethereum' AS blockchain,
+        'pancakeswap' AS project,
+        dexs_pcsx.version,
+        CAST(date_trunc('month', dexs_pcsx.block_time) AS date) AS block_month,
+        CAST(date_trunc('day', dexs_pcsx.block_time) AS date) AS block_date,
+        dexs_pcsx.block_time,
+        dexs_pcsx.block_number,
+        dexs_pcsx.token_bought_amount_raw,
+        dexs_pcsx.token_sold_amount_raw,
+        dexs_pcsx.token_bought_address,
+        dexs_pcsx.token_sold_address,
+        dexs_pcsx.taker,
+        dexs_pcsx.maker,
+        dexs_pcsx.project_contract_address,
+        dexs_pcsx.tx_hash,
+        dexs_pcsx.evt_index
+    FROM dexs_pcsx
+    WHERE token_sold_amount_raw > 0
+    AND token_bought_amount_raw > 0
+)
