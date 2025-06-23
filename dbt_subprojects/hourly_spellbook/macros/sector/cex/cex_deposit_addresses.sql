@@ -172,7 +172,7 @@ SELECT suspected_deposit_address AS address
 , consolidation_unique_key
 , deposit_unique_key
 FROM in_and_out
-WHERE amount_deposited > amount_consolidated
+WHERE amount_deposited >= amount_consolidated
 AND deposit_first_block_time < consolidation_first_block_time
 AND deposit_last_block_time < consolidation_last_block_time
 {% endmacro %}
