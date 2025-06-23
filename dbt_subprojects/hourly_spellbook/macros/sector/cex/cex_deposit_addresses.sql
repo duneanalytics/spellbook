@@ -111,7 +111,7 @@ WITH unique_inflows_raw AS (
         , i.token_standard
         , i.token_address
         , i.unique_key AS consolidation_unique_key
-        , NULL AS deposit_unique_key
+        , CAST(NULL AS varchar) AS deposit_unique_key
         , SUM(w.amount/1e9) AS amount_deposited
         , MIN(w.block_time) AS deposit_first_block_time
         , MAX(w.block_time) AS deposit_last_block_time
