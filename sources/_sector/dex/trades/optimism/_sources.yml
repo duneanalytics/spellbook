@@ -115,3 +115,6 @@ sources:
   - name: bridgers_optimism
     tables:
       - name: Bridgers_evt_Swap    
+  - name: fxdxdex_v2_optimism
+    tables:
+      - name: vault_evt_swap    
