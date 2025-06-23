@@ -26,7 +26,7 @@ WITH unique_inflows_raw AS (
     , cf.token_address
     , CASE WHEN cf.token_standard = 'native' THEN cf.amount+(f.tx_fee) ELSE cf.amount END AS amount
     , cf.cex_name
-    , ui.unique_key
+    , unique_key
     FROM {{cex_local_flows}} cf
     INNER JOIN unique_inflows_raw ui USING (block_number, unique_key)
     INNER JOIN {{local_gas_fees}} f USING (block_number, tx_hash)
