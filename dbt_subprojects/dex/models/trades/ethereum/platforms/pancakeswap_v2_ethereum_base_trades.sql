@@ -26,13 +26,20 @@ dexs_macro AS (
 ),
 
 transfer as (
-  select * from {{ source('tokens', 'transfers') }}
+  select
+      tx_hash,
+      "from",
+      to,
+      contract_address,
+      sum(amount_raw) as amount_raw
+  from {{ source('tokens', 'transfers') }}
   where blockchain = 'ethereum'
   and block_date >= date '2024-09-20' 
   and tx_hash in (select evt_tx_hash from {{ source('pancakeswap_ethereum', 'ExclusiveDutchOrderReactor_evt_Fill') }})
   {% if is_incremental() %}
   and {{ incremental_predicate('block_time') }}
   {% endif %}
+  group by 1,2,3,4
 ),
 
 dexs_pcsx AS (
@@ -188,3 +195,4 @@ SELECT
 FROM dexs_pcsx
 WHERE token_sold_amount_raw > 0
 AND token_bought_amount_raw > 0
+AND token_bought_address is not NULL
