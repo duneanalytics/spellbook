@@ -1,26 +1,36 @@
 {% macro addresses_events_first_token_received(blockchain, token_transfers) %}
 
 
+WITH finding_transfer AS (
+    SELECT tt.to
+    , MIN_BY(tt.unique_key, (tt.block_number, tt.tx_index, COALESCE(tt.trace_address, ARRAY[COALESCE(evt_index, -1)]))) AS unique_key
+    FROM {{token_transfers}} tt
+    {% if is_incremental() %}
+    LEFT JOIN {{this}} t ON t.address=tt.to
+    WHERE t.address IS NULL
+    AND {{ incremental_predicate('tt.block_time') }}
+    {% endif %}
+    GROUP BY 1
+    )
+
 SELECT '{{blockchain}}' as blockchain
 , tt.to AS address
-, MIN_BY(tt."from", (tt.block_number, tt.tx_index, COALESCE(tt.trace_address, ARRAY[COALESCE(evt_index, -1)]))) AS first_receive_from
-, MIN_BY(tt.tx_from, (tt.block_number, tt.tx_index)) AS first_receive_executed_by
-, MIN_BY(tt.amount, (tt.block_number, tt.tx_index, COALESCE(tt.trace_address, ARRAY[COALESCE(evt_index, -1)]))) AS amount
-, MIN_BY(tt.amount_usd, (tt.block_number, tt.tx_index, COALESCE(tt.trace_address, ARRAY[COALESCE(evt_index, -1)]))) AS amount_usd
-, MIN_BY(tt.token_standard, (tt.block_number, tt.tx_index, COALESCE(tt.trace_address, ARRAY[COALESCE(evt_index, -1)]))) AS token_standard
-, MIN_BY(tt.contract_address, (tt.block_number, tt.tx_index, COALESCE(tt.trace_address, ARRAY[COALESCE(evt_index, -1)]))) AS token_address
-, MIN(tt.block_time) AS block_time
-, MIN(tt.block_number) AS block_number
-, MIN_BY(tt.tx_hash, (tt.block_number, tt.tx_index)) AS tx_hash
-, MIN_BY(tt.tx_index, (tt.block_number, tt.tx_index)) AS tx_index
-, MIN_BY(tt.trace_address, (tt.block_number, tt.tx_index, COALESCE(tt.trace_address, ARRAY[COALESCE(evt_index, -1)]))) AS trace_address
-, MIN_BY(tt.unique_key, (tt.block_number, tt.tx_index, COALESCE(tt.trace_address, ARRAY[COALESCE(evt_index, -1)]))) AS unique_key
+, tt."from" AS first_receive_from
+, tt.tx_from AS first_receive_executed_by
+, tt.amount AS amount
+, tt.amount_usd AS amount_usd
+, tt.token_standard AS token_standard
+, tt.contract_address AS token_address
+, tt.block_time AS block_time
+, tt.block_number AS block_number
+, tt.tx_hash AS tx_hash
+, tt.tx_index AS tx_index
+, tt.trace_address AS trace_address
+, tt.unique_key AS unique_key
 FROM {{token_transfers}} tt
+INNER JOIN finding_transfer ft USING (unique_key)
 {% if is_incremental() %}
 WHERE {{ incremental_predicate('tt.block_time') }}
-AND tt.to NOT IN (SELECT address FROM {{this}})
-{% else %}
 {% endif %}
-GROUP BY tt.to
 
 {% endmacro %}
