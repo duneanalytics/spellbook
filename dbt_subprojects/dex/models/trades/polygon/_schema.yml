@@ -452,3 +452,21 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('gravity_finance_polygon_base_trades_seed')
+  - name: fluid_v1_polygon_base_trades
+    meta:
+      blockchain: polygon
+      sector: dex
+      project: fluid
+      contributors: maybeYonas, pyor_xyz, thetroyharris
+    config:
+      tags: ["[polygon", "dex", "trades", "fluid"]
+    description: "fluid dex polygon base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('fluid_polygon_base_trades_seed')
+          filter:
+            version: 1
