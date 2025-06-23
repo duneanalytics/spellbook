@@ -25,9 +25,6 @@ WITH swaps AS (
         s.evt_tx_hash AS tx_hash,
         s.evt_index
     FROM {{ source('fxdx_base', 'vault_evt_swap') }} s
-    {% if is_incremental() %}
-        WHERE {{ incremental_predicate('block_time') }}
-    {% endif %}
 )
 
 SELECT
@@ -48,3 +45,6 @@ SELECT
     swaps.tx_hash,
     swaps.evt_index
 FROM swaps
+{% if is_incremental() %}
+WHERE {{ incremental_predicate('block_time') }}
+{% endif %}
