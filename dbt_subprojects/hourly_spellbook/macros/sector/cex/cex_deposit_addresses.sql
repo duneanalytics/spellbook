@@ -26,6 +26,7 @@ WITH unique_inflows_raw AS (
     , cf.token_address
     , CASE WHEN cf.token_standard = 'native' THEN cf.amount+(f.tx_fee) ELSE cf.amount END AS amount
     , cf.cex_name
+    , ui.unique_key
     FROM {{cex_local_flows}} cf
     INNER JOIN unique_inflows_raw ui USING (block_number, unique_key)
     INNER JOIN {{local_gas_fees}} f USING (block_number, tx_hash)
@@ -44,6 +45,7 @@ WITH unique_inflows_raw AS (
     , uie.token_standard
     , uie.token_address
     , uie.cex_name
+    , uie.unique_key
     , SUM(cf.amount) AS amount
     , COUNT(*) AS consolidation_count
     FROM {{cex_local_flows}} cf
@@ -53,7 +55,7 @@ WITH unique_inflows_raw AS (
         AND uie.cex_name=cf.cex_name
         AND uie.block_time BETWEEN cf.block_time AND cf.block_time + interval '1' day
     WHERE cf.flow_type = 'Inflow'
-    GROUP BY 1, 2, 4, 5, 6, 7
+    GROUP BY 1, 2, 4, 5, 6, 7, 8
     )
 
 , in_and_out AS (
@@ -67,6 +69,8 @@ WITH unique_inflows_raw AS (
     , consolidation_count
     , token_standard
     , token_address
+    , consolidation_unique_key
+    , MIN_BY(deposit_last_block_time, deposit_unique_key) AS deposit_unique_key
     , SUM(amount_deposited) AS amount_deposited
     , MIN(deposit_first_block_time) AS deposit_first_block_time
     , MAX(deposit_last_block_time) AS deposit_last_block_time
@@ -80,6 +84,8 @@ WITH unique_inflows_raw AS (
         , i.consolidation_count
         , i.token_standard
         , i.token_address
+        , i.unique_key AS consolidation_unique_key
+        , MIN_BY(t.unique_key, (t.block_number, t.tx_index)) AS deposit_unique_key
         , SUM(t.amount) AS amount_deposited
         , MIN(t.block_time) AS deposit_first_block_time
         , MAX(t.block_time) AS deposit_last_block_time
@@ -92,7 +98,7 @@ WITH unique_inflows_raw AS (
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('t.block_time') }}
         {% endif %}
-        GROUP BY 1, 2, 3, 4, 5, 6, 7, 8
+        GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 
         UNION ALL
 
@@ -104,6 +110,8 @@ WITH unique_inflows_raw AS (
         , i.consolidation_count
         , i.token_standard
         , i.token_address
+        , i.unique_key AS consolidation_unique_key
+        , NULL AS deposit_unique_key
         , SUM(w.amount/1e9) AS amount_deposited
         , MIN(w.block_time) AS deposit_first_block_time
         , MAX(w.block_time) AS deposit_last_block_time
@@ -116,9 +124,9 @@ WITH unique_inflows_raw AS (
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('w.block_time') }}
         {% endif %}
-        GROUP BY 1, 2, 3, 4, 5, 6, 7, 8
+        GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
         )
-    GROUP BY 1, 2, 3, 4, 5, 6, 7, 8
+    GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 
     {% else %}
 
@@ -130,6 +138,8 @@ WITH unique_inflows_raw AS (
     , i.consolidation_count
     , i.token_standard
     , i.token_address
+    , i.unique_key AS consolidation_unique_key
+    , MIN_BY(t.unique_key, (t.block_number, t.tx_index)) AS deposit_unique_key
     , SUM(t.amount) AS amount_deposited
     , MIN(t.block_time) AS deposit_first_block_time
     , MAX(t.block_time) AS deposit_last_block_time
@@ -144,7 +154,7 @@ WITH unique_inflows_raw AS (
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('t.block_time') }}
     {% endif %}
-    GROUP BY 1, 2, 3, 4, 5, 6, 7, 8
+    GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 
     {% endif %}
     )
@@ -152,16 +162,15 @@ WITH unique_inflows_raw AS (
 SELECT suspected_deposit_address AS address
 , '{{blockchain}}' AS blockchain
 , cex_name
-, amount_consolidated
-, consolidation_first_block_time
-, consolidation_last_block_time
-, consolidation_count
-, token_standard
-, token_address
-, amount_deposited
+, token_standard AS first_deposit_token_standard
+, token_address AS first_deposit_token_address
 , deposit_first_block_time
-, deposit_last_block_time
+, consolidation_first_block_time
 , deposit_count
+, consolidation_count
+, amount_deposited
+, consolidation_unique_key
+, deposit_unique_key
 FROM in_and_out
 WHERE amount_deposited > amount_consolidated
 AND deposit_first_block_time < consolidation_first_block_time
