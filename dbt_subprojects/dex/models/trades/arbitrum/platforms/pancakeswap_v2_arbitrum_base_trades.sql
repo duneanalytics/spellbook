@@ -1,4 +1,4 @@
-git {{
+{{
     config(
         schema = 'pancakeswap_v2_arbitrum',
         alias = 'base_trades',
