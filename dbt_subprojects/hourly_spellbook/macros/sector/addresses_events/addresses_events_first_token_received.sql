@@ -8,7 +8,7 @@ SELECT '{{blockchain}}' as blockchain
 , MIN_BY(tt.amount, (tt.block_number, tt.tx_index, evt_index, COALESCE(tt.trace_address, ARRAY[]))) AS amount
 , MIN_BY(tt.amount_usd, (tt.block_number, tt.tx_index, evt_index, COALESCE(tt.trace_address, ARRAY[]))) AS amount_usd
 , MIN_BY(tt.token_standard, (tt.block_number, tt.tx_index, evt_index, COALESCE(tt.trace_address, ARRAY[]))) AS token_standard
-, MIN_BY(tt.token_address, (tt.block_number, tt.tx_index, evt_index, COALESCE(tt.trace_address, ARRAY[]))) AS token_address
+, MIN_BY(tt.contract_address, (tt.block_number, tt.tx_index, evt_index, COALESCE(tt.trace_address, ARRAY[]))) AS token_address
 , MIN(tt.block_time) AS block_time
 , MIN(tt.block_number) AS block_number
 , MIN_BY(tt.tx_hash, (tt.block_number, tt.tx_index)) AS tx_hash
