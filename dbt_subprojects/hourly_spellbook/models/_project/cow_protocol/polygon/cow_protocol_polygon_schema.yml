@@ -23,7 +23,7 @@ models:
     config:
       tags: ["polygon", "cow_protocol", "trades", "dex", "aggregator", "auction"]
     description: >
-      CoW Protocol enriched batches table on Avalanche C-Chain
+      CoW Protocol enriched batches table on Polygon
     data_tests:
       - unique:
           column_name: tx_hash
