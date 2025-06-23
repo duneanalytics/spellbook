@@ -98,7 +98,7 @@ WITH unique_inflows_raw AS (
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('t.block_time') }}
         {% endif %}
-        GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+        GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9
 
         UNION ALL
 
@@ -124,9 +124,9 @@ WITH unique_inflows_raw AS (
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('w.block_time') }}
         {% endif %}
-        GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+        GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9
         )
-    GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+    GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9
 
     {% else %}
 
@@ -154,7 +154,7 @@ WITH unique_inflows_raw AS (
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('t.block_time') }}
     {% endif %}
-    GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+    GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9
 
     {% endif %}
     )
