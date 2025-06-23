@@ -13,7 +13,7 @@
 WITH swaps AS (
     SELECT
         s.evt_block_number AS block_number,
-        s.block_time AS block_time,
+        s.evt_block_time AS block_time,
         s.account,
         s.amountIn,
         s.amountOut,
