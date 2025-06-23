@@ -219,6 +219,7 @@ FROM (VALUES
     , ('abstractswap', 'Abstract Swap', 'Direct', 'AbstractChain')
     , ('tamadotmeme', 'tamadotmeme', 'Direct', 'tamadotmeme') 
     , ('tapio', 'Tapio', 'Direct', 'Tapio')
+    , ('bmx', 'BMX', 'Direct', 'BMXDeFi')
     , ('rooster_protocol', 'Rooster Protocol', 'Direct', 'roosterprotocol')
     , ('mindgames', 'Mindgames', 'Direct', 'mindgames_io')
 ) AS temp_table (project, name, marketplace_type, x_username)
