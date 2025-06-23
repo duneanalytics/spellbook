@@ -186,28 +186,16 @@ cumulative_balance AS (
     FROM daily_delta_balance
 ),
 
--- Generate a complete calendar for continuous data
-calendar AS (
-    SELECT date_sequence AS day
-    FROM unnest(
-        sequence(
-            {{ start_date }}, 
-            CURRENT_DATE, 
-            interval '1' day
-        )
-    ) AS t(date_sequence)
-),
-
 -- Join calendar with balances for complete daily series
 daily_balances AS (
     SELECT
-        c.day,
+        c.timestamp as day,
         b.pool_address,
         b.token_address,
         b.cumulative_amount AS token_balance_raw
-    FROM calendar c
+    FROM {{ref('utils_days')}} c
     LEFT JOIN cumulative_balance b 
-        ON b.day <= c.day AND c.day < b.day_of_next_change
+        ON b.day <= c.timestamp AND c.timestamp < b.day_of_next_change
     WHERE b.pool_address IS NOT NULL
 ),
 
@@ -235,22 +223,22 @@ daily_prices AS (
 -- Fill missing price days with forward-fill logic
 prices_with_calendar AS (
     SELECT
-        c.day,
+        c.timestamp as day,
         pt.token_address,
-        MAX_BY(dp.price, c.day) OVER (
+        MAX_BY(dp.price, c.timestamp) OVER (
             PARTITION BY pt.token_address 
-            ORDER BY c.day 
+            ORDER BY c.timestamp 
             ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
         ) AS price,
-        MAX_BY(dp.decimals, c.day) OVER (
+        MAX_BY(dp.decimals, c.timestamp) OVER (
             PARTITION BY pt.token_address 
-            ORDER BY c.day 
+            ORDER BY c.timestamp 
             ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
         ) AS decimals
-    FROM calendar c
+    FROM {{ref('utils_days')}} c
     CROSS JOIN pool_tokens_list pt
     LEFT JOIN daily_prices dp 
-        ON c.day = dp.day AND pt.token_address = dp.token
+        ON c.timestamp = dp.day AND pt.token_address = dp.token
 )
 
 -- Final output with token details and USD values using daily prices
