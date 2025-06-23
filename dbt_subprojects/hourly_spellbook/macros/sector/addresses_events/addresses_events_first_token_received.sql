@@ -26,7 +26,7 @@ SELECT '{{blockchain}}' as blockchain
 , tt.tx_hash AS tx_hash
 , tt.tx_index AS tx_index
 , tt.trace_address AS trace_address
-, unique_key AS unique_key
+, unique_key
 FROM {{token_transfers}} tt
 INNER JOIN finding_transfer ft USING (unique_key)
 {% if is_incremental() %}
