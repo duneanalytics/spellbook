@@ -1,5 +1,4 @@
-{% set blockchain = 'bnb
-' %}
+{% set blockchain = 'bnb' %}
 
 {{ config(
     schema = 'addresses_events_' + blockchain
