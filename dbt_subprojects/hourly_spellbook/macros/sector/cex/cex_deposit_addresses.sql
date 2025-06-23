@@ -70,7 +70,7 @@ WITH unique_inflows_raw AS (
     , token_standard
     , token_address
     , consolidation_unique_key
-    , MIN_BY(deposit_last_block_time, deposit_unique_key) AS deposit_unique_key
+    , MIN_BY(deposit_unique_key, deposit_first_block_time) AS deposit_unique_key
     , SUM(amount_deposited) AS amount_deposited
     , MIN(deposit_first_block_time) AS deposit_first_block_time
     , MAX(deposit_last_block_time) AS deposit_last_block_time
