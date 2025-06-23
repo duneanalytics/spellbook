@@ -76,7 +76,13 @@ with
                 ('Solayer', 'endoLNCKTqDn8gSVnN2hDdpgACUPWHZTwoYnnMybpAT'),
                 ('Token Mill', 'JoeaRXgtME3jAoz5WuFXGEndfv4NPH9nBxsLq44hk9J'),
                 ('Daos.fun', '5jnapfrAN47UYkLkEf7HnprPPBCQLvkYWGZDeKkaP5hv'),
-                ('ZeroFi', 'ZERor4xhbUycZ6gb9ntrhqscUcZmAbQDjEAtCf4hbZY')
+                ('ZeroFi', 'ZERor4xhbUycZ6gb9ntrhqscUcZmAbQDjEAtCf4hbZY'),
+                ('GoonFi', 'goonERTdGsjnkZqWuVjs73BZ3Pb9qoCUdBUL17BnS5j'),
+                ('HumidFi', '9H6tua7jkLhdm3w8BvgpTn5LZNU7g4ZynDmCiNN3q6Rp'),
+                ('Boop.fun', 'boop8hVGQGqehUK2iVEMEnMrL5RbjywRzHKBmBE7ry4'),
+                ('Gavel', 'srAMMzfVHVAtgSJc8iH6CfKzuWuUTzLHVCE81QU1rgi'),
+                ('Dynamic Bonding Curve', 'dbcij3LWUppWqq96dh6gJWwBifmcGfLSB5D4DuSMaqN'),
+                ('Pump.fun AMM', 'pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA')
             ) as v(amm_name, amm)
     )
 
