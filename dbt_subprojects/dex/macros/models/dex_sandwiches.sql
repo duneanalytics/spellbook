@@ -75,7 +75,7 @@ INNER JOIN {{transactions}} tx ON tx.block_time=s.block_time
     {% endif %}
 {% if whitelist is not none %}
 LEFT JOIN {{whitelist}} w ON w.block_number=tx.block_number
-    AND w.tx_hash=tx.tx_hash
+    AND w.tx_hash=tx.hash
 {% endif %}
 WHERE dt.blockchain='{{blockchain}}'
 {% if is_incremental() %}
