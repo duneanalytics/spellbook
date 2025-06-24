@@ -74,14 +74,15 @@ INNER JOIN {{transactions}} tx ON tx.block_time=s.block_time
     AND {{ incremental_predicate('tx.block_time') }}
     {% endif %}
 {% if whitelist is not none %}
-LEFT JOIN {{whitelist}} w ON w.address=dt.tx_from
+LEFT JOIN {{whitelist}} w ON w.block_number=tx.block_number
+    AND w.tx_hash=tx.tx_hash
 {% endif %}
 WHERE dt.blockchain='{{blockchain}}'
 {% if is_incremental() %}
 AND {{ incremental_predicate('dt.block_time') }}
 {% endif %}
 {% if whitelist is not none %}
-AND w.address IS NULL
+AND w.entity IS NULL
 {% endif %}
 
 {% endmacro %}
