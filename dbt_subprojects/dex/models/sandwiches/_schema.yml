@@ -1310,5 +1310,6 @@ models:
     columns:
       - *blockchain
       - *entity
+      - *block_time
       - *block_number
       - *tx_hash

@@ -16,6 +16,7 @@
 
 SELECT DISTINCT 'bnb' AS blockchain
 , t.entity
+, tr.block_time
 , tr.block_number
 , tr.tx_hash
 FROM {{ source('bnb', 'traces') }} tr
@@ -30,6 +31,7 @@ UNION ALL
 
 SELECT DISTINCT 'base' AS blockchain
 , t.entity
+, tr.block_time
 , tr.block_number
 , tr.tx_hash
 FROM {{ source('base', 'traces') }} tr
@@ -44,6 +46,7 @@ UNION ALL
 
 SELECT DISTINCT 'ethereum' AS blockchain
 , t.entity
+, tr.block_time
 , tr.block_number
 , tr.tx_hash
 FROM {{ source('ethereum', 'traces') }} tr
