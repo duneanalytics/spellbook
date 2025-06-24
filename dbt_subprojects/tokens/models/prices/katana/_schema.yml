@@ -7,7 +7,7 @@ models:
       sector: prices
       contributors: hosuke
     config:
-      tags: ['prices', 'tokens', 'usd', 'apechain']
+      tags: ['prices', 'tokens', 'usd']
     description: "Price tokens on Apechain EVM chain"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
