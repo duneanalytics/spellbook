@@ -29,7 +29,7 @@ WITH unique_inflows_raw AS (
     , unique_key
     FROM {{cex_local_flows}} cf
     INNER JOIN unique_inflows_raw ui USING (block_number, unique_key)
-    INNER JOIN {{ ref('gas_' + blockchain + '_fees') }} f USING (block_number, tx_hash)
+    INNER JOIN {{ source('gas_' + blockchain), 'fees') }} f USING (block_number, tx_hash)
     {% if is_incremental() %}
     WHERE cf.flow_type = 'Inflow'
     AND {{ incremental_predicate('cf.block_time') }}
