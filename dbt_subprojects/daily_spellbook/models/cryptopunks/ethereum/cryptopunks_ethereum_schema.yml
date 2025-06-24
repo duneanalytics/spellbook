@@ -165,3 +165,24 @@ models:
         description: "Index of transfer"
       - name: evt_tx_hash
         description: "Transfer transaction hash"
+
+  - name: cryptopunks_ethereum_current_listings
+    meta:
+      blockchain: ethereum
+      project: cryptopunks
+      contributors: [cat]
+    config:
+      tags: ['ethereum', 'cryptopunks', 'listings']
+    description: > 
+        CryptoPunks current listings
+    columns:
+      - name: punk_id
+        description: "CryptoPunk ID #"
+        data_tests:
+          - unique
+      - name: listed_price_eth
+        description: "Price in ETH"
+      - name: listed_price_current_usd
+        description: "Price in USD"
+      - name: listing_created_at
+        description: "Time listing created"
