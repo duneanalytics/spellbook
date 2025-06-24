@@ -19,16 +19,35 @@ WITH unique_inflows_raw AS (
     )
 
 , unique_inflows AS (
-    SELECT block_number
+
+    SELECT cf.block_number
     , cf.block_time
-    , suspected_deposit_address 
+    , ui.suspected_deposit_address 
     , cf.token_standard
     , cf.token_address
     , CASE WHEN cf.token_standard = 'native' THEN cf.amount+(f.tx_fee) ELSE cf.amount END AS amount
     , cf.cex_name
-    , unique_key
+    , cf.unique_key
+    FROM cex_celo.flows cf
+    INNER JOIN unique_inflows_raw ui ON cf.block_number = ui.block_number
+        AND cf.unique_key=ui.unique_key
+    INNER JOIN delta_prod.gas.fees f ON cf.block_number = f.block_number
+        AND cf.tx_hash = f.tx_hash
+        AND f.blockchain = 'celo'
+
+
+
+    SELECT cf.block_number
+    , cf.block_time
+    , ui.suspected_deposit_address 
+    , cf.token_standard
+    , cf.token_address
+    , CASE WHEN cf.token_standard = 'native' THEN cf.amount+(f.tx_fee) ELSE cf.amount END AS amount
+    , cf.cex_name
+    , cf.unique_key
     FROM {{cex_local_flows}} cf
-    INNER JOIN unique_inflows_raw ui USING (block_number, unique_key)
+    INNER JOIN unique_inflows_raw ui ON cf.block_number = ui.block_number
+        AND cf.unique_key = ui.unique_key
     INNER JOIN {{ source('gas', 'fees') }} f
         ON cf.block_number = f.block_number
         AND cf.tx_hash = f.tx_hash
@@ -162,6 +181,19 @@ WITH unique_inflows_raw AS (
     {% endif %}
     )
 
+, filter_multioutflow_addresses AS (
+    SELECT suspected_deposit_address
+    FROM {{ source('tokens_'~blockchain,'transfers') }} tt
+    INNER JOIN in_and_out iao ON iao.suspected_deposit_address = tt."from"
+        AND tt.block_time BETWEEN iao.deposit_first_block_time AND iao.consolidation_last_block_time + interval '1' hour
+    LEFT JOIN {{ ref('cex_evms_addresses') }} ca ON tt.to=ca.address
+    {% if is_incremental() %}
+    WHERE {{ incremental_predicate('tt.block_time') }}
+    {% endif %}
+    GROUP BY 1
+    HAVING MIN(CASE WHEN iao.cex_name=ca.cex_name THEN true ELSE false END) 
+    )
+
 SELECT suspected_deposit_address AS address
 , '{{blockchain}}' AS blockchain
 , cex_name
@@ -175,7 +207,8 @@ SELECT suspected_deposit_address AS address
 , consolidation_unique_key
 , deposit_unique_key
 FROM in_and_out
-WHERE amount_deposited >= amount_consolidated
-AND deposit_first_block_time < consolidation_first_block_time
-AND deposit_last_block_time < consolidation_last_block_time
+INNER JOIN filter_multioutflow_addresses USING (suspected_deposit_address)
+WHERE deposit_first_block_time <= consolidation_first_block_time
+AND deposit_last_block_time <= consolidation_last_block_time
+AND amount_consolidated BETWEEN amount_deposited*0.9 AND amount_deposited*1.1 -- account for older dust test transfers
 {% endmacro %}
