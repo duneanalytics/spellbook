@@ -28,23 +28,6 @@ WITH unique_inflows_raw AS (
     , CASE WHEN cf.token_standard = 'native' THEN cf.amount+(f.tx_fee) ELSE cf.amount END AS amount
     , cf.cex_name
     , cf.unique_key
-    FROM cex_celo.flows cf
-    INNER JOIN unique_inflows_raw ui ON cf.block_number = ui.block_number
-        AND cf.unique_key=ui.unique_key
-    INNER JOIN delta_prod.gas.fees f ON cf.block_number = f.block_number
-        AND cf.tx_hash = f.tx_hash
-        AND f.blockchain = 'celo'
-
-
-
-    SELECT cf.block_number
-    , cf.block_time
-    , ui.suspected_deposit_address 
-    , cf.token_standard
-    , cf.token_address
-    , CASE WHEN cf.token_standard = 'native' THEN cf.amount+(f.tx_fee) ELSE cf.amount END AS amount
-    , cf.cex_name
-    , cf.unique_key
     FROM {{cex_local_flows}} cf
     INNER JOIN unique_inflows_raw ui ON cf.block_number = ui.block_number
         AND cf.unique_key = ui.unique_key
