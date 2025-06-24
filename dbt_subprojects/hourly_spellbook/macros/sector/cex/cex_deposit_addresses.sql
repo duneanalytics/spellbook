@@ -31,7 +31,7 @@ WITH unique_inflows_raw AS (
     FROM {{cex_local_flows}} cf
     INNER JOIN unique_inflows_raw ui ON cf.block_number = ui.block_number
         AND cf.unique_key = ui.unique_key
-    INNER JOIN {{ source('gas', 'fees') }} f
+    INNER JOIN {{ source('gas_' + blockchain, 'fees') }} f
         ON cf.block_number = f.block_number
         AND cf.tx_hash = f.tx_hash
         AND f.blockchain = '{{blockchain}}'
