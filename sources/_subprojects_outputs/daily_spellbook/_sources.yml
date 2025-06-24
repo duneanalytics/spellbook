@@ -70,3 +70,10 @@ sources:
       - name: votes
       - name: supply
       - name: borrow
+
+  - name: xrpl
+    description: "XRPL blockchain data"
+    tables:
+      - name: transactions
+        description: "XRPL transactions table"
+
