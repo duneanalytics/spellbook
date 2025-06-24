@@ -108,11 +108,11 @@ xrpl_gas_fees AS (
     )
     WHERE t.transaction_type IN (
         'Payment'
-        -- ,'PaymentChannelClaim'
-        -- ,'CheckCash'
-        -- ,'AMMDeposit' 
-        -- ,'AMMWithdraw'
-        -- ,'EscrowFinish'
+        ,'PaymentChannelClaim'
+        ,'CheckCash'
+        ,'AMMDeposit' 
+        ,'AMMWithdraw'
+        ,'EscrowFinish'
     )
         AND TRY_CAST(t.fee AS DOUBLE) > 0
         {% if is_incremental() %}

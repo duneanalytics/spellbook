@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'tokens_xrpl',
+        schema = 'tokens_xrpl_payments',
         alias = 'transfers',
         partition_by = ['block_month'],
         materialized = 'incremental',
@@ -25,7 +25,7 @@ WITH xrp_prices AS (
     GROUP BY 1
 ),
 
-successful_transactions AS (
+successful_payment_transactions AS (
     SELECT 
         hash AS tx_hash
         ,CAST(ledger_close_date AS TIMESTAMP) AS block_time
@@ -50,14 +50,7 @@ successful_transactions AS (
         ,CAST(JSON_EXTRACT_SCALAR(metadata, '$.Flags') AS BIGINT) AS flags
         
     FROM {{ source('xrpl', 'transactions') }}
-    WHERE transaction_type IN (
-        'Payment'
-        -- ,'PaymentChannelClaim'
-        -- ,'CheckCash'
-        -- ,'AMMDeposit'
-        -- ,'AMMWithdraw'
-        -- ,'EscrowFinish'
-    )
+    WHERE transaction_type = 'Payment'
         AND JSON_EXTRACT_SCALAR(metadata, '$.TransactionResult') = 'tesSUCCESS'
         AND destination IS NOT NULL
         {% if is_incremental() %}
@@ -65,7 +58,7 @@ successful_transactions AS (
         {% endif %}
 ),
 
-base_transfers AS (
+payment_transfers AS (
     SELECT 
         tx_hash
         ,block_time
@@ -96,7 +89,7 @@ base_transfers AS (
             ELSE 'issued'
         END AS token_standard
         
-    FROM successful_transactions
+    FROM successful_payment_transactions
     WHERE COALESCE(delivered_value, amount_value) IS NOT NULL
         AND TRY_CAST(COALESCE(delivered_value, amount_value) AS DOUBLE) > 0
 ),
@@ -152,6 +145,7 @@ transfers_with_decoded_symbols AS (
                     WHEN SUBSTR(currency, 1, 16) = '534B554C4C000000' THEN 'SKULL'
                     WHEN SUBSTR(currency, 1, 16) = '5852507300000000' THEN 'XRPs'
                     WHEN SUBSTR(currency, 1, 16) = '52454D4F00000000' THEN 'REMO'
+                    WHEN SUBSTR(currency, 1, 16) = '5354494D50594348' THEN 'STIMPYCHA'
                     ELSE SUBSTR(currency, 1, 8)
                 END
             ELSE currency
@@ -169,7 +163,7 @@ transfers_with_decoded_symbols AS (
                 TRY_CAST(amount_delivered_raw AS DOUBLE)
         END AS amount_delivered
         
-    FROM base_transfers
+    FROM payment_transfers
 )
 
 SELECT
@@ -201,6 +195,7 @@ SELECT
     ,t.amount_requested
     ,t.amount_delivered
     ,COALESCE(t.amount_delivered, t.amount_requested) AS amount
+    ,t.partial_payment_flag
     ,CASE 
         WHEN t.currency = 'XRP' THEN p.price_usd
         ELSE NULL
