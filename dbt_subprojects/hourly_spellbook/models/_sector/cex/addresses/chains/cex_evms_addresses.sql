@@ -1879,7 +1879,7 @@ FROM (VALUES
     , (0x43fddf6aa37848e87bb176407dafef2b8ca20a8a, 'Bithumb', 'Bithumb 425', 'hildobby', date '2025-06-25')
     , (0x9e336b34bfa786ae0c56a776e13fb85a7e0cb234, 'Bithumb', 'Bithumb 426', 'hildobby', date '2025-06-25')
     , (0x4511d18987b059ef940764ff85cde2a8841026f3, 'Bithumb', 'Bithumb 427', 'hildobby', date '2025-06-25')
-    , (0x5ee8dd3eefd8dbe1b019e312bce563ff6d7d039e 'Bithumb', 'Bithumb 428', 'hildobby', date '2025-06-25')
+    , (0x5ee8dd3eefd8dbe1b019e312bce563ff6d7d039e, 'Bithumb', 'Bithumb 428', 'hildobby', date '2025-06-25')
     , (0x688e7a9302c6f2b605b48066324c1cf1b48ad440, 'Bithumb', 'Bithumb 429', 'hildobby', date '2025-06-25')
     , (0x3513779d69ee4d1c063a229563c1063172cd47f8, 'Bithumb', 'Bithumb 430', 'hildobby', date '2025-06-25')
     , (0xef978f507ec75fc2736852f66698ad48644b84c9, 'Bithumb', 'Bithumb 431', 'hildobby', date '2025-06-25')
