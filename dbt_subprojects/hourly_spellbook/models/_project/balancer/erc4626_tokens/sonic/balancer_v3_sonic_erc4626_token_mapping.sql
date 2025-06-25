@@ -44,7 +44,7 @@ FROM (VALUES
      (0xEEEEEEE6d95E55A468D32FeB5d6648754d10A967, 'Wrapped Stability USDC', 'wmetaUSDC', 0x29219dd400f2Bf60E5a23d13Be72B486D4038894, 'USDC.e', 6),
      (0xcccccccca9fc69a2b32408730011edb3205a93a1, 'Wrapped Stability scUSD', 'wmetascUSD', 0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE, 'scUSD', 6),
      (0x9A1BF5365edBB99C2c61CA6D9ffAd0B705ACfc6F, 'Varlamore dUSD Vault', 'vdUSD', 0x53a6aBb52B2F968fA80dF6A894e4f1b1020DA975, 'dUSD', 18),
-     (0xded4ac8645619334186f28b8798e07ca354cfa0e, 'Re7 scUSD', 'Re7scUSD', 0x29219dd400f2Bf60E5a23d13Be72B486D4038894, 'scUSD', 6)
+     (0x592D1e187729C76EfacC6dfFB9355bd7BF47B2a7, 'Re7 scUSD', 'Re7scUSD', 0x29219dd400f2Bf60E5a23d13Be72B486D4038894, 'scUSD', 6)
     ) AS temp_table (erc4626_token, erc4626_token_name, erc4626_token_symbol, underlying_token, underlying_token_symbol, decimals)
 )
 
