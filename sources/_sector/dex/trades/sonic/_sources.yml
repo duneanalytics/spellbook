@@ -24,3 +24,15 @@ sources:
       - name: selfpeggingassetfactory_call_createpool
       - name: selfpeggingassetfactory_evt_poolcreated
       - name: selfpeggingasset_evt_tokenswapped
+  - name: swapx_sonic
+    tables:
+      - name: algebrafactory_evt_pool
+      - name: algebrapool_evt_swap
+  - name: metropolis_sonic
+    tables:
+      - name: lbfactory_evt_lbpaircreated
+      - name: v2factory_evt_paircreated
+      - name: router_call_swapexacttokensfortokens
+
+
+
