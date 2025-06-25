@@ -74,6 +74,7 @@
     , "gnosis"
     , "ink"
     , "kaia"
+    , "katana"
     , "linea"
     , "lens"
     , "mantle"
