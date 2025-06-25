@@ -1,0 +1,423 @@
+version: 2
+
+sources:
+  # ===========================================
+  # Base EVM Source (transactions, blocks etc.)
+  # ===========================================
+  - name: katana
+    description: "Raw EVM tables for the katana chain. This source provides access to fundamental blockchain data like blocks, transactions, logs, and traces."
+    tables:
+      - name: transactions
+        # description: "Contains detailed information about each transaction executed on the katana network. Includes sender, receiver, value, gas details, status, input data, and potentially L2-specific L1 submission info."
+        description: "{{ doc('katana_transactions_doc') }}"
+        columns:
+          - &block_date
+            name: block_date
+            description: "The UTC date of the block in which this transaction was included"
+          - &block_time
+            name: block_time
+            description: "The exact UTC timestamp when the block containing this transaction was mined/sequenced"
+          - &value
+            name: value
+            description: "Amount of native currency (e.g., ETH, MATIC) sent from sender to recipient, measured in wei (1 native = 10^18 wei)"
+          - &block_number
+            name: block_number
+            description: "The sequential number (height) of the block containing this transaction"
+          - name: gas_limit
+            description: "Maximum number of gas units this transaction was allowed to consume"
+          - name: gas_price
+            description: "Price per unit of gas for this transaction (legacy or pre-EIP-1559), denominated in wei"
+          - name: gas_used
+            description: "Actual amount of gas units consumed by this transaction's execution"
+          - name: max_fee_per_gas
+            description: "Maximum total fee per gas unit the sender was willing to pay (base fee + priority fee) (post-EIP-1559)"
+          - name: max_priority_fee_per_gas
+            description: "Maximum tip per gas unit the sender was willing to pay to the miner/validator (post-EIP-1559)"
+          - name: base_fee_per_gas
+            description: "The network base fee per gas unit for the block containing this transaction (post-EIP-1559)"
+          - name: nonce
+            description: "Sequential number for transactions sent from the sender's address, preventing replays"
+          - name: index
+            description: "Integer position of this transaction within the list of transactions in its block"
+          - &success
+            name: success
+            description: "Boolean flag indicating if the transaction executed successfully (true) or failed/reverted (false)"
+          - &from
+            name: from
+            description: "Address of the account that initiated and signed this transaction"
+          - &to
+            name: to
+            description: "Address of the recipient account or contract; null for contract creation transactions"
+          - &block_hash
+            name: block_hash
+            description: "Unique 256-bit identifier (hash) of the block containing this transaction"
+          - name: data
+            description: "Input data payload for the transaction, often containing function selectors and arguments for contract calls"
+          - name: hash
+            description: "Unique 256-bit identifier (hash) of this specific transaction"
+          - name: type
+            description: "Numeric type of the transaction (e.g., 0 for legacy, 1 for EIP-2930, 2 for EIP-1559) indicating its format and fee mechanism"
+          - name: access_list
+            description: "List of addresses and storage keys the transaction preemptively specified access to (EIP-2930 and later types)"
+          - name: effective_gas_price
+            description: "The actual price per gas unit paid for this transaction after execution (base fee + priority fee)"
+          - name: l1_block_number
+            description: "For L2s: The block number on the L1 chain (e.g., Ethereum) where this L2 transaction's batch data was included"
+          - name: l1_fee
+            description: "For L2s: Estimated or actual fee paid on L1 for data submission related to this L2 transaction"
+          - name: l1_fee_scalar
+            description: "For L2s: Scalar value applied to L1 gas price/costs for L2 fee calculation"
+          - name: l1_gas_price
+            description: "For L2s: Gas price on L1 at the time relevant to this L2 transaction's L1 submission"
+          - name: l1_gas_used
+            description: "For L2s: Amount of gas consumed on L1 for submitting data related to this L2 transaction"
+          - name: l1_timestamp
+            description: "For L2s: Timestamp associated with the L1 block where this L2 transaction's batch was included"
+          - name: l1_tx_origin
+            description: "For L2s: If applicable, the original EOA address that initiated the corresponding transaction on L1"
+
+      - name: traces
+        # description: "Represents internal operations or execution steps within a transaction (e.g., contract calls, creations). Traces form a tree structure for each transaction."
+        description: "{{ doc('katana_traces_doc') }}"
+        columns:
+          - *block_date
+          - *block_time
+          - *block_number
+          - *value # Value transferred during this specific trace step
+          - name: gas
+            description: "Amount of gas allocated for this trace's execution (may include gas for sub-traces)"
+          - name: gas_used
+            description: "Actual amount of gas consumed by this specific trace step"
+          - *block_hash
+          - name: success
+            description: "Boolean flag indicating if this specific trace step executed successfully (true) or reverted (false)"
+          - &tx_index
+            name: tx_index
+            description: "Index of the parent transaction within its containing block"
+          - name: subtraces
+            description: "Number of direct child traces initiated by this trace"
+          - name: error
+            description: "Error message or reason if this trace step failed/reverted"
+          - name: tx_success
+            description: "Boolean flag indicating the success status of the parent transaction"
+          - &tx_hash
+            name: tx_hash
+            description: "Unique 256-bit identifier (hash) of the parent transaction"
+          - name: from
+            description: "Address initiating this trace step (caller)"
+          - name: to
+            description: "Address receiving this trace step (callee)"
+          - name: trace_address
+            description: "Array representing the path from the root trace (transaction) to this trace within the execution tree (e.g., [], [0], [0, 1])"
+          - name: type
+            description: "Type of trace action (e.g., 'call', 'staticcall', 'delegatecall', 'create', 'suicide')"
+          - name: address # Often populated for 'create' or 'suicide' types
+            description: "Address associated with the trace action (e.g., newly created contract address, recipient of suicide refund)"
+          - name: code # Populated for 'create' type
+            description: "Bytecode of the contract being created"
+          - name: call_type # Populated for 'call' types
+            description: "Specific type of call operation (e.g., 'call', 'delegatecall', 'staticcall')"
+          - name: input
+            description: "Input data provided for this trace step (e.g., function arguments for a call)"
+          - name: output
+            description: "Output data returned by this trace step"
+          - name: refund_address # Populated for 'suicide' type
+            description: "Address designated to receive the contract balance upon self-destruction"
+
+      # Decoded traces might not be available for all chains or need specific schemas
+      - name: traces_decoded
+        description: "{{ doc('katana_traces_decoded_doc') }}"
+        columns:
+          - *block_date
+          - *block_time
+          - *block_number
+          - *tx_hash
+          - name: contract_name
+            description: "Human-readable name of the smart contract involved in this trace"
+          - name: function_name
+            description: "Name of the specific contract function called in this trace"
+          - name: namespace
+            description: "Categorical grouping or project name associated with the contract"
+          - name: signature
+            description: "8 byte function signature used to identify the function"
+          - name: to
+            description: "address of the contract or account receiving this trace"
+          - name: trace_address
+            description: "Array indicating the exact position of this trace within the trace tree of the transaction"
+
+      - name: logs
+        # description: "Contains event logs emitted by smart contracts during transaction execution. Essential for tracking contract state changes and activities."
+        description: "{{ doc('katana_logs_doc') }}"
+        columns:
+          - *block_date
+          - *block_time
+          - *block_number
+          - *block_hash
+          - *tx_index
+          - *tx_hash
+          - name: contract_address
+            description: "Address of the smart contract that emitted this event log"
+          - name: topic0
+            description: "First indexed topic (32 bytes), typically the hash of the event signature (e.g., keccak256('Transfer(address,address,uint256)'))"
+          - name: topic1
+            description: "Second indexed topic (32 bytes), often used for indexed event parameters like addresses"
+          - name: topic2
+            description: "Third indexed topic (32 bytes), used for additional indexed event parameters"
+          - name: topic3
+            description: "Fourth indexed topic (32 bytes), used for further indexed event parameters"
+          - name: data
+            description: "Non-indexed event parameters, ABI-encoded into a single data payload"
+          - name: index # Log index within the block
+            description: "Integer position of this log within the list of all logs in the block"
+
+      - name: logs_decoded
+        description: "{{ doc('katana_logs_decoded_doc') }}"
+        columns:
+          - *block_date
+          - *block_time
+          - *block_number
+          - *tx_hash
+          - name: index
+            description: "Position of this log within the block"
+          - name: contract_address
+            description: "Address of the smart contract that emitted this log"
+          - name: namespace
+            description: "Categorical grouping or project name associated with the contract"
+          - name: contract_name
+            description: "Name of the smart contract that emitted this log"
+          - name: event_name
+            description: "Name of the event emitted in this log"
+          - name: signature
+            description: "Topic0 hash of the event signature"
+
+      - name: blocks
+        # description: "Contains metadata about each block mined or sequenced on the katana network."
+        description: "{{ doc('katana_blocks_doc') }}"
+        columns:
+          - name: base_fee_per_gas
+            description: "The network base fee per gas unit for this block (post-EIP-1559)"
+          - name: difficulty
+            description: "Difficulty level required to mine this block (relevant for PoW chains, pre-Merge for Ethereum)"
+          - name: total_difficulty
+            description: "Cumulative difficulty of the chain up to and including this block (relevant for PoW chains, pre-Merge for Ethereum)"
+          - name: gas_limit
+            description: "Total gas limit for the block, constraining the computation resources available"
+          - name: gas_used
+            description: "Total amount of gas consumed by all transactions included in this block"
+          - name: hash
+            description: "Unique 256-bit identifier (hash) of this block"
+          - name: miner # Or proposer/sequencer depending on consensus
+            description: "Address of the account that mined/proposed/sequenced this block and received rewards/fees"
+          - name: nonce
+            description: "Nonce value used in the block header, typically for PoW consensus mechanism"
+          - name: number
+            description: "Sequential block number (height) of this block in the blockchain"
+          - name: parent_hash
+            description: "Hash of the preceding block in the chain"
+          - name: size
+            description: "Size of the block data in bytes"
+          - name: time
+            description: "Timestamp (UTC) when the block was mined/sequenced"
+          - name: blob_gas_used
+            description: "Total amount of blob gas consumed by transactions in this block (post-EIP-4844)"
+          - name: excess_blob_gas
+            description: "Running total of blob gas consumed in excess of the target, influencing future blob base fees (post-EIP-4844)"
+          - name: parent_beacon_block_root
+            description: "Root hash of the parent beacon chain block (relevant post-Merge for Ethereum and potentially L2s)"
+
+      - name: contracts
+        # description: "Tracks contracts deployed on katana, often enriched with metadata from decoding efforts (e.g., ABI, name)."
+        description: "{{ doc('katana_contracts_doc') }}"
+        columns:
+          - name: abi_id
+            description: "Unique identifier potentially linking to a known contract ABI repository"
+          - name: abi
+            description: "JSON representation of the contract's Application Binary Interface (ABI), if available"
+          - name: address
+            description: "Address where the contract is deployed"
+          - name: from # Creator address from git history version
+            description: "Address that deployed this contract. Can be a contract or EOA."
+          - name: code # Renamed from bytecode to match git history version
+            description: "Bytecode of the contract at the time of creation"
+          - name: name
+            description: "Human-readable name assigned to the contract (often from decoding or verification sources)"
+          - name: namespace
+            description: "Categorical namespace or project associated with the contract (e.g., 'Uniswap V3')"
+          - name: dynamic
+            description: "Boolean indicating if this contract was submitted to Dune with the 'dynamic' flag enabled."
+          - name: ethereum # Column name from git history
+            description: "Boolean indicating if this is a manual individual submission of a contract."
+          - name: factory
+            description: "Boolean indicating if this submission was submitted to Dune with the 'factory' flag enabled."
+          - name: detection_source
+            description: "Method used to detect and decode this contract: 'factory', 'ethereum', or 'dynamic'. "
+          - name: created_at # Dune timestamp from git history
+            description: "Timestamp of when this contract was first decoded on Dune. This is not the contract creation timestamp."
+
+      - name: creation_traces # Added from original file
+        description: "{{ doc('katana_creation_traces_doc') }}"
+        columns:
+          - *block_time
+          - *block_number
+          - *tx_hash
+          - name: address
+            description: "Address of the contract created"
+          - name: from # Creator address
+            description: "Address that created this contract. Can be a contract or EOA."
+          - name: code
+            description: "Deployed bytecode of the contract"
+
+
+  # ===========================================
+  # ERC20 Source
+  # ===========================================
+  - name: erc20_katana
+    description: "Standard ERC20 Fungible Token event tables for katana"
+    tables:
+      - name: evt_Transfer
+        description: "{{ doc('erc20_katana_evt_Transfer_doc') }}"
+        columns:
+          - name: contract_address
+            description: "Address of the ERC20 token contract that emitted this event"
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Hash of the transaction containing this event"
+          - &evt_index
+            name: evt_index
+            description: "Index position of this event within the transaction"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp of the block containing this event"
+          - &evt_block_number
+            name: evt_block_number
+            description: "The block number containing this event"
+          - *from # Sender of tokens
+          - *to   # Recipient of tokens
+          - name: value # Amount transferred, in token's minimal unit (raw)
+            description: "Amount of ERC20 tokens transferred, in the token's native decimal representation (raw value)"
+
+      - name: evt_Approval
+        description: "{{ doc('erc20_katana_evt_Approval_doc') }}"
+        columns:
+          - name: contract_address
+            description: "Address of the ERC20 token contract"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: owner
+            description: "Address of the token owner granting approval"
+          - name: spender
+            description: "Address being granted permission to spend tokens"
+          - name: value # Amount approved, in token's minimal unit (raw)
+            description: "Amount of ERC20 tokens approved for spending, in the token's native decimal representation (raw value)"
+
+  # ===========================================
+  # ERC721 Source
+  # ===========================================
+  - name: erc721_katana
+    description: "Standard ERC721 NFT event tables for katana"
+    tables:
+      - name: evt_Transfer
+        description: "{{ doc('erc721_katana_evt_Transfer_doc') }}"
+        columns:
+          - name: contract_address
+            description: "Address of the ERC721 token contract"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *from # Previous owner
+          - *to   # New owner
+          - name: tokenId
+            description: "Unique identifier of the specific ERC721 token (NFT) being transferred"
+
+      - name: evt_Approval
+        description: "{{ doc('erc721_katana_evt_Approval_doc') }}"
+        columns:
+          - name: contract_address
+            description: "Address of the ERC721 token contract"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - &approved # Address approved for this specific token ID
+            name: approved
+            description: "Address approved to manage the specific tokenId"
+          - &owner
+            name: owner
+            description: "Address of the token owner"
+          - name: tokenId
+            description: "Unique identifier of the specific ERC721 token (NFT) for which approval is granted/revoked"
+
+      - name: evt_ApprovalForAll
+        description: "{{ doc('erc721_katana_evt_ApprovalForAll_doc') }}"
+        columns:
+          - name: contract_address
+            description: "Address of the ERC721 token contract"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - &approved_flag
+            name: approved
+            description: "Boolean indicating whether the operator is approved for all tokens (true) or revoked (false)"
+          - *owner
+          - name: operator
+            description: "Address granted or revoked permission to manage all of the owner's tokens"
+
+  # ===========================================
+  # ERC1155 Source
+  # ===========================================
+  - name: erc1155_katana
+    description: "Standard ERC1155 multi-token standard event tables for katana"
+    tables:
+      - name: evt_TransferSingle
+        description: "{{ doc('erc1155_katana_evt_TransferSingle_doc') }}"
+        columns:
+          - name: contract_address
+            description: "Address of the ERC1155 token contract"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: operator
+            description: "Address that initiated the transfer (may be owner or approved operator)"
+          - *from
+          - *to
+          - name: id # Token ID being transferred
+            description: "Identifier of the specific ERC1155 token type being transferred"
+          - name: value # Amount of the token ID transferred
+            description: "Quantity of the specific ERC1155 token type transferred"
+
+      - name: evt_TransferBatch
+        description: "{{ doc('erc1155_katana_evt_TransferBatch_doc') }}"
+        columns:
+          - name: contract_address
+            description: "Address of the ERC1155 token contract"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: operator
+            description: "Address that initiated the batch transfer"
+          - *from
+          - *to
+          - name: ids # Array of token IDs transferred
+            description: "Array of identifiers for the ERC1155 token types transferred in the batch"
+          - name: values # Array of amounts transferred
+            description: "Array of quantities for each ERC1155 token type transferred, corresponding to the ids array"
+
+      - name: evt_ApprovalForAll
+        description: "{{ doc('erc1155_katana_evt_ApprovalForAll_doc') }}"
+        columns:
+          - name: contract_address
+            description: "Address of the ERC1155 token contract"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *approved_flag
+          - *owner
+          - name: operator
+            description: "Address granted or revoked permission to manage all of the owner's tokens" 
