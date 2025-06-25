@@ -10,7 +10,7 @@
 }}
 
 {{
-    uniswap_compatible_v4_blast_liquidity(
+    uniswap_compatible_v4_base_liquidity_events(
           blockchain = 'blast'
         , project = 'uniswap'
         , version = '4'

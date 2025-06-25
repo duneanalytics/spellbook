@@ -10,7 +10,7 @@
 }}
 
 {{
-    uniswap_compatible_v4_base_liquidity(
+    uniswap_compatible_v4_base_liquidity_events(
           blockchain = 'worldchain'
         , project = 'uniswap'
         , version = '4'

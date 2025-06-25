@@ -96,7 +96,7 @@ models:
             - tx_hash
             - evt_index
             - event_type
-      - check_dex_optimism_liquidity_seed:
+      - check_dex_base_liquidity_seed:
           seed_file: ref('uniswap_optimism_base_liquidity_seed')
           filter:
             version: 4

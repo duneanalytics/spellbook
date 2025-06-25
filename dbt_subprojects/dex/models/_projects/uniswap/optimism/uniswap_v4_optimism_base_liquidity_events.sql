@@ -10,7 +10,7 @@
 }}
 
 {{
-    uniswap_compatible_v4_optimism_liquidity(
+    uniswap_compatible_v4_base_liquidity_events(
           blockchain = 'optimism'
         , project = 'uniswap'
         , version = '4'
