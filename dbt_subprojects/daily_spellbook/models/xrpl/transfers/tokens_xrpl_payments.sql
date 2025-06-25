@@ -94,7 +94,7 @@ payment_transfers AS (
         AND TRY_CAST(COALESCE(delivered_value, amount_value) AS DOUBLE) > 0
 ),
 
-transfers_with_decoded_symbols AS (
+transfers_with_amounts AS (
     SELECT
         tx_hash || '_0' AS unique_key
         ,'xrpl' AS blockchain
@@ -117,39 +117,18 @@ transfers_with_decoded_symbols AS (
         ,to_address
         ,issuer
         ,currency
-        ,amount_requested_raw
-        ,amount_delivered_raw
         ,CASE 
             WHEN LENGTH(currency) = 40 THEN currency
             ELSE NULL
         END AS currency_hex
         ,CASE 
             WHEN currency = 'XRP' THEN 'XRP'
-            WHEN LENGTH(currency) = 40 THEN 
-                CASE 
-                    WHEN SUBSTR(currency, 1, 16) = '586F676500000000' THEN 'Xoge'
-                    WHEN SUBSTR(currency, 1, 16) = '5363686D65636B6C' THEN 'Schmeckles' 
-                    WHEN SUBSTR(currency, 1, 16) = '524C555344000000' THEN 'RLUSD'
-                    WHEN SUBSTR(currency, 1, 16) = '5349474D41000000' THEN 'SIGMA'
-                    WHEN SUBSTR(currency, 1, 16) = '5348524F4F4D4945' THEN 'SHROOMIES'
-                    WHEN SUBSTR(currency, 1, 16) = '4841494300000000' THEN 'HAIC'
-                    WHEN SUBSTR(currency, 1, 16) = '4249545800000000' THEN 'BITX'
-                    WHEN SUBSTR(currency, 1, 16) = '515A696C6C610000' THEN 'QZilla'
-                    WHEN SUBSTR(currency, 1, 16) = '5852505400000000' THEN 'XRPT'
-                    WHEN SUBSTR(currency, 1, 16) = '584D454D45000000' THEN 'XMEME'
-                    WHEN SUBSTR(currency, 1, 16) = '4752554D50590000' THEN 'GRUMPY'
-                    WHEN SUBSTR(currency, 1, 16) = '6277696600000000' THEN 'bwif'
-                    WHEN SUBSTR(currency, 1, 16) = '534F4C4F00000000' THEN 'SOLO'
-                    WHEN SUBSTR(currency, 1, 16) = '4D4F4F4E00000000' THEN 'MOON'
-                    WHEN SUBSTR(currency, 1, 16) = '52495A5A4C450000' THEN 'RIZZLE'
-                    WHEN SUBSTR(currency, 1, 16) = '534B554C4C000000' THEN 'SKULL'
-                    WHEN SUBSTR(currency, 1, 16) = '5852507300000000' THEN 'XRPs'
-                    WHEN SUBSTR(currency, 1, 16) = '52454D4F00000000' THEN 'REMO'
-                    WHEN SUBSTR(currency, 1, 16) = '5354494D50594348' THEN 'STIMPYCHA'
-                    ELSE SUBSTR(currency, 1, 8)
-                END
+            WHEN LENGTH(currency) = 40 AND cm.symbol IS NOT NULL THEN cm.symbol
+            WHEN LENGTH(currency) = 40 AND cm.symbol IS NULL THEN SUBSTR(currency, 1, 8)
             ELSE currency
         END AS symbol
+        ,amount_requested_raw
+        ,amount_delivered_raw
         ,CASE 
             WHEN currency = 'XRP' THEN 
                 TRY_CAST(amount_requested_raw AS DOUBLE) / 1000000
@@ -162,8 +141,10 @@ transfers_with_decoded_symbols AS (
             ELSE 
                 TRY_CAST(amount_delivered_raw AS DOUBLE)
         END AS amount_delivered
+        ,partial_payment_flag
         
     FROM payment_transfers
+    LEFT JOIN {{ ref('tokens_xrpl_currency_mapping') }} cm ON currency = cm.currency_hex
 )
 
 SELECT
@@ -206,7 +187,7 @@ SELECT
         ELSE NULL
     END AS amount_usd
     
-FROM transfers_with_decoded_symbols t
+FROM transfers_with_amounts t
 LEFT JOIN xrp_prices p ON DATE_TRUNC('minute', t.block_time) = p.price_minute
 WHERE COALESCE(t.amount_delivered, t.amount_requested) > 0
 ORDER BY t.block_time DESC, t.tx_index

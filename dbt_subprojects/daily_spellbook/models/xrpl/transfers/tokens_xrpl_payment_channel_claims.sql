@@ -51,7 +51,6 @@ successful_payment_channel_transactions AS (
         {% endif %}
 ),
 
--- Find valid PayChannel node indices (safe approach - no -1 indices)
 valid_payment_channel_nodes AS (
     SELECT 
         tx_hash
@@ -94,28 +93,58 @@ payment_channel_transfers AS (
         ,sequence
         ,fee
         ,node_index
-        -- Extract balance change from PayChannel node
-        ,CAST(
-            JSON_EXTRACT_SCALAR(metadata, CONCAT('$.AffectedNodes[', CAST(node_index AS VARCHAR), '].ModifiedNode.FinalFields.Balance.value'))
-            AS BIGINT
-        ) - CAST(
-            JSON_EXTRACT_SCALAR(metadata, CONCAT('$.AffectedNodes[', CAST(node_index AS VARCHAR), '].ModifiedNode.PreviousFields.Balance.value'))
-            AS BIGINT
-        ) AS balance_change_drops
-        -- Extract addresses
+        -- Extract currency from PayChannel node (could be XRP or other tokens)
+        ,COALESCE(
+            JSON_EXTRACT_SCALAR(metadata, CONCAT('$.AffectedNodes[', CAST(node_index AS VARCHAR), '].ModifiedNode.FinalFields.Balance.currency')),
+            'XRP'
+        ) AS currency
+        -- Extract issuer for non-XRP tokens
+        ,CASE 
+            WHEN COALESCE(
+                JSON_EXTRACT_SCALAR(metadata, CONCAT('$.AffectedNodes[', CAST(node_index AS VARCHAR), '].ModifiedNode.FinalFields.Balance.currency')),
+                'XRP'
+            ) = 'XRP' THEN NULL
+            ELSE JSON_EXTRACT_SCALAR(metadata, CONCAT('$.AffectedNodes[', CAST(node_index AS VARCHAR), '].ModifiedNode.FinalFields.Balance.issuer'))
+        END AS issuer
+        -- Calculate the balance change (amount claimed)
+        ,CASE
+            -- If Balance is a string (pure XRP in drops)
+            WHEN JSON_EXTRACT_SCALAR(metadata, CONCAT('$.AffectedNodes[', CAST(node_index AS VARCHAR), '].ModifiedNode.FinalFields.Balance')) IS NOT NULL
+                AND JSON_EXTRACT_SCALAR(metadata, CONCAT('$.AffectedNodes[', CAST(node_index AS VARCHAR), '].ModifiedNode.FinalFields.Balance.currency')) IS NULL
+            THEN CAST(
+                JSON_EXTRACT_SCALAR(metadata, CONCAT('$.AffectedNodes[', CAST(node_index AS VARCHAR), '].ModifiedNode.FinalFields.Balance'))
+                AS BIGINT
+            ) - CAST(
+                JSON_EXTRACT_SCALAR(metadata, CONCAT('$.AffectedNodes[', CAST(node_index AS VARCHAR), '].ModifiedNode.PreviousFields.Balance'))
+                AS BIGINT
+            )
+            -- If Balance is an object with value field
+            ELSE CAST(
+                JSON_EXTRACT_SCALAR(metadata, CONCAT('$.AffectedNodes[', CAST(node_index AS VARCHAR), '].ModifiedNode.FinalFields.Balance.value'))
+                AS DOUBLE
+            ) - CAST(
+                JSON_EXTRACT_SCALAR(metadata, CONCAT('$.AffectedNodes[', CAST(node_index AS VARCHAR), '].ModifiedNode.PreviousFields.Balance.value'))
+                AS DOUBLE
+            )
+        END AS balance_change
+        -- Extract addresses - PayChannel shows the source and destination
         ,COALESCE(
             JSON_EXTRACT_SCALAR(metadata, CONCAT('$.AffectedNodes[', CAST(node_index AS VARCHAR), '].ModifiedNode.FinalFields.Account')),
             tx_from
         ) AS from_address
-        ,COALESCE(
-            JSON_EXTRACT_SCALAR(metadata, CONCAT('$.AffectedNodes[', CAST(node_index AS VARCHAR), '].ModifiedNode.FinalFields.Destination')),
-            tx_to
-        ) AS to_address
+        ,tx_from AS to_address  -- The account claiming the funds
         
     FROM valid_payment_channel_nodes
     WHERE node_index IS NOT NULL
-        AND JSON_EXTRACT_SCALAR(metadata, CONCAT('$.AffectedNodes[', CAST(node_index AS VARCHAR), '].ModifiedNode.FinalFields.Balance.value')) IS NOT NULL
-        AND JSON_EXTRACT_SCALAR(metadata, CONCAT('$.AffectedNodes[', CAST(node_index AS VARCHAR), '].ModifiedNode.PreviousFields.Balance.value')) IS NOT NULL
+        AND (
+            -- Check for string format Balance (XRP)
+            (JSON_EXTRACT_SCALAR(metadata, CONCAT('$.AffectedNodes[', CAST(node_index AS VARCHAR), '].ModifiedNode.FinalFields.Balance')) IS NOT NULL
+             AND JSON_EXTRACT_SCALAR(metadata, CONCAT('$.AffectedNodes[', CAST(node_index AS VARCHAR), '].ModifiedNode.PreviousFields.Balance')) IS NOT NULL)
+            OR 
+            -- Check for object format Balance (tokens)
+            (JSON_EXTRACT_SCALAR(metadata, CONCAT('$.AffectedNodes[', CAST(node_index AS VARCHAR), '].ModifiedNode.FinalFields.Balance.value')) IS NOT NULL
+             AND JSON_EXTRACT_SCALAR(metadata, CONCAT('$.AffectedNodes[', CAST(node_index AS VARCHAR), '].ModifiedNode.PreviousFields.Balance.value')) IS NOT NULL)
+        )
 ),
 
 transfers_with_amounts AS (
@@ -129,8 +158,11 @@ transfers_with_amounts AS (
         ,tx_hash
         ,tx_index
         ,0 AS evt_index
-        ,'payment_channel' AS transfer_type
-        ,'native' AS token_standard
+        ,'payment_channel_claim' AS transfer_type
+        ,CASE 
+            WHEN currency = 'XRP' THEN 'native'
+            ELSE 'issued'
+        END AS token_standard
         ,transaction_type
         ,transaction_result
         ,sequence
@@ -139,18 +171,37 @@ transfers_with_amounts AS (
         ,tx_to
         ,from_address
         ,to_address
-        ,NULL AS issuer
-        ,'XRP' AS currency
-        ,NULL AS currency_hex
-        ,'XRP' AS symbol
-        ,CAST(balance_change_drops AS VARCHAR) AS amount_requested_raw
-        ,CAST(balance_change_drops AS VARCHAR) AS amount_delivered_raw
-        ,balance_change_drops / 1000000.0 AS amount_requested
-        ,balance_change_drops / 1000000.0 AS amount_delivered
+        ,issuer
+        ,currency
+        ,CASE 
+            WHEN LENGTH(currency) = 40 THEN currency
+            ELSE NULL
+        END AS currency_hex
+        ,CASE 
+            WHEN currency = 'XRP' THEN 'XRP'
+            WHEN LENGTH(currency) = 40 AND cm.symbol IS NOT NULL THEN cm.symbol
+            WHEN LENGTH(currency) = 40 AND cm.symbol IS NULL THEN SUBSTR(currency, 1, 8)
+            ELSE currency
+        END AS symbol
+        ,CAST(balance_change AS VARCHAR) AS amount_requested_raw
+        ,CAST(balance_change AS VARCHAR) AS amount_delivered_raw
+        ,CASE 
+            WHEN currency = 'XRP' THEN 
+                balance_change / 1000000.0
+            ELSE 
+                CAST(balance_change AS DOUBLE)
+        END AS amount_requested
+        ,CASE 
+            WHEN currency = 'XRP' THEN 
+                balance_change / 1000000.0
+            ELSE 
+                CAST(balance_change AS DOUBLE)
+        END AS amount_delivered
         ,false AS partial_payment_flag
         
     FROM payment_channel_transfers
-    WHERE balance_change_drops > 0  -- Only positive balance changes (actual transfers)
+    LEFT JOIN {{ ref('tokens_xrpl_currency_mapping') }} cm ON currency = cm.currency_hex
+    WHERE balance_change > 0  -- Only positive balance changes (actual claims)
 )
 
 SELECT

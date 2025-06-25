@@ -63,7 +63,6 @@ successful_amm_withdraw_transactions AS (
         {% endif %}
 ),
 
--- Find valid AMM node indices (safe approach - no -1 indices)
 valid_amm_nodes AS (
     SELECT 
         tx_hash
@@ -141,63 +140,6 @@ lp_token_burns AS (
             END,
             lp_token_in_currency
         ) AS currency
-        ,CASE WHEN LENGTH(COALESCE(
-            CASE WHEN node_index IS NOT NULL THEN
-                JSON_EXTRACT_SCALAR(metadata, CONCAT('$.AffectedNodes[', CAST(node_index AS VARCHAR), '].ModifiedNode.FinalFields.LPTokenBalance.currency'))
-            END,
-            lp_token_in_currency
-        )) = 40 THEN COALESCE(
-            CASE WHEN node_index IS NOT NULL THEN
-                JSON_EXTRACT_SCALAR(metadata, CONCAT('$.AffectedNodes[', CAST(node_index AS VARCHAR), '].ModifiedNode.FinalFields.LPTokenBalance.currency'))
-            END,
-            lp_token_in_currency
-        ) ELSE NULL END AS currency_hex
-        ,CASE 
-            WHEN COALESCE(
-                CASE WHEN node_index IS NOT NULL THEN
-                    JSON_EXTRACT_SCALAR(metadata, CONCAT('$.AffectedNodes[', CAST(node_index AS VARCHAR), '].ModifiedNode.FinalFields.LPTokenBalance.currency'))
-                END,
-                lp_token_in_currency
-            ) = 'XRP' THEN 'XRP'
-            WHEN LENGTH(COALESCE(
-                CASE WHEN node_index IS NOT NULL THEN
-                    JSON_EXTRACT_SCALAR(metadata, CONCAT('$.AffectedNodes[', CAST(node_index AS VARCHAR), '].ModifiedNode.FinalFields.LPTokenBalance.currency'))
-                END,
-                lp_token_in_currency
-            )) = 40 THEN 
-                CASE 
-                    WHEN SUBSTR(COALESCE(
-                        CASE WHEN node_index IS NOT NULL THEN
-                            JSON_EXTRACT_SCALAR(metadata, CONCAT('$.AffectedNodes[', CAST(node_index AS VARCHAR), '].ModifiedNode.FinalFields.LPTokenBalance.currency'))
-                        END,
-                        lp_token_in_currency
-                    ), 1, 16) = '586F676500000000' THEN 'Xoge'
-                    WHEN SUBSTR(COALESCE(
-                        CASE WHEN node_index IS NOT NULL THEN
-                            JSON_EXTRACT_SCALAR(metadata, CONCAT('$.AffectedNodes[', CAST(node_index AS VARCHAR), '].ModifiedNode.FinalFields.LPTokenBalance.currency'))
-                        END,
-                        lp_token_in_currency
-                    ), 1, 16) = '5363686D65636B6C' THEN 'Schmeckles' 
-                    WHEN SUBSTR(COALESCE(
-                        CASE WHEN node_index IS NOT NULL THEN
-                            JSON_EXTRACT_SCALAR(metadata, CONCAT('$.AffectedNodes[', CAST(node_index AS VARCHAR), '].ModifiedNode.FinalFields.LPTokenBalance.currency'))
-                        END,
-                        lp_token_in_currency
-                    ), 1, 16) = '524C555344000000' THEN 'RLUSD'
-                    ELSE SUBSTR(COALESCE(
-                        CASE WHEN node_index IS NOT NULL THEN
-                            JSON_EXTRACT_SCALAR(metadata, CONCAT('$.AffectedNodes[', CAST(node_index AS VARCHAR), '].ModifiedNode.FinalFields.LPTokenBalance.currency'))
-                        END,
-                        lp_token_in_currency
-                    ), 1, 8)
-                END
-            ELSE COALESCE(
-                CASE WHEN node_index IS NOT NULL THEN
-                    JSON_EXTRACT_SCALAR(metadata, CONCAT('$.AffectedNodes[', CAST(node_index AS VARCHAR), '].ModifiedNode.FinalFields.LPTokenBalance.currency'))
-                END,
-                lp_token_in_currency
-            )
-        END AS symbol
         ,COALESCE(
             lp_token_in_value,
             CASE WHEN node_index IS NOT NULL THEN
@@ -270,36 +212,8 @@ asset1_withdrawals AS (
             'AMM_POOL'
         ) AS from_address
         ,tx_from AS to_address
-        ,CASE WHEN amount_currency = 'XRP' THEN NULL ELSE amount_issuer END AS issuer
+        ,CASE WHEN amount_currency = 'XRP' THEN CAST(NULL AS VARCHAR) ELSE amount_issuer END AS issuer
         ,amount_currency AS currency
-        ,CASE WHEN LENGTH(amount_currency) = 40 THEN amount_currency ELSE NULL END AS currency_hex
-        ,CASE 
-            WHEN amount_currency = 'XRP' THEN 'XRP'
-            WHEN LENGTH(amount_currency) = 40 THEN 
-                CASE 
-                    WHEN SUBSTR(amount_currency, 1, 16) = '586F676500000000' THEN 'Xoge'
-                    WHEN SUBSTR(amount_currency, 1, 16) = '5363686D65636B6C' THEN 'Schmeckles' 
-                    WHEN SUBSTR(amount_currency, 1, 16) = '524C555344000000' THEN 'RLUSD'
-                    WHEN SUBSTR(amount_currency, 1, 16) = '5349474D41000000' THEN 'SIGMA'
-                    WHEN SUBSTR(amount_currency, 1, 16) = '5348524F4F4D4945' THEN 'SHROOMIES'
-                    WHEN SUBSTR(amount_currency, 1, 16) = '4841494300000000' THEN 'HAIC'
-                    WHEN SUBSTR(amount_currency, 1, 16) = '4249545800000000' THEN 'BITX'
-                    WHEN SUBSTR(amount_currency, 1, 16) = '515A696C6C610000' THEN 'QZilla'
-                    WHEN SUBSTR(amount_currency, 1, 16) = '5852505400000000' THEN 'XRPT'
-                    WHEN SUBSTR(amount_currency, 1, 16) = '584D454D45000000' THEN 'XMEME'
-                    WHEN SUBSTR(amount_currency, 1, 16) = '4752554D50590000' THEN 'GRUMPY'
-                    WHEN SUBSTR(amount_currency, 1, 16) = '6277696600000000' THEN 'bwif'
-                    WHEN SUBSTR(amount_currency, 1, 16) = '534F4C4F00000000' THEN 'SOLO'
-                    WHEN SUBSTR(amount_currency, 1, 16) = '4D4F4F4E00000000' THEN 'MOON'
-                    WHEN SUBSTR(amount_currency, 1, 16) = '52495A5A4C450000' THEN 'RIZZLE'
-                    WHEN SUBSTR(amount_currency, 1, 16) = '534B554C4C000000' THEN 'SKULL'
-                    WHEN SUBSTR(amount_currency, 1, 16) = '5852507300000000' THEN 'XRPs'
-                    WHEN SUBSTR(amount_currency, 1, 16) = '52454D4F00000000' THEN 'REMO'
-                    WHEN SUBSTR(amount_currency, 1, 16) = '5354494D50594348' THEN 'STIMPYCHA'
-                    ELSE SUBSTR(amount_currency, 1, 8)
-                END
-            ELSE amount_currency
-        END AS symbol
         ,amount_value AS amount_requested_raw
         ,amount_value AS amount_delivered_raw
         ,CASE 
@@ -344,36 +258,8 @@ asset2_withdrawals AS (
             'AMM_POOL'
         ) AS from_address
         ,tx_from AS to_address
-        ,CASE WHEN amount2_currency = 'XRP' THEN NULL ELSE amount2_issuer END AS issuer
+        ,CASE WHEN amount2_currency = 'XRP' THEN CAST(NULL AS VARCHAR) ELSE amount2_issuer END AS issuer
         ,amount2_currency AS currency
-        ,CASE WHEN LENGTH(amount2_currency) = 40 THEN amount2_currency ELSE NULL END AS currency_hex
-        ,CASE 
-            WHEN amount2_currency = 'XRP' THEN 'XRP'
-            WHEN LENGTH(amount2_currency) = 40 THEN 
-                CASE 
-                    WHEN SUBSTR(amount2_currency, 1, 16) = '586F676500000000' THEN 'Xoge'
-                    WHEN SUBSTR(amount2_currency, 1, 16) = '5363686D65636B6C' THEN 'Schmeckles' 
-                    WHEN SUBSTR(amount2_currency, 1, 16) = '524C555344000000' THEN 'RLUSD'
-                    WHEN SUBSTR(amount2_currency, 1, 16) = '5349474D41000000' THEN 'SIGMA'
-                    WHEN SUBSTR(amount2_currency, 1, 16) = '5348524F4F4D4945' THEN 'SHROOMIES'
-                    WHEN SUBSTR(amount2_currency, 1, 16) = '4841494300000000' THEN 'HAIC'
-                    WHEN SUBSTR(amount2_currency, 1, 16) = '4249545800000000' THEN 'BITX'
-                    WHEN SUBSTR(amount2_currency, 1, 16) = '515A696C6C610000' THEN 'QZilla'
-                    WHEN SUBSTR(amount2_currency, 1, 16) = '5852505400000000' THEN 'XRPT'
-                    WHEN SUBSTR(amount2_currency, 1, 16) = '584D454D45000000' THEN 'XMEME'
-                    WHEN SUBSTR(amount2_currency, 1, 16) = '4752554D50590000' THEN 'GRUMPY'
-                    WHEN SUBSTR(amount2_currency, 1, 16) = '6277696600000000' THEN 'bwif'
-                    WHEN SUBSTR(amount2_currency, 1, 16) = '534F4C4F00000000' THEN 'SOLO'
-                    WHEN SUBSTR(amount2_currency, 1, 16) = '4D4F4F4E00000000' THEN 'MOON'
-                    WHEN SUBSTR(amount2_currency, 1, 16) = '52495A5A4C450000' THEN 'RIZZLE'
-                    WHEN SUBSTR(amount2_currency, 1, 16) = '534B554C4C000000' THEN 'SKULL'
-                    WHEN SUBSTR(amount2_currency, 1, 16) = '5852507300000000' THEN 'XRPs'
-                    WHEN SUBSTR(amount2_currency, 1, 16) = '52454D4F00000000' THEN 'REMO'
-                    WHEN SUBSTR(amount2_currency, 1, 16) = '5354494D50594348' THEN 'STIMPYCHA'
-                    ELSE SUBSTR(amount2_currency, 1, 8)
-                END
-            ELSE amount2_currency
-        END AS symbol
         ,amount2_value AS amount_requested_raw
         ,amount2_value AS amount_delivered_raw
         ,CASE 
@@ -422,8 +308,16 @@ SELECT
     ,t.to_address
     ,t.issuer
     ,t.currency
-    ,t.currency_hex
-    ,t.symbol
+    ,CASE 
+        WHEN LENGTH(t.currency) = 40 THEN t.currency
+        ELSE NULL
+    END AS currency_hex
+    ,CASE 
+        WHEN t.currency = 'XRP' THEN 'XRP'
+        WHEN LENGTH(t.currency) = 40 AND cm.symbol IS NOT NULL THEN cm.symbol
+        WHEN LENGTH(t.currency) = 40 AND cm.symbol IS NULL THEN SUBSTR(t.currency, 1, 8)
+        ELSE t.currency
+    END AS symbol
     ,t.amount_requested_raw
     ,t.amount_delivered_raw
     ,t.amount_requested
@@ -441,6 +335,8 @@ SELECT
     END AS amount_usd
     
 FROM all_amm_withdraw_transfers t
+LEFT JOIN {{ ref('tokens_xrpl_currency_mapping') }} cm 
+    ON t.currency = cm.currency_hex
 LEFT JOIN xrp_prices p ON DATE_TRUNC('minute', t.block_time) = p.price_minute
 WHERE COALESCE(t.amount_delivered, t.amount_requested) > 0
 ORDER BY t.block_time DESC, t.tx_index, t.evt_index

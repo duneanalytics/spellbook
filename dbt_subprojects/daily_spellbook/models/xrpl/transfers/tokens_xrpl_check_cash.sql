@@ -181,33 +181,7 @@ transfers_with_amounts AS (
             WHEN LENGTH(currency) = 40 THEN currency
             ELSE NULL
         END AS currency_hex
-        ,CASE 
-            WHEN currency = 'XRP' THEN 'XRP'
-            WHEN LENGTH(currency) = 40 THEN 
-                CASE 
-                    WHEN SUBSTR(currency, 1, 16) = '586F676500000000' THEN 'Xoge'
-                    WHEN SUBSTR(currency, 1, 16) = '5363686D65636B6C' THEN 'Schmeckles' 
-                    WHEN SUBSTR(currency, 1, 16) = '524C555344000000' THEN 'RLUSD'
-                    WHEN SUBSTR(currency, 1, 16) = '5349474D41000000' THEN 'SIGMA'
-                    WHEN SUBSTR(currency, 1, 16) = '5348524F4F4D4945' THEN 'SHROOMIES'
-                    WHEN SUBSTR(currency, 1, 16) = '4841494300000000' THEN 'HAIC'
-                    WHEN SUBSTR(currency, 1, 16) = '4249545800000000' THEN 'BITX'
-                    WHEN SUBSTR(currency, 1, 16) = '515A696C6C610000' THEN 'QZilla'
-                    WHEN SUBSTR(currency, 1, 16) = '5852505400000000' THEN 'XRPT'
-                    WHEN SUBSTR(currency, 1, 16) = '584D454D45000000' THEN 'XMEME'
-                    WHEN SUBSTR(currency, 1, 16) = '4752554D50590000' THEN 'GRUMPY'
-                    WHEN SUBSTR(currency, 1, 16) = '6277696600000000' THEN 'bwif'
-                    WHEN SUBSTR(currency, 1, 16) = '534F4C4F00000000' THEN 'SOLO'
-                    WHEN SUBSTR(currency, 1, 16) = '4D4F4F4E00000000' THEN 'MOON'
-                    WHEN SUBSTR(currency, 1, 16) = '52495A5A4C450000' THEN 'RIZZLE'
-                    WHEN SUBSTR(currency, 1, 16) = '534B554C4C000000' THEN 'SKULL'
-                    WHEN SUBSTR(currency, 1, 16) = '5852507300000000' THEN 'XRPs'
-                    WHEN SUBSTR(currency, 1, 16) = '52454D4F00000000' THEN 'REMO'
-                    WHEN SUBSTR(currency, 1, 16) = '5354494D50594348' THEN 'STIMPYCHA'
-                    ELSE SUBSTR(currency, 1, 8)
-                END
-            ELSE currency
-        END AS symbol
+        ,currency AS symbol
         ,amount_raw AS amount_requested_raw
         ,amount_raw AS amount_delivered_raw
         ,CASE 
@@ -252,7 +226,12 @@ SELECT
     ,t.issuer
     ,t.currency
     ,t.currency_hex
-    ,t.symbol
+    ,CASE 
+        WHEN t.currency = 'XRP' THEN 'XRP'
+        WHEN LENGTH(t.currency) = 40 AND cm.symbol IS NOT NULL THEN cm.symbol
+        WHEN LENGTH(t.currency) = 40 AND cm.symbol IS NULL THEN SUBSTR(t.currency, 1, 8)
+        ELSE t.currency
+    END AS symbol
     ,t.amount_requested_raw
     ,t.amount_delivered_raw
     ,t.amount_requested
@@ -270,6 +249,8 @@ SELECT
     END AS amount_usd
     
 FROM transfers_with_amounts t
+LEFT JOIN {{ ref('tokens_xrpl_currency_mapping') }} cm 
+    ON t.currency = cm.currency_hex
 LEFT JOIN xrp_prices p ON DATE_TRUNC('minute', t.block_time) = p.price_minute
 WHERE COALESCE(t.amount_delivered, t.amount_requested) > 0
 ORDER BY t.block_time DESC, t.tx_index
