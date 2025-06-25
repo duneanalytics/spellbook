@@ -17,7 +17,7 @@ WITH indexed_sandwich_trades AS (
         AND front.token_sold_address=back.token_bought_address
         AND front.token_bought_address=back.token_sold_address
         AND front.evt_index + 1 < back.evt_index
-        {% if is_incremental() or true %}
+        {% if is_incremental() %}
         AND {{ incremental_predicate('back.block_time') }}
         {% endif %}
     INNER JOIN {{ ref('dex_trades') }} victim ON victim.blockchain='{{blockchain}}'
@@ -27,12 +27,12 @@ WITH indexed_sandwich_trades AS (
         AND front.token_bought_address=victim.token_bought_address
         AND front.token_sold_address=victim.token_sold_address
         AND victim.evt_index BETWEEN front.evt_index AND back.evt_index
-        {% if is_incremental() or true %}
+        {% if is_incremental() %}
         AND {{ incremental_predicate('victim.block_time') }}
         {% endif %}
     CROSS JOIN UNNEST(ARRAY[(front.tx_hash, front.evt_index), (back.tx_hash, back.evt_index)]) AS t(tx_hash_all, evt_index_all)
     WHERE front.blockchain='{{blockchain}}'
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
     AND {{ incremental_predicate('front.block_time') }}
     {% endif %}
     )
@@ -70,7 +70,7 @@ INNER JOIN indexed_sandwich_trades s ON dt.block_time=s.block_time
 -- Adding block_number and tx_index to the mix, can be removed once those are in dex.trades
 INNER JOIN {{transactions}} tx ON tx.block_time=s.block_time
     AND tx.hash=s.tx_hash
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
     AND {{ incremental_predicate('tx.block_time') }}
     {% endif %}
 {% if whitelist is not none %}
@@ -78,7 +78,7 @@ LEFT JOIN {{whitelist}} w ON w.block_number=tx.block_number
     AND w.tx_hash=tx.hash
 {% endif %}
 WHERE dt.blockchain='{{blockchain}}'
-{% if is_incremental() or true %}
+{% if is_incremental() %}
 AND {{ incremental_predicate('dt.block_time') }}
 {% endif %}
 {% if whitelist is not none %}
