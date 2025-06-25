@@ -193,7 +193,7 @@ daily_balances AS (
         b.pool_address,
         b.token_address,
         b.cumulative_amount AS token_balance_raw
-    FROM {{ref('utils_days')}} c
+    FROM {{ source('utils', 'days') }} c
     LEFT JOIN cumulative_balance b 
         ON b.day <= c.timestamp AND c.timestamp < b.day_of_next_change
     WHERE b.pool_address IS NOT NULL
@@ -235,7 +235,7 @@ prices_with_calendar AS (
             ORDER BY c.timestamp 
             ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
         ) AS decimals
-    FROM {{ref('utils_days')}} c
+    FROM {{ source('utils', 'days') }} c
     CROSS JOIN pool_tokens_list pt
     LEFT JOIN daily_prices dp 
         ON c.timestamp = dp.day AND pt.token_address = dp.token
