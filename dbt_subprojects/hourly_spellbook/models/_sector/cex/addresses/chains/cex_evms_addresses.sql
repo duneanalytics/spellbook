@@ -543,6 +543,9 @@ FROM (VALUES
     , (0xd1e859c8fbb8acdcc8e815c70d33b6aca58fde8a, 'OKX', 'OKX 155', 'hildobby', date '2025-06-16')
     , (0x451703122f1bb2d65cd2b08c0f9dc636c43d8718, 'OKX', 'OKX 156', 'hildobby', date '2025-06-16')
     , (0xf61f565a37a08713740c2b9c56756dca687d926c, 'OKX', 'OKX 157', 'hildobby', date '2025-06-16')
+    , (0x8d371bc560246dc632c4e707707d85d2e568a832, 'OKX', 'OKX 158', 'hildobby', date '2025-06-25')
+    , (0xf28143f7b282e59bd5f979012982e7cb9d9b95b0, 'OKX', 'OKX 159', 'hildobby', date '2025-06-25')
+    , (0xf5988713400da6fc8a58ec9515e2b0df9b40b115, 'OKX', 'OKX 160', 'hildobby', date '2025-06-25')
     , (0x2ce910fbba65b454bbaf6a18c952a70f3bcd8299, 'OKX', 'OKX Internal 1', 'hildobby', date '2025-05-02')
     , (0x3b3ae790df4f312e745d270119c6052904fb6790, 'OKX', 'OKX DEX Aggregation Router', 'hildobby', date '2023-08-31')
     , (0xc5a93444cc4da6efb9e6fc6e5d3cb55a53b52396, 'OKX', 'OKX Gas Supplier 1', 'hildobby', date '2023-08-31')
@@ -1732,6 +1735,7 @@ FROM (VALUES
     -- Roobet
     , (0xc94ebb328ac25b95db0e0aa968371885fa516215, 'Roobet', 'Roobet 1', 'hildobby', date '2023-11-15')
     , (0x9ebe47c83c996e5cbbe44c423d7f20db19defc39, 'Roobet', 'Roobet 2', 'hildobby', date '2024-10-06')
+    , (0xa26148ae51fa8e787df319c04137602cc018b521, 'Roobet', 'Roobet 3', 'hildobby', date '2025-06-25')
     -- Bitsten
     , (0xbdef6e20692c302044b98284090922f683f3b523, 'Bitsten', 'Bitsten 1', 'hildobby', date '2023-11-17')
     , (0xfe0cb30afcb0eb1c27ae33d11be7ef749ed25072, 'Bitsten', 'Bitsten Deployer', 'hildobby', date '2023-11-17')
