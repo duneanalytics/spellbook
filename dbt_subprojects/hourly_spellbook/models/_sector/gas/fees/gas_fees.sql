@@ -22,6 +22,7 @@
                                     , "gnosis"
                                     , "ink"
                                     , "kaia"
+                                    , "katana"
                                     , "lens"
                                     , "linea"
                                     , "mantle"

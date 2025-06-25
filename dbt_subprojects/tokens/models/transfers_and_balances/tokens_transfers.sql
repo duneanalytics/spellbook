@@ -22,6 +22,7 @@
                                             ,"gnosis"
                                             ,"ink"
                                             ,"kaia"
+                                            ."katana"
                                             ,"linea"
                                             ,"mantle"
                                             ,"nova"
