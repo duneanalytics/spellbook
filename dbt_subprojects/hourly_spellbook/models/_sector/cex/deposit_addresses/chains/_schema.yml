@@ -1,0 +1,312 @@
+version: 2
+
+models:
+  - name: cex_arbitrum_deposit_addresses
+    meta:
+      blockchain: arbitrum
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses on arbitrum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - &address
+        name: address
+        description: "Deposit address"
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &cex_name
+        name: cex_name
+        description: "CEX name"
+      - &first_deposit_token_standard
+        name: first_deposit_token_standard
+        description: "Token standard of first deposit (ERC20, native, etc.)"
+      - &first_deposit_token_address
+        name: first_deposit_token_address
+        description: "Token contract address of first deposit"
+      - &deposit_first_block_time
+        name: deposit_first_block_time
+        description: "Time of first deposit to this address"
+      - &consolidation_first_block_time
+        name: consolidation_first_block_time
+        description: "Time of first consolidation by CEX"
+      - &deposit_count
+        name: deposit_count
+        description: "Number of deposit transactions"
+      - &consolidation_count
+        name: consolidation_count
+        description: "Number of consolidation transactions"
+      - &amount_deposited
+        name: amount_deposited
+        description: "Total amount deposited to this address"
+      - &consolidation_unique_key
+        name: consolidation_unique_key
+        description: "Unique key for consolidation transaction"
+      - &deposit_unique_key
+        name: deposit_unique_key
+        description: "Unique key for deposit transaction"
+
+  - name: cex_avalanche_c_deposit_addresses
+    meta:
+      blockchain: avalanche_c
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses on avalanche_c"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *address
+      - *blockchain
+      - *cex_name
+      - *first_deposit_token_standard
+      - *first_deposit_token_address
+      - *deposit_first_block_time
+      - *consolidation_first_block_time
+      - *deposit_count
+      - *consolidation_count
+      - *amount_deposited
+      - *consolidation_unique_key
+      - *deposit_unique_key
+
+  - name: cex_base_deposit_addresses
+    meta:
+      blockchain: base
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses on base"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *address
+      - *blockchain
+      - *cex_name
+      - *first_deposit_token_standard
+      - *first_deposit_token_address
+      - *deposit_first_block_time
+      - *consolidation_first_block_time
+      - *deposit_count
+      - *consolidation_count
+      - *amount_deposited
+      - *consolidation_unique_key
+      - *deposit_unique_key
+
+  - name: cex_bnb_deposit_addresses
+    meta:
+      blockchain: bnb
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses on bnb"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *address
+      - *blockchain
+      - *cex_name
+      - *first_deposit_token_standard
+      - *first_deposit_token_address
+      - *deposit_first_block_time
+      - *consolidation_first_block_time
+      - *deposit_count
+      - *consolidation_count
+      - *amount_deposited
+      - *consolidation_unique_key
+      - *deposit_unique_key
+
+  - name: cex_celo_deposit_addresses
+    meta:
+      blockchain: celo
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses on celo"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *address
+      - *blockchain
+      - *cex_name
+      - *first_deposit_token_standard
+      - *first_deposit_token_address
+      - *deposit_first_block_time
+      - *consolidation_first_block_time
+      - *deposit_count
+      - *consolidation_count
+      - *amount_deposited
+      - *consolidation_unique_key
+      - *deposit_unique_key
+
+  - name: cex_ethereum_deposit_addresses
+    meta:
+      blockchain: ethereum
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses on ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *address
+      - *blockchain
+      - *cex_name
+      - *first_deposit_token_standard
+      - *first_deposit_token_address
+      - *deposit_first_block_time
+      - *consolidation_first_block_time
+      - *deposit_count
+      - *consolidation_count
+      - *amount_deposited
+      - *consolidation_unique_key
+      - *deposit_unique_key
+
+  - name: cex_gnosis_deposit_addresses
+    meta:
+      blockchain: gnosis
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses on gnosis"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *address
+      - *blockchain
+      - *cex_name
+      - *first_deposit_token_standard
+      - *first_deposit_token_address
+      - *deposit_first_block_time
+      - *consolidation_first_block_time
+      - *deposit_count
+      - *consolidation_count
+      - *amount_deposited
+      - *consolidation_unique_key
+      - *deposit_unique_key
+
+  - name: cex_optimism_deposit_addresses
+    meta:
+      blockchain: optimism
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses on optimism"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *address
+      - *blockchain
+      - *cex_name
+      - *first_deposit_token_standard
+      - *first_deposit_token_address
+      - *deposit_first_block_time
+      - *consolidation_first_block_time
+      - *deposit_count
+      - *consolidation_count
+      - *amount_deposited
+      - *consolidation_unique_key
+      - *deposit_unique_key
+
+  - name: cex_polygon_deposit_addresses
+    meta:
+      blockchain: polygon
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses on polygon"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *address
+      - *blockchain
+      - *cex_name
+      - *first_deposit_token_standard
+      - *first_deposit_token_address
+      - *deposit_first_block_time
+      - *consolidation_first_block_time
+      - *deposit_count
+      - *consolidation_count
+      - *amount_deposited
+      - *consolidation_unique_key
+      - *deposit_unique_key
+
+  - name: cex_scroll_deposit_addresses
+    meta:
+      blockchain: scroll
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses on scroll"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *address
+      - *blockchain
+      - *cex_name
+      - *first_deposit_token_standard
+      - *first_deposit_token_address
+      - *deposit_first_block_time
+      - *consolidation_first_block_time
+      - *deposit_count
+      - *consolidation_count
+      - *amount_deposited
+      - *consolidation_unique_key
+      - *deposit_unique_key
+
+  - name: cex_zora_deposit_addresses
+    meta:
+      blockchain: zora
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses on zora"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *address
+      - *blockchain
+      - *cex_name
+      - *first_deposit_token_standard
+      - *first_deposit_token_address
+      - *deposit_first_block_time
+      - *consolidation_first_block_time
+      - *deposit_count
+      - *consolidation_count
+      - *amount_deposited
+      - *consolidation_unique_key
+      - *deposit_unique_key
