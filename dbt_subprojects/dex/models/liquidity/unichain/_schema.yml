@@ -1,7 +1,0 @@
-version: 2
-
-models:
-  - name: dex_unichain_base_liquidity
-    description: "dex unichain base liquidity"
-
- 
