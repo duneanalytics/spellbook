@@ -62,7 +62,7 @@ successful_amm_withdraw_transactions AS (
     WHERE transaction_type = 'AMMWithdraw'
         AND JSON_EXTRACT_SCALAR(metadata, '$.TransactionResult') = 'tesSUCCESS'
         {% if is_incremental() %}
-        AND {{ incremental_predicate('_ledger_close_time_human') }}
+        AND {{ incremental_predicate('block_time') }}
         {% endif %}
 ),
 
