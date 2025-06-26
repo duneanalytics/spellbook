@@ -3320,11 +3320,6 @@ FROM (VALUES
     , (0xbd6d79f3f02584cfcb754437ac6776c4c6e0a0ec, 'IDAX', 'IDAX 2', 'hildobby', date '2024-10-06')
     , (0x6e743cdc08f22578f5fe99779aa2edc019363483, 'IDAX', 'IDAX 3', 'hildobby', date '2024-10-06')
     , (0x408af76966d49e57d79aaa6bd55f5162476b051b, 'IDAX', 'IDAX Gas Supplier 1', 'hildobby', date '2024-10-06')
-    -- IDEX
-    , (0x2a0c0dbecc7e4d658f48e01e3fa353f44050c208, 'IDEX', 'IDEX 1', 'hildobby', date '2023-09-08')
-    , (0xa7a7899d944fe658c4b0a1803bab2f490bd3849e, 'IDEX', 'IDEX 2', 'hildobby', date '2023-09-08')
-    , (0x8af97264482b59c7aa11010907710dee6d8d8c6c, 'IDEX', 'IDEX 3', 'hildobby', date '2024-06-03')
-    , (0x9a79994bf5b887ff7e909498c14dd896c62ff891, 'IDEX', 'IDEX 4', 'hildobby', date '2024-10-06')
     -- Flata Exchange
     , (0x14301566b9669b672878d86ff0b1d18dd58054e9, 'Flata Exchange', 'Flata Exchange 1', 'hildobby', date '2022-08-28')
     , (0xc517dfacbee5dfa82feefb5ca29a2bb40b2d4faa, 'Flata Exchange', 'Flata Exchange Gas Supplier 1', 'hildobby', date '2024-10-06')
