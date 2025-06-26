@@ -1,34 +1,37 @@
 {{
     config(
-        schema = 'tokens_xrpl_amm_deposits',
-        alias = 'transfers',
+        schema = 'tokens_xrpl',
+        alias = 'amm_deposits_transfers',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['block_date','unique_key'],
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
-        post_hook='{{ expose_spells(\'["xrpl"]\',
-                                    "sector",
-                                    "tokens",
-                                    \'["krishhh"]\') }}'
+        unique_key = ['block_date', 'tx_hash', 'evt_index'],
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
     )
 }}
 
 WITH xrp_prices AS (
     SELECT
-        DATE_TRUNC('minute', minute) AS price_minute
-        ,AVG(price) AS price_usd
+        minute AS price_minute
+        ,price AS price_usd
     FROM {{ source('prices', 'usd') }}
     WHERE symbol = 'XRP' 
         AND blockchain IS NULL
-    GROUP BY 1
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('minute') }}
+        {% endif %}
 ),
 
 successful_amm_deposit_transactions AS (
     SELECT 
         hash AS tx_hash
-        ,CAST(ledger_close_date AS TIMESTAMP) AS block_time
+        ,CAST(
+            PARSE_DATETIME(
+                REGEXP_REPLACE(_ledger_close_time_human, ' UTC$', ''),
+                'yyyy-MMM-dd HH:mm:ss.SSSSSSSSS'
+            ) AS TIMESTAMP
+        ) AS block_time
         ,ledger_index
         ,account AS tx_from
         ,destination AS tx_to
@@ -55,7 +58,7 @@ successful_amm_deposit_transactions AS (
     WHERE transaction_type = 'AMMDeposit'
         AND JSON_EXTRACT_SCALAR(metadata, '$.TransactionResult') = 'tesSUCCESS'
         {% if is_incremental() %}
-        AND {{ incremental_predicate('ledger_close_date') }}
+        AND {{ incremental_predicate('_ledger_close_time_human') }}
         {% endif %}
 ),
 
@@ -98,8 +101,7 @@ valid_amm_nodes AS (
 -- Asset 1 Deposits (User → AMM Pool)
 asset1_deposits AS (
     SELECT
-        tx_hash || '_deposit1' AS unique_key
-        ,'xrpl' AS blockchain
+        'xrpl' AS blockchain
         ,CAST(date_trunc('month', block_time) AS DATE) AS block_month
         ,CAST(block_time AS DATE) AS block_date
         ,block_time
@@ -122,7 +124,7 @@ asset1_deposits AS (
             END,
             'AMM_POOL'
         ) AS to_address
-        ,CASE WHEN amount_currency = 'XRP' THEN NULL ELSE amount_issuer END AS issuer
+        ,CASE WHEN amount_currency = 'XRP' THEN 'rrrrrrrrrrrrrrrrrrrrrhoLvTp' ELSE amount_issuer END AS issuer
         ,amount_currency AS currency
         ,amount_value AS amount_requested_raw
         ,amount_value AS amount_delivered_raw
@@ -144,8 +146,7 @@ asset1_deposits AS (
 -- Asset 2 Deposits (User → AMM Pool) - if present
 asset2_deposits AS (
     SELECT
-        tx_hash || '_deposit2' AS unique_key
-        ,'xrpl' AS blockchain
+        'xrpl' AS blockchain
         ,CAST(date_trunc('month', block_time) AS DATE) AS block_month
         ,CAST(block_time AS DATE) AS block_date
         ,block_time
@@ -168,7 +169,7 @@ asset2_deposits AS (
             END,
             'AMM_POOL'
         ) AS to_address
-        ,CASE WHEN amount2_currency = 'XRP' THEN NULL ELSE amount2_issuer END AS issuer
+        ,CASE WHEN amount2_currency = 'XRP' THEN 'rrrrrrrrrrrrrrrrrrrrrhoLvTp' ELSE amount2_issuer END AS issuer
         ,amount2_currency AS currency
         ,amount2_value AS amount_requested_raw
         ,amount2_value AS amount_delivered_raw
@@ -190,8 +191,7 @@ asset2_deposits AS (
 -- LP Token Receipt (AMM Pool → User)
 lp_token_receipts AS (
     SELECT
-        tx_hash || '_lp_receive' AS unique_key
-        ,'xrpl' AS blockchain
+        'xrpl' AS blockchain
         ,CAST(date_trunc('month', block_time) AS DATE) AS block_month
         ,CAST(block_time AS DATE) AS block_date
         ,block_time
@@ -248,8 +248,7 @@ all_amm_deposit_transfers AS (
 )
 
 SELECT
-    t.unique_key
-    ,t.blockchain
+    t.blockchain
     ,t.block_month
     ,t.block_date
     ,t.block_time
@@ -300,4 +299,3 @@ LEFT JOIN {{ ref('tokens_xrpl_currency_mapping') }} cm
     ON t.currency = cm.currency_hex
 LEFT JOIN xrp_prices p ON DATE_TRUNC('minute', t.block_time) = p.price_minute
 WHERE COALESCE(t.amount_delivered, t.amount_requested) > 0
-ORDER BY t.block_time DESC, t.tx_index, t.evt_index

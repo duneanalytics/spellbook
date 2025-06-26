@@ -6,7 +6,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['block_date','unique_key'],
+        unique_key = ['block_month', 'tx_hash'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
         post_hook='{{ expose_spells(\'["xrpl"]\',
                                     "sector",
@@ -17,19 +17,36 @@
 
 WITH xrp_prices AS (
     SELECT
-        DATE_TRUNC('minute', minute) AS price_minute
-        ,AVG(price) AS price_usd
+        minute AS price_minute
+        ,price AS price_usd
     FROM {{ source('prices', 'usd') }}
     WHERE symbol = 'XRP' 
         AND blockchain IS NULL
-    GROUP BY 1
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('minute') }}
+        {% endif %}
 ),
 xrpl_gas_fees AS (
     SELECT 
         'xrpl' AS blockchain
-        ,CAST(DATE_TRUNC('month', CAST(ledger_close_date AS TIMESTAMP)) AS DATE) AS block_month
-        ,CAST(DATE_TRUNC('day', CAST(ledger_close_date AS TIMESTAMP)) AS DATE) AS block_date
-        ,CAST(ledger_close_date AS TIMESTAMP) AS block_time
+        ,CAST(DATE_TRUNC('month', CAST(
+            PARSE_DATETIME(
+                REGEXP_REPLACE(t._ledger_close_time_human, ' UTC$', ''),
+                'yyyy-MMM-dd HH:mm:ss.SSSSSSSSS'
+            ) AS TIMESTAMP
+        )) AS DATE) AS block_month
+        ,CAST(DATE_TRUNC('day', CAST(
+            PARSE_DATETIME(
+                REGEXP_REPLACE(t._ledger_close_time_human, ' UTC$', ''),
+                'yyyy-MMM-dd HH:mm:ss.SSSSSSSSS'
+            ) AS TIMESTAMP
+        )) AS DATE) AS block_date
+        ,CAST(
+            PARSE_DATETIME(
+                REGEXP_REPLACE(t._ledger_close_time_human, ' UTC$', ''),
+                'yyyy-MMM-dd HH:mm:ss.SSSSSSSSS'
+            ) AS TIMESTAMP
+        ) AS block_time
         ,ledger_index AS block_number
         ,CAST(hash AS VARCHAR) AS tx_hash
         ,CAST(account AS VARCHAR) AS tx_from
@@ -82,7 +99,7 @@ xrpl_gas_fees AS (
                 ) AS ROW(fee_type VARCHAR, amount VARCHAR)
             )
         ] AS tx_fee_breakdown_raw
-        ,'XRP' AS tx_fee_currency
+        ,'rrrrrrrrrrrrrrrrrrrrrhoLvTp' AS tx_fee_currency
         ,CAST(NULL AS VARCHAR) AS block_proposer
         ,CASE 
             WHEN JSON_EXTRACT_SCALAR(metadata, '$.TransactionIndex') IS NOT NULL THEN 
@@ -92,19 +109,23 @@ xrpl_gas_fees AS (
         ,transaction_type AS tx_type
         ,JSON_EXTRACT_SCALAR(metadata, '$.TransactionResult') AS transaction_result
         ,sequence
-        ,hash || '_fee' AS unique_key
         ,1 AS evt_index
         ,'fee' AS transfer_type
         ,'native' AS token_standard
         ,CAST(account AS VARCHAR) AS from_address
         ,CAST(NULL AS VARCHAR) AS to_address
-        ,CAST(NULL AS VARCHAR) AS issuer
+        ,'rrrrrrrrrrrrrrrrrrrrrhoLvTp' AS issuer
         ,p.price_usd
         ,fee AS fee_drops
         
     FROM {{ source('xrpl', 'transactions') }} t
     LEFT JOIN xrp_prices p ON (
-        DATE_TRUNC('minute', CAST(t.ledger_close_date AS TIMESTAMP)) = p.price_minute
+        DATE_TRUNC('minute', CAST(
+            PARSE_DATETIME(
+                REGEXP_REPLACE(t._ledger_close_time_human, ' UTC$', ''),
+                'yyyy-MMM-dd HH:mm:ss.SSSSSSSSS'
+            ) AS TIMESTAMP
+        )) = p.price_minute
     )
     WHERE t.transaction_type IN (
         'Payment'
@@ -116,7 +137,7 @@ xrpl_gas_fees AS (
     )
         AND TRY_CAST(t.fee AS DOUBLE) > 0
         {% if is_incremental() %}
-        AND {{ incremental_predicate('t.ledger_close_date') }}
+        AND {{ incremental_predicate('t._ledger_close_time_human') }}
         {% endif %}
 )
 SELECT
@@ -149,7 +170,6 @@ SELECT
     ,l1_gas_used
     ,l1_gas_price
     ,l1_fee_scalar
-    ,unique_key
     ,tx_index
     ,tx_type
     ,transaction_result
@@ -166,4 +186,3 @@ SELECT
 FROM xrpl_gas_fees
 WHERE tx_fee IS NOT NULL 
     AND tx_fee > 0
-ORDER BY block_time DESC
