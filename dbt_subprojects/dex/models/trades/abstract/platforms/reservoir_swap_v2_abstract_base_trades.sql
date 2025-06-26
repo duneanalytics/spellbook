@@ -10,7 +10,7 @@
 }}
 
 {{
-    uniswap_compatible_v3_trades(
+    uniswap_compatible_v2_trades(
         blockchain = 'abstract'
         , project = 'reservoir_swap'
         , version = '1'
