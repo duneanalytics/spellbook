@@ -117,7 +117,7 @@ days as (
 tvl_daily as (
     select 
         block_month
-        , block_date
+        , cast(date_trunc('day', d.day) as date) as block_date
         , blockchain
         , project
         , version
@@ -214,7 +214,7 @@ days as (
 tvl_daily as (
     select 
         block_month
-        , block_date
+        , cast(date_trunc('day', d.day) as date) as block_date
         , blockchain
         , project
         , version
