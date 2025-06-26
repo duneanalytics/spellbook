@@ -35,11 +35,11 @@ We need to split the onboarding process into multiple PRs because of the way we 
         -   Add the native token to [`prices_native_tokens.sql`](./dbt_subprojects/tokens/models/prices/prices_native_tokens.sql) if it's not already present via another chain.
         -   Create a new `prices_<blockchain>.tokens` model (e.g., [`prices_lens_tokens.sql`](./dbt_subprojects/tokens/models/prices/lens/prices_lens_tokens.sql)) in `dbt_subprojects/tokens/models/prices/<blockchain>/`. Manually list the native token and other key tokens (e.g., top 5 transferred, stables, WETH).
         -   Add the new `prices_<blockchain>.tokens` model to the union in [`prices_tokens.sql`](./dbt_subprojects/tokens/models/prices/prices_tokens.sql).
-        -   Add a small subset of highly trusted/liquid tokens (stables, WETH, wrapped native) to [`prices_trusted_tokens.sql`](./dbt_subprojects/tokens/models/prices/prices_trusted_tokens.sql).
-    -   **Why:** Establishes price feeds for the native token and key ERC20s. `prices_trusted_tokens` is used for reliable USD calculations in core models like [`dex.trades`](./dbt_subprojects/dex/models/trades/dex_trades.sql). We rely on CoinPaprika for feeds, so coverage might be limited initially.
+        -  After this PR is merged we have to add the new chain to the `prices_trusted_tokens` pipeline on the sqlmesh project so our price feeds are updated.
+    -   **Why:** Establishes price feeds for the native token and key ERC20s. We rely on CoinPaprika for feeds, so coverage might be limited initially.
     -   *Future State Note:* The dependency on CoinPaprika for *all* tokens is being reduced, but the `prices_trusted_tokens` pipeline will likely remain.
 
-3.  **Configure ERC20 Metadata (`tokens` project):**
+3.  **Configure ERC20 Metadata (`tokens` project) (not always required):**
 
 *Note: This step is not required for all chains. It is only required for chains we could not generate amp coverage for.*
 
