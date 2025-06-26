@@ -242,6 +242,31 @@ sources:
             data_type: integer
           - name: name
             data_type: varchar
+      - name: balances_daily_agg_base
+        freshness:
+          warn_after: {count: 1, period: day}
+        loaded_at_field: "block_time"
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: day
+            data_type: date
+          - name: block_number
+            data_type: bigint
+          - name: block_time
+            data_type: timestamp
+          - name: address
+            data_type: varbinary
+          - name: token_address
+            data_type: varbinary
+          - name: token_standard
+            data_type: varchar
+          - name: token_id
+            data_type: decimal(38,0)
+          - name: balance_raw
+            data_type: decimal(38,0)
+          - name: unique_key
+            data_type: varchar
 
   - name: tokens_blast
     tables:
