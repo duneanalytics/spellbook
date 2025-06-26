@@ -84,8 +84,8 @@ WITH trades AS (
     , sub_tx_trade_id
     --, tx_from
     --, tx_to
-    , CAST(0.015*CAST(price_raw AS double) AS UINT256) AS platform_fee_amount_raw
-    , CAST(0.015*CAST(price_raw AS double) AS UINT256) AS royalty_fee_amount_raw
+    , CAST((CASE WHEN block_number < 18397361 THEN 0.015 ELSE 0.017955 END)*CAST(price_raw AS double) AS UINT256) AS platform_fee_amount_raw
+    , CAST((CASE WHEN block_number < 18397361 THEN 0.015 ELSE 0.021945 END)*CAST(price_raw AS double) AS UINT256) AS royalty_fee_amount_raw
     , CAST(NULL AS VARBINARY) AS royalty_fee_address
     , 0x8ab15fe88a00b03724ac91ee4ee1f998064f2e31 AS platform_fee_address
     FROM trades
