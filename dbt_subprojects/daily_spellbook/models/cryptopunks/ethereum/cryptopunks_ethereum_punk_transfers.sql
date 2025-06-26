@@ -31,7 +31,7 @@ from
                         when a.evt_tx_hash = 0x76d32b465ca332bbbe74f7a1834c6d354125f6950168c6123f8ab07440bc285e and a.evt_index = 27 then UINT256 '675'
                         when a.evt_tx_hash = 0x76d32b465ca332bbbe74f7a1834c6d354125f6950168c6123f8ab07440bc285e and a.evt_index = 25 then UINT256 '2138'
                         when topic0 = 0x05af636b70da6819000c49f85b21fa82081c632069bb626f30932034099107d8 then bytearray_to_uint256(data)
-                        else bytearray_to_uint256(topic2) end as punk_id
+                        else bytearray_to_uint256(topic1) end as punk_id
                 , a.evt_tx_hash
         from {{ source('erc20_ethereum','evt_Transfer') }} a
         inner join {{ source('ethereum','logs') }} b
