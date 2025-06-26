@@ -137,12 +137,24 @@ tvl_daily as (
     days d 
         on c.block_date <= d.day 
         and d.day < c.next_day
-)
+),
+
+prices as (
+    select
+        cast(date_trunc('day', minute) as date) as block_date
+        , blockchain
+        , contract_address
+        , max_by(price, minute) as price
+    from 
+    {{ source('prices','usd_with_native') }}
+    where {{ incremental_predicate('minute') }}
+    group by 1, 2, 3 
+) 
 
     select 
         block_month
-        , block_date
-        , blockchain
+        , tl.block_date
+        , tl.blockchain
         , project
         , version
         , id
@@ -154,8 +166,20 @@ tvl_daily as (
         , token1_balance_raw 
         , token0_balance
         , token1_balance
+        , token0_balance * pa.price as token0_balance_usd
+        , token1_balance * pb.price as token1_balance_usd
     from 
-    tvl_daily 
+    tvl_daily tl 
+    left join 
+    prices pa 
+        on tl.token0 = pa.contract_address 
+        and tl.block_date = pa.block_date 
+        and tl.blockchain = pa.blockchain 
+    left join 
+    prices pb
+        on tl.token1 = pb.contract_address 
+        and tl.block_date = pb.block_date 
+        and tl.blockchain = pb.blockchain 
     where check_filter = 'include'  
 
 {% else %}
@@ -233,12 +257,24 @@ tvl_daily as (
     days d 
         on c.block_date <= d.day 
         and d.day < c.next_day
-)
+),
+
+prices as (
+    select
+        cast(date_trunc('day', minute) as date) as block_date
+        , blockchain
+        , contract_address
+        , max_by(price, minute) as price
+    from 
+    {{ source('prices','usd_with_native') }}
+    where {{ incremental_predicate('minute') }}
+    group by 1, 2, 3 
+) 
 
     select 
         block_month
-        , block_date
-        , blockchain
+        , tl.block_date
+        , tl.blockchain
         , project
         , version
         , id
@@ -250,7 +286,19 @@ tvl_daily as (
         , token1_balance_raw 
         , token0_balance
         , token1_balance
+        , token0_balance * pa.price as token0_balance_usd
+        , token1_balance * pb.price as token1_balance_usd
     from 
-    tvl_daily 
+    tvl_daily tl 
+    left join 
+    prices pa 
+        on tl.token0 = pa.contract_address 
+        and tl.block_date = pa.block_date 
+        and tl.blockchain = pa.blockchain 
+    left join 
+    prices pb
+        on tl.token1 = pb.contract_address 
+        and tl.block_date = pb.block_date 
+        and tl.blockchain = pb.blockchain 
 
 {% endif %}

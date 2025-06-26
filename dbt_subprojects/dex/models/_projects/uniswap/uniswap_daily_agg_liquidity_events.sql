@@ -28,6 +28,6 @@ select
 from 
 {{ ref('uniswap_liquidity_events') }}
 {% if is_incremental() %}
-WHERE {{ incremental_predicate('block_time') }}
+WHERE {{ incremental_predicate('block_date') }}
 {% endif %}
 GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10

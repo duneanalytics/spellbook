@@ -452,3 +452,9 @@ models:
       - &token1_balance
         name: token1_balance
         description: "Liquidity balance of token1 in units (decimal normalized)"
+      - &token0_balance_usd
+        name: token0_balance_usd
+        description: "Liquidity balance of token0 in USD"
+      - &token1_balance_usd
+        name: token1_balance_usd
+        description: "Liquidity balance of token1 in USD"
