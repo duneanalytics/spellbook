@@ -8,7 +8,8 @@
     , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     , post_hook='{{ expose_spells(\'[
-                                        "arbitrum"
+                                        "abstract"
+                                        , "arbitrum"
                                         , "avalanche_c"
                                         , "base"
                                         , "blast"
