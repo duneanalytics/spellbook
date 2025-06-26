@@ -59,10 +59,10 @@ tvl_min_daily as (
         , token1 
         , token0_symbol 
         , token1_symbol 
-        , amount0_raw 
-        , amount1_raw 
-        , amount0 
-        , amount1
+        , token0_balance_raw as amount0_raw 
+        , token1_balance_raw as amount1_raw 
+        , token0_balance as amount0 
+        , token1_balance as amount1
     from 
     {{this}}
     where block_date = (select block_date from min_daily)
