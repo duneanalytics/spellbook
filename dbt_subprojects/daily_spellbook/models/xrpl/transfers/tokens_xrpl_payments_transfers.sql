@@ -57,7 +57,7 @@ successful_payment_transactions AS (
         AND JSON_EXTRACT_SCALAR(metadata, '$.TransactionResult') = 'tesSUCCESS'
         AND destination IS NOT NULL
         {% if is_incremental() %}
-        AND {{ incremental_predicate('block_time') }}
+        AND {{ incremental_predicate('CAST(PARSE_DATETIME(REGEXP_REPLACE(_ledger_close_time_human, \' UTC$\', \'\'), \'yyyy-MMM-dd HH:mm:ss.SSSSSSSSS\') AS TIMESTAMP)') }}
         {% endif %}
 ),
 
