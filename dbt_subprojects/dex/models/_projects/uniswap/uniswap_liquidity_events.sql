@@ -37,6 +37,8 @@ WITH dexes AS (
                 , event_type
                 , token0
                 , token1
+                , token0_symbol 
+                , token1_symbol
                 , amount0_raw
                 , amount1_raw
                 , amount0

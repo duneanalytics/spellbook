@@ -325,6 +325,12 @@ models:
         description: "Transaction event type"   
       - *token0
       - *token1
+      - &token0_symbol
+        name: token0_symbol
+        description: "Token 0 Symbol"
+      - &token1_symbol
+        name: token1_symbol
+        description: "Token 1 Symbol"
       - &amount0_raw
         name: amount0_raw
         description: "Liquidity amount of token0 in units"
@@ -376,3 +382,73 @@ models:
       - *token1
       - *amount0_raw
       - *amount1_raw
+
+  - name: uniswap_daily_agg_liquidity_events
+    meta:
+      blockchain: ethereum,arbitrum,base,optimism,polygon,zora,blast,bnb,avalanche_c,worldchain,ink,unichain
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: [ 'dex' ]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - project
+            - version
+            - id
+            - block_date
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_month
+      - *block_date
+      - *id
+      - *token0
+      - *token1
+      - *token0_symbol
+      - *token1_symbol
+      - *amount0_raw
+      - *amount1_raw
+      - *amount0
+      - *amount1
+
+  - name: uniswap_tvl_daily
+    meta:
+      blockchain: ethereum,arbitrum,base,optimism,polygon,zora,blast,bnb,avalanche_c,worldchain,ink,unichain
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: [ 'dex' ]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - project
+            - version
+            - id
+            - block_date
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_month
+      - *block_date
+      - *id
+      - *token0
+      - *token1
+      - *token0_symbol
+      - *token1_symbol
+      - &token0_balance_raw
+        name: token0_balance_raw
+        description: "Liquidity balance of token0 in units"
+      - &token1_balance_raw
+        name: token1_balance_raw
+        description: "Liquidity amount of token1 in units"
+      - &token0_balance
+        name: token0_balance
+        description: "Liquidity balance of token0 in units (decimal normalized)"
+      - &token1_balance
+        name: token1_balance
+        description: "Liquidity balance of token1 in units (decimal normalized)"

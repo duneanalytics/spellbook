@@ -45,6 +45,7 @@ WITH base_liquidity as (
         , base.block_month
         , base.block_date
         , base.block_time
+        , date_trunc('minute', base.block_time) as block_minute 
         , base.block_number
         , base.id
         , base.tx_hash
@@ -52,6 +53,8 @@ WITH base_liquidity as (
         , base.event_type
         , base.token0
         , base.token1
+        , tk0.symbol as token0_symbol 
+        , tk1.symbol as token1_symbol
         , base.amount0_raw
         , base.amount1_raw
         , base.amount0_raw/pow(10,tk0.decimals) as amount0
@@ -81,6 +84,8 @@ WITH base_liquidity as (
             , en.event_type
             , en.token0
             , en.token1
+            , en.token0_symbol 
+            , en.token1_symbol
             , en.amount0_raw
             , en.amount1_raw
             , en.amount0
@@ -91,11 +96,11 @@ WITH base_liquidity as (
     LEFT JOIN prices p0
            ON en.token0 = p0.contract_address
           AND en.blockchain = p0.blockchain
-          AND p0.minute = date_trunc('minute', en.block_time)
+          AND p0.minute = en.block_minute
     LEFT JOIN prices p1
            ON en.token1 = p1.contract_address
           AND en.blockchain = p1.blockchain
-          AND p1.minute = date_trunc('minute', en.block_time)
+          AND p1.minute = en.block_minute 
 )
 
 
@@ -113,6 +118,8 @@ SELECT
     , event_type
     , token0
     , token1
+    , token0_symbol 
+    , token1_symbol
     , amount0_raw
     , amount1_raw  
     , amount0
