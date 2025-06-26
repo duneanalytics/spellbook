@@ -15,4 +15,5 @@
 {{dex_sandwiches(
         blockchain = blockchain
         , transactions = source(blockchain,'transactions')
+        , whitelist = ref('dex_sandwiches_whitelist')
 )}}
