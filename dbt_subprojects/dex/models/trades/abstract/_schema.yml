@@ -19,7 +19,7 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('reservoir_swap_v2_abstract_base_trades_seed')
           filter:
-            version: 2
+            version: 1
 
   - name: reservoir_swap_v3_abstract_base_trades
     meta:
@@ -38,4 +38,4 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('reservoir_swap_v3_abstract_base_trades_seed')
           filter:
-            version: 3
+            version: 2
