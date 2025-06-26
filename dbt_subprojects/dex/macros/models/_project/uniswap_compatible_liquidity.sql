@@ -349,7 +349,8 @@ pure_fee_collection as (
             and ml.evt_tx_hash = lt.tx_hash
             and ml.sender = lt."from"
             and ml.liquidityDelta = int256 '0'
-        where varbinary_substring(lt.input, 1, 4) = 0x0b0d9c09 -- take func sig
+        where lt.block_time >= date '2025-01-01' -- v4 launch 
+        and varbinary_substring(lt.input, 1, 4) = 0x0b0d9c09 -- take func sig
         {%- if is_incremental() %}
         and {{ incremental_predicate('block_time') }}
         {%- endif %} 
@@ -409,7 +410,8 @@ bundled_fee_collection as (
             on ml.evt_block_number = lt.block_number
             and ml.evt_index = lt.tx_index + 2 
             and ml.evt_tx_hash = lt.tx_hash
-        where varbinary_substring(lt.input, 1, 4) = 0x0b0d9c09 -- take func sig
+        where lt.block_time >= date '2025-01-01' -- v4 launch 
+        and varbinary_substring(lt.input, 1, 4) = 0x0b0d9c09 -- take func sig
         {%- if is_incremental() %}
         and {{ incremental_predicate('block_time') }}
         {%- endif %} 
