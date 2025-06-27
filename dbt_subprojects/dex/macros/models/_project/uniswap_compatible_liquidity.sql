@@ -434,7 +434,7 @@ fee_collection as (
         end as amount0 -- subtract total modify liquidity amount from total amount logged in take()
         , case 
             when amount1 > modify_amount1 then amount1 - modify_amount1 else 0 
-        end as amount
+        end as amount1
     from 
     join_with_pools
 ),
