@@ -1,4 +1,4 @@
-{% macro cex_evms(cex_addresses, blockchain, traces) %}
+{% macro cex_evms(cex_addresses, blockchain, transfers) %}
 
 WITH new_addresses AS (
     SELECT 
@@ -9,7 +9,7 @@ WITH new_addresses AS (
         a.added_by,
         a.added_date,
         MIN(t.block_time) AS first_used
-    FROM {{traces}} t
+    FROM {{transfers}} t
     INNER JOIN {{cex_addresses}} a ON a.address = t.to
     {% if is_incremental() %}
     WHERE {{incremental_predicate('t.block_time')}}
