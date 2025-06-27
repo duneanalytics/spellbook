@@ -21,7 +21,7 @@
     set contracts = {
         "EscrowFactoryV1": {
             "version": "1",
-            "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "avalanche_c", "gnosis", "optimism", "base", "zksync"],
+            "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "avalanche_c", "gnosis", "optimism", "base", "zksync", "linea", "sonic", "unichain"],
             "start": "2024-08-20",
             "dst_creation": dict(immutables["v1"], method="createDstEscrow"),
             "src_created":  dict(immutables["v1"], event="SrcEscrowCreated",
