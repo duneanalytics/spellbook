@@ -59,4 +59,5 @@ FROM
     , ('frxeth-frax-ether', 'frxETH', 0x2fb960611bdc322a9a4a994252658cae9fe2eea1, 18)
     , ('ws-wrapped-sonic', 'beS', 0x871A101Dcf22fE4fE37be7B654098c801CBA1c88, 18)
     , ('sfrxusd-staked-frax-usd', 'sfrxUSD', 0x5bff88ca1442c2496f7e475e9e7786383bc070c0, 18)
+    , ('rezerve-rzr', 'RZR', 0xb4444468e444f89e1c2cac2f1d3ee7e336cbd1f5, 18)
 ) as temp (token_id, symbol, contract_address, decimals)
