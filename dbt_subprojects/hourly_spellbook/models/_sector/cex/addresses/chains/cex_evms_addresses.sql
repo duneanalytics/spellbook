@@ -3261,7 +3261,6 @@ FROM (VALUES
     , (0xf8d3188e8349de474a2b086976cda158b4e109db, 'Bitkub', 'Bitkub 27', 'hildobby', date '2025-06-27')
     , (0x308672703961164e64332ba1ce19b85827502b4d, 'Bitkub', 'Bitkub 28', 'hildobby', date '2025-06-27')
     , (0xdff73312bebe434f8258d623c9ce6de834abbcdd, 'Bitkub', 'Bitkub 29', 'hildobby', date '2025-06-27')
-    , (0xdff73312bebe434f8258d623c9ce6de834abbcdd, 'Bitkub', 'Bitkub 30', 'hildobby', date '2025-06-27')
     , (0xbb317c75f7ca98f830dd6f7eb1981852ebe6f839, 'Bitkub', 'Bitkub 31', 'hildobby', date '2025-06-27')
     , (0x79169e7818968cd0c6dbd8929f24d797cc1af9a1, 'Bitkub', 'Bitkub Multisig 1', 'hildobby', date '2024-06-03')
     , (0x9be7b0f285d04701f27682f591a60417c47d095a, 'Bitkub', 'Bitkub Gas Supplier 1', 'hildobby', date '2023-11-15')
