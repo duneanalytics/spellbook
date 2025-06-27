@@ -429,8 +429,12 @@ fee_collection as (
         , event_type 
         , token0 
         , token1 
-        , amount0 - modify_amount0 as amount0 -- subtract total modify liquidity amount from total amount logged in take()
-        , amount1 - modify_amount1 as amount1
+        , case 
+            when amount0 > modify_amount0 then amount0 - modify_amount0 else 0 
+        end as amount0 -- subtract total modify liquidity amount from total amount logged in take()
+        , case 
+            when amount1 > modify_amount1 then amount1 - modify_amount1 else 0 
+        end as amount
     from 
     join_with_pools
 ),

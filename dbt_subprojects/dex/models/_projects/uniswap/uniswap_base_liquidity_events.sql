@@ -19,6 +19,7 @@
    ,ref('uniswap_v4_avalanche_c_base_liquidity_events')
    ,ref('uniswap_v4_ink_base_liquidity_events')
    ,ref('uniswap_v4_unichain_base_liquidity_events')
+   ,ref('uniswap_v4_base_base_liquidity_events')
 ] %}
 
 with base_union as (
