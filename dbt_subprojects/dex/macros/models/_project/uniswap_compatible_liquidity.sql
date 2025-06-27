@@ -187,9 +187,9 @@ sort_table as (
     , version = '4'
     , PoolManager_evt_ModifyLiquidity = null
     , PoolManager_evt_Swap = null
+    , PoolManager_call_Take = null 
     , liquidity_pools = null
     , liquidity_sqrtpricex96 = null
-    , liquidity_traces = null 
     )
 %}
 
@@ -323,131 +323,103 @@ modify_liquidity_events as (
     prep_for_calculations
 ),
 
-pure_fee_collection as (
+fee_collection as (
     with 
 
-    get_traces as (
+    get_fees as (
         select 
-            ml.evt_block_time
-            , ml.evt_block_number
-            , ml.id 
-            , ml.evt_tx_hash 
-            , ml.evt_index 
-            , 'pure_fee_collection' as event_type
-            , case 
-                when varbinary_ltrim(varbinary_substring(varbinary_substring(input, 5, 256), 1, 32)) = 0x 
-                then 0x0000000000000000000000000000000000000000
-                else varbinary_ltrim(varbinary_substring(varbinary_substring(input, 5, 256), 1, 32))  
-              end as fee_currency -- fix for ETH
-            , varbinary_to_uint256(varbinary_substring(varbinary_substring(input, 5, 256), 65, 32)) as fee_amount
+            call_tx_hash as tx_hash 
+            , call_block_time as block_time 
+            , call_block_number as block_number 
+            , call_tx_index as evt_index 
+            , amount 
+            , currency 
         from 
-        {{ liquidity_traces }} lt 
-        inner join 
-        modify_liquidity_events ml 
-            on ml.evt_block_number = lt.block_number
-            and ml.evt_index = lt.tx_index
-            and ml.evt_tx_hash = lt.tx_hash
-            and ml.sender = lt."from"
-            and ml.liquidityDelta = int256 '0'
-        where lt.block_time >= date '2025-01-01' -- v4 launch 
-        and varbinary_substring(lt.input, 1, 4) = 0x0b0d9c09 -- take func sig
+        {{ PoolManager_call_Take }}
         {%- if is_incremental() %}
-        and {{ incremental_predicate('block_time') }}
+        where {{ incremental_predicate('call_block_time') }}
         {%- endif %} 
-    ), 
-
-    join_with_pools as (
-        select 
-            gt.*,
-            gp.token0,
-            gp.token1
-        from 
-        get_traces gt 
-        inner join 
-        get_pools gp 
-            on gt.id = gp.id 
-    )
-    
-    select 
-        id
-        , evt_block_time as block_time 
-        , evt_block_number as block_number 
-        , evt_tx_hash as tx_hash 
-        , evt_index 
-        , event_type 
-        , token0 
-        , token1 
-        , sum(case when fee_currency = token0 then fee_amount else 0 end) as amount0 
-        , sum(case when fee_currency = token1 then fee_amount else 0 end) as amount1
-    from 
-    join_with_pools  
-    group by 1, 2, 3, 4, 5, 6, 7, 8 
-),
-
-bundled_fee_collection as (
-    with 
-
-    get_traces as (
-        select 
-            ml.evt_block_time
-            , ml.evt_block_number
-            , ml.id 
-            , ml.evt_tx_hash 
-            , ml.amount0 
-            , ml.amount1
-            , lt.tx_index as evt_index
-            , 'bundled_fee_collection' as event_type
-            , case 
-                when varbinary_ltrim(varbinary_substring(varbinary_substring(input, 5, 256), 1, 32)) = 0x 
-                then 0x0000000000000000000000000000000000000000
-                else varbinary_ltrim(varbinary_substring(varbinary_substring(input, 5, 256), 1, 32))  
-              end as fee_currency -- fix for ETH
-            , varbinary_to_uint256(varbinary_substring(varbinary_substring(input, 5, 256), 65, 32)) as fee_amount
-        from 
-        {{ liquidity_traces }} lt 
-        inner join 
-        modify_liquidity_events ml 
-            on ml.evt_block_number = lt.block_number
-            and ml.evt_index = lt.tx_index + 2 
-            and ml.evt_tx_hash = lt.tx_hash
-        where lt.block_time >= date '2025-01-01' -- v4 launch 
-        and varbinary_substring(lt.input, 1, 4) = 0x0b0d9c09 -- take func sig
-        {%- if is_incremental() %}
-        and {{ incremental_predicate('block_time') }}
-        {%- endif %} 
-    ), 
-
-    join_with_pools as (
-        select 
-            gt.*,
-            gp.token0,
-            gp.token1
-        from 
-        get_traces gt 
-        inner join 
-        get_pools gp 
-            on gt.id = gp.id 
+        and call_success
     ),
 
-    get_amounts as (
+    agg_fees as (
         select 
-            id 
-            , evt_block_time as block_time 
+            tx_hash
+            , block_time
+            , block_number
+            , min(evt_index) as evt_index
+            , sum(amount) as fee_amount 
+            , currency as fee_currency
+        from 
+        get_fees 
+        group by 1, 2, 3, 6 
+    ),
+
+    modify_events as (
+        select 
+            evt_block_time as block_time
             , evt_block_number as block_number 
+            , id 
             , evt_tx_hash as tx_hash 
             , evt_index 
-            , event_type 
-            , token0 
-            , token1 
+            , amount0 
+            , amount1 
+        from 
+        modify_liquidity_events
+        where liquidityDelta <= int256 '0'
+    ),
+
+    single_pools as (
+        select 
+            tx_hash 
+            , count(distinct id) as num_pools 
+        from 
+        modify_events 
+        group by 1 
+        having count(distinct id) = 1 -- only one pool in txn 
+    ),
+
+    agg_events as (
+        select 
+            me.tx_hash
+            , me.block_number 
+            , me.id 
+            , sum(me.amount0) as amount0
+            , sum(me.amount1) as amount1 
+        from 
+        modify_events me 
+        inner join 
+        single_pools sp 
+            on me.tx_hash = sp.tx_hash 
+        group by 1, 2, 3 
+    ),
+
+    join_with_pools (
+        select 
+            gf.tx_hash 
+            , gf.block_time 
+            , gf.block_number 
+            , gf.evt_index 
+            , 'fee_collection' as event_type
+            , ae.id 
             , -amount0 as modify_amount0 
             , -amount1 as modify_amount1
+            , token0 
+            , token1 
             , sum(case when fee_currency = token0 then fee_amount else 0 end) as amount0 
             , sum(case when fee_currency = token1 then fee_amount else 0 end) as amount1
         from 
-        join_with_pools 
-        group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 
+        agg_fees gf 
+        inner join 
+        agg_events ae 
+            on gf.tx_hash = ae.tx_hash 
+            and gf.block_number = ae.block_number 
+        inner join 
+        get_pools gp 
+            on ae.id = gp.id 
+        group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
     )
-    
+
     select 
         id
         , block_time 
@@ -457,12 +429,10 @@ bundled_fee_collection as (
         , event_type 
         , token0 
         , token1 
-        , amount0 - modify_amount0 as amount0 -- subtract modify liquidity amount from amount logged in take()
+        , amount0 - modify_amount0 as amount0 -- subtract total modify liquidity amount from total amount logged in take()
         , amount1 - modify_amount1 as amount1
     from 
-    get_amounts
-    where amount0 > modify_amount0 -- ensure amount in take() is larger
-    and amount1 > modify_amount1 
+    join_with_pools
 ),
 
 swap_events as (
@@ -532,23 +502,7 @@ liquidity_change_base as (
         , -amount0 as amount0
         , -amount1 as amount1
     from 
-    pure_fee_collection
-
-    union all 
-
-    select 
-        id
-        , block_time
-        , block_number 
-        , tx_hash 
-        , evt_index 
-        , event_type 
-        , token0 
-        , token1 
-        , -amount0 as amount0
-        , -amount1 as amount1
-    from 
-    bundled_fee_collection
+    fee_collection
 )
 
     select 

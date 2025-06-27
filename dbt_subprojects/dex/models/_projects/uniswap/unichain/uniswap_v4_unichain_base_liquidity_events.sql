@@ -18,6 +18,6 @@
         , PoolManager_evt_Swap = source('uniswap_v4_unichain', 'PoolManager_evt_Swap') 
         , liquidity_pools = ref('uniswap_v4_unichain_pools')
         , liquidity_sqrtpricex96 = ref('uniswap_v4_unichain_sqrtpricex96')
-        , liquidity_traces = source('unichain', 'traces')
+        , PoolManager_call_Take = source('uniswap_v4_unichain', 'poolmanager_call_take')
     )
 }}

@@ -18,6 +18,6 @@
         , PoolManager_evt_Swap = source('uniswap_v4_avalanche_c', 'PoolManager_evt_Swap') 
         , liquidity_pools = ref('uniswap_v4_avalanche_c_pools')
         , liquidity_sqrtpricex96 = ref('uniswap_v4_avalanche_c_sqrtpricex96')
-        , liquidity_traces = source('avalanche_c', 'traces')
+        , PoolManager_call_Take = source('uniswap_v4_avalanche_c', 'poolmanager_call_take')
     )
 }}

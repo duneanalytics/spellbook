@@ -18,6 +18,6 @@
         , PoolManager_evt_Swap = source('uniswap_v4_arbitrum', 'PoolManager_evt_Swap') 
         , liquidity_pools = ref('uniswap_v4_arbitrum_pools')
         , liquidity_sqrtpricex96 = ref('uniswap_v4_arbitrum_sqrtpricex96')
-        , liquidity_traces = source('arbitrum', 'traces')
+        , PoolManager_call_Take = source('uniswap_v4_arbitrum', 'poolmanager_call_take')
     )
 }}

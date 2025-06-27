@@ -18,6 +18,6 @@
         , PoolManager_evt_Swap = source('uniswap_v4_zora', 'PoolManager_evt_Swap') 
         , liquidity_pools = ref('uniswap_v4_zora_pools')
         , liquidity_sqrtpricex96 = ref('uniswap_v4_zora_sqrtpricex96')
-        , liquidity_traces = source('zora', 'traces')
+        , PoolManager_call_Take = source('uniswap_v4_zora', 'poolmanager_call_take')
     )
 }}
