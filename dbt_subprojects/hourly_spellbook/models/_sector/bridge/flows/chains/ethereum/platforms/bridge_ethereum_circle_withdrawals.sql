@@ -7,47 +7,47 @@
     )
 }}
 
-SELECT 'base' AS source_chain
-, 'ethereum' AS destination_chain
+SELECT 'base' AS deposit_chain
+, 'ethereum' AS withdraw_chain
 , 'Base Bridge' AS project
 , '1' AS project_version
 , 'source' AS event_side
 , evt_block_date AS block_date
 , evt_block_time AS block_time
 , evt_block_number AS block_number
-, amount AS source_amount_raw
-, amount AS destination_amount_raw
+, amount AS deposit_amount_raw
+, amount AS withdraw_amount_raw
 , "from" AS sender
 , to AS recipient
-, 'erc20' AS source_token_standard
-, 'erc20' AS destination_token_standard
-, localtoken AS source_token_address
-, remotetoken AS destination_token_address
+, 'erc20' AS deposit_token_standard
+, 'erc20' AS withdraw_token_standard
+, localtoken AS deposit_token_address
+, remotetoken AS withdraw_token_address
 , evt_tx_from AS tx_from
 , evt_tx_hash AS tx_hash
 , evt_index
 , contract_address
-, {{ dbt_utils.generate_surrogate_key(["Base Bridge'" "1", 'source_chain', 'destination_chain', '"from"', 'to', 'localtoken', 'remotetoken', 'amount', 'amount'])}} as bridge_id
+, {{ dbt_utils.generate_surrogate_key(["Base Bridge'" "1", 'deposit_chain', 'withdraw_chain', '"from"', 'to', 'localtoken', 'remotetoken', 'amount', 'amount'])}} as bridge_id
 FROM {{ source('base_ethereum', 'l1standardbridge_evt_erc20bridgefinalized')}}
 
 UNION ALL
 
-SELECT 'base' AS source_chain
-, 'ethereum' AS destination_chain
+SELECT 'base' AS deposit_chain
+, 'ethereum' AS withdraw_chain
 , 'Base Bridge' AS project
 , '1' AS project_version
 , 'source' AS event_side
 , evt_block_date AS block_date
 , evt_block_time AS block_time
 , evt_block_number AS block_number
-, amount AS source_amount_raw
-, amount AS destination_amount_raw
+, amount AS deposit_amount_raw
+, amount AS withdraw_amount_raw
 , "from" AS sender
 , to AS recipient
-, 'native' AS source_token_standard
-, 'native' AS destination_token_standard
-, NULL AS source_token_address
-, NULL AS destination_token_address
+, 'native' AS deposit_token_standard
+, 'native' AS withdraw_token_standard
+, NULL AS deposit_token_address
+, NULL AS withdraw_token_address
 , evt_tx_from AS tx_from
 , evt_tx_hash AS tx_hash
 , evt_index

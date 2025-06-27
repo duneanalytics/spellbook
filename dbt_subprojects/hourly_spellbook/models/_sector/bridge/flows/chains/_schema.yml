@@ -1,24 +1,24 @@
 version: 2
 
 models:
-  - name: bridge_ethereum_initiated
+  - name: bridge_ethereum_deposits
     meta:
       blockchain: ethereum
       sector: bridge
       project: base
       contributors: [ 'hildobby']
     config:
-      tags: [ 'bridge', 'flows', 'initiated' ]
-    description: "Bridge initiated events on Ethereum"
+      tags: [ 'bridge', 'flows', 'deposits' ]
+    description: "Bridge deposits events on Ethereum"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['tx_hash','evt_index']
     columns:
-      - &source_chain
-        name: source_chain
+      - &deposit_chain
+        name: deposit_chain
         description: "Blockchain where the tokens were sent"
-      - &destination_chain
-        name: destination_chain
+      - &withdraw_chain
+        name: withdraw_chain
         description: "Blockchain where the tokens were received"
       - &project
         name: project
@@ -26,9 +26,6 @@ models:
       - &project_version
         name: project_version
         description: "Version of the project"
-      - &event_side
-        name: event_side
-        description: "Blockchain where the event was emitted"
       - &block_date
         name: block_date
         description: "Block month of the bridge transaction"
@@ -38,11 +35,11 @@ models:
       - &block_number
         name: block_number
         description: "Block number of the bridge transaction"
-      - &source_amount_raw 
-        name: source_amount_raw
+      - &deposit_amount_raw 
+        name: deposit_amount_raw
         description: "Raw amount of tokens bridged from source chain"
-      - &destination_amount_raw 
-        name: destination_amount_raw
+      - &withdraw_amount_raw 
+        name: withdraw_amount_raw
         description: "Raw amount of tokens bridged to destination chain"
       - &sender 
         name: sender
@@ -50,21 +47,21 @@ models:
       - &recipient 
         name: recipient
         description: "Destination address"
-      - &source_token_standard  
-        name: source_token_standard
+      - &deposit_token_standard  
+        name: deposit_token_standard
         description: "Source blockchain token standard"
-      - &destination_token_standard
+      - &withdraw_token_standard
         name: remote_token
         description: "Destination blockchain token standard"
-      - &source_token_address  
-        name: source_token_address
+      - &deposit_token_address  
+        name: deposit_token_address
         description: "Source blockchain token address"
-      - &destination_token_address
-        name: destination_token_address
+      - &withdraw_token_address
+        name: withdraw_token_address
         description: "Destination blockchain token address"
       - &tx_from
         name: tx_from
-        description: "Address that initiated the transaction"
+        description: "Address that deposits the transaction"
       - &tx_hash
         name: tx_hash
         description: "Transaction hash"
@@ -77,103 +74,100 @@ models:
       - &bridge_id 
         name: bridge_id
         description: "Bridge order identifier"
-  - name: bridge_ethereum_finalised
+  - name: bridge_ethereum_withdrawals
     meta:
       blockchain: ethereum
       sector: bridge
       project: base
       contributors: [ 'hildobby']
     config:
-      tags: [ 'base', 'bridge', 'flows' , 'finalised' ]
-    description: "Bridge finalised events on Ethereum"
+      tags: [ 'base', 'bridge', 'flows' , 'withdrawals' ]
+    description: "Bridge withdrawals events on Ethereum"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['tx_hash','evt_index']
     columns:
-      - *source_chain
-      - *destination_chain
+      - *deposit_chain
+      - *withdraw_chain
       - *project
       - *project_version
-      - *event_side
       - *block_date
       - *block_time
       - *block_number
-      - *source_amount_raw
-      - *destination_amount_raw
+      - *deposit_amount_raw
+      - *withdraw_amount_raw
       - *sender
       - *recipient
-      - *source_token_standard
-      - *destination_token_standard
-      - *source_token_address
-      - *destination_token_address
+      - *deposit_token_standard
+      - *withdraw_token_standard
+      - *deposit_token_address
+      - *withdraw_token_address
       - *tx_from
       - *tx_hash
       - *evt_index  
       - *contract_address 
       - *bridge_id 
-  - name: bridge_base_initiated
+  - name: bridge_base_deposits
     meta:
       blockchain: base
       sector: bridge
       project: base
       contributors: [ 'hildobby']
     config:
-      tags: [ 'base', 'bridge', 'flows' , 'initiated' ]
-    description: "Bridge initiated events on Base"
+      tags: [ 'base', 'bridge', 'flows' , 'deposits' ]
+    description: "Bridge deposits events on Base"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['tx_hash','evt_index']
     columns:
-      - *source_chain
-      - *destination_chain
+      - *deposit_chain
+      - *withdraw_chain
       - *project
       - *project_version
-      - *event_side
       - *block_date
       - *block_time
       - *block_number
-      - *source_amount_raw 
-      - *destination_amount_raw 
+      - *deposit_amount_raw 
+      - *withdraw_amount_raw 
       - *sender
       - *recipient
-      - *source_token_standard
-      - *destination_token_standard
-      - *source_token_address
-      - *destination_token_address
+      - *deposit_token_standard
+      - *withdraw_token_standard
+      - *deposit_token_address
+      - *withdraw_token_address
       - *tx_from
       - *tx_hash
       - *evt_index  
       - *contract_address 
       - *bridge_id 
-  - name: bridge_base_finalised
+  - name: bridge_base_withdrawals
     meta:
       blockchain: base
       sector: bridge
       project: base
       contributors: [ 'hildobby']
     config:
-      tags: [ 'base', 'bridge', 'flows' , 'finalised' ]
-    description: "Bridge finalised events on Base"
+      tags: [ 'base', 'bridge', 'flows' , 'withdrawals' ]
+    description: "Bridge withdrawals events on Base"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['tx_hash','evt_index']
     columns:
-      - *source_chain
-      - *destination_chain
+      - *deposit_chain
+      - *withdraw_chain
       - *project
       - *project_version
-      - *event_side
       - *block_date
       - *block_time
       - *block_number
-      - *source_amount_raw 
-      - *destination_amount_raw 
+      - *deposit_amount_raw 
+      - *withdraw_amount_raw 
       - *sender
       - *recipient
-      - *source_token_standard
-      - *destination_token_standard
-      - *source_token_address
-      - *destination_token_address
+      - *deposit_token_standard
+      - *withdraw_token_standard
+      - *deposit_token_address
+      - *withdraw_token_address
       - *tx_from
       - *tx_hash
       - *evt_index  

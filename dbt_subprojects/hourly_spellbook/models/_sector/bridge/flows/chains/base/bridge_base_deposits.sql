@@ -2,34 +2,33 @@
 
 {{ config(
     schema = 'bridge_' + blockchain,
-    alias = 'finalised',
+    alias = 'deposits',
     materialized = 'view'
     )
 }}
 
 {% set bridge_platforms = [
-    'bridge_base_base_bridge_finalised'
+    'bridge_base_circle_deposits'
 ] %}
 
 SELECT *
 FROM (
     {% for bridge_platform in bridge_platforms %}
-    SELECT source_chain
-    , destination_chain
+    SELECT deposit_chain
+    , withdraw_chain
     , project
     , project_version
-    , event_side
     , block_date
     , block_time
     , block_number
-    , source_amount_raw
-    , destination_amount_raw
+    , deposit_amount_raw
+    , withdraw_amount_raw
     , sender
     , recipient
-    , source_token_standard
-    , destination_token_standard
-    , source_token_address
-    , destination_token_address
+    , deposit_token_standard
+    , withdraw_token_standard
+    , deposit_token_address
+    , withdraw_token_address
     , tx_from
     , tx_hash
     , evt_index
