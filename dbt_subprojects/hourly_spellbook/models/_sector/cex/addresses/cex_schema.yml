@@ -26,6 +26,8 @@ models:
         description: "Who added the address"
       - name: added_date
         description: "Date the address was added on"
+      - name: is_contract
+        description: "Is the address a contract or not?"
 
   - name: cex_addresses
     meta:

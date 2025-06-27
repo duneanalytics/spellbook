@@ -12,5 +12,6 @@
 {{cex_evms(
         cex_addresses = ref('cex_evms_addresses')
         , blockchain = blockchain
-        , traces = source(blockchain, 'traces')
+        , token_transfers = source('tokens_'~blockchain,'transfers')
+        , contract_creations =  source(blockchain, 'creation_traces')
         )}}
