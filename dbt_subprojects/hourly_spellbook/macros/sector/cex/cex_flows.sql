@@ -1,6 +1,6 @@
 {% macro cex_flows(blockchain, transfers, addresses) %}
 
-SELECT DISTINCT '{{blockchain}}' AS blockchain
+SELECT '{{blockchain}}' AS blockchain
 , CAST(date_trunc('month', block_time) AS date) AS block_month
 , block_time
 , block_number
