@@ -179,6 +179,7 @@ FROM (VALUES
     , (0xf65d698d18bc37bf36e4c8d4fe4f051ef570e2b6, 'Bybit', 'Bybit Gas Supplier 3', 'hildobby', date '2023-11-23')
     , (0x2ded5ce31a0c61ecaf6429a1ba1a00b2bfe67099, 'Bybit', 'Bybit Gas Supplier 4', 'hildobby', date '2023-11-23')
     , (0x2c7dab4b02b77603ef16a7aea8e30f137e8c1b93, 'Bybit', 'Bybit Gas Supplier 5', 'hildobby', date '2023-11-23')
+    , (0x8e4d553557727d4a299ab2108215e614e6a3f6c0, 'Bybit', 'Bybit Gas Supplier 6', 'hildobby', date '2025-06-27')
     -- Deribit
     , (0x77021d475e36b3ab1921a0e3a8380f069d3263de, 'Deribit', 'Deribit 1', 'hildobby', date '2023-04-06')
     , (0x5f397b62502e255f68382791947d54c4b2d37f09, 'Deribit', 'Deribit 2', 'hildobby', date '2023-04-06')
@@ -639,6 +640,7 @@ FROM (VALUES
     , (0x8744f9a43c22c804553835ba33c5c402af3c79d6, 'OKX', 'OKX Gas Supplier 16', 'hildobby', date '2024-08-13')
     , (0x6182672efcb2ddf094f7bfd3e92ecd10e718e4e1, 'OKX', 'OKX Gas Supplier 17', 'hildobby', date '2024-10-06')
     , (0x45ceabb79cf4aba1e9781cec35ce726f8a1a9309, 'OKX', 'OKX Gas Supplier 18', 'hildobby', date '2024-10-06')
+    , (0x3ed0b01c262a3938c25d16c8902e1e8ca2cfd8fb, 'OKX', 'OKX Gas Supplier 20', 'hildobby', date '2025-06-27')
     -- Cobo
     , (0xa9c7d31bb1879bff8be25ead2f59b310a52b7c5a, 'Cobo', 'Cobo 1', 'hildobby', date '2023-11-16')
     , (0xbf957e1c121fa769580d29bf320ee8bff138ad12, 'Cobo', 'Cobo 2', 'hildobby', date '2023-11-16')
@@ -881,6 +883,7 @@ FROM (VALUES
     , (0x36d86971bebacd424aeb0bb164c629d61f4557a2, 'HTX', 'HTX Gas Supplier 30', 'hildobby', date '2024-10-06')
     , (0x5f477d105efa3bcc2f74f0e9a008bcaa988a8e8a, 'HTX', 'HTX Gas Supplier 31', 'hildobby', date '2024-10-06')
     , (0x80e63d2735789fa1f676b7644236d501133986dd, 'HTX', 'HTX Gas Supplier 32', 'hildobby', date '2024-10-06')
+    , (0x3c5eefdf009cdce3b5cb2fc959866750e6eba66a, 'HTX', 'HTX Gas Supplier 33', 'hildobby', date '2025-06-27')
     , (0xbc53b706b165d2b7e98f254095d9d342e845e5ac, 'HTX', 'HTX Bridge 1', 'hildobby', date '2024-05-25')
     , (0x24d48513eac38449ec7c310a79584f87785f856f, 'HTX', 'HTX Locking Multisig 1', 'hildobby', date '2025-05-02')
     , (0x7262b784e35e1f0d1b83f4f00cab1877e3047e70, 'HTX', 'HTX Internal 1', 'hildobby', date '2025-05-04')
@@ -1373,6 +1376,8 @@ FROM (VALUES
     , (0x7b403c20adb5674e31fbbc040945999739a874c8, 'KuCoin', 'KuCoin Gas Supplier 11', 'hildobby', date '2024-08-13')
     , (0x439ef8dd8e50d632f6e5802869fd13af430de84f, 'KuCoin', 'KuCoin Gas Supplier 12', 'hildobby', date '2024-10-06')
     , (0x4316e553902c3eab807663001d089fd6554a4566, 'KuCoin', 'KuCoin Gas Supplier 13', 'hildobby', date '2025-06-14')
+    , (0xf3a3ae8413e10341a23b9e0d20669009811928db, 'KuCoin', 'KuCoin Gas Supplier 14', 'hildobby', date '2025-06-27')
+    , (0x0c32131b67a9306a42e5b66f869bc213d40e43f0, 'KuCoin', 'KuCoin Gas Supplier 15', 'hildobby', date '2025-06-27')
     -- Crypto.com
     , (0x6262998ced04146fa42253a5c0af90ca02dfd2a3, 'Crypto.com', 'Crypto.com 1', 'hildobby', date '2022-08-28')
     , (0x46340b20830761efd32832a74d7169b29feb9758, 'Crypto.com', 'Crypto.com 2', 'hildobby', date '2022-08-28')
@@ -1497,6 +1502,7 @@ FROM (VALUES
     , (0x051c869bf94ba4ad372f88b227d78de4508eabf3, 'BitMart', 'BitMart 20', 'hildobby', date '2025-06-25')
     , (0xb4af4d0b9bd38c9f2fec9778e48667912f778f01, 'BitMart', 'BitMart 21', 'hildobby', date '2025-06-25')
     , (0xe9ee9f2857b559c67dd03576a1c74589a6af6197, 'BitMart', 'BitMart 22', 'hildobby', date '2025-06-25')
+    , (0x2fedfef485ef23b4b38d11d5a3ed8bd83f12ffcb, 'BitMart', 'BitMart 23', 'hildobby', date '2025-06-27')
     , (0x1aac8bc17da523b9bc7470b0c9ed47a83760acef, 'BitMart', 'BitMart Deployer', 'hildobby', date '2023-11-16')
     , (0xf8f21a32648a540dd8e982ff47bef6be2e823f9e, 'BitMart', 'BitMart Gas Supplier 1', 'hildobby', date '2023-11-23')
     , (0x3752a0f9bea7cdf593f46533e23853161233bd04, 'BitMart', 'BitMart Gas Supplier 2', 'hildobby', date '2024-10-06')
@@ -1509,6 +1515,9 @@ FROM (VALUES
     , (0x701f38c8c0ee48b4c1e5aefc0a3c6880f1d3d445, 'BitMart', 'BitMart Gas Supplier 9', 'hildobby', date '2024-10-06')
     , (0x03ca1829f4d3839467701592b9adcc7babbd8769, 'BitMart', 'BitMart Gas Supplier 10', 'hildobby', date '2024-10-06')
     , (0xabb239191ab5d0482ab7c74f412d2b117f4eed3a, 'BitMart', 'BitMart Gas Supplier 11', 'hildobby', date '2024-10-06')
+    , (0x0a3ed175807bb420ae6621cac1d351ed0eec8025, 'BitMart', 'BitMart Gas Supplier 12', 'hildobby', date '2025-06-27')
+    , (0xf81bf0f6edbb71ed9b8ef865dd0cf4195f25042a, 'BitMart', 'BitMart Gas Supplier 13', 'hildobby', date '2025-06-27')
+    , (0x933b72f4595f42a58affd737dbf84e50432d7190, 'BitMart', 'BitMart Gas Supplier 14', 'hildobby', date '2025-06-27')
     -- LAToken
     , (0x0861fca546225fbf8806986d211c8398f7457734, 'LAToken', 'LAToken 1', 'hildobby', date '2022-08-28')
     , (0x7891b20c690605f4e370d6944c8a5dbfac5a451c, 'LAToken', 'LAToken 2', 'hildobby', date '2022-08-28')
@@ -2094,6 +2103,7 @@ FROM (VALUES
     , (0xdc6afc9db17550fd1074431ed66809576d19e514, 'Bithumb', 'Bithumb 506', 'hildobby', date '2025-06-25')
     , (0x106c41d1c1965189a85a13d34dbdbaff70834db5, 'Bithumb', 'Bithumb 507', 'hildobby', date '2025-06-25')
     , (0xdb3a0dee0c2429f779f6493f966431cb7ea0b00f, 'Bithumb', 'Bithumb 508', 'hildobby', date '2025-06-25')
+    , (0x7f9156b15d3f90d382dd9931bbb4cd7521056567, 'Bithumb', 'Bithumb 509', 'hildobby', date '2025-06-25')
     , (0x560e389a2b032319e742a59ae8bafa62671089fe, 'Bithumb', 'Bithumb Contract', 'hildobby', date '2023-11-16')
     , (0xbb5a0408fa54287b9074a2f47ab54c855e95ef82, 'Bithumb', 'Bithumb Old Address 1', 'hildobby', date '2022-08-28')
     , (0x5521a68d4f8253fc44bfb1490249369b3e299a4a, 'Bithumb', 'Bithumb Old Address 2', 'hildobby', date '2022-08-28')
@@ -2150,6 +2160,7 @@ FROM (VALUES
     -- BetFury
     , (0x52a258ed593c793251a89bfd36cae158ee9fc4f8, 'BetFury', 'BetFury 1', 'hildobby', date '2024-10-06')
     , (0x4b2cad10b86c42fb79518d0ee4905d2868a77d42, 'BetFury', 'BetFury 2', 'hildobby', date '2025-05-05')
+    , (0xdfe6db173dffe1935b70c6efa4c9e7636cd98c9f, 'BetFury', 'BetFury Gas Supplier 1', 'hildobby', date '2025-06-27')
     -- Rollbit
     , (0xcbd6832ebc203e49e2b771897067fce3c58575ac, 'Rollbit', 'Rollbit 1', 'hildobby', date '2023-11-15')
     , (0xef8801eaf234ff82801821ffe2d78d60a0237f97, 'Rollbit', 'Rollbit 2', 'hildobby', date '2023-11-15')
@@ -2200,6 +2211,7 @@ FROM (VALUES
     , (0xd9f2c88ae7372e7e418e5304105b918d6cf2ce1f, 'ChangeNOW', 'ChangeNOW Gas Supplier 7', 'hildobby', date '2024-10-06')
     , (0xd421bb540b5f980a9f7d4206e1404c107aad9ecc, 'ChangeNOW', 'ChangeNOW Gas Supplier 8', 'hildobby', date '2024-10-12')
     , (0x458c2a06ba8dc3def078513ad98e9da8ced39e02, 'ChangeNOW', 'ChangeNOW Gas Supplier 9', 'hildobby', date '2025-06-25')
+    , (0xc6cad2d42c7510a72edefe32246f54617c16437e, 'ChangeNOW', 'ChangeNOW Gas Supplier 10', 'hildobby', date '2025-06-27')
     , (0x6ba7fe01eec4c6a4308c8e2b35970e0488ce9a86, 'ChangeNOW', 'ChangeNOW HTX Deposit 1', 'hildobby', date '2023-11-20')
     , (0x19f00b3a7b6f55c9da966fe3723251784a797fa7, 'ChangeNOW', 'ChangeNOW Binance Deposit 1', 'hildobby', date '2025-05-04')
     -- Bitstamp
@@ -2492,6 +2504,7 @@ FROM (VALUES
     , (0x2fb074fa59c9294c71246825c1c9a0c7782d41a4, 'Paxos', 'Paxos 9', 'hildobby', date '2025-06-25')
     , (0x5195427ca88df768c298721da791b93ad11eca65, 'Paxos', 'Paxos Treasury 1', 'hildobby', date '2024-05-04')
     , (0x8a89e016750479dc1d7ad32ecffcecd76e118697, 'Paxos', 'Paxos Gas Supplier 1', 'hildobby', date '2023-11-23')
+    , (0x6fa67393be5d9a5b6b3570646ef238bb52795350, 'Paxos', 'Paxos Gas Supplier 2', 'hildobby', date '2025-06-27')
 
     -- DigiFinex
     , (0xe17ee7b3c676701c66b395a35f0df4c2276a344e, 'DigiFinex', 'DigiFinex 1', 'hildobby', date '2022-08-28')
@@ -2814,6 +2827,10 @@ FROM (VALUES
     , (0xa8fdc778fda2df87b3fa5842dca3b5ff3f3b0e76, 'ShapeShift', 'ShapeShift 30', 'hildobby', date '2025-06-17')
     , (0x28c575d32daf3b8d8b85a73390971cc969d570f6, 'ShapeShift', 'ShapeShift 31', 'hildobby', date '2025-06-17')
     , (0x1c39ba39e4735cb65978d4db400ddd70a72dc750, 'ShapeShift', 'ShapeShift 32', 'hildobby', date '2025-06-25')
+    , (0x568f7c121c669fe87b3f3a8219abce22952af66b, 'ShapeShift', 'ShapeShift 33', 'hildobby', date '2025-06-27')
+    , (0x776d2316541d678181e82faf409df77790ee71a1, 'ShapeShift', 'ShapeShift 34', 'hildobby', date '2025-06-27')
+    , (0x51b52ff8d2d93ad8067aa046b821fad005127514, 'ShapeShift', 'ShapeShift 35', 'hildobby', date '2025-06-27')
+    , (0xb90e3aeb12643d33b96e18d60820824a22c72bc3, 'ShapeShift', 'ShapeShift 36', 'hildobby', date '2025-06-27')
     , (0xb36efd48c9912bd9fd58b67b65f7438f6364a256, 'ShapeShift', 'ShapeShift Binance Deposit 1', 'hildobby', date '2022-08-28')
     , (0xda1e5d4cc9873963f788562354b55a772253b92f, 'ShapeShift', 'ShapeShift Bitfinex Deposit 1', 'hildobby', date '2022-08-28')
     , (0xe9319eba87af7c2fc1f55ccde9d10ea8efbd592d, 'ShapeShift', 'ShapeShift Bittrex Deposit 1', 'hildobby', date '2022-08-28')
@@ -3276,6 +3293,7 @@ FROM (VALUES
     , (0x3a4d84e64fa6bb51f1eebc8741d33b0663b5a5ef, 'Indodax', 'Indodax 6', 'hildobby', date '2025-05-04')
     , (0xaba3002ab1597433ba79abc48eead54dc10a45f2, 'Indodax', 'Indodax 7', 'hildobby', date '2025-06-14')
     , (0x91dca37856240e5e1906222ec79278b16420dc92, 'Indodax', 'Indodax 8', 'hildobby', date '2025-06-16')
+    , (0x8a02ca5a49bf432452b5b5772f57ffc136dcca12, 'Indodax', 'Indodax 9', 'hildobby', date '2025-06-27')
     -- MaiCoin
     , (0x477b8d5ef7c2c42db84deb555419cd817c336b6f, 'MaiCoin', 'MaiCoin 1', 'hildobby', date '2022-08-28')
     , (0x986aac49d38cea193e56df1a114894f8f25333ee, 'MaiCoin', 'MaiCoin Gas Supplier 1', 'hildobby', date '2024-10-06')
@@ -3315,6 +3333,8 @@ FROM (VALUES
     , (0x0bc6e8ceac156acbe85e2c46a505ff33407c45f5, 'FixedFloat', 'FixedFloat 8', 'hildobby', date '2024-10-06')
     , (0x5959dba0123d7a60df9e1409de4d7b5604976060, 'FixedFloat', 'FixedFloat Gas Supplier 1', 'hildobby', date '2024-10-06')
     , (0x440efc740ca49ed88051c05cf756cde6c8be3b27, 'FixedFloat', 'FixedFloat Gas Supplier 2', 'hildobby', date '2024-10-06')
+    , (0x506c4dc5284316c04f34b8954e9bd6df3d7c514e, 'FixedFloat', 'FixedFloat Gas Supplier 3', 'hildobby', date '2025-06-27')
+    , (0xa2fc0dc8fe9f7500c554c77ba61c79b2492ab38f, 'FixedFloat', 'FixedFloat Gas Supplier 4', 'hildobby', date '2025-06-27')
     -- Bitrue
     , (0x6cc8dcbca746a6e4fdefb98e1d0df903b107fd21, 'Bitrue', 'Bitrue 1', 'hildobby', date '2022-08-28')
     , (0xd205a958527f083f1b222061b4d60d147fec5044, 'Bitrue', 'Bitrue 2', 'hildobby', date '2024-06-03')
@@ -3548,6 +3568,7 @@ FROM (VALUES
     , (0x0fdd8454cda144b88955e8bb7931456989f853cc, 'SimpleSwap', 'SimpleSwap Gas Supplier 3', 'hildobby', date '2024-10-06')
     , (0x59b36b4b1b25bc61c8a81eaf70ad923d149f3d95, 'SimpleSwap', 'SimpleSwap Gas Supplier 4', 'hildobby', date '2024-10-06')
     , (0xbbe4b05aaef7526153888d0cdd054b78c72a7e85, 'SimpleSwap', 'SimpleSwap Gas Supplier 5', 'hildobby', date '2024-10-06')
+    , (0x135417ccea4182615ee2e633311d45a761c9b3c2, 'SimpleSwap', 'SimpleSwap Gas Supplier 6', 'hildobby', date '2025-06-27')
     -- Alcumex Exchange
     , (0x2ddd202174a72514ed522e77972b461b03155525, 'Alcumex Exchange', 'Alcumex Exchange 1', 'hildobby', date '2023-04-06')
     -- APROBIT
@@ -3666,7 +3687,9 @@ FROM (VALUES
     , (0x808d0aee8db7e7c74faf4b264333afe8c9ccdba4, 'AlphaPo', 'AlphaPo 2', 'hildobby', date '2024-03-13')
     , (0x183a6cf1fc6504138d92c9d663094ee774f80038, 'AlphaPo', 'AlphaPo 3', 'hildobby', date '2024-03-13')
     , (0x9a10da8ce77f26231860764a2caab36e70584c4b, 'AlphaPo', 'AlphaPo 4', 'hildobby', date '2025-06-16')
+    , (0x6900d5480601ba3c831daa2c40e445181c5db95c, 'AlphaPo', 'AlphaPo 5', 'hildobby', date '2025-06-27')
     , (0x8e44724b191b9f6fb6bf58dc13e6cee76d811d9d, 'AlphaPo', 'AlphaPo Gas Supplier 1', 'hildobby', date '2025-06-14')
+    , (0xaa5b229f5bc4324097ddf0be6d02ee12c488c3f8, 'AlphaPo', 'AlphaPo Gas Supplier 2', 'hildobby', date '2025-06-27')
     -- C2CX
     , (0xd7c866d0d536937bf9123e02f7c052446588189f, 'C2CX', 'C2CX 1', 'hildobby', date '2023-04-06')
     , (0xd37ac9c98d4dd1af3ef786a47250e6d1bdbe9332, 'C2CX', 'C2CX 2', 'hildobby', date '2025-06-25')
@@ -3741,6 +3764,7 @@ FROM (VALUES
     , (0xcbea7739929cc6a2b4e46a1f6d26841d8d668b9e, 'HashKey Exchange', 'HashKey Exchange 8', 'hildobby', date '2025-04-28')
     , (0x25a58cee7928b3d6c1d392ebe1a97318aa5ff2f2, 'HashKey Exchange', 'HashKey Exchange 9', 'hildobby', date '2025-04-28')
     , (0x7ffbafdc1e4f0a4b97130b075fb4a25f807a1807, 'HashKey Exchange', 'HashKey Exchange 10', 'hildobby', date '2025-05-02')
+    , (0x677adbe3b82f0689971b7ee39c0c038c1581aaeb, 'HashKey Exchange', 'HashKey Exchange 11', 'hildobby', date '2025-06-27')
     -- Mercuryo
     , (0x8c8d7c46219d9205f056f28fee5950ad564d7465, 'Mercuryo', 'Mercuryo 1', 'hildobby', date '2023-03-13')
     -- Coinify
@@ -3900,6 +3924,7 @@ FROM (VALUES
     -- Anycoin Direct
     , (0x5b31bb52bdd7006ae57f9d9506c0ff995229b63c, 'Anycoin Direct', 'Anycoin Direct 1', 'hildobby', date '2023-09-09')
     , (0x3eebbebecde31d36d6aa7aa4fe2a06159119b659, 'Anycoin Direct', 'Anycoin Direct 2', 'hildobby', date '2024-10-06')
+    , (0x2e9db1a176426062a546dbe7877e8a381f9a4171, 'Anycoin Direct', 'Anycoin Direct Gas Supplier 1', 'hildobby', date '2025-06-27')
     -- Cryptonator
     , (0x4fed1fc4144c223ae3c1553be203cdfcbd38c581, 'Cryptonator', 'Cryptonator 1', 'hildobby', date '2023-09-09')
     , (0x687c8ecbc10ed1ff6b1d700037fc4b873cf7e424, 'Cryptonator', 'Cryptonator 2', 'hildobby', date '2023-11-24')
@@ -4116,6 +4141,7 @@ FROM (VALUES
     , (0xbd0fccdc19bc3b979e8e256b7b88aae7c77a5bec, 'CoinsPaid', 'CoinsPaid 3', 'hildobby', date '2024-04-04')
     , (0xa1280ba719747c88eab200f6d9b5f34b95c64ea8, 'CoinsPaid', 'CoinsPaid 4', 'hildobby', date '2025-06-16')
     , (0xaadb2f593975fa63d1ac9c57d37ec5c09a4551a9, 'CoinsPaid', 'CoinsPaid Gas Supplier 1', 'hildobby', date '2025-06-14')
+    , (0x11e67e7fb64265d1cc815c4f16049187029bae56, 'CoinsPaid', 'CoinsPaid Gas Supplier 2', 'hildobby', date '2025-06-27')
     -- BitGo
     , (0x0c9b25dfe02b2c89cce86e1a0bd6c04a7aca01b6, 'BitGo', 'BitGo Batcher 1', 'hildobby', date '2024-01-04')
     , (0x95eeadde20306a602cba20ae8b4f29a95c5d6405, 'BitGo', 'BitGo MultiSig 1', 'hildobby', date '2024-01-04')
@@ -4438,6 +4464,7 @@ FROM (VALUES
     , (0x99fa1561e63ddd3cb318ef6cb306f04fa6e149b0, 'Celsius Network', 'Celsius Network Gas Supplier 17', 'hildobby', date '2023-11-23')
     , (0x5132d0a2fc15fba4a9a64ea714854270bec382fb, 'Celsius Network', 'Celsius Network Gas Supplier 18', 'hildobby', date '2023-11-23')
     , (0xa8631fa3b38c84c22b2e4b6e33997bc7563a4baa, 'Celsius Network', 'Celsius Network Gas Supplier 19', 'hildobby', date '2023-11-23')
+    , (0x674535b5bd4dedab70b22cd0657680cde794fe63, 'Celsius Network', 'Celsius Network Gas Supplier 20', 'hildobby', date '2025-06-27')
     -- C-Patex
     , (0x4c8f52106d72da5e090bc08fb4d8063f3d591beb, 'C-Patex', 'C-Patex 1', 'hildobby', date '2023-09-12')
     -- Coinsquare
@@ -4466,6 +4493,7 @@ FROM (VALUES
     , (0xfac596facd1901458c1c6347397a6e5d0769736c, 'Coinsquare', 'Coinsquare 23', 'hildobby', date '2023-04-07')
     , (0x91adf14f4c0782634e04dfc6e9be16d950aa4daa, 'Coinsquare', 'Coinsquare 24', 'hildobby', date '2024-05-04')
     , (0x2f671a39613861ec17ad35de44f4f84e3d4c69f4, 'Coinsquare', 'Coinsquare 25', 'hildobby', date '2024-10-06')
+    , (0xd2e9d994a1c3f217656db51ecaac3ca7cfd9d42e, 'Coinsquare', 'Coinsquare Gas Supplier 1', 'hildobby', date '2025-06-27')
     -- Tokocrypto
     , (0x0068eb681ec52dbd9944517d785727310b494575, 'Tokocrypto', 'Tokocrypto 1', 'hildobby', date '2023-04-06')
     , (0x9f589e3eabe42ebc94a44727b3f3531c0c877809, 'Tokocrypto', 'Tokocrypto 2', 'hildobby', date '2023-11-23')
@@ -4639,6 +4667,10 @@ FROM (VALUES
     , (0xf52605c7b778563a5a9144ef4dc53b57463ca2c7, 'Cryptomus', 'Cryptomus 2', 'hildobby', date '2025-06-16')
     , (0x25da419ce9633b0681be01aca175cd0c0f2c2b47, 'Cryptomus', 'Cryptomus 3', 'hildobby', date '2025-06-16')
     , (0x061be0bc209a27588b7e85c0032ac8a0cdfd12a5, 'Cryptomus', 'Cryptomus 4', 'hildobby', date '2025-06-16')
+    , (0xe15a8a7e5f84331f6fbfb19bee6471c31eea281a, 'Cryptomus', 'Cryptomus 5', 'hildobby', date '2025-06-27')
+    , (0x99e75e4a5002d08429649fdc2b6c80c27f97eb5c, 'Cryptomus', 'Cryptomus Gas Supplier 1', 'hildobby', date '2025-06-27')
+    , (0xf64bbc1c98624e2c44afb3d7665a058b4eab79d8, 'Cryptomus', 'Cryptomus Gas Supplier 2', 'hildobby', date '2025-06-27')
+    , (0xb338c6bfee66e277a7614b08f10d64c29d29c2b2, 'Cryptomus', 'Cryptomus Gas Supplier 3', 'hildobby', date '2025-06-27')
     -- Newton
     , (0x2db1d8cdf1abe8c70b531a790cdf2ff38aecf652, 'Newton', 'Newton 1', 'hildobby', date '2025-06-16')
     , (0x3f3a26857b3bde848927fafca975b2ee5bcf1390, 'Newton', 'Newton 2', 'hildobby', date '2025-06-16')
