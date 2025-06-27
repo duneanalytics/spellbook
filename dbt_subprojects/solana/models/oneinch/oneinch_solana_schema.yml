@@ -1,0 +1,241 @@
+version: 2
+
+models:
+  - name: oneinch_solana_fusion_created_orders
+    data_tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - block_month
+          - tx_id
+          - order_hash
+    meta:
+      blockchain: solana
+      contributors: [grkhr]
+    config:
+      tags: ['solana','oneinch','fusion']
+    description: >
+        solana fusion created orders for 1inch
+    columns:
+      - name: blockchain
+        description: blockchain name
+      - name: block_slot
+        description: slot number of the transaction
+      - name: block_date
+        description: block date of the transaction
+      - name: block_time
+        description: block time of the transaction
+      - name: block_hash
+        description: block hash of the transaction
+      - name: tx_index
+        description: transaction index
+      - name: inner_instruction_index
+        description: inner instruction index
+      - name: outer_instruction_index
+        description: outer instruction index
+      - name: inner_executing_account
+        description: inner executing account
+      - name: outer_executing_account
+        description: outer executing account
+      - name: executing_account
+        description: executing account
+      - name: is_inner
+        description: whether instruction is inner
+      - name: program_name
+        description: program name
+      - name: instruction_name
+        description: instruction name
+      - name: version
+        description: version of the program
+      - name: data
+        description: instruction data
+      - name: tx_id
+        description: transaction id
+        data_tests:
+        - not_null
+      - name: tx_signer
+        description: transaction signer
+      - name: order_hash
+        description: hash of the order
+        data_tests:
+        - not_null
+      - name: order_hash_base58
+        description: base58 encoded order hash
+      - name: order_id
+        description: unique order id
+      - name: order_src_amount
+        description: source token amount in order
+      - name: order_min_dst_amount
+        description: minimum destination token amount in order
+      - name: order_estimated_dst_amount
+        description: estimated destination token amount in order
+      - name: order_expiration_time
+        description: order expiration time
+      - name: order_src_asset_is_native
+        description: whether source asset is native
+      - name: order_dst_asset_is_native
+        description: whether destination asset is native
+      - name: system_program
+        description: system program account
+      - name: escrow
+        description: escrow account
+      - name: src_mint
+        description: source token mint
+      - name: src_token_program
+        description: source token program
+      - name: escrow_src_ata
+        description: escrow source associated token account
+      - name: maker
+        description: order maker
+      - name: maker_src_ata
+        description: maker source associated token account
+      - name: dst_mint
+        description: destination token mint
+      - name: maker_receiver
+        description: maker receiver account
+      - name: associated_token_program
+        description: associated token program
+      - name: protocol_dst_acc
+        description: protocol destination account
+      - name: integrator_dst_acc
+        description: integrator destination account
+      - name: order
+        description: order data
+      - name: block_month
+        description: block month of the transaction
+        data_tests:
+        - not_null
+
+  - name: oneinch_solana_transfers
+    data_tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - tx_id
+          - order_hash
+          - call_trace_address
+          - transfer_trace_address
+    meta:
+      blockchain: solana
+      contributors: [grkhr]
+    config:
+      tags: ['solana','oneinch']
+    description: >
+        solana transfers for 1inch fusion
+    columns:
+      - name: tx_id
+        description: transaction id
+        data_tests:
+        - not_null
+      - name: order_hash
+        description: hash of the order
+        data_tests:
+        - not_null
+      - name: call_trace_address
+        description: call trace address
+        data_tests:
+        - not_null
+      - name: transfer_trace_address
+        description: transfer trace address
+        data_tests:
+        - not_null
+      - name: blockchain
+        description: blockchain name
+      - name: block_month
+        description: block month of the transaction
+
+  - name: oneinch_solana_swaps
+    data_tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - block_month
+          - unique_key
+    meta:
+      blockchain: solana
+      contributors: [grkhr]
+      docs_slug: /trading/solana/oneinch-trades
+    config:
+      tags: ['solana','oneinch']
+    description: >
+        solana swaps for 1inch
+    columns:
+      - name: blockchain
+        description: blockchain name
+        data_tests:
+        - not_null
+      - name: block_slot
+        description: slot number of the transaction
+      - name: block_time
+        description: block time of the transaction
+      - name: tx_id
+        description: transaction id
+        data_tests:
+        - not_null
+      - name: tx_signer
+        description: transaction signer
+      - name: call_trace_address
+        description: call trace address
+        data_tests:
+        - not_null
+      - name: tx_gas_used
+        description: transaction gas used
+      - name: tx_gas_price
+        description: transaction gas price
+      - name: tx_priority_fee_per_gas
+        description: transaction priority fee per gas
+      - name: fee
+        description: transaction fee
+      - name: program_name
+        description: program name
+      - name: version
+        description: version of the program
+      - name: resolver
+        description: order resolver (taker)
+      - name: user
+        description: order user (maker)
+      - name: escrow
+        description: escrow account
+      - name: maker_receiver
+        description: maker receiver account
+      - name: order_hash
+        description: hash of the order
+        data_tests:
+        - not_null
+      - name: order_hash_base58
+        description: base58 encoded order hash
+      - name: order_id
+        description: unique order id
+      - name: order_src_token_amount
+        description: source token amount in order
+      - name: order_min_dst_token_amount
+        description: minimum destination token amount in order
+      - name: order_estimated_dst_token_amount
+        description: estimated destination token amount in order
+      - name: order_expiration_time
+        description: order expiration time
+      - name: order_src_asset_is_native
+        description: whether source asset is native
+      - name: order_dst_asset_is_native
+        description: whether destination asset is native
+      - name: src_token_mint
+        description: source token mint address
+      - name: src_token_symbol
+        description: source token symbol
+      - name: src_token_amount
+        description: source token amount
+      - name: src_token_amount_usd
+        description: source token amount in USD
+      - name: dst_token_mint
+        description: destination token mint address
+      - name: dst_token_symbol
+        description: destination token symbol
+      - name: dst_token_amount
+        description: destination token amount
+      - name: dst_token_amount_usd
+        description: destination token amount in USD
+      - name: amount_usd
+        description: swap amount in USD
+      - name: unique_key
+        description: unique key for the swap
+      - name: block_month
+        description: block month of the transaction
+        data_tests:
+        - not_null
