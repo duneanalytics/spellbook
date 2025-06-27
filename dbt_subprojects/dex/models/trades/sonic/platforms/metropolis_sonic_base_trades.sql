@@ -15,7 +15,6 @@
         blockchain = 'sonic',
         project = 'metropolis',
         version = '1',
-        Pair_evt_Swap = source('metropolis_sonic', 'Pair_evt_Swap'),
         Factory_evt_PairCreated = source('metropolis_sonic', 'PairFactory_evt_PairCreated')
     )
 }}
