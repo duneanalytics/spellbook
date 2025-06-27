@@ -19,7 +19,6 @@ WITH unique_inflows_raw AS (
     )
 
 , unique_inflows AS (
-
     SELECT cf.block_number
     , cf.block_time
     , ui.suspected_deposit_address 
@@ -65,7 +64,6 @@ WITH unique_inflows_raw AS (
 
 , in_and_out AS (
     {% if blockchain == 'ethereum' %}
-
     SELECT suspected_deposit_address
     , cex_name
     , amount_consolidated
@@ -123,8 +121,8 @@ WITH unique_inflows_raw AS (
         , COUNT(*) AS deposit_count
         FROM {{source('ethereum', 'withdrawals')}} w
         INNER JOIN unique_inflows_expanded i ON w.block_number<i.block_number
-            AND w.address=i.suspected_deposit_address
             AND i.token_standard = 'native'
+            AND w.address=i.suspected_deposit_address
             AND w.block_time BETWEEN i.consolidation_first_block_time - interval '1' day AND i.consolidation_last_block_time
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('w.block_time') }}

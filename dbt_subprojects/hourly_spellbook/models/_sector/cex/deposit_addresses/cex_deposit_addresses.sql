@@ -31,7 +31,6 @@
 
 {% if not is_incremental() %}
 
-
 SELECT MIN_BY(blockchain, deposit_first_block_time) AS blockchain
 , address
 , MIN(cex_name) AS cex_name
@@ -53,8 +52,8 @@ FROM (
     , first_deposit_token_address
     , deposit_first_block_time
     , consolidation_first_block_time
-    , deposit_count
     , consolidation_count
+    , deposit_count
     , amount_deposited
     , consolidation_unique_key
     , deposit_unique_key
@@ -89,8 +88,8 @@ FROM (
     , cm.address
     , cm.cex_name
     , cm.first_deposit_token_standard
-    , cm.first_deposit_token_address
     , cm.deposit_first_block_time
+    , cm.first_deposit_token_address
     , cm.consolidation_first_block_time
     , cm.deposit_count
     , cm.consolidation_count
