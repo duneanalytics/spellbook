@@ -2,8 +2,11 @@
   config(
     schema = 'nexusmutual_ethereum',
     alias = 'base_staking_pools',
-    materialized = 'view',
-    unique_key = ['pool_id', 'product_id']
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['pool_id', 'product_id'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time_updated')]
   )
 }}
 
@@ -209,47 +212,77 @@ products as (
     null as product_name,
     -1 as product_type_id,
     null as product_type
+),
+
+staking_pools_final as (
+  select
+    sp.block_time_created,
+    spc.block_time_updated as block_time_product_updated,
+    spm.block_time_updated as block_time_manager_updated,
+    spf.block_time_updated as block_time_fee_updated,
+    greatest(
+      coalesce(spc.block_time_updated, sp.block_time_created),
+      coalesce(spm.block_time_updated, sp.block_time_created),
+      coalesce(spf.block_time_updated, sp.block_time_created)
+    ) as block_time_updated,
+    sp.pool_id,
+    sp.pool_address,
+    spm.manager_address,
+    spm.manager_ens,
+    spm.manager,
+    sp.is_private_pool,
+    sp.initial_pool_fee / 100.00 as initial_pool_fee,
+    coalesce(spf.new_fee, sp.initial_pool_fee) / 100.00 as current_management_fee,
+    sp.max_management_fee / 100.00 as max_management_fee,
+    spc.product_id,
+    p.product_name,
+    p.product_type,
+    spc.initial_price / 100.00 as initial_price,
+    spc.target_price / 100.00 as target_price,
+    spc.initial_weight / 100.00 as initial_weight,
+    spc.target_weight / 100.00 as target_weight,
+    sp.block_time_created as pool_created_time,
+    if(spc.is_product_added, spc.block_time_updated, sp.block_time_created) as product_added_time,
+    sp.tx_hash_created,
+    spc.tx_hash_updated as tx_hash_product_updated,
+    spm.tx_hash_updated as tx_hash_manager_updated,
+    spf.tx_hash_updated as tx_hash_fee_updated,
+    greatest(
+      coalesce(spc.tx_hash_updated, sp.tx_hash_created),
+      coalesce(spm.tx_hash_updated, sp.tx_hash_created),
+      coalesce(spf.tx_hash_updated, sp.tx_hash_created)
+    ) as tx_hash_updated
+  from staking_pools_created_ext sp
+    inner join staking_pool_products_combined spc on sp.pool_id = spc.pool_id
+    inner join products p on spc.product_id = p.product_id
+    left join staking_pool_managers spm on sp.pool_id = spm.pool_id
+    left join staking_pool_fee_updates spf on sp.pool_address = spf.pool_address
 )
 
 select
-  sp.block_time_created,
-  spc.block_time_updated as block_time_product_updated,
-  spm.block_time_updated as block_time_manager_updated,
-  spf.block_time_updated as block_time_fee_updated,
-  greatest(
-    coalesce(spc.block_time_updated, sp.block_time_created),
-    coalesce(spm.block_time_updated, sp.block_time_created),
-    coalesce(spf.block_time_updated, sp.block_time_created)
-  ) as block_time_updated,
-  sp.pool_id,
-  sp.pool_address,
-  spm.manager_address,
-  spm.manager_ens,
-  spm.manager,
-  sp.is_private_pool,
-  sp.initial_pool_fee / 100.00 as initial_pool_fee,
-  coalesce(spf.new_fee, sp.initial_pool_fee) / 100.00 as current_management_fee,
-  sp.max_management_fee / 100.00 as max_management_fee,
-  spc.product_id,
-  p.product_name,
-  p.product_type,
-  spc.initial_price / 100.00 as initial_price,
-  spc.target_price / 100.00 as target_price,
-  spc.initial_weight / 100.00 as initial_weight,
-  spc.target_weight / 100.00 as target_weight,
-  sp.block_time_created as pool_created_time,
-  if(spc.is_product_added, spc.block_time_updated, sp.block_time_created) as product_added_time,
-  sp.tx_hash_created,
-  spc.tx_hash_updated as tx_hash_product_updated,
-  spm.tx_hash_updated as tx_hash_manager_updated,
-  spf.tx_hash_updated as tx_hash_fee_updated,
-  greatest(
-    coalesce(spc.tx_hash_updated, sp.tx_hash_created),
-    coalesce(spm.tx_hash_updated, sp.tx_hash_created),
-    coalesce(spf.tx_hash_updated, sp.tx_hash_created)
-  ) as tx_hash_updated
-from staking_pools_created_ext sp
-  inner join staking_pool_products_combined spc on sp.pool_id = spc.pool_id
-  inner join products p on spc.product_id = p.product_id
-  left join staking_pool_managers spm on sp.pool_id = spm.pool_id
-  left join staking_pool_fee_updates spf on sp.pool_address = spf.pool_address
+  block_time_created,
+  block_time_updated,
+  pool_id,
+  pool_address,
+  manager_address,
+  manager_ens,
+  manager,
+  is_private_pool,
+  initial_pool_fee,
+  current_management_fee,
+  max_management_fee,
+  product_id,
+  product_name,
+  product_type,
+  initial_price,
+  target_price,
+  initial_weight,
+  target_weight,
+  pool_created_time,
+  product_added_time,
+  tx_hash_created,
+  tx_hash_updated
+from staking_pools_final
+{% if is_incremental() %}
+where {{ incremental_predicate('block_time_updated') }}
+{% endif %}
