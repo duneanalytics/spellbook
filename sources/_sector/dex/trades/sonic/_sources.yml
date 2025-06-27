@@ -30,8 +30,10 @@ sources:
       - name: algebrapool_evt_swap
   - name: metropolis_sonic
     tables:
-      - name: lbfactory_evt_lbpaircreated
       - name: v2factory_evt_paircreated
+      - name: router_call_swapexacttokensfortokens
+
+
       
 
 
