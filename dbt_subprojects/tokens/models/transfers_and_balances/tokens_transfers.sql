@@ -22,6 +22,7 @@
                                             ,"gnosis"
                                             ,"ink"
                                             ,"kaia"
+                                            ."katana"
                                             ,"linea"
                                             ,"mantle"
                                             ,"nova"
@@ -71,6 +72,7 @@
     ,'gnosis'
     ,'ink'
     ,'kaia'
+    ,'katana'
     ,'linea'
     ,'mantle'
     ,'nova'
