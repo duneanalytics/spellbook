@@ -3646,17 +3646,6 @@ FROM (VALUES
     -- Bitexlive
     , (0x7217d64f77041ce320c356d1a2185bcb89798a0a, 'Bitexlive', 'Bitexlive 1', 'hildobby', date '2023-04-06')
     , (0x57a47cfe647306a406118b6cf36459a1756823d0, 'Bitexlive', 'Bitexlive 2', 'hildobby', date '2023-04-06')
-    -- BitKeep
-    , (0x603d022611bfe6a101dcdab207d96c527f1d4d8e, 'BitKeep', 'BitKeep 1', 'hildobby', date '2023-04-06')
-    , (0x8967711d157561656b236f36db5f448bd63f7029, 'BitKeep', 'BitKeep 2', 'hildobby', date '2023-11-17')
-    , (0x34f1b0d87bb332d3d99a410376ac30499a9f97b9, 'BitKeep', 'BitKeep 3', 'hildobby', date '2023-11-17')
-    , (0xa366ac4542bedd0ab96b9e80687bba2a0f1b7b19, 'BitKeep', 'BitKeep 4', 'hildobby', date '2023-11-17')
-    , (0xee0ca9ca2deff0f8be6a1229d89555689f8fe365, 'BitKeep', 'BitKeep 5', 'hildobby', date '2023-11-17')
-    , (0xf8c7e1e2f92ccbfb6911dbe62f38966fe836eb9e, 'BitKeep', 'BitKeep 6', 'hildobby', date '2023-11-17')
-    , (0x4e29fa717fb61753e26885421b84ff7e06df585e, 'BitKeep', 'BitKeep 7', 'hildobby', date '2024-10-06')
-    , (0x77e7c5cbeaad915cf5462064b02984e16a902e67, 'BitKeep', 'BitKeep Gas Supplier 1', 'hildobby', date '2024-10-06')
-    , (0x7d1288e5dbc91b9d2e7be736cc789114e8d58f69, 'BitKeep', 'BitKeep Gas Supplier 2', 'hildobby', date '2024-10-06')
-    , (0x2f2dd99235cb728fc79af575f1325eaa270f0c99, 'BitKeep', 'BitKeep BKSwap', 'hildobby', date '2023-11-17')
     -- LiteBit
     , (0x9afa066884ce723200438b672c0b8d5769e03a6a, 'LiteBit', 'LiteBit 1', 'hildobby', date '2024-05-04')
     , (0x67655e8fcd903f75aceb82bb3f782687ce985d35, 'LiteBit', 'LiteBit 2', 'hildobby', date '2024-05-04')
