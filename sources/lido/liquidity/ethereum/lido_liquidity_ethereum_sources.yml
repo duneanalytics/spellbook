@@ -26,11 +26,6 @@ sources:
       - name: WstETH_call_unwrap
       - name: WstETH_call_wrap
 
-  - name: erc20_ethereum
-    description: "Ethereum decoded tables related to erc20 tokens"
-    tables:
-      - name: evt_Transfer
-        
   - name: maverick_v1_ethereum
     description: "Ethereum decoded tables related to Maverick DEX contracts"
     tables:
@@ -74,7 +69,8 @@ sources:
       - name: SolidlyV3Factory_evt_PoolCreated
       - name: SolidlyV3Pool_evt_Swap      
       - name: SolidlyV3Pool_evt_Mint
-      - name: SolidlyV3Pool_evt_Collect          
+      - name: SolidlyV3Pool_evt_Collect  
+      - name: SolidlyV3Pool_evt_Burn          
 
   - name: puffer_ethereum
     description: "Ethereum decoded tables related to Curve pufETH:wstETH pool contract"

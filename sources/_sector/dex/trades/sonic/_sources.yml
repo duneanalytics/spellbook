@@ -15,3 +15,12 @@ sources:
       - name: Core_PairFactory_evt_PairCreated
       - name: RamsesV3Pool_evt_Swap
       - name: RamsesV3Factory_evt_PoolCreated
+  - name: uniswap_v3_sonic
+    tables:
+      - name: uniswapv3factory_evt_poolcreated
+      - name: uniswapv3pool_evt_swap
+  - name: tapio_sonic
+    tables:
+      - name: selfpeggingassetfactory_call_createpool
+      - name: selfpeggingassetfactory_evt_poolcreated
+      - name: selfpeggingasset_evt_tokenswapped

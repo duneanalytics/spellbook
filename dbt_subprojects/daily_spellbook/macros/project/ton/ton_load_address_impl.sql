@@ -3,7 +3,7 @@
 CAST(
 CASE
     {# addr_none$00 = MsgAddressExt; #}
-    WHEN {{ ton_preload_uint('state', 2) }} = 0 THEN
+    WHEN COALESCE({{ ton_preload_uint('state', 2) }}, 0) = 0 THEN
     ROW(
       state.has_idx, state.size, state.original_cell_data, state.cell_pointer,
       state.refs, state.exotic, state.level_,

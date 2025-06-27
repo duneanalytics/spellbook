@@ -40,3 +40,36 @@ sources:
     tables:
       - name: bubblegum_call_mintV1
       - name: bubblegum_call_mintToCollectionV1
+
+  - name: pumpdotfun_solana
+    description: "pumpswap protocol decoded tables"
+    schema: pumpdotfun_solana
+    tables:
+      - name: pump_amm_call_buy
+      - name: pump_amm_call_sell
+      - name: pump_amm_call_create_pool
+      - name: pump_amm_call_create_config
+      - name: pump_amm_call_update_fee_config
+
+  - name: raydium_solana
+    description: "Raydium protocol decoded tables"
+    tables:
+      - name: raydium_launchpad_call_buy_exact_in
+        description: "Raydium Launchpad buy exact in calls"
+      - name: raydium_launchpad_call_buy_exact_out
+        description: "Raydium Launchpad buy exact out calls"
+      - name: raydium_launchpad_call_sell_exact_in
+        description: "Raydium Launchpad sell exact in calls"
+      - name: raydium_launchpad_call_sell_exact_out
+        description: "Raydium Launchpad sell exact out calls"
+      - name: raydium_launchpad_call_create_platform_config
+        description: "Raydium Launchpad create platform config calls"
+        
+  - name: stable_swap_solana
+    description: "Stable Swap decoded tables"
+    tables:
+      - name: stable_swap_call_swap
+      - name: stable_swap_call_swap_v2
+      - name: weighted_swap_call_swap
+      - name: weighted_swap_call_swap_v2
+

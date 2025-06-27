@@ -1,0 +1,268 @@
+version: 2
+
+models:
+  - name: rocketpool_node_operators
+    meta:
+      blockchain: ethereum
+      project: rocketpool
+      contributors: mtitus6
+    config:
+      tags: ['ethereum','rocketpool']
+    description: >
+        A table containing all registered Rocket Pool node operators.
+    columns:
+      - &node_address
+        name: node_address
+        description: "The wallet address of the node."
+      - &evt_block_time
+        name: evt_block_time
+        description: "The time the event was triggered."
+  - name: rocketpool_node_smoothing_pool
+    meta:
+      blockchain: ethereum
+      project: rocketpool
+      contributors: mtitus6
+    config:
+      tags: ['ethereum','rocketpool']
+    description: >
+        A table containing a nodes participation in the smoothing pool.
+    columns:
+      - &in_smoothing_pool
+        name: in_smoothing_pool
+        description: "The time the node smoothing pool status changed."
+  - name: rocketpool_node_rpl_staking
+    meta:
+      blockchain: ethereum
+      project: rocketpool
+      contributors: mtitus6
+    config:
+      tags: ['ethereum','rocketpool']
+    description: >
+        A table containing RPL staking events by node operators.
+    columns:
+      - &amount
+        name: amount
+        description: "The amount of RPL included in the staking event."
+      - &cat
+        name: cat
+        description: "The type of staking event, staked, withdrawn, or slashed."  
+  - name: rocketpool_minipool_created_destroyed
+    meta:
+      blockchain: ethereum
+      project: rocketpool
+      contributors: mtitus6
+    config:
+      tags: ['ethereum','rocketpool']
+    description: >
+        A table containing all minipools created by node operators.
+    columns:
+      - &contract_address
+        name: contract_address
+        description: "The contract address used to create the minipool."
+      - &created_time
+        name: created_time
+        description: "The time the minipool was created."
+      - &destroyed_time
+        name: destroyed_time
+        description: "The time the minipool was destroyed."
+  - name: rocketpool_minipool_deposit_standard
+    meta:
+      blockchain: ethereum
+      project: rocketpool
+      contributors: mtitus6
+    config:
+      tags: ['ethereum','rocketpool']
+    description: >
+        A table containing all minipools standard deposit events.
+    columns:
+      - &call_block_time
+        name: call_block_time
+        description: "The time the successful function was called."
+      - &bond_amount
+        name: bond_amount
+        description: "The bond amount assigned to the minipool at the time of deposit"
+      - &pubkey
+        name: pubkey
+        description: "The public key of the minipool"
+      - &node_fee
+        name: node_fee
+        description: "The node fee assigned to the minipool at the time of deposit"
+  - name: rocketpool_minipool_deposit_credit
+    meta:
+      blockchain: ethereum
+      project: rocketpool
+      contributors: mtitus6
+    config:
+      tags: ['ethereum','rocketpool']
+    description: >
+        A table containing all minipools credit deposit events that occur during bond reductions.
+  - name: rocketpool_minipool_deposit_vacant
+    meta:
+      blockchain: ethereum
+      project: rocketpool
+      contributors: mtitus6
+    config:
+      tags: ['ethereum','rocketpool']
+    description: >
+        A table containing all minipools vacant deposit events that occur during solo staker migrations.
+  - name: rocketpool_minipool_bond_reduction
+    meta:
+      blockchain: ethereum
+      project: rocketpool
+      contributors: mtitus6
+    config:
+      tags: ['ethereum','rocketpool']
+    description: >
+        A table containing all minipools vacant deposit events that occur during solo staker migrations.
+    columns:
+      - &new_bond_amount
+        name: new_bond_amount
+        description: "The new bond amount following the bond reduction"
+      - &new_node_fee
+        name: new_node_fee
+        description: "The new node fee following the bond reduction"
+  - name: rocketpool_minipool_queue
+    meta:
+      blockchain: ethereum
+      project: rocketpool
+      contributors: mtitus6
+    config:
+      tags: ['ethereum','rocketpool']
+    description: >
+        A table containing all minipools queue and deque times.
+    columns:
+      - &enqueued_time
+        name: enqueued_time
+        description: "The time the minipool entered the queue to recieve remaining validator funds."
+      - &dequeued_time
+        name: dequeued_time
+        description: "The time the minipool was removed from the queue to recieve remaining validator funds."
+      - &queue_days
+        name: queue_days
+        description: "The days between enqueue and dequeue time"
+      - &queue_hrs
+        name: queue_hrs
+        description: "The hours between enqueue and dequeue time"
+  - name: rocketpool_minipool_pubkey_index
+    meta:
+      blockchain: ethereum
+      project: rocketpool
+      contributors: mtitus6
+    config:
+      tags: ['ethereum','rocketpool']
+    description: >
+        A table containing the index numbers of all minipools.
+    columns:
+      - &validator_index
+        name: validator_index
+        description: "The index number of the minipool validator."
+  - name: rocketpool_minipool_beacon_deposit
+    meta:
+      blockchain: ethereum
+      project: rocketpool
+      contributors: mtitus6
+    config:
+      tags: ['ethereum','rocketpool']
+    description: >
+        A table containing the beacon chain deposits of all minipools.
+    columns:
+      - &beacon_amount_deposited
+        name: beacon_amount_deposited
+        description: "The amount of ETH deposited to the beacon chain."
+  - name: rocketpool_minipool_beacon_withdrawal
+    meta:
+      blockchain: ethereum
+      project: rocketpool
+      contributors: mtitus6
+    config:
+      tags: ['ethereum','rocketpool']
+    description: >
+        A table containing the beacon chain withdrawals of all minipools.
+    columns:
+      - &last_withdrawal_time
+        name: last_withdrawal_time
+        description: "The last withdrawal time from the beacon chain."
+      - &beacon_amount_withdrawn
+        name: beacon_amount_withdrawn
+        description: "The amount of ETH withdrawn from the beacon chain."
+      - &beacon_amount_skim_withdrawn
+        name: beacon_amount_skim_withdrawn
+        description: "The amount of ETH withdrawn from the beacon chain excluding the minimum staking amount."
+      - &exited
+        name: exited
+        description: "Boolean field on whether or not the validator is exited from the beacon chain."
+  - name: rocketpool_minipool_balance_distribution
+    meta:
+      blockchain: ethereum
+      project: rocketpool
+      contributors: mtitus6
+    config:
+      tags: ['ethereum','rocketpool']
+    description: >
+        A table containing a flag on whether the full balance of a minipool has been distributed following exit.
+    columns:
+      - &is_distributed
+        name: is_distributed
+        description: "Boolean indicating a minipool balance has been distributed."
+  - name: rocketpool_minipool_master
+    meta:
+      blockchain: ethereum
+      project: rocketpool
+      contributors: mtitus6
+    config:
+      tags: ['ethereum','rocketpool']
+    description: >
+        A master table of all relevant minipool fields.
+    columns:
+      - &orig_bond_amount
+        name: orig_bond_amount
+        description: "The original bond amount when the minipool was created prior to potential bond reduction."
+      - &orig_node_fee
+        name: orig_node_fee
+        description: "The original node fee when the minipool was created prior to potential bond reduction."
+      - &bond_reduced
+        name: bond_reduced
+        description: "A Boolean indicating whether the minipool went through a bond reduction."
+  - name: rocketpool_node_master
+    meta:
+      blockchain: ethereum
+      project: rocketpool
+      contributors: mtitus6
+    config:
+      tags: ['ethereum','rocketpool']
+    description: >
+        A master table of all relevant node operator fields.
+    columns:
+      - &node_registered_time
+        name: node_registered_time
+        description: "The time the node was registered."
+      - &total_minipools
+        name: total_minipools
+        description: "The total number of minipools created by the node."
+      - &active_minipools
+        name: active_minipools
+        description: "The total number of minipools actively validating on the node."
+      - &exited_minipools
+        name: exited_minipools
+        description: "The total number of minipools exited on the node." 
+      - &active_effective_stake
+        name: active_effective_stake
+        description: "The total active staking amount of all minipools on the node."
+      - &active_bond_amount
+        name: active_bond_amount
+        description: "The total active bond amount of all minipools on the node."
+      - &active_borrowed_amount
+        name: active_borrowed_amount
+        description: "The total active borrowed amount of all minipools on the node."
+      - &rpl_staked_amount
+        name: rpl_staked_amount
+        description: "The total RPL staked the node."
+      - &rpl_staked_amount_weth
+        name: rpl_staked_amount_weth
+        description: "The total RPL staked the node valued in ETH."
+      - &rpl_vs_borrowed_ratio
+        name: rpl_vs_borrowed_ratio
+        description: "The ratio between borrowed eth and rpl staked valued in ETH on the node."
+      - &in_smoothing_pool_time
+        name: in_smoothing_pool_time
+        description: "The event time associated with the last change in smoothing pool participation on the node."    

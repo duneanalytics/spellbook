@@ -83,7 +83,21 @@ known_solver_metadata (address, environment, name) as (
                 (0x312B5D8AbC6b7C8355B86f5F7803E9cD97AE8D75, 'barn', 'Helixbox'),
                 (0x4CdbA844CEB949567eA18b9EF185515fA626c69D, 'prod', 'Helixbox'),
                 (0x9CF49541f8b94DA501Cd16B60Fa176D856fB1e75, 'prod', 'Sector_Finance'),
-                (0xaf888d387adceed01a736aa3deae75dcf3edd8c1, 'prod', 'Copium_Capital')
+                (0xaf888d387adceed01a736aa3deae75dcf3edd8c1, 'prod', 'Copium_Capital'),
+                (0xD5a9FAE900C3FfF4145753F47Eb2E9d573b107D7, 'barn', 'Piggy'),
+                (0xFE082A5784cA28F67D1E6aB04EAe7c313c210229, 'prod', 'Piggy'),
+                (0x550EC8e3944E9aF8411f32273555656977D884Ac, 'barn', 'Apollo'),
+                (0x65E80731F97b8361E77670357d287266dD0d93b6, 'prod', 'Apollo'),
+                (0xEa77cB08FBf7ef0CaF615dcE37A159D56B2B867f, 'barn', 'Wraxyn'),
+                (0x09498CF3414616c1d58979FCE65438473C998c47, 'prod', 'Wraxyn'),
+                (0x301994d1A89578e9933E44982eb969B9f38d7097, 'barn', 'Unizen'),
+                (0x4D72B179b7706A768C0bA378D78E1dD2d5c618a2, 'prod', 'Unizen'),
+                (0xe52b4918554f9dDcAC10BE388aeA3a53aB3d33f3, 'barn', 'Horadrim'),
+                (0xfFF90c451ba1Cb6A1B8b950DA4aa9c3f82270Ac3, 'prod', 'Horadrim'),
+                (0xcf6fda0b383ef980aacbc56d9d0be14931ffe576, 'barn', 'ExtQuasimodo'),
+                (0xADF619eB586e7b3586BA5f45A6086D64b8F1dcAa, 'prod', 'ExtQuasimodo'),
+                (0x7b0DF3Cd3bFf32f6545A4491cD414152D7d29E3c, 'barn', 'Arctic'),
+                (0xA8d8613ec7cbE23c506ef5F293d570945b988Cb9, 'prod', 'Arctic')
     ) as _
 )
 -- Combining the metadata with current activation status for final table

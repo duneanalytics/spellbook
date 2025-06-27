@@ -40,6 +40,9 @@ WITH data AS (
         , 0xa0425d71cB1D6fb80E65a5361a04096E0672De03 -- L1 transactions settle here post-Boojum
         , 0xa8CB082A5a689E0d594d7da1E2d72A3D63aDc1bD -- L1 transactions settle here post-EIP4844
         , 0x5D8ba173Dc6C3c90C8f7C04C9288BeF5FDbAd06E -- L1 transactions settle here post v24 upgrade (shared bridge)
+        , 0x0D3250c3D5FAcb74Ac15834096397a3Ef790ec99 -- Batcher
+        , 0x3527439923a63F8C13CF72b8Fe80a77f6e572092 -- Validator
+        , 0x8c0Bfc04AdA21fd496c55B8C50331f904306F564 -- ValidatorTimelock
     )
     AND bytearray_substring(t.data, 1, 4) IN (
         0x0c4dd810 -- Commit Block, pre-Boojum
@@ -48,6 +51,8 @@ WITH data AS (
         , 0xc3d93e7c -- Execute Batches, post-Boojum
         , 0x6edd4f12 -- Commit Batches, post v24 upgrade (shared bridge)
         , 0x6f497ac6 -- Execute Batches, post v24 upgrade (shared bridge)
+        , 0xcf02827d -- executeBatchesSharedBridge (Validator)
+        , 0x98f81962 -- commitBatchesSharedBridge (Batcher)
     )
     AND t.block_time >= TIMESTAMP '2023-02-14'
     {% if is_incremental() %}

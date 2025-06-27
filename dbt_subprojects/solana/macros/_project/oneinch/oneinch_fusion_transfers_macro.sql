@@ -1,54 +1,39 @@
-{% macro oneinch_fusion_transfers_macro(direction) %} -- src/dst
+{% macro oneinch_fusion_transfers_macro() %} -- src/dst
 
 
 select 
         tx_id
         , block_time
         , block_slot
-        , true as fusion -- TODO: make flags
-        , taker as resolver -- Check if this is correct logic
-        , maker as user -- Check
         , order_hash
-        , tx_success
-        , call_trace_address
+        , order_hash_base58
+        , order_id
         , token_mint_address
+        , taker
         , symbol 
         , amount 
         , amount_usd 
         , from_owner
         , to_owner
+        , call_trace_address
         , array[coalesce(outer_instruction_index, -1), coalesce(inner_instruction_index, -1)] as transfer_trace_address
-        -- , CALLTRACEADDRESs
-
-    -- , outer_executing_account
-    -- , tx_id
-    -- , outer_instruction_index
-    -- , block_time
-    -- , block_slot
-    -- , min_by(token_mint_address, inner_instruction_index) as {{ direction }}_token_mint
-    -- , min_by(amount_usd, inner_instruction_index) as {{ direction }}_amount_usd
-    -- , max_by(token_mint_address, inner_instruction_index) as dst_token_mint
-    -- , max_by(amount_usd, inner_instruction_index) as dst_amount_usd
-    -- , coalesce(max(amount_usd), 0) as max_amount_usd
-    -- , coalesce(min(amount_usd), 0) as min_amount_usd
 from (
     select 
-        tx_id
-        , block_time
-        , block_slot
-        , taker
-        , maker
-        , order_hash
-        , tx_success
-        , outer_instruction_index
-        , call_trace_address
-    from {{ ref('oneinch_solana_fusion_calls') }}
+        call_tx_id as tx_id
+        , call_block_time as block_time
+        , call_block_slot as block_slot
+        , account_taker as taker
+        , {{ oneinch_order_hash_macro() }} as order_hash
+        , to_base58({{ oneinch_order_hash_macro() }}) as order_hash_base58
+        , cast(json_value("order", 'lax $.OrderConfig.id') as uint256) as order_id
+        , call_outer_instruction_index as outer_instruction_index
+        , array[coalesce(call_outer_instruction_index, -1), coalesce(call_inner_instruction_index, -1)] call_trace_address
+    from {{ source('oneinch_solana', 'fusion_swap_call_fill') }}
     where 
-        instruction_type = 'fill'
         {% if is_incremental() %}
-            and {{ incremental_predicate('block_time') }}
+            {{ incremental_predicate('call_block_time') }}
         {% else %}
-            and block_time >= date('{{ oneinch_cfg_macro("project_start_date") }}')
+            call_block_time >= date('{{ oneinch_cfg_macro("project_start_date") }}')
         {% endif %}
 ) qf
 left join (

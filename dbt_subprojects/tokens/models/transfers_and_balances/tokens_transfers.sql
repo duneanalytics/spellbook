@@ -6,10 +6,12 @@
                                             ,"apechain"
                                             ,"arbitrum"
                                             ,"avalanche_c"
+                                            ,"b3"
                                             ,"base"
                                             ,"berachain"
                                             ,"blast"
                                             ,"bnb"
+                                            ,"bob"
                                             ,"boba"
                                             ,"celo"
                                             ,"corn"
@@ -23,19 +25,24 @@
                                             ,"linea"
                                             ,"mantle"
                                             ,"nova"
+                                            ,"opbnb"
                                             ,"optimism"
+                                            ,"plume"
                                             ,"polygon"
                                             ,"ronin"
                                             ,"scroll"
                                             ,"sei"
+                                            ,"shape"
                                             ,"sonic"
                                             ,"sophon"
                                             ,"tron"
+                                            ,"unichain"
                                             ,"viction"
                                             ,"worldchain"
                                             ,"zkevm"
                                             ,"zksync"
                                             ,"zora"
+                                            ,"lens"
                                         ]\',
                                         spell_type = "sector",
                                         spell_name = "tokens",
@@ -48,10 +55,12 @@
     ,'apechain'
     ,'arbitrum'
     ,'avalanche_c'
+    ,'b3'
     ,'base'
     ,'berachain'
     ,'blast'
     ,'bnb'
+    ,'bob'
     ,'boba'
     ,'celo'
     ,'corn'
@@ -65,19 +74,24 @@
     ,'linea'
     ,'mantle'
     ,'nova'
+    ,'opbnb'
     ,'optimism'
+    ,'plume'
     ,'polygon'
     ,'ronin'
     ,'scroll'
     ,'sei'
+    ,'shape'
     ,'sonic'
     ,'sophon'
     ,'tron'
+    ,'unichain'
     ,'viction'
     ,'worldchain'
     ,'zkevm'
     ,'zksync'
     ,'zora'
+    ,'lens'
 ] %}
 
 SELECT *

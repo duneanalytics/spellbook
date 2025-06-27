@@ -16,6 +16,6 @@
         version = '2',
         project_decoded_as = 'beethoven_x',
         base_spells_namespace = 'beethoven_x_fantom',
-        pool_labels_spell = ref('labels_beethoven_x_pools_fantom')
+        pool_labels_model = 'beethoven_x_pools_fantom'
     )
 }}

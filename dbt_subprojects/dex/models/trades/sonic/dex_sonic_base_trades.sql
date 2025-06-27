@@ -6,11 +6,14 @@
 }}
 
 {% set base_models = [
-    ref('beets_sonic_base_trades')
+    ref('beets_v2_sonic_base_trades')
+    , ref('beets_v3_sonic_base_trades')
     , ref('wagmi_sonic_base_trades')
     , ref('equalizer_sonic_base_trades')
     , ref('shadow_sonic_base_trades')
     , ref('silverswap_sonic_base_trades')
+    , ref('uniswap_v3_sonic_base_trades')
+    , ref('tapio_sonic_base_trades')
 ] %}
 
 WITH base_union AS (

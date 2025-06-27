@@ -28,6 +28,7 @@
                                         , "scroll"
                                         , "sei"
                                         , "sonic"
+                                        , "sophon"
                                         , "zkevm"
                                         , "zksync"
                                         , "unichain"

@@ -1,4 +1,4 @@
-{%- macro transfers_base(blockchain, traces, transactions, erc20_transfers, native_contract_address = null, include_traces = true) -%}
+{%- macro transfers_base(blockchain, traces, transactions, erc20_transfers, include_traces = true) -%}
 {%- set token_standard_20 = 'bep20' if blockchain == 'bnb' else 'erc20' %}
 
 WITH transfers AS (
@@ -10,11 +10,7 @@ WITH transfers AS (
         , tx_hash
         , cast(NULL as bigint) AS evt_index
         , trace_address
-        {%- if native_contract_address %}
-        , {{native_contract_address}} AS contract_address 
-        {% else %}
-        , CAST(NULL AS varbinary) AS contract_address 
-        {%- endif %}
+        , (select token_address from {{source('dune','blockchains')}} where name = '{{blockchain}}') as contract_address 
         , 'native' AS token_standard
         , "from"
         , COALESCE(to,address) AS to -- Contract Creation has NULL "to" address, but transaction might have value that goes to contract created
@@ -29,8 +25,8 @@ WITH transfers AS (
         {%- if blockchain == 'polygon' %}
         -- ✅ Optimized CASE statement for filtering out POL ERC-20 contract transfers
         AND CASE 
-            WHEN to = {{native_contract_address}} 
-                OR "from" = {{native_contract_address}} 
+            WHEN to = (select token_address from {{source('dune','blockchains')}} where name = '{{blockchain}}') 
+                OR "from" = (select token_address from {{source('dune','blockchains')}} where name = '{{blockchain}}')  
             THEN FALSE  -- Exclude these
             ELSE TRUE   -- Keep everything else
         END
@@ -48,12 +44,7 @@ WITH transfers AS (
         , CAST(NULL AS ARRAY<BIGINT>) AS trace_address
         , t.contract_address
         , CASE
-            WHEN t.contract_address =     
-                {%- if native_contract_address %}
-                    {{native_contract_address}}
-                {% else %}
-                    CAST(NULL AS varbinary)
-                {%- endif %}
+            WHEN d.name is not null
             THEN 'native'
             ELSE '{{token_standard_20}}'
             END AS token_standard
@@ -61,6 +52,7 @@ WITH transfers AS (
         , t.to
         , t.value AS amount_raw
     FROM {{ erc20_transfers }} t
+    LEFT JOIN ({{source('dune','blockchains')}}) d on d.name = '{{blockchain}}' and d.token_address = t.contract_address
     {%- if is_incremental() %}
     WHERE {{incremental_predicate('evt_block_time')}}
     {%- endif %}

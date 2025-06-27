@@ -86,7 +86,7 @@ with events_raw as (
         ,cast(null as varbinary) as platform_fee_address
         ,er.evt_index as sub_tx_trade_id
     from events_raw as er
-    left join {{ source('erc20_optimism','evt_transfer') }} as erc20
+    left join {{ source('erc20_optimism','evt_Transfer') }} as erc20
         on erc20.evt_block_time=er.block_time
         and erc20.evt_tx_hash=er.tx_hash
         and erc20.to=er.seller

@@ -1,0 +1,6 @@
+version: 2
+
+sources:    
+  - name: uniswap_v4_unichain
+    description: "Unichain decoded tables related to Uniswap v4 pools contracts"
+

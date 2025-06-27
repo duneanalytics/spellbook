@@ -45,7 +45,7 @@ SELECT
     ) as blob_indexes
     , CARDINALITY(t.blob_versioned_hashes) AS blob_count
     , CARDINALITY(t.blob_versioned_hashes) * pow(2,17) as blob_gas_used -- within this tx
-    , fee.blob_base_fee as blob_base_fee
+    , case when t.block_number < 22431084 then fee.blob_base_fee_dencun else fee.blob_base_fee_pectra end as blob_base_fee
     , t.max_fee_per_blob_gas
     , coalesce(("LEFT"(from_utf8(t.data), 5)='data:'), false) as is_blobscription
 FROM blob_transactions t
@@ -62,7 +62,7 @@ INNER JOIN {{ source('beacon', 'blocks') }} beacon
     and {{ incremental_predicate('beacon.time') }}
     {% endif %}
 -- this lookup relies on the invariant that the excess blob gas is updated with fixed increment and thus only ever holds a limited set of values.
-LEFT JOIN  {{ source("resident_wizards", "dataset_blob_base_fees_lookup", database="dune") }} fee
+LEFT JOIN  {{ source("resident_wizards", "blob_base_fees_lookup_v2", database="dune") }} fee
     ON fee.excess_blob_gas = block.excess_blob_gas
 LEFT JOIN {{ref('blobs_submitters')}} l
     ON t."from" = l.address

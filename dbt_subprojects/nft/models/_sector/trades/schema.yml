@@ -145,9 +145,9 @@ models:
 
  - name: nft_trades
    meta:
-     blockchain: ethereum, solana, bnb, optimism, arbitrum, polygon, blast, fantom, nova
+     blockchain: ethereum, solana, bnb, optimism, arbitrum, polygon, blast, fantom, nova, abstract, apechain
      sector: nft
-     contributors: soispoke, hildobby, ilemi, cat, 0xRob
+     contributors: soispoke, hildobby, ilemi, cat, 0xRob, 0xr3x
      docs_slug: curated/trading/NFT/nft-trades
    config:
      tags: [ 'nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'solana', 'optimism', 'arbitrum', 'trades','superrare', 'polygon', 'rarible', 'aavegotchi', 'oneplanet', 'fractal' ]

@@ -15,7 +15,7 @@ SELECT distinct 'avalanche_c' AS blockchain
 , NOW() AS updated_at
 , 'token_standard' AS model_name
 , 'persona' as label_type
-FROM {{ source('erc20_avalanche_c', 'evt_transfer') }} erc20
+FROM {{ source('erc20_avalanche_c', 'evt_Transfer') }} erc20
 {% if is_incremental() %}
 LEFT JOIN this t
     ON t.address = erc20.contract_address

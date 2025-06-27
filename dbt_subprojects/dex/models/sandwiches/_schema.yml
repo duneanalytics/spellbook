@@ -3,9 +3,9 @@ version: 2
 models:
   - name: dex_sandwiches
     meta:
-      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zksync, scroll, zora
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zksync, scroll, zora, mantle, unichain
       sector: dex
-      contributors: hildobby
+      contributors: hildobby, agaperste
       docs_slug: /curated/trading/DEX/dex-sandwiches
     config:
       tags: ["dex", "mev", "sandwiches"]
@@ -1281,3 +1281,35 @@ models:
       - *token_bought_amount
       - *amount_usd
       - *evt_index
+  - name: dex_sandwiches_whitelist_tags
+    meta:
+      blockchain: ethereum, bnb, base
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ["dex", "mev", "sandwiched", "whitelist"]
+    description: >
+      List of whitelisted addresses that would otherwise be flagged as sandwiching but aren't
+    columns:
+      - &address
+        name: address
+        description: "Whitelisted address"
+      - &entity
+        name: entity
+        description: "Entity the address is controlled by"
+      - *blockchain
+  - name: dex_sandwiches_whitelist
+    meta:
+      blockchain: ethereum, bnb, base
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ["dex", "mev", "sandwiched", "whitelist"]
+    description: >
+      List of whitelisted transactions that would otherwise be flagged as sandwiching but aren't
+    columns:
+      - *blockchain
+      - *entity
+      - *block_time
+      - *block_number
+      - *tx_hash

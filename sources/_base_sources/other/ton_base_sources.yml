@@ -651,6 +651,138 @@ sources:
             description: "Time at which the pool data was ingested"
             data_type: timestamp
 
+      - name: nft_events
+        loaded_at_field: ingested_at
+        description: "TON NFT events"
+        columns:
+          - name: type
+            description: "Event type"
+            data_type: varchar
+
+          - name: nft_item_address
+            description: "NFT item address"
+            data_type: varchar
+          
+          - name: is_init
+            description: "true if the NFT is initialized"
+            data_type: bool
+  
+          - name: nft_item_index
+            description: "NFT index"
+            data_type: varchar
+
+          - name: collection_address
+            description: "NFT collection address"
+            data_type: varchar
+          
+          - name: owner_address
+            description: "NFT owner address"
+            data_type: varchar
+
+          - name: content_onchain
+            description: "NFT content present onchain"
+            data_type: varchar
+          
+          - name: timestamp
+            description: "timestamp of the NFT state update or action"
+            data_type: bigint
+
+          - name: lt
+            description: "logical time of the NFT state update or action"
+            data_type: bigint
+
+          - name: tx_hash
+            description: "Transaction hash"
+            data_type: varchar
+          
+          - name: trace_id
+            description: "Trace identifier"
+            data_type: varchar
+
+          - name: prev_owner
+            description: "previous owner address (if applicable)"
+            data_type: varchar
+          
+          - name: query_id
+            description: "query id (if exists)"
+            data_type: decimal(20,0)
+
+          - name: forward_amount
+            description: "amount of the forward message from transfer message (if related to the event)"
+            data_type: decimal(38,0)
+          
+          - name: forward_payload
+            description: "payload of the forward message from transfer message (if related to the event)"
+            data_type: varbinary
+          
+          - name: comment
+            description: "text comment from forward_payload"
+            data_type: varchar
+
+          - name: custom_payload
+            description: "custom payload from the transfer message (if related to the event)"
+            data_type: varbinary
+          
+          - name: sale_contract
+            description: "address of the sale contract (if related to the event)"
+            data_type: varchar
+
+          - name: sale_type
+            description: "type of the sale (sale or auction)"
+            data_type: varchar
+
+          - name: sale_end_time
+            description: "end time of the sale (if applicable)"
+            data_type: bigint
+          
+          - name: marketplace_address
+            description: "NFT sale marketplace address"
+            data_type: varchar
+
+          - name: marketplace_fee_address
+            description: "NFT sale marketplace address"
+            data_type: varchar
+          
+          - name: marketplace_fee
+            description: "NFT sale marketplace fee"
+            data_type: decimal(38,0)
+
+          - name: sale_price
+            description: "price of the NFT"
+            data_type: decimal(38,0)
+
+          - name: payment_asset
+            description: "asset type of the payment"
+            data_type: varchar
+          
+          - name: royalty_address
+            description: "NFT sale royalty address"
+            data_type: varchar
+          
+          - name: royalty_amount
+            description: "NFT sale royalty amount"
+            data_type: decimal(38,0)
+          
+          - name: auction_max_bid
+            description: "maximum bid amount in the auction"
+            data_type: decimal(38,0)
+
+          - name: auction_min_bid
+            description: "minimum bid amount in the auction"
+            data_type: decimal(38,0)
+
+          - name: auction_min_step
+            description: "minimum bid step in the auction"
+            data_type: decimal(38,0)
+            
+          - name: updated_at
+            description: "Last update timestamp"
+            data_type: timestamp
+          
+          - name: ingested_at
+            description: "Time at which the NFT event was ingested"
+            data_type: timestamp
+
       - name: dex_trades
         loaded_at_field: ingested_at
         description: "TON DEX trades information"
@@ -910,6 +1042,50 @@ sources:
           - name: adding_date
             description: "Token adding timestamp"
             data_type: integer
+          
+          - name: updated_at
+            description: "Last update timestamp"
+            data_type: timestamp
+          
+          - name: ingested_at
+            description: "Time at which the metadata was ingested"
+            data_type: timestamp
+
+      - name: balances_history
+        loaded_at_field: ingested_at
+        description: "TON and jettonsbalances history"
+        columns:
+          - name: block_time
+            description: "Block timestamp"
+            data_type: timestamp
+          
+          - name: block_date
+            description: "Block date"
+            data_type: date
+
+          - name: address
+            description: "Address"
+            data_type: varchar
+
+          - name: asset
+            description: "Asset"
+            data_type: varchar
+          
+          - name: amount
+            description: "Amount (without decimals)"
+            data_type: decimal(38,0)
+  
+          - name: mintless_claimed
+            description: "Mintless claimed flag"
+            data_type: boolean
+
+          - name: timestamp
+            description: "Tx timestamp"
+            data_type: bigint
+          
+          - name: lt
+            description: "Tx lt"
+            data_type: bigint
           
           - name: updated_at
             description: "Last update timestamp"

@@ -72,4 +72,42 @@ models:
      - *tx_data_marker
      - *currency_contract
 
+ - name: nft_abstract_base_trades
+   meta:
+     blockchain: abstract
+     sector: nft
+     contributors: hildobby
+   config:
+     tags: [ 'abstract', 'nft', 'trades' ]
+   description: "NFT Abstract base trades"
+   columns:
+     - *blockchain
+     - *project
+     - *project_version
+     - *tx_hash
+     - *sub_tx_trade_id
+     - *trade_type
+     - *trade_category
+     - *price_raw
+     - *tx_data_marker
+     - *currency_contract
 
+ - name: nft_apechain_base_trades
+   meta:
+     blockchain: apechain
+     sector: nft
+     contributors: 0xr3x
+   config:
+     tags: [ 'apechain', 'nft', 'trades' ]
+   description: "NFT Apechain base trades"
+   columns:
+     - *blockchain
+     - *project
+     - *project_version
+     - *tx_hash
+     - *sub_tx_trade_id
+     - *trade_type
+     - *trade_category
+     - *price_raw
+     - *tx_data_marker
+     - *currency_contract
