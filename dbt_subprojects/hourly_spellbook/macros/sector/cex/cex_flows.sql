@@ -32,7 +32,7 @@ LEFT JOIN {{addresses}} a ON a.address = t."from" AND t.block_time>=a.first_used
 LEFT JOIN {{addresses}} b ON b.address = t.tx_from AND t.block_time>=b.first_used
 LEFT JOIN {{addresses}} c ON c.address = t.to AND t.block_time>=c.first_used
 LEFT JOIN {{addresses}} d ON d.address = t.tx_to AND t.block_time>=d.first_used
-WHERE COALESCE(a.cex_name, b.cex_name, c.cex_name, d.cex_name) IS NOT NULL
+WHERE (a.cex_name IS NOT NULL OR c.cex_name IS NOT NULL OR b.cex_name IS NOT NULL OR d.cex_name IS NOT NULL)
 {% if is_incremental() %}
 AND {{incremental_predicate('block_time')}}
 {% endif %}
