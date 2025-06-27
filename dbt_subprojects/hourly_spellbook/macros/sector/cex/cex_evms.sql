@@ -10,7 +10,7 @@ WITH first_appearance AS (
     {% if is_incremental() %}
     LEFT JOIN {{this}} b ON a.address = b.address
     WHERE b.cex_name IS NULL
-    AND {{incremental_predicate('t.block_time')}}
+    AND {{incremental_predicate('cc.block_time')}}
     {% endif %}
     
     UNION ALL
