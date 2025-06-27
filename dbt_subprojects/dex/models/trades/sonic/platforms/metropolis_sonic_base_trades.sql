@@ -15,7 +15,7 @@
         blockchain = 'sonic',
         project = 'metropolis',
         version = '1',
-        factory_swap_function = source('metropolis_sonic', 'router_call_swapexacttokensfortokens'),
+        Factory_swap_function = source('metropolis_sonic', 'router_call_swapexacttokensfortokens'),
         Factory_evt_PairCreated = source('metropolis_sonic', 'v2factory_evt_paircreated')
     )
 }}
