@@ -1,4 +1,4 @@
-{% macro cex_evms(cex_addresses, blockchain, transfers) %}
+{% macro cex_evms(cex_addresses, blockchain, token_transfers) %}
 
 WITH new_addresses AS (
     SELECT 
