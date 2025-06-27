@@ -394,7 +394,7 @@ fee_collection as (
         group by 1, 2, 3 
     ),
 
-    join_with_pools (
+    join_with_pools as (
         select 
             gf.tx_hash 
             , gf.block_time 
