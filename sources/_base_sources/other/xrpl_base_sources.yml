@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  # Base Tables
+  - name: xrpl
+    description: "XRPL blockchain data"
+    tables:
+      - name: transactions
+        description: "XRPL transactions table"
+        meta:
+          docs_slug: /xrpl/transactions
+          short_description: The 'xrpl.transactions' table contains detailed information about transactions on the XRPL blockchain. 
