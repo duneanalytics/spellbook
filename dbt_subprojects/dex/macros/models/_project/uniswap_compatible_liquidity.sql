@@ -331,7 +331,7 @@ fee_collection as (
             call_tx_hash as tx_hash 
             , call_block_time as block_time 
             , call_block_number as block_number 
-            , call_tx_index as evt_index 
+            , 1 as evt_index -- we don't actually use index here for anything and some indexes are missing in the call table so hardcoding here as evt_index 
             , amount 
             , currency 
         from 
@@ -425,7 +425,7 @@ fee_collection as (
         , block_time 
         , block_number 
         , tx_hash 
-        , evt_index 
+        , evt_index
         , event_type 
         , token0 
         , token1 
