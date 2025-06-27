@@ -1,0 +1,136 @@
+version: 2
+
+models:
+
+  - name: uniswap_v4_zora_pools
+    meta:
+      blockchain: zora
+      sector: dex
+      project: uniswap
+      contributors: Henrystats
+    config:
+      tags: ['zora', 'pools', 'liquidity', 'uniswap']
+    description: >
+      Uniswap V4 zora DEX pools
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - id
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the DEX is deployed"
+      - &project
+        name: project
+        description: "Project name of the DEX"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the DEX project"
+      - &id
+        name: id
+        description: "DEX pool smart contract address"
+      - &token0
+        name: token0
+        description: "First token in pool"
+      - &token1
+        name: token1
+        description: "Second token in pool"
+      - name: creation_block_time
+        description: "Block time of pool creation"
+      - name: creation_block_number
+        description: "Block number of pool creation"
+      - name: contract_address
+        description: "Contract address used to create the pool"
+
+  - name: uniswap_v4_zora_sqrtpricex96
+    meta:
+      blockchain: zora
+      sector: dex
+      project: uniswap
+      contributors: Henrystats
+    config:
+      tags: ['zora', 'pools', 'liquidity', 'uniswap', 'sqrtpricex96']
+    description: >
+      Retrieves the most recent price (sqrtPriceX96) for each pool ID, reflecting the current price after the latest swap or liquidity modification.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - id
+            - block_index_sum
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *id
+      - name: block_time
+        description: "Block time of Price event"
+      - name: block_number
+        description: "Block number of Price event"
+      - name: evt_index
+        description: "Event Index of Price event"
+      - &block_index_sum
+        name: block_index_sum
+        description: "A sum of block_number and evt_index/1e6, necessary to avoid using window functions twice"
+      - &previous_block_index_sum
+        name: previous_block_index_sum
+        description: "Last value of block_index_sum"
+      - &sqrtpricex96
+        name: sqrtpricex96
+        description: "Pool Price"
+
+  - name: uniswap_v4_zora_base_liquidity_events
+    meta:
+      blockchain: zora
+      sector: dex
+      project: uniswap
+      contributors: irishlatte19, Henrystats
+    config:
+      tags: ['zora', 'pools', 'liquidity', 'uniswap']
+    description: >
+      "uniswap zora v4 base liquidity events"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - event_type
+      - check_dex_base_liquidity_seed:
+          seed_file: ref('uniswap_zora_base_liquidity_seed')
+          filter:
+            version: 4
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *id
+      - &block_month
+        name: block_month
+        description: "UTC event block month"
+      - &block_date
+        name: block_date
+        description: "UTC event block date"
+      - &block_time
+        name: block_time
+        description: "UTC event block time"
+      - &block_number
+        name: block_number
+        description: "Block number of the block in which the trade occurred"
+      - &tx_hash
+        name: tx_hash
+        description: "The hash of the transaction"
+      - &evt_index
+        name: evt_index
+        description: "Index of the event in the transaction. Can be used to uniquely identify the order of events within a transaction"
+      - &event_type
+        name: event_type
+        description: "Transaction event type"
+      - *token0
+      - *token1
+      - &amount0_raw
+        name: amount0_raw
+        description: "Liquidity amount of token0 in units"
+      - &amount1_raw
+        name: amount1_raw
+        description: "Liquidity amount of token1 in units"

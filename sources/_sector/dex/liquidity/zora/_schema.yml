@@ -4,3 +4,4 @@ sources:
   - name: uniswap_v4_zora
     tables:
       - name: PoolManager_evt_ModifyLiquidity
+      - name: poolmanager_call_take
