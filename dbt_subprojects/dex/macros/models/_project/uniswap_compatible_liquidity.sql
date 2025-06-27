@@ -336,10 +336,10 @@ fee_collection as (
             , currency 
         from 
         {{ PoolManager_call_Take }}
+        where call_success
         {%- if is_incremental() %}
-        where {{ incremental_predicate('call_block_time') }}
+        and {{ incremental_predicate('call_block_time') }}
         {%- endif %} 
-        and call_success
     ),
 
     agg_fees as (
