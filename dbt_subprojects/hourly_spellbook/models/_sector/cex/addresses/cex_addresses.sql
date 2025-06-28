@@ -1,8 +1,6 @@
 {{ config(
-        tags = ['static'],
         schema = 'cex',
         alias = 'addresses',
-        materialized = 'table',
         post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "optimism", "arbitrum", "polygon", "bitcoin", "fantom", "aptos", "celo", "zora", "zksync", "zkevm", "linea", "solana", "scroll", "tron", "base", "mantle", "worldchain", "sei"]\',
                                     "sector",
                                     "cex",
@@ -11,8 +9,8 @@
 
 {% set chains = [
  ref('cex_algorand_addresses')
- , ref('cex_aptos_addresses')
  , ref('cex_arbitrum_addresses')
+ , ref('cex_aptos_addresses')
  , ref('cex_avalanche_c_addresses')
  , ref('cex_base_addresses')
  , ref('cex_bitcoin_addresses')

@@ -19,8 +19,8 @@
      , (ref('cex_avalanche_c_flows'))
      , (ref('cex_bnb_flows'))
      , (ref('cex_ethereum_flows'))
-     , (ref('cex_fantom_flows'))
      , (ref('cex_gnosis_flows'))
+     , (ref('cex_fantom_flows'))
      , (ref('cex_optimism_flows'))
      , (ref('cex_polygon_flows'))
      , (ref('cex_base_flows'))
@@ -45,8 +45,8 @@ FROM (
         , token_symbol
         , token_standard
         , flow_type
-        , amount
         , amount_raw
+        , amount
         , amount_usd
         , "from"
         , to

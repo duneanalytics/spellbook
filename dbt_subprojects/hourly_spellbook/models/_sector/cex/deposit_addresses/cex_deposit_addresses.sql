@@ -19,8 +19,8 @@
     , ref('cex_bnb_deposit_addresses')
     , ref('cex_avalanche_c_deposit_addresses')
     , ref('cex_gnosis_deposit_addresses')
-    , ref('cex_optimism_deposit_addresses')
     , ref('cex_arbitrum_deposit_addresses')
+    , ref('cex_optimism_deposit_addresses')
     , ref('cex_polygon_deposit_addresses')
     , ref('cex_base_deposit_addresses')
     , ref('cex_celo_deposit_addresses')
@@ -30,7 +30,6 @@
 
 
 {% if not is_incremental() %}
-
 
 SELECT MIN_BY(blockchain, deposit_first_block_time) AS blockchain
 , address
@@ -51,10 +50,10 @@ FROM (
     , cex_name
     , first_deposit_token_standard
     , first_deposit_token_address
-    , deposit_first_block_time
     , consolidation_first_block_time
-    , deposit_count
+    , deposit_first_block_time
     , consolidation_count
+    , deposit_count
     , amount_deposited
     , consolidation_unique_key
     , deposit_unique_key
@@ -93,9 +92,9 @@ FROM (
     , cm.deposit_first_block_time
     , cm.consolidation_first_block_time
     , cm.deposit_count
-    , cm.consolidation_count
     , cm.amount_deposited
     , cm.consolidation_unique_key
+    , cm.consolidation_count
     , cm.deposit_unique_key
     FROM {{ cex_model }} cm
     LEFT JOIN {{this}} t ON cm.address=t.address
