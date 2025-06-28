@@ -50,8 +50,8 @@ FROM (
     , cex_name
     , first_deposit_token_standard
     , first_deposit_token_address
-    , deposit_first_block_time
     , consolidation_first_block_time
+    , deposit_first_block_time
     , consolidation_count
     , deposit_count
     , amount_deposited
@@ -92,9 +92,9 @@ FROM (
     , cm.deposit_first_block_time
     , cm.consolidation_first_block_time
     , cm.deposit_count
-    , cm.consolidation_count
     , cm.amount_deposited
     , cm.consolidation_unique_key
+    , cm.consolidation_count
     , cm.deposit_unique_key
     FROM {{ cex_model }} cm
     LEFT JOIN {{this}} t ON cm.address=t.address
