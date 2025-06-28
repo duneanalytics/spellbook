@@ -19,8 +19,8 @@
     , ref('cex_bnb_deposit_addresses')
     , ref('cex_avalanche_c_deposit_addresses')
     , ref('cex_gnosis_deposit_addresses')
-    , ref('cex_optimism_deposit_addresses')
     , ref('cex_arbitrum_deposit_addresses')
+    , ref('cex_optimism_deposit_addresses')
     , ref('cex_polygon_deposit_addresses')
     , ref('cex_base_deposit_addresses')
     , ref('cex_celo_deposit_addresses')
@@ -88,8 +88,8 @@ FROM (
     , cm.address
     , cm.cex_name
     , cm.first_deposit_token_standard
-    , cm.deposit_first_block_time
     , cm.first_deposit_token_address
+    , cm.deposit_first_block_time
     , cm.consolidation_first_block_time
     , cm.deposit_count
     , cm.consolidation_count
