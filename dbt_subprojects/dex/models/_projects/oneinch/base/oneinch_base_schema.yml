@@ -190,6 +190,10 @@ models:
       - name: transfer_to
       - name: transfers_between_players
       - name: minute
+      - name: symbol
+      - name: decimals
+      - name: amount_usd
+      - name: trusted
       - name: block_month
 
   - name: oneinch_base_escrow_results
