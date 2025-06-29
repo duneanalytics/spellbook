@@ -132,7 +132,7 @@ meta as (
         , symbol as token_symbol
         , decimals as token_decimals
     from {{ source('tokens', 'erc20') }}
-    where blockchain = {{blockchain}}
+    where blockchain = '{{blockchain}}'
 )
 
 , prices as (
@@ -146,7 +146,7 @@ meta as (
     from {{ source('prices', 'usd') }}
     {% if is_incremental() %}
         where {{ incremental_predicate('minute') }}
-            and blockchain = {{blockchain}}
+            and blockchain = '{{blockchain}}'
     {% endif %}
 )
 
@@ -156,7 +156,7 @@ meta as (
         , contract_address
         , true as trusted
     from {{ source('prices', 'trusted_tokens') }}
-    where blockchain = {{blockchain}}
+    where blockchain = '{{blockchain}}'
     group by 1, 2, 3
 )
 
