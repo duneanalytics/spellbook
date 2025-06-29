@@ -20,6 +20,9 @@
    ,ref('uniswap_v4_ink_base_liquidity_events')
    ,ref('uniswap_v4_unichain_base_liquidity_events')
    ,ref('uniswap_v4_base_base_liquidity_events')
+   ,ref('uniswap_v4_polygon_base_liquidity_events')
+   ,ref('uniswap_v4_bnb_base_liquidity_events')
+   ,ref('uniswap_v4_worldchain_base_liquidity_events')
 ] %}
 
 with base_union as (
