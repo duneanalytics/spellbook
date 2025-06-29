@@ -117,9 +117,10 @@ meta as (
         , transfer_from
         , transfer_to
         , date_trunc('minute', transfers.block_time) as minute
-    from calls, meta
-    join transfers on 
-        transfers.block_number = calls.result_block_number
+    from calls
+    join meta on true
+    join transfers on true
+        and transfers.block_number = calls.result_block_number
         and transfers.tx_hash = calls.result_tx_hash
         and slice(transfer_trace_address, 1, cardinality(result_trace_address)) = result_trace_address
 )
