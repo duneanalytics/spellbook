@@ -124,7 +124,7 @@ meta as (
         and slice(transfer_trace_address, 1, cardinality(result_trace_address)) = result_trace_address
 )
 
-tokens as (
+, tokens as (
     select
         blockchain as transfer_blockchain
         , contract_address
