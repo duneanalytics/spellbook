@@ -8,7 +8,7 @@
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         partition_by = ['block_month'],
         unique_key = ['unique_key'],
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "polygon", "arbitrum", "avalanche_c", "gnosis", "fantom", "optimism", "base"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "bnb", "polygon", "arbitrum", "avalanche_c", "gnosis", "fantom", "optimism", "base", "zksync", "linea", "sonic", "unichain"]\',
                                 "project",
                                 "oneinch",
                                 \'["max-morrow", "grkhr"]\') }}'
