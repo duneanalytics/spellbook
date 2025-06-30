@@ -31,6 +31,11 @@ with sol_payments as (
         join {{ source('dex_solana', 'trades') }} as trades
             on trades.tx_id = account_activity.tx_id
             and trades.block_time = account_activity.block_time
+            {% if is_incremental() %} 
+                {{ incremental_predicate('trades.block_time') }}
+            {% else %} 
+                trades.block_time >= timestamp '{{query_start_date}}'
+            {% endif %} 
         where
             {% if is_incremental() %} 
                 {{ incremental_predicate('account_activity.block_time') }}
