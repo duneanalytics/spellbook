@@ -28,10 +28,12 @@
     , ref('dex_ink_base_trades')
     , ref('dex_linea_base_trades')
     , ref('dex_kaia_base_trades')
+    , ref('dex_katana_base_trades')
     , ref('dex_mantle_base_trades')
     , ref('dex_nova_base_trades')
     , ref('dex_opbnb_base_trades')
-    , ref('dex_optimism_base_trades')
+    , ref('dex_optimism_base_trades'
+    , ref('dex_plume_base_trades'))
     , ref('dex_polygon_base_trades')
     , ref('dex_ronin_base_trades')
     , ref('dex_scroll_base_trades')
@@ -44,7 +46,6 @@
     , ref('dex_zkevm_base_trades')
     , ref('dex_zksync_base_trades')
     , ref('dex_zora_base_trades')
-    , ref('dex_plume_base_trades')
 ] %}
 
 with base_union as (
