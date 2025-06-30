@@ -68,14 +68,14 @@ select
     'solana' as blockchain
     , 'meteora' as project
     , '2' as version
-    , DATE_TRUNC('month', sw.block_time) AS block_month
+    , cast(DATE_TRUNC('month', sw.block_time) AS DATE) as block_month
     , sw.block_time
     , sw.block_slot
     , CASE WHEN is_inner_swap = FALSE THEN 'direct' ELSE sw.outer_executing_account END AS trade_source
-    , bytearray_to_bigint(bytearray_reverse(bytearray_substring(('0x'||substr(cast(ic.data as varchar),211,2)), 1, 2)))  as swapforY
+    -- , bytearray_to_bigint(bytearray_reverse(bytearray_substring(('0x'||substr(cast(ic.data as varchar),211,2)), 1, 2)))  as swapforY
     , bytearray_to_bigint(bytearray_reverse(bytearray_substring(('0x'||substr(cast(ic.data as VARCHAR),195,16)),1,16))) as token_bought_amount_raw
     , bytearray_to_bigint(bytearray_reverse(bytearray_substring(('0x'||substr(cast(ic.data as VARCHAR),179,16)),1,16))) as token_sold_amount_raw
-    , NULL AS fee_tier
+    , cast(NULL AS double) as fee_tier
     , case when bytearray_to_bigint(bytearray_reverse(bytearray_substring(('0x'||substr(cast(ic.data as varchar),211,2)), 1, 2))) =1 
       then account_tokenXMint
       else account_tokenYMint
