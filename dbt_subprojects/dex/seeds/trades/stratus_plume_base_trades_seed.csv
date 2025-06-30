@@ -1,0 +1,2 @@
+blockchain,project,version,block_date,tx_hash,evt_index,token_bought_address,token_sold_address,block_number,token_bought_amount_raw,token_sold_amount_raw
+plume,stratus,1,2025-06-22 00:00,0x6f27c375b55eb5140ac02b3686b12077619f0f054f3d8d51df61b856e917b1b2,5,0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee,0xdddd73f5df1f0dc31373357beac77545dc5a6f3f,7020940,2595187292813061856,200000

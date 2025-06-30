@@ -5,3 +5,6 @@ sources:
     tables:
       - name: maverickv2factory_evt_poolcreated
       - name: maverickv2pool_evt_poolswap
+  - name: stratus_plume
+    tables:
+      - name: stratusrouter_evt_route
