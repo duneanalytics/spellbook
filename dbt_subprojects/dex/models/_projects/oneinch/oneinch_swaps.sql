@@ -159,9 +159,9 @@ calls as (
         -- src $ amount from user
         , sum(amount_usd * if(user = transfer_from, 1, -1)) filter(where {{ src_condition }} and user in (transfer_from, transfer_to)) as _amount_usd_from_user
         -- dst $ amount to user
-        , sum(amount * if(user = transfer_to, 1, -1)) filter(where {{ dst_condition }} and user in (transfer_from, transfer_to)) as _amount_usd_to_user
+        , sum(amount_usd * if(user = transfer_to, 1, -1)) filter(where {{ dst_condition }} and user in (transfer_from, transfer_to)) as _amount_usd_to_user
         -- dst $ amount to receiver
-        , sum(amount * if(receiver = transfer_to, 1, -1)) filter(where {{ dst_condition }} and receiver in (transfer_from, transfer_to)) as _amount_usd_to_receiver
+        , sum(amount_usd * if(receiver = transfer_to, 1, -1)) filter(where {{ dst_condition }} and receiver in (transfer_from, transfer_to)) as _amount_usd_to_receiver
 
         -- escrow results
         , sum(amount) filter(where result_escrow = src_escrow and result_method = 'withdraw') as src_withdraw_amount
