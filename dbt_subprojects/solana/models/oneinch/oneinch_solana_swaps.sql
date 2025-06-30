@@ -1,5 +1,6 @@
 {{
     config(
+        tags = ['prod_exclude'],
         schema = 'oneinch_solana',
         alias = 'swaps',
         partition_by = ['block_month'],
