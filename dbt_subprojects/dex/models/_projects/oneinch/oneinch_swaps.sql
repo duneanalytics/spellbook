@@ -152,8 +152,8 @@ calls as (
         , max(amount) filter(where {{ src_condition }} and amount <= src_token_amount) as _src_token_amount_true -- take only src token amounts less than in the call
         , max(amount) filter(where {{ dst_condition }} and amount <= dst_token_amount) as _dst_token_amount_true -- take only dst token amounts less than in the call
         , max(amount_usd) filter(where {{ src_condition }} and amount <= src_token_amount or {{ dst_condition }} and amount <= dst_token_amount) as sources_amount_usd
-        , max(amount_usd) filter(where {{ src_condition }} and amount <= src_token_amount) as src_amount_usd
-        , max(amount_usd) filter(where {{ dst_condition }} and amount <= dst_token_amount) as dst_amount_usd
+        , max(amount_usd) filter(where {{ src_condition }} and amount <= src_token_amount) as src_token_amount_usd
+        , max(amount_usd) filter(where {{ dst_condition }} and amount <= dst_token_amount) as dst_token_amount_usd
         , max(amount_usd) filter(where ({{ src_condition }} and amount <= src_token_amount or {{ dst_condition }} and amount <= dst_token_amount) and trusted) as sources_amount_usd_trusted
         , max(amount_usd) as transfers_amount_usd
         , max(amount_usd) filter(where trusted) as transfers_amount_usd_trusted
@@ -238,8 +238,8 @@ select
     , coalesce(_dst_token_amount_true, dst_token_amount) as dst_token_amount
     , coalesce(sources_amount_usd_trusted, sources_amount_usd, transfers_amount_usd_trusted, transfers_amount_usd) as amount_usd -- sources $ amount first if found prices, then $ amount of connector tokens
     , sources_amount_usd
-    , src_amount_usd
-    , dst_amount_usd
+    , src_token_amount_usd
+    , dst_token_amount_usd
     , transfers_amount_usd
     , greatest(coalesce(_amount_usd_from_user, 0), coalesce(_amount_usd_to_user, _amount_usd_to_receiver, 0)) as user_amount_usd -- actual user $ amount
     , tokens

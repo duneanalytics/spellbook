@@ -361,8 +361,8 @@ models:
       - name: dst_token_amount
       - name: amount_usd
       - name: sources_amount_usd
-      - name: src_amount_usd
-      - name: dst_amount_usd
+      - name: src_token_amount_usd
+      - name: dst_token_amount_usd
       - name: transfers_amount_usd
       - name: user_amount_usd
       - name: tokens
