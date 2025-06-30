@@ -222,3 +222,7 @@ sources:
     tables: 
       - name: FluidDexT1_evt_Swap
       - name: fluiddexfactory_call_deploydex
+  - name: bmx_multichain
+    tables:
+      - name: vault_evt_swap
+      - name: router_evt_swap
