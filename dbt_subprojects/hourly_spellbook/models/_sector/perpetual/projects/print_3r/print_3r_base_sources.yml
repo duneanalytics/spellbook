@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: print_3r_base
+    description: Base decoded tables related to print_3r protocol
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: vault_evt_increaseposition
+        loaded_at_field: evt_block_time
+      - name: vault_evt_decreaseposition
+        loaded_at_field: evt_block_time
+      - name: vault_evt_liquidateposition
+        loaded_at_field: evt_block_time
