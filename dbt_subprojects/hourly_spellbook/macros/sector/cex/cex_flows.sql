@@ -16,9 +16,9 @@ SELECT '{{blockchain}}' AS blockchain
     WHEN d.cex_name IS NOT NULL THEN 'Executed Contract'
     WHEN b.cex_name IS NOT NULL THEN 'Executed'
     END AS flow_type
-, CASE WHEN a.address=t."from" AND c.address!=t.to THEN -t.amount ELSE t.amount END AS amount
+, t.amount
 , t.amount_raw
-, CASE WHEN a.address=t."from" AND c.address!=t.to THEN -t.amount_usd ELSE t.amount_usd END AS amount_usd
+, t.amount_usd
 , t."from"
 , t.to
 , t.tx_from
