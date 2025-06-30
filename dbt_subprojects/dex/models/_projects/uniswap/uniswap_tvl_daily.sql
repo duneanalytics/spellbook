@@ -97,21 +97,11 @@ daily_cum as (
     daily_events_final 
 ),
 
-time_seq as (
-    select
-        sequence(
-        cast('2025-01-01' as timestamp),
-        date_trunc('day', cast(now() as timestamp)),
-        interval '1' day
-        ) as time 
-),
-
 days as (
     select
-        time.time AS day 
+        timestamp as day 
     from 
-    time_seq
-    cross join unnest(time) AS time(time)
+    {{ source('utils','days') }}
 ),
 
 tvl_daily as (
@@ -141,14 +131,13 @@ tvl_daily as (
 
 prices as (
     select
-        cast(date_trunc('day', minute) as date) as block_date
+        cast(date_trunc('day', timestamp) as date) as block_date
         , blockchain
         , contract_address
-        , max_by(price, minute) as price
+        , price
     from 
-    {{ source('prices','usd_with_native') }}
-    where {{ incremental_predicate('minute') }}
-    group by 1, 2, 3 
+    {{ source('prices','day') }}
+    where {{ incremental_predicate('timestamp') }}
 ) 
 
     select 
@@ -218,21 +207,11 @@ daily_cum as (
     daily_events
 ),
 
-time_seq as (
-    select
-        sequence(
-        cast('2025-01-01' as timestamp),
-        date_trunc('day', cast(now() as timestamp)),
-        interval '1' day
-        ) as time 
-),
-
 days as (
     select
-        time.time AS day 
+        timestamp as day 
     from 
-    time_seq
-    cross join unnest(time) AS time(time)
+    {{ source('utils','days') }}
 ),
 
 tvl_daily as (
@@ -261,14 +240,12 @@ tvl_daily as (
 
 prices as (
     select
-        cast(date_trunc('day', minute) as date) as block_date
+        cast(date_trunc('day', timestamp) as date) as block_date
         , blockchain
         , contract_address
-        , max_by(price, minute) as price
+        , price
     from 
-    {{ source('prices','usd_with_native') }}
-    where {{ incremental_predicate('minute') }}
-    group by 1, 2, 3 
+    {{ source('prices','day') }}
 ) 
 
     select 
