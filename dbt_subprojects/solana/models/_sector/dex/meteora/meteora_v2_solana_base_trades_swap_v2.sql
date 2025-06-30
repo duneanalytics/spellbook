@@ -1,6 +1,6 @@
  {{
   config(
-        schema = 'meteora_v2_solana',
+        schema = 'meteora_v2_solana_swaps_v2',
         alias = 'base_trades',
         partition_by = ['block_month'],
         materialized = 'incremental',
@@ -21,7 +21,7 @@ with swaps as
 (
     select sw.*, ic.data
     from {{ source('dlmm_solana','lb_clmm_call_swap2') }} sw
-    left join {{ ref('solana','instruction_calls') }} ic 
+    left join {{ source('solana','instruction_calls') }} ic 
     on 
         ( sw.call_tx_id=ic.tx_id and sw.call_block_time=ic.block_time and sw.call_tx_index=ic.tx_index and coalesce(sw.call_inner_instruction_index,0)+1 = ic.inner_instruction_index)
     where sw.call_block_time >= TIMESTAMP '{{project_start_date}}'
