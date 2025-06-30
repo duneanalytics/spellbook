@@ -10,7 +10,7 @@ sources:
     description: "meteora vault decoded tables"
     tables:
       - name: vault_call_deposit
-  - name: meteora_solana
+  - name: dlmm_solana
     description: "meteora lb_clmm decoded tables"
     tables:
       - name: lb_clmm_call_swap
