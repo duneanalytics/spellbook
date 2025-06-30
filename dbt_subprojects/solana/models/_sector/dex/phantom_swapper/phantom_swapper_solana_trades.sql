@@ -19,7 +19,7 @@ with filtered_transactions as (
             block_date
         from {{ source('solana', 'transactions') }}
         where
-            {% if is_incremental() or true %} 
+            {% if is_incremental() %} 
                 {{ incremental_predicate('block_date') }}
             {% else %} 
                 block_date >= timestamp '{{query_start_date}}'
@@ -69,7 +69,7 @@ with filtered_transactions as (
             fa1.fee_receiver IS NULL -- Exclude trades where FeeWallet is trader
             and fa2.fee_receiver IS NULL -- Exclude transactions signed by FeeWallet 
             and trades.trade_source IN ('JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4','6m2CDdhRgxpH4WjvdzxAYbGxwdGUz5MziiL5jek2kBma', 'JUPSjgjMFjU4453KMgxhqVmzep6W352bQpE4RsNqXAx')
-            {% if is_incremental() or true %}
+            {% if is_incremental() %}
                 and {{ incremental_predicate('trades.block_time') }}
                 and {{ incremental_predicate('fee_payments.block_time') }}
             {% else %}

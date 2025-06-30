@@ -31,13 +31,13 @@ with sol_payments as (
         join {{ source('dex_solana', 'trades') }} as trades
             on trades.tx_id = account_activity.tx_id
             and trades.block_time = account_activity.block_time
-            {% if is_incremental() or true %} 
+            {% if is_incremental() %} 
             and {{ incremental_predicate('trades.block_time') }}
             {% else %} 
             and trades.block_time >= timestamp '{{query_start_date}}'
             {% endif %} 
         where
-            {% if is_incremental() or true %} 
+            {% if is_incremental() %} 
                 {{ incremental_predicate('account_activity.block_time') }}
             {% else %} 
                 account_activity.block_time >= timestamp '{{query_start_date}}'
@@ -60,7 +60,7 @@ with sol_payments as (
                 and token_balance_change > 0
             )
         where
-            {% if is_incremental() or true %} 
+            {% if is_incremental() %} 
                 {{ incremental_predicate('account_activity.block_time') }}
             {% else %} 
                 account_activity.block_time >= timestamp '{{query_start_date}}'
@@ -81,7 +81,7 @@ with sol_payments as (
             block_date
         from {{ source('solana', 'transactions') }}
         where
-            {% if is_incremental() or true %} 
+            {% if is_incremental() %} 
                 {{ incremental_predicate('block_date') }}
             {% else %} 
                 block_date >= timestamp '{{query_start_date}}'
