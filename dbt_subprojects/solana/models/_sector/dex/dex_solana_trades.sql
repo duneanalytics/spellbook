@@ -38,26 +38,26 @@ SELECT bt.blockchain
             then concat(token_bought.symbol, '-', token_sold.symbol)
             else concat(token_sold.symbol, '-', token_bought.symbol)
         end as token_pair
-      , bt.token_bought_amount_raw / pow(10, coalesce(bt.token_bought_decimal_project_specific, token_bought.decimals, 9)) as token_bought_amount
-      , bt.token_sold_amount_raw / pow(10, coalesce(bt.token_sold_decimal_project_specific, token_sold.decimals, 9)) as token_sold_amount
+      , bt.token_bought_amount_raw / pow(10, coalesce(bt.token_bought_decimal_project_specific, token_bought.decimals)) as token_bought_amount
+      , bt.token_sold_amount_raw / pow(10, coalesce(bt.token_sold_decimal_project_specific, token_sold.decimals)) as token_sold_amount
       , bt.token_bought_amount_raw
       , bt.token_sold_amount_raw
       , COALESCE(
             -- if bought token is trusted, prefer that price, else default to sold token then bought token.
             case when tt_bought.contract_address is not null then
-                bt.token_bought_amount_raw / pow(10, coalesce(bt.token_bought_decimal_project_specific, token_bought.decimals, 9)) * p_bought.price
+                bt.token_bought_amount_raw / pow(10, coalesce(bt.token_bought_decimal_project_specific, token_bought.decimals)) * p_bought.price
                 else null end
-               , bt.token_sold_amount_raw / pow(10, coalesce(bt.token_sold_decimal_project_specific, token_sold.decimals, 9)) * p_sold.price
-               , bt.token_bought_amount_raw / pow(10, coalesce(bt.token_bought_decimal_project_specific, token_bought.decimals, 9)) * p_bought.price)
+               , bt.token_sold_amount_raw / pow(10, coalesce(bt.token_sold_decimal_project_specific, token_sold.decimals)) * p_sold.price
+               , bt.token_bought_amount_raw / pow(10, coalesce(bt.token_bought_decimal_project_specific, token_bought.decimals)) * p_bought.price)
             as amount_usd
       , bt.fee_tier
       , bt.fee_tier * COALESCE(
             -- if bought token is trusted, prefer that price, else default to sold token then bought token.
             case when tt_bought.contract_address is not null then
-                bt.token_bought_amount_raw / pow(10, coalesce(bt.token_bought_decimal_project_specific, token_bought.decimals, 9)) * p_bought.price
+                bt.token_bought_amount_raw / pow(10, coalesce(bt.token_bought_decimal_project_specific, token_bought.decimals)) * p_bought.price
                 else null end
-            , bt.token_sold_amount_raw / pow(10, coalesce(bt.token_sold_decimal_project_specific, token_sold.decimals, 9)) * p_sold.price
-            , bt.token_bought_amount_raw / pow(10, coalesce(bt.token_bought_decimal_project_specific, token_bought.decimals, 9)) * p_bought.price
+            , bt.token_sold_amount_raw / pow(10, coalesce(bt.token_sold_decimal_project_specific, token_sold.decimals)) * p_sold.price
+            , bt.token_bought_amount_raw / pow(10, coalesce(bt.token_bought_decimal_project_specific, token_bought.decimals)) * p_bought.price
         ) as fee_usd
       , bt.token_bought_mint_address
       , bt.token_sold_mint_address
