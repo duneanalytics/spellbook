@@ -45,6 +45,9 @@ WITH
   )
 
 SELECT
+
+
+
     'arbitrum' AS blockchain
     , 'fluid' AS project
     , dexs.version
