@@ -137,7 +137,7 @@ xrpl_gas_fees AS (
     )
         AND TRY_CAST(t.fee AS DOUBLE) > 0
         {% if is_incremental() %}
-        AND {{ incremental_predicate('CAST(PARSE_DATETIME(REGEXP_REPLACE(t._ledger_close_time_human, \' UTC$\', \'\'), \'yyyy-MMM-dd HH:mm:ss.SSSSSSSSS\') AS TIMESTAMP)') }}
+        AND CAST(PARSE_DATETIME(REGEXP_REPLACE(t._ledger_close_time_human, ' UTC$', ''), 'yyyy-MMM-dd HH:mm:ss.SSSSSSSSS') AS TIMESTAMP) >= current_timestamp - interval '14 days'
         {% endif %}
 )
 SELECT
