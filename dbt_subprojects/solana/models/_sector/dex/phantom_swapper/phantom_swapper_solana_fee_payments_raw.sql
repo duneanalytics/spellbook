@@ -29,6 +29,9 @@ with sol_payments as (
                 fee_addresses.fee_receiver = account_activity.address
                 and balance_change > 0
             )
+        join {{ source('dex_solana', 'trades') }} as trades
+            on trades.tx_id = account_activity.tx_id
+            and trades.block_time = account_activity.block_time
         where
             {% if is_incremental() %} 
                 {{ incremental_predicate('account_activity.block_time') }}
