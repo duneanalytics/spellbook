@@ -13,9 +13,8 @@
 
 {% set project_start_date = '2023-11-01' %} --grabbed program deployed at time (account created at).
 
-{% set project_start_date = '2025-06-29' %} 
 
-with swaps_events_data as
+with swaps as
 (
 select
     call_block_slot as block_slot
@@ -41,6 +40,38 @@ where 1=1
             {% else %}
             AND call_block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
+),
+swaps2 as
+(
+select
+    call_block_slot as block_slot
+    , call_block_time as block_time
+    , coalesce(call_tx_index,0) as tx_index
+    , coalesce(call_outer_instruction_index,0) as outer_instruction_index
+    , coalesce(call_inner_instruction_index,0) as inner_instruction_index
+    , call_tx_id as tx_id
+    , call_tx_signer as trader_id
+    , call_outer_executing_account as outer_executing_account
+    , account_tokenXMint
+    , account_tokenYMint
+    , account_reserveX
+    , account_reserveY
+    , account_lbPair
+    , call_is_inner as is_inner_swap
+    , row_number() over (partition by call_tx_id order by call_tx_index asc, call_outer_instruction_index asc, call_inner_instruction_index) as swap_number
+from {{ source ('dlmm_solana','lb_clmm_call_swap2') }}
+where 1=1
+-- and call_block_time >= timestamp '{{project_start_date}}'
+            {% if is_incremental() %}
+            AND {{incremental_predicate('call_block_time')}}
+            {% else %}
+            AND call_block_time >= TIMESTAMP '{{project_start_date}}'
+            {% endif %}
+),
+all_swaps_events_data as (
+    select * from swaps
+    union 
+    select * from swaps2
 ),
 inner_instruct_data as 
 (
@@ -101,7 +132,7 @@ select
     , sw.tx_index
   
 from 
-swaps_events_data sw 
+all_swaps_events_data sw 
 left join inner_instruct_data ic 
 on (sw.tx_id=ic.tx_id and sw.block_time=ic.block_time and sw.swap_number=ic.swap_number)
 where 1=1 
