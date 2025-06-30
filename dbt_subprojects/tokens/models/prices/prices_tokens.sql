@@ -34,6 +34,7 @@
                                         , "solana"
                                         , "sonic"
                                         , "sophon"
+                                        , "tac"
                                         , "opbnb"
                                         , "unichain"
                                         , "viction"
@@ -88,6 +89,7 @@ ref('prices_native_tokens')
 ,ref('prices_sonic_tokens')
 ,ref('prices_ink_tokens')
 ,ref('prices_sophon_tokens')
+,ref('prices_tac_tokens')
 ,ref('prices_opbnb_tokens')
 ,ref('prices_unichain_tokens')
 ,ref('prices_abstract_tokens')
