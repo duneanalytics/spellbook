@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'sushiswap_v1_katana',
+        schema = 'sushiswap_v2_katana',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
