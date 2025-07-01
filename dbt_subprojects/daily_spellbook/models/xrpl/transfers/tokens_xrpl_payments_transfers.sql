@@ -57,7 +57,7 @@ successful_payment_transactions AS (
         AND JSON_EXTRACT_SCALAR(metadata, '$.TransactionResult') = 'tesSUCCESS'
         AND destination IS NOT NULL
         {% if is_incremental() %}
-        AND CAST(PARSE_DATETIME(REGEXP_REPLACE(_ledger_close_time_human, ' UTC$', ''), 'yyyy-MMM-dd HH:mm:ss.SSSSSSSSS') AS TIMESTAMP) >= current_timestamp - interval '14 days'
+        AND CAST(PARSE_DATETIME(REGEXP_REPLACE(_ledger_close_time_human, ' UTC$', ''), 'yyyy-MMM-dd HH:mm:ss.SSSSSSSSS') AS TIMESTAMP) >= current_timestamp - interval '3' day
         {% endif %}
 ),
 
