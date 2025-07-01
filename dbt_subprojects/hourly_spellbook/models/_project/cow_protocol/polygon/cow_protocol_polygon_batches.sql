@@ -80,6 +80,8 @@ batch_values as (
             on p.contract_address = 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
             {% if is_incremental() %}
             and {{ incremental_predicate('minute') }}
+            {% else %}
+            and minute >= timestamp '2023-08-03 16:25' --first observed date for polygon
             {% endif %}
             and p.minute = date_trunc('minute', block_time)
             and blockchain = 'polygon'
