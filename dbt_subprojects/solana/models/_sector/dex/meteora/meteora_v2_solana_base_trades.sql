@@ -106,22 +106,22 @@ select
     , sw.block_slot
     , CASE WHEN is_inner_swap = FALSE THEN 'direct' ELSE sw.outer_executing_account END AS trade_source
     -- , bytearray_to_bigint(bytearray_reverse(bytearray_substring(('0x'||substr(cast(ic.data as varchar),211,2)), 1, 2)))  as swapforY
-    , cast(bytearray_to_bigint(bytearray_reverse(bytearray_substring(('0x'||substr(cast(ic.data as VARCHAR),195,16)),1,16))) as uint256) as token_bought_amount_raw
-    , cast(bytearray_to_bigint(bytearray_reverse(bytearray_substring(('0x'||substr(cast(ic.data as VARCHAR),179,16)),1,16))) as uint256) as token_sold_amount_raw
+    , bytearray_to_uint256(bytearray_reverse(bytearray_substring(('0x'||substr(cast(ic.data as VARCHAR),195,16)),1,16))) as token_bought_amount_raw
+    , bytearray_to_uint256(bytearray_reverse(bytearray_substring(('0x'||substr(cast(ic.data as VARCHAR),179,16)),1,16))) as token_sold_amount_raw
     , cast(NULL AS double) as fee_tier
-    , case when bytearray_to_bigint(bytearray_reverse(bytearray_substring(('0x'||substr(cast(ic.data as varchar),211,2)), 1, 2))) =1 
+    , case when bytearray_to_uint256(bytearray_reverse(bytearray_substring(('0x'||substr(cast(ic.data as varchar),211,2)), 1, 2))) =1 
       then account_tokenXMint
       else account_tokenYMint
       end as token_sold_mint_address
-    , case when bytearray_to_bigint(bytearray_reverse(bytearray_substring(('0x'||substr(cast(data as varchar),211,2)), 1, 2))) =0 
+    , case when bytearray_to_uint256(bytearray_reverse(bytearray_substring(('0x'||substr(cast(ic.data as varchar),211,2)), 1, 2))) =0 
       then account_tokenXMint
       else account_tokenYMint
       end as token_bought_mint_address
-    , case when bytearray_to_bigint(bytearray_reverse(bytearray_substring(('0x'||substr(cast(ic.data as varchar),211,2)), 1, 2))) =1 
+    , case when bytearray_to_uint256(bytearray_reverse(bytearray_substring(('0x'||substr(cast(ic.data as varchar),211,2)), 1, 2))) =1 
       then account_reserveX
       else account_reserveY
       end AS token_sold_vault
-    , case when bytearray_to_bigint(bytearray_reverse(bytearray_substring(('0x'||substr(cast(data as varchar),211,2)), 1, 2))) =0 
+    , case when bytearray_to_uint256(bytearray_reverse(bytearray_substring(('0x'||substr(cast(ic.data as varchar),211,2)), 1, 2))) =0 
       then account_reserveX
       else account_reserveY
       end as token_bought_vault
@@ -131,7 +131,7 @@ select
     , sw.tx_id
     , sw.outer_instruction_index
     , sw.inner_instruction_index
-    , sw.tx_index
+    -- , sw.tx_index
   
 from 
 all_swaps_events_data sw 
