@@ -131,13 +131,14 @@ tvl_daily as (
 
 prices as (
     select
-        cast(date_trunc('day', timestamp) as date) as block_date
+        cast(date_trunc('day', minute) as date) as block_date
         , blockchain
         , contract_address
-        , price
+        , max_by(price, minute) as price
     from 
-    {{ source('prices','day') }}
-    where {{ incremental_predicate('timestamp') }}
+    {{ source('prices','usd_with_native') }}
+    where {{ incremental_predicate('minute') }}
+    group by 1, 2, 3 
 ) 
 
     select 
@@ -240,12 +241,13 @@ tvl_daily as (
 
 prices as (
     select
-        cast(date_trunc('day', timestamp) as date) as block_date
+        cast(date_trunc('day', minute) as date) as block_date
         , blockchain
         , contract_address
-        , price
+        , max_by(price, minute) as price
     from 
-    {{ source('prices','day') }}
+    {{ source('prices','usd_with_native') }}
+    group by 1, 2, 3 
 ) 
 
     select 
