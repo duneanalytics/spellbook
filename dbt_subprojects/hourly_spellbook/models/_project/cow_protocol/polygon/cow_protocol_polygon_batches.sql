@@ -29,6 +29,8 @@ solvers_ranked as (
             on t."from" = solvers.address
     {% if is_incremental() %}
     where {{ incremental_predicate('block_time') }}
+    {% else %}
+    where block_time >= timestamp '2023-08-03 16:25' --first block_time observed
     {% endif %}
 ),
 
