@@ -84,7 +84,47 @@ sources:
     tables:
       - name: fees
 
+  - name: gas_ethereum
+    tables:
+      - name: fees
+
+  - name: gas_bnb
+    tables:
+      - name: fees
+
+  - name: gas_avalanche_c
+    tables:
+      - name: fees
+
+  - name: gas_gnosis
+    tables:
+      - name: fees
+
+  - name: gas_optimism
+    tables:
+      - name: fees
+
+  - name: gas_arbitrum
+    tables:
+      - name: fees
+
+  - name: gas_polygon
+    tables:
+      - name: fees
+
+  - name: gas_base
+    tables:
+      - name: fees
+
   - name: gas_celo
+    tables:
+      - name: fees
+
+  - name: gas_scroll
+    tables:
+      - name: fees
+
+  - name: gas_zora
     tables:
       - name: fees
 

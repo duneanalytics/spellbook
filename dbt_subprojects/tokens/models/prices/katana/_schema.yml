@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: prices_katana_tokens
+    meta:
+      blockchain: katana
+      sector: prices
+      contributors: hosuke
+    config:
+      tags: ['prices', 'tokens', 'usd']
+    description: "Price tokens on Katana EVM chain"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - contract_address
+      - test_prices_tokens_against_erc20
+    columns:
+      - name: token_id
+        description: "Id of the token at coinpaprika. This id is required to pull the price feed data."
+      - name: blockchain
+        description: "Native blockchain of the token, if any"
+        data_tests:
+          - accepted_values:
+              values: [ "katana" ]
+      - name: contract_address
+        description: "Contract address of the token, if any"
+      - name: symbol
+        description: "Token symbol"
+      - name: decimals
+        description: "Number of decimals for the token contract"
