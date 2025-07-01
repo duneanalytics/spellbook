@@ -131,7 +131,7 @@ select
     , sw.tx_id
     , sw.outer_instruction_index
     , sw.inner_instruction_index
-    -- , sw.tx_index
+    , sw.tx_index
   
 from 
 all_swaps_events_data sw 
