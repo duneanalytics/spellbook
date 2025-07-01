@@ -94,6 +94,8 @@ and tx_success
 and is_inner
 and inner_executing_account='LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo' 
 and cardinality(account_arguments)=1
+and length(data) = 145 
+
 )
 select 
     'solana' as blockchain
