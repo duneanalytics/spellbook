@@ -137,9 +137,3 @@ from
 all_swaps_events_data sw 
 left join inner_instruct_data ic 
 on (sw.tx_id=ic.tx_id and sw.block_time=ic.block_time and sw.outer_instruction_index=ic.outer_instruction_index and sw.swap_number=ic.swap_number)
-where 1=1 
-{% if is_incremental() %}
-            AND {{incremental_predicate('sw.block_time')}}
-            {% else %}
-            AND sw.block_time >= TIMESTAMP '{{project_start_date}}'
-            {% endif %}
