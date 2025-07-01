@@ -111,16 +111,57 @@ meta as (
         , transfers.block_time as transfer_block_time
         , transfers.tx_hash as transfer_tx_hash
         , transfers.transfer_trace_address
-        , contract_address
+        , if(contract_address = 0xae, wrapped_native_token_address, contract_address) as contract_address
         , amount
+        , if(contract_address = 0xae, true, false) as transfer_native
         , transfer_from
         , transfer_to
+        , date_trunc('minute', transfers.block_time) as minute
     from calls
-    join transfers on 
-        transfers.block_number = calls.result_block_number
+    join meta on true
+    join transfers on true
+        and transfers.block_number = calls.result_block_number
         and transfers.tx_hash = calls.result_tx_hash
         and slice(transfer_trace_address, 1, cardinality(result_trace_address)) = result_trace_address
 )
+
+, tokens as (
+    select
+        blockchain as transfer_blockchain
+        , contract_address
+        , symbol as token_symbol
+        , decimals as token_decimals
+    from {{ source('tokens', 'erc20') }}
+    where blockchain = '{{blockchain}}'
+)
+
+, prices as (
+    select
+        blockchain as transfer_blockchain
+        , contract_address
+        , minute
+        , price
+        , decimals
+        , symbol
+    from {{ source('prices', 'usd') }}
+    {% if is_incremental() %}
+        where {{ incremental_predicate('minute') }}
+            and blockchain = '{{blockchain}}'
+    {% endif %}
+)
+
+, trusted_tokens as (
+    select
+        blockchain as transfer_blockchain
+        , contract_address
+        , true as trusted
+    from {{ source('prices', 'trusted_tokens') }}
+    where blockchain = '{{blockchain}}'
+    group by 1, 2, 3
+)
+
+{% set symbol = 'coalesce(symbol, token_symbol)' %}
+{% set decimals = 'coalesce(token_decimals, decimals)' %}
 
 -- output --
 
@@ -141,17 +182,24 @@ select
     , transfer_block_time
     , transfer_tx_hash
     , transfer_trace_address
-    , if(contract_address = 0xae, wrapped_native_token_address, contract_address) as contract_address
+    , contract_address
     , amount
-    , if(contract_address = 0xae, true, false) as transfer_native
+    , transfer_native
     , transfer_from
     , transfer_to
     , if(
         coalesce(transfer_from, transfer_to) is not null
         , count(*) over(partition by blockchain, tx_hash, call_trace_address, array_join(array_sort(array[transfer_from, transfer_to]), ''))
     ) as transfers_between_players
-    , date_trunc('minute', transfer_block_time) as minute
+    , minute
+    , {{ symbol }} as symbol
+    , {{ decimals }} as decimals
+    , amount * price / pow(10, {{ decimals }}) as amount_usd
+    , coalesce(trusted, false) as trusted
     , date(date_trunc('month', transfer_block_time)) as block_month
-from merging, meta
+from merging
+left join prices using(transfer_blockchain, contract_address, minute)
+left join tokens using(transfer_blockchain, contract_address)
+left join trusted_tokens using(transfer_blockchain, contract_address)
 
 {% endmacro %}
