@@ -6,7 +6,7 @@ models:
       sector: metrics
       contributors: krishhh
     config:
-      tags: ['metrics', 'fees', 'gas', 'daily', 'ton']
+      tags: ['metrics', 'fees', 'gas', 'daily', 'xrpl']
     description: "Sum of total fees spent per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
