@@ -136,7 +136,6 @@ all_swaps_events_data sw
 left join inner_instruct_data ic 
 on (sw.tx_id=ic.tx_id and sw.block_time=ic.block_time and sw.swap_number=ic.swap_number)
 where 1=1 
-and sw.tx_id='3kDZJQo2fyyE6kiViKtmGbxCcTh7EDjADux9xkah5ytNhsSBbHKx4h1QcJNWTT5BBD4nyxqdN7hahzW4pE4AYTZT'
 {% if is_incremental() %}
             AND {{incremental_predicate('sw.block_time')}}
             {% else %}
