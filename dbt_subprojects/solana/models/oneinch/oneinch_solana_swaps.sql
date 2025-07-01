@@ -99,7 +99,7 @@ select
     , dst_amount as dst_token_amount
     , dst_amount_usd as dst_token_amount_usd
     , coalesce(src_amount_usd, dst_amount_usd) as amount_usd
-    , {{dbt_utils.generate_surrogate_key(["blockchain", "order_hash", "array_join(call_trace_address, ',')"])}} as unique_key
+    , {{dbt_utils.generate_surrogate_key(["blockchain", "order_hash", "amounts.tx_id", "array_join(call_trace_address, ',')"])}} as unique_key
     , cast(date_trunc('month', tx.block_time) as date) as block_month
 from orders as o
 join amounts using(order_hash)
