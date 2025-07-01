@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: rooster_protocol_plume
+    tables:
+      - name: maverickv2factory_evt_poolcreated
+      - name: maverickv2pool_evt_poolswap

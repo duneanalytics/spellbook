@@ -83,3 +83,7 @@ sources:
       - name: MorphoBlue_evt_Repay
       - name: MorphoBlue_evt_Liquidate
 
+  - name: pike_base
+    tables:
+      - name: ptoken_evt_borrow
+      - name: ptoken_evt_repayborrow

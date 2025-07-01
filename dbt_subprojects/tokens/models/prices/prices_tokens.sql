@@ -22,6 +22,7 @@
                                         , "gnosis"
                                         , "ink"
                                         , "kaia"
+                                        , "katana"
                                         , "linea"
                                         , "nova"
                                         , "optimism"
@@ -96,6 +97,7 @@ ref('prices_native_tokens')
 ,ref('prices_degen_tokens')
 ,ref('prices_lens_tokens')
 ,ref('prices_plume_tokens')
+,ref('prices_katana_tokens')
 ] %}
 
 

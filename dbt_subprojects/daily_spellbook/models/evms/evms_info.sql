@@ -17,6 +17,7 @@
                                         , "gnosis"
                                         , "ink"
                                         , "kaia"
+                                        , "katana"
                                         , "linea"
                                         , "nova"
                                         , "optimism"
@@ -105,7 +106,7 @@ FROM (
         , (14, 'flare', 'Flare', 'Layer 1', NULL, 'FLR', NULL, 'https://flare-explorer.flare.network/', timestamp '2022-07-13 15:32', NULL, NULL, NULL, true, NULL)
         , (88, 'viction', 'Viction', 'Layer 1', NULL, 'VIC', 0xC054751BdBD24Ae713BA3Dc9Bd9434aBe2abc1ce, 'https://vicscan.xyz/', timestamp '2018-12-14 07:50:20', NULL, NULL, NULL, true, NULL)
         , (21000000, 'corn', 'Corn', 'Layer 1', NULL, 'BTCN', NULL, 'https://cornscan.io/', timestamp '2024-11-19 10:29:11', NULL, NULL, NULL, true, NULL)
-        , (146, 'sonic', 'Sonic', 'Layer 1', NULL, 'SONIC', NULL, 'https://sonicscan.org/', timestamp '2024-12-01 00:00', NULL, NULL, NULL, true, NULL)
+        , (146, 'sonic', 'Sonic', 'Layer 1', NULL, 'SONIC', 0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38, 'https://sonicscan.org/', timestamp '2024-12-01 00:00', NULL, NULL, NULL, true, NULL)
         , (57073, 'ink', 'Ink', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.inkonchain.com/', timestamp '2024-12-06 15:20', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, 'Superchain')
         , (50104, 'sophon', 'Sophon', 'Layer 2', 'Validium', 'SOPH', NULL, 'https://explorer.sophon.xyz/', timestamp '2024-10-22 01:23', 'ZK Stack', 'Ethereum Blobs', 'Ethereum', true, NULL)
         , (2741, 'abstract', 'Abstract', 'Layer 2', 'ZK Rollup', 'ETH', 0x3439153EB7AF838Ad19d56E1571FBD09333C2809, 'https://abscan.org/', timestamp '2024-10-25 18:31', 'ZK Stack', 'Ethereum Blobs', 'Ethereum', true, 'Elastic Network')
@@ -114,4 +115,5 @@ FROM (
         , (130, 'unichain', 'Unichain', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://uniscan.xyz/', timestamp '2024-11-04 19:26', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, 'Superchain')
         , (232, 'lens', 'Lens', 'Layer 2', 'ZK Rollup', 'GHO', 0x6bDc36E20D267Ff0dd6097799f82e78907105e2F, 'https://explorer.lens.xyz', timestamp '2025-04-24 00:00',  'zkSync', 'Ethereum Blobs', 'Ethereum', true, 'Elastic Network')
         , (98867, 'plume', 'Plume', 'Layer 2', 'Optimistic Rollup', 'PLUME', 0xEa237441c92CAe6FC17Caaf9a7acB3f953be4bd1, 'https://explorer.plume.org/', timestamp '2025-02-20 10:39', 'Arbitrum Orbit', 'Ethereum Blobs', 'Ethereum', true, 'Arbitrum Orbit')
+        , (747474, 'katana', 'Katana', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x0000000000000000000000000000000000000000, 'https://explorer.katanarpc.com/', timestamp '2025-06-23 09:45', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, 'Superchain')
 ) AS temp_table (chain_id, blockchain, name, chain_type, rollup_type, native_token_symbol, wrapped_native_token_address, explorer_link, first_block_time, codebase, data_availability, settlement, is_on_dune, ecosystem)
