@@ -31,7 +31,7 @@ select
     , account_reserveY
     , account_lbPair
     , call_is_inner as is_inner_swap
-    , row_number() over (partition by call_tx_id order by call_tx_index asc, call_outer_instruction_index asc, call_inner_instruction_index) as swap_number
+    , row_number() over (partition by call_tx_id, call_outer_instruction_index order by call_inner_instruction_index) as swap_number
 from {{ source ('dlmm_solana','lb_clmm_call_swap') }}
 where 1=1
 -- and call_block_time >= timestamp '{{project_start_date}}'
@@ -58,7 +58,7 @@ select
     , account_reserveY
     , account_lbPair
     , call_is_inner as is_inner_swap
-    , row_number() over (partition by call_tx_id order by call_tx_index asc, call_outer_instruction_index asc, call_inner_instruction_index) as swap_number
+    , row_number() over (partition by call_tx_id, call_outer_instruction_index order by call_inner_instruction_index) as swap_number
 from {{ source ('dlmm_solana','lb_clmm_call_swap2') }}
 where 1=1
 -- and call_block_time >= timestamp '{{project_start_date}}'
@@ -81,7 +81,7 @@ select
     , coalesce(tx_index,0) as tx_index
     , coalesce(outer_instruction_index,0) as outer_instruction_index
     , coalesce(inner_instruction_index,0) as  inner_instruction_index
-    , row_number() over (partition by tx_id order by tx_index asc, outer_instruction_index asc, inner_instruction_index) as swap_number
+    , row_number() over (partition by tx_id , outer_instruction_index order by inner_instruction_index) as swap_number
     , data
 from {{ source ('solana','instruction_calls') }}
 where 1=1
@@ -134,7 +134,7 @@ select
 from 
 all_swaps_events_data sw 
 left join inner_instruct_data ic 
-on (sw.tx_id=ic.tx_id and sw.block_time=ic.block_time and sw.swap_number=ic.swap_number)
+on (sw.tx_id=ic.tx_id and sw.block_time=ic.block_time and sw.outer_instruction_index=ic.outer_instruction_index and sw.swap_number=ic.swap_number)
 where 1=1 
 {% if is_incremental() %}
             AND {{incremental_predicate('sw.block_time')}}
