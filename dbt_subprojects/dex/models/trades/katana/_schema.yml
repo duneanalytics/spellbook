@@ -24,6 +24,8 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('sushiswap_katana_base_trades_seed')
+          filter:
+            version: 1
 
   - name: sushiswap_v2_katana_base_trades
     meta:
@@ -41,3 +43,5 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('sushiswap_katana_base_trades_seed')
+          filter:
+            version: 2
