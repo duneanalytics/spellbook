@@ -15,4 +15,7 @@ sources:
     tables:
       - name: lb_clmm_call_swap
       - name: lb_clmm_call_swap2
-        
+      - name: lb_clmm_call_swapexactout
+      - name: lb_clmm_call_swapexactout2
+      - name: lb_clmm_call_swapwithpriceimpact
+      - name: lb_clmm_call_swapwithpriceimpact2
