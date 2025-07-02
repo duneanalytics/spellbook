@@ -98,7 +98,7 @@ final as (
         bytearray_substring(('0x'||substr(cast(ic.data as varchar),179,16)),1,16)
       )
     )                                       as token_sold_amount_raw,
-    null                                    as fee_tier,
+    cast(null as double)                                    as fee_tier,
     case 
       when bytearray_to_uint256(
              bytearray_reverse(
