@@ -154,4 +154,4 @@ final as (
    and sw.swap_number = ic.swap_number
 )
 
-select * from final;
+select * from final
