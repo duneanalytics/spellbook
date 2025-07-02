@@ -104,7 +104,7 @@ native_ton_transfers AS (
     JOIN ton_prices tp ON tm.block_date = tp.block_date
     WHERE tm.direction = 'in'
         AND tm.value > 0
-        AND tm.block_date >= current_date - interval '5 days'
+        AND tm.block_date >= current_date - interval '5' day
         {% if is_incremental() %}
         AND {{ incremental_predicate('tm.block_date') }}
         {% endif %}
@@ -154,7 +154,7 @@ jetton_transfers AS (
         AND je.jetton_master != upper('0:671963027f7f85659ab55b821671688601cdcf1ee674fc7fbbb1a776a18d34a3') -- pTON
         AND NOT je.tx_aborted
         AND je.amount > 0
-        AND je.block_date >= current_date - interval '5 days'
+        AND je.block_date >= current_date - interval '5' day
         {% if is_incremental() %}
         AND {{ incremental_predicate('je.block_date') }}
         {% endif %}
