@@ -18,7 +18,6 @@
 
 with
 
--- 1) union both swap tables in a loop
 all_swaps as (
   {% for tbl in swap_tables %}
     select
@@ -51,7 +50,6 @@ all_swaps as (
   {% endfor %}
 ),
 
--- 2) inner instruction data
 inner_instruct as (
   select
     tx_id,
@@ -78,7 +76,6 @@ inner_instruct as (
     {% endif %}
 ),
 
--- 3) decode + join
 final as (
   select
     'solana'                                as blockchain,
@@ -102,7 +99,6 @@ final as (
       )
     )                                       as token_sold_amount_raw,
     null                                    as fee_tier,
-    /* determine which mint & vault based on the “flag” at position 211: */
     case 
       when bytearray_to_uint256(
              bytearray_reverse(
