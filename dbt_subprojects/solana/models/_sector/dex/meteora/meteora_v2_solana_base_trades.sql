@@ -86,7 +86,7 @@ final as (
       else sw.outer_executing_account 
     end as trade_source,
     bytearray_to_uint256(bytearray_reverse(bytearray_substring(('0x'||substr(cast(ic.data as varchar),195,16)),1,16))) as token_bought_amount_raw,
-    bytearray_to_uint256(bytearray_substring(('0x'||substr(cast(ic.data as varchar),179,16)),1,16)) as token_sold_amount_raw,
+    bytearray_to_uint256(bytearray_reverse(bytearray_substring(('0x'||substr(cast(ic.data as varchar),179,16)),1,16))) as token_sold_amount_raw,
     cast(null as double) as fee_tier,
     case 
       when bytearray_to_uint256(bytearray_reverse(bytearray_substring(('0x'||substr(cast(ic.data as varchar),211,2)),1,2))) = 1 
