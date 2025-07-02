@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date','unique_key'],
+    unique_key = ['block_date', 'tx_hash', 'tx_lt'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     post_hook='{{ expose_spells(\'["ton"]\',
                                 "sector",
@@ -74,7 +74,6 @@ daily_liquidity AS (
 -- Native TON transfers
 native_ton_transfers AS (
     SELECT
-        {{ dbt_utils.generate_surrogate_key(['tm.block_number', 'tm.tx_hash', 'tm.tx_lt']) }} as unique_key,
         'ton' as blockchain,
         date_trunc('month', tm.block_date) as block_month,
         tm.block_date,
@@ -105,6 +104,7 @@ native_ton_transfers AS (
     JOIN ton_prices tp ON tm.block_date = tp.block_date
     WHERE tm.direction = 'in'
         AND tm.value > 0
+        AND tm.block_date >= current_date - interval '5 days'
         {% if is_incremental() %}
         AND {{ incremental_predicate('tm.block_date') }}
         {% endif %}
@@ -113,7 +113,6 @@ native_ton_transfers AS (
 -- Jetton transfers with proper metadata
 jetton_transfers AS (
     SELECT
-        {{ dbt_utils.generate_surrogate_key(['je.block_number', 'je.tx_hash', 'je.jetton_master', 'je.amount']) }} as unique_key,
         'ton' as blockchain,
         date_trunc('month', je.block_date) as block_month,
         je.block_date,
@@ -137,12 +136,12 @@ jetton_transfers AS (
         COALESCE(jm.symbol, 'UNKNOWN') as token_symbol,
         COALESCE(jm.decimals, 9) as token_decimals,
         je.amount as amount_raw,
-        je.amount / power(10, COALESCE(jm.decimals, 9)) as amount,  -- Fixed: Proper decimal conversion
+        je.amount / power(10, COALESCE(jm.decimals, 9)) as amount,  
         CASE
-            WHEN jp.is_need_liquidity_limit = 0 -- treat volume as is
-                THEN (je.amount / power(10, COALESCE(jm.decimals, 9))) * jp.price_usd
-            WHEN jp.is_need_liquidity_limit = 1 -- limit volume by total token TVL
-                THEN least((je.amount / power(10, COALESCE(jm.decimals, 9))) * jp.price_usd, coalesce(dl.total_token_tvl_usd, 0))
+            WHEN jp.is_need_liquidity_limit = 0 
+                THEN (je.amount / power(10, COALESCE(jm.decimals, 9))) * COALESCE(jp.price_usd, 0)
+            WHEN jp.is_need_liquidity_limit = 1
+                THEN least((je.amount / power(10, COALESCE(jm.decimals, 9))) * COALESCE(jp.price_usd, 0), coalesce(dl.total_token_tvl_usd, 0))
             ELSE 0 
         END as amount_usd,
         jp.price_usd
@@ -155,14 +154,13 @@ jetton_transfers AS (
         AND je.jetton_master != upper('0:671963027f7f85659ab55b821671688601cdcf1ee674fc7fbbb1a776a18d34a3') -- pTON
         AND NOT je.tx_aborted
         AND je.amount > 0
+        AND je.block_date >= current_date - interval '5 days'
         {% if is_incremental() %}
         AND {{ incremental_predicate('je.block_date') }}
         {% endif %}
 )
 
--- Final SELECT with proper column alignment
 SELECT 
-    unique_key,
     blockchain,
     block_month,
     block_date,
@@ -194,7 +192,6 @@ FROM native_ton_transfers
 UNION ALL
 
 SELECT 
-    unique_key,
     blockchain,
     block_month,
     block_date,
