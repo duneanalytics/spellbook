@@ -11,6 +11,7 @@
 }}
 
 {% set models = [  
+    ref('dex_abstract_base_trades')
     ref('dex_arbitrum_base_trades')
     , ref('dex_avalanche_c_base_trades')
     , ref('dex_abstract_base_trades')
