@@ -1,0 +1,9 @@
+version: 2
+sources:
+- name: sushiswap_katana
+  schema: sushiswap_katana
+  tables:
+  - name: routeprocessor7_call_processRoute
+  - name: routeprocessor7_call_transferValueAndprocessRoute
+  - name: routeprocessor7_call_processRouteWithTransferValueOutput
+  - name: routeprocessor7_call_processRouteWithTransferValueInput
