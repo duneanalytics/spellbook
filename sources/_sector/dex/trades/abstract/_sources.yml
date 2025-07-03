@@ -16,9 +16,5 @@ sources:
   - name: abstractswap_abstract
     tables:
       - name: uniswapv3pool_evt_swap
-        description: "Swap events from AbstractSwap V3 Pair contracts"
-  
-  - name: reservoir_swap_abstract
-    tables:
       - name: uniswapv3factory_evt_poolcreated
         description: "PoolCreated events from AbstractSwap V3 Factory contract"
