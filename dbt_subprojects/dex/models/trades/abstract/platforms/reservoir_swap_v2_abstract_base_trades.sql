@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'abstractswap_v2_abstract'
+    schema = 'reservoir_swap_v2_abstract'
     , alias = 'base_trades'
     , materialized = 'incremental'
     , file_format = 'delta'
@@ -16,9 +16,9 @@ with
         {{
     uniswap_compatible_v2_trades(
         blockchain = 'abstract'
-        , project = 'abstractswap'
+        , project = 'reservoir_swap'
         , version = '2'
-        , Pair_evt_Swap = source('uniswap_abstract', 'pair_evt_swap')
+        , Pair_evt_Swap = source('reservoir_swap_abstract', 'uniswapv2pair_evt_swap')
         , Factory_evt_PairCreated = source('reservoir_swap_abstract', 'uniswapv2factory_evt_paircreated')
     )
     }}
