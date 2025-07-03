@@ -1,8 +1,8 @@
 {{ config(
-        schema = 'bebop_optimism',
+        schema = 'bebop_avalanche_c',
         alias = 'trades',
         materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'["optimism"]\',
+        post_hook='{{ expose_spells(blockchains = \'["avalanche_c"]\',
                                     spell_type = "project",
                                     spell_name = "bebop",
                                     contributors = \'["alekss"]\') }}'
@@ -10,9 +10,7 @@
 
 
 {% set bebop_models = [
-    ref('bebop_rfq_optimism_trades'),
-    ref('bebop_jam_optimism_trades'),
-    ref('bebop_blend_optimism_trades')
+    ref('bebop_blend_avalanche_c_trades')
 ] %}
 
 SELECT *
