@@ -137,6 +137,7 @@ WITH pools AS (
             ) 
             OR
             (sf.swap_inner_index IS NOT NULL 
+            AND t.inner_instruction_index > sf.swap_inner_index
             AND t.inner_instruction_index BETWEEN sf.swap_inner_index + 1 AND sf.swap_inner_index + 12
             AND (
                         CASE 
