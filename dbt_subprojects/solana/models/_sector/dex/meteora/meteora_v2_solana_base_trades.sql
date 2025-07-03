@@ -19,6 +19,8 @@
 with
 
 all_swaps as (
+  with individual_program_swaps as 
+  (
   {% for tbl in swap_tables %}
     select
       call_block_slot as block_slot,
@@ -34,11 +36,7 @@ all_swaps as (
       account_reserveX as account_reserveX,
       account_reserveY as account_reserveY,
       account_lbPair as account_lbPair,
-      call_is_inner as is_inner_swap,
-      row_number() over (
-        partition by call_tx_id, call_outer_instruction_index
-        order by call_inner_instruction_index
-      ) as swap_number
+      call_is_inner as is_inner_swap
     from {{ source('dlmm_solana', tbl) }}
     where 1=1
       {% if is_incremental() %}
@@ -48,6 +46,13 @@ all_swaps as (
       {% endif %}
     {% if not loop.last %} union all {% endif %}
   {% endfor %}
+  )
+  select *,       
+      row_number() over (
+        partition by tx_id, outer_instruction_index
+        order by inner_instruction_index
+      ) as swap_number
+  from individual_program_swaps
 ),
 
 inner_instruct as (
