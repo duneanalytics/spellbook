@@ -2391,6 +2391,11 @@ models:
       contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'claimable_collateral_updated']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2430,6 +2435,11 @@ models:
       contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'claimable_funding_updated']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2468,6 +2478,11 @@ models:
       contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'clear_pending_action']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2498,6 +2513,11 @@ models:
       contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'collateral_claimed']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2538,6 +2558,11 @@ models:
       contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'funding_fees_claimed']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2576,6 +2601,11 @@ models:
       contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'grant_role']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2606,6 +2636,11 @@ models:
       contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'revoke_role']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2636,6 +2671,11 @@ models:
       contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'set_atomic_oracle_provider']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2666,6 +2706,11 @@ models:
       contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'set_data_stream']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2700,6 +2745,11 @@ models:
       contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'set_oracle_provider_enabled']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2730,6 +2780,11 @@ models:
       contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'set_oracle_provider_for_token']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2760,6 +2815,11 @@ models:
       contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'set_price_feed']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2796,6 +2856,11 @@ models:
       contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'signal_grant_role']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2826,6 +2891,11 @@ models:
       contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'signal_pending_action']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2856,6 +2926,11 @@ models:
       contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'signal_revoke_role']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2886,6 +2961,11 @@ models:
       contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'signal_set_atomic_oracle_provider']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2916,6 +2996,11 @@ models:
       contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'signal_set_data_stream']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2950,6 +3035,11 @@ models:
       contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'signal_set_oracle_provider_enabled']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2980,6 +3070,11 @@ models:
       contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'signal_set_oracle_provider_for_token']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -3010,6 +3105,11 @@ models:
       contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'signal_set_price_feed']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -3046,6 +3146,11 @@ models:
       contributors: ai_data_master, gmx-io
     config:
       tags: ['arbitrum', 'gmx', 'event', 'swap_info']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -3085,3 +3190,42 @@ models:
         description: The amount of the price impact attributed to the input token
       - name: order_key
         description: A unique identifier linking this swap to a specific order
+
+  - name: gmx_v2_arbitrum_increment_subaccount_action_count
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'increment_subaccount_action_count']
+    description: |
+      Aggregates counts of subaccount actions on the Arbitrum chain.
+      This model pulls from each chain-specific source and unifies them into a single 
+      table tracking how many times each subaccount performed each action.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The type of event recorded, always 'IncrementSubaccountActionCount'
+      - *msg_sender
+      - name: account
+        description: The primary account associated with the subaccount action
+      - name: subaccount
+        description: The subaccount identifier on which the action was performed
+      - name: next_value
+        description: The updated action-count after this event
+      - name: action_type
+        description: The type of subaccount action performed.
