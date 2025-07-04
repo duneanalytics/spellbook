@@ -128,7 +128,7 @@ excluded_addresses AS (
     UNION ALL
     SELECT _recipient AS address FROM {{source('lido_ethereum','AllowedRecipientsRegistry_RevShare_evt_RecipientAdded')}}
     UNION ALL
-    SELECT 0x0000000000000000000000000000000000000000 -- 零地址
+    SELECT 0x0000000000000000000000000000000000000000
     UNION ALL
     SELECT address FROM diversifications_addresses
     UNION ALL
