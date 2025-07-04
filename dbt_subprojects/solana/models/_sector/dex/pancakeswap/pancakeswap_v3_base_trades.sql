@@ -20,16 +20,16 @@
     pools as (
         -- come back for fees some other day after we can tie fee account
         SELECT
-             ip.account_tokenMint0 as tokenA
-            , ip.account_tokenVault0 as tokenAVault
-            , ip.account_tokenMint1 as tokenB
-            , ip.account_tokenVault1 as tokenBVault
-            , ip.account_ammConfig as fee_tier
-            , ip.account_poolState as pool_id
+             ip.account_token_mint_0 as tokenA
+            , ip.account_token_vault_0 as tokenAVault
+            , ip.account_token_mint_1 as tokenB
+            , ip.account_token_vault_1 as tokenBVault
+            , ip.account_amm_config as fee_tier
+            , ip.account_pool_state as pool_id
             , ip.call_tx_id as init_tx
             , ip.call_block_time as init_time
-            , row_number() over (partition by ip.account_poolState order by ip.call_block_time desc) as recent_init
-        FROM {{ source('pancakeswap_solana','amm_v3_call_createPool') }} ip
+            , row_number() over (partition by ip.account_pool_state order by ip.call_block_time desc) as recent_init
+        FROM "delta_prod"."pancakeswap_solana"."amm_v3_call_create_pool" ip
     )
 
     , all_swaps as (
@@ -65,15 +65,15 @@
                 end as token_sold_vault
         FROM (
             SELECT
-                account_poolState , call_is_inner, call_outer_instruction_index, call_inner_instruction_index, call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer, call_tx_index
+                account_pool_state , call_is_inner, call_outer_instruction_index, call_inner_instruction_index, call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer, call_tx_index
             FROM {{ source('pancakeswap_solana', 'amm_v3_call_swap') }}
             UNION ALL
             SELECT
-                account_poolState , call_is_inner, call_outer_instruction_index, call_inner_instruction_index, call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer, call_tx_index
-            FROM {{ source('pancakeswap_solana', 'amm_v3_call_swapV2') }}
+                account_pool_state , call_is_inner, call_outer_instruction_index, call_inner_instruction_index, call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer, call_tx_index
+            FROM {{ source('pancakeswap_solana', 'amm_v3_call_swap_v2') }}
         ) sp
         INNER JOIN pools p
-            ON sp.account_poolState = p.pool_id --account 2
+            ON sp.account_pool_state = p.pool_id --account 2
             and p.recent_init = 1 --for some reason, some pools get created twice.
         INNER JOIN {{ ref('tokens_solana_transfers') }} tr_1
             ON tr_1.tx_id = sp.call_tx_id
