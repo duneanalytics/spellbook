@@ -73,5 +73,5 @@ WITH cctp_id_mapping AS (
     , CAST(m.nonce AS varchar) AS transfer_id
     FROM withdrawals w
     INNER JOIN messages m ON w.block_number = m.block_number
-        and w.join_index + 1 = m.join_index
+        and w.join_index = m.join_index
     INNER JOIN cctp_id_mapping i ON i.id=m.sourceDomain
