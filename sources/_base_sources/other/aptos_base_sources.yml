@@ -6,7 +6,7 @@ sources:
       - name: blocks
         meta:
           docs_slug: /aptos/blocks
-          short_description: no description yet for aptos.blocks. TBD
+          short_description: Blocks on the Aptos blockchain containing transaction data and metadata
 
         description: '{{ doc("aptos_blocks_doc") }}'
         columns:
@@ -461,84 +461,84 @@ sources:
       - name: user_transactions
         meta:
           docs_slug: /aptos/user_transactions
-          short_description: no description yet for aptos.user_transactions. TBD
+          short_description: User-submitted transactions on the Aptos blockchain
         description: '{{ doc("aptos_user_transactions_doc") }}'
         columns:
           - name: block_height
-            description: No description provided. TBD
+            description: The height of the block containing the user transaction
           - name: block_date
-            description: No description provided. TBD
+            description: The date of the block containing the user transaction
           - name: block_timestamp
-            description: No description provided. TBD
+            description: The timestamp of the block containing the user transaction
           - name: block_hash
-            description: No description provided. TBD
+            description: The hash of the block containing the user transaction
           - name: block_first_version
-            description: No description provided. TBD
+            description: The first version number in the block containing the user transaction
           - name: block_last_version
-            description: No description provided. TBD
+            description: The last version number in the block containing the user transaction
           - name: block_proposer
-            description: No description provided. TBD
+            description: The proposer of the block containing the user transaction
           - name: block_round
-            description: No description provided. TBD
+            description: The round number of the block containing the user transaction
           - name: block_epoch
-            description: No description provided. TBD
+            description: The epoch number of the block containing the user transaction
           - name: block_metadata_id
-            description: No description provided. TBD
+            description: The metadata ID of the block containing the user transaction
           - name: block_failed_proposer_indices
-            description: No description provided. TBD
+            description: The indices of failed proposers for the block containing the user transaction
           - name: block_previous_block_votes_bitvec
-            description: No description provided. TBD
+            description: The bitvector of votes from the previous block
           - name: tx_index
-            description: No description provided. TBD
+            description: The index of the transaction within the block
           - name: tx_type
-            description: No description provided. TBD
+            description: The type of the transaction
           - name: hash
-            description: No description provided. TBD
+            description: The hash of the user transaction
           - name: version
-            description: No description provided. TBD
+            description: The version number of the user transaction
           - name: gas_used
-            description: No description provided. TBD
+            description: The amount of gas used by the user transaction
           - name: vm_status
-            description: No description provided. TBD
+            description: The VM status after executing the user transaction
           - name: success
-            description: No description provided. TBD
+            description: Whether the user transaction was successful
           - name: state_change_hash
-            description: No description provided. TBD
+            description: The hash of the state changes caused by the user transaction
           - name: event_root_hash
-            description: No description provided. TBD
+            description: The root hash of the events emitted by the user transaction
           - name: state_checkpoint_hash
-            description: No description provided. TBD
+            description: The hash of the state checkpoint after the user transaction
           - name: accumulator_root_hash
-            description: No description provided. TBD
+            description: The root hash of the accumulator after the user transaction
           - name: timestamp
-            description: No description provided. TBD
+            description: The timestamp when the user transaction was executed
           - name: sender
-            description: No description provided. TBD
+            description: The address of the account that submitted the user transaction
           - name: max_gas_amount
-            description: No description provided. TBD
+            description: The maximum amount of gas allowed for the user transaction
           - name: gas_unit_price
-            description: No description provided. TBD
+            description: The price per unit of gas for the user transaction
           - name: sequence_number
-            description: No description provided. TBD
+            description: The sequence number of the user transaction for the sender account
           - name: expiration_timestamp_secs
-            description: No description provided. TBD
+            description: The expiration timestamp of the user transaction in seconds
           - name: events_count
-            description: No description provided. TBD
+            description: The number of events emitted by the user transaction
           - name: changes_count
-            description: No description provided. TBD
+            description: The number of state changes caused by the user transaction
           - name: payload_type
-            description: No description provided. TBD
+            description: The type of payload in the user transaction (e.g., entry_function_payload, script_payload)
           - name: entry_function_name
-            description: No description provided. TBD
+            description: The name of the entry function being called, if the payload is an entry function
           - name: entry_function_module_name
-            description: No description provided. TBD
+            description: The name of the module containing the entry function
           - name: entry_function_module_address
-            description: No description provided. TBD
+            description: The address of the module containing the entry function
           - name: script_bytecode
-            description: No description provided. TBD
+            description: The bytecode of the script, if the payload is a script
           - name: script_abi
-            description: No description provided. TBD
+            description: The ABI (Application Binary Interface) of the script, if the payload is a script
           - name: type_arguments
-            description: No description provided. TBD
+            description: The type arguments passed to the function or script
           - name: arguments
-            description: No description provided. TBD
+            description: The arguments passed to the function or script
