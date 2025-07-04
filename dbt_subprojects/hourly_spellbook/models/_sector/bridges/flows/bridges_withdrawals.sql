@@ -51,8 +51,8 @@ SELECT w.deposit_chain
 , w.block_time
 , w.block_number
 , w.withdrawal_amount_raw
-, w.withdrawal_amount_raw/POWER(10, pus.decimals) AS withdrawal_amount
-, pus.price*w.withdrawal_amount_raw/POWER(10, pus.decimals) AS withdrawal_amount_usd
+, w.withdrawal_amount_raw/POWER(10, p.decimals) AS withdrawal_amount
+, p.price*w.withdrawal_amount_raw/POWER(10, p.decimals) AS withdrawal_amount_usd
 , w.sender
 , w.recipient
 , w.withdrawal_token_standard
@@ -63,9 +63,9 @@ SELECT w.deposit_chain
 , w.contract_address
 , w.transfer_id
 FROM grouped_withdrawals w
-INNER JOIN {{ source('prices', 'usd') }} pus ON pus.blockchain=w.withdrawal_chain
-    AND pus.contract_address=w.deposit_token_address
-    AND pus.minute=date_trunc('minute', w.block_time)
+INNER JOIN {{ source('prices', 'usd') }} p ON p.blockchain=w.withdrawal_chain
+    AND p.contract_address=w.withdrawal_token_address
+    AND p.minute=date_trunc('minute', w.block_time)
     {% if is_incremental() %}
-    AND  {{ incremental_predicate('pus.minute') }}
+    AND  {{ incremental_predicate('p.minute') }}
     {% endif %}

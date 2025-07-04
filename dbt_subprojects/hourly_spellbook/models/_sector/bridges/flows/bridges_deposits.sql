@@ -54,8 +54,8 @@ SELECT d.deposit_chain
 , d.block_time
 , d.block_number
 , d.deposit_amount_raw
-, d.deposit_amount_raw/POWER(10, pus.decimals) AS deposit_amount
-, pus.price*d.deposit_amount_raw/POWER(10, pus.decimals) AS deposit_amount_usd
+, d.deposit_amount_raw/POWER(10, p.decimals) AS deposit_amount
+, p.price*d.deposit_amount_raw/POWER(10, p.decimals) AS deposit_amount_usd
 , d.sender
 , d.recipient
 , d.deposit_token_standard
@@ -66,9 +66,9 @@ SELECT d.deposit_chain
 , d.contract_address
 , d.transfer_id
 FROM grouped_deposits d
-INNER JOIN {{ source('prices', 'usd') }} pus ON pus.blockchain=d.deposit_chain
-    AND pus.contract_address=d.deposit_token_address
-    AND pus.minute=date_trunc('minute', d.block_time)
+INNER JOIN {{ source('prices', 'usd') }} p ON p.blockchain=d.deposit_chain
+    AND p.contract_address=d.deposit_token_address
+    AND p.minute=date_trunc('minute', d.block_time)
     {% if is_incremental() %}
-    AND  {{ incremental_predicate('pus.minute') }}
+    AND  {{ incremental_predicate('p.minute') }}
     {% endif %}
