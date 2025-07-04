@@ -10,8 +10,8 @@
     , post_hook='{{ expose_spells(\'[
                                       "ethereum","arbitrum","base","ink","blast","optimism","blast","bnb","zora","avalanche_c","unichain","worldchain"
                                     ]\',
-                                    "sector",
-                                    "dex",
+                                    "project",
+                                    "uniswap",
                                     \'["Henrystats"]\') }}')
 }}
 
@@ -139,7 +139,20 @@ prices as (
     {{ source('prices','usd_with_native') }}
     where {{ incremental_predicate('minute') }}
     group by 1, 2, 3 
-) 
+),
+
+prices_day as (
+    select
+        cast(date_trunc('day', timestamp) as date) as block_date
+        , blockchain
+        , contract_address
+        , price
+    from 
+    {{ source('prices','day') }}
+    where volume is not null 
+    and volume > 500000 -- greater than $500k day volume 
+    and {{ incremental_predicate('timestamp') }}
+)
 
     select 
         block_month
@@ -156,8 +169,8 @@ prices as (
         , token1_balance_raw 
         , token0_balance
         , token1_balance
-        , token0_balance * pa.price as token0_balance_usd
-        , token1_balance * pb.price as token1_balance_usd
+        , token0_balance * coalesce(pa.price, pd_a.price) as token0_balance_usd
+        , token1_balance * coalesce(pb.price, pd_b.price) as token1_balance_usd
     from 
     tvl_daily tl 
     left join 
@@ -169,7 +182,17 @@ prices as (
     prices pb
         on tl.token1 = pb.contract_address 
         and tl.block_date = pb.block_date 
-        and tl.blockchain = pb.blockchain 
+        and tl.blockchain = pb.blockchain
+    left join 
+    prices_day pd_a
+        on tl.token0 = pd_a.contract_address 
+        and tl.block_date = pd_a.block_date 
+        and tl.blockchain = pd_a.blockchain 
+    left join 
+    prices_day pd_b
+        on tl.token1 = pd_b.contract_address 
+        and tl.block_date = pd_b.block_date 
+        and tl.blockchain = pd_b.blockchain 
     where check_filter = 'include'  
 
 {% else %}
@@ -248,7 +271,19 @@ prices as (
     from 
     {{ source('prices','usd_with_native') }}
     group by 1, 2, 3 
-) 
+),
+
+prices_day as (
+    select
+        cast(date_trunc('day', timestamp) as date) as block_date
+        , blockchain
+        , contract_address
+        , price
+    from 
+    {{ source('prices','day') }}
+    where volume is not null 
+    and volume > 500000 -- greater than $500k day volume 
+)
 
     select 
         block_month
@@ -265,8 +300,8 @@ prices as (
         , token1_balance_raw 
         , token0_balance
         , token1_balance
-        , token0_balance * pa.price as token0_balance_usd
-        , token1_balance * pb.price as token1_balance_usd
+        , token0_balance * coalesce(pa.price, pd_a.price) as token0_balance_usd
+        , token1_balance * coalesce(pb.price, pd_b.price) as token1_balance_usd
     from 
     tvl_daily tl 
     left join 
@@ -279,5 +314,14 @@ prices as (
         on tl.token1 = pb.contract_address 
         and tl.block_date = pb.block_date 
         and tl.blockchain = pb.blockchain 
-
+    left join 
+    prices_day pd_a
+        on tl.token0 = pd_a.contract_address 
+        and tl.block_date = pd_a.block_date 
+        and tl.blockchain = pd_a.blockchain 
+    left join 
+    prices_day pd_b
+        on tl.token1 = pd_b.contract_address 
+        and tl.block_date = pd_b.block_date 
+        and tl.blockchain = pd_b.blockchain 
 {% endif %}

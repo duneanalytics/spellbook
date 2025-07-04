@@ -507,6 +507,7 @@ liquidity_change_base as (
         , -amount1 as amount1
     from 
     fee_collection
+    where tx_hash not in (select evt_tx_hash from swap_events)
 )
 
     select 
