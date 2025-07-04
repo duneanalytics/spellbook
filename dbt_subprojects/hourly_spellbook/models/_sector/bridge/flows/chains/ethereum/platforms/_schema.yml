@@ -15,8 +15,7 @@ models:
           combination_of_columns: ['tx_hash','evt_index']
       - equal_rowcount_with_sources:
           evt_sources:
-            - source('base_ethereum', 'l1standardbridge_evt_erc20bridgedeposits')
-            - source('base_ethereum','l1standardbridge_evt_ethbridgedeposits')
+            - source('circle_ethereum', 'tokenmessenger_evt_mintandwithdraw')
     columns:
       - &deposit_chain
         name: deposit_chain
@@ -92,8 +91,7 @@ models:
           combination_of_columns: ['tx_hash','evt_index']
       - equal_rowcount_with_sources:
           evt_sources:
-            - source('base_ethereum','l1standardbridge_evt_erc20bridgefinalized')
-            - source('base_ethereum','l1standardbridge_evt_ethbridgefinalized')
+            - source('circle_ethereum','tokenmessenger_evt_mintandwithdraw')
     columns:
       - *deposit_chain
       - *withdraw_chain

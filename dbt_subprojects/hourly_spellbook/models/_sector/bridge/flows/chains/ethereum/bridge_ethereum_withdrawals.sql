@@ -8,7 +8,7 @@
 }}
 
 {% set bridge_platforms = [
-    'bridge_ethereum_circle_witdrawals'
+    'bridge_ethereum_circle_withdrawals'
 ] %}
 
 SELECT *

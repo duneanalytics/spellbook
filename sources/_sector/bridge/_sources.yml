@@ -1,17 +1,16 @@
 version: 2
 
 sources:
-  - name: ovm_base
+  - name: circle_base
     description: "Base bridge events on Base"
     tables:
-      - name: l2standardbridge_evt_erc20bridgeinitiated
-      - name: l2standardbridge_evt_ethbridgeinitiated
-      - name: l2standardbridge_evt_erc20bridgefinalized
-      - name: l2standardbridge_evt_ethbridgefinalized
-  - name: base_ethereum
+      - name: tokenmessenger_evt_depositforburn
+      - name: tokenmessenger_evt_mintandwithdraw
+      - name: messagetransmitter_evt_messagereceived
+
+  - name: circle_ethereum
     description: "Base bridge events on Ethereum"
     tables:
-      - name: l1standardbridge_evt_erc20bridgeinitiated
-      - name: l1standardbridge_evt_ethbridgeinitiated
-      - name: l1standardbridge_evt_erc20bridgefinalized
-      - name: l1standardbridge_evt_ethbridgefinalized
+      - name: tokenmessenger_evt_depositforburn
+      - name: tokenmessenger_evt_mintandwithdraw
+      - name: messagetransmitter_evt_messagereceived
