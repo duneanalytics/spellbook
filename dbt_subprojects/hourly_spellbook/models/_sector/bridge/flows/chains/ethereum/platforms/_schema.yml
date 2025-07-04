@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: bridge_ethereum_circle_deposits
+  - name: bridge_ethereum_cctp_v1_deposits
     meta:
       blockchain: ethereum
       sector: bridge
-      project: circle
+      project: cctp
       contributors: [ 'hildobby']
     config:
       tags: [ 'base', 'bridge', 'flows', 'deposits' ]
-    description: "Circle's bridge deposits events on Ethereum"
+    description: "Circle's CCTP v1 bridge deposits events on Ethereum"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['tx_hash','evt_index']
@@ -77,15 +77,15 @@ models:
       - &bridge_id 
         name: bridge_id
         description: "Bridge order identifier"
-  - name: bridge_ethereum_circle_withdrawals
+  - name: bridge_ethereum_cctp_v1_withdrawals
     meta:
       blockchain: ethereum
       sector: bridge
-      project: circle
+      project: cctp
       contributors: [ 'hildobby']
     config:
       tags: [ 'circle', 'bridge', 'flows' , 'withdrawals' ]
-    description: "Circle's bridge withdrawals events on Ethereum"
+    description: "Circle's CCTP v1 bridge withdrawals events on Ethereum"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['tx_hash','evt_index']

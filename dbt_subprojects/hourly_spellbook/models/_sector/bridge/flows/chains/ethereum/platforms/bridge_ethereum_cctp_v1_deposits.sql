@@ -1,8 +1,8 @@
-{% set blockchain = 'base' %}
+{% set blockchain = 'ethereum' %}
 
 {{ config(
     schema = 'bridge_' + blockchain,
-    alias = 'circle_deposits',
+    alias = 'cctp_v1_deposits',
     materialized = 'view',
     )
 }}
@@ -28,9 +28,9 @@ WITH cctp_id_mapping AS (
     ) AS x (id, blockchain)
     )
 
-SELECT 'base' AS deposit_chain
+SELECT 'ethereum' AS deposit_chain
 , i.blockchain AS withdraw_chain
-, 'Circle' AS project
+, 'CCTP' AS project
 , '1' AS project_version
 , true AS intent_based
 , evt_block_date AS block_date
@@ -49,5 +49,5 @@ SELECT 'base' AS deposit_chain
 , evt_index
 , contract_address
 , nonce AS transfer_id
-FROM {{ source('circle_base', 'tokenmessenger_evt_depositforburn') }} d
+FROM {{ source('circle_ethereum', 'tokenmessenger_evt_depositforburn') }} d
 INNER JOIN cctp_id_mapping i ON d.destinationDomain=i.id

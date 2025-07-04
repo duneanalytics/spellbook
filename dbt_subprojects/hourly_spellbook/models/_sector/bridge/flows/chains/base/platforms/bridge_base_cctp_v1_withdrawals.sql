@@ -2,7 +2,7 @@
 
 {{ config(
     schema = 'bridge_' + blockchain,
-    alias = 'circle_withdrawals',
+    alias = 'cctp_v1_withdrawals',
     materialized = 'view',
     )
 }}
@@ -31,7 +31,7 @@ WITH cctp_id_mapping AS (
 SELECT i.blockchain AS deposit_chain
 , 'base' AS withdraw_chain
 --, d.destinationDomain
-, 'Circle' AS project
+, 'CCTP' AS project
 , '1' AS project_version
 , true AS intent_based
 , w.evt_block_date AS block_date
