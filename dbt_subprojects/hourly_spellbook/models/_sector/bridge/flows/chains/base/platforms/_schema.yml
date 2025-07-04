@@ -41,8 +41,11 @@ models:
       - &deposit_amount_raw 
         name: deposit_amount_raw
         description: "Raw amount of tokens bridged from source chain"
-      - &withdraw_amount_raw 
-        name: withdraw_amount_raw
+      - &deposit_amount_raw 
+        name: deposit_amount_raw
+        description: "Raw amount of tokens bridged from source chain"
+      - &withdrawal_amount_raw 
+        name: withdrawal_amount_raw
         description: "Raw amount of tokens bridged to destination chain"
       - &sender 
         name: sender
@@ -53,14 +56,14 @@ models:
       - &deposit_token_standard  
         name: deposit_token_standard
         description: "Source blockchain token standard"
-      - &withdraw_token_standard
-        name: remote_token
+      - &withdrawal_token_standard
+        name: withdrawal_token_standard
         description: "Destination blockchain token standard"
       - &deposit_token_address  
         name: deposit_token_address
         description: "Source blockchain token address"
-      - &withdraw_token_address
-        name: withdraw_token_address
+      - &withdrawal_token_address
+        name: withdrawal_token_address
         description: "Destination blockchain token address"
       - &tx_from
         name: tx_from
@@ -74,9 +77,9 @@ models:
       - &contract_address 
         name: contract_address
         description: "Contract address used for the bridge tx"
-      - &bridge_id 
-        name: bridge_id
-        description: "Bridge order identifier"
+      - &transfer_id 
+        name: transfer_id
+        description: "Bridge transfer identifier"
   - name: bridge_base_cctp_v1_withdrawals
     meta:
       blockchain: base
@@ -97,20 +100,19 @@ models:
       - *withdraw_chain
       - *project
       - *project_version
-      
+      - *deposit_amount_raw
+      - *deposit_token_address
       - *block_date
       - *block_time
       - *block_number
-      - *deposit_amount_raw 
-      - *withdraw_amount_raw 
+      - *withdrawal_amount_raw 
       - *sender
       - *recipient
       - *deposit_token_standard
-      - *withdraw_token_standard
-      - *deposit_token_address
-      - *withdraw_token_address
+      - *withdrawal_token_standard
+      - *withdrawal_token_address
       - *tx_from
       - *tx_hash
       - *evt_index  
       - *contract_address 
-      - *bridge_id 
+      - *transfer_id 

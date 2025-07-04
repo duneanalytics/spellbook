@@ -19,26 +19,25 @@ WITH grouped_initiated_events AS (
     FROM (
         {% for chain in chains %}
         SELECT deposit_chain
-        , withdraw_chain
+        , withdrawal_chain
         , project
         , project_version
-        , event_side
+        , intent_based
+        , canonical_bridge
         , block_date
         , block_time
         , block_number
         , deposit_amount_raw
-        , withdraw_amount_raw
         , sender
         , recipient
         , deposit_token_standard
-        , withdraw_token_standard
+        , withdrawal_token_standard
         , deposit_token_address
-        , withdraw_token_address
         , tx_from
         , tx_hash
         , evt_index
         , contract_address
-        , bridge_id
+        , transfer_id
         FROM {{ ref('bridge_'~chain~'_deposits') }}
         {% if is_incremental() %}
         WHERE  {{ incremental_predicate('block_time') }}
@@ -52,7 +51,7 @@ WITH grouped_initiated_events AS (
 
 , deposit_filled AS (
     SELECT deposit_chain
-    , withdraw_chain
+    , withdrawal_chain
     , project
     , project_version
     , event_side
@@ -67,9 +66,9 @@ WITH grouped_initiated_events AS (
     , deposit_token_address
     , deposit_token_standard
     , pus.symbol AS deposit_token_symbol
-    , withdraw_amount_raw
-    , withdraw_token_address
-    , withdraw_token_standard
+    , withdrawal_amount_raw
+    , withdrawal_token_address
+    , withdrawal_token_standard
     , tx_from
     , tx_hash
     , evt_index
@@ -85,7 +84,7 @@ WITH grouped_initiated_events AS (
     )
 
 SELECT deposit_chain
-, withdraw_chain
+, withdrawal_chain
 , project
 , project_version
 , event_side
@@ -100,20 +99,20 @@ SELECT deposit_chain
 , deposit_token_address
 , deposit_token_standard
 , deposit_token_symbol
-, withdraw_amount_raw
-, withdraw_amount_raw/POWER(10, pud.decimals) AS withdraw_amount
-, pud.price*withdraw_amount_raw/POWER(10, pud.decimals) AS withdraw_amount_usd
-, withdraw_token_address
-, withdraw_token_standard
-, pud.symbol AS withdraw_token_symbol
+, withdrawal_amount_raw
+, withdrawal_amount_raw/POWER(10, pud.decimals) AS withdrawal_amount
+, pud.price*withdrawal_amount_raw/POWER(10, pud.decimals) AS withdrawal_amount_usd
+, withdrawal_token_address
+, withdrawal_token_standard
+, pud.symbol AS withdrawal_token_symbol
 , tx_from
 , tx_hash
 , evt_index
 , i.contract_address
 , bridge_id
 FROM deposit_filled i
-INNER JOIN {{ source('prices', 'usd') }} pud ON pud.blockchain=i.withdraw_chain
-    AND pud.contract_address=i.withdraw_token_address
+INNER JOIN {{ source('prices', 'usd') }} pud ON pud.blockchain=i.withdrawal_chain
+    AND pud.contract_address=i.withdrawal_token_address
     AND pud.minute=date_trunc('minute', block_time)
         {% if is_incremental() %}
         AND  {{ incremental_predicate('pud.minute') }}

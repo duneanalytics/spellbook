@@ -6,7 +6,7 @@
 }}
 
 SELECT COALESCE(i.deposit_chain, f.deposit_chain) AS deposit_chain
-, COALESCE(i.withdraw_chain, f.withdraw_chain) AS withdraw_chain
+, COALESCE(i.withdrawal_chain, f.withdrawal_chain) AS withdrawal_chain
 , COALESCE(i.project, f.project) AS project
 , COALESCE(i.project_version, f.project_version) AS project_version
 , CASE WHEN i.event_side IS NOT NULL AND f.event_side IS NOT NULL THEN 'both'
@@ -25,12 +25,12 @@ SELECT COALESCE(i.deposit_chain, f.deposit_chain) AS deposit_chain
 , COALESCE(i.deposit_amount_usd, f.deposit_amount_usd) AS deposit_amount_usd
 , COALESCE(i.deposit_token_address, f.deposit_token_address) AS deposit_token_address
 , COALESCE(i.deposit_token_standard, f.deposit_token_standard) AS deposit_token_standard
-, COALESCE(i.withdraw_amount_raw, f.withdraw_amount_raw) AS withdraw_amount_raw
-, COALESCE(i.withdraw_amount, f.withdraw_amount) AS withdraw_amount
-, COALESCE(i.withdraw_amount_usd, f.withdraw_amount_usd) AS withdraw_amount_usd
-, COALESCE(i.withdraw_token_address, f.withdraw_token_address) AS withdraw_token_address
-, COALESCE(i.withdraw_token_standard, f.withdraw_token_standard) AS withdraw_token_standard
-, COALESCE(i.withdraw_token_symbol, f.withdraw_token_symbol) AS withdraw_token_symbol
+, COALESCE(i.withdrawal_amount_raw, f.withdrawal_amount_raw) AS withdrawal_amount_raw
+, COALESCE(i.withdrawal_amount, f.withdrawal_amount) AS withdrawal_amount
+, COALESCE(i.withdrawal_amount_usd, f.withdrawal_amount_usd) AS withdrawal_amount_usd
+, COALESCE(i.withdrawal_token_address, f.withdrawal_token_address) AS withdrawal_token_address
+, COALESCE(i.withdrawal_token_standard, f.withdrawal_token_standard) AS withdrawal_token_standard
+, COALESCE(i.withdrawal_token_symbol, f.withdrawal_token_symbol) AS withdrawal_token_symbol
 , i.tx_from -- tx_from on finalised chain is irrelevant
 , i.tx_hash AS initiated_tx_hash
 , f.tx_hash AS finalised_tx_hash

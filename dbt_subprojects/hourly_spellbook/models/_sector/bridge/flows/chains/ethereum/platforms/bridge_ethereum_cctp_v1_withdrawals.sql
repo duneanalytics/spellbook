@@ -29,21 +29,18 @@ WITH cctp_id_mapping AS (
     )
 
 SELECT i.blockchain AS deposit_chain
-, 'ethereum' AS withdraw_chain
+, 'ethereum' AS withdrawal_chain
 , 'CCTP' AS project
 , '1' AS project_version
-, true AS intent_based
 , w.evt_block_date AS block_date
 , w.evt_block_time AS block_time
 , w.evt_block_number AS block_number
-, w.amount AS deposit_amount_raw
-, w.amount AS withdraw_amount_raw
+, w.amount AS withdrawal_amount_raw
 , CASE WHEN varbinary_substring(m.sender,1, 12) = 0x000000000000000000000000 THEN varbinary_substring(m.sender,13) ELSE m.sender END AS sender
 , w.mintRecipient AS recipient
 , i.token_standard AS deposit_token_standard
-, 'erc20' AS withdraw_token_standard
---, w.burnToken AS deposit_token_address
-, w.mintToken AS withdraw_token_address
+, 'erc20' AS withdrawal_token_standard
+, w.mintToken AS withdrawal_token_address
 , w.evt_tx_from AS tx_from
 , w.evt_tx_hash AS tx_hash
 , w.evt_index
