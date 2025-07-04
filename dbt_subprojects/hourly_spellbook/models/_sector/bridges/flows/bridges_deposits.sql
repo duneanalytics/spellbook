@@ -65,6 +65,7 @@ SELECT d.deposit_chain
 , d.evt_index
 , d.contract_address
 , d.transfer_id
+, ROW_NUMBER() OVER (PARTITION BY d.block_number, d.tx_hash ORDER BY d.evt_index) AS row_number
 FROM grouped_deposits d
 INNER JOIN {{ source('prices', 'usd') }} p ON p.blockchain=d.deposit_chain
     AND p.contract_address=d.deposit_token_address
