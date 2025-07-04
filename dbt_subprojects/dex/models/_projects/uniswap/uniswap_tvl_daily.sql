@@ -324,5 +324,4 @@ prices_day as (
         on tl.token1 = pd_b.contract_address 
         and tl.block_date = pd_b.block_date 
         and tl.blockchain = pd_b.blockchain 
-
 {% endif %}
