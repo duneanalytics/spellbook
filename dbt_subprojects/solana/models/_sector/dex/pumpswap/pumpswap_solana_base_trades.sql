@@ -52,6 +52,7 @@ WITH pools AS (
     {% else %}
     WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
+    AND call_block_time >= current_date - interval '6' day
     UNION ALL
     
     -- Sell operations
@@ -81,7 +82,7 @@ WITH pools AS (
     {% else %}
     WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
-    
+    AND call_block_time >= current_date - interval '6' day
 )
 
 , fee_configs_with_time_ranges AS (
@@ -117,7 +118,7 @@ WITH pools AS (
         t.amount as quote_token_amount ,
         ROW_NUMBER() OVER (
                     PARTITION BY sf.tx_id, sf.outer_instruction_index, sf.swap_inner_index
-                    ORDER BY t.amount DESC 
+                    ORDER BY t.inner_instruction_index ASC 
                 ) as rn
     FROM swaps_with_fees sf
     INNER JOIN {{ ref('tokens_solana_transfers') }} t
@@ -151,6 +152,7 @@ WITH pools AS (
         {% else %}
         AND t.block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
+        AND t.block_time >= current_date - interval '6' day
 )
 
 , trades_base as (
