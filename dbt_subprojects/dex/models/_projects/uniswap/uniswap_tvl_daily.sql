@@ -150,7 +150,7 @@ prices_day as (
     from 
     {{ source('prices','day') }}
     where volume is not null 
-    and volume > 1000000 -- greater than $1m day volume 
+    and volume > 100000 -- greater than $100k day volume 
     and {{ incremental_predicate('timestamp') }}
 )
 
@@ -282,7 +282,7 @@ prices_day as (
     from 
     {{ source('prices','day') }}
     where volume is not null 
-    and volume > 1000000 -- greater than $1m day volume 
+    and volume > 100000 -- greater than $100k day volume 
 )
 
     select 
