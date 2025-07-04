@@ -100,7 +100,8 @@ ldo_referral_payments_addr AS (
 ),
 
 steth_referral_payments_addr AS (
-    SELECT _recipient AS address FROM {{source('lido_ethereum','AllowedRecipientsRegistry_RevShare_evt_RecipientAdded')}}
+    SELECT _recipient AS address
+    FROM {{ source('lido_ethereum','AllowedRecipientsRegistry_RevShare_evt_RecipientAdded') }}
 ),
 
 stonks AS (
@@ -124,9 +125,11 @@ excluded_addresses AS (
     UNION ALL
     SELECT address FROM ldo_referral_payments_addr
     UNION ALL
-    SELECT _recipient AS address FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientAdded')}}
+    SELECT _recipient AS address
+    FROM {{ source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientAdded') }}
     UNION ALL
-    SELECT _recipient AS address FROM {{source('lido_ethereum','AllowedRecipientsRegistry_RevShare_evt_RecipientAdded')}}
+    SELECT _recipient AS address
+    FROM {{ source('lido_ethereum','AllowedRecipientsRegistry_RevShare_evt_RecipientAdded') }}
     UNION ALL
     SELECT 0x0000000000000000000000000000000000000000
     UNION ALL
@@ -141,7 +144,7 @@ token_transfers AS (
         CAST(value AS DOUBLE) AS value,
         evt_tx_hash,
         contract_address
-    FROM {{source('erc20_ethereum','evt_Transfer')}}
+    FROM {{ source('erc20_ethereum','evt_Transfer') }}
     WHERE contract_address IN (SELECT address FROM tokens)
         AND "from" IN (SELECT address FROM source_multisigs)
         AND to NOT IN (SELECT address FROM excluded_addresses)
@@ -156,7 +159,7 @@ eth_traces AS (
         CAST(value AS DOUBLE) AS value,
         tx_hash,
         0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 AS contract_address
-    FROM {{source('ethereum','traces')}}
+    FROM {{ source('ethereum','traces') }}
     WHERE success = True
         AND "from" IN (SELECT address FROM source_multisigs)
         AND to NOT IN (SELECT address FROM excluded_addresses)
