@@ -47,6 +47,7 @@ models:
             - block_month
             - tx_id
             - token_address
+            - fee_receiver
     columns:
       - name: block_time
         description: "The timestamp when the fee was paid"
