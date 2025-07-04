@@ -39,7 +39,7 @@ SELECT 'ethereum' AS deposit_chain
 , amount AS deposit_amount_raw
 , amount AS withdraw_amount_raw
 , depositor AS sender
-, varbinary_substring(mintRecipient,13) AS recipient
+, CASE WHEN varbinary_substring(mintRecipient,1, 12) = 0x000000000000000000000000 THEN varbinary_substring(mintRecipient,13) ELSE mintRecipient END AS recipient
 , 'erc20' AS deposit_token_standard
 , 'erc20' AS withdraw_token_standard
 , burnToken AS deposit_token_address
@@ -48,6 +48,6 @@ SELECT 'ethereum' AS deposit_chain
 , evt_tx_hash AS tx_hash
 , evt_index
 , contract_address
-, nonce AS transfer_id
+, CAST(nonce AS varchar) AS transfer_id
 FROM {{ source('circle_ethereum', 'tokenmessenger_evt_depositforburn') }} d
 INNER JOIN cctp_id_mapping i ON d.destinationDomain=i.id

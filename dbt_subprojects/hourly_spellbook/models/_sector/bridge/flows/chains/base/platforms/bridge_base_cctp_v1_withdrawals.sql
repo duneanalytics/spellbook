@@ -30,7 +30,6 @@ WITH cctp_id_mapping AS (
 
 SELECT i.blockchain AS deposit_chain
 , 'base' AS withdraw_chain
---, d.destinationDomain
 , 'CCTP' AS project
 , '1' AS project_version
 , true AS intent_based
@@ -49,7 +48,7 @@ SELECT i.blockchain AS deposit_chain
 , w.evt_tx_hash AS tx_hash
 , w.evt_index
 , w.contract_address
-, m.nonce AS transfer_id
+, CAST(m.nonce AS varchar) AS transfer_id
 FROM {{ source('circle_base', 'tokenmessenger_evt_mintandwithdraw')}} w
 INNER JOIN {{ source('circle_base', 'messagetransmitter_evt_messagereceived')}} m ON w.evt_block_number = m.evt_block_number
     and w.evt_index + 1 = m.evt_index
