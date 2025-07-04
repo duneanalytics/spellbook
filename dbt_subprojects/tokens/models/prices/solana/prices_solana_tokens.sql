@@ -769,5 +769,6 @@ FROM
         ('troll-troll2', 'solana', 'TROLL', '5UUH9RTDiSpq6HKS6bp4NdU9PNJpXRXuiw6ShBTBhgH2', 6),
         ('fdusd-first-digital-usd', 'solana', 'FDUSD', '9zNQRsGLjNKwCUU5Gq5LR8beUCPzQMVMqKAi3SSZh54u', 6),
         ('me-magic-eden', 'solana', 'ME', 'MEFNBXixkEbait3xn9bkm8WsJzXtVsaJEn4c8Sam21u', 6),
-        ('bbsol-bybit-staked-sol', 'solana', 'bbSOL', 'Bybit2vBJGhPF52GBdNaQfUJ6ZpThSgHBobjWZpLPb4B', 9)
+        ('bbsol-bybit-staked-sol', 'solana', 'bbSOL', 'Bybit2vBJGhPF52GBdNaQfUJ6ZpThSgHBobjWZpLPb4B', 9),
+        ('may-mayflower-ai', 'solana', 'MAI', 'FJz7ptUR1FwxSHbb8Sfd5Cn6Zt4TqucJZKLqU4n66gdq', 9)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
