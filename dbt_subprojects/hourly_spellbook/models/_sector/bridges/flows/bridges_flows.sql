@@ -5,34 +5,30 @@
     )
 }}
 
-SELECT COALESCE(i.deposit_chain, f.deposit_chain) AS deposit_chain
-, COALESCE(i.withdrawal_chain, f.withdrawal_chain) AS withdrawal_chain
-, COALESCE(i.bridge_name, f.bridge_name) AS bridge_name
-, COALESCE(i.bridge_version, f.bridge_version) AS bridge_version
-, CASE WHEN i.event_side IS NOT NULL AND f.event_side IS NOT NULL THEN 'both'
-    WHEN i.event_side IS NOT NULL THEN 'initiated'
-    ELSE 'finalised'
-    END AS event_side
-, COALESCE(i.block_date, f.block_date) AS block_date
-, COALESCE(i.block_time, f.block_time) AS block_time
-, COALESCE(i.block_number, f.block_number) AS block_number
-, date_diff('milisecond', i.block_time, f.block_time) AS bridge_miliseconds
-, 1000 * (f.block_time - i.block_time) AS bridge_miliseconds_2
-, COALESCE(i.sender, f.sender) AS sender
-, COALESCE(i.recipient, f.recipient) AS recipient
-, COALESCE(i.deposit_amount_raw, f.deposit_amount_raw) AS deposit_amount_raw
-, COALESCE(i.deposit_amount, f.deposit_amount) AS deposit_amount
-, COALESCE(i.deposit_amount_usd, f.deposit_amount_usd) AS deposit_amount_usd
-, COALESCE(i.deposit_token_address, f.deposit_token_address) AS deposit_token_address
-, COALESCE(i.deposit_token_standard, f.deposit_token_standard) AS deposit_token_standard
-, COALESCE(i.withdrawal_amount_raw, f.withdrawal_amount_raw) AS withdrawal_amount_raw
-, COALESCE(i.withdrawal_amount, f.withdrawal_amount) AS withdrawal_amount
-, COALESCE(i.withdrawal_amount_usd, f.withdrawal_amount_usd) AS withdrawal_amount_usd
-, COALESCE(i.withdrawal_token_address, f.withdrawal_token_address) AS withdrawal_token_address
-, COALESCE(i.withdrawal_token_standard, f.withdrawal_token_standard) AS withdrawal_token_standard
-, COALESCE(i.withdrawal_token_symbol, f.withdrawal_token_symbol) AS withdrawal_token_symbol
-, i.tx_from -- tx_from on finalised chain is irrelevant
-, i.tx_hash AS initiated_tx_hash
-, f.tx_hash AS finalised_tx_hash
-FROM {{ ref('bridges_deposits') }} i
-FULL OUTER JOIN {{ ref('bridges_withdrawals') }} f USING (bridge_id)
+SELECT deposit_chain
+, withdraw_chain
+, COALESCE(d.project, w.project) AS project
+, COALESCE(d.project_version, w.project_version) AS project_version
+, d.block_date AS deposit_block_date
+, d.block_time AS deposit_block_time
+, d.block_number AS deposit_block_number
+, w.block_date AS withdraw_block_date
+, w.block_time AS withdraw_block_time
+, w.block_number AS withdraw_block_number
+, d.deposit_amount_raw
+, d.deposit_amount
+, w.withdraw_amount_raw
+, w.withdraw_amount
+, COALESCE(d.withdraw_amount_usd, w.withdraw_amount_usd) AS amount_usd
+, COALESCE(d.sender, w.sender) AS sender
+, COALESCE(w.recipient, d.recipient) AS recipient
+, d.deposit_token_standard
+, w.withdraw_token_standard
+, d.deposit_token_address
+, w.withdraw_token_address
+, d.tx_from AS deposit_tx_from
+, d.tx_hash AS deposit_tx_hash
+, w.tx_hash AS withdraw_tx_hash
+, transfer_id
+FROM {{ ref('bridges_deposits') }} d
+FULL OUTER JOIN {{ ref('bridges_withdrawals') }} w USING (deposit_chain, withdraw_chain, transfer_id)
