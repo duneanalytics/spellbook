@@ -19,7 +19,7 @@ SELECT deposit_chain
 , d.deposit_amount
 , w.withdrawal_amount_raw
 , w.withdrawal_amount
-, COALESCE(d.withdrawal_amount_usd, w.withdrawal_amount_usd) AS amount_usd
+, COALESCE(d.deposit_amount_usd, w.withdrawal_amount_usd) AS amount_usd
 , COALESCE(d.sender, w.sender) AS sender
 , COALESCE(w.recipient, d.recipient) AS recipient
 , d.deposit_token_standard
