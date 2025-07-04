@@ -30,8 +30,8 @@ WITH cctp_id_mapping AS (
 
 SELECT 'base' AS deposit_chain
 , i.blockchain AS withdrawal_chain
-, 'CCTP' AS project
-, '1' AS project_version
+, 'CCTP' AS bridge_name
+, '1' AS bridge_version
 , evt_block_date AS block_date
 , evt_block_time AS block_time
 , evt_block_number AS block_number

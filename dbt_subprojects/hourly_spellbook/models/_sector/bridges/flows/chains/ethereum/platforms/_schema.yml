@@ -23,12 +23,12 @@ models:
       - &withdraw_chain
         name: withdraw_chain
         description: "Blockchain where the tokens were received"
-      - &project
-        name: project
-        description: "Project name of the bridge"
-      - &project_version
-        name: project_version
-        description: "Version of the project"
+      - &bridge_name
+        name: bridge_name
+        description: "Bridge name"
+      - &bridge_version
+        name: bridge_version
+        description: "Version of the bridge"
       - &block_date
         name: block_date
         description: "Block date of the bridge transaction"
@@ -95,8 +95,8 @@ models:
     columns:
       - *deposit_chain
       - *withdraw_chain
-      - *project
-      - *project_version
+      - *bridge_name
+      - *bridge_version
       - *deposit_amount_raw
       - *deposit_token_address
       - *block_date

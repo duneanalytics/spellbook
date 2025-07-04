@@ -20,9 +20,8 @@ FROM (
         {% for chain in chains %}
         SELECT deposit_chain
         , withdrawal_chain
-        , project
-        , project_version
-        , intent_based
+        , bridge_name
+        , bridge_version
         , canonical_bridge
         , block_date
         , block_time
@@ -48,8 +47,8 @@ FROM (
 , deposit_filled AS (
     SELECT deposit_chain
     , withdrawal_chain
-    , project
-    , project_version
+    , bridge_name
+    , bridge_version
     , event_side
     , block_date
     , block_time
@@ -81,8 +80,8 @@ FROM (
 
 SELECT deposit_chain
 , withdrawal_chain
-, project
-, project_version
+, bridge_name
+, bridge_version
 , event_side
 , block_date
 , block_time

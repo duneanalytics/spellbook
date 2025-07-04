@@ -16,9 +16,8 @@ FROM (
     {% for bridge_platform in bridges_platforms %}
     SELECT deposit_chain
     , withdrawal_chain
-    , project
-    , project_version
-    , intent_based
+    , bridge_name
+    , bridge_version
     , canonical_bridge
     , block_date
     , block_time

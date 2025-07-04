@@ -19,12 +19,12 @@ models:
       - &withdrawal_chain
         name: withdrawal_chain
         description: "Blockchain where the tokens were received"
-      - &project
-        name: project
-        description: "Project name of the bridge"
-      - &project_version
-        name: project_version
-        description: "Version of the project"
+      - &bridge_name
+        name: bridge_name
+        description: "Bridge name"
+      - &bridge_version
+        name: bridge_version
+        description: "Version of the bridge"
       - &event_side
         name: event_side
         description: "Blockchain where the event was emitted"
@@ -108,8 +108,8 @@ models:
     columns:
       - *deposit_chain
       - *withdrawal_chain
-      - *project
-      - *project_version
+      - *bridge_name
+      - *bridge_version
       - *event_side
       - *block_date
       - *block_time
@@ -144,8 +144,8 @@ models:
     columns:
       - *deposit_chain
       - *withdrawal_chain
-      - *project
-      - *project_version
+      - *bridge_name
+      - *bridge_version
       - *event_side
       - *block_date
       - *block_time
@@ -188,10 +188,10 @@ models:
     description: "Bridges metadata"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['project', 'project_version']
+          combination_of_columns: ['bridge_name', 'bridge_version']
     columns:
-      - *project
-      - *project_version
+      - *bridge_name
+      - *bridge_version
       - &intent_based
         name: intent_based
         description: "Is it an intent-based bridge or are withdrawals automated?"

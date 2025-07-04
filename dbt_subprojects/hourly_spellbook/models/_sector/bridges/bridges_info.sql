@@ -11,12 +11,12 @@
                                         \'["hildobby"]\') }}')
 }}
 
-SELECT project
-    , version
+SELECT bridge_name
+    , bridge_version
     , intent_based
     , canonical_bridge
     , token_official_bridge
 FROM (
     VALUES
         ('CCTP', '1', true, false, true)
-) AS temp_table (project, version, intent_based, canonical_bridge, token_official_bridge)
+) AS temp_table (bridge_name, bridge_version, intent_based, canonical_bridge, token_official_bridge)

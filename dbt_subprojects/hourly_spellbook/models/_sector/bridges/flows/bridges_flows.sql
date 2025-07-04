@@ -7,8 +7,8 @@
 
 SELECT COALESCE(i.deposit_chain, f.deposit_chain) AS deposit_chain
 , COALESCE(i.withdrawal_chain, f.withdrawal_chain) AS withdrawal_chain
-, COALESCE(i.project, f.project) AS project
-, COALESCE(i.project_version, f.project_version) AS project_version
+, COALESCE(i.bridge_name, f.bridge_name) AS bridge_name
+, COALESCE(i.bridge_version, f.bridge_version) AS bridge_version
 , CASE WHEN i.event_side IS NOT NULL AND f.event_side IS NOT NULL THEN 'both'
     WHEN i.event_side IS NOT NULL THEN 'initiated'
     ELSE 'finalised'
