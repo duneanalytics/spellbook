@@ -70,5 +70,5 @@ INNER JOIN {{ source('prices', 'usd') }} p ON p.blockchain=d.deposit_chain
     AND p.contract_address=d.deposit_token_address
     AND p.minute=date_trunc('minute', d.block_time)
     {% if is_incremental() %}
-    AND  {{ incremental_predicate('p.minute') }}
+    AND {{ incremental_predicate('p.minute') }}
     {% endif %}
