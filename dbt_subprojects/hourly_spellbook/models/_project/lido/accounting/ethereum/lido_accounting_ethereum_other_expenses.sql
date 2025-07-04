@@ -101,7 +101,7 @@ ldo_referral_payments_addr AS (
 
 steth_referral_payments_addr AS (
     SELECT _recipient AS address
-    FROM {{ source('lido_ethereum','AllowedRecipientsRegistry_RevShare_evt_RecipientAdded') }}
+    FROM {{ source('lido_ethereum','allowedrecipientsregistry_revshare_evt_recipientadded') }}
 ),
 
 stonks AS (
