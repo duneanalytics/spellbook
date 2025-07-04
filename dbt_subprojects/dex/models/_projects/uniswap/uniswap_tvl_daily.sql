@@ -10,8 +10,8 @@
     , post_hook='{{ expose_spells(\'[
                                       "ethereum","arbitrum","base","ink","blast","optimism","blast","bnb","zora","avalanche_c","unichain","worldchain"
                                     ]\',
-                                    "sector",
-                                    "dex",
+                                    "project",
+                                    "uniswap",
                                     \'["Henrystats"]\') }}')
 }}
 
