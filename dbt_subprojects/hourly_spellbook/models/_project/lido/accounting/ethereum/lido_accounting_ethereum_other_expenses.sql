@@ -126,10 +126,10 @@ excluded_addresses AS (
     SELECT address FROM ldo_referral_payments_addr
     UNION ALL
     SELECT _recipient AS address
-    FROM {{ source('lido_ethereum', 'AllowedRecipientsRegistry_evt_RecipientAdded') }}
+    FROM {{ source('lido_ethereum', 'allowedrecipientsregistry_evt_recipientadded') }}
     UNION ALL
     SELECT _recipient AS address
-    FROM {{ source('lido_ethereum', 'AllowedRecipientsRegistry_RevShare_evt_RecipientAdded') }}
+    FROM {{ source('lido_ethereum', 'allowedrecipientsregistry_revshare_evt_recipientadded') }}
     UNION ALL
     SELECT 0x0000000000000000000000000000000000000000
     UNION ALL
