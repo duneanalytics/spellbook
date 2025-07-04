@@ -1,19 +1,19 @@
 {% set blockchain = 'base' %}
 
 {{ config(
-    schema = 'bridge_' + blockchain,
-    alias = 'deposits',
+    schema = 'bridges_' + blockchain,
+    alias = 'withdrawals',
     materialized = 'view'
     )
 }}
 
-{% set bridge_platforms = [
-    'bridge_base_cctp_v1_deposits'
+{% set bridges_platforms = [
+    'bridges_base_cctp_v1_withdrawals'
 ] %}
 
 SELECT *
 FROM (
-    {% for bridge_platform in bridge_platforms %}
+    {% for bridge_platform in bridges_platforms %}
     SELECT deposit_chain
     , withdrawal_chain
     , project
@@ -23,12 +23,11 @@ FROM (
     , block_date
     , block_time
     , block_number
-    , deposit_amount_raw
+    , withdrawal_amount_raw
     , sender
     , recipient
-    , deposit_token_standard
     , withdrawal_token_standard
-    , deposit_token_address
+    , withdrawal_token_address
     , tx_from
     , tx_hash
     , evt_index

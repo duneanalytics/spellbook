@@ -1,6 +1,6 @@
 {{ config(
-    schema = 'bridge'
-    , alias = 'initiated'
+    schema = 'bridges'
+    , alias = 'withdrawals'
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy='merge'
@@ -14,9 +14,9 @@
     , 'base'
 ] %}
 
-WITH grouped_initiated_events AS (
-    SELECT *
-    FROM (
+WITH grouped_finalised_events AS (
+SELECT *
+FROM (
         {% for chain in chains %}
         SELECT deposit_chain
         , withdrawal_chain
@@ -27,25 +27,21 @@ WITH grouped_initiated_events AS (
         , block_date
         , block_time
         , block_number
-        , deposit_amount_raw
+        , withdrawal_amount_raw
         , sender
         , recipient
-        , deposit_token_standard
         , withdrawal_token_standard
-        , deposit_token_address
+        , withdrawal_token_address
         , tx_from
         , tx_hash
         , evt_index
         , contract_address
         , transfer_id
-        FROM {{ ref('bridge_'~chain~'_deposits') }}
-        {% if is_incremental() %}
-        WHERE  {{ incremental_predicate('block_time') }}
-        {% endif %}
+        FROM {{ ref('bridges_'~chain~'_withdrawals') }}
         {% if not loop.last %}
         UNION ALL
         {% endif %}
-        {% endfor %} 
+        {% endfor %}
         )
     )
 
@@ -74,7 +70,7 @@ WITH grouped_initiated_events AS (
     , evt_index
     , i.contract_address
     , bridge_id
-    FROM grouped_initiated_events i
+    FROM grouped_finalised_events i
     INNER JOIN {{ source('prices', 'usd') }} pus ON pus.blockchain=i.deposit_chain
         AND pus.contract_address=i.deposit_token_address
         AND pus.minute=date_trunc('minute', block_time)

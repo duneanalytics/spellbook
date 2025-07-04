@@ -1,7 +1,7 @@
-{% set blockchain = 'ethereum' %}
+{% set blockchain = 'base' %}
 
 {{ config(
-    schema = 'bridge_' + blockchain,
+    schema = 'bridges_' + blockchain,
     alias = 'cctp_v1_withdrawals',
     materialized = 'view',
     )
@@ -29,7 +29,7 @@ WITH cctp_id_mapping AS (
     )
 
 SELECT i.blockchain AS deposit_chain
-, 'ethereum' AS withdrawal_chain
+, 'base' AS withdrawal_chain
 , 'CCTP' AS project
 , '1' AS project_version
 , w.evt_block_date AS block_date
@@ -46,7 +46,7 @@ SELECT i.blockchain AS deposit_chain
 , w.evt_index
 , w.contract_address
 , CAST(m.nonce AS varchar) AS transfer_id
-FROM {{ source('circle_ethereum', 'tokenmessenger_evt_mintandwithdraw')}} w
-INNER JOIN {{ source('circle_ethereum', 'messagetransmitter_evt_messagereceived')}} m ON w.evt_block_number = m.evt_block_number
+FROM {{ source('circle_base', 'tokenmessenger_evt_mintandwithdraw')}} w
+INNER JOIN {{ source('circle_base', 'messagetransmitter_evt_messagereceived')}} m ON w.evt_block_number = m.evt_block_number
     and w.evt_index + 1 = m.evt_index
 INNER JOIN cctp_id_mapping i ON i.id=m.sourceDomain

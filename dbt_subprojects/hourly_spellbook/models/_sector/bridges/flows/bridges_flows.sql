@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'bridge',
+    schema = 'bridges',
     alias = 'flows',
     materialized = 'view'
     )
@@ -34,5 +34,5 @@ SELECT COALESCE(i.deposit_chain, f.deposit_chain) AS deposit_chain
 , i.tx_from -- tx_from on finalised chain is irrelevant
 , i.tx_hash AS initiated_tx_hash
 , f.tx_hash AS finalised_tx_hash
-FROM {{ ref('bridge_deposits') }} i
-FULL OUTER JOIN {{ ref('bridge_withdrawals') }} f USING (bridge_id)
+FROM {{ ref('bridges_deposits') }} i
+FULL OUTER JOIN {{ ref('bridges_withdrawals') }} f USING (bridge_id)

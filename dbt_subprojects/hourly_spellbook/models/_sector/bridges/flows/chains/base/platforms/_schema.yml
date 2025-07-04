@@ -1,14 +1,14 @@
 version: 2
 
 models:
-  - name: bridge_base_cctp_v1_deposits
+  - name: bridges_base_cctp_v1_deposits
     meta:
       blockchain: base
-      sector: bridge
+      sector: bridges
       project: cctp
       contributors: [ 'hildobby']
     config:
-      tags: [ 'base', 'bridge', 'flows', 'deposits' ]
+      tags: [ 'base', 'bridges', 'flows', 'deposits' ]
     description: "Circle's CCTP v1 bridge deposits events on Base"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -38,9 +38,6 @@ models:
       - &block_number
         name: block_number
         description: "Block number of the bridge transaction"
-      - &deposit_amount_raw 
-        name: deposit_amount_raw
-        description: "Raw amount of tokens bridged from source chain"
       - &deposit_amount_raw 
         name: deposit_amount_raw
         description: "Raw amount of tokens bridged from source chain"
@@ -80,14 +77,14 @@ models:
       - &transfer_id 
         name: transfer_id
         description: "Bridge transfer identifier"
-  - name: bridge_base_cctp_v1_withdrawals
+  - name: bridges_base_cctp_v1_withdrawals
     meta:
       blockchain: base
-      sector: bridge
+      sector: bridges
       project: cctp
       contributors: [ 'hildobby']
     config:
-      tags: [ 'base', 'bridge', 'flows', 'withdrawals' ]
+      tags: [ 'base', 'bridges', 'flows', 'withdrawals' ]
     description: "Circle's CCTP v1 bridge withdrawals events on Base"
     tests:
       - dbt_utils.unique_combination_of_columns:
