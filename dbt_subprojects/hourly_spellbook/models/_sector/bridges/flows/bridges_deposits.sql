@@ -14,7 +14,7 @@
     , 'base'
 ] %}
 
-WITH grouped_initiated_events AS (
+WITH grouped_deposits AS (
     SELECT *
     FROM (
         {% for chain in chains %}
@@ -29,7 +29,6 @@ WITH grouped_initiated_events AS (
         , sender
         , recipient
         , deposit_token_standard
-        , withdrawal_token_standard
         , deposit_token_address
         , tx_from
         , tx_hash
@@ -47,30 +46,29 @@ WITH grouped_initiated_events AS (
         )
     )
 
-SELECT deposit_chain
-, withdrawal_chain
-, bridge_name
-, bridge_version
-, block_date
-, block_time
-, block_number
-, deposit_amount_raw
-, deposit_amount_raw/POWER(10, pus.decimals) AS deposit_amount
-, pus.price*deposit_amount_raw/POWER(10, pus.decimals) AS deposit_amount_usd
-, sender
-, recipient
-, deposit_token_standard
-, withdrawal_token_standard
-, deposit_token_address
-, tx_from
-, tx_hash
-, evt_index
-, contract_address
-, transfer_id
-FROM grouped_initiated_events i
-INNER JOIN {{ source('prices', 'usd') }} pus ON pus.blockchain=i.deposit_chain
-    AND pus.contract_address=i.deposit_token_address
-    AND pus.minute=date_trunc('minute', block_time)
+SELECT d.deposit_chain
+, d.withdrawal_chain
+, d.bridge_name
+, d.bridge_version
+, d.block_date
+, d.block_time
+, d.block_number
+, d.deposit_amount_raw
+, d.deposit_amount_raw/POWER(10, pus.decimals) AS deposit_amount
+, pus.price*d.deposit_amount_raw/POWER(10, pus.decimals) AS deposit_amount_usd
+, d.sender
+, d.recipient
+, d.deposit_token_standard
+, d.deposit_token_address
+, d.tx_from
+, d.tx_hash
+, d.evt_index
+, d.contract_address
+, d.transfer_id
+FROM grouped_deposits d
+INNER JOIN {{ source('prices', 'usd') }} pus ON pus.blockchain=d.deposit_chain
+    AND pus.contract_address=d.deposit_token_address
+    AND pus.minute=date_trunc('minute', d.block_time)
     {% if is_incremental() %}
     AND  {{ incremental_predicate('pus.minute') }}
     {% endif %}
