@@ -22,7 +22,6 @@ FROM (
         , withdrawal_chain
         , bridge_name
         , bridge_version
-        , canonical_bridge
         , block_date
         , block_time
         , block_number
@@ -48,7 +47,6 @@ SELECT deposit_chain
 , withdrawal_chain
 , bridge_name
 , bridge_version
-, canonical_bridge
 , block_date
 , block_time
 , block_number
