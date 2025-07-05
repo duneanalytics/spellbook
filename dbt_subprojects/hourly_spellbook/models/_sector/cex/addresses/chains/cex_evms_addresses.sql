@@ -4225,6 +4225,10 @@ FROM (VALUES
     , (0x2f5a7b563e6c4761d478273f5f9b4a444bdd2e3c, 'AtomSolutions', 'AtomSolutions TokenHub Exchange 1', 'hildobby', date '2024-01-04')
     , (0xa28d81bf8e4823cf4d6cc2767507dee271994e1a, 'AtomSolutions', 'AtomSolutions Korea 1', 'hildobby', date '2024-01-04')
     -- eToro
+    , (0x8cf23cd535a240eb0ab8667d24eedbd9eccd5cba, 'eToro', 'eToro 1', 'hildobby', date '2025-07-05')
+    , (0xbb0424ed909293701e95cca03cbf1274918d7c09, 'eToro', 'eToro 2', 'hildobby', date '2025-07-05')
+    , (0x3f08f17973ab4124c73200135e2b675ab2d263d9, 'eToro', 'eToro 3', 'hildobby', date '2025-07-05')
+    , (0x77fb357f55bef5a70d30663955f8c9f35794df0e, 'eToro', 'eToro 4', 'hildobby', date '2025-07-05')
     , (0x2953452df5d7285b9a3a8a1e876a4bacb09a976e, 'eToro', 'eToro Binance Deposit 1', 'hildobby', date '2024-01-04')
     -- Bitkan
     , (0x8c00dda00f9e2aabde88a4d17f9ef9fce265592f, 'Bitkan', 'Bitkan 1', 'hildobby', date '2024-01-04')
