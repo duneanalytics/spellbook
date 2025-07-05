@@ -152,7 +152,6 @@ FROM (VALUES
     , (0x9223c017a39d4806d1d92c15046ae28c32c6d8e7, 'Binance US', 'Binance US 7', 'hildobby', date '2024-05-25')
     , (0xd5c08681719445a5fdce2bda98b341a49050d821, 'Binance US', 'Binance US 8', 'hildobby', date '2024-10-06')
     , (0xa74e8ae2f83d2564af25420ad4d6a7fe224b053f, 'Binance US', 'Binance US 9', 'hildobby', date '2025-07-05')
-    , (0xa74e8ae2f83d2564af25420ad4d6a7fe224b053f, 'Binance US', 'Binance US 10', 'hildobby', date '2025-07-05')
     , (0x70d5ccc14a1a264c05ff48b3ec6751b0959541aa, 'Binance US', 'Binance US ETH Staking 1', 'hildobby', date '2025-07-05')
     , (0xb14a67c63bda5024d2effd53aa16a00bb7f9a30a, 'Binance US', 'Binance US Gas Supplier 1', 'hildobby', date '2023-11-23')
     , (0xb650b0b1f183d59343da753d94c068bfea92693d, 'Binance US', 'Binance US Gas Supplier 2', 'hildobby', date '2024-10-06')
@@ -1290,7 +1289,6 @@ FROM (VALUES
     , (0x0edd5b0de0fe748be331186bf0aa878f47f601db, 'Bitget', 'Bitget 32', 'hildobby', date '2025-06-27')
     , (0x54a679e853281a440911f72eae0e24107e9413dc, 'Bitget', 'Bitget 33', 'hildobby', date '2025-06-27')
     , (0x59708733fbbf64378d9293ec56b977c011a08fd2, 'Bitget', 'Bitget 34', 'hildobby', date '2025-06-27')
-    , (0x092fe28430bade62c7c044b9c77d0aaa06241319, 'Bitget', 'Bitget 35', 'hildobby', date '2025-07-05')
     , (0x3a7d1a8c3a8dc9d48a68e628432198a2ead4917c, 'Bitget', 'Bitget Proxy 1', 'hildobby', date '2023-11-22')
     -- Korbit
     , (0x0c01089aedc45ab0f43467cceca6b4d3e4170bea, 'Korbit', 'Korbit 1', 'hildobby', date '2023-04-06')
