@@ -82,7 +82,10 @@ known_solver_metadata (address, environment, name) as (
                 (0xa370940c2024cc029a87a821ee775560ad39dfbe, 'prod', 'Tsolver'),
                 (0xac73db8296f6be1836288da8a57c0f29379741e2, 'barn', 'Tsolver'),
                 (0x474eB2e2415392821CB1fCF61d09B09bDd6c17C4, 'prod', 'Arctic'),
-                (0xe334F185952ed3D1dD901abA217E33d4190F9fE8, 'barn', 'Arctic')
+                (0xe334F185952ed3D1dD901abA217E33d4190F9fE8, 'barn', 'Arctic'),
+                (0xb222da0155640eB2f604164d4a3684139dcC1f95, 'prod', 'Brrr'),
+                (0xB222Da076C21B7784A975dD54Fd09C0f7c21262f, 'barn', 'Brrr'),
+                (0x4dd1be0Cd607E5382Dd2844fA61D3a17e3e83D56, 'prod', 'Rizzolver')
     ) as _
 )
 -- Combining the metadata with current activation status for final table

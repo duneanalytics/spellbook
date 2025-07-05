@@ -47,6 +47,9 @@ known_solver_metadata (address, environment, name) as (
                 (0x48fEc3a113D1647D622c2A43dd4e10Ba761d369a, 'barn', 'Unizen'),
                 (0xD8b92e7d379D1dfb388B386a4bf68D549AE77EC8, 'barn', 'Wraxyn'),
                 (0x667DbAD6525488c01D5C12Ff856ef03E5af75C2a, 'barn', 'ApeOut_1inch'),
+                (0xa8e64684149eC4F3253904c1cD3C5a3aDb9793E5, 'barn', 'ExtQuasimodo'),
+                (0x110157Cf445Afe54bb1ca284b26Ef4670e4F084B, 'barn', 'Apollo'),
+                (0xcAc5830C2c62a7B2D064Ac28A8b81a78601190B4, 'barn', 'Sector'),
                 (0x6c273074c5DE2711CeB7a87Fd525b00a15C65318, 'prod', 'Baseline'),
                 (0xAdC54eD848Fa8e0aD9C6668D5539ebA373CA243F, 'prod', 'Gnosis_ParaSwap'),
                 (0xCa674076e0f96d18347869D9B8f8f57fC098A8c5, 'prod', 'Gnosis_0x'),
@@ -56,7 +59,10 @@ known_solver_metadata (address, environment, name) as (
                 (0x538194A8AB0a92cC60815C3bc651c34751cB4A09, 'prod', 'Tsolver'),
                 (0xd58c5a371F32F0d81B48cE1bE9dBf801181F5c01, 'prod', 'Unizen'),
                 (0x8cD4bEaa599AB64dD7fA2Fa8734BB0D6EC4e0af7, 'prod', 'Wraxyn'),
-                (0x6390F5D0Aa64A41C622EE38D462274275c7fDE61, 'prod', 'ApeOut_1inch')
+                (0x6390F5D0Aa64A41C622EE38D462274275c7fDE61, 'prod', 'ApeOut_1inch'),
+                (0xc3D3151324F04B0d072A74AbFDa84e1A99B19b22, 'prod', 'ExtQuasimodo'),
+                (0x8361B0b967b654C57a9584f15E1F6c289Fb0C13B, 'prod', 'Apollo'),
+                (0xc14820F96Ac38e8f376eb9042DDa927AdB12eE02, 'prod', 'Sector')
     ) as _
 )
 -- Combining the metadata with current activation status for final table

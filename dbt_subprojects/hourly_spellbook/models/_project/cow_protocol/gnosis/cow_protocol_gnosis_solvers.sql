@@ -71,6 +71,8 @@ known_solver_metadata (address, environment, name) as (
                  (0xB073F89C5BFDdD973b42A5629ab96891fAD74118, 'barn', 'Laita'),
                  (0xF2090280361Cc0571c2817Ca7f9F3C628D2bE180, 'barn', 'ExtQuasimodo'),
                  (0x700f0d287C8471057B7856AC7099343854a06b1D, 'barn', 'Wraxyn'),
+                 (0xE17B48cC9c5330d04e08c54E40Ed8107D1E4783f, 'barn', 'Arctic'),
+                 (0xaf5Baa0Ac599d2CCE7C7B7D1803AbAcBd8936598, 'prod', 'Arctic'),
                  (0x4799d639954Bf7A2c420C20a72eBd7caF900bfc4, 'prod', 'Wraxyn'),
                  (0x638D7114Ced5E17bE1a935EC80B20a0A4109360c, 'prod', 'ExtQuasimodo'),
                  (0x606Ce11E72BC77363cE0Dc74A2ed2b4244968143, 'prod', 'Laita'),
