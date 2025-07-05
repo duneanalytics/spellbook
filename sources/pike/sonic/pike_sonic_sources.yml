@@ -1,0 +1,7 @@
+version: 1
+
+sources:
+  - name: pike_sonic
+    tables:
+      - name: factory_call_deploymarket
+      - name: ptoken_evt_liquidateborrow

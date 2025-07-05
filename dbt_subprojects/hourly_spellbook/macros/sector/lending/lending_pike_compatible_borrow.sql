@@ -19,7 +19,7 @@ WITH deployed_markets AS (
 
 borrows AS (
     SELECT
-        'base' AS blockchain,
+        '{{ blockchain }}' AS blockchain,
         'pike' AS project,
         '1' AS version,
         'borrow' AS transaction_type,
@@ -45,7 +45,7 @@ borrows AS (
 
 repays AS (
     SELECT
-        'base' AS blockchain,
+        '{{ blockchain }}' AS blockchain,
         'pike' AS project,
         '1' AS version,
         'repay' AS transaction_type,
@@ -71,7 +71,7 @@ repays AS (
 
 liquidations_borrow AS (
     SELECT
-        'base' AS blockchain,
+        '{{ blockchain }}' AS blockchain,
         'pike' AS project,
         '1' AS version,
         'liquidation_borrow' AS transaction_type,

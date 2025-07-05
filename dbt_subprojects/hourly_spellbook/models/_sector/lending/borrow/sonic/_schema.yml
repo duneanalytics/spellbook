@@ -7,7 +7,7 @@ models:
       sector: lending
       contributors: tomfutago
     config:
-      tags: ['lending', 'borrow', 'aave', 'sonic']
+      tags: ["lending", "borrow", "aave", "sonic"]
     description: "All lending borrow transactions on Sonic"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -93,7 +93,7 @@ models:
       project: aave
       contributors: tomfutago
     config:
-      tags: ['lending', 'borrow', 'aave', 'sonic']
+      tags: ["lending", "borrow", "aave", "sonic"]
     description: "Aave v3 borrow transactions on Sonic"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -104,6 +104,42 @@ models:
             - evt_index
       - check_lending_base_borrow_seed:
           seed_file: ref('aave_sonic_base_borrow_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *borrower
+      - *on_behalf_of
+      - *repayer
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *project_contract_address
+      - *tx_hash
+      - *evt_index
+
+  - name: pike_sonic_base_borrow
+    meta:
+      blockchain: sonic
+      sector: lending
+      project: Pike
+      contributors: brunota20
+    config:
+      tags: ["lending", "borrow", "pike", "sonic"]
+    description: "Pike borrow transactions on Sonic"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_borrow_seed:
+          seed_file: ref('pike_sonic_base_borrow_seed')
     columns:
       - *blockchain
       - *project

@@ -9,6 +9,7 @@
 {%
   set models = [
     ref('aave_v3_sonic_base_supply')
+    , ref('pike_sonic_base_supply')
   ]
 %}
 

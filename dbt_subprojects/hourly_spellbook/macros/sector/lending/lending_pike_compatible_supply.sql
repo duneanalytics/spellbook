@@ -19,7 +19,7 @@ WITH deployed_markets AS (
 
 deposits AS (
     SELECT 
-        'base' AS blockchain,
+        '{{ blockchain }}' AS blockchain,
         'pike' AS project,
         '1' AS version,
         'deposit' AS transaction_type,
@@ -44,7 +44,7 @@ deposits AS (
 
 withdrawals AS (
     SELECT 
-        'base' AS blockchain,
+        '{{ blockchain }}' AS blockchain,
         'pike' AS project,
         '1' AS version,
         'withdraw' AS transaction_type,
@@ -69,7 +69,7 @@ withdrawals AS (
 
 liquidations_supply AS (
     SELECT 
-        'base' AS blockchain,
+        '{{ blockchain }}' AS blockchain,
         'pike' AS project,
         '1' AS version,
         'liquidation_supply' AS transaction_type,
