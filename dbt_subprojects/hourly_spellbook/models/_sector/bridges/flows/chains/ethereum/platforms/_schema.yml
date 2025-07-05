@@ -15,7 +15,7 @@ models:
           combination_of_columns: ['tx_hash','evt_index']
       - equal_rowcount_with_sources:
           evt_sources:
-            - source('circle_ethereum', 'tokenmessenger_evt_mintandwithdraw')
+            - source('circle_ethereum', 'tokenmessenger_evt_depositforburn')
     columns:
       - &deposit_chain
         name: deposit_chain
