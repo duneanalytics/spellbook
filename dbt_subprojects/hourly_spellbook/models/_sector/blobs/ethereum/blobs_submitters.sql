@@ -105,4 +105,6 @@ SELECT address
         , (0xeb18ea5dedee42e7af378991dfeb719d21c17b4c, 'Swellchain', 'swellchain')
         , (0xd0b4c3ac8a50b6f1b3949adaf55cc9805620eb57, 'Settlus', 'Settlusofficial')
         , (0xfbc0dcd6c3518cb529bc1b585db992a7d40005fa, 'Lighter', 'Lighter_xyz')
+        , (0x1ffda89c755f6d4af069897d77ccabb580fd412a, 'Katana', 'katana')
+        , (0xdac936134633c309ba831239e5e25cfe5094b229, 'LaChain', 'LaChain_Network')
         ) AS x(address, entity, x_username)
