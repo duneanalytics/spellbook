@@ -72,7 +72,20 @@ WITH cctp_id_mapping AS (
     , w.contract_address
     , CAST(m.nonce AS varchar) AS transfer_id
     FROM withdrawals w
-    INNER JOIN messages m ON w.block_number = m.block_number
+    INNER JOIN (
+        SELECT w2.block_number, w2.join_index, w2.tx_hash, w2.evt_index AS withdrawal_evt_index,
+               m2.evt_index AS message_evt_index, m2.sender, m2.nonce, m2.sourceDomain
+        FROM withdrawals w2
+        INNER JOIN messages m2 ON w2.block_number = m2.block_number
+            AND w2.join_index = m2.join_index
+            AND w2.tx_hash = m2.tx_hash
+            AND w2.evt_index < m2.evt_index
+        QUALIFY ROW_NUMBER() OVER (
+            PARTITION BY w2.block_number, w2.join_index, w2.tx_hash, w2.evt_index 
+            ORDER BY m2.evt_index ASC
+        ) = 1
+    ) m ON w.block_number = m.block_number
         AND w.join_index = m.join_index
         AND w.tx_hash = m.tx_hash
+        AND w.evt_index = m.withdrawal_evt_index
     INNER JOIN cctp_id_mapping i ON i.id=m.sourceDomain
