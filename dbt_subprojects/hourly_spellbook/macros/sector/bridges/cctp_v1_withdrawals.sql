@@ -79,11 +79,11 @@ WITH cctp_id_mapping AS (
     , w.contract_address
     , CAST(m.nonce AS varchar) AS transfer_id
     FROM withdrawals w
-    LEFT JOIN closest_messages m ON w.block_number = m.block_number
+    INNER JOIN closest_messages m ON w.block_number = m.block_number
         AND w.join_index = m.join_index
         AND w.tx_hash = m.tx_hash
         AND w.evt_index = m.withdrawal_evt_index
         AND m.rn = 1
-    LEFT JOIN cctp_id_mapping i ON i.id=m.sourceDomain
+    INNER JOIN cctp_id_mapping i ON i.id=m.sourceDomain
 
 {% endmacro %}
