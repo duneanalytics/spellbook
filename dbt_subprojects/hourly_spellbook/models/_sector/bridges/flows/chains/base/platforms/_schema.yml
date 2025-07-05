@@ -74,8 +74,8 @@ models:
       - &contract_address 
         name: contract_address
         description: "Contract address used for the bridge tx"
-      - &transfer_id 
-        name: transfer_id
+      - &bridge_id 
+        name: bridge_id
         description: "Bridge transfer identifier"
   - name: bridges_base_cctp_v1_withdrawals
     meta:
@@ -112,4 +112,4 @@ models:
       - *tx_hash
       - *evt_index  
       - *contract_address 
-      - *transfer_id 
+      - *bridge_id 

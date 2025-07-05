@@ -4,7 +4,7 @@
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy='merge'
-    , unique_key = ['deposit_chain','tx_hash','evt_index']
+    , unique_key = ['deposit_chain','withdrawal_chain','bridge_name','bridge_version','bridge_id']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
 )
 }}
@@ -34,7 +34,7 @@ FROM (
         , tx_hash
         , evt_index
         , contract_address
-        , transfer_id
+        , bridge_id
         FROM {{ ref('bridges_'~chain~'_withdrawals') }}
         {% if not loop.last %}
         UNION ALL
@@ -61,7 +61,7 @@ SELECT w.deposit_chain
 , w.tx_hash
 , w.evt_index
 , w.contract_address
-, w.transfer_id
+, w.bridge_id
 FROM grouped_withdrawals w
 INNER JOIN {{ source('prices', 'usd') }} p ON p.blockchain=w.withdrawal_chain
     AND p.contract_address=w.withdrawal_token_address

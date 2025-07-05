@@ -4,7 +4,7 @@
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy='merge'
-    , unique_key = ['deposit_chain','tx_hash','evt_index']
+    , unique_key = ['deposit_chain','withdrawal_chain','bridge_name','bridge_version','bridge_id']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
 )
 }}
@@ -34,7 +34,7 @@ WITH grouped_deposits AS (
         , tx_hash
         , evt_index
         , contract_address
-        , transfer_id
+        , bridge_id
         FROM {{ ref('bridges_'~chain~'_deposits') }}
         {% if is_incremental() %}
         WHERE  {{ incremental_predicate('block_time') }}

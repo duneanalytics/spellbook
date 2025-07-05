@@ -29,6 +29,6 @@ SELECT deposit_chain
 , d.tx_from AS deposit_tx_from
 , d.tx_hash AS deposit_tx_hash
 , w.tx_hash AS withdraw_tx_hash
-, transfer_id
+, bridge_id
 FROM {{ ref('bridges_deposits') }} d
-FULL OUTER JOIN {{ ref('bridges_withdrawals') }} w USING (bridge_name, bridge_version, deposit_chain, withdrawal_chain, transfer_id)
+FULL OUTER JOIN {{ ref('bridges_withdrawals') }} w USING (bridge_name, bridge_version, deposit_chain, withdrawal_chain, bridge_id)
