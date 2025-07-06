@@ -1778,3 +1778,31 @@ seeds:
         token_address: varbinary
         borrower: varbinary
         amount: double
+  - name: pike_sonic_base_supply_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        block_number: bigint
+        block_time: timestamp
+        tx_hash: varbinary
+        evt_index: bigint
+        transaction_type: varchar
+        token_address: varbinary
+        depositor: varbinary
+        amount: double
+  - name: pike_sonic_base_borrow_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        block_number: bigint
+        block_time: timestamp
+        tx_hash: varbinary
+        evt_index: bigint
+        transaction_type: varchar
+        token_address: varbinary
+        borrower: varbinary
+        amount: double
