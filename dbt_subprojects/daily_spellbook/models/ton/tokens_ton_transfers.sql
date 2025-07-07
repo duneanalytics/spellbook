@@ -192,30 +192,5 @@ FROM native_ton_transfers
 UNION ALL
 
 SELECT 
-    blockchain,
-    block_month,
-    block_date,
-    block_time,
-    block_number,
-    tx_hash,
-    tx_index,
-    evt_index,
-    tx_lt,
-    transfer_type,
-    token_standard,
-    transaction_type,
-    transaction_result,
-    trace_address,
-    tx_from,
-    tx_to,
-    from_address as "from",
-    to_address as "to",
-    contract_address,
-    token_address,
-    symbol,
-    token_decimals,
-    amount_raw,
-    amount,
-    amount_usd,
-    price_usd
+    *
 FROM jetton_transfers
