@@ -111,3 +111,59 @@ models:
       - name: epoch_time
       - name: epoch_start_slot
       - name: epoch_next_start_slot
+
+  - name: epoch_next_start_slot
+  - name: solana_staking_data
+    meta:
+      blockchain: solana
+      sector: staking
+      contributors: mostlydata
+    config:
+      tags: ['solana', 'staking', 'actions']
+    description: Curated Solana staking actions, tracking delegations, splits, and deactivations for stake accounts
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_id
+            - event_index
+    columns:
+      - name: stake_account
+        description: Stake account involved in the action
+        data_tests:
+          - not_null
+      - name: block_time
+        description: Timestamp of the block containing the action
+        data_tests:
+          - not_null
+      - name: block_slot
+        description: Block slot of the action
+        data_tests:
+          - not_null
+      - name: tx_id
+        description: Transaction ID of the action
+        data_tests:
+          - not_null
+      - name: event_index
+        description: Index of the event within the transaction
+        data_tests:
+          - not_null
+      - name: action_type
+        description: Type of action (Delegate, Split, Deactivate)
+        data_tests:
+          - not_null
+      - name: stake_authority
+        description: Stake authority of the account
+      - name: withdraw_authority
+        description: Withdraw authority for delegated accounts
+      - name: vote_account
+        description: Vote account for delegations
+      - name: current_lamports
+        description: Current stake amount in lamports
+      - name: current_sol
+        description: Current stake amount in SOL
+      - name: split_stake_account
+        description: New stake account created by split
+      - name: is_active
+        description: Whether the stake account is active (not deactivated)
+        data_tests:
+          - not_null
