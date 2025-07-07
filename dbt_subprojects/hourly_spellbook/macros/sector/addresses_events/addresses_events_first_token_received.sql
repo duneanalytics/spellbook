@@ -3,6 +3,7 @@
 
 WITH finding_transfer AS (
     SELECT tt.to
+    , tt.block_month
     , MIN_BY(tt.unique_key, (tt.block_number, tt.tx_index, COALESCE(tt.trace_address, ARRAY[COALESCE(evt_index, -1)]))) AS unique_key
     FROM {{token_transfers}} tt
     {% if is_incremental() %}
