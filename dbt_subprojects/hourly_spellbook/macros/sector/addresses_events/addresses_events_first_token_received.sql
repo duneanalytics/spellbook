@@ -15,7 +15,7 @@ WITH finding_transfer AS (
     {% else %}
     WHERE tt.block_time >= NOW() - interval '1' month
     {% endif %}
-    GROUP BY 1
+    GROUP BY 1, 2
     )
 
 SELECT '{{blockchain}}' as blockchain
