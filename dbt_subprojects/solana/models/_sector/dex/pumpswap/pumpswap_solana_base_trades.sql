@@ -168,13 +168,13 @@ WITH pools AS (
         --bought
         , case 
             when is_buy = 1 then p.baseMint 
-            else p.quoteMint 
+            else 'So11111111111111111111111111111111111111112'
           end as token_bought_mint_address
         , case when sp.is_buy = 1 then sp.base_token_amount else sp.quote_token_amount end AS token_bought_amount_raw
         --sold
         , case 
             when is_buy = 0 then p.baseMint 
-            else p.quoteMint 
+            else 'So11111111111111111111111111111111111111112'
           end as token_sold_mint_address
         , case when sp.is_buy = 0 then sp.base_token_amount else sp.quote_token_amount end AS token_sold_amount_raw
         , cast(sp.total_fee_rate as double) as fee_tier
