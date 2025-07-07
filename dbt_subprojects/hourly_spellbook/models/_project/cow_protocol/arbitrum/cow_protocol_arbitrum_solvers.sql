@@ -100,8 +100,8 @@ known_solver_metadata (address, environment, name) as (
                 (0xA8d8613ec7cbE23c506ef5F293d570945b988Cb9, 'prod', 'Arctic'),
                 (0xA14b145eb2f3010e1021514a5B6d8570aBD60C68, 'barn', 'Bebop'),
                 (0x6566692e5e7fC9A3559D539488C55C1570a6bd2F, 'prod', 'Bebop'),
-                (0x90Cf61BE4f7A8A47B638200e5434B1D895F8D710, 'barn', 'TSolver'),
-                (0x76EF27384f6aE6f58499C2eCC2273DC4bB2D9B91, 'prod', 'TSolver'),
+                (0x90Cf61BE4f7A8A47B638200e5434B1D895F8D710, 'barn', 'Tsolver'),
+                (0x76EF27384f6aE6f58499C2eCC2273DC4bB2D9B91, 'prod', 'Tsolver'),
                 (0x4dd1be0Cd607E5382Dd2844fA61D3a17e3e83D56, 'prod', 'Rizzolver')
     ) as _
 )
