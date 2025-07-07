@@ -72,6 +72,51 @@ models:
       - *op_fee
       - *beneficiary
 
+  - name: account_abstraction_erc4337_ethereum_v0_7_userops_basics
+    meta:
+      blockchain: ethereum
+      sector: erc4337
+      project: erc4337
+      contributors: 0xbitfly, hosuke
+    config:
+      tags: ["ethereum", "erc4337", "account", "abstraction", "entrypoint"]
+    description: "erc4337 v0.7 user operations on ethereum"
+    columns:
+      - *blockchain
+      - *version
+      - *block_month
+      - *block_time
+      - *entrypoint_contract
+      - *tx_hash
+      - *sender
+      - *userop_hash
+      - *success
+      - *paymaster
+      - *op_fee
+      - *beneficiary
+  - name: account_abstraction_erc4337_ethereum_v0_8_userops_basics
+    meta:
+      blockchain: ethereum
+      sector: erc4337
+      project: erc4337
+      contributors: 0xbitfly, hosuke
+    config:
+      tags: ["ethereum", "erc4337", "account", "abstraction", "entrypoint"]
+    description: "erc4337 v0.8 user operations on ethereum"
+    columns:
+      - *blockchain
+      - *version
+      - *block_month
+      - *block_time
+      - *entrypoint_contract
+      - *tx_hash
+      - *sender
+      - *userop_hash
+      - *success
+      - *paymaster
+      - *op_fee
+      - *beneficiary
+
   - name: account_abstraction_erc4337_ethereum_userops
     meta:
       blockchain: ethereum
@@ -102,6 +147,28 @@ models:
           filter:
             blockchain: ethereum
             version: v0.6
+          match_columns:
+            - userop_hash
+            - tx_hash
+          check_columns:
+            - paymaster
+            - bundler
+      - check_seed:
+          seed_file: ref('account_abstraction_erc4337_userops_seed')
+          filter:
+            blockchain: ethereum
+            version: v0.7
+          match_columns:
+            - userop_hash
+            - tx_hash
+          check_columns:
+            - paymaster
+            - bundler
+      - check_seed:
+          seed_file: ref('account_abstraction_erc4337_userops_seed')
+          filter:
+            blockchain: ethereum
+            version: v0.8
           match_columns:
             - userop_hash
             - tx_hash
@@ -184,6 +251,47 @@ models:
       - *paymaster
       - *factory
 
+  - name: account_abstraction_erc4337_ethereum_v0_7_account_deployed
+    meta:
+      blockchain: ethereum
+      sector: erc4337
+      project: erc4337
+      contributors: 0xbitfly
+    config:
+      tags: ["ethereum", "erc4337", "account", "abstraction", "entrypoint"]
+    description: "erc4337 v0.7 account deployed on ethereum"
+    columns:
+      - *blockchain
+      - *version
+      - *block_time
+      - *block_month
+      - *userop_hash
+      - *entrypoint_contract
+      - *tx_hash
+      - *sender
+      - *paymaster
+      - *factory
+  - name: account_abstraction_erc4337_ethereum_v0_8_account_deployed
+    meta:
+      blockchain: ethereum
+      sector: erc4337
+      project: erc4337
+      contributors: 0xbitfly
+    config:
+      tags: ["ethereum", "erc4337", "account", "abstraction", "entrypoint"]
+    description: "erc4337 v0.8 account deployed on ethereum"
+    columns:
+      - *blockchain
+      - *version
+      - *block_time
+      - *block_month
+      - *userop_hash
+      - *entrypoint_contract
+      - *tx_hash
+      - *sender
+      - *paymaster
+      - *factory
+
   - name: account_abstraction_erc4337_ethereum_account_deployed
     meta:
       blockchain: ethereum
@@ -214,6 +322,28 @@ models:
           filter:
             blockchain: ethereum
             version: v0.6
+          match_columns:
+            - userop_hash
+            - tx_hash
+          check_columns:
+            - paymaster
+            - factory
+      - check_seed:
+          seed_file: ref('account_abstraction_erc4337_account_deployed_seed')
+          filter:
+            blockchain: ethereum
+            version: v0.7
+          match_columns:
+            - userop_hash
+            - tx_hash
+          check_columns:
+            - paymaster
+            - factory
+      - check_seed:
+          seed_file: ref('account_abstraction_erc4337_account_deployed_seed')
+          filter:
+            blockchain: ethereum
+            version: v0.8
           match_columns:
             - userop_hash
             - tx_hash
