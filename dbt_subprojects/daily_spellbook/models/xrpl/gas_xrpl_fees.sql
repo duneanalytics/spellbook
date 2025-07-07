@@ -92,7 +92,7 @@ xrpl_gas_fees AS (
         ,CASE 
             WHEN JSON_EXTRACT_SCALAR(metadata, '$.TransactionIndex') IS NOT NULL THEN 
                 CAST(JSON_EXTRACT_SCALAR(metadata, '$.TransactionIndex') AS BIGINT)
-            ELSE NULL 
+            ELSE CAST(NULL AS BIGINT)
         END AS tx_index
         ,transaction_type AS tx_type
         ,JSON_EXTRACT_SCALAR(metadata, '$.TransactionResult') AS transaction_result
