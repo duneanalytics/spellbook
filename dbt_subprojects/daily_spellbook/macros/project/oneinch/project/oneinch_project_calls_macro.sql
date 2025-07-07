@@ -13,9 +13,9 @@ with
 
 static as (
     select
-          array['swap', 'settle', 'change', 'exact', 'batch', 'trade', 'sell', 'buy', 'fill', 'route', 'zap', 'symbiosis', 'aggregate', 'call', 'execute', 'wrap', 'transform', 'bridge', 'outboundtransfer', 'deposit', 'start', 'transfer'] as suitables
+        array['order'] as suitables
         , array['add', 'remove', 'mint', 'increase', 'decrease', 'cancel', 'destroy', 'claim', 'rescue', 'withdraw', 'simulate', 'join', 'exit', 'interaction', '721', '1155', 'nft', 'create', 'finalize', 'lock'] as exceptions
-        , array['bridge', 'outboundtransfer', 'deposit', 'start', 'transfer'] as cross_chain_suitables
+        , array['receive', 'send'] as cross_chain_suitables
 )
 
 , contracts as (

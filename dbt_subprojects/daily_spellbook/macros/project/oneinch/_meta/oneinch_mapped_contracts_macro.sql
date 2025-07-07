@@ -42,6 +42,7 @@ contracts as (
             , 'Stargate'
             , 'Orbiter'
             , 'LiFi'
+            , 'Swaps.io'
         ], project) or position('bridge' in lower(concat(project, tag))) > 0 as cross_chain
         , tag
     from (values
