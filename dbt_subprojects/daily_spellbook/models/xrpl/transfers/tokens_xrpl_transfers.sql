@@ -20,36 +20,7 @@
 ] %}
 
 SELECT
-    blockchain
-    ,block_month
-    ,block_date
-    ,block_time
-    ,ledger_index
-    ,tx_hash
-    ,tx_index
-    ,evt_index
-    ,transfer_type
-    ,token_standard
-    ,transaction_type
-    ,transaction_result
-    ,sequence
-    ,fee
-    ,tx_from
-    ,tx_to
-    ,from_address
-    ,to_address
-    ,issuer
-    ,currency
-    ,currency_hex
-    ,symbol
-    ,amount_requested_raw
-    ,amount_delivered_raw
-    ,amount_requested
-    ,amount_delivered
-    ,amount
-    ,partial_payment_flag
-    ,price_usd
-    ,amount_usd
+    *
 FROM (
     {% for transfer_model in transfer_models %}
     SELECT
