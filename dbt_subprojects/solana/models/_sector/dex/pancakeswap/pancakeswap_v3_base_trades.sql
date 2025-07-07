@@ -1,4 +1,4 @@
- {{
+{{
   config(
 
         schema = 'pancakeswap_v3',
