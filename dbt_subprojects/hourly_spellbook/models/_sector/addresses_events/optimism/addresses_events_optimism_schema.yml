@@ -145,6 +145,8 @@ models:
         description: "The token contract address of the first token received by this new address"
       - name: block_time
         description: "The block time on which the address first received a token"
+      - name: block_month
+        description: "The month of the block when the address first received a token"
       - name: block_number
         description: "The block number on which the address first received a token"
       - name: tx_hash

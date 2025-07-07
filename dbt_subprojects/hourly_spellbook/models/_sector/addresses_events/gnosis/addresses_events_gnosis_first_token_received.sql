@@ -7,6 +7,7 @@
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'append'
+    , partition_by = ['block_month']
     , unique_key = ['address']
     )
 }}
