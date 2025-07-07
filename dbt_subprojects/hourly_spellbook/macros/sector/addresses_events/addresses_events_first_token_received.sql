@@ -31,7 +31,7 @@ SELECT '{{blockchain}}' as blockchain
 , tt.block_month AS block_month
 , unique_key
 FROM {{token_transfers}} tt
-INNER JOIN finding_transfer ft USING (unique_key)
+INNER JOIN finding_transfer ft USING (block_month, unique_key)
 {% if is_incremental() %}
 WHERE {{ incremental_predicate('tt.block_time') }}
 {% endif %}
