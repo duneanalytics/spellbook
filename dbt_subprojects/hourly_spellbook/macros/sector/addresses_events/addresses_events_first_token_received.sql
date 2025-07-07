@@ -12,7 +12,7 @@ WITH finding_transfer AS (
     WHERE t.address IS NULL
     AND {{ incremental_predicate('tt.block_time') }}
     {% else %}
-    WHERE tt.block_time >= now() - interval '1 month'
+    WHERE tt.block_time >= NOW() - interval '1' month
     {% endif %}
     GROUP BY 1
     )
@@ -37,7 +37,7 @@ INNER JOIN finding_transfer ft USING (block_month, unique_key)
 {% if is_incremental() %}
 WHERE {{ incremental_predicate('tt.block_time') }}
 {% else %}
-WHERE tt.block_time >= now() - interval '1 month'
+WHERE tt.block_time >= NOW() - interval '1' month
 {% endif %}
 
 {% endmacro %}
