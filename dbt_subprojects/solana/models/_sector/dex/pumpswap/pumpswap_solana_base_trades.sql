@@ -52,7 +52,7 @@ WITH pools AS (
     {% else %}
     WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
-    AND call_block_time >= current_date - interval '6' day
+    AND call_block_time >= current_date - interval '8' day
     UNION ALL
     
     -- Sell operations
@@ -82,7 +82,7 @@ WITH pools AS (
     {% else %}
     WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
-    AND call_block_time >= current_date - interval '6' day
+    AND call_block_time >= current_date - interval '8' day
 )
 
 , fee_configs_with_time_ranges AS (
@@ -138,6 +138,7 @@ WITH pools AS (
             ) 
             OR
             (sf.swap_inner_index IS NOT NULL 
+            AND t.inner_instruction_index > sf.swap_inner_index
             AND t.inner_instruction_index BETWEEN sf.swap_inner_index + 1 AND sf.swap_inner_index + 12
             AND (
                         CASE 
@@ -152,7 +153,7 @@ WITH pools AS (
         {% else %}
         AND t.block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
-        AND t.block_time >= current_date - interval '6' day
+        AND t.block_time >= current_date - interval '8' day
 )
 
 , trades_base as (
@@ -166,17 +167,19 @@ WITH pools AS (
             else sp.outer_executing_account
           end as trade_source
         --bought
-        , case 
-            when is_buy = 1 then p.baseMint 
-            else 'So11111111111111111111111111111111111111112'
-          end as token_bought_mint_address
-        , case when sp.is_buy = 1 then sp.base_token_amount else sp.quote_token_amount end AS token_bought_amount_raw
+        ,CASE
+        WHEN is_buy = 1 AND p.baseMint != 'So11111111111111111111111111111111111111112' THEN p.baseMint
+        WHEN is_buy = 1 AND p.quoteMint != 'So11111111111111111111111111111111111111112' THEN p.quoteMint
+        ELSE 'So11111111111111111111111111111111111111112'
+        END as token_bought_mint_address
         --sold
-        , case 
-            when is_buy = 0 then p.baseMint 
-            else 'So11111111111111111111111111111111111111112'
-          end as token_sold_mint_address
+        ,CASE
+        WHEN is_buy = 0 AND p.baseMint != 'So11111111111111111111111111111111111111112' THEN p.baseMint
+        WHEN is_buy = 0 AND p.quoteMint != 'So11111111111111111111111111111111111111112' THEN p.quoteMint
+        ELSE 'So11111111111111111111111111111111111111112'
+        END as token_sold_mint_address
         , case when sp.is_buy = 0 then sp.base_token_amount else sp.quote_token_amount end AS token_sold_amount_raw
+        , case when sp.is_buy = 1 then sp.base_token_amount else sp.quote_token_amount end AS token_bought_amount_raw
         , cast(sp.total_fee_rate as double) as fee_tier
         , sp.pool as pool_id
         , 'pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA' as project_main_id
