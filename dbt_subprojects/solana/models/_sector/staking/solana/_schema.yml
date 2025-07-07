@@ -112,7 +112,6 @@ models:
       - name: epoch_start_slot
       - name: epoch_next_start_slot
 
-  - name: epoch_next_start_slot
   - name: solana_staking_data
     meta:
       blockchain: solana
