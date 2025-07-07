@@ -51,18 +51,6 @@ xrpl_gas_fees AS (
         ,CAST(hash AS VARCHAR) AS tx_hash
         ,CAST(account AS VARCHAR) AS tx_from
         ,CAST(destination AS VARCHAR) AS tx_to
-        ,CAST(NULL AS DOUBLE) AS gas_price
-        ,CAST(NULL AS DOUBLE) AS gas_used
-        ,CAST(NULL AS DOUBLE) AS gas_limit
-        ,CAST(NULL AS DOUBLE) AS gas_limit_usage
-        ,CAST(NULL AS DOUBLE) AS max_fee_per_gas
-        ,CAST(NULL AS DOUBLE) AS priority_fee_per_gas
-        ,CAST(NULL AS DOUBLE) AS max_priority_fee_per_gas
-        ,CAST(NULL AS DOUBLE) AS base_fee_per_gas
-        ,CAST(NULL AS DOUBLE) AS l1_fee
-        ,CAST(NULL AS DOUBLE) AS l1_gas_used
-        ,CAST(NULL AS DOUBLE) AS l1_gas_price
-        ,CAST(NULL AS DOUBLE) AS l1_fee_scalar
         ,'XRP' AS currency_symbol
         ,CAST(fee AS DOUBLE) / 1000000.0 AS tx_fee
         ,CASE 
