@@ -129,47 +129,7 @@ xrpl_gas_fees AS (
         {% endif %}
 )
 SELECT
-    blockchain
-    ,block_month
-    ,block_date
-    ,block_time
-    ,block_number
-    ,tx_hash
-    ,tx_from
-    ,tx_to
-    ,gas_price
-    ,gas_used
-    ,gas_limit
-    ,gas_limit_usage
-    ,max_fee_per_gas
-    ,priority_fee_per_gas
-    ,max_priority_fee_per_gas
-    ,base_fee_per_gas
-    ,currency_symbol
-    ,tx_fee
-    ,tx_fee_usd
-    ,tx_fee_raw
-    ,tx_fee_breakdown
-    ,tx_fee_breakdown_usd
-    ,tx_fee_breakdown_raw
-    ,tx_fee_currency
-    ,block_proposer
-    ,l1_fee
-    ,l1_gas_used
-    ,l1_gas_price
-    ,l1_fee_scalar
-    ,tx_index
-    ,tx_type
-    ,transaction_result
-    ,sequence
-    ,evt_index
-    ,transfer_type
-    ,token_standard
-    ,from_address
-    ,to_address
-    ,issuer
-    ,price_usd
-    ,fee_drops
+    *
     
 FROM xrpl_gas_fees
 WHERE tx_fee IS NOT NULL 
