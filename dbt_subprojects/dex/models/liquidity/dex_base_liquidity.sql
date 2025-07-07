@@ -22,7 +22,7 @@
    ,ref('dex_avalanche_c_base_liquidity') 
    ,ref('dex_ink_base_liquidity') 
    ,ref('dex_unichain_base_liquidity') 
-   ,ref('dex_worldchain_base_liquidity')
+   ,ref('dex_worldchain_base_liquidity') 
 ] %}
 
 with base_union as (

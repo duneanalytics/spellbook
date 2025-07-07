@@ -2,14 +2,10 @@
 
 {{
     config(
-        schema = 'tapio_sonic',
+        schema = 'tapio_' + blockchain,
         alias = 'liquidity',
         materialized = 'view',
-        file_format = 'delta',
-        post_hook = '{{ expose_spells(\'["sonic"]\',
-                                    "project",
-                                    "tapio",
-                                    \'["brunota20"]\') }}'
+        file_format = 'delta'
     )
 }}
 
