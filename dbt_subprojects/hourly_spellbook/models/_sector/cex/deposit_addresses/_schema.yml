@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: cex_deposit_addresses
+    meta:
+      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, gnosis, optimism, polygon, scroll, zora
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses across EVM chains"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - name: address
+        description: "Deposit address"
+      - name: blockchain
+        description: "Blockchain"
+      - name: cex_name
+        description: "CEX name"
+      - name: first_deposit_token_standard
+        description: "Token standard of first deposit (ERC20, native, etc.)"
+      - name: first_deposit_token_address
+        description: "Token contract address of first deposit"
+      - name: deposit_first_block_time
+        description: "Time of first deposit to this address"
+      - name: consolidation_first_block_time
+        description: "Time of first consolidation by CEX"
+      - name: deposit_count
+        description: "Number of deposit transactions"
+      - name: consolidation_count
+        description: "Number of consolidation transactions"
+      - name: amount_deposited
+        description: "Total amount deposited to this address"
+      - name: consolidation_unique_key
+        description: "Unique key for consolidation transaction"
+      - name: deposit_unique_key
+        description: "Unique key for deposit transaction"

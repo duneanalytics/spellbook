@@ -12,7 +12,6 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - flow_type
             - unique_key
     columns:
       - &blockchain
@@ -90,7 +89,6 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - flow_type
             - unique_key
     columns:
       - *blockchain
@@ -126,7 +124,6 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - flow_type
             - unique_key
     columns:
       - *blockchain
@@ -162,7 +159,6 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - flow_type
             - unique_key
     columns:
       - *blockchain
@@ -198,7 +194,6 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - flow_type
             - unique_key
     columns:
       - *blockchain
@@ -234,7 +229,6 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - flow_type
             - unique_key
     columns:
       - *blockchain
@@ -270,7 +264,6 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - flow_type
             - unique_key
     columns:
       - *blockchain
@@ -306,7 +299,6 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - flow_type
             - unique_key
     columns:
       - *blockchain
@@ -342,7 +334,6 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - flow_type
             - unique_key
     columns:
       - *blockchain
@@ -378,7 +369,6 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - flow_type
             - unique_key
     columns:
       - *blockchain
@@ -414,7 +404,6 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - flow_type
             - unique_key
     columns:
       - *blockchain
@@ -450,7 +439,6 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - flow_type
             - unique_key
     columns:
       - *blockchain
@@ -486,7 +474,6 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - flow_type
             - unique_key
     columns:
       - *blockchain
@@ -522,7 +509,6 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - flow_type
             - unique_key
     columns:
       - *blockchain
@@ -558,7 +544,6 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - flow_type
             - unique_key
     columns:
       - *blockchain
