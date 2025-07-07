@@ -2943,3 +2943,38 @@ models:
         description: The amount of the price impact attributed to the input token
       - name: order_key
         description: A unique identifier linking this swap to a specific order
+
+
+  - name: gmx_v2_increment_subaccount_action_count
+    meta:
+      blockchain: arbitrum, avalanche_c
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'event', 'increment_subaccount_action_count']
+    description: |
+      Aggregates counts of subaccount actions on the Arbitrum and Avalanche chains.
+      This model pulls from each chain-specific source and unifies them into a single 
+      table tracking how many times each subaccount performed each action.
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The type of event recorded, always 'IncrementSubaccountActionCount'
+      - *msg_sender
+      - name: account
+        description: The primary account associated with the subaccount action
+      - name: subaccount
+        description: The subaccount identifier on which the action was performed
+      - name: next_value
+        description: The updated action-count after this event
+      - name: action_type
+        description: The type of subaccount action performed.

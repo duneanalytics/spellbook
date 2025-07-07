@@ -1,0 +1,47 @@
+version: 2
+
+models:
+  - name: dex_katana_base_trades
+    data_tests:
+      - check_dex_info_relationship
+      - test_acceptable_usd_amount:
+          column_name: amount_usd
+          max_value: 1000000000
+
+  - name: sushiswap_v1_katana_base_trades
+    meta:
+      blockchain: katana
+      sector: dex
+      project: sushiswap
+      contributors: captncrunch
+    config:
+      tags: [ 'katana', 'dex', 'trades', 'kaia_swap' ]
+    description: "Sushiswap V2 Katana base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sushiswap_katana_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: sushiswap_v2_katana_base_trades
+    meta:
+      blockchain: katana
+      sector: dex
+      project: sushiswap
+      contributors: captncrunch
+    config:
+      tags: [ 'katana', 'dex', 'trades', 'defi_kingdoms' ]
+    description: "Sushiswap V3 Katana base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sushiswap_katana_base_trades_seed')
+          filter:
+            version: 2
