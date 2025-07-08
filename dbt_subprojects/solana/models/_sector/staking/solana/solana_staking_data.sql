@@ -4,8 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['tx_id', 'event_index'],
-    tags = ['solana', 'staking']
+    unique_key = ['tx_id', 'event_index']
 ) }}
 
 WITH delegate_stake_data AS (
