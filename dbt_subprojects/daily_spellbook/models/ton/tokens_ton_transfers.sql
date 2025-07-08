@@ -17,7 +17,9 @@
 WITH ton_prices AS (
     SELECT
         date_trunc('day', minute) as block_date,
-        avg(price) as price
+        avg(price) as price,
+        symbol,
+        9 as token_decimals
     FROM {{ source('prices', 'usd') }}
     WHERE symbol = 'TON' 
         AND blockchain is null
@@ -78,7 +80,6 @@ native_ton_transfers AS (
         date_trunc('month', tm.block_date) as block_month,
         tm.block_date,
         tm.block_time,
-        CAST(null AS bigint) as block_number,
         tm.tx_hash,
         CAST(null AS bigint) as tx_index,
         0 as evt_index,
@@ -87,24 +88,22 @@ native_ton_transfers AS (
         'native' as token_standard,
         'transfer' as transaction_type,
         'success' as transaction_result,
-        CAST(null AS array(bigint)) as trace_address,
         CAST(null AS varchar) as tx_from,
         CAST(null AS varchar) as tx_to,
         tm.source as from_address,
         tm.destination as to_address,
         CAST(null AS varchar) as contract_address,
         CAST(null AS varchar) as token_address,
-        'TON' as symbol,
-        9 as token_decimals,    
+        tp.symbol,
+        tp.token_decimals,    
         tm.value as amount_raw,
-        tm.value / 1e9 as amount,  -- Fixed: Native TON always uses 9 decimals
-        (tm.value / 1e9) * tp.price as amount_usd,
+        tm.value / power(10, tp.token_decimals) as amount,
+        (tm.value / power(10, tp.token_decimals)) * tp.price as amount_usd,
         tp.price as price_usd
     FROM {{ source('ton', 'messages') }} tm
     JOIN ton_prices tp ON tm.block_date = tp.block_date
     WHERE tm.direction = 'in'
         AND tm.value > 0
-        AND tm.block_date >= current_date - interval '5' day
         {% if is_incremental() %}
         AND {{ incremental_predicate('tm.block_date') }}
         {% endif %}
@@ -117,7 +116,6 @@ jetton_transfers AS (
         date_trunc('month', je.block_date) as block_month,
         je.block_date,
         je.block_time,
-        CAST(null AS bigint) as block_number,
         je.tx_hash,
         CAST(null AS bigint) as tx_index,
         0 as evt_index,
@@ -126,7 +124,6 @@ jetton_transfers AS (
         COALESCE(jp.asset_type, 'jetton') as token_standard,
         'transfer' as transaction_type,
         CASE WHEN NOT je.tx_aborted THEN 'success' ELSE 'failed' END as transaction_result,
-        CAST(null AS array(bigint)) as trace_address,
         CAST(null AS varchar) as tx_from,
         CAST(null AS varchar) as tx_to,
         je.source as from_address,
@@ -154,7 +151,6 @@ jetton_transfers AS (
         AND je.jetton_master != upper('0:671963027f7f85659ab55b821671688601cdcf1ee674fc7fbbb1a776a18d34a3') -- pTON
         AND NOT je.tx_aborted
         AND je.amount > 0
-        AND je.block_date >= current_date - interval '5' day
         {% if is_incremental() %}
         AND {{ incremental_predicate('je.block_date') }}
         {% endif %}
@@ -165,7 +161,6 @@ SELECT
     block_month,
     block_date,
     block_time,
-    block_number,
     tx_hash,
     tx_index,
     evt_index,
@@ -174,7 +169,6 @@ SELECT
     token_standard,
     transaction_type,
     transaction_result,
-    trace_address,
     tx_from,
     tx_to,
     from_address as "from",
@@ -196,7 +190,6 @@ SELECT
     block_month,
     block_date,
     block_time,
-    block_number,
     tx_hash,
     tx_index,
     evt_index,
@@ -205,7 +198,6 @@ SELECT
     token_standard,
     transaction_type,
     transaction_result,
-    trace_address,
     tx_from,
     tx_to,
     from_address as "from",
