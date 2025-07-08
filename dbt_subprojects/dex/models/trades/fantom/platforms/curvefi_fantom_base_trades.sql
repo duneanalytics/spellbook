@@ -106,6 +106,7 @@ select
     CAST(date_trunc('day', dexs.block_time) as date) as block_date,
     dexs.block_time,
     dexs.block_number,
+    -- Fantom Curve uses standard decimal handling, no adjustments needed
     dexs.token_bought_amount_raw,
     dexs.token_sold_amount_raw,
     dexs.token_bought_address,

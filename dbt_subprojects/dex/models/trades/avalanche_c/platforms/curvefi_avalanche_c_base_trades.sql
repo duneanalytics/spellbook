@@ -1117,11 +1117,12 @@ WITH dexs AS (
 SELECT
     'avalanche_c' AS blockchain,
     'curve' AS project,
-    '2' AS version,
+    dexs.version AS version,
     CAST(date_trunc('month', dexs.block_time) AS date) AS block_month,
     CAST(date_trunc('day', dexs.block_time) AS date) AS block_date,
     dexs.block_time,
     dexs.block_number,
+    -- Avalanche Curve uses standard decimal handling, no adjustments needed
     dexs.token_bought_amount_raw,
     dexs.token_sold_amount_raw,
     dexs.token_bought_address,
