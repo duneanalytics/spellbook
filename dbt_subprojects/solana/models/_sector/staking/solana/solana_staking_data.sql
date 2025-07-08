@@ -21,10 +21,10 @@ WITH delegate_stake_data AS (
         cc.lamports AS delegate_lamports,
         'Delegate' AS action_type,
         ROW_NUMBER() OVER (PARTITION BY ci.call_tx_id ORDER BY ci.call_inner_instruction_index) AS event_index
-    FROM {{ source('stake_program_solana', 'stake_call_initialize') }} ci
-    INNER JOIN {{ source('stake_program_solana', 'stake_call_delegatestake') }} dd
+    FROM {{ source('stake_program_solana', 'stake_call_Initialize') }} ci
+    INNER JOIN {{ source('stake_program_solana', 'stake_call_DelegateStake') }} dd
         ON dd.call_tx_id = ci.call_tx_id
-    INNER JOIN {{ source('system_program_solana', 'system_program_call_createaccount') }} cc
+    INNER JOIN {{ source('system_program_solana', 'system_program_call_CreateAccount') }} cc
         ON ci.call_tx_id = cc.call_tx_id
         AND cc.account_newAccount = dd.account_stakeAccount
     {% if is_incremental() %}
@@ -45,10 +45,10 @@ WITH delegate_stake_data AS (
         cc.lamports AS delegate_lamports,
         'Delegate' AS action_type,
         ROW_NUMBER() OVER (PARTITION BY ci.call_tx_id ORDER BY ci.call_inner_instruction_index) AS event_index
-    FROM {{ source('stake_program_solana', 'stake_call_initializechecked') }} ci
-    INNER JOIN {{ source('stake_program_solana', 'stake_call_delegatestake') }} dd
+    FROM {{ source('stake_program_solana', 'stake_call_InitializeChecked') }} ci
+    INNER JOIN {{ source('stake_program_solana', 'stake_call_DelegateStake') }} dd
         ON dd.call_tx_id = ci.call_tx_id
-    INNER JOIN {{ source('system_program_solana', 'system_program_call_createaccount') }} cc
+    INNER JOIN {{ source('system_program_solana', 'system_program_call_CreateAccount') }} cc
         ON ci.call_tx_id = cc.call_tx_id
         AND cc.account_newAccount = dd.account_stakeAccount
     {% if is_incremental() %}
@@ -66,7 +66,7 @@ split_stake_data AS (
         scs.lamports AS split_lamports,
         'Split' AS action_type,
         ROW_NUMBER() OVER (PARTITION BY scs.call_tx_id ORDER BY scs.call_inner_instruction_index) AS event_index
-    FROM {{ source('stake_program_solana', 'stake_call_split') }} scs
+    FROM {{ source('stake_program_solana', 'stake_call_Split') }} scs
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('scs.call_block_time') }}
     {% endif %}
@@ -80,7 +80,7 @@ deactivate_stake_data AS (
         scd.account_stakeAuthority AS stake_authority,
         'Deactivate' AS action_type,
         ROW_NUMBER() OVER (PARTITION BY scd.call_tx_id ORDER BY scd.call_inner_instruction_index) AS event_index
-    FROM {{ source('stake_program_solana', 'stake_call_deactivate') }} scd
+    FROM {{ source('stake_program_solana', 'stake_call_Deactivate') }} scd
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('scd.call_block_time') }}
     {% endif %}
