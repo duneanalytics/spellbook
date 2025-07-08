@@ -30,6 +30,46 @@
             , ip.call_block_time as init_time
             , row_number() over (partition by ip.account_pool_state order by ip.call_block_time desc) as recent_init
         FROM {{ source('pancakeswap_solana','amm_v3_call_create_pool') }} ip
+        WHERE 1=1
+        {% if is_incremental() %}
+            AND {{ incremental_predicate('ip.call_block_time') }}
+        {% else %}
+            AND ip.call_block_time >= TIMESTAMP '{{ project_start_date }}'
+        {% endif %}
+    ),
+
+    amm_v3_call_swap_filtered AS (
+        SELECT
+            account_pool_state, call_is_inner, call_outer_instruction_index, call_inner_instruction_index,
+            call_tx_id, call_block_time, call_block_slot, call_outer_executing_account,
+            call_tx_signer, call_tx_index
+        FROM {{ source('pancakeswap_solana', 'amm_v3_call_swap') }}
+        WHERE 1=1
+        {% if is_incremental() %}
+            AND {{ incremental_predicate('call_block_time') }}
+        {% else %}
+            AND call_block_time >= TIMESTAMP '{{ project_start_date }}'
+        {% endif %}
+    )
+
+    , amm_v3_call_swap_v2_filtered AS (
+        SELECT
+            account_pool_state, call_is_inner, call_outer_instruction_index, call_inner_instruction_index,
+            call_tx_id, call_block_time, call_block_slot, call_outer_executing_account,
+            call_tx_signer, call_tx_index
+        FROM {{ source('pancakeswap_solana', 'amm_v3_call_swap_v2') }}
+        WHERE 1=1
+        {% if is_incremental() %}
+            AND {{ incremental_predicate('call_block_time') }}
+        {% else %}
+            AND call_block_time >= TIMESTAMP '{{ project_start_date }}'
+        {% endif %}
+    )
+
+    , sp AS (
+        SELECT * FROM amm_v3_call_swap_filtered
+        UNION ALL
+        SELECT * FROM amm_v3_call_swap_v2_filtered
     )
 
     , all_swaps as (
@@ -63,15 +103,7 @@
             , case when tr_1.token_mint_address = p.tokenA then p.tokenAVault
                 else p.tokenBVault
                 end as token_sold_vault
-        FROM (
-            SELECT
-                account_pool_state , call_is_inner, call_outer_instruction_index, call_inner_instruction_index, call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer, call_tx_index
-            FROM {{ source('pancakeswap_solana', 'amm_v3_call_swap') }}
-            UNION ALL
-            SELECT
-                account_pool_state , call_is_inner, call_outer_instruction_index, call_inner_instruction_index, call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer, call_tx_index
-            FROM {{ source('pancakeswap_solana', 'amm_v3_call_swap_v2') }}
-        ) sp
+        FROM sp
         INNER JOIN pools p
             ON sp.account_pool_state = p.pool_id --account 2
             and p.recent_init = 1 --for some reason, some pools get created twice.
