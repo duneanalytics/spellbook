@@ -21,7 +21,7 @@ models:
               "block_month",
             ]
 
-  - name: pancakeswap_v3_trades
+  - name: pancakeswap_v3_solana_trades
     meta:
       blockchain: solana
       contributors: [chef_butterbeer]
