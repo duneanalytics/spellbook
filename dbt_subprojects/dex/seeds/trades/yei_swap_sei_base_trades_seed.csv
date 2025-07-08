@@ -1,0 +1,2 @@
+blockchain,project,version,block_date,tx_hash,evt_index,token_bought_address,token_sold_address,block_number,token_bought_amount_raw,token_sold_amount_raw
+sei,yei_swap,3,2025-06-27,0x033fa51da48a4bff8827ad38a9d36863ef27a857ba0b0959f946951bc8784f29,25,0xecC35F99e1E2A53Dd3F2989a5f1489C5a2A30347,0xCF693019E794a2CeC8386dA1599D7DF18Be3759c,154353564,95371,93844
