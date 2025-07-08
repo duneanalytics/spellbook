@@ -125,6 +125,8 @@ models:
           combination_of_columns:
             - tx_id
             - event_index
+            - stake_account
+            - action_type
     columns:
       - name: stake_account
         description: Stake account involved in the action

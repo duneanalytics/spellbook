@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'delete+insert',
-    unique_key = ['tx_id', 'event_index']
+    unique_key = ['tx_id', 'event_index', 'stake_account', 'action_type']
 ) }}
 
 WITH delegate_stake_data AS (
