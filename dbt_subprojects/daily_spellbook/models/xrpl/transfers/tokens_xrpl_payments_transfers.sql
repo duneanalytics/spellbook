@@ -56,7 +56,6 @@ successful_payment_transactions AS (
     WHERE transaction_type = 'Payment'
         AND JSON_EXTRACT_SCALAR(metadata, '$.TransactionResult') = 'tesSUCCESS'
         AND destination IS NOT NULL
-        AND CAST(DATE_TRUNC('minute', PARSE_DATETIME(REGEXP_REPLACE(_ledger_close_time_human, ' UTC$', ''), 'yyyy-MMM-dd HH:mm:ss.SSSSSSSSS')) AS TIMESTAMP) >= CURRENT_DATE - INTERVAL '3' DAY
         {% if is_incremental() %}
         AND {{ incremental_predicate('CAST(DATE_TRUNC(\'minute\', PARSE_DATETIME(REGEXP_REPLACE(_ledger_close_time_human, \' UTC$\', \'\'), \'yyyy-MMM-dd HH:mm:ss.SSSSSSSSS\')) AS TIMESTAMP)') }}
         {% endif %}

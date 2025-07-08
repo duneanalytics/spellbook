@@ -61,7 +61,6 @@ successful_amm_withdraw_transactions AS (
     FROM {{ source('xrpl', 'transactions') }}
     WHERE transaction_type = 'AMMWithdraw'
         AND JSON_EXTRACT_SCALAR(metadata, '$.TransactionResult') = 'tesSUCCESS'
-        AND CAST(DATE_TRUNC('minute', PARSE_DATETIME(REGEXP_REPLACE(_ledger_close_time_human, ' UTC$', ''), 'yyyy-MMM-dd HH:mm:ss.SSSSSSSSS')) AS TIMESTAMP) >= CURRENT_DATE - INTERVAL '3' DAY
         {% if is_incremental() %}
         AND {{ incremental_predicate('CAST(DATE_TRUNC(\'minute\', PARSE_DATETIME(REGEXP_REPLACE(_ledger_close_time_human, \' UTC$\', \'\'), \'yyyy-MMM-dd HH:mm:ss.SSSSSSSSS\')) AS TIMESTAMP)') }}
         {% endif %}
