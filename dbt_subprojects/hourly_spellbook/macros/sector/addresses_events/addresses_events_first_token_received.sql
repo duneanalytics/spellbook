@@ -7,7 +7,6 @@ WITH finding_transfer AS (
     {% if is_incremental() %}
     LEFT JOIN {{this}} t
         ON t.address=tt.to
-        AND t.block_month=tt.block_month
     WHERE t.address IS NULL
     AND {{ incremental_predicate('tt.block_time') }}
     {% else %}
@@ -29,7 +28,7 @@ SELECT '{{blockchain}}' as blockchain
 , tt.tx_hash AS tx_hash
 , tt.tx_index AS tx_index
 , tt.trace_address AS trace_address
-, block_month
+, tt.block_month AS block_month
 , unique_key
 FROM {{token_transfers}} tt
 INNER JOIN finding_transfer ft USING (unique_key)
