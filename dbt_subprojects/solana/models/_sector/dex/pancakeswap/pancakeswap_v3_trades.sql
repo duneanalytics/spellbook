@@ -1,6 +1,6 @@
  {{
   config(
-        schema = 'pancakeswap_v3',
+        schema = 'pancakeswap_v3_solana',
         alias = 'trades',
         materialized = 'view',
         post_hook='{{ expose_spells(\'["solana"]\',
