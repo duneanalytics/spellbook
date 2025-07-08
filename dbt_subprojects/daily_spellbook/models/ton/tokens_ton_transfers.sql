@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'tx_hash', 'tx_lt', 'token_address'],
+    unique_key = ['block_month', 'tx_hash', 'tx_lt', 'token_address'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     post_hook='{{ expose_spells(\'["ton"]\',
                                 "sector",
@@ -157,57 +157,11 @@ jetton_transfers AS (
 )
 
 SELECT 
-    blockchain,
-    block_month,
-    block_date,
-    block_time,
-    tx_hash,
-    tx_index,
-    evt_index,
-    tx_lt,
-    transfer_type,
-    token_standard,
-    transaction_type,
-    transaction_result,
-    tx_from,
-    tx_to,
-    from_address as "from",
-    to_address as "to",
-    contract_address,
-    token_address,
-    symbol,
-    token_decimals,
-    amount_raw,
-    amount,
-    amount_usd,
-    price_usd
+    *
 FROM native_ton_transfers
 
 UNION ALL
 
 SELECT 
-    blockchain,
-    block_month,
-    block_date,
-    block_time,
-    tx_hash,
-    tx_index,
-    evt_index,
-    tx_lt,
-    transfer_type,
-    token_standard,
-    transaction_type,
-    transaction_result,
-    tx_from,
-    tx_to,
-    from_address as "from",
-    to_address as "to",
-    contract_address,
-    token_address,
-    symbol,
-    token_decimals,
-    amount_raw,
-    amount,
-    amount_usd,
-    price_usd
+    *
 FROM jetton_transfers
