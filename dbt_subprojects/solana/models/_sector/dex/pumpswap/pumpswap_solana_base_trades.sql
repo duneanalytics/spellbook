@@ -175,16 +175,6 @@ WITH pools AS (
             else p.quoteMint 
           end as token_sold_mint_address
         , case when sp.is_buy = 0 then sp.base_token_amount else sp.quote_token_amount end AS token_sold_amount_raw
-        -- Decimals for bought token
-        , case 
-            when is_buy = 1 then p.baseMintDecimals 
-            else p.quoteMintDecimals 
-          end as token_bought_decimal_project_specific
-        -- Decimals for sold token  
-        , case 
-            when is_buy = 0 then p.baseMintDecimals 
-            else p.quoteMintDecimals 
-          end as token_sold_decimal_project_specific
         , cast(sp.total_fee_rate as double) as fee_tier
         , sp.pool as pool_id
         , 'pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA' as project_main_id
@@ -221,8 +211,6 @@ SELECT
     , tb.fee_tier
     , tb.token_sold_mint_address
     , tb.token_bought_mint_address
-    , tb.token_bought_decimal_project_specific
-    , tb.token_sold_decimal_project_specific
     , tb.token_sold_vault
     , tb.token_bought_vault
     , tb.pool_id as project_program_id
