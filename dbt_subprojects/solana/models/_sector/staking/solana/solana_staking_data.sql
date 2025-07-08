@@ -178,4 +178,3 @@ FROM stake_account_state
 {% if is_incremental() %}
 WHERE {{ incremental_predicate('block_time') }}
 {% endif %}
-ORDER BY block_time, block_slot, event_index;
