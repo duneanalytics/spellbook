@@ -3,7 +3,7 @@
     alias = 'staking_data',
     materialized = 'incremental',
     file_format = 'delta',
-    incremental_strategy = 'merge',
+    incremental_strategy = 'delete+insert',
     unique_key = ['tx_id', 'event_index']
 ) }}
 
@@ -26,9 +26,6 @@ WITH delegate_stake_data AS (
     INNER JOIN {{ source('system_program_solana', 'system_program_call_CreateAccount') }} cc
         ON ci.call_tx_id = cc.call_tx_id
         AND cc.account_newAccount = dd.account_stakeAccount
-    {% if is_incremental() %}
-    WHERE {{ incremental_predicate('cc.call_block_time') }}
-    {% endif %}
 
     UNION ALL
 
@@ -50,9 +47,6 @@ WITH delegate_stake_data AS (
     INNER JOIN {{ source('system_program_solana', 'system_program_call_CreateAccount') }} cc
         ON ci.call_tx_id = cc.call_tx_id
         AND cc.account_newAccount = dd.account_stakeAccount
-    {% if is_incremental() %}
-    WHERE {{ incremental_predicate('cc.call_block_time') }}
-    {% endif %}
 ),
 split_stake_data AS (
     SELECT
@@ -66,9 +60,6 @@ split_stake_data AS (
         'Split' AS action_type,
         ROW_NUMBER() OVER (PARTITION BY scs.call_tx_id ORDER BY scs.call_inner_instruction_index) AS event_index
     FROM {{ source('stake_program_solana', 'stake_call_Split') }} scs
-    {% if is_incremental() %}
-    WHERE {{ incremental_predicate('scs.call_block_time') }}
-    {% endif %}
 ),
 deactivate_stake_data AS (
     SELECT
@@ -80,9 +71,6 @@ deactivate_stake_data AS (
         'Deactivate' AS action_type,
         ROW_NUMBER() OVER (PARTITION BY scd.call_tx_id ORDER BY scd.call_inner_instruction_index) AS event_index
     FROM {{ source('stake_program_solana', 'stake_call_Deactivate') }} scd
-    {% if is_incremental() %}
-    WHERE {{ incremental_predicate('scd.call_block_time') }}
-    {% endif %}
 ),
 all_staking_events AS (
     SELECT
