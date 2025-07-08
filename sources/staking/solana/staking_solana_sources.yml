@@ -9,3 +9,4 @@ sources:
       - name: stake_call_Split
       - name: stake_call_Initialize
       - name: stake_call_InitializeChecked
+      - name: stake_call_Deactivate
