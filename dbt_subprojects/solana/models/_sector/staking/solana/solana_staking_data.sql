@@ -3,7 +3,7 @@
     alias = 'staking_data',
     materialized = 'incremental',
     file_format = 'delta',
-    incremental_strategy = 'delete+insert',
+    incremental_strategy = 'merge',
     unique_key = ['tx_id', 'event_index', 'stake_account', 'action_type']
 ) }}
 
