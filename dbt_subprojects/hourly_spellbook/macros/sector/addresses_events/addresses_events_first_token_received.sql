@@ -31,7 +31,7 @@ SELECT '{{blockchain}}' as blockchain
 , tt.tx_hash AS tx_hash
 , tt.tx_index AS tx_index
 , tt.trace_address AS trace_address
-, tt.block_month AS block_month
+, block_month
 , unique_key
 FROM {{token_transfers}} tt
 INNER JOIN finding_transfer ft USING (block_month, unique_key)
