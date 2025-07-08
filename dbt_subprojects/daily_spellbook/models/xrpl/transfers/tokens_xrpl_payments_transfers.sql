@@ -27,10 +27,10 @@ successful_payment_transactions AS (
     SELECT 
         hash AS tx_hash
         ,CAST(
-            PARSE_DATETIME(
+            DATE_TRUNC('minute', PARSE_DATETIME(
                 REGEXP_REPLACE(_ledger_close_time_human, ' UTC$', ''),
-                'yyyy-MMM-dd HH:mm'
-            ) AS TIMESTAMP
+                'yyyy-MMM-dd HH:mm:ss.SSSSSSSSS'
+            )) AS TIMESTAMP
         ) AS block_time
         ,ledger_index
         ,account AS tx_from
@@ -56,9 +56,9 @@ successful_payment_transactions AS (
     WHERE transaction_type = 'Payment'
         AND JSON_EXTRACT_SCALAR(metadata, '$.TransactionResult') = 'tesSUCCESS'
         AND destination IS NOT NULL
-        AND CAST(PARSE_DATETIME(REGEXP_REPLACE(_ledger_close_time_human, ' UTC$', ''), 'yyyy-MMM-dd HH:mm') AS TIMESTAMP) >= CURRENT_DATE - INTERVAL '3' DAY
+        AND CAST(DATE_TRUNC('minute', PARSE_DATETIME(REGEXP_REPLACE(_ledger_close_time_human, ' UTC$', ''), 'yyyy-MMM-dd HH:mm:ss.SSSSSSSSS')) AS TIMESTAMP) >= CURRENT_DATE - INTERVAL '3' DAY
         {% if is_incremental() %}
-        AND {{ incremental_predicate('CAST(PARSE_DATETIME(REGEXP_REPLACE(_ledger_close_time_human, \' UTC$\', \'\'), \'yyyy-MMM-dd HH:mm\') AS TIMESTAMP)') }}
+        AND {{ incremental_predicate('CAST(DATE_TRUNC(\'minute\', PARSE_DATETIME(REGEXP_REPLACE(_ledger_close_time_human, \' UTC$\', \'\'), \'yyyy-MMM-dd HH:mm:ss.SSSSSSSSS\')) AS TIMESTAMP)') }}
         {% endif %}
 ),
 
