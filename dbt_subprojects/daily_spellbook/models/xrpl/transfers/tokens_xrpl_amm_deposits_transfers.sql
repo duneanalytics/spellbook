@@ -29,7 +29,7 @@ successful_amm_deposit_transactions AS (
         ,CAST(
             PARSE_DATETIME(
                 REGEXP_REPLACE(_ledger_close_time_human, ' UTC$', ''),
-                'yyyy-MMM-dd HH:mm:ss.SSSSSSSSS'
+                'yyyy-MMM-dd HH:mm'
             ) AS TIMESTAMP
         ) AS block_time
         ,ledger_index
@@ -57,8 +57,9 @@ successful_amm_deposit_transactions AS (
     FROM {{ source('xrpl', 'transactions') }}
     WHERE transaction_type = 'AMMDeposit'
         AND JSON_EXTRACT_SCALAR(metadata, '$.TransactionResult') = 'tesSUCCESS'
+        AND CAST(PARSE_DATETIME(REGEXP_REPLACE(_ledger_close_time_human, ' UTC$', ''), 'yyyy-MMM-dd HH:mm') AS TIMESTAMP) >= CURRENT_DATE - INTERVAL '3' DAY
         {% if is_incremental() %}
-        AND {{ incremental_predicate('CAST(PARSE_DATETIME(REGEXP_REPLACE(t._ledger_close_time_human, \' UTC$\', \'\'), \'yyyy-MMM-dd HH:mm:ss.SSSSSSSSS\') AS TIMESTAMP)') }}
+        AND {{ incremental_predicate('CAST(PARSE_DATETIME(REGEXP_REPLACE(_ledger_close_time_human, \' UTC$\', \'\'), \'yyyy-MMM-dd HH:mm\') AS TIMESTAMP)') }}
         {% endif %}
 ),
 
@@ -297,5 +298,5 @@ SELECT
 FROM all_amm_deposit_transfers t
 LEFT JOIN {{ ref('tokens_xrpl_currency_mapping') }} cm 
     ON t.currency = cm.currency_hex
-LEFT JOIN xrp_prices p ON DATE_TRUNC('minute', t.block_time) = p.price_minute
+LEFT JOIN xrp_prices p ON t.block_time = p.price_minute
 WHERE COALESCE(t.amount_delivered, t.amount_requested) > 0

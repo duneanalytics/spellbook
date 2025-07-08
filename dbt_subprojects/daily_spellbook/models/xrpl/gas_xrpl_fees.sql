@@ -29,24 +29,9 @@ WITH xrp_prices AS (
 xrpl_gas_fees AS (
     SELECT 
         'xrpl' AS blockchain
-        ,CAST(DATE_TRUNC('month', CAST(
-            PARSE_DATETIME(
-                REGEXP_REPLACE(t._ledger_close_time_human, ' UTC$', ''),
-                'yyyy-MMM-dd HH:mm:ss.SSSSSSSSS'
-            ) AS TIMESTAMP
-        )) AS DATE) AS block_month
-        ,CAST(DATE_TRUNC('day', CAST(
-            PARSE_DATETIME(
-                REGEXP_REPLACE(t._ledger_close_time_human, ' UTC$', ''),
-                'yyyy-MMM-dd HH:mm:ss.SSSSSSSSS'
-            ) AS TIMESTAMP
-        )) AS DATE) AS block_date
-        ,CAST(
-            PARSE_DATETIME(
-                REGEXP_REPLACE(t._ledger_close_time_human, ' UTC$', ''),
-                'yyyy-MMM-dd HH:mm:ss.SSSSSSSSS'
-            ) AS TIMESTAMP
-        ) AS block_time
+        ,CAST(DATE_TRUNC('month', {{ xrpl_parse_datetime('_ledger_close_time_human') }}) AS DATE) AS block_month
+        ,CAST(DATE_TRUNC('day', {{ xrpl_parse_datetime('_ledger_close_time_human') }}) AS DATE) AS block_date
+        ,{{ xrpl_parse_datetime('_ledger_close_time_human') }} AS block_time
         ,ledger_index AS block_number
         ,CAST(hash AS VARCHAR) AS tx_hash
         ,CAST(account AS VARCHAR) AS tx_from
@@ -108,14 +93,9 @@ xrpl_gas_fees AS (
         
     FROM {{ source('xrpl', 'transactions') }} t
     LEFT JOIN xrp_prices p ON (
-        DATE_TRUNC('minute', CAST(
-            PARSE_DATETIME(
-                REGEXP_REPLACE(t._ledger_close_time_human, ' UTC$', ''),
-                'yyyy-MMM-dd HH:mm:ss.SSSSSSSSS'
-            ) AS TIMESTAMP
-        )) = p.price_minute
+        DATE_TRUNC('minute', {{ xrpl_parse_datetime('_ledger_close_time_human') }}) = p.price_minute
     )
-    WHERE t.transaction_type IN (
+    WHERE transaction_type IN (
         'Payment'
         ,'PaymentChannelClaim'
         ,'CheckCash'
@@ -123,9 +103,10 @@ xrpl_gas_fees AS (
         ,'AMMWithdraw'
         ,'EscrowFinish'
     )
-        AND TRY_CAST(t.fee AS DOUBLE) > 0
+        AND TRY_CAST(fee AS DOUBLE) > 0
+        AND {{ xrpl_parse_datetime('_ledger_close_time_human') }} >= CURRENT_DATE - INTERVAL '3' DAY
         {% if is_incremental() %}
-        AND {{ incremental_predicate('CAST(PARSE_DATETIME(REGEXP_REPLACE(t._ledger_close_time_human, \' UTC$\', \'\'), \'yyyy-MMM-dd HH:mm:ss.SSSSSSSSS\') AS TIMESTAMP)') }}
+        AND {{ incremental_predicate(xrpl_parse_datetime('_ledger_close_time_human')) }}
         {% endif %}
 )
 SELECT

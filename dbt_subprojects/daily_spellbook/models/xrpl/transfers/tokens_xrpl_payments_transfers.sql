@@ -29,7 +29,7 @@ successful_payment_transactions AS (
         ,CAST(
             PARSE_DATETIME(
                 REGEXP_REPLACE(_ledger_close_time_human, ' UTC$', ''),
-                'yyyy-MMM-dd HH:mm:ss.SSSSSSSSS'
+                'yyyy-MMM-dd HH:mm'
             ) AS TIMESTAMP
         ) AS block_time
         ,ledger_index
@@ -56,8 +56,9 @@ successful_payment_transactions AS (
     WHERE transaction_type = 'Payment'
         AND JSON_EXTRACT_SCALAR(metadata, '$.TransactionResult') = 'tesSUCCESS'
         AND destination IS NOT NULL
+        AND CAST(PARSE_DATETIME(REGEXP_REPLACE(_ledger_close_time_human, ' UTC$', ''), 'yyyy-MMM-dd HH:mm') AS TIMESTAMP) >= CURRENT_DATE - INTERVAL '3' DAY
         {% if is_incremental() %}
-        AND {{ incremental_predicate('CAST(PARSE_DATETIME(REGEXP_REPLACE(_ledger_close_time_human, \' UTC$\', \'\'), \'yyyy-MMM-dd HH:mm:ss.SSSSSSSSS\') AS TIMESTAMP)') }}
+        AND {{ incremental_predicate('CAST(PARSE_DATETIME(REGEXP_REPLACE(_ledger_close_time_human, \' UTC$\', \'\'), \'yyyy-MMM-dd HH:mm\') AS TIMESTAMP)') }}
         {% endif %}
 ),
 
@@ -189,5 +190,5 @@ SELECT
     END AS amount_usd
     
 FROM transfers_with_amounts t
-LEFT JOIN xrp_prices p ON DATE_TRUNC('minute', t.block_time) = p.price_minute
+LEFT JOIN xrp_prices p ON t.block_time = p.price_minute
 WHERE COALESCE(t.amount_delivered, t.amount_requested) > 0
