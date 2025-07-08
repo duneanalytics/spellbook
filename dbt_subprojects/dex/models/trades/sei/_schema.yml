@@ -128,3 +128,20 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('sailor_finance_sei_base_trades_seed')
+
+  - name: yei_swap_sei_base_trades
+    meta:
+      blockchain: sei
+      sector: dex
+      project: yei_swap
+      contributors: yei_admin
+    config:
+      tags: [ 'sei', 'dex', 'trades', 'yei_swap', 'v3' ]
+    description: "YeiSwap sei base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('yei_swap_sei_base_trades_seed')
