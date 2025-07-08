@@ -1,9 +1,7 @@
 {% macro addresses_events_first_token_received(blockchain, token_transfers) %}
 
-
 WITH finding_transfer AS (
     SELECT tt.to
-    , tt.block_month
     , MIN_BY(tt.unique_key, (tt.block_number, tt.tx_index, COALESCE(tt.trace_address, ARRAY[COALESCE(evt_index, -1)]))) AS unique_key
     FROM {{token_transfers}} tt
     {% if is_incremental() %}
@@ -15,8 +13,8 @@ WITH finding_transfer AS (
     {% else %}
     WHERE tt.block_time >= NOW() - interval '1' month
     {% endif %}
-    GROUP BY 1, 2
-    )
+    GROUP BY 1
+)
 
 SELECT '{{blockchain}}' as blockchain
 , tt.to AS address
@@ -34,11 +32,10 @@ SELECT '{{blockchain}}' as blockchain
 , block_month
 , unique_key
 FROM {{token_transfers}} tt
-INNER JOIN finding_transfer ft USING (block_month, unique_key)
+INNER JOIN finding_transfer ft USING (unique_key)
 {% if is_incremental() %}
 WHERE {{ incremental_predicate('tt.block_time') }}
 {% else %}
 WHERE tt.block_time >= NOW() - interval '1' month
 {% endif %}
-
 {% endmacro %}
