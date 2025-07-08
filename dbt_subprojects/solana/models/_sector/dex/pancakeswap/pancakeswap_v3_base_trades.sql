@@ -29,7 +29,7 @@
             , ip.call_tx_id as init_tx
             , ip.call_block_time as init_time
             , row_number() over (partition by ip.account_pool_state order by ip.call_block_time desc) as recent_init
-        FROM "delta_prod"."pancakeswap_solana"."amm_v3_call_create_pool" ip
+        FROM {{ source('pancakeswap_solana','amm_v3_call_create_pool') }} ip
     )
 
     , all_swaps as (
