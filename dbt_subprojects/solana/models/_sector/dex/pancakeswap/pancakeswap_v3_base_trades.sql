@@ -1,7 +1,7 @@
 {{
   config(
 
-        schema = 'pancakeswap_v3',
+        schema = 'pancakeswap_v3_solana',
         alias = 'base_trades',
         partition_by = ['block_month'],
         materialized = 'incremental',
