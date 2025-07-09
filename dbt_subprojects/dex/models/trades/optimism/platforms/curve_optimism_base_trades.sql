@@ -164,15 +164,15 @@ SELECT
         dexs.*
         , erc20_bought.decimals as token_bought_decimals
         , erc20_sold.decimals as token_sold_decimals
-        -- Calculate correct decimals based on pool type and token IDs
+        -- Calculate curve used decimals based on pool type and token IDs
         , case
             when dexs.pool_type = 'meta' and dexs.bought_id = INT256 '0' then 18
             else coalesce(erc20_bought.decimals, 18)
-        end as correct_decimals_bought
+        end as curve_decimals_bought
         , case
             when dexs.pool_type = 'meta' and dexs.bought_id = INT256 '0' then coalesce(erc20_bought.decimals, 18)
             else coalesce(erc20_sold.decimals, 18)
-        end as correct_decimals_sold
+        end as curve_decimals_sold
     FROM dexs
     LEFT JOIN {{ source('tokens', 'erc20') }} erc20_bought
         ON erc20_bought.contract_address = dexs.token_bought_address
@@ -193,12 +193,12 @@ SELECT DISTINCT
     -- Adjust raw amounts so that generic enrichment (amount_raw / 10^token_decimals) yields correct token units
     ,CAST(
         dexs_with_decimals.token_bought_amount_raw * 
-        power(10, dexs_with_decimals.correct_decimals_bought - coalesce(dexs_with_decimals.token_bought_decimals, 18))
+        power(10, dexs_with_decimals.token_bought_decimals - dexs_with_decimals.curve_decimals_bought))
         AS UINT256
     ) as token_bought_amount_raw
     ,CAST(
         dexs_with_decimals.token_sold_amount_raw * 
-        power(10, dexs_with_decimals.correct_decimals_sold - coalesce(dexs_with_decimals.token_sold_decimals, 18))
+        power(10, dexs_with_decimals.token_sold_decimals - dexs_with_decimals.curve_decimals_sold))
         AS UINT256
     ) as token_sold_amount_raw
     ,dexs_with_decimals.token_bought_address
