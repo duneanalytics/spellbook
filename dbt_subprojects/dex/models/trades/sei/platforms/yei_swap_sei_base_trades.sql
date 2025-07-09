@@ -1,5 +1,6 @@
 {{
     config(
+        tags = ['prod_exclude'],
         schema = 'yei_swap_sei',
         alias = 'base_trades',
         materialized = 'incremental',
