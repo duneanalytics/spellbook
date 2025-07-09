@@ -11,8 +11,7 @@
   )
 }}
 
-{% set solana_dexes = [
-
+{% set solana_dexes = [ 
    ref('raydium_v3_base_trades')
   , ref('raydium_v4_base_trades')
   , ref('raydium_v5_base_trades')
@@ -72,4 +71,4 @@ FROM
 {% if not loop.last %}
 UNION ALL
 {% endif %}
-{% endfor %} 
+{% endfor %}
