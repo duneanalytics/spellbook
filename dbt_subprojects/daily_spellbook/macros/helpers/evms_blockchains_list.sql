@@ -36,6 +36,7 @@
         "shape",
         "sonic",
         "sophon",
+        "taiko",
         "unichain",
         "viction",
         "worldchain",

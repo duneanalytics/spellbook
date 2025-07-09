@@ -28,6 +28,7 @@
                                         , "shape"
                                         , "sonic"
                                         , "opbnb"
+                                        , "taiko"
                                         , "unichain"
                                         , "viction"
                                         , "worldchain"
@@ -38,7 +39,7 @@
                                         ]\',
                                         "sector",
                                         "evms",
-                                        \'["hildobby", "hosuke", "jeff-dude", "agaperste"]\') }}')
+                                        \'["hildobby", "hosuke", "jeff-dude", "agaperste", "krishhh"]\') }}')
 }}
 
 SELECT chain_id
