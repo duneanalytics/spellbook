@@ -672,6 +672,7 @@ FROM (VALUES
     , (0x45ceabb79cf4aba1e9781cec35ce726f8a1a9309, 'OKX', 'OKX Gas Supplier 18', 'hildobby', date '2024-10-06')
     , (0x3ed0b01c262a3938c25d16c8902e1e8ca2cfd8fb, 'OKX', 'OKX Gas Supplier 20', 'hildobby', date '2025-06-27')
     , (0xc5267f13b9b4ba7bb73bdd53a2a3c944733a2961, 'OKX', 'OKX Gas Supplier 21', 'hildobby', date '2025-07-09')
+    , (0x77a9b3fa8387652128ca5a9e4756e9e88dac3634, 'OKX', 'OKX Gas Supplier 22', 'hildobby', date '2025-07-09')
     -- Cobo
     , (0xa9c7d31bb1879bff8be25ead2f59b310a52b7c5a, 'Cobo', 'Cobo 1', 'hildobby', date '2023-11-16')
     , (0xbf957e1c121fa769580d29bf320ee8bff138ad12, 'Cobo', 'Cobo 2', 'hildobby', date '2023-11-16')
