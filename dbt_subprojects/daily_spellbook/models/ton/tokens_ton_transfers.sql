@@ -26,7 +26,7 @@ WITH ton_prices AS (
     {% if is_incremental() %}
         AND {{ incremental_predicate('minute') }}
     {% endif %}
-    GROUP BY 1
+    GROUP BY 1, 3, 4
 ),
 
 jetton_prices AS (
