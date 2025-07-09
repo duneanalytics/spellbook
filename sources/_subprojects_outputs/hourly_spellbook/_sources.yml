@@ -128,6 +128,30 @@ sources:
     tables:
       - name: fees
 
+  - name: gas_berachain
+    tables:
+      - name: fees
+
+  - name: gas_opbnb
+    tables:
+      - name: fees
+
+  - name: gas_nova
+    tables:
+      - name: fees
+
+  - name: gas_unichain
+    tables:
+      - name: fees
+
+  - name: gas_ink
+    tables:
+      - name: fees
+
+  - name: gas_katana
+    tables:
+      - name: fees
+
   - name: evms
     tables:
       - name: transaction_metrics
