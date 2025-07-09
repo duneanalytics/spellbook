@@ -649,6 +649,7 @@ FROM (VALUES
     , (0x000000000000d5775ff7721cefb8097af62e52dd, 'OKX', 'OKX 205', 'hildobby', date '2025-07-08')
     , (0x00000000004e3d5628234f18b977041e5242651f, 'OKX', 'OKX 206', 'hildobby', date '2025-07-08')
     , (0x0003b5aa5e30e97fcc596bb5d0f3a75255e08d4e, 'OKX', 'OKX 207', 'hildobby', date '2025-07-08')
+    , (0x07b51adee570fcf3a21a864cba4d90d372f2fb94, 'OKX', 'OKX 208', 'hildobby', date '2025-07-09')
     , (0x2ce910fbba65b454bbaf6a18c952a70f3bcd8299, 'OKX', 'OKX Internal 1', 'hildobby', date '2025-05-02')
     , (0x3b3ae790df4f312e745d270119c6052904fb6790, 'OKX', 'OKX DEX Aggregation Router', 'hildobby', date '2023-08-31')
     , (0xc5a93444cc4da6efb9e6fc6e5d3cb55a53b52396, 'OKX', 'OKX Gas Supplier 1', 'hildobby', date '2023-08-31')
@@ -1622,6 +1623,7 @@ FROM (VALUES
     , (0xab2109ad7f82bffe7c3cab3fda25e4799c28ea5b, 'Upbit', 'Upbit 18', 'hildobby', date '2025-06-25')
     , (0x5c3f261290e02ba328af0dcfe2586dba61a358ec, 'Upbit', 'Upbit 19', 'hildobby', date '2025-06-25')
     , (0x00d7f2709c7b305a64b8e49a476fead84d159366, 'Upbit', 'Upbit 20', 'hildobby', date '2025-06-25')
+    , (0x12352dce4985ffb2074b4cb4399901c9d2fd5582, 'Upbit', 'Upbit 21', 'hildobby', date '2025-07-09')
     , (0xc9cf0ec93d764f5c9571fd12f764bae7fc87c84e, 'Upbit', 'Upbit Cold Wallet', 'hildobby', date '2022-08-28')
     , (0x4f01001cf69785d4c37f03fd87398849411ccbba, 'Upbit', 'Upbit Wallet Factory Contract', 'hildobby', date '2023-01-10')
     -- BlockFi
