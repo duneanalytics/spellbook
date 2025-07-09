@@ -36,6 +36,7 @@
         "shape",
         "sonic",
         "sophon",
+        "superseed",
         "unichain",
         "viction",
         "worldchain",
