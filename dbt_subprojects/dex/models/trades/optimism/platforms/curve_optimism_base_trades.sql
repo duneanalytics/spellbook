@@ -193,12 +193,12 @@ SELECT DISTINCT
     -- Adjust raw amounts so that generic enrichment (amount_raw / 10^token_decimals) yields correct token units
     ,CAST(
         dexs_with_decimals.token_bought_amount_raw * 
-        power(10, dexs_with_decimals.token_bought_decimals - dexs_with_decimals.curve_decimals_bought))
+        power(10, dexs_with_decimals.token_bought_decimals - dexs_with_decimals.curve_decimals_bought)
         AS UINT256
     ) as token_bought_amount_raw
     ,CAST(
         dexs_with_decimals.token_sold_amount_raw * 
-        power(10, dexs_with_decimals.token_sold_decimals - dexs_with_decimals.curve_decimals_sold))
+        power(10, dexs_with_decimals.token_sold_decimals - dexs_with_decimals.curve_decimals_sold)
         AS UINT256
     ) as token_sold_amount_raw
     ,dexs_with_decimals.token_bought_address
