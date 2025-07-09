@@ -14,8 +14,8 @@
     uniswap_compatible_v2_trades(
         blockchain = 'arbitrum',
         project = 'gammaswap',
-        version = '2',
+        version = '1',
         Pair_evt_Swap = source('gammaswap_arbitrum', 'deltaswappair_evt_swap'),
         Factory_evt_PairCreated = source('gammaswap_arbitrum', 'deltaswapfactory_evt_paircreated')
     )
-}}
+}}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
