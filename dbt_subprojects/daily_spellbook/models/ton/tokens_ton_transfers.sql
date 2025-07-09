@@ -89,7 +89,7 @@ native_ton_transfers AS (
         tm.source as from_address,
         tm.destination as to_address,
         CAST(null AS varchar) as contract_address,
-        CAST(null AS varchar) as token_address,
+        '0:0000000000000000000000000000000000000000000000000000000000000000' as token_address, -- Native TON token address
         tp.symbol,
         tp.token_decimals,    
         tm.value as amount_raw,
