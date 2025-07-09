@@ -251,6 +251,7 @@ FROM (VALUES
     , (0x46e0813dcb480517e3e73449761bdc596e424a79, 'Blockchain.com', 'Blockchain.com 5', 'hildobby', date '2023-09-12')
     , (0x9aa65464b4cfbe3dc2bdb3df412aee2b3de86687, 'Blockchain.com', 'Blockchain.com 6', 'hildobby', date '2023-11-20')
     , (0xfc3e21f959551512d68b6b00f8931593d3106151, 'Blockchain.com', 'Blockchain.com 7', 'hildobby', date '2024-06-03')
+    , (0x8badd8b59ddaf9a12c4910ca1b2e8ea750a71594, 'Blockchain.com', 'Blockchain.com 8', 'hildobby', date '2025-07-09')
     -- Coinbase
     , (0x71660c4005ba85c37ccec55d0c4493e66fe775d3, 'Coinbase', 'Coinbase 1', 'hildobby', date '2022-08-28')
     , (0x503828976d22510aad0201ac7ec88293211d23da, 'Coinbase', 'Coinbase 2', 'hildobby', date '2022-08-28')
@@ -669,6 +670,7 @@ FROM (VALUES
     , (0x6182672efcb2ddf094f7bfd3e92ecd10e718e4e1, 'OKX', 'OKX Gas Supplier 17', 'hildobby', date '2024-10-06')
     , (0x45ceabb79cf4aba1e9781cec35ce726f8a1a9309, 'OKX', 'OKX Gas Supplier 18', 'hildobby', date '2024-10-06')
     , (0x3ed0b01c262a3938c25d16c8902e1e8ca2cfd8fb, 'OKX', 'OKX Gas Supplier 20', 'hildobby', date '2025-06-27')
+    , (0xc5267f13b9b4ba7bb73bdd53a2a3c944733a2961, 'OKX', 'OKX Gas Supplier 21', 'hildobby', date '2025-07-09')
     -- Cobo
     , (0xa9c7d31bb1879bff8be25ead2f59b310a52b7c5a, 'Cobo', 'Cobo 1', 'hildobby', date '2023-11-16')
     , (0xbf957e1c121fa769580d29bf320ee8bff138ad12, 'Cobo', 'Cobo 2', 'hildobby', date '2023-11-16')
@@ -2584,6 +2586,7 @@ FROM (VALUES
     , (0x680178d61d910736153991660c5710841c440ec7, 'MEXC', 'MEXC 18', 'hildobby', date '2025-06-25')
     , (0x016c685d3379a515c64e7d85de8c0be11127f1d5, 'MEXC', 'MEXC 19', 'hildobby', date '2025-06-25')
     , (0x5c30940a4544ca845272fe97c4a27f2ed2cd7b64, 'MEXC', 'MEXC 20', 'hildobby', date '2025-06-25')
+    , (0x9642b23ed1e01df1092b92641051881a322f5d4e, 'MEXC', 'MEXC 21', 'hildobby', date '2025-07-09')
     , (0x9b79cc64cd3e5ec86d951acb27ddbd9ed660cd07, 'MEXC', 'MEXC Gas Supplier 1', 'hildobby', date '2025-06-25')
     , (0xc2149f0d56e227e39077bf4d592f6314098f3b29, 'MEXC', 'MEXC Gas Supplier 2', 'hildobby', date '2025-06-25')
     , (0xe8832a868c091263ed190a9f4be304a03895dd91, 'MEXC', 'MEXC Gas Supplier 3', 'hildobby', date '2025-06-25')
@@ -4154,6 +4157,7 @@ FROM (VALUES
     , (0xc0924edefb2c0c303de2d0c21bff07ab763163b5, 'Steam Exchange', 'Steam Exchange 2', 'hildobby', date '2024-01-04')
     -- Transak
     , (0x27899fface558bde9f284ba5c8c91ec79ee60fd6, 'Transak', 'Transak 1', 'hildobby', date '2024-01-04')
+    , (0x3247f6b66f24f672eacf52080e0381fa45deb307, 'Transak', 'Transak 2', 'hildobby', date '2025-07-09')
     -- CoinField
     , (0xa1813f73448a7392e6f069299c23120aeeab879a, 'CoinField', 'CoinField 1', 'hildobby', date '2024-01-04')
     -- Prime Trust
