@@ -888,3 +888,22 @@ models:
           seed_file: ref('fluid_arbitrum_base_trades_seed')
           filter:
             version: 1
+
+  - name: gammaswap_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gammaswap
+      contributors: principatel
+    config:
+      tags: ["arbitrum", "dex", "trades", "gammaswap"]
+    description: "gammaswap arbitrum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('gammaswap_arbitrum_base_trades_seed')
+          filter:
+            version: 1
