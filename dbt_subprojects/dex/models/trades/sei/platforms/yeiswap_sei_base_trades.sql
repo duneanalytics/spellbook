@@ -13,9 +13,9 @@
 {{
     uniswap_compatible_v3_trades(
         blockchain = 'sei',
-        project = 'yei_swap',
+        project = 'yeiswap',
         version = '3',
-        Pair_evt_Swap = source('yei_swap_sei', 'UniswapV3Pool_evt_Swap'),
+        Pair_evt_Swap = source('yeiswap_sei', 'UniswapV3Pool_evt_Swap'),
         Factory_evt_PoolCreated = source('yeiswap_sei', 'UniswapV3Factory_evt_PoolCreated')
     )
 }}
