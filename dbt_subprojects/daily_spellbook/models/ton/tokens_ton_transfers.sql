@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_month', 'tx_hash', 'tx_lt'],
+    unique_key = ['block_month', 'tx_hash', 'tx_lt', 'token_address'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     post_hook='{{ expose_spells(\'["ton"]\',
                                 "sector",
