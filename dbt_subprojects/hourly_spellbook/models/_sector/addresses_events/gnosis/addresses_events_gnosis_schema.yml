@@ -89,3 +89,47 @@ models:
         description: "first function called by address"
       - name: first_xdai_transferred
         description: "xDAI transferred in transaction"
+  - name: addresses_events_gnosis_first_token_received
+    meta:
+      blockchain: gnosis
+      sector: addresses_events
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'received', 'addresses_events', 'gnosis']
+    description: "Table showing which token was first received for each Gnosis address"
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: address
+        description: "Concerned Gnosis address"
+        data_tests:
+          - unique
+      - name: first_receive_executed_by
+        description: "Which address executed the tx with the first token received"
+      - name: first_receive_from
+        description: "From which Gnosis address did the first token received come from"
+      - name: amount
+        description: "The amount of tokens the wallet was funded with in this first transfer"
+      - name: amount_usd
+        description: "The USD value of the tokens the wallet was funded with in this first transfer"
+      - name: token_standard
+        description: "The token standard of the first token received by this new address"
+      - name: token_address
+        description: "The token contract address of the first token received by this new address"
+      - name: block_time
+        description: "The block time on which the address first received a token"
+      - name: block_month
+        description: "The month of the block when the address first received a token"
+      - name: block_number
+        description: "The block number on which the address first received a token"
+      - name: tx_hash
+        description: "The transaction hash on which the address first received a token"
+      - name: tx_index
+        description: "The transaction index within the block on which the address first received a token"
+      - name: trace_address
+        description: "The trace_address within the transaction on which the address first received a token"
+      - name: unique_key
+        description: "Unique transfer identifier key"
+
+
