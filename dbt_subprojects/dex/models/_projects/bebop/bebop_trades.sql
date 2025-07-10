@@ -2,7 +2,7 @@
         schema = 'bebop',
         alias = 'trades',
         materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'["polygon", "arbitrum", "ethereum", "bnb", "base", "optimism", "scroll", "zksync", "avalanche_c"]\',
+        post_hook='{{ expose_spells(blockchains = \'["polygon", "arbitrum", "ethereum", "bnb", "base", "optimism", "scroll", "zksync"]\',
                                     spell_type = "project",
                                     spell_name = "bebop",
                                     contributors = \'["alekss"]\') }}'
