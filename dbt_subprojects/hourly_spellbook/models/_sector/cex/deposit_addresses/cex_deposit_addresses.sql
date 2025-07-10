@@ -7,7 +7,7 @@
         incremental_strategy = 'merge',
         unique_key = ['address'],
         merge_update_columns = ['blockchain', 'cex_name', 'first_deposit_token_standard', 'first_deposit_token_address', 'deposit_first_block_time', 'consolidation_first_block_time', 'deposit_count', 'consolidation_count', 'amount_deposited', 'consolidation_unique_key', 'deposit_unique_key'],
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "base", "celo", "scroll", "zora"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "base", "celo", "scroll", "zora", "berachain", "ink", "katana", "nova", "opbnb", "unichain"]\',
                                     "sector",
                                     "cex",
                                     \'["hildobby"]\') }}'
@@ -26,6 +26,12 @@
     , ref('cex_celo_deposit_addresses')
     , ref('cex_scroll_deposit_addresses')
     , ref('cex_zora_deposit_addresses')
+    , ref('cex_berachain_deposit_addresses')
+    , ref('cex_ink_deposit_addresses')
+    , ref('cex_katana_deposit_addresses')
+    , ref('cex_nova_deposit_addresses')
+    , ref('cex_opbnb_deposit_addresses')
+    , ref('cex_unichain_deposit_addresses')
 ] %}
 
 

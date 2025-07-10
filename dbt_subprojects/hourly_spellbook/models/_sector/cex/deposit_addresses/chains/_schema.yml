@@ -310,3 +310,159 @@ models:
       - *amount_deposited
       - *consolidation_unique_key
       - *deposit_unique_key
+
+  - name: cex_berachain_deposit_addresses
+    meta:
+      blockchain: berachain
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses on berachain"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *address
+      - *blockchain
+      - *cex_name
+      - *first_deposit_token_standard
+      - *first_deposit_token_address
+      - *deposit_first_block_time
+      - *consolidation_first_block_time
+      - *deposit_count
+      - *consolidation_count
+      - *amount_deposited
+      - *consolidation_unique_key
+      - *deposit_unique_key
+
+  - name: cex_ink_deposit_addresses
+    meta:
+      blockchain: ink
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses on ink"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *address
+      - *blockchain
+      - *cex_name
+      - *first_deposit_token_standard
+      - *first_deposit_token_address
+      - *deposit_first_block_time
+      - *consolidation_first_block_time
+      - *deposit_count
+      - *consolidation_count
+      - *amount_deposited
+      - *consolidation_unique_key
+      - *deposit_unique_key
+
+  - name: cex_katana_deposit_addresses
+    meta:
+      blockchain: katana
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses on katana"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *address
+      - *blockchain
+      - *cex_name
+      - *first_deposit_token_standard
+      - *first_deposit_token_address
+      - *deposit_first_block_time
+      - *consolidation_first_block_time
+      - *deposit_count
+      - *consolidation_count
+      - *amount_deposited
+      - *consolidation_unique_key
+      - *deposit_unique_key
+
+  - name: cex_nova_deposit_addresses
+    meta:
+      blockchain: nova
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses on nova"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *address
+      - *blockchain
+      - *cex_name
+      - *first_deposit_token_standard
+      - *first_deposit_token_address
+      - *deposit_first_block_time
+      - *consolidation_first_block_time
+      - *deposit_count
+      - *consolidation_count
+      - *amount_deposited
+      - *consolidation_unique_key
+      - *deposit_unique_key
+
+  - name: cex_opbnb_deposit_addresses
+    meta:
+      blockchain: opbnb
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses on opbnb"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *address
+      - *blockchain
+      - *cex_name
+      - *first_deposit_token_standard
+      - *first_deposit_token_address
+      - *deposit_first_block_time
+      - *consolidation_first_block_time
+      - *deposit_count
+      - *consolidation_count
+      - *amount_deposited
+      - *consolidation_unique_key
+      - *deposit_unique_key
+
+  - name: cex_unichain_deposit_addresses
+    meta:
+      blockchain: unichain
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses on unichain"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *address
+      - *blockchain
+      - *cex_name
+      - *first_deposit_token_standard
+      - *first_deposit_token_address
+      - *deposit_first_block_time
+      - *consolidation_first_block_time
+      - *deposit_count
+      - *consolidation_count
+      - *amount_deposited
+      - *consolidation_unique_key
+      - *deposit_unique_key
