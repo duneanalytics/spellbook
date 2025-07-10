@@ -294,6 +294,10 @@ models:
       - name: transfer_to
       - name: transfers_between_players
       - name: minute
+      - name: symbol
+      - name: decimals
+      - name: amount_usd
+      - name: trusted
       - name: block_month
 
   - name: oneinch_swaps
@@ -357,6 +361,8 @@ models:
       - name: dst_token_amount
       - name: amount_usd
       - name: sources_amount_usd
+      - name: src_token_amount_usd
+      - name: dst_token_amount_usd
       - name: transfers_amount_usd
       - name: user_amount_usd
       - name: tokens
