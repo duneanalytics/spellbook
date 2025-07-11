@@ -91,8 +91,8 @@ models:
       - &contract_address 
         name: contract_address
         description: "Contract address used for the bridge tx"
-      - &bridge_id 
-        name: bridge_id
+      - &bridge_transfer_id 
+        name: bridge_transfer_id
         description: "Bridge order identifier"
   - name: bridges_withdrawals
     meta:
@@ -132,7 +132,7 @@ models:
       - *tx_hash
       - *evt_index  
       - *contract_address 
-      - *bridge_id 
+      - *bridge_transfer_id 
   - name: bridges_flows
     meta:
       blockchain: ethereum, base
@@ -171,7 +171,7 @@ models:
       - &withdrawals_tx_hash 
         name: withdrawals_tx_hash
         description: "Transaction hash of withdrawals bridge transfer on destination chain"
-      - *bridge_id 
+      - *bridge_transfer_id 
       - &bridge_miliseconds
         name: bridge_miliseconds
         description: "Time in miliseconds between deposits and withdrawals transactions"

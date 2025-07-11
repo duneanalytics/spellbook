@@ -4,7 +4,7 @@
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy='merge'
-    , unique_key = ['deposit_chain','withdrawal_chain','bridge_name','bridge_version','bridge_id']
+    , unique_key = ['deposit_chain','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
 )
 }}
@@ -34,7 +34,7 @@ WITH grouped_deposits AS (
         , tx_hash
         , evt_index
         , contract_address
-        , bridge_id
+        , bridge_transfer_id
         FROM {{ ref('bridges_'~chain~'_deposits') }}
         {% if is_incremental() %}
         WHERE  {{ incremental_predicate('block_time') }}
@@ -64,7 +64,7 @@ SELECT d.deposit_chain
 , d.tx_hash
 , d.evt_index
 , d.contract_address
-, d.bridge_id
+, d.bridge_transfer_id
 , ROW_NUMBER() OVER (PARTITION BY d.block_number, d.tx_hash ORDER BY d.evt_index) AS row_number
 FROM grouped_deposits d
 INNER JOIN {{ source('prices', 'usd') }} p ON p.blockchain=d.deposit_chain

@@ -31,7 +31,7 @@ FROM (
     , tx_hash
     , evt_index
     , contract_address
-    , bridge_id
+    , bridge_transfer_id
     FROM {{ ref(bridge_platform) }}
     {% if not loop.last %}
     UNION ALL
