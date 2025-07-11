@@ -63,6 +63,9 @@ with
             DATE_TRUNC('hour', block_time) AS hour,
             SUM(amount_usd) / SUM(token_bought_amount) AS price
         FROM raw_data
+        WHERE
+            token_bought_amount > 0
+            and token_bought_mint_address is not null
         GROUP BY
             1,
             2
@@ -72,7 +75,11 @@ with
             DATE_TRUNC('hour', block_time) AS hour,
             SUM(amount_usd) / SUM(token_sold_amount) AS price
         FROM raw_data
-        GROUP BY 1,
+        WHERE
+            token_sold_amount > 0
+            and token_sold_mint_address is not null
+        GROUP BY
+            1,
             2
     ),
     all_trades as (
@@ -82,17 +89,19 @@ with
         SELECT *
         FROM sold_price
     )
-SELECT t1.token_mint as contract_address,
+SELECT
+    t1.token_mint as contract_address,
     t1.hour as hour,
     t2.symbol,
     t2.decimals,
     'solana' as blockchain,
-    avg(t1.price) as price,
+    approx_percentile(t1.price, 0.5) AS price,
     CAST(DATE_TRUNC('month', t1.hour) as date) as block_month
 FROM all_trades t1
-    JOIN
-        {{ source('tokens_solana','fungible') }}  t2 ON t1.token_mint = t2.token_mint_address
-GROUP BY 1,
+JOIN
+    {{ source('tokens_solana','fungible') }}  t2 ON t1.token_mint = t2.token_mint_address
+GROUP BY
+    1,
     2,
     3,
     4
