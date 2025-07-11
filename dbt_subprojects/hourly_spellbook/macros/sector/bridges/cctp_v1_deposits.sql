@@ -38,7 +38,7 @@ SELECT '{{blockchain}}' AS deposit_chain
 , evt_tx_hash AS tx_hash
 , evt_index
 , contract_address
-, CAST(nonce AS varchar) AS bridge_id
+, CAST(nonce AS varchar) AS bridge_transfer_id
 FROM {{ source('circle_' + blockchain, 'tokenmessenger_evt_depositforburn') }} d
 INNER JOIN cctp_id_mapping i ON d.destinationDomain=i.id
 

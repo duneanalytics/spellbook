@@ -77,7 +77,7 @@ WITH cctp_id_mapping AS (
     , w.tx_hash
     , w.evt_index
     , w.contract_address
-    , CAST(m.nonce AS varchar) AS bridge_id
+    , CAST(m.nonce AS varchar) AS bridge_transfer_id
     FROM withdrawals w
     INNER JOIN closest_messages m ON w.block_number = m.block_number
         AND w.join_index = m.join_index
