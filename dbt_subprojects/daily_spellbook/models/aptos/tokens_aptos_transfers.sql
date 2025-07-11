@@ -5,12 +5,12 @@
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
-    , unique_key = ['block_date', 'tx_hash', 'evt_index']
+    , unique_key = ['block_date', 'tx_hash', 'block_number', 'from', 'to', 'contract_address']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
     , post_hook='{{ expose_spells(\'["aptos"]\',
                                 "sector",
                                 "tokens",
-                                \'["your_name"]\') }}'
+                                \'["krishhh"]\') }}'
 )}}
 
 -- Price data for APT
