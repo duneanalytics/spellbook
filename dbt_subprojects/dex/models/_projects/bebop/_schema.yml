@@ -3,7 +3,7 @@ version: 2
 models:
   - name: bebop_trades
     meta:
-      blockchain: polygon, arbitrum, ethereum, bnb, base, optimism, scroll, zksync
+      blockchain: polygon, arbitrum, ethereum, bnb, base, optimism, scroll, zksync, avalanche_c
       sector: dex
       project: bebop
       contributors: alekss
