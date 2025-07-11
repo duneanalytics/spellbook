@@ -57,29 +57,27 @@ all_swaps as (
 
 inner_instruct as (
   select
-    tx_id,
-    block_time,
-    coalesce(tx_index,0) as tx_index,
-    coalesce(outer_instruction_index,0) as outer_instruction_index,
-    coalesce(inner_instruction_index,0) as inner_instruction_index,
-    row_number() over ( partition by tx_id, outer_instruction_index order by inner_instruction_index ) as swap_number,
-    data
+    evt_tx_id as tx_id,
+    evt_block_time as block_time,
+    coalesce(evt_tx_index,0) as tx_index,
+    coalesce(evt_outer_instruction_index,0) as outer_instruction_index,
+    coalesce(evt_inner_instruction_index,0) as inner_instruction_index,
+    row_number() over ( partition by evt_tx_id, evt_outer_instruction_index order by coalesce(evt_inner_instruction_index,0) asc ) as swap_number,
+    amountIn,
+    amountOut,
+    swapForY
   from {{ source('solana','instruction_calls') }}
-  where tx_success
-    and is_inner
-    and inner_executing_account = 'LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo'
-    and cardinality(account_arguments) = 1
-    and substr(cast(data as varchar),3,16)='e445a52e51cb9a1d'
-    and substr(cast(data as varchar),19,16)='516ce3becdd00ac4'
+  where 1=1
+    and evt_inner_executing_account = 'LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo'
     {% if is_incremental() %}
-      and {{ incremental_predicate('block_time') }}
+      and {{ incremental_predicate('evt_block_time') }}
     {% else %}
-      and block_time >= timestamp '{{ project_start_date }}'
+      and evt_block_time >= timestamp '{{ project_start_date }}'
     {% endif %}
 ),
 
 final as (
-  select
+select
     'solana' as blockchain,
     'meteora' as project,
     2 as version,
@@ -90,26 +88,26 @@ final as (
       when sw.is_inner_swap = false then 'direct'
       else sw.outer_executing_account 
     end as trade_source,
-    bytearray_to_uint256(bytearray_reverse(bytearray_substring(('0x'||substr(cast(ic.data as varchar),195,16)),1,16))) as token_bought_amount_raw,
-    bytearray_to_uint256(bytearray_reverse(bytearray_substring(('0x'||substr(cast(ic.data as varchar),179,16)),1,16))) as token_sold_amount_raw,
+    amountIn as token_bought_amount_raw,
+    amountOut as token_sold_amount_raw,
     cast(null as double) as fee_tier,
     case 
-      when bytearray_to_uint256(bytearray_reverse(bytearray_substring(('0x'||substr(cast(ic.data as varchar),211,2)),1,2))) = 1 
+      when swapForY = True
       then sw.account_tokenXMint 
       else sw.account_tokenYMint
     end as token_sold_mint_address,
     case 
-      when bytearray_to_uint256(bytearray_reverse(bytearray_substring(('0x'||substr(cast(ic.data as varchar),211,2)),1,2))) = 0 
+      when swapForY = False
       then sw.account_tokenXMint 
       else sw.account_tokenYMint
     end as token_bought_mint_address,
     case 
-      when bytearray_to_uint256(bytearray_reverse(bytearray_substring(('0x'||substr(cast(ic.data as varchar),211,2)),1,2))) = 1 
+      when swapForY = True
       then sw.account_reserveX 
       else sw.account_reserveY
     end as token_sold_vault,
     case 
-      when bytearray_to_uint256(bytearray_reverse(bytearray_substring(('0x'||substr(cast(ic.data as varchar),211,2)),1,2))) = 0 
+      when swapForY = False 
       then sw.account_reserveX 
       else sw.account_reserveY
     end as token_bought_vault,
