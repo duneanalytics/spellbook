@@ -66,7 +66,7 @@ inner_instruct as (
     amountIn,
     amountOut,
     swapForY
-  from {{ source('solana','instruction_calls') }}
+  from {{ source('dlmm_solana','lb_clmm_evt_swap') }}
   where 1=1
     and evt_inner_executing_account = 'LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo'
     {% if is_incremental() %}
