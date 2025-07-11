@@ -63,6 +63,9 @@ with
             DATE_TRUNC('hour', block_time) AS hour,
             SUM(amount_usd) / SUM(token_bought_amount) AS price
         FROM raw_data
+        WHERE
+            token_bought_amount > 0
+            and token_bought_mint_address is not null
         GROUP BY
             1,
             2
@@ -72,6 +75,9 @@ with
             DATE_TRUNC('hour', block_time) AS hour,
             SUM(amount_usd) / SUM(token_sold_amount) AS price
         FROM raw_data
+        WHERE
+            token_sold_amount > 0
+            and token_sold_mint_address is not null
         GROUP BY
             1,
             2
@@ -99,5 +105,3 @@ GROUP BY
     2,
     3,
     4
-HAVING
-    COUNT(*) >= 5 -- Ensure we have at least 5 minute-level observations per hour
