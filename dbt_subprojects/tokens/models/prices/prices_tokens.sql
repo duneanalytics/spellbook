@@ -34,6 +34,7 @@
                                         , "solana"
                                         , "sonic"
                                         , "sophon"
+                                        , "superseed"
                                         , "opbnb"
                                         , "taiko"
                                         , "unichain"
@@ -100,6 +101,7 @@ ref('prices_native_tokens')
 ,ref('prices_lens_tokens')
 ,ref('prices_plume_tokens')
 ,ref('prices_katana_tokens')
+,ref('prices_superseed_tokens')
 ] %}
 
 

@@ -35,6 +35,7 @@ class TokenChecker:
                             "tron": "trx-tron",
                             "boba": "eth-ethereum",
                             "shape": "eth-ethereum",
+                            "superseed": "eth-ethereum",
                             "taiko": "eth-ethereum"
                             }
         self.tokens_by_id = self.get_tokens()
