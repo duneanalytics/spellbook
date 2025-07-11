@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'yei_swap_sei',
+        schema = 'yeiswap_sei',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -13,9 +13,9 @@
 {{
     uniswap_compatible_v3_trades(
         blockchain = 'sei',
-        project = 'yei_swap',
+        project = 'yeiswap',
         version = '3',
-        Pair_evt_Swap = source('yei_swap_sei', 'UniswapV3Pool_evt_Swap'),
-        Factory_evt_PoolCreated = source('yei_swap_sei', 'UniswapV3Factory_evt_PoolCreated')
+        Pair_evt_Swap = source('yeiswap_sei', 'UniswapV3Pool_evt_Swap'),
+        Factory_evt_PoolCreated = source('yeiswap_sei', 'UniswapV3Factory_evt_PoolCreated')
     )
 }}
