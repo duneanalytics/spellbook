@@ -1,8 +1,8 @@
-{# pick up a project_start_date var, with a sensible fallback #}
+{# pevtk up a project_start_date var, with a sensible fallback #}
 {% set project_start_date = var('project_start_date', '2023-11-07') %}
 
 {# list of your swap tables to loop over #}
-{% set swap_tables = ['lb_clmm_call_swap', 'lb_clmm_call_swap2','lb_clmm_call_swapexactout','lb_clmm_call_swapexactout2','lb_clmm_call_swapwithpriceimpact','lb_clmm_call_swapwithpriceimpact2'] %}
+{% set swap_tables = ['lb_clmm_call_swap', 'lb_clmm_call_swap2','lb_clmm_call_swapexactout','lb_clmm_call_swapexactout2','lb_clmm_call_swapwithprevteimpact','lb_clmm_call_swapwithprevteimpact2'] %}
 
 {{ 
   config(
@@ -40,7 +40,7 @@ all_swaps as (
     from {{ source('dlmm_solana', tbl) }}
     where 1=1
       {% if is_incremental() %}
-        and {{ incremental_predicate('call_block_time') }}
+        and {{ incremental_predevtate('call_block_time') }}
       {% else %}
         and call_block_time >= timestamp '{{ project_start_date }}'
       {% endif %}
@@ -55,7 +55,7 @@ all_swaps as (
   from individual_program_swaps
 ),
 
-inner_instruct as (
+evt_table as (
   select
     evt_tx_id as tx_id,
     evt_block_time as block_time,
@@ -70,7 +70,7 @@ inner_instruct as (
   where 1=1
     and evt_inner_executing_account = 'LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo'
     {% if is_incremental() %}
-      and {{ incremental_predicate('evt_block_time') }}
+      and {{ incremental_predevtate('evt_block_time') }}
     {% else %}
       and evt_block_time >= timestamp '{{ project_start_date }}'
     {% endif %}
@@ -119,11 +119,12 @@ select
     sw.inner_instruction_index,
     sw.tx_index
   from all_swaps sw
-  left join inner_instruct ic
-    on sw.tx_id = ic.tx_id
-   and sw.block_time = ic.block_time
-   and sw.outer_instruction_index = ic.outer_instruction_index
-   and sw.swap_number = ic.swap_number
+  left join evt_table evt
+    on sw.tx_id = evt.tx_id
+   and sw.block_time = evt.block_time
+   and sw.outer_instruction_index = evt.outer_instruction_index
+   and sw.swap_number = evt.swap_number
 )
 
 select * from final
+
