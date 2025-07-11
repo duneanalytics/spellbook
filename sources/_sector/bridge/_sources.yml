@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: circle_base
+    description: "Base bridge events on Base"
+    tables:
+      - name: tokenmessenger_evt_depositforburn
+      - name: tokenmessenger_evt_mintandwithdraw
+      - name: messagetransmitter_evt_messagereceived
+
+  - name: circle_ethereum
+    description: "Base bridge events on Ethereum"
+    tables:
+      - name: tokenmessenger_evt_depositforburn
+      - name: tokenmessenger_evt_mintandwithdraw
+      - name: messagetransmitter_evt_messagereceived

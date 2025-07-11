@@ -1,0 +1,115 @@
+version: 2
+
+models:
+  - name: bridges_base_cctp_v1_deposits
+    meta:
+      blockchain: base
+      sector: bridges
+      project: cctp
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'base', 'bridges', 'flows', 'deposits' ]
+    description: "Circle's CCTP v1 bridge deposits events on Base"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']
+      - equal_rowcount_with_sources:
+          evt_sources:
+            - source('circle_base','tokenmessenger_evt_depositforburn')
+    columns:
+      - &deposit_chain
+        name: deposit_chain
+        description: "Blockchain where the tokens were sent"
+      - &withdraw_chain
+        name: withdraw_chain
+        description: "Blockchain where the tokens were received"
+      - &bridge_name
+        name: bridge_name
+        description: "Bridge name"
+      - &bridge_version
+        name: bridge_version
+        description: "Version of the bridge"
+      - &block_date
+        name: block_date
+        description: "Block date of the bridge transaction"
+      - &block_time
+        name: block_time
+        description: "Block time of the bridge transaction"
+      - &block_number
+        name: block_number
+        description: "Block number of the bridge transaction"
+      - &deposit_amount_raw 
+        name: deposit_amount_raw
+        description: "Raw amount of tokens bridged from source chain"
+      - &withdrawal_amount_raw 
+        name: withdrawal_amount_raw
+        description: "Raw amount of tokens bridged to destination chain"
+      - &sender 
+        name: sender
+        description: "Source address"
+      - &recipient 
+        name: recipient
+        description: "Destination address"
+      - &deposit_token_standard  
+        name: deposit_token_standard
+        description: "Source blockchain token standard"
+      - &withdrawal_token_standard
+        name: withdrawal_token_standard
+        description: "Destination blockchain token standard"
+      - &deposit_token_address  
+        name: deposit_token_address
+        description: "Source blockchain token address"
+      - &withdrawal_token_address
+        name: withdrawal_token_address
+        description: "Destination blockchain token address"
+      - &tx_from
+        name: tx_from
+        description: "Address that deposits the transaction"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash"
+      - &evt_index  
+        name: evt_index
+        description: "Event index"
+      - &contract_address 
+        name: contract_address
+        description: "Contract address used for the bridge tx"
+      - &bridge_transfer_id 
+        name: bridge_transfer_id
+        description: "Bridge transfer identifier"
+  - name: bridges_base_cctp_v1_withdrawals
+    meta:
+      blockchain: base
+      sector: bridges
+      project: cctp
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'base', 'bridges', 'flows', 'withdrawals' ]
+    description: "Circle's CCTP v1 bridge withdrawals events on Base"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']
+      - equal_rowcount_with_sources:
+          evt_sources:
+            - source('circle_base','tokenmessenger_evt_mintandwithdraw')
+    columns:
+      - *deposit_chain
+      - *withdraw_chain
+      - *bridge_name
+      - *bridge_version
+      - *deposit_amount_raw
+      - *deposit_token_address
+      - *block_date
+      - *block_time
+      - *block_number
+      - *withdrawal_amount_raw 
+      - *sender
+      - *recipient
+      - *deposit_token_standard
+      - *withdrawal_token_standard
+      - *withdrawal_token_address
+      - *tx_from
+      - *tx_hash
+      - *evt_index  
+      - *contract_address 
+      - *bridge_transfer_id 
