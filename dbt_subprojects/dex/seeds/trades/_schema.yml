@@ -5210,7 +5210,7 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
-  - name: abstractswap_v2_abstract_base_trades_seed
+  - name: reservoir_swap_v2_abstract_base_trades_seed
     config:
       column_types:
         blockchain: varchar
@@ -5225,7 +5225,7 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
-  - name: abstractswap_v3_abstract_base_trades_seed
+  - name: reservoir_swap_v3_abstract_base_trades_seed
     config:
       column_types:
         blockchain: varchar
