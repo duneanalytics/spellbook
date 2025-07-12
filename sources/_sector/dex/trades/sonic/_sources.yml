@@ -19,6 +19,7 @@ sources:
     tables:
       - name: uniswapv3factory_evt_poolcreated
       - name: uniswapv3pool_evt_swap
+<<<<<<< HEAD
   - name: tapio_sonic
     tables:
       - name: selfpeggingassetfactory_call_createpool
@@ -45,3 +46,5 @@ sources:
       
 
 
+=======
+>>>>>>> upstream/main
