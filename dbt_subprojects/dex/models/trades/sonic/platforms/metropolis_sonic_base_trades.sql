@@ -10,17 +10,15 @@
 
 WITH all_swaps AS (
 
-    SELECT * FROM {{ source('metropolis_sonic', 'router_call_swapExactTokensForTokens') }}
+    SELECT * FROM {{ source('metropolis_sonic', 'router_call_swapexacttokensfortokens') }}
     UNION ALL
-    SELECT * FROM {{ source('metropolis_sonic', 'router_call_swapExactTokensForETH') }}
+    SELECT * FROM {{ source('metropolis_sonic', 'router_call_swapexacttokensforeth') }}
     UNION ALL
-    SELECT * FROM {{ source('metropolis_sonic', 'router_call_swapETHForExactTokens') }}
+    SELECT * FROM {{ source('metropolis_sonic', 'router_call_swapethforexacttokens') }}
     UNION ALL
-    SELECT * FROM {{ source('metropolis_sonic', 'router_call_swapTokensForExactTokens') }}
+    SELECT * FROM {{ source('metropolis_sonic', 'router_call_swaptokensforexacttokens') }}
     UNION ALL
-    SELECT * FROM {{ source('metropolis_sonic', 'router_call_swapTokensForExactETH') }}
-    UNION ALL
-    SELECT * FROM {{ source('metropolis_sonic', 'router_call_swapExactETHForTokens') }}
+    SELECT * FROM {{ source('metropolis_sonic', 'router_call_swapexactethfortokens') }}
     UNION ALL
     SELECT * FROM {{ source('metropolis_sonic', 'router_call_swapexactethfortokenssupportingfeeontransfertokens') }}
     UNION ALL

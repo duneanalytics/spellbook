@@ -19,7 +19,6 @@ sources:
     tables:
       - name: uniswapv3factory_evt_poolcreated
       - name: uniswapv3pool_evt_swap
-<<<<<<< HEAD
   - name: tapio_sonic
     tables:
       - name: selfpeggingassetfactory_call_createpool
@@ -27,24 +26,9 @@ sources:
       - name: selfpeggingasset_evt_tokenswapped
   - name: swapx_sonic
     tables:
-      - name: AlgebraFactory_evt_Pool
-      - name: AlgebraPool_evt_Swap
+      - name: algebrafactory_evt_pool
+      - name: algebrapool_evt_swap
   - name: metropolis_sonic
     tables:
       - name: v2factory_evt_paircreated
-      - name: router_call_swapExactTokensForTokens
-      - name: router_call_swapExactTokensForETH
-      - name: router_call_swapETHForExactTokens
-      - name: router_call_swapTokensForExactTokens
-      - name: router_call_swapTokensForExactETH
-      - name: router_call_swapExactETHForTokens
-      - name: router_call_swapexactethfortokenssupportingfeeontransfertokens
-      - name: router_call_swapexacttokensforethsupportingfeeontransfertokens
-      - name: router_call_swapexacttokensfortokenssupportingfeeontransfertokens
-
-
-      
-
-
-=======
->>>>>>> upstream/main
+      - name: router_call_swapexacttokensfortokens
