@@ -21,7 +21,7 @@ models:
         description: "Blockchain on which this address has been sanctioned by OFAC"
       - name: currency_contract
         description: "Contract address of OFAC sanctioned currency"
-      - name: currency_name
+      - name: currency_symbol
         description: "Currency symbol of OFAC sanctioned currency"
         
   - name: addresses_ethereum_defi
