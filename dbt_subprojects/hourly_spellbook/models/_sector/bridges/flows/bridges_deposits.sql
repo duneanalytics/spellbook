@@ -1,23 +1,17 @@
 {{ config(
     schema = 'bridges'
     , alias = 'initiated'
-    , materialized = 'incremental'
-    , file_format = 'delta'
-    , incremental_strategy='merge'
-    , unique_key = ['deposit_chain','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id']
-    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    , materialized = 'view'
 )
 }}
 
-{% set chains = [
-    'ethereum'
-    , 'base'
+{% set vms = [
+    'evms'
 ] %}
 
-WITH grouped_deposits AS (
-    SELECT *
+SELECT *
     FROM (
-        {% for chain in chains %}
+        {% for vm in vms %}
         SELECT deposit_chain
         , withdrawal_chain
         , bridge_name
@@ -35,7 +29,7 @@ WITH grouped_deposits AS (
         , evt_index
         , contract_address
         , bridge_transfer_id
-        FROM {{ ref('bridges_'~chain~'_deposits') }}
+        FROM {{ ref('bridges_'~vm~'_deposits') }}
         {% if is_incremental() %}
         WHERE  {{ incremental_predicate('block_time') }}
         {% endif %}
@@ -44,31 +38,3 @@ WITH grouped_deposits AS (
         {% endif %}
         {% endfor %} 
         )
-    )
-
-SELECT d.deposit_chain
-, d.withdrawal_chain
-, d.bridge_name
-, d.bridge_version
-, d.block_date
-, d.block_time
-, d.block_number
-, d.deposit_amount_raw
-, d.deposit_amount_raw/POWER(10, p.decimals) AS deposit_amount
-, p.price*d.deposit_amount_raw/POWER(10, p.decimals) AS deposit_amount_usd
-, d.sender
-, d.recipient
-, d.deposit_token_standard
-, d.deposit_token_address
-, d.tx_from
-, d.tx_hash
-, d.evt_index
-, d.contract_address
-, d.bridge_transfer_id
-FROM grouped_deposits d
-INNER JOIN {{ source('prices', 'usd') }} p ON p.blockchain=d.deposit_chain
-    AND p.contract_address=d.deposit_token_address
-    AND p.minute=date_trunc('minute', d.block_time)
-    {% if is_incremental() %}
-    AND {{ incremental_predicate('p.minute') }}
-    {% endif %}
