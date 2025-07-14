@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'bridges',
+    schema = 'bridges_crosschain',
     alias = 'flows',
     materialized = 'view'
     )

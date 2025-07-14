@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: bridges_deposits
+  - name: bridges_crosschain_deposits
     meta:
       blockchain: ethereum, base
       sector: bridges
@@ -94,7 +94,7 @@ models:
       - &bridge_transfer_id 
         name: bridge_transfer_id
         description: "Bridge order identifier"
-  - name: bridges_withdrawals
+  - name: bridges_crosschain_withdrawals
     meta:
       blockchain: ethereum, base
       sector: bridges
@@ -133,7 +133,7 @@ models:
       - *evt_index  
       - *contract_address 
       - *bridge_transfer_id 
-  - name: bridges_flows
+  - name: bridges_crosschain_flows
     meta:
       blockchain: ethereum, base
       sector: bridges

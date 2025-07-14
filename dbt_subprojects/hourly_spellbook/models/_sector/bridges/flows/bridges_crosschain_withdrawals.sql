@@ -1,6 +1,6 @@
 {{ config(
-    schema = 'bridges'
-    , alias = 'initiated'
+    schema = 'bridges_crosschain'
+    , alias = 'withdrawals'
     , materialized = 'view'
 )
 }}
@@ -19,19 +19,19 @@ SELECT *
         , block_date
         , block_time
         , block_number
-        , deposit_amount_raw
+        , withdrawal_amount_raw
         , CAST(sender AS VARCHAR) AS sender
         , CAST(recipient AS VARCHAR) AS recipient
-        , deposit_token_standard
-        , CAST(deposit_token_address AS VARCHAR) AS deposit_token_address
+        , withdrawal_token_standard
+        , CAST(withdrawal_token_address AS VARCHAR) AS withdrawal_token_address
         , CAST(tx_from AS VARCHAR) AS tx_from
         , tx_hash
         , evt_index
         , CAST(contract_address AS VARCHAR) AS contract_address
         , bridge_transfer_id
-        FROM {{ ref('bridges_'~vm~'_deposits') }}
+        FROM {{ ref('bridges_'~vm~'_withdrawals') }}
         {% if not loop.last %}
         UNION ALL
         {% endif %}
-        {% endfor %} 
+        {% endfor %}
         )
