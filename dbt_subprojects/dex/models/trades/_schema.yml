@@ -26,10 +26,6 @@ models:
       - &project
         name: project
         description: "Name of the dex on which the trade occurred"
-        data_tests:
-          - relationships:
-              to: ref('dex_info')
-              field: project
       - &version
         name: version
         description: "Version of the DEX protocol/contract"
