@@ -10,7 +10,7 @@
 
 SELECT project, name, marketplace_type, x_username
 FROM (VALUES
-    	('uniswap', 'Uniswap', 'Direct', 'Uniswap')
+    ('uniswap', 'Uniswap', 'Direct', 'Uniswap')
     , ('pancakeswap', 'PancakeSwap', 'Direct', 'PancakeSwap')
     , ('curve', 'Curve', 'Direct', 'CurveFinance')
     , ('sushiswap', 'SushiSwap', 'Direct', 'SushiSwap')
@@ -223,4 +223,5 @@ FROM (VALUES
     , ('mindgames', 'Mindgames', 'Direct', 'mindgames_io')
     , ('yei_swap', 'YeiSwap', 'Direct', 'YeiFinance')
     , ('gammaswap', 'GammaSwap', 'Direct', 'gammaswap')
+    , ('yeiswap', 'YeiSwap', 'Direct', 'YeiFinance')
 ) AS temp_table (project, name, marketplace_type, x_username)
