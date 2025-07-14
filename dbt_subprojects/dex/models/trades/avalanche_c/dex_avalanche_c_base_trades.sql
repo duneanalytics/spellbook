@@ -29,6 +29,7 @@
     , ref('curvefi_avalanche_c_base_trades')
     , ref('hashflow_avalanche_c_base_trades')
     , ref('elk_finance_avalanche_c_base_trades')
+    , ref('blackhole_avalanche_c_base_trades')
 ] %}
 
 WITH base_union AS (
