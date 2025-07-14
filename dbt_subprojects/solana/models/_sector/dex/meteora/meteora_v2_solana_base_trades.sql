@@ -127,4 +127,6 @@ select
 )
 
 select * from final
+-- Trying if comments can make dbt run. 
+
 
