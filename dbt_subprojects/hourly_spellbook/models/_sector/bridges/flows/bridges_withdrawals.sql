@@ -21,14 +21,14 @@ FROM (
         , block_time
         , block_number
         , withdrawal_amount_raw
-        , sender
-        , recipient
+        , CAST(sender AS VARCHAR) AS sender
+        , CAST(recipient AS VARCHAR) AS recipient
         , withdrawal_token_standard
-        , withdrawal_token_address
-        , tx_from
+        , CAST(withdrawal_token_address AS VARCHAR) AS withdrawal_token_address
+        , CAST(tx_from AS VARCHAR) AS tx_from
         , tx_hash
         , evt_index
-        , contract_address
+        , CAST(contract_address AS VARCHAR) AS contract_address
         , bridge_transfer_id
         FROM {{ ref('bridges_'~vm~'_withdrawals') }}
         {% if not loop.last %}

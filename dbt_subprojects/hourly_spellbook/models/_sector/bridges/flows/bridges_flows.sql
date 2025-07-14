@@ -28,13 +28,13 @@ SELECT *
         , withdrawal_amount_raw
         , withdrawal_amount
         , amount_usd
-        , sender
-        , recipient
+        , CAST(sender AS VARCHAR) AS sender
+        , CAST(recipient AS VARCHAR) AS recipient
         , deposit_token_standard
         , withdrawal_token_standard
-        , deposit_token_address
-        , withdrawal_token_address
-        , deposit_tx_from
+        , CAST(deposit_token_address AS VARCHAR) AS deposit_token_address
+        , CAST(withdrawal_token_address AS VARCHAR) AS withdrawal_token_address
+        , CAST(deposit_tx_from AS VARCHAR) AS deposit_tx_from
         , deposit_tx_hash
         , withdraw_tx_hash
         , bridge_transfer_id

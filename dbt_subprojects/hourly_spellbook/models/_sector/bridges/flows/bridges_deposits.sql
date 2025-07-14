@@ -20,14 +20,14 @@ SELECT *
         , block_time
         , block_number
         , deposit_amount_raw
-        , sender
-        , recipient
+        , CAST(sender AS VARCHAR) AS sender
+        , CAST(recipient AS VARCHAR) AS recipient
         , deposit_token_standard
-        , deposit_token_address
-        , tx_from
+        , CAST(deposit_token_address AS VARCHAR) AS deposit_token_address
+        , CAST(tx_from AS VARCHAR) AS tx_from
         , tx_hash
         , evt_index
-        , contract_address
+        , CAST(contract_address AS VARCHAR) AS contract_address
         , bridge_transfer_id
         FROM {{ ref('bridges_'~vm~'_deposits') }}
         {% if is_incremental() %}
