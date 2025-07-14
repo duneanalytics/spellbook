@@ -178,26 +178,3 @@ models:
       - &bridge_miliseconds_2
         name: bridge_miliseconds_2
         description: "Time in miliseconds between deposits and withdrawals transactions"
-  - name: bridges_info
-    meta:
-      blockchain: ethereum, base
-      sector: bridges
-      contributors: [ 'hildobby']
-    config:
-      tags: [ 'bridges', 'info', 'metadata' ]
-    description: "Bridges metadata"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['bridge_name', 'bridge_version']
-    columns:
-      - *bridge_name
-      - *bridge_version
-      - &intent_based
-        name: intent_based
-        description: "Is it an intent-based bridge or are withdrawals automated?"
-      - &canonical_bridge
-        name: canonical_bridge
-        description: "Is it the canonical bridge for a certain project?"
-      - &token_official_bridge
-        name: token_official_bridge
-        description: "Is it the official bridge of a specific token/set of tokens?"
