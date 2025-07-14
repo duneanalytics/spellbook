@@ -39,9 +39,6 @@ SELECT *
         , withdraw_tx_hash
         , bridge_transfer_id
         FROM {{ ref('bridges_'~vm~'_deposits') }}
-        {% if is_incremental() %}
-        WHERE  {{ incremental_predicate('block_time') }}
-        {% endif %}
         {% if not loop.last %}
         UNION ALL
         {% endif %}

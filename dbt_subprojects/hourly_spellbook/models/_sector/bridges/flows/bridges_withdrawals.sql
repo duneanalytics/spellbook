@@ -9,9 +9,8 @@
     'evms'
 ] %}
 
-WITH grouped_withdrawals AS (
 SELECT *
-FROM (
+    FROM (
         {% for vm in vms %}
         SELECT deposit_chain
         , withdrawal_chain
