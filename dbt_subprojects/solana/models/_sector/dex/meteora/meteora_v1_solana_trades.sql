@@ -26,9 +26,11 @@ select
       , token_sold_amount_raw
       , amount_usd
       , fee_tier
+      , total_fees_raw
       , fee_usd
       , token_bought_mint_address
       , token_sold_mint_address
+      , token_fee_mint_address
       , token_bought_vault
       , token_sold_vault
       , project_program_id

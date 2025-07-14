@@ -11,7 +11,7 @@
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
                                     "dex_solana",
-                                    \'["ilemi","0xRob","jeff-dude","0xBoxer","krishhh"]\') }}')
+                                    \'["ilemi","0xRob","jeff-dude","0xBoxer","krishhh","0xsandeshk"]\') }}')
 }}
 
 with base_trades as (
@@ -51,6 +51,7 @@ SELECT bt.blockchain
                , bt.token_bought_amount_raw / pow(10, coalesce(bt.token_bought_decimal_project_specific, token_bought.decimals)) * p_bought.price)
             as amount_usd
       , bt.fee_tier
+      , bt.total_fees_raw
       , bt.fee_tier * COALESCE(
             -- if bought token is trusted, prefer that price, else default to sold token then bought token.
             case when tt_bought.contract_address is not null then
@@ -61,6 +62,7 @@ SELECT bt.blockchain
         ) as fee_usd
       , bt.token_bought_mint_address
       , bt.token_sold_mint_address
+      , bt.token_fee_mint_address
       , bt.token_bought_vault
       , bt.token_sold_vault
       , bt.project_program_id

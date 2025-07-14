@@ -76,6 +76,9 @@ models:
       - &fee_tier
         name: fee_tier
         description: "Whirlpool fee tier (fee %)"
+      - &total_fees_raw
+        name: total_fees_raw
+        description: "Raw value of the total fees paid on swap"
       - &fee_usd
         name: fee_usd
         description: "Whirlpool fee usd paid on swap"
@@ -85,6 +88,9 @@ models:
       - &token_sold_address
         name: token_sold_address
         description: "token mint address of the token sold"
+      - &token_fee_address
+        name: token_fee_address
+        description: "token mint address of the token fee paid in"
       - &token_bought_vault
         name: token_bought_vault
         description: "token associated address for the whirlpool, of the token bought"

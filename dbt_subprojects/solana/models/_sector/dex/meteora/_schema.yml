@@ -16,7 +16,7 @@ models:
   - name: meteora_v2_solana_base_trades
     meta:
       blockchain: solana
-      contributors: [ ilemi ]
+      contributors: [ 0xsandeshk ]
     config:
       tags: [ 'solana','dex' ]
     description: >
@@ -98,6 +98,9 @@ models:
       - &fee_tier
         name: fee_tier
         description: "fee tier (fee %)"
+      - &total_fees_raw
+        name: total_fees_raw
+        description: "Raw value of the total fees paid on swap"
       - &fee_usd
         name: fee_usd
         description: "fee usd paid on swap"
@@ -107,6 +110,9 @@ models:
       - &token_sold_mint_address
         name: token_sold_address
         description: "token mint address of the token sold"
+      - &token_fee_mint_address
+        name: token_fee_address
+        description: "token mint address of the token fee paid in"
       - &token_bought_vault
         name: token_bought_vault
         description: "token associated address, of the token bought"
@@ -160,9 +166,11 @@ models:
       - *token_sold_amount_raw
       - *amount_usd
       - *fee_tier
+      - *total_fees_raw
       - *fee_usd
       - *token_bought_mint_address
       - *token_sold_mint_address
+      - *token_fee_mint_address
       - *token_bought_vault
       - *token_sold_vault
       - *project_program_id
@@ -172,4 +180,43 @@ models:
       - *outer_instruction_index
       - *inner_instruction_index
       - *tx_index
-      
+
+  - name: meteora_v4_solana_trades
+    meta:
+      blockchain: solana
+      contributors: [0xsandeshk]
+    config:
+      tags: ['solana','dex']  
+    description: >
+        all meteora dbc dex trades on Solana
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_month
+      - *block_time
+      - *block_slot
+      - *trade_source
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *fee_tier
+      - *total_fees_raw
+      - *fee_usd
+      - *token_bought_mint_address
+      - *token_sold_mint_address
+      - *token_fee_mint_address
+      - *token_bought_vault
+      - *token_sold_vault
+      - *project_program_id
+      - *project_main_id
+      - *trader_id
+      - *tx_id
+      - *outer_instruction_index
+      - *inner_instruction_index
+      - *tx_index

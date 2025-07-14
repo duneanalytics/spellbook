@@ -13,22 +13,11 @@
 
 {% set solana_dexes = [
 
-   ref('raydium_v3_base_trades')
-  , ref('raydium_v4_base_trades')
-  , ref('raydium_v5_base_trades')
-  , ref('raydium_launchlab_v1_base_trades')
-  , ref('orca_whirlpool_base_trades')
-  , ref('orca_whirlpool_v2_base_trades')
-  , ref('phoenix_v1_base_trades')
-  , ref('lifinity_v1_base_trades')
-  , ref('lifinity_v2_base_trades')
-  , ref('meteora_v1_solana_base_trades')
+
+    ref('meteora_v1_solana_base_trades')
   , ref('meteora_v2_solana_base_trades')
   , ref('meteora_v4_solana_base_trades')
-  , ref('goosefx_ssl_v2_solana_base_trades')
-  , ref('pumpdotfun_solana_base_trades')
-  , ref('pumpswap_solana_base_trades') 
-  , ref('stabble_solana_base_trades')
+
 ] %}
 
 /*
@@ -54,8 +43,10 @@ SELECT
       , CAST(NULL AS BIGINT) as token_sold_decimal_project_specific
       {% endif %}
       , fee_tier
+      , total_fees_raw
       , token_bought_mint_address
       , token_sold_mint_address
+      , token_fee_mint_address
       , token_bought_vault
       , token_sold_vault
       , project_program_id
