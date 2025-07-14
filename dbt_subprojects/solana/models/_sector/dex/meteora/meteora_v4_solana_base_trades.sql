@@ -1,3 +1,19 @@
+ {{
+  config(
+        schema = 'meteora_v4_solana',
+        alias = 'base_trades',
+        partition_by = ['block_month'],
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+        unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index','block_month']
+        )
+}}
+
+{% set project_start_date = '2025-05-14 04:20' %} --grabbed program deployed at time (account created at).
+
+
 with swap_details as
 (
 select 
@@ -14,11 +30,13 @@ select
 , coalesce(call_inner_instruction_index,0) as inner_instruction_index
 , call_tx_index as tx_index
 , row_number () over (partition by call_tx_id, call_tx_index, call_outer_instruction_index order by coalesce(call_inner_instruction_index,0) asc) as rn
-from meteora_solana.dynamic_bonding_curve_call_swap cs
+from {{ source('meteora_solana','dynamic_bonding_curve_call_swap') }} cs
 where 1=1
--- and call_tx_id = '3Uj7Eh6WcH6VsmwPMC47wWkHKSXBWYoeTtp49hSoUhKRrmj9bGD9oGK7WKZLdqzxxSX449R1zP29gS2kTDqx6JLY'
-and call_block_time > timestamp '2025-05-09 04:20'
--- and call_tx_signer = '8xefbTCwb9fZbnffTuMaAL99VKKbMMKcgHrgyoYEPX2w'
+{% if is_incremental() %}
+and {{incremental_predicate('call_block_time')}}
+{% else %}
+and call_block_time >= TIMESTAMP '{{project_start_date}}'
+{% endif %}
 ),
 evt_deatils as 
 (
@@ -35,11 +53,13 @@ evt_block_time as block_time
 , coalesce(evt_inner_instruction_index,0) as inner_instruction_index
 , evt_tx_index as tx_index
 , row_number () over (partition by evt_tx_id, evt_tx_index, evt_outer_instruction_index order by coalesce(evt_inner_instruction_index,0) asc) as rn
-from meteora_solana.dynamic_bonding_curve_evt_evtswap es 
+from {{ source('meteora_solana','dynamic_bonding_curve_evt_evtswap') }} es 
 where 1=1
--- and evt_tx_id = '3Uj7Eh6WcH6VsmwPMC47wWkHKSXBWYoeTtp49hSoUhKRrmj9bGD9oGK7WKZLdqzxxSX449R1zP29gS2kTDqx6JLY'
--- and evt_tx_signer =  '8xefbTCwb9fZbnffTuMaAL99VKKbMMKcgHrgyoYEPX2w'
-and evt_block_time > timestamp '2025-05-09 04:20'
+{% if is_incremental() %}
+and {{incremental_predicate('evt_block_time')}}
+{% else %}
+and evt_block_time >= TIMESTAMP '{{project_start_date}}'
+{% endif %}
 
 ),
 temp as (
@@ -76,5 +96,3 @@ on (
 )
 )
 select * from temp 
--- where token_bought_amount_raw is null 
-limit 5

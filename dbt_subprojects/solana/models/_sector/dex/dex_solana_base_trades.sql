@@ -24,6 +24,7 @@
   , ref('lifinity_v2_base_trades')
   , ref('meteora_v1_solana_base_trades')
   , ref('meteora_v2_solana_base_trades')
+  , ref('meteora_v4_solana_base_trades')
   , ref('goosefx_ssl_v2_solana_base_trades')
   , ref('pumpdotfun_solana_base_trades')
   , ref('pumpswap_solana_base_trades') 
