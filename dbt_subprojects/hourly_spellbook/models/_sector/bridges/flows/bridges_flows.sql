@@ -38,7 +38,7 @@ SELECT *
         , deposit_tx_hash
         , withdraw_tx_hash
         , bridge_transfer_id
-        FROM {{ ref('bridges_'~vm~'_deposits') }}
+        FROM {{ ref('bridges_'~vm~'_flows') }}
         {% if not loop.last %}
         UNION ALL
         {% endif %}
