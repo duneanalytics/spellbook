@@ -441,3 +441,21 @@ models:
           filter:
             version: 1
 
+  - name: blackhole_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: blackhole
+      contributors: //todo
+    config:
+      tags: [ 'avalanche_c', 'dex', 'trades', 'blackhole' ]
+    description: "blackhole avalanche_c base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('blackhole_avalanche_c_base_trades_seed')
+          filter:
+            version: 1
