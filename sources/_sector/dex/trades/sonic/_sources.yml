@@ -27,7 +27,7 @@ sources:
   - name: swapx_sonic
     tables:
       - name: algebrafactory_evt_pool
-      - name: algebrapool_evt_swap
+      - name: AlgebraPool_evt_Swap
   - name: metropolis_sonic
     tables:
       - name: router_call_swapexacttokensfortokens
