@@ -27,6 +27,7 @@
     , 'scroll'
     , 'sei'
     , 'shape'
+    , 'superseed'
     , 'tron'
     , 'unichain'
     , 'zkevm'
