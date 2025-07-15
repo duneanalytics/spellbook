@@ -64,4 +64,5 @@ FROM
     , ('s-sonic', 'metaS', 0x4444444420D9De54d69b3997b7D6A31d2BF63F32, 18)
     , ('usdc-usd-coin', 'wmetaUSD', 0xAaAaaAAac311D0572Bffb4772fe985A750E88805, 18)
     , ('usdc-usd-coin', 'metaUSD', 0x1111111199558661Bf7Ff27b4F1623dC6b91Aa3e, 18)
+    , ('equal-equalizer-on-sonic', 'EQUAL', 0xddf26b42c1d903de8962d3f79a74a501420d5f19, 18)
 ) as temp (token_id, symbol, contract_address, decimals)
