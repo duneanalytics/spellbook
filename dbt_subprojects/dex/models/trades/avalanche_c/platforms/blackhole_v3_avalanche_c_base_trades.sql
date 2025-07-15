@@ -16,6 +16,6 @@
         project = 'blackhole',
         version = '2',
         Pair_evt_Swap =  source('blackhole_avalanche_c', 'algebrapool_evt_swap'),
-        Factory_evt_PairCreated = source('blackhole_avalanche_c', 'algebrafactory_evt_custompool'),
+        Factory_evt_PoolCreated = source('blackhole_avalanche_c', 'algebrafactory_evt_custompool'),
     )
 }}
