@@ -14,7 +14,7 @@
     uniswap_compatible_v2_trades(
         blockchain = 'avalanche_c',
         project = 'blackhole',
-        version = '1',
+        version = '2',
         Pair_evt_Swap = source('blackhole_avalanche_c', 'pair_evt_swap'),
         Factory_evt_PairCreated = source('blackhole_avalanche_c', 'pairgenerator_evt_paircreated')
     )
