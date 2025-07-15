@@ -30,5 +30,12 @@ sources:
       - name: algebrapool_evt_swap
   - name: metropolis_sonic
     tables:
-      - name: v2factory_evt_paircreated
       - name: router_call_swapexacttokensfortokens
+      - name: router_call_swapexacttokensforeth
+      - name: router_call_swapethforexacttokens
+      - name: router_call_swaptokensforexacttokens
+      - name: router_call_swapexactethfortokens
+      - name: router_call_swapexactethfortokenssupportingfeeontransfertokens
+      - name: router_call_swapexacttokensforethsupportingfeeontransfertokens
+      - name: router_call_swapexacttokensfortokenssupportingfeeontransfertokens 
+             
