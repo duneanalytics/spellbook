@@ -1,7 +1,7 @@
 {{ config(
         schema = 'cex',
         alias = 'addresses',
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "optimism", "arbitrum", "polygon", "bitcoin", "fantom", "aptos", "celo", "zora", "zksync", "zkevm", "linea", "solana", "scroll", "tron", "base", "mantle", "worldchain", "sei", "sui"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "optimism", "arbitrum", "polygon", "bitcoin", "fantom", "aptos", "celo", "zora", "zksync", "zkevm", "linea", "solana", "scroll", "tron", "base", "mantle", "worldchain", "sei", "berachain", "ink", "katana", "nova", "opbnb", "unichain", "sui"]\',
                                     "sector",
                                     "cex",
                                     \'["hildobby"]\') }}')
@@ -42,6 +42,12 @@
  , ref('cex_sei_addresses')
   , ref('cex_near_addresses')
   , ref('cex_sui_addresses')
+  , ref('cex_berachain_addresses')
+  , ref('cex_ink_addresses')
+  , ref('cex_katana_addresses')
+  , ref('cex_nova_addresses')
+  , ref('cex_opbnb_addresses')
+  , ref('cex_unichain_addresses')
 ] %}
 
 SELECT *
