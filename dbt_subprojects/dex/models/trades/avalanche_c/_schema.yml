@@ -446,7 +446,7 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: blackhole
-      contributors: //todo
+      contributors: abhijeetblitz
     config:
       tags: [ 'avalanche_c', 'dex', 'trades', 'blackhole' ]
     description: "blackhole avalanche_c base trades"
