@@ -27,6 +27,7 @@
     , 'scroll'
     , 'sei'
     , 'shape'
+    , 'taiko'
     , 'tron'
     , 'unichain'
     , 'zkevm'
