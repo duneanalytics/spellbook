@@ -116,6 +116,6 @@ sources:
     tables:
       - name: pairgenerator_evt_paircreated
       - name: pair_evt_swap
-      - name: algebrafactory_evt_pool
+      - name: algebrafactory_evt_custompool
       - name: algebrapool_evt_swap
 

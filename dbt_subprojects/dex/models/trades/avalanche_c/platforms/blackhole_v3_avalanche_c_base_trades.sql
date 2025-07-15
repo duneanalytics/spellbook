@@ -16,6 +16,7 @@
         project = 'blackhole',
         version = '3',
         Pair_evt_Swap =  source('blackhole_avalanche_c', 'algebrapool_evt_swap'),
-        Factory_evt_PoolCreated = source('blackhole_avalanche_c', 'algebrafactory_evt_pool'),
+        Factory_evt_PoolCreated = source('blackhole_avalanche_c', 'algebrafactory_evt_custompool'),
+        optional_columns = []
     )
 }}
