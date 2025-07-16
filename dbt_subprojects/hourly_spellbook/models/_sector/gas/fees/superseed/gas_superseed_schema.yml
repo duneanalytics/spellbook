@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: superseed
       sector: gas
-      contributors: captncrunch
+      contributors: krishhh
     config:
       tags: ['superseed', 'gas', 'fees']
     description: >
