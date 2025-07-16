@@ -236,33 +236,18 @@ meta as (
         from calls
         join (
             select
-                block_number
-                , block_time
-                , tx_hash
-                , transfer_trace_address
-                , contract_address as contract_address_raw
-                , if(contract_address = {{ native_address }}, wrapped_native_token_address, contract_address) as contract_address
-                , contract_address = {{ native_address }} as native
-                , amount
-                , native_symbol
-                , transfer_from
-                , transfer_to
-                , date_trunc('minute', block_time) as minute
-            from (
-                select * from ({{ oneinch_project_ptfc_macro(blockchain) }})
-                where
-                    {% if is_incremental() %}
-                        {{ incremental_predicate('block_time') }}
-                    {% else %}
-                        block_time >= timestamp '{{date_from}}'
-                    {% endif %}
-            ), meta
-            where
-                {% if is_incremental() %}
-                    {{ incremental_predicate('block_time') }}
-                {% else %}
-                    block_time >= timestamp '{{date_from}}'
-                {% endif %}
+                0 block_number
+                , timestamp '2025-06-01 00:00:00' block_time
+                , 0x0000000000000000000000000000000000000000 tx_hash
+                , array[0] transfer_trace_address
+                , 0x0000000000000000000000000000000000000000 contract_address_raw
+                , 0x0000000000000000000000000000000000000000 contract_address
+                , false native
+                , 1 amount
+                , 'ETH' native_symbol
+                , 0x0000000000000000000000000000000000000000 transfer_from
+                , 0x0000000000000000000000000000000000000000 transfer_to
+                , timestamp '2025-06-01 00:00:00' minute
         ) as transfers on
             calls.block_number = transfers.block_number
             and calls.tx_hash = transfers.tx_hash
