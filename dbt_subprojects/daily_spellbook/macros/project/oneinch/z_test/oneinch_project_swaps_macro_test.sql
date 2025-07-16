@@ -256,7 +256,7 @@ meta as (
                     {% else %}
                         block_time >= timestamp '{{date_from}}'
                     {% endif %}
-                limit 100000
+                    and contract_address in (select contract_address from trusted_tokens)
             ), meta
             where
                 {% if is_incremental() %}
