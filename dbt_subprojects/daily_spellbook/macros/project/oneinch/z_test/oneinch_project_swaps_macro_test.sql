@@ -117,18 +117,10 @@ meta as (
 
 , prices as (
     select
-        contract_address
-        , minute
-        , price
-        , decimals
-    from {{ source('prices', 'usd') }}
-    where
-        {% if is_incremental() %}
-            {{ incremental_predicate('minute') }}
-        {% else %}
-            minute >= timestamp '{{date_from}}'
-        {% endif %}
-        and blockchain = '{{blockchain}}'
+        0x0000000000000000000000000000000000000000 contract_address
+        , timestamp '2025-06-01 00:00:00'minute
+        , 1.01 price
+        , 18 decimals
 )
 
 , creations as (
