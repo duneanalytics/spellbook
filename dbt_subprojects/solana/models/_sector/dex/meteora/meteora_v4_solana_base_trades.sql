@@ -44,8 +44,8 @@ evt_deatils as
 select 
 evt_block_time as block_time
 , trade_direction
-, json_extract(swap_result, '$.SwapResult.actual_input_amount') as token_in_amount_raw
-, json_extract(swap_result, '$.SwapResult.output_amount') as token_out_amount_raw
+, cast(json_extract(swap_result, '$.SwapResult.actual_input_amount') as double) as token_in_amount_raw
+, cast(json_extract(swap_result, '$.SwapResult.output_amount') as double) as token_out_amount_raw
 , cast(json_extract(swap_result, '$.SwapResult.trading_fee') as double) + cast(json_extract(swap_result, '$.SwapResult.protocol_fee') as double) + cast(json_extract(swap_result, '$.SwapResult.referral_fee') as double) as total_fees_raw 
 , pool as project_program_id
 , evt_tx_id  as tx_id
@@ -71,8 +71,8 @@ select
 , sd.block_time 
 , sd.block_slot 
 , sd.trade_source
-, evt.token_out_amount_raw as token_bought_amount_raw
-, evt.token_in_amount_raw as token_sold_amount_raw
+, cast(evt.token_out_amount_raw as double) as token_bought_amount_raw
+, cast(evt.token_in_amount_raw as double) as token_sold_amount_raw
 , cast (null as double) as fee_tier
 -- , evt.total_fees_raw
 , case when evt.trade_direction =0 then sd.token_a else sd.token_b end as token_sold_mint_address
