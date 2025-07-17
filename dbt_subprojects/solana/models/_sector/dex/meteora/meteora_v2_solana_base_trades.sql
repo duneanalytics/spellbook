@@ -1,4 +1,4 @@
-{# pevtk up a project_start_date var, with a sensible fallback #}
+{# pick up a project_start_date var, with a sensible fallback #}
 {% set project_start_date = var('project_start_date', '2023-11-07') %}
 
 {# list of your swap tables to loop over #}
@@ -40,7 +40,7 @@ all_swaps as (
     from {{ source('dlmm_solana', tbl) }}
     where 1=1
       {% if is_incremental() %}
-        and {{ incremental_predevtate('call_block_time') }}
+        and {{ incremental_predicate('call_block_time') }}
       {% else %}
         and call_block_time >= timestamp '{{ project_start_date }}'
       {% endif %}
@@ -70,7 +70,7 @@ evt_table as (
   where 1=1
     and evt_inner_executing_account = 'LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo'
     {% if is_incremental() %}
-      and {{ incremental_predevtate('evt_block_time') }}
+      and {{ incremental_predicate('evt_block_time') }}
     {% else %}
       and evt_block_time >= timestamp '{{ project_start_date }}'
     {% endif %}
