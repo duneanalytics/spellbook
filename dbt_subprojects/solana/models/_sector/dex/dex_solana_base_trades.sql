@@ -54,10 +54,10 @@ SELECT
       , CAST(NULL AS BIGINT) as token_sold_decimal_project_specific
       {% endif %}
       , fee_tier
-      , total_fees_raw
+      -- , total_fees_raw
       , token_bought_mint_address
       , token_sold_mint_address
-      , token_fee_mint_address
+      -- , token_fee_mint_address
       , token_bought_vault
       , token_sold_vault
       , project_program_id
