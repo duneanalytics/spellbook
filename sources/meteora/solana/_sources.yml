@@ -14,4 +14,7 @@ sources:
     description: "meteora lb_clmm decoded tables"
     tables:
       - name: lb_clmm_call_swap
+      - name: dynamic_bonding_curve_call_swap
+      - name: dynamic_bonding_curve_evt_evtswap
+      
         
