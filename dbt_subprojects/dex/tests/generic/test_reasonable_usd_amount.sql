@@ -16,12 +16,6 @@ WITH base_trades AS (
 ),
 
 -- Split trades by project for optimized processing
-curve_trades AS (
-    SELECT *
-    FROM base_trades
-    WHERE project = 'curve'
-),
-
 balancer_v3_trades AS (
     SELECT *
     FROM base_trades
@@ -31,46 +25,7 @@ balancer_v3_trades AS (
 other_trades AS (
     SELECT *
     FROM base_trades
-    WHERE project != 'curve' 
-    AND NOT (project = 'balancer' AND version = '3')
-),
-
--- Process Curve trades
-curve_enriched AS (
-    SELECT
-        bt.blockchain,
-        bt.project,
-        bt.version,
-        bt.block_time,
-        bt.tx_hash,
-        bt.evt_index,
-        CASE
-            WHEN curve_optimism.pool_type is not null
-                THEN bt.token_bought_amount_raw / power(10, CASE WHEN curve_optimism.pool_type = 'meta' AND curve_optimism.bought_id = INT256 '0' THEN 18 ELSE erc20_bought.decimals END)
-            ELSE bt.token_bought_amount_raw / power(10, erc20_bought.decimals)
-        END AS token_bought_amount,
-        CASE
-            WHEN curve_ethereum.swap_type is not null
-                THEN bt.token_sold_amount_raw / power(10, CASE WHEN curve_ethereum.swap_type = 'underlying_exchange_base' THEN 18 ELSE erc20_sold.decimals END)
-            WHEN curve_optimism.pool_type is not null
-                THEN bt.token_sold_amount_raw / power(10, CASE WHEN curve_optimism.pool_type = 'meta' AND curve_optimism.bought_id = INT256 '0' THEN erc20_bought.decimals ELSE erc20_sold.decimals END)
-            ELSE bt.token_sold_amount_raw / power(10, erc20_sold.decimals)
-        END AS token_sold_amount,
-        bt.token_bought_address,
-        bt.token_sold_address
-    FROM curve_trades bt
-    LEFT JOIN {{ source('tokens', 'erc20') }} erc20_bought
-        ON erc20_bought.contract_address = bt.token_bought_address
-        AND erc20_bought.blockchain = bt.blockchain
-    LEFT JOIN {{ source('tokens', 'erc20') }} erc20_sold
-        ON erc20_sold.contract_address = bt.token_sold_address
-        AND erc20_sold.blockchain = bt.blockchain
-    LEFT JOIN {{ ref('curve_ethereum_base_trades') }} curve_ethereum
-        ON curve_ethereum.tx_hash = bt.tx_hash
-        AND curve_ethereum.evt_index = bt.evt_index
-    LEFT JOIN {{ ref('curve_optimism_base_trades') }} curve_optimism
-        ON curve_optimism.tx_hash = bt.tx_hash
-        AND curve_optimism.evt_index = bt.evt_index
+    WHERE NOT (project = 'balancer' AND version = '3')
 ),
 
 -- Process Balancer V3 trades
@@ -95,7 +50,7 @@ balancer_v3_enriched AS (
         AND erc20_sold.blockchain = bt.blockchain
 ),
 
--- Process other trades
+-- Process other trades (including Curve, which now has decimal handling in base trades)
 other_enriched AS (
     SELECT
         bt.blockchain,
@@ -147,7 +102,7 @@ erc4626_prices AS (
     GROUP BY 1, 2, 3, 4
 ),
 
--- Calculate USD amounts for regular trades (Curve and Others)
+-- Calculate USD amounts for regular trades (including Curve)
 regular_trades_with_prices AS (
     SELECT
         bt.*,
@@ -157,11 +112,7 @@ regular_trades_with_prices AS (
             bt.token_bought_amount * pb.price,
             bt.token_sold_amount * ps.price
         ) AS amount_usd
-    FROM (
-        SELECT * FROM curve_enriched
-        UNION ALL
-        SELECT * FROM other_enriched
-    ) bt
+    FROM other_enriched bt
     LEFT JOIN prices pb
         ON bt.token_bought_address = pb.contract_address
         AND bt.blockchain = pb.blockchain
