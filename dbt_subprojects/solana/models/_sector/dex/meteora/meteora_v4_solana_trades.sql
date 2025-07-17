@@ -1,6 +1,6 @@
  {{
   config(
-        schema = 'meteora_v2_solana',
+        schema = 'meteora_v4_solana',
         alias = 'trades',
         materialized = 'view',
         post_hook='{{ expose_spells(\'["solana"]\',
