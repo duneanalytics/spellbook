@@ -10,6 +10,10 @@
  )
 }}
 
+-- TESTING: Add hardcoded date filter for faster testing
+-- Remove this filter after testing is complete
+{% set test_start_date = '2025-07-10' %} 
+
 {{transfers_base(
      blockchain='taiko'
      , traces = source('taiko','traces')
