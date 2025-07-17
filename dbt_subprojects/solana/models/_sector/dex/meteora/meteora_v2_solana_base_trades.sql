@@ -88,8 +88,8 @@ select
       when sw.is_inner_swap = false then 'direct'
       else sw.outer_executing_account 
     end as trade_source,
-    amountIn as token_bought_amount_raw,
-    amountOut as token_sold_amount_raw,
+    amountOut as token_bought_amount_raw,
+    amountIn as token_sold_amount_raw,
     cast(null as double) as fee_tier,
     case 
       when swapForY = True
