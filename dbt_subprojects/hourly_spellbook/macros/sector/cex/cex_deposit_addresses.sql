@@ -1,6 +1,18 @@
 {% macro cex_deposit_addresses(blockchain, cex_local_flows) %}
 
 WITH unique_inflows_raw AS (
+    {% if not is_incremental() %}
+    SELECT cf."from" AS suspected_deposit_address
+    , MIN(cf.block_number) AS block_number
+    , MIN_BY(cf.unique_key, cf.block_number) AS unique_key
+    FROM {{ ref('cex_'~blockchain~'_flows') }} cf
+    INNER JOIN {{ref('cex_'~blockchain~'_addresses')}} ca ON ca.address=cf."from"
+    WHERE cf.flow_type = 'Internal'
+    AND REGEXP_LIKE(ca.distinct_name, 'Deposit( ?\d+)?$')
+    GROUP BY 1
+
+    UNION ALL
+    {% endif %}
     SELECT cf."from" AS suspected_deposit_address
     , MIN(cf.block_number) AS block_number
     , MIN_BY(cf.unique_key, cf.block_number) AS unique_key
@@ -13,12 +25,13 @@ WITH unique_inflows_raw AS (
     WHERE {{ incremental_predicate('cf.block_time') }}
     AND cf.flow_type IN ('Inflow') --, 'Executed', 'Executed Contract')
     AND t.address IS NULL
+    AND NOT REGEXP_LIKE(cf.distinct_name, 'Deposit( ?\d+)?$')
     {% else %}
     WHERE cf.flow_type IN ('Inflow') --, 'Executed', 'Executed Contract')
     {% endif %}
     AND varbinary_substring(cf."from", 1, 16) <> 0x00000000000000000000000000000000 -- removing last 5 bytes, often used to identify null or system addresses
     GROUP BY 1
-    HAVING COUNT(DISTINCT cf.cex_name) = 1
+    HAVING COUNT(DISTINCT cf.cex_name) = 1 -- check it only deposited to 1 CEX
     )
 
 , unique_inflows AS (
