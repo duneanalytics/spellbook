@@ -35,7 +35,7 @@ models:
       sector: cex
       contributors: hildobby
     config:
-      tags: ['cex','addresses', 'deposits', 'withdrawals', 'ethereum', 'bnb', 'avalanche_c', 'optimism', 'arbitrum', 'polygon', 'bitcoin', 'fantom']
+      tags: ['cex','addresses', 'deposits', 'withdrawals', 'ethereum', 'bnb', 'avalanche_c', 'optimism', 'arbitrum', 'polygon', 'bitcoin', 'fantom', 'aptos']
     description: "All CEX-tied addresses identified"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
