@@ -16,7 +16,7 @@ models:
   - name: meteora_v2_solana_base_trades
     meta:
       blockchain: solana
-      contributors: [ 0xsandeshk ]
+      contributors: [ ilemi ]
     config:
       tags: [ 'solana','dex' ]
     description: >
@@ -25,7 +25,7 @@ models:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
-
+  
   - name: meteora_v4_solana_base_trades
     meta:
       blockchain: solana
@@ -38,8 +38,6 @@ models:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
-      - dbt_utils.not_empty_string:
-          column_name: ['token_bought_amount_raw','token_sold_amount_raw','token_bought_mint_address','token_sold_mint_address']
 
   - name: meteora_v1_solana_trades
     meta:
@@ -98,9 +96,6 @@ models:
       - &fee_tier
         name: fee_tier
         description: "fee tier (fee %)"
-      - &total_fees_raw
-        name: total_fees_raw
-        description: "Raw value of the total fees paid on swap"
       - &fee_usd
         name: fee_usd
         description: "fee usd paid on swap"
@@ -110,9 +105,6 @@ models:
       - &token_sold_mint_address
         name: token_sold_address
         description: "token mint address of the token sold"
-      - &token_fee_mint_address
-        name: token_fee_address
-        description: "token mint address of the token fee paid in"
       - &token_bought_vault
         name: token_bought_vault
         description: "token associated address, of the token bought"
@@ -166,11 +158,9 @@ models:
       - *token_sold_amount_raw
       - *amount_usd
       - *fee_tier
-      - *total_fees_raw
       - *fee_usd
       - *token_bought_mint_address
       - *token_sold_mint_address
-      - *token_fee_mint_address
       - *token_bought_vault
       - *token_sold_vault
       - *project_program_id
@@ -180,7 +170,7 @@ models:
       - *outer_instruction_index
       - *inner_instruction_index
       - *tx_index
-
+    
   - name: meteora_v4_solana_trades
     meta:
       blockchain: solana
@@ -206,11 +196,9 @@ models:
       - *token_sold_amount_raw
       - *amount_usd
       - *fee_tier
-      - *total_fees_raw
       - *fee_usd
       - *token_bought_mint_address
       - *token_sold_mint_address
-      - *token_fee_mint_address
       - *token_bought_vault
       - *token_sold_vault
       - *project_program_id
@@ -220,3 +208,4 @@ models:
       - *outer_instruction_index
       - *inner_instruction_index
       - *tx_index
+      

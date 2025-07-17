@@ -102,10 +102,8 @@ SELECT
     , tb.token_bought_amount_raw
     , tb.token_sold_amount_raw
     , cast(null as double) as fee_tier
-    , cast(null as double) as total_fees_raw
     , tb.token_sold_mint_address
     , tb.token_bought_mint_address
-    , tb.token_fee_mint_address
     , tb.token_sold_vault
     , tb.token_bought_vault
     , tb.pool_id as project_program_id

@@ -74,10 +74,10 @@ select
 , evt.token_out_amount_raw as token_bought_amount_raw
 , evt.token_in_amount_raw as token_sold_amount_raw
 , cast (null as double) as fee_tier
-, evt.total_fees_raw
+-- , evt.total_fees_raw
 , case when evt.trade_direction =0 then sd.token_a else sd.token_b end as token_sold_mint_address
 , case when evt.trade_direction =1 then sd.token_a else sd.token_b  end as token_bought_mint_address
-, sd.token_b as token_fee_mint_address
+-- , sd.token_b as token_fee_mint_address
 , case when evt.trade_direction =0 then sd.token_a_vault else sd.token_b_vault end as token_sold_vault
 , case when evt.trade_direction =1 then sd.token_a_vault else sd.token_b_vault  end as token_bought_vault
 , evt.project_program_id
