@@ -1,19 +1,22 @@
 {% macro cex_deposit_addresses(blockchain, cex_local_flows) %}
 
 WITH unique_inflows_raw AS (
-    SELECT "from" AS suspected_deposit_address
-    , MIN(block_number) AS block_number
-    , MIN_BY(unique_key, block_number) AS unique_key
+    SELECT cf."from" AS suspected_deposit_address
+    , MIN(cf.block_number) AS block_number
+    , MIN_BY(cf.unique_key, cf.block_number) AS unique_key
     FROM {{cex_local_flows}} cf
+    INNER JOIN {{ ref('addresses_events_'~blockchain~'_first_token_received') }} f ON f.address=cf."from"
+        AND cf.block_time BETWEEN f.block_time AND f.block_time + interval '1' day
     {% if is_incremental() %}
+        AND {{ incremental_predicate("f.block_time - interval '1' day") }}
     LEFT JOIN {{this}} t ON cf."from"=t.address
-    WHERE {{ incremental_predicate('block_time') }}
-    AND flow_type IN ('Inflow') --, 'Executed', 'Executed Contract')
+    WHERE {{ incremental_predicate('cf.block_time') }}
+    AND cf.flow_type IN ('Inflow') --, 'Executed', 'Executed Contract')
     AND t.address IS NULL
     {% else %}
-    WHERE flow_type IN ('Inflow') --, 'Executed', 'Executed Contract')
+    WHERE cf.flow_type IN ('Inflow') --, 'Executed', 'Executed Contract')
     {% endif %}
-    AND varbinary_substring("from", 1, 16) <> 0x00000000000000000000000000000000 -- removing last 5 bytes, often used to identify null or system addresses
+    AND varbinary_substring(cf."from", 1, 16) <> 0x00000000000000000000000000000000 -- removing last 5 bytes, often used to identify null or system addresses
     GROUP BY 1
     HAVING COUNT(DISTINCT cf.cex_name) = 1
     )
