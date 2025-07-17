@@ -2,7 +2,7 @@
 {% set project_start_date = var('project_start_date', '2023-11-07') %}
 
 {# list of your swap tables to loop over #}
-{% set swap_tables = ['lb_clmm_call_swap', 'lb_clmm_call_swap2','lb_clmm_call_swapexactout','lb_clmm_call_swapexactout2','lb_clmm_call_swapwithprevteimpact','lb_clmm_call_swapwithprevteimpact2'] %}
+{% set swap_tables = ['lb_clmm_call_swap', 'lb_clmm_call_swap2','lb_clmm_call_swapexactout','lb_clmm_call_swapexactout2','lb_clmm_call_swapwithpriceimpact','lb_clmm_call_swapwithpriceimpact2'] %}
 
 {{ 
   config(
