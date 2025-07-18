@@ -15,7 +15,7 @@
         blockchain = 'taiko',
         project = 'izumi',
         version = '1',
-        Pool_evt_Swap = source('izumi_taiko', 'iZiSwapPool_evt_Swap'),
+        Pair_evt_Swap = source('izumi_taiko', 'iZiSwapPool_evt_Swap'),
         Factory_evt_PoolCreated = source('izumi_taiko', 'iZiSwapFactory_evt_NewPool')
     )
 }}
