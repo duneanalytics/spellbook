@@ -33,6 +33,7 @@
                                         , "zksync"
                                         , "unichain"
                                         , "zora"
+                                        , "taiko"
                                     ]\',
                                     "sector",
                                     "dex",
