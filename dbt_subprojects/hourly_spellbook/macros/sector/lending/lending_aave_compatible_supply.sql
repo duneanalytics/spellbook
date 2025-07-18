@@ -512,7 +512,7 @@ select
   hmu.symbol,
   hmu.user,
   sum(s.atoken_amount) over (
-    partition by hmu.token_address, hmu.user 
+    partition by hmu.user, hmu.token_address
     order by hmu.block_hour
   ) * hmu.liquidity_index / power(10, 27) as amount
 from hourly_market_user hmu
