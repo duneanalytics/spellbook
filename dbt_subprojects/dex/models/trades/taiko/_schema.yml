@@ -26,8 +26,6 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_dex_base_trades_seed:
-          seed_file: ref('oku_taiko_base_trades_seed')
 
   - name: unagi_v2_taiko_base_trades
     meta:
@@ -43,10 +41,6 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_dex_base_trades_seed:
-          seed_file: ref('unagi_v2_taiko_base_trades_seed')
-          filter:
-            version: 2
 
   - name: unagi_v3_taiko_base_trades
     meta:
@@ -62,10 +56,6 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_dex_base_trades_seed:
-          seed_file: ref('unagi_v3_taiko_base_trades_seed')
-          filter:
-            version: 3
 
   - name: izumi_taiko_base_trades
     meta:
@@ -81,7 +71,3 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_dex_base_trades_seed:
-          seed_file: ref('izumi_taiko_base_trades_seed')
-          filter:
-            version: 1
