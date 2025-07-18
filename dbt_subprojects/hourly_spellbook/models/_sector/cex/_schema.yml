@@ -3,11 +3,11 @@ version: 2
 models:
   - name: cex_info
     meta:
-      blockchain: ethereum, bnb, avalanche_c, optimism, arbitrum, polygon, fantom, base, zksync, celo, zora
+      blockchain: ethereum, bnb, avalanche_c, optimism, arbitrum, polygon, fantom, base, zksync, celo, zora, aptos
       sector: cex
       contributors: hildobby
     config:
-      tags: ['dex', 'ethereum', 'bnb', 'avalanche_c', 'optimism', 'arbitrum', 'polygon', 'fantom', 'base', 'zksync', 'celo', 'zora', 'info']
+      tags: ['dex', 'ethereum', 'bnb', 'avalanche_c', 'optimism', 'arbitrum', 'polygon', 'fantom', 'base', 'zksync', 'celo', 'zora', 'aptos', 'info']
     description: >
         CEXs info
     data_tests:
