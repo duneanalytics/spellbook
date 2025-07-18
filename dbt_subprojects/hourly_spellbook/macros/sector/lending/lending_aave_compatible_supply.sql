@@ -417,9 +417,6 @@ hourly_market as (
     liquidity_index,
     variable_borrow_index
   from {{ ref(project ~ '_v' ~ version ~ '_' ~ blockchain ~ '_base_market_hourly_agg') }}
-  {% if is_incremental() %}
-  where {{ incremental_predicate('block_hour') }}
-  {% endif %}
 ),
 
 market_ordered as (
@@ -437,9 +434,6 @@ market_ordered as (
     tx_hash,
     row_number() over (partition by block_time, tx_hash, token_address order by evt_index) as event_order
   from {{ ref(project ~ '_v' ~ version ~ '_' ~ blockchain ~ '_base_market') }}
-  {% if is_incremental() %}
-  where {{ incremental_predicate('block_time') }}
-  {% endif %}
 ),
 
 supply_ordered as (
@@ -457,9 +451,6 @@ supply_ordered as (
     row_number() over (partition by block_time, tx_hash, token_address order by evt_index) as event_order
   from {{ ref('aave_' ~ blockchain ~ '_supply')}}
   where version = '3'
-  {% if is_incremental() %}
-  and {{ incremental_predicate('block_time') }}
-  {% endif %}
 ),
 
 supplied as (
@@ -515,7 +506,7 @@ select
   hmu.blockchain,
   hmu.project,
   hmu.version,
-  cast(date_trunc('month', hmu.block_hour) as date) as block_month,
+  cast(date_trunc('day', hmu.block_hour) as date) as block_date,
   hmu.block_hour,
   hmu.token_address,
   hmu.symbol,
@@ -529,5 +520,8 @@ from hourly_market_user hmu
     on hmu.block_hour = s.block_hour
     and hmu.token_address = s.token_address
     and hmu.user = s.user
+{% if is_incremental() %}
+where {{ incremental_predicate('hmu.block_hour') }}
+{% endif %}
 
 {% endmacro %}

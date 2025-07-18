@@ -17,7 +17,7 @@ select
   blockchain,
   project,
   version,
-  block_month,
+  block_date,
   block_hour,
   token_address,
   symbol,
@@ -27,4 +27,4 @@ from {{ model }}
 {% if not loop.last %}
 union all
 {% endif %}
-{% endfor %} 
+{% endfor %}
