@@ -770,5 +770,6 @@ FROM
         ('fdusd-first-digital-usd', 'solana', 'FDUSD', '9zNQRsGLjNKwCUU5Gq5LR8beUCPzQMVMqKAi3SSZh54u', 6),
         ('me-magic-eden', 'solana', 'ME', 'MEFNBXixkEbait3xn9bkm8WsJzXtVsaJEn4c8Sam21u', 6),
         ('bbsol-bybit-staked-sol', 'solana', 'bbSOL', 'Bybit2vBJGhPF52GBdNaQfUJ6ZpThSgHBobjWZpLPb4B', 9),
-        ('pump-pumpfun', 'solana', 'PUMP', 'pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn', 6)
+        ('pump-pumpfun', 'solana', 'PUMP', 'pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn', 6),
+        ('stik-staika', 'solana', 'STIK', '8BMzMi2XxZn9afRaMx5Z6fauk9foHXqV5cLTCYWRcVje', 9)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
