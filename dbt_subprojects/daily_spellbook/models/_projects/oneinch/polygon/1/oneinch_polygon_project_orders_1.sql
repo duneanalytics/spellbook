@@ -1,25 +1,26 @@
-{% set blockchain = 'bnb' %}
+{% set blockchain = 'polygon' %}
 
 
 
 {{
     config(
         schema = 'oneinch_' + blockchain,
-        alias = 'project_calls_1',
+        alias = 'project_orders_1',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['blockchain', 'block_number', 'tx_hash', 'call_trace_address']
+        unique_key = ['blockchain', 'block_number', 'tx_hash', 'call_trace_address', 'order_hash', 'call_trade']
     )
 }}
 
--- depends_on: {{ ref('oneinch_' + blockchain + '_mapped_contracts') }}
+-- depends_on: {{ ref('oneinch_' + blockchain + '_project_orders_raw_logs') }}
+-- depends_on: {{ ref('oneinch_' + blockchain + '_project_orders_raw_traces') }}
 
 
 {{
-    oneinch_project_calls_macro_test(
+    oneinch_project_orders_macro_test(
         blockchain = blockchain
         , partition_number = '1'
     )
