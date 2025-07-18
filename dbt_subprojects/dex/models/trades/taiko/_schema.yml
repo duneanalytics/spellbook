@@ -1,0 +1,87 @@
+version: 2
+
+models:
+  - name: dex_taiko_base_trades
+    meta:
+      blockchain: taiko
+      sector: dex
+      contributors: krishhh
+    config:
+      tags: ['taiko', 'dex', 'trades']
+    description: 'All DEX trades on Taiko'
+    data_tests:
+      - check_dex_info_relationship
+
+  - name: oku_v3_taiko_base_trades
+    meta:
+      blockchain: taiko
+      sector: dex
+      project: oku
+      contributors: krishhh
+    config:
+      tags: ['taiko', 'dex', 'trades', 'oku', 'v3']
+    description: 'Oku V3 DEX trades on Taiko'
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('oku_taiko_base_trades_seed')
+
+  - name: unagi_v2_taiko_base_trades
+    meta:
+      blockchain: taiko
+      sector: dex
+      project: unagi
+      contributors: krishhh
+    config:
+      tags: ['taiko', 'dex', 'trades', 'unagi', 'v2']
+    description: 'Unagi V2 DEX trades on Taiko'
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('unagi_v2_taiko_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: unagi_v3_taiko_base_trades
+    meta:
+      blockchain: taiko
+      sector: dex
+      project: unagi
+      contributors: krishhh
+    config:
+      tags: ['taiko', 'dex', 'trades', 'unagi', 'v3']
+    description: 'Unagi V3 DEX trades on Taiko'
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('unagi_v3_taiko_base_trades_seed')
+          filter:
+            version: 3
+
+  - name: izumi_taiko_base_trades
+    meta:
+      blockchain: taiko
+      sector: dex
+      project: izumi
+      contributors: krishhh
+    config:
+      tags: ['taiko', 'dex', 'trades', 'izumi']
+    description: 'Izumi DEX trades on Taiko'
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('izumi_taiko_base_trades_seed')
+          filter:
+            version: 1
