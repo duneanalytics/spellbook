@@ -12,7 +12,6 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - flow_type
             - unique_key
     columns:
       - &blockchain
@@ -90,7 +89,6 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - flow_type
             - unique_key
     columns:
       - *blockchain
@@ -126,7 +124,6 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - flow_type
             - unique_key
     columns:
       - *blockchain
@@ -162,7 +159,6 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - flow_type
             - unique_key
     columns:
       - *blockchain
@@ -198,7 +194,6 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - flow_type
             - unique_key
     columns:
       - *blockchain
@@ -234,7 +229,6 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - flow_type
             - unique_key
     columns:
       - *blockchain
@@ -270,7 +264,6 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - flow_type
             - unique_key
     columns:
       - *blockchain
@@ -306,7 +299,6 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - flow_type
             - unique_key
     columns:
       - *blockchain
@@ -342,7 +334,6 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - flow_type
             - unique_key
     columns:
       - *blockchain
@@ -378,7 +369,6 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - flow_type
             - unique_key
     columns:
       - *blockchain
@@ -414,7 +404,6 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - flow_type
             - unique_key
     columns:
       - *blockchain
@@ -450,7 +439,6 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - flow_type
             - unique_key
     columns:
       - *blockchain
@@ -486,7 +474,6 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - flow_type
             - unique_key
     columns:
       - *blockchain
@@ -522,7 +509,6 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - flow_type
             - unique_key
     columns:
       - *blockchain
@@ -558,7 +544,216 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - flow_type
+            - unique_key
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_time
+      - *block_number
+      - *cex_name
+      - *distinct_name
+      - *token_address
+      - *token_symbol
+      - *token_standard
+      - *flow_type
+      - *amount
+      - *amount_raw
+      - *amount_usd
+      - *from
+      - *to
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *tx_hash
+      - *evt_index
+      - *unique_key
+
+  - name: cex_berachain_flows
+    meta:
+      blockchain: berachain
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','flows', 'berachain']
+    description: "All CEX-tied flows identified on Berachain"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - unique_key
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_time
+      - *block_number
+      - *cex_name
+      - *distinct_name
+      - *token_address
+      - *token_symbol
+      - *token_standard
+      - *flow_type
+      - *amount
+      - *amount_raw
+      - *amount_usd
+      - *from
+      - *to
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *tx_hash
+      - *evt_index
+      - *unique_key
+
+  - name: cex_ink_flows
+    meta:
+      blockchain: ink
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','flows', 'ink']
+    description: "All CEX-tied flows identified on Ink"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - unique_key
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_time
+      - *block_number
+      - *cex_name
+      - *distinct_name
+      - *token_address
+      - *token_symbol
+      - *token_standard
+      - *flow_type
+      - *amount
+      - *amount_raw
+      - *amount_usd
+      - *from
+      - *to
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *tx_hash
+      - *evt_index
+      - *unique_key
+
+  - name: cex_katana_flows
+    meta:
+      blockchain: katana
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','flows', 'katana']
+    description: "All CEX-tied flows identified on Katana"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - unique_key
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_time
+      - *block_number
+      - *cex_name
+      - *distinct_name
+      - *token_address
+      - *token_symbol
+      - *token_standard
+      - *flow_type
+      - *amount
+      - *amount_raw
+      - *amount_usd
+      - *from
+      - *to
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *tx_hash
+      - *evt_index
+      - *unique_key
+
+  - name: cex_nova_flows
+    meta:
+      blockchain: nova
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','flows', 'nova']
+    description: "All CEX-tied flows identified on Nova"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - unique_key
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_time
+      - *block_number
+      - *cex_name
+      - *distinct_name
+      - *token_address
+      - *token_symbol
+      - *token_standard
+      - *flow_type
+      - *amount
+      - *amount_raw
+      - *amount_usd
+      - *from
+      - *to
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *tx_hash
+      - *evt_index
+      - *unique_key
+
+  - name: cex_opbnb_flows
+    meta:
+      blockchain: opbnb
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','flows', 'opbnb']
+    description: "All CEX-tied flows identified on opBNB"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - unique_key
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_time
+      - *block_number
+      - *cex_name
+      - *distinct_name
+      - *token_address
+      - *token_symbol
+      - *token_standard
+      - *flow_type
+      - *amount
+      - *amount_raw
+      - *amount_usd
+      - *from
+      - *to
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *tx_hash
+      - *evt_index
+      - *unique_key
+
+  - name: cex_unichain_flows
+    meta:
+      blockchain: unichain
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','flows', 'unichain']
+    description: "All CEX-tied flows identified on Unichain"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
             - unique_key
     columns:
       - *blockchain
