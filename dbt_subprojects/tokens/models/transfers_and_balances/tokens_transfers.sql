@@ -36,6 +36,7 @@
                                             ,"shape"
                                             ,"sonic"
                                             ,"sophon"
+                                            ,"superseed"
                                             ,"taiko"
                                             ,"tron"
                                             ,"unichain"
@@ -87,6 +88,7 @@
     ,'shape'
     ,'sonic'
     ,'sophon'
+    ,'superseed'
     ,'taiko'
     ,'tron'
     ,'unichain'
