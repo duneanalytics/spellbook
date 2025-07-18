@@ -520,8 +520,10 @@ from hourly_market_user hmu
     on hmu.block_hour = s.block_hour
     and hmu.token_address = s.token_address
     and hmu.user = s.user
+/*
 {% if is_incremental() %}
 where {{ incremental_predicate('hmu.block_hour') }}
 {% endif %}
+*/
 
 {% endmacro %}
