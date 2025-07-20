@@ -34,7 +34,7 @@ json_extract_scalar(params,'$._uri') as uri,
 json_extract_scalar(params,'$._trustedForwarders') as trustedForwarders,
 json_extract_scalar(params,'$._primarySaleRecipient') as primarySaleRecipient,
 json_extract_scalar(params,'$._royaltyRecipient') as royaltyRecipient,
-cast(json_extract_scalar(params,'$._royaltyBps') as double)/1e5 as royalty_pct,
+cast(json_extract_scalar(params,'$._royaltyBps') as double)/1e4 as royalty_pct,
 json_extract_scalar(params,'$._platformFee') as platformFee,
 json_extract_scalar(params,'$._platformFeeRecipient') as platformFeeRecipient,
 json_extract_scalar(params,'$.salt') AS salt
