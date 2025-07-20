@@ -33,8 +33,8 @@ models:
         name: name
         description: "Token name"
       - &decimals
-        name: name
-        description: "Token decimals (assume 18 unless we have an L1 mapping"
+        name: decimals
+        description: "Token decimals (assume 18 unless we have an L1 mapping)"
       - &call_tx_hash
         name: call_tx_hash
         description: "Transaction hash of token creation transaction"
