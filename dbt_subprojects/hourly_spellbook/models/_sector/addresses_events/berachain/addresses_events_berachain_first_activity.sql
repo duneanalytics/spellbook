@@ -11,5 +11,5 @@
 
 {{addresses_events_first_activity(
     blockchain='berachain',
-    native_symbol = 'berachain'
+    native_symbol = 'BERA'
 )}}
