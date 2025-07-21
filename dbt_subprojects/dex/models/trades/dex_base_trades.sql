@@ -44,7 +44,7 @@ with base_union as (
             {{ model }}
         WHERE
            token_sold_amount_raw >= 0 and token_bought_amount_raw >= 0
-        AND block_time >= '2024-07-15'  -- <--- a temporary date filter
+        AND block_time >= TIMESTAMP '2024-07-15'
 
         {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
