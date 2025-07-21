@@ -15,7 +15,7 @@
         project = 'izumi',
         version = '1',
         Pair_evt_Swap = ref('stg_izumi_finance_taiko_swaps'),
-        Factory_evt_PoolCreated = source('izumi_finance_multichain', 'iziswapfactory_evt_newpool'),
+        Factory_evt_PoolCreated = ref('stg_izumi_finance_taiko_pool'),
         taker_column_name = 'evt_tx_to'
     )
 }}
