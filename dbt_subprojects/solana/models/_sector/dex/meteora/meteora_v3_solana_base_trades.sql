@@ -75,6 +75,7 @@ select
 , sd.trade_source
 , cast(evt.token_out_amount_raw as uint256) as token_bought_amount_raw
 , cast(evt.token_in_amount_raw as uint256) as token_sold_amount_raw
+, cast(null as double) as fee_tier
 -- , evt.total_fees_raw
 , case when evt.trade_direction = 0 then sd.token_a else sd.token_b end as token_sold_mint_address
 , case when evt.trade_direction = 1 then sd.token_a else sd.token_b  end as token_bought_mint_address
