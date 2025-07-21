@@ -1,6 +1,6 @@
 {{ config(
     schema = 'bridges_evms'
-    , alias = 'initiated'
+    , alias = 'deposits'
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy='merge'
