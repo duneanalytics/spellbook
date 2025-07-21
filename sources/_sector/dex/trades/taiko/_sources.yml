@@ -5,15 +5,13 @@ sources:
     tables:
       - name: V3Pool_evt_Swap
       - name: V3Factory_evt_PoolCreated
-  - name: unagi_v2_taiko
+  - name: unagi_taiko
     tables:
-      - name: UniswapV2Pair_evt_Swap
-      - name: UniswapV2Factory_evt_PairCreated
-  - name: unagi_v3_taiko
+      - name: v2pool_evt_swap
+      - name: v2factory_evt_paircreated
+      - name: v3pool_evt_swap
+      - name: v3factory_evt_poolcreated
+  - name: izumi_multichain
     tables:
-      - name: UniswapV3Pool_evt_Swap
-      - name: UniswapV3Factory_evt_PoolCreated
-  - name: izumi_taiko
-    tables:
-      - name: iZiSwapPool_evt_Swap
-      - name: iZiSwapFactory_evt_NewPool 
+      - name: iziswappool_evt_swap
+      - name: iziswapfactory_call_newpool

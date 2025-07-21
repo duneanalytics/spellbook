@@ -57,7 +57,7 @@ models:
             - tx_hash
             - evt_index
 
-  - name: izumi_taiko_base_trades
+  - name: izumi_multichain_base_trades
     meta:
       blockchain: taiko
       sector: dex

@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'izumi_taiko',
+        schema = 'izumi_multichain',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -15,7 +15,7 @@
         blockchain = 'taiko',
         project = 'izumi',
         version = '1',
-        Pair_evt_Swap = source('izumi_taiko', 'iZiSwapPool_evt_Swap'),
-        Factory_evt_PoolCreated = source('izumi_taiko', 'iZiSwapFactory_evt_NewPool')
+        Pair_evt_Swap = source('izumi_multichain', 'iziswappool_evt_swap'),
+        Factory_evt_PoolCreated = source('izumi_multichain', 'iziswapfactory_call_newpool')
     )
 }}

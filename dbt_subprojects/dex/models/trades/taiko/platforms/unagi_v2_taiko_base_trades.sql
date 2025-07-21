@@ -15,7 +15,7 @@
         blockchain = 'taiko',
         project = 'unagi',
         version = '2',
-        Pair_evt_Swap = source('unagi_v2_taiko', 'UniswapV2Pair_evt_Swap'),
-        Factory_evt_PairCreated = source('unagi_v2_taiko', 'UniswapV2Factory_evt_PairCreated')
+        Pair_evt_Swap = source('unagi_taiko', 'v2pool_evt_swap'),
+        Factory_evt_PairCreated = source('unagi_taiko', 'v2factory_evt_paircreated')
     )
 }}

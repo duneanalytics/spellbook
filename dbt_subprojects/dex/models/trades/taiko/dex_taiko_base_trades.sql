@@ -9,7 +9,7 @@
     ref('oku_v3_taiko_base_trades')
     , ref('unagi_v2_taiko_base_trades')
     , ref('unagi_v3_taiko_base_trades')
-    , ref('izumi_taiko_base_trades')
+    , ref('izumi_multichain_base_trades')
 ] %}
 
 WITH base_union AS (
