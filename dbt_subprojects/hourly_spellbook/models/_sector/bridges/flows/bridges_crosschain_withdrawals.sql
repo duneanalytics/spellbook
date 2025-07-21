@@ -20,12 +20,13 @@ SELECT *
         , block_time
         , block_number
         , withdrawal_amount_raw
+        , withdrawal_amount
         , CAST(sender AS VARCHAR) AS sender
         , CAST(recipient AS VARCHAR) AS recipient
         , withdrawal_token_standard
         , CAST(withdrawal_token_address AS VARCHAR) AS withdrawal_token_address
         , CAST(tx_from AS VARCHAR) AS tx_from
-        , tx_hash
+        , CAST(tx_hash AS VARCHAR) AS tx_hash
         , evt_index
         , CAST(contract_address AS VARCHAR) AS contract_address
         , bridge_transfer_id

@@ -35,8 +35,8 @@ SELECT *
         , CAST(deposit_token_address AS VARCHAR) AS deposit_token_address
         , CAST(withdrawal_token_address AS VARCHAR) AS withdrawal_token_address
         , CAST(deposit_tx_from AS VARCHAR) AS deposit_tx_from
-        , deposit_tx_hash
-        , withdraw_tx_hash
+        , CAST(deposit_tx_hash AS VARCHAR) AS deposit_tx_hash
+        , CAST(withdraw_tx_hash AS VARCHAR) AS withdraw_tx_hash
         , bridge_transfer_id
         FROM {{ ref('bridges_'~vm~'_flows') }}
         {% if not loop.last %}

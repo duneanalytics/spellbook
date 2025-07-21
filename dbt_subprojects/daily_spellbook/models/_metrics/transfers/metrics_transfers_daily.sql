@@ -46,6 +46,7 @@
     , 'tron'
     , 'unichain'
     , 'worldchain'
+    , 'xrpl'
     , 'zkevm'
     , 'zksync'
     , 'zora'
