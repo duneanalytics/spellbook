@@ -40,3 +40,17 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
+  - name: izumi_finance_taiko_base_trades
+    meta:
+      blockchain: taiko
+      sector: dex
+      project: izumi
+      contributors: krishhh
+    config:
+      tags: ['taiko', 'dex', 'trades', 'izumi']
+    description: 'Izumi DEX trades on Taiko'
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index

@@ -8,6 +8,7 @@
 {% set base_models = [
     ref('oku_v3_taiko_base_trades')
     , ref('unagi_v3_taiko_base_trades')
+    , ref('izumi_finance_taiko_base_trades')
 ] %}
 
 WITH base_union AS (
