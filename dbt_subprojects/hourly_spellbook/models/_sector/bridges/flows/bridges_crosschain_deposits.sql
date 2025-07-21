@@ -1,6 +1,6 @@
 {{ config(
     schema = 'bridges_crosschain'
-    , alias = 'initiated'
+    , alias = 'deposits'
     , materialized = 'view'
 )
 }}
