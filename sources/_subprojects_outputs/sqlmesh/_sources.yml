@@ -203,3 +203,6 @@ sources:
   - name: solana_utils
     tables:
       - name: token_address_mapping
+  - name: token_accounts_solana
+    tables:
+      - name: state_history
