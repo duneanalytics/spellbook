@@ -11,5 +11,5 @@
 
 {{addresses_events_first_activity(
     blockchain='katana',
-    native_symbol = 'katana'
+    native_symbol = 'ETH'
 )}}
