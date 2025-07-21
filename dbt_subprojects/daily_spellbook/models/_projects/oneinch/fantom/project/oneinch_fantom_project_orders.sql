@@ -16,7 +16,7 @@
 }}
 
 -- depends_on: {{ ref('oneinch_' + blockchain + '_project_orders_raw_logs') }}
--- depends_on: {{ ref('oneinch_' + blockchain + '_project_orders_raw_traces') }}
+-- depends_on: {{ ref('oneinch_' + blockchain + '_project_orders_raw_traces') }} 
 
 
 {{
