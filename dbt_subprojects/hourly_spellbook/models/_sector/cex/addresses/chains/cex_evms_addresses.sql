@@ -650,6 +650,7 @@ FROM (VALUES
     , (0x00000000004e3d5628234f18b977041e5242651f, 'OKX', 'OKX 206', 'hildobby', date '2025-07-08')
     , (0x0003b5aa5e30e97fcc596bb5d0f3a75255e08d4e, 'OKX', 'OKX 207', 'hildobby', date '2025-07-08')
     , (0x07b51adee570fcf3a21a864cba4d90d372f2fb94, 'OKX', 'OKX 208', 'hildobby', date '2025-07-09')
+    , (0x0f2c4650642ba2381836c7d215da3bdf0e0b36aa, 'OKX', 'OKX 209', 'hildobby', date '2025-07-18')
     , (0x2ce910fbba65b454bbaf6a18c952a70f3bcd8299, 'OKX', 'OKX Internal 1', 'hildobby', date '2025-05-02')
     , (0x3b3ae790df4f312e745d270119c6052904fb6790, 'OKX', 'OKX DEX Aggregation Router', 'hildobby', date '2023-08-31')
     , (0xc5a93444cc4da6efb9e6fc6e5d3cb55a53b52396, 'OKX', 'OKX Gas Supplier 1', 'hildobby', date '2023-08-31')
