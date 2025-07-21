@@ -14,4 +14,4 @@ sources:
   - name: izumi_multichain
     tables:
       - name: iziswappool_evt_swap
-      - name: iziswapfactory_call_newpool
+      - name: iziswapfactory_evt_newpool
