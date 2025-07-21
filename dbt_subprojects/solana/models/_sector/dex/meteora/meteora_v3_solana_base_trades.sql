@@ -75,10 +75,10 @@ select
 , sd.trade_source
 , cast(evt.token_out_amount_raw as uint256) as token_bought_amount_raw
 , cast(evt.token_in_amount_raw as uint256) as token_sold_amount_raw
-, evt.total_fees_raw
+-- , evt.total_fees_raw
 , case when evt.trade_direction = 0 then sd.token_a else sd.token_b end as token_sold_mint_address
 , case when evt.trade_direction = 1 then sd.token_a else sd.token_b  end as token_bought_mint_address
-, sd.token_b as token_fee_mint_address
+-- , sd.token_b as token_fee_mint_address
 , case when evt.trade_direction = 0 then sd.token_a_vault else sd.token_b_vault end as token_sold_vault
 , case when evt.trade_direction = 1 then sd.token_a_vault else sd.token_b_vault  end as token_bought_vault
 , evt.project_program_id
@@ -88,7 +88,6 @@ select
 , sd.outer_instruction_index
 , sd.inner_instruction_index
 , sd.tx_index
-, evt.rn
 from swap_calls sd 
 left join swap_event_details evt 
 on ( 
