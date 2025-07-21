@@ -26,22 +26,6 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-
-  - name: unagi_v2_taiko_base_trades
-    meta:
-      blockchain: taiko
-      sector: dex
-      project: unagi
-      contributors: krishhh
-    config:
-      tags: ['taiko', 'dex', 'trades', 'unagi', 'v2']
-    description: 'Unagi V2 DEX trades on Taiko'
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-
   - name: unagi_v3_taiko_base_trades
     meta:
       blockchain: taiko
@@ -51,21 +35,6 @@ models:
     config:
       tags: ['taiko', 'dex', 'trades', 'unagi', 'v3']
     description: 'Unagi V3 DEX trades on Taiko'
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-
-  - name: izumi_multichain_base_trades
-    meta:
-      blockchain: taiko
-      sector: dex
-      project: izumi
-      contributors: krishhh
-    config:
-      tags: ['taiko', 'dex', 'trades', 'izumi']
-    description: 'Izumi DEX trades on Taiko'
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
