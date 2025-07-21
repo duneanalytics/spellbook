@@ -12,8 +12,25 @@
 
 WITH base_swaps AS (
   SELECT
-    evt_tx_hash AS tx_hash,
+    -- All raw columns from the source table
+    contract_address,
+    evt_tx_hash,
+    evt_tx_from,
+    evt_tx_to,
+    evt_tx_index,
     evt_index,
+    evt_block_time,
+    evt_block_number,
+    evt_block_date,
+    amountX,
+    amountY,
+    currentPoint,
+    fee,
+    sellXEarnY,
+    tokenX,
+    tokenY,
+    -- Standardized/derived columns for downstream compatibility
+    evt_tx_hash AS tx_hash,
     evt_block_number AS block_number,
     evt_block_date AS block_date,
     CASE WHEN sellXEarnY THEN tokenY ELSE tokenX END AS token_bought_address,
