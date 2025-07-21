@@ -8,7 +8,7 @@
 }}
 
 {% set bridges_platforms = [
-    'bridges_ethereum_cctp_v1_withdrawals'
+    'bridges_' + blockchain + '_cctp_v1_withdrawals'
 ] %}
 
 SELECT *
