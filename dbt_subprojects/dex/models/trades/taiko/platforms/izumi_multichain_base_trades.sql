@@ -16,6 +16,6 @@
         project = 'izumi',
         version = '1',
         Pair_evt_Swap = source('izumi_multichain', 'iziswappool_evt_swap'),
-        Factory_evt_PoolCreated = source('izumi_multichain', 'iziswapfactory_call_newpool')
+        Factory_evt_PoolCreated = source('izumi_multichain', 'iziswapfactory_evt_newpool')
     )
 }}
