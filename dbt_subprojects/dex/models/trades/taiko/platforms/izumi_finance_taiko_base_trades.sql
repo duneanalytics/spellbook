@@ -14,7 +14,7 @@
         blockchain = 'taiko',
         project = 'izumi',
         version = '1',
-        Pair_evt_Swap = source('izumi_finance_taiko', 'iziswappool_evt_swap'),
+        Pair_evt_Swap = ref('stg_izumi_finance_taiko_swaps'),
         Factory_evt_PoolCreated = source('izumi_finance_multichain', 'iziswapfactory_evt_newpool'),
         taker_column_name = 'evt_tx_to'
     )
