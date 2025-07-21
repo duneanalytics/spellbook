@@ -14,11 +14,11 @@ class ManifestEditor:
         compiled_code = node.get('compiled_code', '')
 
         if raw_code.count('\n') > max_lines:
-            node['raw_code'] = ''.join(
+            node['raw_code'] = '\n'.join(
                 raw_code.split('\n')[0:max_lines])
 
         if compiled_code.count('\n') > max_lines:
-            node['compiled_code'] = ''.join(
+            node['compiled_code'] = '\n'.join(
                 compiled_code.split('\n')[0:max_lines])
 
         return node
