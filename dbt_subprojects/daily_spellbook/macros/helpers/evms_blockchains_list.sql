@@ -19,7 +19,7 @@
         "fantom",
         "flare",
         "gnosis",
-        "hemi"
+        "hemi",
         "ink",
         "kaia",
         "katana",
