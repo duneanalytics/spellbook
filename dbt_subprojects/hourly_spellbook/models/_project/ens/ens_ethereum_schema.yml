@@ -63,46 +63,6 @@ models:
         name: evt_block_number
         description: "Block number"
 
-  - name: ens_view_renewals
-    meta:
-      blockchain: ethereum
-      project: ethereum_name_service
-      contributors: mewwts, antonio-mendes
-    config:
-      tags: ['ethereum','ens','ethereum_name_service','ethereumnameservice']
-    description: >
-        View ENS renewals
-    columns:
-      - *name
-      - *label
-      - *cost
-      - *expires
-      - *contract_address
-      - *evt_tx_hash
-      - *evt_index
-      - *evt_block_time
-      - *evt_block_number
-
-  - name: ens_view_registries
-    meta:
-      blockchain: ethereum
-      project: ethereum_name_service
-      contributors: mewwts, antonio-mendes
-    config:
-      tags: ['ethereum','ens','ethereum_name_service','ethereumnameservice']
-    description: >
-        View ENS registry
-    columns:
-      - *label
-      - name: node
-        description: "A cryptographic hash uniquely identifying a name"
-      - name: min_evt_block_time
-        description: "Block time UTC of first registry for node"
-      - name: max_evt_block_time
-        description: "Block time UTC of latest registry for node"
-      - name: count
-        description: "Total number of node registries"
-
   - name: ens_reverse_latest
     meta:
       blockchain: ethereum

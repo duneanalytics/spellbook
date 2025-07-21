@@ -11,9 +11,8 @@
   )
 }}
 
-{% set solana_dexes = [
-
-    ref('raydium_v3_base_trades')
+{% set solana_dexes = [ 
+   ref('raydium_v3_base_trades')
   , ref('raydium_v4_base_trades')
   , ref('raydium_v5_base_trades')
   , ref('raydium_launchlab_v1_base_trades')
@@ -28,6 +27,7 @@
   , ref('pumpdotfun_solana_base_trades')
   , ref('pumpswap_solana_base_trades') 
   , ref('stabble_solana_base_trades')
+  , ref('pancakeswap_v3_solana_base_trades') 
 ] %}
 
 /*
@@ -72,4 +72,4 @@ FROM
 {% if not loop.last %}
 UNION ALL
 {% endif %}
-{% endfor %} 
+{% endfor %}

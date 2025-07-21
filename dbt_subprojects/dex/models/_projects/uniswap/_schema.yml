@@ -42,35 +42,6 @@ models:
       - name: contract_address
         description: "Contract address used to create the pool"
 
-  - name: uniswap_liquidity_manager_pools
-    meta:
-      blockchain: optimism
-      project: uniswap
-      contributors: msilb7
-    config:
-      tags: ['optimism','uniswap','pools','liquidity managers']
-    description: >
-        A table containing Uniswap mappings for known liquidity manager pools created.
-    columns:
-      - name: blockchain
-        description: 'Blockchain of the LP Token'
-      - name: dex_project_name
-        description: "DEX Project Name - This will be used for overall DEX LM incentives models"
-      - name: dex_project_version
-        description: "DEX Project Version - This will be used for overall DEX LM incentives models"
-      - name: project
-        description: 'Project Name of the LP Token'
-      - name: contract_address
-        description: 'Manager LP Token contract address'
-      - name: pool_contract
-        description: "Uniswap liquidity pool contract address"
-      - name: fee
-        description:  "Swap fee of a Uniswap liquidity pool. Divide by 1e4 or power(10,4) to get the fee percentage"
-      - name: token0
-        description:  "Token0 contract address"
-      - name: token1
-        description:  "Token1 contract address"
-
   - name: uniswap_arbitrum_pools
     meta:
       blockchain: arbitrum
@@ -306,3 +277,184 @@ models:
         description: "Block number of pool creation"
       - name: contract_address
         description: "Contract address used to create the pool"
+
+  - name: uniswap_liquidity_events
+    meta:
+      blockchain: ethereum,arbitrum,base,optimism,polygon,zora,blast,bnb,avalanche_c,worldchain,ink,unichain
+      sector: dex
+      short_description: The `uniswap.liquidity_events` table captures liquidity data on Uniswap. This table contains a detailed breakdown of liquidity pmodified per transaction. 
+      contributors: irishLatte19, Henrystats
+    config:
+      tags: [ 'dex', 'liquidity_events']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - event_type
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - &block_month
+        name: block_month
+        description: "UTC event block month"
+      - &block_date
+        name: block_date
+        description: "UTC event block date"
+      - &block_time
+        name: block_time
+        description: "UTC event block time"
+      - &block_number
+        name: block_number
+        description: "Block number of the block in which the trade occurred"
+      - &id
+        name: id
+        description: "Pool Address"
+      - &tx_hash
+        name: tx_hash
+        description: "The hash of the transaction"
+      - &evt_index
+        name: evt_index
+        description: "Index of the event in the transaction. Can be used to uniquely identify the order of events within a transaction"
+      - &event_type
+        name: event_type
+        description: "Transaction event type"   
+      - *token0
+      - *token1
+      - &token0_symbol
+        name: token0_symbol
+        description: "Token 0 Symbol"
+      - &token1_symbol
+        name: token1_symbol
+        description: "Token 1 Symbol"
+      - &amount0_raw
+        name: amount0_raw
+        description: "Liquidity amount of token0 in units"
+      - &amount1_raw
+        name: amount1_raw
+        description: "Liquidity amount of token1 in units"
+      - &amount0
+        name: amount0
+        description: "Liquidity amount of token0 in units (decimal normalized)"
+      - &amount1
+        name: amount1
+        description: "Liquidity amount of token1 in units(decimal normalized)"
+      - &amount0_usd
+        name: amount0_usd
+        description: "Liquidity amount of token0 in USD"
+      - &amount1_usd
+        name: amount1_usd
+        description: "Liquidity amount of token1 in USD"       
+
+  - name: uniswap_base_liquidity_events
+    meta:
+      blockchain: ethereum,arbitrum,base,optimism,polygon,zora,blast,bnb,avalanche_c,worldchain,ink,unichain
+      sector: dex
+      contributors: irishLatte19, Henrystats
+    config:
+      tags: [ 'dex' ]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - event_type
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_month
+      - *block_date
+      - *block_time
+      - *block_number
+      - *id
+      - *tx_hash
+      - *evt_index
+      - *event_type
+      - *token0
+      - *token1
+      - *amount0_raw
+      - *amount1_raw
+
+  - name: uniswap_daily_agg_liquidity_events
+    meta:
+      blockchain: ethereum,arbitrum,base,optimism,polygon,zora,blast,bnb,avalanche_c,worldchain,ink,unichain
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: [ 'dex' ]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - project
+            - version
+            - id
+            - block_date
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_month
+      - *block_date
+      - *id
+      - *token0
+      - *token1
+      - *token0_symbol
+      - *token1_symbol
+      - *amount0_raw
+      - *amount1_raw
+      - *amount0
+      - *amount1
+
+  - name: uniswap_tvl_daily
+    meta:
+      blockchain: ethereum,arbitrum,base,optimism,polygon,zora,blast,bnb,avalanche_c,worldchain,ink,unichain
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: [ 'dex' ]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - project
+            - version
+            - id
+            - block_date
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_month
+      - *block_date
+      - *id
+      - *token0
+      - *token1
+      - *token0_symbol
+      - *token1_symbol
+      - &token0_balance_raw
+        name: token0_balance_raw
+        description: "Liquidity balance of token0 in units"
+      - &token1_balance_raw
+        name: token1_balance_raw
+        description: "Liquidity amount of token1 in units"
+      - &token0_balance
+        name: token0_balance
+        description: "Liquidity balance of token0 in units (decimal normalized)"
+      - &token1_balance
+        name: token1_balance
+        description: "Liquidity balance of token1 in units (decimal normalized)"
+      - &token0_balance_usd
+        name: token0_balance_usd
+        description: "Liquidity balance of token0 in USD"
+      - &token1_balance_usd
+        name: token1_balance_usd
+        description: "Liquidity balance of token1 in USD"
