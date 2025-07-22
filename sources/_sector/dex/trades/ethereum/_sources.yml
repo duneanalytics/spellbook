@@ -140,3 +140,6 @@ sources:
   - name: pancakeswap_ethereum
     tables:
       - name: ExclusiveDutchOrderReactor_evt_Fill
+  - name: native_ethereum
+    tables:
+      - name: NativeRfqPool_evt_RfqTrade
