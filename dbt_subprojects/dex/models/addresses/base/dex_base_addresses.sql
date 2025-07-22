@@ -24,6 +24,7 @@ FROM (VALUES
       ('base', 0xf8b959870634e1bb1926f8790e5ec3592d44a82a, 'DackieSwap', 'Router'),
       ('base', 0x19ceead7105607cd444f5ad10dd51356436095a1, 'Odos', 'Router'),
       ('base', 0x3a23f943181408eac424116af7b7790c94cb97a5, 'Socket', 'Aggregator of Aggregators'),
-      ('base', 0x00000000009726632680fb29d3f7a9734e3010e2, 'Rainbow', 'Aggregator of Aggregators')
+      ('base', 0x00000000009726632680fb29d3f7a9734e3010e2, 'Rainbow', 'Aggregator of Aggregators'),
+      ('base', 0x4f37a9d177470499a2dd084621020b023fcffc1f, 'Curve', 'Router')
 
     ) AS x (blockchain, address, dex_name, distinct_name)
