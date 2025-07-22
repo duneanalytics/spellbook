@@ -14,7 +14,7 @@ WITH base_pool AS (
   SELECT
       chain
     , contract_address
-    , evt_tx_hash
+    , evt_tx_hash as tx_hash
     , evt_tx_from
     , evt_tx_to
     , evt_tx_index
