@@ -138,4 +138,4 @@ sources:
       - name: ThugswapFactory_evt_PairCreated
   - name: native_bnb
     tables:
-      - name: NativeRfqPool_evt_RfqTrade
+      - name: NativeRFQPool_evt_RFQTrade

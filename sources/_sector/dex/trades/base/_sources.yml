@@ -219,4 +219,4 @@ sources:
       - name: fluiddexfactory_call_deploydex
   - name: native_base
     tables:
-      - name: NativeRfqPool_evt_RfqTrade
+      - name: NativeRFQPool_evt_RFQTrade

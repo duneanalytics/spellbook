@@ -142,4 +142,4 @@ sources:
       - name: ExclusiveDutchOrderReactor_evt_Fill
   - name: native_ethereum
     tables:
-      - name: NativeRfqPool_evt_RfqTrade
+      - name: NativeRFQPool_evt_RFQTrade

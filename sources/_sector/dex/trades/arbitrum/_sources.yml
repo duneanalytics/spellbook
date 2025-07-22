@@ -189,4 +189,4 @@ sources:
       - name: fluiddexfactory_call_deploydex
   - name: native_arbitrum
     tables:
-      - name: NativeRfqPool_evt_RfqTrade
+      - name: NativeRFQPool_evt_RFQTrade
