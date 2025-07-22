@@ -1,6 +1,6 @@
 {{ config(
     schema = 'tokens_solana',
-    alias = 'sol_transfers',
+    alias = 'sol_transfers_dbt',
     materialized = 'view',
     post_hook='{{ expose_spells(\'["solana"]\', "sector", "tokens", \'["0xBoxer"]\') }}'
 ) }}
