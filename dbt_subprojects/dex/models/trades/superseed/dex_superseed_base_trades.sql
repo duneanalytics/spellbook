@@ -40,3 +40,11 @@ WITH base_union AS (
         {% endfor %}
     )
 )
+
+{{
+    add_tx_columns(
+        model_cte = 'base_union'
+        , blockchain = 'superseed'
+        , columns = ['from', 'to', 'index']
+    )
+}}
