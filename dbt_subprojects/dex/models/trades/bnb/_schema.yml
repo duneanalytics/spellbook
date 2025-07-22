@@ -627,5 +627,4 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('native_bnb_base_trades_seed')
           filter:
-            version:
-              - 1
+            version: 1

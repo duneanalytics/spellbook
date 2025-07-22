@@ -1153,6 +1153,7 @@ models:
           seed_file: ref('fluid_base_base_trades_seed')
           filter:
             version: 1
+
   - name: native_base_base_trades
     meta:
       blockchain: base
@@ -1170,5 +1171,4 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('native_base_base_trades_seed')
           filter:
-            version:
-              - 1
+            version: 1
