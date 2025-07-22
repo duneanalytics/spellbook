@@ -19,6 +19,7 @@ WITH base_swaps AS (
     , evt_tx_index
     , evt_index
     , evt_block_number
+    , evt_block_time
     , amountX
     , amountY
     , currentPoint
