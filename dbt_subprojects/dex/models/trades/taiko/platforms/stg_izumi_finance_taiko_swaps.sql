@@ -18,9 +18,7 @@ WITH base_swaps AS (
     , evt_tx_to
     , evt_tx_index
     , evt_index
-    , evt_block_time
     , evt_block_number
-    , evt_block_date
     , amountX
     , amountY
     , currentPoint
@@ -32,6 +30,7 @@ WITH base_swaps AS (
     , evt_tx_hash AS tx_hash
     , evt_block_number AS block_number
     , evt_block_date AS block_date
+    , evt_block_time AS block_time
     , amountX AS amount0
     , amountY AS amount1
     , tokenX AS token0

@@ -21,7 +21,7 @@ WITH base_pool AS (
     , evt_index
     , evt_block_time
     , evt_block_number
-    , evt_block_date
+    , evt_block_time AS block_time
     , fee
     , pointDelta
     , pool
