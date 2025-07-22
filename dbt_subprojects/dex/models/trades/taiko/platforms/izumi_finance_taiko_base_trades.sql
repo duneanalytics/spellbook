@@ -52,7 +52,7 @@ SELECT
     CASE WHEN swaps.sellXEarnY THEN swaps.amountY ELSE swaps.amountX END AS token_bought_amount_raw,
     CASE WHEN swaps.sellXEarnY THEN swaps.amountX ELSE swaps.amountY END AS token_sold_amount_raw,
     swaps.taker,
-    NULL AS maker,
+    CAST(NULL AS VARBINARY) AS maker,
     swaps.contract_address AS project_contract_address,
     swaps.tx_hash,
     swaps.evt_index,
