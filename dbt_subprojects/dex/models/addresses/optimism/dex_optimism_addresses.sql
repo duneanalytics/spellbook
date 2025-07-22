@@ -36,6 +36,7 @@ FROM (VALUES
       ('optimism', 0x1328ff5ac67a48c4a0a4339ff07fedf4f2a76387, 'OPX Finance', 'Router'),
       ('optimism', 0x7af14adc8aea70f063c7ea3b2c1ad0d7a59c4bff, 'Rubicon', 'Router'),
       ('optimism', 0xfd9d2827ad469b72b69329daa325ba7afbdb3c98, 'DODO', 'V2Proxy02'),
-      ('optimism', 0x716fcc67dca500a91b4a28c9255262c398d8f971, 'DODO', 'FeeRouteProxy')
-      
+      ('optimism', 0x716fcc67dca500a91b4a28c9255262c398d8f971, 'DODO', 'FeeRouteProxy'),
+      ('optimism', 0x0dcded3545d565ba3b19e683431381007245d983, 'Curve', 'Router')
+
     ) AS x (blockchain, address, dex_name, distinct_name)
