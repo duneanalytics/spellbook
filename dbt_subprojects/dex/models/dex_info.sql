@@ -199,7 +199,7 @@ FROM (VALUES
     , ('sparkdex', 'SparkDEX', 'Direct', 'SparkDexAI')
     , ('blazeswap', 'BlazeSwap', 'Direct', 'blazeswapdex')
     , ('unagi', 'Unagi', 'Direct', 'UnagiProtocol')
-    , ('izumi', 'iZUMi Finance', 'Direct', 'izumi_Finance')
+    , ('izumi_finance', 'iZUMi Finance', 'Direct', 'izumi_Finance')
     , ('enosys', 'Enosys', 'Direct', 'enosys_global')
     , ('gravity_finance', 'GravityFinance', 'Direct', 'Gravity_Finance')
     , ('fluid', 'Fluid DEX', 'Direct', '0xfluid')
