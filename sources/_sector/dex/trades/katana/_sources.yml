@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: sushiswap_katana
+    tables:
+      - name: v3pool_evt_swap
+      - name: v3factory_evt_poolcreated
+      - name: v2pair_evt_swap
+      - name: v2factory_evt_paircreated
