@@ -44,6 +44,7 @@ FROM (VALUES
      ('arbitrum', 0xba12222222228d8ba445958a75a0704d566bf2c8, 'Balancer', 'Vault'),
      ('arbitrum', 0x8cfe327cec66d1c090dd72bd0ff11d690c33a2eb, 'PancakeSwap', 'Router v2'),
      ('arbitrum', 0xe708aa9e887980750c040a6a2cb901c37aa34f3b, 'Chronos', 'Router'),
-     ('arbitrum', 0x16e71B13fE6079B4312063F7E81F76d165Ad32Ad, 'Zyberswap', 'Router')
-            
+     ('arbitrum', 0x16e71B13fE6079B4312063F7E81F76d165Ad32Ad, 'Zyberswap', 'Router'),
+     ('arbitrum', 0x2191718CD32d02B8E60BAdFFeA33E4B5DD9A0A0D, 'Curve', 'Router')
+
     ) AS x (blockchain, address, dex_name, distinct_name)
