@@ -12,7 +12,12 @@
 }}
 
 {% set solana_dexes = [ 
-  ref('meteora_v4_solana_base_trades')
+      ref('meteora_v2_solana_base_trades')
+      ,ref('meteora_v4_solana_base_trades')
+] %}
+
+{% set solana_dexes_with_fees = [ 
+      ref('meteora_v4_solana_base_trades')
 ] %}
 
 /*
@@ -30,6 +35,11 @@ SELECT
       , trade_source
       , token_bought_amount_raw
       , token_sold_amount_raw
+      {% if dex in solana_dexes_with_fees %}
+      , total_fees_amount_raw       
+      {% else %}
+      , CAST(NULL AS BIGINT) as total_fees_amount_raw
+      {% endif %}
       {% if dex == ref('phoenix_v1_base_trades') %}
       , token_bought_decimal_project_specific
       , token_sold_decimal_project_specific
@@ -40,6 +50,11 @@ SELECT
       , fee_tier
       , token_bought_mint_address
       , token_sold_mint_address
+      {% if dex in solana_dexes_with_fees %}
+      , token_fee_mint_address
+      {% else %}
+      , CAST(NULL AS VARCHAR) as token_fee_mint_address
+      {% endif %}
       , token_bought_vault
       , token_sold_vault
       , project_program_id

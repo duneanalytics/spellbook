@@ -46,7 +46,7 @@ evt_block_time as block_time
 , trade_direction
 , cast(json_extract(swap_result, '$.SwapResult.actual_input_amount') as double) as token_in_amount_raw
 , cast(json_extract(swap_result, '$.SwapResult.output_amount') as double) as token_out_amount_raw
-, cast(json_extract(swap_result, '$.SwapResult.trading_fee') as  double) + cast(json_extract(swap_result, '$.SwapResult.protocol_fee') as double) + cast(json_extract(swap_result, '$.SwapResult.referral_fee') as double) as total_fees_raw 
+, cast(json_extract(swap_result, '$.SwapResult.trading_fee') as  double) + cast(json_extract(swap_result, '$.SwapResult.protocol_fee') as double) + cast(json_extract(swap_result, '$.SwapResult.referral_fee') as double) as total_fees_amount_raw 
 , pool as project_program_id
 , evt_tx_id  as tx_id
 , evt_outer_instruction_index as outer_instruction_index
@@ -62,7 +62,7 @@ and evt_block_time >= TIMESTAMP '{{project_start_date}}'
 {% endif %}
 
 ),
-temp as (
+swaps_details as (
 select 
   'solana' as blockchain
 , 'meteora' as project
@@ -74,10 +74,10 @@ select
 , cast(evt.token_out_amount_raw as uint256) as token_bought_amount_raw
 , cast(evt.token_in_amount_raw as uint256) as token_sold_amount_raw
 , cast (null as double) as fee_tier
--- , evt.total_fees_raw
+, evt.total_fees_amount_raw
 , case when evt.trade_direction =0 then sd.token_a else sd.token_b end as token_sold_mint_address
 , case when evt.trade_direction =1 then sd.token_a else sd.token_b  end as token_bought_mint_address
--- , sd.token_b as token_fee_mint_address
+, sd.token_b as token_fee_mint_address
 , case when evt.trade_direction =0 then sd.token_a_vault else sd.token_b_vault end as token_sold_vault
 , case when evt.trade_direction =1 then sd.token_a_vault else sd.token_b_vault  end as token_bought_vault
 , evt.project_program_id
@@ -96,4 +96,4 @@ on (
     and sd.rn=evt.rn
 )
 )
-select * from temp 
+select * from swaps_details 

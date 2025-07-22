@@ -14,6 +14,7 @@
                                     \'["ilemi","0xRob","jeff-dude","0xBoxer","krishhh"]\') }}')
 }}
 
+
 with base_trades as (
     SELECT
         *
@@ -34,14 +35,17 @@ SELECT bt.blockchain
       , bt.trade_source
       , token_bought.symbol as token_bought_symbol
       , token_sold.symbol as token_sold_symbol
+      , token_fee.symbol as token_fee_symbol
       , case when lower(token_bought.symbol) > lower(token_sold.symbol)
             then concat(token_bought.symbol, '-', token_sold.symbol)
             else concat(token_sold.symbol, '-', token_bought.symbol)
         end as token_pair
       , bt.token_bought_amount_raw / pow(10, coalesce(bt.token_bought_decimal_project_specific, token_bought.decimals)) as token_bought_amount
       , bt.token_sold_amount_raw / pow(10, coalesce(bt.token_sold_decimal_project_specific, token_sold.decimals)) as token_sold_amount
+      , bt.total_fees_amount_raw / pow(10,  token_fee.decimals) as total_fees_amount
       , bt.token_bought_amount_raw
       , bt.token_sold_amount_raw
+      , bt.total_fees_amount_raw
       , COALESCE(
             -- if bought token is trusted, prefer that price, else default to sold token then bought token.
             case when tt_bought.contract_address is not null then
@@ -51,16 +55,19 @@ SELECT bt.blockchain
                , bt.token_bought_amount_raw / pow(10, coalesce(bt.token_bought_decimal_project_specific, token_bought.decimals)) * p_bought.price)
             as amount_usd
       , bt.fee_tier
-      , bt.fee_tier * COALESCE(
+      , coalesce(bt.fee_tier * COALESCE(
             -- if bought token is trusted, prefer that price, else default to sold token then bought token.
             case when tt_bought.contract_address is not null then
                 bt.token_bought_amount_raw / pow(10, coalesce(bt.token_bought_decimal_project_specific, token_bought.decimals)) * p_bought.price
                 else null end
             , bt.token_sold_amount_raw / pow(10, coalesce(bt.token_sold_decimal_project_specific, token_sold.decimals)) * p_sold.price
             , bt.token_bought_amount_raw / pow(10, coalesce(bt.token_bought_decimal_project_specific, token_bought.decimals)) * p_bought.price
-        ) as fee_usd
+        ),
+        bt.total_fees_amount_raw / pow(10,  token_fee.decimals) * p_fee.price) 
+        as fee_usd
       , bt.token_bought_mint_address
       , bt.token_sold_mint_address
+      , bt.token_fee_mint_address
       , bt.token_bought_vault
       , bt.token_sold_vault
       , bt.project_program_id
@@ -79,6 +86,9 @@ LEFT JOIN
     {{ source('tokens_solana','fungible') }} token_sold 
     ON token_sold.token_mint_address = bt.token_sold_mint_address
 LEFT JOIN 
+    {{ source('tokens_solana','fungible') }} token_fee 
+    ON token_fee.token_mint_address = bt.token_fee_mint_address
+LEFT JOIN 
     {{ source('prices', 'usd') }} p_bought
     ON p_bought.blockchain = 'solana'
     AND date_trunc('minute', bt.block_time) = p_bought.minute
@@ -93,6 +103,14 @@ LEFT JOIN
     AND bt.token_sold_mint_address = toBase58(p_sold.contract_address)
     {% if is_incremental() %}
     AND {{incremental_predicate('p_sold.minute')}}
+    {% endif %}
+LEFT JOIN 
+    {{ source('prices', 'usd') }} p_fee
+    ON p_fee.blockchain = 'solana'
+    AND date_trunc('minute', bt.block_time) = p_fee.minute
+    AND bt.token_fee_mint_address = toBase58(p_fee.contract_address)
+    {% if is_incremental() %}
+    AND {{incremental_predicate('p_fee.minute')}}
     {% endif %}
 -- if bought token is trusted, prefer that price, else default to sold token then bought token.
 LEFT JOIN 

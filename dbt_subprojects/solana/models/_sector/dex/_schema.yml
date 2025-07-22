@@ -51,6 +51,9 @@ models:
       - &token_sold_symbol
         name: token_sold_symbol
         description: "Token symbol for token sold in the trade"
+      - &token_fee_symbol
+        name: token_fee_symbol
+        description: "Token symbol for token fee in the trade"
       - &token_pair
         name: token_pair
         description: "Token symbol pair for each token involved in the trade"
@@ -66,12 +69,22 @@ models:
       - &token_sold_amount_raw
         name: token_sold_amount_raw
         description: "Raw value of the token sold at time of execution in the original currency"
+      - &total_fees_amount_raw
+        name: total_fees_amount_raw
+        description: "Raw value of the total fees at time of execution in the original currency"
       - &amount_usd
         name: amount_usd
         description: "USD value of the trade at time of execution"
         data_tests:
           - dbt_utils.accepted_range:
               max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+              severity: warn
+      - &amount_fee_usd
+        name: amount_fee_usd
+        description: "USD value of the fees paid at time of execution"
+        data_tests:
+          - dbt_utils.accepted_range:
+              max_value: 10000 # $10k is an arbitrary number, intended to flag outlier amounts early
               severity: warn
       - &fee_tier
         name: fee_tier
@@ -85,6 +98,9 @@ models:
       - &token_sold_address
         name: token_sold_address
         description: "token mint address of the token sold"
+      - &token_fee_mint_address
+        name: token_fee_mint_address
+        description: "token mint address of the token fee"
       - &token_bought_vault
         name: token_bought_vault
         description: "token associated address for the whirlpool, of the token bought"
