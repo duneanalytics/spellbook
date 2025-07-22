@@ -5433,6 +5433,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
+
   - name: native_base_base_trades_seed
     config:
       column_types:
@@ -5446,4 +5447,4 @@ seeds:
         token_sold_address: varbinary
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
-        block_date: timestame
+        block_date: timestamp
