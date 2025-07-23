@@ -87,11 +87,21 @@ get_latest_active_pools as (
         , max_by(th.evt_index, th.block_index_sum) as evt_index
         , max(block_index_sum) as block_index_sum 
         , max_by(sqrtpricex96, th.block_index_sum) as sqrtpricex96
-    from 
-    {{this}} th 
-    inner join 
-    get_active_pools ga 
-        on th.id = ga.id 
+    from (
+        select 
+            th.*,
+            be.block_index_sum as base_block_index_sum
+        from 
+        {{this}} th 
+        inner join 
+        get_active_pools ga 
+            on th.id = ga.id 
+        left join 
+        base_events be 
+            on th.id = be.id 
+            and th.block_index_sum = be.block_index_sum 
+    ) th 
+    where base_block_index_sum is null 
     group by 1
 
     union all 
