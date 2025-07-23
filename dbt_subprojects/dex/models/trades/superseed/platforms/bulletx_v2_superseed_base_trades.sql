@@ -18,25 +18,29 @@ WITH dexs AS (
         t.contract_address AS maker,
         LOWER(CAST(
             CASE 
-                WHEN amount0Out = UINT256 '0' THEN tokenB
-                ELSE tokenA
+                WHEN amount0Out > UINT256 '0' THEN 
+                    CASE WHEN f.tokenA < f.tokenB THEN f.tokenA ELSE f.tokenB END
+                ELSE 
+                    CASE WHEN f.tokenA < f.tokenB THEN f.tokenB ELSE f.tokenA END
             END AS VARCHAR
         )) AS token_bought_address,
 
         LOWER(CAST(
             CASE 
-                WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN tokenB
-                ELSE tokenA
+                WHEN amount0In > UINT256 '0' THEN 
+                    CASE WHEN f.tokenA < f.tokenB THEN f.tokenA ELSE f.tokenB END
+                ELSE 
+                    CASE WHEN f.tokenA < f.tokenB THEN f.tokenB ELSE f.tokenA END
             END AS VARCHAR
         )) AS token_sold_address,
 
         CAST(
-            CASE WHEN amount0Out = UINT256 '0' THEN amount1Out ELSE amount0Out END
+            CASE WHEN amount0Out > UINT256 '0' THEN amount0Out ELSE amount1Out END
             AS UINT256
         ) AS token_bought_amount_raw,
 
         CAST(
-            CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN amount1In ELSE amount0In END
+            CASE WHEN amount0In > UINT256 '0' THEN amount0In ELSE amount1In END
             AS UINT256
         ) AS token_sold_amount_raw,
         t.contract_address AS project_contract_address,
@@ -45,6 +49,7 @@ WITH dexs AS (
     FROM {{ source('bulletx_superseed', 'V2Pair_evt_Swap') }} t
     INNER JOIN {{ source('bulletx_superseed', 'BulletXFactory_call_createPair') }} f
         ON f.output_pair = t.contract_address
+        AND f.call_success = true
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('t.evt_block_time') }}
     {% endif %}
