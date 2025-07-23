@@ -7,7 +7,7 @@
     incremental_strategy = 'merge',
     unique_key = ['tx_hash', 'evt_index']
 ) }}
-
+-- dbt model
 {{
     saru_compatible_v2_trades(
         blockchain = 'apechain',
