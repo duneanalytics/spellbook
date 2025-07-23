@@ -9,7 +9,7 @@
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
-
+-- dbt model 
 {{
     uniswap_compatible_v2_trades(
         blockchain = 'arbitrum',
