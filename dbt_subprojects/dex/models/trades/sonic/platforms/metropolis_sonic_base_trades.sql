@@ -27,8 +27,6 @@ WITH all_swaps AS (
     SELECT contract_address, call_success, call_tx_hash, call_tx_from, call_tx_to, call_tx_index, call_trace_address, call_block_time, call_block_number, call_block_date, amountIn, amountOutMin, deadline, NULL, path, to  FROM {{ source('metropolis_sonic', 'router_call_swapexacttokensfortokenssupportingfeeontransfertokens') }}
 
 ),
-
-WITH 
 swap_events AS (
     SELECT
         contract_address,
