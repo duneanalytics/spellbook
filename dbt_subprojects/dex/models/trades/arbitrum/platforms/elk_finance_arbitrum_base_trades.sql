@@ -8,7 +8,7 @@
     unique_key = ['tx_hash', 'evt_index'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
 ) }}
-
+-- dbt model
 {{ elk_compatible_v1_trades(
     blockchain = 'arbitrum',
     project = 'elk_finance',
