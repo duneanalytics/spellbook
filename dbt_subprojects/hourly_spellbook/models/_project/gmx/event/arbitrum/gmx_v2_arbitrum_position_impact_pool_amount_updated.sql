@@ -162,16 +162,16 @@ WITH evt_data_1 AS (
         event_name,
         msg_sender,
 
-        from_hex(market) AS market,
-        TRY_CAST(next_value AS DOUBLE) / POWER(10, MD.index_token_decimals) AS next_value,
-        TRY_CAST(delta AS DOUBLE) / POWER(10, MD.index_token_decimals) AS delta
+        from_hex(EDP.market) AS market,
+        TRY_CAST(EDP.next_value AS DOUBLE) / POWER(10, MD.index_token_decimals) AS next_value,
+        TRY_CAST(EDP.delta AS DOUBLE) / POWER(10, MD.index_token_decimals) AS delta
         
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
         ON ED.tx_hash = EDP.tx_hash
         AND ED.index = EDP.index
     LEFT JOIN {{ ref('gmx_v2_arbitrum_markets_data') }} AS MD
-        ON ED.market = MD.market
+        ON EDP..market = MD.market
 )
 
 --can be removed once decoded tables are fully denormalized
