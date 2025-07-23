@@ -188,7 +188,7 @@ valued_trades as (
            -- ETH Flow orders have trader = sender of orderCreation.
            case when sender is not null then sender else trader end as trader,
            sell_token_address,
-           case when sender is not null then 'POL' else sell_token end as sell_token,
+           case when sender is not null then 'AVAX' else sell_token end as sell_token,
            buy_token_address,
            buy_token,
            case
