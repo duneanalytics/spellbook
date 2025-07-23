@@ -1,4 +1,6 @@
-{{ config(
+{{ 
+    config(
+    pre_hook = "CREATE SCHEMA IF NOT EXISTS git_dunesql_cff79ee",
     schema = 'metropolis_sonic',
     alias  = 'base_trades',
     materialized = 'incremental',
