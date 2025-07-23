@@ -37,6 +37,8 @@
 
 {% if is_incremental() %}
 
+-- force price reload
+
 with
 
 base_events as (
