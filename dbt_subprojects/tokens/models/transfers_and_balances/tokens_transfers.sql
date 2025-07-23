@@ -22,6 +22,7 @@
                                             ,"gnosis"
                                             ,"ink"
                                             ,"kaia"
+                                            ."katana"
                                             ,"linea"
                                             ,"mantle"
                                             ,"nova"
@@ -35,6 +36,8 @@
                                             ,"shape"
                                             ,"sonic"
                                             ,"sophon"
+                                            ,"superseed"
+                                            ,"taiko"
                                             ,"tron"
                                             ,"unichain"
                                             ,"viction"
@@ -71,6 +74,7 @@
     ,'gnosis'
     ,'ink'
     ,'kaia'
+    ,'katana'
     ,'linea'
     ,'mantle'
     ,'nova'
@@ -84,6 +88,8 @@
     ,'shape'
     ,'sonic'
     ,'sophon'
+    ,'superseed'
+    ,'taiko'
     ,'tron'
     ,'unichain'
     ,'viction'

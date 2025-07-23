@@ -1,282 +1,532 @@
-{% macro uniswap_compatible_v4_liquidity(
+{% macro uniswap_compatible_v4_liquidity_pools(
+    blockchain = null
+    , project = 'uniswap'
+    , version = '4'
+    , PoolManager_evt_Initialize = null
+    )
+%}
+
+    select 
+        '{{blockchain}}' as blockchain
+        , '{{project}}'  as project
+        , '{{version}}' as version
+        , contract_address
+        , evt_block_time as creation_block_time
+        , evt_block_number as creation_block_number
+        , id
+        , evt_tx_hash as tx_hash
+        , evt_index
+        , currency0 as token0
+        , currency1 as token1
+    from 
+    {{ PoolManager_evt_Initialize }}
+    {%- if is_incremental() %}
+    where {{ incremental_predicate('evt_block_time') }}
+    {%- endif %}
+
+{% endmacro %}
+
+{% macro uniswap_compatible_v4_liquidity_sqrtpricex96(
+    blockchain = null
+    , project = 'uniswap'
+    , version = '4'
+    , PoolManager_evt_Initialize = null
+    , PoolManager_evt_Swap = null 
+    )
+%}
+
+{% if is_incremental() %}
+
+with
+
+base_events as (
+    select 
+        id
+        , 'include' as check_filter
+        , evt_block_time as block_time
+        , evt_block_number as block_number
+        , evt_index
+        , evt_block_number + evt_index/1e6 as block_index_sum
+        , sqrtpricex96
+    from 
+    {{ PoolManager_evt_Initialize }}
+    where sqrtPriceX96 is not null 
+    and {{ incremental_predicate('evt_block_time') }}
+
+    union all 
+
+    select 
+        id
+        , 'include' as check_filter
+        , evt_block_time as block_time
+        , evt_block_number as block_number
+        , evt_index
+        , evt_block_number + evt_index/1e6 as block_index_sum 
+        , sqrtpricex96
+    from 
+    {{ PoolManager_evt_Swap }}
+    where sqrtPriceX96 is not null 
+    and {{ incremental_predicate('evt_block_time') }}
+),
+
+get_active_pools as ( -- get only the pools that were active on incremental run
+    select 
+       distinct id
+    from 
+    base_events 
+),
+
+get_latest_active_pools as (
+    select 
+        th.id
+        , 'exclude' as check_filter
+        , max_by(th.block_time, th.block_index_sum) as block_time
+        , max_by(th.block_number, th.block_index_sum) as block_number
+        , max_by(th.evt_index, th.block_index_sum) as evt_index
+        , max(block_index_sum) as block_index_sum 
+        , max_by(sqrtpricex96, th.block_index_sum) as sqrtpricex96
+    from 
+    {{this}} th 
+    inner join 
+    get_active_pools ga 
+        on th.id = ga.id 
+    group by 1
+
+    union all 
+
+    select 
+        id
+        , check_filter
+        , block_time
+        , block_number
+        , evt_index
+        , block_index_sum 
+        , sqrtpricex96
+    from 
+    base_events
+), 
+
+sort_table as (
+    select 
+        *
+        , lag(block_index_sum, 1, 0) over (partition by id order by block_index_sum) as previous_block_index_sum
+    from 
+    get_latest_active_pools
+)
+
+    select 
+        '{{blockchain}}' as blockchain
+        , '{{project}}'  as project
+        , '{{version}}' as version
+        , id
+        , block_time
+        , block_number
+        , evt_index 
+        , block_index_sum 
+        , previous_block_index_sum
+        , sqrtpricex96
+    from 
+    sort_table 
+    where check_filter = 'include'
+
+
+{% else %}
+
+
+
+    with 
+
+    get_events as (
+        select 
+            id
+            , evt_block_time as block_time
+            , evt_block_number as block_number
+            , evt_index 
+            , evt_block_number + evt_index/1e6 as block_index_sum 
+            , sqrtpricex96
+        from 
+        {{ PoolManager_evt_Initialize }}
+        where sqrtPriceX96 is not null 
+
+        union all 
+
+        select 
+            id
+            , evt_block_time as block_time
+            , evt_block_number as block_number
+            , evt_index 
+            , evt_block_number + evt_index/1e6 as block_index_sum
+            , sqrtpricex96 
+        from 
+        {{ PoolManager_evt_Swap }}
+        where sqrtPriceX96 is not null 
+    )
+    
+
+    select 
+        '{{blockchain}}' as blockchain
+        , '{{project}}'  as project
+        , '{{version}}' as version
+        , id
+        , block_time
+        , block_number
+        , evt_index 
+        , block_index_sum 
+        , lag(block_index_sum, 1, 0) over (partition by id order by block_index_sum) as previous_block_index_sum
+        , sqrtpricex96
+    from 
+    get_events 
+
+{% endif %}
+
+{% endmacro %}
+
+{% macro uniswap_compatible_v4_base_liquidity_events( 
     blockchain = null
     , project = 'uniswap'
     , version = '4'
     , PoolManager_evt_ModifyLiquidity = null
     , PoolManager_evt_Swap = null
-    , PoolManager_call_Swap = null
-    , PoolManager_evt_Initialize = null
-    , pair_column_name = 'id'
+    , PoolManager_call_Take = null 
+    , liquidity_pools = null
+    , liquidity_sqrtpricex96 = null
     )
 %}
 
-WITH filtered_modify_liquidity AS (
-    SELECT 
-         evt_block_time
-       , evt_block_number
-       , id
-       , evt_tx_hash
-       , evt_index
-       , salt
-       , tickLower
-       , tickUpper
-       , liquidityDelta
-    FROM {{ PoolManager_evt_ModifyLiquidity }}
-    {%- if is_incremental() %}
-    WHERE {{ incremental_predicate('evt_block_time') }}
-    {%- endif %}
-)
 
-, filtered_swaps_evt AS (
-    SELECT 
-         evt_block_time
-       , evt_block_number
-       , evt_tx_hash
-       , evt_index
-       , id
-       , sqrtPriceX96
-    FROM {{ PoolManager_evt_Swap }}
-    {%- if is_incremental() %}
-    WHERE {{ incremental_predicate('evt_block_time') }}
-    {%- endif %}
-)
+with 
 
-, filtered_swaps_func AS (
-    SELECT 
-          call_block_number
-        , call_block_time 
-        , call_tx_hash 
-        , call_trace_address
-        , "key"
-        , output_swapDelta
-    FROM {{ PoolManager_call_Swap }}
-    {%- if is_incremental() %}
-    WHERE {{ incremental_predicate('call_block_time') }}
-    {%- endif %}
-
-)
-
-, filtered_initialize AS (
-    SELECT 
-        evt_block_time,
-        {{pair_column_name}} as id,
-        currency0,
-        currency1,
-        sqrtPriceX96
-    FROM {{ PoolManager_evt_Initialize }}
-)
-
-, swap_liquidity as (
-          WITH clean_swaps AS (
-                        WITH raw AS (
-                            SELECT 
-                              call_block_number
-                            , call_block_time 
-                            , call_tx_hash 
-                            , call_trace_address
-                            , FROM_HEX(JSON_EXTRACT_SCALAR(JSON_PARSE("key"), '$.currency0')) AS currency0
-                            , FROM_HEX(JSON_EXTRACT_SCALAR(JSON_PARSE("key"), '$.currency1')) AS currency1
-                            , CAST(output_swapDelta AS VARBINARY) AS swapDelta_varbinary
-                       FROM filtered_swaps_func  
-                     )
-                     , wrangled as (
-                          SELECT *
-                            -- The top 16 bytes
-                            , CASE 
-                                WHEN BITWISE_AND(
-                                    VARBINARY_TO_BIGINT(VARBINARY_SUBSTRING(swapDelta_varbinary, 1, 1))
-                                    , FROM_BASE('80', 16) -- 0x80 as decimal 128
-                                ) = FROM_BASE('80', 16)
-                                THEN VARBINARY_TO_INT256(
-                                    VARBINARY_CONCAT(
-                                        FROM_HEX('0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF') -- 16 bytes of 0xFF
-                                        , VARBINARY_SUBSTRING(swapDelta_varbinary, 1, 16)           
-                                    )
-                                )
-                                ELSE VARBINARY_TO_INT256(
-                                    VARBINARY_CONCAT(
-                                        FROM_HEX('0x00000000000000000000000000000000') -- 16 bytes of 0x00
-                                        , VARBINARY_SUBSTRING(swapDelta_varbinary, 1, 16)
-                                    )
-                                )
-                            END AS amount0
-                
-                            -- The bottom 16 bytes
-                            , CASE 
-                                WHEN BITWISE_AND(
-                                    VARBINARY_TO_BIGINT(VARBINARY_SUBSTRING(swapDelta_varbinary, 17, 1))
-                                    , FROM_BASE('80', 16)
-                                ) = FROM_BASE('80', 16)
-                                THEN VARBINARY_TO_INT256(
-                                    VARBINARY_CONCAT(
-                                        FROM_HEX('0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF') -- 16 bytes of 0xFF
-                                        , VARBINARY_SUBSTRING(swapDelta_varbinary, 17, 16)          
-                                    )
-                                )
-                                ELSE VARBINARY_TO_INT256(
-                                    VARBINARY_CONCAT(
-                                        FROM_HEX('0x00000000000000000000000000000000') -- 16 bytes of 0x00
-                                        , VARBINARY_SUBSTRING(swapDelta_varbinary, 17, 16)
-                                    )
-                                )
-                            END AS amount1
-                            
-                            FROM raw
-                        )
-        
-                SELECT 
-                      call_block_number
-                    , call_block_time
-                    , call_tx_hash
-                    , currency0
-                    , currency1
-                    , -1 * amount0 as amount0
-                    , -1 * amount1 as amount1 
-                    ,  row_number() over(partition by call_tx_hash order by call_trace_address) as call_rn
-                FROM wrangled
-        )
-        , swap_evt as (
-            select 
-                  evt_tx_hash
-                , evt_block_time
-                , evt_index
-                , evt_block_number
-                , id
-                , sqrtPriceX96
-                , row_number() over(partition by evt_tx_hash order by evt_index) as evt_rn
-            FROM filtered_swaps_evt
-        )
-
-    SELECT 
-        e.evt_block_number
-      , e.evt_block_time
-      , e.evt_tx_hash
-      , e.evt_index
-      , e.id
-      , c.currency0 as token0
-      , c.currency1 as token1
-      , c.amount0
-      , c.amount1
-      , e.sqrtPriceX96
-    FROM clean_swaps c 
-    JOIN swap_evt e on c.call_block_number = e.evt_block_number 
-        and c.call_tx_hash = e.evt_tx_hash
-        and c.call_rn = e.evt_rn 
-)
-, get_recent_sqrtPriceX96 AS (
-    SELECT *
-    FROM (
-        SELECT 
-            ml.*
-            ,i.currency0 as token0
-            ,i.currency1 as token1
-            ,COALESCE(s.evt_block_time, i.evt_block_time) as most_recent_time
-            ,COALESCE(s.sqrtPriceX96, i.sqrtPriceX96) AS sqrtPriceX96
-            ,ROW_NUMBER() OVER (
-                PARTITION BY ml.id, ml.evt_block_time, ml.evt_index
-                ORDER BY 
-                    CASE WHEN s.sqrtPriceX96 IS NOT NULL THEN s.evt_block_time ELSE i.evt_block_time END DESC
-            ) AS rn
-        FROM filtered_modify_liquidity ml
-        LEFT JOIN swap_liquidity s 
-            ON ml.evt_block_time > s.evt_block_time AND ml.id = s.id
-        LEFT JOIN filtered_initialize i 
-            ON ml.evt_block_time >= i.evt_block_time AND i.id = ml.id
-    ) tbl
-    WHERE rn = 1
+get_pools as (
+    select 
+        blockchain
+        , id
+        , token0
+        , token1
+    from 
+    {{ liquidity_pools }}
 ),
 
-prep_for_calculations AS (
-    SELECT  
-          evt_block_time as block_time
-        , evt_block_number as block_number
-        , id 
-        , evt_tx_hash as tx_hash
-        , evt_index
-        , salt
-        , token0
-        , token1
-        , LOG(sqrtPriceX96/POWER(2, 96), 10)/LOG(1.0001, 10) as tickCurrent
-        , tickLower
-        , tickUpper
-        , SQRT(POWER(1.0001, tickLower)) as sqrtRatioL
-        , SQRT(POWER(1.0001, tickUpper)) sqrtRatioU
-        , sqrtPriceX96/ POWER(2, 96) sqrtPrice
-        , sqrtPriceX96
-        , liquidityDelta
-    FROM get_recent_sqrtPriceX96
+get_prices_tmp as (
+    select
+        blockchain
+        , id
+        , block_index_sum 
+        , previous_block_index_sum
+        , sqrtpricex96
+    from 
+    {{ liquidity_sqrtpricex96 }}
 ),
 
-base_liquidity_amounts AS (
-    SELECT
-          block_time
-        , block_number
+get_latest_prices as (
+    select 
+        blockchain
         , id 
-        , tx_hash
-        , evt_index
-        , salt
-        , token0
-        , token1
-        , CASE 
-            WHEN sqrtPrice <= sqrtRatioL THEN 
-                liquidityDelta * ((sqrtRatioU - sqrtRatioL)/(sqrtRatioL*sqrtRatioU))
-            WHEN sqrtPrice >= sqrtRatioU THEN 
-                0
-            ELSE 
-                liquidityDelta * ((sqrtRatioU - sqrtPrice)/(sqrtPrice*sqrtRatioU))
-          END as amount0
-        , CASE 
-            WHEN sqrtPrice <= sqrtRatioL THEN 
-                0
-            WHEN sqrtPrice >= sqrtRatioU THEN 
-                liquidityDelta*(sqrtRatioU - sqrtRatioL)
-            ELSE 
-                liquidityDelta*(sqrtPrice - sqrtRatioL)
-          END as amount1
-    FROM prep_for_calculations
-)
-, liquidity_change_base as (
+        , max(block_index_sum) as block_index_sum 
+        , max(previous_block_index_sum) as previous_block_index_sum 
+        , max_by(sqrtpricex96, block_index_sum) as sqrtpricex96
+    from 
+    get_prices_tmp 
+    group by 1, 2 
+),
 
-    SELECT b.id
-        , date_trunc('minute', b.block_time) as block_time
-        , b.block_number
-        , b.tx_hash
-        , b.evt_index
-        , b.token0
-        , b.token1
-        , b.amount0
-        , b.amount1
-    FROM base_liquidity_amounts b
+get_prices as (
+    select 
+        blockchain
+        , id
+        , block_index_sum 
+        , previous_block_index_sum
+        , sqrtpricex96
+    from 
+    get_prices_tmp 
+
+    union all 
+
+    select 
+        blockchain
+        , id
+        , block_index_sum + block_index_sum as block_index_sum 
+        , block_index_sum as previous_block_index_sum -- for filling
+        , sqrtpricex96
+    from 
+    get_latest_prices
+),
+
+modify_liquidity_events as (
+    with 
     
-    union all -- add liquidty modification together with swaps as they both impact total liquidity
-    
-    select s.id
-        , date_trunc('minute', s.evt_block_time) as block_time
-        , evt_block_number as block_number
-        , s.evt_tx_hash as tx_hash
-        , s.evt_index
-        , token0
-        , token1
-        -- v4 signage is from user's perspective, so multiply -1 to flip signage to be from pool's perspective
-        , -1* s.amount0
-        , -1* s.amount1
-    from swap_liquidity s
-)
-SELECT 
-          '{{blockchain}}' AS blockchain
-        , '{{project}}'  AS project
-        , '{{version}}' AS version
-        , CAST(date_trunc('month', base.block_time) AS date) AS block_month
-        , CAST(date_trunc('day', base.block_time) AS date) AS block_date
+    get_events as (
+        select 
+              evt_block_time
+            , evt_block_number
+            , evt_block_number + evt_index/1e6 as block_index_sum
+            , id
+            , evt_tx_hash
+            , evt_index
+            , 'modify_liquidity' as event_type
+            , salt
+            , tickLower
+            , tickUpper
+            , liquidityDelta
+            , sender -- needed for fee logic
+        from 
+        {{ PoolManager_evt_ModifyLiquidity }}
+        {%- if is_incremental() %}
+        where {{ incremental_predicate('evt_block_time') }}
+        {%- endif %} 
+    ),
+
+    add_latest_price as (
+        select 
+            ab.*,
+            gp.sqrtpricex96
+        from (
+        select 
+            ge.*
+            , gp.previous_block_index_sum
+        from 
+        get_events ge 
+        left join 
+        get_prices gp 
+            on ge.id = gp.id 
+            and ge.block_index_sum >= gp.previous_block_index_sum
+            and ge.block_index_sum < gp.block_index_sum 
+        ) ab 
+        inner join 
+        get_prices gp 
+            on ab.id = gp.id
+            and ab.previous_block_index_sum = gp.block_index_sum 
+    ),
+
+    prep_for_calculations as (
+        select 
+            * 
+            , sqrtpricex96 / power(2, 96) AS sqrtprice
+            , sqrt(power(1.0001, tickLower)) AS sqrtRatioL
+            , sqrt(power(1.0001, tickUpper)) AS sqrtRatioU
+        from 
+        add_latest_price
+    )
+
+    select 
+        *
+        , case
+            when sqrtPrice <= sqrtRatioL then liquidityDelta * ((sqrtRatioU - sqrtRatioL)/(sqrtRatioL*sqrtRatioU))
+            when sqrtPrice >= sqrtRatioU then 0
+            else liquidityDelta * ((sqrtRatioU - sqrtPrice) / (sqrtPrice * sqrtRatioU))
+          end as amount0
+        , case
+            when sqrtPrice <= sqrtRatioL then 0
+            when sqrtPrice >= sqrtRatioU then liquidityDelta * (sqrtRatioU - sqrtRatioL)
+            else liquidityDelta * (sqrtPrice - sqrtRatioL)
+          end as amount1
+    from 
+    prep_for_calculations
+),
+
+fee_collection as (
+    with 
+
+    get_fees as (
+        select 
+            call_tx_hash as tx_hash 
+            , call_block_time as block_time 
+            , call_block_number as block_number 
+            , 1 as evt_index -- we don't actually use index here for anything and some indexes are missing in the call table so hardcoding here as evt_index 
+            , amount 
+            , currency 
+        from 
+        {{ PoolManager_call_Take }}
+        where call_success
+        {%- if is_incremental() %}
+        and {{ incremental_predicate('call_block_time') }}
+        {%- endif %} 
+    ),
+
+    agg_fees as (
+        select 
+            tx_hash
+            , block_time
+            , block_number
+            , min(evt_index) as evt_index
+            , sum(amount) as fee_amount 
+            , currency as fee_currency
+        from 
+        get_fees 
+        group by 1, 2, 3, 6 
+    ),
+
+    modify_events as (
+        select 
+            evt_block_time as block_time
+            , evt_block_number as block_number 
+            , id 
+            , evt_tx_hash as tx_hash 
+            , evt_index 
+            , amount0 
+            , amount1 
+        from 
+        modify_liquidity_events
+        where liquidityDelta <= int256 '0'
+    ),
+
+    single_pools as (
+        select 
+            tx_hash 
+            , count(distinct id) as num_pools 
+        from 
+        modify_events 
+        group by 1 
+        having count(distinct id) = 1 -- only one pool in txn 
+    ),
+
+    agg_events as (
+        select 
+            me.tx_hash
+            , me.block_number 
+            , me.id 
+            , sum(me.amount0) as amount0
+            , sum(me.amount1) as amount1 
+        from 
+        modify_events me 
+        inner join 
+        single_pools sp 
+            on me.tx_hash = sp.tx_hash 
+        group by 1, 2, 3 
+    ),
+
+    join_with_pools as (
+        select 
+            gf.tx_hash 
+            , gf.block_time 
+            , gf.block_number 
+            , gf.evt_index 
+            , 'fee_collection' as event_type
+            , ae.id 
+            , -amount0 as modify_amount0 
+            , -amount1 as modify_amount1
+            , token0 
+            , token1 
+            , sum(case when fee_currency = token0 then fee_amount else 0 end) as amount0 
+            , sum(case when fee_currency = token1 then fee_amount else 0 end) as amount1
+        from 
+        agg_fees gf 
+        inner join 
+        agg_events ae 
+            on gf.tx_hash = ae.tx_hash 
+            and gf.block_number = ae.block_number 
+        inner join 
+        get_pools gp 
+            on ae.id = gp.id 
+        group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+    )
+
+    select 
+        id
+        , block_time 
+        , block_number 
+        , tx_hash 
+        , evt_index
+        , event_type 
+        , token0 
+        , token1 
+        , case 
+            when amount0 > modify_amount0 then amount0 - modify_amount0 else 0 
+        end as amount0 -- subtract total modify liquidity amount from total amount logged in take()
+        , case 
+            when amount1 > modify_amount1 then amount1 - modify_amount1 else 0 
+        end as amount1
+    from 
+    join_with_pools
+),
+
+swap_events as (
+    select 
+        evt_block_time
+        , evt_block_number 
+        , evt_tx_hash 
+        , evt_index 
+        , id 
+        , -1 * amount0 as amount0
+        , -1 * amount1 as amount1
+    from 
+    {{ PoolManager_evt_Swap }}
+    {%- if is_incremental() %}
+    where {{ incremental_predicate('evt_block_time') }}
+    {%- endif %}
+),
+
+liquidity_change_base as (
+    select 
+        ml.id
+        , ml.evt_block_time as block_time
+        , ml.evt_block_number as block_number 
+        , ml.evt_tx_hash as tx_hash 
+        , ml.evt_index 
+        , ml.event_type 
+        , gp.token0 
+        , gp.token1 
+        , ml.amount0 
+        , ml.amount1 
+    from 
+    modify_liquidity_events ml 
+    inner join 
+    get_pools gp 
+        on ml.id = gp.id 
+
+    union all 
+
+    select 
+        se.id
+        , se.evt_block_time as block_time
+        , se.evt_block_number as block_number 
+        , se.evt_tx_hash as tx_hash 
+        , se.evt_index 
+        , 'swap' as event_type 
+        , gp.token0 
+        , gp.token1 
+        , se.amount0 
+        , se.amount1 
+    from 
+    swap_events se
+    inner join 
+    get_pools gp 
+        on se.id = gp.id 
+
+    union all 
+
+    select 
+        id
         , block_time
+        , block_number 
+        , tx_hash 
+        , evt_index 
+        , event_type 
+        , token0 
+        , token1 
+        , -amount0 as amount0
+        , -amount1 as amount1
+    from 
+    fee_collection
+    where tx_hash not in (select evt_tx_hash from swap_events)
+)
+
+    select 
+          '{{blockchain}}' as blockchain
+        , '{{project}}'  as project
+        , '{{version}}' as version
+        , cast(date_trunc('month', block_time) as date) as block_month
+        , cast(date_trunc('day', block_time) as date) as block_date
+        , date_trunc('minute', block_time) as block_time -- for prices
         , block_number
         , id
         , tx_hash
         , evt_index
+        , event_type
         , token0
         , token1
         , CAST(amount0 AS double) as amount0_raw
         , CAST(amount1 AS double) as amount1_raw
-FROM liquidity_change_base base
+    from 
+    liquidity_change_base 
 
 {% endmacro %}

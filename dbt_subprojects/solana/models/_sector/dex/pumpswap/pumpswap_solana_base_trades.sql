@@ -81,7 +81,6 @@ WITH pools AS (
     {% else %}
     WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
-    
 )
 
 , fee_configs_with_time_ranges AS (
@@ -117,7 +116,7 @@ WITH pools AS (
         t.amount as quote_token_amount ,
         ROW_NUMBER() OVER (
                     PARTITION BY sf.tx_id, sf.outer_instruction_index, sf.swap_inner_index
-                    ORDER BY t.amount DESC 
+                    ORDER BY t.inner_instruction_index ASC 
                 ) as rn
     FROM swaps_with_fees sf
     INNER JOIN {{ ref('tokens_solana_transfers') }} t
@@ -137,6 +136,7 @@ WITH pools AS (
             ) 
             OR
             (sf.swap_inner_index IS NOT NULL 
+            AND t.inner_instruction_index > sf.swap_inner_index
             AND t.inner_instruction_index BETWEEN sf.swap_inner_index + 1 AND sf.swap_inner_index + 12
             AND (
                         CASE 
