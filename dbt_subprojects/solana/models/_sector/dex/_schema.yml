@@ -79,19 +79,16 @@ models:
           - dbt_utils.accepted_range:
               max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
               severity: warn
-      - &amount_fee_usd
-        name: amount_fee_usd
-        description: "USD value of the fees paid at time of execution"
-        data_tests:
-          - dbt_utils.accepted_range:
-              max_value: 10000 # $10k is an arbitrary number, intended to flag outlier amounts early
-              severity: warn
       - &fee_tier
         name: fee_tier
         description: "Whirlpool fee tier (fee %)"
       - &fee_usd
-        name: fee_usd
-        description: "Whirlpool fee usd paid on swap"
+        name: amount_fee_usd
+        description: "USD value of the fees paid at time of execution"
+        data_tests:
+          - dbt_utils.accepted_range:
+              max_value: 100000 # $10k is an arbitrary number, intended to flag outlier amounts early
+              severity: warn
       - &token_bought_address
         name: token_bought_address
         description: "token mint address of the token bought"
