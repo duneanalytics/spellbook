@@ -10,21 +10,21 @@
 
 WITH all_swaps AS (
 
-    SELECT * FROM {{ source('metropolis_sonic', 'router_call_swapexacttokensfortokens') }}
+    SELECT contract_address, call_success, call_tx_hash, call_tx_from, call_tx_to, call_tx_index, call_trace_address, call_block_time, call_block_number, call_block_date, amountIn, amountOutMin, deadline, output_amounts, path, to FROM {{ source('metropolis_sonic', 'router_call_swapexacttokensfortokens') }}
     UNION ALL
-    SELECT * FROM {{ source('metropolis_sonic', 'router_call_swapexacttokensforeth') }}
+    SELECT contract_address, call_success, call_tx_hash, call_tx_from, call_tx_to, call_tx_index, call_trace_address, call_block_time, call_block_number, call_block_date, amountIn, amountOutMin, deadline, output_amounts, path, to FROM {{ source('metropolis_sonic', 'router_call_swapexacttokensforeth') }}
     UNION ALL
-    SELECT * FROM {{ source('metropolis_sonic', 'router_call_swapethforexacttokens') }}
+    SELECT contract_address, call_success, call_tx_hash, call_tx_from, call_tx_to, call_tx_index, call_trace_address, call_block_time, call_block_number, call_block_date, NULL, amountOut as amountOutMin, deadline, output_amounts, path, to FROM {{ source('metropolis_sonic', 'router_call_swapethforexacttokens') }}
     UNION ALL
-    SELECT * FROM {{ source('metropolis_sonic', 'router_call_swaptokensforexacttokens') }}
+    SELECT contract_address, call_success, call_tx_hash, call_tx_from, call_tx_to, call_tx_index, call_trace_address, call_block_time, call_block_number, call_block_date, amountInMax as amountIn, amountOut as amountOutMin, deadline, output_amounts, path, to FROM {{ source('metropolis_sonic', 'router_call_swaptokensforexacttokens') }}
     UNION ALL
-    SELECT * FROM {{ source('metropolis_sonic', 'router_call_swapexactethfortokens') }}
+    SELECT contract_address, call_success, call_tx_hash, call_tx_from, call_tx_to, call_tx_index, call_trace_address, call_block_time, call_block_number, call_block_date, NULL, amountOutMin, deadline, output_amounts, path, to FROM {{ source('metropolis_sonic', 'router_call_swapexactethfortokens') }}
     UNION ALL
-    SELECT * FROM {{ source('metropolis_sonic', 'router_call_swapexactethfortokenssupportingfeeontransfertokens') }}
+    SELECT contract_address, call_success, call_tx_hash, call_tx_from, call_tx_to, call_tx_index, call_trace_address, call_block_time, call_block_number, call_block_date, NULL, amountOutMin, deadline, NULL, path, to  FROM {{ source('metropolis_sonic', 'router_call_swapexactethfortokenssupportingfeeontransfertokens') }}
     UNION ALL
-    SELECT * FROM {{ source('metropolis_sonic', 'router_call_swapexacttokensforethsupportingfeeontransfertokens') }}
+    SELECT contract_address, call_success, call_tx_hash, call_tx_from, call_tx_to, call_tx_index, call_trace_address, call_block_time, call_block_number, call_block_date, amountIn, amountOutMin, deadline, NULL, path, to FROM {{ source('metropolis_sonic', 'router_call_swapexacttokensforethsupportingfeeontransfertokens') }}
     UNION ALL
-    SELECT * FROM {{ source('metropolis_sonic', 'router_call_swapexacttokensfortokenssupportingfeeontransfertokens') }}
+    SELECT contract_address, call_success, call_tx_hash, call_tx_from, call_tx_to, call_tx_index, call_trace_address, call_block_time, call_block_number, call_block_date, amountIn, amountOutMin, deadline, NULL, path, to  FROM {{ source('metropolis_sonic', 'router_call_swapexacttokensfortokenssupportingfeeontransfertokens') }}
 
 ),
 
