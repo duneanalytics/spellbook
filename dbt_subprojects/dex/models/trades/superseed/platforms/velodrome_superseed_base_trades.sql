@@ -16,19 +16,29 @@ WITH dexs AS (
         t.evt_block_time AS block_time,
         t.to AS taker,
         t.contract_address AS maker,
-        CASE WHEN amount0Out = UINT256 '0' THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw,
-        CASE WHEN amount0In = UINT256 '0' THEN amount1In ELSE amount0In END AS token_sold_amount_raw,
-        CASE 
-  WHEN amount0Out > 0 THEN f.tokenA
-  WHEN amount1Out > 0 THEN f.tokenB
-  ELSE NULL
-END AS token_bought_address,
+        LOWER(CAST(
+    CASE 
+        WHEN amount0Out = UINT256 '0' THEN f.tokenB
+        ELSE f.tokenA
+    END AS VARCHAR
+)) AS token_bought_address,
 
-CASE 
-  WHEN amount0In > 0 THEN f.tokenA
-  WHEN amount1In > 0 THEN f.tokenB
-  ELSE NULL
-END AS token_sold_address,
+LOWER(CAST(
+    CASE 
+        WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN f.tokenB
+        ELSE f.tokenA
+    END AS VARCHAR
+)) AS token_sold_address,
+
+CAST(
+    CASE WHEN amount0Out = UINT256 '0' THEN amount1Out ELSE amount0Out END
+    AS UINT256
+) AS token_bought_amount_raw,
+
+CAST(
+    CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN amount1In ELSE amount0In END
+    AS UINT256
+) AS token_sold_amount_raw,
         t.contract_address AS project_contract_address,
         t.evt_tx_hash AS tx_hash,
         t.evt_index AS evt_index
