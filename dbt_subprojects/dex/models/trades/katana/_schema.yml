@@ -45,3 +45,22 @@ models:
           seed_file: ref('sushiswap_katana_base_trades_seed')
           filter:
             version: 2
+
+  - name: blade_katana_base_trades
+    meta:
+      blockchain: katana
+      sector: dex
+      project: sushiswap
+      contributors: 0xTemo
+    config:
+      tags: [ 'katana', 'dex', 'trades', 'blade' ]
+    description: "Blade katana base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('blade_katana_base_trades_seed')
+          filter:
+            version: 1
