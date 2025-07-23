@@ -10,7 +10,7 @@
     )
 }}
     
-{% set native_address = '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1' %}
+{% set native_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' %}
     
 WITH 
   decoded_events AS (
