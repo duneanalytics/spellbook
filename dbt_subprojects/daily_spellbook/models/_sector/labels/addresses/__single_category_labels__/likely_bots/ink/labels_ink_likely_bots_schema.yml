@@ -1,0 +1,94 @@
+version: 2
+
+models:
+  - name: labels_ink_likely_bot_addresses
+    description: "Addresses that are likely bots based on transaction frequency and sender concentration"
+    columns:
+      - name: blockchain
+        description: "The blockchain this address is on"
+        tests:
+          - not_null
+      - name: address
+        description: "The address that is likely a bot"
+        tests:
+          - not_null
+          - unique:
+              where: "blockchain = 'ink'"
+      - name: name
+        description: "The name of the bot type"
+        tests:
+          - not_null
+      - name: category
+        description: "The category of the bot"
+        tests:
+          - not_null
+      - name: contributor
+        description: "The contributor who created this label"
+        tests:
+          - not_null
+      - name: source
+        description: "The source of this label"
+        tests:
+          - not_null
+      - name: created_at
+        description: "When this label was created"
+        tests:
+          - not_null
+      - name: updated_at
+        description: "When this label was last updated"
+        tests:
+          - not_null
+      - name: model_name
+        description: "The name of the model that created this label"
+        tests:
+          - not_null
+      - name: label_type
+        description: "The type of label"
+        tests:
+          - not_null
+
+  - name: labels_ink_likely_bot_contracts
+    description: "Contracts that are likely bots based on transaction frequency and sender concentration"
+    columns:
+      - name: blockchain
+        description: "The blockchain this contract is on"
+        tests:
+          - not_null
+      - name: address
+        description: "The contract address that is likely a bot"
+        tests:
+          - not_null
+          - unique:
+              where: "blockchain = 'ink'"
+      - name: name
+        description: "The name of the bot type"
+        tests:
+          - not_null
+      - name: category
+        description: "The category of the bot"
+        tests:
+          - not_null
+      - name: contributor
+        description: "The contributor who created this label"
+        tests:
+          - not_null
+      - name: source
+        description: "The source of this label"
+        tests:
+          - not_null
+      - name: created_at
+        description: "When this label was created"
+        tests:
+          - not_null
+      - name: updated_at
+        description: "When this label was last updated"
+        tests:
+          - not_null
+      - name: model_name
+        description: "The name of the model that created this label"
+        tests:
+          - not_null
+      - name: label_type
+        description: "The type of label"
+        tests:
+          - not_null 
