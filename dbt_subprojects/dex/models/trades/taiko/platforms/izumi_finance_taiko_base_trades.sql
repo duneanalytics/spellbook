@@ -38,6 +38,7 @@ pools AS (
         tokenY,
         fee
     FROM {{ source('izumi_finance_multichain', 'iziswapfactory_evt_newpool') }}
+    WHERE chain = 'taiko'
 )
 SELECT
     'taiko' AS blockchain,

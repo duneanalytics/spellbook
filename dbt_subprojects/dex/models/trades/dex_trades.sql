@@ -29,11 +29,11 @@
                                         , "sei"
                                         , "sonic"
                                         , "sophon"
+                                        , "taiko"
                                         , "zkevm"
                                         , "zksync"
                                         , "unichain"
                                         , "zora"
-                                        , "taiko"
                                     ]\',
                                     "sector",
                                     "dex",
