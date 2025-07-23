@@ -3242,7 +3242,11 @@ models:
       Captures pool balance changes related to position impact adjustments on the GMX protocol for Avalanche.
       This model aggregates the normalized `next_value` of the impact pool, tracking changes over time and by token market.
       Each row corresponds to a `PositionImpactPoolAmountUpdated` event on-chain.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time

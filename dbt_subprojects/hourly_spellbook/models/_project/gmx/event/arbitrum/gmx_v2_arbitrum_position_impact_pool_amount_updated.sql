@@ -171,8 +171,7 @@ WITH evt_data_1 AS (
         ON ED.tx_hash = EDP.tx_hash
         AND ED.index = EDP.index
     LEFT JOIN {{ ref('gmx_v2_arbitrum_markets_data') }} AS MD
-        ON ED.blockchain = MD.blockchain
-        AND ED.market = MD.market
+        ON ED.market = MD.market
 )
 
 --can be removed once decoded tables are fully denormalized
