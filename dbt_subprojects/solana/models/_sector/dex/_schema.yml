@@ -83,7 +83,7 @@ models:
         name: fee_tier
         description: "Whirlpool fee tier (fee %)"
       - &fee_usd
-        name: amount_fee_usd
+        name: fee_usd
         description: "USD value of the fees paid at time of execution"
         data_tests:
           - dbt_utils.accepted_range:
