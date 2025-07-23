@@ -187,3 +187,7 @@ sources:
     tables:
       - name: FluidDexT1_evt_Swap
       - name: fluiddexfactory_call_deploydex
+  - name: elk_finance_arbitrum
+    tables:
+      - name: ElkPair_evt_Swap
+      - name: ElkFactory_evt_PairCreated
