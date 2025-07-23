@@ -171,7 +171,7 @@ WITH evt_data_1 AS (
         ON ED.tx_hash = EDP.tx_hash
         AND ED.index = EDP.index
     LEFT JOIN {{ ref('gmx_v2_avalanche_c_markets_data') }} AS MD
-        ON EDP.market = MD.market
+        ON from_hex(EDP.market) = MD.market
 )
 
 --can be removed once decoded tables are fully denormalized
