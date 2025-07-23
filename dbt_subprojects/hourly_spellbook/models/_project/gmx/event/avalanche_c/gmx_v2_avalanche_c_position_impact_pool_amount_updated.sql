@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'gmx_v2_arbitrum',
+    schema = 'gmx_v2_avalanche_c',
     alias = 'position_impact_pool_amount_updated',
     materialized = 'incremental',
     unique_key = ['tx_hash', 'index'],
@@ -9,7 +9,7 @@
 }}
 
 {%- set event_name = 'PositionImpactPoolAmountUpdated' -%}
-{%- set blockchain_name = 'arbitrum' -%}
+{%- set blockchain_name = 'avalanche_c' -%}
 
 
 WITH evt_data_1 AS (
@@ -24,7 +24,7 @@ WITH evt_data_1 AS (
         eventName AS event_name,
         eventData AS data,
         msgSender AS msg_sender
-    FROM {{ source('gmx_v2_arbitrum','EventEmitter_evt_EventLog1')}}
+    FROM {{ source('gmx_v2_avalanche_c','EventEmitter_evt_EventLog1')}}
     WHERE eventName = '{{ event_name }}'
     {% if is_incremental() %}
         AND {{ incremental_predicate('evt_block_time') }}
@@ -43,7 +43,7 @@ WITH evt_data_1 AS (
         eventName AS event_name,
         eventData AS data,
         msgSender AS msg_sender
-    FROM {{ source('gmx_v2_arbitrum','EventEmitter_evt_EventLog2')}}
+    FROM {{ source('gmx_v2_avalanche_c','EventEmitter_evt_EventLog2')}}
     WHERE eventName = '{{ event_name }}'
     {% if is_incremental() %}
         AND {{ incremental_predicate('evt_block_time') }}
@@ -62,7 +62,7 @@ WITH evt_data_1 AS (
         eventName AS event_name,
         eventData AS data,
         msgSender AS msg_sender
-    FROM {{ source('gmx_v2_arbitrum','EventEmitter_evt_EventLog')}}
+    FROM {{ source('gmx_v2_avalanche_c','EventEmitter_evt_EventLog')}}
     WHERE eventName = '{{ event_name }}'
     {% if is_incremental() %}
         AND {{ incremental_predicate('evt_block_time') }}
@@ -170,7 +170,7 @@ WITH evt_data_1 AS (
     LEFT JOIN evt_data_parsed AS EDP
         ON ED.tx_hash = EDP.tx_hash
         AND ED.index = EDP.index
-    LEFT JOIN {{ ref('gmx_v2_arbitrum_markets_data') }} AS MD
+    LEFT JOIN {{ ref('gmx_v2_avalanche_c_markets_data') }} AS MD
         ON ED.blockchain = MD.blockchain
         AND ED.market = MD.market
 )
