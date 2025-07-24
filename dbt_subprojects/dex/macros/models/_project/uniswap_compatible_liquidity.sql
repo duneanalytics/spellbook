@@ -659,4 +659,6 @@ token_tfers as (
         , token1
         , amount0 as amount0_raw
         , amount1 as amount1_raw
+    from 
+    token_tfers 
 {% endmacro %}
