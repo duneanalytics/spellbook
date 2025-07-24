@@ -14,4 +14,6 @@ sources:
     description: "meteora lb_clmm decoded tables"
     tables:
       - name: lb_clmm_call_swap
+      - name: cp_amm_call_swap
+      - name: cp_amm_evt_evtswap
         
