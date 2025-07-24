@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'blade_katana',
+        schema = 'blade',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
