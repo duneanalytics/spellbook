@@ -523,3 +523,140 @@ liquidity_change_base as (
     liquidity_change_base 
 
 {% endmacro %}
+
+{% macro uniswap_compatible_v3_base_liquidity_events( 
+    blockchain = null
+    , project = 'uniswap'
+    , version = null 
+    , token_transfers = null 
+    , liquidity_pools = null
+    )
+%}
+
+with 
+
+get_pools as (
+    select 
+        blockchain
+        , id
+        , token0
+        , token1
+    from 
+    {{ liquidity_pools }}
+    where version = '{{version}}'
+),
+
+token_tfers as (
+    -- token0 out tfers
+    select 
+        gp.id
+        , tt.evt_tx_from as tx_from 
+        , tt.evt_block_time as block_time 
+        , tt.evt_block_number as block_number 
+        , tt.evt_index 
+        , 'token0_out' as event_type 
+        , gp.token0 
+        , gp.token1 
+        , -1 * cast(tt.value as double) as amount0 
+        , 0 as amount1 
+    from 
+    token_transfers tt 
+    inner join 
+    get_pools gp 
+        on tt.id = gp."from"
+        and tt.token0 = gp.contract_address 
+    {%- if is_incremental() %}
+    where {{ incremental_predicate('gp.evt_block_time') }}
+    {%- endif %}
+
+    union all 
+
+    -- token0 in tfers
+    select 
+        gp.id
+        , tt.evt_tx_from as tx_from 
+        , tt.evt_block_time as block_time 
+        , tt.evt_block_number as block_number 
+        , tt.evt_index 
+        , 'token0_in' as event_type 
+        , gp.token0 
+        , gp.token1 
+        , cast(tt.value as double) as amount0 
+        , 0 as amount1 
+    from 
+    token_transfers tt 
+    inner join 
+    get_pools gp 
+        on tt.id = gp.to 
+        and tt.token0 = gp.contract_address 
+    {%- if is_incremental() %}
+    where {{ incremental_predicate('gp.evt_block_time') }}
+    {%- endif %}
+
+    union all 
+
+    -- token1 out tfers
+    select 
+        gp.id
+        , tt.evt_tx_from as tx_from 
+        , tt.evt_block_time as block_time 
+        , tt.evt_block_number as block_number 
+        , tt.evt_index 
+        , 'token1_out' as event_type 
+        , gp.token0 
+        , gp.token1 
+        , 0 as amount0
+        , -1 * cast(tt.value as double) as amount1
+    from 
+    token_transfers tt 
+    inner join 
+    get_pools gp 
+        on tt.id = gp."from"
+        and tt.token1 = gp.contract_address 
+    {%- if is_incremental() %}
+    where {{ incremental_predicate('gp.evt_block_time') }}
+    {%- endif %}
+
+    union all 
+
+    -- token1 in 
+    select 
+        gp.id
+        , tt.evt_tx_from as tx_from 
+        , tt.evt_block_time as block_time 
+        , tt.evt_block_number as block_number 
+        , tt.evt_index 
+        , 'token1_in' as event_type 
+        , gp.token0 
+        , gp.token1 
+        , 0 as amount0
+        , cast(tt.value as double) as amount1
+    from 
+    token_transfers tt 
+    inner join 
+    get_pools gp 
+        on tt.id = gp.to 
+        and tt.token1 = gp.contract_address 
+    {%- if is_incremental() %}
+    where {{ incremental_predicate('gp.evt_block_time') }}
+    {%- endif %}
+)
+
+    select 
+          '{{blockchain}}' as blockchain
+        , '{{project}}'  as project
+        , '{{version}}' as version
+        , cast(date_trunc('month', block_time) as date) as block_month
+        , cast(date_trunc('day', block_time) as date) as block_date
+        , date_trunc('minute', block_time) as block_time -- for prices
+        , block_number
+        , id
+        , tx_hash
+        , tx_from
+        , evt_index
+        , event_type
+        , token0
+        , token1
+        , amount0 as amount0_raw
+        , amount1 as amount1_raw
+{% endmacro %}

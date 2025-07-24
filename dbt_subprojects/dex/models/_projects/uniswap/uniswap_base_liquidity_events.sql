@@ -12,7 +12,7 @@
 
 {% set models = [
     ref('uniswap_v4_ethereum_base_liquidity_events')
-   ,ref('uniswap_v4_arbitrum_base_liquidity_events')
+   ,ref('uniswap_arbitrum_base_liquidity_events')
    ,ref('uniswap_v4_optimism_base_liquidity_events')
    ,ref('uniswap_v4_blast_base_liquidity_events')
    ,ref('uniswap_v4_zora_base_liquidity_events')
