@@ -16,23 +16,23 @@ WITH dexs AS (
         t.evt_block_time AS block_time,
         t.to AS taker,
         t.contract_address AS maker,
-        LOWER(CAST(
+        CAST(
             CASE 
                 WHEN amount0Out > UINT256 '0' THEN 
                     CASE WHEN f.tokenA < f.tokenB THEN f.tokenA ELSE f.tokenB END
                 ELSE 
                     CASE WHEN f.tokenA < f.tokenB THEN f.tokenB ELSE f.tokenA END
-            END AS VARCHAR
-        )) AS token_bought_address,
+            END AS VARBINARY
+        ) AS token_bought_address,
 
-        LOWER(CAST(
+        CAST(
             CASE 
                 WHEN amount0In > UINT256 '0' THEN 
                     CASE WHEN f.tokenA < f.tokenB THEN f.tokenA ELSE f.tokenB END
                 ELSE 
                     CASE WHEN f.tokenA < f.tokenB THEN f.tokenB ELSE f.tokenA END
-            END AS VARCHAR
-        )) AS token_sold_address,
+            END AS VARBINARY
+        ) AS token_sold_address,
 
         CAST(
             CASE WHEN amount0Out > UINT256 '0' THEN amount0Out ELSE amount1Out END
