@@ -19,6 +19,8 @@ ref('paraswap_avalanche_c_trades')
 ,ref('paraswap_base_trades')
 ] %}
 
+--
+
 
 SELECT *
 FROM (
