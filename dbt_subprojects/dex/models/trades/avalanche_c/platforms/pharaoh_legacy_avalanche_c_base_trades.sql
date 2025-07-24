@@ -15,7 +15,7 @@
         blockchain = 'avalanche_c',
         project = 'pharaoh',
         version = 'legacy',
-        Pair_evt_Swap = source('pharaoh_avalanche_c', 'Pair_evt_Swap'),
-        Factory_evt_PairCreated = source('pharaoh_avalanche_c', 'PairFactory_evt_PairCreated')
+        Pair_evt_Swap = source('pharaoh_avalanche_c', 'pair_evt_swap'),
+        Factory_evt_PairCreated = source('pharaoh_avalanche_c', 'pairfactory_evt_paircreated')
     )
 }}
