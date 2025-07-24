@@ -179,6 +179,9 @@ models:
       - &tx_hash
         name: tx_hash
         description: "The hash of the transaction"
+      - &tx_from
+        name: tx_from
+        description: "Address that initiated the txn"
       - &evt_index
         name: evt_index
         description: "Index of the event in the transaction. Can be used to uniquely identify the order of events within a transaction"

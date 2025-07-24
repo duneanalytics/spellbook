@@ -20,6 +20,7 @@
                                         , "fantom"
                                         , "flare"
                                         , "gnosis"
+                                        , "hemi"
                                         , "ink"
                                         , "kaia"
                                         , "katana"
@@ -66,6 +67,7 @@ ref('prices_native_tokens')
 ,ref('prices_fantom_tokens')
 ,ref('prices_flare_tokens')
 ,ref('prices_gnosis_tokens')
+,ref('prices_hemi_tokens')
 ,ref('prices_optimism_tokens')
 ,ref('prices_polygon_tokens')
 ,ref('prices_solana_tokens')
