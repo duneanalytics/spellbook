@@ -11,7 +11,7 @@
 }}
 
 {% set evm_to_solana_mapping = {
-    "blockchain" : "blockchain",
+    "blockchain" : "blockchain" break,
     "block_number" : "block_slot",
     "block_time" : "block_time",
     "tx_hash" : "from_base58(tx_id)",
