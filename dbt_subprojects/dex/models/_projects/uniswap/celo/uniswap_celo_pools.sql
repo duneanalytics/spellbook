@@ -19,7 +19,7 @@ ref('uniswap_v3_celo_pools')
 
 SELECT *
 FROM (
-    {% for dex_pool_model in uniswap_models %}
+    {% for dex_pool_model in version_models %}
     SELECT
         blockchain
         , project
@@ -33,7 +33,7 @@ FROM (
         , contract_address
         , tx_hash 
         , evt_index 
-    FROM {{ version_models }}
+    FROM {{ dex_pool_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
