@@ -560,7 +560,7 @@ token_tfers as (
         , -1 * cast(tt.value as double) as amount0 
         , 0 as amount1 
     from 
-    token_transfers tt 
+    {{ token_transfers }} tt 
     inner join 
     get_pools gp 
         on tt.id = gp."from"
@@ -584,7 +584,7 @@ token_tfers as (
         , cast(tt.value as double) as amount0 
         , 0 as amount1 
     from 
-    token_transfers tt 
+    {{ token_transfers }} tt 
     inner join 
     get_pools gp 
         on tt.id = gp.to 
@@ -608,7 +608,7 @@ token_tfers as (
         , 0 as amount0
         , -1 * cast(tt.value as double) as amount1
     from 
-    token_transfers tt 
+    {{ token_transfers }} tt 
     inner join 
     get_pools gp 
         on tt.id = gp."from"
@@ -632,7 +632,7 @@ token_tfers as (
         , 0 as amount0
         , cast(tt.value as double) as amount1
     from 
-    token_transfers tt 
+    {{ token_transfers }} tt 
     inner join 
     get_pools gp 
         on tt.id = gp.to 
