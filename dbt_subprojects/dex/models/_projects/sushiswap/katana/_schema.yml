@@ -113,7 +113,7 @@ models:
           project: sushiswap
           version: 1
     columns:
-      - &blockchain
+      - *blockchain
         name: blockchain
         description: "Blockchain which the Pool is deployed"
       - &project
