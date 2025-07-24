@@ -16,7 +16,7 @@
         project = 'swapx',
         version = '1',
         Pair_evt_Swap = source('swapx_sonic', 'AlgebraPool_evt_Swap'),
-        Factory_evt_PoolCreated = source('swapx_sonic', 'Algebrafactory_evt_Pool'),
+        Factory_evt_PoolCreated = source('swapx_sonic', 'algebrafactory_evt_pool'),
         
         )
 }}
