@@ -563,10 +563,10 @@ token_tfers as (
     {{ token_transfers }} tt 
     inner join 
     get_pools gp 
-        on tt.id = gp."from"
-        and tt.token0 = gp.contract_address 
+        on gp.id = tt."from"
+        and gp.token0 = tt.contract_address 
     {%- if is_incremental() %}
-    where {{ incremental_predicate('gp.evt_block_time') }}
+    where {{ incremental_predicate('tt.evt_block_time') }}
     {%- endif %}
 
     union all 
@@ -587,10 +587,10 @@ token_tfers as (
     {{ token_transfers }} tt 
     inner join 
     get_pools gp 
-        on tt.id = gp.to 
-        and tt.token0 = gp.contract_address 
+        on gp.id = tt.to 
+        and gp.token0 = tt.contract_address 
     {%- if is_incremental() %}
-    where {{ incremental_predicate('gp.evt_block_time') }}
+    where {{ incremental_predicate('tt.evt_block_time') }}
     {%- endif %}
 
     union all 
@@ -611,10 +611,10 @@ token_tfers as (
     {{ token_transfers }} tt 
     inner join 
     get_pools gp 
-        on tt.id = gp."from"
-        and tt.token1 = gp.contract_address 
+        on gp.id = tt."from"
+        and gp.token1 = tt.contract_address 
     {%- if is_incremental() %}
-    where {{ incremental_predicate('gp.evt_block_time') }}
+    where {{ incremental_predicate('tt.evt_block_time') }}
     {%- endif %}
 
     union all 
@@ -635,10 +635,10 @@ token_tfers as (
     {{ token_transfers }} tt 
     inner join 
     get_pools gp 
-        on tt.id = gp.to 
-        and tt.token1 = gp.contract_address 
+        on gp.id = tt.to 
+        and gp.token1 = tt.contract_address 
     {%- if is_incremental() %}
-    where {{ incremental_predicate('gp.evt_block_time') }}
+    where {{ incremental_predicate('tt.evt_block_time') }}
     {%- endif %}
 )
 
