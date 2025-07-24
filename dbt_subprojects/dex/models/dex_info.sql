@@ -222,7 +222,6 @@ FROM (VALUES
     , ('rooster_protocol', 'Rooster Protocol', 'Direct', 'roosterprotocol')
     , ('mindgames', 'Mindgames', 'Direct', 'mindgames_io')
     , ('yeiswap', 'YeiSwap', 'Direct', 'YeiFinance')
-    , ('seedfi', 'SeedFi', 'Direct', 'superseedfi')
     , ('bulletx', 'BulletX', 'Direct', 'bulletx_io')
     , ('native', 'Native', 'Direct', 'Native')
 ) AS temp_table (project, name, marketplace_type, x_username)
