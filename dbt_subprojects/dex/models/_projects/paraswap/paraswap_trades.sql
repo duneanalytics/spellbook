@@ -21,7 +21,7 @@ ref('paraswap_avalanche_c_trades')
 ] %}
 -- ,ref('paraswap_unichain_trades')
 -- ,ref('paraswap_sonic_trades')
-
+--
 
 SELECT *
 FROM (
