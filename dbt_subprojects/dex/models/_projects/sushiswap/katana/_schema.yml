@@ -96,19 +96,3 @@ models:
       - &method
         name: method
         description: "Method"
-  - name: blade_katana_trades
-    meta:
-      blockchain: katana
-      sector: dex
-      project: sushiswap
-      contributors: 0xTemo
-    config:
-      tags: [ 'katana','sushiswap','trades','dex', 'blade']
-    description: Sushiswap Blade Pool contract on katana - formatted for dex.trades
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-            combination_of_columns: ['block_date', 'blockchain', 'project', 'version', 'tx_hash']
-      - check_dex_aggregator_seed:
-          blockchain: katana
-          project: sushiswap
-          version: 1
