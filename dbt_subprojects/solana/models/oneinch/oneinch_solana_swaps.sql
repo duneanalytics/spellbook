@@ -67,7 +67,7 @@ token_decimals as (
         , max(if(dst_mint = token_mint_address, symbol)) as dst_symbol
         , sum(if(to_owner = taker, amount_usd)) as from_user_amount_usd
         , sum(if(to_owner = maker, amount_usd)) as to_user_amount_usd
-        , array_agg(distinct token_mint_address) as tokens
+        , count(distinct token_mint_address) as tokens
         , count(*) as transfers
     from transfers as t -- {{ ref('oneinch_solana_transfers') }}
     join orders as o on t.order_hash = o.order_hash and t.block_month = o.block_month
