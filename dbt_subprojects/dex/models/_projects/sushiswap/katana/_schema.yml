@@ -96,7 +96,7 @@ models:
       - &method
         name: method
         description: "Method"
-  - name: sushiswap_blade_katana_trades
+  - name: blade_katana_trades
     meta:
       blockchain: katana
       sector: dex
