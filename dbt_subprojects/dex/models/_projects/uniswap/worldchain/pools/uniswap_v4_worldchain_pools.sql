@@ -4,16 +4,20 @@
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
-    , unique_key = ['id', 'blockchain']
+    , unique_key = ['id']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.creation_block_time')]
     )
 }}
 
 {{
-    uniswap_compatible_v4_liquidity_pools(
+    uniswap_compatible_pools(
           blockchain = 'worldchain'
         , project = 'uniswap'
         , version = '4'
-        , PoolManager_evt_Initialize = source('uniswap_v4_worldchain', 'PoolManager_evt_Initialize')
+        , fee_column_name = 'fee'
+        , pool_column_name = 'id'
+        , token0_column_name = 'currency0'
+        , token1_column_name = 'currency1'
+        , pool_created_event = source('uniswap_v4_worldchain', 'PoolManager_evt_Initialize')
     )
 }}

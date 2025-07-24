@@ -15,7 +15,6 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - blockchain
             - id
     columns:
       - &blockchain
@@ -30,16 +29,103 @@ models:
       - &id
         name: id
         description: "DEX pool smart contract address"
+      - &fee
+        name: fee
+        description: "DEX pool fee"
       - &token0
         name: token0
         description: "First token in pool"
       - &token1
         name: token1
         description: "Second token in pool"
-      - name: creation_block_time
+      - &creation_block_time
+        name: creation_block_time
         description: "Block time of pool creation"
-      - name: creation_block_number
+      - &creation_block_number
+        name: creation_block_number
         description: "Block number of pool creation"
+      - name: contract_address
+        description: "Contract address used to create the pool"
+
+  - name: uniswap_v3_zora_pools
+    meta:
+      blockchain: zora
+      sector: dex
+      project: uniswap
+      contributors: Henrystats
+    config:
+      tags: ['zora', 'pools', 'liquidity', 'uniswap']
+    description: >
+      Uniswap V3 zora DEX pools
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - id
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *id
+      - *fee
+      - *token0
+      - *token1
+      - *creation_block_time
+      - *creation_block_number
+      - name: contract_address
+        description: "Contract address used to create the pool"
+
+  - name: uniswap_v2_zora_pools
+    meta:
+      blockchain: zora
+      sector: dex
+      project: uniswap
+      contributors: Henrystats
+    config:
+      tags: ['zora', 'pools', 'liquidity', 'uniswap']
+    description: >
+      Uniswap V2 zora DEX pools
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - id
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *id
+      - *fee
+      - *token0
+      - *token1
+      - *creation_block_time
+      - *creation_block_number
+      - name: contract_address
+        description: "Contract address used to create the pool"
+
+  - name: uniswap_zora_pools
+    meta:
+      blockchain: zora
+      sector: dex
+      project: uniswap
+      contributors: Henrystats
+    config:
+      tags: ['zora', 'pools', 'liquidity', 'uniswap']
+    description: >
+      Uniswap zora DEX pools across all versions
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - id
+            - version
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *id
+      - *fee
+      - *token0
+      - *token1
+      - *creation_block_time
+      - *creation_block_number
       - name: contract_address
         description: "Contract address used to create the pool"
 

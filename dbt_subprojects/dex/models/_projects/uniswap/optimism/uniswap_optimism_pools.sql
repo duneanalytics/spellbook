@@ -8,14 +8,20 @@
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "uniswap_v3",
-                                    \'["msilb7", "chuxin"]\') }}'
+                                    \'["msilb7", "chuxin","Henrystats"]\') }}'
   )
 }}
-with uniswap_v3_poolcreated as (
+with
+
+v3_pool_logic as (
+
+with 
+
+uniswap_v3_poolcreated as (
   select 
     'optimism' AS blockchain
     , 'uniswap' AS project
-    , 'v3' AS version
+    , '3' AS version
     , pool
     , token0
     , token1
@@ -29,7 +35,7 @@ with uniswap_v3_poolcreated as (
 select 
   'optimism' AS blockchain
   , 'uniswap' AS project
-  , 'v3' AS version
+  , '3' AS version
   , newAddress as pool
   , token0
   , token1
@@ -53,3 +59,56 @@ select
   , creation_block_number
   , contract_address
 from uniswap_v3_poolcreated
+)
+
+select 
+  blockchain
+  , project
+  , version
+  , contract_address
+  , creation_block_time
+  , creation_block_number
+  , pool as id 
+  , fee
+  , 0x as tx_hash -- or use null as varbinary
+  , 0 as evt_index 
+  , token0
+  , token1
+from 
+v3_pool_logic 
+
+union all 
+
+select 
+  blockchain
+  , project
+  , version
+  , contract_address
+  , creation_block_time
+  , creation_block_number
+  , id
+  , fee
+  , tx_hash
+  , evt_index 
+  , token0
+  , token1
+from 
+{{ ref('uniswap_v2_optimism_pools') }}
+
+union all 
+
+select 
+  blockchain
+  , project
+  , version
+  , contract_address
+  , creation_block_time
+  , creation_block_number
+  , id
+  , fee
+  , tx_hash
+  , evt_index 
+  , token0
+  , token1
+from 
+{{ ref('uniswap_v4_optimism_pools') }}
