@@ -18,9 +18,15 @@ models:
           project: sushiswap
           version: 2
     columns:
-      - *blockchain
-      - *project
-      - *version
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the Aggregator is deployed"
+      - &project
+        name: project
+        description: "Project name of the Aggregator"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the project"
       - &block_date
         name: block_date
         description: "UTC event block date of each Aggregator trade"
@@ -108,14 +114,8 @@ models:
           version: 1
     columns:
       - *blockchain
-        name: blockchain
-        description: "Blockchain which the Pool is deployed"
-      - &project
-        name: project
-        description: "Project name of the Pool"
-      - &version
-        name: version
-        description: "Version of the contract built and deployed by the project"
+      - *project
+      - *version
       - &block_date
         name: block_date
         description: "UTC event block date of each Pool trade"
