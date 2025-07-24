@@ -553,6 +553,7 @@ token_tfers as (
         , tt.evt_tx_from as tx_from 
         , tt.evt_block_time as block_time 
         , tt.evt_block_number as block_number 
+        , tt.evt_tx_hash as tx_hash 
         , tt.evt_index 
         , 'token0_out' as event_type 
         , gp.token0 
@@ -577,6 +578,7 @@ token_tfers as (
         , tt.evt_tx_from as tx_from 
         , tt.evt_block_time as block_time 
         , tt.evt_block_number as block_number 
+        , tt.evt_tx_hash as tx_hash 
         , tt.evt_index 
         , 'token0_in' as event_type 
         , gp.token0 
@@ -601,6 +603,7 @@ token_tfers as (
         , tt.evt_tx_from as tx_from 
         , tt.evt_block_time as block_time 
         , tt.evt_block_number as block_number 
+        , tt.evt_tx_hash as tx_hash 
         , tt.evt_index 
         , 'token1_out' as event_type 
         , gp.token0 
@@ -625,6 +628,7 @@ token_tfers as (
         , tt.evt_tx_from as tx_from 
         , tt.evt_block_time as block_time 
         , tt.evt_block_number as block_number 
+        , tt.evt_tx_hash as tx_hash 
         , tt.evt_index 
         , 'token1_in' as event_type 
         , gp.token0 
