@@ -1,25 +1,14 @@
 {{ config(
-	    schema='paraswap',
+        schema='paraswap_gnosis',
         alias = 'trades',
-        post_hook='{{ expose_spells(\'["avalanche_c","fantom","arbitrum","bnb","ethereum","optimism","polygon","base"]\',
-                                "project",
-                                "paraswap",
-                                \'["Henrystats","springzh"]\') }}'
+        
         )
 }}
 
 {% set paraswap_models = [
-ref('paraswap_avalanche_c_trades')
-,ref('paraswap_fantom_trades')
-,ref('paraswap_arbitrum_trades')
-,ref('paraswap_bnb_trades')
-,ref('paraswap_ethereum_trades')
-,ref('paraswap_optimism_trades')
-,ref('paraswap_polygon_trades')
-,ref('paraswap_base_trades')
-,ref('paraswap_gnosis_trades')
+ref('paraswap_v5_gnosis_trades')
+,ref('paraswap_v6_gnosis_trades')
 ] %}
-
 
 
 SELECT *
@@ -56,4 +45,4 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-
+;
