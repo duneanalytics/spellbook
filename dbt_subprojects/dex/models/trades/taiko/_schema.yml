@@ -11,6 +11,9 @@ models:
     description: 'All DEX trades on Taiko'
     data_tests:
       - check_dex_info_relationship
+      - test_acceptable_usd_amount:
+          column_name: amount_usd
+          max_value: 1000000000
 
   - name: oku_v3_taiko_base_trades
     meta:
