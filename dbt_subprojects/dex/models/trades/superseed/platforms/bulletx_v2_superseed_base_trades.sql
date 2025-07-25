@@ -1,6 +1,6 @@
 {{ 
     config(
-        schema = 'bulletx_superseed',
+        schema = 'bulletx_v2_superseed',
         alias = 'v2_base_trades',
         materialized = 'incremental',
         file_format = 'delta',
