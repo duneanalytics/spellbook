@@ -18,10 +18,9 @@ ref('paraswap_avalanche_c_trades')
 ,ref('paraswap_polygon_trades')
 ,ref('paraswap_base_trades')
 ,ref('paraswap_gnosis_trades')
+,ref('paraswap_unichain_trades')
 ] %}
--- ,ref('paraswap_unichain_trades')
--- ,ref('paraswap_sonic_trades')
---
+
 
 SELECT *
 FROM (
