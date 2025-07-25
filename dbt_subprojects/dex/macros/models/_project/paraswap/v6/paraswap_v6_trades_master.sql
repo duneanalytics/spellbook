@@ -153,16 +153,16 @@ select
     v6_trades{% endmacro %}
 
 {% macro paraswap_v6_trades_master(blockchain, project) %}
-  {% 
-    set contracts = {
-          "AugustusV6_1": {
-              "version":    "6.1",
-          },
-          "AugustusV6_2": {
-              "version":    "6.2",              
-          }
-    } 
-  %}
+  {% if blockchain == 'gnosis' %}
+    {% set contracts = {
+      "AugustusV6_2": {"version": "6.2"}
+    } %}
+  {% else %}
+    {% set contracts = {
+      "AugustusV6_1": {"version": "6.1"},
+      "AugustusV6_2": {"version": "6.2"}
+    } %}
+  {% endif %}
   {% for contract_name, contract_details in contracts.items() %}  
     select * from ({{ paraswap_v6_trades_by_contract(blockchain, project, contract_name, contract_details) }})    
     {% if not loop.last %}
