@@ -21,7 +21,6 @@ ref('paraswap_avalanche_c_trades')
 ] %}
 
 
-
 SELECT *
 FROM (
     {% for dex_model in paraswap_models %}
