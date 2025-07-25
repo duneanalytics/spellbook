@@ -55,7 +55,9 @@ from
             -- TODO: should be possible to improve this conditional code
             {% if contract_details['version'] == '6.2' %}
             union select * from swapOnAugustusRFQTryBatchFill
-            union select * from swapExactAmountInOutOnMakerPSM
+            {% if blockchain != 'gnosis' %}
+              union select * from swapExactAmountInOutOnMakerPSM
+            { % endif %}
             {% endif %}
           )
       ),
