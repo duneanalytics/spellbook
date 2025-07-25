@@ -223,3 +223,105 @@ models:
       - &amount1_raw
         name: amount1_raw
         description: "Liquidity amount of token1 in units"
+
+  - name: uniswap_v3_polygon_base_liquidity_events
+    meta:
+      blockchain: polygon
+      sector: dex
+      project: uniswap
+      contributors: Henrystats
+    config:
+      tags: ['polygon', 'pools', 'liquidity', 'uniswap']
+    description: >
+      "uniswap polygon V3 base liquidity events"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - event_type
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *id
+      - *block_month
+      - *block_date
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *tx_from
+      - *evt_index
+      - *event_type
+      - *token0
+      - *token1
+      - *amount0_raw
+      - *amount1_raw
+
+  - name: uniswap_v2_polygon_base_liquidity_events
+    meta:
+      blockchain: polygon
+      sector: dex
+      project: uniswap
+      contributors: Henrystats
+    config:
+      tags: ['polygon', 'pools', 'liquidity', 'uniswap']
+    description: >
+      "uniswap polygon V2 base liquidity events"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - event_type
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *id
+      - *block_month
+      - *block_date
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *tx_from
+      - *evt_index
+      - *event_type
+      - *token0
+      - *token1
+      - *amount0_raw
+      - *amount1_raw
+
+  - name: uniswap_polygon_base_liquidity_events
+    meta:
+      blockchain: polygon
+      sector: dex
+      project: uniswap
+      contributors: Henrystats
+    config:
+      tags: ['polygon', 'pools', 'liquidity', 'uniswap']
+    description: >
+      "uniswap polygon base liquidity events across all versions"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - event_type
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *id
+      - *block_month
+      - *block_date
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *tx_from
+      - *evt_index
+      - *event_type
+      - *token0
+      - *token1
+      - *amount0_raw
+      - *amount1_raw
