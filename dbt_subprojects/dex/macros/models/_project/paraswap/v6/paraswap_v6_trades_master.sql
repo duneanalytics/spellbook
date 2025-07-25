@@ -57,7 +57,7 @@ from
             union select * from swapOnAugustusRFQTryBatchFill
             {% if blockchain != 'gnosis' %}
               union select * from swapExactAmountInOutOnMakerPSM
-            { % endif %}
+            {% endif %}
             {% endif %}
           )
       ),
