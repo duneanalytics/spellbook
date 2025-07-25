@@ -105,11 +105,11 @@ models:
       blockchain: gnosis
       sector: dex
       project: paraswap
-      contributors: springzh
+      contributors: eptighte
     config:
-      tags: ['gnosis','dex','trades', 'paraswap']
+      tags: ['gnosis','dex','trades', 'paraswap', "velora"]
     description: >
-        paraswap aggregator trades on gnosis across all contracts and versions. This table will load dex trades downstream.
+        Paraswap aggregator trades on gnosis across all contracts and versions. This table will load dex trades downstream.
     columns:
       - *blockchain
       - *project
