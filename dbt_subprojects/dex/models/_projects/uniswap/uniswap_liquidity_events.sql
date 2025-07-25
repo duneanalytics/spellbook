@@ -33,6 +33,7 @@ WITH dexes AS (
                 , block_number
                 , id
                 , tx_hash
+                , tx_from
                 , evt_index
                 , event_type
                 , token0
