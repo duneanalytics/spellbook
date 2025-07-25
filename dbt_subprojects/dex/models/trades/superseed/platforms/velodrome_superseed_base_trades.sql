@@ -22,18 +22,20 @@ WITH dexs AS (
         CAST(
             CASE WHEN f.tokenA < f.tokenB THEN f.tokenB ELSE f.tokenA END AS VARBINARY
         ) AS token1,
-
         CAST(
-            CASE 
-                WHEN amount0Out = UINT256 '0' THEN token1
-                ELSE token0
-            END AS VARBINARY
+            CASE WHEN amount0Out = UINT256 '0' THEN 
+                CASE WHEN f.tokenA < f.tokenB THEN f.tokenB ELSE f.tokenA END
+            ELSE 
+                CASE WHEN f.tokenA < f.tokenB THEN f.tokenA ELSE f.tokenB END
+        END AS VARBINARY
         ) AS token_bought_address,
 
         CAST(
             CASE 
-                WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN token1
-                ELSE token0
+                WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN 
+                    CASE WHEN f.tokenA < f.tokenB THEN f.tokenB ELSE f.tokenA END
+                ELSE 
+                    CASE WHEN f.tokenA < f.tokenB THEN f.tokenA ELSE f.tokenB END
             END AS VARBINARY
         ) AS token_sold_address,
 
