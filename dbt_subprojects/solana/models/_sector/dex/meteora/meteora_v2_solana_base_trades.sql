@@ -18,7 +18,7 @@
 
 with
 
-all_swaps as (
+swaps_call_data as (
   with individual_program_swaps as 
   (
   {% for tbl in swap_tables %}
@@ -76,7 +76,7 @@ evt_table as (
     {% endif %}
 ),
 
-final as (
+met_v2_trades as (
 select
     'solana' as blockchain,
     'meteora' as project,
@@ -118,7 +118,7 @@ select
     sw.outer_instruction_index,
     sw.inner_instruction_index,
     sw.tx_index
-  from all_swaps sw
+  from swaps_call_data sw
   left join evt_table evt
     on sw.tx_id = evt.tx_id
    and sw.block_time = evt.block_time
@@ -126,7 +126,6 @@ select
    and sw.swap_number = evt.swap_number
 )
 
-select * from final
--- Trying if comments can make dbt run. 
+select * from met_v2_trades
 
 
