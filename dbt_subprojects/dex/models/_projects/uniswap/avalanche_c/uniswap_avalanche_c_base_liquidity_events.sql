@@ -1,13 +1,13 @@
 {{ config(
-        schema = 'uniswap_arbitrum',
+        schema = 'uniswap_avalanche_c',
         alias = 'base_liquidity_events'
         )
 }}
 
 {% set version_models = [
-ref('uniswap_v4_arbitrum_base_liquidity_events')
-, ref('uniswap_v3_arbitrum_base_liquidity_events')
-, ref('uniswap_v2_arbitrum_base_liquidity_events')
+ref('uniswap_v4_avalanche_c_base_liquidity_events')
+, ref('uniswap_v3_avalanche_c_base_liquidity_events')
+, ref('uniswap_v2_avalanche_c_base_liquidity_events')
 ] %}
 
 
