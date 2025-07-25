@@ -6,7 +6,7 @@
 }}
 
 {% set paraswap_models = [
-,ref('paraswap_v6_gnosis_trades')
+    ref('paraswap_v6_gnosis_trades')
 ] %}
 
 
