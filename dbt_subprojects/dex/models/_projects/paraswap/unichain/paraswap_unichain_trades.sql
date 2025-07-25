@@ -1,12 +1,12 @@
 {{ config(
-        schema='paraswap_gnosis',
+        schema='paraswap_unichain',
         alias = 'trades',
         
         )
 }}
 
 {% set paraswap_models = [
-    ref('paraswap_v6_gnosis_trades')
+    ref('paraswap_v6_unichain_trades')
 ] %}
 
 

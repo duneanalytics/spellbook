@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'paraswap_v6_gnosis',
+    schema = 'paraswap_v6_unichain',
     alias = 'trades',
 
     partition_by = ['block_month'],
@@ -8,7 +8,7 @@
     incremental_strategy = 'merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'method', 'trace_address'],
-    post_hook='{{ expose_spells(\'["gnosis"]\',
+    post_hook='{{ expose_spells(\'["unichain"]\',
                                 "project",
                                 "paraswap_v6",
                                 \'["eptighte"]\') }}'
@@ -29,25 +29,25 @@ with dexs AS (
             method,
             CASE
                 WHEN from_hex(destToken) = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                THEN 0xe91d153e0b41518a2ce8dd3d7944fa863463a97d -- WXDAI
+                THEN 0x4200000000000000000000000000000000000006 -- WETH
                 ELSE from_hex(destToken)
             END AS token_bought_address,
             CASE
                 WHEN from_hex(srcToken) = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                THEN 0xe91d153e0b41518a2ce8dd3d7944fa863463a97d -- WXDAI
+                THEN 0x4200000000000000000000000000000000000006 -- WETH
                 ELSE from_hex(srcToken)
             END AS token_sold_address,
             projectContractAddress as project_contract_address,
             call_tx_hash as tx_hash,
             call_trace_address AS trace_address,
             CAST(-1 as integer) AS evt_index
-        FROM {{ ref('paraswap_v6_gnosis_trades_decoded') }}
+        FROM {{ ref('paraswap_v6_unichain_trades_decoded') }}
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('blockTime') }}
         {% endif %}
 )
 
-SELECT 'gnosis' AS blockchain,
+SELECT 'unichain' AS blockchain,
     'paraswap' AS project,
     '6' AS version,
     cast(date_trunc('day', d.block_time) as date) as block_date,
@@ -80,7 +80,7 @@ SELECT 'gnosis' AS blockchain,
     d.trace_address,
     d.evt_index
 FROM dexs d
-INNER JOIN {{ source('gnosis', 'transactions') }} tx ON d.tx_hash = tx.hash
+INNER JOIN {{ source('unichain', 'transactions') }} tx ON d.tx_hash = tx.hash
     AND d.block_number = tx.block_number
     {% if not is_incremental() %}
     AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
@@ -89,12 +89,12 @@ INNER JOIN {{ source('gnosis', 'transactions') }} tx ON d.tx_hash = tx.hash
     AND {{ incremental_predicate('tx.block_time') }}
     {% endif %}
 LEFT JOIN {{ source('tokens', 'erc20') }} e1 ON e1.contract_address = d.token_bought_address
-    AND e1.blockchain = 'gnosis'
+    AND e1.blockchain = 'unichain'
 LEFT JOIN {{ source('tokens', 'erc20') }} e2 on e2.contract_address = d.token_sold_address
-    AND e2.blockchain = 'gnosis'
+    AND e2.blockchain = 'unichain'
 LEFT JOIN {{ source('prices', 'usd') }} p1 ON p1.minute = date_trunc('minute', d.block_time)
     AND p1.contract_address = d.token_bought_address
-    AND p1.blockchain = 'gnosis'
+    AND p1.blockchain = 'unichain'
     {% if not is_incremental() %}
     AND p1.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
@@ -103,7 +103,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p1 ON p1.minute = date_trunc('minute', d
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p2 ON p2.minute = date_trunc('minute', d.block_time)
     AND p2.contract_address = d.token_sold_address
-    AND p2.blockchain = 'gnosis'
+    AND p2.blockchain = 'unichain'
     {% if not is_incremental() %}
     AND p2.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}

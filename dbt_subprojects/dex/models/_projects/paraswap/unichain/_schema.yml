@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: paraswap_v6_gnosis_trades
+  - name: paraswap_v6_unichain_trades
     meta:
-      blockchain: gnosis
+      blockchain: unichain
       sector: dex
       project: paraswap_v6
       contributors: eptighte
     config:
-      tags: ['gnosis','paraswap_v6','trades', 'paraswap','dex', "velora"]
+      tags: ['unichain','paraswap_v6','trades', 'paraswap','dex', "velora"]
     description: >
-        Paraswap V6 contract aggregator trades on gnosis
+        Paraswap V6 contract aggregator trades on unichain
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -23,7 +23,7 @@ models:
             - trace_address            
 
       - check_dex_aggregator_seed:
-         blockchain: gnosis
+         blockchain: unichain
          project: paraswap
          version: 6
     columns:
@@ -100,16 +100,16 @@ models:
         name: method
         description: "Method"   
 
-  - name: paraswap_gnosis_trades
+  - name: paraswap_unichain_trades
     meta:
-      blockchain: gnosis
+      blockchain: unichain
       sector: dex
       project: paraswap
       contributors: eptighte
     config:
-      tags: ['gnosis','dex','trades', 'paraswap', "velora"]
+      tags: ['unichain','dex','trades', 'paraswap', "velora"]
     description: >
-        Paraswap aggregator trades on gnosis across all contracts and versions. This table will load dex trades downstream.
+        Paraswap aggregator trades on unichain across all contracts and versions. This table will load dex trades downstream.
     columns:
       - *blockchain
       - *project
@@ -135,7 +135,7 @@ models:
       - *trace_address
       - *evt_index
 
-  - name: paraswap_v6_gnosis_trades_decoded
+  - name: paraswap_v6_unichain_trades_decoded
     description: "Paraswap V6 trades decoded"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
