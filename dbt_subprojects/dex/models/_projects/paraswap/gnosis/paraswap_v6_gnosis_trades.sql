@@ -29,12 +29,12 @@ with dexs AS (
             method,
             CASE
                 WHEN from_hex(destToken) = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                THEN 0x4200000000000000000000000000000000000006 -- WETH
+                THEN 0xe91d153e0b41518a2ce8dd3d7944fa863463a97d -- WXDAI
                 ELSE from_hex(destToken)
             END AS token_bought_address,
             CASE
                 WHEN from_hex(srcToken) = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                THEN 0x4200000000000000000000000000000000000006 -- WETH
+                THEN 0xe91d153e0b41518a2ce8dd3d7944fa863463a97d -- WXDAI
                 ELSE from_hex(srcToken)
             END AS token_sold_address,
             projectContractAddress as project_contract_address,
