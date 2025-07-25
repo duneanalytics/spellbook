@@ -1,7 +1,7 @@
 {{
     config(
         schema = 'bulletx_v3_superseed',
-        alias = 'v3_base_trades',
+        alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
