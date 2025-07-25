@@ -1,23 +1,39 @@
 {{ config(
-    schema = 'uniswap_v4_bnb'
-    , alias = 'base_liquidity_events'
-    , materialized = 'incremental'
-    , file_format = 'delta'
-    , incremental_strategy = 'merge'
-    , unique_key = ['tx_hash', 'evt_index', 'event_type']
-    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
-    )
+        schema = 'uniswap_bnb',
+        alias = 'base_liquidity_events'
+        )
 }}
 
-{{
-    uniswap_compatible_v4_base_liquidity_events(
-          blockchain = 'bnb'
-        , project = 'uniswap'
-        , version = '4'
-        , PoolManager_evt_ModifyLiquidity = source ('uniswap_v4_bnb', 'PoolManager_evt_ModifyLiquidity')
-        , PoolManager_evt_Swap = source('uniswap_v4_bnb', 'PoolManager_evt_Swap') 
-        , liquidity_pools = ref('uniswap_v4_bnb_pools')
-        , liquidity_sqrtpricex96 = ref('uniswap_v4_bnb_sqrtpricex96')
-        , PoolManager_call_Take = source('uniswap_v4_bnb', 'poolmanager_call_take')
-    )
-}}
+{% set version_models = [
+ref('uniswap_v4_bnb_base_liquidity_events')
+, ref('uniswap_v3_bnb_base_liquidity_events')
+, ref('uniswap_v2_bnb_base_liquidity_events')
+] %}
+
+
+SELECT *
+FROM (
+    {% for dex_pool_model in version_models %}
+        SELECT
+                 blockchain
+                , project
+                , version
+                , block_month
+                , block_date
+                , block_time
+                , block_number
+                , id
+                , tx_hash
+                , tx_from
+                , evt_index
+                , event_type
+                , token0
+                , token1
+                , amount0_raw
+                , amount1_raw
+    FROM {{ dex_pool_model }}
+    {% if not loop.last %}
+    UNION ALL
+    {% endif %}
+    {% endfor %}
+)
