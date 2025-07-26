@@ -162,7 +162,7 @@ WITH all_swaps AS (
         , s.tx_index
     FROM all_swaps s
     -- Get the "buy" transfer (vault → user)
-    INNER JOIN {{ ref('tokens_solana_transfers') }} t_buy
+    INNER JOIN {{ source('tokens_solana','transfers') }} t_buy
         ON t_buy.tx_id = s.tx_id 
         AND t_buy.block_slot = s.block_slot
         AND t_buy.outer_instruction_index = s.outer_instruction_index
@@ -181,7 +181,7 @@ WITH all_swaps AS (
         {% endif %}
     
     -- Get the "sell" transfer (user → vault) - OPTIONAL for V1, REQUIRED for V2
-    LEFT JOIN {{ ref('tokens_solana_transfers') }} t_sell
+    LEFT JOIN {{ source('tokens_solana','transfers') }} t_sell
         ON t_sell.tx_id = s.tx_id 
         AND t_sell.block_slot = s.block_slot
         AND t_sell.outer_instruction_index = s.outer_instruction_index

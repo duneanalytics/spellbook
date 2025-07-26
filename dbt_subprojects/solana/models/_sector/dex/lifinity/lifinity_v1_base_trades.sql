@@ -44,7 +44,7 @@ WITH
             , row_number() over (partition by sp.call_tx_id, sp.call_outer_instruction_index, sp.call_inner_instruction_index
                                 order by COALESCE(tr_2.inner_instruction_index, 0) asc) as first_transfer_out
         FROM {{ source('lifinity_amm_solana', 'lifinity_amm_call_swap') }} sp
-        INNER JOIN {{ ref('tokens_solana_transfers') }} tr_1
+        INNER JOIN {{ source('tokens_solana','transfers') }} tr_1
             ON tr_1.tx_id = sp.call_tx_id AND tr_1.action = 'transfer'
             AND tr_1.outer_instruction_index = sp.call_outer_instruction_index
             AND ((sp.call_is_inner = false AND tr_1.inner_instruction_index = 1)
@@ -56,7 +56,7 @@ WITH
             AND tr_1.block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
         --swap out can be either 2nd or 3rd transfer.
-        INNER JOIN {{ ref('tokens_solana_transfers') }} tr_2
+        INNER JOIN {{ source('tokens_solana','transfers') }} tr_2
             ON tr_2.tx_id = sp.call_tx_id AND tr_2.action = 'transfer'
             AND tr_2.outer_instruction_index = sp.call_outer_instruction_index
             AND ((sp.call_is_inner = false AND (tr_2.inner_instruction_index = 2 OR tr_2.inner_instruction_index = 3))

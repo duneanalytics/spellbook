@@ -40,7 +40,7 @@ WITH
         FROM 
             {{ source('meteora_solana','lb_clmm_call_swap') }}  sp
         INNER JOIN 
-            {{ ref('tokens_solana_transfers') }} trs_1 
+            {{ source('tokens_solana','transfers') }} trs_1 
             ON trs_1.tx_id = sp.call_tx_id 
             AND trs_1.block_date = sp.call_block_date
             AND trs_1.block_time = sp.call_block_time
@@ -52,7 +52,7 @@ WITH
             AND trs_1.block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
         INNER JOIN 
-            {{ ref('tokens_solana_transfers') }} trs_2 
+            {{ source('tokens_solana','transfers') }} trs_2 
             ON trs_2.tx_id = sp.call_tx_id 
             AND trs_2.block_date = sp.call_block_date
             AND trs_2.block_time = sp.call_block_time

@@ -37,7 +37,7 @@ from (
         {% endif %}
 ) qf
 left join (
-        select * from {{ ref('tokens_solana_transfers') }}
+        select * from {{ source('tokens_solana','transfers') }}
         {% if is_incremental() %}
             where {{ incremental_predicate('block_time') }}
         {% else %}
