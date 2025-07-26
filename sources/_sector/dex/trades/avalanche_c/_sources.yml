@@ -45,6 +45,8 @@ sources:
     tables:
       - name: ClPool_evt_Swap
       - name: ClPoolFactory_evt_PoolCreated
+      - name: pair_evt_swap
+      - name: pairfactory_evt_paircreated
   - name: kyber_avalanche_c
     tables:
       - name: DMMPool_evt_Swap
