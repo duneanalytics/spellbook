@@ -37,7 +37,7 @@ select
     , tx_from
     , tx_to
     , row_number() over(partition by tx_hash order by call_trace_address) as evt_index
-from {{ ref('oneinch_swaps') }}
+from {{ ref('oneinch_evm_swaps') }}
 where
     protocol = 'LOP'
     and not flags['fusion']
