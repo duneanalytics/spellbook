@@ -37,6 +37,8 @@
 
 {% if is_incremental() %}
 
+-- force price reload
+
 with
 
 base_events as (
@@ -85,11 +87,21 @@ get_latest_active_pools as (
         , max_by(th.evt_index, th.block_index_sum) as evt_index
         , max(block_index_sum) as block_index_sum 
         , max_by(sqrtpricex96, th.block_index_sum) as sqrtpricex96
-    from 
-    {{this}} th 
-    inner join 
-    get_active_pools ga 
-        on th.id = ga.id 
+    from (
+        select 
+            th.*,
+            be.block_index_sum as base_block_index_sum
+        from 
+        {{this}} th 
+        inner join 
+        get_active_pools ga 
+            on th.id = ga.id 
+        left join 
+        base_events be 
+            on th.id = be.id 
+            and th.block_index_sum = be.block_index_sum 
+    ) th 
+    where base_block_index_sum is null 
     group by 1
 
     union all 
@@ -256,7 +268,8 @@ modify_liquidity_events as (
     
     get_events as (
         select 
-              evt_block_time
+            evt_tx_from as tx_from
+            , evt_block_time
             , evt_block_number
             , evt_block_number + evt_index/1e6 as block_index_sum
             , id
@@ -328,7 +341,8 @@ fee_collection as (
 
     get_fees as (
         select 
-            call_tx_hash as tx_hash 
+            call_tx_from as tx_from
+            , call_tx_hash as tx_hash 
             , call_block_time as block_time 
             , call_block_number as block_number 
             , 1 as evt_index -- we don't actually use index here for anything and some indexes are missing in the call table so hardcoding here as evt_index 
@@ -345,6 +359,7 @@ fee_collection as (
     agg_fees as (
         select 
             tx_hash
+            , tx_from
             , block_time
             , block_number
             , min(evt_index) as evt_index
@@ -352,7 +367,7 @@ fee_collection as (
             , currency as fee_currency
         from 
         get_fees 
-        group by 1, 2, 3, 6 
+        group by 1, 2, 3, 4, 7
     ),
 
     modify_events as (
@@ -396,7 +411,8 @@ fee_collection as (
 
     join_with_pools as (
         select 
-            gf.tx_hash 
+            gf.tx_from
+            , gf.tx_hash 
             , gf.block_time 
             , gf.block_number 
             , gf.evt_index 
@@ -417,11 +433,12 @@ fee_collection as (
         inner join 
         get_pools gp 
             on ae.id = gp.id 
-        group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+        group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
     )
 
     select 
         id
+        , tx_from 
         , block_time 
         , block_number 
         , tx_hash 
@@ -441,7 +458,8 @@ fee_collection as (
 
 swap_events as (
     select 
-        evt_block_time
+        evt_tx_from as tx_from
+        , evt_block_time
         , evt_block_number 
         , evt_tx_hash 
         , evt_index 
@@ -458,6 +476,7 @@ swap_events as (
 liquidity_change_base as (
     select 
         ml.id
+        , ml.tx_from 
         , ml.evt_block_time as block_time
         , ml.evt_block_number as block_number 
         , ml.evt_tx_hash as tx_hash 
@@ -477,6 +496,7 @@ liquidity_change_base as (
 
     select 
         se.id
+        , se.tx_from 
         , se.evt_block_time as block_time
         , se.evt_block_number as block_number 
         , se.evt_tx_hash as tx_hash 
@@ -496,6 +516,7 @@ liquidity_change_base as (
 
     select 
         id
+        , tx_from 
         , block_time
         , block_number 
         , tx_hash 
@@ -509,7 +530,6 @@ liquidity_change_base as (
     fee_collection
     where tx_hash not in (select evt_tx_hash from swap_events)
 )
-
     select 
           '{{blockchain}}' as blockchain
         , '{{project}}'  as project
@@ -520,6 +540,7 @@ liquidity_change_base as (
         , block_number
         , id
         , tx_hash
+        , tx_from
         , evt_index
         , event_type
         , token0
