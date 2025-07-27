@@ -27,16 +27,8 @@ with dexs AS (
             fromAmount AS token_sold_amount_raw,
             CAST(NULL AS double) AS amount_usd,
             method,
-            CASE
-                WHEN from_hex(destToken) = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                THEN 0xe91d153e0b41518a2ce8dd3d7944fa863463a97d -- WXDAI
-                ELSE from_hex(destToken)
-            END AS token_bought_address,
-            CASE
-                WHEN from_hex(srcToken) = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                THEN 0xe91d153e0b41518a2ce8dd3d7944fa863463a97d -- WXDAI
-                ELSE from_hex(srcToken)
-            END AS token_sold_address,
+            {{ to_wrapped_native_token('gnosis', 'from_hex(destToken)', 'token_bought_address')   }},
+            {{ to_wrapped_native_token('gnosis', 'from_hex(srcToken)', 'token_sold_address')   }},            
             projectContractAddress as project_contract_address,
             call_tx_hash as tx_hash,
             call_trace_address AS trace_address,
@@ -106,7 +98,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p2 ON p2.minute = date_trunc('minute', d
     AND p2.blockchain = 'gnosis'
     {% if not is_incremental() %}
     AND p2.minute >= TIMESTAMP '{{project_start_date}}'
-    {% endif %}
+{% endif %}
     {% if is_incremental() %}
     AND {{ incremental_predicate('p2.minute') }}
     {% endif %}
