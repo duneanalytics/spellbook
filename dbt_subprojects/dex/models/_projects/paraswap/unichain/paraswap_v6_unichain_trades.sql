@@ -28,8 +28,8 @@ with dexs AS (
             CAST(NULL AS double) AS amount_usd,
             method,            
             token_bought_address
-            {{ to_wrapped_native_token(blockchain, 'from_hex(destToken)', 'token_bought_address')   }},            
-            {{ to_wrapped_native_token(blockchain, 'from_hex(srcToken)', 'token_sold_address')   }},            
+            {{ to_wrapped_native_token('unichain', 'from_hex(destToken)', 'token_bought_address')   }},            
+            {{ to_wrapped_native_token('unichain', 'from_hex(srcToken)', 'token_sold_address')   }},            
             projectContractAddress as project_contract_address,
             call_tx_hash as tx_hash,
             call_trace_address AS trace_address,
