@@ -27,7 +27,7 @@ with dexs AS (
             fromAmount AS token_sold_amount_raw,
             CAST(NULL AS double) AS amount_usd,
             method,            
-            token_bought_address
+            token_bought_address,
             {{ to_wrapped_native_token('unichain', 'from_hex(destToken)', 'token_bought_address')   }},            
             {{ to_wrapped_native_token('unichain', 'from_hex(srcToken)', 'token_sold_address')   }},            
             projectContractAddress as project_contract_address,
