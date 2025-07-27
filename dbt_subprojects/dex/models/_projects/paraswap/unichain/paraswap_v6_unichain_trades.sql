@@ -26,17 +26,9 @@ with dexs AS (
             receivedAmount AS token_bought_amount_raw,
             fromAmount AS token_sold_amount_raw,
             CAST(NULL AS double) AS amount_usd,
-            method,
-            CASE
-                WHEN from_hex(destToken) = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                THEN 0x4200000000000000000000000000000000000006 -- WETH
-                ELSE from_hex(destToken)
-            END AS token_bought_address,
-            CASE
-                WHEN from_hex(srcToken) = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                THEN 0x4200000000000000000000000000000000000006 -- WETH
-                ELSE from_hex(srcToken)
-            END AS token_sold_address,
+            method,            
+            {{ to_wrapped_native_token('unichain', 'from_hex(destToken)', 'token_bought_address')   }},            
+            {{ to_wrapped_native_token('unichain', 'from_hex(srcToken)', 'token_sold_address')   }},            
             projectContractAddress as project_contract_address,
             call_tx_hash as tx_hash,
             call_trace_address AS trace_address,
