@@ -1,0 +1,2 @@
+blockchain,project,version,block_date,tx_hash,evt_index,token_bought_address,token_sold_address,block_number,token_bought_amount_raw,token_sold_amount_raw
+superseed,bulletx,3,2025-07-22 00:00,0x5e758bc5f715cf8585465363d0d5f1995d2b64d7a62aeec0e24e7c0137dca536,10,0x4200000000000000000000000000000000000006,0xc316c8252b5f2176d0135ebb0999e99296998f2e,13510847,47198096206940,174778
