@@ -18,8 +18,7 @@ SELECT
 FROM
 (
     VALUES
-    ('tac-tac-token', 'TAC', 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, 18)
-    , ('wtac-wrapped-tac', 'WTAC', 0xB63B9f0eb4A6E6f191529D71d4D88cc8900Df2C9, 18)
+    ('tac-tac-protocol', 'TAC', 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, 18)
     , ('toncoin-the-open-network', 'TON', 0xb76d91340F5CE3577f0a056D29f6e3Eb4E88B140, 9)
     , ('weth-weth', 'WETH', 0x61D66bC21fED820938021B06e9b2291f3FB91945, 18)
     , ('wsteth-wrapped-liquid-staked-ether-20', 'wstETH', 0xAf368c91793CB22739386DFCbBb2F1A9e4bCBeBf, 18)
