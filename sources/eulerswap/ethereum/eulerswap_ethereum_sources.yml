@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: eulerswap_ethereum
+    description: "decoded events for eulerswap on ethereum"
+    tables:
+      - name: eulerswapfactory_uniswapv4_evt_pooldeployed
+      - name: eulerswapfactory_uniswapv4_evt_poolconfig

@@ -1,0 +1,37 @@
+{{ config(
+        schema = 'eulerswap',
+        alias = 'pools'
+        )
+}}
+
+{% set eulerswap_models = [
+ref('eulerswap_ethereum_pools')
+] %}
+
+
+SELECT *
+FROM (
+    {% for dex_pool_model in eulerswap_models %}
+    SELECT
+        blockchain
+        , project 
+        , version 
+        , factory_address 
+        , creation_block_time
+        , creation_block_number 
+        , pool 
+        , hook
+        , eulerAccount
+        , asset0
+        , asset1
+        , vault0
+        , vault1
+        , fee
+        , protocolFee
+        , protocolFeeRecipient
+    FROM {{ dex_pool_model }}
+    {% if not loop.last %}
+    UNION ALL
+    {% endif %}
+    {% endfor %}
+)
