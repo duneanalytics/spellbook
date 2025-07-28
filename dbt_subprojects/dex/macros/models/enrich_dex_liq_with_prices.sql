@@ -49,6 +49,7 @@ WITH base_liquidity as (
         , base.block_number
         , base.id
         , base.tx_hash
+        , base.tx_from 
         , base.evt_index
         , base.event_type
         , base.token0
@@ -80,6 +81,7 @@ WITH base_liquidity as (
             , en.block_number
             , en.id
             , en.tx_hash
+            , en.tx_from
             , en.evt_index
             , en.event_type
             , en.token0
@@ -114,6 +116,7 @@ SELECT
     , block_number
     , id
     , tx_hash
+    , tx_from 
     , evt_index
     , event_type
     , token0
