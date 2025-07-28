@@ -6,3 +6,4 @@ sources:
     tables:
       - name: eulerswapfactory_uniswapv4_evt_pooldeployed
       - name: eulerswapfactory_uniswapv4_evt_poolconfig
+      - name: eulerswapinstance_evt_swap

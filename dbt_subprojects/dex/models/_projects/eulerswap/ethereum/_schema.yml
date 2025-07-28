@@ -66,3 +66,18 @@ models:
       - &protocolFeeRecipient
         name: protocolFeeRecipient
         description: "COntract address receiving Fee paid to Euler"
+
+  - name: eulerswap_ethereum_raw_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: eulerswap
+      contributors: Henrystats
+    config:
+      tags: ['ethereum', 'pools', 'trades', 'eulerswap']
+    description: "Eulerswap ethereum v2 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
