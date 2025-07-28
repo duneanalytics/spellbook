@@ -18,6 +18,6 @@ SELECT i.blockchain AS deposit_chain
 , contract_address
 , CAST(srcTransferId AS varchar) AS bridge_id
 FROM {{ source('celer_' + blockchain, 'bridge_evt_relay') }} d
-LEFT JOIN evms.info i ON d.srcChainId=i.chain_id
+LEFT JOIN {{ source('evms','info') }} i ON d.srcChainId=i.chain_id
 
 {% endmacro %}
