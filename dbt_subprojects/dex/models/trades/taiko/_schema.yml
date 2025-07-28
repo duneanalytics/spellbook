@@ -57,3 +57,18 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
+
+  - name: taikoswap_taiko_base_trades
+    meta:
+      blockchain: taiko
+      sector: dex
+      project: taikoswap
+      contributors: ShawnEdwards23
+    config:
+      tags: ['taiko', 'dex', 'trades', 'taikoswap']
+    description: 'taikoswap DEX trades on Taiko'
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
