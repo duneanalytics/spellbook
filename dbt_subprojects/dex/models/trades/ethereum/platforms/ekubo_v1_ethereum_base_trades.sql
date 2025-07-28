@@ -61,8 +61,8 @@ with trace_trades as
     select
         block_time
         , tx_hash
-        , index
-        , tx_index as evt_index
+        , index as evt_index
+        , tx_index 
         -- , substr(data,21,32)  as pool_id 
         , row_number() over (partition by tx_hash order by tx_index asc) as swap_number
     from {{ source('ethereum', 'logs') }}
@@ -89,12 +89,12 @@ select
     , cast(tt.block_number as uint256) as block_number
     , cast(tt.token_bought_amount_raw as uint256) as token_bought_amount_raw
     , cast(tt.token_sold_amount_raw as uint256) as token_sold_amount_raw
-    , cast(tt.token_bought_address as varbinary) as token_bought_address
-    , cast(tt.token_sold_address as varbinary) as token_sold_address
+    , token_bought_address
+    , token_sold_address
     , cast(tt.taker as varbinary) as taker
     , cast(tt.maker as varbinary) as maker
-    , cast(tt.project_contract_address as varbinary) as project_contract_address
-    , cast(tt.tx_hash as varbinary) as tx_hash
+    , project_contract_address
+    , tx_hash
     , cast(et.evt_index as uint256) as evt_index 
 
 
