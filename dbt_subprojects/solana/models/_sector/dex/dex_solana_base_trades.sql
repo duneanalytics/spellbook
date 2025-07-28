@@ -26,7 +26,7 @@
   , ref('goosefx_ssl_v2_solana_base_trades')
   , ref('pumpdotfun_solana_base_trades')
   , ref('pumpswap_solana_base_trades') 
-  , ref('stabble_solana_base_trades')
+  -- , ref('stabble_solana_base_trades')
   , ref('pancakeswap_v3_solana_base_trades') 
 ] %}
 
