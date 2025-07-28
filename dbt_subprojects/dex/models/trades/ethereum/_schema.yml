@@ -706,3 +706,21 @@ models:
           seed_file: ref('native_ethereum_base_trades_seed')
           filter:
             version: 1
+  - name: ekubo_v1_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: ekubo
+      contributors: 0xsandeshk
+    config:
+      tags: ["ethereum", "dex", "trades", "ekubo"]
+    description: "ekubo ethereum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('ekubo_v1_ethereum_base_trades')
+          filter:
+            version: 1
