@@ -32,5 +32,3 @@ FROM
     , ('rlp-resolv-rlp', 'RLP', 0x35533f54740F1F1aA4179E57bA37039dfa16868B, 18)
     , ('m-btc-merlins-seal-btc', 'M-BTC', 0xe82dbD543FD729418613d68Cd1E8FC67b0f46E31, 18)
 ) as temp (token_id, symbol, contract_address, decimals)
-
-) as temp (token_id, symbol, contract_address, decimals)
