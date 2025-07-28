@@ -11,6 +11,7 @@ SELECT '{{blockchain}}' AS deposit_chain
 , sender
 , receiver AS recipient
 , 'erc20' AS deposit_token_standard
+, 'erc20' AS withdrawal_token_standard
 , token AS deposit_token_address
 , evt_tx_from AS tx_from
 , evt_tx_hash AS tx_hash
