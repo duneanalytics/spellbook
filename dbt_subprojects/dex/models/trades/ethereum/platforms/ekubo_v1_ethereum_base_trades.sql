@@ -80,22 +80,22 @@ with trace_trades as
         and topic0 is null 
 )
 select 
-    tt.blockchain
-    , tt.project
-    , tt.version
+    cast(tt.blockchain as varchar) as blockchain
+    , cast(tt.project as varchar) as project
+    , cast(tt.version as varchar) as version
     , date_trunc( 'month', tt.block_time) as block_month
     , date_trunc( 'day', tt.block_time) as block_date
     , tt.block_time as block_time
-    , tt.block_number
-    , tt.token_bought_amount_raw
-    , tt.token_sold_amount_raw
-    , tt.token_bought_address
-    , tt.token_sold_address
-    , tt.taker
-    , tt.maker
-    , tt.project_contract_address
-    , tt.tx_hash
-    , et.evt_index 
+    , cast(tt.block_number as uint256) as block_number
+    , cast(tt.token_bought_amount_raw as uint256) as token_bought_amount_raw
+    , cast(tt.token_sold_amount_raw as uint256) as token_sold_amount_raw
+    , cast(tt.token_bought_address as varbinary) as token_bought_address
+    , cast(tt.token_sold_address as varbinary) as token_sold_address
+    , cast(tt.taker as varbinary) as taker
+    , cast(tt.maker as varbinary) as maker
+    , cast(tt.project_contract_address as varbinary) as project_contract_address
+    , cast(tt.tx_hash as varbinary) as tx_hash
+    , cast(et.evt_index as uint256) as evt_index 
 
 
     
@@ -106,6 +106,3 @@ on (
     and tt.block_time=et.block_time 
     and tt.swap_number=et.swap_number
    )
-
-
-
