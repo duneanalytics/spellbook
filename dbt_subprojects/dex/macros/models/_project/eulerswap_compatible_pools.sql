@@ -15,7 +15,7 @@ select
     , d.contract_address as factory_address 
     , d.evt_block_time as creation_block_time
     , d.evt_block_number as creation_block_number 
-    , p.pool 
+    , p.id as pool 
     , d.pool as hook -- EulerSwap instance's pool is the hook in Uniswap v4 universe 
     , d.eulerAccount
     , d.asset0
