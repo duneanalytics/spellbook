@@ -51,10 +51,10 @@ with trace_trades as
 
     FROM {{ source('ekubo_ethereum', 'ekubo_core_call_swap_611415377') }}
     WHERE 1=1
-        {% if is_incremental() %}
-            {{ incremental_predicate('call_block_time') }}
-        {% endif %}
         AND call_success
+        {% if is_incremental() %}
+        and {{ incremental_predicate('call_block_time') }}
+        {% endif %}
 )
 , evt_trades as 
 (
@@ -75,7 +75,7 @@ with trace_trades as
         )
         and block_time >= timestamp '{{ project_deployed_on }}'
         {% if is_incremental() %}
-            {{ incremental_predicate('block_time') }}
+        and {{ incremental_predicate('block_time') }}
         {% endif %}
         and topic0 is null 
 )
@@ -106,3 +106,5 @@ on (
     and tt.block_time=et.block_time 
     and tt.swap_number=et.swap_number
    )
+where 1=1      
+
