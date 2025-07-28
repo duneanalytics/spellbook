@@ -187,3 +187,6 @@ sources:
     tables:
       - name: FluidDexT1_evt_Swap
       - name: fluiddexfactory_call_deploydex
+  - name: native_arbitrum
+    tables:
+      - name: NativeRFQPool_evt_RFQTrade
