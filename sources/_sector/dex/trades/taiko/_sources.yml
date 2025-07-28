@@ -15,4 +15,7 @@ sources:
   - name: izumi_finance_taiko
     tables:
       - name: iziswappool_evt_swap
-
+  - name: taikoswap_taiko
+    tables:
+      - name: uniswapv2pair_evt_swap
+      - name: uniswapv2factory_evt_paircreated
