@@ -8,6 +8,7 @@
     , pool_column_name = 'pair'
     , token0_column_name = 'token0'
     , token1_column_name = 'token1'
+    , hooks_column_name = null 
     )
 %}
 
@@ -32,6 +33,9 @@ select
     , evt_index
     , f.{{ token0_column_name }} as token0
     , f.{{ token1_column_name }} as token1 
+    {% if hooks_column_name %}
+    , f.{{hooks_column_name}} as hooks 
+    {% endif %}
 from 
 {{ pool_created_event }} f
 {% if is_incremental() %}

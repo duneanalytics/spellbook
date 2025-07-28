@@ -19,5 +19,6 @@
         , token0_column_name = 'currency0'
         , token1_column_name = 'currency1'
         , pool_created_event = source('uniswap_v4_avalanche_c', 'PoolManager_evt_Initialize')
+        , hooks_column_name = 'hooks'
     )
 }}
