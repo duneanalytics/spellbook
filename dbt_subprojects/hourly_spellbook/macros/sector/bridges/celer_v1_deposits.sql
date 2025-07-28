@@ -16,7 +16,7 @@ SELECT '{{blockchain}}' AS deposit_chain
 , evt_tx_hash AS tx_hash
 , evt_index
 , contract_address
-, CAST(transferId AS varchar) AS bridge_id
+, CAST(transferId AS varchar) AS bridge_transfer_id
 FROM {{ source('celer_' + blockchain, 'bridge_evt_send') }} d
 LEFT JOIN {{ source('evms','info') }} i ON d.dstChainId=i.chain_id
 
