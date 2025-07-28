@@ -94,7 +94,7 @@ select
     , cast(tt.taker as varbinary) as taker
     , cast(tt.maker as varbinary) as maker
     , project_contract_address
-    , tx_hash
+    , tt.tx_hash
     , cast(et.evt_index as uint256) as evt_index 
 
 
