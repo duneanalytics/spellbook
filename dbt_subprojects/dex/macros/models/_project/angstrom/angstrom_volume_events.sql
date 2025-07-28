@@ -1,0 +1,2 @@
+-- Ideally we could surface the volume macro here
+-- this could be were we collect the transaction level data, and then use the individual decoding macros to get the specific fields required
