@@ -79,11 +79,11 @@ with native as (
     -- source all non-EVM chains excluded from prices pipeline
     {% for model in non_evm_models -%}
     select
-        token_id
-        , blockchain
-        , contract_address
-        , symbol
-        , decimals
+        pt.token_id
+        , pt.blockchain
+        , pt.contract_address
+        , pt.symbol
+        , pt.decimals
     from
         {{ model }} as pt
     left join
