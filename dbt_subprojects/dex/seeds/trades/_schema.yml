@@ -5539,7 +5539,7 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
-  - name: ekubo_v1_base_trades_seed
+  - name: ekubo_v1_ethereum_base_trades_seed
     config:
       column_types:
         blockchain: varchar
