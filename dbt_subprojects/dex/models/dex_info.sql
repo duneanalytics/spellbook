@@ -224,4 +224,5 @@ FROM (VALUES
     , ('rooster_protocol', 'Rooster Protocol', 'Direct', 'roosterprotocol')
     , ('mindgames', 'Mindgames', 'Direct', 'mindgames_io')
     , ('yeiswap', 'YeiSwap', 'Direct', 'YeiFinance')
+    , ('fly_trade', 'Fly.Trade', 'Aggregator', 'fly_trade')
 ) AS temp_table (project, name, marketplace_type, x_username)
