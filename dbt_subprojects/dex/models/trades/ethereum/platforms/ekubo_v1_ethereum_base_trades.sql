@@ -64,7 +64,7 @@ with trace_trades as
         , index as evt_index
         , tx_index 
         -- , substr(data,21,32)  as pool_id 
-        , row_number() over (partition by tx_hash order by tx_index asc) as swap_number
+        , row_number() over (partition by tx_hash order by index asc) as swap_number
     from {{ source('ethereum', 'logs') }}
     where 1=1
         and cast(contract_address as varchar) in 
