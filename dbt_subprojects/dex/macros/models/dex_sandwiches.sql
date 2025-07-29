@@ -5,6 +5,7 @@ WITH augmented_dex_trades AS (
     SELECT dt.project_contract_address
     , dt.tx_from
     , dt.tx_hash
+    , dt.block_time
     , tx.block_number
     , dt.token_sold_address
     , dt.token_bought_address
