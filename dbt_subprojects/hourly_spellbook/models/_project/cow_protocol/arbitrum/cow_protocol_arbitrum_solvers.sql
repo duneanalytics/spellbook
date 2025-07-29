@@ -104,7 +104,11 @@ known_solver_metadata (address, environment, name) as (
                 (0x76EF27384f6aE6f58499C2eCC2273DC4bB2D9B91, 'prod', 'Tsolver'),
                 (0x4dd1be0Cd607E5382Dd2844fA61D3a17e3e83D56, 'prod', 'Rizzolver'),
                 (0x95238c3Bf936424f4B34Ebf8B1e6C1577A6B3406, 'barn', 'Overnight Finance'),
-                (0xcEbd13eE45671CBA34B3424Cd1CD616FAc780EA9, 'prod', 'Overnight Finance')
+                (0xcEbd13eE45671CBA34B3424Cd1CD616FAc780EA9, 'prod', 'Overnight Finance'),
+                (0x9702Add8e0943Ec9a6e1e87FC612537E78d7194E, 'barn', 'MX Trading'),
+                (0x859A672a564A99CDA9BfB2c39ca80Dd9256B94d3, 'prod', 'MX Trading'),
+                (0x96B8F359f0b2067D7F7C84F55f172FF1A70ee0F4, 'barn', 'Trusted Volumes'),
+                (0xE6094DFE442F44df4cfAa21dCC054dC85Fc299DB, 'prod', 'Trusted Volumes')
     ) as _
 )
 -- Combining the metadata with current activation status for final table

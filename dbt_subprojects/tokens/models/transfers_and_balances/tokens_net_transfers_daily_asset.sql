@@ -18,6 +18,7 @@
     , 'ethereum'
     , 'fantom'
     , 'gnosis'
+    , 'hemi'
     , 'linea'
     , 'mantle'
     , 'opbnb'

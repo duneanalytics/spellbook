@@ -3,7 +3,7 @@ version: 2
 models:
   - name: bridges_evms_deposits
     meta:
-      blockchain: ethereum, base
+      blockchain: ethereum, base, arbitrum, avalanche_c, optimism, polygon, unichain
       sector: bridges
       contributors: [ 'hildobby']
     config:
@@ -96,7 +96,7 @@ models:
         description: "Bridge order identifier"
   - name: bridges_evms_withdrawals
     meta:
-      blockchain: ethereum, base
+      blockchain: ethereum, base, arbitrum, avalanche_c, optimism, polygon, unichain
       sector: bridges
       contributors: [ 'hildobby']
     config:
@@ -135,7 +135,7 @@ models:
       - *bridge_transfer_id 
   - name: bridges_evms_flows
     meta:
-      blockchain: ethereum, base
+      blockchain: ethereum, base, arbitrum, avalanche_c, optimism, polygon, unichain
       sector: bridges
       contributors: [ 'hildobby']
     config:
