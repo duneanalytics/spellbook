@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: berachain
       sector: dex
-      project: fly_trade_aggregator
+      project: fly_trade
       contributors: andrew_nguyen
     config:
       tags: ['berachain', 'fly_trade', 'aggregator', 'trades', 'dex']

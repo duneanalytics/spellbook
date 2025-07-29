@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: arbitrum
       sector: dex
-      project: fly_trade_aggregator
+      project: fly_trade
       contributors: andrew_nguyen
     config:
       tags: ['arbitrum', 'fly_trade', 'aggregator', 'trades', 'dex']

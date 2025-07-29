@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: optimism
       sector: dex
-      project: fly_trade_aggregator
+      project: fly_trade
       contributors: andrew_nguyen
     config:
       tags: ['optimism', 'fly_trade', 'aggregator', 'trades', 'dex']

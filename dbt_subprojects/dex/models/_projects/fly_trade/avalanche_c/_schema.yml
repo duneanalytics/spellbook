@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: avalanche_c
       sector: dex
-      project: fly_trade_aggregator
+      project: fly_trade
       contributors: andrew_nguyen
     config:
       tags: ['avalanche_c', 'fly_trade', 'aggregator', 'trades', 'dex']
