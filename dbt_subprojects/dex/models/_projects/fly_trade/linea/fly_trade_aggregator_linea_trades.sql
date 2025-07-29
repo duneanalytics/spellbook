@@ -101,9 +101,9 @@ SELECT
     ,swaps.token_bought_address AS token_bought_address
     ,swaps.token_sold_address AS token_sold_address
     ,swaps.taker AS taker
-    ,swaps.taker.maker AS maker
-    ,swaps.taker.project_contract_address AS project_contract_address
-    ,swaps.taker.tx_hash AS tx_hash
+    ,swaps.maker AS maker
+    ,swaps.project_contract_address AS project_contract_address
+    ,swaps.tx_hash AS tx_hash
     ,swaps.tx_from AS tx_from
     ,swaps.tx_to AS tx_to
     ,swaps.evt_index AS evt_index
