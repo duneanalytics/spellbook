@@ -1,7 +1,7 @@
 {{ config(
     schema = 'dex_zkevm'
     , alias = 'base_trades'
-    , partition_by = ['block_month', 'blockchain', 'project']
+    , partition_by = ['block_month']
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
