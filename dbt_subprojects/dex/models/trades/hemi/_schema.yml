@@ -29,6 +29,7 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
+
   - name: izumi_finance_hemi_base_trades
     meta:
       blockchain: hemi
@@ -38,6 +39,36 @@ models:
     config:
       tags: ['hemi', 'dex', 'trades', 'izumi']
     description: 'Izumi DEX trades on Hemi'
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+
+  - name: sushiswap_v2_hemi_base_trades
+    meta:
+      blockchain: hemi
+      sector: dex
+      project: sushiswap
+      contributors: krishhh
+    config:
+      tags: ['hemi', 'dex', 'trades', 'sushiswap', 'v2']
+    description: 'Sushiswap V2 DEX trades on Hemi'
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            
+  - name: sushiswap_v3_hemi_base_trades
+    meta:
+      blockchain: hemi
+      sector: dex
+      project: sushiswap
+      contributors: krishhh
+    config:
+      tags: ['hemi', 'dex', 'trades', 'sushiswap', 'v3']
+    description: 'Sushiswap V3 DEX trades on Hemi'
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
