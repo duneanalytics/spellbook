@@ -227,5 +227,8 @@ FROM (VALUES
     , ('bulletx', 'BulletX', 'Direct', 'bulletx_io')
     , ('native', 'Native', 'Direct', 'Native')
     , ('blackhole', 'Blackhole', 'Direct', 'BlackholeDEX')
+<<<<<<< HEAD
     , ('ekubo', 'Ekubo', 'Direct', 'EkuboProtocol')
+=======
+>>>>>>> 837d23a1a (added blackhole avalanche_c base trades model  (#8524))
 ) AS temp_table (project, name, marketplace_type, x_username)
