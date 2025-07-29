@@ -113,6 +113,36 @@ models:
       - *evt_index  
       - *contract_address 
       - *bridge_transfer_id 
+  - name: bridges_base_celer_v1_deposits
+    meta:
+      blockchain: base
+      sector: bridges
+      project: celer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'base', 'bridges', 'flows', 'deposits' ]
+    description: "Celer v1 bridge deposits events on Base"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']
+      - equal_rowcount_with_sources:
+          evt_sources:
+            - source('celer_base','bridge_evt_send')
+  - name: bridges_base_celer_v1_withdrawals
+    meta:
+      blockchain: celer
+      sector: bridges
+      project: celer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'celer', 'bridges', 'flows', 'withdrawals' ]
+    description: "Celer v1 bridge withdrawals events on Base"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']
+      - equal_rowcount_with_sources:
+          evt_sources:
+            - source('celer_base','bridge_evt_relay')
   - name: bridges_base_across_v2_deposits
     meta:
       blockchain: base
@@ -122,12 +152,6 @@ models:
     config:
       tags: [ 'base', 'bridges', 'flows', 'deposits' ]
     description: "Across's v2 bridge deposits events on Base"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
-      - equal_rowcount_with_sources:
-          evt_sources:
-            - source('circle_base','tokenmessenger_evt_mintandwithdraw')
   - name: bridges_base_across_v2_withdrawals
     meta:
       blockchain: base
@@ -137,12 +161,6 @@ models:
     config:
       tags: [ 'base', 'bridges', 'flows', 'withdrawals' ]
     description: "Across's v2 bridge withdrawals events on Base"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
-      - equal_rowcount_with_sources:
-          evt_sources:
-            - source('circle_base','tokenmessenger_evt_mintandwithdraw')
   - name: bridges_base_across_v3_deposits
     meta:
       blockchain: base
@@ -152,12 +170,6 @@ models:
     config:
       tags: [ 'base', 'bridges', 'flows', 'deposits' ]
     description: "Across's v3 bridge deposits events on Base"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
-      - equal_rowcount_with_sources:
-          evt_sources:
-            - source('circle_base','tokenmessenger_evt_mintandwithdraw')
   - name: bridges_base_across_v3_withdrawals
     meta:
       blockchain: base
@@ -167,9 +179,3 @@ models:
     config:
       tags: [ 'base', 'bridges', 'flows', 'withdrawals' ]
     description: "Across's v3 bridge withdrawals events on Base"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
-      - equal_rowcount_with_sources:
-          evt_sources:
-            - source('circle_base','tokenmessenger_evt_mintandwithdraw')

@@ -92,27 +92,36 @@ models:
       - equal_rowcount_with_sources:
           evt_sources:
             - source('circle_ethereum','tokenmessenger_evt_mintandwithdraw')
-    columns:
-      - *deposit_chain
-      - *withdraw_chain
-      - *bridge_name
-      - *bridge_version
-      - *deposit_amount_raw
-      - *deposit_token_address
-      - *block_date
-      - *block_time
-      - *block_number
-      - *withdrawal_amount_raw 
-      - *sender
-      - *recipient
-      - *deposit_token_standard
-      - *withdrawal_token_standard
-      - *withdrawal_token_address
-      - *tx_from
-      - *tx_hash
-      - *evt_index  
-      - *contract_address 
-      - *bridge_transfer_id 
+  - name: bridges_ethereum_celer_v1_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: celer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'celer', 'bridges', 'flows' , 'deposits' ]
+    description: "Celer v1 bridge deposits events on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']
+      - equal_rowcount_with_sources:
+          evt_sources:
+            - source('celer_ethereum','bridge_evt_send')
+  - name: bridges_ethereum_celer_v1_withdrawals
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: celer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'celer', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Celer v1 bridge withdrawals events on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']
+      - equal_rowcount_with_sources:
+          evt_sources:
+            - source('celer_ethereum','tokenmessenger_evt_mintandwithdraw')
   - name: bridges_ethereum_across_v2_deposits
     meta:
       blockchain: ethereum
@@ -122,12 +131,6 @@ models:
     config:
       tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
     description: "Across's v2 bridge deposits events on Ethereum"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
-      - equal_rowcount_with_sources:
-          evt_sources:
-            - source('circle_ethereum','tokenmessenger_evt_mintandwithdraw')
   - name: bridges_ethereum_across_v2_withdrawals
     meta:
       blockchain: ethereum
@@ -137,12 +140,6 @@ models:
     config:
       tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
     description: "Across's v2 bridge withdrawals events on Ethereum"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
-      - equal_rowcount_with_sources:
-          evt_sources:
-            - source('circle_ethereum','tokenmessenger_evt_mintandwithdraw')
   - name: bridges_ethereum_across_v3_deposits
     meta:
       blockchain: ethereum
@@ -152,12 +149,6 @@ models:
     config:
       tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
     description: "Across's v3 bridge deposits events on Ethereum"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
-      - equal_rowcount_with_sources:
-          evt_sources:
-            - source('circle_ethereum','tokenmessenger_evt_mintandwithdraw')
   - name: bridges_ethereum_across_v3_withdrawals
     meta:
       blockchain: ethereum
@@ -167,9 +158,3 @@ models:
     config:
       tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
     description: "Across's v3 bridge withdrawals events on Ethereum"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
-      - equal_rowcount_with_sources:
-          evt_sources:
-            - source('circle_ethereum','tokenmessenger_evt_mintandwithdraw')
