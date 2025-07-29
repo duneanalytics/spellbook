@@ -31,7 +31,7 @@ latest_block_time as (
 
 dexs as (
     select 
-        , s.evt_block_time as block_time
+        s.evt_block_time as block_time
         , s.evt_block_number as block_number 
         , ep.asset0 as token0 
         , ep.asset1 as token1
