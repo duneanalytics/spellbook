@@ -104,10 +104,6 @@ sources:
     tables:
       - name: first_funded_by
       - name: first_token_received
-  - name: addresses_events_nova
-    tables:
-      - name: first_funded_by
-      - name: first_token_received
   - name: addresses_events_berachain
     tables:
       - name: first_funded_by
