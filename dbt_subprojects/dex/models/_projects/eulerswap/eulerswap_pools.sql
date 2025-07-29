@@ -5,7 +5,7 @@
 }}
 
 {% set eulerswap_models = [
-ref('eulerswap_ethereum_pools')
+ref('eulerswap_ethereum_pool_creations')
 ] %}
 
 

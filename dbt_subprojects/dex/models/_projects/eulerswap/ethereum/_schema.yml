@@ -2,7 +2,7 @@ version: 2
 
 models:
 
-  - name: eulerswap_ethereum_pools
+  - name: eulerswap_ethereum_pool_creations
     meta:
       blockchain: ethereum
       sector: dex
@@ -66,6 +66,42 @@ models:
       - &protocolFeeRecipient
         name: protocolFeeRecipient
         description: "COntract address receiving Fee paid to Euler"
+
+  - name: eulerswap_ethereum_pools_prep
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: eulerswap
+      contributors: Henrystats
+    config:
+      tags: ['ethereum', 'pools', 'liquidity', 'eulerswap']
+    description: >
+      PREP table to get final eulerswap_pools table 
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - pool
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *factory_address
+      - *creation_block_time
+      - *creation_block_number
+      - *pool
+      - *hook
+      - *eulerAccount
+      - *asset0
+      - *asset1
+      - *vault0
+      - *vault1
+      - *fee
+      - *protocolFee
+      - *protocolFeeRecipient
+      - &previous_block_number
+        name: previous_block_number
+        description: "creation block_number of the pool tied to the EulerAccount before this"
 
   - name: eulerswap_ethereum_raw_trades
     meta:

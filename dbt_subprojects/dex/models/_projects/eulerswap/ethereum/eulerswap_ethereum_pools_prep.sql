@@ -1,6 +1,6 @@
 {{ config(
     schema = 'eulerswap_ethereum'
-    , alias = 'pools'
+    , alias = 'pools_prep'
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
@@ -10,12 +10,10 @@
 }}
 
 {{
-    eulerswap_compatible_univ4_pools(
+    eulerswap_compatible_pools_prep(
           blockchain = 'ethereum'
         , project = 'eulerswap'
-        , version = '4'
-        , uniswap_pools = ref('uniswap_v4_ethereum_pools')
-        , factory_univ4_pooldeployed  = source('eulerswap_ethereum', 'eulerswapfactory_uniswapv4_evt_pooldeployed')
-        , factory_univ4_poolconfig = source('eulerswap_ethereum', 'eulerswapfactory_uniswapv4_evt_poolconfig')
+        , version = '1'
+        , PoolCreations = ref('eulerswap_ethereum_pool_creations')
     )
 }}

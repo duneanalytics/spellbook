@@ -4,6 +4,7 @@
     , version = null
     , eulerswapinstance_evt_swap = null
     , eulerswap_pools_created = null
+    , filter = null 
     )
 %}
 
@@ -118,5 +119,6 @@ select
     , dexs.source
 from 
 dexs 
+where {{ filter }}
 
 {% endmacro %}
