@@ -127,7 +127,7 @@ models:
           combination_of_columns: ['tx_hash','evt_index']
       - equal_rowcount_with_sources:
           evt_sources:
-            - source('circle_base','tokenmessenger_evt_mintandwithdraw')
+            - source('celer_base','bridge_evt_send')
     columns:
       - *deposit_chain
       - *withdraw_chain
@@ -163,7 +163,7 @@ models:
           combination_of_columns: ['tx_hash','evt_index']
       - equal_rowcount_with_sources:
           evt_sources:
-            - source('circle_base','tokenmessenger_evt_mintandwithdraw')
+            - source('celer_base','bridge_evt_relay')
     columns:
       - *deposit_chain
       - *withdraw_chain
