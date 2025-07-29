@@ -61,7 +61,7 @@ dexs as (
         , s.sender -- router 
         , s.evt_index
         , case 
-            when t.amount_usd is not null then 'uni_v4' 
+            when t.tx_hash is not null then 'uni_v4' 
             else 'OG' 
          end as source
     from 
