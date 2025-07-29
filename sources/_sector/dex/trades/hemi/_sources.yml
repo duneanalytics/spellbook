@@ -5,9 +5,6 @@ sources:
     tables:
       - name: v3pool_evt_swap
       - name: v3factory_evt_poolcreated
-  - name: izumi_finance_multichain
-    tables:
-      - name: iziswapfactory_evt_newpool
   - name: izumi_finance_hemi
     tables:
       - name: iziswappool_evt_swap
