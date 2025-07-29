@@ -120,8 +120,9 @@ WITH swaps AS (
         ,evt_index AS evt_index
         ,ARRAY[-1] AS trace_address
     FROM
-    WHERE blockchain = '{{ network }}'
+   
         {{ source('magpie_protocol_multichain', 'MagpieRouterV3_evt_Swap') }}
+    WHERE chain = '{{ network }}'
     {% if is_incremental() %}
     AND {{incremental_predicate('evt_block_time')}}
     {% endif %}
@@ -149,7 +150,7 @@ WITH swaps AS (
         ,ARRAY[-1] AS trace_address
     FROM
         {{ source('magpie_protocol_multichain', 'MagpieRouterV3_1_evt_Swap') }}
-    WHERE blockchain = '{{ network }}'
+    WHERE chain = '{{ network }}'
     {% if is_incremental() %}
     AND {{incremental_predicate('evt_block_time')}}
     {% endif %}
