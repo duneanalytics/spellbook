@@ -35,17 +35,17 @@ with trace_trades as
             WHEN isToken1 = FALSE THEN ABS(output_delta0)
         END AS token_sold_amount_raw
         , CASE
-            WHEN isToken1 = TRUE THEN JSON_EXTRACT(poolKey, '$.token0')
-            WHEN isToken1 = FALSE THEN JSON_EXTRACT(poolKey, '$.token1')
+            WHEN isToken1 = TRUE THEN cast(JSON_EXTRACT(poolKey, '$.token0') as varchar)
+            WHEN isToken1 = FALSE THEN cast(JSON_EXTRACT(poolKey, '$.token1') as varchar)
         END AS token_bought_address
         , CASE
-            WHEN isToken1 = TRUE THEN JSON_EXTRACT(poolKey, '$.token1')
-            WHEN isToken1 = FALSE THEN JSON_EXTRACT(poolKey, '$.token0')
+            WHEN isToken1 = TRUE THEN cast(JSON_EXTRACT(poolKey, '$.token1') as varchar)
+            WHEN isToken1 = FALSE THEN cast(JSON_EXTRACT(poolKey, '$.token0') as varchar)
         END AS token_sold_address
         , contract_address AS project_contract_address
         , call_tx_hash AS tx_hash
-        , call_tx_from AS taker
-        , null AS maker
+        , cast(call_tx_from as varchar) AS taker
+        , cast(null as varbinary) AS maker
         -- , cast(JSON_EXTRACT(poolKey, '$.config') as varchar) as config  
         , row_number() over (partition by call_tx_hash order by call_trace_address asc) as swap_number
 
@@ -89,13 +89,13 @@ select
     , cast(tt.block_number as uint256) as block_number
     , cast(tt.token_bought_amount_raw as uint256) as token_bought_amount_raw
     , cast(tt.token_sold_amount_raw as uint256) as token_sold_amount_raw
-    , from_hex(tt.token_bought_address) as token_bought_address
-    , from_hex(tt.token_sold_address) as token_sold_address
+    , from_hex(token_bought_address) as token_bought_address
+    , from_hex(token_sold_address) as token_sold_address
     , from_hex(tt.taker) as taker
     , from_hex(tt.maker) as maker
-    , from_hex(tt.project_contract_address) as project_contract_address
+    , project_contract_address
     , tt.tx_hash
-    , cast(coalesce(et.evt_index, 100000+tt.swap_number) as uint256) as evt_index 
+    , cast(coalesce(et.evt_index, 1000000+tt.swap_number) as uint256) as evt_index 
 
 
     
