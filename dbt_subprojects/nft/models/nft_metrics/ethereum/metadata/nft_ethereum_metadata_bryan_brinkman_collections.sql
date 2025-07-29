@@ -19,5 +19,6 @@ from
 select title, art_type, platform, edition_count, blockchain, token_standard, contract_address, min_token_id, max_token_id, category, link, mint_date
 from (VALUES
         ('NIMBUDS', 'Generative', 'Art Blocks', 400, 'Ethereum', 'erc721', 0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270, 10000000, 10000399, '', 'https://opensea.io/collection/nimbuds-by-bryan-brinkman', '2021-01-16')
+        , ('NIMTEENS', 'Generative', 'Art Blocks', 400, 'Ethereum', 'erc721', 0x99a9b7c1116f9ceeb1652de04d5969cce509b069, 408000000, 408000399, '', 'https://opensea.io/collection/nimteens-by-bryan-brinkman', '2023-01-06')
 ) as temp_table (title, art_type, platform, edition_count, blockchain, token_standard, contract_address, min_token_id, max_token_id, category, link, mint_date)
 ) a 
