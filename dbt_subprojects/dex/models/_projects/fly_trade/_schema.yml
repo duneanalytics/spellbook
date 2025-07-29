@@ -54,7 +54,7 @@ sources:
     tables:
       - name: MagpieRouterV2Avalanche_evt_Swap
       - name: MagpieRouterV21Avalanche_evt_Swap
-  - name: magpie_beta_multichain
+  - name: magpie_aggregator_base
     tables:
       - name: Diamond_evt_Swap
       

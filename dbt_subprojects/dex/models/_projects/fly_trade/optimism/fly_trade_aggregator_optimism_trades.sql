@@ -197,7 +197,7 @@ LEFT JOIN {{ source('tokens', 'erc20') }} erc20b
     AND erc20b.blockchain = '{{ network }}'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought
     ON p_bought.minute = date_trunc('minute', swaps.block_time)
-    AND p_bought.contract_address = meta_roswapsuter.token_bought_address
+    AND p_bought.contract_address = swaps.token_bought_address
     AND p_bought.blockchain = '{{ network }}'
     {% if is_incremental() %}
     AND {{incremental_predicate('p_bought.minute')}}
