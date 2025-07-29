@@ -10,6 +10,8 @@ WITH augmented_dex_trades AS (
     , dt.token_sold_address
     , dt.token_bought_address
     , dt.evt_index
+    , dt.project
+    , dt.version
     FROM {{ ref('dex_trades') }} dt
     INNER JOIN {{transactions}} tx ON dt.block_time=tx.block_time
         AND dt.tx_hash=tx.hash
