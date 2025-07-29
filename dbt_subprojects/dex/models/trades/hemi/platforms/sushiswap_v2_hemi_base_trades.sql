@@ -16,6 +16,6 @@
         project = 'sushiswap',
         version = '2',
         Pair_evt_Swap = source('sushiswap_hemi', 'v2pair_evt_swap'),
-        Factory_evt_PoolCreated = source('sushiswap_hemi', 'v2factory_evt_paircreated')
+        Factory_evt_PairCreated = source('sushiswap_hemi', 'v2factory_evt_paircreated')
     )
 }}
