@@ -226,4 +226,5 @@ FROM (VALUES
     , ('yeiswap', 'YeiSwap', 'Direct', 'YeiFinance')
     , ('bulletx', 'BulletX', 'Direct', 'bulletx_io')
     , ('native', 'Native', 'Direct', 'Native')
+    , ('eulerswap', 'Eulerswap', 'Direct & Aggregator', 'eulerfinance')
 ) AS temp_table (project, name, marketplace_type, x_username)
