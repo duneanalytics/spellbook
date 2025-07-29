@@ -1,7 +1,7 @@
 {{ config
 (
     
-    schema = 'fly_trade_aggregator',
+    schema = 'fly_trade',
     alias = 'trades',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "ethereum", "optimism", "bnb", "polygon", "scroll", "blast", "zksync", "taiko", "linea", "berachain", "base"]\',

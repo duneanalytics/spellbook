@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: fly_trade_aggregator_trades
+  - name: fly_trade_trades
     meta:
       blockchain: avalanche_c, optimism, ethereum, arbitrum, bnb, polygon, base, linea, taiko, blast, berachain, zksync, scroll
       sector: dex_aggregator
