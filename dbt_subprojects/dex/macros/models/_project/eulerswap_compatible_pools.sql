@@ -179,7 +179,7 @@ with
 
 pool_creations as (
     select 
-        , factory_address 
+        factory_address 
         , creation_block_time
         , creation_block_number 
         , pool 
