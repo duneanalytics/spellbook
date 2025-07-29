@@ -105,10 +105,8 @@ select
         when amount0In != 0 then token0
         else token1
       end as token_sold_address
-    , dexs.token_bought_address
-    , dexs.token_sold_address
-    , dexs.taker
-    , dexs.maker
+    , dexs.sender as taker
+    , dexs.project_contract_address as maker
     , dexs.project_contract_address
     , dexs.tx_hash
     , dexs.evt_index
