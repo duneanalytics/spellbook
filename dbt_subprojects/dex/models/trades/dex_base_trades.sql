@@ -66,6 +66,7 @@ with base_union as (
         , evt_index
         , tx_from
         , tx_to
+        , tx_index
     FROM
         {{ model }}
     {% if not loop.last %}
