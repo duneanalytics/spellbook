@@ -8,12 +8,10 @@ sources:
   - name: izumi_finance_hemi
     tables:
       - name: iziswappool_evt_swap
-  - name: sushiswap_v2_hemi
+  - name: sushiswap_hemi
     tables:
-      - name: v2pool_evt_swap
+      - name: v2pair_evt_swap
       - name: v2factory_evt_paircreated
-  - name: sushiswap_v3_hemi
-    tables:
       - name: v3pool_evt_swap
       - name: v3factory_evt_poolcreated
 
