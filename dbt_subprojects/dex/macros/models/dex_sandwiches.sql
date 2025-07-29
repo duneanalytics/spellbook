@@ -16,7 +16,7 @@ WITH augmented_dex_trades AS (
     )
 
 -- Checking that each frontrun trade has a matching backrun and at least one victim in between
-WITH indexed_sandwich_trades AS (
+, indexed_sandwich_trades AS (
     SELECT DISTINCT front.block_time
     , t.tx_hash_all AS tx_hash
     , front.project
