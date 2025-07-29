@@ -98,12 +98,12 @@ select
         else amount1In
       end as token_sold_amount_raw 
     , case 
-        when amount0Out != 0 then asset0
-        else asset1
+        when amount0Out != 0 then token0
+        else token1
       end as token_bought_address
     , case 
-        when amount0In != 0 then asset0
-        else asset1
+        when amount0In != 0 then token0
+        else token1
       end as token_sold_address
     , dexs.token_bought_address
     , dexs.token_sold_address
