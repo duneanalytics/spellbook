@@ -7,7 +7,7 @@ SELECT i.blockchain AS deposit_chain
 , evt_block_date AS block_date
 , evt_block_time AS block_time
 , evt_block_number AS block_number
-, amount AS deposit_amount_raw
+, amount AS withdrawal_amount_raw
 , sender
 , receiver AS recipient
 , 'erc20' AS withdrawal_token_standard
