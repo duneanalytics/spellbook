@@ -10,16 +10,15 @@
 with 
 
 uni_v4_trades as (
-    select 
-        * 
-    from 
-    {{ ref('dex_trades') }}
-    where blockchain = '{{blockchain}}'
-    and project = 'uniswap'
-    and version = '4'
-    {% if is_incremental() %}
-    and {{ incremental_predicate('block_time') }}
-    {% endif %}
+    {{
+        uniswap_compatible_v4_trades(
+            blockchain = '{{blockchain}}'
+            , project = 'uniswap'
+            , version = '4'
+            , PoolManager_call_Swap = source('uniswap_v4_'~blockchain, 'PoolManager_call_Swap') 
+            , PoolManager_evt_Swap = source('uniswap_v4_'~blockchain, 'PoolManager_evt_Swap') 
+        )
+    }}
 ),
 
 latest_block_time as (

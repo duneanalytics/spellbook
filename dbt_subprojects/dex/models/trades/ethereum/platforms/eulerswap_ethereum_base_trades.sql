@@ -9,10 +9,19 @@
     )
 }}
 
+with 
 
-select * from {{ ref('eulerswap_ethereum_raw_trades') }}
+trades_cte as (
+{{
+    eulerswap_compatible_trades(
+        blockchain = 'ethereum'
+        , project = 'eulerswap'
+        , version = '1'
+        , eulerswapinstance_evt_swap = source('eulerswap_ethereum', 'eulerswapinstance_evt_swap')
+        , eulerswap_pools_created = ref('eulerswap_ethereum_pools')
+    )
+}}
+)
+
+select * from trades_cte
 where source != 'uni_v4' -- exclude trades logged in Uniswap V4 
-{% if is_incremental() %}
-and {{ incremental_predicate('block_time') }}
-{% endif %}
-
