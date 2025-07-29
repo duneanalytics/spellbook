@@ -16,5 +16,6 @@
         , version = '1'
         , eulerswapinstance_evt_swap = source('eulerswap_ethereum', 'eulerswapinstance_evt_swap')
         , eulerswap_pools_created = ref('eulerswap_ethereum_pool_creations')
+        , filter = "(1 = 1)"
     )
 }}
