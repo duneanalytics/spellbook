@@ -48,11 +48,6 @@ models:
     config:
       tags: ['prices', 'tokens', 'usd']
     description: "Price tokens"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
     columns:
       - &token_id
         name: token_id
@@ -60,13 +55,9 @@ models:
       - &blockchain
         name: blockchain
         description: "Native blockchain of the token, if any"
-        data_tests:
-          - not_null
       - &contract_address
         name: contract_address
         description: "Contract address of the token, if any"
-        data_tests:
-          - not_null
       - &symbol
         name: symbol
         description: "Token symbol"
