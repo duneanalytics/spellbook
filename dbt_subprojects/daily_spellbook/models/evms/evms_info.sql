@@ -30,6 +30,7 @@
                                         , "sonic"
                                         , "superseed"
                                         , "opbnb"
+                                        , "tac"
                                         , "taiko"
                                         , "unichain"
                                         , "viction"
@@ -121,4 +122,5 @@ FROM (
         , (747474, 'katana', 'Katana', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x0000000000000000000000000000000000000000, 'https://explorer.katanarpc.com/', timestamp '2025-06-23 09:45', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, 'Superchain')
         , (5330, 'superseed', 'Superseed', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.superseed.xyz/', timestamp '2024-09-12 22:21', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, 'Superchain')
         , (43111, 'hemi', 'Hemi', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.hemi.xyz/', timestamp '2024-09-09 07:25', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, NULL)
+        , (10000, 'tac', 'TAC', 'Layer 1', NULL, 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.tac.build/', timestamp '2025-06-23 09:45', NULL, NULL, NULL, true, NULL)
 ) AS temp_table (chain_id, blockchain, name, chain_type, rollup_type, native_token_symbol, wrapped_native_token_address, explorer_link, first_block_time, codebase, data_availability, settlement, is_on_dune, ecosystem)
