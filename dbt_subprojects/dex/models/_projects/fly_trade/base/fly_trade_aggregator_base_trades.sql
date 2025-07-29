@@ -38,9 +38,10 @@ WITH swaps AS (
         ,evt_index AS evt_index
         ,ARRAY[-1] AS trace_address
     FROM
-        {{ source('magpie_beta_' ~ network, 'Diamond_evt_Swap') }}
+        {{ source('magpie_beta_multichain', 'Diamond_evt_Swap') }}
+    WHERE chain = '{{ network }}'
     {% if is_incremental() %}
-    WHERE {{incremental_predicate('evt_block_time')}}
+    AND {{incremental_predicate('evt_block_time')}}
     {% endif %}
 
     -- Version V2

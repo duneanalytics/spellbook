@@ -41,7 +41,7 @@ WITH swaps AS (
         {{ source('magpie_beta_multichain', 'MulticallFacet_evt_Swap') }}
     WHERE chain = '{{ network }}'
     {% if is_incremental() %}
-    WHERE {{incremental_predicate('evt_block_time')}}
+    AND {{incremental_predicate('evt_block_time')}}
     {% endif %}
 
     -- Version V2
