@@ -192,7 +192,7 @@ v3_pools AS(
         c.pool AS pool_id,
         t.tokens,
         0 AS weights,
-        "NA" AS symbol,
+        'NA' AS symbol,
         'quantamm' AS pool_type
       FROM token_data c
       INNER JOIN {{ source('beethoven_x_v3_sonic', 'QuantAMMWeightedPoolFactory_call_create') }} cc
