@@ -76,7 +76,7 @@ WITH swaps AS (
 
 )
 SELECT
-    blockchain AS blockchain
+    swaps.blockchain AS blockchain
     ,project AS project
     ,version AS version
     ,block_date AS block_date

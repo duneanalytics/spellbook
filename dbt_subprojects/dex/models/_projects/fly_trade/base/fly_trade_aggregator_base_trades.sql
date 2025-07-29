@@ -39,9 +39,8 @@ WITH swaps AS (
         ,ARRAY[-1] AS trace_address
     FROM
         {{ source('magpie_aggregator_base', 'Diamond_evt_Swap') }}
-    WHERE chain = '{{ network }}'
     {% if is_incremental() %}
-    AND {{incremental_predicate('evt_block_time')}}
+    WHERE {{incremental_predicate('evt_block_time')}}
     {% endif %}
 
     -- Version V2
@@ -156,7 +155,7 @@ WITH swaps AS (
 
 )
 SELECT
-    blockchain AS blockchain
+    swaps.blockchain AS blockchain
     ,project AS project
     ,version AS version
     ,block_date AS block_date
