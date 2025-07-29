@@ -199,7 +199,7 @@ pool_creations as (
 sort_table as (
     select 
         *
-        , lag(block_number, 1, 0) over (partition by eulerAccount, pool order by block_number) as previous_block_number 
+        , lag(creation_block_number, 1, 0) over (partition by eulerAccount, pool order by creation_block_number) as previous_block_number 
     from 
     pool_creations
 )
