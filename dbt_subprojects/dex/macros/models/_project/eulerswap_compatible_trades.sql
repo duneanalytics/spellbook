@@ -57,7 +57,6 @@ dexs as (
         , s.amount0Out
         , s.amount1In
         , s.amount1Out
-        , t.amount_usd -- reference / comp from dex.trades
         , s.sender -- router 
         , s.evt_index
         , case 
