@@ -120,7 +120,7 @@ models:
       project: across
       contributors: [ 'hildobby']
     config:
-      tags: [ 'base', 'bridges', 'flows', 'withdrawals' ]
+      tags: [ 'base', 'bridges', 'flows', 'deposits' ]
     description: "Across's v2 bridge deposits events on Base"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -150,7 +150,7 @@ models:
       project: across
       contributors: [ 'hildobby']
     config:
-      tags: [ 'base', 'bridges', 'flows', 'withdrawals' ]
+      tags: [ 'base', 'bridges', 'flows', 'deposits' ]
     description: "Across's v3 bridge deposits events on Base"
     tests:
       - dbt_utils.unique_combination_of_columns:
