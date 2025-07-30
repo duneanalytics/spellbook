@@ -4,7 +4,7 @@ models:
 
   - name: addresses_events_first_funded_by
     meta:
-      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, celo, base, scroll, zkevm, linea, zksync, sei, mantle, blast, abstract, apechain, berachain, katana, ink, opbnb
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, celo, base, scroll, zkevm, linea, zksync, sei, mantle, blast, abstract, apechain, berachain, katana, ink, opbnb, unichain
       sector: addresses_events
       project: addresses
       contributors: hildobby, 0xr3x
@@ -58,7 +58,7 @@ models:
 
   - name: addresses_events_first_token_received
     meta:
-      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, celo, base, scroll, zkevm, linea, zksync, sei, mantle, blast, abstract, apechain, berachain, katana, ink, opbnb
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, celo, base, scroll, zkevm, linea, zksync, sei, mantle, blast, abstract, apechain, berachain, katana, ink, opbnb, unichain
       sector: addresses_events
       project: addresses
       contributors: hildobby
@@ -97,7 +97,7 @@ models:
 
   - name: addresses_events_first_activity
     meta:
-      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, zksync, base, scroll, zkevm, linea, sei, mantle, blast, abstract, apechain, berachain, katana, ink, opbnb
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, zksync, base, scroll, zkevm, linea, sei, mantle, blast, abstract, apechain, berachain, katana, ink, opbnb, unichain
       sector: addresses_events
       project: addresses
       contributors: Henrystats, hildobby, 0xr3x
