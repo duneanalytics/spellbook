@@ -17,6 +17,7 @@ models:
           combination_of_columns:
             - blockchain
             - pool
+            - eulerAccount
     columns:
       - &blockchain
         name: blockchain
@@ -66,3 +67,9 @@ models:
       - &protocolFeeRecipient
         name: protocolFeeRecipient
         description: "COntract address receiving Fee paid to Euler"
+      - &next_block_number
+        name: next_block_number
+        description: "creation block_number of the pool tied to the EulerAccount after this"
+      - &isActive
+        name: isActive
+        description: "returns True or False on if pool is active"

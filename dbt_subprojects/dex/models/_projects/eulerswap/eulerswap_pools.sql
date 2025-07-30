@@ -5,7 +5,7 @@
 }}
 
 {% set eulerswap_models = [
-ref('eulerswap_ethereum_pool_creations')
+ref('eulerswap_ethereum_pools')
 ] %}
 
 
@@ -19,7 +19,9 @@ FROM (
         , factory_address 
         , creation_block_time
         , creation_block_number 
+        , next_block_number
         , pool 
+        , isActive
         , hook
         , eulerAccount
         , asset0
