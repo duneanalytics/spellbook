@@ -37,6 +37,7 @@ select
     , tx_from
     , tx_to
     , row_number() over(partition by tx_hash order by call_trace_address) as evt_index
+    , CAST(NULL AS BIGINT) as tx_index
 from {{ ref('oneinch_swaps') }}
 where
     protocol = 'LOP'
