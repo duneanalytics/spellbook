@@ -84,7 +84,7 @@ WITH
         )
     )
 SELECT
-    *
+    buf
 FROM {{field_step}}
 
 
