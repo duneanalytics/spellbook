@@ -393,7 +393,8 @@ SELECT distinct all_fills.block_time                                    AS block
                 all_fills.contract_address,
                 native_order_type,
                 tx."from" AS tx_from,
-                tx.to                                                   AS tx_to
+                tx.to                                                   AS tx_to,
+                tx."index"                                              AS tx_index
 FROM all_fills
 INNER JOIN {{ source('ethereum', 'transactions')}} tx
     ON all_fills.transaction_hash = tx.hash

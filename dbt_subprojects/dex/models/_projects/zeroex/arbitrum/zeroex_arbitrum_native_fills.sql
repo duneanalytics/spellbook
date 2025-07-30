@@ -252,7 +252,8 @@ SELECT DISTINCT
     all_fills.contract_address,
     all_fills.native_order_type,
     tx."from" AS tx_from,
-    tx.to AS tx_to
+    tx.to AS tx_to,
+    tx."index" AS tx_index
 FROM all_fills
 INNER JOIN {{ source('arbitrum', 'transactions') }} tx
     ON all_fills.transaction_hash = tx.hash

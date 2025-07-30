@@ -44,7 +44,7 @@ FROM (
       tx_from  as tx_from,
       tx_to  as tx_to,
       evt_index  as evt_index,
-      CAST(NULL AS BIGINT) as tx_index
+      tx_index
 
     FROM {{ model }}
     {% if not loop.last %}
