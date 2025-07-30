@@ -31,7 +31,7 @@
     "call_gas_used" : "null",
     "call_type" : "null",
     "user" : "from_base58(user)",
-    "receiver" : "from_base58(receiver)",
+    "receiver" : "from_base58(maker_receiver)",
     "order_hash" : "order_hash",
     "flags" : "map_from_entries(array[('contracts_only', false), ('cross_chain', false), ('direct', true), ('fusion', true), ('ordinary', null), ('second_side', false)])",
     "remains" : "null",
