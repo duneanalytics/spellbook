@@ -1,7 +1,7 @@
  {{
   config(
         
-        schema='uniswap_v3_optimism',
+        schema='uniswap_optimism',
         alias='pools',
         materialized='table',
         file_format = 'delta',
@@ -70,7 +70,7 @@ select
   , creation_block_number
   , pool as id 
   , fee
-  , 0x as tx_hash -- or use null as varbinary
+  , cast(null as varbinary) as tx_hash -- or use null as varbinary
   , 0 as evt_index 
   , token0
   , token1
