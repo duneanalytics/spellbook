@@ -1,13 +1,17 @@
 {{ config(
     schema = 'dex_hemi'
     , alias = 'base_trades'
-    , materialized = 'view'
+    , materialized = 'incremental'
+    , unique_key = ['tx_hash', 'evt_index']
+    
     )
 }}
 
 {% set base_models = [
     ref('oku_v3_hemi_base_trades')
     , ref('izumi_finance_hemi_base_trades')
+    , ref('sushiswap_v2_hemi_base_trades')
+    , ref('sushiswap_v3_hemi_base_trades')
 ] %}
 
 WITH base_union AS (
