@@ -1,0 +1,6 @@
+version: 2
+
+sources:
+  - name: magpie_protocol_zksync
+    tables:
+      - name: MagpieRouterV2zkSync_evt_Swap
