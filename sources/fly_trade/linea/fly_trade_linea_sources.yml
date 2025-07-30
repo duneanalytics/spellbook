@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: magpie_beta_multichain
+    tables:
+      - name: MulticallFacet_evt_Swap
+      - name: AggregatorFacet_evt_Swap
+      - name: DiamondCutFacet_evt_Swap
+
+  - name: magpie_protocol_multichain
+    tables:
+      - name: MagpieRouterV3_evt_Swap
+      - name: MagpieRouterV3_1_evt_Swap
+      
