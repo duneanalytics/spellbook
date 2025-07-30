@@ -143,7 +143,3 @@ sources:
   - name: native_ethereum
     tables:
       - name: NativeRFQPool_evt_RFQTrade
-  - name: ekubo_ethereum
-    tables:
-      - name: ekubo_core_call_swap_611415377
-      
