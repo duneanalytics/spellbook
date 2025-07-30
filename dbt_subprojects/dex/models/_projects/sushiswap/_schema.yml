@@ -4,7 +4,7 @@ models:
 
   - name: sushiswap_agg_trades
     meta:
-      blockchain: arbitrum, avalanche_c, apechain, base, blast, bnb, celo, ethereum, fantom, gnosis, linea, mantle, nova, optimism, polygon, scroll, sonic, zkevm, zksync
+      blockchain: arbitrum, avalanche_c, apechain, base, blast, bnb, celo, ethereum, fantom, gnosis, hemi, katana, linea, mantle, nova, optimism, polygon, scroll, sonic, zkevm, zksync
       sector: dex
       project: sushiswap
       contributors: olastenberg
