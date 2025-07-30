@@ -29,6 +29,7 @@
     , 'sei'
     , 'shape'
     , 'superseed'
+    , 'tac'
     , 'taiko'
     , 'tron'
     , 'unichain'
