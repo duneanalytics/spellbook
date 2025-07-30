@@ -55,6 +55,7 @@ WITH base_trades as (
         , base_trades.tx_from
         , base_trades.tx_to
         , base_trades.evt_index
+        , base_trades.tx_index
     FROM
         base_trades
     LEFT JOIN
@@ -123,6 +124,7 @@ SELECT
     , tx_from
     , tx_to
     , evt_index
+    , tx_index
 FROM
     enrichments_with_prices dexs
 LEFT JOIN erc4626_prices erc4626a
