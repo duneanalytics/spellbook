@@ -568,6 +568,8 @@ token_tfers as (
         and gp.token0 = tt.contract_address 
     {%- if is_incremental() %}
     where {{ incremental_predicate('tt.evt_block_time') }}
+    {% else %}
+    where tt.evt_block_time >= date '2025-07-01'
     {%- endif %}
 
     union all 
@@ -593,6 +595,8 @@ token_tfers as (
         and gp.token0 = tt.contract_address 
     {%- if is_incremental() %}
     where {{ incremental_predicate('tt.evt_block_time') }}
+    {% else %}
+    where tt.evt_block_time >= date '2025-07-01'
     {%- endif %}
 
     union all 
@@ -618,6 +622,8 @@ token_tfers as (
         and gp.token1 = tt.contract_address 
     {%- if is_incremental() %}
     where {{ incremental_predicate('tt.evt_block_time') }}
+    {% else %}
+    where tt.evt_block_time >= date '2025-07-01'
     {%- endif %}
 
     union all 
@@ -643,6 +649,8 @@ token_tfers as (
         and gp.token1 = tt.contract_address 
     {%- if is_incremental() %}
     where {{ incremental_predicate('tt.evt_block_time') }}
+    {% else %}
+    where tt.evt_block_time >= date '2025-07-01'
     {%- endif %}
 )
 
