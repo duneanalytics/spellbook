@@ -106,7 +106,7 @@ select * from equality_checks where not contains(split(expected_type,'/'),actual
         'maker': 'varbinary',
         'project_contract_address': 'varbinary',
         'tx_hash': 'varbinary',
-        'evt_index': 'bigint',
+        'evt_index': 'bigint/integer',
         'tx_from': 'varbinary',
         'tx_to': 'varbinary',
         'tx_index': 'bigint'
