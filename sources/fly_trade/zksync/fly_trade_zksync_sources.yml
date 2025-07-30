@@ -4,3 +4,4 @@ sources:
   - name: magpie_protocol_zksync
     tables:
       - name: MagpieRouterV2zkSync_evt_Swap
+      - name: MagpieRouterV21zkSync_evt_Swap
