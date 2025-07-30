@@ -70,7 +70,6 @@ with base_union as (
         , tx_index
     FROM
         {{ model }}
-    WHERE block_time >= now() - interval '7' day
     {% if not loop.last %}
     UNION ALL
     {% endif %}
