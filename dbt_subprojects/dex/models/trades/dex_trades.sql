@@ -8,7 +8,33 @@
     , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     , post_hook='{{ expose_spells(\'[
-                                         "hemi"
+                                        "arbitrum"
+                                        , "avalanche_c"
+                                        , "base"
+                                        , "blast"
+                                        , "bnb"
+                                        , "boba"
+                                        , "celo"
+                                        , "ethereum"
+                                        , "fantom"
+                                        , "gnosis"
+                                        , "hemi"
+                                        , "kaia"
+                                        , "linea"
+                                        , "mantle"
+                                        , "nova"
+                                        , "optimism"
+                                        , "polygon"
+                                        , "ronin"
+                                        , "scroll"
+                                        , "sei"
+                                        , "sonic"
+                                        , "sophon"
+                                        , "taiko"
+                                        , "zkevm"
+                                        , "zksync"
+                                        , "unichain"
+                                        , "zora"
                                     ]\',
                                     "sector",
                                     "dex",
