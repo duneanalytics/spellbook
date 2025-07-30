@@ -12,6 +12,7 @@ models:
       tags: [ 'dex', 'trades']
     description: '{{ doc("dex_trades_doc") }}'
     data_tests:
+      - check_columns_dex_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -104,6 +105,7 @@ models:
     config:
       tags: [ 'dex' ]
     data_tests:
+      - check_columns_dex_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
