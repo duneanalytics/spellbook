@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'dex_bnb'
+    schema = 'eulerswap'
     , alias = 'base_trades'
     , partition_by = ['block_month']
     , materialized = 'incremental'
@@ -10,43 +10,10 @@
     )
 }}
 
-
--- (blockchain, project, project_version, model)
 {% set base_models = [
-    ref('uniswap_v4_bnb_base_trades')
-    , ref('uniswap_v3_bnb_base_trades')
-    , ref('uniswap_v2_bnb_base_trades')
-    , ref('apeswap_bnb_base_trades')
-    , ref('airswap_bnb_base_trades')
-    , ref('sushiswap_v1_bnb_base_trades')
-    , ref('sushiswap_v2_bnb_base_trades')
-    , ref('fraxswap_bnb_base_trades')
-    , ref('trader_joe_v2_bnb_base_trades')
-    , ref('trader_joe_v2_1_bnb_base_trades')
-    , ref('pancakeswap_v2_bnb_base_trades')
-    , ref('pancakeswap_v3_bnb_base_trades')
-    , ref('pancakeswap_infinity_bnb_base_trades')
-    , ref('biswap_v2_bnb_base_trades')
-    , ref('biswap_v3_bnb_base_trades')
-    , ref('babyswap_bnb_base_trades')
-    , ref('mdex_bnb_base_trades')
-    , ref('wombat_bnb_base_trades')
-    , ref('dodo_bnb_base_trades')
-    , ref('iziswap_bnb_base_trades')
-    , ref('maverick_bnb_base_trades')
-    , ref('maverick_v2_bnb_base_trades')
-    , ref('nomiswap_bnb_base_trades')
-    , ref('kyberswap_bnb_base_trades')
-    , ref('xchange_bnb_base_trades')
-    , ref('thena_bnb_base_trades')
-    , ref('ellipsis_finance_bnb_base_trades')
-    , ref('onepunchswap_bnb_base_trades')
-    , ref('woofi_bnb_base_trades')
-    , ref('hashflow_bnb_base_trades')
-    , ref('swaap_v2_bnb_base_trades')
-    , ref('hyperjump_bnb_base_trades')
-    , ref('native_bnb_base_trades')
-    , ref('eulerswap_bnb_base_trades')
+    ref('eulerswap_ethereum_raw_trades')
+    , ref('eulerswap_bnb_raw_trades')
+    , ref('eulerswap_unichain_raw_trades')
 ] %}
 with base_union as (
     SELECT *
@@ -70,6 +37,13 @@ with base_union as (
             , project_contract_address
             , tx_hash
             , evt_index
+            , fee 
+            , protocolFee 
+            , instance 
+            , eulerAccount 
+            , factory_address 
+            , sender 
+            , source
             , row_number() over (partition by tx_hash, evt_index order by tx_hash) as duplicates_rank
         FROM
             {{ base_model }}
@@ -90,7 +64,7 @@ with base_union as (
 {{
     add_tx_columns(
         model_cte = 'base_union'
-        , blockchain = 'bnb'
+        , blockchain = 'unichain'
         , columns = ['from', 'to', 'index']
     )
 }}

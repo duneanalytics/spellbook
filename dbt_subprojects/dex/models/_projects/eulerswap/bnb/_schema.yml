@@ -2,22 +2,21 @@ version: 2
 
 models:
 
-  - name: eulerswap_pools
+  - name: eulerswap_bnb_pool_creations
     meta:
-      blockchain: ethereum, bnb, unichain
+      blockchain: bnb
       sector: dex
       project: eulerswap
       contributors: Henrystats
     config:
-      tags: ['ethereum', 'pools', 'liquidity', 'eulerswap']
+      tags: ['bnb', 'pools', 'liquidity', 'eulerswap']
     description: >
-      eulerswap Uni V4 DEX pools across all chains
+      eulerswap Uni V4 bnb DEX pools
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
             - pool
-            - eulerAccount
     columns:
       - &blockchain
         name: blockchain
@@ -67,6 +66,40 @@ models:
       - &protocolFeeRecipient
         name: protocolFeeRecipient
         description: "COntract address receiving Fee paid to Euler"
+
+  - name: eulerswap_bnb_pools
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: eulerswap
+      contributors: Henrystats
+    config:
+      tags: ['bnb', 'pools', 'liquidity', 'eulerswap']
+    description: >
+      Eulerswap pools on bnb
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - pool
+            - eulerAccount
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *factory_address
+      - *creation_block_time
+      - *creation_block_number
+      - *pool
+      - *hook
+      - *eulerAccount
+      - *asset0
+      - *asset1
+      - *vault0
+      - *vault1
+      - *fee
+      - *protocolFee
+      - *protocolFeeRecipient
       - &next_block_number
         name: next_block_number
         description: "creation block_number of the pool tied to the EulerAccount after this"
@@ -74,15 +107,15 @@ models:
         name: isActive
         description: "returns True or False on if pool is active"
 
-  - name: eulerswap_base_trades
+  - name: eulerswap_bnb_raw_trades
     meta:
-      blockchain: ethereum, bnb, unichain
+      blockchain: bnb
       sector: dex
       project: eulerswap
       contributors: Henrystats
     config:
-      tags: ['bnb', 'ethereum', 'unichain', 'pools', 'trades', 'eulerswap']
-    description: "Eulerswap base trades across all chains"
+      tags: ['bnb', 'pools', 'trades', 'eulerswap']
+    description: "Eulerswap bnb base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

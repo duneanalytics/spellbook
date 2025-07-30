@@ -115,7 +115,7 @@ models:
       contributors: Henrystats
     config:
       tags: ['ethereum', 'pools', 'trades', 'eulerswap']
-    description: "Eulerswap ethereum v2 base trades"
+    description: "Eulerswap ethereum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
