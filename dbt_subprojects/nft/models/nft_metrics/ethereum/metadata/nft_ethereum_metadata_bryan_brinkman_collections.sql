@@ -3,10 +3,6 @@
         ,schema = 'nft_ethereum_metadata'
         ,alias = 'bryan_brinkman_collections'
         ,materialized = 'table'
-        ,post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
-                                    spell_type = "sector",
-                                    spell_name = "nft_ethereum_metadata",
-                                    contributors = \'["rickmanelius"]\') }}'
         )
 }}
 
