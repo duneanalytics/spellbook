@@ -104,22 +104,22 @@ with trace_trades as
 )
 SELECT 
 
-    CAST('ethereum' AS VARCHAR) AS blockchain
-    , CAST('ekubo' AS VARCHAR) AS project
-    , CAST('1' AS VARCHAR) AS version
+    'ethereum' AS blockchain
+    , 'ekubo' AS project
+    , '1' AS version
     , date_trunc( 'month', tt.block_time) AS block_month
     , date_trunc( 'day', tt.block_time) AS block_date
     , tt.block_time AS block_time
-    , CAST(tt.block_number AS uint256) AS block_number
-    , CAST(tt.token_bought_amount_raw AS uint256) AS token_bought_amount_raw
-    , CAST(tt.token_sold_amount_raw AS uint256) AS token_sold_amount_raw
+    , tt.block_number AS block_number
+    , tt.token_bought_amount_raw AS token_bought_amount_raw
+    , tt.token_sold_amount_raw AS token_sold_amount_raw
     , from_hex(token_bought_address) AS token_bought_address
     , from_hex(token_sold_address) AS token_sold_address
     , from_hex(tt.taker) AS taker
     , from_hex(tt.maker) AS maker
     , project_contract_address
     , tt.tx_hash
-    , CAST(et.evt_index AS uint256) AS evt_index 
+    , et.evt_index AS evt_index 
 
 FROM trace_trades tt
 INNER JOIN evt_trades et 
