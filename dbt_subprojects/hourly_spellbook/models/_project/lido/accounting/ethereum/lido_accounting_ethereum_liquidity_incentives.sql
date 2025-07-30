@@ -125,7 +125,27 @@ multichain_liquidity_incentives_txns AS (
         UNION ALL
         SELECT address FROM revshare_payments_addr
     )
-
+    
+     UNION ALL
+    -- includes period before RewShare payments scheme changed
+        SELECT
+        evt_block_time,
+        CAST(value AS DOUBLE) AS value,
+        evt_tx_hash,
+        to,
+        "from",
+        contract_address,
+        'ethereum' as blockchain
+    FROM  delta_prod.erc20_ethereum.evt_transfer
+    WHERE "from" IN (
+        SELECT
+            address
+        FROM multisigs_list
+        WHERE name in ('LiquidityRewardsMsig', 'LiquidityRewardMngr') AND chain = 'Ethereum'
+    )
+    AND to IN ( SELECT address FROM revshare_payments_addr ) 
+    AND evt_block_time < date '2025-07-23'
+    
     UNION ALL
 
     SELECT
