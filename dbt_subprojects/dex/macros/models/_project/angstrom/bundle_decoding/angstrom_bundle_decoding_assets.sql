@@ -1,14 +1,10 @@
 {% macro
-    angstrom_decoding_assets(
-        input_hex,
-        offset
-    )
+    angstrom_decoding_assets(input_hex)
 %}
 
 
 WITH vec_pade AS (
-    SELECT
-        varbinary_substring(input_hex, offset) AS buf
+    SELECT input_hex AS buf
 )
 SELECT 
     bundle_idx,
