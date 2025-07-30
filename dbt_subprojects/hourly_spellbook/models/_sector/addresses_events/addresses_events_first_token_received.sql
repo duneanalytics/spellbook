@@ -2,7 +2,7 @@
 (
     alias = 'first_token_received',
     schema = 'addresses_events',
-    post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "gnosis", "optimism", "polygon", "celo", "zora", "base", "scroll", "zksync", "sei", "mantle", "blast", "ronin", "nova", "abstract", "berachain", "katana"]\',
+    post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "gnosis", "optimism", "polygon", "celo", "zora", "base", "scroll", "zksync", "sei", "mantle", "blast", "ronin", "nova", "abstract", "berachain", "katana", "ink"]\',
                                     "sector",
                                     "addresses_events",
                                     \'["hildobby"]\') }}'
@@ -34,6 +34,7 @@
 , (ref('addresses_events_apechain_first_token_received'))
 , (ref('addresses_events_berachain_first_token_received'))
 , (ref('addresses_events_katana_first_token_received'))
+, (ref('addresses_events_ink_first_token_received'))
 ] %}
 
 WITH joined_data AS (
