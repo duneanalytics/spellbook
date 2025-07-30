@@ -227,4 +227,5 @@ FROM (VALUES
     , ('bulletx', 'BulletX', 'Direct', 'bulletx_io')
     , ('native', 'Native', 'Direct', 'Native')
     , ('eulerswap', 'Eulerswap', 'Direct & Aggregator', 'eulerfinance')
+    , ('blackhole', 'Blackhole', 'Direct', 'BlackholeDEX')
 ) AS temp_table (project, name, marketplace_type, x_username)
