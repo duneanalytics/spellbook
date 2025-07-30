@@ -227,5 +227,4 @@ FROM (VALUES
     , ('bulletx', 'BulletX', 'Direct', 'bulletx_io')
     , ('native', 'Native', 'Direct', 'Native')
     , ('blackhole', 'Blackhole', 'Direct', 'BlackholeDEX')
-    , ('ekubo', 'Ekubo', 'Direct', 'EkuboProtocol')
 ) AS temp_table (project, name, marketplace_type, x_username)
