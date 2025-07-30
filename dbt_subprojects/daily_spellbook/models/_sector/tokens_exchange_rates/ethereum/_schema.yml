@@ -1,0 +1,45 @@
+version: 2
+
+models:
+  - name: tokens_ethereum_exchange_rates
+    meta:
+      blockchain: ethereum
+      sector: tokens
+      contributors: Henrystats
+    config:
+      tags: ['oracle', 'rates', 'lst', 'vaults', 'ethereum']
+    description: >
+      Effective exchange rates for tokens that derive their value from another asset, including LSTs, yield vault tokens, fTokens, and more.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+    columns:
+      - name: blockchain
+        description: "Blockchain where the event or token interaction occurred (e.g., ethereum, base, arbitrum)"
+      - name: block_time
+        description: "UTC timestamp of the block when the event occurred"
+      - name: block_number
+        description: "Block number when the event occurred"
+      - name: tx_hash
+        description: "Transaction hash where the event occurred"
+      - name: evt_index
+        description: "Log index of the event within the transaction"
+      - name: project
+        description: "Project or protocol the token belongs to (e.g., etherfi, frax, morpho)"
+      - name: token_address
+        description: "Address of the token whose exchange rate is being tracked"
+      - name: token_symbol
+        description: "Symbol of the token (e.g., tETH, ETH+, sfrxETH)"
+      - name: token_type
+        description: "Classification of the token (e.g., LST, Vault Token, fToken)"
+      - name: underlying_token_address
+        description: "Address of the token this asset derives value from (e.g., wstETH → ETH)"
+      - name: underlying_token_symbol
+        description: "Symbol of the underlying token"
+      - name: rate
+        description: "Exchange rate between the token and its underlying asset"
+      - name: price_usd
+        description: "USD price of the token, calculated using the underlying asset price"
