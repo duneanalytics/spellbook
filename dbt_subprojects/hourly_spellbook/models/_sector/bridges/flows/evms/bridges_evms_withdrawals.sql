@@ -12,6 +12,11 @@
 {% set chains = [
     'ethereum'
     , 'base'
+    , 'arbitrum'
+    , 'avalanche_c'
+    , 'optimism'
+    , 'polygon'
+    , 'unichain'
 ] %}
 
 WITH grouped_withdrawals AS (
