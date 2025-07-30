@@ -19,7 +19,6 @@
 WITH swaps AS (
     
     -- Version V3
-    -- UNION ALL
     SELECT
         '{{ network }}' AS blockchain
         ,'fly_trade' AS project
