@@ -107,8 +107,8 @@ SELECT
     'ethereum' AS blockchain
     , 'ekubo' AS project
     , '1' AS version
-    , date_trunc( 'month', tt.block_time) AS block_month
-    , date_trunc( 'day', tt.block_time) AS block_date
+    , cast(date_trunc( 'month', tt.block_time) as date) AS block_month
+    , cast(date_trunc( 'day', tt.block_time) as date) AS block_date
     , tt.block_time AS block_time
     , tt.block_number AS block_number
     , tt.token_bought_amount_raw AS token_bought_amount_raw

@@ -59,8 +59,8 @@ with base_union as (
             blockchain
             , project
             , version
-            , cast(block_month as date) as block_month
-            , cast(block_date as date) as block_date
+            , block_month
+            , block_date
             , block_time
             , block_number
             , cast(token_bought_amount_raw as uint256) as token_bought_amount_raw
