@@ -35,5 +35,7 @@ SELECT
     CAST(cases_for_params[1] AS uint256) AS t1_amount
 FROM amount_case
 
+-- TODO: investigate tiny rounding error (approx 10^-20 units off, so very insignificant)
+
 
 {% endmacro %}
