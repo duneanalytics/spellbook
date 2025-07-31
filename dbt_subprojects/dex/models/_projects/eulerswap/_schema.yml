@@ -74,7 +74,7 @@ models:
         name: isActive
         description: "returns True or False on if pool is active"
 
-  - name: eulerswap_base_trades
+  - name: eulerswap_trades
     meta:
       blockchain: ethereum, bnb, unichain
       sector: dex
@@ -82,7 +82,7 @@ models:
       contributors: Henrystats
     config:
       tags: ['bnb', 'ethereum', 'unichain', 'pools', 'trades', 'eulerswap']
-    description: "Eulerswap base trades across all chains"
+    description: "Eulerswap trades across all chains"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
