@@ -62,7 +62,7 @@ and evt_block_time >= TIMESTAMP '{{project_start_date}}'
 {% endif %}
 
 ),
-temp as (
+swaps_table as (
 select 
   'solana' as blockchain
 , 'meteora' as project
@@ -96,4 +96,4 @@ on (
     and sd.rn=evt.rn
 )
 )
-select * from temp 
+select * from swaps_table 
