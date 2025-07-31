@@ -21,7 +21,7 @@ CASE
     END AS {{to_column_name}}
     {% elif blockchain == 'sonic' %}
 CASE
-        WHEN {{from_column_name}} = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x039e2fB66102314Ce7b64Ce5Ce3E5183bc94aD38 -- wS (wrapped sonic)
+        WHEN {{from_column_name}} = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x039e2fB66102314Ce7b64Ce5Ce3E5183bc94aD38 -- wS // wrapped sonic
         ELSE {{from_column_name}}
     END AS {{to_column_name}}
 {% endif %}
