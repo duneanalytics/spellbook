@@ -167,13 +167,39 @@ v3_pools AS(
         t.tokens,
         0 AS weights,
         cc.symbol,
-        'stable' AS pool_type
+        'ECLP' AS pool_type
       FROM token_data c
       INNER JOIN {{ source('beethoven_x_v3_sonic', 'GyroECLPPoolFactory_call_create') }} cc
         ON c.pool = cc.output_pool
       CROSS JOIN UNNEST(c.tokens) AS t(tokens)
+
+      UNION ALL
+
+      SELECT
+        c.pool AS pool_id,
+        t.tokens,
+        0 AS weights,
+        cc.symbol,
+        'reclamm' AS pool_type
+      FROM token_data c
+      INNER JOIN {{ source('beethoven_x_v3_sonic', 'ReClammPoolFactory_call_create') }} cc
+        ON c.pool = cc.output_pool
+      CROSS JOIN UNNEST(c.tokens) AS t(tokens)
+
+      UNION ALL
+
+      SELECT
+        c.pool AS pool_id,
+        t.tokens,
+        0 AS weights,
+        'NA' AS symbol,
+        'quantamm' AS pool_type
+      FROM token_data c
+      INNER JOIN {{ source('beethoven_x_v3_sonic', 'QuantAMMWeightedPoolFactory_call_create') }} cc
+        ON c.pool = cc.output_pool
+      CROSS JOIN UNNEST(c.tokens) AS t(tokens)
     ) zip 
-          ),
+  ),
 
     settings AS (
       SELECT
