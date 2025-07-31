@@ -161,6 +161,10 @@ WITH all_swaps AS (
         , s.outer_instruction_index
         , s.inner_instruction_index
         , s.tx_index
+        , ROW_NUMBER() OVER (
+            PARTITION BY s.tx_id, s.outer_instruction_index, s.inner_instruction_index
+            ORDER BY t_buy.amount DESC
+        ) as rn
     FROM all_swaps s
     -- Get the "buy" transfer (vault → user)
     INNER JOIN {{ ref('tokens_solana_transfers') }} t_buy
@@ -224,3 +228,4 @@ SELECT
     , inner_instruction_index
     , tx_index
 FROM transfers 
+WHERE rn = 1 
