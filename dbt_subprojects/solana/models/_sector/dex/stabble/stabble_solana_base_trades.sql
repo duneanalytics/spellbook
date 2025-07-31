@@ -38,10 +38,9 @@ WITH all_swaps AS (
         , account_vault_token_in AS token_sold_vault
         , account_vault_token_out AS token_bought_vault
     FROM {{ source('stable_swap_solana', 'stable_swap_call_swap') }}
+    WHERE call_block_time >= now() - interval '7' day
     {% if is_incremental() %}
-    WHERE {{incremental_predicate('call_block_time')}}
-    {% else %}
-    WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
+    AND {{incremental_predicate('call_block_time')}}
     {% endif %}
 
     UNION ALL
@@ -69,10 +68,9 @@ WITH all_swaps AS (
         , account_vault_token_in AS token_sold_vault
         , account_vault_token_out AS token_bought_vault
     FROM {{ source('stable_swap_solana', 'stable_swap_call_swap_v2') }}
+    WHERE call_block_time >= now() - interval '7' day
     {% if is_incremental() %}
-    WHERE {{incremental_predicate('call_block_time')}}
-    {% else %}
-    WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
+    AND {{incremental_predicate('call_block_time')}}
     {% endif %}
 
     UNION ALL
@@ -100,10 +98,9 @@ WITH all_swaps AS (
         , account_vault_token_in AS token_sold_vault
         , account_vault_token_out AS token_bought_vault
     FROM {{ source('stable_swap_solana', 'weighted_swap_call_swap') }}
+    WHERE call_block_time >= now() - interval '7' day
     {% if is_incremental() %}
-    WHERE {{incremental_predicate('call_block_time')}}
-    {% else %}
-    WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
+    AND {{incremental_predicate('call_block_time')}}
     {% endif %}
 
     UNION ALL
@@ -131,10 +128,9 @@ WITH all_swaps AS (
         , account_vault_token_in AS token_sold_vault
         , account_vault_token_out AS token_bought_vault
     FROM {{ source('stable_swap_solana', 'weighted_swap_call_swap_v2') }}
+    WHERE call_block_time >= now() - interval '7' day
     {% if is_incremental() %}
-    WHERE {{incremental_predicate('call_block_time')}}
-    {% else %}
-    WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
+    AND {{incremental_predicate('call_block_time')}}
     {% endif %}
 
 )
