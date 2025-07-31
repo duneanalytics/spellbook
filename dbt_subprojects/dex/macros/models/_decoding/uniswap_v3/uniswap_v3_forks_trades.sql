@@ -88,6 +88,7 @@ WITH evt_swap AS (
         AND ct."from" = f.contract_address
         AND ct.blockchain = f.blockchain
         AND ct.block_month = f.block_month
+    -- we need to add an additional condition to match the zksync stack creation traces here
 )
 , optimism_mapped_trades AS (
      -- Special handling for Optimism trades in with mappings (bypassing some filters)
