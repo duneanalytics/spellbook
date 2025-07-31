@@ -1,10 +1,11 @@
 {% macro
-    angstrom_decoding_pairs(input_hex)
+    angstrom_decoding_pairs(raw_tx_input_hex)
 %}
 
 
 WITH vec_pade AS (
-    SELECT input_hex AS buf
+    SELECT buf
+    FROM ({{ angstrom_decoding_recursive(raw_tx_input_hex, step1) }})
 )
 SELECT 
     bundle_idx,
