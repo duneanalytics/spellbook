@@ -65,3 +65,4 @@ select
     dexs.evt_index,
     dexs.tx_index
 from dexs
+where dexs.blockchain = 'abstract'

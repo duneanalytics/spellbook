@@ -39,5 +39,6 @@
         version = '3'
         , Pair_evt_Swap = Pair_evt_Swap
         , Factory_evt_PoolCreated = Factory_evt_PoolCreated
-    )
+    ) 
 }}
+where blockchain = 'abstract'

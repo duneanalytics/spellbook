@@ -42,4 +42,5 @@
         , Pair_evt_Swap = Pair_evt_Swap
         , Factory_evt_PairCreated = Factory_evt_PairCreated
     )
-}}
+}} 
+where blockchain = 'abstract'
