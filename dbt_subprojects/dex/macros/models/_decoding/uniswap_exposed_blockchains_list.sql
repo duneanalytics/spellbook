@@ -39,6 +39,7 @@
       "berachain"
        , "sonic"
        , "unichain"
+       , "abstract"
        
     ]) }}
 {% endmacro %} 

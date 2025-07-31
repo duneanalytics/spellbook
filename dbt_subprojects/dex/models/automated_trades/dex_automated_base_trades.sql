@@ -53,3 +53,4 @@ select
     *
 from
     base_union
+where 1=1
