@@ -6,6 +6,8 @@
 
 {% set eulerswap_models = [
 ref('eulerswap_ethereum_pools')
+, ref('eulerswap_bnb_pools')
+, ref('eulerswap_unichain_pools')
 ] %}
 
 
