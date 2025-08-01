@@ -37,6 +37,7 @@ WITH swaps AS (
         ,evt_tx_to AS tx_to
         ,evt_index AS evt_index
         ,ARRAY[-1] AS trace_address
+        ,ROW_NUMBER() OVER (PARTITION BY evt_tx_hash ORDER BY evt_block_time DESC) AS rn
     FROM
         {{ source('magpie_protocol_' ~ network, 'MagpieRouterV2zkSync_evt_Swap') }}
     {% if is_incremental() %}
@@ -64,6 +65,7 @@ WITH swaps AS (
         ,evt_tx_to AS tx_to
         ,evt_index AS evt_index
         ,ARRAY[-1] AS trace_address
+        ,ROW_NUMBER() OVER (PARTITION BY evt_tx_hash ORDER BY evt_block_time DESC) AS rn
     FROM
         {{ source('magpie_protocol_' ~ network, 'MagpieRouterV21zkSync_evt_Swap') }}
     {% if is_incremental() %}
@@ -137,3 +139,4 @@ LEFT JOIN {{ source('prices', 'usd') }} p_eth
     {% else %}
     AND p_eth.minute >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
+WHERE swaps.rn = 1
