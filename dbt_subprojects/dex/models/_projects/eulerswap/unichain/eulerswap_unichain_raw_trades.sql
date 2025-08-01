@@ -1,30 +1,34 @@
 {{ config(
-    schema = 'dex_unichain'
-    , alias = 'base_trades'
-    , partition_by = ['block_month']
+    schema = 'eulerswap_unichain'
+    , alias = 'raw_trades'
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
-    , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index']
+    , unique_key = ['tx_hash', 'evt_index']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
 
-{% set base_models = [
-    ref('uniswap_v2_unichain_base_trades')
-    , ref('uniswap_v3_unichain_base_trades')
-    , ref('uniswap_v4_unichain_base_trades')
-    , ref('dyorswap_unichain_base_trades')
-    , ref('unichainswap_unichain_base_trades')
-    , ref('velodrome_unichain_base_trades')
-    , ref('eulerswap_unichain_base_trades')
-] %}
-with base_union as (
-    SELECT *
-    FROM
-    (
-        {% for base_model in base_models %}
-        SELECT
+with 
+
+base_model as (
+{{
+    eulerswap_compatible_trades(
+        blockchain = 'unichain'
+        , project = 'eulerswap'
+        , version = '1'
+        , eulerswapinstance_evt_swap = source('eulerswap_unichain', 'eulerswapinstance_evt_swap')
+        , eulerswap_pools_created = ref('eulerswap_unichain_pool_creations')
+        , filter = "(1 = 1)"
+    )
+}}
+)
+
+, base_union as (
+    select 
+        * 
+    from (
+        select 
             blockchain
             , project
             , version
@@ -41,22 +45,22 @@ with base_union as (
             , project_contract_address
             , tx_hash
             , evt_index
+            , fee 
+            , protocolFee 
+            , instance 
+            , eulerAccount 
+            , factory_address 
+            , sender 
+            , source
             , row_number() over (partition by tx_hash, evt_index order by tx_hash) as duplicates_rank
-        FROM
-            {{ base_model }}
-        WHERE
+        from 
+        base_model 
+        where
            token_sold_amount_raw >= 0 and token_bought_amount_raw >= 0
-        {% if is_incremental() %}
-            AND {{ incremental_predicate('block_time') }}
-        {% endif %}
-        {% if not loop.last %}
-        UNION ALL
-        {% endif %}
-        {% endfor %}
-    )
-    WHERE
+    ) 
+    where
         duplicates_rank = 1
-)
+) 
 
 {{
     add_tx_columns(
