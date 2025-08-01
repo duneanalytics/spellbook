@@ -5,9 +5,9 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    partition_by = ['block_month'],
+    partition_by = ['block_date'],
     unique_key = ['block_hour', 'token_address', 'user'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_hour')],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     tags = ['static']
   )
 }}
@@ -18,4 +18,4 @@
     project = 'aave',
     version = '3'
   )
-}} 
+}}
