@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: magpie_protocol_avalanche_c
+    tables:
+      - name: MagpieRouterV2Avalanche_evt_Swap
+      - name: MagpieRouterV21Avalanche_evt_Swap

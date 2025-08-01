@@ -1,0 +1,6 @@
+version: 2
+
+sources:
+  - name: magpie_protocol_scroll
+    tables:
+      - name: MagpieRouterV21Scroll_evt_Swap

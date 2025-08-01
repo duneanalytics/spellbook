@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: magpie_aggregator_base
+    tables:
+      - name: Diamond_evt_Swap
+
+  - name: magpie_protocol_base
+    tables:
+      - name: MagpieRouterV2Base_evt_Swap
+      - name: MagpieRouterV21Base_evt_Swap  
