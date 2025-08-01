@@ -65,3 +65,20 @@ models:
           seed_file: ref('velodrome_superseed_base_trades_seed')
           filter:
             version: 2 
+
+  - name: seedfi_superseed_base_trades
+    meta:
+      blockchain: superseed
+      sector: dex
+      project: seedfi
+      contributors: ShawnEdwards23
+    config:
+      tags: ["ink", "dex", "trades", "seedfi"]
+    description: "seedfi superseed base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('seedfi_superseed_base_trades_seed')
