@@ -502,28 +502,32 @@ hourly_market_user as (
     inner join first_supplied fs
       on hm.block_hour >= fs.first_block_hour
       and hm.token_address = fs.token_address
+),
+
+supply_scaled as (
+  select
+    hmu.blockchain,
+    hmu.project,
+    hmu.version,
+    hmu.block_date,
+    hmu.block_hour,
+    hmu.token_address,
+    hmu.symbol,
+    hmu.user,
+    sum(s.atoken_amount) over (
+      partition by hmu.user, hmu.token_address
+      order by hmu.block_hour
+    ) * hmu.liquidity_index / power(10, 27) as amount
+  from hourly_market_user hmu
+    left join supplied s
+      on hmu.block_hour = s.block_hour
+      and hmu.token_address = s.token_address
+      and hmu.user = s.user
 )
 
-select
-  hmu.blockchain,
-  hmu.project,
-  hmu.version,
-  hmu.block_date,
-  hmu.block_hour,
-  hmu.token_address,
-  hmu.symbol,
-  hmu.user,
-  sum(s.atoken_amount) over (
-    partition by hmu.user, hmu.token_address
-    order by hmu.block_hour
-  ) * hmu.liquidity_index / power(10, 27) as amount
-from hourly_market_user hmu
-  left join supplied s
-    on hmu.block_hour = s.block_hour
-    and hmu.token_address = s.token_address
-    and hmu.user = s.user
+select * from supply_scaled
 {% if is_incremental() %}
-where {{ incremental_predicate('hmu.block_date') }}
+where {{ incremental_predicate('block_date') }}
 {% endif %}
 
 {% endmacro %}
