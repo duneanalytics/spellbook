@@ -37,7 +37,7 @@ select
     , tx_to
     , call_trace_address as trace_address
     , -1 as evt_index
-from {{ ref('oneinch_swaps') }}
+from {{ ref('oneinch_evm_swaps') }}
 where
     protocol = 'AR'
     or flags['fusion']
