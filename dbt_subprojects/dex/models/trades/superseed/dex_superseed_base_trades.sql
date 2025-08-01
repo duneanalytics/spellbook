@@ -14,6 +14,7 @@
      ref('velodrome_superseed_base_trades')
      , ref('bulletx_v2_superseed_base_trades')
      , ref('bulletx_v3_superseed_base_trades')
+     , ref('seedfi_superseed_base_trades')
 ] %}
 with base_union as (
     SELECT *
