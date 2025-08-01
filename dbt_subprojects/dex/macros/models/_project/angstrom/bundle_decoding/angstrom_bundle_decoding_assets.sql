@@ -9,10 +9,10 @@ WITH vec_pade AS (
 )
 SELECT 
     bundle_idx,
-    addr,
-    save,
-    take,
-    settle
+    token_address,
+    save_amount,
+    take_amount,
+    settle_amount
 FROM (
     WITH RECURSIVE decode_asset (buf, len, idx, addr, save, take, settle) AS (
         SELECT
