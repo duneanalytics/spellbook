@@ -20,3 +20,8 @@ sources:
         description: "Velodrome factory pool creation calls"
       - name: Pool_evt_Swap
         description: "Velodrome pool swap events"
+
+  - name: seedfi_superseed
+    tables:
+      - name: seedfipool_evt_swap
+      - name: seedfifactory_evt_paircreated
