@@ -1,6 +1,5 @@
 {{
   config(
-    tags = ['prod_exclude'],
     schema = 'stabble_solana',
     alias = 'base_trades',
     partition_by = ['block_month'],
