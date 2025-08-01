@@ -24,7 +24,6 @@
     ,ref('oneinch_ar_trades')
     ,ref('odos_trades')
     ,ref('sushiswap_agg_trades')
-    ,ref('fly_trade_trades')
 ] %}
 
 WITH enriched_aggregator_base_trades AS (
