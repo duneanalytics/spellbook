@@ -24,7 +24,7 @@ with dexs as (
 )
 SELECT
     '{{ blockchain }}' AS blockchain
-    , 'reservoir' AS project
+    , 'reservoir_swap' AS project
     , '2' AS version
     , CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
     , CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
