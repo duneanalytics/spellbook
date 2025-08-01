@@ -412,6 +412,7 @@ hourly_market as (
     project,
     version,
     block_hour,
+    date_trunc('day', block_hour) as block_date,
     token_address,
     symbol,
     liquidity_index,
@@ -506,7 +507,7 @@ select
   hmu.blockchain,
   hmu.project,
   hmu.version,
-  cast(date_trunc('day', hmu.block_hour) as date) as block_date,
+  hmu.block_date,
   hmu.block_hour,
   hmu.token_address,
   hmu.symbol,
@@ -520,10 +521,8 @@ from hourly_market_user hmu
     on hmu.block_hour = s.block_hour
     and hmu.token_address = s.token_address
     and hmu.user = s.user
-/*
 {% if is_incremental() %}
-where {{ incremental_predicate('hmu.block_hour') }}
+where {{ incremental_predicate('hmu.block_date') }}
 {% endif %}
-*/
 
 {% endmacro %}
