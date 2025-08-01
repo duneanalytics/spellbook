@@ -28,7 +28,7 @@
 ] %}
 
 
-SELECT *
+SELECT DISTINCT *
 FROM (
     {% for aggregator_dex_model in models %}
     SELECT
