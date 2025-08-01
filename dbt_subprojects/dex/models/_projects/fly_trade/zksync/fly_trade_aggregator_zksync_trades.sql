@@ -46,7 +46,7 @@ WITH swaps AS (
 
     -- Version V21
     UNION ALL
-    SELECT
+    SELECT 
         '{{ network }}' AS blockchain
         ,'fly_trade' AS project
         ,'v21' AS version
@@ -73,7 +73,7 @@ WITH swaps AS (
     {% endif %}
 
 )
-SELECT
+SELECT DISTINCT
     swaps.blockchain AS blockchain
     ,project AS project
     ,version AS version

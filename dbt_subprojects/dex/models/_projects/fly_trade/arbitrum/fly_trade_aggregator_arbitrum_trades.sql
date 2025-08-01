@@ -161,7 +161,7 @@ WITH swaps AS (
     {% endif %}
 
 )
-SELECT
+SELECT DISTINCT
     swaps.blockchain AS blockchain
     ,project AS project
     ,version AS version
