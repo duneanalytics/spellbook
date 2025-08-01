@@ -13,7 +13,18 @@
 
 {% set models = [
     ref('fly_trade_aggregator_arbitrum_trades')
-
+    ,ref('fly_trade_aggregator_avalanche_c_trades')
+    ,ref('fly_trade_aggregator_ethereum_trades')
+    ,ref('fly_trade_aggregator_optimism_trades')
+    ,ref('fly_trade_aggregator_bnb_trades')
+    ,ref('fly_trade_aggregator_polygon_trades')
+    ,ref('fly_trade_aggregator_scroll_trades')
+    ,ref('fly_trade_aggregator_blast_trades')
+    ,ref('fly_trade_aggregator_zksync_trades')
+    ,ref('fly_trade_aggregator_taiko_trades')
+    ,ref('fly_trade_aggregator_linea_trades')
+    ,ref('fly_trade_aggregator_berachain_trades')
+    ,ref('fly_trade_aggregator_base_trades')
 ] %}
 
 
