@@ -491,6 +491,7 @@ hourly_market_user as (
     hm.blockchain,
     hm.project,
     hm.version,
+    hm.block_date,
     hm.block_hour,
     hm.token_address,
     hm.symbol,
