@@ -22,7 +22,7 @@ WITH swaps AS (
     SELECT
         '{{ network }}' AS blockchain
         ,'fly_trade' AS project
-        ,'v2' AS version
+        ,'v21' AS version
         ,CAST(date_trunc('day', evt_block_time) AS DATE) AS block_date
         ,CAST(date_trunc('month', evt_block_time) AS DATE) AS block_month
         ,evt_block_time AS block_time
