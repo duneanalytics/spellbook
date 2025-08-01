@@ -18,6 +18,7 @@
     'tx_gas_used',
     'tx_gas_price',
     'tx_priority_fee_per_gas',
+    'tx_index',
     'contract_name',
     'protocol',
     'protocol_version',
@@ -100,6 +101,7 @@ select
     , tx_gas_used
     , tx_gas_price
     , tx_priority_fee_per_gas
+    , tx_index
     , contract_name
     , protocol
     , protocol_version
