@@ -11,7 +11,7 @@
   )
 }}
 
-{% set project_start_date = '2025-07-20' %}
+{% set project_start_date = '2024-04-01' %}
 
 WITH all_swaps AS (
     -- Stable Swap V1
@@ -98,7 +98,7 @@ WITH all_swaps AS (
         , account_user_token_out    
         , account_vault_token_in AS token_sold_vault
         , account_vault_token_out AS token_bought_vault
-        FROM {{ source('stable_swap_solana', 'weighted_swap_call_swap') }}
+    FROM {{ source('stable_swap_solana', 'weighted_swap_call_swap') }}
     {% if is_incremental() %}
     WHERE {{incremental_predicate('call_block_time')}}
     {% else %}
@@ -227,4 +227,4 @@ SELECT
     , inner_instruction_index
     , tx_index
 FROM transfers 
-WHERE rn = 1 
+WHERE rn = 1
