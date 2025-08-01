@@ -12,7 +12,7 @@
   )
 }}
 
-{% set project_start_date = '2024-04-01' %}
+{% set project_start_date = '2025-07-20' %}
 
 WITH all_swaps AS (
     -- Stable Swap V1
@@ -38,9 +38,10 @@ WITH all_swaps AS (
         , account_vault_token_in AS token_sold_vault
         , account_vault_token_out AS token_bought_vault
     FROM {{ source('stable_swap_solana', 'stable_swap_call_swap') }}
-    WHERE call_block_time >= now() - interval '7' day
+    WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% if is_incremental() %}
-    AND {{incremental_predicate('call_block_time')}}
+    WHERE {{incremental_predicate('call_block_time')}}
+    {% else %}
     {% endif %}
 
     UNION ALL
@@ -68,9 +69,10 @@ WITH all_swaps AS (
         , account_vault_token_in AS token_sold_vault
         , account_vault_token_out AS token_bought_vault
     FROM {{ source('stable_swap_solana', 'stable_swap_call_swap_v2') }}
-    WHERE call_block_time >= now() - interval '7' day
+     WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% if is_incremental() %}
-    AND {{incremental_predicate('call_block_time')}}
+    WHERE {{incremental_predicate('call_block_time')}}
+    {% else %}
     {% endif %}
 
     UNION ALL
@@ -98,9 +100,10 @@ WITH all_swaps AS (
         , account_vault_token_in AS token_sold_vault
         , account_vault_token_out AS token_bought_vault
     FROM {{ source('stable_swap_solana', 'weighted_swap_call_swap') }}
-    WHERE call_block_time >= now() - interval '7' day
+     WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% if is_incremental() %}
-    AND {{incremental_predicate('call_block_time')}}
+    WHERE {{incremental_predicate('call_block_time')}}
+    {% else %}
     {% endif %}
 
     UNION ALL
@@ -128,9 +131,10 @@ WITH all_swaps AS (
         , account_vault_token_in AS token_sold_vault
         , account_vault_token_out AS token_bought_vault
     FROM {{ source('stable_swap_solana', 'weighted_swap_call_swap_v2') }}
-    WHERE call_block_time >= now() - interval '7' day
+    WHERE call_block_time >= TIMESTAMP '{{project_start_date}}'
     {% if is_incremental() %}
-    AND {{incremental_predicate('call_block_time')}}
+    WHERE {{incremental_predicate('call_block_time')}}
+    {% else %}
     {% endif %}
 
 )
