@@ -369,6 +369,8 @@ models:
     columns:
       - name: method
         description: "Call Method"
+      - name: evt_index
+        description: "Event Index (if applicable)"
       - name: order_index
         description: "Index of the Order in Batch (0 if single order swap)"
       - name: trace_address

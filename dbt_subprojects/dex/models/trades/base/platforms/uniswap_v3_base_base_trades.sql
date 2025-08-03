@@ -9,6 +9,8 @@
     )
 }}
 
+-- stamp 1
+
 {{
     uniswap_compatible_v3_trades(
         blockchain = 'base'

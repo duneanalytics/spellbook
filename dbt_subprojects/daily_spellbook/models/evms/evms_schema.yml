@@ -38,6 +38,8 @@ models:
         description: "Number of confirmed transactions previously sent by this account"
       - name: index
         description: "Transaction index"
+      - name: authorization_list
+        description: "Authorization list, if there's one"
       - &success
         name: success
         description: "Whether the transaction was completed successfully"
@@ -167,7 +169,7 @@ models:
       - name: contract_address
         description: "Address of the ethereum smart contract generating the log"
       - name: topic0
-        description: "Topics are 32-byte (256 bit) “words” that are used to describe what’s going on in an event. The first topic usually consists of the signature of the name of the event that occurred, including the types (uint256, string, etc.) of its parameters."
+        description: "Topics are 32-byte (256 bit) 'words' that are used to describe what's going on in an event. The first topic usually consists of the signature of the name of the event that occurred, including the types (uint256, string, etc.) of its parameters."
       - name: topic1
         description: "Second topic"
       - name: topic2
@@ -238,11 +240,6 @@ models:
     config:
       tags: ["evms", "contracts"]
     description: "A view keeping track of what contracts are decoded across EVM chains on Dune; contains information associated with the decoded contract such as namespace, name, address, ABI."
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - address
     columns:
       - *blockchain
       - name: abi
@@ -315,6 +312,18 @@ models:
       - &evt_block_number
         name: evt_block_number
         description: "Event block number"
+      - &evt_block_date
+        name: evt_block_date
+        description: "Date of block event in UTC"
+      - &evt_tx_from
+        name: evt_tx_from
+        description: "Address initiating the transaction"
+      - &evt_tx_to
+        name: evt_tx_to
+        description: "To address of the transaction"
+      - &evt_tx_index
+        name: evt_tx_index
+        description: "Index of the transaction in the block"
       - *from
       - *to
       - name: value
@@ -336,6 +345,10 @@ models:
       - *evt_index
       - *evt_block_time
       - *evt_block_number
+      - *evt_block_date
+      - *evt_tx_from
+      - *evt_tx_to
+      - *evt_tx_index
       - name: owner
         description: "Owner"
       - name: spender
@@ -359,6 +372,10 @@ models:
       - *evt_index
       - *evt_block_time
       - *evt_block_number
+      - *evt_block_date
+      - *evt_tx_from
+      - *evt_tx_to
+      - *evt_tx_index
       - name: operator
         description: "Addresses authorized (or approved) by a NFT owner to spend all of his token IDs."
       - *from
@@ -384,6 +401,10 @@ models:
       - *evt_index
       - *evt_block_time
       - *evt_block_number
+      - *evt_block_date
+      - *evt_tx_from
+      - *evt_tx_to
+      - *evt_tx_index
       - name: operator
         description: "Addresses authorized (or approved) by a NFT owner to spend all of his token IDs."
       - *from
@@ -409,6 +430,10 @@ models:
       - *evt_index
       - *evt_block_time
       - *evt_block_number
+      - *evt_block_date
+      - *evt_tx_from
+      - *evt_tx_to
+      - *evt_tx_index
       - &approved
         name: approved
         description: "Is approved"
@@ -434,31 +459,12 @@ models:
       - *evt_index
       - *evt_block_time
       - *evt_block_number
+      - *evt_block_date
+      - *evt_tx_from
+      - *evt_tx_to
+      - *evt_tx_index
       - *from
       - *to
-      - name: tokenId
-        description: "ERC721 token ID."
-
-  - name: evms_erc721_approvals
-    meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei, ronin, ink
-      sector: evms
-      contributors: [hildobby, synthquest]
-    config:
-      tags: ["evms", "erc721", "approvals"]
-    description: "Approval events for ERC721 tokens on EVM chains."
-    columns:
-      - *blockchain
-      - name: contract_address
-        description: "ERC721 token contract address"
-      - *evt_tx_hash
-      - *evt_index
-      - *evt_block_time
-      - *evt_block_number
-      - *approved
-      - &owner
-        name: owner
-        description: "Owner"
       - name: tokenId
         description: "ERC721 token ID."
 
@@ -478,8 +484,14 @@ models:
       - *evt_index
       - *evt_block_time
       - *evt_block_number
+      - *evt_block_date
+      - *evt_tx_from
+      - *evt_tx_to
+      - *evt_tx_index
       - *approved
-      - *owner
+      - &owner
+        name: owner
+        description: "Owner"
       - *operator
 
   - name: evms_info

@@ -35,4 +35,5 @@ FROM (VALUES
     , ('strike', 'Strike', TRUE, 'Strike')
     , ('sonne_finance', 'Sonne Finance', TRUE, 'SonneFinance')
     , ('benqi', 'BENQI', TRUE, 'BenqiFinance')
+    , ('pike', 'Pike', TRUE, 'Pike')
     ) AS temp_table (project, name, has_flashloans, x_username)

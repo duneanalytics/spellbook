@@ -35,7 +35,7 @@ WITH
       DATE_TRUNC('hour', a.evt_block_time) AS evt_hour,
       DATE_TRUNC('day', a.evt_block_time) AS evt_day,
       CAST(value AS double) / pow(10, b.decimals) AS tokens_burned
-    FROM {{ source('erc20_polygon', 'evt_transfer') }} a
+    FROM {{ source('erc20_polygon', 'evt_Transfer') }} a
     INNER JOIN {{ source('tokens', 'erc20') }} b
         ON a.contract_address = b.contract_address
         AND b.blockchain = 'polygon'

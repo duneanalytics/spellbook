@@ -1,0 +1,71 @@
+version: 2
+
+models:
+  - name: lending_bnb_base_supply_scaled
+    meta:
+      blockchain: bnb
+      sector: lending
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'supply', 'aave', 'compound', 'bnb']
+    description: "Hourly lending scaled supply on BNB"
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain name"
+      - &project
+        name: project
+        description: "Project name"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the lending project"
+      - &block_month
+        name: block_month
+        description: "Block month"
+      - &block_hour
+        name: block_hour
+        description: "Block hour"
+        data_tests:
+          - not_null
+      - &token_address
+        name: token_address
+        description: "Token contract address"
+        data_tests:
+          - not_null
+      - &symbol
+        name: symbol
+        description: "Token symbol"
+      - &user
+        name: user
+        description: "User wallet address"
+        data_tests:
+          - not_null
+      - &amount
+        name: amount
+        description: "Scaled supply amount"
+
+  - name: aave_v3_bnb_base_supply_scaled
+    meta:
+      blockchain: bnb
+      sector: lending
+      project: aave
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'supply', 'aave', 'bnb']
+    description: "Hourly Aave v3 scaled supply on BNB"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_hour
+            - token_address
+            - user
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_month
+      - *block_hour
+      - *token_address
+      - *symbol
+      - *user
+      - *amount

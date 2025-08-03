@@ -84,10 +84,78 @@ sources:
     tables:
       - name: fees
 
+  - name: gas_ethereum
+    tables:
+      - name: fees
+
+  - name: gas_bnb
+    tables:
+      - name: fees
+
+  - name: gas_avalanche_c
+    tables:
+      - name: fees
+
+  - name: gas_gnosis
+    tables:
+      - name: fees
+
+  - name: gas_optimism
+    tables:
+      - name: fees
+
+  - name: gas_arbitrum
+    tables:
+      - name: fees
+
+  - name: gas_polygon
+    tables:
+      - name: fees
+
+  - name: gas_base
+    tables:
+      - name: fees
+
   - name: gas_celo
+    tables:
+      - name: fees
+
+  - name: gas_scroll
+    tables:
+      - name: fees
+
+  - name: gas_zora
+    tables:
+      - name: fees
+
+  - name: gas_berachain
+    tables:
+      - name: fees
+
+  - name: gas_opbnb
+    tables:
+      - name: fees
+
+  - name: gas_nova
+    tables:
+      - name: fees
+
+  - name: gas_unichain
+    tables:
+      - name: fees
+
+  - name: gas_ink
+    tables:
+      - name: fees
+
+  - name: gas_katana
     tables:
       - name: fees
 
   - name: evms
     tables:
       - name: transaction_metrics
+
+  - name: dune
+    tables:
+      - name: blockchains

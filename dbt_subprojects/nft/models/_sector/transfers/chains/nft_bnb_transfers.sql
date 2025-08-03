@@ -14,7 +14,7 @@
 {{nft_transfers(
     blockchain='bnb'
     , base_transactions = source('bnb','transactions')
-    , erc721_transfers = source('erc721_bnb','evt_transfer')
-    , erc1155_single = source('erc1155_bnb','evt_transfersingle')
-    , erc1155_batch = source('erc1155_bnb', 'evt_transferbatch')
+    , erc721_transfers = source('erc721_bnb','evt_Transfer')
+    , erc1155_single = source('erc1155_bnb','evt_TransferSingle')
+    , erc1155_batch = source('erc1155_bnb', 'evt_TransferBatch')
 )}}

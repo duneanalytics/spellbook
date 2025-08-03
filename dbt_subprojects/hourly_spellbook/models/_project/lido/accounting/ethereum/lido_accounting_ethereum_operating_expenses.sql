@@ -14,13 +14,15 @@
 with tokens AS (
 select * from (values
     (0x5A98FcBEA516Cf06857215779Fd812CA3beF1B32), --LDO
-    (0x6B175474E89094C44Da98b954EedeAC495271d0F),   --DAI
-    (0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48),   --USDC
+    (0x6B175474E89094C44Da98b954EedeAC495271d0F), --DAI
+    (0xdC035D45d973E3EC169d2276DDab16f1e407384F), --USDS
+    (0xa3931d71877C0E7a3148CB7Eb4463524FEc27fbD), --Savings USDS (sUSDS)
+    (0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48), --USDC
     (0xdAC17F958D2ee523a2206206994597C13D831ec7), -- USDT
-    (0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2),   --WETH
-    (0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0),   --MATIC
-    (0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84),  --stETH
-    (0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0) --wstETH
+    (0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2), --WETH
+    (0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0), --MATIC
+    (0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84), --stETH
+    (0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0)  --wstETH
 ) as tokens(address)),
 
 
@@ -45,7 +47,9 @@ multisigs_list AS (
     (0x17F6b2C738a63a8D3A113a228cfd0b373244633D,  'Ethereum',  'PMLMsig'),
     (0xde06d17db9295fa8c4082d4f73ff81592a3ac437,  'Ethereum',  'RCCMsig'),
     (0x834560f580764bc2e0b16925f8bf229bb00cb759,  'Ethereum',  'TRPMsig'),
-    (0x606f77BF3dd6Ed9790D9771C7003f269a385D942,  'Ethereum',  'AllianceMsig')
+    (0x606f77BF3dd6Ed9790D9771C7003f269a385D942,  'Ethereum',  'AllianceMsig'),
+    (0x55897893c19e4B0c52731a3b7C689eC417005Ad6,  'Ethereum',  'EcosystemBORGMsig'),
+    (0x95B521B4F55a447DB89f6a27f951713fC2035f3F,  'Ethereum',  'LabsBORGMsig')
     ) as list(address, chain, name)
 
 ),
@@ -72,7 +76,11 @@ intermediate_addresses AS (
     (0x6625C6332c9F91F2D27c304E729B86db87A3f504, 'Scroll bridge'),
     (0x0914d4ccc4154ca864637b0b653bc5fd5e1d3ecf, 'AnySwap bridge (Polkadot, Kusama)'),
     (0x3ee18b2214aff97000d974cf647e7c347e8fa585, 'Wormhole bridge'), --Solana, Terra
-    (0x9ee91F9f426fA633d227f7a9b000E28b9dfd8599, 'stMatic Contract')
+    (0x9ee91F9f426fA633d227f7a9b000E28b9dfd8599, 'stMatic Contract'),
+
+    (0xd0A61F2963622e992e6534bde4D52fd0a89F39E0, 'Spark PSM'),
+    (0x37305B1cD40574E4C5Ce33f8e8306Be057fD7341, 'Sky PSM')
+
     ) as list(address, name)
 ),
 
@@ -108,13 +116,13 @@ operating_expenses_txns AS (
         contract_address,
         "from",
         to
-    FROM {{source('erc20_ethereum','evt_transfer')}}
+    FROM {{source('erc20_ethereum','evt_Transfer')}}
     WHERE contract_address IN (SELECT address FROM tokens)
     AND "from" IN (
         SELECT
             address
         FROM multisigs_list
-        WHERE name IN ('ATCMsig', 'PMLMsig', 'RCCMsig', 'AllianceMsig') AND chain = 'Ethereum'
+        WHERE name IN ('ATCMsig', 'PMLMsig', 'RCCMsig', 'AllianceMsig', 'EcosystemBORGMsig', 'LabsBORGMsig') AND chain = 'Ethereum'
     )
     AND to NOT IN (
         SELECT address FROM multisigs_list
@@ -142,7 +150,7 @@ operating_expenses_txns AS (
         SELECT
             address
         FROM multisigs_list
-        WHERE name IN ('ATCMsig', 'PMLMsig', 'RCCMsig', 'AllianceMsig') AND chain = 'Ethereum'
+        WHERE name IN ('ATCMsig', 'PMLMsig', 'RCCMsig', 'AllianceMsig', 'EcosystemBORGMsig', 'LabsBORGMsig') AND chain = 'Ethereum'
     )
     AND tr.type='call'
     AND (tr.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR tr.call_type IS NULL)
@@ -156,13 +164,13 @@ operating_expenses_txns AS (
         contract_address,
         "from",
         to
-    FROM {{source('erc20_ethereum','evt_transfer')}}
+    FROM {{source('erc20_ethereum','evt_Transfer')}}
     WHERE contract_address IN (SELECT address FROM tokens)
     AND to IN (
         SELECT
             address
         FROM multisigs_list
-        WHERE name IN ('ATCMsig', 'PMLMsig', 'RCCMsig', 'AllianceMsig') AND chain = 'Ethereum'
+        WHERE name IN ('ATCMsig', 'PMLMsig', 'RCCMsig', 'AllianceMsig', 'EcosystemBORGMsig', 'LabsBORGMsig') AND chain = 'Ethereum'
     )
     AND "from" NOT IN (
         SELECT address FROM multisigs_list
@@ -190,7 +198,7 @@ operating_expenses_txns AS (
         SELECT
             address
         FROM multisigs_list
-        WHERE name IN ('ATCMsig', 'PMLMsig', 'RCCMsig', 'AllianceMsig') AND chain = 'Ethereum'
+        WHERE name IN ('ATCMsig', 'PMLMsig', 'RCCMsig', 'AllianceMsig', 'EcosystemBORGMsig', 'LabsBORGMsig') AND chain = 'Ethereum'
     )
     AND tr.type='call'
     AND (tr.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR tr.call_type IS NULL)

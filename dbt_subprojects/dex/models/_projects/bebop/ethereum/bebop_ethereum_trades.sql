@@ -15,6 +15,7 @@
     ref('bebop_blend_ethereum_trades')
 ] %}
 
+
 SELECT *
 FROM (
     {% for dex_model in bebop_models %}

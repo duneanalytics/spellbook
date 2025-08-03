@@ -101,3 +101,38 @@ models:
         description: "daily minimum USD price of a token"
       - name: price_close
         description: "daily closing USD price of a token"
+
+  - name: prices_usd_native
+    description: "Native token prices in USD"
+    contributors: krishhh
+    columns:
+      - name: blockchain
+        description: "The blockchain name"
+        tests:
+          - not_null
+      - name: contract_address
+        description: "The token contract address"
+        tests:
+          - not_null
+      - name: symbol
+        description: "The token symbol"
+        tests:
+          - not_null
+      - name: decimals
+        description: "The token decimals"
+        tests:
+          - not_null
+      - name: minute
+        description: "The timestamp of the price"
+        tests:
+          - not_null
+      - name: price
+        description: "The price in USD"
+        tests:
+          - not_null
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+            - minute

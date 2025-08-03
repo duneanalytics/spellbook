@@ -166,3 +166,98 @@ models:
         description: "number of separate streaks the user has had (indicates consistency)"
       - name: claims_last_30_days
         description: "recent activity metric showing engagement in the last 30 days"
+
+  - name: gooddollar_celo_reserve
+    meta:
+      blockchain: celo
+      project: gooddollar
+      contributors: tomfutago
+    config:
+      tags: ["celo", "gooddollar", "reserve"]
+    description: "GoodDollar reserve movement"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - evt_index
+            - tx_hash
+    columns:
+      - *block_time
+      - *block_date
+      - *block_number
+      - &movement_type
+        name: movement_type
+        description: "movement type (funding/inflow/outflow)"
+      - &token_in_symbol
+        name: token_in_symbol
+        description: "inflow token symbol"
+      - &token_out_symbol
+        name: token_out_symbol  
+        description: "outflow token symbol"
+      - &token_in_amount
+        name: token_in_amount
+        description: "inflow token amount"
+      - &token_out_amount
+        name: token_out_amount
+        description: "outflow token amount"
+      - name: amount_usd
+        description: "amount in USD"
+      - &token_in_address
+        name: token_in_address
+        description: "inflow token address"
+      - &token_out_address
+        name: token_out_address
+        description: "outflow token address"
+      - &taker
+        name: taker
+        description: "taker address"
+      - &tx_from
+        name: tx_from
+        description: "tx from address"
+      - &tx_to
+        name: tx_to
+        description: "tx to address"
+      - *project_contract_address
+      - &evt_index
+        name: evt_index
+        description: "event index"
+      - *tx_hash
+
+  - name: gooddollar_celo_reserve_movement
+    meta:
+      blockchain: celo
+      project: gooddollar
+      contributors: tomfutago
+    config:
+      tags: ["celo", "gooddollar", "reserve"]
+    description: "GoodDollar reserve movement"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+    columns:
+      - *block_date
+      - &cusd_in
+        name: cusd_in 
+        description: "cUSD inflow/funding"
+      - &cusd_out
+        name: cusd_out
+        description: "cUSD outflow"
+      - &gd_in
+        name: gd_in
+        description: "G$ inflow (G$ swapped in for cUSD)"
+      - &gd_out
+        name: gd_out
+        description: "G$ outflow (G$ minted from the reserve / swapped out for cUSD)"
+      - &cusd_net
+        name: cusd_net
+        description: "cUSD net (inflow - outflow)"
+      - &gd_net
+        name: gd_net
+        description: "G$ net (inflow - outflow)"
+      - &cusd_balance
+        name: cusd_balance
+        description: "cUSD balance (cumulative inflow - cumulative outflow)"
+      - &gd_balance
+        name: gd_balance
+        description: "G$ balance (cumulative inflow - cumulative outflow)"

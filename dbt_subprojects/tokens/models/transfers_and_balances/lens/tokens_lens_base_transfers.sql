@@ -14,8 +14,7 @@
     blockchain='lens',
     traces = source('lens','traces'),
     transactions = source('lens','transactions'),
-    erc20_transfers = source('erc20_lens','evt_transfer'),
-    native_contract_address = '0x000000000000000000000000000000000000800a',
+    erc20_transfers = source('erc20_lens','evt_Transfer'),
     include_traces = false
 )
 }} 

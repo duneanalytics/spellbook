@@ -2,55 +2,6 @@ version: 2
 
 models:
 
-  - name: nft_ethereum_top_sales
-    meta:
-      blockchain: ethereum
-      sector: nft
-      contributors: Henrystats
-    config:
-      tags: ['nft', 'ethereum', 'top sales']
-    description: >
-        Top 50 NFT sales
-    columns:
-      - name: nft_contract_address
-        description: "nft contract address"
-      - name: nft_token_id
-        description: "nft token id"
-      - name: seller
-        description: "seller address"
-      - name: price
-        description: "value of trade in eth"
-      - name: tx_hash
-        description: "Unique trade blockchain tx_hash"
-      - name: rn
-        description: "row number"
-
-  - name: nft_ethereum_top_minters
-    meta:
-      blockchain: ethereum
-      sector: nft
-      contributors: Henrystats
-    config:
-      tags: ['nft', 'ethereum', 'top minters']
-    description: >
-        Top 50 NFT minters
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - nft_contract_address
-            - minter
-    columns:
-      - name: nft_contract_address
-        description: "nft contract address"
-      - name: minter
-        description: "Address that minted the nft"
-      - name: eth_spent
-        description: "Total eth spent by minter"
-      - name: no_minted
-        description: "Number of nft's minted"
-      - name: last_updated
-        description: "Last time spell was updated"
-
   - name: nft_ethereum_wallet_pnl
     meta:
       blockchain: ethereum

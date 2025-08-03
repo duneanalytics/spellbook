@@ -91,7 +91,24 @@ known_solver_metadata (address, environment, name) as (
                 (0xEa77cB08FBf7ef0CaF615dcE37A159D56B2B867f, 'barn', 'Wraxyn'),
                 (0x09498CF3414616c1d58979FCE65438473C998c47, 'prod', 'Wraxyn'),
                 (0x301994d1A89578e9933E44982eb969B9f38d7097, 'barn', 'Unizen'),
-                (0x4D72B179b7706A768C0bA378D78E1dD2d5c618a2, 'prod', 'Unizen')
+                (0x4D72B179b7706A768C0bA378D78E1dD2d5c618a2, 'prod', 'Unizen'),
+                (0xe52b4918554f9dDcAC10BE388aeA3a53aB3d33f3, 'barn', 'Horadrim'),
+                (0xfFF90c451ba1Cb6A1B8b950DA4aa9c3f82270Ac3, 'prod', 'Horadrim'),
+                (0xcf6fda0b383ef980aacbc56d9d0be14931ffe576, 'barn', 'ExtQuasimodo'),
+                (0xADF619eB586e7b3586BA5f45A6086D64b8F1dcAa, 'prod', 'ExtQuasimodo'),
+                (0x7b0DF3Cd3bFf32f6545A4491cD414152D7d29E3c, 'barn', 'Arctic'),
+                (0xA8d8613ec7cbE23c506ef5F293d570945b988Cb9, 'prod', 'Arctic'),
+                (0xA14b145eb2f3010e1021514a5B6d8570aBD60C68, 'barn', 'Bebop'),
+                (0x6566692e5e7fC9A3559D539488C55C1570a6bd2F, 'prod', 'Bebop'),
+                (0x90Cf61BE4f7A8A47B638200e5434B1D895F8D710, 'barn', 'Tsolver'),
+                (0x76EF27384f6aE6f58499C2eCC2273DC4bB2D9B91, 'prod', 'Tsolver'),
+                (0x4dd1be0Cd607E5382Dd2844fA61D3a17e3e83D56, 'prod', 'Rizzolver'),
+                (0x95238c3Bf936424f4B34Ebf8B1e6C1577A6B3406, 'barn', 'Overnight Finance'),
+                (0xcEbd13eE45671CBA34B3424Cd1CD616FAc780EA9, 'prod', 'Overnight Finance'),
+                (0x9702Add8e0943Ec9a6e1e87FC612537E78d7194E, 'barn', 'MX Trading'),
+                (0x859A672a564A99CDA9BfB2c39ca80Dd9256B94d3, 'prod', 'MX Trading'),
+                (0x96B8F359f0b2067D7F7C84F55f172FF1A70ee0F4, 'barn', 'Trusted Volumes'),
+                (0xE6094DFE442F44df4cfAa21dCC054dC85Fc299DB, 'prod', 'Trusted Volumes')
     ) as _
 )
 -- Combining the metadata with current activation status for final table

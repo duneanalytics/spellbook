@@ -23,14 +23,6 @@ WITH base_liquidity as (
         , decimals
     from
         {{ tokens_erc20_model }}
-    union all
-    --native tokens
-    select
-        blockchain
-        , {{var('ETH_ERC20_ADDRESS')}} as contract_address -- 0x00..00
-        , native_token_symbol as symbol
-        , 18 as decimals
-    from {{ source('evms','info') }}
 )
 , prices AS (
     SELECT
@@ -53,12 +45,17 @@ WITH base_liquidity as (
         , base.block_month
         , base.block_date
         , base.block_time
+        , date_trunc('minute', base.block_time) as block_minute 
         , base.block_number
         , base.id
         , base.tx_hash
+        , base.tx_from 
         , base.evt_index
+        , base.event_type
         , base.token0
         , base.token1
+        , tk0.symbol as token0_symbol 
+        , tk1.symbol as token1_symbol
         , base.amount0_raw
         , base.amount1_raw
         , base.amount0_raw/pow(10,tk0.decimals) as amount0
@@ -84,9 +81,13 @@ WITH base_liquidity as (
             , en.block_number
             , en.id
             , en.tx_hash
+            , en.tx_from
             , en.evt_index
+            , en.event_type
             , en.token0
             , en.token1
+            , en.token0_symbol 
+            , en.token1_symbol
             , en.amount0_raw
             , en.amount1_raw
             , en.amount0
@@ -97,11 +98,11 @@ WITH base_liquidity as (
     LEFT JOIN prices p0
            ON en.token0 = p0.contract_address
           AND en.blockchain = p0.blockchain
-          AND p0.minute = date_trunc('minute', en.block_time)
+          AND p0.minute = en.block_minute
     LEFT JOIN prices p1
            ON en.token1 = p1.contract_address
           AND en.blockchain = p1.blockchain
-          AND p1.minute = date_trunc('minute', en.block_time)
+          AND p1.minute = en.block_minute 
 )
 
 
@@ -115,9 +116,13 @@ SELECT
     , block_number
     , id
     , tx_hash
+    , tx_from 
     , evt_index
+    , event_type
     , token0
     , token1
+    , token0_symbol 
+    , token1_symbol
     , amount0_raw
     , amount1_raw  
     , amount0

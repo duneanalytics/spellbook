@@ -107,6 +107,7 @@ FROM (VALUES
       ('ethereum', 0x57f5e098cad7a3d1eed53991d4d66c45c9af7812, 'Crypto-backed stablecoin', 'wUSDM', 18, 'Mountain Protocol', 'USD'),
       ('ethereum', 0x7c1156e515aa1a2e851674120074968c905aaf37, 'Crypto-backed stablecoin', 'lvlUSD', 18, 'Level Finance', 'USD'),
       ('ethereum', 0xb58e61c3098d85632df34eecfb899a1ed80921cb, 'Fiat-backed stablecoin', 'ZCHF', 18, 'Frankencoin', 'CHF'),
-      ('ethereum', 0x57ab1e0003f623289cd798b1824be09a793e4bec, 'Crypto-backed stablecoin', 'reUSD', 18, 'Resupply', 'USD')
+      ('ethereum', 0x57ab1e0003f623289cd798b1824be09a793e4bec, 'Crypto-backed stablecoin', 'reUSD', 18, 'Resupply', 'USD'),
+      ('ethereum', 0x8d0d000ee44948fc98c9b98a4fa4921476f08b0d, 'Fiat-backed stablecoin', 'USD1', 18, 'World Liberty Financial USD', 'USD')
 
 ) AS temp_table (blockchain, contract_address, backing, symbol, decimals, name, denomination)

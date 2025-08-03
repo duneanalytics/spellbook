@@ -1,6 +1,6 @@
 {% macro map_internal_to_dex(blockchain, version, from_alias) %}
 select 
-        src.blockchain,
+        {{from_alias}}.blockchain,
         'velora_delta' as project,
         '{{version}}' as version,
         date_trunc('month', call_block_time) AS block_month,
@@ -21,13 +21,17 @@ select
         dest_token as token_bought_address,
         src_token as token_sold_address,
         owner as taker,        
-        CAST(NULL AS VARBINARY) AS maker, -- TODO: consider `executor as maker`,
-        src.contract_address as project_contract_address,
+        {% if version == 'v2' %}
+            {{from_alias}}.executor as maker,
+        {% else %}
+            CAST(NULL AS VARBINARY) as maker,
+        {% endif %}
+        {{from_alias}}.contract_address as project_contract_address,
         call_tx_hash as tx_hash,
         call_tx_from as tx_from,
         call_tx_to as tx_to,
-        call_trace_address as trace_address,
-        evt_index,
+        case when CARDINALITY(call_trace_address) > 0 then call_trace_address else ARRAY[-1] end as trace_address,
+        COALESCE(evt_index, 0) as evt_index, -- TMP: after joining envents in swapSettle can remove it
         order_index,
         method,
         from_hex(regexp_replace(
@@ -54,7 +58,7 @@ select
         src.gas_fee_usd,        
         wnt_price_usd,
         executor
-    from {{from_alias}} src
+    from {{from_alias}}  
         LEFT JOIN 
         {{ source('tokens', 'erc20') }} t_src_token 
             ON t_src_token.blockchain = '{{blockchain}}'

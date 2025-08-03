@@ -56,7 +56,7 @@ sources:
   - name: baseswap_v3_base
     tables:
       - name: UniswapV3Pool_evt_Swap
-      - name: UniswapV3Factory_evt_PoolCreated  
+      - name: UniswapV3Factory_evt_PoolCreated
   - name: scale_base
     tables:
       - name: Pair_evt_Swap
@@ -94,9 +94,9 @@ sources:
   - name: throne_exchange_base
     tables:
       - name: ThroneV2Factory_evt_PairCreated
-      - name: ThroneV2Pair_evt_Swap  
+      - name: ThroneV2Pair_evt_Swap
       - name: ThroneV3Factory_evt_PoolCreated
-      - name: ThroneV3Pool_evt_Swap  
+      - name: ThroneV3Pool_evt_Swap
   - name: sharkswap_base
     tables:
       - name: SharkswapFactory_evt_PairCreated
@@ -213,3 +213,10 @@ sources:
   - name: jojo_base
     tables:
       - name: FundingRateArbitrage_evt_Swap
+  - name: fluid_base
+    tables: 
+      - name: FluidDexT1_evt_Swap
+      - name: fluiddexfactory_call_deploydex
+  - name: native_base
+    tables:
+      - name: NativeRFQPool_evt_RFQTrade

@@ -34,7 +34,7 @@ FROM (VALUES
     , ('bitcoin', '395vnFScKQ1ay695C6v7gf89UzoFpx3WuJ', 'Binance', 'Binance 9', 'hildobby', date '2024-04-20')
     , ('bitcoin', '39884E3j6KZj82FK4vcCrkUvWYL5MQaS3v', 'Binance', 'Binance 10', 'hildobby', date '2024-04-20')
     , ('bitcoin', '3AQ8bAh88TQU7JV1H3ovXrwsuV6s3zYZuN', 'Binance', 'Binance 11', 'hildobby', date '2024-04-20')
-    , ('bitcoin', '3AeUiDpPPUrUBS377584sFCpx8KLfpX9Ry', 'Binance', 'Binance 12', 'hildobby', date '2024-04-20')
+    , ('bitcoin', '3HkgC2R5PhqyXy6RVFyemvxN1VuFbQiQ5V', 'Binance', 'Binance 12', 'hildobby', date '2025-07-07')
     , ('bitcoin', '3CySuFKbBS29M7rE5iJakZRNqb3msMeFoN', 'Binance', 'Binance 13', 'hildobby', date '2024-04-20')
     , ('bitcoin', '3E97AjYaCq9QYnfFMtBCYiCEsN956Rvpj2', 'Binance', 'Binance 14', 'hildobby', date '2024-04-20')
     , ('bitcoin', '3FHNBLobJnbCTFTVakh5TXmEneyf5PT61B', 'Binance', 'Binance 15', 'hildobby', date '2024-04-20')
@@ -54,6 +54,22 @@ FROM (VALUES
     , ('bitcoin', '3Qxak1CZhLyZ7GVckKphLURdLBCjMfz9bA', 'Binance', 'Binance 29', 'hildobby', date '2024-04-20')
     , ('bitcoin', 'bc1q7t9fxfaakmtk8pj7tdxjvwsng6y9x76czuaf5h', 'Binance', 'Binance 30', 'hildobby', date '2024-04-20')
     , ('bitcoin', 'bc1qm34lsc65zpw79lxes69zkqmk6ee3ewf0j77s3h', 'Binance', 'Binance 31', 'hildobby', date '2024-04-20')
+    , ('bitcoin', '1PPWMe42cywnM61nVatkmiggwdRQYLiCyS', 'Binance', 'Binance 32', 'hildobby', date '2025-07-07')
+    , ('bitcoin', '3PXBET2GrTwCamkeDzKCx8DeGDyrbuGKoc', 'Binance', 'Binance 33', 'hildobby', date '2025-07-07')
+    , ('bitcoin', '32BgTv3NSYbMsBTwDbNNN2GKZPCTJSkqDv', 'Binance', 'Binance 34', 'hildobby', date '2025-07-07')
+    , ('bitcoin', '32KqbtrRVxC6GLUJgJhVQtFTaCdq4GrgBb', 'Binance', 'Binance 35', 'hildobby', date '2025-07-07')
+    , ('bitcoin', '3QK5vQ9hucSg8ZC8Vizq83qEWeHFLAWMud', 'Binance', 'Binance 36', 'hildobby', date '2025-07-07')
+    , ('bitcoin', '1DEuKerATHWRfyB14s6QCt4LPkfCTx4zaW', 'Binance', 'Binance 37', 'hildobby', date '2025-07-07')
+    , ('bitcoin', '3M3EtJGx5Dy9nCATLDhyRCrKGc38QC9z2e', 'Binance', 'Binance 38', 'hildobby', date '2025-07-07')
+    , ('bitcoin', '36oiSkAi1VVuUpfdv8E2V5fZ2EarHRJpis', 'Binance', 'Binance 39', 'hildobby', date '2025-07-07')
+    , ('bitcoin', '378GLcve92X2Q4UrCyoMFDL5k5QrzeG7JN', 'Binance', 'Binance 40', 'hildobby', date '2025-07-07')
+    , ('bitcoin', '3F9CGMu7JSJnMHA8jFM2KgxuH6hhxtvENP', 'Binance', 'Binance 41', 'hildobby', date '2025-07-07')
+    , ('bitcoin', '3AtnehKDkFPC1bKvdrEVPSRGCtxQH8F1R8', 'Binance', 'Binance 42', 'hildobby', date '2025-07-07')
+    , ('bitcoin', '3EVVc8e2rxwUuERtdJCduWig8DnpsUqyA6', 'Binance', 'Binance 43', 'hildobby', date '2025-07-07')
+    , ('bitcoin', 'bc1q5rsc4uscnmemlwru8xsys26k3xgxewqfnf3k7j', 'Binance', 'Binance 46', 'hildobby', date '2025-07-07')
+    , ('bitcoin', 'bc1qdtmav38lca8yu3rrcknnqx5242cckgxqws7m72', 'Binance', 'Binance 47', 'hildobby', date '2025-07-07')
+    , ('bitcoin', 'bc1q5n5dy7jgqhmpnmx44d3780qefzaphjreds0z9y', 'Binance', 'Binance 48', 'hildobby', date '2025-07-07')
+    , ('bitcoin', 'bc1q5qvs2dzzydqt4ygfn0k0ertjnv8ctytgcdz7l0', 'Binance', 'Binance 49', 'hildobby', date '2025-07-07')
     , ('bitcoin', '34xp4vRoCGJym3xR7yCVPFHoCNxv4Twseo', 'Binance', 'Binance 32', 'ilemi', date '2023-03-28')
     , ('bitcoin', '38ztxG7GL1LEEbC9gKpqEKEh7WZ3KDTLMi', 'Binance', 'Binance 33', 'ilemi', date '2023-03-28')
     , ('bitcoin', '399QCnqVzAt4HGU1SV7PfVPYovb1BX3u9Y', 'Binance', 'Binance 34', 'ilemi', date '2023-03-28')
@@ -776,6 +792,7 @@ FROM (VALUES
 
     , ('bitcoin', 'bc1q32lyrhp9zpww22phqjwwmelta0c8a5q990ghs6', 'Ceffu', 'Ceffu 1', 'hildobby', date '2024-05-27')
     , ('bitcoin', 'bc1q78ufzeu8w8fwvxuphrdlg446xhyptf28fkatu5', 'Ceffu', 'Ceffu 2', 'hildobby', date '2024-05-27')
+    , ('bitcoin', 'bc1qq393eyjh8hdjvcchy0mxquhh9wx8h3kzlkchfs', 'Ceffu', 'Ceffu 3', 'hildobby', date '2025-07-07')
 
     , ('bitcoin', 'bc1qqxf98drymkq5awwtt685l6463tmtumlrvqfxv2', 'Genesis', 'Genesis 1', 'hildobby', date '2024-05-27')
 
@@ -799,5 +816,7 @@ FROM (VALUES
     , ('bitcoin', 'bc1qyvppkaa74d9jvtz664a6uxmj09hf0eyg3uhx4h', 'HashKey Exchange', 'HashKey Exchange 1', 'hildobby', date '2025-04-28')
     , ('bitcoin', '1DywJMqHHMWuP7xyfkRqJZCEe7GdEKFRcp', 'HashKey Exchange', 'HashKey Exchange 2', 'hildobby', date '2025-04-28')
     , ('bitcoin', '1NfJSiqBw4fb74KgVQrPsk5W5aqitAD1Xv', 'HashKey Exchange', 'HashKey Exchange 3', 'hildobby', date '2025-04-28')
+
+    , ('bitcoin', 'bc1q2dyp7355r2ahkrxngq3y56mulsan3y42sjdsuv', 'Paybis', 'Paybis 1', 'hildobby', date '2025-06-14')
     
     ) AS x (blockchain, address, cex_name, distinct_name, added_by, added_date)

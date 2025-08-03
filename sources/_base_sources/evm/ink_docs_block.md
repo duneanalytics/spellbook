@@ -1,6 +1,27 @@
+{% docs ink_blocks_doc %}
+
+The `ink.blocks` table contains information about blocks on the ink blockchain. It includes:
+
+- Block identifiers: number, hash, time, date
+- Gas metrics: gas_limit, gas_used, blob_gas_used, excess_blob_gas
+- Block characteristics: size, base_fee_per_gas
+- Block roots: state_root, transactions_root, receipts_root, parent_beacon_block_root
+- Consensus data: difficulty, total_difficulty, nonce
+- Block producer: miner
+- Parent block: parent_hash
+
+This table is fundamental for analyzing:
+- Block production and timing
+- Network capacity and usage
+- Chain structure and growth
+- Network performance metrics
+- Blob gas usage patterns
+
+{% enddocs %}
+
 {% docs ink_transactions_doc %}
 
-The `ink.transactions` table contains detailed information about transactions on the Ink blockchain. It includes:
+The `ink.transactions` table contains detailed information about transactions on the ink blockchain. It includes:
 
 - Block information: block_time, block_number, block_hash, block_date
 - Transaction details: hash, from, to, value
@@ -10,14 +31,40 @@ The `ink.transactions` table contains detailed information about transactions on
 - Smart contract interaction: data
 - Transaction type and access list
 - Chain identification: chain_id
+- L1 related data: l1_gas_used, l1_gas_price, l1_fee, l1_fee_scalar, l1_block_number, l1_timestamp, l1_tx_origin
 
-This table is used for analyzing transaction patterns, gas usage, value transfers, and network activity on Ink.
+This table is used for analyzing:
+- Transaction patterns and volume
+- Gas usage and fee trends
+- Smart contract interactions
+- Network activity and usage
+- L1/L2 interactions and costs
+
+{% enddocs %}
+
+{% docs ink_logs_doc %}
+
+The `ink.logs` table contains event logs emitted by smart contracts on the ink blockchain. It includes:
+
+- Block information: block_time, block_number, block_hash, block_date
+- Transaction details: tx_hash, tx_index, tx_from, tx_to
+- Contract address
+- Event topics: topic0 (event signature), topic1, topic2, topic3
+- Event data
+- Log position: index
+
+This table is crucial for:
+- Tracking on-chain events
+- Monitoring contract activity
+- Analyzing token transfers
+- Following protocol-specific events
+- Understanding smart contract interactions
 
 {% enddocs %}
 
 {% docs ink_traces_doc %}
 
-The `ink.traces` table contains records of execution steps for transactions on the Ink blockchain. Each trace represents an atomic operation that modifies the blockchain state. Key components include:
+The `ink.traces` table contains records of execution steps for transactions on the ink blockchain. Each trace represents an atomic operation that modifies the blockchain state. Key components include:
 
 - Block information: block_time, block_number, block_hash, block_date
 - Transaction context: tx_hash, tx_index, tx_from, tx_to
@@ -37,110 +84,9 @@ This table is essential for:
 
 {% enddocs %}
 
-{% docs ink_traces_decoded_doc %}
-
-The `ink.traces_decoded` table contains decoded traces from verified smart contracts on the Ink blockchain. It includes:
-
-- Block information: block_date, block_time, block_number
-- Contract context: namespace, contract_name
-- Transaction details: tx_hash, tx_from, tx_to
-- Execution path: trace_address
-- Function identification: signature, function_name
-
-This table is used for analyzing smart contract interactions with decoded function calls.
-
-{% enddocs %}
-
-{% docs ink_logs_doc %}
-
-The `ink.logs` table contains event logs emitted by smart contracts on the Ink blockchain. It includes:
-
-- Block information: block_time, block_number, block_hash, block_date
-- Transaction details: tx_hash, tx_index, tx_from, tx_to
-- Contract address
-- Event topics: topic0 (event signature), topic1, topic2, topic3
-- Event data
-- Log position: index
-
-This table is crucial for:
-- Tracking on-chain events
-- Monitoring contract activity
-- Analyzing token transfers
-- Following protocol-specific events
-
-{% enddocs %}
-
-{% docs ink_logs_decoded_doc %}
-
-The `ink.logs_decoded` table contains decoded logs from verified smart contracts on the Ink blockchain. It includes:
-
-- Block information: block_date, block_time, block_number
-- Contract details: namespace, contract_name, contract_address
-- Transaction context: tx_hash, tx_from, tx_to
-- Event identification: signature, event_name
-- Log position: index
-
-This table is used for analyzing smart contract events with decoded event data.
-
-{% enddocs %}
-
-{% docs ink_blocks_doc %}
-
-The `ink.blocks` table contains information about blocks on the Ink blockchain. It includes:
-
-- Block identifiers: number, hash, time, date
-- Gas metrics: gas_limit, gas_used
-- Block characteristics: size, base_fee_per_gas
-- Block roots: state_root, transactions_root, receipts_root
-- Consensus data: difficulty, total_difficulty, nonce
-- Block producer: miner
-- Parent block: parent_hash
-- Data availability: blob_gas_used, excess_blob_gas
-- Beacon chain: parent_beacon_block_root
-
-This table is fundamental for analyzing:
-- Block production and timing
-- Network capacity and usage
-- Chain structure and growth
-- Network performance metrics
-
-{% enddocs %}
-
-{% docs ink_contracts_doc %}
-
-The `ink.contracts` table tracks verified smart contracts on the Ink blockchain, including:
-
-- Contract address
-- Contract bytecode
-- Contract name and namespace
-- Complete ABI
-- Creation timestamp
-- Verification status
-
-This table is used for:
-- Contract verification and analysis
-- Protocol research and monitoring
-- Development and debugging
-- Smart contract security analysis
-
-{% enddocs %}
-
-{% docs ink_contracts_submitted_doc %}
-
-The `ink.contracts_submitted` table tracks contracts submitted for verification on the Ink blockchain. It includes:
-
-- Contract address
-- Submission metadata (timestamp, submitter)
-- Contract name and namespace
-- Verification status
-
-This table helps track the progress of contract verification and community contributions.
-
-{% enddocs %}
-
 {% docs ink_creation_traces_doc %}
 
-The `ink.creation_traces` table contains data about contract creation events on the Ink blockchain. It includes:
+The `ink.creation_traces` table contains data about contract creation events on the ink blockchain. It includes:
 
 - Block information: block_time, block_number, block_month
 - Transaction details: tx_hash
@@ -154,28 +100,99 @@ This table is used for:
 
 {% enddocs %}
 
-{% docs erc20_ink_evt_transfer_doc %}
+{% docs ink_contracts_doc %}
 
-The `erc20_ink.evt_transfer` table contains Transfer events from ERC20 token contracts on the Ink blockchain. Each record represents a token transfer and includes:
+The `ink.contracts` table contains information about verified smart contracts on the ink blockchain. It includes:
 
-- Token contract address
-- Sender and recipient addresses
-- Amount of tokens transferred
-- Block and transaction information
-- Event log details
+- Contract identification: address, name, namespace
+- Contract code and ABI
+- Deployment information: from, created_at
+- Contract type flags: dynamic, base, factory
+- Verification metadata: abi_id, detection_source
 
 This table is essential for:
-- Tracking token transfers
-- Analyzing token distribution patterns
-- Monitoring token holder behavior
-- Calculating token balances
-- Understanding token velocity
+- Smart contract analysis
+- Protocol tracking
+- Contract verification status
+- Understanding contract relationships
+- Contract deployment monitoring
 
 {% enddocs %}
 
-{% docs erc20_ink_evt_approval_doc %}
+{% docs ink_contracts_submitted_doc %}
 
-The `erc20_ink.evt_approval` table contains Approval events for ERC20 tokens on the ink blockchain. It includes:
+The `ink.contracts_submitted` table contains information about manually submitted contract verifications on the ink blockchain. It includes:
+
+- Contract identification: address, name, namespace
+- Contract code and ABI
+- Deployment information: from, created_at
+- Contract type flags: dynamic, factory
+
+This table is used for:
+- Tracking manual contract verifications
+- Contract deployment analysis
+- Contract code verification
+- Protocol monitoring
+
+{% enddocs %}
+
+{% docs ink_traces_decoded_doc %}
+
+The `ink.traces_decoded` table contains decoded traces with additional information based on submitted smart contracts and their ABIs. It includes:
+
+- Block information: block_date, block_time, block_number
+- Contract details: namespace, contract_name
+- Transaction context: tx_hash, tx_from, tx_to
+- Function details: signature, function_name
+- Trace location: trace_address
+
+This table is used for:
+- Analyzing smart contract interactions
+- Monitoring protocol operations
+- Debugging contract calls
+- Understanding function call patterns
+- Tracking internal transactions
+
+{% enddocs %}
+
+{% docs ink_logs_decoded_doc %}
+
+The `ink.logs_decoded` table contains decoded event logs with additional information based on submitted smart contracts and their ABIs. It includes:
+
+- Block information: block_date, block_time, block_number
+- Contract details: namespace, contract_name, contract_address
+- Transaction context: tx_hash, tx_from, tx_to
+- Event details: signature, event_name
+- Log position: index
+
+This table is used for:
+- Analyzing decoded smart contract events
+- Monitoring protocol operations
+- Tracking token transfers with human-readable event names
+- Understanding contract interactions
+- Protocol-specific event analysis
+
+{% enddocs %}
+
+{% docs erc20_ink_evt_Transfer_doc %}
+
+The `erc20_ink.evt_transfer` table contains Transfer events for ERC20 tokens on the ink blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- From and to addresses
+- Amount transferred
+
+This table is used for tracking ERC20 token movements on the ink network.
+
+Please be aware that this table is the raw ERC20 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use `tokens.transfers` for a more complete and curated view of token transfers.
+
+{% enddocs %}
+
+{% docs erc20_ink_evt_Approval_doc %}
+
+The `erc20_ink.evt_Approval` table contains Approval events for ERC20 tokens on the ink blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -187,28 +204,9 @@ This table is used for analyzing ERC20 token approvals and spending permissions 
 
 {% enddocs %}
 
-{% docs erc721_ink_evt_transfer_doc %}
+{% docs erc1155_ink_evt_TransferSingle_doc %}
 
-The `erc721_ink.evt_transfer` table contains Transfer events from ERC721 (NFT) token contracts on the Ink blockchain. Each record represents an NFT transfer and includes:
-
-- NFT contract address
-- Token ID
-- Sender and recipient addresses
-- Block and transaction information
-- Event log details
-
-This table is used for:
-- Tracking NFT ownership changes
-- Analyzing NFT trading patterns
-- Monitoring NFT collection activity
-- Building NFT holder histories
-- Understanding NFT market dynamics
-
-{% enddocs %}
-
-{% docs erc1155_ink_evt_transfersingle_doc %}
-
-The `erc1155_ink.evt_transfersingle` table contains TransferSingle events for ERC1155 tokens on the ink blockchain. It includes:
+The `erc1155_ink.evt_TransferSingle` table contains TransferSingle events for ERC1155 tokens on the ink blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -223,9 +221,9 @@ Please be aware that this table is the raw ERC1155 event data, and does not incl
 
 {% enddocs %}
 
-{% docs erc1155_ink_evt_transferbatch_doc %}
+{% docs erc1155_ink_evt_TransferBatch_doc %}
 
-The `erc1155_ink.evt_transferbatch` table contains TransferBatch events for ERC1155 tokens on the ink blockchain. It includes:
+The `erc1155_ink.evt_TransferBatch` table contains TransferBatch events for ERC1155 tokens on the ink blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -254,6 +252,22 @@ This table is used for analyzing blanket approvals for ERC1155 token collections
 
 {% enddocs %}
 
+{% docs erc721_ink_evt_Transfer_doc %}
+
+The `erc721_ink.evt_Transfer` table contains Transfer events for ERC721 tokens on the ink blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- From and to addresses
+- Token ID
+
+This table is used for tracking ERC721 token (NFT) transfers on the ink network.
+
+Please be aware that this table is the raw ERC721 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use `nft.transfers` for a more complete and curated view of NFT transfers.
+
+{% enddocs %}
+
 {% docs erc721_ink_evt_Approval_doc %}
 
 The `erc721_ink.evt_Approval` table contains Approval events for ERC721 tokens on the ink blockchain. It includes:
@@ -279,5 +293,5 @@ The `erc721_ink.evt_ApprovalForAll` table contains ApprovalForAll events for ERC
 - Approved status (boolean)
 
 This table is used for analyzing blanket approvals for ERC721 token collections on the ink network.
-
 {% enddocs %}
+
