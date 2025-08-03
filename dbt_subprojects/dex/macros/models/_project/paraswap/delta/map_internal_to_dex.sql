@@ -55,7 +55,7 @@ select
         call_block_number as block_number,        
         raw_tx_gas_used,
         raw_tx_gas_price,
-        src.gas_fee_usd,        
+        {{from_alias}}.gas_fee_usd,        
         wnt_price_usd,
         executor
     from {{from_alias}}  
