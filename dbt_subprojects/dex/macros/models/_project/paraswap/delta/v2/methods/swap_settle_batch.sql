@@ -22,7 +22,7 @@ delta_v2_swap_settle_batch_ExpandedOrders as (
       raw_txs.gas_used as raw_tx_gas_used,
       raw_txs.gas_price as raw_tx_gas_price
   FROM {{ source("paraswapdelta_"+ blockchain, "ParaswapDeltav2_call_swapSettleBatch") }} ssb                   
-  left join {{blockchain}}.transactions  raw_txs 
+  left join {{source(blockchain, "transactions")}} raw_txs 
      on block_time > TIMESTAMP '{{method_start_date}}' 
       AND raw_txs.hash = ssb.call_tx_hash
       CROSS JOIN UNNEST (

@@ -40,7 +40,7 @@ v2_swap_settle_withParsedOrderData AS (
         raw_txs.gas_used as raw_tx_gas_used,
         raw_txs.gas_price as raw_tx_gas_price
     FROM {{ source("paraswapdelta_"+ blockchain, "ParaswapDeltav2_call_swapSettle") }} ss        
-  left join {{blockchain}}.transactions  raw_txs 
+  left join {{source(blockchain, "transactions")}} raw_txs 
      on block_time > TIMESTAMP '{{method_start_date}}' 
       AND raw_txs.hash = ss.call_tx_hash
      WHERE call_block_time > TIMESTAMP '{{method_start_date}}'
