@@ -64,9 +64,9 @@ select
         LEFT JOIN 
         {{ source('tokens', 'erc20') }} t_src_token 
             ON t_src_token.blockchain = '{{blockchain}}'
-            AND t_src_token.contract_address = src_token
+            AND t_src_token.contract_address = src_token_for_joining
         LEFT JOIN 
         {{ source('tokens', 'erc20') }} t_dest_token
             ON t_dest_token.blockchain = '{{blockchain}}'
-            AND t_dest_token.contract_address = dest_token
+            AND t_dest_token.contract_address = dest_token_for_joining
 {% endmacro %}
