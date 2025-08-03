@@ -44,13 +44,13 @@ select
               )) AS partnerAddress,
         computed_order_hash,
         {% if version == 'v2' %}
-        evt_order_hash,
-        {% endif %}        
+        evt_order_hash,        
         bridgeMultiCallHandler,
         bridgeOutputToken,
         bridgeMaxRelayerFee,
         bridgeDestinationChainId,
         bridge,
+        {% endif %}
         "order",
         "owner",
         ordersCount,
