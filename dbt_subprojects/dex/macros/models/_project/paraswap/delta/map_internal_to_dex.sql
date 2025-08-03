@@ -33,33 +33,33 @@ select
         case when CARDINALITY(call_trace_address) > 0 then call_trace_address else ARRAY[-1] end as trace_address,
         COALESCE(evt_index, 0) as evt_index, -- TMP: after joining envents in swapSettle can remove it
         order_index,
-        method,
-        from_hex(regexp_replace(
+        method
+        {% if version == 'v2' %}
+        ,from_hex(regexp_replace(
                 try_cast(
                   TRY_CAST(
                     BITWISE_RIGHT_SHIFT(partnerAndFee, 96) AS VARBINARY
                   ) as VARCHAR
                 ),
                 '0x(00){12}'
-              )) AS partnerAddress,
-        computed_order_hash,
-        {% if version == 'v2' %}
-        evt_order_hash,        
-        bridgeMultiCallHandler,
-        bridgeOutputToken,
-        bridgeMaxRelayerFee,
-        bridgeDestinationChainId,
-        bridge,
+              )) AS partnerAddress
+        ,computed_order_hash
+        ,evt_order_hash
+        ,bridgeMultiCallHandler
+        ,bridgeOutputToken
+        ,bridgeMaxRelayerFee
+        ,bridgeDestinationChainId
+        ,bridge        
+        ,"order"        
+        ,"owner"
+        ,ordersCount
+        ,call_block_number as block_number
+        ,raw_tx_gas_used
+        ,raw_tx_gas_price
+        ,{{from_alias}}.gas_fee_usd
+        ,wnt_price_usd
+        ,executor
         {% endif %}
-        "order",
-        "owner",
-        ordersCount,
-        call_block_number as block_number,        
-        raw_tx_gas_used,
-        raw_tx_gas_price,
-        {{from_alias}}.gas_fee_usd,        
-        wnt_price_usd,
-        executor
     from {{from_alias}}  
         LEFT JOIN 
         {{ source('tokens', 'erc20') }} t_src_token 
