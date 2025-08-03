@@ -43,7 +43,9 @@ select
                 '0x(00){12}'
               )) AS partnerAddress,
         computed_order_hash,
+        {% if version == 'v2' %}
         evt_order_hash,
+        {% endif %}        
         bridgeMultiCallHandler,
         bridgeOutputToken,
         bridgeMaxRelayerFee,
