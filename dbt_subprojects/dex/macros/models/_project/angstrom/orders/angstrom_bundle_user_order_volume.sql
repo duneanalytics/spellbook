@@ -1,5 +1,5 @@
 {% macro
-    angstrom_bundle_user_order_volume(raw_tx_input_hex)
+    angstrom_bundle_user_order_volume(raw_tx_input_hex, fetched_bn)
 %}
 
 
@@ -16,12 +16,12 @@ WITH
     orders_with_assets AS (
         SELECT
             u.*,
-            f.*
+            a.*
         FROM user_orders AS u
-        CROSS JOIN ({{ angstrom_user_order_fill_amount('!u.zero_for_one', 'u.exact_in', 'u.fill_amount', 'u.extra_fee_asset0', 0, 'u.price_1over0') }}) AS f -- TODO: get pool fee
+        CROSS JOIN ({{ angstrom_pool_fees(fetched_bn) }}) AS f
+        CROSS JOIN ({{ angstrom_user_order_fill_amount('!u.zero_for_one', 'u.exact_in', 'u.fill_amount', 'u.extra_fee_asset0', 'f.bundle_fee', 'u.price_1over0') }}) AS a
     )
 SELECT
-    -- TODO: generalize query, logic is all in the macros tho, so shouldn't take long
     *
 FROM orders_with_assets
 
