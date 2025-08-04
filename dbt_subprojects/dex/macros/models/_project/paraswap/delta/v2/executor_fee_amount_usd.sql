@@ -8,6 +8,6 @@
         )
       else
         -- if can't parse executorFeeAmount - fall back to spent native token, divided by amount of orders if multiple
-        wnt_usd.price * raw_tx_gas_used * raw_tx_gas_price  / POWER(10, wnt_usd.decimals)
+        wnt_usd.price * raw_tx_gas_used * raw_tx_gas_price  / POWER(10, wnt_usd.decimals) / ordersCount
     END AS gas_fee_usd
 {% endmacro %}
