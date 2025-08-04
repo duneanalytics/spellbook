@@ -1,0 +1,67 @@
+version: 2
+
+models:
+  - name: dex_superseed_base_trades
+    data_tests:
+      - check_columns_dex_base_trades
+      - check_dex_info_relationship
+      - test_acceptable_usd_amount:
+          column_name: amount_usd
+          max_value: 1000000000
+
+  - name: bulletx_v2_superseed_base_trades
+    meta:
+      blockchain: superseed
+      sector: dex
+      project: bulletx
+      contributors: krishhh
+    config:
+      tags: [ 'superseed', 'dex', 'trades', 'bulletx', 'v2', 'superseed' ]
+    description: "bulletx superseed v2 base trades (uniswap v2 compatible)"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('bulletx_v2_superseed_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: bulletx_v3_superseed_base_trades
+    meta:
+      blockchain: superseed
+      sector: dex
+      project: bulletx
+      contributors: krishhh
+    config:
+      tags: [ 'superseed', 'dex', 'trades', 'bulletx', 'v3' ]
+    description: "bulletx superseed v3 base trades (uniswap v3 compatible)"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('bulletx_v3_superseed_base_trades_seed')
+          filter:
+            version: 3 
+
+  - name: velodrome_superseed_base_trades
+    meta:
+      blockchain: superseed
+      sector: dex
+      project: velodrome
+      contributors: krishhh
+    config:
+      tags: [ 'superseed', 'dex', 'trades', 'velodrome', 'v2' ]
+    description: "velodrome superseed v2 base trades (uniswap v2 compatible)"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('velodrome_superseed_base_trades_seed')
+          filter:
+            version: 2 

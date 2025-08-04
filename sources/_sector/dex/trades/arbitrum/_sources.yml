@@ -191,3 +191,6 @@ sources:
     tables:
       - name: deltaswappair_evt_swap
       - name: deltaswapfactory_evt_paircreated
+  - name: native_arbitrum
+    tables:
+      - name: NativeRFQPool_evt_RFQTrade
