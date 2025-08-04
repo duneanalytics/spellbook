@@ -728,7 +728,59 @@
     "nonce":            "substr(input, " ~ _beginning ~ " + 32*3 + 1        , 32)",
     "order_hash":       "substr(input, " ~ _beginning ~ " + 32*10 + 1       , 16)",
 }] %}
+{% set methods = methods + [{
+    "project":          "Bebop",
+    "selector":         "0x4dcebcba",
+    "name":             "swapSingle",
+    "auction":          "false",
+    "event":            "0xadd7095becdaa725f0f33243630938c861b0bba83dfd217d4055701aa768ec2e",
+    "deadline":         "substr(input    , 4 + 32*0 + 1        , 32)",
+    "taker":            "substr(input    , 4 + 32*1 + 12 + 1   , 20)",
+    "maker":            "substr(input    , 4 + 32*2 + 12 + 1   , 20)",
+    "nonce":            "substr(input    , 4 + 32*3 + 1        , 32)",
+    "taker_asset":      "substr(input    , 4 + 32*4 + 12 + 1   , 20)",
+    "maker_asset":      "substr(input    , 4 + 32*5 + 12 + 1   , 20)",
+    "taking_amount":    "substr(input    , 4 + 32*6 + 1        , 32)",
+    "making_amount":    "substr(input    , 4 + 32*7 + 1        , 32)",
+    "receiver":         "substr(input    , 4 + 32*8 + 12 + 1   , 20)",
+    "packed_commands":  "substr(input    , 4 + 32*9 + 1        , 32)",
+    "flags":            "substr(input    , 4 + 32*10 + 1       , 32)",
+}] %}
+{% set _beginning              =  "4 + bytearray_to_bigint(substr(input, 4 + 32*0 + 24 + 1, 8))" %} -- 4 + initial offset to start of data (like 96)
+{% set _maker_addresses_offset =  " " ~ _beginning ~ " + bytearray_to_bigint(substr(input, " ~ _beginning ~ " + 32*2 + 24 + 1, 8))" %} -- address[] maker_addresses;
+{% set _maker_nonces_offset    =  " " ~ _beginning ~ " + bytearray_to_bigint(substr(input, " ~ _beginning ~ " + 32*3 + 24 + 1, 8))" %} -- uint256[] maker_nonces;
+{% set _taker_tokens_offset =     " " ~ _beginning ~ " + bytearray_to_bigint(substr(input, " ~ _beginning ~ " + 32*4 + 24 + 1, 8))" %} -- address[][] taker_tokens;
+{% set _maker_tokens_offset =     " " ~ _beginning ~ " + bytearray_to_bigint(substr(input, " ~ _beginning ~ " + 32*5 + 24 + 1, 8))" %} -- address[][] maker_tokens;
+{% set _taker_amounts_offset =    " " ~ _beginning ~ " + bytearray_to_bigint(substr(input, " ~ _beginning ~ " + 32*6 + 24 + 1, 8))" %} -- uint256[][] taker_amounts;
+{% set _maker_amounts_offset =    " " ~ _beginning ~ " + bytearray_to_bigint(substr(input, " ~ _beginning ~ " + 32*7 + 24 + 1, 8))" %} -- uint256[][] maker_amounts;
+{% set _total_makers =                  "bytearray_to_bigint(substr(input, " ~ _maker_addresses_offset ~ " + 24 + 1, 8))" %}
+-- we add 32 below to offset in order to account for row where number of elements in taker_assets array stored
+{% set _taker_assets_per_maker_offset = "32 + " ~ _taker_tokens_offset ~ " + bytearray_to_bigint(substr(input, " ~ _taker_tokens_offset ~ " + 32*least(maker_idx, " ~ _total_makers ~ ") + 24 + 1, 8))" %}
+{% set _maker_assets_per_maker_offset = "32 + " ~ _maker_tokens_offset ~ " + bytearray_to_bigint(substr(input, " ~ _maker_tokens_offset ~ " + 32*least(maker_idx, " ~ _total_makers ~ ") + 24 + 1, 8))" %}
+{% set _taker_amounts_per_maker_offset = "32 + " ~ _taker_amounts_offset ~ " + bytearray_to_bigint(substr(input, " ~ _taker_amounts_offset ~ " + 32*least(maker_idx, " ~ _total_makers ~ ") + 24 + 1, 8))" %}
+{% set _maker_amounts_per_maker_offset = "32 + " ~ _maker_amounts_offset ~ " + bytearray_to_bigint(substr(input, " ~ _maker_amounts_offset ~ " + 32*least(maker_idx, " ~ _total_makers ~ ") + 24 + 1, 8))" %}
+{% set _trades_per_maker =              "bytearray_to_bigint(substr(input, " ~ _taker_assets_per_maker_offset ~ " + 32*0 + 24 + 1, 8))" %}
+{% set methods = methods + [{
+    "project":           "Bebop",
+    "selector":          "0xa2f74893",
+    "name":              "swapAggregate",
+    "auction":           "false",
+    "event":             "0xadd7095becdaa725f0f33243630938c861b0bba83dfd217d4055701aa768ec2e",
+    "total_makers":      _total_makers,
+    "number":            _trades_per_maker,
+    "filled_taker_amount": "substr(input, " ~ _beginning ~ " - 32 + 1, 32)",
+    "deadline":            "substr(input, " ~ _beginning ~ " + 32*0      + 1, 32)",
+    "taker":               "substr(input," ~ _beginning ~ "  + 32*1 + 12 + 1, 20)",
+    "maker":               "substr(input, " ~ _maker_addresses_offset ~ " + 32 * least(maker_idx, " ~ _total_makers ~ ")  + 12 + 1, 20)",
+    "nonce":               "substr(input, " ~ _maker_nonces_offset ~ " + 32 * least(maker_idx, " ~ _total_makers ~ ") + 1, 32)",
+    "taker_asset":         "substr(input, " ~ _taker_assets_per_maker_offset ~ " + 32*least(x,   " ~ _trades_per_maker ~ ") + 12 + 1, 20)",
+    "maker_asset":         "substr(input, " ~ _maker_assets_per_maker_offset ~ " + 32*least(x,   " ~ _trades_per_maker ~ ") + 12 + 1, 20)",
+    "taking_amount":       "substr(input, " ~ _taker_amounts_per_maker_offset ~ " + 32*least(x,   " ~ _trades_per_maker ~ ")     + 1, 32)",
+    "making_amount":       "substr(input, " ~ _maker_amounts_per_maker_offset ~ " + 32*least(x,   " ~ _trades_per_maker ~ ")     + 1, 32)",
+    "receiver":            "substr(input, " ~ _beginning ~ " + 32*8 + 12 + 1, 20)",
+    "packed_commands":     "substr(input, " ~ _beginning ~ " + 32*9      + 1, 32)",
+    "flags":               "substr(input, " ~ _beginning ~ " + 32*10     + 1, 32)",
 
+}] %}
 {{ return(methods) }}
-
 {% endmacro %}
