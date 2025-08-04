@@ -18,7 +18,7 @@
 with
 -- First subquery joins buy and sell token prices from prices.usd.
 -- Also deducts fee from sell amount.
-trades_with_prices AasS (
+trades_with_prices as (
     select cast(date_trunc('day', evt_block_time) as date) as block_date,
            cast(date_trunc('month', evt_block_time) as date) as block_month,
            evt_block_time            as block_time,
