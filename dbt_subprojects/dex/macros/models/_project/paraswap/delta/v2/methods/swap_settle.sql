@@ -153,7 +153,7 @@ select
       AND call_tx_hash = events.evt_tx_hash
 ), delta_v2_swapSettle as (  
 SELECT 
-    -- NB: columns mapping must match accross all the methods, since they're uninoned into one in master macro
+    -- NB: columns mapping must match across all the methods, since they're unioned into one in master macro
     '{{blockchain}}' as blockchain,
     method,
     0 as order_index,
