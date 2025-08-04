@@ -16,7 +16,7 @@ delta_v2_swap_settle_batch_ExpandedOrders as (
       -- ordersWithSigs[order_index] as extractedOrderWithSig,              
       JSON_EXTRACT_SCALAR(ordersWithSigs[order_index], '$.order') as "order", -- returns json
       JSON_EXTRACT_SCALAR(ordersWithSigs[order_index], '$.signature') as signature,                            
-      1 as ordersCount, -- TODO
+      CARDINALITY(ordersWithSigs) as ordersCount,
       executor,
       executorData[order_index] as executorData,
       raw_txs.gas_used as raw_tx_gas_used,
