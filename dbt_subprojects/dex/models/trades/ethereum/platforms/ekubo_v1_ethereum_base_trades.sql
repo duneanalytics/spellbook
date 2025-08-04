@@ -111,8 +111,8 @@ SELECT
     , cast(date_trunc( 'day', tt.block_time) as date) AS block_date
     , tt.block_time AS block_time
     , tt.block_number AS block_number
-    , tt.token_bought_amount_raw AS token_bought_amount_raw
-    , tt.token_sold_amount_raw AS token_sold_amount_raw
+    , cast(tt.token_bought_amount_raw as uint256) AS token_bought_amount_raw
+    , cast(tt.token_sold_amount_raw as uint256) AS token_sold_amount_raw
     , from_hex(token_bought_address) AS token_bought_address
     , from_hex(token_sold_address) AS token_sold_address
     , from_hex(tt.taker) AS taker
