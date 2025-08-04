@@ -1,6 +1,6 @@
 {% macro
     angstrom_decoding_recursive(
-        input_hex,
+        raw_tx_input_hex,
         field_step
     )
 %}
@@ -11,7 +11,7 @@ WITH
     trimmed_input AS (
         SELECT 
             1 AS next_offset,
-            varbinary_substring(input_hex, 69) AS next_buf
+            varbinary_substring({{ raw_tx_input_hex }}, 69) AS next_buf
     ),
     -- assets
     step0 AS (
@@ -83,10 +83,8 @@ WITH
             FROM step3
         )
     )
-SELECT
-    buf
-FROM {{field_step}}
-
+SELECT buf
+FROM {{ field_step }}
 
 
 {% endmacro %}

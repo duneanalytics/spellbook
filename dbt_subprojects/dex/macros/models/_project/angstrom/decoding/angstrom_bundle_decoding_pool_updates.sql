@@ -5,7 +5,7 @@
 
 WITH vec_pade AS (
     SELECT buf
-    FROM ({{ angstrom_decoding_recursive(raw_tx_input_hex, step2) }})
+    FROM ({{ angstrom_decoding_recursive(raw_tx_input_hex, 'step2') }})
 )
 SELECT 
     idx AS bundle_idx,
@@ -207,7 +207,7 @@ FROM (
     FROM decode_pool_update
     WHERE idx > 0
 )
-ORDER BY idx DESC;
+ORDER BY idx DESC
 
 
 {% endmacro %}

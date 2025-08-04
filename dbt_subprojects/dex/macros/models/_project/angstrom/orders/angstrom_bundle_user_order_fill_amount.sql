@@ -2,19 +2,21 @@
     angstrom_user_order_fill_amount(
         is_bid,
         exact_in,
-        fill_amount,
-        gas,
-        fee,
-        ray_ucp
+        _fill_amount,
+        _gas,
+        _fee,
+        _ray_ucp
     )
 %}
 
 WITH
     case_bools AS (
         SELECT 
-            ARRAY[is_bid, exact_in] AS cases,
-            CAST(fill_amount AS uint256) AS fill_amount,
-            CAST(ray_ucp AS uint256) AS ray_ucp
+            ARRAY[NOT {{ is_bid }}, {{ exact_in }}] AS cases,
+            CAST({{ _fill_amount }} AS uint256) AS fill_amount,
+            CAST({{ _ray_ucp }} AS uint256) AS ray_ucp,
+            {{ _fee }} AS fee,
+            {{ _gas }} AS gas
     ),
     amount_case AS (
         SELECT

@@ -8,7 +8,6 @@ SELECT
     ab.*,
     asts.*
 FROM ({{angstrom_decoding_top_of_block_orders(raw_tx_input_hex)}}) AS ab
-CROSS JOIN ({{ angstrom_bundle_indexes_to_assets(raw_tx_input_hex, 'ab.pair_index', 'ab.zfo') }}) AS asts
-
+CROSS JOIN LATERAL ({{ angstrom_bundle_indexes_to_assets(raw_tx_input_hex, 'ab.pairs_index', 'ab.zero_for_1') }}) AS asts
 
 {% endmacro %}

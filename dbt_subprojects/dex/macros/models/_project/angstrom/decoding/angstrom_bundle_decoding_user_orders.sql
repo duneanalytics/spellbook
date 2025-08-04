@@ -5,7 +5,7 @@
 
 WITH vec_pade AS (
     SELECT buf
-    FROM ({{ angstrom_decoding_recursive(raw_tx_input_hex, step4) }})
+    FROM ({{ angstrom_decoding_recursive(raw_tx_input_hex, 'step4') }})
 )
 SELECT
     ref_id,
@@ -430,7 +430,7 @@ FROM (
     FROM decode_user_order
     WHERE idx > 0
 )
-ORDER BY idx DESC;
+ORDER BY idx DESC
 
 
 
