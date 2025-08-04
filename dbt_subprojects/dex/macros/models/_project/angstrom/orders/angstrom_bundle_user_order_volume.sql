@@ -10,7 +10,7 @@ WITH
             ab.*,
             if(ab.order_quantities_kind = 'Exact', ab.order_quantities_exact_quantity, ab.order_quantities_partial_filled_quantity) AS fill_amount,
             asts.*
-        FROM ({{angstrom_bundle_user_order_volume(raw_tx_input_hex)}}) AS ab
+        FROM ({{angstrom_decoding_user_orders(raw_tx_input_hex)}}) AS ab
         CROSS JOIN ({{ angstrom_bundle_indexes_to_assets(raw_tx_input_hex, 'ab.pair_index', 'ab.zfo') }}) AS asts
     ),
     orders_with_assets AS (

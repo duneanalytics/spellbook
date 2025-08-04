@@ -21,14 +21,14 @@ WITH
             token_address AS asset_in
         FROM assets AS a
         CROSS JOIN pairs AS p
-        WHERE a.bundle_idx = p.index0
+        WHERE a.bundle_idx = p.index0 AND p.bundle_idx = pair_index
     ),
     _asset_out AS (
         SELECT
             token_address AS asset_out
         FROM assets AS a
         CROSS JOIN pairs AS p
-        WHERE a.bundle_idx = p.index1
+        WHERE a.bundle_idx = p.index1 AND p.bundle_idx = pair_index
     ),
     zfo_assets AS (
         SELECT
