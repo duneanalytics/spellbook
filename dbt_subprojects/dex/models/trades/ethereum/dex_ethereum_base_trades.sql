@@ -44,6 +44,7 @@
     , ref('fluid_v1_ethereum_base_trades')
     , ref('native_ethereum_base_trades')
 ] %}
+    -- , ref('angstrom_ethereum_base_trades')
 
 WITH base_union AS (
     SELECT *

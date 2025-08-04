@@ -1,10 +1,10 @@
 {% macro
     angstrom_decoding_recursive(
         input_hex,
-        field_step -- 0. assets, 1. pairs, 2. pool_updates, 3. top_of_block_orders, 4. user_orders
+        field_step
     )
 %}
-
+ -- 0. assets, 1. pairs, 2. pool_updates, 3. top_of_block_orders, 4. user_orders
 
 
 WITH

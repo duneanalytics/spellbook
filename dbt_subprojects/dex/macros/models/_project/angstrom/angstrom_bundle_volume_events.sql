@@ -1,5 +1,6 @@
 {% macro
-    angstrom_bundle_volume_events(    
+    angstrom_bundle_volume_events(   
+        angstrom_contract_addr, 
         blockchain = null,
         project = null,
         version = null
@@ -16,8 +17,8 @@ WITH
             index AS tx_index,
             to AS angstrom_address,
             data AS tx_data
-        FROM ethereum.transactions
-        WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(data, 1, 4) = 0x09c5eabe
+        FROM {{ source(blockchain, 'transactions') }}
+        WHERE to = angstrom_contract_addr AND varbinary_substring(data, 1, 4) = 0x09c5eabe
     ),
     tob_orders AS (
         SELECT 
@@ -92,24 +93,3 @@ FROM user_orders
 
 
 {% endmacro %}
-
-
-
-
-
-    -- '{{ blockchain }}' AS blockchain
-    -- , '{{ project }}' AS project
-    -- , '{{ version }}' AS version
-    -- , CAST(date_trunc('month', block_time) AS date) AS block_month
-    -- , CAST(date_trunc('day', block_time) AS date) AS block_date
-    -- , block_time
-    -- , block_number
-    -- , token_bought_amount_raw
-    -- , token_sold_amount_raw
-    -- , token_bought_address
-    -- , token_sold_address
-    -- , taker
-    -- , maker
-    -- , project_contract_address
-    -- , tx_hash
-    -- , evt_index
