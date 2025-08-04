@@ -36,7 +36,6 @@ WITH
     ),
     user_orders AS (
         SELECT 
-            COUNT(*) OVER (PARTITION BY tx_hash) AS count_tob_orders,
             block_number,
             block_time,
             t0_amount AS token_bought_amount_raw,
@@ -47,9 +46,9 @@ WITH
             angstrom_address AS maker,
             angstrom_address AS project_contract_address,
             tx_hash,
-            row_number() OVER (PARTITION BY tx_hash) + tob_cnt AS evt_index
+            row_number() OVER (PARTITION BY tx_hash) + tc.tob_cnt AS evt_index
         FROM {{ angstrom_bundle_user_order_volume(tx_data, block_number) }} AS uo
-        CROSS JOIN ( SELECT COUNT(*) FROM tob_orders ) AS tob_cnt
+        CROSS JOIN ( SELECT COUNT(*) AS tob_cnt FROM tob_orders ) AS tc
     )
 
 
