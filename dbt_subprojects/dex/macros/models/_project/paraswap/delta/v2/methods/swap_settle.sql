@@ -38,7 +38,8 @@ v2_swap_settle_withParsedOrderData AS (
         executorData,
         contract_address,
         raw_txs.gas_used as raw_tx_gas_used,
-        raw_txs.gas_price as raw_tx_gas_price
+        raw_txs.gas_price as raw_tx_gas_price,
+        1 as ordersCount
     FROM {{ source("paraswapdelta_"+ blockchain, "ParaswapDeltav2_call_swapSettle") }} ss        
   left join {{source(blockchain, "transactions")}} raw_txs 
      on block_time > TIMESTAMP '{{method_start_date}}' 
@@ -183,7 +184,7 @@ SELECT
     raw_tx_gas_used, 
     raw_tx_gas_price,
     wnt_price_usd,
-    1 as ordersCount,
+    ordersCount,    
     src_token_order_usd,
     dest_token_order_usd,
     contract_address,
