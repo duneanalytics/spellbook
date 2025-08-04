@@ -1,7 +1,7 @@
 {{ config(
         schema = 'cow_protocol',
         alias='trades',
-        post_hook='{{ expose_spells(\'["ethereum", "gnosis", "arbitrum", "base", "avalanche_c"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "gnosis", "arbitrum", "base", "avalanche_c", "polygon", "lens"]\',
                                     "project",
                                     "cow_protocol",
                                     \'["bh2smith", "gentrexha", "olgafetisova"]\') }}'

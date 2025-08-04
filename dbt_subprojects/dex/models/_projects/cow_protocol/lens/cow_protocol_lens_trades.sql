@@ -156,25 +156,6 @@ uid_to_app_id as (
       i = j
 ),
 
--- eth_flow_senders as (
---     select
---         sender,
---         bytearray_concat(
---             bytearray_concat(
---                 output_orderHash,
---                 bytearray_substring(event.contract_address, 1, 20)
---             ),
---             0xffffffff
---         ) AS order_uid
---     from {{ source('cow_protocol_lens', 'CoWSwapEthFlow_evt_OrderPlacement') }} event
---     inner join {{ source('cow_protocol_lens', 'CoWSwapEthFlow_call_createOrder') }} call
---         on call_block_number = evt_block_number
---         and call_tx_hash = evt_tx_hash
---     {% if is_incremental() %}
---     where {{ incremental_predicate('evt_block_time') }}
---     {% endif %}
--- ),
-
 valued_trades as (
     SELECT block_date,
            block_month,
