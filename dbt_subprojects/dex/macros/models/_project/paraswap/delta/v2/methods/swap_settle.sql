@@ -1,6 +1,6 @@
 {% macro delta_v2_swap_settle(blockchain) %}
 -- since this call always is a whole-order-at-once fulfillment, can source it from method calls and no need to join with events as all data is in the call
-{% set method_start_date = '2025-04-01' %}
+{% set method_start_date = '2024-11-04' %}
 -- order_hash_computed
 
 

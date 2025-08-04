@@ -1,6 +1,6 @@
 {% macro delta_v2_swap_settle_batch(blockchain) %}
 
-{% set method_start_date = '2025-04-01' %}
+{% set method_start_date = '2024-11-04' %}
 
 delta_v2_swap_settle_batch_ExpandedOrders as (
     select            
