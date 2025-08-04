@@ -8,7 +8,6 @@
 {% set paraswap_models = [
 ref('paraswap_v5_base_trades')
 ,ref('paraswap_delta_v2_base_trades')
-,ref('paraswap_v6_base_trades')
  ] %}
 --exclude trouble model: ,ref('paraswap_v6_base_trades')
 
