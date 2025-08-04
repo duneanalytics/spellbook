@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'iziswap_v1_zksync',
+        schema = 'izumi_finance_scroll',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -10,11 +10,11 @@
     )
 }}
 
-{% set iziswap_v1_start_date = "2023-03-28" %}
+{% set izumi_finance_start_date = "2023-10-13" %}
 
 SELECT
-    'zksync' AS blockchain
-    , 'iziswap' AS project
+    'scroll' AS blockchain
+    , 'izumi_finance' AS project
     , contract_address AS project_contract_address
     , '1' AS version
     , evt_tx_hash AS tx_hash
@@ -29,10 +29,10 @@ SELECT
     , CASE WHEN sellXEarnY THEN amountX ELSE amountY END AS token_sold_amount_raw
     , CAST(evt_tx_from AS VARBINARY) AS taker
     , CAST(evt_tx_to AS VARBINARY) AS maker
-FROM {{ source('iziswap_v1_zksync', 'iZiSwapPool_evt_Swap') }}
+FROM {{ source('izumi_finance_scroll', 'iZiSwapPool_evt_Swap') }}
 {% if is_incremental() %}
 WHERE {{incremental_predicate('evt_block_time')}}
 {% else %}
-WHERE evt_block_time >= TIMESTAMP '{{iziswap_v1_start_date}}'
+WHERE evt_block_time >= TIMESTAMP '{{izumi_finance_start_date}}'
 {% endif %}
 

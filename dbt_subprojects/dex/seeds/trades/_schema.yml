@@ -1095,7 +1095,7 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
-  - name: iziswap_bnb_base_trades_seed
+  - name: izumi_finance_bnb_base_trades_seed
     config:
       column_types:
         blockchain: varchar
@@ -1110,7 +1110,7 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
-  - name: iziswap_scroll_base_trades_seed
+  - name: izumi_finance_scroll_base_trades_seed
     config:
       column_types:
         blockchain: varchar
@@ -3675,7 +3675,7 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
-  - name: iziswap_zksync_base_trades_seed
+  - name: izumi_finance_zksync_base_trades_seed
     config:
       column_types:
         blockchain: varchar

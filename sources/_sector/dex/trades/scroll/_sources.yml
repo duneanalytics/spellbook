@@ -27,7 +27,7 @@ sources:
     tables:
       - name: ClPoolFactory_evt_PoolCreated
       - name: ClPool_evt_Swap
-  - name: iziswap_scroll
+  - name: izumi_finance_scroll
     tables:
       - name: iZiSwapPool_evt_Swap
   - name: icecreamswap_v2_scroll
