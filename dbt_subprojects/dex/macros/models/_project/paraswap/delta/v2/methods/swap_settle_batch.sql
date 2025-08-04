@@ -159,7 +159,7 @@ from delta_v2_swap_settle_batch_withEvents w
 -- partnerFee uint256 
 ), delta_v2_swapSettleBatch as (  
 SELECT
-    -- NB: columns mapping must match accross all the methods, since they're unioned into one in master macro
+    -- NB: columns mapping must match across all the methods, since they're unioned into one in master macro
     '{{blockchain}}' as blockchain,    
     method,
     order_index,
