@@ -7,7 +7,7 @@ WITH dexs AS
 
 
 WITH
-    tx_data AS (
+    tx_data_cte AS (
         SELECT 
             block_number,
             block_time,
@@ -16,22 +16,23 @@ WITH
             to AS angstrom_address,
             data AS tx_data
         FROM "delta_prod"."ethereum"."transactions"
-        WHERE to = angstrom_contract_addr AND varbinary_substring(data, 1, 4) = 0x09c5eabe
+        WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x47aefe13a19c8036c0985b59090a34adffcad108630a86aae298954554394d10
     ),
     tob_orders AS (
         SELECT 
-            block_number,
-            block_time,
-            quantity_in AS token_bought_amount_raw,
-            quantity_out AS token_sold_amount_raw,
-            asset_in AS token_bought_address,
-            asset_out AS token_sold_address,
-            recipient AS taker,
-            angstrom_address AS maker,
-            angstrom_address AS project_contract_address,
-            tx_hash,
-            row_number() OVER (PARTITION BY tx_hash) AS evt_index
-        FROM 
+            t.block_number AS block_number,
+            t.block_time AS block_time,
+            p.quantity_in       AS token_bought_amount_raw,
+            p.quantity_out      AS token_sold_amount_raw,
+            p.asset_in          AS token_bought_address,
+            p.asset_out         AS token_sold_address,
+            p.recipient AS taker,
+            t.angstrom_address AS maker,
+            t.angstrom_address AS project_contract_address,
+            t.tx_hash AS tx_hash,
+            row_number() over (partition by t.tx_hash) as evt_index
+        FROM tx_data_cte t
+        CROSS JOIN LATERAL (
 
 
 
@@ -51,7 +52,7 @@ WITH
     trimmed_input AS (
         SELECT 
             1 AS next_offset,
-            varbinary_substring(input_hex, 69) AS next_buf
+            varbinary_substring(t.tx_data, 69) AS next_buf
     ),
     -- assets
     step0 AS (
@@ -123,10 +124,8 @@ WITH
             FROM step3
         )
     )
-SELECT
-    buf
-FROM 
-
+SELECT buf
+FROM step3
 
 
 )
@@ -391,11 +390,11 @@ FROM (
     FROM decode_tob_order
     WHERE idx > 0
 )
-ORDER BY idx DESC;
+ORDER BY idx DESC
 
 
 ) AS ab
-CROSS JOIN (
+CROSS JOIN LATERAL (
 
 WITH
     assets AS (
@@ -413,7 +412,7 @@ WITH
     trimmed_input AS (
         SELECT 
             1 AS next_offset,
-            varbinary_substring(input_hex, 69) AS next_buf
+            varbinary_substring(t.tx_data, 69) AS next_buf
     ),
     -- assets
     step0 AS (
@@ -485,10 +484,8 @@ WITH
             FROM step3
         )
     )
-SELECT
-    buf
-FROM 
-
+SELECT buf
+FROM step0
 
 
 )
@@ -537,13 +534,14 @@ FROM (
         decode_asset
     WHERE
         idx > 0
-);
+)
 
 
 )
     ),
     pairs AS (
         SELECT 
+            bundle_idx,
             index0,
             index1,
             price_1over0
@@ -560,7 +558,7 @@ WITH
     trimmed_input AS (
         SELECT 
             1 AS next_offset,
-            varbinary_substring(input_hex, 69) AS next_buf
+            varbinary_substring(t.tx_data, 69) AS next_buf
     ),
     -- assets
     step0 AS (
@@ -632,10 +630,8 @@ WITH
             FROM step3
         )
     )
-SELECT
-    buf
-FROM 
-
+SELECT buf
+FROM step1
 
 
 )
@@ -684,12 +680,12 @@ FROM (
         decode_pair
     WHERE
         idx > 0
-);
+)
 
 
 
 )
-        WHERE bundle_idx = pair_index
+        WHERE bundle_idx = ab.pairs_index
     ),
     _asset_in AS (
         SELECT
@@ -697,19 +693,19 @@ FROM (
             token_address AS asset_in
         FROM assets AS a
         CROSS JOIN pairs AS p
-        WHERE a.bundle_idx = p.index0 AND p.bundle_idx = pair_index
+        WHERE a.bundle_idx = p.index0 AND p.bundle_idx = ab.pairs_index
     ),
     _asset_out AS (
         SELECT
             token_address AS asset_out
         FROM assets AS a
         CROSS JOIN pairs AS p
-        WHERE a.bundle_idx = p.index1 AND p.bundle_idx = pair_index
+        WHERE a.bundle_idx = p.index1 AND p.bundle_idx = ab.pairs_index
     ),
     zfo_assets AS (
         SELECT
             price_1over0,
-            if(zfo, ARRAY[asset_in, asset_out], ARRAY[asset_out, asset_in]) AS zfo_sorted_assets
+            if(ab.zero_for_1, ARRAY[asset_in, asset_out], ARRAY[asset_out, asset_in]) AS zfo_sorted_assets
         FROM _asset_in i 
         CROSS JOIN _asset_out o
     )
@@ -723,23 +719,24 @@ FROM zfo_assets
 
 ) AS asts
 
-
-
+) AS p
     ),
     user_orders AS (
         SELECT 
-            block_number,
-            block_time,
-            t0_amount AS token_bought_amount_raw,
-            t1_amount AS token_sold_amount_raw,
-            asset_in AS token_bought_address,
-            asset_out AS token_sold_address,
-            recipient AS taker,
-            angstrom_address AS maker,
-            angstrom_address AS project_contract_address,
-            tx_hash,
-            row_number() OVER (PARTITION BY tx_hash) + tc.tob_cnt AS evt_index
-        FROM 
+            t.block_number AS block_number,
+            t.block_time AS block_time,
+            p.t0_amount AS token_bought_amount_raw,
+            p.t1_amount AS token_sold_amount_raw,
+            p.asset_in AS token_bought_address,
+            p.asset_out AS token_sold_address,
+            p.recipient AS taker,
+            t.angstrom_address AS maker,
+            t.angstrom_address AS project_contract_address,
+            t.tx_hash AS tx_hash,
+            row_number() OVER (PARTITION BY t.tx_hash) + tc.tob_cnt AS evt_index
+        FROM tx_data_cte t
+        CROSS JOIN ( SELECT COUNT(*) AS tob_cnt FROM tob_orders ) AS tc
+        CROSS JOIN LATERAL (
 
 
 
@@ -762,7 +759,7 @@ WITH
     trimmed_input AS (
         SELECT 
             1 AS next_offset,
-            varbinary_substring(input_hex, 69) AS next_buf
+            varbinary_substring(t.tx_data, 69) AS next_buf
     ),
     -- assets
     step0 AS (
@@ -834,10 +831,8 @@ WITH
             FROM step3
         )
     )
-SELECT
-    buf
-FROM 
-
+SELECT buf
+FROM step4
 
 
 )
@@ -1265,13 +1260,13 @@ FROM (
     FROM decode_user_order
     WHERE idx > 0
 )
-ORDER BY idx DESC;
+ORDER BY idx DESC
 
 
 
 
 ) AS ab
-        CROSS JOIN (
+        CROSS JOIN LATERAL (
 
 WITH
     assets AS (
@@ -1289,7 +1284,7 @@ WITH
     trimmed_input AS (
         SELECT 
             1 AS next_offset,
-            varbinary_substring(input_hex, 69) AS next_buf
+            varbinary_substring(t.tx_data, 69) AS next_buf
     ),
     -- assets
     step0 AS (
@@ -1361,10 +1356,8 @@ WITH
             FROM step3
         )
     )
-SELECT
-    buf
-FROM 
-
+SELECT buf
+FROM step0
 
 
 )
@@ -1413,13 +1406,14 @@ FROM (
         decode_asset
     WHERE
         idx > 0
-);
+)
 
 
 )
     ),
     pairs AS (
         SELECT 
+            bundle_idx,
             index0,
             index1,
             price_1over0
@@ -1436,7 +1430,7 @@ WITH
     trimmed_input AS (
         SELECT 
             1 AS next_offset,
-            varbinary_substring(input_hex, 69) AS next_buf
+            varbinary_substring(t.tx_data, 69) AS next_buf
     ),
     -- assets
     step0 AS (
@@ -1508,10 +1502,8 @@ WITH
             FROM step3
         )
     )
-SELECT
-    buf
-FROM 
-
+SELECT buf
+FROM step1
 
 
 )
@@ -1560,12 +1552,12 @@ FROM (
         decode_pair
     WHERE
         idx > 0
-);
+)
 
 
 
 )
-        WHERE bundle_idx = pair_index
+        WHERE bundle_idx = ab.pair_index
     ),
     _asset_in AS (
         SELECT
@@ -1573,19 +1565,19 @@ FROM (
             token_address AS asset_in
         FROM assets AS a
         CROSS JOIN pairs AS p
-        WHERE a.bundle_idx = p.index0 AND p.bundle_idx = pair_index
+        WHERE a.bundle_idx = p.index0 AND p.bundle_idx = ab.pair_index
     ),
     _asset_out AS (
         SELECT
             token_address AS asset_out
         FROM assets AS a
         CROSS JOIN pairs AS p
-        WHERE a.bundle_idx = p.index1 AND p.bundle_idx = pair_index
+        WHERE a.bundle_idx = p.index1 AND p.bundle_idx = ab.pair_index
     ),
     zfo_assets AS (
         SELECT
             price_1over0,
-            if(zfo, ARRAY[asset_in, asset_out], ARRAY[asset_out, asset_in]) AS zfo_sorted_assets
+            if(ab.zero_for_one, ARRAY[asset_in, asset_out], ARRAY[asset_out, asset_in]) AS zfo_sorted_assets
         FROM _asset_in i 
         CROSS JOIN _asset_out o
     )
@@ -1604,34 +1596,36 @@ FROM zfo_assets
             u.*,
             a.*
         FROM user_orders AS u
-        CROSS JOIN (
+        CROSS JOIN LATERAL (
 
--- TODO generalize blockchain + addresses, (maybe use abi too?)
+-- maybe use abi for log??
 
 SELECT 
-    varbinary_to_integer(varbinary_substring(data, 62, 3)) AS bundle_fee,
-    varbinary_to_integer(varbinary_substring(data, 94, 3)) AS unlocked_fee,
-    varbinary_to_integer(varbinary_substring(data, 126, 3)) AS protocol_unlocked_fee
-FROM ethereum.logs
+    varbinary_to_integer(varbinary_substring(l.data, 62, 3)) AS bundle_fee,
+    varbinary_to_integer(varbinary_substring(l.data, 94, 3)) AS unlocked_fee,
+    varbinary_to_integer(varbinary_substring(l.data, 126, 3)) AS protocol_unlocked_fee
+FROM "delta_prod"."ethereum"."logs" AS l
 WHERE 
-    contract_address = 0xFE77113460CF1833c4440FD17B4463f472010e10 AND 
+    contract_address = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND 
     topic0 = 0xf325a037d71efc98bc41dc5257edefd43a1d1162e206373e53af271a7a3224e9 AND
-    block_number <= fetched_bn AND 
-    (varbinary_substring(topic1, 13, 20) = asset0 OR varbinary_substring(topic2, 13, 20) = asset0) AND 
-    (varbinary_substring(topic1, 13, 20) = asset1 OR varbinary_substring(topic2, 13, 20) = asset1)
+    block_number <= t.block_number AND 
+    (varbinary_substring(topic1, 13, 20) = u.asset_in OR varbinary_substring(topic2, 13, 20) = u.asset_in) AND 
+    (varbinary_substring(topic1, 13, 20) = u.asset_out OR varbinary_substring(topic2, 13, 20) = u.asset_out)
 ORDER BY block_number DESC 
 LIMIT 1
 
 
 ) AS f
-        CROSS JOIN (
+        CROSS JOIN LATERAL (
 
 WITH
     case_bools AS (
         SELECT 
-            ARRAY[is_bid, exact_in] AS cases,
-            CAST(fill_amount AS uint256) AS fill_amount,
-            CAST(ray_ucp AS uint256) AS ray_ucp
+            ARRAY[NOT u.zero_for_one, u.exact_in] AS cases,
+            CAST(u.fill_amount AS uint256) AS fill_amount,
+            CAST(u.price_1over0 AS uint256) AS ray_ucp,
+            f.bundle_fee AS fee,
+            u.extra_fee_asset0 AS gas
     ),
     amount_case AS (
         SELECT
@@ -1665,8 +1659,8 @@ FROM orders_with_assets
 
 
 
- AS uo
-        CROSS JOIN ( SELECT COUNT(*) AS tob_cnt FROM tob_orders ) AS tc
+) AS p
+
     )
 SELECT
     'ethereum' AS blockchain
