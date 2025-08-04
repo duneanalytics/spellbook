@@ -50,7 +50,45 @@ WITH
         FROM {{ angstrom_bundle_user_order_volume(tx_data, block_number) }} AS uo
         CROSS JOIN ( SELECT COUNT(*) AS tob_cnt FROM tob_orders ) AS tc
     )
+SELECT
+    '{{ blockchain }}' AS blockchain
+    , '{{ project }}' AS project
+    , '{{ version }}' AS version
+    , CAST(date_trunc('month', block_time) AS date) AS block_month
+    , CAST(date_trunc('day', block_time) AS date) AS block_date
+    , block_time
+    , block_number
+    , token_bought_amount_raw
+    , token_sold_amount_raw
+    , token_bought_address
+    , token_sold_address
+    , taker
+    , maker
+    , project_contract_address
+    , tx_hash
+    , evt_index
+FROM tob_orders
 
+UNION ALL 
+
+SELECT 
+    '{{ blockchain }}' AS blockchain
+    , '{{ project }}' AS project
+    , '{{ version }}' AS version
+    , CAST(date_trunc('month', block_time) AS date) AS block_month
+    , CAST(date_trunc('day', block_time) AS date) AS block_date
+    , block_time
+    , block_number
+    , token_bought_amount_raw
+    , token_sold_amount_raw
+    , token_bought_address
+    , token_sold_address
+    , taker
+    , maker
+    , project_contract_address
+    , tx_hash
+    , evt_index
+FROM user_orders
 
 
 {% endmacro %}
@@ -62,16 +100,16 @@ WITH
     -- '{{ blockchain }}' AS blockchain
     -- , '{{ project }}' AS project
     -- , '{{ version }}' AS version
-    -- , CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
-    -- , CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
-    -- , dexs.block_time
-    -- , dexs.block_number
-    -- , dexs.token_bought_amount_raw
-    -- , dexs.token_sold_amount_raw
-    -- , dexs.token_bought_address
-    -- , dexs.token_sold_address
-    -- , dexs.taker
-    -- , dexs.maker
-    -- , dexs.project_contract_address
-    -- , dexs.tx_hash
-    -- , dexs.evt_index
+    -- , CAST(date_trunc('month', block_time) AS date) AS block_month
+    -- , CAST(date_trunc('day', block_time) AS date) AS block_date
+    -- , block_time
+    -- , block_number
+    -- , token_bought_amount_raw
+    -- , token_sold_amount_raw
+    -- , token_bought_address
+    -- , token_sold_address
+    -- , taker
+    -- , maker
+    -- , project_contract_address
+    -- , tx_hash
+    -- , evt_index
