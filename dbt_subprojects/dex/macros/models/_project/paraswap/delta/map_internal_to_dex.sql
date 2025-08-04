@@ -59,6 +59,9 @@ select
         ,{{from_alias}}.gas_fee_usd
         ,wnt_price_usd
         ,executor
+        ,returnAmount -- uint256
+        ,protocolFee -- uint256
+        ,partnerFee -- uint256
         {% endif %}
     from {{from_alias}}  
         LEFT JOIN 

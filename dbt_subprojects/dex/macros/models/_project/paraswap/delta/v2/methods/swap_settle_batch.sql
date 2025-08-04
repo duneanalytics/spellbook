@@ -154,9 +154,9 @@ from delta_v2_swap_settle_batch_withEvents w
 -- destToken varbinary
 -- srcAmount uint256
 -- destAmount uint256
--- returnAmount uint256   -- TODO: add this field to the model
--- protocolFee uint256    -- TODO: add this field to the model
--- partnerFee uint256     -- TODO: add this field to the model
+-- returnAmount uint256 
+-- protocolFee uint256 
+-- partnerFee uint256 
 ), delta_v2_swapSettleBatch as (  
 SELECT
     -- NB: columns mapping must match accross all the methods, since they're unioned into one in master macro

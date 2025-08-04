@@ -20,9 +20,9 @@
 -- destToken varbinary
 -- srcAmount uint256
 -- destAmount uint256
--- returnAmount uint256   -- TODO: add this field to the model
--- protocolFee uint256    -- TODO: add this field to the model
--- partnerFee uint256     -- TODO: add this field to the model
+-- returnAmount uint256
+-- protocolFee uint256
+-- partnerFee uint256
 
 
 v2_swap_settle_withParsedOrderData AS (
