@@ -8,22 +8,15 @@ WITH dexs AS
 
 WITH
     tx_data_cte AS (
-        
-
--- maybe use abi for log??
-
-SELECT 
-    block_number,
-    block_time,
-    hash AS tx_hash,
-    index AS tx_index,
-    to AS angstrom_address,
-    data AS tx_data
-FROM "delta_prod"."ethereum"."transactions"
-WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x47aefe13a19c8036c0985b59090a34adffcad108630a86aae298954554394d10
-
-
-
+        SELECT 
+            block_number,
+            block_time,
+            hash AS tx_hash,
+            index AS tx_index,
+            to AS angstrom_address,
+            data AS tx_data
+        FROM "delta_prod"."ethereum"."transactions"
+        WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x47aefe13a19c8036c0985b59090a34adffcad108630a86aae298954554394d10
     ),
     tob_orders AS (
         SELECT 
@@ -45,12 +38,17 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
 
 SELECT 
     ab.*,
-    asts.*
+    if(ab.zero_for_1, asts.asset_in, asts.asset_out) AS asset_in,
+    if(ab.zero_for_1, asts.asset_out, asts.asset_in) AS asset_out,
+    asts.price_1over0
 FROM (
 
 
 WITH vec_pade AS (
-    SELECT buf
+    SELECT 
+        tx_hash,
+        block_number,
+        buf
     FROM (
  -- 0. assets, 1. pairs, 2. pool_updates, 3. top_of_block_orders, 4. user_orders
 
@@ -63,10 +61,7 @@ WITH
 
 SELECT 
     block_number,
-    block_time,
     hash AS tx_hash,
-    index AS tx_index,
-    to AS angstrom_address,
     data AS tx_data
 FROM "delta_prod"."ethereum"."transactions"
 WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x47aefe13a19c8036c0985b59090a34adffcad108630a86aae298954554394d10
@@ -76,6 +71,8 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     ),
     trimmed_input AS (
         SELECT 
+            tx_hash,
+            block_number,
             1 AS next_offset,
             varbinary_substring(t.tx_data, 69) AS next_buf
         FROM tx_data_cte AS t
@@ -83,11 +80,15 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     -- assets
     step0 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
@@ -97,11 +98,15 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     -- pairs
     step1 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
@@ -111,11 +116,15 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     -- pool updates
     step2 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
@@ -125,11 +134,15 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     -- top of block orders
     step3 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
@@ -139,24 +152,33 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     -- user orders
     step4 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
             FROM step3
         )
     )
-SELECT buf
+SELECT 
+    tx_hash,
+    block_number,
+    buf
 FROM step3
 
 
 )
 )
 SELECT
+    tx_hash,
+    block_number,
     use_internal,
     quantity_in,
     quantity_out,
@@ -173,6 +195,8 @@ SELECT
     signature_contract_signature
 FROM (
     WITH RECURSIVE decode_tob_order (
+        tx_hash,
+        block_number,
         buf,
         pointer,
         idx,
@@ -192,6 +216,8 @@ FROM (
         signature_contract_signature
     ) AS (
         SELECT
+            tx_hash,
+            block_number,
             varbinary_substring(buf, 4, varbinary_length(buf) - 3),
             4,
             0,
@@ -214,6 +240,8 @@ FROM (
         UNION ALL
 
         SELECT
+            tx_hash,
+            block_number,
             buf,
             pointer,
             idx,
@@ -235,6 +263,8 @@ FROM (
             WITH 
             trimmed_as_fields AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx + 1 AS idx,
                     ARRAY[
                         bitwise_and(bitwise_right_shift(varbinary_to_integer(varbinary_substring(buf, 1, 1)), 3), 1),
@@ -248,6 +278,8 @@ FROM (
             ),
             use_internal_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     if(bitmap[4] = 1, true, false) AS use_internal,
                     bitmap,
@@ -257,6 +289,8 @@ FROM (
             ),
             quantity_in_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     use_internal,
                     varbinary_to_uint256(varbinary_substring(buf, pointer, 16)) AS quantity_in,
@@ -267,6 +301,8 @@ FROM (
             ),
             quantity_out_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     use_internal,
                     quantity_in,
@@ -278,6 +314,8 @@ FROM (
             ),
             max_gas_asset_0_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     use_internal,
                     quantity_in,
@@ -290,6 +328,8 @@ FROM (
             ),
             gas_used_asset_0_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     use_internal,
                     quantity_in,
@@ -303,6 +343,8 @@ FROM (
             ),
             pairs_index_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     use_internal,
                     quantity_in,
@@ -317,6 +359,8 @@ FROM (
             ),
             zero_for_1_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     use_internal,
                     quantity_in,
@@ -332,6 +376,8 @@ FROM (
             ),
             recipient_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     use_internal,
                     quantity_in,
@@ -348,6 +394,8 @@ FROM (
             ),
             signature_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     use_internal,
                     quantity_in,
@@ -370,6 +418,8 @@ FROM (
             ),
             all_fields_collapsed AS (
                 SELECT 
+                    tx_hash,
+                    block_number,
                     buf,
                     pointer,
                     idx,
@@ -390,6 +440,8 @@ FROM (
                 FROM signature_field
             )
             SELECT 
+                tx_hash,
+                block_number,
                 varbinary_substring(buf, pointer) AS buf,
                 pointer,
                 idx,
@@ -420,7 +472,7 @@ ORDER BY idx DESC
 
 
 ) AS ab
-JOIN (
+CROSS JOIN LATERAL (
 
 WITH
     assets AS (
@@ -429,7 +481,10 @@ WITH
 
 
 WITH vec_pade AS (
-    SELECT buf
+    SELECT 
+        tx_hash,
+        block_number,
+        buf
     FROM (
  -- 0. assets, 1. pairs, 2. pool_updates, 3. top_of_block_orders, 4. user_orders
 
@@ -442,10 +497,7 @@ WITH
 
 SELECT 
     block_number,
-    block_time,
     hash AS tx_hash,
-    index AS tx_index,
-    to AS angstrom_address,
     data AS tx_data
 FROM "delta_prod"."ethereum"."transactions"
 WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x47aefe13a19c8036c0985b59090a34adffcad108630a86aae298954554394d10
@@ -455,6 +507,8 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     ),
     trimmed_input AS (
         SELECT 
+            tx_hash,
+            block_number,
             1 AS next_offset,
             varbinary_substring(t.tx_data, 69) AS next_buf
         FROM tx_data_cte AS t
@@ -462,11 +516,15 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     -- assets
     step0 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
@@ -476,11 +534,15 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     -- pairs
     step1 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
@@ -490,11 +552,15 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     -- pool updates
     step2 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
@@ -504,11 +570,15 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     -- top of block orders
     step3 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
@@ -518,32 +588,43 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     -- user orders
     step4 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
             FROM step3
         )
     )
-SELECT buf
+SELECT 
+    tx_hash,
+    block_number,
+    buf
 FROM step0
 
 
 )
 )
 SELECT 
+    tx_hash,
+    block_number,
     bundle_idx,
     token_address,
     save_amount,
     take_amount,
     settle_amount
 FROM (
-    WITH RECURSIVE decode_asset (buf, len, idx, addr, save, take, settle) AS (
+    WITH RECURSIVE decode_asset (tx_hash, block_number, buf, len, idx, addr, save, take, settle) AS (
         SELECT
+            tx_hash,
+            block_number,
             varbinary_substring(buf, 4, varbinary_length(buf) - 3),
             varbinary_to_integer(varbinary_substring(buf, 1, 3)) / 68 AS len,
             0 AS idx,
@@ -557,6 +638,8 @@ FROM (
         UNION ALL
 
         SELECT
+            tx_hash,
+            block_number,
             varbinary_substring(buf, 69, varbinary_length(buf) - 68) AS enc,
             len,
             idx + 1 AS new_idx,
@@ -570,6 +653,8 @@ FROM (
             idx < len
     )
     SELECT
+        tx_hash,
+        block_number,
         idx AS bundle_idx,
         addr AS token_address,
         save AS save_amount,
@@ -586,6 +671,8 @@ FROM (
     ),
     all_pairs AS (
         SELECT 
+            tx_hash,
+            block_number,
             bundle_idx,
             index0,
             index1,
@@ -594,7 +681,10 @@ FROM (
 
 
 WITH vec_pade AS (
-    SELECT buf
+    SELECT 
+        tx_hash,
+        block_number,
+        buf
     FROM (
  -- 0. assets, 1. pairs, 2. pool_updates, 3. top_of_block_orders, 4. user_orders
 
@@ -607,10 +697,7 @@ WITH
 
 SELECT 
     block_number,
-    block_time,
     hash AS tx_hash,
-    index AS tx_index,
-    to AS angstrom_address,
     data AS tx_data
 FROM "delta_prod"."ethereum"."transactions"
 WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x47aefe13a19c8036c0985b59090a34adffcad108630a86aae298954554394d10
@@ -620,6 +707,8 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     ),
     trimmed_input AS (
         SELECT 
+            tx_hash,
+            block_number,
             1 AS next_offset,
             varbinary_substring(t.tx_data, 69) AS next_buf
         FROM tx_data_cte AS t
@@ -627,11 +716,15 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     -- assets
     step0 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
@@ -641,11 +734,15 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     -- pairs
     step1 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
@@ -655,11 +752,15 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     -- pool updates
     step2 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
@@ -669,11 +770,15 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     -- top of block orders
     step3 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
@@ -683,32 +788,43 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     -- user orders
     step4 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
             FROM step3
         )
     )
-SELECT buf
+SELECT 
+    tx_hash,
+    block_number,
+    buf
 FROM step1
 
 
 )
 )
 SELECT 
+    tx_hash,
+    block_number,
     bundle_idx,
     index0, 
     index1, 
     store_index, 
     price_1over0
 FROM (
-    WITH RECURSIVE decode_pair (buf, len, idx, index0, index1, store_index, price_1over0) AS (
+    WITH RECURSIVE decode_pair (tx_hash, block_number, buf, len, idx, index0, index1, store_index, price_1over0) AS (
         SELECT
+            tx_hash,
+            block_number,
             varbinary_substring(buf, 4, varbinary_length(buf) - 3),
             varbinary_to_integer(varbinary_substring(buf, 1, 3)) / 38 AS len,
             0 AS idx,
@@ -722,6 +838,8 @@ FROM (
         UNION ALL
 
         SELECT
+            tx_hash,
+            block_number,
             varbinary_substring(buf, 39, varbinary_length(buf) - 38) AS enc,
             len,
             idx + 1 AS new_idx,
@@ -735,6 +853,8 @@ FROM (
             idx < len
     )
     SELECT
+        tx_hash,
+        block_number,
         idx AS bundle_idx,
         index0,
         index1,
@@ -752,52 +872,56 @@ FROM (
     ),
     pairs AS (
         SELECT 
+            ap.block_number,
+            ap.tx_hash,
             ap.bundle_idx,
             ap.index0,
             ap.index1,
             ap.price_1over0
         FROM all_pairs ap
-        CROSS JOIN params
-        WHERE ap.bundle_idx = params.this_pair_index
     ),
     _asset_in AS (
         SELECT
+            p.block_number AS block_number,
+            p.tx_hash AS tx_hash,
+            p.bundle_idx AS p_index,
             p.price_1over0,
             a.token_address AS asset_in
         FROM assets AS a
-        JOIN pairs AS p ON a.bundle_idx = p.index0
+        JOIN pairs AS p ON a.bundle_idx = p.index0 AND a.block_number = p.block_number AND a.tx_hash = p.tx_hash
     ),
     _asset_out AS (
         SELECT
+            p.block_number AS block_number,
+            p.tx_hash AS tx_hash,
+            p.bundle_idx AS p_index,
             a.token_address AS asset_out
         FROM assets AS a
-        JOIN pairs AS p ON a.bundle_idx = p.index1
+        JOIN pairs AS p ON a.bundle_idx = p.index1 AND a.block_number = p.block_number AND a.tx_hash = p.tx_hash
     ),
     zfo_assets AS (
         SELECT
-            i.price_1over0,
-            params.this_zfo,
-            i.asset_in,
-            o.asset_out,
-            CASE 
-                WHEN params.this_zfo THEN ARRAY[i.asset_in, o.asset_out]
-                ELSE ARRAY[o.asset_out, i.asset_in]
-            END AS zfo_sorted_assets
+            i.block_number AS block_number,
+            i.tx_hash AS tx_hash,
+            i.price_1over0 AS price_1over0,
+            i.p_index AS bundle_pair_index,
+            i.asset_in AS asset_in,
+            o.asset_out AS asset_out
         FROM _asset_in i 
         CROSS JOIN _asset_out o
-        CROSS JOIN params
+        WHERE i.p_index = o.p_index AND i.block_number = o.block_number AND i.tx_hash = o.tx_hash
     )
 SELECT
-    zfo_sorted_assets[1] AS asset_in,
-    zfo_sorted_assets[2] AS asset_out,
-    price_1over0
+    *
 FROM zfo_assets
 
 
 
 ) AS asts
+WHERE asts.bundle_pair_index = ab.pairs_index AND ab.block_number = asts.block_number AND ab.tx_hash = asts.tx_hash
 
 ) AS p
+        WHERE t.tx_hash = p.tx_hash AND t.block_number = p.block_number
     ),
     user_orders AS (
         SELECT 
@@ -813,7 +937,6 @@ FROM zfo_assets
             t.tx_hash AS tx_hash,
             row_number() OVER (PARTITION BY t.tx_hash) + tc.tob_cnt AS evt_index
         FROM tx_data_cte t
-        CROSS JOIN ( SELECT COUNT(*) AS tob_cnt FROM tob_orders ) AS tc
         CROSS JOIN LATERAL (
 
 
@@ -823,12 +946,17 @@ WITH
         SELECT 
             ab.*,
             if(ab.order_quantities_kind = 'Exact', ab.order_quantities_exact_quantity, ab.order_quantities_partial_filled_quantity) AS fill_amount,
-            asts.*
+            if(ab.zero_for_one, asts.asset_in, asts.asset_out) AS asset_in,
+            if(ab.zero_for_one, asts.asset_out, asts.asset_in) AS asset_out,
+            asts.price_1over0
         FROM (
 
 
 WITH vec_pade AS (
-    SELECT buf
+    SELECT 
+        tx_hash,
+        block_number,
+        buf
     FROM (
  -- 0. assets, 1. pairs, 2. pool_updates, 3. top_of_block_orders, 4. user_orders
 
@@ -841,10 +969,7 @@ WITH
 
 SELECT 
     block_number,
-    block_time,
     hash AS tx_hash,
-    index AS tx_index,
-    to AS angstrom_address,
     data AS tx_data
 FROM "delta_prod"."ethereum"."transactions"
 WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x47aefe13a19c8036c0985b59090a34adffcad108630a86aae298954554394d10
@@ -854,6 +979,8 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     ),
     trimmed_input AS (
         SELECT 
+            tx_hash,
+            block_number,
             1 AS next_offset,
             varbinary_substring(t.tx_data, 69) AS next_buf
         FROM tx_data_cte AS t
@@ -861,11 +988,15 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     -- assets
     step0 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
@@ -875,11 +1006,15 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     -- pairs
     step1 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
@@ -889,11 +1024,15 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     -- pool updates
     step2 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
@@ -903,11 +1042,15 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     -- top of block orders
     step3 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
@@ -917,24 +1060,33 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     -- user orders
     step4 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
             FROM step3
         )
     )
-SELECT buf
+SELECT 
+    tx_hash,
+    block_number,
+    buf
 FROM step4
 
 
 )
 )
 SELECT
+    tx_hash,
+    block_number,
     ref_id,
     use_internal,
     pair_index,
@@ -960,6 +1112,8 @@ SELECT
     signature_contract_signature
 FROM (
     WITH RECURSIVE decode_user_order (
+        tx_hash,
+        block_number,
         buf,
         pointer,
         idx,
@@ -988,6 +1142,8 @@ FROM (
         signature_contract_signature
     ) AS (
         SELECT
+            tx_hash,
+            block_number,
             varbinary_substring(buf, 4, varbinary_length(buf) - 3),
             4,
             0,
@@ -1019,6 +1175,8 @@ FROM (
         UNION ALL
 
         SELECT
+            tx_hash,
+            block_number,
             buf,
             pointer,
             idx,
@@ -1049,6 +1207,8 @@ FROM (
             WITH 
             trimmed_as_fields AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx + 1 AS idx,
                     ARRAY[
                         bitwise_and(bitwise_right_shift(varbinary_to_integer(varbinary_substring(buf, 1, 1)), 7), 1),
@@ -1067,6 +1227,8 @@ FROM (
             -- ref id
             ref_id_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     varbinary_to_bigint(varbinary_substring(buf, pointer, 4)) AS ref_id,
                     bitmap,
@@ -1076,6 +1238,8 @@ FROM (
             ),
             use_internal_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     ref_id,
                     if(bitmap[8] = 1, true, false) AS use_internal,
@@ -1086,6 +1250,8 @@ FROM (
             ),
             pair_index_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     ref_id,
                     use_internal,
@@ -1097,6 +1263,8 @@ FROM (
             ),
             min_price_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     ref_id,
                     use_internal,
@@ -1109,6 +1277,8 @@ FROM (
             ),
             recipient_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     ref_id,
                     use_internal,
@@ -1122,6 +1292,8 @@ FROM (
             ),
             hook_data_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     ref_id,
                     use_internal,
@@ -1136,6 +1308,8 @@ FROM (
             ),
             zero_for_one_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     ref_id,
                     use_internal,
@@ -1151,6 +1325,8 @@ FROM (
             ),
             standing_validation_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     ref_id,
                     use_internal,
@@ -1168,6 +1344,8 @@ FROM (
             ),
             order_quantities_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     ref_id,
                     use_internal,
@@ -1190,6 +1368,8 @@ FROM (
             ),
             max_extra_fee_asset0_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     ref_id,
                     use_internal,
@@ -1213,6 +1393,8 @@ FROM (
             ),
             extra_fee_asset0_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     ref_id,
                     use_internal,
@@ -1237,6 +1419,8 @@ FROM (
             ),
             exact_in_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     ref_id,
                     use_internal,
@@ -1262,6 +1446,8 @@ FROM (
             ),
             signature_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     ref_id,
                     use_internal,
@@ -1293,6 +1479,8 @@ FROM (
             ),
             all_fields_collapsed AS (
                 SELECT 
+                    tx_hash,
+                    block_number,
                     ref_id,
                     use_internal,
                     pair_index,
@@ -1322,6 +1510,8 @@ FROM (
                 FROM signature_field
             )
             SELECT 
+                tx_hash,
+                block_number,
                 varbinary_substring(buf, pointer) AS buf,
                 pointer,
                 idx,
@@ -1366,18 +1556,16 @@ ORDER BY idx DESC
         CROSS JOIN LATERAL (
 
 WITH
-    params AS (
-        SELECT 
-            ab.pair_index AS this_pair_index,
-            ab.zero_for_one AS this_zfo
-    ),
     assets AS (
         SELECT *
         FROM (
 
 
 WITH vec_pade AS (
-    SELECT buf
+    SELECT 
+        tx_hash,
+        block_number,
+        buf
     FROM (
  -- 0. assets, 1. pairs, 2. pool_updates, 3. top_of_block_orders, 4. user_orders
 
@@ -1390,10 +1578,7 @@ WITH
 
 SELECT 
     block_number,
-    block_time,
     hash AS tx_hash,
-    index AS tx_index,
-    to AS angstrom_address,
     data AS tx_data
 FROM "delta_prod"."ethereum"."transactions"
 WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x47aefe13a19c8036c0985b59090a34adffcad108630a86aae298954554394d10
@@ -1403,6 +1588,8 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     ),
     trimmed_input AS (
         SELECT 
+            tx_hash,
+            block_number,
             1 AS next_offset,
             varbinary_substring(t.tx_data, 69) AS next_buf
         FROM tx_data_cte AS t
@@ -1410,11 +1597,15 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     -- assets
     step0 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
@@ -1424,11 +1615,15 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     -- pairs
     step1 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
@@ -1438,11 +1633,15 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     -- pool updates
     step2 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
@@ -1452,11 +1651,15 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     -- top of block orders
     step3 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
@@ -1466,32 +1669,43 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     -- user orders
     step4 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
             FROM step3
         )
     )
-SELECT buf
+SELECT 
+    tx_hash,
+    block_number,
+    buf
 FROM step0
 
 
 )
 )
 SELECT 
+    tx_hash,
+    block_number,
     bundle_idx,
     token_address,
     save_amount,
     take_amount,
     settle_amount
 FROM (
-    WITH RECURSIVE decode_asset (buf, len, idx, addr, save, take, settle) AS (
+    WITH RECURSIVE decode_asset (tx_hash, block_number, buf, len, idx, addr, save, take, settle) AS (
         SELECT
+            tx_hash,
+            block_number,
             varbinary_substring(buf, 4, varbinary_length(buf) - 3),
             varbinary_to_integer(varbinary_substring(buf, 1, 3)) / 68 AS len,
             0 AS idx,
@@ -1505,6 +1719,8 @@ FROM (
         UNION ALL
 
         SELECT
+            tx_hash,
+            block_number,
             varbinary_substring(buf, 69, varbinary_length(buf) - 68) AS enc,
             len,
             idx + 1 AS new_idx,
@@ -1518,6 +1734,8 @@ FROM (
             idx < len
     )
     SELECT
+        tx_hash,
+        block_number,
         idx AS bundle_idx,
         addr AS token_address,
         save AS save_amount,
@@ -1534,6 +1752,8 @@ FROM (
     ),
     all_pairs AS (
         SELECT 
+            tx_hash,
+            block_number,
             bundle_idx,
             index0,
             index1,
@@ -1542,7 +1762,10 @@ FROM (
 
 
 WITH vec_pade AS (
-    SELECT buf
+    SELECT 
+        tx_hash,
+        block_number,
+        buf
     FROM (
  -- 0. assets, 1. pairs, 2. pool_updates, 3. top_of_block_orders, 4. user_orders
 
@@ -1555,10 +1778,7 @@ WITH
 
 SELECT 
     block_number,
-    block_time,
     hash AS tx_hash,
-    index AS tx_index,
-    to AS angstrom_address,
     data AS tx_data
 FROM "delta_prod"."ethereum"."transactions"
 WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x47aefe13a19c8036c0985b59090a34adffcad108630a86aae298954554394d10
@@ -1568,6 +1788,8 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     ),
     trimmed_input AS (
         SELECT 
+            tx_hash,
+            block_number,
             1 AS next_offset,
             varbinary_substring(t.tx_data, 69) AS next_buf
         FROM tx_data_cte AS t
@@ -1575,11 +1797,15 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     -- assets
     step0 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
@@ -1589,11 +1815,15 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     -- pairs
     step1 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
@@ -1603,11 +1833,15 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     -- pool updates
     step2 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
@@ -1617,11 +1851,15 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     -- top of block orders
     step3 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
@@ -1631,32 +1869,43 @@ WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(da
     -- user orders
     step4 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
             FROM step3
         )
     )
-SELECT buf
+SELECT 
+    tx_hash,
+    block_number,
+    buf
 FROM step1
 
 
 )
 )
 SELECT 
+    tx_hash,
+    block_number,
     bundle_idx,
     index0, 
     index1, 
     store_index, 
     price_1over0
 FROM (
-    WITH RECURSIVE decode_pair (buf, len, idx, index0, index1, store_index, price_1over0) AS (
+    WITH RECURSIVE decode_pair (tx_hash, block_number, buf, len, idx, index0, index1, store_index, price_1over0) AS (
         SELECT
+            tx_hash,
+            block_number,
             varbinary_substring(buf, 4, varbinary_length(buf) - 3),
             varbinary_to_integer(varbinary_substring(buf, 1, 3)) / 38 AS len,
             0 AS idx,
@@ -1670,6 +1919,8 @@ FROM (
         UNION ALL
 
         SELECT
+            tx_hash,
+            block_number,
             varbinary_substring(buf, 39, varbinary_length(buf) - 38) AS enc,
             len,
             idx + 1 AS new_idx,
@@ -1683,6 +1934,8 @@ FROM (
             idx < len
     )
     SELECT
+        tx_hash,
+        block_number,
         idx AS bundle_idx,
         index0,
         index1,
@@ -1700,50 +1953,53 @@ FROM (
     ),
     pairs AS (
         SELECT 
+            ap.block_number,
+            ap.tx_hash,
             ap.bundle_idx,
             ap.index0,
             ap.index1,
             ap.price_1over0
         FROM all_pairs ap
-        CROSS JOIN params
-        WHERE ap.bundle_idx = params.this_pair_index
     ),
     _asset_in AS (
         SELECT
+            p.block_number AS block_number,
+            p.tx_hash AS tx_hash,
+            p.bundle_idx AS p_index,
             p.price_1over0,
             a.token_address AS asset_in
         FROM assets AS a
-        JOIN pairs AS p ON a.bundle_idx = p.index0
+        JOIN pairs AS p ON a.bundle_idx = p.index0 AND a.block_number = p.block_number AND a.tx_hash = p.tx_hash
     ),
     _asset_out AS (
         SELECT
+            p.block_number AS block_number,
+            p.tx_hash AS tx_hash,
+            p.bundle_idx AS p_index,
             a.token_address AS asset_out
         FROM assets AS a
-        JOIN pairs AS p ON a.bundle_idx = p.index1
+        JOIN pairs AS p ON a.bundle_idx = p.index1 AND a.block_number = p.block_number AND a.tx_hash = p.tx_hash
     ),
     zfo_assets AS (
         SELECT
-            i.price_1over0,
-            params.this_zfo,
-            i.asset_in,
-            o.asset_out,
-            CASE 
-                WHEN params.this_zfo THEN ARRAY[i.asset_in, o.asset_out]
-                ELSE ARRAY[o.asset_out, i.asset_in]
-            END AS zfo_sorted_assets
+            i.block_number AS block_number,
+            i.tx_hash AS tx_hash,
+            i.price_1over0 AS price_1over0,
+            i.p_index AS bundle_pair_index,
+            i.asset_in AS asset_in,
+            o.asset_out AS asset_out
         FROM _asset_in i 
         CROSS JOIN _asset_out o
-        CROSS JOIN params
+        WHERE i.p_index = o.p_index AND i.block_number = o.block_number AND i.tx_hash = o.tx_hash
     )
 SELECT
-    zfo_sorted_assets[1] AS asset_in,
-    zfo_sorted_assets[2] AS asset_out,
-    price_1over0
+    *
 FROM zfo_assets
 
 
 
 ) AS asts
+        WHERE asts.bundle_pair_index = ab.pair_index AND ab.block_number = asts.block_number AND ab.tx_hash = asts.tx_hash
     ),
     orders_with_assets AS (
         SELECT
@@ -1757,14 +2013,13 @@ FROM zfo_assets
 SELECT 
     varbinary_to_integer(varbinary_substring(l.data, 62, 3)) AS bundle_fee,
     varbinary_to_integer(varbinary_substring(l.data, 94, 3)) AS unlocked_fee,
-    varbinary_to_integer(varbinary_substring(l.data, 126, 3)) AS protocol_unlocked_fee
+    varbinary_to_integer(varbinary_substring(l.data, 126, 3)) AS protocol_unlocked_fee,
+    topic1,
+    topic2
 FROM "delta_prod"."ethereum"."logs" AS l
 WHERE 
     contract_address = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND 
-    topic0 = 0xf325a037d71efc98bc41dc5257edefd43a1d1162e206373e53af271a7a3224e9 AND
-    block_number <= t.block_number AND 
-    (varbinary_substring(topic1, 13, 20) = u.asset_in OR varbinary_substring(topic2, 13, 20) = u.asset_in) AND 
-    (varbinary_substring(topic1, 13, 20) = u.asset_out OR varbinary_substring(topic2, 13, 20) = u.asset_out)
+    topic0 = 0xf325a037d71efc98bc41dc5257edefd43a1d1162e206373e53af271a7a3224e9
 ORDER BY block_number DESC 
 LIMIT 1
 
@@ -1804,6 +2059,9 @@ FROM amount_case
 
 
 ) AS a
+        WHERE     
+            ((varbinary_substring(f.topic1, 13, 20) = u.asset_in OR varbinary_substring(f.topic2, 13, 20) = u.asset_out) AND 
+            (varbinary_substring(f.topic1, 13, 20) = u.asset_out OR varbinary_substring(f.topic2, 13, 20) = u.asset_in))
     )
 SELECT
     *
@@ -1814,6 +2072,8 @@ FROM orders_with_assets
 
 
 ) AS p
+        CROSS JOIN ( SELECT COUNT(*) AS tob_cnt FROM tob_orders ) AS tc
+        WHERE t.tx_hash = p.tx_hash AND t.block_number = p.block_number
 
     )
 SELECT
