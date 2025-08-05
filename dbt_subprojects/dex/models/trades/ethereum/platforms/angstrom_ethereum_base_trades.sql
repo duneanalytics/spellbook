@@ -18,7 +18,6 @@ WITH dexs AS
         , blockchain = 'ethereum'
         , project = 'angstrom'
         , version = '2'
-        
     )
     }}
 )

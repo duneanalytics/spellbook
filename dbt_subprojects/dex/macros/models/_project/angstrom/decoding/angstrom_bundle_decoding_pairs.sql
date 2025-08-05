@@ -1,21 +1,31 @@
 {% macro
-    angstrom_decoding_pairs(raw_tx_input_hex)
+    angstrom_decoding_pairs(
+        angstrom_contract_addr,
+        blockchain
+    )
 %}
 
 
 WITH vec_pade AS (
-    SELECT buf
-    FROM ({{ angstrom_decoding_recursive(raw_tx_input_hex, 'step1') }})
+    SELECT 
+        tx_hash,
+        block_number,
+        buf
+    FROM ({{ angstrom_decoding_recursive(angstrom_contract_addr, blockchain, 'step1') }})
 )
 SELECT 
+    tx_hash,
+    block_number,
     bundle_idx,
     index0, 
     index1, 
     store_index, 
     price_1over0
 FROM (
-    WITH RECURSIVE decode_pair (buf, len, idx, index0, index1, store_index, price_1over0) AS (
+    WITH RECURSIVE decode_pair (tx_hash, block_number, buf, len, idx, index0, index1, store_index, price_1over0) AS (
         SELECT
+            tx_hash,
+            block_number,
             varbinary_substring(buf, 4, varbinary_length(buf) - 3),
             varbinary_to_integer(varbinary_substring(buf, 1, 3)) / 38 AS len,
             0 AS idx,
@@ -29,6 +39,8 @@ FROM (
         UNION ALL
 
         SELECT
+            tx_hash,
+            block_number,
             varbinary_substring(buf, 39, varbinary_length(buf) - 38) AS enc,
             len,
             idx + 1 AS new_idx,
@@ -42,6 +54,8 @@ FROM (
             idx < len
     )
     SELECT
+        tx_hash,
+        block_number,
         idx AS bundle_idx,
         index0,
         index1,

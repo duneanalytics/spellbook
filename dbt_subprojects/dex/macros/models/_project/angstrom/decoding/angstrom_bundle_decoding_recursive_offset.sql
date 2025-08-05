@@ -1,6 +1,7 @@
 {% macro
     angstrom_decoding_recursive(
-        raw_tx_input_hex,
+        angstrom_contract_addr,
+        blockchain,
         field_step
     )
 %}
@@ -8,19 +9,29 @@
 
 
 WITH
+    tx_data_cte AS (
+        {{ angstrom_tx_data(angstrom_contract_addr, blockchain) }}
+    ),
     trimmed_input AS (
         SELECT 
+            tx_hash,
+            block_number,
             1 AS next_offset,
-            varbinary_substring({{ raw_tx_input_hex }}, 69) AS next_buf
+            varbinary_substring(t.tx_data, 69) AS next_buf
+        FROM tx_data_cte AS t
     ),
     -- assets
     step0 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
@@ -30,11 +41,15 @@ WITH
     -- pairs
     step1 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
@@ -44,11 +59,15 @@ WITH
     -- pool updates
     step2 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
@@ -58,11 +77,15 @@ WITH
     -- top of block orders
     step3 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
@@ -72,18 +95,25 @@ WITH
     -- user orders
     step4 AS (
         SELECT
+            tx_hash,
+            block_number,
             len + 3 + offset AS next_offset,
             varbinary_substring(next_buf, offset, len + 3) AS buf,
             next_buf
         FROM (
             SELECT 
+                tx_hash,
+                block_number,
                 next_offset AS offset,
                 varbinary_to_integer(varbinary_substring(next_buf, next_offset, 3)) AS len,
                 next_buf
             FROM step3
         )
     )
-SELECT buf
+SELECT 
+    tx_hash,
+    block_number,
+    buf
 FROM {{ field_step }}
 
 

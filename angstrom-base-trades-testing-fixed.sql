@@ -1,3 +1,5 @@
+
+
 {% macro
     angstrom_bundle_volume_events(   
         angstrom_contract_addr, 
@@ -10,15 +12,7 @@
 
 WITH
     tx_data_cte AS (
-        SELECT 
-            block_number,
-            block_time,
-            hash AS tx_hash,
-            index AS tx_index,
-            to AS angstrom_address,
-            data AS tx_data
-        FROM {{ source(blockchain, 'transactions') }}
-        WHERE to = {{ angstrom_contract_addr }} AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x47aefe13a19c8036c0985b59090a34adffcad108630a86aae298954554394d10
+        {{ angstrom_tx_data(angstrom_contract_addr, blockchain) }}
     ),
     tob_orders AS (
         SELECT 
@@ -34,8 +28,7 @@ WITH
             t.tx_hash AS tx_hash,
             row_number() over (partition by t.tx_hash) as evt_index
         FROM tx_data_cte t
-        CROSS JOIN LATERAL ({{ angstrom_bundle_tob_order_volume(angstrom_contract_addr, blockchain) }}) AS p
-        WHERE t.tx_hash = p.tx_hash AND t.block_number = p.block_number
+        CROSS JOIN LATERAL ({{ angstrom_bundle_tob_order_volume(angstrom_contract_addr, blockchain, 't.tx_data') }}) AS p
     ),
     user_orders AS (
         SELECT 
@@ -51,9 +44,8 @@ WITH
             t.tx_hash AS tx_hash,
             row_number() OVER (PARTITION BY t.tx_hash) + tc.tob_cnt AS evt_index
         FROM tx_data_cte t
-        CROSS JOIN LATERAL ({{ angstrom_bundle_user_order_volume(angstrom_contract_addr, blockchain) }}) AS p
         CROSS JOIN ( SELECT COUNT(*) AS tob_cnt FROM tob_orders ) AS tc
-        WHERE t.tx_hash = p.tx_hash AND t.block_number = p.block_number
+        CROSS JOIN LATERAL ({{ angstrom_bundle_user_order_volume(angstrom_contract_addr, blockchain, 't.tx_data', 't.block_number') }}) AS p
 
     )
 SELECT
@@ -98,3 +90,4 @@ FROM user_orders
 
 
 {% endmacro %}
+

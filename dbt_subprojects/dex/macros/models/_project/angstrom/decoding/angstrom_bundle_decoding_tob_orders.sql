@@ -1,13 +1,21 @@
 {% macro
-    angstrom_decoding_top_of_block_orders(raw_tx_input_hex)
+    angstrom_decoding_top_of_block_orders(
+        angstrom_contract_addr,
+        blockchain
+    )
 %}
 
 
 WITH vec_pade AS (
-    SELECT buf
-    FROM ({{ angstrom_decoding_recursive(raw_tx_input_hex, 'step3') }})
+    SELECT 
+        tx_hash,
+        block_number,
+        buf
+    FROM ({{ angstrom_decoding_recursive(angstrom_contract_addr, blockchain, 'step3') }})
 )
 SELECT
+    tx_hash,
+    block_number,
     use_internal,
     quantity_in,
     quantity_out,
@@ -24,6 +32,8 @@ SELECT
     signature_contract_signature
 FROM (
     WITH RECURSIVE decode_tob_order (
+        tx_hash,
+        block_number,
         buf,
         pointer,
         idx,
@@ -43,6 +53,8 @@ FROM (
         signature_contract_signature
     ) AS (
         SELECT
+            tx_hash,
+            block_number,
             varbinary_substring(buf, 4, varbinary_length(buf) - 3),
             4,
             0,
@@ -65,6 +77,8 @@ FROM (
         UNION ALL
 
         SELECT
+            tx_hash,
+            block_number,
             buf,
             pointer,
             idx,
@@ -86,6 +100,8 @@ FROM (
             WITH 
             trimmed_as_fields AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx + 1 AS idx,
                     ARRAY[
                         bitwise_and(bitwise_right_shift(varbinary_to_integer(varbinary_substring(buf, 1, 1)), 3), 1),
@@ -99,6 +115,8 @@ FROM (
             ),
             use_internal_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     if(bitmap[4] = 1, true, false) AS use_internal,
                     bitmap,
@@ -108,6 +126,8 @@ FROM (
             ),
             quantity_in_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     use_internal,
                     varbinary_to_uint256(varbinary_substring(buf, pointer, 16)) AS quantity_in,
@@ -118,6 +138,8 @@ FROM (
             ),
             quantity_out_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     use_internal,
                     quantity_in,
@@ -129,6 +151,8 @@ FROM (
             ),
             max_gas_asset_0_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     use_internal,
                     quantity_in,
@@ -141,6 +165,8 @@ FROM (
             ),
             gas_used_asset_0_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     use_internal,
                     quantity_in,
@@ -154,6 +180,8 @@ FROM (
             ),
             pairs_index_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     use_internal,
                     quantity_in,
@@ -168,6 +196,8 @@ FROM (
             ),
             zero_for_1_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     use_internal,
                     quantity_in,
@@ -183,6 +213,8 @@ FROM (
             ),
             recipient_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     use_internal,
                     quantity_in,
@@ -199,6 +231,8 @@ FROM (
             ),
             signature_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     use_internal,
                     quantity_in,
@@ -221,6 +255,8 @@ FROM (
             ),
             all_fields_collapsed AS (
                 SELECT 
+                    tx_hash,
+                    block_number,
                     buf,
                     pointer,
                     idx,
@@ -241,6 +277,8 @@ FROM (
                 FROM signature_field
             )
             SELECT 
+                tx_hash,
+                block_number,
                 varbinary_substring(buf, pointer) AS buf,
                 pointer,
                 idx,

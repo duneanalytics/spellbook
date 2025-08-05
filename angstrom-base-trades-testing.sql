@@ -8,15 +8,22 @@ WITH dexs AS
 
 WITH
     tx_data_cte AS (
-        SELECT 
-            block_number,
-            block_time,
-            hash AS tx_hash,
-            index AS tx_index,
-            to AS angstrom_address,
-            data AS tx_data
-        FROM "delta_prod"."ethereum"."transactions"
-        WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x47aefe13a19c8036c0985b59090a34adffcad108630a86aae298954554394d10
+        
+
+-- maybe use abi for log??
+
+SELECT 
+    block_number,
+    block_time,
+    hash AS tx_hash,
+    index AS tx_index,
+    to AS angstrom_address,
+    data AS tx_data
+FROM "delta_prod"."ethereum"."transactions"
+WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x47aefe13a19c8036c0985b59090a34adffcad108630a86aae298954554394d10
+
+
+
     ),
     tob_orders AS (
         SELECT 
@@ -49,10 +56,29 @@ WITH vec_pade AS (
 
 
 WITH
+    tx_data_cte AS (
+        
+
+-- maybe use abi for log??
+
+SELECT 
+    block_number,
+    block_time,
+    hash AS tx_hash,
+    index AS tx_index,
+    to AS angstrom_address,
+    data AS tx_data
+FROM "delta_prod"."ethereum"."transactions"
+WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x47aefe13a19c8036c0985b59090a34adffcad108630a86aae298954554394d10
+
+
+
+    ),
     trimmed_input AS (
         SELECT 
             1 AS next_offset,
             varbinary_substring(t.tx_data, 69) AS next_buf
+        FROM tx_data_cte AS t
     ),
     -- assets
     step0 AS (
@@ -394,7 +420,7 @@ ORDER BY idx DESC
 
 
 ) AS ab
-CROSS JOIN LATERAL (
+JOIN (
 
 WITH
     assets AS (
@@ -409,10 +435,29 @@ WITH vec_pade AS (
 
 
 WITH
+    tx_data_cte AS (
+        
+
+-- maybe use abi for log??
+
+SELECT 
+    block_number,
+    block_time,
+    hash AS tx_hash,
+    index AS tx_index,
+    to AS angstrom_address,
+    data AS tx_data
+FROM "delta_prod"."ethereum"."transactions"
+WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x47aefe13a19c8036c0985b59090a34adffcad108630a86aae298954554394d10
+
+
+
+    ),
     trimmed_input AS (
         SELECT 
             1 AS next_offset,
             varbinary_substring(t.tx_data, 69) AS next_buf
+        FROM tx_data_cte AS t
     ),
     -- assets
     step0 AS (
@@ -539,7 +584,7 @@ FROM (
 
 )
     ),
-    pairs AS (
+    all_pairs AS (
         SELECT 
             bundle_idx,
             index0,
@@ -555,10 +600,29 @@ WITH vec_pade AS (
 
 
 WITH
+    tx_data_cte AS (
+        
+
+-- maybe use abi for log??
+
+SELECT 
+    block_number,
+    block_time,
+    hash AS tx_hash,
+    index AS tx_index,
+    to AS angstrom_address,
+    data AS tx_data
+FROM "delta_prod"."ethereum"."transactions"
+WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x47aefe13a19c8036c0985b59090a34adffcad108630a86aae298954554394d10
+
+
+
+    ),
     trimmed_input AS (
         SELECT 
             1 AS next_offset,
             varbinary_substring(t.tx_data, 69) AS next_buf
+        FROM tx_data_cte AS t
     ),
     -- assets
     step0 AS (
@@ -685,29 +749,43 @@ FROM (
 
 
 )
-        WHERE bundle_idx = ab.pairs_index
+    ),
+    pairs AS (
+        SELECT 
+            ap.bundle_idx,
+            ap.index0,
+            ap.index1,
+            ap.price_1over0
+        FROM all_pairs ap
+        CROSS JOIN params
+        WHERE ap.bundle_idx = params.this_pair_index
     ),
     _asset_in AS (
         SELECT
-            price_1over0,
-            token_address AS asset_in
+            p.price_1over0,
+            a.token_address AS asset_in
         FROM assets AS a
-        CROSS JOIN pairs AS p
-        WHERE a.bundle_idx = p.index0 AND p.bundle_idx = ab.pairs_index
+        JOIN pairs AS p ON a.bundle_idx = p.index0
     ),
     _asset_out AS (
         SELECT
-            token_address AS asset_out
+            a.token_address AS asset_out
         FROM assets AS a
-        CROSS JOIN pairs AS p
-        WHERE a.bundle_idx = p.index1 AND p.bundle_idx = ab.pairs_index
+        JOIN pairs AS p ON a.bundle_idx = p.index1
     ),
     zfo_assets AS (
         SELECT
-            price_1over0,
-            if(ab.zero_for_1, ARRAY[asset_in, asset_out], ARRAY[asset_out, asset_in]) AS zfo_sorted_assets
+            i.price_1over0,
+            params.this_zfo,
+            i.asset_in,
+            o.asset_out,
+            CASE 
+                WHEN params.this_zfo THEN ARRAY[i.asset_in, o.asset_out]
+                ELSE ARRAY[o.asset_out, i.asset_in]
+            END AS zfo_sorted_assets
         FROM _asset_in i 
         CROSS JOIN _asset_out o
+        CROSS JOIN params
     )
 SELECT
     zfo_sorted_assets[1] AS asset_in,
@@ -756,10 +834,29 @@ WITH vec_pade AS (
 
 
 WITH
+    tx_data_cte AS (
+        
+
+-- maybe use abi for log??
+
+SELECT 
+    block_number,
+    block_time,
+    hash AS tx_hash,
+    index AS tx_index,
+    to AS angstrom_address,
+    data AS tx_data
+FROM "delta_prod"."ethereum"."transactions"
+WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x47aefe13a19c8036c0985b59090a34adffcad108630a86aae298954554394d10
+
+
+
+    ),
     trimmed_input AS (
         SELECT 
             1 AS next_offset,
             varbinary_substring(t.tx_data, 69) AS next_buf
+        FROM tx_data_cte AS t
     ),
     -- assets
     step0 AS (
@@ -1269,6 +1366,11 @@ ORDER BY idx DESC
         CROSS JOIN LATERAL (
 
 WITH
+    params AS (
+        SELECT 
+            ab.pair_index AS this_pair_index,
+            ab.zero_for_one AS this_zfo
+    ),
     assets AS (
         SELECT *
         FROM (
@@ -1281,10 +1383,29 @@ WITH vec_pade AS (
 
 
 WITH
+    tx_data_cte AS (
+        
+
+-- maybe use abi for log??
+
+SELECT 
+    block_number,
+    block_time,
+    hash AS tx_hash,
+    index AS tx_index,
+    to AS angstrom_address,
+    data AS tx_data
+FROM "delta_prod"."ethereum"."transactions"
+WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x47aefe13a19c8036c0985b59090a34adffcad108630a86aae298954554394d10
+
+
+
+    ),
     trimmed_input AS (
         SELECT 
             1 AS next_offset,
             varbinary_substring(t.tx_data, 69) AS next_buf
+        FROM tx_data_cte AS t
     ),
     -- assets
     step0 AS (
@@ -1411,7 +1532,7 @@ FROM (
 
 )
     ),
-    pairs AS (
+    all_pairs AS (
         SELECT 
             bundle_idx,
             index0,
@@ -1427,10 +1548,29 @@ WITH vec_pade AS (
 
 
 WITH
+    tx_data_cte AS (
+        
+
+-- maybe use abi for log??
+
+SELECT 
+    block_number,
+    block_time,
+    hash AS tx_hash,
+    index AS tx_index,
+    to AS angstrom_address,
+    data AS tx_data
+FROM "delta_prod"."ethereum"."transactions"
+WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x47aefe13a19c8036c0985b59090a34adffcad108630a86aae298954554394d10
+
+
+
+    ),
     trimmed_input AS (
         SELECT 
             1 AS next_offset,
             varbinary_substring(t.tx_data, 69) AS next_buf
+        FROM tx_data_cte AS t
     ),
     -- assets
     step0 AS (
@@ -1557,29 +1697,43 @@ FROM (
 
 
 )
-        WHERE bundle_idx = ab.pair_index
+    ),
+    pairs AS (
+        SELECT 
+            ap.bundle_idx,
+            ap.index0,
+            ap.index1,
+            ap.price_1over0
+        FROM all_pairs ap
+        CROSS JOIN params
+        WHERE ap.bundle_idx = params.this_pair_index
     ),
     _asset_in AS (
         SELECT
-            price_1over0,
-            token_address AS asset_in
+            p.price_1over0,
+            a.token_address AS asset_in
         FROM assets AS a
-        CROSS JOIN pairs AS p
-        WHERE a.bundle_idx = p.index0 AND p.bundle_idx = ab.pair_index
+        JOIN pairs AS p ON a.bundle_idx = p.index0
     ),
     _asset_out AS (
         SELECT
-            token_address AS asset_out
+            a.token_address AS asset_out
         FROM assets AS a
-        CROSS JOIN pairs AS p
-        WHERE a.bundle_idx = p.index1 AND p.bundle_idx = ab.pair_index
+        JOIN pairs AS p ON a.bundle_idx = p.index1
     ),
     zfo_assets AS (
         SELECT
-            price_1over0,
-            if(ab.zero_for_one, ARRAY[asset_in, asset_out], ARRAY[asset_out, asset_in]) AS zfo_sorted_assets
+            i.price_1over0,
+            params.this_zfo,
+            i.asset_in,
+            o.asset_out,
+            CASE 
+                WHEN params.this_zfo THEN ARRAY[i.asset_in, o.asset_out]
+                ELSE ARRAY[o.asset_out, i.asset_in]
+            END AS zfo_sorted_assets
         FROM _asset_in i 
         CROSS JOIN _asset_out o
+        CROSS JOIN params
     )
 SELECT
     zfo_sorted_assets[1] AS asset_in,

@@ -1,13 +1,21 @@
 {% macro
-    angstrom_decoding_pool_updates(raw_tx_input_hex)
+    angstrom_decoding_pool_updates(
+        angstrom_contract_addr,
+        blockchain
+    )
 %}
 
 
 WITH vec_pade AS (
-    SELECT buf
-    FROM ({{ angstrom_decoding_recursive(raw_tx_input_hex, 'step2') }})
+    SELECT 
+        tx_hash, 
+        block_number,
+        buf
+    FROM ({{ angstrom_decoding_recursive(angstrom_contract_addr, blockchain, 'step2') }})
 )
 SELECT 
+    tx_hash,
+    block_number,
     idx AS bundle_idx,
     zero_for_one,
     pair_index,
@@ -21,6 +29,8 @@ SELECT
     expected_liquidity
 FROM (
     WITH RECURSIVE decode_pool_update (
+        tx_hash,
+        block_number,
         buf,
         len,
         idx,
@@ -36,6 +46,8 @@ FROM (
         expected_liquidity
     ) AS (
         SELECT
+            tx_hash,
+            block_number,
             varbinary_substring(buf, 4, varbinary_length(buf) - 3),
             varbinary_to_bigint(varbinary_substring(buf, 1, 3)),
             0,
@@ -54,6 +66,8 @@ FROM (
         UNION ALL
 
         SELECT
+            tx_hash,
+            block_number,
             final_parse[1],
             final_parse[2],
             final_parse[3],
@@ -69,6 +83,8 @@ FROM (
             final_parse[13]
         FROM (
             SELECT
+                tx_hash,
+                block_number,
                 CASE kind_id
                     WHEN 0 THEN ROW(
                         next_buf,
@@ -140,6 +156,8 @@ FROM (
             FROM (
                 WITH decode_simple AS (
                     SELECT
+                        block_number,
+                        tx_hash,
                         CASE varbinary_to_integer(varbinary_substring(buf, 1, 1))
                             WHEN 0 THEN (
                                 0,
@@ -190,6 +208,8 @@ FROM (
                     WHERE idx < len
                 )
                 SELECT
+                    tx_hash, 
+                    block_number,
                     inner_decoded[1] AS kind_id,
                     inner_decoded[2] AS buf,
                     inner_decoded[3] AS next_buf,

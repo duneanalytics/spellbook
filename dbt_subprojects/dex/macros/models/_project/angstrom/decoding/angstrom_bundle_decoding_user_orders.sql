@@ -1,13 +1,21 @@
 {% macro
-    angstrom_decoding_user_orders(raw_tx_input_hex)
+    angstrom_decoding_user_orders(
+        angstrom_contract_addr,
+        blockchain
+    )
 %}
 
 
 WITH vec_pade AS (
-    SELECT buf
-    FROM ({{ angstrom_decoding_recursive(raw_tx_input_hex, 'step4') }})
+    SELECT 
+        tx_hash,
+        block_number,
+        buf
+    FROM ({{ angstrom_decoding_recursive(angstrom_contract_addr, blockchain, 'step4') }})
 )
 SELECT
+    tx_hash,
+    block_number,
     ref_id,
     use_internal,
     pair_index,
@@ -33,6 +41,8 @@ SELECT
     signature_contract_signature
 FROM (
     WITH RECURSIVE decode_user_order (
+        tx_hash,
+        block_number,
         buf,
         pointer,
         idx,
@@ -61,6 +71,8 @@ FROM (
         signature_contract_signature
     ) AS (
         SELECT
+            tx_hash,
+            block_number,
             varbinary_substring(buf, 4, varbinary_length(buf) - 3),
             4,
             0,
@@ -92,6 +104,8 @@ FROM (
         UNION ALL
 
         SELECT
+            tx_hash,
+            block_number,
             buf,
             pointer,
             idx,
@@ -122,6 +136,8 @@ FROM (
             WITH 
             trimmed_as_fields AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx + 1 AS idx,
                     ARRAY[
                         bitwise_and(bitwise_right_shift(varbinary_to_integer(varbinary_substring(buf, 1, 1)), 7), 1),
@@ -140,6 +156,8 @@ FROM (
             -- ref id
             ref_id_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     varbinary_to_bigint(varbinary_substring(buf, pointer, 4)) AS ref_id,
                     bitmap,
@@ -149,6 +167,8 @@ FROM (
             ),
             use_internal_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     ref_id,
                     if(bitmap[8] = 1, true, false) AS use_internal,
@@ -159,6 +179,8 @@ FROM (
             ),
             pair_index_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     ref_id,
                     use_internal,
@@ -170,6 +192,8 @@ FROM (
             ),
             min_price_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     ref_id,
                     use_internal,
@@ -182,6 +206,8 @@ FROM (
             ),
             recipient_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     ref_id,
                     use_internal,
@@ -195,6 +221,8 @@ FROM (
             ),
             hook_data_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     ref_id,
                     use_internal,
@@ -209,6 +237,8 @@ FROM (
             ),
             zero_for_one_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     ref_id,
                     use_internal,
@@ -224,6 +254,8 @@ FROM (
             ),
             standing_validation_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     ref_id,
                     use_internal,
@@ -241,6 +273,8 @@ FROM (
             ),
             order_quantities_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     ref_id,
                     use_internal,
@@ -263,6 +297,8 @@ FROM (
             ),
             max_extra_fee_asset0_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     ref_id,
                     use_internal,
@@ -286,6 +322,8 @@ FROM (
             ),
             extra_fee_asset0_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     ref_id,
                     use_internal,
@@ -310,6 +348,8 @@ FROM (
             ),
             exact_in_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     ref_id,
                     use_internal,
@@ -335,6 +375,8 @@ FROM (
             ),
             signature_field AS (
                 SELECT
+                    tx_hash,
+                    block_number,
                     idx,
                     ref_id,
                     use_internal,
@@ -366,6 +408,8 @@ FROM (
             ),
             all_fields_collapsed AS (
                 SELECT 
+                    tx_hash,
+                    block_number,
                     ref_id,
                     use_internal,
                     pair_index,
@@ -395,6 +439,8 @@ FROM (
                 FROM signature_field
             )
             SELECT 
+                tx_hash,
+                block_number,
                 varbinary_substring(buf, pointer) AS buf,
                 pointer,
                 idx,
