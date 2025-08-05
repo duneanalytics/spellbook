@@ -51,6 +51,39 @@
 
 
 
+{% set aerodrome_compatible_config = {
+    '0xab0d57f0df537bb25e80245ef7748fa62353808c54d6e528a9dd20887aed9ac2': {
+        'type': 'aerodrome_compatible',
+        'version': 'slipstream',
+        'pool_position': 13,
+    },
+    '0x2128d88d14c80cb081c1252a5acff7a264671bf199ce226b53788fb26065005e': {
+        'type': 'aerodrome_compatible',
+        'version': 'v1',
+        'pool_position': 13,
+    }
+} %}
+
+
+
+{% set maverick_compatible_config = {
+    '0x9b3fb3a17b4e94eb4d1217257372dcc712218fcd4bc1c28482bd8a6804a7c775': {
+        'type': 'maverick_compatible',
+        'version': 'v1',
+        'pool_position': 13,
+        'token0_position': 6*32 + 13,
+        'token1_position': 7*32 + 13,
+    },
+    '0x848331e408557f4b7eb6561ca1c18a3ac43004fbe64b8b5bce613855cfdf22d2': {
+        'type': 'maverick_compatible',
+        'version': 'v2',
+        'pool_position': 13,
+        'token0_position': 7*32 + 13,
+        'token1_position': 8*32 + 13,
+    },
+} %}
+
+
 {%
     set curvefi_compatible_base_config = {
         '0x52f2db69': {
@@ -162,6 +195,62 @@ uniswap_pool_created_logs as (
                 , substr(topic1, 13) as token0
                 , substr(topic2, 13) as token1
                 , coalesce(bytearray_to_uint256(topic3), uint256 '3000') as fee
+                , block_number
+                , block_time
+                , contract_address
+                , tx_hash
+            from {{ source(blockchain, 'logs') }}
+            where topic0 = {{ topic0 }}
+            {% if not loop.last %}
+                union all
+            {% endif %}
+        {% endfor %}
+        {% if not loop.last %}
+            union all
+        {% endif %}
+    {% endfor %}
+)
+
+
+, aerodrome_pool_created_logs as (
+    {% for blockchain in blockchains %}
+        {% for topic0, data in aerodrome_compatible_config.items() %}
+            select
+                '{{ blockchain }}' as blockchain
+                , '{{ data.type }}' as type
+                , '{{ data.version }}' as version
+                , substr(data, {{ data.pool_position }}, 20) as pool
+                , substr(topic1, 13) as token0
+                , substr(topic2, 13) as token1
+                , null as fee
+                , block_number
+                , block_time
+                , contract_address
+                , tx_hash
+            from {{ source(blockchain, 'logs') }}
+            where topic0 = {{ topic0 }}
+            {% if not loop.last %}
+                union all
+            {% endif %}
+        {% endfor %}
+        {% if not loop.last %}
+            union all
+        {% endif %}
+    {% endfor %}
+)
+
+
+, maverick_pool_created_logs as (
+    {% for blockchain in blockchains %}
+        {% for topic0, data in maverick_compatible_config.items() %}
+            select
+                '{{ blockchain }}' as blockchain
+                , '{{ data.type }}' as type
+                , '{{ data.version }}' as version
+                , substr(data, {{ data.pool_position }}, 20) as pool
+                , substr(data, {{ data.token0_position }}, 20) as token0
+                , substr(data, {{ data.token1_position }}, 20) as token1
+                , null as fee
                 , block_number
                 , block_time
                 , contract_address
@@ -311,6 +400,40 @@ uniswap_pool_created_logs as (
         , contract_address
         , tx_hash
     from curve_base_pool_created_calls
+
+    union all
+
+    select
+        blockchain
+        , type
+        , version
+        , pool
+        , token0
+        , token1
+        , array[token0, token1] as tokens
+        , fee
+        , block_time
+        , block_number
+        , contract_address
+        , tx_hash
+    from aerodrome_pool_created_logs
+
+    union all
+
+    select
+        blockchain
+        , type
+        , version
+        , pool
+        , token0
+        , token1
+        , array[token0, token1] as tokens
+        , fee
+        , block_time
+        , block_number
+        , contract_address
+        , tx_hash
+    from maverick_pool_created_logs
 )
 
 
