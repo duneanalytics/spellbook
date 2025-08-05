@@ -18,193 +18,24 @@
 -- -- implement mento pools on celo. it's only 11 of them, but implementation is not trivial, so for now we'll just skip them
 
 
--- {topic0: params}
-{%
-    set uniswap_compatible_config = {
-        '0x0d3648bd0f6ba80134a33ba9275ac585d9d315f0ad8355cddefde31afa28d0e9': {
-            'type': 'uniswap_compatible',
-            'version': 'v2',
-            'pool_position': 13,
-        },
-        '0x3541d8fea55be35f686281f975bf8b7ab8fbb500c1c7ddd6c4e714655e9cd4e2': {
-            'type': 'uniswap_compatible',
-            'version': 'v2',
-            'pool_position': 13,
-        },
-        '0x41f8736f924f57e464ededb08bf71f868f9d142885bbc73a1516db2be21fc428': {
-            'type': 'uniswap_compatible',
-            'version': 'v2',
-            'pool_position': 13,
-        },
-        '0xc4805696c66d7cf352fc1d6bb633ad5ee82f6cb577c453024b6e0eb8306c6fc9': {
-            'type': 'uniswap_compatible',
-            'version': 'v2',
-            'pool_position': 45,
-        },
-        '0x783cca1c0412dd0d695e784568c96da2e9c22ff989357a2e8b1d9b2b4e6b7118': {
-            'type': 'uniswap_compatible',
-            'version': 'v3',
-            'pool_position': 45,
-        }
-    }
-%}
+with 
 
-
-
-{% set aerodrome_compatible_config = {
-    '0xab0d57f0df537bb25e80245ef7748fa62353808c54d6e528a9dd20887aed9ac2': {
-        'type': 'aerodrome_compatible',
-        'version': 'slipstream',
-        'pool_position': 13,
-    },
-    '0x2128d88d14c80cb081c1252a5acff7a264671bf199ce226b53788fb26065005e': {
-        'type': 'aerodrome_compatible',
-        'version': 'v1',
-        'pool_position': 13,
-    }
-} %}
-
-
-
-{% set maverick_compatible_config = {
-    '0x9b3fb3a17b4e94eb4d1217257372dcc712218fcd4bc1c28482bd8a6804a7c775': {
-        'type': 'maverick_compatible',
-        'version': 'v1',
-        'pool_position': 13,
-        'token0_position': 6*32 + 13,
-        'token1_position': 7*32 + 13,
-    },
-    '0x848331e408557f4b7eb6561ca1c18a3ac43004fbe64b8b5bce613855cfdf22d2': {
-        'type': 'maverick_compatible',
-        'version': 'v2',
-        'pool_position': 13,
-        'token0_position': 7*32 + 13,
-        'token1_position': 8*32 + 13,
-    },
-} %}
-
-
-{%
-    set curvefi_compatible_base_config = {
-        '0x52f2db69': {
-            'type': 'curve_compatible',
-            'version': 'Factory V1 Plain',
-            'tokens_position': 4 + 1 + 32 * 2,
-            'tokens_count': 4,
-            'fee_position': 4 + 1 + 32 * 7,
-        },
-        '0xd4b9e214': {
-            'type': 'curve_compatible',
-            'version': 'Factory V1 Plain',
-            'tokens_position': 4 + 1 + 32 * 2,
-            'tokens_count': 4,
-            'fee_position': 4 + 1 + 32 * 7,
-        },
-        '0xcd419bb5': {
-            'type': 'curve_compatible',
-            'version': 'Factory V1 Plain',
-            'tokens_position': 4 + 1 + 32 * 2,
-            'tokens_count': 4,
-            'fee_position': 4 + 1 + 32 * 7,
-        },
-        '0x5c16487b': {
-            'type': 'curve_compatible',
-            'version': 'Factory V1 Plain',
-            'tokens_position': 4 + 1 + 32 * 2,
-            'tokens_count': 4,
-            'fee_position': 4 + 1 + 32 * 7,
-        },
-
-        '0xc955fa04': {
-            'type': 'curve_compatible',
-            'version': 'Factory V2',
-            'tokens_position': 4 + 1 + 32 * 2,
-            'tokens_count': 2,
-            'fee_position': 4 + 1 + 32 * 4,
-        },
-        '0xaa38b385': {
-            'type': 'curve_compatible',
-            'version': 'Factory V2',
-            'tokens_position': 4 + 1 + 32 * 2,
-            'tokens_count': 3,
-        },
-
-        '0x5bcd3d83': {
-            'type': 'curve_compatible',
-            'version': 'Factory V1 Plain Stableswap',
-            'tokens_position': 4 + 1 + 32 * 16,
-            'tokens_count': 8,
-            'fee_position': 4 + 1 + 32 * 4,
-        },
-    }
-%}
-
-
-
--- TODO: implement meta pools logic
-
-{%
-    set curvefi_compatible_meta_config = {
-        '0xde7fe3bf': {
-            'type': 'curve_compatible',
-            'version': 'Factory V2 Meta',
-            'base_pool_position': 4 + 1 + 13,
-            'coin_position': 4 + 1 + 32 * 3 + 13,
-        },
-        '0xe339eb4f': {
-            'type': 'curve_compatible',
-            'version': 'Factory V2 Meta',
-            'base_pool_position': 4 + 1 + 13,
-            'coin_position': 4 + 1 + 32 * 3 + 13,
-        },
-    }
-%}
-
-
-
-{%
-    set blockchains = [
-        "ethereum",
-        "bnb",
-        "polygon",
-        "avalanche_c",
-        "gnosis",
-        "fantom",
-        "optimism",
-        "arbitrum",
-        "celo",
-        "base",
-        "zksync",
-        "zora",
-    ]
-%}
-
-
-
-with
-
-
-uniswap_pool_created_logs as (
-    {% for blockchain in blockchains %}
-        {% for topic0, data in uniswap_compatible_config.items() %}
-            select
-                '{{ blockchain }}' as blockchain
-                , '{{ data.type }}' as type
-                , '{{ data.version }}' as version
-                , substr(data, {{ data.pool_position }}, 20) as pool
-                , substr(topic1, 13) as token0
-                , substr(topic2, 13) as token1
-                , coalesce(bytearray_to_uint256(topic3), uint256 '3000') as fee
-                , block_number
-                , block_time
-                , contract_address
-                , tx_hash
-            from {{ source(blockchain, 'logs') }}
-            where topic0 = {{ topic0 }}
-            {% if not loop.last %}
-                union all
-            {% endif %}
-        {% endfor %}
+_pool_created_logs as (
+    {% for topic0, data in dex_raw_pools_logs_config_macro().items() %}
+        select
+            '{{ blockchain }}' as blockchain
+            , '{{ data.type }}' as type
+            , '{{ data.version }}' as version
+            , {{ data.pool }} as pool
+            , {{ data.token0 }} as token0
+            , {{ data.token1 }} as token1
+            , {{ data.fee }} as fee
+            , block_number
+            , block_time
+            , contract_address
+            , tx_hash
+        from {{ ref('dex_raw_pool_pre_materialized_logs') }}
+        where topic0 = {{ topic0 }}
         {% if not loop.last %}
             union all
         {% endif %}
@@ -212,127 +43,36 @@ uniswap_pool_created_logs as (
 )
 
 
-, aerodrome_pool_created_logs as (
-    {% for blockchain in blockchains %}
-        {% for topic0, data in aerodrome_compatible_config.items() %}
-            select
-                '{{ blockchain }}' as blockchain
-                , '{{ data.type }}' as type
-                , '{{ data.version }}' as version
-                , substr(data, {{ data.pool_position }}, 20) as pool
-                , substr(topic1, 13) as token0
-                , substr(topic2, 13) as token1
-                , null as fee
-                , block_number
-                , block_time
-                , contract_address
-                , tx_hash
-            from {{ source(blockchain, 'logs') }}
-            where topic0 = {{ topic0 }}
-            {% if not loop.last %}
-                union all
-            {% endif %}
-        {% endfor %}
+, _pool_created_calls as (
+    -- for curve
+    {% for selector, data in dex_raw_pools_traces_config_macro().items() if not data.get('skip', False) %}
+        select
+            '{{ blockchain }}' as blockchain
+            , '{{ data.type }}' as type
+            , '{{ data.version }}' as version
+            , {{ data.pool }} as pool
+            , trace_address
+            , {{ data.tokens }} as tokens
+            , {{ data.fee }} as fee
+            , block_number
+            , block_time
+            , "to" as contract_address
+            , tx_hash
+        from {{ ref('dex_raw_pool_pre_materialized_traces') }}
+        where 
+            substr(input, 1, 4) = {{ selector }} 
+            and length(output) = 32
+            and success 
+            and tx_success 
         {% if not loop.last %}
             union all
         {% endif %}
     {% endfor %}
 )
 
-
-, maverick_pool_created_logs as (
-    {% for blockchain in blockchains %}
-        {% for topic0, data in maverick_compatible_config.items() %}
-            select
-                '{{ blockchain }}' as blockchain
-                , '{{ data.type }}' as type
-                , '{{ data.version }}' as version
-                , substr(data, {{ data.pool_position }}, 20) as pool
-                , substr(data, {{ data.token0_position }}, 20) as token0
-                , substr(data, {{ data.token1_position }}, 20) as token1
-                , null as fee
-                , block_number
-                , block_time
-                , contract_address
-                , tx_hash
-            from {{ source(blockchain, 'logs') }}
-            where topic0 = {{ topic0 }}
-            {% if not loop.last %}
-                union all
-            {% endif %}
-        {% endfor %}
-        {% if not loop.last %}
-            union all
-        {% endif %}
-    {% endfor %}
-)
-
-
-, curve_base_pool_created_calls as (
-    {% for blockchain in blockchains %}
-        {% for selector, data in curvefi_compatible_base_config.items() %}
-            select
-                '{{ blockchain }}' as blockchain
-                , '{{ data.type }}' as type
-                , '{{ data.version }}' as version
-                , substr(output, 13, 20) as pool
-                , trace_address
-                , transform(sequence(1, 32 * {{ data.tokens_count }}, 32), x -> substr(substr(substr(input, {{ data.tokens_position }}, 32 * {{ data.tokens_count }}), x, 32), 13)) tokens
-                , {% if data.fee_position %} bytearray_to_uint256(substr(input, {{ data.fee_position }}, 32)) {% else %} cast(null as uint256) {% endif %} as fee
-                , block_number
-                , block_time
-                , "to" as contract_address
-                , tx_hash
-            from {{ source(blockchain, 'traces') }}
-            where 
-                substr(input, 1, 4) = {{ selector }} 
-                and length(output) = 32
-                and success 
-                and tx_success 
-            {% if not loop.last %}
-                union all
-            {% endif %}
-        {% endfor %}
-        {% if not loop.last %}
-            union all
-        {% endif %}
-    {% endfor %}
-)
-
--- will be included later
-, curve_meta_pool_created_calls as (
-    {% for blockchain in blockchains %}
-        {% for selector, data in curvefi_compatible_meta_config.items() %}
-            select
-                '{{ blockchain }}' as blockchain
-                , '{{ data.type }}' as type
-                , '{{ data.version }}' as version
-                , substr(output, 13, 20) as pool
-                , trace_address
-                , substr(input, {{ data.base_pool_position }}, 20) as base_pool
-                , substr(input, {{ data.coin_position }}, 20) as coin
-                , block_number
-                , block_time
-                , "to" as contract_address
-                , tx_hash
-            from {{ source(blockchain, 'traces') }}
-            where 
-                substr(input, 1, 4) = {{ selector }} 
-                and length(output) = 32
-                and success 
-                and tx_success 
-            {% if not loop.last %}
-                union all
-            {% endif %}
-        {% endfor %}
-        {% if not loop.last %}
-            union all
-        {% endif %}
-    {% endfor %}
-)
 
 , creation_traces as (
-    {% for blockchain in blockchains %}
+    {% for blockchain in dex_raw_pools_blockchains_macro() %}
         select
             '{{ blockchain }}' as blockchain
             , address as pool
@@ -368,7 +108,8 @@ uniswap_pool_created_logs as (
     )
 )
 
-, pool_created_logs as (
+
+, pools_cte as (
     select 
         blockchain
         , type
@@ -382,7 +123,7 @@ uniswap_pool_created_logs as (
         , block_number
         , contract_address
         , tx_hash
-    from uniswap_pool_created_logs
+    from _pool_created_logs
 
     union all
     
@@ -399,41 +140,7 @@ uniswap_pool_created_logs as (
         , block_number
         , contract_address
         , tx_hash
-    from curve_base_pool_created_calls
-
-    union all
-
-    select
-        blockchain
-        , type
-        , version
-        , pool
-        , token0
-        , token1
-        , array[token0, token1] as tokens
-        , fee
-        , block_time
-        , block_number
-        , contract_address
-        , tx_hash
-    from aerodrome_pool_created_logs
-
-    union all
-
-    select
-        blockchain
-        , type
-        , version
-        , pool
-        , token0
-        , token1
-        , array[token0, token1] as tokens
-        , fee
-        , block_time
-        , block_number
-        , contract_address
-        , tx_hash
-    from maverick_pool_created_logs
+    from _pool_created_calls
 )
 
 
@@ -450,7 +157,7 @@ uniswap_pool_created_logs as (
         , block_time as creation_block_time
         , block_number as creation_block_number
         , contract_address
-    from pool_created_logs
+    from pools_cte
     join creation_traces using(blockchain, tx_hash, block_number, block_time, pool)
     {% if is_incremental() %}
         where {{ incremental_predicate('block_time') }}

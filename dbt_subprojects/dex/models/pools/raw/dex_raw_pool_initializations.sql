@@ -10,27 +10,8 @@
 
 
 
-{% 
-    set blockchains = [
-        "ethereum", 
-        "polygon", 
-        "bnb", 
-        "avalanche_c", 
-        "gnosis", 
-        "fantom", 
-        "optimism", 
-        "arbitrum", 
-        "celo", 
-        "base", 
-        "zksync",
-        "zora",
-    ]
-%}
-
-
-
 select * from (
-    {% for blockchain in blockchains %}
+    {% for blockchain in dex_raw_pools_blockchains_macro() %}
         -- only uni v2. re-initialization is restricted on v3
         select
             '{{blockchain}}' as blockchain
