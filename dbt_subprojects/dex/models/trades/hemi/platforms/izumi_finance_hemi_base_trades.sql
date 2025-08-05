@@ -10,7 +10,7 @@
     )
 }}
 
-{% set iziswap_start_date = "2025-03-05" %}  
+{% set iziswap_start_date = "2025-08-01" %}  
 
 WITH swaps AS (
     SELECT

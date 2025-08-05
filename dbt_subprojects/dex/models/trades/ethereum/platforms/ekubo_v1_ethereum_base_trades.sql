@@ -39,7 +39,7 @@
 }}
 
 -- The project was deployed on 2025-03-14 07:41 PM. https://etherscan.io/tx/0x15cc649ad5dea0943e4d0ea81df42e0dcb11e46766ebd6aeeffd6e91aecaf9c9
-{% set project_deployed_on = '2025-03-14 19:00' %}
+{% set project_deployed_on = '2025-08-01 19:00' %}
 {% set contract_addresses = [
     '0xe0e0e08a6a4b9dc7bd67bcb7aade5cf48157d444'
 ] %}
