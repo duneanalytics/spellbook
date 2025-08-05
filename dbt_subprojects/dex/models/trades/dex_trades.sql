@@ -18,7 +18,6 @@
                                         , "ethereum"
                                         , "fantom"
                                         , "gnosis"
-                              
                                         , "kaia"
                                         , "linea"
                                         , "mantle"
