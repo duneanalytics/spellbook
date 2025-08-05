@@ -30,6 +30,8 @@
         and tx_success
         {% if is_incremental() %}
             and {{ incremental_predicate('block_time') }}
+        {% else %}
+            and block_time > '2025-01-01'
         {% endif %}
     {% if not loop.last %}
         union all
