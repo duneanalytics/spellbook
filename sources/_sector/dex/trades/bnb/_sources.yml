@@ -81,7 +81,7 @@ sources:
       - name: DPPAdvanced_evt_DODOSwap
       - name: DPPOracle_evt_DODOSwap
       - name: DSP_evt_DODOSwap
-  - name: izumi_finance_bnb
+  - name: izumi_bnb
     tables:
       - name: iZiSwapPool_evt_Swap
   - name: maverick_v1_bnb

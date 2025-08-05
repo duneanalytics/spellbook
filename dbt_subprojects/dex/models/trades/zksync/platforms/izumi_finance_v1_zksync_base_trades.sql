@@ -29,7 +29,7 @@ SELECT
     , CASE WHEN sellXEarnY THEN amountX ELSE amountY END AS token_sold_amount_raw
     , CAST(evt_tx_from AS VARBINARY) AS taker
     , CAST(evt_tx_to AS VARBINARY) AS maker
-FROM {{ source('izumi_finance_v1_zksync', 'iZiSwapPool_evt_Swap') }}
+FROM {{ source('iziswap_v1_zksync', 'iZiSwapPool_evt_Swap') }}
 {% if is_incremental() %}
 WHERE {{incremental_predicate('evt_block_time')}}
 {% else %}

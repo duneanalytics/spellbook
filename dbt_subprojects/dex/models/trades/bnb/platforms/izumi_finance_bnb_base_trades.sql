@@ -23,7 +23,7 @@ with dexs as (
         t.evt_tx_hash as tx_hash,
         t.evt_index,
         t.contract_address as project_contract_address
-    from {{ source('izumi_finance_bnb', 'iZiSwapPool_evt_Swap') }} t
+    from {{ source('izumi_bnb', 'iZiSwapPool_evt_Swap') }} t
     {% if is_incremental() %}
     where {{ incremental_predicate('t.evt_block_time') }}
     {% endif %}

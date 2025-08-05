@@ -76,10 +76,10 @@ sources:
     tables:
       - name: DraculaPair_evt_Swap
       - name: DraculaFactory_evt_PairCreated
-  - name: izumi_finance_v1_zksync
+  - name: iziswap_v1_zksync
     tables:
       - name: iZiSwapPool_evt_Swap
-  - name: izumi_finance_v2_zksync
+  - name: iziswap_v2_zksync
     tables:
       - name: iZiSwapPool_evt_Swap
   - name: velocore_v0_zksync
