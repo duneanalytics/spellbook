@@ -61,9 +61,6 @@ _pool_created_logs as (
         from {{ ref('dex_raw_pool_pre_materialized_traces') }}
         where 
             substr(input, 1, 4) = {{ selector }} 
-            and length(output) = 32
-            and success 
-            and tx_success 
         {% if not loop.last %}
             union all
         {% endif %}
