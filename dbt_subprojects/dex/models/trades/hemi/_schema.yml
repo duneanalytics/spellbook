@@ -10,11 +10,11 @@ models:
       tags: ['hemi', 'dex', 'trades']
     description: 'All DEX trades on Hemi'
     data_tests:
+      - check_columns_dex_base_trades
       - check_dex_info_relationship
       - test_acceptable_usd_amount:
           column_name: amount_usd
           max_value: 1000000000
-
   - name: oku_v3_hemi_base_trades
     meta:
       blockchain: hemi
