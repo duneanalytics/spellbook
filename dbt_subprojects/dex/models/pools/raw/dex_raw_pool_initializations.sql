@@ -30,7 +30,7 @@ select * from (
             {% if is_incremental() %}
                 and {{ incremental_predicate('block_time') }}
             {% else %}
-                and block_time > '2025-01-01'
+                and block_time > date('2025-08-01')
             {% endif %}
 
 
