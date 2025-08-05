@@ -6,7 +6,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['block_month', 'blockchain', 'tx_hash', 'trace_address']
+        unique_key = ['block_month', 'blockchain', 'tx_hash', 'index']
     )
 }}
 
@@ -24,6 +24,7 @@
         , block_time
         , contract_address
         , tx_hash
+        , index
         , cast(date_trunc('month', block_time) as date) as block_month
     from {{ source(blockchain, 'logs') }}
     where topic0 in ({{ dex_raw_pools_logs_config_macro().keys() | join(',') }})
