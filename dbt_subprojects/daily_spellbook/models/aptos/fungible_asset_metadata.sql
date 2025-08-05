@@ -18,6 +18,8 @@ WITH mr_fa_metadata AS (
         tx_hash,
         block_date,
         block_time,
+        --
+        write_set_change_index,
         move_address,
         json_extract_scalar(move_data, '$.name') AS asset_name,
         json_extract_scalar(move_data, '$.symbol') AS asset_symbol,
@@ -81,8 +83,10 @@ WITH mr_fa_metadata AS (
         tx_hash,
         block_date,
         block_time,
+        --
+        write_set_change_index,
         array_join(move_resource_generic_type_params, '') AS asset_type,
-        SPLIT(asset_type, '::')[1] AS creator_address,
+        move_address AS creator_address,
         json_extract_scalar(move_data, '$.name') AS asset_name,
         json_extract_scalar(move_data, '$.symbol') AS asset_symbol,
         CAST(json_extract_scalar(move_data, '$.decimals') AS INT) AS decimals,
@@ -105,6 +109,8 @@ SELECT
     tx_version,
     block_time,
     tx_hash,
+    --
+    write_set_change_index,
     IF(LENGTH(SPLIT(asset_type, '::')[1]) != 66,
         '0x' || LPAD(LTRIM(SPLIT(asset_type, '::')[1],'0x'),64, '0') || 
         SUBSTR(asset_type, LENGTH(SPLIT(asset_type, '::')[1])+1, LENGTH(asset_type)),
@@ -132,6 +138,8 @@ SELECT
     m.tx_version,
     m.block_time,
     m.tx_hash,
+    --
+    write_set_change_index,
     '0x' || LPAD(lower(to_hex(m.move_address)), 64, '0') AS asset_type,
     '0x' || LPAD(LTRIM(o.owner_address, '0x'), 64, '0') AS owner_address,
     asset_name,

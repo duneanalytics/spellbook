@@ -1,6 +1,6 @@
 {{ config(
     materialized='incremental',
-    unique_key=['asset_type'],
+    unique_key=['asset_type_v2'],
 ) }}
 
 SELECT
