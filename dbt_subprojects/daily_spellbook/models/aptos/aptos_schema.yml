@@ -45,6 +45,7 @@ models:
         description: "Project URI (parsed from metadata) v2 only"
       - name: maximum
         description: "Maximum supply, typically 2^128-1 (parsed from metadata) v2 only"
+
   - name: fungible_asset_balances
     meta:
       blockchain: aptos
@@ -79,6 +80,7 @@ models:
         description: "If asset is frozen"
       - name: token_standard
         description: "Coin is v1, FungibleAsset is v2"
+
   - name: fungible_asset_activities
     meta:
       blockchain: aptos
@@ -113,6 +115,7 @@ models:
         description: "raw asset amount (before taking into account decimals)"
       - name: token_standard
         description: "Coin is v1, FungibleAsset is v2"
+
   - name: fungible_asset_migration
     meta:
       blockchain: aptos
@@ -128,6 +131,7 @@ models:
         description: "Asset identifier for v1"
       - name: asset_type_v2
         description: "Asset identifier for v2"
+
   - name: fungible_asset_metadata_current
     meta:
       blockchain: aptos
