@@ -17,13 +17,14 @@ WITH coin_balances AS (
         move_resource_generic_type_params[1] AS asset_type,
         move_address,
         IF(move_is_deletion, 0, json_extract_scalar(move_data, '$.coin.value')) AS balance,
-        CAST(json_extract_scalar(move_data, '$.frozen') AS BOOLEAN) AS is_frozen,
+        CAST(json_extract_scalar(move_data, '$.frozen') AS BOOLEAN) AS is_frozen
     FROM {{ source('aptos', 'move_resources') }}
     WHERE 1=1
         AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
         AND move_resource_module = 'coin'
         AND move_resource_name = 'CoinStore'
         AND block_date < '2025-08-05'  -- almost all migrated
+        AND block_date = DATE('2025-01-01') -- DEBUG
     {% if is_incremental() %}
         AND {{ incremental_predicate('block_time') }}
     {% endif %}
@@ -43,7 +44,7 @@ WITH coin_balances AS (
             c.balance, -- CFB
             json_extract_scalar(move_data, '$.balance') -- FS
         ) AS balance,
-        CAST(json_extract_scalar(move_data, '$.frozen') AS BOOLEAN) AS is_frozen,
+        CAST(json_extract_scalar(move_data, '$.frozen') AS BOOLEAN) AS is_frozen
     FROM {{ source('aptos', 'move_resources') }} fa_balance
     LEFT JOIN (
         -- if CFB
@@ -57,6 +58,7 @@ WITH coin_balances AS (
             AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
             AND move_resource_module = 'fungible_asset'
             AND move_resource_name = 'ConcurrentFungibleBalance'
+            AND block_date = DATE('2025-01-01') -- DEBUG
         {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
         {% endif %}
@@ -72,6 +74,7 @@ WITH coin_balances AS (
             AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
             AND move_resource_module = 'object'
             AND move_resource_name = 'ObjectCore'
+            AND block_date = DATE('2025-01-01') -- DEBUG
         {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
         {% endif %}
@@ -81,6 +84,7 @@ WITH coin_balances AS (
         AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
         AND move_resource_module = 'fungible_asset'
         AND move_resource_name = 'FungibleStore'
+        AND block_date = DATE('2025-01-01') -- DEBUG
     {% if is_incremental() %}
         AND {{ incremental_predicate('block_time') }}
     {% endif %}

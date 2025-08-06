@@ -4,7 +4,7 @@
 ) }}
 
 SELECT
-    move_address AS asset_type_v2,
+    '0x' || LPAD(lower(to_hex(move_address)), 64, '0') AS asset_type_v2,
     '0x' || LPAD(LTRIM(json_extract_scalar(move_data, '$.type.account_address'), '0x'), 64, '0') || '::' ||
     FROM_UTF8(FROM_HEX(LTRIM(json_extract_scalar(move_data, '$.type.module_name'), '0x'))) || '::' ||
     FROM_UTF8(FROM_HEX(LTRIM(json_extract_scalar(move_data, '$.type.struct_name'), '0x'))) AS asset_type_v1
@@ -19,6 +19,7 @@ FROM (
         AND {{ incremental_predicate('block_time') }}
         AND move_address NOT IN (SELECT asset_type_v2 FROM {{ this }})
     {% else %}
+        AND block_date = DATE('2025-01-01') -- DEBUG
         AND block_date >= DATE('2024-08-02') -- beginning of FA (v2) migration
     {% endif %}
     GROUP BY 1
