@@ -712,7 +712,7 @@ models:
       blockchain: ethereum
       sector: dex
       project: angstrom
-      contributors: j92z
+      contributors: jnoorchashm37
     config:
       tags: ["ethereum", "dex", "trades", "native"]
     description: "angstrom ethereum base trades"
