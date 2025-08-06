@@ -29,8 +29,8 @@ select * from (
             and success
             {% if is_incremental() %}
                 and {{ incremental_predicate('block_time') }}
-            {% else %}
-                and block_time > date('2025-01-01')
+            -- {% else %}
+            --     and block_time > date('2000-01-01')
             {% endif %}
 
 
