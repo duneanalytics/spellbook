@@ -12,8 +12,8 @@ WITH token_swaps AS (
     SELECT
         evt_block_number AS block_number,
         CAST(evt_block_time AS timestamp(3) WITH time zone) AS block_time,
-        evt_tx_from AS maker,
-        evt_tx_to AS taker,
+        evt_tx_to AS maker,
+        evt_tx_from AS taker,
         amountIn AS token_sold_amount_raw,
         amountOut AS token_bought_amount_raw,
         tokenIn AS token_sold_address,
