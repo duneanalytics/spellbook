@@ -8,7 +8,7 @@
 -- creator_address is not needed for coins/fa, it's a holdover from tokens (where it is used as key with name)
 {{ config(
     materialized='incremental',
-    unique_key=['txn_hash', 'asset_type'],
+    unique_key=['tx_hash', 'asset_type'],
     partition_by = ['block_date'],
 ) }}
 

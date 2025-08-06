@@ -3,7 +3,7 @@
 
 {{ config(
     materialized='incremental',
-    unique_key=['txn_hash', 'event_index'],
+    unique_key=['tx_hash', 'event_index'],
     partition_by = ['block_date'],
 ) }}
 
@@ -67,7 +67,7 @@ WITH coin_activities AS (
         fab.owner_address,
         fab.asset_type
     FROM {{ source('aptos', 'events') }} ev
-    LEFT JOIN {{ ref('fungible_asset_balances') }} fab
+    LEFT JOIN {{ ref('fungible_asset_balances') }} fab -- TODO: edge case around deletes
     ON ev.tx_version = fab.tx_version
     AND '0x' || LPAD(LTRIM(json_extract_scalar(ev.data, '$.store'), '0x'), 64, '0') = fab.storage_id
     AND fab.token_standard = 'v2'

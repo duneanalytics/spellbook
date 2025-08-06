@@ -104,7 +104,7 @@ sources:
       - name: move_modules
         meta:
           docs_slug: /aptos/move_modules
-          short_description: The Move modules (smart contracts)deployed on Aptos
+          short_description: The Move modules (smart contracts) deployed on Aptos
         description: '{{ doc("aptos_move_modules_doc") }}'
         columns:
           - name: block_height
@@ -236,7 +236,7 @@ sources:
           - name: move_is_deletion
             description: Whether the Move operation is a deletion
           - name: move_data
-            description: The data (in JSON)associated with the Move resource
+            description: The data (in JSON) associated with the Move resource
           - name: move_address
             description: The address associated with the Move resource
           - name: move_module_address
@@ -533,7 +533,7 @@ sources:
           - name: entry_function_module_name
             description: Name of first module containing called in transaction
           - name: entry_function_module_addressfirst 
-            description: Name of first module address called in transaction
+            description: Address of first module called in transaction
           - name: script_bytecode
             description: Script bytecode
           - name: script_abi

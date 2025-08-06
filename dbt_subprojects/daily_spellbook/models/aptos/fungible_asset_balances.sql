@@ -1,6 +1,6 @@
 {{ config(
     materialized='incremental',
-    unique_key=['txn_hash', 'write_set_change_index'],
+    unique_key=['tx_hash', 'write_set_change_index'],
     partition_by = ['block_date'],
 ) }}
 
@@ -35,7 +35,7 @@ WITH coin_balances AS (
         block_time,
         --
         COALESCE(c.write_set_change_index, fa_balance.write_set_change_index) AS write_set_change_index,
-        json_extract_scalar(move_data, '$.metadata.inner') AS asset_type
+        json_extract_scalar(move_data, '$.metadata.inner') AS asset_type,
         fa_balance.move_address,
         fs_owner.owner_address,
         move_is_deletion,
@@ -102,7 +102,7 @@ SELECT
     NULL AS storage_id,
     CAST(balance AS UINT256) AS amount,
     is_frozen,
-    'v1' AS token_standard,
+    'v1' AS token_standard
 FROM coin_balances
 
 UNION ALL
@@ -119,5 +119,5 @@ SELECT
     '0x' || LPAD(LTRIM(move_address, '0x'), 64, '0') AS storage_id,
     CAST(IF(move_is_deletion, 0, balance) AS UINT256) AS amount,
     is_frozen,
-    'v2' AS token_standard,
+    'v2' AS token_standard
 FROM fa_balance
