@@ -3,6 +3,7 @@
         alias = 'raw_pool_initializations',
         materialized = 'incremental',
         file_format = 'delta',
+        tags = ['prod_exclude'],
         incremental_strategy = 'merge',
         unique_key = ['blockchain', 'pool', 'tx_hash', 'call_trace_address']
 )
