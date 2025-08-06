@@ -5,18 +5,33 @@ WITH dexs AS
 (
     
 
+-------------------- TO TEST ------------------
+
+-- single, TOB only: 23077861 - 0xb72c702151c9004f3f327a82cfe451f69a206c21b82fa98419791ebc0bc29b94
+-- single, USER only: 23077829 - 0x32716081b3461e4f4770e14d97565c003aecf647837d151a8380f6b9722e7faf
+
+
+-----------------------------------------------
+
 
 WITH
     tx_data_cte AS (
-        SELECT 
-            block_number,
-            block_time,
-            hash AS tx_hash,
-            index AS tx_index,
-            to AS angstrom_address,
-            data AS tx_data
-        FROM "delta_prod"."ethereum"."transactions"
-        WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x47aefe13a19c8036c0985b59090a34adffcad108630a86aae298954554394d10
+        
+
+-- maybe use abi for log??
+
+SELECT 
+    block_number,
+    block_time,
+    hash AS tx_hash,
+    index AS tx_index,
+    to AS angstrom_address,
+    data AS tx_data
+FROM "delta_prod"."ethereum"."transactions"
+WHERE block_number = 23077861 AND to = 0x0000000aa232009084Bd71A5797d089AA4Edfad4 AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x32716081b3461e4f4770e14d97565c003aecf647837d151a8380f6b9722e7faf
+
+
+
     ),
     tob_orders AS (
         SELECT 
@@ -32,7 +47,7 @@ WITH
             t.tx_hash AS tx_hash,
             row_number() over (partition by t.tx_hash) as evt_index
         FROM tx_data_cte t
-        CROSS JOIN LATERAL (
+        INNER JOIN (
 
 
 
@@ -61,10 +76,13 @@ WITH
 
 SELECT 
     block_number,
+    block_time,
     hash AS tx_hash,
+    index AS tx_index,
+    to AS angstrom_address,
     data AS tx_data
 FROM "delta_prod"."ethereum"."transactions"
-WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x47aefe13a19c8036c0985b59090a34adffcad108630a86aae298954554394d10
+WHERE block_number = 23077861 AND to = 0x0000000aa232009084Bd71A5797d089AA4Edfad4 AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x32716081b3461e4f4770e14d97565c003aecf647837d151a8380f6b9722e7faf
 
 
 
@@ -472,11 +490,15 @@ ORDER BY idx DESC
 
 
 ) AS ab
-CROSS JOIN LATERAL (
+INNER JOIN (
 
 WITH
     assets AS (
-        SELECT *
+        SELECT  
+            tx_hash,
+            block_number,
+            bundle_idx - 1 AS bundle_idx,
+            token_address
         FROM (
 
 
@@ -497,10 +519,13 @@ WITH
 
 SELECT 
     block_number,
+    block_time,
     hash AS tx_hash,
+    index AS tx_index,
+    to AS angstrom_address,
     data AS tx_data
 FROM "delta_prod"."ethereum"."transactions"
-WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x47aefe13a19c8036c0985b59090a34adffcad108630a86aae298954554394d10
+WHERE block_number = 23077861 AND to = 0x0000000aa232009084Bd71A5797d089AA4Edfad4 AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x32716081b3461e4f4770e14d97565c003aecf647837d151a8380f6b9722e7faf
 
 
 
@@ -669,11 +694,11 @@ FROM (
 
 )
     ),
-    all_pairs AS (
+    pairs AS (
         SELECT 
             tx_hash,
             block_number,
-            bundle_idx,
+            bundle_idx - 1 AS bundle_idx, 
             index0,
             index1,
             price_1over0
@@ -697,10 +722,13 @@ WITH
 
 SELECT 
     block_number,
+    block_time,
     hash AS tx_hash,
+    index AS tx_index,
+    to AS angstrom_address,
     data AS tx_data
 FROM "delta_prod"."ethereum"."transactions"
-WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x47aefe13a19c8036c0985b59090a34adffcad108630a86aae298954554394d10
+WHERE block_number = 23077861 AND to = 0x0000000aa232009084Bd71A5797d089AA4Edfad4 AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x32716081b3461e4f4770e14d97565c003aecf647837d151a8380f6b9722e7faf
 
 
 
@@ -870,22 +898,12 @@ FROM (
 
 )
     ),
-    pairs AS (
-        SELECT 
-            ap.block_number,
-            ap.tx_hash,
-            ap.bundle_idx,
-            ap.index0,
-            ap.index1,
-            ap.price_1over0
-        FROM all_pairs ap
-    ),
     _asset_in AS (
         SELECT
             p.block_number AS block_number,
             p.tx_hash AS tx_hash,
             p.bundle_idx AS p_index,
-            p.price_1over0,
+            p.price_1over0 AS price_1over0,
             a.token_address AS asset_in
         FROM assets AS a
         JOIN pairs AS p ON a.bundle_idx = p.index0 AND a.block_number = p.block_number AND a.tx_hash = p.tx_hash
@@ -917,11 +935,12 @@ FROM zfo_assets
 
 
 
+
 ) AS asts
-WHERE asts.bundle_pair_index = ab.pairs_index AND ab.block_number = asts.block_number AND ab.tx_hash = asts.tx_hash
+    ON asts.bundle_pair_index = ab.pairs_index AND ab.block_number = asts.block_number AND ab.tx_hash = asts.tx_hash
 
 ) AS p
-        WHERE t.tx_hash = p.tx_hash AND t.block_number = p.block_number
+            ON t.tx_hash = p.tx_hash AND t.block_number = p.block_number
     ),
     user_orders AS (
         SELECT 
@@ -937,7 +956,7 @@ WHERE asts.bundle_pair_index = ab.pairs_index AND ab.block_number = asts.block_n
             t.tx_hash AS tx_hash,
             row_number() OVER (PARTITION BY t.tx_hash) + tc.tob_cnt AS evt_index
         FROM tx_data_cte t
-        CROSS JOIN LATERAL (
+        INNER JOIN (
 
 
 
@@ -969,10 +988,13 @@ WITH
 
 SELECT 
     block_number,
+    block_time,
     hash AS tx_hash,
+    index AS tx_index,
+    to AS angstrom_address,
     data AS tx_data
 FROM "delta_prod"."ethereum"."transactions"
-WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x47aefe13a19c8036c0985b59090a34adffcad108630a86aae298954554394d10
+WHERE block_number = 23077861 AND to = 0x0000000aa232009084Bd71A5797d089AA4Edfad4 AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x32716081b3461e4f4770e14d97565c003aecf647837d151a8380f6b9722e7faf
 
 
 
@@ -1557,7 +1579,11 @@ ORDER BY idx DESC
 
 WITH
     assets AS (
-        SELECT *
+        SELECT  
+            tx_hash,
+            block_number,
+            bundle_idx - 1 AS bundle_idx,
+            token_address
         FROM (
 
 
@@ -1578,10 +1604,13 @@ WITH
 
 SELECT 
     block_number,
+    block_time,
     hash AS tx_hash,
+    index AS tx_index,
+    to AS angstrom_address,
     data AS tx_data
 FROM "delta_prod"."ethereum"."transactions"
-WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x47aefe13a19c8036c0985b59090a34adffcad108630a86aae298954554394d10
+WHERE block_number = 23077861 AND to = 0x0000000aa232009084Bd71A5797d089AA4Edfad4 AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x32716081b3461e4f4770e14d97565c003aecf647837d151a8380f6b9722e7faf
 
 
 
@@ -1750,11 +1779,11 @@ FROM (
 
 )
     ),
-    all_pairs AS (
+    pairs AS (
         SELECT 
             tx_hash,
             block_number,
-            bundle_idx,
+            bundle_idx - 1 AS bundle_idx, 
             index0,
             index1,
             price_1over0
@@ -1778,10 +1807,13 @@ WITH
 
 SELECT 
     block_number,
+    block_time,
     hash AS tx_hash,
+    index AS tx_index,
+    to AS angstrom_address,
     data AS tx_data
 FROM "delta_prod"."ethereum"."transactions"
-WHERE to = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x47aefe13a19c8036c0985b59090a34adffcad108630a86aae298954554394d10
+WHERE block_number = 23077861 AND to = 0x0000000aa232009084Bd71A5797d089AA4Edfad4 AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x32716081b3461e4f4770e14d97565c003aecf647837d151a8380f6b9722e7faf
 
 
 
@@ -1951,22 +1983,12 @@ FROM (
 
 )
     ),
-    pairs AS (
-        SELECT 
-            ap.block_number,
-            ap.tx_hash,
-            ap.bundle_idx,
-            ap.index0,
-            ap.index1,
-            ap.price_1over0
-        FROM all_pairs ap
-    ),
     _asset_in AS (
         SELECT
             p.block_number AS block_number,
             p.tx_hash AS tx_hash,
             p.bundle_idx AS p_index,
-            p.price_1over0,
+            p.price_1over0 AS price_1over0,
             a.token_address AS asset_in
         FROM assets AS a
         JOIN pairs AS p ON a.bundle_idx = p.index0 AND a.block_number = p.block_number AND a.tx_hash = p.tx_hash
@@ -1998,6 +2020,7 @@ FROM zfo_assets
 
 
 
+
 ) AS asts
         WHERE asts.bundle_pair_index = ab.pair_index AND ab.block_number = asts.block_number AND ab.tx_hash = asts.tx_hash
     ),
@@ -2018,7 +2041,7 @@ SELECT
     topic2
 FROM "delta_prod"."ethereum"."logs" AS l
 WHERE 
-    contract_address = 0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC AND 
+    contract_address = 0x0000000aa232009084Bd71A5797d089AA4Edfad4 AND 
     topic0 = 0xf325a037d71efc98bc41dc5257edefd43a1d1162e206373e53af271a7a3224e9
 ORDER BY block_number DESC 
 LIMIT 1
@@ -2071,9 +2094,9 @@ FROM orders_with_assets
 
 
 
-) AS p
+) AS p 
+            ON t.tx_hash = p.tx_hash AND t.block_number = p.block_number
         CROSS JOIN ( SELECT COUNT(*) AS tob_cnt FROM tob_orders ) AS tc
-        WHERE t.tx_hash = p.tx_hash AND t.block_number = p.block_number
 
     )
 SELECT

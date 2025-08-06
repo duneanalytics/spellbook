@@ -7,35 +7,29 @@
 
 WITH
     assets AS (
-        SELECT *
+        SELECT  
+            tx_hash,
+            block_number,
+            bundle_idx - 1 AS bundle_idx,
+            token_address
         FROM ({{angstrom_decoding_assets(angstrom_contract_addr, blockchain)}})
     ),
-    all_pairs AS (
+    pairs AS (
         SELECT 
             tx_hash,
             block_number,
-            bundle_idx,
+            bundle_idx - 1 AS bundle_idx, 
             index0,
             index1,
             price_1over0
         FROM ({{angstrom_decoding_pairs(angstrom_contract_addr, blockchain)}})
-    ),
-    pairs AS (
-        SELECT 
-            ap.block_number,
-            ap.tx_hash,
-            ap.bundle_idx,
-            ap.index0,
-            ap.index1,
-            ap.price_1over0
-        FROM all_pairs ap
     ),
     _asset_in AS (
         SELECT
             p.block_number AS block_number,
             p.tx_hash AS tx_hash,
             p.bundle_idx AS p_index,
-            p.price_1over0,
+            p.price_1over0 AS price_1over0,
             a.token_address AS asset_in
         FROM assets AS a
         JOIN pairs AS p ON a.bundle_idx = p.index0 AND a.block_number = p.block_number AND a.tx_hash = p.tx_hash
@@ -64,6 +58,7 @@ WITH
 SELECT
     *
 FROM zfo_assets
+
 
 
 

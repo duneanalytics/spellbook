@@ -7,18 +7,18 @@
     )
 %}
 
+-------------------- TO TEST ------------------
+
+-- single, TOB only: 23077861 - 0xb72c702151c9004f3f327a82cfe451f69a206c21b82fa98419791ebc0bc29b94
+-- single, USER only: 23077829 - 0x32716081b3461e4f4770e14d97565c003aecf647837d151a8380f6b9722e7faf
+
+
+-----------------------------------------------
+
 
 WITH
     tx_data_cte AS (
-        SELECT 
-            block_number,
-            block_time,
-            hash AS tx_hash,
-            index AS tx_index,
-            to AS angstrom_address,
-            data AS tx_data
-        FROM {{ source(blockchain, 'transactions') }}
-        WHERE to = {{ angstrom_contract_addr }} AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x47aefe13a19c8036c0985b59090a34adffcad108630a86aae298954554394d10
+        {{ angstrom_tx_data(angstrom_contract_addr, blockchain) }}
     ),
     tob_orders AS (
         SELECT 
@@ -34,8 +34,8 @@ WITH
             t.tx_hash AS tx_hash,
             row_number() over (partition by t.tx_hash) as evt_index
         FROM tx_data_cte t
-        CROSS JOIN LATERAL ({{ angstrom_bundle_tob_order_volume(angstrom_contract_addr, blockchain) }}) AS p
-        WHERE t.tx_hash = p.tx_hash AND t.block_number = p.block_number
+        INNER JOIN ({{ angstrom_bundle_tob_order_volume(angstrom_contract_addr, blockchain) }}) AS p
+            ON t.tx_hash = p.tx_hash AND t.block_number = p.block_number
     ),
     user_orders AS (
         SELECT 
@@ -51,9 +51,9 @@ WITH
             t.tx_hash AS tx_hash,
             row_number() OVER (PARTITION BY t.tx_hash) + tc.tob_cnt AS evt_index
         FROM tx_data_cte t
-        CROSS JOIN LATERAL ({{ angstrom_bundle_user_order_volume(angstrom_contract_addr, blockchain) }}) AS p
+        INNER JOIN ({{ angstrom_bundle_user_order_volume(angstrom_contract_addr, blockchain) }}) AS p 
+            ON t.tx_hash = p.tx_hash AND t.block_number = p.block_number
         CROSS JOIN ( SELECT COUNT(*) AS tob_cnt FROM tob_orders ) AS tc
-        WHERE t.tx_hash = p.tx_hash AND t.block_number = p.block_number
 
     )
 SELECT

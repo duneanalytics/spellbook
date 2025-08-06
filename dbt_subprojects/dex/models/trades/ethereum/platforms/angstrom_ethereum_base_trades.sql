@@ -14,7 +14,7 @@ WITH dexs AS
 (
     {{
     angstrom_bundle_volume_events(
-        angstrom_contract_addr = '0xb9c4cE42C2e29132e207d29Af6a7719065Ca6AeC'
+        angstrom_contract_addr = '0x0000000aa232009084Bd71A5797d089AA4Edfad4'
         , blockchain = 'ethereum'
         , project = 'angstrom'
         , version = '2'
