@@ -80,6 +80,14 @@
             'token0': 'substr(data, ' ~ (7*32 + 13) ~ ', 20)',
             'token1': 'substr(data, ' ~ (8*32 + 13) ~ ', 20)',
             'fee': 'null',
+        },
+        '0xdd466e674ea557f56295e2d0218a125ea4b4f0f6f3307b95f85e6110838d6438': {
+            'type': 'uniswap_compatible',
+            'version': 'v4',
+            'pool': 'topic1',
+            'token0': 'substr(topic2, 13, 20)',
+            'token1': 'substr(topic3, 13, 20)',
+            'fee': 'bytearray_to_uint256(substr(data, 1, 32))',
         }
     } %}
     {{ return(logs_configs) }}
