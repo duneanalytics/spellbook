@@ -39,6 +39,11 @@ with sol_payments as (
                 select 1 
                 from {{ source('dex_solana', 'trades') }} as trades
                 where trades.tx_id = account_activity.tx_id
+                {% if is_incremental() %} 
+                and {{ incremental_predicate('trades.block_time') }}
+                {% else %} 
+                and trades.block_time >= timestamp '{{query_start_date}}'
+                {% endif %} 
             )
     ),
     token_payments as (
@@ -67,6 +72,11 @@ with sol_payments as (
                 select 1 
                 from {{ source('dex_solana', 'trades') }} as trades
                 where trades.tx_id = account_activity.tx_id
+                {% if is_incremental() %} 
+                and {{ incremental_predicate('trades.block_time') }}
+                {% else %} 
+                and trades.block_time >= timestamp '{{query_start_date}}'
+                {% endif %} 
             )
     ),
     fee_payments as (
