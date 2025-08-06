@@ -162,4 +162,4 @@ LEFT JOIN mr_fa_supply AS s
 LEFT JOIN mr_fa_owner AS o
     ON m.tx_version = o.tx_version AND m.move_address = o.move_address
 LEFT JOIN {{ ref('fungible_asset_migration') }} AS mig
-    ON mig.asset_type_v2 = m.asset_type
+    ON mig.asset_type_v2 = '0x' || LPAD(lower(to_hex(m.move_address)), 64, '0')
