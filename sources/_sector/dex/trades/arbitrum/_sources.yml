@@ -23,6 +23,7 @@ sources:
     tables:
       - name: Pair_evt_Swap
       - name: Factory_evt_PairCreated
+      - name: routeprocessor3_2_evt_route
   - name: sushiswap_arbitrum
     tables:
       - name: UniswapV3Factory_evt_PoolCreated

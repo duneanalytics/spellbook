@@ -908,3 +908,22 @@ models:
           seed_file: ref('native_arbitrum_base_trades_seed')
           filter:
             version: 1
+
+  - name: sushi_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: sushi
+      contributors: principatel
+    config:
+      tags: ["arbitrum", "dex", "trades", "sushi"]
+    description: "sushi arbitrum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sushi_arbitrum_base_trades_seed')
+          filter:
+            version: 1

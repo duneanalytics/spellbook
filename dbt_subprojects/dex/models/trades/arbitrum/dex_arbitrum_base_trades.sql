@@ -60,6 +60,7 @@
     , ref('mindgames_arbitrum_base_trades')
     , ref('fluid_v1_arbitrum_base_trades')
     , ref('native_arbitrum_base_trades')
+    , ref('sushi_arbitrum_base_trades')
 ] %}
 
 with base_union as (
