@@ -10,7 +10,7 @@
    )
 }}
 
-{% set query_start_date = '2024-01-01' %}
+{% set query_start_date = '2025-08-01' %}
 {% set blockchain = 'solana' %}
 {% set wsol_token = 'So11111111111111111111111111111111111111112' %}
 
@@ -29,14 +29,6 @@ with sol_payments as (
                 fee_addresses.fee_receiver = account_activity.address
                 and balance_change > 0
             )
-        join {{ source('dex_solana', 'trades') }} as trades
-            on trades.tx_id = account_activity.tx_id
-            and trades.block_time = account_activity.block_time
-            {% if is_incremental() %} 
-            and {{ incremental_predicate('trades.block_time') }}
-            {% else %} 
-            and trades.block_time >= timestamp '{{query_start_date}}'
-            {% endif %} 
         where
             {% if is_incremental() %} 
                 {{ incremental_predicate('account_activity.block_time') }}
@@ -44,6 +36,11 @@ with sol_payments as (
                 account_activity.block_time >= timestamp '{{query_start_date}}'
             {% endif %} 
             and tx_success
+            and exists (
+                select 1 
+                from {{ source('dex_solana', 'trades') }} as trades
+                where trades.tx_id = account_activity.tx_id
+            )
     ),
     token_payments as (
         select
@@ -67,6 +64,11 @@ with sol_payments as (
                 account_activity.block_time >= timestamp '{{query_start_date}}'
             {% endif %} 
             and tx_success
+            and exists (
+                select 1 
+                from {{ source('dex_solana', 'trades') }} as trades
+                where trades.tx_id = account_activity.tx_id
+            )
     ),
     fee_payments as (
         select *
