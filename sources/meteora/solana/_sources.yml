@@ -20,7 +20,10 @@ sources:
       - name: lb_clmm_call_swapwithpriceimpact
       - name: lb_clmm_call_swapwithpriceimpact2
       - name: lb_clmm_evt_swap
+  - name: meteora_solana
+    description: "meteora cpamm decoded tables"
+    tables:
       - name: cp_amm_call_swap
-      - name: cp_amm_evt_evtswap"
+      - name: cp_amm_evt_evtswap
     
     
