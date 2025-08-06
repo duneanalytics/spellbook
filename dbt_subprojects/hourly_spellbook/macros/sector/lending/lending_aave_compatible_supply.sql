@@ -250,7 +250,9 @@ from base_supply
     project_decoded_as = 'aave_v3',
     decoded_contract_name = 'Pool',
     wrapped_token_gateway_available = true,
-    decoded_wrapped_token_gateway_name = 'WrappedTokenGatewayV3'
+    decoded_wrapped_token_gateway_name = 'WrappedTokenGatewayV3',
+    wethgateway_available = false,
+    decoded_wethgateway_name = 'WETHGateway'
   )
 %}
 
@@ -276,6 +278,16 @@ src_LendingPool_evt_Withdraw as (
 src_WrappedTokenGatewayV3_call_withdrawETH as (
   select *
   from {{ source(project_decoded_as ~ '_' ~ blockchain, decoded_wrapped_token_gateway_name ~ '_call_withdrawETH') }}
+  {% if is_incremental() %}
+  where {{ incremental_predicate('call_block_time') }}
+  {% endif %}
+),
+{% endif %}
+
+{% if wethgateway_available %}
+src_WETHGateway_call_withdrawETH as (
+  select *
+  from {{ source(project_decoded_as ~ '_' ~ blockchain, decoded_wethgateway_name ~ '_call_withdrawETH') }}
   {% if is_incremental() %}
   where {{ incremental_predicate('call_block_time') }}
   {% endif %}
@@ -319,8 +331,12 @@ base_supply as (
     'withdraw' as transaction_type,
     w.reserve as token_address,
     w.user as depositor,
-    {% if wrapped_token_gateway_available %}
+    {% if wrapped_token_gateway_available and wethgateway_available %}
+      cast(coalesce(wrap.to, wgate.to) as varbinary)
+    {% elif wrapped_token_gateway_available %}
       cast(wrap.to as varbinary)
+    {% elif wethgateway_available %}
+      cast(wgate.to as varbinary)
     {% else %}
       cast(null as varbinary)
     {% endif %} as on_behalf_of,
@@ -340,6 +356,14 @@ base_supply as (
       and w.to = wrap.contract_address
       and w.amount = wrap.amount
       and wrap.call_success
+  {% endif %}
+  {% if wethgateway_available %}
+    left join src_WETHGateway_call_withdrawETH wgate
+      on w.evt_block_number = wgate.call_block_number
+      and w.evt_tx_hash = wgate.call_tx_hash
+      and w.to = wgate.contract_address
+      and w.amount = wgate.amount
+      and wgate.call_success
   {% endif %}
   union all
   select
