@@ -154,8 +154,8 @@ SELECT
     s.maximum_v2 AS maximum
 FROM mr_fa_metadata m
 LEFT JOIN mr_fa_supply AS s
-    ON m.txn_version = s.txn_version AND m.move_address = s.move_address
+    ON m.tx_version = s.tx_version AND m.move_address = s.move_address
 LEFT JOIN mr_fa_owner AS o
-    ON m.txn_version = o.txn_version AND m.move_address = o.move_address
+    ON m.tx_version = o.tx_version AND m.move_address = o.move_address
 LEFT JOIN {{ ref('fungible_asset_migration') }} AS mig
     ON mig.asset_type_v2 = m.asset_type
