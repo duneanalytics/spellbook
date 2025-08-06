@@ -5,7 +5,7 @@
         materialized = 'view',
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "project",
-                                    "meteroa",
+                                    "meteora_v3",
                                     \'["0xsandeshk"]\') }}')
 }}
 select
