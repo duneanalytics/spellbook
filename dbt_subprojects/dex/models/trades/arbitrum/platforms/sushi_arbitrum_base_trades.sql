@@ -22,7 +22,7 @@ WITH token_swaps AS (
         evt_tx_hash AS tx_hash,
         evt_index AS evt_index
     FROM 
-        {{ source('sushi_arbitrum', 'routeprocessor3_2_evt_route') }}
+        {{ source('sushiswap_v2_arbitrum', 'routeprocessor3_2_evt_route') }}
     {% if is_incremental() %}
     WHERE
         {{ incremental_predicate('evt_block_time') }}
