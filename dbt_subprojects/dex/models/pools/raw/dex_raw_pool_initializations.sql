@@ -27,10 +27,11 @@ select * from (
         where 
             substr(input, 1, 4) = 0x485cc955 
             and success
+            and tx_success
             {% if is_incremental() %}
                 and {{ incremental_predicate('block_time') }}
-            -- {% else %}
-            --     and block_time > date('2000-01-01')
+            {% else %}
+                and block_time > date('2025-01-01')
             {% endif %}
 
 
