@@ -9,7 +9,7 @@ SELECT
     FROM_UTF8(FROM_HEX(LTRIM(json_extract_scalar(move_data, '$.type.module_name'), '0x'))) || '::' ||
     FROM_UTF8(FROM_HEX(LTRIM(json_extract_scalar(move_data, '$.type.struct_name'), '0x'))) AS asset_type_v1
 FROM (
-    SELECT move_address, ANY_VALUE(move_data)   
+    SELECT move_address, ANY_VALUE(move_data) AS move_data
     FROM {{ source('aptos', 'move_resources') }}
     WHERE 1=1
         AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
