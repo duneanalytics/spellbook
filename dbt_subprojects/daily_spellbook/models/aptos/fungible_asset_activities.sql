@@ -75,7 +75,7 @@ WITH coin_activities AS (
     AND fab.token_standard = 'v2'
     WHERE 1=1
         AND ev.block_date = DATE('2025-01-01') -- DEBUG
-        AND block_date >= DATE('2023-07-28') -- v2 deployed
+        AND ev.block_date >= DATE('2023-07-28') -- v2 deployed
         AND event_type IN (
             '0x1::fungible_asset::Deposit',
             '0x1::fungible_asset::Withdraw'
