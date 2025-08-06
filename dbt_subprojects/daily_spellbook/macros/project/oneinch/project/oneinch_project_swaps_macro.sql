@@ -197,20 +197,14 @@ meta as (
                 , intent boolean
             ))
         ) over(partition by block_number, tx_hash) as tx_swaps
-        , if(user_amount_usd_trusted is null or caller_amount_usd_trusted is null
+        , if(
+            user_amount_usd_trusted is not null or caller_amount_usd_trusted is not null or contract_amount_usd_trusted is not null
+            , greatest(coalesce(user_amount_usd_trusted, 0), coalesce(caller_amount_usd_trusted, 0), coalesce(contract_amount_usd_trusted, 0))
             , if(
-                user_amount_usd is null or caller_amount_usd is null
-                , coalesce(
-                    user_amount_usd_trusted
-                    , caller_amount_usd_trusted
-                    , call_amount_usd_trusted
-                    , user_amount_usd
-                    , caller_amount_usd
-                    , call_amount_usd
-                )
-                , greatest(user_amount_usd, caller_amount_usd)
-            ) -- the user_amount & caller_amount of untrusted tokens takes precedence over the call_amount of trusted tokens
-            , greatest(user_amount_usd_trusted, caller_amount_usd_trusted)
+                user_amount_usd is not null or caller_amount_usd is not null or contract_amount_usd is not null
+                , greatest(coalesce(user_amount_usd, 0), coalesce(caller_amount_usd, 0), coalesce(contract_amount_usd, 0))
+                , coalesce(call_amount_usd_trusted, call_amount_usd)
+            )
         ) as amount_usd
         , coalesce(element_at(order_flags, 'fusion'), false) or coalesce(element_at(order_flags, 'auction'), false) as auction -- 1inch Fusion or any other auction
         , coalesce(element_at(order_flags, 'cross_chain'), false) -- 1inch cross-chain
@@ -263,6 +257,8 @@ meta as (
             , max(amount * price / pow(10, decimals)) filter(where (creations_from.block_number is null or creations_to.block_number is null) and trusted) as user_amount_usd_trusted
             , max(amount * price / pow(10, decimals)) filter(where transfer_from = call_from or transfer_to = call_from) as caller_amount_usd
             , max(amount * price / pow(10, decimals)) filter(where (transfer_from = call_from or transfer_to = call_from) and trusted) as caller_amount_usd_trusted
+            , max(amount * price / pow(10, decimals)) filter(where transfer_from = call_to or transfer_to = call_to) as contract_amount_usd
+            , max(amount * price / pow(10, decimals)) filter(where (transfer_from = call_to or transfer_to = call_to) and trusted) as contract_amount_usd_trusted
             , array_agg(distinct transfer_from) filter(where creations_from.block_number is null) as senders
             , array_agg(distinct transfer_to) filter(where creations_to.block_number is null) as receivers
         from calls
@@ -410,6 +406,8 @@ select
     , user_amount_usd_trusted
     , caller_amount_usd
     , caller_amount_usd_trusted
+    , contract_amount_usd
+    , contract_amount_usd_trusted
     , call_amount_usd
     , call_amount_usd_trusted
     , tx_swaps
