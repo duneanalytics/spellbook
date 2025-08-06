@@ -23,7 +23,7 @@ with
 _pool_created_logs as (
     {% for topic0, data in dex_raw_pools_logs_config_macro().items() %}
         select
-            '{{ blockchain }}' as blockchain
+            blockchain
             , '{{ data.type }}' as type
             , '{{ data.version }}' as version
             , {{ data.pool }} as pool
@@ -47,7 +47,7 @@ _pool_created_logs as (
     -- for curve
     {% for selector, data in dex_raw_pools_traces_config_macro().items() if not data.get('skip', False) and not data.get('initialization_call', False) %}
         select
-            '{{ blockchain }}' as blockchain
+            blockchain
             , '{{ data.type }}' as type
             , '{{ data.version }}' as version
             , {{ data.pool }} as pool
