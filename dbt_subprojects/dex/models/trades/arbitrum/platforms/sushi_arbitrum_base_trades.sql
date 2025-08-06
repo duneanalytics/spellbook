@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'sushiswap_v2_arbitrum',
+    schema = 'sushi_arbitrum',
     alias = 'base_trades',
     partition_by = ['block_month'],
     materialized = 'incremental',
@@ -23,7 +23,7 @@ WITH token_swaps AS (
         evt_index AS evt_index
 
     FROM 
-        {{ source('sushiswap_v2_arbitrum', 'routeprocessor3_2_evt_route') }}
+        {{ source('sushi_arbitrum', 'routeprocessor3_2_evt_route') }}
     {% if is_incremental() %}
     WHERE
         {{ incremental_predicate('evt_block_time') }}
@@ -50,3 +50,4 @@ SELECT
     token_swaps.evt_index
 FROM 
     token_swaps
+    
