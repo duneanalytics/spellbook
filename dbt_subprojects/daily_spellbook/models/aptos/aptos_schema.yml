@@ -44,7 +44,7 @@ models:
       - name: project_uri
         description: "Project URI (parsed from metadata) v2 only"
       - name: maximum
-        description: "Maximum supply, typically 2^128-1 (parsed from metadata) v2 only"
+        description: "Maximum supply, if blank then 2^128-1 (parsed from metadata) v2 only"
 
   - name: fungible_asset_balances
     meta:

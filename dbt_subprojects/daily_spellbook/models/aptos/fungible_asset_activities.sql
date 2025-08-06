@@ -1,4 +1,4 @@
--- this query is an approximation of logic behind fungible_asset_activities
+-- this query is an approximation of logic behind fungible_asset_activities (does not include gas fees or entryfn)
 -- https://github.com/aptos-labs/aptos-indexer-processors-v2/blob/main/processor/src/processors/fungible_asset/fungible_asset_processor.rs
 
 {{ config(
@@ -57,10 +57,10 @@ WITH coin_activities AS (
     {% endif %}
 ), fa_activities AS (
     SELECT
-        tx_version,
-        tx_hash,
-        block_date,
-        block_time,
+        ev.tx_version,
+        ev.tx_hash,
+        ev.block_date,
+        ev.block_time,
         --
         event_index,
         event_type,
@@ -71,11 +71,11 @@ WITH coin_activities AS (
     FROM {{ source('aptos', 'events') }} ev
     LEFT JOIN {{ ref('fungible_asset_balances') }} fab -- TODO: edge case around deletes
     ON ev.tx_version = fab.tx_version
-    AND '0x' || LPAD(LTRIM(json_extract_scalar(ev.data, '$.store'), '0x'), 64, '0') = fab.storage_id
+    AND address_32_from_hex(json_extract_scalar(ev.data, '$.store')) = fab.storage_id
     AND fab.token_standard = 'v2'
     WHERE 1=1
         AND ev.block_date = DATE('2025-01-01') -- DEBUG
-        AND block_date >= '2023-07-28' -- v2 deployed
+        AND block_date >= DATE('2023-07-28') -- v2 deployed
         AND event_type IN (
             '0x1::fungible_asset::Deposit',
             '0x1::fungible_asset::Withdraw'

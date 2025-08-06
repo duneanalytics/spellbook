@@ -68,7 +68,7 @@ WITH mr_fa_metadata AS (
     SELECT
         tx_version,    
         move_address,
-        json_extract_scalar(move_data, '$.owner') AS owner_address
+        '0x' || LPAD(LTRIM(json_extract_scalar(move_data, '$.owner'), '0x'), 64, '0') AS owner_address
     FROM {{ source('aptos', 'move_resources') }}
     WHERE 1=1
         AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
@@ -93,7 +93,7 @@ WITH mr_fa_metadata AS (
         json_extract_scalar(move_data, '$.name') AS asset_name,
         json_extract_scalar(move_data, '$.symbol') AS asset_symbol,
         CAST(json_extract_scalar(move_data, '$.decimals') AS INT) AS decimals,
-        CAST(json_extract_scalar(move_data, '$.supply.vec[0].integer.vec[0].value') AS BIGINT) AS supply_v1
+        CAST(json_extract_scalar(move_data, '$.supply.vec[0].integer.vec[0].value') AS UINT256) AS supply_v1
         -- only APT uses aggregator
         -- json_extract_scalar(move_data, '$.supply.vec[0].aggregator.vec[0].handle') AS supply_aggregator_table_handle_v1,
         -- json_extract_scalar(move_data, '$.supply.vec[0].aggregator.vec[0].key') AS supply_aggregator_table_key_v1,
@@ -120,7 +120,7 @@ SELECT
         SUBSTR(asset_type, LENGTH(SPLIT(asset_type, '::')[1])+1, LENGTH(asset_type)),
         asset_type
     ) AS asset_type,
-    from_hex('0x' || LPAD(LTRIM(creator_address, '0x'), 64, '0')) AS owner_address,
+    creator_address AS owner_address,
     asset_name,
     asset_symbol,
     decimals,
@@ -145,7 +145,7 @@ SELECT
     --
     write_set_change_index,
     '0x' || LPAD(lower(to_hex(m.move_address)), 64, '0') AS asset_type,
-    '0x' || LPAD(LTRIM(o.owner_address, '0x'), 64, '0') AS owner_address,
+    from_hex(owner_address) AS owner_address,
     asset_name,
     asset_symbol,
     decimals,

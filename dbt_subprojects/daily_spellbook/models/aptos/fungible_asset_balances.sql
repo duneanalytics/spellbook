@@ -16,7 +16,7 @@ WITH coin_balances AS (
         write_set_change_index,
         move_resource_generic_type_params[1] AS asset_type,
         move_address,
-        IF(move_is_deletion, 0, json_extract_scalar(move_data, '$.coin.value')) AS balance,
+        IF(move_is_deletion, '0', json_extract_scalar(move_data, '$.coin.value')) AS balance,
         CAST(json_extract_scalar(move_data, '$.frozen') AS BOOLEAN) AS is_frozen
     FROM {{ source('aptos', 'move_resources') }}
     WHERE 1=1
@@ -30,14 +30,14 @@ WITH coin_balances AS (
     {% endif %}
 ), fa_balance AS (
     SELECT
-        fa_balance.tx_version,
+        tx_version,
         tx_hash,
         block_date,
         block_time,
         --
-        COALESCE(c.write_set_change_index, fa_balance.write_set_change_index) AS write_set_change_index,
+        COALESCE(c.write_set_change_index, mr.write_set_change_index) AS write_set_change_index,
         json_extract_scalar(move_data, '$.metadata.inner') AS asset_type,
-        fa_balance.move_address,
+        move_address,
         fs_owner.owner_address,
         move_is_deletion,
         COALESCE(
@@ -45,7 +45,7 @@ WITH coin_balances AS (
             json_extract_scalar(move_data, '$.balance') -- FS
         ) AS balance,
         CAST(json_extract_scalar(move_data, '$.frozen') AS BOOLEAN) AS is_frozen
-    FROM {{ source('aptos', 'move_resources') }} fa_balance
+    FROM {{ source('aptos', 'move_resources') }} mr
     LEFT JOIN (
         -- if CFB
         SELECT
@@ -78,8 +78,7 @@ WITH coin_balances AS (
         {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
         {% endif %}
-    ) AS fs_owner ON fs_owner.tx_version = fa_balance.tx_version
-        AND fs_owner.move_address = fa_balance.move_address
+    ) AS fs_owner USING(tx_version, move_address)
     WHERE 1=1
         AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
         AND move_resource_module = 'fungible_asset'
@@ -102,10 +101,10 @@ SELECT
         SUBSTR(asset_type, LENGTH(SPLIT(asset_type, '::')[1])+1, LENGTH(asset_type)),
         asset_type
     ) AS asset_type,
-    from_hex('0x' || LPAD(LTRIM(move_address, '0x'), 64, '0')) AS owner_address,
-    NULL AS storage_id,
+    move_address AS owner_address,
+    CAST(NULL AS varbinary) AS storage_id,
     CAST(balance AS UINT256) AS amount,
-    is_frozen,
+    is_frozen, -- null on delete
     'v1' AS token_standard
 FROM coin_balances
 
@@ -118,10 +117,10 @@ SELECT
     tx_hash,
     --
     write_set_change_index,
-    from_hex('0x' || LPAD(LTRIM(asset_type, '0x'), 64, '0')) AS asset_type,
-    owner_address,
-    '0x' || LPAD(LTRIM(move_address, '0x'), 64, '0') AS storage_id,
-    CAST(IF(move_is_deletion, 0, balance) AS UINT256) AS amount,
+    '0x' || LPAD(LTRIM(asset_type, '0x'), 64, '0') AS asset_type,
+    from_hex(owner_address) AS owner_address,
+    move_address AS storage_id,
+    CAST(IF(move_is_deletion, '0', balance) AS UINT256) AS amount,
     is_frozen,
     'v2' AS token_standard
 FROM fa_balance
