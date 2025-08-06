@@ -24,18 +24,14 @@ select * from (
             , substr(input, 49, 20) token1
             , tx_hash
             , trace_address call_trace_address
-        from {{ source(blockchain, 'traces') }}
+        from {{ ref('dex_raw_pool_pre_materialized_traces') }}
         where 
             substr(input, 1, 4) = 0x485cc955 
             and success
             and tx_success
             {% if is_incremental() %}
                 and {{ incremental_predicate('block_time') }}
-            {% else %}
-                and block_time > date('2025-01-01')
             {% endif %}
-
-
         {% if not loop.last %}
             union all
         {% endif %}

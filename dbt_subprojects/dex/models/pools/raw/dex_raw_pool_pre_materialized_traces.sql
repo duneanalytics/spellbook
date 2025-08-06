@@ -24,14 +24,17 @@
         , trace_address
         , cast(date_trunc('month', block_time) as date) as block_month
     from {{ source(blockchain, 'traces') }}
-    where substr(input, 1, 4) in ({{ dex_raw_pools_traces_config_macro().keys() | join(',') }})
-        and length(output) = 32
+    where substr(input, 1, 4) in (
+            {{ dex_raw_pools_traces_config_macro().keys() | join(',') }}
+            , 0x485cc955 -- uniswap v2 pool initialization for further exclusion
+        )
+        -- and length(output) = 32
         and success
         and tx_success
         {% if is_incremental() %}
             and {{ incremental_predicate('block_time') }}
         {% else %}
-            and block_time > date('2021-01-01')
+            and block_time > date('2025-08-01')
         {% endif %}
     {% if not loop.last %}
         union all

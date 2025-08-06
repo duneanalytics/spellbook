@@ -137,7 +137,15 @@
             'pool': 'substr(output, 13, 20)',
             'tokens': 'transform(sequence(1, 32 * 8, 32), x -> substr(substr(substr(input, ' ~ (4 + 1 + 32 * 16) ~ ', 32 * 8), x, 32), 13))',
             'fee': 'bytearray_to_uint256(substr(input, ' ~ (4 + 1 + 32 * 4) ~ ', 32))',
-        },       
+        },
+        '0x485cc955': {
+            'type': 'uniswap_compatible',
+            'version': 'v2',
+            'pool': '"to"',
+            'token0': 'substr(input, 17, 20)',
+            'token1': 'substr(input, 49, 20)',
+            'initialization_call': True,
+        } 
     } %}
     {{ return(traces_configs) }}
 {% endmacro %}

@@ -45,7 +45,7 @@ _pool_created_logs as (
 
 , _pool_created_calls as (
     -- for curve
-    {% for selector, data in dex_raw_pools_traces_config_macro().items() if not data.get('skip', False) %}
+    {% for selector, data in dex_raw_pools_traces_config_macro().items() if not data.get('skip', False) and not data.get('initialization_call', False) %}
         select
             '{{ blockchain }}' as blockchain
             , '{{ data.type }}' as type
@@ -61,6 +61,7 @@ _pool_created_logs as (
         from {{ ref('dex_raw_pool_pre_materialized_traces') }}
         where 
             substr(input, 1, 4) = {{ selector }} 
+            and length(output) = 32 -- check this when adding new pools to config
         {% if not loop.last %}
             union all
         {% endif %}
