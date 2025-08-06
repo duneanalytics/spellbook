@@ -525,7 +525,17 @@ supply_scaled as (
       and hmu.user = s.user
 )
 
-select * from supply_scaled
+select
+  blockchain,
+  project,
+  version,
+  block_date,
+  block_hour,
+  token_address,
+  symbol,
+  user,
+  if(amount > 1e-8, amount, 0) as amount -- account for assumed zero
+from supply_scaled
 {% if is_incremental() %}
 where {{ incremental_predicate('block_date') }}
 {% endif %}
