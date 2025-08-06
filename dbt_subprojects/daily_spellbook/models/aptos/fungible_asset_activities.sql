@@ -81,7 +81,7 @@ WITH coin_activities AS (
             '0x1::fungible_asset::Withdraw'
         )
     {% if is_incremental() %}
-        AND {{ incremental_predicate('block_time') }}
+        AND {{ incremental_predicate('ev.block_time') }}
     {% endif %}
 )
 

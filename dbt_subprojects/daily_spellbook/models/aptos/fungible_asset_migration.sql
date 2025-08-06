@@ -17,7 +17,7 @@ FROM (
         AND move_resource_name = 'PairedCoinType'
     {% if is_incremental() %}
         AND {{ incremental_predicate('block_time') }}
-        AND move_address NOT IN (SELECT asset_type_v2 FROM {{ this }})
+        AND '0x' || LPAD(lower(to_hex(move_address)), 64, '0') NOT IN (SELECT asset_type_v2 FROM {{ this }})
     {% else %}
         AND block_date = DATE('2025-01-01') -- DEBUG
         AND block_date >= DATE('2024-08-02') -- beginning of FA (v2) migration
