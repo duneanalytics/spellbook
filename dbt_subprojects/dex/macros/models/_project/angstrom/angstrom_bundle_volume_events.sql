@@ -109,5 +109,3 @@ FROM user_orders
 {% endmacro %}
 
 
-
-{% endmacro %}
