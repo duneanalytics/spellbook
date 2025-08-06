@@ -7,11 +7,19 @@ WITH dexs AS
 
 -------------------- TO TEST ------------------
 
--- single, TOB only: 23077861 - 0xb72c702151c9004f3f327a82cfe451f69a206c21b82fa98419791ebc0bc29b94
--- single, USER only: 23077829 - 0x32716081b3461e4f4770e14d97565c003aecf647837d151a8380f6b9722e7faf
-
+-- single, TOB: 23077861 - 0xb72c702151c9004f3f327a82cfe451f69a206c21b82fa98419791ebc0bc29b94
+-- single, USER: 23077829 - 0x32716081b3461e4f4770e14d97565c003aecf647837d151a8380f6b9722e7faf
+-- multi, TOB: 
+    -- 23085211 - 0xbb0cb5d7062a838a9b590a202a6e9b6478aa7e9a78824a21576dae1662b7dbcb
+    -- 23085199 - 0xf07e41f652e68359a2c2fa1e571fdd05fa0eb4430da3941ce96744ac873408b1
+    -- 23085183 - 0x627d33d7a00554446b2e4d109bc695c5d5b1131ed68980a24250e36103102c89
+-- multi, USER: 
+    -- 23084306 - 0x5f0a2eb5ea030dc3f18d03901ffe4ec161bb5fb5942e9904a3d1a75d5e6e53cc
+    -- 23084299 - 0xd46f57a0e3aaa61a5f711cd7d2cf90f083e7e37d9125dd07e300a27d554c9c46
+    -- 23083864 - 0x6e299e112769472208e63bd05bf40787ff9168c4731c6daa601c25b67f125d95
 
 -----------------------------------------------
+
 
 
 WITH
@@ -28,7 +36,7 @@ SELECT
     to AS angstrom_address,
     data AS tx_data
 FROM "delta_prod"."ethereum"."transactions"
-WHERE block_number = 23077861 AND to = 0x0000000aa232009084Bd71A5797d089AA4Edfad4 AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x32716081b3461e4f4770e14d97565c003aecf647837d151a8380f6b9722e7faf
+WHERE to = 0x0000000aa232009084Bd71A5797d089AA4Edfad4 AND varbinary_substring(data, 1, 4) = 0x09c5eabe 
 
 
 
@@ -39,8 +47,8 @@ WHERE block_number = 23077861 AND to = 0x0000000aa232009084Bd71A5797d089AA4Edfad
             t.block_time AS block_time,
             p.quantity_in       AS token_bought_amount_raw,
             p.quantity_out      AS token_sold_amount_raw,
-            p.asset_in          AS token_bought_address,
-            p.asset_out         AS token_sold_address,
+            p.asset_out          AS token_bought_address,
+            p.asset_in         AS token_sold_address,
             p.recipient AS taker,
             t.angstrom_address AS maker,
             t.angstrom_address AS project_contract_address,
@@ -82,7 +90,7 @@ SELECT
     to AS angstrom_address,
     data AS tx_data
 FROM "delta_prod"."ethereum"."transactions"
-WHERE block_number = 23077861 AND to = 0x0000000aa232009084Bd71A5797d089AA4Edfad4 AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x32716081b3461e4f4770e14d97565c003aecf647837d151a8380f6b9722e7faf
+WHERE to = 0x0000000aa232009084Bd71A5797d089AA4Edfad4 AND varbinary_substring(data, 1, 4) = 0x09c5eabe 
 
 
 
@@ -525,7 +533,7 @@ SELECT
     to AS angstrom_address,
     data AS tx_data
 FROM "delta_prod"."ethereum"."transactions"
-WHERE block_number = 23077861 AND to = 0x0000000aa232009084Bd71A5797d089AA4Edfad4 AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x32716081b3461e4f4770e14d97565c003aecf647837d151a8380f6b9722e7faf
+WHERE to = 0x0000000aa232009084Bd71A5797d089AA4Edfad4 AND varbinary_substring(data, 1, 4) = 0x09c5eabe 
 
 
 
@@ -728,7 +736,7 @@ SELECT
     to AS angstrom_address,
     data AS tx_data
 FROM "delta_prod"."ethereum"."transactions"
-WHERE block_number = 23077861 AND to = 0x0000000aa232009084Bd71A5797d089AA4Edfad4 AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x32716081b3461e4f4770e14d97565c003aecf647837d151a8380f6b9722e7faf
+WHERE to = 0x0000000aa232009084Bd71A5797d089AA4Edfad4 AND varbinary_substring(data, 1, 4) = 0x09c5eabe 
 
 
 
@@ -948,8 +956,8 @@ FROM zfo_assets
             t.block_time AS block_time,
             p.t0_amount AS token_bought_amount_raw,
             p.t1_amount AS token_sold_amount_raw,
-            p.asset_in AS token_bought_address,
-            p.asset_out AS token_sold_address,
+            p.asset_out AS token_bought_address,
+            p.asset_in AS token_sold_address,
             p.recipient AS taker,
             t.angstrom_address AS maker,
             t.angstrom_address AS project_contract_address,
@@ -994,7 +1002,7 @@ SELECT
     to AS angstrom_address,
     data AS tx_data
 FROM "delta_prod"."ethereum"."transactions"
-WHERE block_number = 23077861 AND to = 0x0000000aa232009084Bd71A5797d089AA4Edfad4 AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x32716081b3461e4f4770e14d97565c003aecf647837d151a8380f6b9722e7faf
+WHERE to = 0x0000000aa232009084Bd71A5797d089AA4Edfad4 AND varbinary_substring(data, 1, 4) = 0x09c5eabe 
 
 
 
@@ -1575,7 +1583,7 @@ ORDER BY idx DESC
 
 
 ) AS ab
-        CROSS JOIN LATERAL (
+        INNER JOIN (
 
 WITH
     assets AS (
@@ -1610,7 +1618,7 @@ SELECT
     to AS angstrom_address,
     data AS tx_data
 FROM "delta_prod"."ethereum"."transactions"
-WHERE block_number = 23077861 AND to = 0x0000000aa232009084Bd71A5797d089AA4Edfad4 AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x32716081b3461e4f4770e14d97565c003aecf647837d151a8380f6b9722e7faf
+WHERE to = 0x0000000aa232009084Bd71A5797d089AA4Edfad4 AND varbinary_substring(data, 1, 4) = 0x09c5eabe 
 
 
 
@@ -1813,7 +1821,7 @@ SELECT
     to AS angstrom_address,
     data AS tx_data
 FROM "delta_prod"."ethereum"."transactions"
-WHERE block_number = 23077861 AND to = 0x0000000aa232009084Bd71A5797d089AA4Edfad4 AND varbinary_substring(data, 1, 4) = 0x09c5eabe AND hash = 0x32716081b3461e4f4770e14d97565c003aecf647837d151a8380f6b9722e7faf
+WHERE to = 0x0000000aa232009084Bd71A5797d089AA4Edfad4 AND varbinary_substring(data, 1, 4) = 0x09c5eabe 
 
 
 
@@ -2022,32 +2030,87 @@ FROM zfo_assets
 
 
 ) AS asts
-        WHERE asts.bundle_pair_index = ab.pair_index AND ab.block_number = asts.block_number AND ab.tx_hash = asts.tx_hash
+            ON asts.bundle_pair_index = ab.pair_index AND ab.block_number = asts.block_number AND ab.tx_hash = asts.tx_hash
     ),
     orders_with_assets AS (
         SELECT
             u.*,
-            a.*
+            f.bundle_fee AS bundle_fee
         FROM user_orders AS u
-        CROSS JOIN LATERAL (
+        INNER JOIN (
 
 -- maybe use abi for log??
 
+WITH fee_events AS (
+    SELECT 
+        block_number,
+        varbinary_to_integer(varbinary_substring(l.data, 62, 3)) AS bundle_fee,
+        varbinary_to_integer(varbinary_substring(l.data, 94, 3)) AS unlocked_fee,
+        varbinary_to_integer(varbinary_substring(l.data, 126, 3)) AS protocol_unlocked_fee,
+        topic1,
+        topic2
+    FROM "delta_prod"."ethereum"."logs" AS l
+    WHERE 
+        contract_address = 0xFE77113460CF1833c4440FD17B4463f472010e10 AND 
+        topic0 = 0xf325a037d71efc98bc41dc5257edefd43a1d1162e206373e53af271a7a3224e9
+),
+block_range AS (
+    SELECT number AS block_number
+    FROM "delta_prod"."ethereum"."blocks"
+    WHERE number >= (SELECT MIN(block_number) FROM fee_events)
+),
+topic_pairs AS (
+    SELECT DISTINCT topic1, topic2
+    FROM fee_events
+),
+block_topic_combinations AS (
+    SELECT 
+        br.block_number,
+        tp.topic1,
+        tp.topic2
+    FROM block_range br
+    CROSS JOIN topic_pairs tp
+),
+latest_fees_per_pair AS (
+    SELECT 
+        btc.block_number,
+        btc.topic1,
+        btc.topic2,
+        fe.bundle_fee,
+        fe.unlocked_fee,
+        fe.protocol_unlocked_fee,
+        ROW_NUMBER() OVER (
+            PARTITION BY btc.block_number, btc.topic1, btc.topic2 
+            ORDER BY fe.block_number DESC
+        ) AS rn
+    FROM block_topic_combinations btc
+    LEFT JOIN fee_events fe 
+        ON fe.topic1 = btc.topic1 
+        AND fe.topic2 = btc.topic2
+        AND fe.block_number <= btc.block_number
+)
 SELECT 
-    varbinary_to_integer(varbinary_substring(l.data, 62, 3)) AS bundle_fee,
-    varbinary_to_integer(varbinary_substring(l.data, 94, 3)) AS unlocked_fee,
-    varbinary_to_integer(varbinary_substring(l.data, 126, 3)) AS protocol_unlocked_fee,
+    block_number,
+    bundle_fee,
+    unlocked_fee,
+    protocol_unlocked_fee,
     topic1,
     topic2
-FROM "delta_prod"."ethereum"."logs" AS l
-WHERE 
-    contract_address = 0x0000000aa232009084Bd71A5797d089AA4Edfad4 AND 
-    topic0 = 0xf325a037d71efc98bc41dc5257edefd43a1d1162e206373e53af271a7a3224e9
-ORDER BY block_number DESC 
-LIMIT 1
+FROM latest_fees_per_pair
+WHERE rn = 1 AND bundle_fee IS NOT NULL
+ORDER BY block_number DESC, topic1, topic2
 
 
 ) AS f
+            ON u.block_number = f.block_number AND
+                ((varbinary_substring(f.topic1, 13, 20) = u.asset_in OR varbinary_substring(f.topic2, 13, 20) = u.asset_in) AND 
+                (varbinary_substring(f.topic1, 13, 20) = u.asset_out OR varbinary_substring(f.topic2, 13, 20) = u.asset_out)) 
+    ),
+    orders_with_priced_assets AS (
+        SELECT 
+            u.*,
+            a.*
+        FROM orders_with_assets AS u
         CROSS JOIN LATERAL (
 
 WITH
@@ -2056,7 +2119,7 @@ WITH
             ARRAY[NOT u.zero_for_one, u.exact_in] AS cases,
             CAST(u.fill_amount AS uint256) AS fill_amount,
             CAST(u.price_1over0 AS uint256) AS ray_ucp,
-            f.bundle_fee AS fee,
+            u.bundle_fee AS fee,
             u.extra_fee_asset0 AS gas
     ),
     amount_case AS (
@@ -2081,14 +2144,11 @@ FROM amount_case
 -- TODO: investigate tiny rounding error (approx 10^-20 units off, so very insignificant)
 
 
-) AS a
-        WHERE     
-            ((varbinary_substring(f.topic1, 13, 20) = u.asset_in OR varbinary_substring(f.topic2, 13, 20) = u.asset_out) AND 
-            (varbinary_substring(f.topic1, 13, 20) = u.asset_out OR varbinary_substring(f.topic2, 13, 20) = u.asset_in))
+) AS a    
     )
 SELECT
     *
-FROM orders_with_assets
+FROM orders_with_priced_assets
 
 
 
