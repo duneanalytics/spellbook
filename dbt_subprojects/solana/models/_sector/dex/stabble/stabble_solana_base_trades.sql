@@ -163,7 +163,8 @@ WITH all_swaps AS (
         , ROW_NUMBER() OVER (
             PARTITION BY s.tx_id, s.outer_instruction_index, s.inner_instruction_index
             ORDER BY t_buy.amount DESC
-        ) as rn
+        ) as rn -- some transactions have multiple transfers within the same instruction range (intermetiate transfers etc.)
+                -- so we are to selecting the largest transfer as the trade)
     FROM all_swaps s
     -- Get the "buy" transfer (vault → user)
     INNER JOIN {{ ref('tokens_solana_transfers') }} t_buy
