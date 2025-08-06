@@ -315,7 +315,7 @@ meta as (
         *
         , map_from_entries(array[
               ('intra-chain: classic: direct',
-                flags['direct']
+                entry
                 and order_hash is null
                 and not auction
                 and not cross_chain_swap
@@ -323,7 +323,7 @@ meta as (
                 or second_side
             )
             , ('intra-chain: classic: external',
-                not flags['direct']
+                not entry
                 and order_hash is null
                 and not auction
                 and not contracts_only
@@ -347,12 +347,20 @@ meta as (
             , ('cross-chain', cross_chain_swap)
         ]) as modes
     from (
-        select *, coalesce(maker, tx_from) as user, false as second_side
+        select
+            *
+            , coalesce(maker, tx_from) as user
+            , false as second_side
+            , flags['direct'] or reduce(tx_swaps, false, (r, x) -> x.call_trace_address <> call_trace_address and slice(call_trace_address, 1, cardinality(x.call_trace_address)) = x.call_trace_address or r, r -> not r) as entry
         from swaps
         
         union all
         
-        select *, tx_from as user, true as second_side
+        select
+            *
+            , tx_from as user
+            , true as second_side
+            , false as entry
         from swaps
         where
             true
@@ -380,6 +388,7 @@ select
         ('intent', order_hash is not null and not second_side)
         , ('auction', auction and not cross_chain_swap)
         , ('cross_chain_swap', cross_chain_swap)
+        , ('entry', entry)
     ])) as flags
     , call_selector
     , method
