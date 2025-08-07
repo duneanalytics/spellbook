@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'iziswap_bnb',
+        schema = 'izumi_finance_bnb',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -31,7 +31,7 @@ with dexs as (
 
 select
     'bnb' as blockchain,
-    'iziswap' as project,
+    'izumi_finance' as project,
     '1' as version,
     CAST(date_trunc('month', dexs.block_time) as date) as block_month,
     CAST(date_trunc('day', dexs.block_time) as date) as block_date,
