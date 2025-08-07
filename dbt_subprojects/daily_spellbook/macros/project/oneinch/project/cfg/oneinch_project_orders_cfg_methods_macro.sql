@@ -748,8 +748,9 @@
 {% set _signatures = "4 + bytearray_to_bigint(substr(input, 4 + 32*1 + 24 + 1, 8))" %}
 {% set _maker_nonces = "bytearray_to_bigint(substr(input, " ~ _beginning ~ " + 32*3 + 24 + 1, 8))" %}
 {% set _taker_tokens = "bytearray_to_bigint(substr(input, " ~ _beginning ~ " + 32*4 + 24 + 1, 8))" %}
-{% set _takers_number = "bytearray_to_bigint(substr(input, " ~ _beginning ~ " + " ~ _taker_tokens ~ " + 32*0 + 24 + 1, 8))" %}
+{% set _taker_tokens_number = "bytearray_to_bigint(substr(input, " ~ _beginning ~ " + " ~ _taker_tokens ~ " + 32*0 + 24 + 1, 8))" %}
 {% set _taker_amounts = "bytearray_to_bigint(substr(input, " ~ _beginning ~ " + 32*6 + 24 + 1, 8))" %}
+{% set _taker_amounts_number = "bytearray_to_bigint(substr(input, " ~ _beginning ~ " + " ~ _taker_amounts ~ " + 32*0 + 24 + 1, 8))" %}
 {% set methods = methods + [{
     "project":          "Bebop",
     "selector":         "0xa2f74893",
@@ -757,14 +758,15 @@
     "auction":          "true",
     "event":            "0xadd7095becdaa725f0f33243630938c861b0bba83dfd217d4055701aa768ec2e",
     "maker":            "substr(input, " ~ _beginning ~ " + " ~ _maker_nonces ~ " - 32*1 + 12 + 1, 20)",
-    "taker":            "substr(input, " ~ _beginning ~ " + 32*1 + 12 + 1   , 20)",
-    "receiver":         "substr(input, " ~ _beginning ~ " + 32*8 + 12 + 1   , 20)",
+    "taker":            "substr(input, " ~ _beginning ~ " + 32*1 + 12 + 1, 20)",
+    "receiver":         "substr(input, " ~ _beginning ~ " + 32*8 + 12 + 1, 20)",
     "maker_asset":      "substr(input, " ~ _beginning ~ " + " ~ _taker_amounts ~ " - 32*1 + 12 + 1, 20)",
-    "taker_asset":      "substr(input, " ~ _beginning ~ " + " ~ _taker_tokens ~ " + 32*(" ~ _takers_number ~ "+2) + 12 + 1, 20)",
-    "making_amount":    "substr(input, " ~ _signatures ~ " - 32*3 + 1, 32)",
+    "taker_asset":      "substr(input, " ~ _beginning ~ " + " ~ _taker_tokens ~ " + 32*(" ~ _taker_tokens_number ~ "+2) + 12 + 1, 20)",
+    "maker_max_amount": "substr(input, " ~ _signatures ~ " - 32*3 + 1, 32)",
+    "taker_max_amount": "substr(input, " ~ _beginning ~ " + " ~ _taker_amounts ~ " + 32*(" ~ _taker_amounts_number ~ "+2) + 1, 32)",
     "taking_amount":    "substr(input, 4 + 32*2 + 1, 32)",
-    "deadline":         "substr(input, " ~ _beginning ~ " + 32*0 + 1        , 32)",
-    "order_hash":       "substr(input, " ~ _beginning ~ " + 32*10 + 1   , 16)",
+    "deadline":         "substr(input, " ~ _beginning ~ " + 32*0 + 1, 32)",
+    "order_hash":       "substr(input, " ~ _beginning ~ " + 32*10 + 1, 16)",
 }] %}
 
 {{ return(methods) }}
