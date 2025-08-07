@@ -23,7 +23,7 @@ SELECT
     gas_used_asset_0,
     pairs_index,
     zero_for_1,
-    recipient,
+    if((recipient IS NULL OR recipient = 0x0000000000000000000000000000000000000000) AND signature_contract_from IS NOT NULL, signature_contract_from, recipient),
     signature_kind,
     signature_ecdsa_v,
     signature_ecdsa_r,
