@@ -53,7 +53,7 @@ select
   block_month,
   block_time,
   block_slot,
-  case when is_inner_swap = false then 'direct' else call_outer_executing_account end as trade_source,
+  case when is_inner_swap = false then 'direct' else outer_executing_account end as trade_source,
   amountIn as token_sold_amount_raw,
   cast(null as double) as token_bought_amount_raw, -- update once we have this field
   cast(null as double) as fee_tier,
