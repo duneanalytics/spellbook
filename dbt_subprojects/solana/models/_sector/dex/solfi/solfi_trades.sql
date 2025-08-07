@@ -35,3 +35,4 @@ select
       , inner_instruction_index
       , tx_index
 from {{ ref('solfi_base_trades') }}
+
