@@ -748,7 +748,7 @@
 {% set _signatures = "4 + bytearray_to_bigint(substr(input, 4 + 32*1 + 24 + 1, 8))" %}
 {% set _maker_nonces = "bytearray_to_bigint(substr(input, " ~ _beginning ~ " + 32*3 + 24 + 1, 8))" %}
 {% set _taker_tokens = "bytearray_to_bigint(substr(input, " ~ _beginning ~ " + 32*4 + 24 + 1, 8))" %}
-{% set _takers_number = "bytearray_to_bigint(substr(input, " ~ _beginning " + " ~ _taker_tokens ~ " + 32*0 + 24 + 1, 8))" %}
+{% set _takers_number = "bytearray_to_bigint(substr(input, " ~ _beginning ~ " + " ~ _taker_tokens ~ " + 32*0 + 24 + 1, 8))" %}
 {% set _taker_amounts = "bytearray_to_bigint(substr(input, " ~ _beginning ~ " + 32*6 + 24 + 1, 8))" %}
 {% set methods = methods + [{
     "project":          "Bebop",
