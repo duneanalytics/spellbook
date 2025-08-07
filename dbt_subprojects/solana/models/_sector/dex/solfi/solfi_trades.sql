@@ -13,16 +13,16 @@ select
       , block_time
       , block_slot
       , trade_source
-      , null as token_bought_symbol
-      , null as token_sold_symbol
-      , null as token_pair
-      , null as token_bought_amount
-      , null as token_sold_amount
+      , cast(null as varchar) as token_bought_symbol
+      , cast(null as varchar) as token_sold_symbol
+      , cast(null as varchar) as token_pair
+      , cast(null as double) as token_bought_amount
+      , cast(null as double) as token_sold_amount
       , token_bought_amount_raw
       , token_sold_amount_raw
-      , null as amount_usd
+      , cast(null as double) as amount_usd
       , fee_tier
-      , null as fee_usd
+      , cast(null as double) as fee_usd
       , token_bought_mint_address
       , token_sold_mint_address
       , token_bought_vault
