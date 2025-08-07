@@ -58,11 +58,18 @@ WITH
             t.angstrom_address AS maker,
             t.angstrom_address AS project_contract_address,
             t.tx_hash AS tx_hash,
-            count(*) OVER (PARTITION BY t.tx_hash) + tc.tob_cnt AS evt_index
+            count(*) over (partition by t.tx_hash) + tc.tob_cnt as evt_index
         FROM tx_data_cte t
         INNER JOIN ({{ angstrom_bundle_user_order_volume(angstrom_contract_addr, controller_v1_contract_addr, blockchain) }}) AS p 
             ON t.tx_hash = p.tx_hash AND t.block_number = p.block_number
-        CROSS JOIN ( SELECT COUNT(*) AS tob_cnt FROM tob_orders ) AS tc
+        INNER JOIN ( 
+            SELECT 
+                tx_hash,
+                COUNT(*) AS tob_cnt 
+            FROM tob_orders 
+            GROUP BY tx_hash
+        ) AS tc
+        ON tc.tx_hash = t.tx_hash
 
     )
 SELECT
