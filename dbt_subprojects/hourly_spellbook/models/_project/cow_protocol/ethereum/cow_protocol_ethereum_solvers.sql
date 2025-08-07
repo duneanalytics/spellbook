@@ -127,6 +127,7 @@ known_solver_metadata (address, environment, name) as (
                  (0xA7842153fDe380A864726d0E91f14F6FFAb7d46C, 'prod', 'Wraxyn'),
                  (0xDFddAdd85FE5A8A0943A2DD263F8fE5302A7d027, 'prod', 'Unizen'),
                  (0xbB786564a4d6A41370bA782c2a398CF0aAE52B94, 'prod', 'ExtQuasimodo'),
+                 (0xA9D635EF85bc37EB9Ff9d6165481eA230ed32392, 'prod', 'Quasi'),
                  (0x658614f5065Cf018A2A24082f6983e833ac5f0E7, 'barn', 'ExtQuasimodo'),
                  (0xb856279C12a45Acb9E18D50943f029021dE2a65C, 'barn', 'Unizen'),
                  (0x949CbEB40AA624D449A80C7A33F02148F93B6235, 'barn', 'Wraxyn'),
