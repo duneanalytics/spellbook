@@ -9,4 +9,4 @@ sources:
     tables:
       - name: solfi_call_swap
         description: "Raw swap calls from the SolFi contract"
-        loaded_at_field: block_time
+        loaded_at_field: call_block_time
