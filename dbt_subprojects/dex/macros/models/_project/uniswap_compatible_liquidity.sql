@@ -521,7 +521,6 @@ liquidity_change_base as (
         , CAST(amount1 AS double) as amount1_raw
     from 
     liquidity_change_base 
-    where block_time <= date '2025-03-02'
 
 {% endmacro %}
 
@@ -567,9 +566,8 @@ token_tfers as (
     get_pools gp 
         on gp.id = tt."from"
         and gp.token0 = tt.contract_address 
-    where tt.evt_block_time >= date '2025-07-01'
     {%- if is_incremental() %}
-    and {{ incremental_predicate('tt.evt_block_time') }}
+    where {{ incremental_predicate('tt.evt_block_time') }}
     {%- endif %}
 
     union all 
@@ -593,9 +591,8 @@ token_tfers as (
     get_pools gp 
         on gp.id = tt.to 
         and gp.token0 = tt.contract_address 
-    where tt.evt_block_time >= date '2025-07-01'
     {%- if is_incremental() %}
-    and {{ incremental_predicate('tt.evt_block_time') }}
+    where {{ incremental_predicate('tt.evt_block_time') }}
     {%- endif %}
 
     union all 
@@ -621,7 +618,7 @@ token_tfers as (
         and gp.token1 = tt.contract_address 
     where tt.evt_block_time >= date '2025-07-01'
     {%- if is_incremental() %}
-    and {{ incremental_predicate('tt.evt_block_time') }}
+    where {{ incremental_predicate('tt.evt_block_time') }}
     {%- endif %}
 
     union all 
@@ -647,7 +644,7 @@ token_tfers as (
         and gp.token1 = tt.contract_address 
     where tt.evt_block_time >= date '2025-07-01'
     {%- if is_incremental() %}
-    and {{ incremental_predicate('tt.evt_block_time') }}
+    where {{ incremental_predicate('tt.evt_block_time') }}
     {%- endif %}
 )
 
