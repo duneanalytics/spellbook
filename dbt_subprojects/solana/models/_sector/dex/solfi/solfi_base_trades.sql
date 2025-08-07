@@ -46,7 +46,7 @@ with solfi_swaps as (
       and call_block_time >= timestamp '{{ project_start_date }}'
     {% endif %}
 )
-
+select
   'solana' as blockchain,
   'solfi' as project,
   1 as version,
