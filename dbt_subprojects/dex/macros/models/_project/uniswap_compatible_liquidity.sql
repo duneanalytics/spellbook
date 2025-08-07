@@ -521,6 +521,7 @@ liquidity_change_base as (
         , CAST(amount1 AS double) as amount1_raw
     from 
     liquidity_change_base 
+    where block_time <= date '2025-03-02'
 
 {% endmacro %}
 
