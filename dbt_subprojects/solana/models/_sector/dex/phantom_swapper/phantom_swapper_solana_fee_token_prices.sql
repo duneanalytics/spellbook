@@ -1,5 +1,6 @@
 {{
     config(
+        tags=["prod_exclude"],
         schema="phantom_swapper_solana",
         alias="fee_token_prices",
         partition_by=["block_month"],
