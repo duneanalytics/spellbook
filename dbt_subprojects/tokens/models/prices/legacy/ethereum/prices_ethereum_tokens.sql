@@ -1677,7 +1677,6 @@ FROM
     ('dragonx-dragonxwin','ethereum','DRAGONX',0x96a5399d07896f757bd4c6ef56461f58db951862, 18),
     ('grai-gravita-protocol','ethereum','GRAI',0x15f74458ae0bfdaa1a96ca1aa779d715cc1eefe4, 18),
     ('ppg-pudgypenguins','ethereum','PPG',0x30f7c830e0c2f4bec871df809d73e27ef19eb151, 18),
-    ('bitcoin-harrypotterobamasonic10inu-eth','ethereum','BITCOIN',0x72e4f9f808c49a2a61de9c5896298920dc4eeea9, 8),
     ('paw-pawswap','ethereum','PAW',0xdc63269ea166b70d4780b3a11f5c825c2b761b01,18),
     ('psiacc-psi-gate','ethereum','PSI/ACC',0xbfe178cf147fda6490f69fe7e6ae038ff09d2980,18),
     ('topia-hytopia','ethereum','TOPIA',0xccccb68e1a848cbdb5b60a974e07aae143ed40c3,18),
