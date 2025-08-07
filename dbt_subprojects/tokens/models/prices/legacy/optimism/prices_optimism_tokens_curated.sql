@@ -23,6 +23,7 @@ FROM
     ('dai-dai', 'DAI', 0xda10009cbd5d07dd0cecc66161fc93d7c9000da1, 18),
     ('usdc-usd-coin', 'USDC', 0x7f5c764cbc14f9669b88837ca1490cca17c31607, 6),
     ('usdt-tether', 'USDT', 0x94b008aa00579c1307b0ef2c499ad98a8ce58e58, 6),
+    ('wbtc-wrapped-bitcoin', 'WBTC', 0x68f180fcce6836688e9084f035309e29bf0a2095, 8),
     ('weth-weth', 'WETH', 0x4200000000000000000000000000000000000006,18),
     ('link-chainlink', 'LINK', 0x350a791bfc2c21f9ed5d10980dad2e2638ffa7f6,18),
     ('rgt-rari-governance-token', 'RGT', 0xb548f63d4405466b36c0c0ac3318a22fdcec711a,18),
