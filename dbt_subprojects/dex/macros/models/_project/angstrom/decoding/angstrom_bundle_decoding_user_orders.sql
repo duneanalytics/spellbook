@@ -20,7 +20,7 @@ SELECT
     use_internal,
     pair_index,
     min_price,
-    if((recipient IS NULL OR recipient = 0x0000000000000000000000000000000000000000) AND signature_contract_from IS NOT NULL, signature_contract_from, recipient),
+    if((recipient IS NULL OR recipient = 0x0000000000000000000000000000000000000000) AND signature_contract_from IS NOT NULL, signature_contract_from, recipient) AS recipient,
     hook_data,
     zero_for_one,
     standing_validation_nonce,
