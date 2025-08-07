@@ -34,4 +34,4 @@ select
       , outer_instruction_index
       , inner_instruction_index
       , tx_index
-from {{ ref('solfi_solana_base_trades') }}
+from {{ ref('solfi_base_trades') }}
