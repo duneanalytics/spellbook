@@ -135,45 +135,34 @@ logs as (
                 , '{{ item["name"] }}' as method
                 , {{ item.get("auction", "false") }} as auction
                 , {{ item.get("event", "null") }} as topic0
-                -- TODO:
-                -- below is not correct for cases where multiple makers have different number of exchanged assets.
-                -- for example Bebop swapAggregate, need to calculate sum of products, so need to extract it from loop in loop below
-                , coalesce({{ item.get("total_makers", "1") }}, 1) * coalesce({{ item.get("number", "1") }}, 1) as call_trades -- total trades in the call
-                , flatten(
-                    transform(
-                        sequence(1, coalesce({{ item.get("total_makers", "1") }}, 1)), maker_idx ->
-                            transform(
-                                sequence(1, coalesce({{ item.get("number", "1") }}, 1)), x ->
-                                    map_from_entries(array[
-                                        ('trade',             try(to_big_endian_64(x))),
-                                        ('maker',             {{ item.get("maker", "null") }}),
-                                        ('taker',             {{ item.get("taker", "null") }}),
-                                        ('receiver',          {{ item.get("receiver", "null") }}),
-                                        ('pool',              {{ item.get("pool", "null") }}),
-                                        ('maker_asset',       {{ item.get("maker_asset", "null") }}),
-                                        ('taker_asset',       {{ item.get("taker_asset", "null") }}),
-                                        ('maker_max_amount',  {{ item.get("maker_max_amount", "null") }}),
-                                        ('taker_max_amount',  {{ item.get("taker_max_amount", "null") }}),
-                                        ('maker_min_amount',  {{ item.get("maker_min_amount", "null") }}),
-                                        ('taker_min_amount',  {{ item.get("taker_min_amount", "null") }}),
-                                        ('making_amount',     {{ item.get("making_amount", "null") }}),
-                                        ('taking_amount',     {{ item.get("taking_amount", "null") }}),
-                                        ('start',             {{ item.get("start", "null") }}),
-                                        ('end',               {{ item.get("end", "null") }}),
-                                        ('deadline',          {{ item.get("deadline", "null") }}),
-                                        ('fee_asset',         {{ item.get("fee_asset", "null") }}),
-                                        ('fee_max_amount',    {{ item.get("fee_max_amount", "null") }}),
-                                        ('fee_min_amount',    {{ item.get("fee_min_amount", "null") }}),
-                                        ('fee_amount',        {{ item.get("fee_amount", "null") }}),
-                                        ('fee_receiver',      {{ item.get("fee_receiver", "null") }}),
-                                        ('nonce',             {{ item.get("nonce", "null") }}),
-                                        ('order_hash',        {{ item.get("order_hash", "null") }}),
-                                        ('_maker_parts',      {{ item.get("_maker_parts", "0x01") }}),
-                                        ('_taker_parts',      {{ item.get("_taker_parts", "0x01") }})
-                                    ])
-                            )
-                    )
-                ) as trades
+                , coalesce({{ item.get("number", "1") }}, 1) as call_trades -- total trades in the call
+                , transform(sequence(1, coalesce({{ item.get("number", "1") }}, 1)), x -> map_from_entries(array[
+                      ('trade',             try(to_big_endian_64(x)))
+                    , ('maker',             {{ item.get("maker", "null") }})
+                    , ('taker',             {{ item.get("taker", "null") }})
+                    , ('receiver',          {{ item.get("receiver", "null") }})
+                    , ('pool',              {{ item.get("pool", "null") }})
+                    , ('maker_asset',       {{ item.get("maker_asset", "null") }})
+                    , ('taker_asset',       {{ item.get("taker_asset", "null") }})
+                    , ('maker_max_amount',  {{ item.get("maker_max_amount", "null") }})
+                    , ('taker_max_amount',  {{ item.get("taker_max_amount", "null") }})
+                    , ('maker_min_amount',  {{ item.get("maker_min_amount", "null") }})
+                    , ('taker_min_amount',  {{ item.get("taker_min_amount", "null") }})
+                    , ('making_amount',     {{ item.get("making_amount", "null") }})
+                    , ('taking_amount',     {{ item.get("taking_amount", "null") }})
+                    , ('start',             {{ item.get("start", "null") }})
+                    , ('end',               {{ item.get("end", "null") }})
+                    , ('deadline',          {{ item.get("deadline", "null") }})
+                    , ('fee_asset',         {{ item.get("fee_asset", "null") }})
+                    , ('fee_max_amount',    {{ item.get("fee_max_amount", "null") }})
+                    , ('fee_min_amount',    {{ item.get("fee_min_amount", "null") }})
+                    , ('fee_amount',        {{ item.get("fee_amount", "null") }})
+                    , ('fee_receiver',      {{ item.get("fee_receiver", "null") }})
+                    , ('nonce',             {{ item.get("nonce", "null") }})
+                    , ('order_hash',        {{ item.get("order_hash", "null") }})
+                    , ('_maker_parts',      {{ item.get("_maker_parts", "0x01") }})
+                    , ('_taker_parts',      {{ item.get("_taker_parts", "0x01") }})
+                ])) as trades
                 , input
                 , output
             from {{ ref('oneinch_' + blockchain + '_project_orders_raw_traces') }}
