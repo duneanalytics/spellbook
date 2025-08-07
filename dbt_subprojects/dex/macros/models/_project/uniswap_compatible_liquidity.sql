@@ -566,8 +566,9 @@ token_tfers as (
     get_pools gp 
         on gp.id = tt."from"
         and gp.token0 = tt.contract_address 
+    where tt.evt_block_time >= date '2025-07-01'
     {%- if is_incremental() %}
-    where {{ incremental_predicate('tt.evt_block_time') }}
+    and {{ incremental_predicate('tt.evt_block_time') }}
     {%- endif %}
 
     union all 
@@ -591,8 +592,9 @@ token_tfers as (
     get_pools gp 
         on gp.id = tt.to 
         and gp.token0 = tt.contract_address 
+    where tt.evt_block_time >= date '2025-07-01'
     {%- if is_incremental() %}
-    where {{ incremental_predicate('tt.evt_block_time') }}
+    and {{ incremental_predicate('tt.evt_block_time') }}
     {%- endif %}
 
     union all 
@@ -616,8 +618,9 @@ token_tfers as (
     get_pools gp 
         on gp.id = tt."from"
         and gp.token1 = tt.contract_address 
+    where tt.evt_block_time >= date '2025-07-01'
     {%- if is_incremental() %}
-    where {{ incremental_predicate('tt.evt_block_time') }}
+    and {{ incremental_predicate('tt.evt_block_time') }}
     {%- endif %}
 
     union all 
@@ -641,8 +644,9 @@ token_tfers as (
     get_pools gp 
         on gp.id = tt.to 
         and gp.token1 = tt.contract_address 
+    where tt.evt_block_time >= date '2025-07-01'
     {%- if is_incremental() %}
-    where {{ incremental_predicate('tt.evt_block_time') }}
+    and {{ incremental_predicate('tt.evt_block_time') }}
     {%- endif %}
 )
 

@@ -11,55 +11,6 @@
                                     \'["msilb7", "chuxin","Henrystats"]\') }}'
   )
 }}
-with
-
-v3_pool_logic as (
-
-with 
-
-uniswap_v3_poolcreated as (
-  select 
-    'optimism' AS blockchain
-    , 'uniswap' AS project
-    , '3' AS version
-    , pool
-    , token0
-    , token1
-    , fee
-    , evt_block_time AS creation_block_time
-    , evt_block_number AS creation_block_number
-    , contract_address
-  from {{ source('uniswap_v3_optimism', 'Factory_evt_PoolCreated') }}
-)
-
-select 
-  'optimism' AS blockchain
-  , 'uniswap' AS project
-  , '3' AS version
-  , newAddress as pool
-  , token0
-  , token1
-  , fee
-  , creation_block_time
-  , creation_block_number
-  , contract_address
-from {{ ref('uniswap_optimism_ovm1_pool_mapping') }}
-
-union
-
-select
-  blockchain
-  , project
-  , version
-  , pool
-  , token0
-  , token1
-  , fee
-  , creation_block_time
-  , creation_block_number
-  , contract_address
-from uniswap_v3_poolcreated
-)
 
 select 
   blockchain
@@ -75,7 +26,7 @@ select
   , token0
   , token1
 from 
-v3_pool_logic 
+{{ ref('uniswap_v3_optimism_pools') }} -- V3 pools (including ovm1)
 
 union all 
 

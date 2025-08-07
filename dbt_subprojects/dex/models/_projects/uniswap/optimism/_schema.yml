@@ -74,7 +74,7 @@ models:
       - name: contract_address
         description: "Contract address used to create the pool"
 
-  - name: uniswap_optimism_pools
+  - name: uniswap_v3_optimism_pools
     meta:
       blockchain: optimism
       sector: dex
@@ -83,7 +83,37 @@ models:
     config:
       tags: ['optimism', 'pools', 'liquidity', 'uniswap']
     description: >
-      Uniswap optimism DEX pools across all versions
+      Uniswap optimism V3 pools including ovm1
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool
+            - version
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - &pool
+        name: pool
+        description: "DEX pool smart contract address"
+      - *fee
+      - *token0
+      - *token1
+      - *creation_block_time
+      - *creation_block_number
+      - name: contract_address
+        description: "Contract address used to create the pool"
+
+  - name: uniswap_optimism_pools
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: uniswap
+      contributors: Henrystats
+    config:
+      tags: ['optimism', 'pools', 'liquidity', 'uniswap']
+    description: >
+      Uniswap Optimism Dex pools across all versions 
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
