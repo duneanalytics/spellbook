@@ -221,7 +221,6 @@ FROM (VALUES
     , ('tapio', 'Tapio', 'Direct', 'Tapio')
     , ('rooster_protocol', 'Rooster Protocol', 'Direct', 'roosterprotocol')
     , ('mindgames', 'Mindgames', 'Direct', 'mindgames_io')
-    -- , ('yei_swap', 'YeiSwap', 'Direct', 'YeiFinance')
     , ('gammaswap', 'GammaSwap', 'Direct', 'gammaswap')
     , ('yeiswap', 'YeiSwap', 'Direct', 'YeiFinance')
 ) AS temp_table (project, name, marketplace_type, x_username)
