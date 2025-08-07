@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: solfi_trades
+    description: "Standardized DEX trades derived from the SolFi protocol"
+    columns:
+      - name: block_time
+        description: "Timestamp of the swap event"
+        tests:
+          - not_null
+      - name: tx_id
+        description: "Transaction identifier (transaction hash)"
+        tests:
+          - not_null
+      - name: buyer
+        description: "Address initiating or receiving swap on SolFi"
+      - name: seller
+        description: "Address on the other side of the swap"
+      - name: token_sold_symbol
+        description: "Symbol of token sold"
+      - name: token_bought_symbol
+        description: "Symbol of token bought"
+      - name: amount_sold
+        description: "Amount of token sold"
+      - name: amount_bought
+        description: "Amount of token bought"
