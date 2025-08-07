@@ -56,7 +56,7 @@ select
   block_slot,
   direction as trade_source,
   amountIn as token_sold_amount_raw,
-  null as token_bought_amount_raw, -- update once we have this field
+  cast(null as double) as token_bought_amount_raw, -- update once we have this field
   cast(null as double) as fee_tier,
   case when direction = 1 then account_userTokenAccountA else account_userTokenAccountB end as token_sold_mint_address,
   case when direction = 1 then account_userTokenAccountB else account_userTokenAccountA end as token_bought_mint_address,
