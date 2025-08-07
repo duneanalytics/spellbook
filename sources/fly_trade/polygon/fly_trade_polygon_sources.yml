@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: magpie_protocol_polygon
+    tables:
+      - name: MagpieRouterV2Polygon_evt_Swap
+      - name: MagpieRouterV21Polygon_evt_Swap

@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: magpie_protocol_optimism
+    tables:
+      - name: MagpieRouterV2Optimism_evt_Swap
+      - name: MagpieRouterV21Optimism_evt_Swap
+      

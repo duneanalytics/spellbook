@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: magpie_protocol_bnb
+    tables:
+      - name: MagpieRouterV2BSC_evt_Swap
+      - name: MagpieRouterV21BSC_evt_Swap
