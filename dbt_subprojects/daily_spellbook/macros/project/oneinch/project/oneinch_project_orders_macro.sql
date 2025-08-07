@@ -199,8 +199,8 @@ logs as (
         , coalesce(log_taker_max_amount, call_taker_max_amount) as taker_max_amount
         , coalesce(log_maker_min_amount, call_maker_min_amount) as maker_min_amount
         , coalesce(log_taker_min_amount, call_taker_min_amount) as taker_min_amount
-        , coalesce(log_making_amount, call_making_amount, try(call_maker_max_amount * (call_taking_amount / call_taker_max_amount))) as making_amount
-        , coalesce(log_taking_amount, call_taking_amount, try(call_taker_max_amount * (call_making_amount / call_maker_max_amount))) as taking_amount
+        , coalesce(log_making_amount, call_making_amount) as making_amount
+        , coalesce(log_taking_amount, call_taking_amount) as taking_amount
         , coalesce(log_start, call_start) as order_start
         , coalesce(log_end, call_end) as order_end
         , coalesce(log_deadline, call_deadline) as order_deadline
@@ -277,8 +277,8 @@ select
     , taker_max_amount
     , maker_min_amount
     , taker_min_amount
-    , coalesce(making_amount, try(if(order_start = uint256 '0' or order_start = order_end, maker_max_amount, maker_max_amount - cast(to_unixtime(block_time) - order_start as double) / (order_end - order_start) * (cast(maker_max_amount as double) - cast(maker_min_amount as double)))), maker_max_amount, maker_min_amount) as making_amount
-    , coalesce(taking_amount, try(if(order_start = uint256 '0' or order_start = order_end, taker_max_amount, taker_max_amount - cast(to_unixtime(block_time) - order_start as double) / (order_end - order_start) * (cast(taker_max_amount as double) - cast(taker_min_amount as double)))), taker_max_amount, taker_min_amount) as taking_amount
+    , coalesce(making_amount, try(if(order_start = uint256 '0' or order_start = order_end, maker_max_amount, maker_max_amount - cast(to_unixtime(block_time) - order_start as double) / (order_end - order_start) * (cast(maker_max_amount as double) - cast(maker_min_amount as double)))), try(call_maker_max_amount * (call_taking_amount / call_taker_max_amount)), maker_max_amount, maker_min_amount) as making_amount
+    , coalesce(taking_amount, try(if(order_start = uint256 '0' or order_start = order_end, taker_max_amount, taker_max_amount - cast(to_unixtime(block_time) - order_start as double) / (order_end - order_start) * (cast(taker_max_amount as double) - cast(taker_min_amount as double)))), try(call_taker_max_amount * (call_making_amount / call_maker_max_amount)), taker_max_amount, taker_min_amount) as taking_amount
     , order_start
     , order_end
     , order_deadline
