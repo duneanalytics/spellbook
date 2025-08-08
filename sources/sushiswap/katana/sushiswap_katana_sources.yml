@@ -11,3 +11,7 @@ sources:
   - name: routeprocessor8_call_transferValueAndprocessRoute
   - name: routeprocessor8_call_processRouteWithTransferValueOutput
   - name: routeprocessor8_call_processRouteWithTransferValueInput
+- name: blade_katana
+  schema: blade_katana
+  tables:
+  - name: BladeVerifiedExchange_evt_Swapped
