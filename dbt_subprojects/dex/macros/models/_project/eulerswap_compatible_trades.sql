@@ -119,3 +119,96 @@ dexs
 where {{ filter }}
 
 {% endmacro %}
+
+
+{% macro eulerswap_downstream_trades(
+    blockchain = null
+    , project = null
+    , version = null
+    , eulerswapinstance_evt_swap = null
+    , eulerswap_pools_created = null
+    )
+%}
+
+with 
+
+eulerswap_events as (
+    select 
+        s.evt_block_number as block_number 
+        , ep.fee
+        , ep.protocolFee
+        , s.contract_address as instance -- hook
+        , ep.eulerAccount 
+        , ep.factory_address
+        , s.evt_tx_hash as tx_hash
+        , s.evt_index as tx_index
+        , s.sender -- router 
+    from 
+    {{ eulerswapinstance_evt_swap }} s 
+    left join 
+    {{ eulerswap_pools_created }} ep 
+        on ep.hook = s.contract_address 
+    where 1 = 1 
+    {% if is_incremental() %}
+    and {{ incremental_predicate('s.evt_block_time') }}
+    {% endif %}
+),
+
+
+eulerswap_og_trades as (
+    select 
+      dexs.*
+      , ee.fee 
+      , ee.protocolFee 
+      , ee.instance 
+      , ee.eulerAccount 
+      , ee.factory_address 
+      , ee.sender 
+      , 'OG' as source 
+    from 
+    {{ref('dex_trades')}} dexs 
+    inner join 
+    eulerswap_events ee 
+      on dexs.block_number = ee.block_number 
+      and dexs.tx_hash = ee.tx_hash 
+      and dexs.tx_index = ee.tx_index 
+    where dexs.blockchain = '{{blockchain}}'
+    and dexs.project = '{{project}}'
+    and dexs.version = '{{version}}'
+    {% if is_incremental() %}
+    and {{ incremental_predicate('dexs.block_time') }}
+    {% endif %}
+),
+
+eulerswap_univ4_trades as (
+    select 
+      dexs.*
+      , ee.fee 
+      , ee.protocolFee 
+      , ee.instance 
+      , ee.eulerAccount 
+      , ee.factory_address 
+      , ee.sender 
+      , 'uni_v4' as source
+    from 
+    {{ref('dex_trades')}} dexs 
+    inner join 
+    eulerswap_events ee 
+      on dexs.block_number = ee.block_number 
+      and dexs.tx_hash = ee.tx_hash 
+      and dexs.tx_index = ee.tx_index + 1 
+    where dexs.blockchain = '{{blockchain}}'
+    and dexs.project = 'uniswap'
+    and dexs.version = '4'
+    {% if is_incremental() %}
+    and {{ incremental_predicate('dexs.block_time') }}
+    {% endif %}
+)
+
+select * from eulerswap_og_trades
+
+union all 
+
+select * from eulerswap_univ4_trades
+
+{% endmacro %}
