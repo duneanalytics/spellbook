@@ -19,7 +19,7 @@
 {{
     blade_compatible_trades(
         blockchain = 'katana',
-        project = 'sushiswap',
+        project = 'blade',
         sources = config_sources
     )
 }}

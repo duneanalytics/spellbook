@@ -103,19 +103,3 @@ models:
         description: "Block number when the pool was created"
       - name: contract_address
         description: "Factory contract address used to create the pool"
-  - name: blade_trades
-    meta:
-      blockchain: katana
-      sector: dex
-      project: sushiswap
-      contributors: 0xTemo
-    config:
-      tags: ['sushiswap','trades','dex', 'blade']
-    description: Blade Pool contract - formatted for dex.trades
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-            combination_of_columns: ['block_date', 'blockchain', 'project', 'version', 'tx_hash']
-      - check_dex_aggregator_seed:
-          blockchain: katana
-          project: sushiswap
-          version: 1

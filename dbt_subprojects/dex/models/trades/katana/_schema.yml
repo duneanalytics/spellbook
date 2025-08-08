@@ -51,7 +51,7 @@ models:
     meta:
       blockchain: katana
       sector: dex
-      project: sushiswap
+      project: blade
       contributors: 0xTemo
     config:
       tags: [ 'katana', 'dex', 'trades', 'blade' ]

@@ -35,4 +35,4 @@ SELECT  blockchain
         , tx_to
         , evt_index
 FROM {{ ref('dex_trades') }}
-WHERE project = 'sushiswap'
+WHERE project = 'blade'
