@@ -1,10 +1,10 @@
 {{ config(
         schema = 'safe',
         alias = 'safes_all',
-        post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","base","blast","bnb","celo","ethereum","fantom","gnosis","goerli","linea","mantle","optimism","polygon","scroll","worldchain","zkevm","zksync"]\',
+        post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","base","blast","bnb","celo","ethereum","fantom","gnosis","goerli","linea","mantle","optimism","polygon","scroll","unichain","worldchain","zkevm","zksync"]\',
                                 "project",
                                 "safe",
-                                \'["tschubotz", "danielpartida", "kryptaki", "safeintern"]\') }}'
+                                \'["tschubotz", "danielpartida", "kryptaki", "safeintern", "safehjc"]\') }}'
         )
 }}
 
@@ -26,6 +26,7 @@
 ,ref('safe_polygon_safes')
 ,ref('safe_ronin_safes')
 ,ref('safe_scroll_safes')
+,ref('safe_unichain_safes')
 ,ref('safe_worldchain_safes')
 ,ref('safe_zkevm_safes')
 ,ref('safe_zksync_safes')
