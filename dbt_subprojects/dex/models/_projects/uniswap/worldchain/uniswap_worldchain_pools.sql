@@ -1,14 +1,7 @@
 {{ config(
     schema = 'uniswap_worldchain',
     alias = 'pools',
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['id', 'version'],
-    post_hook='{{ expose_spells(\'["worldchain"]\',
-                                "project",
-                                "uniswap",
-                                \'["Henrystats"]\') }}'
+    materialized = 'view'
     )
 }}
 

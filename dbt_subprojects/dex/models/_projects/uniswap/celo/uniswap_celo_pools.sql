@@ -1,14 +1,7 @@
 {{ config(
     schema = 'uniswap_celo',
     alias = 'pools',
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['id', 'version'],
-    post_hook='{{ expose_spells(\'["celo"]\',
-                                "project",
-                                "uniswap",
-                                \'["hildobby", "tomfutago", "Henrystats"]\') }}'
+    materialized = 'view'
     )
 }}
 

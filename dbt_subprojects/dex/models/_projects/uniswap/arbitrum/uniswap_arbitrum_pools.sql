@@ -1,14 +1,7 @@
 {{ config(
     schema = 'uniswap_arbitrum',
     alias = 'pools',
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['id', 'version'],
-    post_hook='{{ expose_spells(\'["arbitrum"]\',
-                                "project",
-                                "uniswap",
-                                \'["hildobby", "Henrystats"]\') }}'
+    materialized = 'view'
     )
 }}
 

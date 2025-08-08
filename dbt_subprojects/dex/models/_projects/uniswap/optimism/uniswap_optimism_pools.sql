@@ -1,14 +1,8 @@
  {{
   config(
-        
-        schema='uniswap_optimism',
-        alias='pools',
-        materialized='table',
-        file_format = 'delta',
-        post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "project",
-                                    "uniswap_v3",
-                                    \'["msilb7", "chuxin","Henrystats"]\') }}'
+      schema='uniswap_optimism',
+      alias = 'pools',
+      materialized = 'view'
   )
 }}
 
