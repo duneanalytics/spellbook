@@ -24,7 +24,6 @@ base_flashloans as (
     cast(0 as uint256) as fee,
     token as token_address,
     contract_address as project_contract_address,
-    date_trunc('month', evt_block_time) as block_month,
     evt_block_time as block_time,
     evt_block_number as block_number,
     evt_tx_hash as tx_hash,
@@ -40,11 +39,11 @@ select
   amount,
   fee,
   token_address,
-  contract_address as project_contract_address,
-  cast(date_trunc('month', evt_block_time) as date) as block_month,
-  evt_block_time as block_time,
-  evt_block_number as block_number,
-  evt_tx_hash as tx_hash,
+  project_contract_address,
+  cast(date_trunc('month', block_time) as date) as block_month,
+  block_time,
+  block_number,
+  tx_hash,
   evt_index
 from base_flashloans
 

@@ -10,20 +10,8 @@
   )
 }}
 
-SELECT 'base' AS blockchain
-, 'morpho' AS project
-, '1' AS version
-, caller AS recipient
-, assets AS amount
-, CAST(0 AS UINT256) AS fee
-, token AS token_address
-, contract_address AS project_contract_address
-, date_trunc('month', evt_block_time) AS block_month
-, evt_block_time AS block_time
-, evt_block_number AS block_number
-, evt_tx_hash AS tx_hash
-, evt_index
-FROM {{ source('morpho_blue_base', 'MorphoBlue_evt_FlashLoan') }}
-{% if is_incremental() %}
-WHERE {{ incremental_predicate('evt_block_time') }}
-{% endif %}
+{{
+  lending_morpho_v1_compatible_flashloans(
+    blockchain = 'base'
+  )
+}}

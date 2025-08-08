@@ -200,7 +200,7 @@ models:
       blockchain: base
       sector: lending
       project: morpho
-      contributors: 0xDataWolf
+      contributors: 0xDataWolf, tomfutago
     config:
       tags: ['lending', 'flashloans', 'morpho', 'base']
     description: "Morpho flashloans transactions on Base"
