@@ -603,13 +603,12 @@ models:
       - *tx_hash
       - *evt_index
 
-
   - name: morpho_ethereum_base_borrow
     meta:
       blockchain: ethereum
       sector: lending
       project: morpho
-      contributors: hildobby
+      contributors: hildobby, tomfutago
     config:
       tags: ['lending', 'borrow', 'compound', 'morpho', 'ethereum']
     description: "Morpho borrow transactions on Ethereum"
