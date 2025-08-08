@@ -46,7 +46,7 @@
             SELECT account_serumMarket, account_amm, call_is_inner, call_outer_instruction_index, call_inner_instruction_index, call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer, call_tx_index
             FROM {{ source('raydium_amm_solana', 'raydium_amm_call_swapBaseIn') }}
         ) sp
-        INNER JOIN {{ ref('tokens_solana_transfers') }} trs_1
+        INNER JOIN {{ source('tokens_solana','transfers') }} trs_1
             ON trs_1.tx_id = sp.call_tx_id
             AND trs_1.block_time = sp.call_block_time
             AND trs_1.outer_instruction_index = sp.call_outer_instruction_index
@@ -58,7 +58,7 @@
             {% else %}
             AND trs_1.block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
-        INNER JOIN {{ ref('tokens_solana_transfers') }} trs_2
+        INNER JOIN {{ source('tokens_solana','transfers') }} trs_2
             ON trs_2.tx_id = sp.call_tx_id
             AND trs_2.block_time = sp.call_block_time
             AND trs_2.outer_instruction_index = sp.call_outer_instruction_index

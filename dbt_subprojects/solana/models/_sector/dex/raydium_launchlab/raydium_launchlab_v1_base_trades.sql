@@ -148,7 +148,7 @@ with calls as (
         , case when sp.is_buy = 1 then trs_base.from_token_account else trs_quote.from_token_account end as token_bought_vault
         , case when sp.is_buy = 0 then trs_base.to_token_account else trs_quote.to_token_account end as token_sold_vault
     FROM calls as sp
-    INNER JOIN {{ ref('tokens_solana_transfers') }} as trs_base
+    INNER JOIN {{ source('tokens_solana','transfers') }} as trs_base
         ON trs_base.tx_id = sp.call_tx_id 
         AND trs_base.block_slot = sp.call_block_slot
         AND trs_base.outer_instruction_index = sp.call_outer_instruction_index
@@ -166,7 +166,7 @@ with calls as (
         {% else -%}
         AND trs_base.block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif -%}
-    INNER JOIN {{ ref('tokens_solana_transfers') }} as trs_quote
+    INNER JOIN {{ source('tokens_solana','transfers') }} as trs_quote
         ON trs_quote.tx_id = sp.call_tx_id 
         AND trs_quote.block_slot = sp.call_block_slot
         AND trs_quote.outer_instruction_index = sp.call_outer_instruction_index
