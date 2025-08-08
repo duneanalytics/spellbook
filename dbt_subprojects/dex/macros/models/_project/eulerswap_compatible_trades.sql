@@ -39,6 +39,7 @@ dexs as (
         , s.contract_address as project_contract_address -- rename for dex trades
         , ep.eulerAccount 
         , ep.factory_address
+        , ep.creation_block_time as pool_creation_time 
         , s.evt_tx_hash as tx_hash
         , s.evt_index as tx_index 
     
@@ -107,6 +108,7 @@ select
     , dexs.tx_hash
     , dexs.evt_index
     -- add eulerswap trades items at the end 
+    , dexs.pool_creation_time
     , dexs.fee 
     , dexs.protocolFee 
     , dexs.instance 
@@ -140,6 +142,7 @@ eulerswap_events as (
         , s.contract_address as instance -- hook
         , ep.eulerAccount 
         , ep.factory_address
+        , ep.creation_block_time as pool_creation_time
         , s.evt_tx_hash as tx_hash
         , s.evt_index as tx_index
         , s.sender -- router 
@@ -158,6 +161,7 @@ eulerswap_events as (
 eulerswap_og_trades as (
     select 
       dexs.*
+      , ee.pool_creation_time
       , ee.fee 
       , ee.protocolFee 
       , ee.instance 
@@ -183,6 +187,7 @@ eulerswap_og_trades as (
 eulerswap_univ4_trades as (
     select 
       dexs.*
+      , ee.pool_creation_time
       , ee.fee 
       , ee.protocolFee 
       , ee.instance 

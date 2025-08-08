@@ -43,6 +43,7 @@ select * from  (
         , tx_from
         , tx_to
         , evt_index
+        , pool_creation_time
         , fee 
         , protocolFee 
         , instance 
