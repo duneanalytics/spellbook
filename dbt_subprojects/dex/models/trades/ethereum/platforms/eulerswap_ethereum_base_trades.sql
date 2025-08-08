@@ -18,5 +18,6 @@
         , eulerswapinstance_evt_swap = source('eulerswap_ethereum', 'eulerswapinstance_evt_swap')
         , eulerswap_pools_created = ref('eulerswap_ethereum_pool_creations')
         , filter = "(source != 'uni_v4')"
+        , univ4_PoolManager_evt_Swap = source('uniswap_v4_ethereum', 'PoolManager_evt_Swap') 
     )
 }}

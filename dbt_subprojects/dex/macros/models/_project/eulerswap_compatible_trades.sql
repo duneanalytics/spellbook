@@ -4,6 +4,7 @@
     , version = null
     , eulerswapinstance_evt_swap = null
     , eulerswap_pools_created = null
+    , univ4_PoolManager_evt_Swap = null 
     , filter = null 
     )
 %}
@@ -11,22 +12,18 @@
 with 
 
 uni_v4_trades as (
-    {{
-        uniswap_compatible_v4_trades(
-            blockchain = '{{blockchain}}'
-            , project = 'uniswap'
-            , version = '4'
-            , PoolManager_call_Swap = source('uniswap_v4_'~blockchain, 'PoolManager_call_Swap') 
-            , PoolManager_evt_Swap = source('uniswap_v4_'~blockchain, 'PoolManager_evt_Swap') 
-        )
-    }}
-),
-
-latest_block_time as (
     select 
-        max(block_time) as latest_block_time -- since dex.trades refreshes hourly, we need to make sure trades that happen between the last dex.trades run and eulerswap spell run aren't improperly tagged 
+        evt_tx_hash as tx_hash 
+        , evt_block_time as block_time 
+        , evt_index
+        , evt_block_number as block_number 
     from 
-    uni_v4_trades
+    {{ univ4_PoolManager_evt_Swap }}
+    where 1=1
+    {%- if is_incremental() %}
+    and {{ incremental_predicate('evt_block_time') }}
+    {%- endif %}
+
 ),
 
 dexs as (
@@ -74,7 +71,7 @@ dexs as (
         on t.block_number = s.evt_block_number 
         and t.tx_hash = s.evt_tx_hash
         and t.evt_index = s.evt_index + 1 
-    where s.evt_block_time <= (select latest_block_time from latest_block_time)
+    where 1 = 1 
     {% if is_incremental() %}
     and {{ incremental_predicate('s.evt_block_time') }}
     {% endif %}
