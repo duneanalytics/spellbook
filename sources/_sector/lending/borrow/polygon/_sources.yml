@@ -19,3 +19,10 @@ sources:
       - name: cUSDCv3Polygon_evt_Withdraw
       - name: cUSDCv3Polygon_evt_Transfer
       - name: cUSDCv3Polygon_evt_AbsorbDebt
+
+  - name: morpho_blue_polygon
+    tables:
+      - name: MorphoBlue_evt_CreateMarket
+      - name: MorphoBlue_evt_Borrow
+      - name: MorphoBlue_evt_Repay
+      - name: MorphoBlue_evt_Liquidate

@@ -12,3 +12,7 @@ sources:
   - name: the_granary_bnb
     tables:
       - name: LendingPool_evt_FlashLoan
+
+  - name: morpho_blue_bnb
+    tables:
+      - name: MorphoBlue_evt_FlashLoan

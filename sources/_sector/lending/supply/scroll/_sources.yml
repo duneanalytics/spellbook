@@ -15,3 +15,8 @@ sources:
       - name: lUSDC_evt_Redeem
       - name: lwstETH_evt_Mint
       - name: lwstETH_evt_Redeem
+
+  - name: morpho_blue_scroll
+    tables:
+      - name: MorphoBlue_evt_Supply
+      - name: MorphoBlue_evt_Withdraw

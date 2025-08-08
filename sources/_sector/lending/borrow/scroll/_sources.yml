@@ -18,3 +18,10 @@ sources:
       - name: lwstETH_evt_Borrow
       - name: lwstETH_evt_RepayBorrow
       - name: lwstETH_evt_LiquidateBorrow
+
+  - name: morpho_blue_scroll
+    tables:
+      - name: MorphoBlue_evt_CreateMarket
+      - name: MorphoBlue_evt_Borrow
+      - name: MorphoBlue_evt_Repay
+      - name: MorphoBlue_evt_Liquidate
