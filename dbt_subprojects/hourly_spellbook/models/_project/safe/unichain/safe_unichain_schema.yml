@@ -1,48 +1,60 @@
 version: 2
 
 models:
-  - name: safe_safes_all
+  - name: safe_unichain_singletons
     meta:
-      blockchain: arbitrum, avalanche_c, base, blast, bnb, celo, ethereum, fantom, gnosis, goerli, linea, , mantle, optimism, polygon, scroll, unichain, worldchain, zkevm, zksync
+      blockchain: unichain
       project: safe
-      contributors: tschubotz, danielpartida, kryptaki, safehjc
+      contributors: tschubotz
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'blast', 'bnb', 'celo','ethereum', 'fantom', 'gnosis', 'goerli', 'linea', 'mantle', 'optimism', 'polygon', 'safe', 'scroll', 'unichain', 'worldchain', 'zkevm', 'zksync']
-    description: >
-        Lists all Safes across chains.
+      tags: ['safe', 'singletons', 'unichain']
+    description: "Singletons addresses used with Safes"
+    columns:
+      - &address
+        name: address
+        description: "Safe contract address"
+        data_tests:
+          - unique
+          - not_null
+
+  - name: safe_unichain_safes
+    meta:
+      blockchain: unichain
+      project: safe
+      contributors: tschubotz
+    config:
+      tags: ['safe', 'unichain']
+    description: "Safe addresses"
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain on which the Safe is deployed"
-      - &address
-        name: address
-        description: "Safe contract address"
+      - *address
       - &creation_version
         name: creation_version
         description: "Initial version during creation"
       - &block_date
         name: block_date
-        description: "Date of Safe creation"
+      - &block_month
+        name: block_month
       - &creation_time
         name: creation_time
         description: "Datetime of Safe creation"
       - &tx_hash
         name: tx_hash
-        description: "Tx hash of Safe creation"
 
-  - name: safe_transactions_all
+  - name: safe_unichain_transactions
     meta:
-      blockchain: arbitrum, avalanche_c, base, blast, bnb, celo, ethereum, fantom, gnosis, goerli, linea, mantle, optimism, polygon, scroll, unichain, worldchain, zkevm, zksync
+      blockchain: unichain
       project: safe
-      contributors: kryptaki, danielpartida
+      contributors: tschubotz, danielpartida
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'blast', 'bnb', 'celo','ethereum', 'fantom', 'gnosis', 'goerli', 'linea', 'mantle', 'optimism', 'polygon', 'safe', 'scroll', 'unichain', 'worldchain', 'zkevm', 'zksync']
+      tags: ['safe', 'unichain']
     description: "Safe transactions"
     columns:
       - *blockchain
       - *block_date
-      - &block_month
-        name: block_month
+      - *block_month
       - &block_time
         name: block_time
         description: "Datetime of block"
@@ -59,11 +71,14 @@ models:
         name: value
         description: "Value of transaction"
       - &gas
-        name: gas 
+        name: gas
         description: "Gas limit set for transaction"
-      - &gas_used
-        name: gas_used
-        description: "Gas used during transaction"
+      - &execution_gas_used
+        name: execution_gas_used
+        description: "Execution gas used during transaction, for more details see https://dune.com/docs/data-tables/raw/evm/traces/?h=traces#gas-used-in-traces"
+      - &total_gas_used
+        name: total_gas_used
+        description: "Total gas used during transaction"
       - &tx_index
         name: tx_index
         description: "Transaction index"
@@ -89,14 +104,14 @@ models:
         name: output
         description: "Output data"
 
-  - name: safe_native_transfers_all
+  - name: safe_unichain_eth_transfers
     meta:
-      blockchain: arbitrum, avalanche_c, base, blast, bnb, celo, ethereum, gnosis, goerli, linea, mantle, optimism, polygon, scroll, unichain, worldchain, zkevm, zksync
+      blockchain: unichain
       project: safe
-      contributors: kryptaki, tschubotz, danielpartida
+      contributors: tschubotz
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'blast', 'bnb', 'celo','ethereum', 'gnosis', 'goerli', 'linea', 'mantle', 'optimism', 'polygon', 'safe', 'scroll', 'unichain', 'worldchain', 'zkevm', 'zksync']
-    description: "Native gas token transfers into or out of Safes"
+      tags: ['safe', 'transfers', 'unichain']
+    description: "ETH transfers into or out of Safes"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

@@ -94,6 +94,8 @@ models:
           +schema: safe_goerli
         base:
           +schema: safe_base
+        unichain:
+          +schema: safe_unichain
       cow_protocol:
         +schema: cow_protocol
         ethereum:
