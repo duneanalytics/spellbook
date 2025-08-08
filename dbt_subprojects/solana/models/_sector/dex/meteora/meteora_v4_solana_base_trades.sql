@@ -44,7 +44,7 @@ evt_deatils as
 select 
 evt_block_time as block_time
 , trade_direction
-, cast(json_extract(swap_result, '$.SwapResult.actual_input_amount') as double) as token_in_amount_raw
+, cast(amount_in as double) as token_in_amount_raw
 , cast(json_extract(swap_result, '$.SwapResult.output_amount') as double) as token_out_amount_raw
 , cast(json_extract(swap_result, '$.SwapResult.trading_fee') as  double) + cast(json_extract(swap_result, '$.SwapResult.protocol_fee') as double) + cast(json_extract(swap_result, '$.SwapResult.referral_fee') as double) as total_fees_raw 
 , pool as project_program_id
