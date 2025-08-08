@@ -7,6 +7,3 @@ sources:
       - name: v3factory_evt_poolcreated
       - name: v2pair_evt_swap
       - name: v2factory_evt_paircreated
-  - name: blade_katana
-    tables:
-      - name: BladeVerifiedExchange_evt_Swapped
