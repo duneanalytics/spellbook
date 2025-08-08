@@ -1,0 +1,2 @@
+blockchain,project,version,tx_hash,evt_index,block_number,token_bought_address,token_sold_address,token_bought_amount_raw,token_sold_amount_raw,block_date
+taiko,izumi,1,0x01d9ef0c80a6eea6d8bda2ee2703549080c773a730c8670e5e3e7db1f3443da5,355,1200438,0x19e26b0638bf63aa9fa4d14c6baf8d52ebe86c5c,0x07d83526730c7438048d55a4fc0b850e2aab6f0b,10000,9988,2025-06-11 00:00:00

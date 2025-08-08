@@ -15,6 +15,7 @@
                                         , "fantom"
                                         , "flare"
                                         , "gnosis"
+                                        , "hemi"
                                         , "ink"
                                         , "kaia"
                                         , "katana"
@@ -29,6 +30,7 @@
                                         , "sonic"
                                         , "superseed"
                                         , "opbnb"
+                                        , "tac"
                                         , "taiko"
                                         , "unichain"
                                         , "viction"
@@ -116,7 +118,9 @@ FROM (
         , (33139, 'apechain', 'ApeChain', 'Layer 3', 'Optimistic Rollup', 'APE', 0x48b62137edfa95a428d35c09e44256a739f6b557, 'https://apescan.io/', timestamp '2024-08-28 16:45:22', 'Arbitrum Orbit', 'AnyTrust', 'Arbitrum One', true, 'Arbitrum Orbit')
         , (130, 'unichain', 'Unichain', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://uniscan.xyz/', timestamp '2024-11-04 19:26', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, 'Superchain')
         , (232, 'lens', 'Lens', 'Layer 2', 'ZK Rollup', 'GHO', 0x6bDc36E20D267Ff0dd6097799f82e78907105e2F, 'https://explorer.lens.xyz', timestamp '2025-04-24 00:00',  'zkSync', 'Ethereum Blobs', 'Ethereum', true, 'Elastic Network')
-        , (98867, 'plume', 'Plume', 'Layer 2', 'Optimistic Rollup', 'PLUME', 0xEa237441c92CAe6FC17Caaf9a7acB3f953be4bd1, 'https://explorer.plume.org/', timestamp '2025-02-20 10:39', 'Arbitrum Orbit', 'Ethereum Blobs', 'Ethereum', true, 'Arbitrum Orbit')
+        , (98866, 'plume', 'Plume', 'Layer 2', 'Optimistic Rollup', 'PLUME', 0xEa237441c92CAe6FC17Caaf9a7acB3f953be4bd1, 'https://explorer.plume.org/', timestamp '2025-02-20 10:39', 'Arbitrum Orbit', 'Ethereum Blobs', 'Ethereum', true, 'Arbitrum Orbit')
         , (747474, 'katana', 'Katana', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x0000000000000000000000000000000000000000, 'https://explorer.katanarpc.com/', timestamp '2025-06-23 09:45', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, 'Superchain')
         , (5330, 'superseed', 'Superseed', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.superseed.xyz/', timestamp '2024-09-12 22:21', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, 'Superchain')
+        , (43111, 'hemi', 'Hemi', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.hemi.xyz/', timestamp '2024-09-09 07:25', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, NULL)
+        , (10000, 'tac', 'TAC', 'Layer 1', NULL, 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.tac.build/', timestamp '2025-06-23 09:45', NULL, NULL, NULL, true, NULL)
 ) AS temp_table (chain_id, blockchain, name, chain_type, rollup_type, native_token_symbol, wrapped_native_token_address, explorer_link, first_block_time, codebase, data_availability, settlement, is_on_dune, ecosystem)

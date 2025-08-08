@@ -1,0 +1,363 @@
+version: 2
+
+models:
+  - name: bridges_ethereum_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bridges', 'flows', 'deposits' ]
+    description: "Bridge deposits events on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']
+    columns:
+      - &deposit_chain
+        name: deposit_chain
+        description: "Blockchain where the tokens were sent"
+      - &withdraw_chain
+        name: withdraw_chain
+        description: "Blockchain where the tokens were received"
+      - &bridge_name
+        name: bridge_name
+        description: "Bridge name"
+      - &bridge_version
+        name: bridge_version
+        description: "Version of the bridge"
+      - &block_date
+        name: block_date
+        description: "Block month of the bridge transaction"
+      - &block_time
+        name: block_time
+        description: "Block time of the bridge transaction"
+      - &block_number
+        name: block_number
+        description: "Block number of the bridge transaction"
+      - &deposit_amount_raw 
+        name: deposit_amount_raw
+        description: "Raw amount of tokens bridged from source chain"
+      - &withdraw_amount_raw 
+        name: withdraw_amount_raw
+        description: "Raw amount of tokens bridged to destination chain"
+      - &sender 
+        name: sender
+        description: "Source address"
+      - &recipient 
+        name: recipient
+        description: "Destination address"
+      - &deposit_token_standard  
+        name: deposit_token_standard
+        description: "Source blockchain token standard"
+      - &withdraw_token_standard
+        name: remote_token
+        description: "Destination blockchain token standard"
+      - &deposit_token_address  
+        name: deposit_token_address
+        description: "Source blockchain token address"
+      - &withdraw_token_address
+        name: withdraw_token_address
+        description: "Destination blockchain token address"
+      - &tx_from
+        name: tx_from
+        description: "Address that deposits the transaction"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash"
+      - &evt_index  
+        name: evt_index
+        description: "Event index"
+      - &contract_address 
+        name: contract_address
+        description: "Contract address used for the bridge tx"
+      - &bridge_transfer_id 
+        name: bridge_transfer_id
+        description: "Bridge order identifier"
+  - name: bridges_ethereum_withdrawals
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'base', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Bridge withdrawals events on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']
+    columns:
+      - *deposit_chain
+      - *withdraw_chain
+      - *bridge_name
+      - *bridge_version
+      - *block_date
+      - *block_time
+      - *block_number
+      - *deposit_amount_raw
+      - *withdraw_amount_raw
+      - *sender
+      - *recipient
+      - *deposit_token_standard
+      - *withdraw_token_standard
+      - *deposit_token_address
+      - *withdraw_token_address
+      - *tx_from
+      - *tx_hash
+      - *evt_index  
+      - *contract_address 
+      - *bridge_transfer_id 
+  - name: bridges_base_deposits
+    meta:
+      blockchain: base
+      sector: bridges
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'base', 'bridges', 'flows' , 'deposits' ]
+    description: "Bridge deposits events on Base"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']
+    columns:
+      - *deposit_chain
+      - *withdraw_chain
+      - *bridge_name
+      - *bridge_version
+      - *block_date
+      - *block_time
+      - *block_number
+      - *deposit_amount_raw 
+      - *withdraw_amount_raw 
+      - *sender
+      - *recipient
+      - *deposit_token_standard
+      - *withdraw_token_standard
+      - *deposit_token_address
+      - *withdraw_token_address
+      - *tx_from
+      - *tx_hash
+      - *evt_index  
+      - *contract_address 
+      - *bridge_transfer_id 
+  - name: bridges_base_withdrawals
+    meta:
+      blockchain: base
+      sector: bridges
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'base', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Bridge withdrawals events on Base"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']
+    columns:
+      - *deposit_chain
+      - *withdraw_chain
+      - *bridge_name
+      - *bridge_version
+      - *block_date
+      - *block_time
+      - *block_number
+      - *deposit_amount_raw 
+      - *withdraw_amount_raw 
+      - *sender
+      - *recipient
+      - *deposit_token_standard
+      - *withdraw_token_standard
+      - *deposit_token_address
+      - *withdraw_token_address
+      - *tx_from
+      - *tx_hash
+      - *evt_index  
+      - *contract_address 
+      - *bridge_transfer_id 
+  - name: bridges_optimism_deposits
+    meta:
+      blockchain: optimism
+      sector: bridges
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'optimism', 'bridges', 'flows' , 'deposits' ]
+    description: "Bridge deposits events on OP Mainnet"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']
+    columns:
+      - *deposit_chain
+      - *withdraw_chain
+      - *bridge_name
+      - *bridge_version
+      - *block_date
+      - *block_time
+      - *block_number
+      - *deposit_amount_raw 
+      - *withdraw_amount_raw 
+      - *sender
+      - *recipient
+      - *deposit_token_standard
+      - *withdraw_token_standard
+      - *deposit_token_address
+      - *withdraw_token_address
+      - *tx_from
+      - *tx_hash
+      - *evt_index  
+      - *contract_address 
+      - *bridge_transfer_id 
+  - name: bridges_optimism_withdrawals
+    meta:
+      blockchain: optimism
+      sector: bridges
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'optimism', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Bridge withdrawals events on OP Mainnet"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']
+    columns:
+      - *deposit_chain
+      - *withdraw_chain
+      - *bridge_name
+      - *bridge_version
+      - *block_date
+      - *block_time
+      - *block_number
+      - *deposit_amount_raw 
+      - *withdraw_amount_raw 
+      - *sender
+      - *recipient
+      - *deposit_token_standard
+      - *withdraw_token_standard
+      - *deposit_token_address
+      - *withdraw_token_address
+      - *tx_from
+      - *tx_hash
+      - *evt_index  
+      - *contract_address 
+      - *bridge_transfer_id 
+  - name: bridges_polygon_deposits
+    meta:
+      blockchain: polygon
+      sector: bridges
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'polygon', 'bridges', 'flows' , 'deposits' ]
+    description: "Bridge deposits events on Polygon"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']
+    columns:
+      - *deposit_chain
+      - *withdraw_chain
+      - *bridge_name
+      - *bridge_version
+      - *block_date
+      - *block_time
+      - *block_number
+      - *deposit_amount_raw 
+      - *withdraw_amount_raw 
+      - *sender
+      - *recipient
+      - *deposit_token_standard
+      - *withdraw_token_standard
+      - *deposit_token_address
+      - *withdraw_token_address
+      - *tx_from
+      - *tx_hash
+      - *evt_index  
+      - *contract_address 
+      - *bridge_transfer_id 
+  - name: bridges_polygon_withdrawals
+    meta:
+      blockchain: polygon
+      sector: bridges
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'polygon', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Bridge withdrawals events on Polygon"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']
+    columns:
+      - *deposit_chain
+      - *withdraw_chain
+      - *bridge_name
+      - *bridge_version
+      - *block_date
+      - *block_time
+      - *block_number
+      - *deposit_amount_raw 
+      - *withdraw_amount_raw 
+      - *sender
+      - *recipient
+      - *deposit_token_standard
+      - *withdraw_token_standard
+      - *deposit_token_address
+      - *withdraw_token_address
+      - *tx_from
+      - *tx_hash
+      - *evt_index  
+      - *contract_address 
+      - *bridge_transfer_id 
+  - name: bridges_unichain_deposits
+    meta:
+      blockchain: unichain
+      sector: bridges
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'unichain', 'bridges', 'flows' , 'deposits' ]
+    description: "Bridge deposits events on Unichain"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']
+    columns:
+      - *deposit_chain
+      - *withdraw_chain
+      - *bridge_name
+      - *bridge_version
+      - *block_date
+      - *block_time
+      - *block_number
+      - *deposit_amount_raw 
+      - *withdraw_amount_raw 
+      - *sender
+      - *recipient
+      - *deposit_token_standard
+      - *withdraw_token_standard
+      - *deposit_token_address
+      - *withdraw_token_address
+      - *tx_from
+      - *tx_hash
+      - *evt_index  
+      - *contract_address 
+      - *bridge_transfer_id 
+  - name: bridges_unichain_withdrawals
+    meta:
+      blockchain: unichain
+      sector: bridges
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'unichain', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Bridge withdrawals events on Unichain"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']
+    columns:
+      - *deposit_chain
+      - *withdraw_chain
+      - *bridge_name
+      - *bridge_version
+      - *block_date
+      - *block_time
+      - *block_number
+      - *deposit_amount_raw 
+      - *withdraw_amount_raw 
+      - *sender
+      - *recipient
+      - *deposit_token_standard
+      - *withdraw_token_standard
+      - *deposit_token_address
+      - *withdraw_token_address
+      - *tx_from
+      - *tx_hash
+      - *evt_index  
+      - *contract_address 
+      - *bridge_transfer_id 

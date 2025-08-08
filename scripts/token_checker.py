@@ -36,7 +36,8 @@ class TokenChecker:
                             "boba": "eth-ethereum",
                             "shape": "eth-ethereum",
                             "superseed": "eth-ethereum",
-                            "taiko": "eth-ethereum"
+                            "taiko": "eth-ethereum",
+                            "hemi": "eth-ethereum"
                             }
         self.tokens_by_id = self.get_tokens()
         self.contracts_by_chain = self.get_contracts()

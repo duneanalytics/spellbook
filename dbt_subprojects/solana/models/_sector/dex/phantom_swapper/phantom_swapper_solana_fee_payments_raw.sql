@@ -1,4 +1,5 @@
 {{ config(
+    tags = ['prod_exclude'],
     schema = 'phantom_swapper_solana',
     alias = 'fee_payments_raw',
     partition_by = ['block_month'],

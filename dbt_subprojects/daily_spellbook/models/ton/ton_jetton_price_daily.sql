@@ -29,6 +29,7 @@ ALL_TRADES AS (
       ROW(token_bought_address, amount_bought_raw), 
       ROW(token_sold_address, amount_sold_raw)
       ]) AS T(token_address, amount_raw)
+    WHERE token_address NOT IN (SELECT * FROM {{ ref('ton_proxy_ton_addresses') }})
 )
 
 

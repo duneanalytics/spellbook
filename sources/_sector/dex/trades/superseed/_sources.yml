@@ -1,0 +1,22 @@
+version: 2
+
+sources:
+  - name: bulletx_superseed
+    description: "Decoded events and function calls for BulletX on superseed"
+    tables:
+      - name: V2Pair_evt_Swap
+        description: "BulletX V2 pair swap events"
+      - name: BulletXFactory_call_createPair
+        description: "BulletX V2 factory pair creation calls"
+      - name: V3Pool_evt_Swap
+        description: "BulletX V3 pool swap events"
+      - name: BulletXV3Factory_evt_PoolCreated
+        description: "BulletX V3 factory pool creation events"
+
+  - name: velodrome_superseed
+    description: "Decoded events and function calls for Velodrome on superseed"
+    tables:
+      - name: PoolFactory_call_createPool
+        description: "Velodrome factory pool creation calls"
+      - name: Pool_evt_Swap
+        description: "Velodrome pool swap events"

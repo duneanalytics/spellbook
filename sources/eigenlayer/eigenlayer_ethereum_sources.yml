@@ -8,6 +8,8 @@ sources:
       - name: DelegationManager_evt_WithdrawalQueued
       - name: DelegationManager_evt_WithdrawalCompleted
       - name: DelegationManager_evt_WithdrawalMigrated
+      - name: DelegationManager_evt_SlashingWithdrawalQueued
+      - name: DelegationManager_evt_SlashingWithdrawalCompleted
       - name: DelegationManager_evt_OperatorSharesIncreased
       - name: DelegationManager_evt_OperatorSharesDecreased
       - name: DelegationManager_evt_OperatorMetadataURIUpdated

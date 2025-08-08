@@ -112,4 +112,10 @@ sources:
     tables:
       - name: ElkFactory_evt_PairCreated
       - name: ElkPair_evt_Swap
+  - name: blackhole_avalanche_c
+    tables:
+      - name: pairgenerator_evt_paircreated
+      - name: pair_evt_swap
+      - name: algebrafactory_evt_custompool
+      - name: algebrapool_evt_swap
 

@@ -3,10 +3,7 @@
         alias = 'satoshi_latest_day',
         materialized='view',
 
-        post_hook='{{ expose_spells(\'["bitcoin"]\',
-                                        "sector",
-                                        "balances",
-                                        \'["gandalf"]\') }}'
+        post_hook='{{ hide_spells() }}'
         )
 }}
 

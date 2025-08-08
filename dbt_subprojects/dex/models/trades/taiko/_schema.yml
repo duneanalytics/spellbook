@@ -1,0 +1,60 @@
+version: 2
+
+models:
+  - name: dex_taiko_base_trades
+    meta:
+      blockchain: taiko
+      sector: dex
+      contributors: krishhh
+    config:
+      tags: ['taiko', 'dex', 'trades']
+    description: 'All DEX trades on Taiko'
+    data_tests:
+      - check_columns_dex_base_trades
+      - check_dex_info_relationship
+      - test_acceptable_usd_amount:
+          column_name: amount_usd
+          max_value: 1000000000
+
+  - name: oku_v3_taiko_base_trades
+    meta:
+      blockchain: taiko
+      sector: dex
+      project: oku
+      contributors: krishhh
+    config:
+      tags: ['taiko', 'dex', 'trades', 'oku', 'v3']
+    description: 'Oku V3 DEX trades on Taiko'
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+  - name: unagi_v3_taiko_base_trades
+    meta:
+      blockchain: taiko
+      sector: dex
+      project: unagi
+      contributors: krishhh
+    config:
+      tags: ['taiko', 'dex', 'trades', 'unagi', 'v3']
+    description: 'Unagi V3 DEX trades on Taiko'
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+  - name: izumi_finance_taiko_base_trades
+    meta:
+      blockchain: taiko
+      sector: dex
+      project: izumi
+      contributors: krishhh
+    config:
+      tags: ['taiko', 'dex', 'trades', 'izumi']
+    description: 'Izumi DEX trades on Taiko'
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
