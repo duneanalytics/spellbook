@@ -29,6 +29,7 @@
                                         , "sei"
                                         , "sonic"
                                         , "sophon"
+                                        , "taiko"
                                         , "zkevm"
                                         , "zksync"
                                         , "unichain"
