@@ -175,7 +175,7 @@ eulerswap_og_trades as (
     eulerswap_events ee 
       on dexs.block_number = ee.block_number 
       and dexs.tx_hash = ee.tx_hash 
-      and dexs.tx_index = ee.tx_index 
+      and dexs.evt_index = ee.tx_index 
     where dexs.blockchain = '{{blockchain}}'
     and dexs.project = '{{project}}'
     and dexs.version = '{{version}}'
@@ -201,7 +201,7 @@ eulerswap_univ4_trades as (
     eulerswap_events ee 
       on dexs.block_number = ee.block_number 
       and dexs.tx_hash = ee.tx_hash 
-      and dexs.tx_index = ee.tx_index + 1 
+      and dexs.evt_index = ee.tx_index + 1 
     where dexs.blockchain = '{{blockchain}}'
     and dexs.project = 'uniswap'
     and dexs.version = '4'
