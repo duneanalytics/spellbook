@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'lending_scroll',
+    schema = 'lending_worldchain',
     alias = 'base_borrow',
     materialized = 'view'
   )
@@ -8,9 +8,7 @@
 
 {%
   set models = [
-    ref('aave_v3_scroll_base_borrow'),
-    ref('layer_bank_scroll_base_borrow'),
-    ref('morpho_scroll_base_borrow')
+    ref('morpho_worldchain_base_borrow')
   ]
 %}
 
