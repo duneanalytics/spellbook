@@ -1,0 +1,51 @@
+version: 2
+
+sources:
+  - name: circle_base
+    description: "Circle's CCTP bridge events on Base"
+    tables:
+      - name: tokenmessenger_evt_depositforburn
+      - name: tokenmessenger_evt_mintandwithdraw
+      - name: messagetransmitter_evt_messagereceived
+
+  - name: circle_ethereum
+    description: "Circle's CCTP bridge events on Ethereum"
+    tables:
+      - name: tokenmessenger_evt_depositforburn
+      - name: tokenmessenger_evt_mintandwithdraw
+      - name: messagetransmitter_evt_messagereceived
+
+  - name: circle_arbitrum
+    description: "Base bridge events on Arbitrum"
+    tables:
+      - name: tokenmessenger_evt_depositforburn
+      - name: tokenmessenger_evt_mintandwithdraw
+      - name: messagetransmitter_evt_messagereceived
+
+  - name: circle_optimism
+    description: "Circle's CCTP bridge events on OP Mainnet"
+    tables:
+      - name: tokenmessenger_evt_depositforburn
+      - name: tokenmessenger_evt_mintandwithdraw
+      - name: messagetransmitter_evt_messagereceived
+
+  - name: circle_polygon
+    description: "Circle's CCTP bridge events on Polygon"
+    tables:
+      - name: tokenmessenger_evt_depositforburn
+      - name: tokenmessenger_evt_mintandwithdraw
+      - name: messagetransmitter_evt_messagereceived
+
+  - name: circle_unichain
+    description: "Circle's CCTP bridge events on Unichain"
+    tables:
+      - name: tokenmessenger_evt_depositforburn
+      - name: tokenmessenger_evt_mintandwithdraw
+      - name: messagetransmitter_evt_messagereceived
+
+  - name: circle_avalanche_c
+    description: "Circle's CCTP bridge events on Avalanche"
+    tables:
+      - name: tokenmessenger_evt_depositforburn
+      - name: tokenmessenger_evt_mintandwithdraw
+      - name: messagetransmitter_evt_messagereceived
