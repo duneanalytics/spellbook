@@ -23,6 +23,7 @@
 ,ref('safe_optimism_eth_transfers')
 ,ref('safe_polygon_matic_transfers')
 ,ref('safe_scroll_eth_transfers')
+,ref('safe_unichain_eth_transfers')
 ,ref('safe_worldchain_eth_transfers')
 ,ref('safe_zkevm_matic_transfers')
 ,ref('safe_zksync_eth_transfers')
