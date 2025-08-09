@@ -2,10 +2,7 @@
         
         schema='prices',
         alias = 'usd_forward_fill',
-        post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon", "zksync"]\',
-                                    "sector",
-                                    "prices",
-                                    \'["0xRob"]\') }}'
+        post_hook='{{ hide_spells() }}'
         )
 }}
 

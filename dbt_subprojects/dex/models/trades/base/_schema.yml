@@ -3,6 +3,7 @@ version: 2
 models:
   - name: dex_base_base_trades
     data_tests:
+      - check_columns_dex_base_trades
       - check_dex_info_relationship
       - test_acceptable_usd_amount:
           column_name: amount_usd
@@ -1151,5 +1152,24 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('fluid_base_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: native_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: native
+      contributors: j92z
+    config:
+      tags: ["base", "dex", "trades", "native"]
+    description: "native base base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('native_base_base_trades_seed')
           filter:
             version: 1

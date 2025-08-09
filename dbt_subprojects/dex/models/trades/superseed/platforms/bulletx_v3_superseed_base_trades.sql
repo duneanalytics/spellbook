@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'yei_swap_sei',
+        schema = 'bulletx_v3_superseed',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -12,10 +12,10 @@
 
 {{
     uniswap_compatible_v3_trades(
-        blockchain = 'sei',
-        project = 'yei_swap',
+        blockchain = 'superseed',
+        project = 'bulletx',
         version = '3',
-        Pair_evt_Swap = source('yei_swap_sei', 'UniswapV3Pool_evt_Swap'),
-        Factory_evt_PoolCreated = source('yei_swap_sei', 'UniswapV3Factory_evt_PoolCreated')
+        Pair_evt_Swap = source('bulletx_superseed', 'V3Pool_evt_Swap'),
+        Factory_evt_PoolCreated = source('bulletx_superseed', 'BulletXV3Factory_evt_PoolCreated')
     )
-}}
+}} 

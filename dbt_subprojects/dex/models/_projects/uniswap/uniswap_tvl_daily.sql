@@ -44,7 +44,8 @@ min_daily as (
     select 
         min(block_date) as block_date 
     from 
-    daily_events
+   {{this}} -- get the earliest date from existing table instead
+   where {{ incremental_predicate('block_date') }}
 ),
 
 tvl_min_daily as (
