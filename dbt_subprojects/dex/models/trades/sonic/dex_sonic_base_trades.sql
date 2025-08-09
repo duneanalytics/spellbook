@@ -19,6 +19,8 @@
     , ref('silverswap_sonic_base_trades')
     , ref('uniswap_v3_sonic_base_trades')
     , ref('tapio_sonic_base_trades')
+    , ref('swapx_sonic_base_trades')
+    , ref('metropolis_sonic_base_trades')
 ] %}
 with base_union as (
     SELECT *
