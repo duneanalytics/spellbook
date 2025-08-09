@@ -44,9 +44,9 @@ swap_event_details as
 select 
 evt_block_time as block_time
 , trade_direction
-, cast(json_extract(params, '$.SwapParameters.amount_in') as double) as token_in_amount_raw
-, cast(json_extract(swap_result, '$.SwapResult.output_amount') as double) as token_out_amount_raw
-, cast(json_extract(swap_result, '$.SwapResult.lp_fee') as double) + cast(json_extract(swap_result, '$.SwapResult.protocol_fee') as double) + cast(json_extract(swap_result, '$.SwapResult.partner_fee') as double) + cast(json_extract(swap_result, '$.SwapResult.referral_fee') as double) as total_fees_raw 
+, cast(json_extract(params, '$.SwapParameters.amount_in') as decimal) as token_in_amount_raw
+, cast(json_extract(swap_result, '$.SwapResult.output_amount') as decimal) as token_out_amount_raw
+, cast(json_extract(swap_result, '$.SwapResult.lp_fee') as decimal) + cast(json_extract(swap_result, '$.SwapResult.protocol_fee') as decimal) + cast(json_extract(swap_result, '$.SwapResult.partner_fee') as decimal) + cast(json_extract(swap_result, '$.SwapResult.referral_fee') as decimal) as total_fees_raw 
 , pool as project_program_id
 , evt_tx_id  as tx_id
 , evt_outer_instruction_index as outer_instruction_index
@@ -93,7 +93,8 @@ from swap_calls sd
 left join swap_event_details evt 
 on ( 
     sd.tx_id=evt.tx_id 
-    and sd.block_time=evt.block_time 
+    and sd.block_time=evt.block_time
+    and sd.tx_index=evt.tx_index 
     and sd.outer_instruction_index = evt.outer_instruction_index
     and sd.rn=evt.rn
 )
