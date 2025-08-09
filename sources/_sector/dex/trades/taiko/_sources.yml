@@ -1,0 +1,18 @@
+version: 2
+
+sources:
+  - name: oku_taiko
+    tables:
+      - name: V3Pool_evt_Swap
+      - name: V3Factory_evt_PoolCreated
+  - name: unagi_taiko
+    tables:
+      - name: v3pool_evt_swap
+      - name: v3factory_evt_poolcreated
+  - name: izumi_finance_multichain
+    tables:
+      - name: iziswapfactory_evt_newpool
+  - name: izumi_finance_taiko
+    tables:
+      - name: iziswappool_evt_swap
+

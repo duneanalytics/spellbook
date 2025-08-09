@@ -10,7 +10,7 @@
 
 SELECT project, name, marketplace_type, x_username
 FROM (VALUES
-    	('uniswap', 'Uniswap', 'Direct', 'Uniswap')
+    ('uniswap', 'Uniswap', 'Direct', 'Uniswap')
     , ('pancakeswap', 'PancakeSwap', 'Direct', 'PancakeSwap')
     , ('curve', 'Curve', 'Direct', 'CurveFinance')
     , ('sushiswap', 'SushiSwap', 'Direct', 'SushiSwap')
@@ -198,6 +198,8 @@ FROM (VALUES
     , ('levinswap', 'Levinswap', 'Direct', 'levinswap')
     , ('sparkdex', 'SparkDEX', 'Direct', 'SparkDexAI')
     , ('blazeswap', 'BlazeSwap', 'Direct', 'blazeswapdex')
+    , ('unagi', 'Unagi', 'Direct', 'UnagiProtocol')
+    , ('izumi_finance', 'iZUMi Finance', 'Direct', 'izumi_Finance')
     , ('enosys', 'Enosys', 'Direct', 'enosys_global')
     , ('gravity_finance', 'GravityFinance', 'Direct', 'Gravity_Finance')
     , ('fluid', 'Fluid DEX', 'Direct', '0xfluid')
@@ -221,5 +223,8 @@ FROM (VALUES
     , ('tapio', 'Tapio', 'Direct', 'Tapio')
     , ('rooster_protocol', 'Rooster Protocol', 'Direct', 'roosterprotocol')
     , ('mindgames', 'Mindgames', 'Direct', 'mindgames_io')
-    , ('yei_swap', 'YeiSwap', 'Direct', 'YeiFinance')
+    , ('yeiswap', 'YeiSwap', 'Direct', 'YeiFinance')
+    , ('bulletx', 'BulletX', 'Direct', 'bulletx_io')
+    , ('native', 'Native', 'Direct', 'Native')
+    , ('blackhole', 'Blackhole', 'Direct', 'BlackholeDEX')
 ) AS temp_table (project, name, marketplace_type, x_username)

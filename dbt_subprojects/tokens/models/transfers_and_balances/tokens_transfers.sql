@@ -36,6 +36,8 @@
                                             ,"shape"
                                             ,"sonic"
                                             ,"sophon"
+                                            ,"superseed"
+                                            ,"taiko"
                                             ,"tron"
                                             ,"unichain"
                                             ,"viction"
@@ -86,6 +88,8 @@
     ,'shape'
     ,'sonic'
     ,'sophon'
+    ,'superseed'
+    ,'taiko'
     ,'tron'
     ,'unichain'
     ,'viction'

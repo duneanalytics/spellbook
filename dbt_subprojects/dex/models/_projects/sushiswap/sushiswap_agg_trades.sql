@@ -3,7 +3,7 @@
     alias = 'trades',
     materialized = 'view',
     post_hook='{{ expose_spells(
-        blockchains   = \'["arbitrum","avalanche_c","apechain","base","blast","bnb","celo","ethereum","fantom","gnosis","linea","mantle","nova","optimism","polygon","scroll","sonic","zkevm","zksync"]\',
+        blockchains   = \'["arbitrum","avalanche_c","apechain","base","blast","bnb","celo","ethereum","fantom","gnosis","hemi","katana","linea","mantle","nova","optimism","polygon","scroll","sonic","zkevm","zksync"]\',
         spell_type    = "project",
         spell_name    = "sushiswap_agg",
         contributors  = \'["olastenberg"]\'
@@ -22,6 +22,8 @@
     ref('sushiswap_agg_ethereum_trades'),
     ref('sushiswap_agg_fantom_trades'),
     ref('sushiswap_agg_gnosis_trades'),
+    ref('sushiswap_agg_hemi_trades'),
+    ref('sushiswap_agg_katana_trades'),
     ref('sushiswap_agg_linea_trades'),
     ref('sushiswap_agg_mantle_trades'),
     ref('sushiswap_agg_nova_trades'),
