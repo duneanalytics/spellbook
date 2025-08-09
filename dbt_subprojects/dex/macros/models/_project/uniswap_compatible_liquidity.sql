@@ -18,6 +18,7 @@
         , evt_index
         , currency0 as token0
         , currency1 as token1
+        , hooks 
     from 
     {{ PoolManager_evt_Initialize }}
     {%- if is_incremental() %}

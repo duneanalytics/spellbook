@@ -1,0 +1,90 @@
+version: 2
+
+models:
+
+  - name: eulerswap_pools
+    meta:
+      blockchain: ethereum, bnb, unichain
+      sector: dex
+      project: eulerswap
+      contributors: Henrystats
+    config:
+      tags: ['ethereum', 'pools', 'liquidity', 'eulerswap']
+    description: >
+      eulerswap Uni V4 DEX pools across all chains
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - pool
+            - eulerAccount
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the DEX is deployed"
+      - &project
+        name: project
+        description: "Project name of the DEX"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the DEX project"
+      - &factory_address
+        name: factory_address
+        description: "Contract address used to create the pool"
+      - &creation_block_time
+        name: creation_block_time
+        description: "Block time of pool creation"
+      - &creation_block_number
+        name: creation_block_number
+        description: "Block number of pool creation"
+      - &pool
+        name: pool
+        description: "Uni V4 virtual pool ID"
+      - &hook
+        name: hook
+        description: "EulerSwap instance's pool is the hook in Uniswap v4 universe"
+      - &eulerAccount
+        name: eulerAccount
+        description: "eulerAccount"
+      - &asset0
+        name: asset0
+        description: "First token in pool"
+      - &asset1
+        name: asset1
+        description: "Second token in pool"
+      - &vault0
+        name: vault0
+        description: "Contract Address holding First token in pool"
+      - &vault1
+        name: vault1
+        description: "Contract Address holding Second token in pool"
+      - &fee
+        name: fee
+        description: "Trade fee"
+      - &protocolFee
+        name: protocolFee
+        description: "Fee paid to Euler"
+      - &protocolFeeRecipient
+        name: protocolFeeRecipient
+        description: "COntract address receiving Fee paid to Euler"
+      - &next_block_number
+        name: next_block_number
+        description: "creation block_number of the pool tied to the EulerAccount after this"
+      - &isActive
+        name: isActive
+        description: "returns True or False on if pool is active"
+
+  - name: eulerswap_trades
+    meta:
+      blockchain: ethereum, bnb, unichain
+      sector: dex
+      project: eulerswap
+      contributors: Henrystats
+    config:
+      tags: ['bnb', 'ethereum', 'unichain', 'pools', 'trades', 'eulerswap']
+    description: "Eulerswap trades across all chains"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
