@@ -173,7 +173,7 @@
             "project":          "Bebop",
             "name":             "BebopOrder",
             "order_hash":       "substr(topic1  , 16 + 1                , 16)",
-        }
+        },
         "0xfeb087be954e9eb692f863466081925668f8f5214f5c1d1a28438df811cbf042": {
             "project":          "Dexalot",
             "name":             "SwapExecuted",
