@@ -92,6 +92,7 @@ WITH balancer_v3 AS (
         , tx_from
         , tx_to
         , evt_index
+        , tx_index
     FROM
         {{ model }}
     {% if is_incremental() %}
@@ -138,6 +139,7 @@ WITH balancer_v3 AS (
         , tx_from
         , tx_to
         , evt_index
+        , tx_index
     FROM
         {{ cte }}
     {% if not loop.last %}
