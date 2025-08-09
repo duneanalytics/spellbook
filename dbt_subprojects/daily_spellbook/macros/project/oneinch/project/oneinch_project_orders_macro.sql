@@ -63,7 +63,7 @@ logs as (
 )
 
 , calls as (
-    select *, row_number() over(partition by block_number, tx_hash order by call_trace_address, call_trade) as call_trade_counter -- trade counter in the tx: there may be multiple calls and multiple trades within a call in a single transaction
+    select *, row_number() over(partition by block_number, tx_hash, call_to, method order by call_trace_address, call_trade) as call_trade_counter -- trade counter in the tx: there may be multiple calls and multiple trades within a call in a single transaction
     from (
         select
             blockchain
