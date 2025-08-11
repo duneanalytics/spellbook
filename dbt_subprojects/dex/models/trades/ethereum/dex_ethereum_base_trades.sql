@@ -48,6 +48,7 @@
     , ref('xchange_v2_ethereum_base_trades')
     , ref('fluid_v1_ethereum_base_trades')
     , ref('native_ethereum_base_trades')
+    , ref('ekubo_v1_ethereum_base_trades')
 ] %}
 with base_union as (
     SELECT *
