@@ -91,7 +91,7 @@ models:
     meta:
       blockchain: worldchain
       sector: lending
-      project: Morpho
+      project: morpho
       contributors: tomfutago
     config:
       tags: ["lending", "supply", "morpho", "worldchain"]
