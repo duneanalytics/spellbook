@@ -3268,3 +3268,42 @@ models:
         description: Total value in the impact pool after the update, normalized for decimals associated with the market.
       - name: delta
         description: Change in the impact pool value as a result of the transaction, normalized.
+
+  - name: gmx_v2_arbitrum_sync_config
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'sync_config']
+    description: |
+      Consolidates SyncConfig events from Arbitrum chain into a single table.
+      Each row captures a configuration update, including the update identifier, previous
+      and next values, and whether the update was applied.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The name of the emitted event, expected to be 'SyncConfig'
+      - *msg_sender
+      - name: update_id
+        description: Numeric or bytes32 identifier of the config entry being updated
+      - name: prev_value
+        description: The configuration value before this update
+      - name: next_value
+        description: The configuration value after this update
+      - name: update_applied
+        description: Boolean flag indicating whether the update took effect
