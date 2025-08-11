@@ -4,7 +4,7 @@ models:
   - name: safe_worldchain_safes
     meta:
       blockchain: worldchain
-      project: safe
+      project: gnosis_safe
       contributors: danielpartida
     config:
       tags: ['safe', 'worldchain']
@@ -37,7 +37,7 @@ models:
   - name: safe_worldchain_eth_transfers
     meta:
       blockchain: worldchain
-      project: safe
+      project: gnosis_safe
       contributors: danielpartida
     config:
       tags: ['safe', 'transfers', 'worldchain']
@@ -73,7 +73,7 @@ models:
   - name: safe_worldchain_singletons
     meta:
       blockchain: worldchain
-      project: safe
+      project: gnosis_safe
       contributors: danielpartida
     config:
       tags: ['safe', 'singletons', 'worldchain']
