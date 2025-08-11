@@ -152,10 +152,10 @@ WITH evt_data_1 AS (
         event_name,
         msg_sender,
         
-        TRY_CAST(EDP.update_id AS DOUBLE) AS update_id,
-        TRY_CAST(EDP.prev_value AS DOUBLE) / POWER(10, 30) AS prev_value,
-        TRY_CAST(EDP.next_value AS DOUBLE) / POWER(10, 30) AS next_value,
-        update_applied
+        TRY_CAST(EDP.update_id AS DECIMAL(38,0)) AS update_id,
+        TRY_CAST(EDP.prev_value AS DECIMAL(38,0)) / POWER(10, 30) AS prev_value,
+        TRY_CAST(EDP.next_value AS DECIMAL(38,0)) / POWER(10, 30) AS next_value,
+        TRY_CAST(EDP.update_applied AS BOOLEAN) AS update_applied
 
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
