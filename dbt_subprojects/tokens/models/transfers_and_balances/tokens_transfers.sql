@@ -104,7 +104,8 @@ SELECT *
 FROM (
     {% for chain in chains %}
     SELECT
-          unique_key
+        --rebuild final view in CI
+        unique_key
         , blockchain
         , block_month
         , block_date
