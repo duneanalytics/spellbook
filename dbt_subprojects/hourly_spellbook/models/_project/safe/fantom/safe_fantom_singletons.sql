@@ -1,7 +1,7 @@
 {{ 
     config(
         materialized='table',
-        
+        schema = 'safe_fantom',
         alias = 'singletons',
         post_hook='{{ expose_spells(\'["fantom"]\',
                                     "project",
@@ -10,7 +10,4 @@
     ) 
 }}
 
-
--- Fetch all known singleton addresses used via the factory.
-select distinct singleton as address 
-from {{ source('gnosis_safe_fantom', 'GnosisSafeProxyFactory_v1_3_0_evt_ProxyCreation') }}
+{{ safe_singletons_by_network('fantom') }}
