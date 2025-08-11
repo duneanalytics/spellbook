@@ -1,7 +1,7 @@
 {{
   config(
     schema = 'morpho_plume',
-    alias = 'plume_supply',
+    alias = 'base_supply',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
