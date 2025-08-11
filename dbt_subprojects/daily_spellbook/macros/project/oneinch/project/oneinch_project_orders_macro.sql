@@ -277,8 +277,8 @@ select
     , taker_max_amount
     , maker_min_amount
     , taker_min_amount
-    , cast(coalesce(if(not tx_success, 0), making_amount, try(if(order_start = uint256 '0' or order_start = order_end, maker_max_amount, maker_max_amount - cast(to_unixtime(block_time) - order_start as double) / (order_end - order_start) * (cast(maker_max_amount as double) - cast(maker_min_amount as double)))), try(call_maker_max_amount * (cast(call_taking_amount as double) / call_taker_max_amount)), maker_max_amount, maker_min_amount) as uint256) as making_amount
-    , cast(coalesce(if(not tx_success, 0), taking_amount, try(if(order_start = uint256 '0' or order_start = order_end, taker_max_amount, taker_max_amount - cast(to_unixtime(block_time) - order_start as double) / (order_end - order_start) * (cast(taker_max_amount as double) - cast(taker_min_amount as double)))), try(call_taker_max_amount * (cast(call_making_amount as double) / call_maker_max_amount)), taker_max_amount, taker_min_amount) as uint256) as taking_amount
+    , try(cast(coalesce(making_amount, try(if(order_start = uint256 '0' or order_start = order_end, maker_max_amount, maker_max_amount - cast(to_unixtime(block_time) - order_start as double) / (order_end - order_start) * (cast(maker_max_amount as double) - cast(maker_min_amount as double)))), try(call_maker_max_amount * (cast(call_taking_amount as double) / call_taker_max_amount)), maker_max_amount, maker_min_amount) as uint256)) as making_amount
+    , try(cast(coalesce(taking_amount, try(if(order_start = uint256 '0' or order_start = order_end, taker_max_amount, taker_max_amount - cast(to_unixtime(block_time) - order_start as double) / (order_end - order_start) * (cast(taker_max_amount as double) - cast(taker_min_amount as double)))), try(call_taker_max_amount * (cast(call_making_amount as double) / call_maker_max_amount)), taker_max_amount, taker_min_amount) as uint256)) as taking_amount
     , order_start
     , order_end
     , order_deadline
