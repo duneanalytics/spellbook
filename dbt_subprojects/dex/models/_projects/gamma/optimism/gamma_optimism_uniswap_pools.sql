@@ -50,7 +50,7 @@ SELECT lp_name, contract_address
 
 SELECT distinct
     'optimism' AS blockchain,
-    lp_name, mm.contract_address, pool AS pool_contract, fee, token0, token1
+    lp_name, mm.contract_address, id AS pool_contract, fee, token0, token1
     FROM manual_mapping mm
     INNER JOIN {{ source('optimism', 'creation_traces') }} ct 
         ON ct.address = mm.contract_address
