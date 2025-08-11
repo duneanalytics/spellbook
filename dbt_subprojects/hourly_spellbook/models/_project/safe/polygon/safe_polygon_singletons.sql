@@ -10,4 +10,4 @@
     ) 
 }}
 
-{{ safe_singletons_by_network('polygon') }}
+{{ safe_singletons_by_network_validated('polygon', only_official=true) }}

@@ -10,4 +10,4 @@
     ) 
 }}
 
-{{ safe_singletons_by_network('linea') }}
+{{ safe_singletons_by_network_validated('linea', only_official=true) }}

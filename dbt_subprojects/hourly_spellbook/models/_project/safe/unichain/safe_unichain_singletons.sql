@@ -10,4 +10,4 @@
     ) 
 }}
 
-{{ safe_singletons_by_network('unichain') }}
+{{ safe_singletons_by_network_validated('unichain', only_official=true) }}

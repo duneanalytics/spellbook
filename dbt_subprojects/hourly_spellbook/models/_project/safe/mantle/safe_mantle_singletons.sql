@@ -10,4 +10,4 @@
     ) 
 }}
 
-{{ safe_singletons_by_network('mantle') }}
+{{ safe_singletons_by_network_validated('mantle', only_official=true) }}

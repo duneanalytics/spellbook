@@ -10,4 +10,4 @@
     ) 
 }}
 
-{{ safe_singletons_by_network('zkevm') }}
+{{ safe_singletons_by_network_validated('zkevm', only_official=true) }}

@@ -10,4 +10,4 @@
     )
 }}
 
-{{ safe_singletons_by_network('ethereum') }}
+{{ safe_singletons_by_network_validated('ethereum', only_official=true) }}

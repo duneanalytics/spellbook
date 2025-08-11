@@ -10,4 +10,4 @@
     ) 
 }}
 
-{{ safe_singletons_by_network('ronin') }}
+{{ safe_singletons_by_network_validated('ronin', only_official=true) }}

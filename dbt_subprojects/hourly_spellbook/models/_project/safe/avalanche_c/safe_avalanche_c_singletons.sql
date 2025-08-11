@@ -10,4 +10,4 @@
     )
 }}
 
-{{ safe_singletons_by_network('avalanche_c') }}
+{{ safe_singletons_by_network_validated('avalanche_c', only_official=true) }}

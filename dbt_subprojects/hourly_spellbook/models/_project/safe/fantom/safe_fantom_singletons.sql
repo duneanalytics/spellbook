@@ -10,4 +10,4 @@
     ) 
 }}
 
-{{ safe_singletons_by_network('fantom') }}
+{{ safe_singletons_by_network_validated('fantom', only_official=true) }}
