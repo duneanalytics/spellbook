@@ -101,3 +101,8 @@ sources:
     description: "decoded events and function calls for oneproto on ethereum"
     tables:
       - name: OneSplitAudit_evt_Swapped
+
+
+  - name: zeroex_ethereum
+    tables:
+      - name: settler_addresses

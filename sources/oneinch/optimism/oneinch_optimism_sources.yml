@@ -68,3 +68,8 @@ sources:
       - name: EscrowFactoryV1_evt_SrcEscrowCreated
       - name: lop
       - name: ar
+
+
+  - name: zeroex_optimism
+    tables:
+      - name: settler_addresses
