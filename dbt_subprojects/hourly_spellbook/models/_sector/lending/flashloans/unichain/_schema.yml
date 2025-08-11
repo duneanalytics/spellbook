@@ -1,14 +1,14 @@
 version: 2
 
 models:
-  - name: lending_sonic_base_flashloans
+  - name: lending_unichain_base_flashloans
     meta:
-      blockchain: sonic
+      blockchain: unichain
       sector: lending
       contributors: tomfutago
     config:
-      tags: ['lending', 'flashloans', 'aave', 'sonic']
-    description: "All lending flashloans transactions on Sonic"
+      tags: ['lending', 'flashloans', 'aave', 'unichain']
+    description: "All lending flashloans transactions on Unichain"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -72,46 +72,15 @@ models:
         data_tests:
           - not_null
 
-  - name: aave_v3_sonic_base_flashloans
+  - name: morpho_unichain_base_flashloans
     meta:
-      blockchain: sonic
-      sector: lending
-      project: aave
-      contributors: tomfutago
-    config:
-      tags: ['lending', 'flashloans', 'aave', 'sonic']
-    description: "Aave v3 flashloans transactions on Sonic"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-      - check_lending_base_flashloans_seed:
-          seed_file: ref('aave_sonic_base_flashloans_seed')
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *recipient
-      - *amount
-      - *fee
-      - *token_address
-      - *project_contract_address
-      - *block_month
-      - *block_time
-      - *block_number
-      - *tx_hash
-      - *evt_index
-
-  - name: morpho_sonic_base_flashloans
-    meta:
-      blockchain: sonic
+      blockchain: unichain
       sector: lending
       project: morpho
       contributors: 0xDataWolf, tomfutago
     config:
-      tags: ['lending', 'flashloans', 'morpho', 'sonic']
-    description: "Morpho flashloans transactions on Sonic"
+      tags: ['lending', 'flashloans', 'morpho', 'unichain']
+    description: "Morpho flashloans transactions on Unichain"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

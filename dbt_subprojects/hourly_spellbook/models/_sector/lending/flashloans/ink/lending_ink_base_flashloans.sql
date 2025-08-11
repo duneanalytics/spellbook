@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'lending_scroll',
+    schema = 'lending_ink',
     alias = 'base_flashloans',
     materialized = 'view'
   )
@@ -8,8 +8,7 @@
 
 {%
   set models = [
-    ref('aave_v3_scroll_base_flashloans'),
-    ref('morpho_scroll_base_flashloans')
+    ref('morpho_ink_base_flashloans')
   ]
 %}
 
