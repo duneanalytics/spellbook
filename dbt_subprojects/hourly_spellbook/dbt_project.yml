@@ -90,8 +90,6 @@ models:
           +schema: safe_fantom
         arbitrum:
           +schema: safe_arbitrum
-        goerli:
-          +schema: safe_goerli
         base:
           +schema: safe_base
         unichain:
