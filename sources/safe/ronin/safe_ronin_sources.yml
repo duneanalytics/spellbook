@@ -1,32 +1,44 @@
 version: 2
 
 sources:
-  - name: safe_ronin
+  - name: gnosis_safe_ronin
     freshness:
       warn_after: { count: 12, period: hour }
     tables:
-      - name: GnosisSafeProxyFactory_v1_3_0_evt_ProxyCreation
+      - name: SafeProxyFactory_v1_3_0_evt_ProxyCreation
         loaded_at_field: evt_block_time
         description: "Safe v1.3.0 factory ProxyCreation events"
         columns:
           - &contract_address
-              name: contract_address
-              description: "Contract address"
-          - &evt_block_number
-              name: evt_block_number
-              description: "Event block number"
-          - &evt_block_time
-              name: evt_block_time
-              description: "Event block time"
-          - &evt_index
-              name: evt_index
-              description: "Event index"
+            name: contract_address
+            description: "Contract address"
           - &evt_tx_hash
-              name: evt_tx_hash
-              description: "Event tx hash"
+            name: evt_tx_hash
+            description: "Event transaction hash"
+          - &evt_tx_from
+            name: evt_tx_from
+            description: "Event transacrion from"
+          - &evt_tx_to
+            name: evt_tx_to
+            description: "Event transation to"
+          - &evt_tx_index
+            name: evt_tx_index
+            description: "Evenet transaction index"
+          - &evt_index
+            name: evt_index
+            description: "Event index"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Event block time"
+          - &evt_block_number
+            name: evt_block_number
+            description: "Event block number"
+          - &evt_block_date
+            name: evt_block_date
+            description: "Event block date"
           - &proxy
             name: proxy
-            description: "Address of created Safe proxy"
+            description: "Proxy"
           - &singleton
             name: singleton
             description: "Singleton"
