@@ -92,8 +92,28 @@ models:
           +schema: safe_arbitrum
         base:
           +schema: safe_base
+        berachain:
+          +schema: safe_berachain
+        blast:
+          +schema: safe_blast
+        celo:
+          +schema: safe_celo
+        linea:
+          +schema: safe_linea
+        mantle:
+          +schema: safe_mantle
+        ronin:
+          +schema: safe_ronin
+        scroll:
+          +schema: safe_scroll
         unichain:
           +schema: safe_unichain
+        worldchain:
+          +schema: safe_worldchain
+        zkevm:
+          +schema: safe_zkevm
+        zksync:
+          +schema: safe_zksync
       cow_protocol:
         +schema: cow_protocol
         ethereum:
