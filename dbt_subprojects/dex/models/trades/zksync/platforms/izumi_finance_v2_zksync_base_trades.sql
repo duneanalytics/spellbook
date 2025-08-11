@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'iziswap_v2_zksync',
+        schema = 'izumi_finance_v2_zksync',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -10,11 +10,11 @@
     )
 }}
 
-{% set iziswap_v2_start_date = "2023-07-17" %}
+{% set izumi_finance_v2_start_date = "2023-07-17" %}
 
 SELECT
     'zksync' AS blockchain
-    , 'iziswap' AS project
+    , 'izumi_finance' AS project
     , contract_address AS project_contract_address
     , '2' AS version
     , evt_tx_hash AS tx_hash
@@ -33,6 +33,6 @@ FROM {{ source('iziswap_v2_zksync', 'iZiSwapPool_evt_Swap') }}
 {% if is_incremental() %}
 WHERE {{incremental_predicate('evt_block_time')}}
 {% else %}
-WHERE evt_block_time >= TIMESTAMP '{{iziswap_v2_start_date}}'
+WHERE evt_block_time >= TIMESTAMP '{{izumi_finance_v2_start_date}}'
 {% endif %}
 

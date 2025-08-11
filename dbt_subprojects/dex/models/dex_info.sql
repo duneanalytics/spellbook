@@ -55,7 +55,6 @@ FROM (VALUES
     , ('wigoswap', 'Wigo Ecosystem', 'Direct', 'WigoSwap')
     , ('equalizer', 'Equalizer', 'Direct', 'Equalizer0x')
     , ('zipswap', 'ZipSwap', 'Direct', 'Zip_swap')
-    , ('iziswap', 'iZUMi Finance', 'Direct', 'izumi_Finance')
     , ('spartacus_exchange', 'Spartacus', 'Direct', 'Spartacus_Fi')
     , ('swapr', 'swapr', 'Direct', 'swapr_finance')
     , ('rubicon', 'Rubicon', 'Direct', 'rubicondefi')
