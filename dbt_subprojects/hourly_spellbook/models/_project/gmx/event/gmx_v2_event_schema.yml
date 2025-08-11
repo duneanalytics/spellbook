@@ -3041,9 +3041,9 @@ models:
       - *msg_sender
       - name: update_id
         description: Numeric or bytes32 identifier of the config entry being updated
-      - name: prev_value
+      - name: prev_value_raw
         description: The configuration value before this update
-      - name: next_value
+      - name: next_value_raw
         description: The configuration value after this update
       - name: update_applied
         description: Boolean flag indicating whether the update took effect

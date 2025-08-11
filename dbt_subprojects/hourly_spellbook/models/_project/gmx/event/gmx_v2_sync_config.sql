@@ -27,8 +27,8 @@ SELECT
     event_name,
     msg_sender,
     update_id,
-    prev_value,
-    next_value,
+    prev_value_raw,
+    next_value_raw,
     update_applied
 
 FROM {{ ref('gmx_v2_' ~ chain ~ '_sync_config') }}
