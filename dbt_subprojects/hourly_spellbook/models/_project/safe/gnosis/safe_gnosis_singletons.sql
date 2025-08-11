@@ -1,15 +1,14 @@
-{{ 
+{{
     config(
         materialized='table',
+        schema = 'safe_gnosis',
         alias = 'singletons',
-        
         post_hook='{{ expose_spells(\'["gnosis"]\',
                                     "project",
                                     "safe",
                                     \'["tschubotz"]\') }}'
-    ) 
+    )
 }}
-
 
 -- Fetch all known singleton/mastercopy addresses used via factories.
 -- Prior to 1.3.0, the factory didn't emit the singleton address with the ProxyCreation event,
