@@ -1,8 +1,8 @@
 {{ 
     config(
         materialized='table',
+        schema = 'safe_polygon',
         alias = 'singletons',
-        
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "project",
                                     "safe",
@@ -10,28 +10,4 @@
     ) 
 }}
 
-
--- Fetch all known singleton/mastercopy addresses used via factories.
--- Prior to 1.3.0, the factory didn't emit the singleton address with the ProxyCreation event,
-select distinct masterCopy as address 
-from {{ source('gnosis_safe_polygon', 'ProxyFactory_v1_1_1_call_createProxy') }}
-
-union 
-
-select distinct _mastercopy as address 
-from {{ source('gnosis_safe_polygon', 'ProxyFactory_v1_1_1_call_createProxyWithNonce') }}
-
-union
-
-select distinct _mastercopy as address 
-from {{ source('gnosis_safe_polygon', 'ProxyFactory_v1_1_1_call_createProxyWithCallback') }}
-
-union
-
-select distinct singleton as address 
-from {{ source('gnosis_safe_polygon', 'GnosisSafeProxyFactory_v1_3_0_evt_ProxyCreation') }}
-
-union
-
-select distinct singleton as address 
-from {{ source('gnosis_safe_polygon', 'ProxyFactoryv_1_4_1_evt_ProxyCreation') }}
+{{ safe_singletons_by_network('polygon') }}
