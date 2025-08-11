@@ -1,6 +1,9 @@
 version: 2
 
 sources:
+  - name: prices__dev
+    tables:
+      - name: day
   - name: prices
     description: "Price data from various sources and time granularities"
     tables:

@@ -18,7 +18,7 @@
     transfers_enrich(
         base_transfers = ref('tokens_arbitrum_base_transfers')
         , tokens_erc20_model = source('tokens', 'erc20')
-        , prices_model = source('prices', 'hour')
+        , prices_model = source('prices__dev', 'day')
         , transfers_start_date = '2021-05-29'
         , blockchain = 'arbitrum'
     )

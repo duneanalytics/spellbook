@@ -18,7 +18,7 @@
     transfers_enrich(
         base_transfers = ref('tokens_superseed_base_transfers')
         , tokens_erc20_model = source('tokens', 'erc20')
-        , prices_model = source('prices', 'hour')
+        , prices_model = source('prices__dev', 'day')
         , transfers_start_date = '2025-05-08'
         , blockchain = 'superseed'
     )
