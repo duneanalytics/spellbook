@@ -13,7 +13,6 @@
 
 {% set solana_dexes = [ 
    ref('solfi_solana_base_trades') 
-   --testing this run
 ] %}
 
 /*
