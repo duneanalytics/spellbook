@@ -4,7 +4,7 @@ models:
   - name: safe_unichain_singletons
     meta:
       blockchain: unichain
-      project: safe
+      project: gnosis_safe
       contributors: tschubotz
     config:
       tags: ['safe', 'singletons', 'unichain']
@@ -20,7 +20,7 @@ models:
   - name: safe_unichain_safes
     meta:
       blockchain: unichain
-      project: safe
+      project: gnosis_safe
       contributors: tschubotz
     config:
       tags: ['safe', 'unichain']
@@ -46,7 +46,7 @@ models:
   - name: safe_unichain_transactions
     meta:
       blockchain: unichain
-      project: safe
+      project: gnosis_safe
       contributors: tschubotz, danielpartida
     config:
       tags: ['safe', 'unichain']
@@ -107,7 +107,7 @@ models:
   - name: safe_unichain_eth_transfers
     meta:
       blockchain: unichain
-      project: safe
+      project: gnosis_safe
       contributors: tschubotz
     config:
       tags: ['safe', 'transfers', 'unichain']
