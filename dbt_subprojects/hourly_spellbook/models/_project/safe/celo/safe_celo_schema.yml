@@ -4,7 +4,7 @@ models:
   - name: safe_celo_singletons
     meta:
       blockchain: celo
-      project: safe
+      project: gnosis_safe
       contributors: danielpartida
     config:
       tags: ['safe', 'singletons', 'celo']
@@ -20,7 +20,7 @@ models:
   - name: safe_celo_safes
     meta:
       blockchain: celo
-      project: safe
+      project: gnosis_safe
       contributors: danielpartida
     config:
       tags: ['safe', 'celo']
@@ -46,7 +46,7 @@ models:
   - name: safe_celo_transactions
     meta:
       blockchain: celo
-      project: safe
+      project: gnosis_safe
       contributors: danielpartida
     config:
       tags: ['safe', 'celo']
@@ -107,7 +107,7 @@ models:
   - name: safe_celo_celo_transfers
     meta:
       blockchain: celo
-      project: safe
+      project: gnosis_safe
       contributors: danielpartida
     config:
       tags: ['safe', 'transfers', 'celo']
