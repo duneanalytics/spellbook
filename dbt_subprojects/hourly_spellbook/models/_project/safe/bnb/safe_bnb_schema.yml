@@ -4,7 +4,7 @@ models:
   - name: safe_bnb_singletons
     meta:
       blockchain: bnb
-      project: safe
+      project: gnosis_safe
       contributors: tschubotz
     config:
       tags: ['safe', 'singletons', 'bnb']
@@ -20,7 +20,7 @@ models:
   - name: safe_bnb_safes
     meta:
       blockchain: bnb
-      project: safe
+      project: gnosis_safe
       contributors: tschubotz
     config:
       tags: ['safe', 'bnb']
@@ -46,7 +46,7 @@ models:
   - name: safe_bnb_transactions
     meta:
       blockchain: bnb
-      project: safe
+      project: gnosis_safe
       contributors: tschubotz, danielpartida
     config:
       tags: ['safe', 'bnb']
@@ -107,7 +107,7 @@ models:
   - name: safe_bnb_bnb_transfers
     meta:
       blockchain: bnb
-      project: safe
+      project: gnosis_safe
       contributors: tschubotz
     config:
       tags: ['safe', 'transfers', 'bnb']
