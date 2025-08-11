@@ -4,7 +4,7 @@ models:
   - name: safe_scroll_safes
     meta:
       blockchain: scroll
-      project: safe
+      project: gnosis_safe
       contributors: danielpartida
     config:
       tags: ['safe', 'scroll']
@@ -37,7 +37,7 @@ models:
   - name: safe_scroll_eth_transfers
     meta:
       blockchain: scroll
-      project: safe
+      project: gnosis_safe
       contributors: danielpartida
     config:
       tags: ['safe', 'transfers', 'scroll']
@@ -73,7 +73,7 @@ models:
   - name: safe_scroll_singletons
     meta:
       blockchain: scroll
-      project: safe
+      project: gnosis_safe
       contributors: danielpartida
     config:
       tags: ['safe', 'singletons', 'scroll']
@@ -85,7 +85,7 @@ models:
   - name: safe_scroll_transactions
     meta:
       blockchain: scroll
-      project: safe
+      project: gnosis_safe
       contributors: danielpartida
     config:
       tags: ['safe', 'scroll']
