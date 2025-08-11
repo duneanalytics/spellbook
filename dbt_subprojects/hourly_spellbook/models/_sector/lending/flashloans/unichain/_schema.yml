@@ -77,7 +77,7 @@ models:
       blockchain: unichain
       sector: lending
       project: morpho
-      contributors: 0xDataWolf, tomfutago
+      contributors: tomfutago
     config:
       tags: ['lending', 'flashloans', 'morpho', 'unichain']
     description: "Morpho flashloans transactions on Unichain"

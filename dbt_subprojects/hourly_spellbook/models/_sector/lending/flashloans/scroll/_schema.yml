@@ -109,7 +109,7 @@ models:
       blockchain: scroll
       sector: lending
       project: morpho
-      contributors: 0xDataWolf, tomfutago
+      contributors: tomfutago
     config:
       tags: ['lending', 'flashloans', 'morpho', 'scroll']
     description: "Morpho flashloans transactions on Scroll"

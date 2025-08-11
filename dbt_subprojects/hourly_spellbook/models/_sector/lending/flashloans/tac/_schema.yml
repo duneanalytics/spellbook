@@ -77,7 +77,7 @@ models:
       blockchain: tac
       sector: lending
       project: morpho
-      contributors: 0xDataWolf, tomfutago
+      contributors: tomfutago
     config:
       tags: ['lending', 'flashloans', 'morpho', 'tac']
     description: "Morpho flashloans transactions on Tac"

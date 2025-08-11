@@ -171,7 +171,7 @@ models:
       blockchain: bnb
       sector: lending
       project: morpho
-      contributors: 0xDataWolf, tomfutago
+      contributors: tomfutago
     config:
       tags: ['lending', 'flashloans', 'morpho', 'bnb']
     description: "Morpho flashloans transactions on BNB"

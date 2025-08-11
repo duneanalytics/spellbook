@@ -173,7 +173,7 @@ models:
       blockchain: polygon
       sector: lending
       project: morpho
-      contributors: 0xDataWolf, tomfutago
+      contributors: tomfutago
     config:
       tags: ['lending', 'flashloans', 'morpho', 'polygon']
     description: "Morpho flashloans transactions on Polygon"
