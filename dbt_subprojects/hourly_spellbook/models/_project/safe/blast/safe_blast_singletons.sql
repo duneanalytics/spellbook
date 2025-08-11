@@ -10,4 +10,4 @@
     ) 
 }}
 
-{{ safe_singletons_by_network('blast') }}
+{{ safe_singletons_by_network_validated('blast', only_official=true) }}

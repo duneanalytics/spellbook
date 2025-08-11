@@ -10,4 +10,4 @@
     ) 
 }}
 
-{{ safe_singletons_by_network('worldchain') }}
+{{ safe_singletons_by_network_validated('worldchain', only_official=true) }}

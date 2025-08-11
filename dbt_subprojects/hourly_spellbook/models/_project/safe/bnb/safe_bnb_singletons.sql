@@ -10,4 +10,4 @@
     )
 }}
 
-{{ safe_singletons_by_network('bnb') }}
+{{ safe_singletons_by_network_validated('bnb', only_official=true) }}
