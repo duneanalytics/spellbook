@@ -10,4 +10,4 @@
     ) 
 }}
 
-{{ safe_singletons_by_network('zksync') }}
+{{ safe_singletons_by_network_validated('zksync', only_official=true) }}

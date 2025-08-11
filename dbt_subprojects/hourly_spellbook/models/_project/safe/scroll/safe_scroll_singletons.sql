@@ -10,4 +10,4 @@
     ) 
 }}
 
-{{ safe_singletons_by_network('scroll') }}
+{{ safe_singletons_by_network_validated('scroll', only_official=true) }}

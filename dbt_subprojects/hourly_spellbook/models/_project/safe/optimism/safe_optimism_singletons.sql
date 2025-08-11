@@ -10,4 +10,4 @@
     ) 
 }}
 
-{{ safe_singletons_by_network('optimism') }}
+{{ safe_singletons_by_network_validated('optimism', only_official=true) }}
