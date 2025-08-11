@@ -32,7 +32,7 @@
     , ref('mdex_bnb_base_trades')
     , ref('wombat_bnb_base_trades')
     , ref('dodo_bnb_base_trades')
-    , ref('iziswap_bnb_base_trades')
+    , ref('izumi_finance_bnb_base_trades')
     , ref('maverick_bnb_base_trades')
     , ref('maverick_v2_bnb_base_trades')
     , ref('nomiswap_bnb_base_trades')
