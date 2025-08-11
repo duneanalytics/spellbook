@@ -8,40 +8,31 @@ models:
       - test_acceptable_usd_amount:
           column_name: amount_usd
           max_value: 1000000000
-  - name: abstractswap_v2_abstract_base_trades
+  - name: reservoir_swap_v2_abstract_base_trades
     meta:
       blockchain: abstract
       sector: dex
-      project: abstractswap
-      contributors: [clizzard]
+      project: reservoir_swap
+      contributors: [jeff-dude]
     config:
-      tags: ["abstract", "dex", "trades", "abstractswap", "v2"]
-    description: "AbstractSwap abstract v2 base trades"
+      tags: ["abstract", "dex", "trades", "reservoir_swap", "v2"]
+    description: "ReservoirSwap abstract v2 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_dex_base_trades_seed:
-          seed_file: ref('abstractswap_v2_abstract_base_trades_seed')
-          filter:
-            version: 2
-
-  - name: abstractswap_v3_abstract_base_trades
+  - name: reservoir_swap_v3_abstract_base_trades
     meta:
       blockchain: abstract
       sector: dex
-      project: abstractswap
-      contributors: [clizzard]
+      project: reservoir_swap
+      contributors: [jeff-dude]
     config:
-      tags: ["abstract", "dex", "trades", "abstractswap", "v3"]
-    description: "AbstractSwap abstract v3 base trades"
+      tags: ["abstract", "dex", "trades", "reservoir_swap", "v3"]
+    description: "ReservoirSwap abstract v3 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_dex_base_trades_seed:
-          seed_file: ref('abstractswap_v3_abstract_base_trades_seed')
-          filter:
-            version: 3
