@@ -4,7 +4,7 @@ models:
   - name: safe_zksync_safes
     meta:
       blockchain: zksync
-      project: safe
+      project: gnosis_safe
       contributors: ['danielpartida' , 'kryptaki']
     config:
       tags: ['safe', 'zksync']
@@ -37,7 +37,7 @@ models:
   - name: safe_zksync_eth_transfers
     meta:
       blockchain: zksync
-      project: safe
+      project: gnosis_safe
       contributors: ['danielpartida' , 'kryptaki']
     config:
       tags: ['safe', 'transfers', 'zksync']
@@ -74,7 +74,7 @@ models:
   - name: safe_zksync_singletons
     meta:
       blockchain: zksync
-      project: safe
+      project: gnosis_safe
       contributors: ['danielpartida' , 'kryptaki']
     config:
       tags: ['safe', 'singletons', 'zksync']
@@ -89,7 +89,7 @@ models:
   - name: safe_zksync_transactions
     meta:
       blockchain: zksync
-      project: safe
+      project: gnosis_safe
       contributors: kryptaki
     config:
       tags: ['safe', 'zksync']
