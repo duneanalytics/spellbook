@@ -1,32 +1,3 @@
-{% macro uniswap_compatible_v4_liquidity_pools(
-    blockchain = null
-    , project = 'uniswap'
-    , version = '4'
-    , PoolManager_evt_Initialize = null
-    )
-%}
-
-    select 
-        '{{blockchain}}' as blockchain
-        , '{{project}}'  as project
-        , '{{version}}' as version
-        , contract_address
-        , evt_block_time as creation_block_time
-        , evt_block_number as creation_block_number
-        , id
-        , evt_tx_hash as tx_hash
-        , evt_index
-        , currency0 as token0
-        , currency1 as token1
-        , hooks 
-    from 
-    {{ PoolManager_evt_Initialize }}
-    {%- if is_incremental() %}
-    where {{ incremental_predicate('evt_block_time') }}
-    {%- endif %}
-
-{% endmacro %}
-
 {% macro uniswap_compatible_v4_liquidity_sqrtpricex96(
     blockchain = null
     , project = 'uniswap'
@@ -551,4 +522,147 @@ liquidity_change_base as (
     from 
     liquidity_change_base 
 
+{% endmacro %}
+
+{% macro uniswap_compatible_v3_base_liquidity_events( 
+    blockchain = null
+    , project = 'uniswap'
+    , version = null 
+    , token_transfers = null 
+    , liquidity_pools = null
+    )
+%}
+
+with 
+
+get_pools as (
+    select 
+        blockchain
+        , id
+        , token0
+        , token1
+    from 
+    {{ liquidity_pools }}
+    where version = '{{version}}'
+),
+
+token_tfers as (
+    -- token0 out tfers
+    select 
+        gp.id
+        , tt.evt_tx_from as tx_from 
+        , tt.evt_block_time as block_time 
+        , tt.evt_block_number as block_number 
+        , tt.evt_tx_hash as tx_hash 
+        , tt.evt_index 
+        , 'token0_out' as event_type 
+        , gp.token0 
+        , gp.token1 
+        , -1 * cast(tt.value as double) as amount0 
+        , 0 as amount1 
+    from 
+    {{ token_transfers }} tt 
+    inner join 
+    get_pools gp 
+        on gp.id = tt."from"
+        and gp.token0 = tt.contract_address 
+    {%- if is_incremental() %}
+    where {{ incremental_predicate('tt.evt_block_time') }}
+    {%- endif %}
+
+    union all 
+
+    -- token0 in tfers
+    select 
+        gp.id
+        , tt.evt_tx_from as tx_from 
+        , tt.evt_block_time as block_time 
+        , tt.evt_block_number as block_number 
+        , tt.evt_tx_hash as tx_hash 
+        , tt.evt_index 
+        , 'token0_in' as event_type 
+        , gp.token0 
+        , gp.token1 
+        , cast(tt.value as double) as amount0 
+        , 0 as amount1 
+    from 
+    {{ token_transfers }} tt 
+    inner join 
+    get_pools gp 
+        on gp.id = tt.to 
+        and gp.token0 = tt.contract_address 
+    {%- if is_incremental() %}
+    where {{ incremental_predicate('tt.evt_block_time') }}
+    {%- endif %}
+
+    union all 
+
+    -- token1 out tfers
+    select 
+        gp.id
+        , tt.evt_tx_from as tx_from 
+        , tt.evt_block_time as block_time 
+        , tt.evt_block_number as block_number 
+        , tt.evt_tx_hash as tx_hash 
+        , tt.evt_index 
+        , 'token1_out' as event_type 
+        , gp.token0 
+        , gp.token1 
+        , 0 as amount0
+        , -1 * cast(tt.value as double) as amount1
+    from 
+    {{ token_transfers }} tt 
+    inner join 
+    get_pools gp 
+        on gp.id = tt."from"
+        and gp.token1 = tt.contract_address 
+    {%- if is_incremental() %}
+    where {{ incremental_predicate('tt.evt_block_time') }}
+    {%- endif %}
+
+    union all 
+
+    -- token1 in 
+    select 
+        gp.id
+        , tt.evt_tx_from as tx_from 
+        , tt.evt_block_time as block_time 
+        , tt.evt_block_number as block_number 
+        , tt.evt_tx_hash as tx_hash 
+        , tt.evt_index 
+        , 'token1_in' as event_type 
+        , gp.token0 
+        , gp.token1 
+        , 0 as amount0
+        , cast(tt.value as double) as amount1
+    from 
+    {{ token_transfers }} tt 
+    inner join 
+    get_pools gp 
+        on gp.id = tt.to 
+        and gp.token1 = tt.contract_address 
+    {%- if is_incremental() %}
+    where {{ incremental_predicate('tt.evt_block_time') }}
+    {%- endif %}
+)
+
+    select 
+          '{{blockchain}}' as blockchain
+        , '{{project}}'  as project
+        , '{{version}}' as version
+        , cast(date_trunc('month', block_time) as date) as block_month
+        , cast(date_trunc('day', block_time) as date) as block_date
+        , date_trunc('minute', block_time) as block_time -- for prices
+        , block_number
+        , id
+        , tx_hash
+        , tx_from
+        , evt_index
+        , event_type
+        , token0
+        , token1
+        , amount0 as amount0_raw
+        , amount1 as amount1_raw
+    from 
+    token_tfers 
 {% endmacro %}
