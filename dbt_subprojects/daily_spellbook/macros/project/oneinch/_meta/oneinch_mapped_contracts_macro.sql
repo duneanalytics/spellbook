@@ -522,25 +522,17 @@ contracts as (
     {% if blockchain in ['ethereum','bnb','polygon','arbitrum','avalanche_c','optimism','base','linea','unichain'] %}
     union all
     select
-        substr(topic3, 13) as address
+        settler_address as address
         , true as user
         , 'ZeroEx' as project
-        , concat(case substr(topic1, 32)
+        , case substr(token_id, 32)
             when 0x02 then 'Settler'
             when 0x03 then 'SettlerMetaTxn'
             when 0x04 then 'SettlerIntent'
             when 0x05 then 'BridgeSettler'
             else concat('Settler', cast(substr(topic1, 32) as varchar))
-        end, 'V', lpad(cast(bytearray_to_bigint(substr(topic2, 32)) as varchar), 2, '0')) as tag
-        , substr(topic2, 32) as version
-    from {{ source(blockchain, 'logs') }}
-    where
-        {% if is_incremental() %}
-            {{ incremental_predicate('block_time') }}
-        {% else %}
-            block_time >= timestamp '2024-05-01'
-        {% endif %}
-        and topic0 = 0xaa94c583a45742b26ac5274d230aea34ab334ed5722264aa5673010e612bc0b2
+        end as tag
+    from {{ source('zeroex_' + blockchain, 'settler_addresses') }}
     {% endif %}
 )
 
