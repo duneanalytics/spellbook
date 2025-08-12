@@ -514,23 +514,26 @@
 with 
 
 contracts_union as (
-    -- zeroex settlers
-    {% if blockchain not in ['gnosis','sonic','zksync'] %} -- not deployed on
-    select 
-        settler_address as address
-        , true as user
-        , 'ZeroEx' as project
-        , 'Settler' as tag
-    from {{ source('zeroex_' + blockchain, 'settler_addresses') }}
-    union all 
-    {% endif %}
-
     -- from config
     select * from (values
         {% for row in config if blockchain in row[4] %}
             {% if not loop.first %}, {% endif %}({{ row[0] }}, {{ row[1] }}, '{{ row[2] }}', '{{ row[3] }}')
         {% endfor %}
     ) as c(address, user, project, tag)
+
+
+    -- zeroex settlers
+    {% if blockchain not in ['gnosis','sonic','zksync'] %} -- not deployed on
+    union all 
+    select 
+        settler_address as address
+        , true as user
+        , 'ZeroEx' as project
+        , 'Settler' as tag
+    from {{ source('zeroex_' + blockchain, 'settler_addresses') }}
+    {% endif %}
+
+    -- paste other automated contracts below
 )
     
 , contracts as (
@@ -602,15 +605,3 @@ join creations using(blockchain, address)
 order by project, blockchain, last_created_at, tag, address
 
 {% endmacro %}
-
-
-
-
-
--- LIFI: https://github.com/lifinance/contracts/tree/main/deployments
--- ODOS: https://docs.odos.xyz/build/contracts
--- KYBER: https://docs.kyberswap.com/kyberswap-solutions/kyberswap-aggregator/contracts/aggregator-contract-addresses
--- ENSO: https://docs.enso.build/pages/build/reference/deployments
--- OPENOCEAN: https://apis.openocean.finance/developer/apis/swap-api/contracts-of-chains
--- FLY (MAGPIE): https://docs.fly.trade/developers/deployments
--- OKXDEX: https://web3.okx.com/build/dev-docs/dex-api/dex-smart-contract
