@@ -17,8 +17,6 @@
 -- Sophon mainnet launch date: 2024-10-22 (Block #1 timestamp)
 {{ transfers_enrich(
     base_transfers = ref('tokens_sophon_base_transfers'),
-    tokens_erc20_model = source('tokens', 'erc20'),
-    prices_model = source('prices__dev_rob', 'day'),
     transfers_start_date = '2024-10-22',
     blockchain = 'sophon'
   ) 

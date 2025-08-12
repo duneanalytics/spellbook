@@ -17,8 +17,6 @@
 {{
     transfers_enrich(
         base_transfers = ref('tokens_fantom_base_transfers')
-        , tokens_erc20_model = source('tokens', 'erc20')
-        , prices_model = source('prices__dev_rob', 'day')
         , transfers_start_date = '2019-12-27'
         , blockchain = 'fantom'
     )

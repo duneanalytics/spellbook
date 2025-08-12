@@ -17,8 +17,6 @@
 -- Tac mainnet launch date: 2025-06-11 (Block #1)
 {{ transfers_enrich(
     base_transfers = ref('tokens_tac_base_transfers'),
-    tokens_erc20_model = source('tokens', 'erc20'),
-    prices_model = source('prices__dev_rob', 'day'),
     transfers_start_date = '2025-06-11',
     blockchain = 'tac'
   ) 
