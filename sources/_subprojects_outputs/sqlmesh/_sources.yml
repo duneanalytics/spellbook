@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: prices__dev_rob_rob
+  - name: prices__dev_rob
     tables:
       - name: day
   - name: prices
