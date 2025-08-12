@@ -50,6 +50,40 @@ models:
       - *withdrawalRoot
       - *strategy
       - *shares
+  - name: eigenlayer_ethereum_slashing_withdrawal_queued_flattened
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: haminkang
+    config:
+      tags: ['eigenlayer', 'restaking', 'slashing', 'withdrawal']
+    description: >
+      Flattened slashing withdrawal queued events
+    columns:
+      - *evt_block_time
+      - *evt_block_number
+      - *evt_tx_hash
+      - *evt_index
+      - *withdrawalRoot
+      - *strategy
+      - *shares
+  - name: eigenlayer_ethereum_slashing_withdrawal_completed_enriched
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: haminkang
+    config:
+      tags: ['eigenlayer', 'restaking', 'slashing', 'withdrawal']
+    description: >
+      Slashing withdrawal completed events, enriched with slashing withdrawal queued strategy and share breakdowns
+    columns:
+      - *evt_block_time
+      - *evt_block_number
+      - *evt_tx_hash
+      - *evt_index
+      - *withdrawalRoot
+      - *strategy
+      - *shares
   - name: eigenlayer_ethereum_strategy_shares_inflow_by_day
     meta:
       blockchain: ethereum

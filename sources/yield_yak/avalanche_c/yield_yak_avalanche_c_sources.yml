@@ -96,6 +96,14 @@ sources:
       - name: BirdyStrategyForLP_evt_Withdraw
       - name: BirdyStrategyForLP_evt_Reinvest
       - name: BirdyStrategyForLP_evt_Transfer
+      - name: BlackholeStableStrategy_evt_Deposit
+      - name: BlackholeStableStrategy_evt_Withdraw
+      - name: BlackholeStableStrategy_evt_Reinvest
+      - name: BlackholeStableStrategy_evt_Transfer
+      - name: BlackholeStrategy_evt_Deposit
+      - name: BlackholeStrategy_evt_Withdraw
+      - name: BlackholeStrategy_evt_Reinvest
+      - name: BlackholeStrategy_evt_Transfer
       - name: BlizzStrategyAvaxV1_evt_Deposit
       - name: BlizzStrategyAvaxV1_evt_Withdraw
       - name: BlizzStrategyAvaxV1_evt_Reinvest

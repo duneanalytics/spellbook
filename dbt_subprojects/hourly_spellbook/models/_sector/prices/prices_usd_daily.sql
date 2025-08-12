@@ -3,10 +3,7 @@
         alias = 'usd_daily',
         materialized = 'table',
         file_format = 'delta',
-        post_hook = '{{ expose_spells(\'["ethereum", "solana", "arbitrum", "base", "gnosis", "optimism", "bnb", "avalanche_c", "polygon", "scroll", "zksync"]\',
-                                    "sector",
-                                    "prices",
-                                    \'["aalan3"]\') }}'
+        post_hook = '{{ hide_spells() }}'
         )
 }}
 

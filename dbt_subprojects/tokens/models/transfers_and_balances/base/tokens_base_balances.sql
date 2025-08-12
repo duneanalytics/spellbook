@@ -2,11 +2,7 @@
     schema = 'tokens_base',
     alias = 'balances',
     materialized = 'view',
-    post_hook = '{{ expose_spells(
-                        blockchains = \'["base"]\',
-                        spell_type = "sector",
-                        spell_name = "balances",
-                        contributors = \'["aalan3"]\') }}'
+    post_hook = '{{ hide_spells() }}'
     )
 }}
 

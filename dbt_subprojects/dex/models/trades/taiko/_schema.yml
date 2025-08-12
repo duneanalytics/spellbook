@@ -10,6 +10,7 @@ models:
       tags: ['taiko', 'dex', 'trades']
     description: 'All DEX trades on Taiko'
     data_tests:
+      - check_columns_dex_base_trades
       - check_dex_info_relationship
       - test_acceptable_usd_amount:
           column_name: amount_usd

@@ -1,10 +1,7 @@
 {{ config(
         
         alias = 'bep20_latest',
-        post_hook='{{ expose_spells(\'["bnb"]\',
-                                    "sector",
-                                    "balances",
-                                    \'["Henrystats"]\') }}'
+        post_hook='{{ hide_spells() }}'
         )
 }}
 

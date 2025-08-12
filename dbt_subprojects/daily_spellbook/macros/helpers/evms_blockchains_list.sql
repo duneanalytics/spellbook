@@ -38,6 +38,7 @@
         "sonic",
         "sophon",
         "superseed",
+        "tac",
         "taiko",
         "unichain",
         "viction",
