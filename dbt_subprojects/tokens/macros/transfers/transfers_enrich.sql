@@ -1,12 +1,19 @@
 {% macro transfers_enrich(
     base_transfers = null
-    , tokens_erc20_model = null
-    , prices_model = null
+    , tokens_erc20_model = source('tokens', 'erc20')
+    , prices_model = 'day'
     , transfers_start_date = '2000-01-01'
     , blockchain = null
     , usd_amount_threshold = 25000000000
     )
 %}
+
+{%- if blockchain is none or blockchain == '' -%}
+    {{ exceptions.raise_compiler_error("blockchain parameter cannot be null or empty") }}
+{%- endif -%}
+{%- if base_transfers is none or base_transfers == '' -%}
+    {{ exceptions.raise_compiler_error("base_transfers parameter cannot be null or empty") }}
+{%- endif -%}
 
 WITH base_transfers as (
     SELECT
@@ -30,7 +37,7 @@ WITH base_transfers as (
         , symbol
         , price
     FROM
-        {{ prices_model }}
+        {{ source('prices', prices_model) }}
     {% if is_incremental() %}
     WHERE
         {{ incremental_predicate('timestamp') }}
@@ -70,7 +77,7 @@ WITH base_transfers as (
         AND tokens_erc20.contract_address = t.contract_address
     LEFT JOIN
         prices
-        ON date_trunc('hour', t.block_time) = prices.timestamp
+        ON date_trunc('{{ prices_model }}', t.block_time) = prices.timestamp
         AND t.blockchain = prices.blockchain
         AND t.contract_address = prices.contract_address
 )
@@ -96,14 +103,11 @@ WITH base_transfers as (
         , amount_raw
         , amount
         , price_usd
-        , amount_usd
-        /*
         , CASE
             WHEN amount_usd >= {{ usd_amount_threshold }}
                 THEN CAST(NULL as double)
                 ELSE amount_usd -- Select only transfers where USD amount is less than the threshold
             END AS amount_usd
-        */
     FROM
         transfers
 )
