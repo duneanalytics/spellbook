@@ -411,6 +411,8 @@
         , ('0x6000da47483062a0d734ba3dc7576ce6a0b645c4', 'true', 'UniswapX'             , 'UniswapXV1'              , ['ethereum'])
         , ('0x00000011f84b9aa48e5f8aa8b9897600006289be', 'true', 'UniswapX'             , 'UniswapXV2'              , ['ethereum'])
         , ('0x1bd1aAdc9E230626C44a139d7E70d842749351eb', 'true', 'UniswapX'             , 'UniswapXV2'              , ['arbitrum'])
+        , ('0x000000001ec5656dcdb24d90dfa42742738de729', 'true', 'UniswapX'             , 'UniswapXV2'              , ['base'])
+        , ('0x00000006021a6bce796be7ba509bbba71e956e37', 'true', 'UniswapX'             , 'UniswapXV2'              , ['unichain'])
         , ('0x9c12939390052919af3155f41bf4160fd3666a6f', 'true', 'Velodrome'            , 'Router'                  , ['optimism'])
         , ('0xa132dab612db5cb9fc9ac426a0cc215a3423f9c9', 'true', 'Velodrome'            , 'Router'                  , ['optimism'])
         , ('0x777777773fdd8b28bb03377d10fcea75ad9768da', 'true', 'Viarouter'            , 'ViaRouter'               , ['polygon','arbitrum','optimism'])
@@ -525,12 +527,13 @@ contracts as (
         settler_address as address
         , true as user
         , 'ZeroEx' as project
-        , case substr(token_id, 32)
-            when 0x02 then 'Settler'
-            when 0x03 then 'SettlerMetaTxn'
-            when 0x04 then 'SettlerIntent'
-            when 0x05 then 'BridgeSettler'
-            else concat('Settler', cast(substr(topic1, 32) as varchar))
+        , case token_id
+            when 1 then 'Settler'
+            when 2 then 'Settler'
+            when 3 then 'SettlerMetaTxn'
+            when 4 then 'SettlerIntent'
+            when 5 then 'BridgeSettler'
+        else concat('Settler', cast(token_id as varchar))
         end as tag
     from {{ source('zeroex_' + blockchain, 'settler_addresses') }}
     {% endif %}
