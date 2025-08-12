@@ -1,6 +1,6 @@
 {{ config(
-    schema = 'eulerswap_bnb'
-    , alias = 'raw_trades'
+    schema = 'eulerswap_ethereum'
+    , alias = 'trades'
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
@@ -11,10 +11,10 @@
 
 {{
     eulerswap_downstream_trades(
-        blockchain = 'bnb'
+        blockchain = 'ethereum'
         , project = 'eulerswap'
         , version = '1'
-        , eulerswapinstance_evt_swap = source('eulerswap_bnb', 'eulerswapinstance_evt_swap')
-        , eulerswap_pools_created = ref('eulerswap_bnb_pool_creations') 
+        , eulerswapinstance_evt_swap = source('eulerswap_ethereum', 'eulerswapinstance_evt_swap')
+        , eulerswap_pools_created = ref('eulerswap_ethereum_pool_creations') 
     )
 }}

@@ -58,10 +58,7 @@ dexs as (
         , s.amount1Out
         , s.sender -- router 
         , s.evt_index
-        , case 
-            when t.tx_hash is not null then 'uni_v4' 
-            else 'OG' 
-         end as source
+        , t.tx_hash as uni_tx_hash
     from 
     {{ eulerswapinstance_evt_swap }} s 
     left join 
@@ -115,10 +112,10 @@ select
     , dexs.eulerAccount 
     , dexs.factory_address 
     , dexs.sender 
-    , dexs.source
 from 
 dexs 
 where {{ filter }}
+and uni_tx_hash is not null 
 
 {% endmacro %}
 

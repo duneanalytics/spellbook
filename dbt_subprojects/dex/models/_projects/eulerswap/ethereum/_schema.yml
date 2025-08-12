@@ -107,7 +107,7 @@ models:
         name: isActive
         description: "returns True or False on if pool is active"
 
-  - name: eulerswap_ethereum_raw_trades
+  - name: eulerswap_ethereum_trades
     meta:
       blockchain: ethereum
       sector: dex

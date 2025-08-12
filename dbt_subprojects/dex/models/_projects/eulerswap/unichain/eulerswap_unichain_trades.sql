@@ -1,6 +1,6 @@
 {{ config(
     schema = 'eulerswap_unichain'
-    , alias = 'raw_trades'
+    , alias = 'trades'
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'

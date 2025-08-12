@@ -5,15 +5,15 @@
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
-    , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index']
+    , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'block_month']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
 
 {% set base_models = [
-    ref('eulerswap_ethereum_raw_trades')
-    , ref('eulerswap_bnb_raw_trades')
-    , ref('eulerswap_unichain_raw_trades')
+    ref('eulerswap_ethereum_trades')
+    , ref('eulerswap_bnb_trades')
+    , ref('eulerswap_unichain_trades')
 ] %}
 
 select * from  (
@@ -42,7 +42,10 @@ select * from  (
         , tx_hash
         , tx_from
         , tx_to
-        , evt_index
+        , case 
+            when source = 'uni-v4' then evt_index - 1
+            else evt_index 
+        end as evt_index
         , pool_creation_time
         , fee 
         , protocolFee 

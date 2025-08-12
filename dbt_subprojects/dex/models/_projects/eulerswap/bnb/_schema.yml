@@ -107,7 +107,7 @@ models:
         name: isActive
         description: "returns True or False on if pool is active"
 
-  - name: eulerswap_bnb_raw_trades
+  - name: eulerswap_bnb_trades
     meta:
       blockchain: bnb
       sector: dex

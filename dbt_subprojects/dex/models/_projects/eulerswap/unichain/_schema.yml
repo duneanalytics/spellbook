@@ -107,7 +107,7 @@ models:
         name: isActive
         description: "returns True or False on if pool is active"
 
-  - name: eulerswap_unichain_raw_trades
+  - name: eulerswap_unichain_trades
     meta:
       blockchain: unichain
       sector: dex
