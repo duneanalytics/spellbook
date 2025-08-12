@@ -97,7 +97,7 @@ SELECT
     ,b.gas_limit_usage
 FROM base_model as b
 LEFT JOIN {{ source('prices', 'hour') }} as p --celo can pay gas with various tokens, can't use macro for native token prices only
-    ON p.timestamp = date_trunc('hour', b.block_time)
+    ON p.timestamp = date_trunc('day', b.block_time)
     AND p.blockchain = '{{blockchain}}'
     AND p.contract_address = b.tx_fee_currency
     {% if is_incremental() %}

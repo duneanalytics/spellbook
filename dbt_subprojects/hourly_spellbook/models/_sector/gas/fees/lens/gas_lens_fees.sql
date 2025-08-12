@@ -85,4 +85,4 @@ SELECT
     ,b.gas_limit_usage
 FROM base_model as b
 LEFT JOIN native_token_prices as p
-    ON p.timestamp = date_trunc('hour', b.block_time)
+    ON p.timestamp = date_trunc('day', b.block_time)

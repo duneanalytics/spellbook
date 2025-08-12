@@ -1,6 +1,6 @@
 {% macro native_token_prices(
     blockchain = ''
-    , time_unit = 'hour'
+    , time_unit = 'day'
     )
 -%}
 
