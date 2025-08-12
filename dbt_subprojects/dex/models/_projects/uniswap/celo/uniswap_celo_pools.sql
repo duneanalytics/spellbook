@@ -1,30 +1,34 @@
 {{ config(
-    
     schema = 'uniswap_celo',
     alias = 'pools',
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['pool'],
-    post_hook='{{ expose_spells(\'["celo"]\',
-                                "project",
-                                "uniswap",
-                                \'["tomfutago"]\') }}'
+    materialized = 'view'
     )
 }}
 
-SELECT
-  'celo' AS blockchain,
-  'uniswap' AS project,
-  'v3' AS version,
-  pool,
-  fee,
-  token0,
-  token1,
-  evt_block_time AS creation_block_time,
-  evt_block_number AS creation_block_number,
-  contract_address
-FROM {{ source('uniswap_v3_celo', 'UniswapV3Factory_evt_PoolCreated') }}
-{% if is_incremental() %}
-WHERE {{incremental_predicate('evt_block_time')}}
-{% endif %}
+{% set version_models = [
+ref('uniswap_v3_celo_pools')
+] %}
+
+
+SELECT *
+FROM (
+    {% for dex_pool_model in version_models %}
+    SELECT
+        blockchain
+        , project
+        , version
+        , id
+        , fee
+        , token0
+        , token1
+        , creation_block_time
+        , creation_block_number
+        , contract_address
+        , tx_hash 
+        , evt_index 
+    FROM {{ dex_pool_model }}
+    {% if not loop.last %}
+    UNION ALL
+    {% endif %}
+    {% endfor %}
+)
