@@ -30,4 +30,6 @@ FROM
     , ('usr-resolv-usr', 'USR', 0xb1b385542B6E80F77B94393Ba8342c3Af699f15c, 18)
     , ('rlp-resolv-rlp', 'RLP', 0x35533f54740F1F1aA4179E57bA37039dfa16868B, 18)
     , ('m-btc-merlins-seal-btc', 'M-BTC', 0xe82dbD543FD729418613d68Cd1E8FC67b0f46E31, 18)
+    , ('unibtc-universal-btc', 'uniBTC', 0xf9775085d726e782e83585033b58606f7731ab18, 8)
+    , ('wrseth-wrapped-rseth', 'wrsETH', 0x5448bbf60ee2edbcd32f032f3294982f4ad1119e, 18)
 ) as temp (token_id, symbol, contract_address, decimals)
