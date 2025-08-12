@@ -25,7 +25,7 @@ WITH base_transfers as (
         {{ incremental_predicate('block_date') }}
     {% else %}
     WHERE
-        block_date >= TIMESTAMP '2025-07-01'
+        block_date >= TIMESTAMP '{{ transfers_start_date }}'
     {% endif %}
 )
 , prices AS (
@@ -43,7 +43,7 @@ WITH base_transfers as (
         {{ incremental_predicate('timestamp') }}
     {% else %}
     WHERE
-        timestamp >= TIMESTAMP '2025-07-01'
+        timestamp >= TIMESTAMP '{{ transfers_start_date }}'
     {% endif %}
 )
 , transfers as (
