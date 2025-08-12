@@ -7,4 +7,3 @@ sources:
     
     tables:
       - name: ExchangeProxy_evt_TransformedERC20
-      - name: settler_addresses

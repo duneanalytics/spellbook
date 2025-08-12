@@ -11,7 +11,6 @@ sources:
       - name: ExchangeProxy_evt_LiquidityProviderSwap
       - name: ExchangeProxy_evt_ERC721OrderFilled
       - name: ExchangeProxy_evt_ERC1155OrderFilled
-      - name: settler_addresses
 
   # for native orders on v2
   - name: zeroex_v2_ethereum

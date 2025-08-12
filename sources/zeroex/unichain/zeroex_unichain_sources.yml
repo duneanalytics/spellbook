@@ -1,8 +1,0 @@
-version: 2
-
-sources: 
-  - name: zeroex_unichain
-    description: "base decoded tables related to 0x Exchange Proxy (v4)"
-    
-    tables:
-      - name: settler_addresses
