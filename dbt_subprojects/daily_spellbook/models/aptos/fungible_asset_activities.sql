@@ -45,7 +45,6 @@ WITH coin_activities AS (
             AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
             AND move_resource_module = 'coin'
             AND move_resource_name = 'CoinStore'
-            AND block_date = DATE('2025-01-01') -- DEBUG
         {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
         {% endif %}
@@ -56,7 +55,6 @@ WITH coin_activities AS (
         AND ev.guid_creation_number = mr.creation_num
     WHERE 1=1
         AND event_type IN ('0x1::coin::WithdrawEvent', '0x1::coin::DepositEvent')
-        AND ev.block_date = DATE('2025-01-01') -- DEBUG
     {% if is_incremental() %}
         AND {{ incremental_predicate('block_time') }}
     {% endif %}

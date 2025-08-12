@@ -23,7 +23,6 @@ FROM (
     {% if is_incremental() %}
         AND {{ incremental_predicate('block_time') }}
     {% else %}
-        AND block_date = DATE('2025-01-01') -- DEBUG
         AND block_date >= DATE('2024-08-02') -- beginning of FA (v2) migration
     {% endif %}
     GROUP BY 1
