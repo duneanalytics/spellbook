@@ -12,6 +12,9 @@ models:
         Metadata for [fungible assets](https://aptos.dev/concepts/fungible-assets)
         and [legacy coins](https://aptos.dev/build/smart-contracts/aptos-coin) on Aptos.
         [Explainer for Supply and Volume](https://aptoslabs.medium.com/data-analyst-guide-to-aptos-supply-and-volume-pt-3-535e312946ad) on Aptos.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: ['tx_hash', 'asset_type']
     columns:
       - name: block_date
         description: The date of the block containing the transaction
@@ -59,6 +62,9 @@ models:
         Balances for [fungible assets](https://aptos.dev/concepts/fungible-assets)
         and [legacy coins](https://aptos.dev/build/smart-contracts/aptos-coin) on Aptos.
         [Explainer for activity and balances](https://aptoslabs.medium.com/data-analyst-guide-to-aptos-supply-and-volume-pt-3-535e312946ad) on Aptos.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: ['tx_hash', 'write_set_change_index']
     columns:
       - name: block_date
         description: The date of the block containing the transaction
@@ -96,6 +102,9 @@ models:
         Activities for [fungible assets](https://aptos.dev/concepts/fungible-assets)
         and [legacy coins](https://aptos.dev/build/smart-contracts/aptos-coin) on Aptos.
         [Explainer for activity and balances](https://aptoslabs.medium.com/data-analyst-guide-to-aptos-supply-and-volume-pt-3-535e312946ad) on Aptos.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: ['tx_hash', 'event_index']
     columns:
       - name: block_date
         description: The date of the block containing the transaction
@@ -132,6 +141,9 @@ models:
     description: >
         Mappings for migration of [legacy coins](https://aptos.dev/build/smart-contracts/aptos-coin)
         to [fungible assets](https://aptos.dev/concepts/fungible-assets) on Aptos.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: ['asset_type_v2']
     columns:
       - name: asset_type_v1
         description: "Asset identifier for v1"
@@ -149,6 +161,9 @@ models:
         Latest metadata for [fungible assets](https://aptos.dev/concepts/fungible-assets)
         and [legacy coins](https://aptos.dev/build/smart-contracts/aptos-coin) on Aptos.
         [Explainer for Supply and Volume](https://aptoslabs.medium.com/data-analyst-guide-to-aptos-supply-and-volume-pt-3-535e312946ad) on Aptos.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: ['asset_type']
     columns:
       - name: block_date
         description: The date of the block containing the transaction
