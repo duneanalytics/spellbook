@@ -1,3 +1,9 @@
+{{ config(
+    schema = 'aptos_fungible_asset',
+    alias = 'metadata_current',
+    materialized = 'view'
+) }}
+
 WITH latest_metadata AS (
     SELECT *, ROW_NUMBER() OVER (PARTITION BY asset_type ORDER BY block_time DESC) AS rn
     FROM {{ ref('fungible_asset_metadata') }}
