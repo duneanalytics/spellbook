@@ -52,3 +52,5 @@ WITH dexes AS (
            WHERE
                {{ incremental_predicate('block_time') }}
           {% endif %}
+
+-- refresh 
