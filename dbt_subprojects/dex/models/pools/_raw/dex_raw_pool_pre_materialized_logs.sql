@@ -30,8 +30,6 @@
     where topic0 in ({{ dex_raw_pools_logs_config_macro().keys() | join(',') }})
         {% if is_incremental() %}
             and {{ incremental_predicate('block_time') }}
-        {% else %}
-                and block_time > date('2025-08-01')
         {% endif %}
     {% if not loop.last %}
         union all
