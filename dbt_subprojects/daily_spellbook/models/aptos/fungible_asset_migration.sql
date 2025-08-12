@@ -1,6 +1,11 @@
 {{ config(
-    materialized='incremental',
-    unique_key=['asset_type_v2'],
+    schema = 'aptos_fungible_asset',
+    alias = 'migrations',
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    unique_key = ['asset_type_v2'],
 ) }}
 
 SELECT
@@ -17,7 +22,6 @@ FROM (
         AND move_resource_name = 'PairedCoinType'
     {% if is_incremental() %}
         AND {{ incremental_predicate('block_time') }}
-        AND '0x' || LPAD(lower(to_hex(move_address)), 64, '0') NOT IN (SELECT asset_type_v2 FROM {{ this }})
     {% else %}
         AND block_date = DATE('2025-01-01') -- DEBUG
         AND block_date >= DATE('2024-08-02') -- beginning of FA (v2) migration

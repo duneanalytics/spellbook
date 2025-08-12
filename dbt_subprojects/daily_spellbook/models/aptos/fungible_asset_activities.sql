@@ -2,9 +2,14 @@
 -- https://github.com/aptos-labs/aptos-indexer-processors-v2/blob/main/processor/src/processors/fungible_asset/fungible_asset_processor.rs
 
 {{ config(
-    materialized='incremental',
-    unique_key=['tx_hash', 'event_index'],
-    partition_by = ['block_date'],
+    schema = 'aptos_fungible_asset',
+    alias = 'activities',
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    unique_key = ['tx_hash', 'event_index'],
+    partition_by = ['block_month'],
 ) }}
 
 WITH coin_activities AS (
@@ -90,6 +95,7 @@ SELECT
     tx_hash,
     block_date,
     block_time,
+    date(date_trunc('month', block_time)) as block_month,
     --
     event_index,
     event_type,
@@ -107,6 +113,7 @@ SELECT
     tx_hash,
     block_date,
     block_time,
+    date(date_trunc('month', block_time)) as block_month,
     --
     event_index,
     event_type,

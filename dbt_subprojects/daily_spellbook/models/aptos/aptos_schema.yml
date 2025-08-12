@@ -19,6 +19,8 @@ models:
         description: The version of the transaction
       - name: block_time
         description: The timestamp of the block containing the transaction
+      - name: block_month
+        description: The month of the block containing the transaction
       - name: tx_hash
         description: The hash of the transaction
       - name: write_set_change_index
@@ -64,6 +66,8 @@ models:
         description: The version of the transaction
       - name: block_time
         description: The timestamp of the block containing the transaction
+      - name: block_month
+        description: The month of the block containing the transaction
       - name: tx_hash
         description: The hash of the transaction
       - name: write_set_change_index
@@ -99,6 +103,8 @@ models:
         description: The version of the transaction
       - name: block_time
         description: The timestamp of the block containing the transaction
+      - name: block_month
+        description: The month of the block containing the transaction
       - name: tx_hash
         description: The hash of the transaction
       - name: event_index
@@ -150,6 +156,8 @@ models:
         description: The version of the transaction
       - name: block_time
         description: The timestamp of the block containing the transaction
+      - name: block_month
+        description: The month of the block containing the transaction
       - name: tx_hash
         description: The hash of the transaction
       - name: write_set_change_index

@@ -1,7 +1,12 @@
 {{ config(
-    materialized='incremental',
-    unique_key=['tx_hash', 'write_set_change_index'],
-    partition_by = ['block_date'],
+    schema = 'aptos_fungible_asset',
+    alias = 'balances',
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    unique_key = ['tx_hash', 'write_set_change_index'],
+    partition_by = ['block_month'],
 ) }}
 
 -- TODO: edge cases around deleted balances / objects
@@ -93,6 +98,7 @@ SELECT
     block_date,
     tx_version,
     block_time,
+    date(date_trunc('month', block_time)) as block_month,
     tx_hash,
     --
     write_set_change_index,
@@ -114,6 +120,7 @@ SELECT
     block_date,
     tx_version,
     block_time,
+    date(date_trunc('month', block_time)) as block_month,
     tx_hash,
     --
     write_set_change_index,

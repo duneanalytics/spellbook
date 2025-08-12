@@ -348,6 +348,3 @@ models:
       +schema: aerodrome
       base:
         +schema: aerodrome_base
-
-    aptos:
-      +schema: aptos

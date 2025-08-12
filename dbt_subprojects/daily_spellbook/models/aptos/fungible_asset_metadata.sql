@@ -7,9 +7,14 @@
 -- creator_address is the asset address for v1 and owner for v2 (can change for v2)
 -- creator_address is not needed for coins/fa, it's a holdover from tokens (where it is used as key with name)
 {{ config(
-    materialized='incremental',
-    unique_key=['tx_hash', 'asset_type'],
-    partition_by = ['block_date'],
+    schema = 'aptos_fungible_asset',
+    alias = 'metadata',
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    unique_key = ['tx_hash', 'asset_type'],
+    partition_by = ['block_month'],
 ) }}
 
 WITH mr_fa_metadata AS (
@@ -112,6 +117,7 @@ SELECT
     block_date,
     tx_version,
     block_time,
+    date(date_trunc('month', block_time)) as block_month,
     tx_hash,
     --
     write_set_change_index,
@@ -141,6 +147,7 @@ SELECT
     m.block_date,
     m.tx_version,
     m.block_time,
+    date(date_trunc('month', block_time)) as block_month,
     m.tx_hash,
     --
     write_set_change_index,

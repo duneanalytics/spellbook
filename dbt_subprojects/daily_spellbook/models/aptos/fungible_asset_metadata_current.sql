@@ -7,6 +7,7 @@ SELECT
     block_date,
     tx_version,
     block_time,
+    block_month,
     tx_hash,
     --
     write_set_change_index,
