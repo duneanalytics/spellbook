@@ -108,16 +108,7 @@ WITH base_transfers as (
         transfers
 )
 SELECT
-    src.*
+    *
 FROM
-    final as src
-{% if is_incremental() -%}
-LEFT JOIN
-    {{ this }} as tgt
-    ON src.unique_key = tgt.unique_key
-    AND src.block_month = tgt.block_month
-    AND src.block_date = tgt.block_date
-WHERE
-    tgt.unique_key IS NULL
-{% endif -%}
+    final
 {%- endmacro %}
