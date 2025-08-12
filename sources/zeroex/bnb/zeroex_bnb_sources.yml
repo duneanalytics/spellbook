@@ -10,6 +10,7 @@ sources:
       - name: ExchangeProxy_evt_OtcOrderFilled
       - name: ExchangeProxy_evt_RfqOrderFilled
       - name: ExchangeProxy_evt_LiquidityProviderSwap
+      - name: settler_addresses
 
     # for native orders on v2
   - name: zeroex_v2_bnb

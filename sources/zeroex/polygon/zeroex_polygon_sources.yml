@@ -19,6 +19,7 @@ sources:
       - name: ExchangeProxy_call_batchBuyERC1155s
       - name: ExchangeProxy_call_sellERC721
       - name: ExchangeProxy_call_sellERC1155
+      - name: settler_addresses
 
 
     # for native orders on v3
