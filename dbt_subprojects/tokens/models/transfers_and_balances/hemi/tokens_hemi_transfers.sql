@@ -18,7 +18,7 @@
     transfers_enrich(
         base_transfers = ref('tokens_hemi_base_transfers')
         , tokens_erc20_model = source('tokens', 'erc20')
-        , prices_model = source('prices__dev', 'day')
+        , prices_model = source('prices__dev_rob', 'day')
         , transfers_start_date = '2024-09-09'
         , blockchain = 'hemi'
     )

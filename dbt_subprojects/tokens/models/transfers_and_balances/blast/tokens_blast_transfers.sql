@@ -18,7 +18,7 @@
     transfers_enrich(
         base_transfers = ref('tokens_blast_base_transfers')
         , tokens_erc20_model = source('tokens', 'erc20')
-        , prices_model = source('prices__dev', 'day')
+        , prices_model = source('prices__dev_rob', 'day')
         , transfers_start_date = '2020-04-22'
         , blockchain = 'blast'
     )
