@@ -772,5 +772,6 @@ FROM
         ('bbsol-bybit-staked-sol', 'solana', 'bbSOL', 'Bybit2vBJGhPF52GBdNaQfUJ6ZpThSgHBobjWZpLPb4B', 9),
         ('pump-pumpfun', 'solana', 'PUMP', 'pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn', 6),
         ('es-eclipse', 'solana', 'ES', 'BqPqrrQuoQXFGGEAEMnPmDgZ6RWQCajWnY3V6Yp4DZWP', 6),
+        ('frag-fragmetric', 'solana', 'FRAG', 'FRAGMEWj2z65qM62zqKhNtwNFskdfKs4ekDUDX3b4VD5', 9),
         ('wct-walletconnect-token', 'solana', 'WCT', 'WCTk5xWdn5SYg56twGj32sUF3W4WFQ48ogezLBuYTBY', 9)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
