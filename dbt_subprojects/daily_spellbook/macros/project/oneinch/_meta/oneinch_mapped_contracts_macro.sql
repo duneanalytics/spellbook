@@ -435,6 +435,8 @@
         , ('0x145f83ad6108391cbf9ed554e5ce1dbd984437f8', 'true', 'ZeroEx'               , 'ExchangeV2'              , ['bnb','polygon'])
         , ('0x61935cbdd02287b511119ddb11aeb42f1593b7ef', 'true', 'ZeroEx'               , 'ExchangeV3'              , ['ethereum'])
         , ('0x18381c0f738146fb694de18d1106bde2be040fa4', 'true', 'ZkSwap'               , 'Router'                  , ['zksync'])
+
+
         , ('0xe7b0ce0526fbe3969035a145c9e9691d4d9d216c', 'false', 'Clipper'             , 'Clipper'                 , ['ethereum','arbitrum'])
         , ('0x655edce464cc797526600a462a8154650eee4b77', 'false', 'Clipper'             , 'Clipper'                 , ['ethereum'])
         , ('0x2e9c6Dcdca22A5952A88C4b18EDB5B54C5155BC9', 'false', 'Clipper'             , 'Clipper'                 , ['ethereum'])
@@ -503,6 +505,7 @@
         , ('0x6a3e4b7e23661108aaec70266c468e6c679ae022', 'false', 'Unknown'             , 'Unknown'                 , ['arbitrum'])
         , ('0xf770c63b1764a9c8f0fa925044158b09855a7faf', 'false', 'Unknown'             , 'Unknown'                 , ['arbitrum'])
         , ('0x00000000001f8b68515efb546542397d3293ccfd', 'false', 'Unknown'             , 'ArbBot'                  , ['bnb'])
+        
     ]
 %}
 
@@ -510,7 +513,7 @@
 
 with 
 
-contracts as (
+contracts_union as (
     -- from config
     select * from (values
         {% for row in config if blockchain in row[4] %}
@@ -518,33 +521,22 @@ contracts as (
         {% endfor %}
     ) as c(address, user, project, tag)
 
-    -- automated
-    {% if blockchain in ['ethereum','bnb','polygon','arbitrum','avalanche_c','optimism','base','linea','unichain'] %}
-    union all
-    select
-        substr(topic3, 13) as address
+
+    -- zeroex settlers
+    {% if blockchain not in ['gnosis','sonic','zksync'] %} -- not deployed on
+    union all 
+    select 
+        settler_address as address
         , true as user
         , 'ZeroEx' as project
-        , concat(case substr(topic1, 32)
-            when 0x02 then 'Settler'
-            when 0x03 then 'SettlerMetaTxn'
-            when 0x04 then 'SettlerIntent'
-            when 0x05 then 'BridgeSettler'
-            else concat('Settler', cast(substr(topic1, 32) as varchar))
-        end, 'V', lpad(cast(bytearray_to_bigint(substr(topic2, 32)) as varchar), 2, '0')) as tag
-        , substr(topic2, 32) as version
-    from {{ source(blockchain, 'logs') }}
-    where
-        {% if is_incremental() %}
-            {{ incremental_predicate('block_time') }}
-        {% else %}
-            block_time >= timestamp '2024-05-01'
-        {% endif %}
-        and topic0 = 0xaa94c583a45742b26ac5274d230aea34ab334ed5722264aa5673010e612bc0b2
+        , 'Settler' as tag
+    from {{ source('zeroex_' + blockchain, 'settler_addresses') }}
     {% endif %}
-)
 
-, additions as (
+    -- paste other automated contracts below
+)
+    
+, contracts as (
     select distinct
         '{{blockchain}}' as blockchain
         , address
@@ -574,8 +566,7 @@ contracts as (
         ], project) or position('bridge' in lower(concat(project, tag))) > 0 as cross_chain
         , tag
     from (
-        select address, max(project) as project, max(user) as user, max(tag) as tag
-        from contracts
+        select address, max(project) as project, max(user) as user, max(tag) as tag from contracts_union
         group by address
     )
 )
@@ -609,7 +600,7 @@ select
     , last_created_at
     , last_creator
     , last_creation_tx_hash
-from additions
+from contracts
 join creations using(blockchain, address)
 order by project, blockchain, last_created_at, tag, address
 

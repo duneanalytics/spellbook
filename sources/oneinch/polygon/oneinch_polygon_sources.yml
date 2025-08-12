@@ -69,3 +69,8 @@ sources:
       - name: EscrowFactoryV1_evt_SrcEscrowCreated
       - name: lop
       - name: ar
+
+
+  - name: zeroex_polygon
+    tables:
+      - name: settler_addresses
