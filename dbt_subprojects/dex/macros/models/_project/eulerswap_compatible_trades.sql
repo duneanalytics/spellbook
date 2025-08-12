@@ -114,7 +114,7 @@ select
     , dexs.sender 
 from 
 dexs 
-where uni_tx_hash is not null 
+where uni_tx_hash is null 
 
 {% endmacro %}
 
