@@ -1,4 +1,4 @@
-{% macro safe_native_transfer_wrapper(blockchain, native_token_symbol=none, project_start_date=none) %}
+{% macro safe_native_transfer_wrapper(blockchain, native_token_symbol=none, project_start_date=none, date_filter=false) %}
 {%- set network_config = get_safe_network_config(blockchain) -%}
 {%- set token = native_token_symbol if native_token_symbol else network_config.native_token -%}
 {%- set start_date = project_start_date if project_start_date else network_config.start_date -%}
@@ -15,7 +15,8 @@
     safe_native_transfers(
         blockchain = blockchain,
         native_token_symbol = token,
-        project_start_date = start_date
+        project_start_date = start_date,
+        date_filter = date_filter
     )
 }}
 {% endmacro %}
@@ -108,7 +109,7 @@ FROM (
 )
 {% endmacro %}
 
-{% macro safe_transactions_wrapper(blockchain, project_start_date=none) %}
+{% macro safe_transactions_wrapper(blockchain, project_start_date=none, date_filter=false) %}
 {%- set network_config = get_safe_network_config(blockchain) -%}
 {%- set start_date = project_start_date if project_start_date else network_config.start_date -%}
 
@@ -119,5 +120,5 @@ FROM (
     )
 }}
 
-{{ safe_transactions(blockchain, start_date) }}
+{{ safe_transactions(blockchain, start_date, date_filter) }}
 {% endmacro %}
