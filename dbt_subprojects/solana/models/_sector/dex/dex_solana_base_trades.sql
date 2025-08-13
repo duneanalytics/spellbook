@@ -23,11 +23,12 @@ ref('raydium_v3_base_trades')
   , ref('lifinity_v2_base_trades')
   , ref('meteora_v1_solana_base_trades')
   , ref('meteora_v2_solana_base_trades')
+  , ref('meteora_v3_solana_base_trades')
   , ref('goosefx_ssl_v2_solana_base_trades')
   , ref('pumpdotfun_solana_base_trades')
   , ref('pumpswap_solana_base_trades')
   , ref('pancakeswap_v3_solana_base_trades') 
-  , ref('meteora_v3_solana_base_trades')
+  , ref('solfi_solana_base_trades') 
 ] %}
 
 /*
