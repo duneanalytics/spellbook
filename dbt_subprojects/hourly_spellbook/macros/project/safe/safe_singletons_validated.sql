@@ -65,8 +65,9 @@
 {% macro safe_singletons_modern_validated(blockchain, sources_list, date_filter=false) %}
 -- Fetch all known singleton addresses used via the factory
 -- FILTERED to only include official Safe deployments
-{%- set official_addresses = get_official_safe_addresses() -%}
-{%- if sources_list and sources_list|length > 0 -%}
+{% set official_addresses = get_official_safe_addresses() %}
+{% if sources_list and sources_list|length > 0 %}
+
 WITH all_singletons AS (
     {%- for source_info in sources_list %}
     select distinct singleton as address 
@@ -97,9 +98,10 @@ WHERE FALSE
 {% macro safe_singletons_legacy_validated(blockchain, legacy_sources, modern_sources, date_filter=false) %}
 -- Fetch all known singleton/mastercopy addresses used via factories
 -- FILTERED to only include official Safe deployments
-{%- set official_addresses = get_official_safe_addresses() -%}
-{%- set has_sources = (legacy_sources and legacy_sources|length > 0) or (modern_sources and modern_sources|length > 0) -%}
-{%- if has_sources -%}
+{% set official_addresses = get_official_safe_addresses() %}
+{% set has_sources = (legacy_sources and legacy_sources|length > 0) or (modern_sources and modern_sources|length > 0) %}
+{% if has_sources %}
+
 WITH all_singletons AS (
     {%- for source_info in legacy_sources %}
     select distinct {{ source_info.column }} as address 
@@ -144,7 +146,8 @@ WHERE FALSE
 {% macro safe_singletons_ethereum_validated(date_filter=false) %}
 -- Fetch all known singleton/mastercopy addresses used via factories for Ethereum
 -- FILTERED to only include official Safe deployments
-{%- set official_addresses = get_official_safe_addresses() -%}
+{% set official_addresses = get_official_safe_addresses() %}
+
 WITH all_singletons AS (
     select distinct masterCopy as address 
     from {{ source('gnosis_safe_ethereum', 'ProxyFactoryv1_0_0_call_createProxy') }}
