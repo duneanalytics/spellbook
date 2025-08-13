@@ -1,5 +1,6 @@
 {{ 
     safe_transactions_wrapper(
-        blockchain = 'ethereum'
+        blockchain = 'ethereum',
+        date_filter = true
     )
 }}

@@ -1,5 +1,6 @@
 {{ 
     safe_transactions_wrapper(
-        blockchain = 'celo'
+        blockchain = 'celo',
+        date_filter = true
     )
 }}

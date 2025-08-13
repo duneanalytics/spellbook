@@ -5,4 +5,9 @@
     )
 }}
 
-{{ safe_safes_creation('polygon') }}
+{{ 
+    safe_safes_creation(
+        blockchain = 'polygon',
+        date_filter = true
+    ) 
+}}

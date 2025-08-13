@@ -1,5 +1,6 @@
 {{ 
     safe_transactions_wrapper(
-        blockchain = 'unichain'
+        blockchain = 'unichain',
+        date_filter = true
     )
 }}

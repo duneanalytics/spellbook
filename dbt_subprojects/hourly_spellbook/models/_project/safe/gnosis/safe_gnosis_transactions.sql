@@ -1,5 +1,6 @@
 {{ 
     safe_transactions_wrapper(
-        blockchain = 'gnosis'
+        blockchain = 'gnosis',
+        date_filter = true
     )
 }}

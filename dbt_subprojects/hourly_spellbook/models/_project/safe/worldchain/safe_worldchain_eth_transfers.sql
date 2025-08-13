@@ -1,5 +1,6 @@
 {{ 
     safe_native_transfer_wrapper(
-        blockchain = 'worldchain'
+        blockchain = 'worldchain',
+        date_filter = true
     )
 }}

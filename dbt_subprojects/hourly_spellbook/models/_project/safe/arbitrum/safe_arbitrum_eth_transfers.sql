@@ -1,5 +1,6 @@
 {{ 
     safe_native_transfer_wrapper(
-        blockchain = 'arbitrum'
+        blockchain = 'arbitrum',
+        date_filter = true
     )
 }}

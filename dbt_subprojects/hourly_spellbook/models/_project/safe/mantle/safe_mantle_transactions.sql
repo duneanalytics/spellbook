@@ -1,5 +1,6 @@
 {{ 
     safe_transactions_wrapper(
-        blockchain = 'mantle'
+        blockchain = 'mantle',
+        date_filter = true
     )
 }}

@@ -1,5 +1,6 @@
 {{ 
     safe_native_transfer_wrapper(
-        blockchain = 'zksync'
+        blockchain = 'zksync',
+        date_filter = true
     )
 }}

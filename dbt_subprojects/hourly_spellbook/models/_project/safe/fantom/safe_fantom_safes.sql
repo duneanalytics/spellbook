@@ -7,6 +7,7 @@
 
 {{ 
     safe_safes_creation(
-        blockchain = 'fantom'
+        blockchain = 'fantom',
+        date_filter = true
     ) 
 }}
