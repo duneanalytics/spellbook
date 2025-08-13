@@ -46,6 +46,7 @@
     , ref('swaap_v2_bnb_base_trades')
     , ref('hyperjump_bnb_base_trades')
     , ref('native_bnb_base_trades')
+    , ref('eulerswap_bnb_base_trades')
 ] %}
 with base_union as (
     SELECT *
