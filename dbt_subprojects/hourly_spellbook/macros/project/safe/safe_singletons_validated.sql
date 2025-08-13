@@ -1,45 +1,64 @@
-{% macro get_official_safe_addresses() %}
+{% macro get_official_safe_deployments() %}
     {#- 
-    Returns a list of all official Safe singleton addresses
-    Used to filter discovered singletons to only include official deployments
+    Single source of truth for all official Safe singleton addresses and their versions
+    Returns a dictionary mapping addresses to their version info
     
     Official Safe Singleton Addresses by version:
     ============================================
-    v1.0.0 - Safe:   0xb6029EA3B2c51D09a50B53CA8012FeEB05bDa35A
+    v0.1.0 - Safe:   0x8942595A2dC5181Df0465af0D7be08c8f23C93af (pre-audit, not validated in singletons)
+    v1.0.0 - Safe:   0xb6029EA3B2c51D09a50B53CA8012FEeB05bDa35A
+    v1.1.0 - Safe:   0xae32496491b53841efb51829d6f886387708F99B (not validated in singletons)
     v1.1.1 - Safe:   0x34CfAC646f301356fAa8B21e94227e3583Fe3F5F
     v1.2.0 - Safe:   0x6851D6fDFAfD08c0295C392436245E5bc78B0185
     v1.3.0 - Safe:   0xd9Db270c1B5E3Bd161E8c8503c55cEABeE709552
-    v1.3.0 - Safe:   0x69f4D1788e39c87893C980c06EdF4b7f686e2938
-    v1.3.0 - Safe:   0xB00ce5CCcdEf57e539ddcEd01DF43a13855d9910
+    v1.3.0 - Safe:   0x69f4D1788e39c87893C980c06EdF4b7f686e2938 (EIP-155)
+    v1.3.0 - Safe:   0xB00ce5CCcdEf57e539ddcEd01DF43a13855d9910 (ZKSync)
     v1.3.0 - SafeL2: 0x3E5c63644E683549055b9Be8653de26E0B4CD36E
-    v1.3.0 - SafeL2: 0xfb1bffC9d739B8D520DaF37dF666da4C687191EA
-    v1.3.0 - SafeL2: 0x1727c2c531cf966f902E5927b98490fDFb3b2b70
+    v1.3.0 - SafeL2: 0xfb1bffC9d739B8D520DaF37dF666da4C687191EA (EIP-155)
+    v1.3.0 - SafeL2: 0x1727c2c531cf966f902E5927b98490fDFb3b2b70 (ZKSync)
     v1.4.1 - Safe:   0x41675C099F32341bf84BFc5382aF534df5C7461a
-    v1.4.1 - Safe:   0xC35F063962328aC65cED5D4c3fC5dEf8dec68dFa
+    v1.4.1 - Safe:   0xC35F063962328aC65cED5D4c3fC5dEf8dec68dFa (ZKSync)
     v1.4.1 - SafeL2: 0x29fcB43b46531BcA003ddC8FCB67FFE91900C762
-    v1.4.1 - SafeL2: 0x610fcA2e0279Fa1F8C00c8c2F71dF522AD469380
+    v1.4.1 - SafeL2: 0x610fcA2e0279Fa1F8C00c8c2F71dF522AD469380 (ZKSync)
     v1.5.0 - Safe:   0xFf51A5898e281Db6DfC7855790607438dF2ca44b
     v1.5.0 - SafeL2: 0xEdd160fEBBD92E350D4D398fb636302fccd67C7e
     
     Source: https://github.com/safe-global/safe-deployments
     #}
-    {%- set addresses = [
-        '0xb6029EA3B2c51D09a50B53CA8012FeEB05bDa35A',
-        '0x34CfAC646f301356fAa8B21e94227e3583Fe3F5F',
-        '0x6851D6fDFAfD08c0295C392436245E5bc78B0185',
-        '0xd9Db270c1B5E3Bd161E8c8503c55cEABeE709552',
-        '0x69f4D1788e39c87893C980c06EdF4b7f686e2938',
-        '0xB00ce5CCcdEf57e539ddcEd01DF43a13855d9910',
-        '0x3E5c63644E683549055b9Be8653de26E0B4CD36E',
-        '0xfb1bffC9d739B8D520DaF37dF666da4C687191EA',
-        '0x1727c2c531cf966f902E5927b98490fDFb3b2b70',
-        '0x41675C099F32341bf84BFc5382aF534df5C7461a',
-        '0xC35F063962328aC65cED5D4c3fC5dEf8dec68dFa',
-        '0x29fcB43b46531BcA003ddC8FCB67FFE91900C762',
-        '0x610fcA2e0279Fa1F8C00c8c2F71dF522AD469380',
-        '0xFf51A5898e281Db6DfC7855790607438dF2ca44b',
-        '0xEdd160fEBBD92E350D4D398fb636302fccd67C7e'
-    ] -%}
+    {%- set deployments = {
+        '0x8942595A2dC5181Df0465af0D7be08c8f23C93af': {'version': '0.1.0', 'validate': false},
+        '0xb6029EA3B2c51D09a50B53CA8012FEeB05bDa35A': {'version': '1.0.0', 'validate': true},
+        '0xae32496491b53841efb51829d6f886387708F99B': {'version': '1.1.0', 'validate': false},
+        '0x34CfAC646f301356fAa8B21e94227e3583Fe3F5F': {'version': '1.1.1', 'validate': true},
+        '0x6851D6fDFAfD08c0295C392436245E5bc78B0185': {'version': '1.2.0', 'validate': true},
+        '0xd9Db270c1B5E3Bd161E8c8503c55cEABeE709552': {'version': '1.3.0', 'validate': true},
+        '0x69f4D1788e39c87893C980c06EdF4b7f686e2938': {'version': '1.3.0', 'validate': true, 'note': 'EIP-155'},
+        '0xB00ce5CCcdEf57e539ddcEd01DF43a13855d9910': {'version': '1.3.0', 'validate': true, 'note': 'ZKSync'},
+        '0x3E5c63644E683549055b9Be8653de26E0B4CD36E': {'version': '1.3.0L2', 'validate': true},
+        '0xfb1bffC9d739B8D520DaF37dF666da4C687191EA': {'version': '1.3.0L2', 'validate': true, 'note': 'EIP-155'},
+        '0x1727c2c531cf966f902E5927b98490fDFb3b2b70': {'version': '1.3.0L2', 'validate': true, 'note': 'ZKSync'},
+        '0x41675C099F32341bf84BFc5382aF534df5C7461a': {'version': '1.4.1', 'validate': true},
+        '0xC35F063962328aC65cED5D4c3fC5dEf8dec68dFa': {'version': '1.4.1', 'validate': true, 'note': 'ZKSync'},
+        '0x29fcB43b46531BcA003ddC8FCB67FFE91900C762': {'version': '1.4.1L2', 'validate': true},
+        '0x610fcA2e0279Fa1F8C00c8c2F71dF522AD469380': {'version': '1.4.1L2', 'validate': true, 'note': 'ZKSync'},
+        '0xFf51A5898e281Db6DfC7855790607438dF2ca44b': {'version': '1.5.0', 'validate': true},
+        '0xEdd160fEBBD92E350D4D398fb636302fccd67C7e': {'version': '1.5.0L2', 'validate': true}
+    } -%}
+    {{ return(deployments) }}
+{% endmacro %}
+
+{% macro get_official_safe_addresses() %}
+    {#- 
+    Returns a list of official Safe singleton addresses that should be validated
+    Filters the full deployment list to only include addresses marked for validation
+    #}
+    {%- set deployments = get_official_safe_deployments() -%}
+    {%- set addresses = [] -%}
+    {%- for address, info in deployments.items() -%}
+        {%- if info.validate -%}
+            {%- set _ = addresses.append(address) -%}
+        {%- endif -%}
+    {%- endfor -%}
     {{ return(addresses) }}
 {% endmacro %}
 
