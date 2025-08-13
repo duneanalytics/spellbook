@@ -47,7 +47,7 @@ left join {{ source('prices', 'usd') }} p on p.blockchain is null
     and p.symbol = 'ETH'
     and p.minute = date_trunc('minute', r.evt_block_time)
 where
-    r.contract_address = 0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000
+    LOWER(r.contract_address) = LOWER('0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000')
     and r.value > UINT256 '0'
     {% if not is_incremental() %}
     and r.evt_block_time > TIMESTAMP '{{project_start_date}}'
@@ -77,7 +77,7 @@ left join {{ source('prices', 'usd') }} p on p.blockchain is null
     and p.symbol = 'ETH'
     and p.minute = date_trunc('minute', r.evt_block_time)
 where
-    r.contract_address = 0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000
+    LOWER(r.contract_address) = LOWER('0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000')
     and r.value > UINT256 '0'
     {% if not is_incremental() %}
     and r.evt_block_time > TIMESTAMP '{{project_start_date}}'
