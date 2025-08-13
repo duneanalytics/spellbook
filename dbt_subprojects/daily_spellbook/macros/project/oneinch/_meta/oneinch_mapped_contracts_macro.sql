@@ -247,7 +247,7 @@
         , ('0x2E1Dee213BA8d7af0934C49a23187BabEACa8764', 'true', 'OKXDEX'               , 'DexRouter'               , ['ethereum'])
         , ('0x8feB9E84b7E9DC86adc6cD6Eb554C5B4355c8405', 'true', 'OKXDEX'               , 'DexRouter'               , ['sonic'])
         , ('0x010BC6B1014E5ed8284ab0667b116AAb99588159', 'true', 'OKXDEX'               , 'DexRouter'               , ['zksync'])
-        , ('0x86F752f1F662f39BFbcBeF95EE56B6C20d178969', 'true', 'OKXDEX'               , 'DexRouter'               , ['optimimsm'])
+        , ('0x86F752f1F662f39BFbcBeF95EE56B6C20d178969', 'true', 'OKXDEX'               , 'DexRouter'               , ['optimism'])
         , ('0xF5402CCC5fC3181B45D7571512999D3Eea0257B6', 'true', 'OKXDEX'               , 'DexRouter'               , ['polygon'])
         , ('0x6015126d7D23648C2e4466693b8DeaB005ffaba8', 'true', 'OKXDEX'               , 'DexRouter'               , ['bnb'])
         , ('0x79f7C6C6dc16Ed3154E85A8ef9c1Ef31CEFaEB19', 'true', 'OKXDEX'               , 'DexRouter'               , ['avalanche_c'])
