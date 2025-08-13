@@ -26,7 +26,7 @@ filter_2_back_forth AS (
         AND dt1.tx_to = dt2.tx_from
         AND dt1.token_bought_address = dt2.token_sold_address
         AND dt1.token_sold_address = dt2.token_bought_address
-        AND ABS(EXTRACT(EPOCH FROM (dt1.block_time - dt2.block_time))) < 300 -- 5 minutes arbitrary threshold
+        AND date_diff('second', dt1.block_time, dt2.block_time) BETWEEN -300 AND 300 -- 5 minutes arbitrary threshold
         AND dt1.blockchain = '{{blockchain}}'
         AND dt2.blockchain = '{{blockchain}}'
     WHERE dt1.blockchain = '{{blockchain}}'
