@@ -1,13 +1,6 @@
-{{ 
-    config(
-        materialized='table',
-        schema = 'safe_polygon',
-        alias = 'singletons',
-        post_hook='{{ expose_spells(\'["polygon"]\',
-                                    "project",
-                                    "safe",
-                                    \'["tschubotz"]\') }}'
-    ) 
-}}
+{{ safe_table_config(
+    blockchain = 'polygon',
+    alias_name = 'singletons'
+) }}
 
-{{ safe_singletons_by_network_validated('polygon', only_official=true) }}
+{{ safe_singletons_by_network_validated('polygon', only_official=true, date_filter=true) }}

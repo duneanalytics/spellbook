@@ -16,12 +16,14 @@
 }}
 
 {% set project_start_date = '2021-11-17' %}
+{% set date_filter = true %}
 
 {{
     safe_native_transfers(
         blockchain = 'optimism',
         native_token_symbol = 'ETH',
-        project_start_date = project_start_date
+        project_start_date = project_start_date,
+        date_filter = date_filter
     )
 }}
 
@@ -49,9 +51,10 @@ where
     and r.value > UINT256 '0'
     {% if not is_incremental() %}
     and r.evt_block_time > TIMESTAMP '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-    and r.evt_block_time >= date_trunc('day', now() - interval '10' day)
+    {% elif is_incremental() %}
+        {% if date_filter %}
+        and r.evt_block_time >= date_trunc('day', now() - interval '10' day)
+        {% endif %}
     {% endif %}
 
 union all
@@ -78,7 +81,8 @@ where
     and r.value > UINT256 '0'
     {% if not is_incremental() %}
     and r.evt_block_time > TIMESTAMP '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-    and r.evt_block_time >= date_trunc('day', now() - interval '10' day)
+    {% elif is_incremental() %}
+        {% if date_filter %}
+        and r.evt_block_time >= date_trunc('day', now() - interval '10' day)
+        {% endif %}
     {% endif %}

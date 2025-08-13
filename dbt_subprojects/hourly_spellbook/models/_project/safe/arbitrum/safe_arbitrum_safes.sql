@@ -7,6 +7,7 @@
 
 {{ 
     safe_safes_creation(
-        blockchain = 'arbitrum'
+        blockchain = 'arbitrum',
+        date_filter = true
     ) 
 }}

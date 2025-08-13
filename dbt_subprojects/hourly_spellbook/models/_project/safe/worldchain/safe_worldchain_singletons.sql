@@ -1,13 +1,6 @@
-{{ 
-    config(
-        materialized='table',
-        schema = 'safe_worldchain',
-        alias = 'singletons',
-        post_hook='{{ expose_spells(\'["worldchain"]\',
-                                    "project",
-                                    "safe",
-                                    \'["danielpartida"]\') }}'
-    ) 
-}}
+{{ safe_table_config(
+    blockchain = 'worldchain',
+    alias_name = 'singletons'
+) }}
 
-{{ safe_singletons_by_network_validated('worldchain', only_official=true) }}
+{{ safe_singletons_by_network_validated('worldchain', only_official=true, date_filter=true) }}

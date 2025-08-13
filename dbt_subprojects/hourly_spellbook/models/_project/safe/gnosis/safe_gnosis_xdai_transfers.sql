@@ -1,6 +1,7 @@
 {{ 
     safe_native_transfer_wrapper(
-        blockchain = 'gnosis'
+        blockchain = 'gnosis',
+        date_filter = true
     )
 }}
 

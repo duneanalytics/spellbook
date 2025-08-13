@@ -1,5 +1,6 @@
 {{ 
     safe_transactions_wrapper(
-        blockchain = 'zksync'
+        blockchain = 'zksync',
+        date_filter = true
     )
 }}

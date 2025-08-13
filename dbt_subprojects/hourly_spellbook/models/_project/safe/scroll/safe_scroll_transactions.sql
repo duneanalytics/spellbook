@@ -1,5 +1,6 @@
 {{ 
     safe_transactions_wrapper(
-        blockchain = 'scroll'
+        blockchain = 'scroll',
+        date_filter = true
     )
 }}

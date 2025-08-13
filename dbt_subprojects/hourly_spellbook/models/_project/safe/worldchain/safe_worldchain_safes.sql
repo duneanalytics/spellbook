@@ -7,6 +7,7 @@
 
 {{ 
     safe_safes_creation(
-        blockchain = 'worldchain'
+        blockchain = 'worldchain',
+        date_filter = true
     ) 
 }}

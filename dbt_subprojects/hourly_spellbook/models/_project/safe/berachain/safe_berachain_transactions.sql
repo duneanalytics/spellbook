@@ -1,5 +1,6 @@
 {{ 
     safe_transactions_wrapper(
-        blockchain = 'berachain'
+        blockchain = 'berachain',
+        date_filter = true
     )
 }}

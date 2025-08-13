@@ -1,5 +1,6 @@
 {{ 
     safe_native_transfer_wrapper(
-        blockchain = 'blast'
+        blockchain = 'blast',
+        date_filter = true
     )
 }}

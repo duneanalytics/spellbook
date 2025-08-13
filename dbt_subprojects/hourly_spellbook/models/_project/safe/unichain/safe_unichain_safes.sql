@@ -7,6 +7,7 @@
 
 {{ 
     safe_safes_creation(
-        blockchain = 'unichain'
+        blockchain = 'unichain',
+        date_filter = true
     ) 
 }}

@@ -7,6 +7,7 @@
 
 {{ 
     safe_safes_creation(
-        blockchain = 'berachain'
+        blockchain = 'berachain',
+        date_filter = true
     ) 
 }}

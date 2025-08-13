@@ -1,5 +1,6 @@
 {{ 
     safe_native_transfer_wrapper(
-        blockchain = 'polygon'
+        blockchain = 'polygon',
+        date_filter = true
     )
 }}

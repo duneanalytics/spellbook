@@ -1,5 +1,6 @@
 {{ 
     safe_native_transfer_wrapper(
-        blockchain = 'celo'
+        blockchain = 'celo',
+        date_filter = true
     )
 }}

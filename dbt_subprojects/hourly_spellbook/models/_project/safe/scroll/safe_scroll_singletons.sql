@@ -1,13 +1,6 @@
-{{ 
-    config(
-        materialized='table',
-        schema = 'safe_scroll',
-        alias = 'singletons',
-        post_hook='{{ expose_spells(\'["scroll"]\',
-                                    "project",
-                                    "safe",
-                                    \'["danielpartida"]\') }}'
-    ) 
-}}
+{{ safe_table_config(
+    blockchain = 'scroll',
+    alias_name = 'singletons'
+) }}
 
-{{ safe_singletons_by_network_validated('scroll', only_official=true) }}
+{{ safe_singletons_by_network_validated('scroll', only_official=true, date_filter=true) }}

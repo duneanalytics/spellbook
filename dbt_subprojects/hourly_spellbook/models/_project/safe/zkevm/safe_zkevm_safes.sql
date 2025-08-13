@@ -7,6 +7,7 @@
 
 {{ 
     safe_safes_creation(
-        blockchain = 'zkevm'
+        blockchain = 'zkevm',
+        date_filter = true
     ) 
 }}

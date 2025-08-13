@@ -1,5 +1,6 @@
 {{ 
     safe_transactions_wrapper(
-        blockchain = 'linea'
+        blockchain = 'linea',
+        date_filter = true
     )
 }}

@@ -7,6 +7,7 @@
 
 {{ 
     safe_safes_creation(
-        blockchain = 'scroll'
+        blockchain = 'scroll',
+        date_filter = true
     ) 
 }}
