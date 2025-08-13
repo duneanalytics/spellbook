@@ -10,7 +10,7 @@
             ]
         },
         'avalanche_c': {
-            'start_date': '2021-07-29',
+            'start_date': '2021-10-05',
             'native_token': 'AVAX',
             'singleton_type': 'modern',
             'singleton_sources': [
@@ -18,7 +18,7 @@
             ]
         },
         'base': {
-            'start_date': '2023-06-15',
+            'start_date': '2023-07-01',
             'native_token': 'ETH',
             'singleton_type': 'modern',
             'singleton_sources': [
@@ -27,7 +27,7 @@
             ]
         },
         'berachain': {
-            'start_date': '2024-01-11',
+            'start_date': '2025-01-01',
             'native_token': 'BERA',
             'singleton_type': 'modern',
             'singleton_sources': [
@@ -46,7 +46,7 @@
             ]
         },
         'bnb': {
-            'start_date': '2021-01-29',
+            'start_date': '2021-01-26',
             'native_token': 'BNB',
             'legacy_singleton_sources': [
                 {'table': 'ProxyFactory_v1_1_1_call_createProxy', 'column': 'masterCopy'},
@@ -59,7 +59,7 @@
             ]
         },
         'celo': {
-            'start_date': '2021-07-20',
+            'start_date': '2021-06-20',
             'native_token': 'CELO',
             'singleton_type': 'modern',
             'singleton_sources': [
@@ -72,7 +72,7 @@
             'singleton_type': 'legacy_ethereum'
         },
         'fantom': {
-            'start_date': '2021-12-20',
+            'start_date': '2021-11-25',
             'native_token': 'FTM',
             'singleton_type': 'modern',
             'singleton_sources': [
@@ -81,7 +81,7 @@
             'has_native_transfers': false
         },
         'gnosis': {
-            'start_date': '2020-05-15',
+            'start_date': '2020-05-21',
             'native_token': 'xDAI',
             'legacy_singleton_sources': [
                 {'table': 'ProxyFactory_v1_1_1_call_createProxy', 'column': 'masterCopy'},
@@ -103,7 +103,7 @@
             ]
         },
         'mantle': {
-            'start_date': '2023-07-14',
+            'start_date': '2023-07-12',
             'native_token': 'MNT',
             'singleton_type': 'modern',
             'singleton_sources': [
@@ -135,7 +135,7 @@
             ]
         },
         'ronin': {
-            'start_date': '2024-03-19',
+            'start_date': '2024-10-01',
             'native_token': 'ETH',
             'singleton_type': 'modern',
             'singleton_sources': [
@@ -143,7 +143,7 @@
             ]
         },
         'scroll': {
-            'start_date': '2023-10-10',
+            'start_date': '2023-10-15',
             'native_token': 'ETH',
             'singleton_type': 'modern',
             'singleton_sources': [
@@ -152,7 +152,7 @@
             ]
         },
         'unichain': {
-            'start_date': '2024-11-19',
+            'start_date': '2025-01-29',
             'native_token': 'ETH',
             'singleton_type': 'modern',
             'singleton_sources': [
@@ -161,7 +161,7 @@
             ]
         },
         'worldchain': {
-            'start_date': '2024-10-21',
+            'start_date': '2024-10-01',
             'native_token': 'ETH',
             'singleton_type': 'modern',
             'singleton_sources': [
@@ -170,7 +170,7 @@
             ]
         },
         'zkevm': {
-            'start_date': '2023-03-24',
+            'start_date': '2023-09-01',
             'native_token': 'MATIC',
             'singleton_type': 'modern',
             'singleton_sources': [
@@ -179,7 +179,7 @@
             ]
         },
         'zksync': {
-            'start_date': '2023-02-14',
+            'start_date': '2023-09-01',
             'native_token': 'ETH',
             'singleton_type': 'modern',
             'singleton_sources': [
