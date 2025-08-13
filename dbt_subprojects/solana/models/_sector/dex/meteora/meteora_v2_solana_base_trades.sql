@@ -127,5 +127,3 @@ select
 )
 
 select * from met_v2_trades
-
-

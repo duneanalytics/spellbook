@@ -119,7 +119,7 @@ WITH pools AS (
                     ORDER BY t.inner_instruction_index ASC 
                 ) as rn
     FROM swaps_with_fees sf
-    INNER JOIN {{ ref('tokens_solana_transfers') }} t
+    INNER JOIN {{ source('tokens_solana','transfers') }} t
         ON t.tx_id = sf.tx_id
         AND t.block_slot = sf.block_slot
         AND t.outer_instruction_index = sf.outer_instruction_index
