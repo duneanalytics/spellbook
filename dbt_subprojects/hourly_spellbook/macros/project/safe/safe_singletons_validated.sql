@@ -189,7 +189,7 @@ WITH all_singletons AS (
     union
     
     select distinct singleton as address 
-    from {{ source('gnosis_safe_ethereum', 'GnosisSafeProxyFactory_v1_3_0_evt_ProxyCreation') }}
+    from {{ source('gnosis_safe_ethereum', 'SafeProxyFactory_v1_3_0_evt_ProxyCreation') }}
     {%- if date_filter %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {%- endif %}
@@ -197,7 +197,12 @@ WITH all_singletons AS (
     union
     
     select distinct singleton as address
-    from {{ source('gnosis_safe_ethereum', 'SafeProxyFactory_v_1_4_1_evt_ProxyCreation') }}
+    from {{ source('gnosis_safe_ethereum', 'SafeProxyFactory_v1_4_1_evt_ProxyCreation') }}
+
+    union
+    
+    select distinct singleton as address
+    from {{ source('gnosis_safe_ethereum', 'SafeProxyFactory_v1_5_0_evt_ProxyCreation') }}
     {%- if date_filter %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {%- endif %}
