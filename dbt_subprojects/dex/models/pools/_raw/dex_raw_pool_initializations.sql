@@ -25,8 +25,6 @@ select * from (
     from {{ ref('dex_raw_pool_pre_materialized_traces') }}
     where 
         substr(input, 1, 4) = 0x485cc955 
-        and success
-        and tx_success
         {% if is_incremental() %}
             and {{ incremental_predicate('block_time') }}
         {% endif %}
