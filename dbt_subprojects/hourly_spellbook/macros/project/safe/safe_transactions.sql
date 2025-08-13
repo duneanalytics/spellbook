@@ -1,4 +1,4 @@
-{% macro safe_transactions(blockchain, project_start_date) %}
+{% macro safe_transactions(blockchain, project_start_date, date_filter=false) %}
 
 select
     '{{ blockchain }}' as blockchain,
@@ -36,7 +36,9 @@ join {{ source(blockchain, 'transactions') }} et
     on tr.block_date = et.block_date
     and tr.tx_hash = et.hash
     and tr.block_number = et.block_number
-    {% if is_incremental() %}
+    {% if date_filter %}
+    and et.block_time >= date_trunc('day', now() - interval '7' day)
+    {% elif is_incremental() %}
     and {{ incremental_predicate('et.block_time') }}
     {% endif %}
 where bytearray_substring(tr.input, 1, 4) in (
@@ -45,7 +47,9 @@ where bytearray_substring(tr.input, 1, 4) in (
         0x5229073f -- execTransactionFromModuleReturnData
     )
     and tr.call_type = 'delegatecall'
-    {% if not is_incremental() %}
+    {% if date_filter %}
+    and tr.block_time >= date_trunc('day', now() - interval '7' day)
+    {% elif not is_incremental() %}
     and tr.block_time > TIMESTAMP '{{ project_start_date }}' -- for initial query optimisation
     {% else %}
     and {{ incremental_predicate('tr.block_time') }}
