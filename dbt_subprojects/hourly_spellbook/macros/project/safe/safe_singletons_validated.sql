@@ -66,6 +66,7 @@
 -- Fetch all known singleton addresses used via the factory
 -- FILTERED to only include official Safe deployments
 {%- set official_addresses = get_official_safe_addresses() -%}
+{%- if sources_list and sources_list|length > 0 -%}
 WITH all_singletons AS (
     {%- for source_info in sources_list %}
     select distinct singleton as address 
@@ -86,12 +87,19 @@ WHERE LOWER(address) IN (
     LOWER('{{ addr }}'){% if not loop.last %},{% endif %}
     {%- endfor %}
 )
+{%- else -%}
+-- No source tables available for this network yet
+SELECT CAST(NULL AS VARCHAR) AS address
+WHERE FALSE
+{%- endif -%}
 {% endmacro %}
 
 {% macro safe_singletons_legacy_validated(blockchain, legacy_sources, modern_sources, date_filter=false) %}
 -- Fetch all known singleton/mastercopy addresses used via factories
 -- FILTERED to only include official Safe deployments
 {%- set official_addresses = get_official_safe_addresses() -%}
+{%- set has_sources = (legacy_sources and legacy_sources|length > 0) or (modern_sources and modern_sources|length > 0) -%}
+{%- if has_sources -%}
 WITH all_singletons AS (
     {%- for source_info in legacy_sources %}
     select distinct {{ source_info.column }} as address 
@@ -126,6 +134,11 @@ WHERE LOWER(address) IN (
     LOWER('{{ addr }}'){% if not loop.last %},{% endif %}
     {%- endfor %}
 )
+{%- else -%}
+-- No source tables available for this network yet
+SELECT CAST(NULL AS VARCHAR) AS address
+WHERE FALSE
+{%- endif -%}
 {% endmacro %}
 
 {% macro safe_singletons_ethereum_validated(date_filter=false) %}
@@ -198,7 +211,10 @@ WITH all_singletons AS (
     
     select distinct singleton as address
     from {{ source('gnosis_safe_ethereum', 'SafeProxyFactory_v1_4_1_evt_ProxyCreation') }}
-
+    {%- if date_filter %}
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    {%- endif %}
+    
     union
     
     select distinct singleton as address
