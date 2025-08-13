@@ -219,13 +219,36 @@ The Safe project uses several macros for configuration and logic, located in `ma
 
 ### Validation Macros
 - `safe_singletons_validated.sql`: Validated singleton discovery
-  - `get_official_safe_addresses()`: Returns list of official Safe addresses (15 addresses covering all versions)
+  - `get_official_safe_deployments()`: Single source of truth for all official Safe addresses and versions
+  - `get_official_safe_addresses()`: Returns list of official Safe addresses (15 addresses marked for validation)
   - `safe_singletons_by_network_validated()`: Main macro for validated singleton discovery
   - Filters to only include official Safe deployments
 
 ### Other Macros
-- `safe_safes.sql`: Safe creation logic
-- `safe_utils.sql`: Utility functions for Safe models
+- `safe_safes.sql`: Safe creation logic with version detection
+- `safe_transactions.sql`: Transaction extraction and processing
+- `safe_utils.sql`: Utility functions and wrapper macros for Safe models
+
+## CI/CD Optimization
+
+All Safe macros support a `date_filter` parameter to constrain data to the last 7 days for CI/CD pipeline performance:
+- Set `date_filter=true` in model files to enable filtering
+- This prevents timeouts during automated testing
+- Production runs use full historical data when `date_filter=false` (default)
+
+## Best Practices
+
+### Address Comparisons
+All address comparisons in the Safe project use case-insensitive matching with `LOWER()`:
+- Always wrap addresses in `LOWER()` function for comparisons
+- Example: `LOWER(address) = LOWER('0x...')`
+- This prevents issues with checksummed vs non-checksummed addresses
+
+### Centralized Configuration
+- Project start dates are managed centrally in `safe_network_config.sql`
+- Official Safe addresses are managed in `get_official_safe_deployments()` macro
+- Contributors are managed in `get_safe_contributors()` macro
+- Never hardcode these values in individual models
 
 ## Testing
 
