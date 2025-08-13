@@ -1,12 +1,12 @@
  {{
   config(
-        schema = 'meteora_v1_solana',
+        schema = 'meteora_v4_solana',
         alias = 'trades',
         materialized = 'view',
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "project",
                                     "meteora",
-                                    \'["ilemi"]\') }}')
+                                    \'["0xsandeshk"]\') }}')
 }}
 select
       blockchain
@@ -42,4 +42,4 @@ from
       {{ ref('dex_solana_trades') }}
 where 
       project = 'meteora'
-      and version = 1
+      and version = 4
