@@ -1,55 +1,59 @@
  {{
   config(
-        
-        schema='uniswap_v3_optimism',
-        alias='pools',
-        materialized='table',
-        file_format = 'delta',
-        post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "project",
-                                    "uniswap_v3",
-                                    \'["msilb7", "chuxin"]\') }}'
+      schema='uniswap_optimism',
+      alias = 'pools',
+      materialized = 'view'
   )
 }}
-with uniswap_v3_poolcreated as (
-  select 
-    'optimism' AS blockchain
-    , 'uniswap' AS project
-    , 'v3' AS version
-    , pool
-    , token0
-    , token1
-    , fee
-    , evt_block_time AS creation_block_time
-    , evt_block_number AS creation_block_number
-    , contract_address
-  from {{ source('uniswap_v3_optimism', 'Factory_evt_PoolCreated') }}
-)
 
 select 
-  'optimism' AS blockchain
-  , 'uniswap' AS project
-  , 'v3' AS version
-  , newAddress as pool
-  , token0
-  , token1
-  , fee
-  , creation_block_time
-  , creation_block_number
-  , contract_address
-from {{ ref('uniswap_optimism_ovm1_pool_mapping') }}
-
-union
-
-select
   blockchain
   , project
   , version
-  , pool
-  , token0
-  , token1
-  , fee
+  , contract_address
   , creation_block_time
   , creation_block_number
+  , pool as id 
+  , fee
+  , cast(null as varbinary) as tx_hash -- or use null as varbinary
+  , 0 as evt_index 
+  , token0
+  , token1
+from 
+{{ ref('uniswap_v3_optimism_pools') }} -- V3 pools (including ovm1)
+
+union all 
+
+select 
+  blockchain
+  , project
+  , version
   , contract_address
-from uniswap_v3_poolcreated
+  , creation_block_time
+  , creation_block_number
+  , id
+  , fee
+  , tx_hash
+  , evt_index 
+  , token0
+  , token1
+from 
+{{ ref('uniswap_v2_optimism_pools') }}
+
+union all 
+
+select 
+  blockchain
+  , project
+  , version
+  , contract_address
+  , creation_block_time
+  , creation_block_number
+  , id
+  , fee
+  , tx_hash
+  , evt_index 
+  , token0
+  , token1
+from 
+{{ ref('uniswap_v4_optimism_pools') }}
