@@ -2,7 +2,7 @@
 
 WITH filter_1_same_wallet AS (
     -- Same wallet buys and sells to itself
-    SELECT tx_hash, true AS same_wallet_trading
+    SELECT dt1.tx_hash, true AS same_wallet_trading
     FROM {{ ref('dex_trades') }} dt1
     INNER JOIN {{ ref('dex_trades') }} dt2 
         ON dt1.tx_hash = dt2.tx_hash
@@ -71,26 +71,29 @@ filter_5_net_zero_pnl AS (
         SELECT 
             tx_hash,
             SUM(amount_usd) as total_volume,
-            -- Net USD position change per trader in this transaction
+            -- Calculate net position change for each trader in the transaction
             MAX(ABS(net_position_change)) as max_net_change
         FROM (
+            -- Calculate net position change per trader per transaction
             SELECT 
                 tx_hash,
                 trader_address,
                 SUM(amount_usd) as total_volume,
-                -- Net position change: positive = net buying, negative = net selling
                 SUM(CASE 
-                    WHEN tx_from = trader_address THEN -amount_usd  -- Selling
-                    WHEN tx_to = trader_address THEN amount_usd     -- Buying
+                    WHEN trader_address = tx_from THEN -amount_usd  -- Selling
+                    WHEN trader_address = tx_to THEN amount_usd     -- Buying
                     ELSE 0 
                 END) as net_position_change
-            FROM {{ ref('dex_trades') }}
-            CROSS JOIN (
-                SELECT DISTINCT tx_from as trader_address FROM {{ ref('dex_trades') }}
-                UNION 
-                SELECT DISTINCT tx_to as trader_address FROM {{ ref('dex_trades') }}
-            ) traders
-            WHERE blockchain = '{{blockchain}}'
+            FROM (
+                -- Get all trades with their trader addresses
+                SELECT tx_hash, tx_from as trader_address, amount_usd, blockchain, tx_from, tx_to
+                FROM {{ ref('dex_trades') }}
+                WHERE blockchain = '{{blockchain}}'
+                UNION ALL
+                SELECT tx_hash, tx_to as trader_address, amount_usd, blockchain, tx_from, tx_to
+                FROM {{ ref('dex_trades') }}
+                WHERE blockchain = '{{blockchain}}'
+            ) all_trades
             GROUP BY tx_hash, trader_address
         ) trader_positions
         GROUP BY tx_hash, total_volume
