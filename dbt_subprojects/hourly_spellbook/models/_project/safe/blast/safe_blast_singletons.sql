@@ -1,13 +1,6 @@
-{{ 
-    config(
-        materialized='table',
-        schema = 'gnosis_safe_blast',
-        alias = 'singletons',
-        post_hook='{{ expose_spells(\'["blast"]\',
-                                    "project",
-                                    "safe",
-                                    \'["danielpartida"]\') }}'
-    ) 
-}}
+{{ safe_table_config(
+    blockchain = 'blast',
+    alias_name = 'singletons'
+) }}
 
-{{ safe_singletons_by_network_validated('blast', only_official=true) }}
+{{ safe_singletons_by_network_validated('blast', only_official=true, date_filter=true) }}

@@ -1,5 +1,6 @@
 {{ 
     safe_native_transfer_wrapper(
-        blockchain = 'scroll'
+        blockchain = 'scroll',
+        date_filter = true
     )
 }}

@@ -1,5 +1,6 @@
 {{ 
     safe_native_transfer_wrapper(
-        blockchain = 'ethereum'
+        blockchain = 'ethereum',
+        date_filter = true
     )
 }}

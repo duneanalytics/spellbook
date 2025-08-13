@@ -5,4 +5,9 @@
     )
 }}
 
-{{ safe_safes_creation('optimism') }}
+{{ 
+    safe_safes_creation(
+        blockchain = 'optimism',
+        date_filter = true
+    ) 
+}}

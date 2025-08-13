@@ -1,5 +1,6 @@
 {{ 
     safe_transactions_wrapper(
-        blockchain = 'bnb'
+        blockchain = 'bnb',
+        date_filter = true
     )
 }}

@@ -1,13 +1,6 @@
-{{ 
-    config(
-        materialized='table',
-        schema = 'safe_unichain',
-        alias = 'singletons',
-        post_hook='{{ expose_spells(\'["unichain"]\',
-                                    "project",
-                                    "safe",
-                                    \'["tschubotz", "peterrliem", "safehjc"]\') }}'
-    ) 
-}}
+{{ safe_table_config(
+    blockchain = 'unichain',
+    alias_name = 'singletons'
+) }}
 
-{{ safe_singletons_by_network_validated('unichain', only_official=true) }}
+{{ safe_singletons_by_network_validated('unichain', only_official=true, date_filter=true) }}
