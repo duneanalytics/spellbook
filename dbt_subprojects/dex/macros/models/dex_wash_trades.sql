@@ -70,7 +70,7 @@ filter_5_net_zero_pnl AS (
     FROM (
         SELECT 
             tx_hash,
-            SUM(amount_usd) as total_volume,
+            SUM(trader_volume) as total_volume,
             -- Calculate net position change for each trader in the transaction
             MAX(ABS(net_position_change)) as max_net_change
         FROM (
@@ -78,7 +78,7 @@ filter_5_net_zero_pnl AS (
             SELECT 
                 tx_hash,
                 trader_address,
-                SUM(amount_usd) as total_volume,
+                SUM(amount_usd) as trader_volume,
                 SUM(CASE 
                     WHEN trader_address = tx_from THEN -amount_usd  -- Selling
                     WHEN trader_address = tx_to THEN amount_usd     -- Buying
@@ -87,16 +87,16 @@ filter_5_net_zero_pnl AS (
             FROM (
                 -- Get all trades with their trader addresses
                 SELECT tx_hash, tx_from as trader_address, amount_usd, blockchain, tx_from, tx_to
-                FROM {{ ref('dex_trades') }}
-                WHERE blockchain = '{{blockchain}}'
+                FROM {{ ref('dex_trades') }} dt1
+                WHERE dt1.blockchain = '{{blockchain}}'
                 UNION ALL
                 SELECT tx_hash, tx_to as trader_address, amount_usd, blockchain, tx_from, tx_to
-                FROM {{ ref('dex_trades') }}
-                WHERE blockchain = '{{blockchain}}'
+                FROM {{ ref('dex_trades') }} dt2
+                WHERE dt2.blockchain = '{{blockchain}}'
             ) all_trades
             GROUP BY tx_hash, trader_address
         ) trader_positions
-        GROUP BY tx_hash, total_volume
+        GROUP BY tx_hash
     ) t
     WHERE total_volume > 100000 
         AND (max_net_change / total_volume) < 0.002 -- Less than 0.2% net change - this is an arbitrary threshold
