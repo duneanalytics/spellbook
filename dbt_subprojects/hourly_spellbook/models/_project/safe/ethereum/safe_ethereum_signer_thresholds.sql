@@ -22,7 +22,14 @@ with safes as (
         and et.success = true
         AND bytearray_substring(et.input, 1, 4) = 0x0ec78d9e -- setup methods of v0_1_0
         AND et.call_type = 'delegatecall' -- the delegate call to the master copy is the Safe address
-        AND et.to = 0x8942595a2dc5181df0465af0d7be08c8f23c93af -- mastercopy address v0_1_0
+        {%- set deployments = get_official_safe_deployments() -%}
+        {%- set v0_1_0_address = none -%}
+        {%- for addr, info in deployments.items() -%}
+            {%- if info.version == '0.1.0' -%}
+                {%- set v0_1_0_address = addr -%}
+            {%- endif -%}
+        {%- endfor -%}
+        AND LOWER(et.to) = LOWER('{{ v0_1_0_address }}') -- mastercopy address v0_1_0
     union all
     select
         call_block_time as block_time,
