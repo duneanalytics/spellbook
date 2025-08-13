@@ -1,5 +1,4 @@
 {% macro safe_network_config() %}
-    {%- set default_contributors = ["tschubotz", "hosuke", "danielpartida", "safehjc"] -%}
     {%- set networks = {
         'arbitrum': {
             'start_date': '2021-06-20',
@@ -8,13 +7,7 @@
             'singleton_sources': [
                 'SafeProxyFactory_v1_3_0_evt_ProxyCreation',
                 'SafeProxyFactory_v1_4_1_evt_ProxyCreation'
-            ],
-            'contributors': {
-                'safes': ["tschubotz", "hosuke", "danielpartida"],
-                'singletons': ["tschubotz", "peterrliem"],
-                'eth_transfers': ["tschubotz", "hosuke"],
-                'transactions': ["tschubotz", "hosuke", "danielpartida"]
-            }
+            ]
         },
         'avalanche_c': {
             'start_date': '2021-07-29',
@@ -22,11 +15,7 @@
             'singleton_type': 'modern',
             'singleton_sources': [
                 'SafeProxyFactory_v1_3_0_evt_ProxyCreation',
-            ],
-            'contributors': {
-                'safes': ["tschubotz", "hosuke"],
-                'singletons': ["tschubotz"]
-            }
+            ]
         },
         'base': {
             'start_date': '2023-06-15',
@@ -35,13 +24,7 @@
             'singleton_sources': [
                 'SafeProxyFactory_v1_3_0_evt_ProxyCreation',
                 'SafeProxyFactory_v1_4_1_evt_ProxyCreation'
-            ],
-            'contributors': {
-                'safes': ["danielpartida"],
-                'singletons': ["danielpartida", "peterrliem"],
-                'eth_transfers': ["danielpartida", "hosuke"],
-                'transactions': ["danielpartida"]
-            }
+            ]
         },
         'berachain': {
             'start_date': '2024-01-11',
@@ -70,8 +53,8 @@
                 {'table': 'ProxyFactory_v1_1_1_call_createProxyWithNonce', 'column': '_mastercopy'},
                 {'table': 'ProxyFactory_v1_1_1_call_createProxyWithCallback', 'column': '_mastercopy'}
             ],
-            'singleton_type': 'modern',
-            'singleton_sources': [
+            'singleton_type': 'legacy',
+            'modern_singleton_sources': [
                 'SafeProxyFactory_v1_3_0_evt_ProxyCreation',
             ]
         },
@@ -86,13 +69,7 @@
         'ethereum': {
             'start_date': '2018-11-24',
             'native_token': 'ETH',
-            'singleton_type': 'legacy_ethereum',
-            'contributors': {
-                'safes': ["sche", "tschubotz", "danielpartida", "hosuke"],
-                'singletons': ["tschubotz", "danielpartida"],
-                'eth_transfers': ["tschubotz", "hosuke"],
-                'transactions': ["sche", "tschubotz", "danielpartida", "hosuke"]
-            }
+            'singleton_type': 'legacy_ethereum'
         },
         'fantom': {
             'start_date': '2021-12-20',
@@ -111,9 +88,9 @@
                 {'table': 'ProxyFactory_v1_1_1_call_createProxyWithNonce', 'column': '_mastercopy'},
                 {'table': 'ProxyFactory_v1_1_1_call_createProxyWithCallback', 'column': '_mastercopy'}
             ],
-            'singleton_type': 'modern',
-            'singleton_sources': [
-                'SafeProxyFactory_v1_3_0_evt_ProxyCreation',
+            'singleton_type': 'legacy',
+            'modern_singleton_sources': [
+                'SafeProxyFactory_v1_3_0_evt_ProxyCreation'
             ]
         },
         'linea': {
@@ -222,13 +199,11 @@
     {%- endif -%}
 {% endmacro %}
 
-{% macro get_safe_contributors(blockchain, model_type) %}
-    {%- set default_contributors = ["tschubotz", "hosuke", "danielpartida", "safehjc"] -%}
-    {%- set network_config = get_safe_network_config(blockchain) -%}
-    
-    {%- if 'contributors' in network_config and model_type in network_config.contributors -%}
-        {{ return(network_config.contributors[model_type]) }}
-    {%- else -%}
-        {{ return(default_contributors) }}
-    {%- endif -%}
+{% macro get_safe_contributors(blockchain=none, model_type=none) %}
+    {#-
+    Centralized contributor list for Safe project
+    Returns the list of all Safe contributors
+    #}
+    {%- set default_contributors = ["tschubotz", "peterrliem", "danielpartida", "hosuke", "frankmaseo", "kryptaki", "sche", "safehjc"] -%}
+    {{ return(default_contributors) }}
 {% endmacro %}

@@ -1,4 +1,4 @@
-{% macro safe_safes_creation(blockchain, project_start_date=none, version_mapping=none) %}
+{% macro safe_safes_creation(blockchain, project_start_date=none, version_mapping=none, date_filter=false) %}
     {%- set network_config = get_safe_network_config(blockchain) -%}
     {%- set start_date = project_start_date if project_start_date else network_config.start_date -%}
     {%- set default_version_mapping = {
@@ -45,10 +45,11 @@ where et.success = true
         0xb63e800d -- setup method v1.1.0, v1.1.1, v1.2.0, v1.3.0, v1.3.0L2, v1.4.1, v.1.4.1L2
     )
     and et.gas_used > 10000  -- to ensure the setup call was successful. excludes e.g. setup calls with missing params that fallback
-    {% if not is_incremental() %}
+    {% if date_filter %}
+    and et.block_time >= date_trunc('day', now() - interval '7' day)
+    {% elif not is_incremental() %}
     and et.block_time > TIMESTAMP '{{ start_date }}' -- for initial query optimisation
-    {% endif %}
-    {% if is_incremental() %}
+    {% elif is_incremental() %}
     and et.block_time > date_trunc('day', now() - interval '7' day)
     {% endif %}
 {% endmacro %}

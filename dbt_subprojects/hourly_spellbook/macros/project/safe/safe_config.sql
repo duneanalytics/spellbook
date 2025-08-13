@@ -21,6 +21,26 @@
     }}
 {% endmacro %}
 
+{% macro safe_table_config(blockchain, alias_name, schema_prefix='safe') %}
+    {#-
+    Simplified config for Safe table models (non-incremental)
+    Used primarily for singleton models
+    #}
+    {%- set contributors = get_safe_contributors(blockchain, alias_name) -%}
+    {%- set contributors_str = '\'' ~ contributors|tojson ~ '\'' -%}
+    {{
+        config(
+            materialized='table',
+            schema = schema_prefix ~ '_' ~ blockchain,
+            alias = alias_name,
+            post_hook='{{ expose_spells(\'["' ~ blockchain ~ '"]\',
+                                        "project",
+                                        "safe",
+                                        ' ~ contributors_str ~ ') }}'
+        )
+    }}
+{% endmacro %}
+
 {% macro default_safe_unique_key(alias_name) %}
     {%- if alias_name == 'safes' -%}
         ['block_date', 'address']
