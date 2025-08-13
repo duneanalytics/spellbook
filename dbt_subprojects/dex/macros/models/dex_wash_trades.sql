@@ -59,6 +59,9 @@ filter_4_circular_trading AS (
                COUNT(*) as total_trades
         FROM {{ ref('dex_trades') }}
         WHERE blockchain = '{{blockchain}}'
+        {% if is_incremental() %}
+        AND block_time >= date_trunc('day', NOW() - interval '7' day)
+        {% endif %}
         GROUP BY tx_hash
     ) t
     WHERE unique_traders <= 3 AND total_trades >= 5 -- This is an arbitrary threshold
@@ -89,10 +92,16 @@ filter_5_net_zero_pnl AS (
                 SELECT tx_hash, tx_from as trader_address, amount_usd, blockchain, tx_from, tx_to
                 FROM {{ ref('dex_trades') }} dt1
                 WHERE dt1.blockchain = '{{blockchain}}'
+                {% if is_incremental() %}
+                AND dt1.block_time >= date_trunc('day', NOW() - interval '7' day)
+                {% endif %}
                 UNION ALL
                 SELECT tx_hash, tx_to as trader_address, amount_usd, blockchain, tx_from, tx_to
                 FROM {{ ref('dex_trades') }} dt2
                 WHERE dt2.blockchain = '{{blockchain}}'
+                {% if is_incremental() %}
+                AND dt2.block_time >= date_trunc('day', NOW() - interval '7' day)
+                {% endif %}
             ) all_trades
             GROUP BY tx_hash, trader_address
         ) trader_positions
@@ -108,16 +117,22 @@ SELECT
     dt.version,
     dt.block_time,
     dt.block_date,
+    dt.block_month,
     dt.block_number,
     dt.tx_hash,
     dt.tx_from,
     dt.tx_to,
+    dt.taker,
+    dt.maker,
     dt.token_bought_address,
     dt.token_sold_address,
     dt.token_bought_symbol,
     dt.token_sold_symbol,
+    dt.token_pair,
     dt.token_bought_amount,
     dt.token_sold_amount,
+    dt.token_bought_amount_raw,
+    dt.token_sold_amount_raw,
     dt.amount_usd,
     dt.project_contract_address,
     dt.evt_index,
