@@ -3,17 +3,23 @@
     Returns a list of all official Safe singleton addresses
     Used to filter discovered singletons to only include official deployments
     
-    Official Safe Singleton Addresses by Version:
+    Official Safe Singleton Addresses by version:
     ============================================
-    v1.0.0 - GnosisSafe:       0xb6029EA3B2c51D09a50B53CA8012FeEB05bDa35A
-    v1.1.1 - GnosisSafe:       0x34CfAC646f301356fAa8B21e94227e3583Fe3F5F
-    v1.2.0 - GnosisSafe:       0x6851D6fDFAfD08c0295C392436245E5bc78B0185
-    v1.3.0 - GnosisSafe:       0xd9Db270c1B5E3Bd161E8c8503c55cEABeE709552
-    v1.3.0 - GnosisSafeL2:     0x3E5c63644E683549055b9Be8653de26E0B4CD36E
-    v1.4.x - Safe:             0x41675C099F32341bf84BFc5382aF534df5C7461a
-    v1.4.x - SafeL2:           0x29fcB43b46531BcA003ddC8FCB67FFE91900C762
-    v1.5.0 - Safe:             0xFf51A5898e281Db6DfC7855790607438dF2ca44b
-    v1.5.0 - SafeL2:           0xEdd160fEBBD92E350D4D398fb636302fccd67C7e
+    v1.0.0 - Safe:   0xb6029EA3B2c51D09a50B53CA8012FeEB05bDa35A
+    v1.1.1 - Safe:   0x34CfAC646f301356fAa8B21e94227e3583Fe3F5F
+    v1.2.0 - Safe:   0x6851D6fDFAfD08c0295C392436245E5bc78B0185
+    v1.3.0 - Safe:   0xd9Db270c1B5E3Bd161E8c8503c55cEABeE709552
+    v1.3.0 - Safe:   0x69f4D1788e39c87893C980c06EdF4b7f686e2938
+    v1.3.0 - Safe:   0xB00ce5CCcdEf57e539ddcEd01DF43a13855d9910
+    v1.3.0 - SafeL2: 0x3E5c63644E683549055b9Be8653de26E0B4CD36E
+    v1.3.0 - SafeL2: 0xfb1bffC9d739B8D520DaF37dF666da4C687191EA
+    v1.3.0 - SafeL2: 0x1727c2c531cf966f902E5927b98490fDFb3b2b70
+    v1.4.1 - Safe:   0x41675C099F32341bf84BFc5382aF534df5C7461a
+    v1.4.1 - Safe:   0xC35F063962328aC65cED5D4c3fC5dEf8dec68dFa
+    v1.4.1 - SafeL2: 0x29fcB43b46531BcA003ddC8FCB67FFE91900C762
+    v1.4.1 - SafeL2: 0x610fcA2e0279Fa1F8C00c8c2F71dF522AD469380
+    v1.5.0 - Safe:   0xFf51A5898e281Db6DfC7855790607438dF2ca44b
+    v1.5.0 - SafeL2: 0xEdd160fEBBD92E350D4D398fb636302fccd67C7e
     
     Source: https://github.com/safe-global/safe-deployments
     #}
@@ -22,9 +28,15 @@
         '0x34CfAC646f301356fAa8B21e94227e3583Fe3F5F',
         '0x6851D6fDFAfD08c0295C392436245E5bc78B0185',
         '0xd9Db270c1B5E3Bd161E8c8503c55cEABeE709552',
+        '0x69f4D1788e39c87893C980c06EdF4b7f686e2938',
+        '0xB00ce5CCcdEf57e539ddcEd01DF43a13855d9910',
         '0x3E5c63644E683549055b9Be8653de26E0B4CD36E',
+        '0xfb1bffC9d739B8D520DaF37dF666da4C687191EA',
+        '0x1727c2c531cf966f902E5927b98490fDFb3b2b70',
         '0x41675C099F32341bf84BFc5382aF534df5C7461a',
+        '0xC35F063962328aC65cED5D4c3fC5dEf8dec68dFa',
         '0x29fcB43b46531BcA003ddC8FCB67FFE91900C762',
+        '0x610fcA2e0279Fa1F8C00c8c2F71dF522AD469380',
         '0xFf51A5898e281Db6DfC7855790607438dF2ca44b',
         '0xEdd160fEBBD92E350D4D398fb636302fccd67C7e'
     ] -%}
