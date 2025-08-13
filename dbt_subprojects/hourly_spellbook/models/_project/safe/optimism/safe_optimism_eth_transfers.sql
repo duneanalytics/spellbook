@@ -15,14 +15,14 @@
     ) 
 }}
 
-{% set project_start_date = '2021-11-17' %}
+{%- set network_config = get_safe_network_config('optimism') -%}
+{%- set project_start_date = network_config.start_date -%}
 {% set date_filter = true %}
 
 {{
     safe_native_transfers(
         blockchain = 'optimism',
         native_token_symbol = 'ETH',
-        project_start_date = project_start_date,
         date_filter = date_filter
     )
 }}
