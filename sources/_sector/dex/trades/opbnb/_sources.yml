@@ -9,3 +9,7 @@ sources:
     tables:
       - name: PancakePair_evt_Swap
       - name: PancakeFactory_evt_PairCreated
+  - name: luigiswap_opbnb
+    tables:
+      - name: uniswapv2pair_evt_swap
+      - name: uniswapv2factory_evt_paircreated
