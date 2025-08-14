@@ -83,7 +83,7 @@ WITH all_singletons AS (
 )
 SELECT DISTINCT address
 FROM all_singletons
-WHERE LOWER(address) IN (
+WHERE LOWER(CAST(address AS VARCHAR)) IN (
     {%- for addr in official_addresses %}
     LOWER('{{ addr }}'){% if not loop.last %},{% endif %}
     {%- endfor %}
@@ -131,7 +131,7 @@ WITH all_singletons AS (
 )
 SELECT DISTINCT address
 FROM all_singletons
-WHERE LOWER(address) IN (
+WHERE LOWER(CAST(address AS VARCHAR)) IN (
     {%- for addr in official_addresses %}
     LOWER('{{ addr }}'){% if not loop.last %},{% endif %}
     {%- endfor %}
@@ -228,7 +228,7 @@ WITH all_singletons AS (
 )
 SELECT DISTINCT address
 FROM all_singletons
-WHERE LOWER(address) IN (
+WHERE LOWER(CAST(address AS VARCHAR)) IN (
     {%- for addr in official_addresses %}
     LOWER('{{ addr }}'){% if not loop.last %},{% endif %}
     {%- endfor %}

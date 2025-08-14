@@ -21,7 +21,7 @@ select
     case 
         {%- for address, version in final_version_mapping.items() %}
         {%- set deployment_info = deployments.get(address, {}) %}
-        when LOWER(et.to) = LOWER('{{ address }}') then '{{ version }}'{{ '  -- ' ~ deployment_info.get('note', '') if deployment_info.get('note') else '' }}
+        when LOWER(CAST(et.to AS VARCHAR)) = LOWER('{{ address }}') then '{{ version }}'{{ '  -- ' ~ deployment_info.get('note', '') if deployment_info.get('note') else '' }}
         {%- endfor %}
         else 'unknown'
     end as creation_version,
@@ -31,7 +31,7 @@ select
     et.tx_hash
 from {{ source(blockchain, 'traces') }} et 
 join {{ ref('safe_' ~ blockchain ~ '_singletons') }} s
-    on et.to = s.address
+    on LOWER(CAST(et.to AS VARCHAR)) = LOWER(CAST(s.address AS VARCHAR))
 where et.success = true
     and et.call_type = 'delegatecall' -- delegatecall to singleton is Safe (proxy) address
     and bytearray_substring(et.input, 1, 4) in (
