@@ -62,7 +62,7 @@ v1.5.0 - Safe:             0xFf51A5898e281Db6DfC7855790607438dF2ca44b
 v1.5.0 - SafeL2:           0xEdd160fEBBD92E350D4D398fb636302fccd67C7e
 ```
 
-Note: Some versions have multiple addresses due to different deployment methods (standard, EIP-155 chain-specific, and custom deployments).
+Note: Some versions have multiple addresses due to different deployment methods (standard, EIP-155 chain-specific, and zkSync).
 
 Source: https://github.com/safe-global/safe-deployments
 
