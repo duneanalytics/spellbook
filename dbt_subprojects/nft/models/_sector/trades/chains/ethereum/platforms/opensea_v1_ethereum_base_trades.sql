@@ -147,8 +147,19 @@ enhanced_trades as (
     inner join nft_transfers nft
     ON o.block_number = nft.block_number
         AND o.tx_hash = nft.tx_hash
-        AND ((trade_category = 'Buy' AND nft."from" = o.seller) OR (trade_category = 'Sell' AND nft.to = o.buyer))
-        AND nft.evt_index <= o.order_evt_index and (prev_order_evt_index is null OR nft.evt_index > o.prev_order_evt_index )
+        -- Use a more flexible approach to match transfers with orders
+        AND (
+            -- Standard case: direct buyer/seller match
+            ((trade_category = 'Buy' AND nft."from" = o.seller) OR (trade_category = 'Sell' AND nft.to = o.buyer))
+            -- Additional case: include transfers where either buyer or seller is involved
+            OR (
+                (trade_category = 'Buy' AND (nft."from" = o.seller OR nft.to = o.buyer))
+                OR (trade_category = 'Sell' AND (nft.to = o.buyer OR nft."from" = o.seller))
+            )
+        )
+        -- Relax the event index filtering to capture all relevant transfers
+        AND nft.evt_index <= o.order_evt_index 
+        AND (o.prev_order_evt_index is null OR nft.evt_index > o.prev_order_evt_index)
 )
 
 SELECT
