@@ -1,6 +1,5 @@
 {{
   config(
-    tags = ['prod_exclude'],
     schema = 'stabble_solana',
     alias = 'base_trades',
     partition_by = ['block_month'],
@@ -161,6 +160,11 @@ WITH all_swaps AS (
         , s.outer_instruction_index
         , s.inner_instruction_index
         , s.tx_index
+        , ROW_NUMBER() OVER (
+            PARTITION BY s.tx_id, s.outer_instruction_index, s.inner_instruction_index
+            ORDER BY t_buy.amount DESC
+        ) as rn -- some transactions have multiple transfers within the same instruction range (intermetiate transfers etc.)
+                -- so we are to selecting the largest transfer as the trade)
     FROM all_swaps s
     -- Get the "buy" transfer (vault → user)
     INNER JOIN {{ ref('tokens_solana_transfers') }} t_buy
@@ -224,3 +228,4 @@ SELECT
     , inner_instruction_index
     , tx_index
 FROM transfers 
+WHERE rn = 1
