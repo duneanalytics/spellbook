@@ -662,6 +662,48 @@
     "fee_min_amount":   "if(" ~ _recipients ~ " > 1, substr(input, " ~ _order_beginning ~ " + " ~ _taker_data ~ " + 32*11 + 1, 32))",
     "fee_receiver":     "if(" ~ _recipients ~ " > 1, substr(input, " ~ _order_beginning ~ " + " ~ _taker_data ~ " + 32*12 + 12 + 1, 20))",
 }] %}
+{% set _order_beginning = "4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8))" %}
+{% set _order_beginning = _order_beginning ~ " + bytearray_to_bigint(substr(input, " ~ _order_beginning ~ " + 24 + 1, 8)) + 32*1" %}
+{% set _order_beginning = _order_beginning ~ " + bytearray_to_bigint(substr(input, " ~ _order_beginning ~ " + 24 + 1, 8))" %}
+{% set _order_info = _order_beginning ~ " + bytearray_to_bigint(substr(input, " ~ _order_beginning ~ " + 32*0 + 24 + 1, 8))" %}
+{% set _taker_data = _order_beginning ~ " + bytearray_to_bigint(substr(input, " ~ _order_beginning ~ " + 32*7 + 24 + 1, 8))" %}
+{% set methods = methods + [{
+    "project":          "UniswapX",
+    "selector":         "0x0d335884",
+    "tag":              "'UniswapXV2v1'",
+    "name":             "executeWithCallback",
+    "auction":          "true",
+    "event":            "0x78ad7ec0e9f89e74012afa58738b6b661c024cb0fd185ee2f616c0a28924bd66",
+    "maker":            "substr(input, " ~ _order_info ~ " + 32*1 + 12 + 1, 20)",
+    "maker_asset":      "substr(input, " ~ _order_beginning ~ " + 32*4  + 12 + 1, 20)",
+    "taker_asset":      "substr(input, " ~ _taker_data ~ " + 32*1 + 12 + 1, 20)",
+    "maker_max_amount": "substr(input, " ~ _order_beginning ~ " + 32*5 + 1, 32)",
+    "taker_max_amount": "substr(input, " ~ _taker_data ~ " + 32*2 + 1, 32)",
+    "deadline":         "substr(input, " ~ _order_info ~ " + 32*3 + 1, 32)",
+    "nonce":            "substr(input, " ~ _order_info ~ " + 32*2 + 1, 32)",
+}] %}
+{% set _beginning = "4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*1" %}
+{% set _order_beginning = _beginning ~ " + bytearray_to_bigint(substr(input, " ~ _beginning ~ " + 32*(x - 1) + 24 + 1, 8))" %}
+{% set _order_beginning = _order_beginning ~ " + bytearray_to_bigint(substr(input, " ~ _order_beginning ~ " + 24 + 1, 8)) + 32*1" %}
+{% set _order_beginning = _order_beginning ~ " + bytearray_to_bigint(substr(input, " ~ _order_beginning ~ " + 24 + 1, 8))" %}
+{% set _order_info = _order_beginning ~ " + bytearray_to_bigint(substr(input, " ~ _order_beginning ~ " + 32*0 + 24 + 1, 8))" %}
+{% set _taker_data = _order_beginning ~ " + bytearray_to_bigint(substr(input, " ~ _order_beginning ~ " + 32*7 + 24 + 1, 8))" %}
+{% set methods = methods + [{
+    "project":          "UniswapX",
+    "selector":         "0x13fb72c7",
+    "tag":              "'UniswapXV2v1'",
+    "name":             "executeBatchWithCallback",
+    "auction":          "true",
+    "event":            "0x78ad7ec0e9f89e74012afa58738b6b661c024cb0fd185ee2f616c0a28924bd66",
+    "number":           "coalesce(try(bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 24 + 1, 8))), 1)",
+    "maker":            "substr(input, " ~ _order_info ~ " + 32*1 + 12 + 1, 20)",
+    "maker_asset":      "substr(input, " ~ _order_beginning ~ " + 32*4  + 12 + 1, 20)",
+    "taker_asset":      "substr(input, " ~ _taker_data ~ " + 32*1 + 12 + 1, 20)",
+    "maker_max_amount": "substr(input, " ~ _order_beginning ~ " + 32*5 + 1, 32)",
+    "taker_max_amount": "substr(input, " ~ _taker_data ~ " + 32*2 + 1, 32)",
+    "deadline":         "substr(input, " ~ _order_info ~ " + 32*3 + 1, 32)",
+    "nonce":            "substr(input, " ~ _order_info ~ " + 32*2 + 1, 32)",
+}] %}
 
 -- Bebop --
 
