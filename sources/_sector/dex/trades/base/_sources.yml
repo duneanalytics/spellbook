@@ -187,6 +187,9 @@ sources:
   - name: clipper_base
     tables:
       - name: ClipperPackedVerifiedExchange_evt_Swapped
+  - name: blade_base
+    tables:
+      - name: BladeVerifiedExchange_evt_Swapped
   - name: swaap_v2_base
     tables:
       - name: Vault_evt_Swap
