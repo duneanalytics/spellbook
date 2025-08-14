@@ -46,3 +46,20 @@ models:
           seed_file: ref('pancakeswap_opbnb_base_trades_seed')
           filter:
             version: 2
+
+  - name: luigiswap_opbnb_base_trades
+    meta:
+      blockchain: scroll
+      sector: dex
+      project: luigiswap
+      contributors: ShawnEdwards23 
+    config:
+      tags: [ 'opbnb', 'dex', 'trades', 'luigiswap' ]
+    description: "luigiswap base base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('luigiswap_opbnb_base_trades_seed')
