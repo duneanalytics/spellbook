@@ -228,4 +228,5 @@ FROM (VALUES
     , ('eulerswap', 'Eulerswap', 'Direct & Aggregator', 'eulerfinance')
     , ('blackhole', 'Blackhole', 'Direct', 'BlackholeDEX')
     , ('ekubo', 'Ekubo', 'Direct', 'EkuboProtocol')
+    , ('luigiswap', 'LuigiSwap', 'Direct', 'LuigiSwap')
 ) AS temp_table (project, name, marketplace_type, x_username)
