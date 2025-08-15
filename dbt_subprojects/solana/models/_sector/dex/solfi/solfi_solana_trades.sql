@@ -39,7 +39,6 @@ select
       , outer_instruction_index
       , inner_instruction_index
       , tx_index
-      -- trigger run here
 from {{ref('dex_solana_trades')}}
 where project = 'solfi'
 
