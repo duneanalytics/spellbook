@@ -43,4 +43,6 @@ FROM
     , ('usdt-tether', 'edgeUSDT', 0x9A057627f023f5C37Ebc6E7959720848968d7a43, 18)
     , ('cbbtc-coinbase-wrapped-btc', 'Re7cbBTC', 0xf49f14Cff1bA2eE7E23222A76e0C2b3D0BDE06dC, 18)
     , ('lbtc-lombard-staked-btc', 'Re7LBTC', 0xe9BD3590A68939344953b4f912d83b7c8C2A1f77, 18)
+    , ('pufeth-pufeth', 'pufETH', 0x37D6382B6889cCeF8d6871A8b60E667115eDDBcF, 18)
+    , ('tac-tac-protocol', 'WTAC', 0xb63b9f0eb4a6e6f191529d71d4d88cc8900df2c9, 18)
 ) as temp (token_id, symbol, contract_address, decimals)
