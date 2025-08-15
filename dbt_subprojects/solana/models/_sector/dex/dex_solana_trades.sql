@@ -95,6 +95,7 @@ LEFT JOIN
     AND {{incremental_predicate('p_sold.minute')}}
     {% endif %}
 -- if bought token is trusted, prefer that price, else default to sold token then bought token.
+--trigger run here
 LEFT JOIN 
     {{ source('prices','trusted_tokens') }} tt_bought
     ON bt.token_bought_mint_address = toBase58(tt_bought.contract_address)

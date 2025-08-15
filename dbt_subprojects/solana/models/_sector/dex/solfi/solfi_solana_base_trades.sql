@@ -12,7 +12,7 @@
   )
 }}
 
-{% set project_start_date = '2024-10-29' %}
+{% set project_start_date = '2025-08-03' %}
 
 -- Base swaps from solfi_call_swap table
 WITH solfi_swaps AS (
