@@ -4,7 +4,7 @@ models:
   - name: safe_blast_safes
     meta:
       blockchain: blast
-      project: safe
+      project: gnosis_safe
       contributors: danielpartida
     config:
       tags: ['safe', 'blast']
@@ -37,7 +37,7 @@ models:
   - name: safe_blast_eth_transfers
     meta:
       blockchain: blast
-      project: safe
+      project: gnosis_safe
       contributors: danielpartida
     config:
       tags: ['safe', 'transfers', 'blast']
@@ -73,7 +73,7 @@ models:
   - name: safe_blast_singletons
     meta:
       blockchain: blast
-      project: safe
+      project: gnosis_safe
       contributors: danielpartida
     config:
       tags: ['safe', 'singletons', 'blast']
@@ -88,7 +88,7 @@ models:
   - name: safe_blast_transactions
     meta:
       blockchain: blast
-      project: safe
+      project: gnosis_safe
       contributors: danielpartida
     config:
       tags: ['safe', 'blast']
