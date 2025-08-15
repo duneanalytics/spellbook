@@ -20,6 +20,7 @@
     , ref('aerodrome_base_base_trades')
     , ref('pancakeswap_v2_base_base_trades')
     , ref('pancakeswap_v3_base_base_trades')
+    , ref('pancakeswap_infinity_base_base_trades')
     , ref('balancer_v2_base_base_trades')
     , ref('balancer_v3_base_base_trades')
     , ref('dodo_base_base_trades')
