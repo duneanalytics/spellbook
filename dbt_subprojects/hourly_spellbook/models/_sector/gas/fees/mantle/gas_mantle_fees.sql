@@ -12,7 +12,7 @@
     )
 }}
 
-{% set test_short_ci = true %}
+{% set test_short_ci=false %}
 
 WITH native_token_prices as (
     {{ native_token_prices(blockchain) }}

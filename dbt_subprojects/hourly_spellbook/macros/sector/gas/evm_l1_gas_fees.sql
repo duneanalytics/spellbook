@@ -1,4 +1,4 @@
-{% macro evm_l1_gas_fees(blockchain, test_short_ci=true) -%}
+{% macro evm_l1_gas_fees(blockchain, test_short_ci=false) -%}
 WITH native_token_prices as (
     {{ native_token_prices(blockchain) }}
 )
