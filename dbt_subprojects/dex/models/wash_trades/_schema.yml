@@ -1,0 +1,85 @@
+version: 2
+
+models:
+  - name: dex_wash_trades
+    meta:
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, gnosis, optimism, polygon, celo, base, scroll, zora, blast, fantom, ronin, linea, nova, abstract, apechain
+      sector: dex
+      contributors: hildobby
+      docs_slug: /curated/trading/DEX/dex-wash-trades
+    config:
+      tags: ['dex', 'wash_trades', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'gnosis', 'optimism', 'polygon', 'celo', 'base', 'scroll', 'zora', 'blast', 'fantom', 'ronin', 'linea', 'nova', 'abstract', 'apechain']
+    description: >
+        Dataset for identifying and analyzing potential wash trading activities in DEX transactions across various protocols and blockchains
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: project
+        description: "DEX project name"
+      - name: version
+        description: "Project version"
+      - name: block_time
+        description: "UTC event block time"
+      - name: block_date
+        description: "UTC event block date"
+      - name: block_month
+        description: "UTC event block month"
+      - name: block_number
+        description: "Block number"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: tx_from
+        description: "Transaction sender address"
+      - name: tx_to
+        description: "Transaction recipient address"
+      - name: token_bought_address
+        description: "Address of token bought"
+      - name: token_sold_address
+        description: "Address of token sold"
+      - name: token_bought_symbol
+        description: "Symbol of token bought"
+      - name: token_sold_symbol
+        description: "Symbol of token sold"
+      - name: token_bought_amount
+        description: "Amount of token bought"
+      - name: token_sold_amount
+        description: "Amount of token sold"
+      - name: token_bought_amount_raw
+        description: "Raw amount of token bought"
+      - name: token_sold_amount_raw
+        description: "Raw amount of token sold"
+      - name: amount_usd
+        description: "USD value of the trade"
+      - name: project_contract_address
+        description: "DEX contract address"
+      - name: evt_index
+        description: "Event index"
+      - name: token_pair
+        description: "Token pair"
+      - name: filter_1_same_wallet
+        description: "Same wallet buying and selling to itself"
+      - name: filter_2_back_forth
+        description: "Rapid back-and-forth trading between two wallets"
+      - name: filter_3_high_frequency
+        description: "Extremely high frequency trading (50+ swaps per tx)"
+      - name: filter_4_circular_trading
+        description: "Circular trading patterns with few unique traders (≤3 traders, ≥5 trades)"
+      - name: filter_5_net_zero_pnl
+        description: "High volume trading with minimal net position change (<0.2% of total volume)"
+      - name: is_wash_trade
+        description: "Flag indicating if trade is classified as wash trading"
+
+  - name: dex_bnb_wash_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: [ 'dex', 'wash_trades', 'bnb' ]
+    description: >
+      DEX wash trades detection on BNB Chain
+    columns:
+      - name: tx_hash
+        description: "Transaction hash"
+        data_tests:
+          - unique 
