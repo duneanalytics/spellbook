@@ -12,7 +12,7 @@
   )
 }}
 
-{% set project_start_date = '2024-10-29' %}
+{% set project_start_date = '2025-08-05' %}
 
 -- Base swaps from solfi_call_swap table
 WITH solfi_swaps AS (
@@ -44,21 +44,6 @@ WITH solfi_swaps AS (
     {% endif %}
 )
 
--- Get pool mint addresses efficiently
-, pool_mint_addresses AS (
-    SELECT DISTINCT 
-        COALESCE(from_token_account, to_token_account) as token_account,
-        token_mint_address,
-        ROW_NUMBER() OVER (PARTITION BY COALESCE(from_token_account, to_token_account) ORDER BY token_mint_address) as rn
-    FROM {{ ref('tokens_solana_transfers') }}
-    WHERE token_mint_address IS NOT NULL
-    {% if is_incremental() %}
-        AND {{ incremental_predicate('block_time') }}
-    {% else %}
-        AND block_time >= TIMESTAMP '{{ project_start_date }}'
-    {% endif %}
-)
-
 -- Join with token transfers to get the output amounts and mint addresses
 , swaps_with_transfers AS (
     SELECT
@@ -66,18 +51,25 @@ WITH solfi_swaps AS (
         s.amountIn as token_sold_amount_raw,
         t.amount as token_bought_amount_raw,
         t.token_mint_address as token_bought_mint_address,
-        -- Get mint addresses from pool data
         tm_a.token_mint_address as mint_a,
         tm_b.token_mint_address as mint_b
     FROM solfi_swaps s
     -- Join to get mint address for pool token account A
-    LEFT JOIN pool_mint_addresses tm_a 
-        ON tm_a.token_account = s.account_poolTokenAccountA 
-        AND tm_a.rn = 1
+    LEFT JOIN (
+        SELECT DISTINCT 
+            COALESCE(from_token_account, to_token_account) as token_account,
+            token_mint_address
+        FROM {{ ref('tokens_solana_transfers') }}
+        WHERE token_mint_address IS NOT NULL
+    ) tm_a ON (tm_a.token_account = s.account_poolTokenAccountA)
     -- Join to get mint address for pool token account B  
-    LEFT JOIN pool_mint_addresses tm_b 
-        ON tm_b.token_account = s.account_poolTokenAccountB 
-        AND tm_b.rn = 1
+    LEFT JOIN (
+        SELECT DISTINCT 
+            COALESCE(from_token_account, to_token_account) as token_account,
+            token_mint_address
+        FROM {{ ref('tokens_solana_transfers') }}
+        WHERE token_mint_address IS NOT NULL
+    ) tm_b ON (tm_b.token_account = s.account_poolTokenAccountB)
     -- Main transfer join for the output transfer
     INNER JOIN {{ ref('tokens_solana_transfers') }} t
         ON t.tx_id = s.tx_id
@@ -91,7 +83,7 @@ WITH solfi_swaps AS (
             (s.is_inner_swap = true AND t.inner_instruction_index = s.inner_instruction_index + 2)
         )
         AND (
-            -- Verifing here that this is the correct output transfer based on direction
+            -- Verify this is the correct output transfer based on direction
             CASE 
                 WHEN s.direction = 0 THEN t.from_token_account = s.account_poolTokenAccountB 
                                       AND t.to_token_account = s.account_userTokenAccountB
@@ -122,14 +114,11 @@ WITH solfi_swaps AS (
         , st.token_bought_mint_address
         , st.token_bought_amount_raw
         
-        -- Token sold (what user gives) - determine from direction and pool mints
-        , CASE 
-            WHEN st.direction = 0 THEN st.mint_a  -- direction 0: user sells tokenA
-            ELSE st.mint_b                        -- direction 1: user sells tokenB
-          END as token_sold_mint_address
+        -- Token sold (what user gives) - get from input transfer mint address
+        , st.token_sold_mint_address_from_transfer as token_sold_mint_address
         , st.token_sold_amount_raw
         
-        , CAST(NULL AS DOUBLE) as fee_tier
+        , CAST(NULL AS DOUBLE) as fee_tier  -- Solfi doesn't seem to have variable fees in the data
         , st.account_pair as pool_id
         , 'SoLFiHG9TfgtdUXUjWAxi3LtvYuFyDLVhBWxdMZxyCe' as project_main_id
         , st.trader_id
