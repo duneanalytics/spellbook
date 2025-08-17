@@ -87,13 +87,14 @@
     {%- if table_type == 'native_transfers' -%}
         {%- set network_config = all_networks[network] -%}
         {%- if network_config.get('has_native_transfers', true) -%}
-            {%- set _ = model_refs.append('ref(\'gnosis_safe_' ~ network ~ '_' ~ network_config.native_token|lower ~ '_transfers\')') -%}
+            {%- set _ = model_refs.append('ref(\'safe_' ~ network ~ '_' ~ network_config.native_token|lower ~ '_transfers\')') -%}
         {%- endif -%}
     {%- else -%}
-        {%- set _ = model_refs.append('ref(\'gnosis_safe_' ~ network ~ '_' ~ table_type ~ '\')') -%}
+        {%- set _ = model_refs.append('ref(\'safe_' ~ network ~ '_' ~ table_type ~ '\')') -%}
     {%- endif -%}
 {%- endfor -%}
 
+{%- if model_refs|length > 0 %}
 SELECT *
 FROM (
     {%- for model_ref in model_refs %}
@@ -107,6 +108,14 @@ FROM (
     {%- endif %}
     {%- endfor %}
 )
+{%- else %}
+-- No models found for this aggregation
+SELECT
+    {%- for column in columns %}
+    CAST(NULL AS {{ 'VARCHAR' if column in ['blockchain', 'symbol', 'tx_hash', 'address'] else 'TIMESTAMP' if column in ['block_time', 'creation_time'] else 'DATE' if column in ['block_date'] else 'VARBINARY' if column == 'trace_address' else 'DECIMAL(38,0)' }}) AS {{ column }}{{ "," if not loop.last }}
+    {%- endfor %}
+WHERE 1=0
+{%- endif %}
 {% endmacro %}
 
 {% macro safe_transactions_wrapper(blockchain, project_start_date=none, date_filter=false) %}
