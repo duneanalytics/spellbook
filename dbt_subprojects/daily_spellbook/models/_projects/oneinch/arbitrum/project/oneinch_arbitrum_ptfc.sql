@@ -24,4 +24,4 @@ select *, date(date_trunc('month', block_time)) as block_month from (
     )
 }}
 )
-where block_time >= date('2025-01-01')
+where block_time >= date('2025-08-15')
