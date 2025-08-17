@@ -87,22 +87,22 @@
     {%- if table_type == 'native_transfers' -%}
         {%- set network_config = all_networks[network] -%}
         {%- if network_config.get('has_native_transfers', true) -%}
-            {%- set _ = model_refs.append('ref(\'safe_' ~ network ~ '_' ~ network_config.native_token|lower ~ '_transfers\')') -%}
+            {%- set _ = model_refs.append({'name': 'safe_' ~ network ~ '_' ~ network_config.native_token|lower ~ '_transfers'}) -%}
         {%- endif -%}
     {%- else -%}
-        {%- set _ = model_refs.append('ref(\'safe_' ~ network ~ '_' ~ table_type ~ '\')') -%}
+        {%- set _ = model_refs.append({'name': 'safe_' ~ network ~ '_' ~ table_type}) -%}
     {%- endif -%}
 {%- endfor -%}
 
 {%- if model_refs|length > 0 %}
 SELECT *
 FROM (
-    {%- for model_ref in model_refs %}
+    {%- for model in model_refs %}
     SELECT
         {%- for column in columns %}
         {{ column }}{{ "," if not loop.last }}
         {%- endfor %}
-    FROM {{ model_ref }}
+    FROM {{ ref(model.name) }}
     {%- if not loop.last %}
     UNION ALL
     {%- endif %}
