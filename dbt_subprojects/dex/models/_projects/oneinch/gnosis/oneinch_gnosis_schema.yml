@@ -50,8 +50,10 @@ models:
       - name: maker
       - name: receiver
       - name: maker_asset
+      - name: maker_amount
       - name: making_amount
       - name: taker_asset
+      - name: taker_amount
       - name: taking_amount
       - name: order_hash
       - name: flags

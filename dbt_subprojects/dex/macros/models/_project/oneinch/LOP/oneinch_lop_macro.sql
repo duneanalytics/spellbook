@@ -248,13 +248,15 @@ select
     , maker
     , coalesce(dst_maker, receiver) as receiver
     , maker_asset
-    , coalesce(making_amount, try(cast(maker_amount * (taking_amount / taker_amount) as uint256))) as making_amount
+    , maker_amount
+    , coalesce(making_amount, try(cast(maker_amount * (cast(taking_amount as double) / taker_amount) as uint256))) as making_amount
     , coalesce(dst_token, taker_asset) as taker_asset
+    , taker_amount
     , coalesce(dst_amount, taking_amount) as taking_amount
     , order_hash
     , map_concat(flags, map_from_entries(array[
         ('first', row_number() over(partition by coalesce(order_hash, tx_hash), tx_success and call_success order by block_number, tx_index, call_trace_address) = 1)
-        , ('direct', call_from = tx_from and call_to = tx_to) -- == cardinality(call_trace_address) = 0, but because of zksync trace structure we switched to this
+        , ('direct', call_from = tx_from and call_to = tx_to) -- == cardinality(call_trace_address) = 0, but because of zksync trace structure switched to this
     ])) as flags
     , remains
     , src_escrow
