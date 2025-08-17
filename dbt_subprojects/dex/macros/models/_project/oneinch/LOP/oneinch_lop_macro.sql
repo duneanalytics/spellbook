@@ -22,6 +22,8 @@ orders as (
                 , {{ method_data.get("receiver", "null") }} as receiver
                 , {{ method_data.get("maker_asset", "null") }} as maker_asset
                 , {{ method_data.get("taker_asset", "null") }} as taker_asset
+                , {{ method_data.get("maker_amount", "null") }} as maker_amount
+                , {{ method_data.get("taker_amount", "null") }} as taker_amount
                 , {{ method_data.get("making_amount", "null") }} as making_amount
                 , {{ method_data.get("taking_amount", "null") }} as taking_amount
                 , {{ method_data.get("order_hash", "null") }} as order_hash
@@ -246,7 +248,7 @@ select
     , maker
     , coalesce(dst_maker, receiver) as receiver
     , maker_asset
-    , making_amount
+    , coalesce(making_amount, try(cast(maker_amount * (taking_amount / taker_amount) as uint256))) as making_amount
     , coalesce(dst_token, taker_asset) as taker_asset
     , coalesce(dst_amount, taking_amount) as taking_amount
     , order_hash
