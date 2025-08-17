@@ -75,7 +75,8 @@ Source: https://github.com/safe-global/safe-deployments
 
 ## Network Configuration
 
-Networks are configured in `macros/project/safe/safe_network_config.sql`. Each network configuration includes:
+Networks are configured in `macros/project/safe/safe_network_config.sql`.
+Each network configuration includes:
 - `start_date`: When Safe was deployed on that network
 - `native_token`: The native token of the network (ETH, BNB, MATIC, etc.)
 - `singleton_type`: Type of singleton implementation
