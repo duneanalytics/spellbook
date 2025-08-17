@@ -26,7 +26,7 @@ with prices as (
         decimals
     from {{ source('prices', 'usd') }}
     where blockchain = '{{ blockchain }}'
-        and minute >= date('2025-08-15')
+        and minute >= date('2025-01-01')
         {% if is_incremental() %}
         and {{ incremental_predicate('minute') }}
         {% endif %} 
@@ -57,11 +57,19 @@ with prices as (
         , transfer_to
         , date_trunc('minute', block_time) as minute
         , block_month
-    from {{ ref('oneinch_' + blockchain + '_ptfc') }}, meta
-    where block_time >= date('2025-08-15')
-        {% if is_incremental() %} 
+    from (
+        select *, date(date_trunc('month', block_time)) as block_month from (
+        {{
+            oneinch_project_ptfc_macro(
+                blockchain = blockchain
+            )
+        }}
+        )
+        where block_time >= date('2025-01-01')
+            {% if is_incremental() %} 
          and   {{ incremental_predicate('block_time') }}
         {% endif %}
+    ), meta
 )
 
 
