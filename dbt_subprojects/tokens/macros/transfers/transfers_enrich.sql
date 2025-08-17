@@ -5,7 +5,7 @@
     , trusted_tokens_model = source('prices', 'trusted_tokens')
     , transfers_start_date = '2000-01-01'
     , blockchain = null
-    , usd_amount_threshold = 1000000000
+    , usd_amount_threshold = 100000000
     )
 %}
 
