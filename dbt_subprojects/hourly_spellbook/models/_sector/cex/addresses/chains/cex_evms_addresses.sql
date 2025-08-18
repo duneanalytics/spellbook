@@ -221,6 +221,7 @@ FROM (VALUES
     , (0xcab3f132a11e5b723fc20ddab8bb1b858d00a8e8, 'Bybit', 'Bybit 43', 'hildobby', date '2025-08-01')
     , (0xf2f40c3bb444288f6f64d8336dcc14dbd929fd94, 'Bybit', 'Bybit 44', 'hildobby', date '2025-08-01')
     , (0x79ae8c1b31b1e61c4b9d1040217a051f954d4433, 'Bybit', 'Bybit 45', 'hildobby', date '2025-08-01')
+    , (0x3fb00e38602c6a501e19eda24787f40bccef0432, 'Bybit', 'Bybit 46', 'muh_raf', date '2025-08-18')
     , (0xab97925eb84fe0260779f58b7cb08d77dcb1ee2b, 'Bybit', 'Bybit Gas Supplier 1', 'hildobby', date '2023-11-15')
     , (0xa95b83af96d0b8a90bd507f2bd82ad8f3dbb86bc, 'Bybit', 'Bybit Gas Supplier 2', 'hildobby', date '2023-11-20')
     , (0xf65d698d18bc37bf36e4c8d4fe4f051ef570e2b6, 'Bybit', 'Bybit Gas Supplier 3', 'hildobby', date '2023-11-23')
@@ -5226,5 +5227,7 @@ FROM (VALUES
     , (0xdc2822d0685c0cceab07b35d6de4ac9280fb9cff, 'Arkham', 'Arkham 4', 'hildobby', date '2024-12-13')
     , (0x794c629e4403ca7cee126cc19d6c7b002d0238a5, 'Arkham', 'Arkham Deployer 1', 'hildobby', date '2025-04-28')
     -- Reku
-    , (0xcc0061c5025e1173c6ab08d56af429e3ba3037fd, 'Reku', 'Reku 1', 'hildobby', date '2025-08-18')
+    , (0xcc0061c5025e1173c6ab08d56af429e3ba3037fd, 'Reku', 'Reku 1', 'muh_raf', date '2025-08-18')
+    -- Pluang
+    , (0xf03e8a4619d2286947af3385c9a474d253392d36, 'Pluang', 'Pluang 1', 'muh_raf', date '2025-08-18')
     ) AS x (address, cex_name, distinct_name, added_by, added_date)
