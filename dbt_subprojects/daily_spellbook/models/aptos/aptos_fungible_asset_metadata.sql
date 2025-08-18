@@ -135,7 +135,7 @@ SELECT
     NULL AS maximum
 FROM mr_coin_info AS ci
 LEFT JOIN {{ ref('aptos_fungible_asset_migration') }} AS m
-    ON m.asset_type_v1 = mr_coin_info.asset_type
+    ON m.asset_type_v1 = ci.asset_type
 
 UNION ALL
 
