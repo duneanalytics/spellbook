@@ -56,7 +56,7 @@ tx_basic_candidates AS (
 
 -- Filter 1: True self-trading (same address on both sides)
 filter_1_self_trading AS (
-    SELECT tx_hash, true AS self_trading
+    SELECT DISTINCT tx_hash, true AS self_trading
     FROM thin_trades 
     WHERE tx_from = tx_to  -- Actual self-trading
 ),
@@ -85,7 +85,7 @@ filter_2_circular_same_tx AS (
 
 -- Filter 3: Suspicious volume patterns (same wallet, high volume, minimal value extracted)
 filter_3_suspicious_volume AS (
-    SELECT tx_hash, true AS suspicious_volume
+    SELECT DISTINCT tx_hash, true AS suspicious_volume
     FROM (
         SELECT 
             wt.tx_hash,
@@ -112,7 +112,7 @@ filter_3_suspicious_volume AS (
 
 -- Filter 4: Related wallet patterns (simplified for Trino compatibility)
 filter_4_related_wallets AS (
-    SELECT tx_hash, true AS related_wallets
+    SELECT DISTINCT tx_hash, true AS related_wallets
     FROM (
         SELECT 
             tt.tx_hash,
@@ -130,7 +130,7 @@ filter_4_related_wallets AS (
 
 -- Filter 5: Token manipulation patterns
 filter_5_token_manipulation AS (
-    SELECT tx_hash, true AS token_manipulation
+    SELECT DISTINCT tx_hash, true AS token_manipulation
     FROM (
         SELECT 
             tt.tx_hash,
