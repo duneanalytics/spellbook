@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: fungible_asset_metadata
+  - name: aptos_fungible_asset_metadata
     meta:
       blockchain: aptos
       project: aptos_indexer
@@ -51,7 +51,7 @@ models:
       - name: maximum
         description: "Maximum supply, if blank then 2^128-1 (parsed from metadata) v2 only"
 
-  - name: fungible_asset_balances
+  - name: aptos_fungible_asset_balances
     meta:
       blockchain: aptos
       project: aptos_indexer
@@ -91,7 +91,7 @@ models:
       - name: token_standard
         description: "Coin is v1, FungibleAsset is v2"
 
-  - name: fungible_asset_activities
+  - name: aptos_fungible_asset_activities
     meta:
       blockchain: aptos
       project: aptos_indexer
@@ -131,7 +131,7 @@ models:
       - name: token_standard
         description: "Coin is v1, FungibleAsset is v2"
 
-  - name: fungible_asset_migration
+  - name: aptos_fungible_asset_migration
     meta:
       blockchain: aptos
       project: aptos_indexer
@@ -150,7 +150,7 @@ models:
       - name: asset_type_v2
         description: "Asset identifier for v2"
 
-  - name: fungible_asset_metadata_current
+  - name: aptos_fungible_asset_metadata_current
     meta:
       blockchain: aptos
       project: aptos_indexer
