@@ -9,11 +9,11 @@
 ) }}
 
 SELECT
-    tx_version AS tx_version_latest,
-    tx_hash AS tx_hash_latest,
-    block_date AS block_date_latest,
-    block_time AS block_time_latest,
-    date(date_trunc('month', block_time)) as block_month_latest,
+    tx_version_latest,
+    -- tx_hash_latest,
+    block_date_latest,
+    block_time_latest,
+    date(date_trunc('month', block_time_latest)) as block_month_latest,
     --
     '0x' || LPAD(lower(to_hex(move_address)), 64, '0') AS asset_type_v2,
     '0x' || LPAD(LTRIM(json_extract_scalar(move_data, '$.type.account_address'), '0x'), 64, '0') || '::' ||
@@ -21,10 +21,9 @@ SELECT
     FROM_UTF8(FROM_HEX(LTRIM(json_extract_scalar(move_data, '$.type.struct_name'), '0x'))) AS asset_type_v1
 FROM (
     SELECT
-        tx_version,
-        tx_hash,
-        block_date,
-        block_time,
+        MAX(tx_version) AS tx_version_latest,
+        MAX(block_date) AS block_date_latest,
+        MAX(block_time) AS block_time_latest,
         --
         move_address,
         ANY_VALUE(move_data) AS move_data
@@ -39,5 +38,5 @@ FROM (
         AND block_date = DATE('2025-08-01') -- DEBUG
         AND block_date >= DATE('2024-08-02') -- beginning of FA (v2) migration
     {% endif %}
-    GROUP BY 1
+    GROUP BY move_address
 )
