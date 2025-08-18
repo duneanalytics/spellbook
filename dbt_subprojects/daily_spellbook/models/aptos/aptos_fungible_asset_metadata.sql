@@ -110,11 +110,11 @@ WITH mr_fa_metadata AS (
 )
 
 SELECT
-    tx_version,
-    tx_hash,
-    block_date,
-    block_time,
-    date(date_trunc('month', block_time)) as block_month,
+    ci.tx_version,
+    ci.tx_hash,
+    ci.block_date,
+    ci.block_time,
+    date(date_trunc('month', ci.block_time)) as block_month,
     --
     write_set_change_index,
     IF(LENGTH(SPLIT(asset_type, '::')[1]) != 66,
@@ -133,7 +133,7 @@ SELECT
     NULL AS icon_uri,
     NULL AS project_uri,
     NULL AS maximum
-FROM mr_coin_info
+FROM mr_coin_info AS ci
 LEFT JOIN {{ ref('aptos_fungible_asset_migration') }} AS m
     ON m.asset_type_v1 = mr_coin_info.asset_type
 
