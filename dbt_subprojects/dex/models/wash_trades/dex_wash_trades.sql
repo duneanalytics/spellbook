@@ -37,15 +37,15 @@ FROM (
     , project_contract_address
     , evt_index
     , token_pair
-    , filter_1_same_wallet
-    , filter_2_back_forth
-    , filter_3_high_frequency
-    , filter_4_circular_trading
-    , filter_5_net_zero_pnl
+    , filter_1_self_trading
+    , filter_2_circular_same_tx
+    , filter_3_suspicious_volume
+    , filter_4_related_wallets
+    , filter_5_token_manipulation
     , is_wash_trade
     FROM {{ dex_wash_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
     {% endfor %}
-    ) 
+    )
