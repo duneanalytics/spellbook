@@ -3613,8 +3613,8 @@ FROM (VALUES
     , (0xdf552a7eadf42b5be39e71bfc662f1c39440e548, 'Bitcoin Suisse', 'Bitcoin Suisse 6', 'hildobby', date '2025-06-25')
     , (0x4ebf51689228236ec55bcafef9d79663992a7fb6, 'Bitcoin Suisse', 'Bitcoin Suisse 7', 'hildobby', date '2025-07-31')
     , (0xe20c0178c91050155f461685c24db0c0276c94b6, 'Bitcoin Suisse', 'Bitcoin Suisse 8', 'hildobby', date '2025-07-31')
-    , (0xc3ecba28af450e2ed469164766751130d93ecc36, 'Bitcoin Suisse', 'Bitcoin Suisse 7', 'hildobby', date '2025-08-01')
-    , (0xdd9663bd979f1ab1bada85e1bc7d7f13cafe71f8, 'Bitcoin Suisse', 'Bitcoin Suisse 8', 'hildobby', date '2025-08-01')
+    , (0xc3ecba28af450e2ed469164766751130d93ecc36, 'Bitcoin Suisse', 'Bitcoin Suisse 9', 'hildobby', date '2025-08-01')
+    , (0xdd9663bd979f1ab1bada85e1bc7d7f13cafe71f8, 'Bitcoin Suisse', 'Bitcoin Suisse 10', 'hildobby', date '2025-08-01')
     , (0xfcb7edb966d320c7f3ae1f751a8c86f30fa5ad37, 'Bitcoin Suisse', 'Bitcoin Suisse Binance Deposit 1', 'hildobby', date '2024-06-01')
     , (0x2a7077399b3e90f5392d55a1dc7046ad8d152348, 'Bitcoin Suisse', 'Bitcoin Suisse ETH Staking 1', 'hildobby', date '2023-11-23')
     -- Bitci
