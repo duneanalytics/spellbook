@@ -70,23 +70,21 @@ models:
         description: "Flag indicating if trade is classified as wash trading"
 
   - name: dex_bnb_wash_trades
-  meta:
-    blockchain: bnb
-    sector: dex
-    contributors: krishhh
-  config:
-    tags: [ 'dex', 'wash_trades', 'bnb' ]
-  description: >
-    DEX wash trades detection on BNB Chain
-  columns:
-    - name: tx_hash
-      description: "Transaction hash"
-    - name: evt_index
-      description: "Event index within the transaction"
-    - name: tx_hash_evt_index
-      description: "Composite unique key"
-      data_tests:
-        - unique:
-            combination_of_columns:
-              - tx_hash
-              - evt_index
+    meta:
+      blockchain: bnb
+      sector: dex
+      contributors: krishhh
+    config:
+      tags: ['dex', 'wash_trades', 'bnb']
+    description: >
+      DEX wash trades detection on BNB Chain
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [tx_hash, evt_index]
+    columns:
+      - name: tx_hash
+        description: "Transaction hash"
+        tests: [not_null]
+      - name: evt_index
+        description: "Event index within the transaction"
+        tests: [not_null]
