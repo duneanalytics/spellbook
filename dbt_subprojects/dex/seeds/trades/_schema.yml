@@ -1095,7 +1095,7 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
-  - name: iziswap_bnb_base_trades_seed
+  - name: izumi_finance_bnb_base_trades_seed
     config:
       column_types:
         blockchain: varchar
@@ -1110,7 +1110,7 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
-  - name: iziswap_scroll_base_trades_seed
+  - name: izumi_finance_scroll_base_trades_seed
     config:
       column_types:
         blockchain: varchar
@@ -3675,7 +3675,7 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
-  - name: iziswap_zksync_base_trades_seed
+  - name: izumi_finance_zksync_base_trades_seed
     config:
       column_types:
         blockchain: varchar
@@ -5553,8 +5553,113 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-      
+
   - name: blackhole_avalanche_c_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+        
+  - name: izumi_finance_hemi_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: ekubo_v1_ethereum_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: oku_hemi_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: sushiswap_hemi_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+        
+  - name: eulerswap_ethereum_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: eulerswap_bnb_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: eulerswap_unichain_base_trades_seed
     config:
       column_types:
         blockchain: varchar
