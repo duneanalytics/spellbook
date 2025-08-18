@@ -190,7 +190,7 @@ sources:
   - name: native_arbitrum
     tables:
       - name: NativeRFQPool_evt_RFQTrade
-  - name: spectra_arbitrum
+  - name: spectra_multichain
     tables:
       - name: vyper_contract_evt_tokenexchange
       - name: vyper_contract_call_coins
