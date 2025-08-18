@@ -29,6 +29,7 @@ WITH coin_balances AS (
         AND move_resource_module = 'coin'
         AND move_resource_name = 'CoinStore'
         AND block_date < DATE('2025-08-05')  -- almost all migrated
+        AND block_date = DATE('2025-08-01') -- DEBUG
     {% if is_incremental() %}
         AND {{ incremental_predicate('block_time') }}
     {% endif %}
@@ -62,6 +63,7 @@ WITH coin_balances AS (
             AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
             AND move_resource_module = 'fungible_asset'
             AND move_resource_name = 'ConcurrentFungibleBalance'
+            AND block_date = DATE('2025-08-01') -- DEBUG
         {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
         {% endif %}
@@ -77,6 +79,7 @@ WITH coin_balances AS (
             AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
             AND move_resource_module = 'object'
             AND move_resource_name = 'ObjectCore'
+            AND block_date = DATE('2025-08-01') -- DEBUG
         {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
         {% endif %}
@@ -85,6 +88,7 @@ WITH coin_balances AS (
         AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
         AND move_resource_module = 'fungible_asset'
         AND move_resource_name = 'FungibleStore'
+        AND block_date = DATE('2025-08-01') -- DEBUG
     {% if is_incremental() %}
         AND {{ incremental_predicate('block_time') }}
     {% endif %}
