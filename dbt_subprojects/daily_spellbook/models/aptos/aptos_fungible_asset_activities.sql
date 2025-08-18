@@ -8,7 +8,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    unique_key = ['tx_hash', 'event_index'],
+    unique_key = ['block_month', 'tx_hash', 'event_index'],
     partition_by = ['block_month'],
 ) }}
 
@@ -76,6 +76,9 @@ WITH coin_activities AS (
     ON ev.tx_version = fab.tx_version
     AND address_32_from_hex(json_extract_scalar(ev.data, '$.store')) = fab.storage_id
     AND fab.token_standard = 'v2'
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('fab.block_time') }}
+    {% endif %}
     WHERE 1=1
         AND ev.block_date = DATE('2025-01-01') -- DEBUG
         AND ev.block_date >= DATE('2023-07-28') -- v2 deployed

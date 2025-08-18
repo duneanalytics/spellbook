@@ -5,7 +5,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    unique_key = ['tx_hash', 'write_set_change_index'],
+    unique_key = ['block_month', 'tx_hash', 'write_set_change_index'],
     partition_by = ['block_month'],
 ) }}
 
