@@ -10,10 +10,11 @@
 -- TODO: change into one time table after coins are no longer allowed to be created
 
 SELECT
-    tx_version_latest,
-    block_date_latest,
-    block_time_latest,
-    date(date_trunc('month', block_time_latest)) as block_month_latest,
+    -- latest
+    tx_version,
+    block_date,
+    block_time,
+    date(date_trunc('month', block_time)) as block_month,
     --
     '0x' || LPAD(lower(to_hex(move_address)), 64, '0') AS asset_type_v2,
     '0x' || LPAD(LTRIM(json_extract_scalar(move_data, '$.type.account_address'), '0x'), 64, '0') || '::' ||
@@ -21,9 +22,9 @@ SELECT
     FROM_UTF8(FROM_HEX(LTRIM(json_extract_scalar(move_data, '$.type.struct_name'), '0x'))) AS asset_type_v1
 FROM (
     SELECT
-        MAX(tx_version) AS tx_version_latest,
-        MAX(block_date) AS block_date_latest,
-        MAX(block_time) AS block_time_latest,
+        MAX(tx_version) AS tx_version,
+        MAX(block_date) AS block_date,
+        MAX(block_time) AS block_time,
         --
         move_address,
         ANY_VALUE(move_data) AS move_data
