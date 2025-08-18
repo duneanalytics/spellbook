@@ -50,7 +50,7 @@ SELECT lp_name, contract_address
 
 SELECT distinct
     'optimism' AS blockchain,
-    lp_name, mm.contract_address, pool AS pool_contract, fee, token0, token1
+    lp_name, mm.contract_address, id AS pool_contract, fee, token0, token1
     FROM manual_mapping mm
     INNER JOIN {{ source('optimism', 'creation_traces') }} ct 
         ON ct.address = mm.contract_address
@@ -70,4 +70,4 @@ SELECT distinct
         AND l.block_time < ct.block_time + interval '1' month
         AND l.block_time >= TIMESTAMP '{{project_start_date}}'
     INNER JOIN {{ ref('uniswap_optimism_pools') }} up
-        ON up.pool = l.contract_address
+        ON up.id = l.contract_address
