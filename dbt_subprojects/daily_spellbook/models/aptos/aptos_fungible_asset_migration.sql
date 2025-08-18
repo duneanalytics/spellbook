@@ -7,10 +7,10 @@
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['asset_type_v2'],
 ) }}
+-- TODO: change into one time table after coins are no longer allowed to be created
 
 SELECT
     tx_version_latest,
-    -- tx_hash_latest,
     block_date_latest,
     block_time_latest,
     date(date_trunc('month', block_time_latest)) as block_month_latest,
