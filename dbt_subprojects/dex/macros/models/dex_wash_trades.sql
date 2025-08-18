@@ -22,7 +22,7 @@ filter_2_circular_same_tx AS (
     FROM (
         SELECT 
             ft1.tx_hash,
-            COUNT(DISTINCT CONCAT(ft1.tx_from, '-', ft1.tx_to)) OVER (PARTITION BY ft1.tx_hash) as unique_pairs,
+            COUNT(DISTINCT CONCAT(CAST(ft1.tx_from AS varchar), '-', CAST(ft1.tx_to AS varchar))) OVER (PARTITION BY ft1.tx_hash) as unique_pairs,
             COUNT(*) OVER (PARTITION BY ft1.tx_hash) as total_trades,
             -- Check for reciprocal pairs using self-join instead of EXISTS
             CASE WHEN ft2.tx_hash IS NOT NULL THEN 1 ELSE 0 END as has_reciprocal
@@ -48,8 +48,8 @@ filter_3_suspicious_volume AS (
             COUNT(*) as trade_count,
             SUM(amount_usd) as total_volume,
             -- Calculate if wallet is both major buyer and seller
-            SUM(CASE WHEN tx_from = wallet_addr THEN amount_usd ELSE 0.0 END) as sell_volume,
-            SUM(CASE WHEN tx_to = wallet_addr THEN amount_usd ELSE 0.0 END) as buy_volume
+            SUM(CASE WHEN tx_from = wallet_addr THEN amount_usd ELSE CAST(0.0 AS DECIMAL(38,18)) END) as sell_volume,
+            SUM(CASE WHEN tx_to = wallet_addr THEN amount_usd ELSE CAST(0.0 AS DECIMAL(38,18)) END) as buy_volume
         FROM (
             -- Get all unique wallets involved in the transaction
             SELECT tx_hash, tx_from as wallet_addr, tx_from, tx_to, amount_usd FROM filtered_trades
@@ -61,7 +61,7 @@ filter_3_suspicious_volume AS (
     WHERE trade_count >= 6  -- Minimum trades for suspicion
     AND total_volume > 50000.0  -- Significant volume
     AND sell_volume > 0.0 AND buy_volume > 0.0  -- Wallet both buys and sells
-    AND ABS(sell_volume - buy_volume) / GREATEST(sell_volume, buy_volume) < 0.05  -- Nearly balanced
+    AND ABS(sell_volume - buy_volume) / NULLIF(GREATEST(sell_volume, buy_volume), 0.0) < 0.05  -- Nearly balanced
 ),
 
 -- Filter 4: Related wallet patterns (simplified for Trino compatibility)
@@ -98,7 +98,7 @@ filter_5_token_manipulation AS (
     ) subq
     WHERE unique_tokens <= 2  -- Focus on 1-2 tokens
     AND total_trades >= 8     -- High frequency
-    AND max_trade_size / NULLIF(min_trade_size, 0.0) > 100.0  -- Suspicious size variation
+    AND max_trade_size / COALESCE(NULLIF(min_trade_size, 0.0), 1.0) > 100.0  -- Suspicious size variation
     AND avg_trade_size > 10000.0  -- Significant average size
 )
 
@@ -124,7 +124,7 @@ SELECT
     ELSE false
     END AS is_wash_trade,
     
-    -- Confidence score
+    -- Confidence score, keeping only for testing, will remove for prod
     ((CASE WHEN COALESCE(f1.self_trading, false) THEN 3 ELSE 0 END) + 
      (CASE WHEN COALESCE(f2.circular_trading, false) THEN 3 ELSE 0 END) +
      (CASE WHEN COALESCE(f3.suspicious_volume, false) THEN 1 ELSE 0 END) + 
