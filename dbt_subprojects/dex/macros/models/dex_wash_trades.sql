@@ -22,8 +22,8 @@ filter_2_circular_same_tx AS (
     FROM (
         SELECT 
             ft1.tx_hash,
-            COUNT(DISTINCT CONCAT(CAST(ft1.tx_from AS varchar), '-', CAST(ft1.tx_to AS varchar))) OVER (PARTITION BY ft1.tx_hash) as unique_pairs,
-            COUNT(*) OVER (PARTITION BY ft1.tx_hash) as total_trades,
+            tx_stats.unique_pairs,
+            tx_stats.total_trades,
             -- Check for reciprocal pairs using self-join instead of EXISTS
             CASE WHEN ft2.tx_hash IS NOT NULL THEN 1 ELSE 0 END as has_reciprocal
         FROM filtered_trades ft1
@@ -33,6 +33,14 @@ filter_2_circular_same_tx AS (
             AND ft1.tx_to = ft2.tx_from
             AND ft1.token_bought_address = ft2.token_sold_address
             AND ft1.token_sold_address = ft2.token_bought_address
+        INNER JOIN (
+            SELECT 
+                tx_hash,
+                COUNT(DISTINCT CONCAT(CAST(tx_from AS varchar), '-', CAST(tx_to AS varchar))) as unique_pairs,
+                COUNT(*) as total_trades
+            FROM filtered_trades
+            GROUP BY tx_hash
+        ) tx_stats ON ft1.tx_hash = tx_stats.tx_hash
     ) subq
     WHERE has_reciprocal = 1     -- Must have reciprocal trades
     AND unique_pairs <= 3        -- Limited participants
