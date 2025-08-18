@@ -74,7 +74,7 @@ WITH coin_activities AS (
         fab.owner_address,
         fab.asset_type
     FROM {{ source('aptos', 'events') }} ev
-    LEFT JOIN {{ ref('fungible_asset_balances') }} fab -- TODO: edge case around deletes
+    LEFT JOIN {{ ref('aptos_fungible_asset_balances') }} fab -- TODO: edge case around deletes
     ON ev.tx_version = fab.tx_version
     AND address_32_from_hex(json_extract_scalar(ev.data, '$.store')) = fab.storage_id
     AND fab.token_standard = 'v2'

@@ -138,7 +138,7 @@ SELECT
     NULL AS project_uri,
     NULL AS maximum
 FROM mr_coin_info
-LEFT JOIN {{ ref('fungible_asset_migration') }} AS m
+LEFT JOIN {{ ref('aptos_fungible_asset_migration') }} AS m
     ON m.asset_type_v1 = mr_coin_info.asset_type
 
 UNION ALL
@@ -168,5 +168,5 @@ LEFT JOIN mr_fa_supply AS s
     ON m.tx_version = s.tx_version AND m.move_address = s.move_address
 LEFT JOIN mr_fa_owner AS o
     ON m.tx_version = o.tx_version AND m.move_address = o.move_address
-LEFT JOIN {{ ref('fungible_asset_migration') }} AS mig
+LEFT JOIN {{ ref('aptos_fungible_asset_migration') }} AS mig
     ON mig.asset_type_v2 = '0x' || LPAD(lower(to_hex(m.move_address)), 64, '0')

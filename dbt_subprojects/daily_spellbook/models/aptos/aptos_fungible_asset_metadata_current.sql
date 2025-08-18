@@ -6,7 +6,7 @@
 
 WITH latest_metadata AS (
     SELECT *, ROW_NUMBER() OVER (PARTITION BY asset_type ORDER BY block_time DESC) AS rn
-    FROM {{ ref('fungible_asset_metadata') }}
+    FROM {{ ref('aptos_fungible_asset_metadata') }}
 )
 
 SELECT
