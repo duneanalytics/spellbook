@@ -7,7 +7,7 @@ WITH base_filtered_trades AS (
     {% if is_incremental() %}
     AND {{ incremental_predicate('block_time') }}
     {% else %}
-    AND block_time >= date_trunc('day', NOW() - interval '3' day)
+    AND block_time >= date_trunc('day', NOW() - interval '10' day)
     {% endif %}
     AND amount_usd > 100  -- Filter small trades early
 ),
