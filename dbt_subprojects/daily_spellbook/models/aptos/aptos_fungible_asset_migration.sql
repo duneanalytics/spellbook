@@ -9,6 +9,12 @@
 ) }}
 
 SELECT
+    tx_version,
+    tx_hash,
+    block_date,
+    block_time,
+    date(date_trunc('month', block_time)) as block_month,
+    --
     '0x' || LPAD(lower(to_hex(move_address)), 64, '0') AS asset_type_v2,
     '0x' || LPAD(LTRIM(json_extract_scalar(move_data, '$.type.account_address'), '0x'), 64, '0') || '::' ||
     FROM_UTF8(FROM_HEX(LTRIM(json_extract_scalar(move_data, '$.type.module_name'), '0x'))) || '::' ||

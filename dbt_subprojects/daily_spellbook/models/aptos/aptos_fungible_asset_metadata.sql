@@ -114,11 +114,11 @@ WITH mr_fa_metadata AS (
 )
 
 SELECT
-    block_date,
     tx_version,
+    tx_hash,
+    block_date,
     block_time,
     date(date_trunc('month', block_time)) as block_month,
-    tx_hash,
     --
     write_set_change_index,
     IF(LENGTH(SPLIT(asset_type, '::')[1]) != 66,
@@ -144,11 +144,11 @@ LEFT JOIN {{ ref('aptos_fungible_asset_migration') }} AS m
 UNION ALL
 
 SELECT
-    m.block_date,
     m.tx_version,
-    m.block_time,
-    date(date_trunc('month', block_time)) as block_month,
     m.tx_hash,
+    m.block_date,
+    m.block_time,
+    date(date_trunc('month', m.block_time)) as block_month,
     --
     write_set_change_index,
     '0x' || LPAD(lower(to_hex(m.move_address)), 64, '0') AS asset_type,

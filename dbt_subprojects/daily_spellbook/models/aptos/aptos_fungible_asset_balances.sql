@@ -95,11 +95,11 @@ WITH coin_balances AS (
 )
 
 SELECT
-    block_date,
     tx_version,
+    tx_hash,
+    block_date,
     block_time,
     date(date_trunc('month', block_time)) as block_month,
-    tx_hash,
     --
     write_set_change_index,
     IF(LENGTH(SPLIT(asset_type, '::')[1]) != 66,
@@ -117,11 +117,11 @@ FROM coin_balances
 UNION ALL
 
 SELECT
-    block_date,
     tx_version,
+    tx_hash,
+    block_date,
     block_time,
     date(date_trunc('month', block_time)) as block_month,
-    tx_hash,
     --
     write_set_change_index,
     '0x' || LPAD(LTRIM(asset_type, '0x'), 64, '0') AS asset_type,
