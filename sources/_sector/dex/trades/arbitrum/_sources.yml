@@ -192,5 +192,5 @@ sources:
       - name: NativeRFQPool_evt_RFQTrade
   - name: spectra_arbitrum
     tables:
-      - name: TokenExchange_evt_TokenExchange
-      - name: Coins_call_Coins
+      - name: vyper_contract_evt_tokenexchange
+      - name: vyper_contract_call_coins
