@@ -14,7 +14,7 @@ SELECT
     data AS tx_data
 FROM {{ source(blockchain, 'transactions') }}
 WHERE to = {{ angstrom_contract_addr }} AND varbinary_substring(data, 1, 4) = 0x09c5eabe
-AND block_number >= 22973479 AND block_number <= 23168845
+
 
 
 {% endmacro %}

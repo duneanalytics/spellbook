@@ -41,12 +41,12 @@ WITH
             t.angstrom_address AS maker,
             t.angstrom_address AS project_contract_address,
             t.tx_hash AS tx_hash,
-            ROW_NUMBER(*) over (partition by t.tx_hash) as evt_index
+            count(*) over (partition by t.tx_hash) as evt_index
         FROM tx_data_cte t
         INNER JOIN ({{ angstrom_bundle_tob_order_volume(angstrom_contract_addr, blockchain) }}) AS p
             ON t.tx_hash = p.tx_hash AND t.block_number = p.block_number
     ),
-    user_orders_inner AS (
+    user_orders AS (
         SELECT 
             t.block_number AS block_number,
             t.block_time AS block_time,
@@ -58,26 +58,11 @@ WITH
             t.angstrom_address AS maker,
             t.angstrom_address AS project_contract_address,
             t.tx_hash AS tx_hash,
-            ROW_NUMBER(*) over (partition by t.tx_hash) as evt_index
+            count(*) over (partition by t.tx_hash) + tc.tob_cnt as evt_index
         FROM tx_data_cte t
         INNER JOIN ({{ angstrom_bundle_user_order_volume(angstrom_contract_addr, controller_v1_contract_addr, blockchain) }}) AS p 
             ON t.tx_hash = p.tx_hash AND t.block_number = p.block_number
-    ),
-    user_orders AS (
-        SELECT
-            t.block_number AS block_number,
-            t.block_time AS block_time,
-            t.token_bought_amount_raw AS token_bought_amount_raw,
-            t.token_sold_amount_raw AS token_sold_amount_raw,
-            t.token_bought_address AS token_bought_address,
-            t.token_sold_address AS token_sold_address,
-            t.taker AS taker,
-            t.maker AS maker,
-            t.project_contract_address AS project_contract_address,
-            t.tx_hash AS tx_hash,
-            t.evt_index + coalesce(tc.tob_cnt, 0) AS evt_index
-        FROM user_orders_inner AS t
-        LEFT JOIN ( 
+        INNER JOIN ( 
             SELECT 
                 tx_hash,
                 COUNT(*) AS tob_cnt 
@@ -129,4 +114,5 @@ FROM user_orders
 
 
 {% endmacro %}
+
 
