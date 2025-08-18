@@ -36,10 +36,9 @@ WITH mr_fa_metadata AS (
         AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
         AND move_resource_module = 'fungible_asset'
         AND move_resource_name = 'Metadata'
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
         AND {{ incremental_predicate('block_time') }}
     {% else %}
-        AND block_date = DATE('2025-08-01') -- DEBUG
         AND block_date >= DATE('2023-07-27') -- beginning of FA (v2)
     {% endif %}
 ), mr_fa_supply AS (
@@ -63,10 +62,9 @@ WITH mr_fa_metadata AS (
         AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
         AND move_resource_module = 'fungible_asset'
         AND move_resource_name IN ('Supply', 'ConcurrentSupply')
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
         AND {{ incremental_predicate('block_time') }}
     {% else %}
-        AND block_date = DATE('2025-08-01') -- DEBUG
         AND block_date >= DATE('2023-07-27') -- beginning of FA (v2)
     {% endif %}
 ), mr_fa_owner AS (
@@ -79,10 +77,9 @@ WITH mr_fa_metadata AS (
         AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
         AND move_resource_module = 'object'
         AND move_resource_name = 'ObjectCore'
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
         AND {{ incremental_predicate('block_time') }}
     {% else %}
-        AND block_date = DATE('2025-08-01') -- DEBUG
         AND block_date >= DATE('2023-07-27') -- beginning of FA (v2)
     {% endif %}
 ), mr_coin_info AS (
@@ -107,8 +104,7 @@ WITH mr_fa_metadata AS (
         AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
         AND move_resource_module = 'coin'
         AND move_resource_name = 'CoinInfo'
-        AND block_date = DATE('2025-08-01') -- DEBUG
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
         AND {{ incremental_predicate('block_time') }}
     {% endif %}
 )

@@ -32,10 +32,9 @@ FROM (
         AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
         AND move_resource_module = 'coin'
         AND move_resource_name = 'PairedCoinType'
-    {% if is_incremental() %}
-        AND {{ incremental_predicate('block_time_latest') }}
+    {% if is_incremental() or true %}
+        AND {{ incremental_predicate('block_time') }}
     {% else %}
-        AND block_date = DATE('2025-08-01') -- DEBUG
         AND block_date >= DATE('2024-08-02') -- beginning of FA (v2) migration
     {% endif %}
     GROUP BY move_address
