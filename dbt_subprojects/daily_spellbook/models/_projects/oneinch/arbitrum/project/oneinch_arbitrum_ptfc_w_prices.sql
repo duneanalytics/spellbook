@@ -26,7 +26,7 @@ with prices as (
         decimals
     from {{ source('prices', 'usd') }}
     where blockchain = '{{ blockchain }}'
-        and minute >= date('2024-01-01')
+        and minute >= date('2021-05-01')
         {% if is_incremental() %}
         and {{ incremental_predicate('minute') }}
         {% endif %} 
@@ -65,7 +65,7 @@ with prices as (
             )
         }}
         )
-        where block_time >= date('2024-01-01')
+        where block_time >= date('2021-05-01')
             {% if is_incremental() %} 
          and   {{ incremental_predicate('block_time') }}
         {% endif %}
