@@ -9,15 +9,11 @@
         {%- set _ = default_version_mapping.update({address: info.version}) -%}
     {%- endfor -%}
     
+    {%- set final_version_mapping = default_version_mapping.copy() -%}
     {%- if version_mapping -%}
-        {%- set final_version_mapping = default_version_mapping.update(version_mapping) or default_version_mapping -%}
-    {%- else -%}
-        {%- set final_version_mapping = default_version_mapping -%}
+        {%- do final_version_mapping.update(version_mapping) -%}
     {%- endif -%}
 
-with singleton_addresses as (
-    select * from {{ ref('safe_' ~ blockchain ~ '_singletons') }}
-)
 select
     '{{ blockchain }}' as blockchain,
     et."from" as address,
@@ -33,9 +29,12 @@ select
     et.block_time as creation_time,
     et.tx_hash
 from {{ source(blockchain, 'traces') }} et 
-join singleton_addresses s
-    on LOWER(CAST(et.to AS VARCHAR)) = LOWER(CAST(s.address AS VARCHAR))
 where et.success = true
+    and LOWER(CAST(et.to AS VARCHAR)) in (
+        {%- for address in final_version_mapping.keys() %}
+        LOWER('{{ address }}'){{ ',' if not loop.last }}
+        {%- endfor %}
+    )
     and et.call_type = 'delegatecall' -- delegatecall to singleton is Safe (proxy) address
     and bytearray_substring(et.input, 1, 4) in (
         0x0ec78d9e, -- setup method v0.1.0
