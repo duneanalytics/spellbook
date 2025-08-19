@@ -4840,6 +4840,13 @@ FROM (VALUES
     , (0x471d113059324321749e097705197a2b44a070fc, 'Kanga Exchange', 'Kanga Exchange 2', 'hildobby', date '2024-01-04')
     -- Lemon Cash
     , (0x20bb82f2db6ff52b42c60ce79cde4c7094ce133f, 'Lemon Cash', 'Lemon Cash 1', 'hildobby', date '2024-01-04')
+    , (0xee728f4b29aa7243de914fdb91351ada00fdd98f, 'Lemon Cash', 'Lemon Cash 2', 'hildobby', date '2025-08-19')
+    , (0xda496f2e9e78e357c34323b1ce0dcb6a2860129f, 'Lemon Cash', 'Lemon Cash 3', 'hildobby', date '2025-08-19')
+    , (0xcb93a5880f9d9e855aa08b1ce3211ae06539463d, 'Lemon Cash', 'Lemon Cash 4', 'hildobby', date '2025-08-19')
+    , (0xc1da33e8d60daf4f93a52357a57a076f44c45759, 'Lemon Cash', 'Lemon Cash 5', 'hildobby', date '2025-08-19')
+    , (0x67f432dd3182bb9d45532e572703d884b0f8eab6, 'Lemon Cash', 'Lemon Cash 6', 'hildobby', date '2025-08-19')
+    , (0x203a53957d04a8a7df0951d1af510b2062b5b125, 'Lemon Cash', 'Lemon Cash 7', 'hildobby', date '2025-08-19')
+    , (0x02a78632215262a94ce8651846e7d22adc98ce3c, 'Lemon Cash', 'Lemon Cash 8', 'hildobby', date '2025-08-19')
     -- LordToken
     , (0x76c674f9bcb5eb01ad64629d3f68895b60029305, 'LordToken', 'LordToken 1', 'hildobby', date '2024-01-04')
     -- Paybis
@@ -5222,4 +5229,11 @@ FROM (VALUES
     , (0xcc0061c5025e1173c6ab08d56af429e3ba3037fd, 'Reku', 'Reku 1', 'muh_raf', date '2025-08-18')
     -- Pluang
     , (0xf03e8a4619d2286947af3385c9a474d253392d36, 'Pluang', 'Pluang 1', 'muh_raf', date '2025-08-18')
+    -- Ripio
+    , (0xf0b223f5ff6702e273a50390e2435c1666c02cd7, 'Ripio', 'Ripio 1', 'hildobby', date '2025-08-19')
+    , (0xa2201234a4652a704f5539058ccb9ab6ebcd486b, 'Ripio', 'Ripio 2', 'hildobby', date '2025-08-19')
+    , (0x98329910449586ba244d9edea97496f8ccf1c6be, 'Ripio', 'Ripio 3', 'hildobby', date '2025-08-19')
+    , (0x4905288e14f8f8ad21fa1662943475ccd2072651, 'Ripio', 'Ripio 4', 'hildobby', date '2025-08-19')
+    -- Brasil Bitcoin
+    , (0x04c079bb31deed8391015eed8d6b625a40957058, 'Brasil Bitcoin', 'Brasil Bitcoin 1', 'hildobby', date '2025-08-19')
     ) AS x (address, cex_name, distinct_name, added_by, added_date)
