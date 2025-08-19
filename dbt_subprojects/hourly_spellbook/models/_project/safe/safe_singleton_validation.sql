@@ -39,7 +39,7 @@ enriched_singletons AS (
             ELSE 'unknown'
         END as safe_version,
         CASE 
-            {%- set official_addresses = get_official_safe_addresses() -%}
+            {% set official_addresses = get_official_safe_addresses() %}
             WHEN LOWER(address) IN (
                 {%- for addr in official_addresses %}
                 LOWER('{{ addr }}'){{ "," if not loop.last else "" }}
