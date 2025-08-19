@@ -13,10 +13,10 @@
             on_schema_change = on_schema_change,
             file_format = file_format,
             incremental_strategy = incremental_strategy,
-            post_hook='{{ expose_spells(blockchains = \'["' ~ blockchain ~ '"]\',
-                                        spell_type = "project",
-                                        spell_name = "gnosis_safe",
-                                        contributors = ' ~ contributors ~ ') }}'
+            post_hook='{{ expose_spells(\'["' ~ blockchain ~ '"]\',
+                                        "project",
+                                        "gnosis_safe",
+                                        ' ~ contributors ~ ') }}'
         )
     }}
 {% endmacro %}
