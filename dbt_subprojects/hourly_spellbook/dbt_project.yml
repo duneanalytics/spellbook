@@ -7,7 +7,7 @@ require-dbt-version: ">=1.8.0"
 
 quoting:
   database: false
-  schema: true
+  schema: false
   identifier: false
 
 # This setting configures which "profile" dbt uses for this project.

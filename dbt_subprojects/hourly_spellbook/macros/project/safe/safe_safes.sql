@@ -15,6 +15,9 @@
         {%- set final_version_mapping = default_version_mapping -%}
     {%- endif -%}
 
+with singleton_addresses as (
+    select * from {{ ref('safe_' ~ blockchain ~ '_singletons') }}
+)
 select
     '{{ blockchain }}' as blockchain,
     et."from" as address,
@@ -30,7 +33,7 @@ select
     et.block_time as creation_time,
     et.tx_hash
 from {{ source(blockchain, 'traces') }} et 
-join {{ ref('safe_' ~ blockchain ~ '_singletons') }} s
+join singleton_addresses s
     on LOWER(CAST(et.to AS VARCHAR)) = LOWER(CAST(s.address AS VARCHAR))
 where et.success = true
     and et.call_type = 'delegatecall' -- delegatecall to singleton is Safe (proxy) address
