@@ -27,14 +27,7 @@ select
         when bytearray_substring(tr.input, 1, 4) = 0x5229073f then 'execTransactionFromModuleReturnData'
         else 'unknown'
     end as method,
-    tr.tx_hash as trace_tx_hash,
-    cast(
-        concat(
-            cast(date_trunc('day', tr.block_time) as varchar),
-            '-', cast(tr.tx_hash as varchar),
-            '-', array_join(cast(tr.trace_address as array(varchar)), ',')
-        ) as varchar
-    ) as unique_key
+    tr.tx_hash as trace_tx_hash
 from {{ source(blockchain, 'traces') }} tr
 join {{ ref('safe_' ~ blockchain ~ '_safes') }} s
     on s.address = tr."from"
