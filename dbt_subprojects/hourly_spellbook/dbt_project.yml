@@ -6,9 +6,9 @@ config-version: 2
 require-dbt-version: ">=1.8.0"
 
 quoting:
-  database: false
-  schema: false
-  identifier: false
+  database: true
+  schema: true
+  identifier: true
 
 # This setting configures which "profile" dbt uses for this project.
 # profile: "spellbook-poc-tokens"

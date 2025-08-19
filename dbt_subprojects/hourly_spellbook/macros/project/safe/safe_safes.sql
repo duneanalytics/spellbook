@@ -22,10 +22,10 @@ select
     '{{ blockchain }}' as blockchain,
     et."from" as address,
     case 
-        {%- for address, version in final_version_mapping.items() %}
-        {%- set deployment_info = deployments.get(address, {}) %}
+        {% for address, version in final_version_mapping.items() %}
+        {% set deployment_info = deployments.get(address, {}) %}
         when LOWER(CAST(et.to AS VARCHAR)) = LOWER('{{ address }}') then '{{ version }}'{{ '  -- ' ~ deployment_info.get('note', '') if deployment_info.get('note') else '' }}
-        {%- endfor %}
+        {% endfor %}
         else 'unknown'
     end as creation_version,
     try_cast(date_trunc('day', et.block_time) as date) as block_date,
