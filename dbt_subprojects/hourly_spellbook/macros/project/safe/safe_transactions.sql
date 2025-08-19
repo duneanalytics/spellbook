@@ -32,7 +32,7 @@ select
         concat(
             cast(date_trunc('day', tr.block_time) as varchar),
             '-', cast(tr.tx_hash as varchar),
-            '-', cast(tr.trace_address as varchar)
+            '-', array_join(cast(tr.trace_address as array(varchar)), ',')
         ) as varchar
     ) as unique_key
 from {{ source(blockchain, 'traces') }} tr
