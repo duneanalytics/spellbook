@@ -34,13 +34,13 @@ enriched_singletons AS (
         CASE 
             {%- set deployments = get_official_safe_deployments() -%}
             {%- for addr, info in deployments.items() %}
-            WHEN LOWER(address) = LOWER('{{ addr }}') THEN '{{ info.version }}{{ " - " ~ info.note if info.get("note") else "" }}'
+            WHEN LOWER(CAST(address AS varchar)) = LOWER('{{ addr }}') THEN '{{ info.version }}{{ " - " ~ info.note if info.get("note") else "" }}'
             {%- endfor %}
             ELSE 'unknown'
         END as safe_version,
         CASE 
             {% set official_addresses = get_official_safe_addresses() %}
-            WHEN LOWER(address) IN (
+            WHEN LOWER(CAST(address AS varchar)) IN (
                 {%- for addr in official_addresses %}
                 LOWER('{{ addr }}'){{ "," if not loop.last else "" }}
                 {%- endfor %}
