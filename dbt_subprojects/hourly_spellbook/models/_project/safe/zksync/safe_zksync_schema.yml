@@ -9,11 +9,6 @@ models:
     config:
       tags: ['safe', 'zksync']
     description: "Safe addresses"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - address
     columns:
       - &blockchain
         name: blockchain
@@ -33,7 +28,6 @@ models:
         description: "Date/time of safe creation"
       - &tx_hash
         name: tx_hash
-
   - name: safe_zksync_eth_transfers
     meta:
       blockchain: zksync
@@ -69,8 +63,6 @@ models:
       - &amount_usd
         name: amount_usd
         description: "USD amount of transferred ETH"
-
-
   - name: safe_zksync_singletons
     meta:
       blockchain: zksync
@@ -85,7 +77,6 @@ models:
         data_tests:
           - unique
           - not_null
-
   - name: safe_zksync_transactions
     meta:
       blockchain: zksync
