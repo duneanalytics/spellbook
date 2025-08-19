@@ -184,6 +184,7 @@
             'singleton_type': 'modern',
             'singleton_sources': [
                 'SafeProxyFactory_v1_3_0_evt_ProxyCreation',
+                'SafeProxyFactory_v1_4_1_evt_ProxyCreation'
             ]
         }
     } -%}
