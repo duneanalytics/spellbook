@@ -3,13 +3,28 @@
         {%- set contributor_list = get_safe_contributors(blockchain, alias_name) -%}
         {%- set contributors = '\'' ~ contributor_list|tojson ~ '\'' -%}
     {%- endif -%}
+    
+    {%- if not unique_key -%}
+        {%- if alias_name == 'safes' -%}
+            {%- set unique_key = ['block_date', 'address'] -%}
+        {%- elif alias_name == 'transactions' -%}
+            {%- set unique_key = ['block_date', 'tx_hash', 'trace_address'] -%}
+        {%- elif alias_name in ['eth_transfers', 'matic_transfers', 'xdai_transfers', 'bnb_transfers', 'avax_transfers', 'mnt_transfers', 'celo_transfers'] -%}
+            {%- set unique_key = ['block_date', 'address', 'tx_hash', 'trace_address'] -%}
+        {%- elif alias_name == 'singletons' -%}
+            {%- set unique_key = ['address'] -%}
+        {%- else -%}
+            {%- set unique_key = ['block_date'] -%}
+        {%- endif -%}
+    {%- endif -%}
+    
     {{
         config(
             materialized='incremental',
             schema = schema if schema else 'gnosis_safe_' ~ blockchain,
             alias = alias_name,
             partition_by = partition_by,
-            unique_key = unique_key if unique_key else default_safe_unique_key(alias_name),
+            unique_key = unique_key,
             on_schema_change = on_schema_change,
             file_format = file_format,
             incremental_strategy = incremental_strategy,
@@ -41,16 +56,3 @@
     }}
 {% endmacro %}
 
-{% macro default_safe_unique_key(alias_name) %}
-    {%- if alias_name == 'safes' -%}
-        ['block_date', 'address']
-    {%- elif alias_name == 'transactions' -%}
-        ['block_date', 'tx_hash', 'trace_address']
-    {%- elif alias_name in ['eth_transfers', 'matic_transfers', 'xdai_transfers', 'bnb_transfers', 'avax_transfers', 'mnt_transfers', 'celo_transfers'] -%}
-        ['block_date', 'address', 'tx_hash', 'trace_address']
-    {%- elif alias_name == 'singletons' -%}
-        ['address']
-    {%- else -%}
-        ['block_date']
-    {%- endif -%}
-{% endmacro %}
