@@ -85,6 +85,12 @@ models:
     config:
       tags: ['safe', 'zksync']
     description: "Safe transactions"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - trace_address
     columns:
       - *blockchain
       - *block_date
@@ -139,8 +145,3 @@ models:
       - &trace_tx_hash
         name: trace_tx_hash
         description: "Tx hash to retrieve traces"
-      - &unique_key
-        name: unique_key
-        description: unique row identifier
-        data_tests:
-          - unique
