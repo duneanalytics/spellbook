@@ -10,7 +10,8 @@
     )
 }}
 
-{{
+SELECT DISTINCT *
+FROM {{
     uniswap_compatible_v3_trades(
         blockchain = 'sei',
         project = 'dragon_swap',
