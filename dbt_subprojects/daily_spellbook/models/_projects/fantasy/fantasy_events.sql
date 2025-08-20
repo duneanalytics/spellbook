@@ -258,43 +258,6 @@ AND amount > 0
 
 UNION ALL
 
--- Tactics Purchases - Base
-SELECT block_time
-, block_number
-, block_date
-, 'Tactics Purchase' AS evt_type
-, tx_from AS user_address
-, false AS whitelist
-, CAST(NULL AS varbinary) AS collection
-, CAST(0 AS double) AS cards_minted
-, CAST(0 AS double) AS cards_burned
-, CAST(NULL AS ARRAY<UINT256>) AS minted_ids
-, CAST(NULL AS ARRAY<UINT256>) AS burned_ids
-, CAST(NULL AS DOUBLE) AS traded_ids
-, CAST(NULL AS varbinary) AS traded_with
-, tx_from
-, tx_to
-, tx_hash
-, tx_index
-, CAST(NULL AS varbinary) AS contract_address
-, CAST(NULL AS boolean) AS is_wash_trade
-, symbol AS token_symbol
-, contract_address AS token_address
-, amount AS token_amount
-, amount_usd AS price_usd
-, CASE WHEN block_number < 18397361 THEN 0.015*amount ELSE 0 END AS heroes_revenue
-, CASE WHEN block_number < 18397361 THEN 0.015*amount_usd ELSE 0 END AS heroes_revenue_usd
-, 0.06*amount AS to_fantasy_treasury
-, 0.06*amount_usd AS to_fantasy_treasury_usd
-, ROUND(amount_usd/19.99) AS tactics_bought
-FROM {{ source('tokens_base', 'transfers') }} tt
-WHERE block_number >= 4917909
-AND to = 0x4af1f00f50efbfcdf7a8f2ac02e9bc24825438ac
-AND contract_address = 0x4300000000000000000000000000000000000004
-AND amount > 0
-
-UNION ALL
-
 -- Batch Burn
 SELECT evt_block_time AS block_time
 , evt_block_number AS block_number
