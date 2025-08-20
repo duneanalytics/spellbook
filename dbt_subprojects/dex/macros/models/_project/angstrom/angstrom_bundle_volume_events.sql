@@ -2,6 +2,7 @@
     angstrom_bundle_volume_events(   
         angstrom_contract_addr, 
         controller_v1_contract_addr,
+        earliest_block,
         blockchain,
         project = null,
         version = null
@@ -27,7 +28,7 @@
 
 WITH
     tx_data_cte AS (
-        {{ angstrom_tx_data(angstrom_contract_addr, blockchain) }}
+        {{ angstrom_tx_data(angstrom_contract_addr, earliest_block, blockchain) }}
     ),
     tob_orders AS (
         SELECT 
@@ -43,7 +44,7 @@ WITH
             t.tx_hash AS tx_hash,
             ROW_NUMBER(*) over (partition by t.tx_hash) as evt_index
         FROM tx_data_cte t
-        INNER JOIN ({{ angstrom_bundle_tob_order_volume(angstrom_contract_addr, controller_v1_contract_addr, blockchain) }}) AS p
+        INNER JOIN ({{ angstrom_bundle_tob_order_volume(angstrom_contract_addr, controller_v1_contract_addr, earliest_block, blockchain) }}) AS p
             ON t.tx_hash = p.tx_hash AND t.block_number = p.block_number
     ),
     user_orders_inner AS (
@@ -60,7 +61,7 @@ WITH
             t.tx_hash AS tx_hash,
             ROW_NUMBER(*) over (partition by t.tx_hash) as evt_index
         FROM tx_data_cte t
-        INNER JOIN ({{ angstrom_bundle_user_order_volume(angstrom_contract_addr, controller_v1_contract_addr, blockchain) }}) AS p 
+        INNER JOIN ({{ angstrom_bundle_user_order_volume(angstrom_contract_addr, controller_v1_contract_addr, earliest_block, blockchain) }}) AS p 
             ON t.tx_hash = p.tx_hash AND t.block_number = p.block_number
     ),
     user_orders AS (

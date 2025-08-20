@@ -2,6 +2,7 @@
     angstrom_bundle_user_order_volume(        
         angstrom_contract_addr, 
         controller_v1_contract_addr,
+        earliest_block,
         blockchain
     )
 %}
@@ -16,8 +17,8 @@ WITH
             if(ab.zero_for_one, asts.asset_in, asts.asset_out) AS asset_in,
             if(ab.zero_for_one, asts.asset_out, asts.asset_in) AS asset_out,
             asts.price_1over0
-        FROM ({{angstrom_decoding_user_orders(angstrom_contract_addr, blockchain)}}) AS ab
-        INNER JOIN ({{ angstrom_bundle_indexes_to_assets(angstrom_contract_addr, blockchain) }}) AS asts
+        FROM ({{angstrom_decoding_user_orders(angstrom_contract_addr, earliest_block, blockchain)}}) AS ab
+        INNER JOIN ({{ angstrom_bundle_indexes_to_assets(angstrom_contract_addr, earliest_block, blockchain) }}) AS asts
             ON asts.bundle_pair_index = ab.pair_index AND ab.block_number = asts.block_number AND ab.tx_hash = asts.tx_hash
     ),
     user_orders_with_pool AS (
@@ -26,7 +27,7 @@ WITH
             f.pool_id AS pool_id,
             f.bundle_fee AS bundle_fee
         FROM user_orders AS u
-        INNER JOIN ({{ angstrom_pool_info(controller_v1_contract_addr, blockchain) }}) AS f
+        INNER JOIN ({{ angstrom_pool_info(controller_v1_contract_addr, earliest_block, blockchain) }}) AS f
             ON u.block_number = f.block_number AND
                 ((varbinary_substring(f.topic1, 13, 20) = u.asset_in OR varbinary_substring(f.topic2, 13, 20) = u.asset_in) AND 
                 (varbinary_substring(f.topic1, 13, 20) = u.asset_out OR varbinary_substring(f.topic2, 13, 20) = u.asset_out)) 

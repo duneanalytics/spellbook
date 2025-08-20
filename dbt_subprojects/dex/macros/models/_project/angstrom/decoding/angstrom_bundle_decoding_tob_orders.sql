@@ -1,6 +1,7 @@
 {% macro
     angstrom_decoding_top_of_block_orders(
         angstrom_contract_addr,
+        earliest_block,
         blockchain
     )
 %}
@@ -11,7 +12,7 @@ WITH vec_pade AS (
         tx_hash,
         block_number,
         buf
-    FROM ({{ angstrom_decoding_recursive(angstrom_contract_addr, blockchain, 'step3') }})
+    FROM ({{ angstrom_decoding_recursive(angstrom_contract_addr, earliest_block, blockchain, 'step3') }})
 )
 SELECT
     tx_hash,

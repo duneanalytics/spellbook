@@ -1,6 +1,7 @@
 {% macro
     angstrom_pool_info(
-        controller_v1_contract_addr, 
+        controller_v1_contract_addr,
+        earliest_block,
         blockchain
     )
 %}
@@ -43,6 +44,7 @@ WITH fee_events AS (
         ) AS pool_id
     FROM {{ source(blockchain, 'logs') }} AS l
     WHERE 
+        block_number >= {{ earliest_block }} AND
         contract_address = {{ controller_v1_contract_addr }} AND 
         topic0 = 0xf325a037d71efc98bc41dc5257edefd43a1d1162e206373e53af271a7a3224e9
 ),

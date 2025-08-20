@@ -1,6 +1,7 @@
 {% macro
     angstrom_bundle_indexes_to_assets(
         angstrom_contract_addr, 
+        earliest_block,
         blockchain
     )
 %}
@@ -12,7 +13,7 @@ WITH
             block_number,
             bundle_idx - 1 AS bundle_idx,
             token_address
-        FROM ({{angstrom_decoding_assets(angstrom_contract_addr, blockchain)}})
+        FROM ({{angstrom_decoding_assets(angstrom_contract_addr, earliest_block, blockchain)}})
     ),
     pairs AS (
         SELECT 
@@ -22,7 +23,7 @@ WITH
             index0,
             index1,
             price_1over0
-        FROM ({{angstrom_decoding_pairs(angstrom_contract_addr, blockchain)}})
+        FROM ({{angstrom_decoding_pairs(angstrom_contract_addr, earliest_block, blockchain)}})
     ),
     _asset_in AS (
         SELECT
