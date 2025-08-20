@@ -83,7 +83,6 @@ referral_payment_txns AS (
     )
     AND evt_block_time >= CAST('2023-08-01 00:00' AS TIMESTAMP)
     AND contract_address in (select address from tokens)
-    ORDER BY evt_block_time
 
     UNION ALL -- payments from LiquidityRewards MS to registry recipients
 

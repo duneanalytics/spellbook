@@ -11,7 +11,7 @@
         )
 }}
 
-multisigs_list AS (
+with multisigs_list AS (
     select * from (values
     (0x3e40d73eb977dc6a537af587d48316fee66e9c8c, 'Ethereum', 'Aragon'),
     (0x48F300bD3C52c7dA6aAbDE4B683dEB27d38B9ABb, 'Ethereum', 'FinanceOpsMsig'),
@@ -60,11 +60,11 @@ ldo_referral_payments_addr AS (
     (0x9e2b6378ee8ad2A4A95Fe481d63CAba8FB0EBBF9),
     (0xaf8aE6955d07776aB690e565Ba6Fbc79B8dE3a5d) --rhino
     ) as list(address)
-),
+)
 
 
 
-ldo_referral_payment_txns AS ( --only LDO referral program, need to add DAI referrals
+, ldo_referral_payment_txns AS ( --only LDO referral program, need to add DAI referrals
    SELECT evt_block_time, CAST(_amount AS DOUBLE) AS amnt, evt_tx_hash, _to, _from, contract_address
     FROM {{source('lido_ethereum','LDO_evt_Transfer')}}
     WHERE _from IN (
