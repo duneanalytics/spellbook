@@ -32,7 +32,6 @@ ALL_TRADES AS (
     WHERE token_address NOT IN (SELECT * FROM {{ ref('ton_proxy_ton_addresses') }})
 )
 
-
 , LIQUID_TOKENS AS (
     SELECT DISTINCT 
         block_date,
@@ -44,6 +43,9 @@ ALL_TRADES AS (
         ]) AS T(token_address, reserves_raw)
     WHERE 1=1
         AND tvl_usd >= 100_000 -- highly liquid pools
+        -- LST tokens may have low activity on DEXs and since they are liquid by the definition
+        -- we can use lower threshold for them
+        OR tvl_usd >= 5_000 AND token_address IN (SELECT address FROM {{ ref('ton_lst_addresses') }})
 )
 
 
