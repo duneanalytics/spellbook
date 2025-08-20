@@ -43,7 +43,7 @@ WITH fee_events AS (
         ) AS pool_id
     FROM {{ source(blockchain, 'logs') }} AS l
     WHERE 
-        contract_address = 0xFE77113460CF1833c4440FD17B4463f472010e10 AND 
+        contract_address = {{ controller_v1_contract_addr }} AND 
         topic0 = 0xf325a037d71efc98bc41dc5257edefd43a1d1162e206373e53af271a7a3224e9
 ),
 block_range AS (
@@ -90,7 +90,7 @@ SELECT
     protocol_unlocked_fee,
     topic1,
     topic2,
-    pool_id
+    FROM_HEX(pool_id) AS pool_id
 FROM latest_fees_per_pair
 WHERE rn = 1 AND bundle_fee IS NOT NULL
 ORDER BY block_number DESC, topic1, topic2
