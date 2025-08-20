@@ -62,7 +62,7 @@ referral_payment_txns AS (
             evt_tx_hash,
             contract_address,
             cast(value as double) as value
-    FROM  {{source('erc20_ethereum','evt_Transfer')}}
+    FROM {{source('erc20_ethereum','evt_Transfer')}}
     WHERE "from" in (select address from multisigs_list where chain = 'Ethereum' and name = 'Aragon')
     AND to IN (
         SELECT address FROM steth_referral_payments_addr
@@ -76,7 +76,7 @@ referral_payment_txns AS (
             evt_tx_hash,
             contract_address,
             -cast(value as double)
-    FROM  {{source('erc20_ethereum','evt_Transfer')}}
+    FROM {{source('erc20_ethereum','evt_Transfer')}}
     WHERE to in (select address from multisigs_list where chain = 'Ethereum' and name = 'Aragon')
     AND "from" IN (
         SELECT address FROM steth_referral_payments_addr
@@ -91,7 +91,7 @@ referral_payment_txns AS (
             evt_tx_hash,
             contract_address,
             cast(value as double) as value
-    FROM  {{source('erc20_ethereum','evt_transfer')}}
+    FROM  {{source('erc20_ethereum','evt_Transfer')}}
     WHERE "from" in (select address from multisigs_list where chain = 'Ethereum' and name = 'LiquidityRewardsMsig')
     AND to IN (
         SELECT address FROM steth_referral_payments_addr
@@ -105,7 +105,7 @@ referral_payment_txns AS (
             evt_tx_hash,
             contract_address,
             -cast(value as double)
-    FROM  {{source('erc20_ethereum','evt_transfer')}}
+    FROM  {{source('erc20_ethereum','evt_Transfer')}}
     WHERE to in (select address from multisigs_list where chain = 'Ethereum' and name = 'LiquidityRewardsMsig')
     AND "from" IN (
         SELECT address FROM steth_referral_payments_addr

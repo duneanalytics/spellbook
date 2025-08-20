@@ -146,7 +146,7 @@ multichain_liquidity_incentives_txns AS (
         "from",
         contract_address,
         'ethereum' as blockchain
-    FROM  delta_prod.erc20_ethereum.evt_transfer
+    FROM  {{source('erc20_ethereum','evt_Transfer')}}
     WHERE "from" IN (
         SELECT
             address
