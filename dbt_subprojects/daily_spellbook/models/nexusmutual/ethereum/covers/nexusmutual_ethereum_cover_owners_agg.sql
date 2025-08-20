@@ -12,111 +12,33 @@
 
 with
 
-daily_avg_prices as (
-  select
-    block_date,
-    avg_eth_usd_price,
-    avg_dai_usd_price,
-    avg_usdc_usd_price,
-    avg_cbbtc_usd_price,
-    avg_nxm_eth_price,
-    avg_nxm_usd_price
-  from {{ ref('nexusmutual_ethereum_capital_pool_prices') }}
-),
-
 covers as (
   select
     cover_id,
     cover_start_date,
     cover_end_date,
-    syndicate as staking_pool,
+    cover_owner,
     product_id,
-    product_type,
-    product_name,
-    cover_asset,
-    sum_assured,
-    sum_assured as cover_amount,
-    premium_asset,
-    premium,
-    cover_owner
-  from {{ ref('nexusmutual_ethereum_covers_v1') }}
-  union all
-  select
-    cover_id,
-    cover_start_date,
-    cover_end_date,
-    staking_pool,
-    product_id,
-    product_type,
-    product_name,
-    cover_asset,
-    sum_assured,
-    sum_assured * partial_cover_amount / sum(partial_cover_amount) over (partition by cover_id) as cover_amount,
-    premium_asset,
-    premium_incl_commission as premium,
-    cover_owner
-  from {{ ref('nexusmutual_ethereum_covers_v2') }}
+    eth_eth_cover,
+    eth_usd_cover,
+    dai_eth_cover,
+    dai_usd_cover,
+    usdc_eth_cover,
+    usdc_usd_cover,
+    cbbtc_eth_cover,
+    cbbtc_usd_cover,
+    eth_eth_premium,
+    eth_usd_premium,
+    dai_eth_premium,
+    dai_usd_premium,
+    usdc_eth_premium,
+    usdc_usd_premium,
+    cbbtc_eth_premium,
+    cbbtc_usd_premium,
+    nxm_eth_premium,
+    nxm_usd_premium
+  from {{ ref('nexusmutual_ethereum_covers_full_list') }}
   where is_migrated = false
-),
-
-covers_ext as (
-  select
-    cover_id,
-    cover_start_date,
-    cover_end_date,
-    staking_pool,
-    product_id,
-    product_type,
-    product_name,
-    cover_asset,
-    if(cover_asset = 'ETH', cover_amount, 0) as eth_cover_amount,
-    if(cover_asset = 'DAI', cover_amount, 0) as dai_cover_amount,
-    if(cover_asset = 'USDC', cover_amount, 0) as usdc_cover_amount,
-    if(cover_asset = 'cbBTC', cover_amount, 0) as cbbtc_cover_amount,
-    premium_asset,
-    if(staking_pool = 'v1' and cover_asset = 'ETH', premium, 0) as eth_premium_amount,
-    if(staking_pool = 'v1' and cover_asset = 'DAI', premium, 0) as dai_premium_amount,
-    if(staking_pool <> 'v1', premium, 0) as nxm_premium_amount,
-    cover_owner
-  from covers
-),
-
-cover_sales_per_owner as (
-  select
-    p.block_date,
-    c_start.cover_id,
-    c_start.cover_start_date,
-    c_start.cover_end_date,
-    c_start.staking_pool,
-    c_start.product_id,
-    c_start.product_type,
-    c_start.product_name,
-    c_start.cover_owner,
-    --== cover ==
-    --ETH
-    coalesce(c_start.eth_cover_amount, 0) as eth_eth_cover,
-    coalesce(c_start.eth_cover_amount * p.avg_eth_usd_price, 0) as eth_usd_cover,
-    --DAI
-    coalesce(c_start.dai_cover_amount * p.avg_dai_usd_price / p.avg_eth_usd_price, 0) as dai_eth_cover,
-    coalesce(c_start.dai_cover_amount * p.avg_dai_usd_price, 0) as dai_usd_cover,
-    --USDC
-    coalesce(c_start.usdc_cover_amount * p.avg_usdc_usd_price / p.avg_eth_usd_price, 0) as usdc_eth_cover,
-    coalesce(c_start.usdc_cover_amount * p.avg_usdc_usd_price, 0) as usdc_usd_cover,
-    --cbBTC
-    coalesce(c_start.cbbtc_cover_amount * p.avg_cbbtc_usd_price / p.avg_eth_usd_price, 0) as cbbtc_eth_cover,
-    coalesce(c_start.cbbtc_cover_amount * p.avg_cbbtc_usd_price, 0) as cbbtc_usd_cover,
-    --== fees ==
-    --ETH
-    coalesce(c_start.eth_premium_amount, 0) as eth_eth_premium,
-    coalesce(c_start.eth_premium_amount * p.avg_eth_usd_price, 0) as eth_usd_premium,
-    --DAI
-    coalesce(c_start.dai_premium_amount * p.avg_dai_usd_price / p.avg_eth_usd_price, 0) as dai_eth_premium,
-    coalesce(c_start.dai_premium_amount * p.avg_dai_usd_price, 0) as dai_usd_premium,
-    --NXM
-    coalesce(c_start.nxm_premium_amount * p.avg_nxm_usd_price / p.avg_eth_usd_price, 0) as nxm_eth_premium,
-    coalesce(c_start.nxm_premium_amount * p.avg_nxm_usd_price, 0) as nxm_usd_premium
-  from daily_avg_prices p
-    inner join covers_ext c_start on p.block_date = c_start.cover_start_date
 ),
 
 cover_sales_per_owner_aggs as (
@@ -150,7 +72,7 @@ cover_sales_per_owner_aggs as (
     sum(nxm_usd_premium) as nxm_usd_premium,
     sum(eth_usd_premium) + sum(dai_usd_premium) + sum(nxm_usd_premium) as usd_premium,
     approx_percentile(eth_usd_premium + dai_usd_premium + nxm_usd_premium, 0.5) as median_usd_premium
-  from cover_sales_per_owner
+  from covers
   group by 1
 )
 

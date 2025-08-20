@@ -3,6 +3,7 @@ version: 2
 models:
   - name: dex_ink_base_trades
     data_tests:
+      - check_columns_dex_base_trades
       - check_dex_info_relationship
       - test_acceptable_usd_amount:
           column_name: amount_usd
@@ -150,3 +151,22 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('reservoir_swap_ink_base_trades_seed')
+
+  - name: velodrome_v3_ink_base_trades
+    meta:
+      blockchain: ink
+      sector: dex
+      project: velodrome
+      contributors: ShawnEdwards23
+    config:
+      tags: [ 'ink', 'dex', 'trades', 'velodrome', 'v3' ]
+    description: "velodrome ink v3 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('velodrome_ink_base_trades_seed')
+          filter:
+            version: 3

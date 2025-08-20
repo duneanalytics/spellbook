@@ -89,9 +89,48 @@ sources:
   - name: cow_protocol_base
     tables:
       - name: trades
+  - name: cow_protocol_avalanche_c
+    tables:
+      - name: trades
+  - name: cow_protocol_polygon
+    tables:
+      - name: trades
   - name: jelly_swap
     tables:
       - name: trades
   - name: beethoven_x
     tables:
       - name: trades
+  - name: zeroex_arbitrum
+    tables:
+      - name: settler_addresses
+  - name: zeroex_avalanche_c
+    tables:
+      - name: settler_addresses
+  - name: zeroex_base
+    tables:
+      - name: settler_addresses
+  - name: zeroex_bnb
+    tables:
+      - name: settler_addresses
+  - name: zeroex_celo
+    tables:
+      - name: settler_addresses
+  - name: zeroex_ethereum
+    tables:
+      - name: settler_addresses
+  - name: zeroex_fantom
+    tables:
+      - name: settler_addresses
+  - name: zeroex_linea
+    tables:
+      - name: settler_addresses
+  - name: zeroex_optimism
+    tables:
+      - name: settler_addresses
+  - name: zeroex_polygon
+    tables:
+      - name: settler_addresses
+  - name: zeroex_unichain
+    tables:
+      - name: settler_addresses

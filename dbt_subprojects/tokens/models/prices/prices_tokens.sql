@@ -4,48 +4,7 @@
         materialized='table',
         file_format = 'delta',
         tags = ['static'],
-        post_hook = '{{ expose_spells(\'[
-                                        "arbitrum"
-                                        , "avalanche_c"
-                                        , "base"
-                                        , "bitcoin"
-                                        , "blast"
-                                        , "bnb"
-                                        , "boba"
-                                        , "cardano"
-                                        , "celo"
-                                        , "corn"
-                                        , "degen"
-                                        , "ethereum"
-                                        , "fantom"
-                                        , "flare"
-                                        , "gnosis"
-                                        , "ink"
-                                        , "kaia"
-                                        , "linea"
-                                        , "nova"
-                                        , "optimism"
-                                        , "polygon"
-                                        , "ronin"
-                                        , "scroll"
-                                        , "sei"
-                                        , "shape"
-                                        , "solana"
-                                        , "sonic"
-                                        , "sophon"
-                                        , "opbnb"
-                                        , "unichain"
-                                        , "viction"
-                                        , "worldchain"
-                                        , "zksync"
-                                        , "zkevm"
-                                        , "zora"
-                                        , "abstract"
-                                        , "lens"
-                                    ]\',
-                                    "sector",
-                                    "prices",
-                                    \'["aalan3", "jeff-dude", "umer_h_adil", "0xBoxer", "rantum", "lgingerich", "hildobby", "cryptokoryo", "0xRob", "hosuke", "Henrystats"]\') }}'
+        post_hook = '{{ hide_spells() }}'
         )
 }}
 
@@ -62,6 +21,7 @@ ref('prices_native_tokens')
 ,ref('prices_fantom_tokens')
 ,ref('prices_flare_tokens')
 ,ref('prices_gnosis_tokens')
+,ref('prices_hemi_tokens')
 ,ref('prices_optimism_tokens')
 ,ref('prices_polygon_tokens')
 ,ref('prices_solana_tokens')
@@ -86,7 +46,9 @@ ref('prices_native_tokens')
 ,ref('prices_sonic_tokens')
 ,ref('prices_ink_tokens')
 ,ref('prices_sophon_tokens')
+,ref('prices_tac_tokens')
 ,ref('prices_opbnb_tokens')
+,ref('prices_taiko_tokens')
 ,ref('prices_unichain_tokens')
 ,ref('prices_abstract_tokens')
 ,ref('prices_berachain_tokens')
@@ -94,6 +56,9 @@ ref('prices_native_tokens')
 ,ref('prices_shape_tokens')
 ,ref('prices_degen_tokens')
 ,ref('prices_lens_tokens')
+,ref('prices_plume_tokens')
+,ref('prices_katana_tokens')
+,ref('prices_superseed_tokens')
 ] %}
 
 

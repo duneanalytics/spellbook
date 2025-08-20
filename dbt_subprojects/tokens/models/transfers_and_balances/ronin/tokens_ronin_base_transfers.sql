@@ -14,7 +14,6 @@
     blockchain='ronin',
     traces = source('ronin','traces'),
     transactions = source('ronin','transactions'),
-    erc20_transfers = source('erc20_ronin','evt_transfer'),
-    native_contract_address = null
+    erc20_transfers = source('erc20_ronin','evt_Transfer')
 )
 }}

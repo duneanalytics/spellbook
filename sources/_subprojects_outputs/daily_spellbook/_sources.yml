@@ -20,7 +20,9 @@ sources:
       
   - name: labels
     tables:
-      - name: jelly_swap_pools_sei     
+      - name: jelly_swap_pools_sei   
+      - name: beethoven_x_pools_fantom
+      - name: beets_pools_sonic
       - name: addresses
       
   - name: evms
@@ -28,6 +30,8 @@ sources:
     tables:
       - name: info
         description: "Blockchain metadata for all EVM compatible chains"
+      - name: erc20_transfers
+        description: "ERC-20 token transfer events across chains"
       - name: evm_smart_account_method_ids
       - name: base_evm_smart_account_method_ids
       - name: contracts

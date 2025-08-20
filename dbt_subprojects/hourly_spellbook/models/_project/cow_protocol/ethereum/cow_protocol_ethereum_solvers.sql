@@ -124,6 +124,12 @@ known_solver_metadata (address, environment, name) as (
                  (0x34717040928D7fd8154d4612f3228EFf14521023, 'prod', 'Laita'),
                  (0xdcE5B9574C9A18B4f1713C80BfC53623c007e7e1, 'prod', 'OKX'),
                  (0x42cb97c2695cF6227C3a1323A1942089ABc9716B, 'prod', 'Elfomo'),
+                 (0xA7842153fDe380A864726d0E91f14F6FFAb7d46C, 'prod', 'Wraxyn'),
+                 (0xDFddAdd85FE5A8A0943A2DD263F8fE5302A7d027, 'prod', 'Unizen'),
+                 (0xbB786564a4d6A41370bA782c2a398CF0aAE52B94, 'prod', 'ExtQuasimodo'),
+                 (0x658614f5065Cf018A2A24082f6983e833ac5f0E7, 'barn', 'ExtQuasimodo'),
+                 (0xb856279C12a45Acb9E18D50943f029021dE2a65C, 'barn', 'Unizen'),
+                 (0x949CbEB40AA624D449A80C7A33F02148F93B6235, 'barn', 'Wraxyn'),
                  (0x6b8Dc2Dd45bBF6A71a987b61cC4Dbbdf7C601c20, 'barn', 'Elfomo'),
                  (0xD2E90778eE3F480d305FF535bE88f5AF9F2ac85c, 'barn', 'OKX'),
                  (0xBab555BaBEe5d867983902bC8db8F707157245Be, 'barn', 'Project_Blanc'),
@@ -220,7 +226,10 @@ known_solver_metadata (address, environment, name) as (
                  (0x2caef7f0ee82fb0abf1ab0dcd3a093803002e705, 'test', 'Test Solver 1'),
                  (0x56d4ed5e49539ebb1366c7d6b8f2530f1e4fe753, 'test', 'Test Solver 2'),
                  (0x83919ba112Fae537d4889e7932a64bE9ECB25dF8, 'barn', 'Apollo'),
-                 (0xD2ADF24253056D45731a8561749fC9b2ffa4Fe19, 'prod', 'Apollo')
+                 (0xD2ADF24253056D45731a8561749fC9b2ffa4Fe19, 'prod', 'Apollo'),
+                 (0x4dd1be0Cd607E5382Dd2844fA61D3a17e3e83D56, 'prod', 'Rizzolver'),
+                 (0x7f2cb2C1B2dfCc4212CBa59ef0a61d9CdE20158D, 'barn', 'PLM'),
+                 (0x1b99451f62a8574f8413F5A3FC80B99b29701C16, 'prod', 'PLM')
     ) as _
 )
 -- Combining the metadata with current activation status for final table

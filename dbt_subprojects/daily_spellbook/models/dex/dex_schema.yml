@@ -1,50 +1,6 @@
 version: 2
 
 models:
-  - name: dex_incentive_mappings
-    meta:
-      blockchain: optimism
-      sector: dex
-      contributors: msilb7
-    config:
-      tags: ['optimism', 'amm', 'trades', 'dex', 'cross-chain','incentives']
-    description: >
-      Mappings for DEX incentives contracts (i.e. gauges, bribes) to liquidity pools on all chains across all contracts and versions
-    columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain which the DEX is deployed"
-      - &project
-        name: project
-        description: "Project name of the DEX"
-      - &version
-        name: version
-        description: "Version of the contract built and deployed by the DEX project"
-      - &pool_contract
-        name: pool_contract
-        description: "Address of the liquidity pool contract"
-      - &incentives_contract
-        name: incentives_contract
-        description: "Address of the contract where incentives are stored and emitted."
-      - &incentives_type
-        name: incentives_type
-        description: "Description of the incentives address type."
-      - &evt_block_time
-        name: evt_block_time
-        description: 'Block time in UTC'
-      - &evt_block_number
-        name: evt_block_number
-        description: 'Block Number'
-      - &contract_address
-        name: contract_address
-        description: "token's contract address"
-      - &evt_tx_hash
-        name: evt_tx_hash
-        description: 'Tx Hash'
-      - &evt_index
-        name: evt_index
-        description: "Index of the corresponding trade event"
-
   - name: dex_offers
     meta:
       blockchain: optimism
@@ -55,9 +11,12 @@ models:
     description: >
       DEX offers across all chains across all contracts and versions
     columns:
-      - *blockchain
-      - *project
-      - *version
+      - name: blockchain
+        description: "Blockchain which the DEX is deployed"
+      - name: project
+        description: "Project name of the DEX"
+      - name: version
+        description: "Version of the contract built and deployed by the DEX project"
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
@@ -70,7 +29,8 @@ models:
       - &tx_index
         name: tx_index
         description: "the transaction index of the transaction that the offer was created in"
-      - *evt_index
+      - name: evt_index
+        description: "Event index which allows for uniqueness of the DEX trade (e.g., if multiple DEX trades happen in a single tx, the evt_index will differentiate them)"
       - &maker
         name: maker
         description: "Address of trader who sold a token"

@@ -1,0 +1,38 @@
+version: 2
+
+models:
+  - name: dex_abstract_base_trades
+    data_tests:
+      - check_columns_dex_base_trades
+      - check_dex_info_relationship
+      - test_acceptable_usd_amount:
+          column_name: amount_usd
+          max_value: 1000000000
+  - name: reservoir_swap_v2_abstract_base_trades
+    meta:
+      blockchain: abstract
+      sector: dex
+      project: reservoir_swap
+      contributors: [jeff-dude]
+    config:
+      tags: ["abstract", "dex", "trades", "reservoir_swap", "v2"]
+    description: "ReservoirSwap abstract v2 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+  - name: reservoir_swap_v3_abstract_base_trades
+    meta:
+      blockchain: abstract
+      sector: dex
+      project: reservoir_swap
+      contributors: [jeff-dude]
+    config:
+      tags: ["abstract", "dex", "trades", "reservoir_swap", "v3"]
+    description: "ReservoirSwap abstract v3 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index

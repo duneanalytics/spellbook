@@ -19,7 +19,6 @@
     , ref('labels_balancer_gauges')
     , ref('labels_cex')
     , ref('labels_contracts')
-    , ref('labels_hackers_ethereum')
     , ref('labels_ofac_sanctionned_ethereum')
     , ref('labels_project_wallets')
     , ref('labels_safe_ethereum')

@@ -102,7 +102,6 @@ FROM
     ('renbtc-renbtc', 'bnb', 'renBTC', 0xfce146bf3146100cfe5db4129cf6c82b0ef4ad8c, 8),
     ('ruby-ruby-play-network', 'bnb', 'RUBY', 0xf7722aa0714096f1fb5ef83e6041cebb4d58a08e, 12),
     ('rune-thorchain', 'bnb', 'RUNE', 0xa9776b590bfc2f956711b3419910a5ec1f63153e, 18),
-    ('safemoon-safemoon', 'bnb', 'SAFEMOON', 0x8076c74c5e3f5852037f31ff0093eeb8c8add8d3, 9),
     --('sbd-steem-dollars', 'bnb', 'SBD', 0x3bf7e66b905bf2aaa08c45f0bdab0c4b26c36d4a, 9),
     ('soul-phantasma', 'bnb', 'SOUL', 0x67d012f731c23f0313cea1186d0121779c77fcfe, 8),
     ('super-superfarm', 'bnb', 'SUPER', 0x51ba0b044d96c3abfca52b64d733603ccc4f0d4d, 18),
@@ -301,7 +300,11 @@ FROM
     ('hare-hare-token', 'bnb', 'HARE', 0x4afc8c2be6a0783ea16e16066fde140d15979296, 9),
     ('vinu-vita-inu', 'bnb', 'VINU', 0xfebe8c1ed424dbf688551d4e2267e7a53698f0aa, 18),
     ('sign-sign2', 'bnb', 'SIGN', 0x868fced65edbf0056c4163515dd840e9f287a4c3, 18),
-    ('hyper-hyperlane', 'bnb', 'HYPER', 0xc9d23ed2adb0f551369946bd377f8644ce1ca5c4, 18)
+    ('hyper-hyperlane', 'bnb', 'HYPER', 0xc9d23ed2adb0f551369946bd377f8644ce1ca5c4, 18),
+    ('usd1-usd1', 'bnb', 'USD1', 0x8d0d000ee44948fc98c9b98a4fa4921476f08b0d, 18),
+    ('susde-ethena-staked-usde', 'bnb', 'sUSDe', 0x211Cc4DD073734dA055fbF44a2b4667d5E5fE5d2, 18),
+    ('usde-ethena-usde', 'bnb', 'USDe', 0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34, 18)
+        
 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (

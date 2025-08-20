@@ -24,7 +24,7 @@ models:
   - name: hashflow_trades
   - name: honeyswap_trades
   - name: integral_trades
-  - name: iziswap_trades
+  - name: izumi_finance_trades
   - name: kyberswap_trades
   - name: mauve_trades
   - name: maverick_trades
@@ -47,6 +47,7 @@ models:
   - name: sushiswap_trades
   - name: swapr_trades
   - name: synthetix_trades
+  - name: tapio_trades
   - name: thena_trades
   - name: trader_joe_trades
   - name: ubeswap_trades

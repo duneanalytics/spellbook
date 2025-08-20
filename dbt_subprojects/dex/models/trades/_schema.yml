@@ -4,7 +4,7 @@ models:
   - name: dex_trades
     meta:
       docs_slug: /curated/trading/DEX/dex-trades
-      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, kaia, optimism, polygon, scroll, zksync, linea, blast, sei, ronin, flare, boba, sonic, corn, berachain
+      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, kaia, optimism, polygon, scroll, zksync, linea, blast, sei, ronin, flare, boba, sonic, corn, berachain, sophon
       sector: dex
       short_description: The `dex.trades` table captures detailed data on trades executed via decentralized exchanges (DEXs). This table contains a detailed breakdown of trade execution containing one or many trades per transaction. 
       contributors: 0xRob, hosuke, jeff-dude, tomfutago, viniabussafi
@@ -12,6 +12,32 @@ models:
       tags: [ 'dex', 'trades']
     description: '{{ doc("dex_trades_doc") }}'
     data_tests:
+      - check_column_types:
+          column_types:
+            blockchain: varchar
+            project: varchar
+            version: varchar
+            block_month: date
+            block_date: 'timestamp(3) with time zone'
+            block_time: 'timestamp(3) with time zone'
+            block_number: bigint
+            token_bought_symbol: varchar
+            token_sold_symbol: varchar
+            token_pair: varchar
+            token_bought_amount: double
+            token_sold_amount: double
+            token_bought_amount_raw: uint256
+            token_sold_amount_raw: uint256
+            amount_usd: double
+            token_bought_address: varbinary
+            token_sold_address: varbinary
+            taker: varbinary
+            maker: varbinary
+            project_contract_address: varbinary
+            tx_hash: varbinary
+            tx_from: varbinary
+            tx_to: varbinary
+            evt_index: bigint
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -26,10 +52,6 @@ models:
       - &project
         name: project
         description: "Name of the dex on which the trade occurred"
-        data_tests:
-          - relationships:
-              to: ref('dex_info')
-              field: project
       - &version
         name: version
         description: "Version of the DEX protocol/contract"
@@ -108,6 +130,7 @@ models:
     config:
       tags: [ 'dex' ]
     data_tests:
+      - check_columns_dex_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

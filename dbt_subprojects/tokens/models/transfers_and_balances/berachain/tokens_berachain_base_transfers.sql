@@ -15,7 +15,6 @@
     blockchain='berachain',
     traces = source('berachain','traces'),
     transactions = source('berachain','transactions'),
-    erc20_transfers = source('erc20_berachain','evt_transfer'),
-    native_contract_address = var('ETH_ERC20_ADDRESS')
+    erc20_transfers = source('erc20_berachain','evt_Transfer')
   ) 
 }}

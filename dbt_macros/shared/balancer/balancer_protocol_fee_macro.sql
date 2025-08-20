@@ -1,6 +1,6 @@
 {% macro 
     balancer_v2_compatible_protocol_fee_macro(
-        blockchain, version, project_decoded_as, base_spells_namespace, pool_labels_spell
+        blockchain, version, project_decoded_as, base_spells_namespace, pool_labels_model
     ) 
 %}
 
@@ -11,8 +11,10 @@ WITH pool_labels AS (
                 name,
                 pool_type,
                 ROW_NUMBER() OVER (PARTITION BY address ORDER BY MAX(updated_at) DESC) AS num
-            FROM {{ pool_labels_spell }}
+            FROM {{ source('labels', pool_labels_model) }}
             WHERE blockchain = '{{blockchain}}'
+            AND source = 'query'
+            AND model_name = '{{pool_labels_model}}'
             GROUP BY 1, 2, 3) 
         WHERE num = 1
     ),
@@ -114,7 +116,7 @@ WITH pool_labels AS (
             b.poolAddress AS token_address,
             sum(value) AS protocol_fee_amount_raw
         FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_PoolRegistered') }} b
-        INNER JOIN {{ source('erc20_' + blockchain, 'evt_transfer') }} t
+        INNER JOIN {{ source('erc20_' + blockchain, 'evt_Transfer') }} t
             ON t.contract_address = b.poolAddress
             AND t."from" = 0x0000000000000000000000000000000000000000
             AND t."to" =
@@ -194,7 +196,7 @@ WITH pool_labels AS (
 
 {% macro 
     balancer_v3_compatible_protocol_fee_macro(
-        blockchain, version, project_decoded_as, base_spells_namespace, pool_labels_spell
+        blockchain, version, project_decoded_as, base_spells_namespace, pool_labels_model
     ) 
 %}
 
@@ -205,8 +207,10 @@ WITH pool_labels AS (
                 name,
                 pool_type,
                 ROW_NUMBER() OVER (PARTITION BY address ORDER BY MAX(updated_at) DESC) AS num
-            FROM {{ pool_labels_spell }}
+            FROM {{ source('labels', pool_labels_model) }}
             WHERE blockchain = '{{blockchain}}'
+            AND source = 'query'
+            AND model_name = '{{pool_labels_model}}'
             GROUP BY 1, 2, 3) 
         WHERE num = 1
     ),

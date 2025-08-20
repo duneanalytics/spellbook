@@ -16,11 +16,37 @@ models:
   - name: meteora_v2_solana_base_trades
     meta:
       blockchain: solana
-      contributors: [ ilemi ]
+      contributors: [ ilemi, 0xsandeshk ]
     config:
       tags: [ 'solana','dex' ]
     description: >
         all meteora amm dex trades on Solana
+    data_tests:
+      - check_columns_solana_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
+          
+  - name: meteora_v4_solana_base_trades
+    meta:
+      blockchain: solana
+      contributors: [ 0xsandeshk ]
+    config:
+      tags: [ 'solana','dex' ]
+    description: >
+        all meteora dbc dex trades on Solana
+    data_tests:
+      - check_columns_solana_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
+          
+  - name: meteora_v3_solana_base_trades
+    meta:
+      blockchain: solana
+      contributors: [ 0xsandeshk ]
+    config:
+      tags: [ 'solana','dex' ]
+    description: >
+        all meteora cpamm dex trades on Solana
     data_tests:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
@@ -123,11 +149,87 @@ models:
   - name: meteora_v2_solana_trades
     meta:
       blockchain: solana
-      contributors: [ilemi]
+      contributors: [ilemi, 0xsandeshk]
     config:
       tags: ['solana','dex']  
     description: >
         all meteora lb_clmm dex trades on Solana
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_month
+      - *block_time
+      - *block_slot
+      - *trade_source
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *fee_tier
+      - *fee_usd
+      - *token_bought_mint_address
+      - *token_sold_mint_address
+      - *token_bought_vault
+      - *token_sold_vault
+      - *project_program_id
+      - *project_main_id
+      - *trader_id
+      - *tx_id
+      - *outer_instruction_index
+      - *inner_instruction_index
+      - *tx_index
+
+  - name: meteora_v4_solana_trades
+    meta:
+      blockchain: solana
+      contributors: [0xsandeshk]
+    config:
+      tags: ['solana','dex']  
+    description: >
+        all meteora dbc dex trades on Solana
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_month
+      - *block_time
+      - *block_slot
+      - *trade_source
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *fee_tier
+      - *fee_usd
+      - *token_bought_mint_address
+      - *token_sold_mint_address
+      - *token_bought_vault
+      - *token_sold_vault
+      - *project_program_id
+      - *project_main_id
+      - *trader_id
+      - *tx_id
+      - *outer_instruction_index
+      - *inner_instruction_index
+      - *tx_index
+      
+  - name: meteora_v3_solana_trades
+    meta:
+      blockchain: solana
+      contributors: [0xsandeshk]
+    config:
+      tags: ['solana','dex']  
+    description: >
+        all meteora cpamm dex trades on Solana
     columns:
       - *blockchain
       - *project

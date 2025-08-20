@@ -66,7 +66,7 @@ FROM (
             ,ROW_NUMBER() OVER (PARTITION BY r.evt_tx_hash, r.evt_index ORDER BY tf.evt_index ASC) AS claim_rank_asc
 
         FROM {{ source('aave_v3_optimism','RewardsController_evt_RewardsClaimed') }} r
-            inner JOIN {{ source('erc20_optimism', 'evt_transfer') }} tf
+            inner JOIN {{ source('erc20_optimism', 'evt_Transfer') }} tf
                 ON tf.evt_tx_hash = r.evt_tx_hash
                 AND tf.evt_block_number = r.evt_block_number
                 AND tf.contract_address = r.reward

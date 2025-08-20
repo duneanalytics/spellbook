@@ -15,8 +15,7 @@
     blockchain='sophon',
     traces = source('sophon','traces'),
     transactions = source('sophon','transactions'),
-    erc20_transfers = source('erc20_sophon','evt_transfer'),
-    native_contract_address = '0x000000000000000000000000000000000000800a',
+    erc20_transfers = source('erc20_sophon','evt_Transfer'),
     include_traces = false
   ) 
 }}
