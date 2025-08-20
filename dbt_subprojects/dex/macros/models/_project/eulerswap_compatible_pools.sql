@@ -123,6 +123,6 @@ pair_symbols as (
         , protocolFee
         , protocolFeeRecipient
     from 
-    pair_symbol
+    pair_symbols
 
 {% endmacro %}
