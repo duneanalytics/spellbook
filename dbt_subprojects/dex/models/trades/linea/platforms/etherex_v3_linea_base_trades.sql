@@ -15,7 +15,7 @@
         blockchain = 'linea',
         project = 'etherex',
         version = '3',
-        Pair_evt_Swap = source('etherex_linea', 'ramsesv3pool_evt_swap'),
+        Pair_evt_Swap = source('etherex_linea', 'RamsesV3Pool_evt_Swap'),
         Factory_evt_PoolCreated = source('etherex_linea', 'EtherexV3Factory_evt_PoolCreated')
     )
 }}
