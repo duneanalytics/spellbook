@@ -226,7 +226,7 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('leetswap_linea_base_trades_seed')
 
-name: etherex_v2_linea_base_trades
+  - name: etherex_v2_linea_base_trades
     meta:
       blockchain: linea
       sector: dex
