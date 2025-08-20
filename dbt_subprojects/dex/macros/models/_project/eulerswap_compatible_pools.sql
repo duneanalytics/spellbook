@@ -86,7 +86,7 @@ pair_symbols as (
             else tb.symbol || '-' || ta.symbol 
         end as pair
         , case 
-            when lower(ta.symbol) < lower(tb.symbol) then ta.symbol || '-' || tb.symbol || format('%,.5f', fee) || '%'
+            when lower(ta.symbol) < lower(tb.symbol) then ta.symbol || '-' || tb.symbol || ' ' || format('%,.5f', fee) || '%'
             else tb.symbol || '-' || ta.symbol || ' ' || format('%,.5f', fee) || '%'
         end as pair_w_fee
     from 
