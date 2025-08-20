@@ -238,5 +238,6 @@ FROM
     ('odos-odos-token', 'base', 'ODOS',0xca73ed1815e5915489570014e024b7EbE65dE679, 18),
     ('sign-sign2', 'base', 'SIGN',0x868fced65edbf0056c4163515dd840e9f287a4c3, 18),
     ('hyper-hyperlane', 'base', 'HYPER',0xc9d23ed2adb0f551369946bd377f8644ce1ca5c4, 18),
-    ('zora-zora', 'base', 'ZORA',0x1111111111166b7FE7bd91427724B487980aFc69, 18)
+    ('zora-zora', 'base', 'ZORA',0x1111111111166b7FE7bd91427724B487980aFc69, 18),
+    ('towns-towns', 'base', 'TOWNS', 0x00000000A22C618fd6b4D7E9A335C4B96B189a38, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
