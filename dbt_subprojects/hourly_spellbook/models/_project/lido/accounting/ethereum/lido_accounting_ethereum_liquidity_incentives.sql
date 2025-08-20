@@ -49,7 +49,9 @@ multisigs_list AS (
     (0x87D93d9B2C672bf9c9642d853a8682546a5012B5,  'Polygon',  'LiquidityRewardsMsig'),
     (0x9cd7477521B7d7E7F9e2F091D2eA0084e8AaA290,  'Ethereum', 'PolygonTeamRewardsMsig'),
     (0x5033823f27c5f977707b58f0351adcd732c955dd,  'Optimism', 'LiquidityRewardsMsig'),
+    (0x5A9d695c518e95CD6Ea101f2f25fC2AE18486A61,  'Optimism', 'LiquidityRewardsMsig'),
     (0x8c2b8595ea1b627427efe4f29a64b145df439d16,  'Arbitrum', 'LiquidityRewardsMsig'),
+    (0x5A9d695c518e95CD6Ea101f2f25fC2AE18486A61,  'Arbitrum', 'LiquidityRewardsMsig'),
     (0x5A9d695c518e95CD6Ea101f2f25fC2AE18486A61,  'Base',     'LiquidityRewardsMsig'),
     (0x65B05f4fCa066316383b0FE196C76C873a4dFD02,  'zkSync',   'LiquidityRewardsMsig'),
     (0x5A9d695c518e95CD6Ea101f2f25fC2AE18486A61,  'bnb',      'LiquidityRewardsMsig'),
@@ -95,7 +97,7 @@ intermediate_addresses AS (
 
 revshare_payments_addr AS (
     
-    select _recipient AS address FROM {{source('lido_ethereum','AllowedRecipientsRegistry_RevShare_evt_RecipientAdded')}}
+    select distinct _recipient AS address FROM {{source('lido_ethereum','AllowedRecipientsRegistry_RevShare_evt_RecipientAdded')}}
     
    ),
 
