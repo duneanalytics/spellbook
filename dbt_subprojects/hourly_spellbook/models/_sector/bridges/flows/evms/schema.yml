@@ -9,6 +9,9 @@ models:
     config:
       tags: [ 'bridges', 'flows', 'deposits' ]
     description: "Bridge deposits events on EVM chains"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['deposit_chain', 'tx_hash','evt_index']
     columns:
       - &deposit_chain
         name: deposit_chain
