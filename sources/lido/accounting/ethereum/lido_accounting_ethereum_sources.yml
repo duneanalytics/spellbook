@@ -20,3 +20,7 @@ sources:
       - name: WithdrawalQueueERC721_evt_WithdrawalsFinalized
       - name: steth_evt_TokenRebased
       
+  - name: erc20_ethereum
+    description: "Ethereum decoded tables related to erc20 tokens"
+    tables:
+      - name: evt_Transfer
