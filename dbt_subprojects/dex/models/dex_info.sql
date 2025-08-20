@@ -222,6 +222,7 @@ FROM (VALUES
     , ('tapio', 'Tapio', 'Direct', 'Tapio')
     , ('rooster_protocol', 'Rooster Protocol', 'Direct', 'roosterprotocol')
     , ('mindgames', 'Mindgames', 'Direct', 'mindgames_io')
+    , ('gammaswap', 'GammaSwap', 'Direct', 'gammaswap')
     , ('yeiswap', 'YeiSwap', 'Direct', 'YeiFinance')
     , ('bulletx', 'BulletX', 'Direct', 'bulletx_io')
     , ('native', 'Native', 'Direct', 'Native')
