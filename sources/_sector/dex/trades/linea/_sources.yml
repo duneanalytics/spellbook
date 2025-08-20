@@ -49,6 +49,6 @@ sources:
   - name: etherex_linea
     tables:
       - name: Pair_evt_Swap
-      - name: Factory_evt_PairCreated
+      - name: PairFactory_evt_PairCreated
       - name: RamsesV3Pool_evt_Swap
       - name: EtherexV3Factory_evt_PoolCreated
