@@ -35,7 +35,7 @@ left join
     {%- if is_incremental() %}
     and {{ incremental_predicate('c.evt_block_time') }}
     {%- endif %}
-left join 
+inner join -- use inner join so that pools deployed before uniswap_pools is updated are not ommitted
 {{ uniswap_pools }} p 
     on p.blockchain = '{{blockchain}}'
     and d.evt_block_number = p.creation_block_number
