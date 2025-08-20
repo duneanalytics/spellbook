@@ -1,33 +1,6 @@
 version: 2
 
 models:
-  - name: tokens_solana_transfers
-    meta:
-      blockchain: solana
-      contributors: [ilemi]
-    config:
-      tags: ['solana','transfers','erc20','nft','spl']
-    description: >
-        get all spl token transfers
-    columns:
-      - name: block_time
-      - name: block_date
-      - name: block_slot
-      - name: action
-      - name: token_mint_address
-      - name: amount
-      - name: fee
-      - name: token_version
-      - name: from_owner
-      - name: to_owner
-      - name: from_token_account
-      - name: to_token_account
-      - name: token_version
-      - name: tx_signer
-      - name: tx_id
-      - name: outer_instruction_index
-      - name: inner_instruction_index
-      - name: outer_executing_account
 
   - name: tokens_solana_net_transfers_daily
     meta:
