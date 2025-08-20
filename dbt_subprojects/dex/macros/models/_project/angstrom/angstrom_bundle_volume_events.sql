@@ -51,8 +51,8 @@ WITH
         SELECT 
             t.block_number AS block_number,
             t.block_time AS block_time,
-            p.t0_amount AS token_bought_amount_raw,
-            p.t1_amount AS token_sold_amount_raw,
+            p.token_bought_amt AS token_bought_amount_raw,
+            p.token_sold_amt AS token_sold_amount_raw,
             p.asset_out AS token_bought_address,
             p.asset_in AS token_sold_address,
             p.recipient AS taker,
