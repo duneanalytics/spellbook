@@ -11,7 +11,6 @@
 }}
 
 WITH
-
 dexs_clamm AS (
     -- PancakeSwap Infinity CLAMM (Concentrated Liquidity AMM)
     {{
