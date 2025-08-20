@@ -35,8 +35,8 @@ WITH
     user_orders_with_priced_assets AS (
         SELECT 
             u.*,
-            if(ab.zero_for_one, a.t1_amount, a.t0_amount) AS token_sold_amt,
-            if(ab.zero_for_one, a.t0_amount, a.t1_amount) AS token_bought_amt
+            if(u.zero_for_one, a.t1_amount, a.t0_amount) AS token_sold_amt,
+            if(u.zero_for_one, a.t0_amount, a.t1_amount) AS token_bought_amt
         FROM user_orders_with_pool AS u
         CROSS JOIN LATERAL ({{ angstrom_user_order_fill_amount('u.zero_for_one', 'u.exact_in', 'u.fill_amount', 'u.extra_fee_asset0', 'u.bundle_fee', 'u.price_1over0') }}) AS a    
     )
