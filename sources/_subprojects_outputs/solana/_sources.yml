@@ -5,9 +5,6 @@ sources:
     tables:
       - name: fees
       - name: vote_fees
-  - name: tokens_solana
-    tables:
-      - name: transfers
   - name: dex_solana
     tables:
       - name: trades
