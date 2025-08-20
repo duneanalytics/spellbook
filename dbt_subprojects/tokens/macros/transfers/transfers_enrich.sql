@@ -2,9 +2,10 @@
     base_transfers = null
     , tokens_erc20_model = source('tokens', 'erc20')
     , prices_model = 'day'
+    , trusted_tokens_model = source('prices', 'trusted_tokens')
     , transfers_start_date = '2000-01-01'
     , blockchain = null
-    , usd_amount_threshold = 25000000000
+    , usd_amount_threshold = 100000000
     )
 %}
 
@@ -46,6 +47,12 @@ WITH base_transfers as (
         timestamp >= TIMESTAMP '{{ transfers_start_date }}'
     {% endif %}
 )
+, trusted_tokens AS (
+    SELECT
+        blockchain
+        , contract_address
+    FROM {{ trusted_tokens_model }}
+)
 , transfers as (
     SELECT
         t.unique_key
@@ -69,12 +76,17 @@ WITH base_transfers as (
         , t.amount_raw / power(10, coalesce(tokens_erc20.decimals, prices.decimals)) AS amount
         , prices.price AS price_usd
         , t.amount_raw / power(10, coalesce(tokens_erc20.decimals, prices.decimals)) * prices.price AS amount_usd
+        , CASE WHEN trusted_tokens.blockchain IS NOT NULL THEN true ELSE false END AS is_trusted_token
     FROM
         base_transfers as t
     LEFT JOIN
         {{ tokens_erc20_model }} as tokens_erc20
         ON tokens_erc20.blockchain = t.blockchain
         AND tokens_erc20.contract_address = t.contract_address
+    LEFT JOIN
+        trusted_tokens
+        ON trusted_tokens.blockchain = t.blockchain
+        AND trusted_tokens.contract_address = t.contract_address
     LEFT JOIN
         prices
         ON date_trunc('{{ prices_model }}', t.block_time) = prices.timestamp
@@ -104,9 +116,9 @@ WITH base_transfers as (
         , amount
         , price_usd
         , CASE
-            WHEN amount_usd >= {{ usd_amount_threshold }}
-                THEN CAST(NULL as double)
-                ELSE amount_usd -- Select only transfers where USD amount is less than the threshold
+            WHEN is_trusted_token = true THEN amount_usd
+            WHEN (is_trusted_token = false AND amount_usd < {{ usd_amount_threshold }}) THEN amount_usd
+            WHEN (is_trusted_token = false AND amount_usd >= {{ usd_amount_threshold }}) THEN CAST(NULL as double) /* ignore inflated outlier prices */
             END AS amount_usd
     FROM
         transfers

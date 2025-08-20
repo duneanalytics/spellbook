@@ -42,12 +42,10 @@ WITH solfi_swaps AS (
         AND call_block_time >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
 )
-
 -- Get both input and output transfers for each swap
 , swap_transfers AS (
     SELECT
         s.*,
-        
         -- Input transfer (user to pool) - gives us SOLD token info
         t_input.amount as token_sold_amount_raw,
         t_input.token_mint_address as token_sold_mint_address,
@@ -61,7 +59,7 @@ WITH solfi_swaps AS (
     FROM solfi_swaps s
     
     -- Join for INPUT transfer (what user sells to pool)
-    INNER JOIN {{ ref('tokens_solana_transfers') }} t_input
+    INNER JOIN {{ source('tokens_solana','transfers') }} t_input
         ON t_input.tx_id = s.tx_id
         AND t_input.block_slot = s.block_slot
         AND t_input.outer_instruction_index = s.outer_instruction_index
@@ -82,7 +80,7 @@ WITH solfi_swaps AS (
         {% endif %}
     
     -- Join for OUTPUT transfer (what user receives from pool)
-    INNER JOIN {{ ref('tokens_solana_transfers') }} t_output
+    INNER JOIN {{ source('tokens_solana','transfers') }} t_output
         ON t_output.tx_id = s.tx_id
         AND t_output.block_slot = s.block_slot
         AND t_output.outer_instruction_index = s.outer_instruction_index
