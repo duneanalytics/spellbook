@@ -89,7 +89,7 @@ transactions as (
             "from" as address_interacted_with,
             array[evt_index] as trace_address
         FROM 
-        {{ source('erc20_base', 'evt_transfer') }}
+        {{ source('erc20_base', 'evt_Transfer') }}
         {% if not is_incremental() %}
         WHERE evt_block_time >= DATE '{{transactions_start_date}}'
         {% endif %}
@@ -112,7 +112,7 @@ transactions as (
             "to" as address_interacted_with,
             array[evt_index] as trace_address
         FROM 
-        {{ source('erc20_base', 'evt_transfer') }}
+        {{ source('erc20_base', 'evt_Transfer') }}
         {% if not is_incremental() %}
         WHERE evt_block_time >= DATE '{{transactions_start_date}}'
         {% endif %}

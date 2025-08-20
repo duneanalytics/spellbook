@@ -29,7 +29,7 @@ SELECT
     , tx."from" as tx_from
     , tx.to as tx_to
     , t.value AS amount_raw
-FROM {{ source('erc20_tron','evt_transfer') }} t
+FROM {{ source('erc20_tron','evt_Transfer') }} t
 INNER JOIN {{ source('tron','transactions') }} tx ON
     tx.block_time = t.evt_block_time -- raw base tables partitioned by time
     AND tx.block_number = t.evt_block_number

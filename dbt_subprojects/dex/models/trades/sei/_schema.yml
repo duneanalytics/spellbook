@@ -3,6 +3,7 @@ version: 2
 models:
   - name: dex_sei_base_trades
     data_tests:
+      - check_columns_dex_base_trades
       - check_dex_info_relationship
       - test_acceptable_usd_amount:
           column_name: amount_usd
@@ -128,3 +129,20 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('sailor_finance_sei_base_trades_seed')
+
+  - name: yeiswap_sei_base_trades
+    meta:
+      blockchain: sei
+      sector: dex
+      project: yeiswap
+      contributors: yei_admin
+    config:
+      tags: [ 'sei', 'dex', 'trades', 'yeiswap', 'v3' ]
+    description: "YeiSwap sei base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('yeiswap_sei_base_trades_seed')

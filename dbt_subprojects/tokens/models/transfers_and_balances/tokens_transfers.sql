@@ -22,11 +22,13 @@
                                             ,"gnosis"
                                             ,"ink"
                                             ,"kaia"
+                                            ."katana"
                                             ,"linea"
                                             ,"mantle"
                                             ,"nova"
                                             ,"opbnb"
                                             ,"optimism"
+                                            ,"plume"
                                             ,"polygon"
                                             ,"ronin"
                                             ,"scroll"
@@ -34,6 +36,8 @@
                                             ,"shape"
                                             ,"sonic"
                                             ,"sophon"
+                                            ,"superseed"
+                                            ,"taiko"
                                             ,"tron"
                                             ,"unichain"
                                             ,"viction"
@@ -70,11 +74,13 @@
     ,'gnosis'
     ,'ink'
     ,'kaia'
+    ,'katana'
     ,'linea'
     ,'mantle'
     ,'nova'
     ,'opbnb'
     ,'optimism'
+    ,'plume'
     ,'polygon'
     ,'ronin'
     ,'scroll'
@@ -82,6 +88,8 @@
     ,'shape'
     ,'sonic'
     ,'sophon'
+    ,'superseed'
+    ,'taiko'
     ,'tron'
     ,'unichain'
     ,'viction'

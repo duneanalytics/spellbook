@@ -111,11 +111,13 @@ models:
       - *block_number
       - *swap_fee_percentage      
 
+
+models:
   - name: beets_trades
     meta:
       blockchain: sonic
       sector: dex
-      contributors: viniabussafi
+      contributors: franz
     config:
       tags: ['beets', 'sonic', 'amm', 'trades', 'dex']
     description: >
@@ -133,7 +135,7 @@ models:
       - *blockchain
       - &project
         name: project
-        description: "Project name (balancer)"
+        description: "Project name (beets)"
       - *version
       - &block_month
         name: block_month
@@ -204,3 +206,81 @@ models:
       - &evt_index
         name: evt_index
         description: 'Event index'
+
+  - name: beets_v2_sonic_trades
+    meta:
+      blockchain: sonic
+      sector: dex
+      contributors: franz
+    config:
+      tags: ['beets', 'sonic', 'amm', 'trades', 'dex']
+    description: >
+      DEX trades on beets v2 on sonic
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_month
+      - *block_date
+      - *block_time
+      - *block_number
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *pool_id
+      - *swap_fee
+      - *project_contract_address
+      - *pool_symbol
+      - *pool_type
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index
+
+  - name: beets_v3_sonic_trades
+    meta:
+      blockchain: sonic
+      sector: dex
+      contributors: franz
+    config:
+      tags: [ 'beets', 'sonic', 'amm', 'trades', 'dex', 'beta' ]
+    description: >
+      DEX trades on beets v3 on sonic
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_month
+      - *block_date
+      - *block_time
+      - *block_number
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *pool_symbol
+      - *pool_type
+      - *pool_id
+      - *swap_fee
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index           

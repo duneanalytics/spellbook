@@ -1,18 +1,14 @@
 {{ config(
     schema = 'dex'
     , alias = 'base_trades'
-    , partition_by = ['block_month', 'blockchain', 'project']
-    , materialized = 'incremental'
-    , file_format = 'delta'
-    , incremental_strategy = 'merge'
-    , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index']
-    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    , materialized = 'view'
     )
 }}
 
-{% set models = [
-    ref('dex_arbitrum_base_trades')
+{% set models = [  
+      ref('dex_arbitrum_base_trades')
     , ref('dex_avalanche_c_base_trades')
+    , ref('dex_abstract_base_trades')
     , ref('dex_base_base_trades')
     , ref('dex_berachain_base_trades')
     , ref('dex_blast_base_trades')
@@ -24,19 +20,25 @@
     , ref('dex_fantom_base_trades')
     , ref('dex_flare_base_trades')
     , ref('dex_gnosis_base_trades')
+    , ref('dex_hemi_base_trades')
     , ref('dex_ink_base_trades')
     , ref('dex_linea_base_trades')
     , ref('dex_kaia_base_trades')
+    , ref('dex_katana_base_trades')
     , ref('dex_mantle_base_trades')
     , ref('dex_nova_base_trades')
     , ref('dex_opbnb_base_trades')
     , ref('dex_optimism_base_trades')
+    , ref('dex_plume_base_trades')
     , ref('dex_polygon_base_trades')
     , ref('dex_ronin_base_trades')
     , ref('dex_scroll_base_trades')
     , ref('dex_sei_base_trades')
     , ref('dex_shape_base_trades')
     , ref('dex_sonic_base_trades')
+    , ref('dex_sophon_base_trades')
+    , ref('dex_superseed_base_trades')
+    , ref('dex_taiko_base_trades')
     , ref('dex_unichain_base_trades')
     , ref('dex_worldchain_base_trades')
     , ref('dex_zkevm_base_trades')
@@ -45,44 +47,33 @@
 ] %}
 
 with base_union as (
-    SELECT *
+    {% for model in models %}
+    SELECT
+        blockchain
+        , project
+        , version
+        , block_month
+        , block_date
+        , block_time
+        , block_number
+        , token_bought_amount_raw
+        , token_sold_amount_raw
+        , token_bought_address
+        , token_sold_address
+        , taker
+        , maker
+        , project_contract_address
+        , tx_hash
+        , evt_index
+        , tx_from
+        , tx_to
+        , tx_index
     FROM
-    (
-        {% for model in models %}
-        SELECT
-            blockchain
-            , project
-            , version
-            , block_month
-            , block_date
-            , block_time
-            , block_number
-            , cast(token_bought_amount_raw as uint256) as token_bought_amount_raw
-            , cast(token_sold_amount_raw as uint256) as token_sold_amount_raw
-            , token_bought_address
-            , token_sold_address
-            , taker
-            , maker
-            , project_contract_address
-            , tx_hash
-            , evt_index
-            , tx_from
-            , tx_to
-            , row_number() over (partition by tx_hash, evt_index order by tx_hash) as duplicates_rank
-        FROM
-            {{ model }}
-        WHERE
-           token_sold_amount_raw >= 0 and token_bought_amount_raw >= 0
-        {% if is_incremental() %}
-            AND {{ incremental_predicate('block_time') }}
-        {% endif %}
-        {% if not loop.last %}
-        UNION ALL
-        {% endif %}
-        {% endfor %}
-    )
-    WHERE
-        duplicates_rank = 1
+        {{ model }}
+    {% if not loop.last %}
+    UNION ALL
+    {% endif %}
+    {% endfor %}
 )
 select
     *

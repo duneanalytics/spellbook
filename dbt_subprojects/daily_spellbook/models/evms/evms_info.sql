@@ -15,8 +15,10 @@
                                         , "fantom"
                                         , "flare"
                                         , "gnosis"
+                                        , "hemi"
                                         , "ink"
                                         , "kaia"
+                                        , "katana"
                                         , "linea"
                                         , "nova"
                                         , "optimism"
@@ -26,17 +28,21 @@
                                         , "sei"
                                         , "shape"
                                         , "sonic"
+                                        , "superseed"
                                         , "opbnb"
+                                        , "tac"
+                                        , "taiko"
                                         , "unichain"
                                         , "viction"
                                         , "worldchain"
                                         , "zksync"
                                         , "zkevm"
                                         , "zora"
+                                        , "plume"
                                         ]\',
                                         "sector",
                                         "evms",
-                                        \'["hildobby", "hosuke", "jeff-dude", "agaperste"]\') }}')
+                                        \'["hildobby", "hosuke", "jeff-dude", "agaperste", "krishhh"]\') }}')
 }}
 
 SELECT chain_id
@@ -73,7 +79,7 @@ FROM (
         , (1101, 'zkevm', 'Polygon zkEVM', 'Layer 2', 'ZK Rollup', 'ETH', 0x4f9a0e7fd2bf6067db6994cf12e4495df938e6e9, 'https://zkevm.polygonscan.com/', timestamp '2023-03-24 05:30', 'Polygon', 'Ethereum', 'Ethereum', true, NULL)
         , (1088, 'metis_andromeda', 'Metis Andromeda', NULL, NULL, NULL, NULL, 'https://andromeda-explorer.metis.io/', timestamp '2021-11-18 22:19', 'Optimistic Virtual Machine', 'Ethereum', 'Ethereum', false, NULL)
         , (59144, 'linea', 'Linea', 'Layer 2', 'ZK Rollup', 'ETH', 0xe5d7c2a44ffddf6b295a15c148167daaaf5cf34f, 'https://lineascan.build/', timestamp '2023-07-06 13:15', NULL, 'Ethereum Blobs', 'Ethereum', true, NULL)
-        , (288, 'boba', 'Boba Network', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://bobascan.com/', timestamp '2021-10-28 05:03', 'OP Stack', 'Ethereum', 'Ethereum', true, NULL)
+        , (288, 'boba', 'Boba Network', 'Layer 2', 'Optimistic Rollup', 'ETH', 0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000, 'https://bobascan.com/', timestamp '2021-10-28 05:03', 'OP Stack', 'Ethereum', 'Ethereum', true, NULL)
         , (7700, 'canto', 'Canto', 'Layer 2', NULL, 'ETH', NULL, 'https://evm.explorer.canto.io/', timestamp '2022-07-26 19:27', NULL, 'Ethereum', 'Ethereum', false, NULL)
         , (420, 'optimism_goerli', 'Optimism Goerli', 'Testnet', 'Optimistic Rollup', 'GTH', 0x4200000000000000000000000000000000000006, 'https://optimism-goerli.blockscout.com/', timestamp '2022-06-09 16:55', 'OP Stack', 'Goerli', 'Goerli', false, NULL)
         , (1313161554, 'aurora', 'Aurora', 'Layer 2', NULL, 'ETH', 0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB, 'https://explorer.aurora.dev/', timestamp '2020-07-21 21:50:11', NULL, NULL, NULL, false, NULL)
@@ -93,7 +99,7 @@ FROM (
         , (60808, 'bob', 'BOB', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.gobob.xyz/', timestamp '2024-04-11 20:59:47', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, 'Superchain')
         , (11155111, 'sepolia', 'Sepolia', 'Testnet', 'Testnet', 'tETH', 0x7b79995e5f793a07bc00c21412e50ecae098e7f9, 'https://sepolia.etherscan.io/', timestamp '2015-07-30 15:26:13', NULL, NULL, NULL, true, NULL)
         , (360, 'shape', 'Shape', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://shapescan.xyz/', timestamp '2024-07-23 22:21:13', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, NULL)
-        , (167000, 'taiko', 'Taiko', 'Layer 2', 'Optimistic Rollup', 'ETH', 0xa51894664a773981c6c112c43ce576f315d5b1b6, 'https://taikoscan.network/', timestamp '2024-03-29 07:39:12', 'OP Stack', 'Ethereum Blobs', 'Ethereum', false, NULL)
+        , (167000, 'taiko', 'Taiko', 'Layer 2', 'Optimistic Rollup', 'ETH', 0xa51894664a773981c6c112c43ce576f315d5b1b6, 'https://taikoscan.network/', timestamp '2024-05-25 07:03', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, NULL)
         , (1329, 'sei', 'Sei Network', 'Layer 1', NULL, 'SEI', 0xE30feDd158A2e3b13e9badaeABaFc5516e95e8C7, 'https://seitrace.com/?chain=pacific-1', timestamp '2024-05-27 13:14', NULL, NULL, NULL, true, NULL)
         , (480, 'worldchain', 'World Chain', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://worldchain-mainnet.explorer.alchemy.com/', timestamp '2024-06-25 17:14', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, 'Superchain')
         , (728126428, 'tron', 'TRON', 'Layer 1', null, 'TRX', from_tron_address('TNUC9Qb1rRpS5CbWLmNMxXBjyFoydXjWFR'), 'https://tronscan.org/', timestamp '2024-06-25 17:14', NULL, NULL, NULL, true, NULL)
@@ -104,7 +110,7 @@ FROM (
         , (14, 'flare', 'Flare', 'Layer 1', NULL, 'FLR', NULL, 'https://flare-explorer.flare.network/', timestamp '2022-07-13 15:32', NULL, NULL, NULL, true, NULL)
         , (88, 'viction', 'Viction', 'Layer 1', NULL, 'VIC', 0xC054751BdBD24Ae713BA3Dc9Bd9434aBe2abc1ce, 'https://vicscan.xyz/', timestamp '2018-12-14 07:50:20', NULL, NULL, NULL, true, NULL)
         , (21000000, 'corn', 'Corn', 'Layer 1', NULL, 'BTCN', NULL, 'https://cornscan.io/', timestamp '2024-11-19 10:29:11', NULL, NULL, NULL, true, NULL)
-        , (146, 'sonic', 'Sonic', 'Layer 1', NULL, 'SONIC', NULL, 'https://sonicscan.org/', timestamp '2024-12-01 00:00', NULL, NULL, NULL, true, NULL)
+        , (146, 'sonic', 'Sonic', 'Layer 1', NULL, 'SONIC', 0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38, 'https://sonicscan.org/', timestamp '2024-12-01 00:00', NULL, NULL, NULL, true, NULL)
         , (57073, 'ink', 'Ink', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.inkonchain.com/', timestamp '2024-12-06 15:20', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, 'Superchain')
         , (50104, 'sophon', 'Sophon', 'Layer 2', 'Validium', 'SOPH', NULL, 'https://explorer.sophon.xyz/', timestamp '2024-10-22 01:23', 'ZK Stack', 'Ethereum Blobs', 'Ethereum', true, NULL)
         , (2741, 'abstract', 'Abstract', 'Layer 2', 'ZK Rollup', 'ETH', 0x3439153EB7AF838Ad19d56E1571FBD09333C2809, 'https://abscan.org/', timestamp '2024-10-25 18:31', 'ZK Stack', 'Ethereum Blobs', 'Ethereum', true, 'Elastic Network')
@@ -112,4 +118,9 @@ FROM (
         , (33139, 'apechain', 'ApeChain', 'Layer 3', 'Optimistic Rollup', 'APE', 0x48b62137edfa95a428d35c09e44256a739f6b557, 'https://apescan.io/', timestamp '2024-08-28 16:45:22', 'Arbitrum Orbit', 'AnyTrust', 'Arbitrum One', true, 'Arbitrum Orbit')
         , (130, 'unichain', 'Unichain', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://uniscan.xyz/', timestamp '2024-11-04 19:26', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, 'Superchain')
         , (232, 'lens', 'Lens', 'Layer 2', 'ZK Rollup', 'GHO', 0x6bDc36E20D267Ff0dd6097799f82e78907105e2F, 'https://explorer.lens.xyz', timestamp '2025-04-24 00:00',  'zkSync', 'Ethereum Blobs', 'Ethereum', true, 'Elastic Network')
+        , (98866, 'plume', 'Plume', 'Layer 2', 'Optimistic Rollup', 'PLUME', 0xEa237441c92CAe6FC17Caaf9a7acB3f953be4bd1, 'https://explorer.plume.org/', timestamp '2025-02-20 10:39', 'Arbitrum Orbit', 'Ethereum Blobs', 'Ethereum', true, 'Arbitrum Orbit')
+        , (747474, 'katana', 'Katana', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x0000000000000000000000000000000000000000, 'https://explorer.katanarpc.com/', timestamp '2025-06-23 09:45', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, 'Superchain')
+        , (5330, 'superseed', 'Superseed', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.superseed.xyz/', timestamp '2024-09-12 22:21', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, 'Superchain')
+        , (43111, 'hemi', 'Hemi', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.hemi.xyz/', timestamp '2024-09-09 07:25', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, NULL)
+        , (10000, 'tac', 'TAC', 'Layer 1', NULL, 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.tac.build/', timestamp '2025-06-23 09:45', NULL, NULL, NULL, true, NULL)
 ) AS temp_table (chain_id, blockchain, name, chain_type, rollup_type, native_token_symbol, wrapped_native_token_address, explorer_link, first_block_time, codebase, data_availability, settlement, is_on_dune, ecosystem)

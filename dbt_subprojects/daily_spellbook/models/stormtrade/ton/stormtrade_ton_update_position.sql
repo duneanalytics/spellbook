@@ -15,9 +15,9 @@
 
 
 -- update_position#60dfc677 is sent from the AMM smart contract to the user position
--- https://github.com/Tsunami-Exchange/storm-contracts-specs/blob/3da4852/scheme.tlb#L79
+-- https://github.com/Tsunami-Exchange/storm-contracts-specs/blob/59aefe4/scheme.tlb#L79
 -- update_position_with_stop_loss#5d1b17b8 is sent from the AMM smart contract to the user position
--- https://github.com/Tsunami-Exchange/storm-contracts-specs/blob/3da4852/scheme.tlb#L81
+-- https://github.com/Tsunami-Exchange/storm-contracts-specs/blob/59aefe4/scheme.tlb#L81
 
 WITH valid_amms AS (
     SELECT DISTINCT amm, vault, vault_token FROM {{ ref('stormtrade_ton_trade_notification') }}
@@ -51,6 +51,7 @@ select {{ ton_from_boc('body_boc', [
     ton_load_uint(1, 'direction'),
     ton_load_uint(32, 'origin_op'),
     ton_load_coins('oracle_price'),
+    ton_load_coins('settlement_oracle_price'),
     
     ton_load_ref(),
     ton_begin_parse(),
@@ -87,6 +88,7 @@ select {{ ton_from_boc('body_boc', [
     ton_load_coins('take_trigger_price'),
     ton_load_uint(32, 'origin_op'),
     ton_load_coins('oracle_price'),
+    ton_load_coins('settlement_oracle_price'),
     
     ton_load_ref(),
     ton_begin_parse(),
@@ -117,7 +119,7 @@ select {{ ton_from_boc('body_boc', [
 )
 SELECT block_date, tx_hash, trace_id, tx_now, tx_lt,
 user_position, vault, vault_token, amm,
-result.direction, result.origin_op, result.oracle_price, null as stop_trigger_price, null as take_trigger_price,
+result.direction, result.origin_op, result.oracle_price, result.settlement_oracle_price, null as stop_trigger_price, null as take_trigger_price,
 result.position_size, result.position_direction, result.position_margin, result.position_open_notional,
 result.position_last_updated_cumulative_premium, result.position_fee, result.position_discount, result.position_rebate,
 result.position_last_updated_timestamp,
@@ -128,7 +130,7 @@ FROM parse_output_update_position
 UNION ALL
 SELECT block_date, tx_hash, trace_id, tx_now, tx_lt,
 user_position, vault, vault_token, amm,
-result.direction, result.origin_op, result.oracle_price, result.stop_trigger_price, result.take_trigger_price,
+result.direction, result.origin_op, result.oracle_price, result.settlement_oracle_price, result.stop_trigger_price, result.take_trigger_price,
 result.position_size, result.position_direction, result.position_margin, result.position_open_notional,
 result.position_last_updated_cumulative_premium, result.position_fee, result.position_discount, result.position_rebate,
 result.position_last_updated_timestamp,

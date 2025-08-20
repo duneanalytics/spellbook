@@ -1,4 +1,5 @@
 {{config(
+    tags = ['static'],
     schema = 'tokens_goerli',
     alias = 'base_transfers',
     partition_by = ['block_month'],
@@ -14,7 +15,6 @@
     blockchain='goerli',
     traces = source('goerli','traces'),
     transactions = source('goerli','transactions'),
-    erc20_transfers = source('erc20_goerli','evt_transfer'),
-    native_contract_address = null
+    erc20_transfers = source('erc20_goerli','evt_Transfer')
 )
 }}

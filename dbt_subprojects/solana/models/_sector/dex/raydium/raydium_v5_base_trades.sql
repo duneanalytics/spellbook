@@ -45,37 +45,34 @@
             SELECT account_poolState, call_is_inner, call_outer_instruction_index, call_inner_instruction_index, call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer, call_tx_index
             FROM {{ source('raydium_cp_solana', 'raydium_cp_swap_call_swapBaseInput') }}
         ) sp
-        INNER JOIN {{ ref('tokens_solana_transfers') }} trs_1
+        INNER JOIN {{ source('tokens_solana','transfers') }} trs_1
             ON trs_1.tx_id = sp.call_tx_id
             AND trs_1.block_time = sp.call_block_time
             AND trs_1.outer_instruction_index = sp.call_outer_instruction_index
             AND ((sp.call_is_inner = false AND (trs_1.inner_instruction_index = 1 OR trs_1.inner_instruction_index = 2))
                 OR (sp.call_is_inner = true AND (trs_1.inner_instruction_index = sp.call_inner_instruction_index + 1 OR trs_1.inner_instruction_index = sp.call_inner_instruction_index + 2))
                 )
-            AND trs_1.token_version = 'spl_token'
             {% if is_incremental() %}
             AND {{incremental_predicate('trs_1.block_time')}}
             {% else %}
             AND trs_1.block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
-        INNER JOIN {{ ref('tokens_solana_transfers') }} trs_2
+        INNER JOIN {{ source('tokens_solana','transfers') }} trs_2
             ON trs_2.tx_id = sp.call_tx_id
             AND trs_2.block_time = sp.call_block_time
             AND trs_2.outer_instruction_index = sp.call_outer_instruction_index
             AND ((sp.call_is_inner = false AND (trs_2.inner_instruction_index = 2 OR trs_2.inner_instruction_index = 3))
                 OR (sp.call_is_inner = true AND (trs_2.inner_instruction_index = sp.call_inner_instruction_index + 2 OR trs_2.inner_instruction_index = sp.call_inner_instruction_index + 3))
                 )
-            AND trs_2.token_version = 'spl_token'
             {% if is_incremental() %}
             AND {{incremental_predicate('trs_2.block_time')}}
             {% else %}
             AND trs_2.block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
         LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_2 ON tk_2.address = trs_2.from_token_account
-            AND tk_2.account_type = 'fungible'
         WHERE 1=1
         and trs_1.token_mint_address != trs_2.token_mint_address --gets rid of dupes from the OR statement in transfer joins
-        and tk_2.token_balance_owner = 'GpMZbSM2GgvTKHJirzeGfMFoaZ8UR2X7F4v8vHTvxFbL' --raydium pool v4 authority. makes sure we don't accidently catch some fee transfer or something after the swap. should add for lifinity too later.
+        and tk_2.token_balance_owner = 'GpMZbSM2GgvTKHJirzeGfMFoaZ8UR2X7F4v8vHTvxFbL' --raydium pool v5 authority. makes sure we don't accidently catch some fee transfer or something after the swap. should add for lifinity too later.
         {% if is_incremental() %}
         AND {{incremental_predicate('sp.call_block_time')}}
         {% else %}

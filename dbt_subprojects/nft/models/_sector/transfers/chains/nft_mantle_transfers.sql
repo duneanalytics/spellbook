@@ -17,8 +17,8 @@
     nft_transfers(
         blockchain="mantle",
         base_transactions=source("mantle", "transactions"),
-        erc721_transfers=source("erc721_mantle", "evt_transfer"),
-        erc1155_single=source("erc1155_mantle", "evt_transfersingle"),
-        erc1155_batch=source("erc1155_mantle", "evt_transferbatch"),
+        erc721_transfers=source("erc721_mantle", "evt_Transfer"),
+        erc1155_single=source("erc1155_mantle", "evt_TransferSingle"),
+        erc1155_batch=source("erc1155_mantle", "evt_TransferBatch"),
     )
 }}

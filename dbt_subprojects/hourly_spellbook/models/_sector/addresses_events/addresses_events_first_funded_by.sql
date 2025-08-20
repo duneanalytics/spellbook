@@ -2,7 +2,7 @@
 (
     alias = 'first_funded_by',
     schema = 'addresses_events',
-    post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "gnosis", "optimism", "polygon", "celo", "zora", "base", "scroll", "zksync", "sei", "mantle", "blast", "ronin", "nova", "abstract"]\',
+    post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "gnosis", "optimism", "polygon", "celo", "zora", "base", "scroll", "zksync", "sei", "mantle", "blast", "ronin", "nova", "abstract", "berachain", "katana"]\',
                                     "sector",
                                     "addresses_events",
                                     \'["hildobby"]\') }}'
@@ -31,6 +31,9 @@
 , (ref('addresses_events_ronin_first_funded_by'), 'RON')
 , (ref('addresses_events_nova_first_funded_by'), 'ETH')
 , (ref('addresses_events_abstract_first_funded_by'), 'ETH')
+, (ref('addresses_events_apechain_first_funded_by'), 'APE')
+, (ref('addresses_events_berachain_first_funded_by'), 'BERA')
+, (ref('addresses_events_katana_first_funded_by'), 'ETH')
 ] %}
 
 WITH joined_data AS (
