@@ -22,8 +22,7 @@
     , ref('lynex_fusion_linea_base_trades')
     , ref('swaap_v2_linea_base_trades')
     , ref('leetswap_linea_base_trades')
-    , ref('etherex_v2_linea_base_trades')
-	, ref('etherex_v3_linea_base_trades')
+    , ref('etherex_linea_base_trades')
 ] %}
 with base_union as (
     SELECT *
