@@ -38,12 +38,12 @@ WITH
             p.asset_out          AS token_bought_address,
             p.asset_in         AS token_sold_address,
             p.recipient AS taker,
-            t.angstrom_address AS maker,
+            p.pool_id AS maker,
             t.angstrom_address AS project_contract_address,
             t.tx_hash AS tx_hash,
             ROW_NUMBER(*) over (partition by t.tx_hash) as evt_index
         FROM tx_data_cte t
-        INNER JOIN ({{ angstrom_bundle_tob_order_volume(angstrom_contract_addr, blockchain) }}) AS p
+        INNER JOIN ({{ angstrom_bundle_tob_order_volume(angstrom_contract_addr, controller_v1_contract_addr, blockchain) }}) AS p
             ON t.tx_hash = p.tx_hash AND t.block_number = p.block_number
     ),
     user_orders_inner AS (
@@ -55,7 +55,7 @@ WITH
             p.asset_out AS token_bought_address,
             p.asset_in AS token_sold_address,
             p.recipient AS taker,
-            t.angstrom_address AS maker,
+            p.pool_id AS maker,
             t.angstrom_address AS project_contract_address,
             t.tx_hash AS tx_hash,
             ROW_NUMBER(*) over (partition by t.tx_hash) as evt_index
