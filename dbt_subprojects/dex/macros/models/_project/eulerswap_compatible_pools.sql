@@ -87,7 +87,7 @@ pair_symbols as (
         end as pair
         , case 
             when lower(ta.symbol) < lower(tb.symbol) then ta.symbol || '-' || tb.symbol || format('%,.5f', fee) || '%'
-            else tb.symbol || '-' || ta.symbol || format('%,.5f', fee) || '%'
+            else tb.symbol || '-' || ta.symbol || ' ' || format('%,.5f', fee) || '%'
         end as pair_w_fee
     from 
     pool_creations pc 
