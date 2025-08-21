@@ -22,4 +22,6 @@ SELECT id, blockchain
     , (12, 'codex')
     , (13, 'sonic')
     , (14, 'worldchain')
+    , (16, 'sei')
+    , (17, 'bnb')
     ) AS x (id, blockchain)
