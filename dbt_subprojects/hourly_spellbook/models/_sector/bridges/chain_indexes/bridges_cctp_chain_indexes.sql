@@ -5,6 +5,8 @@
     )
 }}
 
+-- source: https://developers.circle.com/cctp/cctp-supported-blockchains
+
 SELECT id, blockchain
     FROM (VALUES
     (0, 'ethereum')
