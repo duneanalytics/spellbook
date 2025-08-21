@@ -112,7 +112,6 @@ models:
       - *tx_hash
       - *evt_index  
       - *contract_address 
-<<<<<<< HEAD
       - *bridge_transfer_id 
   - name: bridges_base_celer_v1_deposits
     meta:
@@ -180,6 +179,3 @@ models:
     config:
       tags: [ 'base', 'bridges', 'flows', 'withdrawals' ]
     description: "Across's v3 bridge withdrawals events on Base"
-=======
-      - *bridge_transfer_id 
->>>>>>> main
