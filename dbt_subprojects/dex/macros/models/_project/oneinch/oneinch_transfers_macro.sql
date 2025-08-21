@@ -143,10 +143,6 @@ select
     , transfer_native
     , transfer_from
     , transfer_to
-    , if(
-        coalesce(transfer_from, transfer_to) is not null
-        , count(*) over(partition by blockchain, tx_hash, call_trace_address, array_join(array_sort(array[transfer_from, transfer_to]), ''))
-    ) as transfers_between_players
     , minute
     , {{ symbol }} as symbol
     , {{ decimals }} as decimals

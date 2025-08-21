@@ -232,7 +232,6 @@ models:
           - not_null
       - name: transfer_from
       - name: transfer_to
-      - name: transfers_between_players
       - name: minute
       - name: symbol
       - name: decimals
