@@ -198,6 +198,49 @@ models:
       - name: trusted
       - name: block_month
 
+  - name: oneinch_arbitrum_transfers
+    meta:
+      blockchain: ['arbitrum']
+      sector: oneinch
+      contributors: ['max-morrow', 'grkhr']
+    config:
+      tags: ['oneinch', 'transfers']
+    description: >
+        transfers within txs with 1inch calls
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - transfer_trace_address
+    columns:
+      - name: blockchain
+        data_tests:
+          - not_null
+      - name: block_number
+      - name: block_time
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: transfer_trace_address
+        data_tests:
+          - not_null
+      - name: contract_address
+      - name: amount
+      - name: transfer_native
+        data_tests:
+          - not_null
+      - name: transfer_from
+      - name: transfer_to
+      - name: transfers_between_players
+      - name: minute
+      - name: symbol
+      - name: decimals
+      - name: amount_usd
+      - name: trusted
+      - name: block_date
+      - name: block_month
+
   - name: oneinch_arbitrum_escrow_results
     meta:
       blockchain: ['arbitrum']
