@@ -13,7 +13,8 @@
         'zksync', 
         'zora',
         'scroll',
-        'mantle'
+        'mantle',
+        'tac',
     ]) }}
 {% endmacro %}
 
