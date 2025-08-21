@@ -124,7 +124,7 @@ meta as (
         , true as trusted
     from {{ source('prices', 'trusted_tokens') }}
     where blockchain = '{{blockchain}}'
-    group by 1, 2, 3
+    group by 1, 2
 )
 
 {% set symbol = 'coalesce(symbol, token_symbol)' %}
