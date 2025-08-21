@@ -10,7 +10,7 @@
         'block_number',
         'block_time',
         'tx_hash',
-        'block_date',
+        'date(block_time) as block_date',
     ]
 %}
 
