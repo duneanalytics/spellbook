@@ -92,6 +92,7 @@ models:
       - equal_rowcount_with_sources:
           evt_sources:
             - source('circle_ethereum','tokenmessenger_evt_mintandwithdraw')
+<<<<<<< HEAD
   - name: bridges_ethereum_celer_v1_deposits
     meta:
       blockchain: ethereum
@@ -158,3 +159,26 @@ models:
     config:
       tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
     description: "Across's v3 bridge withdrawals events on Ethereum"
+=======
+    columns:
+      - *deposit_chain
+      - *withdraw_chain
+      - *bridge_name
+      - *bridge_version
+      - *deposit_amount_raw
+      - *deposit_token_address
+      - *block_date
+      - *block_time
+      - *block_number
+      - *withdrawal_amount_raw 
+      - *sender
+      - *recipient
+      - *deposit_token_standard
+      - *withdrawal_token_standard
+      - *withdrawal_token_address
+      - *tx_from
+      - *tx_hash
+      - *evt_index  
+      - *contract_address 
+      - *bridge_transfer_id 
+>>>>>>> main

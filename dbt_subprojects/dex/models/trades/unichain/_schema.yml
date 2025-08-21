@@ -3,6 +3,7 @@ version: 2
 models:
   - name: dex_unichain_base_trades
     data_tests:
+      - check_columns_dex_base_trades
       - check_dex_info_relationship
       - test_acceptable_usd_amount:
           column_name: amount_usd
@@ -119,3 +120,22 @@ models:
             version:
               - '2'
               - '2_cl'
+
+  - name: eulerswap_unichain_base_trades
+    meta:
+      blockchain: unichain
+      sector: dex
+      project: eulerswap
+      contributors: Henrystats
+    config:
+      tags: ["unichain", "dex", "trades", "eulerswap"]
+    description: "eulerswap unichain base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('eulerswap_unichain_base_trades_seed')
+          filter:
+            version: 1
