@@ -62,7 +62,7 @@ WITH solfi_swaps AS (
     INNER JOIN {{ source('tokens_solana','transfers') }} t_input
         ON t_input.tx_id = s.tx_id
         AND t_input.block_slot = s.block_slot
-        AND t_input.block_time = s.call_block_time  -- Add block_time
+        AND t_input.block_time = s.block_time  -- Add block_time
         AND t_input.outer_instruction_index = s.outer_instruction_index
         AND (
             -- For non-inner swaps: input transfer is at instruction index 1
