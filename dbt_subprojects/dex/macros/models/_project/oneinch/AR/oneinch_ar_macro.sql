@@ -25,34 +25,34 @@ pools_list as (
 
 , calls as (
     {% for contract, contract_data in oneinch_ar_cfg_contracts_macro().items() if blockchain in contract_data.blockchains %}
-
     select * from (
-        with traces_cte as (
-            select
-                block_number as call_block_number
-                , tx_hash as call_tx_hash
-                , trace_address as call_trace_address
-                , "from" as call_from
-                , selector as call_selector
-                , gas_used as call_gas_used
-                , input as call_input
-                , input_length as call_input_length
-                , substr(input, input_length - mod(input_length - 4, 32) + 1) as remains
-                , output as call_output
-                , error as call_error
-                , value as call_value
-                , call_type
-            from {{ ref('oneinch_' + blockchain + '_ar_raw_traces') }}
-            where
-                {% if is_incremental() %}
-                    {{ incremental_predicate('block_time') }}
-                {% else %}
-                    block_time >= greatest(timestamp '{{ contract_data['start'] }}', timestamp {{ oneinch_easy_date() }})
-                {% endif %}
-        )
+        {% for method, method_data in contract_data.methods.items() if blockchain in method_data.get('blockchains', contract_data.blockchains) and not method_data.get('auxiliary', false) %} -- method-level blockchains override contract-level blockchains
+            with traces_cte as (
+                select
+                    block_number as call_block_number
+                    , tx_hash as call_tx_hash
+                    , trace_address as call_trace_address
+                    , "from" as call_from
+                    , selector as call_selector
+                    , gas_used as call_gas_used
+                    , input as call_input
+                    , input_length as call_input_length
+                    , substr(input, input_length - mod(input_length - 4, 32) + 1) as remains
+                    , output as call_output
+                    , error as call_error
+                    , value as call_value
+                    , call_type
+                from {{ ref('oneinch_' + blockchain + '_ar_raw_traces') }}
+                where
+                    {% if is_incremental() %}
+                        {{ incremental_predicate('block_time') }}
+                    {% else %}
+                        block_time >= greatest(timestamp '{{ contract_data['start'] }}', timestamp {{ oneinch_easy_date() }})
+                    {% endif %}
+                    and contract_name = '{{ contract }}'
+                    and method = '{{ method }}'
+            )
 
-
-        {% for method, method_data in contract_data.methods.items() if blockchain in method_data.get('blockchains', contract_data.blockchains) %} -- method-level blockchains override contract-level blockchains
             {% if method_data.router_type in ['generic', 'clipper'] %}
                 {{
                     oneinch_ar_handle_generic(
@@ -79,10 +79,10 @@ pools_list as (
                     )
                 }}
             {% endif %}
-        {% if not loop.last %} union all {% endif %}
+        {% if not loop.last %}union all{% endif %}
         {% endfor %}
     )
-    {% if not loop.last %} union all {% endif %}
+    {% if not loop.last %}union all{% endif %}
     {% endfor %}
 )
 
