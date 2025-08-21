@@ -74,7 +74,7 @@ meta as (
 )
 
 , merging as (
-    select 
+    select
         blockchain
         , block_number
         , block_time
@@ -149,7 +149,7 @@ select
     , amount * price / pow(10, {{ decimals }}) as amount_usd
     , coalesce(trusted, false) as trusted
     , block_date
-    , date(date_trunc('month', transfer_block_time)) as block_month
+    , date(date_trunc('month', block_time)) as block_month
 from merging
 left join prices using(contract_address, minute)
 left join tokens using(contract_address)
