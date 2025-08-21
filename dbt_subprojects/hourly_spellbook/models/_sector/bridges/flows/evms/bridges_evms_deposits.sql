@@ -1,5 +1,6 @@
 {{ config(
-    schema = 'bridges_evms'
+    tags = ['prod_exclude']
+    , schema = 'bridges_evms'
     , alias = 'deposits'
     , materialized = 'incremental'
     , file_format = 'delta'
@@ -12,6 +13,11 @@
 {% set chains = [
     'ethereum'
     , 'base'
+    , 'arbitrum'
+    , 'avalanche_c'
+    , 'optimism'
+    , 'polygon'
+    , 'unichain'
 ] %}
 
 WITH grouped_deposits AS (

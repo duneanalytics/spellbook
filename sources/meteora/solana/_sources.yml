@@ -10,8 +10,20 @@ sources:
     description: "meteora vault decoded tables"
     tables:
       - name: vault_call_deposit
-  - name: meteora_solana
+  - name: dlmm_solana
     description: "meteora lb_clmm decoded tables"
     tables:
       - name: lb_clmm_call_swap
-        
+      - name: lb_clmm_call_swap2
+      - name: lb_clmm_call_swapexactout
+      - name: lb_clmm_call_swapexactout2
+      - name: lb_clmm_call_swapwithpriceimpact
+      - name: lb_clmm_call_swapwithpriceimpact2
+      - name: lb_clmm_evt_swap
+  - name: meteora_solana
+    description: "meteora dbc and cpamm decoded tables"
+    tables:
+      - name: dynamic_bonding_curve_call_swap
+      - name: dynamic_bonding_curve_evt_evtswap
+      - name: cp_amm_call_swap
+      - name: cp_amm_evt_evtswap

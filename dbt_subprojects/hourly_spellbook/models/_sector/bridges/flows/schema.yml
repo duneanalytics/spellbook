@@ -3,7 +3,7 @@ version: 2
 models:
   - name: bridges_crosschain_deposits
     meta:
-      blockchain: ethereum, base
+      blockchain: ethereum, base, arbitrum, avalanche_c, optimism, polygon, unichain
       sector: bridges
       contributors: [ 'hildobby']
     config:
@@ -87,7 +87,7 @@ models:
         description: "Bridge order identifier"
   - name: bridges_crosschain_withdrawals
     meta:
-      blockchain: ethereum, base
+      blockchain: ethereum, base, arbitrum, avalanche_c, optimism, polygon, unichain
       sector: bridges
       contributors: [ 'hildobby']
     config:
@@ -132,7 +132,7 @@ models:
       - *bridge_transfer_id 
   - name: bridges_crosschain_flows
     meta:
-      blockchain: ethereum, base
+      blockchain: ethereum, base, arbitrum, avalanche_c, optimism, polygon, unichain
       sector: bridges
       contributors: [ 'hildobby']
     config:
@@ -177,7 +177,7 @@ models:
         description: "Time in miliseconds between deposits and withdrawals transactions"
   - name: bridges_info
     meta:
-      blockchain: ethereum, base
+      blockchain: ethereum, base, arbitrum, avalanche_c, optimism, polygon, unichain
       sector: bridges
       contributors: [ 'hildobby']
     config:

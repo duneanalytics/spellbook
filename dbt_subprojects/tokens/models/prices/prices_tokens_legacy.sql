@@ -43,6 +43,7 @@
     ,ref('prices_sonic_tokens')
     ,ref('prices_ink_tokens')
     ,ref('prices_sophon_tokens')
+    ,ref('prices_tac_tokens')
     ,ref('prices_opbnb_tokens')
     ,ref('prices_taiko_tokens')
     ,ref('prices_unichain_tokens')

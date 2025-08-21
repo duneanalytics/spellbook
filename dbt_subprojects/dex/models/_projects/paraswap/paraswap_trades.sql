@@ -17,6 +17,8 @@ ref('paraswap_avalanche_c_trades')
 ,ref('paraswap_optimism_trades')
 ,ref('paraswap_polygon_trades')
 ,ref('paraswap_base_trades')
+,ref('paraswap_gnosis_trades')
+,ref('paraswap_unichain_trades')
 ] %}
 
 
