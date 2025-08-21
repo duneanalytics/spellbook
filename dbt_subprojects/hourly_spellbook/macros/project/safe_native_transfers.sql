@@ -1,4 +1,4 @@
-{% macro safe_native_transfers(blockchain, native_token_symbol, project_start_date) %}
+{% macro safe_native_transfers(blockchain, native_token_symbol, project_start_date, date_filter=false) %}
 
 select
     t.*
@@ -25,7 +25,9 @@ from
         and et.success = true
         and (lower(et.call_type) not in ('delegatecall', 'callcode', 'staticcall') or et.call_type is null)
         and et.value > UINT256 '0' -- et.value is uint256 type
-        {% if not is_incremental() %}
+        {% if date_filter %}
+        and et.block_time >= date_trunc('day', now() - interval '7' day)
+        {% elif not is_incremental() %}
         and et.block_time >= TIMESTAMP '{{ project_start_date }}'
         {% else %}
         and et.block_time > date_trunc('day', now() - interval '10' day) -- to prevent potential counterfactual safe deployment issues we take a bigger interval
@@ -53,7 +55,9 @@ from
         and et.success = true
         and (lower(et.call_type) not in ('delegatecall', 'callcode', 'staticcall') or et.call_type is null)
         and et.value > UINT256 '0' -- et.value is uint256 type
-        {% if not is_incremental() %}
+        {% if date_filter %}
+        and et.block_time >= date_trunc('day', now() - interval '7' day)
+        {% elif not is_incremental() %}
         and et.block_time >= TIMESTAMP '{{ project_start_date }}'
         {% else %}
         and et.block_time > date_trunc('day', now() - interval '10' day) -- to prevent potential counterfactual safe deployment issues we take a bigger interval
@@ -62,7 +66,9 @@ from
 left join {{ source('prices', 'usd') }} p on p.blockchain is null
     and p.symbol = t.symbol
     and p.minute = date_trunc('minute', t.block_time)
-    {% if not is_incremental() %}
+    {% if date_filter %}
+    and p.minute >= date_trunc('day', now() - interval '7' day)
+    {% elif not is_incremental() %}
     and p.minute >= TIMESTAMP '{{ project_start_date }}'
     {% else %}
     and p.minute > date_trunc('day', now() - interval '10' day) -- to prevent potential counterfactual safe deployment issues we take a bigger interval
