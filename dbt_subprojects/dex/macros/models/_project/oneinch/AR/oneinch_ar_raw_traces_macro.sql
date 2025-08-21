@@ -10,7 +10,7 @@ cfg as (
         {% set outer_loop = loop %}
         {% for method, method_data in contract_data.methods.items() if blockchain in method_data.get('blockchains', contract_data.blockchains) %} -- method-level blockchains override contract-level blockchains
             select
-                {{ contract_data.addresses | dictsort | selectattr(1, 'contains', blockchain) | map(attribute=0) | first }} as "to"
+                {% for address, blockchains in contract_data.addresses.items() if blockchain in blockchains %}{{address}}{% endfor %} as "to"
                 , '{{ contract }}' as contract_name
                 , {{ method_data.get('selector', 'null') }} as selector
                 , '{{ method }}' as method
