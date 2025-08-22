@@ -44,7 +44,7 @@ SELECT m.blockchain AS deposit_chain
 , evt_index
 , contract_address
 , CAST(depositId_uint256 AS varchar) AS bridge_id
-FROM {{ source('across_v2_' + blockchain, 'uba_arbitrum_spokepool_evt_filledrelay') }} d
+FROM {{ source('across_v2_' + blockchain, 'UBA_' + blockchain|title + '_SpokePool_evt_FilledRelay') }} d
 LEFT JOIN across_id_mapping m ON d.originChainId=m.id
 
 {% endmacro %}

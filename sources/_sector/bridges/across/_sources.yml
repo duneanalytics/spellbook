@@ -2,25 +2,25 @@ version: 2
 
 sources:
   - name: across_v2_ethereum
-    description: "Circle's CCTP bridge events on Base"
+    description: "Across Protocol v2 bridge events on Ethereum"
     tables:
-      - name: uba_arbitrum_spokepool_evt_fundsdeposited
-      - name: uba_arbitrum_spokepool_evt_filledrelay
+      - name: UBA_Ethereum_SpokePool_evt_FundsDeposited
+      - name: UBA_Ethereum_SpokePool_evt_FilledRelay
 
   - name: across_v2_base
-    description: "Circle's CCTP bridge events on Base"
+    description: "Across Protocol v2 bridge events on Base"
     tables:
-      - name: uba_arbitrum_spokepool_evt_fundsdeposited
-      - name: uba_arbitrum_spokepool_evt_filledrelay
+      - name: UBA_Base_SpokePool_evt_FundsDeposited
+      - name: UBA_Base_SpokePool_evt_FilledRelay
 
   - name: across_v3_ethereum
-    description: "Circle's CCTP bridge events on Ethereum"
+    description: "Across Protocol v3 bridge events on Ethereum"
     tables:
-      - name: uba_arbitrum_spokepool_evt_v3fundsdeposited
-      - name: uba_arbitrum_spokepool_evt_filledv3relay
+      - name: UBA_Ethereum_SpokePool_evt_V3FundsDeposited
+      - name: UBA_Ethereum_SpokePool_evt_FilledV3Relay
 
   - name: across_v3_base
-    description: "Circle's CCTP bridge events on Ethereum"
+    description: "Across Protocol v3 bridge events on Base"
     tables:
-      - name: uba_arbitrum_spokepool_evt_v3fundsdeposited
-      - name: uba_arbitrum_spokepool_evt_filledv3relay
+      - name: UBA_Base_SpokePool_evt_V3FundsDeposited
+      - name: UBA_Base_SpokePool_evt_FilledV3Relay
