@@ -213,6 +213,7 @@ models:
             - blockchain
             - tx_hash
             - transfer_trace_address
+            - contract_address
     columns:
       - name: blockchain
         data_tests:
@@ -226,6 +227,8 @@ models:
         data_tests:
           - not_null
       - name: contract_address
+        data_tests:
+          - not_null
       - name: amount
       - name: transfer_native
         data_tests:
