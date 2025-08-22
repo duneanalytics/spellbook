@@ -42,7 +42,8 @@ sources:
       - name: stETHng_evt_TokenExchange    
       - name: frxeth_eth_pool_call_price_oracle
       - name: frxETH_stETH_evt_TokenExchange 
-      - name: rETHwstETH_evt_TokenExchange    
+      - name: rETHwstETH_evt_TokenExchange   
+      - name: CurveStableSwapNG_evt_TokenExchange   
 
   - name: pancakeswap_v3_ethereum
     description: "Ethereum decoded tables related to Pancakeswap v3 contract"
