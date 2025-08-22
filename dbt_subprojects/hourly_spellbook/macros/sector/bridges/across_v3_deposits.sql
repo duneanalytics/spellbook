@@ -44,7 +44,7 @@ SELECT 'arbitrum' AS deposit_chain
 , evt_index
 , contract_address
 , CAST(depositId AS varchar) AS bridge_id
-FROM {{ source('across_v3_' + blockchain, 'UBA_' + blockchain|title + '_SpokePool_evt_V3FundsDeposited') }} d
+FROM {{ source('across_v3_' + blockchain, 'uba_' + blockchain + '_spokepool_evt_v3fundsdeposited') }} d
 LEFT JOIN across_id_mapping m ON d.destinationChainId=m.id
 
 {% endmacro %}

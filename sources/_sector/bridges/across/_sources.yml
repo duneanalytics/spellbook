@@ -4,23 +4,23 @@ sources:
   - name: across_v2_ethereum
     description: "Across Protocol v2 bridge events on Ethereum"
     tables:
-      - name: UBA_Ethereum_SpokePool_evt_FundsDeposited
-      - name: UBA_Ethereum_SpokePool_evt_FilledRelay
+      - name: uba_ethereum_spokepool_evt_fundsdeposited
+      - name: uba_ethereum_spokepool_evt_filledrelay
 
   - name: across_v2_base
     description: "Across Protocol v2 bridge events on Base"
     tables:
-      - name: UBA_Base_SpokePool_evt_FundsDeposited
-      - name: UBA_Base_SpokePool_evt_FilledRelay
+      - name: uba_base_spokepool_evt_fundsdeposited
+      - name: uba_base_spokepool_evt_filledrelay
 
   - name: across_v3_ethereum
     description: "Across Protocol v3 bridge events on Ethereum"
     tables:
-      - name: UBA_Ethereum_SpokePool_evt_V3FundsDeposited
-      - name: UBA_Ethereum_SpokePool_evt_FilledV3Relay
+      - name: uba_ethereum_spokepool_evt_v3fundsdeposited
+      - name: uba_ethereum_spokepool_evt_filledv3relay
 
   - name: across_v3_base
     description: "Across Protocol v3 bridge events on Base"
     tables:
-      - name: UBA_Base_SpokePool_evt_V3FundsDeposited
-      - name: UBA_Base_SpokePool_evt_FilledV3Relay
+      - name: uba_base_spokepool_evt_v3fundsdeposited
+      - name: uba_base_spokepool_evt_filledv3relay
