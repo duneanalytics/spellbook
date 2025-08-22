@@ -128,6 +128,7 @@ FROM
     , PoolManager_evt_Swap = null
     , taker_column_name = null
     , maker_column_name = null
+    , filter_angstrom_addr = null
     )
 %}
 WITH dexs AS
@@ -234,6 +235,9 @@ WITH dexs AS
         {%- if is_incremental() %}
         AND {{ incremental_predicate('evt_block_time') }}
         {%- endif %}
+        {% if filter_angstrom_addr %}
+        AND NOT (hooks = {{ filter_angstrom_addr }} AND fee = 0)
+        {% endif %}
 
 )
 

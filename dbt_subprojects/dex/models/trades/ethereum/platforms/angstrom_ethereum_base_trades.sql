@@ -18,8 +18,8 @@ WITH dexs AS
         controller_v1_contract_addr = '0x1746484EA5e11C75e009252c102C8C33e0315fD4',
         earliest_block = '22971781',
         blockchain = 'ethereum',
-        project = 'angstrom',
-        version = '1'
+        project = 'uniswap',
+        version = '4'
     )
     }}
 )
