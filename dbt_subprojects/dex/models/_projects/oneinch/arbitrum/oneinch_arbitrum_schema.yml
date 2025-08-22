@@ -184,6 +184,8 @@ models:
         data_tests:
           - not_null
       - name: contract_address
+        data_tests:
+          - not_null
       - name: amount
       - name: transfer_native
         data_tests:
