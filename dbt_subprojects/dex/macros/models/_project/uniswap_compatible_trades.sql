@@ -213,9 +213,6 @@ WITH dexs AS
         , row_number() over(partition by call_tx_hash order by call_trace_address) as call_rn
 
         FROM wrangled
-        {% if filter_angstrom_addr %}
-        WHERE NOT (hooks = {{ filter_angstrom_addr }} AND fee = 0)
-        {% endif %}
     )
 
     , swap_evt as (
@@ -266,6 +263,9 @@ WITH dexs AS
     JOIN swap_evt e on c.call_block_number = e.evt_block_number 
         and c.call_tx_hash = e.evt_tx_hash
         and c.call_rn = e.evt_rn 
+    {% if filter_angstrom_addr %}
+    WHERE NOT (c.hooks = {{ filter_angstrom_addr }} AND e.fee = 0)
+    {% endif %}
 
 )
 
