@@ -188,6 +188,10 @@ sources:
     tables:
       - name: FluidDexT1_evt_Swap
       - name: fluiddexfactory_call_deploydex
+  - name: gammaswap_arbitrum
+    tables:
+      - name: deltaswappair_evt_swap
+      - name: deltaswapfactory_evt_paircreated
   - name: native_arbitrum
     tables:
       - name: NativeRFQPool_evt_RFQTrade
