@@ -10,7 +10,8 @@
   set models = [
     ref('aave_v3_optimism_base_flashloans'),
     ref('granary_optimism_base_flashloans'),
-    ref('balancer_v2_optimism_base_flashloans')
+    ref('balancer_v2_optimism_base_flashloans'),
+    ref('morpho_optimism_base_flashloans')
   ]
 %}
 
