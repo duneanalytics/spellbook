@@ -43,7 +43,7 @@ SELECT m.blockchain AS deposit_chain
 , evt_tx_hash AS tx_hash
 , evt_index
 , contract_address
-, CAST(depositId_uint256 AS varchar) AS bridge_id
+, CAST(depositId_uint256 AS varchar) AS bridge_transfer_id
 FROM ({{ events }}) d
 LEFT JOIN across_id_mapping m ON d.originChainId=m.id
 
