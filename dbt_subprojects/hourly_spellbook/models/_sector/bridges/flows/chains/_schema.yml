@@ -93,9 +93,9 @@ models:
       - *withdraw_amount_raw
       - *sender
       - *recipient
-      - *withdrawal_token_standard
+      - *withdraw_token_standard
       - *deposit_token_address
-      - *withdrawal_token_address
+      - *withdraw_token_address
       - *tx_from
       - *tx_hash
       - *evt_index  
@@ -121,12 +121,12 @@ models:
       - *block_time
       - *block_number
       - *deposit_amount_raw 
-      - *withdrawal_amount_raw 
+      - *withdraw_amount_raw 
       - *sender
       - *recipient
       - *deposit_token_standard
       - *deposit_token_address
-      - *withdrawal_token_address
+      - *withdraw_token_address
       - *tx_from
       - *tx_hash
       - *evt_index  
@@ -152,13 +152,13 @@ models:
       - *block_time
       - *block_number
       - *deposit_amount_raw 
-      - *withdrawal_amount_raw 
+      - *withdraw_amount_raw 
       - *sender
       - *recipient
       - *deposit_token_standard
-      - *withdrawal_token_standard
+      - *withdraw_token_standard
       - *deposit_token_address
-      - *withdrawal_token_address
+      - *withdraw_token_address
       - *tx_from
       - *tx_hash
       - *evt_index  
@@ -188,9 +188,9 @@ models:
       - *sender
       - *recipient
       - *deposit_token_standard
-      - *withdrawal_token_standard
+      - *withdraw_token_standard
       - *deposit_token_address
-      - *withdrawal_token_address
+      - *withdraw_token_address
       - *tx_from
       - *tx_hash
       - *evt_index  
@@ -220,9 +220,9 @@ models:
       - *sender
       - *recipient
       - *deposit_token_standard
-      - *withdrawal_token_standard
+      - *withdraw_token_standard
       - *deposit_token_address
-      - *withdrawal_token_address
+      - *withdraw_token_address
       - *tx_from
       - *tx_hash
       - *evt_index  
@@ -254,7 +254,7 @@ models:
       - *deposit_token_standard
       - *withdraw_token_standard
       - *deposit_token_address
-      - *withdrawal_token_address
+      - *withdraw_token_address
       - *tx_from
       - *tx_hash
       - *evt_index  
@@ -286,7 +286,7 @@ models:
       - *deposit_token_standard
       - *withdraw_token_standard
       - *deposit_token_address
-      - *withdrawal_token_address
+      - *withdraw_token_address
       - *tx_from
       - *tx_hash
       - *evt_index  
@@ -318,7 +318,7 @@ models:
       - *deposit_token_standard
       - *withdraw_token_standard
       - *deposit_token_address
-      - *withdrawal_token_address
+      - *withdraw_token_address
       - *tx_from
       - *tx_hash
       - *evt_index  
@@ -350,7 +350,7 @@ models:
       - *deposit_token_standard
       - *withdraw_token_standard
       - *deposit_token_address
-      - *withdrawal_token_address
+      - *withdraw_token_address
       - *tx_from
       - *tx_hash
       - *evt_index  

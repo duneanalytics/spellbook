@@ -13,18 +13,18 @@ SELECT *
     FROM (
         {% for vm in vms %}
         SELECT deposit_chain
-        , withdrawal_chain
+        , withdraw_chain
         , bridge_name
         , bridge_version
         , block_date
         , block_time
         , block_number
-        , withdrawal_amount_raw
-        , withdrawal_amount
+        , withdraw_amount_raw
+        , withdraw_amount
         , CAST(sender AS VARCHAR) AS sender
         , CAST(recipient AS VARCHAR) AS recipient
-        , withdrawal_token_standard
-        , CAST(withdrawal_token_address AS VARCHAR) AS withdrawal_token_address
+        , withdraw_token_standard
+        , CAST(withdraw_token_address AS VARCHAR) AS withdraw_token_address
         , CAST(tx_from AS VARCHAR) AS tx_from
         , CAST(tx_hash AS VARCHAR) AS tx_hash
         , evt_index

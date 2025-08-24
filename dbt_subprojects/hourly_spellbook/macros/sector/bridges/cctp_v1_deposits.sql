@@ -22,7 +22,7 @@ WITH cctp_id_mapping AS (
     )
 
 SELECT '{{blockchain}}' AS deposit_chain
-, i.blockchain AS withdrawal_chain
+, i.blockchain AS withdraw_chain
 , 'CCTP' AS bridge_name
 , '1' AS bridge_version
 , evt_block_date AS block_date

@@ -41,8 +41,8 @@ models:
       - &deposit_amount_raw 
         name: deposit_amount_raw
         description: "Raw amount of tokens bridged from source chain"
-      - &withdrawal_amount_raw 
-        name: withdrawal_amount_raw
+      - &withdraw_amount_raw 
+        name: withdraw_amount_raw
         description: "Raw amount of tokens bridged to destination chain"
       - &sender 
         name: sender
@@ -53,14 +53,14 @@ models:
       - &deposit_token_standard  
         name: deposit_token_standard
         description: "Source blockchain token standard"
-      - &withdrawal_token_standard
-        name: withdrawal_token_standard
+      - &withdraw_token_standard
+        name: withdraw_token_standard
         description: "Destination blockchain token standard"
       - &deposit_token_address  
         name: deposit_token_address
         description: "Source blockchain token address"
-      - &withdrawal_token_address
-        name: withdrawal_token_address
+      - &withdraw_token_address
+        name: withdraw_token_address
         description: "Destination blockchain token address"
       - &tx_from
         name: tx_from
@@ -102,11 +102,11 @@ models:
       - *block_date
       - *block_time
       - *block_number
-      - *withdrawal_amount_raw 
+      - *withdraw_amount_raw 
       - *sender
       - *recipient
-      - *withdrawal_token_standard
-      - *withdrawal_token_address
+      - *withdraw_token_standard
+      - *withdraw_token_address
       - *tx_from
       - *tx_hash
       - *evt_index  

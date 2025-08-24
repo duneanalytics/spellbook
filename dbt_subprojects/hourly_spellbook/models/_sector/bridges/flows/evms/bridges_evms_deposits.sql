@@ -5,7 +5,7 @@
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy='merge'
-    , unique_key = ['deposit_chain','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id']
+    , unique_key = ['deposit_chain','withdraw_chain','bridge_name','bridge_version','bridge_transfer_id']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
 )
 }}
@@ -25,7 +25,7 @@ WITH grouped_deposits AS (
     FROM (
         {% for chain in chains %}
         SELECT deposit_chain
-        , withdrawal_chain
+        , withdraw_chain
         , bridge_name
         , bridge_version
         , block_date
@@ -53,7 +53,7 @@ WITH grouped_deposits AS (
     )
 
 SELECT d.deposit_chain
-, d.withdrawal_chain
+, d.withdraw_chain
 , d.bridge_name
 , d.bridge_version
 , d.block_date

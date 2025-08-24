@@ -14,7 +14,7 @@ SELECT *
     FROM (
         {% for vm in vms %}
         SELECT deposit_chain
-        , withdrawal_chain
+        , withdraw_chain
         , bridge_name
         , bridge_version
         , deposit_block_date
@@ -25,15 +25,15 @@ SELECT *
         , withdraw_block_number
         , deposit_amount_raw
         , deposit_amount
-        , withdrawal_amount_raw
-        , withdrawal_amount
+        , withdraw_amount_raw
+        , withdraw_amount
         , amount_usd
         , CAST(sender AS VARCHAR) AS sender
         , CAST(recipient AS VARCHAR) AS recipient
         , deposit_token_standard
-        , withdrawal_token_standard
+        , withdraw_token_standard
         , CAST(deposit_token_address AS VARCHAR) AS deposit_token_address
-        , CAST(withdrawal_token_address AS VARCHAR) AS withdrawal_token_address
+        , CAST(withdraw_token_address AS VARCHAR) AS withdraw_token_address
         , CAST(deposit_tx_from AS VARCHAR) AS deposit_tx_from
         , CAST(deposit_tx_hash AS VARCHAR) AS deposit_tx_hash
         , CAST(withdraw_tx_hash AS VARCHAR) AS withdraw_tx_hash
