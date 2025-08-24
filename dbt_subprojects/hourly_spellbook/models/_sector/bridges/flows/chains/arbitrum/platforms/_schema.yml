@@ -105,7 +105,6 @@ models:
       - *withdrawal_amount_raw 
       - *sender
       - *recipient
-      - *deposit_token_standard
       - *withdrawal_token_standard
       - *withdrawal_token_address
       - *tx_from
