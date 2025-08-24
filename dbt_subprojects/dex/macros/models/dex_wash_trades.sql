@@ -104,10 +104,10 @@ filter_3_suspicious_volume AS (
         ) wt
         GROUP BY wt.tx_hash, wt.wallet_addr
     ) subq
-    WHERE trade_count >= 6  -- Minimum trades for suspicion
-    AND total_volume > 50000.0  -- Significant volume
+    WHERE trade_count >= 12  -- Increased from 6 to 12 (more suspicious)
+    AND total_volume > 100000.0  -- Increased threshold (wash trades typically high volume)
     AND sell_volume > 0.0 AND buy_volume > 0.0  -- Wallet both buys and sells
-    AND ABS(sell_volume - buy_volume) / NULLIF(GREATEST(sell_volume, buy_volume), 0.0) < 0.05  -- Nearly balanced
+    AND ABS(sell_volume - buy_volume) / NULLIF(GREATEST(sell_volume, buy_volume), 0.0) < 0.02  -- Tightened to 2% (more suspicious)
 ),
 
 -- Filter 4: Related wallet patterns (simplified for Trino compatibility)
@@ -123,9 +123,9 @@ filter_4_related_wallets AS (
         INNER JOIN tx_basic_candidates tbc ON tt.tx_hash = tbc.tx_hash
         GROUP BY tt.tx_hash
     ) subq
-    WHERE total_trades >= 8
+    WHERE total_trades >= 12
     AND unique_senders = unique_receivers  -- Same number of senders/receivers
-    AND unique_senders <= 3  -- Limited participants
+    AND unique_senders <= 4  -- Limited participants
 ),
 
 -- Filter 5: Token manipulation patterns
@@ -145,9 +145,9 @@ filter_5_token_manipulation AS (
         GROUP BY tt.tx_hash
     ) subq
     WHERE unique_tokens <= 2  -- Focus on 1-2 tokens
-    AND total_trades >= 8     -- High frequency
-    AND max_trade_size / COALESCE(NULLIF(min_trade_size, 0.0), 1.0) > 100.0  -- Suspicious size variation
-    AND avg_trade_size > 10000.0  -- Significant average size
+    AND total_trades >= 12     -- High frequency
+    AND max_trade_size / COALESCE(NULLIF(min_trade_size, 0.0), 1.0) > 200.0  -- Suspicious size variation
+    AND avg_trade_size > 20000.0  -- Significant average size
 ),
 
 -- OPTIMIZATION: only process candidate transactions downstream
