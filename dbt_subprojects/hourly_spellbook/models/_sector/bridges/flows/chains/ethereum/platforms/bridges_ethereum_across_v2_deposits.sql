@@ -9,5 +9,5 @@
 
 {{across_v2_deposits(
     blockchain = blockchain
-    , events = ref('across_v2_ethereum.uba_ethereum_spokepool_evt_fundsdeposited')
+    , events = source('across_v2_ethereum', 'uba_ethereum_spokepool_evt_fundsdeposited')
     )}}

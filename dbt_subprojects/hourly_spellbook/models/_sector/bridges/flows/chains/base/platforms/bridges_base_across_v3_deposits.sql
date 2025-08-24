@@ -9,5 +9,5 @@
 
 {{across_v3_deposits(
     blockchain = blockchain
-    , events = ref('across_v2_base.base_spokepool_evt_v3fundsdeposited')
+    , events = source('across_v2_base', 'base_spokepool_evt_v3fundsdeposited')
     )}}
