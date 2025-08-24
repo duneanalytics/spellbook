@@ -53,9 +53,6 @@ models:
       - &deposit_token_standard  
         name: deposit_token_standard
         description: "Source blockchain token standard"
-      - &withdrawal_token_standard
-        name: withdrawal_token_standard
-        description: "Destination blockchain token standard"
       - &deposit_token_address  
         name: deposit_token_address
         description: "Source blockchain token address"
