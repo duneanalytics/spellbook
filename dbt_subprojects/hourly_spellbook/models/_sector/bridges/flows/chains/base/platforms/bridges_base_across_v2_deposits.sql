@@ -7,4 +7,7 @@
     )
 }}
 
-{{across_v2_deposits(blockchain = blockchain)}}
+{{across_v2_deposits(
+    blockchain = blockchain
+    , events = ref('across_v2_base.base_spokepool_evt_fundsdeposited')
+    )}}

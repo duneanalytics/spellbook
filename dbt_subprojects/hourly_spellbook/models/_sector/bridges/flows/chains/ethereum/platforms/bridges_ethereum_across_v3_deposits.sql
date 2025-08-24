@@ -7,4 +7,7 @@
     )
 }}
 
-{{across_v3_deposits(blockchain = blockchain)}}
+{{across_v3_deposits(
+    blockchain = blockchain
+    , events = ref('across_v2_ethereum.uba_ethereum_spokepool_evt_v3fundsdeposited')
+    )}}

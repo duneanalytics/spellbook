@@ -1,4 +1,4 @@
-{% macro across_v2_deposits(blockchain) %}
+{% macro across_v2_deposits(blockchain, events) %}
 
 
 WITH across_id_mapping AS (
@@ -44,7 +44,7 @@ SELECT '{{blockchain}}' AS deposit_chain
 , evt_index
 , contract_address
 , CAST(depositId_uint256 AS varchar) AS bridge_id
-FROM {{ source('across_v2_' + blockchain, 'uba_' + blockchain + '_spokepool_evt_fundsdeposited') }} d
+FROM ({{ events }}) d
 LEFT JOIN across_id_mapping m ON d.destinationChainId=m.id
 
 {% endmacro %}

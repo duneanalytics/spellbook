@@ -110,21 +110,4 @@ models:
     config:
       tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
     description: "Across's v2 bridge withdrawals events on Ethereum"
-  - name: bridges_ethereum_across_v3_deposits
-    meta:
-      blockchain: ethereum
-      sector: bridges
-      project: across
-      contributors: [ 'hildobby']
-    config:
-      tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
-    description: "Across's v3 bridge deposits events on Ethereum"
-  - name: bridges_ethereum_across_v3_withdrawals
-    meta:
-      blockchain: ethereum
-      sector: bridges
-      project: across
-      contributors: [ 'hildobby']
-    config:
-      tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
-    description: "Across's v3 bridge withdrawals events on Ethereum"
+

@@ -7,4 +7,7 @@
     )
 }}
 
-{{across_v3_withdrawals(blockchain = blockchain)}}
+{{across_v3_withdrawals(
+    blockchain = blockchain
+    , events = ref('across_v2_base.base_spokepool_evt_filledv3relay')
+    )}}
