@@ -36,8 +36,9 @@ SELECT m.blockchain AS deposit_chain
 , outputAmount AS deposit_amount_raw
 , CASE WHEN varbinary_substring(depositor,1, 12) = 0x000000000000000000000000 THEN varbinary_substring(depositor,13) ELSE depositor END AS sender
 , CASE WHEN varbinary_substring(recipient,1, 12) = 0x000000000000000000000000 THEN varbinary_substring(recipient,13) ELSE recipient END AS recipient
-, 'erc20' AS withdrawal_token_address
 , CASE WHEN varbinary_substring(outputToken,1, 12) = 0x000000000000000000000000 THEN varbinary_substring(outputToken,13) ELSE outputToken END AS withdrawal_token_address
+, 'erc20' AS deposit_token_standard
+, 'erc20' AS withdrawal_token_standard
 , evt_tx_from AS tx_from
 , evt_tx_hash AS tx_hash
 , evt_index
