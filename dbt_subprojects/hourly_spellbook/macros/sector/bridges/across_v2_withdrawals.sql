@@ -33,7 +33,7 @@ SELECT m.blockchain AS deposit_chain
 , evt_block_date AS block_date
 , evt_block_time AS block_time
 , evt_block_number AS block_number
-, outputAmount AS deposit_amount_raw
+, outputAmount AS withdrawal_amount_raw
 , CASE WHEN varbinary_substring(depositor,1, 12) = 0x000000000000000000000000 THEN varbinary_substring(depositor,13) ELSE depositor END AS sender
 , CASE WHEN varbinary_substring(recipient,1, 12) = 0x000000000000000000000000 THEN varbinary_substring(recipient,13) ELSE recipient END AS recipient
 , CASE WHEN varbinary_substring(outputToken,1, 12) = 0x000000000000000000000000 THEN varbinary_substring(outputToken,13) ELSE outputToken END AS withdrawal_token_address
