@@ -9,7 +9,7 @@ WITH base_filtered_trades AS (
     {% else %}
     AND block_time >= date_trunc('day', NOW() - interval '10' day)
     {% endif %}
-    AND amount_usd > 100  -- Filter small trades early
+    AND amount_usd > 1000  -- Filter small trades early
 ),
 
 multi_trade_transactions AS (
@@ -104,7 +104,7 @@ filter_3_suspicious_volume AS (
         ) wt
         GROUP BY wt.tx_hash, wt.wallet_addr
     ) subq
-    WHERE trade_count >= 12  -- Increased from 6 to 12 (more suspicious)
+    WHERE trade_count >= 12 
     AND total_volume > 100000.0  -- Increased threshold (wash trades typically high volume)
     AND sell_volume > 0.0 AND buy_volume > 0.0  -- Wallet both buys and sells
     AND ABS(sell_volume - buy_volume) / NULLIF(GREATEST(sell_volume, buy_volume), 0.0) < 0.02  -- Tightened to 2% (more suspicious)
