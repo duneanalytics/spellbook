@@ -60,6 +60,7 @@
     , ref('mindgames_arbitrum_base_trades')
     , ref('fluid_v1_arbitrum_base_trades')
     , ref('elk_finance_arbitrum_base_trades')
+    , ref('gammaswap_arbitrum_base_trades')
     , ref('native_arbitrum_base_trades')
 ] %}
 
