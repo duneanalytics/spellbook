@@ -54,28 +54,11 @@ tx_basic_candidates AS (
     WHERE total_trades >= 6  -- Only check complex transactions
 ),
 
--- Filter 1: True self-trading (same address on both sides) - Enhanced for low tx_count, high volume
+-- Filter 1: True self-trading (same address on both sides)
 filter_1_self_trading AS (
     SELECT DISTINCT tx_hash, true AS self_trading
-    FROM (
-        SELECT tx_hash
-        FROM thin_trades 
-        WHERE tx_from = tx_to  -- Direct self-trading
-        
-        UNION
-        
-        -- Economic self-trading: same recipient in multiple trades within transaction
-        SELECT tx_hash
-        FROM thin_trades tt1
-        WHERE EXISTS (
-            SELECT 1 FROM thin_trades tt2 
-            WHERE tt2.tx_hash = tt1.tx_hash 
-            AND tt2.tx_to = tt1.tx_to
-            AND tt2.tx_from != tt1.tx_from  -- Different senders to same recipient
-        )
-        AND (SELECT SUM(amount_usd) FROM thin_trades WHERE tx_hash = tt1.tx_hash) > 5000000  -- High volume threshold
-        AND (SELECT COUNT(*) FROM thin_trades WHERE tx_hash = tt1.tx_hash) <= 3  -- Low transaction count
-    ) combined
+    FROM thin_trades 
+    WHERE tx_from = tx_to  -- Actual self-trading
 ),
 
 -- Filter 2: Circular trading within single transaction (more restrictive) rewritten with EXISTS
