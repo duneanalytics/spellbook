@@ -33,6 +33,7 @@ thin_trades AS (
         tx_to,
         token_bought_address,
         token_sold_address,
+        evt_index,
         amount_usd
     FROM filtered_trades
 ),
