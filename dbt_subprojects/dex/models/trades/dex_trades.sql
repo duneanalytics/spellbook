@@ -40,14 +40,14 @@
                                     \'["hosuke", "0xrob", "jeff-dude", "tomfutago", "viniabussafi"]\') }}')
 }}
 
--- keep existing dbt lineages for the following projects, as the team built themselves and use the spells throughout the entire lineage
+-- keep existing dbt lineages for the following projects, as the team built themselves and use the spells throughout the entire lineage.
 {% set as_is_models = [
     ref('oneinch_lop_own_trades')
     , ref('zeroex_native_trades')
 ] %}
 
 WITH balancer_v3 AS (
-    -- due to Balancer V3 having trades between ERC4626 tokens, which won't be priced on prices.usd, enrich separately
+    -- due to Balancer V3 having trades between ERC4626 tokens, which won't be priced on prices.usd, enrich separately.
     {{
         enrich_balancer_v3_dex_trades(
             base_trades = ref('dex_base_trades')

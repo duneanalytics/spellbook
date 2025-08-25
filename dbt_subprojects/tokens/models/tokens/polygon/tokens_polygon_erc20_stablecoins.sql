@@ -32,7 +32,9 @@ FROM (VALUES
     ('polygon', 0xdab529f40e671a1d4bf91361c21bf9f0c9712ab7, 'Fiat-backed stablecoin', 'BUSD', 18, ''),
     ('polygon', 0x3a3e7650f8b9f667da98f236010fbf44ee4b2975, 'Crypto-backed stablecoin', 'xUSD', 18, ''),
     ('polygon', 0x23001f892c0c82b79303edc9b9033cd190bb21c7, 'Crypto-backed stablecoin', 'LUSD', 18, ''),
-    ('polygon', 0x750e4c4984a9e0f12978ea6742bc1c5d248f40ed, 'Crypto-backed stablecoin', 'axlUSDC', 6, '')
+    ('polygon', 0x750e4c4984a9e0f12978ea6742bc1c5d248f40ed, 'Crypto-backed stablecoin', 'axlUSDC', 6, ''),
+    ('polygon', 0x2893Ef551B6dD69F661Ac00F11D93E5Dc5Dc0e99, 'Fiat-backed stablecoin', 'BUIDL', 6, ''),
+    ('polygon', 0x00000000eFE302BEAA2b3e6e1b18d08D69a9012a, 'Fiat-backed stablecoin', 'AUSD', 6, '')
 
 
      ) AS temp_table (blockchain, contract_address, backing, symbol, decimals, name)

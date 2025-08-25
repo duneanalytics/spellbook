@@ -1,0 +1,76 @@
+version: 2
+
+models:
+  - name: dex_hemi_base_trades
+    meta:
+      blockchain: hemi
+      sector: dex
+      contributors: krishhh
+    config:
+      tags: ['hemi', 'dex', 'trades']
+    description: 'All DEX trades on Hemi'
+    data_tests:
+      - check_columns_dex_base_trades
+      - check_dex_info_relationship
+      - test_acceptable_usd_amount:
+          column_name: amount_usd
+          max_value: 1000000000
+  - name: oku_v3_hemi_base_trades
+    meta:
+      blockchain: hemi
+      sector: dex
+      project: oku
+      contributors: krishhh
+    config:
+      tags: ['hemi', 'dex', 'trades', 'oku', 'v3']
+    description: 'Oku V3 DEX trades on Hemi'
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+
+  - name: izumi_finance_hemi_base_trades
+    meta:
+      blockchain: hemi
+      sector: dex
+      project: izumi
+      contributors: krishhh
+    config:
+      tags: ['hemi', 'dex', 'trades', 'izumi']
+    description: 'Izumi DEX trades on Hemi'
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+
+  - name: sushiswap_v2_hemi_base_trades
+    meta:
+      blockchain: hemi
+      sector: dex
+      project: sushiswap
+      contributors: krishhh
+    config:
+      tags: ['hemi', 'dex', 'trades', 'sushiswap', 'v2']
+    description: 'Sushiswap V2 DEX trades on Hemi'
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            
+  - name: sushiswap_v3_hemi_base_trades
+    meta:
+      blockchain: hemi
+      sector: dex
+      project: sushiswap
+      contributors: krishhh
+    config:
+      tags: ['hemi', 'dex', 'trades', 'sushiswap', 'v3']
+    description: 'Sushiswap V3 DEX trades on Hemi'
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index

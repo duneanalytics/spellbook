@@ -240,7 +240,7 @@ with
             AND memo.block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
         --token extension transfer could be preceeded by the memo program and followed by a post execution hook + even potentially more instructions.
-        INNER JOIN {{ ref('tokens_solana_transfers') }} tr_1
+        INNER JOIN {{ source('tokens_solana','transfers') }} tr_1
             ON tr_1.tx_id = sp.call_tx_id
             AND tr_1.block_slot = sp.call_block_slot
             AND tr_1.outer_instruction_index = sp.call_outer_instruction_index
@@ -251,7 +251,7 @@ with
             {% else %}
             AND tr_1.block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
-        INNER JOIN {{ ref('tokens_solana_transfers') }} tr_2
+        INNER JOIN {{ source('tokens_solana','transfers') }} tr_2
             ON tr_2.tx_id = sp.call_tx_id
             AND tr_2.block_slot = sp.call_block_slot
             AND tr_2.outer_instruction_index = sp.call_outer_instruction_index

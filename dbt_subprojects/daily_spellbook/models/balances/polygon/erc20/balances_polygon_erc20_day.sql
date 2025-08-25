@@ -2,10 +2,7 @@
         schema = 'balances_polygon',
         
         alias = 'erc20_day',
-        post_hook='{{ expose_spells(\'["polygon"]\',
-                                    "sector",
-                                    "balances",
-                                    \'["Henrystats"]\') }}'
+        post_hook='{{ hide_spells() }}'
         )
 }}
 

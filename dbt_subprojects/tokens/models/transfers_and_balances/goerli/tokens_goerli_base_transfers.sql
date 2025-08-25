@@ -1,4 +1,5 @@
 {{config(
+    tags = ['static'],
     schema = 'tokens_goerli',
     alias = 'base_transfers',
     partition_by = ['block_month'],

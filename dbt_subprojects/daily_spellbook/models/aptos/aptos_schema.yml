@@ -1,0 +1,201 @@
+version: 2
+
+models:
+  - name: aptos_fungible_asset_metadata
+    meta:
+      blockchain: aptos
+      project: aptos_indexer
+      contributors: ying-w
+    config:
+      tags: ['aptos','fungible_asset']
+    description: >
+        Metadata for [fungible assets](https://aptos.dev/concepts/fungible-assets)
+        and [legacy coins](https://aptos.dev/build/smart-contracts/aptos-coin) on Aptos.
+        [Explainer for Supply and Volume](https://aptoslabs.medium.com/data-analyst-guide-to-aptos-supply-and-volume-pt-3-535e312946ad) on Aptos.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: ['tx_hash', 'asset_type']
+    columns:
+      - name: block_date
+        description: The date of the block containing the transaction
+      - name: tx_version
+        description: The version of the transaction
+      - name: block_time
+        description: The timestamp of the block containing the transaction
+      - name: block_month
+        description: The month of the block containing the transaction
+      - name: tx_hash
+        description: The hash of the transaction
+      - name: write_set_change_index
+        description: The index of the write set change
+      - name: asset_type
+        description: "Asset identifier"
+      - name: owner_address
+        description: "creator_address is the asset address for v1 and owner for v2 (can change for v2)"
+      - name: asset_name
+        description: "Asset name (parsed from metadata)"
+      - name: asset_symbol
+        description: "Asset symbol (parsed from metadata)"
+      - name: decimals
+        description: "Decimals (parsed from metadata)"
+      - name: supply
+        description: "Optional for v1, required for v2"
+      - name: token_standard
+        description: "Coin is v1, FungibleAsset is v2"
+      - name: asset_type_migrated
+        description: "Paired asset type from migration"
+      - name: icon_uri
+        description: "Icon URI (parsed from metadata) v2 only"
+      - name: project_uri
+        description: "Project URI (parsed from metadata) v2 only"
+      - name: maximum
+        description: "Maximum supply, if blank then 2^128-1 (parsed from metadata) v2 only"
+
+  - name: aptos_fungible_asset_balances
+    meta:
+      blockchain: aptos
+      project: aptos_indexer
+      contributors: ying-w
+    config:
+      tags: ['aptos','fungible_asset']
+    description: >
+        Balances for [fungible assets](https://aptos.dev/concepts/fungible-assets)
+        and [legacy coins](https://aptos.dev/build/smart-contracts/aptos-coin) on Aptos.
+        [Explainer for activity and balances](https://aptoslabs.medium.com/data-analyst-guide-to-aptos-supply-and-volume-pt-3-535e312946ad) on Aptos.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: ['tx_hash', 'write_set_change_index']
+    columns:
+      - name: block_date
+        description: The date of the block containing the transaction
+      - name: tx_version
+        description: The version of the transaction
+      - name: block_time
+        description: The timestamp of the block containing the transaction
+      - name: block_month
+        description: The month of the block containing the transaction
+      - name: tx_hash
+        description: The hash of the transaction
+      - name: write_set_change_index
+        description: "Index of the write set change"
+      - name: asset_type
+        description: "Asset identifier"
+      - name: owner_address
+        description: "creator_address is the asset address for v1 and owner for v2 (can change for v2)"
+      - name: storage_id
+        description: "NULL for v1, address of FungibleStore for v2"
+      - name: amount
+        description: "raw asset amount (before taking into account decimals)"
+      - name: is_frozen
+        description: "If asset is frozen"
+      - name: token_standard
+        description: "Coin is v1, FungibleAsset is v2"
+
+  - name: aptos_fungible_asset_activities
+    meta:
+      blockchain: aptos
+      project: aptos_indexer
+      contributors: ying-w
+    config:
+      tags: ['aptos','fungible_asset']
+    description: >
+        Activities for [fungible assets](https://aptos.dev/concepts/fungible-assets)
+        and [legacy coins](https://aptos.dev/build/smart-contracts/aptos-coin) on Aptos.
+        [Explainer for activity and balances](https://aptoslabs.medium.com/data-analyst-guide-to-aptos-supply-and-volume-pt-3-535e312946ad) on Aptos.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: ['tx_hash', 'event_index']
+    columns:
+      - name: block_date
+        description: The date of the block containing the transaction
+      - name: tx_version
+        description: The version of the transaction
+      - name: block_time
+        description: The timestamp of the block containing the transaction
+      - name: block_month
+        description: The month of the block containing the transaction
+      - name: tx_hash
+        description: The hash of the transaction
+      - name: event_index
+        description: The index of the event within the transaction
+      - name: event_type
+        description: The type of the event
+      - name: owner_address
+        description: "creator_address is the asset address for v1 and owner for v2 (can change for v2)"
+      - name: storage_id
+        description: "NULL for v1, address of FungibleStore for v2"
+      - name: asset_type
+        description: "Asset identifier"
+      - name: amount
+        description: "raw asset amount (before taking into account decimals)"
+      - name: token_standard
+        description: "Coin is v1, FungibleAsset is v2"
+
+  - name: aptos_fungible_asset_migration
+    meta:
+      blockchain: aptos
+      project: aptos_indexer
+      contributors: ying-w
+    config:
+      tags: ['aptos','fungible_asset']
+    description: >
+        Mappings for migration of [legacy coins](https://aptos.dev/build/smart-contracts/aptos-coin)
+        to [fungible assets](https://aptos.dev/concepts/fungible-assets) on Aptos.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: ['asset_type_v2']
+    columns:
+      - name: asset_type_v1
+        description: "Asset identifier for v1"
+      - name: asset_type_v2
+        description: "Asset identifier for v2"
+
+  - name: aptos_fungible_asset_metadata_current
+    meta:
+      blockchain: aptos
+      project: aptos_indexer
+      contributors: ying-w
+    config:
+      tags: ['aptos','fungible_asset']
+    description: >
+        Latest metadata for [fungible assets](https://aptos.dev/concepts/fungible-assets)
+        and [legacy coins](https://aptos.dev/build/smart-contracts/aptos-coin) on Aptos.
+        [Explainer for Supply and Volume](https://aptoslabs.medium.com/data-analyst-guide-to-aptos-supply-and-volume-pt-3-535e312946ad) on Aptos.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: ['asset_type']
+    columns:
+      - name: block_date
+        description: The date of the block containing the transaction
+      - name: tx_version
+        description: The version of the transaction
+      - name: block_time
+        description: The timestamp of the block containing the transaction
+      - name: block_month
+        description: The month of the block containing the transaction
+      - name: tx_hash
+        description: The hash of the transaction
+      - name: write_set_change_index
+        description: The index of the write set change
+      - name: asset_type
+        description: "Asset identifier"
+      - name: owner_address
+        description: "creator_address is the asset address for v1 and owner for v2 (can change for v2)"
+      - name: asset_name
+        description: "Asset name (parsed from metadata)"
+      - name: asset_symbol
+        description: "Asset symbol (parsed from metadata)"
+      - name: decimals
+        description: "Decimals (parsed from metadata)"
+      - name: supply
+        description: "Optional for v1, required for v2"
+      - name: token_standard
+        description: "Coin is v1, FungibleAsset is v2"
+      - name: asset_type_migrated
+        description: "Paired asset type from migration"
+      - name: icon_uri
+        description: "Icon URI (parsed from metadata) v2 only"
+      - name: project_uri
+        description: "Project URI (parsed from metadata) v2 only"
+      - name: maximum
+        description: "Maximum supply, typically 2^128-1 (parsed from metadata) v2 only"

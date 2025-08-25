@@ -11,8 +11,8 @@
 }}
 
 {% set base_models = [
-    ref('abstractswap_v3_abstract_base_trades')
-    ,ref('abstractswap_v2_abstract_base_trades')
+    ref('reservoir_swap_v2_abstract_base_trades')
+    ,ref('reservoir_swap_v3_abstract_base_trades')
 ] %}
 
 with base_union as (
