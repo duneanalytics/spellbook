@@ -327,4 +327,4 @@ prices_day as (
         and tl.blockchain = pd_b.blockchain 
 {% endif %}
 
--- refresh 
+-- refresh again
