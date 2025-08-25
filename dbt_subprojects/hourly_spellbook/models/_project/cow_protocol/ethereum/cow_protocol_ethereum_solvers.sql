@@ -229,7 +229,8 @@ known_solver_metadata (address, environment, name) as (
                  (0xD2ADF24253056D45731a8561749fC9b2ffa4Fe19, 'prod', 'Apollo'),
                  (0x4dd1be0Cd607E5382Dd2844fA61D3a17e3e83D56, 'prod', 'Rizzolver'),
                  (0x7f2cb2C1B2dfCc4212CBa59ef0a61d9CdE20158D, 'barn', 'PLM'),
-                 (0x1b99451f62a8574f8413F5A3FC80B99b29701C16, 'prod', 'PLM')
+                 (0x1b99451f62a8574f8413F5A3FC80B99b29701C16, 'prod', 'PLM'),
+                 (0xA9D635EF85bc37EB9Ff9d6165481eA230ed32392, 'prod', 'Quasi')
     ) as _
 )
 -- Combining the metadata with current activation status for final table
