@@ -50,7 +50,7 @@ WITH solfi_swaps AS (
         COALESCE(from_token_account, to_token_account) as token_account,
         token_mint_address,
         ROW_NUMBER() OVER (PARTITION BY COALESCE(from_token_account, to_token_account) ORDER BY token_mint_address) as rn
-    FROM {{ ref('tokens_solana_transfers') }}
+    FROM {{ source('tokens_solana','transfers') }}
     WHERE token_mint_address IS NOT NULL
     {% if is_incremental() %}
         AND {{ incremental_predicate('block_time') }}
@@ -79,7 +79,7 @@ WITH solfi_swaps AS (
         ON tm_b.token_account = s.account_poolTokenAccountB 
         AND tm_b.rn = 1
     -- Main transfer join for the output transfer
-    INNER JOIN {{ ref('tokens_solana_transfers') }} t
+    INNER JOIN {{ source('tokens_solana','transfers') }} t
         ON t.tx_id = s.tx_id
         AND t.block_slot = s.block_slot
         AND t.outer_instruction_index = s.outer_instruction_index
