@@ -7,7 +7,7 @@ WITH base_filtered_trades AS (
     {% if is_incremental() %}
     AND {{ incremental_predicate('block_time') }}
     {% else %}
-    AND block_time >= date_trunc('day', NOW() - interval '10' day)
+    AND block_time >= date_trunc('day', NOW() - interval '20' day)
     {% endif %}
     AND amount_usd > 1000  -- Filter small trades early
 ),
@@ -114,7 +114,7 @@ filter_3_suspicious_volume AS (
 filter_4_related_wallets AS (
     SELECT DISTINCT tx_hash, true AS related_wallets
     FROM (
-        SELECT 
+        SELECT
             tt.tx_hash,
             COUNT(DISTINCT tt.tx_from) as unique_senders,
             COUNT(DISTINCT tt.tx_to) as unique_receivers,
