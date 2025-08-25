@@ -45,6 +45,7 @@ min_daily as (
         min(block_date) as block_date 
     from 
    {{this}} -- get the earliest date from existing table instead
+            -- consider using max(block_date) - interval '7' from this date depending on how often table refreshes
    where {{ incremental_predicate('block_date') }}
 ),
 
@@ -75,7 +76,7 @@ daily_events_final as (
         , 'include' as check_filter
     from 
     daily_events 
-    where block_date != (select block_date from min_daily)
+    where block_date > (select block_date from min_daily)
 
     union all 
 
@@ -327,4 +328,4 @@ prices_day as (
         and tl.blockchain = pd_b.blockchain 
 {% endif %}
 
--- refresh again
+-- refresh 
