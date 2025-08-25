@@ -12,10 +12,11 @@ models:
       ERC20 token rolling sum balances on Balancer, an automated portfolio manager and trading platform.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - pool_address
-            - token_address
+          arguments:
+            combination_of_columns:
+              - day
+              - pool_address
+              - token_address
     columns:
       - &day
         name: day
@@ -46,10 +47,11 @@ models:
       Balancer CoWSwap AMM pools liquidity by token in base.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - pool_id
-            - token_address
+          arguments:
+            combination_of_columns:
+              - day
+              - pool_id
+              - token_address
     columns:
       - *day
       - name: pool_id
