@@ -66,7 +66,7 @@ tvl_min_daily as (
         , token1_balance as amount1
     from 
     {{this}}
-    where block_date = (select block_date from min_daily)
+    where block_date = (select block_date - interval '1' day from min_daily) -- use last day before incremental
 ),
 
 daily_events_final as (
@@ -75,7 +75,6 @@ daily_events_final as (
         , 'include' as check_filter
     from 
     daily_events 
-    where block_date > (select block_date from min_daily)
 
     union all 
 
