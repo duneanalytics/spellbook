@@ -16,7 +16,7 @@ models:
       project: uniswap
       contributors: agaperste
     config:
-      tags: [ 'base', 'dex', 'trades', 'uniswap', 'v4' ]
+      tags: ["base", "dex", "trades", "uniswap", "v4"]
     description: "uniswap base v4 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -175,6 +175,27 @@ models:
           seed_file: ref('pancakeswap_base_base_trades_seed')
           filter:
             version: 3
+
+  - name: pancakeswap_infinity_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: pancakeswap
+      contributors: chef_butterbeer
+    config:
+      tags: ["base", "dex", "trades", "pancakeswap", "infinity"]
+    description: "Pancakeswap BASE Infinity base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('pancakeswap_base_base_trades_seed')
+          filter:
+            version:
+              - infinity_cl
+              - infinity_lb
 
   - name: dodo_base_base_trades
     meta:
@@ -1021,7 +1042,7 @@ models:
       project: infusion
       contributors: jason
     config:
-      tags: [ 'base', 'dex', 'trades', 'infusion' ]
+      tags: ["base", "dex", "trades", "infusion"]
     description: "infusion base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -1038,7 +1059,7 @@ models:
       project: flashliquidity
       contributors: archie
     config:
-      tags: [ 'base', 'dex', 'trades', 'flashliquidity' ]
+      tags: ["base", "dex", "trades", "flashliquidity"]
     description: "flashliquidity base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -1047,7 +1068,7 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('flashliquidity_base_base_trades_seed')
-          
+
   - name: akronswap_base_base_trades
     meta:
       blockchain: base
@@ -1055,7 +1076,7 @@ models:
       project: akronswap
       contributors: archie
     config:
-      tags: [ 'base', 'dex', 'trades', 'akronswap' ]
+      tags: ["base", "dex", "trades", "akronswap"]
     description: "akronswap base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -1064,7 +1085,7 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('akronswap_base_base_trades_seed')
-          
+
   - name: otsea_base_base_trades
     meta:
       blockchain: base
@@ -1072,7 +1093,7 @@ models:
       project: otsea
       contributors: princi
     config:
-      tags: [ 'base', 'dex', 'trades', 'otsea' ]
+      tags: ["base", "dex", "trades", "otsea"]
     description: "otsea base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -1081,7 +1102,7 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('otsea_base_base_trades_seed')
-          
+
   - name: jojo_base_base_trades
     meta:
       blockchain: base
@@ -1089,7 +1110,7 @@ models:
       project: jojo
       contributors: princi
     config:
-      tags: [ 'base', 'dex', 'trades', 'jojo' ]
+      tags: ["base", "dex", "trades", "jojo"]
     description: "jojo base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
