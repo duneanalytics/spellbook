@@ -150,6 +150,30 @@ filter_5_token_manipulation AS (
     AND avg_trade_size > 20000.0  -- Significant average size
 ),
 
+-- Filter 6: High value simple trades
+filter_6_high_value_simple AS (
+    SELECT tx_hash
+    FROM (
+        SELECT 
+            tx_hash,
+            COUNT(*) as trade_count,
+            SUM(amount_usd) as total_volume
+        FROM thin_trades tt
+        GROUP BY tx_hash
+    ) subq
+    WHERE trade_count <= 3
+    AND total_volume >= 5000000
+    AND tx_hash IN (
+        SELECT tx_hash FROM thin_trades tt1
+        WHERE EXISTS (
+            SELECT 1 FROM thin_trades tt2 
+            WHERE tt2.tx_hash = tt1.tx_hash 
+            AND tt2.tx_to = tt1.tx_to
+            AND tt2.evt_index != tt1.evt_index
+        )
+    )
+),
+
 -- OPTIMIZATION: only process candidate transactions downstream
 wash_candidate_tx AS (
     SELECT tx_hash FROM filter_1_self_trading
@@ -161,6 +185,8 @@ wash_candidate_tx AS (
     SELECT tx_hash FROM filter_4_related_wallets
     UNION
     SELECT tx_hash FROM filter_5_token_manipulation
+    UNION
+    SELECT tx_hash FROM filter_6_high_value_simple
 )
 
 SELECT 
@@ -171,11 +197,12 @@ SELECT
     COALESCE(f3.suspicious_volume, false) AS filter_3_suspicious_volume,
     COALESCE(f4.related_wallets, false) AS filter_4_related_wallets,
     COALESCE(f5.token_manipulation, false) AS filter_5_token_manipulation,
+    COALESCE(f6.high_value_simple, false) AS filter_6_high_value_simple,
     
     -- Combined wash trade flag (require multiple indicators for higher confidence)
     CASE WHEN 
         -- High confidence: Self-trading or circular trading
-        COALESCE(f1.self_trading, false) OR COALESCE(f2.circular_trading, false)
+        COALESCE(f1.self_trading, false) OR COALESCE(f2.circular_trading, false) OR COALESCE(f6.high_value_simple, false)  
         OR 
         -- Medium confidence: Multiple suspicious indicators
         ((CASE WHEN COALESCE(f3.suspicious_volume, false) THEN 1 ELSE 0 END) + 
@@ -192,5 +219,6 @@ LEFT JOIN filter_2_circular_same_tx f2 ON dt.tx_hash = f2.tx_hash
 LEFT JOIN filter_3_suspicious_volume f3 ON dt.tx_hash = f3.tx_hash
 LEFT JOIN filter_4_related_wallets f4 ON dt.tx_hash = f4.tx_hash
 LEFT JOIN filter_5_token_manipulation f5 ON dt.tx_hash = f5.tx_hash
+LEFT JOIN filter_6_high_value_simple f6 ON dt.tx_hash = f6.tx_hash
 
 {% endmacro %}
