@@ -45,7 +45,6 @@ min_daily as (
         min(block_date) as block_date 
     from 
    {{this}} -- get the earliest date from existing table instead
-            -- consider using max(block_date) - interval '7' from this date depending on how often table refreshes
    where {{ incremental_predicate('block_date') }}
 ),
 
@@ -122,7 +121,10 @@ tvl_daily as (
         , token1_balance_raw 
         , token0_balance
         , token1_balance
-        , check_filter 
+        , case 
+            when c.block_date = d.day then check_filter
+            else 'include'
+          end as check_filter
     from 
     daily_cum c
     inner join 
