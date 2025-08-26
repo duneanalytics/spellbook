@@ -61,6 +61,7 @@
     , ref('fluid_v1_arbitrum_base_trades')
     , ref('gammaswap_arbitrum_base_trades')
     , ref('native_arbitrum_base_trades')
+    , ref('spectra_arbitrum_base_trades')
 ] %}
 
 with base_union as (
