@@ -1,6 +1,54 @@
 version: 2
 
 models:  
+  - name: prices_minute_interpolated
+    meta:
+      blockchain: ethereum, polygon, bnb, avalanche_c, optimism, arbitrum, gnosis, fantom, base, zksync, linea, zkevm, blast, sei, nova, worldchain, kaia, ronin, ink, shape, scroll, mantle, celo
+      sector: prices
+      short_description: |
+          The prices.minute table provides historical price information for each token at minute-level granularity.
+          This implementation uses a sparse hour interpolation approach, where hourly price data serves as anchor points
+          and minute-level prices are forward-filled within each hour. This reduces noise and outliers compared to 
+          direct minute-by-minute aggregation while maintaining good temporal resolution.
+      contributors: 0xRob, jeff-dude, hildobby
+    config:
+      tags: ['prices', 'minute', 'interpolated']
+    description: "Minute-level token prices using sparse hour interpolation approach"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+            - symbol
+            - decimals
+            - minute
+    columns:
+      - name: minute
+        description: "UTC timestamp truncated to the minute mark"
+        data_tests:
+          - not_null
+      - name: blockchain
+        description: "Native blockchain of the token"
+        data_tests:
+          - not_null
+      - name: contract_address
+        description: "Contract address of the token"
+        data_tests:
+          - not_null
+      - name: symbol
+        description: "Token symbol"
+        data_tests:
+          - not_null
+      - name: decimals
+        description: "Number of decimals for the token contract"
+      - name: price
+        description: "USD price of a token (interpolated from hourly data)"
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: false
+
   - name: prices_solana_hour
     meta:
       blockchain: |
