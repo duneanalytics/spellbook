@@ -40,6 +40,12 @@ models:
       - &pool
         name: pool
         description: "Uni V4 virtual pool ID"
+      - &pair
+        name: pair
+        description: "Pool Token Symbols paired together"
+      - &pair_w_fee
+        name: pair_w_fee
+        description: "Pool Token Symbols paired together with fee %"
       - &hook
         name: hook
         description: "EulerSwap instance's pool is the hook in Uniswap v4 universe"
