@@ -30,7 +30,7 @@
 {% if is_incremental() %}
 {%- set lookback_days = "'3'" %}
 {% else %}
-{%- set lookback_days = "'365'" %}
+{%- set lookback_days = "'90'" %}
 {% endif %}
 
 WITH 
@@ -58,9 +58,12 @@ hourly_prices AS (
         {% endif %}
         AND price IS NOT NULL
         AND price > 0
+        -- Ensure we have recent data by filtering out very old timestamps
+        AND timestamp >= timestamp '2020-01-01'
 ),
 
 -- Generate minute-level timeseries for each token-hour combination
+-- This creates 60 minute entries for each hour, but stops early if there's a next hour data point
 minute_timeseries AS (
     SELECT 
         hp.blockchain,
@@ -76,7 +79,8 @@ minute_timeseries AS (
     CROSS JOIN unnest(sequence(0, 59)) as seq(minute_offset)
     WHERE 
         -- Only generate minutes that are before the next actual hour data point
-        -- or generate full hour if it's the last hour
+        -- This ensures we don't have overlapping price intervals
+        -- For the last available hour, we generate the full 60 minutes
         (hp.next_hour_timestamp IS NULL OR 
          date_add('minute', seq.minute_offset, hp.hour_timestamp) < hp.next_hour_timestamp)
 ),
