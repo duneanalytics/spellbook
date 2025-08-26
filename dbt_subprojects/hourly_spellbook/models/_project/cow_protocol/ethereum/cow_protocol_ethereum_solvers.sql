@@ -230,7 +230,15 @@ known_solver_metadata (address, environment, name) as (
                  (0x4dd1be0Cd607E5382Dd2844fA61D3a17e3e83D56, 'prod', 'Rizzolver'),
                  (0x7f2cb2C1B2dfCc4212CBa59ef0a61d9CdE20158D, 'barn', 'PLM'),
                  (0x1b99451f62a8574f8413F5A3FC80B99b29701C16, 'prod', 'PLM'),
-                 (0xA9D635EF85bc37EB9Ff9d6165481eA230ed32392, 'prod', 'Quasi')
+                 (0xA9D635EF85bc37EB9Ff9d6165481eA230ed32392, 'prod', 'Quasi'),
+                 (0x6b4c67Fb71bc6160655779ecC50E23d87d403376, 'barn', 'Arctic'),
+                 (0xE31267F42Cf47a87ecc9E818b4Db80168A4c84A1, 'prod', 'Arctic'),
+                 (0xCb0C23132eB546b9b8C4CD12D9496efDEbAf395d, 'barn', 'Helixbox'),
+                 (0xA60Ded4c899E7560DC4cA56b57fbab25C90ADdeB, 'prod', 'Helixbox'),
+                 (0xc6fBb25D5d435D151a9427Bf50c3e678C5D42833, 'barn', 'JPEG'),
+                 (0x06A012D7aA71236f90aAcFf738F18601a5866beD, 'prod', 'JPEG'),
+                 (0xB7e46816941805a4abF488a5853B1ed0B0B39398, 'barn', 'Prycto'),
+                 (0xa97851357E99082762C972F794B2a29E629511A7, 'prod', 'Prycto'),
     ) as _
 )
 -- Combining the metadata with current activation status for final table
