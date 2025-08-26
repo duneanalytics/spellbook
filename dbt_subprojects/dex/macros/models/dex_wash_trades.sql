@@ -7,7 +7,7 @@ WITH base_filtered_trades AS (
     {% if is_incremental() %}
     AND {{ incremental_predicate('block_time') }}
     {% else %}
-    AND block_time >= date_trunc('day', NOW() - interval '20' day)
+    AND block_time >= date_trunc('day', NOW() - interval '21' day)
     {% endif %}
     AND amount_usd > 1000  -- Filter small trades early
 ),
@@ -50,9 +50,14 @@ tx_stats AS (
 
 -- NEW: Basic candidate filter to gate expensive operations
 tx_basic_candidates AS (
-    SELECT tx_hash
-    FROM tx_stats
-    WHERE total_trades >= 6  -- Only check complex transactions
+    SELECT tx_hash FROM tx_stats WHERE total_trades >= 6  -- Complex transactions
+    UNION
+    SELECT tx_hash FROM (  -- Simple, high-value transactions
+        SELECT tx_hash
+        FROM thin_trades 
+        GROUP BY tx_hash 
+        HAVING COUNT(*) <= 3 AND SUM(amount_usd) >= 5000000
+    ) simple_high_value
 ),
 
 -- Filter 1: True self-trading (same address on both sides)
@@ -153,7 +158,7 @@ filter_5_token_manipulation AS (
 
 -- Filter 6: High value simple trades
 filter_6_high_value_simple AS (
-    SELECT tx_hash
+    SELECT tx_hash, true AS high_value_simple 
     FROM (
         SELECT 
             tx_hash,
