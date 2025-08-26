@@ -14,6 +14,8 @@
 )
 }}
 
+--stamp 1
+
 {{
     transfers_enrich(
         base_transfers = ref('tokens_viction_base_transfers')
