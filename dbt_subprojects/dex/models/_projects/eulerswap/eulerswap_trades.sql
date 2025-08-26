@@ -7,6 +7,10 @@
     , incremental_strategy = 'merge'
     , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'block_month']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    , post_hook='{{ expose_spells(blockchains = \'["bnb","ethereum","unichain"]\',
+                                      spell_type = "project", 
+                                      spell_name = "eulerswap", 
+                                      contributors = \'["Henrystats"]\') }}'
     )
 }}
 
