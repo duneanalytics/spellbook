@@ -14,7 +14,6 @@
         'zora',
         'scroll',
         'mantle',
-        'tac',
     ]) }}
 {% endmacro %}
 

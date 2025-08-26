@@ -29,7 +29,6 @@
                                         , "sei"
                                         , "sonic"
                                         , "sophon"
-                                        , "tac"
                                         , "taiko"
                                         , "zkevm"
                                         , "zksync"
