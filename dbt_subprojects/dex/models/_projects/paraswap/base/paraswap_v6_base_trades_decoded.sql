@@ -1,6 +1,7 @@
 {{ config(
     schema = 'paraswap_v6_base',
     alias = 'trades_decoded',
+    
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
