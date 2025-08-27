@@ -1,6 +1,10 @@
 {{ config(
         schema = 'eulerswap',
-        alias = 'pools'
+        alias = 'pools',
+        post_hook='{{ expose_spells(blockchains = \'["bnb","ethereum","unichain"]\',
+                                      spell_type = "project", 
+                                      spell_name = "eulerswap", 
+                                      contributors = \'["Henrystats"]\') }}'
         )
 }}
 
@@ -23,6 +27,8 @@ FROM (
         , creation_block_number 
         , next_block_number
         , pool 
+        , pair 
+        , pair_w_fee
         , isActive
         , hook
         , eulerAccount
