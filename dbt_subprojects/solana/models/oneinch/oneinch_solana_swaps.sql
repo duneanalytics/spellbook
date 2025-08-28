@@ -27,7 +27,7 @@ token_decimals as (
         {% if is_incremental() %}
             {{ incremental_predicate('block_time') }}
         {% else %}
-            block_time >= date('{{ oneinch_cfg_macro("project_start_date") }}')
+            block_time >= date('{{ oneinch_solana_cfg_macro("fusion_start_date") }}')
         {% endif %}
 )
 
@@ -37,7 +37,7 @@ token_decimals as (
         {% if is_incremental() %}
             {{ incremental_predicate('block_time') }}
         {% else %}
-            block_time >= date('{{ oneinch_cfg_macro("project_start_date") }}')
+            block_time >= date('{{ oneinch_solana_cfg_macro("fusion_start_date") }}')
         {% endif %}
 )
 
@@ -47,7 +47,7 @@ token_decimals as (
         {% if is_incremental() %}
             {{ incremental_predicate('block_time') }}
         {% else %}
-            block_time >= date('{{ oneinch_cfg_macro("project_start_date") }}')
+            block_time >= date('{{ oneinch_solana_cfg_macro("fusion_start_date") }}')
         {% endif %}
 )
 

@@ -23,7 +23,7 @@ with tx_list as ( -- for filtering using fast inner join
         {% if is_incremental() %}
             {{ incremental_predicate('call_block_time') }}
         {% else %}
-            call_block_time >= date('{{ oneinch_cfg_macro("project_start_date") }}')
+            call_block_time >= date('{{ oneinch_solana_cfg_macro("fusion_start_date") }}')
         {% endif %}
 )
 
@@ -45,6 +45,6 @@ where
     {% if is_incremental() %}
         {{ incremental_predicate('block_time') }}
     {% else %}
-        block_date >= date('{{ oneinch_cfg_macro("project_start_date") }}')
+        block_date >= date('{{ oneinch_solana_cfg_macro("fusion_start_date") }}')
     {% endif %}
 
