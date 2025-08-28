@@ -19,6 +19,7 @@
                                             ,"ethereum"
                                             ,"fantom"
                                             ,"flare"
+                                            ,"flow"
                                             ,"gnosis"
                                             ,"ink"
                                             ,"kaia"
@@ -71,6 +72,7 @@
     ,'ethereum'
     ,'fantom'
     ,'flare'
+    ,'flow'
     ,'gnosis'
     ,'ink'
     ,'kaia'
