@@ -28,6 +28,13 @@ sources:
       - name: PoolInstance_evt_Repay
       - name: PoolInstance_evt_LiquidationCall
 
+  - name: aave_horizon_ethereum
+    tables:
+      - name: poolinstance_evt_Borrow
+      - name: poolinstance_evt_Repay
+      - name: poolinstance_evt_LiquidationCall
+
+
   - name: compound_v1_ethereum
     tables:
       - name: MoneyMarket_evt_BorrowTaken
