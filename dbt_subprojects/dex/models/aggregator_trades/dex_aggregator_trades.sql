@@ -12,6 +12,7 @@
                                 \'["bh2smith", "Henrystats", "jeff-dude", "rantum", "hosuke"]\') }}'
         )
 }}
+--stamp 1
 
 {% set as_is_models = [
     ref('cow_protocol_trades')
