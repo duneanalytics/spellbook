@@ -35,7 +35,7 @@ left join
     {%- if is_incremental() %}
     and {{ incremental_predicate('c.evt_block_time') }}
     {%- endif %}
-left join 
+inner join -- use inner join so that pools deployed before uniswap_pools is updated are not ommitted
 {{ uniswap_pools }} p 
     on p.blockchain = '{{blockchain}}'
     and d.evt_block_number = p.creation_block_number
@@ -76,6 +76,29 @@ pool_creations as (
     from 
     {{ PoolCreations }}
     where version = '{{version}}'
+),
+
+pair_symbols as (
+    select 
+        pc.*
+        , case 
+            when lower(ta.symbol) < lower(tb.symbol) then ta.symbol || '-' || tb.symbol 
+            else tb.symbol || '-' || ta.symbol 
+        end as pair
+        , case 
+            when lower(ta.symbol) < lower(tb.symbol) then ta.symbol || '-' || tb.symbol || ' ' || format('%,.5f', fee) || '%'
+            else tb.symbol || '-' || ta.symbol || ' ' || format('%,.5f', fee) || '%'
+        end as pair_w_fee
+    from 
+    pool_creations pc 
+    left join 
+    {{ source('tokens', 'erc20') }} ta 
+        on ta.blockchain = '{{blockchain}}'
+        and pc.asset0 = ta.contract_address
+    left join 
+    {{ source('tokens', 'erc20') }} tb
+        on tb.blockchain = '{{blockchain}}'
+        and pc.asset1= tb.contract_address
 )
 
     select 
@@ -87,6 +110,8 @@ pool_creations as (
         , creation_block_number 
         , next_block_number
         , pool 
+        , pair 
+        , pair_w_fee
         , case when next_block_number = 1e18 then true else false end as isActive
         , hook 
         , eulerAccount
@@ -98,6 +123,6 @@ pool_creations as (
         , protocolFee
         , protocolFeeRecipient
     from 
-    pool_creations
+    pair_symbols
 
 {% endmacro %}
