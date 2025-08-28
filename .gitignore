@@ -152,3 +152,5 @@ logs/
 dbt_subprojects/dex/spellbook-env/
 
 .cursor/
+
+.pre-commit-config.yaml
