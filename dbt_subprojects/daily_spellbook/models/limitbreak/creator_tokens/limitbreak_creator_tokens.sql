@@ -7,7 +7,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['blockchain','address'],
-    post_hook='{{ expose_spells(\'["ethereum","bnb","optimism","arbitrum","base","polygon","avalanche_c"]\',
+    post_hook='{{ expose_spells(\'["ethereum","bnb","optimism","arbitrum","base","polygon","avalanche_c","apechain","berachain","abstract"]\',
                     "sector",
                     "limitbreak",
                     \'["limitbreak"]\') }}')
@@ -22,6 +22,10 @@
 ,ref('limitbreak_bnb_creator_tokens')
 ,ref('limitbreak_optimism_creator_tokens')
 ,ref('limitbreak_polygon_creator_tokens')
+,ref('limitbreak_apechain_creator_tokens')
+,ref('limitbreak_berachain_creator_tokens')
+,ref('limitbreak_abstract_creator_tokens')
+,ref('limitbreak_abstract_zkevm_creator_tokens')
 ] %}
 
 WITH creator_tokens_union as
