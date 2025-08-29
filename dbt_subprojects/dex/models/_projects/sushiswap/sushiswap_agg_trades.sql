@@ -9,6 +9,7 @@
         contributors  = \'["olastenberg"]\'
     ) }}'
 ) }}
+    --stamp 1
 
 
 {% set sushiswap_agg_models = [
