@@ -60,7 +60,9 @@ known_solver_metadata (address, environment, name) as (
                 (0x8518181b9E31C139542bdA727Ae147d7aE67F2D4, 'prod', 'Wraxyn'),
                 (0x7776c6188143C22a0805FFdF0D604146C7885027, 'prod', 'ApeOut_1inch'),
                 (0x92Af001AF846450EA5B2DFb286B5be559E741300, 'prod', 'Sector'),
-                (0x6715174ADe6ac9fB8E0d5461b8051F7DD496798B, 'prod', 'Apollo')
+                (0x6715174ADe6ac9fB8E0d5461b8051F7DD496798B, 'prod', 'Apollo'),
+                (0x8497B82A31DC91C274a068900f1100de243BfDf8, 'barn', 'Bebop'),
+                (0xbeE0a8F78875bd23A8b5a1D7283B163ae7dADCf5, 'prod', 'Bebop')
     ) as _
 )
 -- Combining the metadata with current activation status for final table
