@@ -7,6 +7,13 @@ sources:
       - name: fusion_swap_call_cancel
       - name: fusion_swap_call_cancel_by_resolver
       - name: fusion_swap_call_fill
+      - name: crossChainEscrowSrc_call_create
+      - name: crossChainEscrowSrc_call_createEscrow
+      - name: crossChainEscrowSrc_call_withdraw
+      - name: crossChainEscrowSrc_call_cancel
+      - name: crossChainEscrowDst_call_create
+      - name: crossChainEscrowDst_call_withdraw
+      - name: crossChainEscrowDst_call_cancel
   - name: prices_solana
     tables:
       - name: tokens
