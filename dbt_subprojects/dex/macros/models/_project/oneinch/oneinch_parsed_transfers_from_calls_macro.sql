@@ -55,6 +55,7 @@ transfers as (
             when {{ selector }} = {{ withdraw_selector }} then "to" -- withdraw
             else "to" -- native, deposit
         end as transfer_to
+        , date(block_time) as block_date
     from {{ source(blockchain, 'traces') }}
     where
         (
@@ -88,6 +89,7 @@ select
     , amount
     , transfer_to as transfer_from
     , transfer_from as transfer_to
+    , block_date
 from transfers
 join (select wrapped_native_token_address as transfer_to from ({{ oneinch_blockchain_macro(blockchain) }})) using(transfer_to)
 where

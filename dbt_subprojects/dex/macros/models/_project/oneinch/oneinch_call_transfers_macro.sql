@@ -40,9 +40,13 @@ meta as (
         , amount as result_amount
     from {{ ref('oneinch_escrow_results') }}
     where
-        call_success
+        {% if is_incremental() %}
+            {{ incremental_predicate('block_time') }}
+        {% else %}
+            block_time > timestamp {{ oneinch_easy_date() }}
+        {% endif %}
+        and call_success
         and tx_success
-        {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %} -- with an incremental predicate, as the results always come after the creations
 )
 
 , calls as (
@@ -58,9 +62,13 @@ meta as (
         , null as result_amount
     from ({{ oneinch_calls_macro(blockchain) }})
     where
-        tx_success
+        {% if is_incremental() %}
+            {{ incremental_predicate('block_time') }}
+        {% else %}
+            block_time > timestamp {{ oneinch_easy_date() }}
+        {% endif %}
+        and tx_success
         and call_success
-        {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
     
     union all -- add calls with escrow results
 
@@ -77,14 +85,19 @@ meta as (
     from (select * from ({{ oneinch_calls_macro(blockchain) }}) where hashlock is not null)
     join results using(hashlock) -- escrow results only
     where
-        tx_success
+        {% if is_incremental() %}
+            {{ incremental_predicate('block_time') }}
+        {% else %}
+            block_time > timestamp {{ oneinch_easy_date() }}
+        {% endif %}
+        and tx_success
         and call_success
         and result_escrow in (src_escrow, dst_escrow)
-        {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
 )
 
 , transfers as (
-    select * from ({{ oneinch_parsed_transfers_from_calls_macro(blockchain) }})
+    select *
+    from ({{ oneinch_parsed_transfers_from_calls_macro(blockchain) }})
     where
         {% if is_incremental() %}
             {{ incremental_predicate('block_time') }}
@@ -144,10 +157,13 @@ meta as (
         , decimals
         , symbol
     from {{ source('prices', 'usd') }}
-    {% if is_incremental() %}
-        where {{ incremental_predicate('minute') }}
-            and blockchain = '{{blockchain}}'
-    {% endif %}
+    where
+        {% if is_incremental() %}
+            {{ incremental_predicate('minute') }}
+        {% else %}
+            minute > timestamp {{ oneinch_easy_date() }}
+        {% endif %}
+        and blockchain = '{{blockchain}}'
 )
 
 , trusted_tokens as (
