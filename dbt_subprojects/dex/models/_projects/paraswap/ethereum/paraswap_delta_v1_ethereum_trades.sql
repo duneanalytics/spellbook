@@ -16,6 +16,7 @@
                                 contributors = \'["eptighte"]\') }}'
     )
 }}
+--stamp 1
 
 {% set project_start_date = '2024-05-01' %}
 
