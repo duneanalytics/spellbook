@@ -62,6 +62,21 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('dragon_swap_sei_base_trades_seed')
 
+  - name: dragon_swap_v3_sei_base_trades
+    meta:
+      blockchain: sei
+      sector: dex
+      project: dragon_swap
+      contributors: hosuke
+    config:
+      tags: [ 'sei', 'dex', 'trades', 'dragon_swap', 'v3' ]
+    description: "DragonSwap v3 sei base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+
   - name: xei_finance_sei_base_trades
     meta:
       blockchain: sei
