@@ -1,4 +1,5 @@
 {% macro generate_sushiswap_trades(chain) %}
+  --stamp 1
   {% set fn_map = {
     'routeprocessor_call_processRoute'                         : '1',
     'routeprocessor_call_transferValueAndprocessRoute'         : '1',
