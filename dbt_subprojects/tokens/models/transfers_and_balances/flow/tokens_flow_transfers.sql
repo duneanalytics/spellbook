@@ -17,7 +17,7 @@
 {{
     transfers_enrich(
         base_transfers = ref('tokens_flow_base_transfers')
-        , transfers_start_date = '2025-08-26'
+        , transfers_start_date = '2024-09-04'
         , blockchain = 'flow'
     )
 }} 
