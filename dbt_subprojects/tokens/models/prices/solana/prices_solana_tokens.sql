@@ -774,5 +774,7 @@ FROM
         ('es-eclipse', 'solana', 'ES', 'BqPqrrQuoQXFGGEAEMnPmDgZ6RWQCajWnY3V6Yp4DZWP', 6),
         ('dfdvx-dfdv-xstock','solana', 'DFDVx', 'Xs2yquAgsHByNzx68WJC55WHjHBvG9JsMB7CWjTLyPy', 8),
         ('frag-fragmetric', 'solana', 'FRAG', 'FRAGMEWj2z65qM62zqKhNtwNFskdfKs4ekDUDX3b4VD5', 9),
+        ('codec-codec-flow', 'solana', 'CODEC', '69LjZUUzxj3Cb3Fxeo1X4QpYEQTboApkhXTysPpbpump', 6),
+        ('aura-auraonsol', 'solana', 'AURA', 'DtR4D9FtVoTX2569gaL837ZgrB6wNjj6tkmnX9Rdk9B2', 6),
         ('wct-walletconnect-token', 'solana', 'WCT', 'WCTk5xWdn5SYg56twGj32sUF3W4WFQ48ogezLBuYTBY', 9)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
