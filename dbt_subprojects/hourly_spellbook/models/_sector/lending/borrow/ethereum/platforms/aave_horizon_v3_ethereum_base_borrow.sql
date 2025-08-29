@@ -10,7 +10,7 @@
   )
 }}
 
--- RWA version of aave 
+
 {{
   lending_aave_v3_compatible_borrow(    
     blockchain = 'ethereum',
