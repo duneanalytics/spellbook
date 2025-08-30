@@ -30,7 +30,7 @@ src_LendingPool_evt_Repay as (
 src_LendingPool_evt_LiquidationCall as (
   select *
   from {{ source(project_decoded_as ~ '_' ~ blockchain, 'LendingPool_evt_LiquidationCall') }}
-  {% if is_incremental() %}
+  {% if is_incremental() %} /Users/sandesh/data_science/dune/spellbook/.pre-commit-config.yaml
   where {{ incremental_predicate('evt_block_time') }}
   {% endif %}
 ),

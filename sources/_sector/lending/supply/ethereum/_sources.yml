@@ -28,6 +28,12 @@ sources:
       - name: PoolInstance_evt_Withdraw
       - name: WrappedTokenGatewayV3_call_withdrawETH
 
+  - name: aave_horizon_ethereum
+    tables:
+      - name: poolinstance_evt_Supply
+      - name: poolinstance_evt_Withdraw
+      - name: WrappedTokenGatewayV3_call_withdrawETH
+
   - name: compound_v2_ethereum
     tables:
       - name: cErc20_evt_Mint
