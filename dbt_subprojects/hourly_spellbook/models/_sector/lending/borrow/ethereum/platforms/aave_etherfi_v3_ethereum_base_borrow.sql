@@ -13,9 +13,9 @@
 {{
   lending_aave_v3_compatible_borrow(
     blockchain = 'ethereum',
-    project = 'aave_horizon',
+    project = 'aave_etherfi',
     version = '3',
-    project_decoded_as = 'aave_horizon',
+    project_decoded_as = 'aave_v3_etherfi',
     decoded_contract_name = 'PoolInstance'
   )
 }}
