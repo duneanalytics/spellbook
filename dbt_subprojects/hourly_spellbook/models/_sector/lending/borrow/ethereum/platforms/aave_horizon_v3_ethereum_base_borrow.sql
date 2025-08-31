@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'aave_etherfi_v3_ethereum',
+    schema = 'aave_horizon_v3_ethereum',
     alias = 'base_borrow',
     materialized = 'incremental',
     file_format = 'delta',

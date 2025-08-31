@@ -1,7 +1,7 @@
 {{
   config(
-    schema = 'aave_etherfi_v3_ethereum',
-    alias = 'base_borrow',
+    schema = 'aave_horizon_v3_ethereum',
+    alias = 'base_supply',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -11,7 +11,7 @@
 }}
 
 {{
-  lending_aave_v3_compatible_borrow(
+  lending_aave_v3_compatible_supply(
     blockchain = 'ethereum',
     project = 'aave_horizon',
     version = '3',
@@ -19,3 +19,4 @@
     decoded_contract_name = 'PoolInstance'
   )
 }}
+
