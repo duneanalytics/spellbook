@@ -31,5 +31,5 @@ SELECT
     sub_idx as sub_tx_trade_id,
     tx_hash as tx_from,
     tx_hash as tx_to,
-    cast(null as varchar) as tx_data_marker
+    cast(null as varbinary) as tx_data_marker
 FROM {{ ref('courtyard_polygon_trades') }}
