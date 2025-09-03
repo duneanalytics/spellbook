@@ -31,7 +31,7 @@ WITH fantasy_configs AS (
     , evt_index
     , contract_address
     , CAST(NULL AS boolean) AS is_wash_trade
-    FROM {{ source('fantasy_blast', 'Minter_evt_NewMintConfig')}}
+    FROM {{ source('fantasy_multichain', 'Minter_evt_NewMintConfig')}}
     )
 
 -- Mints
@@ -104,7 +104,7 @@ FROM (
     , 0.9*m.price/POWER(10, 18)*pu.price AS to_fantasy_treasury_usd
     , 0 AS tactics_bought
     , RANK() OVER (PARTITION BY m.mintConfigId ORDER BY c.block_number, c.evt_index DESC) AS rank
-    FROM {{ source('fantasy_blast', 'Minter_evt_Mint')}} m
+    FROM {{ source('fantasy_multichain', 'Minter_evt_Mint')}} m
     INNER JOIN fantasy_configs c ON m.mintConfigId=c.config_id
         AND c.block_number < m.evt_block_number
     LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.blockchain='blast'
@@ -144,7 +144,7 @@ SELECT evt_block_time AS block_time
 , 0 AS to_fantasy_treasury
 , 0 AS to_fantasy_treasury_usd
 , 0 AS tactics_bought
-FROM {{ source('fantasy_blast', 'Minter_evt_LevelUp')}}
+FROM {{ source('fantasy_multichain', 'Minter_evt_LevelUp')}}
 
 UNION ALL
 
@@ -177,7 +177,7 @@ SELECT evt_block_time AS block_time
 , 0 AS to_fantasy_treasury
 , 0 AS to_fantasy_treasury_usd
 , 0 AS tactics_bought
-FROM {{ source('fantasy_blast', 'Minter_evt_BurnToDraw')}}
+FROM {{ source('fantasy_multichain', 'Minter_evt_BurnToDraw')}}
 
 UNION ALL
 
@@ -221,7 +221,7 @@ AND nftt.project = 'fantasy'
 
 UNION ALL
 
--- Tactics Purchases
+-- Tactics Purchases - Blast
 SELECT block_time
 , block_number
 , block_date
@@ -287,4 +287,4 @@ SELECT evt_block_time AS block_time
 , 0 AS to_fantasy_treasury
 , 0 AS to_fantasy_treasury_usd
 , 0 AS tactics_bought
-FROM {{ source('fantasy_blast', 'minter_evt_batchburn')}}
+FROM {{ source('fantasy_multichain', 'minter_evt_batchburn')}}
