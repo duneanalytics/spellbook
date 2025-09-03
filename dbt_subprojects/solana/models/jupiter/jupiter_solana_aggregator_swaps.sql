@@ -76,7 +76,7 @@ with
                 ('Solayer', 'endoLNCKTqDn8gSVnN2hDdpgACUPWHZTwoYnnMybpAT'),
                 ('Token Mill', 'JoeaRXgtME3jAoz5WuFXGEndfv4NPH9nBxsLq44hk9J'),
                 ('Daos.fun', '5jnapfrAN47UYkLkEf7HnprPPBCQLvkYWGZDeKkaP5hv'),
-                ('ZeroFi', 'ZERor4xhbUycZ6gb9ntrhqscUcZmAbQDjEAtCf4hbZY')
+                ('ZeroFi', 'ZERor4xhbUycZ6gb9ntrhqscUcZmAbQDjEAtCf4hbZY'),
                 ('Meteora DLMM', 'LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo'),
                 ('Raydium Launchlab', 'LanMV9sAd7wArD4vJFi2qDdfnVhFxYSUg6eADduJ3uj'),
                 ('Pump.fun Amm', 'pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA'),
