@@ -26,9 +26,9 @@ SELECT
     s.evt_index,
     s.buyer,
     s.seller,
-    s.price_usd,
-    s.platform_fee_usd,
-    s.royalty_fee_usd,
+    s.price as price_usd,  -- Changed from s.price_usd
+    s.platform_fee_amount as platform_fee_usd,  -- Changed from s.platform_fee_usd
+    s.royalty_fee_amount as royalty_fee_usd,  -- Changed from s.royalty_fee_usd
     s.nft_contract_address,
     s.token_id,
     s.token_standard,
