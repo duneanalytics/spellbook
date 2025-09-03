@@ -8,6 +8,7 @@
 {% set nft_models = [
      ref('aavegotchi_polygon_base_trades')
     ,ref('aurem_polygon_base_trades')
+    ,ref('courtyard_polygon_base_trades')
     ,ref('dew_polygon_base_trades')
     ,ref('decentraland_polygon_base_trades')
     ,ref('element_polygon_base_trades')
