@@ -48,6 +48,9 @@ models:
       - &blob_submitter_label
         name: blob_submitter_label
         description: "the entity that submitted the blob"
+      - &blob_proposer_label
+        name: blob_proposer_label
+        description: "the proposer that submitted the blob"
       - &blob_base_fee
         name: blob_base_fee
         description: "the base fee (wei) per blob gas"
