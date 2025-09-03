@@ -31,5 +31,6 @@ FROM
     , ('jst-just', 'JST', 'TCFLL5dx5ZJdKnWuesXxi1VPwjLVmWZZy9', 18)
     , ('wbt-whitebit-coin', 'WBT', 'TFptbWaARrWTX5Yvy3gNG5Lm8BmhPx82Bt', 8)
     , ('bttc-bittorrent-chain', 'BTT', 'TAFjULxiVgT4qWk6UZwjqwZXTSaGaqnVp4', 18)
+    , ('sun-sun', 'SUN', 'TSSMHYeV2uE9qYH95DqyoCuNCzEL1NvU3S', 18)
     , ('usdd-usdd', 'USDD', 'TPYmHEhy5n8TCEfYGqW2rPxsghSfzghPDn', 18)
 ) as temp (token_id, symbol, contract_address, decimals)

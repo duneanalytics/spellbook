@@ -28,5 +28,6 @@ FROM
     , ('JST', 'TCFLL5dx5ZJdKnWuesXxi1VPwjLVmWZZy9', 18)
     , ('WBT', 'TFptbWaARrWTX5Yvy3gNG5Lm8BmhPx82Bt', 8)
     , ('BTT', 'TAFjULxiVgT4qWk6UZwjqwZXTSaGaqnVp4', 18)
+    , ('SUN', 'TSSMHYeV2uE9qYH95DqyoCuNCzEL1NvU3S', 18)
     , ('USDD', 'TPYmHEhy5n8TCEfYGqW2rPxsghSfzghPDn', 18)
 ) as temp (symbol, contract_address, decimals)

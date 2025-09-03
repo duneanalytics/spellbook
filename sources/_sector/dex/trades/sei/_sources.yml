@@ -9,6 +9,10 @@ sources:
     tables:
       - name: DragonswapFactory_evt_PairCreated
       - name: DragonswapPair_evt_Swap
+  - name: dragon_swap_sei_v2_sei
+    tables:
+      - name: dragonswapv2pool_evt_swap
+      - name: dragonswapv2factory_evt_poolcreated
   - name: jelly_swap_sei
     tables:
       - name: WeightedPoolFactory_call_create

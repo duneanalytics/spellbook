@@ -18,6 +18,7 @@
         "ethereum",
         "fantom",
         "flare",
+        "flow",
         "gnosis",
         "hemi",
         "ink",

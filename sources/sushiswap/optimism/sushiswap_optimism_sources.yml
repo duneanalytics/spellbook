@@ -23,6 +23,14 @@ sources:
   - name: routeprocessor7_call_transferValueAndprocessRoute
   - name: routeprocessor7_call_processRouteWithTransferValueOutput
   - name: routeprocessor7_call_processRouteWithTransferValueInput
+  - name: routeprocessor8_call_processRoute
+  - name: routeprocessor8_call_transferValueAndprocessRoute
+  - name: routeprocessor8_call_processRouteWithTransferValueOutput
+  - name: routeprocessor8_call_processRouteWithTransferValueInput
+  - name: routeprocessor9_call_processRoute
+  - name: routeprocessor9_call_transferValueAndprocessRoute
+  - name: routeprocessor9_call_processRouteWithTransferValueOutput
+  - name: routeprocessor9_call_processRouteWithTransferValueInput
   - name: MiniChefV2_evt_LogPoolAddition
   - name: MiniChefV2_evt_LogSetPool
   - name: MiniChefV2_evt_LogSushiPerSecond

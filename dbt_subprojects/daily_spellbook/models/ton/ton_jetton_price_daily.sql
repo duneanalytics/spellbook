@@ -32,7 +32,6 @@ ALL_TRADES AS (
     WHERE token_address NOT IN (SELECT * FROM {{ ref('ton_proxy_ton_addresses') }})
 )
 
-
 , LIQUID_TOKENS AS (
     SELECT DISTINCT 
         block_date,
@@ -44,6 +43,9 @@ ALL_TRADES AS (
         ]) AS T(token_address, reserves_raw)
     WHERE 1=1
         AND tvl_usd >= 100_000 -- highly liquid pools
+        -- LST tokens may have low activity on DEXs and since they are liquid by the definition
+        -- we can use lower threshold for them
+        OR tvl_usd >= 5_000 AND token_address IN (SELECT address FROM {{ ref('ton_lst_addresses') }})
 )
 
 
@@ -179,39 +181,97 @@ ALL_TRADES AS (
     INNER JOIN PRICES_FROM_DEX_TRADES P
         ON P.token_address = SLP_ADDRESS_INTER_PRICE.underlying_asset
         AND P.ts = SLP_ADDRESS_INTER_PRICE.block_date
+),
+
+----------------------------------------------
+--------------Ethena tsUSDe-------------------
+-- Price is derived from mint events --------
+----------------------------------------------
+
+TSUSDE_MINTS AS (
+    SELECT
+        block_date,
+        trace_id,
+        amount as ts_USDe_amount
+    FROM
+        {{ source('ton', 'jetton_events') }}
+    WHERE
+        block_date >= DATE '2025-05-15'
+        AND type = 'mint'
+        AND jetton_master = '0:D0E545323C7ACB7102653C073377F7E3C67F122EB94D430A250739F109D4A57D' -- tsUSDe
+        AND NOT tx_aborted
+), TSUSDE_USDE_TRANSFERS AS (
+    SELECT
+        block_date,
+        trace_id,
+        amount AS USDe_amount
+    FROM
+        {{ source('ton', 'jetton_events') }}
+    WHERE
+        block_date >= DATE '2025-05-15'
+        AND type = 'transfer'
+        AND jetton_master = '0:086FA2A675F74347B08DD4606A549B8FDB98829CB282BC1949D3B12FBAED9DCC' -- USDe
+        AND destination = UPPER('0:a11ae0f5bb47bb2945871f915a621ff281c2d786c746da74873d71d6f2aaa7a5') -- vault
+        AND NOT tx_aborted
+), TON_PRICES AS (
+    SELECT
+        date_trunc('day', minute) AS block_date,
+        avg(price) AS price_ton
+    FROM {{ source('prices', 'usd') }}
+    WHERE symbol = 'TON'
+        AND blockchain IS NULL
+    GROUP BY 1
+),
+PRICES_TSUSDE AS (
+    SELECT 
+        '0:D0E545323C7ACB7102653C073377F7E3C67F122EB94D430A250739F109D4A57D' AS token_address,
+        block_date AS ts,
+        1e0 * sum(USDe_amount) / sum(ts_USDe_amount) / max(price_ton) as price_ton,
+        1e0 * sum(USDe_amount) / sum(ts_USDe_amount) as price_usd,
+        'tsUSDe' AS asset_type
+    FROM TSUSDE_MINTS
+    JOIN TSUSDE_USDE_TRANSFERS USING(block_date, trace_id)
+    JOIN TON_PRICES USING(block_date)
+    GROUP BY 1, 2
 )
+
 
 ------------------------------------------
 -----------FINAL GRAND MERGE -------------
 ------------------------------------------
-
-SELECT 
+, PRICES_ALL AS (
+    SELECT 
     'ton' AS blockchain,
     COALESCE(
+        PRICES_TSUSDE.token_address,
         PRICES_SLP.token_address,
         PRICES_LP_TOKENS.token_address,
         PRICES_FROM_DEX_TRADES.token_address
     ) AS token_address,
     
     COALESCE(
+        PRICES_TSUSDE.ts,
         PRICES_SLP.ts,
         PRICES_LP_TOKENS.ts,
         PRICES_FROM_DEX_TRADES.ts
     ) AS timestamp,
 
     COALESCE(
+        PRICES_TSUSDE.price_ton,
         PRICES_SLP.price_ton,
         PRICES_LP_TOKENS.price_ton,
         PRICES_FROM_DEX_TRADES.price_ton
     ) AS price_ton,
 
     COALESCE(
+        PRICES_TSUSDE.price_usd,
         PRICES_SLP.price_usd,
         PRICES_LP_TOKENS.price_usd,
         PRICES_FROM_DEX_TRADES.price_usd
     ) AS price_usd,
 
 COALESCE(
+        PRICES_TSUSDE.asset_type,
         PRICES_SLP.asset_type,
         PRICES_LP_TOKENS.asset_type,
         PRICES_FROM_DEX_TRADES.asset_type
@@ -224,3 +284,32 @@ FULL OUTER JOIN PRICES_SLP
 FULL OUTER JOIN PRICES_LP_TOKENS
     ON PRICES_FROM_DEX_TRADES.token_address = PRICES_LP_TOKENS.token_address
     AND PRICES_FROM_DEX_TRADES.ts = PRICES_LP_TOKENS.ts
+FULL OUTER JOIN PRICES_TSUSDE
+    ON PRICES_FROM_DEX_TRADES.token_address = PRICES_TSUSDE.token_address
+    AND PRICES_FROM_DEX_TRADES.ts = PRICES_TSUSDE.ts
+),
+
+------------------------------------------
+-- Some tokens may have gaps in the price
+-- table due to low activity in some days.
+-- To avoid this, we will fill the gaps
+-- with the last known price in
+-- 7 days window.
+------------------------------------------
+
+LATEST_DATE AS (
+    SELECT MAX(timestamp) AS latest_date FROM PRICES_ALL
+),
+PRICES_WITH_HISTORY AS (
+    SELECT blockchain, token_address, DATE_ADD('day', offset, timestamp) AS timestamp,
+    price_ton, price_usd, asset_type, offset
+    FROM PRICES_ALL
+    CROSS JOIN UNNEST(ARRAY[0, 1, 2, 3, 4, 5, 6]) AS T(offset)
+    WHERE DATE_ADD('day', offset, timestamp) <= (SELECT latest_date FROM LATEST_DATE)
+)
+SELECT blockchain, token_address, timestamp,
+MIN_BY(price_ton, offset) AS price_ton,
+MIN_BY(price_usd, offset) AS price_usd,
+MIN_BY(asset_type, offset) AS asset_type
+FROM PRICES_WITH_HISTORY
+GROUP BY 1, 2, 3

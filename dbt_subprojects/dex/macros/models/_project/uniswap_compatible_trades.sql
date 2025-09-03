@@ -128,6 +128,7 @@ FROM
     , PoolManager_evt_Swap = null
     , taker_column_name = null
     , maker_column_name = null
+    , filter_angstrom_addr = null
     )
 %}
 WITH dexs AS
@@ -262,6 +263,9 @@ WITH dexs AS
     JOIN swap_evt e on c.call_block_number = e.evt_block_number 
         and c.call_tx_hash = e.evt_tx_hash
         and c.call_rn = e.evt_rn 
+    {% if filter_angstrom_addr %}
+    WHERE NOT (c.hooks = {{ filter_angstrom_addr }} AND e.fee = 0)
+    {% endif %}
 
 )
 
