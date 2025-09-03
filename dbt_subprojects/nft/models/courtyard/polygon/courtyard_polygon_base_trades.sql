@@ -14,7 +14,7 @@ SELECT
     block_month,
     block_number,
     tx_hash,
-    '' as project_contract_address,
+    cast(null as varbinary) as project_contract_address,
     trade_type as trade_category,
     'Trade' as trade_type,
     buyer,
@@ -26,10 +26,10 @@ SELECT
     payment_token as currency_contract,
     platform_fee_usd as platform_fee_amount_raw,
     royalty_fee_usd as royalty_fee_amount_raw,
-    '' as platform_fee_address,
-    '' as royalty_fee_address,
+    cast(null as varbinary) as platform_fee_address,
+    cast(null as varbinary) as royalty_fee_address,
     sub_idx as sub_tx_trade_id,
     tx_hash as tx_from,
     tx_hash as tx_to,
-    '' as tx_data_marker
+    cast(null as varchar) as tx_data_marker
 FROM {{ ref('courtyard_polygon_trades') }}
