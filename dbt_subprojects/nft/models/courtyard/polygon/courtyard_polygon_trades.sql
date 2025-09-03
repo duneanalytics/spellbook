@@ -32,7 +32,7 @@ SELECT
     s.nft_contract_address,
     s.token_id,
     s.token_standard,
-    s.token_amount,
+    s.nft_cnt as token_amount,
     s.trade_type,
     s.payment_token,
     s.price_amount_raw as price,
