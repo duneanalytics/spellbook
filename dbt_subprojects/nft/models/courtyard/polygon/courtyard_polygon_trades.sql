@@ -34,7 +34,7 @@ SELECT
     s.token_standard,
     s.number_of_items as token_amount,
     s.trade_type,
-    s.payment_token,
+    s.currency_contract as payment_token,
     s.amount_raw as price,
     s.sub_type,
     s.sub_idx
