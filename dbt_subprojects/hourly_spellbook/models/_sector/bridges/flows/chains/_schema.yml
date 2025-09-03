@@ -49,9 +49,7 @@ models:
       - &deposit_token_standard  
         name: deposit_token_standard
         description: "Source blockchain token standard"
-      - &withdraw_token_standard
-        name: remote_token
-        description: "Destination blockchain token standard"
+      
       - &deposit_token_address  
         name: deposit_token_address
         description: "Source blockchain token address"
@@ -96,8 +94,8 @@ models:
       - *withdraw_amount_raw
       - *sender
       - *recipient
-      - *deposit_token_standard
-      - *withdraw_token_standard
+      - name: withdraw_token_standard
+        description: "Destination blockchain token standard"
       - *deposit_token_address
       - *withdraw_token_address
       - *tx_from
@@ -129,7 +127,6 @@ models:
       - *sender
       - *recipient
       - *deposit_token_standard
-      - *withdraw_token_standard
       - *deposit_token_address
       - *withdraw_token_address
       - *tx_from
@@ -161,7 +158,8 @@ models:
       - *sender
       - *recipient
       - *deposit_token_standard
-      - *withdraw_token_standard
+      - name: withdraw_token_standard
+        description: "Destination blockchain token standard"
       - *deposit_token_address
       - *withdraw_token_address
       - *tx_from
@@ -193,7 +191,7 @@ models:
       - *sender
       - *recipient
       - *deposit_token_standard
-      - *withdraw_token_standard
+      
       - *deposit_token_address
       - *withdraw_token_address
       - *tx_from
@@ -225,7 +223,8 @@ models:
       - *sender
       - *recipient
       - *deposit_token_standard
-      - *withdraw_token_standard
+      - name: withdraw_token_standard
+        description: "Destination blockchain token standard"
       - *deposit_token_address
       - *withdraw_token_address
       - *tx_from
@@ -257,7 +256,7 @@ models:
       - *sender
       - *recipient
       - *deposit_token_standard
-      - *withdraw_token_standard
+      
       - *deposit_token_address
       - *withdraw_token_address
       - *tx_from
@@ -289,7 +288,8 @@ models:
       - *sender
       - *recipient
       - *deposit_token_standard
-      - *withdraw_token_standard
+      - name: withdraw_token_standard
+        description: "Destination blockchain token standard"
       - *deposit_token_address
       - *withdraw_token_address
       - *tx_from
@@ -321,7 +321,7 @@ models:
       - *sender
       - *recipient
       - *deposit_token_standard
-      - *withdraw_token_standard
+      
       - *deposit_token_address
       - *withdraw_token_address
       - *tx_from

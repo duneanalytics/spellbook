@@ -22,7 +22,7 @@ WITH cctp_id_mapping AS (
     )
 
 SELECT '{{blockchain}}' AS deposit_chain
-, i.blockchain AS withdrawal_chain
+, i.blockchain AS withdraw_chain
 , 'CCTP' AS bridge_name
 , '1' AS bridge_version
 , evt_block_date AS block_date
@@ -32,7 +32,6 @@ SELECT '{{blockchain}}' AS deposit_chain
 , depositor AS sender
 , CASE WHEN varbinary_substring(mintRecipient,1, 12) = 0x000000000000000000000000 THEN varbinary_substring(mintRecipient,13) ELSE mintRecipient END AS recipient
 , 'erc20' AS deposit_token_standard
-, 'erc20' AS withdrawal_token_standard
 , burnToken AS deposit_token_address
 , evt_tx_from AS tx_from
 , evt_tx_hash AS tx_hash
