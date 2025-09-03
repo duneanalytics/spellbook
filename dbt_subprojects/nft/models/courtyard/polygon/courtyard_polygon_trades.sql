@@ -32,10 +32,10 @@ SELECT
     s.nft_contract_address,
     s.token_id,
     s.token_standard,
-    s.nft_cnt as token_amount,
+    s.number_of_items as token_amount,
     s.trade_type,
     s.payment_token,
-    s.price_amount_raw as price,
+    s.amount_raw as price,
     s.sub_type,
     s.sub_idx
 FROM {{ ref('seaport_polygon_trades') }} s
