@@ -36,7 +36,6 @@ WITH mr_fa_metadata AS (
         AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
         AND move_resource_module = 'fungible_asset'
         AND move_resource_name = 'Metadata'
-        AND block_date = DATE('2025-01-01')
     {% if is_incremental() %}
         AND {{ incremental_predicate('block_time') }}
     {% else %}
@@ -63,7 +62,6 @@ WITH mr_fa_metadata AS (
         AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
         AND move_resource_module = 'fungible_asset'
         AND move_resource_name IN ('Supply', 'ConcurrentSupply')
-        AND block_date = DATE('2025-01-01')
     {% if is_incremental() %}
         AND {{ incremental_predicate('block_time') }}
     {% else %}
@@ -79,7 +77,6 @@ WITH mr_fa_metadata AS (
         AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
         AND move_resource_module = 'object'
         AND move_resource_name = 'ObjectCore'
-        AND block_date = DATE('2025-01-01')
     {% if is_incremental() %}
         AND {{ incremental_predicate('block_time') }}
     {% else %}
@@ -107,7 +104,6 @@ WITH mr_fa_metadata AS (
         AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
         AND move_resource_module = 'coin'
         AND move_resource_name = 'CoinInfo'
-        AND block_date = DATE('2025-01-01')
     {% if is_incremental() %}
         AND {{ incremental_predicate('block_time') }}
     {% endif %}
