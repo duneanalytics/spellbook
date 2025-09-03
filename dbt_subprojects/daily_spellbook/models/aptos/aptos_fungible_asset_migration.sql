@@ -1,13 +1,10 @@
 {{ config(
     schema = 'aptos_fungible_asset',
-    alias = 'migrations',
-    materialized = 'incremental',
+    alias = 'migration',
+    materialized = 'table',
     file_format = 'delta',
-    incremental_strategy = 'merge',
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['asset_type_v2'],
 ) }}
--- TODO: change into one time table after coins are no longer allowed to be created
 
 SELECT
     -- latest
@@ -36,7 +33,7 @@ FROM (
     {% if is_incremental() %}
         AND {{ incremental_predicate('block_time') }}
     {% else %}
-        AND block_date >= DATE('2024-08-02') -- beginning of FA (v2) migration
+        AND block_date BETWEEN DATE('2024-08-02') AND DATE('2025-09-01') -- FA (v2) migration period
     {% endif %}
     GROUP BY move_address
 )
