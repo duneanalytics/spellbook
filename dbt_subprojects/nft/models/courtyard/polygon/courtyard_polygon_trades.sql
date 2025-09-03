@@ -26,7 +26,7 @@ SELECT
     s.evt_index,
     s.buyer,
     s.seller,
-    s.price_amount_usd as price_usd,
+    s.amount_usd as price_usd,
     s.platform_fee_amount_usd as platform_fee_usd,
     s.royalty_fee_amount_usd as royalty_fee_usd,
     s.nft_contract_address,
