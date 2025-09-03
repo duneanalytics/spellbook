@@ -26,16 +26,16 @@ SELECT
     s.evt_index,
     s.buyer,
     s.seller,
-    s.price as price_usd,  -- Changed from s.price_usd
-    s.platform_fee_amount as platform_fee_usd,  -- Changed from s.platform_fee_usd
-    s.royalty_fee_amount as royalty_fee_usd,  -- Changed from s.royalty_fee_usd
+    s.price_amount_usd as price_usd,
+    s.platform_fee_amount_usd as platform_fee_usd,
+    s.royalty_fee_amount_usd as royalty_fee_usd,
     s.nft_contract_address,
     s.token_id,
     s.token_standard,
     s.token_amount,
     s.trade_type,
     s.payment_token,
-    s.price,
+    s.price_amount_raw as price,
     s.sub_type,
     s.sub_idx
 FROM {{ ref('seaport_polygon_trades') }} s
