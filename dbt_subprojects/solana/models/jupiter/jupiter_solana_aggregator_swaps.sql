@@ -20,7 +20,7 @@ with
         SELECT
         *
         FROM (
-            --use this api https://api.jup.ag/swap/v1/program-id-to-label
+            --use this api https://quote-api.jup.ag/v6/program-id-to-label
             values
                 ('Perena', 'NUMERUNsFCP3kuNmWZuXtm1AaQCPj9uw6Guv2Ekoi5P'),
                 ('stabble Stable Swap', 'swapNyd8XiQwJ6ianp9snpu4brUqFxadzvHebnAXjJZ'),
@@ -77,6 +77,24 @@ with
                 ('Token Mill', 'JoeaRXgtME3jAoz5WuFXGEndfv4NPH9nBxsLq44hk9J'),
                 ('Daos.fun', '5jnapfrAN47UYkLkEf7HnprPPBCQLvkYWGZDeKkaP5hv'),
                 ('ZeroFi', 'ZERor4xhbUycZ6gb9ntrhqscUcZmAbQDjEAtCf4hbZY')
+                ('Meteora DLMM', 'LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo'),
+                ('Raydium Launchlab', 'LanMV9sAd7wArD4vJFi2qDdfnVhFxYSUg6eADduJ3uj'),
+                ('Pump.fun Amm', 'pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA'),
+                ('Virtuals', '5U3EU2ubXtK84QcRjWVmYt9RaDyA8gKxdUrPFXmZyaki'),
+                ('GooseFX GAMMA', 'GAMMA7meSFWaBXF25oSUgmGRwaW6sCMFLmBNiMSdbHVT'),
+                ('Heaven', 'HEAVENoP2qxoeuF8Dj2oT1GHEnu49U5mJYkdeC8BAX2o'),
+                ('Meteora DAMM v2', 'cpamdpZCGKUy5JxQXB4dcpGPiikHawvSWAd6mEn1sGG'),
+                ('Dynamic Bonding Curve', 'dbcij3LWUppWqq96dh6gJWwBifmcGfLSB5D4DuSMaqN'),
+                ('Moonit', 'MoonCVVNZFSYkqNXP6bxHLPL6QQJiMagDL3qcqUQTrG'),
+                ('GoonFi', 'goonERTdGsjnkZqWuVjs73BZ3Pb9qoCUdBUL17BnS5j'),
+                ('Gavel', 'srAMMzfVHVAtgSJc8iH6CfKzuWuUTzLHVCE81QU1rgi'),
+                ('Byreal', 'REALQqNEomY6cQGZJUGwywTBD2UmDT32rZcNnfxQ5N2'),
+                ('HumidiFi', '9H6tua7jkLhdm3w8BvgpTn5LZNU7g4ZynDmCiNN3q6Rp'),
+                ('TesseraV', 'TessVdML9pBGgG9yGks7o4HewRaXVAMuoVj4x83GLQH'),
+                ('Woofi', 'WooFif76YGRNjk1pA8wCsN67aQsD9f9iLsz4NcJ1AVb'),
+                ('Boop.fun', 'boop8hVGQGqehUK2iVEMEnMrL5RbjywRzHKBmBE7ry4'),
+                ('PancakeSwap', 'HpNfyc2Saw7RKkQd8nEL4khUcuPhQ7WwY1B2qjx8jxFq'),
+                ('SolFi V2', 'SV2EYYJyRz2YhfXwXnhNAevDEui5Q6yrfyo13WtupPF')
             ) as v(amm_name, amm)
     )
 
