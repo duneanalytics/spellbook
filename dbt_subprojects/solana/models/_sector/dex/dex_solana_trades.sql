@@ -86,7 +86,6 @@ LEFT JOIN
     {% if is_incremental() %}
     AND {{incremental_predicate('p_bought.minute')}}
     {% endif %}
-    -- test run, remove this
 LEFT JOIN 
     {{ source('prices', 'usd') }} p_sold
     ON p_sold.blockchain = 'solana'
