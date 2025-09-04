@@ -1,6 +1,3 @@
--- this query is an approximation of logic behind fungible_asset_activities (does not include gas fees or entryfn)
--- https://github.com/aptos-labs/aptos-indexer-processors-v2/blob/main/processor/src/processors/fungible_asset/fungible_asset_processor.rs
-
 {{ config(
     schema = 'aptos_fungible_asset',
     alias = 'activities',
@@ -10,7 +7,18 @@
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['block_month', 'tx_hash', 'event_index'],
     partition_by = ['block_month'],
+    post_hook='{{ expose_spells(blockchains = \'["aptos"]\',
+        spell_type = "project",
+        spell_name = "fungible_asset",
+        contributors = \'["ying-w"]\') }}'
 ) }}
+
+-- this query is an approximation of logic behind fungible_asset_activities
+-- https://github.com/aptos-labs/aptos-indexer-processors-v2/blob/main/processor/src/processors/fungible_asset/fungible_asset_processor.rs
+-- Differences include
+-- 1. Gas fees are not included (same as filtering out is_gas_fee)
+-- 2. entry_function is not included (join against user_transactions)
+-- 3. Excludes freeze events (uncommon) `0x1::fungible_asset::Frozen`
 
 WITH coin_activities AS (
     -- example to check: tx_version = 1887949456 '2024-11-05'
@@ -83,7 +91,9 @@ WITH coin_activities AS (
         AND ev.block_date >= DATE('2023-07-28') -- v2 deployed
         AND event_type IN (
             '0x1::fungible_asset::Deposit',
-            '0x1::fungible_asset::Withdraw'
+            '0x1::fungible_asset::DepositEvent', -- old
+            '0x1::fungible_asset::Withdraw',
+            '0x1::fungible_asset::WithdrawEvent' -- old
         )
     {% if is_incremental() %}
         AND {{ incremental_predicate('ev.block_time') }}
