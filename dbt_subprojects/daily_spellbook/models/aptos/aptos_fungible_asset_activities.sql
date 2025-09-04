@@ -90,10 +90,12 @@ WITH coin_activities AS (
     WHERE 1=1
         AND ev.block_date >= DATE('2023-07-28') -- v2 deployed
         AND event_type IN (
+            -- prior to Events v2 migration, different event types were used
+            -- this happened between 2023-08-04 to 2024-05-29
             '0x1::fungible_asset::Deposit',
-            '0x1::fungible_asset::DepositEvent', -- old
+            '0x1::fungible_asset::DepositEvent', -- legacy
             '0x1::fungible_asset::Withdraw',
-            '0x1::fungible_asset::WithdrawEvent' -- old
+            '0x1::fungible_asset::WithdrawEvent' -- legacy
         )
     {% if is_incremental() %}
         AND {{ incremental_predicate('ev.block_time') }}
