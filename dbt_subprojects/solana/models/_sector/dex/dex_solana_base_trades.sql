@@ -30,7 +30,7 @@ ref('raydium_v3_base_trades')
   , ref('pumpswap_solana_base_trades')
   , ref('pancakeswap_v3_solana_base_trades') 
   , ref('stabble_solana_base_trades')
-  , ref('solfi_solana_base_trades')
+  , ref('solfi_solana_base_trades') 
 ] %}
 
 /*
