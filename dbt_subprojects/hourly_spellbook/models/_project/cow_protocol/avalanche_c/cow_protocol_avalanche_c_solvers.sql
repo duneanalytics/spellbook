@@ -64,7 +64,9 @@ known_solver_metadata (address, environment, name) as (
                 (0xc3D3151324F04B0d072A74AbFDa84e1A99B19b22, 'prod', 'ExtQuasimodo'),
                 (0x8361B0b967b654C57a9584f15E1F6c289Fb0C13B, 'prod', 'Apollo'),
                 (0xc14820F96Ac38e8f376eb9042DDa927AdB12eE02, 'prod', 'Sector'),
-                (0x9E1C61a10463D24Efe7E661eb4ed9b26f4f41552, 'prod', 'Bebop')
+                (0x9E1C61a10463D24Efe7E661eb4ed9b26f4f41552, 'prod', 'Bebop'),
+                (0xCcEa0a350aE1734A10981A2aA45D1A9a5fDfaDe3, 'barn', 'Piggy'),
+                (0x568868a02aff3765CFCebBF13FF4A3A7fec7f7d5, 'prod', 'Piggy')
     ) as _
 )
 -- Combining the metadata with current activation status for final table
