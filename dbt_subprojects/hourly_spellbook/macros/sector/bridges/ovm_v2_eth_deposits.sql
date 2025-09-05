@@ -16,11 +16,11 @@
 {% set cross_domain_messenger = 0x4200000000000000000000000000000000000007 %}
 {% set l2_standard_bridge = 0x4200000000000000000000000000000000000010 %}
 {% set l2_to_l1_message_passer = 0x4200000000000000000000000000000000000016 %}
--- {% set l1_standard_bridge = 0x3154Cf16ccdb4C6d922629664174b904d80F2C35 %}
+-- {% set l1_standard_bridge = 0x3154Cf16ccdb4C6d922629664174b904d80F2C35 %} for base
 
 -- important methods
-{% set relay_message_selector = 0xd764ad0b %}
-{% set finalize_bridge_eth_selector = 0x1635f5fd %}
+-- {% set relay_message_selector = 0xd764ad0b %}
+-- {% set finalize_bridge_eth_selector = 0x1635f5fd %}
 
 
 with direct_l2_to_l1_eth_deposits as (
@@ -65,12 +65,12 @@ select
     , evt_tx_from as tx_from
     , evt_tx_hash as tx_hash
     , evt_index
-    , sender as contract_address
+    , sender as contract_address -- CrossDomainMessenger
     , withdrawalHash as bridge_id
 from ovm_{{blockchain}}.l2tol1messagepasser_evt_messagepassed
 where value <> 0
 and sender = {{cross_domain_messenger}}
-and varbinary_substring(data, 81, 20) <> {{l1_standard_bridge}}
+and varbinary_substring(data, 49, 20) <> {{l2_standard_bridge}}
 ),
 l2_standard_bridge_l2_to_l1_eth_deposits as (
 -- 3. CrossDomainMessenger -> L2ToL1MessagePasser (calling the L1StandardBridge)
@@ -91,7 +91,7 @@ select
     , evt_tx_from as tx_from
     , evt_tx_hash as tx_hash
     , evt_index
-    , varbinary_substring(data, 49, 20) as sender -- taken from the relayMessage() CrossDomainMessenger
+    , varbinary_substring(data, 49, 20) as contract_address -- L2StandardBridge
     , withdrawalHash as bridge_id
 from ovm_{{blockchain}}.l2tol1messagepasser_evt_messagepassed
 where value <> 0
