@@ -28,8 +28,8 @@ with withdrawal_l2_to_l1_portal_call as (
         , cast(JSON_EXTRACT_SCALAR(c._tx, '$.value') AS uint256) as withdrawal_amount_raw
         , from_hex(JSON_EXTRACT_SCALAR(c._tx, '$.sender')) as sender
         , from_hex(JSON_EXTRACT_SCALAR(c._tx, '$.target')) as recipient
-        , 'eth' as withdrawal_token_standard
-        , 0x0000000000000000000000000000000000000000 as withdrawal_token_address
+            , 'eth' as withdrawal_token_standard
+    , 0x0000000000000000000000000000000000000000 as withdrawal_token_address
         , call_tx_from as tx_from
         , call_tx_hash as tx_hash
         , {{l1_portal}} as contract_address --OptimismPortal
@@ -40,7 +40,7 @@ with withdrawal_l2_to_l1_portal_call as (
                 c.call_tx_index
         ) as matching_index
         , from_hex(JSON_EXTRACT_SCALAR(c._tx, '$.data')) as data
-        from bridge{{blockchain}}_ethereum.optimismportal_call_finalizewithdrawaltransaction c
+        from {{ source('bridge' + blockchain + '_ethereum', 'optimismportal_call_finalizewithdrawaltransaction') }} c
         where c.call_success = true
    and CAST(JSON_EXTRACT_SCALAR(c._tx, '$.value') as uint256) > 0
 )
@@ -55,7 +55,7 @@ with withdrawal_l2_to_l1_portal_call as (
                 e.evt_index
         ) as matching_index
         , withdrawalHash as bridge_transfer_id
-        from bridge{{blockchain}}_ethereum.optimismportal_evt_withdrawalfinalized e
+        from {{ source('bridge' + blockchain + '_ethereum', 'optimismportal_evt_withdrawalfinalized') }} e
         where success = true
 ),
 withdrawal_portal_raw as (
@@ -88,7 +88,7 @@ select
     , contract_address
     , bridge_transfer_id
 from withdrawal_portal_raw
-where destination <> {{cross_domain_messenger}}
+where recipient <> {{cross_domain_messenger}}
 ),
 
 messenger_l2_to_l1_eth_withdrawals as (
@@ -140,3 +140,5 @@ union all
 select * from messenger_l2_to_l1_eth_withdrawals
 union all
 select * from l1_standard_bridge_l2_to_l1_eth_withdrawals
+
+{% endmacro %}

@@ -49,3 +49,25 @@ sources:
       - name: tokenmessenger_evt_depositforburn
       - name: tokenmessenger_evt_mintandwithdraw
       - name: messagetransmitter_evt_messagereceived
+
+  - name: ovm_base
+    description: "OVM bridge events on Base L2"
+    tables:
+      - name: l2tol1messagepasser_evt_messagepassed
+
+  - name: ovm_optimism  
+    description: "OVM bridge events on Optimism L2"
+    tables:
+      - name: l2tol1messagepasser_evt_messagepassed
+
+  - name: bridgebase_ethereum
+    description: "Base to Ethereum bridge events"
+    tables:
+      - name: optimismportal_call_finalizewithdrawaltransaction
+      - name: optimismportal_evt_withdrawalfinalized
+
+  - name: bridgeoptimism_ethereum
+    description: "Optimism to Ethereum bridge events" 
+    tables:
+      - name: optimismportal_call_finalizewithdrawaltransaction
+      - name: optimismportal_evt_withdrawalfinalized

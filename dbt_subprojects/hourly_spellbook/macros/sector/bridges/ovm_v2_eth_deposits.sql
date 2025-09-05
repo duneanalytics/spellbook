@@ -43,9 +43,9 @@ select
     , evt_index
     , contract_address -- L2ToL1MessagePasser
     , withdrawalHash as bridge_id
-from ovm_{{blockchain}}.l2tol1messagepasser_evt_messagepassed
+from {{ source('ovm_' + blockchain, 'l2tol1messagepasser_evt_messagepassed') }}
 where value <> 0
-and sender <> {{cross_domain_messenger_address}}
+and sender <> {{cross_domain_messenger}}
 ),
 cross_domain_messenger_l2_to_l1_eth_deposits as (
 -- 2. CrossDomainMessenger -> L2ToL1MessagePasser (direct)
@@ -67,7 +67,7 @@ select
     , evt_index
     , sender as contract_address -- CrossDomainMessenger
     , withdrawalHash as bridge_id
-from ovm_{{blockchain}}.l2tol1messagepasser_evt_messagepassed
+from {{ source('ovm_' + blockchain, 'l2tol1messagepasser_evt_messagepassed') }}
 where value <> 0
 and sender = {{cross_domain_messenger}}
 and varbinary_substring(data, 49, 20) <> {{l2_standard_bridge}}
@@ -93,7 +93,7 @@ select
     , evt_index
     , varbinary_substring(data, 49, 20) as contract_address -- L2StandardBridge
     , withdrawalHash as bridge_id
-from ovm_{{blockchain}}.l2tol1messagepasser_evt_messagepassed
+from {{ source('ovm_' + blockchain, 'l2tol1messagepasser_evt_messagepassed') }}
 where value <> 0
 and sender = {{cross_domain_messenger}}
 and varbinary_substring(data, 81, 20) = {{l1_standard_bridge}}
@@ -104,3 +104,5 @@ union all
 select * from cross_domain_messenger_l2_to_l1_eth_deposits
 union all
 select * from l2_standard_bridge_l2_to_l1_eth_deposits
+
+{% endmacro %}
