@@ -7,9 +7,16 @@
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['block_month', 'tx_hash', 'write_set_change_index'],
     partition_by = ['block_month'],
+    post_hook='{{ expose_spells(blockchains = \'["aptos"]\',
+        spell_type = "project",
+        spell_name = "fungible_asset",
+        contributors = \'["ying-w"]\') }}'
 ) }}
 
--- TODO: edge cases around deleted balances / objects
+-- Compared to GraphQL endpoint, this table has the following differences:
+-- 1. All balance changes (rather than just current balance)
+-- 2. When FA is deleted, sometimes they are missing from GraphQL (prior to delete event) ex 2424873868 idx 8
+-- 3. In case of ConcurrentFungibleBalance and FungibleStore, write_set_change_index is former for this table
 
 WITH coin_balances AS (
     SELECT
