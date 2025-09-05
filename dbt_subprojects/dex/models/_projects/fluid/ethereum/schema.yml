@@ -52,3 +52,18 @@ models:
         name: dex_id
         description: "nonce unique to factory and pool"
 
+  - name: fluid_ethereum_liquidity_events
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: fluid
+      contributors: Henrystats, dknugo
+    config:
+      tags: ['ethereum', 'liquidity_events', 'liquidity', 'fluid']
+    description: >
+      All dex events in logoperate
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
