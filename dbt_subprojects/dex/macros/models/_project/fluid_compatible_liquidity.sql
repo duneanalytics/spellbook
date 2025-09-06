@@ -35,7 +35,7 @@ logoperate_raw as (
     {{ source(blockchain, 'logs') }}
     where contract_address = {{ contract_address }}
     and topic0 = 0x4d93b232a24e82b284ced7461bf4deacffe66759d5c24513e6f29e571ad78d15
-    and user_address in (select dex from {{ liquidity_pools }} where blockchain = '{{blockchain}}' )
+    and varbinary_substring(topic1, 13, 20) in (select dex from {{ liquidity_pools }} where blockchain = '{{blockchain}}' )
     {% if is_incremental() %}
     and {{ incremental_predicate('block_time') }}
     {% endif %}
