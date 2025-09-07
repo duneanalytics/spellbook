@@ -1772,7 +1772,7 @@ FROM
     ('savm-satoshivm', 'ethereum', 'SAVM', 0x15e6e0d4ebeac120f9a97e71faa6a0235b85ed12, 18),
     ('hemule-hemule', 'ethereum', 'HEMULE', 0xeAA63125dd63f10874F99CdBbb18410e7Fc79dD3, 18),
     ('election-real-smurf-cat', 'ethereum', 'SMURFCAT', 0xfF836A5821E69066c87E268bC51b849FaB94240C, 18),
-    ('eth-zoomer', 'ethereum', 'ETH', 0x0d505c03d30e65f6e9b4ef88855a47a89e4b7676, 18),
+    ('eth-zoomer', 'ethereum', 'ZOOMER', 0x0d505c03d30e65f6e9b4ef88855a47a89e4b7676, 18),
     ('shia-shia1', 'ethereum', 'SHIA', 0x43D7E65B8fF49698D9550a7F315c87E67344FB59, 18),
     ('qanx-qanx-token', 'ethereum', 'QANX', 0xaaa9214f675316182eaa21c85f0ca99160cc3aaa, 18),
     ('hft1-hashflow', 'ethereum', 'HFT', 0xb3999f658c0391d94a37f7ff328f3fec942bcadc, 18),
@@ -1902,7 +1902,8 @@ FROM
     ('wct-walletconnect-token', 'ethereum', 'WCT', 0xeF4461891DfB3AC8572cCf7C794664A8DD927945, 18),
     ('prompt-wayfinder', 'ethereum', 'PROMPT', 0x28d38df637db75533bd3f71426f3410a82041544, 18),
     ('usd1-usd1', 'ethereum', 'USD1', 0x8d0d000ee44948fc98c9b98a4fa4921476f08b0d, 18),
-    ('fuel-fuel-network', 'ethereum', 'FUEL', 0x675B68AA4d9c2d3BB3F0397048e62E6B7192079c, 9)
+    ('fuel-fuel-network', 'ethereum', 'FUEL', 0x675B68AA4d9c2d3BB3F0397048e62E6B7192079c, 9),
+    ('towns-towns', 'ethereum', 'TOWNS', 0x000000Fa00b200406de700041CFc6b19BbFB4d13, 18)
    ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
