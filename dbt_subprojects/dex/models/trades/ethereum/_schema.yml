@@ -707,6 +707,25 @@ models:
           filter:
             version: 1
 
+  - name: angstrom_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: angstrom
+      contributors: jnoorchashm37
+    config:
+      tags: ["ethereum", "dex", "trades", "native"]
+    description: "angstrom ethereum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('angstrom_ethereum_base_trades_seed')
+          filter:
+            version: 1
+
   - name: eulerswap_ethereum_base_trades
     meta:
       blockchain: ethereum
@@ -744,3 +763,4 @@ models:
           seed_file: ref('ekubo_v1_ethereum_base_trades_seed')
           filter:
             version: 1
+
