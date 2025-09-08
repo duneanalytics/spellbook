@@ -164,7 +164,6 @@ logoperate_raw as (
         block_time
         , tx_hash
         , evt_index
-        , blockchain
         , user_address
         , token_address
         , supply_amount
