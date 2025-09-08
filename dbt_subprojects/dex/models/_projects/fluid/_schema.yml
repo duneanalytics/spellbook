@@ -1,0 +1,63 @@
+version: 2
+
+models:
+  - name: fluid_pools
+    meta:
+      blockchain: ethereum,arbitrum,base,polygon
+      sector: dex
+      contributors: Henrystats, dknugo
+    config:
+      tags: ['ethereum', 'polygon', 'arbitrum', 'base', 'pools']
+    description: >
+      Fluid DEX pools across all chains and versions
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - dex
+            - version
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the DEX is deployed"
+      - &project
+        name: project
+        description: "Project name of the DEX"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the DEX project"
+      - &dex
+        name: dex
+        description: "DEX pool smart contract address"
+      - &supply_token
+        name: supply_token
+        description: "Dex Supply Token"
+      - &borrow_token
+        name: borrow_token
+        description: "Dex Borrow Token"
+      - name: creation_block_time
+        description: "Block time of pool creation"
+      - name: creation_block_number
+        description: "Block number of pool creation"
+      - name: factory
+        description: "Factory Pool was deployed from"
+
+
+  - name: fluid_daily_agg_liquidity_events
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: fluid
+      contributors: Henrystats, dknugo
+    config:
+      tags: ['ethereum', 'agg_liquidity_events', 'liquidity', 'fluid']
+    description: >
+      Daily aggregated events for Fluid dexes across all chains
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - project
+            - version
+            - dex
+            - block_date
