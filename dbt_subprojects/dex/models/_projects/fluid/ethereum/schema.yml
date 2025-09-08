@@ -68,7 +68,7 @@ models:
             - tx_hash
             - evt_index
 
-  - name: fluid_ethereum_ldex_events
+  - name: fluid_ethereum_dex_events
     meta:
       blockchain: ethereum
       sector: dex
