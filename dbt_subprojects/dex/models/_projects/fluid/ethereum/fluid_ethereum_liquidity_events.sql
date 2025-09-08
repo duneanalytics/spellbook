@@ -16,5 +16,6 @@
         , version = '1'
         , liquidity_pools = ref('fluid_v1_ethereum_pools')
         , contract_address = '0x52Aa899454998Be5b000Ad077a46Bbe360F4e497'
+        , weth_address = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'
     )
 }}

@@ -165,7 +165,7 @@ logoperate_raw as (
         , tx_hash
         , evt_index
         , user_address
-        , token_address
+        , if (token_address = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, {{weth_address}}, token_address) as token_address
         , supply_amount
         , borrow_amount
         , withdraw_to
@@ -236,6 +236,7 @@ vault_op_mapping(topic0, op_type, side, shares_offset, token0_offset, token1_off
         , l.block_time
         , date_trunc('day', l.block_time) as block_date
         , l.contract_address as dex
+        , l.index as evt_index
         , op.op_type
         , op.side
         , varbinary_to_uint256(bytearray_substring(data, op.shares_offset, 32)) as shares
