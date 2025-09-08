@@ -42,10 +42,21 @@ models:
       - name: factory
         description: "Factory Pool was deployed from"
 
+  - name: fluid_liquidity_events
+    meta:
+      blockchain: ethereum, arbitrum
+      sector: dex
+      project: fluid
+      contributors: Henrystats, dknugo
+    config:
+      tags: ['ethereum', 'agg_liquidity_events', 'liquidity', 'fluid']
+    description: >
+      Liquidity events for Fluid dexes across all chains
+
 
   - name: fluid_daily_agg_liquidity_events
     meta:
-      blockchain: ethereum
+      blockchain: ethereum, arbitrum
       sector: dex
       project: fluid
       contributors: Henrystats, dknugo
@@ -61,3 +72,27 @@ models:
             - version
             - dex
             - block_date
+
+  - name: fluid_base_tvl_daily
+    meta:
+      blockchain: ethereum,arbitrum,base,polygon
+      sector: dex
+      contributors: Henrystats, dknugo
+    config:
+      tags: [ 'dex' ]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - project
+            - version
+            - dex
+            - block_date
+
+  - name: fluid_tvl_daily
+    meta:
+      blockchain: ethereum,arbitrum,base,polygon
+      sector: dex
+      contributors: Henrystats, dknugo
+    config:
+      tags: [ 'dex' ]
