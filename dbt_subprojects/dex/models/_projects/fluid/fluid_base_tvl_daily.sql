@@ -270,7 +270,7 @@ tvl_daily as (
         , blockchain
         , project
         , version
-        , id
+        , dex
         , token0 
         , token1 
         , token0_symbol 
