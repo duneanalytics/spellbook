@@ -11,7 +11,7 @@
 }}
 
 {{
-    fluid_liquidity_events(
+    fluid_liquidity_pools(
         blockchain = 'arbitrum'
         , project = 'fluid'
         , version = '1'
