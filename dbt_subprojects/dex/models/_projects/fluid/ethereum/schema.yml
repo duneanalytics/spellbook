@@ -67,3 +67,19 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
+
+  - name: fluid_ethereum_ldex_events
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: fluid
+      contributors: Henrystats, dknugo
+    config:
+      tags: ['ethereum', 'dex_events', 'liquidity', 'fluid']
+    description: >
+      All dex events in logoperate logged in dex contract (not general fluidliquidityproxy)
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
