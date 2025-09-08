@@ -213,26 +213,20 @@ TSUSDE_MINTS AS (
         AND jetton_master = '0:086FA2A675F74347B08DD4606A549B8FDB98829CB282BC1949D3B12FBAED9DCC' -- USDe
         AND destination = UPPER('0:a11ae0f5bb47bb2945871f915a621ff281c2d786c746da74873d71d6f2aaa7a5') -- vault
         AND NOT tx_aborted
-), TON_PRICES AS (
-    SELECT
-        date_trunc('day', minute) AS block_date,
-        avg(price) AS price_ton
-    FROM {{ source('prices', 'usd') }}
-    WHERE symbol = 'TON'
-        AND blockchain IS NULL
-    GROUP BY 1
 ),
 PRICES_TSUSDE AS (
     SELECT 
         '0:D0E545323C7ACB7102653C073377F7E3C67F122EB94D430A250739F109D4A57D' AS token_address,
         block_date AS ts,
-        1e0 * sum(USDe_amount) / sum(ts_USDe_amount) / max(price_ton) as price_ton,
-        1e0 * sum(USDe_amount) / sum(ts_USDe_amount) as price_usd,
+        1e0 * sum(USDe_amount) / sum(ts_USDe_amount) * P.price_ton as price_ton,
+        1e0 * sum(USDe_amount) / sum(ts_USDe_amount) * P.price_usd as price_usd,
         'tsUSDe' AS asset_type
     FROM TSUSDE_MINTS
     JOIN TSUSDE_USDE_TRANSFERS USING(block_date, trace_id)
-    JOIN TON_PRICES USING(block_date)
-    GROUP BY 1, 2
+    INNER JOIN PRICES_FROM_DEX_TRADES P
+        ON P.token_address = '0:B113A994B5024A16719F69139328EB759596C38A25F59028B146FECDC3621DFE' -- USDT
+        AND P.ts = block_date
+    GROUP BY 1, 2, P.price_ton, P.price_usd
 )
 
 
