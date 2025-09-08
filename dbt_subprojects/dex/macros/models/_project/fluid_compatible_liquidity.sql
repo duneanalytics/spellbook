@@ -4,6 +4,7 @@
     , version = null 
     , liquidity_pools = null
     , contract_address = null 
+    , weth_address = null 
     )
 %}
 -- full credits to @dknugo https://dune.com/dknugo for entire logic for Fluid liquidity, code here mirrors what he has on dune: https://dune.com/queries/5011149
