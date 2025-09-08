@@ -39,7 +39,7 @@ select
     factory,
     dex,
     if (supplytoken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, {{weth_address}}, supplyToken) as supply_token,
-    if (borrowtoken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, {{weth_address}}, borrowToken) as borrow_token
+    if (borrowtoken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, {{weth_address}}, borrowToken) as borrow_token,
     dexId as dex_id
 from 
 decoded_events
