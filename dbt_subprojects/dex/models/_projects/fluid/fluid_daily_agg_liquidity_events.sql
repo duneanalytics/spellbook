@@ -15,10 +15,8 @@ with
 enrich_prices as (
     select 
         *
-        , supply_amount / (supply_exchange_price / 1e12) as supply_amount_raw
-        , borrow_amount / (borrow_exchange_price / 1e12) as borrow_amount_raw
     from 
-    {{ ref('fluid_ethereum_liquidity_events') }}
+    {{ ref('fluid_liquidity_events') }}
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('block_time') }}
     {% endif %}

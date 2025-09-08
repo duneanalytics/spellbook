@@ -6,6 +6,7 @@
 
 {% set fluid_models = [
 ref('fluid_v1_ethereum_pools')
+, ref('fluid_arbitrum_pools')
 ] %}
 
 with 
@@ -60,5 +61,5 @@ all_pools as (
             and ap.blockchain = sup.blockchain 
         left join 
         {{ source('tokens', 'erc20') }} bor
-            on ap.supply_token = bor.contract_address 
+            on ap.borrow_token = bor.contract_address 
             and ap.blockchain = bor.blockchain 
