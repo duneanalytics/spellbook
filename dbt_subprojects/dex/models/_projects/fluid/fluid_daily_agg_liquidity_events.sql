@@ -37,10 +37,10 @@ select
     , fp.borrow_token_symbol as token1_symbol 
     , sum(case when fp.supply_token = ep.token_address then ep.supply_amount_raw else 0 end) as amount0_raw 
     , sum(case when fp.supply_token = ep.token_address then ep.supply_amount_raw / pow(10, fp.supply_token_decimals) else 0 end) as amount0
-    , max(case when fp.supply_token = ep.token_adddress then ep.supply_exchange_price else 0 end) as amount0_price
+    , max(case when fp.supply_token = ep.token_address then ep.supply_exchange_price else 0 end) as amount0_price
     , sum(case when fp.borrow_token = ep.token_address then ep.supply_amount_raw else 0 end) as amount1_raw 
     , sum(case when fp.supply_token = ep.token_address then ep.supply_amount_raw / pow(10, fp.borrow_token_decimals) else 0 end) as amount1
-    , max(case when fp.borrow_token = ep.token_adddress then ep.supply_exchange_price else 0 end) as amount1_price
+    , max(case when fp.borrow_token = ep.token_address then ep.supply_exchange_price else 0 end) as amount1_price
 from 
 enrich_prices ep 
 inner join 
