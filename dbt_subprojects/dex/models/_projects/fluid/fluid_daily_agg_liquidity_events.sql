@@ -20,7 +20,7 @@ enrich_prices as (
     from 
     {{ ref('fluid_ethereum_liquidity_events') }}
     {% if is_incremental() %}
-    WHERE {{ incremental_predicate('block_date') }}
+    WHERE {{ incremental_predicate('block_time') }}
     {% endif %}
 )
 
