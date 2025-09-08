@@ -9,7 +9,8 @@ WITH test_data AS (
 
         ('TON-SLP price', TIMESTAMP '2025-02-17', '0:8D636010DD90D8C0902AC7F9F397D8BD5E177F131EE2CCA24CE894F15D19CEEA',  1.17855, 4.4699248, 1e9),
         ('USDT-SLP price', TIMESTAMP '2025-02-17', '0:AEA78C710AE94270DC263A870CF47B4360F53CC5ED38E3DB502E9E9AFB904B11',  0.3239736, 1.229129, 1e9),
-        ('NOT-SLP price', TIMESTAMP '2025-02-17', '0:2AB634CFCBDBE3B97503691E0780C3D07C9069210A2B24B991BA4F9941B453F9',  0.00094732, 0.00360335, 1e9)
+        ('NOT-SLP price', TIMESTAMP '2025-02-17', '0:2AB634CFCBDBE3B97503691E0780C3D07C9069210A2B24B991BA4F9941B453F9',  0.00094732, 0.00360335, 1e9),
+        ('tsUSDe price', TIMESTAMP '2025-09-07', '0:D0E545323C7ACB7102653C073377F7E3C67F122EB94D430A250739F109D4A57D',  0.3749781, 1.238678, 1e6)
     )
     AS temp (name, timestamp, token_address, expected_price_ton, expected_price_usd, decimals)
 ), test_results AS (    
@@ -20,5 +21,5 @@ WITH test_data AS (
     {{ ref ('ton_jetton_price_daily') }} P
     RIGHT JOIN test_data T ON P.timestamp = T.timestamp AND P.token_address = T.token_address
 )
-SELECT name || ': delta_ton = ' || cast(coalesce(delta_ton, 0) as varchar) || ', delta_usd = ' || cast(coalesce(delta_usd, 0) as varchar) as name FROM test_results
+SELECT name || 'is' || status || ': delta_ton = ' || cast(coalesce(delta_ton, 0) as varchar) || ', delta_usd = ' || cast(coalesce(delta_usd, 0) as varchar) as name FROM test_results
 WHERE status = 'Missing' OR delta_ton > 0.01 OR delta_usd > 0.01
