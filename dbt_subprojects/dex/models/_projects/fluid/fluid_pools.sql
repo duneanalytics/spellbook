@@ -7,6 +7,8 @@
 {% set fluid_models = [
 ref('fluid_v1_ethereum_pools')
 , ref('fluid_arbitrum_pools')
+, ref('fluid_base_pools')
+, ref('fluid_polygon_pools')
 ] %}
 
 with 
