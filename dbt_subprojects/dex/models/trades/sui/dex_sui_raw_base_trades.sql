@@ -18,29 +18,29 @@ with all_swaps as (
   from (
     {% for base in base_models %}
       select
-          protocol,
-          timestamp_ms,
-          block_time,
-          block_date,
-          block_month,
-          transaction_digest,
-          event_index,
-          epoch,
-          checkpoint,
-          pool_id,
-          sender,
-          cast(amount_in  as decimal(38,0)) as amount_in,
-          cast(amount_out as decimal(38,0)) as amount_out,
-          a_to_b,
-          cast(fee_amount           as decimal(38,0)) as fee_amount,
-          cast(protocol_fee_amount  as decimal(38,0)) as protocol_fee_amount,
-          after_sqrt_price,
-          before_sqrt_price,
-          liquidity,
-          reserve_a,
-          reserve_b,
-          tick_index_bits,
-          row_number() over (
+          protocol
+          , timestamp_ms
+          , block_time
+          , block_date
+          , block_month
+          , transaction_digest
+          , event_index
+          , epoch
+          , checkpoint
+          , pool_id
+          , sender
+          , cast(amount_in  as decimal(38,0)) as amount_in
+          , cast(amount_out as decimal(38,0)) as amount_out
+          , a_to_b
+          , cast(fee_amount           as decimal(38,0)) as fee_amount
+          , cast(protocol_fee_amount  as decimal(38,0)) as protocol_fee_amount
+          , after_sqrt_price
+          , before_sqrt_price
+          , liquidity
+          , reserve_a
+          , reserve_b
+          , tick_index_bits
+          , row_number() over (
             partition by protocol, transaction_digest, event_index
             order by transaction_digest
           ) as dup_rank
