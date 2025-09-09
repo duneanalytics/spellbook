@@ -1,0 +1,55 @@
+version: 2
+
+sources:
+  - name: sui
+    description: "Sui blockchain data"
+    tables:
+      - name: events
+        description: "Sui blockchain events"
+        columns:
+          - name: event_type
+            description: "Type of the event"
+          - name: event_json
+            description: "Event data in JSON format"
+          - name: transaction_digest
+            description: "Transaction hash"
+          - name: event_index
+            description: "Event index within transaction"
+          - name: timestamp_ms
+            description: "Event timestamp in milliseconds"
+          - name: sender
+            description: "Event sender address"
+          - name: package
+            description: "Package address"
+          - name: epoch
+            description: "Sui epoch number"
+          - name: checkpoint
+            description: "Sui checkpoint number"
+
+      - name: transactions
+        description: "Sui blockchain transactions"
+        columns:
+          - name: transaction_digest
+            description: "Transaction hash"
+          - name: timestamp_ms
+            description: "Transaction timestamp in milliseconds"
+          - name: epoch
+            description: "Sui epoch number"
+          - name: checkpoint
+            description: "Sui checkpoint number"
+
+      - name: objects
+        description: "Sui blockchain objects"
+        columns:
+          - name: object_id
+            description: "Object identifier"
+          - name: type_
+            description: "Object type"
+          - name: object_json
+            description: "Object data in JSON format"
+          - name: bcs
+            description: "Binary Canonical Serialization data"
+          - name: checkpoint
+            description: "Sui checkpoint number"
+          - name: version
+            description: "Object version"

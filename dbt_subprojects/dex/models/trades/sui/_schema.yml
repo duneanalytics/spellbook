@@ -54,13 +54,13 @@ models:
             - transaction_digest
             - event_index
       - not_null:
-          column_name: token_sold_amount_raw
+          column_name: amount_in
       - not_null:
-          column_name: token_bought_amount_raw
+          column_name: amount_out
       - not_null:
-          column_name: token_sold_address
+          column_name: pool_id
       - not_null:
-          column_name: token_bought_address
+          column_name: protocol
 
   - name: dex_sui_raw_base_trades
     meta:
@@ -73,18 +73,13 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
+            - protocol
+            - transaction_digest
+            - event_index
       - not_null:
-          column_name: token_sold_amount_raw
+          column_name: amount_in
       - not_null:
-          column_name: token_bought_amount_raw
-      - accepted_values:
-          column_name: blockchain
-          values: ["sui"]
+          column_name: amount_out
 
   - name: dex_sui_base_trades
     meta:
@@ -100,45 +95,16 @@ models:
       - test_acceptable_usd_amount:
           column_name: amount_usd
           max_value: 1000000000
-
-sources:
-  - name: sui
-    description: "Sui blockchain data"
-    tables:
-      - name: events
-        description: "Sui blockchain events"
-        columns:
-          - name: event_type
-            description: "Type of the event"
-          - name: event_json
-            description: "Event data in JSON format"
-          - name: transaction_digest
-            description: "Transaction hash"
-          - name: event_index
-            description: "Event index within transaction"
-          - name: timestamp_ms
-            description: "Event timestamp in milliseconds"
-          - name: sender
-            description: "Event sender address"
-          - name: package
-            description: "Package address"
-          - name: epoch
-            description: "Sui epoch number"
-          - name: checkpoint
-            description: "Sui checkpoint number"
-
-      - name: objects
-        description: "Sui blockchain objects"
-        columns:
-          - name: object_id
-            description: "Object identifier"
-          - name: type_
-            description: "Object type"
-          - name: object_json
-            description: "Object data in JSON format"
-          - name: bcs
-            description: "Binary Canonical Serialization data"
-          - name: checkpoint
-            description: "Sui checkpoint number"
-          - name: version
-            description: "Object version"
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - protocol
+            - transaction_digest
+            - event_index
+      - not_null:
+          column_name: coin_type_in
+      - not_null:
+          column_name: coin_type_out
+      - not_null:
+          column_name: amount_in
+      - not_null:
+          column_name: amount_out
