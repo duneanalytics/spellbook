@@ -13,7 +13,8 @@ SELECT
    token_id
    , '{{ blockchain }}' as blockchain
    , symbol
-   , contract_address
+   , cast(split_part(contract_address, '::', 1) as varbinary) as contract_address
+   , contract_address as contract_address_full
    , decimals
 FROM
 (
