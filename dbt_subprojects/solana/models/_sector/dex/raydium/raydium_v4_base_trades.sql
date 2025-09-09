@@ -12,7 +12,7 @@
         )
 }}
 
-{% set project_start_date = '2021-03-21' %} --grabbed program deployed at time (account created at).
+{% set project_start_date = '2025-09-02' %} --grabbed program deployed at time (account created at).
 
   WITH
     --we aren't tracking using pool inits because there are a hundred or so pools from 2021 that did not use a consistent pattern.
@@ -80,7 +80,7 @@
         AND sp.call_block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
     )
-
+--triggering a run here to see if it works
 SELECT
     tb.blockchain
     , tb.project
