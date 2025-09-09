@@ -96,8 +96,8 @@ daily_cum as (
         , sum(amount1_raw) over (partition by blockchain, project, version, dex order by block_date asc) as token1_balance_raw_tmp
         , sum(amount0) over (partition by blockchain, project, version, dex order by block_date asc) as token0_balance_tmp
         , sum(amount1) over (partition by blockchain, project, version, dex order by block_date asc) as token1_balance_tmp
-        , max(amount0_price) over (partition by blockchain, project, version, dex order by block_date asc) as amount0_price
-        , max(amount1_price) over (partition by blockchain, project, version, dex order by block_date asc) as amount1_price
+        , max(amount0_price) over (partition by blockchain, project, version, dex order by block_date asc) as amount0_price_tmp
+        , max(amount1_price) over (partition by blockchain, project, version, dex order by block_date asc) as amount1_price_tmp
         , lead(block_date, 1, current_timestamp) over (partition by blockchain, project, version, dex order by block_date asc) as next_day
     from 
     daily_events_final 
@@ -124,12 +124,12 @@ tvl_daily as (
         , token1_symbol 
         , token0_balance_raw_tmp as amount0_raw
         , token1_balance_raw_tmp as amount1_raw
-        , token0_balance_raw_tmp * (amount0_price /1e12) as token0_balance_raw 
-        , token1_balance_raw_tmp * (amount1_price /1e12) as token1_balance_raw 
+        , token0_balance_raw_tmp * (amount0_price_tmp /1e12) as token0_balance_raw 
+        , token1_balance_raw_tmp * (amount1_price_tmp /1e12) as token1_balance_raw 
         , token0_balance_tmp as amount0
         , token1_balance_tmp as amount1
-        , token0_balance_tmp * (amount0_price /1e12) as token0_balance
-        , token1_balance_tmp * (amount1_price /1e12) as token1_balance
+        , token0_balance_tmp * (amount0_price_tmp /1e12) as token0_balance
+        , token1_balance_tmp * (amount1_price_tmp /1e12) as token1_balance
         , amount0_price
         , amount1_price
         , case 
@@ -249,8 +249,8 @@ daily_cum as (
         , sum(amount1_raw) over (partition by blockchain, project, version, dex order by block_date asc) as token1_balance_raw_tmp
         , sum(amount0) over (partition by blockchain, project, version, dex order by block_date asc) as token0_balance_tmp
         , sum(amount1) over (partition by blockchain, project, version, dex order by block_date asc) as token1_balance_tmp
-        , max(amount0_price) over (partition by blockchain, project, version, dex order by block_date asc) as amount0_price
-        , max(amount1_price) over (partition by blockchain, project, version, dex order by block_date asc) as amount1_price
+        , max(amount0_price) over (partition by blockchain, project, version, dex order by block_date asc) as amount0_price_tmp
+        , max(amount1_price) over (partition by blockchain, project, version, dex order by block_date asc) as amount1_price_tmp
         , lead(block_date, 1, current_timestamp) over (partition by blockchain, project, version, dex order by block_date asc) as next_day
     from 
     daily_events
@@ -277,12 +277,12 @@ tvl_daily as (
         , token1_symbol 
         , token0_balance_raw_tmp as amount0_raw
         , token1_balance_raw_tmp as amount1_raw
-        , token0_balance_raw_tmp * (amount0_price /1e12) as token0_balance_raw 
-        , token1_balance_raw_tmp * (amount1_price /1e12) as token1_balance_raw 
+        , token0_balance_raw_tmp * (amount0_price_tmp /1e12) as token0_balance_raw 
+        , token1_balance_raw_tmp * (amount1_price_tmp /1e12) as token1_balance_raw 
         , token0_balance_tmp as amount0
         , token1_balance_tmp as amount1
-        , token0_balance_tmp * (amount0_price /1e12) as token0_balance
-        , token1_balance_tmp * (amount1_price /1e12) as token1_balance
+        , token0_balance_tmp * (amount0_price_tmp /1e12) as token0_balance
+        , token1_balance_tmp * (amount1_price_tmp /1e12) as token1_balance
         , amount0_price
         , amount1_price
     from 
