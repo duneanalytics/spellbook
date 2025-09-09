@@ -7,6 +7,8 @@
 {% set fluid_models = [
 ref('fluid_arbitrum_liquidity_events')
 , ref('fluid_ethereum_liquidity_events')
+, ref('fluid_base_liquidity_events')
+, ref('fluid_polygon_liquidity_events')
 ] %}
 
 

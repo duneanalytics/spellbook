@@ -44,7 +44,7 @@ models:
 
   - name: fluid_liquidity_events
     meta:
-      blockchain: ethereum, arbitrum
+      blockchain: ethereum, arbitrum, base, polygon
       sector: dex
       project: fluid
       contributors: Henrystats, dknugo
@@ -56,7 +56,7 @@ models:
 
   - name: fluid_daily_agg_liquidity_events
     meta:
-      blockchain: ethereum, arbitrum
+      blockchain: ethereum, arbitrum, base, polygon
       sector: dex
       project: fluid
       contributors: Henrystats, dknugo
