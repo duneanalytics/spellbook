@@ -11,6 +11,7 @@
 
 {% set base_models = [
   ref('momentum_sui_base_trades')
+  , ref('cetus_sui_base_trades')
 ] %}
 
 with all_swaps as (

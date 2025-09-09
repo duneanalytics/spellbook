@@ -61,6 +61,16 @@ models:
           column_name: pool_id
       - not_null:
           column_name: protocol
+  - name: cetus_sui_base_trades
+    meta:
+      sector: dex
+      project: cetus
+    config:
+      tags: ["sui","dex","trades","cetus"]
+    description: "Cetus Sui base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [transaction_digest, event_index]
 
   - name: dex_sui_raw_base_trades
     meta:
