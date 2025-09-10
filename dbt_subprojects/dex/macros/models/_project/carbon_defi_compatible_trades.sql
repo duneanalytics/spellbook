@@ -38,7 +38,7 @@ WITH dexs AS (
     SELECT
         v.evt_block_number AS block_number,
         v.evt_block_time AS block_time,
-        v.trader AS taker,
+        v.caller AS taker,
         CAST(NULL as VARBINARY) as maker,
         v.targetAmount AS token_bought_amount_raw,
         v.sourceAmount AS token_sold_amount_raw,
