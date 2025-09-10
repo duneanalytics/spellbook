@@ -23,7 +23,7 @@ latest as (
   join used_pools u
     on o.object_id = u.pool_id
   -- only types that even *could* have generics
-  where position('<' in o.type_) > 0
+  where strpos(o.type_, '<') > 0
 ),
 
 -- 3) extract the full generic string inside <…>
@@ -66,4 +66,4 @@ filtered as (
 )
 
 select distinct pool_id, coin_type_a, coin_type_b
-from filtered;
+from filtered

@@ -46,11 +46,15 @@ with all_swaps as (
             order by transaction_digest
           ) as dup_rank
       from {{ base }}
-      {% if is_incremental() %} where {{ incremental_predicate('block_time') }} {% endif %}
-      {% if not loop.last %} union all {% endif %}
+      {% if is_incremental() %}
+        where {{ incremental_predicate('block_time') }}
+      {% endif %}
+      {% if not loop.last %}
+        union all
+      {% endif %}
     {% endfor %}
   )
   where dup_rank = 1
 )
 
-select * from all_swaps;
+select * from all_swaps

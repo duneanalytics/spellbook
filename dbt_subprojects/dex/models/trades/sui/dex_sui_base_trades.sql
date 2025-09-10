@@ -10,8 +10,11 @@
 ) }}
 
 with raw as (
-  select * from {{ ref('dex_sui_raw_base_trades') }}
-  {% if is_incremental() %} where {{ incremental_predicate('block_time') }} {% endif %}
+  select * 
+  from {{ ref('dex_sui_raw_base_trades') }}
+  {% if is_incremental() %} 
+  where {{ incremental_predicate('block_time') }} 
+  {% endif %}
 ),
 
 -- resolve coin types for pool-style swaps using pool_map + a_to_b
@@ -75,7 +78,7 @@ joined as (
       , t.storage_rebate                as gas_used_storage_rebate
       , t.non_refundable_storage_fee    as gas_used_non_refundable_storage_fee
       , t.total_gas_mist
-      , cast(t.total_gas_mist as decimal(38,0)) / cast(1e9 as decimal(38,0)) as total_gas_sui
+      , cast(t.total_gas_mist as decimal(38,0)) / cast(1000000000 as decimal(38,0)) as total_gas_sui
   from meta m
   left join tx t
     on m.transaction_digest = t.transaction_digest
@@ -126,11 +129,17 @@ finalize as (
 
       -- fee rates relative to input size
       , case when amount_in_decimal is not null and amount_in_decimal > 0
-           then fee_amount_decimal / amount_in_decimal
+           then cast(
+                  cast(fee_amount as decimal(38,0)) / cast(pow(10, coin_decimals_in) as decimal(38,0))
+                as decimal(38,18)
+                ) / amount_in_decimal
            else null end as fee_rate
 
       , case when amount_in_decimal is not null and amount_in_decimal > 0
-           then protocol_fee_amount_decimal / amount_in_decimal
+           then cast(
+                  cast(protocol_fee_amount as decimal(38,0)) / cast(pow(10, coin_decimals_in) as decimal(38,0))
+                as decimal(38,18)
+                ) / amount_in_decimal
            else null end as protocol_fee_rate
 
       -- pool state & ticks
@@ -153,4 +162,4 @@ finalize as (
   from joined
 )
 
-select * from finalize;
+select * from finalize

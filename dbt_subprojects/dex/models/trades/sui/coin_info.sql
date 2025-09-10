@@ -8,14 +8,8 @@
 with meta as (
   select
       lower(regexp_extract(type_, '<(.*)>', 1)) as coin_type
-      , coalesce(
-        json_extract_scalar(object_json, '$.symbol'),
-        json_extract_scalar(bcs,         '$.symbol')
-      )                                         as coin_symbol
-      , cast(coalesce(
-        json_extract_scalar(object_json, '$.decimals'),
-        json_extract_scalar(bcs,         '$.decimals')
-      ) as integer)                             as coin_decimals
+      , json_extract_scalar(object_json, '$.symbol') as coin_symbol
+      , cast(json_extract_scalar(object_json, '$.decimals') as integer) as coin_decimals
       , checkpoint
       , version
       , row_number() over (
