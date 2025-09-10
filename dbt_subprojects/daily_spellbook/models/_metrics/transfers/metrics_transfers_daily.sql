@@ -25,7 +25,6 @@
     , 'fantom'
     , 'flare'
     , 'gnosis'
-    , 'hyperevm'
     , 'ink'
     , 'kaia'
     , 'lens'
