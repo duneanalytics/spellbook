@@ -11,12 +11,16 @@
 with decoded as (
   select
       -- swap core
-      case when cast(json_extract_scalar(event_json, '$.x_for_y') as boolean)
-           then cast(json_extract_scalar(event_json, '$.amount_x') as decimal(38,0))
-           else cast(json_extract_scalar(event_json, '$.amount_y') as decimal(38,0)) end  as amount_in
-      , case when cast(json_extract_scalar(event_json, '$.x_for_y') as boolean)
-           then cast(json_extract_scalar(event_json, '$.amount_y') as decimal(38,0))
-           else cast(json_extract_scalar(event_json, '$.amount_x') as decimal(38,0)) end  as amount_out
+      case 
+          when cast(json_extract_scalar(event_json, '$.x_for_y') as boolean)
+          then cast(json_extract_scalar(event_json, '$.amount_x') as decimal(38,0))
+          else cast(json_extract_scalar(event_json, '$.amount_y') as decimal(38,0)) 
+      end as amount_in
+      , case 
+    when cast(json_extract_scalar(event_json, '$.x_for_y') as boolean)
+    then cast(json_extract_scalar(event_json, '$.amount_y') as decimal(38,0))
+    else cast(json_extract_scalar(event_json, '$.amount_x') as decimal(38,0)) 
+end as amount_out
       , cast(json_extract_scalar(event_json, '$.x_for_y') as boolean)                        as a_to_b
       , cast(json_extract_scalar(event_json, '$.fee_amount') as decimal(38,0))               as fee_amount
       , cast(json_extract_scalar(event_json, '$.protocol_fee') as decimal(38,0))             as protocol_fee_amount
@@ -25,8 +29,7 @@ with decoded as (
       , cast(json_extract_scalar(event_json, '$.liquidity') as decimal(38,0))                as liquidity
       , cast(json_extract_scalar(event_json, '$.reserve_x') as decimal(38,0))                as reserve_a
       , cast(json_extract_scalar(event_json, '$.reserve_y') as decimal(38,0))                as reserve_b
-      , cast(cast(json_extract_scalar(event_json, '$.tick_index.bits') as decimal(38,0)) as bigint)
-                                                                                           as tick_index_bits
+      , cast(json_extract_scalar(event_json, '$.tick_index.bits') as bigint) as tick_index_bits
       -- ids & time
       , timestamp_ms
       , from_unixtime(timestamp_ms/1000)                              as block_time
@@ -70,5 +73,5 @@ select
     , reserve_b
     , tick_index_bits
 from decoded
-where amount_in  > 0
-  and amount_out > 0;
+where amount_in > 0
+  and amount_out > 0

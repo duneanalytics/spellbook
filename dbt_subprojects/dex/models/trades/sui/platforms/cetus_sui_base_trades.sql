@@ -64,4 +64,4 @@ select
     , cast(null as bigint)        as tick_index_bits
 from decoded
 where amount_in > 0
-  and amount_out > 0;
+  and amount_out > 0
