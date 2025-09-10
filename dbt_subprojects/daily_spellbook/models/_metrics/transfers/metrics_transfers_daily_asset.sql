@@ -16,6 +16,7 @@
     , 'ethereum'
     , 'fantom'
     , 'gnosis'
+    , 'hyperevm'
     , 'linea'
     , 'mantle'
     , 'optimism'
