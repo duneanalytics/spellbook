@@ -44,7 +44,7 @@ WITH dexs AS (
         v.sourceAmount AS token_sold_amount_raw,
         v.token AS token_bought_address,
         CASE
-            WHEN v.token = targetToken THEN {{ finalTargetToken }}
+            WHEN v.token = {{ targetToken }} THEN {{ finalTargetToken }}
             ELSE {{ targetToken }}
         END AS token_sold_address,
         v.contract_address AS project_contract_address,
