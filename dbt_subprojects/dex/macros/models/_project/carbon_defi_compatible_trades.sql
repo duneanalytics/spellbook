@@ -33,7 +33,7 @@ WITH dexs AS (
     WHERE {{incremental_predicate('t.evt_block_time')}}
     {% endif %}
 
-    {% if CarbonVortex_evt_TokenTraded is not none %}
+    {% if CarbonVortex_evt_TokenTraded %}
     UNION ALL
     SELECT
         v.evt_block_number AS block_number,
