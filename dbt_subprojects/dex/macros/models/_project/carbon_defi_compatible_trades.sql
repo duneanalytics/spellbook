@@ -2,7 +2,10 @@
     blockchain = null,
     project = null,
     CarbonController_evt_TokensTraded = null,
-    wrapped_native_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+    CarbonVortex_evt_TokenTraded = null,
+    wrapped_native_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+    targetToken = null,
+    finalTargetToken = null
     )
 %}
 
@@ -28,6 +31,29 @@ WITH dexs AS (
     FROM {{ CarbonController_evt_TokensTraded }} t
     {% if is_incremental() %}
     WHERE {{incremental_predicate('t.evt_block_time')}}
+    {% endif %}
+
+    {% if CarbonVortex_evt_TokenTraded is not none %}
+    UNION ALL
+    SELECT
+        v.evt_block_number AS block_number,
+        v.evt_block_time AS block_time,
+        v.trader AS taker,
+        CAST(NULL as VARBINARY) as maker,
+        v.targetAmount AS token_bought_amount_raw,
+        v.sourceAmount AS token_sold_amount_raw,
+        v.token AS token_bought_address,
+        CASE
+            WHEN v.token = targetToken THEN {{ finalTargetToken }}
+            ELSE {{ targetToken }}
+        END AS token_sold_address,
+        v.contract_address AS project_contract_address,
+        v.evt_tx_hash AS tx_hash,
+        v.evt_index
+    FROM {{ CarbonVortex_evt_TokenTraded }} v
+    {% if is_incremental() %}
+    WHERE {{incremental_predicate('v.evt_block_time')}}
+    {% endif %}
     {% endif %}
 )
 
