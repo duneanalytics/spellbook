@@ -20,6 +20,7 @@
                                         , "gnosis"
                                         , "kaia"
                                         , "linea"
+                                        , "mantle"
                                         , "nova"
                                         , "optimism"
                                         , "polygon"
