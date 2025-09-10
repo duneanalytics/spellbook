@@ -4,7 +4,6 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['asset_type_v2'],
 ) }}
 
