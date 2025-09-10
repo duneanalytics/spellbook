@@ -5,3 +5,9 @@ sources:
     tables:
       - name: PoolManager_evt_ModifyLiquidity
       - name: poolmanager_call_take
+
+  - name: ekubo_ethereum
+    tables:
+      - name: ekubo_core_evt_poolinitialized
+      - name: ekubo_core_evt_positionupdated
+      - name: ekubo_core_evt_positionfeescollected
