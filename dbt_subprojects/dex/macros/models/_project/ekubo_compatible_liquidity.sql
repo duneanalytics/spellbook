@@ -103,8 +103,8 @@ get_pools as (
         ae.tx_from,
         ae.evt_index,
         ae.event_type,
-        ep.token0_address as token0,
-        ep.token1_address as token1,
+        ep.token0,
+        ep.token1,
         CAST(ae.amount0 AS double) as amount0_raw,
         CAST(ae.amount1 AS double) as amount1_raw
     from 
