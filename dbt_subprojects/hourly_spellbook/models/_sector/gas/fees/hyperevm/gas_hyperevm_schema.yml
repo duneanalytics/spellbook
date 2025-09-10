@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: hyperevm
       sector: gas
-      contributors: 0xRob, soispoke
+      contributors: 0xRob, soispoke, msilb7
     config:
       tags: ['hyperevm', 'gas', 'fees']
     description: >
