@@ -15,6 +15,7 @@ models:
           combination_of_columns:
             - tx_hash
             - block_date
+            - pool_address
     columns:
       - name: block_date
         description: "block_date of the transaction"
