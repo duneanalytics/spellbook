@@ -62,7 +62,7 @@
     {{ return(addresses) }}
 {% endmacro %}
 
-{% macro safe_singletons_modern_validated(blockchain, sources_list, date_filter=false) %}
+{% macro safe_singletons_modern_validated(blockchain, sources_list) %}
 -- Fetch all known singleton addresses used via the factory
 -- FILTERED to only include official Safe deployments
 {% set official_addresses = get_official_safe_addresses() %}
@@ -72,8 +72,10 @@ WITH all_singletons AS (
     {%- for source_info in sources_list %}
     select distinct singleton as address 
     from {{ source('gnosis_safe_' ~ blockchain, source_info) }}
-    {%- if date_filter %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    {%- if not is_incremental() %}
+    -- no filter for initial load
+    {%- else %}
+    WHERE {{ incremental_predicate('evt_block_time') }}
     {%- endif %}
     {%- if not loop.last %}
     
@@ -95,7 +97,7 @@ WHERE FALSE
 {%- endif -%}
 {% endmacro %}
 
-{% macro safe_singletons_legacy_validated(blockchain, legacy_sources, modern_sources, date_filter=false) %}
+{% macro safe_singletons_legacy_validated(blockchain, legacy_sources, modern_sources) %}
 -- Fetch all known singleton/mastercopy addresses used via factories
 -- FILTERED to only include official Safe deployments
 {% set official_addresses = get_official_safe_addresses() %}
@@ -106,8 +108,10 @@ WITH all_singletons AS (
     {%- for source_info in legacy_sources %}
     select distinct {{ source_info.column }} as address 
     from {{ source('gnosis_safe_' ~ blockchain, source_info.table) }}
-    {%- if date_filter %}
-    WHERE call_block_time >= date_trunc('day', now() - interval '7' day)
+    {%- if not is_incremental() %}
+    -- no filter for initial load
+    {%- else %}
+    WHERE {{ incremental_predicate('call_block_time') }}
     {%- endif %}
     {%- if not loop.last or modern_sources|length > 0 %}
     
@@ -119,8 +123,10 @@ WITH all_singletons AS (
     {%- for source_info in modern_sources %}
     select distinct singleton as address 
     from {{ source('gnosis_safe_' ~ blockchain, source_info) }}
-    {%- if date_filter %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    {%- if not is_incremental() %}
+    -- no filter for initial load
+    {%- else %}
+    WHERE {{ incremental_predicate('evt_block_time') }}
     {%- endif %}
     {%- if not loop.last %}
     
@@ -143,7 +149,7 @@ WHERE FALSE
 {%- endif -%}
 {% endmacro %}
 
-{% macro safe_singletons_ethereum_validated(date_filter=false) %}
+{% macro safe_singletons_ethereum_validated() %}
 -- Fetch all known singleton/mastercopy addresses used via factories for Ethereum
 -- FILTERED to only include official Safe deployments
 {% set official_addresses = get_official_safe_addresses() %}
@@ -151,79 +157,99 @@ WHERE FALSE
 WITH all_singletons AS (
     select distinct masterCopy as address 
     from {{ source('gnosis_safe_ethereum', 'ProxyFactoryv1_0_0_call_createProxy') }}
-    {%- if date_filter %}
-    WHERE call_block_time >= date_trunc('day', now() - interval '7' day)
+    {%- if not is_incremental() %}
+    -- no filter for initial load
+    {%- else %}
+    WHERE {{ incremental_predicate('call_block_time') }}
     {%- endif %}
     
     union 
     
     select distinct _mastercopy as address 
     from {{ source('gnosis_safe_ethereum', 'ProxyFactoryv1_0_0_call_createProxyWithNonce') }}
-    {%- if date_filter %}
-    WHERE call_block_time >= date_trunc('day', now() - interval '7' day)
+    {%- if not is_incremental() %}
+    -- no filter for initial load
+    {%- else %}
+    WHERE {{ incremental_predicate('call_block_time') }}
     {%- endif %}
     
     union
     
     select distinct masterCopy as address 
     from {{ source('gnosis_safe_ethereum', 'ProxyFactoryv1_1_0_call_createProxy') }}
-    {%- if date_filter %}
-    WHERE call_block_time >= date_trunc('day', now() - interval '7' day)
+    {%- if not is_incremental() %}
+    -- no filter for initial load
+    {%- else %}
+    WHERE {{ incremental_predicate('call_block_time') }}
     {%- endif %}
     
     union 
     select distinct _mastercopy as address 
     from {{ source('gnosis_safe_ethereum', 'ProxyFactoryv1_1_0_call_createProxyWithNonce') }}
-    {%- if date_filter %}
-    WHERE call_block_time >= date_trunc('day', now() - interval '7' day)
+    {%- if not is_incremental() %}
+    -- no filter for initial load
+    {%- else %}
+    WHERE {{ incremental_predicate('call_block_time') }}
     {%- endif %}
     
     union
     
     select distinct masterCopy as address 
     from {{ source('gnosis_safe_ethereum', 'ProxyFactoryv1_1_1_call_createProxy') }}
-    {%- if date_filter %}
-    WHERE call_block_time >= date_trunc('day', now() - interval '7' day)
+    {%- if not is_incremental() %}
+    -- no filter for initial load
+    {%- else %}
+    WHERE {{ incremental_predicate('call_block_time') }}
     {%- endif %}
     
     union 
     
     select distinct _mastercopy as address 
     from {{ source('gnosis_safe_ethereum', 'ProxyFactoryv1_1_1_call_createProxyWithNonce') }}
-    {%- if date_filter %}
-    WHERE call_block_time >= date_trunc('day', now() - interval '7' day)
+    {%- if not is_incremental() %}
+    -- no filter for initial load
+    {%- else %}
+    WHERE {{ incremental_predicate('call_block_time') }}
     {%- endif %}
     
     union
     
     select distinct _mastercopy as address 
     from {{ source('gnosis_safe_ethereum', 'ProxyFactoryv1_1_1_call_createProxyWithCallback') }}
-    {%- if date_filter %}
-    WHERE call_block_time >= date_trunc('day', now() - interval '7' day)
+    {%- if not is_incremental() %}
+    -- no filter for initial load
+    {%- else %}
+    WHERE {{ incremental_predicate('call_block_time') }}
     {%- endif %}
     
     union
     
     select distinct singleton as address 
     from {{ source('gnosis_safe_ethereum', 'SafeProxyFactory_v1_3_0_evt_ProxyCreation') }}
-    {%- if date_filter %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    {%- if not is_incremental() %}
+    -- no filter for initial load
+    {%- else %}
+    WHERE {{ incremental_predicate('evt_block_time') }}
     {%- endif %}
     
     union
     
     select distinct singleton as address
     from {{ source('gnosis_safe_ethereum', 'SafeProxyFactory_v1_4_1_evt_ProxyCreation') }}
-    {%- if date_filter %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    {%- if not is_incremental() %}
+    -- no filter for initial load
+    {%- else %}
+    WHERE {{ incremental_predicate('evt_block_time') }}
     {%- endif %}
     
     union
     
     select distinct singleton as address
     from {{ source('gnosis_safe_ethereum', 'SafeProxyFactory_v1_5_0_evt_ProxyCreation') }}
-    {%- if date_filter %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    {%- if not is_incremental() %}
+    -- no filter for initial load
+    {%- else %}
+    WHERE {{ incremental_predicate('evt_block_time') }}
     {%- endif %}
 )
 SELECT DISTINCT address
@@ -235,22 +261,21 @@ WHERE LOWER(CAST(address AS VARCHAR)) IN (
 )
 {% endmacro %}
 
-{% macro safe_singletons_by_network_validated(blockchain, only_official=true, date_filter=false) %}
+{% macro safe_singletons_by_network_validated(blockchain, only_official=true) %}
 {#- 
 Main macro to get singletons for a network
 Set only_official=true to filter for official Safe deployments only
 Set only_official=false to get all discovered singletons (including unofficial)
-Set date_filter=true to limit results to last 7 days (for CI/CD performance)
 #}
 {%- set network_config = get_safe_network_config(blockchain) -%}
 
 {%- if only_official -%}
     {%- if network_config.singleton_type == 'modern' -%}
-        {{ safe_singletons_modern_validated(blockchain, network_config.singleton_sources, date_filter) }}
+        {{ safe_singletons_modern_validated(blockchain, network_config.singleton_sources) }}
     {%- elif network_config.singleton_type == 'legacy' -%}
-        {{ safe_singletons_legacy_validated(blockchain, network_config.legacy_singleton_sources, network_config.modern_singleton_sources, date_filter) }}
+        {{ safe_singletons_legacy_validated(blockchain, network_config.legacy_singleton_sources, network_config.modern_singleton_sources) }}
     {%- elif network_config.singleton_type == 'legacy_ethereum' -%}
-        {{ safe_singletons_ethereum_validated(date_filter) }}
+        {{ safe_singletons_ethereum_validated() }}
     {%- else -%}
         {{ exceptions.raise_compiler_error("Unknown singleton type: " ~ network_config.singleton_type) }}
     {%- endif -%}
