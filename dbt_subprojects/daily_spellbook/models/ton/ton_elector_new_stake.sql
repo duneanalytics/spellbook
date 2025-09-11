@@ -1,11 +1,13 @@
 {{
     config(
         schema = 'ton_elector',
-        alias='new_stake',
-        
-        materialized = 'table',
-        unique_key = ['address'],
-        post_hook='{{ expose_spells(\'["ton"]\',
+        alias = 'new_stake',
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
+        unique_key = ['tx_hash'],
+        post_hook = '{{ expose_spells(\'["ton"]\',
                                     "sector",
                                     "ton",
                                     \'["pshuvalov"]\') }}'

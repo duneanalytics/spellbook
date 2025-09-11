@@ -240,7 +240,7 @@ models:
         description: "The query id of the transaction"
       - name: reason
         description: "The reason of the return (see Elector code)"
-- name: ton_elector_recover_stake_success
+  - name: ton_elector_recover_stake
     meta:
       blockchain: ton
       contributors: [pshuvalov]
@@ -267,3 +267,50 @@ models:
         description: "The address of the wallet"
       - name: value
         description: "The value of the transaction"
+  - name: ton_nominators_cashflow
+    meta:
+      blockchain: ton
+      contributors: [pshuvalov]
+    config:
+      tags: ['ton', 'validation']
+    description: "In/out flow of funds from/to nominators"
+    columns:
+      - name: block_date
+        description: "The date of the block"
+      - name: block_time
+        description: "The time of the block"
+      - name: direction
+        description: "The direction of the transaction"
+      - name: pool_type
+        description: "The type of the pool"
+      - name: pool_address
+        description: "The address of the pool"
+      - name: user_address
+        description: "The address of the user"
+      - name: value
+        description: "The value of the transaction"
+      - name: tx_hash
+        description: "The hash of the transaction"
+  - name: ton_nominators_balances
+    meta:
+      blockchain: ton
+      contributors: [pshuvalov]
+    config:
+      tags: ['ton', 'validation']
+    description: "Balances of nominators"
+    columns:
+      - name: pool
+        description: "The pool of the nominator"
+      - name: user_address
+        description: "The address of the user"
+      - name: pool_type
+        description: "The type of the pool"
+      - name: current_balance
+        description: "The current balance of the nominator"
+      - name: first_tx
+        description: "The first transaction of the nominator"
+      - name: last_tx
+        description: "The last transaction of the nominator"
+      - name: tx_count
+        description: "The number of transactions of the nominator"
+      
