@@ -47,6 +47,6 @@ where et.success = true
     {% elif not is_incremental() %}
     and et.block_time > TIMESTAMP '{{ start_date }}' -- for initial query optimisation
     {% elif is_incremental() %}
-    and et.block_time > date_trunc('day', now() - interval '7' day)
+    and {{ incremental_predicate('et.block_time') }}
     {% endif %}
 {% endmacro %}
