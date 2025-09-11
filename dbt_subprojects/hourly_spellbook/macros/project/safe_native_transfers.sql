@@ -25,12 +25,10 @@ from
         and et.success = true
         and (lower(et.call_type) not in ('delegatecall', 'callcode', 'staticcall') or et.call_type is null)
         and et.value > UINT256 '0' -- et.value is uint256 type
-        {% if date_filter %}
-        and et.block_time >= date_trunc('day', now() - interval '7' day)
-        {% elif not is_incremental() %}
+        {% if not is_incremental() %}
         and et.block_time >= TIMESTAMP '{{ project_start_date }}'
         {% else %}
-        and et.block_time > date_trunc('day', now() - interval '10' day) -- to prevent potential counterfactual safe deployment issues we take a bigger interval
+        and {{ incremental_predicate('et.block_time') }}
         {% endif %}
 
     union all
@@ -55,22 +53,18 @@ from
         and et.success = true
         and (lower(et.call_type) not in ('delegatecall', 'callcode', 'staticcall') or et.call_type is null)
         and et.value > UINT256 '0' -- et.value is uint256 type
-        {% if date_filter %}
-        and et.block_time >= date_trunc('day', now() - interval '7' day)
-        {% elif not is_incremental() %}
+        {% if not is_incremental() %}
         and et.block_time >= TIMESTAMP '{{ project_start_date }}'
         {% else %}
-        and et.block_time > date_trunc('day', now() - interval '10' day) -- to prevent potential counterfactual safe deployment issues we take a bigger interval
+        and {{ incremental_predicate('et.block_time') }}
         {% endif %}
 ) t
 left join {{ source('prices', 'usd') }} p on p.blockchain is null
     and p.symbol = t.symbol
     and p.minute = date_trunc('minute', t.block_time)
-    {% if date_filter %}
-    and p.minute >= date_trunc('day', now() - interval '7' day)
-    {% elif not is_incremental() %}
+    {% if not is_incremental() %}
     and p.minute >= TIMESTAMP '{{ project_start_date }}'
     {% else %}
-    and p.minute > date_trunc('day', now() - interval '10' day) -- to prevent potential counterfactual safe deployment issues we take a bigger interval
+    and {{ incremental_predicate('p.minute') }}
     {% endif %}
 {% endmacro %}
