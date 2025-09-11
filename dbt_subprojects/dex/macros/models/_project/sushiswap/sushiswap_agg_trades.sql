@@ -35,17 +35,21 @@
     'routeprocessor9_call_transferValueAndprocessRoute'        : '9',
     'routeprocessor9_call_processRouteWithTransferValueOutput' : '9',
     'routeprocessor9_call_processRouteWithTransferValueInput'  : '9',
+    'routeprocessor9_call_processRoute'                          : '9.1',
+    'routeprocessor9_1_call_transferValueAndprocessRoute'        : '9.1',
+    'routeprocessor9_1_call_processRouteWithTransferValueOutput' : '9.1',
+    'routeprocessor9_1_call_processRouteWithTransferValueInput'  : '9.1',
   } %}
 
 {% set versions_by_chain = {
   'apechain'    : ['6','6.1','7','9'],
-  'arbitrum'    : ['1','2','3.1','4','5','6','6.1','7','8','9'],
+  'arbitrum'    : ['1','2','3.1','4','5','6','6.1','7','8','9','9.1'],
   'avalanche_c' : ['1','2','4','5','6','6.1','7','9'],
-  'base'        : ['3','3.1','3.2','4','5','6','6.1','7','8','9'],
+  'base'        : ['3','3.1','3.2','4','5','6','6.1','7','8','9','9.1'],
   'blast'       : ['4','5','6','6.1','7','9'],
-  'bnb'         : ['1','2','3','3.2','4','5','6','6.1','7','9'],
+  'bnb'         : ['1','2','3','3.2','4','5','6','6.1','7','9','9.1'],
   'celo'        : ['4','5','6','6.1','7','9'],
-  'ethereum'    : ['3.2','4','5','6','6.1','7','8','9'],
+  'ethereum'    : ['3.2','4','5','6','6.1','7','8','9','9.1'],
   'fantom'      : ['1','2','3.2','5','6','6.1','7','9'],
   'gnosis'      : ['1','2','3','3.2','4','5','6','6.1','7','9'],
   'hemi'        : ['5', '6.1', '7','9'],
@@ -55,10 +59,10 @@
   'nova'        : ['1','2','3','3.2','4','5','6','6.1','7','9'],
   'optimism'    : ['3.2','4','5','6','6.1','7','8','9'],
   'polygon'     : ['1','2','3','3.1','3.2','4','5','6','6.1','7','8','9'],
-  'scroll'      : ['3.2','4','5','6','6.1','7','9'],
+  'scroll'      : ['3.2','4','5','6','6.1','7','9','9.1'],
   'sonic'       : ['5','6','6.1','7','9'],
   'zkevm'       : ['3','3.2','4','5','6','6.1','9'],
-  'zksync'      : ['5','6','6.1','7','9']
+  'zksync'      : ['5','6','6.1','7','9','9.1']
 } %}
 
   {% set wrapped_native = {
