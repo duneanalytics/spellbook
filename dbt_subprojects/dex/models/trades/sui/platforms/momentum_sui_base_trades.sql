@@ -1,12 +1,15 @@
 {{ config(
     schema = 'momentum_sui',
     alias = 'base_trades',
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['transaction_digest', 'event_index'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
 ) }}
+
+{% set momentum_start_date = "2024-01-15" %}
 
 with decoded as (
   select
@@ -45,7 +48,7 @@ end as amount_out
   from {{ source('sui','events') }}
   where event_type = '0x70285592c97965e811e0c6f98dccc3a9c2b4ad854b3594faab9597ada267b860::trade::SwapEvent'
   {% if is_incremental() %}
-    and {{ incremental_predicate('from_unixtime(timestamp_ms/1000)') }}
+    and {{ incremental_predicate('block_date') }}
   {% endif %}
 )
 
@@ -75,3 +78,7 @@ select
 from decoded
 where amount_in > 0
   and amount_out > 0
+  and block_time >= '{{ momentum_start_date }}'
+{% if is_incremental() %}
+  and {{ incremental_predicate('block_time') }}
+{% endif %}

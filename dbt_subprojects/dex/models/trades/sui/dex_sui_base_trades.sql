@@ -87,7 +87,9 @@ joined as (
 -- DEX fee normalization & rates (fees are in the input coin units)
 finalize as (
   select
-      protocol
+      -- Standard DEX model columns (required by tests)
+      'sui' as blockchain
+      , protocol as project
       , timestamp_ms
       , block_time
       , block_date
