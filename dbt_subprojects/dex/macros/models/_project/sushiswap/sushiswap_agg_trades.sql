@@ -35,7 +35,7 @@
     'routeprocessor9_call_transferValueAndprocessRoute'        : '9',
     'routeprocessor9_call_processRouteWithTransferValueOutput' : '9',
     'routeprocessor9_call_processRouteWithTransferValueInput'  : '9',
-    'routeprocessor9_call_processRoute'                          : '9.1',
+    'routeprocessor9_1_call_processRoute'                        : '9.1',
     'routeprocessor9_1_call_transferValueAndprocessRoute'        : '9.1',
     'routeprocessor9_1_call_processRouteWithTransferValueOutput' : '9.1',
     'routeprocessor9_1_call_processRouteWithTransferValueInput'  : '9.1',
