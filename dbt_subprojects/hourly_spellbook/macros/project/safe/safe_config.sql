@@ -56,3 +56,26 @@
     }}
 {% endmacro %}
 
+{% macro safe_incremental_singleton_config(blockchain, alias_name, schema_prefix='safe') %}
+    {#-
+    Incremental config for Safe singleton models
+    Uses merge strategy to handle singleton discovery
+    #}
+    {%- set contributors = get_safe_contributors(blockchain, alias_name) -%}
+    {%- set contributors_str = '\'' ~ contributors|tojson ~ '\'' -%}
+    {{
+        config(
+            materialized='incremental',
+            schema = schema_prefix ~ '_' ~ blockchain,
+            alias = alias_name,
+            unique_key = 'address',
+            incremental_strategy = 'merge',
+            file_format = 'delta',
+            post_hook='{{ expose_spells(\'["' ~ blockchain ~ '"]\',
+                                        "project",
+                                        "safe",
+                                        ' ~ contributors_str ~ ') }}'
+        )
+    }}
+{% endmacro %}
+
