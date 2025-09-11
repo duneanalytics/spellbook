@@ -5,48 +5,51 @@
   schema='dex_sui'
 ) }}
 
--- 1) limit to pools actually referenced by your decoded trades
+-- 1) Limit to pools we actually see in swaps
 with used_pools as (
-  select distinct pool_id
+  select distinct lower(pool_id) as pool_id
   from {{ ref('dex_sui_raw_base_trades') }}
   where pool_id is not null
 ),
 
--- 2) grab the latest row per pool_id from objects
+-- 2) Latest row per object_id, join on normalized hex id
 latest as (
   select
-      o.object_id,
-      o.type_,
+      -- normalize VARBINARY id -> '0x' + lowercase hex string
+      ('0x' || lower(to_hex(o.object_id))) as object_id_hex,
+      cast(o.type_ as varchar)             as type_str,
       o.checkpoint,
-      row_number() over (partition by o.object_id order by o.checkpoint desc) as rn
+      row_number() over (
+        partition by ('0x' || lower(to_hex(o.object_id)))
+        order by o.checkpoint desc
+      ) as rn
   from {{ source('sui','objects') }} o
   join used_pools u
-    on o.object_id = u.pool_id
-  -- only types that even *could* have generics
-  where strpos(o.type_, '<') > 0
+    on ('0x' || lower(to_hex(o.object_id))) = u.pool_id
+  where strpos(cast(o.type_ as varchar), '<') > 0  -- only types with generics
 ),
 
--- 3) extract the full generic string inside <…>
+-- 3) Extract the full generics string between <…>
 parsed as (
   select
-      object_id as pool_id,
-      type_,
-      regexp_extract(type_, '<(.*)>', 1) as generics
+      object_id_hex as pool_id,
+      type_str,
+      regexp_extract(type_str, '<(.*)>', 1) as generics
   from latest
   where rn = 1
 ),
 
--- 4) split the generics by comma -> first two tokens are our A/B coin types
+-- 4) Split "A,B,..." and take first two as coin types
 split as (
   select
       pool_id,
-      type_,
+      type_str,
       element_at(split(generics, ','), 1) as coin_type_a_raw,
       element_at(split(generics, ','), 2) as coin_type_b_raw
   from parsed
 ),
 
--- 5) keep only pool-ish structs to avoid false positives
+-- 5) Keep pool-ish structs to avoid false positives
 filtered as (
   select
       pool_id,
@@ -56,12 +59,12 @@ filtered as (
   where coin_type_a_raw is not null
     and coin_type_b_raw is not null
     and (
-      type_ like '%::pool::%' or
-      type_ like '%::clpool::%' or
-      type_ like '%::clmm::%'  or
-      type_ like '%::amm::%'   or
-      type_ like '%::pair::%'  or
-      type_ like '%::obric::%'
+      type_str like '%::pool::%' or
+      type_str like '%::clpool::%' or
+      type_str like '%::clmm::%'  or
+      type_str like '%::amm::%'   or
+      type_str like '%::pair::%'  or
+      type_str like '%::obric::%'
     )
 )
 

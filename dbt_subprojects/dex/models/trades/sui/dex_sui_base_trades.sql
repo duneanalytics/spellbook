@@ -27,7 +27,7 @@ resolved as (
            when r.a_to_b then pm.coin_type_b else pm.coin_type_a end as coin_type_out
   from raw r
   left join {{ ref('pool_map') }} pm
-    on r.pool_id = pm.pool_id
+    on lower(r.pool_id) = lower(pm.pool_id)
 ),
 
 -- coin metadata
