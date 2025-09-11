@@ -48,7 +48,7 @@ with decoded as (
 
 , shaped as (
   select
-      , timestamp_ms
+      timestamp_ms
       , block_time
       , block_date
       , block_month
