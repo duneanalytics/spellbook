@@ -36,7 +36,7 @@ with all_swaps as (
           , event_index
           , epoch
           , checkpoint
-          , pool_id
+          , cast(pool_id as varchar) as pool_id
           , sender
           , cast(amount_in  as decimal(38,0)) as amount_in
           , cast(amount_out as decimal(38,0)) as amount_out
