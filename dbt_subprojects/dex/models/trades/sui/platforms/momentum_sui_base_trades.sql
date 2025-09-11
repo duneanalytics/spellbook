@@ -9,7 +9,7 @@
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
 ) }}
 
-{% set momentum_start_date = "2024-01-15" %}
+{% set momentum_start_date = "2025-09-03" %}
 
 with decoded as (
   select
@@ -44,13 +44,14 @@ end as amount_out
       , checkpoint
       , json_extract_scalar(event_json, '$.pool_id')                  as pool_id
       , sender
-      , 'momentum' as protocol
   from {{ source('sui','events') }}
   where event_type = '0x70285592c97965e811e0c6f98dccc3a9c2b4ad854b3594faab9597ada267b860::trade::SwapEvent'
 )
 
 select
-    protocol
+    'sui' as blockchain
+    , 'momentum' as project
+    , '1' as version
     , timestamp_ms
     , block_time
     , block_date
@@ -72,6 +73,8 @@ select
     , reserve_a
     , reserve_b
     , tick_index_bits
+    , cast(null as varchar)       as coin_type_in -- momentum event lacks explicit coin types
+    , cast(null as varchar)       as coin_type_out
 from decoded
 where amount_in > 0
   and amount_out > 0

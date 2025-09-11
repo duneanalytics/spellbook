@@ -5,13 +5,19 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['protocol', 'transaction_digest', 'event_index'],
+    unique_key = ['project', 'transaction_digest', 'event_index'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
 ) }}
 
 {% set base_models = [
   ref('momentum_sui_base_trades')
   , ref('cetus_sui_base_trades')
+  , ref('bluefin_sui_base_trades')
+  , ref('kriya_sui_base_trades')
+  , ref('bluemove_sui_base_trades')
+  , ref('flowx_sui_base_trades')
+  , ref('obric_sui_base_trades')
+  , ref('aftermath_sui_base_trades')
 ] %}
 
 with all_swaps as (
@@ -19,7 +25,9 @@ with all_swaps as (
   from (
     {% for base in base_models %}
       select
-          protocol
+          blockchain
+          , project
+          , version
           , timestamp_ms
           , block_time
           , block_date
@@ -41,8 +49,10 @@ with all_swaps as (
           , reserve_a
           , reserve_b
           , tick_index_bits
+          , cast(coin_type_in  as varchar) as coin_type_in
+          , cast(coin_type_out as varchar) as coin_type_out
           , row_number() over (
-            partition by protocol, transaction_digest, event_index
+            partition by project, transaction_digest, event_index
             order by transaction_digest
           ) as dup_rank
       from {{ base }}

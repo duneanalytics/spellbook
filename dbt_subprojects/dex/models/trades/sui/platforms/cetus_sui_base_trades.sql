@@ -9,7 +9,7 @@
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
 ) }}
 
-{% set cetus_start_date = "2023-05-03" %}
+{% set cetus_start_date = "2025-09-03" %}
 
 with decoded as (
   select
@@ -32,14 +32,14 @@ with decoded as (
       , checkpoint
       , json_extract_scalar(event_json, '$.pool')                     as pool_id
       , sender
-
-      , 'cetus' as protocol
   from {{ source('sui','events') }}
   where event_type = '0x1eabed72c53feb3805120a081dc15963c204dc8d091542592abaf7a35689b2fb::pool::SwapEvent'
 )
 
 select
-    protocol
+    'sui' as blockchain
+    , 'cetus' as project
+    , '1' as version
     , timestamp_ms
     , block_time
     , block_date
@@ -62,6 +62,8 @@ select
     , cast(null as decimal(38,0)) as reserve_a
     , cast(null as decimal(38,0)) as reserve_b
     , cast(null as bigint)        as tick_index_bits
+    , cast(null as varchar)       as coin_type_in -- not emitted in event
+    , cast(null as varchar)       as coin_type_out
 from decoded
 where amount_in > 0
   and amount_out > 0
