@@ -36,10 +36,6 @@ with decoded as (
       , 'cetus' as protocol
   from {{ source('sui','events') }}
   where event_type = '0x1eabed72c53feb3805120a081dc15963c204dc8d091542592abaf7a35689b2fb::pool::SwapEvent'
-    and block_date >= '{{ cetus_start_date }}'
-    {% if is_incremental() %}
-    and {{ incremental_predicate('block_date') }}
-    {% endif %}
 )
 
 select
@@ -69,7 +65,7 @@ select
 from decoded
 where amount_in > 0
   and amount_out > 0
-  and block_time >= '{{ cetus_start_date }}'
+  and block_time >= timestamp '{{ cetus_start_date }}'
 {% if is_incremental() %}
   and {{ incremental_predicate('block_time') }}
 {% endif %}

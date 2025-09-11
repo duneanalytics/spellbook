@@ -47,9 +47,6 @@ end as amount_out
       , 'momentum' as protocol
   from {{ source('sui','events') }}
   where event_type = '0x70285592c97965e811e0c6f98dccc3a9c2b4ad854b3594faab9597ada267b860::trade::SwapEvent'
-  {% if is_incremental() %}
-    and {{ incremental_predicate('block_date') }}
-  {% endif %}
 )
 
 select
@@ -78,7 +75,7 @@ select
 from decoded
 where amount_in > 0
   and amount_out > 0
-  and block_time >= '{{ momentum_start_date }}'
+  and block_time >= timestamp '{{ momentum_start_date }}'
 {% if is_incremental() %}
   and {{ incremental_predicate('block_time') }}
 {% endif %}
