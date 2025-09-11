@@ -23,6 +23,7 @@
     safe_native_transfers(
         blockchain = 'optimism',
         native_token_symbol = 'ETH',
+        project_start_date = project_start_date,
         date_filter = date_filter
     )
 }}
