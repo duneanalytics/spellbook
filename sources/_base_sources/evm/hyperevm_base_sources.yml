@@ -1,0 +1,122 @@
+version: 2
+
+sources:
+  # ===========================================
+  # Base EVM Source (transactions, blocks, logs)
+  # ===========================================
+  - name: hyperevm
+    description: "Raw EVM tables for the hyperevm chain. This source provides access to fundamental blockchain data like blocks, transactions and logs."
+    tables:
+      - name: transactions
+        # description: "Contains detailed information about each transaction executed on the hyperevm network. Includes sender, receiver, value, gas details, status, input data, and potentially L2-specific L1 submission info."
+        description: "{{ doc('hyperevm_transactions_doc') }}"
+        columns:
+          - &block_date
+            name: block_date
+            description: "The UTC date of the block in which this transaction was included"
+          - &block_time
+            name: block_time
+            description: "The exact UTC timestamp when the block containing this transaction was mined/sequenced"
+          - &value
+            name: value
+            description: "Amount of native currency sent from sender to recipient, measured in wei (1 native = 10^18 wei)"
+          - &block_number
+            name: block_number
+            description: "The sequential number (height) of the block containing this transaction"
+          - name: gas_limit
+            description: "Maximum number of gas units this transaction was allowed to consume"
+          - name: gas_price
+            description: "Price per unit of gas for this transaction (legacy or pre-EIP-1559), denominated in wei"
+          - name: gas_used
+            description: "Actual amount of gas units consumed by this transaction's execution"
+          - name: max_fee_per_gas
+            description: "Maximum total fee per gas unit the sender was willing to pay (base fee + priority fee) (post-EIP-1559)"
+          - name: max_priority_fee_per_gas
+            description: "Maximum tip per gas unit the sender was willing to pay to the miner/validator (post-EIP-1559)"
+          - name: base_fee_per_gas
+            description: "The network base fee per gas unit for the block containing this transaction (post-EIP-1559)"
+          - name: nonce
+            description: "Sequential number for transactions sent from the sender's address, preventing replays"
+          - name: index
+            description: "Integer position of this transaction within the list of transactions in its block"
+          - &success
+            name: success
+            description: "Boolean flag indicating if the transaction executed successfully (true) or failed/reverted (false)"
+          - &from
+            name: from
+            description: "Address of the account that initiated and signed this transaction"
+          - &to
+            name: to
+            description: "Address of the recipient account or contract; null for contract creation transactions"
+          - &block_hash
+            name: block_hash
+            description: "Unique 256-bit identifier (hash) of the block containing this transaction"
+          - name: data
+            description: "Input data payload for the transaction, often containing function selectors and arguments for contract calls"
+          - name: hash
+            description: "Unique 256-bit identifier (hash) of this specific transaction"
+          - name: type
+            description: "Numeric type of the transaction (e.g., 0 for legacy, 1 for EIP-2930, 2 for EIP-1559) indicating its format and fee mechanism"
+          - name: access_list
+            description: "List of addresses and storage keys the transaction preemptively specified access to (EIP-2930 and later types)"
+          - name: effective_gas_price
+            description: "The actual price per gas unit paid for this transaction after execution (base fee + priority fee)"
+
+
+      - name: logs
+        # description: "Contains event logs emitted by smart contracts during transaction execution. Essential for tracking contract state changes and activities."
+        description: "{{ doc('hyperevm_logs_doc') }}"
+        columns:
+          - *block_date
+          - *block_time
+          - *block_number
+          - *block_hash
+          - &tx_index
+            name: tx_index
+            description: "Index position of this event within the transaction"
+          - &tx_hash
+            name: tx_hash
+            description: "Hash of the transaction containing this event"
+          - name: contract_address
+            description: "Address of the smart contract that emitted this event log"
+          - name: topic0
+            description: "First indexed topic (32 bytes), typically the hash of the event signature"
+          - name: topic1
+            description: "Second indexed topic (32 bytes)"
+          - name: topic2
+            description: "Third indexed topic (32 bytes)"
+          - name: topic3
+            description: "Fourth indexed topic (32 bytes)"
+          - name: data
+            description: "Non-indexed event parameters, ABI-encoded into a single data payload"
+          - name: index
+            description: "Integer position of this log within the list of all logs in the block"
+
+      - name: blocks
+        # description: "Contains metadata about each block mined or sequenced on the hyperevm network."
+        description: "{{ doc('hyperevm_blocks_doc') }}"
+        columns:
+          - name: base_fee_per_gas
+            description: "The network base fee per gas unit for this block (post-EIP-1559)"
+          - name: gas_limit
+            description: "Total gas limit for the block, constraining the computation resources available"
+          - name: gas_used
+            description: "Total amount of gas consumed by all transactions included in this block"
+          - name: hash
+            description: "Unique 256-bit identifier (hash) of this block"
+          - name: miner
+            description: "Address of the account that mined/proposed/sequenced this block and received rewards/fees"
+          - name: number
+            description: "Sequential block number (height) of this block in the blockchain"
+          - name: parent_hash
+            description: "Hash of the preceding block in the chain"
+          - name: size
+            description: "Size of the block data in bytes"
+          - name: time
+            description: "Timestamp (UTC) when the block was mined/sequenced"
+          - name: blob_gas_used
+            description: "Total amount of blob gas consumed by transactions in this block (post-EIP-4844)"
+          - name: excess_blob_gas
+            description: "Running total of blob gas consumed in excess of the target, influencing future blob base fees (post-EIP-4844)"
+
+
