@@ -1,14 +1,14 @@
 version: 2
 
 models:
-  - name: fluid_v1_ethereum_pools
+  - name: fluid_base_pools
     meta: 
-      blockchain: ethereum
+      blockchain: base
       sector: dex
       project: fluid
-      contributor: maybeYonas
+      contributor: Henrystats
     config:
-      tags: ['ethereum', 'trades', 'fluid', 'dex']
+      tags: ['base', 'trades', 'fluid', 'dex']
     description: "fluid pools"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -52,14 +52,14 @@ models:
         name: dex_id
         description: "nonce unique to factory and pool"
 
-  - name: fluid_ethereum_liquidity_events
+  - name: fluid_base_liquidity_events
     meta:
-      blockchain: ethereum
+      blockchain: base
       sector: dex
       project: fluid
       contributors: Henrystats, dknugo
     config:
-      tags: ['ethereum', 'liquidity_events', 'liquidity', 'fluid']
+      tags: ['base', 'liquidity_events', 'liquidity', 'fluid']
     description: >
       All dex events in logoperate
     data_tests:
@@ -68,14 +68,14 @@ models:
             - tx_hash
             - evt_index
 
-  - name: fluid_ethereum_dex_events
+  - name: fluid_base_dex_events
     meta:
-      blockchain: ethereum
+      blockchain: base
       sector: dex
       project: fluid
       contributors: Henrystats, dknugo
     config:
-      tags: ['ethereum', 'dex_events', 'liquidity', 'fluid']
+      tags: ['base', 'dex_events', 'liquidity', 'fluid']
     description: >
       All dex events in logoperate logged in dex contract (not general fluidliquidityproxy)
     data_tests:
