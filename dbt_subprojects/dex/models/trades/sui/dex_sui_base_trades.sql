@@ -165,6 +165,7 @@ finalize as (
       , case when amount_in_decimal is not null and amount_in_decimal > 0
            then cast(
                   cast(protocol_fee_amount as decimal(38,0)) / cast(pow(10, coin_decimals_in) as decimal(38,0))
+                as decimal(38,18)
                 ) / amount_in_decimal
            else null end as protocol_fee_rate
 
