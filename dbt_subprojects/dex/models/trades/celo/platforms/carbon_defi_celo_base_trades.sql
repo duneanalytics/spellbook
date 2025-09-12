@@ -11,12 +11,17 @@
 }}
 
 {% set wcelo_address = '0x471EcE3750Da237f93B8E339c536989b8978a438' %}
+{% set targetToken = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' %}
+{% set finalTargetToken = '0x66803FB87aBd4aaC3cbB3fAd7C3aa01f6F3FB207' %}
 
 {{
     carbon_defi_compatible_trades(
         blockchain = 'celo',
         project = 'carbon_defi',
         CarbonController_evt_TokensTraded = source('carbon_defi_celo', 'CarbonController_evt_TokensTraded'),
-        wrapped_native_token = wcelo_address
+        CarbonVortex_evt_TokenTraded = source('carbon_defi_celo', 'CarbonVortex_evt_TokenTraded'),
+        wrapped_native_token = wcelo_address,
+        targetToken = targetToken,
+        finalTargetToken = finalTargetToken
     )
 }}
