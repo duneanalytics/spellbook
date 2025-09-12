@@ -20,7 +20,30 @@ with raw as (
 -- resolve coin types: prefer provided ones; fallback to pool_map + a_to_b
 resolved as (
   select
-      r.*
+      r.blockchain
+      , r.project
+      , r.version
+      , r.timestamp_ms
+      , r.block_time
+      , r.block_date
+      , r.block_month
+      , r.transaction_digest
+      , r.event_index
+      , r.epoch
+      , r.checkpoint
+      , r.pool_id
+      , r.sender
+      , r.amount_in
+      , r.amount_out
+      , r.a_to_b
+      , r.fee_amount
+      , r.protocol_fee_amount
+      , r.after_sqrt_price
+      , r.before_sqrt_price
+      , r.liquidity
+      , r.reserve_a
+      , r.reserve_b
+      , r.tick_index_bits
       , coalesce(
           r.coin_type_in,
           case when r.a_to_b is null then null
