@@ -6,7 +6,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['ds'],
-    incremental_predicates = [incremental_predicate('block_time')]
+    incremental_predicates = [incremental_predicate('timestamp_ms')]
 ) }}
 
 -- Base: project needed columns, build proper TIMESTAMP, and exclude system/non-PTB rows
@@ -37,7 +37,7 @@ with tx as (
   where transaction_kind = 'ProgrammableTransaction'
     and is_system_txn = false
   {% if is_incremental() %}
-    and {{ incremental_predicate('block_time') }}
+    and {{ incremental_predicate('timestamp_ms') }}
   {% endif %}
 ),
 
