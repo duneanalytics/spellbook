@@ -98,6 +98,9 @@ sources:
   - name: cow_protocol_lens
     tables:
       - name: trades
+  - name: cow_protocol_bnb
+    tables:
+      - name: trades
   - name: jelly_swap
     tables:
       - name: trades
