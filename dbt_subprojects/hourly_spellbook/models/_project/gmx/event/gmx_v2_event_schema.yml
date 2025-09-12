@@ -3047,3 +3047,211 @@ models:
         description: The configuration value after this update
       - name: update_applied
         description: Boolean flag indicating whether the update took effect
+
+  - name: gmx_v2_multichain_bridge_action_failed
+    meta:
+      blockchain: arbitrum, avalanche_c
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'bridge', 'event', 'failed']
+    description: |
+      Extracts and decodes the `BridgeActionFailed` event log data from the Arbitrum and Avalanche blockchains. 
+      This model captures instances where a multichain bridge action did not succeed, providing details on the failure,
+      including the reason for the failure.
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The type of event recorded, always 'BridgeActionFailed' for this model.
+      - *msg_sender
+      - name: provider
+        description: The address of the provider facilitating the multichain action.
+      - name: account
+        description: The user's account address involved in the transaction.
+      - name: src_chain_id
+        description: The identifier of the source blockchain for the multichain transaction.
+      - name: action_type
+        description: A numerical identifier for the type of action that failed.
+      - name: reason
+        description: A string providing the reason for the action's failure.
+
+  - name: gmx_v2_multichain_bridge_action
+    meta:
+      blockchain: arbitrum, avalanche_c
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'bridge', 'event']
+    description: |
+      Extracts and decodes the `BridgeAction` event log data from the Arbitrum and Avalanche blockchains. 
+      This model records successful multichain bridge actions initiated by users, detailing the provider,
+      account, and type of action.
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The type of event recorded, always 'BridgeAction' for this model.
+      - *msg_sender
+      - name: provider
+        description: The address of the provider facilitating the multichain action.
+      - name: account
+        description: The user's account address involved in the transaction.
+      - name: src_chain_id
+        description: The identifier of the source blockchain for the multichain transaction.
+      - name: action_type
+        description: A numerical identifier for the type of action being performed.
+
+  - name: gmx_v2_multichain_bridge_in
+    meta:
+      blockchain: arbitrum, avalanche_c
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'bridge', 'event', 'bridge_in']
+    description: |
+      Extracts and decodes the `BridgeIn` event log data from the Arbitrum and Avalanche blockchains. 
+      This model tracks tokens that have been successfully bridged into the GMX V2 ecosystem from another chain.
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The type of event recorded, always 'BridgeIn' for this model.
+      - *msg_sender
+      - name: provider
+        description: The address of the provider that facilitated the bridge-in transaction.
+      - name: token
+        description: The contract address of the token being bridged in.
+      - name: account
+        description: The user's account address receiving the bridged tokens.
+      - name: amount
+        description: The amount of the token being bridged, in its smallest unit.
+      - name: src_chain_id
+        description: The identifier of the source blockchain from which the tokens were bridged.
+
+  - name: gmx_v2_multichain_bridge_out
+    meta:
+      blockchain: arbitrum, avalanche_c
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'bridge', 'event', 'bridge_out']
+    description: |
+      Extracts and decodes the `BridgeOut` event log data from the Arbitrum and Avalanche blockchains. 
+      This model tracks tokens that have been bridged out of the GMX V2 ecosystem to another chain.
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The type of event recorded, always 'BridgeOut' for this model.
+      - *msg_sender
+      - name: provider
+        description: The address of the provider that facilitated the bridge-out transaction.
+      - name: token
+        description: The contract address of the token being bridged out.
+      - name: receiver
+        description: The address of the recipient of the bridged tokens on the destination chain.
+      - name: amount
+        description: The amount of the token being bridged, in its smallest unit.
+      - name: src_chain_id
+        description: The identifier of the destination blockchain to which the tokens were bridged.
+
+  - name: gmx_v2_multichain_transfer_in
+    meta:
+      blockchain: arbitrum, avalanche_c
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'transfer', 'event', 'transfer_in']
+    description: |
+      Extracts and decodes the `TransferIn` event log data from the Arbitrum and Avalanche blockchains. 
+      This model records multichain token transfers received by users within the GMX V2 ecosystem.
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The type of event recorded, always 'TransferIn' for this model.
+      - *msg_sender
+      - name: token
+        description: The contract address of the token being transferred in.
+      - name: account
+        description: The user's account address receiving the transferred tokens.
+      - name: amount
+        description: The amount of the token being transferred, in its smallest unit.
+      - name: src_chain_id
+        description: The identifier of the source blockchain from which the tokens were transferred.
+
+  - name: gmx_v2_multichain_transfer_out
+    meta:
+      blockchain: arbitrum, avalanche_c
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'transfer', 'event', 'transfer_out']
+    description: |
+      Extracts and decodes the `TransferOut` event log data from the Arbitrum and Avalanche blockchains. 
+      This model records multichain token transfers sent by users from the GMX V2 ecosystem to another chain.
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The type of event recorded, always 'TransferOut' for this model.
+      - *msg_sender
+      - name: token
+        description: The contract address of the token being transferred out.
+      - name: account
+        description: The user's account address initiating the transfer.
+      - name: receiver
+        description: The address of the recipient of the transferred tokens on the destination chain.
+      - name: amount
+        description: The amount of the token being transferred, in its smallest unit.
+      - name: src_chain_id
+        description: The identifier of the destination blockchain to which the tokens were transferred.
