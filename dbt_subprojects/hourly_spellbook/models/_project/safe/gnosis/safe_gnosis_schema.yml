@@ -4,7 +4,7 @@ models:
   - name: safe_gnosis_singletons
     meta:
       blockchain: gnosis
-      project: safe
+      project: gnosis_safe
       contributors: tschubotz
     config:
       tags: ['safe', 'singletons', 'gnosis']
@@ -20,7 +20,7 @@ models:
   - name: safe_gnosis_safes
     meta:
       blockchain: gnosis
-      project: safe
+      project: gnosis_safe
       contributors: tschubotz
     config:
       tags: ['safe', 'gnosis']
@@ -46,7 +46,7 @@ models:
   - name: safe_gnosis_transactions
     meta:
       blockchain: gnosis
-      project: safe
+      project: gnosis_safe
       contributors: tschubotz, danielpartida
     config:
       tags: ['safe', 'gnosis']
@@ -107,7 +107,7 @@ models:
   - name: safe_gnosis_xdai_transfers
     meta:
       blockchain: gnosis
-      project: safe
+      project: gnosis_safe
       contributors: tschubotz
     config:
       tags: ['safe', 'transfers', 'gnosis']

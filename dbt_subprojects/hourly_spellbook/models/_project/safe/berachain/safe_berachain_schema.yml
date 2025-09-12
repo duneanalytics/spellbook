@@ -4,7 +4,7 @@ models:
   - name: safe_berachain_safes
     meta:
       blockchain: berachain
-      project: safe
+      project: gnosis_safe
       contributors: petertherock
     config:
       tags: ['safe', 'berachain']
@@ -37,7 +37,7 @@ models:
   - name: safe_berachain_singletons
     meta:
       blockchain: berachain
-      project: safe
+      project: gnosis_safe
       contributors: petertherock
     config:
       tags: ['safe', 'singletons', 'berachain']
@@ -49,7 +49,7 @@ models:
   - name: safe_berachain_transactions
     meta:
       blockchain: berachain
-      project: safe
+      project: gnosis_safe
       contributors: petertherock
     config:
       tags: ['safe', 'berachain']

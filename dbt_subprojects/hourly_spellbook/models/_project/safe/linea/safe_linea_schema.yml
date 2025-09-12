@@ -4,7 +4,7 @@ models:
   - name: safe_linea_safes
     meta:
       blockchain: linea
-      project: safe
+      project: gnosis_safe
       contributors: danielpartida
     config:
       tags: ['safe', 'linea']
@@ -37,7 +37,7 @@ models:
   - name: safe_linea_eth_transfers
     meta:
       blockchain: linea
-      project: safe
+      project: gnosis_safe
       contributors: danielpartida
     config:
       tags: ['safe', 'transfers', 'linea']
@@ -73,7 +73,7 @@ models:
   - name: safe_linea_singletons
     meta:
       blockchain: linea
-      project: safe
+      project: gnosis_safe
       contributors: danielpartida
     config:
       tags: ['safe', 'singletons', 'linea']
@@ -88,7 +88,7 @@ models:
   - name: safe_linea_transactions
     meta:
       blockchain: linea
-      project: safe
+      project: gnosis_safe
       contributors: danielpartida
     config:
       tags: ['safe', 'linea']

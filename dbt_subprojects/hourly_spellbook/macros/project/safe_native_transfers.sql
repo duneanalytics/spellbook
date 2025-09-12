@@ -1,4 +1,4 @@
-{% macro safe_native_transfers(blockchain, native_token_symbol, project_start_date) %}
+{% macro safe_native_transfers(blockchain, native_token_symbol, project_start_date, date_filter=false) %}
 
 select
     t.*
@@ -28,7 +28,7 @@ from
         {% if not is_incremental() %}
         and et.block_time >= TIMESTAMP '{{ project_start_date }}'
         {% else %}
-        and et.block_time > date_trunc('day', now() - interval '10' day) -- to prevent potential counterfactual safe deployment issues we take a bigger interval
+        and {{ incremental_predicate('et.block_time') }}
         {% endif %}
 
     union all
@@ -56,7 +56,7 @@ from
         {% if not is_incremental() %}
         and et.block_time >= TIMESTAMP '{{ project_start_date }}'
         {% else %}
-        and et.block_time > date_trunc('day', now() - interval '10' day) -- to prevent potential counterfactual safe deployment issues we take a bigger interval
+        and {{ incremental_predicate('et.block_time') }}
         {% endif %}
 ) t
 left join {{ source('prices', 'usd') }} p on p.blockchain is null
@@ -65,6 +65,6 @@ left join {{ source('prices', 'usd') }} p on p.blockchain is null
     {% if not is_incremental() %}
     and p.minute >= TIMESTAMP '{{ project_start_date }}'
     {% else %}
-    and p.minute > date_trunc('day', now() - interval '10' day) -- to prevent potential counterfactual safe deployment issues we take a bigger interval
+    and {{ incremental_predicate('p.minute') }}
     {% endif %}
 {% endmacro %}

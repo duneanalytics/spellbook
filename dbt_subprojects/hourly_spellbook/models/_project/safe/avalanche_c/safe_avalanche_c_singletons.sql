@@ -1,16 +1,6 @@
-{{ 
-    config(
-        materialized='table',
-        
-        alias = 'singletons',
-        post_hook='{{ expose_spells(\'["avalanche_c"]\',
-                                    "project",
-                                    "safe",
-                                    \'["tschubotz"]\') }}'
-    ) 
-}}
+{{ safe_incremental_singleton_config(
+    blockchain = 'avalanche_c',
+    alias_name = 'singletons'
+) }}
 
-
--- Fetch all known singleton addresses used via the factory.
-select distinct singleton as address 
-from {{ source('gnosis_safe_avalanche_c', 'GnosisSafeProxyFactory_v1_3_0_evt_ProxyCreation') }}
+{{ safe_singletons_by_network_validated('avalanche_c', only_official=true) }}

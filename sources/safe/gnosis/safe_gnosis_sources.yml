@@ -65,7 +65,7 @@ sources:
           - *initializer
           - *output_proxy
           - *saltNonce
-      - name: GnosisSafeProxyFactory_v1_3_0_evt_ProxyCreation
+      - name: SafeProxyFactory_v1_3_0_evt_ProxyCreation
         description: "Safe v1.3.0 factory ProxyCreation events"
         columns:
           - *contract_address
