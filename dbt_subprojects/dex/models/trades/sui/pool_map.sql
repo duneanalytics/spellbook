@@ -53,8 +53,8 @@ split as (
 filtered as (
   select
       pool_id,
-      lower(trim(coin_type_a_raw)) as coin_type_a,
-      lower(trim(coin_type_b_raw)) as coin_type_b
+      cast(lower(trim(coin_type_a_raw)) as varbinary) as coin_type_a,
+      cast(lower(trim(coin_type_b_raw)) as varbinary) as coin_type_b
   from split
   where coin_type_a_raw is not null
     and coin_type_b_raw is not null

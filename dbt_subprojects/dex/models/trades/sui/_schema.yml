@@ -193,7 +193,7 @@ models:
       - not_null:
           column_name: amount_out
       - not_null:
-          column_name: protocol
+          column_name: project
 
   - name: dex_sui_raw_base_trades
     meta:
@@ -202,7 +202,7 @@ models:
       contributors: krishhh
     config:
       tags: ["sui", "dex", "trades", "raw"]
-    description: "Raw union of all Sui DEX protocol trades"
+    description: "Raw union of all Sui DEX project trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

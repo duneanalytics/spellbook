@@ -37,7 +37,7 @@ with all_swaps as (
           , epoch
           , checkpoint
           , cast(pool_id as varchar) as pool_id
-          , cast(sender as varchar) as sender  -- ADD THIS LINE
+          , cast(sender as varchar) as sender
           , cast(amount_in  as decimal(38,0)) as amount_in
           , cast(amount_out as decimal(38,0)) as amount_out
           , a_to_b
@@ -49,8 +49,8 @@ with all_swaps as (
           , reserve_a
           , reserve_b
           , tick_index_bits
-          , cast(coin_type_in  as varchar) as coin_type_in
-          , cast(coin_type_out as varchar) as coin_type_out
+          , cast(coin_type_in  as varbinary) as coin_type_in
+          , cast(coin_type_out as varbinary) as coin_type_out
           , row_number() over (
             partition by project, transaction_digest, event_index
             order by transaction_digest

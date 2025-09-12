@@ -57,17 +57,18 @@ with decoded as (
       , case when amount_x_out > 0 then amount_x_out else amount_y_out end as amount_out
       -- normalize token type ids
       , case when token_x_in_raw  is null then null
-             when starts_with(token_x_in_raw,  '0x') then lower(token_x_in_raw)
-             else lower(concat('0x', token_x_in_raw)) end as token_x_in_norm
+       when starts_with(token_x_in_raw,  '0x') then cast(lower(token_x_in_raw) as varbinary)
+       else cast(lower(concat('0x', token_x_in_raw)) as varbinary) end as token_x_in_norm
       , case when token_y_in_raw  is null then null
-             when starts_with(token_y_in_raw,  '0x') then lower(token_y_in_raw)
-             else lower(concat('0x', token_y_in_raw)) end as token_y_in_norm
+       when starts_with(token_y_in_raw,  '0x') then cast(lower(token_y_in_raw) as varbinary)
+       else cast(lower(concat('0x', token_y_in_raw)) as varbinary) end as token_y_in_norm
       , case when token_x_out_raw is null then null
-             when starts_with(token_x_out_raw, '0x') then lower(token_x_out_raw)
-             else lower(concat('0x', token_x_out_raw)) end as token_x_out_norm
-      , case when token_y_out_raw is null then null
-             when starts_with(token_y_out_raw, '0x') then lower(token_y_out_raw)
-             else lower(concat('0x', token_y_out_raw)) end as token_y_out_norm
+       when starts_with(token_x_out_raw, '0x') then cast(lower(token_x_out_raw) as varbinary)
+       else cast(lower(concat('0x', token_x_out_raw)) as varbinary) end as token_x_out_norm
+      , case when token_y_out_raw is null then 
+      null
+       when starts_with(token_y_out_raw, '0x') then cast(lower(token_y_out_raw) as varbinary)
+       else cast(lower(concat('0x', token_y_out_raw)) as varbinary) end as token_y_out_norm
   from decoded
 )
 

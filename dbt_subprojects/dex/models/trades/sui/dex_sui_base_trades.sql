@@ -77,9 +77,9 @@ meta as (
            else cast(null as decimal(38,18)) end as amount_out_decimal
   from resolved re
   left join {{ ref('coin_info') }} ci_in
-    on lower(re.coin_type_in) = ci_in.coin_type
+    on re.coin_type_in = ci_in.coin_type
   left join {{ ref('coin_info') }} ci_out
-    on lower(re.coin_type_out) = ci_out.coin_type
+    on re.coin_type_out = ci_out.coin_type
 ),
 
 -- transactions: gas components (Dune column names)
@@ -123,7 +123,7 @@ priced as (
   left join {{ source('prices','usd') }} pb
     on pb.blockchain = 'sui'
    and pb.minute = date_trunc('minute', j.block_time)
-   and pb.contract_address = j.coin_type_in
+   and pb.contract_address = j.coin_type_in 
   left join {{ source('prices','usd') }} ps
     on ps.blockchain = 'sui'
    and ps.minute = date_trunc('minute', j.block_time)
@@ -157,8 +157,8 @@ finalize as (
       , a_to_b
 
       -- coin identity & metadata
-      , lower(coin_type_in)   as coin_type_in
-      , lower(coin_type_out)  as coin_type_out
+      , coin_type_in
+      , coin_type_out
       , coin_symbol_in
       , coin_symbol_out
       , coin_decimals_in
@@ -201,8 +201,8 @@ finalize as (
       -- Standard DEX test columns (mapped to Sui equivalents)
       , amount_out as token_bought_amount_raw
       , amount_in as token_sold_amount_raw
-      , lower(coin_type_out) as token_bought_address
-      , lower(coin_type_in) as token_sold_address
+      , coin_type_out as token_bought_address
+      , coin_type_in as token_sold_address
       , sender as taker
       , pool_id as maker
       , pool_id as project_contract_address

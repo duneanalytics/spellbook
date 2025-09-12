@@ -55,11 +55,11 @@ with decoded as (
       , case when amount_x_out > 0 then amount_x_out else amount_y_out end as amount_out
       -- normalized coin ids (0x-prefixed lowercase)
       , case when coin_x_raw is null then null
-             when starts_with(coin_x_raw, '0x') then lower(coin_x_raw)
-             else lower(concat('0x', coin_x_raw)) end as coin_x_norm
+       when starts_with(coin_x_raw, '0x') then cast(lower(coin_x_raw) as varbinary)
+       else cast(lower(concat('0x', coin_x_raw)) as varbinary) end as coin_x_norm
       , case when coin_y_raw is null then null
-             when starts_with(coin_y_raw, '0x') then lower(coin_y_raw)
-             else lower(concat('0x', coin_y_raw)) end as coin_y_norm
+       when starts_with(coin_y_raw, '0x') then cast(lower(coin_y_raw) as varbinary)
+       else cast(lower(concat('0x', coin_y_raw)) as varbinary) end as coin_y_norm
   from decoded
 )
 

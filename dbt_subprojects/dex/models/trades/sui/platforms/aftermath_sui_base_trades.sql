@@ -71,11 +71,11 @@ with decoded as (
       , tick_index_bits
       -- normalized coin types
       , case when coin_in_raw is null then null
-             when starts_with(coin_in_raw, '0x') then lower(coin_in_raw)
-             else lower(concat('0x', coin_in_raw)) end as coin_type_in
+       when starts_with(coin_in_raw, '0x') then cast(lower(coin_in_raw) as varbinary)
+       else cast(lower(concat('0x', coin_in_raw)) as varbinary) end as coin_type_in
       , case when coin_out_raw is null then null
-             when starts_with(coin_out_raw, '0x') then lower(coin_out_raw)
-             else lower(concat('0x', coin_out_raw)) end as coin_type_out
+       when starts_with(coin_out_raw, '0x') then cast(lower(coin_out_raw) as varbinary)
+       else cast(lower(concat('0x', coin_out_raw)) as varbinary) end as coin_type_out
   from decoded
 )
 

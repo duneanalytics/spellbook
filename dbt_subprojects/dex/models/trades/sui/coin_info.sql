@@ -7,7 +7,7 @@
 
 with meta as (
   select
-      lower(regexp_extract(type_, '<(.*)>', 1)) as coin_type
+      cast(lower(regexp_extract(type_, '<(.*)>', 1)) as varbinary) as coin_type
       , json_extract_scalar(object_json, '$.symbol') as coin_symbol
       , cast(json_extract_scalar(object_json, '$.decimals') as integer) as coin_decimals
       , checkpoint

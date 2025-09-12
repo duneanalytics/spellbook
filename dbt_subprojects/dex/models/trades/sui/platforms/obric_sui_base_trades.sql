@@ -68,8 +68,8 @@ select
     , reserve_a
     , reserve_b
     , tick_index_bits
-    , cast(null as varchar) as coin_type_in
-    , cast(null as varchar) as coin_type_out
+    , cast(null as varbinary) as coin_type_in
+    , cast(null as varbinary) as coin_type_out
 from decoded
 where amount_in > 0
   and amount_out > 0

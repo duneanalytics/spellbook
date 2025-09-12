@@ -7,7 +7,7 @@
     incremental_strategy = 'merge',
     partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    unique_key = ['protocol', 'transaction_digest', 'event_index'],
+    unique_key = ['project', 'transaction_digest', 'event_index'],
     post_hook='{{ expose_spells(\'["sui"]\', "sector", "dex_sui", \'["krishhh"]\') }}'
   )
 }}
