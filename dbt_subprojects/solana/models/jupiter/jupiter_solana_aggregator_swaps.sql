@@ -20,7 +20,7 @@ with
         SELECT
         *
         FROM (
-            --use this api https://api.jup.ag/swap/v1/program-id-to-label
+            --use this api https://quote-api.jup.ag/v6/program-id-to-label
             values
                 ('Perena', 'NUMERUNsFCP3kuNmWZuXtm1AaQCPj9uw6Guv2Ekoi5P'),
                 ('stabble Stable Swap', 'swapNyd8XiQwJ6ianp9snpu4brUqFxadzvHebnAXjJZ'),
@@ -76,7 +76,13 @@ with
                 ('Solayer', 'endoLNCKTqDn8gSVnN2hDdpgACUPWHZTwoYnnMybpAT'),
                 ('Token Mill', 'JoeaRXgtME3jAoz5WuFXGEndfv4NPH9nBxsLq44hk9J'),
                 ('Daos.fun', '5jnapfrAN47UYkLkEf7HnprPPBCQLvkYWGZDeKkaP5hv'),
-                ('ZeroFi', 'ZERor4xhbUycZ6gb9ntrhqscUcZmAbQDjEAtCf4hbZY')
+                ('ZeroFi', 'ZERor4xhbUycZ6gb9ntrhqscUcZmAbQDjEAtCf4hbZY'),
+                ('GoonFi', 'goonERTdGsjnkZqWuVjs73BZ3Pb9qoCUdBUL17BnS5j'),
+                ('HumidiFi', '9H6tua7jkLhdm3w8BvgpTn5LZNU7g4ZynDmCiNN3q6Rp'),
+                ('TesseraV', 'TessVdML9pBGgG9yGks7o4HewRaXVAMuoVj4x83GLQH'),
+                ('Woofi', 'WooFif76YGRNjk1pA8wCsN67aQsD9f9iLsz4NcJ1AVb'),
+                ('PancakeSwap', 'HpNfyc2Saw7RKkQd8nEL4khUcuPhQ7WwY1B2qjx8jxFq'),
+                ('SolFi V2', 'SV2EYYJyRz2YhfXwXnhNAevDEui5Q6yrfyo13WtupPF')
             ) as v(amm_name, amm)
     )
 
@@ -106,8 +112,9 @@ with
                 AND bytearray_substring(from_base64(split(l.logs, ' ')[3]), 1, 8) IN (0x516ce3becdd00ac4, 0x40c6cde8260871e2) --v4, v5 discriminator
                 {% if is_incremental() %}
                 AND {{ incremental_predicate('block_time') }}
+                {% else %}
+                and block_time >= now() - interval '7' day --shorten CI
                 {% endif %}
-                -- and block_time >= now() - interval '7' day --shorten CI
         )
 
         SELECT
@@ -163,8 +170,9 @@ with
             and tx_success = true
             {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
+            {% else %}
+            and block_time >= now() - interval '7' day --shorten CI
             {% endif %}
-            -- and block_time >= now() - interval '7' day --shorten CI
         ) l
         JOIN amms a ON a.amm = toBase58(bytearray_substring(l.data,1+16,32)) --only include amms that we are tracking.
     )
@@ -206,12 +214,16 @@ LEFT JOIN {{ source('prices','usd_forward_fill') }} p_1 ON p_1.blockchain = 'sol
     AND l.input_mint = toBase58(p_1.contract_address)
     {% if is_incremental() %}
     AND {{ incremental_predicate('p_1.minute') }}
+    {% else %}
+    AND p_1.minute >= now() - interval '7' day  --shorten CI
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd_forward_fill') }}  p_2 ON p_2.blockchain = 'solana'
     AND date_trunc('minute', l.block_time) = p_2.minute
     AND l.output_mint = toBase58(p_2.contract_address)
     {% if is_incremental() %}
     AND {{ incremental_predicate('p_2.minute') }}
+    {% else %}
+    AND p_2.minute >= now() - interval '7' day  --shorten CI
     {% endif %}
 WHERE l.input_mint not in ('4PfN9GDeF9yQ37qt9xCPsQ89qktp1skXfbsZ5Azk82Xi')
 AND l.output_mint not in ('4PfN9GDeF9yQ37qt9xCPsQ89qktp1skXfbsZ5Azk82Xi')
