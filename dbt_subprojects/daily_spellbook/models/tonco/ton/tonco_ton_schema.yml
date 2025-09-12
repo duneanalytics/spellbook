@@ -162,3 +162,57 @@ models:
         description: "Fee counter inside position range for jetton0, per unit of liquidity, in 128.128 fixed point"
       - name: feeGrowthInside1CurrentX128
         description: "Fee counter inside position range for jetton1, per unit of liquidity, in 128.128 fixed point"
+
+  - name: tonco_ton_nft_position_init
+    meta:
+      blockchain: ton
+      sector: dex
+      contributors: markfromton
+    config:
+      tags: ['ton', 'tonco', 'dex']
+    description: >
+      Tonco protocol pool burn events. This message is sent by the Position NFT itself to the pool contract
+      to burn liquidity or withdraw collected fees.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - block_date
+            - nft_index
+    columns:
+      - name: block_date
+        description: "block_date of the transaction"
+      - name: tx_hash
+        description: "transaction hash"
+      - name: trace_id
+        description: "trace id"
+      - name: tx_now
+        description: "transaction timestamp"
+      - name: tx_lt
+        description: "transaction logical time"
+      - name: pool_address
+        description: "Pool address"
+      - name: op
+        description: "Uint(32),op"
+      - name: query_id
+        description: "queryid as of the TON documentation"
+      - name: user_address
+        description: "NFT owner"
+      - name: liquidity
+        description: "Amount of the liquidity"
+      - name: tickLower
+        description: "Lower tick of the NFT"
+      - name: tickUpper
+        description: "Upper tick of the NFT"
+      - name: feeGrowthInside0LastX128
+        description: "Fee counter inside position range for jetton0, per unit of liquidity, in 128.128 fixed point"
+      - name: feeGrowthInside1LastX128
+        description: "Fee counter inside position range for jetton1, per unit of liquidity, in 128.128 fixed point"
+      - name: nftIndex
+        description: "Index if the NFT"
+      - name: jetton0Amount
+        description: "jetton 0 amount"
+      - name: jetton1Amount
+        description: "jetton 1 amount"
+      - name: tick
+        description: "tick"
