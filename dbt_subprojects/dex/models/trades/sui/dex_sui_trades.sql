@@ -42,11 +42,9 @@ with base_trades as (
   left join {{ source('prices','usd') }} pg
     on pg.blockchain = 'sui'
    and pg.minute = date_trunc('minute', bt.block_time)
-   and pg.contract_address = '0x2::sui::SUI'
-
+   and pg.contract_address = cast(lower('0x2::sui::SUI') as varbinary)
   {% if is_incremental() %}
-    -- Optional: additional pruning of price scans (the equality above already helps a lot)
-    -- and {{ incremental_predicate('bt.block_time') }}
+    and {{ incremental_predicate('bt.block_time') }}
   {% endif %}
 )
 
