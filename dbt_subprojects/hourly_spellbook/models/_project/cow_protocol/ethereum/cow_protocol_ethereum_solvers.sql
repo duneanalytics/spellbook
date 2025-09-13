@@ -238,7 +238,9 @@ known_solver_metadata (address, environment, name) as (
                  (0xc6fBb25D5d435D151a9427Bf50c3e678C5D42833, 'barn', 'JPEG'),
                  (0x06A012D7aA71236f90aAcFf738F18601a5866beD, 'prod', 'JPEG'),
                  (0xB7e46816941805a4abF488a5853B1ed0B0B39398, 'barn', 'Prycto'),
-                 (0xa97851357E99082762C972F794B2a29E629511A7, 'prod', 'Prycto')
+                 (0xa97851357E99082762C972F794B2a29E629511A7, 'prod', 'Prycto'),
+                 (0xf039fd228b6DD779515C30C734bD38dD0C1160F4, 'barn', 'Piggy'),
+                 (0x53040838714f31972f8114eF53915a22894f550C, 'prod', 'Piggy')
     ) as _
 )
 -- Combining the metadata with current activation status for final table
