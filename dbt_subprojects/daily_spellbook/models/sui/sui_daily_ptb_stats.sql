@@ -6,16 +6,15 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['ds'],
-    incremental_predicates = [incremental_predicate('timestamp_ms')]
+    incremental_predicates = [incremental_predicate('block_time')]
 ) }}
 
--- Base: project needed columns, build proper TIMESTAMP, and exclude system/non-PTB rows
 with tx as (
   select
       -- canonical time grains
-      cast(from_unixtime(timestamp_ms/1000) as timestamp)      as block_time
-    , date(cast(from_unixtime(timestamp_ms/1000) as timestamp)) as ds
-    , date_trunc('month', cast(from_unixtime(timestamp_ms/1000) as timestamp)) as block_month
+      from_unixtime(timestamp_ms/1000)                           as block_time
+    , date(from_unixtime(timestamp_ms/1000))                     as ds
+    , date_trunc('month', from_unixtime(timestamp_ms/1000))      as block_month
 
     -- identifiers & attributes
     , transaction_digest
@@ -36,11 +35,15 @@ with tx as (
   from {{ source('sui','transactions') }}
   where transaction_kind = 'ProgrammableTransaction'
     and is_system_txn = false
+),
+-- Apply incremental pruning using the timestamp column
+tx_filtered as (
+  select *
+  from tx
   {% if is_incremental() %}
-    and {{ incremental_predicate('timestamp_ms') }}
+    where {{ incremental_predicate('block_time') }}
   {% endif %}
 ),
-
 -- Daily rollup
 daily as (
   select
@@ -97,7 +100,7 @@ daily as (
     , cast(sum(storage_cost)               as double) / 1e9 as storage_cost_incurred_sui
     , cast(sum(storage_rebate)             as double) / 1e9 as storage_rebated_sui
     , cast(sum(non_refundable_storage_fee) as double) / 1e9 as non_refundable_storage_fee_sui
-  from tx
+  from tx_filtered
   group by 1
 )
 
