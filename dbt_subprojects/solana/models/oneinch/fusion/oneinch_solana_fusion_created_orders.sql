@@ -59,5 +59,5 @@ where
     {% if is_incremental() %}
         {{ incremental_predicate('call_block_time') }}
     {% else %}
-        call_block_time >= date('{{ oneinch_cfg_macro("project_start_date") }}')
+        call_block_time >= date('{{ oneinch_solana_cfg_macro("fusion_start_date") }}')
     {% endif %}
