@@ -14,6 +14,7 @@ FROM (VALUES
     , ('pancakeswap', 'PancakeSwap', 'Direct', 'PancakeSwap')
     , ('curve', 'Curve', 'Direct', 'CurveFinance')
     , ('sushiswap', 'SushiSwap', 'Direct', 'SushiSwap')
+    , ('sushi', 'Sushi', 'Direct', 'SushiSwap')
     , ('mdex', 'Mdex', 'Direct', 'Mdextech')
     , ('dodo', 'DODO', 'Direct & Aggregator', 'BreederDodo') -- To Fix, should be just dodo
     , ('DODO X', 'DODO', 'Direct & Aggregator', 'BreederDodo')
