@@ -15,6 +15,7 @@
     blockchain = 'arbitrum',
     project = 'aave',
     version = '3',
-    decoded_contract_name = 'L2Pool'
+    decoded_contract_name = 'L2Pool',
+    wethgateway_available = true
   )
 }}
