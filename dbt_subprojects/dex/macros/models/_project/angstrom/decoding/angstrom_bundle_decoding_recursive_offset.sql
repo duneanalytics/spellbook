@@ -1,6 +1,7 @@
 {% macro
     angstrom_decoding_recursive(
         angstrom_contract_addr,
+        earliest_block,
         blockchain,
         field_step
     )
@@ -10,7 +11,7 @@
 
 WITH
     tx_data_cte AS (
-        {{ angstrom_tx_data(angstrom_contract_addr, blockchain) }}
+        {{ angstrom_tx_data(angstrom_contract_addr, earliest_block, blockchain) }}
     ),
     trimmed_input AS (
         SELECT 
