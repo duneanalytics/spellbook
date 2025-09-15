@@ -85,11 +85,11 @@ event_data as (
 dataset as (
   select
     l.sender,
-    wp.partner_name,
+    CAST(NULL AS VARCHAR) AS partner_name,
     l.epoch         as epoch_register,
 
--   l.timestamp_ms  as ts_register,
-+   l.block_time    as ts_register,
+    l.timestamp_ms  as ts_register,
+    l.block_time    as ts_register,
 
     l.blob_id       as blob_hash,
     l.object_id,
@@ -104,8 +104,8 @@ dataset as (
     r.extension,
     case when r.sender is null then 0 else 1 end as certify,
 
--   r.timestamp_ms  as ts_certify,
-+   r.block_time    as ts_certify,
+    r.timestamp_ms  as ts_certify,
+    r.block_time    as ts_certify,
 
     r.epoch         as epoch_certify,
     l.transaction_digest as tx_register,
@@ -119,8 +119,6 @@ dataset as (
     and l.epoch          = r.epoch
     and l.starting_epoch = r.starting_epoch
     and l.ending_epoch   = r.ending_epoch
-    left join {{ ref('walrus_partner_wallets') }} wp
-      on wp.wallet_address = l.sender
 )
 
 -- 4) Incremental pruning
