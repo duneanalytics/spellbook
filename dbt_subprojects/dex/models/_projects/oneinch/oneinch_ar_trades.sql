@@ -2,8 +2,7 @@
     config(
         schema = 'oneinch',
         alias = 'ar_trades',
-        materialized = 'view',
-        unique_key = ['blockchain', 'tx_hash', 'trace_address']
+        materialized = 'view'
     )
 }}
 
