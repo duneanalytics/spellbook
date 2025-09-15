@@ -5,25 +5,23 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['ds'],
-    incremental_predicates = [incremental_predicate('block_time')]
+    unique_key = ['block_date'],
+    incremental_predicates = [ incremental_predicate('DBT_INTERNAL_DEST.block_date') ]
 ) }}
 
-with tx as (
-  select
-      -- canonical time grains
-      from_unixtime(timestamp_ms/1000)                           as block_time
-    , date(from_unixtime(timestamp_ms/1000))                     as ds
-    , date_trunc('month', from_unixtime(timestamp_ms/1000))      as block_month
+{% set sui_project_start_date = var('sui_project_start_date', '2025-09-13') %}
 
-    -- identifiers & attributes
+with base as (
+  select
+      from_unixtime(timestamp_ms/1000)                          as block_time
+    , date(from_unixtime(timestamp_ms/1000))                    as block_date
+    , date_trunc('month', from_unixtime(timestamp_ms/1000))     as block_month
+
     , transaction_digest
     , sender
     , execution_success
     , is_sponsored_tx
     , has_zklogin_sig
-
-    -- commands-per-PTB
     , transaction_count
 
     -- gas (Mist)
@@ -36,18 +34,26 @@ with tx as (
   where transaction_kind = 'ProgrammableTransaction'
     and is_system_txn = false
 ),
--- Apply incremental pruning using the timestamp column
+
+-- Cap the initial historical scan at DATE grain (no alias scoping issue)
+tx as (
+  select *
+  from base
+  where block_date >= date '{{ sui_project_start_date }}'
+),
+
+-- Incremental pruning at DATE grain (DEST uses block_date too)
 tx_filtered as (
   select *
   from tx
   {% if is_incremental() %}
-    where {{ incremental_predicate('block_time') }}
+    where {{ incremental_predicate('block_date') }}   -- DATE ↔ DATE
   {% endif %}
 ),
--- Daily rollup
+
 daily as (
   select
-      ds
+      block_date
     , max(block_month) as block_month  -- all rows for a day share the same month
 
     -- sanity: rows vs distinct PTBs
@@ -95,6 +101,8 @@ daily as (
     , coalesce(sum(storage_cost), 0)                 as storage_cost_incurred_mist
     , coalesce(sum(storage_rebate), 0)               as storage_rebated_mist
     , coalesce(sum(non_refundable_storage_fee), 0)   as non_refundable_storage_fee_mist
+
+    -- Gas totals in SUI
     , cast(sum(total_gas_cost)              as double) / 1e9 as gas_fees_sui
     , cast(sum(computation_cost)            as double) / 1e9 as computation_cost_sui
     , cast(sum(storage_cost)               as double) / 1e9 as storage_cost_incurred_sui
