@@ -36,7 +36,7 @@ select
     , tx_from
     , tx_to
     , call_trace_address as trace_address
-    , -1 as evt_index
+    , if(flags['second_side'], -2, -1) as evt_index
 from {{ ref('oneinch_evm_swaps') }}
 where
     protocol = 'AR'
