@@ -20,6 +20,7 @@ ref('prices_native_tokens')
 ,ref('prices_ethereum_tokens')
 ,ref('prices_fantom_tokens')
 ,ref('prices_flare_tokens')
+,ref('prices_flow_tokens')
 ,ref('prices_gnosis_tokens')
 ,ref('prices_hemi_tokens')
 ,ref('prices_optimism_tokens')
@@ -59,6 +60,7 @@ ref('prices_native_tokens')
 ,ref('prices_plume_tokens')
 ,ref('prices_katana_tokens')
 ,ref('prices_superseed_tokens')
+,ref('prices_sui_tokens')
 ] %}
 
 
