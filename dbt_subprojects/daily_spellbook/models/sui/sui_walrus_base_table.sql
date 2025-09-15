@@ -119,7 +119,7 @@ dataset as (
    and l.epoch          = r.epoch
    and l.starting_epoch = r.starting_epoch
    and l.ending_epoch   = r.ending_epoch
-)
+),
 
 pruned as (
   select
