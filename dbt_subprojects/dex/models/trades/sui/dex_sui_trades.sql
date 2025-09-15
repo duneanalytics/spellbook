@@ -1,5 +1,4 @@
-{{
-  config(
+{{ config(
     schema = 'dex_sui',
     alias = 'trades',
     materialized = 'incremental',
@@ -9,8 +8,7 @@
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['project', 'transaction_digest', 'event_index'],
     post_hook='{{ expose_spells(\'["sui"]\', "sector", "dex_sui", \'["krishhh"]\') }}'
-  )
-}}
+) }}
 
 with base_trades as (
   select *
@@ -20,37 +18,9 @@ with base_trades as (
   {% endif %}
 )
 
--- join prices for both legs (same minute as the trade)
-, priced as (
-  select
-      bt.*,
-
-      -- prices keyed by contract
-      pb.price as price_in,   -- coin_type_in
-      ps.price as price_out,  -- coin_type_out
-      pg.price as price_gas   -- SUI gas price
-
-  from base_trades bt
-  left join {{ source('prices','usd') }} pb
-    on pb.blockchain = 'sui'
-   and pb.minute = date_trunc('minute', bt.block_time)
-   and pb.contract_address = bt.coin_type_in
-  left join {{ source('prices','usd') }} ps
-    on ps.blockchain = 'sui'
-   and ps.minute = date_trunc('minute', bt.block_time)
-   and ps.contract_address = bt.coin_type_out
-  left join {{ source('prices','usd') }} pg
-    on pg.blockchain = 'sui'
-   and pg.minute = date_trunc('minute', bt.block_time)
-   and pg.contract_address = cast(lower('0x2::sui::SUI') as varbinary)
-  {% if is_incremental() %}
-    and {{ incremental_predicate('bt.block_time') }}
-  {% endif %}
-)
-
 select
-    -- standard Dune outputs
-    bt.project ,
+    -- identity / time
+    bt.project,
     bt.version,
     bt.blockchain,
     bt.block_month,
@@ -59,16 +29,19 @@ select
     bt.epoch,
     bt.checkpoint,
 
-    -- bought = output leg; sold = input leg
-    bt.coin_symbol_out   as token_bought_symbol,
-    bt.coin_symbol_in    as token_sold_symbol,
+    -- token labels & pair
+    bt.coin_symbol_out as token_bought_symbol,
+    bt.coin_symbol_in  as token_sold_symbol,
     case
-      when lower(bt.coin_symbol_out) > lower(bt.coin_symbol_in)
+      when bt.coin_symbol_out is not null and bt.coin_symbol_in is not null
+           and lower(bt.coin_symbol_out) > lower(bt.coin_symbol_in)
         then concat(bt.coin_symbol_in, '-', bt.coin_symbol_out)
-      else concat(bt.coin_symbol_out, '-', bt.coin_symbol_in)
+      when bt.coin_symbol_out is not null and bt.coin_symbol_in is not null
+        then concat(bt.coin_symbol_out, '-', bt.coin_symbol_in)
+      else null
     end as token_pair,
 
-    -- decimals
+    -- normalized amounts
     bt.amount_out_decimal as token_bought_amount,
     bt.amount_in_decimal  as token_sold_amount,
 
@@ -76,19 +49,16 @@ select
     bt.amount_out as token_bought_amount_raw,
     bt.amount_in  as token_sold_amount_raw,
 
-    -- USD notional: prefer valuing the bought leg; fall back to sold leg
-    coalesce(
-      bt.amount_out_decimal * bt.price_out,
-      bt.amount_in_decimal  * bt.price_in
-    ) as amount_usd,
+    -- USD notional (reused from base pricing)
+    bt.amount_usd,
 
-    -- fees (taken from input leg)
+    -- fees (reprice using base price columns)
     bt.fee_amount_decimal as fee_amount,
     case
-      when bt.fee_amount_decimal is not null and bt.price_in is not null
-        then bt.fee_amount_decimal * bt.price_in
-      when bt.fee_amount_decimal is not null and bt.price_out is not null
-        then bt.fee_amount_decimal * bt.price_out
+      when bt.fee_amount_decimal is not null and bt.price_in_usd  is not null
+        then bt.fee_amount_decimal * bt.price_in_usd
+      when bt.fee_amount_decimal is not null and bt.price_out_usd is not null
+        then bt.fee_amount_decimal * bt.price_out_usd
       else null
     end as fee_usd,
 
@@ -97,14 +67,24 @@ select
     bt.coin_type_in  as token_sold_address,
 
     -- actors & ids
-    bt.sender        as taker,
-    bt.pool_id       as maker,
-    bt.pool_id       as project_contract_address,
-    bt.transaction_digest as tx_hash,
-    bt.transaction_digest as tx_id,
-    bt.event_index   as evt_index,
+    bt.sender  as taker,
+    bt.pool_id as maker,
+    bt.pool_id as project_contract_address,
 
-    -- extras you surfaced
+    -- Unique keys
+    bt.transaction_digest as transaction_digest,
+    bt.event_index        as event_index,
+
+    -- pricing columns (passed through for transparency)
+    bt.price_in_usd,
+    bt.price_out_usd,
+    bt.price_gas_usd,
+
+    -- gas
+    bt.total_gas_sui,
+    bt.total_gas_usd,
+
+    -- pool state & extras
     bt.a_to_b,
     bt.after_sqrt_price,
     bt.before_sqrt_price,
@@ -113,8 +93,8 @@ select
     bt.reserve_b,
     bt.tick_index_bits,
     bt.fee_rate,
-    bt.protocol_fee_rate,
-    bt.total_gas_sui,
-    (bt.total_gas_sui * bt.price_gas) as total_gas_usd
+    bt.protocol_fee_rate
 
-from priced bt
+from base_trades bt
+where bt.transaction_digest is not null
+  and bt.event_index        is not null
