@@ -85,10 +85,10 @@ event_data as (
 dataset as (
   select
     l.sender,
-    CAST(NULL AS VARCHAR) AS partner_name,
+    cast(null as varchar) as partner_name,
     l.epoch         as epoch_register,
 
-    l.timestamp_ms  as ts_register,
+    -- human-readable register time
     l.block_time    as ts_register,
 
     l.blob_id       as blob_hash,
@@ -104,7 +104,7 @@ dataset as (
     r.extension,
     case when r.sender is null then 0 else 1 end as certify,
 
-    r.timestamp_ms  as ts_certify,
+    -- human-readable certify time
     r.block_time    as ts_certify,
 
     r.epoch         as epoch_certify,
@@ -112,25 +112,42 @@ dataset as (
     l.event_index        as evt_index_register,
     l.block_date,
     l.block_month
-    from (select * from event_data where action = 'register') l
-    left join (select * from event_data where action = 'certify') r
-      on l.object_id      = r.object_id
-    and l.sender         = r.sender
-    and l.epoch          = r.epoch
-    and l.starting_epoch = r.starting_epoch
-    and l.ending_epoch   = r.ending_epoch
+  from (select * from event_data where action = 'register') l
+  left join (select * from event_data where action = 'certify') r
+    on l.object_id      = r.object_id
+   and l.sender         = r.sender
+   and l.epoch          = r.epoch
+   and l.starting_epoch = r.starting_epoch
+   and l.ending_epoch   = r.ending_epoch
 )
 
--- 4) Incremental pruning
-, pruned as (
-  select *
+pruned as (
+  select
+    sender,
+    partner_name,
+    epoch_register,
+    ts_register,
+    blob_hash,
+    object_id,
+    deletable,
+    starting_epoch,
+    ending_epoch,
+    size_mb,
+    extension,
+    certify,
+    ts_certify,
+    epoch_certify,
+    tx_register,
+    evt_index_register,
+    block_date,
+    block_month
   from dataset
   {% if is_incremental() %}
     where {{ incremental_predicate('block_date') }}
   {% endif %}
 )
 
--- 5) Final projection (match Snowflake column list exactly + partner_name)
+-- 5) Final projection
 select
   sender,
   partner_name,
