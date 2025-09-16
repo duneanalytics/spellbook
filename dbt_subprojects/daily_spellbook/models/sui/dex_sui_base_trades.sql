@@ -84,7 +84,7 @@ meta as (
 -- Transaction gas components
 tx as (
   select
-      ('0x' || lower(to_hex(t.transaction_digest))) as transaction_digest,
+      ('0x' || lower(to_hex(from_base58(t.transaction_digest)))) as transaction_digest,
       t.gas_budget   as gas_budget_mist,
       t.gas_price    as gas_price_mist_per_unit,
       t.computation_cost,
@@ -94,7 +94,7 @@ tx as (
       t.total_gas_cost as total_gas_mist
   from {{ source('sui','transactions') }} t
   join (select distinct transaction_digest from meta) m
-    on t.transaction_digest = from_hex(substr(m.transaction_digest, 3))
+    on from_base58(t.transaction_digest) = from_hex(substr(m.transaction_digest, 3))
 )
 
 -- Attach gas usage & total_gas_sui

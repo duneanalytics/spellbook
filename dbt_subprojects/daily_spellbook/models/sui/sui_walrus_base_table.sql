@@ -19,7 +19,7 @@ with events as (
       {{ j_bigint('event_json', '$.epoch') }}         as epoch,            -- payload epoch
       event_type,
       event_json,
-      ('0x' || lower(to_hex(transaction_digest)))     as transaction_digest,
+      ('0x' || lower(to_hex(from_base58(transaction_digest)))) as transaction_digest,
       event_index,
       timestamp_ms,
       from_unixtime(timestamp_ms/1000)                as block_time,

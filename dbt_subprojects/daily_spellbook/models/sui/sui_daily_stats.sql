@@ -16,7 +16,7 @@ with base as (
       from_unixtime(timestamp_ms/1000)                          as block_time
     , date(from_unixtime(timestamp_ms/1000))                    as block_date
     , date_trunc('month', from_unixtime(timestamp_ms/1000))     as block_month
-    , ('0x' || lower(to_hex(transaction_digest))) as transaction_digest
+    , ('0x' || lower(to_hex(from_base58(transaction_digest)))) as transaction_digest,
     , ('0x' || lower(to_hex(sender))) as sender
     , execution_success
     , is_sponsored_tx
