@@ -13,3 +13,7 @@ cast(json_extract_scalar({{ col }}, '{{ path }}') as double)
 {% macro j_bool(col, path) -%}
 cast(json_extract_scalar({{ col }}, '{{ path }}') as boolean)
 {%- endmacro %}
+
+{% macro j_bigint(col, path) -%}
+cast(json_extract_scalar({{ col }}, '{{ path }}') as bigint)
+{%- endmacro %}
