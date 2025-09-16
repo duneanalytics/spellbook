@@ -1,6 +1,17 @@
-{{ safe_incremental_singleton_config(
-    blockchain = 'celo',
-    alias_name = 'singletons'
-) }}
+{{
+    config(
+        materialized='table',
+        
+        schema='safe_celo',
+        alias = 'singletons',
+        post_hook='{{ expose_spells(\'["celo"]\',
+                                    "project",
+                                    "safe",
+                                    \'["danielpartida"]\') }}'
+    )
+}}
 
-{{ safe_singletons_by_network_validated('celo', only_official=true) }}
+
+-- Fetch all known singleton addresses used via the factory.
+select distinct singleton as address
+from {{ source('gnosis_safe_celo', 'GnosisSafeProxyFactory_v1_3_0_evt_ProxyCreation') }}

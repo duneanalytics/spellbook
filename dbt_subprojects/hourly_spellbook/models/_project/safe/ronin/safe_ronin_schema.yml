@@ -4,7 +4,7 @@ models:
   - name: safe_ronin_safes
     meta:
       blockchain: ronin
-      project: gnosis_safe
+      project: safe
       contributors: petertherock
     config:
       tags: ['safe', 'ronin']
@@ -37,7 +37,7 @@ models:
   - name: safe_ronin_eth_transfers
     meta:
       blockchain: ronin
-      project: gnosis_safe
+      project: safe
       contributors: petertherock
     config:
       tags: ['safe', 'transfers', 'ronin']
@@ -73,7 +73,7 @@ models:
   - name: safe_ronin_singletons
     meta:
       blockchain: ronin
-      project: gnosis_safe
+      project: safe
       contributors: petertherock
     config:
       tags: ['safe', 'singletons', 'ronin']
@@ -85,7 +85,7 @@ models:
   - name: safe_ronin_transactions
     meta:
       blockchain: ronin
-      project: gnosis_safe
+      project: safe
       contributors: petertherock
     config:
       tags: ['safe', 'ronin']

@@ -1,13 +1,13 @@
 version: 2
 
 models:
-  - name: safe_unichain_singletons
+  - name: safe_goerli_singletons
     meta:
-      blockchain: unichain
-      project: gnosis_safe
+      blockchain: goerli
+      project: safe
       contributors: tschubotz
     config:
-      tags: ['safe', 'singletons', 'unichain']
+      tags: ['safe', 'singletons', 'goerli']
     description: "Singletons addresses used with Safes"
     columns:
       - &address
@@ -17,13 +17,13 @@ models:
           - unique
           - not_null
 
-  - name: safe_unichain_safes
+  - name: safe_goerli_safes
     meta:
-      blockchain: unichain
-      project: gnosis_safe
+      blockchain: goerli
+      project: safe
       contributors: tschubotz
     config:
-      tags: ['safe', 'unichain']
+      tags: ['safe', 'goerli']
     description: "Safe addresses"
     columns:
       - &blockchain
@@ -43,13 +43,13 @@ models:
       - &tx_hash
         name: tx_hash
 
-  - name: safe_unichain_transactions
+  - name: safe_goerli_transactions
     meta:
-      blockchain: unichain
-      project: gnosis_safe
+      blockchain: goerli
+      project: safe
       contributors: tschubotz, danielpartida
     config:
-      tags: ['safe', 'unichain']
+      tags: ['safe', 'goerli']
     description: "Safe transactions"
     columns:
       - *blockchain
@@ -71,7 +71,7 @@ models:
         name: value
         description: "Value of transaction"
       - &gas
-        name: gas
+        name: gas 
         description: "Gas limit set for transaction"
       - &execution_gas_used
         name: execution_gas_used
@@ -104,13 +104,13 @@ models:
         name: output
         description: "Output data"
 
-  - name: safe_unichain_eth_transfers
+  - name: safe_goerli_eth_transfers
     meta:
-      blockchain: unichain
-      project: gnosis_safe
+      blockchain: goerli
+      project: safe
       contributors: tschubotz
     config:
-      tags: ['safe', 'transfers', 'unichain']
+      tags: ['safe', 'transfers', 'goerli']
     description: "ETH transfers into or out of Safes"
     data_tests:
       - dbt_utils.unique_combination_of_columns:

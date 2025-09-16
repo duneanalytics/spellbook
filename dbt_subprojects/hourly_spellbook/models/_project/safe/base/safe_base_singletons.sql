@@ -1,6 +1,21 @@
-{{ safe_incremental_singleton_config(
-    blockchain = 'base',
-    alias_name = 'singletons'
-) }}
+{{
+    config(
+        materialized='table',
+        
+        alias= 'singletons',
+        post_hook='{{ expose_spells(\'["base"]\',
+                                    "project",
+                                    "safe",
+                                    \'["danielpartida", "peterrliem"]\') }}'
+    )
+}}
 
-{{ safe_singletons_by_network_validated('base', only_official=true) }}
+
+-- Fetch all known singleton/mastercopy addresses used via factories.
+select distinct singleton as address
+from {{ source('gnosis_safe_base', 'GnosisSafeProxyFactoryv_1_3_0_evt_ProxyCreation') }}
+
+union
+
+select distinct singleton as address
+from {{ source('gnosis_safe_base', 'SafeProxyFactory_v_1_4_1_evt_ProxyCreation') }}

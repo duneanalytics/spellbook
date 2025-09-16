@@ -4,7 +4,7 @@ models:
   - name: safe_avalanche_c_singletons
     meta:
       blockchain: avalanche_c
-      project: gnosis_safe
+      project: safe
       contributors: tschubotz
     config:
       tags: ['safe', 'singletons', 'avalanche_c']
@@ -20,7 +20,7 @@ models:
   - name: safe_avalanche_c_safes
     meta:
       blockchain: avalanche_c
-      project: gnosis_safe
+      project: safe
       contributors: tschubotz
     config:
       tags: ['safe', 'avalanche_c']
@@ -46,7 +46,7 @@ models:
   - name: safe_avalanche_c_transactions
     meta:
       blockchain: avalanche_c
-      project: gnosis_safe
+      project: safe
       contributors: tschubotz, danielpartida
     config:
       tags: ['safe', 'avalanche_c']
@@ -107,7 +107,7 @@ models:
   - name: safe_avalanche_c_avax_transfers
     meta:
       blockchain: avalanche_c
-      project: gnosis_safe
+      project: safe
       contributors: tschubotz
     config:
       tags: ['safe', 'transfers', 'avalanche_c']
