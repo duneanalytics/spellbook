@@ -49,10 +49,10 @@ select
     bt.amount_out as token_bought_amount_raw,
     bt.amount_in  as token_sold_amount_raw,
 
-    -- USD notional (reused from base pricing)
+    -- USD notional
     bt.amount_usd,
 
-    -- fees (reprice using base price columns)
+    -- fees
     bt.fee_amount_decimal as fee_amount,
     case
       when bt.fee_amount_decimal is not null and bt.price_in_usd  is not null
@@ -62,7 +62,7 @@ select
       else null
     end as fee_usd,
 
-    -- addresses
+    -- addresses (*** stay native VARCHAR ***)
     bt.coin_type_out as token_bought_address,
     bt.coin_type_in  as token_sold_address,
 
@@ -75,7 +75,7 @@ select
     bt.transaction_digest as transaction_digest,
     bt.event_index        as event_index,
 
-    -- pricing columns (passed through for transparency)
+    -- pricing columns (passed through)
     bt.price_in_usd,
     bt.price_out_usd,
     bt.price_gas_usd,
@@ -94,7 +94,6 @@ select
     bt.tick_index_bits,
     bt.fee_rate,
     bt.protocol_fee_rate
-
 from base_trades bt
 where bt.transaction_digest is not null
   and bt.event_index        is not null

@@ -75,15 +75,15 @@ meta as (
         else cast(null as decimal(38,18)) end as amount_out_decimal
   from resolved re
   left join {{ ref('coin_info') }} ci_in
-    on re.coin_type_in = ci_in.coin_type
+    on lower(re.coin_type_in) = lower(ci_in.coin_type)
   left join {{ ref('coin_info') }} ci_out
-    on re.coin_type_out = ci_out.coin_type
+    on lower(re.coin_type_out) = lower(ci_out.coin_type)
 ),
 
 -- Transaction gas components (Dune naming)
 tx as (
   select
-      transaction_digest
+      lower(transaction_digest) as transaction_digest
     , gas_budget   as gas_budget_mist
     , gas_price    as gas_price_mist_per_unit
     , computation_cost
@@ -111,7 +111,7 @@ joined as (
     on m.transaction_digest = t.transaction_digest
 ),
 
--- Prices (in/out + SUI gas) at trade minute
+-- Prices (cast ONLY in the ON clause to match prices.usd VARBINARY contract_address)
 priced as (
   select
       j.*
@@ -122,21 +122,20 @@ priced as (
   left join {{ source('prices','usd') }} pb
     on pb.blockchain = 'sui'
    and pb.minute = date_trunc('minute', j.block_time)
-   and pb.contract_address = j.coin_type_in
+   and pb.contract_address = cast(lower(j.coin_type_in) as varbinary)
   left join {{ source('prices','usd') }} ps
     on ps.blockchain = 'sui'
    and ps.minute = date_trunc('minute', j.block_time)
-   and ps.contract_address = j.coin_type_out
+   and ps.contract_address = cast(lower(j.coin_type_out) as varbinary)
   left join {{ source('prices','usd') }} pg
     on pg.blockchain = 'sui'
    and pg.minute = date_trunc('minute', j.block_time)
    and pg.contract_address = cast(lower('0x2::sui::SUI') as varbinary)
 ),
 
--- Final projection: keys, pricing, fees, gas totals
+-- Final projection
 finalize as (
   select
-      -- Canonical identifiers (lock types for merge keys)
       'sui' as blockchain
     , project
     , version
@@ -144,32 +143,29 @@ finalize as (
     , block_time
     , block_date
     , block_month
-    , cast(null as bigint) as block_number  -- Sui has no block numbers
+    , cast(null as bigint) as block_number
 
-    , cast(transaction_digest as varbinary) as transaction_digest
-    , cast(event_index        as bigint)    as event_index
+    , transaction_digest      -- native VARCHAR
+    , cast(event_index as bigint) as event_index
 
     , epoch
     , checkpoint
-    , pool_id
-    , sender
+    , pool_id                 -- native VARCHAR
+    , sender                  -- native VARCHAR
 
-    -- Swap core (raw + normalized)
     , amount_in
     , amount_out
     , amount_in_decimal
     , amount_out_decimal
     , a_to_b
 
-    -- Coin identity & metadata
-    , coin_type_in
-    , coin_type_out
+    , coin_type_in            -- native VARCHAR
+    , coin_type_out           -- native VARCHAR
     , coin_symbol_in
     , coin_symbol_out
     , coin_decimals_in
     , coin_decimals_out
 
-    -- Prices & USD notional
     , price_in_usd
     , price_out_usd
     , price_gas_usd
@@ -178,7 +174,6 @@ finalize as (
         amount_in_decimal  * coalesce(price_in_usd,  0)
       ) as amount_usd
 
-    -- Fees (raw + normalized + rate)
     , fee_amount
     , protocol_fee_amount
     , case when coin_decimals_in is not null
@@ -196,7 +191,7 @@ finalize as (
              / amount_in_decimal
         else null end as protocol_fee_rate
 
-    -- Standard DEX test columns (mapped)
+    -- Standard DEX mapping
     , amount_out as token_bought_amount_raw
     , amount_in  as token_sold_amount_raw
     , coin_type_out as token_bought_address
@@ -207,7 +202,6 @@ finalize as (
     , transaction_digest as tx_hash
     , event_index        as evt_index
 
-    -- Pool state & ticks
     , after_sqrt_price
     , before_sqrt_price
     , liquidity
@@ -215,7 +209,6 @@ finalize as (
     , reserve_b
     , tick_index_bits
 
-    -- Gas
     , gas_budget_mist
     , gas_price_mist_per_unit
     , gas_used_computation_cost

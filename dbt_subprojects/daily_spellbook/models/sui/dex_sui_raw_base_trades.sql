@@ -26,32 +26,32 @@ with all_swaps as (
     {% for base in base_models %}
       select
           blockchain
-          , project
-          , version
-          , timestamp_ms
-          , block_time
-          , block_date
-          , block_month
-          , transaction_digest
-          , event_index
-          , epoch
-          , checkpoint
-          , cast(pool_id as varchar) as pool_id
-          , cast(sender as varchar) as sender
-          , cast(amount_in  as decimal(38,0)) as amount_in
-          , cast(amount_out as decimal(38,0)) as amount_out
-          , a_to_b
-          , cast(fee_amount           as decimal(38,0)) as fee_amount
-          , cast(protocol_fee_amount  as decimal(38,0)) as protocol_fee_amount
-          , after_sqrt_price
-          , before_sqrt_price
-          , liquidity
-          , reserve_a
-          , reserve_b
-          , tick_index_bits
-          , cast(coin_type_in  as varbinary) as coin_type_in
-          , cast(coin_type_out as varbinary) as coin_type_out
-          , row_number() over (
+        , project
+        , version
+        , timestamp_ms
+        , block_time
+        , block_date
+        , block_month
+        , lower(transaction_digest) as transaction_digest
+        , event_index
+        , epoch
+        , checkpoint
+        , lower(pool_id)  as pool_id
+        , lower(sender)   as sender
+        , cast(amount_in  as decimal(38,0)) as amount_in
+        , cast(amount_out as decimal(38,0)) as amount_out
+        , a_to_b
+        , cast(fee_amount           as decimal(38,0)) as fee_amount
+        , cast(protocol_fee_amount  as decimal(38,0)) as protocol_fee_amount
+        , after_sqrt_price
+        , before_sqrt_price
+        , liquidity
+        , reserve_a
+        , reserve_b
+        , tick_index_bits
+        , cast(coin_type_in  as varchar) as coin_type_in
+        , cast(coin_type_out as varchar) as coin_type_out
+        , row_number() over (
             partition by project, transaction_digest, event_index
             order by transaction_digest
           ) as dup_rank

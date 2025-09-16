@@ -15,8 +15,7 @@ with used_pools as (
 -- 2) Latest row per object_id, join on normalized hex id
 latest as (
   select
-      -- normalize VARBINARY id -> '0x' + lowercase hex string
-      ('0x' || lower(to_hex(o.object_id))) as object_id_hex,
+      ('0x' || lower(to_hex(o.object_id))) as object_id_hex, -- VARCHAR pool id
       cast(o.type_ as varchar)             as type_str,
       o.checkpoint,
       row_number() over (
@@ -26,10 +25,10 @@ latest as (
   from {{ source('sui','objects') }} o
   join used_pools u
     on ('0x' || lower(to_hex(o.object_id))) = u.pool_id
-  where strpos(cast(o.type_ as varchar), '<') > 0  -- only types with generics
+  where strpos(cast(o.type_ as varchar), '<') > 0
 ),
 
--- 3) Extract the full generics string between <…>
+-- 3) Extract generics <A,B,...>
 parsed as (
   select
       object_id_hex as pool_id,
@@ -39,7 +38,7 @@ parsed as (
   where rn = 1
 ),
 
--- 4) Split "A,B,..." and take first two as coin types
+-- 4) Split and take first two generic types
 split as (
   select
       pool_id,
@@ -49,12 +48,12 @@ split as (
   from parsed
 ),
 
--- 5) Keep pool-ish structs to avoid false positives
+-- 5) Keep only pool-ish structs and normalize
 filtered as (
   select
       pool_id,
-      cast(lower(trim(coin_type_a_raw)) as varbinary) as coin_type_a,
-      cast(lower(trim(coin_type_b_raw)) as varbinary) as coin_type_b
+      lower(trim(coin_type_a_raw)) as coin_type_a,  -- *** native VARCHAR ***
+      lower(trim(coin_type_b_raw)) as coin_type_b   -- *** native VARCHAR ***
   from split
   where coin_type_a_raw is not null
     and coin_type_b_raw is not null
