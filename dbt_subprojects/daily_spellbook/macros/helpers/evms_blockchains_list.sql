@@ -30,7 +30,7 @@
         "mantle",
         "opbnb",
         "optimism",
-        "peaq"
+        "peaq",
         "plume",
         "polygon",
         "zkevm",
