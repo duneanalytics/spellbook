@@ -4,16 +4,11 @@ models:
   - name: safe_zksync_safes
     meta:
       blockchain: zksync
-      project: safe
+      project: gnosis_safe
       contributors: ['danielpartida' , 'kryptaki']
     config:
       tags: ['safe', 'zksync']
     description: "Safe addresses"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - address
     columns:
       - &blockchain
         name: blockchain
@@ -33,11 +28,10 @@ models:
         description: "Date/time of safe creation"
       - &tx_hash
         name: tx_hash
-
   - name: safe_zksync_eth_transfers
     meta:
       blockchain: zksync
-      project: safe
+      project: gnosis_safe
       contributors: ['danielpartida' , 'kryptaki']
     config:
       tags: ['safe', 'transfers', 'zksync']
@@ -69,12 +63,10 @@ models:
       - &amount_usd
         name: amount_usd
         description: "USD amount of transferred ETH"
-
-
   - name: safe_zksync_singletons
     meta:
       blockchain: zksync
-      project: safe
+      project: gnosis_safe
       contributors: ['danielpartida' , 'kryptaki']
     config:
       tags: ['safe', 'singletons', 'zksync']
@@ -85,15 +77,20 @@ models:
         data_tests:
           - unique
           - not_null
-
   - name: safe_zksync_transactions
     meta:
       blockchain: zksync
-      project: safe
+      project: gnosis_safe
       contributors: kryptaki
     config:
       tags: ['safe', 'zksync']
     description: "Safe transactions"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - trace_address
     columns:
       - *blockchain
       - *block_date
@@ -148,8 +145,3 @@ models:
       - &trace_tx_hash
         name: trace_tx_hash
         description: "Tx hash to retrieve traces"
-      - &unique_key
-        name: unique_key
-        description: unique row identifier
-        data_tests:
-          - unique

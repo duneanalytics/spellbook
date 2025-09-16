@@ -1,17 +1,6 @@
-{{
-    config(
-        materialized='table',
-        schema = 'safe_ronin',
-        alias= 'singletons',
-        post_hook = '{{ expose_spells(
-                        blockchains = \'["ronin"]\',
-                        spell_type = "project",
-                        spell_name = "safe",
-                        contributors = \'["petertherock"]\') }}'
-    )
-}}
+{{ safe_incremental_singleton_config(
+    blockchain = 'ronin',
+    alias_name = 'singletons'
+) }}
 
-
--- Fetch all known singleton/mastercopy addresses used via factories.
-select distinct singleton as address
-from {{ source('safe_ronin', 'GnosisSafeProxyFactory_v1_3_0_evt_ProxyCreation') }}
+{{ safe_singletons_by_network_validated('ronin', only_official=true) }}

@@ -4,7 +4,7 @@ models:
   - name: safe_mantle_safes
     meta:
       blockchain: mantle
-      project: safe
+      project: gnosis_safe
       contributors: danielpartida
     config:
       tags: ['safe', 'mantle']
@@ -37,7 +37,7 @@ models:
   - name: safe_mantle_mnt_transfers
     meta:
       blockchain: mantle
-      project: safe
+      project: gnosis_safe
       contributors: danielpartida
     config:
       tags: ['safe', 'transfers', 'mantle']
@@ -73,7 +73,7 @@ models:
   - name: safe_mantle_singletons
     meta:
       blockchain: mantle
-      project: safe
+      project: gnosis_safe
       contributors: danielpartida
     config:
       tags: ['safe', 'singletons', 'mantle']
@@ -85,7 +85,7 @@ models:
   - name: safe_mantle_transactions
     meta:
       blockchain: mantle
-      project: safe
+      project: gnosis_safe
       contributors: danielpartida
     config:
       tags: ['safe', 'mantle']
