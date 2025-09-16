@@ -21,6 +21,7 @@
         "flow",
         "gnosis",
         "hemi",
+        "hyperevm",
         "ink",
         "kaia",
         "katana",
@@ -29,6 +30,7 @@
         "mantle",
         "opbnb",
         "optimism",
+        "peaq"
         "plume",
         "polygon",
         "zkevm",

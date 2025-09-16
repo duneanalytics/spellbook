@@ -61,6 +61,8 @@ ref('prices_native_tokens')
 ,ref('prices_katana_tokens')
 ,ref('prices_superseed_tokens')
 ,ref('prices_sui_tokens')
+,ref('prices_hyperevm_tokens')
+,ref('prices_peaq_tokens')
 ] %}
 
 

@@ -99,5 +99,7 @@ FROM
     ('corn-corn2', null, 'BTCN', null, null),
     ('tomo-tomochain', null, 'VIC', null, null),
     ('s-sonic', null, 'S', null, null),
-    ('flow-flow', null, 'FLOW', null, null)
+    ('flow-flow', null, 'FLOW', null, null),
+    ('hype-hyperliquid', null, 'HYPE', null, null),
+    ('peaq-peaq-network', null, 'PEAQ', null, null)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
