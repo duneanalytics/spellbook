@@ -41,10 +41,7 @@ with decoded as (
     , lower(sender)                                         as sender
   from {{ source('sui','events') }}
   where event_type = '0x200e762fa2c49f3dc150813038fbf22fd4f894ac6f23ebe1085c62f2ef97f1ca::obric::ObricSwapEvent'
-  and block_time >= timestamp '{{ obric_start_date }}'
-  {% if is_incremental() %}
-  and {{ incremental_predicate('block_time') }}
-  {% endif %}
+  and from_unixtime(timestamp_ms/1000) >= timestamp '{{ obric_start_date }}'
 )
 
 select
@@ -77,3 +74,6 @@ select
 from decoded
 where amount_in  > 0
   and amount_out > 0
+  {% if is_incremental() %}
+  and {{ incremental_predicate('block_time') }}
+  {% endif %}

@@ -30,12 +30,15 @@ with events as (
     '0xfdc88f7d7cf30afab2f82e8380d11ee8f70efb90e863d1de8616fae1bb09ea77::events::BlobRegistered',
     '0xfdc88f7d7cf30afab2f82e8380d11ee8f70efb90e863d1de8616fae1bb09ea77::events::BlobCertified'
   )
-    and block_time >= timestamp '{{ walrus_start_date }}'
-    {% if is_incremental() %}
-      and {{ incremental_predicate('block_time') }}
-    {% endif %}
+    and from_unixtime(timestamp_ms/1000) >= timestamp '{{ walrus_start_date }}'
 ),
-
+events_filtered as (
+  select *
+  from events
+  {% if is_incremental() %}
+    where {{ incremental_predicate('block_time') }}
+  {% endif %}
+),
 -- 2) Normalize payloads (Snowflake-parity)
 event_data as (
   select
@@ -78,7 +81,7 @@ event_data as (
       from_unixtime(timestamp_ms/1000)                      as block_time,
       date(from_unixtime(timestamp_ms/1000))                as block_date,
       date_trunc('month', from_unixtime(timestamp_ms/1000)) as block_month
-  from events
+  from events_filtered
 ),
 
 -- 3) Split and join register ↔ certify (exact Snowflake-ish join keys)

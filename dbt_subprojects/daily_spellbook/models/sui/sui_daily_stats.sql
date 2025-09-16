@@ -32,14 +32,10 @@ with base as (
   from {{ source('sui','transactions') }}
   where transaction_kind = 'ProgrammableTransaction'
     and is_system_txn = false
-    and block_time >= timestamp '{{ sui_project_start_date }}'
-    {% if is_incremental() %}
-      and {{ incremental_predicate('block_time') }}
-    {% endif %}
+    and from_unixtime(timestamp_ms/1000) >= timestamp '{{ sui_project_start_date }}'
 ),
 
--- Incremental pruning at DATE grain (DEST uses block_date too)
-tx_filtered as (
+filtered as (
   select *
   from base
   {% if is_incremental() %}
@@ -104,7 +100,7 @@ daily as (
     , cast(sum(storage_cost)               as double) / 1e9 as storage_cost_incurred_sui
     , cast(sum(storage_rebate)             as double) / 1e9 as storage_rebated_sui
     , cast(sum(non_refundable_storage_fee) as double) / 1e9 as non_refundable_storage_fee_sui
-  from tx_filtered
+  from filtered
   group by 1
 )
 

@@ -46,10 +46,7 @@ with decoded as (
     '0xc4049b2d1cc0f6e017fda8260e4377cecd236bd7f56a54fee120816e72e2e0dd::events::SwapEventV2',
     '0xefe170ec0be4d762196bedecd7a065816576198a6527c99282a2551aaa7da38c::events::SwapEvent'
   )
-  and block_time >= timestamp '{{ aftermath_start_date }}'
-  {% if is_incremental() %}
-  and {{ incremental_predicate('block_time') }}
-  {% endif %}
+  and from_unixtime(timestamp_ms/1000) >= timestamp '{{ aftermath_start_date }}'
 ),
 
 shaped as (
@@ -120,3 +117,6 @@ select
 from shaped
 where amount_in  > 0
   and amount_out > 0
+  {% if is_incremental() %}
+  and {{ incremental_predicate('block_time') }}
+  {% endif %}

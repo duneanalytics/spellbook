@@ -38,10 +38,7 @@ with decoded as (
     , lower(json_extract_scalar(event_json, '$.user'))      as sender
   from {{ source('sui','events') }}
   where event_type like '0xb24b6789e088b876afabca733bed2299fbc9e2d6369be4d1acfa17d8145454d9::swap::Swap_Event%'
-    and block_time >= timestamp '{{ bluemove_start_date }}'
-  {% if is_incremental() %}
-  and {{ incremental_predicate('block_time') }}
-  {% endif %}
+    and from_unixtime(timestamp_ms/1000) >= timestamp '{{ bluemove_start_date }}'
 ),
 
 shaped as (
@@ -120,3 +117,6 @@ select
 from shaped
 where amount_in  > 0
   and amount_out > 0
+  {% if is_incremental() %}
+  and {{ incremental_predicate('block_time') }}
+  {% endif %}

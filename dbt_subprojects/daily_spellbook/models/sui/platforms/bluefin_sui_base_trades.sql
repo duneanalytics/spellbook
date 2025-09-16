@@ -39,10 +39,7 @@ with decoded as (
     , lower(sender)                                         as sender
   from {{ source('sui','events') }}
   where event_type = '0x3492c874c1e3b3e2984e8c41b589e642d4d0a5d6459e5a9cfc2d52fd7c89c267::events::AssetSwap'
-  and block_time >= timestamp '{{ bluefin_start_date }}'
-  {% if is_incremental() %}
-  and {{ incremental_predicate('block_time') }}
-  {% endif %}
+  and from_unixtime(timestamp_ms/1000) >= timestamp '{{ bluefin_start_date }}'
 )
 
 select
@@ -75,3 +72,6 @@ select
 from decoded
 where amount_in  > 0
   and amount_out > 0
+  {% if is_incremental() %}
+  and {{ incremental_predicate('block_time') }}
+  {% endif %}

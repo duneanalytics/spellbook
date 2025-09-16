@@ -36,10 +36,7 @@ with decoded as (
     , lower(json_extract_scalar(event_json, '$.user'))      as sender
   from {{ source('sui','events') }}
   where event_type = '0xba153169476e8c3114962261d1edc70de5ad9781b83cc617ecc8c1923191cae0::pair::Swapped'
-    and block_time >= timestamp '{{ flowx_start_date }}'
-  {% if is_incremental() %}
-  and {{ incremental_predicate('block_time') }}
-  {% endif %}
+    and from_unixtime(timestamp_ms/1000) >= timestamp '{{ flowx_start_date }}'
 ),
 
 shaped as (
@@ -106,3 +103,6 @@ select
 from shaped
 where amount_in  > 0
   and amount_out > 0
+  {% if is_incremental() %}
+  and {{ incremental_predicate('block_time') }}
+  {% endif %}
