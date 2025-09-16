@@ -73,6 +73,7 @@ select
 
     -- Unique keys
     bt.transaction_digest as transaction_digest,
+    bt.transaction_digest_b58 as transaction_digest_b58,
     bt.event_index        as event_index,
 
     -- pricing columns (passed through)

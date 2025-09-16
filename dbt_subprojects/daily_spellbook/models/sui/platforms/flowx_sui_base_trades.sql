@@ -28,12 +28,18 @@ with decoded as (
     , from_unixtime(timestamp_ms/1000)                      as block_time
     , date(from_unixtime(timestamp_ms/1000))                as block_date
     , date_trunc('month', from_unixtime(timestamp_ms/1000)) as block_month
-    , lower(transaction_digest)                             as transaction_digest
+    , ('0x' || lower(to_hex(transaction_digest))) as transaction_digest
+    , to_base58(transaction_digest) as transaction_digest_b58
     , event_index
     , epoch
     , checkpoint
     , cast(null as varchar)                                 as pool_id  -- not provided in event
-    , lower(json_extract_scalar(event_json, '$.user'))      as sender
+    , case
+        when json_extract_scalar(event_json, '$.user') is null then null
+        when starts_with(lower(json_extract_scalar(event_json, '$.user')), '0x')
+          then lower(json_extract_scalar(event_json, '$.user'))
+        else concat('0x', lower(json_extract_scalar(event_json, '$.user')))
+      end as sender
   from {{ source('sui','events') }}
   where event_type = '0xba153169476e8c3114962261d1edc70de5ad9781b83cc617ecc8c1923191cae0::pair::Swapped'
     and from_unixtime(timestamp_ms/1000) >= timestamp '{{ flowx_start_date }}'
@@ -46,6 +52,7 @@ shaped as (
     , block_date
     , block_month
     , transaction_digest
+  , transaction_digest_b58
     , event_index
     , epoch
     , checkpoint
@@ -82,6 +89,7 @@ select
   , block_date
   , block_month
   , transaction_digest
+  , transaction_digest_b58
   , event_index
   , epoch
   , checkpoint

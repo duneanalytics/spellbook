@@ -31,12 +31,23 @@ with decoded as (
     , from_unixtime(timestamp_ms/1000)                      as block_time
     , date(from_unixtime(timestamp_ms/1000))                as block_date
     , date_trunc('month', from_unixtime(timestamp_ms/1000)) as block_month
-    , lower(transaction_digest)                             as transaction_digest
+    , ('0x' || lower(to_hex(transaction_digest))) as transaction_digest
+    , to_base58(transaction_digest) as transaction_digest_b58
     , event_index
     , epoch
     , checkpoint
-    , lower(json_extract_scalar(event_json, '$.pool_id'))   as pool_id
-    , lower(sender)                                         as sender
+    , case
+        when json_extract_scalar(event_json, '$.pool_id') is null then null
+        when starts_with(lower(json_extract_scalar(event_json, '$.pool_id')), '0x')
+          then lower(json_extract_scalar(event_json, '$.pool_id'))
+        else concat('0x', lower(json_extract_scalar(event_json, '$.pool_id')))
+      end as pool_id
+    , case
+        when json_extract_scalar(event_json, '$.user') is null then null
+        when starts_with(lower(json_extract_scalar(event_json, '$.user')), '0x')
+          then lower(json_extract_scalar(event_json, '$.user'))
+        else concat('0x', lower(json_extract_scalar(event_json, '$.user')))
+      end as sender
   from {{ source('sui','events') }}
   where event_type = '0x3492c874c1e3b3e2984e8c41b589e642d4d0a5d6459e5a9cfc2d52fd7c89c267::events::AssetSwap'
   and from_unixtime(timestamp_ms/1000) >= timestamp '{{ bluefin_start_date }}'
@@ -51,6 +62,7 @@ select
   , block_date
   , block_month
   , transaction_digest
+  , transaction_digest_b58
   , event_index
   , epoch
   , checkpoint

@@ -10,14 +10,14 @@
 ) }}
 
 {% set base_models = [
-  ref('momentum_sui_base_trades')
-  , ref('cetus_sui_base_trades')
-  , ref('bluefin_sui_base_trades')
-  , ref('kriya_sui_base_trades')
-  , ref('bluemove_sui_base_trades')
-  , ref('flowx_sui_base_trades')
-  , ref('obric_sui_base_trades')
-  , ref('aftermath_sui_base_trades')
+  ref('aftermath_sui_base_trades')
+    , ref('bluefin_sui_base_trades')
+    , ref('bluemove_sui_base_trades')
+    , ref('cetus_sui_base_trades')
+    , ref('flowx_sui_base_trades')
+    , ref('kriya_sui_base_trades')
+    , ref('momentum_sui_base_trades')
+    , ref('obric_sui_base_trades')
 ] %}
 
 with all_swaps as (
@@ -32,12 +32,13 @@ with all_swaps as (
         , block_time
         , block_date
         , block_month
-        , lower(transaction_digest) as transaction_digest
+        , transaction_digest as transaction_digest
+        , transaction_digest_b58
         , event_index
         , epoch
         , checkpoint
-        , lower(pool_id)  as pool_id
-        , lower(sender)   as sender
+        , pool_id
+        , sender
         , cast(amount_in  as decimal(38,0)) as amount_in
         , cast(amount_out as decimal(38,0)) as amount_out
         , a_to_b
@@ -66,5 +67,4 @@ with all_swaps as (
   )
   where dup_rank = 1
 )
-
 select * from all_swaps

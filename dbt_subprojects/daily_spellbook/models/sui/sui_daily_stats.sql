@@ -16,8 +16,8 @@ with base as (
       from_unixtime(timestamp_ms/1000)                          as block_time
     , date(from_unixtime(timestamp_ms/1000))                    as block_date
     , date_trunc('month', from_unixtime(timestamp_ms/1000))     as block_month
-    , lower(transaction_digest) as transaction_digest
-    , lower(sender) as sender
+    , ('0x' || lower(to_hex(transaction_digest))) as transaction_digest
+    , ('0x' || lower(to_hex(sender))) as sender
     , execution_success
     , is_sponsored_tx
     , has_zklogin_sig

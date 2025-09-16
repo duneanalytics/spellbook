@@ -14,12 +14,12 @@
 -- 1) Walrus events (package + event types)
 with events as (
   select
-      lower(sender)                                         as sender,
+      ('0x' || lower(to_hex(sender)))                       as sender,
       epoch                                                 as sui_epoch,     -- epoch from Sui header
       {{ j_bigint('event_json', '$.epoch') }}               as epoch,         -- epoch from event payload
       event_type,
       event_json,
-      lower(transaction_digest)                             as transaction_digest,
+      ('0x' || lower(to_hex(transaction_digest)))           as transaction_digest,
       event_index,
       timestamp_ms,
       from_unixtime(timestamp_ms/1000)                      as block_time,

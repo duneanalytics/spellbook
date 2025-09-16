@@ -28,6 +28,7 @@ resolved as (
     , r.block_date
     , r.block_month
     , r.transaction_digest
+    , r.transaction_digest_b58
     , r.event_index
     , r.epoch
     , r.checkpoint
@@ -80,19 +81,21 @@ meta as (
     on lower(re.coin_type_out) = lower(ci_out.coin_type)
 ),
 
--- Transaction gas components (Dune naming)
+-- Transaction gas components
 tx as (
   select
-      lower(transaction_digest) as transaction_digest
-    , gas_budget   as gas_budget_mist
-    , gas_price    as gas_price_mist_per_unit
-    , computation_cost
-    , storage_cost
-    , storage_rebate
-    , non_refundable_storage_fee
-    , total_gas_cost as total_gas_mist
-  from {{ source('sui','transactions') }}
-),
+      ('0x' || lower(to_hex(t.transaction_digest))) as transaction_digest,
+      t.gas_budget   as gas_budget_mist,
+      t.gas_price    as gas_price_mist_per_unit,
+      t.computation_cost,
+      t.storage_cost,
+      t.storage_rebate,
+      t.non_refundable_storage_fee,
+      t.total_gas_cost as total_gas_mist
+  from {{ source('sui','transactions') }} t
+  join (select distinct transaction_digest from meta) m
+    on t.transaction_digest = from_hex(substr(m.transaction_digest, 3))
+)
 
 -- Attach gas usage & total_gas_sui
 joined as (
@@ -146,6 +149,7 @@ finalize as (
     , cast(null as bigint) as block_number
 
     , transaction_digest      -- native VARCHAR
+    , transaction_digest_b58
     , cast(event_index as bigint) as event_index
 
     , epoch
