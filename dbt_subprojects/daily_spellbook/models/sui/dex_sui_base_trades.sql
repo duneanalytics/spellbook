@@ -174,9 +174,9 @@ finalize as (
     , price_out_usd
     , price_gas_usd
     , coalesce(
-        amount_out_decimal * coalesce(price_out_usd, 0),
-        amount_in_decimal  * coalesce(price_in_usd,  0)
-      ) as amount_usd
+      case when price_out_usd is not null then amount_out_decimal * price_out_usd end,
+      case when price_in_usd  is not null then amount_in_decimal  * price_in_usd  end
+    ) as amount_usd
 
     , fee_amount
     , protocol_fee_amount

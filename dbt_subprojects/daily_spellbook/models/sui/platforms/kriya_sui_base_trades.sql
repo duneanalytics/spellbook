@@ -37,8 +37,19 @@ with decoded as (
     , from_unixtime(timestamp_ms/1000)                      as block_time
     , date(from_unixtime(timestamp_ms/1000))                as block_date
     , date_trunc('month', from_unixtime(timestamp_ms/1000)) as block_month
-    , ('0x' || lower(to_hex(transaction_digest))) as transaction_digest
-    , to_base58(transaction_digest) as transaction_digest_b58
+    , case
+        when transaction_digest is null then null
+        when starts_with(lower(transaction_digest),'0x') then lower(transaction_digest)
+        else concat('0x', lower(transaction_digest))
+      end as transaction_digest
+    , to_base58(
+        from_hex(
+          case when starts_with(lower(transaction_digest),'0x')
+              then substr(transaction_digest, 3)
+              else transaction_digest
+          end
+        )
+      ) as transaction_digest_b58
     , event_index
     , epoch
     , checkpoint
