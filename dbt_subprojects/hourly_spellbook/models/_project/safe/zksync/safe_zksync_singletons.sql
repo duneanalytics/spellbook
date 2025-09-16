@@ -1,6 +1,16 @@
-{{ safe_incremental_singleton_config(
-    blockchain = 'zksync',
-    alias_name = 'singletons'
-) }}
+{{
+    config(
+        materialized='table',
+        schema = 'safe_zksync',
+        alias = 'singletons',
+        post_hook='{{ expose_spells(\'["zksync"]\',
+                                    "project",
+                                    "safe",
+                                    \'["danielpartida", "kryptaki"]\') }}'
+    )
+}}
 
-{{ safe_singletons_by_network_validated('zksync', only_official=true) }}
+
+-- Fetch all known singleton/mastercopy addresses used via factories.
+select distinct singleton as address
+from {{ source('gnosis_safe_zksync', 'GnosisSafeProxyFactoryv1_3_0_evt_ProxyCreation') }}

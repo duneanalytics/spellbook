@@ -4,7 +4,7 @@ models:
   - name: safe_polygon_singletons
     meta:
       blockchain: polygon
-      project: gnosis_safe
+      project: safe
       contributors: tschubotz
     config:
       tags: ['safe', 'singletons', 'polygon']
@@ -20,7 +20,7 @@ models:
   - name: safe_polygon_safes
     meta:
       blockchain: polygon
-      project: gnosis_safe
+      project: safe
       contributors: tschubotz
     config:
       tags: ['safe', 'polygon']
@@ -46,7 +46,7 @@ models:
   - name: safe_polygon_matic_transfers
     meta:
       blockchain: polygon
-      project: gnosis_safe
+      project: safe
       contributors: tschubotz
     config:
       tags: ['safe', 'transfers', 'polygon']
@@ -82,7 +82,7 @@ models:
   - name: safe_polygon_transactions
     meta:
       blockchain: polygon
-      project: gnosis_safe
+      project: safe
       contributors: tschubotz, danielpartida
     config:
       tags: ['safe', 'polygon']

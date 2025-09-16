@@ -4,7 +4,7 @@ models:
   - name: safe_base_safes
     meta:
       blockchain: base
-      project: gnosis_safe
+      project: safe
       contributors: danielpartida
     config:
       tags: ['safe', 'base']
@@ -32,7 +32,7 @@ models:
   - name: safe_base_eth_transfers
     meta:
       blockchain: base
-      project: gnosis_safe
+      project: safe
       contributors: danielpartida
     config:
       tags: ['safe', 'transfers', 'base']
@@ -61,7 +61,7 @@ models:
   - name: safe_base_singletons
     meta:
       blockchain: base
-      project: gnosis_safe
+      project: safe
       contributors: danielpartida
     config:
       tags: ['safe', 'singletons', 'base']
@@ -76,7 +76,7 @@ models:
   - name: safe_base_transactions
     meta:
       blockchain: base
-      project: gnosis_safe
+      project: safe
       contributors: danielpartida
     config:
       tags: ['safe', 'base']

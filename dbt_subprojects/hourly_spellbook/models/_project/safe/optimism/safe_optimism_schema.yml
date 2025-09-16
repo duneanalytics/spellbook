@@ -4,7 +4,7 @@ models:
   - name: safe_optimism_safes
     meta:
       blockchain: optimism
-      project: gnosis_safe
+      project: safe
       contributors: frankmaseo
     config:
       tags: ['safe', 'optimism']
@@ -31,7 +31,7 @@ models:
   - name: safe_optimism_singletons
     meta:
       blockchain: optimism
-      project: gnosis_safe
+      project: safe
       contributors: tschubotz
     config:
       tags: ['safe', 'singletons', 'optimism']
@@ -46,7 +46,7 @@ models:
   - name: safe_optimism_transactions
     meta:
       blockchain: optimism
-      project: gnosis_safe
+      project: safe
       contributors: tschubotz, danielpartida
     config:
       tags: ['safe', 'optimism']
@@ -107,7 +107,7 @@ models:
   - name: safe_optimism_eth_transfers
     meta:
       blockchain: optimism
-      project: gnosis_safe
+      project: safe
       contributors: tschubotz
     config:
       tags: ['safe', 'transfers', 'optimism']

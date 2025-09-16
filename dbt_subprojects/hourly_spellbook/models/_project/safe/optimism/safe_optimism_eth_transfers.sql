@@ -15,16 +15,13 @@
     ) 
 }}
 
-{%- set network_config = get_safe_network_config('optimism') -%}
-{%- set project_start_date = network_config.start_date -%}
-{% set date_filter = false %}
+{% set project_start_date = '2021-11-17' %}
 
 {{
     safe_native_transfers(
         blockchain = 'optimism',
         native_token_symbol = 'ETH',
-        project_start_date = project_start_date,
-        date_filter = date_filter
+        project_start_date = project_start_date
     )
 }}
 
@@ -48,14 +45,13 @@ left join {{ source('prices', 'usd') }} p on p.blockchain is null
     and p.symbol = 'ETH'
     and p.minute = date_trunc('minute', r.evt_block_time)
 where
-    LOWER(CAST(r.contract_address AS VARCHAR)) = LOWER('0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000')
+    r.contract_address = 0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000
     and r.value > UINT256 '0'
     {% if not is_incremental() %}
     and r.evt_block_time > TIMESTAMP '{{project_start_date}}'
-    {% elif is_incremental() %}
-        {% if date_filter %}
-        and r.evt_block_time >= date_trunc('day', now() - interval '10' day)
-        {% endif %}
+    {% endif %}
+    {% if is_incremental() %}
+    and r.evt_block_time >= date_trunc('day', now() - interval '10' day)
     {% endif %}
 
 union all
@@ -78,12 +74,11 @@ left join {{ source('prices', 'usd') }} p on p.blockchain is null
     and p.symbol = 'ETH'
     and p.minute = date_trunc('minute', r.evt_block_time)
 where
-    LOWER(CAST(r.contract_address AS VARCHAR)) = LOWER('0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000')
+    r.contract_address = 0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000
     and r.value > UINT256 '0'
     {% if not is_incremental() %}
     and r.evt_block_time > TIMESTAMP '{{project_start_date}}'
-    {% elif is_incremental() %}
-        {% if date_filter %}
-        and r.evt_block_time >= date_trunc('day', now() - interval '10' day)
-        {% endif %}
+    {% endif %}
+    {% if is_incremental() %}
+    and r.evt_block_time >= date_trunc('day', now() - interval '10' day)
     {% endif %}

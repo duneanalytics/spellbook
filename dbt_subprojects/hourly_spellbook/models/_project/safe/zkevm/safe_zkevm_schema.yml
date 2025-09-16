@@ -4,7 +4,7 @@ models:
   - name: safe_zkevm_safes
     meta:
       blockchain: zkevm
-      project: gnosis_safe
+      project: safe
       contributors: danielpartida
     config:
       tags: ['safe', 'zkevm']
@@ -37,7 +37,7 @@ models:
   - name: safe_zkevm_matic_transfers
     meta:
       blockchain: zkevm
-      project: gnosis_safe
+      project: safe
       contributors: danielpartida
     config:
       tags: ['safe', 'transfers', 'zkevm']
@@ -73,7 +73,7 @@ models:
   - name: safe_zkevm_singletons
     meta:
       blockchain: zkevm
-      project: gnosis_safe
+      project: safe
       contributors: danielpartida
     config:
       tags: ['safe', 'singletons', 'zkevm']
@@ -85,7 +85,7 @@ models:
   - name: safe_zkevm_transactions
     meta:
       blockchain: zkevm
-      project: gnosis_safe
+      project: safe
       contributors: danielpartida
     config:
       tags: ['safe', 'zkevm']

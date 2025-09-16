@@ -4,7 +4,7 @@ models:
   - name: safe_fantom_singletons
     meta:
       blockchain: fantom
-      project: gnosis_safe
+      project: safe
       contributors: tschubotz
     config:
       tags: ['safe', 'singletons', 'fantom']
@@ -20,7 +20,7 @@ models:
   - name: safe_fantom_safes
     meta:
       blockchain: fantom
-      project: gnosis_safe
+      project: safe
       contributors: tschubotz
     config:
       tags: ['safe', 'fantom']
@@ -46,7 +46,7 @@ models:
   - name: safe_fantom_transactions
     meta:
       blockchain: fantom
-      project: gnosis_safe
+      project: safe
       contributors: tschubotz, danielpartida
     config:
       tags: ['safe', 'fantom']

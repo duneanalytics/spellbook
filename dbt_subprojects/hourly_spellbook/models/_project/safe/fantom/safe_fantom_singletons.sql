@@ -1,6 +1,16 @@
-{{ safe_incremental_singleton_config(
-    blockchain = 'fantom',
-    alias_name = 'singletons'
-) }}
+{{ 
+    config(
+        materialized='table',
+        
+        alias = 'singletons',
+        post_hook='{{ expose_spells(\'["fantom"]\',
+                                    "project",
+                                    "safe",
+                                    \'["tschubotz"]\') }}'
+    ) 
+}}
 
-{{ safe_singletons_by_network_validated('fantom', only_official=true) }}
+
+-- Fetch all known singleton addresses used via the factory.
+select distinct singleton as address 
+from {{ source('gnosis_safe_fantom', 'GnosisSafeProxyFactory_v1_3_0_evt_ProxyCreation') }}
