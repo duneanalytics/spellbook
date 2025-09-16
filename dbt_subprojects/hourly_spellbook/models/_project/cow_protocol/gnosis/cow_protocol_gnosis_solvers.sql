@@ -105,7 +105,9 @@ known_solver_metadata (address, environment, name) as (
                  (0xfaBBDf8a77005C00edBe0000bDC000644c024322, 'prod', 'Copium_Capital'),
                  (0x68dEE65bB88d919463495E5CeA9870a81f1e9413, 'service', 'Withdraw'),
                  (0xa03be496e67ec29bc62f01a428683d7f9c204930, 'service', 'Withdraw'),
-                 (0x7524942F9283FBFa8F17b05CC0a9cBde397d25b3, 'test', 'Test 1')
+                 (0x7524942F9283FBFa8F17b05CC0a9cBde397d25b3, 'test', 'Test 1'),
+                 (0xd8d943ADbb4c77ce003a8DA94f2A9005ac62EE2f, 'barn', 'Piggy'),
+                 (0xBf12C31863CcFcefcdC084654194bB96ef4517cF, 'prod', 'Piggy')
          ) as _
 )
 -- Combining the metadata with current activation status for final table
