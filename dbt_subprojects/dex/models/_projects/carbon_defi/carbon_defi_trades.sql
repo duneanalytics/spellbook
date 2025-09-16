@@ -2,10 +2,10 @@
     schema = 'carbon_defi',
     alias = 'trades',
     materialized = 'view',
-    post_hook='{{ expose_spells(blockchains = \'["ethereum", "sei", "celo", "tac"]\',
+    post_hook='{{ expose_spells(blockchains = \'["ethereum", "sei", "celo", "tac", "mantle"]\',
                                   spell_type = "project", 
                                   spell_name = "carbon_defi", 
-                                  contributors = \'["tiagofilipenunes"]\') }}'
+                                  contributors = \'["tiagofilipenunes", "NIXBNT"]\') }}'
     )
 }}
 
