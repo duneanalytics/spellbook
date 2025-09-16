@@ -8,6 +8,6 @@
 {{ 
     safe_transactions(
         blockchain = 'base',
-        date_filter = true
+        date_filter = false
     ) 
 }}

@@ -1,6 +1,6 @@
 {{ 
     safe_transactions_wrapper(
         blockchain = 'ronin',
-        date_filter = true
+        date_filter = false
     )
 }}

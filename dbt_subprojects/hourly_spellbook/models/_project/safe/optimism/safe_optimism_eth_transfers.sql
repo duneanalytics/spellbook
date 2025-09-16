@@ -17,7 +17,7 @@
 
 {%- set network_config = get_safe_network_config('optimism') -%}
 {%- set project_start_date = network_config.start_date -%}
-{% set date_filter = true %}
+{% set date_filter = false %}
 
 {{
     safe_native_transfers(

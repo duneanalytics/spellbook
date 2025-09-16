@@ -1,6 +1,6 @@
 {{ 
     safe_native_transfer_wrapper(
         blockchain = 'unichain',
-        date_filter = true
+        date_filter = false
     )
 }}

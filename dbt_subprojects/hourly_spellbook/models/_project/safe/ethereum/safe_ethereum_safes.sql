@@ -8,6 +8,6 @@
 {{ 
     safe_safes_creation(
         blockchain = 'ethereum',
-        date_filter = true
+        date_filter = false
     ) 
 }}
