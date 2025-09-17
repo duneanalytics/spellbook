@@ -32,10 +32,10 @@ with decoded as (
     , epoch
     , checkpoint
     , case
-        when json_extract_scalar(event_json, '$.pool_id') is null then null
-        when starts_with(lower(json_extract_scalar(event_json, '$.pool_id')), '0x')
-          then lower(json_extract_scalar(event_json, '$.pool_id'))
-        else concat('0x', lower(json_extract_scalar(event_json, '$.pool_id')))
+        when json_extract_scalar(event_json, '$.pool') is null then null
+        when starts_with(lower(json_extract_scalar(event_json, '$.pool')), '0x')
+          then lower(json_extract_scalar(event_json, '$.pool'))
+        else concat('0x', lower(json_extract_scalar(event_json, '$.pool')))
       end as pool_id
     , case
         when json_extract_scalar(event_json, '$.user') is null then null

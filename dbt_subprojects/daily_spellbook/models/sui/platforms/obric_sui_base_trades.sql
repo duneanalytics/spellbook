@@ -16,7 +16,13 @@ with decoded as (
       -- core swap fields
       cast(json_extract_scalar(event_json, '$.amount_in')   as decimal(38,0)) as amount_in
     , cast(json_extract_scalar(event_json, '$.amount_out')  as decimal(38,0)) as amount_out
-    , cast(json_extract_scalar(event_json, '$.a2b')         as boolean)       as a_to_b
+    , CAST(
+        COALESCE(
+          CAST(json_extract_scalar(event_json, '$.atob')    AS boolean),
+          CAST(json_extract_scalar(event_json, '$.a2b')     AS boolean),
+          CAST(json_extract_scalar(event_json, '$.a_to_b')  AS boolean)
+        ) AS boolean
+      ) AS a_to_b
 
       -- fees & pool state (not emitted by Obric)
     , cast(null as decimal(38,0)) as fee_amount
@@ -38,18 +44,36 @@ with decoded as (
     , event_index
     , epoch
     , checkpoint
-    , case
-        when json_extract_scalar(event_json, '$.pool_id') is null then null
-        when starts_with(lower(json_extract_scalar(event_json, '$.pool_id')), '0x')
-          then lower(json_extract_scalar(event_json, '$.pool_id'))
-        else concat('0x', lower(json_extract_scalar(event_json, '$.pool_id')))
-      end as pool_id
-    , case
-        when json_extract_scalar(event_json, '$.user') is null then null
-        when starts_with(lower(json_extract_scalar(event_json, '$.user')), '0x')
-          then lower(json_extract_scalar(event_json, '$.user'))
-        else concat('0x', lower(json_extract_scalar(event_json, '$.user')))
-      end as sender
+    , CASE
+        WHEN json_extract_scalar(event_json, '$.pool') IS NOT NULL THEN
+          CASE
+            WHEN starts_with(lower(json_extract_scalar(event_json, '$.pool')), '0x')
+              THEN lower(json_extract_scalar(event_json, '$.pool'))
+            ELSE concat('0x', lower(json_extract_scalar(event_json, '$.pool')))
+          END
+        WHEN json_extract_scalar(event_json, '$.pool_id') IS NOT NULL THEN
+          CASE
+            WHEN starts_with(lower(json_extract_scalar(event_json, '$.pool_id')), '0x')
+              THEN lower(json_extract_scalar(event_json, '$.pool_id'))
+            ELSE concat('0x', lower(json_extract_scalar(event_json, '$.pool_id')))
+          END
+        ELSE NULL
+      END AS pool_id
+    , CASE
+        WHEN json_extract_scalar(event_json, '$.user') IS NOT NULL THEN
+          CASE
+            WHEN starts_with(lower(json_extract_scalar(event_json, '$.user')), '0x')
+              THEN lower(json_extract_scalar(event_json, '$.user'))
+            ELSE concat('0x', lower(json_extract_scalar(event_json, '$.user')))
+          END
+        WHEN json_extract_scalar(event_json, '$.trader') IS NOT NULL THEN
+          CASE
+            WHEN starts_with(lower(json_extract_scalar(event_json, '$.trader')), '0x')
+              THEN lower(json_extract_scalar(event_json, '$.trader'))
+            ELSE concat('0x', lower(json_extract_scalar(event_json, '$.trader')))
+          END
+        ELSE NULL
+      END AS sender
   from {{ source('sui','events') }}
   where event_type = '0x200e762fa2c49f3dc150813038fbf22fd4f894ac6f23ebe1085c62f2ef97f1ca::obric::ObricSwapEvent'
   and from_unixtime(timestamp_ms/1000) >= timestamp '{{ obric_start_date }}'
