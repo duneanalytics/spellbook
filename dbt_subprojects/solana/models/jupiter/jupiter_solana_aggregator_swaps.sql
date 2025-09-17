@@ -210,8 +210,6 @@ LEFT JOIN {{ source('prices','usd_forward_fill') }} p_1 ON p_1.blockchain = 'sol
     AND l.input_mint = toBase58(p_1.contract_address)
     {% if is_incremental() %}
     AND {{ incremental_predicate('p_1.minute') }}
-    {% else %}
-    AND p_1.minute >= now() - interval '7' day  --shorten CI
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd_forward_fill') }}  p_2 ON p_2.blockchain = 'solana'
     AND date_trunc('minute', l.block_time) = p_2.minute
