@@ -44,7 +44,7 @@ filtered as (
 -- Single aggregation pass; keep names aligned to the “ask”
 daily as (
   select
-      block_date                                         as ds
+      block_date                                         as block_date
     , max(block_month)                                   as block_month
 
     -- data quality
@@ -94,7 +94,7 @@ daily as (
 )
 
 select
-    ds
+    block_date
   , block_month
   , n_senders
   , n_ptbs

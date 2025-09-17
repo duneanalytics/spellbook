@@ -64,8 +64,9 @@ with walrus_tx as (
 )
 select
     w.transaction_digest_hex as transaction_digest
-  , bt.block_date
-  , bt.block_month
+  , w.block_date
+  , w.block_month
+  -- gas
   , g.gas_budget_mist
   , g.gas_price_mist_per_unit
   , g.gas_used_computation_cost
@@ -74,20 +75,10 @@ select
   , g.gas_used_non_refundable_storage_fee
   , g.total_gas_mist
   , m.wal_amount_raw
-  , case
-      when m.wal_amount_raw is not null and wm.wal_decimals is not null
-      then m.wal_amount_raw / cast(pow(10, wm.wal_decimals) as decimal(38,0))
-      else null
-    end as wal_amount
 from walrus_tx w
-join {{ ref('sui_walrus_base_table') }} bt
-  on bt.tx_register = w.transaction_digest_hex
-left join tx_gas g
-  on g.transaction_digest_hex = w.transaction_digest_hex
-left join wal_moves m
-  on m.transaction_digest_hex = w.transaction_digest_hex
-left join wal_meta wm
-  on true
+left join tx_gas  g on g.transaction_digest_hex  = w.transaction_digest_hex
+left join wal_moves m on m.transaction_digest_hex = w.transaction_digest_hex
+left join wal_meta  wm on true
 {% if is_incremental() %}
-where {{ incremental_predicate('bt.block_date') }}
+where {{ incremental_predicate('w.block_date') }}
 {% endif %}
