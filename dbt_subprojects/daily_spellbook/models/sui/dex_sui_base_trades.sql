@@ -114,16 +114,57 @@ tx as (
 -- 5) Attach gas + prefer canonical sender if event sender was missing
 joined as (
   select
-      m.*
-      , coalesce(m.sender, t.sender_from_tx) as sender
-      , t.gas_budget_mist
-      , t.gas_price_mist_per_unit
-      , t.computation_cost              as gas_used_computation_cost
-      , t.storage_cost                  as gas_used_storage_cost
-      , t.storage_rebate                as gas_used_storage_rebate
-      , t.non_refundable_storage_fee    as gas_used_non_refundable_storage_fee
-      , t.total_gas_mist
-      , cast(t.total_gas_mist as decimal(38,0)) / cast(1000000000 as decimal(38,0)) as total_gas_sui
+      /* enumerate meta fields, but DO NOT carry m.sender to avoid duplicates */
+      m.blockchain,
+      m.project,
+      m.version,
+      m.timestamp_ms,
+      m.block_time,
+      m.block_date,
+      m.block_month,
+      m.transaction_digest,
+      m.transaction_digest_b58,
+      m.event_index,
+      m.epoch,
+      m.checkpoint,
+      m.pool_id,
+
+      /* single canonical sender column */
+      coalesce(m.sender, t.sender_from_tx) as sender,
+
+      m.amount_in,
+      m.amount_out,
+      m.a_to_b,
+      m.fee_amount,
+      m.protocol_fee_amount,
+      m.after_sqrt_price,
+      m.before_sqrt_price,
+      m.liquidity,
+      m.reserve_a,
+      m.reserve_b,
+      m.tick_index_bits,
+
+      /* keep normalized/derived coin + addr keys & scaled amounts for pricing */
+      m.coin_type_in_norm,
+      m.coin_type_out_norm,
+      m.coin_symbol_in,
+      m.coin_symbol_out,
+      m.coin_decimals_in,
+      m.coin_decimals_out,
+      m.addr_in,
+      m.addr_out,
+      m.amount_in_decimal,
+      m.amount_out_decimal,
+
+      /* gas fields */
+      t.gas_budget_mist,
+      t.gas_price_mist_per_unit,
+      t.computation_cost              as gas_used_computation_cost,
+      t.storage_cost                  as gas_used_storage_cost,
+      t.storage_rebate                as gas_used_storage_rebate,
+      t.non_refundable_storage_fee    as gas_used_non_refundable_storage_fee,
+      t.total_gas_mist,
+      cast(t.total_gas_mist as decimal(38,0)) / cast(1000000000 as decimal(38,0)) as total_gas_sui
   from meta m
   left join tx t
     on m.transaction_digest = t.transaction_digest
@@ -132,10 +173,10 @@ joined as (
 -- 6) Prices join (minute UTC; address-only keys)
 priced as (
   select
-      j.*
-      , pb.price as price_in_usd
-      , ps.price as price_out_usd
-      , pg.price as price_gas_usd
+      j.*,
+      pb.price as price_in_usd,
+      ps.price as price_out_usd,
+      pg.price as price_gas_usd
   from joined j
   left join {{ source('prices','usd') }} pb
     on pb.blockchain = 'sui'
@@ -150,7 +191,6 @@ priced as (
    and pg.minute = cast(date_trunc('minute', at_timezone(j.block_time,'UTC')) as timestamp)
    and pg.contract_address = cast('0x2' as varbinary)   -- SUI gas
 ),
-
 -- 7) Final projection
 finalize as (
   select
