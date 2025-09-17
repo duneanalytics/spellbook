@@ -2,12 +2,12 @@
   config(
     schema = 'solfi_solana'
     , alias = 'token_transfers'
-    , partition_by = ['block_month']
+    , partition_by = ['block_date']
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
-    , unique_key = ['block_month', 'block_time', 'unique_instruction_key']
+    , unique_key = ['block_date', 'unique_instruction_key']
   )
 }}
 
@@ -16,7 +16,7 @@
 -- Base swaps from solfi_call_swap table
 WITH solfi_swaps AS (
     SELECT distinct
-        call_block_time as block_time
+        date_trunc('day', call_block_time) as block_date
         , call_block_slot as block_slot
         , call_tx_index as tx_index
         , call_outer_instruction_index as outer_instruction_index
@@ -41,4 +41,4 @@ WITH solfi_swaps AS (
 
 select *
 from token_transfers
-inner join solfi_swaps using (block_time, block_slot, tx_index, outer_instruction_index)
+inner join solfi_swaps using (block_date, block_slot, tx_index, outer_instruction_index)
