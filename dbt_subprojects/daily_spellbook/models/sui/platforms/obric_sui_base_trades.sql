@@ -6,110 +6,82 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['transaction_digest', 'event_index'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    incremental_predicates = [incremental_predicate('block_time')]
 ) }}
 
 {% set obric_start_date = "2025-09-14" %}
 
-with decoded as (
+with base as (
   select
-      -- core swap fields
-      cast(json_extract_scalar(event_json, '$.amount_in')   as decimal(38,0)) as amount_in
-    , cast(json_extract_scalar(event_json, '$.amount_out')  as decimal(38,0)) as amount_out
-    , CAST(
-        COALESCE(
-          CAST(json_extract_scalar(event_json, '$.atob')    AS boolean),
-          CAST(json_extract_scalar(event_json, '$.a2b')     AS boolean),
-          CAST(json_extract_scalar(event_json, '$.a_to_b')  AS boolean)
-        ) AS boolean
-      ) AS a_to_b
-
-      -- fees & pool state (not emitted by Obric)
-    , cast(null as decimal(38,0)) as fee_amount
-    , cast(null as decimal(38,0)) as protocol_fee_amount
-    , cast(null as double)        as after_sqrt_price
-    , cast(null as double)        as before_sqrt_price
-    , cast(null as decimal(38,0)) as liquidity
-    , cast(null as decimal(38,0)) as reserve_a
-    , cast(null as decimal(38,0)) as reserve_b
-    , cast(null as bigint)        as tick_index_bits
-
-      -- ids & time (normalized lowercase strings)
-    , timestamp_ms
-    , from_unixtime(timestamp_ms/1000)                      as block_time
+      -- time helpers for partitioning/incremental
+      from_unixtime(timestamp_ms/1000)                      as block_time
     , date(from_unixtime(timestamp_ms/1000))                as block_date
     , date_trunc('month', from_unixtime(timestamp_ms/1000)) as block_month
-    , ('0x' || lower(to_hex(from_base58(transaction_digest)))) as transaction_digest
-    , transaction_digest as transaction_digest_b58
+
+      -- minimal fields from event_json (no normalization)
+    , json_extract_scalar(event_json, '$.pool_id')          as pool_id
+    , cast(json_extract_scalar(event_json,'$.amount_in')  as decimal(38,0)) as amount_in,
+    , cast(json_extract_scalar(event_json,'$.amount_out') as decimal(38,0)) as amount_out,
+    , cast(json_extract_scalar(event_json, '$.a2b') as boolean) as a_to_b
+    , json_extract_scalar(event_json, '$.coin_a.name')      as coin_a
+    , json_extract_scalar(event_json, '$.coin_b.name')      as coin_b
+
+      -- base ids (preserve native datatypes)
+    , timestamp_ms
+    , transaction_digest
     , event_index
     , epoch
     , checkpoint
-    , CASE
-        WHEN json_extract_scalar(event_json, '$.pool') IS NOT NULL THEN
-          CASE
-            WHEN starts_with(lower(json_extract_scalar(event_json, '$.pool')), '0x')
-              THEN lower(json_extract_scalar(event_json, '$.pool'))
-            ELSE concat('0x', lower(json_extract_scalar(event_json, '$.pool')))
-          END
-        WHEN json_extract_scalar(event_json, '$.pool_id') IS NOT NULL THEN
-          CASE
-            WHEN starts_with(lower(json_extract_scalar(event_json, '$.pool_id')), '0x')
-              THEN lower(json_extract_scalar(event_json, '$.pool_id'))
-            ELSE concat('0x', lower(json_extract_scalar(event_json, '$.pool_id')))
-          END
-        ELSE NULL
-      END AS pool_id
-    , CASE
-        WHEN json_extract_scalar(event_json, '$.user') IS NOT NULL THEN
-          CASE
-            WHEN starts_with(lower(json_extract_scalar(event_json, '$.user')), '0x')
-              THEN lower(json_extract_scalar(event_json, '$.user'))
-            ELSE concat('0x', lower(json_extract_scalar(event_json, '$.user')))
-          END
-        WHEN json_extract_scalar(event_json, '$.trader') IS NOT NULL THEN
-          CASE
-            WHEN starts_with(lower(json_extract_scalar(event_json, '$.trader')), '0x')
-              THEN lower(json_extract_scalar(event_json, '$.trader'))
-            ELSE concat('0x', lower(json_extract_scalar(event_json, '$.trader')))
-          END
-        ELSE NULL
-      END AS sender
+    , sender
   from {{ source('sui','events') }}
   where event_type = '0x200e762fa2c49f3dc150813038fbf22fd4f894ac6f23ebe1085c62f2ef97f1ca::obric::ObricSwapEvent'
-  and from_unixtime(timestamp_ms/1000) >= timestamp '{{ obric_start_date }}'
+    and from_unixtime(timestamp_ms/1000) >= timestamp '{{ obric_start_date }}'
+),
+
+shaped as (
+  select
+      -- ids & time
+      timestamp_ms, transaction_digest, event_index, epoch, checkpoint,
+      block_time, block_date, block_month,
+
+      -- trade identifiers
+      pool_id,
+      sender,
+
+      -- direction & amounts (amounts are provided directly in the event)
+      amount_in,
+      amount_out,
+      a_to_b,
+
+      -- coin types chosen by direction (no normalization)
+      case when a_to_b then coin_a else coin_b end as coin_type_in,
+      case when a_to_b then coin_b else coin_a end as coin_type_out
+
+  from base
 )
 
 select
-    'sui' as blockchain
-  , 'obric' as project
-  , '1' as version
-  , timestamp_ms
-  , block_time
-  , block_date
-  , block_month
+    -- ids & time
+    timestamp_ms
   , transaction_digest
-  , transaction_digest_b58
   , event_index
   , epoch
   , checkpoint
+  , block_time
+  , block_date
+  , block_month
+
+  -- trade fields
   , pool_id
   , sender
+  , coin_type_in
+  , coin_type_out
   , amount_in
   , amount_out
   , a_to_b
-  , fee_amount
-  , protocol_fee_amount
-  , after_sqrt_price
-  , before_sqrt_price
-  , liquidity
-  , reserve_a
-  , reserve_b
-  , tick_index_bits
-  , cast(null as varchar) as coin_type_in
-  , cast(null as varchar) as coin_type_out
-from decoded
-where amount_in  > 0
-  and amount_out > 0
-  {% if is_incremental() %}
-  and {{ incremental_predicate('block_time') }}
-  {% endif %}
+  , cast(null as decimal(38,0)) as fee_amount   -- This event was not provided directly
+
+from shaped
+{% if is_incremental() %}
+where {{ incremental_predicate('block_time') }}
+{% endif %}

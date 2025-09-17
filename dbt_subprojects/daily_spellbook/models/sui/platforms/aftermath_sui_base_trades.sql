@@ -1,135 +1,66 @@
 {{ config(
     schema = 'aftermath_sui',
     alias = 'base_trades',
-    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['transaction_digest', 'event_index'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    partition_by = ['block_month'],
+    incremental_predicates = [incremental_predicate('block_time')]
 ) }}
 
 {% set aftermath_start_date = "2025-09-14" %}
 
-with decoded as (
+with base as (
   select
-      -- core swap fields
-      cast(json_extract_scalar(event_json, '$.amounts_in[0]')   as decimal(38,0)) as amount_in
-    , cast(json_extract_scalar(event_json, '$.amounts_out[0]')  as decimal(38,0)) as amount_out
-    , cast(null as boolean)         as a_to_b
-    , cast(null as decimal(38,0))   as fee_amount
-    , cast(null as decimal(38,0))   as protocol_fee_amount
-    , cast(null as double)          as after_sqrt_price
-    , cast(null as double)          as before_sqrt_price
-    , cast(null as decimal(38,0))   as liquidity
-    , cast(null as decimal(38,0))   as reserve_a
-    , cast(null as decimal(38,0))   as reserve_b
-    , cast(null as bigint)          as tick_index_bits
-
-      -- ids & time (normalized lowercase strings)
-    , timestamp_ms
-    , from_unixtime(timestamp_ms/1000)                      as block_time
+      -- time helpers for partitioning/incremental (derived; doesn’t change base types)
+      from_unixtime(timestamp_ms/1000)                      as block_time
     , date(from_unixtime(timestamp_ms/1000))                as block_date
     , date_trunc('month', from_unixtime(timestamp_ms/1000)) as block_month
-    , ('0x' || lower(to_hex(from_base58(transaction_digest)))) as transaction_digest
-    , transaction_digest as transaction_digest_b58
+
+      -- required fields
+    , json_extract_scalar(event_json, '$.pool_id')          as pool_id
+    , cast(json_extract_scalar(event_json,'$.amounts_in[0]')  as decimal(38,0)) as amount_in
+    , cast(json_extract_scalar(event_json,'$.amounts_out[0]') as decimal(38,0)) as amount_out
+    , json_extract_scalar(event_json, '$.types_in[0]')      as coin_type_in
+    , json_extract_scalar(event_json, '$.types_out[0]')     as coin_type_out
+    , sender                                                -- base column (preserve type)
+    , timestamp_ms
+    , transaction_digest
     , event_index
     , epoch
     , checkpoint
-    , case
-        when json_extract_scalar(event_json, '$.pool_id') is null then null
-        when starts_with(lower(json_extract_scalar(event_json, '$.pool_id')), '0x')
-          then lower(json_extract_scalar(event_json, '$.pool_id'))
-        else concat('0x', lower(json_extract_scalar(event_json, '$.pool_id')))
-      end as pool_id
-    , case
-        when json_extract_scalar(event_json, '$.issuer') is null then null
-        when starts_with(lower(json_extract_scalar(event_json, '$.issuer')), '0x')
-          then lower(json_extract_scalar(event_json, '$.issuer'))
-        else concat('0x', lower(json_extract_scalar(event_json, '$.issuer')))
-      end as sender
-
-      -- raw coin types (as strings)
-    , json_extract_scalar(event_json, '$.types_in[0]')   as coin_in_raw
-    , json_extract_scalar(event_json, '$.types_out[0]')  as coin_out_raw
   from {{ source('sui','events') }}
   where event_type in (
     '0xc4049b2d1cc0f6e017fda8260e4377cecd236bd7f56a54fee120816e72e2e0dd::events::SwapEventV2',
     '0xefe170ec0be4d762196bedecd7a065816576198a6527c99282a2551aaa7da38c::events::SwapEvent'
   )
   and from_unixtime(timestamp_ms/1000) >= timestamp '{{ aftermath_start_date }}'
-),
-
-shaped as (
-  select
-      timestamp_ms
-    , block_time
-    , block_date
-    , block_month
-    , transaction_digest
-    , transaction_digest_b58
-    , event_index
-    , epoch
-    , checkpoint
-    , pool_id
-    , sender
-    , amount_in
-    , amount_out
-    , a_to_b
-    , fee_amount
-    , protocol_fee_amount
-    , after_sqrt_price
-    , before_sqrt_price
-    , liquidity
-    , reserve_a
-    , reserve_b
-    , tick_index_bits
-
-      -- normalized coin types (native VARCHAR; lowercase; ensure 0x prefix)
-    , case
-        when coin_in_raw  is null then null
-        when starts_with(coin_in_raw,  '0x') then lower(coin_in_raw)
-        else lower(concat('0x', coin_in_raw))
-      end as coin_type_in
-    , case
-        when coin_out_raw is null then null
-        when starts_with(coin_out_raw, '0x') then lower(coin_out_raw)
-        else lower(concat('0x', coin_out_raw))
-      end as coin_type_out
-  from decoded
 )
 
 select
-    'sui' as blockchain
-  , 'aftermath' as project
-  , '1' as version
-  , timestamp_ms
-  , block_time
-  , block_date
-  , block_month
+    -- core output
+    timestamp_ms
   , transaction_digest
-  , transaction_digest_b58
   , event_index
   , epoch
   , checkpoint
   , pool_id
   , sender
-  , amount_in
-  , amount_out
-  , a_to_b
-  , fee_amount
-  , protocol_fee_amount
-  , after_sqrt_price
-  , before_sqrt_price
-  , liquidity
-  , reserve_a
-  , reserve_b
-  , tick_index_bits
   , coin_type_in
   , coin_type_out
-from shaped
-where amount_in  > 0
-  and amount_out > 0
-  {% if is_incremental() %}
-  and {{ incremental_predicate('block_time') }}
-  {% endif %}
+  , amount_in
+  , amount_out
+
+  -- placeholders (not in Aftermath events)
+  , cast(null as boolean) as a_to_b
+  , cast(null as decimal(38,0)) as fee_amount
+
+  , block_time
+  , block_date
+  , block_month
+from base
+{% if is_incremental() %}
+where {{ incremental_predicate('block_time') }}
+{% endif %}
+;

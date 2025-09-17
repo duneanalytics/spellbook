@@ -11,98 +11,104 @@
 
 {% set sui_project_start_date = var('sui_project_start_date', '2025-09-01') %}
 
-with base as (
+-- Pull only what we need; keep native datatypes (sender varbinary, digest varchar)
+with src as (
   select
-      from_unixtime(timestamp_ms/1000)                          as block_time
-    , date(from_unixtime(timestamp_ms/1000))                    as block_date
-    , date_trunc('month', from_unixtime(timestamp_ms/1000))     as block_month
-    , ('0x' || lower(to_hex(from_base58(transaction_digest)))) as transaction_digest
-    , ('0x' || lower(to_hex(sender))) as sender
-    , execution_success
-    , is_sponsored_tx
-    , has_zklogin_sig
-    , transaction_count
-
-    -- gas (Mist)
-    , total_gas_cost
-    , computation_cost
-    , storage_cost
-    , storage_rebate
-    , non_refundable_storage_fee
+      date                                                       as block_date              -- native DATE
+    , date_trunc('month', date)                                  as block_month             -- needed for partition
+    , transaction_digest                                         as transaction_digest      -- varchar (base58)
+    , sender                                                     as sender_vb               -- varbinary
+    , execution_success                                          as execution_success       -- boolean
+    , is_sponsored_tx                                            as is_sponsored_tx         -- boolean
+    , has_zklogin_sig                                            as has_zklogin_sig         -- boolean
+    , transaction_count                                          as transaction_count_d20   -- decimal(20,0)
+    , total_gas_cost                                             as total_gas_cost_d20      -- decimal(20,0)
+    , computation_cost                                           as computation_cost_d20    -- decimal(20,0)
+    , storage_cost                                               as storage_cost_d20        -- decimal(20,0)
+    , storage_rebate                                             as storage_rebate_d20      -- decimal(20,0)
+    , non_refundable_storage_fee                                 as nrs_fee_d20             -- decimal(20,0)
   from {{ source('sui','transactions') }}
   where transaction_kind = 'ProgrammableTransaction'
     and is_system_txn = false
-    and from_unixtime(timestamp_ms/1000) >= timestamp '{{ sui_project_start_date }}'
+    and date >= date '{{ sui_project_start_date }}'
 ),
 
 filtered as (
   select *
-  from base
+  from src
   {% if is_incremental() %}
     where {{ incremental_predicate('block_date') }}
   {% endif %}
 ),
 
+-- Single aggregation pass; keep names aligned to the “ask”
 daily as (
   select
-      block_date
-    , max(block_month) as block_month
+      block_date                                         as ds
+    , max(block_month)                                   as block_month
 
-    -- sanity: rows vs distinct PTBs
-    , count(*)                                                   as rows_cnt
-    , count(distinct transaction_digest)                         as ptb_cnt
-    , (count(*) = count(distinct transaction_digest))            as rows_vs_ptbs_is_one_to_one
+    -- data quality
+    , count(*)                                           as n_rows_checkon_ptbs
+    , count(distinct transaction_digest)                 as n_ptbs
 
-    -- distinct senders (headline)
-    , count(distinct sender)                                     as senders
+    -- distinct senders
+    , count(distinct sender_vb)                          as n_senders
 
     -- commands from successful PTBs
-    , coalesce(sum(case when execution_success then transaction_count else 0 end), 0)
-        as commands_from_successful_ptbs
+    , coalesce(
+        sum(case when execution_success then cast(transaction_count_d20 as bigint) else 0 end), 0
+      )                                                  as n_commands_successful_ptbs
 
-    -- success counts & share of PTBs
+    -- success counts & pct (over all PTBs)
     , count(distinct case when execution_success then transaction_digest end)
-        as successful_ptbs_n
+                                                        as n_ptbs_success
     , case when count(distinct transaction_digest) > 0
            then cast(count(distinct case when execution_success then transaction_digest end) as double)
                 / cast(count(distinct transaction_digest) as double)
-           else null end
-        as successful_ptbs_pct
+           else null end                                 as pct_ptbs_success
 
     -- sponsored among successful PTBs
     , count(distinct case when execution_success and is_sponsored_tx then transaction_digest end)
-        as successful_ptbs_sponsored_n
+                                                        as n_ptbs_success_sponsored
     , case when count(distinct case when execution_success then transaction_digest end) > 0
            then cast(count(distinct case when execution_success and is_sponsored_tx then transaction_digest end) as double)
                 / cast(count(distinct case when execution_success then transaction_digest end) as double)
-           else null end
-        as successful_ptbs_sponsored_pct
+           else null end                                 as pct_ptbs_success_sponsored
 
     -- zkLogin among successful PTBs
     , count(distinct case when execution_success and has_zklogin_sig then transaction_digest end)
-        as successful_ptbs_zklogin_n
+                                                        as n_ptbs_success_zklogin
     , case when count(distinct case when execution_success then transaction_digest end) > 0
            then cast(count(distinct case when execution_success and has_zklogin_sig then transaction_digest end) as double)
                 / cast(count(distinct case when execution_success then transaction_digest end) as double)
-           else null end
-        as successful_ptbs_zklogin_pct
+           else null end                                 as pct_ptbs_success_zklogin
 
-    -- Gas totals (Mist)
-    , coalesce(sum(total_gas_cost), 0)               as total_gas_cost_mist
-    , coalesce(sum(computation_cost), 0)             as computation_cost_mist
-    , coalesce(sum(storage_cost), 0)                 as storage_cost_incurred_mist
-    , coalesce(sum(storage_rebate), 0)               as storage_rebated_mist
-    , coalesce(sum(non_refundable_storage_fee), 0)   as non_refundable_storage_fee_mist
-
-    -- Gas totals in SUI
-    , cast(sum(total_gas_cost)              as double) / 1e9 as gas_fees_sui
-    , cast(sum(computation_cost)            as double) / 1e9 as computation_cost_sui
-    , cast(sum(storage_cost)               as double) / 1e9 as storage_cost_incurred_sui
-    , cast(sum(storage_rebate)             as double) / 1e9 as storage_rebated_sui
-    , cast(sum(non_refundable_storage_fee) as double) / 1e9 as non_refundable_storage_fee_sui
+    -- Gas totals in SUI (divide Mist by 1e9)
+    , cast(sum(total_gas_cost_d20)           as double) / 1e9  as total_gas_cost
+    , cast(sum(computation_cost_d20)         as double) / 1e9  as sum_computation_cost
+    , cast(sum(storage_cost_d20)             as double) / 1e9  as sum_storage_cost
+    , cast(sum(storage_rebate_d20)           as double) / 1e9  as sum_storage_rebate
+    , cast(sum(nrs_fee_d20)                  as double) / 1e9  as sum_non_refundable_storage_fee
   from filtered
   group by 1
 )
 
-select *
+select
+    ds
+  , block_month
+  , n_senders
+  , n_ptbs
+  , n_rows_checkon_ptbs
+  , n_commands_successful_ptbs
+  , n_ptbs_success
+  , pct_ptbs_success
+  , n_ptbs_success_sponsored
+  , pct_ptbs_success_sponsored
+  , n_ptbs_success_zklogin
+  , pct_ptbs_success_zklogin
+  , total_gas_cost
+  , sum_computation_cost
+  , sum_storage_cost
+  , sum_storage_rebate
+  , sum_non_refundable_storage_fee
 from daily

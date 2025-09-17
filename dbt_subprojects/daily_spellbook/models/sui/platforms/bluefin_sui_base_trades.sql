@@ -6,84 +6,59 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['transaction_digest', 'event_index'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    incremental_predicates = [incremental_predicate('block_time')]
 ) }}
 
 {% set bluefin_start_date = "2025-09-14" %}
 
-with decoded as (
+with base as (
   select
-      -- core swap fields
-      cast(json_extract_scalar(event_json, '$.amount_in')   as decimal(38,0))  as amount_in
-    , cast(json_extract_scalar(event_json, '$.amount_out')  as decimal(38,0))  as amount_out
-    , cast(json_extract_scalar(event_json, '$.a2b')         as boolean)        as a_to_b
-    , cast(json_extract_scalar(event_json, '$.fee')         as decimal(38,0))  as fee_amount
-    , cast(null as decimal(38,0)) as protocol_fee_amount
-    , cast(json_extract_scalar(event_json, '$.after_sqrt_price')  as double)   as after_sqrt_price
-    , cast(json_extract_scalar(event_json, '$.before_sqrt_price') as double)   as before_sqrt_price
-    , cast(null as decimal(38,0)) as liquidity
-    , cast(null as decimal(38,0)) as reserve_a
-    , cast(null as decimal(38,0)) as reserve_b
-    , cast(json_extract_scalar(event_json, '$.current_tick.bits') as bigint)   as tick_index_bits
-
-      -- ids & time (keep native string formats)
-    , timestamp_ms
-    , from_unixtime(timestamp_ms/1000)                      as block_time
+      -- time helpers for partitioning/incremental
+      from_unixtime(timestamp_ms/1000)                      as block_time
     , date(from_unixtime(timestamp_ms/1000))                as block_date
     , date_trunc('month', from_unixtime(timestamp_ms/1000)) as block_month
-    , ('0x' || lower(to_hex(from_base58(transaction_digest)))) as transaction_digest
-    , transaction_digest as transaction_digest_b58
+
+      -- required fields (no casts)
+    , json_extract_scalar(event_json, '$.pool_id')   as pool_id
+    , cast(json_extract_scalar(event_json,'$.amount_in')  as decimal(38,0)) as amount_in
+    , cast(json_extract_scalar(event_json,'$.amount_out') as decimal(38,0)) as amount_out
+    , cast(json_extract_scalar(event_json,'$.a2b')        as boolean)       as a_to_b
+    , cast(json_extract_scalar(event_json,'$.fee')        as decimal(38,0)) as fee_amount
+
+      -- base ids (native datatypes preserved)
+    , timestamp_ms
+    , transaction_digest
     , event_index
     , epoch
     , checkpoint
-    , case
-        when json_extract_scalar(event_json, '$.pool_id') is null then null
-        when starts_with(lower(json_extract_scalar(event_json, '$.pool_id')), '0x')
-          then lower(json_extract_scalar(event_json, '$.pool_id'))
-        else concat('0x', lower(json_extract_scalar(event_json, '$.pool_id')))
-      end as pool_id
-    , case
-        when json_extract_scalar(event_json, '$.user') is null then null
-        when starts_with(lower(json_extract_scalar(event_json, '$.user')), '0x')
-          then lower(json_extract_scalar(event_json, '$.user'))
-        else concat('0x', lower(json_extract_scalar(event_json, '$.user')))
-      end as sender
+    , sender
   from {{ source('sui','events') }}
   where event_type = '0x3492c874c1e3b3e2984e8c41b589e642d4d0a5d6459e5a9cfc2d52fd7c89c267::events::AssetSwap'
-  and from_unixtime(timestamp_ms/1000) >= timestamp '{{ bluefin_start_date }}'
+    and from_unixtime(timestamp_ms/1000) >= timestamp '{{ bluefin_start_date }}'
 )
 
 select
-    'sui' as blockchain
-  , 'bluefin' as project
-  , '1' as version
-  , timestamp_ms
-  , block_time
-  , block_date
-  , block_month
+    -- ids & time
+    timestamp_ms
   , transaction_digest
-  , transaction_digest_b58
   , event_index
   , epoch
   , checkpoint
+  , block_time
+  , block_date
+  , block_month
+
+    -- trade fields
   , pool_id
   , sender
+  , cast(null as varchar) as coin_type_in
+  , cast(null as varchar) as coin_type_out
   , amount_in
   , amount_out
   , a_to_b
   , fee_amount
-  , protocol_fee_amount
-  , after_sqrt_price
-  , before_sqrt_price
-  , liquidity
-  , reserve_a
-  , reserve_b
-  , tick_index_bits
-  , cast(null as varchar)  as coin_type_in
-  , cast(null as varchar)  as coin_type_out
-from decoded
-where amount_in  > 0
-  and amount_out > 0
-  {% if is_incremental() %}
-  and {{ incremental_predicate('block_time') }}
-  {% endif %}
+
+from base
+{% if is_incremental() %}
+where {{ incremental_predicate('block_time') }}
+{% endif %}
