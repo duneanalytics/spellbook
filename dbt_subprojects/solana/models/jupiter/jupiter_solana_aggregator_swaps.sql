@@ -112,8 +112,6 @@ with
                 AND bytearray_substring(from_base64(split(l.logs, ' ')[3]), 1, 8) IN (0x516ce3becdd00ac4, 0x40c6cde8260871e2) --v4, v5 discriminator
                 {% if is_incremental() %}
                 AND {{ incremental_predicate('block_time') }}
-                {% else %}
-                and block_time >= now() - interval '7' day --shorten CI
                 {% endif %}
         )
 
