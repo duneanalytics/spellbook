@@ -69,8 +69,8 @@ with used_pools as (
 , filtered as (
   select
       pool_id
-    , regexp_replace(coin_type_a_u, '^0x0*([0-9a-f]+)(::.*)$', '0x\\1\\2') as coin_type_a
-    , regexp_replace(coin_type_b_u, '^0x0*([0-9a-f]+)(::.*)$', '0x\\1\\2') as coin_type_b
+    , regexp_replace(coin_type_a_u, '^0x0*([0-9a-f]+)(::.*)$', '0x$1$2') as coin_type_a
+    , regexp_replace(coin_type_b_u, '^0x0*([0-9a-f]+)(::.*)$', '0x$1$2') as coin_type_b
   from unwrapped
   where
         lower(type_str) like '%::pool::%'
