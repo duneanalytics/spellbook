@@ -63,13 +63,14 @@ resolved as (
 -- 2) Canonicalize Move types & extract address-only keys for price join
 norm as (
   select
-      re.*
+      re.*,
       -- Canonical 0x…::module::name (trim leading zeroes in the address)
-      , regexp_replace(lower(re.coin_type_in),  '^0x0*([0-9a-f]+)(::.*)$', '0x\\1\\2') as coin_type_in_norm
-      , regexp_replace(lower(re.coin_type_out), '^0x0*([0-9a-f]+)(::.*)$', '0x\\1\\2') as coin_type_out_norm
+      regexp_replace(lower(re.coin_type_in),  '^0x0*([0-9a-f]+)(::.*)$',  '0x$1$2') as coin_type_in_norm,
+      regexp_replace(lower(re.coin_type_out), '^0x0*([0-9a-f]+)(::.*)$',  '0x$1$2') as coin_type_out_norm,
+
       -- Address-only 0x… (strip ::module::name and leading zeroes)
-      , regexp_replace(lower(re.coin_type_in),  '^0x0*([0-9a-f]+)(::.*)?$', '0x\\1')   as addr_in
-      , regexp_replace(lower(re.coin_type_out), '^0x0*([0-9a-f]+)(::.*)?$', '0x\\1')   as addr_out
+      regexp_replace(lower(re.coin_type_in),  '^0x0*([0-9a-f]+)(::.*)?$', '0x$1')   as addr_in,
+      regexp_replace(lower(re.coin_type_out), '^0x0*([0-9a-f]+)(::.*)?$', '0x$1')   as addr_out
   from resolved re
 ),
 
