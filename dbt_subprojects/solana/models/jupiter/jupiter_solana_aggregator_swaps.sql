@@ -216,8 +216,6 @@ LEFT JOIN {{ source('prices', 'usd_forward_fill') }}  p_2 ON p_2.blockchain = 's
     AND l.output_mint = toBase58(p_2.contract_address)
     {% if is_incremental() %}
     AND {{ incremental_predicate('p_2.minute') }}
-    {% else %}
-    AND p_2.minute >= now() - interval '7' day  --shorten CI
     {% endif %}
 WHERE l.input_mint not in ('4PfN9GDeF9yQ37qt9xCPsQ89qktp1skXfbsZ5Azk82Xi')
 AND l.output_mint not in ('4PfN9GDeF9yQ37qt9xCPsQ89qktp1skXfbsZ5Azk82Xi')
