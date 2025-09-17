@@ -168,8 +168,6 @@ with
             and tx_success = true
             {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
-            {% else %}
-            and block_time >= now() - interval '7' day --shorten CI
             {% endif %}
         ) l
         JOIN amms a ON a.amm = toBase58(bytearray_substring(l.data,1+16,32)) --only include amms that we are tracking.
