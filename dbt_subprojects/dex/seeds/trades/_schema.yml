@@ -4754,7 +4754,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: fluid_arbitrum_base_trades_seed
     config:
       column_types:
@@ -4769,7 +4769,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: fluid_base_base_trades_seed
     config:
       column_types:
@@ -4784,7 +4784,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: fluid_polygon_base_trades_seed
     config:
       column_types:
@@ -5284,21 +5284,6 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
-  - name: tapio_base_base_trades_seed
-    config:
-      column_types:
-        blockchain: varchar
-        project: varchar
-        version: varchar
-        tx_hash: varbinary
-        evt_index: uint256
-        block_number: uint256
-        token_bought_address: varbinary
-        token_sold_address: varbinary
-        token_bought_amount_raw: uint256
-        token_sold_amount_raw: uint256
-        block_date: timestamp
-
   - name: tapio_sonic_base_trades_seed
     config:
       column_types:
@@ -5313,7 +5298,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-  
+
   - name: tamadotmeme_ronin_base_trades_seed
     config:
       column_types:
@@ -5343,7 +5328,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: rooster_protocol_plume_base_trades_seed
     config:
       column_types:
@@ -5358,7 +5343,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-  
+
   - name: mindgames_arbitrum_base_trades_seed
     config:
       column_types:
@@ -5418,7 +5403,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: elk_finance_arbitrum_base_trades_seed
     config:
       column_types:
@@ -5433,7 +5418,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: gammaswap_arbitrum_base_trades_seed
     config:
       column_types:
@@ -5523,7 +5508,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-               
+
   - name: oku_taiko_base_trades_seed
     config:
       column_types:
@@ -5553,7 +5538,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: unagi_v3_taiko_base_trades_seed
     config:
       column_types:
@@ -5583,7 +5568,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: izumi_finance_taiko_base_trades_seed
     config:
       column_types:
@@ -5613,7 +5598,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: izumi_finance_hemi_base_trades_seed
     config:
       column_types:
@@ -5673,7 +5658,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: eulerswap_ethereum_base_trades_seed
     config:
       column_types:
@@ -5718,7 +5703,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: angstrom_ethereum_base_trades_seed
     config:
       column_types:

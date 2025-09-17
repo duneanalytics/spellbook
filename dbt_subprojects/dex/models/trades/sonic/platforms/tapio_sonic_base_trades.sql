@@ -15,8 +15,8 @@
         blockchain = 'sonic',
         project = 'tapio',
         version = '1',
-        factory_create_pool_function = 'selfpeggingassetfactory_call_createpool',
-        factory_create_pool_evt = 'selfpeggingassetfactory_evt_poolcreated',
+        factory_create_pool_function = 'factory_call_createpool',
+        factory_create_pool_evt = 'factory_evt_poolcreated',
         spa_token_swapped_evt = 'selfpeggingasset_evt_tokenswapped'
     )
 }}
