@@ -6,7 +6,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['transaction_digest', 'event_index'],
-    incremental_predicates = [incremental_predicate('block_time')]
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
 ) }}
 
 {% set cetus_start_date = "2025-09-14" %}
@@ -60,5 +60,5 @@ select
 
 from base
 {% if is_incremental() %}
-where {{ incremental_predicate('block_time') }}
+where {{ incremental_predicate('base.block_time') }}
 {% endif %}

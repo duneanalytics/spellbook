@@ -37,7 +37,7 @@ filtered as (
   select *
   from src
   {% if is_incremental() %}
-    where {{ incremental_predicate('block_date') }}
+    where {{ incremental_predicate('src.block_date') }}
   {% endif %}
 ),
 

@@ -6,7 +6,7 @@
   incremental_strategy = 'merge',
   unique_key = ['project','transaction_digest','event_index'],
   partition_by = ['block_month'],
-  incremental_predicates = [incremental_predicate('block_time')]
+  incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
 ) }}
 
 -- 0) Base (pure pass-through union)
@@ -179,5 +179,5 @@ with base as (
 select *
 from final
 {% if is_incremental() %}
-where {{ incremental_predicate('block_time') }}
+where {{ incremental_predicate('final.block_time') }}
 {% endif %}

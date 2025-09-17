@@ -33,7 +33,7 @@ with events as (
   )
     and from_unixtime(timestamp_ms/1000) >= timestamp '{{ walrus_start_date }}'
   {% if is_incremental() %}
-    and {{ incremental_predicate('block_time') }}
+    and {{ incremental_predicate('from_unixtime(timestamp_ms/1000)') }}
   {% endif %}
 ),
 
@@ -125,5 +125,5 @@ select
   , block_month
 from joined
 {% if is_incremental() %}
-where {{ incremental_predicate('block_date') }}
+where {{ incremental_predicate('joined.block_date') }}
 {% endif %}

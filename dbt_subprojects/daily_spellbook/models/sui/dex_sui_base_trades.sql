@@ -6,7 +6,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['project', 'transaction_digest', 'event_index'],
-    incremental_predicates = [incremental_predicate('block_time')]
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
 ) }}
 
 {% set branches = [
@@ -82,5 +82,5 @@ select
   , fee_amount
 from all_swaps
 {% if is_incremental() %}
-where {{ incremental_predicate('block_time') }}
+where {{ incremental_predicate('all_swaps.block_time') }}
 {% endif %}
