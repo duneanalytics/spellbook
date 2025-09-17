@@ -63,4 +63,3 @@ from base
 {% if is_incremental() %}
 where {{ incremental_predicate('block_time') }}
 {% endif %}
-;

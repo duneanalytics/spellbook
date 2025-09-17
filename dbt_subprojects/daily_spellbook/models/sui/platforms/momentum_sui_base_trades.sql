@@ -56,8 +56,8 @@ shaped as (
       fee_amount,
 
       -- coin types not emitted in this event
-      null as coin_type_in,
-      null as coin_type_out
+      cast(null as varchar) as coin_type_in,
+      cast(null as varchar) as coin_type_out
   from base
 )
 

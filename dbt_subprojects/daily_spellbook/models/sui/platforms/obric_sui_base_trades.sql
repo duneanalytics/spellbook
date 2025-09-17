@@ -20,8 +20,8 @@ with base as (
 
       -- minimal fields from event_json (no normalization)
     , json_extract_scalar(event_json, '$.pool_id')          as pool_id
-    , cast(json_extract_scalar(event_json,'$.amount_in')  as decimal(38,0)) as amount_in,
-    , cast(json_extract_scalar(event_json,'$.amount_out') as decimal(38,0)) as amount_out,
+    , cast(json_extract_scalar(event_json,'$.amount_in')  as decimal(38,0)) as amount_in
+    , cast(json_extract_scalar(event_json,'$.amount_out') as decimal(38,0)) as amount_out
     , cast(json_extract_scalar(event_json, '$.a2b') as boolean) as a_to_b
     , json_extract_scalar(event_json, '$.coin_a.name')      as coin_a
     , json_extract_scalar(event_json, '$.coin_b.name')      as coin_b

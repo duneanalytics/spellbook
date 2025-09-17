@@ -1,6 +1,7 @@
 {{ config(
   schema='dex_sui',
-  materialized='coin_info',
+  alias='coin_info',
+  materialized='table',
   file_format='delta',
   tags=['sui','dex']
 ) }}
