@@ -64,13 +64,22 @@ resolved as (
 norm as (
   select
       re.*,
-      -- Canonical 0x…::module::name (trim leading zeroes in the address)
+
+      -- Canonical 0x…::module::name (trim leading zeros in the address)
       regexp_replace(lower(re.coin_type_in),  '^0x0*([0-9a-f]+)(::.*)$',  '0x$1$2') as coin_type_in_norm,
       regexp_replace(lower(re.coin_type_out), '^0x0*([0-9a-f]+)(::.*)$',  '0x$1$2') as coin_type_out_norm,
 
-      -- Address-only 0x… (strip ::module::name and leading zeroes)
+      -- Address-only strings (strip ::module::name and leading zeros)
       regexp_replace(lower(re.coin_type_in),  '^0x0*([0-9a-f]+)(::.*)?$', '0x$1')   as addr_in,
-      regexp_replace(lower(re.coin_type_out), '^0x0*([0-9a-f]+)(::.*)?$', '0x$1')   as addr_out
+      regexp_replace(lower(re.coin_type_out), '^0x0*([0-9a-f]+)(::.*)?$', '0x$1')   as addr_out,
+
+      -- Varbinary join keys built from the *normalized* types
+      cast(split_part(
+            regexp_replace(lower(re.coin_type_in),  '^0x0*([0-9a-f]+)(::.*)$',  '0x$1$2'),
+            '::', 1) as varbinary) as addr_in_vb,
+      cast(split_part(
+            regexp_replace(lower(re.coin_type_out), '^0x0*([0-9a-f]+)(::.*)$',  '0x$1$2'),
+            '::', 1) as varbinary) as addr_out_vb
   from resolved re
 ),
 
@@ -129,6 +138,10 @@ joined as (
       m.epoch,
       m.checkpoint,
       m.pool_id,
+      m.addr_in, 
+      m.addr_out, 
+      m.addr_in_vb, 
+      m.addr_out_vb,
 
       /* single canonical sender column */
       coalesce(m.sender, t.sender_from_tx) as sender,
@@ -152,8 +165,6 @@ joined as (
       m.coin_symbol_out,
       m.coin_decimals_in,
       m.coin_decimals_out,
-      m.addr_in,
-      m.addr_out,
       m.amount_in_decimal,
       m.amount_out_decimal,
 
@@ -180,13 +191,14 @@ priced as (
       pg.price as price_gas_usd
   from joined j
   left join {{ source('prices','usd') }} pb
-    on pb.blockchain = 'sui'
-   and pb.minute = cast(date_trunc('minute', at_timezone(j.block_time,'UTC')) as timestamp)
-   and pb.contract_address = cast(j.addr_in as varbinary)
+      on pb.blockchain = 'sui'
+    and pb.minute = cast(date_trunc('minute', at_timezone(j.block_time,'UTC')) as timestamp)
+    and pb.contract_address = j.addr_in_vb
+
   left join {{ source('prices','usd') }} ps
-    on ps.blockchain = 'sui'
-   and ps.minute = cast(date_trunc('minute', at_timezone(j.block_time,'UTC')) as timestamp)
-   and ps.contract_address = cast(j.addr_out as varbinary)
+      on ps.blockchain = 'sui'
+    and ps.minute = cast(date_trunc('minute', at_timezone(j.block_time,'UTC')) as timestamp)
+    and ps.contract_address = j.addr_out_vb
   left join {{ source('prices','usd') }} pg
     on pg.blockchain = 'sui'
    and pg.minute = cast(date_trunc('minute', at_timezone(j.block_time,'UTC')) as timestamp)
