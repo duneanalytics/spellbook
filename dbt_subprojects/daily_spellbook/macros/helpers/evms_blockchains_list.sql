@@ -38,6 +38,7 @@
         "scroll",
         "sei",
         "shape",
+        "somnia"
         "sonic",
         "sophon",
         "superseed",
