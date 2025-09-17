@@ -16,7 +16,7 @@
 -- Base swaps from solfi_call_swap table
 WITH solfi_swaps AS (
     SELECT distinct
-        call_block_time as block_time
+        date_trunc('day', call_block_time) as block_date
         , call_block_slot as block_slot
         , call_tx_index as tx_index
         , call_outer_instruction_index as outer_instruction_index
@@ -42,4 +42,4 @@ WITH solfi_swaps AS (
 
 select *
 from token_transfers
-inner join solfi_swaps using (block_time, block_slot, tx_index, outer_instruction_index)
+inner join solfi_swaps using (block_date, block_slot, tx_index, outer_instruction_index)
