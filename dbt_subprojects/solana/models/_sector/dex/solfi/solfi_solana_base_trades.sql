@@ -8,11 +8,10 @@
     , incremental_strategy = 'merge'
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     , unique_key = ['block_month', 'surrogate_key']
-    , pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
   )
 }}
 
-{% set project_start_date = '2024-10-29' %}
+{% set project_start_date = '2025-08-01' %}
 
 -- Base swaps from solfi_call_swap table
 WITH solfi_swaps AS (
@@ -59,9 +58,9 @@ WITH solfi_swaps AS (
     FROM solfi_swaps s
     
     -- Join for INPUT transfer (what user sells to pool)
-    INNER JOIN {{ source('tokens_solana','transfers') }} t_input
-        ON t_input.tx_id = s.tx_id
-        AND t_input.block_slot = s.block_slot
+    INNER JOIN {{ ref('solfi_solana_token_transfers') }} t_input
+        ON t_input.block_slot = s.block_slot
+        AND t_input.tx_index = s.tx_index
         AND t_input.block_time = s.block_time  -- Add block_time
         AND t_input.outer_instruction_index = s.outer_instruction_index
         AND (
@@ -81,9 +80,9 @@ WITH solfi_swaps AS (
         {% endif %}
     
     -- Join for OUTPUT transfer (what user receives from pool)
-    INNER JOIN {{ source('tokens_solana','transfers') }} t_output
-        ON t_output.tx_id = s.tx_id
-        AND t_output.block_slot = s.block_slot
+    INNER JOIN {{ ref('solfi_solana_token_transfers') }} t_output
+        ON t_output.block_slot = s.block_slot
+        AND t_output.tx_index = s.tx_index
         AND t_output.outer_instruction_index = s.outer_instruction_index
         AND (
             -- For non-inner swaps: output transfer is at instruction index 2
