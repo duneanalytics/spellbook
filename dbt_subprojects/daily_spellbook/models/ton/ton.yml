@@ -172,3 +172,98 @@ models:
         description: "The timestamp of the last change"
       - name: last_change_lt
         description: "The lt of the last change"
+  - name: ton_elector_new_stake
+    meta:
+      blockchain: ton
+      contributors: [pshuvalov]
+    config:
+      tags: ['ton', 'validation']
+    description: "Elector new stake events"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+    columns:
+      - name: block_date
+        description: "The date of the block"
+      - name: tx_hash
+        description: "The hash of the transaction"
+      - name: trace_id
+        description: "The trace id of the transaction"
+      - name: tx_now
+        description: "The timestamp of the transaction"
+      - name: tx_lt
+        description: "The lt of the transaction"
+      - name: wallet_address
+        description: "The address of the wallet"
+      - name: value
+        description: "The value of the transaction"
+      - name: query_id
+        description: "The query id of the transaction"
+      - name: validator_pubkey
+        description: "The validator pubkey"
+      - name: stake_at
+        description: "The stake timestamp (only for signature check)"
+      - name: max_factor
+        description: "The max_factor param for the stake"
+      - name: adnl_addr
+        description: "The adnl addr of the validator"
+  - name: ton_elector_return_stake
+    meta:
+      blockchain: ton
+      contributors: [pshuvalov]
+    config:
+      tags: ['ton', 'validation']
+    description: "Elector return stake events"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+    columns:
+      - name: block_date
+        description: "The date of the block"
+      - name: tx_hash
+        description: "The hash of the transaction"
+      - name: trace_id
+        description: "The trace id of the transaction"
+      - name: tx_now
+        description: "The timestamp of the transaction"
+      - name: tx_lt
+        description: "The lt of the transaction"
+      - name: wallet_address
+        description: "The address of the wallet"
+      - name: value
+        description: "The value to return"
+      - name: query_id
+        description: "The query id of the transaction"
+      - name: reason
+        description: "The reason of the return (see Elector code)"
+- name: ton_elector_recover_stake_success
+    meta:
+      blockchain: ton
+      contributors: [pshuvalov]
+    config:
+      tags: ['ton', 'validation']
+    description: "Stake withdrawal success events from Elector"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+    columns:
+      - name: block_date
+        description: "The date of the block"
+      - name: tx_hash
+        description: "The hash of the transaction"
+      - name: trace_id
+        description: "The trace id of the transaction"
+      - name: tx_now
+        description: "The timestamp of the transaction"
+      - name: tx_lt
+        description: "The lt of the transaction"
+      - name: wallet_address
+        description: "The address of the wallet"
+      - name: value
+        description: "The value of the transaction"
