@@ -95,7 +95,7 @@ tx as (
   from {{ source('sui','transactions') }} t
   join (select distinct transaction_digest from meta) m
     on from_base58(t.transaction_digest) = from_hex(substr(m.transaction_digest, 3))
-)
+),
 
 -- Attach gas usage & total_gas_sui
 joined as (
