@@ -149,47 +149,27 @@ with base as (
     , p.sender
     , p.transaction_digest
     , p.event_index
-    , regexp_replace(lower(p.coin_type_in ), '^0x?0*([0-9a-f]+)(::.*)$', '0x$1$2') as token_sold_address
+    , regexp_replace(lower(p.coin_type_in ),  '^0x?0*([0-9a-f]+)(::.*)$', '0x$1$2') as token_sold_address
     , regexp_replace(lower(p.coin_type_out), '^0x?0*([0-9a-f]+)(::.*)$', '0x$1$2') as token_bought_address
     , p.coin_in_symbol  as token_sold_symbol
     , p.coin_out_symbol as token_bought_symbol
-    , final as (
-  select
-      p.blockchain
-    , p.project
-    , p.block_month
-    , p.block_date
-    , p.block_time
-    , p.epoch
-    , p.checkpoint
-    , p.pool_id
-    , p.sender
-    , p.transaction_digest
-    , p.event_index
-    , regexp_replace(lower(p.coin_type_in ), '^0x?0*([0-9a-f]+)(::.*)$', '0x$1$2') as token_sold_address
-    , regexp_replace(lower(p.coin_type_out), '^0x?0*([0-9a-f]+)(::.*)$', '0x$1$2') as token_bought_address
-    , p.coin_in_symbol  as token_sold_symbol
-    , p.coin_out_symbol as token_bought_symbol
+
+    -- stable, sorted pair (fallback to last ::segment if symbols missing)
     , case
         when p.coin_in_symbol is not null and p.coin_out_symbol is not null then
-          case
-            when lower(p.coin_out_symbol) > lower(p.coin_in_symbol)
-              then concat(p.coin_in_symbol, '-', p.coin_out_symbol)
-            else concat(p.coin_out_symbol, '-', p.coin_in_symbol)
+          case when lower(p.coin_out_symbol) > lower(p.coin_in_symbol)
+               then concat(p.coin_in_symbol, '-', p.coin_out_symbol)
+               else concat(p.coin_out_symbol, '-', p.coin_in_symbol)
           end
         else
-          -- Fallback uses the last ::segment from the type (module/name)
           case
-            when lower(regexp_extract(p.coin_type_out, '::([a-zA-Z0-9_]+)$'))
-                 > lower(regexp_extract(p.coin_type_in,  '::([a-zA-Z0-9_]+)$'))
-              then concat(regexp_extract(p.coin_type_in,  '::([a-zA-Z0-9_]+)$'),
-                         '-', 
-                         regexp_extract(p.coin_type_out, '::([a-zA-Z0-9_]+)$'))
-            else concat(regexp_extract(p.coin_type_out, '::([a-zA-Z0-9_]+)$'),
-                        '-', 
-                        regexp_extract(p.coin_type_in,  '::([a-zA-Z0-9_]+)$'))
+            when lower(regexp_extract(p.coin_type_out, '::([^:]+)$', 1))
+                 > lower(regexp_extract(p.coin_type_in,  '::([^:]+)$', 1))
+              then concat(regexp_extract(p.coin_type_in,  '::([^:]+)$', 1), '-', regexp_extract(p.coin_type_out, '::([^:]+)$', 1))
+              else concat(regexp_extract(p.coin_type_out, '::([^:]+)$', 1), '-', regexp_extract(p.coin_type_in,  '::([^:]+)$', 1))
           end
       end as token_pair
+
     , p.amount_in  as token_sold_amount_raw
     , p.amount_out as token_bought_amount_raw
     , p.amount_in_decimal  as token_sold_amount
@@ -197,28 +177,26 @@ with base as (
     , p.a_to_b
     , p.fee_amount
     , case when p.coin_in_decimals is not null
-        then cast( cast(p.fee_amount as double) / pow(10, p.coin_in_decimals) as decimal(38,18))
+        then cast(cast(p.fee_amount as double) / pow(10, p.coin_in_decimals) as decimal(38,18))
         else cast(null as decimal(38,18))
       end as fee_amount_decimal
     , p.price_in_usd
     , p.price_out_usd
     , case when p.amount_in_decimal  is not null and p.price_in_usd  is not null
-        then cast( (cast(p.amount_in_decimal  as double) * p.price_in_usd ) as decimal(38,8))
-      end as token_sold_usd
+        then cast((cast(p.amount_in_decimal  as double) * p.price_in_usd ) as decimal(38,8)) end as token_sold_usd
     , case when p.amount_out_decimal is not null and p.price_out_usd is not null
-        then cast( (cast(p.amount_out_decimal as double) * p.price_out_usd) as decimal(38,8))
-      end as token_bought_usd
+        then cast((cast(p.amount_out_decimal as double) * p.price_out_usd) as decimal(38,8)) end as token_bought_usd
     , coalesce(
         case when p.amount_in_decimal  is not null and p.price_in_usd  is not null
-          then cast( (cast(p.amount_in_decimal  as double) * p.price_in_usd ) as decimal(38,8)) end,
+          then cast((cast(p.amount_in_decimal  as double) * p.price_in_usd ) as decimal(38,8)) end,
         case when p.amount_out_decimal is not null and p.price_out_usd is not null
-          then cast( (cast(p.amount_out_decimal as double) * p.price_out_usd) as decimal(38,8)) end
+          then cast((cast(p.amount_out_decimal as double) * p.price_out_usd) as decimal(38,8)) end
       ) as amount_usd
     , case
         when p.fee_amount is not null and p.coin_in_decimals is not null and p.price_in_usd is not null
-          then cast( (cast(p.fee_amount as double) / pow(10, p.coin_in_decimals)) * p.price_in_usd  as decimal(38,8))
+          then cast((cast(p.fee_amount as double) / pow(10, p.coin_in_decimals)) * p.price_in_usd  as decimal(38,8))
         when p.fee_amount is not null and p.coin_in_decimals is not null and p.price_out_usd is not null
-          then cast( (cast(p.fee_amount as double) / pow(10, p.coin_in_decimals)) * p.price_out_usd as decimal(38,8))
+          then cast((cast(p.fee_amount as double) / pow(10, p.coin_in_decimals)) * p.price_out_usd as decimal(38,8))
         else null
       end as fee_usd
   from priced p
