@@ -16,35 +16,41 @@
 with events as (
   select
       transaction_digest
-      , event_index
-      , checkpoint
-      , epoch                                                       as sui_epoch      -- Sui epoch (DECIMAL)
-      , timestamp_ms
-      , date
-      , sender                                                      as sender_bin     -- VARBINARY (from source)
-      , package
-      , module
-      , event_type
-      , event_json
-      -- convenience display columns (no forced conversions in joins unless needed)
-      , '0x' || lower(to_hex(sender))                               as sender_hex     -- for display/partner join
-      , try_to_number(replace(event_json:blob_id, '"',''))          as blob_id_dec    -- Walrus blob id (decimal)
-      , lower(replace(event_json:object_id, '"',''))                as object_id_hex  -- 0x... lower
-      , cast(event_json:start_epoch as number)                      as start_epoch
-      , cast(event_json:end_epoch   as number)                      as end_epoch
-      , cast(event_json:epoch       as number)                      as walrus_event_epoch
-      , case when event_type like '%::BlobRegistered'
-           then cast(event_json:size as number)
+    , event_index
+    , checkpoint
+    , epoch                                                    as sui_epoch
+    , timestamp_ms
+    , sender                                                  as sender_bin
+    , package
+    , module
+    , event_type
+    , event_json
+    , ('0x' || lower(to_hex(sender)))                         as sender_hex
+
+    -- Walrus payload fields (Trino JSON functions)
+    , case 
+        when json_extract_scalar(event_json, '$.blob_id') is null then null
+        when starts_with(lower(json_extract_scalar(event_json, '$.blob_id')), '0x')
+          then lower(json_extract_scalar(event_json, '$.blob_id'))
+        else concat('0x', lower(json_extract_scalar(event_json, '$.blob_id')))
+      end                                                     as blob_id_hex
+    , lower(json_extract_scalar(event_json, '$.object_id'))   as object_id_hex
+    , cast(json_extract_scalar(event_json, '$.start_epoch') as bigint)  as start_epoch
+    , cast(json_extract_scalar(event_json, '$.end_epoch')   as bigint)  as end_epoch
+    , cast(json_extract_scalar(event_json, '$.epoch')       as bigint)  as walrus_event_epoch
+    , case when event_type like '%::BlobRegistered'
+           then cast(json_extract_scalar(event_json, '$.size') as decimal(38,0))
            else null
-      end                                                         as size_bytes
-      , case when event_type like '%::BlobCertified'
-           then cast(event_json:is_extension as boolean)
+      end                                                     as size_bytes
+    , case when event_type like '%::BlobCertified'
+           then try_cast(json_extract_scalar(event_json, '$.is_extension') as boolean)
            else null
-      end                                                         as is_extension
+      end                                                     as is_extension
+
   from {{ source('sui','events') }}
   where event_type in (
-    '0xfdc88f7d7cf30afab2f82e8380d11ee8f70efb90e863d1de8616fae1bb09ea77::events::BlobRegistered',
-    '0xfdc88f7d7cf30afab2f82e8380d11ee8f70efb90e863d1de8616fae1bb09ea77::events::BlobCertified'
+        '0xfdc88f7d7cf30afab2f82e8380d11ee8f70efb90e863d1de8616fae1bb09ea77::events::BlobRegistered',
+        '0xfdc88f7d7cf30afab2f82e8380d11ee8f70efb90e863d1de8616fae1bb09ea77::events::BlobCertified'
   )
     and from_unixtime(timestamp_ms/1000) >= timestamp '{{ walrus_start_date }}'
   {% if is_incremental() %}
@@ -56,25 +62,24 @@ with events as (
 , event_data as (
   select
       transaction_digest
-      , event_index
-      , timestamp_ms
-      , sender_bin
-      , sender_hex
-      , object_id_hex
-      , sui_epoch
-      , walrus_event_epoch
-      , start_epoch
-      , end_epoch
-      , blob_id_dec
-      , size_bytes
-      , is_extension
-      , case when event_type like '%::BlobRegistered' then 'register' else 'certify' end as action
-      , from_unixtime(timestamp_ms/1000)                           as block_time
-      , date(from_unixtime(timestamp_ms/1000))                     as block_date
-      , date_trunc('month', from_unixtime(timestamp_ms/1000))      as block_month
+    , event_index
+    , timestamp_ms
+    , sender_bin
+    , sender_hex
+    , object_id_hex
+    , sui_epoch
+    , walrus_event_epoch
+    , start_epoch
+    , end_epoch
+    , blob_id_hex              as blob_id      -- use hex string consistently
+    , size_bytes
+    , is_extension
+    , case when event_type like '%::BlobRegistered' then 'register' else 'certify' end as action
+    , from_unixtime(timestamp_ms/1000)                         as block_time
+    , date(from_unixtime(timestamp_ms/1000))                   as block_date
+    , date_trunc('month', from_unixtime(timestamp_ms/1000))    as block_month
   from events
 )
-
 -- 3a) split and dedupe registers
 , regs as (
   select *
@@ -155,7 +160,7 @@ with events as (
       , wp.partner_name
   from joined j
   left join walrus_partner_wallets wp
-    on wp.wallet_address = j.sender   -- both VARCHAR 0x… hex (we produced sender)
+    on wp.wallet_address = j.sender
 )
 
 select * from with_partner
