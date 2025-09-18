@@ -52,10 +52,8 @@ select
   , g.gas_used_non_refundable_storage_fee
   , g.total_gas_mist
 from walrus_tx w
-join {{ ref('sui_walrus_base_table') }} bt
-  on bt.tx_register = w.transaction_digest_hex
 left join tx_gas g
   on g.transaction_digest_hex = w.transaction_digest_hex
 {% if is_incremental() %}
-where {{ incremental_predicate('bt.block_date') }}
+where {{ incremental_predicate('w.block_date') }}
 {% endif %}

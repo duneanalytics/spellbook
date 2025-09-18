@@ -153,6 +153,43 @@ with base as (
     , regexp_replace(lower(p.coin_type_out), '^0x?0*([0-9a-f]+)(::.*)$', '0x$1$2') as token_bought_address
     , p.coin_in_symbol  as token_sold_symbol
     , p.coin_out_symbol as token_bought_symbol
+    , final as (
+  select
+      p.blockchain
+    , p.project
+    , p.block_month
+    , p.block_date
+    , p.block_time
+    , p.epoch
+    , p.checkpoint
+    , p.pool_id
+    , p.sender
+    , p.transaction_digest
+    , p.event_index
+    , regexp_replace(lower(p.coin_type_in ), '^0x?0*([0-9a-f]+)(::.*)$', '0x$1$2') as token_sold_address
+    , regexp_replace(lower(p.coin_type_out), '^0x?0*([0-9a-f]+)(::.*)$', '0x$1$2') as token_bought_address
+    , p.coin_in_symbol  as token_sold_symbol
+    , p.coin_out_symbol as token_bought_symbol
+    , case
+        when p.coin_in_symbol is not null and p.coin_out_symbol is not null then
+          case
+            when lower(p.coin_out_symbol) > lower(p.coin_in_symbol)
+              then concat(p.coin_in_symbol, '-', p.coin_out_symbol)
+            else concat(p.coin_out_symbol, '-', p.coin_in_symbol)
+          end
+        else
+          -- Fallback uses the last ::segment from the type (module/name)
+          case
+            when lower(regexp_extract(p.coin_type_out, '::([a-zA-Z0-9_]+)$'))
+                 > lower(regexp_extract(p.coin_type_in,  '::([a-zA-Z0-9_]+)$'))
+              then concat(regexp_extract(p.coin_type_in,  '::([a-zA-Z0-9_]+)$'),
+                         '-', 
+                         regexp_extract(p.coin_type_out, '::([a-zA-Z0-9_]+)$'))
+            else concat(regexp_extract(p.coin_type_out, '::([a-zA-Z0-9_]+)$'),
+                        '-', 
+                        regexp_extract(p.coin_type_in,  '::([a-zA-Z0-9_]+)$'))
+          end
+      end as token_pair
     , p.amount_in  as token_sold_amount_raw
     , p.amount_out as token_bought_amount_raw
     , p.amount_in_decimal  as token_sold_amount
@@ -171,6 +208,12 @@ with base as (
     , case when p.amount_out_decimal is not null and p.price_out_usd is not null
         then cast( (cast(p.amount_out_decimal as double) * p.price_out_usd) as decimal(38,8))
       end as token_bought_usd
+    , coalesce(
+        case when p.amount_in_decimal  is not null and p.price_in_usd  is not null
+          then cast( (cast(p.amount_in_decimal  as double) * p.price_in_usd ) as decimal(38,8)) end,
+        case when p.amount_out_decimal is not null and p.price_out_usd is not null
+          then cast( (cast(p.amount_out_decimal as double) * p.price_out_usd) as decimal(38,8)) end
+      ) as amount_usd
     , case
         when p.fee_amount is not null and p.coin_in_decimals is not null and p.price_in_usd is not null
           then cast( (cast(p.fee_amount as double) / pow(10, p.coin_in_decimals)) * p.price_in_usd  as decimal(38,8))
