@@ -227,6 +227,92 @@ PRICES_TSUSDE AS (
         ON P.token_address = '0:B113A994B5024A16719F69139328EB759596C38A25F59028B146FECDC3621DFE' -- USDT
         AND P.ts = block_date
     GROUP BY 1, 2, P.price_ton, P.price_usd
+),
+
+----------------------------------------------
+--------------Tradoor LP tokens (TLP)---------
+----------------------------------------------
+
+TLPs as ( -- list of tlp jettons and underlying assets
+  SELECT 'USDT-TLP' as asset,
+  UPPER('0:332c916f885a26051cb3a121f00c2bda459339eb103df36fe484df0b87b39384') as tlp_address,
+  '0:B113A994B5024A16719F69139328EB759596C38A25F59028B146FECDC3621DFE' AS underlying_asset -- USDT
+
+  UNION ALL
+
+  SELECT 'TON-TLP' as asset,
+  UPPER('0:d810b4477bab0d70710a5f9dea59d5c6dfb38af5511d0d6497d4d72e6ed7184b') as tlp_address,
+  UPPER('0:0000000000000000000000000000000000000000000000000000000000000000') as underlying_asset
+  
+)
+
+, TLP_BURNS AS ( -- get all burn event
+  SELECT trace_id, je.amount AS tlp_amount, block_date, TLPs.* 
+  FROM {{ source('ton', 'jetton_events') }} je
+  INNER JOIN TLPs 
+      ON je.jetton_master = TLPs.tlp_address
+  WHERE 1=1
+      AND type = 'burn'
+      AND NOT tx_aborted
+)
+
+, TON_TLP_BURNS AS (
+    SELECT 
+        TLP_BURNS.*,
+        SUM(M.value) AS underlying_asset_amount
+    FROM {{ source('ton', 'messages') }} M
+    INNER JOIN TLP_BURNS ON 1=1
+        AND TLP_BURNS.block_date = M.block_date 
+        AND TLP_BURNS.trace_id = M.trace_id
+        AND TLP_BURNS.underlying_asset = '0:0000000000000000000000000000000000000000000000000000000000000000'
+        AND source = '0:0D36BA31CC15D776DD529B990872735972B0C4CEEC77741F9ED3344E48E19084' -- TON-TLP vault
+        AND destination NOT IN (
+            '0:6F4194CF9622507FD946E5519F3793E05133A46ECA0D2AEE0E5FCC844BD46694', 
+            '0:D17CCAEA7AC3226257AE5B1163AE7D75E6F518167984AA61E2457CF748562D50',
+            '0:26801AA583732772B25C500C16025AF83147AD4FA2AF503B9DA527C55FF798F7',
+            '0:5795A2DB66CFF3C7311F56F3729B3F0FF7D1E049940AE54E36AB6616B0C0FCF8'
+        ) -- exclude management accounts
+        AND direction = 'in'
+        AND opcode IS NULL
+        AND M.block_date >= TIMESTAMP '2025-03-12' -- first burn
+    GROUP BY 1, 2, 3, 4, 5, 6
+    HAVING SUM(M.value) > 1e9
+), USDT_TLP_BURNS AS (
+    SELECT TLP_BURNS.*, je.amount as underlying_asset_amount 
+    FROM {{ source('ton', 'jetton_events') }} je
+    INNER JOIN TLP_BURNS ON 1=1
+        AND je.block_date = TLP_BURNS.block_date
+        AND je.trace_id = TLP_BURNS.trace_id
+        AND je.jetton_master = TLP_BURNS.underlying_asset 
+        AND NOT tx_aborted 
+        AND TLP_BURNS.underlying_asset != '0:0000000000000000000000000000000000000000000000000000000000000000'
+        AND je.block_date >= TIMESTAMP '2024-09-10'
+)
+
+, ALL_TLP_BURNS AS (
+    SELECT * FROM TON_TLP_BURNS
+    UNION ALL 
+    SELECT * FROM USDT_TLP_BURNS
+)
+, TLP_ADDRESS_INTER_PRICE AS (
+    SELECT 
+        block_date, 
+        asset, tlp_address, underlying_asset, 
+        CAST(1.0 AS DOUBLE) * SUM(underlying_asset_amount) / SUM(tlp_amount) AS price
+    FROM ALL_TLP_BURNS
+    GROUP BY 1, 2, 3, 4
+)
+, PRICES_TLP AS (
+    SELECT 
+        tlp_address AS token_address,
+        block_date AS ts,
+        TLP_ADDRESS_INTER_PRICE.price * P.price_ton AS price_ton,
+        TLP_ADDRESS_INTER_PRICE.price * P.price_usd AS price_usd,
+        'TLP' AS asset_type
+    FROM TLP_ADDRESS_INTER_PRICE
+    INNER JOIN PRICES_FROM_DEX_TRADES P
+        ON P.token_address = TLP_ADDRESS_INTER_PRICE.underlying_asset
+        AND P.ts = TLP_ADDRESS_INTER_PRICE.block_date
 )
 
 
@@ -239,6 +325,7 @@ PRICES_TSUSDE AS (
     COALESCE(
         PRICES_TSUSDE.token_address,
         PRICES_SLP.token_address,
+        PRICES_TLP.token_address,
         PRICES_LP_TOKENS.token_address,
         PRICES_FROM_DEX_TRADES.token_address
     ) AS token_address,
@@ -246,6 +333,7 @@ PRICES_TSUSDE AS (
     COALESCE(
         PRICES_TSUSDE.ts,
         PRICES_SLP.ts,
+        PRICES_TLP.ts,
         PRICES_LP_TOKENS.ts,
         PRICES_FROM_DEX_TRADES.ts
     ) AS timestamp,
@@ -253,6 +341,7 @@ PRICES_TSUSDE AS (
     COALESCE(
         PRICES_TSUSDE.price_ton,
         PRICES_SLP.price_ton,
+        PRICES_TLP.price_ton,
         PRICES_LP_TOKENS.price_ton,
         PRICES_FROM_DEX_TRADES.price_ton
     ) AS price_ton,
@@ -260,6 +349,7 @@ PRICES_TSUSDE AS (
     COALESCE(
         PRICES_TSUSDE.price_usd,
         PRICES_SLP.price_usd,
+        PRICES_TLP.price_usd,
         PRICES_LP_TOKENS.price_usd,
         PRICES_FROM_DEX_TRADES.price_usd
     ) AS price_usd,
@@ -267,6 +357,7 @@ PRICES_TSUSDE AS (
 COALESCE(
         PRICES_TSUSDE.asset_type,
         PRICES_SLP.asset_type,
+        PRICES_TLP.asset_type,
         PRICES_LP_TOKENS.asset_type,
         PRICES_FROM_DEX_TRADES.asset_type
     ) AS asset_type
@@ -275,6 +366,9 @@ FROM PRICES_FROM_DEX_TRADES
 FULL OUTER JOIN PRICES_SLP
     ON PRICES_FROM_DEX_TRADES.token_address = PRICES_SLP.token_address
     AND PRICES_FROM_DEX_TRADES.ts = PRICES_SLP.ts
+FULL OUTER JOIN PRICES_TLP
+    ON PRICES_FROM_DEX_TRADES.token_address = PRICES_TLP.token_address
+    AND PRICES_FROM_DEX_TRADES.ts = PRICES_TLP.ts
 FULL OUTER JOIN PRICES_LP_TOKENS
     ON PRICES_FROM_DEX_TRADES.token_address = PRICES_LP_TOKENS.token_address
     AND PRICES_FROM_DEX_TRADES.ts = PRICES_LP_TOKENS.ts
