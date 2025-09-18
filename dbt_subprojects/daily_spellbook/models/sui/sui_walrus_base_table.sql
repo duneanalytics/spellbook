@@ -55,7 +55,6 @@ event_data as (
       end                                                   as blob_id
     , lower(json_extract_scalar(event_json, '$.object_id')) as object_id
     , cast(json_extract_scalar(event_json, '$.deletable') as boolean) as deletable
-    , cast(json_extract_scalar(event_json, '$.epoch') as bigint)      as epoch
     , cast(json_extract_scalar(event_json, '$.end_epoch') as bigint)  as ending_epoch
     , cast(null as bigint)                                            as starting_epoch
     , case
