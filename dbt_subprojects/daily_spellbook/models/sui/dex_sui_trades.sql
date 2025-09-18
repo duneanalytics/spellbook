@@ -76,10 +76,12 @@ with base as (
     , ci_out.coin_out_symbol
     , ci_out.coin_out_decimals
     , case when ci_in.coin_in_decimals is not null
-        then cast(r.amount_in as decimal(38,0)) / cast(pow(10, ci_in.coin_in_decimals) as decimal(38,0))
+        then cast( cast(r.amount_in as double)
+                   / pow(10, ci_in.coin_in_decimals) as decimal(38,18))
         else cast(null as decimal(38,18)) end as amount_in_decimal
     , case when ci_out.coin_out_decimals is not null
-        then cast(r.amount_out as decimal(38,0)) / cast(pow(10, ci_out.coin_out_decimals) as decimal(38,0))
+        then cast( cast(r.amount_out as double)
+                   / pow(10, ci_out.coin_out_decimals) as decimal(38,18))
         else cast(null as decimal(38,18)) end as amount_out_decimal
   from resolved r
   left join ci_in
@@ -158,19 +160,22 @@ with base as (
     , p.a_to_b
     , p.fee_amount
     , case when p.coin_in_decimals is not null
-        then cast(p.fee_amount as decimal(38,0)) / cast(pow(10, p.coin_in_decimals) as decimal(38,0))
-        else cast(null as decimal(38,18)) end as fee_amount_decimal
+        then cast( cast(p.fee_amount as double) / pow(10, p.coin_in_decimals) as decimal(38,18))
+        else cast(null as decimal(38,18))
+      end as fee_amount_decimal
     , p.price_in_usd
     , p.price_out_usd
     , case when p.amount_in_decimal  is not null and p.price_in_usd  is not null
-        then p.amount_in_decimal  * p.price_in_usd end as token_sold_usd
+        then cast( (cast(p.amount_in_decimal  as double) * p.price_in_usd ) as decimal(38,8))
+      end as token_sold_usd
     , case when p.amount_out_decimal is not null and p.price_out_usd is not null
-        then p.amount_out_decimal * p.price_out_usd end as token_bought_usd
+        then cast( (cast(p.amount_out_decimal as double) * p.price_out_usd) as decimal(38,8))
+      end as token_bought_usd
     , case
         when p.fee_amount is not null and p.coin_in_decimals is not null and p.price_in_usd is not null
-          then (cast(p.fee_amount as decimal(38,0)) / cast(pow(10, p.coin_in_decimals) as decimal(38,0))) * p.price_in_usd
+          then cast( (cast(p.fee_amount as double) / pow(10, p.coin_in_decimals)) * p.price_in_usd  as decimal(38,8))
         when p.fee_amount is not null and p.coin_in_decimals is not null and p.price_out_usd is not null
-          then (cast(p.fee_amount as decimal(38,0)) / cast(pow(10, p.coin_in_decimals) as decimal(38,0))) * p.price_out_usd
+          then cast( (cast(p.fee_amount as double) / pow(10, p.coin_in_decimals)) * p.price_out_usd as decimal(38,8))
         else null
       end as fee_usd
   from priced p
