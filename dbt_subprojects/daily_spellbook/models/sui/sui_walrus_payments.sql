@@ -1,4 +1,3 @@
--- models/sui_walrus/payments.sql
 {{ config(
     schema = 'sui_walrus'
   , alias  = 'payments'
