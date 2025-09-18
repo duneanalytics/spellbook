@@ -1,11 +1,10 @@
 {% macro
-    angstrom_all_trades(   
+    angstrom_bundle_orders(   
         angstrom_contract_addr, 
         controller_v1_contract_addr,
         earliest_block,
         blockchain,
-        project = null,
-        version = null
+        controller_pool_configured_log_topic0
     )
 %}
 
@@ -32,7 +31,7 @@ WITH
             t.tx_hash AS tx_hash,
             ROW_NUMBER(*) over (partition by t.tx_hash) as evt_index
         FROM tx_data_cte t
-        INNER JOIN ({{ angstrom_bundle_tob_order_volume(angstrom_contract_addr, controller_v1_contract_addr, earliest_block, blockchain) }}) AS p
+        INNER JOIN ({{ angstrom_bundle_tob_order_volume(angstrom_contract_addr, controller_v1_contract_addr, earliest_block, blockchain, controller_pool_configured_log_topic0) }}) AS p
             ON t.tx_hash = p.tx_hash AND t.block_number = p.block_number
     ),
     user_orders_inner AS (
@@ -53,7 +52,7 @@ WITH
             t.tx_hash AS tx_hash,
             ROW_NUMBER(*) over (partition by t.tx_hash) as evt_index
         FROM tx_data_cte t
-        INNER JOIN ({{ angstrom_bundle_user_order_volume(angstrom_contract_addr, controller_v1_contract_addr, earliest_block, blockchain) }}) AS p 
+        INNER JOIN ({{ angstrom_bundle_user_order_volume(angstrom_contract_addr, controller_v1_contract_addr, earliest_block, blockchain, controller_pool_configured_log_topic0) }}) AS p 
             ON t.tx_hash = p.tx_hash AND t.block_number = p.block_number
     ),
     user_orders AS (
@@ -83,52 +82,45 @@ WITH
         ) AS tc
         ON tc.tx_hash = t.tx_hash
     )
+    
 SELECT
-    '{{ blockchain }}' AS blockchain
-    , '{{ project }}' AS project
-    , '{{ version }}' AS version
-    , CAST(date_trunc('month', block_time) AS date) AS block_month
-    , CAST(date_trunc('day', block_time) AS date) AS block_date
-    , block_time
-    , block_number
-    , token_bought_amount_raw
-    , token_sold_amount_raw
-    , token_bought_address
-    , token_sold_address
-    , token_sold_lp_fees_paid_raw
-    , token_bought_lp_fees_paid_raw
-    , token_sold_protocol_fees_paid_raw
-    , token_bought_protocol_fees_paid_raw
-    , taker
-    , maker
-    , project_contract_address
-    , tx_hash
-    , evt_index
+    block_time,
+    block_number,
+    token_bought_amount_raw,
+    token_sold_amount_raw,
+    token_bought_address,
+    token_sold_address,
+    token_sold_lp_fees_paid_raw,
+    token_bought_lp_fees_paid_raw,
+    token_sold_protocol_fees_paid_raw,
+    token_bought_protocol_fees_paid_raw,
+    taker,
+    maker,
+    project_contract_address,
+    tx_hash,
+    evt_index,
+    'Top Of Block Order' AS trade_type
 FROM tob_orders
 
 UNION ALL 
 
 SELECT 
-    '{{ blockchain }}' AS blockchain
-    , '{{ project }}' AS project
-    , '{{ version }}' AS version
-    , CAST(date_trunc('month', block_time) AS date) AS block_month
-    , CAST(date_trunc('day', block_time) AS date) AS block_date
-    , block_time
-    , block_number
-    , token_bought_amount_raw
-    , token_sold_amount_raw
-    , token_bought_address
-    , token_sold_address
-    , token_sold_lp_fees_paid_raw
-    , token_bought_lp_fees_paid_raw
-    , token_sold_protocol_fees_paid_raw
-    , token_bought_protocol_fees_paid_raw
-    , taker
-    , maker
-    , project_contract_address
-    , tx_hash
-    , evt_index
+    block_time,
+    block_number,
+    token_bought_amount_raw,
+    token_sold_amount_raw,
+    token_bought_address,
+    token_sold_address,
+    token_sold_lp_fees_paid_raw,
+    token_bought_lp_fees_paid_raw,
+    token_sold_protocol_fees_paid_raw,
+    token_bought_protocol_fees_paid_raw,
+    taker,
+    maker,
+    project_contract_address,
+    tx_hash,
+    evt_index,
+    'User Order' AS trade_type
 FROM user_orders
 
 

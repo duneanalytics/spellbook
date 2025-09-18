@@ -19,7 +19,10 @@ WITH dexs AS
         earliest_block = '22971781',
         blockchain = 'ethereum',
         project = 'uniswap',
-        version = '4'
+        version = '4',
+        controller_pool_configured_log_topic0 = '0xf325a037d71efc98bc41dc5257edefd43a1d1162e206373e53af271a7a3224e9',
+        PoolManager_call_Swap = source('uniswap_v4_ethereum', 'PoolManager_call_Swap'),
+        PoolManager_evt_Swap = source('uniswap_v4_ethereum', 'PoolManager_evt_Swap')
     )
     }}
 )

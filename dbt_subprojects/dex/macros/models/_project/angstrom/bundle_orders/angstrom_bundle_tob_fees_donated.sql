@@ -3,7 +3,8 @@
         angstrom_contract_addr, 
         controller_v1_contract_addr,
         earliest_block,
-        blockchain
+        blockchain,
+        controller_pool_configured_log_topic0
     )
 %}
 
@@ -14,7 +15,7 @@ WITH
             tx_hash,
             pair_index,
             SUM(lp_fees_paid_asset_in + lp_fees_paid_asset_out) AS total_fees_paid_t0
-        FROM ({{ angstrom_bundle_user_order_volume(angstrom_contract_addr, controller_v1_contract_addr, earliest_block, blockchain) }})
+        FROM ({{ angstrom_bundle_user_order_volume(angstrom_contract_addr, controller_v1_contract_addr, earliest_block, blockchain, controller_pool_configured_log_topic0) }})
         GROUP BY tx_hash, pair_index
     ),
     donated_amounts_by_pool_all AS (

@@ -3,7 +3,8 @@
         angstrom_contract_addr,
         controller_v1_contract_addr,
         earliest_block,
-        blockchain
+        blockchain,
+        controller_pool_configured_log_topic0
     )
 %}
 
@@ -26,17 +27,17 @@ WITH
             u.*,
             f.pool_id AS pool_id
         FROM tob_orders AS u
-        INNER JOIN ({{ angstrom_pool_info(controller_v1_contract_addr, earliest_block, blockchain) }}) AS f
+        INNER JOIN ({{ angstrom_pool_info(angstrom_contract_addr, controller_v1_contract_addr, earliest_block, blockchain, controller_pool_configured_log_topic0) }}) AS f
             ON u.block_number = f.block_number AND
-                ((varbinary_substring(f.topic1, 13, 20) = u.asset_in OR varbinary_substring(f.topic2, 13, 20) = u.asset_in) AND 
-                (varbinary_substring(f.topic1, 13, 20) = u.asset_out OR varbinary_substring(f.topic2, 13, 20) = u.asset_out)) 
+                ((token0 = u.asset_in OR token1 = u.asset_in) AND 
+                (token0 = u.asset_out OR token1 = u.asset_out)) 
     )
 SELECT
     t.*,
     if(t.zero_for_1, f.tob_donated_amount_t0, 0) AS fees_paid_asset_in,
     if(t.zero_for_1, 0, f.tob_donated_amount_t0) AS fees_paid_asset_out
 FROM tob_orders_with_pool AS t
-INNER JOIN ({{ angstrom_bundle_tob_fees_donated(angstrom_contract_addr, controller_v1_contract_addr, earliest_block, blockchain) }}) AS f
+INNER JOIN ({{ angstrom_bundle_tob_fees_donated(angstrom_contract_addr, controller_v1_contract_addr, earliest_block, blockchain, controller_pool_configured_log_topic0) }}) AS f
     ON t.tx_hash = f.tx_hash AND t.pairs_index = f.pair_index
 
 {% endmacro %}

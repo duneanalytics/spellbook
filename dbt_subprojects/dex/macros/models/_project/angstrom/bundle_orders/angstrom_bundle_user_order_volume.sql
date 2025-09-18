@@ -3,7 +3,8 @@
         angstrom_contract_addr, 
         controller_v1_contract_addr,
         earliest_block,
-        blockchain
+        blockchain,
+        controller_pool_configured_log_topic0
     )
 %}
 
@@ -27,10 +28,10 @@ WITH
             f.pool_id AS pool_id,
             f.bundle_fee AS bundle_fee
         FROM user_orders AS u
-        INNER JOIN ({{ angstrom_pool_info(controller_v1_contract_addr, earliest_block, blockchain) }}) AS f
+        INNER JOIN ({{ angstrom_pool_info(angstrom_contract_addr, controller_v1_contract_addr, earliest_block, blockchain, controller_pool_configured_log_topic0) }}) AS f
             ON u.block_number = f.block_number AND
-                ((varbinary_substring(f.topic1, 13, 20) = u.asset_in OR varbinary_substring(f.topic2, 13, 20) = u.asset_in) AND 
-                (varbinary_substring(f.topic1, 13, 20) = u.asset_out OR varbinary_substring(f.topic2, 13, 20) = u.asset_out)) 
+                ((token0 = u.asset_in OR token1 = u.asset_in) AND 
+                (token0 = u.asset_out OR token1 = u.asset_out)) 
     ),
     user_orders_with_priced_assets AS (
         SELECT 
