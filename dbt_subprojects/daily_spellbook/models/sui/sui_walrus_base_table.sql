@@ -35,7 +35,7 @@ with events as (
         else concat('0x', lower(json_extract_scalar(event_json, '$.blob_id')))
       end                                                     as blob_id_hex
     , lower(json_extract_scalar(event_json, '$.object_id'))   as object_id_hex
-    , cast(json_extract_scalar(event_json, '$.start_epoch') as bigint)  as start_epoch
+    , cast(json_extract_scalar(event_json, '$.epoch')     as bigint)  as start_epoch
     , cast(json_extract_scalar(event_json, '$.end_epoch')   as bigint)  as end_epoch
     , cast(json_extract_scalar(event_json, '$.epoch')       as bigint)  as walrus_event_epoch
     , case when event_type like '%::BlobRegistered'
@@ -136,7 +136,6 @@ with events as (
     , ts_register
     , blob_id                         as blob_hash       -- keep hex form
     , object_id
-    , cast(null as boolean)           as is_deletable
     , starting_epoch
     , ending_epoch
     , case when size_bytes is not null

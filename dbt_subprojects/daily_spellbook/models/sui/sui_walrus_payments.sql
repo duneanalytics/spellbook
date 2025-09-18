@@ -34,7 +34,7 @@ walrus_tx_dedup as (
   where rn = 1
 )
 
--- B) Gas (join on Base58 directly; no conversions)
+-- B) Gas
 , tx_gas AS (
   SELECT
       t.transaction_digest
@@ -55,8 +55,6 @@ walrus_tx_dedup as (
 
 select
     w.transaction_digest                                       as transaction_digest
-    -- optional convenience: keep a hex mirror for UIs, but don't use in joins
-    , '0x' || lower(to_hex(from_base58(w.transaction_digest)))     as transaction_digest_hex
     , w.block_date
     , w.block_month
     , g.gas_budget_mist
