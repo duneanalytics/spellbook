@@ -190,7 +190,7 @@ sources:
           - name: signature
             description: "Topic0 hash of the event signature"
 
-      - name: blocks
+      - name: evm_blocks
         # description: "Contains metadata about each block mined or sequenced on the peaq network."
         description: "{{ doc('peaq_blocks_doc') }}"
         config:
