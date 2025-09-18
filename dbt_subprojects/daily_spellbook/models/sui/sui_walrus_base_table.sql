@@ -47,24 +47,21 @@ event_data as (
     , sui_epoch
     , epoch
     , case when event_type like '%::BlobRegistered' then 'register' else 'certify' end as action
-
     , case
         when json_extract_scalar(event_json, '$.blob_id') is null then null
         when starts_with(lower(json_extract_scalar(event_json, '$.blob_id')), '0x')
           then lower(json_extract_scalar(event_json, '$.blob_id'))
         else concat('0x', lower(json_extract_scalar(event_json, '$.blob_id')))
       end                                                   as blob_id
-
     , lower(json_extract_scalar(event_json, '$.object_id')) as object_id
     , cast(json_extract_scalar(event_json, '$.deletable') as boolean) as deletable
-    , cast(json_extract_scalar(event_json, '$.epoch') as bigint)      as starting_epoch
+    , cast(json_extract_scalar(event_json, '$.epoch') as bigint)      as epoch
     , cast(json_extract_scalar(event_json, '$.end_epoch') as bigint)  as ending_epoch
-
+    , cast(null as bigint)                                            as starting_epoch
     , case
         when event_type like '%::BlobRegistered'
           then cast(json_extract_scalar(event_json, '$.size') as decimal(38,0))
         else null end                                         as size_bytes
-
     , from_unixtime(timestamp_ms/1000)                        as block_time
     , date(from_unixtime(timestamp_ms/1000))                  as block_date
     , date_trunc('month', from_unixtime(timestamp_ms/1000))   as block_month
@@ -87,8 +84,6 @@ joined as (
            else null end                      as size_mb
     , r.block_time                            as ts_certify
     , r.epoch                                 as epoch_certify
-
-    -- incremental/merge keys (kept internal)
     , l.transaction_digest_hex                as tx_register
     , l.event_index                           as evt_index_register
     , l.block_date
@@ -100,8 +95,9 @@ joined as (
    and l.object_id      = r.object_id
    and l.sender         = r.sender
    and l.epoch          = r.epoch
-   and l.starting_epoch = r.starting_epoch
-   and l.ending_epoch   = r.ending_epoch
+   and l.starting_epoch IS NOT DISTINCT FROM r.starting_epoch
+   and l.ending_epoch   IS NOT DISTINCT FROM r.ending_epoch
+   and r.timestamp_ms  >= l.timestamp_ms
 )
 
 -- 4) Final (only required business columns + tech cols for incremental)

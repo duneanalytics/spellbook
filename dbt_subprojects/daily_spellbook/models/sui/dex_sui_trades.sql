@@ -108,31 +108,31 @@ with base as (
   left join {{ source('prices','usd') }} pin
     on pin.blockchain = 'sui'
    and pin.minute = cast(date_trunc('minute', at_timezone(d.block_time,'UTC')) as timestamp)
-   and pin.contract_address =
-       cast(
-         split_part(
-           case
-             when d.coin_type_in is null then null
-             when starts_with(lower(d.coin_type_in),'0x') then lower(d.coin_type_in)
-             else concat('0x', lower(d.coin_type_in))
-           end
-         , '::', 1
-         ) as varbinary
-       )
+   and pin.contract_address = cast(
+      regexp_replace(
+        split_part(
+          case
+            when starts_with(lower(d.coin_type_in),'0x') then lower(d.coin_type_in)
+            else concat('0x', lower(d.coin_type_in))
+          end, '::', 1
+        ),
+        '^0x0*([0-9a-f]+)$', '0x$1'
+      ) as varbinary
+    )
   left join {{ source('prices','usd') }} pout
     on pout.blockchain = 'sui'
    and pout.minute = cast(date_trunc('minute', at_timezone(d.block_time,'UTC')) as timestamp)
-   and pout.contract_address =
-       cast(
-         split_part(
-           case
-             when d.coin_type_out is null then null
-             when starts_with(lower(d.coin_type_out),'0x') then lower(d.coin_type_out)
-             else concat('0x', lower(d.coin_type_out))
-           end
-         , '::', 1
-         ) as varbinary
-       )
+   and pout.contract_address = cast(
+      regexp_replace(
+        split_part(
+          case
+            when starts_with(lower(d.coin_type_out),'0x') then lower(d.coin_type_out)
+            else concat('0x', lower(d.coin_type_out))
+          end, '::', 1
+        ),
+        '^0x0*([0-9a-f]+)$', '0x$1'
+      ) as varbinary
+    )
 )
 
 -- 4) Minimal final projection
@@ -149,8 +149,8 @@ with base as (
     , p.sender
     , p.transaction_digest
     , p.event_index
-    , p.coin_type_in  as token_sold_address
-    , p.coin_type_out as token_bought_address
+    , regexp_replace(lower(p.coin_type_in ), '^0x?0*([0-9a-f]+)(::.*)$', '0x$1$2') as token_sold_address
+    , regexp_replace(lower(p.coin_type_out), '^0x?0*([0-9a-f]+)(::.*)$', '0x$1$2') as token_bought_address
     , p.coin_in_symbol  as token_sold_symbol
     , p.coin_out_symbol as token_bought_symbol
     , p.amount_in  as token_sold_amount_raw

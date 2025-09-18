@@ -48,20 +48,20 @@ daily as (
     , max(block_month)                                   as block_month
 
     -- data quality
-    , count(*)                                           as n_rows_checkon_ptbs
-    , count(distinct transaction_digest)                 as n_ptbs
+    , count(*)                                           as rows_checkon_ptbs
+    , count(distinct transaction_digest)                 as ptbs
 
     -- distinct senders
-    , count(distinct sender_vb)                          as n_senders
+    , count(distinct sender_vb)                          as senders
 
     -- commands from successful PTBs
     , coalesce(
         sum(case when execution_success then cast(transaction_count_d20 as bigint) else 0 end), 0
-      )                                                  as n_commands_successful_ptbs
+      )                                                  as commands_successful_ptbs
 
     -- success counts & pct (over all PTBs)
     , count(distinct case when execution_success then transaction_digest end)
-                                                        as n_ptbs_success
+                                                        as ptbs_success
     , case when count(distinct transaction_digest) > 0
            then cast(count(distinct case when execution_success then transaction_digest end) as double)
                 / cast(count(distinct transaction_digest) as double)
@@ -69,7 +69,7 @@ daily as (
 
     -- sponsored among successful PTBs
     , count(distinct case when execution_success and is_sponsored_tx then transaction_digest end)
-                                                        as n_ptbs_success_sponsored
+                                                        as ptbs_success_sponsored
     , case when count(distinct case when execution_success then transaction_digest end) > 0
            then cast(count(distinct case when execution_success and is_sponsored_tx then transaction_digest end) as double)
                 / cast(count(distinct case when execution_success then transaction_digest end) as double)
@@ -77,7 +77,7 @@ daily as (
 
     -- zkLogin among successful PTBs
     , count(distinct case when execution_success and has_zklogin_sig then transaction_digest end)
-                                                        as n_ptbs_success_zklogin
+                                                        as ptbs_success_zklogin
     , case when count(distinct case when execution_success then transaction_digest end) > 0
            then cast(count(distinct case when execution_success and has_zklogin_sig then transaction_digest end) as double)
                 / cast(count(distinct case when execution_success then transaction_digest end) as double)
@@ -85,10 +85,10 @@ daily as (
 
     -- Gas totals in SUI (divide Mist by 1e9)
     , cast(sum(total_gas_cost_d20)           as double) / 1e9  as total_gas_cost
-    , cast(sum(computation_cost_d20)         as double) / 1e9  as sum_computation_cost
-    , cast(sum(storage_cost_d20)             as double) / 1e9  as sum_storage_cost
-    , cast(sum(storage_rebate_d20)           as double) / 1e9  as sum_storage_rebate
-    , cast(sum(nrs_fee_d20)                  as double) / 1e9  as sum_non_refundable_storage_fee
+    , cast(sum(computation_cost_d20)         as double) / 1e9  as computation_cost
+    , cast(sum(storage_cost_d20)             as double) / 1e9  as storage_cost
+    , cast(sum(storage_rebate_d20)           as double) / 1e9  as storage_rebate
+    , cast(sum(nrs_fee_d20)                  as double) / 1e9  as non_refundable_storage_fee
   from filtered
   group by 1
 )
@@ -96,19 +96,19 @@ daily as (
 select
     block_date
   , block_month
-  , n_senders
-  , n_ptbs
-  , n_rows_checkon_ptbs
-  , n_commands_successful_ptbs
-  , n_ptbs_success
+  , senders
+  , ptbs
+  , rows_checkon_ptbs
+  , commands_successful_ptbs
+  , ptbs_success
   , pct_ptbs_success
-  , n_ptbs_success_sponsored
+  , ptbs_success_sponsored
   , pct_ptbs_success_sponsored
-  , n_ptbs_success_zklogin
+  , ptbs_success_zklogin
   , pct_ptbs_success_zklogin
   , total_gas_cost
-  , sum_computation_cost
-  , sum_storage_cost
-  , sum_storage_rebate
-  , sum_non_refundable_storage_fee
+  , computation_cost
+  , storage_cost
+  , storage_rebate
+  , non_refundable_storage_fee
 from daily
