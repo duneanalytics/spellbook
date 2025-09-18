@@ -32,7 +32,11 @@ WITH
                 (varbinary_substring(f.topic1, 13, 20) = u.asset_out OR varbinary_substring(f.topic2, 13, 20) = u.asset_out)) 
     )
 SELECT
-    *
-FROM tob_orders_with_pool
+    t.*,
+    if(t.zero_for_1, f.tob_donated_amount_t0, 0) AS fees_paid_asset_in,
+    if(t.zero_for_1, 0, f.tob_donated_amount_t0) AS fees_paid_asset_out
+FROM tob_orders_with_pool AS t
+INNER JOIN ({{ angstrom_bundle_tob_fees_donated(angstrom_contract_addr, controller_v1_contract_addr, earliest_block, blockchain) }}) AS f
+    ON t.tx_hash = f.tx_hash AND t.pairs_index = f.pair_index
 
 {% endmacro %}

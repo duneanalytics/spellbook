@@ -36,9 +36,13 @@ WITH
         SELECT 
             u.*,
             if(u.zero_for_one, a.t0_amount, a.t1_amount) AS token_sold_amt,
-            if(u.zero_for_one, a.t1_amount, a.t0_amount) AS token_bought_amt
+            if(u.zero_for_one, a.t1_amount, a.t0_amount) AS token_bought_amt,
+            if(u.zero_for_one, a.lp_fees_paid_t0, 0) AS lp_fees_paid_asset_in,
+            if(u.zero_for_one, 0, a.lp_fees_paid_t0) AS lp_fees_paid_asset_out,
+            if(u.zero_for_one, a.protocol_fees_paid_t0, 0) AS protocol_fees_paid_asset_in,
+            if(u.zero_for_one, 0, a.protocol_fees_paid_t0) AS protocol_fees_paid_asset_out
         FROM user_orders_with_pool AS u
-        CROSS JOIN LATERAL ({{ angstrom_user_order_fill_amount('u.zero_for_one', 'u.exact_in', 'u.fill_amount', 'u.extra_fee_asset0', 'u.bundle_fee', 'u.price_1over0') }}) AS a    
+        CROSS JOIN LATERAL ({{ angstrom_user_order_fill_amount('u.zero_for_one', 'u.exact_in', 'u.fill_amount', 'u.extra_fee_asset0', 'u.bundle_fee', 'u.price_1over0') }}) AS a
     )
 SELECT
     *

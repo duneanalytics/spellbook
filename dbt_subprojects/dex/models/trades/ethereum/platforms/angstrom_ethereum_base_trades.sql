@@ -13,7 +13,7 @@
 WITH dexs AS
 (
     {{
-    angstrom_bundle_volume_events(
+    angstrom_all_trades(
         angstrom_contract_addr = '0x0000000aa232009084Bd71A5797d089AA4Edfad4',
         controller_v1_contract_addr = '0x1746484EA5e11C75e009252c102C8C33e0315fD4',
         earliest_block = '22971781',

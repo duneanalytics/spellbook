@@ -1,5 +1,5 @@
 {% macro
-    angstrom_bundle_volume_events(   
+    angstrom_all_trades(   
         angstrom_contract_addr, 
         controller_v1_contract_addr,
         earliest_block,
@@ -22,6 +22,10 @@ WITH
             p.quantity_in      AS token_sold_amount_raw,
             p.asset_out          AS token_bought_address,
             p.asset_in         AS token_sold_address,
+            p.fees_paid_asset_in AS token_sold_lp_fees_paid_raw,
+            p.fees_paid_asset_out AS token_bought_lp_fees_paid_raw,
+            0 AS token_sold_protocol_fees_paid_raw,
+            0 AS token_bought_protocol_fees_paid_raw,
             p.recipient AS taker,
             p.pool_id AS maker,
             t.angstrom_address AS project_contract_address,
@@ -39,6 +43,10 @@ WITH
             p.token_sold_amt AS token_sold_amount_raw,
             p.asset_out AS token_bought_address,
             p.asset_in AS token_sold_address,
+            p.lp_fees_paid_asset_in AS token_sold_lp_fees_paid_raw,
+            p.lp_fees_paid_asset_out AS token_bought_lp_fees_paid_raw,
+            p.protocol_fees_paid_asset_in AS token_sold_protocol_fees_paid_raw,
+            p.protocol_fees_paid_asset_out AS token_bought_protocol_fees_paid_raw,
             p.recipient AS taker,
             p.pool_id AS maker,
             t.angstrom_address AS project_contract_address,
@@ -56,6 +64,10 @@ WITH
             t.token_sold_amount_raw AS token_sold_amount_raw,
             t.token_bought_address AS token_bought_address,
             t.token_sold_address AS token_sold_address,
+            t.token_sold_lp_fees_paid_raw AS token_sold_lp_fees_paid_raw,
+            t.token_bought_lp_fees_paid_raw AS token_bought_lp_fees_paid_raw,
+            t.token_sold_protocol_fees_paid_raw AS token_sold_protocol_fees_paid_raw,
+            t.token_bought_protocol_fees_paid_raw AS token_bought_protocol_fees_paid_raw,
             t.taker AS taker,
             t.maker AS maker,
             t.project_contract_address AS project_contract_address,
@@ -70,7 +82,6 @@ WITH
             GROUP BY tx_hash
         ) AS tc
         ON tc.tx_hash = t.tx_hash
-
     )
 SELECT
     '{{ blockchain }}' AS blockchain
@@ -84,6 +95,10 @@ SELECT
     , token_sold_amount_raw
     , token_bought_address
     , token_sold_address
+    , token_sold_lp_fees_paid_raw
+    , token_bought_lp_fees_paid_raw
+    , token_sold_protocol_fees_paid_raw
+    , token_bought_protocol_fees_paid_raw
     , taker
     , maker
     , project_contract_address
@@ -105,6 +120,10 @@ SELECT
     , token_sold_amount_raw
     , token_bought_address
     , token_sold_address
+    , token_sold_lp_fees_paid_raw
+    , token_bought_lp_fees_paid_raw
+    , token_sold_protocol_fees_paid_raw
+    , token_bought_protocol_fees_paid_raw
     , taker
     , maker
     , project_contract_address
