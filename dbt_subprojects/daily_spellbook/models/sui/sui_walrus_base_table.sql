@@ -153,17 +153,7 @@ with events as (
   where rn_cert = 1 or ts_certify is null
 )
 
--- 4) partner join without type fights (partners table has 0x… hex VARCHAR)
-, with_partner as (
-  select
-      j.*
-      , wp.partner_name
-  from joined j
-  left join walrus_partner_wallets wp
-    on wp.wallet_address = j.sender
-)
-
-select * from with_partner
+select * from joined
 {% if is_incremental() %}
 where {{ incremental_predicate('block_date') }}
 {% endif %}
