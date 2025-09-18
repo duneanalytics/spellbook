@@ -190,11 +190,11 @@ sources:
           - name: signature
             description: "Topic0 hash of the event signature"
 
-      - name: evm_blocks
+      - name: blocks
         # description: "Contains metadata about each block mined or sequenced on the peaq network."
         description: "{{ doc('peaq_blocks_doc') }}"
         config:
-          table: "peaq.evm_blocks"
+          table: "evm_blocks"
         columns:
           - name: base_fee_per_gas
             description: "The network base fee per gas unit for this block (post-EIP-1559)"
