@@ -97,58 +97,58 @@ with events as (
 -- 3b) match first certification at/after register
 , reg_cert as (
   select
-      r.sender_hex                                  as sender
-      , r.sender_bin
-      , r.object_id_hex                               as object_id
-      , r.walrus_event_epoch                          as epoch_register
-      , r.sui_epoch                                   as sui_epoch_register
-      , r.start_epoch                                  as starting_epoch
-      , r.end_epoch                                    as ending_epoch
-      , r.blob_id_dec                                  as blob_id_dec
-      , r.size_bytes
-      , r.block_time                                   as ts_register
-      , r.block_date
-      , r.block_month
-      , r.transaction_digest                                     as tx_register
-      , r.event_index                                  as evt_index_register
-      , c.block_time                                   as ts_certify
-      , c.walrus_event_epoch                           as epoch_certify
-      , c.sui_epoch                                    as sui_epoch_certify
-      , c.is_extension
-      , row_number() over (
+      r.sender_hex                    as sender
+    , r.sender_bin
+    , r.object_id_hex                 as object_id
+    , r.walrus_event_epoch            as epoch_register
+    , r.sui_epoch                     as sui_epoch_register
+    , r.start_epoch                   as starting_epoch
+    , r.end_epoch                     as ending_epoch
+    , r.blob_id                       as blob_id         -- hex string
+    , r.size_bytes
+    , r.block_time                    as ts_register
+    , r.block_date
+    , r.block_month
+    , r.transaction_digest            as tx_register
+    , r.event_index                   as evt_index_register
+    , c.block_time                    as ts_certify
+    , c.walrus_event_epoch            as epoch_certify
+    , c.sui_epoch                     as sui_epoch_certify
+    , c.is_extension
+    , row_number() over (
         partition by r.sender_bin, r.object_id_hex, r.start_epoch, r.end_epoch, r.timestamp_ms
-          order by c.timestamp_ms
-        ) as rn_cert
+        order by c.timestamp_ms
+      ) as rn_cert
   from regs_dedup r
   left join event_data c
-    on  c.action         = 'certify'
-    and c.sender_bin     = r.sender_bin
-    and c.object_id_hex  = r.object_id
-    and c.start_epoch    = r.starting_epoch
-    and c.end_epoch      = r.ending_epoch
-    and c.timestamp_ms  >= r.timestamp_ms
+    on  c.action        = 'certify'
+    and c.sender_bin    = r.sender_bin
+    and c.object_id_hex = r.object_id_hex
+    and c.start_epoch   is not distinct from r.start_epoch
+    and c.end_epoch     is not distinct from r.end_epoch
+    and c.timestamp_ms >= r.timestamp_ms
 )
 
 , joined as (
   select
       sender
-      , epoch_register
-      , ts_register
-      , blob_id_dec                                     as blob_hash_dec
-      , object_id
-      , cast(null as boolean)                            as is_deletable
-      , starting_epoch
-      , ending_epoch
-      , case when size_bytes is not null
+    , epoch_register
+    , ts_register
+    , blob_id                         as blob_hash       -- keep hex form
+    , object_id
+    , cast(null as boolean)           as is_deletable
+    , starting_epoch
+    , ending_epoch
+    , case when size_bytes is not null
            then cast(size_bytes as decimal(38,6)) / 1e6
-           else null end                               as size_mb
-      , ts_certify
-      , epoch_certify
-      , tx_register
-      , evt_index_register
-      , block_date
-      , block_month
-      , is_extension
+           else null end               as size_mb
+    , ts_certify
+    , epoch_certify
+    , tx_register
+    , evt_index_register
+    , block_date
+    , block_month
+    , is_extension
   from reg_cert
   where rn_cert = 1 or ts_certify is null
 )
