@@ -9,7 +9,7 @@
     incremental_predicates = [ incremental_predicate('DBT_INTERNAL_DEST.block_date') ]
 ) }}
 
-{% set sui_project_start_date = var('sui_project_start_date', '2025-09-01') %}
+{% set sui_project_start_date = var('sui_project_start_date', '2025-09-15') %}
 
 -- Pull only what we need; keep native datatypes (sender varbinary, digest varchar)
 with src as (

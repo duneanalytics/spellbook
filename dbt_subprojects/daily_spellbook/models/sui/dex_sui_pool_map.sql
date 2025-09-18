@@ -18,14 +18,6 @@ with used_pools as (
   {% if is_incremental() %}
     and {{ incremental_predicate('block_time') }}
   {% endif %}
-
-  union
-
-  select distinct pool_id
-  from {{ this }}
-  {% if not is_incremental() %}
-    where 1=0
-  {% endif %}
 )
 
 -- 2) Latest object row per pool_id

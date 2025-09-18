@@ -9,7 +9,7 @@
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
 ) }}
 
-{% set bluemove_start_date = "2025-09-14" %}
+{% set bluemove_start_date = "2025-09-17" %}
 
 with decoded as (
   select

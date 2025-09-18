@@ -10,7 +10,7 @@
   tags=['walrus']
 ) }}
 
-{% set walrus_start_date = var('walrus_start_date', '2025-09-13') %}
+{% set walrus_start_date = var('walrus_start_date', '2025-09-16') %}
 
 -- 1) Source events (keep source types; add normalized display columns)
 with events as (
