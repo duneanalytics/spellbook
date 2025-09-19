@@ -29,54 +29,6 @@ WITH base_transfers as (
         block_date >= TIMESTAMP '{{ transfers_start_date }}'
     {% endif %}
 )
-, temp_prices as (
-    --temp: until prices_coinpaprika.hour is fixed, use raw SQL under the view
-    with prices_tokens_patched as (
-        select
-            token_id
-            ,blockchain
-            ,contract_address
-            ,symbol
-            ,decimals
-        from
-            prices.tokens
-        where blockchain is not null
-        and contract_address is not null    
-
-        union all
-        
-        select 
-            t.token_id
-            ,d.name as blockchain
-            ,d.token_address as contract_address
-            ,d.token_symbol as symbol
-            ,d.token_decimals as decimals
-        from prices.tokens t
-        inner join dune.blockchains d
-            on d.token_symbol = t.symbol
-            and t.blockchain is null
-            and t.contract_address is null
-    )
-    select
-        timestamp
-        ,blockchain
-        ,contract_address
-        ,coalesce(erc20.symbol, prices_tokens.symbol) as symbol
-        ,price
-        ,coalesce(erc20.decimals, prices_tokens.decimals) as decimals
-        ,volume
-        , case
-            -- only two known chains which cast address in prices.tokens
-            when blockchain = 'solana' then to_base58(contract_address)
-            when blockchain = 'tron' then to_tron_address(contract_address)
-            else cast(contract_address as varchar)
-        end as contract_address_varchar
-    from prices_v2_coinpaprika.hour
-    left join delta_prod.tokens.erc20 as erc20
-        using (blockchain, contract_address)
-    left join prices_tokens_patched as prices_tokens  -- fallback if not in erc20 tokenset
-        using (blockchain, contract_address)
-)
 , prices AS (
     SELECT
         timestamp
@@ -86,8 +38,7 @@ WITH base_transfers as (
         , symbol
         , price
     FROM
-        temp_prices
-        --{{ source('prices_coinpaprika', prices_interval) }}
+        {{ source('prices_coinpaprika', prices_interval) }}
     {% if is_incremental() or true %}
     WHERE
         {{ incremental_predicate('timestamp') }}
