@@ -20,6 +20,7 @@
                                             ,"fantom"
                                             ,"flare"
                                             ,"gnosis"
+                                            ,"hyperevm"
                                             ,"ink"
                                             ,"kaia"
                                             ,"katana"
@@ -28,12 +29,14 @@
                                             ,"nova"
                                             ,"opbnb"
                                             ,"optimism"
+                                            ,"peaq"
                                             ,"plume"
                                             ,"polygon"
                                             ,"ronin"
                                             ,"scroll"
                                             ,"sei"
                                             ,"shape"
+                                            ,"somnia"
                                             ,"sonic"
                                             ,"sophon"
                                             ,"superseed"
@@ -72,6 +75,7 @@
     ,'fantom'
     ,'flare'
     ,'gnosis'
+    ,'hyperevm'
     ,'ink'
     ,'kaia'
     ,'katana'
@@ -80,12 +84,14 @@
     ,'nova'
     ,'opbnb'
     ,'optimism'
+    ,'peaq'
     ,'plume'
     ,'polygon'
     ,'ronin'
     ,'scroll'
     ,'sei'
     ,'shape'
+    ,'somnia'
     ,'sonic'
     ,'sophon'
     ,'superseed'
