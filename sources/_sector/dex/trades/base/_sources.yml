@@ -231,3 +231,6 @@ sources:
   - name: native_base
     tables:
       - name: NativeRFQPool_evt_RFQTrade
+  - name: carbon_defi_base
+    tables:
+      - name: CarbonController_evt_TokensTraded
