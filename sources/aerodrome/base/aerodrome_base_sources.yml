@@ -5,3 +5,5 @@ sources:
     description: "decoded events and function calls for aerodrome v2 on base"
     tables:
       - name: Voter_evt_GaugeCreated
+      - name: CLFactory_call_getSwapFee
+      - name: poolfactory_call_getfee
