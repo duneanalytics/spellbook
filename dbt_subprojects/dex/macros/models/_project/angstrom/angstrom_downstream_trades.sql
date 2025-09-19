@@ -14,10 +14,10 @@ base_trades as (
         , block_time
         , block_number
         , evt_index 
-        , 0 as token_sold_lp_fees_paid_raw -- fee columns 
-        , 0 as token_bought_lp_fees_paid_raw
-        , 0 as token_sold_protocol_fees_paid_raw
-        , 0 as token_bought_protocol_fees_paid_raw
+        , token_sold_lp_fees_paid_raw -- fee columns 
+        , token_bought_lp_fees_paid_raw
+        , token_sold_protocol_fees_paid_raw
+        , token_bought_protocol_fees_paid_raw
     from 
     {{ trades_table }}
     where 1=1
