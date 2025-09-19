@@ -125,4 +125,3 @@ FROM user_orders
 
 
 {% endmacro %}
-
