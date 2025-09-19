@@ -343,7 +343,33 @@ models:
       - *tx_index
       - *block_time
       - *block_number
-      - *swap_fee_percentage            
+      - *swap_fee_percentage
+
+  - name: balancer_v3_avalanche_c_pools_fees
+    meta:
+      blockchain: avalanche_c
+      project: balancer_v3
+      contributors: gosuto
+    config:
+      tags: ['avalanche_c', 'balancer', 'pools_fees']
+    description: >
+      Balancer v3 swap fees stored at the pool level.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_number
+            - tx_hash
+            - index
+    columns:
+      - *blockchain
+      - *version
+      - *contract_address
+      - *tx_hash
+      - *index
+      - *tx_index
+      - *block_time
+      - *block_number
+      - *swap_fee_percentage
 
   - name: balancer_v3_base_pools_fees
     meta:
