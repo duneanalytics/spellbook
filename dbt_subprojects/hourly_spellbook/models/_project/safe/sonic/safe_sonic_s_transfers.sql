@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'safe_scroll',
+        schema = 'safe_sonic',
         alias= 's_transfers',
         partition_by = ['block_month'],
         on_schema_change='fail',
