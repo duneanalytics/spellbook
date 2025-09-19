@@ -26,6 +26,7 @@
 ,ref('safe_polygon_safes')
 ,ref('safe_ronin_safes')
 ,ref('safe_scroll_safes')
+,ref('safe_sonic_safes')
 ,ref('safe_worldchain_safes')
 ,ref('safe_zkevm_safes')
 ,ref('safe_zksync_safes')
