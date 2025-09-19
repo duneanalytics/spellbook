@@ -101,6 +101,5 @@ FROM
     ('s-sonic', null, 'S', null, null),
     ('flow-flow', null, 'FLOW', null, null),
     ('peaq-peaq-network', null, 'PEAQ', null, null),
-    ('somi-somnia', null, 'SOMI', null, null),
-    ('hype-hyperliquid', null, 'HYPE', null, null)
+    ('somi-somnia', null, 'SOMI', null, null)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
