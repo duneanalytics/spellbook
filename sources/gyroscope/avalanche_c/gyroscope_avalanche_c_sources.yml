@@ -21,3 +21,20 @@ sources:
             description: 'Block number which processed the unique transaction hash'
           - name: pool
             description: 'created ECLP pool address'
+
+      - name: GyroECLPPoolFactory_call_create
+        description: >
+          Decoded table of gyroscope pool creation calls
+        columns:
+          - name: call_tx_hash
+            description: 'Primary key of the transaction'
+          - name: call_block_time
+            description: 'Timestamp for block time in UTC'
+          - name: call_block_number
+            description: 'Block number which processed the unique transaction hash'
+          - name: contract_address
+            description: 'GyroECLPPoolFactory contract address'
+          - name: output_pool
+            description: 'Created pool address'
+          - name: symbol
+            description: 'Pool symbol'
