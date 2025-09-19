@@ -99,3 +99,5 @@ with base_union as (
         , columns = ['from', 'to', 'index']
     )
 }}
+
+-- refresh model
