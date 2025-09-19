@@ -17,7 +17,7 @@ select *
 from (
     {% for dex_trade_model in angstrom_models %}
     select
-        dt.blockchain
+        blockchain
         , project
         , version
         , block_month
@@ -41,8 +41,18 @@ from (
         , tx_from
         , tx_to
         , evt_index
-        , fee -- fee columns
-        , fee_amount_usd 
+        , token_sold_lp_fees_paid_raw
+        , token_bought_lp_fees_paid_raw
+        , token_sold_protocol_fees_paid_raw
+        , token_bought_protocol_fees_paid_raw
+        , token_sold_lp_fees_paid
+        , token_bought_lp_fees_paid
+        , token_sold_protocol_fees_paid
+        , token_bought_protocol_fees_paid
+        , token_sold_lp_fees_paid_usd
+        , token_bought_lp_fees_paid_usd
+        , token_sold_protocol_fees_paid_usd
+        , token_bought_protocol_fees_paid_usd
     from 
     {{ dex_trade_model }}
     {% if not loop.last %}

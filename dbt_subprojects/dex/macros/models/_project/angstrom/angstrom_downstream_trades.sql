@@ -1,6 +1,8 @@
 {% macro angstrom_downstream_trades(
     blockchain = null
     , trades_table = null
+    , version = null 
+    , project = null 
     )
 %}
 
@@ -12,7 +14,10 @@ base_trades as (
         , block_time
         , block_number
         , evt_index 
-        , 0 as fee -- fee columns 
+        , 0 as token_sold_lp_fees_paid_raw -- fee columns 
+        , 0 as token_bought_lp_fees_paid_raw
+        , 0 as token_sold_protocol_fees_paid_raw
+        , 0 as token_bought_protocol_fees_paid_raw
     from 
     {{ trades_table }}
     where 1=1
@@ -25,7 +30,10 @@ base_trades as (
     select 
         dexs.*
         , date_trunc('minute', dexs.block_time) as block_minute -- for prices join
-        , bt.fee -- fee columns 
+        , token_sold_lp_fees_paid_raw -- fee columns
+        , token_bought_lp_fees_paid_raw
+        , token_sold_protocol_fees_paid_raw
+        , token_bought_protocol_fees_paid_raw
     from 
     {{ ref('dex_trades') }} dexs 
     inner join 
@@ -52,10 +60,22 @@ base_trades as (
     {% endif %}
 ) 
 
+, tokens_metadata as (
+    --erc20 tokens
+    select
+          blockchain
+        , contract_address
+        , symbol
+        , decimals
+    from
+    {{ source ('tokens', 'erc20') }}
+    where blockchain = '{{blockchain}}'
+)
+
     select
         dt.blockchain
-        , project
-        , version
+        , '{{project}}' as project
+        , '{{version}}' as version
         , block_month
         , block_date
         , block_time
@@ -77,13 +97,34 @@ base_trades as (
         , tx_from
         , tx_to
         , evt_index
-        , dt.fee -- fee columns
-        , dt.fee * p.price as fee_amount_usd -- fee columns usd assuming token_sold_address is what fee is paid in
+        -- fee columns
+        , token_sold_lp_fees_paid_raw
+        , token_bought_lp_fees_paid_raw
+        , token_sold_protocol_fees_paid_raw
+        , token_bought_protocol_fees_paid_raw
+        , token_sold_lp_fees_paid_raw / pow(10, ta.decimals) as token_sold_lp_fees_paid
+        , token_bought_lp_fees_paid_raw / pow(10, tb.decimals) as token_bought_lp_fees_paid
+        , token_sold_protocol_fees_paid_raw / pow(10, ta.decimals) as token_sold_protocol_fees_paid
+        , token_bought_protocol_fees_paid_raw / pow(10, tb.decimals) as token_bought_protocol_fees_paid
+        , (token_sold_lp_fees_paid_raw / pow(10, ta.decimals)) * pa.price as token_sold_lp_fees_paid_usd
+        , (token_bought_lp_fees_paid_raw / pow(10, tb.decimals)) * pb.price as token_bought_lp_fees_paid_usd
+        , (token_sold_protocol_fees_paid_raw / pow(10, ta.decimals)) * pa.price as token_sold_protocol_fees_paid_usd
+        , (token_bought_protocol_fees_paid_raw / pow(10, tb.decimals)) * pb.price as token_bought_protocol_fees_paid_usd
     from 
     dex_trades dt 
     left join 
-    prices p 
-        on dt.token_sold_address = p.contract_address 
-        and dt.block_minute = p.minute 
+    prices pa
+        on dt.token_sold_address = pa.contract_address 
+        and dt.block_minute = pa.minute 
+    left join 
+    prices pb
+        on dt.token_bought_address = pb.contract_address 
+        and dt.block_minute = pb.minute
+    left join 
+    tokens_metadata ta 
+        on dt.token_sold_address = ta.contract_address
+    left join 
+    tokens_metadata tb
+        on dt.token_bought_address = tb.contract_address
 
 {% endmacro %}

@@ -13,5 +13,7 @@
     angstrom_downstream_trades(
           blockchain = 'ethereum'
         , trades_table = ref('angstrom_ethereum_base_trades')
+        , version = '1'
+        , project = 'angstrom'
     )
 }}
