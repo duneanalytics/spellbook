@@ -1,0 +1,271 @@
+version: 2
+
+models:
+  - name: pool_map
+    meta:
+      blockchain: sui
+      sector: dex
+      contributors: krishhh
+    config:
+      tags: ["static", "sui", "dex"]
+    description: "Maps Sui pool IDs to token pairs (coin_type_a, coin_type_b)"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_id
+      - not_null:
+          column_name: pool_id
+      - not_null:
+          column_name: coin_type_a
+      - not_null:
+          column_name: coin_type_b
+
+  - name: coin_info
+    meta:
+      blockchain: sui
+      sector: dex
+      contributors: krishhh
+    config:
+      tags: ["static", "sui", "dex"]
+    description: "Sui coin metadata including symbol and decimals"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - coin_type
+      - not_null:
+          column_name: coin_type
+      - not_null:
+          column_name: coin_symbol
+      - not_null:
+          column_name: coin_decimals
+
+  - name: momentum_sui_base_trades
+    meta:
+      blockchain: sui
+      sector: dex
+      project: momentum
+      contributors: krishhh
+    config:
+      tags: ["sui", "dex", "trades", "momentum"]
+    description: "Momentum DEX trades on Sui blockchain"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_digest
+            - event_index
+      - not_null:
+          column_name: amount_in
+      - not_null:
+          column_name: amount_out
+      - not_null:
+          column_name: project
+
+  - name: cetus_sui_base_trades
+    meta:
+      blockchain: sui
+      sector: dex
+      project: cetus
+      contributors: krishhh
+    config:
+      tags: ["sui","dex","trades","cetus"]
+    description: "Cetus DEX trades on Sui blockchain"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [transaction_digest, event_index]
+      - not_null:
+          column_name: amount_in
+      - not_null:
+          column_name: amount_out
+      - not_null:
+          column_name: project
+
+  - name: bluefin_sui_base_trades
+    meta:
+      blockchain: sui
+      sector: dex
+      project: bluefin
+      contributors: krishhh
+    config:
+      tags: ["sui", "dex", "trades", "bluefin"]
+    description: "Bluefin DEX trades on Sui blockchain"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [transaction_digest, event_index]
+      - not_null:
+          column_name: amount_in
+      - not_null:
+          column_name: amount_out
+      - not_null:
+          column_name: project
+
+  - name: kriya_sui_base_trades
+    meta:
+      blockchain: sui
+      sector: dex
+      project: kriya
+      contributors: krishhh
+    config:
+      tags: ["sui", "dex", "trades", "kriya"]
+    description: "Kriya DEX trades on Sui blockchain"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [transaction_digest, event_index]
+      - not_null:
+          column_name: amount_in
+      - not_null:
+          column_name: amount_out
+      - not_null:
+          column_name: project
+
+  - name: bluemove_sui_base_trades
+    meta:
+      blockchain: sui
+      sector: dex
+      project: bluemove
+      contributors: krishhh
+    config:
+      tags: ["sui", "dex", "trades", "bluemove"]
+    description: "Bluemove DEX trades on Sui blockchain"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [transaction_digest, event_index]
+      - not_null:
+          column_name: amount_in
+      - not_null:
+          column_name: amount_out
+      - not_null:
+          column_name: project
+
+  - name: flowx_sui_base_trades
+    meta:
+      blockchain: sui
+      sector: dex
+      project: flowx
+      contributors: krishhh
+    config:
+      tags: ["sui", "dex", "trades", "flowx"]
+    description: "FlowX DEX trades on Sui blockchain"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [transaction_digest, event_index]
+      - not_null:
+          column_name: amount_in
+      - not_null:
+          column_name: amount_out
+      - not_null:
+          column_name: project
+
+  - name: obric_sui_base_trades
+    meta:
+      blockchain: sui
+      sector: dex
+      project: obric
+      contributors: krishhh
+    config:
+      tags: ["sui", "dex", "trades", "obric"]
+    description: "Obric DEX trades on Sui blockchain"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [transaction_digest, event_index]
+      - not_null:
+          column_name: amount_in
+      - not_null:
+          column_name: amount_out
+      - not_null:
+          column_name: project
+
+  - name: aftermath_sui_base_trades
+    meta:
+      blockchain: sui
+      sector: dex
+      project: aftermath
+      contributors: krishhh
+    config:
+      tags: ["sui", "dex", "trades", "aftermath"]
+    description: "Aftermath DEX trades on Sui blockchain"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [transaction_digest, event_index]
+      - not_null:
+          column_name: amount_in
+      - not_null:
+          column_name: amount_out
+      - not_null:
+          column_name: project
+
+  - name: dex_sui_raw_base_trades
+    meta:
+      blockchain: sui
+      sector: dex
+      contributors: krishhh
+    config:
+      tags: ["sui", "dex", "trades", "raw"]
+    description: "Raw union of all Sui DEX project trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - project
+            - transaction_digest
+            - event_index
+      - not_null:
+          column_name: amount_in
+      - not_null:
+          column_name: amount_out
+
+  - name: dex_sui_base_trades
+    meta:
+      blockchain: sui
+      sector: dex
+      contributors: krishhh
+    config:
+      tags: ["sui", "dex", "trades"]
+    description: "Processed Sui DEX trades with resolved token types, normalized amounts, and pricing (in/out + gas)"
+    data_tests:
+      - check_dex_info_relationship
+      - test_acceptable_usd_amount:
+          column_name: amount_usd
+          max_value: 1000000000
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - project
+            - transaction_digest
+            - event_index
+      - not_null:
+          column_name: project
+      - not_null:
+          column_name: transaction_digest
+      - not_null:
+          column_name: event_index
+      - not_null:
+          column_name: block_time
+      - not_null:
+          column_name: amount_in
+      - not_null:
+          column_name: amount_out
+
+  - name: dex_sui_trades
+    meta:
+      blockchain: sui
+      sector: dex
+      contributors: krishhh
+    config:
+      tags: ["sui","dex","trades","final"]
+    description: "Final Sui DEX trades (presentation; reuses pricing from dex_sui_base_trades)"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - project
+            - transaction_digest
+            - event_index
+      - not_null:
+          column_name: project
+      - not_null:
+          column_name: transaction_digest
+      - not_null:
+          column_name: event_index
+      - not_null:
+          column_name: block_time
+      - dbt_utils.expression_is_true:
+          expression: "amount_usd >= 0"
+      - dbt_utils.expression_is_true:
+          expression: "fee_usd is null or fee_usd >= 0"
