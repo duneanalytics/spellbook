@@ -17,17 +17,20 @@
                                         , "flow"
                                         , "gnosis"
                                         , "hemi"
+                                        , "hyperevm"
                                         , "ink"
                                         , "kaia"
                                         , "katana"
                                         , "linea"
                                         , "nova"
                                         , "optimism"
+                                        , "peaq"
                                         , "polygon"
                                         , "ronin"
                                         , "scroll"
                                         , "sei"
                                         , "shape"
+                                        , "somnia"
                                         , "sonic"
                                         , "superseed"
                                         , "opbnb"
@@ -125,4 +128,7 @@ FROM (
         , (43111, 'hemi', 'Hemi', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.hemi.xyz/', timestamp '2024-09-09 07:25', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, NULL)
         , (10000, 'tac', 'TAC', 'Layer 1', NULL, 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.tac.build/', timestamp '2025-06-23 09:45', NULL, NULL, NULL, true, NULL)
         , (747, 'flow', 'Flow', 'Layer 1', NULL, 'WFLOW', 0xd3bf53dac106a0290b0483ecbc89d40fcc961f3e, 'https://evm.flowscan.io/', timestamp '2025-08-26 14:59', NULL, NULL, NULL, true, NULL)
+        , (999, 'hyperevm', 'HypereVM', 'Layer 1', NULL, 'HYPE', 0x0000000000000000000000000000000000000000, 'https://hyperevmscan.io/', timestamp '2025-02-18 04:25', NULL, NULL, NULL, true, NULL)
+        , (3338, 'peaq', 'Peaq', 'Layer 1', NULL, 'PEAQ', 0x0000000000000000000000000000000000000000, 'https://peaqscan.xyz/', timestamp '2024-04-25 12:46', NULL, NULL, NULL, true, NULL)
+        , (5031, 'somnia', 'Somnia', 'Layer 1', NULL, 'SOMNIA', 0x0000000000000000000000000000000000000000, 'https://explorer-somnia.network/', timestamp '2025-05-22 11:47', NULL, NULL, NULL, true, NULL)
 ) AS temp_table (chain_id, blockchain, name, chain_type, rollup_type, native_token_symbol, wrapped_native_token_address, explorer_link, first_block_time, codebase, data_availability, settlement, is_on_dune, ecosystem)

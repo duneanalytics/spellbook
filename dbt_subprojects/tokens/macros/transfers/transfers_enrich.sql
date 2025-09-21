@@ -1,11 +1,11 @@
 {% macro transfers_enrich(
     base_transfers = null
+    , blockchain = null
     , tokens_erc20_model = source('tokens', 'erc20')
-    , prices_model = 'day'
+    , prices_interval = 'hour'
     , trusted_tokens_model = source('prices', 'trusted_tokens')
     , transfers_start_date = '2000-01-01'
-    , blockchain = null
-    , usd_amount_threshold = 100000000
+    , usd_amount_threshold = 1000000000
     )
 %}
 
@@ -38,7 +38,7 @@ WITH base_transfers as (
         , symbol
         , price
     FROM
-        {{ source('prices', prices_model) }}
+        {{ source('prices_coinpaprika', prices_interval) }}
     {% if is_incremental() %}
     WHERE
         {{ incremental_predicate('timestamp') }}
@@ -89,7 +89,7 @@ WITH base_transfers as (
         AND trusted_tokens.contract_address = t.contract_address
     LEFT JOIN
         prices
-        ON date_trunc('{{ prices_model }}', t.block_time) = prices.timestamp
+        ON date_trunc('{{ prices_interval }}', t.block_time) = prices.timestamp
         AND t.blockchain = prices.blockchain
         AND t.contract_address = prices.contract_address
 )
