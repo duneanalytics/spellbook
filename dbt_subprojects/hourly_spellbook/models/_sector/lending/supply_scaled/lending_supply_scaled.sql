@@ -29,7 +29,7 @@ select
   blockchain,
   project,
   version,
-  block_month,
+  block_date,
   block_hour,
   token_address,
   symbol,
