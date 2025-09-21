@@ -4,9 +4,12 @@ sources:
   - name: oneinch
     tables:
       - name: blockchains
-      - name: lop
+  - name: oneinch_evms
+    tables:
       - name: ar
-      - name: parsed_transfers_from_calls
+      - name: lop
+      - name: cc
+      - name: ptfc
   - name: oneinch_solana
     tables:
       - name: swaps

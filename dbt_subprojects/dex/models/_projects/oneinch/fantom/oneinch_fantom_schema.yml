@@ -1,80 +1,6 @@
 version: 2
 
 models:
-  - name: oneinch_fantom_lop
-    meta:
-      blockchain: ['fantom']
-      sector: oneinch
-      contributors: ['max-morrow', 'grkhr']
-    config:
-      tags: ['oneinch', 'lop', 'calls']
-    description: >
-        1inch limit order protocol calls
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - call_trace_address
-    columns:
-      - name: blockchain
-        data_tests:
-          - not_null
-      - name: block_number
-      - name: block_time
-      - name: tx_hash
-        data_tests:
-          - not_null
-      - name: tx_from
-      - name: tx_to
-      - name: tx_success
-      - name: tx_nonce
-      - name: tx_gas_used
-      - name: tx_gas_price
-      - name: tx_priority_fee_per_gas
-      - name: contract_name
-      - name: protocol
-      - name: protocol_version
-      - name: method
-      - name: call_selector
-      - name: call_trace_address
-        data_tests:
-          - not_null
-      - name: call_from
-      - name: call_to
-      - name: call_success
-      - name: call_gas_used
-      - name: call_output
-      - name: call_error
-      - name: call_type
-      - name: maker
-      - name: receiver
-      - name: maker_asset
-      - name: maker_amount
-      - name: making_amount
-      - name: taker_asset
-      - name: taker_amount
-      - name: taking_amount
-      - name: order_hash
-      - name: flags
-      - name: remains
-      - name: src_escrow
-      - name: hashlock
-      - name: dst_blockchain
-      - name: dst_block_number
-      - name: dst_block_time
-      - name: dst_tx_hash
-      - name: dst_escrow
-      - name: dst_maker
-      - name: dst_taker
-      - name: dst_token
-      - name: dst_amount
-      - name: dst_wrapper
-      - name: dst_creation_call_success
-      - name: args
-      - name: minute
-      - name: block_month
-
   - name: oneinch_fantom_ar
     meta:
       blockchain: ['fantom']
@@ -94,33 +20,35 @@ models:
       - name: blockchain
         data_tests:
           - not_null
+      - name: chain_id
       - name: block_number
       - name: block_time
       - name: tx_hash
         data_tests:
           - not_null
+      - name: tx_success
       - name: tx_from
       - name: tx_to
-      - name: tx_success
       - name: tx_nonce
       - name: tx_gas_used
       - name: tx_gas_price
       - name: tx_priority_fee_per_gas
-      - name: contract_name
-      - name: protocol
-      - name: protocol_version
-      - name: method
-      - name: call_selector
+      - name: tx_index
       - name: call_trace_address
         data_tests:
           - not_null
-      - name: call_from
-      - name: call_to
       - name: call_success
       - name: call_gas_used
+      - name: call_selector
+      - name: call_method
+      - name: call_from
+      - name: call_to
       - name: call_output
       - name: call_error
       - name: call_type
+      - name: protocol
+      - name: protocol_version
+      - name: contract_name
       - name: src_receiver
       - name: dst_receiver
       - name: src_token_address
@@ -128,14 +56,152 @@ models:
       - name: src_token_amount
       - name: dst_token_amount
       - name: dst_token_amount_min
-      - name: flags
-      - name: pools
       - name: router_type
+      - name: pools
       - name: remains
+      - name: flags
       - name: minute
+      - name: block_date
       - name: block_month
+      - name: native_price
+      - name: native_decimals
 
-  - name: oneinch_fantom_call_transfers
+  - name: oneinch_fantom_lo
+    meta:
+      blockchain: ['fantom']
+      sector: oneinch
+      contributors: ['max-morrow', 'grkhr']
+    config:
+      tags: ['oneinch', 'lo', 'calls']
+    description: >
+        1inch limit order protocol calls
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - call_trace_address
+    columns:
+      - name: blockchain
+        data_tests:
+          - not_null
+      - name: chain_id
+      - name: block_number
+      - name: block_time
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: tx_success
+      - name: tx_from
+      - name: tx_to
+      - name: tx_nonce
+      - name: tx_gas_used
+      - name: tx_gas_price
+      - name: tx_priority_fee_per_gas
+      - name: tx_index
+      - name: call_trace_address
+        data_tests:
+          - not_null
+      - name: call_success
+      - name: call_gas_used
+      - name: call_selector
+      - name: call_method
+      - name: call_from
+      - name: call_to
+      - name: call_output
+      - name: call_error
+      - name: call_type
+      - name: protocol
+      - name: protocol_version
+      - name: contract_name
+      - name: order_hash
+      - name: maker
+      - name: receiver
+      - name: maker_asset
+      - name: maker_amount
+      - name: making_amount
+      - name: taker_asset
+      - name: taker_amount
+      - name: taking_amount
+      - name: remains
+      - name: flags
+      - name: minute
+      - name: block_date
+      - name: block_month
+      - name: native_price
+      - name: native_decimals
+
+  - name: oneinch_fantom_cc
+    meta:
+      blockchain: ['fantom']
+      sector: oneinch
+      contributors: ['max-morrow', 'grkhr']
+    config:
+      tags: ['oneinch', 'cc', 'calls']
+    description: >
+        1inch cross-chain calls
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - call_trace_address
+    columns:
+      - name: blockchain
+        data_tests:
+          - not_null
+      - name: chain_id
+      - name: block_number
+      - name: block_time
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: tx_success
+      - name: tx_from
+      - name: tx_to
+      - name: tx_nonce
+      - name: tx_gas_used
+      - name: tx_gas_price
+      - name: tx_priority_fee_per_gas
+      - name: tx_index
+      - name: call_trace_address
+        data_tests:
+          - not_null
+      - name: call_success
+      - name: call_gas_used
+      - name: call_selector
+      - name: call_method
+      - name: call_from
+      - name: call_to
+      - name: call_output
+      - name: call_error
+      - name: call_type
+      - name: protocol
+      - name: protocol_version
+      - name: contract_name
+      - name: action
+      - name: action_id
+      - name: order_hash
+      - name: hashlock
+      - name: escrow
+      - name: secret
+      - name: maker
+      - name: taker
+      - name: receiver
+      - name: token
+      - name: amount
+      - name: safety_deposit
+      - name: timelocks
+      - name: complement
+      - name: remains
+      - name: flags
+      - name: minute
+      - name: block_date
+      - name: block_month
+      - name: native_price
+      - name: native_decimals
+
+  - name: oneinch_fantom_raw_transfers
     meta:
       blockchain: ['fantom']
       sector: oneinch
@@ -143,17 +209,15 @@ models:
     config:
       tags: ['oneinch', 'calls']
     description: >
-        1inch transfers within calls
+        transfers within transactions with 1inch calls
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
             - tx_hash
             - call_trace_address
-            - transfer_blockchain
-            - transfer_tx_hash
             - transfer_trace_address
-            - transfer_native
+            - transfer_contract_address
     columns:
       - name: blockchain
         data_tests:
@@ -166,75 +230,25 @@ models:
       - name: call_trace_address
         data_tests:
           - not_null
-      - name: dst_blockchain
-      - name: hashlock
-      - name: result_escrow
-      - name: result_trace_address
-      - name: result_method
-      - name: result_amount
-      - name: transfer_blockchain
-        data_tests:
-          - not_null
-      - name: transfer_block_number
-      - name: transfer_block_time
-      - name: transfer_tx_hash
-        data_tests:
-          - not_null
+      - name: call_selector
+      - name: call_method
+      - name: call_to
+      - name: protocol
+      - name: contract_name
       - name: transfer_trace_address
         data_tests:
           - not_null
-      - name: contract_address
-      - name: amount
-      - name: transfer_native
+      - name: transfer_contract_address
         data_tests:
           - not_null
+      - name: transfer_native
       - name: transfer_from
       - name: transfer_to
-      - name: transfers_between_players
-      - name: minute
-      - name: symbol
-      - name: decimals
-      - name: amount_usd
+      - name: transfer_symbol
+      - name: transfer_amount
+      - name: transfer_amount_usd
+      - name: transfer_decimals
       - name: trusted
-      - name: block_month
-
-  - name: oneinch_fantom_escrow_results
-    meta:
-      blockchain: ['fantom']
-      sector: oneinch
-      contributors: ['max-morrow', 'grkhr']
-    config:
-      tags: ['oneinch', 'cross-chain']
-    description: >
-        escrow results
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - trace_address
-    columns:
-      - name: blockchain
-        data_tests:
-          - not_null
-      - name: block_number
-      - name: block_time
-      - name: tx_hash
-        data_tests:
-          - not_null
-      - name: trace_address
-        data_tests:
-          - not_null
-      - name: escrow
-      - name: hashlock
-      - name: selector
-      - name: method
-      - name: secret
-      - name: order_hash
-      - name: token
-      - name: amount
-      - name: rescue_token
-      - name: rescue_amount
-      - name: call_success
-      - name: tx_success
+      - name: price
+      - name: block_date
       - name: block_month

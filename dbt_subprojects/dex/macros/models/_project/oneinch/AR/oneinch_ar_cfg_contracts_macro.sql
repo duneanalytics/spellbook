@@ -1,5 +1,6 @@
 {% macro oneinch_ar_cfg_contracts_macro() %}
 
+-- METHOD SAMPLES --
 {%
     set samples = {
         "aggregate": {
@@ -57,6 +58,7 @@
 
 {% set native = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
 
+-- CONTRACTS CONFIG --
 {%
     set contracts = {
         "ExchangeV1": {

@@ -1,75 +1,71 @@
+{% set exposed = oneinch_meta_cfg_macro(property = 'blockchains').exposed.keys() %}
+
 {{
     config(
         schema = 'oneinch',
         alias = 'swaps',
         materialized = 'view',
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "polygon", "arbitrum", "avalanche_c", "gnosis", "fantom", "optimism", "base", "zksync", "linea", "sonic", "unichain", "solana"]\',
-                                "project",
-                                "oneinch",
-                                \'["max-morrow", "grkhr"]\') }}'
+        post_hook = '{{ expose_spells(exposed, "project", "oneinch", ["max-morrow", "grkhr"]) }}'
     )
 }}
 
-{% set evm_to_solana_mapping = {
-    "blockchain" : "blockchain", 
-    "block_number" : "block_slot",
-    "block_time" : "block_time",
-    "tx_hash" : "from_base58(tx_id)",
-    "tx_from" : "from_base58(tx_signer)",
-    "tx_to" : "from_base58(outer_executing_account)",
-    "tx_nonce" : "null",
-    "tx_gas_used" : "tx_gas_used",
-    "tx_gas_price" : "tx_gas_price",
-    "tx_priority_fee_per_gas" : "tx_priority_fee_per_gas",
-    "contract_name" : "program_name",
-    "protocol" : "null",
-    "protocol_version" : "version",
-    "method" : "method",
-    "call_trace_address" : "call_trace_address",
-    "call_from" : "from_base58(resolver)",
-    "call_to" : "from_base58(outer_executing_account)",
-    "call_gas_used" : "null",
-    "call_type" : "null",
-    "user" : "from_base58(user)",
-    "receiver" : "from_base58(maker_receiver)",
-    "order_hash" : "order_hash",
-    "flags" : "map_from_entries(array[('contracts_only', false), ('cross_chain', false), ('direct', true), ('fusion', true), ('ordinary', null), ('second_side', false)])",
-    "remains" : "null",
-    "src_token_address" : "from_base58(src_token_mint)",
-    "src_token_symbol" : "src_token_symbol",
-    "src_token_decimals" : "src_token_decimals",
-    "src_token_amount" : "src_token_amount",
-    "src_escrow" : "null",
-    "hashlock" : "null",
-    "dst_blockchain" : "null",
-    "dst_block_number" : "null",
-    "dst_block_time" : "null",
-    "dst_tx_hash" : "null",
-    "dst_token_address" : "from_base58(dst_token_mint)",
-    "dst_token_symbol" : "dst_token_symbol",
-    "dst_token_decimals" : "dst_token_decimals", 
-    "dst_token_amount" : "dst_token_amount",
-    "amount_usd" : "amount_usd",
-    "sources_amount_usd" : "sources_amount_usd",
-    "src_token_amount_usd" : "src_token_amount_usd",
-    "dst_token_amount_usd" : "dst_token_amount_usd",
-    "transfers_amount_usd" : "amount_usd",
-    "user_amount_usd" : "user_amount_usd",
-    "tokens" : "tokens",
-    "transfers" : "transfers",
-    "escrow_results" : "null",
-    "minute" : "date_trunc('minute', block_time)",
-    "block_month" : "block_month",
-    "swap_id" : "order_hash",
-    "unique_key" : "unique_key",
-} %}
 
-select 
-    {{ evm_to_solana_mapping.keys() | join('\n    , ') }}
-from {{ ref('oneinch_evm_swaps') }}
 
-union all
+select
+    blockchain
+    , chain_id
+    , dst_blockchain
+    , order_hash
+    , user
+    , max(mode) as mode
+    , max(protocol) as protocol
+    , max(protocol_version) as protocol_version
+    , max(contract_address) as contract_address
+    , max(contract_name) as contract_name
 
-select 
-    {{ evm_to_solana_mapping.values() | join('\n    , ') }}
-from {{ source('oneinch_solana', 'swaps') }}
+    , max_by(block_number, amount_usd) as main_block_number
+    , max_by(block_time, amount_usd) as main_block_time
+    , max_by(tx_hash, amount_usd) as main_tx_hash
+    , max_by(tx_from, amount_usd) as main_tx_from
+    , max_by(tx_to, amount_usd) as main_tx_to
+    
+    , sum(amount_usd) as amount_usd
+    , sum(execution_cost) as execution_cost
+    
+    , max(coalesce(src_executed_address, src_token_address)) as src_token_address
+    , max(src_token_amount) as src_token_amount
+    , max(coalesce(src_executed_symbol, '')) as src_token_symbol
+    , sum(src_executed_amount) as src_executed_amount
+    , sum(src_executed_amount_usd) as src_executed_amount_usd
+
+    , max(coalesce(dst_executed_address, dst_token_address)) as dst_token_address
+    , max(dst_token_amount) as dst_token_amount
+    , max(coalesce(dst_executed_symbol, '')) as dst_token_symbol
+    , sum(dst_executed_amount) as dst_executed_amount
+    , sum(dst_executed_amount_usd) as dst_executed_amount_usd
+
+    , max_by(remains, amount_usd) as remains
+    , max_by(flags, amount_usd) as flags
+    
+    , array_agg(cast(
+        row(
+            id
+            , hashlock
+            , receiver
+            , call_method
+            , call_selector
+            , amount_usd
+        ) as row(
+            id number
+            , hashlock varbinary
+            , receiver varbinary
+            , call_method varchar
+            , call_selector varbinary
+            , amount_usd double
+        )
+    )) as executions
+from {{ ref('oneinch_executions') }}
+where true
+    and tx_success
+    and call_success
+group by 1, 2, 3, 4, 5

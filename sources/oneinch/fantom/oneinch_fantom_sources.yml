@@ -57,5 +57,6 @@ sources:
       - name: AggregationRouterV6_call_fillOrderArgs
       - name: AggregationRouterV6_call_fillContractOrder
       - name: AggregationRouterV6_call_fillContractOrderArgs
+      - name: AggregationRouterV6_call_permitAndCall
       - name: lop
       - name: ar
