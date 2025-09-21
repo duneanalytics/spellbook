@@ -4,8 +4,10 @@ sources:
   - name: lido_ethereum
     description: "Decoded events for [LidoDAO](https://lido.fi/)."
     tables:
+      - name: allowedrecipientsregistry_evt_recipientadded
       - name: AllowedRecipientsRegistry_evt_RecipientAdded
       - name: AllowedRecipientsRegistry_evt_RecipientRemoved
+      - name: allowedrecipientsregistry_revshare_evt_recipientadded
       - name: AllowedRecipientsRegistry_RevShare_evt_RecipientAdded
       - name: AllowedRecipientsRegistry_RevShare_evt_RecipientRemoved
       - name: LegacyOracle_evt_PostTotalShares
@@ -19,4 +21,3 @@ sources:
       - name: steth_evt_WithdrawalsReceived
       - name: WithdrawalQueueERC721_evt_WithdrawalsFinalized
       - name: steth_evt_TokenRebased
-      
