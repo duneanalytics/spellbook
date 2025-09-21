@@ -26,7 +26,10 @@
     ref('lending_zksync_base_borrow'),
     ref('lending_scroll_base_borrow'),
     ref('lending_linea_base_borrow'),
-    ref('lending_sonic_base_borrow')
+    ref('lending_sonic_base_borrow'),
+    ref('lending_tac_base_borrow'),
+    ref('lending_unichain_base_borrow'),
+    ref('lending_worldchain_base_borrow')
   ]
 %}
 

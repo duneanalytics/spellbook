@@ -8,7 +8,8 @@
 
 {%
   set models = [
-    ref('aave_v3_sonic_base_flashloans')
+    ref('aave_v3_sonic_base_flashloans'),
+    ref('morpho_sonic_base_flashloans')
   ]
 %}
 
