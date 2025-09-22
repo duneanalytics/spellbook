@@ -9,6 +9,9 @@
     )
 }}
 
+with 
+
+pools as (
 {{
     uniswap_compatible_pools(
           blockchain = 'optimism'
@@ -20,3 +23,12 @@
         , pool_created_event = source('velodrome_v2_optimism', 'PoolFactory_evt_PoolCreated')
     )
 }}
+
+) 
+
+select 
+    distinct 
+    * 
+from 
+pools 
+-- there's one single case of a velodrome pool being deployed twice (two events), using distinct here to filter it out
