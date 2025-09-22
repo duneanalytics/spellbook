@@ -25,6 +25,12 @@
         , token1_balance
         , token0_balance_usd
         , token1_balance_usd
+        , borrow_token0_balance_raw 
+        , borrow_token1_balance_raw 
+        , borrow_token0_balance
+        , borrow_token1_balance
+        , borrow_token0_balance_usd
+        , borrow_token1_balance_usd
     from 
     {{ ref('fluid_base_tvl_daily') }}
     -- we need a couple of columns from the final incremental table to be able to refresh the table incrementally
