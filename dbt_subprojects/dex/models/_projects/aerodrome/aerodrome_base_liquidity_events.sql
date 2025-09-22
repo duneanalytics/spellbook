@@ -38,9 +38,6 @@ with base_union as (
                 , amount1_raw
         FROM
             {{ model }}
-        {% if is_incremental() %}
-        WHERE {{ incremental_predicate('block_time') }}
-        {% endif %}
         {% if not loop.last %}
            UNION ALL
         {% endif %}
