@@ -2,6 +2,10 @@
     schema = 'gas_solana',
     alias = 'tx_fees',
     materialized = 'view'
+    post_hook='{{ expose_spells(\'["solana"]\',
+                                    "sector",
+                                    "gas",
+                                    \'["0xBoxer"]\') }}'
     )
 }}
 
