@@ -5,7 +5,7 @@
         schema = 'oneinch',
         alias = 'swaps',
         materialized = 'view',
-        post_hook = '{{ expose_spells(exposed, "project", "oneinch", ["max-morrow", "grkhr"]) }}'
+        post_hook = '{{ expose_spells(\'exposed\', "project", "oneinch", \'["max-morrow", "grkhr"]\') }}'
     )
 }}
 
