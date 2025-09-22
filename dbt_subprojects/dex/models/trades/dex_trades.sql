@@ -94,8 +94,9 @@ WITH balancer_v3 AS (
         , evt_index
     FROM
         {{ model }}
+    WHERE block_date >= date '2025-09-01'
     {% if is_incremental() %}
-    WHERE
+    AND
         {{ incremental_predicate('block_time') }}
     {% endif %}
     {% if not loop.last %}
