@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'aerodrome_slipstream_base'
+    schema = 'velodrome_v2_optimism'
     , alias = 'base_liquidity_events'
     , materialized = 'incremental'
     , file_format = 'delta'
@@ -11,10 +11,10 @@
 
 {{
     uniswap_compatible_v3_base_liquidity_events(
-          blockchain = 'base'
-        , project = 'aerodrome'
-        , version = 'slipstream'
+          blockchain = 'optimism'
+        , project = 'velodrome'
+        , version = '2'
         , token_transfers = source('erc20_base', 'evt_Transfer')
-        , liquidity_pools = ref('aerodrome_base_pools')
+        , liquidity_pools = ref('velodrome_optimism_pools')
     )
 }}

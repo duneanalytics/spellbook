@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'aerodrome'
+    schema = 'velodrome'
     , alias = 'liquidity_events'
     , partition_by = ['block_month', 'blockchain', 'project']
     , materialized = 'incremental'
@@ -8,17 +8,17 @@
     , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'event_type']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     , post_hook='{{ expose_spells(\'[
-                                      "base"
+                                      "optimism"
                                     ]\',
                                     "project",
-                                    "aerodrome",
+                                    "velodrome",
                                     \'["Henrystats"]\') }}')
 }}
 
 WITH dexes AS (
     {{
         enrich_dex_liq_with_prices(
-            base_liquidity = ref('aerodrome_base_liquidity_events')
+            base_liquidity = ref('velodrome_base_liquidity_events')
             , tokens_erc20_model = source('tokens', 'erc20')
         )
     }}

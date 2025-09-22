@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'aerodrome'
+    schema = 'velodrome'
     , alias = 'base_liquidity_events'
     , partition_by = ['block_month', 'blockchain', 'project']
     , materialized = 'incremental'
@@ -11,7 +11,7 @@
 }}
 
 {% set models = [
-    ref('aerodrome_base_base_liquidity_events')
+    ref('velodrome_optimism_base_liquidity_events')
 ] %}
 
 with base_union as (
@@ -38,9 +38,6 @@ with base_union as (
                 , amount1_raw
         FROM
             {{ model }}
-        {% if is_incremental() %}
-        WHERE {{ incremental_predicate('block_time') }}
-        {% endif %}
         {% if not loop.last %}
            UNION ALL
         {% endif %}

@@ -1,12 +1,13 @@
 {{ config(
-        schema = 'aerodrome_base',
+        schema = 'velodrome_optimism',
         alias = 'base_liquidity_events'
         )
 }}
 
 {% set version_models = [
-ref('aerodrome_v1_base_base_liquidity_events')
-, ref('aerodrome_slipstream_base_base_liquidity_events')
+ref('velodrome_v1_optimism_base_liquidity_events')
+, ref('velodrome_v2_optimism_base_liquidity_events')
+, ref('velodrome_2_cl_optimism_base_liquidity_events')
 ] %}
 
 

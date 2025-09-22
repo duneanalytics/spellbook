@@ -1,13 +1,14 @@
 {{ config(
-    schema = 'aerodrome_base',
+    schema = 'velodrome_optimism',
     alias = 'pools',
     materialized = 'view'
     )
 }}
 
 {% set version_models = [
-ref('aerodrome_v1_base_pools')
-, ref('aerodrome_slipstream_base_pools')
+ref('velodrome_v1_optimism_pools')
+, ref('velodrome_v2_optimism_pools')
+, ref('velodrome_2_cl_optimism_pools')
 ] %}
 
 

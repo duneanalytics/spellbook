@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: aerodrome_pools
+  - name: velodrome_pools
     meta:
-      blockchain: base
+      blockchain: optimism
       sector: dex
       contributors: Henrystats
     config:
-      tags: ['base', 'pools']
+      tags: ['optimism', 'pools']
     description: >
-      aerodrome DEX pools across all chains and versions
+      velodrome DEX pools across all chains and versions
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -44,11 +44,11 @@ models:
       - name: contract_address
         description: "Contract address used to create the pool"
 
-  - name: aerodrome_liquidity_events
+  - name: velodrome_liquidity_events
     meta:
-      blockchain: base
+      blockchain: optimism
       sector: dex
-      short_description: The `aerodrome.liquidity_events` table captures liquidity data on aerodrome. This table contains a detailed breakdown of liquidity pmodified per transaction. 
+      short_description: The `velodrome.liquidity_events` table captures liquidity data on velodrome. This table contains a detailed breakdown of liquidity pmodified per transaction. 
       contributors: Henrystats
     config:
       tags: [ 'dex', 'liquidity_events']
@@ -119,9 +119,9 @@ models:
         name: amount1_usd
         description: "Liquidity amount of token1 in USD"       
 
-  - name: aerodrome_base_liquidity_events
+  - name: velodrome_base_liquidity_events
     meta:
-      blockchain: base
+      blockchain: optimism
       sector: dex
       contributors: Henrystats
     config:
@@ -153,9 +153,9 @@ models:
       - *amount0_raw
       - *amount1_raw
 
-  - name: aerodrome_daily_agg_liquidity_events
+  - name: velodrome_daily_agg_liquidity_events
     meta:
-      blockchain: base
+      blockchain: optimism
       sector: dex
       contributors: Henrystats
     config:
@@ -184,9 +184,9 @@ models:
       - *amount0
       - *amount1
 
-  - name: aerodrome_tvl_daily
+  - name: velodrome_tvl_daily
     meta:
-      blockchain: base
+      blockchain: optimism
       sector: dex
       contributors: Henrystats
     config:

@@ -2,16 +2,16 @@ version: 2
 
 models:
 
-  - name: aerodrome_v1_base_pools
+  - name: velodrome_v1_optimism_pools
     meta:
-      blockchain: base
+      blockchain: optimism
       sector: dex
-      project: aerodrome
+      project: velodrome
       contributors: Henrystats
     config:
-      tags: ['base', 'pools', 'liquidity', 'aerodrome']
+      tags: ['optimism', 'pools', 'liquidity', 'velodrome']
     description: >
-      aerodrome V1 base DEX pools
+      velodrome V1 optimism DEX pools
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -47,16 +47,16 @@ models:
       - name: contract_address
         description: "Contract address used to create the pool"
 
-  - name: aerodrome_slipstream_base_pools
+  - name: velodrome_v2_optimism_pools
     meta:
-      blockchain: base
+      blockchain: optimism
       sector: dex
-      project: aerodrome
+      project: velodrome
       contributors: Henrystats
     config:
-      tags: ['base', 'pools', 'liquidity', 'aerodrome']
+      tags: ['optimism', 'pools', 'liquidity', 'velodrome']
     description: >
-      aerodrome slipstream base DEX pools
+      velodrome V2 optimism DEX pools
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -74,16 +74,43 @@ models:
       - name: contract_address
         description: "Contract address used to create the pool"
 
-  - name: aerodrome_base_pools
+  - name: velodrome_2_cl_optimism_pools
     meta:
-      blockchain: base
+      blockchain: optimism
       sector: dex
-      project: aerodrome
+      project: velodrome
       contributors: Henrystats
     config:
-      tags: ['base', 'pools', 'liquidity', 'aerodrome']
+      tags: ['optimism', 'pools', 'liquidity', 'velodrome']
     description: >
-      aerodrome base DEX pools across all versions
+      velodrome V2 CL optimism DEX pools
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - id
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *id
+      - *fee
+      - *token0
+      - *token1
+      - *creation_block_time
+      - *creation_block_number
+      - name: contract_address
+        description: "Contract address used to create the pool"
+
+  - name: velodrome_optimism_pools
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: velodrome
+      contributors: Henrystats
+    config:
+      tags: ['optimism', 'pools', 'liquidity', 'velodrome']
+    description: >
+      velodrome optimism DEX pools across all versions
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -102,16 +129,16 @@ models:
       - name: contract_address
         description: "Contract address used to create the pool"
 
-  - name: aerodrome_v1_base_base_liquidity_events
+  - name: velodrome_v1_optimism_base_liquidity_events
     meta:
-      blockchain: base
+      blockchain: optimism
       sector: dex
-      project: aerodrome
+      project: velodrome
       contributors: Henrystats
     config:
-      tags: ['base', 'pools', 'liquidity', 'aerodrome']
+      tags: ['optimism', 'pools', 'liquidity', 'velodrome']
     description: >
-      "aerodrome base v1 base liquidity events"
+      "velodrome optimism v1 base liquidity events"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -156,16 +183,16 @@ models:
         name: amount1_raw
         description: "Liquidity amount of token1 in units"
 
-  - name: aerodrome_slipstream_base_base_liquidity_events
+  - name: velodrome_v2_optimism_base_liquidity_events
     meta:
-      blockchain: base
+      blockchain: optimism
       sector: dex
-      project: aerodrome
+      project: velodrome
       contributors: Henrystats
     config:
-      tags: ['base', 'pools', 'liquidity', 'aerodrome']
+      tags: ['optimism', 'pools', 'liquidity', 'velodrome']
     description: >
-      "aerodrome base Slipstream base liquidity events"
+      "velodrome optimism V2 base liquidity events"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -190,16 +217,50 @@ models:
       - *amount0_raw
       - *amount1_raw
 
-  - name: aerodrome_base_base_liquidity_events
+  - name: velodrome_2_cl_optimism_base_liquidity_events
     meta:
-      blockchain: base
+      blockchain: optimism
       sector: dex
-      project: aerodrome
+      project: velodrome
       contributors: Henrystats
     config:
-      tags: ['base', 'pools', 'liquidity', 'aerodrome']
+      tags: ['optimism', 'pools', 'liquidity', 'velodrome']
     description: >
-      "aerodrome base base liquidity events across all versions"
+      "velodrome optimism 2 CL base liquidity events"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - event_type
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *id
+      - *block_month
+      - *block_date
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *tx_from
+      - *evt_index
+      - *event_type
+      - *token0
+      - *token1
+      - *amount0_raw
+      - *amount1_raw
+
+  - name: velodrome_optimism_base_liquidity_events
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: velodrome
+      contributors: Henrystats
+    config:
+      tags: ['optimism', 'pools', 'liquidity', 'velodrome']
+    description: >
+      "velodrome optimism base liquidity events across all versions"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

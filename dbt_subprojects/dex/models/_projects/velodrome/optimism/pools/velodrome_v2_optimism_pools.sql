@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'aerodrome_v1_base'
+    schema = 'velodrome_v2_optimism'
     , alias = 'pools'
     , materialized = 'incremental'
     , file_format = 'delta'
@@ -11,12 +11,12 @@
 
 {{
     uniswap_compatible_pools(
-          blockchain = 'base'
-        , project = 'aerodrome'
-        , version = '1'
+          blockchain = 'optimism'
+        , project = 'veloodrome'
+        , version = '2'
         , pool_column_name = 'pool'
         , token0_column_name = 'token0'
         , token1_column_name = 'token1'
-        , pool_created_event = source('aerodrome_base', 'PoolFactory_evt_PoolCreated')
+        , pool_created_event = source('velodrome_v2_optimism', 'PoolFactory_evt_PoolCreated')
     )
 }}

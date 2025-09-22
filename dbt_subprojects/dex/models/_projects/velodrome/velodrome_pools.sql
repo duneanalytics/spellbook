@@ -1,17 +1,17 @@
 {{ config(
-        schema = 'aerodrome',
+        schema = 'velodrome',
         alias = 'pools'
         )
 }}
 
-{% set aerodrome_models = [
-ref('aerodrome_base_pools')
+{% set velodrome_models = [
+ref('velodrome_optimism_pools')
 ] %}
 
 
 SELECT *
 FROM (
-    {% for dex_pool_model in aerodrome_models %}
+    {% for dex_pool_model in velodrome_models %}
     SELECT
         blockchain
         , project

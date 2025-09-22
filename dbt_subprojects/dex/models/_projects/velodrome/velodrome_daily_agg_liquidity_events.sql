@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'aerodrome'
+    schema = 'velodrome'
     , alias = 'daily_agg_liquidity_events'
     , partition_by = ['block_month', 'blockchain', 'project']
     , materialized = 'incremental'
@@ -26,7 +26,7 @@ select
     , sum(amount0) as amount0 
     , sum(amount1) as amount1 
 from 
-{{ ref('aerodrome_liquidity_events') }}
+{{ ref('velodrome_liquidity_events') }}
 {% if is_incremental() %}
 WHERE {{ incremental_predicate('block_date') }}
 {% endif %}

@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'aerodrome'
+    schema = 'velodrome'
     , alias = 'tvl_daily'
     , partition_by = ['block_month', 'blockchain', 'project']
     , materialized = 'incremental'
@@ -8,10 +8,10 @@
     , unique_key = ['blockchain', 'project', 'version', 'id', 'block_date']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
     , post_hook='{{ expose_spells(\'[
-                                      "base"
+                                      "optimism"
                                     ]\',
                                     "project",
-                                    "aerodrome",
+                                    "velodrome",
                                     \'["Henrystats"]\') }}')
 }}
 
@@ -36,7 +36,7 @@ daily_events as (
         , amount0 
         , amount1
     from 
-    {{ ref('aerodrome_daily_agg_liquidity_events') }}
+    {{ ref('velodrome_daily_agg_liquidity_events') }}
     where {{ incremental_predicate('block_date') }}
 ),
 
@@ -219,7 +219,7 @@ daily_events as (
         , amount0 
         , amount1
     from 
-    {{ ref('aerodrome_daily_agg_liquidity_events') }}
+    {{ ref('velodrome_daily_agg_liquidity_events') }}
 ),
 
 daily_cum as (
