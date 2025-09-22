@@ -37,6 +37,12 @@ daily_events as (
         , amount1
         , amount0_price 
         , amount1_price 
+        , borrow_amount0_raw 
+        , borrow_amount1_raw 
+        , borrow_amount0 
+        , borrow_amount1
+        , borrow_amount0_price 
+        , borrow_amount1_price 
     from 
     {{ ref('fluid_daily_agg_liquidity_events') }}
     where {{ incremental_predicate('block_date') }}
@@ -68,6 +74,12 @@ tvl_min_daily as (
         , amount1
         , amount0_price 
         , amount1_price 
+        , borrow_amount0_raw 
+        , borrow_amount1_raw 
+        , borrow_amount0 
+        , borrow_amount1
+        , borrow_amount0_price 
+        , borrow_amount1_price 
     from 
     {{this}}
     where block_date = (select block_date - interval '1' day from min_daily) -- use last day before incremental
@@ -98,6 +110,12 @@ daily_cum as (
         , sum(amount1) over (partition by blockchain, project, version, dex order by block_date asc) as token1_balance_tmp
         , max(amount0_price) over (partition by blockchain, project, version, dex order by block_date asc) as amount0_price_tmp
         , max(amount1_price) over (partition by blockchain, project, version, dex order by block_date asc) as amount1_price_tmp
+        , sum(borrow_amount0_raw) over (partition by blockchain, project, version, dex order by block_date asc) as borrow_token0_balance_raw_tmp
+        , sum(borrow_amount1_raw) over (partition by blockchain, project, version, dex order by block_date asc) as borrow_token1_balance_raw_tmp
+        , sum(borrow_amount0) over (partition by blockchain, project, version, dex order by block_date asc) as borrow_token0_balance_tmp
+        , sum(borrow_amount1) over (partition by blockchain, project, version, dex order by block_date asc) as borrow_token1_balance_tmp
+        , max(borrow_amount0_price) over (partition by blockchain, project, version, dex order by block_date asc) as borrow_amount0_price_tmp
+        , max(borrow_amount1_price) over (partition by blockchain, project, version, dex order by block_date asc) as borrow_amount1_price_tmp 
         , lead(block_date, 1, current_timestamp) over (partition by blockchain, project, version, dex order by block_date asc) as next_day
     from 
     daily_events_final 
@@ -132,6 +150,16 @@ tvl_daily as (
         , token1_balance_tmp * (amount1_price_tmp /1e12) as token1_balance
         , amount0_price
         , amount1_price
+        , borrow_token0_balance_raw_tmp as borrow_amount0_raw
+        , borrow_token1_balance_raw_tmp as borrow_amount1_raw
+        , borrow_token0_balance_raw_tmp * (borrow_amount0_price_tmp /1e12) as borrow_token0_balance_raw 
+        , borrow_token1_balance_raw_tmp * (borrow_amount1_price_tmp /1e12) as borrow_token1_balance_raw 
+        , borrow_token0_balance_tmp as borrow_amount0
+        , borrow_token1_balance_tmp as borrow_amount1
+        , borrow_token0_balance_tmp * (borrow_amount0_price_tmp /1e12) as borrow_token0_balance
+        , borrow_token1_balance_tmp * (borrow_amount1_price_tmp /1e12) as borrow_token1_balance
+        , borrow_amount0_price
+        , borrow_amount1_price 
         , case 
             when c.block_date = d.day then check_filter
             else 'include'
@@ -192,6 +220,18 @@ prices_day as (
         , amount1 
         , amount0_price 
         , amount1_price
+        , borrow_token0_balance_raw 
+        , borrow_token1_balance_raw 
+        , borrow_token0_balance
+        , borrow_token1_balance
+        , borrow_token0_balance * coalesce(pa.price, pd_a.price) as borrow_token0_balance_usd
+        , borrow_token1_balance * coalesce(pb.price, pd_b.price) as borrow_token1_balance_usd
+        , borrow_amount0_raw
+        , borrow_amount1_raw 
+        , borrow_amount0
+        , borrow_amount1 
+        , borrow_amount0_price 
+        , borrow_amount1_price
     from 
     tvl_daily tl 
     left join 
