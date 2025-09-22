@@ -20,7 +20,6 @@
                                             ,"fantom"
                                             ,"flare"
                                             ,"gnosis"
-                                            ,"hyperevm"
                                             ,"ink"
                                             ,"kaia"
                                             ,"katana"
@@ -29,14 +28,12 @@
                                             ,"nova"
                                             ,"opbnb"
                                             ,"optimism"
-                                            ,"peaq"
                                             ,"plume"
                                             ,"polygon"
                                             ,"ronin"
                                             ,"scroll"
                                             ,"sei"
                                             ,"shape"
-                                            ,"somnia"
                                             ,"sonic"
                                             ,"sophon"
                                             ,"superseed"
@@ -105,6 +102,16 @@
     ,'zora'
     ,'lens'
 ] %}
+
+{{ config(
+        schema = 'tokens'
+        , alias = 'transfers'
+        , post_hook='{{ expose_spells(blockchains = \'["' + chains | join('","') + '"]\',
+                                        spell_type = "sector",
+                                        spell_name = "tokens",
+                                        contributors = \'["aalan3", "jeff-dude", "0xBoxer", "hildobby", "0xRob", "hosuke"]\') }}'
+        )
+}}
 
 SELECT *
 FROM (
