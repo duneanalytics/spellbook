@@ -37,3 +37,4 @@
     -- these columns can be confusing if displayed on dune 
     -- hence why we build a seperate table thay isn't materialized 
     -- this table selects just the relevant columns 
+    -- force refresh
