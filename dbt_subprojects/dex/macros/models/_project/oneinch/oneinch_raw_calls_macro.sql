@@ -14,7 +14,7 @@
 
 with
 
-{% if stream == "cc" %}creations as (
+{% if stream == "cc_raw_calls" %}creations as (
     select address as contract_address
     from {{ source(blockchain, 'creation_traces') }}
     where true

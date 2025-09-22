@@ -13,4 +13,4 @@
     )
 }}
 
-{{ oneinch_cc_macro(blockchain) }}
+{{ oneinch_cc_macro(blockchain = blockchain) }}

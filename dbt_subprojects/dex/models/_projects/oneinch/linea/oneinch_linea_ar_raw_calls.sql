@@ -4,7 +4,7 @@
 {{
     config(
         schema = 'oneinch_' + blockchain,
-        alias = 'ar_raw_calls',
+        alias = stream,
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -14,9 +14,4 @@
     )
 }}
 
-{{
-    oneinch_raw_calls_macro(
-        blockchain = blockchain,
-        stream = stream,
-    )
-}}
+{{ oneinch_raw_calls_macro(blockchain = blockchain, stream = stream) }}

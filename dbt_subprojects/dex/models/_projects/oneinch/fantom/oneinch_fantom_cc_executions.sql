@@ -13,4 +13,4 @@
     )
 }}
 
-{{ oneinch_cc_executions_macro(blockchain) }}
+{{ oneinch_cc_executions_macro(blockchain = blockchain) }}

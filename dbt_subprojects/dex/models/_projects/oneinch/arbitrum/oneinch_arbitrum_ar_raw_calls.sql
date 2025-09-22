@@ -14,4 +14,4 @@
     )
 }}
 
-{{ oneinch_raw_calls_macro(blockchain, stream) }}
+{{ oneinch_raw_calls_macro(blockchain = blockchain, stream = stream) }}

@@ -1,10 +1,9 @@
 {% set blockchain = 'avalanche_c' %}
-{% set stream = 'cc' %}
 
 {{
     config(
         schema = 'oneinch_' + blockchain,
-        alias = stream,
+        alias = 'cc',
         partition_by = ['block_month', 'block_date'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -14,8 +13,4 @@
     )
 }}
 
-{{
-    oneinch_cc_macro(
-        blockchain = blockchain
-    )
-}}
+{{ oneinch_cc_macro(blockchain = blockchain) }}

@@ -13,4 +13,4 @@
     )
 }}
 
-{{ oneinch_raw_transfers_macro(blockchain) }}
+{{ oneinch_raw_transfers_macro(blockchain = blockchain) }}

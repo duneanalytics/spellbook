@@ -14,9 +14,4 @@
     )
 }}
 
-{{
-    oneinch_lo_macro(
-        blockchain = blockchain,
-        for_stream = stream
-    )
-}}
+{{ oneinch_lo_macro(blockchain = blockchain, for_stream = stream) }}
