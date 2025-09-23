@@ -18,6 +18,37 @@ pool_addresses AS (
     coin0 as token_address
   from 
   {{ ref('curve_ethereum_view_pools') }}
+  where coin0 is not null 
+
+  union all 
+
+  select 
+    pool_address as address,
+    coin1 as token_address
+  from 
+  {{ ref('curve_ethereum_view_pools') }}
+  where coin1 is not null 
+
+  union all 
+
+  select 
+    pool_address as address,
+    coin2 as token_address
+  from 
+  {{ ref('curve_ethereum_view_pools') }}
+  where coin2 is not null 
+
+  union all 
+
+  union all 
+
+  select 
+    pool_address as address,
+    coin3 as token_address
+  from 
+  {{ ref('curve_ethereum_view_pools') }}
+  where coin3 is not null 
+
 ),
 
 filtered_balances AS (
