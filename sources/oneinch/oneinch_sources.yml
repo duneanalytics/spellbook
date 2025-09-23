@@ -7,7 +7,7 @@ sources:
   - name: oneinch_evms
     tables:
       - name: ar
-      - name: lop
+      - name: lo
       - name: cc
       - name: ptfc
   - name: oneinch_solana
