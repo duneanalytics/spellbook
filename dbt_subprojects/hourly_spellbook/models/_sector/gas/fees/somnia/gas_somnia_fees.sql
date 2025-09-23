@@ -27,7 +27,8 @@ WITH native_token_prices as (
         ,cast(gas_price as uint256) * cast(txns.gas_used as uint256) as tx_fee_raw
         ,map_concat(
             map()
-            ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas <= 0
+            ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas <= 0 
+                     or cast(priority_fee_per_gas as uint256) >= cast(gas_price as uint256)
                 then map(array['base_fee'], array[(cast(gas_price as uint256) * cast(txns.gas_used as uint256))])
                 else map(array['base_fee','priority_fee'],
                          array[(cast(gas_price as uint256) - cast(priority_fee_per_gas as uint256)) * cast(txns.gas_used as uint256)
