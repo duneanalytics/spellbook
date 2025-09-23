@@ -8,7 +8,7 @@
         )
 }}
 
-{% set erc20_prices_models = [
+{% set fungible_prices_models = [
     ref('prices_arbitrum_tokens')
     ,ref('prices_avalanche_c_tokens')
     ,ref('prices_bitcoin_tokens')
@@ -63,11 +63,11 @@
     ,ref('prices_somnia_tokens')
 ] %}
 
-with erc20_prices_tokens as (
+with fungible_tokens as (
     select *
     from
     (
-        {% for model in erc20_prices_models -%}
+        {% for model in fungible_prices_models -%}
         select
             token_id
             , blockchain
@@ -81,7 +81,7 @@ with erc20_prices_tokens as (
         {% endfor -%}
     )
 )
-, erc20 as (
+, fungible as (
     select
         p.token_id
         ,p.blockchain
@@ -89,7 +89,7 @@ with erc20_prices_tokens as (
         ,coalesce(erc20.symbol, p.symbol) as symbol
         ,coalesce(erc20.decimals, p.decimals) as decimals
     from
-        erc20_prices_tokens as p
+        fungible_tokens as p
     left join {{source('tokens','erc20')}} as erc20
         on p.blockchain = erc20.blockchain
         and p.contract_address = erc20.contract_address
@@ -98,7 +98,7 @@ with erc20_prices_tokens as (
         and p.contract_address is not null
 )
 select *
-from erc20
+from fungible
 union all
 select *
 from {{ref('prices_native_tokens')}}
