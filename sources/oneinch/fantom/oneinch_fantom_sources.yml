@@ -58,8 +58,5 @@ sources:
       - name: AggregationRouterV6_call_fillContractOrder
       - name: AggregationRouterV6_call_fillContractOrderArgs
       - name: AggregationRouterV6_call_permitAndCall
-      - name: EscrowV1_call_withdraw
-      - name: EscrowV1_call_cancel
-      - name: EscrowV1_call_rescueFunds
       - name: lop
       - name: ar
