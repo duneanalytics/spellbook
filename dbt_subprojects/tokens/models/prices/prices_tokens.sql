@@ -85,8 +85,8 @@ with prices_tokens as (
 , erc20 as (
     select
         p.token_id
-        ,blockchain
-        ,contract_address
+        ,p.blockchain
+        ,p.contract_address
         ,erc20.symbol
         ,erc20.decimals
     from
