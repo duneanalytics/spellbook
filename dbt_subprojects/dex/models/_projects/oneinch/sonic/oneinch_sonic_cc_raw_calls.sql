@@ -1,5 +1,5 @@
 {% set blockchain = 'sonic' %}
-{% set stream = 'cc_raw_calls' %}
+{% set stream = 'cc' %}
 
 {{
     config(

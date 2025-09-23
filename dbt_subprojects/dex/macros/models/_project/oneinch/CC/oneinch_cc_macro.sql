@@ -1,11 +1,10 @@
 {% macro oneinch_cc_macro(blockchain) %}
 
 {% set stream = 'cc' %}
-{% set meta = oneinch_meta_cfg_macro(property = 'blockchains') %}
-{% set contracts = oneinch_meta_cfg_macro(property = 'streams')[stream]['contracts'] %}
-{% set stream_start = oneinch_meta_cfg_macro(property = 'streams')[stream]['start'] %}
-{% set date_from = [meta['start'][blockchain], stream_start] | max %}
-{% set wrapper = meta['wrapped_native_token_address'][blockchain] %}
+{% set meta = oneinch_meta_cfg_macro() %}
+{% set contracts = meta['streams'][stream]['contracts'] %}
+{% set date_from = [meta['blockchains']['start'][blockchain], meta['streams'][stream]['start']['stream']] | max %}
+{% set wrapper = meta['blockchains']['wrapped_native_token_address'][blockchain] %}
 
 
 
@@ -13,17 +12,17 @@ with
 
 iterations as (
     select *
-    from ({{ oneinch_cc_handle_src_creations_macro(blockchain, stream, contracts, date_from) }})
+    from ({{ oneinch_cc_handle_src_creations_macro(blockchain = blockchain, stream = stream, contracts = contracts, date_from = date_from) }})
     
     union all
 
     select *
-    from ({{ oneinch_cc_handle_dst_creations_macro(blockchain, contracts, date_from) }})
+    from ({{ oneinch_cc_handle_dst_creations_macro(blockchain = blockchain, contracts = contracts, date_from = date_from) }})
 
     union all
     
     select *
-    from ({{ oneinch_cc_handle_results_macro(blockchain, contracts, date_from) }})
+    from ({{ oneinch_cc_handle_results_macro(blockchain = blockchain, contracts = contracts, date_from = date_from) }})
 )
 
 , native_prices as (

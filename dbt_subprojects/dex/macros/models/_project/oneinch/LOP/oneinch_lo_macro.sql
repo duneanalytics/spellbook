@@ -5,15 +5,14 @@
     )
 %}
 
-{% set stream = 'lo' %}
-{% set meta = oneinch_meta_cfg_macro(property = 'blockchains') %}
-{% set contracts = oneinch_meta_cfg_macro(property = 'streams')[stream]['contracts'] %}
-{% set stream_start = oneinch_meta_cfg_macro(property = 'streams')[for_stream]['start'] %}
-{% set date_from = [meta['start'][blockchain], stream_start] | max %}
-{% set wrapper = meta['wrapped_native_token_address'][blockchain] %}
-{% set chain_id = meta['chain_id'][blockchain] %}
-{% set settlements = meta['fusion_settlement_addresses'][blockchain] | join(', ') %}
-{% set factories = meta['escrow_factory_addresses'][blockchain] | join(', ') %}
+{% set meta = oneinch_meta_cfg_macro() %}
+{% set contracts = meta['streams']['lo']['contracts'] %}
+{% set date_from = [meta['blockchains']['start'][blockchain], meta['streams'][for_stream]['start']['stream']] | max %}
+
+{% set wrapper = meta['blockchains']['wrapped_native_token_address'][blockchain] %}
+{% set chain_id = meta['blockchains']['chain_id'][blockchain] %}
+{% set settlements = meta['blockchains']['fusion_settlement_addresses'][blockchain] | join(', ') %}
+{% set factories = meta['blockchains']['escrow_factory_addresses'][blockchain] | join(', ') %}
 
 
 

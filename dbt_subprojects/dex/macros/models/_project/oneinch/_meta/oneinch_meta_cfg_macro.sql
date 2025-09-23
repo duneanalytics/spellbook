@@ -1,48 +1,40 @@
-{% macro oneinch_meta_cfg_macro(property) %}
+{% macro oneinch_meta_cfg_macro() %}
 
--- STREAM SAMPLES --
+-- STREAMS CONFIG --
 -- start dates for sreams by default:
 -- for ar: 2019-06-01
 -- for lo: 2021-06-01
 -- for cc: 2024-08-20
 -- for a quick CI, change the start dates of the streams to light/easy
 {%
-    set samples = {
+    set streams = {
         "ar": {
-            "start"     : '2019-06-01',
-            "contracts" : oneinch_ar_cfg_contracts_macro()
+            "start": {
+                "raw_calls" : "2019-06-01",
+                "transfers" : "2019-06-01",
+                "stream"    : "2019-06-01",
+                "executions": "2019-06-01",
+            },
+            "contracts" : oneinch_ar_cfg_contracts_macro(),
         },
         "lo": {
-            "start"     : '2021-06-01',
-            "contracts" : oneinch_lo_cfg_contracts_macro()
+            "start": {
+                "raw_calls" : "2021-06-01",
+                "transfers" : "2021-06-01",
+                "stream"    : "2021-06-01",
+                "executions": "2021-06-01",
+            },
+            "contracts" : oneinch_lo_cfg_contracts_macro(),
         },
         "cc": {
-            "start"     : '2024-08-20',
-            "contracts" : oneinch_cc_cfg_contracts_macro()
+            "start": {
+                "raw_calls" : "2024-08-20",
+                "transfers" : "2024-08-20",
+                "stream"    : "2024-08-20",
+                "executions": "2024-08-20",
+            },
+            "contracts" : oneinch_cc_cfg_contracts_macro(),
         },
-    }
-%}
-
--- STREAMS CONFIG --
-{%
-    set streams = {
-        "ar"            : dict(samples['ar']),
-        "ar_raw_calls"  : dict(samples['ar'], start = '2019-06-01'),
-        "ar_executions" : dict(samples['ar'], start = '2019-06-01'),
-        
-        "lo"            : dict(samples['lo']),
-        "lo_raw_calls"  : dict(samples['lo'], start = '2021-06-01'),
-        "lo_executions" : dict(samples['lo'], start = '2021-06-01'),
-
-        "cc"            : dict(samples['cc']),
-        "cc_raw_calls"  : dict(samples['cc'], start = '2024-08-20'),
-        "cc_executions" : dict(samples['cc'], start = '2024-08-20'),
-
-        "raw_transfers" : dict(start = '2019-06-01', configurations = {
-            "ar"    : samples['ar']['contracts'],
-            "lo"    : samples['lo']['contracts'],
-            "cc"    : samples['cc']['contracts'],
-        }),
     }
 %}
 
@@ -193,6 +185,6 @@
     "blockchains": blockchains
 } %}
 
-{{ return(config[property]) }}
+{{ return(config) }}
 
 {% endmacro %}

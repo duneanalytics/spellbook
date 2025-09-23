@@ -5,16 +5,15 @@
     )
 %}
 
-{% set meta = oneinch_meta_cfg_macro(property = 'blockchains') %}
-{% set contracts = oneinch_meta_cfg_macro(property = 'streams')[stream]['contracts'] %}
-{% set stream_start = oneinch_meta_cfg_macro(property = 'streams')[stream]['start'] %}
-{% set date_from = [meta['start'][blockchain], stream_start] | max %}
+{% set meta = oneinch_meta_cfg_macro() %}
+{% set contracts = meta['streams'][stream]['contracts'] %}
+{% set date_from = [meta['blockchains']['start'][blockchain], meta['streams'][stream]['start']['raw_calls']] | max %}
 
 
 
 with
 
-{% if stream == "cc_raw_calls" %}creations as (
+{% if stream == "cc" %}creations as (
     select address as contract_address
     from {{ source(blockchain, 'creation_traces') }}
     where true

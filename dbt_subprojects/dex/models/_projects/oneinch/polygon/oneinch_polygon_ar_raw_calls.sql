@@ -1,5 +1,5 @@
 {% set blockchain = 'polygon' %}
-{% set stream = 'ar_raw_calls' %}
+{% set stream = 'ar' %}
 
 {{
     config(

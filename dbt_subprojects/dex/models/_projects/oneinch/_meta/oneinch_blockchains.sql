@@ -7,7 +7,7 @@
     )
 }}
 
-{% set meta = oneinch_meta_cfg_macro(property = 'blockchains') %}
+{% set meta = oneinch_meta_cfg_macro()['blockchains'] %}
 
 select *
 from (

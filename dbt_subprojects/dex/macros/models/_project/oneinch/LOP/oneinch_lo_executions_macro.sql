@@ -1,10 +1,9 @@
 {% macro oneinch_lo_executions_macro(blockchain) %}
 
-{% set stream = 'lo_executions' %}
-{% set meta = oneinch_meta_cfg_macro(property = 'blockchains') %}
-{% set stream_start = oneinch_meta_cfg_macro(property = 'streams')[stream]['start'] %}
-{% set date_from = [meta['start'][blockchain], stream_start] | max %}
-{% set wrapper = meta['wrapped_native_token_address'][blockchain] %}
+{% set meta = oneinch_meta_cfg_macro() %}
+{% set date_from = [meta['blockchains']['start'][blockchain], meta['streams']['lo']['start']['executions']] | max %}
+
+{% set wrapper = meta['blockchains']['wrapped_native_token_address'][blockchain] %}
 {% set same = '(0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, ' + wrapper + ')' %}
 
 

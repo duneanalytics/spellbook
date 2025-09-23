@@ -1,5 +1,5 @@
 {% set blockchain = 'unichain' %}
-{% set stream = 'lo_raw_calls' %}
+{% set stream = 'lo' %}
 
 {{
     config(

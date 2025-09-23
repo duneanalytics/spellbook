@@ -1,5 +1,5 @@
 {% set blockchain = 'optimism' %}
-{% set stream = 'cc_raw_calls' %}
+{% set stream = 'cc' %}
 
 {{
     config(

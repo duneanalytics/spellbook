@@ -1,10 +1,6 @@
 {% macro oneinch_raw_transfers_macro(blockchain) %}
 
-{% set stream = 'raw_transfers' %}
-{% set meta = oneinch_meta_cfg_macro(property = 'blockchains') %}
-{% set configurations = oneinch_meta_cfg_macro(property = 'streams')[stream]['configurations'] %}
-{% set stream_start = oneinch_meta_cfg_macro(property = 'streams')[stream]['start'] %}
-{% set date_from = [meta['start'][blockchain], stream_start] | max %}
+{% set meta = oneinch_meta_cfg_macro() %}
 
 
 
@@ -14,9 +10,10 @@ calls as (
     select *
         , array_agg(call_trace_address) over(partition by block_number, tx_hash) as call_trace_addresses
     from (
-        {% for stream, contracts in configurations.items() %}
+        {% for stream, stream_data in meta['streams'].items() %}
             -- STREAM: {{ stream }} --
-            {% for contract, contract_data in contracts.items() if blockchain in contract_data.blockchains %}
+            {% set date_from = [stream_data['start']['transfers'], meta['blockchains']['start'][blockchain]] | max %}
+            {% for contract, contract_data in stream_data.contracts.items() if blockchain in contract_data.blockchains %}
                 -- CONTRACT: {{ contract }} --
                 {% for method, method_data in contract_data.methods.items() if blockchain in method_data.get('blockchains', contract_data.blockchains) %} -- method-level blockchains override contract-level blockchains
                     -- METHOD: {{ method }} --
@@ -58,8 +55,8 @@ calls as (
         , call_trace_address
         , transfer_trace_address
         , contract_address as transfer_contract_address -- original
-        , if(token_standard = 'native', {{ meta['wrapped_native_token_address'][blockchain] }}, contract_address) as contract_address
-        , if(token_standard = 'native', {{ meta['native_token_symbol'][blockchain] }}) as native_symbol
+        , if(token_standard = 'native', {{ meta['blockchains']['wrapped_native_token_address'][blockchain] }}, contract_address) as contract_address
+        , if(token_standard = 'native', {{ meta['blockchains']['native_token_symbol'][blockchain] }}) as native_symbol
         , amount
         , transfer_from
         , transfer_to

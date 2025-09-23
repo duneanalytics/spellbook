@@ -1,5 +1,5 @@
 {% set blockchain = 'linea' %}
-{% set stream = 'lo_raw_calls' %}
+{% set stream = 'lo' %}
 
 {{
     config(

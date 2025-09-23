@@ -1,12 +1,12 @@
 {% macro oneinch_ar_macro(blockchain) %}
 
 {% set stream = 'ar' %}
-{% set meta = oneinch_meta_cfg_macro(property = 'blockchains') %}
-{% set contracts = oneinch_meta_cfg_macro(property = 'streams')[stream]['contracts'] %}
-{% set stream_start = oneinch_meta_cfg_macro(property = 'streams')[stream]['start'] %}
-{% set date_from = [meta['start'][blockchain], stream_start] | max %}
-{% set wrapper = meta['wrapped_native_token_address'][blockchain] %}
-{% set chain_id = meta['chain_id'][blockchain] %}
+{% set meta = oneinch_meta_cfg_macro() %}
+{% set contracts = meta['streams'][stream]['contracts'] %}
+{% set date_from = [meta['blockchains']['start'][blockchain], meta['streams'][stream]['start']['stream']] | max %}
+
+{% set wrapper = meta['blockchains']['wrapped_native_token_address'][blockchain] %}
+{% set chain_id = meta['blockchains']['chain_id'][blockchain] %}
 {% set native = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
 
 
