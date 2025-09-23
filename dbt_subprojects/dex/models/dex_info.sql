@@ -233,6 +233,4 @@ FROM (VALUES
     , ('hyperswap', 'HyperSwap', 'Direct', 'HyperSwap')
     , ('hybra', 'Hybra', 'Direct', 'Hybra')
     , ('prjx', 'PRJX', 'Direct', 'PRJX')
-    , ('somnex', 'SomneX', 'Direct', 'SomneX')
-    , ('machinex', 'MachineX', 'Direct', 'MachineX')
 ) AS temp_table (project, name, marketplace_type, x_username)
