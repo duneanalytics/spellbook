@@ -47,6 +47,11 @@ models:
     config:
       tags: ['prices', 'tokens', 'usd']
     description: "Price tokens list mapping CoinPaprika API Ids to token metadata"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
     columns:
       - &token_id
         name: token_id
