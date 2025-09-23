@@ -33,10 +33,9 @@
     SELECT DISTINCT
       'sonic' AS blockchain, 
       ut.vault_address as erc4626_token,
-      ut.underlying_address,
       COALESCE(vault_tokens.name, 'Unknown Vault') AS erc4626_token_name,
       COALESCE(vault_tokens.symbol, 'Unknown') AS erc4626_token_symbol,
-      COALESCE(underlying_tokens.name, 'Unknown Token') AS underlying_token,
+      ut.underlying_address as underlying_token,
       COALESCE(underlying_tokens.symbol, 'Unknown') AS underlying_token_symbol,
       underlying_tokens.decimals AS decimals
     FROM underlying_tokens ut
