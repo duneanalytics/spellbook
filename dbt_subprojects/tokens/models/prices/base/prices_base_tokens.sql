@@ -240,6 +240,6 @@ FROM
     ('hyper-hyperlane', 'base', 'HYPER',0xc9d23ed2adb0f551369946bd377f8644ce1ca5c4, 18),
     ('zora-zora', 'base', 'ZORA',0x1111111111166b7FE7bd91427724B487980aFc69, 18),
     ('towns-towns', 'base', 'TOWNS', 0x00000000A22C618fd6b4D7E9A335C4B96B189a38, 18),
-    ('superoeth-super-oeth', 'base', 'superOETHb', 0xDBFeFD2e8460a6Ee4955A68582F85708BAEA60A3, 18)
+    ('superoeth-super-oeth', 'base', 'SUPEROETH', 0xDBFeFD2e8460a6Ee4955A68582F85708BAEA60A3, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 -- refresh 
