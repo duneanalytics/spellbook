@@ -1,4 +1,4 @@
-{% macro oneinch_meta_cfg_macro(property=None) %}
+{% macro oneinch_meta_cfg_macro(property = none) %}
 
 -- STREAMS CONFIG --
 -- start dates for sreams by default:
