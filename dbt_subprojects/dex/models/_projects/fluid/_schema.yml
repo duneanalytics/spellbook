@@ -88,6 +88,59 @@ models:
             - version
             - dex
             - block_date
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *dex
+      - &token0
+        name: token0
+        description: "Token0 is the Dex's Supply Token"
+      - &token1
+        name: token1
+        description: "Token1 is the Dex's Borrow Token"
+      - &token0_symbol
+        name: token0_symbol
+        description: "Token0 Symbol"
+      - &token1_symbol
+        name: token1_symbol
+        description: "Token1 Symbol"
+      - &token0_balance_raw
+        name: token0_balance_raw
+        description: "Smart collateral deposited in the dex (Supply Token)"
+      - &token1_balance_raw
+        name: token1_balance_raw
+        description: "Smart collateral deposited in the dex (Debt Token)"
+      - &token0_balance
+        name: token0_balance
+        description: "Smart collateral enriched with decimals deposited in the dex (Supply Token)"
+      - &token1_balance
+        name: token1_balance
+        description: "Smart collateral enriched with decimals deposited in the dex (Debt Token)"
+      - &token0_balance_usd
+        name: token0_balance_usd
+        description: "Smart collateral value in USD deposited in the dex (Supply Token)"
+      - &token1_balance_usd
+        name: token1_balance_usd
+        description: "Smart collateral value in USD deposited in the dex (Debt Token)"
+      - &borrow_token0_balance_raw
+        name: borrow_token0_balance_raw
+        description: "Smart debt deposited in the dex (Supply Token)"
+      - &borrow_token1_balance_raw
+        name: borrow_token1_balance_raw
+        description: "Smart debt deposited in the dex (Debt Token)"
+      - &borrow_token0_balance
+        name: borrow_token0_balance
+        description: "Smart debt enriched with decimals deposited in the dex (Supply Token)"
+      - &borrow_token1_balance
+        name: borrow_token1_balance
+        description: "Smart debt enriched with decimals deposited in the dex (Debt Token)"
+      - &borrow_token0_balance_usd
+        name: borrow_token0_balance_usd
+        description: "Smart debt value in USD deposited in the dex (Supply Token)"
+      - &borrow_token1_balance_usd
+        name: borrow_token1_balance_usd
+        description: "Smart debt value in USD deposited in the dex (Debt Token)"
 
   - name: fluid_tvl_daily
     meta:
@@ -96,3 +149,24 @@ models:
       contributors: Henrystats, dknugo
     config:
       tags: [ 'dex' ]
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *dex
+      - *token0
+      - *token1
+      - *token0_symbol
+      - *token1_symbol
+      - *token0_balance_raw
+      - *token1_balance_raw
+      - *token0_balance
+      - *token1_balance
+      - *token0_balance_usd
+      - *token1_balance_usd
+      - *borrow_token0_balance_raw
+      - *borrow_token1_balance_raw
+      - *borrow_token0_balance
+      - *borrow_token1_balance
+      - *borrow_token0_balance_usd
+      - *borrow_token1_balance_usd
