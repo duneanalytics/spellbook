@@ -36,7 +36,7 @@ select
     id,
     fee,
     tx_hash,
-    min(evt_index) as evt_index -- pick first
+    min(evt_index) as evt_index, -- pick first
     token0,
     token1 
 from 
