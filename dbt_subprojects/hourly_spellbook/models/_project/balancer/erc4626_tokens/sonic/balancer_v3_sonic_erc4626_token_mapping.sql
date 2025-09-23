@@ -9,8 +9,6 @@
 
   WITH vault_mappings AS (
     SELECT DISTINCT
-      evt_block_time,
-      evt_block_number,
       evt_tx_hash,
       wrappedToken AS vault_address,
       amountUnderlying,
@@ -24,8 +22,6 @@
     SELECT DISTINCT
       vm.vault_address,
       t.contract_address AS underlying_address,
-      vm.evt_block_time,
-      vm.evt_block_number,
       vm.evt_tx_hash
     FROM vault_mappings vm
     JOIN erc20_sonic.evt_transfer t ON t.evt_tx_hash = vm.evt_tx_hash
