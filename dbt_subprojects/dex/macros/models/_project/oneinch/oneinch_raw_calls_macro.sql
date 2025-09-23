@@ -61,8 +61,8 @@ with
     select *
     from {{ source(blockchain, 'traces') }}
     where true
-        and block_date >= timestamp '{{ date_from }}'
         and type = 'call'
+        and block_date >= timestamp '{{ date_from }}'
         {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
 )
 
@@ -74,6 +74,7 @@ select
     , block_time
     , tx_hash
     , tx_success
+    , upper('{{ stream }}') as protocol
     , contract_name
     , trace_address as call_trace_address -- the call prefix is needed for merging without renaming
     , success as call_success

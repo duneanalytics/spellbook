@@ -1,9 +1,9 @@
-{% set stream = 'executions' %}
+{% set substream = 'executions' %}
 
 {{
     config(
         schema = 'oneinch_evms',
-        alias = stream,
+        alias = substream,
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -22,14 +22,14 @@ executions as (
         select *
             , flags as _flags
             , 'classic' as mode
-        from {{ ref('oneinch_' + blockchain + '_ar_' + stream) }}
+        from {{ ref('oneinch_' + blockchain + '_ar_' + substream) }}
         
         union all
         
         select *
             , map_concat(flags, map_from_entries(array[('contracts_only', position('RFQ' in method) > 0 or flags['partial'] and not flags['multiple'])])) as _flags
             , if(flags['fusion'], 'fusion', 'limits') as mode
-        from {{ ref('oneinch_' + blockchain + '_lop_' + stream) }}
+        from {{ ref('oneinch_' + blockchain + '_lo_' + substream) }}
         
         union all
         
@@ -91,7 +91,7 @@ executions as (
             , native_decimals
             , map_concat(flags, map_from_entries(array[('second_side', true)])) as _flags
             , 'classic' as mode
-        from {{ ref('oneinch_' + blockchain + '_lop_' + stream) }}
+        from {{ ref('oneinch_' + blockchain + '_lo_' + substream) }}
         where true -- second side of LOP calls (when a direct call LOP method => users from two sides)
             and protocol = 'LOP'
             and flags['direct']
@@ -103,7 +103,7 @@ executions as (
     select *
         , flags as _flags
         , 'cross-chain' as mode
-    from {{ ref('oneinch_cc_' + stream) }}
+    from {{ ref('oneinch_cc_' + substream) }}
 
     union all
     

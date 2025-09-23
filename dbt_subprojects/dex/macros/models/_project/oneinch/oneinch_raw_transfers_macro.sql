@@ -12,31 +12,25 @@ calls as (
     from (
         {% for stream, stream_data in meta['streams'].items() %}
             -- STREAM: {{ stream }} --
-            {% set date_from = [stream_data['start']['transfers'], meta['blockchains']['start'][blockchain]] | max %}
-            {% for contract, contract_data in stream_data.contracts.items() if blockchain in contract_data.blockchains %}
-                -- CONTRACT: {{ contract }} --
-                {% for method, method_data in contract_data.methods.items() if blockchain in method_data.get('blockchains', contract_data.blockchains) %} -- method-level blockchains override contract-level blockchains
-                    -- METHOD: {{ method }} --
-                    select
-                        call_block_number as block_number
-                        , call_block_date as block_date
-                        , call_tx_hash as tx_hash
-                        , call_trace_address
-                        , contract_address as call_to
-                        , upper('{{ stream }}') as protocol
-                        , '{{ contract }}' as contract_name
-                        , '{{ method }}' as call_method
-                        , {{ method_data.get('selector', 'null') }} as call_selector
-                    from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}
-                    where true
-                        and call_success
-                        and call_block_time >= timestamp '{{ date_from }}' -- it is only needed for simple/easy dates
-                        {% if is_incremental() %}and {{ incremental_predicate('call_block_time') }}{% endif %}
-                    {% if not loop.last %}union{% endif %}
-                {% endfor %}
-                {% if not loop.last %}union{% endif %}
-            {% endfor %}
+            {% set date_from = [meta['blockchains']['start'][blockchain], stream_data['start']['transfers']] | max %}
+            select
+                block_number
+                , block_date
+                , tx_hash
+                , call_trace_address
+                , call_to
+                , protocol
+                , contract_name
+                , call_method
+                , call_selector
+            from {{ ref('oneinch_' + blockchain + '_' + stream + '_raw_calls') }}
+            where true
+                and call_success
+                and block_time >= timestamp '{{ date_from }}' -- it is only needed for simple/easy dates
+                {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
+            
             {% if not loop.last %}union{% endif %}
+            
         {% endfor %}
     )
 )

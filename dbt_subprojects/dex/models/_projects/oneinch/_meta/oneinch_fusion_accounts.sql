@@ -49,7 +49,7 @@ executors as (
 
 , fusion as (
     select blockchain, tx_hash, call_from as resolver_executor
-    from {{ ref('oneinch_lop') }}
+    from {{ ref('oneinch_evms_lo') }}
     where
         {% if is_incremental() %}
             {{ incremental_predicate('block_time') }}
