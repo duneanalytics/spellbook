@@ -8,6 +8,7 @@
 }}
 
   WITH vault_mappings AS (
+    -- Only ops team adds liquidity to buffer, so we can use these events to find vaults and amounts
     SELECT DISTINCT
       evt_tx_hash,
       wrappedToken AS vault_address,
@@ -26,6 +27,7 @@
     FROM vault_mappings vm
     JOIN erc20_sonic.evt_transfer t ON t.evt_tx_hash = vm.evt_tx_hash
       AND t.contract_address != vm.vault_address -- Exclude transfers of the vault token itself
+      AND t.value = vm.amountUnderlying -- Match the amount transferred
   )
 
     SELECT DISTINCT
