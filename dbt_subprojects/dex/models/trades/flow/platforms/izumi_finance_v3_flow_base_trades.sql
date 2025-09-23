@@ -10,7 +10,7 @@
     )
 }}
 
-{% set izumi_finance_start_date = "2024-01-01" %}  
+{% set izumi_finance_start_date = "2024-09-24" %}  
 
 WITH swaps AS (
     SELECT
