@@ -27,8 +27,19 @@ pools as (
 ) 
 
 select 
-    distinct 
-    * 
+    blockchain,
+    project,
+    version,
+    contract_address,
+    creation_block_time,
+    creation_block_number,
+    id,
+    fee,
+    tx_hash,
+    min(evt_index) as evt_index -- pick first
+    token0,
+    token1 
 from 
 pools 
+group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12 
 -- there's one single case of a velodrome pool being deployed twice (two events), using distinct here to filter it out
