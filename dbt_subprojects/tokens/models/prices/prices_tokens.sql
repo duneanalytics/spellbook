@@ -72,6 +72,8 @@ with erc20_prices_tokens as (
             token_id
             , blockchain
             , contract_address
+            , symbol
+            , decimals
         from {{ model }}
         {% if not loop.last -%}
         union all
@@ -84,11 +86,11 @@ with erc20_prices_tokens as (
         p.token_id
         ,p.blockchain
         ,p.contract_address
-        ,erc20.symbol
-        ,erc20.decimals
+        ,coalesce(erc20.symbol, p.symbol) as symbol
+        ,coalesce(erc20.decimals, p.decimals) as decimals
     from
         erc20_prices_tokens as p
-    inner join {{source('tokens','erc20')}} as erc20
+    left join {{source('tokens','erc20')}} as erc20
         on p.blockchain = erc20.blockchain
         and p.contract_address = erc20.contract_address
     where
