@@ -92,7 +92,8 @@ with prices_tokens as (
     from
         prices_tokens as p
     inner join {{source('tokens','erc20')}} as erc20
-        using (blockchain, contract_address)
+        on p.blockchain = erc20.blockchain
+        and p.contract_address = erc20.contract_address
     where
         p.blockchain is not null
         and p.contract_address is not null
