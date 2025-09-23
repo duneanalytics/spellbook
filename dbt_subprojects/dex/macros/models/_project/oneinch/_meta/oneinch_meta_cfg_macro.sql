@@ -1,4 +1,4 @@
-{% macro oneinch_meta_cfg_macro() %}
+{% macro oneinch_meta_cfg_macro(property=None) %}
 
 -- STREAMS CONFIG --
 -- start dates for sreams by default:
@@ -184,6 +184,10 @@
     "streams": streams,
     "blockchains": blockchains
 } %}
+
+{% if property is not none %}
+    {{ return(config[property]) }}
+{% endif %}
 
 {{ return(config) }}
 
