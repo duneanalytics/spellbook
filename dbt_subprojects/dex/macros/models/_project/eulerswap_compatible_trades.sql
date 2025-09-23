@@ -42,7 +42,6 @@ dexs as (
         , ep.creation_block_time as pool_creation_time 
         , s.evt_tx_hash as tx_hash
         , s.evt_index as tx_index 
-    
         -- EulerSwap Instance event from pool's perspective, so flipping the sign to be user's perspective
         , case 
             when s.amount0In != 0 then -1 * cast(s.amount0In as double)
@@ -211,5 +210,7 @@ select * from eulerswap_og_trades
 union all 
 
 select * from eulerswap_univ4_trades
+
+--- 
 
 {% endmacro %}

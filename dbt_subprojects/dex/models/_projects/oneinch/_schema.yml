@@ -312,6 +312,7 @@ models:
             - blockchain
             - tx_hash
             - trace_address
+            - evt_index
     columns:
       - name: blockchain
         data_tests:
