@@ -28,7 +28,7 @@ WITH dexs AS (
         WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
 )
-
+-- DBT Model
 SELECT
     'arbitrum' AS blockchain,
     'skate_fi' AS project,
