@@ -145,7 +145,7 @@
             "start": "2024-02-12",
             "methods": {
                 "fillOrder":             samples["v4"],
-                "fillOrderArgs":         dict(samples["v4"], args="args", streams=["lop", "cc"]),
+                "fillOrderArgs":         dict(samples["v4"], args="args", streams=["lo", "cc"]),
                 "fillContractOrder":     samples["v4"],
                 "fillContractOrderArgs": dict(samples["v4"], args="args"),
             },

@@ -20,7 +20,7 @@ with
 
 decoded as (
     {% for contract, contract_data in contracts.items() if blockchain in contract_data['blockchains'] %}
-        {% for method, method_data in contract_data.methods.items() if for_stream in method_data.get('streams', ['lop']) %}
+        {% for method, method_data in contract_data.methods.items() if for_stream in method_data.get('streams', ['lo']) %}
             select
                 call_block_number as block_number
                 , call_block_time as block_time
@@ -76,13 +76,13 @@ decoded as (
         , substr(input, call_input_length - mod(call_input_length - 4, 32) + 1) as call_input_remains
         , call_from in ({{ settlements }}) as call_from_settlement
         , array_join(call_trace_address, '') as call_id
-    from {{ ref('oneinch_' + blockchain + '_lop_raw_calls') }}
+    from {{ ref('oneinch_' + blockchain + '_lo_raw_calls') }}
     where true
         and block_date >= timestamp '{{ date_from }}'
         {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
 )
 
-{% if stream == 'lop' %}, native_prices as (
+{% if stream == 'lo' %}, native_prices as (
     select
         minute
         , price
@@ -104,7 +104,7 @@ select
     , block_time
     , tx_hash
     , tx_success
-{% if stream == 'lop' %}
+{% if stream == 'lo' %}
     , tx_from
     , tx_to
     , tx_nonce
@@ -123,7 +123,7 @@ select
     , call_output
     , call_error
     , call_type
-    , 'LOP' as protocol
+    , upper('{{ stream }}') as protocol
     , protocol_version
     , contract_name
     , coalesce(order_hash, concat(tx_hash, from_hex(ltrim(cast(cast(cast(concat('0', array_join(call_trace_address, '')) as uint256) as varbinary) as varchar), '0x00')))) as order_hash
@@ -150,7 +150,7 @@ select
     , minute
     , block_date
     , block_month
-{% if stream == 'lop' %}
+{% if stream == 'lo' %}
     , price as native_price
     , decimals as native_decimals
 from ({{
