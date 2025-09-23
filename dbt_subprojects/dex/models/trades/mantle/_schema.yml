@@ -133,3 +133,20 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('tropicalswap_mantle_base_trades_seed')
+
+  - name: carbon_defi_mantle_base_trades
+    meta:
+      blockchain: mantle
+      sector: dex
+      project: carbon_defi
+      contributors: NIXBNT
+    config:
+      tags: ["mantle", "dex", "trades", "carbon_defi"]
+    description: "Carbon_defi mantle base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('carbon_defi_mantle_base_trades_seed')
