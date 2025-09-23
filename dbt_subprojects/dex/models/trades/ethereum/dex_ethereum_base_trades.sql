@@ -48,6 +48,9 @@
     , ref('xchange_v2_ethereum_base_trades')
     , ref('fluid_v1_ethereum_base_trades')
     , ref('native_ethereum_base_trades')
+    , ref('eulerswap_ethereum_base_trades')
+    , ref('ekubo_v1_ethereum_base_trades')
+    , ref('angstrom_ethereum_base_trades')
 ] %}
 with base_union as (
     SELECT *
@@ -86,6 +89,7 @@ with base_union as (
     )
     WHERE
         duplicates_rank = 1
+        AND tx_hash != 0x1c27c4d625429acfc0f97e466eda725fd09ebdc77550e529ba4cbdbc33beb97b -- inflated volume (10trillion)
 )
 
 {{

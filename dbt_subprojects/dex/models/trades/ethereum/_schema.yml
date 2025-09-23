@@ -8,7 +8,6 @@ models:
       - test_acceptable_usd_amount:
           column_name: amount_usd
           max_value: 1000000000
-
   - name: uniswap_v1_ethereum_base_trades
     meta:
       blockchain: ethereum
@@ -707,3 +706,61 @@ models:
           seed_file: ref('native_ethereum_base_trades_seed')
           filter:
             version: 1
+
+  - name: angstrom_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: angstrom
+      contributors: jnoorchashm37
+    config:
+      tags: ["ethereum", "dex", "trades", "native"]
+    description: "angstrom ethereum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('angstrom_ethereum_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: eulerswap_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: eulerswap
+      contributors: Henrystats
+    config:
+      tags: ["ethereum", "dex", "trades", "eulerswap"]
+    description: "eulerswap ethereum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('eulerswap_ethereum_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: ekubo_v1_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: ekubo
+      contributors: 0xsandeshk
+    config:
+      tags: ["ethereum", "dex", "trades", "ekubo"]
+    description: "ekubo ethereum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('ekubo_v1_ethereum_base_trades_seed')
+          filter:
+            version: 1
+

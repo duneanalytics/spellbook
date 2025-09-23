@@ -173,6 +173,18 @@
             "project":          "Bebop",
             "name":             "BebopOrder",
             "order_hash":       "substr(topic1  , 16 + 1                , 16)",
+        },
+        "0xfeb087be954e9eb692f863466081925668f8f5214f5c1d1a28438df811cbf042": {
+            "project":          "Dexalot",
+            "name":             "SwapExecuted",
+            "taker":            "substr(data    , 32*0 + 12 + 1         , 20)",
+            "receiver":         "substr(data    , 32*1 + 12 + 1         , 20)",
+            "maker_asset":      "substr(data    , 32*4 + 12 + 1         , 20)",
+            "taker_asset":      "substr(data    , 32*3 + 12 + 1         , 20)",
+            "making_amount":    "substr(data    , 32*2 + 1              , 32)",
+            "making_amount":    "substr(data    , 32*6 + 1              , 32)",
+            "taking_amount":    "substr(data    , 32*5 + 1              , 32)",
+            "order_hash":       "substr(topic1  , 1                     , 32)",
         }
     }
 %}
