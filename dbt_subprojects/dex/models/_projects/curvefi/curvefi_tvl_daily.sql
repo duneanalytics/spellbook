@@ -40,8 +40,6 @@ pool_addresses AS (
 
   union all 
 
-  union all 
-
   select 
     pool_address as address,
     coin3 as token_address
