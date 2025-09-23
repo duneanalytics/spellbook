@@ -13,7 +13,7 @@
     uniswap_compatible_pools(
           blockchain = 'optimism'
         , project = 'velodrome'
-        , version = '2_c1'
+        , version = '2_cl'
         , pool_column_name = 'pool'
         , token0_column_name = 'token0'
         , token1_column_name = 'token1'
