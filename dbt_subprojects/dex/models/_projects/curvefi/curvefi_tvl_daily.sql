@@ -16,6 +16,8 @@ pool_addresses AS (
   select 
     pool_address as address,
     coin0 as token_address
+  from 
+  {{ ref('curve_ethereum_view_pools') }}
 ),
 
 filtered_balances AS (
