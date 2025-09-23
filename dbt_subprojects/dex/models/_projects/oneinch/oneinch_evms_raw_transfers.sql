@@ -9,7 +9,7 @@
     )
 }}
 
-{% for blockchain, exposed in oneinch_meta_cfg_macro(property = 'blockchains')['exposed'].items() if exposed == 'evms' %}
+{% for blockchain, exposed in oneinch_meta_cfg_macro()['blockchains']['exposed'].items() if exposed == 'evms' %}
     select * from {{ ref('oneinch_' + blockchain + '_' + stream) }}
     {% if not loop.last %}union all{% endif %}
 {% endfor %}

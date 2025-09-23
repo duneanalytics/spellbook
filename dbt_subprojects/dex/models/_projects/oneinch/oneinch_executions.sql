@@ -18,7 +18,7 @@
 with
 
 executions as (
-    {% for blockchain, exposed in oneinch_meta_cfg_macro(property = 'blockchains')['exposed'].items() if exposed == 'evms' %}
+    {% for blockchain, exposed in oneinch_meta_cfg_macro()['blockchains']['exposed'].items() if exposed == 'evms' %}
         select *
             , flags as _flags
             , 'classic' as mode
@@ -109,7 +109,7 @@ executions as (
     
     select
         blockchain
-        , {{ oneinch_meta_cfg_macro(property = 'blockchains')['chain_id'].get('solana', 'null') }} as chain_id -- TO DO
+        , {{ oneinch_meta_cfg_macro()['blockchains']['chain_id'].get('solana', 'null') }} as chain_id -- TO DO
         , block_slot as block_number
         , block_time
         , from_base58(tx_id) as tx_hash

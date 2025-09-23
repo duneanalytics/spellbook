@@ -1,9 +1,7 @@
-{% set stream = 'cc_executions' %}
-
 {{
     config(
         schema = 'oneinch',
-        alias = stream,
+        alias = 'cc_executions',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -13,9 +11,9 @@
     )
 }}
 
-{% set meta = oneinch_meta_cfg_macro(property = 'blockchains') %}
-{% set date_from = oneinch_meta_cfg_macro(property = 'streams')[stream]['start'] %}
-{% set wrapper = meta['wrapped_native_token_address'][blockchain] %}
+{% set meta = oneinch_meta_cfg_macro() %}
+{% set date_from = meta['streams']['cc']['start']['executions'] %}
+{% set wrapper = meta['blockchains']['wrapped_native_token_address'][blockchain] %}
 {% set same = '(0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, ' + wrapper + ')' %}
 
 
@@ -23,8 +21,8 @@
 with
 
 meta(dst_blockchain, dst_chain_id) as (values
-    {% for blockchain, exposed in meta['exposed'].items() if exposed == 'evms' %} -- TO DO: all exposed blockchains, i.e. add solana for now
-        {% if not loop.first %}, {% endif %}('{{ blockchain }}', {{ meta['chain_id'][blockchain] }})
+    {% for blockchain, exposed in meta['blockchains']['exposed'].items() if exposed == 'evms' %} -- TO DO: all exposed blockchains, i.e. add solana for now
+        {% if not loop.first %}, {% endif %}('{{ blockchain }}', {{ meta['blockchains']['chain_id'][blockchain] }})
     {% endfor %}
 )
 
