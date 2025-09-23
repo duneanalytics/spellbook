@@ -14,7 +14,7 @@
           blockchain = 'optimism'
         , project = 'velodrome'
         , version = '1'
-        , token_transfers = source('erc20_base', 'evt_Transfer')
+        , token_transfers = source('erc20_optimism', 'evt_Transfer')
         , liquidity_pools = ref('velodrome_optimism_pools')
     )
 }}
