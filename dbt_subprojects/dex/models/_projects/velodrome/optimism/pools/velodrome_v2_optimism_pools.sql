@@ -43,3 +43,4 @@ from
 pools 
 group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12 
 -- there's one single case of a velodrome pool being deployed twice (two events), using distinct here to filter it out
+-- attempt another rerun 
