@@ -67,5 +67,8 @@ sources:
       - name: AggregationRouterV6_call_permitAndCall
       - name: EscrowFactoryV1_call_createDstEscrow
       - name: EscrowFactoryV1_evt_SrcEscrowCreated
+      - name: EscrowV1_call_withdraw
+      - name: EscrowV1_call_cancel
+      - name: EscrowV1_call_rescueFunds
       - name: lop
       - name: ar
