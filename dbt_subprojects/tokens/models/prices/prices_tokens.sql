@@ -8,9 +8,8 @@
         )
 }}
 
-{% set prices_models = [
-    ref('prices_native_tokens')
-    ,ref('prices_arbitrum_tokens')
+{% set erc20_prices_models = [
+    ref('prices_arbitrum_tokens')
     ,ref('prices_avalanche_c_tokens')
     ,ref('prices_bitcoin_tokens')
     ,ref('prices_bnb_tokens')
@@ -64,17 +63,15 @@
     ,ref('prices_somnia_tokens')
 ] %}
 
-with prices_tokens as (
+with erc20_prices_tokens as (
     select *
     from
     (
-        {% for model in prices_models -%}
+        {% for model in erc20_prices_models -%}
         select
             token_id
             , blockchain
             , contract_address
-            , symbol
-            , decimals
         from {{ model }}
         {% if not loop.last -%}
         union all
@@ -90,7 +87,7 @@ with prices_tokens as (
         ,erc20.symbol
         ,erc20.decimals
     from
-        prices_tokens as p
+        erc20_prices_tokens as p
     inner join {{source('tokens','erc20')}} as erc20
         on p.blockchain = erc20.blockchain
         and p.contract_address = erc20.contract_address
@@ -98,22 +95,8 @@ with prices_tokens as (
         p.blockchain is not null
         and p.contract_address is not null
 )
-, native as (
-    select
-        p.token_id
-        , d.name as blockchain
-        , d.token_address as contract_address
-        , d.token_symbol as symbol
-        , d.token_decimals as decimals
-    from prices_tokens as p
-    inner join {{source('dune','blockchains')}} as d
-        on d.token_symbol = p.symbol
-    where
-        p.blockchain is null
-        and p.contract_address is null
-)
 select *
 from erc20
 union all
 select *
-from native
+from {{ref('prices_native_tokens')}}
