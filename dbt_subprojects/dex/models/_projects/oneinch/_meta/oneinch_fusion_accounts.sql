@@ -30,7 +30,7 @@ executors as (
 )
 
 , evms_traces as (
-    {% for blockchain in oneinch_exposed_blockchains_list() %}
+    {% for blockchain, exposed in oneinch_meta_cfg_macro()['blockchains']['exposed'].items() if exposed == 'evms' %}
         select
             '{{ blockchain }}' as blockchain
             , tx_hash
@@ -74,7 +74,7 @@ executors as (
 )
 
 , evms_transactions as (
-    {% for blockchain in oneinch_exposed_blockchains_list() %}
+    {% for blockchain, exposed in oneinch_meta_cfg_macro()['blockchains']['exposed'].items() if exposed == 'evms' %}
         select
             '{{ blockchain }}' as blockchain
             , hash as tx_hash

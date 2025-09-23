@@ -4,7 +4,7 @@
 {{
     config(
         schema = 'oneinch_' + blockchain,
-        alias = stream,
+        alias = stream + '_raw_calls',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
