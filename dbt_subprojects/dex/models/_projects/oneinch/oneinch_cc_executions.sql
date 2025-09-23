@@ -13,16 +13,15 @@
 
 {% set meta = oneinch_meta_cfg_macro() %}
 {% set date_from = meta['streams']['cc']['start']['executions'] %}
-{% set wrapper = meta['blockchains']['wrapped_native_token_address'][blockchain] %}
-{% set same = '(0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, ' + wrapper + ')' %}
+{% set same = '0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
 
 
 
 with
 
-meta(dst_blockchain, dst_chain_id) as (values
+meta(blockchain, chain_id, wrapper) as (values
     {% for blockchain, exposed in meta['blockchains']['exposed'].items() if exposed == 'evms' %} -- TO DO: all exposed blockchains, i.e. add solana for now
-        {% if not loop.first %}, {% endif %}('{{ blockchain }}', {{ meta['blockchains']['chain_id'][blockchain] }})
+        {% if not loop.first %}, {% endif %}('{{ blockchain }}', {{ meta['blockchains']['chain_id'][blockchain] }}, {{ meta['blockchains']['wrapped_native_token_address'][blockchain] }})
     {% endfor %}
 )
 
@@ -45,14 +44,15 @@ meta(dst_blockchain, dst_chain_id) as (values
             and block_date >= timestamp '{{ date_from }}'
             {% if is_incremental() %}and hashlock in (select hashlock from {{ ref('oneinch_cc') }} where {{ incremental_predicate('block_time') }} group by 1){% endif %}
     )
-    left join meta using(dst_chain_id)
+    left join (select blockchain as dst_blockchain, chain_id as dst_chain_id from meta) using(dst_chain_id)
 )
 
 , transfers as (
     select *
-        , if(transfer_contract_address in {{ same }}, {{ same }}, (transfer_contract_address)) as same
+        , if(transfer_contract_address in ({{ same }}, wrapper), ({{ same }}, wrapper), (transfer_contract_address)) as same
         , row_number() over(partition by block_month, block_date, block_number, tx_hash order by transfer_trace_address desc) as transfer_number_desc
     from {{ ref('oneinch_evms_raw_transfers') }} -- also need all the blockchains
+    join (select blockchain, wrapper from meta) using(blockchain)
     where true
         and nested
         and related
