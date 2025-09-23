@@ -30,3 +30,5 @@ select
     * 
 from 
 filtered_balances
+
+-- test retry 
