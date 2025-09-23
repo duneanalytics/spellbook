@@ -62,6 +62,7 @@
     , ref('elk_finance_arbitrum_base_trades')
     , ref('gammaswap_arbitrum_base_trades')
     , ref('native_arbitrum_base_trades')
+    , ref('skate_fi_arbitrum_base_trades')
 ] %}
 
 with base_union as (
