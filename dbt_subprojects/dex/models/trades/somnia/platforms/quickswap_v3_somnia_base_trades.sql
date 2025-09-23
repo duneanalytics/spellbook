@@ -17,6 +17,6 @@
         version = '3',
         Pair_evt_Swap = source('quickswap_somnia', 'algebrapool_evt_swap'),
         Factory_evt_PoolCreated = source('quickswap_somnia', 'algebrafactory_call_createpool'),
-        pair_column_name = 'output_0'
+        pair_column_name = 'output_pool'
     )
 }} 

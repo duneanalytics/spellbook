@@ -17,6 +17,6 @@
         version = '3',
         Pair_evt_Swap = source('machinex_peaq', 'machinexv3pool_evt_swap'),
         Factory_evt_PoolCreated = source('machinex_peaq', 'machinexv3factory_call_createpool'),
-        pair_column_name = 'output_0'
+        pair_column_name = 'output_pool'
     )
 }} 

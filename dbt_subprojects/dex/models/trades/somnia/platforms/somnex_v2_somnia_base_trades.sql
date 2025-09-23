@@ -17,6 +17,6 @@
         version = '2',
         Pair_evt_Swap = source('somnex_somnia', 'somnexammpair_evt_swap'),
         Factory_evt_PairCreated = source('somnex_somnia', 'somnexammfactory_call_createpair'),
-        pair_column_name = 'output_0'
+        pair_column_name = 'output_pair'
     )
 }} 
