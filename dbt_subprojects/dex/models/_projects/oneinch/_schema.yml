@@ -499,3 +499,128 @@ models:
           - not_null
       - name: resolver_name
       - name: resolver_address
+
+  - name: oneinch_escrow_results
+    meta:
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
+      sector: oneinch
+      contributors: ['max-morrow', 'grkhr']
+    config:
+      tags: ['oneinch', 'cross-chain']
+    description: >
+        escrow results
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - trace_address
+    columns:
+      - name: blockchain
+        data_tests:
+          - not_null
+      - name: block_number
+      - name: block_time
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: trace_address
+        data_tests:
+          - not_null
+      - name: escrow
+      - name: hashlock
+      - name: selector
+      - name: method
+      - name: secret
+      - name: order_hash
+      - name: token
+      - name: amount
+      - name: rescue_token
+      - name: rescue_amount
+      - name: call_success
+      - name: tx_success
+      - name: block_month
+
+  - name: oneinch_aave_tokens
+    config:
+      tags: ['oneinch', 'tokens']
+    description: >
+        Aave v3 aToken metadata for supported 1inch chains
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - atoken_address
+    columns:
+      - name: blockchain
+        data_tests:
+          - not_null
+      - name: atoken_address
+        data_tests:
+          - not_null
+      - name: underlying_address
+        data_tests:
+          - not_null
+      - name: atoken_decimals
+      - name: atoken_symbol
+      - name: atoken_name
+      - name: block_time
+
+  - name: oneinch_ondo_tokens
+    config:
+      tags: ['oneinch', 'tokens']
+    description: >
+        Ondo GM token deployments tracked for 1inch
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - contract_address
+            - blockchain
+    columns:
+      - name: blockchain         
+      - name: contract_address
+        data_tests:
+          - not_null
+      - name: symbol
+      - name: name
+      - name: block_time
+
+  - name: oneinch_escrow_dst_creations
+    meta:
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
+      sector: oneinch
+      contributors: ['max-morrow', 'grkhr']
+    config:
+      tags: ['oneinch', 'internal']
+    description: >
+        escrow dst creations
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - trace_address
+    columns:
+      - name: blockchain
+        data_tests:
+          - not_null
+      - name: block_number
+      - name: block_time
+      - name: tx_hash
+        data_tests:
+          - not_null
+      - name: trace_address
+        data_tests:
+          - not_null
+      - name: factory
+      - name: escrow
+      - name: order_hash
+      - name: hashlock
+      - name: maker
+      - name: taker
+      - name: token
+      - name: amount
+      - name: safety_deposit
+      - name: timelocks
+      - name: call_success
+      - name: block_month
