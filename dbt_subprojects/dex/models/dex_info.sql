@@ -230,4 +230,5 @@ FROM (VALUES
     , ('blackhole', 'Blackhole', 'Direct', 'BlackholeDEX')
     , ('ekubo', 'Ekubo', 'Direct', 'EkuboProtocol')
     , ('angstrom', 'Angstrom', 'Direct', 'angstromxyz')
+    , ('somnex', 'SomneX', 'Direct', 'SomneX')
 ) AS temp_table (project, name, marketplace_type, x_username)

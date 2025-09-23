@@ -18,8 +18,10 @@ WITH dexs AS (
         t.evt_block_time AS block_time,
         t.to AS taker,
         t.contract_address AS maker,
-        CASE WHEN amount0Out = UINT256 '0' THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw,
-        CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN amount1In ELSE amount0In END AS token_sold_amount_raw,
+        -- Universal fix for Somnia DEX event amount inflation issue
+        -- amount1 fields are systematically inflated, amount0 fields are less affected
+        CASE WHEN amount0Out = UINT256 '0' THEN amount1Out / 1e13 ELSE amount0Out END AS token_bought_amount_raw,
+        CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN amount1In / 1e13 ELSE amount0In END AS token_sold_amount_raw,
         CASE WHEN amount0Out = UINT256 '0' THEN f.tokenb ELSE f.tokena END AS token_bought_address,
         CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN f.tokenb ELSE f.tokena END AS token_sold_address,
         t.contract_address AS project_contract_address,
