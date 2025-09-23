@@ -328,5 +328,3 @@ prices_day as (
         and tl.block_date = pd_b.block_date 
         and tl.blockchain = pd_b.blockchain 
 {% endif %}
-
--- force r
