@@ -1,0 +1,20 @@
+packages:
+  - name: dbt_utils
+    package: dbt-labs/dbt_utils
+    version: 1.1.1
+  - name: codegen
+    package: dbt-labs/codegen
+    version: 0.12.1
+  - git: https://github.com/stellar/stellar-dbt-public.git
+    name: stellar_dbt_public
+    revision: 60a8e4e89ae2136c3da79cbeab7461391c1f11e9
+  - name: elementary
+    package: elementary-data/elementary
+    version: 0.19.4
+  - name: dbt_airflow_macros
+    package: yu-iskw/dbt_airflow_macros
+    version: 0.3.0
+  - name: dbt_project_evaluator
+    package: dbt-labs/dbt_project_evaluator
+    version: 0.14.2
+sha1_hash: 70f93f54fcbd215b1870529dc73ff2016b80b295
