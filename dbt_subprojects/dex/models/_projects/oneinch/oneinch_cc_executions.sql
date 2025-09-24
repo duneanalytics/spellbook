@@ -42,7 +42,7 @@ meta(blockchain, chain_id, wrapper) as (values
         from {{ ref('oneinch_cc') }} -- all blockchains are needed to merge src and dst results
         where true
             and block_date >= timestamp '{{ date_from }}'
-            {% if is_incremental() %}and hashlock in (select hashlock from {{ ref('oneinch_cc') }} where {{ incremental_predicate('block_time') }} group by 1){% endif %}
+            {% if is_incremental() %}and hashlock in (select hashlock from {{ ref('oneinch_cc') }} where {{ incremental_predicate('block_time') }} group by 1){% endif %} -- e.g. if "cancel" happens a week later, update the whole trade
     )
     left join (select blockchain as dst_blockchain, chain_id as dst_chain_id from meta) using(dst_chain_id)
 )
@@ -58,7 +58,7 @@ meta(blockchain, chain_id, wrapper) as (values
         and related
         and protocol = 'CC'
         and block_date >= timestamp '{{ date_from }}'
-        {% if is_incremental() %}and block_time >= (select min(block_time) from {{ ref('oneinch_cc') }} where {{ incremental_predicate('block_time') }}){% endif %}
+        {% if is_incremental() %}and block_time >= (select min(block_time) from {{ ref('oneinch_cc') }} where {{ incremental_predicate('block_time') }}){% endif %} -- c?? why just not use incremental_predicate directly? 
 )
 
 , amounts as (
@@ -136,18 +136,18 @@ select
 
     , token as src_token_address
     , cast(element_at(complement, 'order_src_amount') as uint256) as src_token_amount
-    , src_executed.address
-    , src_executed.symbol
-    , src_executed_amount
+    , src_executed.address as src_executed_token_address
+    , src_executed.symbol as src_executed_token_symbol
+    , src_executed.amount as src_executed_token_amount
     , src_executed_amount_usd
 
     , dst_blockchain
 
     , cast(element_at(complement, 'dst_token') as uint256) as dst_token_address
     , cast(element_at(complement, 'order_dst_amount') as uint256) as dst_token_amount
-    , dst_executed.address
-    , dst_executed.symbol
-    , dst_executed_amount
+    , dst_executed.address as dst_executed_token_address
+    , dst_executed.symbol as dst_executed_token_symbol
+    , dst_executed.amount as dst_executed_token_amount
     , dst_executed_amount_usd
 
     , actions

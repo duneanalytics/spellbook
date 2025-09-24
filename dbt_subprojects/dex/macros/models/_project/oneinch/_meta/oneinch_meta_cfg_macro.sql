@@ -10,18 +10,18 @@
     set streams = {
         "ar": {
             "start": {
+                "_initial"  : "2025-09-10",
                 "raw_calls" : "2025-09-10",
                 "transfers" : "2025-09-10",
-                "stream"    : "2025-09-10",
                 "executions": "2025-09-10",
             },
             "contracts" : oneinch_ar_cfg_contracts_macro(),
         },
         "lo": {
             "start": {
+                "_initial"  : "2025-09-10",
                 "raw_calls" : "2025-09-10",
                 "transfers" : "2025-09-10",
-                "stream"    : "2025-09-10",
                 "executions": "2025-09-10",
                 "fusion"    : "2025-09-10",
             },
@@ -29,9 +29,9 @@
         },
         "cc": {
             "start": {
+                "_initial"  : "2025-09-10",
                 "raw_calls" : "2025-09-10",
                 "transfers" : "2025-09-10",
-                "stream"    : "2025-09-10",
                 "executions": "2025-09-10",
             },
             "contracts" : oneinch_cc_cfg_contracts_macro(),
@@ -42,7 +42,8 @@
 -- BLOCKCHAINS CONFIG --
 {%
     set blockchains = {
-        "exposed": {
+        "exposed": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea", "sonic", "unichain", "solana", "klaytn", "aurora"],
+        "category": {
             "ethereum"      : "evms",
             "bnb"           : "evms",
             "polygon"       : "evms",
@@ -57,6 +58,8 @@
             "sonic"         : "evms",
             "unichain"      : "evms",
             "solana"        : "solana",
+            "klaytn"        : "evms",
+            "aurora"        : "evms",
         },
         "start": {
             "ethereum"      : "2019-06-03",
@@ -92,6 +95,7 @@
             "linea"         : "59144",
             "sonic"         : "146",
             "unichain"      : "130",
+            "solana"        : "501",
         },
         "native_token_symbol": {
             "ethereum"      : "'ETH'",
@@ -127,6 +131,7 @@
             "sonic"         : "0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38",
             "unichain"      : "0x4200000000000000000000000000000000000006",
             "klaytn"        : "0x",
+            "solana"        : "from_base58('So11111111111111111111111111111111111111112')",
         },
         "explorer_link": {
             "ethereum"      : "'https://etherscan.io'",
@@ -144,6 +149,7 @@
             "linea"         : "'https://lineascan.build'",
             "sonic"         : "'https://sonicscan.org'",
             "unichain"      : "'https://uniscan.xyz'",
+            "solana"        : "'https://solscan.io'",
         },
         "fusion_settlement_addresses": {
             "ethereum"      : ['0x2ad5004c60e16e54d5007c80ce329adde5b51ef5', '0xabd4e5fb590aa132749bbf2a04ea57efbaac399e', '0xfb2809a5314473e1165f6b58018e20ed8f07b840', '0xa88800cd213da5ae406ce248380802bd53b47647'],

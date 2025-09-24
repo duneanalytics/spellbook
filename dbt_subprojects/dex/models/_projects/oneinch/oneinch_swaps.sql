@@ -34,13 +34,13 @@ select
     
     , max(coalesce(src_executed_address, src_token_address)) as src_token_address
     , max(src_token_amount) as src_token_amount
-    , max(coalesce(src_executed_symbol, '')) as src_token_symbol
+    , max(src_executed_symbol) as src_token_symbol
     , sum(src_executed_amount) as src_executed_amount
     , sum(src_executed_amount_usd) as src_executed_amount_usd
 
     , max(coalesce(dst_executed_address, dst_token_address)) as dst_token_address
     , max(dst_token_amount) as dst_token_amount
-    , max(coalesce(dst_executed_symbol, '')) as dst_token_symbol
+    , max(dst_executed_symbol) as dst_token_symbol
     , sum(dst_executed_amount) as dst_executed_amount
     , sum(dst_executed_amount_usd) as dst_executed_amount_usd
 

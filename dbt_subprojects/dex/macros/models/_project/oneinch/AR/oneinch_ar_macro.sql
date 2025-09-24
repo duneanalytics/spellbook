@@ -3,7 +3,7 @@
 {% set stream = 'ar' %}
 {% set meta = oneinch_meta_cfg_macro() %}
 {% set contracts = meta['streams'][stream]['contracts'] %}
-{% set date_from = [meta['blockchains']['start'][blockchain], meta['streams'][stream]['start']['stream']] | max %}
+{% set date_from = [meta['blockchains']['start'][blockchain], meta['streams'][stream]['start']['_initial']] | max %}
 
 {% set wrapper = meta['blockchains']['wrapped_native_token_address'][blockchain] %}
 {% set chain_id = meta['blockchains']['chain_id'][blockchain] %}
@@ -141,7 +141,7 @@ decoded as (
     left join (select pool as last_pool, tokens as last_pool_tokens from pools_list) using(last_pool)
 )
 
-, native_prices as (
+, native_prices as (-- we join prices at this level, not on "raw_transfers", because there could be a call without transfers for which we should calculate tx cost
     select
         minute
         , price

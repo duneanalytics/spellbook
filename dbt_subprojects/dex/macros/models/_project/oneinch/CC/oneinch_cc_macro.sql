@@ -3,7 +3,7 @@
 {% set stream = 'cc' %}
 {% set meta = oneinch_meta_cfg_macro() %}
 {% set contracts = meta['streams'][stream]['contracts'] %}
-{% set date_from = [meta['blockchains']['start'][blockchain], meta['streams'][stream]['start']['stream']] | max %}
+{% set date_from = [meta['blockchains']['start'][blockchain], meta['streams'][stream]['start']['_initial']] | max %}
 {% set wrapper = meta['blockchains']['wrapped_native_token_address'][blockchain] %}
 
 
@@ -25,7 +25,7 @@ iterations as (
     from ({{ oneinch_cc_handle_results_macro(blockchain = blockchain, contracts = contracts, date_from = date_from) }})
 )
 
-, native_prices as (
+, native_prices as (-- we join prices at this level, not on "raw_transfers", because there could be a call without transfers for which we should calculate tx cost
     select
         minute
         , price

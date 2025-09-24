@@ -7,6 +7,9 @@
     )
 }}
 
+{% set src_symbol = "coalesce(src_executed_symbol, '')" %}
+{% set dst_symbol = "coalesce(dst_executed_symbol, '')" %}
+
 
 
 select
@@ -16,11 +19,11 @@ select
     , block_date
     , block_month
     , block_time
-    , coalesce(dst_executed_symbol, '') as token_bought_symbol
-    , coalesce(src_executed_symbol, '') as token_sold_symbol
+    , {{ dst_symbol }} as token_bought_symbol
+    , {{ src_symbol }} as token_sold_symbol
     , case
-        when lower(src_executed_symbol) > lower(dst_executed_symbol) then concat(dst_executed_symbol, '-', src_executed_symbol)
-        else concat(src_executed_symbol, '-', dst_executed_symbol)
+        when lower({{ src_symbol }}) > lower({{ dst_symbol }}) then concat({{ dst_symbol }}, '-', {{ src_symbol }})
+        else concat({{ src_symbol }}, '-', {{ dst_symbol }})
     end as token_pair
     , cast(dst_executed_amount as double) / pow(10, cast(element_at(complement, 'dst_decimals') as bigint)) as token_bought_amount
     , cast(src_executed_amount as double) / pow(10, cast(element_at(complement, 'src_decimals') as bigint)) as token_sold_amount

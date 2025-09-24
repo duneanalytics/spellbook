@@ -109,7 +109,7 @@ executions as (
     
     select
         blockchain
-        , {{ oneinch_meta_cfg_macro()['blockchains']['chain_id'].get('solana', 'null') }} as chain_id -- TO DO
+        , {{ oneinch_meta_cfg_macro()['blockchains']['chain_id'].get('solana', 'null') }} as chain_id
         , block_slot as block_number
         , block_time
         , from_base58(tx_id) as tx_hash
@@ -172,7 +172,7 @@ executions as (
         , null as native_price -- TO DO
         , null as native_decimals -- TO DO
         , cast(null as map(varchar, boolean)) as _flags
-        , 'fusion' as mode
+        , 'fusion' as mode -- TO DO
     from {{ source('oneinch_solana', 'swaps') }} -- TO DO: swaps -> executions
 )
 
@@ -236,3 +236,6 @@ select
     , native_decimals
     , {{ dbt_utils.generate_surrogate_key(["blockchain", "tx_hash", "array_join(call_trace_address, '')", "mode"]) }} as id -- TO DO: make it orderly (with block_number & tx_index)
 from executions
+{% if is_incremental() %}
+    where {{ incremental_predicate('block_time') }}
+{% endif %}

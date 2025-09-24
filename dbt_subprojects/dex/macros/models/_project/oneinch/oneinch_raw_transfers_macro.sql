@@ -58,7 +58,7 @@ calls as (
         , block_date
         , slice(transfer_trace_address, 1, cardinality(call_trace_address)) = call_trace_address as nested -- nested transfers only
         , reduce(call_trace_addresses, call_trace_address, (r, x) -> if(slice(transfer_trace_address, 1, cardinality(x)) = x and x > r, x, r), r -> r) = call_trace_address as related -- transfers related to the call only, i.e. without transfers in nested calls
-    from bonded
+    from calls
     join transfers using(block_date, block_number, tx_hash)
 )
 
