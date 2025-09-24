@@ -12,6 +12,8 @@
 -- Converted from Snowflake materialized view to dbt incremental model
 -- Covers: Suilend, Navi, Scallop, Bucket, Alphalend
 
+{% set sui_project_start_date = var('sui_project_start_date', '2025-09-16') %}
+
 with suilend_base as (
     -- Suilend uses a single monolith object containing an array of reserves.
     -- We use array index notation like existing Sui models (following aftermath pattern)
@@ -35,6 +37,7 @@ with suilend_base as (
         checkpoint
     from {{ source('sui','objects') }}
     where cast(type_ as varchar) like '0xf95b06141ed4a174f239417323bde3f209b972f5930d8521ea38a52aff3a6ddf::lending_market::LendingMarket<%>'
+        and from_unixtime(timestamp_ms/1000) >= timestamp '{{ sui_project_start_date }}'
     {% if is_incremental() %}
     and checkpoint > coalesce((select max(checkpoint) from {{ this }} where protocol = 'suilend'), 0)
     {% endif %}
@@ -63,6 +66,7 @@ navi_base as (
     from {{ source('sui','objects') }}
     where cast(type_ as varchar) like '%::storage::ReserveData>%' -- More generic to catch versions
         and json_extract_scalar(object_json, '$.value.coin_type') is not null
+        and from_unixtime(timestamp_ms/1000) >= timestamp '{{ sui_project_start_date }}'
     {% if is_incremental() %}
     and checkpoint > coalesce((select max(checkpoint) from {{ this }} where protocol = 'navi'), 0)
     {% endif %}
@@ -92,6 +96,7 @@ scallop_base as (
         checkpoint
     from {{ source('sui','objects') }}
     where cast(type_ as varchar) like '0x2::dynamic_field::Field<0x1::type_name::TypeName, 0xefe8b36d5b2e43728cc323298626b83177803521d195cfb11e15b910e892fddf::reserve::BalanceSheet>%'
+        and from_unixtime(timestamp_ms/1000) >= timestamp '{{ sui_project_start_date }}'
     {% if is_incremental() %}
     and checkpoint > coalesce((select max(checkpoint) from {{ this }} where protocol = 'scallop'), 0)
     {% endif %}
@@ -121,6 +126,7 @@ bucket_base as (
         checkpoint
     from {{ source('sui','objects') }}
     where cast(type_ as varchar) like '0xce7ff77a83ea0cb6fd39bd8748e2ec89a3f41e8efdc3f4eb123e0ca37b184db2::bucket::Bucket<%>'
+        and from_unixtime(timestamp_ms/1000) >= timestamp '{{ sui_project_start_date }}'
     {% if is_incremental() %}
     and checkpoint > coalesce((select max(checkpoint) from {{ this }} where protocol = 'bucket'), 0)
     {% endif %}
@@ -146,6 +152,7 @@ alphalend_base as (
         checkpoint
     from {{ source('sui','objects') }}
     where cast(type_ as varchar) = '0x2::dynamic_field::Field<u64, 0xd631cd66138909636fc3f73ed75820d0c5b76332d1644608ed1c85ea2b8219b4::market::Market>'
+        and from_unixtime(timestamp_ms/1000) >= timestamp '{{ sui_project_start_date }}'
     {% if is_incremental() %}
     and checkpoint > coalesce((select max(checkpoint) from {{ this }} where protocol = 'alphalend'), 0)
     {% endif %}

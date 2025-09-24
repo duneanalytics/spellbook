@@ -12,6 +12,8 @@
 -- This table captures the minted on-chain supply of tokens
 -- Converted from Snowflake materialized view to dbt incremental model
 
+{% set sui_project_start_date = var('sui_project_start_date', '2025-09-16') %}
+
 with supply_data as (
     select
         date_trunc('hour', from_unixtime(timestamp_ms / 1000)) as hour_timestamp,
@@ -87,6 +89,7 @@ with supply_data as (
             cast(type_ as varchar) like '0x25646e1cac13d6198e821aac7a94cbb74a8e49a2b3bed2ffd22346990811fcc6::satlayer_pool::Vault<%>%' or
             cast(type_ as varchar) like '%::TreasuryCapManager'
         )
+        and from_unixtime(timestamp_ms/1000) >= timestamp '{{ sui_project_start_date }}'
         {% if is_incremental() %}
         and checkpoint > coalesce((select max(checkpoint) from {{ this }}), 0)
         {% endif %}

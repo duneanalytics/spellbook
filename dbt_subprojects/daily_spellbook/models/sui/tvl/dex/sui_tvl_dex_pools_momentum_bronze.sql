@@ -11,6 +11,8 @@
 -- Momentum DEX pools for TVL calculation
 -- Converted from Snowflake task to dbt incremental model
 
+{% set momentum_start_date = "2025-09-16" %}
+
 with coin_info_cte as (
     select
         coin_type,
@@ -49,6 +51,7 @@ filtered_pools_cte as (
         
     from {{ source('sui','objects') }}
     where cast(type_ as varchar) like '0x70285592c97965e811e0c6f98dccc3a9c2b4ad854b3594faab9597ada267b860::pool::Pool<%'
+        and from_unixtime(timestamp_ms/1000) >= timestamp '{{ momentum_start_date }}'
     {% if is_incremental() %}
     and checkpoint > coalesce((select max(checkpoint) from {{ this }}), 0)
     {% endif %}

@@ -11,6 +11,8 @@
 -- Cetus DEX pools for TVL calculation
 -- Converted from Snowflake task to dbt incremental model
 
+{% set cetus_start_date = "2025-09-16" %}
+
 with coin_info_cte as (
     select
         coin_type,
@@ -42,6 +44,7 @@ filtered_pools_cte as (
         
     from {{ source('sui','objects') }}
     where cast(type_ as varchar) like '%0x1eabed72c53feb3805120a081dc15963c204dc8d091542592abaf7a35689b2fb::pool::Pool<%'
+        and from_unixtime(timestamp_ms/1000) >= timestamp '{{ cetus_start_date }}'
     {% if is_incremental() %}
     and checkpoint > coalesce((select max(checkpoint) from {{ this }}), 0)
     {% endif %}

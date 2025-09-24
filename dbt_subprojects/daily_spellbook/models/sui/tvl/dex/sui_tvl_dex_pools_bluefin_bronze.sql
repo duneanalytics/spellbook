@@ -11,6 +11,8 @@
 -- Bluefin DEX pools for TVL calculation
 -- Converted from Snowflake task to dbt incremental model
 
+{% set bluefin_start_date = "2025-09-16" %}
+
 with coin_info_cte as (
     -- Use existing DEX coin info model (now with name field added)
     select
@@ -53,6 +55,7 @@ filtered_pools_cte as (
         
     from {{ source('sui','objects') }}
     where cast(type_ as varchar) like '%0x3492c874c1e3b3e2984e8c41b589e642d4d0a5d6459e5a9cfc2d52fd7c89c267::pool::Pool<%'
+        and from_unixtime(timestamp_ms/1000) >= timestamp '{{ bluefin_start_date }}'
     {% if is_incremental() %}
     and checkpoint > coalesce((select max(checkpoint) from {{ this }}), 0)
     {% endif %}
