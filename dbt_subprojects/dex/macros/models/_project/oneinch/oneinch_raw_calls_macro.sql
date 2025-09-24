@@ -35,7 +35,7 @@ with
             from (
                 {% for method, method_data in contract_data.methods.items() if blockchain in method_data.get('blockchains', contract_data.blockchains) %}{# method-level blockchains override contract-level blockchains #}
                     select
-                        {{ method_data.get('selector', 'null') }} as selector
+                        {{ method_data.get('selector', 'cast(null as varbinary)') }} as selector
                         , '{{ method }}' as method
                         , {{ method_data.get('auxiliary', 'null') }} as auxiliary
                     {% if not loop.last %}union{% endif %}
