@@ -75,6 +75,7 @@ with fungible_tokens as (
             , symbol
             , decimals
         from {{ model }}
+        where contract_address is distinct from 0x0000000000000000000000000000000000000000
         {% if not loop.last -%}
         union all
         {% endif -%}
