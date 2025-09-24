@@ -1,7 +1,7 @@
 {% macro
     oneinch_ptfc_macro(
         blockchain,
-        date_from
+        date_from = none
     )
 %}
 
@@ -67,7 +67,7 @@ transfers as (
         and call_type = 'call'
         and (tx_success or tx_success is null)
         and success
-        and block_date >= timestamp '{{ date_from }}'
+        {% if date_from != none %}and block_date >= timestamp '{{ date_from }}'{% endif %}
         {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
 )
 -- the wrapper deposit includes two transfers: native and wrapper
