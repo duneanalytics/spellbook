@@ -7,8 +7,8 @@
     )
 }}
 
+  -- Only ops team adds liquidity to buffer, so we can use these events to find vaults and amounts
   WITH vault_mappings AS (
-    -- Only ops team adds liquidity to buffer, so we can use these events to find vaults and amounts
     SELECT DISTINCT
       evt_tx_hash,
       wrappedToken AS vault_address,
@@ -18,7 +18,7 @@
     WHERE b.amountUnderlying > 0
   ),
 
-  -- Find ERC20 transfers in the same transactions to identify underlying tokens
+  -- Find ERC20 transfers in the same transactions to identify underlying tokens, make sure to match the amount too
   underlying_tokens AS (
     SELECT DISTINCT
       vm.vault_address,
