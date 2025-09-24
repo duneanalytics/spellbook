@@ -33,7 +33,7 @@ with
                 , methods.method
                 , methods.auxiliary
             from (
-                {% for method, method_data in contract_data.methods.items() if blockchain in method_data.get('blockchains', contract_data.blockchains) %} -- method-level blockchains override contract-level blockchains
+                {% for method, method_data in contract_data.methods.items() if blockchain in method_data.get('blockchains', contract_data.blockchains) %}{# method-level blockchains override contract-level blockchains #}
                     select
                         {{ method_data.get('selector', 'null') }} as selector
                         , '{{ method }}' as method
@@ -42,7 +42,7 @@ with
                 {% endfor %}
             ) as methods, creations
         {% else %}
-            {% for method, method_data in contract_data.methods.items() if blockchain in method_data.get('blockchains', contract_data.blockchains) %} -- method-level blockchains override contract-level blockchains
+            {% for method, method_data in contract_data.methods.items() if blockchain in method_data.get('blockchains', contract_data.blockchains) %}{# method-level blockchains override contract-level blockchains #}
                 select
                     {% for address, blockchains in contract_data.addresses.items() if blockchain in blockchains %}{{ address }}{% endfor %} as contract_address
                     , '{{ contract }}' as contract_name

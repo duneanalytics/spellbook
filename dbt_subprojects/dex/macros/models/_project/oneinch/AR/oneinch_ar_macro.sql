@@ -15,7 +15,7 @@ with
 
 decoded as (
     {% for contract, contract_data in contracts.items() if blockchain in contract_data.blockchains %}
-        {% for method, method_data in contract_data.methods.items() if blockchain in method_data.get('blockchains', contract_data.blockchains) and not method_data.get('auxiliary', false) %} -- method-level blockchains override contract-level blockchains
+        {% for method, method_data in contract_data.methods.items() if blockchain in method_data.get('blockchains', contract_data.blockchains) and not method_data.get('auxiliary', false) %}{# method-level blockchains override contract-level blockchains #}
             select
                 call_block_number as block_number
                 , call_block_date as block_date
