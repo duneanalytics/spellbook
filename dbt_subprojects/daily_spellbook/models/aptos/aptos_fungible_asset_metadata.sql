@@ -7,7 +7,6 @@
 -- creator_address is the asset address for v1 and owner for v2 (can change for v2)
 -- creator_address is not needed for coins/fa, it's a holdover from tokens (where it is used as key with name)
 {{ config(
-    tags = ['prod_exclude'],
     schema = 'aptos_fungible_asset',
     alias = 'metadata',
     materialized = 'incremental',
