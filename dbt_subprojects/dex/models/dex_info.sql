@@ -229,6 +229,7 @@ FROM (VALUES
     , ('eulerswap', 'Eulerswap', 'Direct & Aggregator', 'eulerfinance')
     , ('blackhole', 'Blackhole', 'Direct', 'BlackholeDEX')
     , ('ekubo', 'Ekubo', 'Direct', 'EkuboProtocol')
+    , ('etherex', 'EtherEx', 'Direct', 'etherexfi')
     , ('angstrom', 'Angstrom', 'Direct', 'angstromxyz')
     , ('hyperswap', 'HyperSwap', 'Direct', 'HyperSwap')
     , ('hybra', 'Hybra', 'Direct', 'Hybra')
