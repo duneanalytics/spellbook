@@ -55,7 +55,13 @@ with
         {% endif %}
         union
     {% endfor %}
-    select * from (values (null, null, null, null, null, null)) as t(contract_address, contract_name, date_from, selector, method, auxiliary)
+    select -- for correct execution in blockchains, where cc stream is empty
+        cast(null as varbinary) as contract_address
+        , cast(null as varchar) as contract_name
+        , cast(null as timestamp) as date_from
+        , cast(null as varbinary) as selector
+        , cast(null as varchar) as method
+        , cast(null as boolean) as auxiliary
 )
 
 , traces as (
