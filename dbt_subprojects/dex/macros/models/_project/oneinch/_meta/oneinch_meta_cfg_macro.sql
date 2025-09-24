@@ -3,7 +3,7 @@
 -- STREAMS CONFIG --
 -- start dates for sreams by default:
 -- for ar: 2019-06-01
--- for lo: 2021-06-01
+-- for lo: 2021-06-01 / fusion: 2022-12-25
 -- for cc: 2024-08-20
 -- for a quick CI, change the start dates of the streams to light/easy
 {%
@@ -23,6 +23,7 @@
                 "transfers" : "2021-06-01",
                 "stream"    : "2021-06-01",
                 "executions": "2021-06-01",
+                "fusion"    : "2022-12-25",
             },
             "contracts" : oneinch_lo_cfg_contracts_macro(),
         },

@@ -8,6 +8,7 @@
 {% set meta = oneinch_meta_cfg_macro() %}
 {% set contracts = meta['streams'][stream]['contracts'] %}
 {% set date_from = [meta['blockchains']['start'][blockchain], meta['streams'][stream]['start']['raw_calls']] | max %}
+{% set contract_addresses = {} %}
 
 
 
@@ -41,10 +42,9 @@ with
                 {% endfor %}
             ) as methods, creations
         {% else %}
-            {% for address, blockchains in contract_data.addresses.items() if blockchain in blockchains %}{% set contract_address = address %}{% endfor %}
             {% for method, method_data in contract_data.methods.items() if blockchain in method_data.get('blockchains', contract_data.blockchains) %} -- method-level blockchains override contract-level blockchains
                 select
-                    {{ contract_address }} as contract_address
+                    {% for address, blockchains in contract_data.addresses.items() if blockchain in blockchains %}{{ address }}{% endfor %} as contract_address
                     , '{{ contract }}' as contract_name
                     , timestamp '{{ [date_from, contract_data.start] | max }}' as date_from
                     , {{ method_data.get('selector', 'null') }} as selector
