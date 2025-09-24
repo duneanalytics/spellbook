@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'dex_linea'
+    schema = 'dex_flow'
     , alias = 'base_trades'
     , partition_by = ['block_month']
     , materialized = 'incremental'
@@ -11,19 +11,7 @@
 }}
 
 {% set base_models = [
-    ref('sushiswap_v2_linea_base_trades')
-    , ref('nile_linea_base_trades')
-    , ref('echodex_linea_base_trades')
-    , ref('secta_linea_base_trades')
-    , ref('pancakeswap_v2_linea_base_trades')
-    , ref('pancakeswap_v3_linea_base_trades')
-    , ref('horizondex_linea_base_trades')
-    , ref('uniswap_v3_linea_base_trades')
-    , ref('lynex_fusion_linea_base_trades')
-    , ref('swaap_v2_linea_base_trades')
-    , ref('leetswap_linea_base_trades')
-    , ref('etherex_v2_linea_base_trades')
-    , ref('etherex_v3_linea_base_trades')
+    ref('izumi_finance_v3_flow_base_trades')
 ] %}
 with base_union as (
     SELECT *
@@ -67,7 +55,7 @@ with base_union as (
 {{
     add_tx_columns(
         model_cte = 'base_union'
-        , blockchain = 'linea'
+        , blockchain = 'flow'
         , columns = ['from', 'to', 'index']
     )
-}}
+}} 
