@@ -42,7 +42,7 @@
 -- BLOCKCHAINS CONFIG --
 {%
     set blockchains = {
-        "exposed": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea", "sonic", "unichain", "solana", "klaytn", "aurora"],
+        "exposed": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea", "sonic", "unichain", "solana"],
         "category": {
             "ethereum"      : "evms",
             "bnb"           : "evms",

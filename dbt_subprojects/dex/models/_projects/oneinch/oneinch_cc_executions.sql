@@ -20,7 +20,7 @@
 with
 
 meta(blockchain, chain_id, wrapper) as (values
-    {% for blockchain, exposed in meta['blockchains']['exposed'].items() if exposed == 'evms' %} -- TO DO: all exposed blockchains, i.e. add solana for now
+    {% for blockchain, category in meta['blockchains']['category'].items() if category == 'evms' and blockchain in meta['blockchains']['exposed'] %}
         {% if not loop.first %}, {% endif %}('{{ blockchain }}', {{ meta['blockchains']['chain_id'][blockchain] }}, {{ meta['blockchains']['wrapped_native_token_address'][blockchain] }})
     {% endfor %}
 )

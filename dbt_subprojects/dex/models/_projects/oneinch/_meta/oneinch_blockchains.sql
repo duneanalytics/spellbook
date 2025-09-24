@@ -21,7 +21,8 @@ from (
             , {{ meta['explorer_link'].get(blockchain, 'null') }} as explorer_link
             , array[{{ meta['fusion_settlement_addresses'].get(blockchain, []) | join(', ') }}] as fusion_settlement_addresses
             , array[{{ meta['escrow_factory_addresses'].get(blockchain, []) | join(', ') }}] as escrow_factory_addresses
-            , '{{ meta['exposed'].get(blockchain, '') }}' as exposed
+            , '{{ meta['category'].get(blockchain, '') }}' as category
+            , {{ blockchain in meta['exposed'] }} as exposed
         {% if not loop.last %}union{% endif %}
     {% endfor %}
 )

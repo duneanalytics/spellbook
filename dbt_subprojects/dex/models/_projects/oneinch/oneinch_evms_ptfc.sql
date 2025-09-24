@@ -8,7 +8,7 @@
 
 -- View for all parsed transfers from calls, for internal usage. Won't be used in lineage --
 
-{% for blockchain, exposed in oneinch_meta_cfg_macro()['blockchains']['exposed'].items() if exposed == 'evms' %}
+{% for blockchain, category in meta['blockchains']['category'].items() if category == 'evms' and blockchain in meta['blockchains']['exposed'] %}
     select * from ({{ oneinch_ptfc_macro(blockchain = blockchain) }})
     {% if not loop.last %}union all{% endif %}
 {% endfor %}

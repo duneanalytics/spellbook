@@ -10,7 +10,7 @@
 }}
 
 {% for stream, stream_data in oneinch_meta_cfg_macro()['streams'].items() %}
-    {% for blockchain, exposed in oneinch_meta_cfg_macro()['blockchains']['exposed'].items() if exposed == 'evms' %}
+    {% for blockchain, category in meta['blockchains']['category'].items() if category == 'evms' and blockchain in meta['blockchains']['exposed'] %}
         select * from {{ ref('oneinch_' + blockchain + '_' + stream + '_' + substream) }}
         {% if not loop.last %}union all{% endif %}
     {% endfor %}
