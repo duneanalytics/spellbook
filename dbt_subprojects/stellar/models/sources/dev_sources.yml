@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: crypto_stellar
+    overrides: stellar_dbt_public
+    database: crypto-stellar
+    schema: crypto_stellar
+    tables:
+      - name: account_signers
+

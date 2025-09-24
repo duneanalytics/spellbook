@@ -1,0 +1,7 @@
+packages:
+  - package: dbt-labs/dbt_utils
+    version: 1.3.0
+  - package: dbt-labs/codegen
+    version: 0.12.1
+  - package: stellar/stellar-dbt-public
+    version: 60a8e4e89ae2136c3da79cbeab7461391c1f11e9
