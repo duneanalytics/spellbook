@@ -14,7 +14,7 @@
 
 with suilend_base as (
     -- Suilend uses a single monolith object containing an array of reserves.
-    -- We use json_extract to create a row for each reserve in the array.
+    -- We use array index notation like existing Sui models (following aftermath pattern)
     select
         timestamp_ms,
         from_unixtime(timestamp_ms/1000) as block_time,
@@ -22,21 +22,18 @@ with suilend_base as (
         date_trunc('month', from_unixtime(timestamp_ms/1000)) as block_month,
         date_trunc('hour', from_unixtime(timestamp_ms / 1000)) as date_hour,
         'suilend' as protocol,
-        json_extract_scalar(reserve_json, '$.id.id') as market_id,
+        json_extract_scalar(object_json, '$.reserves[0].id.id') as market_id,
         case 
-            when left(json_extract_scalar(reserve_json, '$.coin_type.name'), 2) = '0x' 
-            then json_extract_scalar(reserve_json, '$.coin_type.name')
-            else concat('0x', json_extract_scalar(reserve_json, '$.coin_type.name'))
+            when starts_with(json_extract_scalar(object_json, '$.reserves[0].coin_type.name'), '0x') 
+            then json_extract_scalar(object_json, '$.reserves[0].coin_type.name')
+            else concat('0x', json_extract_scalar(object_json, '$.reserves[0].coin_type.name'))
         end as coin_type,
-        cast(json_extract_scalar(reserve_json, '$.ctoken_supply') as decimal(38,0)) as coin_collateral_amount,
-        cast(json_extract_scalar(reserve_json, '$.borrowed_amount.value') as decimal(38,0)) as coin_borrow_amount,
+        cast(json_extract_scalar(object_json, '$.reserves[0].ctoken_supply') as decimal(38,0)) as coin_collateral_amount,
+        cast(json_extract_scalar(object_json, '$.reserves[0].borrowed_amount.value') as decimal(38,0)) as coin_borrow_amount,
         object_id,
         version,
         checkpoint
-    from {{ source('sui','objects') }} o
-    cross join unnest(
-        cast(json_extract(object_json, '$.reserves') as array(json))
-    ) as t(reserve_json)
+    from {{ source('sui','objects') }}
     where cast(type_ as varchar) like '0xf95b06141ed4a174f239417323bde3f209b972f5930d8521ea38a52aff3a6ddf::lending_market::LendingMarket<%>'
     {% if is_incremental() %}
     and checkpoint > coalesce((select max(checkpoint) from {{ this }} where protocol = 'suilend'), 0)
@@ -54,7 +51,7 @@ navi_base as (
         'navi' as protocol,
         json_extract_scalar(object_json, '$.value.id') as market_id,
         case 
-            when left(json_extract_scalar(object_json, '$.value.coin_type'), 2) = '0x' 
+            when starts_with(json_extract_scalar(object_json, '$.value.coin_type'), '0x') 
             then json_extract_scalar(object_json, '$.value.coin_type')
             else concat('0x', json_extract_scalar(object_json, '$.value.coin_type'))
         end as coin_type,
@@ -83,7 +80,7 @@ scallop_base as (
         'scallop' as protocol,
         object_id as market_id,
         case 
-            when left(json_extract_scalar(object_json, '$.name.name'), 2) = '0x' 
+            when starts_with(json_extract_scalar(object_json, '$.name.name'), '0x') 
             then json_extract_scalar(object_json, '$.name.name')
             else concat('0x', json_extract_scalar(object_json, '$.name.name'))
         end as coin_type,
@@ -113,7 +110,7 @@ bucket_base as (
         'bucket' as protocol,
         object_id as market_id,
         case 
-            when left(regexp_extract(cast(type_ as varchar), '<([^>]+)>', 1), 2) = '0x' 
+            when starts_with(regexp_extract(cast(type_ as varchar), '<([^>]+)>', 1), '0x') 
             then regexp_extract(cast(type_ as varchar), '<([^>]+)>', 1)
             else concat('0x', regexp_extract(cast(type_ as varchar), '<([^>]+)>', 1))
         end as coin_type,
