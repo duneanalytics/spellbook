@@ -55,6 +55,7 @@ with
         {% endif %}
         {% if not loop.last %}union{% endif %}
     {% endfor %}
+    union select * from (values (null, null, null, null, null, null)) as t(contract_address, contract_name, date_from, selector, method, auxiliary)
 )
 
 , traces as (
