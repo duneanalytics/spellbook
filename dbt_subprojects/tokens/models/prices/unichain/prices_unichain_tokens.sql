@@ -31,4 +31,6 @@ FROM
     , ('rseth-rseth', 'rsETH', 0xc3eACf0612346366Db554C991D7858716db09f58, 18)
     , ('comp-compoundd', 'COMP', 0xdf78e4F0A8279942ca68046476919A90f2288656, 18)
     , ('wbtc-wrapped-bitcoin', 'kBTC', 0x73e0c0d45e048d25fc26fa3159b0aa04bfa4db98, 8)
+    , ('hype-hyperliquid', 'HYPE', 0x15D0e0c55a3E7eE67152aD7E89acf164253Ff68d, 18)
+    , ('wsol-wormhole-bridged-wrapped-sol-base', 'WSOL', 0xbdE8A5331E8Ac4831cf8ea9e42e229219EafaB97, 9)
 ) as temp (token_id, symbol, contract_address, decimals) 
