@@ -2,9 +2,12 @@
 
 name: "stellar"
 version: "1.0.0"
-require-dbt-version: ">=1.8.0"
+config-version: 2
 
 quoting:
   database: false
   schema: false
   identifier: false
+
+# This setting configures which "profile" dbt uses for this project.
+profile: "spellbook-local"
