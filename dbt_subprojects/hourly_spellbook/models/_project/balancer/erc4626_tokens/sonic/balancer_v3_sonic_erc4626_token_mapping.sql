@@ -28,6 +28,7 @@
     JOIN {{ source('erc20_sonic','evt_Transfer') }} t ON t.evt_tx_hash = vm.evt_tx_hash
       AND t.contract_address != vm.vault_address -- Exclude transfers of the vault token itself
       AND t.value = vm.amountUnderlying -- Match the amount transferred
+      AND t.to = 0xba1333333333a1ba1108e8412f11850a5c319ba9  -- Only transfers to the balancer vault
   )
 
     SELECT DISTINCT
