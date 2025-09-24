@@ -1,4 +1,4 @@
-{% set exposed = oneinch_meta_cfg_macro()['blockchains']['exposed'].keys() %}
+{% set exposed = oneinch_meta_cfg_macro()['blockchains']['exposed'] %}
 
 {{
     config(

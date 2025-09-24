@@ -9,9 +9,8 @@
     )
 }}
 
-
-
-{% set project_start_date = "timestamp '2022-12-25'" %} 
+{% set project_start_date = "timestamp '2022-12-25'" %}
+{% set meta = oneinch_meta_cfg_macro() %}
 
 
 

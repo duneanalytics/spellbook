@@ -13,12 +13,14 @@
     )
 }}
 
+{% set meta = oneinch_meta_cfg_macro()['blockchains'] %}
+
 
 
 with
 
 executions as (
-    {% for blockchain, category in meta['blockchains']['category'].items() if category == 'evms' and blockchain in meta['blockchains']['exposed'] %}
+    {% for blockchain, category in meta['category'].items() if category == 'evms' and blockchain in meta['exposed'] %}
         select *
             , flags as _flags
             , 'classic' as mode
@@ -109,7 +111,7 @@ executions as (
     
     select
         blockchain
-        , {{ oneinch_meta_cfg_macro()['blockchains']['chain_id'].get('solana', 'null') }} as chain_id
+        , {{ meta['chain_id'].get('solana', 'null') }} as chain_id
         , block_slot as block_number
         , block_time
         , from_base58(tx_id) as tx_hash

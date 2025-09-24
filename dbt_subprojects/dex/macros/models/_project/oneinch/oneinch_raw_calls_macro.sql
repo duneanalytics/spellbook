@@ -8,7 +8,7 @@
 {% set meta = oneinch_meta_cfg_macro() %}
 {% set contracts = meta['streams'][stream]['contracts'] %}
 {% set date_from = [meta['blockchains']['start'][blockchain], meta['streams'][stream]['start']['raw_calls']] | max %}
-{% set contract_addresses = {} %}
+{% set factories = meta['blockchains']['escrow_factory_addresses'][blockchain] %}
 
 
 
@@ -19,7 +19,7 @@ with
     from {{ source(blockchain, 'creation_traces') }}
     where true
         and block_time >= timestamp '{{ date_from }}' -- without an incremental predicate, as the results may be delayed, i.e. need escrow creations for all time
-        and "from" in ({{ meta['blockchains']['escrow_factory_addresses'][blockchain] | join(', ') }})
+        and "from" in ({% if factories == [] %}0x{% else %}{{ factories | join(', ') }}{% endif %})
 )
 
 , {% endif %}payload as (
@@ -53,9 +53,9 @@ with
                 {% if not loop.last %}union{% endif %}
             {% endfor %}
         {% endif %}
-        {% if not loop.last %}union{% endif %}
+        union
     {% endfor %}
-    union select * from (values (null, null, null, null, null, null)) as t(contract_address, contract_name, date_from, selector, method, auxiliary)
+    select * from (values (null, null, null, null, null, null)) as t(contract_address, contract_name, date_from, selector, method, auxiliary)
 )
 
 , traces as (
