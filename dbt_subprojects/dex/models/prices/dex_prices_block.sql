@@ -20,6 +20,6 @@ select
     , volume as amount_usd
     , price
 from 
-    {{ source('prices', 'minute_updates') }}
+    {{ source('prices_dex', 'minute') }}
 where
     source = 'dex.trades'  -- Only include DEX-sourced prices for consistency
