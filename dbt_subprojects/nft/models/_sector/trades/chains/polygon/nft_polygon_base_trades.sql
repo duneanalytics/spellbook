@@ -5,6 +5,7 @@
     )
 }}
 -- (project, project_version, model)
+--temp: exclude ,ref('rarible_polygon_base_trades') due to duplicates
 {% set nft_models = [
      ref('aavegotchi_polygon_base_trades')
     ,ref('aurem_polygon_base_trades')
@@ -13,7 +14,6 @@
     ,ref('element_polygon_base_trades')
     ,ref('fractal_polygon_base_trades')
     ,ref('opensea_v2_polygon_base_trades')
-    ,ref('rarible_polygon_base_trades')
     ,ref('tofu_polygon_base_trades')
     ,ref('magiceden_polygon_base_trades')
     ,ref('magiceden_v2_polygon_base_trades')
