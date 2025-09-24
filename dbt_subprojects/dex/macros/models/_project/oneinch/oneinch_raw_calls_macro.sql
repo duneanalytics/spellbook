@@ -49,7 +49,7 @@ with
                     , timestamp '{{ [date_from, contract_data.start] | max }}' as date_from
                     , {{ method_data.get('selector', 'null') }} as selector
                     , '{{ method }}' as method
-                    , {{ method_data.get('auxiliary', 'null') }} as auxiliary
+                    , {{ method_data.get('auxiliary', 'cast(null as boolean)') }} as auxiliary
                 {% if not loop.last %}union{% endif %}
             {% endfor %}
         {% endif %}

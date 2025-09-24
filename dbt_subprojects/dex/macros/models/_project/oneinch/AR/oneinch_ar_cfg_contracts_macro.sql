@@ -231,7 +231,7 @@
                 "unoswapTo":     dict(samples["unoswap v6"], selector='0xe2c95c82', dst_receiver='substr(cast("to" as varbinary), 13)', pools="array[dex]"),
                 "unoswapTo2":    dict(samples["unoswap v6"], selector='0xea76dddf', dst_receiver='substr(cast("to" as varbinary), 13)', pools="array[dex,dex2]"),
                 "unoswapTo3":    dict(samples["unoswap v6"], selector='0xf7a70056', dst_receiver='substr(cast("to" as varbinary), 13)', pools="array[dex,dex2,dex3]"),
-                "permitAndCall": dict(auxiliary=true, selector='0x5816d723'),
+                "permitAndCall": dict(auxiliary='true', selector='0x5816d723'),
             },
         },
     }
