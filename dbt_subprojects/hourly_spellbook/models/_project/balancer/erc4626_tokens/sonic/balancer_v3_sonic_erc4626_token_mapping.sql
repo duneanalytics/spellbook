@@ -25,7 +25,7 @@
       t.contract_address AS underlying_address,
       vm.evt_tx_hash
     FROM vault_mappings vm
-    JOIN erc20_sonic.evt_transfer t ON t.evt_tx_hash = vm.evt_tx_hash
+    JOIN {{ source('erc20_sonic','evt_transfer') }} t ON t.evt_tx_hash = vm.evt_tx_hash
       AND t.contract_address != vm.vault_address -- Exclude transfers of the vault token itself
       AND t.value = vm.amountUnderlying -- Match the amount transferred
   )
