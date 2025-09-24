@@ -16,6 +16,7 @@
     ,'ethereum'
     ,'fantom'
     ,'flare'
+    ,'flow'
     ,'gnosis'
     ,'hyperevm'
     ,'ink'

@@ -17,6 +17,7 @@
     , 'celo'
     , 'ethereum'
     , 'fantom'
+    , 'flow'
     , 'gnosis'
     , 'hemi'
     , 'hyperevm'
