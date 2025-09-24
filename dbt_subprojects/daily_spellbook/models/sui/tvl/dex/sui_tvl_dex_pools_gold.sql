@@ -109,7 +109,7 @@ select
     avg_fee_rate_percent as fee_rate_percent,
     num_records
 from dex_pools_with_pricing
-where tvl_usd > 100  -- Business filter: only include pools with meaningful TVL
+where tvl_usd > 1000
 order by
     metric_date desc,
     tvl_usd desc 

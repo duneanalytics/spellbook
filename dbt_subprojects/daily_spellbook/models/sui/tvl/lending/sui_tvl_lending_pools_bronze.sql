@@ -4,7 +4,7 @@
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
-    unique_key=['protocol', 'object_id', 'version'],
+    unique_key=['protocol', 'market_id', 'block_date'],
     tags=['sui','tvl','lending']
 ) }}
 
@@ -17,6 +17,9 @@ with suilend_base as (
     -- We use json_extract to create a row for each reserve in the array.
     select
         timestamp_ms,
+        from_unixtime(timestamp_ms/1000) as block_time,
+        date(from_unixtime(timestamp_ms/1000)) as block_date,
+        date_trunc('month', from_unixtime(timestamp_ms/1000)) as block_month,
         date_trunc('hour', from_unixtime(timestamp_ms / 1000)) as date_hour,
         'suilend' as protocol,
         json_extract_scalar(reserve_json, '$.id.id') as market_id,
@@ -44,6 +47,9 @@ navi_base as (
     -- Navi has one object per market, making the extraction straightforward.
     select
         timestamp_ms,
+        from_unixtime(timestamp_ms/1000) as block_time,
+        date(from_unixtime(timestamp_ms/1000)) as block_date,
+        date_trunc('month', from_unixtime(timestamp_ms/1000)) as block_month,
         date_trunc('hour', from_unixtime(timestamp_ms / 1000)) as date_hour,
         'navi' as protocol,
         json_extract_scalar(object_json, '$.value.id') as market_id,
@@ -70,6 +76,9 @@ scallop_base as (
     -- Total collateral is the sum of cash (available) and debt (borrowed).
     select
         timestamp_ms,
+        from_unixtime(timestamp_ms/1000) as block_time,
+        date(from_unixtime(timestamp_ms/1000)) as block_date,
+        date_trunc('month', from_unixtime(timestamp_ms/1000)) as block_month,
         date_trunc('hour', from_unixtime(timestamp_ms / 1000)) as date_hour,
         'scallop' as protocol,
         object_id as market_id,
@@ -97,6 +106,9 @@ bucket_base as (
     -- Collateral coin type is extracted from the object's struct tag.
     select
         timestamp_ms,
+        from_unixtime(timestamp_ms/1000) as block_time,
+        date(from_unixtime(timestamp_ms/1000)) as block_date,
+        date_trunc('month', from_unixtime(timestamp_ms/1000)) as block_month,
         date_trunc('hour', from_unixtime(timestamp_ms / 1000)) as date_hour,
         'bucket' as protocol,
         object_id as market_id,
@@ -122,6 +134,9 @@ alphalend_base as (
     -- Total collateral is the sum of available liquidity (balance_holding) and borrowed assets.
     select
         timestamp_ms,
+        from_unixtime(timestamp_ms/1000) as block_time,
+        date(from_unixtime(timestamp_ms/1000)) as block_date,
+        date_trunc('month', from_unixtime(timestamp_ms/1000)) as block_month,
         date_trunc('hour', from_unixtime(timestamp_ms / 1000)) as date_hour,
         'alphalend' as protocol,
         json_extract_scalar(object_json, '$.value.market_id') as market_id,
@@ -139,12 +154,12 @@ alphalend_base as (
     {% endif %}
 )
 
-select timestamp_ms, date_hour, protocol, market_id, coin_type, coin_collateral_amount, coin_borrow_amount, object_id, version, checkpoint from suilend_base
+select timestamp_ms, block_time, block_date, block_month, date_hour, protocol, market_id, coin_type, coin_collateral_amount, coin_borrow_amount, object_id, version, checkpoint from suilend_base
 union all
-select timestamp_ms, date_hour, protocol, market_id, coin_type, coin_collateral_amount, coin_borrow_amount, object_id, version, checkpoint from navi_base
+select timestamp_ms, block_time, block_date, block_month, date_hour, protocol, market_id, coin_type, coin_collateral_amount, coin_borrow_amount, object_id, version, checkpoint from navi_base
 union all
-select timestamp_ms, date_hour, protocol, market_id, coin_type, coin_collateral_amount, coin_borrow_amount, object_id, version, checkpoint from scallop_base
+select timestamp_ms, block_time, block_date, block_month, date_hour, protocol, market_id, coin_type, coin_collateral_amount, coin_borrow_amount, object_id, version, checkpoint from scallop_base
 union all
-select timestamp_ms, date_hour, protocol, market_id, coin_type, coin_collateral_amount, coin_borrow_amount, object_id, version, checkpoint from bucket_base
+select timestamp_ms, block_time, block_date, block_month, date_hour, protocol, market_id, coin_type, coin_collateral_amount, coin_borrow_amount, object_id, version, checkpoint from bucket_base
 union all
-select timestamp_ms, date_hour, protocol, market_id, coin_type, coin_collateral_amount, coin_borrow_amount, object_id, version, checkpoint from alphalend_base 
+select timestamp_ms, block_time, block_date, block_month, date_hour, protocol, market_id, coin_type, coin_collateral_amount, coin_borrow_amount, object_id, version, checkpoint from alphalend_base 

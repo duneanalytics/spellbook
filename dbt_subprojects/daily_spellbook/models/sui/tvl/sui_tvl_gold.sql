@@ -72,13 +72,13 @@ all_tvl_data as (
     
     union all
     
-    -- Lending pools data (already has pricing from gold layer)
+    -- Lending pools data (already has pricing and token-level aggregation from gold layer)
     select 
         protocol,
-        market_id,
+        collateral_coin_symbol as market_id, -- Using token symbol as identifier since aggregated by token
         collateral_coin_type as coin_type,
         collateral_coin_symbol as token_symbol,
-        eod_collateral_amount as token_amount,
+        total_collateral_amount as token_amount,
         null as protocol_fee_rate, -- Lending doesn't have explicit fee rates
         concat(protocol, ' - ', coalesce(collateral_coin_symbol, 'UNKNOWN')) as token_name,
         case 
@@ -86,7 +86,7 @@ all_tvl_data as (
             else 'Lending Pool'
         end as object_type,
         block_date,
-        collateral_price_usd as token_price_usd,
+        avg_collateral_price_usd as token_price_usd,
         tvl_usd
     from {{ ref('sui_tvl_lending_pools_gold') }}
     {% if is_incremental() %}
@@ -108,4 +108,4 @@ select
     block_date
 from all_tvl_data
 where token_amount > 0 -- Only include pools/markets with actual liquidity
-  and tvl_usd > 10 -- Business filter: meaningful TVL threshold 
+  and tvl_usd > 1000

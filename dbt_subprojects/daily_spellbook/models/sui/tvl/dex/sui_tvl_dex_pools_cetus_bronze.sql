@@ -4,7 +4,7 @@
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
-    unique_key=['object_id', 'version'],
+    unique_key=['pool_id', 'block_date'],
     tags=['sui','tvl','dex','cetus']
 ) }}
 

@@ -86,7 +86,8 @@ select
     avg(coin_a_amount) as avg_coin_a_amount,
     avg(coin_b_amount) as avg_coin_b_amount,
     avg(fee_rate_percent) as avg_fee_rate_percent,
-    count(*) as num_records
+    count(*) as num_records,
+    max(block_time) as latest_block_time
 from combined_data
 where coin_a_amount > 0 and coin_b_amount > 0  -- Filter out empty pools
 group by

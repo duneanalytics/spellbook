@@ -19,6 +19,7 @@ with supply_with_pricing as (
         s.total_token_supply,
         s.supply_breakdown_json,
         s.token_count,
+        s.latest_block_time,
         
         -- Get SUI price for valuation (using SUI as the primary token)
         p.price as sui_price_usd,
@@ -46,6 +47,7 @@ select
     token_count,
     sui_price_usd,
     estimated_total_supply_usd,
+    latest_block_time,
     
     -- Calculate metrics
     case 

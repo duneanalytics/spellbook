@@ -101,7 +101,9 @@ aggregated_supply_daily as (
                 cast(round(carried_forward_supply_raw / power(10, coin_decimals), 2) as decimal(38,2)) as value
             )
         )) as supply_breakdown_json,
-        count(distinct coin_symbol) as token_count
+        count(distinct coin_symbol) as token_count,
+        max(last_observed_timestamp_ms) as max_timestamp_ms,
+        from_unixtime(max(last_observed_timestamp_ms)/1000) as max_block_time
     from deduplicated_daily_supply_by_symbol
     group by block_date
 )
@@ -110,6 +112,7 @@ select
     block_date,
     total_token_supply,
     supply_breakdown_json,
-    token_count
+    token_count,
+    max_block_time as latest_block_time
 from aggregated_supply_daily
 order by block_date desc 

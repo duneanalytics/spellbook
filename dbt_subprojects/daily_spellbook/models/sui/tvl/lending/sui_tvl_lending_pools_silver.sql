@@ -26,7 +26,7 @@ raw_updates as (
 raw_updates_with_rn as (
     select *,
            row_number() over (
-               partition by date(date_hour), protocol, market_id 
+               partition by block_date, protocol, market_id 
                order by version desc
            ) as rn
     from raw_updates
@@ -56,7 +56,8 @@ coin_info_cte as (
 last_daily_markets as (
     select
         raw.timestamp_ms,
-        date(raw.date_hour) as block_date,
+        raw.block_date,
+        raw.block_time,
         raw.protocol,
         raw.market_id,
         
@@ -107,5 +108,6 @@ select
     borrow_coin_type,
     borrow_coin_symbol,
     adjusted_borrow_amount as eod_borrow_amount,
-    timestamp_ms
+    timestamp_ms,
+    block_time as latest_block_time
 from last_daily_markets 

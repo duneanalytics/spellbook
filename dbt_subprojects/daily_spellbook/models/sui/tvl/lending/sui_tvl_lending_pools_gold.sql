@@ -4,14 +4,14 @@
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
-    unique_key=['block_date', 'protocol', 'market_id'],
+    unique_key=['block_date', 'protocol', 'collateral_coin_symbol'],
     partition_by=['block_date'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     tags=['sui','tvl','lending','gold']
 ) }}
 
--- Gold layer: Lending pools with USD pricing and TVL calculations
--- Following the Snowflake pattern but adapted for general TVL (not just BTC)
+-- Gold layer: Lending pools with USD pricing and token-level aggregation
+-- Following the Snowflake pattern exactly: aggregate by token symbol per protocol
 
 with lending_with_pricing as (
     select
@@ -24,6 +24,7 @@ with lending_with_pricing as (
         s.borrow_coin_symbol,
         s.eod_collateral_amount,
         s.eod_borrow_amount,
+        s.latest_block_time,
         
         -- Get pricing for collateral token
         pc.price as collateral_price_usd,
@@ -75,27 +76,38 @@ with lending_with_pricing as (
     {% endif %}
 )
 
+-- Following Snowflake pattern: aggregate by token symbol per protocol per day
 select
     block_date,
     protocol,
-    market_id,
-    collateral_coin_type,
     collateral_coin_symbol,
-    borrow_coin_type,
-    borrow_coin_symbol,
-    eod_collateral_amount,
-    eod_borrow_amount,
-    collateral_price_usd,
-    borrow_price_usd,
-    collateral_usd as total_collateral_usd,
-    borrow_usd as total_borrow_usd,
-    net_supply_usd as net_tvl_usd,
+    collateral_coin_type,
     
-    -- Calculate effective TVL (collateral is what's "locked")
-    collateral_usd as tvl_usd
+    -- Aggregate amounts across all markets for this token (following Snowflake pattern)
+    sum(eod_collateral_amount) as total_collateral_amount,
+    sum(eod_borrow_amount) as total_borrow_amount,
+    sum(eod_collateral_amount - eod_borrow_amount) as net_supply_amount,
+    
+    -- Aggregate USD values (following Snowflake pattern)
+    sum(collateral_usd) as total_collateral_usd,
+    sum(borrow_usd) as total_borrow_usd,
+    sum(net_supply_usd) as net_tvl_usd,
+    
+    -- TVL is total collateral locked (following Snowflake pattern)
+    sum(collateral_usd) as tvl_usd,
+    
+    -- Metadata
+    avg(collateral_price_usd) as avg_collateral_price_usd,
+    count(distinct market_id) as market_count,
+    max(latest_block_time) as latest_block_time
     
 from lending_with_pricing
-where collateral_usd > 100 -- Business filter: meaningful TVL threshold
+where collateral_usd > 1000
+group by 
+    block_date,
+    protocol,
+    collateral_coin_symbol,
+    collateral_coin_type
 order by
     block_date desc,
     tvl_usd desc 

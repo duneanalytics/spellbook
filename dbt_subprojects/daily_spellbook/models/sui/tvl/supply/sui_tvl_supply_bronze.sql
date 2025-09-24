@@ -4,7 +4,7 @@
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
-    unique_key=['object_id', 'version'],
+    unique_key=['coin_type', 'block_date'],
     tags=['sui','tvl','supply']
 ) }}
 
