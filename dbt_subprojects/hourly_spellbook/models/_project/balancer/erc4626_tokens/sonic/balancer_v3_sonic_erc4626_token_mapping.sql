@@ -14,8 +14,8 @@
       wrappedToken AS vault_address,
       amountUnderlying,
       amountWrapped
-    FROM beethoven_x_v3_sonic.vault_evt_liquidityaddedtobuffer
-    WHERE amountUnderlying > 0
+    FROM {{ source('beethoven_x_v3_sonic','Vault_evt_LiquidityAddedToBuffer') }}  b
+    WHERE b.amountUnderlying > 0
   ),
 
   -- Find ERC20 transfers in the same transactions to identify underlying tokens
@@ -39,8 +39,8 @@
       COALESCE(underlying_tokens.symbol, 'Unknown') AS underlying_token_symbol,
       underlying_tokens.decimals AS decimals
     FROM underlying_tokens ut
-    LEFT JOIN tokens.erc20 vault_tokens ON vault_tokens.contract_address = ut.vault_address
+    LEFT JOIN {{ source('tokens','erc20') }} vault_tokens ON vault_tokens.contract_address = ut.vault_address
       AND vault_tokens.blockchain = 'sonic'
-    LEFT JOIN tokens.erc20 underlying_tokens ON underlying_tokens.contract_address = ut.underlying_address
+    LEFT JOIN {{ source('tokens','erc20') }} underlying_tokens ON underlying_tokens.contract_address = ut.underlying_address
       AND underlying_tokens.blockchain = 'sonic'
  
