@@ -13,21 +13,7 @@
 -- Gold layer: DEX pools with pricing and business metrics
 -- Adds USD pricing and applies business filters like the Snowflake pattern
 
-with combined_coin_info as (
-    -- Use existing coin info model and add SUI if not present
-    select
-        coin_type,
-        coin_decimals,
-        coin_symbol
-    from {{ ref('dex_sui_coin_info') }}
-    
-    union all
-    
-    select
-        '0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI' as coin_type,
-        9 as coin_decimals,
-        'SUI' as coin_symbol
-),
+
 
 dex_pools_with_pricing as (
     select

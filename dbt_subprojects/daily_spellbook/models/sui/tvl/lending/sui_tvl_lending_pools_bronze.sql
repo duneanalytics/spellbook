@@ -78,7 +78,7 @@ scallop_base as (
         date_trunc('month', from_unixtime(timestamp_ms/1000)) as block_month,
         date_trunc('hour', from_unixtime(timestamp_ms / 1000)) as date_hour,
         'scallop' as protocol,
-        object_id as market_id,
+        cast(object_id as varchar) as market_id,
         case 
             when starts_with(json_extract_scalar(object_json, '$.name.name'), '0x') 
             then json_extract_scalar(object_json, '$.name.name')
@@ -108,7 +108,7 @@ bucket_base as (
         date_trunc('month', from_unixtime(timestamp_ms/1000)) as block_month,
         date_trunc('hour', from_unixtime(timestamp_ms / 1000)) as date_hour,
         'bucket' as protocol,
-        object_id as market_id,
+        cast(object_id as varchar) as market_id,
         case 
             when starts_with(regexp_extract(cast(type_ as varchar), '<([^>]+)>', 1), '0x') 
             then regexp_extract(cast(type_ as varchar), '<([^>]+)>', 1)

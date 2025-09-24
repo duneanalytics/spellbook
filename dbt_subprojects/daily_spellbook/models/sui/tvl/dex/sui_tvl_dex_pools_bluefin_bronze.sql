@@ -12,11 +12,12 @@
 -- Converted from Snowflake task to dbt incremental model
 
 with coin_info_cte as (
-    -- Use existing DEX coin info model (maintains consistency with existing DEX models)
+    -- Use existing DEX coin info model (now with name field added)
     select
         coin_type,
         coin_decimals as decimals,
-        coin_symbol as symbol
+        coin_symbol as symbol,
+        coin_name as name
     from {{ ref('dex_sui_coin_info') }}
 ),
 
@@ -106,7 +107,9 @@ select
     
     -- Extended coin metadata
     coin_a_info.decimals as coin_a_decimals,
-    coin_b_info.decimals as coin_b_decimals
+    coin_a_info.name as coin_a_name,
+    coin_b_info.decimals as coin_b_decimals,
+    coin_b_info.name as coin_b_name
 
 from filtered_pools_cte p
 -- Add token information for both sides of the pool

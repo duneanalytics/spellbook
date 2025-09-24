@@ -30,7 +30,7 @@ all_tokens as (
         coin_type,
         coin_symbol,
         coin_decimals
-    from {{ ref('sui_tvl_tokens_detail') }}
+    from {{ ref('dex_sui_coin_info') }}
     where coin_type is not null
 ),
 

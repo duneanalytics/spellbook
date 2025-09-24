@@ -12,11 +12,11 @@
 -- Converted from Snowflake task to dbt incremental model
 
 with coin_info_cte as (
-    -- Use existing DEX coin info model (maintains consistency with existing DEX models)
     select
         coin_type,
         coin_decimals as decimals,
-        coin_symbol as symbol
+        coin_symbol as symbol,
+        coin_name as name
     from {{ ref('dex_sui_coin_info') }}
 ),
 

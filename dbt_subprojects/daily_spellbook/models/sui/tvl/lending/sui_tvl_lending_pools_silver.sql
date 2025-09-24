@@ -39,17 +39,7 @@ coin_info_cte as (
         coin_decimals,
         coin_name,
         coin_symbol
-    from {{ ref('sui_tvl_tokens_detail') }}
-    
-    union all
-    
-    -- Add key tokens that might not be in the main tokens table
-    select
-        coin_type,
-        coin_decimals,
-        coin_name,
-        coin_symbol
-    from {{ ref('sui_tvl_key_tokens_detail') }}
+    from {{ ref('dex_sui_coin_info') }}
 ),
 
 -- 4. Finding last market state each day
