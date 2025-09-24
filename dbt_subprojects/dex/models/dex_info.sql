@@ -229,5 +229,7 @@ FROM (VALUES
     , ('eulerswap', 'Eulerswap', 'Direct & Aggregator', 'eulerfinance')
     , ('blackhole', 'Blackhole', 'Direct', 'BlackholeDEX')
     , ('ekubo', 'Ekubo', 'Direct', 'EkuboProtocol')
+    , ('etherex', 'EtherEx', 'Direct', 'etherexfi')
     , ('angstrom', 'Angstrom', 'Direct', 'angstromxyz')
+
 ) AS temp_table (project, name, marketplace_type, x_username)
