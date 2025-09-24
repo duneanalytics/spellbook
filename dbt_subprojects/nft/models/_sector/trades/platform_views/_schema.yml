@@ -1,4 +1,3 @@
-
 version: 2
 models:
 
@@ -40,6 +39,16 @@ models:
    config:
      tags: ['nft', 'trades', 'collectionswap']
    description: "NFT trades view for collectionswap"
+
+
+ - name: courtyard_trades_view
+   meta:
+     blockchain: ["polygon"]
+     sector: nft
+     contributors: mukhtaryah
+   config:
+     tags: ['nft', 'trades', 'courtyard', 'polygon']
+   description: "NFT trades view for courtyard"
 
 
  - name: cryptopunks_trades_view
@@ -260,4 +269,3 @@ models:
    config:
      tags: ['nft', 'trades', 'blast']
    description: "NFT trades view for fantasy"
-
