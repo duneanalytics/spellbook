@@ -231,5 +231,7 @@ FROM (VALUES
     , ('ekubo', 'Ekubo', 'Direct', 'EkuboProtocol')
     , ('etherex', 'EtherEx', 'Direct', 'etherexfi')
     , ('angstrom', 'Angstrom', 'Direct', 'angstromxyz')
-
+    , ('hyperswap', 'HyperSwap', 'Direct', 'HyperSwap')
+    , ('hybra', 'Hybra', 'Direct', 'Hybra')
+    , ('prjx', 'PRJX', 'Direct', 'PRJX')
 ) AS temp_table (project, name, marketplace_type, x_username)
