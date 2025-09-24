@@ -11,3 +11,16 @@ quoting:
 
 # This setting configures which "profile" dbt uses for this project.
 profile: "spellbook-local"
+
+models:
+  stellar:
+    +on_schema_change: "append_new_columns"
+    staging:
+      +materialized: view
+
+  stellar_dbt_public:
+    +on_schema_change: "append_new_columns"
+    staging:
+      +materialized: view
+      +project: crypto-stellar
+      +dataset: crypto_stellar_raw
