@@ -10,29 +10,29 @@
     set streams = {
         "ar": {
             "start": {
-                "raw_calls" : "2019-06-01",
-                "transfers" : "2019-06-01",
-                "stream"    : "2019-06-01",
-                "executions": "2019-06-01",
+                "raw_calls" : "2025-09-10",
+                "transfers" : "2025-09-10",
+                "stream"    : "2025-09-10",
+                "executions": "2025-09-10",
             },
             "contracts" : oneinch_ar_cfg_contracts_macro(),
         },
         "lo": {
             "start": {
-                "raw_calls" : "2021-06-01",
-                "transfers" : "2021-06-01",
-                "stream"    : "2021-06-01",
-                "executions": "2021-06-01",
-                "fusion"    : "2022-12-25",
+                "raw_calls" : "2025-09-10",
+                "transfers" : "2025-09-10",
+                "stream"    : "2025-09-10",
+                "executions": "2025-09-10",
+                "fusion"    : "2025-19-10",
             },
             "contracts" : oneinch_lo_cfg_contracts_macro(),
         },
         "cc": {
             "start": {
-                "raw_calls" : "2024-08-20",
-                "transfers" : "2024-08-20",
-                "stream"    : "2024-08-20",
-                "executions": "2024-08-20",
+                "raw_calls" : "2025-09-10",
+                "transfers" : "2025-09-10",
+                "stream"    : "2025-09-10",
+                "executions": "2025-09-10",
             },
             "contracts" : oneinch_cc_cfg_contracts_macro(),
         },
