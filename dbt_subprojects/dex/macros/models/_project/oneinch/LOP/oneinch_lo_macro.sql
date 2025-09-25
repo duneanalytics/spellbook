@@ -19,7 +19,7 @@
 with
 
 decoded as (
-    {% for contract, contract_data in contracts.items() if blockchain in contract_data['blockchains'] %}
+    {% for contract, contract_data in contracts.items() if blockchain in contract_data['blockchains'] if for_stream in contract_data.get('streams', ['lo']) %}
         {% for method, method_data in contract_data.methods.items() if for_stream in method_data.get('streams', ['lo']) %}
             select
                 call_block_number as block_number
@@ -67,8 +67,33 @@ decoded as (
             )
             {% if not loop.last %}union all{% endif %}
         {% endfor %}
-        {% if not loop.last %}union all{% endif %}
+        union all
     {% endfor %}
+    select -- for correct execution in blockchains, where cc stream is empty
+        0 as block_number
+        , current_timestamp as block_time
+        , current_timestamp as block_date
+        , 0x as tx_hash
+        , '' as contract_name
+        , 0 as protocol_version
+        , '' as call_method
+        , [] as call_trace_address
+        , 0x as call_to
+        , false as call_success
+        , 0x as maker
+        , 0x as receiver
+        , 0x as maker_asset
+        , 0x as taker_asset
+        , '0' uint256 as maker_amount
+        , '0' uint256 as taker_amount
+        , '0' uint256 as making_amount
+        , '0' uint256 as taking_amount
+        , 0x as order_hash
+        , [] as order_remains
+        , false as settlement_in_args
+        , false as factory_in_args
+        , false as partial
+        , false as multiple
 )
 
 , raw_calls as (
@@ -163,5 +188,6 @@ from ({{
 left join native_prices using(minute)
 {% else %}from decoded{% endif %}
 join raw_calls using(block_date, block_number, tx_hash, call_to, call_trace_address)
+where call_to <> 0x
 
 {% endmacro %}

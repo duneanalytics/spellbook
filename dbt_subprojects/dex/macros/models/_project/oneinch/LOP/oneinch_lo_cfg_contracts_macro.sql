@@ -143,6 +143,7 @@
                 "0x6fd4383cb451173d5f9304f041c7bcbf27d561ff": ['zksync'],
             },
             "start": "2024-02-12",
+            "streams": ["lo", "cc"],
             "methods": {
                 "fillOrder":             dict(samples["v4"], selector="0x9fda64bd"),
                 "fillOrderArgs":         dict(samples["v4"], selector="0xf497df75", args="args", streams=["lo", "cc"]),
