@@ -53,7 +53,7 @@ filtered_balances AS (
   {{ balances_incremental_subset_daily(
        blockchain='ethereum',
        start_date='2021-11-11',
-       address_token_list='pool_addresses'
+       address_list='pool_addresses'
   ) }}
 )
 
