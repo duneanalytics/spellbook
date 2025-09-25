@@ -91,6 +91,7 @@ FROM
     ('ont-ontology', 'bnb', 'ONT', 0xfd7b3a77848f1c2d67e05e54d78d174a0c850335, 18),
     ('orbs-orbs', 'bnb', 'ORBS', 0xebd49b26169e1b52c04cfd19fcf289405df55f80, 18),
     ('pets-micropets', 'bnb', 'PETS', 0xa77346760341460b42c230ca6d21d4c8e743fa9c, 18),
+    ('plasma-xpl', 'bnb', 'XPL', 0x405FBc9004D857903bFD6b3357792D71a50726b0, 18),
     ('pmon-polychain-monsters', 'bnb', 'PMON', 0x1796ae0b0fa4862485106a0de9b654efe301d0b2, 18),
     ('pols-polkastarter', 'bnb', 'POLS', 0x7e624fa0e1c4abfd309cc15719b7e2580887f570, 18),
     ('prq-parsiq', 'bnb', 'PRQ', 0xd21d29b38374528675c34936bf7d5dd693d2a577, 18),
