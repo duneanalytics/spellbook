@@ -50,7 +50,7 @@ filtered_pools_cte as (
         json_extract_scalar(object_json, '$.coin_a') as coin_a_amount_raw,
         json_extract_scalar(object_json, '$.coin_b') as coin_b_amount_raw,
         json_extract_scalar(object_json, '$.current_sqrt_price') as current_sqrt_price,
-        cast(json_extract_scalar(object_json, '$.fee_rate') as integer) as fee_rate,
+        cast(json_extract_scalar(object_json, '$.fee_rate') as decimal(38,0)) as fee_rate,
         json_extract_scalar(object_json, '$.liquidity') as liquidity
         
     from {{ source('sui','objects') }}

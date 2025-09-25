@@ -17,7 +17,7 @@ select
     json_extract_scalar(event_json, '$.pool_id') as pool_id,
     concat('0x', json_extract_scalar(event_json, '$.coin_type_a')) as coin_type_a,
     concat('0x', json_extract_scalar(event_json, '$.coin_type_b')) as coin_type_b,
-    cast(json_extract_scalar(event_json, '$.tick_spacing') as integer) as tick_spacing,
+    json_extract_scalar(event_json, '$.tick_spacing') as tick_spacing,
     transaction_digest,
     event_index,
     epoch,

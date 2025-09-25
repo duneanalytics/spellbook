@@ -43,8 +43,8 @@ filtered_pools_cte as (
         
         -- Pool parameters  
         json_extract_scalar(object_json, '$.flash_loan_fee_rate') as flash_loan_fee_rate,
-        cast(json_extract_scalar(object_json, '$.tick_spacing') as integer) as tick_spacing,
-        cast(json_extract_scalar(object_json, '$.swap_fee_rate') as integer) as swap_fee_rate,
+        json_extract_scalar(object_json, '$.tick_spacing') as tick_spacing,
+        cast(json_extract_scalar(object_json, '$.swap_fee_rate') as decimal(38,0)) as swap_fee_rate,
         json_extract_scalar(object_json, '$.sqrt_price') as sqrt_price,
         json_extract_scalar(object_json, '$.fee_growth_global_x') as fee_growth_global_a,
         json_extract_scalar(object_json, '$.fee_growth_global_y') as fee_growth_global_b
