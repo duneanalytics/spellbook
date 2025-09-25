@@ -25,7 +25,6 @@ FROM (
     , sender
     , recipient
     , deposit_token_standard
-    , withdrawal_token_standard
     , deposit_token_address
     , tx_from
     , tx_hash
