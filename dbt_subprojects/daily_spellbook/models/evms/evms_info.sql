@@ -25,6 +25,7 @@
                                         , "nova"
                                         , "optimism"
                                         , "peaq"
+                                        , "plasma"
                                         , "polygon"
                                         , "ronin"
                                         , "scroll"
@@ -130,5 +131,6 @@ FROM (
         , (747, 'flow', 'Flow', 'Layer 1', NULL, 'WFLOW', 0xd3bf53dac106a0290b0483ecbc89d40fcc961f3e, 'https://evm.flowscan.io/', timestamp '2025-08-26 14:59', NULL, NULL, NULL, true, NULL)
         , (999, 'hyperevm', 'HypereVM', 'Layer 1', NULL, 'HYPE', 0x0000000000000000000000000000000000000000, 'https://hyperevmscan.io/', timestamp '2025-02-18 04:25', NULL, NULL, NULL, true, NULL)
         , (3338, 'peaq', 'Peaq', 'Layer 1', NULL, 'PEAQ', 0x0000000000000000000000000000000000000000, 'https://peaqscan.xyz/', timestamp '2024-04-25 12:46', NULL, NULL, NULL, true, NULL)
+        , (9745, 'plasma', 'Plasma Mainnet Beta', 'Layer 1', NULL, 'XPL', 0x6100E367285b01F48D07953803A2d8dCA5D19873, 'https://plasmascan.to/', timestamp '2025-09-03 20:24:26', NULL, NULL, NULL, true, NULL)
         , (5031, 'somnia', 'Somnia', 'Layer 1', NULL, 'SOMNIA', 0x0000000000000000000000000000000000000000, 'https://explorer-somnia.network/', timestamp '2025-05-22 11:47', NULL, NULL, NULL, true, NULL)
 ) AS temp_table (chain_id, blockchain, name, chain_type, rollup_type, native_token_symbol, wrapped_native_token_address, explorer_link, first_block_time, codebase, data_availability, settlement, is_on_dune, ecosystem)
