@@ -43,7 +43,7 @@
 {%
     set blockchains = {
         "exposed": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea", "sonic", "unichain", "solana"],
-        "aave": ["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "linea", "optimism", "polygon", "scroll",  "zksync"],
+        "aave": ["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "linea", "optimism", "polygon", "scroll", "sonic",  "zksync"],
         "category": {
             "ethereum"      : "evms",
             "bnb"           : "evms",

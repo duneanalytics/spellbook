@@ -77,7 +77,7 @@ decoded as (
         , '' as contract_name
         , 0 as protocol_version
         , '' as call_method
-        , [] as call_trace_address
+        , array[] as call_trace_address
         , 0x as call_to
         , false as call_success
         , 0x as maker
@@ -89,7 +89,7 @@ decoded as (
         , '0' uint256 as making_amount
         , '0' uint256 as taking_amount
         , 0x as order_hash
-        , [] as order_remains
+        , array[] as order_remains
         , false as settlement_in_args
         , false as factory_in_args
         , false as partial
