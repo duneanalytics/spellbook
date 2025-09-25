@@ -16,8 +16,8 @@ models:
       - &deposit_chain
         name: deposit_chain
         description: "Blockchain where the tokens were sent"
-      - &withdraw_chain
-        name: withdraw_chain
+      - &withdrawal_chain
+        name: withdrawal_chain
         description: "Blockchain where the tokens were received"
       - &bridge_name
         name: bridge_name
@@ -46,14 +46,14 @@ models:
       - &deposit_amount_usd
         name: deposit_amount_usd
         description: "USD value of tokens bridged from source chain"
-      - &withdraw_amount_raw 
-        name: withdraw_amount_raw
+      - &withdrawal_amount_raw 
+        name: withdrawal_amount_raw
         description: "Raw amount of tokens bridged to destination chain"
-      - &withdraw_amount
-        name: withdraw_amount
+      - &withdrawal_amount
+        name: withdrawal_amount
         description: "Amount of tokens bridged to destination chain"
-      - &withdraw_amount_usd
-        name: withdraw_amount_usd
+      - &withdrawal_amount_usd
+        name: withdrawal_amount_usd
         description: "USD value of tokens bridged to destination chain"
       - &sender 
         name: sender
@@ -70,11 +70,11 @@ models:
       - &deposit_token_symbol
         name: deposit_token_symbol
         description: "Source blockchain token symbol"
-      - &withdraw_token_address
-        name: withdraw_token_address
+      - &withdrawal_token_address
+        name: withdrawal_token_address
         description: "Destination blockchain token address"
-      - &withdraw_token_symbol
-        name: withdraw_token_symbol
+      - &withdrawal_token_symbol
+        name: withdrawal_token_symbol
         description: "Destination blockchain token symbol"
       - &tx_from
         name: tx_from
@@ -101,10 +101,10 @@ models:
     description: "Bridge withdrawals events"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['withdraw_chain', 'tx_hash', 'evt_index']
+          combination_of_columns: ['withdrawal_chain', 'tx_hash', 'evt_index']
     columns:
       - *deposit_chain
-      - *withdraw_chain
+      - *withdrawal_chain
       - *bridge_name
       - *bridge_version
       - *event_side
@@ -114,18 +114,18 @@ models:
       - *deposit_amount_raw
       - *deposit_amount
       - *deposit_amount_usd
-      - *withdraw_amount_raw
-      - *withdraw_amount
-      - *withdraw_amount_usd
+      - *withdrawal_amount_raw
+      - *withdrawal_amount
+      - *withdrawal_amount_usd
       - *sender
       - *recipient
       - *deposit_token_symbol
-      - &withdraw_token_standard
-        name: withdraw_token_standard
+      - &withdrawal_token_standard
+        name: withdrawal_token_standard
         description: "Destination blockchain token standard"
-      - *withdraw_token_symbol
+      - *withdrawal_token_symbol
       - *deposit_token_address
-      - *withdraw_token_address
+      - *withdrawal_token_address
       - *tx_from
       - *tx_hash
       - *evt_index  
@@ -141,7 +141,7 @@ models:
     description: "Bridge flows"
     columns:
       - *deposit_chain
-      - *withdraw_chain
+      - *withdrawal_chain
       - *bridge_name
       - *bridge_version
       - *event_side
@@ -151,17 +151,17 @@ models:
       - *deposit_amount_raw
       - *deposit_amount
       - *deposit_amount_usd
-      - *withdraw_amount_raw
-      - *withdraw_amount
-      - *withdraw_amount_usd
+      - *withdrawal_amount_raw
+      - *withdrawal_amount
+      - *withdrawal_amount_usd
       - *sender
       - *recipient
       - *deposit_token_standard
       - *deposit_token_symbol
-      - *withdraw_token_standard
-      - *withdraw_token_symbol
+      - *withdrawal_token_standard
+      - *withdrawal_token_symbol
       - *deposit_token_address
-      - *withdraw_token_address
+      - *withdrawal_token_address
       - *tx_from
       - &deposits_tx_hash
         name: deposits_tx_hash

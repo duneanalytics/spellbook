@@ -15,7 +15,7 @@ SELECT *
 FROM (
     {% for bridge_platform in bridges_platforms %}
     SELECT deposit_chain
-    , withdraw_chain
+    , withdrawal_chain
     , bridge_name
     , bridge_version
     , block_date

@@ -20,8 +20,8 @@ models:
       - &deposit_chain
         name: deposit_chain
         description: "Blockchain where the tokens were sent"
-      - &withdraw_chain
-        name: withdraw_chain
+      - &withdrawal_chain
+        name: withdrawal_chain
         description: "Blockchain where the tokens were received"
       - &bridge_name
         name: bridge_name
@@ -41,8 +41,8 @@ models:
       - &deposit_amount_raw 
         name: deposit_amount_raw
         description: "Raw amount of tokens bridged from source chain"
-      - &withdraw_amount_raw 
-        name: withdraw_amount_raw
+      - &withdrawal_amount_raw 
+        name: withdrawal_amount_raw
         description: "Raw amount of tokens bridged to destination chain"
       - &sender 
         name: sender
@@ -50,15 +50,18 @@ models:
       - &recipient 
         name: recipient
         description: "Destination address"
-      - &deposit_token_standard  
+      - &deposit_token_standard
         name: deposit_token_standard
         description: "Source blockchain token standard"
+      - &withdrawal_token_standard
+        name: withdrawal_token_standard
+        description: "Destination blockchain token standard"
       
       - &deposit_token_address  
         name: deposit_token_address
         description: "Source blockchain token address"
-      - &withdraw_token_address
-        name: withdraw_token_address
+      - &withdrawal_token_address
+        name: withdrawal_token_address
         description: "Destination blockchain token address"
       - &tx_from
         name: tx_from
@@ -92,7 +95,7 @@ models:
             - source('circle_arbitrum','tokenmessenger_evt_mintandwithdraw')
     columns:
       - *deposit_chain
-      - *withdraw_chain
+      - *withdrawal_chain
       - *bridge_name
       - *bridge_version
       - *deposit_amount_raw
@@ -100,11 +103,11 @@ models:
       - *block_date
       - *block_time
       - *block_number
-      - *withdraw_amount_raw 
+      - *withdrawal_amount_raw 
       - *sender
       - *recipient
-      - *withdraw_token_standard
-      - *withdraw_token_address
+      - *withdrawal_token_standard
+      - *withdrawal_token_address
       - *tx_from
       - *tx_hash
       - *evt_index  

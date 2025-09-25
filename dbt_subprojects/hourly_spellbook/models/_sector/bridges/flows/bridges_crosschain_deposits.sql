@@ -13,7 +13,7 @@ SELECT *
     FROM (
         {% for vm in vms %}
         SELECT deposit_chain
-        , withdraw_chain
+        , withdrawal_chain
         , bridge_name
         , bridge_version
         , block_date

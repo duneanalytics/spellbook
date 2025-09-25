@@ -15,17 +15,17 @@ SELECT *
 FROM (
     {% for bridge_platform in bridges_platforms %}
     SELECT deposit_chain
-    , withdraw_chain
+    , withdrawal_chain
     , bridge_name
     , bridge_version
     , block_date
     , block_time
     , block_number
-    , withdraw_amount_raw
+    , withdrawal_amount_raw
     , sender
     , recipient
-    , withdraw_token_standard
-    , withdraw_token_address
+    , withdrawal_token_standard
+    , withdrawal_token_address
     , tx_from
     , tx_hash
     , evt_index
