@@ -17,7 +17,7 @@ calls as (
         , maker_asset as token
     from (
         {{ oneinch_lo_macro(blockchain = blockchain, for_stream = stream) }}
-        where factory_in_args -- only calls where factory in args
+        and factory_in_args -- only calls where factory in args
     )
 )
 
