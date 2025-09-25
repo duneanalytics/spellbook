@@ -5,6 +5,51 @@
     )
 }}
 
+WITH latest_deposits AS (
+    SELECT bridge_name
+    , bridge_version
+    , deposit_chain
+    , withdrawal_chain
+    , bridge_transfer_id
+    , block_date
+    , block_time
+    , block_number
+    , deposit_amount_raw
+    , deposit_amount
+    , deposit_amount_usd
+    , sender
+    , recipient
+    , deposit_token_standard
+    , deposit_token_address
+    , tx_from
+    , tx_hash
+    FROM (
+        SELECT bridge_name
+        , bridge_version
+        , deposit_chain
+        , withdrawal_chain
+        , bridge_transfer_id
+        , block_date
+        , block_time
+        , block_number
+        , deposit_amount_raw
+        , deposit_amount
+        , deposit_amount_usd
+        , sender
+        , recipient
+        , deposit_token_standard
+        , deposit_token_address
+        , tx_from
+        , tx_hash
+        , ROW_NUMBER() OVER (
+            PARTITION BY bridge_name, bridge_version, deposit_chain, withdrawal_chain, bridge_transfer_id 
+            ORDER BY block_number DESC, evt_index DESC
+            ) AS rn
+        FROM {{ ref('bridges_evms_deposits') }}
+    )
+    WHERE rn = 1
+    )
+
 SELECT deposit_chain
 , withdraw_chain
 , bridge_name
@@ -30,5 +75,10 @@ SELECT deposit_chain
 , d.tx_hash AS deposit_tx_hash
 , w.tx_hash AS withdraw_tx_hash
 , bridge_transfer_id
+<<<<<<< HEAD
 FROM {{ ref('bridges_evms_deposits') }} d
 FULL OUTER JOIN {{ ref('bridges_evms_withdrawals') }} w USING (bridge_name, bridge_version, deposit_chain, withdraw_chain, bridge_transfer_id)
+=======
+FROM {{ ref('bridges_evms_withdrawals') }} w
+FULL OUTER JOIN latest_deposits d USING (bridge_name, bridge_version, deposit_chain, withdrawal_chain, bridge_transfer_id)
+>>>>>>> upstream/main
