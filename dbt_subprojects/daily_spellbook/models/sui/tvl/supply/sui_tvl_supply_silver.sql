@@ -9,43 +9,68 @@
     tags=['sui','tvl','supply','silver']
 ) }}
 
--- Silver layer: Simple daily aggregated token supply (following Snowflake pattern)
--- Basic aggregation without complex LOCF logic
+-- Silver layer: BTC supply with simple daily aggregation
+-- Simplified to use latest snapshot per token per day (like other Sui models)
 
-with daily_supply as (
-    select
-        block_date,
+with btc_tokens as (
+    -- Get BTC token whitelist
+    select 
         coin_type,
-        total_supply,
-        -- Get latest supply per token per day
-        row_number() over (
-            partition by block_date, coin_type
-            order by timestamp_ms desc
-        ) as rn
-    from {{ ref('sui_tvl_supply_bronze') }}
-    {% if is_incremental() %}
-    where {{ incremental_predicate('block_date') }}
-    {% endif %}
+        coin_symbol,
+        coin_decimals
+    from {{ ref('sui_tvl_btc_tokens_detail') }}
 ),
 
-supply_with_metadata as (
+daily_btc_supply as (
+    -- Get latest supply per BTC token per day
     select
         s.block_date,
         s.coin_type,
         s.total_supply,
-        c.coin_symbol,
-        c.coin_decimals
-    from daily_supply s
-    left join {{ ref('dex_sui_coin_info') }} c
-        on s.coin_type = c.coin_type
-    where s.rn = 1
-        and s.total_supply > 0
+        bt.coin_symbol,
+        bt.coin_decimals,
+        row_number() over (
+            partition by s.block_date, s.coin_type
+            order by s.timestamp_ms desc
+        ) as rn
+    from {{ ref('sui_tvl_supply_bronze') }} s
+    inner join btc_tokens bt on s.coin_type = bt.coin_type
+    {% if is_incremental() %}
+    where {{ incremental_predicate('s.block_date') }}
+    {% endif %}
+),
+
+deduplicated_daily_btc_supply_by_symbol as (
+    -- Handle multiple tokens with same symbol (e.g., different wrapped BTC versions)
+    select
+        block_date,
+        coin_symbol,
+        total_supply,
+        coin_decimals,
+        row_number() over (
+            partition by block_date, coin_symbol
+            order by total_supply desc, coin_type desc -- Largest supply wins, tie-break by coin_type
+        ) as rn
+    from daily_btc_supply
+    where rn = 1
+    qualify rn = 1
 )
 
 select
-    block_date,
-    sum(total_supply / power(10, coalesce(coin_decimals, 9))) as total_token_supply,
-    count(distinct coin_symbol) as token_count
-from supply_with_metadata
+    block_date as date,
+    
+    -- Total BTC supply across all variants
+    sum(total_supply / power(10, coin_decimals)) as total_btc_supply,
+    
+    -- Supply breakdown by symbol (JSON aggregation)
+    object_construct_keep_null(
+        'breakdown', 
+        object_agg(
+            coin_symbol, 
+            round(total_supply / power(10, coin_decimals), 0)
+        )
+    ) as supply_breakdown_json
+    
+from deduplicated_daily_btc_supply_by_symbol
 group by block_date
 order by block_date desc 

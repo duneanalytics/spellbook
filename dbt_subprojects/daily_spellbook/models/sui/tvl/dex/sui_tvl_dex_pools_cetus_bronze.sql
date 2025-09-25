@@ -22,31 +22,28 @@ with coin_info_cte as (
     from {{ ref('dex_sui_coin_info') }}
 ),
 
-
-
 filtered_pools_cte as (
     select
-        cast(type_ as varchar) as type_,
-        timestamp_ms,
+        cast(type_ as varchar) as type,
         date as block_date,
         date_trunc('month', date) as block_month,
+        from_unixtime(timestamp_ms/1000) as block_time,
         version,
         object_id,
-        checkpoint,
         json_extract_scalar(object_json, '$.id.id') as pool_id,
         json_extract_scalar(object_json, '$.coin_a') as coin_a_amount_raw,
         json_extract_scalar(object_json, '$.coin_b') as coin_b_amount_raw,
         json_extract_scalar(object_json, '$.current_sqrt_price') as current_sqrt_price,
-        cast(json_extract_scalar(object_json, '$.fee_rate') as decimal(38,0)) as fee_rate,
+        cast(json_extract_scalar(object_json, '$.fee_rate') as integer) as fee_rate,
         json_extract_scalar(object_json, '$.liquidity') as liquidity,
-        json_extract_scalar(object_json, '$.current_tick_index.bits') as tick_index_bits,
-        json_extract_scalar(object_json, '$.tick_spacing') as tick_spacing
+        cast(json_extract_scalar(object_json, '$.current_tick_index.bits') as integer) as tick_index_bits,
+        cast(json_extract_scalar(object_json, '$.tick_spacing') as integer) as tick_spacing
         
     from {{ source('sui','objects') }}
     where cast(type_ as varchar) like '%0x1eabed72c53feb3805120a081dc15963c204dc8d091542592abaf7a35689b2fb::pool::Pool<%'
         and from_unixtime(timestamp_ms/1000) >= timestamp '{{ cetus_start_date }}'
     {% if is_incremental() %}
-    and checkpoint > coalesce((select max(checkpoint) from {{ this }}), 0)
+    and {{ incremental_predicate('from_unixtime(timestamp_ms/1000)') }}
     {% endif %}
 ),
 
@@ -61,16 +58,14 @@ pools_with_metadata_cte as (
 )
 
 select 
-    -- Basic metadata (following existing Sui model patterns)
-    p.type_,
-    from_unixtime(p.timestamp_ms/1000) as block_time,
+    -- Basic metadata
+    p.type,
+    p.block_time,
     p.block_date,
     p.block_month,
-    p.timestamp_ms,
     p.version,
     p.object_id,
     p.pool_id,
-    p.checkpoint,
     
     -- Pool token type information
     p.coin_type_a,
@@ -94,8 +89,6 @@ select
     p.current_sqrt_price,
     p.tick_index_bits,
     p.fee_rate,
-    
-    -- Calculated columns
     p.fee_rate / 10000.0 as fee_rate_percent,
     concat(
         coalesce(coin_a_info.symbol, 'UNKNOWN'),
@@ -105,15 +98,8 @@ select
         cast(p.fee_rate / 10000.0 as varchar),
         '%'
     ) as pool_name,
-    
     p.liquidity,
-    p.tick_spacing,
-    
-    -- Extended coin metadata
-    coin_a_info.decimals as coin_a_decimals,
-    coin_a_info.name as coin_a_name,
-    coin_b_info.decimals as coin_b_decimals,
-    coin_b_info.name as coin_b_name
+    p.tick_spacing
 
 from pools_with_metadata_cte p
 -- Add token information for both sides of the pool  

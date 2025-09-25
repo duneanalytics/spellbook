@@ -14,7 +14,7 @@
 {% set bluefin_start_date = "2025-09-16" %}
 
 with coin_info_cte as (
-    -- Use existing DEX coin info model (now with name field added)
+    -- Use existing DEX coin info model
     select
         coin_type,
         coin_decimals as decimals,
@@ -25,13 +25,12 @@ with coin_info_cte as (
 
 filtered_pools_cte as (
     select
-        cast(type_ as varchar) as type_,
-        timestamp_ms,
+        cast(type_ as varchar) as type,
         date as block_date,
         date_trunc('month', date) as block_month,
+        from_unixtime(timestamp_ms/1000) as block_time,
         version,
         object_id,
-        checkpoint,
         json_extract_scalar(object_json, '$.id.id') as pool_id,
         
         -- Extract coin types from the object type string and replace short SUI address with full address
@@ -50,28 +49,26 @@ filtered_pools_cte as (
         json_extract_scalar(object_json, '$.coin_a') as coin_a_amount_raw,
         json_extract_scalar(object_json, '$.coin_b') as coin_b_amount_raw,
         json_extract_scalar(object_json, '$.current_sqrt_price') as current_sqrt_price,
-        cast(json_extract_scalar(object_json, '$.fee_rate') as decimal(38,0)) as fee_rate,
+        cast(json_extract_scalar(object_json, '$.fee_rate') as integer) as fee_rate,
         json_extract_scalar(object_json, '$.liquidity') as liquidity
         
     from {{ source('sui','objects') }}
     where cast(type_ as varchar) like '%0x3492c874c1e3b3e2984e8c41b589e642d4d0a5d6459e5a9cfc2d52fd7c89c267::pool::Pool<%'
         and from_unixtime(timestamp_ms/1000) >= timestamp '{{ bluefin_start_date }}'
     {% if is_incremental() %}
-    and checkpoint > coalesce((select max(checkpoint) from {{ this }}), 0)
+    and {{ incremental_predicate('from_unixtime(timestamp_ms/1000)') }}
     {% endif %}
 )
 
 select 
-    -- Basic metadata (following existing Sui model patterns)
-    p.type_,
-    from_unixtime(p.timestamp_ms/1000) as block_time,
+    -- Basic metadata
+    p.type,
+    p.block_time,
     p.block_date,
     p.block_month,
-    p.timestamp_ms,
     p.version,
     p.object_id,
     p.pool_id,
-    p.checkpoint,
     
     -- Pool token type information
     p.coin_type_a,
@@ -94,8 +91,6 @@ select
     -- Pool pricing and parameters
     p.current_sqrt_price,
     p.fee_rate,
-    
-    -- Calculated columns
     p.fee_rate / 10000.0 as fee_rate_percent,
     concat(
         coalesce(coin_a_info.symbol, 'UNKNOWN'),
@@ -105,14 +100,7 @@ select
         cast(p.fee_rate / 10000.0 as varchar),
         '%'
     ) as pool_name,
-    
-    p.liquidity,
-    
-    -- Extended coin metadata
-    coin_a_info.decimals as coin_a_decimals,
-    coin_a_info.name as coin_a_name,
-    coin_b_info.decimals as coin_b_decimals,
-    coin_b_info.name as coin_b_name
+    p.liquidity
 
 from filtered_pools_cte p
 -- Add token information for both sides of the pool

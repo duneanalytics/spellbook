@@ -24,13 +24,12 @@ with coin_info_cte as (
 
 filtered_pools_cte as (
     select
-        cast(type_ as varchar) as type_,
-        timestamp_ms,
+        cast(type_ as varchar) as type,
         date as block_date,
         date_trunc('month', date) as block_month,
+        from_unixtime(timestamp_ms/1000) as block_time,
         version,
         object_id,
-        checkpoint,
         json_extract_scalar(object_json, '$.id.id') as pool_id,
         
         -- Extract token types from object JSON (Momentum specific paths)
@@ -43,8 +42,8 @@ filtered_pools_cte as (
         
         -- Pool parameters  
         json_extract_scalar(object_json, '$.flash_loan_fee_rate') as flash_loan_fee_rate,
-        json_extract_scalar(object_json, '$.tick_spacing') as tick_spacing,
-        cast(json_extract_scalar(object_json, '$.swap_fee_rate') as decimal(38,0)) as swap_fee_rate,
+        cast(json_extract_scalar(object_json, '$.tick_spacing') as integer) as tick_spacing,
+        cast(json_extract_scalar(object_json, '$.swap_fee_rate') as integer) as swap_fee_rate,
         json_extract_scalar(object_json, '$.sqrt_price') as sqrt_price,
         json_extract_scalar(object_json, '$.fee_growth_global_x') as fee_growth_global_a,
         json_extract_scalar(object_json, '$.fee_growth_global_y') as fee_growth_global_b
@@ -53,23 +52,22 @@ filtered_pools_cte as (
     where cast(type_ as varchar) like '0x70285592c97965e811e0c6f98dccc3a9c2b4ad854b3594faab9597ada267b860::pool::Pool<%'
         and from_unixtime(timestamp_ms/1000) >= timestamp '{{ momentum_start_date }}'
     {% if is_incremental() %}
-    and checkpoint > coalesce((select max(checkpoint) from {{ this }}), 0)
+    and {{ incremental_predicate('from_unixtime(timestamp_ms/1000)') }}
     {% endif %}
 )
 
 select 
-    -- Timestamps & Identifiers (following existing Sui model patterns)
-    from_unixtime(p.timestamp_ms/1000) as block_time,
+    -- Timestamps & Identifiers
+    p.block_time,
     p.block_date,
     p.block_month,
-    p.timestamp_ms,
-    p.object_id as digest, -- Using object_id as digest equivalent
+    p.object_id as digest,
     p.version,
     p.pool_id,
     
     -- Token Info (use Momentum naming convention)
-    coalesce(token_a_info_full.coin_type, p.token_a_type) as token_a_type,
-    coalesce(token_b_info_full.coin_type, p.token_b_type) as token_b_type,
+    p.token_a_type,
+    p.token_b_type,
     coalesce(token_a_info.symbol, 'UNK') as token_a_symbol,
     coalesce(token_b_info.symbol, 'UNK') as token_b_symbol,
     coalesce(token_a_info.name, 'Unknown') as token_a_name,
@@ -107,15 +105,10 @@ select
         cast(p.swap_fee_rate / 10000.0 as varchar) || '%'
     ) as pool_name,
     
-    p.type_ as type
+    p.type
 
 from filtered_pools_cte p
 -- Join to get coin info for Token A  
 left join coin_info_cte token_a_info on p.token_a_type = token_a_info.coin_type
 -- Join to get coin info for Token B
-left join coin_info_cte token_b_info on p.token_b_type = token_b_info.coin_type
--- Optional joins for full SUI address consistency
-left join coin_info_cte token_a_info_full on p.token_a_type = token_a_info_full.coin_type 
-    and token_a_info_full.coin_type = '0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI'
-left join coin_info_cte token_b_info_full on p.token_b_type = token_b_info_full.coin_type 
-    and token_b_info_full.coin_type = '0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI' 
+left join coin_info_cte token_b_info on p.token_b_type = token_b_info.coin_type 

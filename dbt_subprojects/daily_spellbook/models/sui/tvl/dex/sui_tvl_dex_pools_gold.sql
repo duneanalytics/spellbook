@@ -10,10 +10,34 @@
     tags=['sui','tvl','dex','gold']
 ) }}
 
--- Gold layer: DEX pools with pricing and business metrics
--- Adds USD pricing and applies business filters like the Snowflake pattern
+-- Gold layer: BTC DEX pools with pricing and business metrics
+-- Adds USD pricing, volume data, and applies business filters like the Snowflake pattern
+-- Filters for BTC pools only to match Snowflake BTC_POOLS_DAILY_METRICS_V
 
+with btc_pools_silver as (
+    -- Filter for BTC pools only (matching Snowflake logic)
+    select *
+    from {{ ref('sui_tvl_dex_pools_silver') }}
+    where coin_type_a = '0x27792d9fed7f9844eb4839566001bb6f6cb4804f66aa2da6fe1ee242d896881::coin::COIN'
+       or coin_type_b = '0x27792d9fed7f9844eb4839566001bb6f6cb4804f66aa2da6fe1ee242d896881::coin::COIN'
+    {% if is_incremental() %}
+    and {{ incremental_predicate('block_date') }}
+    {% endif %}
+),
 
+daily_volume as (
+    -- Aggregate daily volume per pool from trades
+    select 
+        block_date,
+        pool_id,
+        sum(amount_usd) as total_volume_usd
+    from {{ ref('dex_sui_trades') }}
+    where pool_id is not null
+    {% if is_incremental() %}
+    and {{ incremental_predicate('block_date') }}
+    {% endif %}
+    group by block_date, pool_id
+),
 
 dex_pools_with_pricing as (
     select
@@ -30,6 +54,9 @@ dex_pools_with_pricing as (
         s.avg_fee_rate_percent,
         s.num_records,
         
+        -- Add volume data
+        coalesce(v.total_volume_usd, 0) as total_volume_usd,
+        
         -- Get pricing for coin A
         pa.price as coin_a_price_usd,
         -- Get pricing for coin B  
@@ -39,7 +66,12 @@ dex_pools_with_pricing as (
         cast(coalesce(cast(s.avg_coin_a_amount as double) * pa.price, 0) + 
              coalesce(cast(s.avg_coin_b_amount as double) * pb.price, 0) as decimal(38,8)) as tvl_usd
         
-    from {{ ref('sui_tvl_dex_pools_silver') }} s
+    from btc_pools_silver s
+    
+    -- Join volume data
+    left join daily_volume v
+        on v.block_date = s.block_date
+        and v.pool_id = s.pool_id
     
     -- Join pricing for coin A
     left join {{ source('prices','usd') }} pa
@@ -72,10 +104,6 @@ dex_pools_with_pricing as (
                 '^0x0*([0-9a-f]+)$', '0x$1'
             ) as varbinary
         )
-    
-    {% if is_incremental() %}
-    where s.block_date >= date_sub(current_date(), 7)
-    {% endif %}
 )
 
 select
@@ -92,10 +120,10 @@ select
     coin_a_price_usd,
     coin_b_price_usd,
     tvl_usd,
+    total_volume_usd,
     avg_fee_rate_percent as fee_rate_percent,
     num_records
 from dex_pools_with_pricing
-where tvl_usd > 1000
-order by
+where tvl_usd > 1000 and total_volume_usd > 1000
     metric_date desc,
     tvl_usd desc 

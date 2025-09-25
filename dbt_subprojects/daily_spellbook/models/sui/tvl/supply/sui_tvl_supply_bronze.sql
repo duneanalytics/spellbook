@@ -59,21 +59,21 @@ with supply_data as (
         case
             -- For non-generic TreasuryCapManager (path: treasury:total_supply:value)
             when cast(type_ as varchar) like '%::TreasuryCapManager' 
-            then cast(json_extract_scalar(object_json, '$.treasury.total_supply.value') as double)
+            then cast(json_extract_scalar(object_json, '$.treasury.total_supply.value') as decimal(38,0))
             
             -- For TreasuryCap (top-level total_supply:value)
             when cast(type_ as varchar) like '0x2::coin::TreasuryCap<%>%' 
-            then cast(json_extract_scalar(object_json, '$.total_supply.value') as double)
+            then cast(json_extract_scalar(object_json, '$.total_supply.value') as decimal(38,0))
             
             -- For ControlledTreasury, TBTC GatewayCapabilities, SATLBTC Vault (treasury_cap:total_supply:value)
             when cast(type_ as varchar) like '%::treasury::ControlledTreasury<%>%'
                  or cast(type_ as varchar) = '0x77045f1b9f811a7a8fb9ebd085b5b0c55c5cb0d1520ff55f7037f89b5da9f5f1::Gateway::GatewayCapabilities'
                  or cast(type_ as varchar) like '0x25646e1cac13d6198e821aac7a94cbb74a8e49a2b3bed2ffd22346990811fcc6::satlayer_pool::Vault<%>%'
-            then cast(json_extract_scalar(object_json, '$.treasury_cap.total_supply.value') as double)
+            then cast(json_extract_scalar(object_json, '$.treasury_cap.total_supply.value') as decimal(38,0))
             
             -- For Dynamic Fields (Token Registry/Wrapped Asset) (value:treasury_cap:total_supply:value)
             when cast(type_ as varchar) like '0x2::dynamic_field::Field<%::token_registry::Key<%>%wrapped_asset::WrappedAsset<%>%' 
-            then cast(json_extract_scalar(object_json, '$.value.treasury_cap.total_supply.value') as double)
+            then cast(json_extract_scalar(object_json, '$.value.treasury_cap.total_supply.value') as decimal(38,0))
             
             else null
         end as total_supply
