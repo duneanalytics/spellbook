@@ -26,7 +26,6 @@ class TokenChecker:
                             "zksync": "zksync-zksync",
                             "zora": "eth-ethereum",
                             "mantle": "mnt-mantle",
-                            "blast": "blast-blast",
                             "linea": "eth-ethereum",
                             "scroll": "eth-ethereum",
                             "zkevm": "eth-ethereum",
