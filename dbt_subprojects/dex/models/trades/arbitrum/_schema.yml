@@ -946,3 +946,18 @@ models:
           seed_file: ref('native_arbitrum_base_trades_seed')
           filter:
             version: 1
+
+  - name: eulerswap_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: eulerswap
+      contributors: Henrystats
+    config:
+      tags: ["arbitrum", "dex", "trades", "eulerswap"]
+    description: "eulerswap arbitrum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
