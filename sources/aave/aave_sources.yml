@@ -68,6 +68,264 @@ sources:
         - *debtTokenSymbol
         - *debtTokenName
 
+  - name: aave_v3_base
+    description: "Decoded contracts for Aave on Base"
+
+    tables:
+    - name: AToken_evt_Initialized
+      description: "aToken initialization events, supply tokens."
+      columns:
+        - *contract_address      
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index 
+        - *evt_tx_hash
+        - *underlyingAsset
+        - *aTokenDecimals
+        - *aTokenSymbol
+        - *aTokenName
+
+    - name: StableDebtToken_evt_Initialized
+      description: "aToken initialization events, stable debt tokens."
+      columns:
+        - *contract_address  
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index
+        - *evt_tx_hash
+        - *underlyingAsset
+        - *debtTokenDecimals
+        - *debtTokenSymbol
+        - *debtTokenName
+      
+    - name: VariableDebtToken_evt_Initialized
+      description: "aToken initialization events, variable debt tokens."
+      columns:
+        - *contract_address  
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index
+        - *evt_tx_hash
+        - *underlyingAsset
+        - *debtTokenDecimals
+        - *debtTokenSymbol
+        - *debtTokenName
+
+  - name: aave_v3_ethereum
+    description: "Decoded contracts for Aave on Ethereum"
+
+    tables:
+    - name: AToken_evt_Initialized
+      description: "aToken initialization events, supply tokens."
+      columns:
+        - *contract_address      
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index 
+        - *evt_tx_hash
+        - *underlyingAsset
+        - *aTokenDecimals
+        - *aTokenSymbol
+        - *aTokenName
+
+    - name: StableDebtToken_evt_Initialized
+      description: "aToken initialization events, stable debt tokens."
+      columns:
+        - *contract_address  
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index
+        - *evt_tx_hash
+        - *underlyingAsset
+        - *debtTokenDecimals
+        - *debtTokenSymbol
+        - *debtTokenName
+      
+    - name: VariableDebtToken_evt_Initialized
+      description: "aToken initialization events, variable debt tokens."
+      columns:
+        - *contract_address  
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index
+        - *evt_tx_hash
+        - *underlyingAsset
+        - *debtTokenDecimals
+        - *debtTokenSymbol
+        - *debtTokenName
+
+  - name: aave_v3_gnosis
+    description: "Decoded contracts for Aave on Gnosis"
+
+    tables:
+    - name: AToken_evt_Initialized
+      description: "aToken initialization events, supply tokens."
+      columns:
+        - *contract_address      
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index 
+        - *evt_tx_hash
+        - *underlyingAsset
+        - *aTokenDecimals
+        - *aTokenSymbol
+        - *aTokenName
+
+    - name: StableDebtToken_evt_Initialized
+      description: "aToken initialization events, stable debt tokens."
+      columns:
+        - *contract_address  
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index
+        - *evt_tx_hash
+        - *underlyingAsset
+        - *debtTokenDecimals
+        - *debtTokenSymbol
+        - *debtTokenName
+      
+    - name: VariableDebtToken_evt_Initialized
+      description: "aToken initialization events, variable debt tokens."
+      columns:
+        - *contract_address  
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index
+        - *evt_tx_hash
+        - *underlyingAsset
+        - *debtTokenDecimals
+        - *debtTokenSymbol
+        - *debtTokenName
+
+  - name: aave_v3_linea
+    description: "Decoded contracts for Aave on Linea"
+
+    tables:
+    - name: AToken_evt_Initialized
+      description: "aToken initialization events, supply tokens."
+      columns:
+        - *contract_address      
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index 
+        - *evt_tx_hash
+        - *underlyingAsset
+        - *aTokenDecimals
+        - *aTokenSymbol
+        - *aTokenName
+
+    - name: StableDebtToken_evt_Initialized
+      description: "aToken initialization events, stable debt tokens."
+      columns:
+        - *contract_address  
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index
+        - *evt_tx_hash
+        - *underlyingAsset
+        - *debtTokenDecimals
+        - *debtTokenSymbol
+        - *debtTokenName
+      
+    - name: VariableDebtToken_evt_Initialized
+      description: "aToken initialization events, variable debt tokens."
+      columns:
+        - *contract_address  
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index
+        - *evt_tx_hash
+        - *underlyingAsset
+        - *debtTokenDecimals
+        - *debtTokenSymbol
+        - *debtTokenName
+
+  - name: aave_v3_scroll
+    description: "Decoded contracts for Aave on Scroll"
+
+    tables:
+    - name: AToken_evt_Initialized
+      description: "aToken initialization events, supply tokens."
+      columns:
+        - *contract_address      
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index 
+        - *evt_tx_hash
+        - *underlyingAsset
+        - *aTokenDecimals
+        - *aTokenSymbol
+        - *aTokenName
+
+    - name: StableDebtToken_evt_Initialized
+      description: "aToken initialization events, stable debt tokens."
+      columns:
+        - *contract_address  
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index
+        - *evt_tx_hash
+        - *underlyingAsset
+        - *debtTokenDecimals
+        - *debtTokenSymbol
+        - *debtTokenName
+      
+    - name: VariableDebtToken_evt_Initialized
+      description: "aToken initialization events, variable debt tokens."
+      columns:
+        - *contract_address  
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index
+        - *evt_tx_hash
+        - *underlyingAsset
+        - *debtTokenDecimals
+        - *debtTokenSymbol
+        - *debtTokenName
+
+  - name: aave_v3_zksync
+    description: "Decoded contracts for Aave on zkSync"
+
+    tables:
+    - name: AToken_evt_Initialized
+      description: "aToken initialization events, supply tokens."
+      columns:
+        - *contract_address      
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index 
+        - *evt_tx_hash
+        - *underlyingAsset
+        - *aTokenDecimals
+        - *aTokenSymbol
+        - *aTokenName
+
+    - name: StableDebtToken_evt_Initialized
+      description: "aToken initialization events, stable debt tokens."
+      columns:
+        - *contract_address  
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index
+        - *evt_tx_hash
+        - *underlyingAsset
+        - *debtTokenDecimals
+        - *debtTokenSymbol
+        - *debtTokenName
+      
+    - name: VariableDebtToken_evt_Initialized
+      description: "aToken initialization events, variable debt tokens."
+      columns:
+        - *contract_address  
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index
+        - *evt_tx_hash
+        - *underlyingAsset
+        - *debtTokenDecimals
+        - *debtTokenSymbol
+        - *debtTokenName
+
   - name: aave_v3_arbitrum
     description: "Decoded contracts for Aave on Arbitrum"
 

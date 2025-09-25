@@ -21,7 +21,7 @@
     ,ref('zeroex_trades')
     ,ref('kyberswap_aggregator_trades')
     ,ref('tokenlon_trades')
-    ,ref('oneinch_ar_trades')
+    ,ref('oneinch_evms_aggregation_trades')
     ,ref('odos_trades')
     ,ref('sushiswap_agg_trades')
 ] %}
