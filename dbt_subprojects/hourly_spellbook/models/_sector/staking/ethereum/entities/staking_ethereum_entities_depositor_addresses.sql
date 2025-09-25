@@ -377,6 +377,7 @@ FROM
     , (0x96f4489fe75d0494bd5088b0d80b17a5759dac37, 'Tranchess', 'Tranchess', 'Liquid Staking')
     , (0x1a0ffc5d6a8f14bacfb21056355394128fa6b955, 'DxPool', 'DxPool 1', 'Staking Pool')
     , (0x4e089Dd33A1F71413c29e79839e79Cacfa341350, 'DxPool', 'DxPool 2', 'Staking Pool')
+    , (0x8d1f0ac39f922aa08061c76ebf56b6ab256a2ddf, 'DxPool', 'DxPool 3', 'Staking Pool')
     , (0xa1619fb8ccc03ee3c8d543fb8be993764030e028, 'Ebunker', 'Ebunker', 'Staking Pool')
     , (0x7471cc21f84b2eeb1ba3560ed6afc60a833b5dec, 'epstrom.eth', 'epstrom.eth', 'Solo Staker')
     , (0x7cad02c1e53decf5d1102a4b9bee5de79c6d2e18, 'godavego.eth', 'godavego.eth', 'Solo Staker')
