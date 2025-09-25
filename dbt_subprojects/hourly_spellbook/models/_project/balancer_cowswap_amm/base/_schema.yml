@@ -46,10 +46,10 @@ models:
       Balancer CoWSwap AMM pools liquidity by token in base.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-            combination_of_columns:
-              - day
-              - pool_id
-              - token_address
+          combination_of_columns:
+            - day
+            - pool_id
+            - token_address
     columns:
       - *day
       - name: pool_id
