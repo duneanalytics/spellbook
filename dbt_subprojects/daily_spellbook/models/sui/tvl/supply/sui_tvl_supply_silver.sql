@@ -19,7 +19,7 @@ with recursive_all_dates as (
     
     union all
     
-    select date_add(dt, 1) as dt
+    select dt + interval '1' day as dt
     from recursive_all_dates
     where dt < current_date()
 ),
@@ -67,7 +67,7 @@ daily_supply_with_locf as (
     from all_dates_and_coins adc
     left join {{ ref('sui_tvl_supply_bronze') }} su
         on adc.coin_type = su.coin_type
-        and su.timestamp_ms < unix_timestamp(date_add(adc.block_date, 1)) * 1000
+        and su.timestamp_ms < unix_timestamp(adc.block_date + interval '1' day) * 1000
     {% if is_incremental() %}
     where adc.block_date >= date_sub(current_date(), 7)
     {% endif %}
