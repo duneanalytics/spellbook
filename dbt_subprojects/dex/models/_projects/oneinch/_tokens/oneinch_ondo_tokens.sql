@@ -14,7 +14,7 @@ select
     'ethereum' as blockchain
     , proxy as contract_address
     , max_by(ticker, evt_block_time) as symbol
-    , max_by(name, evt_block_time)
+    , max_by(name, evt_block_time) as name
     , max_by(evt_block_time, evt_block_time) as block_time 
 from {{ source('ondo_finance_ethereum', 'GMTokenFactory_evt_NewGMTokenDeployed') }}
 group by 1, 2 -- take latest event only in case of re-deployments
