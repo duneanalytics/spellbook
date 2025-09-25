@@ -9,110 +9,43 @@
     tags=['sui','tvl','supply','silver']
 ) }}
 
--- Silver layer: Daily aggregated token supply with LOCF (Last Observation Carried Forward)
--- Following the Snowflake pattern with dense date generation and supply tracking
+-- Silver layer: Simple daily aggregated token supply (following Snowflake pattern)
+-- Basic aggregation without complex LOCF logic
 
-with recursive_all_dates as (
-    -- Generate all dates from the earliest supply record up to today
-    select min(block_date) as dt
-    from {{ ref('sui_tvl_supply_bronze') }}
-    
-    union all
-    
-    select dt + interval '1' day as dt
-    from recursive_all_dates
-    where dt < current_date()
-),
-
--- Get distinct tokens from coin info (not limiting to specific token types)
-all_tokens as (
-    select 
+with daily_supply as (
+    select
+        block_date,
         coin_type,
-        coin_symbol,
-        coin_decimals
-    from {{ ref('dex_sui_coin_info') }}
-    where coin_type is not null
-),
-
--- Creating cross of dense dates and tokens
-all_dates_and_coins as (
-    select
-        rd.dt as block_date,
-        ci.coin_type,
-        ci.coin_symbol,
-        ci.coin_decimals
-    from recursive_all_dates rd
-    cross join all_tokens ci
-),
-
--- Ensuring date/token density using LOCF
-daily_supply_with_locf as (
-    select
-        adc.block_date,
-        adc.coin_type,
-        adc.coin_symbol,
-        adc.coin_decimals,
-        -- Apply Last Observation Carried Forward (LOCF) for total_supply
-        last_value(su.total_supply) ignore nulls over (
-            partition by adc.coin_type
-            order by adc.block_date asc, su.timestamp_ms asc nulls last
-            rows between unbounded preceding and current row
-        ) as carried_forward_supply_raw,
-        -- Also capture the timestamp of the last observed supply
-        last_value(su.timestamp_ms) ignore nulls over (
-            partition by adc.coin_type
-            order by adc.block_date asc, su.timestamp_ms asc nulls last
-            rows between unbounded preceding and current row
-        ) as last_observed_timestamp_ms
-    from all_dates_and_coins adc
-    left join {{ ref('sui_tvl_supply_bronze') }} su
-        on adc.coin_type = su.coin_type
-        and su.timestamp_ms < unix_timestamp(adc.block_date + interval '1' day) * 1000
-    {% if is_incremental() %}
-    where adc.block_date >= date_sub(current_date(), 7)
-    {% endif %}
-    qualify carried_forward_supply_raw is not null -- Only keep rows where supply was found or carried forward
-),
-
--- Deduplicate by symbol (in case multiple coin types have same symbol)
-deduplicated_daily_supply_by_symbol as (
-    select
-        block_date,
-        coin_symbol,
-        carried_forward_supply_raw,
-        coin_decimals,
+        total_supply,
+        -- Get latest supply per token per day
         row_number() over (
-            partition by block_date, coin_symbol
-            order by last_observed_timestamp_ms desc, coin_type desc
+            partition by block_date, coin_type
+            order by timestamp_ms desc
         ) as rn
-    from daily_supply_with_locf
-    qualify rn = 1
+    from {{ ref('sui_tvl_supply_bronze') }}
+    {% if is_incremental() %}
+    where {{ incremental_predicate('block_date') }}
+    {% endif %}
 ),
 
--- Aggregate total supply by date
-aggregated_supply_daily as (
+supply_with_metadata as (
     select
-        block_date,
-        sum(carried_forward_supply_raw / power(10, coin_decimals)) as total_token_supply,
-        -- Create JSON object with supply breakdown by symbol
-        map_from_entries(collect_list(
-            struct(
-                coin_symbol as key,
-                cast(round(carried_forward_supply_raw / power(10, coin_decimals), 2) as decimal(38,2)) as value
-            )
-        )) as supply_breakdown_json,
-        count(distinct coin_symbol) as token_count,
-        max(last_observed_timestamp_ms) as max_timestamp_ms,
-        from_unixtime(max(last_observed_timestamp_ms)/1000) as max_block_time
-    from deduplicated_daily_supply_by_symbol
-    group by block_date
+        s.block_date,
+        s.coin_type,
+        s.total_supply,
+        c.coin_symbol,
+        c.coin_decimals
+    from daily_supply s
+    left join {{ ref('dex_sui_coin_info') }} c
+        on s.coin_type = c.coin_type
+    where s.rn = 1
+        and s.total_supply > 0
 )
 
 select
     block_date,
-    total_token_supply,
-    supply_breakdown_json,
-    token_count,
-    max_block_time as latest_block_time
-from aggregated_supply_daily
+    sum(total_supply / power(10, coalesce(coin_decimals, 9))) as total_token_supply,
+    count(distinct coin_symbol) as token_count
+from supply_with_metadata
+group by block_date
 order by block_date desc 
