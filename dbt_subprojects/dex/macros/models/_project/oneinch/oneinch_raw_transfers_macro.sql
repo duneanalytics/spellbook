@@ -37,7 +37,7 @@ calls as (
 
 , transfers as (
     select *
-    from ({{ oneinch_ptfc_macro(blockchain, date_from) }}) -- filters and incremental logic within a macro
+    from ({{ oneinch_ptfc_macro(blockchain) }}) -- filters and incremental logic within a macro
 )
 
 , merging as (
