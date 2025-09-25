@@ -55,13 +55,8 @@ with
         {% endif %}
         union
     {% endfor %}
-    select -- for correct execution in blockchains, where cc stream is empty
-        cast(null as varbinary) as contract_address
-        , cast(null as varchar) as contract_name
-        , cast(null as timestamp) as date_from
-        , cast(null as varbinary) as selector
-        , cast(null as varchar) as method
-        , cast(null as boolean) as auxiliary
+    -- for correct execution in blockchains, where cc stream is empty
+    select 0x as contract_address, '' as contract_name, current_timestamp as date_from, 0x as selector, '' as method, false as auxiliary
 )
 
 , traces as (
