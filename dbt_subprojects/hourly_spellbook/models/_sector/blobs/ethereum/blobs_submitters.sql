@@ -129,4 +129,5 @@ SELECT address
         , (0x139ac582825dd6a9b9d6a6a64f1be149c84e0d03, 'Proof of Play Apex', '', 'ProofOfPlay')
         , (0x75efae926bcb72433c70fbfa76588f16338397de, 'Proof of Play Boss', '', 'ProofOfPlay')
         , (0x583e2c664c868611a6e3f1d6dcbc8aa00de43a7f, 'Superposition', '', 'Superpositionso')
+        , (0x8b5606469e21c75edd7c74d1c7a65824675d9aff, 'Spire DA Builder', '', 'spire_labs')
         ) AS x(address, entity, proposer, x_username)
