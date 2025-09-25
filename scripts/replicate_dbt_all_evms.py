@@ -3,7 +3,7 @@ import sys
 
 # List of valid evm chains
 chains = [
-    "arbitrum", "avalanche_c", "base", "blast", "bnb", "celo", "ethereum",
+    "arbitrum", "avalanche_c", "base", "bnb", "celo", "ethereum",
     "fantom", "gnosis", "linea", "mantle", "optimism", "polygon", "scroll",
     "sei", "zkevm", "zksync", "zora"
 ]

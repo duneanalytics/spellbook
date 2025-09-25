@@ -4,7 +4,7 @@
         alias = 'bot_trades',
         materialized = 'view',
         post_hook = '{{ expose_spells(
-                        blockchains = \'["ethereum", "base", "blast", "arbitrum", "bnb", "avalanche_c"]\',
+                        blockchains = \'["ethereum", "base", "arbitrum", "bnb", "avalanche_c"]\',
                         spell_type = "sector",
                         spell_name = "bot_trades",
                         contributors = \'["whale_hunter"]\') }}'

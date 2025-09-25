@@ -6,7 +6,6 @@
     ,'b3'
     ,'base'
     ,'berachain'
-    ,'blast'
     ,'bnb'
     ,'bob'
     ,'boba'

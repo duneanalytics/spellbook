@@ -3,7 +3,6 @@
        "avalanche_c"
        ,"arbitrum"
        , "base"
-       , "blast"
        , "bnb"
        , "bob"
        , "boba"

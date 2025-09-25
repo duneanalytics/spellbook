@@ -11,7 +11,6 @@
                                         "arbitrum"
                                         , "avalanche_c"
                                         , "base"
-                                        , "blast"
                                         , "bnb"
                                         , "boba"
                                         , "celo"
