@@ -46,14 +46,21 @@ deduplicated_daily_btc_supply_by_symbol as (
         block_date,
         coin_symbol,
         total_supply,
-        coin_decimals,
-        row_number() over (
-            partition by block_date, coin_symbol
-            order by total_supply desc, coin_type desc -- Largest supply wins, tie-break by coin_type
-        ) as rn
-    from daily_btc_supply
-    where rn = 1
-    qualify rn = 1
+        coin_decimals
+    from (
+        select
+            block_date,
+            coin_symbol,
+            total_supply,
+            coin_decimals,
+            row_number() over (
+                partition by block_date, coin_symbol
+                order by total_supply desc, coin_type desc -- Largest supply wins, tie-break by coin_type
+            ) as rn
+        from daily_btc_supply
+        where rn = 1  -- Filter for latest supply per token per day first
+    )
+    where rn = 1  -- Then deduplicate by symbol
 )
 
 select
@@ -62,13 +69,10 @@ select
     -- Total BTC supply across all variants
     sum(total_supply / power(10, coin_decimals)) as total_btc_supply,
     
-    -- Supply breakdown by symbol (JSON aggregation)
-    object_construct_keep_null(
-        'breakdown', 
-        object_agg(
-            coin_symbol, 
-            round(total_supply / power(10, coin_decimals), 0)
-        )
+    -- Supply breakdown by symbol (JSON aggregation using Trino map_agg)
+    map_agg(
+        coin_symbol, 
+        round(total_supply / power(10, coin_decimals), 0)
     ) as supply_breakdown_json
     
 from deduplicated_daily_btc_supply_by_symbol
