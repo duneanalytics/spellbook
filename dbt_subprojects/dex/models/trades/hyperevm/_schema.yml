@@ -1,0 +1,87 @@
+version: 2
+
+models:
+  - name: dex_hyperevm_base_trades
+    data_tests:
+      - check_columns_dex_base_trades
+      - check_dex_info_relationship
+      - test_acceptable_usd_amount:
+          column_name: amount_usd
+          max_value: 1000000000
+
+  - name: prjx_v3_hyperevm_base_trades
+    meta:
+      blockchain: hyperevm
+      sector: dex
+      project: prjx
+      contributors: krishg
+    config:
+      tags: [ 'hyperevm', 'dex', 'trades', 'prjx' ]
+    description: "PRJX V3 HyperEVM base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('prjx_hyperevm_base_trades_seed')
+          filter:
+            version: 3
+
+  - name: hyperswap_v2_hyperevm_base_trades
+    meta:
+      blockchain: hyperevm
+      sector: dex
+      project: hyperswap
+      contributors: krishg
+    config:
+      tags: [ 'hyperevm', 'dex', 'trades', 'hyperswap' ]
+    description: "HyperSwap V2 HyperEVM base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('hyperswap_hyperevm_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: hyperswap_v3_hyperevm_base_trades
+    meta:
+      blockchain: hyperevm
+      sector: dex
+      project: hyperswap
+      contributors: krishg
+    config:
+      tags: [ 'hyperevm', 'dex', 'trades', 'hyperswap' ]
+    description: "HyperSwap V3 HyperEVM base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('hyperswap_hyperevm_base_trades_seed')
+          filter:
+            version: 3
+
+  - name: hybra_v3_hyperevm_base_trades
+    meta:
+      blockchain: hyperevm
+      sector: dex
+      project: hybra
+      contributors: krishg
+    config:
+      tags: [ 'hyperevm', 'dex', 'trades', 'hybra' ]
+    description: "Hybra V3 HyperEVM base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('hybra_hyperevm_base_trades_seed')
+          filter:
+            version: 3
+ 

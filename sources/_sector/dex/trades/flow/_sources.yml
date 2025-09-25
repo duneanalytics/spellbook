@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: izumi_finance_flow
+    tables:
+      - name: iziswappool_evt_swap
+      - name: iziswapfactory_evt_newpool 
