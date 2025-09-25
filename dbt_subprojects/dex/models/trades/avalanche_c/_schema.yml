@@ -203,6 +203,21 @@ models:
           filter:
             version: 2
 
+  - name: balancer_v3_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: balancer
+      contributors: gosuto
+    config:
+      tags: [ 'avalanche_c', 'dex', 'trades', 'balancer' ]
+    description: "Balancer v3 avalanche_c base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+
   - name: fraxswap_avalanche_c_base_trades
     meta:
       blockchain: avalanche_c
