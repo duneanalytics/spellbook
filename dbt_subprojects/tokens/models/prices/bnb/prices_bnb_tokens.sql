@@ -123,6 +123,7 @@ FROM
     ('win-winklink', 'bnb', 'WIN', 0xaef0d72a118ce24fee3cd1d43d383897d05b4e99, 18),
     ('woo-wootrade', 'bnb', 'WOO', 0x4691937a7508860f876c9c0a2a617e7d9e945d4b, 18),
     ('xct-citadelone', 'bnb', 'XCT', 0xe8670901e86818745b28c8b30b17986958fce8cc, 6),
+    ('xpl-plasma', 'bnb', 'XPL', 0x405FBc9004D857903bFD6b3357792D71a50726b0, 18),
     ('xpr-proton', 'bnb', 'XPR', 0x5de3939b2f811a61d830e6f52d13b066881412ab, 4),
     ('xrp-xrp', 'bnb', 'XRP', 0x1d2f0da169ceb9fc7b3144628db156f3f6c60dbe, 18),
     ('xvs-venus', 'bnb', 'XVS', 0xcf6bb5389c92bdda8a3747ddb454cb7a64626c63, 18),
