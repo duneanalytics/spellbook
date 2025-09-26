@@ -53,6 +53,7 @@ with prices_native_tokens as (
         , ('optimism', 'eth-ethereum')
         , ('optimism_legacy_ovm1', 'eth-ethereum')
         , ('peaq', 'peaq-peaq-network')
+        , ('plasma', 'xpl-plasma')
         , ('plume', 'plume-plume')
         , ('polygon', 'matic-polygon')
         , ('ronin', 'ron-ronin-token')
