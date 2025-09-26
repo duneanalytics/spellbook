@@ -9,24 +9,28 @@
     tags=['sui','tvl','dex','silver']
 ) }}
 
--- Silver layer: Daily aggregated DEX pools from all protocols
--- Combines and standardizes data structure across Cetus, Bluefin, and Momentum
--- Performs daily aggregation like the Snowflake pattern
+-- Silver layer: Daily aggregated DEX pools with metadata enrichment
+-- Handles metadata joins and decimal conversion that bronze doesn't do
 
-with combined_data as (
-    -- Cetus data
+with coin_info_cte as (
+    select
+        coin_type,
+        coin_decimals,
+        coin_symbol
+    from {{ ref('dex_sui_coin_info') }}
+),
+
+all_pools_raw as (
+    -- Cetus data (standardize column names)
     select
         block_date,
-        coin_a_symbol,
-        coin_b_symbol,
+        block_time,
+        pool_id,
         coin_type_a,
         coin_type_b,
-        pool_id,
-        pool_name,
-        coin_a_amount,
-        coin_b_amount,
-        fee_rate_percent,
-        block_time,
+        coin_a_amount_raw,
+        coin_b_amount_raw,
+        fee_rate,
         'cetus' as protocol
     from {{ ref('sui_tvl_dex_pools_cetus_bronze') }}
     {% if is_incremental() %}
@@ -35,19 +39,16 @@ with combined_data as (
 
     union all
 
-    -- Bluefin data
+    -- Bluefin data (standardize column names)
     select
         block_date,
-        coin_a_symbol,
-        coin_b_symbol,
+        block_time,
+        pool_id,
         coin_type_a,
         coin_type_b,
-        pool_id,
-        pool_name,
-        coin_a_amount,
-        coin_b_amount,
-        fee_rate_percent,
-        block_time,
+        coin_a_amount_raw,
+        coin_b_amount_raw,
+        fee_rate,
         'bluefin' as protocol
     from {{ ref('sui_tvl_dex_pools_bluefin_bronze') }}
     {% if is_incremental() %}
@@ -56,24 +57,64 @@ with combined_data as (
 
     union all
 
-    -- Momentum data (now uses standardized schema)
+    -- Momentum data (alias to standard names)
     select
         block_date,
-        coin_a_symbol,
-        coin_b_symbol,
-        coin_type_a,
-        coin_type_b,
-        pool_id,
-        pool_name,
-        coin_a_amount,
-        coin_b_amount,
-        fee_rate_percent,
         block_time,
+        pool_id,
+        token_a_type as coin_type_a,
+        token_b_type as coin_type_b,
+        reserve_a_raw as coin_a_amount_raw,
+        reserve_b_raw as coin_b_amount_raw,
+        swap_fee_rate as fee_rate,
         'momentum' as protocol
     from {{ ref('sui_tvl_dex_pools_momentum_bronze') }}
     {% if is_incremental() %}
     where {{ incremental_predicate('block_date') }}
     {% endif %}
+),
+
+enriched_pools as (
+    -- Add metadata and convert amounts
+    select
+        p.block_date,
+        p.block_time,
+        p.pool_id,
+        p.protocol,
+        p.coin_type_a,
+        p.coin_type_b,
+        
+        -- Add coin symbols
+        coalesce(coin_a_info.coin_symbol, 'UNKNOWN') as coin_a_symbol,
+        coalesce(coin_b_info.coin_symbol, 'UNKNOWN') as coin_b_symbol,
+        
+        -- Convert raw amounts to decimal
+        case when coin_a_info.coin_decimals is not null
+            then cast(cast(p.coin_a_amount_raw as double) / 
+                 power(10, coin_a_info.coin_decimals) as decimal(38,18))
+            else cast(null as decimal(38,18)) end as coin_a_amount,
+        case when coin_b_info.coin_decimals is not null
+            then cast(cast(p.coin_b_amount_raw as double) / 
+                 power(10, coin_b_info.coin_decimals) as decimal(38,18))
+            else cast(null as decimal(38,18)) end as coin_b_amount,
+        
+        -- Convert fee rate to percentage
+        p.fee_rate / 10000.0 as fee_rate_percent,
+        
+        -- Create pool name
+        concat(
+            coalesce(coin_a_info.coin_symbol, 'UNKNOWN'),
+            ' / ',
+            coalesce(coin_b_info.coin_symbol, 'UNKNOWN'),
+            ' ',
+            cast(p.fee_rate / 10000.0 as varchar),
+            '%'
+        ) as pool_name
+
+    from all_pools_raw p
+    -- Add token information for both sides of the pool
+    left join coin_info_cte coin_a_info on p.coin_type_a = coin_a_info.coin_type
+    left join coin_info_cte coin_b_info on p.coin_type_b = coin_b_info.coin_type
 )
 
 -- Daily aggregation
@@ -91,7 +132,7 @@ select
     avg(fee_rate_percent) as avg_fee_rate_percent,
     count(*) as num_records,
     max(block_time) as block_time
-from combined_data
+from enriched_pools
 where coin_a_amount > 0 and coin_b_amount > 0  -- Filter out empty pools
 group by
     block_date,

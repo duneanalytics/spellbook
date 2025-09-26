@@ -11,19 +11,11 @@
 ) }}
 
 -- Momentum DEX pools for TVL calculation (Bronze Layer)
--- Raw extraction without coin metadata joins for better performance
+-- Raw extraction only, metadata enrichment moved to silver layer
 
-{% set momentum_start_date = "2025-09-24" %}
+{% set momentum_start_date = "2025-09-23" %}
 
-with coin_info_cte as (
-    select
-        coin_type,
-        coin_decimals as decimals,
-        coin_symbol as symbol
-    from {{ ref('dex_sui_coin_info') }}
-),
-
-filtered_pools_cte as (
+with filtered_pools_cte as (
     select
         cast(type_ as varchar) as type,
         date as block_date,
@@ -37,11 +29,11 @@ filtered_pools_cte as (
         concat('0x', json_extract_scalar(object_json, '$.type_x.name')) as token_a_type,
         concat('0x', json_extract_scalar(object_json, '$.type_y.name')) as token_b_type,
         
-        -- Reserve amounts
+        -- Reserve amounts (raw only)
         json_extract_scalar(object_json, '$.reserve_x') as reserve_a_raw,
         json_extract_scalar(object_json, '$.reserve_y') as reserve_b_raw,
         
-        -- Pool parameters  
+        -- Pool parameters (raw only)
         json_extract_scalar(object_json, '$.flash_loan_fee_rate') as flash_loan_fee_rate,
         cast(json_extract_scalar(object_json, '$.tick_spacing') as integer) as tick_spacing,
         cast(json_extract_scalar(object_json, '$.swap_fee_rate') as integer) as swap_fee_rate,
@@ -66,46 +58,22 @@ select
     p.version,
     p.pool_id,
     
-    -- Token Info (use Momentum naming convention but output as standard names)
-    p.token_a_type as coin_type_a,
-    p.token_b_type as coin_type_b,
-    coalesce(token_a_info.symbol, 'UNK') as coin_a_symbol,
-    coalesce(token_b_info.symbol, 'UNK') as coin_b_symbol,
+    -- Token Info (raw only, no metadata)
+    p.token_a_type,
+    p.token_b_type,
     
-    -- Reserves (Raw & Adjusted) - Momentum specific naming
+    -- Reserves (raw only)
     p.reserve_a_raw,
     p.reserve_b_raw,
-    case when token_a_info.decimals is not null
-        then cast(cast(p.reserve_a_raw as double) / 
-             power(10, token_a_info.decimals) as decimal(38,18))
-        else cast(null as decimal(38,18)) end as coin_a_amount,
-    case when token_b_info.decimals is not null
-        then cast(cast(p.reserve_b_raw as double) / 
-             power(10, token_b_info.decimals) as decimal(38,18))
-        else cast(null as decimal(38,18)) end as coin_b_amount,
     
-    -- Pool Parameters
+    -- Pool Parameters (raw only)
     p.flash_loan_fee_rate,
     p.tick_spacing,
     p.swap_fee_rate,
-    p.swap_fee_rate / 10000.0 as fee_rate_percent,
     p.sqrt_price,
     p.fee_growth_global_a,
     p.fee_growth_global_b,
     
-    -- Derived Pool Name
-    concat(
-        coalesce(token_a_info.symbol, 'UNK'),
-        ' / ',
-        coalesce(token_b_info.symbol, 'UNK'),
-        ' ',
-        cast(p.swap_fee_rate / 10000.0 as varchar) || '%'
-    ) as pool_name,
-    
     p.type
 
-from filtered_pools_cte p
--- Join to get coin info for Token A  
-left join coin_info_cte token_a_info on p.token_a_type = token_a_info.coin_type
--- Join to get coin info for Token B
-left join coin_info_cte token_b_info on p.token_b_type = token_b_info.coin_type 
+from filtered_pools_cte p 
