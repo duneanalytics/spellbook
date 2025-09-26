@@ -12,55 +12,97 @@
 }}
 
 {% set project_start_date = '2025-04-23 06:13' %} --grabbed program deployed at time (account created at).
+{% set swap_tables = ['dynamic_bonding_curve_call_swap','dynamic_bonding_curve_call_swap2'] %}
 
 
 with swap_details as
 (
-select 
-  call_block_time as block_time
-, call_block_slot as block_slot
-, call_outer_executing_account as trade_source
-, account_base_mint as token_a
-, account_quote_mint as token_b
-, account_base_vault as token_a_vault
-, account_quote_vault as token_b_vault
-, call_tx_signer as trader_id
-, call_tx_id  as tx_id
-, call_outer_instruction_index as outer_instruction_index
-, coalesce(call_inner_instruction_index,0) as inner_instruction_index
-, call_tx_index as tx_index
-, row_number () over (partition by call_tx_id, call_tx_index, call_outer_instruction_index order by coalesce(call_inner_instruction_index,0) asc) as rn
-from {{ source('meteora_solana','dynamic_bonding_curve_call_swap') }} cs
-where 1=1
-{% if is_incremental() %}
-and {{incremental_predicate('call_block_time')}}
-{% else %}
-and call_block_time >= TIMESTAMP '{{project_start_date}}'
-{% endif %}
+  with individual_program_swaps as 
+  (
+  {% for tbl in swap_tables %}  
+    select 
+      call_block_time as block_time
+    , call_block_slot as block_slot
+    , call_outer_executing_account as trade_source
+    , account_base_mint as token_a
+    , account_quote_mint as token_b
+    , account_base_vault as token_a_vault
+    , account_quote_vault as token_b_vault
+    , call_tx_signer as trader_id
+    , call_tx_id  as tx_id
+    , call_outer_instruction_index as outer_instruction_index
+    , coalesce(call_inner_instruction_index,0) as inner_instruction_index
+    , call_tx_index as tx_index
+    , row_number () over (partition by call_tx_id, call_tx_index, call_outer_instruction_index order by coalesce(call_inner_instruction_index,0) asc) as rn
+    from {{ source('meteora_solana',tbl) }} cs
+    where 1=1
+    {% if is_incremental() %}
+    and {{incremental_predicate('call_block_time')}}
+    {% else %}
+    and call_block_time >= TIMESTAMP '{{project_start_date}}'
+    {% endif %}
+    {% if not loop.last %} union all {% endif %}
+    {% endfor %}
+  )
+  select *,       
+    row_number() over (
+      partition by tx_id, outer_instruction_index
+      order by inner_instruction_index
+    ) as swap_number
+from individual_program_swaps
 ),
 evt_deatils as 
 (
-
-select 
-evt_block_time as block_time
-, trade_direction
-, cast(amount_in as double) as token_in_amount_raw
-, cast(json_extract(swap_result, '$.SwapResult.output_amount') as double) as token_out_amount_raw
-, cast(json_extract(swap_result, '$.SwapResult.trading_fee') as  double) + cast(json_extract(swap_result, '$.SwapResult.protocol_fee') as double) + cast(json_extract(swap_result, '$.SwapResult.referral_fee') as double) as total_fees_raw 
-, pool as project_program_id
-, evt_tx_id  as tx_id
-, evt_outer_instruction_index as outer_instruction_index
-, coalesce(evt_inner_instruction_index,0) as inner_instruction_index
-, evt_tx_index as tx_index
-, row_number () over (partition by evt_tx_id, evt_tx_index, evt_outer_instruction_index order by coalesce(evt_inner_instruction_index,0) asc) as rn
-from {{ source('meteora_solana','dynamic_bonding_curve_evt_evtswap') }} es 
-where 1=1
-{% if is_incremental() %}
-and {{incremental_predicate('evt_block_time')}}
-{% else %}
-and evt_block_time >= TIMESTAMP '{{project_start_date}}'
-{% endif %}
-
+  with swaps_v1 as 
+  (
+    select 
+    evt_block_time as block_time
+    , trade_direction
+    , cast(amount_in as double) as token_in_amount_raw
+    , cast(json_extract(swap_result, '$.SwapResult.output_amount') as double) as token_out_amount_raw
+    , cast(json_extract(swap_result, '$.SwapResult.trading_fee') as  double) + cast(json_extract(swap_result, '$.SwapResult.protocol_fee') as double) + cast(json_extract(swap_result, '$.SwapResult.referral_fee') as double) as total_fees_raw 
+    , pool as project_program_id
+    , evt_tx_id  as tx_id
+    , evt_outer_instruction_index as outer_instruction_index
+    , coalesce(evt_inner_instruction_index,0) as inner_instruction_index
+    , evt_tx_index as tx_index
+    from {{ source('meteora_solana','dynamic_bonding_curve_evt_evtswap') }} es 
+    where 1=1
+    {% if is_incremental() %}
+    and {{incremental_predicate('evt_block_time')}}
+    {% else %}
+    and evt_block_time >= TIMESTAMP '{{project_start_date}}'
+    {% endif %}
+  ),
+  swaps_v2 as 
+  (
+    select 
+    evt_block_time as block_time
+    , trade_direction
+    , cast(json_extract(swap_result, '$.SwapResult2.included_fee_input_amount') as double) as token_in_amount_raw
+    , cast(json_extract(swap_result, '$.SwapResult2.output_amount') as double) as token_out_amount_raw
+    , cast(json_extract(swap_result, '$.SwapResult2.trading_fee') as  double) + cast(json_extract(swap_result, '$.SwapResult.protocol_fee') as double) + cast(json_extract(swap_result, '$.SwapResult.referral_fee') as double) as total_fees_raw 
+    , pool as project_program_id
+    , evt_tx_id  as tx_id
+    , evt_outer_instruction_index as outer_instruction_index
+    , coalesce(evt_inner_instruction_index,0) as inner_instruction_index
+    , evt_tx_index as tx_index
+    from {{ source('meteora_solana','dynamic_bonding_curve_evt_evtswap2') }} es 
+    where 1=1
+    {% if is_incremental() %}
+    and {{incremental_predicate('evt_block_time')}}
+    {% else %}
+    and evt_block_time >= TIMESTAMP '{{project_start_date}}'
+    {% endif %}
+  ),
+  combined as 
+  (
+  select * from swaps_v1
+  union all 
+  select * from swaps_v2
+  )
+  select *, row_number () over (partition by tx_id, tx_index, outer_instruction_index order by coalesce(inner_instruction_index,0) asc) as rn
+  from combined
 ),
 swaps_table as (
 select 
