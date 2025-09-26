@@ -25,11 +25,16 @@ select
     
 from {{ ref('sui_tvl_supply_silver') }} s
 
--- Join BTC pricing
-left join {{ source('prices','usd') }} p
-    on p.blockchain = 'sui'
-    and date(p.minute) = s.block_date
-    and p.contract_address = cast(
+-- Join BTC pricing (using TBTC token, latest price per day to prevent duplication)
+left join (
+    select 
+        blockchain,
+        date(minute) as price_date,
+        price,
+        row_number() over (partition by blockchain, date(minute) order by minute desc) as rn
+    from {{ source('prices','usd') }}
+    where blockchain = 'sui'
+    and contract_address = cast(
         regexp_replace(
             split_part(
                 lower('0x77045f1b9f811a7a8fb9ebd085b5b0c55c5cb0d1520ff55f7037f89b5da9f5f1::TBTC::TBTC'), 
@@ -39,6 +44,9 @@ left join {{ source('prices','usd') }} p
             '^0x0*([0-9a-f]+)$', '0x$1'
         ) as varbinary
     )
+) p on p.blockchain = 'sui'
+    and p.price_date = s.block_date
+    and p.rn = 1
 
 {% if is_incremental() %}
 where {{ incremental_predicate('s.block_date') }}
