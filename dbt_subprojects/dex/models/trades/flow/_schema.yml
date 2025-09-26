@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: dex_flow_base_trades
+    data_tests:
+      - check_columns_dex_base_trades
+      - check_dex_info_relationship
+      - test_acceptable_usd_amount:
+          column_name: amount_usd
+          max_value: 1000000000
+
+  - name: izumi_finance_v3_flow_base_trades
+    meta:
+      blockchain: flow
+      sector: dex
+      project: izumi_finance
+      contributors: krishg
+    config:
+      tags: [ 'flow', 'dex', 'trades', 'izumi_finance' ]
+    description: "Izumi Finance V3 Flow base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('izumi_finance_flow_base_trades_seed')
+          filter:
+            version: 3 

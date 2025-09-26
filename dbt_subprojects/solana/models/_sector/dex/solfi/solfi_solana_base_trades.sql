@@ -8,7 +8,6 @@
     , incremental_strategy = 'merge'
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     , unique_key = ['block_month', 'surrogate_key']
-    , pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
   )
 }}
 
@@ -33,7 +32,6 @@ WITH solfi_swaps AS (
         , account_user
         , account_userTokenAccountA
         , account_userTokenAccountB
-        , amountIn
         , direction
     FROM {{ source('solfi_solana', 'solfi_call_swap') }}
     WHERE 1=1
@@ -43,66 +41,63 @@ WITH solfi_swaps AS (
         AND call_block_time >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
 )
-
--- Get pool mint addresses efficiently
-, pool_mint_addresses AS (
-    SELECT DISTINCT 
-        COALESCE(from_token_account, to_token_account) as token_account,
-        token_mint_address,
-        ROW_NUMBER() OVER (PARTITION BY COALESCE(from_token_account, to_token_account) ORDER BY token_mint_address) as rn
-    FROM {{ source('tokens_solana','transfers') }}
-    WHERE token_mint_address IS NOT NULL
-    {% if is_incremental() %}
-        AND {{ incremental_predicate('block_time') }}
-    {% else %}
-        AND block_time >= TIMESTAMP '{{ project_start_date }}'
-    {% endif %}
-)
-
--- Join with token transfers to get the output amounts and mint addresses
-, swaps_with_transfers AS (
+-- Get both input and output transfers for each swap
+, swap_transfers AS (
     SELECT
         s.*,
-        s.amountIn as token_sold_amount_raw,
-        t.amount as token_bought_amount_raw,
-        t.token_mint_address as token_bought_mint_address,
-        -- Get mint addresses from pool data
-        tm_a.token_mint_address as mint_a,
-        tm_b.token_mint_address as mint_b
+        -- Input transfer (user to pool) - gives us SOLD token info
+        t_input.amount as token_sold_amount_raw,
+        t_input.token_mint_address as token_sold_mint_address,
+        t_input.to_token_account as token_sold_vault,  -- pool account receiving
+        
+        -- Output transfer (pool to user) - gives us BOUGHT token info  
+        t_output.amount as token_bought_amount_raw,
+        t_output.token_mint_address as token_bought_mint_address,
+        t_output.from_token_account as token_bought_vault  -- pool account sending
+        
     FROM solfi_swaps s
-    -- Join to get mint address for pool token account A
-    LEFT JOIN pool_mint_addresses tm_a 
-        ON tm_a.token_account = s.account_poolTokenAccountA 
-        AND tm_a.rn = 1
-    -- Join to get mint address for pool token account B  
-    LEFT JOIN pool_mint_addresses tm_b 
-        ON tm_b.token_account = s.account_poolTokenAccountB 
-        AND tm_b.rn = 1
-    -- Main transfer join for the output transfer
-    INNER JOIN {{ source('tokens_solana','transfers') }} t
-        ON t.tx_id = s.tx_id
-        AND t.block_slot = s.block_slot
-        AND t.outer_instruction_index = s.outer_instruction_index
+    
+    -- Join for INPUT transfer (what user sells to pool)
+    INNER JOIN {{ ref('solfi_solana_token_transfers') }} t_input
+        ON t_input.block_slot = s.block_slot
+        AND t_input.tx_index = s.tx_index
+        AND t_input.block_time = s.block_time  -- Add block_time
+        AND t_input.outer_instruction_index = s.outer_instruction_index
+        AND (
+            -- For non-inner swaps: input transfer is at instruction index 1
+            (s.is_inner_swap = false AND t_input.inner_instruction_index = 1)
+            OR
+            -- For inner swaps: input transfer is at swap instruction + 1
+            (s.is_inner_swap = true AND t_input.inner_instruction_index = s.inner_instruction_index + 1)
+        )
+        -- Input transfer: from user account to pool account
+        AND t_input.from_token_account IN (s.account_userTokenAccountA, s.account_userTokenAccountB)
+        AND t_input.to_token_account IN (s.account_poolTokenAccountA, s.account_poolTokenAccountB)
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('t_input.block_time') }}
+        {% else %}
+        AND t_input.block_time >= TIMESTAMP '{{ project_start_date }}'
+        {% endif %}
+    
+    -- Join for OUTPUT transfer (what user receives from pool)
+    INNER JOIN {{ ref('solfi_solana_token_transfers') }} t_output
+        ON t_output.block_slot = s.block_slot
+        AND t_output.tx_index = s.tx_index
+        AND t_output.outer_instruction_index = s.outer_instruction_index
         AND (
             -- For non-inner swaps: output transfer is at instruction index 2
-            (s.is_inner_swap = false AND t.inner_instruction_index = 2)
+            (s.is_inner_swap = false AND t_output.inner_instruction_index = 2)
             OR
             -- For inner swaps: output transfer is at swap instruction + 2
-            (s.is_inner_swap = true AND t.inner_instruction_index = s.inner_instruction_index + 2)
+            (s.is_inner_swap = true AND t_output.inner_instruction_index = s.inner_instruction_index + 2)
         )
-        AND (
-            -- Verifing here that this is the correct output transfer based on direction
-            CASE 
-                WHEN s.direction = 0 THEN t.from_token_account = s.account_poolTokenAccountB 
-                                      AND t.to_token_account = s.account_userTokenAccountB
-                ELSE t.from_token_account = s.account_poolTokenAccountA
-                     AND t.to_token_account = s.account_userTokenAccountA
-            END
-        )
+        -- Output transfer: from pool account to user account
+        AND t_output.from_token_account IN (s.account_poolTokenAccountA, s.account_poolTokenAccountB)
+        AND t_output.to_token_account IN (s.account_userTokenAccountA, s.account_userTokenAccountB)
         {% if is_incremental() %}
-        AND {{ incremental_predicate('t.block_time') }}
+        AND {{ incremental_predicate('t_output.block_time') }}
         {% else %}
-        AND t.block_time >= TIMESTAMP '{{ project_start_date }}'
+        AND t_output.block_time >= TIMESTAMP '{{ project_start_date }}'
         {% endif %}
 )
 
@@ -117,16 +112,9 @@ WITH solfi_swaps AS (
             WHEN st.is_inner_swap = false THEN 'direct'
             ELSE st.outer_executing_account
           END as trade_source
-        
-        -- Token bought (what user receives) - get from transfer mint address
         , st.token_bought_mint_address
         , st.token_bought_amount_raw
-        
-        -- Token sold (what user gives) - determine from direction and pool mints
-        , CASE 
-            WHEN st.direction = 0 THEN st.mint_a  -- direction 0: user sells tokenA
-            ELSE st.mint_b                        -- direction 1: user sells tokenB
-          END as token_sold_mint_address
+        , st.token_sold_mint_address
         , st.token_sold_amount_raw
         
         , CAST(NULL AS DOUBLE) as fee_tier
@@ -139,17 +127,11 @@ WITH solfi_swaps AS (
         , st.tx_index
         , st.block_slot
         
-        -- Token vaults (pool accounts)
-        , CASE
-            WHEN st.direction = 0 THEN st.account_poolTokenAccountB  -- direction 0: bought from poolB
-            ELSE st.account_poolTokenAccountA                       -- direction 1: bought from poolA
-          END as token_bought_vault
-        , CASE
-            WHEN st.direction = 0 THEN st.account_poolTokenAccountA  -- direction 0: sold to poolA
-            ELSE st.account_poolTokenAccountB                       -- direction 1: sold to poolB
-          END as token_sold_vault
+        -- Token vaults come directly from transfers
+        , st.token_bought_vault
+        , st.token_sold_vault
             
-    FROM swaps_with_transfers st
+    FROM swap_transfers st
 )
 
 SELECT

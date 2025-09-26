@@ -15,7 +15,7 @@ with fees as (
         , block_date
         , sum(tx_fee_usd) as gas_fees_usd
     from
-        {{ source('gas', 'fees') }}
+        {{ source('gas_solana', 'fees') }}
     where blockchain = 'solana'
     {% if is_incremental() %}
     and

@@ -1,0 +1,85 @@
+version: 2
+
+models:
+  - name: fluid_polygon_pools
+    meta: 
+      blockchain: polygon
+      sector: dex
+      project: fluid
+      contributor: Henrystats
+    config:
+      tags: ['polygon', 'trades', 'fluid', 'dex']
+    description: "fluid pools"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - dex
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "blockchain where the pool is deployed"
+      - &project
+        name: project
+        description: "project name"
+      - &version
+        name: version
+        description: "project version"
+      - &block_time
+        name: block_time
+        description: "utc block timestamp when the pool is deployed"
+      - &block_number
+        name: block_number
+        description: "block number at which the pool is deployed"
+      - &evt_index
+        name: evt_index
+        description: "index of log emitted"
+      - &tx_hash
+        name: tx_hash
+        description: "hash of tx in which pool is deployed"
+      - &factory
+        name: factory
+        description: "factory contract deploying the pool"
+      - &dex
+        name: dex
+        description: "pool contract address"
+      - &supply_token
+        name: supply_token
+        description: "supply token"
+      - &borrow_token
+        name: borrow_token
+        description: "borrow token"
+      - &dex_id
+        name: dex_id
+        description: "nonce unique to factory and pool"
+
+  - name: fluid_polygon_liquidity_events
+    meta:
+      blockchain: polygon
+      sector: dex
+      project: fluid
+      contributors: Henrystats, dknugo
+    config:
+      tags: ['polygon', 'liquidity_events', 'liquidity', 'fluid']
+    description: >
+      All dex events in logoperate
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+
+  - name: fluid_polygon_dex_events
+    meta:
+      blockchain: polygon
+      sector: dex
+      project: fluid
+      contributors: Henrystats, dknugo
+    config:
+      tags: ['polygon', 'dex_events', 'liquidity', 'fluid']
+    description: >
+      All dex events in logoperate logged in dex contract (not general fluidliquidityproxy)
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index

@@ -1,4 +1,5 @@
 {{ config(
+    tags = ['prod_exclude'],
     schema = 'rarible_polygon',
     alias = 'base_trades',
     materialized = 'incremental',

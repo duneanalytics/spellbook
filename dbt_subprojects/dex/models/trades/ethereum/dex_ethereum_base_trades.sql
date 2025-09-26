@@ -89,6 +89,7 @@ with base_union as (
     )
     WHERE
         duplicates_rank = 1
+        AND tx_hash != 0x1c27c4d625429acfc0f97e466eda725fd09ebdc77550e529ba4cbdbc33beb97b -- inflated volume (10trillion)
 )
 
 {{

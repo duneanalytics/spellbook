@@ -1,0 +1,88 @@
+{{ config(
+    schema = 'momentum_sui',
+    alias = 'base_trades',
+    partition_by = ['block_month'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['transaction_digest', 'event_index'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+) }}
+
+{% set momentum_start_date = "2023-04-12" %}
+
+with base as (
+  select
+      -- time helpers for partitioning/incremental
+      from_unixtime(timestamp_ms/1000)                      as block_time
+    , date(from_unixtime(timestamp_ms/1000))                as block_date
+    , date_trunc('month', from_unixtime(timestamp_ms/1000)) as block_month
+
+      -- minimal fields from event_json (cast JSON only; keep base columns untouched)
+    , json_extract_scalar(event_json, '$.pool_id')             as pool_id
+    , cast(json_extract_scalar(event_json, '$.x_for_y') as boolean)          as a_to_b
+    , cast(json_extract_scalar(event_json, '$.amount_x') as decimal(38,0))   as amount_x
+    , cast(json_extract_scalar(event_json, '$.amount_y') as decimal(38,0))   as amount_y
+    , cast(json_extract_scalar(event_json, '$.fee_amount') as decimal(38,0)) as fee_amount
+
+      -- base ids (preserve native datatypes)
+    , timestamp_ms
+    , transaction_digest
+    , event_index
+    , epoch
+    , checkpoint
+    , sender
+  from {{ source('sui','events') }}
+  where event_type = '0x70285592c97965e811e0c6f98dccc3a9c2b4ad854b3594faab9597ada267b860::trade::SwapEvent'
+    and from_unixtime(timestamp_ms/1000) >= timestamp '{{ momentum_start_date }}'
+),
+
+shaped as (
+  select
+      -- ids & time
+      timestamp_ms, transaction_digest, event_index, epoch, checkpoint,
+      block_time, block_date, block_month,
+
+      -- trade identifiers
+      pool_id,
+      sender,
+
+      -- amounts selected by direction
+      case when a_to_b then amount_x else amount_y end as amount_in,
+      case when a_to_b then amount_y else amount_x end as amount_out,
+
+      -- direction & fee
+      a_to_b,
+      fee_amount,
+
+      -- coin types not emitted in this event
+      cast(null as varchar) as coin_type_in,
+      cast(null as varchar) as coin_type_out
+  from base
+)
+
+select
+    -- ids & time
+    timestamp_ms
+  , transaction_digest
+  , event_index
+  , epoch
+  , checkpoint
+  , block_time
+  , block_date
+  , block_month
+
+  -- trade fields
+  , pool_id
+  , sender
+  , coin_type_in
+  , coin_type_out
+  , amount_in
+  , amount_out
+  , a_to_b
+  , fee_amount
+
+from shaped
+{% if is_incremental() %}
+where {{ incremental_predicate('shaped.block_time') }}
+{% endif %}
