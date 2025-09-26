@@ -56,18 +56,18 @@ with combined_data as (
 
     union all
 
-    -- Momentum data
+    -- Momentum data (now uses standardized schema)
     select
         block_date,
-        token_a_symbol as coin_a_symbol,
-        token_b_symbol as coin_b_symbol,
-        token_a_type as coin_type_a,
-        token_b_type as coin_type_b,
+        coin_a_symbol,
+        coin_b_symbol,
+        coin_type_a,
+        coin_type_b,
         pool_id,
         pool_name,
-        reserve_a_adjusted as coin_a_amount,
-        reserve_b_adjusted as coin_b_amount,
-        swap_fee_rate_percent as fee_rate_percent,
+        coin_a_amount,
+        coin_b_amount,
+        fee_rate_percent,
         block_time,
         'momentum' as protocol
     from {{ ref('sui_tvl_dex_pools_momentum_bronze') }}

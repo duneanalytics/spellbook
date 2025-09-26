@@ -11,7 +11,6 @@
 ) }}
 
 -- Gold layer: BTC lending pools with standard decimal normalization
--- Removed arbitrary protocol-specific adjustments, using proper decimal handling
 -- Filters for BTC tokens only and aggregates by protocol and token symbol
 
 select

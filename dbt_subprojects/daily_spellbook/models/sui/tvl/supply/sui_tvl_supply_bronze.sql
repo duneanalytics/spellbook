@@ -14,7 +14,7 @@
 -- This table captures the minted on-chain supply of tokens
 -- Converted from Snowflake materialized view to dbt incremental model
 
-{% set sui_project_start_date = var('sui_project_start_date', '2025-09-23') %}
+{% set sui_project_start_date = var('sui_project_start_date', '2025-09-24') %}
 
 with supply_data as (
     select

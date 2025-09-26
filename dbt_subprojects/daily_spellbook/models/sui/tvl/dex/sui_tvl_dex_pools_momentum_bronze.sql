@@ -10,17 +10,16 @@
     tags=['sui','tvl','dex','momentum']
 ) }}
 
--- Momentum DEX pools for TVL calculation
--- Converted from Snowflake task to dbt incremental model
+-- Momentum DEX pools for TVL calculation (Bronze Layer)
+-- Raw extraction without coin metadata joins for better performance
 
-{% set momentum_start_date = "2025-09-23" %}
+{% set momentum_start_date = "2025-09-24" %}
 
 with coin_info_cte as (
     select
         coin_type,
         coin_decimals as decimals,
-        coin_symbol as symbol,
-        coin_name as name
+        coin_symbol as symbol
     from {{ ref('dex_sui_coin_info') }}
 ),
 
@@ -53,9 +52,9 @@ filtered_pools_cte as (
     from {{ source('sui','objects') }}
     where cast(type_ as varchar) like '0x70285592c97965e811e0c6f98dccc3a9c2b4ad854b3594faab9597ada267b860::pool::Pool<%'
         and from_unixtime(timestamp_ms/1000) >= timestamp '{{ momentum_start_date }}'
-    {% if is_incremental() %}
-    and {{ incremental_predicate('from_unixtime(timestamp_ms/1000)') }}
-    {% endif %}
+        {% if is_incremental() %}
+        and {{ incremental_predicate('from_unixtime(timestamp_ms/1000)') }}
+        {% endif %}
 )
 
 select 
@@ -67,15 +66,11 @@ select
     p.version,
     p.pool_id,
     
-    -- Token Info (use Momentum naming convention)
-    p.token_a_type,
-    p.token_b_type,
-    coalesce(token_a_info.symbol, 'UNK') as token_a_symbol,
-    coalesce(token_b_info.symbol, 'UNK') as token_b_symbol,
-    coalesce(token_a_info.name, 'Unknown') as token_a_name,
-    coalesce(token_b_info.name, 'Unknown') as token_b_name,
-    token_a_info.decimals as token_a_decimals,
-    token_b_info.decimals as token_b_decimals,
+    -- Token Info (use Momentum naming convention but output as standard names)
+    p.token_a_type as coin_type_a,
+    p.token_b_type as coin_type_b,
+    coalesce(token_a_info.symbol, 'UNK') as coin_a_symbol,
+    coalesce(token_b_info.symbol, 'UNK') as coin_b_symbol,
     
     -- Reserves (Raw & Adjusted) - Momentum specific naming
     p.reserve_a_raw,
@@ -83,17 +78,17 @@ select
     case when token_a_info.decimals is not null
         then cast(cast(p.reserve_a_raw as double) / 
              power(10, token_a_info.decimals) as decimal(38,18))
-        else cast(null as decimal(38,18)) end as reserve_a_adjusted,
+        else cast(null as decimal(38,18)) end as coin_a_amount,
     case when token_b_info.decimals is not null
         then cast(cast(p.reserve_b_raw as double) / 
              power(10, token_b_info.decimals) as decimal(38,18))
-        else cast(null as decimal(38,18)) end as reserve_b_adjusted,
+        else cast(null as decimal(38,18)) end as coin_b_amount,
     
     -- Pool Parameters
     p.flash_loan_fee_rate,
     p.tick_spacing,
     p.swap_fee_rate,
-    p.swap_fee_rate / 10000.0 as swap_fee_rate_percent,
+    p.swap_fee_rate / 10000.0 as fee_rate_percent,
     p.sqrt_price,
     p.fee_growth_global_a,
     p.fee_growth_global_b,

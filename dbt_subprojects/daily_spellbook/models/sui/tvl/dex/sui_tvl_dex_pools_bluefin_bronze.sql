@@ -13,15 +13,14 @@
 -- Bluefin DEX pools for TVL calculation
 -- Converted from Snowflake task to dbt incremental model
 
-{% set bluefin_start_date = "2025-09-23" %}
+{% set bluefin_start_date = "2025-09-24" %}
 
 with coin_info_cte as (
     -- Use existing DEX coin info model
     select
         coin_type,
         coin_decimals as decimals,
-        coin_symbol as symbol,
-        coin_name as name
+        coin_symbol as symbol
     from {{ ref('dex_sui_coin_info') }}
 ),
 

@@ -13,7 +13,6 @@ with src as (
   select
       lower(regexp_extract(cast(type_ as varchar), '<(.*)>', 1)) as coin_type
     , cast(json_extract_scalar(object_json, '$.symbol')   as varchar) as coin_symbol
-    , cast(json_extract_scalar(object_json, '$.name')     as varchar) as coin_name
     , cast(json_extract_scalar(object_json, '$.decimals') as integer) as coin_decimals
     , checkpoint                                              as checkpoint_latest
     , version                                                 as version_latest
@@ -30,7 +29,7 @@ with src as (
   select * from src
   {% if is_incremental() %}
   union all
-  select coin_type, coin_symbol, coin_name, coin_decimals, checkpoint_latest, version_latest
+  select coin_type, coin_symbol, coin_decimals, checkpoint_latest, version_latest
   from {{ this }}
   {% endif %}
 )
@@ -49,7 +48,6 @@ with src as (
   select
       coin_type
     , coin_symbol
-    , coin_name
     , coin_decimals
     , checkpoint_latest
     , version_latest
@@ -70,7 +68,6 @@ with src as (
 select
     l.coin_type
   , l.coin_symbol
-  , l.coin_name
   , l.coin_decimals
   , l.checkpoint_latest
   , l.version_latest
@@ -81,7 +78,6 @@ union all
 select
     m.coin_type
   , m.coin_symbol
-  , m.coin_symbol as coin_name  -- Use symbol as name for manual entries
   , m.coin_decimals
   , cast(null as bigint)  as checkpoint_latest
   , cast(null as bigint)  as version_latest

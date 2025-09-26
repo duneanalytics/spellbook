@@ -10,10 +10,8 @@
     tags=['sui','tvl','dex','gold']
 ) }}
 
--- Gold layer: BTC DEX pools with pricing and business metrics
--- Adds USD pricing, volume data, and applies business filters like the Snowflake pattern
--- Filters for BTC pools only to match Snowflake BTC_POOLS_DAILY_METRICS_V
-
+-- Gold layer: BTC DEX pools with pricing
+-- Filters for BTC pools only
 with btc_pools_silver as (
     -- Filter for BTC pools only (matching Snowflake logic)
     select *
@@ -125,5 +123,6 @@ select
     num_records
 from dex_pools_with_pricing
 where tvl_usd > 1000 and total_volume_usd > 1000
+order by
     metric_date desc,
     tvl_usd desc 

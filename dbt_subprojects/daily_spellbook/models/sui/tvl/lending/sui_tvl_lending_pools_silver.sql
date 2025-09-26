@@ -37,7 +37,6 @@ coin_info_cte as (
     select
         coin_type,
         coin_decimals,
-        coin_name,
         coin_symbol
     from {{ ref('dex_sui_coin_info') }}
 ),
