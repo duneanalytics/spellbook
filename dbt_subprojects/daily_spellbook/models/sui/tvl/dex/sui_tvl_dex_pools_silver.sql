@@ -112,9 +112,8 @@ enriched_pools as (
         ) as pool_name
 
     from all_pools_raw p
-    -- Add token information for both sides of the pool
-    left join coin_info_cte coin_a_info on p.coin_type_a = coin_a_info.coin_type
-    left join coin_info_cte coin_b_info on p.coin_type_b = coin_b_info.coin_type
+    left join coin_info_cte coin_a_info on lower(p.coin_type_a) = coin_a_info.coin_type
+    left join coin_info_cte coin_b_info on lower(p.coin_type_b) = coin_b_info.coin_type
 )
 
 -- Daily aggregation
