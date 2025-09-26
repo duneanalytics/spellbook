@@ -5,6 +5,8 @@
     file_format='delta',
     incremental_strategy='merge',
     unique_key=['coin_type', 'block_date'],
+    partition_by=['block_month'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     tags=['sui','tvl','supply']
 ) }}
 
@@ -92,6 +94,7 @@ with supply_data as (
         and from_unixtime(timestamp_ms/1000) >= timestamp '{{ sui_project_start_date }}'
         {% if is_incremental() %}
         and checkpoint > coalesce((select max(checkpoint) from {{ this }}), 0)
+        and {{ incremental_predicate('from_unixtime(timestamp_ms/1000)') }}
         {% endif %}
 )
 

@@ -18,7 +18,7 @@ raw_updates as (
     select *
     from {{ ref('sui_tvl_lending_pools_bronze') }}
     {% if is_incremental() %}
-    where timestamp_ms > coalesce((select max(timestamp_ms) from {{ this }}), 0)
+    where {{ incremental_predicate('block_date') }}
     {% endif %}
 ),
 

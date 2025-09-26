@@ -10,49 +10,30 @@
     tags=['sui','tvl','lending','gold']
 ) }}
 
--- Gold layer: BTC lending pools with protocol-specific adjustments
--- Following the Snowflake BTC_LENDING_POOLS_DAILY_GOLD pattern exactly
--- Filters for BTC tokens only and applies protocol-specific decimal corrections
+-- Gold layer: BTC lending pools with standard decimal normalization
+-- Removed arbitrary protocol-specific adjustments, using proper decimal handling
+-- Filters for BTC tokens only and aggregates by protocol and token symbol
 
 select
     block_date as date,
     protocol,
     collateral_coin_symbol,
     
-    -- BTC Collateral (with protocol-specific adjustments)
-    sum(
-        case 
-            when protocol = 'navi' and collateral_coin_symbol like '%BTC%' 
-            then eod_collateral_amount / 10
-            else eod_collateral_amount 
-        end
-    ) as btc_collateral,
+    -- BTC Collateral (standard decimal normalization)
+    sum(eod_collateral_amount) as btc_collateral,
     
-    -- BTC Borrow (with protocol-specific adjustments)
+    -- BTC Borrow (standard decimal normalization, Bucket borrows BUCK not BTC)
     sum(
         case 
             when protocol = 'bucket' then 0  -- Bucket borrows BUCK, not BTC
-            when protocol = 'navi' and collateral_coin_symbol like '%BTC%' 
-            then eod_borrow_amount / 10
-            when protocol = 'suilend' and collateral_coin_symbol like '%BTC%'
-            then eod_borrow_amount / power(10, 18)
             else eod_borrow_amount 
         end
     ) as btc_borrow,
     
-    -- BTC Supply (collateral - borrow with adjustments)
+    -- BTC Supply (collateral - borrow with standard calculation)
     sum(
         case 
-            when protocol = 'bucket' then 
-                case 
-                    when protocol = 'navi' and collateral_coin_symbol like '%BTC%' 
-                    then eod_collateral_amount / 10
-                    else eod_collateral_amount 
-                end  -- For Bucket, supply = collateral (no BTC borrow)
-            when protocol = 'navi' and collateral_coin_symbol like '%BTC%' 
-            then (eod_collateral_amount - eod_borrow_amount) / 10
-            when protocol = 'suilend' and collateral_coin_symbol like '%BTC%'
-            then (eod_collateral_amount - eod_borrow_amount / power(10, 18))
+            when protocol = 'bucket' then eod_collateral_amount  -- For Bucket, supply = collateral (no BTC borrow)
             else (eod_collateral_amount - eod_borrow_amount)
         end
     ) as btc_supply

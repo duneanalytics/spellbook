@@ -5,6 +5,8 @@
     file_format='delta',
     incremental_strategy='merge',
     unique_key=['protocol', 'market_id', 'block_date'],
+    partition_by=['block_month'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     tags=['sui','tvl','lending']
 ) }}
 
@@ -31,6 +33,7 @@ with suilend_raw as (
         and from_unixtime(timestamp_ms/1000) >= timestamp '{{ sui_project_start_date }}'
     {% if is_incremental() %}
     and checkpoint > coalesce((select max(checkpoint) from {{ this }} where protocol = 'suilend'), 0)
+    and {{ incremental_predicate('from_unixtime(timestamp_ms/1000)') }}
     {% endif %}
 ),
 
@@ -180,6 +183,7 @@ navi_base as (
         and from_unixtime(timestamp_ms/1000) >= timestamp '{{ sui_project_start_date }}'
     {% if is_incremental() %}
     and checkpoint > coalesce((select max(checkpoint) from {{ this }} where protocol = 'navi'), 0)
+    and {{ incremental_predicate('from_unixtime(timestamp_ms/1000)') }}
     {% endif %}
 ),
 
@@ -210,6 +214,7 @@ scallop_base as (
         and from_unixtime(timestamp_ms/1000) >= timestamp '{{ sui_project_start_date }}'
     {% if is_incremental() %}
     and checkpoint > coalesce((select max(checkpoint) from {{ this }} where protocol = 'scallop'), 0)
+    and {{ incremental_predicate('from_unixtime(timestamp_ms/1000)') }}
     {% endif %}
 ),
 
@@ -240,6 +245,7 @@ bucket_base as (
         and from_unixtime(timestamp_ms/1000) >= timestamp '{{ sui_project_start_date }}'
     {% if is_incremental() %}
     and checkpoint > coalesce((select max(checkpoint) from {{ this }} where protocol = 'bucket'), 0)
+    and {{ incremental_predicate('from_unixtime(timestamp_ms/1000)') }}
     {% endif %}
 ),
 
@@ -266,6 +272,7 @@ alphalend_base as (
         and from_unixtime(timestamp_ms/1000) >= timestamp '{{ sui_project_start_date }}'
     {% if is_incremental() %}
     and checkpoint > coalesce((select max(checkpoint) from {{ this }} where protocol = 'alphalend'), 0)
+    and {{ incremental_predicate('from_unixtime(timestamp_ms/1000)') }}
     {% endif %}
 )
 

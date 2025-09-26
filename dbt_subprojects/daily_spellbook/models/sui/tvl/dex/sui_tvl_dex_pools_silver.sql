@@ -26,6 +26,7 @@ with combined_data as (
         coin_a_amount,
         coin_b_amount,
         fee_rate_percent,
+        block_time,
         'cetus' as protocol
     from {{ ref('sui_tvl_dex_pools_cetus_bronze') }}
     {% if is_incremental() %}
@@ -46,6 +47,7 @@ with combined_data as (
         coin_a_amount,
         coin_b_amount,
         fee_rate_percent,
+        block_time,
         'bluefin' as protocol
     from {{ ref('sui_tvl_dex_pools_bluefin_bronze') }}
     {% if is_incremental() %}
@@ -54,18 +56,19 @@ with combined_data as (
 
     union all
 
-    -- Momentum data (using Momentum-specific column names)
+    -- Momentum data
     select
         block_date,
-        token_a_symbol as coin_a_symbol, -- Aliased to match standard naming
-        token_b_symbol as coin_b_symbol, -- Aliased to match standard naming
-        token_a_type as coin_type_a,     -- Aliased to match standard naming
-        token_b_type as coin_type_b,     -- Aliased to match standard naming
+        token_a_symbol as coin_a_symbol,
+        token_b_symbol as coin_b_symbol,
+        token_a_type as coin_type_a,
+        token_b_type as coin_type_b,
         pool_id,
         pool_name,
-        reserve_a_adjusted as coin_a_amount, -- Aliased to match standard naming
-        reserve_b_adjusted as coin_b_amount, -- Aliased to match standard naming
-        swap_fee_rate_percent as fee_rate_percent, -- Aliased to match standard naming
+        reserve_a_adjusted as coin_a_amount,
+        reserve_b_adjusted as coin_b_amount,
+        swap_fee_rate_percent as fee_rate_percent,
+        block_time,
         'momentum' as protocol
     from {{ ref('sui_tvl_dex_pools_momentum_bronze') }}
     {% if is_incremental() %}
@@ -73,7 +76,7 @@ with combined_data as (
     {% endif %}
 )
 
--- Daily aggregation following the Snowflake pattern
+-- Daily aggregation
 select
     block_date,
     protocol,

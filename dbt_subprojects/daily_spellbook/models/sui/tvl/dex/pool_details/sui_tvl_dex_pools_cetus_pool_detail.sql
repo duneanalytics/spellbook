@@ -5,6 +5,7 @@
     file_format='delta',
     incremental_strategy='merge',
     unique_key=['pool_id'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     tags=['sui','tvl','dex','cetus','pool_details']
 ) }}
 
@@ -28,4 +29,5 @@ where event_type = '0x1eabed72c53feb3805120a081dc15963c204dc8d091542592abaf7a356
     and from_unixtime(timestamp_ms/1000) >= timestamp '{{ cetus_start_date }}'
 {% if is_incremental() %}
 and checkpoint > coalesce((select max(checkpoint) from {{ this }}), 0)
+and {{ incremental_predicate('from_unixtime(timestamp_ms/1000)') }}
 {% endif %} 
