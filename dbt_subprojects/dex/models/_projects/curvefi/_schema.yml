@@ -1,0 +1,20 @@
+version: 2
+
+models:
+
+  - name: curvefi_tvl_daily
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project:  curvefi
+      contributors: Henrystats
+    config:
+      tags: ['ethereum', 'pools', 'liquidity', 'curve']
+    description: >
+      Curve pools liquidity
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - token_address
+            - day
