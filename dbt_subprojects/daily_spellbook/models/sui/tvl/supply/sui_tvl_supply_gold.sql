@@ -15,7 +15,7 @@
 -- Adds BTC pricing to enable downstream ecosystem analysis
 
 select
-    s.date as block_date,
+    s.block_date,
     s.total_btc_supply,
     s.supply_breakdown_json,
     
@@ -28,7 +28,7 @@ from {{ ref('sui_tvl_supply_silver') }} s
 -- Join BTC pricing (using standard wrapped BTC token for pricing)
 left join {{ source('prices','usd') }} p
     on p.blockchain = 'sui'
-    and date(p.minute) = s.date
+    and date(p.minute) = s.block_date
     and p.contract_address = cast(
         regexp_replace(
             split_part(
@@ -40,7 +40,7 @@ left join {{ source('prices','usd') }} p
     )
 
 {% if is_incremental() %}
-where {{ incremental_predicate('s.date') }}
+where {{ incremental_predicate('s.block_date') }}
 {% endif %}
 
 order by block_date desc 

@@ -80,9 +80,9 @@ last_daily_markets as (
         end as adjusted_borrow_amount
         
     from raw_updates_with_rn raw
-    left join coin_info_cte ci on raw.coin_type = ci.coin_type
-    -- Special joins for Bucket Protocol's BUCK borrow asset
-    left join coin_info_cte buck_ci on buck_ci.coin_type = '0x9e3dab13212b27f5434416939db5dec6f6717822e825121b82320b9e8503bade::buck::BUCK'
+    left join coin_info_cte ci on lower(raw.coin_type) = ci.coin_type
+    -- Special joins for Bucket Protocol's BUCK borrow asset (case-insensitive)
+    left join coin_info_cte buck_ci on buck_ci.coin_type = lower('0x9e3dab13212b27f5434416939db5dec6f6717822e825121b82320b9e8503bade::buck::BUCK')
     where raw.rn = 1 -- Only process the latest snapshot per day
 )
 

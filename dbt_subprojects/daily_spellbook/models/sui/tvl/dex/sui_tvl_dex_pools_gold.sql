@@ -105,7 +105,7 @@ dex_pools_with_pricing as (
 )
 
 select
-    block_date as metric_date,
+    block_date,
     protocol,
     pool_name,
     pool_id,
@@ -124,5 +124,5 @@ select
 from dex_pools_with_pricing
 where tvl_usd > 1000 and total_volume_usd > 1000
 order by
-    metric_date desc,
+    block_date desc,
     tvl_usd desc 

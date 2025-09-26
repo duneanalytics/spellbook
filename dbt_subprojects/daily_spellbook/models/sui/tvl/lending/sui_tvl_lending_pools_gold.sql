@@ -14,7 +14,7 @@
 -- Filters for BTC tokens only and aggregates by protocol and token symbol
 
 select
-    block_date as date,
+    block_date,
     protocol,
     collateral_coin_symbol,
     

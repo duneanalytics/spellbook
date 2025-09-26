@@ -75,7 +75,7 @@ deduplicated_daily_btc_supply_by_symbol as (
 )
 
 select
-    block_date as date,
+    block_date,
     
     -- Total BTC supply across all variants
     sum(total_supply / power(10, coin_decimals)) as total_btc_supply,
