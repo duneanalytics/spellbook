@@ -25,14 +25,15 @@ select
     
 from {{ ref('sui_tvl_supply_silver') }} s
 
--- Join BTC pricing (using standard wrapped BTC token for pricing)
+-- Join BTC pricing
 left join {{ source('prices','usd') }} p
     on p.blockchain = 'sui'
     and date(p.minute) = s.block_date
     and p.contract_address = cast(
         regexp_replace(
             split_part(
-                lower('0x027792d9fed7f9844eb4839566001bb6f6cb4804f66aa2da6fe1ee242d896881::coin::COIN'), 
+                lower('0x77045f1b9f811a7a8fb9ebd085b5b0c55c5cb0d1520ff55f7037f89b5da9f5f1::TBTC::TBTC'), 
+                --using TBTC token which has good pricing coverage instead of BTC
                 '::', 1
             ),
             '^0x0*([0-9a-f]+)$', '0x$1'

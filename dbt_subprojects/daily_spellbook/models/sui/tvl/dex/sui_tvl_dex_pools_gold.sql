@@ -58,10 +58,16 @@ dex_pools_with_pricing as (
         -- Add volume data
         coalesce(v.total_volume_usd, 0) as total_volume_usd,
         
-        -- Get pricing for coin A
-        pa.price as coin_a_price_usd,
-        -- Get pricing for coin B  
-        pb.price as coin_b_price_usd,
+        -- Get pricing for coin A (with BTC proxy fallback)
+        coalesce(pa.price, 
+            case when s.coin_a_symbol in ('BTC', 'WBTC', 'wBTC', 'xBTC', 'eBTC') 
+                 then tbtc_price.price else null end
+        ) as coin_a_price_usd,
+        -- Get pricing for coin B (with BTC proxy fallback)
+        coalesce(pb.price, 
+            case when s.coin_b_symbol in ('BTC', 'WBTC', 'wBTC', 'xBTC', 'eBTC') 
+                 then tbtc_price.price else null end
+        ) as coin_b_price_usd,
         
         -- Calculate TVL in USD (following existing decimal precision pattern)
         cast(coalesce(cast(s.avg_coin_a_amount as double) * pa.price, 0) + 
@@ -74,10 +80,19 @@ dex_pools_with_pricing as (
         on v.block_date = s.block_date
         and v.pool_id = s.pool_id
     
-    -- Join pricing for coin A
-    left join {{ source('prices','usd') }} pa
-        on pa.blockchain = 'sui'
-        and date(pa.minute) = s.block_date
+    -- Join pricing for coin A (use latest price for the day)
+    left join (
+        select 
+            blockchain,
+            contract_address, 
+            date(minute) as price_date,
+            price,
+            row_number() over (partition by blockchain, contract_address, date(minute) order by minute desc) as rn
+        from {{ source('prices','usd') }}
+        where blockchain = 'sui'
+    ) pa on pa.blockchain = 'sui'
+        and pa.price_date = s.block_date
+        and pa.rn = 1
         and pa.contract_address = cast(
             regexp_replace(
                 split_part(
@@ -90,10 +105,19 @@ dex_pools_with_pricing as (
             ) as varbinary
         )
     
-    -- Join pricing for coin B
-    left join {{ source('prices','usd') }} pb
-        on pb.blockchain = 'sui'
-        and date(pb.minute) = s.block_date
+    -- Join pricing for coin B (use latest price for the day)
+    left join (
+        select 
+            blockchain,
+            contract_address, 
+            date(minute) as price_date,
+            price,
+            row_number() over (partition by blockchain, contract_address, date(minute) order by minute desc) as rn
+        from {{ source('prices','usd') }}
+        where blockchain = 'sui'
+    ) pb on pb.blockchain = 'sui'
+        and pb.price_date = s.block_date
+        and pb.rn = 1
         and pb.contract_address = cast(
             regexp_replace(
                 split_part(
@@ -105,6 +129,28 @@ dex_pools_with_pricing as (
                 '^0x0*([0-9a-f]+)$', '0x$1'
             ) as varbinary
         )
+    
+    -- Join TBTC pricing as BTC proxy
+    left join (
+        select 
+            blockchain,
+            date(minute) as price_date,
+            price,
+            row_number() over (partition by blockchain, date(minute) order by minute desc) as rn
+        from {{ source('prices','usd') }}
+        where blockchain = 'sui'
+        and contract_address = cast(
+            regexp_replace(
+                split_part(
+                    lower('0x77045f1b9f811a7a8fb9ebd085b5b0c55c5cb0d1520ff55f7037f89b5da9f5f1::TBTC::TBTC'), 
+                    '::', 1
+                ),
+                '^0x0*([0-9a-f]+)$', '0x$1'
+            ) as varbinary
+        )
+    ) tbtc_price on tbtc_price.blockchain = 'sui'
+        and tbtc_price.price_date = s.block_date
+        and tbtc_price.rn = 1
 )
 
 select

@@ -71,14 +71,14 @@ lending_markets_unpivoted as (
         l.date as block_date
     from {{ ref('sui_tvl_lending_pools_gold') }} l
     
-    -- Get BTC price for lending TVL calculation
+    -- Get BTC price for lending TVL calculation (using TBTC pricing)
     left join {{ source('prices','usd') }} btc_price
         on btc_price.blockchain = 'sui'
         and date(btc_price.minute) = l.date
         and btc_price.contract_address = cast(
             regexp_replace(
                 split_part(
-                    lower('0x027792d9fed7f9844eb4839566001bb6f6cb4804f66aa2da6fe1ee242d896881::coin::COIN'), 
+                    lower('0x77045f1b9f811a7a8fb9ebd085b5b0c55c5cb0d1520ff55f7037f89b5da9f5f1::TBTC::TBTC'), 
                     '::', 1
                 ),
                 '^0x0*([0-9a-f]+)$', '0x$1'
