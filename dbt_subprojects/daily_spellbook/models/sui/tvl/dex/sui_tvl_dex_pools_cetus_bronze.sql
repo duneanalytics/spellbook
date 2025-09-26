@@ -36,7 +36,7 @@ filtered_pools_cte as (
         json_extract_scalar(object_json, '$.current_sqrt_price') as current_sqrt_price,
         cast(json_extract_scalar(object_json, '$.fee_rate') as integer) as fee_rate,
         json_extract_scalar(object_json, '$.liquidity') as liquidity,
-        cast(json_extract_scalar(object_json, '$.current_tick_index.bits') as integer) as tick_index_bits,
+        cast(json_extract_scalar(object_json, '$.current_tick_index.bits') as bigint) as tick_index_bits,
         cast(json_extract_scalar(object_json, '$.tick_spacing') as integer) as tick_spacing
         
     from {{ source('sui','objects') }}

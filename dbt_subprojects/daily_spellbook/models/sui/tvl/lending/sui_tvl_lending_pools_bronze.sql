@@ -11,7 +11,7 @@
 -- All lending pools for TVL calculation (Bronze Layer)
 -- Covers: Suilend, Navi, Scallop, Bucket, Alphalend
 
-{% set sui_project_start_date = var('sui_project_start_date', '2025-09-16') %}
+{% set sui_project_start_date = var('sui_project_start_date', '2025-09-23') %}
 
 with suilend_raw as (
     -- Suilend raw objects for array processing

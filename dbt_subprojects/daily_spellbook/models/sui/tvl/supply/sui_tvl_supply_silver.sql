@@ -10,15 +10,26 @@
 ) }}
 
 -- Silver layer: BTC supply with simple daily aggregation
--- Simplified to use latest snapshot per token per day (like other Sui models)
+-- Using dynamic BTC token discovery instead of static whitelist
 
 with btc_tokens as (
-    -- Get BTC token whitelist
-    select 
+    -- Get BTC tokens directly from bronze with address-based matching and manual symbol mapping
+    select distinct
         coin_type,
-        coin_symbol,
-        coin_decimals
-    from {{ ref('sui_tvl_btc_tokens_detail') }}
+        case 
+            when coin_type like '%27792d9fed7f9844eb4839566001bb6f6cb4804f66aa2da6fe1ee242d896881%' then 'BTC'
+            when coin_type like '%77045f1b9f811a7a8fb9ebd085b5b0c55c5cb0d1520ff55f7037f89b5da9f5f1%' then 'TBTC'  
+            when coin_type like '%dfe175720cb087f967694c1ce7e881ed835be73e8821e161c351f4cea24a0f20%' then 'SATLBTC'
+        end as coin_symbol,
+        case 
+            when coin_type like '%27792d9fed7f9844eb4839566001bb6f6cb4804f66aa2da6fe1ee242d896881%' then 8
+            when coin_type like '%77045f1b9f811a7a8fb9ebd085b5b0c55c5cb0d1520ff55f7037f89b5da9f5f1%' then 8
+            when coin_type like '%dfe175720cb087f967694c1ce7e881ed835be73e8821e161c351f4cea24a0f20%' then 8
+        end as coin_decimals
+    from {{ ref('sui_tvl_supply_bronze') }}
+    where coin_type like '%27792d9fed7f9844eb4839566001bb6f6cb4804f66aa2da6fe1ee242d896881%'
+       or coin_type like '%77045f1b9f811a7a8fb9ebd085b5b0c55c5cb0d1520ff55f7037f89b5da9f5f1%'
+       or coin_type like '%dfe175720cb087f967694c1ce7e881ed835be73e8821e161c351f4cea24a0f20%'
 ),
 
 daily_btc_supply as (
