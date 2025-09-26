@@ -15,24 +15,24 @@
 {% set sui_project_start_date = var('sui_project_start_date', '2025-09-25') %}
 
 select
-    timestamp_ms,
-    from_unixtime(timestamp_ms/1000) as block_time,
-    date(from_unixtime(timestamp_ms/1000)) as block_date,
-    date_trunc('month', from_unixtime(timestamp_ms/1000)) as block_month,
-    date_trunc('hour', from_unixtime(timestamp_ms / 1000)) as date_hour,
-    'scallop' as protocol,
-    cast(object_id as varchar) as market_id,
-    case 
+    timestamp_ms
+    , from_unixtime(timestamp_ms/1000) as block_time
+    , date(from_unixtime(timestamp_ms/1000)) as block_date
+    , date_trunc('month', from_unixtime(timestamp_ms/1000)) as block_month
+    , date_trunc('hour', from_unixtime(timestamp_ms / 1000)) as date_hour
+    , 'scallop' as protocol
+    , cast(object_id as varchar) as market_id
+    , case 
         when starts_with(json_extract_scalar(object_json, '$.name.name'), '0x') 
         then json_extract_scalar(object_json, '$.name.name')
         else concat('0x', json_extract_scalar(object_json, '$.name.name'))
-    end as coin_type,
-    (cast(json_extract_scalar(object_json, '$.value.cash') as decimal(38,0)) + 
-     cast(json_extract_scalar(object_json, '$.value.debt') as decimal(38,0))) as coin_collateral_amount,
-    cast(json_extract_scalar(object_json, '$.value.debt') as decimal(38,0)) as coin_borrow_amount,
-    object_id,
-    version,
-    checkpoint
+    end as coin_type
+    , (cast(json_extract_scalar(object_json, '$.value.cash') as decimal(38,0)) + 
+     cast(json_extract_scalar(object_json, '$.value.debt') as decimal(38,0))) as coin_collateral_amount
+    , cast(json_extract_scalar(object_json, '$.value.debt') as decimal(38,0)) as coin_borrow_amount
+    , object_id
+    , version
+    , checkpoint
 from {{ source('sui','objects') }}
 where cast(type_ as varchar) like '0x2::dynamic_field::Field<0x1::type_name::TypeName, 0xefe8b36d5b2e43728cc323298626b83177803521d195cfb11e15b910e892fddf::reserve::BalanceSheet>%'
     and from_unixtime(timestamp_ms/1000) >= timestamp '{{ sui_project_start_date }}'

@@ -10,7 +10,6 @@
 ) }}
 
 -- Silver layer: Daily lending pools with end-of-day calculations
--- Following the Snowflake pattern with latest snapshot per day logic
 
 with 
 -- 1. Get new raw data since the last run
@@ -20,56 +19,56 @@ raw_updates as (
     {% if is_incremental() %}
     where {{ incremental_predicate('block_date') }}
     {% endif %}
-),
+)
 
 -- 2. For fetching the latest snapshot for each market per day
-raw_updates_with_rn as (
-    select *,
-           row_number() over (
+, raw_updates_with_rn as (
+    select *
+           , row_number() over (
                partition by block_date, protocol, market_id 
                order by version desc
            ) as rn
     from raw_updates
-),
+)
 
 -- 3. Coin Info (including SUI)
-coin_info_cte as (
+, coin_info_cte as (
     select
-        coin_type,
-        coin_decimals,
-        coin_symbol
+        coin_type
+        , coin_decimals
+        , coin_symbol
     from {{ ref('dex_sui_coin_info') }}
-),
+)
 
 -- 4. Finding last market state each day
-last_daily_markets as (
+, last_daily_markets as (
     select
-        raw.timestamp_ms,
-        raw.block_date,
-        raw.block_time,
-        raw.protocol,
-        raw.market_id,
+        raw.timestamp_ms
+        , raw.block_date
+        , raw.block_time
+        , raw.protocol
+        , raw.market_id
         
         -- Collateral Info
-        raw.coin_type as collateral_coin_type,
-        ci.coin_symbol as collateral_coin_symbol,
-        case when ci.coin_decimals is not null
+        , raw.coin_type as collateral_coin_type
+        , ci.coin_symbol as collateral_coin_symbol
+        , case when ci.coin_decimals is not null
             then cast(cast(raw.coin_collateral_amount as double) / 
                  power(10, ci.coin_decimals) as decimal(38,8))
-            else cast(null as decimal(38,8)) end as adjusted_collateral_amount,
+            else cast(null as decimal(38,8)) end as adjusted_collateral_amount
         
         -- Borrow Info (Handle Bucket Protocol's BUCK token)
-        case 
+        , case 
             when raw.protocol = 'bucket' 
             then buck_ci.coin_type 
             else raw.coin_type 
-        end as borrow_coin_type,
-        case 
+        end as borrow_coin_type
+        , case 
             when raw.protocol = 'bucket' 
             then buck_ci.coin_symbol 
             else ci.coin_symbol 
-        end as borrow_coin_symbol,
-        case 
+        end as borrow_coin_symbol
+        , case 
             when raw.protocol = 'bucket' and buck_ci.coin_decimals is not null then
                 cast(cast(raw.coin_borrow_amount as double) / 
                      power(10, buck_ci.coin_decimals) as decimal(38,8))
@@ -88,15 +87,15 @@ last_daily_markets as (
 
 -- 5. Final output
 select
-    block_date, 
-    protocol,
-    market_id,
-    collateral_coin_type,
-    collateral_coin_symbol,
-    adjusted_collateral_amount as eod_collateral_amount,
-    borrow_coin_type,
-    borrow_coin_symbol,
-    adjusted_borrow_amount as eod_borrow_amount,
-    timestamp_ms,
-    block_time as latest_block_time
+    block_date
+    , protocol
+    , market_id
+    , collateral_coin_type
+    , collateral_coin_symbol
+    , adjusted_collateral_amount as eod_collateral_amount
+    , borrow_coin_type
+    , borrow_coin_symbol
+    , adjusted_borrow_amount as eod_borrow_amount
+    , timestamp_ms
+    , block_time as latest_block_time
 from last_daily_markets 

@@ -4,125 +4,179 @@
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
-    unique_key=['protocol', 'market_id', 'coin_type', 'block_date'],
+    unique_key=['block_date', 'object_type', 'market_id'],
     partition_by=['block_date'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     tags=['sui','tvl','btc','ecosystem']
 ) }}
 
--- BTC Ecosystem: Granular token-level TVL data across Supply, Lending, and DEX
--- Each row represents one token in one object (pool/market)
+-- BTC Ecosystem: One row per economic object (pool/market/registry)
+-- Each row represents one live object with its complete TVL and metadata
+-- Eliminates double counting while capturing all essential data
 
-with dex_pools_unpivoted as (
-    -- DEX pools unpivoted: one row per token per pool
-    select 
-        d.protocol,
-        d.pool_id as market_id,
-        d.coin_type_a as coin_type,
-        d.coin_a_symbol as token_symbol,
-        d.pool_name as token_name,
-        'Liquidity Pool' as object_type,
-        d.avg_coin_a_amount as tvl_native_amount,
-        -- Calculate individual token TVL (half of pool TVL since it's token A)
-        cast(coalesce(cast(d.avg_coin_a_amount as double) * d.coin_a_price_usd, 0) as decimal(38,8)) as tvl_usd,
-        d.fee_rate_percent as protocol_fee_rate,
-        d.metric_date as block_date
-    from {{ ref('sui_tvl_dex_pools_gold') }} d
-    {% if is_incremental() %}
-    where {{ incremental_predicate('d.metric_date') }}
-    {% endif %}
-    
-    union all
-    
-    select 
-        d.protocol,
-        d.pool_id as market_id,
-        d.coin_type_b as coin_type,
-        d.coin_b_symbol as token_symbol,
-        d.pool_name as token_name,
-        'Liquidity Pool' as object_type,
-        d.avg_coin_b_amount as tvl_native_amount,
-        -- Calculate individual token TVL (half of pool TVL since it's token B)
-        cast(coalesce(cast(d.avg_coin_b_amount as double) * d.coin_b_price_usd, 0) as decimal(38,8)) as tvl_usd,
-        d.fee_rate_percent as protocol_fee_rate,
-        d.metric_date as block_date
-    from {{ ref('sui_tvl_dex_pools_gold') }} d
-    {% if is_incremental() %}
-    where {{ incremental_predicate('d.metric_date') }}
-    {% endif %}
-),
-
-lending_markets_unpivoted as (
-    -- Lending markets: one row per token type (collateral) per market
-    select 
-        l.protocol,
-        concat(l.protocol, '_', l.collateral_coin_symbol) as market_id, -- Create unique market identifier
-        l.collateral_coin_type as coin_type,
-        l.collateral_coin_symbol as token_symbol,
-        concat(l.protocol, ' - ', l.collateral_coin_symbol, ' Market') as token_name,
-        case 
-            when l.protocol = 'bucket' then 'Collateral Vault'
-            else 'Lending Market'
-        end as object_type,
-        l.btc_collateral as tvl_native_amount,
-        -- Lending TVL is the collateral amount (what's locked)
-        cast(coalesce(cast(l.btc_collateral as double) * btc_price.price, 0) as decimal(38,8)) as tvl_usd,
-        cast(null as decimal) as protocol_fee_rate, -- Lending doesn't have explicit fee rates
-        l.date as block_date
-    from {{ ref('sui_tvl_lending_pools_gold') }} l
-    
-    -- Get BTC price for lending TVL calculation (using TBTC pricing)
-    left join {{ source('prices','usd') }} btc_price
-        on btc_price.blockchain = 'sui'
-        and date(btc_price.minute) = l.date
-        and btc_price.contract_address = cast(
-            regexp_replace(
-                split_part(
-                    lower('0x77045f1b9f811a7a8fb9ebd085b5b0c55c5cb0d1520ff55f7037f89b5da9f5f1::TBTC::TBTC'), 
-                    '::', 1
-                ),
-                '^0x0*([0-9a-f]+)$', '0x$1'
-            ) as varbinary
-        )
-    
-    {% if is_incremental() %}
-    where {{ incremental_predicate('l.date') }}
-    {% endif %}
-)
-
-select
-    protocol,
-    object_type,
-    market_id,
-    coin_type,
-    token_symbol,
-    token_name,
-    tvl_native_amount,
-    tvl_usd,
-    protocol_fee_rate,
+-- DEX Pools - One row per pool
+select 
     block_date
+    
+    -- Object identification
+    , pool_id as market_id
+    , concat(coin_a_symbol, '/', coin_b_symbol, ' ', 
+           coalesce(cast(fee_rate_percent as varchar), '0'), '%') as token_name
+    , 'Liquidity Pool' as object_type
+    , 'dex' as storage_location
+    , protocol
+    
+    -- Token composition (both tokens in one row)
+    , coin_type_a
+    , coin_a_symbol as token_a_symbol
+    , coin_type_b
+    , coin_b_symbol as token_b_symbol
+    
+    -- Pool TVL amounts (native + USD for both tokens)
+    , avg_coin_a_amount as token_a_native_amount
+    , avg_coin_b_amount as token_b_native_amount
+    , coin_a_price_usd as token_a_price_usd
+    , coin_b_price_usd as token_b_price_usd
+    , tvl_usd as total_pool_tvl_usd
+    
+    -- Protocol Fee Rate (available for DEX)
+    , fee_rate_percent as protocol_fee_rate
+    
+    -- Object metadata
+    , total_volume_usd as object_volume_usd
+    , num_records as data_points_count
+    , pool_name as object_name
+    
+    -- NULL padding for lending/supply specific columns
+    , cast(null as varchar) as collateral_coin_symbol
+    , cast(null as decimal(38,8)) as btc_collateral
+    , cast(null as decimal(38,8)) as btc_borrow
+    , cast(null as decimal(38,8)) as btc_supply
+    , cast(null as decimal(38,8)) as btc_collateral_usd
+    , cast(null as decimal(38,8)) as btc_borrow_usd
+    , cast(null as decimal(38,8)) as btc_supply_usd
+    , cast(null as decimal(38,8)) as total_btc_supply
+    , cast(null as map(varchar, bigint)) as supply_breakdown_json
+    , cast(null as decimal(38,8)) as total_btc_usd_value
 
-from dex_pools_unpivoted
+from {{ ref('sui_tvl_dex_pools_gold') }}
+{% if is_incremental() %}
+where {{ incremental_predicate('block_date') }}
+{% endif %}
 
 union all
 
-select
-    protocol,
-    object_type,
-    market_id,
-    coin_type,
-    token_symbol,
-    token_name,
-    tvl_native_amount,
-    tvl_usd,
-    protocol_fee_rate,
+-- Lending Markets - One row per market
+select 
     block_date
+    
+    -- Object identification  
+    , concat(protocol, '_', collateral_coin_symbol) as market_id
+    , concat(protocol, ' - ', collateral_coin_symbol, ' Market') as token_name
+    , case 
+        when protocol = 'bucket' then 'Collateral Vault'
+        else 'Lending Market'
+    end as object_type
+    , 'lending' as storage_location
+    , protocol
+    
+    -- NULL padding for DEX specific columns
+    , cast(null as varchar) as coin_type_a
+    , cast(null as varchar) as token_a_symbol
+    , cast(null as varchar) as coin_type_b
+    , cast(null as varchar) as token_b_symbol
+    , cast(null as decimal(38,8)) as token_a_native_amount
+    , cast(null as decimal(38,8)) as token_b_native_amount
+    , cast(null as decimal(38,8)) as token_a_price_usd
+    , cast(null as decimal(38,8)) as token_b_price_usd
+    
+    -- Market TVL (collateral represents the TVL locked in this market)
+    , btc_collateral_usd as total_pool_tvl_usd
+    
+    -- Protocol Fee Rate (NOT available for lending protocols)
+    , cast(null as decimal) as protocol_fee_rate
+    
+    -- NULL padding for DEX specific metadata
+    , cast(null as decimal(38,8)) as object_volume_usd
+    , cast(null as bigint) as data_points_count
+    , concat(protocol, ' ', collateral_coin_symbol, ' Market') as object_name
+    
+    -- Lending specific columns
+    , collateral_coin_symbol
+    , btc_collateral
+    , btc_borrow
+    , btc_supply
+    , btc_collateral_usd
+    , btc_borrow_usd
+    , btc_supply_usd
+    
+    -- NULL padding for supply specific columns
+    , cast(null as decimal(38,8)) as total_btc_supply
+    , cast(null as map(varchar, bigint)) as supply_breakdown_json
+    , cast(null as decimal(38,8)) as total_btc_usd_value
 
-from lending_markets_unpivoted
+from {{ ref('sui_tvl_lending_pools_gold') }}
+{% if is_incremental() %}
+where {{ incremental_predicate('block_date') }}
+{% endif %}
 
-where tvl_native_amount > 0 -- Only include objects with actual TVL
-  and tvl_usd > 1000 -- Business filter for meaningful TVL
+union all
+
+-- Supply Tracking - One row for total BTC supply
+select 
+    block_date
+    
+    -- Object identification
+    , 'total_btc_supply' as market_id
+    , 'Total BTC Supply' as token_name
+    , 'Supply Registry' as object_type
+    , 'supply' as storage_location
+    , 'supply_tracking' as protocol
+    
+    -- NULL padding for DEX specific columns
+    , cast(null as varchar) as coin_type_a
+    , cast(null as varchar) as token_a_symbol
+    , cast(null as varchar) as coin_type_b
+    , cast(null as varchar) as token_b_symbol
+    , cast(null as decimal(38,8)) as token_a_native_amount
+    , cast(null as decimal(38,8)) as token_b_native_amount
+    , cast(null as decimal(38,8)) as token_a_price_usd
+    , cast(null as decimal(38,8)) as token_b_price_usd
+    
+    -- Supply TVL (total BTC value in ecosystem)
+    , total_btc_usd_value as total_pool_tvl_usd
+    
+    -- Protocol Fee Rate (NOT applicable for supply tracking)
+    , cast(null as decimal) as protocol_fee_rate
+    
+    -- NULL padding for DEX specific metadata
+    , cast(null as decimal(38,8)) as object_volume_usd
+    , cast(null as bigint) as data_points_count
+    , 'BTC Supply Registry' as object_name
+    
+    -- NULL padding for lending specific columns
+    , cast(null as varchar) as collateral_coin_symbol
+    , cast(null as decimal(38,8)) as btc_collateral
+    , cast(null as decimal(38,8)) as btc_borrow
+    , cast(null as decimal(38,8)) as btc_supply
+    , cast(null as decimal(38,8)) as btc_collateral_usd
+    , cast(null as decimal(38,8)) as btc_borrow_usd
+    , cast(null as decimal(38,8)) as btc_supply_usd
+    
+    -- Supply specific columns
+    , total_btc_supply
+    , supply_breakdown_json
+    , total_btc_usd_value
+
+from {{ ref('sui_tvl_supply_gold') }}
+{% if is_incremental() %}
+where {{ incremental_predicate('block_date') }}
+{% endif %}
+
+-- Filter for live objects with meaningful TVL
+where total_pool_tvl_usd > 100  -- Business filter for meaningful TVL
 
 order by 
-    block_date desc,
-    tvl_usd desc
+    block_date desc
+    , storage_location
+    , total_pool_tvl_usd desc

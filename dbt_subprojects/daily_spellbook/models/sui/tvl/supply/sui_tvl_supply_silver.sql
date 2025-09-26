@@ -9,83 +9,62 @@
     tags=['sui','tvl','supply','silver']
 ) }}
 
--- Silver layer: BTC supply with simple daily aggregation
--- Using dynamic BTC token discovery instead of static whitelist
+-- Silver layer: BTC supply with LOCF (Last Observation Carried Forward)
 
-with btc_tokens as (
-    -- Get BTC tokens directly from bronze with address-based matching and manual symbol mapping
-    select distinct
-        coin_type,
-        case 
-            when coin_type like '%27792d9fed7f9844eb4839566001bb6f6cb4804f66aa2da6fe1ee242d896881%' then 'BTC'
-            when coin_type like '%77045f1b9f811a7a8fb9ebd085b5b0c55c5cb0d1520ff55f7037f89b5da9f5f1%' then 'TBTC'  
-            when coin_type like '%dfe175720cb087f967694c1ce7e881ed835be73e8821e161c351f4cea24a0f20%' then 'SATLBTC'
-        end as coin_symbol,
-        case 
-            when coin_type like '%27792d9fed7f9844eb4839566001bb6f6cb4804f66aa2da6fe1ee242d896881%' then 8
-            when coin_type like '%77045f1b9f811a7a8fb9ebd085b5b0c55c5cb0d1520ff55f7037f89b5da9f5f1%' then 8
-            when coin_type like '%dfe175720cb087f967694c1ce7e881ed835be73e8821e161c351f4cea24a0f20%' then 8
-        end as coin_decimals
-    from {{ ref('sui_tvl_supply_bronze') }}
-    where coin_type like '%27792d9fed7f9844eb4839566001bb6f6cb4804f66aa2da6fe1ee242d896881%'
-       or coin_type like '%77045f1b9f811a7a8fb9ebd085b5b0c55c5cb0d1520ff55f7037f89b5da9f5f1%'
-       or coin_type like '%dfe175720cb087f967694c1ce7e881ed835be73e8821e161c351f4cea24a0f20%'
-),
-
-daily_btc_supply as (
-    -- Get latest supply per BTC token per day
-    select
-        s.block_date,
-        s.coin_type,
-        s.total_supply,
-        bt.coin_symbol,
-        bt.coin_decimals,
+with daily_supply_with_forward_fill as (
+    select 
+        su.block_date,
+        su.coin_type,
+        ci.coin_symbol,
+        ci.coin_decimals,
+        -- Get the latest supply for each day, or carry forward the last known value
+        last_value(su.total_supply) ignore nulls over (
+            partition by su.coin_type
+            order by su.block_date
+            rows between unbounded preceding and current row
+        ) as total_supply,
         row_number() over (
-            partition by s.block_date, s.coin_type
-            order by s.timestamp_ms desc
+            partition by su.block_date, su.coin_type 
+            order by su.timestamp_ms desc
         ) as rn
-    from {{ ref('sui_tvl_supply_bronze') }} s
-    inner join btc_tokens bt on s.coin_type = bt.coin_type
+    from {{ ref('sui_tvl_supply_bronze') }} su
+    inner join {{ ref('sui_tvl_btc_tokens_detail') }} ci
+        on su.coin_type = ci.coin_type
+    where su.block_date >= date('{{ var('sui_project_start_date', '2025-09-25') }}')
     {% if is_incremental() %}
-    where {{ incremental_predicate('s.block_date') }}
+        and {{ incremental_predicate('su.block_date') }}
     {% endif %}
-),
+    qualify rn = 1  -- Latest update per day per coin
+)
 
-deduplicated_daily_btc_supply_by_symbol as (
-    -- Handle multiple tokens with same symbol (e.g., different wrapped BTC versions)
+-- Deduplicate by symbol (handle multiple tokens with same symbol)
+, deduplicated_daily_btc_supply_by_symbol as (
     select
-        block_date,
+        block_date as date,
         coin_symbol,
-        total_supply,
-        coin_decimals
-    from (
-        select
-            block_date,
-            coin_symbol,
-            total_supply,
-            coin_decimals,
-            row_number() over (
-                partition by block_date, coin_symbol
-                order by total_supply desc, coin_type desc -- Largest supply wins, tie-break by coin_type
-            ) as rn
-        from daily_btc_supply
-        where rn = 1  -- Filter for latest supply per token per day first
-    )
-    where rn = 1  -- Then deduplicate by symbol
+        total_supply as carried_forward_supply_raw,
+        coin_decimals,
+        row_number() over (
+            partition by block_date, coin_symbol
+            order by coin_type desc -- Tie-break by coin_type
+        ) as rn
+    from daily_supply_with_forward_fill
+    where total_supply is not null
+    qualify rn = 1
 )
 
 select
-    block_date,
+    date as block_date
     
     -- Total BTC supply across all variants
-    sum(total_supply / power(10, coin_decimals)) as total_btc_supply,
+    , sum(carried_forward_supply_raw / power(10, coin_decimals)) as total_btc_supply
     
-    -- Supply breakdown by symbol (JSON aggregation using Trino map_agg)
-    map_agg(
-        coin_symbol, 
-        round(total_supply / power(10, coin_decimals), 0)
+    -- Supply breakdown by symbol
+    , map_agg(
+        coin_symbol
+        , round(carried_forward_supply_raw / power(10, coin_decimals), 0)
     ) as supply_breakdown_json
     
 from deduplicated_daily_btc_supply_by_symbol
-group by block_date
-order by block_date desc 
+group by date
+order by date desc 

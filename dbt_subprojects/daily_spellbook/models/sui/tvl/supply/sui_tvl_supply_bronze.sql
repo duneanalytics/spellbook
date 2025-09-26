@@ -12,24 +12,22 @@
 
 -- Tracks the minted on-chain supply of tokens (Bronze Layer)
 -- This table captures the minted on-chain supply of tokens
--- Converted from Snowflake materialized view to dbt incremental model
-
 {% set sui_project_start_date = var('sui_project_start_date', '2025-09-25') %}
 
 with supply_data as (
     select
-        date_trunc('hour', from_unixtime(timestamp_ms / 1000)) as hour_timestamp,
-        from_unixtime(timestamp_ms/1000) as block_time,
-        date(from_unixtime(timestamp_ms/1000)) as block_date,
-        date_trunc('month', from_unixtime(timestamp_ms/1000)) as block_month,
-        timestamp_ms,
-        cast(type_ as varchar) as type_,
-        object_status,
-        version,
-        object_id,
-        checkpoint,
+        date_trunc('hour', from_unixtime(timestamp_ms / 1000)) as hour_timestamp
+        , from_unixtime(timestamp_ms/1000) as block_time
+        , date(from_unixtime(timestamp_ms/1000)) as block_date
+        , date_trunc('month', from_unixtime(timestamp_ms/1000)) as block_month
+        , timestamp_ms
+        , cast(type_ as varchar) as type_
+        , object_status
+        , version
+        , object_id
+        , checkpoint
         -- Extract coin type based on the specific pattern found in TYPE
-        case
+        , case
             -- For non-generic TreasuryCapManager (e.g., ...::mbtc::TreasuryCapManager)
             when cast(type_ as varchar) like '%::TreasuryCapManager' 
             then replace(cast(type_ as varchar), '::TreasuryCapManager', '::' || upper(split_part(cast(type_ as varchar), '::', 2)))
@@ -55,10 +53,10 @@ with supply_data as (
             then '0xdfe175720cb087f967694c1ce7e881ed835be73e8821e161c351f4cea24a0f20::satlbtc::SATLBTC'
             
             else null
-        end as coin_type,
+        end as coin_type
         
         -- Extract total supply, checking potential JSON paths based on TYPE patterns
-        case
+        , case
             -- For non-generic TreasuryCapManager (path: treasury:total_supply:value)
             when cast(type_ as varchar) like '%::TreasuryCapManager' 
             then cast(json_extract_scalar(object_json, '$.treasury.total_supply.value') as decimal(38,0))
@@ -99,18 +97,18 @@ with supply_data as (
 )
 
 select 
-    hour_timestamp,
-    block_time,
-    block_date,
-    block_month,
-    timestamp_ms,
-    type_,
-    coin_type,
-    total_supply,
-    version,
-    object_id,
-    object_status,
-    checkpoint
+    hour_timestamp
+    , block_time
+    , block_date
+    , block_month
+    , timestamp_ms
+    , type_
+    , coin_type
+    , total_supply
+    , version
+    , object_id
+    , object_status
+    , checkpoint
 from supply_data
 where 
     -- Post-filter to ensure coin_type was extracted and total_supply is valid
