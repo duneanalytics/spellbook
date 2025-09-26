@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: aave_v3_plasma
+    tables:
+      - name: poolinstance_evt_FlashLoan
+
