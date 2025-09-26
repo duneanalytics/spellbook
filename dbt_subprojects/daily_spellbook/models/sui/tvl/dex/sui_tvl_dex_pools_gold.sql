@@ -24,11 +24,14 @@ with btc_pools_silver as (
 ),
 
 daily_volume as (
-    -- Aggregate daily volume per pool from trades
+    -- Aggregate daily volume per pool from trades (with overflow protection)
     select 
         block_date,
         pool_id,
-        sum(amount_usd) as total_volume_usd
+        sum(case 
+            when amount_usd > 1e12 or amount_usd < 0 then 0  -- Filter out suspicious values (>$1T per trade)
+            else coalesce(amount_usd, 0) 
+        end) as total_volume_usd
     from {{ ref('dex_sui_trades') }}
     where pool_id is not null
     {% if is_incremental() %}

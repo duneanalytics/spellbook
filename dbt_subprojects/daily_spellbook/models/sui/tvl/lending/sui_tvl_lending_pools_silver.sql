@@ -55,8 +55,8 @@ last_daily_markets as (
         ci.coin_symbol as collateral_coin_symbol,
         case when ci.coin_decimals is not null
             then cast(cast(raw.coin_collateral_amount as double) / 
-                 power(10, ci.coin_decimals) as decimal(38,18))
-            else cast(null as decimal(38,18)) end as adjusted_collateral_amount,
+                 power(10, ci.coin_decimals) as decimal(38,8))
+            else cast(null as decimal(38,8)) end as adjusted_collateral_amount,
         
         -- Borrow Info (Handle Bucket Protocol's BUCK token)
         case 
@@ -72,11 +72,11 @@ last_daily_markets as (
         case 
             when raw.protocol = 'bucket' and buck_ci.coin_decimals is not null then
                 cast(cast(raw.coin_borrow_amount as double) / 
-                     power(10, buck_ci.coin_decimals) as decimal(38,18))
+                     power(10, buck_ci.coin_decimals) as decimal(38,8))
             when raw.protocol != 'bucket' and ci.coin_decimals is not null then
                 cast(cast(raw.coin_borrow_amount as double) / 
-                     power(10, ci.coin_decimals) as decimal(38,18))
-            else cast(null as decimal(38,18))
+                     power(10, ci.coin_decimals) as decimal(38,8))
+            else cast(null as decimal(38,8))
         end as adjusted_borrow_amount
         
     from raw_updates_with_rn raw

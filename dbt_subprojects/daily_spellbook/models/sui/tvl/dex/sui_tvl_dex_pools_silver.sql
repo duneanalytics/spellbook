@@ -91,12 +91,12 @@ enriched_pools as (
         -- Convert raw amounts to decimal
         case when coin_a_info.coin_decimals is not null
             then cast(cast(p.coin_a_amount_raw as double) / 
-                 power(10, coin_a_info.coin_decimals) as decimal(38,18))
-            else cast(null as decimal(38,18)) end as coin_a_amount,
+                 power(10, coin_a_info.coin_decimals) as decimal(38,8))
+            else cast(null as decimal(38,8)) end as coin_a_amount,
         case when coin_b_info.coin_decimals is not null
             then cast(cast(p.coin_b_amount_raw as double) / 
-                 power(10, coin_b_info.coin_decimals) as decimal(38,18))
-            else cast(null as decimal(38,18)) end as coin_b_amount,
+                 power(10, coin_b_info.coin_decimals) as decimal(38,8))
+            else cast(null as decimal(38,8)) end as coin_b_amount,
         
         -- Convert fee rate to percentage
         p.fee_rate / 10000.0 as fee_rate_percent,
