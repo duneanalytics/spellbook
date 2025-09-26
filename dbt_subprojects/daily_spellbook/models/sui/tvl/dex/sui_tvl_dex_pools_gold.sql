@@ -16,8 +16,8 @@ with btc_pools_silver as (
     -- Filter for BTC pools only (matching Snowflake logic)
     select *
     from {{ ref('sui_tvl_dex_pools_silver') }}
-    where coin_type_a = '0x27792d9fed7f9844eb4839566001bb6f6cb4804f66aa2da6fe1ee242d896881::coin::COIN'
-       or coin_type_b = '0x27792d9fed7f9844eb4839566001bb6f6cb4804f66aa2da6fe1ee242d896881::coin::COIN'
+    where coin_type_a = '0x027792d9fed7f9844eb4839566001bb6f6cb4804f66aa2da6fe1ee242d896881::coin::COIN'
+       or coin_type_b = '0x027792d9fed7f9844eb4839566001bb6f6cb4804f66aa2da6fe1ee242d896881::coin::COIN'
     {% if is_incremental() %}
     and {{ incremental_predicate('block_date') }}
     {% endif %}
