@@ -4,7 +4,7 @@
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
-    unique_key=['coin_type', 'object_id', 'checkpoint'],
+    unique_key=['coin_type', 'object_id', 'version'],
     partition_by=['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     tags=['sui','tvl','supply']
