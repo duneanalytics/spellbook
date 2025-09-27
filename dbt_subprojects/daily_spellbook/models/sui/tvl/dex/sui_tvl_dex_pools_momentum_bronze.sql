@@ -54,7 +54,7 @@ select
     p.block_time
     , p.block_date
     , p.block_month
-    , p.object_id as digest
+    , p.object_id
     , p.version
     , p.pool_id
     
