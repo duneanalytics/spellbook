@@ -173,10 +173,6 @@ from {{ ref('sui_tvl_supply_gold') }}
 where {{ incremental_predicate('block_date') }}
 {% endif %}
 
--- Filter for live objects with meaningful TVL
-where total_pool_tvl_usd > 100  -- Business filter for meaningful TVL
-
 order by 
     block_date desc
     , storage_location
-    , total_pool_tvl_usd desc

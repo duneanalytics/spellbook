@@ -11,7 +11,6 @@
 ) }}
 
 -- Gold layer: BTC supply with USD pricing and business metrics
--- Following the Snowflake BTC_SUPPLY_GOLD pattern exactly
 -- Adds BTC pricing to enable downstream ecosystem analysis
 
 select
