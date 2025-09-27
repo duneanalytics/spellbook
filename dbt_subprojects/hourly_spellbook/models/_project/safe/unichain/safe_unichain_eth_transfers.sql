@@ -1,7 +1,7 @@
 {{
     config(
         schema = 'safe_unichain',
-        alias= 's_transfers',
+        alias= 'eth_transfers',
         partition_by = ['block_month'],
         on_schema_change='fail',
         materialized='incremental',
