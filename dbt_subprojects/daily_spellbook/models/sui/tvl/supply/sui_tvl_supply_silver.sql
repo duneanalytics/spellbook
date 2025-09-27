@@ -13,44 +13,59 @@
 
 with daily_supply_with_forward_fill as (
     select 
-        su.block_date,
-        su.coin_type,
-        ci.coin_symbol,
-        ci.coin_decimals,
-        -- Get the latest supply for each day, or carry forward the last known value
-        last_value(su.total_supply) ignore nulls over (
-            partition by su.coin_type
-            order by su.block_date
-            rows between unbounded preceding and current row
-        ) as total_supply,
-        row_number() over (
-            partition by su.block_date, su.coin_type 
-            order by su.timestamp_ms desc
-        ) as rn
-    from {{ ref('sui_tvl_supply_bronze') }} su
-    inner join {{ ref('sui_tvl_btc_tokens_detail') }} ci
-        on su.coin_type = ci.coin_type
-    where su.block_date >= date('{{ var('sui_project_start_date', '2025-09-25') }}')
-    {% if is_incremental() %}
-        and {{ incremental_predicate('su.block_date') }}
-    {% endif %}
-    qualify rn = 1  -- Latest update per day per coin
+        block_date
+        , coin_type
+        , coin_symbol
+        , coin_decimals
+        , total_supply
+    from (
+        select 
+            su.block_date
+            , su.coin_type
+            , ci.coin_symbol
+            , ci.coin_decimals
+            -- Get the latest supply for each day, or carry forward the last known value
+            , last_value(su.total_supply) ignore nulls over (
+                partition by su.coin_type
+                order by su.block_date
+                rows between unbounded preceding and current row
+            ) as total_supply
+            , row_number() over (
+                partition by su.block_date, su.coin_type 
+                order by su.timestamp_ms desc
+            ) as rn
+        from {{ ref('sui_tvl_supply_bronze') }} su
+        inner join {{ ref('sui_tvl_btc_tokens_detail') }} ci
+            on su.coin_type = ci.coin_type
+        where su.block_date >= date('{{ var('sui_project_start_date', '2025-09-25') }}')
+        {% if is_incremental() %}
+            and {{ incremental_predicate('su.block_date') }}
+        {% endif %}
+    ) ranked
+    where rn = 1  -- Latest update per day per coin
 )
 
 -- Deduplicate by symbol (handle multiple tokens with same symbol)
 , deduplicated_daily_btc_supply_by_symbol as (
     select
-        block_date as date,
-        coin_symbol,
-        total_supply as carried_forward_supply_raw,
-        coin_decimals,
-        row_number() over (
-            partition by block_date, coin_symbol
-            order by coin_type desc -- Tie-break by coin_type
-        ) as rn
-    from daily_supply_with_forward_fill
-    where total_supply is not null
-    qualify rn = 1
+        date
+        , coin_symbol
+        , carried_forward_supply_raw
+        , coin_decimals
+    from (
+        select
+            block_date as date
+            , coin_symbol
+            , total_supply as carried_forward_supply_raw
+            , coin_decimals
+            , row_number() over (
+                partition by block_date, coin_symbol
+                order by coin_type desc -- Tie-break by coin_type
+            ) as rn
+        from daily_supply_with_forward_fill
+        where total_supply is not null
+    ) ranked
+    where rn = 1
 )
 
 select
