@@ -26,7 +26,8 @@ with filtered_pools_cte as (
         , json_extract_scalar(object_json, '$.coin_a') as coin_a_amount_raw
         , json_extract_scalar(object_json, '$.coin_b') as coin_b_amount_raw
         , json_extract_scalar(object_json, '$.current_sqrt_price') as current_sqrt_price
-t also shows up in the pool name as 0 as wel. I do think its just a decimal showing error as these pools would no rmally have like .01% fee        , json_extract_scalar(object_json, '$.liquidity') as liquidity
+        , cast(json_extract_scalar(object_json, '$.fee_rate') as integer) as fee_rate
+        , json_extract_scalar(object_json, '$.liquidity') as liquidity
         , cast(json_extract_scalar(object_json, '$.current_tick_index.bits') as bigint) as tick_index_bits
         , cast(json_extract_scalar(object_json, '$.tick_spacing') as integer) as tick_spacing
         
