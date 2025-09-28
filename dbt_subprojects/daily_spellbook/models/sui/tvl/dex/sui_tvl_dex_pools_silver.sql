@@ -98,16 +98,16 @@ with coin_info_cte as (
                  power(10, coin_b_info.coin_decimals) as decimal(38,8))
             else cast(null as decimal(38,8)) end as coin_b_amount
         
-        -- Convert fee rate to percentage
-        , p.fee_rate / 10000.0 as fee_rate_percent
+        -- Convert fee rate to percentage with proper precision
+        , cast(cast(p.fee_rate as decimal(18,8)) / 10000.0 as decimal(10,4)) as fee_rate_percent
         
-        -- Create pool name
+        -- Create pool name with proper fee rate formatting
         , concat(
             coalesce(coin_a_info.coin_symbol, 'UNKNOWN')
             , ' / '
             , coalesce(coin_b_info.coin_symbol, 'UNKNOWN')
             , ' '
-            , cast(p.fee_rate / 10000.0 as varchar)
+            , cast(cast(cast(p.fee_rate as decimal(18,8)) / 10000.0 as decimal(10,4)) as varchar)
             , '%'
         ) as pool_name
 
@@ -128,7 +128,7 @@ select
     , pool_name
     , avg(coin_a_amount) as avg_coin_a_amount
     , avg(coin_b_amount) as avg_coin_b_amount
-    , avg(fee_rate_percent) as avg_fee_rate_percent
+    , cast(avg(fee_rate_percent) as decimal(10,4)) as avg_fee_rate_percent
     , count(*) as num_records
     , max(block_time) as block_time
 from enriched_pools

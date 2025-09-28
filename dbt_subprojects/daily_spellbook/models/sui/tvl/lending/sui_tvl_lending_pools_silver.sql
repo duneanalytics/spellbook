@@ -52,9 +52,15 @@ raw_updates as (
         -- Collateral Info
         , raw.coin_type as collateral_coin_type
         , ci.coin_symbol as collateral_coin_symbol
-        , case when ci.coin_decimals is not null
-            then cast(cast(raw.coin_collateral_amount as double) / 
-                 power(10, ci.coin_decimals) as decimal(38,8))
+        , case when ci.coin_decimals is not null then
+            case when raw.protocol = 'navi' then
+                -- Navi stores values with an extra decimal place
+                cast(cast(raw.coin_collateral_amount as double) / 
+                     (power(10, ci.coin_decimals) * 10) as decimal(38,8))
+            else
+                cast(cast(raw.coin_collateral_amount as double) / 
+                     power(10, ci.coin_decimals) as decimal(38,8))
+            end
             else cast(null as decimal(38,8)) end as adjusted_collateral_amount
         
         -- Borrow Info (Handle Bucket Protocol's BUCK token)
@@ -72,7 +78,11 @@ raw_updates as (
             when raw.protocol = 'bucket' and buck_ci.coin_decimals is not null then
                 cast(cast(raw.coin_borrow_amount as double) / 
                      power(10, buck_ci.coin_decimals) as decimal(38,8))
-            when raw.protocol != 'bucket' and ci.coin_decimals is not null then
+            when raw.protocol = 'navi' and ci.coin_decimals is not null then
+                -- Navi stores values with an extra decimal place
+                cast(cast(raw.coin_borrow_amount as double) / 
+                     (power(10, ci.coin_decimals) * 10) as decimal(38,8))
+            when raw.protocol != 'bucket' and raw.protocol != 'navi' and ci.coin_decimals is not null then
                 cast(cast(raw.coin_borrow_amount as double) / 
                      power(10, ci.coin_decimals) as decimal(38,8))
             else cast(null as decimal(38,8))
