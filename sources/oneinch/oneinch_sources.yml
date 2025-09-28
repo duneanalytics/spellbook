@@ -4,11 +4,11 @@ sources:
   - name: oneinch
     tables:
       - name: blockchains
-  - name: oneinch_evms
-    tables:
       - name: ar
       - name: lo
       - name: cc
+  - name: oneinch_evms
+    tables:
       - name: ptfc
   - name: oneinch_solana
     tables:

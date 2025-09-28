@@ -1,14 +1,10 @@
-{% macro
-    oneinch_lo_macro(
-        blockchain,
-        for_stream
-    )
-%}
+{% macro oneinch_lo_macro(blockchain) %}
 
+{% set stream = 'lo' %}
+{% set substream = '_initial' %}
 {% set meta = oneinch_meta_cfg_macro() %}
-{% set contracts = meta['streams']['lo']['contracts'] %}
-{% set date_from = [meta['blockchains']['start'][blockchain], meta['streams'][for_stream]['start']['_initial']] | max %}
-
+{% set contracts = meta['streams'][stream]['contracts'] %}
+{% set date_from = [meta['blockchains']['start'][blockchain], meta['streams'][stream]['start'][substream]] | max %}
 {% set wrapper = meta['blockchains']['wrapped_native_token_address'][blockchain] %}
 {% set chain_id = meta['blockchains']['chain_id'][blockchain] %}
 {% set settlements = meta['blockchains']['fusion_settlement_addresses'][blockchain] | join(', ') %}
@@ -19,19 +15,19 @@
 with
 
 decoded as (
-    {% for contract, contract_data in contracts.items() if blockchain in contract_data['blockchains'] if for_stream in contract_data.get('streams', ['lo']) %}
-        {% for method, method_data in contract_data.methods.items() if for_stream in method_data.get('streams', ['lo']) %}
+    {% for contract, contract_data in contracts.items() if blockchain in contract_data['blockchains'] %}
+        {% for method, method_data in contract_data.methods.items() %}
             select
                 call_block_number as block_number
                 , call_block_time as block_time
                 , call_block_date as block_date
                 , call_tx_hash as tx_hash
-                , '{{ contract }}' as contract_name
-                , '{{ contract_data['version'] }}' as protocol_version
-                , '{{ method }}' as call_method
+                -- , '{{ contract }}' as contract_name
+                -- , '{{ contract_data['version'] }}' as protocol_version
+                -- , '{{ method }}' as call_method
                 , call_trace_address
-                , contract_address as call_to
-                , call_success
+                -- , contract_address as call_to
+                -- , call_success
                 , {{ method_data.get("maker", "cast(null as varbinary)") }} as maker
                 , {{ method_data.get("receiver", "cast(null as varbinary)") }} as receiver
                 , {{ method_data.get("maker_asset", "cast(null as varbinary)") }} as maker_asset
@@ -67,33 +63,8 @@ decoded as (
             )
             {% if not loop.last %}union all{% endif %}
         {% endfor %}
-        union all
+        {% if not loop.last %}union all{% endif %}
     {% endfor %}
-    select -- for correct execution in blockchains, where cc stream is empty
-        0 as block_number
-        , current_timestamp as block_time
-        , current_timestamp as block_date
-        , 0x as tx_hash
-        , '' as contract_name
-        , 0 as protocol_version
-        , '' as call_method
-        , array[] as call_trace_address
-        , 0x as call_to
-        , false as call_success
-        , 0x as maker
-        , 0x as receiver
-        , 0x as maker_asset
-        , 0x as taker_asset
-        , '0' uint256 as maker_amount
-        , '0' uint256 as taker_amount
-        , '0' uint256 as making_amount
-        , '0' uint256 as taking_amount
-        , 0x as order_hash
-        , array[] as order_remains
-        , false as settlement_in_args
-        , false as factory_in_args
-        , false as partial
-        , false as multiple
 )
 
 , raw_calls as (
@@ -107,7 +78,7 @@ decoded as (
         {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
 )
 
-{% if stream == 'lo' %}, native_prices as (-- we join prices at this level, not on "raw_transfers", because there could be a call without transfers for which we should calculate tx cost
+, native_prices as ( -- joining prices at this level, not on "raw_transfers", because there could be a call without transfers for which the tx cost needs to be calculated
     select
         minute
         , price
@@ -118,7 +89,7 @@ decoded as (
         and contract_address = {{ wrapper }}
         and minute >= timestamp '{{ date_from }}'
         {% if is_incremental() %}and {{ incremental_predicate('minute') }}{% endif %}
-){% endif %}
+)
 
 -- output --
 
@@ -129,7 +100,6 @@ select
     , block_time
     , tx_hash
     , tx_success
-{% if stream == 'lo' %}
     , tx_from
     , tx_to
     , tx_nonce
@@ -137,7 +107,6 @@ select
     , tx_gas_price
     , tx_priority_fee_per_gas
     , tx_index -- it is necessary to determine the order in the block
-{% endif %}
     , call_trace_address
     , call_success
     , call_gas_used
@@ -148,7 +117,7 @@ select
     , call_output
     , call_error
     , call_type
-    , upper('{{ stream }}') as protocol
+    , protocol
     , protocol_version
     , contract_name
     , coalesce(order_hash, concat(tx_hash, from_hex(ltrim(cast(cast(cast(concat('0', array_join(call_trace_address, '')) as uint256) as varbinary) as varchar), '0x00')))) as order_hash
@@ -165,17 +134,16 @@ select
         , transform(sequence(1, length(call_input_remains), 4), x -> bytearray_to_bigint(reverse(substr(reverse(call_input_remains), x, 4))))
     ) as remains
     , map_from_entries(array[
-        ('partial', partial)
-        , ('multiple', multiple)
+        ('direct', call_from = tx_from and call_to = tx_to) -- == cardinality(call_trace_address) = 0, but because of zksync trace structure switched to this
         , ('fusion', call_from_settlement or settlement_in_args)
-        , ('direct', call_from = tx_from and call_to = tx_to) -- == cardinality(call_trace_address) = 0, but because of zksync trace structure switched to this
         , ('cross_chain', factory_in_args)
+        , ('partial', partial)
+        , ('multiple', multiple)
         , ('contracts_only', position('RFQ' in call_method) > 0 or partial and not multiple)
     ]) as flags
     , minute
     , block_date
     , block_month
-{% if stream == 'lo' %}
     , price as native_price
     , decimals as native_decimals
 from ({{
@@ -186,8 +154,6 @@ from ({{
     )
 }}) as t
 left join native_prices using(minute)
-{% else %}from decoded{% endif %}
-join raw_calls using(block_date, block_number, tx_hash, call_to, call_trace_address)
-where call_to <> 0x
+join raw_calls using(block_date, block_number, tx_hash, call_trace_address)
 
 {% endmacro %}

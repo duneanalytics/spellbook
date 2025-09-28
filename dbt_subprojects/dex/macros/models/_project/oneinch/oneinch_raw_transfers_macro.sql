@@ -8,9 +8,9 @@ with
 
 calls as (
     select *
-        , array_agg(call_trace_address) over(partition by block_number, tx_hash) as call_trace_addresses
+        , array_agg(call_trace_address) over(partition by block_number, tx_hash) as call_trace_addresses -- need all streams for this
     from (
-        {% for stream, stream_data in meta['streams'].items() %}
+        {% for stream, stream_data in meta['streams'].items() if blockchain in stream_data['exposed'] %}
             -- STREAM: {{ stream }} --
             {% set date_from = [meta['blockchains']['start'][blockchain], stream_data['start']['transfers']] | max %}
             select

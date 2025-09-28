@@ -1,6 +1,6 @@
 {{  
     config(
-        schema = 'oneinch_evms',
+        schema = 'oneinch',
         alias = 'limit_trades',
         materialized = 'view',
         unique_key = ['blockchain', 'tx_hash', 'evt_index']

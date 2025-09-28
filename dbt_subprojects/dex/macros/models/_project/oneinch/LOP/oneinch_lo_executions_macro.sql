@@ -14,6 +14,7 @@ calls as (
     select *
     from {{ ref('oneinch_' + blockchain + '_lo') }}
     where true
+        and not flags['cross_chain']
         and block_date >= timestamp '{{ date_from }}'
         {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
 )
@@ -21,12 +22,11 @@ calls as (
 , transfers as (
     select *
         , if(transfer_contract_address in {{ same }}, {{ same }}, (transfer_contract_address)) as same
-        , row_number() over(partition by block_month, block_date, block_number, tx_hash order by transfer_trace_address desc) as transfer_number_desc
     from {{ ref('oneinch_' + blockchain + '_raw_transfers') }}
     where true
         and nested
         and related
-        and protocol = 'AR'
+        and protocol = 'LO'
         and block_date >= timestamp '{{ date_from }}'
         {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
 )
@@ -45,15 +45,12 @@ calls as (
         , max_by(cast(row(transfer_contract_address, transfer_symbol, transfer_amount, transfer_amount_usd, transfer_decimals) as row(address varbinary, symbol varchar, amount uint256, amount_usd double, decimals bigint)), transfer_amount) filter(where taker_asset in same and transfer_to in (maker, receiver)) as dst_executed -- trying to find out what the user actually received, from the related transfers with the greatest transfer amount
 
         -- general --
-        , max(transfer_amount_usd) filter(where sources_same and user_same and trusted) as sources_executed_trusted_amount_usd
-        , max(transfer_amount_usd) filter(where sources_same and user_same) as sources_executed_amount_usd
+        , max(transfer_amount_usd) filter(where user_related and trusted) as sources_executed_trusted_amount_usd
+        , max(transfer_amount_usd) filter(where user_related) as sources_executed_amount_usd
         , max(transfer_amount_usd) as executed_amount_usd
     from (
         select *
-            , maker_asset in same and transfer_amount <= coalesce(maker_amount, making_amount) as src_same
-            , taker_asset in same and transfer_amount <= coalesce(taker_amount, taking_amount) as dst_same
-            , maker_asset in same and transfer_amount <= coalesce(maker_amount, making_amount) or taker_asset in same and transfer_amount <= coalesce(taker_amount, taking_amount) as sources_same
-            , cardinality(array_intersect(array[transfer_from, transfer_to], array[maker, receiver])) > 0 as user_same
+            , cardinality(array_intersect(array[transfer_from, transfer_to], array[maker, receiver])) > 0 as user_related
         from calls
         left join transfers using(blockchain, block_month, block_date, block_time, block_number, tx_hash, call_trace_address, call_to, protocol, contract_name, call_selector, call_method) -- even with missing transfers, as transfers may not have been parsed
     )
@@ -101,7 +98,6 @@ select
 
     , maker as user
     , receiver
-
     , maker_asset as src_token_address
     , maker_amount as src_token_amount
     , src_executed.address as src_executed_address
@@ -110,17 +106,16 @@ select
     , src_executed.amount_usd as src_executed_amount_usd
 
     , null as dst_blockchain
-
     , taker_asset as dst_token_address
     , taker_amount as dst_token_amount
     , dst_executed.address as dst_executed_address
     , dst_executed.symbol as dst_executed_symbol
     , dst_executed.amount as dst_executed_amount
     , dst_executed.amount_usd as dst_executed_amount_usd
-
-    , cast(null as row(action varchar, success boolean, tx_fee double, tx_hash varbinary, escrow varbinary, token varbinary, amount uint256)) as actions
+    
     , order_hash
     , cast(null as varbinary) as hashlock
+    , cast(null as row(action varchar, success boolean, tx_fee double, tx_hash varbinary, escrow varbinary, token varbinary, amount uint256)) as actions
 
     , map_from_entries(array[
         ('making_amount', cast(making_amount as varchar))

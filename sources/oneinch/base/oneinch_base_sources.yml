@@ -40,7 +40,18 @@ sources:
       - name: AggregationRouterV6_call_fillContractOrder
       - name: AggregationRouterV6_call_fillContractOrderArgs
       - name: AggregationRouterV6_call_permitAndCall
+      - name: EscrowFactoryV1_call_addressOfEscrowSrc
       - name: EscrowFactoryV1_call_createDstEscrow
       - name: EscrowFactoryV1_evt_SrcEscrowCreated
+      - name: EscrowSrcV1_call_withdraw
+      - name: EscrowSrcV1_call_withdrawTo
+      - name: EscrowSrcV1_call_publicWithdraw
+      - name: EscrowSrcV1_call_cancel
+      - name: EscrowSrcV1_call_publicCancel
+      - name: EscrowSrcV1_call_rescueFunds
+      - name: EscrowDstV1_call_withdraw
+      - name: EscrowDstV1_call_publicWithdraw
+      - name: EscrowDstV1_call_cancel
+      - name: EscrowDstV1_call_rescueFunds
       - name: ar
       - name: lo

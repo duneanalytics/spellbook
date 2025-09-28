@@ -1,10 +1,10 @@
-{% set blockchain = 'fantom' %}
+{% set blockchain = 'linea' %}
 
 {{
     config(
         schema = 'oneinch_' + blockchain,
-        alias = 'cc',
-        partition_by = ['block_month', 'block_date'],
+        alias = 'cc_executions',
+        partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -13,4 +13,4 @@
     )
 }}
 
-{{ oneinch_cc_macro(blockchain = blockchain) }}
+{{ oneinch_cc_executions_macro(blockchain = blockchain) }}

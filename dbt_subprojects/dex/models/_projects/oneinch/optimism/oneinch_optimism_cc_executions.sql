@@ -1,9 +1,9 @@
-{% set blockchain = 'zksync' %}
+{% set blockchain = 'optimism' %}
 
 {{
     config(
         schema = 'oneinch_' + blockchain,
-        alias = 'lo',
+        alias = 'cc_executions',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -13,4 +13,4 @@
     )
 }}
 
-{{ oneinch_lo_macro(blockchain = blockchain) }}
+{{ oneinch_cc_executions_macro(blockchain = blockchain) }}

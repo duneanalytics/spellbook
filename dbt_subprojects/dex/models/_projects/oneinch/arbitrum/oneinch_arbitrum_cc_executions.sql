@@ -1,10 +1,9 @@
-{% set blockchain = 'zksync' %}
-{% set stream = 'cc' %}
+{% set blockchain = 'arbitrum' %}
 
 {{
     config(
         schema = 'oneinch_' + blockchain,
-        alias = stream + '_raw_calls',
+        alias = 'cc_executions',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -14,4 +13,4 @@
     )
 }}
 
-{{ oneinch_raw_calls_macro(blockchain = blockchain, stream = stream) }}
+{{ oneinch_cc_executions_macro(blockchain = blockchain) }}

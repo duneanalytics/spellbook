@@ -1,11 +1,10 @@
 {% set blockchain = 'arbitrum' %}
-{% set stream = 'lo' %}
 
 {{
     config(
         schema = 'oneinch_' + blockchain,
-        alias = stream,
-        partition_by = ['block_month', 'block_date'],
+        alias = 'lo',
+        partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -14,4 +13,4 @@
     )
 }}
 
-{{ oneinch_lo_macro(blockchain = blockchain, for_stream = stream) }}
+{{ oneinch_lo_macro(blockchain = blockchain) }}

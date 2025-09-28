@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: oneinch_evms_ar
+  - name: oneinch_ar
     meta:
       blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
       sector: oneinch
@@ -66,7 +66,7 @@ models:
       - name: native_price
       - name: native_decimals
 
-  - name: oneinch_evms_lo
+  - name: oneinch_lo
     meta:
       blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
       sector: oneinch
@@ -183,18 +183,18 @@ models:
       - name: action_id
       - name: order_hash
       - name: hashlock
+      - name: flow
       - name: escrow
       - name: secret
       - name: maker
-      - name: taker
       - name: receiver
+      - name: taker
       - name: token
       - name: amount
       - name: safety_deposit
       - name: timelocks
       - name: complement
       - name: remains
-      - name: flags
       - name: minute
       - name: block_date
       - name: block_month
@@ -297,7 +297,7 @@ models:
       - name: transfer_from
       - name: transfer_to
 
-  - name: oneinch_evms_aggregation_trades
+  - name: oneinch_aggregation_trades
     meta:
       blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
       sector: oneinch
@@ -345,7 +345,7 @@ models:
           - not_null
       - name: evt_index
 
-  - name: oneinch_evms_limit_trades
+  - name: oneinch_limit_trades
     meta:
       blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
       sector: oneinch

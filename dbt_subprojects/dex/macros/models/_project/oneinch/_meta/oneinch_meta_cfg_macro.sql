@@ -16,6 +16,8 @@
                 "executions": "2025-09-10",
             },
             "contracts" : oneinch_ar_cfg_contracts_macro(),
+            "exposed"   : ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea", "sonic", "unichain"],
+            "mode"      : "'classic'",
         },
         "lo": {
             "start": {
@@ -26,6 +28,8 @@
                 "fusion"    : "2025-09-10",
             },
             "contracts" : oneinch_lo_cfg_contracts_macro(),
+            "exposed"   : ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea", "sonic", "unichain"],
+            "mode"      : "if(flags['fusion'], 'fusion', 'limits')",
         },
         "cc": {
             "start": {
@@ -35,6 +39,8 @@
                 "executions": "2025-09-10",
             },
             "contracts" : oneinch_cc_cfg_contracts_macro(),
+            "exposed"   : ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "base", "linea", "sonic", "unichain"],
+            "mode"      : "'cross-chain'",
         },
     }
 %}
@@ -42,26 +48,8 @@
 -- BLOCKCHAINS CONFIG --
 {%
     set blockchains = {
-        "exposed": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea", "sonic", "unichain", "solana"],
+        "evms": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea", "sonic", "unichain"],
         "aave": ["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "linea", "optimism", "polygon", "scroll", "zksync"],
-        "category": {
-            "ethereum"      : "evms",
-            "bnb"           : "evms",
-            "polygon"       : "evms",
-            "arbitrum"      : "evms",
-            "optimism"      : "evms",
-            "avalanche_c"   : "evms",
-            "gnosis"        : "evms",
-            "fantom"        : "evms",
-            "base"          : "evms",
-            "zksync"        : "evms",
-            "linea"         : "evms",
-            "sonic"         : "evms",
-            "unichain"      : "evms",
-            "solana"        : "solana",
-            "klaytn"        : "evms",
-            "aurora"        : "evms",
-        },
         "start": {
             "ethereum"      : "2019-06-03",
             "bnb"           : "2021-02-18",

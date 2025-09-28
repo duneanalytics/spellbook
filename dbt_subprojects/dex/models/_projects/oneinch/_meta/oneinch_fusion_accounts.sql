@@ -29,7 +29,7 @@ executors as (
 )
 
 , evms_traces as (
-    {% for blockchain, category in meta['blockchains']['category'].items() if category == 'evms' and blockchain in meta['blockchains']['exposed'] %}
+    {% for blockchain in meta['streams']['lo']['exposed'] if blockchain in meta['blockchains']['evms'] %}
         select
             '{{ blockchain }}' as blockchain
             , tx_hash
@@ -48,7 +48,7 @@ executors as (
 
 , fusion as (
     select blockchain, tx_hash, call_from as resolver_executor
-    from {{ ref('oneinch_evms_lo') }}
+    from {{ ref('oneinch_lo') }}
     where
         {% if is_incremental() %}
             {{ incremental_predicate('block_time') }}
@@ -73,7 +73,7 @@ executors as (
 )
 
 , evms_transactions as (
-    {% for blockchain, category in meta['blockchains']['category'].items() if category == 'evms' and blockchain in meta['blockchains']['exposed'] %}
+    {% for blockchain in meta['streams']['lo']['exposed'] if blockchain in meta['blockchains']['evms'] %}
         select
             '{{ blockchain }}' as blockchain
             , hash as tx_hash

@@ -183,18 +183,18 @@ models:
       - name: action_id
       - name: order_hash
       - name: hashlock
+      - name: flow
       - name: escrow
       - name: secret
       - name: maker
-      - name: taker
       - name: receiver
+      - name: taker
       - name: token
       - name: amount
       - name: safety_deposit
       - name: timelocks
       - name: complement
       - name: remains
-      - name: flags
       - name: minute
       - name: block_date
       - name: block_month

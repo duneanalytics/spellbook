@@ -1,10 +1,10 @@
 {% macro oneinch_ar_macro(blockchain) %}
 
 {% set stream = 'ar' %}
+{% set substream = '_initial' %}
 {% set meta = oneinch_meta_cfg_macro() %}
 {% set contracts = meta['streams'][stream]['contracts'] %}
-{% set date_from = [meta['blockchains']['start'][blockchain], meta['streams'][stream]['start']['_initial']] | max %}
-
+{% set date_from = [meta['blockchains']['start'][blockchain], meta['streams'][stream]['start'][substream]] | max %}
 {% set wrapper = meta['blockchains']['wrapped_native_token_address'][blockchain] %}
 {% set chain_id = meta['blockchains']['chain_id'][blockchain] %}
 {% set native = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
@@ -20,7 +20,6 @@ decoded as (
                 call_block_number as block_number
                 , call_block_date as block_date
                 , call_tx_hash as tx_hash
-                , {{ contract_data.version }} as protocol_version
                 , call_trace_address
                 , {{ method_data.get("src_token_address", "null") }} as src_token_address
                 , {{ method_data.get("dst_token_address", "null") }} as dst_token_address
@@ -141,7 +140,7 @@ decoded as (
     left join (select pool as last_pool, tokens as last_pool_tokens from pools_list) using(last_pool)
 )
 
-, native_prices as (-- we join prices at this level, not on "raw_transfers", because there could be a call without transfers for which we should calculate tx cost
+, native_prices as ( -- joining prices at this level, not on "raw_transfers", because there could be a call without transfers for which the tx cost needs to be calculated
     select
         minute
         , price
@@ -180,7 +179,7 @@ select
     , call_output
     , call_error
     , call_type
-    , 'AR' as protocol
+    , protocol
     , protocol_version
     , contract_name
     , src_receiver

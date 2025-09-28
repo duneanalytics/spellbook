@@ -108,7 +108,6 @@ select
 
     , tx_from as user
     , dst_receiver as receiver
-
     , src_token_address
     , src_token_amount
     , coalesce(src_user_executed.address, src_executed.address) as src_executed_address
@@ -117,17 +116,16 @@ select
     , src_executed_amount_usd
 
     , null as dst_blockchain
-
     , dst_token_address
     , dst_token_amount
     , coalesce(dst_user_executed.address, dst_executed.address) as dst_executed_address
     , coalesce(dst_user_executed.symbol, dst_executed.symbol) as dst_executed_symbol
     , coalesce(dst_user_executed.amount, dst_executed_amount) as dst_executed_amount -- first to the user, then only with the correct amount
     , dst_executed_amount_usd
-
-    , cast(null as row(action varchar, success boolean, tx_fee double, tx_hash varbinary, escrow varbinary, token varbinary, amount uint256)) as actions
+    
     , cast(null as varbinary) as order_hash
     , cast(null as varbinary) as hashlock
+    , cast(null as row(action varchar, success boolean, tx_fee double, tx_hash varbinary, escrow varbinary, token varbinary, amount uint256)) as actions
 
     , map_from_entries(array[
         ('sender', cast(coalesce(src_user_executed.sender, src_executed.sender) as varchar))

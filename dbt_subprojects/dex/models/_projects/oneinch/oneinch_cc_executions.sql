@@ -1,7 +1,10 @@
+{% set stream = 'cc' %}
+{% set substream = 'executions' %}
+
 {{
     config(
         schema = 'oneinch',
-        alias = 'cc_executions',
+        alias = stream + '_' + substream,
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -11,72 +14,38 @@
     )
 }}
 
-{% set meta = oneinch_meta_cfg_macro() %}
-{% set date_from = meta['streams']['cc']['start']['executions'] %}
-{% set same = '0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
+{% set stream_data = oneinch_meta_cfg_macro()['streams'][stream] %}
+{% set date_from = stream_data['start'][substream] %}
 
 
 
 with
 
-meta(blockchain, chain_id, wrapper) as (values
-    {% for blockchain, category in meta['blockchains']['category'].items() if category == 'evms' and blockchain in meta['blockchains']['exposed'] %}
-        {% if not loop.first %}, {% endif %}('{{ blockchain }}', {{ meta['blockchains']['chain_id'][blockchain] }}, {{ meta['blockchains']['wrapped_native_token_address'][blockchain] }})
+iterations as (
+    {% for blockchain in stream_data['exposed'] %}
+        select * from {{ ref('oneinch_' + blockchain + '_' + stream + '_' + substream) }}
+        where true
+            and block_date >= date('{{ date_from }}')
+            {% if is_incremental() %}and hashlock in (select hashlock from {{ ref('oneinch_cc') }} where {{ incremental_predicate('block_time') }} group by 1){% endif %} -- e.g. if "cancel" happens a week later, update the whole trade
+        {% if not loop.last %}union all{% endif %}
     {% endfor %}
 )
 
-, iterations as (
-    select *
-        , case
-            when position('src' in lower(action)) > 0 then 'src_escrow_creation'
-            when position('dst' in lower(action)) > 0 then 'dst_escrow_creation'
-            when array_position(src_escrows, escrow) > 0 then concat('src_', action)
-            when array_position(dst_escrows, escrow) > 0 then concat('dst_', action)
-            else 'unknown'
-        end as flow
-    from (
-        select *
-            , cast(element_at(complement, 'dst_chain_id') as int) as dst_chain_id
-            , array_agg(distinct if(action = 'SrcEscrowCreated', escrow)) over(partition by hashlock) as src_escrows
-            , array_agg(distinct if(action = 'createDstEscrow', escrow)) over(partition by hashlock) as dst_escrows
-        from {{ ref('oneinch_cc') }} -- all blockchains are needed to merge src and dst results
-        where true
-            and block_date >= timestamp '{{ date_from }}'
-            {% if is_incremental() %}and hashlock in (select hashlock from {{ ref('oneinch_cc') }} where {{ incremental_predicate('block_time') }} group by 1){% endif %} -- e.g. if "cancel" happens a week later, update the whole trade
-    )
-    left join (select blockchain as dst_blockchain, chain_id as dst_chain_id from meta) using(dst_chain_id)
-)
-
-, transfers as (
-    select *
-        , if(transfer_contract_address in ({{ same }}, wrapper), ({{ same }}, wrapper), (transfer_contract_address)) as same
-        , row_number() over(partition by block_month, block_date, block_number, tx_hash order by transfer_trace_address desc) as transfer_number_desc
-    from {{ ref('oneinch_evms_raw_transfers') }} -- also need all the blockchains
-    join (select blockchain, wrapper from meta) using(blockchain)
-    where true
-        and nested
-        and related
-        and protocol = 'CC'
-        and block_date >= timestamp '{{ date_from }}'
-        {% if is_incremental() %}and block_time >= (select min(block_time) from {{ ref('oneinch_cc') }} where {{ incremental_predicate('block_time') }}){% endif %} -- c?? why just not use incremental_predicate directly? 
-)
-
-, amounts as (
+, actions as (
     select
-        hashlock
-        , max_by(cast(row(transfer_contract_address, transfer_symbol, transfer_decimals) as row(address varbinary, symbol varchar, decimals bigint)), (transfer_amount, transfer_trace_address)) filter(where flow = 'src_escrow_creation' and transfer_from = maker) as src_executed
-        , sum(transfer_amount) filter(where flow = 'src_withdraw' and token in same) as src_executed_amount -- same: token address of iteration ~ transfer address (i.e. native ~ wrapped_native)
-        , sum(transfer_amount_usd) filter(where flow = 'src_withdraw' and token in same) as src_executed_amount_usd
-        , sum(transfer_amount_usd) filter(where flow = 'src_withdraw' and token in same and trusted) as src_executed_trusted_amount_usd
-        , max_by(cast(row(transfer_contract_address, transfer_symbol, transfer_decimals, transfer_to) as row(address varbinary, symbol varchar, decimals bigint, receiver varbinary)), (transfer_amount, transfer_trace_address)) filter(where flow = 'dst_escrow_creation' and transfer_amount = amount) as dst_executed
-        , sum(transfer_amount) filter(where flow = 'dst_withdraw' and token in same) as dst_executed_amount
-        , sum(transfer_amount_usd) filter(where flow = 'dst_withdraw' and token in same) as dst_executed_amount_usd
-        , sum(transfer_amount_usd) filter(where flow = 'dst_withdraw' and token in same and trusted) as dst_executed_trusted_amount_usd
-        , array_agg(distinct cast(
+        order_hash
+        , hashlock
+        , max_by(cast(row(blockchain, token) as row(blockchain varchar, address varbinary)), block_time) filter(where flow = 'dst_creation') as dst_creation_info
+        , max_by(transfered, block_time) filter(where flow = 'src_withdraw') as src_executed
+        , max_by(transfered, block_time) filter(where flow = 'dst_withdraw') as dst_executed
+        , max(amount_usd) filter(where flow in ('src_withdraw', 'dst_withdraw') and transfered.trusted) as sources_executed_trusted_amount_usd
+        , max(amount_usd) filter(where flow in ('src_withdraw', 'dst_withdraw')) as sources_executed_amount_usd
+        , sum(execution_cost) as execution_cost
+        , array_agg(cast(
             row(
                 flow
                 , tx_success and call_success
-                , tx_gas_used * gas_price * native_price / pow(10, native_decimals)
+                , execution_cost
                 , tx_hash
                 , escrow
                 , token
@@ -91,10 +60,8 @@ meta(blockchain, chain_id, wrapper) as (values
                 , amount uint256
             )
         )) as actions
-        , sum(tx_gas_price * tx_gas_used * native_price / pow(10, native_decimals)) as execution_cost
     from iterations
-    left join transfers using(blockchain, block_month, block_date, block_time, block_number, tx_hash, call_trace_address, call_to, protocol, contract_name, call_selector, call_method) -- even with missing transfers, as transfers may not have been parsed
-    group by 1
+    group by 1, 2
 )
 
 -- output --
@@ -128,31 +95,33 @@ select
     , contract_address
     , contract_name
 
-    , coalesce(src_executed_trusted_amount_usd, dst_executed_trusted_amount_usd, src_executed_amount_usd, dst_executed_amount_usd) as amount_usd
+    , coalesce(null
+        , sources_executed_trusted_amount_usd
+        , if(sources_executed_amount_usd - least(src_executed.amount_usd, dst_executed.amount_usd) > least(src_executed.amount_usd, dst_executed.amount_usd), least(src_executed.amount_usd, dst_executed.amount_usd)) -- i.e. if the slippadge/difference > ~50% then the least of src/dst, for minimize price errors
+        , sources_executed_amount_usd -- if previous is null, that is false
+    ) as amount_usd
     , execution_cost
 
-    , maker as user
-    , receiver
-
+    , from_hex(complement['order_maker']) as user
+    , from_hex(complement['order_receiver']) as receiver
     , token as src_token_address
-    , cast(element_at(complement, 'order_src_amount') as uint256) as src_token_amount
-    , src_executed.address as src_executed_token_address
-    , src_executed.symbol as src_executed_token_symbol
-    , src_executed.amount as src_executed_token_amount
-    , src_executed_amount_usd
+    , complement['order_maker_amount'] uint256 as src_token_amount
+    , src_executed.address as src_executed_address
+    , src_executed.symbol as src_executed_symbol
+    , src_executed.amount as src_executed_amount
+    , src_executed.amount_usd as src_executed_amount_usd
+    
+    , dst_creation_info.blockchain as dst_blockchain
+    , dst_creation_info.token as dst_token_address
+    , complement['order_taker_amount'] uint256 as dst_token_amount
+    , dst_executed.address as dst_executed_address
+    , dst_executed.symbol as dst_executed_symbol
+    , dst_executed.amount as dst_executed_amount
+    , dst_executed.amount_usd as dst_executed_amount_usd
 
-    , dst_blockchain
-
-    , cast(element_at(complement, 'dst_token') as uint256) as dst_token_address
-    , cast(element_at(complement, 'order_dst_amount') as uint256) as dst_token_amount
-    , dst_executed.address as dst_executed_token_address
-    , dst_executed.symbol as dst_executed_token_symbol
-    , dst_executed.amount as dst_executed_token_amount
-    , dst_executed_amount_usd
-
-    , actions
     , order_hash
     , hashlock
+    , actions
 
     , map_concat(complement, map_from_entries(array[
         ('executed_receiver', cast(dst_executed.receiver as varchar))
@@ -161,7 +130,7 @@ select
     ])) as complement
 
     , remains
-    , flags
+    , cast(null as map(varchar, boolean)) as flags
     , minute
     , block_date
     , block_month
@@ -170,6 +139,7 @@ select
 from (
     select *
     from iterations
-    where flow = 'src_escrow_creation'
+    where true
+        and flow = 'src_creation'
 )
-left join amounts using(hashlock)
+join actions using(order_hash, hashlock)
