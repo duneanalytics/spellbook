@@ -11,7 +11,7 @@
 
 -- Cetus pool creation events to map pool_id to coin types
 
-{% set cetus_start_date = "2025-01-01" %}
+{% set cetus_start_date = "2025-04-01" %}
 
 select 
     json_extract_scalar(event_json, '$.pool_id') as pool_id

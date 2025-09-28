@@ -12,7 +12,7 @@
 
 -- Tracks the minted on-chain supply of tokens (Bronze Layer)
 -- This table captures the minted on-chain supply of tokens
-{% set sui_project_start_date = var('sui_project_start_date', '2025-09-25') %}
+{% set sui_project_start_date = var('sui_project_start_date', '2023-04-01') %}
 
 with supply_data as (
     select

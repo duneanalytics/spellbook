@@ -12,7 +12,7 @@
 
 -- Bucket lending pools for TVL calculation (Bronze Layer)
 
-{% set sui_project_start_date = var('sui_project_start_date', '2025-09-25') %}
+{% set sui_project_start_date = var('sui_project_start_date', '2024-05-01') %}
 
 select
     timestamp_ms

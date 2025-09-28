@@ -13,7 +13,7 @@
 -- Momentum DEX pools for TVL calculation (Bronze Layer)
 -- Raw extraction only, metadata enrichment moved to silver layer
 
-{% set momentum_start_date = "2025-09-25" %}
+{% set momentum_start_date = "2025-03-01" %}
 
 with filtered_pools_cte as (
     select

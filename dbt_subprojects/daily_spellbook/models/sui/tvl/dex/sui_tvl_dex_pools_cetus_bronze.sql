@@ -12,7 +12,7 @@
 
 -- Cetus DEX pools for TVL calculation (Bronze Layer)
 
-{% set cetus_start_date = "2025-09-25" %}
+{% set cetus_start_date = "2025-04-01" %}
 
 with filtered_pools_cte as (
     select
