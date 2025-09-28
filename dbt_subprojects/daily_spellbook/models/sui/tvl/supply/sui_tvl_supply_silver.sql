@@ -37,7 +37,7 @@ with daily_supply_with_forward_fill as (
         from {{ ref('sui_tvl_supply_bronze') }} su
         inner join {{ ref('sui_tvl_btc_tokens_detail') }} ci
             on su.coin_type = ci.coin_type
-        where su.block_date >= date('{{ var('sui_project_start_date', '2025-09-25') }}')
+        where su.block_date >= date('{{ var('sui_project_start_date', '2023-04-01') }}')
         {% if is_incremental() %}
             and {{ incremental_predicate('su.block_date') }}
         {% endif %}
