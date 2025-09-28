@@ -26,7 +26,7 @@ payload as (
                 , {{ method_data.get('selector', 'null') }} as selector
                 , '{{ method }}' as method
                 , {{ method_data.get('auxiliary', 'false') }} as auxiliary
-            {% if contract_data.addresses == "creations" %}from (secret distinct contract_address from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}){% endif %}
+            {% if contract_data.addresses == "creations" %}from (select distinct contract_address from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}){% endif %}
             {% if not loop.last %}union{% endif %}
         {% endfor %}
         {% if not loop.last %}union{% endif %}
