@@ -107,7 +107,7 @@ with coin_info_cte as (
             , ' / '
             , coalesce(coin_b_info.coin_symbol, 'UNKNOWN')
             , ' '
-            , cast(cast(cast(p.fee_rate as decimal(18,8)) / 10000.0 as decimal(18,4)) as varchar)
+            , cast(cast(cast(p.fee_rate as decimal(18,8)) / 10000.0 as decimal(10,4)) as varchar)
             , '%'
         ) as pool_name
 
