@@ -1,0 +1,45 @@
+version: 2
+
+models:
+  - name: pancakeswap_pools
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: ['ethereum', 'polygon', 'arbitrum', 'celo', 'pools']
+    description: >
+      Pancakeswap DEX pools across all chains and versions
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - pool
+            - version
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the DEX is deployed"
+      - &project
+        name: project
+        description: "Project name of the DEX"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the DEX project"
+      - name: pool
+        description: "DEX pool smart contract address"
+      - &fee
+        name: fee
+        description: "Defined fee"
+      - &token0
+        name: token0
+        description: "First token in pool"
+      - &token1
+        name: token1
+        description: "Second token in pool"
+      - name: creation_block_time
+        description: "Block time of pool creation"
+      - name: creation_block_number
+        description: "Block number of pool creation"
+      - name: contract_address
+        description: "Contract address used to create the pool"
