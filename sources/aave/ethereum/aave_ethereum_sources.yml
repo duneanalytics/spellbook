@@ -130,7 +130,7 @@ sources:
     description: "Decoded contracts for Aave v3 on Ethereum"
     tables:
       - name: VariableDebtToken_evt_Initialized
-      - name: PoolConfigurator_evt_ReserveInitialized      
+      - name: poolconfigurator_evt_reserveinitialized      
       - name: etherfipoolconfiguratorinstance_evt_reserveinitialized
   
   - name: aave_v3_lido_ethereum
