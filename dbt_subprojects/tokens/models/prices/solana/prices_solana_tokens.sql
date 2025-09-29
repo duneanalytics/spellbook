@@ -777,5 +777,6 @@ FROM
         ('codec-codec-flow', 'solana', 'CODEC', '69LjZUUzxj3Cb3Fxeo1X4QpYEQTboApkhXTysPpbpump', 6),
         ('aura-auraonsol', 'solana', 'AURA', 'DtR4D9FtVoTX2569gaL837ZgrB6wNjj6tkmnX9Rdk9B2', 6),
         ('wct-walletconnect-token', 'solana', 'WCT', 'WCTk5xWdn5SYg56twGj32sUF3W4WFQ48ogezLBuYTBY', 9),
-        ('holo-holoworld-ai', 'solana', 'HOLO', '69RX85eQoEsnZvXGmLNjYcWgVkp9r2JjahVm99KbJETU', 9)
+        ('holo-holoworld-ai', 'solana', 'HOLO', '69RX85eQoEsnZvXGmLNjYcWgVkp9r2JjahVm99KbJETU', 9),
+        ('yzy-yzy', 'solana', 'YZY', 'DrZ26cKJDksVRWib3DVVsjo9eeXccc7hKhDJviiYEEZY', 6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
