@@ -9,7 +9,7 @@ models:
       contributors: 0xsandeshk
     config:
       tags: ['lending', 'borrow', 'aave', 'compound', 'plasma']
-    description: "Aave v1 borrow transactions on Ethereum"
+    description: "Aave v1 borrow transactions on Plasma"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
