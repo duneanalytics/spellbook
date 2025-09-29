@@ -107,15 +107,18 @@ WITH coin_balances AS (
             block_date,
             block_time,
             --
-            '0x' || LPAD(LTRIM(json_extract_scalar(move_data, '$.metadata'), '0x'), 64, '0') AS asset_type,
-            '0x' || LPAD(LTRIM(json_extract_scalar(move_data, '$.store'), '0x'), 64, '0') AS storage_id,
-            '0x' || LPAD(LTRIM(json_extract_scalar(move_data, '$.owner'), '0x'), 64, '0') AS owner_address,
+            '0x' || LPAD(LTRIM(json_extract_scalar(data, '$.metadata'), '0x'), 64, '0') AS asset_type,
+            '0x' || LPAD(LTRIM(json_extract_scalar(data, '$.store'), '0x'), 64, '0') AS storage_id,
+            '0x' || LPAD(LTRIM(json_extract_scalar(data, '$.owner'), '0x'), 64, '0') AS owner_address,
             TRUE AS move_is_deletion,
-            CAST(0 AS UINT256) AS amount,
+            CAST(0 AS UINT256) AS amount
         FROM {{ source('aptos', 'events') }}
         WHERE 1=1
         AND event_type = '0x1::fungible_asset::FungibleStoreDeletion'
         AND block_date >= DATE('2025-04-28') -- date enabled
+    {% if is_incremental() %}
+        AND {{ incremental_predicate('block_time') }}
+    {% endif %}
 )
 
 SELECT
@@ -168,7 +171,7 @@ SELECT
     -1 AS write_set_change_index, -- virtual
     asset_type,
     from_hex(owner_address) AS owner_address,
-    storage_id,
+    from_hex(storage_id) AS storage_id,
     amount,
     NULL AS is_frozen,
     'v2' AS token_standard
