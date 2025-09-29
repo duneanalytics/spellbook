@@ -37,8 +37,7 @@ executors as (
             , "to" as settlement
         from {{ source(blockchain, 'traces') }}
         where
-            {% if is_incremental() %}
-                {{ incremental_predicate('block_time') }}
+            {% if is_incremental() %}{{ incremental_predicate('block_time') }}
             {% else %}
                 block_time >= {{ project_start_date }}
             {% endif %}
