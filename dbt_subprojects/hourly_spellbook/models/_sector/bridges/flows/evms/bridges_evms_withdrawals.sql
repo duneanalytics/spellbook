@@ -74,3 +74,4 @@ INNER JOIN {{ source('prices', 'usd') }} p ON p.blockchain=w.withdrawal_chain
     {% if is_incremental() %}
     AND {{ incremental_predicate('p.minute') }}
     {% endif %}
+    
