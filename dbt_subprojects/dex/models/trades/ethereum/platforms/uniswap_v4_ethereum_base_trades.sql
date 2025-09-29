@@ -15,6 +15,7 @@
         , project = 'uniswap'
         , version = '4'
         , PoolManager_call_Swap = source('uniswap_v4_ethereum', 'PoolManager_call_Swap') 
-        , PoolManager_evt_Swap = source('uniswap_v4_ethereum', 'PoolManager_evt_Swap') 
+        , PoolManager_evt_Swap = source('uniswap_v4_ethereum', 'PoolManager_evt_Swap')
+        , filter_angstrom_addr = '0x0000000aa232009084Bd71A5797d089AA4Edfad4'
     )
 }}
