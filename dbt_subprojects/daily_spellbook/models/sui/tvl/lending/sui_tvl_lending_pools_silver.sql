@@ -82,7 +82,11 @@ raw_updates as (
                 -- Navi stores values with an extra decimal place
                 cast(cast(raw.coin_borrow_amount as double) / 
                      (power(10, ci.coin_decimals) * 10) as decimal(38,8))
-            when raw.protocol != 'bucket' and raw.protocol != 'navi' and ci.coin_decimals is not null then
+            when raw.protocol = 'suilend' then
+                -- Suilend stores borrowed_amount.value in fixed 27-decimal precision
+                cast(cast(raw.coin_borrow_amount as double) / 
+                     power(10, 27) as decimal(38,8))
+            when raw.protocol != 'bucket' and raw.protocol != 'navi' and raw.protocol != 'suilend' and ci.coin_decimals is not null then
                 cast(cast(raw.coin_borrow_amount as double) / 
                      power(10, ci.coin_decimals) as decimal(38,8))
             else cast(null as decimal(38,8))
