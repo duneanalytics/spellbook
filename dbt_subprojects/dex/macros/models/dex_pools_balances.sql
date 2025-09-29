@@ -123,7 +123,7 @@ distinct_days as (
     get_prices t0 
         on dd.day = t0.day 
         and dd.address = t0.address 
-        and dd.blockchain = t0.blockchcian 
+        and dd.blockchain = t0.blockchain
         and pt.{{token0}} = t0.token_address 
     {% endif %}
 
@@ -132,7 +132,7 @@ distinct_days as (
     get_prices t1
         on dd.day = t1.day 
         and dd.address = t1.address 
-        and dd.blockchain = t1.blockchcian 
+        and dd.blockchain = t1.blockchain
         and pt.{{token1}} = t1.token_address 
     {% endif %}
 
@@ -141,7 +141,7 @@ distinct_days as (
     get_prices t2
         on dd.day = t2.day 
         and dd.address = t2.address 
-        and dd.blockchain = t2.blockchcian 
+        and dd.blockchain = t2.blockchain 
         and pt.{{token2}} = t2.token_address 
     {% endif %}
 
@@ -150,7 +150,7 @@ distinct_days as (
     get_prices t3
         on dd.day = t3.day 
         and dd.address = t3.address 
-        and dd.blockchain = t3.blockchcian 
+        and dd.blockchain = t3.blockchain
         and pt.{{token3}} = t3.token_address 
     {% endif %}
 
