@@ -242,4 +242,3 @@ FROM
     ('towns-towns', 'base', 'TOWNS', 0x00000000A22C618fd6b4D7E9A335C4B96B189a38, 18),
     ('superoeth-super-oeth', 'base', 'superOETHb', 0xDBFeFD2e8460a6Ee4955A68582F85708BAEA60A3, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
--- refresh 
