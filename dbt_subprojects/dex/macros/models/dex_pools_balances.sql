@@ -49,7 +49,7 @@ with
 
 get_balances as (
     select 
-        , blockchain
+        blockchain
         , day
         , address
         , token_symbol
