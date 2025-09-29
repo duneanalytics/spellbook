@@ -5,7 +5,7 @@
 }}
 
 {% set pancakeswap_models = [
-ref('pancakeswap_arbitrum_pools')
+ref('pancakeswap_bnb_pools')
 ] %}
 
 

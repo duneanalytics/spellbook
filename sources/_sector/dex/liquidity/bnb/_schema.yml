@@ -5,3 +5,10 @@ sources:
     tables:
       - name: PoolManager_evt_ModifyLiquidity
       - name: poolmanager_call_take
+
+  - name: pancakeswap_infinity_bnb
+    tables:
+      - name: clpoolmanager_evt_modifyliquidity
+      - name: clpoolmanager_evt_initialize
+      - name: clpoolmanager_call_collectprotocolfees
+      - name: binpoolmanager_evt_initialize

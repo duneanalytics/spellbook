@@ -1,18 +1,20 @@
 {{ config(
-        schema = 'pancakeswap',
+        schema = 'pancakeswap_bnb',
         alias = 'base_liquidity_events'
         )
 }}
 
-{% set models = [
-    ref('pancakeswap_bnb_base_liquidity_events')
+{% set version_models = [
+ref('pancakeswap_infinity_cl_bnb_base_liquidity_events')
+, ref('pancakeswap_stableswap_bnb_base_liquidity_events')
+, ref('pancakeswap_v3_bnb_base_liquidity_events')
+, ref('pancakeswap_v2_bnb_base_liquidity_events')
 ] %}
 
-with base_union as (
-    SELECT *
-    FROM
-    (
-        {% for model in models %}
+
+SELECT *
+FROM (
+    {% for dex_pool_model in version_models %}
         SELECT
                  blockchain
                 , project
@@ -30,16 +32,9 @@ with base_union as (
                 , token1
                 , amount0_raw
                 , amount1_raw
-        FROM
-            {{ model }}
-        {% if not loop.last %}
-           UNION ALL
-        {% endif %}
-        {% endfor %}
-    )
+    FROM {{ dex_pool_model }}
+    {% if not loop.last %}
+    UNION ALL
+    {% endif %}
+    {% endfor %}
 )
-select
-    *
-from
-    base_union
--- comment to refresh
