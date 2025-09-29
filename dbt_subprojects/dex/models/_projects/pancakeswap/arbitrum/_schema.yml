@@ -129,7 +129,7 @@ models:
       - name: contract_address
         description: "Contract address used to create the pool"
 
-  - name: pancakeswap_arbitrum_pools_balances
+  - name: pancakeswap_stableswap_arbitrum_base_liquidity_events
     meta:
       blockchain: arbitrum
       sector: dex
@@ -138,10 +138,149 @@ models:
     config:
       tags: ['arbitrum', 'pools', 'liquidity', 'pancakeswap']
     description: >
-      pancakeswap arbitrum DEX pools balances across all versions
+      "pancakeswap arbitrum stableswap base liquidity events"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - address
-            - token_address
-            - day
+            - tx_hash
+            - evt_index
+            - event_type
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *id
+      - &block_month
+        name: block_month
+        description: "UTC event block month"
+      - &block_date
+        name: block_date
+        description: "UTC event block date"
+      - &block_time
+        name: block_time
+        description: "UTC event block time"
+      - &block_number
+        name: block_number
+        description: "Block number of the block in which the trade occurred"
+      - &tx_hash
+        name: tx_hash
+        description: "The hash of the transaction"
+      - &tx_from
+        name: tx_from
+        description: "Address that initiated the txn"
+      - &evt_index
+        name: evt_index
+        description: "Index of the event in the transaction. Can be used to uniquely identify the order of events within a transaction"
+      - &event_type
+        name: event_type
+        description: "Transaction event type"
+      - *token0
+      - *token1
+      - &amount0_raw
+        name: amount0_raw
+        description: "Liquidity amount of token0 in units"
+      - &amount1_raw
+        name: amount1_raw
+        description: "Liquidity amount of token1 in units"
+
+  - name: pancakeswap_v3_arbitrum_base_liquidity_events
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: pancakeswap
+      contributors: Henrystats
+    config:
+      tags: ['arbitrum', 'pools', 'liquidity', 'pancakeswap']
+    description: >
+      "pancakeswap arbitrum V3 base liquidity events"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - event_type
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *id
+      - *block_month
+      - *block_date
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *tx_from
+      - *evt_index
+      - *event_type
+      - *token0
+      - *token1
+      - *amount0_raw
+      - *amount1_raw
+
+  - name: pancakeswap_v2_arbitrum_base_liquidity_events
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: pancakeswap
+      contributors: Henrystats
+    config:
+      tags: ['arbitrum', 'pools', 'liquidity', 'pancakeswap']
+    description: >
+      "pancakeswap arbitrum V2 base liquidity events"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - event_type
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *id
+      - *block_month
+      - *block_date
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *tx_from
+      - *evt_index
+      - *event_type
+      - *token0
+      - *token1
+      - *amount0_raw
+      - *amount1_raw
+
+  - name: pancakeswap_arbitrum_base_liquidity_events
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: pancakeswap
+      contributors: Henrystats
+    config:
+      tags: ['arbitrum', 'pools', 'liquidity', 'pancakeswap']
+    description: >
+      "pancakeswap arbitrum base liquidity events across all versions"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - event_type
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *id
+      - *block_month
+      - *block_date
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *tx_from
+      - *evt_index
+      - *event_type
+      - *token0
+      - *token1
+      - *amount0_raw
+      - *amount1_raw
