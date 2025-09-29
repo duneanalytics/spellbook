@@ -125,7 +125,7 @@ distinct_days as (
         , '{{ blockchain }}' as blockchain
         , '{{ project }}' as project
         , pt.version
-        , pt.{{pools_column}} as id
+        , pt.id
         {% if token0 %} -- token0
         , t0.token_address as token0 
         , t0.token_symbol as token0_symbol 
