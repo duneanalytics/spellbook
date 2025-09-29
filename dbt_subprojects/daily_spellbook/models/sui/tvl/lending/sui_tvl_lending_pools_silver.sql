@@ -49,19 +49,25 @@ raw_updates as (
         , raw.protocol
         , raw.market_id
         
-        -- Collateral Info
+                -- Collateral Info
         , raw.coin_type as collateral_coin_type
         , ci.coin_symbol as collateral_coin_symbol
-        , case when ci.coin_decimals is not null then
-            case when raw.protocol = 'navi' then
-                -- Navi stores values with an extra decimal place
+        , case 
+            when raw.protocol = 'suilend' and raw.coin_type = '0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI' then
+                -- Suilend SUI token has extra scaling (÷ 10^12 beyond standard 9 decimals)
                 cast(cast(raw.coin_collateral_amount as double) / 
-                     (power(10, ci.coin_decimals) * 10) as decimal(38,8))
-            else
-                cast(cast(raw.coin_collateral_amount as double) / 
-                     power(10, ci.coin_decimals) as decimal(38,8))
-            end
-            else cast(null as decimal(38,8)) end as adjusted_collateral_amount
+                     (power(10, 9) * power(10, 12)) as decimal(38,8))
+            when ci.coin_decimals is not null then
+                case when raw.protocol = 'navi' then
+                    -- Navi stores values with an extra decimal place
+                    cast(cast(raw.coin_collateral_amount as double) / 
+                         (power(10, ci.coin_decimals) * 10) as decimal(38,8))
+                else
+                    cast(cast(raw.coin_collateral_amount as double) / 
+                         power(10, ci.coin_decimals) as decimal(38,8))
+                end
+            else cast(null as decimal(38,8)) 
+        end as adjusted_collateral_amount
         
         -- Borrow Info (Handle Bucket Protocol's BUCK token)
         , case 
@@ -82,7 +88,11 @@ raw_updates as (
                 -- Navi stores values with an extra decimal place
                 cast(cast(raw.coin_borrow_amount as double) / 
                      (power(10, ci.coin_decimals) * 10) as decimal(38,8))
-            when raw.protocol != 'bucket' and raw.protocol != 'navi' and ci.coin_decimals is not null then
+            when raw.protocol = 'suilend' then
+                -- Suilend stores borrowed_amount.value in fixed 27-decimal precision
+                cast(cast(raw.coin_borrow_amount as double) / 
+                     power(10, 27) as decimal(38,8))
+            when raw.protocol != 'bucket' and raw.protocol != 'navi' and raw.protocol != 'suilend' and ci.coin_decimals is not null then
                 cast(cast(raw.coin_borrow_amount as double) / 
                      power(10, ci.coin_decimals) as decimal(38,8))
             else cast(null as decimal(38,8))
