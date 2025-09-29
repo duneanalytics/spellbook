@@ -15,6 +15,9 @@ with
 
 raw_calls as (
     select *
+        , block_number as call_block_number
+        , block_date as call_block_date
+        , tx_hash as call_tx_hash
         , substr(call_input, call_input_length - mod(call_input_length - 4, 32) + 1) as call_input_remains
     from {{ ref('oneinch_' + blockchain + '_ar_raw_calls') }}
     where true
@@ -48,7 +51,7 @@ raw_calls as (
                 , {{ method_data.get("dst_token_offset", "null") }} as dst_token_offset
                 , {{ method_data.get("router_type", "null") }} as router_type
             from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}
-            join raw_calls using(block_date, block_number, tx_hash, call_trace_address)
+            join raw_calls using(call_block_date, call_block_number, call_tx_hash, call_trace_address)
             where true
                 and call_block_date >= timestamp '{{ date_from }}' -- it is only needed for simple/easy dates
                 {% if is_incremental() %}and {{ incremental_predicate('call_block_time') }}{% endif %}
