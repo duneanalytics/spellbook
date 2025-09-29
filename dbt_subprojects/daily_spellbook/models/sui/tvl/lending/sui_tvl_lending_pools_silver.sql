@@ -49,11 +49,15 @@ raw_updates as (
         , raw.protocol
         , raw.market_id
         
-        -- Collateral Info
+                -- Collateral Info
         , raw.coin_type as collateral_coin_type
         , ci.coin_symbol as collateral_coin_symbol
         , case when ci.coin_decimals is not null then
-            case when raw.protocol = 'navi' then
+            case when raw.protocol = 'suilend' and raw.coin_type = '0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI' then
+                -- Suilend SUI token has extra scaling (÷ 10^12 beyond standard decimals)
+                cast(cast(raw.coin_collateral_amount as double) / 
+                     (power(10, ci.coin_decimals) * power(10, 12)) as decimal(38,8))
+            when raw.protocol = 'navi' then
                 -- Navi stores values with an extra decimal place
                 cast(cast(raw.coin_collateral_amount as double) / 
                      (power(10, ci.coin_decimals) * 10) as decimal(38,8))
@@ -61,7 +65,7 @@ raw_updates as (
                 cast(cast(raw.coin_collateral_amount as double) / 
                      power(10, ci.coin_decimals) as decimal(38,8))
             end
-            else cast(null as decimal(38,8)) end as adjusted_collateral_amount
+          else cast(null as decimal(38,8)) end as adjusted_collateral_amount
         
         -- Borrow Info (Handle Bucket Protocol's BUCK token)
         , case 
