@@ -1,12 +1,10 @@
 version: 2
 
 sources:
-  - name: fantasy_multichain
-    description: "Decoded contracts for Fantasy across EVMs"
+  - name: fantasy_base
+    description: "Decoded contracts for Fantasy on Base"
 
     tables:
-      - name: Exchange_evt_Buy
-      - name: Exchange_evt_Sell
       - name: Minter_evt_NewMintConfig
       - name: Minter_evt_Mint
       - name: Minter_evt_LevelUp
