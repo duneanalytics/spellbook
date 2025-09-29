@@ -51,6 +51,7 @@ supply_events_with_next as (
     inner join {{ ref('sui_tvl_btc_tokens_detail') }} ci
         on su.coin_type = ci.coin_type
     where su.total_supply is not null
+      and su.total_supply >= 0  -- Include zero supply events for proper LOCF
 ),
 
 daily_supply_with_forward_fill as (
@@ -64,7 +65,7 @@ daily_supply_with_forward_fill as (
     left join supply_events_with_next se 
         on g.coin_type = se.coin_type
         and g.block_date >= se.block_date
-        and (se.next_update_date is null OR g.block_date < se.next_update_date)  -- Standard spellbook forward fill
+        and (se.next_update_date is null OR g.block_date < se.next_update_date)
         and se.rn = 1
 )
 
@@ -86,7 +87,7 @@ daily_supply_with_forward_fill as (
                 order by coin_type desc -- Tie-break by coin_type
             ) as rn
         from daily_supply_with_forward_fill
-        where total_supply is not null
+        -- Remove filter to ensure all tokens appear on all dates
     ) ranked
     where rn = 1
 )
@@ -94,13 +95,13 @@ daily_supply_with_forward_fill as (
 select
     date as block_date
     
-    -- Total BTC supply across all variants
-    , sum(carried_forward_supply_raw / power(10, coin_decimals)) as total_btc_supply
+    -- Total BTC supply across all variants (handle nulls as 0)
+    , sum(coalesce(carried_forward_supply_raw, 0) / power(10, coin_decimals)) as total_btc_supply
     
-    -- Supply breakdown by symbol
+    -- Supply breakdown by symbol (handle nulls as 0)
     , map_agg(
         coin_symbol
-        , round(carried_forward_supply_raw / power(10, coin_decimals), 0)
+        , round(coalesce(carried_forward_supply_raw, 0) / power(10, coin_decimals), 0)
     ) as supply_breakdown_json
     
 from deduplicated_daily_btc_supply_by_symbol
