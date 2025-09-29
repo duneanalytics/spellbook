@@ -1,10 +1,11 @@
 {{ config(
-    schema = 'bridges_evms'
+    tags = ['prod_exclude']
+    , schema = 'bridges_evms'
     , alias = 'deposits'
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy='merge'
-    , unique_key = ['deposit_chain','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id']
+    , unique_key = ['deposit_chain','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id', 'duplicate_index']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
 )
 }}
@@ -51,6 +52,20 @@ WITH grouped_deposits AS (
         )
     )
 
+{% if is_incremental() %}
+, check_dupes AS (
+    SELECT deposit_chain
+    , withdrawal_chain
+    , bridge_name
+    , bridge_version
+    , bridge_transfer_id
+    , MAX(duplicate_index) AS duplicate_index
+    FROM {{ this }}
+    INNER JOIN grouped_deposits USING (deposit_chain, withdrawal_chain, bridge_name, bridge_version, bridge_transfer_id)
+    GROUP BY 1, 2, 3, 4, 5
+    )
+{% endif %}
+
 SELECT d.deposit_chain
 , d.withdrawal_chain
 , d.bridge_name
@@ -70,6 +85,10 @@ SELECT d.deposit_chain
 , d.evt_index
 , d.contract_address
 , d.bridge_transfer_id
+{% if is_incremental() %}
+, COALESCE(cd.duplicate_index, 0) + 
+{% endif %}
+ROW_NUMBER() OVER (PARTITION BY d.deposit_chain, d.withdrawal_chain, d.bridge_name, d.bridge_version, d.bridge_transfer_id ORDER BY d.block_number, d.evt_index ) AS duplicate_index
 FROM grouped_deposits d
 INNER JOIN {{ source('prices', 'usd') }} p ON p.blockchain=d.deposit_chain
     AND p.contract_address=d.deposit_token_address
@@ -77,3 +96,10 @@ INNER JOIN {{ source('prices', 'usd') }} p ON p.blockchain=d.deposit_chain
     {% if is_incremental() %}
     AND {{ incremental_predicate('p.minute') }}
     {% endif %}
+{% if is_incremental() %}
+LEFT JOIN check_dupes cd ON  d.deposit_chain = cd.deposit_chain
+    AND d.withdrawal_chain = cd.withdrawal_chain
+    AND d.bridge_name = cd.bridge_name
+    AND d.bridge_version = cd.bridge_version
+    AND d.bridge_transfer_id = cd.bridge_transfer_id
+{% endif %}

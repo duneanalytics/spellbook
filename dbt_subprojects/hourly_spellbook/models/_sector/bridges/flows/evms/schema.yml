@@ -70,15 +70,6 @@ models:
       - &deposit_token_symbol
         name: deposit_token_symbol
         description: "Source blockchain token symbol"
-      - &withdrawal_token_address
-        name: withdrawal_token_address
-        description: "Destination blockchain token address"
-      - &withdrawal_token_standard
-        name: withdrawal_token_standard
-        description: "Destination blockchain token standard"
-      - &withdrawal_token_symbol
-        name: withdrawal_token_symbol
-        description: "Destination blockchain token symbol"
       - &tx_from
         name: tx_from
         description: "Address that deposits the transaction"
@@ -94,6 +85,9 @@ models:
       - &bridge_transfer_id 
         name: bridge_transfer_id
         description: "Bridge order identifier"
+      - &duplicate_index 
+        name: duplicate_index
+        description: "Index across duplicates of the deposit event if there are any"
   - name: bridges_evms_withdrawals
     meta:
       blockchain: ethereum, base, arbitrum, avalanche_c, optimism, polygon, unichain
@@ -122,12 +116,18 @@ models:
       - *withdrawal_amount_usd
       - *sender
       - *recipient
+      - *deposit_token_address
       - *deposit_token_standard
       - *deposit_token_symbol
-      - *withdrawal_token_standard
-      - *withdrawal_token_symbol
-      - *deposit_token_address
-      - *withdrawal_token_address
+      - &withdrawal_token_address
+        name: withdrawal_token_address
+        description: "Destination blockchain token address"
+      - &withdrawal_token_standard
+        name: withdrawal_token_standard
+        description: "Destination blockchain token standard"
+      - &withdrawal_token_symbol
+        name: withdrawal_token_symbol
+        description: "Destination blockchain token symbol"
       - *tx_from
       - *tx_hash
       - *evt_index  
@@ -172,9 +172,3 @@ models:
         name: withdrawals_tx_hash
         description: "Transaction hash of withdrawals bridge transfer on destination chain"
       - *bridge_transfer_id 
-      - &bridge_miliseconds
-        name: bridge_miliseconds
-        description: "Time in miliseconds between deposits and withdrawals transactions"
-      - &bridge_miliseconds_2
-        name: bridge_miliseconds_2
-        description: "Time in miliseconds between deposits and withdrawals transactions"
