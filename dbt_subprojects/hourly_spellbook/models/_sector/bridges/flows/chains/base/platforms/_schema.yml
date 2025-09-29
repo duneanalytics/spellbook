@@ -48,40 +48,19 @@ models:
             - source('celer_base','bridge_evt_send')
   - name: bridges_base_celer_v1_withdrawals
     meta:
-      blockchain: celer
+      blockchain: base
       sector: bridges
       project: celer
       contributors: [ 'hildobby']
     config:
-      tags: [ 'celer', 'bridges', 'flows', 'withdrawals' ]
+      tags: [ 'base', 'bridges', 'flows', 'withdrawals' ]
     description: "Celer v1 bridge withdrawals events on Base"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['tx_hash','evt_index']
       - equal_rowcount_with_sources:
           evt_sources:
-            - source('celer_base','bridge_evt_relay')
-    columns:
-      - *deposit_chain
-      - *withdraw_chain
-      - *bridge_name
-      - *bridge_version
-      - *deposit_amount_raw
-      - *deposit_token_address
-      - *block_date
-      - *block_time
-      - *block_number
-      - *withdrawal_amount_raw 
-      - *sender
-      - *recipient
-      - *deposit_token_standard
-      - *withdrawal_token_standard
-      - *withdrawal_token_address
-      - *tx_from
-      - *tx_hash
-      - *evt_index  
-      - *contract_address 
-      - *bridge_transfer_id 
+            - source('celer_base','bridge_evt_relay') 
   - name: bridges_base_across_v2_deposits
     meta:
       blockchain: base
