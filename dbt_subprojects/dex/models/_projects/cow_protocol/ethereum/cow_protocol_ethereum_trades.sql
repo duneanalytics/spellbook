@@ -52,6 +52,10 @@ all_prices as (
     FROM atoken_prices
 
 ),
+deduped_prices as (
+    SELECT  contract_address, price, minute, blockchain, row_number() over (partition by contract_address, minute, blockchain order by price desc) as rn
+    FROM all_prices
+),
 -- First subquery joins buy and sell token prices from prices.usd.
 -- Also deducts fee from sell amount.
 trades_with_prices AS (
@@ -72,14 +76,14 @@ trades_with_prices AS (
            ps.price                  as sell_price,
            pb.price                  as buy_price
     FROM {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Trade') }} trade
-             LEFT OUTER JOIN all_prices as ps
+             LEFT OUTER JOIN deduped_prices as ps
                              ON sellToken = ps.contract_address
                                  AND ps.minute = date_trunc('minute', evt_block_time)
                                  AND ps.blockchain = 'ethereum'
                                  {% if is_incremental() %}
                                  AND {{ incremental_predicate('ps.minute') }}
                                  {% endif %}
-             LEFT OUTER JOIN all_prices as pb
+             LEFT OUTER JOIN deduped_prices as pb
                              ON pb.contract_address = (
                                  CASE
                                      WHEN buyToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
@@ -94,6 +98,8 @@ trades_with_prices AS (
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
+    AND ps.rn = 1
+    AND pb.rn = 1
 ),
 -- Second subquery gets token symbol and decimals from tokens.erc20 (to display units bought and sold)
 trades_with_token_units as (
