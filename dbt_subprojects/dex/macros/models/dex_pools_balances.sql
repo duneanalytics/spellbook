@@ -98,7 +98,7 @@ get_pools as (
             ) as token3
         {% endif %}
     from 
-    {{ pools_table }}
+    {{ pools_table }} pt 
 ),
 
 -- get prices first 
