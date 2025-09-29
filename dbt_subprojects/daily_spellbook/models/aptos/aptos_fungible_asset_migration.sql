@@ -5,12 +5,12 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['asset_type_v2'],
-    post_hook='{{ expose_spells(blockchains = \'["aptos"]\',
-        spell_type = "project",
-        spell_name = "fungible_asset",
-        contributors = \'["ying-w"]\') }}'
 ) }}
 
+-- coin to FA mapping is a deterministic lookup using SHA3
+-- however, SHA3 is not implemented in SQL so instead lookup using resource
+-- For pythno code using SHA3, see 'Finding migrated fungible assets' section of
+-- https://medium.com/aptoslabs/data-analyst-guide-to-aptos-defi-swaps-pt2-e343ac6be84e 
 SELECT
     -- latest
     tx_version,

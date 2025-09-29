@@ -1,11 +1,3 @@
--- `fungible_asset_metadata` from indexer is a current table, this table has historical
--- for FA, the 3 resources are grouped under the same state key (fungible_asset::Metadata, fungible_asset::ConcurrentSupply, object::ObjectCore)
--- so will be emitted together (parse without new lookup)
--- edge cases
--- indexer table removes assets when LENGTH(asset_type) > 1_000 Ex 521538257
--- asset_name can be unicode: Ex 321165430
--- creator_address is the asset address for v1 and owner for v2 (can change for v2)
--- creator_address is not needed for coins/fa, it's a holdover from tokens (where it is used as key with name)
 {{ config(
     schema = 'aptos_fungible_asset',
     alias = 'metadata',
@@ -20,6 +12,15 @@
         spell_name = "fungible_asset",
         contributors = \'["ying-w"]\') }}'
 ) }}
+
+-- `fungible_asset_metadata` from indexer is a current table, this table has historical
+-- for FA, the 3 resources are grouped under the same state key hash (fungible_asset::Metadata, fungible_asset::ConcurrentSupply, object::ObjectCore)
+-- so will be emitted together (parse without new lookup)
+-- edge cases:
+-- indexer table removes assets when LENGTH(asset_type) > 1_000 Ex 521538257
+-- asset_name can be unicode: Ex 321165430
+-- creator_address is the asset address for v1 and owner for v2 (can change for v2)
+-- creator_address is not needed for coins/fa, it's a holdover from tokens (where it is used as key with name)
 
 WITH mr_fa_metadata AS (
     SELECT
