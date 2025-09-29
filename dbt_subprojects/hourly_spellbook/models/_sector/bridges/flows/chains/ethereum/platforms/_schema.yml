@@ -61,3 +61,22 @@ models:
       - equal_rowcount_with_sources:
           evt_sources:
             - source('celer_ethereum','bridge_evt_relay')
+  - name: bridges_ethereum_across_v2_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
+    description: "Across's v2 bridge deposits events on Ethereum"
+  - name: bridges_ethereum_across_v2_withdrawals
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Across's v2 bridge withdrawals events on Ethereum"
+
