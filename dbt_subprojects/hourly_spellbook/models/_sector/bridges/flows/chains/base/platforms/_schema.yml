@@ -113,3 +113,22 @@ models:
       - *evt_index  
       - *contract_address 
       - *bridge_transfer_id 
+  - name: bridges_base_across_v2_deposits
+    meta:
+      blockchain: base
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'base', 'bridges', 'flows', 'deposits' ]
+    description: "Across's v2 bridge deposits events on Base"
+  - name: bridges_base_across_v2_withdrawals
+    meta:
+      blockchain: base
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'base', 'bridges', 'flows', 'withdrawals' ]
+    description: "Across's v2 bridge withdrawals events on Base"
+
