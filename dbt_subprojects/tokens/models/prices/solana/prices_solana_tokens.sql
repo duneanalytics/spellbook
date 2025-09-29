@@ -776,5 +776,7 @@ FROM
         ('frag-fragmetric', 'solana', 'FRAG', 'FRAGMEWj2z65qM62zqKhNtwNFskdfKs4ekDUDX3b4VD5', 9),
         ('codec-codec-flow', 'solana', 'CODEC', '69LjZUUzxj3Cb3Fxeo1X4QpYEQTboApkhXTysPpbpump', 6),
         ('aura-auraonsol', 'solana', 'AURA', 'DtR4D9FtVoTX2569gaL837ZgrB6wNjj6tkmnX9Rdk9B2', 6),
+        ('psol-phantom-staked-sol', 'solana', 'PSOL', 'pSo1f9nQXWgXibFtKf7NWYxb5enAM4qfP6UJSiXRQfL', 9),
+        ('bless-bless', 'solana', 'BLESS', 'DtR4D9FtVoTX2569gaL837ZgrB6wNjj6tkmnX9Rdk9B2', 9),
         ('wct-walletconnect-token', 'solana', 'WCT', 'WCTk5xWdn5SYg56twGj32sUF3W4WFQ48ogezLBuYTBY', 9)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
