@@ -12,7 +12,7 @@ calls as (
     from (
         {% for stream, stream_data in meta['streams'].items() if blockchain in stream_data['exposed'] %}
             -- STREAM: {{ stream }} --
-            {% set date_from = [meta['blockchains']['start'][blockchain], stream_data['start']['transfers']] | max %}
+            {% set date_from = stream_data['start']['transfers'] %}
             select
                 block_number
                 , block_date
@@ -81,7 +81,7 @@ calls as (
     from {{ source('prices', 'usd') }}
     where true
         and blockchain = '{{ blockchain }}'
-        and minute >= timestamp '{{ date_from }}'
+        and minute >= least({% for stream_data in meta['streams'].values() %}date('{{ stream_data['start']['transfers'] }}'){% if not loop.last %}, {% endif %}{% endfor %})
         {% if is_incremental() %}and {{ incremental_predicate('minute') }}{% endif %}
 )
 
