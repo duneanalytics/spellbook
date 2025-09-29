@@ -9,8 +9,8 @@
     incremental_predicates = [ incremental_predicate('DBT_INTERNAL_DEST.block_date') ],
     post_hook='{{ expose_spells(\'["sui"]\',
                                 "sector",
-                                "sui",
-                                \'[]\') }}'
+                                "daily_stats",
+                                \'["krishhh"]\') }}'
 ) }}
 
 {% set sui_project_start_date = var('sui_project_start_date', '2023-04-12') %}
