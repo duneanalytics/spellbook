@@ -13,53 +13,57 @@
 
 with
 
-decoded as (
-    {% for contract, contract_data in contracts.items() if blockchain in contract_data.blockchains %}
-        {% for method, method_data in contract_data.methods.items() if blockchain in method_data.get('blockchains', contract_data.blockchains) and not method_data.get('auxiliary', false) %}{# method-level blockchains override contract-level blockchains #}
-            select
-                call_block_number as block_number
-                , call_block_date as block_date
-                , call_tx_hash as tx_hash
-                , call_trace_address
-                , {{ method_data.get("src_token_address", "null") }} as src_token_address
-                , {{ method_data.get("dst_token_address", "null") }} as dst_token_address
-                , {{ method_data.get("src_receiver", "null") }} as src_receiver
-                , {{ method_data.get("dst_receiver", "null") }} as dst_receiver
-                , {{ method_data.get("src_token_amount", "null") }} as src_token_amount
-                , {{ method_data.get("dst_token_amount", "null") }} as dst_token_amount
-                , {{ method_data.get("dst_token_amount_min", "null") }} as dst_token_amount_min
-                , raw_pools
-                , {{ method_data.get("pool_type_mask", "null") }} as pool_type_mask
-                , {{ method_data.get("pool_type_offset", "null") }} as pool_type_offset
-                , {{ method_data.get("direction_mask", "null") }} as direction_mask
-                , {{ method_data.get("unwrap_mask", "null") }} as unwrap_mask
-                , {{ method_data.get("src_token_mask", "null") }} as src_token_mask
-                , {{ method_data.get("src_token_offset", "null") }} as src_token_offset
-                , {{ method_data.get("dst_token_mask", "null") }} as dst_token_mask
-                , {{ method_data.get("dst_token_offset", "null") }} as dst_token_offset
-                , {{ method_data.get("router_type", "null") }} as router_type
-            from (
-                select *
-                    , {{ method_data.get("kit", "null") }} as kit
-                    , {{ method_data.get("pools", "array[]") }} as raw_pools
-                from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}
-                where true
-                    and call_block_date >= timestamp '{{ date_from }}' -- it is only needed for simple/easy dates
-                    {% if is_incremental() %}and {{ incremental_predicate('call_block_time') }}{% endif %}
-            )
-            {% if not loop.last %}union all{% endif %}
-        {% endfor %}
-        {% if not loop.last %}union all{% endif %}
-    {% endfor %}
-)
-
-, raw_calls as (
+raw_calls as (
     select *
         , substr(input, call_input_length - mod(call_input_length - 4, 32) + 1) as call_input_remains
     from {{ ref('oneinch_' + blockchain + '_ar_raw_calls') }}
     where true
         and block_date >= timestamp '{{ date_from }}' -- it is only needed for simple/easy dates
         {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
+)
+
+, decoded as (
+    {% for contract, contract_data in contracts.items() if blockchain in contract_data.blockchains %}
+        {% for method, method_data in contract_data.methods.items() if blockchain in method_data.get('blockchains', contract_data.blockchains) and not method_data.get('auxiliary', false) %}{# method-level blockchains override contract-level blockchains #}
+            select *
+                , {{ method_data.get("src_token_amount", "null") }} as src_token_amount
+                , if(router_type = 'unoswap' and cardinality(raw_pools) = 0
+                    , array[bytearray_to_uint256(substr(call_input, call_input_length - 32 - mod(call_input_length - 4, 32) + 1, 32))] -- last 32 bytes of input without remains
+                    , raw_pools
+                ) as call_pools
+                , if(router_type = 'unoswap', cardinality(raw_pools) > 0) as ordinary -- true if call pools is not empty, null for generic
+            from (
+                select
+                    call_block_number as block_number
+                    , call_block_date as block_date
+                    , call_tx_hash as tx_hash
+                    , call_trace_address
+                    , {{ method_data.get("src_token_address", "null") }} as src_token_address
+                    , {{ method_data.get("dst_token_address", "null") }} as dst_token_address
+                    , {{ method_data.get("src_receiver", "null") }} as src_receiver
+                    , {{ method_data.get("dst_receiver", "null") }} as dst_receiver
+                    , {{ method_data.get("dst_token_amount", "null") }} as dst_token_amount
+                    , {{ method_data.get("dst_token_amount_min", "null") }} as dst_token_amount_min
+                    , {{ method_data.get("pools", "array[]") }} as raw_pools
+                    , {{ method_data.get("pool_type_mask", "null") }} as pool_type_mask
+                    , {{ method_data.get("pool_type_offset", "null") }} as pool_type_offset
+                    , {{ method_data.get("direction_mask", "null") }} as direction_mask
+                    , {{ method_data.get("unwrap_mask", "null") }} as unwrap_mask
+                    , {{ method_data.get("src_token_mask", "null") }} as src_token_mask
+                    , {{ method_data.get("src_token_offset", "null") }} as src_token_offset
+                    , {{ method_data.get("dst_token_mask", "null") }} as dst_token_mask
+                    , {{ method_data.get("dst_token_offset", "null") }} as dst_token_offset
+                    , {{ method_data.get("router_type", "null") }} as router_type
+                from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}
+                where true
+                    and call_block_date >= timestamp '{{ date_from }}' -- it is only needed for simple/easy dates
+                    {% if is_incremental() %}and {{ incremental_predicate('call_block_time') }}{% endif %}
+            )
+            join raw_calls using(block_date, block_number, tx_hash, call_trace_address)
+            {% if not loop.last %}union all{% endif %}
+        {% endfor %}
+        {% if not loop.last %}union all{% endif %}
+    {% endfor %}
 )
 
 , auxiliary as (
@@ -124,16 +128,7 @@ decoded as (
             , if(slice(call_trace_address, 1, length(auxiliary_trace_address)) = auxiliary_trace_address, auxiliary_remains, call_input_remains) as actual_remains
             , if(slice(call_trace_address, 1, length(auxiliary_trace_address)) = auxiliary_trace_address, auxiliary_call_from, call_from) as actual_call_from
             , if(slice(call_trace_address, 1, length(auxiliary_trace_address)) = auxiliary_trace_address, auxiliary_call_to, call_to) as actual_call_to
-        from (
-            select *
-                , if(router_type = 'unoswap' and cardinality(raw_pools) = 0
-                    , array[bytearray_to_uint256(substr(call_input, call_input_length - 32 - mod(call_input_length - 4, 32) + 1, 32))] -- last 32 bytes of input without remains
-                    , raw_pools
-                ) as call_pools
-                , if(router_type = 'unoswap', cardinality(raw_pools) > 0) as ordinary -- true if call pools is not empty, null for generic
-            from decoded
-            join raw_calls using(block_date, block_number, tx_hash, call_trace_address)
-        )
+        from decoded
         left join auxiliary using(block_date, block_number, tx_hash)
     )
     left join (select pool as first_pool, tokens as first_pool_tokens from pools_list) using(first_pool)

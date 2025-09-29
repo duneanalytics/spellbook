@@ -63,7 +63,7 @@ decoded as (
 
 , raw_calls as (
     select *
-        , substr(input, call_input_length - mod(call_input_length - 4, 32) + 1) as call_input_remains
+        , substr(call_input, call_input_length - mod(call_input_length - 4, 32) + 1) as call_input_remains
         , call_from in ({{ settlements }}) as call_from_settlement
         , array_join(call_trace_address, '') as call_id
     from {{ ref('oneinch_' + blockchain + '_lo_raw_calls') }}
