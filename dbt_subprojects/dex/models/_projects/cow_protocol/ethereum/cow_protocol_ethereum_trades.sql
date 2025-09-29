@@ -18,8 +18,7 @@
 -- Find the PoC Query here: https://dune.com/queries/2360196
 WITH
 atokens_mapping as (
-    SELECT DISTINCT chain as blockchain,      aToken as atoken_address, asset as underlying_address FROM {{source('aave_v3_multichain','poolconfigurator_evt_reserveinitialized')}} 
-    WHERE chain='ethereum'
+    SELECT DISTINCT 'ethereum' as blockchain,      aToken as atoken_address, asset as underlying_address FROM {{source('aave_v3_ethereum','poolconfigurator_evt_reserveinitialized')}} 
     UNION 
     SELECT DISTINCT 'ethereum' as blockchain, aToken as atoken_address, asset as underlying_address FROM {{source('aave_v3_lido_ethereum','poolconfigurator_evt_reserveinitialized')}}
     UNION 
