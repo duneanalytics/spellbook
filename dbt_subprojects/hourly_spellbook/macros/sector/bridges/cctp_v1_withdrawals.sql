@@ -36,9 +36,9 @@ WITH cctp_id_mapping AS (
     SELECT w.evt_block_date AS block_date
     , w.evt_block_time AS block_time
     , w.evt_block_number AS block_number
-    , w.amount AS withdrawal_amount_raw
+    , w.amount AS withdraw_amount_raw
     , w.mintRecipient AS recipient
-    , w.mintToken AS withdrawal_token_address
+    , w.mintToken AS withdraw_token_address
     , w.evt_tx_from AS tx_from
     , w.evt_tx_hash AS tx_hash
     , w.evt_index
@@ -48,7 +48,7 @@ WITH cctp_id_mapping AS (
     )
 
 , closest_messages AS (
-    SELECT w.block_number, w.join_index, w.tx_hash, w.evt_index AS withdrawal_evt_index,
+    SELECT w.block_number, w.join_index, w.tx_hash, w.evt_index AS withdraw_evt_index,
            m.evt_index AS message_evt_index, m.sender, m.nonce, m.sourceDomain,
            ROW_NUMBER() OVER (
                PARTITION BY w.block_number, w.join_index, w.tx_hash, w.evt_index 
@@ -62,17 +62,17 @@ WITH cctp_id_mapping AS (
     )
 
     SELECT i.blockchain AS deposit_chain
-    , '{{blockchain}}' AS withdrawal_chain
+    , '{{blockchain}}' AS withdraw_chain
     , 'CCTP' AS bridge_name
     , '1' AS bridge_version
     , w.block_date
     , w.block_time
     , w.block_number
-    , w.withdrawal_amount_raw
+    , w.withdraw_amount_raw
     , m.sender
     , w.recipient
-    , 'erc20' AS withdrawal_token_standard
-    , w.withdrawal_token_address
+    , 'erc20' AS withdraw_token_standard
+    , w.withdraw_token_address
     , w.tx_from
     , w.tx_hash
     , w.evt_index
@@ -82,7 +82,7 @@ WITH cctp_id_mapping AS (
     INNER JOIN closest_messages m ON w.block_number = m.block_number
         AND w.join_index = m.join_index
         AND w.tx_hash = m.tx_hash
-        AND w.evt_index = m.withdrawal_evt_index
+        AND w.evt_index = m.withdraw_evt_index
         AND m.rn = 1
     INNER JOIN cctp_id_mapping i ON i.id=m.sourceDomain
 
