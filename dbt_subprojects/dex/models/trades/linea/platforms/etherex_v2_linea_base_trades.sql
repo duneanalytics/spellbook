@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'uniswap_v2_ink',
+        schema = 'etherex_v2_linea',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -12,10 +12,10 @@
 
 {{
     uniswap_compatible_v2_trades(
-        blockchain = 'ink',
-        project = 'uniswap',
+        blockchain = 'linea',
+        project = 'etherex',
         version = '2',
-        Pair_evt_Swap = source('uniswap_v2_ink', 'UniswapV2Pair_evt_Swap'),
-        Factory_evt_PairCreated = source('uniswap_v2_ink', 'UniswapV2Factory_evt_PairCreated')
+        Pair_evt_Swap = source('etherex_linea', 'Pair_evt_Swap'),
+        Factory_evt_PairCreated = source('etherex_linea', 'PairFactory_evt_PairCreated')
     )
 }}

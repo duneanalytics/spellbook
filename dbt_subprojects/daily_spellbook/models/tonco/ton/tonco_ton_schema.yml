@@ -1,0 +1,218 @@
+version: 1
+
+models:
+  - name: tonco_ton_pool_init
+    meta:
+      blockchain: ton
+      sector: dex
+      contributors: markfromton
+    config:
+      tags: ['ton', 'tonco', 'dex']
+    description: >
+      Tonco protocol pool initialization events.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - block_date
+            - pool_address
+    columns:
+      - name: block_date
+        description: "block_date of the transaction"
+      - name: tx_hash
+        description: "transaction hash"
+      - name: trace_id
+        description: "trace id"
+      - name: tx_now
+        description: "transaction timestamp"
+      - name: tx_lt
+        description: "transaction logical time"
+      - name: pool_address
+        description: "Pool address"
+      - name: op
+        description: "Uint(32),op"
+      - name: query_id
+        description: "Uint(64) queryid as of the TON documentation"
+      - name: from_admin
+        description: "Flag that shows if this message goes from router admin or pool factory"
+      - name: has_admin
+        description: "Flag that shows if this message have a new admin address"
+      - name: admin_addr
+        description: "New address of the admin. If has_admin is false could be 00b"
+      - name: has_controller
+        description: "Flag that shows if this message have a new controller address"
+      - name: controller_addr
+        description: "Address that is allowed to change the fee. Can always be updated by admin. If has_controller is false could be 00b"
+      - name: set_spacing
+        description: "Flag that shows if tick_spacing should be set to the pool or ignored"
+      - name: tick_spacing
+        description: "Tick spacing to be used in the pool"
+      - name: set_price
+        description: "Flag that shows if initial_priceX96 should be set to the pool or ignored"
+      - name: initial_priceX96
+        description: "Initial price for the pool"
+      - name: set_active
+        description: "Flag that shows if pool_active should be set to the pool or ignored"
+      - name: pool_active
+        description: "Flag is we should start the pool as unlocked"
+      - name: protocol_fee
+        description: "Liquidity provider fee. base in FEE_DENOMINATOR parts. If value is more than 10000 value would be default"
+      - name: lp_fee_base
+        description: "Protocol fee in FEE_DENOMINATOR. If value is more than 10000 value would be default"
+      - name: lp_fee_current
+        description: "Current value of the pool fee, in case of dynamic adjustment. If value is more than 10000 value would be default"
+      - name: jetton0_minter
+        description: "Address of the jetton0 minter, used by indexer and frontend"
+      - name: jetton1_minter
+        description: "Address of the jetton1 minter, used by indexer and frontend"
+
+  - name: tonco_ton_pool_mint
+    meta:
+      blockchain: ton
+      sector: dex
+      contributors: markfromton
+    config:
+      tags: ['ton', 'tonco', 'dex']
+    description: >
+      Tonco protocol pool mint events.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - block_date
+    columns:
+      - name: block_date
+        description: "block_date of the transaction"
+      - name: tx_hash
+        description: "transaction hash"
+      - name: trace_id
+        description: "trace id"
+      - name: tx_now
+        description: "transaction timestamp"
+      - name: tx_lt
+        description: "transaction logical time"
+      - name: pool_address
+        description: "Pool address"
+      - name: op
+        description: "Uint(32),op"
+      - name: query_id
+        description: "Uint(64) queryid as of the TON documentation"
+      - name: amount0Funded
+        description: "Amount of jetton 0 received by router for the mint"
+      - name: amount1Funded
+        description: "Amount of jetton 1 recived by router for the mint"
+      - name: recipient
+        description: "Address that would receive the minted NFT, excesses and refunds"
+      - name: liquidity
+        description: "Amount of liquidity to mint"
+      - name: tickLower
+        description: "lower bound of the range in which to mint"
+      - name: tickUpper
+        description: "upper bound of the range in which to mint"
+
+  - name: tonco_ton_pool_burn
+    meta:
+      blockchain: ton
+      sector: dex
+      contributors: markfromton
+    config:
+      tags: ['ton', 'tonco', 'dex']
+    description: >
+      Tonco protocol pool burn events. This message is sent by the Position NFT itself to the pool contract
+      to burn liquidity or withdraw collected fees.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - block_date
+    columns:
+      - name: block_date
+        description: "block_date of the transaction"
+      - name: tx_hash
+        description: "transaction hash"
+      - name: trace_id
+        description: "trace id"
+      - name: tx_now
+        description: "transaction timestamp"
+      - name: tx_lt
+        description: "transaction logical time"
+      - name: pool_address
+        description: "Pool address"
+      - name: op
+        description: "Uint(32),op"
+      - name: query_id
+        description: "Uint(64) queryid as of the TON documentation"
+      - name: recipient
+        description: "NFT owner to receive funds"
+      - name: burned_index
+        description: "Index if the NFT to burn. Should match the sender address"
+      - name: liquidity
+        description: "NFT liquidity amount prior to burn"
+      - name: tickLower
+        description: "Lower tick of the NFT. Sanitized by NFTPosition contract"
+      - name: tickUpper
+        description: "Upper tick of the NFT. Sanitized by NFTPosition contract"
+      - name: liquidity2Burn
+        description: "Amount of the liquidity to burn, 0 is a valid amount, in this case only collected fees would be returned"
+      - name: feeGrowthInside0LastX128
+        description: "Fee counter inside position range for jetton0, per unit of liquidity, in 128.128 fixed point"
+      - name: feeGrowthInside1LastX128
+        description: "Fee counter inside position range for jetton1, per unit of liquidity, in 128.128 fixed point"
+      - name: feeGrowthInside0CurrentX128
+        description: "Fee counter inside position range for jetton0, per unit of liquidity, in 128.128 fixed point"
+      - name: feeGrowthInside1CurrentX128
+        description: "Fee counter inside position range for jetton1, per unit of liquidity, in 128.128 fixed point"
+
+  - name: tonco_ton_nft_position_init
+    meta:
+      blockchain: ton
+      sector: dex
+      contributors: markfromton
+    config:
+      tags: ['ton', 'tonco', 'dex']
+    description: >
+      Tonco protocol pool burn events. This message is sent by the Position NFT itself to the pool contract
+      to burn liquidity or withdraw collected fees.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - block_date
+            - nftIndex
+    columns:
+      - name: block_date
+        description: "block_date of the transaction"
+      - name: tx_hash
+        description: "transaction hash"
+      - name: trace_id
+        description: "trace id"
+      - name: tx_now
+        description: "transaction timestamp"
+      - name: tx_lt
+        description: "transaction logical time"
+      - name: pool_address
+        description: "Pool address"
+      - name: op
+        description: "Uint(32),op"
+      - name: query_id
+        description: "queryid as of the TON documentation"
+      - name: user_address
+        description: "NFT owner"
+      - name: liquidity
+        description: "Amount of the liquidity"
+      - name: tickLower
+        description: "Lower tick of the NFT"
+      - name: tickUpper
+        description: "Upper tick of the NFT"
+      - name: feeGrowthInside0LastX128
+        description: "Fee counter inside position range for jetton0, per unit of liquidity, in 128.128 fixed point"
+      - name: feeGrowthInside1LastX128
+        description: "Fee counter inside position range for jetton1, per unit of liquidity, in 128.128 fixed point"
+      - name: nftIndex
+        description: "Index if the NFT"
+      - name: jetton0Amount
+        description: "jetton 0 amount"
+      - name: jetton1Amount
+        description: "jetton 1 amount"
+      - name: tick
+        description: "tick"

@@ -50,6 +50,7 @@ known_solver_metadata (address, environment, name) as (
                 (0xa8e64684149eC4F3253904c1cD3C5a3aDb9793E5, 'barn', 'ExtQuasimodo'),
                 (0x110157Cf445Afe54bb1ca284b26Ef4670e4F084B, 'barn', 'Apollo'),
                 (0xcAc5830C2c62a7B2D064Ac28A8b81a78601190B4, 'barn', 'Sector'),
+                (0x710ABcCa3d9e344783eF2890cb153Cd00B10107e, 'barn', 'Bebop'),
                 (0x6c273074c5DE2711CeB7a87Fd525b00a15C65318, 'prod', 'Baseline'),
                 (0xAdC54eD848Fa8e0aD9C6668D5539ebA373CA243F, 'prod', 'Gnosis_ParaSwap'),
                 (0xCa674076e0f96d18347869D9B8f8f57fC098A8c5, 'prod', 'Gnosis_0x'),
@@ -62,7 +63,8 @@ known_solver_metadata (address, environment, name) as (
                 (0x6390F5D0Aa64A41C622EE38D462274275c7fDE61, 'prod', 'ApeOut_1inch'),
                 (0xc3D3151324F04B0d072A74AbFDa84e1A99B19b22, 'prod', 'ExtQuasimodo'),
                 (0x8361B0b967b654C57a9584f15E1F6c289Fb0C13B, 'prod', 'Apollo'),
-                (0xc14820F96Ac38e8f376eb9042DDa927AdB12eE02, 'prod', 'Sector')
+                (0xc14820F96Ac38e8f376eb9042DDa927AdB12eE02, 'prod', 'Sector'),
+                (0x9E1C61a10463D24Efe7E661eb4ed9b26f4f41552, 'prod', 'Bebop')
     ) as _
 )
 -- Combining the metadata with current activation status for final table

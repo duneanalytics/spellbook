@@ -29,3 +29,7 @@ sources:
   - name: routeprocessor7_call_transferValueAndprocessRoute
   - name: routeprocessor7_call_processRouteWithTransferValueOutput
   - name: routeprocessor7_call_processRouteWithTransferValueInput
+  - name: routeprocessor9_call_processRoute
+  - name: routeprocessor9_call_transferValueAndprocessRoute
+  - name: routeprocessor9_call_processRouteWithTransferValueOutput
+  - name: routeprocessor9_call_processRouteWithTransferValueInput

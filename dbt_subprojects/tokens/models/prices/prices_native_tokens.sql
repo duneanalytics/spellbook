@@ -6,97 +6,84 @@
         tags = ['static']
         )
 }}
-SELECT
-    token_id
-    , CAST(blockchain as VARCHAR) as blockchain
-    , symbol
-    , CAST(contract_address as VARBINARY) as contract_address
-    , CAST(decimals as int) as decimals
-FROM
-(
-    VALUES
 
-    ('ada-cardano', null, 'ADA', null, null),
-    ('apt-aptos', null, 'APT', null, null),
-    ('ae-aeternity', null, 'AE', null, null),
-    ('algo-algorand', null, 'ALGO', null, null),
-    ('arb-arbitrum', null, 'ARB', null, null),
-    ('atom-cosmos', null, 'ATOM', null, null),
-    ('avax-avalanche', null, 'AVAX', null, null),
-    ('bch-bitcoin-cash', null, 'BCH', null, null),
-    ('bnb-binance-coin', null, 'BNB', null, null),
-    ('boba-boba-network', null, 'BOBA', null, null),
-    ('bsv-bitcoin-sv', null, 'BSV', null, null),
-    ('btc-bitcoin', null, 'BTC', null, null),
-    ('celo-celo', null, 'CELO', null, null),
-    ('dash-dash', null, 'DASH', null, null),
-    ('dcr-decred', null, 'DCR', null, null),
-    ('doge-dogecoin', null, 'DOGE', null, null),
-    ('eos-eos', null, 'EOS', null, null),
-    ('etc-ethereum-classic', null, 'ETC', null, null),
-    ('eth-ethereum', null, 'ETH', null, null),
-    ('ftm-fantom', null, 'FTM', null, null),
-    ('hbar-hedera-hashgraph', null, 'HBAR', null, null),
-    ('icp-internet-computer', null, 'ICP', null, null),
-    ('icx-icon', null, 'ICX', null, null),
-    ('kava-kava', null, 'KAVA', null, null),
-    ('kuji-kujira', null, 'KUJI', null, null),
-    ('ltc-litecoin', null, 'LTC', null, null),
-    ('matic-polygon', null, 'MATIC', null, null), --maintain legacy native token for legacy queries
-    ('matic-polygon', null, 'POL', null, null), --no full history for 'pol-polygon-ecosystem-token' API ID on coinpaprika
-    ('miota-iota', null, 'MIOTA', null, null),
-    ('mnt-mantle', null, 'MNT', null, null),
-    ('mona-monacoin', null, 'MONA', null, null),
-    ('neo-neo', null, 'NEO', null, null),
-    ('ont-ontology', null, 'ONT', null, null),
-    ('osmo-osmosis', null, 'OSMO', null, null),
-    ('sei-sei', null, 'SEI', null, null), --note: SEI already added to native tokens, commenting for history in PR to initiate SEI
-    ('sol-solana', null, 'SOL', null, null),
-    ('stx-blockstack', null, 'STX', null, null),
-    ('sui-sui', null, 'SUI', null, null),
-    ('tao-bittensor', null, 'TAO', null, null),
-    ('thr-thorecoin', null, 'THR', null, null),
-    ('tia-celestia', null, 'TIA', null, null),
-    ('tomo-tomochain', null, 'TOMO', null, null),
-    ('trx-tron', null, 'TRX', null, null),
-    ('dai-dai', null, 'XDAI', null, null),    -- maintain all caps spelling for legacy queries, coinpaprika xdai only goes back to 2023
-    ('dai-dai', null, 'xDAI', null, null),    -- xDAI is the proper spelling, coinpaprika xdai only goes back to 2023
-    ('wld-worldcoin', null, 'WLD', null, null),
-    ('xem-nem', null, 'XEM', null, null),
-    ('xlm-stellar', null, 'XLM', null, null),
-    ('xmr-monero', null, 'XMR', null, null),
-    ('xrp-xrp', null, 'XRP', null, null),
-    ('xtz-tezos', null, 'XTZ', null, null),
-    ('zec-zcash', null, 'ZEC', null, null),
-    ('astr-astar', null, 'ASTR', null, null),
-    ('dym-dymension-iou', null, 'DYM', null, null),
-    ('manta-manta-network', null, 'MANTA', null, null),
-    ('rose-oasis-network', null, 'ROSE', null, null),
-    ('saga-saga', null, 'SAGA', null, null),
-    ('kas-kaspa', null, 'KAS', null, null),
-    ('egld-elrond', null, 'EGLD', null, null),
-    ('ntrn1-neutron', null, 'NTRN', null, null),
-    ('flr-flare-network', null, 'FLR', null, null),
-    ('ar-arweave', null, 'AR', null, null),
-    ('glmr-moonbeam', null, 'GLMR', null, null),
-    ('klay-klaytn', null, 'KLAY', null, null), --old symbol was KLAY, new symbol is KAIA, keep for existing queries downstream
-    ('kaia-kaia', null, 'KAIA', null, null),
-    ('fuse-fuse-network', null, 'FUSE', null, null),
-    ('zel-zelcash', null, 'FLUX', null, null),
-    ('myria-myria', null, 'MYRIA', null, null),
-    ('mode-mode', null, 'MODE', null,null),
-    ('ton-toncoin', null, 'TON', null,null),
-    ('strk-starknet', null, 'STRK', null,null),
-    ('kda-kadena', null, 'KDA', null, null),
-    ('ron-ronin-token', null, 'RON', null, null),
-    ('hype-hyperliquid', null, 'HYPE', null, null),
-    ('bera-berachain', null, 'BERA', null, null),
-    ('ape-apecoin', null, 'APE', null, null),
-    ('gho-gho', null, 'GHO', null, null),
-    ('plume-plume', null, 'PLUME', null, null),
-    ('degen-degen-base', null, 'DEGEN', null, null),
-    ('soph-sophon', null, 'SOPH', null, null),
-    ('corn-corn2', null, 'BTCN', null, null),
-    ('tomo-tomochain', null, 'VIC', null, null),
-    ('s-sonic', null, 'S', null, null)
-) as temp (token_id, blockchain, symbol, contract_address, decimals)
+with prices_native_tokens as (
+    select
+        blockchain
+        , token_id
+    from
+    (
+        values
+        ('abstract', 'eth-ethereum')
+        , ('apechain', 'ape-apecoin')
+        , ('aptos', 'apt-aptos')
+        , ('arbitrum', 'eth-ethereum')
+        , ('avalanche_c', 'avax-avalanche')
+        , ('b3', 'eth-ethereum')
+        , ('base', 'eth-ethereum')
+        , ('beacon', 'eth-ethereum')
+        , ('berachain', 'bera-berachain')
+        , ('bitcoin', 'btc-bitcoin')
+        , ('blast', 'eth-ethereum')
+        , ('bnb', 'bnb-binance-coin')
+        , ('bob', 'eth-ethereum')
+        , ('boba', 'eth-ethereum')
+        , ('celo', 'celo-celo')
+        , ('corn', 'corn-corn2')
+        , ('degen', 'degen-degen-base')
+        , ('ethereum', 'eth-ethereum')
+        , ('fantom', 'ftm-fantom')
+        , ('flare', 'flr-flare-network')
+        , ('flow', 'eth-ethereum')
+        , ('fuel', 'eth-ethereum')
+        , ('gnosis', 'dai-dai')
+        , ('goerli', 'eth-ethereum')
+        , ('hemi', 'eth-ethereum')
+        , ('hyperevm', 'hype-hyperliquid')
+        , ('ink', 'eth-ethereum')
+        , ('kaia', 'kaia-kaia')
+        , ('katana', 'eth-ethereum')
+        , ('lens', 'gho-gho')
+        , ('linea', 'eth-ethereum')
+        , ('mantle', 'mnt-mantle')
+        , ('mode', 'eth-ethereum')
+        , ('noble', 'eth-ethereum')
+        , ('nova', 'eth-ethereum')
+        , ('opbnb', 'bnb-binance-coin')
+        , ('optimism', 'eth-ethereum')
+        , ('optimism_legacy_ovm1', 'eth-ethereum')
+        , ('peaq', 'peaq-peaq-network')
+        , ('plume', 'plume-plume')
+        , ('polygon', 'matic-polygon')
+        , ('ronin', 'ron-ronin-token')
+        , ('scroll', 'eth-ethereum')
+        , ('sei', 'sei-sei')
+        , ('sepolia', 'eth-ethereum')
+        , ('shape', 'eth-ethereum')
+        , ('solana', 'sol-solana')
+        , ('somnia', 'somi-somnia')
+        , ('sonic', 's-sonic')
+        , ('sophon', 'soph-sophon')
+        , ('starknet', 'strk-starknet')
+        , ('stellar', 'xlm-stellar')
+        , ('superseed', 'eth-ethereum')
+        , ('taiko', 'eth-ethereum')
+        , ('ton', 'ton-toncoin')
+        , ('tron', 'trx-tron')
+        , ('unichain', 'eth-ethereum')
+        , ('viction', 'tomo-tomochain')
+        , ('worldchain', 'eth-ethereum')
+        , ('zkevm', 'eth-ethereum')
+        , ('zksync', 'eth-ethereum')
+        , ('zora', 'eth-ethereum')
+    ) as temp (blockchain, token_id)
+)
+select
+    p.token_id
+    , p.blockchain
+    , d.token_address as contract_address
+    , d.token_symbol as symbol
+    , d.token_decimals as decimals
+from prices_native_tokens as p
+inner join {{source('dune','blockchains')}} as d
+    on p.blockchain = d.name
