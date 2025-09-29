@@ -41,6 +41,9 @@ FROM (
         , contract_address
         , bridge_transfer_id
         FROM {{ ref('bridges_'~chain~'_withdrawals') }}
+        {% if is_incremental() %}
+        WHERE  {{ incremental_predicate('block_time') }}
+        {% endif %}
         {% if not loop.last %}
         UNION ALL
         {% endif %}
