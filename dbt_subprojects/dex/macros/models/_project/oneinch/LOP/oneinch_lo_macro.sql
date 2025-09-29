@@ -147,7 +147,7 @@ from ({{
         , columns = ['from', 'to', 'success', 'nonce', 'gas_price', 'priority_fee_per_gas', 'gas_used', 'index']
     )
 }}) as t
-left join native_prices using(minute)
 join raw_calls using(block_date, block_number, tx_hash, call_trace_address)
+left join native_prices using(minute)
 
 {% endmacro %}

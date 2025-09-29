@@ -15,7 +15,7 @@ with
 
 raw_calls as (
     select *
-        , substr(input, call_input_length - mod(call_input_length - 4, 32) + 1) as call_input_remains
+        , substr(call_input, call_input_length - mod(call_input_length - 4, 32) + 1) as call_input_remains
     from {{ ref('oneinch_' + blockchain + '_ar_raw_calls') }}
     where true
         and block_date >= timestamp '{{ date_from }}' -- it is only needed for simple/easy dates
