@@ -15,6 +15,10 @@
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['block_month', 'tx_hash', 'asset_type'],
     partition_by = ['block_month'],
+    post_hook='{{ expose_spells(blockchains = \'["aptos"]\',
+        spell_type = "project",
+        spell_name = "fungible_asset",
+        contributors = \'["ying-w"]\') }}'
 ) }}
 
 WITH mr_fa_metadata AS (

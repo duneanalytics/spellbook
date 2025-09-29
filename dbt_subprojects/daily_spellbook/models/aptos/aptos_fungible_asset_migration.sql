@@ -5,6 +5,10 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['asset_type_v2'],
+    post_hook='{{ expose_spells(blockchains = \'["aptos"]\',
+        spell_type = "project",
+        spell_name = "fungible_asset",
+        contributors = \'["ying-w"]\') }}'
 ) }}
 
 SELECT
