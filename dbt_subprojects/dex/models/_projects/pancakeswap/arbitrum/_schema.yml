@@ -128,3 +128,20 @@ models:
       - *creation_block_number
       - name: contract_address
         description: "Contract address used to create the pool"
+
+  - name: pancakeswap_arbitrum_pools_balances
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: pancakeswap
+      contributors: Henrystats
+    config:
+      tags: ['arbitrum', 'pools', 'liquidity', 'pancakeswap']
+    description: >
+      pancakeswap arbitrum DEX pools balances across all versions
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - token_address
+            - day
