@@ -42,6 +42,9 @@ where token_standard in ('erc20', 'native')
     , pools_column = null 
     , blockchain = null 
     , project = null 
+    , native_token_symbol = null 
+    , pool_native_token_address = null 
+    , balances_native_token_address = null
     )
 %}
 
@@ -52,7 +55,7 @@ get_balances as (
         blockchain
         , day
         , address
-        , token_symbol
+        , if (token_standard = 'native', '{{native_token_symbol}}', token_symbol) as token_symbol
         , token_address
         , balance 
     from 
@@ -60,6 +63,42 @@ get_balances as (
     {% if is_incremental() %}
     where {{ incremental_predicate('day') }}
     {% endif %}
+),
+
+get_pools as (
+    select 
+        pt.version
+        , pt.{{pools_column}} as id
+        {% if token0 %} 
+        , if (
+                pt.{{token0}} = {{pool_native_token_address}}, 
+                {{balances_native_token_address}}, 
+                pt.{{token0}}
+            ) as token0
+        {% endif %}
+        {% if token1 %} 
+        , if (
+                pt.{{token1}} = {{pool_native_token_address}}, 
+                {{balances_native_token_address}}, 
+                pt.{{token1}}
+            ) as token1
+        {% endif %}
+        {% if token2 %} 
+        , if (
+                pt.{{token2}} = {{pool_native_token_address}}, 
+                {{balances_native_token_address}}, 
+                pt.{{token2}}
+            ) as token2
+        {% endif %}
+        {% if token3 %} 
+        , if (
+                pt.{{token3}} = {{pool_native_token_address}}, 
+                {{balances_native_token_address}}, 
+                pt.{{token3}}
+            ) as token3
+        {% endif %}
+    from 
+    {{ pools_table }}
 ),
 
 -- get prices first 
@@ -114,8 +153,8 @@ distinct_days as (
     from 
     distinct_days dd 
     inner join 
-    {{ pools_table }} pt 
-        on dd.address = pt.{{pools_column}}
+    get_pools pt 
+        on dd.address = pt.id
         and dd.blockchain = '{{ blockchain }}'
 
     {% if token0 %} -- token0
@@ -124,7 +163,7 @@ distinct_days as (
         on dd.day = t0.day 
         and dd.address = t0.address 
         and dd.blockchain = t0.blockchain
-        and pt.{{token0}} = t0.token_address 
+        and pt.token0 = t0.token_address 
     {% endif %}
 
     {% if token1 %} -- token1
@@ -133,7 +172,7 @@ distinct_days as (
         on dd.day = t1.day 
         and dd.address = t1.address 
         and dd.blockchain = t1.blockchain
-        and pt.{{token1}} = t1.token_address 
+        and pt.token1 = t1.token_address 
     {% endif %}
 
     {% if token2 %} -- token2
@@ -142,7 +181,7 @@ distinct_days as (
         on dd.day = t2.day 
         and dd.address = t2.address 
         and dd.blockchain = t2.blockchain 
-        and pt.{{token2}} = t2.token_address 
+        and pt.token2 = t2.token_address 
     {% endif %}
 
     {% if token3 %} -- token3
@@ -151,7 +190,7 @@ distinct_days as (
         on dd.day = t3.day 
         and dd.address = t3.address 
         and dd.blockchain = t3.blockchain
-        and pt.{{token3}} = t3.token_address 
+        and pt.token3 = t3.token_address 
     {% endif %}
 
 {% endmacro %}
