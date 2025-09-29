@@ -22,12 +22,7 @@ decoded as (
                 , call_block_time as block_time
                 , call_block_date as block_date
                 , call_tx_hash as tx_hash
-                -- , '{{ contract }}' as contract_name
-                -- , '{{ contract_data['version'] }}' as protocol_version
-                -- , '{{ method }}' as call_method
                 , call_trace_address
-                -- , contract_address as call_to
-                -- , call_success
                 , {{ method_data.get("maker", "cast(null as varbinary)") }} as maker
                 , {{ method_data.get("receiver", "cast(null as varbinary)") }} as receiver
                 , {{ method_data.get("maker_asset", "cast(null as varbinary)") }} as maker_asset
@@ -38,8 +33,8 @@ decoded as (
                 , {{ method_data.get("taking_amount", "cast(null as varbinary)") }} as taking_amount
                 , {{ method_data.get("order_hash", "cast(null as varbinary)") }} as order_hash
                 , {{ method_data.get("order_remains", "0x0000000000") }} as order_remains
-                , {% if method_data.args %}reduce(array[{{ settlements }}], false, (r, x) -> r or coalesce(varbinary_position(args, x), 0) > 0, r -> r){% else %}false{% endif %} as settlement_in_args
-                , {% if method_data.args %}reduce(array[{{ factories }}], false, (r, x) -> r or coalesce(varbinary_position(args, x), 0) > 0, r -> r){% else %}false{% endif %} as factory_in_args
+                , {% if method_data.args %}reduce(array[{{ settlements }}], false, (r, x) -> r or coalesce(varbinary_position({{ method_data.args }}, x), 0) > 0, r -> r){% else %}false{% endif %} as settlement_in_args
+                , {% if method_data.args %}reduce(array[{{ factories }}], false, (r, x) -> r or coalesce(varbinary_position({{ method_data.args }}, x), 0) > 0, r -> r){% else %}false{% endif %} as factory_in_args
                 , {% if 'partial_bit' in method_data %}
                     try(bitwise_and( -- binary AND to allocate significant bit: necessary byte & mask (i.e. * bit weight)
                         bytearray_to_bigint(substr({{ method_data.maker_traits }}, {{ method_data.partial_bit }} / 8 + 1, 1)) -- current byte: partial_bit / 8 + 1 -- integer division
@@ -55,7 +50,6 @@ decoded as (
             from (
                 select *
                     , cast(json_parse({{ method_data.get("order", '"order"') }}) as map(varchar, varchar)) as order_map
-                    , {{ method_data.get("args", "cast(null as varbinary)") }} as args
                 from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}
                 where true
                     and call_block_date >= timestamp '{{ date_from }}' -- there are only calls after the contract creation in the decoded table

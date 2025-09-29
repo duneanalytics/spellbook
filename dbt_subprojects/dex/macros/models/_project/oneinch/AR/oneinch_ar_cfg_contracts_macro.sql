@@ -9,7 +9,7 @@
             "src_token_amount":     "tokensAmount",
             "dst_token_amount":     "output_returnAmount",
             "dst_token_amount_min": "minTokensAmount",
-            "router_type":          "generic",
+            "router_type":          "'generic'",
         },
         "swap": {
             "kit":                  "cast(json_parse(desc) as map(varchar, varchar))",
@@ -20,7 +20,7 @@
             "src_token_amount":     "cast(kit['amount'] as uint256)",
             "dst_token_amount":     "output_returnAmount",
             "dst_token_amount_min": "cast(kit['minReturnAmount'] as uint256)",
-            "router_type":          "generic",
+            "router_type":          "'generic'",
         },
         "unoswap v3-v5": {
             "pools":                "pools",
@@ -29,7 +29,7 @@
             "dst_token_amount_min": "minReturn",
             "direction_mask":       "bytearray_to_uint256(rpad(0x80, 32, 0x00))",
             "unwrap_mask":          "bytearray_to_uint256(rpad(0x40, 32, 0x00))",
-            "router_type":          "unoswap",
+            "router_type":          "'unoswap'",
         },
         "unoswap v6": {
             "src_token_address":    "substr(cast(if(token <> 0, token) as varbinary), 13)",
@@ -44,14 +44,14 @@
             "src_token_offset":     "224",
             "dst_token_mask":       "bytearray_to_uint256(rpad(0x0000ff00, 32, 0x00))",
             "dst_token_offset":     "232",
-            "router_type":          "unoswap",
+            "router_type":          "'unoswap'",
         },
         "clipper": {
             "src_token_address":    "srcToken",
             "dst_token_address":    "dstToken",
             "src_token_amount":     "inputAmount",
             "dst_token_amount":     "output_returnAmount",
-            "router_type":          "clipper",
+            "router_type":          "'clipper'",
         },
     }
 %}

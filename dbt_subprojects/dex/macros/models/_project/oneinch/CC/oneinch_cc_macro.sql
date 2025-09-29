@@ -20,7 +20,7 @@ decoded as (
                 , call_block_date as block_date
                 , call_tx_hash as tx_hash
                 , call_trace_address as iteration_call_trace_address
-                , '{{ contract_data['version'] }}' as iteration_protocol_version
+                , {{ contract_data['version'] }} as iteration_protocol_version
                 , {{ method_data.get("selector", "null") }} as call_selector
                 , {{ method_data.get("flow", "null") }} as flow
                 , {{ method_data.get("factory", "null") }} as factory
