@@ -17,7 +17,7 @@ pool_addresses as (
 filtered_balances AS (
   {{ balances_incremental_subset_daily(
        blockchain=blockchain,
-       start_date='{{start_date}}',
+       start_date=start_date,
        address_list='pool_addresses'
   ) }}
 )
