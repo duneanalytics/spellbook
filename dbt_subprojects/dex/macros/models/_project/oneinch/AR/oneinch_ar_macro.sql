@@ -128,7 +128,7 @@ raw_calls as (
                 ) as call_pools
                 , if(router_type = 'unoswap', cardinality(raw_pools) > 0) as ordinary -- true if call pools is not empty, null for generic
             from decoded
-            join raw_calls using(block_date, block_number, tx_hash, call_trace_address)
+            join raw_calls using(block_date, block_number, tx_hash, call_trace_address) -- to avoid listing all raw_calls columns in the previous step (in decoded cte)
         )
         left join auxiliary using(block_date, block_number, tx_hash)
     )

@@ -47,6 +47,11 @@ calls as (
         , block_time
         , tx_hash
         , call_trace_address
+        , call_to
+        , protocol
+        , contract_name
+        , call_method
+        , call_selector
         , transfer_trace_address
         , contract_address as transfer_contract_address -- original
         , if(token_standard = 'native', {{ meta['blockchains']['wrapped_native_token_address'][blockchain] }}, contract_address) as contract_address
