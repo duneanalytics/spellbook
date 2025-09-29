@@ -10,7 +10,7 @@
 }}
 
 {{
-    uniswap_compatible_v4_base_liquidity_events(
+    pancakeswap_compatible_infinity_base_liquidity_events(
           blockchain = 'bnb'
         , project = 'pancakeswap'
         , version = 'infinity_cl'
@@ -18,6 +18,5 @@
         , PoolManager_evt_Swap = source('pancakeswap_infinity_bnb', 'ClPoolManager_evt_Swap') 
         , liquidity_pools = ref('pancakeswap_infinity_cl_bnb_pools')
         , liquidity_sqrtpricex96 = ref('pancakeswap_infinity_cl_bnb_sqrtpricex96')
-        , PoolManager_call_Take = source('pancakeswap_infinity_bnb', 'clpoolmanager_call_collectprotocolfees')
     )
 }}
