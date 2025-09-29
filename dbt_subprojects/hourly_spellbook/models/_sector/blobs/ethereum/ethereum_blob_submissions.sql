@@ -33,6 +33,7 @@ SELECT
     , t."from" as blob_submitter
     , t.to as blob_receiver
     , COALESCE(l.entity, ls.entity) as blob_submitter_label
+    , l.proposer as blob_proposer_label
     , t.index as tx_index
     , t.success as tx_success
     , t.data as tx_data

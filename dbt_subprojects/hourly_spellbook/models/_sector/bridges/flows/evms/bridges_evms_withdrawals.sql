@@ -6,6 +6,7 @@
     , incremental_strategy='merge'
     , unique_key = ['deposit_chain','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    , tags = ['prod_exclude']
 )
 }}
 
@@ -41,6 +42,9 @@ FROM (
         , contract_address
         , bridge_transfer_id
         FROM {{ ref('bridges_'~chain~'_withdrawals') }}
+        {% if is_incremental() %}
+        WHERE  {{ incremental_predicate('block_time') }}
+        {% endif %}
         {% if not loop.last %}
         UNION ALL
         {% endif %}
@@ -74,3 +78,4 @@ INNER JOIN {{ source('prices', 'usd') }} p ON p.blockchain=w.withdrawal_chain
     {% if is_incremental() %}
     AND {{ incremental_predicate('p.minute') }}
     {% endif %}
+    

@@ -61,6 +61,7 @@
     ,ref('prices_hyperevm_tokens')
     ,ref('prices_peaq_tokens')
     ,ref('prices_somnia_tokens')
+    ,ref('prices_plasma_tokens')
 ] %}
 
 with fungible_tokens as (
