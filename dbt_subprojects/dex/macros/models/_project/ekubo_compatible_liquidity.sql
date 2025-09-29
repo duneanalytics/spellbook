@@ -7,6 +7,7 @@
     , ekubo_core_contract = null 
     , position_updated = null 
     , position_fees_collected = null 
+    , position_fees_accumulated = null
     )
 %}
 
@@ -65,6 +66,24 @@ liquidity_events as (
         'fees_collected' as event_type 
     from 
     {{ position_fees_collected }}
+    {%- if is_incremental() %}
+    where {{ incremental_predicate('evt_block_time') }}
+    {%- endif %}
+
+    union all 
+
+    select 
+        evt_block_time as block_time,
+        evt_block_number as block_number,
+        evt_tx_from as tx_from,
+        poolId as id,
+        amount0 as amount0,
+        amount1 as amount1,
+        evt_tx_hash as tx_hash,
+        evt_index,
+        'fees_accumulated' as event_type 
+    from 
+    {{ position_fees_accumulated }}
     {%- if is_incremental() %}
     where {{ incremental_predicate('evt_block_time') }}
     {%- endif %}

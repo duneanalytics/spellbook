@@ -11,3 +11,4 @@ sources:
       - name: ekubo_core_evt_poolinitialized
       - name: ekubo_core_evt_positionupdated
       - name: ekubo_core_evt_positionfeescollected
+      - name: ekubo_core_evt_feesaccumulated

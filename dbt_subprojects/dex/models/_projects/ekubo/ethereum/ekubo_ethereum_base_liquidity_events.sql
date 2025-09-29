@@ -18,6 +18,7 @@
         , ekubo_core_contract = '0xe0e0e08A6A4b9Dc7bD67BCB7aadE5cF48157d444'
         , position_updated = source ('ekubo_ethereum', 'ekubo_core_evt_positionupdated')
         , position_fees_collected = source ('ekubo_ethereum', 'ekubo_core_evt_positionfeescollected')
+        , position_fees_accumulated = source ('ekubo_ethereum', 'ekubo_core_evt_feesaccumulated')
         , liquidity_pools = ref('ekubo_ethereum_pools')
     )
 }}
