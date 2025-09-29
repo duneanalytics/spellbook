@@ -2,7 +2,7 @@
 
 {{ config(
     schema = 'bridges_' + blockchain,
-    alias = 'witdrawals',
+    alias = 'withdrawals',
     materialized = 'view'
     )
 }}
