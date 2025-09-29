@@ -101,13 +101,48 @@ get_pools as (
     {{ pools_table }} pt 
 ),
 
+prices as (
+    select
+        cast(date_trunc('day', minute) as date) as block_date
+        , blockchain
+        , contract_address
+        , max_by(price, minute) as price
+    from 
+    {{ source('prices','usd_with_native') }}
+    where {{ incremental_predicate('minute') }}
+    group by 1, 2, 3 
+),
+
+prices_day as (
+    select
+        cast(date_trunc('day', timestamp) as date) as block_date
+        , blockchain
+        , contract_address
+        , price
+    from 
+    {{ source('prices','day') }}
+    where volume is not null 
+    and volume > 500000 -- greater than $500k day volume 
+    and {{ incremental_predicate('timestamp') }}
+),
+
 -- get prices first 
 get_prices as (
     select 
-        *
-        , balance * 1 as balance_usd 
+        gb.*
+        , gb.balance * coaleace(p.price, pd.price) as balance_usd 
     from 
-    get_balances
+    get_balances gb 
+    left join 
+    prices p 
+        on gb.token_address = p.contract_address 
+        and gb.blockchain = p.blockchain 
+        and gb.day = p.block_date 
+    left join 
+    prices_day pd
+        on gb.token_address = pd.contract_address 
+        and gb.blockchain = pd.blockchain 
+        and gb.day = pd.block_date 
 ),
 
 distinct_days as (
@@ -121,7 +156,8 @@ distinct_days as (
 )
 
     select 
-        dd.day
+        date_trunc('month', dd.day) as block_month
+        , dd.day as block_date
         , '{{ blockchain }}' as blockchain
         , '{{ project }}' as project
         , pt.version
