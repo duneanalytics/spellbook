@@ -1,7 +1,11 @@
 {{ config(
     schema = 'aptos_fungible_asset',
     alias = 'metadata_current',
-    materialized = 'view'
+    materialized = 'view',
+    post_hook='{{ expose_spells(blockchains = \'["aptos"]\',
+        spell_type = "project",
+        spell_name = "fungible_asset",
+        contributors = \'["ying-w"]\') }}'
 ) }}
 
 WITH latest_metadata AS (
