@@ -56,6 +56,7 @@
     ,ref('prices_plume_tokens')
     ,ref('prices_katana_tokens')
     ,ref('prices_superseed_tokens')
+    ,ref('prices_sui_tokens')
 ] %}
 
 

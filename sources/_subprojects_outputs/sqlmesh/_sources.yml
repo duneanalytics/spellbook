@@ -125,36 +125,20 @@ sources:
             description: "Source of the price data"
             type: varchar
 
-      - name: minute_updates
-        description: "Minute-level token price updates from various sources"
-        columns:
-          - name: blockchain
-            description: "Native blockchain of the token"
-            type: varchar
-          - name: contract_address
-            description: "Contract address of the token"
-            type: varbinary
-          - name: symbol
-            description: "Token symbol"
-            type: varchar
-          - name: timestamp
-            description: "UTC timestamp of the price update"
-            type: "timestamp(3) with time zone"
-          - name: price
-            description: "USD price of a token"
-            type: double
-          - name: decimals
-            description: "Number of decimals for the token contract"
-            type: bigint
-          - name: volume
-            description: "Trading volume in USD"
-            type: double
-          - name: source
-            description: "Source of the price data (e.g., 'dex.trades')"
-            type: varchar
-          - name: next_update
-            description: "Expected timestamp of the next price update"
-            type: "timestamp(3) with time zone"
+  - name: prices_coinpaprika
+    description: "Price data from CoinPaprika API"
+    tables:
+      - name: minute
+      - name: hour
+      - name: day
+      - name: latest
+  - name: prices_dex
+    description: "Price data from DEX pipeline"
+    tables:
+      - name: minute
+      - name: hour
+      - name: day
+      - name: latest
   - name: tokens_v2
     tables:
       - name: erc20
