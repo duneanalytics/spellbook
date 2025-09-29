@@ -126,11 +126,10 @@ prices_day as (
     and {{ incremental_predicate('timestamp') }}
 ),
 
--- get prices first 
 get_prices as (
     select 
         gb.*
-        , gb.balance * coaleace(p.price, pd.price) as balance_usd 
+        , gb.balance * coalesce(p.price, pd.price) as balance_usd 
     from 
     get_balances gb 
     left join 
