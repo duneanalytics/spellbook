@@ -14,7 +14,7 @@ models:
       blockchain: plasma
       sector: dex
       project: uniswap
-      contributors: your_contributor_name
+      contributors: krishhh
     config:
       tags: ["plasma", "dex", "trades", "uniswap", "v3"]
     description: "uniswap plasma v3 base trades"
@@ -33,7 +33,7 @@ models:
       blockchain: plasma
       sector: dex
       project: fluid
-      contributors: your_contributor_name
+      contributors: krishhh
     config:
       tags: ["plasma", "dex", "trades", "fluid", "v1"]
     description: "fluid plasma v1 base trades"
