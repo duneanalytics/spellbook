@@ -86,8 +86,7 @@ with trace_trades as
     SELECT
         block_time
         , tx_hash
-        -- , 0x as pool_id
-        , substr(el."data", 21, 32) AS pool_id -- sanitycheck
+        , substr(el."data", 21, 32) AS pool_id
         , index as evt_index
         , ROW_NUMBER() OVER (PARTITION BY tx_hash ORDER BY index ASC) AS swap_number
     FROM {{ source('ethereum', 'logs') }} el
