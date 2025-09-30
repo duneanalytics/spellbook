@@ -37,30 +37,6 @@ as
     {% endif %}
 
 ),
-
-all_prices as (
-
-    SELECT contract_address, price, minute, blockchain
-    FROM 
-     {{ source('prices', 'usd') }} as asset_prices
-      {% if is_incremental() %}
-            WHERE {{ incremental_predicate('minute') }}
-        {% endif %}
-    UNION ALL
-    SELECT
-     contract_address, price, minute, blockchain
-    FROM atoken_prices
-
-),
--- all_prices_with_rn as (
---     SELECT  contract_address, price, minute, blockchain, row_number() over (partition by contract_address, minute, blockchain order by price desc) as rn
---     FROM all_prices
--- ),
--- deduped_prices as (
---     SELECT contract_address, price, minute, blockchain
---     FROM all_prices_with_rn
---     WHERE rn = 1
--- ),
 -- First subquery joins buy and sell token prices from prices.usd.
 -- Also deducts fee from sell amount.
 trades_with_prices AS (
@@ -78,17 +54,17 @@ trades_with_prices AS (
            sellAmount - feeAmount    as sell_amount,
            buyAmount                 as buy_amount,
            feeAmount                 as fee_amount,
-           ps.price                  as sell_price,
-           pb.price                  as buy_price
+           coalesce(ps.price, atoken_ps.price)                  as sell_price,
+           coalesce(pb.price, atoken_pb.price)                  as buy_price
     FROM {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Trade') }} trade
-             LEFT OUTER JOIN all_prices as ps
+             LEFT OUTER JOIN {{ source('prices', 'usd') }} as ps
                              ON sellToken = ps.contract_address
                                  AND ps.minute = date_trunc('minute', evt_block_time)
                                  AND ps.blockchain = 'ethereum'
                                  {% if is_incremental() %}
                                  AND {{ incremental_predicate('ps.minute') }}
                                  {% endif %}
-             LEFT OUTER JOIN all_prices as pb
+             LEFT OUTER JOIN {{ source('prices', 'usd') }} as pb
                              ON pb.contract_address = (
                                  CASE
                                      WHEN buyToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
@@ -100,6 +76,23 @@ trades_with_prices AS (
                                  {% if is_incremental() %}
                                  AND {{ incremental_predicate('pb.minute') }}
                                  {% endif %}
+            LEFT OUTER JOIN atoken_prices as atoken_pb
+                             ON atoken_pb.contract_address = (
+                                 CASE
+                                     WHEN buyToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                                         THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                                     ELSE buyToken
+                                     END)
+                                 AND atoken_pb.minute = date_trunc('minute', evt_block_time)
+            LEFT OUTER JOIN atoken_prices as atoken_ps
+                             ON atoken_ps.contract_address = (
+                                 CASE
+                                     WHEN buyToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                                         THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                                     ELSE buyToken
+                                     END)
+                                 AND atoken_ps.minute = date_trunc('minute', evt_block_time)
+                                 
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
