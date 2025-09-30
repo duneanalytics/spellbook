@@ -7,6 +7,10 @@
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['block_month', 'tx_hash', 'from_index', 'to_index'],
     partition_by = ['block_month'],
+    post_hook='{{ expose_spells(blockchains = \'["aptos"]\',
+        spell_type = "project",
+        spell_name = "stablecoins",
+        contributors = \'["ying-w"]\') }}'
 ) }}
 -- usdt is minted to a reserve account
 -- 0xd5b71ee4d1bad5cb7f14c880ee55633c7befcb7384cf070919ea5c481019a4e9
@@ -96,8 +100,9 @@ WITH events AS (
     SELECT
         f.block_date,
         f.block_time,
-        f.txn_version,
-        f.txn_hash,
+        date(date_trunc('month', f.block_time)) as block_month,
+        f.tx_version,
+        f.tx_hash,
         f.session_id,
         f.store_owner AS from_account,
         f.fungible_store AS from_store,
