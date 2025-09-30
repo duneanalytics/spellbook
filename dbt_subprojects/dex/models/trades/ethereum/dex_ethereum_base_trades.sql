@@ -100,4 +100,4 @@ with base_union as (
     )
 }}
 
--- refresh model again 
+-- refresh model
