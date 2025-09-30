@@ -86,12 +86,7 @@ trades_with_prices AS (
                                      END)
                                  AND atoken_pb.minute = date_trunc('minute', evt_block_time)
             LEFT OUTER JOIN atoken_prices as atoken_ps
-                             ON atoken_ps.contract_address = (
-                                 CASE
-                                     WHEN buyToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                                         THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
-                                     ELSE buyToken
-                                     END)
+                             ON atoken_ps.contract_address = sellToken
                                  AND atoken_ps.minute = date_trunc('minute', evt_block_time)
                                  
     {% if is_incremental() %}
