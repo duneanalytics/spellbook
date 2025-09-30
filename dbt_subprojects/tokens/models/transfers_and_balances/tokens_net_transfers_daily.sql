@@ -24,6 +24,7 @@
     , 'mantle'
     , 'opbnb'
     , 'optimism'
+    , 'plasma'
     , 'polygon'
     , 'ronin'
     , 'scroll'
