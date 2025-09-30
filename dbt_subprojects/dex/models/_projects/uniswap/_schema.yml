@@ -253,3 +253,20 @@ models:
       - &token1_balance_usd
         name: token1_balance_usd
         description: "Liquidity balance of token1 in USD"
+
+  - name: uniswap_v4_base_liquidity_events
+    meta:
+      blockchain: ethereum,arbitrum,base,optimism,polygon,zora,blast,bnb,avalanche_c,worldchain,unichain
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: [ 'dex' ]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - event_type
