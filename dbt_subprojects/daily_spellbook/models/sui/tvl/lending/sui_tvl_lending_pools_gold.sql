@@ -61,7 +61,6 @@ select
             else (l.eod_collateral_amount - l.eod_borrow_amount)
         end
     ) as btc_supply
-    --trigger run here 
     -- USD Values
     , p.price as btc_price_usd
     , cast(coalesce(cast(sum(l.eod_collateral_amount) as double) * p.price, 0) as decimal(38,8)) as btc_collateral_usd
