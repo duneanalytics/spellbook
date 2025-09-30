@@ -270,3 +270,21 @@ models:
             - tx_hash
             - evt_index
             - event_type
+
+  - name: uniswap_v4_liquidity_events
+    meta:
+      blockchain: ethereum,arbitrum,base,optimism,polygon,zora,blast,bnb,avalanche_c,worldchain,ink,unichain
+      sector: dex
+      short_description: The `uniswap_v4.liquidity_events` table captures liquidity data on Uniswap V4. This table contains a detailed breakdown of liquidity pmodified per transaction. 
+      contributors: Henrystats
+    config:
+      tags: [ 'dex', 'liquidity_events']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - event_type
