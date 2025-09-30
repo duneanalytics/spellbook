@@ -16,6 +16,7 @@ with
 
 decoded as (
     {% for contract, contract_data in contracts.items() if blockchain in contract_data['blockchains'] %}
+        -- CONTRACT: {{ contract }} --
         {% for method, method_data in contract_data.methods.items() %}
             select
                 call_block_number as block_number

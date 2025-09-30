@@ -14,6 +14,7 @@ with
 
 decoded as (
     {% for contract, contract_data in contracts.items() if blockchain in contract_data.blockchains %}
+        -- CONTRACT: {{ contract }} --
         {% for method, method_data in contract_data.methods.items() if blockchain in method_data.get('blockchains', contract_data.blockchains) %}{# method-level blockchains override contract-level blockchains #}
             select
                 call_block_number as block_number

@@ -117,7 +117,7 @@ select
     , transfer_from
     , transfer_to
     , coalesce(native_symbol, symbol, token_symbol) as transfer_symbol
-    , transfer_amount
+    , amount as transfer_amount
     , amount * price / pow(10, coalesce(token_decimals, decimals)) as transfer_amount_usd
     , coalesce(token_decimals, decimals) as transfer_decimals
     , coalesce(trusted, false) as trusted

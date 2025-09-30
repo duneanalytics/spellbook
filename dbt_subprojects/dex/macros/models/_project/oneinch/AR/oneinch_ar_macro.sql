@@ -27,11 +27,10 @@ raw_calls as (
 
 , decoded as (
     {% for contract, contract_data in contracts.items() if blockchain in contract_data.blockchains %}
+        -- CONTRACT: {{ contract }} --
         {% for method, method_data in contract_data.methods.items() if blockchain in method_data.get('blockchains', contract_data.blockchains) and not method_data.get('auxiliary', false) %}{# method-level blockchains override contract-level blockchains #}
             select
-                call_block_number as block_number
-                , call_block_date as block_date
-                , call_tx_hash as tx_hash
+                raw_calls.*
                 , call_trace_address
                 , {{ method_data.get("src_token_address", "null") }} as src_token_address
                 , {{ method_data.get("dst_token_address", "null") }} as dst_token_address
@@ -131,7 +130,6 @@ raw_calls as (
                 ) as call_pools
                 , if(router_type = 'unoswap', cardinality(raw_pools) > 0) as ordinary -- true if call pools is not empty, null for generic
             from decoded
-            join raw_calls using(block_date, block_number, tx_hash, call_trace_address) -- to avoid listing all raw_calls columns in the previous step (in decoded cte)
         )
         left join auxiliary using(block_date, block_number, tx_hash)
     )
