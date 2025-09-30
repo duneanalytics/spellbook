@@ -1,7 +1,8 @@
 {{ config(
     schema = 'bridges_crosschain',
     alias = 'flows',
-    materialized = 'view'
+    materialized = 'view',
+    tags = ['prod_exclude']
     )
 }}
 
