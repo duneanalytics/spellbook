@@ -31,6 +31,7 @@
         "opbnb",
         "optimism",
         "peaq",
+        "plasma",
         "plume",
         "polygon",
         "zkevm",
