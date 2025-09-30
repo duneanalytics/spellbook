@@ -33,6 +33,7 @@ SELECT address
         , (0xe1b64045351b0b6e9821f19b39f81bc4711d2230, 'Boba Network', '', 'bobanetwork')
         , (0xa4ed58737fc5c4861c33410c29ecb1e2af29d960, 'Boba Network', '', 'bobanetwork')
         , (0x08f9f14ff43e112b18c96f0986f28cb1878f1d11, 'BOB Network', '', 'build_on_bob')
+        , (0x7cb1022d30b9860c36b243e7b181a1d46f618c69, 'BOB Network', '', 'build_on_bob')
         , (0x5ead389b57d533a94a0eacd570dc1cc59c25f2d4, 'Parallel', '', 'ParallelFi')
         , (0x40acdc94a00b33151b40763b3fed7c46ff639df4, 'Parallel', '', 'ParallelFi')
         , (0xcf2898225ed05be911d3709d9417e86e0b4cfc8f, 'Scroll', '', 'Scroll_ZKP')
@@ -130,4 +131,5 @@ SELECT address
         , (0x75efae926bcb72433c70fbfa76588f16338397de, 'Proof of Play Boss', '', 'ProofOfPlay')
         , (0x583e2c664c868611a6e3f1d6dcbc8aa00de43a7f, 'Superposition', '', 'Superpositionso')
         , (0x8b5606469e21c75edd7c74d1c7a65824675d9aff, 'Spire DA Builder', '', 'spire_labs')
+        , (0xbe7f4edb6257b4d2c77293c380f19ce96a4fa41e, 'Symbiosis', '', 'symbiosis_fi')
         ) AS x(address, entity, proposer, x_username)
