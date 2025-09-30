@@ -52,9 +52,14 @@ all_prices as (
     FROM atoken_prices
 
 ),
-deduped_prices as (
+all_prices_with_rn as (
     SELECT  contract_address, price, minute, blockchain, row_number() over (partition by contract_address, minute, blockchain order by price desc) as rn
     FROM all_prices
+),
+deduped_prices as (
+    SELECT contract_address, price, minute, blockchain
+    FROM all_prices_with_rn
+    WHERE rn = 1
 ),
 -- First subquery joins buy and sell token prices from prices.usd.
 -- Also deducts fee from sell amount.
@@ -98,8 +103,6 @@ trades_with_prices AS (
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
-    AND ps.rn = 1
-    AND pb.rn = 1
 ),
 -- Second subquery gets token symbol and decimals from tokens.erc20 (to display units bought and sold)
 trades_with_token_units as (
