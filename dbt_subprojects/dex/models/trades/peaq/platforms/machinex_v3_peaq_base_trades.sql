@@ -14,16 +14,11 @@
 
 WITH pool_tokens AS (
     SELECT 
-        i.contract_address as pool,
-        c0.output_0 as token0,
-        c1.output_0 as token1
-    FROM {{ source('machinex_peaq', 'machinexv3pool_evt_initialize') }} i
-    LEFT JOIN {{ source('machinex_peaq', 'machinexv3pool_call_token0') }} c0
-        ON i.contract_address = c0.contract_address 
-        AND c0.call_success = true
-    LEFT JOIN {{ source('machinex_peaq', 'machinexv3pool_call_token1') }} c1
-        ON i.contract_address = c1.contract_address 
-        AND c1.call_success = true
+        output_pool as pool,
+        token0,
+        token1
+    FROM {{ source('machinex_peaq', 'nonfungiblepositionmanager_call_createandinitializepoolifnecessary') }}
+    WHERE call_success = true
     GROUP BY 1, 2, 3
 ),
 

@@ -4,6 +4,4 @@ sources:
   - name: machinex_peaq
     tables:
       - name: machinexv3pool_evt_swap
-      - name: machinexv3pool_evt_initialize
-      - name: machinexv3pool_call_token0
-      - name: machinexv3pool_call_token1 
+      - name: nonfungiblepositionmanager_call_createandinitializepoolifnecessary 
