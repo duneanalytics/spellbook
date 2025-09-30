@@ -240,7 +240,7 @@ models:
       contributors: ying-w
     config:
       tags: ['aptos','stablecoins']
-    description: usdt mint, burn, withdraw, deposit volume
+    description: usdc mint, burn, withdraw, deposit volume
     data_tests:
       - dbt_utils.unique_combination_of_columns:
          combination_of_columns: ['tx_hash', 'event_index']
@@ -292,12 +292,12 @@ models:
         description: Virtual index for transfer within transaction
       - name: from_account
         description: Owner of fungible store that origninates funds
-      - name: from_astore
+      - name: from_store
         description: Address of fungible store that origninates funds
       - name: to_account
         description: Owner of fungible store that receives funds
       - name: to_store
-        description: Address of fungible store that origninates funds
+        description: Address of fungible store that receives funds
       - name: amount
         description: raw asset amount (before taking into account decimals)
       - name: from_index
@@ -338,13 +338,13 @@ models:
       - name: session_id
         description: Virtual index for transfer within transaction
       - name: from_account
-        description: Owner of fungible store that origninates funds
-      - name: from_astore
-        description: Address of fungible store that origninates funds
+        description: Owner of fungible store that originates funds
+      - name: from_store
+        description: Address of fungible store that originates funds
       - name: to_account
         description: Owner of fungible store that receives funds
       - name: to_store
-        description: Address of fungible store that origninates funds
+        description: Address of fungible store that receives funds
       - name: amount
         description: raw asset amount (before taking into account decimals)
       - name: from_index
