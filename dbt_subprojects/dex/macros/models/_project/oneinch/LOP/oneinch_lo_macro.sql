@@ -47,6 +47,7 @@ decoded as (
                         , cast(pow(2, {{ method_data.multiple_bit }} - {{ method_data.multiple_bit }} / 8 * 8) as bigint) -- 2 ^ (multiple_bit - multiple_bit / 8 * 8) -- bit_weights = array[128, 64, 32, 16, 8, 4, 2, 1]
                     ) > 0) -- if set, the order permits multiple fills
                 {% else %} null {% endif %} as multiple
+                , row_number() over(partition by call_tx_hash order by call_trace_address) as tx_call_id
             from (
                 select *
                     , cast(json_parse({{ method_data.get("order", '"order"') }}) as map(varchar, varchar)) as order_map
@@ -65,7 +66,6 @@ decoded as (
     select *
         , substr(call_input, call_input_length - mod(call_input_length - 4, 32) + 1) as call_input_remains
         , call_from in ({{ settlements }}) as call_from_settlement
-        , array_join(call_trace_address, '') as call_id
     from {{ ref('oneinch_' + blockchain + '_lo_raw_calls') }}
     where true
         and block_date >= timestamp '{{ date_from }}'
@@ -114,7 +114,7 @@ select
     , protocol
     , protocol_version
     , contract_name
-    , coalesce(order_hash, concat(tx_hash, from_hex(ltrim(cast(cast(cast(concat('0', array_join(call_trace_address, '')) as uint256) as varbinary) as varchar), '0x00')))) as order_hash
+    , coalesce(order_hash, concat(tx_hash, substr(to_big_endian_64(tx_call_id), 5))) as order_hash
     , maker
     , receiver
     , maker_asset
