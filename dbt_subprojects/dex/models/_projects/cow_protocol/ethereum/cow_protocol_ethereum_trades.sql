@@ -32,6 +32,7 @@ as
     INNER JOIN {{ source('prices', 'usd') }} prc
     ON atkm.underlying_address = prc.contract_address
     WHERE atkm.blockchain = 'ethereum'
+    and prc.blockchain = 'ethereum'
     {% if is_incremental() %}
                 AND {{ incremental_predicate('minute') }}
     {% endif %}
