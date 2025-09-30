@@ -79,7 +79,7 @@ WITH bridge AS (
         activity.activity_type,
         activity.amount,
         COALESCE(activity.fungible_store, m.fungible_store, b.fungible_store) AS fungible_store,
-        COALESCE(activity.store_owner, m.store_owner, b.store_owner, bridge.store_owner) AS store_owner
+        COALESCE(activity.store_owner, m.store_owner, b.store_owner, from_hex(bridge.store_owner)) AS store_owner
     FROM activity
     LEFT JOIN ( -- to catch non-bridge mints
         SELECT * FROM activity WHERE activity_type = 'Deposit'
