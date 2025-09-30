@@ -27,21 +27,21 @@ WITH events AS (
     {% endif %}
 ), cumulative AS (
     SELECT *,
-        SUM(net_amount) OVER (PARTITION BY txn_version ORDER BY event_index ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS balance_tracker
+        SUM(net_amount) OVER (PARTITION BY tx_version ORDER BY event_index ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS balance_tracker
     FROM events
 ), sessioning AS (
     SELECT *,
-        COALESCE(SUM(IF(balance_tracker >= 0, 1, 0)) OVER (PARTITION BY txn_version ORDER BY event_index ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING),0) AS session_id,
+        COALESCE(SUM(IF(balance_tracker >= 0, 1, 0)) OVER (PARTITION BY tx_version ORDER BY event_index ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING),0) AS session_id,
         balance_tracker > 0 AS missing_event -- qc
     FROM cumulative
 ), session_sum AS (
     SELECT *,
         SUM(amount) OVER (
-            PARTITION BY txn_version, session_id, IF(activity_type IN ('Withdraw', 'Mint'), 1, 0)
+            PARTITION BY tx_version, session_id, IF(activity_type IN ('Withdraw', 'Mint'), 1, 0)
             ORDER BY event_index ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
         ) AS amount_csum,
         SUM(amount) OVER (
-            PARTITION BY txn_version, session_id, IF(activity_type IN ('Withdraw', 'Mint'), 1, 0)
+            PARTITION BY tx_version, session_id, IF(activity_type IN ('Withdraw', 'Mint'), 1, 0)
             ORDER BY event_index ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING
         ) AS amount_csum_prev
     FROM sessioning
@@ -92,16 +92,16 @@ WITH events AS (
         sc.n_burn > 0 AS has_burn
     FROM (SELECT * FROM session_sum WHERE activity_type IN ('Withdraw', 'Mint')) f
     LEFT JOIN (SELECT * FROM session_sum WHERE activity_type IN ('Deposit', 'Burn')) t
-    ON f.txn_version = t.txn_version
+    ON f.tx_version = t.tx_version
     AND f.session_id = t.session_id
     LEFT JOIN session_counter sc
-    ON f.txn_version = sc.txn_version
+    ON f.tx_version = sc.tx_version
     AND f.session_id = sc.session_id
     WHERE 1=1
     AND f.amount_csum > COALESCE(t.amount_csum_prev,0)
     AND t.amount_csum > COALESCE(f.amount_csum_prev,0)
 )
 
-SELECT *, ROW_NUMBER() OVER (PARTITION BY txn_version ORDER BY amount DESC) AS amount_rank
+SELECT *, ROW_NUMBER() OVER (PARTITION BY tx_version ORDER BY amount DESC) AS amount_rank
 FROM transfers_multi_fifo
 -- WHERE from_store != COALESCE(to_store, '') -- exclude self transfers, ex. 2891465845
