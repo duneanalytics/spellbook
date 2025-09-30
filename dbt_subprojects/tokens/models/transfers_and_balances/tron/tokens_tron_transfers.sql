@@ -21,3 +21,5 @@
         , blockchain = 'tron'
     )
 }}
+
+WHERE block_time >= now() - interval '2' day
