@@ -1,6 +1,6 @@
 {{ config(
     schema = 'aptos_stablecoins',
-    alias = 'usdc_volume',
+    alias = 'usdt_volume',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

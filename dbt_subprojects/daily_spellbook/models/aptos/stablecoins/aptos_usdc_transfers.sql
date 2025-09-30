@@ -7,6 +7,10 @@
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['block_month', 'tx_hash', 'from_index', 'to_index'],
     partition_by = ['block_month'],
+    post_hook='{{ expose_spells(blockchains = \'["aptos"]\',
+        spell_type = "project",
+        spell_name = "stablecoins",
+        contributors = \'["ying-w"]\') }}'
 ) }}
 WITH events AS (
     SELECT
@@ -95,6 +99,7 @@ WITH events AS (
     SELECT
         f.block_date,
         f.block_time,
+        date(date_trunc('month', f.block_time)) as block_month,
         f.tx_version,
         f.tx_hash,
         f.session_id,
