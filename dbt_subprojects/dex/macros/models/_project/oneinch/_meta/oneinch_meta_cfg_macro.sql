@@ -10,10 +10,10 @@
     set streams = {
         "ar": {
             "start": {
-                "_initial"  : "2025-09-10",
-                "raw_calls" : "2025-09-10",
-                "transfers" : "2025-09-10",
-                "executions": "2025-09-10",
+                "_initial"  : "2025-09-28",
+                "raw_calls" : "2025-09-28",
+                "transfers" : "2025-09-28",
+                "executions": "2025-09-28",
             },
             "contracts" : oneinch_ar_cfg_contracts_macro(),
             "exposed"   : ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea", "sonic", "unichain"],
@@ -21,11 +21,11 @@
         },
         "lo": {
             "start": {
-                "_initial"  : "2025-09-10",
-                "raw_calls" : "2025-09-10",
-                "transfers" : "2025-09-10",
-                "executions": "2025-09-10",
-                "fusion"    : "2025-09-10",
+                "_initial"  : "2025-09-28",
+                "raw_calls" : "2025-09-28",
+                "transfers" : "2025-09-28",
+                "executions": "2025-09-28",
+                "fusion"    : "2025-09-28",
             },
             "contracts" : oneinch_lo_cfg_contracts_macro(),
             "exposed"   : ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea", "sonic", "unichain"],
@@ -33,10 +33,10 @@
         },
         "cc": {
             "start": {
-                "_initial"  : "2025-09-10",
-                "raw_calls" : "2025-09-10",
-                "transfers" : "2025-09-10",
-                "executions": "2025-09-10",
+                "_initial"  : "2025-09-28",
+                "raw_calls" : "2025-09-28",
+                "transfers" : "2025-09-28",
+                "executions": "2025-09-28",
             },
             "contracts" : oneinch_cc_cfg_contracts_macro(),
             "exposed"   : ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "base", "linea", "sonic", "unichain"],
