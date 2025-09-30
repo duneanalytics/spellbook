@@ -86,10 +86,10 @@ with trace_trades as
     SELECT
         block_time
         , tx_hash
-        , substr("data", 21, 32) AS pool_id
+        , substr(el."data", 21, 32) AS pool_id
         , index as evt_index
         , ROW_NUMBER() OVER (PARTITION BY tx_hash ORDER BY index ASC) AS swap_number
-    FROM {{ source('ethereum', 'logs') }}
+    FROM {{ source('ethereum', 'logs') }} el
     WHERE 1=1
         AND block_time >= timestamp '{{ project_deployed_on }}'
         AND cast(contract_address as varchar) in 
