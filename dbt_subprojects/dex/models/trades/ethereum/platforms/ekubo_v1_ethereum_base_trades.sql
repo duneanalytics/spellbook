@@ -86,6 +86,7 @@ with trace_trades as
     SELECT
         block_time
         , tx_hash
+        , substr("data", 21, 32) AS pool_id
         , index as evt_index
         , ROW_NUMBER() OVER (PARTITION BY tx_hash ORDER BY index ASC) AS swap_number
     FROM {{ source('ethereum', 'logs') }}
@@ -116,7 +117,7 @@ SELECT
     , from_hex(token_bought_address) AS token_bought_address
     , from_hex(token_sold_address) AS token_sold_address
     , from_hex(tt.taker) AS taker
-    , from_hex(tt.maker) AS maker
+    , from_hex(et.pool_id) AS maker
     , project_contract_address
     , tt.tx_hash
     , et.evt_index AS evt_index 
