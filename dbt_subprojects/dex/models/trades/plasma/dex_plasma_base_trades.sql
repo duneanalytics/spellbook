@@ -12,6 +12,7 @@
 
 {% set plasma_models = [
     ref('uniswap_v3_plasma_base_trades')
+    , ref('fluid_v1_plasma_base_trades')
 ] %}
 
 with plasma_union as (

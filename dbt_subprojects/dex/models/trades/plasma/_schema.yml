@@ -26,4 +26,23 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('uniswap_v3_plasma_base_trades_seed')
           filter:
-            version: 3 
+            version: 3
+
+  - name: fluid_v1_plasma_base_trades
+    meta:
+      blockchain: plasma
+      sector: dex
+      project: fluid
+      contributors: your_contributor_name
+    config:
+      tags: ["plasma", "dex", "trades", "fluid", "v1"]
+    description: "fluid plasma v1 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('fluid_v1_plasma_base_trades_seed')
+          filter:
+            version: 1 
