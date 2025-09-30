@@ -32,7 +32,7 @@ WITH events AS (
 ), sessioning AS (
     SELECT *,
         COALESCE(SUM(IF(balance_tracker >= 0, 1, 0)) OVER (PARTITION BY txn_version ORDER BY event_index ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING),0) AS session_id,
-        balance_tracker > 0 AS missing_event, -- qc
+        balance_tracker > 0 AS missing_event -- qc
     FROM cumulative
 ), session_sum AS (
     SELECT *,
@@ -43,7 +43,7 @@ WITH events AS (
         SUM(amount) OVER (
             PARTITION BY txn_version, session_id, IF(activity_type IN ('Withdraw', 'Mint'), 1, 0)
             ORDER BY event_index ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING
-        ) AS amount_csum_prev,
+        ) AS amount_csum_prev
     FROM sessioning
 ), session_counter AS (
     SELECT
@@ -59,42 +59,9 @@ WITH events AS (
         MAX(IF(activity_type = 'Withdraw', amount, 0)) AS max_withdraw,
         MAX(IF(activity_type = 'Deposit', amount, 0)) AS max_deposit,
         MAX(IF(activity_type = 'Mint', amount, 0)) AS max_mint,
-        MAX(IF(activity_type = 'Burn', amount, 0)) AS max_burn,
+        MAX(IF(activity_type = 'Burn', amount, 0)) AS max_burn
     FROM sessioning
     GROUP BY ALL
-), transfers_ez AS (
-    -- cannot handle many:many
-    SELECT
-        w.block_date,
-        w.block_time,
-        w.tx_version,
-        w.tx_hash,
-        w.session_id,
-        w.store_owner AS from_account,
-        w.fungible_store AS from_store,
-        d.store_owner AS to_account,
-        d.fungible_store AS to_store,
-        w.amount AS from_amount,
-        d.amount AS to_amount,
-        LEAST(w.amount, d.amount) AS amount,
-        w.event_index AS from_index,
-        d.event_index AS to_index,
-        sc.n_withdraw + sc.n_mint > 1 AS from_many,
-        sc.n_deposit + sc.n_burn > 1 AS to_many,
-        sc.n_mint > 0 AS has_mint,
-        sc.n_burn > 0 AS has_burn,
-    FROM sessioning w
-    INNER JOIN sessioning d
-    ON w.txn_version = d.txn_version
-    AND w.event_index < d.event_index
-    AND (w.activity_type = 'Withdraw' OR w.activity_type = 'Mint')
-    AND (d.activity_type = 'Deposit' OR d.activity_type = 'Burn')
-    AND w.session_id = d.session_id
-    LEFT JOIN session_counter sc
-    ON w.txn_version = sc.txn_version
-    AND w.session_id = sc.session_id
-    WHERE 1=1
-    AND (n_withdraw + n_mint = 1 OR n_deposit + n_burn = 1) -- ensure only one side of transfer
 ), transfers_multi_fifo AS (
     SELECT
         f.block_date,
@@ -122,7 +89,7 @@ WITH events AS (
         sc.n_withdraw + sc.n_mint > 1 AS from_many,
         sc.n_deposit + sc.n_burn > 1 AS to_many,
         sc.n_mint > 0 AS has_mint,
-        sc.n_burn > 0 AS has_burn,
+        sc.n_burn > 0 AS has_burn
     FROM (SELECT * FROM session_sum WHERE activity_type IN ('Withdraw', 'Mint')) f
     LEFT JOIN (SELECT * FROM session_sum WHERE activity_type IN ('Deposit', 'Burn')) t
     ON f.txn_version = t.txn_version
