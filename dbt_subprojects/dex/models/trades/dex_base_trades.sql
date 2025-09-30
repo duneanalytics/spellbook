@@ -32,6 +32,7 @@
     , ref('dex_opbnb_base_trades')
     , ref('dex_optimism_base_trades')
     , ref('dex_peaq_base_trades')
+    , ref('dex_plasma_base_trades')
     , ref('dex_plume_base_trades')
     , ref('dex_polygon_base_trades')
     , ref('dex_ronin_base_trades')
