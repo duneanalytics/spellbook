@@ -24,8 +24,7 @@ WITH bridge AS (
         -- only for burn
         CAST(json_extract_scalar(data, '$.destination_domain') AS INT) AS destination_domain,
         json_extract_scalar(data, '$.mint_recipient') AS mint_recipient
-    -- FROM {{ source('aptos', 'events') }}
-    FROM aptos.events
+    FROM {{ source('aptos', 'events') }}
     WHERE 1=1
     AND event_type IN (
         '0x9bce6734f7b63e835108e3bd8c36743d4709fe435f44791918801d0989640a9d::token_messenger::DepositForBurn', -- 2360646121
