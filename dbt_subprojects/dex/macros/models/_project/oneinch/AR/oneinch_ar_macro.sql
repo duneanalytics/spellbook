@@ -39,7 +39,7 @@ raw_calls as (
                 , {{ method_data.get("src_token_amount", "null") }} as src_token_amount
                 , {{ method_data.get("dst_token_amount", "null") }} as dst_token_amount
                 , {{ method_data.get("dst_token_amount_min", "null") }} as dst_token_amount_min
-                , {{ method_data.get("pools", "array[]") }} as raw_pools
+                , {{ method_data.get("pools", "null") }} as raw_pools
                 , {{ method_data.get("pool_type_mask", "null") }} as pool_type_mask
                 , {{ method_data.get("pool_type_offset", "null") }} as pool_type_offset
                 , {{ method_data.get("direction_mask", "null") }} as direction_mask
@@ -119,9 +119,9 @@ raw_calls as (
                 , ('src_token_index', bitwise_right_shift(bitwise_and(x, src_token_mask), src_token_offset))
                 , ('dst_token_index', bitwise_right_shift(bitwise_and(x, dst_token_mask), dst_token_offset))
             ])) as parsed_pools
-            , if(slice(call_trace_address, 1, cardinality(auxiliary_trace_address)) = auxiliary_trace_address, auxiliary_remains, call_input_remains) as actual_remains
-            , if(slice(call_trace_address, 1, cardinality(auxiliary_trace_address)) = auxiliary_trace_address, auxiliary_call_from, call_from) as actual_call_from
-            , if(slice(call_trace_address, 1, cardinality(auxiliary_trace_address)) = auxiliary_trace_address, auxiliary_call_to, call_to) as actual_call_to
+            , if(slice(call_trace_address, 1, cardinality(auxiliary_trace_address)) = auxiliary_trace_address, auxiliary_remains, call_input_remains) as actual_remains -- remains from the parent auxiliary call
+            , if(slice(call_trace_address, 1, cardinality(auxiliary_trace_address)) = auxiliary_trace_address, auxiliary_call_from, call_from) as actual_call_from -- caller from the parent auxiliary call
+            , if(slice(call_trace_address, 1, cardinality(auxiliary_trace_address)) = auxiliary_trace_address, auxiliary_call_to, call_to) as actual_call_to -- executor from the parent auxiliary call
         from (
             select *
                 , if(router_type = 'unoswap' and cardinality(raw_pools) = 0
@@ -181,8 +181,8 @@ select
     , contract_name
     , src_receiver
     , dst_receiver
-    , if(element_at(pools[1], 'unwrap') = 0x01 and pool_src_token_address = {{ wrapper }} and call_value > uint256 '0', {{ native }}, pool_src_token_address) as src_token_address
-    , if(element_at(reverse(pools)[1], 'unwrap') = 0x01 and pool_dst_token_address = {{ wrapper }}, {{ native }}, pool_dst_token_address) as dst_token_address
+    , coalesce(src_token_address, if(element_at(pools[1], 'unwrap') = 0x01 and pool_src_token_address = {{ wrapper }} and call_value > uint256 '0', {{ native }}, pool_src_token_address)) as src_token_address
+    , coalesce(dst_token_address, if(element_at(reverse(pools)[1], 'unwrap') = 0x01 and pool_dst_token_address = {{ wrapper }}, {{ native }}, pool_dst_token_address)) as dst_token_address
     , src_token_amount
     , dst_token_amount
     , dst_token_amount_min
