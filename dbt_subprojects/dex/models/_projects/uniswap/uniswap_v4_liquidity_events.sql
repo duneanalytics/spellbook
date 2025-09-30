@@ -72,4 +72,4 @@ uniswap_liquidity_events as (
             ON v4.tx_hash = ul.tx_hash 
             AND v4.id = ul.id 
             AND v4.evt_index = ul.evt_index 
-            AND v4.evevnt_type = ul.event_type 
+            AND v4.event_type = ul.event_type 
