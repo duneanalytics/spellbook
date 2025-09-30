@@ -69,10 +69,10 @@ raw_calls as (
         , min_by(call_input_remains, call_trace_address) as auxiliary_remains
         , min_by(call_from, call_trace_address) as auxiliary_call_from
         , min_by(call_to, call_trace_address) as auxiliary_call_to
-        , min(trace_address) as auxiliary_trace_address
+        , min(call_trace_address) as auxiliary_trace_address
     from raw_calls
     where auxiliary
-    group by 1, 2, 3, 4
+    group by 1, 2, 3
 )
 
 , pools_list as (
@@ -90,16 +90,16 @@ raw_calls as (
     select *
         , coalesce(
             src_token_address -- src_token_address from params
-            , try(case -- try to get src_token_address from first pool: pools[1]
-                when pools[1]['pool_type'] = 2 then first_pool_tokens[cast(pools[1]['src_token_index'] as int) + 1] -- when pool type = 2, i.e Curve pool, than get src token address from first_pool_tokens by src token index
-                else first_pool_tokens[cast(pools[1]['direction'] as int) + 1] -- when other cases, i.e. Uniswap compatible pool, than get src token address from first_pool_tokens by direction
+            , try(case -- try to get src_token_address from first pool: parsed_pools[1]
+                when parsed_pools[1]['pool_type'] = 2 then first_pool_tokens[cast(parsed_pools[1]['src_token_index'] as int) + 1] -- when pool type = 2, i.e Curve pool, than get src token address from first_pool_tokens by src token index
+                else first_pool_tokens[cast(parsed_pools[1]['direction'] as int) + 1] -- when other cases, i.e. Uniswap compatible pool, than get src token address from first_pool_tokens by direction
             end)
         ) as pool_src_token_address
         , coalesce(
             dst_token_address -- dst_token_address from params
-            , try(case -- try to get dst_token_address from last pool: reverse(pools)[1]
-                when reverse(pools)[1]['pool_type'] = 2 then last_pool_tokens[cast(reverse(pools)[1]['dst_token_index'] as int) + 1] -- when pool type = 2, i.e Curve pool, than get dst token address from last_pool_tokens by dst token index
-                else last_pool_tokens[cast(bitwise_xor(reverse(pools)[1]['direction'], 1) as int) + 1] -- when other cases, i.e. Uniswap compatible pool, than get dst token address from last_pool_tokens by direction
+            , try(case -- try to get dst_token_address from last pool: reverse(parsed_pools)[1]
+                when reverse(parsed_pools)[1]['pool_type'] = 2 then last_pool_tokens[cast(reverse(parsed_pools)[1]['dst_token_index'] as int) + 1] -- when pool type = 2, i.e Curve pool, than get dst token address from last_pool_tokens by dst token index
+                else last_pool_tokens[cast(bitwise_xor(reverse(parsed_pools)[1]['direction'], 1) as int) + 1] -- when other cases, i.e. Uniswap compatible pool, than get dst token address from last_pool_tokens by direction
             end)
         ) as pool_dst_token_address
         , transform(parsed_pools, x -> map_from_entries(array[
@@ -120,9 +120,9 @@ raw_calls as (
                 , ('src_token_index', bitwise_right_shift(bitwise_and(x, src_token_mask), src_token_offset))
                 , ('dst_token_index', bitwise_right_shift(bitwise_and(x, dst_token_mask), dst_token_offset))
             ])) as parsed_pools
-            , if(slice(call_trace_address, 1, length(auxiliary_trace_address)) = auxiliary_trace_address, auxiliary_remains, call_input_remains) as actual_remains
-            , if(slice(call_trace_address, 1, length(auxiliary_trace_address)) = auxiliary_trace_address, auxiliary_call_from, call_from) as actual_call_from
-            , if(slice(call_trace_address, 1, length(auxiliary_trace_address)) = auxiliary_trace_address, auxiliary_call_to, call_to) as actual_call_to
+            , if(slice(call_trace_address, 1, cardinality(auxiliary_trace_address)) = auxiliary_trace_address, auxiliary_remains, call_input_remains) as actual_remains
+            , if(slice(call_trace_address, 1, cardinality(auxiliary_trace_address)) = auxiliary_trace_address, auxiliary_call_from, call_from) as actual_call_from
+            , if(slice(call_trace_address, 1, cardinality(auxiliary_trace_address)) = auxiliary_trace_address, auxiliary_call_to, call_to) as actual_call_to
         from (
             select *
                 , if(router_type = 'unoswap' and cardinality(raw_pools) = 0
@@ -193,7 +193,7 @@ select
     , coalesce(try(transform(sequence(1, length(actual_remains), 4), x -> bytearray_to_bigint(reverse(substr(reverse(actual_remains), x, 4))))), array[]) as remains
     , map_from_entries(array[
         ('ordinary', ordinary)
-        , ('direct', _call_from = tx_from and _call_to = tx_to) -- == cardinality(call_trace_address) = 0, but due to zksync trace structure, it is necessary to switch to this
+        , ('direct', actual_call_from = tx_from and actual_call_to = tx_to) -- == cardinality(call_trace_address) = 0, but due to zksync trace structure, it is necessary to switch to this
     ]) as flags
     , minute
     , block_date
@@ -204,7 +204,7 @@ from ({{
     add_tx_columns(
         model_cte = 'processing'
         , blockchain = blockchain
-        , columns = ['from', 'to', 'success', 'nonce', 'gas_price', 'priority_fee_per_gas', 'gas_used', 'index']
+        , columns = ['from', 'to', 'nonce', 'gas_price', 'priority_fee_per_gas', 'gas_used', 'index']
     )
 }}) as t
 left join native_prices using(minute)

@@ -21,7 +21,6 @@ decoded as (
                 , call_tx_hash as tx_hash
                 , call_trace_address as iteration_call_trace_address
                 , {{ contract_data['version'] }} as iteration_protocol_version
-                , {{ method_data.get("selector", "null") }} as call_selector
                 , {{ method_data.get("flow", "null") }} as flow
                 , {{ method_data.get("factory", "null") }} as factory
                 , {{ method_data.get("escrow", "null") }} as escrow
@@ -184,7 +183,7 @@ from ({{
     add_tx_columns(
         model_cte = 'decoded'
         , blockchain = blockchain
-        , columns = ['from', 'to', 'success', 'nonce', 'gas_price', 'priority_fee_per_gas', 'gas_used', 'index']
+        , columns = ['from', 'to', 'nonce', 'gas_price', 'priority_fee_per_gas', 'gas_used', 'index']
     )
 }}) as t
 left join initial using(block_date, block_number, tx_hash, order_hash)

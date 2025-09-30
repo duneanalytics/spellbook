@@ -124,7 +124,7 @@ select
     , taking_amount
     , concat(
         bytearray_to_bigint(order_remains)
-        , transform(sequence(1, length(call_input_remains), 4), x -> bytearray_to_bigint(reverse(substr(reverse(call_input_remains), x, 4))))
+        , coalesce(try(transform(sequence(1, length(call_input_remains), 4), x -> bytearray_to_bigint(reverse(substr(reverse(call_input_remains), x, 4))))), array[])
     ) as remains
     , map_from_entries(array[
         ('direct', call_from = tx_from and call_to = tx_to) -- == cardinality(call_trace_address) = 0, but because of zksync trace structure switched to this
@@ -143,7 +143,7 @@ from ({{
     add_tx_columns(
         model_cte = 'decoded'
         , blockchain = blockchain
-        , columns = ['from', 'to', 'success', 'nonce', 'gas_price', 'priority_fee_per_gas', 'gas_used', 'index']
+        , columns = ['from', 'to', 'nonce', 'gas_price', 'priority_fee_per_gas', 'gas_used', 'index']
     )
 }}) as t
 join raw_calls using(block_date, block_number, tx_hash, call_trace_address)
