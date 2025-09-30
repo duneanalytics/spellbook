@@ -61,7 +61,7 @@ WITH events AS (
         MAX(IF(activity_type = 'Mint', amount, 0)) AS max_mint,
         MAX(IF(activity_type = 'Burn', amount, 0)) AS max_burn
     FROM sessioning
-    GROUP BY ALL
+    GROUP BY tx_version, tx_hash, session_id
 ), transfers_multi_fifo AS (
     SELECT
         f.block_date,
