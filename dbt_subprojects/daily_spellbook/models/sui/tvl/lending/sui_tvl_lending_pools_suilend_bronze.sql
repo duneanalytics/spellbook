@@ -154,6 +154,78 @@ with suilend_raw as (
         , checkpoint
     from suilend_raw
     where json_extract_scalar(object_json, '$.reserves[4].id.id') is not null
+    
+    union all
+    
+    -- Extract reserves[21] - BTC token
+    select
+        timestamp_ms
+        , block_time
+        , block_date
+        , block_month
+        , date_hour
+        , protocol
+        , json_extract_scalar(object_json, '$.reserves[21].id.id') as market_id
+        , case 
+            when starts_with(json_extract_scalar(object_json, '$.reserves[21].coin_type.name'), '0x') 
+            then json_extract_scalar(object_json, '$.reserves[21].coin_type.name')
+            else concat('0x', json_extract_scalar(object_json, '$.reserves[21].coin_type.name'))
+        end as coin_type
+        , cast(json_extract_scalar(object_json, '$.reserves[21].ctoken_supply') as decimal(38,0)) as coin_collateral_amount
+        , cast(json_extract_scalar(object_json, '$.reserves[21].borrowed_amount.value') as decimal(38,0)) as coin_borrow_amount
+        , object_id
+        , version
+        , checkpoint
+    from suilend_raw
+    where json_extract_scalar(object_json, '$.reserves[21].id.id') is not null
+    
+    union all
+    
+    -- Extract reserves[24] - LBTC token
+    select
+        timestamp_ms
+        , block_time
+        , block_date
+        , block_month
+        , date_hour
+        , protocol
+        , json_extract_scalar(object_json, '$.reserves[24].id.id') as market_id
+        , case 
+            when starts_with(json_extract_scalar(object_json, '$.reserves[24].coin_type.name'), '0x') 
+            then json_extract_scalar(object_json, '$.reserves[24].coin_type.name')
+            else concat('0x', json_extract_scalar(object_json, '$.reserves[24].coin_type.name'))
+        end as coin_type
+        , cast(json_extract_scalar(object_json, '$.reserves[24].ctoken_supply') as decimal(38,0)) as coin_collateral_amount
+        , cast(json_extract_scalar(object_json, '$.reserves[24].borrowed_amount.value') as decimal(38,0)) as coin_borrow_amount
+        , object_id
+        , version
+        , checkpoint
+    from suilend_raw
+    where json_extract_scalar(object_json, '$.reserves[24].id.id') is not null
+    
+    union all
+    
+    -- Extract reserves[36] - xBTC token
+    select
+        timestamp_ms
+        , block_time
+        , block_date
+        , block_month
+        , date_hour
+        , protocol
+        , json_extract_scalar(object_json, '$.reserves[36].id.id') as market_id
+        , case 
+            when starts_with(json_extract_scalar(object_json, '$.reserves[36].coin_type.name'), '0x') 
+            then json_extract_scalar(object_json, '$.reserves[36].coin_type.name')
+            else concat('0x', json_extract_scalar(object_json, '$.reserves[36].coin_type.name'))
+        end as coin_type
+        , cast(json_extract_scalar(object_json, '$.reserves[36].ctoken_supply') as decimal(38,0)) as coin_collateral_amount
+        , cast(json_extract_scalar(object_json, '$.reserves[36].borrowed_amount.value') as decimal(38,0)) as coin_borrow_amount
+        , object_id
+        , version
+        , checkpoint
+    from suilend_raw
+    where json_extract_scalar(object_json, '$.reserves[36].id.id') is not null
 )
 
 select 
@@ -170,4 +242,4 @@ select
     , object_id
     , version
     , checkpoint 
-from suilend_base 
+from suilend_base
