@@ -29,7 +29,7 @@ select
     , 'Liquidity Pool' as object_type
     , 'dex' as storage_location
     , protocol
-    --trigger run here 
+    
     -- Token composition (both tokens in one row)
     , coin_type_a
     , coin_a_symbol as token_a_symbol
