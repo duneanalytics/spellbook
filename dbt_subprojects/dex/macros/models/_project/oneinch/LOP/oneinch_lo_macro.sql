@@ -19,7 +19,6 @@ decoded as (
         {% for method, method_data in contract_data.methods.items() %}
             select
                 call_block_number as block_number
-                , call_block_time as block_time
                 , call_block_date as block_date
                 , call_tx_hash as tx_hash
                 , call_trace_address

@@ -114,7 +114,6 @@ select
     , contract_name
     , transfer_trace_address
     , transfer_contract_address
-    , transfer_native
     , transfer_from
     , transfer_to
     , coalesce(native_symbol, symbol, token_symbol) as transfer_symbol
