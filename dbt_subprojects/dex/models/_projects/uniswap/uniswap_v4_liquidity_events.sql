@@ -47,18 +47,18 @@ uniswap_liquidity_events as (
                 , v4.block_number
                 , v4.id
                 , v4.tx_hash
-                , v4.x_from
+                , v4.tx_from
                 , v4.evt_index
                 , v4.event_type
                 , v4.token0
                 , v4.token1
-                , v4.token0_symbol 
-                , token1_symbol
+                , ul.token0_symbol 
+                , ul.token1_symbol
                 , v4.amount0_raw
                 , v4.amount1_raw
                 , ul.amount0
                 , ul.amount1
-                , ulamount0_usd
+                , ul.amount0_usd
                 , ul.amount1_usd
                 , v4.liquidityDelta
                 , v4.sqrtPriceX96
