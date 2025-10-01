@@ -53,11 +53,11 @@ select
         when {{ selector }} = {{ withdraw_selector }} then "to" -- withdraw
         else coalesce("to", address) -- native, deposit (address is used in cases of contract creation with transfer where "to" is null)
     end as "to"
-    , keccak(to_utf8(concat_ws('|'
+    , md5(to_utf8(concat_ws('|'
         , '{{ blockchain }}'
         , cast(block_number as varchar)
         , cast(tx_hash as varchar)
-        , array_join(trace_address, '')
+        , array_join(trace_address, ',') -- ',' is necessary to avoid similarities after concatenation // array_join(array[1, 0], '') = array_join(array[10], '')
         , cast(if(value > uint256 '0', native_address, "to") as varchar)
     ))) as unique_key
 from {{ source(blockchain, 'traces') }}, (select token_address as native_address from {{ source('dune', 'blockchains') }} where name = '{{ blockchain }}') as meta

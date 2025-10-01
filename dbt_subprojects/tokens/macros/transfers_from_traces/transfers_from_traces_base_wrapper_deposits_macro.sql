@@ -21,11 +21,11 @@ select
     , amount_raw
     , "to" as transfer_from
     , "from" as transfer_to
-    , keccak(to_utf8(concat_ws('|'
+    , md5(to_utf8(concat_ws('|'
         , blockchain
         , cast(block_number as varchar)
         , cast(tx_hash as varchar)
-        , array_join(trace_address, '')
+        , array_join(trace_address, ',') -- ',' is necessary to avoid similarities after concatenation // array_join(array[1, 0], '') = array_join(array[10], '')
         , cast("to" as varchar)
     ))) as unique_key
 from {{ transfers_from_traces_base_table }}
