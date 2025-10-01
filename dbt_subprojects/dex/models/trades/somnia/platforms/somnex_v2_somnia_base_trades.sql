@@ -18,7 +18,7 @@ WITH dexs AS (
         t.evt_block_time AS block_time,
         t.to AS taker,
         t.contract_address AS maker,
-        CASE 
+        CAST(CASE 
             WHEN amount0Out = UINT256 '0' AND (tokena_decimals.decimals IS NULL OR tokena_decimals.decimals = 18)
                 THEN amount1Out / 1e10
             WHEN amount0Out = UINT256 '0' 
@@ -26,8 +26,8 @@ WITH dexs AS (
             WHEN tokena_decimals.decimals = 6
                 THEN amount0Out / 1e10
             ELSE amount0Out 
-        END AS token_bought_amount_raw,
-        CASE 
+        END AS UINT256) AS token_bought_amount_raw,
+        CAST(CASE 
             WHEN (amount0In = UINT256 '0' OR amount1Out = UINT256 '0') AND (tokena_decimals.decimals IS NULL OR tokena_decimals.decimals = 18)
                 THEN amount1In / 1e10
             WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' 
@@ -35,7 +35,7 @@ WITH dexs AS (
             WHEN tokena_decimals.decimals = 6
                 THEN amount0In / 1e10
             ELSE amount0In 
-        END AS token_sold_amount_raw,
+        END AS UINT256) AS token_sold_amount_raw,
         CASE WHEN amount0Out = UINT256 '0' THEN f.tokenb ELSE f.tokena END AS token_bought_address,
         CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN f.tokenb ELSE f.tokena END AS token_sold_address,
         t.contract_address AS project_contract_address,
