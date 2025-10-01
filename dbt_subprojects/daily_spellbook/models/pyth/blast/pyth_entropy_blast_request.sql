@@ -5,7 +5,9 @@
         materialized='incremental',
         file_format='delta',
         incremental_strategy='merge',
-        unique_key=['tx_hash', 'assigned_sequence_number']
+        unique_key=['tx_hash', 'assigned_sequence_number'],
+        tags=['static'],
+        post_hook='{{ hide_spells() }}'
     )
 }}
 

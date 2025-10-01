@@ -4,6 +4,8 @@
         schema = 'metrics_' + blockchain
         , alias = 'transfers_daily'
         , materialized = 'view'
+        , tags=['static']
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

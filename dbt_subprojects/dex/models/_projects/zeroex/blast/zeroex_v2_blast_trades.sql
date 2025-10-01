@@ -7,7 +7,9 @@
     on_schema_change='sync_all_columns',
     file_format ='delta',
     incremental_strategy='merge',
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    tags=['static'],
+    post_hook='{{ hide_spells() }}'
 )}}
 
 {% set zeroex_settler_start_date = '2024-07-15' %}

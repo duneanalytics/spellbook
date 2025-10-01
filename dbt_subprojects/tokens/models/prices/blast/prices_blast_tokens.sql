@@ -3,7 +3,8 @@
         alias = 'tokens',
         materialized='table',
         file_format = 'delta',
-        tags=['static']
+        tags=['static'],
+        post_hook='{{ hide_spells() }}'
         )
 }}
 SELECT
