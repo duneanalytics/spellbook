@@ -18,29 +18,16 @@ WITH dexs AS (
         t.evt_block_time AS block_time,
         t.to AS taker,
         t.contract_address AS maker,
-        CAST(CASE 
-            WHEN amount0Out = UINT256 '0' AND (tokena_decimals.decimals IS NULL OR tokena_decimals.decimals = 18)
-                THEN amount1Out / 1e10
-            WHEN amount0Out = UINT256 '0' 
-                THEN amount1Out
-            WHEN tokena_decimals.decimals = 6
-                THEN amount0Out / 1e10
-            ELSE amount0Out 
-        END AS UINT256) AS token_bought_amount_raw,
-        CAST(CASE 
-            WHEN (amount0In = UINT256 '0' OR amount1Out = UINT256 '0') AND (tokena_decimals.decimals IS NULL OR tokena_decimals.decimals = 18)
-                THEN amount1In / 1e10
-            WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' 
-                THEN amount1In
-            WHEN tokena_decimals.decimals = 6
-                THEN amount0In / 1e10
-            ELSE amount0In 
-        END AS UINT256) AS token_sold_amount_raw,
+        t.amount0In,
+        t.amount0Out,
+        t.amount1In,
+        t.amount1Out,
         CASE WHEN amount0Out = UINT256 '0' THEN f.tokenb ELSE f.tokena END AS token_bought_address,
         CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN f.tokenb ELSE f.tokena END AS token_sold_address,
         t.contract_address AS project_contract_address,
         t.evt_tx_hash AS tx_hash,
-        t.evt_index AS evt_index
+        t.evt_index AS evt_index,
+        tokena_decimals.decimals as tokena_decimals
     FROM {{ source('somnex_somnia', 'somnexammpair_evt_swap') }} t
     INNER JOIN {{ source('somnex_somnia', 'somnexammfactory_call_createpair') }} f
         ON f.output_pair = t.contract_address
@@ -62,8 +49,26 @@ SELECT
     CAST(DATE_TRUNC('day', dexs.block_time) AS DATE) AS block_date,
     dexs.block_time,
     dexs.block_number,
-    dexs.token_bought_amount_raw,
-    dexs.token_sold_amount_raw,
+    -- Somnex bug: when tokenA=18 decimals (or unknown), amount1 inflated by 1e10
+    --             when tokenA=6 decimals, amount0 inflated by 1e10
+    CASE 
+        WHEN amount0Out = UINT256 '0' AND (tokena_decimals IS NULL OR tokena_decimals = 18)
+            THEN amount1Out / UINT256 '10000000000'
+        WHEN amount0Out = UINT256 '0' 
+            THEN amount1Out
+        WHEN tokena_decimals = 6
+            THEN amount0Out / UINT256 '10000000000'
+        ELSE amount0Out 
+    END AS token_bought_amount_raw,
+    CASE 
+        WHEN (amount0In = UINT256 '0' OR amount1Out = UINT256 '0') AND (tokena_decimals IS NULL OR tokena_decimals = 18)
+            THEN amount1In / UINT256 '10000000000'
+        WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' 
+            THEN amount1In
+        WHEN tokena_decimals = 6
+            THEN amount0In / UINT256 '10000000000'
+        ELSE amount0In 
+    END AS token_sold_amount_raw,
     dexs.token_bought_address,
     dexs.token_sold_address,
     dexs.taker,
