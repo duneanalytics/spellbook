@@ -264,7 +264,7 @@ WITH dexs AS
         and c.call_tx_hash = e.evt_tx_hash
         and c.call_rn = e.evt_rn 
     {% if filter_angstrom_addr %}
-    WHERE NOT (c.hooks = {{ filter_angstrom_addr }} AND e.fee = 0)
+    WHERE NOT c.hooks = {{ filter_angstrom_addr }}
     {% endif %}
 
 )

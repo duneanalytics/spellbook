@@ -1,27 +1,6 @@
 {% macro cctp_v1_withdrawals(blockchain) %}
 
-WITH cctp_id_mapping AS (
-    SELECT id, blockchain
-    FROM (VALUES
-    (0, 'ethereum')
-    , (1, 'avalanche_c')
-    , (2, 'optimism')
-    , (3, 'arbitrum')
-    , (4, 'noble')
-    , (5, 'solana')
-    , (6, 'base')
-    , (7, 'polygon')
-    , (8, 'sui')
-    , (9, 'aptos')
-    , (10, 'unichain')
-    , (11, 'linea')
-    , (12, 'codex')
-    , (13, 'sonic')
-    , (14, 'worldchain')
-    ) AS x (id, blockchain)
-    )
-
-, messages AS (
+WITH messages AS (
     SELECT evt_block_number AS block_number
     , evt_tx_hash AS tx_hash
     , CASE WHEN varbinary_substring(sender,1, 12) = 0x000000000000000000000000 THEN varbinary_substring(sender,13) ELSE sender END AS sender
@@ -84,6 +63,6 @@ WITH cctp_id_mapping AS (
         AND w.tx_hash = m.tx_hash
         AND w.evt_index = m.withdrawal_evt_index
         AND m.rn = 1
-    INNER JOIN cctp_id_mapping i ON i.id=m.sourceDomain
+    INNER JOIN {{ ref('bridges_cctp_chain_indexes') }} i ON i.id=m.sourceDomain
 
 {% endmacro %}
