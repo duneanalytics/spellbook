@@ -1,7 +1,9 @@
 {{ config(
     schema = 'nft_blast',
     alias = 'base_trades',
-    materialized = 'view'
+    materialized = 'view',
+    tags=['static'],
+    post_hook='{{ hide_spells() }}'
     )
 }}
 

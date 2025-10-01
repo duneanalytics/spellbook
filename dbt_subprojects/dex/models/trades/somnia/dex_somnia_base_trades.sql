@@ -10,7 +10,8 @@
 ) }}
 
 {% set base_models = [
-    ref('quickswap_v3_somnia_base_trades')
+    ref('quickswap_v3_somnia_base_trades'),
+    ref('somnex_v2_somnia_base_trades')
 ] %}
 
 with base_union as (
