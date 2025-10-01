@@ -105,7 +105,7 @@ select
     , src_executed.amount as src_executed_amount
     , src_executed.amount_usd as src_executed_amount_usd
 
-    , null as dst_blockchain
+    , cast(null as varchar) as dst_blockchain
     , taker_asset as dst_token_address
     , taker_amount as dst_token_amount
     , dst_executed.address as dst_executed_address

@@ -113,7 +113,7 @@ select
     , coalesce(src_user_executed.amount, src_executed_amount) as src_executed_amount -- first from the user, then only with the correct amount
     , src_executed_amount_usd
 
-    , null as dst_blockchain
+    , cast(null as varchar) as dst_blockchain
     , dst_token_address
     , dst_token_amount
     , coalesce(dst_user_executed.address, dst_executed.address) as dst_executed_address

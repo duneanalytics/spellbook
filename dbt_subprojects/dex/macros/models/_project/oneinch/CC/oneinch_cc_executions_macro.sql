@@ -52,7 +52,6 @@ calls as (
 select
     blockchain
     , chain_id
-    , chain_id
     , block_number
     , block_time
     , tx_hash
