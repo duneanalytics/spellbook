@@ -90,7 +90,7 @@ select
     , secret
     , transfered
     , transfered.amount_usd as amount_usd
-    , tx_gas_used * tx_gas_price * native_price / pow(10, native_decimals) as execution_cost
+    , native_price * tx_gas_used * tx_gas_price / pow(10, native_decimals) as execution_cost
     , complement
     , remains
     , minute

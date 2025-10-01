@@ -94,7 +94,7 @@ select
         , sources_executed_amount_usd -- if previous is null or false
         , executed_amount_usd
     ) as amount_usd
-    , tx_gas_price * if(element_at(flags, 'direct'), tx_gas_used, call_gas_used) * native_price / pow(10, native_decimals) as execution_cost
+    , native_price * tx_gas_price * if(element_at(flags, 'direct'), tx_gas_used, call_gas_used) / pow(10, native_decimals) as execution_cost
 
     , maker as user
     , receiver
