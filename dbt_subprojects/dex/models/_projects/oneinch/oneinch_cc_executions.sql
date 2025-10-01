@@ -92,7 +92,6 @@ select
     , call_type
     , protocol
     , protocol_version
-    , contract_address
     , contract_name
 
     , coalesce(null
