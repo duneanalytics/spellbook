@@ -16,7 +16,7 @@
 
 -- log::liquidate_success is sent by the router and contains all the data regarding the liquidation
 -- https://github.com/evaafi/contracts/blob/d5a6bf889f8bbfa8bcc82671c17e65a3b2b360cd/contracts/core/master-liquidate.fc#L353-L377
--- 
+-- https://github.com/evaafi/contracts/blob/d9138cb24f03b53522774351aceb38c51a047eee/contracts/core/master-liquidate.fc#L399-L423
 
 WITH evaa_ton_pools AS (
     {{ evaa_ton_pools() }}
