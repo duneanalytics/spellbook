@@ -35,17 +35,17 @@ iterations as (
     select
         order_hash
         , hashlock
-        , max_by(cast(row(blockchain, token) as row(blockchain varchar, address varbinary)), block_time) filter(where flow = 'dst_creation') as dst_creation_info
+        , max_by(cast(row(blockchain, token) as row(blockchain varchar, token varbinary)), block_time) filter(where flow = 'dst_creation') as dst_creation_info
         , max_by(transfered, block_time) filter(where flow = 'src_withdraw') as src_executed
         , max_by(transfered, block_time) filter(where flow = 'dst_withdraw') as dst_executed
         , max(amount_usd) filter(where flow in ('src_withdraw', 'dst_withdraw') and transfered.trusted) as sources_executed_trusted_amount_usd
         , max(amount_usd) filter(where flow in ('src_withdraw', 'dst_withdraw')) as sources_executed_amount_usd
-        , sum(execution_cost) as execution_cost
+        , sum(action_cost) as execution_cost
         , array_agg(cast(
             row(
                 flow
                 , tx_success and call_success
-                , execution_cost
+                , action_cost
                 , tx_hash
                 , escrow
                 , token
@@ -105,7 +105,7 @@ select
     , from_hex(complement['order_maker']) as user
     , from_hex(complement['order_receiver']) as receiver
     , token as src_token_address
-    , complement['order_maker_amount'] uint256 as src_token_amount
+    , cast(complement['order_maker_amount'] as uint256) as src_token_amount
     , src_executed.address as src_executed_address
     , src_executed.symbol as src_executed_symbol
     , src_executed.amount as src_executed_amount
@@ -113,7 +113,7 @@ select
     
     , dst_creation_info.blockchain as dst_blockchain
     , dst_creation_info.token as dst_token_address
-    , complement['order_taker_amount'] uint256 as dst_token_amount
+    , cast(complement['order_taker_amount'] as uint256) as dst_token_amount
     , dst_executed.address as dst_executed_address
     , dst_executed.symbol as dst_executed_symbol
     , dst_executed.amount as dst_executed_amount
