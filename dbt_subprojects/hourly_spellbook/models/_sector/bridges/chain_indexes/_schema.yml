@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: bridges_cctp_chain_indexes
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: cctp
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bridges', 'chain_indexes' ]
+    description: "Circle's CCTP blockchains indexes"
+    columns:
+      - &id
+        name: id
+        description: "Blockchain id"
+      - &blockchain
+        name: blockchain
+        description: "Blockchain name"

@@ -4,7 +4,7 @@ models:
 
   - name: eulerswap_pools
     meta:
-      blockchain: ethereum, bnb, unichain
+      blockchain: ethereum, bnb, unichain, arbitrum
       sector: dex
       project: eulerswap
       contributors: Henrystats
@@ -82,7 +82,7 @@ models:
 
   - name: eulerswap_trades
     meta:
-      blockchain: ethereum, bnb, unichain
+      blockchain: ethereum, bnb, unichain, arbitrum
       sector: dex
       project: eulerswap
       contributors: Henrystats

@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: angstrom_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      contributors: jnoorchashm37
+    config:
+      tags: ['ethereum', 'ansgtrom', 'trades']
+    description: >
+      All angstrom trades across all chains

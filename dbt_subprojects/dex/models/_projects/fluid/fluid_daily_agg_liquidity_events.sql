@@ -39,6 +39,12 @@ select
     , sum(case when fp.borrow_token = ep.token_address then ep.supply_amount_raw else 0 end) as amount1_raw 
     , sum(case when fp.borrow_token = ep.token_address then ep.supply_amount_raw / pow(10, fp.borrow_token_decimals) else 0 end) as amount1
     , max(case when fp.borrow_token = ep.token_address then ep.supply_exchange_price else 0 end) as amount1_price
+    , sum(case when fp.supply_token = ep.token_address then ep.borrow_amount_raw else 0 end) as borrow_amount0_raw 
+    , sum(case when fp.supply_token = ep.token_address then ep.borrow_amount_raw / pow(10, fp.supply_token_decimals) else 0 end) as borrow_amount0
+    , max(case when fp.supply_token = ep.token_address then ep.borrow_exchange_price else 0 end) as borrow_amount0_price
+    , sum(case when fp.borrow_token = ep.token_address then ep.borrow_amount_raw else 0 end) as borrow_amount1_raw 
+    , sum(case when fp.borrow_token = ep.token_address then ep.borrow_amount_raw / pow(10, fp.borrow_token_decimals) else 0 end) as borrow_amount1
+    , max(case when fp.borrow_token = ep.token_address then ep.borrow_exchange_price else 0 end) as borrow_amount1_price
 from 
 enrich_prices ep 
 inner join 
