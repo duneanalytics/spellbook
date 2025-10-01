@@ -1,7 +1,9 @@
 {{config(
     
     schema = 'nft_blast',
-    alias = 'aggregators'
+    alias = 'aggregators',
+    tags=['static'],
+    post_hook='{{ hide_spells() }}'
 )}}
 
 SELECT

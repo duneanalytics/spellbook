@@ -1,7 +1,9 @@
 {{ config(
     schema = 'uniswap_blast',
     alias = 'pools',
-    materialized = 'view'
+    materialized = 'view',
+    tags=['static'],
+    post_hook='{{ hide_spells() }}'
     )
 }}
 
