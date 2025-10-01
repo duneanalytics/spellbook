@@ -66,7 +66,6 @@ select
     , mode
     , protocol
     , protocol_version
-    , contract_address
     , contract_name
     , amount_usd
     , execution_cost
@@ -95,7 +94,7 @@ select
     , block_month
     , native_price
     , native_decimals
-    , {{ dbt_utils.generate_surrogate_key(["blockchain", "tx_hash", "array_join(call_trace_address, '')", "mode"]) }} as id -- TO DO: make it orderly (with block_number & tx_index)
+    , keccak(to_utf8(concat_ws('|', blockchain, cast(tx_hash as varchar), array_join(call_trace_address, ''), mode))) as execution_id -- TO DO: try to make it orderly (with block_number & tx_index)
 from executions
 {% if is_incremental() %}
     where {{ incremental_predicate('block_time') }}

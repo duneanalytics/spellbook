@@ -4,7 +4,7 @@
 {% set date_from = [meta['blockchains']['start'][blockchain], meta['streams']['ar']['start']['executions']] | max %}
 
 {% set wrapper = meta['blockchains']['wrapped_native_token_address'][blockchain] %}
-{% set same = '(0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, ' + wrapper + ')' %}
+{% set same = '0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, ' + wrapper %}
 
 
 
@@ -20,7 +20,7 @@ calls as (
 
 , transfers as (
     select *
-        , if(transfer_contract_address in {{ same }}, {{ same }}, (transfer_contract_address)) as same
+        , if(transfer_contract_address in ({{ same }}), array[{{ same }}], array[transfer_contract_address]) as same
         , row_number() over(partition by block_month, block_date, block_number, tx_hash order by transfer_trace_address desc) as transfer_number_desc
     from {{ ref('oneinch_' + blockchain + '_raw_transfers') }}
     where true
@@ -31,6 +31,12 @@ calls as (
         {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
 )
 
+{% set src_data = 'cast(row(transfer_contract_address, transfer_symbol, transfer_amount, transfer_decimals, transfer_from) as row(address varbinary, symbol varchar, amount uint256, decimals bigint, sender varbinary))' %}
+{% set dst_data = 'cast(row(transfer_contract_address, transfer_symbol, transfer_amount, transfer_decimals, transfer_to) as row(address varbinary, symbol varchar, amount uint256, decimals bigint, receiver varbinary))' %}
+{% set src_condition = 'array_position(same, src_token_address) > 0 and transfer_amount <= src_token_amount' %}
+{% set dst_condition = 'array_position(same, dst_token_address) > 0 and transfer_amount <= dst_token_amount' %}
+{% set user_condition = 'cardinality(array_intersect(array[transfer_from, transfer_to], array[tx_from, call_from, dst_receiver])) > 0' %}
+
 , executions as (
     select
         block_date
@@ -39,31 +45,24 @@ calls as (
         , call_trace_address
 
         -- source token data --
-        , max(transfer_amount) filter(where src_same) as src_executed_amount
-        , max(transfer_amount_usd) filter(where src_same) as src_executed_amount_usd
-        , max_by(cast(row(transfer_contract_address, transfer_symbol, transfer_amount, transfer_decimals, transfer_from) as row(address varbinary, symbol varchar, amount uint256, decimals bigint, sender varbinary)), (transfer_amount, transfer_number_desc)) filter(where src_token_address in same and transfer_from in (tx_from, call_from)) as src_user_executed -- trying to find out what the user actually sent, from the related transfers with the greatest transfer amount and the least trace address
-        , max_by(cast(row(transfer_contract_address, transfer_symbol, transfer_amount, transfer_decimals, transfer_from) as row(address varbinary, symbol varchar, amount uint256, decimals bigint, sender varbinary)), (transfer_amount, transfer_number_desc)) filter(where src_token_address in same) as src_executed -- src data from the related transfers with the greatest transfer amount and the least trace address
+        , max(transfer_amount) filter(where {{ src_condition }}) as src_executed_amount
+        , max(transfer_amount_usd) filter(where {{ src_condition }}) as src_executed_amount_usd
+        , max_by({{ src_data }}, (transfer_amount, transfer_number_desc)) filter(where {{ src_condition }} and transfer_from in (tx_from, call_from)) as src_user_executed -- trying to find out what the user actually sent, from the related transfers with the greatest transfer amount and the least trace address
+        , max_by({{ src_data }}, (transfer_amount, transfer_number_desc)) filter(where {{ src_condition }}) as src_executed -- src data from the related transfers with the greatest transfer amount and the least trace address
 
         -- destination token data --
-        , max(transfer_amount) filter(where dst_same) as dst_executed_amount
-        , max(transfer_amount_usd) filter(where dst_same) as dst_executed_amount_usd
-        , max_by(cast(row(transfer_contract_address, transfer_symbol, transfer_amount, transfer_decimals, transfer_to) as row(address varbinary, symbol varchar, amount uint256, decimals bigint, receiver varbinary)), (transfer_amount, transfer_trace_address)) filter(where dst_token_address in same and transfer_to in (tx_from, call_from, dst_receiver)) as dst_user_executed -- trying to find out what the user actually received, from the related transfers with the greatest transfer amount and the greatest (the last) trace address
-        , max_by(cast(row(transfer_contract_address, transfer_symbol, transfer_amount, transfer_decimals, transfer_to) as row(address varbinary, symbol varchar, amount uint256, decimals bigint, receiver varbinary)), (transfer_amount, transfer_trace_address)) filter(where dst_token_address in same) as dst_executed -- dst data from the related transfers with the greatest transfer amount and the greatest (the last) trace address
+        , max(transfer_amount) filter(where {{ dst_condition }}) as dst_executed_amount
+        , max(transfer_amount_usd) filter(where {{ dst_condition }}) as dst_executed_amount_usd
+        , max_by({{ dst_data }}, (transfer_amount, transfer_trace_address)) filter(where {{ dst_condition }} and transfer_to in (tx_from, call_from, dst_receiver)) as dst_user_executed -- trying to find out what the user actually received, from the related transfers with the greatest transfer amount and the greatest (the last) trace address
+        , max_by({{ dst_data }}, (transfer_amount, transfer_trace_address)) filter(where {{ dst_condition }}) as dst_executed -- dst data from the related transfers with the greatest transfer amount and the greatest (the last) trace address
 
         -- general --
-        , max(transfer_amount_usd) filter(where sources_same and trusted) as sources_trusted_executed_amount_usd
-        , max(transfer_amount_usd) filter(where sources_same and user_same) as sources_user_executed_amount_usd
-        , max(transfer_amount_usd) filter(where sources_same) as sources_executed_amount_usd
+        , max(transfer_amount_usd) filter(where ({{ src_condition }} or {{ dst_condition }}) and trusted) as sources_trusted_executed_amount_usd
+        , max(transfer_amount_usd) filter(where ({{ src_condition }} or {{ dst_condition }}) and {{ user_condition }}) as sources_user_executed_amount_usd
+        , max(transfer_amount_usd) filter(where ({{ src_condition }} or {{ dst_condition }})) as sources_executed_amount_usd
         , max(transfer_amount_usd) as executed_amount_usd
-    from (
-        select *
-            , src_token_address in same and transfer_amount <= src_token_amount as src_same
-            , dst_token_address in same and transfer_amount <= dst_token_amount as dst_same
-            , src_token_address in same and transfer_amount <= src_token_amount or dst_token_address in same and transfer_amount <= dst_token_amount as sources_same
-            , cardinality(array_intersect(array[transfer_from, transfer_to], array[tx_from, call_from, dst_receiver])) > 0 as user_same
-        from calls
-        left join transfers using(blockchain, block_month, block_date, block_time, block_number, tx_hash, call_trace_address, call_to, protocol, contract_name, call_selector, call_method) -- even with missing transfers, as transfers may not have been parsed
-    )
+    from calls
+    left join transfers using(blockchain, block_month, block_date, block_time, block_number, tx_hash, call_trace_address, call_to, protocol, contract_name, call_selector, call_method) -- even with missing transfers, as transfers may not have been parsed
     group by 1, 2, 3, 4
 )
 
@@ -95,7 +94,6 @@ select
     , call_type
     , protocol
     , protocol_version
-    , contract_address
     , contract_name
 
     , coalesce(null
@@ -129,7 +127,7 @@ select
 
     , map_from_entries(array[
         ('sender', cast(coalesce(src_user_executed.sender, src_executed.sender) as varchar))
-        , ('receiver', cast(coalesce(src_user_executed.receiver, dst_executed.receiver) as varchar))
+        , ('receiver', cast(coalesce(dst_user_executed.receiver, dst_executed.receiver) as varchar))
         , ('sources_trusted_amount_usd', cast(sources_trusted_executed_amount_usd as varchar))
         , ('sources_user_amount_usd', cast(sources_user_executed_amount_usd as varchar))
         , ('sources_amount_usd', cast(sources_executed_amount_usd as varchar))

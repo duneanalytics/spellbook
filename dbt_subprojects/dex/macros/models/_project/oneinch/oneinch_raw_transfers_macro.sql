@@ -121,9 +121,12 @@ select
     , amount * price / pow(10, coalesce(token_decimals, decimals)) as transfer_amount_usd
     , coalesce(token_decimals, decimals) as transfer_decimals
     , coalesce(trusted, false) as trusted
+    , nested
+    , related
     , price
     , block_date
     , date(date_trunc('month', block_time)) as block_month
+    , keccak(to_utf8(concat_ws('|', blockchain, cast(tx_hash as varchar), array_join(call_trace_address, ''), array_join(transfer_trace_address, ''), cast(contract_address as varchar)))) as transfer_id
 from merging
 left join prices using(contract_address, minute)
 left join tokens using(contract_address)

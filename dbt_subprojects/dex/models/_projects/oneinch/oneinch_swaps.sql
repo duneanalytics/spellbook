@@ -49,7 +49,7 @@ select
     
     , array_agg(cast(
         row(
-            id
+            execution_id
             , hashlock
             , receiver
             , call_method

@@ -249,6 +249,9 @@ models:
       - name: transfer_amount_usd
       - name: transfer_decimals
       - name: trusted
+      - name: nested
+      - name: related
       - name: price
       - name: block_date
       - name: block_month
+      - name: transfer_id
