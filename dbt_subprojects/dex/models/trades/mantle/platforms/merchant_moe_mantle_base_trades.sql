@@ -19,13 +19,3 @@
         Factory_evt_PairCreated = source('merchant_moe_mantle', 'MoeFactory_evt_PairCreated')
     )
 }}
-
-{{
-    trader_joe_compatible_v2_1_trades(
-        blockchain = 'mantle'
-        , project = 'merchant_moe'
-        , version = '2.2'
-        , Pair_evt_Swap = source('merchant_moe_mantle', 'LBPair_evt_Swap')
-        , Factory_evt_PoolCreated = source('merchant_moe_mantle', 'LBFactory_evt_LBPairCreated')
-    )
-}}
