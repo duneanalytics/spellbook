@@ -53,7 +53,7 @@ select
         when {{ selector }} = {{ withdraw_selector }} then "to" -- withdraw
         else coalesce("to", address) -- native, deposit (address is used in cases of contract creation with transfer where "to" is null)
     end as "to"
-    , md5(to_utf8(concat_ws('|'
+    , keccak(to_utf8(concat_ws('|'
         , '{{ blockchain }}'
         , cast(block_number as varchar)
         , cast(tx_hash as varchar)
