@@ -1,9 +1,7 @@
 {%- macro transfers_from_traces_base_wrapper_deposits_macro(blockchain, transfers_from_traces_base_table) -%}
 
 -- the wrapper deposit includes two transfers: native and wrapped, so we should add second one manually reversing from/to
--- it's splitted to 2 operations and fetching from pre-materialized table to prevent doubling full-scan of traces 
-
-{%- set token_standard = 'bep20' if blockchain == 'bnb' else 'erc20' -%}
+-- it's splitted to 2 operations and fetching from pre-materialized table to prevent doubling full-scan of traces
 
 -- output --
 
@@ -16,12 +14,12 @@ select
     , tx_hash
     , trace_address
     , type
-    , '{{ token_standard }}' as token_standard
+    , 'erc20' as token_standard
     , "to" as contract_address
     , amount_raw
     , "to" as transfer_from
     , "from" as transfer_to
-    , md5(to_utf8(concat_ws('|'
+    , sha1(to_utf8(concat_ws('|'
         , blockchain
         , cast(block_number as varchar)
         , cast(tx_hash as varchar)
