@@ -1,13 +1,12 @@
-{%- macro transfers_traces_wrapped_token_deposit_base(blockchain, transfers_traces_base_table) -%}
-
+{%- macro transfers_from_traces_base_wrapper_deposits_macro(blockchain, transfers_from_traces_base_table) -%}
 
 -- the wrapper deposit includes two transfers: native and wrapped, so we should add second one manually reversing from/to
 -- it's splitted to 2 operations and fetching from pre-materialized table to prevent doubling full-scan of traces 
 
+{%- set token_standard_20 = 'bep20' if blockchain == 'bnb' else 'erc20' -%}
 
-{%- set token_standard_20 = 'bep20' if blockchain == 'bnb' else 'erc20' %}
+-- output --
 
--- output
 select
     blockchain
     , block_month
@@ -22,8 +21,14 @@ select
     , amount_raw
     , "to" as transfer_from
     , "from" as transfer_to
-    , unique_key
-from {{ transfers_traces_base_table }}
+    , md5(to_utf8(concat_ws('|'
+        , blockchain
+        , cast(block_number as varchar)
+        , cast(tx_hash as varchar)
+        , array_join(trace_address, '')
+        , cast("to" as varchar)
+    ))) as unique_key
+from {{ transfers_from_traces_base_table }}
 join ( -- to leave only real tokens (mostly for wrapped token, but works for rare cases too, like tradable weth fork). 
     select contract_address as "to"
     from {{ source('tokens', 'erc20') }}
@@ -31,7 +36,7 @@ join ( -- to leave only real tokens (mostly for wrapped token, but works for rar
 ) using("to")
 where
     type = 'deposit'
-    {% if is_incremental() %} and {{ incremental_predicate('block_time') }}{% endif %}
+    {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
 
 
 

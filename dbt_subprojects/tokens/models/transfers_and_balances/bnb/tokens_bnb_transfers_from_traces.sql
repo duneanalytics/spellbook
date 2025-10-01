@@ -3,11 +3,9 @@
 {{
     config(
         schema = 'tokens_' ~ blockchain,
-        alias = 'transfers_traces',
+        alias = 'transfers_from_traces',
         materialized = 'view',
     )
 }}
 
-
-
-{{ transfers_traces(blockchain=blockchain) }}
+{{ transfers_from_traces_macro(blockchain=blockchain) }}
