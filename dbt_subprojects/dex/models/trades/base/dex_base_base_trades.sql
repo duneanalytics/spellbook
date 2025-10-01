@@ -66,7 +66,6 @@
     , ref('otsea_base_base_trades')
     , ref('tapio_base_base_trades')
     , ref('fluid_v1_base_base_trades')
-    , ref('native_base_base_trades')
     , ref('carbon_defi_base_base_trades')
 ] %}
 with base_union as (

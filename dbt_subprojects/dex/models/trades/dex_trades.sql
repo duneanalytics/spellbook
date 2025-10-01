@@ -8,36 +8,54 @@
     , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     , post_hook='{{ expose_spells(\'[
-                                        "arbitrum"
+                                        "abstract"
+                                        , "apechain"
+                                        , "arbitrum"
                                         , "avalanche_c"
                                         , "base"
+                                        , "berachain"
                                         , "blast"
                                         , "bnb"
                                         , "boba"
                                         , "celo"
+                                        , "corn"
                                         , "ethereum"
                                         , "fantom"
+                                        , "flare"
+                                        , "flow"
                                         , "gnosis"
+                                        , "hemi"
+                                        , "hyperevm"
+                                        , "ink"
                                         , "kaia"
+                                        , "katana"
                                         , "linea"
                                         , "mantle"
                                         , "nova"
+                                        , "opbnb"
                                         , "optimism"
+                                        , "peaq"
+                                        , "plasma"
+                                        , "plume"
                                         , "polygon"
                                         , "ronin"
                                         , "scroll"
                                         , "sei"
+                                        , "shape"
+                                        , "somnia"
                                         , "sonic"
                                         , "sophon"
+                                        , "superseed"
                                         , "taiko"
+                                        , "unichain"
+                                        , "worldchain"
                                         , "zkevm"
                                         , "zksync"
-                                        , "unichain"
                                         , "zora"
                                     ]\',
                                     "sector",
                                     "dex",
-                                    \'["hosuke", "0xrob", "jeff-dude", "tomfutago", "viniabussafi"]\') }}')
+                                    \'["hosuke", "0xrob", "jeff-dude", "tomfutago", "viniabussafi", "krishhh"]\') }}')
 }}
 
 -- keep existing dbt lineages for the following projects, as the team built themselves and use the spells throughout the entire lineage.
@@ -144,4 +162,3 @@ WITH balancer_v3 AS (
     UNION ALL
     {% endif %}
 {% endfor %}
--- refresh model 
