@@ -18,17 +18,17 @@ WITH dexs AS (
         t.evt_block_time AS block_time,
         t.to AS taker,
         t.contract_address AS maker,
-        -- amount1 fields are inflated by 1e10 ONLY when tokenB (amount1) has 18 decimals
-        -- For 6-decimal tokenB (like USDC.e), amount1 is already correct
+        -- amount1 fields are inflated by 1e10 ONLY when tokenA (amount0) has 18 decimals or is unknown
+        -- For 6-decimal tokenA (like USDC.e), amount1 is already correct
         CASE 
-            WHEN amount0Out = UINT256 '0' AND COALESCE(tokenb_decimals.decimals, 18) = 18 
+            WHEN amount0Out = UINT256 '0' AND (tokena_decimals.decimals IS NULL OR tokena_decimals.decimals = 18)
                 THEN amount1Out / 1e10
             WHEN amount0Out = UINT256 '0' 
                 THEN amount1Out
             ELSE amount0Out 
         END AS token_bought_amount_raw,
         CASE 
-            WHEN (amount0In = UINT256 '0' OR amount1Out = UINT256 '0') AND COALESCE(tokenb_decimals.decimals, 18) = 18 
+            WHEN (amount0In = UINT256 '0' OR amount1Out = UINT256 '0') AND (tokena_decimals.decimals IS NULL OR tokena_decimals.decimals = 18)
                 THEN amount1In / 1e10
             WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' 
                 THEN amount1In
@@ -42,9 +42,9 @@ WITH dexs AS (
     FROM {{ source('somnex_somnia', 'somnexammpair_evt_swap') }} t
     INNER JOIN {{ source('somnex_somnia', 'somnexammfactory_call_createpair') }} f
         ON f.output_pair = t.contract_address
-    LEFT JOIN {{ source('tokens', 'erc20') }} tokenb_decimals
-        ON tokenb_decimals.contract_address = f.tokenb 
-        AND tokenb_decimals.blockchain = 'somnia'
+    LEFT JOIN {{ source('tokens', 'erc20') }} tokena_decimals
+        ON tokena_decimals.contract_address = f.tokena 
+        AND tokena_decimals.blockchain = 'somnia'
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('t.evt_block_time') }}
     {% else %}
