@@ -123,8 +123,8 @@ select
     
     , cast(null as varbinary) as order_hash
     , cast(null as varbinary) as hashlock
-    , cast(null as row(action varchar, success boolean, tx_fee double, tx_hash varbinary, escrow varbinary, token varbinary, amount uint256)) as actions
-
+    , cast(null as row(action varchar, success boolean, cost double, tx_hash varbinary, escrow varbinary, token varbinary, amount uint256)) as actions
+    
     , map_from_entries(array[
         ('sender', cast(coalesce(src_user_executed.sender, src_executed.sender) as varchar))
         , ('receiver', cast(coalesce(dst_user_executed.receiver, dst_executed.receiver) as varchar))

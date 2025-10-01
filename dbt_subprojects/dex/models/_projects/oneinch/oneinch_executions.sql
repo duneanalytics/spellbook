@@ -9,7 +9,7 @@
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         partition_by = ['block_month'],
-        unique_key = ['id']
+        unique_key = ['block_date', 'execution_id']
     )
 }}
 
@@ -94,7 +94,12 @@ select
     , block_month
     , native_price
     , native_decimals
-    , keccak(to_utf8(concat_ws('|', blockchain, cast(tx_hash as varchar), array_join(call_trace_address, ''), mode))) as execution_id -- TO DO: try to make it orderly (with block_number & tx_index)
+    , sha1(to_utf8(concat_ws('|'
+        , blockchain
+        , cast(tx_hash as varchar)
+        , array_join(call_trace_address, ',') -- ',' is necessary to avoid similarities after concatenation // array_join(array[1, 0], '') = array_join(array[10], '')
+        , mode
+    ))) as execution_id -- TO DO: try to make it orderly (with block_number & tx_index)
 from executions
 {% if is_incremental() %}
     where {{ incremental_predicate('block_time') }}

@@ -48,8 +48,9 @@
 -- BLOCKCHAINS CONFIG --
 {%
     set blockchains = {
+        "exposed": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea", "sonic", "unichain"],
         "evms": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea", "sonic", "unichain"],
-        "aave": ["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "linea", "optimism", "polygon", "scroll", "zksync"],
+        "aave": ["ethereum", "arbitrum", "avalanche_c", "base", "gnosis", "linea", "optimism", "polygon", "scroll", "zksync"],
         "start": {
             "ethereum"      : "2019-06-03",
             "bnb"           : "2021-02-18",
