@@ -1,6 +1,6 @@
 {%- macro transfers_from_traces_base_macro(blockchain, easy_dates=false) -%}
 
--- this macro process all kind of transfers from traces: native, erc20 transfer/transferFrom, mint/burn, wrapped deposit/withdrawal
+-- this stream process all kind of transfers from traces: native, erc20 transfer/transferFrom, mint/burn, wrapped deposit/withdrawal
 
 {%- set token_standard = 'bep20' if blockchain == 'bnb' else 'erc20' -%}
 {%- set null_address = '0x0000000000000000000000000000000000000000' -%}
@@ -13,7 +13,7 @@
 {%- set withdraw_selector = '0x2e1a7d4d' -%}{# for wrappers #}
 {%- set selector = 'substr(input, 1, 4)' -%}
 
-
+-- output --
 
 select
     '{{ blockchain }}' as blockchain
@@ -65,14 +65,14 @@ where
     (
         length(input) >= 68 and {{ selector }} in ({{ transfer_selector }}, {{ mint_selector }}, {{ burn_selector }}) -- transfer, mint, burn
         or length(input) >= 100 and {{ selector }} = {{ transferFrom_selector }} -- transferFrom
-        or length(input) >= 36 and {{ selector }} = {{ withdraw_selector }}  -- withdraw
+        or length(input) >= 36 and {{ selector }} = {{ withdraw_selector }} -- withdraw
         or value > uint256 '0' -- native, deposit
     )
     and (call_type = 'call' or type = 'create') -- call_type should be only call if present; type = 'create' is contract creation
     and (tx_success or tx_success is null) -- tx_success is null - is for old ethereum data
     and success
-    {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
     {% if easy_dates %}and block_date > current_date - interval '10' day{% endif %} -- easy_dates mode for dev, to prevent full scan
+    {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
 
 
 
