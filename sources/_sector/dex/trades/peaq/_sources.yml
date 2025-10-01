@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: machinex_peaq
+    tables:
+      - name: machinexv3pool_evt_swap
+      - name: nonfungiblepositionmanager_call_createandinitializepoolifnecessary 

@@ -9,6 +9,8 @@
     , incremental_strategy = 'append'
     , partition_by = ['block_month']
     , unique_key = ['address']
+    , tags=['static']
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 
