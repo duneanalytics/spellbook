@@ -88,7 +88,6 @@ select {{ ton_from_boc('body_boc', [
     ton_load_int(64, 'new_total_borrow_in'),
     ton_load_uint(64, 's_rate_in'),
     ton_load_uint(64, 'b_rate_in'),
-    ton_end_parse(),
     ton_load_ref(),
     ton_begin_parse(),
     ton_load_uint(256, 'withdraw_asset_id'),
