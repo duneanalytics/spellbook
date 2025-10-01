@@ -12,6 +12,10 @@ sources:
     tables:
       - name: MoeFactory_evt_PairCreated
       - name: MoePair_evt_Swap
+  - name: merchant_moe_v2_2_mantle
+    tables:
+      - name: LBPair_evt_Swap
+      - name: LBFactory_evt_LBPairCreated
   - name: agni_mantle
     tables:
       - name: AgniPool_evt_Swap
