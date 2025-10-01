@@ -18,13 +18,13 @@ WITH dexs AS (
         t.evt_block_time AS block_time,
         t.to AS taker,
         t.contract_address AS maker,
-        -- amount1 fields are inflated by 1e10 ONLY when tokenA (amount0) has 18 decimals or is unknown
-        -- For 6-decimal tokenA (like USDC.e), amount1 is already correct
         CASE 
             WHEN amount0Out = UINT256 '0' AND (tokena_decimals.decimals IS NULL OR tokena_decimals.decimals = 18)
                 THEN amount1Out / 1e10
             WHEN amount0Out = UINT256 '0' 
                 THEN amount1Out
+            WHEN tokena_decimals.decimals = 6
+                THEN amount0Out / 1e10
             ELSE amount0Out 
         END AS token_bought_amount_raw,
         CASE 
@@ -32,6 +32,8 @@ WITH dexs AS (
                 THEN amount1In / 1e10
             WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' 
                 THEN amount1In
+            WHEN tokena_decimals.decimals = 6
+                THEN amount0In / 1e10
             ELSE amount0In 
         END AS token_sold_amount_raw,
         CASE WHEN amount0Out = UINT256 '0' THEN f.tokenb ELSE f.tokena END AS token_bought_address,
