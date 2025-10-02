@@ -132,7 +132,36 @@ models:
       - *tx_hash
       - *evt_index  
       - *contract_address 
-      - *bridge_transfer_id 
+      - *bridge_transfer_id
+  - name: bridges_evms_deposits_raw
+    meta:
+      blockchain: ethereum, base, arbitrum, avalanche_c, optimism, polygon, unichain
+      sector: bridges
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bridges', 'flows', 'deposits', 'raw' ]
+    description: "Raw bridge deposits events on EVM chains (materialized view for complex UNION ALL)"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['deposit_chain','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id']
+    columns:
+      - *deposit_chain
+      - *withdrawal_chain
+      - *bridge_name
+      - *bridge_version
+      - *block_date
+      - *block_time
+      - *block_number
+      - *deposit_amount_raw
+      - *sender
+      - *recipient
+      - *deposit_token_standard
+      - *deposit_token_address
+      - *tx_from
+      - *tx_hash
+      - *evt_index
+      - *contract_address
+      - *bridge_transfer_id
   - name: bridges_evms_withdrawals_raw
     meta:
       blockchain: ethereum, base, arbitrum, avalanche_c, optimism, polygon, unichain
