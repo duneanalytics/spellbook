@@ -162,6 +162,7 @@ models:
       - *evt_index
       - *contract_address
       - *bridge_transfer_id
+      - *duplicate_index
   - name: bridges_evms_withdrawals_raw
     meta:
       blockchain: ethereum, base, arbitrum, avalanche_c, optimism, polygon, unichain
