@@ -46,5 +46,4 @@ FROM
     , ('mdus-medieus', 'MDUS', 0xab9cb20a28f97e189ca0b666b8087803ad636b3c, 18)
     , ('wemix-wemix-token', 'WEMIX', 0x5096db80b21ef45230c9e423c373f1fc9c0198dd, 18)
     , ('jade-jade-currency', 'JADE', 0xb3f5867e277798b50ba7a71c0b24fdca03045edf, 18)
-    , ('npt-neopin', 'NPT', 0x8888888888885b073f3c81258c27e83db228d5f3, 18)
 ) as temp (token_id, symbol, contract_address, decimals)
