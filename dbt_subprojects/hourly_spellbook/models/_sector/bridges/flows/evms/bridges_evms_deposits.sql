@@ -9,48 +9,6 @@
 )
 }}
 
-{% set chains = [
-    'ethereum'
-    , 'base'
-    , 'arbitrum'
-    , 'avalanche_c'
-    , 'optimism'
-    , 'polygon'
-    , 'unichain'
-] %}
-
-WITH grouped_deposits AS (
-    SELECT *
-    FROM (
-        {% for chain in chains %}
-        SELECT deposit_chain
-        , withdrawal_chain
-        , bridge_name
-        , bridge_version
-        , block_date
-        , block_time
-        , block_number
-        , deposit_amount_raw
-        , sender
-        , recipient
-        , deposit_token_standard
-        , deposit_token_address
-        , tx_from
-        , tx_hash
-        , evt_index
-        , contract_address
-        , bridge_transfer_id
-        FROM {{ ref('bridges_'~chain~'_deposits') }}
-        {% if is_incremental() %}
-        WHERE  {{ incremental_predicate('block_time') }}
-        {% endif %}
-        {% if not loop.last %}
-        UNION ALL
-        {% endif %}
-        {% endfor %} 
-        )
-    )
-
 {% if is_incremental() %}
 , check_dupes AS (
     SELECT deposit_chain
@@ -59,8 +17,9 @@ WITH grouped_deposits AS (
     , bridge_version
     , bridge_transfer_id
     , MAX(duplicate_index) AS duplicate_index
-    FROM {{ this }}
-    INNER JOIN grouped_deposits USING (deposit_chain, withdrawal_chain, bridge_name, bridge_version, bridge_transfer_id)
+    FROM {{ ref('bridges_evms_deposits_raw') }} dr
+    INNER JOIN {{ this }} t USING (deposit_chain, withdrawal_chain, bridge_name, bridge_version, bridge_transfer_id)
+    WHERE {{ incremental_predicate('dr.block_time') }}
     GROUP BY 1, 2, 3, 4, 5
     )
 {% endif %}
@@ -89,7 +48,7 @@ SELECT d.deposit_chain
 {% else %}
 , ROW_NUMBER() OVER (PARTITION BY d.deposit_chain, d.withdrawal_chain, d.bridge_name, d.bridge_version, d.bridge_transfer_id ORDER BY d.block_number, d.evt_index ) AS duplicate_index
 {% endif %}
-FROM grouped_deposits d
+FROM {{ ref('bridges_evms_deposits_raw') }} d
 INNER JOIN {{ source('prices', 'usd') }} p ON p.blockchain=d.deposit_chain
     AND p.contract_address=d.deposit_token_address
     AND p.minute=date_trunc('minute', d.block_time)
@@ -102,4 +61,7 @@ LEFT JOIN check_dupes cd ON  d.deposit_chain = cd.deposit_chain
     AND d.bridge_name = cd.bridge_name
     AND d.bridge_version = cd.bridge_version
     AND d.bridge_transfer_id = cd.bridge_transfer_id
+{% endif %}
+{% if is_incremental() %}
+WHERE {{ incremental_predicate('d.block_time') }}
 {% endif %}
