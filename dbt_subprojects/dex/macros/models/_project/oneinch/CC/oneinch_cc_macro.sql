@@ -191,7 +191,7 @@ left join initial using(block_date, block_number, tx_hash, order_hash)
 join raw_calls using(block_date, block_number, tx_hash)
 left join native_prices using(minute)
 where true
-    and coalesce(slice(iteration_call_trace_address, 1, cardinality(initial_call_trace_address)) = initial_call_trace_address, true) -- the iteration_calls nested in the initial_calls where initial_calls are
+    and coalesce(slice(iteration_call_trace_address, 1, cardinality(initial_call_trace_address)) = initial_call_trace_address, true) -- the iteration call nested in the initial call where initial call is
     and call_trace_address = coalesce(initial_call_trace_address, iteration_call_trace_address) -- the raw_calls are joined to the initial_calls or to the iteration_calls in case of absence
 
 {% endmacro %}
