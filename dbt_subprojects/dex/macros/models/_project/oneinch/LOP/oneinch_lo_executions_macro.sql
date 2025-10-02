@@ -115,7 +115,7 @@ select
     
     , order_hash
     , cast(null as varbinary) as hashlock
-    , cast(null as row(action varchar, success boolean, cost double, tx_hash varbinary, escrow varbinary, token varbinary, amount uint256)) as actions
+    , cast(null as array(row(action varchar, success boolean, cost double, tx_hash varbinary, escrow varbinary, token varbinary, amount uint256))) as actions
     
     , map_from_entries(array[
         ('making_amount', cast(making_amount as varchar))
