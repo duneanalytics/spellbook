@@ -1194,3 +1194,20 @@ models:
           seed_file: ref('native_base_base_trades_seed')
           filter:
             version: 1
+
+  - name: carbon_defi_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: carbon_defi
+      contributors: NIXBNT
+    config:
+      tags: ["base", "dex", "trades", "carbon_defi"]
+    description: "Carbon_defi base base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('carbon_defi_base_base_trades_seed')

@@ -1,0 +1,110 @@
+version: 2
+
+models:
+  - name: tradoor_ton_perp_order
+    meta:
+      blockchain: ton
+      sector: dex
+      contributors: pshuvalov
+    config:
+      tags: ['ton', 'tradoor', 'perpetual']
+    description: >
+      Tradoor Perp orders events
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - block_date
+            - op_type
+    columns:
+      - name: block_date
+        description: "block_date of the transaction"
+      - name: tx_hash
+        description: "transaction hash"
+      - name: trace_id
+        description: "trace id"
+      - name: tx_now
+        description: "transaction timestamp"
+      - name: tx_lt
+        description: "transaction logical time"
+      - name: pool_address
+        description: "pool address"
+      - name: pool_name
+        description: "pool name"
+      - name: trader_addr
+        description: "trader address"
+      - name: is_long
+        description: "is long"
+      - name: margin_delta
+        description: "margin delta"
+      - name: size_delta
+        description: "size delta"
+      - name: trigger_price
+        description: "trigger price"
+      - name: trigger_above
+        description: "trigger above"
+      - name: execution_fee
+        description: "execution fee"
+      - name: order_id
+        description: "order id"
+      - name: trx_id
+        description: "trx id"
+      - name: request_time
+        description: "request time"
+  - name: tradoor_ton_perp_position_change
+    meta:
+      blockchain: ton
+      sector: dex
+      contributors: pshuvalov
+    config:
+      tags: ['ton', 'tradoor', 'perpetual']
+    description: >
+      Tradoor Perp position change events
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - block_date
+    columns:
+      - name: block_date
+        description: "block_date of the transaction"
+      - name: tx_hash
+        description: "transaction hash"
+      - name: trace_id
+        description: "trace id"
+      - name: tx_now
+        description: "transaction timestamp"
+      - name: tx_lt
+        description: "transaction logical time"
+      - name: pool_address
+        description: "pool address"
+      - name: pool_name
+        description: "pool name"
+      - name: is_increased
+        description: "is increased"
+      - name: trx_id
+        description: "trx id"
+      - name: order_id
+        description: "order id"
+      - name: op_type
+        description: "op type"
+      - name: position_id
+        description: "position id"
+      - name: trader_addr
+        description: "trader address"
+      - name: token_id
+        description: "token id"
+      - name: is_long
+        description: "is long"
+      - name: margin_delta
+        description: "margin delta"
+      - name: margin_after
+        description: "margin after"
+      - name: size_delta
+        description: "size delta"
+      - name: size_after
+        description: "size after"
+      - name: trade_price
+        description: "trade price"
+      - name: entry_price
+        description: "entry price"

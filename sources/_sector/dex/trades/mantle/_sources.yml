@@ -30,3 +30,6 @@ sources:
     tables:
       - name: TropicalFactory_evt_PairCreated
       - name: TropicalPair_evt_Swap
+  - name: carbon_defi_mantle
+    tables:
+      - name: CarbonController_evt_TokensTraded

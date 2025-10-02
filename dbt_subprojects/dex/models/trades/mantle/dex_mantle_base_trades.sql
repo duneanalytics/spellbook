@@ -18,6 +18,7 @@
     , ref('clipper_mantle_base_trades')
     , ref('uniswap_v3_mantle_base_trades')
     , ref('tropicalswap_mantle_base_trades')
+    , ref('carbon_defi_mantle_base_trades')
 ] %}
 with base_union as (
     SELECT *

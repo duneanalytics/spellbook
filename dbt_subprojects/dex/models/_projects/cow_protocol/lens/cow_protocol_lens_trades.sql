@@ -156,6 +156,25 @@ uid_to_app_id as (
       i = j
 ),
 
+eth_flow_senders as (
+    select
+        sender,
+        bytearray_concat(
+            bytearray_concat(
+                output_orderHash,
+                bytearray_substring(event.contract_address, 1, 20)
+            ),
+            0xffffffff
+        ) AS order_uid
+    from {{ source('cow_protocol_lens', 'CoWSwapEthFlow_evt_OrderPlacement') }} event
+    inner join {{ source('cow_protocol_lens', 'CoWSwapEthFlow_call_createOrder') }} call
+        on call_block_number = evt_block_number
+        and call_tx_hash = evt_tx_hash
+    {% if is_incremental() %}
+    where {{ incremental_predicate('evt_block_time') }}
+    {% endif %}
+),
+
 valued_trades as (
     SELECT block_date,
            block_month,
@@ -167,11 +186,9 @@ valued_trades as (
            project_contract_address,
            trades.order_uid,
            -- ETH Flow orders have trader = sender of orderCreation.
-           --case when sender is not null then sender else trader end as trader,
-           trader,
+           case when sender is not null then sender else trader end as trader,
            sell_token_address,
-           --case when sender is not null then 'GHO' else sell_token end as sell_token,
-           sell_token,
+           case when sender is not null then 'GHO' else sell_token end as sell_token,
            buy_token_address,
            buy_token,
            case
@@ -229,8 +246,8 @@ valued_trades as (
     JOIN uid_to_app_id
         ON uid = trades.order_uid
         AND hash=tx_hash
-    -- LEFT OUTER JOIN eth_flow_senders efs
-    --         ON trades.order_uid = efs.order_uid
+    LEFT OUTER JOIN eth_flow_senders efs
+            ON trades.order_uid = efs.order_uid
 )
 
 select *,

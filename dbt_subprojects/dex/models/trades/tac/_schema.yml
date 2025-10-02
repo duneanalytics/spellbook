@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: dex_tac_base_trades
+    data_tests:
+      - check_columns_dex_base_trades
+      - check_dex_info_relationship
+      - test_acceptable_usd_amount:
+          column_name: amount_usd
+          max_value: 1000000000
+
+  - name: carbon_defi_tac_base_trades
+    meta:
+      blockchain: tac
+      sector: dex
+      project: carbon_defi
+      contributors: tiagofilipenunes
+    config:
+      tags: ["tac", "dex", "trades", "carbon_defi"]
+    description: "Carbon_defi tac base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('carbon_defi_tac_base_trades_seed')
