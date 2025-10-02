@@ -174,7 +174,7 @@ select
         , ('order_making_amount', cast(order_making_amount as varchar))
         , ('order_taking_amount', cast(order_taking_amount as varchar))
     ]) as complement
-    , array[order_remains] as remains
+    , array[bytearray_to_bigint(order_remains)] as remains
     , minute
     , block_date
     , block_month
@@ -191,7 +191,7 @@ left join initial using(block_date, block_number, tx_hash, order_hash)
 join raw_calls using(block_date, block_number, tx_hash)
 left join native_prices using(minute)
 where true
-    and slice(iteration_call_trace_address, 1, cardinality(initial_call_trace_address)) = initial_call_trace_address -- nested
-    and call_trace_address = coalesce(initial_call_trace_address, iteration_call_trace_address)
+    and coalesce(slice(iteration_call_trace_address, 1, cardinality(initial_call_trace_address)) = initial_call_trace_address, true) -- the iteration_calls nested in the initial_calls where initial_calls are
+    and call_trace_address = coalesce(initial_call_trace_address, iteration_call_trace_address) -- the raw_calls are joined to the initial_calls or to the iteration_calls in case of absence
 
 {% endmacro %}
