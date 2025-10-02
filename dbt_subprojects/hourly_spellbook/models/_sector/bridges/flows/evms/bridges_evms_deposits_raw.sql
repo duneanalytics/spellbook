@@ -66,17 +66,28 @@ WITH check_dupes AS (
     )
 {% endif %}
 
-    SELECT deposit_chain
-, withdrawal_chain
-, bridge_name
-, bridge_version
-, bridge_transfer_id
+    SELECT rd.deposit_chain
+, rd.withdrawal_chain
+, rd.bridge_name
+, rd.bridge_version
+, rd.bridge_transfer_id
+, rd.block_date
+, rd.block_time
+, rd.block_number
+, rd.deposit_amount_raw
+, rd.sender
+, rd.recipient
+, rd.deposit_token_standard
+, rd.deposit_token_address
+, rd.tx_from
+, rd.tx_hash
+, rd.evt_index
+, rd.contract_address
 {% if is_incremental() %}
-, COALESCE(cd.duplicate_index, 0) + ROW_NUMBER() OVER (PARTITION BY d.deposit_chain, d.withdrawal_chain, d.bridge_name, d.bridge_version, d.bridge_transfer_id ORDER BY d.block_number, d.evt_index ) AS duplicate_index
+, COALESCE(cd.duplicate_index, 0) + ROW_NUMBER() OVER (PARTITION BY rd.deposit_chain, rd.withdrawal_chain, rd.bridge_name, rd.bridge_version, rd.bridge_transfer_id ORDER BY rd.block_number, rd.evt_index ) AS duplicate_index
 {% else %}
-, ROW_NUMBER() OVER (PARTITION BY d.deposit_chain, d.withdrawal_chain, d.bridge_name, d.bridge_version, d.bridge_transfer_id ORDER BY d.block_number, d.evt_index ) AS duplicate_index
+, ROW_NUMBER() OVER (PARTITION BY rd.deposit_chain, rd.withdrawal_chain, rd.bridge_name, rd.bridge_version, rd.bridge_transfer_id ORDER BY rd.block_number, rd.evt_index ) AS duplicate_index
 {% endif %}
-, ROW_NUMBER() OVER (PARTITION BY d.deposit_chain, d.withdrawal_chain, d.bridge_name, d.bridge_version, d.bridge_transfer_id ORDER BY d.block_number, d.evt_index) AS duplicate_index
 FROM raw_deposits rd
 {% if is_incremental() %}
 INNER JOIN check_dupes cd ON rd.deposit_chain = cd.deposit_chain
