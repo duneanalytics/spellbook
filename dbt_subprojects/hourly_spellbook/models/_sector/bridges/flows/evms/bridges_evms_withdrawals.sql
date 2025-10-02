@@ -9,48 +9,6 @@
 )
 }}
 
-{% set chains = [
-    'ethereum'
-    , 'base'
-    , 'arbitrum'
-    , 'avalanche_c'
-    , 'optimism'
-    , 'polygon'
-    , 'unichain'
-] %}
-
-WITH grouped_withdrawals AS (
-SELECT *
-FROM (
-        {% for chain in chains %}
-        SELECT deposit_chain
-        , withdrawal_chain
-        , bridge_name
-        , bridge_version
-        , block_date
-        , block_time
-        , block_number
-        , withdrawal_amount_raw
-        , sender
-        , recipient
-        , withdrawal_token_standard
-        , withdrawal_token_address
-        , tx_from
-        , tx_hash
-        , evt_index
-        , contract_address
-        , bridge_transfer_id
-        FROM {{ ref('bridges_'~chain~'_withdrawals') }}
-        {% if is_incremental() %}
-        WHERE  {{ incremental_predicate('block_time') }}
-        {% endif %}
-        {% if not loop.last %}
-        UNION ALL
-        {% endif %}
-        {% endfor %}
-        )
-    )
-
 SELECT w.deposit_chain
 , w.withdrawal_chain
 , w.bridge_name
@@ -70,11 +28,14 @@ SELECT w.deposit_chain
 , w.evt_index
 , w.contract_address
 , w.bridge_transfer_id
-FROM grouped_withdrawals w
+FROM {{ ref('bridges_evms_withdrawals_raw') }} w
 INNER JOIN {{ source('prices', 'usd') }} p ON p.blockchain=w.withdrawal_chain
     AND p.contract_address=w.withdrawal_token_address
     AND p.minute=date_trunc('minute', w.block_time)
     {% if is_incremental() %}
     AND {{ incremental_predicate('p.minute') }}
     {% endif %}
+{% if is_incremental() %}
+WHERE {{ incremental_predicate('w.block_time') }}
+{% endif %}
     
