@@ -7,6 +7,8 @@
     , incremental_strategy = 'merge'
     , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    , tags=['static']
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 
