@@ -1,6 +1,5 @@
 {{ config(
-    tags = ['prod_exclude']
-    , schema = 'bridges_evms'
+    schema = 'bridges_evms'
     , alias = 'deposits'
     , materialized = 'incremental'
     , file_format = 'delta'
