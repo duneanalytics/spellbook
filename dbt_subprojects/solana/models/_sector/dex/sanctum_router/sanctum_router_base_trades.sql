@@ -178,7 +178,7 @@ token_amounts AS (
 SELECT
     'solana' as blockchain
     , 'sanctum_router' as project
-    , 1 as version
+    , '1' as version
     , CAST(date_trunc('month', b.block_time) AS DATE) as block_month
     , b.block_time
     , b.block_slot

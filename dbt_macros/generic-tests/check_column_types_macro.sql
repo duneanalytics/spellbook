@@ -68,7 +68,7 @@ select * from equality_checks where not contains(split(expected_type,'/'),actual
     {%- set column_types = {
         'blockchain': 'varchar',
         'project': 'varchar',
-        'version': 'integer',
+        'version': 'varchar',
         'block_month': 'date',
         'block_slot': 'bigint',
         'block_time': 'timestamp(3) with time zone',

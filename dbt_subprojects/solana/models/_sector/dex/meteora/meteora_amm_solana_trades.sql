@@ -1,15 +1,13 @@
  {{
   config(
-        schema = 'raydium_v3',
+        schema = 'meteora_amm_solana',
         alias = 'trades',
         materialized = 'view',
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "project",
-                                    "raydium",
-                                    \'["ilemi"]\') }}'
-        )
+                                    "meteora",
+                                    \'["ilemi"]\') }}')
 }}
-
 select
       blockchain
       , project
@@ -40,5 +38,8 @@ select
       , outer_instruction_index
       , inner_instruction_index
       , tx_index
-from {{ref('dex_solana_trades')}}
-where project = 'raydium' and version = 3
+from
+      {{ ref('dex_solana_trades') }}
+where 
+      project = 'meteora'
+      and version = 'amm'

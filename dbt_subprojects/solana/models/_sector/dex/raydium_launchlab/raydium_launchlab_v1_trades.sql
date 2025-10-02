@@ -49,4 +49,4 @@ left join {{ref('raydium_launchlab_v1_base_trades')}} as base
       and dex_trades.tx_index = base.tx_index
       and dex_trades.block_slot = base.block_slot
       and dex_trades.block_time = base.block_time
-where dex_trades.project = 'raydium_launchlab' and dex_trades.version = 1
+where dex_trades.project = 'raydium_launchlab' and dex_trades.version = '1'

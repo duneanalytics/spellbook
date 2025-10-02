@@ -129,7 +129,7 @@ with calls as (
         sp.call_block_time as block_time
         , sp.call_block_slot as block_slot
         , 'raydium_launchlab' as project
-        , 1 as version
+        , '1' as version
         , 'solana' as blockchain
         , case when sp.call_is_inner = False then 'direct'
             else sp.call_outer_executing_account

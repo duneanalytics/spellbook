@@ -1,11 +1,11 @@
  {{
   config(
-        schema = 'meteora_v1_solana',
+        schema = 'goosefx_ssl_solana',
         alias = 'trades',
         materialized = 'view',
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "project",
-                                    "meteora",
+                                    "goosefx",
                                     \'["ilemi"]\') }}')
 }}
 select
@@ -41,5 +41,5 @@ select
 from
       {{ ref('dex_solana_trades') }}
 where 
-      project = 'meteora'
-      and version = 1
+      project = 'goosefx_ssl'
+      and version = 'ssl'

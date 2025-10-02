@@ -1,12 +1,12 @@
  {{
   config(
-        schema = 'goosefx_ssl_v2_solana',
+        schema = 'meteora_dlmm_solana',
         alias = 'trades',
         materialized = 'view',
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "project",
-                                    "goosefx",
-                                    \'["ilemi"]\') }}')
+                                    "meteora",
+                                    \'["ilemi", "0xsandeshk"]\') }}')
 }}
 select
       blockchain
@@ -41,5 +41,5 @@ select
 from
       {{ ref('dex_solana_trades') }}
 where 
-      project = 'goosefx_ssl'
-      and version = 2
+      project = 'meteora'
+      and version = 'dlmm'

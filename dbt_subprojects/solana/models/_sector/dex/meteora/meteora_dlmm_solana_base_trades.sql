@@ -6,7 +6,7 @@
 
 {{ 
   config(
-    schema='meteora_v2_solana',
+    schema='meteora_dlmm_solana',
     alias='base_trades',
     materialized='incremental',
     file_format='delta',
@@ -80,7 +80,7 @@ met_v2_trades as (
 select
     'solana' as blockchain,
     'meteora' as project,
-    2 as version,
+    'dlmm' as version,
     cast(date_trunc('month', sw.block_time) as date) as block_month,
     sw.block_time,
     sw.block_slot,

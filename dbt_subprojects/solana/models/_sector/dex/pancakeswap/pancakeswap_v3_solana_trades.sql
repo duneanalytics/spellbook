@@ -41,4 +41,4 @@ select
       , inner_instruction_index
       , tx_index
 from {{ref('dex_solana_trades')}}
-where project = 'pancakeswap' and version = 3
+where project = 'pancakeswap' and version = '3'

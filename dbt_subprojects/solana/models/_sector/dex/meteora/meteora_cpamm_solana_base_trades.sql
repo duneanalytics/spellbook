@@ -4,7 +4,7 @@
 
 {{ 
   config(
-    schema='meteora_v3_solana',
+    schema='meteora_cpamm_solana',
     alias='base_trades',
     materialized='incremental',
     file_format='delta',
@@ -68,7 +68,7 @@ swaps_data as (
 select 
   'solana' as blockchain
 , 'meteora' as project
-, 3 as version
+, 'cpamm' as version
 , cast (date_trunc('month',sd.block_time) as date) as block_month
 , sd.block_time  
 , sd.block_slot 

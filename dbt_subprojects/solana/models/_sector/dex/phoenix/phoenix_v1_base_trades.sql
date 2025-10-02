@@ -142,7 +142,7 @@
     SELECT
         l.call_block_time as block_time
         , 'phoenix' as project
-        , 1 as version
+        , '1' as version
         , 'solana' as blockchain
         , l.call_block_slot as block_slot
         , case when s.call_outer_executing_account = 'PhoeNiXZ8ByJGLkxNfZRnkUfjvmuYqLR89jjFHGqdXY' then 'direct'

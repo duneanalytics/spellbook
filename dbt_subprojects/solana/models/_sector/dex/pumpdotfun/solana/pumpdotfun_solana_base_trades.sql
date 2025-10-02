@@ -70,7 +70,7 @@ with
         SELECT
             sp.block_time
             , 'pumpdotfun' as project
-            , 1 as version
+            , '1' as version
             , 'solana' as blockchain
             , case when sp.outer_executing_account = '6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P' then 'direct'
                 else sp.outer_executing_account

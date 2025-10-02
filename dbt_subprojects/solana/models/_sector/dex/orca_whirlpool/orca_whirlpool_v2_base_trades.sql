@@ -159,7 +159,7 @@ with
             sp.call_block_time as block_time
             , sp.call_block_slot as block_slot
             , 'whirlpool' as project
-            , 2 as version
+            , '2' as version
             , 'solana' as blockchain
             , case when sp.call_outer_executing_account = 'whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc' then 'direct'
                 else sp.call_outer_executing_account

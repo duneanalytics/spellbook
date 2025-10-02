@@ -40,4 +40,4 @@ select
       , inner_instruction_index
       , tx_index
 from {{ ref('dex_solana_trades' )}}
-where project = 'lifinity' and version = 1
+where project = 'lifinity' and version = '1'

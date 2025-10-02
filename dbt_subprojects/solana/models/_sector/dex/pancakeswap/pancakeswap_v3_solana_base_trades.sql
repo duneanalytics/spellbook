@@ -83,7 +83,7 @@
         SELECT
             sp.call_block_time as block_time
             , 'pancakeswap' as project
-            , 3 as version
+            , '3' as version
             , 'solana' as blockchain
             , call_block_slot as block_slot
             , case when sp.call_is_inner = False then 'direct'
