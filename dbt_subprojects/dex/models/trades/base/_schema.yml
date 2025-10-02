@@ -815,7 +815,7 @@ models:
       blockchain: base
       sector: dex
       project: alienbase
-      contributors: intensodefi, krishg
+      contributors: krishg
     config:
       tags: ["base", "dex", "trades", "alienbase", "v3"]
     description: "alienbase base v3 base trades"
