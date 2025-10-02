@@ -9,21 +9,6 @@
 )
 }}
 
-{% if is_incremental() %}
-, check_dupes AS (
-    SELECT deposit_chain
-    , withdrawal_chain
-    , bridge_name
-    , bridge_version
-    , bridge_transfer_id
-    , MAX(duplicate_index) AS duplicate_index
-    FROM {{ ref('bridges_evms_deposits_raw') }} dr
-    INNER JOIN {{ this }} t USING (deposit_chain, withdrawal_chain, bridge_name, bridge_version, bridge_transfer_id)
-    WHERE {{ incremental_predicate('dr.block_time') }}
-    GROUP BY 1, 2, 3, 4, 5
-    )
-{% endif %}
-
 SELECT d.deposit_chain
 , d.withdrawal_chain
 , d.bridge_name
@@ -56,11 +41,6 @@ INNER JOIN {{ source('prices', 'usd') }} p ON p.blockchain=d.deposit_chain
     AND {{ incremental_predicate('p.minute') }}
     {% endif %}
 {% if is_incremental() %}
-LEFT JOIN check_dupes cd ON  d.deposit_chain = cd.deposit_chain
-    AND d.withdrawal_chain = cd.withdrawal_chain
-    AND d.bridge_name = cd.bridge_name
-    AND d.bridge_version = cd.bridge_version
-    AND d.bridge_transfer_id = cd.bridge_transfer_id
 {% endif %}
 {% if is_incremental() %}
 WHERE {{ incremental_predicate('d.block_time') }}
