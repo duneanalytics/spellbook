@@ -2,7 +2,6 @@
     schema = 'bridges_evms'
     , alias = 'flows'
     , materialized = 'view'
-    , tags = ['prod_exclude']
     )
 }}
 
