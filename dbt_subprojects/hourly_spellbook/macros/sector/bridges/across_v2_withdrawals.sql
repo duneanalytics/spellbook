@@ -26,25 +26,49 @@ WITH across_id_mapping AS (
     ) AS x (id, blockchain)
     )
     
-SELECT m.blockchain AS deposit_chain
-, '{{blockchain}}' AS withdrawal_chain
-, 'Across' AS bridge_name
-, '2' AS bridge_version
-, evt_block_date AS block_date
-, evt_block_time AS block_time
-, evt_block_number AS block_number
-, outputAmount AS withdrawal_amount_raw
-, CASE WHEN varbinary_substring(depositor,1, 12) = 0x000000000000000000000000 THEN varbinary_substring(depositor,13) ELSE depositor END AS sender
-, CASE WHEN varbinary_substring(recipient,1, 12) = 0x000000000000000000000000 THEN varbinary_substring(recipient,13) ELSE recipient END AS recipient
-, CASE WHEN varbinary_substring(outputToken,1, 12) = 0x000000000000000000000000 THEN varbinary_substring(outputToken,13) ELSE outputToken END AS withdrawal_token_address
-, 'erc20' AS deposit_token_standard
-, 'erc20' AS withdrawal_token_standard
-, evt_tx_from AS tx_from
-, evt_tx_hash AS tx_hash
+, ranked AS (
+    SELECT m.blockchain AS deposit_chain
+    , '{{blockchain}}' AS withdrawal_chain
+    , 'Across' AS bridge_name
+    , '2' AS bridge_version
+    , evt_block_date AS block_date
+    , evt_block_time AS block_time
+    , evt_block_number AS block_number
+    , outputAmount AS withdrawal_amount_raw
+    , CASE WHEN varbinary_substring(depositor,1, 12) = 0x000000000000000000000000 THEN varbinary_substring(depositor,13) ELSE depositor END AS sender
+    , CASE WHEN varbinary_substring(recipient,1, 12) = 0x000000000000000000000000 THEN varbinary_substring(recipient,13) ELSE recipient END AS recipient
+    , CASE WHEN varbinary_substring(outputToken,1, 12) = 0x000000000000000000000000 THEN varbinary_substring(outputToken,13) ELSE outputToken END AS withdrawal_token_address
+    , 'erc20' AS deposit_token_standard
+    , 'erc20' AS withdrawal_token_standard
+    , evt_tx_from AS tx_from
+    , evt_tx_hash AS tx_hash
+    , evt_index
+    , contract_address
+    , CAST(depositId_uint256 AS varchar) AS bridge_transfer_id
+    , ROW_NUMBER() OVER (PARTITION BY m.blockchain, evt_block_number, evt_tx_hash ORDER BY evt_index DESC) AS rn
+    FROM ({{ events }}) d
+    LEFT JOIN across_id_mapping m ON d.originChainId=m.id
+    )
+
+SELECT deposit_chain
+, withdrawal_chain
+, bridge_name
+, bridge_version
+, block_date
+, block_time
+, block_number
+, withdrawal_amount_raw
+, sender
+, recipient
+, withdrawal_token_address
+, deposit_token_standard
+, withdrawal_token_standard
+, tx_from
+, tx_hash
 , evt_index
 , contract_address
-, CAST(depositId_uint256 AS varchar) AS bridge_transfer_id
-FROM ({{ events }}) d
-LEFT JOIN across_id_mapping m ON d.originChainId=m.id
+, bridge_transfer_id
+FROM ranked
+WHERE rn = 1
 
 {% endmacro %}
