@@ -40,6 +40,7 @@ with prices_native_tokens as (
         , ('goerli', 'eth-ethereum')
         , ('hemi', 'eth-ethereum')
         , ('hyperevm', 'hype-hyperliquid')
+        , ('initia', 'init-initia')
         , ('ink', 'eth-ethereum')
         , ('kaia', 'kaia-kaia')
         , ('katana', 'eth-ethereum')
