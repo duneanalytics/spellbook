@@ -17,7 +17,7 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain name"
-  - name: bridges_cctp_chain_indexes
+  - name: bridges_across_chain_indexes
     meta:
       blockchain: ethereum
       sector: bridges
@@ -27,9 +27,5 @@ models:
       tags: [ 'bridges', 'chain_indexes' ]
     description: "Across's blockchains indexes"
     columns:
-      - &id
-        name: id
-        description: "Blockchain id"
-      - &blockchain
-        name: blockchain
-        description: "Blockchain name"
+      - *id
+      - *blockchain
