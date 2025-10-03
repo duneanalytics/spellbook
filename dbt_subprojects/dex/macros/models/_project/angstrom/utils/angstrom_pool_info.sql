@@ -1,8 +1,10 @@
 {% macro
     angstrom_pool_info(
+        angstrom_contract_addr,
         controller_v1_contract_addr,
         earliest_block,
-        blockchain
+        blockchain,
+        controller_pool_configured_log_topic0
     )
 %}
 
@@ -35,7 +37,7 @@ WITH fee_events AS (
                         64,
                         '0'
                     ),
-                    LPAD('0000000aa232009084bd71a5797d089aa4edfad4', 64, '0')
+                    LPAD(substr(CAST({{ angstrom_contract_addr }} AS VARCHAR), 3), 64, '0')
                     )
                 )
                 )
@@ -46,7 +48,7 @@ WITH fee_events AS (
     WHERE 
         block_number >= {{ earliest_block }} AND
         contract_address = {{ controller_v1_contract_addr }} AND 
-        topic0 = 0xf325a037d71efc98bc41dc5257edefd43a1d1162e206373e53af271a7a3224e9
+        topic0 = {{ controller_pool_configured_log_topic0 }}
 ),
 block_range AS (
     SELECT number AS block_number
@@ -90,8 +92,8 @@ SELECT
     bundle_fee,
     unlocked_fee,
     protocol_unlocked_fee,
-    topic1,
-    topic2,
+    varbinary_substring(topic1, 13, 20) AS token0,
+    varbinary_substring(topic2, 13, 20) AS token1,
     FROM_HEX(pool_id) AS pool_id
 FROM latest_fees_per_pair
 WHERE rn = 1 AND bundle_fee IS NOT NULL
