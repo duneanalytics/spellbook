@@ -26,7 +26,7 @@ WITH across_id_mapping AS (
     ) AS x (id, blockchain)
     )
     
-SELECT 'arbitrum' AS deposit_chain
+SELECT '{{blockchain}}' AS deposit_chain
 , m.blockchain AS withdrawal_chain
 , 'Across' AS bridge_name
 , '3' AS bridge_version
