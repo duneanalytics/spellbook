@@ -15,7 +15,7 @@
         blockchain = 'kaia',
         project = 'cldex',
         version = '2',
-        Pair_evt_Swap = source('cldex_kaia', 'CLDEXPair_evt_Swap'),
-        Factory_evt_PairCreated = source('cldex_kaia', 'CLDEXFactory_evt_PairCreated')
+        Pair_evt_Swap = source('cldex_kaia', 'cldexpair_evt_swap'),
+        Factory_evt_PairCreated = source('cldex_kaia', 'cldexfactory_evt_paircreated')
     )
 }}
