@@ -125,7 +125,7 @@ models:
       contributors: thecaptncrunch
     config:
       tags: [ 'kaia', 'dex', 'trades', 'cldex' ]
-    description: "Kaia concetrated liquidity base trades"
+    description: "Kaia concentrated liquidity base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
