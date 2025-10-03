@@ -45,7 +45,7 @@ WITH across_id_mapping AS (
     , evt_index
     , contract_address
     , CAST(depositId_uint256 AS varchar) AS bridge_transfer_id
-    , ROW_NUMBER() OVER (PARTITION BY m.blockchain, evt_block_number, evt_tx_hash ORDER BY evt_index DESC) AS rn
+    , ROW_NUMBER() OVER (PARTITION BY d.originChainId, d.evt_block_number, d.evt_tx_hash, d.depositId_uint256 ORDER BY d.evt_index DESC) AS rn
     FROM ({{ events }}) d
     LEFT JOIN across_id_mapping m ON d.originChainId=m.id
     )
