@@ -8,4 +8,4 @@ sources:
         description: "Swap events from CLDEX on Kaia" # Placeholder description
         
       - name: cldexfactory_evt_paircreated
-        description: "Pool creation events from CLDEX on Kaia" # Placeholder description
+        description: "Pair creation events from CLDEX on Kaia" # Placeholder description
