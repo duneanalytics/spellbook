@@ -2,7 +2,7 @@
 
 {{
     config(
-        schema = 'oneinch_evms',
+        schema = 'oneinch',
         alias = substream,
         materialized = 'incremental',
         file_format = 'delta',
@@ -37,6 +37,12 @@ executions as (
     {% endfor %}
 )
 
+, resolvers as (
+    select *
+        , address as tx_from
+    from {{ ref('oneinch_fusion_accounts') }}
+)
+
 -- output --
 
 select
@@ -67,6 +73,8 @@ select
     , protocol
     , protocol_version
     , contract_name
+    , resolver_address
+    , resolver_name
     , amount_usd
     , execution_cost
     , if(second_side, tx_from, user) as user
@@ -101,6 +109,6 @@ select
         , mode
     ))) as execution_id -- TO DO: try to make it orderly (with block_number & tx_index)
 from executions
-{% if is_incremental() %}
-    where {{ incremental_predicate('block_time') }}
-{% endif %}
+left join resolvers using(blockchain, tx_from)
+where true
+    {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}

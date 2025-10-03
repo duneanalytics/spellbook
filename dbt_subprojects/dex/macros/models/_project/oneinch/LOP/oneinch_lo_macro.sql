@@ -47,7 +47,6 @@ decoded as (
                         , cast(pow(2, {{ method_data.multiple_bit }} - {{ method_data.multiple_bit }} / 8 * 8) as bigint) -- 2 ^ (multiple_bit - multiple_bit / 8 * 8) -- bit_weights = array[128, 64, 32, 16, 8, 4, 2, 1]
                     ) > 0) -- if set, the order permits multiple fills
                 {% else %} null {% endif %} as multiple
-                , row_number() over(partition by call_tx_hash order by call_trace_address) as tx_call_id
             from (
                 select *
                     , cast(json_parse({{ method_data.get("order", '"order"') }}) as map(varchar, varchar)) as order_map
@@ -114,7 +113,7 @@ select
     , protocol
     , protocol_version
     , contract_name
-    , coalesce(order_hash, concat(tx_hash, substr(to_big_endian_64(tx_call_id), 5))) as order_hash
+    , order_hash
     , maker
     , receiver
     , maker_asset

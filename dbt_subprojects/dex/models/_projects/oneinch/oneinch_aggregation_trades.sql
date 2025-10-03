@@ -15,7 +15,7 @@
 select
     blockchain
     , '1inch' as project
-    , 'AR v' || protocol_version as version
+    , 'AR v' || cast(round(protocol_version) as varchar) as version
     , block_date
     , block_month
     , block_time

@@ -13,21 +13,27 @@
 
 select
     blockchain
-    , chain_id
+    , mode
     , dst_blockchain
-    , order_hash
-    , user
-    , max(mode) as mode
-    , max(protocol) as protocol
-    , max(protocol_version) as protocol_version
-    , max(contract_address) as contract_address
-    , max(contract_name) as contract_name
+    , coalesce(order_hash, execution_id) as swap_id
 
-    , max_by(block_number, amount_usd) as main_block_number
-    , max_by(block_time, amount_usd) as main_block_time
-    , max_by(tx_hash, amount_usd) as main_tx_hash
-    , max_by(tx_from, amount_usd) as main_tx_from
-    , max_by(tx_to, amount_usd) as main_tx_to
+    , min_by(user, block_time) as user
+    , min_by(block_number, block_time) as block_number
+    , min_by(block_month, block_time) as block_month
+    , min_by(block_date, block_time) as block_date
+    , min(block_time) as block_time
+    , min_by(tx_hash, block_time) as tx_hash
+    , min_by(tx_from, block_time) as tx_from
+    , min_by(tx_to, block_time) as tx_to
+    , min_by(call_trace_address, block_time) as call_trace_address
+    , min_by(call_from, block_time) as call_from
+    , min_by(call_to, block_time) as call_to
+    , min_by(call_selector, block_time) as call_selector
+    , min_by(call_method, block_time) as call_method
+
+    , min_by(protocol, block_time) as protocol
+    , min_by(protocol_version, block_time) as protocol_version
+    , min_by(contract_name, block_time) as contract_name
     
     , sum(amount_usd) as amount_usd
     , sum(execution_cost) as execution_cost
@@ -37,35 +43,25 @@ select
     , max(src_executed_symbol) as src_token_symbol
     , sum(src_executed_amount) as src_executed_amount
     , sum(src_executed_amount_usd) as src_executed_amount_usd
-
+    
     , max(coalesce(dst_executed_address, dst_token_address)) as dst_token_address
     , max(dst_token_amount) as dst_token_amount
     , max(dst_executed_symbol) as dst_token_symbol
     , sum(dst_executed_amount) as dst_executed_amount
     , sum(dst_executed_amount_usd) as dst_executed_amount_usd
 
-    , max_by(remains, amount_usd) as remains
-    , max_by(flags, amount_usd) as flags
+    , min_by(remains, block_time) as remains
+    , min_by(flags, block_time) as flags
     
-    , array_agg(cast(
-        row(
-            execution_id
-            , hashlock
-            , receiver
-            , call_method
-            , call_selector
-            , amount_usd
-        ) as row(
-            id number
-            , hashlock varbinary
-            , receiver varbinary
-            , call_method varchar
-            , call_selector varbinary
-            , amount_usd double
-        )
-    )) as executions
+    , array_agg(map_from_entries(array[
+        ('amount', concat('$', format_number(amount_usd)))
+        , ('execution', cast(execution_id as varchar))
+        , ('resolver', resolver_name)
+        , ('hashlock', cast(hashlock as varchar))
+        , ('receiver', cast(receiver as varchar))
+    ])) as executions
 from {{ ref('oneinch_executions') }}
 where true
     and tx_success
     and call_success
-group by 1, 2, 3, 4, 5
+group by 1, 2, 3, 4

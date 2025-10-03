@@ -16,9 +16,9 @@
             "dst_token_address":    "from_hex(json_value(desc, 'lax $.dstToken'))",
             "src_receiver":         "from_hex(json_value(desc, 'lax $.srcReceiver'))",
             "dst_receiver":         "from_hex(json_value(desc, 'lax $.dstReceiver'))",
-            "src_token_amount":     "cast(json_value(desc, 'lax $.amount') as uint256)",
+            "src_token_amount":     "cast(json_extract_scalar(desc, '$.amount') as uint256)",
             "dst_token_amount":     "output_returnAmount",
-            "dst_token_amount_min": "cast(json_value(desc, 'lax $.minReturnAmount') as uint256)",
+            "dst_token_amount_min": "cast(json_extract_scalar(desc, '$.minReturnAmount') as uint256)",
             "router_type":          "'generic'",
         },
         "unoswap v3-v5": {

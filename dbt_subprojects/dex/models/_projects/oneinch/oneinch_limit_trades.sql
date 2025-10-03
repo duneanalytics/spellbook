@@ -15,7 +15,7 @@
 select
     blockchain
     , '1inch-LOP' as project
-    , protocol_version as version
+    , cast(protocol_version as varchar) as version
     , block_date
     , block_month
     , block_time
