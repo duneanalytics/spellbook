@@ -27,7 +27,7 @@ WITH across_id_mapping AS (
     )
     
 SELECT m.blockchain AS deposit_chain
-, 'arbitrum' AS withdrawal_chain
+, '{{blockchain}}' AS withdrawal_chain
 , 'Across' AS bridge_name
 , '3' AS bridge_version
 , evt_block_date AS block_date
