@@ -1,32 +1,6 @@
 {% macro across_v2_withdrawals(blockchain, events) %}
 
-WITH across_id_mapping AS (
-    SELECT id, blockchain
-    FROM (VALUES
-    (1, 'ethereum')
-    , (10, 'optimism')
-    , (137, 'polygon')
-    , (42161, 'arbitrum')
-    , (56, 'bnb')
-    , (324, 'zksync')
-    , (59144, 'linea')
-    , (8453, 'base')
-    , (7777777, 'zora')
-    , (81457, 'blast')
-    , (34443, 'mode')
-    , (232, 'lens')
-    , (57073, 'ink')
-    , (1135, 'list')
-    , (41455, 'aleph_zero')
-    , (690, 'redstone')
-    , (534352, 'scroll')
-    , (1868, 'soneium')
-    , (480, 'worldchain')
-    , (130, 'unichain')
-    ) AS x (id, blockchain)
-    )
-    
-, ranked AS (
+WITH ranked AS (
     SELECT m.blockchain AS deposit_chain
     , '{{blockchain}}' AS withdrawal_chain
     , 'Across' AS bridge_name
@@ -47,7 +21,7 @@ WITH across_id_mapping AS (
     , CAST(d.depositId_uint256 AS varchar) AS bridge_transfer_id
     , ROW_NUMBER() OVER (PARTITION BY d.originChainId, d.evt_block_number, d.evt_tx_hash, d.depositId_uint256 ORDER BY d.evt_index DESC) AS rn
     FROM ({{ events }}) d
-    LEFT JOIN across_id_mapping m ON d.originChainId=m.id
+    LEFT JOIN {{ ref('bridges_across_chain_indexes') }} m ON d.originChainId=m.id
     )
 
 SELECT deposit_chain
