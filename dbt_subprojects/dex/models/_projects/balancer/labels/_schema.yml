@@ -381,6 +381,31 @@ models:
       - *model_name
       - *label_type
 
+  - name: labels_balancer_v3_pools_avalanche_c
+    meta:
+      blockchain: avalanche_c
+      sector: labels
+      project: balancer_v3
+      contributors: gosuto
+    config:
+      tags: ['labels', 'avalanche_c', 'balancer', 'pools']
+    description: 'Balancer V3 liquidity pools created on Avalanche C-Chain.'
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
   - name: labels_balancer_v3_pools_base
     meta:
       blockchain: base
