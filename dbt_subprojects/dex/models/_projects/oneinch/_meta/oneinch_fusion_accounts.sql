@@ -9,9 +9,8 @@
     )
 }}
 
-
-
-{% set project_start_date = "timestamp '2022-12-25'" %} 
+{% set project_start_date = "timestamp '2022-12-25'" %}
+{% set meta = oneinch_meta_cfg_macro() %}
 
 
 
@@ -30,7 +29,7 @@ executors as (
 )
 
 , evms_traces as (
-    {% for blockchain in oneinch_exposed_blockchains_list() %}
+    {% for blockchain in meta['streams']['lo']['exposed'] if blockchain in meta['blockchains']['evms'] %}
         select
             '{{ blockchain }}' as blockchain
             , tx_hash
@@ -49,7 +48,7 @@ executors as (
 
 , fusion as (
     select blockchain, tx_hash, call_from as resolver_executor
-    from {{ ref('oneinch_lop') }}
+    from {{ ref('oneinch_lo') }}
     where
         {% if is_incremental() %}
             {{ incremental_predicate('block_time') }}
@@ -74,7 +73,7 @@ executors as (
 )
 
 , evms_transactions as (
-    {% for blockchain in oneinch_exposed_blockchains_list() %}
+    {% for blockchain in meta['streams']['lo']['exposed'] if blockchain in meta['blockchains']['evms'] %}
         select
             '{{ blockchain }}' as blockchain
             , hash as tx_hash
