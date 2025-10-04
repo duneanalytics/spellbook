@@ -2,7 +2,6 @@
     schema = 'bridges_crosschain'
     , alias = 'withdrawals'
     , materialized = 'view'
-    , tags = ['prod_exclude']
 )
 }}
 
