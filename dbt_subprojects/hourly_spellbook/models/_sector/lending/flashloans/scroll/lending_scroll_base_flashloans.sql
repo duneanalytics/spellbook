@@ -8,7 +8,8 @@
 
 {%
   set models = [
-    ref('aave_v3_scroll_base_flashloans')
+    ref('aave_v3_scroll_base_flashloans'),
+    ref('morpho_scroll_base_flashloans')
   ]
 %}
 
