@@ -35,7 +35,7 @@ from (
         {% if is_incremental() %}
             {{ incremental_predicate('call_block_time') }}
         {% else %}
-            call_block_time >= date('{{ oneinch_cfg_macro("project_start_date") }}')
+            call_block_time >= date('{{ oneinch_solana_cfg_macro("project_start_date") }}')
         {% endif %}
 ) qf
 left join (
@@ -43,7 +43,7 @@ left join (
         {% if is_incremental() %}
             where {{ incremental_predicate('block_time') }}
         {% else %}
-            where block_time >= date('{{ oneinch_cfg_macro("project_start_date") }}')
+            where block_time >= date('{{ oneinch_solana_cfg_macro("project_start_date") }}')
         {% endif %}
 ) using(tx_id, block_time, block_slot, outer_instruction_index)
 where 
@@ -53,7 +53,7 @@ where
     {% if is_incremental() %}
         and {{ incremental_predicate('block_time') }}
     {% else %}
-        and block_time >= date('{{ oneinch_cfg_macro("project_start_date") }}')
+        and block_time >= date('{{ oneinch_solana_cfg_macro("project_start_date") }}')
     {% endif %}
 
 
