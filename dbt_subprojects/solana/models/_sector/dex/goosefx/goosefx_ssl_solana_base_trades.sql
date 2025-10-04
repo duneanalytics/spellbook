@@ -1,6 +1,6 @@
  {{
   config(
-        schema = 'goosefx_ssl_v2_solana',
+        schema = 'goosefx_ssl_solana',
         alias = 'base_trades',
         partition_by = ['block_month'],
         materialized = 'incremental',
@@ -19,7 +19,7 @@ WITH
             sp.call_block_time as block_time
             , sp.call_block_slot as block_slot
             , 'goosefx_ssl' as project
-            , 2 as version
+            , 'ssl' as version
             , 'solana' as blockchain
             , case when sp.call_is_inner = False then 'direct'
                 else sp.call_outer_executing_account

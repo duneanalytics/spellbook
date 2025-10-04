@@ -1,7 +1,7 @@
  {{
   config(
 
-        schema = 'raydium_v3',
+        schema = 'raydium_clmm',
         alias = 'base_trades',
         partition_by = ['block_month'],
         materialized = 'incremental',
@@ -36,7 +36,7 @@
         SELECT
             sp.call_block_time as block_time
             , 'raydium' as project
-            , 3 as version
+            , 'clmm' as version
             , 'solana' as blockchain
             , call_block_slot as block_slot
             , case when sp.call_is_inner = False then 'direct'

@@ -1,13 +1,15 @@
  {{
   config(
-        schema = 'meteora_v4_solana',
+        schema = 'raydium_clmm',
         alias = 'trades',
         materialized = 'view',
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "project",
-                                    "meteora",
-                                    \'["0xsandeshk"]\') }}')
+                                    "raydium",
+                                    \'["ilemi"]\') }}'
+        )
 }}
+
 select
       blockchain
       , project
@@ -38,8 +40,5 @@ select
       , outer_instruction_index
       , inner_instruction_index
       , tx_index
-from
-      {{ ref('dex_solana_trades') }}
-where 
-      project = 'meteora'
-      and version = 4
+from {{ref('dex_solana_trades')}}
+where project = 'raydium' and version = 'clmm'

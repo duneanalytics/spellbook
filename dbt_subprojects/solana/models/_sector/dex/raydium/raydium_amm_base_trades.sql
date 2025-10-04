@@ -1,6 +1,6 @@
  {{
   config(
-        schema = 'raydium_v4',
+        schema = 'raydium_amm',
         alias = 'base_trades',
         partition_by = ['block_month'],
         materialized = 'incremental',
@@ -21,7 +21,7 @@
             sp.call_block_time as block_time
             , sp.call_block_slot as block_slot
             , 'raydium' as project
-            , 4 as version
+            , 'amm' as version
             , 'solana' as blockchain
             , case when sp.call_is_inner = False then 'direct'
                 else sp.call_outer_executing_account

@@ -20,7 +20,7 @@ WITH all_swaps AS (
         , call_block_time AS block_time
         , call_block_slot AS block_slot
         , 'stabble' AS project
-        , 1 AS version
+        , '1' AS version
         , 'solana' AS blockchain
         , CASE WHEN call_is_inner = FALSE THEN 'direct' ELSE call_outer_executing_account END AS trade_source
         , amount_in AS token_sold_amount_raw
@@ -51,7 +51,7 @@ WITH all_swaps AS (
         , call_block_time AS block_time
         , call_block_slot AS block_slot
         , 'stabble' AS project
-        , 1 AS version
+        , '1' AS version
         , 'solana' AS blockchain
         , CASE WHEN call_is_inner = FALSE THEN 'direct' ELSE call_outer_executing_account END as trade_source
         , amount_in AS token_sold_amount_raw
@@ -82,7 +82,7 @@ WITH all_swaps AS (
         , call_block_time AS block_time
         , call_block_slot AS block_slot
         , 'stabble' AS project
-        , 1 AS version
+        , '1' AS version
         , 'solana' AS blockchain
         , CASE WHEN call_is_inner = FALSE THEN 'direct' ELSE call_outer_executing_account END AS trade_source
         , amount_in AS token_sold_amount_raw
@@ -113,7 +113,7 @@ WITH all_swaps AS (
         , call_block_time AS block_time
         , call_block_slot AS block_slot
         , 'stabble' AS project
-        , 1 AS version
+        , '1' AS version
         , 'solana' AS blockchain
         , CASE WHEN call_is_inner = FALSE THEN 'direct' ELSE call_outer_executing_account END AS trade_source
         , amount_in AS token_sold_amount_raw

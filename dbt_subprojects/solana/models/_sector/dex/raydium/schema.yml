@@ -1,27 +1,27 @@
 version: 3
 
 models:
-  - name: raydium_v3_base_trades
+  - name: raydium_clmm_base_trades
     meta:
       blockchain: solana
       contributors: [ ilemi ]
     config:
       tags: [ 'solana','dex' ]
     description: >
-      all raw raydium_v3 CLAMM dex trades on Solana
+      all raw raydium CLMM dex trades on Solana
     data_tests:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
 
-  - name: raydium_v3_trades
+  - name: raydium_clmm_trades
     meta:
       blockchain: solana
       contributors: [ilemi]
     config:
       tags: ['solana','dex']
     description: >
-        all raydium_v3 CLAMM dex trades on Solana
+        all raydium CLMM dex trades on Solana
     columns:
       - &blockchain
         name: blockchain
@@ -112,27 +112,27 @@ models:
         name: tx_index
         description: "index of the transaction in the block slot"
 
-  - name: raydium_v4_base_trades
+  - name: raydium_amm_base_trades
     meta:
       blockchain: solana
       contributors: [ ilemi ]
     config:
       tags: [ 'solana','dex' ]
     description: >
-      all raw raydium_v4 hybrid amm dex trades on Solana
+      all raw raydium amm dex trades on Solana
     data_tests:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
 
-  - name: raydium_v4_trades
+  - name: raydium_amm_trades
     meta:
       blockchain: solana
       contributors: [ilemi]
     config:
       tags: ['solana','dex']
     description: >
-        all raydium_v4 hybrid amm dex trades on Solana
+        all raydium amm dex trades on Solana
     columns:
       - *blockchain
       - *project
@@ -163,27 +163,27 @@ models:
       - *inner_instruction_index
       - *tx_index
 
-  - name: raydium_v5_base_trades
+  - name: raydium_cpmm_base_trades
     meta:
       blockchain: solana
       contributors: [ 0xsharples ]
     config:
       tags: [ 'solana','dex' ]
     description: >
-      all raw raydium_v5 constant product amm dex trades on Solana
+      all raw raydium cpmm dex trades on Solana
     data_tests:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
 
-  - name: raydium_v5_trades
+  - name: raydium_cpmm_trades
     meta:
       blockchain: solana
       contributors: [ 0xsharples ]
     config:
       tags: ['solana','dex']
     description: >
-        all raydium_v5 constant product amm dex trades on Solana
+        all raydium cpmm dex trades on Solana
     columns:
       - *blockchain
       - *project

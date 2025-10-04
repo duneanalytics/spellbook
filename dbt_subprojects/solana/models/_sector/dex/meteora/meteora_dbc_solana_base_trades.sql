@@ -1,6 +1,6 @@
  {{
   config(
-        schema = 'meteora_v4_solana',
+        schema = 'meteora_dbc_solana',
         alias = 'base_trades',
         partition_by = ['block_month'],
         materialized = 'incremental',
@@ -66,7 +66,7 @@ swaps_table as (
 select 
   'solana' as blockchain
 , 'meteora' as project
-, 4 as version
+, 'dbc' as version
 , cast (date_trunc('month',sd.block_time) as date) as block_month
 , sd.block_time 
 , sd.block_slot 

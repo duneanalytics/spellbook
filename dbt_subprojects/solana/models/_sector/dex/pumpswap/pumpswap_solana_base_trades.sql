@@ -157,7 +157,7 @@ WITH pools AS (
     SELECT
         sp.block_time
         , 'pumpswap' as project
-        , 1 as version
+        , '1' as version
         , 'solana' as blockchain
         , case 
             when sp.outer_executing_account = 'pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA' then 'direct'

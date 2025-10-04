@@ -41,4 +41,4 @@ select
       , inner_instruction_index
       , tx_index
 from {{ref('dex_solana_trades')}}
-where project = 'sanctum_router' and version = 1
+where project = 'sanctum_router' and version = '1'

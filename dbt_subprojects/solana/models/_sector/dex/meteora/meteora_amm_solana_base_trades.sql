@@ -1,6 +1,6 @@
  {{
   config(
-        schema = 'meteora_v1_solana',
+        schema = 'meteora_amm_solana',
         alias = 'base_trades',
         partition_by = ['block_month'],
         materialized = 'incremental',
@@ -19,7 +19,7 @@ WITH
             sp.call_block_time as block_time
             , sp.call_block_slot as block_slot
             , 'meteora' as project
-            , 1 as version
+            , 'amm' as version
             , 'solana' as blockchain
             , case when sp.call_is_inner = False then 'direct'
                 else sp.call_outer_executing_account

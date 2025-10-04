@@ -106,7 +106,7 @@ WITH solfi_swaps AS (
     SELECT
         st.block_time
         , 'solfi' as project
-        , 1 as version
+        , '1' as version
         , 'solana' as blockchain
         , CASE 
             WHEN st.is_inner_swap = false THEN 'direct'
