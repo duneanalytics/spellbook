@@ -236,4 +236,5 @@ FROM (VALUES
     , ('prjx', 'PRJX', 'Direct', 'PRJX')
     , ('somnex', 'SomneX', 'Direct', 'SomneX')
     , ('machinex', 'Machine X', 'Direct', 'machinexdotxyz')
+    , ('cldex', 'CLDEX', 'Direct', 'KaiaChain')
 ) AS temp_table (project, name, marketplace_type, x_username)
