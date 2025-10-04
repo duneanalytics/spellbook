@@ -14,6 +14,7 @@
 {% set project_start_date = '2024-10-29' %}
 
 -- Base swaps from solfi_call_swap table
+  -- triger CI
 WITH solfi_swaps AS (
     SELECT distinct
         date_trunc('day', call_block_time) as block_date
