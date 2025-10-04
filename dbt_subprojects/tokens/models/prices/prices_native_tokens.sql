@@ -83,7 +83,7 @@ with prices_native_tokens as (
 select
     p.token_id
     , p.blockchain
-    , d.token_address as contract_address
+    , coalesce(d.token_address, 0x0000000000000000000000000000000000000000) as contract_address
     , d.token_symbol as symbol
     , d.token_decimals as decimals
 from prices_native_tokens as p
