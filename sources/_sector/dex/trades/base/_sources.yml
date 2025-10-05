@@ -151,6 +151,8 @@ sources:
     tables:
       - name: UniswapV2Factory_evt_PairCreated
       - name: UniswapV2Pair_evt_Swap
+      - name: UniswapV3Factory_evt_PoolCreated
+      - name: UniswapV3Pool_evt_Swap
   - name: swapbased_base
     tables:
       - name: UniswapV2Factory_evt_PairCreated
