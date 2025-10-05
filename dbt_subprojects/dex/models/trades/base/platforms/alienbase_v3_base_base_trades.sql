@@ -1,7 +1,6 @@
 {{
     config(
-        schema = 'hyperswap_v3_hyperevm',
-        tags = ['prod_exclude'],
+        schema = 'alienbase_v3_base',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -13,10 +12,10 @@
 
 {{
     uniswap_compatible_v3_trades(
-        blockchain = 'hyperevm',
-        project = 'hyperswap',
+        blockchain = 'base',
+        project = 'alienbase',
         version = '3',
-        Pair_evt_Swap = source('hyperswap_hyperevm', 'hyperswapv3pool_evt_swap'),
-        Factory_evt_PoolCreated = source('hyperswap_hyperevm', 'hyperswapv3factory_evt_poolcreated')
+        Pair_evt_Swap = source('alienbase_base', 'UniswapV3Pool_evt_Swap'),
+        Factory_evt_PoolCreated = source('alienbase_base', 'UniswapV3Factory_evt_PoolCreated')
     )
 }} 

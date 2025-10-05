@@ -1,7 +1,6 @@
 {{
     config(
-        schema = 'hyperswap_v2_hyperevm',
-        tags = ['prod_exclude'],
+        schema = 'cldex_kaia',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -13,10 +12,10 @@
 
 {{
     uniswap_compatible_v2_trades(
-        blockchain = 'hyperevm',
-        project = 'hyperswap',
+        blockchain = 'kaia',
+        project = 'cldex',
         version = '2',
-        Pair_evt_Swap = source('hyperswap_hyperevm', 'hyperswappair_evt_swap'),
-        Factory_evt_PairCreated = source('hyperswap_hyperevm', 'uniswapv2factory_evt_paircreated')
+        Pair_evt_Swap = source('cldex_kaia', 'cldexpair_evt_swap'),
+        Factory_evt_PairCreated = source('cldex_kaia', 'cldexfactory_evt_paircreated')
     )
-}} 
+}}
