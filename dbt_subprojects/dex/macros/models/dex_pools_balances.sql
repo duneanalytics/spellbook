@@ -105,7 +105,23 @@ prices as (
     from 
     {{ source('prices','usd_with_native') }}
     where {{ incremental_predicate('minute') }}
+    and not (blockchain = 'ethereum' and contract_address = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee)
     group by 1, 2, 3 
+
+    union all 
+
+    select
+        cast(date_trunc('day', minute) as date) as block_date
+        , blockchain
+        , 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as contract_address
+        , max_by(price, minute) as price
+    from 
+    {{ source('prices','usd_with_native') }}
+    where {{ incremental_predicate('minute') }}
+    and blockchain = 'ethereum'
+    and contract_address = 0x0000000000000000000000000000000000000000
+    group by 1, 2, 3 
+    -- ethereum's native contract address in prices is 0x..000 while the native contract in balances is 0x...eee
 ),
 
 prices_day as (
