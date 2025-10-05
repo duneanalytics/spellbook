@@ -32,4 +32,3 @@ SELECT id, blockchain
     , (999, 'hyperevm')
     , (34268394551451, 'solana')
     ) AS x (id, blockchain)
-    )
