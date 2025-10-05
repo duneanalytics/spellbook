@@ -39,12 +39,15 @@ where token_standard in ('erc20', 'native')
     , token1 = null 
     , token2 = null 
     , token3 = null 
+    , token0_weth = null 
+    , token1_weth = null 
     , pools_column = null 
     , blockchain = null 
     , project = null 
     , native_token_symbol = null 
     , pool_native_token_address = null 
     , balances_native_token_address = null
+    , weth_address = null 
     )
 %}
 
@@ -84,18 +87,10 @@ get_pools as (
             ) as token1
         {% endif %}
         {% if token2 %} 
-        , if (
-                pt.{{token2}} = {{pool_native_token_address}}, 
-                {{balances_native_token_address}}, 
-                pt.{{token2}}
-            ) as token2
+        , pt.{{token2}} as token2
         {% endif %}
         {% if token3 %} 
-        , if (
-                pt.{{token3}} = {{pool_native_token_address}}, 
-                {{balances_native_token_address}}, 
-                pt.{{token3}}
-            ) as token3
+        , pt.{{token3}} as token3
         {% endif %}
     from 
     {{ pools_table }} pt 
@@ -162,10 +157,37 @@ distinct_days as (
         , pt.version
         , pt.id
         {% if token0 %} -- token0
+        {% if token0_weth %} -- this additional logic only affects curve pools since some pools have the WETH address as the token address but they're actually holding ETH in the wallet and not WETH so if they have no WETH balance, we should replace with ETH balance
+        , case 
+            when pt.token0 = {{weth_address}}
+            and (t0.balance = 0 or t0.balance is null)
+            then coalesce(t0w.token_address, pt.token0) -- if null return original value
+            else pt.token0
+        end as token0
+        , case 
+            when pt.token0 = {{weth_address}}
+            and (t0.balance = 0 or t0.balance is null)
+            then coalesce(t0w.token_symbol, t0.token_symbol)
+            else t0.token_symbol
+        end as token0_symbol 
+        , case 
+            when pt.token0 = {{weth_address}}
+            and (t0.balance = 0 or t0.balance is null)
+            then coalesce(t0w.balance, t0.balance)
+            else t0.balance
+        end as token0_balance
+        , case 
+            when pt.token0 = {{weth_address}}
+            and (t0.balance = 0 or t0.balance is null)
+            then coalesce(t0w.balance_usd, t0.balance_usd)
+            else t0.balance_usd
+        end as token0_balance_usd
+        {% else %}
         , t0.token_address as token0 
         , t0.token_symbol as token0_symbol 
         , t0.balance as token0_balance
-        , t0.balance_usd as token0_balance_usd 
+        , t0.balance_usd as token0_balance_usd
+        {% endif %}
         {% endif %}
         {% if token1 %} -- token1
         , t1.token_address as token1
@@ -199,6 +221,15 @@ distinct_days as (
         and dd.address = t0.address 
         and dd.blockchain = t0.blockchain
         and pt.token0 = t0.token_address 
+    {% if token0_weth %}
+    left join 
+    get_prices t0w
+        on dd.day = t0w.day 
+        and dd.address = t0w.address 
+        and dd.blockchain = t0w.blockchain
+        and pt.token0 = {{weth_address}}
+        and t0w.token_address = {{token0_weth}}
+    {% endif %}
     {% endif %}
 
     {% if token1 %} -- token1

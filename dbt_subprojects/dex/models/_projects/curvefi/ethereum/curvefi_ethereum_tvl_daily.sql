@@ -18,11 +18,13 @@
         , token1 = 'coin1'
         , token2 = 'coin2'
         , token3 = 'coin3'
+        , token0_weth = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
         , pools_column = 'pool_address'
         , blockchain = 'ethereum'
         , project = 'curvefi'
         , native_token_symbol = 'ETH'
         , pool_native_token_address = '0x0000000000000000000000000000000000000000'
         , balances_native_token_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+        , weth_address = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'
     )
 }}
