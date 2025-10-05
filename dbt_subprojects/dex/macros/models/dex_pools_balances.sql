@@ -206,10 +206,37 @@ distinct_days as (
         {% endif %}
         {% endif %}
         {% if token1 %} -- token1
+        {% if token1_weth %} -- this additional logic only affects curve pools since some pools have the WETH address as the token address but they're actually holding ETH in the wallet and not WETH so if they have no WETH balance, we should replace with ETH balance
+        , case 
+            when pt.token1 = {{weth_address}}
+            and (t1.balance = 0 or t1.balance is null)
+            then coalesce(t1w.token_address, pt.token1) -- if null return original value
+            else pt.token1
+        end as token1
+        , case 
+            when pt.token1 = {{weth_address}}
+            and (t1.balance = 0 or t1.balance is null)
+            then coalesce(t1w.token_symbol, t1.token_symbol)
+            else t1.token_symbol
+        end as token1_symbol 
+        , case 
+            when pt.token1 = {{weth_address}}
+            and (t1.balance = 0 or t1.balance is null)
+            then coalesce(t1w.balance, t1.balance)
+            else t1.balance
+        end as token1_balance
+        , case 
+            when pt.token1 = {{weth_address}}
+            and (t1.balance = 0 or t1.balance is null)
+            then coalesce(t1w.balance_usd, t1.balance_usd)
+            else t1.balance_usd
+        end as token1_balance_usd
+        {% else %}
         , t1.token_address as token1
         , t1.token_symbol as token1_symbol 
         , t1.balance as token1_balance
-        , t1.balance_usd as token1_balance_usd 
+        , t1.balance_usd as token1_balance_usd
+        {% endif %}
         {% endif %}
         {% if token2 %} -- token2
         , t2.token_address as token2 
@@ -255,6 +282,15 @@ distinct_days as (
         and dd.address = t1.address 
         and dd.blockchain = t1.blockchain
         and pt.token1 = t1.token_address 
+    {% if token1_weth %}
+    left join 
+    get_prices t1w
+        on dd.day = t1w.day 
+        and dd.address = t1w.address 
+        and dd.blockchain = t1w.blockchain
+        and pt.token1 = {{weth_address}}
+        and t1w.token_address = {{token1_weth}}
+    {% endif %}
     {% endif %}
 
     {% if token2 %} -- token2

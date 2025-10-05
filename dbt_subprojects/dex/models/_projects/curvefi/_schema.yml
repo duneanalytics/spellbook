@@ -17,4 +17,4 @@ models:
           combination_of_columns:
             - id
             - blockchain
-            - day
+            - block_date

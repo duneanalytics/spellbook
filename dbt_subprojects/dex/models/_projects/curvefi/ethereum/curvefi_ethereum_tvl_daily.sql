@@ -19,6 +19,7 @@
         , token2 = 'coin2'
         , token3 = 'coin3'
         , token0_weth = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+        , token1_weth = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
         , pools_column = 'pool_address'
         , blockchain = 'ethereum'
         , project = 'curvefi'
