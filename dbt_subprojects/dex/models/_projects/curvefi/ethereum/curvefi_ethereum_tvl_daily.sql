@@ -6,7 +6,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['id', 'block_date', 'blockchain', 'version'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')]
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
   )
 }}
 
