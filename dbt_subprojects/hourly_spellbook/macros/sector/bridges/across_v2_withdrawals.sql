@@ -21,7 +21,7 @@ WITH ranked AS (
     , CAST(depositId_uint256 AS varchar) AS bridge_transfer_id
     , ROW_NUMBER() OVER (PARTITION BY d.originChainId, d.evt_block_number, d.evt_tx_hash, d.depositId_uint256 ORDER BY d.evt_index DESC) AS rn
     FROM ({{ events }}) d
-    LEFT JOIN {{ ref('bridges_cctp_chain_indexes') }} m ON d.originChainId=m.id
+    LEFT JOIN {{ ref('bridges_across_chain_indexes') }} m ON d.originChainId=m.id
     )
 
 SELECT deposit_chain

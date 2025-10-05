@@ -19,6 +19,6 @@ SELECT m.blockchain AS deposit_chain
 , contract_address
 , CAST(depositId AS varchar) AS bridge_transfer_id
 FROM ({{ events }}) d
-LEFT JOIN {{ ref('bridges_cctp_chain_indexes') }} m ON d.originChainId=m.id
+LEFT JOIN {{ ref('bridges_across_chain_indexes') }} m ON d.originChainId=m.id
 
 {% endmacro %}
