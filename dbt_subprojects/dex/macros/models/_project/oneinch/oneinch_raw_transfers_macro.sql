@@ -64,11 +64,6 @@ calls as (
         , call_selector
         , transfer_trace_address
         , contract_address as transfer_contract_address -- original
-        , case
-            when token_standard = 'native' then {{ meta['blockchains']['wrapped_native_token_address'][blockchain] }}
-            when atoken_address 
-            else contract_address
-        end as contract_address
         , if(token_standard = 'native', {{ meta['blockchains']['wrapped_native_token_address'][blockchain] }}, {% if blockchain in meta['blockchains']['aave'] %}coalesce(atoken_address, contract_address){% else %}contract_address{% endif %}) as contract_address
         , if(token_standard = 'native', {{ meta['blockchains']['native_token_symbol'][blockchain] }}{% if blockchain in meta['blockchains']['aave'] %}, atoken_symbol{% endif %}) as _symbol
         , amount
