@@ -22,6 +22,18 @@ all_pools as (
 
 select 
     'ethereum' as blockchain
-    , * 
+    , pool_id
+    , block_number
+    , bundle_fee 
+    , unlocked_fee 
+    , protocol_unlocked_fee 
+    , token0
+    , token
+from (
+select 
+    *
+    , row_number() over (partition by pool_id order by block_number desc) as rn 
 from 
-all_pools 
+all_pools
+) 
+where rn = 1 -- most recent 
