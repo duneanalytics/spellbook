@@ -63,6 +63,7 @@
     , ref('gammaswap_arbitrum_base_trades')
     , ref('native_arbitrum_base_trades')
     , ref('defi_money_arbitrum_base_trades')
+    , ref('eulerswap_arbitrum_base_trades')
 ] %}
 
 with base_union as (

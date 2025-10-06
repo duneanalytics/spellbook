@@ -1,6 +1,8 @@
 {{ config(
         schema = 'uniswap_blast',
-        alias = 'base_liquidity_events'
+        alias = 'base_liquidity_events',
+        tags=['static'],
+        post_hook='{{ hide_spells() }}'
         )
 }}
 
