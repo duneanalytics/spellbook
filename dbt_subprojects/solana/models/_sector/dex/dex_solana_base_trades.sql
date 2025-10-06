@@ -82,15 +82,3 @@ FROM
 UNION ALL
 {% endif %}
 {% endfor %}
-
--- for test only, revert after testing
-
--- FROM
---       {{ dex }}
--- {% if is_incremental() %}
---       WHERE {{incremental_predicate('block_time')}}
--- {% endif %}
--- {% if not loop.last %}
--- UNION ALL
--- {% endif %}
--- {% endfor %}
