@@ -966,21 +966,21 @@ models:
           filter:
             version: 1
  
-  - name: fishswap_arbitrum_base_trades
+  - name: swapfish_arbitrum_base_trades
     meta:
       blockchain: arbitrum
       sector: dex
-      project: fishswap
+      project: swapfish
       contributors: principatel
     config:
-      tags: ["arbitrum", "dex", "trades", "fishswap"]
-    description: "fishswap arbitrum base trades"
+      tags: ["arbitrum", "dex", "trades", "swapfish"]
+    description: "swapfish arbitrum base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
             - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('fishswap_arbitrum_base_trades_seed')
+          seed_file: ref('swapfish_arbitrum_base_trades_seed')
           filter:
             version: 1           

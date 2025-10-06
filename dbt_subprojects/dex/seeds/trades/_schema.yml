@@ -5959,7 +5959,7 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
-  - name: fishswap_arbitrum_base_trades_seed
+  - name: swapfish_arbitrum_base_trades_seed
     config:
       column_types:
         blockchain: varchar
