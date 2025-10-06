@@ -42,7 +42,11 @@ WITH swaps AS (
     {% if is_incremental() %}
         AND {{ incremental_predicate('block_time') }}
     {% else %}
+        {% if target.schema.startswith('git_dunesql_') %}
+        AND block_time >= current_timestamp - interval '7' day
+        {% else %}
         AND block_time >= TIMESTAMP '{{ project_start_date }}'
+        {% endif %}
     {% endif %}
 )
 
@@ -73,7 +77,11 @@ WITH swaps AS (
         {% if is_incremental() %}
         AND {{ incremental_predicate('t.call_block_time') }}
         {% else %}
+        {% if target.schema.startswith('git_dunesql_') %}
+        AND t.call_block_time >= current_timestamp - interval '7' day
+        {% else %}
         AND t.call_block_time >= TIMESTAMP '{{ project_start_date }}'
+        {% endif %}
         {% endif %}
     INNER JOIN {{ source('spl_token_solana','spl_token_call_transfer') }} t1  ON t1.call_tx_id = s.tx_id --sell 
         AND t1.call_outer_instruction_index = s.outer_instruction_index
@@ -81,7 +89,11 @@ WITH swaps AS (
         {% if is_incremental() %}
         AND {{ incremental_predicate('t1.call_block_time') }}
         {% else %}
+        {% if target.schema.startswith('git_dunesql_') %}
+        AND t1.call_block_time >= current_timestamp - interval '7' day
+        {% else %}
         AND t1.call_block_time >= TIMESTAMP '{{ project_start_date }}'
+        {% endif %}
         {% endif %}
     WHERE 1=1
         --AND t.tx_id = '52Es2KAyZ8vf86uPLYMQXD8uNgDUxqfQi58zT2P4dmRHWgVzMB8b2iJjZ26rfvQCkJHzjNcVKqmmAmJWtbmmQ7Fd' --testing
