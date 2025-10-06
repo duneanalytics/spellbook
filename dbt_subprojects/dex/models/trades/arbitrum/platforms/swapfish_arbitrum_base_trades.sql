@@ -222,4 +222,4 @@ SELECT
 FROM swap_events se
 JOIN pool_tokens pt ON se.pool_address = pt.pool_address
 
--- using the event and function in this dbt model
+-- using the event and function in this dbt model test
