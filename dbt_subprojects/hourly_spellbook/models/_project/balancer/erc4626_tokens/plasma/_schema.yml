@@ -1,4 +1,4 @@
-version: 3
+version: 2
 
 models:
   - name: balancer_v3_plasma_erc4626_token_mapping
