@@ -40,6 +40,7 @@ with prices_native_tokens as (
         , ('goerli', 'eth-ethereum')
         , ('hemi', 'eth-ethereum')
         , ('hyperevm', 'hype-hyperliquid')
+        , ('initia', 'init-initia')
         , ('ink', 'eth-ethereum')
         , ('kaia', 'kaia-kaia')
         , ('katana', 'eth-ethereum')
@@ -53,6 +54,7 @@ with prices_native_tokens as (
         , ('optimism', 'eth-ethereum')
         , ('optimism_legacy_ovm1', 'eth-ethereum')
         , ('peaq', 'peaq-peaq-network')
+        , ('plasma', 'xpl-plasma')
         , ('plume', 'plume-plume')
         , ('polygon', 'matic-polygon')
         , ('ronin', 'ron-ronin-token')
@@ -81,7 +83,7 @@ with prices_native_tokens as (
 select
     p.token_id
     , p.blockchain
-    , d.token_address as contract_address
+    , coalesce(d.token_address, 0x0000000000000000000000000000000000000000) as contract_address
     , d.token_symbol as symbol
     , d.token_decimals as decimals
 from prices_native_tokens as p
