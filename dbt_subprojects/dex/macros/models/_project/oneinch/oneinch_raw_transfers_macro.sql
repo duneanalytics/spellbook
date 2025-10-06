@@ -40,6 +40,16 @@ calls as (
     from ({{ oneinch_ptfc_macro(blockchain) }}) -- filters and incremental logic within a macro
 )
 
+{% if blockchain in meta['blockchains']['aave'] %}, atokens as (
+    select
+        contract_address as atoken_address
+        , max_by(underlyingAsset, evt_block_time) as contract_address
+        , max_by(aTokenSymbol, evt_block_time) as atoken_symbol
+    from {{ source('aave_v3_' + blockchain, 'AToken_evt_Initialized') }}
+    where underlyingAsset is not null
+    group by 1 -- take latest event only
+){% endif %}
+
 , merging as (
     select
         blockchain
@@ -54,8 +64,13 @@ calls as (
         , call_selector
         , transfer_trace_address
         , contract_address as transfer_contract_address -- original
-        , if(token_standard = 'native', {{ meta['blockchains']['wrapped_native_token_address'][blockchain] }}, contract_address) as contract_address
-        , if(token_standard = 'native', {{ meta['blockchains']['native_token_symbol'][blockchain] }}) as native_symbol
+        , case
+            when token_standard = 'native' then {{ meta['blockchains']['wrapped_native_token_address'][blockchain] }}
+            when atoken_address 
+            else contract_address
+        end as contract_address
+        , if(token_standard = 'native', {{ meta['blockchains']['wrapped_native_token_address'][blockchain] }}, {% if blockchain in meta['blockchains']['aave'] %}coalesce(atoken_address, contract_address){% else %}contract_address{% endif %}) as contract_address
+        , if(token_standard = 'native', {{ meta['blockchains']['native_token_symbol'][blockchain] }}{% if blockchain in meta['blockchains']['aave'] %}, atoken_symbol{% endif %}) as _symbol
         , amount
         , transfer_from
         , transfer_to
@@ -65,6 +80,7 @@ calls as (
         , reduce(call_trace_addresses, call_trace_address, (r, x) -> if(slice(transfer_trace_address, 1, cardinality(x)) = x and x > r, x, r), r -> r) = call_trace_address as related -- transfers related to the call only, i.e. without transfers in nested calls
     from calls
     join transfers using(block_date, block_number, tx_hash)
+    {% if blockchain in meta['blockchains']['aave'] %}left join atokens using(contract_address){% endif %}
 )
 
 , tokens as (
@@ -116,7 +132,7 @@ select
     , transfer_contract_address
     , transfer_from
     , transfer_to
-    , coalesce(native_symbol, symbol, token_symbol) as transfer_symbol
+    , coalesce(_symbol, symbol, token_symbol) as transfer_symbol
     , amount as transfer_amount
     , amount * price / pow(10, coalesce(token_decimals, decimals)) as transfer_amount_usd
     , coalesce(token_decimals, decimals) as transfer_decimals
