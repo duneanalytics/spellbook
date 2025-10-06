@@ -19,6 +19,20 @@
     , 'unichain'
 ] %}
 
+{% if is_incremental() %}
+WITH check_dupes AS (
+    SELECT deposit_chain
+    , withdrawal_chain
+    , bridge_name
+    , bridge_version
+    , bridge_transfer_id
+    , MAX(duplicate_index) AS duplicate_index
+    FROM raw_deposits rd
+    INNER JOIN {{ this }} t USING (deposit_chain, withdrawal_chain, bridge_name, bridge_version, bridge_transfer_id)
+    WHERE {{ incremental_predicate('rd.block_time') }}
+    GROUP BY 1, 2, 3, 4, 5
+    )
+{% else %}
 WITH raw_deposits AS (
     SELECT *
     FROM (
@@ -49,20 +63,6 @@ WITH raw_deposits AS (
         {% endif %}
         {% endfor %} 
         )
-    )
-
-{% if is_incremental() %}
-WITH check_dupes AS (
-    SELECT deposit_chain
-    , withdrawal_chain
-    , bridge_name
-    , bridge_version
-    , bridge_transfer_id
-    , MAX(duplicate_index) AS duplicate_index
-    FROM raw_deposits rd
-    INNER JOIN {{ this }} t USING (deposit_chain, withdrawal_chain, bridge_name, bridge_version, bridge_transfer_id)
-    WHERE {{ incremental_predicate('rd.block_time') }}
-    GROUP BY 1, 2, 3, 4, 5
     )
 {% endif %}
 
