@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: angstrom_ethereum_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      contributors: jnoorchashm37
+    config:
+      tags: ['ethereum', 'ansgtrom', 'trades']
+    description: >
+      All angstrom trades on ethereum
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index

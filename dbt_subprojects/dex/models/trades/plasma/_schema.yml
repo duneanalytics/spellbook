@@ -1,0 +1,48 @@
+version: 2
+
+models:
+  - name: dex_plasma_base_trades
+    data_tests:
+      - check_columns_dex_base_trades
+      - check_dex_info_relationship
+      - test_acceptable_usd_amount:
+          column_name: amount_usd
+          max_value: 1000000000
+
+  - name: uniswap_v3_plasma_base_trades
+    meta:
+      blockchain: plasma
+      sector: dex
+      project: uniswap
+      contributors: krishhh
+    config:
+      tags: ["plasma", "dex", "trades", "uniswap", "v3"]
+    description: "uniswap plasma v3 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_v3_plasma_base_trades_seed')
+          filter:
+            version: 3
+
+  - name: fluid_v1_plasma_base_trades
+    meta:
+      blockchain: plasma
+      sector: dex
+      project: fluid
+      contributors: krishhh
+    config:
+      tags: ["plasma", "dex", "trades", "fluid", "v1"]
+    description: "fluid plasma v1 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('fluid_v1_plasma_base_trades_seed')
+          filter:
+            version: 1 
