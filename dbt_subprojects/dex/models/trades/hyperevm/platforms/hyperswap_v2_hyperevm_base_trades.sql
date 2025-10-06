@@ -1,7 +1,6 @@
 {{
     config(
         schema = 'hyperswap_v2_hyperevm',
-        tags = ['prod_exclude'],
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
