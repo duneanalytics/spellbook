@@ -21,7 +21,18 @@ with base_trades as (
         {{ ref('dex_solana_base_trades')}}    
     {% if is_incremental() %}
         WHERE {{incremental_predicate('block_time')}}
+    {% else %}
+        {% if target.schema.startswith('git_dunesql_') %}
+        WHERE block_time >= current_timestamp - interval '7' day
+        {% endif %}
     {% endif %}
+
+    -- for test merge only, revert after testing 
+    -- FROM
+    --     {{ ref('dex_solana_base_trades')}}    
+    -- {% if is_incremental() %}
+    --     WHERE {{incremental_predicate('block_time')}}
+    -- {% endif %}
 )
 
 SELECT bt.blockchain
