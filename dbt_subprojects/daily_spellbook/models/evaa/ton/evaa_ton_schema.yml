@@ -85,6 +85,8 @@ models:
         description: "EVAA pool name"
       - name: protocol_version
         description: "Protocol version (v3, v4, v9)"
+      - name: subaccount_id
+        description: "subaccount id (only for v9 protocol upgrade, otherwise null)"
       - name: owner_address
         description: "owner address"
       - name: sender_address
@@ -132,6 +134,10 @@ models:
         description: "EVAA pool address"
       - name: pool_name
         description: "EVAA pool name"
+      - name: protocol_version
+        description: "Protocol version (v3, v4, v9)"
+      - name: subaccount_id
+        description: "subaccount id (only for v9 protocol upgrade, otherwise null)"
       - name: owner_address
         description: "owner address"
       - name: sender_address
