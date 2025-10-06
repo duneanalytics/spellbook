@@ -11,7 +11,7 @@ models:
     description: "Bridge deposits events"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['deposit_chain', 'tx_hash','evt_index']
+          combination_of_columns: ['deposit_chain','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id']
     columns:
       - &deposit_chain
         name: deposit_chain
@@ -95,7 +95,7 @@ models:
     description: "Bridge withdrawals events"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['withdrawal_chain', 'tx_hash', 'evt_index']
+          combination_of_columns: ['deposit_chain','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id']
     columns:
       - *deposit_chain
       - *withdrawal_chain
@@ -138,6 +138,9 @@ models:
     config:
       tags: [ 'bridges', 'flows' ]
     description: "Bridge flows"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['deposit_chain','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id']
     columns:
       - *deposit_chain
       - *withdrawal_chain
