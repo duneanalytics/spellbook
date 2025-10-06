@@ -17,7 +17,7 @@ WITH check_dupes AS (
     , bridge_version
     , bridge_transfer_id
     , MAX(duplicate_index) AS duplicate_index
-    FROM raw_deposits rd
+    FROM {{ ref('bridges_evms_deposits_raw') }} rd
     INNER JOIN {{ this }} t USING (deposit_chain, withdrawal_chain, bridge_name, bridge_version, bridge_transfer_id)
     WHERE {{ incremental_predicate('rd.block_time') }}
     GROUP BY 1, 2, 3, 4, 5
