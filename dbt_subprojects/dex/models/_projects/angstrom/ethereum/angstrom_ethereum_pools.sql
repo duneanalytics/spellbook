@@ -28,7 +28,7 @@ select
     , unlocked_fee 
     , protocol_unlocked_fee 
     , token0
-    , token
+    , token1
 from (
 select 
     *
