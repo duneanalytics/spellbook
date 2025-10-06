@@ -779,5 +779,5 @@ FROM
         ('wct-walletconnect-token', 'solana', 'WCT', 'WCTk5xWdn5SYg56twGj32sUF3W4WFQ48ogezLBuYTBY', 9),
         ('holo-holoworld-ai', 'solana', 'HOLO', '69RX85eQoEsnZvXGmLNjYcWgVkp9r2JjahVm99KbJETU', 9),
         ('yzy-yzy', 'solana', 'YZY', 'DrZ26cKJDksVRWib3DVVsjo9eeXccc7hKhDJviiYEEZY', 6),
-        ('useless-coin', 'solana', 'USELESS', 'Dz9mQ9NzkBcCsuGPFJ3r1bS4wgqKMHBPiVuniW8Mbonk', 6)
+        ('useless-useless-coin', 'solana', 'USELESS', 'Dz9mQ9NzkBcCsuGPFJ3r1bS4wgqKMHBPiVuniW8Mbonk', 6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
