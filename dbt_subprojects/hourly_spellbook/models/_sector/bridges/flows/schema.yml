@@ -11,7 +11,7 @@ models:
     description: "Bridge deposits events"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['deposit_chain','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id']
+          combination_of_columns: ['deposit_chain','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id', 'duplicate_index']
     columns:
       - &deposit_chain
         name: deposit_chain
@@ -85,6 +85,9 @@ models:
       - &bridge_transfer_id 
         name: bridge_transfer_id
         description: "Bridge order identifier"
+      - &duplicate_index 
+        name: duplicate_index
+        description: "Index across duplicates of the deposit event if there are any"
   - name: bridges_crosschain_withdrawals
     meta:
       blockchain: ethereum, base, arbitrum, avalanche_c, optimism, polygon, unichain
