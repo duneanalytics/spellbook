@@ -143,7 +143,7 @@ models:
     description: "Raw bridge deposits events on EVM chains (materialized view for complex UNION ALL)"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['deposit_chain','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id','duplicate_index']
+          combination_of_columns: ['deposit_chain','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id','tx_hash','evt_index']
     columns:
       - *deposit_chain
       - *withdrawal_chain
@@ -162,7 +162,6 @@ models:
       - *evt_index
       - *contract_address
       - *bridge_transfer_id
-      - *duplicate_index
   - name: bridges_evms_withdrawals_raw
     meta:
       blockchain: ethereum, base, arbitrum, avalanche_c, optimism, polygon, unichain
