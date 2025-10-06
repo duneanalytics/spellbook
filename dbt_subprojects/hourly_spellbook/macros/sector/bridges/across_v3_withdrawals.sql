@@ -5,21 +5,21 @@ WITH ranked AS (
     , '{{blockchain}}' AS withdrawal_chain
     , 'Across' AS bridge_name
     , '3' AS bridge_version
-    , evt_block_date AS block_date
-    , evt_block_time AS block_time
-    , evt_block_number AS block_number
-    , outputAmount AS withdrawal_amount_raw
-    , CASE WHEN varbinary_substring(depositor,1, 12) = 0x000000000000000000000000 THEN varbinary_substring(depositor,13) ELSE depositor END AS sender
-    , CASE WHEN varbinary_substring(recipient,1, 12) = 0x000000000000000000000000 THEN varbinary_substring(recipient,13) ELSE recipient END AS recipient
-    , CASE WHEN varbinary_substring(outputToken,1, 12) = 0x000000000000000000000000 THEN varbinary_substring(outputToken,13) ELSE outputToken END AS withdrawal_token_address
+    , d.evt_block_date AS block_date
+    , d.evt_block_time AS block_time
+    , d.evt_block_number AS block_number
+    , d.outputAmount AS withdrawal_amount_raw
+    , CASE WHEN varbinary_substring(d.depositor,1, 12) = 0x000000000000000000000000 THEN varbinary_substring(d.depositor,13) ELSE d.depositor END AS sender
+    , CASE WHEN varbinary_substring(d.recipient,1, 12) = 0x000000000000000000000000 THEN varbinary_substring(d.recipient,13) ELSE d.recipient END AS recipient
+    , CASE WHEN varbinary_substring(d.outputToken,1, 12) = 0x000000000000000000000000 THEN varbinary_substring(d.outputToken,13) ELSE d.outputToken END AS withdrawal_token_address
     , 'erc20' AS deposit_token_standard
     , 'erc20' AS withdrawal_token_standard
-    , evt_tx_from AS tx_from
-    , evt_tx_hash AS tx_hash
-    , evt_index
-    , contract_address
-    , CAST(depositId AS varchar) AS bridge_transfer_id
-    , ROW_NUMBER() OVER (PARTITION BY m.blockchain, d.depositId_uint256 ORDER BY d.evt_block_number DESC, d.evt_index DESC) AS rn
+    , d.evt_tx_from AS tx_from
+    , d.evt_tx_hash AS tx_hash
+    , d.evt_index
+    , d.contract_address
+    , CAST(d.depositId AS varchar) AS bridge_transfer_id
+    , ROW_NUMBER() OVER (PARTITION BY m.blockchain, d.depositId ORDER BY d.evt_block_number DESC, d.evt_index DESC) AS rn
     FROM ({{ events }}) d
     LEFT JOIN {{ ref('bridges_across_chain_indexes') }} m ON d.originChainId=m.id
     )
