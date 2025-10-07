@@ -1,7 +1,8 @@
 {% macro across_v3_withdrawals(blockchain, events) %}
 
 WITH ranked AS (
-    SELECT m.blockchain AS deposit_chain
+    SELECT d.originChainId AS deposit_chain_id
+    , m.blockchain AS deposit_chain
     , '{{blockchain}}' AS withdrawal_chain
     , 'Across' AS bridge_name
     , '3' AS bridge_version
@@ -24,7 +25,8 @@ WITH ranked AS (
     LEFT JOIN {{ ref('bridges_across_chain_indexes') }} m ON d.originChainId=m.id
     )
 
-SELECT deposit_chain
+SELECT deposit_chain_id
+, deposit_chain
 , withdrawal_chain
 , bridge_name
 , bridge_version

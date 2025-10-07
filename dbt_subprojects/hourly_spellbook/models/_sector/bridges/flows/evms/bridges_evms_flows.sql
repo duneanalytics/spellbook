@@ -77,5 +77,7 @@ SELECT deposit_chain
 , w.tx_hash AS withdraw_tx_hash
 , bridge_transfer_id
 , d.duplicate_index
+, d.withdrawal_chain_id
+, w.deposit_chain_id
 FROM {{ ref('bridges_evms_withdrawals') }} w
 FULL OUTER JOIN latest_deposits d USING (bridge_name, bridge_version, deposit_chain, withdrawal_chain, bridge_transfer_id)
