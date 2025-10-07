@@ -1,0 +1,343 @@
+version: 2
+
+models:
+  # Silver Models
+  - name: thorchain_silver_rune_price
+    description: "RUNE price data processed from Thorchain"
+    columns:
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: rune_price_usd
+        description: "RUNE price in USD"
+      - name: symbol
+        description: "Token symbol (RUNE)"
+      - name: blockchain
+        description: "Blockchain (thorchain)"
+
+  - name: thorchain_silver_prices
+    description: "Combined price data for Thorchain tokens including RUNE and external assets"
+    columns:
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: price
+        description: "Token price in USD"
+      - name: symbol
+        description: "Token symbol"
+      - name: contract_address
+        description: "Contract address for price joins"
+
+  - name: thorchain_silver_add_events
+    description: "Processed liquidity add events from Thorchain"
+    columns:
+      - name: tx_hash
+        description: "Transaction hash"
+        data_tests:
+          - not_null
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - unique
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: asset_amount
+        description: "Asset amount added to liquidity"
+      - name: rune_amount
+        description: "RUNE amount added to liquidity"
+      - name: pool
+        description: "Pool identifier"
+
+  - name: thorchain_silver_withdraw_events
+    description: "Processed liquidity withdraw events from Thorchain"
+    columns:
+      - name: tx_hash
+        description: "Transaction hash"
+        data_tests:
+          - not_null
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - unique
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: emit_asset_amount
+        description: "Asset amount withdrawn from liquidity"
+      - name: emit_rune_amount
+        description: "RUNE amount withdrawn from liquidity"
+      - name: pool
+        description: "Pool identifier"
+
+  - name: thorchain_silver_swap_events
+    description: "Processed swap events from Thorchain"
+    columns:
+      - name: tx_hash
+        description: "Transaction hash"
+        data_tests:
+          - not_null
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - unique
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: from_asset_amount
+        description: "Amount of asset being sold"
+      - name: to_asset_amount
+        description: "Amount of asset being bought"
+      - name: pool
+        description: "Pool identifier"
+
+  - name: thorchain_silver_streaming_swap_details_events
+    description: "Processed streaming swap details events from Thorchain"
+    columns:
+      - name: tx_id
+        description: "Transaction ID"
+        data_tests:
+          - not_null
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - unique
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: stream_count
+        description: "Number of streams in the swap"
+      - name: deposit_amount
+        description: "Total deposit amount"
+
+  - name: thorchain_silver_fee_events
+    description: "Processed fee events from Thorchain"
+    columns:
+      - name: tx_hash
+        description: "Transaction hash"
+        data_tests:
+          - not_null
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - unique
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: asset_amount
+        description: "Fee amount in asset"
+      - name: pool_deduct_amount
+        description: "Amount deducted from pool"
+
+  - name: thorchain_silver_pending_liquidity_events
+    description: "Processed pending liquidity events from Thorchain"
+    columns:
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - unique
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: pool
+        description: "Pool identifier"
+      - name: pending_type
+        description: "Type of pending operation"
+
+  - name: thorchain_silver_swaps
+    description: "Curated swaps rollup combining swap events with streaming swap details"
+    columns:
+      - name: tx_hash
+        description: "Transaction hash"
+        data_tests:
+          - not_null
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: from_amount_usd
+        description: "USD value of asset sold"
+      - name: to_amount_usd
+        description: "USD value of asset bought"
+      - name: involves_rune
+        description: "Whether the swap involves RUNE"
+
+  - name: thorchain_silver_liquidity_actions
+    description: "Curated liquidity actions combining add and withdraw events"
+    columns:
+      - name: tx_hash
+        description: "Transaction hash"
+        data_tests:
+          - not_null
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - not_null
+      - name: action_type
+        description: "Type of action (add/withdraw)"
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: total_value_usd
+        description: "Total USD value of the liquidity action"
+      - name: liquidity_type
+        description: "Type of liquidity provision (symmetric/asymmetric)"
+
+  # Gold Models
+  - name: thorchain_core_dim_block
+    description: "Core block dimension table for Thorchain with time-based analytics"
+    columns:
+      - name: height
+        description: "Block height"
+        data_tests:
+          - unique
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: block_date
+        description: "Block date for partitioning"
+        data_tests:
+          - not_null
+      - name: block_hash
+        description: "Block hash"
+
+  - name: thorchain_defi_fact_swaps
+    description: "DeFi fact table for Thorchain swaps with enriched data"
+    columns:
+      - name: tx_hash
+        description: "Transaction hash"
+        data_tests:
+          - not_null
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: project
+        description: "Project name (thorchain)"
+      - name: volume_usd
+        description: "Swap volume in USD"
+      - name: trade_direction
+        description: "Trade direction relative to RUNE"
+
+  - name: thorchain_defi_fact_swap_events
+    description: "DeFi fact table for raw Thorchain swap events"
+    columns:
+      - name: tx_hash
+        description: "Transaction hash"
+        data_tests:
+          - not_null
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - unique
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: project
+        description: "Project name (thorchain)"
+
+  - name: thorchain_defi_fact_streaming_swap_details_events
+    description: "DeFi fact table for Thorchain streaming swap details"
+    columns:
+      - name: tx_hash
+        description: "Transaction hash"
+        data_tests:
+          - not_null
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - unique
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: is_successful
+        description: "Whether the streaming swap was successful"
+
+  - name: thorchain_defi_fact_liquidity_actions
+    description: "DeFi fact table for Thorchain liquidity actions"
+    columns:
+      - name: tx_hash
+        description: "Transaction hash"
+        data_tests:
+          - not_null
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - not_null
+      - name: action_type
+        description: "Type of action (add/withdraw)"
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: total_value_usd
+        description: "Total USD value of the liquidity action"
+
+  - name: thorchain_defi_fact_withdraw_events
+    description: "DeFi fact table for raw Thorchain withdraw events"
+    columns:
+      - name: tx_hash
+        description: "Transaction hash"
+        data_tests:
+          - not_null
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - unique
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: withdrawal_type
+        description: "Type of withdrawal (symmetric/asymmetric)"
+
+  - name: thorchain_defi_fact_fee_events
+    description: "DeFi fact table for Thorchain fee events"
+    columns:
+      - name: tx_hash
+        description: "Transaction hash"
+        data_tests:
+          - not_null
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - unique
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: fee_amount_usd
+        description: "Fee amount in USD"
+      - name: protocol_revenue_usd
+        description: "Protocol revenue in USD"
