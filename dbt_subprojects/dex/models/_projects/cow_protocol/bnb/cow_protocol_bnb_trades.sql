@@ -35,7 +35,7 @@ trades_with_prices AS (
            feeAmount                 as fee_amount,
            ps.price                  as sell_price,
            pb.price                  as buy_price
-    FROM {{ source('cow_protocol_v2_bnb', 'GPv2Settlement_evt_Trade') }} trade
+    FROM {{ source('gnosis_protocol_v2_bnb', 'GPv2Settlement_evt_Trade') }} trade
              LEFT OUTER JOIN {{ source('prices', 'usd') }} as ps
                              ON sellToken = ps.contract_address
                                  AND ps.minute = date_trunc('minute', evt_block_time)
@@ -112,7 +112,7 @@ sorted_orders as (
             evt_index,
             evt_block_number,
             orderUid
-        from {{ source('cow_protocol_v2_bnb', 'GPv2Settlement_evt_Trade') }}
+        from {{ source('gnosis_protocol_v2_bnb', 'GPv2Settlement_evt_Trade') }}
         {% if is_incremental() %}
         where {{ incremental_predicate('evt_block_time') }}
         {% endif %}
@@ -126,7 +126,7 @@ orders_and_trades as (
         trades,
         order_ids
     from sorted_orders
-    inner join {{ source('cow_protocol_v2_bnb', 'GPv2Settlement_call_settle') }}
+    inner join {{ source('gnosis_protocol_v2_bnb', 'GPv2Settlement_call_settle') }}
         on evt_block_number = call_block_number
         and evt_tx_hash = call_tx_hash
 ),
