@@ -15,7 +15,7 @@ SELECT
     , symbol
     , cast(contract_address as varbinary) as contract_address
     , contract_address as contract_address_full
-    , decimals
+    , cast(decimals as integer) as decimals
 FROM
 (
     VALUES
