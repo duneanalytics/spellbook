@@ -13,3 +13,5 @@
 {{creator_tokens_inspect_contracts(
     blockchain='plume'
 )}}
+
+-- plume chain added
