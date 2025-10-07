@@ -31,6 +31,7 @@ ref('raydium_version_clmm_base_trades')
   , ref('pancakeswap_version_v3_base_trades') 
   , ref('stabble_version_1_base_trades')
   , ref('solfi_version_1_base_trades') 
+  , ref('tessera_version_1_base_trades')
 ] %}
 
 /*
@@ -72,7 +73,9 @@ SELECT
 FROM
       {{ dex }}
 {% if is_incremental() %}
-      WHERE {{incremental_predicate('block_time')}}
+      WHERE {{incremental_predicate('block_time')}} AND block_time >= now() - interval '7' day
+{% else %}
+      WHERE block_time >= now() - interval '7' day
 {% endif %}
 {% if not loop.last %}
 UNION ALL
