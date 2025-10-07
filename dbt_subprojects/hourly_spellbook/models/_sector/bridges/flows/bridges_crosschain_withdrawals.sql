@@ -30,6 +30,7 @@ SELECT *
         , evt_index
         , CAST(contract_address AS VARCHAR) AS contract_address
         , bridge_transfer_id
+        , deposit_chain_id
         FROM {{ ref('bridges_'~vm~'_withdrawals') }}
         {% if not loop.last %}
         UNION ALL

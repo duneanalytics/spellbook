@@ -4,12 +4,13 @@
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy='merge'
-    , unique_key = ['deposit_chain','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id']
+    , unique_key = ['deposit_chain','deposit_chain_id','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
 )
 }}
 
-SELECT w.deposit_chain
+SELECT w.deposit_chain_id
+, w.deposit_chain
 , w.withdrawal_chain
 , w.bridge_name
 , w.bridge_version

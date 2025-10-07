@@ -11,7 +11,7 @@ models:
     description: "Bridge deposits events on EVM chains"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['deposit_chain','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id', 'duplicate_index']
+          combination_of_columns: ['deposit_chain','withdrawal_chain','withdrawal_chain_id','bridge_name','bridge_version','bridge_transfer_id', 'duplicate_index']
     columns:
       - &deposit_chain
         name: deposit_chain
@@ -88,6 +88,9 @@ models:
       - &duplicate_index 
         name: duplicate_index
         description: "Index across duplicates of the deposit event if there are any"
+      - &withdrawal_chain_id
+        name: withdrawal_chain_id
+        description: "Blockchain ID where the tokens were received"
   - name: bridges_evms_withdrawals
     meta:
       blockchain: ethereum, base, arbitrum, avalanche_c, optimism, polygon, unichain
@@ -98,7 +101,7 @@ models:
     description: "Bridge withdrawals events on EVM chains"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['deposit_chain','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id']
+          combination_of_columns: ['deposit_chain','deposit_chain_id','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id']
     columns:
       - *deposit_chain
       - *withdrawal_chain
@@ -133,6 +136,9 @@ models:
       - *evt_index  
       - *contract_address 
       - *bridge_transfer_id
+      - &deposit_chain_id
+        name: deposit_chain_id
+        description: "Blockchain ID where the tokens were sent"
   - name: bridges_evms_deposits_raw
     meta:
       blockchain: ethereum, base, arbitrum, avalanche_c, optimism, polygon, unichain
@@ -143,7 +149,7 @@ models:
     description: "Raw bridge deposits events on EVM chains (materialized view for complex UNION ALL)"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['deposit_chain','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id','tx_hash','evt_index']
+          combination_of_columns: ['deposit_chain','deposit_chain_id','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id','tx_hash','evt_index']
     columns:
       - *deposit_chain
       - *withdrawal_chain
@@ -162,6 +168,7 @@ models:
       - *evt_index
       - *contract_address
       - *bridge_transfer_id
+      - *withdrawal_chain_id
   - name: bridges_evms_withdrawals_raw
     meta:
       blockchain: ethereum, base, arbitrum, avalanche_c, optimism, polygon, unichain
@@ -172,7 +179,7 @@ models:
     description: "Raw bridge withdrawals events on EVM chains (materialized view for complex UNION ALL)"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['deposit_chain','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id', 'tx_hash', 'evt_index']
+          combination_of_columns: ['deposit_chain','withdrawal_chain','deposit_chain_id','bridge_name','bridge_version','bridge_transfer_id', 'tx_hash', 'evt_index']
     columns:
       - *deposit_chain
       - *withdrawal_chain
@@ -191,6 +198,7 @@ models:
       - *evt_index
       - *contract_address
       - *bridge_transfer_id
+      - *deposit_chain_id
   - name: bridges_evms_flows
     meta:
       blockchain: ethereum, base, arbitrum, avalanche_c, optimism, polygon, unichain
@@ -230,3 +238,5 @@ models:
         name: withdrawals_tx_hash
         description: "Transaction hash of withdrawals bridge transfer on destination chain"
       - *bridge_transfer_id 
+      - *deposit_chain_id
+      - *withdrawal_chain_id
