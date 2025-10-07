@@ -31,7 +31,7 @@ ref('raydium_version_clmm_base_trades')
   , ref('pancakeswap_version_v3_base_trades') 
   , ref('stabble_version_1_base_trades')
   , ref('solfi_version_1_base_trades') 
-  , ref('tessera_version_1_base_trades')
+  , ref('tessera_solana_base_trades')
 ] %}
 
 /*
