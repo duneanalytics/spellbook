@@ -23,7 +23,13 @@ WITH evaa_ton_pools AS (
     {{ evaa_ton_pools() }}
 ),
 source_data AS (
-    SELECT M.block_date, M.tx_hash, M.trace_id, M.tx_now, M.tx_lt, pool_address, pool_name, tx_lt <= v4_upgrate_lt AS is_pre_v4, body_boc,
+    SELECT M.block_date, M.tx_hash, M.trace_id, M.tx_now, M.tx_lt, pool_address, pool_name,
+           CASE
+               WHEN tx_lt <= v4_upgrate_lt THEN 'v3'
+               WHEN v4_upgrate_lt < tx_lt AND tx_lt <= v9_upgrate_lt THEN 'v4'
+               ELSE 'v9'
+           END AS protocol_version,
+           body_boc,
            bitwise_right_shift(opcode, 24) AS log_type
     FROM {{ source('ton', 'messages') }} M
     JOIN evaa_ton_pools ON M.source = pool_address
@@ -33,7 +39,7 @@ source_data AS (
         AND {{ incremental_predicate('M.block_date') }}
     {% endif %}
     AND (bitwise_right_shift(opcode, 24) = 2 OR bitwise_right_shift(opcode, 24) = 22) -- log::withdraw_success (0x2) or log::supply_withdraw_success (0x16)
-), parse_output_prev4 as (
+), parse_output_v3 as (
 select {{ ton_from_boc('body_boc', [
     ton_begin_parse(),
     ton_load_uint(8, 'opcode'),
@@ -50,8 +56,8 @@ select {{ ton_from_boc('body_boc', [
     ton_load_int(64, 'new_total_borrow'),
     ton_load_uint(64, 's_rate'),
     ton_load_uint(64, 'b_rate')
-    ]) }} as result, * FROM source_data WHERE is_pre_v4 AND log_type = 2
-), parse_output_postv4 as (
+    ]) }} as result, * FROM source_data WHERE protocol_version = 'v3' AND log_type = 2
+), parse_output_v4 as (
 select {{ ton_from_boc('body_boc', [
     ton_begin_parse(),
     ton_load_uint(8, 'opcode'),
@@ -69,8 +75,8 @@ select {{ ton_from_boc('body_boc', [
     ton_load_int(64, 'new_total_borrow'),
     ton_load_uint(64, 's_rate'),
     ton_load_uint(64, 'b_rate')
-    ]) }} as result, * FROM source_data WHERE NOT is_pre_v4 AND log_type = 2
-), parse_output_supply_withdraw as (
+    ]) }} as result, * FROM source_data WHERE protocol_version = 'v4' AND log_type = 2
+), parse_output_v9_supply_withdraw as (
 select {{ ton_from_boc('body_boc', [
     ton_begin_parse(),
     ton_load_uint(8, 'opcode'),
@@ -97,59 +103,62 @@ select {{ ton_from_boc('body_boc', [
     ton_load_int(64, 'new_total_borrow_out'),
     ton_load_uint(64, 's_rate_out'),
     ton_load_uint(64, 'b_rate_out')
-    ]) }} as result, * FROM source_data WHERE log_type = 22
-), supply_from_supply_withdraw as (
-    -- Extract supply records from supply_withdraw transactions when supply_amount > 0
-    SELECT block_date, tx_hash, trace_id, tx_now, tx_lt, pool_address, pool_name,
-           result.owner_address, result.sender_address, result.recipient_address, 
-           result.supply_asset_id as asset_id,
-           result.supply_amount as amount_supplied, 
-           result.supply_new_principal as user_new_principal, 
-           result.new_total_supply_in as new_total_supply,
-           result.new_total_borrow_in as new_total_borrow,
-           CAST(result.s_rate_in AS bigint) AS s_rate, 
-           CAST(result.b_rate_in AS bigint) AS b_rate,
-           'supply_withdraw' as transaction_type
-    FROM parse_output_supply_withdraw
+    ]) }} as result, * FROM source_data WHERE protocol_version = 'v9' AND log_type = 22
+), combined_results as (
+    -- Withdraw records from regular withdraw transactions (v3)
+    select block_date, tx_hash, trace_id, tx_now, tx_lt, pool_address, pool_name, protocol_version
+    result.owner_address, result.sender_address, null AS recipient_address,
+    result.asset_id, result.withdraw_amount_current, result.user_new_principal,
+    result.new_total_supply, result.new_total_borrow,
+    CAST(result.s_rate AS bigint) AS s_rate, CAST(result.b_rate AS bigint) AS b_rate,
+    CAST(NULL AS int) AS subaccount_id,
+    CAST(NULL AS bigint) AS amount_supplied
+    FROM parse_output_v3
+
+    UNION ALL
+
+    -- Withdraw records from regular withdraw transactions (v4)
+    select block_date, tx_hash, trace_id, tx_now, tx_lt, pool_address, pool_name, protocol_version,
+    result.owner_address, result.sender_address, result.recipient_address,
+    result.asset_id, result.withdraw_amount_current, result.user_new_principal,
+    result.new_total_supply, result.new_total_borrow,
+    CAST(result.s_rate AS bigint) AS s_rate, CAST(result.b_rate AS bigint) AS b_rate,
+    CAST(NULL AS int) AS subaccount_id,
+    CAST(NULL AS bigint) AS amount_supplied
+    FROM parse_output_v4
+
+    UNION ALL
+
+    -- Withdraw records from supply_withdraw transactions (v9) - always included
+    select block_date, tx_hash, trace_id, tx_now, tx_lt, pool_address, pool_name, protocol_version,
+    result.owner_address, result.sender_address, result.recipient_address,
+    result.withdraw_asset_id as asset_id, result.withdraw_amount as withdraw_amount_current,
+    result.withdraw_new_principal as user_new_principal,
+    result.new_total_supply_out as new_total_supply,
+    result.new_total_borrow_out as new_total_borrow,
+    CAST(result.s_rate_out AS bigint) AS s_rate, CAST(result.b_rate_out AS bigint) AS b_rate,
+    CAST(result.subaccount_id AS int) AS subaccount_id,
+    CAST(NULL AS bigint) AS amount_supplied
+    FROM parse_output_v9_supply_withdraw
+
+    UNION ALL
+
+    -- Supply records from supply_withdraw transactions (v9) - only when supply_amount > 0
+    select block_date, tx_hash, trace_id, tx_now, tx_lt, pool_address, pool_name, protocol_version,
+    result.owner_address, result.sender_address, result.recipient_address,
+    result.supply_asset_id as asset_id, 
+    CAST(NULL AS bigint) AS withdraw_amount_current,
+    result.supply_new_principal as user_new_principal,
+    result.new_total_supply_in as new_total_supply,
+    result.new_total_borrow_in as new_total_borrow,
+    CAST(result.s_rate_in AS bigint) AS s_rate, CAST(result.b_rate_in AS bigint) AS b_rate,
+    CAST(result.subaccount_id AS int) AS subaccount_id,
+    result.supply_amount as amount_supplied
+    FROM parse_output_v9_supply_withdraw
     WHERE result.supply_amount > 0
-), withdraw_from_supply_withdraw as (
-    -- Extract withdraw records from supply_withdraw transactions
-    SELECT block_date, tx_hash, trace_id, tx_now, tx_lt, pool_address, pool_name,
-           result.owner_address, result.sender_address, result.recipient_address, 
-           CAST(result.subaccount_id AS int) AS subaccount_id,
-           result.withdraw_asset_id as asset_id,
-           result.withdraw_amount as withdraw_amount_current, 
-           result.withdraw_new_principal as user_new_principal, 
-           result.new_total_supply_out as new_total_supply,
-           result.new_total_borrow_out as new_total_borrow,
-           CAST(result.s_rate_out AS bigint) AS s_rate, 
-           CAST(result.b_rate_out AS bigint) AS b_rate,
-           'supply_withdraw' as transaction_type
-    FROM parse_output_supply_withdraw
 )
--- Withdraw records from regular withdraw transactions
-select block_date, tx_hash, trace_id, tx_now, tx_lt, pool_address, pool_name,
-result.owner_address, result.sender_address, null AS  recipient_address, CAST(NULL AS int) AS subaccount_id, result.asset_id,
-result.withdraw_amount_current, result.user_new_principal, result.new_total_supply,
-result.new_total_borrow,
-CAST(result.s_rate AS bigint) AS s_rate, CAST(result.b_rate AS bigint) AS b_rate -- should be less than 2^64
-FROM parse_output_prev4
-
-UNION ALL
-
--- Withdraw records from regular withdraw transactions (post-v4)
-select block_date, tx_hash, trace_id, tx_now, tx_lt, pool_address, pool_name,
-result.owner_address, result.sender_address, result.recipient_address, CAST(NULL AS int) AS subaccount_id, result.asset_id,
-result.withdraw_amount_current, result.user_new_principal, result.new_total_supply,
-result.new_total_borrow,
-CAST(result.s_rate AS bigint) AS s_rate, CAST(result.b_rate AS bigint) AS b_rate -- should be less than 2^64
-FROM parse_output_postv4
-
-UNION ALL
-
--- Withdraw records from supply_withdraw transactions
-select block_date, tx_hash, trace_id, tx_now, tx_lt, pool_address, pool_name,
-owner_address, sender_address, recipient_address, subaccount_id, asset_id,
-withdraw_amount_current, user_new_principal, new_total_supply,
+select block_date, tx_hash, trace_id, tx_now, tx_lt, pool_address, pool_name, protocol_version,
+subaccount_id, owner_address, sender_address, recipient_address, asset_id,
+withdraw_amount_current, amount_supplied, user_new_principal, new_total_supply,
 new_total_borrow, s_rate, b_rate
-FROM withdraw_from_supply_withdraw
+FROM combined_results
