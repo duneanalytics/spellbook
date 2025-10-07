@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'solfi_version_1',
+    schema = 'tessera_version_1',
     alias = 'base_trades',
     materialized = 'view'
   )
