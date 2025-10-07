@@ -18,8 +18,6 @@ WITH tessera_swaps AS (
     SELECT
           block_slot
         , block_date
-        , block_time
-        , COALESCE(inner_instruction_index,0) as inner_instruction_index-- adjust to index 0 for non aggregated trades. Avoids complex joins downstream
         , outer_instruction_index
         , tx_index
     FROM {{ source('solana','instruction_calls') }}
