@@ -114,11 +114,3 @@ models:
         name: tx_index
         description: "index of the transaction in the block slot"
 
-  - name: tessera_version_1_base_trades
-    meta:
-      blockchain: solana
-      contributors: [Sector920]
-    config:
-      tags: ['solana','dex']
-    description: >
-        tessera dex base trades on Solana with version_name
