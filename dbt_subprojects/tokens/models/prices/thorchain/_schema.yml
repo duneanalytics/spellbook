@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: prices_thorchain_tokens
+    description: "Thorchain token price mappings"
+    config:
+      tags: ['static']
+    columns:
+      - name: blockchain
+        tests:
+          - not_null
+      - name: contract_address
+        tests:
+          - not_null
+          - unique
+      - name: symbol
+        tests:
+          - not_null
+      - name: decimals
+        tests:
+          - not_null
+          - accepted_values:
+              values: [6, 8, 9, 18]
