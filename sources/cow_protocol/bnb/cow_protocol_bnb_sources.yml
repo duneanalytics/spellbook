@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: cow_protocol_v2_bnb
+  - name: gnosis_protocol_v2_bnb
     description: "Bnb decoded tables related to CoW Protocol contract"
     tables:
       - name: GPv2AllowListAuthentication_evt_SolverAdded
