@@ -92,7 +92,7 @@ select {{ ton_from_boc('body_boc', [
     result.amount_supplied, result.user_new_principal, result.new_total_supply,
     result.new_total_borrow,
     CAST(result.s_rate AS bigint) AS s_rate, CAST(result.b_rate AS bigint) AS b_rate, -- should be less than 2^64
-    CAST(result.subaccount_id AS bigint) AS subaccount_id
+    CAST(result.subaccount_id AS int) AS subaccount_id
     from parse_output_postv4
 )
 select block_date, tx_hash, trace_id, tx_now, tx_lt, pool_address, pool_name, protocol_version,

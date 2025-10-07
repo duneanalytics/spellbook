@@ -161,5 +161,5 @@ result.loan_new_total_borrow, CAST(result.loan_s_rate AS bigint) AS loan_s_rate,
 result.collateral_asset_id, result.collateral_reward, result.new_user_collateral_principal,
 result.new_collateral_total_supply, result.new_collateral_total_borrow,
 CAST(result.collateral_s_rate AS bigint) AS collateral_s_rate, CAST(result.collateral_b_rate AS bigint) AS collateral_b_rate, -- should be less than 2^64
-CAST(result.subaccount_id AS bigint) AS subaccount_id
+CAST(result.subaccount_id AS int) AS subaccount_id
 FROM parse_output_postv9

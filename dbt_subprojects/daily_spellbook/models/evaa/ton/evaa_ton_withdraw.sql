@@ -116,7 +116,7 @@ select {{ ton_from_boc('body_boc', [
     -- Extract withdraw records from supply_withdraw transactions
     SELECT block_date, tx_hash, trace_id, tx_now, tx_lt, pool_address, pool_name,
            result.owner_address, result.sender_address, result.recipient_address, 
-           CAST(result.subaccount_id AS bigint) AS subaccount_id,
+           CAST(result.subaccount_id AS int) AS subaccount_id,
            result.withdraw_asset_id as asset_id,
            result.withdraw_amount as withdraw_amount_current, 
            result.withdraw_new_principal as user_new_principal, 
