@@ -1,6 +1,6 @@
 {% macro across_v2_deposits(blockchain, events) %}
 
-SELECT DISTINCT '{{blockchain}}' AS deposit_chain
+SELECT '{{blockchain}}' AS deposit_chain
 , m.blockchain AS withdrawal_chain
 , 'Across' AS bridge_name
 , '2' AS bridge_version

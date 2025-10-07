@@ -31,4 +31,5 @@ SELECT id, blockchain
     , (130, 'unichain')
     , (999, 'hyperevm')
     , (34268394551451, 'solana')
+    , (9745, 'plasma')
     ) AS x (id, blockchain)
