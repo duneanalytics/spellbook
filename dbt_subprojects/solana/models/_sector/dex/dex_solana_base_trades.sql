@@ -44,6 +44,7 @@ SELECT
       blockchain
       , project
       , version
+      , version_name
       , CAST(date_trunc('month', block_time) AS DATE) as block_month
       , block_time
       , block_slot
