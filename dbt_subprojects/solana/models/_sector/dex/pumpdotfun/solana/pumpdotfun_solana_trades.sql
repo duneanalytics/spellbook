@@ -10,7 +10,6 @@ select
       , project
       , version
       , version_name
-      , version_name
       , block_month
       , block_date
       , block_time
