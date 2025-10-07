@@ -121,20 +121,19 @@ SELECT
       'solana' as blockchain
     , 'humidifi' AS project
     , 1 AS version
+    , 'v1' as version_name
     , date_trunc('month',s.block_date) as block_month
     , s.block_time
     , s.block_slot
     , s.block_date
-    , trade_source
-    -- , t1.token_symbol as token_bought_symbol
-    -- , t2.token_symbol as token_sold_symbol
-    , token_bought_amount_raw
-    , token_sold_amount_raw
+    , s.trade_source
+    , s.token_bought_amount_raw
+    , s.token_sold_amount_raw
     , CAST(NULL AS DOUBLE) as fee_tier
-    , t2.token_mint_address as token_sold_mint_address
     , t1.token_mint_address as token_bought_mint_address  
-    , token_sold_vault
-    , token_bought_vault
+    , t2.token_mint_address as token_sold_mint_address
+    , s.token_bought_vault
+    , s.token_sold_vault
     , s.project_program_id
     , '9H6tua7jkLhdm3w8BvgpTn5LZNU7g4ZynDmCiNN3q6Rp' AS project_main_id
     , s.trader_id 

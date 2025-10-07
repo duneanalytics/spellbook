@@ -36,7 +36,6 @@ ref('raydium_version_clmm_base_trades')
 
 /*
  intentionally excluded:    , ref('sanctum_router_base_trades')
-  ,ref('stabble_solana_base_trades')
 */
 
 {% for dex in solana_dexes %}

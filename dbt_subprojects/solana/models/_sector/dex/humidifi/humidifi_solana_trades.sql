@@ -13,6 +13,7 @@ select
       blockchain
       , project
       , version
+      , version_name
       , block_month
       , block_date
       , block_time
@@ -41,4 +42,3 @@ select
       , tx_index
 from {{ref('dex_solana_trades')}}
 where project = 'humidifi'
-

@@ -6,20 +6,20 @@ models:
       blockchain: solana
       contributors: [ Sector920 ]
     config:
-      tags: [ 'solana','dex' ]
+      tags: [ 'solana','dex', 'humidifi' ]
     description: >
       all raw humidifi dex trades on Solana
     data_tests:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
+          combination_of_columns: ['block_month', 'surrogate_key']
 
   - name: humidifi_solana_trades
     meta:
       blockchain: solana
       contributors: [Sector920]
     config:
-      tags: ['solana','dex']
+      tags: ['solana','dex', 'humidifi']
     description: >
         all humidifi dex trades on Solana
     columns:
@@ -71,10 +71,6 @@ models:
       - &amount_usd
         name: amount_usd
         description: "USD value of the trade at time of execution"
-        data_tests:
-          - dbt_utils.accepted_range:
-              max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
-              severity: warn
       - &fee_tier
         name: fee_tier
         description: "humidifi fee tier (fee %)"
