@@ -106,7 +106,7 @@ select {{ ton_from_boc('body_boc', [
     ]) }} as result, * FROM source_data WHERE protocol_version = 'v9' AND log_type = 22
 ), combined_results as (
     -- Withdraw records from regular withdraw transactions (v3)
-    select block_date, tx_hash, trace_id, tx_now, tx_lt, pool_address, pool_name, protocol_version
+    select block_date, tx_hash, trace_id, tx_now, tx_lt, pool_address, pool_name, protocol_version,
     result.owner_address, result.sender_address, null AS recipient_address,
     result.asset_id, result.withdraw_amount_current, result.user_new_principal,
     result.new_total_supply, result.new_total_borrow,
