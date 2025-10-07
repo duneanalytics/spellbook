@@ -15,11 +15,11 @@
     )
 }}
 
-with
+WITH
 -- First subquery joins buy and sell token prices from prices.usd.
 -- Also deducts fee from sell amount.
-trades_with_prices as (
-    select cast(date_trunc('day', evt_block_time) as date) as block_date,
+trades_with_prices AS (
+    SELECT cast(date_trunc('day', evt_block_time) as date) as block_date,
            cast(date_trunc('month', evt_block_time) as date) as block_month,
            evt_block_time            as block_time,
            evt_block_number          as block_number,
@@ -35,33 +35,33 @@ trades_with_prices as (
            feeAmount                 as fee_amount,
            ps.price                  as sell_price,
            pb.price                  as buy_price
-    from {{ source('gnosis_protocol_v2_bnb', 'GPv2Settlement_evt_Trade') }} trade
-             left outer join {{ source('prices', 'usd') }} as ps
-                             on sellToken = ps.contract_address
-                                 and ps.minute = date_trunc('minute', evt_block_time)
-                                 and ps.blockchain = 'bnb'
+    FROM {{ source('gnosis_protocol_v2_bnb', 'GPv2Settlement_evt_Trade') }} trade
+             LEFT OUTER JOIN {{ source('prices', 'usd') }} as ps
+                             ON sellToken = ps.contract_address
+                                 AND ps.minute = date_trunc('minute', evt_block_time)
+                                 AND ps.blockchain = 'bnb'
                                  {% if is_incremental() %}
-                                 and {{ incremental_predicate('ps.minute') }}
+                                 AND {{ incremental_predicate('ps.minute') }}
                                  {% endif %}
-             left outer join {{ source('prices', 'usd') }} as pb
-                             on pb.contract_address = (
-                                 case
-                                     when buyToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                                         then 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c
-                                     else buyToken
-                                     end)
-                                 and pb.minute = date_trunc('minute', evt_block_time)
-                                 and pb.blockchain = 'bnb'
+             LEFT OUTER JOIN {{ source('prices', 'usd') }} as pb
+                             ON pb.contract_address = (
+                                 CASE
+                                     WHEN buyToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                                         THEN 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c
+                                     ELSE buyToken
+                                     END)
+                                 AND pb.minute = date_trunc('minute', evt_block_time)
+                                 AND pb.blockchain = 'bnb'
                                  {% if is_incremental() %}
-                                 and {{ incremental_predicate('pb.minute') }}
+                                 AND {{ incremental_predicate('pb.minute') }}
                                  {% endif %}
     {% if is_incremental() %}
-    where {{ incremental_predicate('evt_block_time') }}
+    WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
 ),
 -- Second subquery gets token symbol and decimals from tokens.erc20 (to display units bought and sold)
 trades_with_token_units as (
-    select block_date,
+    SELECT block_date,
            block_month,
            block_time,
            block_number,
@@ -71,16 +71,16 @@ trades_with_token_units as (
            order_uid,
            trader,
            sell_token                        as sell_token_address,
-           (case
-                when ts.symbol is null then cast(sell_token as varchar)
-                else ts.symbol
-               end)                          as sell_token,
+           (CASE
+                WHEN ts.symbol IS NULL THEN cast(sell_token as varchar)
+                ELSE ts.symbol
+               END)                          as sell_token,
            buy_token                         as buy_token_address,
-           (case
-                when tb.symbol is null then cast(buy_token as varchar)
-                when buy_token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee then 'BNB'
-                else tb.symbol
-               end)                          as buy_token,
+           (CASE
+                WHEN tb.symbol IS NULL THEN cast(buy_token as varchar)
+                WHEN buy_token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 'POL'
+                ELSE tb.symbol
+               END)                          as buy_token,
            sell_amount / pow(10, ts.decimals) as units_sold,
            sell_amount                       as atoms_sold,
            buy_amount / pow(10, tb.decimals)  as units_bought,
@@ -90,16 +90,16 @@ trades_with_token_units as (
            fee_amount                        as fee_atoms,
            sell_price,
            buy_price
-    from trades_with_prices
-             left outer join {{ source('tokens', 'erc20') }} ts
-                             on ts.blockchain='bnb' and ts.contract_address = sell_token
-             left outer join {{ source('tokens', 'erc20') }} tb
-                             on tb.blockchain='bnb' and tb.contract_address =
-                                (case
-                                     when buy_token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                                         then 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c
-                                     else buy_token
-                                    end)
+    FROM trades_with_prices
+             LEFT OUTER JOIN {{ source('tokens', 'erc20') }} ts
+                             ON ts.blockchain='bnb' AND ts.contract_address = sell_token
+             LEFT OUTER JOIN {{ source('tokens', 'erc20') }} tb
+                             ON tb.blockchain='bnb' AND tb.contract_address =
+                                (CASE
+                                     WHEN buy_token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                                         THEN 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c
+                                     ELSE buy_token
+                                    END)
 ),
 sorted_orders as (
     select
@@ -132,7 +132,7 @@ orders_and_trades as (
 ),
 
 uid_to_app_id as (
-    select
+    SELECT
       distinct uid,
       evt_tx_hash as hash,
       from_hex(JSON_EXTRACT_SCALAR(trade, '$.appData')) AS app_data,
@@ -144,16 +144,35 @@ uid_to_app_id as (
         '%Y-%m-%d %T'
       ) AS valid_to,
       cast(JSON_EXTRACT_SCALAR(trade, '$.flags') as integer) AS flags
-    from
+    FROM
       orders_and_trades
-      cross join UNNEST (order_ids)
-    with
+      CROSS JOIN UNNEST (order_ids)
+    WITH
       ORDINALITY AS o (uid, i)
       CROSS JOIN UNNEST (trades)
-    with
+    WITH
       ORDINALITY AS t (trade, j)
-    where
+    WHERE
       i = j
+),
+
+eth_flow_senders as (
+    select
+        sender,
+        bytearray_concat(
+            bytearray_concat(
+                output_orderHash,
+                bytearray_substring(event.contract_address, 1, 20)
+            ),
+            0xffffffff
+        ) AS order_uid
+    from {{ source('cow_protocol_bnb', 'CoWSwapEthFlow_evt_OrderPlacement') }} event
+    inner join {{ source('cow_protocol_bnb', 'CoWSwapEthFlow_call_createOrder') }} call
+        on call_block_number = evt_block_number
+        and call_tx_hash = evt_tx_hash
+    {% if is_incremental() %}
+    where {{ incremental_predicate('evt_block_time') }}
+    {% endif %}
 ),
 
 valued_trades as (
@@ -167,11 +186,9 @@ valued_trades as (
            project_contract_address,
            trades.order_uid,
            -- ETH Flow orders have trader = sender of orderCreation.
-           --case when sender is not null then sender else trader end as trader,
-           trader,
+           case when sender is not null then sender else trader end as trader,
            sell_token_address,
-           --case when sender is not null then 'GHO' else sell_token end as sell_token,
-           sell_token,
+           case when sender is not null then 'BNB' else sell_token end as sell_token,
            buy_token_address,
            buy_token,
            case
@@ -229,8 +246,8 @@ valued_trades as (
     JOIN uid_to_app_id
         ON uid = trades.order_uid
         AND hash=tx_hash
-    -- LEFT OUTER JOIN eth_flow_senders efs
-    --         ON trades.order_uid = efs.order_uid
+    LEFT OUTER JOIN eth_flow_senders efs
+            ON trades.order_uid = efs.order_uid
 )
 
 select *,
