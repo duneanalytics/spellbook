@@ -10,6 +10,7 @@ WITH latest_deposits AS (
     , bridge_version
     , deposit_chain
     , withdrawal_chain
+    , withdrawal_chain_id
     , bridge_transfer_id
     , block_date
     , block_time
@@ -29,6 +30,7 @@ WITH latest_deposits AS (
         , bridge_version
         , deposit_chain
         , withdrawal_chain
+        , withdrawal_chain_id
         , bridge_transfer_id
         , block_date
         , block_time
@@ -52,7 +54,9 @@ WITH latest_deposits AS (
     )
 
 SELECT deposit_chain
+, deposit_chain_id
 , withdrawal_chain
+, withdrawal_chain_id
 , bridge_name
 , bridge_version
 , d.block_date AS deposit_block_date
