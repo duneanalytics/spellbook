@@ -39,15 +39,11 @@ WITH swaps AS (
                     -- Humidifi team recommendation: arguments = 9 for swaps, join on inner_insturction_index +1 & +2 on token transfers.
         AND cardinality(account_arguments) = 9 -- 9 arguments for all swap instructions. 3 arguments for all quote update instructions. No change in this pattern since deployment
         AND tx_success = true
-    {% if is_incremental() %}
+        {% if is_incremental() -%}
         AND {{ incremental_predicate('block_time') }}
-    {% else %}
-        {% if target.schema.startswith('git_dunesql_') %}
-        AND block_time >= current_timestamp - interval '7' day
-        {% else %}
+        {% else -%}
         AND block_time >= TIMESTAMP '{{ project_start_date }}'
-        {% endif %}
-    {% endif %}
+        {% endif -%}
 )
 
 -- Join inner instruction token transfers initiated by amm swap instructions. Humidifi utilizes TOKEN PROGRAM: TRANSFER for all swaps
@@ -74,30 +70,21 @@ WITH swaps AS (
     INNER JOIN {{ source('spl_token_solana','spl_token_call_transfer') }} t  ON t.call_tx_id = s.tx_id --buy 
         AND t.call_outer_instruction_index = s.outer_instruction_index
         AND t.call_inner_instruction_index = s.inner_instruction_index + 1
-        {% if is_incremental() %}
+        {% if is_incremental() -%}
         AND {{ incremental_predicate('t.call_block_time') }}
-        {% else %}
-        {% if target.schema.startswith('git_dunesql_') %}
-        AND t.call_block_time >= current_timestamp - interval '7' day
-        {% else %}
+        {% else -%}
         AND t.call_block_time >= TIMESTAMP '{{ project_start_date }}'
-        {% endif %}
-        {% endif %}
+        {% endif -%}
     INNER JOIN {{ source('spl_token_solana','spl_token_call_transfer') }} t1  ON t1.call_tx_id = s.tx_id --sell 
         AND t1.call_outer_instruction_index = s.outer_instruction_index
         AND t1.call_inner_instruction_index = s.inner_instruction_index + 2
-        {% if is_incremental() %}
+        {% if is_incremental() -%}
         AND {{ incremental_predicate('t1.call_block_time') }}
-        {% else %}
-        {% if target.schema.startswith('git_dunesql_') %}
-        AND t1.call_block_time >= current_timestamp - interval '7' day
-        {% else %}
+        {% else -%}
         AND t1.call_block_time >= TIMESTAMP '{{ project_start_date }}'
-        {% endif %}
-        {% endif %}
+        {% endif -%}
     WHERE 1=1
         --AND t.tx_id = '52Es2KAyZ8vf86uPLYMQXD8uNgDUxqfQi58zT2P4dmRHWgVzMB8b2iJjZ26rfvQCkJHzjNcVKqmmAmJWtbmmQ7Fd' --testing
-            
 )
 
 -- reduce table size for next join
