@@ -24,7 +24,7 @@ WITH ranked AS (
     LEFT JOIN {{ ref('bridges_across_chain_indexes') }} m ON d.originChainId=m.id
     )
 
-SELECT deposit_chain
+SELECT DISTINCT deposit_chain
 , withdrawal_chain
 , bridge_name
 , bridge_version
