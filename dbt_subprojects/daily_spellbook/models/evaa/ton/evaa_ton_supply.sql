@@ -27,7 +27,7 @@ parsed_boc AS (
            tx_lt <= v9_upgrate_lt AS is_pre_v9,
            CASE 
                WHEN tx_lt <= v4_upgrate_lt THEN 'v3'
-               WHEN tx_lt <= v9_upgrate_lt THEN 'v4'
+               WHEN v4_upgrate_lt < tx_lt AND tx_lt <= v9_upgrate_lt THEN 'v4'
                ELSE 'v9'
            END AS protocol_version,
            body_boc
