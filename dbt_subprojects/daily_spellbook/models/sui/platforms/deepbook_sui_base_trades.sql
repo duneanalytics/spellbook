@@ -50,7 +50,7 @@ select
   , block_month
 
   , pool_id
-  , taker_id as sender  
+  , taker_id as sender
   , cast(null as varchar) as coin_type_in
   , cast(null as varchar) as coin_type_out
   , case
@@ -62,7 +62,7 @@ select
       else quote_quantity
     end as amount_out
   , not taker_is_bid as a_to_b
-  , taker_fee as fee_amount 
+  , coalesce(taker_fee, cast(0 as decimal(38,0))) as fee_amount 
 
 from base
 {% if is_incremental() %}
