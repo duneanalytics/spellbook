@@ -68,7 +68,7 @@ WITH swaps AS (
         , s.inner_instruction_index 
         , s.tx_index
     FROM swaps s
-    INNER JOIN from {{ source('tokens_solana','transfers') }} t  ON t.tx_id = s.tx_id --buy 
+    INNER JOIN {{ source('tokens_solana','transfers') }} t  ON t.tx_id = s.tx_id --buy 
         AND t.block_date = s.block_date
         AND t.block_slot = s.block_slot
         AND t.outer_instruction_index = s.outer_instruction_index
