@@ -45,7 +45,7 @@ WITH swaps AS (
         {% endif -%}
 )
 
--- Join inner instruction token transfers initiated by amm swap instructions. tessera utilizes TOKEN PROGRAM: TRANSFERCHECKED for all swaps
+-- Join inner token_transfers initiated by amm swap instructions. tessera utilizes TOKEN PROGRAM: TRANSFERCHECKED for all swaps
 , transfers AS (        
     SELECT
           s.block_date
@@ -59,6 +59,8 @@ WITH swaps AS (
         , t1.amount token_sold_amount_raw
         , t.account_source as token_bought_vault
         , t1.account_destination as token_sold_vault
+        , t.token_mint_address as token_bought_mint_address
+        , t1.token_mint_address as token_sold_mint_address
         , s.pool_id AS project_program_id
         , s.tx_signer as trader_id 
         , s.tx_id
@@ -66,42 +68,33 @@ WITH swaps AS (
         , s.inner_instruction_index 
         , s.tx_index
     FROM swaps s
-    INNER JOIN {{ source('spl_token_solana','spl_token_call_transferChecked') }} t  ON t.call_tx_id = s.tx_id --buy 
-        AND t.call_outer_instruction_index = s.outer_instruction_index
-        AND t.call_inner_instruction_index = s.inner_instruction_index + 2
+    INNER JOIN from {{ source('tokens_solana','transfers') }} t  ON t.tx_id = s.tx_id --buy 
+        AND t.block_date = s.block_date
+        AND t.block_slot = s.block_slot
+        AND t.outer_instruction_index = s.outer_instruction_index
+        AND t.inner_instruction_index = s.inner_instruction_index + 2
+        AND (t.token_version = 'spl_token' or t.token_version = 'spl_token_2022')
         {% if is_incremental() -%}
-        AND {{ incremental_predicate('t.call_block_time') }}
+        AND {{ incremental_predicate('t.block_time') }}
         {% else -%}
-        AND t.call_block_time >= TIMESTAMP '{{ project_start_date }}'
+        AND t.block_time >= TIMESTAMP '{{ project_start_date }}'
         {% endif -%}
-    INNER JOIN {{ source('spl_token_solana','spl_token_call_transferChecked') }} t1  ON t1.call_tx_id = s.tx_id --sell 
-        AND t1.call_outer_instruction_index = s.outer_instruction_index
-        AND t1.call_inner_instruction_index = s.inner_instruction_index + 1
+    INNER JOIN {{ source('tokens_solana','transfers') }} t1  ON t1.tx_id = s.tx_id --sell 
+        AND t1.block_date = s.block_date
+        AND t1.block_slot = s.block_slot
+        AND t1.outer_instruction_index = s.outer_instruction_index
+        AND t1.inner_instruction_index = s.inner_instruction_index + 1
+        AND (t1.token_version = 'spl_token' or t1.token_version = 'spl_token_2022')
         {% if is_incremental() -%}
-        AND {{ incremental_predicate('t1.call_block_time') }}
+        AND {{ incremental_predicate('t1.block_time') }}
         {% else -%}
-        AND t1.call_block_time >= TIMESTAMP '{{ project_start_date }}'
+        AND t1.block_time >= TIMESTAMP '{{ project_start_date }}'
         {% endif -%}
 
 )
 
--- reduce table size for next join
-,vaults AS (
-    SELECT DISTINCT token_a_vault as vault FROM swaps
-    UNION ALL
-    SELECT DISTINCT token_b_vault as vault FROM swaps
-)
 
---Join token data from solana_utils.token_accounts 
-,token_info AS (
-    SELECT DISTINCT
-         v.vault
-        , a1.token_mint_address as token_mint_address
-    FROM vaults v
-    LEFT JOIN {{ ref('solana_utils_token_accounts') }} a1 ON v.vault = a1.address
-)
-
---join token info with transfers to match buy/sell token info
+--add pertinent info in prep for union on solana_base_trades
 SELECT
       'solana' as blockchain
     , 'tessera' AS Project
@@ -115,8 +108,8 @@ SELECT
     , s.token_bought_amount_raw
     , s.token_sold_amount_raw
     , CAST(NULL AS DOUBLE) as fee_tier
-    , t1.token_mint_address as token_bought_mint_address  
-    , t2.token_mint_address as token_sold_mint_address
+    , s.token_bought_mint_address  
+    , s.token_sold_mint_address
     , s.token_bought_vault
     , s.token_sold_vault
     , s.project_program_id
@@ -128,5 +121,3 @@ SELECT
     , s.tx_index
     , {{ dbt_utils.generate_surrogate_key(['tx_id', 'tx_index', 'outer_instruction_index', 'inner_instruction_index']) }} as surrogate_key
 FROM transfers s
-LEFT JOIN token_info t1 ON s.token_bought_vault = t1.vault
-LEFT JOIN token_info t2 ON s.token_sold_vault = t2.vault
