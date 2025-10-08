@@ -43,7 +43,7 @@ WITH messages AS (
     SELECT m.sourceDomain AS deposit_chain_id
     , i.blockchain AS deposit_chain
     , '{{blockchain}}' AS withdrawal_chain
-    , 'Debridge' AS bridge_name
+    , 'deBridge' AS bridge_name
     , '1' AS bridge_version
     , w.block_date
     , w.block_time

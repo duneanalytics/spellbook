@@ -1,24 +1,25 @@
 {% macro debridge_v1_deposits(blockchain) %}
 
 SELECT '{{blockchain}}' AS deposit_chain
-, CAST(json_extract_scalar(f."order", '$.takeChainId') AS bigint) AS withdrawal_chain_id
-, t.blockchain AS withdrawal_chain
-, 'Debridge' AS bridge_name
+, d.chainIdTo AS withdrawal_chain_id
+, m.blockchain AS withdrawal_chain
+, 'deBridge' AS bridge_name
 , '1' AS bridge_version
-, evt_block_date AS block_date
-, evt_block_time AS block_time
-, evt_block_number AS block_number
-, json_extract_scalar(f."order", '$.giveAmount') AS deposit_amount_raw
-, sender
-, json_extract_scalar(f."order", '$.receiverDst') AS recipient
-, 'erc20' AS withdrawal_token_standard
-, json_extract_scalar(f."order", '$.takeTokenAddress') AS withdrawal_token_address
-, evt_tx_from AS tx_from
-, evt_tx_hash AS tx_hash
-, evt_index
-, contract_address
-, CAST(orderId AS varchar) AS bridge_id
-FROM debridge_sonic.dlndestination_evt_fulfilledorder f
-LEFT JOIN {{ ref('bridges_cctp_chain_indexes') }} t ON t.id=CAST(json_extract_scalar(f."order", '$.takeChainId') AS bigint)
+, d.evt_block_date AS block_date
+, d.evt_block_time AS block_time
+, d.evt_block_number AS block_number
+, CAST(json_extract_scalar(d.feeParams, '$.receivedAmount') AS UINT256) AS deposit_amount_raw
+, d.nativeSender AS sender
+, d.receiver AS recipient
+, CASE WHEN json_extract_scalar(d.feeParams, '$.isNativeToken') = 'true' THEN 'native' ELSE 'erc20' END AS deposit_token_standard
+, t.tokenAddress AS deposit_token_address
+, d.evt_tx_from AS tx_from
+, d.evt_tx_hash AS tx_hash
+, d.evt_index
+, d.contract_address
+, CAST(d.submissionId AS varchar) AS bridge_id
+FROM {{ source('debridge_' + blockchain, 'debridgegate_evt_sent') }} d
+LEFT JOIN {{ source('debridge_' + blockchain, 'debridgegate_evt_pairadded') }} t USING (debridgeId)
+LEFT JOIN {{ ref('bridges_debridge_chain_indexes') }} m ON d.chainIdTo=m.id
 
 {% endmacro %}
