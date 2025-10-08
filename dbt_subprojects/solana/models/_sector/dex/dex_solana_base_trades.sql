@@ -31,11 +31,11 @@ ref('raydium_version_clmm_base_trades')
   , ref('pancakeswap_version_v3_base_trades') 
   , ref('stabble_version_1_base_trades')
   , ref('solfi_version_1_base_trades') 
+  , ref('zerofi_solana_base_trades')
 ] %}
 
 /*
  intentionally excluded:    , ref('sanctum_router_base_trades')
-  ,ref('stabble_solana_base_trades')
 */
 
 {% for dex in solana_dexes %}
@@ -73,6 +73,8 @@ FROM
       {{ dex }}
 {% if is_incremental() %}
       WHERE {{incremental_predicate('block_time')}}
+{% else %}
+        WHERE block_time >= now() - interval '7' day
 {% endif %}
 {% if not loop.last %}
 UNION ALL
