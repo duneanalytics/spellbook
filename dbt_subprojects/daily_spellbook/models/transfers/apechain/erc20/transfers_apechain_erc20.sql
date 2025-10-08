@@ -19,14 +19,14 @@ erc20_transfers  as (
             'receive' as transfer_type,
             evt_tx_hash,
             evt_index,
-            block_time,
+            evt_block_time,
             to as wallet_address,
             contract_address as token_address,
             CAST(value as double) as amount_raw
         FROM
         {{ source('erc20_apechain', 'evt_Transfer') }}
         {% if is_incremental() %}
-            WHERE {{ incremental_predicate('block_time') }}
+            WHERE {{ incremental_predicate('evt_block_time') }}
         {% endif %}
 
         UNION ALL
@@ -35,14 +35,14 @@ erc20_transfers  as (
             'send' as transfer_type,
             evt_tx_hash,
             evt_index,
-            block_time,
+            evt_block_time,
             "from" as wallet_address,
             contract_address as token_address,
             -CAST(value as double) as amount_raw
         FROM
         {{ source('erc20_apechain', 'evt_Transfer') }}
         {% if is_incremental() %}
-            WHERE {{ incremental_predicate('block_time') }}
+            WHERE {{ incremental_predicate('evt_block_time') }}
         {% endif %}
 )
 
@@ -51,8 +51,8 @@ SELECT
     transfer_type,
     evt_tx_hash,
     evt_index,
-    block_time,
-    CAST(date_trunc('month', block_time) as date) as block_month,
+    evt_block_time as block_time,
+    CAST(date_trunc('month', evt_block_time) as date) as block_month,
     wallet_address,
     token_address,
     amount_raw
