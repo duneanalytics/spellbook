@@ -1,8 +1,7 @@
 {{ config(
     schema = 'bridges_crosschain',
     alias = 'flows',
-    materialized = 'view',
-    tags = ['prod_exclude']
+    materialized = 'view'
     )
 }}
 
@@ -39,6 +38,8 @@ SELECT *
         , CAST(deposit_tx_hash AS VARCHAR) AS deposit_tx_hash
         , CAST(withdrawal_tx_hash AS VARCHAR) AS withdrawal_tx_hash
         , bridge_transfer_id
+        , deposit_chain_id
+        , withdrawal_chain_id
         FROM {{ ref('bridges_'~vm~'_flows') }}
         {% if not loop.last %}
         UNION ALL

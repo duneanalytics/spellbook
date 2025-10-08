@@ -2,7 +2,6 @@
     schema = 'bridges_evms'
     , alias = 'flows'
     , materialized = 'view'
-    , tags = ['prod_exclude']
     )
 }}
 
@@ -11,6 +10,7 @@ WITH latest_deposits AS (
     , bridge_version
     , deposit_chain
     , withdrawal_chain
+    , withdrawal_chain_id
     , bridge_transfer_id
     , block_date
     , block_time
@@ -24,11 +24,13 @@ WITH latest_deposits AS (
     , deposit_token_address
     , tx_from
     , tx_hash
+    , duplicate_index
     FROM (
         SELECT bridge_name
         , bridge_version
         , deposit_chain
         , withdrawal_chain
+        , withdrawal_chain_id
         , bridge_transfer_id
         , block_date
         , block_time
@@ -42,17 +44,19 @@ WITH latest_deposits AS (
         , deposit_token_address
         , tx_from
         , tx_hash
+        , duplicate_index
         , ROW_NUMBER() OVER (
             PARTITION BY bridge_name, bridge_version, deposit_chain, withdrawal_chain, bridge_transfer_id 
-            ORDER BY block_number DESC, evt_index DESC
-            ) AS rn
+            ORDER BY duplicate_index DESC) AS rn
         FROM {{ ref('bridges_evms_deposits') }}
     )
     WHERE rn = 1
     )
 
 SELECT deposit_chain
+, w.deposit_chain_id
 , withdrawal_chain
+, d.withdrawal_chain_id
 , bridge_name
 , bridge_version
 , d.block_date AS deposit_block_date
@@ -76,5 +80,6 @@ SELECT deposit_chain
 , d.tx_hash AS deposit_tx_hash
 , w.tx_hash AS withdrawal_tx_hash
 , bridge_transfer_id
+, d.duplicate_index
 FROM {{ ref('bridges_evms_withdrawals') }} w
 FULL OUTER JOIN latest_deposits d USING (bridge_name, bridge_version, deposit_chain, withdrawal_chain, bridge_transfer_id)
