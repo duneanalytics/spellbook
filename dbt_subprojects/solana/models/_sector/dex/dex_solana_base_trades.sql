@@ -73,9 +73,7 @@ SELECT
 FROM
       {{ dex }}
 {% if is_incremental() %}
-      WHERE {{incremental_predicate('block_time')}} AND block_time >= now() - interval '7' day
-{% else %}
-      WHERE block_time >= now() - interval '7' day
+      WHERE {{incremental_predicate('block_time')}}
 {% endif %}
 {% if not loop.last %}
 UNION ALL
