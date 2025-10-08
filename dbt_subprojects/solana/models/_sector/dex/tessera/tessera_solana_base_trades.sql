@@ -48,25 +48,25 @@ WITH swaps AS (
 -- Join inner token_transfers initiated by amm swap instructions. tessera utilizes TOKEN PROGRAM: TRANSFERCHECKED for all swaps
 , transfers AS (        
     SELECT
-          s.block_date
-        , s.block_time
-        , s.block_slot
-        , CASE 
-            WHEN s.is_inner = false THEN 'direct'
-            ELSE s.outer_executing_account
-          END as trade_source
-        , t.amount token_bought_amount_raw
-        , t1.amount token_sold_amount_raw
-        , t.account_source as token_bought_vault
-        , t1.account_destination as token_sold_vault
-        , t.token_mint_address as token_bought_mint_address
-        , t1.token_mint_address as token_sold_mint_address
-        , s.pool_id AS project_program_id
-        , s.tx_signer as trader_id 
-        , s.tx_id
-        , s.outer_instruction_index
-        , s.inner_instruction_index 
-        , s.tx_index
+        s.block_date
+      , s.block_time
+      , s.block_slot
+      , CASE 
+          WHEN s.is_inner = false THEN 'direct'
+          ELSE s.outer_executing_account
+        END as trade_source
+      , t.amount as token_bought_amount_raw
+      , t1.amount as token_sold_amount_raw
+      , t.from_token_account as token_bought_vault
+      , t1.to_token_account as token_sold_vault
+      , t.token_mint_address as token_bought_mint_address
+      , t1.token_mint_address as token_sold_mint_address
+      , s.pool_id AS project_program_id
+      , s.tx_signer as trader_id --s.trader_id
+      , s.tx_id
+      , s.outer_instruction_index
+      , s.inner_instruction_index 
+      , s.tx_index
     FROM swaps s
     INNER JOIN {{ source('tokens_solana','transfers') }} t  ON t.tx_id = s.tx_id --buy 
         AND t.block_date = s.block_date
