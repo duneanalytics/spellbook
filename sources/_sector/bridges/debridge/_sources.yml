@@ -10,4 +10,6 @@ sources:
         description: "PairAdded events from deBridge Gateway on Arbitrum"
       - name: debridgegate_evt_claimed
         description: "Claimed events from deBridge Gateway on Arbitrum"
+      - name: dlndestination_evt_fulfilledorder
+        description: "FulfilledOrder events from DLN Destination on Arbitrum"
 
