@@ -33,7 +33,7 @@ thorchain_tokens AS (
         symbol,
         contract_address,
         decimals
-    FROM {{ ref('prices_thorchain_tokens') }}
+    FROM {{ ref('tokens', 'prices_thorchain_tokens') }}
 ),
 
 external_prices AS (
