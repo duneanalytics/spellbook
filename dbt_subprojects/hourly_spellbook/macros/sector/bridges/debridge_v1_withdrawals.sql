@@ -1,69 +1,24 @@
 {% macro debridge_v1_withdrawals(blockchain) %}
 
-WITH messages AS (
-    SELECT evt_block_number AS block_number
-    , evt_tx_hash AS tx_hash
-    , CASE WHEN varbinary_substring(sender,1, 12) = 0x000000000000000000000000 THEN varbinary_substring(sender,13) ELSE sender END AS sender
-    , nonce
-    , evt_index
-    , sourceDomain
-    , ROW_NUMBER() OVER (PARTITION BY evt_block_number, evt_tx_hash ORDER BY evt_index) AS join_index
-    FROM {{ source('circle_'  + blockchain, 'messagetransmitter_evt_messagereceived')}}
-    )
-
-, withdrawals AS (
-    SELECT w.evt_block_date AS block_date
-    , w.evt_block_time AS block_time
-    , w.evt_block_number AS block_number
-    , w.amount AS withdrawal_amount_raw
-    , w.mintRecipient AS recipient
-    , w.mintToken AS withdrawal_token_address
-    , w.evt_tx_from AS tx_from
-    , w.evt_tx_hash AS tx_hash
-    , w.evt_index
-    , w.contract_address
-    , ROW_NUMBER() OVER (PARTITION BY evt_block_number, evt_tx_hash ORDER BY evt_index) AS join_index
-    FROM {{ source('circle_'  + blockchain, 'tokenmessenger_evt_mintandwithdraw')}} w
-    )
-
-, closest_messages AS (
-    SELECT w.block_number, w.join_index, w.tx_hash, w.evt_index AS withdrawal_evt_index,
-           m.evt_index AS message_evt_index, m.sender, m.nonce, m.sourceDomain,
-           ROW_NUMBER() OVER (
-               PARTITION BY w.block_number, w.join_index, w.tx_hash, w.evt_index 
-               ORDER BY m.evt_index ASC
-           ) AS rn
-    FROM withdrawals w
-    INNER JOIN messages m ON w.block_number = m.block_number
-        AND w.join_index = m.join_index
-        AND w.tx_hash = m.tx_hash
-        AND w.evt_index < m.evt_index
-    )
-
-    SELECT m.sourceDomain AS deposit_chain_id
-    , i.blockchain AS deposit_chain
-    , '{{blockchain}}' AS withdrawal_chain
-    , 'deBridge' AS bridge_name
-    , '1' AS bridge_version
-    , w.block_date
-    , w.block_time
-    , w.block_number
-    , w.withdrawal_amount_raw
-    , m.sender
-    , w.recipient
-    , 'erc20' AS withdrawal_token_standard
-    , w.withdrawal_token_address
-    , w.tx_from
-    , w.tx_hash
-    , w.evt_index
-    , w.contract_address
-    , CAST(m.nonce AS varchar) AS bridge_transfer_id
-    FROM withdrawals w
-    INNER JOIN closest_messages m ON w.block_number = m.block_number
-        AND w.join_index = m.join_index
-        AND w.tx_hash = m.tx_hash
-        AND w.evt_index = m.withdrawal_evt_index
-        AND m.rn = 1
-    INNER JOIN {{ ref('bridges_cctp_chain_indexes') }} i ON i.id=m.sourceDomain
+SELECT t.blockchain AS deposit_chain
+, CAST(json_extract_scalar(f."order", '$.takeChainId') AS bigint) AS deposit_chain_id
+, '{{blockchain}}' AS withdrawal_chain
+, 'deBridge' AS bridge_name
+, '1' AS bridge_version
+, evt_block_date AS block_date
+, evt_block_time AS block_time
+, evt_block_number AS block_number
+, json_extract_scalar(f."order", '$.giveAmount') AS deposit_amount_raw
+, sender
+, json_extract_scalar(f."order", '$.receiverDst') AS recipient
+, 'erc20' AS withdrawal_token_standard
+, json_extract_scalar(f."order", '$.takeTokenAddress') AS withdrawal_token_address
+, evt_tx_from AS tx_from
+, evt_tx_hash AS tx_hash
+, evt_index
+, contract_address
+, CAST(orderId AS varchar) AS bridge_id
+FROM {{ source('debridge_' + blockchain, 'dlndestination_evt_fulfilledorder') }} f
+LEFT JOIN debridge_id_mapping t ON t.id=CAST(json_extract_scalar(f."order", '$.takeChainId') AS bigint)
 
 {% endmacro %}

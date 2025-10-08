@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: debridge_arbitrum
+    description: "deBridge Protocol bridge events on Arbitrum"
+    tables:
+      - name: debridgegate_evt_sent
+        description: "Sent events from deBridge Gateway on Arbitrum"
+      - name: debridgegate_evt_pairadded
+        description: "PairAdded events from deBridge Gateway on Arbitrum"
+      - name: debridgegate_evt_claimed
+        description: "Claimed events from deBridge Gateway on Arbitrum"
+
