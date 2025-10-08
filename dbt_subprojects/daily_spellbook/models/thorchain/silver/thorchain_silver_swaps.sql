@@ -42,9 +42,9 @@ WITH swap_events AS (
         pool_asset,
         event_id,
         'swap_event' as source_table
-    FROM {{ ref('thorchain_silver_swap_events') }}
+    FROM {{ ref('thorchain_silver_swap_events') }} se
     {% if is_incremental() %}
-    WHERE {{ incremental_predicate('block_time') }}
+    WHERE {{ incremental_predicate('se.block_time') }}
     {% endif %}
 ),
 
@@ -80,9 +80,9 @@ streaming_swaps AS (
         null as pool_asset,
         event_id,
         'streaming_swap_event' as source_table
-    FROM {{ ref('thorchain_silver_streaming_swap_details_events') }}
+    FROM {{ ref('thorchain_silver_streaming_swap_details_events') }} ss
     {% if is_incremental() %}
-    WHERE {{ incremental_predicate('block_time') }}
+    WHERE {{ incremental_predicate('ss.block_time') }}
     {% endif %}
 )
 

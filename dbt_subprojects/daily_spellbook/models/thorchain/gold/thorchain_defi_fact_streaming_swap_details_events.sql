@@ -75,11 +75,11 @@ SELECT
     
     -- Success rate metrics
     CASE 
-        WHEN ssd.failed_swaps IS NOT NULL AND ssd.failed_swaps > 0 THEN false
+        WHEN ssd.failed_swaps IS NOT NULL AND cardinality(ssd.failed_swaps) > 0 THEN false
         ELSE true
     END as is_successful,
     
-    COALESCE(ssd.failed_swaps, 0) as failed_swap_count,
+    COALESCE(cardinality(ssd.failed_swaps), 0) as failed_swap_count,
     
     -- Trade direction relative to RUNE
     CASE
