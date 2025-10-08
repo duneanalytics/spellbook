@@ -14,43 +14,43 @@
 SELECT
     cast(height as bigint) as height,
     hash as block_hash,
-    cast(from_unixtime(timestamp / 1e18) as timestamp) as block_time,
-    date(from_unixtime(timestamp / 1e18)) as block_date,
-    date_trunc('month', from_unixtime(timestamp / 1e18)) as block_month,
-    date_trunc('hour', from_unixtime(timestamp / 1e18)) as block_hour,
-    date_trunc('week', from_unixtime(timestamp / 1e18)) as block_week,
-    extract(year from from_unixtime(timestamp / 1e18)) as block_year,
-    extract(quarter from from_unixtime(timestamp / 1e18)) as block_quarter,
+    cast(from_unixtime(cast(timestamp / 1e9 as bigint)) as timestamp) as block_time,
+    date(from_unixtime(cast(timestamp / 1e9 as bigint))) as block_date,
+    date_trunc('month', from_unixtime(cast(timestamp / 1e9 as bigint))) as block_month,
+    date_trunc('hour', from_unixtime(cast(timestamp / 1e9 as bigint))) as block_hour,
+    date_trunc('week', from_unixtime(cast(timestamp / 1e9 as bigint))) as block_week,
+    year(from_unixtime(cast(timestamp / 1e9 as bigint))) as block_year,
+    quarter(from_unixtime(cast(timestamp / 1e9 as bigint))) as block_quarter,
     timestamp as raw_timestamp,
     agg_state,
     
     -- Additional time-based dimensions for analytics
-    extract(dayofweek from from_unixtime(timestamp / 1e18)) as day_of_week,
-    extract(hour from from_unixtime(timestamp / 1e18)) as hour_of_day,
+    day_of_week(from_unixtime(cast(timestamp / 1e9 as bigint))) as day_of_week,
+    hour(from_unixtime(cast(timestamp / 1e9 as bigint))) as hour_of_day,
     
-    -- Flag for weekend vs weekday
+    -- Flag for weekend vs weekday (Trino: 1=Monday, 7=Sunday)
     CASE 
-        WHEN extract(dayofweek from from_unixtime(timestamp / 1e18)) IN (1, 7) THEN true
+        WHEN day_of_week(from_unixtime(cast(timestamp / 1e9 as bigint))) IN (6, 7) THEN true
         ELSE false
     END as is_weekend,
     
-    -- Business day classification (Monday-Friday)
+    -- Business day classification (Monday-Friday, Trino: 1=Monday)
     CASE 
-        WHEN extract(dayofweek from from_unixtime(timestamp / 1e18)) BETWEEN 2 AND 6 THEN true
+        WHEN day_of_week(from_unixtime(cast(timestamp / 1e9 as bigint))) BETWEEN 1 AND 5 THEN true
         ELSE false
     END as is_business_day,
     
     -- Time period classifications for analytics
     CASE 
-        WHEN extract(hour from from_unixtime(timestamp / 1e18)) BETWEEN 0 AND 5 THEN 'night'
-        WHEN extract(hour from from_unixtime(timestamp / 1e18)) BETWEEN 6 AND 11 THEN 'morning'
-        WHEN extract(hour from from_unixtime(timestamp / 1e18)) BETWEEN 12 AND 17 THEN 'afternoon'
-        WHEN extract(hour from from_unixtime(timestamp / 1e18)) BETWEEN 18 AND 23 THEN 'evening'
+        WHEN hour(from_unixtime(cast(timestamp / 1e9 as bigint))) BETWEEN 0 AND 5 THEN 'night'
+        WHEN hour(from_unixtime(cast(timestamp / 1e9 as bigint))) BETWEEN 6 AND 11 THEN 'morning'
+        WHEN hour(from_unixtime(cast(timestamp / 1e9 as bigint))) BETWEEN 12 AND 17 THEN 'afternoon'
+        WHEN hour(from_unixtime(cast(timestamp / 1e9 as bigint))) BETWEEN 18 AND 23 THEN 'evening'
         ELSE 'unknown'
     END as time_period
 
 FROM {{ source('thorchain', 'block_log') }}
 WHERE height IS NOT NULL
 {% if is_incremental() %}
-AND {{ incremental_predicate('cast(from_unixtime(timestamp / 1e18) as timestamp)') }}
+AND {{ incremental_predicate('cast(from_unixtime(cast(timestamp / 1e9 as bigint)) as timestamp)') }}
 {% endif %}

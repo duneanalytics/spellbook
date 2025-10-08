@@ -22,10 +22,10 @@ SELECT
     rune_e8,
     pending_type,
     event_id,
-    cast(from_unixtime(block_timestamp / 1e18) as timestamp) as block_time,
-    date(from_unixtime(block_timestamp / 1e18)) as block_date,
-    date_trunc('month', from_unixtime(block_timestamp / 1e18)) as block_month,
-    date_trunc('hour', from_unixtime(block_timestamp / 1e18)) as block_hour,
+    cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) as block_time,
+    date(from_unixtime(cast(block_timestamp / 1e9 as bigint))) as block_date,
+    date_trunc('month', from_unixtime(cast(block_timestamp / 1e9 as bigint))) as block_month,
+    date_trunc('hour', from_unixtime(cast(block_timestamp / 1e9 as bigint))) as block_hour,
     block_timestamp as raw_block_timestamp,
     
     -- Extract pool information for better analysis
@@ -39,30 +39,14 @@ SELECT
         ELSE pool
     END as pool_asset,
     
-    -- Asset pricing fields based on pool
+    -- Asset pricing fields based on pool - simplified approach using direct asset identifiers
     CASE 
         WHEN pool LIKE 'THOR.%' THEN cast(null as varbinary)
-        WHEN pool LIKE 'BTC.%' OR pool LIKE 'BTC/%' OR pool LIKE 'BTC~%' THEN cast('BTC.BTC' as varbinary)
-        WHEN pool LIKE 'ETH.%' OR pool LIKE 'ETH/%' OR pool LIKE 'ETH~%' THEN 
-            CASE 
-                WHEN pool = 'ETH.ETH' OR pool = 'ETH/ETH' OR pool = 'ETH~ETH' THEN cast('ETH.ETH' as varbinary)
-                ELSE cast(regexp_replace(pool, '^ETH[./~]([^-]*)-?(.*)$', '$1-$2') as varbinary)
-            END
-        WHEN pool LIKE 'BSC.%' OR pool LIKE 'BSC/%' OR pool LIKE 'BSC~%' THEN
-            CASE 
-                WHEN pool = 'BSC.BNB' THEN cast('BSC.BNB' as varbinary)
-                ELSE cast(regexp_replace(pool, '^BSC[./~]([^-]*)-?(.*)$', '$1-$2') as varbinary)
-            END
-        WHEN pool LIKE 'BNB.%' OR pool LIKE 'BNB/%' OR pool LIKE 'BNB~%' THEN
-            CASE 
-                WHEN pool = 'BNB.BNB' OR pool = 'BNB/BNB' THEN cast('BNB.BNB' as varbinary)
-                ELSE cast(regexp_replace(pool, '^BNB[./~]([^-]*)-?(.*)$', '$1-$2') as varbinary)
-            END
-        WHEN pool LIKE 'DOGE.%' OR pool LIKE 'DOGE/%' OR pool LIKE 'DOGE~%' THEN cast('DOGE.DOGE' as varbinary)
+        -- For prices.usd table, we use the exact pool identifier as it appears
         ELSE cast(pool as varbinary)
     END as contract_address
 
 FROM {{ source('thorchain', 'pending_liquidity_events') }}
 {% if is_incremental() %}
-WHERE {{ incremental_predicate('cast(from_unixtime(block_timestamp / 1e18) as timestamp)') }}
+WHERE {{ incremental_predicate('cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp)') }}
 {% endif %}
