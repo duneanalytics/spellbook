@@ -25,31 +25,19 @@ WITH rune_prices AS (
     {% endif %}
 ),
 
--- Get external token prices from the main prices table
--- We need to join with thorchain tokens to get the contract addresses
-thorchain_tokens AS (
-    SELECT DISTINCT
-        token_id,
-        symbol,
-        contract_address,
-        decimals
-    FROM {{ ref('tokens', 'prices_thorchain_tokens') }}
-),
-
+-- Get external token prices directly from the main prices table
 external_prices AS (
     SELECT
         p.minute as block_time,
         date(p.minute) as block_date,
         date_trunc('month', p.minute) as block_month,
         p.price,
-        t.symbol,
+        p.symbol,
         'thorchain' as blockchain,
         p.contract_address
     FROM {{ source('prices', 'usd') }} p
-    INNER JOIN thorchain_tokens t 
-        ON p.contract_address = t.contract_address
-        AND p.blockchain = 'thorchain'
-    WHERE p.price IS NOT NULL
+    WHERE p.blockchain = 'thorchain'
+        AND p.price IS NOT NULL
     {% if is_incremental() %}
     AND {{ incremental_predicate('p.minute') }}
     {% endif %}
