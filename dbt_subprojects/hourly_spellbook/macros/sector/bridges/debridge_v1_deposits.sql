@@ -1,4 +1,4 @@
-{% macro debridge_v1_withdrawals(blockchain) %}
+{% macro debridge_v1_deposits(blockchain) %}
 
 SELECT '{{blockchain}}' AS deposit_chain
 , CAST(json_extract_scalar(f."order", '$.takeChainId') AS bigint) AS withdrawal_chain_id
