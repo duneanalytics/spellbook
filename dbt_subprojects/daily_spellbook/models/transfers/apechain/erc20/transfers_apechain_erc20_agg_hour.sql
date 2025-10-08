@@ -16,9 +16,9 @@ select
     block_month,
     tr.wallet_address,
     tr.token_address,
-    null as symbol,
+    cast(null as varchar) as symbol,
     sum(tr.amount_raw) as amount_raw,
-    null as amount
+    cast(null as double) as amount
 FROM
 {{ ref('transfers_apechain_erc20') }} tr
 {% if is_incremental() %}
