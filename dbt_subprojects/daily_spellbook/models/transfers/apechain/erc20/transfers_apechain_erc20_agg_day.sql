@@ -16,15 +16,13 @@ select
     block_month,
     tr.wallet_address,
     tr.token_address,
-    t.symbol,
+    null as symbol,
     sum(tr.amount_raw) as amount_raw,
-    sum(tr.amount_raw / power(10, t.decimals)) as amount
+    null as amount
 FROM
 {{ ref('transfers_apechain_erc20') }} tr
-LEFT JOIN
-{{ source('tokens_apechain', 'erc20') }} t on t.contract_address = tr.token_address
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
 WHERE {{ incremental_predicate('tr.block_time') }}
 {% endif %}
-GROUP BY 1, 2, 3, 4, 5, 6
+GROUP BY 1, 2, 3, 4, 5
