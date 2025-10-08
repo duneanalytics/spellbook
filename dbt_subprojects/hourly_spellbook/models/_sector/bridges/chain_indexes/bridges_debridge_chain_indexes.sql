@@ -42,4 +42,3 @@ SELECT blockchain, id
     , ('sei', 100000027)
     , ('plasma', 100000028)
     ) AS x (blockchain, id)
-    )
