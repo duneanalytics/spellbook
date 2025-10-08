@@ -29,3 +29,15 @@ models:
     columns:
       - *id
       - *blockchain
+  - name: bridges_debridge_chain_indexes
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: debridge
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bridges', 'chain_indexes' ]
+    description: "deBridge's blockchains indexes"
+    columns:
+      - *id
+      - *blockchain
