@@ -11,38 +11,62 @@
 
 -- Silver layer: BTC supply with LOCF (Last Observation Carried Forward)
 
-with daily_supply_with_forward_fill as (
+with all_dates as (
+    select distinct block_date 
+    from {{ ref('sui_tvl_supply_bronze') }}
+    {% if is_incremental() %}
+    where {{ incremental_predicate('block_date') }}
+    {% endif %}
+),
+
+all_btc_tokens as (
+    select coin_type, coin_symbol, coin_decimals
+    from {{ ref('sui_tvl_btc_tokens_detail') }}
+),
+
+date_token_grid as (
     select 
-        block_date
-        , coin_type
-        , coin_symbol
-        , coin_decimals
-        , total_supply
-    from (
-        select 
-            su.block_date
-            , su.coin_type
-            , ci.coin_symbol
-            , ci.coin_decimals
-            -- Get the latest supply for each day, or carry forward the last known value
-            , last_value(su.total_supply) ignore nulls over (
-                partition by su.coin_type
-                order by su.block_date
-                rows between unbounded preceding and current row
-            ) as total_supply
-            , row_number() over (
-                partition by su.block_date, su.coin_type 
-                order by su.timestamp_ms desc
-            ) as rn
-        from {{ ref('sui_tvl_supply_bronze') }} su
-        inner join {{ ref('sui_tvl_btc_tokens_detail') }} ci
-            on su.coin_type = ci.coin_type
-        where su.block_date >= date('{{ var('sui_project_start_date', '2023-04-01') }}')
-        {% if is_incremental() %}
-            and {{ incremental_predicate('su.block_date') }}
-        {% endif %}
-    ) ranked
-    where rn = 1  -- Latest update per day per coin
+        d.block_date,
+        t.coin_type,
+        t.coin_symbol,
+        t.coin_decimals
+    from all_dates d
+    cross join all_btc_tokens t
+),
+
+supply_events_with_next as (
+    select 
+        su.block_date,
+        su.coin_type,
+        su.total_supply,
+        lead(su.block_date) over (
+            partition by su.coin_type 
+            order by su.block_date
+        ) as next_update_date,
+        row_number() over (
+            partition by su.block_date, su.coin_type 
+            order by su.timestamp_ms desc
+        ) as rn
+    from {{ ref('sui_tvl_supply_bronze') }} su
+    inner join {{ ref('sui_tvl_btc_tokens_detail') }} ci
+        on su.coin_type = ci.coin_type
+    where su.total_supply is not null
+      and su.total_supply >= 0  -- Include zero supply events for proper LOCF
+),
+
+daily_supply_with_forward_fill as (
+    select 
+        g.block_date,
+        g.coin_type,
+        g.coin_symbol,
+        g.coin_decimals,
+        se.total_supply
+    from date_token_grid g
+    left join supply_events_with_next se 
+        on g.coin_type = se.coin_type
+        and g.block_date >= se.block_date
+        and (se.next_update_date is null OR g.block_date < se.next_update_date)
+        and se.rn = 1
 )
 
 -- Deduplicate by symbol (handle multiple tokens with same symbol)
@@ -63,7 +87,7 @@ with daily_supply_with_forward_fill as (
                 order by coin_type desc -- Tie-break by coin_type
             ) as rn
         from daily_supply_with_forward_fill
-        where total_supply is not null
+        -- Remove filter to ensure all tokens appear on all dates
     ) ranked
     where rn = 1
 )
@@ -71,13 +95,13 @@ with daily_supply_with_forward_fill as (
 select
     date as block_date
     
-    -- Total BTC supply across all variants
-    , sum(carried_forward_supply_raw / power(10, coin_decimals)) as total_btc_supply
+    -- Total BTC supply across all variants (handle nulls as 0)
+    , sum(coalesce(carried_forward_supply_raw, 0) / power(10, coin_decimals)) as total_btc_supply
     
-    -- Supply breakdown by symbol
+    -- Supply breakdown by symbol (handle nulls as 0)
     , map_agg(
         coin_symbol
-        , round(carried_forward_supply_raw / power(10, coin_decimals), 0)
+        , round(coalesce(carried_forward_supply_raw, 0) / power(10, coin_decimals), 0)
     ) as supply_breakdown_json
     
 from deduplicated_daily_btc_supply_by_symbol

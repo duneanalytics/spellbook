@@ -7,7 +7,9 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['address']
+        unique_key = ['address'],
+        tags=['static'],
+        post_hook='{{ hide_spells() }}'
     )
 }}
 
