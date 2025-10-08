@@ -21,7 +21,7 @@ WITH check_dupes AS (
     FROM {{ ref('bridges_evms_deposits_raw') }} rd
     INNER JOIN {{ this }} t USING (deposit_chain, withdrawal_chain, withdrawal_chain_id, bridge_name, bridge_version, bridge_transfer_id)
     WHERE {{ incremental_predicate('rd.block_time') }}
-    GROUP BY 1, 2, 3, 4, 5
+    GROUP BY 1, 2, 3, 4, 5, 6
     )
 {% endif %}
 
