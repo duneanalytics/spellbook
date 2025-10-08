@@ -12,7 +12,7 @@
 
 select
     tr.blockchain,
-    date_trunc('hour', tr.evt_block_time) as block_hour,
+    date_trunc('hour', tr.block_time) as block_hour,
     block_month,
     tr.wallet_address,
     tr.token_address,
@@ -23,6 +23,6 @@ FROM
 {{ ref('transfers_apechain_erc20') }} tr
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
-WHERE {{ incremental_predicate('tr.evt_block_time') }}
+WHERE {{ incremental_predicate('tr.block_time') }}
 {% endif %}
 GROUP BY 1, 2, 3, 4, 5
