@@ -5,6 +5,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['event_id'],
+    partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     tags = ['thorchain', 'swaps', 'streaming']
 ) }}
@@ -56,5 +57,5 @@ SELECT
 
 FROM {{ source('thorchain', 'streaming_swap_details_events') }}
 {% if is_incremental() %}
-WHERE {{ incremental_predicate('cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp)') }}
+WHERE {{ incremental_predicate('block_time') }}
 {% endif %}

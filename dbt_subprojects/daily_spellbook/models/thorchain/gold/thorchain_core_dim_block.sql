@@ -5,6 +5,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['height'],
+    partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     tags = ['thorchain', 'core', 'blocks']
 ) }}
@@ -52,5 +53,5 @@ SELECT
 FROM {{ source('thorchain', 'block_log') }}
 WHERE height IS NOT NULL
 {% if is_incremental() %}
-AND {{ incremental_predicate('cast(from_unixtime(cast(timestamp / 1e9 as bigint)) as timestamp)') }}
+AND {{ incremental_predicate('block_time') }}
 {% endif %}

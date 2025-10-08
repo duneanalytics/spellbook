@@ -5,6 +5,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_timestamp'],
+    partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     tags = ['thorchain', 'rune', 'prices']
 ) }}
@@ -21,5 +22,5 @@ SELECT
     cast(null as varbinary) as contract_address -- RUNE is native token
 FROM {{ source('thorchain', 'rune_price') }}
 {% if is_incremental() %}
-WHERE {{ incremental_predicate('cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp)') }}
+WHERE {{ incremental_predicate('block_time') }}
 {% endif %}
