@@ -53,3 +53,6 @@ SELECT
 FROM {{ source('thorchain', 'block_log') }}
 WHERE height IS NOT NULL
   AND cast(from_unixtime(cast(timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '7' day
+{% if is_incremental() %}
+  AND {{ incremental_predicate('block_time') }}
+{% endif %}
