@@ -12,7 +12,7 @@
 
 WITH base AS (
   SELECT
-    tx_hash,
+    tx_hash as tx_id,
     from_asset,
     to_asset,
     from_amount_usd,
@@ -38,7 +38,7 @@ SELECT
   a.block_time,
   a.block_date,
   a.block_month,
-  a.tx_hash,
+  a.tx_id,
   a.from_asset as token_sold_symbol,
   a.from_asset_amount as token_sold_amount,
   a.to_asset as token_bought_symbol,
