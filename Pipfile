@@ -11,3 +11,5 @@ dbt-trino = "1.9.0"
 
 [requires]
 python_version = "3.9"
+
+[dev-packages]

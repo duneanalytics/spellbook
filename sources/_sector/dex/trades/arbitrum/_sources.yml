@@ -198,3 +198,7 @@ sources:
   - name: native_arbitrum
     tables:
       - name: NativeRFQPool_evt_RFQTrade
+  - name: yieldbasis_arbitrum
+    tables:
+      - name: pool_test_evt_tokenexchange
+      - name: pool_test_call_coins
