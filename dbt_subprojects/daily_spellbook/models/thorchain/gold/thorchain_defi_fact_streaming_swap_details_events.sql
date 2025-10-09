@@ -93,18 +93,22 @@ FROM {{ ref('thorchain_silver_streaming_swap_details_events') }} ssd
 LEFT JOIN {{ ref('thorchain_core_dim_block') }} b
     ON ssd.block_time >= b.block_time
     AND ssd.block_time < b.block_time + interval '1' hour
+    AND b.block_time >= current_date - interval '7' day
 LEFT JOIN {{ ref('thorchain_silver_prices') }} dp
     ON dp.contract_address = ssd.deposit_contract_address
     AND dp.block_time <= ssd.block_time
     AND dp.block_time >= ssd.block_time - interval '1' hour
+    AND dp.block_time >= current_date - interval '10' day
 LEFT JOIN {{ ref('thorchain_silver_prices') }} ip
     ON ip.contract_address = ssd.in_contract_address
     AND ip.block_time <= ssd.block_time
     AND ip.block_time >= ssd.block_time - interval '1' hour
+    AND ip.block_time >= current_date - interval '10' day
 LEFT JOIN {{ ref('thorchain_silver_prices') }} op
     ON op.contract_address = ssd.out_contract_address
     AND op.block_time <= ssd.block_time
     AND op.block_time >= ssd.block_time - interval '1' hour
+    AND op.block_time >= current_date - interval '10' day
 WHERE ssd.block_time >= current_date - interval '7' day
 {% if is_incremental() %}
   AND {{ incremental_predicate('ssd.block_time') }}

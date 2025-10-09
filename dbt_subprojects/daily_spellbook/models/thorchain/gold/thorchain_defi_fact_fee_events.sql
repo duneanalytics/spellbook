@@ -16,7 +16,7 @@ SELECT
     fe.tx_hash,
     fe.block_time,
     b.block_date,
-    b.block_month,
+    b.block_month, 
     b.block_hour,
     b.height as block_height,
     
@@ -86,10 +86,12 @@ FROM {{ ref('thorchain_silver_fee_events') }} fe
 LEFT JOIN {{ ref('thorchain_core_dim_block') }} b
     ON fe.block_time >= b.block_time
     AND fe.block_time < b.block_time + interval '1' hour
+    AND b.block_time >= current_date - interval '7' day  -- KEY: Filter joined table too!
 LEFT JOIN {{ ref('thorchain_silver_prices') }} p
     ON p.contract_address = fe.contract_address
     AND p.block_time <= fe.block_time
     AND p.block_time >= fe.block_time - interval '1' hour
+    AND p.block_time >= current_date - interval '7' day  -- KEY: Filter joined table too!
 WHERE fe.block_time >= current_date - interval '7' day
 {% if is_incremental() %}
   AND {{ incremental_predicate('fe.block_time') }}
