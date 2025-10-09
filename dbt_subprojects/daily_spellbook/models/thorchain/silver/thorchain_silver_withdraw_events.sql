@@ -30,7 +30,7 @@ SELECT
     imp_loss_protection_e8 / 1e8 as imp_loss_protection_amount,
     imp_loss_protection_e8,
     _emit_asset_in_rune_e8 / 1e8 as emit_asset_in_rune_amount,
-    _emit_asset_in_rune_e8,
+    _emit_asset_in_rune_e8 as emit_asset_in_rune_e8,
     _tx_type as tx_type,
     event_id,
     cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) as block_time,
