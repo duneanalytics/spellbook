@@ -10,7 +10,8 @@
     tags = ['thorchain', 'liquidity', 'withdraw_events']  
 ) }}
 
-SELECT
+with base as (
+    SELECT
     tx as tx_hash,
     chain,
     from_addr,
@@ -57,8 +58,11 @@ SELECT
         ELSE pool
     END as pool_asset
 
-FROM {{ source('thorchain', 'withdraw_events') }}
-WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '10' day
+    FROM {{ source('thorchain', 'withdraw_events') }}
+    WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '10' day
+)
+
+SELECT * FROM base
 {% if is_incremental() %}
-  AND {{ incremental_predicate('block_time') }}
+WHERE {{ incremental_predicate('base.block_time') }}
 {% endif %}

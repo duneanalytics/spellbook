@@ -10,40 +10,44 @@
     tags = ['thorchain', 'fees']
 ) }}
 
-SELECT
-    tx as tx_hash,
-    asset,
-    asset_e8 / 1e8 as asset_amount,
-    asset_e8,
-    pool_deduct / 1e8 as pool_deduct_amount,
-    pool_deduct,
-    event_id,
-    cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) as block_time,
-    date(from_unixtime(cast(block_timestamp / 1e9 as bigint))) as block_date,
-    date_trunc('month', from_unixtime(cast(block_timestamp / 1e9 as bigint))) as block_month,
-    date_trunc('hour', from_unixtime(cast(block_timestamp / 1e9 as bigint))) as block_hour,
-    block_timestamp as raw_block_timestamp,
-    
-    -- Asset pricing fields - simplified approach using direct asset identifiers
-    CASE 
-        WHEN asset LIKE 'THOR.%' THEN cast(null as varbinary)
-        -- For prices.usd table, we need to use the exact asset identifier as it appears
-        ELSE cast(asset as varbinary)
-    END as contract_address,
-    
-    -- Extract asset information for better analysis
-    CASE 
-        WHEN asset LIKE '%.%' THEN split_part(asset, '.', 1)
-        ELSE 'THOR'
-    END as asset_chain,
-    
-    CASE 
-        WHEN asset LIKE '%.%' THEN split_part(asset, '.', 2)
-        ELSE asset
-    END as asset_symbol
+with base as (
+    SELECT
+        tx as tx_hash,
+        asset,
+        asset_e8 / 1e8 as asset_amount,
+        asset_e8,
+        pool_deduct / 1e8 as pool_deduct_amount,
+        pool_deduct,
+        event_id,
+        cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) as block_time,
+        date(from_unixtime(cast(block_timestamp / 1e9 as bigint))) as block_date,
+        date_trunc('month', from_unixtime(cast(block_timestamp / 1e9 as bigint))) as block_month,
+        date_trunc('hour', from_unixtime(cast(block_timestamp / 1e9 as bigint))) as block_hour,
+        block_timestamp as raw_block_timestamp,
+        
+        -- Asset pricing fields - simplified approach using direct asset identifiers
+        CASE 
+            WHEN asset LIKE 'THOR.%' THEN cast(null as varbinary)
+            -- For prices.usd table, we need to use the exact asset identifier as it appears
+            ELSE cast(asset as varbinary)
+        END as contract_address,
+        
+        -- Extract asset information for better analysis
+        CASE 
+            WHEN asset LIKE '%.%' THEN split_part(asset, '.', 1)
+            ELSE 'THOR'
+        END as asset_chain,
+        
+        CASE 
+            WHEN asset LIKE '%.%' THEN split_part(asset, '.', 2)
+            ELSE asset
+        END as asset_symbol
 
-FROM {{ source('thorchain', 'fee_events') }}
-WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '7' day
+    FROM {{ source('thorchain', 'fee_events') }}
+    WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '7' day
+)
+
+SELECT * FROM base
 {% if is_incremental() %}
-  AND {{ incremental_predicate('block_time') }}
+WHERE {{ incremental_predicate('base.block_time') }}
 {% endif %}

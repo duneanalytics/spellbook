@@ -10,7 +10,8 @@
     tags = ['thorchain', 'swaps', 'streaming']
 ) }}
 
-SELECT
+with base as (
+    SELECT
     tx_id,
     "interval" as streaming_interval,
     quantity,
@@ -55,8 +56,11 @@ SELECT
         ELSE cast(out_asset as varbinary)
     END as out_contract_address
 
-FROM {{ source('thorchain', 'streaming_swap_details_events') }}
-WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '7' day
+    FROM {{ source('thorchain', 'streaming_swap_details_events') }}
+    WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '7' day
+)
+
+SELECT * FROM base
 {% if is_incremental() %}
-  AND {{ incremental_predicate('block_time') }}
+WHERE {{ incremental_predicate('base.block_time') }}
 {% endif %}
