@@ -11,7 +11,7 @@
   )
 }}
 
-{% set project_start_date = '2025-10-01' %} --testing 7d window. PROD: 2025-06-13
+{% set project_start_date = '2025-06-13' %}
 
 -- humidifi swap data from instruction_calls table
 WITH swaps AS (
@@ -21,17 +21,12 @@ WITH swaps AS (
         , block_time
         , COALESCE(inner_instruction_index,0) as inner_instruction_index -- adjust to index 0 for direct trades
         , outer_instruction_index
-        --, inner_executing_account
         , outer_executing_account
-        --, executing_account
         , is_inner
         , tx_id
         , tx_signer
         , tx_index
-        --, account_arguments[1] AS transfer_authority
         , account_arguments[2] AS pool_id
-        --, account_arguments[3] AS token_a_vault
-        --, account_arguments[4] as token_b_vault
     FROM {{ source('solana','instruction_calls') }}
     WHERE 1=1
         AND executing_account = '9H6tua7jkLhdm3w8BvgpTn5LZNU7g4ZynDmCiNN3q6Rp'

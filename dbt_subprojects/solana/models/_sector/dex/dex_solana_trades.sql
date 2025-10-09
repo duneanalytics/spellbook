@@ -19,11 +19,9 @@ with base_trades as (
         *
     FROM
         {{ ref('dex_solana_base_trades')}}    
-    {% if is_incremental() %}
+    {% if is_incremental() -%}
         WHERE {{incremental_predicate('block_time')}}
-    {% else -%}
-        WHERE block_time >= NOW() - INTERVAL '7' day
-    {% endif %}
+    {% endif -%}
 )
 
 SELECT bt.blockchain
