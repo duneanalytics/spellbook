@@ -49,6 +49,3 @@ SELECT
 
 FROM {{ source('thorchain', 'pending_liquidity_events') }}
 WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '10' day
-{% if is_incremental() %}
-  AND {{ incremental_predicate('block_time') }}
-{% endif %}
