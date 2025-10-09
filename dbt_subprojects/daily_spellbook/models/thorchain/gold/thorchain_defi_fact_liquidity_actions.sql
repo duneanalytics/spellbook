@@ -40,6 +40,8 @@ WITH base AS (
 
 SELECT
   a.block_time,
+  date(a.block_time) as block_date,
+  date_trunc('month', a.block_time) as block_month,
   a.tx_hash as tx_id,
   a.event_id,
   a.lp_action,
