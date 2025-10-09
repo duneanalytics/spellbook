@@ -1,27 +1,27 @@
 version: 2
 
 models:
-  - name: goosefx_ssl_v2_solana_base_trades
+  - name: tessera_solana_base_trades
     meta:
       blockchain: solana
-      contributors: [ ilemi ]
+      contributors: [ Sector920 ]
     config:
-      tags: [ 'solana','dex' ]
+      tags: [ 'solana','dex', 'tessera' ]
     description: >
-        all goosefx ssl v2 dex trades on Solana
+      all raw tessera dex trades on Solana
     data_tests:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
+          combination_of_columns: ['block_month', 'surrogate_key']
 
-  - name: goosefx_ssl_v2_solana_trades
+  - name: tessera_solana_trades
     meta:
       blockchain: solana
-      contributors: [ilemi]
+      contributors: [Sector920]
     config:
-      tags: ['solana','dex']
+      tags: ['solana','dex', 'tessera']
     description: >
-        all goosefx ssl v2 dex trades on Solana
+        all tessera dex trades on Solana
     columns:
       - &blockchain
         name: blockchain
@@ -34,10 +34,13 @@ models:
         description: "Version of the contract built and deployed by the DEX project"
       - &version_name
         name: version_name
-        description: "Descriptive name of the DEX version (ssl)"
+        description: "Descriptive name of the DEX version (1)"
       - &block_month
         name: block_month
         description: "UTC event block month of each DEX trade"
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each DEX trade"
       - &block_time
         name: block_time
         description: "UTC event block time of each DEX trade"
@@ -46,7 +49,7 @@ models:
         description: "block slot of each DEX trade"
       - &trade_source
         name: trade_source
-        description: "Was the trade a direct call to the dexor did it go through another program like Jupiter (Dex Aggregator)"
+        description: "Was the trade a direct call to the tessera or did it go through another program like Jupiter (Dex Aggregator)"
       - &token_bought_symbol
         name: token_bought_symbol
         description: "Token symbol for token bought in the trade"
@@ -73,22 +76,22 @@ models:
         description: "USD value of the trade at time of execution"
       - &fee_tier
         name: fee_tier
-        description: "dexfee tier (fee %)"
+        description: "tessera fee tier (fee %)"
       - &fee_usd
         name: fee_usd
-        description: "dexfee usd paid on swap"
+        description: "tessera fee usd paid on swap"
       - &token_bought_mint_address
-        name: token_bought_address
+        name: token_bought_mint_address
         description: "token mint address of the token bought"
       - &token_sold_mint_address
-        name: token_sold_address
+        name: token_sold_mint_address
         description: "token mint address of the token sold"
       - &token_bought_vault
         name: token_bought_vault
-        description: "token associated address for thedex, of the token bought"
+        description: "token associated address for the tessera, of the token bought"
       - &token_sold_vault
         name: token_sold_vault
-        description: "token associated address for thedex, of the token sold"
+        description: "token associated address for the tessera, of the token sold"
       - &project_program_id
         name: project_program_id
         description: "pool program id of the project"
@@ -111,34 +114,3 @@ models:
         name: tx_index
         description: "index of the transaction in the block slot"
 
-  - name: goosefx_version_ssl_base_trades
-    meta:
-      blockchain: solana
-      contributors: [krishgka]
-    config:
-      tags: ['solana','dex']
-    description: >
-        goosefx ssl dex base trades on Solana with version_name
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *version_name
-      - *block_month
-      - *block_time
-      - *block_slot
-      - *trade_source
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *fee_tier
-      - *token_bought_mint_address
-      - *token_sold_mint_address
-      - *token_bought_vault
-      - *token_sold_vault
-      - *project_program_id
-      - *project_main_id
-      - *trader_id
-      - *tx_id
-      - *outer_instruction_index
-      - *inner_instruction_index
-      - *tx_index
