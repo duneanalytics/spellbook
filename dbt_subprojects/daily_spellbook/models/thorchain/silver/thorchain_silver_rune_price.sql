@@ -21,6 +21,7 @@ SELECT
     'thorchain' as blockchain,
     cast(null as varbinary) as contract_address -- RUNE is native token
 FROM {{ source('thorchain', 'rune_price') }}
+WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '10' day
 {% if is_incremental() %}
-WHERE {{ incremental_predicate('block_time') }}
+  AND {{ incremental_predicate('block_time') }}
 {% endif %}

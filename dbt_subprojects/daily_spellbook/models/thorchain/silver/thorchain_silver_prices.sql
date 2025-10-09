@@ -21,8 +21,9 @@ WITH rune_prices AS (
         blockchain,
         contract_address
     FROM {{ ref('thorchain_silver_rune_price') }}
+    WHERE block_time >= current_date - interval '10' day
     {% if is_incremental() %}
-    WHERE {{ incremental_predicate('block_time') }}
+      AND {{ incremental_predicate('block_time') }}
     {% endif %}
 ),
 
@@ -39,8 +40,9 @@ external_prices AS (
     FROM {{ source('prices', 'usd') }} p
     WHERE p.blockchain = 'thorchain'
         AND p.price IS NOT NULL
+        AND p.minute >= current_date - interval '10' day
     {% if is_incremental() %}
-    AND {{ incremental_predicate('p.minute') }}
+      AND {{ incremental_predicate('p.minute') }}
     {% endif %}
 )
 
