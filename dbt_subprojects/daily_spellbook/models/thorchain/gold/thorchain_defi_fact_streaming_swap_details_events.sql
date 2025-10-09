@@ -36,6 +36,8 @@ WITH base AS (
 SELECT
   concat(cast(a.event_id as varchar)) AS fact_streaming_swap_details_events_id,
   COALESCE(b.block_time, a.block_time) as block_time,
+  COALESCE(b.block_date, date(a.block_time)) as block_date,
+  COALESCE(b.block_month, date_trunc('month', a.block_time)) as block_month,
   COALESCE(b.height, -1) AS block_height,
   a.tx_id,
   a."interval",

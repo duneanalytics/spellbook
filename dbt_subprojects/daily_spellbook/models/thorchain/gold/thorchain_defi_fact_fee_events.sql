@@ -33,7 +33,9 @@ SELECT
     cast(a.block_timestamp as varchar), '-',
     cast(a.tx_id as varchar)
   ) AS fact_fee_events_id,
-  COALESCE(b.block_time, a.block_time) as block_time,  -- Use block_time for spellbook compatibility
+  COALESCE(b.block_time, a.block_time) as block_time,
+  COALESCE(b.block_date, date(a.block_time)) as block_date,
+  COALESCE(b.block_month, date_trunc('month', a.block_time)) as block_month,
   COALESCE(b.height, -1) AS block_height,
   a.tx_id,
   a.asset,
