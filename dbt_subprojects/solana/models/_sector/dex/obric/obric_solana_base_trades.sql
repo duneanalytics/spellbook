@@ -11,7 +11,7 @@
   )
 }}
 
-{% set project_start_date = '2025-10-01' %} -- Testing only. PROD: 2024-06-04
+{% set project_start_date = '2024-06-04' %}
 
 -- obric swap data from instruction_calls table. Filtered by program id & swap discriminator.
 WITH swaps AS (
@@ -21,18 +21,12 @@ WITH swaps AS (
         , block_time
         , COALESCE(inner_instruction_index,0) as inner_instruction_index -- adjust to index 0 for direct trades
         , outer_instruction_index
-        --, inner_executing_account
         , outer_executing_account
-        --, executing_account
         , is_inner
         , tx_id
         , tx_signer
         , tx_index
-        --, account_arguments[11] AS user
         , account_arguments[1] AS pool_id
-        --, account_arguments[4] AS token_a_vault
-        --, account_arguments[5] AS token_b_vault
-        --, bytearray_to_uint256(bytearray_reverse(bytearray_substring(data,1+8,1))) AS is_buy
     FROM {{ source('solana','instruction_calls') }}
     WHERE 1=1
        AND executing_account = 'obriQD1zbpyLz95G5n7nJe6a4DPjpFwa5XYPoNm113y'

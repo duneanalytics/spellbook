@@ -75,9 +75,6 @@ FROM
 {% if is_incremental() -%}
 WHERE
       {{incremental_predicate('block_time')}}
-{% else -%}
-WHERE
-      block_time >= NOW() - INTERVAL '7' DAY
 {% endif -%}
 {% if not loop.last -%}
 UNION ALL
