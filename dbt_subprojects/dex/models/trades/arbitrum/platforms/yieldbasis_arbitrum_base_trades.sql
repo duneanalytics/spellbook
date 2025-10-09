@@ -41,6 +41,7 @@ WITH token_exchange AS (
 SELECT
   'arbitrum' AS blockchain,
   'yieldbasis' AS project,
+  '1' AS version,
   TRY_CAST(DATE_TRUNC('month', te.block_time) AS DATE) AS block_month,
   TRY_CAST(DATE_TRUNC('day', te.block_time) AS DATE) AS block_date,
   te.block_time,
@@ -49,10 +50,10 @@ SELECT
   te.token_bought_amount_raw,
   sold_token.token_address AS token_sold_address,
   bought_token.token_address AS token_bought_address,
-  te.buyer,
-  te.evt_tx_from,
+  te.buyer AS taker,
+  te.evt_tx_from AS maker,
   te.evt_tx_to,
-  te.pool_contract_address,
+  te.pool_contract_address AS project_contract_address,
   te.tx_hash,
   te.evt_index
 FROM token_exchange AS te
