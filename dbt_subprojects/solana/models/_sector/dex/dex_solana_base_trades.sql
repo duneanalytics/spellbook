@@ -32,6 +32,7 @@ ref('raydium_version_clmm_base_trades')
   , ref('stabble_version_1_base_trades')
   , ref('solfi_version_1_base_trades') 
   , ref('tessera_solana_base_trades')
+  , ref('obric_solana_base_trades')
 ] %}
 
 /*
@@ -74,6 +75,9 @@ FROM
 {% if is_incremental() -%}
 WHERE
       {{incremental_predicate('block_time')}}
+{% else -%}
+WHERE
+      block_time >= NOW() - INTERVAL '7' DAY
 {% endif -%}
 {% if not loop.last -%}
 UNION ALL
