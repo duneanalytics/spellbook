@@ -30,6 +30,7 @@ SELECT
   COALESCE(b.block_month, date_trunc('month', a.block_time)) as block_month,
   COALESCE(b.height, -1) AS block_height,
   a.tx_id,
+  a.event_id,
   a.asset,
   a.pool_deduct,
   a.asset_e8,

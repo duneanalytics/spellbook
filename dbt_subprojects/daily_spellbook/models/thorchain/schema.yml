@@ -225,8 +225,8 @@ models:
   - name: thorchain_defi_fact_swaps
     description: "DeFi fact table for Thorchain swaps with enriched data"
     columns:
-      - name: tx_hash
-        description: "Transaction hash"
+      - name: tx_id
+        description: "Transaction ID"
         data_tests:
           - not_null
       - name: event_id
@@ -247,8 +247,8 @@ models:
   - name: thorchain_defi_fact_swap_events
     description: "DeFi fact table for raw Thorchain swap events"
     columns:
-      - name: tx_hash
-        description: "Transaction hash"
+      - name: tx_id
+        description: "Transaction ID"
         data_tests:
           - not_null
       - name: event_id
@@ -266,8 +266,8 @@ models:
   - name: thorchain_defi_fact_streaming_swap_details_events
     description: "DeFi fact table for Thorchain streaming swap details"
     columns:
-      - name: tx_hash
-        description: "Transaction hash"
+      - name: tx_id
+        description: "Transaction ID"
         data_tests:
           - not_null
       - name: event_id
@@ -285,8 +285,8 @@ models:
   - name: thorchain_defi_fact_liquidity_actions
     description: "DeFi fact table for Thorchain liquidity actions"
     columns:
-      - name: tx_hash
-        description: "Transaction hash"
+      - name: tx_id
+        description: "Transaction ID"
         data_tests:
           - not_null
       - name: event_id
@@ -305,8 +305,8 @@ models:
   - name: thorchain_defi_fact_withdraw_events
     description: "DeFi fact table for raw Thorchain withdraw events"
     columns:
-      - name: tx_hash
-        description: "Transaction hash"
+      - name: tx_id
+        description: "Transaction ID"
         data_tests:
           - not_null
       - name: event_id
@@ -324,11 +324,6 @@ models:
   - name: thorchain_defi_fact_fee_events
     description: "DeFi fact table for Thorchain fee events"
     columns:
-      - name: fact_fee_events_id
-        description: "Unique fact table identifier"
-        data_tests:
-          - unique
-          - not_null
       - name: tx_id
         description: "Transaction ID"
         data_tests:
@@ -349,11 +344,6 @@ models:
   - name: thorchain_defi_fact_add_events
     description: "DeFi fact table for Thorchain add events"
     columns:
-      - name: fact_add_events_id
-        description: "Unique fact table identifier"
-        data_tests:
-          - unique
-          - not_null
       - name: tx_id
         description: "Transaction ID"
         data_tests:
