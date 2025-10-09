@@ -59,7 +59,6 @@ SELECT
   a.liq_fee_e8,
   a.liq_fee_in_rune_e8,
   a._direction,
-  a.event_id,
   a._tx_type,
   current_timestamp AS inserted_timestamp,
   current_timestamp AS modified_timestamp

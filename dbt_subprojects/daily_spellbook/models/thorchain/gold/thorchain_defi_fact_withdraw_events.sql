@@ -29,6 +29,7 @@ WITH base AS (
     emit_asset_in_rune_e8 as _emit_asset_in_rune_e8,
     raw_block_timestamp as block_timestamp,
     tx_type as _tx_type,
+    event_id,  -- Add missing event_id
     block_time  -- Keep for incremental predicate
   FROM
     {{ ref('thorchain_silver_withdraw_events') }}

@@ -52,7 +52,6 @@ SELECT
   a.out_e8,
   a.failed_swaps,
   a.failed_swap_reasons,
-  a.event_id,
   -- Success rate metrics
   CASE 
     WHEN a.failed_swaps IS NOT NULL AND cardinality(a.failed_swaps) > 0 THEN false
