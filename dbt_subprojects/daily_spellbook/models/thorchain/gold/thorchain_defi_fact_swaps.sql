@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = 'fact_swaps_id',
+    unique_key = ['tx_id', 'event_id'],
     partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     tags = ['thorchain', 'defi', 'swaps', 'fact']
@@ -35,10 +35,6 @@ WITH base AS (
 )
 
 SELECT
-  concat(
-    cast(a.tx_hash as varchar), '-',
-    cast(a.event_id as varchar)
-  ) AS fact_swaps_id,
   a.block_time,
   a.block_date,
   a.block_month,

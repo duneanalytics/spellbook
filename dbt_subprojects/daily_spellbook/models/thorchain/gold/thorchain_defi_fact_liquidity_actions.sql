@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = 'fact_liquidity_actions_id',
+    unique_key = ['tx_id', 'event_id'],
     partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     tags = ['thorchain', 'defi', 'liquidity', 'fact']
@@ -22,11 +22,11 @@ WITH base AS (
     asset_amount,
     asset_amount_usd,
     stake_units,
-    null as asset_tx_id,  -- Not available in our model
-    null as asset_address,  -- Not available in our model
+    cast(null as varchar) as asset_tx_id,  -- Not available in our model  
+    cast(null as varchar) as asset_address,  -- Not available in our model
     chain as asset_blockchain,
     imp_loss_protection_amount as il_protection,
-    null as il_protection_usd,  -- Will calculate if needed
+    cast(null as double) as il_protection_usd,  -- Will calculate if needed
     asymmetry as unstake_asymmetry,
     basis_points as unstake_basis_points,
     event_id,
@@ -39,13 +39,9 @@ WITH base AS (
 )
 
 SELECT
-  concat(
-    cast(a.tx_hash as varchar), '-',
-    cast(a.event_id as varchar), '-', 
-    cast(a.lp_action as varchar)
-  ) AS fact_liquidity_actions_id,
   a.block_time,
   a.tx_hash as tx_id,
+  a.event_id,
   a.lp_action,
   a.pool_name,
   a.from_address,
