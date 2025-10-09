@@ -33,6 +33,9 @@ models:
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"
+      - &version_name
+        name: version_name
+        description: "Descriptive name of the DEX version (1)"
       - &block_month
         name: block_month
         description: "UTC event block month of each DEX trade"
@@ -117,3 +120,12 @@ models:
       - &tx_index
         name: tx_index
         description: "index of the transaction in the block slot"
+
+  - name: pumpdotfun_version_1_base_trades
+    meta:
+      blockchain: solana
+      contributors: [krishgka]
+    config:
+      tags: ['solana','dex']
+    description: >
+        pumpdotfun dex base trades on Solana with version_name

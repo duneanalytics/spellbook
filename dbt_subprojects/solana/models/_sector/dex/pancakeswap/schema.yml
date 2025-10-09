@@ -114,3 +114,12 @@ models:
       - &tx_index
         name: tx_index
         description: "index of the transaction in the block slot"
+
+  - name: pancakeswap_version_v3_base_trades
+    meta:
+      blockchain: solana
+      contributors: [krishgka]
+    config:
+      tags: ['solana','dex']
+    description: >
+        pancakeswap v3 dex base trades on Solana with version_name
