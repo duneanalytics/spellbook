@@ -252,10 +252,14 @@ models:
         data_tests:
           - not_null
       - name: event_id
-        description: "Unique event identifier"
+        description: "Event identifier (unique with tx_id)"
         data_tests:
-          - unique
           - not_null
+    data_tests:
+      - unique:
+          combination_of_columns:
+            - tx_id
+            - event_id
       - name: block_time
         description: "Block timestamp"
         data_tests:
@@ -271,10 +275,14 @@ models:
         data_tests:
           - not_null
       - name: event_id
-        description: "Unique event identifier"
+        description: "Event identifier (unique with tx_id)"
         data_tests:
-          - unique
           - not_null
+    data_tests:
+      - unique:
+          combination_of_columns:
+            - tx_id
+            - event_id
       - name: block_time
         description: "Block timestamp"
         data_tests:
@@ -310,10 +318,14 @@ models:
         data_tests:
           - not_null
       - name: event_id
-        description: "Unique event identifier"
+        description: "Event identifier (unique with tx_id)"
         data_tests:
-          - unique
           - not_null
+    data_tests:
+      - unique:
+          combination_of_columns:
+            - tx_id
+            - event_id
       - name: block_time
         description: "Block timestamp"
         data_tests:

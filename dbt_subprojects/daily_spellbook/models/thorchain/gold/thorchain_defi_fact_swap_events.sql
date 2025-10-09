@@ -39,10 +39,10 @@ WITH base AS (
 )
 
 SELECT
-  COALESCE(b.block_time, a.block_time) as block_time,
-  COALESCE(b.block_date, date(a.block_time)) as block_date,
-  COALESCE(b.block_month, date_trunc('month', a.block_time)) as block_month,
-  COALESCE(b.height, -1) AS block_height,
+  a.block_time,
+  date(a.block_time) as block_date,
+  date_trunc('month', a.block_time) as block_month,
+  -1 AS block_height,
   a.tx_id,
   a.event_id,
   a.blockchain,
@@ -64,8 +64,6 @@ SELECT
   current_timestamp AS modified_timestamp
 
 FROM base a
-LEFT JOIN {{ ref('thorchain_core_dim_block') }} b
-  ON a.block_timestamp = b.raw_timestamp
 
 {% if is_incremental() %}
 WHERE a.block_time >= (
