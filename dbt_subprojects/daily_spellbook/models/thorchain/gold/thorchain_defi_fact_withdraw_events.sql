@@ -109,4 +109,5 @@ LEFT JOIN {{ ref('thorchain_silver_rune_price') }} rp
 
 {% if is_incremental() %}
 WHERE {{ incremental_predicate('we.block_time') }}
+  AND we.block_time >= current_date - interval '7' day
 {% endif %}

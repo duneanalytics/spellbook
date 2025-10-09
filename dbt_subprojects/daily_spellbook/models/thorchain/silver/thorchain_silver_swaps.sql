@@ -46,6 +46,7 @@ WITH swap_events AS (
     FROM {{ ref('thorchain_silver_swap_events') }} se
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('se.block_time') }}
+      AND se.block_time >= current_date - interval '7' day
     {% endif %}
 ),
 
@@ -84,6 +85,7 @@ streaming_swaps AS (
     FROM {{ ref('thorchain_silver_streaming_swap_details_events') }} ss
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('ss.block_time') }}
+      AND ss.block_time >= current_date - interval '7' day
     {% endif %}
 )
 

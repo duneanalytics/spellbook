@@ -44,6 +44,7 @@ WITH add_events AS (
     FROM {{ ref('thorchain_silver_add_events') }} ae
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('ae.block_time') }}
+      AND ae.block_time >= current_date - interval '7' day
     {% endif %}
 ),
 
@@ -80,6 +81,7 @@ withdraw_events AS (
     FROM {{ ref('thorchain_silver_withdraw_events') }} we  
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('we.block_time') }}
+      AND we.block_time >= current_date - interval '7' day
     {% endif %}
 )
 

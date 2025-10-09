@@ -70,4 +70,5 @@ SELECT
 FROM {{ source('thorchain', 'swap_events') }}
 {% if is_incremental() %}
 WHERE {{ incremental_predicate('block_time') }}
+  AND block_time >= current_date - interval '7' day
 {% endif %}

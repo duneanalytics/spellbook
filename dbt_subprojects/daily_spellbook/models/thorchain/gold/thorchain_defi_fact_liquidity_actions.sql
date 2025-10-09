@@ -107,4 +107,5 @@ LEFT JOIN {{ ref('thorchain_core_dim_block') }} b
 
 {% if is_incremental() %}
 WHERE {{ incremental_predicate('la.block_time') }}
+  AND la.block_time >= current_date - interval '7' day
 {% endif %}
