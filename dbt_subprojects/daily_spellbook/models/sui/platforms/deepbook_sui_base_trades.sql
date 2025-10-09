@@ -50,7 +50,7 @@ select
   , block_month
 
   , pool_id
-  , taker_id as sender
+  , sender
   , cast(null as varchar) as coin_type_in
   , cast(null as varchar) as coin_type_out
   , case
