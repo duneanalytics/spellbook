@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = 'fact_withdraw_events_id',
+    unique_key = ['tx_id', 'event_id'],
     partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     tags = ['thorchain', 'defi', 'withdraw_events', 'fact']
@@ -36,24 +36,6 @@ WITH base AS (
 )
 
 SELECT
-  concat(
-    cast(a.tx_id as varchar), '-',
-    cast(a.blockchain as varchar), '-',
-    cast(a.from_address as varchar), '-',
-    cast(a.to_address as varchar), '-',
-    cast(a.asset as varchar), '-',
-    cast(a.asset_e8 as varchar), '-',
-    cast(a.emit_asset_e8 as varchar), '-',
-    cast(a.emit_rune_e8 as varchar), '-',
-    cast(a.memo as varchar), '-',
-    cast(a.pool_name as varchar), '-',
-    cast(a.stake_units as varchar), '-',
-    cast(a.basis_points as varchar), '-',
-    cast(a.asymmetry as varchar), '-',
-    cast(a.imp_loss_protection_e8 as varchar), '-',
-    cast(a._emit_asset_in_rune_e8 as varchar), '-',
-    cast(a.block_timestamp as varchar)
-  ) AS fact_withdraw_events_id,
   COALESCE(b.block_time, a.block_time) as block_time,
   COALESCE(b.block_date, date(a.block_time)) as block_date,
   COALESCE(b.block_month, date_trunc('month', a.block_time)) as block_month,

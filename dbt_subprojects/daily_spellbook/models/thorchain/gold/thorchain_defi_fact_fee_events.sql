@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = 'fact_fee_events_id',
+    unique_key = ['tx_id', 'event_id'],
     partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     tags = ['thorchain', 'defi', 'fee_events', 'fact']
@@ -25,14 +25,6 @@ WITH base AS (
 )
 
 SELECT
-  concat(
-    cast(a.event_id as varchar), '-',
-    cast(a.asset as varchar), '-', 
-    cast(a.asset_e8 as varchar), '-',
-    cast(a.pool_deduct as varchar), '-',
-    cast(a.block_timestamp as varchar), '-',
-    cast(a.tx_id as varchar)
-  ) AS fact_fee_events_id,
   COALESCE(b.block_time, a.block_time) as block_time,
   COALESCE(b.block_date, date(a.block_time)) as block_date,
   COALESCE(b.block_month, date_trunc('month', a.block_time)) as block_month,
