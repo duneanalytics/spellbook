@@ -42,9 +42,9 @@ WITH add_events AS (
         null as asymmetry,
         null as imp_loss_protection_amount
     FROM {{ ref('thorchain_silver_add_events') }} ae
+    WHERE ae.block_time >= current_date - interval '7' day
     {% if is_incremental() %}
-    WHERE {{ incremental_predicate('ae.block_time') }}
-      AND ae.block_time >= current_date - interval '7' day
+      AND {{ incremental_predicate('ae.block_time') }}
     {% endif %}
 ),
 
@@ -79,9 +79,9 @@ withdraw_events AS (
         asymmetry,
         imp_loss_protection_amount
     FROM {{ ref('thorchain_silver_withdraw_events') }} we  
+    WHERE we.block_time >= current_date - interval '7' day
     {% if is_incremental() %}
-    WHERE {{ incremental_predicate('we.block_time') }}
-      AND we.block_time >= current_date - interval '7' day
+      AND {{ incremental_predicate('we.block_time') }}
     {% endif %}
 )
 

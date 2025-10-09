@@ -105,8 +105,7 @@ LEFT JOIN {{ ref('thorchain_silver_prices') }} op
     ON op.contract_address = ssd.out_contract_address
     AND op.block_time <= ssd.block_time
     AND op.block_time >= ssd.block_time - interval '1' hour
-
+WHERE ssd.block_time >= current_date - interval '7' day
 {% if is_incremental() %}
-WHERE {{ incremental_predicate('ssd.block_time') }}
-  AND ssd.block_time >= current_date - interval '7' day
+  AND {{ incremental_predicate('ssd.block_time') }}
 {% endif %}

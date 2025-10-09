@@ -85,8 +85,7 @@ LEFT JOIN {{ ref('thorchain_core_dim_block') }} b
 LEFT JOIN {{ ref('thorchain_silver_rune_price') }} rp
     ON rp.block_time <= s.block_time
     AND rp.block_time >= s.block_time - interval '1' hour
-
+WHERE s.block_time >= current_date - interval '7' day
 {% if is_incremental() %}
-WHERE {{ incremental_predicate('s.block_time') }}
-  AND s.block_time >= current_date - interval '7' day
+  AND {{ incremental_predicate('s.block_time') }}
 {% endif %}

@@ -104,8 +104,7 @@ FROM {{ ref('thorchain_silver_liquidity_actions') }} la
 LEFT JOIN {{ ref('thorchain_core_dim_block') }} b
     ON la.block_time >= b.block_time
     AND la.block_time < b.block_time + interval '1' hour
-
+WHERE la.block_time >= current_date - interval '7' day
 {% if is_incremental() %}
-WHERE {{ incremental_predicate('la.block_time') }}
-  AND la.block_time >= current_date - interval '7' day
+  AND {{ incremental_predicate('la.block_time') }}
 {% endif %}
