@@ -4,104 +4,84 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['event_id'],
+    unique_key = 'fact_swap_events_id',
     partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     tags = ['thorchain', 'defi', 'swap_events', 'fact']
 ) }}
 
--- DeFi fact table for raw Thorchain swap events
--- Provides access to raw swap event data for detailed analysis
-SELECT
-    se.tx_hash,
-    se.block_time,
-    b.block_date,
-    b.block_month,
-    b.block_hour,
-    b.height as block_height,
-    
-    -- Transaction details
-    se.chain,
-    se.from_addr as trader,
-    se.to_addr as recipient,
-    se.memo,
-    
-    -- From asset details
-    se.from_asset as token_sold_symbol,
-    se.from_asset_amount as token_sold_amount,
-    se.from_e8 as token_sold_amount_raw,
-    se.from_contract_address as token_sold_address,
-    
-    -- To asset details
-    se.to_asset as token_bought_symbol,
-    se.to_asset_amount as token_bought_amount,
-    se.to_e8 as token_bought_amount_raw,
-    se.to_contract_address as token_bought_address,
-    
-    -- Pool and trading details
-    se.pool,
-    se.pool_chain,
-    se.pool_asset,
-    se.to_e8_min_amount as min_amount_out,
-    se.swap_slip_bp / 10000.0 as slippage_percent,
-    se.liq_fee_amount,
-    se.liq_fee_in_rune_amount,
-    se.direction,
-    
-    -- Streaming swap details
-    se.streaming,
-    se.streaming_count,
-    se.streaming_quantity,
-    se.tx_type,
-    
-    -- USD values
-    COALESCE(fp.price * se.from_asset_amount, 0) as amount_usd_sold,
-    COALESCE(tp.price * se.to_asset_amount, 0) as amount_usd_bought,
-    COALESCE(rp.rune_price_usd * se.liq_fee_in_rune_amount, 0) as trading_fee_usd,
-    
-    -- DEX aggregator fields for compatibility
-    'thorchain' as project,
-    '1' as version,
-    'AMM' as category,
-    se.event_id,
-    
-    -- Trading metrics
-    CASE 
-        WHEN COALESCE(fp.price * se.from_asset_amount, 0) > 0 
-        THEN COALESCE(tp.price * se.to_asset_amount, 0) / COALESCE(fp.price * se.from_asset_amount, 1)
-        ELSE null 
-    END as price_impact,
-    
-    -- Volume and value metrics
-    GREATEST(COALESCE(fp.price * se.from_asset_amount, 0), COALESCE(tp.price * se.to_asset_amount, 0)) as volume_usd,
-    
-    -- Trade direction relative to RUNE
-    CASE
-        WHEN se.from_asset LIKE 'THOR.RUNE%' THEN 'sell_rune'
-        WHEN se.to_asset LIKE 'THOR.RUNE%' THEN 'buy_rune'
-        ELSE 'asset_to_asset'
-    END as trade_direction
+WITH base AS (
+  SELECT
+    tx_hash as tx_id,
+    chain as blockchain,
+    from_addr as from_address,
+    to_addr as to_address,
+    from_asset,
+    from_e8,
+    to_asset,
+    to_e8,
+    memo,
+    pool as pool_name,
+    to_e8_min,
+    swap_slip_bp,
+    liq_fee_e8,
+    liq_fee_in_rune_e8,
+    direction as _direction,
+    event_id,
+    raw_block_timestamp as block_timestamp,
+    streaming_count,
+    streaming_quantity,
+    tx_type as _tx_type,
+    block_time  -- Keep for incremental predicate
+  FROM
+    {{ ref('thorchain_silver_swap_events') }}
+  WHERE block_time >= current_date - interval '7' day
+)
 
-FROM {{ ref('thorchain_silver_swap_events') }} se
+SELECT
+  concat(
+    cast(a.event_id as varchar), '-',
+    cast(a.tx_id as varchar), '-',
+    cast(a.blockchain as varchar), '-',
+    cast(a.to_address as varchar), '-',
+    cast(a.from_address as varchar), '-',
+    cast(a.from_asset as varchar), '-',
+    cast(a.from_e8 as varchar), '-',
+    cast(a.to_asset as varchar), '-',
+    cast(a.to_e8 as varchar), '-',
+    cast(a.memo as varchar), '-',
+    cast(a.pool_name as varchar), '-',
+    cast(a._direction as varchar)
+  ) AS fact_swap_events_id,
+  COALESCE(b.block_time, a.block_time) as block_time,
+  COALESCE(b.height, -1) AS block_height,
+  a.tx_id,
+  a.blockchain,
+  a.from_address,
+  a.to_address,
+  a.from_asset,
+  a.from_e8,
+  a.to_asset,
+  a.to_e8,
+  a.memo,
+  a.pool_name,
+  a.to_e8_min,
+  a.swap_slip_bp,
+  a.liq_fee_e8,
+  a.liq_fee_in_rune_e8,
+  a._direction,
+  a.event_id,
+  a._tx_type,
+  current_timestamp AS inserted_timestamp,
+  current_timestamp AS modified_timestamp
+
+FROM base a
 LEFT JOIN {{ ref('thorchain_core_dim_block') }} b
-    ON se.block_time >= b.block_time
-    AND se.block_time < b.block_time + interval '1' hour
-    AND b.block_time >= current_date - interval '7' day
-LEFT JOIN {{ ref('thorchain_silver_prices') }} fp
-    ON fp.contract_address = se.from_contract_address
-    AND fp.block_time <= se.block_time
-    AND fp.block_time >= se.block_time - interval '1' hour
-    AND fp.block_time >= current_date - interval '7' day
-LEFT JOIN {{ ref('thorchain_silver_prices') }} tp
-    ON tp.contract_address = se.to_contract_address
-    AND tp.block_time <= se.block_time
-    AND tp.block_time >= se.block_time - interval '1' hour
-    AND tp.block_time >= current_date - interval '7' day
-LEFT JOIN {{ ref('thorchain_silver_rune_price') }} rp
-    ON rp.block_time <= se.block_time
-    AND rp.block_time >= se.block_time - interval '1' hour
-    AND rp.block_time >= current_date - interval '10' day
-WHERE se.block_time >= current_date - interval '7' day
+  ON a.block_timestamp = b.raw_timestamp
+
 {% if is_incremental() %}
-  AND {{ incremental_predicate('se.block_time') }}
+WHERE a.block_time >= (
+  SELECT MAX(block_time - INTERVAL '1' HOUR)
+  FROM {{ this }}
+) 
 {% endif %}

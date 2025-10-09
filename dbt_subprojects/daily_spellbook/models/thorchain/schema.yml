@@ -324,20 +324,49 @@ models:
   - name: thorchain_defi_fact_fee_events
     description: "DeFi fact table for Thorchain fee events"
     columns:
-      - name: tx_hash
-        description: "Transaction hash"
+      - name: fact_fee_events_id
+        description: "Unique fact table identifier"
+        data_tests:
+          - unique
+          - not_null
+      - name: tx_id
+        description: "Transaction ID"
         data_tests:
           - not_null
       - name: event_id
         description: "Unique event identifier"
         data_tests:
-          - unique
           - not_null
       - name: block_time
         description: "Block timestamp"
         data_tests:
           - not_null
-      - name: fee_amount_usd
-        description: "Fee amount in USD"
-      - name: protocol_revenue_usd
-        description: "Protocol revenue in USD"
+      - name: asset
+        description: "Fee asset identifier"
+      - name: pool_deduct
+        description: "Pool deduction amount"
+
+  - name: thorchain_defi_fact_add_events
+    description: "DeFi fact table for Thorchain add events"
+    columns:
+      - name: fact_add_events_id
+        description: "Unique fact table identifier"
+        data_tests:
+          - unique
+          - not_null
+      - name: tx_id
+        description: "Transaction ID"
+        data_tests:
+          - not_null
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: asset
+        description: "Asset identifier"
+      - name: rune_e8
+        description: "RUNE amount in 1e8 format"
