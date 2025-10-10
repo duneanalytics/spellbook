@@ -29,7 +29,7 @@ WITH bridge AS (
         '0xf73e887a8754f540ee6e1a93bdc6dde2af69fc7ca5de32013e89dd44244473cb::usdt::Mint', -- 2495948836
         '0xf73e887a8754f540ee6e1a93bdc6dde2af69fc7ca5de32013e89dd44244473cb::usdt::Burn' -- 1821522020
     )
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
     AND {{ incremental_predicate('block_time') }}
     {% else %}
     AND block_date >= DATE('2024-10-14')
@@ -54,7 +54,7 @@ WITH bridge AS (
     FROM {{ ref('aptos_fungible_asset_activities') }} faa
     WHERE 1=1
     AND asset_type = '0x357b0b74bc833e95a115ad22604854d6b0fca151cecd94111770e5d6ffc9dc2b'
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
     AND {{ incremental_predicate('block_time') }}
     {% else %}
     AND block_date >= DATE('2024-10-14')
