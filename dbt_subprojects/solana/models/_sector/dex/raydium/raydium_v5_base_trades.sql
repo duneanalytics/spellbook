@@ -12,7 +12,7 @@
         )
 }}
 
-{% set project_start_date = '2025-10-08' %} --grabbed program deployed at time (account created at).
+{% set project_start_date = '2025-08-21' %} --grabbed program deployed at time (account created at).
 
   WITH
     all_swaps as (
