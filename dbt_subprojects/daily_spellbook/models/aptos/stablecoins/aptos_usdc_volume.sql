@@ -30,7 +30,7 @@ WITH bridge AS (
         '0x9bce6734f7b63e835108e3bd8c36743d4709fe435f44791918801d0989640a9d::token_messenger::DepositForBurn', -- 2360646121
         '0x9bce6734f7b63e835108e3bd8c36743d4709fe435f44791918801d0989640a9d::token_messenger::MintAndWithdraw' -- 2359912971
     )
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
     AND {{ incremental_predicate('block_time') }}
     {% else %}
     AND block_date >= DATE('2025-01-02')
@@ -64,7 +64,7 @@ WITH bridge AS (
         '0xe5c5befe31ce06bc1f2fd31210988aac08af6d821b039935557a6f14c03471be::stablecoin::Deposit'
     )
     AND json_extract_scalar(data, '$.amount') != '0'
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
     AND {{ incremental_predicate('block_time') }}
     {% else %}
     AND block_date >= DATE('2024-12-19')
