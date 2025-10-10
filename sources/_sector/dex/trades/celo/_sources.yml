@@ -25,3 +25,4 @@ sources:
   - name: carbon_defi_celo
     tables:
       - name: CarbonController_evt_TokensTraded
+      - name: CarbonVortex_evt_TokenTraded

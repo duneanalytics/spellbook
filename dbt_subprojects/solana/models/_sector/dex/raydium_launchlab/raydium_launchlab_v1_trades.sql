@@ -13,6 +13,7 @@ select
       dex_trades.blockchain
       , dex_trades.project
       , dex_trades.version
+      , dex_trades.version_name
       , dex_trades.block_month
       , dex_trades.block_date
       , dex_trades.block_time

@@ -116,3 +116,20 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('defi_kingdoms_kaia_base_trades_seed')
+
+  - name: cldex_kaia_base_trades
+    meta:
+      blockchain: kaia
+      sector: dex
+      project: cldex
+      contributors: thecaptncrunch
+    config:
+      tags: [ 'kaia', 'dex', 'trades', 'cldex' ]
+    description: "Kaia concentrated liquidity base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('cldex_kaia_base_trades')

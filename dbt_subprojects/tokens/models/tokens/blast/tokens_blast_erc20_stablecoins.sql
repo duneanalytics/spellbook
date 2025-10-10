@@ -2,10 +2,7 @@
       schema = 'tokens_blast'
       , alias = 'erc20_stablecoins'
       , tags=['static']
-      , post_hook='{{ expose_spells(\'["blast"]\',
-                                  "sector",
-                                  "tokens_blast",
-                                  \'["rantum"]\') }}'
+      , post_hook='{{ hide_spells() }}'
       , unique_key = ['contract_address']
   )
 }}

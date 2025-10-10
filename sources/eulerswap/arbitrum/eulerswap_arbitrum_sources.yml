@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: eulerswap_arbitrum
+    description: "decoded events for eulerswap on arbitrum"
+    tables:
+      - name: eulerswapfactory_uniswapv4_evt_pooldeployed
+      - name: eulerswapfactory_uniswapv4_evt_poolconfig
+      - name: eulerswapinstance_evt_swap

@@ -26,6 +26,7 @@
     , 'opbnb'
     , 'optimism'
     , 'peaq'
+    , 'plasma'
     , 'polygon'
     , 'ronin'
     , 'scroll'

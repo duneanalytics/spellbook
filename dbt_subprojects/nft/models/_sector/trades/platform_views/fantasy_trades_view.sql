@@ -4,10 +4,9 @@
         alias = 'trades',
 
         materialized = 'view',
-        post_hook='{{ expose_spells(\'["blast"]\',
-                                    "project",
-                                    "fantasy",
-                                    \'["hildobby"]\') }}')
+        tags=['static'],
+        post_hook='{{ hide_spells() }}'
+        )
 }}
 
 SELECT *

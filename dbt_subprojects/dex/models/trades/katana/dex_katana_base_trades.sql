@@ -13,6 +13,7 @@
 {% set base_models = [
     ref('sushiswap_v1_katana_base_trades')
     , ref('sushiswap_v2_katana_base_trades')
+    , ref('blade_katana_base_trades')
 ] %}
 with base_union as (
     SELECT *
