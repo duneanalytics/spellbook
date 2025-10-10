@@ -13,15 +13,15 @@ WITH swaps AS (
         evt_block_number AS block_number,
         CAST(evt_block_time AS timestamp(3) WITH time zone) AS block_time,
         CAST(evt_block_date AS date) AS block_date,
-        evt_tx_from AS sender,
-        evt_tx_to AS receiver,
+        tx_from AS sender,
+        tx_to AS receiver,
         amountIn AS token_sold_amount_raw,
         amountOut AS token_bought_amount_raw,
         tokenIn AS token_sold_address,
         tokenOut AS token_bought_address,
         CAST(contract_address AS varbinary) AS project_contract_address,
-        evt_tx_hash AS tx_hash,
-        evt_tx_index AS tx_index,
+        tx_hash,
+        tx_index,
         evt_index
     FROM
         {{ source('skate_fi_arbitrum', 'SkateVertexVault_evt_Swapped') }}
