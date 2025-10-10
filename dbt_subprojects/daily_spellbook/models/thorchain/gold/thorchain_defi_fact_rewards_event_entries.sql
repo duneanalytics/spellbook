@@ -16,7 +16,7 @@ WITH base AS (
         rune_e8,
         saver_e8,
         event_id,
-        block_timestamp,
+        -- block_timestamp,              -- ⬅️ remove
         block_time,
         _inserted_timestamp
     FROM {{ ref('thorchain_silver_rewards_event_entries') }}
@@ -24,34 +24,34 @@ WITH base AS (
 )
 
 SELECT
-    -- CRITICAL: Generate surrogate key (Trino equivalent of dbt_utils.generate_surrogate_key)
+    -- Surrogate key: ensure all parts are varchar and use block_time (not block_timestamp)
     to_hex(sha256(to_utf8(concat(
-        COALESCE(a.event_id, ''),
+        coalesce(cast(a.event_id as varchar), ''),
         '|',
-        COALESCE(a.pool_name, ''),
+        coalesce(a.pool_name, ''),
         '|',
-        COALESCE(cast(a.block_timestamp as varchar), '')
+        coalesce(cast(a.block_time as varchar), '')
     )))) AS fact_rewards_event_entries_id,
-    
-    -- CRITICAL: Always include partitioning columns first
+
+    -- Partitioning / time columns
     a.block_time,
     date(a.block_time) as block_date,
     date_trunc('month', a.block_time) as block_month,
-    a.block_timestamp,
-    
-    -- Block dimension reference (set directly - no JOIN needed)
+    -- a.block_timestamp,               -- ⬅️ remove (or: a.block_time as block_timestamp)
+
+    -- Block dimension reference (placeholder)
     '-1' AS dim_block_id,
-    
+
     -- Rewards data
     a.pool_name,
     a.rune_e8,
     a.saver_e8,
     a.event_id,
-    
-    -- Audit fields (Trino conversions)
+
+    -- Audit fields
     a._inserted_timestamp,
-    cast(from_hex(replace(cast(uuid() as varchar), '-', '')) as varchar) AS _audit_run_id,  -- Trino equivalent of invocation_id
-    current_timestamp AS inserted_timestamp,  -- Trino equivalent of SYSDATE()
+    cast(from_hex(replace(cast(uuid() as varchar), '-', '')) as varchar) AS _audit_run_id,
+    current_timestamp AS inserted_timestamp,
     current_timestamp AS modified_timestamp
 
 FROM base a

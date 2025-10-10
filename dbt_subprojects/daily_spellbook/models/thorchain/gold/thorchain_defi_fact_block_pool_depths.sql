@@ -17,7 +17,7 @@ WITH base AS (
         rune_e8,
         synth_e8,
         block_time,
-        raw_block_timestamp as block_timestamp,
+        raw_block_timestamp as block_time,
         _inserted_timestamp
     FROM {{ ref('thorchain_silver_block_pool_depths') }}
     WHERE block_time >= current_date - interval '7' day
@@ -28,14 +28,14 @@ SELECT
     to_hex(sha256(to_utf8(concat(
         COALESCE(a.pool_name, ''),
         '|',
-        COALESCE(cast(a.block_timestamp as varchar), '')
+        COALESCE(cast(a.block_time as varchar), '')
     )))) AS fact_pool_depths_id,
     
     -- CRITICAL: Always include partitioning columns first
     a.block_time,
     date(a.block_time) as block_date,
     date_trunc('month', a.block_time) as block_month,
-    a.block_timestamp,
+    a.block_times,
     
     -- Block dimension reference (set directly - no JOIN needed)
     '-1' AS dim_block_id,

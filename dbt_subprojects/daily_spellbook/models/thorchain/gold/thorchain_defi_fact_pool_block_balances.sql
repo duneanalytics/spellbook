@@ -22,8 +22,7 @@ WITH base AS (
         synth_amount_usd,
         _unique_key,
         _inserted_timestamp,
-        block_time,
-        block_timestamp
+        block_time
     FROM {{ ref('thorchain_silver_pool_block_balances') }}
     WHERE block_time >= current_date - interval '7' day
 )
@@ -36,7 +35,7 @@ SELECT
     a.block_time,
     date(a.block_time) as block_date,
     date_trunc('month', a.block_time) as block_month,
-    a.block_timestamp,
+    a.block_times,
     
     -- Block dimension reference (set directly - no JOIN needed)
     '-1' AS dim_block_id,

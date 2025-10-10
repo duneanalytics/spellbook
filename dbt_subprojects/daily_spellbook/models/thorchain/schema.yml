@@ -540,3 +540,100 @@ models:
         data_tests:
           - unique
           - not_null
+
+  - name: thorchain_defi_fact_rewards_events
+    description: "DeFi fact table for Thorchain rewards events"
+    columns:
+      - name: fact_rewards_events_id
+        description: "Surrogate key for rewards events"
+        data_tests:
+          - unique
+          - not_null
+      - name: block_timestamp
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: dim_block_id
+        description: "Block dimension ID"
+      - name: bond_e8
+        description: "Bond amount in e8 format"
+      - name: _inserted_timestamp
+        description: "Record insertion timestamp"
+      - name: _audit_run_id
+        description: "Audit run identifier"
+      - name: inserted_timestamp
+        description: "Record creation timestamp"
+      - name: modified_timestamp
+        description: "Record modification timestamp"
+
+  - name: thorchain_silver_daily_earnings
+    description: "Silver table for daily Thorchain earnings with USD pricing"
+    columns:
+      - name: day
+        description: "Date"
+        data_tests:
+          - unique
+          - not_null
+      - name: liquidity_fees
+        description: "Liquidity fees earned"
+      - name: liquidity_fees_usd
+        description: "Liquidity fees in USD"
+      - name: block_rewards
+        description: "Block rewards earned"
+      - name: block_rewards_usd
+        description: "Block rewards in USD"
+      - name: total_earnings
+        description: "Total earnings"
+      - name: total_earnings_usd
+        description: "Total earnings in USD"
+      - name: earnings_to_nodes
+        description: "Earnings to nodes"
+      - name: earnings_to_nodes_usd
+        description: "Earnings to nodes in USD"
+      - name: earnings_to_pools
+        description: "Earnings to pools"
+      - name: earnings_to_pools_usd
+        description: "Earnings to pools in USD"
+      - name: avg_node_count
+        description: "Average node count"
+
+  - name: thorchain_defi_fact_daily_earnings
+    description: "DeFi fact table for daily Thorchain earnings"
+    columns:
+      - name: fact_daily_earnings_id
+        description: "Surrogate key for daily earnings"
+        data_tests:
+          - unique
+          - not_null
+      - name: day
+        description: "Date"
+        data_tests:
+          - not_null
+      - name: liquidity_fees
+        description: "Liquidity fees earned"
+      - name: liquidity_fees_usd
+        description: "Liquidity fees in USD"
+      - name: block_rewards
+        description: "Block rewards earned"
+      - name: block_rewards_usd
+        description: "Block rewards in USD"
+      - name: total_earnings
+        description: "Total earnings"
+      - name: total_earnings_usd
+        description: "Total earnings in USD"
+      - name: earnings_to_nodes
+        description: "Earnings to nodes"
+      - name: earnings_to_nodes_usd
+        description: "Earnings to nodes in USD"
+      - name: earnings_to_pools
+        description: "Earnings to pools"
+      - name: earnings_to_pools_usd
+        description: "Earnings to pools in USD"
+      - name: avg_node_count
+        description: "Average node count"
+      - name: _audit_run_id
+        description: "Audit run identifier"
+      - name: inserted_timestamp
+        description: "Record creation timestamp"
+      - name: modified_timestamp
+        description: "Record modification timestamp"
