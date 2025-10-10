@@ -238,4 +238,5 @@ FROM (VALUES
     , ('somnex', 'SomneX', 'Direct', 'SomneX')
     , ('machinex', 'Machine X', 'Direct', 'machinexdotxyz')
     , ('cldex', 'CLDEX', 'Direct', 'KaiaChain')
+    , ('skate_fi', 'Skate Finance', 'Direct', 'skate_fi')
 ) AS temp_table (project, name, marketplace_type, x_username)
