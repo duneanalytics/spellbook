@@ -40,7 +40,8 @@ WITH messages AS (
         AND w.evt_index < m.evt_index
     )
 
-    SELECT i.blockchain AS deposit_chain
+    SELECT m.sourceDomain AS deposit_chain_id
+    , i.blockchain AS deposit_chain
     , '{{blockchain}}' AS withdrawal_chain
     , 'CCTP' AS bridge_name
     , '1' AS bridge_version

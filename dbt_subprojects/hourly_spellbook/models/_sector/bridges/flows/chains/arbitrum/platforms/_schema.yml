@@ -77,6 +77,9 @@ models:
       - &bridge_transfer_id 
         name: bridge_transfer_id
         description: "Bridge transfer identifier"
+      - &withdrawal_chain_id
+        name: withdrawal_chain_id
+        description: "Blockchain ID where the tokens were received"
   - name: bridges_arbitrum_cctp_v1_withdrawals
     meta:
       blockchain: arbitrum
@@ -113,3 +116,6 @@ models:
       - *evt_index  
       - *contract_address 
       - *bridge_transfer_id 
+      - &deposit_chain_id
+        name: deposit_chain_id
+        description: "Blockchain ID where the tokens were sent"
