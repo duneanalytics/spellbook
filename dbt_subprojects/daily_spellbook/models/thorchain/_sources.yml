@@ -189,8 +189,12 @@ sources:
             description: "Synthetic asset amount in e8 format"
           - name: block_timestamp
             description: "Block timestamp"
-          - name: __hevo__loaded_at
-            description: "Hevo ingestion timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
 
       - name: rewards_event_entries
         description: "Rewards event entries from Thorchain"
@@ -205,8 +209,12 @@ sources:
             description: "Unique event identifier"
           - name: block_timestamp
             description: "Block timestamp"
-          - name: __hevo__loaded_at
-            description: "Hevo ingestion timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
 
       - name: pool_events
         description: "Pool status events from Thorchain"
@@ -219,8 +227,12 @@ sources:
             description: "Unique event identifier"
           - name: block_timestamp
             description: "Block timestamp"
-          - name: __hevo__loaded_at
-            description: "Hevo ingestion timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
 
       - name: stake_events
         description: "Stake/liquidity add events from Thorchain"
@@ -249,10 +261,14 @@ sources:
             description: "Unique event identifier"
           - name: block_timestamp
             description: "Block timestamp"
-          - name: __hevo__loaded_at
-            description: "Hevo ingestion timestamp"
-          - name: __hevo__ingested_at
-            description: "Hevo ingestion timestamp (alternative)"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
 
       - name: bond_events
         description: "Bond events from Thorchain validators"
@@ -281,21 +297,29 @@ sources:
             description: "Block timestamp"
           - name: _tx_type
             description: "Transaction type"
-          - name: __hevo__loaded_at
-            description: "Hevo ingestion timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
 
       - name: update_node_account_status_events
         description: "Node account status change events from Thorchain"
         columns:
           - name: node_addr
             description: "Node address"
-          - name: current_flag
-            description: "Current status flag"
+          - name: current
+            description: "Current status"
           - name: former
             description: "Former status"
           - name: block_timestamp
             description: "Block timestamp"
           - name: event_id
             description: "Unique event identifier"
-          - name: __hevo__loaded_at
-            description: "Hevo ingestion timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"

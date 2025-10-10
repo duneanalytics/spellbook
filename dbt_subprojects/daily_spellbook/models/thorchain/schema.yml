@@ -391,3 +391,152 @@ models:
         data_tests:
           - unique
           - not_null
+
+  # MISSING MODELS - Added after source schema audit
+  - name: thorchain_silver_bond_events
+    description: "Silver table for Thorchain bond events from validators"
+    columns:
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - unique
+          - not_null
+      - name: tx_id
+        description: "Transaction ID"
+      - name: bond_type
+        description: "Type of bond operation"
+      - name: e8
+        description: "Bond amount in e8 format"
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+
+  - name: thorchain_silver_update_node_account_status_events
+    description: "Silver table for Thorchain node status change events"
+    columns:
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - unique
+          - not_null
+      - name: node_address
+        description: "Node address"
+      - name: current_status
+        description: "Current node status"
+      - name: former_status
+        description: "Previous node status"
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+
+  - name: thorchain_silver_total_value_locked
+    description: "Silver table for Thorchain total value locked calculations"
+    columns:
+      - name: day
+        description: "Date"
+        data_tests:
+          - unique
+          - not_null
+      - name: total_value_pooled
+        description: "Total value pooled"
+      - name: total_value_bonded
+        description: "Total value bonded"  
+      - name: total_value_locked
+        description: "Total value locked (pooled + bonded)"
+
+  - name: thorchain_silver_block_rewards
+    description: "Silver table for daily Thorchain block rewards"
+    columns:
+      - name: day
+        description: "Date"
+        data_tests:
+          - unique
+          - not_null
+      - name: liquidity_fee
+        description: "Liquidity fees earned"
+      - name: block_rewards
+        description: "Block rewards earned"
+      - name: earnings
+        description: "Total earnings"
+      - name: avg_node_count
+        description: "Average node count"
+
+  - name: thorchain_silver_total_block_rewards
+    description: "Silver table for total Thorchain block rewards by entity"
+    columns:
+      - name: _unique_key
+        description: "Unique identifier (block_id + reward_entity)"
+        data_tests:
+          - unique
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: reward_entity
+        description: "Reward entity (pool name or 'bond_holders')"
+      - name: rune_amount
+        description: "RUNE reward amount"
+      - name: rune_amount_usd
+        description: "RUNE reward amount in USD"
+
+  - name: thorchain_silver_daily_tvl
+    description: "Silver table for daily Thorchain TVL with USD pricing"
+    columns:
+      - name: day
+        description: "Date"
+        data_tests:
+          - unique
+          - not_null
+      - name: total_value_pooled_usd
+        description: "Total pooled value in USD"
+      - name: total_value_locked_usd
+        description: "Total locked value in USD"
+
+  - name: thorchain_defi_fact_total_block_rewards
+    description: "DeFi fact table for total Thorchain block rewards"
+    columns:
+      - name: fact_total_block_rewards_id
+        description: "Surrogate key for total block rewards"
+        data_tests:
+          - unique
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: reward_entity
+        description: "Reward entity identifier"
+
+  - name: thorchain_defi_fact_daily_tvl
+    description: "DeFi fact table for daily Thorchain TVL"
+    columns:
+      - name: fact_daily_tvl_id
+        description: "Surrogate key for daily TVL"
+        data_tests:
+          - unique
+          - not_null
+      - name: day
+        description: "Date"
+        data_tests:
+          - not_null
+
+  - name: thorchain_silver_pool_block_statistics
+    description: "Silver table for complex daily Thorchain pool statistics"
+    columns:
+      - name: _unique_key
+        description: "Unique identifier (day + asset)"
+        data_tests:
+          - unique
+          - not_null
+
+  - name: thorchain_defi_fact_pool_block_statistics
+    description: "DeFi fact table for Thorchain pool statistics"
+    columns:
+      - name: fact_pool_block_statistics_id
+        description: "Surrogate key for pool statistics"
+        data_tests:
+          - unique
+          - not_null

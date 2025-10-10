@@ -25,14 +25,15 @@ with base as (
         date_trunc('month', from_unixtime(cast(block_timestamp / 1e9 as bigint))) as block_month,
         date_trunc('hour', from_unixtime(cast(block_timestamp / 1e9 as bigint))) as block_hour,
         
-        -- Hevo ingestion timestamp conversion (milliseconds to timestamp)
-        from_unixtime(cast(__hevo__loaded_at / 1000 as bigint)) AS _inserted_timestamp,
-        __hevo__loaded_at,
+        -- Use actual Dune source audit timestamps
+        _updated_at AS _inserted_timestamp,
+        _ingested_at,
+        _updated_at,
         
-        -- Row deduplication logic (convert QUALIFY to ROW_NUMBER for Trino)
+        -- Row deduplication logic (using actual available column)
         ROW_NUMBER() OVER(
             PARTITION BY event_id, pool, block_timestamp 
-            ORDER BY __hevo__loaded_at DESC
+            ORDER BY _ingested_at DESC
         ) as rn
 
     FROM {{ source('thorchain', 'rewards_event_entries') }}

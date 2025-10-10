@@ -30,14 +30,15 @@ with base as (
         rune_e8 / 1e8 as rune_amount,
         synth_e8 / 1e8 as synth_amount,
         
-        -- Hevo ingestion timestamp conversion (milliseconds to timestamp)
-        from_unixtime(cast(__hevo__loaded_at / 1000 as bigint)) AS _inserted_timestamp,
-        __hevo__loaded_at,
+        -- Use actual Dune source audit timestamps
+        _updated_at AS _inserted_timestamp,
+        _ingested_at,
+        _updated_at,
         
-        -- Row deduplication logic (convert QUALIFY to ROW_NUMBER for Trino)
+        -- Row deduplication logic (using actual available column)
         ROW_NUMBER() OVER(
             PARTITION BY pool, block_timestamp 
-            ORDER BY __hevo__loaded_at DESC
+            ORDER BY _ingested_at DESC
         ) as rn
 
     FROM {{ source('thorchain', 'block_pool_depths') }}
