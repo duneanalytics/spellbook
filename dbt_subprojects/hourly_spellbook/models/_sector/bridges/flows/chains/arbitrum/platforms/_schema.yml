@@ -20,8 +20,8 @@ models:
       - &deposit_chain
         name: deposit_chain
         description: "Blockchain where the tokens were sent"
-      - &withdraw_chain
-        name: withdraw_chain
+      - &withdrawal_chain
+        name: withdrawal_chain
         description: "Blockchain where the tokens were received"
       - &bridge_name
         name: bridge_name
@@ -77,6 +77,9 @@ models:
       - &bridge_transfer_id 
         name: bridge_transfer_id
         description: "Bridge transfer identifier"
+      - &withdrawal_chain_id
+        name: withdrawal_chain_id
+        description: "Blockchain ID where the tokens were received"
   - name: bridges_arbitrum_cctp_v1_withdrawals
     meta:
       blockchain: arbitrum
@@ -94,7 +97,7 @@ models:
             - source('circle_arbitrum','tokenmessenger_evt_mintandwithdraw')
     columns:
       - *deposit_chain
-      - *withdraw_chain
+      - *withdrawal_chain
       - *bridge_name
       - *bridge_version
       - *deposit_amount_raw
@@ -113,3 +116,6 @@ models:
       - *evt_index  
       - *contract_address 
       - *bridge_transfer_id 
+      - &deposit_chain_id
+        name: deposit_chain_id
+        description: "Blockchain ID where the tokens were sent"
