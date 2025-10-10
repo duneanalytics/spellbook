@@ -34,6 +34,7 @@ ref('raydium_version_clmm_base_trades')
   , ref('zerofi_solana_base_trades')
   , ref('humidifi_solana_base_trades')  
   , ref('tessera_solana_base_trades')
+  , ref('goonfi_solana_base_trades')
   , ref('obric_solana_base_trades')
 ] %}
 
