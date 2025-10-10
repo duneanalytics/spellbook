@@ -13,7 +13,7 @@
 -- CRITICAL: Use CTE pattern to avoid column resolution issues
 with base as (
     SELECT
-        b.block_timestamp,
+        cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) as block_time,
         b.height AS block_id,
         bpd.pool_name,
         
@@ -31,13 +31,12 @@ with base as (
         
         -- Unique key generation
         concat(
-            cast(bpd.block_timestamp as varchar),
+            cast(bpd.raw_block_timestamp as varchar),
             '-',
             bpd.pool_name
         ) AS _unique_key,
         
-        -- Timestamp conversions
-        cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) as block_time,
+        -- Timestamp conversions  
         date(from_unixtime(cast(b.timestamp / 1e9 as bigint))) as block_date,
         date_trunc('month', from_unixtime(cast(b.timestamp / 1e9 as bigint))) as block_month,
         date_trunc('hour', from_unixtime(cast(b.timestamp / 1e9 as bigint))) as block_hour,
@@ -61,7 +60,7 @@ with base as (
 )
 
 SELECT 
-    block_timestamp,
+    block_time,
     block_id,
     pool_name,
     rune_amount,

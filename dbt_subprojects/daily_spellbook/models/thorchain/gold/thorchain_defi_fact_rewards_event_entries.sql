@@ -16,7 +16,6 @@ WITH base AS (
         rune_e8,
         saver_e8,
         event_id,
-        -- block_timestamp,              -- ⬅️ remove
         block_time,
         _inserted_timestamp
     FROM {{ ref('thorchain_silver_rewards_event_entries') }}
@@ -50,7 +49,7 @@ SELECT
 
     -- Audit fields
     a._inserted_timestamp,
-    cast(from_hex(replace(cast(uuid() as varchar), '-', '')) as varchar) AS _audit_run_id,
+    replace(cast(uuid() as varchar), '-', '') AS _audit_run_id,
     current_timestamp AS inserted_timestamp,
     current_timestamp AS modified_timestamp
 

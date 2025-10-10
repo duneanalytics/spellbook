@@ -17,7 +17,7 @@ WITH base AS (
         rune_e8,
         synth_e8,
         block_time,
-        raw_block_timestamp as block_time,
+        raw_block_timestamp,
         _inserted_timestamp
     FROM {{ ref('thorchain_silver_block_pool_depths') }}
     WHERE block_time >= current_date - interval '7' day
@@ -35,7 +35,7 @@ SELECT
     a.block_time,
     date(a.block_time) as block_date,
     date_trunc('month', a.block_time) as block_month,
-    a.block_times,
+    a.raw_block_timestamp,
     
     -- Block dimension reference (set directly - no JOIN needed)
     '-1' AS dim_block_id,

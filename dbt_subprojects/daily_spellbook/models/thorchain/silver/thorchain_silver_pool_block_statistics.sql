@@ -55,7 +55,7 @@ pool_status AS (
             ) AS rn
         FROM {{ ref('thorchain_silver_pool_events') }} a
         JOIN {{ source('thorchain', 'block_log') }} b
-            ON a.block_timestamp = b.timestamp
+            ON a.block_time = cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)
         WHERE cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '7' day
     )
     WHERE rn = 1
@@ -71,7 +71,7 @@ add_liquidity_tbl AS (
         SUM(a.stake_units) AS added_stake
     FROM {{ ref('thorchain_silver_stake_events') }} a
     JOIN {{ source('thorchain', 'block_log') }} b
-        ON a.block_timestamp = b.timestamp
+        ON a.block_time = cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)
     WHERE cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '7' day
     GROUP BY
         DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)),
@@ -205,7 +205,7 @@ stake_amount AS (
         SUM(a.stake_units) AS units
     FROM {{ ref('thorchain_silver_stake_events') }} a
     JOIN {{ source('thorchain', 'block_log') }} b
-        ON a.block_timestamp = b.timestamp
+        ON a.block_time = cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)
     WHERE cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '7' day
     GROUP BY
         DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)),

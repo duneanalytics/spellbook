@@ -55,7 +55,7 @@ all_block_with_nodes_date AS (
         MAX(abwn._inserted_timestamp) AS _inserted_timestamp
     FROM all_block_with_nodes abwn
     JOIN {{ source('thorchain', 'block_log') }} b
-        ON abwn.block_timestamp = b.timestamp
+        ON abwn.block_timestamp = cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)
     WHERE cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '7' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp))') }}

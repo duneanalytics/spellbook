@@ -35,7 +35,6 @@ SELECT
     a.block_time,
     date(a.block_time) as block_date,
     date_trunc('month', a.block_time) as block_month,
-    a.block_times,
     
     -- Block dimension reference (set directly - no JOIN needed)
     '-1' AS dim_block_id,

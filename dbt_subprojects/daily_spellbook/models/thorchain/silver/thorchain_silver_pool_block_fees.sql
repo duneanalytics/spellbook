@@ -35,7 +35,7 @@ total_pool_rewards_tbl AS (
         SUM(a.rune_e8) AS rewards
     FROM {{ ref('thorchain_silver_rewards_event_entries') }} a
     JOIN {{ source('thorchain', 'block_log') }} b
-        ON a.block_timestamp = b.timestamp
+        ON a.block_timestamp = cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)
     WHERE cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '7' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp))') }}

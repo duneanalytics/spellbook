@@ -40,7 +40,7 @@ pool_rewards AS (
         ree._inserted_timestamp
     FROM {{ ref('thorchain_silver_rewards_event_entries') }} ree
     JOIN {{ source('thorchain', 'block_log') }} b
-        ON ree.block_timestamp = b.timestamp
+        ON ree.block_timestamp = cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)
     LEFT JOIN block_prices bp
         ON b.height = bp.block_id
     WHERE cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '7' day
@@ -68,7 +68,7 @@ bond_rewards AS (
         be._inserted_timestamp
     FROM {{ ref('thorchain_silver_bond_events') }} be
     JOIN {{ source('thorchain', 'block_log') }} b
-        ON be.block_timestamp = b.timestamp
+        ON be.block_timestamp = cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)
     LEFT JOIN block_prices bp
         ON b.height = bp.block_id
     WHERE cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '7' day
