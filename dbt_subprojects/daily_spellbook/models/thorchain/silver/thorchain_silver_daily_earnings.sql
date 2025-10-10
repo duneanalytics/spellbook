@@ -1,8 +1,12 @@
 {{ config(
+  schema = 'thorchain_silver',
+  alias = 'daily_earnings',
   materialized = 'incremental',
+  file_format = 'delta',
   unique_key = 'day',
   incremental_strategy = 'merge',
   cluster_by = ['day'],
+  partition_by = ['day_month'],
   incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
   tags = ['thorchain', 'daily', 'earnings']
 ) }}
@@ -32,6 +36,7 @@ daily_rune_price AS (
 
 SELECT
   br.day,
+  date_trunc('month', br.day) as day_month,
   COALESCE(liquidity_fee, 0) AS liquidity_fees,
   COALESCE(liquidity_fee * rune_usd, 0) AS liquidity_fees_usd,
   block_rewards AS block_rewards,
