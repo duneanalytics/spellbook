@@ -19,7 +19,7 @@ WITH daily_rune_price AS (
     WHERE p.symbol = 'RUNE'
       AND p.block_time >= current_date - interval '7' day
     {% if is_incremental() %}
-      AND {{ incremental_predicate('date(p.block_time)') }}
+      AND {{ incremental_predicate('p.block_time') }}
     {% endif %}
     GROUP BY date(p.block_time)
 ),

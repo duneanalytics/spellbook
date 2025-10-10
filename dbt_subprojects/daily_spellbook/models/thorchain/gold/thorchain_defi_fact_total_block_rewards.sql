@@ -18,8 +18,7 @@ WITH base AS (
         rune_amount_usd,
         _unique_key,
         _inserted_timestamp,
-        block_time,
-        block_timestamp
+        block_time
     FROM {{ ref('thorchain_silver_total_block_rewards') }}
     WHERE block_time >= current_date - interval '7' day
 )
@@ -32,7 +31,6 @@ SELECT
     a.block_time,
     date(a.block_time) as block_date,
     date_trunc('month', a.block_time) as block_month,
-    a.block_timestamp,
     
     -- Block dimension reference (simplified - no redundant JOIN)
     '-1' AS dim_block_id,

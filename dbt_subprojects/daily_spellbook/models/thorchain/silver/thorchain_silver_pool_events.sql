@@ -43,7 +43,6 @@ SELECT
     asset,
     status,
     event_id,
-    block_timestamp,
     block_time,
     block_date,
     block_month,

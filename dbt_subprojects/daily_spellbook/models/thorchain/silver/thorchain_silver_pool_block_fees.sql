@@ -53,7 +53,7 @@ total_liquidity_fees_rune_tbl AS (
     FROM {{ ref('thorchain_silver_swap_events') }} a
     WHERE a.block_time >= current_date - interval '7' day  -- FIXED: Use existing block_time
     {% if is_incremental() %}
-      AND {{ incremental_predicate('date(a.block_time)') }}
+      AND {{ incremental_predicate('a.block_time') }}
     {% endif %}
     GROUP BY
         date(a.block_time),

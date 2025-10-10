@@ -22,7 +22,7 @@ WITH bond_type_day AS (
         ON a.block_time = cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)
     WHERE cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '7' day
     {% if is_incremental() %}
-      AND {{ incremental_predicate('DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp))') }}
+      AND {{ incremental_predicate('a.block_time') }}
     {% endif %}
     GROUP BY
         DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)),
@@ -73,7 +73,7 @@ total_pool_depth AS (
     WHERE LOWER(a.pool_name) NOT LIKE 'thor.%'
       AND cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '7' day
     {% if is_incremental() %}
-      AND {{ incremental_predicate('DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp))') }}
+      AND {{ incremental_predicate('a.block_time') }}
     {% endif %}
 ),
 

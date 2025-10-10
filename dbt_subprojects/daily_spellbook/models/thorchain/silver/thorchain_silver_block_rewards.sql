@@ -13,16 +13,16 @@
 -- Complex daily block rewards calculation
 WITH all_block_id AS (
     SELECT
-        block_timestamp,
+        block_time,
         MAX(_inserted_timestamp) AS _inserted_timestamp
     FROM {{ ref('thorchain_silver_block_pool_depths') }}
-    WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '7' day
-    GROUP BY block_timestamp
+    WHERE block_time >= current_date - interval '7' day
+    GROUP BY block_time
 ),
 
 avg_nodes_tbl AS (
     SELECT
-        a.block_timestamp,
+        a.block_time,
         SUM(
             CASE
                 WHEN a.current_status = 'Active' THEN 1
@@ -30,51 +30,41 @@ avg_nodes_tbl AS (
                 ELSE 0
             END
         ) AS delta
-    FROM {{ ref('thorchain_silver_update_node_account_status_events') }} a  -- ✅ Now converted!
-    WHERE cast(from_unixtime(cast(a.block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '7' day
-    GROUP BY a.block_timestamp
+    FROM {{ ref('thorchain_silver_update_node_account_status_events') }} a
+    WHERE a.block_time >= current_date - interval '7' day
+    GROUP BY a.block_time
 ),
 
 all_block_with_nodes AS (
     SELECT
-        abi.block_timestamp,
+        abi.block_time,
         COALESCE(ant.delta, 0) AS delta,
         SUM(COALESCE(ant.delta, 0)) OVER (
-            ORDER BY abi.block_timestamp ASC
+            ORDER BY abi.block_time ASC
         ) AS avg_nodes,
         abi._inserted_timestamp
     FROM all_block_id abi
     LEFT JOIN avg_nodes_tbl ant
-        ON abi.block_timestamp = ant.block_timestamp
+        ON abi.block_time = ant.block_time
 ),
 
 all_block_with_nodes_date AS (
     SELECT
-        DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)) AS day,
+        DATE(abwn.block_time) AS day,
         AVG(abwn.avg_nodes) AS avg_nodes,
         MAX(abwn._inserted_timestamp) AS _inserted_timestamp
     FROM all_block_with_nodes abwn
-    JOIN {{ source('thorchain', 'block_log') }} b
-        ON abwn.block_timestamp = cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)
-    WHERE cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '7' day
-    {% if is_incremental() %}
-      AND {{ incremental_predicate('DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp))') }}
-    {% endif %}
-    GROUP BY DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp))
+    WHERE abwn.block_time >= current_date - interval '7' day
+    GROUP BY DATE(abwn.block_time)
 ),
 
 liquidity_fee_tbl AS (
     SELECT
-        DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)) AS day,
+        DATE(a.block_time) AS day,
         COALESCE(SUM(a.liq_fee_in_rune_e8), 0) AS liquidity_fee
     FROM {{ ref('thorchain_silver_swap_events') }} a
-    JOIN {{ source('thorchain', 'block_log') }} b
-        ON a.raw_block_timestamp = b.timestamp
-    WHERE cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '7' day
-    {% if is_incremental() %}
-      AND {{ incremental_predicate('DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp))') }}
-    {% endif %}
-    GROUP BY DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp))
+    WHERE a.block_time >= current_date - interval '7' day
+    GROUP BY DATE(a.block_time)
 ),
 
 -- CORRECT LOGIC: Use the total_block_rewards aggregation instead of duplicating
@@ -95,9 +85,6 @@ rewards_summary AS (
         ) AS total_pool_rewards
     FROM {{ ref('thorchain_silver_total_block_rewards') }} tbr
     WHERE tbr.block_time >= current_date - interval '7' day
-    {% if is_incremental() %}
-      AND {{ incremental_predicate('date(tbr.block_time)') }}
-    {% endif %}
     GROUP BY date(tbr.block_time)
 ),
 

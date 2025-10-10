@@ -59,7 +59,6 @@ SELECT
     rune_e8,
     _asset_in_rune_e8,
     event_id,
-    block_timestamp,
     block_time,
     block_date,
     block_month,

@@ -123,13 +123,13 @@ SELECT
     s.source_table,
     
     -- Calculate USD values by joining with prices
-    COALESCE(fp.price * s.from_asset_amount, 0) as from_amount_usd,
-    COALESCE(tp.price * s.to_asset_amount, 0) as to_amount_usd,
+    (s.from_asset_amount / POWER(10,8)) * COALESCE(fp_asset.price, fp_rune.price, 0) as from_amount_usd,
+    (s.to_asset_amount / POWER(10,8)) * COALESCE(tp_asset.price, tp_rune.price, 0) as to_amount_usd,
     
     -- Trading metrics
     CASE 
-        WHEN COALESCE(fp.price * s.from_asset_amount, 0) > 0 
-        THEN COALESCE(tp.price * s.to_asset_amount, 0) / COALESCE(fp.price * s.from_asset_amount, 1)
+        WHEN COALESCE(fp_asset.price, fp_rune.price, 0) * s.from_asset_amount > 0 
+        THEN (COALESCE(tp_asset.price, tp_rune.price, 0) * s.to_asset_amount) / (COALESCE(fp_asset.price, fp_rune.price, 1) * s.from_asset_amount)
         ELSE null 
     END as price_impact,
     
@@ -140,14 +140,28 @@ SELECT
     END as involves_rune
 
 FROM swap_events s
-LEFT JOIN {{ ref('thorchain_silver_prices') }} fp
-    ON fp.contract_address = s.from_contract_address
-    AND fp.block_time <= s.block_time
-    AND fp.block_time >= s.block_time - interval '1' hour
-LEFT JOIN {{ ref('thorchain_silver_prices') }} tp
-    ON tp.contract_address = s.to_contract_address  
-    AND tp.block_time <= s.block_time
-    AND tp.block_time >= s.block_time - interval '1' hour
+-- join asset price (non-RUNE)
+LEFT JOIN {{ ref('thorchain_silver_prices') }} fp_asset
+    ON fp_asset.contract_address = s.from_contract_address
+    AND fp_asset.symbol <> 'RUNE'
+    AND fp_asset.block_time <= s.block_time
+    AND fp_asset.block_time >= s.block_time - interval '1' hour
+-- join RUNE price for from_asset
+LEFT JOIN {{ ref('thorchain_silver_prices') }} fp_rune
+    ON fp_rune.symbol = 'RUNE'
+    AND fp_rune.block_time <= s.block_time
+    AND fp_rune.block_time >= s.block_time - interval '1' hour
+-- join asset price (non-RUNE) for to_asset
+LEFT JOIN {{ ref('thorchain_silver_prices') }} tp_asset
+    ON tp_asset.contract_address = s.to_contract_address
+    AND tp_asset.symbol <> 'RUNE'
+    AND tp_asset.block_time <= s.block_time
+    AND tp_asset.block_time >= s.block_time - interval '1' hour
+-- join RUNE price for to_asset  
+LEFT JOIN {{ ref('thorchain_silver_prices') }} tp_rune
+    ON tp_rune.symbol = 'RUNE'
+    AND tp_rune.block_time <= s.block_time
+    AND tp_rune.block_time >= s.block_time - interval '1' hour
 
 UNION ALL
 
@@ -184,13 +198,13 @@ SELECT
     s.source_table,
     
     -- Calculate USD values
-    COALESCE(fp.price * s.from_asset_amount, 0) as from_amount_usd,
-    COALESCE(tp.price * s.to_asset_amount, 0) as to_amount_usd,
+    (s.from_asset_amount / POWER(10,8)) * COALESCE(fp_asset.price, fp_rune.price, 0) as from_amount_usd,
+    (s.to_asset_amount / POWER(10,8)) * COALESCE(tp_asset.price, tp_rune.price, 0) as to_amount_usd,
     
     -- Trading metrics
     CASE 
-        WHEN COALESCE(fp.price * s.from_asset_amount, 0) > 0 
-        THEN COALESCE(tp.price * s.to_asset_amount, 0) / COALESCE(fp.price * s.from_asset_amount, 1)
+        WHEN COALESCE(fp_asset.price, fp_rune.price, 0) * s.from_asset_amount > 0 
+        THEN (COALESCE(tp_asset.price, tp_rune.price, 0) * s.to_asset_amount) / (COALESCE(fp_asset.price, fp_rune.price, 1) * s.from_asset_amount)
         ELSE null 
     END as price_impact,
     
@@ -201,11 +215,25 @@ SELECT
     END as involves_rune
 
 FROM streaming_swaps s
-LEFT JOIN {{ ref('thorchain_silver_prices') }} fp
-    ON fp.contract_address = s.from_contract_address
-    AND fp.block_time <= s.block_time
-    AND fp.block_time >= s.block_time - interval '1' hour
-LEFT JOIN {{ ref('thorchain_silver_prices') }} tp
-    ON tp.contract_address = s.to_contract_address
-    AND tp.block_time <= s.block_time  
-    AND tp.block_time >= s.block_time - interval '1' hour
+-- join asset price (non-RUNE)
+LEFT JOIN {{ ref('thorchain_silver_prices') }} fp_asset
+    ON fp_asset.contract_address = s.from_contract_address
+    AND fp_asset.symbol <> 'RUNE'
+    AND fp_asset.block_time <= s.block_time
+    AND fp_asset.block_time >= s.block_time - interval '1' hour
+-- join RUNE price for from_asset
+LEFT JOIN {{ ref('thorchain_silver_prices') }} fp_rune
+    ON fp_rune.symbol = 'RUNE'
+    AND fp_rune.block_time <= s.block_time
+    AND fp_rune.block_time >= s.block_time - interval '1' hour
+-- join asset price (non-RUNE) for to_asset
+LEFT JOIN {{ ref('thorchain_silver_prices') }} tp_asset
+    ON tp_asset.contract_address = s.to_contract_address
+    AND tp_asset.symbol <> 'RUNE'
+    AND tp_asset.block_time <= s.block_time
+    AND tp_asset.block_time >= s.block_time - interval '1' hour
+-- join RUNE price for to_asset  
+LEFT JOIN {{ ref('thorchain_silver_prices') }} tp_rune
+    ON tp_rune.symbol = 'RUNE'
+    AND tp_rune.block_time <= s.block_time
+    AND tp_rune.block_time >= s.block_time - interval '1' hour

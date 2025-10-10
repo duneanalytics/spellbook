@@ -19,7 +19,7 @@ WITH daily_rune_price AS (
         AVG(price) AS asset_usd  -- Simplified - using same price for now
     FROM {{ ref('thorchain_silver_prices') }} p
     {% if is_incremental() %}
-    WHERE {{ incremental_predicate('date(p.block_time)') }}
+    WHERE {{ incremental_predicate('p.block_time') }}
     {% endif %}
     GROUP BY
         pool_name,
