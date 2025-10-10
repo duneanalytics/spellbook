@@ -29,7 +29,7 @@ WITH base AS (
 
 SELECT
     -- CRITICAL: Generate surrogate key (Trino equivalent of dbt_utils.generate_surrogate_key)
-    to_hex(sha256(to_utf8(a._unique_key))) AS fact_pool_block_balances_id,
+    to_hex(sha256(to_utf8(cast(a._unique_key as varchar)))) AS fact_pool_block_balances_id,
     
     -- CRITICAL: Always include partitioning columns first
     a.block_time,
@@ -49,8 +49,8 @@ SELECT
     a.synth_amount_usd,
     
     -- Audit fields (Trino conversions)
-    a._inserted_timestamp,
-    cast(from_hex(replace(cast(uuid() as varchar), '-', '')) as varchar) AS _audit_run_id,  -- Trino equivalent of invocation_id
+    a._inserted_timestamp                AS source_inserted_timestamp,
+    replace(cast(uuid() as varchar), '-', '') AS _audit_run_id,
     current_timestamp AS inserted_timestamp,  -- Trino equivalent of SYSDATE()
     current_timestamp AS modified_timestamp
 

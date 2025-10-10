@@ -6,7 +6,7 @@
     incremental_strategy = 'merge',
     unique_key = ['_unique_key'],
     partition_by = ['day_month'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day_month')],
     tags = ['thorchain', 'pool_statistics', 'silver']
 ) }}
 
@@ -99,7 +99,7 @@ withdraw_tbl AS (
 swap_total_tbl AS (
     SELECT
         day,
-        pool,
+        pool as pool_name,
         SUM(volume) AS swap_volume
     FROM (
         SELECT
@@ -119,7 +119,7 @@ swap_total_tbl AS (
 swap_to_asset_tbl AS (
     SELECT
         day,
-        pool,
+        pool as pool_name,
         SUM(liq_fee_in_rune_e8) AS to_asset_fees,
         SUM(from_e8) AS to_asset_volume,
         COUNT(*) AS to_asset_count,
@@ -147,7 +147,7 @@ swap_to_asset_tbl AS (
 swap_to_rune_tbl AS (
     SELECT
         day,
-        pool,
+        pool as pool_name,
         SUM(liq_fee_in_rune_e8) AS to_rune_fees,
         SUM(to_e8) AS to_rune_volume,
         COUNT(*) AS to_rune_count,
@@ -175,7 +175,7 @@ swap_to_rune_tbl AS (
 average_slip_tbl AS (
     SELECT
         DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)) AS day,
-        a.pool,
+        a.pool as pool_name,
         AVG(a.swap_slip_bp) AS average_slip
     FROM {{ ref('thorchain_silver_swap_events') }} a
     JOIN {{ source('thorchain', 'block_log') }} b
@@ -188,7 +188,7 @@ average_slip_tbl AS (
 unique_swapper_tbl AS (
     SELECT
         DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)) AS day,
-        a.pool,
+        a.pool as pool_name,
         COUNT(DISTINCT a.from_addr) AS unique_swapper_count
     FROM {{ ref('thorchain_silver_swap_events') }} a
     JOIN {{ source('thorchain', 'block_log') }} b
@@ -212,51 +212,6 @@ stake_amount AS (
         a.pool_name
 ),
 
--- Complete all missing CTEs for full business logic
-swap_to_asset_tbl AS (
-    SELECT
-        DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)) AS day,
-        a.pool AS pool_name,
-        SUM(a.liq_fee_in_rune_e8) AS to_asset_fees,
-        SUM(a.from_e8) AS to_asset_volume,
-        COUNT(*) AS to_asset_count,
-        AVG(a.swap_slip_bp) AS to_asset_average_slip
-    FROM {{ ref('thorchain_silver_swap_events') }} a
-    JOIN {{ source('thorchain', 'block_log') }} b
-        ON a.raw_block_timestamp = b.timestamp
-    WHERE cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '7' day
-      AND a.to_asset != 'THOR.RUNE'  -- Only to_asset swaps
-    GROUP BY DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)), a.pool
-),
-
-swap_to_rune_tbl AS (
-    SELECT
-        DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)) AS day,
-        a.pool AS pool_name,
-        SUM(a.liq_fee_in_rune_e8) AS to_rune_fees,
-        SUM(a.to_e8) AS to_rune_volume,
-        COUNT(*) AS to_rune_count,
-        AVG(a.swap_slip_bp) AS to_rune_average_slip
-    FROM {{ ref('thorchain_silver_swap_events') }} a
-    JOIN {{ source('thorchain', 'block_log') }} b
-        ON a.raw_block_timestamp = b.timestamp
-    WHERE cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '7' day
-      AND a.to_asset = 'THOR.RUNE'  -- Only to_rune swaps
-    GROUP BY DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)), a.pool
-),
-
-unique_swapper_tbl AS (
-    SELECT
-        DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)) AS day,
-        a.pool AS pool_name,
-        COUNT(DISTINCT a.from_addr) AS unique_swapper_count
-    FROM {{ ref('thorchain_silver_swap_events') }} a
-    JOIN {{ source('thorchain', 'block_log') }} b
-        ON a.raw_block_timestamp = b.timestamp
-    WHERE cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '7' day
-    GROUP BY DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)), a.pool
-),
-
 asset_price_usd_tbl AS (
     SELECT
         date(p.block_time) AS day,
@@ -271,7 +226,7 @@ asset_price_usd_tbl AS (
 joined AS (
     SELECT
         pd.day,
-        date_trunc('month', pd.day) as day_month,
+        date_trunc('month', cast(pd.day as timestamp)) as day_month,
         COALESCE(alt.add_asset_liquidity_volume, 0) AS add_asset_liquidity_volume,
         COALESCE(alt.add_liquidity_count, 0) AS add_liquidity_count,
         COALESCE(alt.add_asset_liquidity_volume + alt.add_rune_liquidity_volume, 0) AS add_liquidity_volume,
@@ -316,7 +271,7 @@ joined AS (
     LEFT JOIN withdraw_tbl wt
         ON pd.pool_name = wt.pool_name AND pd.day = wt.day  -- FIXED: Use pool_name consistently
     LEFT JOIN swap_total_tbl stt
-        ON pd.pool_name = stt.pool_name AND pd.day = stt.day  -- FIXED: Use pool_name consistently
+        ON pd.pool_name = stt.pool_name AND pd.day = stt.day
     LEFT JOIN swap_to_asset_tbl tat
         ON pd.pool_name = tat.pool_name AND pd.day = tat.day
     LEFT JOIN swap_to_rune_tbl trt
@@ -326,7 +281,7 @@ joined AS (
     LEFT JOIN stake_amount sa
         ON pd.pool_name = sa.pool_name AND pd.day = sa.day
     LEFT JOIN average_slip_tbl ast
-        ON pd.pool_name = ast.pool_name AND pd.day = ast.day  -- FIXED: Use pool_name consistently  
+        ON pd.pool_name = ast.pool_name AND pd.day = ast.day  
     LEFT JOIN asset_price_usd_tbl apt
         ON pd.pool_name = apt.pool_name AND pd.day = apt.day
 )
@@ -387,5 +342,5 @@ SELECT DISTINCT
     ) AS _unique_key
 FROM joined
 {% if is_incremental() %}
-WHERE {{ incremental_predicate('day') }}
+WHERE {{ incremental_predicate('day_month') }}
 {% endif %}
