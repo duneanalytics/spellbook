@@ -34,6 +34,7 @@ WITH swaps AS (
 SELECT
     'arbitrum' AS blockchain,
     'skate_fi' AS project,
+    '1' AS version,
     'vertex_vault' AS contract,
     CAST(date_trunc('month', swaps.block_time) AS date) AS block_month,
     swaps.block_date,
