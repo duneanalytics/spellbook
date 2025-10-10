@@ -6,42 +6,42 @@
     incremental_strategy = 'merge',
     unique_key = ['_unique_key'],
     partition_by = ['day_month'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day_month')],
     tags = ['thorchain', 'pool_fees', 'silver']
 ) }}
 
 -- CRITICAL: Use CTE pattern for complex daily aggregation
 WITH all_block_id AS (
     SELECT
-        DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)) AS day,
+        date(b.block_time) AS day,
         a.pool_name,
         MAX(a._inserted_timestamp) AS _inserted_timestamp
     FROM {{ ref('thorchain_silver_block_pool_depths') }} a
-    JOIN {{ source('thorchain', 'block_log') }} b
-        ON a.raw_block_timestamp = b.timestamp
-    WHERE cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '7' day
+    JOIN {{ ref('thorchain_core_dim_block') }} b
+        ON a.block_time = b.block_time
+    WHERE b.block_time >= current_date - interval '7' day
     {% if is_incremental() %}
-      AND {{ incremental_predicate('DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp))') }}
+      AND {{ incremental_predicate('b.block_time') }}
     {% endif %}
     GROUP BY
-        DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)),
+        date(b.block_time),
         a.pool_name
 ),
 
 total_pool_rewards_tbl AS (
     SELECT
-        DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)) AS day,
+        date(b.block_time) AS day,
         a.pool_name,
         SUM(a.rune_e8) AS rewards
     FROM {{ ref('thorchain_silver_rewards_event_entries') }} a
-    JOIN {{ source('thorchain', 'block_log') }} b
-        ON a.block_timestamp = cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)
-    WHERE cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '7' day
+    JOIN {{ ref('thorchain_core_dim_block') }} b
+        ON a.block_time = b.block_time
+    WHERE b.block_time >= current_date - interval '7' day
     {% if is_incremental() %}
-      AND {{ incremental_predicate('DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp))') }}
+      AND {{ incremental_predicate('b.block_time') }}
     {% endif %}
     GROUP BY
-        DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)),
+        date(b.block_time),
         a.pool_name
 ),
 
@@ -76,7 +76,7 @@ liquidity_fees_asset_tbl AS (
         FROM {{ ref('thorchain_silver_swap_events') }} a
         WHERE a.block_time >= current_date - interval '7' day  -- FIXED: Use existing block_time
         {% if is_incremental() %}
-          AND {{ incremental_predicate('date(a.block_time)') }}
+          AND {{ incremental_predicate('a.block_time') }}
         {% endif %}
     )
     GROUP BY
@@ -100,7 +100,7 @@ liquidity_fees_rune_tbl AS (
         FROM {{ ref('thorchain_silver_swap_events') }} a
         WHERE a.block_time >= current_date - interval '7' day  -- FIXED: Use existing block_time
         {% if is_incremental() %}
-          AND {{ incremental_predicate('date(a.block_time)') }}
+          AND {{ incremental_predicate('a.block_time') }}
         {% endif %}
     )
     GROUP BY
@@ -112,7 +112,7 @@ base AS (
     SELECT
         a.day,
         a.pool_name,
-        date_trunc('month', a.day) as day_month,
+        date_trunc('month', cast(a.day as timestamp)) as day_month,
         COALESCE((b.rewards / power(10, 8)), 0) AS rewards,
         COALESCE((c.total_liquidity_fees_rune / power(10, 8)), 0) AS total_liquidity_fees_rune,
         COALESCE((d.asset_liquidity_fees / power(10, 8)), 0) AS asset_liquidity_fees,
@@ -141,5 +141,5 @@ base AS (
 
 SELECT * FROM base
 {% if is_incremental() %}
-WHERE {{ incremental_predicate('base.day') }}
+WHERE {{ incremental_predicate('base.day_month') }}
 {% endif %}

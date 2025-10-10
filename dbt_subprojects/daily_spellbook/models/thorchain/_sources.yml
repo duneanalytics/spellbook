@@ -196,6 +196,22 @@ sources:
           - name: _source_file_path
             description: "Source file path"
 
+      - name: rewards_events
+        description: "Rewards events from Thorchain with bond amounts"
+        columns:
+          - name: bond_e8
+            description: "Bond amount in e8 format"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
       - name: rewards_event_entries
         description: "Rewards event entries from Thorchain"
         columns:

@@ -3,7 +3,6 @@
   alias = 'fact_rewards_events',
   materialized = 'incremental',
   file_format = 'delta',
-  meta = { 'database_tags': { 'table': { 'PURPOSE': 'DEX, AMM' } } },
   unique_key = ['fact_rewards_events_id'],
   incremental_strategy = 'merge',
   partition_by = ['block_month'],
@@ -19,7 +18,7 @@ WITH base AS (
     block_date,
     block_month,
     _inserted_timestamp
-  FROM {{ ref('thorchain_silver_rewards_event_entries') }}
+  FROM {{ ref('thorchain_silver_rewards_events') }}
   WHERE block_time >= current_date - interval '7' day
 )
 
