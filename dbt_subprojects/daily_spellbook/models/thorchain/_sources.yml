@@ -175,3 +175,127 @@ sources:
         columns:
           - name: block_timestamp
             description: "Block timestamp"
+
+      - name: block_pool_depths
+        description: "Block-level pool depth data from Thorchain"
+        columns:
+          - name: pool
+            description: "Pool identifier"
+          - name: asset_e8
+            description: "Asset amount in e8 format"
+          - name: rune_e8
+            description: "RUNE amount in e8 format"
+          - name: synth_e8
+            description: "Synthetic asset amount in e8 format"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: __HEVO__LOADED_AT
+            description: "Hevo ingestion timestamp"
+
+      - name: rewards_event_entries
+        description: "Rewards event entries from Thorchain"
+        columns:
+          - name: pool
+            description: "Pool identifier"
+          - name: rune_e8
+            description: "RUNE amount in e8 format"
+          - name: saver_e8
+            description: "Saver amount in e8 format"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: __HEVO__LOADED_AT
+            description: "Hevo ingestion timestamp"
+
+      - name: pool_events
+        description: "Pool status events from Thorchain"
+        columns:
+          - name: asset
+            description: "Pool asset identifier"
+          - name: status
+            description: "Pool status"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: __HEVO__LOADED_AT
+            description: "Hevo ingestion timestamp"
+
+      - name: stake_events
+        description: "Stake/liquidity add events from Thorchain"
+        columns:
+          - name: pool
+            description: "Pool identifier"
+          - name: asset_tx
+            description: "Asset transaction hash"
+          - name: asset_chain
+            description: "Asset blockchain"
+          - name: asset_addr
+            description: "Asset address"
+          - name: asset_e8
+            description: "Asset amount in e8 format"
+          - name: stake_units
+            description: "Stake units"
+          - name: rune_tx
+            description: "RUNE transaction hash"
+          - name: rune_addr
+            description: "RUNE address"
+          - name: rune_e8
+            description: "RUNE amount in e8 format"
+          - name: _asset_in_rune_e8
+            description: "Asset value in RUNE"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: __HEVO__LOADED_AT
+            description: "Hevo ingestion timestamp"
+          - name: __HEVO__INGESTED_AT
+            description: "Hevo ingestion timestamp (alternative)"
+
+      - name: bond_events
+        description: "Bond events from Thorchain validators"
+        columns:
+          - name: tx
+            description: "Transaction hash"
+          - name: chain
+            description: "Chain identifier"
+          - name: from_addr
+            description: "From address"
+          - name: to_addr
+            description: "To address"
+          - name: asset
+            description: "Asset identifier"
+          - name: asset_e8
+            description: "Asset amount in e8 format"
+          - name: memo
+            description: "Transaction memo"
+          - name: bond_type
+            description: "Type of bond operation"
+          - name: e8
+            description: "Amount in e8 format"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _tx_type
+            description: "Transaction type"
+          - name: __HEVO__LOADED_AT
+            description: "Hevo ingestion timestamp"
+
+      - name: update_node_account_status_events
+        description: "Node account status change events from Thorchain"
+        columns:
+          - name: node_addr
+            description: "Node address"
+          - name: current_flag
+            description: "Current status flag"
+          - name: former
+            description: "Former status"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: __HEVO__LOADED_AT
+            description: "Hevo ingestion timestamp"

@@ -1,0 +1,65 @@
+{{ config(
+    schema = 'thorchain_silver',
+    alias = 'block_pool_depths',
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['pool_name', 'block_time'],
+    partition_by = ['block_month'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    tags = ['thorchain', 'pool_depths', 'silver']
+) }}
+
+-- CRITICAL: Use CTE pattern to avoid column resolution issues
+with base as (
+    SELECT
+        pool AS pool_name,
+        asset_e8,
+        rune_e8,
+        synth_e8,
+        
+        -- Timestamp conversion (CRITICAL: nanoseconds to seconds for block_timestamp)
+        cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) as block_time,
+        date(from_unixtime(cast(block_timestamp / 1e9 as bigint))) as block_date,
+        date_trunc('month', from_unixtime(cast(block_timestamp / 1e9 as bigint))) as block_month,
+        date_trunc('hour', from_unixtime(cast(block_timestamp / 1e9 as bigint))) as block_hour,
+        block_timestamp as raw_block_timestamp,
+        
+        -- Asset scaling (human readable versions)
+        asset_e8 / 1e8 as asset_amount,
+        rune_e8 / 1e8 as rune_amount,
+        synth_e8 / 1e8 as synth_amount,
+        
+        -- Hevo ingestion timestamp conversion (milliseconds to timestamp)
+        from_unixtime(cast(__HEVO__LOADED_AT / 1000 as bigint)) AS _inserted_timestamp,
+        __HEVO__LOADED_AT,
+        
+        -- Row deduplication logic (convert QUALIFY to ROW_NUMBER for Trino)
+        ROW_NUMBER() OVER(
+            PARTITION BY pool, block_timestamp 
+            ORDER BY __HEVO__LOADED_AT DESC
+        ) as rn
+
+    FROM {{ source('thorchain', 'block_pool_depths') }}
+    WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '7' day
+)
+
+SELECT 
+    pool_name,
+    asset_e8,
+    rune_e8,
+    synth_e8,
+    asset_amount,
+    rune_amount,
+    synth_amount,
+    block_time,
+    block_date,
+    block_month,
+    block_hour,
+    raw_block_timestamp,
+    _inserted_timestamp
+FROM base
+WHERE rn = 1  -- Trino equivalent of QUALIFY
+{% if is_incremental() %}
+  AND {{ incremental_predicate('base.block_time') }}
+{% endif %}

@@ -355,5 +355,39 @@ models:
           - not_null
       - name: asset
         description: "Asset identifier"
-      - name: rune_e8
-        description: "RUNE amount in 1e8 format"
+
+  - name: thorchain_silver_pool_events
+    description: "Silver table for Thorchain pool status events"  
+    columns:
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - unique
+          - not_null
+
+  - name: thorchain_silver_stake_events
+    description: "Silver table for Thorchain stake events"
+    columns:
+      - name: event_id
+        description: "Unique event identifier" 
+        data_tests:
+          - unique
+          - not_null
+
+  - name: thorchain_silver_daily_pool_stats
+    description: "Silver table for daily Thorchain pool statistics"
+    columns:
+      - name: _unique_key
+        description: "Unique identifier"
+        data_tests:
+          - unique
+          - not_null
+
+  - name: thorchain_defi_fact_daily_pool_stats
+    description: "DeFi fact table for daily Thorchain pool statistics"
+    columns:
+      - name: fact_daily_pool_stats_id
+        description: "Surrogate key"
+        data_tests:
+          - unique
+          - not_null

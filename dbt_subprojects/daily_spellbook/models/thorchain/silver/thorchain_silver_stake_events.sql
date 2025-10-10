@@ -1,0 +1,71 @@
+{{ config(
+    schema = 'thorchain_silver',
+    alias = 'stake_events',
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['event_id'],
+    partition_by = ['block_month'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    tags = ['thorchain', 'stake_events', 'silver']
+) }}
+
+-- CRITICAL: Use CTE pattern to avoid column resolution issues
+with base as (
+    SELECT
+        pool AS pool_name,
+        asset_tx AS asset_tx_id,
+        asset_chain AS asset_blockchain,
+        asset_addr AS asset_address,
+        asset_e8,
+        stake_units,
+        rune_tx AS rune_tx_id,
+        rune_addr AS rune_address,
+        rune_e8,
+        _asset_in_rune_e8,
+        event_id,
+        block_timestamp,
+        
+        -- Timestamp conversion (CRITICAL: nanoseconds to seconds)
+        cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) as block_time,
+        date(from_unixtime(cast(block_timestamp / 1e9 as bigint))) as block_date,
+        date_trunc('month', from_unixtime(cast(block_timestamp / 1e9 as bigint))) as block_month,
+        date_trunc('hour', from_unixtime(cast(block_timestamp / 1e9 as bigint))) as block_hour,
+        
+        -- Hevo ingestion timestamp conversion (milliseconds to timestamp)
+        from_unixtime(cast(__HEVO__LOADED_AT / 1000 as bigint)) AS _inserted_timestamp,
+        __HEVO__LOADED_AT,
+        
+        -- Row deduplication logic (convert QUALIFY to ROW_NUMBER for Trino)
+        ROW_NUMBER() OVER(
+            PARTITION BY event_id, pool, rune_tx, asset_chain, stake_units, rune_addr, asset_tx, asset_addr, block_timestamp
+            ORDER BY __HEVO__INGESTED_AT DESC
+        ) as rn
+
+    FROM {{ source('thorchain', 'stake_events') }}
+    WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '7' day
+)
+
+SELECT 
+    pool_name,
+    asset_tx_id,
+    asset_blockchain,
+    asset_address,
+    asset_e8,
+    stake_units,
+    rune_tx_id,
+    rune_address,
+    rune_e8,
+    _asset_in_rune_e8,
+    event_id,
+    block_timestamp,
+    block_time,
+    block_date,
+    block_month,
+    block_hour,
+    _inserted_timestamp
+FROM base
+WHERE rn = 1  -- Trino equivalent of QUALIFY
+{% if is_incremental() %}
+  AND {{ incremental_predicate('base.block_time') }}
+{% endif %}
