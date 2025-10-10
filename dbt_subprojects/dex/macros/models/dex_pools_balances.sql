@@ -104,7 +104,10 @@ prices as (
         , max_by(price, minute) as price
     from 
     {{ source('prices','usd_with_native') }}
-    where {{ incremental_predicate('minute') }}
+    where 1 = 1 
+    {% if is_incremental() %}
+    and {{ incremental_predicate('minute') }}
+    {% endif %}
     and not (blockchain = 'ethereum' and contract_address = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee)
     group by 1, 2, 3 
 
@@ -117,7 +120,10 @@ prices as (
         , max_by(price, minute) as price
     from 
     {{ source('prices','usd_with_native') }}
-    where {{ incremental_predicate('minute') }}
+    where 1 = 1 
+    {% if is_incremental() %}
+    and {{ incremental_predicate('minute') }}
+    {% endif %}
     and blockchain = 'ethereum'
     and contract_address = 0x0000000000000000000000000000000000000000
     group by 1, 2, 3 
@@ -134,7 +140,9 @@ prices_day as (
     {{ source('prices','day') }}
     where volume is not null 
     and volume > 500000 -- greater than $500k day volume 
+    {% if is_incremental() %}
     and {{ incremental_predicate('timestamp') }}
+    {% endif %}
 ),
 
 get_prices as (
