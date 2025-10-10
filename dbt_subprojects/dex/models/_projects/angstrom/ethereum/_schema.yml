@@ -15,3 +15,18 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
+
+  - name: angstrom_ethereum_pools
+    meta:
+      blockchain: ethereum
+      sector: dex
+      contributors: jnoorchashm37, Henrystats
+    config:
+      tags: ['ethereum', 'ansgtrom', 'trades']
+    description: >
+      All angstrom pools on ethereum
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_id
+            - block_number

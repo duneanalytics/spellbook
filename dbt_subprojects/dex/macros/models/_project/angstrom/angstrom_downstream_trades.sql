@@ -14,6 +14,7 @@ base_trades as (
         , block_time
         , block_number
         , evt_index 
+        , trade_type
         , token_sold_lp_fees_paid_raw -- fee columns 
         , token_bought_lp_fees_paid_raw
         , token_sold_protocol_fees_paid_raw
@@ -34,6 +35,7 @@ base_trades as (
         , token_bought_lp_fees_paid_raw
         , token_sold_protocol_fees_paid_raw
         , token_bought_protocol_fees_paid_raw
+        , trade_type
     from 
     {{ ref('dex_trades') }} dexs 
     inner join 
@@ -80,6 +82,7 @@ base_trades as (
         , block_date
         , block_time
         , block_number
+        , trade_type
         , token_bought_symbol
         , token_sold_symbol
         , token_pair
