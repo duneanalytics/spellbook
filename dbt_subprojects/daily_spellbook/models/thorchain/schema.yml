@@ -1,0 +1,639 @@
+version: 2
+
+models:
+  # Silver Models
+  - name: thorchain_silver_rune_price
+    description: "RUNE price data processed from Thorchain"
+    columns:
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: rune_price_usd
+        description: "RUNE price in USD"
+      - name: symbol
+        description: "Token symbol (RUNE)"
+      - name: blockchain
+        description: "Blockchain (thorchain)"
+
+  - name: thorchain_silver_prices
+    description: "Combined price data for Thorchain tokens including RUNE and external assets"
+    columns:
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: price
+        description: "Token price in USD"
+      - name: symbol
+        description: "Token symbol"
+      - name: contract_address
+        description: "Contract address for price joins"
+
+  - name: thorchain_silver_add_events
+    description: "Processed liquidity add events from Thorchain"
+    columns:
+      - name: tx_hash
+        description: "Transaction hash"
+        data_tests:
+          - not_null
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - unique
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: asset_amount
+        description: "Asset amount added to liquidity"
+      - name: rune_amount
+        description: "RUNE amount added to liquidity"
+      - name: pool
+        description: "Pool identifier"
+
+  - name: thorchain_silver_withdraw_events
+    description: "Processed liquidity withdraw events from Thorchain"
+    columns:
+      - name: tx_hash
+        description: "Transaction hash"
+        data_tests:
+          - not_null
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - unique
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: emit_asset_amount
+        description: "Asset amount withdrawn from liquidity"
+      - name: emit_rune_amount
+        description: "RUNE amount withdrawn from liquidity"
+      - name: pool
+        description: "Pool identifier"
+
+  - name: thorchain_silver_swap_events
+    description: "Processed swap events from Thorchain"
+    columns:
+      - name: tx_hash
+        description: "Transaction hash"
+        data_tests:
+          - not_null
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - unique
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: from_asset_amount
+        description: "Amount of asset being sold"
+      - name: to_asset_amount
+        description: "Amount of asset being bought"
+      - name: pool
+        description: "Pool identifier"
+
+  - name: thorchain_silver_streaming_swap_details_events
+    description: "Processed streaming swap details events from Thorchain"
+    columns:
+      - name: tx_id
+        description: "Transaction ID"
+        data_tests:
+          - not_null
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - unique
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: stream_count
+        description: "Number of streams in the swap"
+      - name: deposit_amount
+        description: "Total deposit amount"
+
+  - name: thorchain_silver_fee_events
+    description: "Processed fee events from Thorchain"
+    columns:
+      - name: tx_hash
+        description: "Transaction hash"
+        data_tests:
+          - not_null
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - unique
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: asset_amount
+        description: "Fee amount in asset"
+      - name: pool_deduct_amount
+        description: "Amount deducted from pool"
+
+  - name: thorchain_silver_pending_liquidity_events
+    description: "Processed pending liquidity events from Thorchain"
+    columns:
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - unique
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: pool
+        description: "Pool identifier"
+      - name: pending_type
+        description: "Type of pending operation"
+
+  - name: thorchain_silver_swaps
+    description: "Curated swaps rollup combining swap events with streaming swap details"
+    columns:
+      - name: tx_hash
+        description: "Transaction hash"
+        data_tests:
+          - not_null
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: from_amount_usd
+        description: "USD value of asset sold"
+      - name: to_amount_usd
+        description: "USD value of asset bought"
+      - name: involves_rune
+        description: "Whether the swap involves RUNE"
+
+  - name: thorchain_silver_liquidity_actions
+    description: "Curated liquidity actions combining add and withdraw events"
+    columns:
+      - name: tx_hash
+        description: "Transaction hash"
+        data_tests:
+          - not_null
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - not_null
+      - name: action_type
+        description: "Type of action (add/withdraw)"
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: total_value_usd
+        description: "Total USD value of the liquidity action"
+      - name: liquidity_type
+        description: "Type of liquidity provision (symmetric/asymmetric)"
+
+  # Gold Models
+  - name: thorchain_core_dim_block
+    description: "Core block dimension table for Thorchain with time-based analytics"
+    columns:
+      - name: height
+        description: "Block height"
+        data_tests:
+          - unique
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: block_date
+        description: "Block date for partitioning"
+        data_tests:
+          - not_null
+      - name: block_hash
+        description: "Block hash"
+
+  - name: thorchain_defi_fact_swaps
+    description: "DeFi fact table for Thorchain swaps with enriched data"
+    columns:
+      - name: tx_id
+        description: "Transaction ID"
+        data_tests:
+          - not_null
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: project
+        description: "Project name (thorchain)"
+      - name: volume_usd
+        description: "Swap volume in USD"
+      - name: trade_direction
+        description: "Trade direction relative to RUNE"
+
+  - name: thorchain_defi_fact_swap_events
+    description: "DeFi fact table for raw Thorchain swap events"
+    columns:
+      - name: tx_id
+        description: "Transaction ID"
+        data_tests:
+          - not_null
+      - name: event_id
+        description: "Event identifier (unique with tx_id)"
+        data_tests:
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: project
+        description: "Project name (thorchain)"
+
+  - name: thorchain_defi_fact_streaming_swap_details_events
+    description: "DeFi fact table for Thorchain streaming swap details"
+    columns:
+      - name: tx_id
+        description: "Transaction ID"
+        data_tests:
+          - not_null
+      - name: event_id
+        description: "Event identifier (unique with tx_id)"
+        data_tests:
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: is_successful
+        description: "Whether the streaming swap was successful"
+
+  - name: thorchain_defi_fact_liquidity_actions
+    description: "DeFi fact table for Thorchain liquidity actions"
+    columns:
+      - name: tx_id
+        description: "Transaction ID"
+        data_tests:
+          - not_null
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - not_null
+      - name: action_type
+        description: "Type of action (add/withdraw)"
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: total_value_usd
+        description: "Total USD value of the liquidity action"
+
+  - name: thorchain_defi_fact_withdraw_events
+    description: "DeFi fact table for raw Thorchain withdraw events"
+    columns:
+      - name: tx_id
+        description: "Transaction ID"
+        data_tests:
+          - not_null
+      - name: event_id
+        description: "Event identifier (unique with tx_id)"
+        data_tests:
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: withdrawal_type
+        description: "Type of withdrawal (symmetric/asymmetric)"
+
+  - name: thorchain_defi_fact_fee_events
+    description: "DeFi fact table for Thorchain fee events"
+    columns:
+      - name: tx_id
+        description: "Transaction ID"
+        data_tests:
+          - not_null
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: asset
+        description: "Fee asset identifier"
+      - name: pool_deduct
+        description: "Pool deduction amount"
+
+  - name: thorchain_defi_fact_add_events
+    description: "DeFi fact table for Thorchain add events"
+    columns:
+      - name: tx_id
+        description: "Transaction ID"
+        data_tests:
+          - not_null
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: asset
+        description: "Asset identifier"
+
+  - name: thorchain_silver_pool_events
+    description: "Silver table for Thorchain pool status events"  
+    columns:
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - unique
+          - not_null
+
+  - name: thorchain_silver_stake_events
+    description: "Silver table for Thorchain stake events"
+    columns:
+      - name: event_id
+        description: "Unique event identifier" 
+        data_tests:
+          - unique
+          - not_null
+
+  - name: thorchain_silver_daily_pool_stats
+    description: "Silver table for daily Thorchain pool statistics"
+    columns:
+      - name: _unique_key
+        description: "Unique identifier"
+        data_tests:
+          - unique
+          - not_null
+
+  - name: thorchain_defi_fact_daily_pool_stats
+    description: "DeFi fact table for daily Thorchain pool statistics"
+    columns:
+      - name: fact_daily_pool_stats_id
+        description: "Surrogate key"
+        data_tests:
+          - unique
+          - not_null
+
+  # MISSING MODELS - Added after source schema audit
+  - name: thorchain_silver_bond_events
+    description: "Silver table for Thorchain bond events from validators"
+    columns:
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - unique
+          - not_null
+      - name: tx_id
+        description: "Transaction ID"
+      - name: bond_type
+        description: "Type of bond operation"
+      - name: e8
+        description: "Bond amount in e8 format"
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+
+  - name: thorchain_silver_update_node_account_status_events
+    description: "Silver table for Thorchain node status change events"
+    columns:
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - unique
+          - not_null
+      - name: node_address
+        description: "Node address"
+      - name: current_status
+        description: "Current node status"
+      - name: former_status
+        description: "Previous node status"
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+
+  - name: thorchain_silver_total_value_locked
+    description: "Silver table for Thorchain total value locked calculations"
+    columns:
+      - name: day
+        description: "Date"
+        data_tests:
+          - unique
+          - not_null
+      - name: total_value_pooled
+        description: "Total value pooled"
+      - name: total_value_bonded
+        description: "Total value bonded"  
+      - name: total_value_locked
+        description: "Total value locked (pooled + bonded)"
+
+  - name: thorchain_silver_block_rewards
+    description: "Silver table for daily Thorchain block rewards"
+    columns:
+      - name: day
+        description: "Date"
+        data_tests:
+          - unique
+          - not_null
+      - name: liquidity_fee
+        description: "Liquidity fees earned"
+      - name: block_rewards
+        description: "Block rewards earned"
+      - name: earnings
+        description: "Total earnings"
+      - name: avg_node_count
+        description: "Average node count"
+
+  - name: thorchain_silver_total_block_rewards
+    description: "Silver table for total Thorchain block rewards by entity"
+    columns:
+      - name: _unique_key
+        description: "Unique identifier (block_id + reward_entity)"
+        data_tests:
+          - unique
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: reward_entity
+        description: "Reward entity (pool name or 'bond_holders')"
+      - name: rune_amount
+        description: "RUNE reward amount"
+      - name: rune_amount_usd
+        description: "RUNE reward amount in USD"
+
+  - name: thorchain_silver_daily_tvl
+    description: "Silver table for daily Thorchain TVL with USD pricing"
+    columns:
+      - name: day
+        description: "Date"
+        data_tests:
+          - unique
+          - not_null
+      - name: total_value_pooled_usd
+        description: "Total pooled value in USD"
+      - name: total_value_locked_usd
+        description: "Total locked value in USD"
+
+  - name: thorchain_defi_fact_total_block_rewards
+    description: "DeFi fact table for total Thorchain block rewards"
+    columns:
+      - name: fact_total_block_rewards_id
+        description: "Surrogate key for total block rewards"
+        data_tests:
+          - unique
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: reward_entity
+        description: "Reward entity identifier"
+
+  - name: thorchain_defi_fact_daily_tvl
+    description: "DeFi fact table for daily Thorchain TVL"
+    columns:
+      - name: fact_daily_tvl_id
+        description: "Surrogate key for daily TVL"
+        data_tests:
+          - unique
+          - not_null
+      - name: day
+        description: "Date"
+        data_tests:
+          - not_null
+
+  - name: thorchain_silver_pool_block_statistics
+    description: "Silver table for complex daily Thorchain pool statistics"
+    columns:
+      - name: _unique_key
+        description: "Unique identifier (day + asset)"
+        data_tests:
+          - unique
+          - not_null
+
+  - name: thorchain_defi_fact_pool_block_statistics
+    description: "DeFi fact table for Thorchain pool statistics"
+    columns:
+      - name: fact_pool_block_statistics_id
+        description: "Surrogate key for pool statistics"
+        data_tests:
+          - unique
+          - not_null
+
+  - name: thorchain_defi_fact_rewards_events
+    description: "DeFi fact table for Thorchain rewards events"
+    columns:
+      - name: fact_rewards_events_id
+        description: "Surrogate key for rewards events"
+        data_tests:
+          - unique
+          - not_null
+      - name: block_timestamp
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: dim_block_id
+        description: "Block dimension ID"
+      - name: bond_e8
+        description: "Bond amount in e8 format"
+      - name: _inserted_timestamp
+        description: "Record insertion timestamp"
+      - name: _audit_run_id
+        description: "Audit run identifier"
+      - name: inserted_timestamp
+        description: "Record creation timestamp"
+      - name: modified_timestamp
+        description: "Record modification timestamp"
+
+  - name: thorchain_silver_daily_earnings
+    description: "Silver table for daily Thorchain earnings with USD pricing"
+    columns:
+      - name: day
+        description: "Date"
+        data_tests:
+          - unique
+          - not_null
+      - name: liquidity_fees
+        description: "Liquidity fees earned"
+      - name: liquidity_fees_usd
+        description: "Liquidity fees in USD"
+      - name: block_rewards
+        description: "Block rewards earned"
+      - name: block_rewards_usd
+        description: "Block rewards in USD"
+      - name: total_earnings
+        description: "Total earnings"
+      - name: total_earnings_usd
+        description: "Total earnings in USD"
+      - name: earnings_to_nodes
+        description: "Earnings to nodes"
+      - name: earnings_to_nodes_usd
+        description: "Earnings to nodes in USD"
+      - name: earnings_to_pools
+        description: "Earnings to pools"
+      - name: earnings_to_pools_usd
+        description: "Earnings to pools in USD"
+      - name: avg_node_count
+        description: "Average node count"
+
+  - name: thorchain_defi_fact_daily_earnings
+    description: "DeFi fact table for daily Thorchain earnings"
+    columns:
+      - name: fact_daily_earnings_id
+        description: "Surrogate key for daily earnings"
+        data_tests:
+          - unique
+          - not_null
+      - name: day
+        description: "Date"
+        data_tests:
+          - not_null
+      - name: liquidity_fees
+        description: "Liquidity fees earned"
+      - name: liquidity_fees_usd
+        description: "Liquidity fees in USD"
+      - name: block_rewards
+        description: "Block rewards earned"
+      - name: block_rewards_usd
+        description: "Block rewards in USD"
+      - name: total_earnings
+        description: "Total earnings"
+      - name: total_earnings_usd
+        description: "Total earnings in USD"
+      - name: earnings_to_nodes
+        description: "Earnings to nodes"
+      - name: earnings_to_nodes_usd
+        description: "Earnings to nodes in USD"
+      - name: earnings_to_pools
+        description: "Earnings to pools"
+      - name: earnings_to_pools_usd
+        description: "Earnings to pools in USD"
+      - name: avg_node_count
+        description: "Average node count"
+      - name: _audit_run_id
+        description: "Audit run identifier"
+      - name: inserted_timestamp
+        description: "Record creation timestamp"
+      - name: modified_timestamp
+        description: "Record modification timestamp"
