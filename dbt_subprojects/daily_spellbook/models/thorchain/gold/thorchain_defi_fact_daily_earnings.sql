@@ -1,8 +1,10 @@
 {{ config(
+  schema = 'thorchain_defi',
+  alias = 'fact_daily_earnings',
   materialized = 'incremental',
+  file_format = 'delta',
   meta = { 'database_tags': { 'table': { 'PURPOSE': 'DEX, AMM' } } },
-  unique_key = 'fact_daily_earnings_id',
-  incremental_predicates = ['DBT_INTERNAL_DEST.day >= (select min(day) from ' ~ generate_tmp_view_name(this) ~ ')'],
+  unique_key = ['fact_daily_earnings_id'],
   incremental_strategy = 'merge',
   tags = ['thorchain', 'defi', 'daily', 'earnings', 'fact']
 ) }}
