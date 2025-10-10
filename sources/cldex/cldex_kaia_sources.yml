@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: cldex_kaia
+    description: "Raw event tables for CLDEX on Kaia" # Placeholder description
+    tables:
+      - name: cldexpair_evt_swap
+        description: "Swap events from CLDEX on Kaia" # Placeholder description
+        
+      - name: cldexfactory_evt_paircreated
+        description: "Pair creation events from CLDEX on Kaia" # Placeholder description

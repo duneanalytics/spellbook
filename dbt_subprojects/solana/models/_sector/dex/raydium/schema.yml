@@ -32,6 +32,9 @@ models:
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"
+      - &version_name
+        name: version_name
+        description: "Descriptive name of the DEX version"
       - &block_month
         name: block_month
         description: "UTC event block month of each DEX trade"
@@ -112,6 +115,33 @@ models:
         name: tx_index
         description: "index of the transaction in the block slot"
 
+  - name: raydium_version_clmm_base_trades
+    meta:
+      blockchain: solana
+      contributors: [krishgka]
+    config:
+      tags: ['solana','dex']
+    description: >
+        raydium clmm dex base trades on Solana with version_name
+
+  - name: raydium_version_amm_base_trades
+    meta:
+      blockchain: solana
+      contributors: [krishgka]
+    config:
+      tags: ['solana','dex']
+    description: >
+        raydium amm dex base trades on Solana with version_name
+
+  - name: raydium_version_cpmm_base_trades
+    meta:
+      blockchain: solana
+      contributors: [krishgka]
+    config:
+      tags: ['solana','dex']
+    description: >
+        raydium cpmm dex base trades on Solana with version_name
+
   - name: raydium_v4_base_trades
     meta:
       blockchain: solana
@@ -137,6 +167,7 @@ models:
       - *blockchain
       - *project
       - *version
+      - *version_name
       - *block_month
       - *block_time
       - *block_slot
@@ -162,6 +193,7 @@ models:
       - *outer_instruction_index
       - *inner_instruction_index
       - *tx_index
+
 
   - name: raydium_v5_base_trades
     meta:
@@ -188,6 +220,7 @@ models:
       - *blockchain
       - *project
       - *version
+      - *version_name
       - *block_month
       - *block_time
       - *block_slot
@@ -213,3 +246,4 @@ models:
       - *outer_instruction_index
       - *inner_instruction_index
       - *tx_index
+
