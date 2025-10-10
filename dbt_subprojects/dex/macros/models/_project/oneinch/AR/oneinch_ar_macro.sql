@@ -1,13 +1,13 @@
-{% macro oneinch_ar_macro(blockchain) %}
+{%- macro oneinch_ar_macro(blockchain) -%}
 
-{% set stream = 'ar' %}
-{% set substream = '_initial' %}
-{% set meta = oneinch_meta_cfg_macro() %}
-{% set contracts = meta['streams'][stream]['contracts'] %}
-{% set date_from = [meta['blockchains']['start'][blockchain], meta['streams'][stream]['start'][substream]] | max %}
-{% set wrapper = meta['blockchains']['wrapped_native_token_address'][blockchain] %}
-{% set chain_id = meta['blockchains']['chain_id'][blockchain] %}
-{% set native = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
+{%- set stream = 'ar' -%}
+{%- set substream = '_initial' -%}
+{%- set meta = oneinch_meta_cfg_macro() -%}
+{%- set contracts = meta['streams'][stream]['contracts'] -%}
+{%- set date_from = [meta['blockchains']['start'][blockchain], meta['streams'][stream]['start'][substream]] | max -%}
+{%- set wrapper = meta['blockchains']['wrapped_native_token_address'][blockchain] -%}
+{%- set chain_id = meta['blockchains']['chain_id'][blockchain] -%}
+{%- set native = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' -%}
 
 
 
@@ -15,10 +15,8 @@ with
 
 raw_calls as (
     select *
-        , block_number as call_block_number
-        , block_date as call_block_date
-        , tx_hash as call_tx_hash
         , substr(call_input, call_input_length - mod(call_input_length - 4, 32) + 1) as call_input_remains
+        , lead(call_trace_address, 1, null) over(partition by block_date, block_number, tx_hash order by call_trace_address) as next_call_trace_address
     from {{ ref('oneinch_' + blockchain + '_ar_raw_calls') }}
     where true
         and block_date >= timestamp '{{ date_from }}' -- it is only needed for simple/easy dates
@@ -30,13 +28,15 @@ raw_calls as (
         -- CONTRACT: {{ contract }} --
         {% for method, method_data in contract_data.methods.items() if blockchain in method_data.get('blockchains', contract_data.blockchains) and not method_data.get('auxiliary', false) %}{# method-level blockchains override contract-level blockchains #}
             select
-                raw_calls.*
+                call_block_date as block_date
+                , call_block_number as block_number
+                , call_tx_hash as tx_hash
                 , call_trace_address
                 , {{ method_data.get("src_token_address", "null") }} as src_token_address
                 , {{ method_data.get("dst_token_address", "null") }} as dst_token_address
                 , {{ method_data.get("src_receiver", "null") }} as src_receiver
                 , {{ method_data.get("dst_receiver", "null") }} as dst_receiver
-                , {{ method_data.get("src_token_amount", "null") }} as src_token_amount
+                , {% if method_data["src_token_amount"] == "call_value" %}null{% else %}{{ method_data.get("src_token_amount", "null") }}{% endif %} as src_token_amount
                 , {{ method_data.get("dst_token_amount", "null") }} as dst_token_amount
                 , {{ method_data.get("dst_token_amount_min", "null") }} as dst_token_amount_min
                 , {{ method_data.get("pools", "null") }} as raw_pools
@@ -49,14 +49,14 @@ raw_calls as (
                 , {{ method_data.get("dst_token_mask", "null") }} as dst_token_mask
                 , {{ method_data.get("dst_token_offset", "null") }} as dst_token_offset
                 , {{ method_data.get("router_type", "null") }} as router_type
+                , {% if method_data["src_token_amount"] == "call_value" %}true{% else %}false{% endif %} as src_token_amount_from_value
             from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}
-            join raw_calls using(call_block_date, call_block_number, call_tx_hash, call_trace_address)
             where true
                 and call_block_date >= timestamp '{{ date_from }}' -- it is only needed for simple/easy dates
                 {% if is_incremental() %}and {{ incremental_predicate('call_block_time') }}{% endif %}
             {% if not loop.last %}union all{% endif %}
         {% endfor %}
-        {% if not loop.last %}union all{% endif %}
+        {%- if not loop.last %}union all{% endif %}
     {% endfor %}
 )
 
@@ -65,13 +65,15 @@ raw_calls as (
         block_number
         , block_date
         , tx_hash
-        , min_by(call_input_remains, call_trace_address) as auxiliary_remains
-        , min_by(call_from, call_trace_address) as auxiliary_call_from
-        , min_by(call_to, call_trace_address) as auxiliary_call_to
-        , min(call_trace_address) as auxiliary_trace_address
+        , next_call_trace_address as call_trace_address
+        , call_input_remains as auxiliary_remains
+        , call_from as auxiliary_call_from
+        , call_to as auxiliary_call_to
     from raw_calls
-    where auxiliary
-    group by 1, 2, 3
+    where true
+        and auxiliary
+        and next_call_trace_address is not null
+        and slice(next_call_trace_address, 1, cardinality(call_trace_address)) = call_trace_address -- the nearest subsidiary trace address
 )
 
 , pools_list as (
@@ -119,9 +121,9 @@ raw_calls as (
                 , ('src_token_index', bitwise_right_shift(bitwise_and(x, src_token_mask), src_token_offset))
                 , ('dst_token_index', bitwise_right_shift(bitwise_and(x, dst_token_mask), dst_token_offset))
             ])) as parsed_pools
-            , if(slice(call_trace_address, 1, cardinality(auxiliary_trace_address)) = auxiliary_trace_address, auxiliary_remains, call_input_remains) as actual_remains -- remains from the parent auxiliary call
-            , if(slice(call_trace_address, 1, cardinality(auxiliary_trace_address)) = auxiliary_trace_address, auxiliary_call_from, call_from) as actual_call_from -- caller from the parent auxiliary call
-            , if(slice(call_trace_address, 1, cardinality(auxiliary_trace_address)) = auxiliary_trace_address, auxiliary_call_to, call_to) as actual_call_to -- executor from the parent auxiliary call
+            , coalesce(auxiliary_remains, call_input_remains) as actual_remains -- remains from the parent auxiliary call
+            , coalesce(auxiliary_call_from, call_from) as actual_call_from -- caller from the parent auxiliary call
+            , coalesce(auxiliary_call_to, call_to) as actual_call_to -- executor from the parent auxiliary call
         from (
             select *
                 , if(router_type = 'unoswap' and cardinality(raw_pools) = 0
@@ -130,8 +132,9 @@ raw_calls as (
                 ) as call_pools
                 , if(router_type = 'unoswap', cardinality(raw_pools) > 0) as ordinary -- true if call pools is not empty, null for generic
             from decoded
+            join raw_calls using(block_date, block_number, tx_hash, call_trace_address)
         )
-        left join auxiliary using(block_date, block_number, tx_hash)
+        left join auxiliary using(block_date, block_number, tx_hash, call_trace_address)
     )
     left join (select pool as first_pool, tokens as first_pool_tokens from pools_list) using(first_pool)
     left join (select pool as last_pool, tokens as last_pool_tokens from pools_list) using(last_pool)
@@ -183,7 +186,7 @@ select
     , dst_receiver
     , coalesce(src_token_address, if(element_at(pools[1], 'unwrap') = 0x01 and pool_src_token_address = {{ wrapper }} and call_value > uint256 '0', {{ native }}, pool_src_token_address)) as src_token_address
     , coalesce(dst_token_address, if(element_at(reverse(pools)[1], 'unwrap') = 0x01 and pool_dst_token_address = {{ wrapper }}, {{ native }}, pool_dst_token_address)) as dst_token_address
-    , src_token_amount
+    , if(src_token_amount_from_value, call_value, src_token_amount) as src_token_amount
     , dst_token_amount
     , dst_token_amount_min
     , router_type
@@ -207,4 +210,4 @@ from ({{
 }}) as t
 left join native_prices using(minute)
 
-{% endmacro %}
+{%- endmacro -%}

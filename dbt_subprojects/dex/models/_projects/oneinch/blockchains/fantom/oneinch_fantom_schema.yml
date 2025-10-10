@@ -185,3 +185,4 @@ models:
       - name: block_date
       - name: block_month
       - name: transfer_id
+      - name: unique_key

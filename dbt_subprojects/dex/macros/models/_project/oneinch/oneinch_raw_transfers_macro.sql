@@ -42,12 +42,12 @@ calls as (
 
 {% if blockchain in meta['blockchains']['aave'] %}, atokens as (
     select
-        contract_address as atoken_address
-        , max_by(underlyingAsset, evt_block_time) as contract_address
+        contract_address -- atoken_address
+        , max_by(underlyingAsset, evt_block_time) as underlying_address
         , max_by(aTokenSymbol, evt_block_time) as atoken_symbol
     from {{ source('aave_v3_' + blockchain, 'AToken_evt_Initialized') }}
     where underlyingAsset is not null
-    group by 1 -- take latest event only
+    group by 1 -- take the latest event only
 ){% endif %}
 
 , merging as (
@@ -64,7 +64,7 @@ calls as (
         , call_selector
         , transfer_trace_address
         , contract_address as transfer_contract_address -- original
-        , if(token_standard = 'native', {{ meta['blockchains']['wrapped_native_token_address'][blockchain] }}, {% if blockchain in meta['blockchains']['aave'] %}coalesce(atoken_address, contract_address){% else %}contract_address{% endif %}) as contract_address
+        , if(token_standard = 'native', {{ meta['blockchains']['wrapped_native_token_address'][blockchain] }}, {% if blockchain in meta['blockchains']['aave'] %}coalesce(underlying_address, contract_address){% else %}contract_address{% endif %}) as contract_address
         , if(token_standard = 'native', {{ meta['blockchains']['native_token_symbol'][blockchain] }}{% if blockchain in meta['blockchains']['aave'] %}, atoken_symbol{% endif %}) as _symbol
         , amount
         , transfer_from
@@ -137,7 +137,19 @@ select
     , price
     , block_date
     , date(date_trunc('month', block_time)) as block_month
-    , keccak(to_utf8(concat_ws('|', blockchain, cast(tx_hash as varchar), array_join(call_trace_address, ''), array_join(transfer_trace_address, ''), cast(contract_address as varchar)))) as transfer_id
+    , sha1(to_utf8(concat_ws('|'
+        , blockchain
+        , cast(tx_hash as varchar)
+        , array_join(transfer_trace_address, ',')
+        , cast(contract_address as varchar)
+    ))) as transfer_id
+    , sha1(to_utf8(concat_ws('|'
+        , blockchain
+        , cast(tx_hash as varchar)
+        , array_join(call_trace_address, ',')
+        , array_join(transfer_trace_address, ',')
+        , cast(contract_address as varchar)
+    ))) as unique_key
 from merging
 left join prices using(contract_address, minute)
 left join tokens using(contract_address)
