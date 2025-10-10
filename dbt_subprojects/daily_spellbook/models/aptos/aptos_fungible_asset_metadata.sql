@@ -1,11 +1,3 @@
--- `fungible_asset_metadata` from indexer is a current table, this table has historical
--- for FA, the 3 resources are grouped under the same state key (fungible_asset::Metadata, fungible_asset::ConcurrentSupply, object::ObjectCore)
--- so will be emitted together (parse without new lookup)
--- edge cases
--- indexer table removes assets when LENGTH(asset_type) > 1_000 Ex 521538257
--- asset_name can be unicode: Ex 321165430
--- creator_address is the asset address for v1 and owner for v2 (can change for v2)
--- creator_address is not needed for coins/fa, it's a holdover from tokens (where it is used as key with name)
 {{ config(
     schema = 'aptos_fungible_asset',
     alias = 'metadata',
@@ -15,7 +7,20 @@
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['block_month', 'tx_hash', 'asset_type'],
     partition_by = ['block_month'],
+    post_hook='{{ expose_spells(blockchains = \'["aptos"]\',
+        spell_type = "project",
+        spell_name = "fungible_asset",
+        contributors = \'["ying-w"]\') }}'
 ) }}
+
+-- `fungible_asset_metadata` from indexer is a current table, this table has historical
+-- for FA, the 3 resources are grouped under the same state key hash (fungible_asset::Metadata, fungible_asset::ConcurrentSupply, object::ObjectCore)
+-- so will be emitted together (parse without new lookup)
+-- edge cases:
+-- indexer table removes assets when LENGTH(asset_type) > 1_000 Ex 521538257
+-- asset_name can be unicode: Ex 321165430
+-- creator_address is the asset address for v1 and owner for v2 (can change for v2)
+-- creator_address is not needed for coins/fa, it's a holdover from tokens (where it is used as key with name)
 
 WITH mr_fa_metadata AS (
     SELECT
@@ -36,7 +41,7 @@ WITH mr_fa_metadata AS (
         AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
         AND move_resource_module = 'fungible_asset'
         AND move_resource_name = 'Metadata'
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
         AND {{ incremental_predicate('block_time') }}
     {% else %}
         AND block_date >= DATE('2023-07-27') -- beginning of FA (v2)
@@ -62,7 +67,7 @@ WITH mr_fa_metadata AS (
         AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
         AND move_resource_module = 'fungible_asset'
         AND move_resource_name IN ('Supply', 'ConcurrentSupply')
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
         AND {{ incremental_predicate('block_time') }}
     {% else %}
         AND block_date >= DATE('2023-07-27') -- beginning of FA (v2)
@@ -77,7 +82,7 @@ WITH mr_fa_metadata AS (
         AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
         AND move_resource_module = 'object'
         AND move_resource_name = 'ObjectCore'
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
         AND {{ incremental_predicate('block_time') }}
     {% else %}
         AND block_date >= DATE('2023-07-27') -- beginning of FA (v2)
@@ -104,7 +109,7 @@ WITH mr_fa_metadata AS (
         AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
         AND move_resource_module = 'coin'
         AND move_resource_name = 'CoinInfo'
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
         AND {{ incremental_predicate('block_time') }}
     {% endif %}
 )

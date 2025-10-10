@@ -14,9 +14,11 @@
 ) }}
 
 -- Compared to GraphQL endpoint, this table has the following differences:
--- 1. All balance changes (rather than just current balance)
--- 2. When FA is deleted, sometimes they are missing from GraphQL (prior to delete event) ex 2424873868 idx 8
--- 3. In case of ConcurrentFungibleBalance and FungibleStore, write_set_change_index is former for this table
+-- 1. Historical balances (rather than only current balance)
+-- 2. When FungibleStore and ObjectCore are desync, representation can be different GraphQL (prior to delete event)
+--   a. FungibleStore when ObjectCore is deleted ex 2424873868 idx 8 has no ObjectCore -> disallowed later
+--   b. ObjectCore when FungibleStore is deleted ex 2975888978 idx 6 has no FungibleStore -> infer from event
+-- 3. If an asset has both ConcurrentFungibleBalance and FungibleStore, write_set_change_index is former for this table
 
 WITH coin_balances AS (
     SELECT
@@ -36,7 +38,7 @@ WITH coin_balances AS (
         AND move_resource_module = 'coin'
         AND move_resource_name = 'CoinStore'
         AND block_date < DATE('2025-08-05')  -- almost all migrated
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
         AND {{ incremental_predicate('block_time') }}
     {% endif %}
 ), fa_balance AS (
@@ -69,7 +71,7 @@ WITH coin_balances AS (
             AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
             AND move_resource_module = 'fungible_asset'
             AND move_resource_name = 'ConcurrentFungibleBalance'
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
             AND {{ incremental_predicate('block_time') }}
         {% endif %}
     ) c USING (tx_version, move_address)
@@ -84,7 +86,7 @@ WITH coin_balances AS (
             AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
             AND move_resource_module = 'object'
             AND move_resource_name = 'ObjectCore'
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
             AND {{ incremental_predicate('block_time') }}
         {% endif %}
     ) AS fs_owner USING(tx_version, move_address)
@@ -92,7 +94,29 @@ WITH coin_balances AS (
         AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
         AND move_resource_module = 'fungible_asset'
         AND move_resource_name = 'FungibleStore'
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
+        AND {{ incremental_predicate('block_time') }}
+    {% endif %}
+), fs_deletion AS (
+    -- secondary (non-primary) FA Stores can be deleted without deleting object
+    -- Store needs to have 0 balance to be deleted
+    -- Ex 2975888978 store 0x1198c59f6c6f84f0a52f1a8524fbaac60946c7e2ac74a87bf7632fa50e23f34d
+        SELECT
+            tx_version,
+            tx_hash,
+            block_date,
+            block_time,
+            --
+            '0x' || LPAD(LTRIM(json_extract_scalar(data, '$.metadata'), '0x'), 64, '0') AS asset_type,
+            '0x' || LPAD(LTRIM(json_extract_scalar(data, '$.store'), '0x'), 64, '0') AS storage_id,
+            '0x' || LPAD(LTRIM(json_extract_scalar(data, '$.owner'), '0x'), 64, '0') AS owner_address,
+            TRUE AS move_is_deletion,
+            CAST(0 AS UINT256) AS amount
+        FROM {{ source('aptos', 'events') }}
+        WHERE 1=1
+        AND event_type = '0x1::fungible_asset::FungibleStoreDeletion'
+        AND block_date >= DATE('2025-04-28') -- date enabled
+    {% if is_incremental() or true %}
         AND {{ incremental_predicate('block_time') }}
     {% endif %}
 )
@@ -134,3 +158,21 @@ SELECT
     is_frozen,
     'v2' AS token_standard
 FROM fa_balance
+
+UNION ALL
+
+SELECT
+    tx_version,
+    tx_hash,
+    block_date,
+    block_time,
+    date(date_trunc('month', block_time)) as block_month,
+    --
+    -1 AS write_set_change_index, -- virtual
+    asset_type,
+    from_hex(owner_address) AS owner_address,
+    from_hex(storage_id) AS storage_id,
+    amount,
+    NULL AS is_frozen,
+    'v2' AS token_standard
+FROM fs_deletion

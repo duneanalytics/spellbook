@@ -199,3 +199,163 @@ models:
         description: "Project URI (parsed from metadata) v2 only"
       - name: maximum
         description: "Maximum supply, typically 2^128-1 (parsed from metadata) v2 only"
+
+  - name: aptos_usdt_volume
+    meta:
+      blockchain: aptos
+      project: aptos_stablecoins
+      contributors: ying-w
+    config:
+      tags: ['aptos','stablecoins']
+    description: usdt mint, burn, withdraw, deposit volume
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: ['tx_hash', 'event_index']
+    columns:
+      - name: tx_version
+        description: The version of the transaction
+      - name: tx_hash
+        description: The hash of the transaction
+      - name: block_date
+        description: The date of the block containing the transaction
+      - name: block_time
+        description: The timestamp of the block containing the transaction
+      - name: block_month
+        description: The month of the block containing the transaction
+      - name: event_index
+        description: The index of the event within the transaction
+      - name: activity_type
+        description: Mint, Burn, Withdraw, Deposit
+      - name: amount
+        description: raw asset amount (before taking into account decimals)
+      - name: fungible_store
+        description: address of fungible store (aka storage_id)
+      - name: store_owner
+        description: address of direct owner of fungible store
+
+  - name: aptos_usdc_volume
+    meta:
+      blockchain: aptos
+      project: aptos_stablecoins
+      contributors: ying-w
+    config:
+      tags: ['aptos','stablecoins']
+    description: usdc mint, burn, withdraw, deposit volume
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: ['tx_hash', 'event_index']
+    columns:
+      - name: tx_version
+        description: The version of the transaction
+      - name: tx_hash
+        description: The hash of the transaction
+      - name: block_date
+        description: The date of the block containing the transaction
+      - name: block_time
+        description: The timestamp of the block containing the transaction
+      - name: block_month
+        description: The month of the block containing the transaction
+      - name: event_index
+        description: The index of the event within the transaction
+      - name: activity_type
+        description: Mint, Burn, Withdraw, Deposit
+      - name: amount
+        description: raw asset amount (before taking into account decimals)
+      - name: fungible_store
+        description: address of fungible store (aka storage_id)
+      - name: store_owner
+        description: address of direct owner of fungible store
+
+  - name: aptos_usdt_transfers
+    meta:
+      blockchain: aptos
+      project: aptos_stablecoins
+      contributors: ying-w
+    config:
+      tags: ['aptos','stablecoins']
+    description: 1-to-1 mapping of transfers using FIFO logic when ambiguous
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: ['tx_hash', 'to_index', 'from_index']
+    columns:
+      - name: tx_version
+        description: The version of the transaction
+      - name: tx_hash
+        description: The hash of the transaction
+      - name: block_date
+        description: The date of the block containing the transaction
+      - name: block_time
+        description: The timestamp of the block containing the transaction
+      - name: block_month
+        description: The month of the block containing the transaction
+      - name: session_id
+        description: Virtual index for transfer within transaction
+      - name: from_account
+        description: Owner of fungible store that origninates funds
+      - name: from_store
+        description: Address of fungible store that origninates funds
+      - name: to_account
+        description: Owner of fungible store that receives funds
+      - name: to_store
+        description: Address of fungible store that receives funds
+      - name: amount
+        description: raw asset amount (before taking into account decimals)
+      - name: from_index
+        description: Event index that funds originate from (Mint or Withdraw)
+      - name: to_index
+        description: Event index that funds are received (Burn or Deposit)
+      - name: from_many
+        description: Transfer does not take entire amount of originating event
+      - name: to_many
+        description: Transfer does not take entire amount of receiving event
+      - name: has_mint
+        description: Whether the transfer is a mint
+      - name: has_burn
+        description: Whether the transfer is a burn
+
+  - name: aptos_usdc_transfers
+    meta:
+      blockchain: aptos
+      project: aptos_stablecoins
+      contributors: ying-w
+    config:
+      tags: ['aptos','stablecoins']
+    description: 1-to-1 mapping of transfers using FIFO logic when ambiguous
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: ['tx_hash', 'to_index', 'from_index']
+    columns:
+      - name: tx_version
+        description: The version of the transaction
+      - name: tx_hash
+        description: The hash of the transaction
+      - name: block_date
+        description: The date of the block containing the transaction
+      - name: block_time
+        description: The timestamp of the block containing the transaction
+      - name: block_month
+        description: The month of the block containing the transaction
+      - name: session_id
+        description: Virtual index for transfer within transaction
+      - name: from_account
+        description: Owner of fungible store that originates funds
+      - name: from_store
+        description: Address of fungible store that originates funds
+      - name: to_account
+        description: Owner of fungible store that receives funds
+      - name: to_store
+        description: Address of fungible store that receives funds
+      - name: amount
+        description: raw asset amount (before taking into account decimals)
+      - name: from_index
+        description: Event index that funds originate from (Mint or Withdraw)
+      - name: to_index
+        description: Event index that funds are received (Burn or Deposit)
+      - name: from_many
+        description: Transfer does not take entire amount of originating event
+      - name: to_many
+        description: Transfer does not take entire amount of receiving event
+      - name: has_mint
+        description: Whether the transfer is a mint
+      - name: has_burn
+        description: Whether the transfer is a burn
