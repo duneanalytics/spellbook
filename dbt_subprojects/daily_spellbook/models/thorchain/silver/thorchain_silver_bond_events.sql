@@ -33,14 +33,14 @@ with base as (
         date_trunc('hour', from_unixtime(cast(block_timestamp / 1e9 as bigint))) as block_hour,
         
         -- Hevo ingestion timestamp conversion (milliseconds to timestamp)
-        from_unixtime(cast(__HEVO__LOADED_AT / 1000 as bigint)) AS _inserted_timestamp,
-        __HEVO__LOADED_AT,
+        from_unixtime(cast(__hevo__loaded_at / 1000 as bigint)) AS _inserted_timestamp,
+        __hevo__loaded_at,
         
         -- Row deduplication logic (convert QUALIFY to ROW_NUMBER for Trino)
         ROW_NUMBER() OVER(
             PARTITION BY tx, from_addr, asset_e8, bond_type, e8, block_timestamp, 
                          COALESCE(to_addr, ''), COALESCE(chain, ''), COALESCE(asset, ''), COALESCE(memo, '')
-            ORDER BY __HEVO__LOADED_AT DESC
+            ORDER BY __hevo__loaded_at DESC
         ) as rn
 
     FROM {{ source('thorchain', 'bond_events') }}

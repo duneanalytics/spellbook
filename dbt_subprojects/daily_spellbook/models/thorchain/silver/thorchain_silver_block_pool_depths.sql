@@ -31,13 +31,13 @@ with base as (
         synth_e8 / 1e8 as synth_amount,
         
         -- Hevo ingestion timestamp conversion (milliseconds to timestamp)
-        from_unixtime(cast(__HEVO__LOADED_AT / 1000 as bigint)) AS _inserted_timestamp,
-        __HEVO__LOADED_AT,
+        from_unixtime(cast(__hevo__loaded_at / 1000 as bigint)) AS _inserted_timestamp,
+        __hevo__loaded_at,
         
         -- Row deduplication logic (convert QUALIFY to ROW_NUMBER for Trino)
         ROW_NUMBER() OVER(
             PARTITION BY pool, block_timestamp 
-            ORDER BY __HEVO__LOADED_AT DESC
+            ORDER BY __hevo__loaded_at DESC
         ) as rn
 
     FROM {{ source('thorchain', 'block_pool_depths') }}

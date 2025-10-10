@@ -189,7 +189,7 @@ sources:
             description: "Synthetic asset amount in e8 format"
           - name: block_timestamp
             description: "Block timestamp"
-          - name: __HEVO__LOADED_AT
+          - name: __hevo__loaded_at
             description: "Hevo ingestion timestamp"
 
       - name: rewards_event_entries
@@ -205,7 +205,7 @@ sources:
             description: "Unique event identifier"
           - name: block_timestamp
             description: "Block timestamp"
-          - name: __HEVO__LOADED_AT
+          - name: __hevo__loaded_at
             description: "Hevo ingestion timestamp"
 
       - name: pool_events
@@ -219,7 +219,7 @@ sources:
             description: "Unique event identifier"
           - name: block_timestamp
             description: "Block timestamp"
-          - name: __HEVO__LOADED_AT
+          - name: __hevo__loaded_at
             description: "Hevo ingestion timestamp"
 
       - name: stake_events
@@ -249,9 +249,9 @@ sources:
             description: "Unique event identifier"
           - name: block_timestamp
             description: "Block timestamp"
-          - name: __HEVO__LOADED_AT
+          - name: __hevo__loaded_at
             description: "Hevo ingestion timestamp"
-          - name: __HEVO__INGESTED_AT
+          - name: __hevo__ingested_at
             description: "Hevo ingestion timestamp (alternative)"
 
       - name: bond_events
@@ -281,7 +281,7 @@ sources:
             description: "Block timestamp"
           - name: _tx_type
             description: "Transaction type"
-          - name: __HEVO__LOADED_AT
+          - name: __hevo__loaded_at
             description: "Hevo ingestion timestamp"
 
       - name: update_node_account_status_events
@@ -297,5 +297,5 @@ sources:
             description: "Block timestamp"
           - name: event_id
             description: "Unique event identifier"
-          - name: __HEVO__LOADED_AT
+          - name: __hevo__loaded_at
             description: "Hevo ingestion timestamp"
