@@ -30,3 +30,4 @@ SELECT
     inner_instruction_index,
     tx_index
 FROM {{ ref('raydium_v5_base_trades') }}
+where 1=1
