@@ -31,6 +31,7 @@ sources:
   - name: carbon_defi_sei
     tables:
       - name: CarbonController_evt_TokensTraded
+      - name: CarbonVortex_evt_TokenTraded
   - name: yaka_sei
     tables:
       - name: Pair_evt_Swap

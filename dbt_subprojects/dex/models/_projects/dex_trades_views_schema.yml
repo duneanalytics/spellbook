@@ -12,6 +12,7 @@ models:
   - name: camelot_trades
   - name: carbon_defi_trades
   - name: clipper_trades
+  - name: blade_trades
   - name: curve_trades
   - name: defiswap_trades
   - name: dfx_trades

@@ -13,6 +13,7 @@ sources:
   - name: carbon_defi_ethereum
     tables:
       - name: CarbonController_evt_TokensTraded
+      - name: CarbonVortex_evt_TokenTraded
   - name: airswap_ethereum
     tables:
       - name: Light_evt_Swap
