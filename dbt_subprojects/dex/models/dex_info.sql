@@ -217,6 +217,7 @@ FROM (VALUES
     , ('inkswap', 'InkSwap', 'Direct', 'inswap_')
     , ('sailor_finance', 'SailorFinance', 'Direct', 'SailorFi')
     , ('gooddollar_reserve', 'GoodDollar Reserve', 'Direct', 'gooddollar_reserve')
+    , ('saru', 'Saru', 'Direct', 'saru_ex')
     , ('abstractswap', 'Abstract Swap', 'Direct', 'AbstractChain')
     , ('tamadotmeme', 'tamadotmeme', 'Direct', 'tamadotmeme') 
     , ('tapio', 'Tapio', 'Direct', 'Tapio')
