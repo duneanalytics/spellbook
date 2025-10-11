@@ -15,12 +15,26 @@ with
 
 raw_calls as (
     select *
-        , substr(call_input, call_input_length - mod(call_input_length - 4, 32) + 1) as call_input_remains
-        , lead(call_trace_address, 1, null) over(partition by block_date, block_number, tx_hash order by call_trace_address) as next_call_trace_address
     from {{ ref('oneinch_' + blockchain + '_ar_raw_calls') }}
     where true
         and block_date >= timestamp '{{ date_from }}' -- it is only needed for simple/easy dates
         {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
+)
+
+, auxiliary as (
+    select
+        block_number
+        , block_date
+        , tx_hash
+        , next_call_trace_address as call_trace_address
+        , call_input_remains as auxiliary_remains
+        , call_from as auxiliary_call_from
+        , call_to as auxiliary_call_to
+    from raw_calls
+    where true
+        and auxiliary
+        and next_call_trace_address is not null
+        and slice(next_call_trace_address, 1, cardinality(call_trace_address)) = call_trace_address -- the nearest subsidiary trace address
 )
 
 , decoded as (
@@ -56,24 +70,8 @@ raw_calls as (
                 {% if is_incremental() %}and {{ incremental_predicate('call_block_time') }}{% endif %}
             {% if not loop.last %}union all{% endif %}
         {% endfor %}
-        {%- if not loop.last %}union all{% endif %}
+        {% if not loop.last %}union all{% endif %}
     {% endfor %}
-)
-
-, auxiliary as (
-    select
-        block_number
-        , block_date
-        , tx_hash
-        , next_call_trace_address as call_trace_address
-        , call_input_remains as auxiliary_remains
-        , call_from as auxiliary_call_from
-        , call_to as auxiliary_call_to
-    from raw_calls
-    where true
-        and auxiliary
-        and next_call_trace_address is not null
-        and slice(next_call_trace_address, 1, cardinality(call_trace_address)) = call_trace_address -- the nearest subsidiary trace address
 )
 
 , pools_list as (
