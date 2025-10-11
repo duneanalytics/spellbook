@@ -4,6 +4,7 @@
         ,alias = 'erc20'
         ,tags = ['static']
         ,materialized = 'table'
+        ,post_hook='{{ hide_spells() }}'
     )
 }}
 

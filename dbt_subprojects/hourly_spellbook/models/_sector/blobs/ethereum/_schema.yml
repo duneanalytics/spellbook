@@ -48,6 +48,9 @@ models:
       - &blob_submitter_label
         name: blob_submitter_label
         description: "the entity that submitted the blob"
+      - &blob_proposer_label
+        name: blob_proposer_label
+        description: "the proposer that submitted the blob"
       - &blob_base_fee
         name: blob_base_fee
         description: "the base fee (wei) per blob gas"
@@ -119,6 +122,8 @@ models:
         description: "Blob submitting address"
       - name: entity
         description: "Entity name the address has been tagged as"
+      - name: proposer
+        description: "Proposer name the address has been tagged as"
       - name: x_username
         description: "X Username of the tagged entity"
 

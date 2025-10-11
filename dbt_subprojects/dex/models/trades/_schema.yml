@@ -124,7 +124,7 @@ models:
 
   - name: dex_base_trades
     meta:
-      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, kaia,optimism, polygon, scroll, zksync, linea, blast, sei, ronin, sonic, flare, boba, corn, berachain
+      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, kaia,optimism, polygon, scroll, zksync, linea, blast, sei, ronin, sonic, flare, boba, corn, berachain, tac
       sector: dex
       contributors: 0xRob, hosuke, jeff-dude, tomfutago, viniabussafi
     config:

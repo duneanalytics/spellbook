@@ -151,6 +151,8 @@ sources:
     tables:
       - name: UniswapV2Factory_evt_PairCreated
       - name: UniswapV2Pair_evt_Swap
+      - name: UniswapV3Factory_evt_PoolCreated
+      - name: UniswapV3Pool_evt_Swap
   - name: swapbased_base
     tables:
       - name: UniswapV2Factory_evt_PairCreated
@@ -195,6 +197,9 @@ sources:
   - name: clipper_base
     tables:
       - name: ClipperPackedVerifiedExchange_evt_Swapped
+  - name: blade_base
+    tables:
+      - name: BladeVerifiedExchange_evt_Swapped
   - name: swaap_v2_base
     tables:
       - name: Vault_evt_Swap
@@ -228,3 +233,6 @@ sources:
   - name: native_base
     tables:
       - name: NativeRFQPool_evt_RFQTrade
+  - name: carbon_defi_base
+    tables:
+      - name: CarbonController_evt_TokensTraded

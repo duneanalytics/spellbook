@@ -2,8 +2,7 @@
     config(
         schema = 'oneinch',
         alias = 'ar_trades',
-        materialized = 'view',
-        unique_key = ['blockchain', 'tx_hash', 'trace_address']
+        materialized = 'view'
     )
 }}
 
@@ -36,7 +35,7 @@ select
     , tx_from
     , tx_to
     , call_trace_address as trace_address
-    , -1 as evt_index
+    , if(flags['second_side'], -2, -1) as evt_index
 from {{ ref('oneinch_evm_swaps') }}
 where
     protocol = 'AR'
