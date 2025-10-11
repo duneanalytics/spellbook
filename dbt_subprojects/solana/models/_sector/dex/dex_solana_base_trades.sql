@@ -52,12 +52,12 @@ SELECT
       , tx_index
 FROM
       {{ dex }}
+WHERE 1=1
 {% if is_incremental() -%}
-WHERE
-      {{incremental_predicate('block_time')}}
+AND
+      {{incremental_predicate('block_time')}} 
 {% endif -%}
 {% if not loop.last -%}
 UNION ALL
 {% endif -%}
 {% endfor %}
-WHERE 1=1
