@@ -7,27 +7,21 @@
     )
 }}
 
-{% set
-    blockchains = [
-        'ethereum',
-        'bnb',
-        'polygon',
-        'arbitrum',
-        'optimism',
-        'avalanche_c',
-        'gnosis',
-        'fantom',
-        'base',
-        'zksync',
-        'aurora',
-        'klaytn',
-        'linea',
-        'sonic',
-        'unichain',
-    ]
-%}
+{% set meta = oneinch_meta_cfg_macro()['blockchains'] %}
 
-{% for blockchain in blockchains %}
-    {{ oneinch_blockchain_macro(blockchain) }}
-    {% if not loop.last %} union all {% endif %}
-{% endfor %}
+select *
+from (
+    {% for blockchain in meta['start'] %}
+        select
+            '{{ blockchain }}' as blockchain
+            , {{ meta['chain_id'].get(blockchain, 'null') }} as chain_id
+            , date('{{ meta['start'][blockchain] }}') as first_deployed_at
+            , {{ meta['native_token_symbol'].get(blockchain, 'null') }} as native_token_symbol
+            , {{ meta['wrapped_native_token_address'].get(blockchain, 'cast(null as varbinary)') }} as wrapped_native_token_address
+            , {{ meta['explorer_link'].get(blockchain, 'null') }} as explorer_link
+            , array[{{ meta['fusion_settlement_addresses'].get(blockchain, []) | join(', ') }}] as fusion_settlement_addresses
+            , array[{{ meta['escrow_factory_addresses'].get(blockchain, []) | join(', ') }}] as escrow_factory_addresses
+            , {{ blockchain in meta['exposed'] }} as exposed
+        {% if not loop.last %}union{% endif %}
+    {% endfor %}
+)
