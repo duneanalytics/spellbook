@@ -68,7 +68,7 @@ select
     , substr(input, length(input) - mod(length(input) - 4, 32) + 1) as call_input_remains
     , output as call_output
     , auxiliary
-    , if(auxiliary, lead(call_trace_address, 1, null) over(partition by block_date, block_number, tx_hash order by call_trace_address)) as next_call_trace_address
+    , if(auxiliary, lead(trace_address, 1, null) over(partition by block_date, block_number, tx_hash order by trace_address)) as next_call_trace_address
     , date_trunc('minute', block_time) as minute
     , block_date
     , date(date_trunc('month', block_time)) as block_month
