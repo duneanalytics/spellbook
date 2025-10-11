@@ -140,20 +140,20 @@ WITH evt_data_1 AS (
 -- full data 
 , full_data AS (
     SELECT 
-        blockchain,
-        block_time,
-        DATE(block_time) AS block_date,
-        block_number,
+        ED.blockchain,
+        ED.block_time,
+        DATE(ED.block_time) AS block_date,
+        ED.block_number,
         ED.tx_hash,
         ED.index,
-        contract_address,
-        event_name,
-        msg_sender,
+        ED.contract_address,
+        ED.event_name,
+        ED.msg_sender,
         
-        from_hex(provider) AS provider,
-        from_hex(account) AS account,
-        TRY_CAST(src_chain_id AS DOUBLE) AS src_chain_id,
-        TRY_CAST(action_type AS DOUBLE) AS action_type
+        from_hex(EDP.provider) AS provider,
+        from_hex(EDP.account) AS account,
+        TRY_CAST(EDP.src_chain_id AS DOUBLE) AS src_chain_id,
+        TRY_CAST(EDP.action_type AS DOUBLE) AS action_type
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
         ON ED.tx_hash = EDP.tx_hash
