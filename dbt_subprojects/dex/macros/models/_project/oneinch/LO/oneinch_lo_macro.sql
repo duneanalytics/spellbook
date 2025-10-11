@@ -14,7 +14,17 @@
 
 with
 
-decoded as (
+raw_calls as (
+    select *
+        , substr(call_input, call_input_length - mod(call_input_length - 4, 32) + 1) as call_input_remains
+        , call_from in ({{ settlements }}) as call_from_settlement
+    from {{ ref('oneinch_' + blockchain + '_lo_raw_calls') }}
+    where true
+        and block_date >= timestamp '{{ date_from }}'
+        {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
+)
+
+, decoded as (
     {% for contract, contract_data in contracts.items() if blockchain in contract_data['blockchains'] %}
         -- CONTRACT: {{ contract }} --
         {% for method, method_data in contract_data.methods.items() %}
@@ -59,15 +69,6 @@ decoded as (
         {% endfor %}
         {% if not loop.last %}union all{% endif %}
     {% endfor %}
-)
-
-, raw_calls as (
-    select *
-        , call_from in ({{ settlements }}) as call_from_settlement
-    from {{ ref('oneinch_' + blockchain + '_lo_raw_calls') }}
-    where true
-        and block_date >= timestamp '{{ date_from }}'
-        {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
 )
 
 , native_prices as ( -- joining prices at this level, not on "raw_transfers", because there could be a call without transfers for which the tx cost needs to be calculated

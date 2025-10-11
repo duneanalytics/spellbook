@@ -15,26 +15,11 @@ with
 
 raw_calls as (
     select *
+        , substr(call_input, call_input_length - mod(call_input_length - 4, 32) + 1) as call_input_remains
     from {{ ref('oneinch_' + blockchain + '_ar_raw_calls') }}
     where true
         and block_date >= timestamp '{{ date_from }}' -- it is only needed for simple/easy dates
         {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
-)
-
-, auxiliary as (
-    select
-        block_number
-        , block_date
-        , tx_hash
-        , next_call_trace_address as call_trace_address
-        , call_input_remains as auxiliary_remains
-        , call_from as auxiliary_call_from
-        , call_to as auxiliary_call_to
-    from raw_calls
-    where true
-        and auxiliary
-        and next_call_trace_address is not null
-        and slice(next_call_trace_address, 1, cardinality(call_trace_address)) = call_trace_address -- the nearest subsidiary trace address
 )
 
 , decoded as (
@@ -119,9 +104,6 @@ raw_calls as (
                 , ('src_token_index', bitwise_right_shift(bitwise_and(x, src_token_mask), src_token_offset))
                 , ('dst_token_index', bitwise_right_shift(bitwise_and(x, dst_token_mask), dst_token_offset))
             ])) as parsed_pools
-            , coalesce(auxiliary_remains, call_input_remains) as actual_remains -- remains from the parent auxiliary call
-            , coalesce(auxiliary_call_from, call_from) as actual_call_from -- caller from the parent auxiliary call
-            , coalesce(auxiliary_call_to, call_to) as actual_call_to -- executor from the parent auxiliary call
         from (
             select *
                 , if(router_type = 'unoswap' and cardinality(raw_pools) = 0
@@ -132,7 +114,6 @@ raw_calls as (
             from decoded
             join raw_calls using(block_date, block_number, tx_hash, call_trace_address)
         )
-        left join auxiliary using(block_date, block_number, tx_hash, call_trace_address)
     )
     left join (select pool as first_pool, tokens as first_pool_tokens from pools_list) using(first_pool)
     left join (select pool as last_pool, tokens as last_pool_tokens from pools_list) using(last_pool)
@@ -172,8 +153,8 @@ select
     , call_gas_used
     , call_selector
     , call_method
-    , actual_call_from as call_from
-    , actual_call_to as call_to
+    , call_from
+    , call_to
     , call_output
     , call_error
     , call_type
@@ -189,10 +170,10 @@ select
     , dst_token_amount_min
     , router_type
     , pools
-    , coalesce(try(transform(sequence(1, length(actual_remains), 4), x -> bytearray_to_bigint(reverse(substr(reverse(actual_remains), x, 4))))), array[]) as remains
+    , coalesce(try(transform(sequence(1, length(call_input_remains), 4), x -> bytearray_to_bigint(reverse(substr(reverse(call_input_remains), x, 4))))), array[]) as remains
     , map_from_entries(array[
         ('ordinary', ordinary)
-        , ('direct', actual_call_from = tx_from and actual_call_to = tx_to) -- == cardinality(call_trace_address) = 0, but due to zksync trace structure, it is necessary to switch to this
+        , ('direct', call_from = tx_from and call_to = tx_to) -- == cardinality(call_trace_address) = 0, but due to zksync trace structure, it is necessary to switch to this
     ]) as flags
     , minute
     , block_date
