@@ -231,6 +231,7 @@ FROM (VALUES
     , ('ekubo', 'Ekubo', 'Direct', 'EkuboProtocol')
     , ('etherex', 'EtherEx', 'Direct', 'etherexfi')
     , ('angstrom', 'Angstrom', 'Direct', 'angstromxyz')
+    , ('skate_fi', 'SkateFi', 'Direct', 'skate_fi')
     , ('blade', 'Blade', 'Direct', 'SushiSwap')
     , ('hyperswap', 'HyperSwap', 'Direct', 'HyperSwap')
     , ('hybra', 'Hybra', 'Direct', 'Hybra')
