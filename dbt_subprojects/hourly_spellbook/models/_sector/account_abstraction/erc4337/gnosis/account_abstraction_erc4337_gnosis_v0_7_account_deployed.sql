@@ -1,7 +1,7 @@
 {{ config
 (
-    alias = 'v0_8_account_deployed',
-    schema = 'account_abstraction_erc4337_arbitrum',
+    alias = 'v0_7_account_deployed',
+    schema = 'account_abstraction_erc4337_gnosis',
 
     partition_by = ['block_month'],
     materialized = 'incremental',
@@ -15,8 +15,8 @@
 -- macros/models/sector/erc4337
 {{
     erc4337_account_deployed(
-        blockchain = 'arbitrum',
-        version = 'v0.8',
-        account_deployed_evt_model = source('erc4337_arbitrum','entrypoint_evt_accountdeployed'),
+        blockchain = 'gnosis',
+        version = 'v0.7',
+        account_deployed_evt_model = source('erc4337_gnosis','entrypoint_v0_7_evt_accountdeployed'),
     )
 }}

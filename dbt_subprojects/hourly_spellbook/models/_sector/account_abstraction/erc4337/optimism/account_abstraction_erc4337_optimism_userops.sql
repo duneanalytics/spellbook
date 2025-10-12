@@ -9,7 +9,7 @@
     post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "erc4337",
-                                    \'["0xbitfly", "hosuke"]\') }}'
+                                    \'["0xbitfly", "hosuke", "sofiat"]\') }}'
 )}}
 
 -- min deployed_date on chain
@@ -22,6 +22,7 @@
 {% set erc4337_models = [
     ref('account_abstraction_erc4337_optimism_v0_5_userops_basics')
     , ref('account_abstraction_erc4337_optimism_v0_6_userops_basics')
+    , ref('account_abstraction_erc4337_optimism_v0_7_userops_basics')
 ] %}
 
 with userop as(
