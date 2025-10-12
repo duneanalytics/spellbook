@@ -6,13 +6,13 @@
     incremental_strategy = 'merge',
     unique_key = ['fact_block_rewards_id'],
     partition_by = ['day_month'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     tags = ['thorchain', 'defi', 'block_rewards', 'fact']
 ) }}
 
 WITH base AS (
     SELECT
-        day,
+        block_date as day,
         liquidity_fee,
         block_rewards,
         earnings,
@@ -22,7 +22,7 @@ WITH base AS (
         _inserted_timestamp,
         day_month
     FROM {{ ref('thorchain_silver_block_rewards') }}
-    WHERE day >= current_date - interval '7' day
+    WHERE block_date >= current_date - interval '7' day
 )
 
 SELECT
@@ -50,5 +50,5 @@ SELECT
 FROM base a
 
 {% if is_incremental() %}
-WHERE {{ incremental_predicate('a.day') }}
+WHERE {{ incremental_predicate('a.block_date') }}
 {% endif %}

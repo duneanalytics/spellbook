@@ -5,8 +5,8 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['_unique_key'],
-    partition_by = ['day_month'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
+    partition_by = ['block_month'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     tags = ['thorchain', 'daily_pool_stats', 'silver']
 ) }}
 
@@ -14,7 +14,7 @@
 WITH daily_rune_price AS (
     SELECT
         pool_name,
-        date(block_time) AS day,
+        date(block_time) AS block_date,
         AVG(price) AS rune_usd,
         AVG(price) AS asset_usd  -- Simplified - using same price for now
     FROM {{ ref('thorchain_silver_prices') }} p
@@ -28,7 +28,7 @@ WITH daily_rune_price AS (
 
 pool_fees AS (
     SELECT
-        pbf.day,
+        pbf.block_date,
         pbf.pool_name,
         pbf.rewards AS system_rewards,
         pbf.rewards * COALESCE(drp.rune_usd, 0) AS system_rewards_usd,
@@ -38,17 +38,17 @@ pool_fees AS (
         pbf.rune_liquidity_fees * COALESCE(drp.rune_usd, 0) AS rune_liquidity_fees_usd
     FROM {{ ref('thorchain_silver_pool_block_fees') }} pbf
     LEFT JOIN daily_rune_price drp
-        ON pbf.day = drp.day
+        ON pbf.block_date = drp.block_date
         AND pbf.pool_name = drp.pool_name
     {% if is_incremental() %}
-    WHERE {{ incremental_predicate('pbf.day') }}
+    WHERE {{ incremental_predicate('pbf.block_date') }}
     {% endif %}
 ),
 
 base AS (
     SELECT
-        pbs.day,
-        date_trunc('month', pbs.day) as day_month,
+        pbs.block_date,
+        date_trunc('month', pbs.block_date) as block_month,
         pbs.asset AS pool_name,
         COALESCE(pf.system_rewards, 0) AS system_rewards,
         COALESCE(pf.system_rewards_usd, 0) AS system_rewards_usd,
@@ -88,20 +88,20 @@ base AS (
         COALESCE(pbs.unique_swapper_count, 0) AS unique_swapper_count,
         COALESCE(pbs.units, 0) AS liquidity_units,
         concat(
-            cast(pbs.day as varchar),
+            cast(pbs.block_date as varchar),
             '-',
             pbs.asset
         ) AS _unique_key
-    FROM {{ ref('thorchain_silver_pool_block_statistics') }} pbs  -- CORRECT: Daily stats builds on pool statistics
+    FROM {{ ref('thorchain_silver_pool_block_statistics') }} pbs
     LEFT JOIN daily_rune_price drp
-        ON pbs.day = drp.day
+        ON pbs.block_date = drp.block_date
         AND pbs.asset = drp.pool_name
     LEFT JOIN pool_fees pf
-        ON pbs.day = pf.day
+        ON pbs.block_date = pf.block_date
         AND pbs.asset = pf.pool_name
 )
 
 SELECT * FROM base
 {% if is_incremental() %}
-WHERE {{ incremental_predicate('base.day') }}
+WHERE {{ incremental_predicate('block_date') }}
 {% endif %}

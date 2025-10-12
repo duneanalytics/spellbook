@@ -5,15 +5,15 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['_unique_key'],
-    partition_by = ['day_month'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day_month')],
+    partition_by = ['block_month'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_month')],
     tags = ['thorchain', 'pool_fees', 'silver']
 ) }}
 
 -- CRITICAL: Use CTE pattern for complex daily aggregation
 WITH all_block_id AS (
     SELECT
-        date(b.block_time) AS day,
+        date(b.block_time) AS block_date,
         a.pool_name,
         MAX(a._inserted_timestamp) AS _inserted_timestamp
     FROM {{ ref('thorchain_silver_block_pool_depths') }} a
@@ -30,7 +30,7 @@ WITH all_block_id AS (
 
 total_pool_rewards_tbl AS (
     SELECT
-        date(b.block_time) AS day,
+        date(b.block_time) AS block_date,
         a.pool_name,
         SUM(a.rune_e8) AS rewards
     FROM {{ ref('thorchain_silver_rewards_event_entries') }} a
@@ -47,11 +47,11 @@ total_pool_rewards_tbl AS (
 
 total_liquidity_fees_rune_tbl AS (
     SELECT
-        date(a.block_time) AS day,
-        a.pool AS pool_name,  -- FIXED: Use correct column name
+        date(a.block_time) AS block_date,
+        a.pool AS pool_name,
         SUM(a.liq_fee_in_rune_e8) AS total_liquidity_fees_rune
     FROM {{ ref('thorchain_silver_swap_events') }} a
-    WHERE a.block_time >= current_date - interval '7' day  -- FIXED: Use existing block_time
+    WHERE a.block_time >= current_date - interval '7' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('a.block_time') }}
     {% endif %}
@@ -62,8 +62,8 @@ total_liquidity_fees_rune_tbl AS (
 
 liquidity_fees_asset_tbl AS (
     SELECT
-        date(block_time) AS day,
-        pool AS pool_name,  -- FIXED: Use correct column name
+        date(block_time) AS block_date,
+        pool AS pool_name,
         SUM(asset_fee) AS asset_liquidity_fees
     FROM (
         SELECT
@@ -74,7 +74,7 @@ liquidity_fees_asset_tbl AS (
                 ELSE a.liq_fee_e8
             END AS asset_fee
         FROM {{ ref('thorchain_silver_swap_events') }} a
-        WHERE a.block_time >= current_date - interval '7' day  -- FIXED: Use existing block_time
+        WHERE a.block_time >= current_date - interval '7' day
         {% if is_incremental() %}
           AND {{ incremental_predicate('a.block_time') }}
         {% endif %}
@@ -86,8 +86,8 @@ liquidity_fees_asset_tbl AS (
 
 liquidity_fees_rune_tbl AS (
     SELECT
-        date(block_time) AS day,
-        pool AS pool_name,  -- FIXED: Use correct column name
+        date(block_time) AS block_date,
+        pool AS pool_name,
         SUM(asset_fee) AS rune_liquidity_fees
     FROM (
         SELECT
@@ -98,7 +98,7 @@ liquidity_fees_rune_tbl AS (
                 ELSE a.liq_fee_e8
             END AS asset_fee
         FROM {{ ref('thorchain_silver_swap_events') }} a
-        WHERE a.block_time >= current_date - interval '7' day  -- FIXED: Use existing block_time
+        WHERE a.block_time >= current_date - interval '7' day
         {% if is_incremental() %}
           AND {{ incremental_predicate('a.block_time') }}
         {% endif %}
@@ -110,36 +110,36 @@ liquidity_fees_rune_tbl AS (
 
 base AS (
     SELECT
-        a.day,
+        a.block_date,
         a.pool_name,
-        date_trunc('month', cast(a.day as timestamp)) as day_month,
+        date_trunc('month', cast(a.block_date as timestamp)) as block_month,
         COALESCE((b.rewards / power(10, 8)), 0) AS rewards,
         COALESCE((c.total_liquidity_fees_rune / power(10, 8)), 0) AS total_liquidity_fees_rune,
         COALESCE((d.asset_liquidity_fees / power(10, 8)), 0) AS asset_liquidity_fees,
         COALESCE((e.rune_liquidity_fees / power(10, 8)), 0) AS rune_liquidity_fees,
         ((COALESCE(c.total_liquidity_fees_rune, 0) + COALESCE(b.rewards, 0)) / power(10, 8)) AS earnings,
         concat(
-            cast(a.day as varchar),
+            cast(a.block_date as varchar),
             '-',
             a.pool_name
         ) AS _unique_key,
         a._inserted_timestamp
     FROM all_block_id a
     LEFT JOIN total_pool_rewards_tbl b
-        ON a.day = b.day
+        ON a.block_date = b.block_date
         AND a.pool_name = b.pool_name
     LEFT JOIN total_liquidity_fees_rune_tbl c
-        ON a.day = c.day
-        AND a.pool_name = c.pool_name  -- FIXED: Now using pool_name consistently
+        ON a.block_date = c.block_date
+        AND a.pool_name = c.pool_name
     LEFT JOIN liquidity_fees_asset_tbl d
-        ON a.day = d.day
-        AND a.pool_name = d.pool_name  -- FIXED: Now using pool_name consistently
+        ON a.block_date = d.block_date
+        AND a.pool_name = d.pool_name
     LEFT JOIN liquidity_fees_rune_tbl e
-        ON a.day = e.day
-        AND a.pool_name = e.pool_name  -- FIXED: Now using pool_name consistently
+        ON a.block_date = e.block_date
+        AND a.pool_name = e.pool_name
 )
 
 SELECT * FROM base
 {% if is_incremental() %}
-WHERE {{ incremental_predicate('base.day_month') }}
+WHERE {{ incremental_predicate('block_month') }}
 {% endif %}

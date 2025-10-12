@@ -4,9 +4,9 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['day'],
-    partition_by = ['day_month'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
+    unique_key = ['block_date'],
+    partition_by = ['block_month'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     tags = ['thorchain', 'block_rewards', 'silver']
 ) }}
 
@@ -50,7 +50,7 @@ all_block_with_nodes AS (
 
 all_block_with_nodes_date AS (
     SELECT
-        DATE(abwn.block_time) AS day,
+        DATE(abwn.block_time) AS block_date,
         AVG(abwn.avg_nodes) AS avg_nodes,
         MAX(abwn._inserted_timestamp) AS _inserted_timestamp
     FROM all_block_with_nodes abwn
@@ -60,7 +60,7 @@ all_block_with_nodes_date AS (
 
 liquidity_fee_tbl AS (
     SELECT
-        DATE(a.block_time) AS day,
+        DATE(a.block_time) AS block_date,
         COALESCE(SUM(a.liq_fee_in_rune_e8), 0) AS liquidity_fee
     FROM {{ ref('thorchain_silver_swap_events') }} a
     WHERE a.block_time >= current_date - interval '7' day
@@ -70,7 +70,7 @@ liquidity_fee_tbl AS (
 -- CORRECT LOGIC: Use the total_block_rewards aggregation instead of duplicating
 rewards_summary AS (
     SELECT
-        date(tbr.block_time) AS day,
+        date(tbr.block_time) AS block_date,
         SUM(
             CASE 
                 WHEN tbr.reward_entity = 'bond_holders' THEN tbr.rune_amount
@@ -90,8 +90,8 @@ rewards_summary AS (
 
 base AS (
     SELECT
-        abwnd.day,
-        date_trunc('month', abwnd.day) as day_month,
+        abwnd.block_date,
+        date_trunc('month', abwnd.block_date) as block_month,
         COALESCE((lft.liquidity_fee / power(10, 8)), 0) AS liquidity_fee,
         
         -- Block rewards calculation (using total_block_rewards aggregation)
@@ -110,12 +110,12 @@ base AS (
         
     FROM all_block_with_nodes_date abwnd
     LEFT JOIN liquidity_fee_tbl lft
-        ON abwnd.day = lft.day
+        ON abwnd.block_date = lft.block_date
     LEFT JOIN rewards_summary rs
-        ON abwnd.day = rs.day
+        ON abwnd.block_date = rs.block_date
 )
 
 SELECT * FROM base
 {% if is_incremental() %}
-WHERE {{ incremental_predicate('base.day') }}
+WHERE {{ incremental_predicate('block_date') }}
 {% endif %}

@@ -4,20 +4,20 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['day'],
-    partition_by = ['day_month'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
+    unique_key = ['block_date'],
+    partition_by = ['block_month'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     tags = ['thorchain', 'total_value_locked', 'silver']
 ) }}
 
 -- Complex TVL calculation with bond events and pool depths
 WITH bond_type_day AS (
     SELECT
-        DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)) AS day,
+        DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)) AS block_date,
         a.bond_type,
         (SUM(a.e8) / pow(10, 8)) AS rune_amount,
         MAX(a._inserted_timestamp) AS _inserted_timestamp
-    FROM {{ ref('thorchain_silver_bond_events') }} a  -- ✅ Now converted!
+    FROM {{ ref('thorchain_silver_bond_events') }} a
     JOIN {{ source('thorchain', 'block_log') }} b
         ON a.block_time = cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)
     WHERE cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '7' day
@@ -31,7 +31,7 @@ WITH bond_type_day AS (
 
 bond_type_day_direction AS (
     SELECT
-        day,
+        block_date,
         bond_type,
         CASE
             WHEN bond_type IN ('bond_returned', 'bond_cost') THEN -1
@@ -49,16 +49,16 @@ bond_type_day_direction AS (
 
 total_value_bonded_tbl AS (
     SELECT
-        day,
+        block_date,
         SUM(abs_rune_amount) AS total_value_bonded,
         MAX(_inserted_timestamp) AS _inserted_timestamp
     FROM bond_type_day_direction
-    GROUP BY day
+    GROUP BY block_date
 ),
 
 total_pool_depth AS (
     SELECT
-        DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)) AS day,
+        DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)) AS block_date,
         b.height AS block_id,
         a.pool_name,
         a.rune_e8,
@@ -79,7 +79,7 @@ total_pool_depth AS (
 
 total_pool_depth_max AS (
     SELECT
-        day,
+        block_date,
         rune_e8 AS rune_depth,
         asset_e8 AS asset_depth,
         _inserted_timestamp
@@ -89,38 +89,38 @@ total_pool_depth_max AS (
 
 total_value_pooled_tbl AS (
     SELECT
-        day,
+        block_date,
         SUM(rune_depth) * 2 / power(10, 8) AS total_value_pooled,
         MAX(_inserted_timestamp) AS _inserted_timestamp
     FROM total_pool_depth_max
-    GROUP BY day
+    GROUP BY block_date
 ),
 
 base AS (
     SELECT
-        COALESCE(tvb.day, tvp.day) AS day,
-        date_trunc('month', COALESCE(tvb.day, tvp.day)) as day_month,
+        COALESCE(tvb.block_date, tvp.block_date) AS block_date,
+        date_trunc('month', COALESCE(tvb.block_date, tvp.block_date)) as block_month,
         COALESCE(tvp.total_value_pooled, 0) AS total_value_pooled,
         
         -- Running total for bonded value (cumulative sum)
         SUM(COALESCE(tvb.total_value_bonded, 0)) OVER (
-            ORDER BY COALESCE(tvb.day, tvp.day) ASC
+            ORDER BY COALESCE(tvb.block_date, tvp.block_date) ASC
         ) AS total_value_bonded,
         
         -- Total value locked = pooled + bonded
         COALESCE(tvp.total_value_pooled, 0) + 
         SUM(COALESCE(tvb.total_value_bonded, 0)) OVER (
-            ORDER BY COALESCE(tvb.day, tvp.day) ASC
+            ORDER BY COALESCE(tvb.block_date, tvp.block_date) ASC
         ) AS total_value_locked,
         
         COALESCE(tvb._inserted_timestamp, tvp._inserted_timestamp) AS _inserted_timestamp
         
     FROM total_value_bonded_tbl tvb
-    FULL OUTER JOIN total_value_pooled_tbl tvp  -- Trino equivalent of FULL JOIN
-        ON tvb.day = tvp.day
+    FULL OUTER JOIN total_value_pooled_tbl tvp
+        ON tvb.block_date = tvp.block_date
 )
 
 SELECT * FROM base
 {% if is_incremental() %}
-WHERE {{ incremental_predicate('base.day') }}
+WHERE {{ incremental_predicate('block_date') }}
 {% endif %}

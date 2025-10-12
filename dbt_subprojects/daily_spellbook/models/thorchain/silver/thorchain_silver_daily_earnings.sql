@@ -3,27 +3,27 @@
   alias = 'daily_earnings',
   materialized = 'incremental',
   file_format = 'delta',
-  unique_key = 'day',
+  unique_key = 'block_date',
   incremental_strategy = 'merge',
-  cluster_by = ['day'],
-  partition_by = ['day_month'],
-  incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
+  cluster_by = ['block_date'],
+  partition_by = ['block_month'],
+  incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
   tags = ['thorchain', 'daily', 'earnings']
 ) }}
 
 WITH max_daily_block AS (
   SELECT
     MAX(height) AS block_id,
-    DATE_TRUNC('day', cast(from_unixtime(cast(timestamp / 1e9 as bigint)) as timestamp)) AS day
+    DATE_TRUNC('day', cast(from_unixtime(cast(timestamp / 1e9 as bigint)) as timestamp)) AS block_date
   FROM {{ source('thorchain', 'block_log') }} b
   WHERE cast(from_unixtime(cast(timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '7' day
-  GROUP BY day
+  GROUP BY block_date
 ),
 
 daily_rune_price AS (
   SELECT
     p.block_id,
-    day,
+    block_date,
     AVG(p.price) AS rune_usd
   FROM {{ source('prices', 'usd') }} p
   JOIN max_daily_block mdb
@@ -31,12 +31,12 @@ daily_rune_price AS (
   WHERE p.blockchain = 'thorchain'
     AND p.symbol = 'RUNE'
     AND p.minute >= current_date - interval '7' day
-  GROUP BY day, p.block_id
+  GROUP BY block_date, p.block_id
 )
 
 SELECT
-  br.day,
-  date_trunc('month', br.day) as day_month,
+  br.block_date,
+  date_trunc('month', br.block_date) as block_month,
   COALESCE(liquidity_fee, 0) AS liquidity_fees,
   COALESCE(liquidity_fee * rune_usd, 0) AS liquidity_fees_usd,
   block_rewards AS block_rewards,
@@ -51,11 +51,11 @@ SELECT
   br._inserted_timestamp
 FROM {{ ref('thorchain_silver_block_rewards') }} br
 JOIN daily_rune_price drp
-  ON br.day = drp.day
-WHERE br.day >= current_date - interval '7' day
+  ON br.block_date = drp.block_date
+WHERE br.block_date >= current_date - interval '7' day
 {% if is_incremental() %}
-  AND br.day >= (
-    SELECT MAX(day)
+  AND br.block_date >= (
+    SELECT MAX(block_date)
     FROM {{ this }}
   )
 {% endif %}

@@ -6,7 +6,7 @@
     incremental_strategy = 'merge',
     unique_key = ['fact_daily_tvl_id'],
     partition_by = ['day_month'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     tags = ['thorchain', 'defi', 'daily_tvl', 'fact']
 ) }}
 
@@ -48,5 +48,5 @@ SELECT
 FROM base a
 
 {% if is_incremental() %}
-WHERE {{ incremental_predicate('a.day') }}
+WHERE {{ incremental_predicate('a.block_date') }}
 {% endif %}
