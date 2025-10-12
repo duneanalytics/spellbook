@@ -120,15 +120,15 @@ WITH evt_data_1 AS (
 -- full data 
 , full_data AS (
     SELECT 
-        blockchain,
-        block_time,
-        DATE(block_time) AS block_date,
-        block_number,
+        ED.blockchain,
+        ED.block_time,
+        DATE(ED.block_time) AS block_date,
+        ED.block_number,
         ED.tx_hash,
         ED.index,
-        contract_address,
-        event_name,
-        msg_sender,
+        ED.contract_address,
+        ED.event_name,
+        ED.msg_sender,
         
         TRY_CAST(distribution_id AS VARCHAR) AS distribution_id
     FROM evt_data AS ED
