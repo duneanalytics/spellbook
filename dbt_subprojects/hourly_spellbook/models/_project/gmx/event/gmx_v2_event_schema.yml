@@ -3255,3 +3255,201 @@ models:
         description: The amount of the token being transferred, in its smallest unit.
       - name: src_chain_id
         description: The identifier of the destination blockchain to which the tokens were transferred.
+
+  - name: gmx_v2_claim_funds_claimed
+    meta:
+      blockchain: arbitrum, avalanche_c
+      sector: dex
+      project: gmx
+      contributors: [ai_data_master, gmx-io]
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'claim_funds', 'event', 'claimed']
+    description: |
+      Extracts and decodes the `ClaimFundsClaimed` event log data from the Arbitrum and Avalanche blockchains. 
+      This model records events where users have successfully claimed their funds from a distribution.
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The type of event recorded, always 'ClaimFundsClaimed' for this model.
+      - *msg_sender
+      - name: account
+        description: The user's account address that is claiming the funds.
+      - name: token
+        description: The contract address of the token being claimed.
+      - name: receiver
+        description: The address that receives the claimed funds.
+      - name: distribution_id
+        description: The identifier for the distribution from which funds are claimed.
+      - name: amount
+        description: The amount of the token being claimed, in its smallest unit.
+
+  - name: gmx_v2_claim_funds_deposited
+    meta:
+      blockchain: arbitrum, avalanche_c
+      sector: dex
+      project: gmx
+      contributors: [ai_data_master, gmx-io]
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'claim_funds', 'event', 'deposited']
+    description: |
+      Extracts and decodes the `ClaimFundsDeposited` event log data from the Arbitrum and Avalanche blockchains. 
+      This model records funds being deposited for a specific distribution.
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The type of event recorded, always 'ClaimFundsDeposited' for this model.
+      - *msg_sender
+      - name: account
+        description: The user's account address that is depositing the funds.
+      - name: token
+        description: The contract address of the token being deposited.
+      - name: distribution_id
+        description: The identifier for the distribution.
+      - name: amount
+        description: The amount of the token being deposited, in its smallest unit.
+      - name: next_amount
+        description: The next total amount of tokens available for the distribution after the deposit.
+        
+  - name: gmx_v2_claim_funds_transferred
+    meta:
+      blockchain: arbitrum, avalanche_c
+      sector: dex
+      project: gmx
+      contributors: [ai_data_master, gmx-io]
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'claim_funds', 'event']
+    description: |
+      Extracts and decodes the `ClaimFundsTransferred` event log data from the Arbitrum and Avalanche blockchains. 
+      This model records instances where users claim funds that were previously transferred.
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The type of event recorded, always 'ClaimFundsTransferred' for this model.
+      - *msg_sender
+      - name: from_account
+        description: The account from which the funds were transferred.
+      - name: to_account
+        description: The account to which the funds were transferred.
+      - name: token
+        description: The contract address of the token being claimed.
+      - name: distribution_id
+        description: The identifier for the distribution.
+      - name: amount
+        description: The amount of the token being claimed, in its smallest unit.
+      - name: next_amount
+        description: The next amount of tokens to be distributed.
+
+  - name: gmx_v2_claim_funds_withdrawn
+    meta:
+      blockchain: arbitrum, avalanche_c
+      sector: dex
+      project: gmx
+      contributors: [ai_data_master, gmx-io]
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'claim_funds', 'event', 'withdrawn']
+    description: |
+      Extracts and decodes the `ClaimFundsWithdrawn` event log data from the Arbitrum and Avalanche blockchains. 
+      This model records events where undistributed funds are withdrawn from a distribution.
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The type of event recorded, always 'ClaimFundsWithdrawn' for this model.
+      - *msg_sender
+      - name: account
+        description: The user's account address that is withdrawing the funds.
+      - name: token
+        description: The contract address of the token being withdrawn.
+      - name: receiver
+        description: The address that receives the withdrawn funds.
+      - name: distribution_id
+        description: The identifier for the distribution from which funds are being withdrawn.
+      - name: amount
+        description: The amount of the token being withdrawn, in its smallest unit.
+
+  - name: gmx_v2_claim_terms_removed
+    meta:
+      blockchain: arbitrum, avalanche_c
+      sector: dex
+      project: gmx
+      contributors: [ai_data_master, gmx-io]
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'claim_terms', 'event', 'removed']
+    description: |
+      Extracts and decodes the `ClaimTermsRemoved` event log data from the Arbitrum and Avalanche blockchains. 
+      This model records when the terms for a specific distribution are removed.
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The type of event recorded, always 'ClaimTermsRemoved' for this model.
+      - *msg_sender
+      - name: distribution_id
+        description: The identifier for the distribution whose terms were removed.
+
+  - name: gmx_v2_claim_terms_set
+    meta:
+      blockchain: arbitrum, avalanche_c
+      sector: dex
+      project: gmx
+      contributors: [ai_data_master, gmx-io]
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'claim_terms', 'event', 'set']
+    description: |
+      Extracts and decodes the `ClaimTermsSet` event log data from the Arbitrum and Avalanche blockchains. 
+      This model records when the terms for a distribution are set or updated.
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The type of event recorded, always 'ClaimTermsSet' for this model.
+      - *msg_sender
+      - name: distribution_id
+        description: The identifier for the distribution whose terms were set.
+      - name: terms_hash
+        description: The hash of the terms for the distribution.
