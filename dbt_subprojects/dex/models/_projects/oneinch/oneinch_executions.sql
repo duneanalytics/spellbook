@@ -31,7 +31,7 @@ executions as (
             from {{ ref('oneinch_' + stream + '_' + substream) }}
             where true
                 and protocol = 'LO'
-                and flags['direct']
+                and coalesce(element_at(flags, 'direct'), false)
         {% endif %}
         {% if not loop.last %}union all{% endif %}
     {% endfor %}

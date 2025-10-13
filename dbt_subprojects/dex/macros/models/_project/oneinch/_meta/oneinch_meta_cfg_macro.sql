@@ -28,7 +28,7 @@
                 "fusion"    : "2025-10-12",
             },
             "contracts" : oneinch_lo_cfg_contracts_macro(),
-            "exposed"   : ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea", "sonic", "unichain"],
+            "exposed"   : ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea", "sonic", "unichain", "solana"],
             "mode"      : "if(flags['fusion'], 'fusion', 'limits')",
         },
         "cc": {
@@ -48,7 +48,7 @@
 -- BLOCKCHAINS CONFIG --
 {%
     set blockchains = {
-        "exposed": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea", "sonic", "unichain"],
+        "exposed": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea", "sonic", "unichain", "solana"],
         "evms": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea", "sonic", "unichain"],
         "aave": ["ethereum", "arbitrum", "avalanche_c", "base", "gnosis", "linea", "optimism", "polygon", "scroll", "zksync"],
         "start": {
