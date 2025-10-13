@@ -778,6 +778,7 @@ FROM
         ('aura-auraonsol', 'solana', 'AURA', 'DtR4D9FtVoTX2569gaL837ZgrB6wNjj6tkmnX9Rdk9B2', 6),
         ('wct-walletconnect-token', 'solana', 'WCT', 'WCTk5xWdn5SYg56twGj32sUF3W4WFQ48ogezLBuYTBY', 9),
         ('holo-holoworld-ai', 'solana', 'HOLO', '69RX85eQoEsnZvXGmLNjYcWgVkp9r2JjahVm99KbJETU', 9),
+        ('2z-doublezero', 'solana', '2Z', 'J6pQQ3FAcJQeWPPGppWRb4nM8jU3wLyYbRrLh7feMfvd', 8),
         ('useless-useless-coin', 'solana', 'USELESS', 'Dz9mQ9NzkBcCsuGPFJ3r1bS4wgqKMHBPiVuniW8Mbonk', 6),
         ('onyc-onyc', 'solana', 'ONyc', '5Y8NV33Vv7WbnLfq3zBcKSdYPrk7g2KoiQoe7M2tcxp5', 9),
         ('yzy-yzy', 'solana', 'YZY', 'DrZ26cKJDksVRWib3DVVsjo9eeXccc7hKhDJviiYEEZY', 6)
