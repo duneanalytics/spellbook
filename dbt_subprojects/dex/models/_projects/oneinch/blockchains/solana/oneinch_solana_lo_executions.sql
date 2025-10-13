@@ -69,7 +69,7 @@ select
     , cast(null as array(row(action varchar, success boolean, cost double, tx_hash varbinary, escrow varbinary, token varbinary, amount uint256))) as actions
     , cast(null as map(varchar, varchar)) as complement
 
-    , cast(null as array(varbinary)) as remains
+    , cast(null as array(bigint)) as remains
     , map_from_entries(array[
         ('direct', false)
         , ('fusion', true)

@@ -56,7 +56,7 @@ select
     , dst_token_amount as taker_amount
     , cast(null as uint256) as taking_amount
 
-    , cast(null as array(varbinary)) as remains
+    , cast(null as array(bigint)) as remains
     , map_from_entries(array[
         ('direct', false)
         , ('fusion', true)
