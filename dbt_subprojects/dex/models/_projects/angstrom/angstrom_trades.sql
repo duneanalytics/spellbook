@@ -24,6 +24,7 @@ from (
         , block_date
         , block_time
         , block_number
+        , trade_type
         , token_bought_symbol
         , token_sold_symbol
         , token_pair
