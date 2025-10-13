@@ -77,6 +77,6 @@ select
     , date_trunc('minute', block_time) as minute
     , date(block_time) as block_date
     , block_month
-    , null as native_price -- TO DO
-    , null as native_decimals -- TO DO
+    , cast(null as double) as native_price -- TO DO
+    , cast(null as bigint) as native_decimals -- TO DO
 from {{ source('oneinch_solana', 'swaps') }} -- TO DO: swaps -> executions
