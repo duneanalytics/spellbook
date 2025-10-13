@@ -39,12 +39,18 @@ names(
         , (0xd6ff6abb93ef058a474769f0d05c7fef440920f8, 'Swaap Labs'     , true  )
         , (0x857851ee6e398651cb7c72462cc7ce2a94d8f1c6, 'Lumia'          , true  )
         , (0x7777777777b90a790898805f90069ec55fe93a73, 'NuConstruct'    , true  )
+        , (0xdeb65e00cc96af530e2ae2407eaa73f6a345687c, 'GSR'            , true  )
+        , (0x9cb8d9bae84830b7f5f11ee5048c04a80b8514ba, 'SwapNet'        , true  )
+        , (0xc6093fd9cc143f9f058938868b2df2daf9a91d28, 'Keystone'       , true  )
+        , (0xe76706d6cd96cba98c783dfbd0f6de4c0ec32278, 'JPEG Trading'   , true  )
+        , (0x451244d9e1b08e7c2340351d980aaf775d8484d8, 'AlgoLabs'       , true  )
+        , (0x98e4428508511774d0164c826003eacd8cdc9b77, 'Lumia'          , true  )
+        , (0xbeeb41b6df0fa04b91a817108c42d7978ba67fff, 'Apollo Labs'    , true  )
         , (0xa6219c7d74edeb12d74a3c664f7aaeb7d01ab902, ''               , false )
         , (0x74c629c4096e234029c78c7760dc0aadb717adb0, ''               , false )
         , (0x7c7047337995c338c1682f12bc38d4e4108309bb, ''               , false )
         , (0x685018ea5c682c5e6d9e4116193f02018f306255, ''               , false )
-        , (0xdeb65e00cc96af530e2ae2407eaa73f6a345687c, 'GSR'            , true  )
-        , (0x9cb8d9bae84830b7f5f11ee5048c04a80b8514ba, 'SwapNet'        , true  )
+
 )
 
 , registrations as (

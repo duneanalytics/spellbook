@@ -25,26 +25,26 @@ select
     , block_slot as block_number
     , block_time
     , from_base58(tx_id) as tx_hash
-    , null as tx_success -- TO DO
+    , cast(null as boolean) as tx_success -- TO DO
     , from_base58(tx_signer) as tx_from
     , from_base58(outer_executing_account) as tx_to
-    , null as tx_nonce
+    , cast(null as bigint) as tx_nonce
     , tx_gas_used
     , tx_gas_price
     , tx_priority_fee_per_gas
     , 1 as tx_index -- TO DO
     , call_trace_address
-    , null as call_success -- TO DO
-    , null as call_gas_used
+    , cast(null as boolean) as call_success -- TO DO
+    , cast(null as bigint) as call_gas_used
     , cast(null as varbinary) as call_selector
     , method as call_method -- TO DO
     , from_base58(resolver) as call_from
     , from_base58(outer_executing_account) as call_to
     , cast(null as varbinary) as call_output
-    , null as call_error
-    , null as call_type
+    , cast(null as varchar) as call_error
+    , cast(null as varchar) as call_type
     , 'INTENTS' as protocol
-    , version as protocol_version -- TO DO
+    , coalesce(try(cast(version as double)), 1.0) as protocol_version -- TO DO
     , program_name as contract_name
 
     , amount_usd
@@ -57,7 +57,7 @@ select
     , src_token_symbol as src_executed_symbol
     , src_token_amount as src_executed_amount
     , src_token_amount_usd as src_executed_amount_usd
-    , null as dst_blockchain
+    , cast(null as varchar) as dst_blockchain
     , from_base58(dst_token_mint) as dst_token_address
     , dst_token_amount
     , from_base58(dst_token_mint) as dst_executed_address
