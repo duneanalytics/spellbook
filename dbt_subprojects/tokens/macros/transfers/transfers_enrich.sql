@@ -71,21 +71,12 @@ WITH base_transfers as (
         , t."from"
         , t.to
         , t.contract_address
-        {% if blockchain == 'tron' %}
-        , t.tx_hash_varchar
-        , t.contract_address_varchar
-        , t.from_varchar
-        , t.to_varchar
-        , t.tx_from_varchar
-        , t.tx_to_varchar
-        {% endif %}
         , coalesce(tokens_erc20.symbol, prices.symbol) AS symbol
         , t.amount_raw
         , t.amount_raw / power(10, coalesce(tokens_erc20.decimals, prices.decimals)) AS amount
         , prices.price AS price_usd
         , t.amount_raw / power(10, coalesce(tokens_erc20.decimals, prices.decimals)) * prices.price AS amount_usd
         , CASE WHEN trusted_tokens.blockchain IS NOT NULL THEN true ELSE false END AS is_trusted_token
-        
     FROM
         base_transfers as t
     LEFT JOIN
@@ -120,14 +111,6 @@ WITH base_transfers as (
         , "from"
         , to
         , contract_address
-        {% if blockchain == 'tron' %}
-        , tx_hash_varchar
-        , contract_address_varchar
-        , from_varchar
-        , to_varchar
-        , tx_from_varchar
-        , tx_to_varchar
-        {% endif %}
         , symbol
         , amount_raw
         , amount
