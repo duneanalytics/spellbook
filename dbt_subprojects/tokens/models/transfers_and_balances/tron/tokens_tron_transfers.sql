@@ -23,7 +23,7 @@ WITH base_transfers as (
         {{ ref('tokens_tron_base_transfers') }}
     WHERE
         1=1
-        {% if is_incremental() or true -%}
+        {% if is_incremental() -%}
         AND {{ incremental_predicate('block_date') }}
         {% else -%}
         AND block_date >= TIMESTAMP '{{ transfers_start_date }}'
@@ -41,7 +41,7 @@ WITH base_transfers as (
         {{ source('prices_coinpaprika', 'hour') }}    
     WHERE
         1=1
-        {% if is_incremental() or true -%}
+        {% if is_incremental() -%}
         AND {{ incremental_predicate('timestamp') }}
         {% else -%}
         AND timestamp >= TIMESTAMP '{{ transfers_start_date }}'
