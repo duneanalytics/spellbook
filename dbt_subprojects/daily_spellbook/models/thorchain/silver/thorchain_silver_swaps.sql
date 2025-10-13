@@ -44,7 +44,7 @@ WITH swap_events AS (
         event_id,
         'swap_event' as source_table
     FROM {{ ref('thorchain_silver_swap_events') }} se
-    WHERE se.block_time >= current_date - interval '15' day
+    WHERE se.block_time >= current_date - interval '14' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('se.block_time') }}
     {% endif %}
@@ -83,7 +83,7 @@ streaming_swaps AS (
         event_id,
         'streaming_swap_event' as source_table
     FROM {{ ref('thorchain_silver_streaming_swap_details_events') }} ss
-    WHERE ss.block_time >= current_date - interval '15' day
+    WHERE ss.block_time >= current_date - interval '14' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('ss.block_time') }}
     {% endif %}

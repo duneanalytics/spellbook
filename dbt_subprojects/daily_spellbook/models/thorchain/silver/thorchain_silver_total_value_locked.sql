@@ -20,7 +20,7 @@ WITH bond_type_day AS (
     FROM {{ ref('thorchain_silver_bond_events') }} a
     JOIN {{ source('thorchain', 'block_log') }} b
         ON a.block_time = cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)
-    WHERE cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '15' day
+    WHERE cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '14' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('a.block_time') }}
     {% endif %}
@@ -71,7 +71,7 @@ total_pool_depth AS (
     JOIN {{ source('thorchain', 'block_log') }} b
         ON a.raw_block_timestamp = b.timestamp
     WHERE LOWER(a.pool_name) NOT LIKE 'thor.%'
-      AND cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '15' day
+      AND cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '14' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('a.block_time') }}
     {% endif %}

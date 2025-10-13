@@ -59,7 +59,7 @@ with base as (
     END as pool_asset
 
     FROM {{ source('thorchain', 'withdraw_events') }}
-    WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '15' day
+    WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '14' day
 )
 
 SELECT * FROM base

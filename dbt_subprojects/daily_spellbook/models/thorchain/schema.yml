@@ -206,21 +206,86 @@ models:
   - name: thorchain_core_dim_block
     description: "Core block dimension table for Thorchain with time-based analytics"
     columns:
-      - name: height
-        description: "Block height"
+      - name: dim_block_id
+        description: "Surrogate key for block dimension"
+        data_tests:
+          - unique
+          - not_null
+      - name: block_id
+        description: "Block height (block_id)"
+        data_tests:
+          - not_null
+      - name: block_time
+        description: "Block timestamp (Spellbook standard)"
+        data_tests:
+          - not_null
+      - name: block_timestamp
+        description: "Block timestamp (alias for compatibility)"
+      - name: block_date
+        description: "Block date for partitioning"
+      - name: block_hour
+        description: "Block hour for time-based analysis"
+      - name: block_week
+        description: "Block week for time-based analysis"
+      - name: block_month
+        description: "Block month for partitioning"
+      - name: block_quarter
+        description: "Block quarter for time-based analysis"
+      - name: block_year
+        description: "Block year for time-based analysis"
+      - name: block_dayofmonth
+        description: "Day of month (1-31)"
+      - name: block_dayofweek
+        description: "Day of week (1=Monday, 7=Sunday)"
+      - name: block_dayofyear
+        description: "Day of year (1-366)"
+      - name: timestamp
+        description: "Raw block timestamp for joins"
+      - name: hash
+        description: "Block hash"
+      - name: agg_state
+        description: "Aggregated state data"
+      - name: _inserted_timestamp
+        description: "Record insertion timestamp"
+      - name: _audit_run_id
+        description: "Audit run identifier"
+      - name: inserted_timestamp
+        description: "Record insertion timestamp"
+      - name: modified_timestamp
+        description: "Record modification timestamp"
+
+  - name: thorchain_core_fact_transfer_events
+    description: "Core fact table for Thorchain asset transfer events"
+    columns:
+      - name: fact_transfer_events_id
+        description: "Surrogate key for transfer events"
         data_tests:
           - unique
           - not_null
       - name: block_time
-        description: "Block timestamp"
+        description: "Block timestamp (Spellbook standard)"
         data_tests:
           - not_null
-      - name: block_date
-        description: "Block date for partitioning"
+      - name: block_timestamp
+        description: "Block timestamp (alias for compatibility)"
+      - name: dim_block_id
+        description: "Foreign key to block dimension"
+      - name: from_address
+        description: "From address"
         data_tests:
           - not_null
-      - name: block_hash
-        description: "Block hash"
+      - name: to_address
+        description: "To address"
+        data_tests:
+          - not_null
+      - name: asset
+        description: "Asset identifier"
+      - name: amount_e8
+        description: "Transfer amount in e8 format"
+      - name: inserted_timestamp
+        description: "Record insertion timestamp"
+      - name: modified_timestamp
+        description: "Record modification timestamp"
 
   - name: thorchain_defi_fact_swaps
     description: "DeFi fact table for Thorchain swaps with enriched data"
@@ -243,6 +308,49 @@ models:
         description: "Swap volume in USD"
       - name: trade_direction
         description: "Trade direction relative to RUNE"
+
+  - name: thorchain_defi_fact_outbound_events
+    description: "DeFi fact table for Thorchain outbound events"
+    columns:
+      - name: fact_outbound_events_id
+        description: "Surrogate key for outbound events"
+        data_tests:
+          - unique
+          - not_null
+      - name: block_time
+        description: "Block timestamp (Spellbook standard)"
+        data_tests:
+          - not_null
+      - name: block_timestamp
+        description: "Block timestamp (alias for compatibility)"
+      - name: dim_block_id
+        description: "Foreign key to block dimension"
+      - name: tx_id
+        description: "Transaction hash"
+        data_tests:
+          - not_null
+      - name: blockchain
+        description: "Blockchain"
+      - name: from_address
+        description: "From address"
+      - name: to_address
+        description: "To address"
+      - name: asset
+        description: "Asset identifier"
+      - name: asset_e8
+        description: "Asset amount in e8 format"
+      - name: asset_amount
+        description: "Asset amount (decimal)"
+      - name: memo
+        description: "Transaction memo"
+      - name: in_tx
+        description: "Inbound transaction hash"
+      - name: _tx_type
+        description: "Transaction type"
+      - name: inserted_timestamp
+        description: "Record insertion timestamp"
+      - name: modified_timestamp
+        description: "Record modification timestamp"
 
   - name: thorchain_defi_fact_swap_events
     description: "DeFi fact table for raw Thorchain swap events"
@@ -430,6 +538,70 @@ models:
         description: "Block timestamp"
         data_tests:
           - not_null
+
+  - name: thorchain_silver_transfer_events
+    description: "Silver table for Thorchain asset transfer events"
+    columns:
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - not_null
+      - name: from_address
+        description: "From address"
+        data_tests:
+          - not_null
+      - name: to_address
+        description: "To address"
+        data_tests:
+          - not_null
+      - name: asset
+        description: "Asset identifier"
+      - name: amount_e8
+        description: "Transfer amount in e8 format"
+      - name: amount
+        description: "Transfer amount (decimal)"
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: block_timestamp
+        description: "Block timestamp (unix nanoseconds)"
+
+  - name: thorchain_silver_outbound_events
+    description: "Silver table for Thorchain outbound events"
+    columns:
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - not_null
+      - name: tx_id
+        description: "Transaction hash"
+        data_tests:
+          - not_null
+      - name: blockchain
+        description: "Blockchain"
+      - name: from_address
+        description: "From address"
+      - name: to_address
+        description: "To address"
+      - name: asset
+        description: "Asset identifier"
+      - name: asset_e8
+        description: "Asset amount in e8 format"
+      - name: asset_amount
+        description: "Asset amount (decimal)"
+      - name: memo
+        description: "Transaction memo"
+      - name: in_tx
+        description: "Inbound transaction hash"
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: block_timestamp
+        description: "Block timestamp (unix nanoseconds)"
+      - name: _tx_type
+        description: "Transaction type"
 
   - name: thorchain_silver_total_value_locked
     description: "Silver table for Thorchain total value locked calculations"

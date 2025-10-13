@@ -37,7 +37,7 @@ with base as (
         ) as rn
 
     FROM {{ source('thorchain', 'rewards_event_entries') }}
-    WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '15' day
+    WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '14' day
 )
 
 SELECT 

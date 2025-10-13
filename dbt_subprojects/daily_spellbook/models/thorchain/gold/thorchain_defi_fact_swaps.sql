@@ -31,7 +31,7 @@ WITH base AS (
     pool
   FROM
     {{ ref('thorchain_silver_swaps') }}
-  WHERE block_time >= current_date - interval '15' day
+  WHERE block_time >= current_date - interval '14' day
 )
 
 SELECT

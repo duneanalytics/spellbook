@@ -407,3 +407,57 @@ sources:
             description: "Record ingestion timestamp"
           - name: _source_file_path
             description: "Source file path"
+
+      - name: transfer_events
+        description: "Transfer events from Thorchain"
+        columns:
+          - name: from_addr
+            description: "From address"
+          - name: to_addr
+            description: "To address"
+          - name: asset
+            description: "Asset identifier"
+          - name: amount_e8
+            description: "Transfer amount in e8 format"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: outbound_events
+        description: "Outbound events from Thorchain"
+        columns:
+          - name: tx
+            description: "Transaction hash"
+          - name: chain
+            description: "Blockchain"
+          - name: from_addr
+            description: "From address"
+          - name: to_addr
+            description: "To address"
+          - name: asset
+            description: "Asset identifier"
+          - name: asset_e8
+            description: "Asset amount in e8 format"
+          - name: memo
+            description: "Transaction memo"
+          - name: in_tx
+            description: "Inbound transaction hash"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _tx_type
+            description: "Transaction type"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
