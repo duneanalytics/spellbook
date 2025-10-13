@@ -13,7 +13,7 @@
 -- Daily pool statistics aggregation with pricing
 WITH daily_rune_price AS (
     SELECT
-        pool_name,
+        symbol AS pool_name,
         date(block_time) AS block_date,
         AVG(price) AS rune_usd,
         AVG(price) AS asset_usd  -- Simplified - using same price for now
@@ -22,7 +22,7 @@ WITH daily_rune_price AS (
     WHERE {{ incremental_predicate('p.block_time') }}
     {% endif %}
     GROUP BY
-        pool_name,
+        symbol,
         date(block_time)
 ),
 

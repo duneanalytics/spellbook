@@ -25,10 +25,18 @@ sources:
             description: "RUNE amount in 1e8 format"
           - name: pool
             description: "Pool identifier"
+          - name: _tx_type
+            description: "Transaction type"
           - name: event_id
             description: "Unique event identifier"
           - name: block_timestamp
             description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
 
       - name: fee_events
         description: "Fee events from Thorchain"
@@ -69,10 +77,34 @@ sources:
             description: "Transaction memo"
           - name: pool
             description: "Pool identifier"
+          - name: to_e8_min
+            description: "Minimum to amount in 1e8 format"
+          - name: swap_slip_bp
+            description: "Swap slippage in basis points"
+          - name: liq_fee_e8
+            description: "Liquidity fee in 1e8 format"
+          - name: liq_fee_in_rune_e8
+            description: "Liquidity fee in RUNE (1e8 format)"
+          - name: _direction
+            description: "Swap direction indicator"
+          - name: _streaming
+            description: "Streaming swap flag"
+          - name: _tx_type
+            description: "Transaction type"
+          - name: streaming_count
+            description: "Number of streaming swaps"
+          - name: streaming_quantity
+            description: "Quantity per streaming swap"
           - name: event_id
             description: "Unique event identifier"
           - name: block_timestamp
             description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
 
       - name: withdraw_events
         description: "Liquidity withdraw events from Thorchain"
@@ -97,10 +129,28 @@ sources:
             description: "Transaction memo"
           - name: pool
             description: "Pool identifier"
+          - name: stake_units
+            description: "Stake units withdrawn"
+          - name: basis_points
+            description: "Withdrawal basis points"
+          - name: asymmetry
+            description: "Asymmetry value"
+          - name: imp_loss_protection_e8
+            description: "Impermanent loss protection in 1e8 format"
+          - name: _emit_asset_in_rune_e8
+            description: "Emitted asset value in RUNE"
+          - name: _tx_type
+            description: "Transaction type"
           - name: event_id
             description: "Unique event identifier"
           - name: block_timestamp
             description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
 
       - name: streaming_swap_details_events
         description: "Streaming swap details events from Thorchain"
@@ -127,10 +177,20 @@ sources:
             description: "Output asset identifier"
           - name: out_e8
             description: "Output amount in 1e8 format"
+          - name: failed_swaps
+            description: "Array of failed swap indices"
+          - name: failed_swap_reasons
+            description: "Array of failure reasons"
           - name: event_id
             description: "Unique event identifier"
           - name: block_timestamp
             description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
 
       - name: pending_liquidity_events
         description: "Pending liquidity events from Thorchain"
@@ -173,8 +233,16 @@ sources:
       - name: rune_price
         description: "RUNE price data from Thorchain"
         columns:
+          - name: rune_price_e8
+            description: "RUNE price in USD (1e8 format)"
           - name: block_timestamp
             description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
 
       - name: block_pool_depths
         description: "Block-level pool depth data from Thorchain"

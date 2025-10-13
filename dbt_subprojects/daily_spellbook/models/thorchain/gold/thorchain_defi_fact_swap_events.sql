@@ -58,8 +58,8 @@ SELECT
   a.swap_slip_bp,
   a.liq_fee_e8,
   a.liq_fee_in_rune_e8,
-  a._direction,
-  a._tx_type,
+  a.direction as _direction,
+  a.tx_type as _tx_type,
   current_timestamp AS inserted_timestamp,
   current_timestamp AS modified_timestamp
 
