@@ -5,32 +5,32 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['fact_daily_tvl_id'],
-    partition_by = ['day_month'],
+    partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     tags = ['thorchain', 'defi', 'daily_tvl', 'fact']
 ) }}
 
 WITH base AS (
     SELECT
-        day,
+        block_date,
         total_value_pooled,
         total_value_pooled_usd,
         total_value_bonded,
         total_value_bonded_usd,
         total_value_locked,
         total_value_locked_usd,
-        day_month
+        block_month
     FROM {{ ref('thorchain_silver_daily_tvl') }}
-    WHERE day >= current_date - interval '7' day
+    WHERE block_date >= current_date - interval '7' day
 )
 
 SELECT
     -- CRITICAL: Generate surrogate key (Trino equivalent of dbt_utils.generate_surrogate_key)
-    to_hex(sha256(to_utf8(cast(a.day as varchar)))) AS fact_daily_tvl_id,
+    to_hex(sha256(to_utf8(cast(a.block_date as varchar)))) AS fact_daily_tvl_id,
     
     -- CRITICAL: Always include partitioning columns first
-    a.day,
-    a.day_month,
+    a.block_date,
+    a.block_month,
     
     -- TVL data
     a.total_value_pooled,

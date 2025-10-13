@@ -5,14 +5,14 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['fact_daily_pool_stats_id'],
-    partition_by = ['day_month'],
+    partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     tags = ['thorchain', 'defi', 'daily_pool_stats', 'fact']
 ) }}
 
 WITH base AS (
     SELECT
-        day,
+        block_date,
         pool_name,
         system_rewards,
         system_rewards_usd,
@@ -52,22 +52,22 @@ WITH base AS (
         unique_swapper_count,
         liquidity_units,
         _unique_key,
-        day_month
+        block_month
     FROM {{ ref('thorchain_silver_daily_pool_stats') }}
-    WHERE day >= current_date - interval '7' day
+    WHERE block_date >= current_date - interval '7' day
 )
 
 SELECT
     -- CRITICAL: Generate surrogate key (Trino equivalent of dbt_utils.generate_surrogate_key)
     to_hex(sha256(to_utf8(concat(
-        COALESCE(cast(a.day as varchar), ''),
+        COALESCE(cast(a.block_date as varchar), ''),
         '|',
         COALESCE(a.pool_name, '')
     )))) AS fact_daily_pool_stats_id,
     
     -- CRITICAL: Always include partitioning columns first
-    a.day,
-    a.day_month,
+    a.block_date,
+    a.block_month,
     
     -- Pool statistics data (all the FlipsideCrypto columns)
     a.pool_name,

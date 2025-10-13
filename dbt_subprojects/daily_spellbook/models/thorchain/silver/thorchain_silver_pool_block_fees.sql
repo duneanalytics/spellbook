@@ -6,7 +6,7 @@
     incremental_strategy = 'merge',
     unique_key = ['_unique_key'],
     partition_by = ['block_month'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_month')],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     tags = ['thorchain', 'pool_fees', 'silver']
 ) }}
 
@@ -141,5 +141,5 @@ base AS (
 
 SELECT * FROM base
 {% if is_incremental() %}
-WHERE {{ incremental_predicate('block_month') }}
+WHERE {{ incremental_predicate('block_date') }}
 {% endif %}

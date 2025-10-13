@@ -5,12 +5,15 @@
   file_format = 'delta',
   unique_key = ['fact_daily_earnings_id'],
   incremental_strategy = 'merge',
+  partition_by = ['block_month'],
+  incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
   tags = ['thorchain', 'defi', 'daily', 'earnings', 'fact']
 ) }}
 
 WITH base AS (
   SELECT
-    day,
+    block_date,
+    block_month,
     liquidity_fees,
     liquidity_fees_usd,
     block_rewards,
@@ -24,18 +27,16 @@ WITH base AS (
     avg_node_count,
     _inserted_timestamp
   FROM {{ ref('thorchain_silver_daily_earnings') }}
-  WHERE day >= current_date - interval '7' day
+  WHERE block_date >= current_date - interval '7' day
   {% if is_incremental() %}
-    AND day >= (
-      SELECT MAX(day)
-      FROM {{ this }}
-    )
+    AND {{ incremental_predicate('block_date') }}
   {% endif %}
 )
 
 SELECT
-  {{ dbt_utils.generate_surrogate_key(['a.day']) }} AS fact_daily_earnings_id,
-  day,
+  to_hex(sha256(to_utf8(cast(a.block_date as varchar)))) AS fact_daily_earnings_id,
+  block_date,
+  block_month,
   liquidity_fees,
   liquidity_fees_usd,
   block_rewards,
@@ -48,7 +49,7 @@ SELECT
   earnings_to_pools_usd,
   avg_node_count,
   A._inserted_timestamp,
-  '{{ invocation_id }}' AS _audit_run_id,
+  cast(from_hex(replace(cast(uuid() as varchar), '-', '')) as varchar) AS _audit_run_id,
   current_timestamp AS inserted_timestamp,
   current_timestamp AS modified_timestamp
 FROM base A

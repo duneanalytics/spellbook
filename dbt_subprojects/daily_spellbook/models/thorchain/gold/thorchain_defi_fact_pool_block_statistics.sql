@@ -5,14 +5,14 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['fact_pool_block_statistics_id'],
-    partition_by = ['day_month'],
+    partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     tags = ['thorchain', 'defi', 'pool_statistics', 'fact']
 ) }}
 
 WITH base AS (
     SELECT
-        day,
+        block_date,
         add_asset_liquidity_volume,
         add_liquidity_count,
         add_liquidity_volume,
@@ -51,9 +51,9 @@ WITH base AS (
         liquidity_unit_value_index,
         prev_liquidity_unit_value_index,
         _unique_key,
-        day_month
+        block_month
     FROM {{ ref('thorchain_silver_pool_block_statistics') }}
-    WHERE day >= current_date - interval '7' day
+    WHERE block_date >= current_date - interval '7' day
 )
 
 SELECT
@@ -61,8 +61,8 @@ SELECT
     to_hex(sha256(to_utf8(a._unique_key))) AS fact_pool_block_statistics_id,
     
     -- CRITICAL: Always include partitioning columns first
-    a.day,
-    a.day_month,
+    a.block_date,
+    a.block_month,
     
     -- Complete pool statistics data (all FlipsideCrypto columns)
     a.add_asset_liquidity_volume,

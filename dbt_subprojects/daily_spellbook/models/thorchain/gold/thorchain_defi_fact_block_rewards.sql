@@ -5,14 +5,14 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['fact_block_rewards_id'],
-    partition_by = ['day_month'],
+    partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     tags = ['thorchain', 'defi', 'block_rewards', 'fact']
 ) }}
 
 WITH base AS (
     SELECT
-        block_date as day,
+        block_date,
         liquidity_fee,
         block_rewards,
         earnings,
@@ -20,18 +20,18 @@ WITH base AS (
         liquidity_earnings,
         avg_node_count,
         _inserted_timestamp,
-        day_month
+        block_month
     FROM {{ ref('thorchain_silver_block_rewards') }}
     WHERE block_date >= current_date - interval '7' day
 )
 
 SELECT
     -- CRITICAL: Generate surrogate key (Trino equivalent of dbt_utils.generate_surrogate_key)
-    to_hex(sha256(to_utf8(cast(a.day as varchar)))) AS fact_block_rewards_id,
+    to_hex(sha256(to_utf8(cast(a.block_date as varchar)))) AS fact_block_rewards_id,
     
     -- CRITICAL: Always include partitioning columns first
-    a.day,
-    a.day_month,
+    a.block_date,
+    a.block_month,
     
     -- Block rewards data
     a.liquidity_fee,

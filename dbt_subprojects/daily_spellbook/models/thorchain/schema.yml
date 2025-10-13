@@ -434,7 +434,7 @@ models:
   - name: thorchain_silver_total_value_locked
     description: "Silver table for Thorchain total value locked calculations"
     columns:
-      - name: day
+      - name: block_date
         description: "Date"
         data_tests:
           - unique
@@ -449,7 +449,7 @@ models:
   - name: thorchain_silver_block_rewards
     description: "Silver table for daily Thorchain block rewards"
     columns:
-      - name: day
+      - name: block_date
         description: "Date"
         data_tests:
           - unique
@@ -485,7 +485,7 @@ models:
   - name: thorchain_silver_daily_tvl
     description: "Silver table for daily Thorchain TVL with USD pricing"
     columns:
-      - name: day
+      - name: block_date
         description: "Date"
         data_tests:
           - unique
@@ -518,7 +518,7 @@ models:
         data_tests:
           - unique
           - not_null
-      - name: day
+      - name: block_date
         description: "Date"
         data_tests:
           - not_null
@@ -527,7 +527,7 @@ models:
     description: "Silver table for complex daily Thorchain pool statistics"
     columns:
       - name: _unique_key
-        description: "Unique identifier (day + asset)"
+        description: "Unique identifier (block_date + asset)"
         data_tests:
           - unique
           - not_null
@@ -569,7 +569,7 @@ models:
   - name: thorchain_silver_daily_earnings
     description: "Silver table for daily Thorchain earnings with USD pricing"
     columns:
-      - name: day
+      - name: block_date
         description: "Date"
         data_tests:
           - unique
@@ -605,7 +605,7 @@ models:
         data_tests:
           - unique
           - not_null
-      - name: day
+      - name: block_date
         description: "Date"
         data_tests:
           - not_null

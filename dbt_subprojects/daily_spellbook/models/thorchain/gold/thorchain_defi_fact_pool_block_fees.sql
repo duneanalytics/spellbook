@@ -5,14 +5,14 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['fact_pool_block_fees_id'],
-    partition_by = ['day_month'],
+    partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     tags = ['thorchain', 'defi', 'pool_fees', 'fact']
 ) }}
 
 WITH base AS (
     SELECT
-        day,
+        block_date,
         pool_name,
         rewards,
         total_liquidity_fees_rune,
@@ -21,9 +21,9 @@ WITH base AS (
         earnings,
         _unique_key,
         _inserted_timestamp,
-        day_month
+        block_month
     FROM {{ ref('thorchain_silver_pool_block_fees') }}
-    WHERE day >= current_date - interval '7' day
+    WHERE block_date >= current_date - interval '7' day
 )
 
 SELECT
@@ -31,8 +31,8 @@ SELECT
     to_hex(sha256(to_utf8(a._unique_key))) AS fact_pool_block_fees_id,
     
     -- CRITICAL: Always include partitioning columns first
-    a.day,
-    a.day_month,
+    a.block_date,
+    a.block_month,
     
     -- Pool fee data
     a.pool_name,
