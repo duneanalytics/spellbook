@@ -36,18 +36,17 @@ SELECT
     , to_tron_address(tx.to) as tx_to_varchar
     , t.value AS amount_raw
 FROM {{ source('erc20_tron','evt_Transfer') }} t
-INNER JOIN {{ source('tron','transactions') }} tx ON
-    tx.block_time = t.evt_block_time -- raw base tables partitioned by time
+INNER JOIN {{ source('tron','transactions') }} tx 
+    ON tx.block_date = t.evt_block_date
+    AND tx.block_time = t.evt_block_time 
     AND tx.block_number = t.evt_block_number
     AND tx.hash = t.evt_tx_hash
-    
     {% if is_incremental() %}
     AND {{incremental_predicate('tx.block_time')}}
     {% endif %}
 {% if is_incremental() %}
 WHERE {{incremental_predicate('t.evt_block_time')}}
 {% endif %}
-WHERE tx.block_time >= now() - interval '2' day
 
 UNION ALL
 
@@ -79,7 +78,6 @@ SELECT
 FROM {{ source('tron','transactions') }} tx
 WHERE tx.success = true
     AND tx.value > UINT256 '0'
-    AND tx.block_time >= now() - interval '2' day
     {% if is_incremental() %}
     AND {{incremental_predicate('tx.block_time')}}
     {% endif %}
