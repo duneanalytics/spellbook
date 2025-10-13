@@ -41,10 +41,10 @@ INNER JOIN {{ source('tron','transactions') }} tx
     AND tx.block_time = t.evt_block_time 
     AND tx.block_number = t.evt_block_number
     AND tx.hash = t.evt_tx_hash
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
     AND {{incremental_predicate('tx.block_time')}}
     {% endif %}
-{% if is_incremental() %}
+{% if is_incremental() or true %}
 WHERE {{incremental_predicate('t.evt_block_time')}}
 {% endif %}
 
@@ -78,6 +78,6 @@ SELECT
 FROM {{ source('tron','transactions') }} tx
 WHERE tx.success = true
     AND tx.value > UINT256 '0'
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
     AND {{incremental_predicate('tx.block_time')}}
     {% endif %}
