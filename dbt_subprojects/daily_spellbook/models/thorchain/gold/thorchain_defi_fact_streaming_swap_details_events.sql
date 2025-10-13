@@ -30,7 +30,7 @@ WITH base AS (
     block_time  -- Keep for incremental predicate
   FROM
     {{ ref('thorchain_silver_streaming_swap_details_events') }}
-  WHERE block_time >= current_date - interval '7' day
+  WHERE block_time >= current_date - interval '15' day
 )
 
 SELECT

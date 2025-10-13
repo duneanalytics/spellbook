@@ -16,7 +16,7 @@ WITH block_prices AS (
         p.block_id  -- Using block_id from prices model
     FROM {{ ref('thorchain_silver_prices') }} p
     WHERE p.symbol = 'RUNE'
-      AND p.block_time >= current_date - interval '7' day
+      AND p.block_time >= current_date - interval '15' day
     GROUP BY p.block_id
 ),
 
@@ -41,7 +41,7 @@ pool_rewards AS (
         ON ree.block_time = cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)
     LEFT JOIN block_prices bp
         ON b.height = bp.block_id
-    WHERE ree.block_time >= current_date - interval '7' day
+    WHERE ree.block_time >= current_date - interval '15' day
 ),
 
 -- SECTION 2: Bond holder rewards (using bond_events as source) - ADAPTED FLIPSIDE LOGIC
@@ -65,7 +65,7 @@ bond_rewards AS (
         ON be.block_time = cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)
     LEFT JOIN block_prices bp
         ON b.height = bp.block_id
-    WHERE be.block_time >= current_date - interval '7' day
+    WHERE be.block_time >= current_date - interval '15' day
       AND be.bond_type IN ('bond_reward', 'reward')  -- Filter for earnings-type bonds
 ),
 

@@ -20,7 +20,7 @@ WITH base AS (
         raw_block_timestamp,
         _inserted_timestamp
     FROM {{ ref('thorchain_silver_block_pool_depths') }}
-    WHERE block_time >= current_date - interval '7' day
+    WHERE block_time >= current_date - interval '15' day
 )
 
 SELECT

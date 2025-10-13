@@ -549,7 +549,7 @@ models:
         data_tests:
           - unique
           - not_null
-      - name: block_timestamp
+      - name: block_time
         description: "Block timestamp"
         data_tests:
           - not_null

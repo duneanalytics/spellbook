@@ -27,7 +27,7 @@ WITH base AS (
     block_time  -- Keep for incremental predicate
   FROM
     {{ ref('thorchain_silver_add_events') }}
-  WHERE block_time >= current_date - interval '10' day
+  WHERE block_time >= current_date - interval '15' day
 )
 
 SELECT
