@@ -57,7 +57,6 @@ select
     , cast(null as uint256) as taking_amount
 
     , cast(null as array(varbinary)) as remains
-    , cast(null as map(varchar, boolean)) as flags
     , map_from_entries(array[
         ('direct', false)
         , ('fusion', true)
