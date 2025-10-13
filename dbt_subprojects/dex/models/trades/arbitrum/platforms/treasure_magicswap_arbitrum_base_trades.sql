@@ -25,6 +25,7 @@ latest_token0 AS (
 ),
 
 token1_calls AS (
+
   SELECT contract_address AS pool_address, output_0 AS token1_address, call_block_time, call_block_number
   FROM "delta_prod"."treasure_magicswap_arbitrum"."magicgflypair_call_token1"
   WHERE call_success = TRUE
@@ -37,7 +38,7 @@ token1_calls AS (
 latest_token1 AS (
   SELECT pool_address, token1_address,
          ROW_NUMBER() OVER (PARTITION BY pool_address ORDER BY call_block_number DESC, call_block_time DESC) AS rn
-  FROM token1_calls
+  FROM token1_calls  
 ),
 
 pool_tokens AS (
