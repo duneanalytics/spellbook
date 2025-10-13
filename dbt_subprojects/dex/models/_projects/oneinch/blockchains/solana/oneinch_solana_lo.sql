@@ -14,7 +14,7 @@
 }}
 
 {% set meta = oneinch_meta_cfg_macro()['blockchains'] %}
-{% set chain_id = meta['blockchains']['chain_id'][blockchain] %}
+{% set chain_id = meta['chain_id'][blockchain] %}
 
 -- temporary implementation -- TO DO: redesign to streams logic
 
