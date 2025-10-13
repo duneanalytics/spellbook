@@ -198,3 +198,11 @@ sources:
   - name: native_arbitrum
     tables:
       - name: NativeRFQPool_evt_RFQTrade
+  - name: treasure_magicswap_arbitrum
+    tables:
+      - name: magicgflypair_call_token0
+      - name: magicgflypair_call_token1
+      - name: magicgflypair_evt_swap
+      - name: magicelmpair_evt_swap
+      - name: magicelmpair_call_token1
+      - name: magicelmpair_call_token0
