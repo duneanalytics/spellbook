@@ -235,16 +235,16 @@ unstake_umc AS (
 stake_umc AS (
     SELECT
         DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)) AS block_date,
-        a.rune_addr AS address,
+        a.rune_address AS address,
         a.pool_name,
         SUM(a.stake_units) AS liquidity_units
     FROM {{ ref('thorchain_silver_stake_events') }} a
     JOIN {{ source('thorchain', 'block_log') }} b
         ON a.block_time = cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)
-    WHERE a.rune_addr IS NOT NULL
+    WHERE a.rune_address IS NOT NULL
         AND cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '15' day
     GROUP BY
-        a.rune_addr,
+        a.rune_address,
         a.pool_name,
         DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp))
     
@@ -252,17 +252,17 @@ stake_umc AS (
     
     SELECT
         DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)) AS block_date,
-        a.asset_addr AS address,
+        a.asset_address AS address,
         a.pool_name,
         SUM(a.stake_units) AS liquidity_units
     FROM {{ ref('thorchain_silver_stake_events') }} a
     JOIN {{ source('thorchain', 'block_log') }} b
         ON a.block_time = cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)
-    WHERE a.asset_addr IS NOT NULL
-        AND a.rune_addr IS NULL
+    WHERE a.asset_address IS NOT NULL
+        AND a.rune_address IS NULL
         AND cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '15' day
     GROUP BY
-        a.asset_addr,
+        a.asset_address,
         a.pool_name,
         DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp))
 ),
