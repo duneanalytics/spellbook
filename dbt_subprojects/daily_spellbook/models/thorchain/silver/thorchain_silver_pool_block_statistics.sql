@@ -372,6 +372,25 @@ joined AS (
         ON pd.pool_name = umc.pool_name AND pd.block_date = umc.block_date
 )
 
+-- Pre-calculate window functions to avoid nesting
+, with_window_calcs AS (
+    SELECT
+        *,
+        SUM(daily_stake_change) OVER (
+            PARTITION BY asset
+            ORDER BY block_date ASC
+        ) AS total_stake,
+        
+        -- Synth units calculation
+        CASE 
+            WHEN synth_depth = 0 OR (CAST(asset_depth AS DOUBLE) * 2 - CAST(synth_depth AS DOUBLE)) = 0 THEN 0
+            ELSE (SUM(daily_stake_change) OVER (PARTITION BY asset ORDER BY block_date ASC)) 
+                 * CAST(synth_depth AS DOUBLE) 
+                 / ((CAST(asset_depth AS DOUBLE) * 2) - CAST(synth_depth AS DOUBLE))
+        END AS synth_units
+    FROM joined
+)
+
 SELECT DISTINCT
     block_date,
     block_month,
@@ -407,60 +426,27 @@ SELECT DISTINCT
     withdraw_rune_volume,
     withdraw_volume,
     
-    -- Complex calculations with proper window functions - FULL FLIPSIDE LOGIC
-    SUM(daily_stake_change) OVER (
-        PARTITION BY asset
-        ORDER BY block_date ASC
-    ) AS total_stake,
-    
+    -- Window functions already calculated
+    total_stake,
     depth_product,
+    synth_units,
     
-    -- Synth units calculation with safe casting (original FlipsideCrypto formula)
-    CASE 
-        WHEN synth_depth = 0 OR (CAST(asset_depth AS DOUBLE) * 2 - CAST(synth_depth AS DOUBLE)) = 0 THEN 0
-        ELSE (SUM(daily_stake_change) OVER (PARTITION BY asset ORDER BY block_date ASC)) 
-             * CAST(synth_depth AS DOUBLE) 
-             / ((CAST(asset_depth AS DOUBLE) * 2) - CAST(synth_depth AS DOUBLE))
-    END AS synth_units,
+    -- Pool units = total_stake + synth_units
+    total_stake + synth_units AS pool_units,
     
-    -- Pool units = total_stake + synth_units (original FlipsideCrypto formula)
-    (SUM(daily_stake_change) OVER (PARTITION BY asset ORDER BY block_date ASC)) 
-    + CASE 
-        WHEN synth_depth = 0 OR (CAST(asset_depth AS DOUBLE) * 2 - CAST(synth_depth AS DOUBLE)) = 0 THEN 0
-        ELSE (SUM(daily_stake_change) OVER (PARTITION BY asset ORDER BY block_date ASC)) 
-             * CAST(synth_depth AS DOUBLE) 
-             / ((CAST(asset_depth AS DOUBLE) * 2) - CAST(synth_depth AS DOUBLE))
-    END AS pool_units,
-    
-    -- Liquidity unit value index with safe SQRT (original FlipsideCrypto formula)
+    -- Liquidity unit value index with safe SQRT
     CASE
-        WHEN (SUM(daily_stake_change) OVER (PARTITION BY asset ORDER BY block_date ASC)) = 0 THEN 0
+        WHEN total_stake = 0 THEN 0
         WHEN depth_product < 0 THEN 0
-        ELSE SQRT(depth_product) / (
-            (SUM(daily_stake_change) OVER (PARTITION BY asset ORDER BY block_date ASC)) 
-            + CASE 
-                WHEN synth_depth = 0 OR (CAST(asset_depth AS DOUBLE) * 2 - CAST(synth_depth AS DOUBLE)) = 0 THEN 0
-                ELSE (SUM(daily_stake_change) OVER (PARTITION BY asset ORDER BY block_date ASC)) 
-                     * CAST(synth_depth AS DOUBLE) 
-                     / ((CAST(asset_depth AS DOUBLE) * 2) - CAST(synth_depth AS DOUBLE))
-            END
-        )
+        ELSE SQRT(depth_product) / (total_stake + synth_units)
     END AS liquidity_unit_value_index,
     
-    -- Previous liquidity unit value index with LAG (original FlipsideCrypto formula)
+    -- Previous liquidity unit value index with LAG (no nested windows!)
     LAG(
         CASE
-            WHEN (SUM(daily_stake_change) OVER (PARTITION BY asset ORDER BY block_date ASC)) = 0 THEN 0
+            WHEN total_stake = 0 THEN 0
             WHEN depth_product < 0 THEN 0
-            ELSE SQRT(depth_product) / (
-                (SUM(daily_stake_change) OVER (PARTITION BY asset ORDER BY block_date ASC)) 
-                + CASE 
-                    WHEN synth_depth = 0 OR (CAST(asset_depth AS DOUBLE) * 2 - CAST(synth_depth AS DOUBLE)) = 0 THEN 0
-                    ELSE (SUM(daily_stake_change) OVER (PARTITION BY asset ORDER BY block_date ASC)) 
-                         * CAST(synth_depth AS DOUBLE) 
-                         / ((CAST(asset_depth AS DOUBLE) * 2) - CAST(synth_depth AS DOUBLE))
-                END
-            )
+            ELSE SQRT(depth_product) / (total_stake + synth_units)
         END,
         1
     ) OVER (
@@ -473,7 +459,7 @@ SELECT DISTINCT
         '-',
         asset
     ) AS _unique_key
-FROM joined
+FROM with_window_calcs
 {% if is_incremental() %}
 WHERE {{ incremental_predicate('block_month') }}
 {% endif %}
