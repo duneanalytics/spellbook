@@ -23,6 +23,7 @@ WITH pool_depth AS (
     FROM (
         SELECT
             DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)) AS block_date,
+            date_trunc('month', cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)) AS block_month,
             b.height AS block_id,
             a.pool_name,
             a.rune_e8 AS rune_depth,
