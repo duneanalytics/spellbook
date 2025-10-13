@@ -214,6 +214,88 @@ stake_amount AS (
         a.pool_name
 ),
 
+-- FLIPSIDE ORIGINAL: Unstake tracking for unique member count
+unstake_umc AS (
+    SELECT
+        DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)) AS block_date,
+        a.from_addr AS address,
+        a.pool AS pool_name,
+        SUM(a.stake_units) AS unstake_liquidity_units
+    FROM {{ ref('thorchain_silver_withdraw_events') }} a
+    JOIN {{ source('thorchain', 'block_log') }} b
+        ON a.raw_block_timestamp = b.timestamp
+    WHERE cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '15' day
+    GROUP BY
+        a.from_addr,
+        a.pool,
+        DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp))
+),
+
+-- FLIPSIDE ORIGINAL: Stake tracking for unique member count (split by rune/asset address)
+stake_umc AS (
+    SELECT
+        DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)) AS block_date,
+        a.rune_addr AS address,
+        a.pool_name,
+        SUM(a.stake_units) AS liquidity_units
+    FROM {{ ref('thorchain_silver_stake_events') }} a
+    JOIN {{ source('thorchain', 'block_log') }} b
+        ON a.block_time = cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)
+    WHERE a.rune_addr IS NOT NULL
+        AND cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '15' day
+    GROUP BY
+        a.rune_addr,
+        a.pool_name,
+        DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp))
+    
+    UNION ALL
+    
+    SELECT
+        DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)) AS block_date,
+        a.asset_addr AS address,
+        a.pool_name,
+        SUM(a.stake_units) AS liquidity_units
+    FROM {{ ref('thorchain_silver_stake_events') }} a
+    JOIN {{ source('thorchain', 'block_log') }} b
+        ON a.block_time = cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)
+    WHERE a.asset_addr IS NOT NULL
+        AND a.rune_addr IS NULL
+        AND cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '15' day
+    GROUP BY
+        a.asset_addr,
+        a.pool_name,
+        DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp))
+),
+
+-- FLIPSIDE ORIGINAL: Count unique members with net positive positions
+unique_member_count AS (
+    SELECT
+        block_date,
+        pool_name,
+        COUNT(DISTINCT address) AS unique_member_count
+    FROM (
+        SELECT
+            stake_umc.block_date,
+            stake_umc.pool_name,
+            stake_umc.address,
+            stake_umc.liquidity_units,
+            CASE
+                WHEN unstake_umc.unstake_liquidity_units IS NOT NULL 
+                    THEN unstake_umc.unstake_liquidity_units
+                ELSE 0
+            END AS unstake_liquidity_units
+        FROM stake_umc
+        LEFT JOIN unstake_umc
+            ON stake_umc.address = unstake_umc.address
+            AND stake_umc.pool_name = unstake_umc.pool_name
+            AND stake_umc.block_date = unstake_umc.block_date
+    )
+    WHERE liquidity_units - unstake_liquidity_units > 0
+    GROUP BY
+        pool_name,
+        block_date
+),
+
 asset_price_usd_tbl AS (
     SELECT
         date(p.block_time) AS block_date,
@@ -253,14 +335,14 @@ joined AS (
         COALESCE(trt.to_rune_fees, 0) AS to_rune_fees,
         COALESCE(trt.to_rune_volume, 0) AS to_rune_volume,
         COALESCE(trt.to_rune_fees + tat.to_asset_fees, 0) AS total_fees,
-        0 AS unique_member_count,  -- Complex windowing logic - will implement if needed
+        COALESCE(umc.unique_member_count, 0) AS unique_member_count,
         COALESCE(ust.unique_swapper_count, 0) AS unique_swapper_count,
         COALESCE(sa.units, 0) AS units,
         COALESCE(wt.withdraw_asset_volume, 0) AS withdraw_asset_volume,
         COALESCE(wt.withdraw_count, 0) AS withdraw_count,
         COALESCE(wt.withdraw_rune_volume, 0) AS withdraw_rune_volume,
         COALESCE(wt.withdraw_rune_volume + wt.withdraw_asset_volume, 0) AS withdraw_volume,
-        pd.asset_depth * COALESCE(pd.rune_depth, 0) AS depth_product,
+        CAST(pd.asset_depth AS DOUBLE) * CAST(COALESCE(pd.rune_depth, 0) AS DOUBLE) AS depth_product,
         
         -- Daily stake changes (will calculate running total in outer SELECT)
         COALESCE(alt.added_stake, 0) - COALESCE(wt.withdrawn_stake, 0) AS daily_stake_change
@@ -286,6 +368,8 @@ joined AS (
         ON pd.pool_name = ast.pool_name AND pd.block_date = ast.block_date  
     LEFT JOIN asset_price_usd_tbl apt
         ON pd.pool_name = apt.pool_name AND pd.block_date = apt.block_date
+    LEFT JOIN unique_member_count umc
+        ON pd.pool_name = umc.pool_name AND pd.block_date = umc.block_date
 )
 
 SELECT DISTINCT
@@ -323,7 +407,7 @@ SELECT DISTINCT
     withdraw_rune_volume,
     withdraw_volume,
     
-    -- Complex calculations with proper window functions (simplified for dbt parsing)
+    -- Complex calculations with proper window functions - FULL FLIPSIDE LOGIC
     SUM(daily_stake_change) OVER (
         PARTITION BY asset
         ORDER BY block_date ASC
@@ -331,11 +415,58 @@ SELECT DISTINCT
     
     depth_product,
     
-    -- Simplified calculations for dbt compatibility (can be made more complex later)
-    0 AS synth_units,  -- TODO: Implement total_stake * synth_depth / ((asset_depth * 2) - synth_depth)
-    0 AS pool_units,   -- TODO: Implement total_stake + synth_units  
-    0 AS liquidity_unit_value_index,  -- TODO: Implement SQRT(depth_product) / pool_units
-    0 AS prev_liquidity_unit_value_index,  -- TODO: Implement LAG of liquidity_unit_value_index
+    -- Synth units calculation with safe casting (original FlipsideCrypto formula)
+    CASE 
+        WHEN synth_depth = 0 OR (CAST(asset_depth AS DOUBLE) * 2 - CAST(synth_depth AS DOUBLE)) = 0 THEN 0
+        ELSE (SUM(daily_stake_change) OVER (PARTITION BY asset ORDER BY block_date ASC)) 
+             * CAST(synth_depth AS DOUBLE) 
+             / ((CAST(asset_depth AS DOUBLE) * 2) - CAST(synth_depth AS DOUBLE))
+    END AS synth_units,
+    
+    -- Pool units = total_stake + synth_units (original FlipsideCrypto formula)
+    (SUM(daily_stake_change) OVER (PARTITION BY asset ORDER BY block_date ASC)) 
+    + CASE 
+        WHEN synth_depth = 0 OR (CAST(asset_depth AS DOUBLE) * 2 - CAST(synth_depth AS DOUBLE)) = 0 THEN 0
+        ELSE (SUM(daily_stake_change) OVER (PARTITION BY asset ORDER BY block_date ASC)) 
+             * CAST(synth_depth AS DOUBLE) 
+             / ((CAST(asset_depth AS DOUBLE) * 2) - CAST(synth_depth AS DOUBLE))
+    END AS pool_units,
+    
+    -- Liquidity unit value index with safe SQRT (original FlipsideCrypto formula)
+    CASE
+        WHEN (SUM(daily_stake_change) OVER (PARTITION BY asset ORDER BY block_date ASC)) = 0 THEN 0
+        WHEN depth_product < 0 THEN 0
+        ELSE SQRT(depth_product) / (
+            (SUM(daily_stake_change) OVER (PARTITION BY asset ORDER BY block_date ASC)) 
+            + CASE 
+                WHEN synth_depth = 0 OR (CAST(asset_depth AS DOUBLE) * 2 - CAST(synth_depth AS DOUBLE)) = 0 THEN 0
+                ELSE (SUM(daily_stake_change) OVER (PARTITION BY asset ORDER BY block_date ASC)) 
+                     * CAST(synth_depth AS DOUBLE) 
+                     / ((CAST(asset_depth AS DOUBLE) * 2) - CAST(synth_depth AS DOUBLE))
+            END
+        )
+    END AS liquidity_unit_value_index,
+    
+    -- Previous liquidity unit value index with LAG (original FlipsideCrypto formula)
+    LAG(
+        CASE
+            WHEN (SUM(daily_stake_change) OVER (PARTITION BY asset ORDER BY block_date ASC)) = 0 THEN 0
+            WHEN depth_product < 0 THEN 0
+            ELSE SQRT(depth_product) / (
+                (SUM(daily_stake_change) OVER (PARTITION BY asset ORDER BY block_date ASC)) 
+                + CASE 
+                    WHEN synth_depth = 0 OR (CAST(asset_depth AS DOUBLE) * 2 - CAST(synth_depth AS DOUBLE)) = 0 THEN 0
+                    ELSE (SUM(daily_stake_change) OVER (PARTITION BY asset ORDER BY block_date ASC)) 
+                         * CAST(synth_depth AS DOUBLE) 
+                         / ((CAST(asset_depth AS DOUBLE) * 2) - CAST(synth_depth AS DOUBLE))
+                END
+            )
+        END,
+        1
+    ) OVER (
+        PARTITION BY asset
+        ORDER BY block_date ASC
+    ) AS prev_liquidity_unit_value_index,
     
     concat(
         cast(block_date as varchar),
