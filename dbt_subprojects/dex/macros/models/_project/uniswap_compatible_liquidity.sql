@@ -455,6 +455,23 @@ swap_events as (
     {%- endif %}
 ),
 
+swap_fees_paid as (
+    select 
+        evt_tx_from as tx_from
+        , evt_block_time
+        , evt_block_number 
+        , evt_tx_hash 
+        , evt_index 
+        , id 
+        , if (amount0 < int256 '0', abs(amount0) * fee/1e6, 0) as amount0
+        , if (amount1 < int256 '0', abs(amount1) * fee/1e6, 0) as amount1
+    from 
+    {{ PoolManager_evt_Swap }}
+    {%- if is_incremental() %}
+    where {{ incremental_predicate('evt_block_time') }}
+    {%- endif %}
+),
+
 liquidity_change_base as (
     select 
         ml.id
@@ -500,6 +517,26 @@ liquidity_change_base as (
         , se.salt
     from 
     swap_events se
+    inner join 
+    get_pools gp 
+        on se.id = gp.id 
+
+    union all 
+
+    select 
+        se.id
+        , se.tx_from 
+        , se.evt_block_time as block_time
+        , se.evt_block_number as block_number 
+        , se.evt_tx_hash as tx_hash 
+        , se.evt_index 
+        , 'swap_fees_paid' as event_type 
+        , gp.token0 
+        , gp.token1 
+        , se.amount0 
+        , se.amount1 
+    from 
+    swap_fees_paid se
     inner join 
     get_pools gp 
         on se.id = gp.id 
