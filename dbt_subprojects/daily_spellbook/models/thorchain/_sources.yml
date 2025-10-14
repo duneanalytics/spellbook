@@ -1309,6 +1309,7 @@ sources:
             description: "Source file path"
 
       - name: slash_amounts
+        identifier: slash_amounts_events
         description: "Slash amounts from Thorchain (validator penalties/slashing)"
         columns:
           - name: pool
@@ -1329,6 +1330,7 @@ sources:
             description: "Source file path"
 
       - name: slash_points
+        identifier: slash_points_events
         description: "Slash points from Thorchain (validator penalty points)"
         columns:
           - name: node_address
