@@ -1179,6 +1179,53 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
+  - name: thorchain_defi_fact_bond_actions
+    description: "DeFi fact table for Thorchain bond actions (node bonding with USD values)"
+    columns:
+      - name: fact_bond_actions_id
+        description: "Unique identifier for the bond action"
+        data_tests:
+          - unique
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: block_timestamp
+        description: "Block timestamp (unix nanoseconds)"
+      - name: block_month
+        description: "Block month (for partitioning)"
+      - name: dim_block_id
+        description: "Foreign key to dim_block"
+      - name: tx_id
+        description: "Transaction ID"
+      - name: from_address
+        description: "From address"
+      - name: to_address
+        description: "To address"
+      - name: asset
+        description: "Asset identifier"
+      - name: blockchain
+        description: "Blockchain"
+      - name: bond_type
+        description: "Bond type"
+      - name: asset_amount
+        description: "Asset amount (decimal)"
+      - name: asset_usd
+        description: "Asset value in USD"
+      - name: memo
+        description: "Transaction memo"
+      - name: event_id
+        description: "Unique event identifier"
+      - name: _tx_type
+        description: "Transaction type"
+      - name: _audit_run_id
+        description: "Audit run identifier"
+      - name: inserted_timestamp
+        description: "Record creation timestamp"
+      - name: modified_timestamp
+        description: "Record modification timestamp"
+
   - name: thorchain_defi_fact_pending_liquidity_events
     description: "DeFi fact table for Thorchain pending liquidity events"
     columns:
@@ -1256,6 +1303,78 @@ models:
         description: "Pool status"
       - name: event_id
         description: "Unique event identifier"
+      - name: _audit_run_id
+        description: "Audit run identifier"
+      - name: inserted_timestamp
+        description: "Record creation timestamp"
+      - name: modified_timestamp
+        description: "Record modification timestamp"
+
+  - name: thorchain_defi_fact_total_value_locked
+    description: "DeFi fact table for Thorchain total value locked (TVL) - daily aggregation"
+    columns:
+      - name: fact_total_value_locked_id
+        description: "Unique identifier for the TVL record"
+        data_tests:
+          - unique
+          - not_null
+      - name: day
+        description: "Date (alias for block_date)"
+        data_tests:
+          - not_null
+      - name: block_date
+        description: "Block date"
+        data_tests:
+          - not_null
+      - name: block_month
+        description: "Block month (for partitioning)"
+      - name: total_value_pooled
+        description: "Total value pooled in liquidity pools (RUNE)"
+      - name: total_value_bonded
+        description: "Cumulative total value bonded by nodes (RUNE)"
+      - name: total_value_locked
+        description: "Total value locked (pooled + bonded, RUNE)"
+      - name: _audit_run_id
+        description: "Audit run identifier"
+      - name: inserted_timestamp
+        description: "Record creation timestamp"
+      - name: modified_timestamp
+        description: "Record modification timestamp"
+
+  - name: thorchain_defi_fact_upgrades
+    description: "DeFi fact table for Thorchain upgrades (token upgrades/switches with USD values)"
+    columns:
+      - name: fact_upgrades_id
+        description: "Unique identifier for the upgrade"
+        data_tests:
+          - unique
+          - not_null
+      - name: block_time
+        description: "Block timestamp"
+        data_tests:
+          - not_null
+      - name: block_timestamp
+        description: "Block timestamp (unix nanoseconds)"
+      - name: block_month
+        description: "Block month (for partitioning)"
+      - name: dim_block_id
+        description: "Foreign key to dim_block"
+      - name: tx_id
+        description: "Transaction ID"
+      - name: from_address
+        description: "From address"
+      - name: to_address
+        description: "To address"
+      - name: burn_asset
+        description: "Burned asset"
+      - name: rune_amount
+        description: "RUNE amount (decimal)"
+      - name: rune_amount_usd
+        description: "RUNE amount in USD"
+      - name: mint_amount
+        description: "Mint amount (decimal)"
+      - name: mint_amount_usd
+        description: "Mint amount in USD"
       - name: _audit_run_id
         description: "Audit run identifier"
       - name: inserted_timestamp
@@ -2207,6 +2326,39 @@ models:
         description: "Constant key/name"
       - name: value
         description: "Constant value"
+
+  - name: thorchain_silver_upgrades
+    description: "Silver table for Thorchain upgrades (switch events with pricing)"
+    columns:
+      - name: _unique_key
+        description: "Composite unique key"
+        data_tests:
+          - unique
+          - not_null
+      - name: block_id
+        description: "Block ID"
+      - name: block_time
+        description: "Block timestamp"
+      - name: block_date
+        description: "Block date"
+      - name: block_month
+        description: "Block month (for partitioning)"
+      - name: tx_id
+        description: "Transaction ID"
+      - name: from_address
+        description: "From address"
+      - name: to_address
+        description: "To address"
+      - name: burn_asset
+        description: "Burned asset"
+      - name: rune_amount
+        description: "RUNE amount (decimal)"
+      - name: rune_amount_usd
+        description: "RUNE amount in USD"
+      - name: mint_amount
+        description: "Mint amount (decimal)"
+      - name: mint_amount_usd
+        description: "Mint amount in USD"
 
   - name: thorchain_silver_stake_events
     description: "Silver table for Thorchain stake events"

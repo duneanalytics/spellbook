@@ -814,26 +814,6 @@ sources:
           - name: _source_file_path
             description: "Source file path"
 
-      - name: update_node_account_status_events
-        description: "Update node account status events from Thorchain (node status transitions)"
-        columns:
-          - name: node_addr
-            description: "Node address"
-          - name: current_flag
-            description: "Current node status"
-          - name: former
-            description: "Former node status"
-          - name: block_timestamp
-            description: "Block timestamp"
-          - name: event_id
-            description: "Unique event identifier"
-          - name: _updated_at
-            description: "Record update timestamp"
-          - name: _ingested_at
-            description: "Record ingestion timestamp"
-          - name: _source_file_path
-            description: "Source file path"
-
       - name: active_vault_events
         description: "Active vault events from Thorchain (Asgard vault lifecycle)"
         columns:
