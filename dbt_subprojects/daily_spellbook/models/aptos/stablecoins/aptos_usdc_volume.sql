@@ -117,7 +117,7 @@ SELECT
     event_index,
     activity_type,
     amount,
-    fungible_store, -- storage_id
+    fungible_store, -- storage_id converted to hex
     store_owner
 FROM final
 WHERE 1=1

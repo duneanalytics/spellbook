@@ -46,7 +46,7 @@ WITH bridge AS (
         WHEN event_type = '0x1::fungible_asset::Deposit' THEN 'Deposit'
         END AS activity_type,
         amount,
-        storage_id AS fungible_store,
+        from_hex(storage_id) AS fungible_store,
         owner_address AS store_owner
         -- -- need fab or more parsing to get below info
         -- is_primary,
