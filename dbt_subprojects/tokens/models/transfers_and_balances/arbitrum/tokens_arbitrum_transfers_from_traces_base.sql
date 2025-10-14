@@ -13,4 +13,4 @@
     )
 }}
 
-{{ transfers_from_traces_base_macro(blockchain=blockchain, easy_dates=true) }}
+{{ transfers_from_traces_base_macro(blockchain=blockchain) }}
