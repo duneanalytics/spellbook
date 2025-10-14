@@ -39,8 +39,8 @@ select
     , token_standard
     , contract_address
     , amount_raw
-    , transfer_from
-    , transfer_to
+    , "from"
+    , "to"
     , unique_key
 from({% for blockchain in exposed %}
     select * from {{ ref('tokens_' + blockchain + '_transfers_from_traces') }}
