@@ -43,6 +43,7 @@ SELECT
     asset,
     status,
     event_id,
+    block_timestamp,  -- Added for gold layer join
     block_time,
     block_date,
     block_month,
