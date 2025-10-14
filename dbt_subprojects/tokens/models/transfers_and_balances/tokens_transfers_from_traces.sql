@@ -1,18 +1,4 @@
-{%- set exposed = [
-    "arbitrum",
-    "avalanche_c",
-    "base",
-    "bnb",
-    "ethereum",
-    "fantom",
-    "gnosis",
-    "linea",
-    "optimism",
-    "polygon",
-    "sonic",
-    "unichain",
-    "zksync",
-] -%}
+{%- set exposed = transfers_from_traces_exposed_blockchains_macro() -%}
 
 {{-
     config(
@@ -42,7 +28,7 @@ select
     , "from"
     , "to"
     , unique_key
-from({% for blockchain in exposed %}
+from ({% for blockchain in exposed %}
     select * from {{ ref('tokens_' + blockchain + '_transfers_from_traces') }}
     {% if not loop.last %}union all{% endif %}
 {% endfor %})
