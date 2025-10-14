@@ -1,4 +1,4 @@
-{%- set exposed: [
+{%- set exposed = [
     "arbitrum",
     "avalanche_c",
     "base",
