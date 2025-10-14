@@ -38,7 +38,7 @@ WITH coin_balances AS (
         AND move_resource_module = 'coin'
         AND move_resource_name = 'CoinStore'
         AND block_date < DATE('2025-08-05')  -- almost all migrated
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
         AND {{ incremental_predicate('block_time') }}
     {% endif %}
 ), fa_balance AS (
@@ -71,7 +71,7 @@ WITH coin_balances AS (
             AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
             AND move_resource_module = 'fungible_asset'
             AND move_resource_name = 'ConcurrentFungibleBalance'
-        {% if is_incremental() or true %}
+        {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
         {% endif %}
     ) c USING (tx_version, move_address)
@@ -86,7 +86,7 @@ WITH coin_balances AS (
             AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
             AND move_resource_module = 'object'
             AND move_resource_name = 'ObjectCore'
-        {% if is_incremental() or true %}
+        {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
         {% endif %}
     ) AS fs_owner USING(tx_version, move_address)
@@ -94,7 +94,7 @@ WITH coin_balances AS (
         AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
         AND move_resource_module = 'fungible_asset'
         AND move_resource_name = 'FungibleStore'
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
         AND {{ incremental_predicate('block_time') }}
     {% endif %}
 ), fs_deletion AS (
@@ -125,7 +125,7 @@ WITH coin_balances AS (
         AND ev.event_type = '0x1::fungible_asset::FungibleStoreDeletion'
         AND ev.block_date >= DATE('2025-04-28') -- date enabled
         AND mr.block_date >= DATE('2025-04-28') -- date enabled
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
         AND {{ incremental_predicate('ev.block_time') }}
         AND {{ incremental_predicate('mr.block_time') }}
     {% endif %}
