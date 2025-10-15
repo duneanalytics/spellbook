@@ -7,7 +7,7 @@
 		file_format = 'delta',
 		incremental_strategy = 'merge',
 		incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-		unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index','block_month']
+    	unique_key = ['block_month', 'surrogate_key']
 	)
 }}
 
@@ -111,6 +111,7 @@ with individual_program_swaps as (
 		'solana' as blockchain
 		, 'meteora' as project
 		, 4 as version
+    	, 'dbc' as version_name
 		, cast(date_trunc('month', sd.block_time) as date) as block_month
 		, sd.block_time
 		, sd.block_slot
@@ -131,6 +132,7 @@ with individual_program_swaps as (
 		, sd.outer_instruction_index
 		, sd.inner_instruction_index
 		, sd.tx_index
+    	, {{ dbt_utils.generate_surrogate_key(['sd.tx_id', 'sd.tx_index', 'sd.outer_instruction_index', 'sd.inner_instruction_index']) }} as surrogate_key
 	from
 		swap_details as sd
 	left join evt_deatils as evt
@@ -139,5 +141,4 @@ with individual_program_swaps as (
 		and sd.outer_instruction_index = evt.outer_instruction_index
 		and sd.rn = evt.rn
 )
-
 select * from swaps_table
