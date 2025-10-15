@@ -7,7 +7,6 @@
                                \'["joaobrunoah"]\') }}'
 )}}
 
-
 WITH token_data AS (
         SELECT
             pool,
