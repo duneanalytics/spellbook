@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['event_id', 'tx_id', 'blockchain', 'from_address', 'to_address', 'asset', 'memo', 'in_tx', 'block_timestamp'],
+    unique_key = ['event_id', 'blockchain', 'from_address', 'to_address', 'asset', 'memo', 'in_tx', 'block_timestamp'],
     partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     tags = ['thorchain', 'outbound_events', 'silver']
@@ -26,7 +26,7 @@ WITH deduplicated AS (
         _tx_type,
         _updated_at,
         ROW_NUMBER() OVER (
-            PARTITION BY event_id, tx, chain, from_addr, to_addr, asset, memo, in_tx, block_timestamp
+            PARTITION BY event_id, chain, from_addr, to_addr, asset, memo, in_tx, block_timestamp
             ORDER BY _updated_at DESC
         ) AS rn
     FROM {{ source('thorchain', 'outbound_events') }}

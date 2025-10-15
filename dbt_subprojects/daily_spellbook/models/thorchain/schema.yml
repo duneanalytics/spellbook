@@ -2059,7 +2059,7 @@ models:
   - name: thorchain_gov_fact_slash_events
     description: "Governance fact table for Thorchain slash events (validator penalties/slashing) - combined silver+gold"
     columns:
-      - name: fact_slash_amounts_id
+      - name: fact_slash_events_id
         description: "Unique identifier for the slash event"
         data_tests:
           - unique
@@ -2135,9 +2135,7 @@ models:
       - name: dim_block_id
         description: "Foreign key to block dimension"
       - name: tx_id
-        description: "Transaction hash"
-        data_tests:
-          - not_null
+        description: "Transaction hash (null for internal THOR blockchain transactions)"
       - name: blockchain
         description: "Blockchain"
       - name: from_address
@@ -2491,9 +2489,7 @@ models:
         data_tests:
           - not_null
       - name: tx_id
-        description: "Transaction hash"
-        data_tests:
-          - not_null
+        description: "Transaction hash (null for internal THOR blockchain transactions)"
       - name: blockchain
         description: "Blockchain"
       - name: from_address
