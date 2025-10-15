@@ -48,3 +48,5 @@ sources:
       - name: LBPool_evt_GradualWeightUpdateScheduled
 
       - name: GyroECLPPoolFactory_call_create
+
+      - name: ReclammPoolFactory_call_create
