@@ -16,7 +16,7 @@ WITH token_data AS (
                 pool,
                 tokenConfig,
                 SEQUENCE(1, CARDINALITY(tokenConfig)) AS token_index_array
-            FROM {{ source('balancer_v3_plasma', 'Vault_evt_poolregistered') }}
+            FROM {{ source('balancer_v3_plasma', 'Vault_evt_PoolRegistered') }}
         ) AS pool_data
         CROSS JOIN UNNEST(tokenConfig, token_index_array) AS t(token, token_index)
         GROUP BY 1
