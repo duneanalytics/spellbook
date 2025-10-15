@@ -121,6 +121,10 @@ WITH coin_balances AS (
             AND move_resource_module = 'object'
             AND move_resource_name = 'ObjectCore'
             AND mr.block_date = ev.block_date -- optimization
+            AND mr.block_date >= DATE('2025-04-28') -- date enabled
+            {% if is_incremental() -%}
+            AND {{ incremental_predicate('mr.block_time') }}
+            {% endif -%}
         WHERE 1=1
         AND ev.event_type = '0x1::fungible_asset::FungibleStoreDeletion'
         AND ev.block_date >= DATE('2025-04-28') -- date enabled
