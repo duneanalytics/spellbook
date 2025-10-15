@@ -130,7 +130,6 @@ WITH coin_balances AS (
         AND ev.block_date >= DATE('2025-04-28') -- date enabled
     {% if is_incremental() %}
         AND {{ incremental_predicate('ev.block_time') }}
-        AND {{ incremental_predicate('mr.block_time') }}
     {% endif %}
 )
 
