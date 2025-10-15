@@ -52,7 +52,7 @@ base AS (
         out_hash,
         max_gas_amount,
         max_gas_decimals,
-        max_gas_asset,
+        array_join(max_gas_asset, ',') AS max_gas_asset,
         module_name,
         vault_pub_key,
         event_id,

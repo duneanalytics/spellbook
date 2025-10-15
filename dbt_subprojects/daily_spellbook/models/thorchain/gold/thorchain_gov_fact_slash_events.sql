@@ -4,13 +4,12 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['fact_slash_amounts_id'],
+    unique_key = ['fact_slash_events_id'],
     partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     tags = ['thorchain', 'gov', 'slash_events', 'fact', 'governance']
 ) }}
 
--- Deduplication and gold layer combined (no silver layer needed)
 WITH deduplicated AS (
     SELECT
         pool AS pool_name,
@@ -23,7 +22,7 @@ WITH deduplicated AS (
             PARTITION BY event_id, pool, asset
             ORDER BY _ingested_at DESC
         ) AS rn
-    FROM {{ source('thorchain', 'slash_amounts') }}
+    FROM {{ source('thorchain', 'slash_events') }}
     WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '14' day
 ),
 
@@ -49,7 +48,7 @@ SELECT
         'a.event_id',
         'a.pool_name',
         'a.asset'
-    ]) }} AS fact_slash_amounts_id,
+    ]) }} AS fact_slash_events_id,
     b.block_time,
     b.block_timestamp,  -- Include for compatibility
     b.block_month,

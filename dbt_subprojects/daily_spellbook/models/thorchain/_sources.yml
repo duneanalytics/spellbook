@@ -1308,9 +1308,8 @@ sources:
           - name: _source_file_path
             description: "Source file path"
 
-      - name: slash_amounts
-        identifier: slash_amounts_events
-        description: "Slash amounts from Thorchain (validator penalties/slashing)"
+      - name: slash_events
+        description: "Slash amount events from Thorchain (validator penalties/slashing)"
         columns:
           - name: pool
             description: "Pool name"
