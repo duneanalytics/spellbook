@@ -128,7 +128,6 @@ WITH coin_balances AS (
         WHERE 1=1
         AND ev.event_type = '0x1::fungible_asset::FungibleStoreDeletion'
         AND ev.block_date >= DATE('2025-04-28') -- date enabled
-        AND mr.block_date >= DATE('2025-04-28') -- date enabled
     {% if is_incremental() %}
         AND {{ incremental_predicate('ev.block_time') }}
         AND {{ incremental_predicate('mr.block_time') }}
