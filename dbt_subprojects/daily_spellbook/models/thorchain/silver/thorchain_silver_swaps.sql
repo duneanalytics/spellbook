@@ -10,40 +10,50 @@
     tags = ['thorchain', 'swaps', 'curated']
 ) }}
 
--- Curated swaps rollup combining swap events with streaming swap details
-WITH swap_events AS (
+-- Get block heights for joining to prices
+WITH block_heights AS (
+    SELECT DISTINCT
+        CAST(from_unixtime(CAST(timestamp/1e9 AS bigint)) AS timestamp) AS block_time,
+        height AS block_id
+    FROM {{ source('thorchain','block_log') }}
+    WHERE CAST(from_unixtime(CAST(timestamp/1e9 AS bigint)) AS timestamp) >= current_date - interval '16' day
+),
+
+swap_events AS (
     SELECT 
-        tx_hash,
-        block_time,
-        block_date,
-        block_month,
-        block_hour,
-        chain,
-        from_addr,
-        to_addr,
-        from_asset,
-        from_asset_amount,
-        from_e8,
-        to_asset,
-        to_asset_amount,
-        to_e8,
-        memo,
-        pool,
-        to_e8_min_amount,
-        swap_slip_bp,
-        liq_fee_amount,
-        liq_fee_in_rune_amount,
-        direction,
-        streaming,
-        streaming_count,
-        streaming_quantity,
-        from_contract_address,
-        to_contract_address,
-        pool_chain,
-        pool_asset,
-        event_id,
+        se.tx_hash,
+        se.block_time,
+        se.block_date,
+        se.block_month,
+        se.block_hour,
+        se.chain,
+        se.from_addr,
+        se.to_addr,
+        se.from_asset,
+        se.from_asset_amount,
+        se.from_e8,
+        se.to_asset,
+        se.to_asset_amount,
+        se.to_e8,
+        se.memo,
+        se.pool,
+        se.to_e8_min_amount,
+        se.swap_slip_bp,
+        se.liq_fee_amount,
+        se.liq_fee_in_rune_amount,
+        se.direction,
+        se.streaming,
+        se.streaming_count,
+        se.streaming_quantity,
+        se.from_contract_address,
+        se.to_contract_address,
+        se.pool_chain,
+        se.pool_asset,
+        se.event_id,
+        bh.block_id,
         'swap_event' as source_table
     FROM {{ ref('thorchain_silver_swap_events') }} se
+    LEFT JOIN block_heights bh ON se.block_time = bh.block_time
     WHERE se.block_time >= current_date - interval '16' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('se.block_time') }}
@@ -52,20 +62,20 @@ WITH swap_events AS (
 
 streaming_swaps AS (
     SELECT 
-        tx_id as tx_hash,
-        block_time,
-        block_date,
-        block_month,
-        block_hour,
+        ss.tx_id as tx_hash,
+        ss.block_time,
+        ss.block_date,
+        ss.block_month,
+        ss.block_hour,
         null as chain,
         null as from_addr,
         null as to_addr,
-        in_asset as from_asset,
-        in_amount as from_asset_amount,
-        in_e8 as from_e8,
-        out_asset as to_asset,
-        out_amount as to_asset_amount,
-        out_e8 as to_e8,
+        ss.in_asset as from_asset,
+        ss.in_amount as from_asset_amount,
+        ss.in_e8 as from_e8,
+        ss.out_asset as to_asset,
+        ss.out_amount as to_asset_amount,
+        ss.out_e8 as to_e8,
         null as memo,
         null as pool,
         null as to_e8_min_amount,
@@ -74,15 +84,17 @@ streaming_swaps AS (
         null as liq_fee_in_rune_amount,
         null as direction,
         true as streaming,
-        stream_count as streaming_count,
-        quantity as streaming_quantity,
-        in_contract_address as from_contract_address,
-        out_contract_address as to_contract_address,
+        ss.stream_count as streaming_count,
+        ss.quantity as streaming_quantity,
+        ss.in_contract_address as from_contract_address,
+        ss.out_contract_address as to_contract_address,
         null as pool_chain,
         null as pool_asset,
-        event_id,
+        ss.event_id,
+        bh.block_id,
         'streaming_swap_event' as source_table
     FROM {{ ref('thorchain_silver_streaming_swap_details_events') }} ss
+    LEFT JOIN block_heights bh ON ss.block_time = bh.block_time
     WHERE ss.block_time >= current_date - interval '16' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('ss.block_time') }}
@@ -90,6 +102,7 @@ streaming_swaps AS (
 )
 
 -- Union all swap types
+-- Using Snowflake approach: join on block_id + pool_name
 SELECT 
     s.tx_hash,
     s.block_time,
@@ -122,14 +135,16 @@ SELECT
     s.event_id,
     s.source_table,
     
-    -- Calculate USD values with proper LEFT JOIN handling
-    (s.from_asset_amount / POWER(10,8)) * COALESCE(fp.price, 0) as from_amount_usd,
-    (s.to_asset_amount / POWER(10,8)) * COALESCE(tp.price, 0) as to_amount_usd,
+    -- Calculate USD values using pool-based prices (Snowflake approach)
+    -- Join on block_id + pool_name for accurate DEX pricing
+    s.from_asset_amount * COALESCE(p.asset_usd, p.rune_usd, 0) as from_amount_usd,
+    s.to_asset_amount * COALESCE(p.asset_usd, p.rune_usd, 0) as to_amount_usd,
     
     -- Trading metrics
     CASE 
-        WHEN COALESCE(fp.price, 0) * s.from_asset_amount > 0 
-        THEN (COALESCE(tp.price, 0) * s.to_asset_amount) / (COALESCE(fp.price, 1) * s.from_asset_amount)
+        WHEN COALESCE(p.asset_usd, p.rune_usd, 0) * s.from_asset_amount > 0 
+        THEN (COALESCE(p.asset_usd, p.rune_usd, 0) * s.to_asset_amount) / 
+             (COALESCE(p.asset_usd, p.rune_usd, 1) * s.from_asset_amount)
         ELSE null 
     END as price_impact,
     
@@ -140,22 +155,10 @@ SELECT
     END as involves_rune
 
 FROM swap_events s
--- Join from_asset price - use RUNE by symbol, others by contract_address
-LEFT JOIN {{ ref('thorchain_silver_prices') }} fp
-    ON fp.block_time <= s.block_time
-    AND fp.block_time >= s.block_time - interval '1' hour
-    AND (
-        (s.from_asset LIKE 'THOR.RUNE%' AND fp.symbol = 'RUNE') OR
-        (s.from_asset NOT LIKE 'THOR.RUNE%' AND fp.contract_address = s.from_contract_address)
-    )
--- Join to_asset price - use RUNE by symbol, others by contract_address  
-LEFT JOIN {{ ref('thorchain_silver_prices') }} tp
-    ON tp.block_time <= s.block_time
-    AND tp.block_time >= s.block_time - interval '1' hour
-    AND (
-        (s.to_asset LIKE 'THOR.RUNE%' AND tp.symbol = 'RUNE') OR
-        (s.to_asset NOT LIKE 'THOR.RUNE%' AND tp.contract_address = s.to_contract_address)
-    )
+-- Snowflake approach: simple join on block_id + pool_name
+LEFT JOIN {{ ref('thorchain_silver_prices') }} p
+    ON p.block_id = s.block_id
+    AND p.pool_name = s.pool
 
 UNION ALL
 
@@ -191,14 +194,15 @@ SELECT
     s.event_id,
     s.source_table,
     
-    -- Calculate USD values with proper LEFT JOIN handling
-    (s.from_asset_amount / POWER(10,8)) * COALESCE(fp.price, 0) as from_amount_usd,
-    (s.to_asset_amount / POWER(10,8)) * COALESCE(tp.price, 0) as to_amount_usd,
+    -- Calculate USD values using pool-based prices
+    s.from_asset_amount * COALESCE(p.asset_usd, p.rune_usd, 0) as from_amount_usd,
+    s.to_asset_amount * COALESCE(p.asset_usd, p.rune_usd, 0) as to_amount_usd,
     
     -- Trading metrics
     CASE 
-        WHEN COALESCE(fp.price, 0) * s.from_asset_amount > 0 
-        THEN (COALESCE(tp.price, 0) * s.to_asset_amount) / (COALESCE(fp.price, 1) * s.from_asset_amount)
+        WHEN COALESCE(p.asset_usd, p.rune_usd, 0) * s.from_asset_amount > 0 
+        THEN (COALESCE(p.asset_usd, p.rune_usd, 0) * s.to_asset_amount) / 
+             (COALESCE(p.asset_usd, p.rune_usd, 1) * s.from_asset_amount)
         ELSE null 
     END as price_impact,
     
@@ -209,19 +213,7 @@ SELECT
     END as involves_rune
 
 FROM streaming_swaps s
--- Join from_asset price - use RUNE by symbol, others by contract_address
-LEFT JOIN {{ ref('thorchain_silver_prices') }} fp
-    ON fp.block_time <= s.block_time
-    AND fp.block_time >= s.block_time - interval '1' hour
-    AND (
-        (s.from_asset LIKE 'THOR.RUNE%' AND fp.symbol = 'RUNE') OR
-        (s.from_asset NOT LIKE 'THOR.RUNE%' AND fp.contract_address = s.from_contract_address)
-    )
--- Join to_asset price - use RUNE by symbol, others by contract_address  
-LEFT JOIN {{ ref('thorchain_silver_prices') }} tp
-    ON tp.block_time <= s.block_time
-    AND tp.block_time >= s.block_time - interval '1' hour
-    AND (
-        (s.to_asset LIKE 'THOR.RUNE%' AND tp.symbol = 'RUNE') OR
-        (s.to_asset NOT LIKE 'THOR.RUNE%' AND tp.contract_address = s.to_contract_address)
-    )
+-- Snowflake approach: simple join on block_id + pool_name
+LEFT JOIN {{ ref('thorchain_silver_prices') }} p
+    ON p.block_id = s.block_id
+    AND p.pool_name = s.pool

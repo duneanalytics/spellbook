@@ -69,18 +69,38 @@ models:
         description: "Blockchain (thorchain)"
 
   - name: thorchain_silver_prices
-    description: "Combined price data for Thorchain tokens including RUNE and external assets"
+    description: "Pool-based price data calculated from ThorChain pool depths (Snowflake approach)"
     columns:
+      - name: block_id
+        description: "Block height"
+        data_tests:
+          - not_null
       - name: block_time
         description: "Block timestamp"
         data_tests:
           - not_null
-      - name: price
-        description: "Token price in USD"
+      - name: pool_name
+        description: "Pool identifier (e.g., 'BTC.BTC', 'ETH.ETH')"
+        data_tests:
+          - not_null
+      - name: price_rune_asset
+        description: "Price ratio: how much RUNE per 1 asset"
+      - name: price_asset_rune
+        description: "Price ratio: how much asset per 1 RUNE"
+      - name: asset_usd
+        description: "USD price of the asset (calculated from pool using rune_usd * (rune_e8 / asset_e8))"
+      - name: rune_usd
+        description: "USD price of RUNE"
+      - name: block_date
+        description: "Block date (for compatibility)"
+      - name: block_month
+        description: "Block month (for compatibility)"
       - name: symbol
-        description: "Token symbol"
+        description: "Token symbol derived from pool_name (for backward compatibility)"
       - name: contract_address
-        description: "Contract address for price joins"
+        description: "Contract address derived from pool_name (for backward compatibility)"
+      - name: blockchain
+        description: "Blockchain identifier (thorchain)"
 
   - name: thorchain_silver_add_events
     description: "Processed liquidity add events from Thorchain"
