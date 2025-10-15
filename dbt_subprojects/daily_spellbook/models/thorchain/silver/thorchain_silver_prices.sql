@@ -17,7 +17,7 @@ WITH blk AS (
     CAST(from_unixtime(CAST(timestamp/1e9 AS bigint)) AS timestamp) AS block_time,
     height                                                       AS block_id
   FROM {{ source('thorchain','block_log') }}
-  WHERE CAST(from_unixtime(CAST(timestamp/1e9 AS bigint)) AS timestamp) >= current_date - interval '14' day
+  WHERE CAST(from_unixtime(CAST(timestamp/1e9 AS bigint)) AS timestamp) >= current_date - interval '15' day
 ),
 
 -- RUNE price (has block_time; bring in height)
@@ -54,7 +54,7 @@ external_prices AS (
   WHERE p.blockchain = 'thorchain'
     AND p.price IS NOT NULL
     AND p.symbol <> 'RUNE'
-    AND p.minute >= current_date - interval '14' day
+    AND p.minute >= current_date - interval '15' day
 )
 
 SELECT block_time, block_date, block_month, block_id, price, symbol, blockchain, contract_address

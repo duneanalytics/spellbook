@@ -30,7 +30,7 @@ WITH deduplicated AS (
             ORDER BY _updated_at DESC
         ) AS rn
     FROM {{ source('thorchain', 'affiliate_fee_events') }}
-    WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '14' day
+    WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '15' day
 ),
 
 base AS (

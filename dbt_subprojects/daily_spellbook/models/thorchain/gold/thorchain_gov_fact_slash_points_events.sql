@@ -24,7 +24,7 @@ WITH deduplicated AS (
             ORDER BY _ingested_at DESC
         ) AS rn
     FROM {{ source('thorchain', 'slash_points') }}
-    WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '14' day
+    WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '15' day
 ),
 
 base AS (

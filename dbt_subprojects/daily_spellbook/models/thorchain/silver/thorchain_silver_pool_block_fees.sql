@@ -19,7 +19,7 @@ WITH all_block_id AS (
     FROM {{ ref('thorchain_silver_block_pool_depths') }} a
     JOIN {{ ref('thorchain_core_dim_block') }} b
         ON a.block_time = b.block_time
-    WHERE b.block_time >= current_date - interval '14' day
+    WHERE b.block_time >= current_date - interval '15' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('b.block_time') }}
     {% endif %}
@@ -36,7 +36,7 @@ total_pool_rewards_tbl AS (
     FROM {{ ref('thorchain_silver_rewards_event_entries') }} a
     JOIN {{ ref('thorchain_core_dim_block') }} b
         ON a.block_time = b.block_time
-    WHERE b.block_time >= current_date - interval '14' day
+    WHERE b.block_time >= current_date - interval '15' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('b.block_time') }}
     {% endif %}
@@ -51,7 +51,7 @@ total_liquidity_fees_rune_tbl AS (
         a.pool AS pool_name,
         SUM(a.liq_fee_in_rune_e8) AS total_liquidity_fees_rune
     FROM {{ ref('thorchain_silver_swap_events') }} a
-    WHERE a.block_time >= current_date - interval '14' day
+    WHERE a.block_time >= current_date - interval '15' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('a.block_time') }}
     {% endif %}
@@ -74,7 +74,7 @@ liquidity_fees_asset_tbl AS (
                 ELSE a.liq_fee_e8
             END AS asset_fee
         FROM {{ ref('thorchain_silver_swap_events') }} a
-        WHERE a.block_time >= current_date - interval '14' day
+        WHERE a.block_time >= current_date - interval '15' day
         {% if is_incremental() %}
           AND {{ incremental_predicate('a.block_time') }}
         {% endif %}
@@ -98,7 +98,7 @@ liquidity_fees_rune_tbl AS (
                 ELSE a.liq_fee_e8
             END AS asset_fee
         FROM {{ ref('thorchain_silver_swap_events') }} a
-        WHERE a.block_time >= current_date - interval '14' day
+        WHERE a.block_time >= current_date - interval '15' day
         {% if is_incremental() %}
           AND {{ incremental_predicate('a.block_time') }}
         {% endif %}

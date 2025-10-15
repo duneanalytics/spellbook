@@ -22,7 +22,7 @@ WITH base AS (
         block_month,
         _inserted_timestamp
     FROM {{ ref('thorchain_silver_transfer_events') }}
-    WHERE block_time >= current_date - interval '14' day
+    WHERE block_time >= current_date - interval '15' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('block_time') }}
     {% endif %}
