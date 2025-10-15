@@ -1,8 +1,5 @@
 {{ config( alias = 'nft',
-        post_hook='{{ expose_spells(\'["avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom","arbitrum","polygon","base","celo","zora","zksync"]\',
-                                    "sector",
-                                    "tokens",
-                                    \'["0xRob"]\') }}')}}
+        post_hook='{{ hide_spells() }}')}}
 
 
 {% set sources = [
