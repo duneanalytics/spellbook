@@ -36,6 +36,11 @@ WITH dexes AS (
                 , tx_from
                 , evt_index
                 , event_type
+                , liquidityDelta
+                , sqrtPriceX96
+                , tickLower
+                , tickUpper
+                , salt
                 , token0
                 , token1
                 , token0_symbol 
