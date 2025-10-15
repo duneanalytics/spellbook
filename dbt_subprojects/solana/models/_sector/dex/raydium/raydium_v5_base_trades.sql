@@ -41,9 +41,23 @@
         FROM (
             SELECT account_poolState, call_is_inner, call_outer_instruction_index, call_inner_instruction_index, call_tx_id, call_block_time, call_block_slot, call_block_date, call_outer_executing_account, call_tx_signer, call_tx_index, account_inputTokenMint, account_outputTokenMint, account_inputVault, account_outputVault
             FROM {{ source('raydium_cp_solana', 'raydium_cp_swap_call_swapBaseOutput') }}
+            WHERE
+                1=1
+                {% if is_incremental() -%}
+                AND {{incremental_predicate('call_block_time')}}
+                {% else -%}
+                AND call_block_date >= DATE '{{project_start_date}}'
+                {% endif -%}
             UNION ALL
             SELECT account_poolState, call_is_inner, call_outer_instruction_index, call_inner_instruction_index, call_tx_id, call_block_time, call_block_slot, call_block_date, call_outer_executing_account, call_tx_signer, call_tx_index, account_inputTokenMint, account_outputTokenMint, account_inputVault, account_outputVault
             FROM {{ source('raydium_cp_solana', 'raydium_cp_swap_call_swapBaseInput') }}
+            WHERE
+                1=1
+                {% if is_incremental() -%}
+                AND {{incremental_predicate('call_block_time')}}
+                {% else -%}
+                AND call_block_date >= DATE '{{project_start_date}}'
+                {% endif -%}
         ) sp
         INNER JOIN {{ source('tokens_solana','transfers') }} trs_1
             ON trs_1.tx_id = sp.call_tx_id
@@ -55,11 +69,11 @@
             AND trs_1.token_mint_address = sp.account_inputTokenMint
             AND trs_1.to_token_account = sp.account_inputVault
             AND (trs_1.token_version = 'spl_token' or trs_1.token_version = 'spl_token_2022')
-            {% if is_incremental() %}
+            {% if is_incremental() -%}
             AND {{incremental_predicate('trs_1.block_time')}}
-            {% else %}
+            {% else -%}
             AND trs_1.block_date >= DATE '{{project_start_date}}'
-            {% endif %}
+            {% endif -%}
         INNER JOIN {{ source('tokens_solana','transfers') }} trs_2
             ON trs_2.tx_id = sp.call_tx_id
             AND trs_2.block_date = sp.call_block_date
@@ -70,17 +84,12 @@
             AND trs_2.token_mint_address = sp.account_outputTokenMint
             AND trs_2.from_token_account = sp.account_outputVault
             AND (trs_2.token_version = 'spl_token' or trs_2.token_version = 'spl_token_2022')
-            {% if is_incremental() %}
+            {% if is_incremental() -%}
             AND {{incremental_predicate('trs_2.block_time')}}
-            {% else %}
+            {% else -%}
             AND trs_2.block_date >= DATE '{{project_start_date}}'
-            {% endif %}
-        {% if is_incremental() %}
-        AND {{incremental_predicate('sp.call_block_time')}}
-        {% else %}
-        AND sp.call_block_date >= DATE '{{project_start_date}}' AND sp.call_block_date < DATE '{{project_start_date}}' + INTERVAL '7' day
-        {% endif %}
-    )
+            {% endif -%}
+)
 
 SELECT
     tb.blockchain
