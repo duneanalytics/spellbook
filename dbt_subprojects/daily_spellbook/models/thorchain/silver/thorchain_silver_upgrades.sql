@@ -36,7 +36,7 @@ switch_events AS (
             ORDER BY _updated_at DESC
         ) AS rn
     FROM {{ source('thorchain', 'switch_events') }}
-    WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '15' day
+    WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '16' day
 )
 
 SELECT
@@ -67,7 +67,7 @@ JOIN {{ source('thorchain', 'block_log') }} bl
 LEFT JOIN block_prices p
     ON bl.height = p.block_id
 WHERE se.rn = 1
-  AND cast(from_unixtime(cast(se.block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '15' day
+  AND cast(from_unixtime(cast(se.block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '16' day
 {% if is_incremental() %}
   AND {{ incremental_predicate('cast(from_unixtime(cast(se.block_timestamp / 1e9 as bigint)) as timestamp)') }}
 {% endif %}

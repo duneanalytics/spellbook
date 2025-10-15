@@ -62,7 +62,7 @@ base as (
         ON ap.blockchain = 'thorchain'
         AND ap.symbol = bpd.pool_name  -- Use symbol instead of contract_address for Thorchain
         AND ap.minute = date_trunc('minute', blk.block_time)
-    WHERE blk.block_time >= current_date - interval '15' day
+    WHERE blk.block_time >= current_date - interval '16' day
 )
 
 SELECT 

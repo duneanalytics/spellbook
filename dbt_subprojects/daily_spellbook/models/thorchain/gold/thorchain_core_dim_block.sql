@@ -36,7 +36,7 @@ WITH base AS (
         current_timestamp AS modified_timestamp
     FROM {{ source('thorchain', 'block_log') }}
     WHERE height IS NOT NULL
-      AND cast(from_unixtime(cast(timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '15' day
+      AND cast(from_unixtime(cast(timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '16' day
 )
 
 SELECT * FROM base

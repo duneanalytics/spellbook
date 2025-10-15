@@ -21,7 +21,7 @@ WITH base AS (
         total_value_locked_usd,
         block_month
     FROM {{ ref('thorchain_silver_daily_tvl') }}
-    WHERE block_date >= current_date - interval '15' day
+    WHERE block_date >= current_date - interval '16' day
 )
 
 SELECT

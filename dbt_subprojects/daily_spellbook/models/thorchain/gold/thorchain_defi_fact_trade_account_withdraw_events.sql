@@ -27,7 +27,7 @@ WITH deduplicated AS (
             ORDER BY _updated_at DESC
         ) AS rn
     FROM {{ source('thorchain', 'trade_account_withdraw_events') }}
-    WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '15' day
+    WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '16' day
 ),
 
 base AS (
