@@ -225,7 +225,3 @@ LEFT JOIN {{ ref('thorchain_silver_prices') }} tp
         (s.to_asset LIKE 'THOR.RUNE%' AND tp.symbol = 'RUNE') OR
         (s.to_asset NOT LIKE 'THOR.RUNE%' AND tp.contract_address = s.to_contract_address)
     )
-
-{% if is_incremental() %}
-WHERE {{ incremental_predicate('block_time') }}
-{% endif %}
