@@ -12,9 +12,10 @@
 
 WITH block_prices AS (
     SELECT
-        AVG(rune_usd) AS rune_usd,
+        AVG(price) AS rune_usd,
         block_id
     FROM {{ ref('thorchain_silver_prices') }}
+    WHERE symbol = 'RUNE'
     GROUP BY block_id
 ),
 
