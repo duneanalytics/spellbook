@@ -153,6 +153,10 @@ sources:
         - *debtTokenDecimals
         - *debtTokenSymbol
         - *debtTokenName
+    
+    - name: poolconfigurator_evt_reserveinitialized
+
+    - name: etherfipoolconfiguratorinstance_evt_reserveinitialized
 
   - name: aave_v3_gnosis
     description: "Decoded contracts for Aave on Gnosis"
