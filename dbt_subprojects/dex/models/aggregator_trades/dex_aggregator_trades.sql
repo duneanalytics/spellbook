@@ -108,6 +108,7 @@ WITH enriched_aggregator_base_trades AS (
         , evt_index
     FROM
         {{ cte }}
+    where block_date > date('2025-10-12') -- //// TEMP, FOR EASY DATE RUN
     {% if not loop.last %}
     UNION ALL
     {% endif %}
