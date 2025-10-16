@@ -6,7 +6,8 @@
                         blockchains = \'["blast", "base"]\',
                         spell_type = "project",
                         spell_name = "events",
-                        contributors = \'["hildobby"]\') }}'
+                        contributors = \'["hildobby"]\') }}',
+        tags=['static']
         )
 }}
 

@@ -55,9 +55,12 @@ trades_with_prices AS (
                                  {% if is_incremental() %}
                                  AND {{ incremental_predicate('pb.minute') }}
                                  {% endif %}
-    {% if is_incremental() %}
-    WHERE {{ incremental_predicate('evt_block_time') }}
-    {% endif %}
+    WHERE
+        1 = 1 -- to keep where clause clean with incremental predicate
+        AND evt_tx_hash != 0xd5c5c3e91e2c0c0552178fccf6af790e692fb9dbf1930df5558c626f0c0ee097 -- known outlier tx which causes UINT256 overflow in surplus_usd calculation downstream
+        {% if is_incremental() -%}
+        AND {{ incremental_predicate('evt_block_time') }}
+        {% endif -%}
 ),
 -- Second subquery gets token symbol and decimals from tokens.erc20 (to display units bought and sold)
 trades_with_token_units as (
@@ -113,9 +116,12 @@ sorted_orders as (
             evt_block_number,
             orderUid
         from {{ source('gnosis_protocol_v2_base', 'GPv2Settlement_evt_Trade') }}
-        {% if is_incremental() %}
-        where {{ incremental_predicate('evt_block_time') }}
-        {% endif %}
+        where
+            1 = 1 -- to keep where clause clean with incremental predicate
+            and evt_tx_hash != 0xd5c5c3e91e2c0c0552178fccf6af790e692fb9dbf1930df5558c626f0c0ee097 -- known outlier tx which causes UINT256 overflow in surplus_usd calculation downstream
+            {% if is_incremental() -%}
+            and {{ incremental_predicate('evt_block_time') }}
+            {% endif -%}
     )
     group by evt_tx_hash, evt_block_number
 ),
