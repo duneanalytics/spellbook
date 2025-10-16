@@ -21,7 +21,7 @@
     ,ref('zeroex_trades')
     ,ref('kyberswap_aggregator_trades')
     ,ref('tokenlon_trades')
-    ,ref('oneinch_aggregation_trades')
+    ,ref('oneinch_ar_trades')
     ,ref('odos_trades')
     ,ref('sushiswap_agg_trades')
 ] %}
@@ -108,7 +108,6 @@ WITH enriched_aggregator_base_trades AS (
         , evt_index
     FROM
         {{ cte }}
-    where block_date > date('2025-10-12') -- //// TEMP, FOR EASY DATE RUN
     {% if not loop.last %}
     UNION ALL
     {% endif %}
