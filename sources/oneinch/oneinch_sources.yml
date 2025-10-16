@@ -13,3 +13,6 @@ sources:
   - name: oneinch_solana
     tables:
       - name: swaps
+  - name: tokens
+    tables:
+      - name: transfers_from_traces
