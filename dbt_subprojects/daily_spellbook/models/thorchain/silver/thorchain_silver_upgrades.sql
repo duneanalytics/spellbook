@@ -10,7 +10,6 @@
     tags = ['thorchain', 'upgrades', 'silver']
 ) }}
 
--- Switch events enriched with pricing for token upgrades
 WITH block_prices AS (
     SELECT
         AVG(rune_usd) AS rune_usd,

@@ -10,7 +10,6 @@
     tags = ['thorchain', 'liquidity', 'curated']
 ) }}
 
--- Combine add and withdraw events into a unified liquidity actions view
 WITH block_heights AS (
     SELECT DISTINCT
         CAST(from_unixtime(CAST(timestamp/1e9 AS bigint)) AS timestamp) AS block_time,
@@ -97,7 +96,6 @@ withdraw_events AS (
     {% endif %}
 )
 
--- Union add and withdraw events
 SELECT 
     a.tx_hash,
     a.block_time,
@@ -128,15 +126,12 @@ SELECT
     a.asymmetry,
     a.imp_loss_protection_amount,
     
-    -- Calculate USD values by joining with prices
     COALESCE(p.asset_usd * COALESCE(a.asset_amount, a.emit_asset_amount), 0) as asset_amount_usd,
     COALESCE(p.rune_usd * COALESCE(a.rune_amount, a.emit_rune_amount), 0) as rune_amount_usd,
     
-    -- Total liquidity action value in USD
     COALESCE(p.asset_usd * COALESCE(a.asset_amount, a.emit_asset_amount), 0) + 
     COALESCE(p.rune_usd * COALESCE(a.rune_amount, a.emit_rune_amount), 0) as total_value_usd,
     
-    -- Liquidity action metrics
     CASE 
         WHEN a.action_type = 'add' AND COALESCE(a.asset_amount, 0) > 0 AND COALESCE(a.rune_amount, 0) > 0 THEN 'symmetric_add'
         WHEN a.action_type = 'add' AND COALESCE(a.asset_amount, 0) > 0 AND COALESCE(a.rune_amount, 0) = 0 THEN 'asymmetric_add_asset'
@@ -184,15 +179,12 @@ SELECT
     w.asymmetry,
     w.imp_loss_protection_amount,
     
-    -- Calculate USD values
     COALESCE(p.asset_usd * COALESCE(w.asset_amount, w.emit_asset_amount), 0) as asset_amount_usd,
     COALESCE(p.rune_usd * COALESCE(w.rune_amount, w.emit_rune_amount), 0) as rune_amount_usd,
     
-    -- Total liquidity action value in USD
     COALESCE(p.asset_usd * COALESCE(w.asset_amount, w.emit_asset_amount), 0) + 
     COALESCE(p.rune_usd * COALESCE(w.rune_amount, w.emit_rune_amount), 0) as total_value_usd,
     
-    -- Liquidity action metrics
     CASE 
         WHEN w.action_type = 'add' AND COALESCE(w.asset_amount, 0) > 0 AND COALESCE(w.rune_amount, 0) > 0 THEN 'symmetric_add'
         WHEN w.action_type = 'add' AND COALESCE(w.asset_amount, 0) > 0 AND COALESCE(w.rune_amount, 0) = 0 THEN 'asymmetric_add_asset'

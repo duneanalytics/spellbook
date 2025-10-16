@@ -19,7 +19,6 @@ WITH block_prices AS (
     GROUP BY p.block_id
 ),
 
--- SECTION 1: Pool rewards (per pool) - ORIGINAL FLIPSIDE LOGIC
 pool_rewards AS (
     SELECT
         cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) as block_time,
@@ -43,7 +42,6 @@ pool_rewards AS (
     WHERE ree.block_time >= current_date - interval '16' day
 ),
 
--- SECTION 2: Bond holder rewards (using bond_events as source) - ADAPTED FLIPSIDE LOGIC
 bond_rewards AS (
     SELECT
         cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) as block_time,
@@ -68,14 +66,12 @@ bond_rewards AS (
       AND be.bond_type IN ('bond_reward', 'reward')  -- Filter for earnings-type bonds
 ),
 
--- UNION LOGIC - EXACTLY AS FLIPSIDE HAD IT
 combined_rewards AS (
     SELECT * FROM pool_rewards
     UNION ALL
     SELECT * FROM bond_rewards
 ),
 
--- FINAL AGGREGATION - SAME AS FLIPSIDE
 base AS (
     SELECT
         block_time,

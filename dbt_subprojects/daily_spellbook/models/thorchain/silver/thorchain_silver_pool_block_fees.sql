@@ -10,7 +10,6 @@
     tags = ['thorchain', 'pool_fees', 'silver']
 ) }}
 
--- CRITICAL: Use CTE pattern for complex daily aggregation
 WITH all_block_id AS (
     SELECT
         date(b.block_time) AS block_date,

@@ -10,7 +10,6 @@
     tags = ['thorchain', 'loan_open_events', 'silver']
 ) }}
 
--- Deduplication using ROW_NUMBER (Trino doesn't support QUALIFY)
 WITH deduplicated AS (
     SELECT
         owner,

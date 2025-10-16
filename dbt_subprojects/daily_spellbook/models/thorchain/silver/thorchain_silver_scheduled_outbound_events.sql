@@ -10,7 +10,6 @@
     tags = ['thorchain', 'scheduled_outbound_events', 'silver']
 ) }}
 
--- Deduplication using ROW_NUMBER (Trino doesn't support QUALIFY)
 WITH deduplicated AS (
     SELECT
         chain,

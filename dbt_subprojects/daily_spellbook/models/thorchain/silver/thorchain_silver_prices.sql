@@ -10,8 +10,6 @@
     tags = ['thorchain', 'prices']
 ) }}
 
--- Pool-based price calculation (matching Snowflake approach)
--- Calculates asset prices from pool depths using AMM math: asset_usd = rune_usd * (rune_e8 / asset_e8)
 
 WITH blocks AS (
     SELECT
@@ -46,32 +44,25 @@ rune_price AS (
     {% endif %}
 )
 
--- Calculate pool-based prices with both Snowflake and DuneSQL compatibility fields
 SELECT DISTINCT
-    -- Snowflake primary fields
     b.block_id,
     b.block_time,
     b.pool_name,
     
-    -- Pool price ratios (Snowflake)
     COALESCE(CAST(b.rune_e8 AS DOUBLE) / NULLIF(CAST(b.asset_e8 AS DOUBLE), 0), 0) AS price_rune_asset,
     COALESCE(CAST(b.asset_e8 AS DOUBLE) / NULLIF(CAST(b.rune_e8 AS DOUBLE), 0), 0) AS price_asset_rune,
     
-    -- USD prices (Snowflake)
     COALESCE(rp.rune_usd * (CAST(b.rune_e8 AS DOUBLE) / NULLIF(CAST(b.asset_e8 AS DOUBLE), 0)), 0) AS asset_usd,
     COALESCE(rp.rune_usd, 0) AS rune_usd,
     
-    -- DuneSQL compatibility fields (for existing downstream dependencies)
     b.block_date,
     b.block_month,
     
-    -- Derive symbol from pool_name (e.g., 'BTC.BTC' -> 'BTC')
     CASE 
         WHEN b.pool_name LIKE '%.%' THEN SPLIT(b.pool_name, '.')[2]
         ELSE b.pool_name
     END AS symbol,
     
-    -- Derive contract_address from pool_name for compatibility
     CAST(b.pool_name AS varbinary) AS contract_address,
     
     'thorchain' AS blockchain

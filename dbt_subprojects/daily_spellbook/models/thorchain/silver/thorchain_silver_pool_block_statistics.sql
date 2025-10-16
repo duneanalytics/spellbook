@@ -10,7 +10,6 @@
     tags = ['thorchain', 'pool_statistics', 'silver']
 ) }}
 
--- Very complex daily statistics aggregation with multiple CTEs
 WITH pool_depth AS (
     SELECT
         block_date,
@@ -214,7 +213,6 @@ stake_amount AS (
         a.pool_name
 ),
 
--- FLIPSIDE ORIGINAL: Unstake tracking for unique member count
 unstake_umc AS (
     SELECT
         DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)) AS block_date,
@@ -231,7 +229,6 @@ unstake_umc AS (
         DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp))
 ),
 
--- FLIPSIDE ORIGINAL: Stake tracking for unique member count (split by rune/asset address)
 stake_umc AS (
     SELECT
         DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)) AS block_date,
@@ -267,7 +264,6 @@ stake_umc AS (
         DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp))
 ),
 
--- FLIPSIDE ORIGINAL: Count unique members with net positive positions
 unique_member_count AS (
     SELECT
         block_date,
@@ -305,7 +301,6 @@ asset_price_usd_tbl AS (
     WHERE p.block_time >= current_date - interval '16' day
 ),
 
--- COMPLETE JOINED LOGIC - All original FlipsideCrypto CTEs now implemented
 joined AS (
     SELECT
         pd.block_date,
@@ -343,7 +338,6 @@ joined AS (
         COALESCE(wt.withdraw_rune_volume + wt.withdraw_asset_volume, 0) AS withdraw_volume,
         CAST(pd.asset_depth AS DOUBLE) * CAST(COALESCE(pd.rune_depth, 0) AS DOUBLE) AS depth_product,
         
-        -- Daily stake changes (will calculate running total in outer SELECT)
         COALESCE(alt.added_stake, 0) - COALESCE(wt.withdrawn_stake, 0) AS daily_stake_change
         
     FROM pool_depth pd
@@ -371,7 +365,6 @@ joined AS (
         ON pd.pool_name = umc.pool_name AND pd.block_date = umc.block_date
 )
 
--- Pre-calculate window functions to avoid nesting
 , with_window_calcs AS (
     SELECT
         *,
@@ -380,7 +373,6 @@ joined AS (
             ORDER BY block_date ASC
         ) AS total_stake,
         
-        -- Synth units calculation
         CASE 
             WHEN synth_depth = 0 OR (CAST(asset_depth AS DOUBLE) * 2 - CAST(synth_depth AS DOUBLE)) = 0 THEN 0
             ELSE (SUM(daily_stake_change) OVER (PARTITION BY asset ORDER BY block_date ASC)) 
@@ -425,22 +417,18 @@ SELECT DISTINCT
     withdraw_rune_volume,
     withdraw_volume,
     
-    -- Window functions already calculated
     total_stake,
     depth_product,
     synth_units,
     
-    -- Pool units = total_stake + synth_units
     total_stake + synth_units AS pool_units,
     
-    -- Liquidity unit value index with safe SQRT
     CASE
         WHEN total_stake = 0 THEN 0
         WHEN depth_product < 0 THEN 0
         ELSE SQRT(depth_product) / (total_stake + synth_units)
     END AS liquidity_unit_value_index,
     
-    -- Previous liquidity unit value index with LAG (no nested windows!)
     LAG(
         CASE
             WHEN total_stake = 0 THEN 0

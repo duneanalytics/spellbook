@@ -10,7 +10,6 @@
     tags = ['thorchain', 'pool_events', 'silver']
 ) }}
 
--- CRITICAL: Use CTE pattern to avoid column resolution issues
 with base as (
     SELECT
         asset,
@@ -18,18 +17,15 @@ with base as (
         event_id,
         block_timestamp,
         
-        -- Timestamp conversion (CRITICAL: nanoseconds to seconds)
         cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) as block_time,
         date(from_unixtime(cast(block_timestamp / 1e9 as bigint))) as block_date,
         date_trunc('month', from_unixtime(cast(block_timestamp / 1e9 as bigint))) as block_month,
         date_trunc('hour', from_unixtime(cast(block_timestamp / 1e9 as bigint))) as block_hour,
         
-        -- Use actual Dune source audit timestamps
         _updated_at AS _inserted_timestamp,
         _ingested_at,
         _updated_at,
         
-        -- Row deduplication logic (using actual available column)
         ROW_NUMBER() OVER(
             PARTITION BY event_id 
             ORDER BY _ingested_at DESC

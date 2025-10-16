@@ -10,8 +10,6 @@
     tags = ['thorchain', 'core', 'blocks']
 ) }}
 
--- Core block dimension table for Thorchain
--- Provides clean joins and partitioning by block_date
 WITH base AS (
     SELECT
         {{ dbt_utils.generate_surrogate_key(['cast(height as bigint)']) }} AS dim_block_id,

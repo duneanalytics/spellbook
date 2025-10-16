@@ -10,7 +10,6 @@
     tags = ['thorchain', 'daily_tvl', 'silver']
 ) }}
 
--- Daily TVL aggregation with RUNE pricing (simplified approach)
 WITH daily_rune_price AS (
     SELECT
         date(p.block_time) AS block_date,

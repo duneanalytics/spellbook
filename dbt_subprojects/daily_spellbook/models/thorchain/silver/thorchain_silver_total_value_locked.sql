@@ -10,7 +10,6 @@
     tags = ['thorchain', 'total_value_locked', 'silver']
 ) }}
 
--- Complex TVL calculation with bond events and pool depths
 WITH bond_type_day AS (
     SELECT
         DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)) AS block_date,
@@ -102,12 +101,10 @@ base AS (
         date_trunc('month', COALESCE(tvb.block_date, tvp.block_date)) as block_month,
         COALESCE(tvp.total_value_pooled, 0) AS total_value_pooled,
         
-        -- Running total for bonded value (cumulative sum)
         SUM(COALESCE(tvb.total_value_bonded, 0)) OVER (
             ORDER BY COALESCE(tvb.block_date, tvp.block_date) ASC
         ) AS total_value_bonded,
         
-        -- Total value locked = pooled + bonded
         COALESCE(tvp.total_value_pooled, 0) + 
         SUM(COALESCE(tvb.total_value_bonded, 0)) OVER (
             ORDER BY COALESCE(tvb.block_date, tvp.block_date) ASC

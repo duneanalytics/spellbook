@@ -10,7 +10,6 @@
     tags = ['thorchain', 'block_log', 'silver', 'dimension']
 ) }}
 
--- Deduplication
 WITH deduplicated AS (
     SELECT
         height,

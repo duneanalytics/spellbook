@@ -30,7 +30,6 @@ with base as (
         date_trunc('hour', from_unixtime(cast(block_timestamp / 1e9 as bigint))) as block_hour,
         block_timestamp as raw_block_timestamp,
         
-        -- Extract pool information for better analysis
         CASE 
             WHEN pool LIKE '%.%' THEN split_part(pool, '.', 1)
             ELSE 'THOR'
@@ -41,10 +40,8 @@ with base as (
             ELSE pool
         END as pool_asset,
         
-        -- Asset pricing fields based on pool - simplified approach using direct asset identifiers
         CASE 
             WHEN pool LIKE 'THOR.%' THEN cast(null as varbinary)
-            -- For prices.usd table, we use the exact pool identifier as it appears
             ELSE cast(pool as varbinary)
         END as contract_address
 

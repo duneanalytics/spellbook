@@ -10,7 +10,6 @@
     tags = ['thorchain', 'block_rewards', 'silver']
 ) }}
 
--- Complex daily block rewards calculation
 WITH all_block_id AS (
     SELECT
         block_time,
@@ -67,7 +66,6 @@ liquidity_fee_tbl AS (
     GROUP BY DATE(a.block_time)
 ),
 
--- CORRECT LOGIC: Use the total_block_rewards aggregation instead of duplicating
 rewards_summary AS (
     SELECT
         date(tbr.block_time) AS block_date,
@@ -94,15 +92,12 @@ base AS (
         date_trunc('month', abwnd.block_date) as block_month,
         COALESCE((lft.liquidity_fee / power(10, 8)), 0) AS liquidity_fee,
         
-        -- Block rewards calculation (using total_block_rewards aggregation)
         (COALESCE(rs.total_pool_rewards, 0) + COALESCE(rs.bond_earnings, 0)) AS block_rewards,
         
-        -- Total earnings calculation
         (COALESCE(rs.total_pool_rewards, 0) + COALESCE(lft.liquidity_fee / power(10, 8), 0) + COALESCE(rs.bond_earnings, 0)) AS earnings,
         
         COALESCE(rs.bond_earnings, 0) AS bonding_earnings,
         
-        -- Liquidity earnings calculation  
         (COALESCE(rs.total_pool_rewards, 0) + COALESCE(lft.liquidity_fee / power(10, 8), 0)) AS liquidity_earnings,
         
         abwnd.avg_nodes + 2 AS avg_node_count,

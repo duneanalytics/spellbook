@@ -10,7 +10,6 @@
     tags = ['thorchain', 'daily_pool_stats', 'silver']
 ) }}
 
--- Daily pool statistics aggregation with pricing
 WITH daily_rune_price AS (
     SELECT
         symbol AS pool_name,

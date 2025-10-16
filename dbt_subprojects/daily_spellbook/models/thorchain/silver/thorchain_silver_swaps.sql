@@ -10,7 +10,6 @@
     tags = ['thorchain', 'swaps', 'curated']
 ) }}
 
--- Following Snowflake logic: only swap_events (no streaming swaps), join on block_id + pool_name
 WITH swaps AS (
     SELECT 
         se.tx_hash,
@@ -52,9 +51,9 @@ WITH swaps AS (
     {% endif %}
 )
 
--- Following Snowflake select logic exactly
 SELECT 
     se.block_timestamp,
+    se.block_timestamp AS block_time,
     se.block_id,
     se.tx_hash,
     se.blockchain,
@@ -73,7 +72,6 @@ SELECT
     
     se.to_address AS to_pool_address,
     
-    -- Affiliate fields (using element_at for safe array access)
     CASE
         WHEN COALESCE(element_at(SPLIT(se.memo, ':'), 5), '') = '' THEN NULL
         WHEN STRPOS(element_at(SPLIT(se.memo, ':'), 5), '/') > 0 THEN 
@@ -96,7 +94,6 @@ SELECT
     COALESCE(se.to_e8 / POWER(10, 8), 0) AS to_amount,
     COALESCE(se.to_e8_min / POWER(10, 8), 0) AS min_to_amount,
     
-    -- USD calculations (Snowflake logic)
     CASE
         WHEN se.from_asset = 'THOR.RUNE' THEN COALESCE(se.from_e8 * p.rune_usd / POWER(10, 8), 0)
         ELSE COALESCE(se.from_e8 * p.asset_usd / POWER(10, 8), 0)
@@ -134,7 +131,6 @@ SELECT
     se.streaming_quantity,
     se._TX_TYPE,
     
-    -- Spellbook fields
     se.block_date,
     se.block_month,
     se.event_id
