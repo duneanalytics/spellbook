@@ -1,4 +1,4 @@
--- it is not incremental, as the source tables are very light and small
+{#- it is not incremental, as the source tables are very light and small -#}
 
 {{-
     config(
