@@ -46,7 +46,7 @@ with base as (
         END as contract_address
 
     FROM {{ source('thorchain', 'pending_liquidity_events') }}
-    WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '16' day
+    WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '17' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp)') }}
     {% endif %}

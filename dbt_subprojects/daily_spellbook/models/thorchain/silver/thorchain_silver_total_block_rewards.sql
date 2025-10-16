@@ -15,7 +15,7 @@ WITH block_prices AS (
         COALESCE(AVG(p.rune_usd), 0) AS rune_usd,
         p.block_id  -- Using block_id from prices model
     FROM {{ ref('thorchain_silver_prices') }} p
-    WHERE p.block_time >= current_date - interval '16' day
+    WHERE p.block_time >= current_date - interval '17' day
     GROUP BY p.block_id
 ),
 
@@ -39,7 +39,7 @@ pool_rewards AS (
         ON ree.block_time = cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)
     LEFT JOIN block_prices bp
         ON b.height = bp.block_id
-    WHERE ree.block_time >= current_date - interval '16' day
+    WHERE ree.block_time >= current_date - interval '17' day
 ),
 
 bond_rewards AS (
@@ -62,7 +62,7 @@ bond_rewards AS (
         ON be.block_time = cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)
     LEFT JOIN block_prices bp
         ON b.height = bp.block_id
-    WHERE be.block_time >= current_date - interval '16' day
+    WHERE be.block_time >= current_date - interval '17' day
       AND be.bond_type IN ('bond_reward', 'reward')  -- Filter for earnings-type bonds
 ),
 

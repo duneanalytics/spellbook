@@ -43,9 +43,9 @@ WITH swaps AS (
             CAST(from_unixtime(CAST(timestamp/1e9 AS bigint)) AS timestamp) AS block_time,
             height AS block_id
         FROM {{ source('thorchain','block_log') }}
-        WHERE CAST(from_unixtime(CAST(timestamp/1e9 AS bigint)) AS timestamp) >= current_date - interval '16' day
+        WHERE CAST(from_unixtime(CAST(timestamp/1e9 AS bigint)) AS timestamp) >= current_date - interval '17' day
     ) bh ON se.block_time = bh.block_time
-    WHERE se.block_time >= current_date - interval '16' day
+    WHERE se.block_time >= current_date - interval '17' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('se.block_time') }}
     {% endif %}

@@ -37,7 +37,7 @@ base AS (
         ON se.block_timestamp = b.timestamp
     LEFT JOIN block_prices p
         ON b.height = p.block_id
-    WHERE se.block_time >= current_date - interval '16' day
+    WHERE se.block_time >= current_date - interval '17' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('se.block_time') }}
     {% endif %}
