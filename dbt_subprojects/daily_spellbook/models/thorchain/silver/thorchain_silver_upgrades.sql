@@ -51,12 +51,11 @@ SELECT
     (se.burn_e8 / power(10, 8)) * COALESCE(p.rune_usd, 0) AS rune_amount_usd,
     se.mint_e8 / power(10, 8) AS mint_amount,
     (se.mint_e8 / power(10, 8)) * COALESCE(p.rune_usd, 0) AS mint_amount_usd,
-    concat_ws(
-        '-',
-        se.tx_id,
-        cast(se.block_timestamp as varchar),
-        se.from_address,
-        se.to_address,
+    CONCAT(
+        se.tx_id, '-',
+        CAST(se.block_timestamp AS VARCHAR), '-',
+        se.from_address, '-',
+        se.to_address, '-',
         se.burn_asset
     ) AS _unique_key,
     current_timestamp AS _inserted_timestamp

@@ -77,7 +77,7 @@ SELECT
     -- Affiliate fields (Snowflake)
     CASE
         WHEN COALESCE(SPLIT(se.memo, ':')[4], '') = '' THEN NULL
-        WHEN CONTAINS(SPLIT(se.memo, ':')[4], '/') THEN 
+        WHEN STRPOS(SPLIT(se.memo, ':')[4], '/') > 0 THEN 
             SPLIT(SPLIT(se.memo, ':')[4], '/')[0]
         ELSE SPLIT(se.memo, ':')[4]
     END AS affiliate_address,
@@ -85,7 +85,7 @@ SELECT
     TRY_CAST(
         CASE
             WHEN COALESCE(SPLIT(se.memo, ':')[5], '') = '' THEN NULL
-            WHEN CONTAINS(SPLIT(se.memo, ':')[5], '/') THEN 
+            WHEN STRPOS(SPLIT(se.memo, ':')[5], '/') > 0 THEN 
                 SPLIT(SPLIT(se.memo, ':')[5], '/')[0]
             ELSE SPLIT(se.memo, ':')[5]
         END AS INTEGER

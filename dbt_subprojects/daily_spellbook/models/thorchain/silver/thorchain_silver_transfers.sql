@@ -55,13 +55,12 @@ SELECT
     COALESCE(amount_e8 / POWER(10, 8), 0) AS rune_amount,
     COALESCE((amount_e8 / POWER(10, 8)) * rune_usd, 0) AS rune_amount_usd,
     event_id,
-    concat_ws(
-        '-',
-        cast(block_id as varchar),
-        cast(from_address as varchar),
-        cast(to_address as varchar),
-        cast(asset as varchar),
-        cast(event_id as varchar)
+    CONCAT(
+        CAST(block_id AS VARCHAR), '-',
+        CAST(from_address AS VARCHAR), '-',
+        CAST(to_address AS VARCHAR), '-',
+        CAST(asset AS VARCHAR), '-',
+        CAST(event_id AS VARCHAR)
     ) AS _unique_key,
     _inserted_timestamp
 FROM base
