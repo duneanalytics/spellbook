@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: fantasy_events
+  - name: fantasy_blast_events
     meta:
       blockchain: blast
       project: fantasy
@@ -11,59 +11,173 @@ models:
     description: >
       All fantasy.top related events on Blast
     columns:
-      - name: block_time
+      - &block_time
+        name: block_time
         description: "UTC time of transaction"
-      - name: block_number
+      - &block_number
+        name: block_number
         description: "Transaction block number on Blast"
-      - name: block_date
+      - &block_date
+        name: block_date
         description: "UTC date of transaction"
-      - name: evt_type
+      - &evt_type
+        name: evt_type
         description: "Type of fantasy event"
-      - name: user_address
+      - &block_date
+        name: block_date
+        description: "UTC date of transaction"
+      - &evt_type
+        name: evt_type
+        description: "Type of fantasy event"
+      - &user_address
+        name: user_address
         description: "Address of fantasy.top user"
-      - name: whitelist
+      - &whitelist
+        name: whitelist
         description: "Was this transaction only possible with a whitelist"
-      - name: collection
+      - &collection
+        name: collection
         description: "The token address of the NFT involved in the transaction"
-      - name: cards_minted
+      - &cards_minted
+        name: cards_minted
         description: "The number of minted fantasy.top cards"
-      - name: cards_burned
+      - &cards_burned
+        name: cards_burned
         description: "The number of burned fantasy.top cards"
-      - name: minted_ids
+      - &minted_ids
+        name: minted_ids
         description: "The list of minted fantasy.top card token ids"
-      - name: burned_ids
+      - &burned_ids
+        name: burned_ids
         description: "The list of burned fantasy.top card token ids"
-      - name: traded_ids
+      - &traded_ids
+        name: traded_ids
         description: "The list of traded fantasy.top card token ids"
-      - name: traded_with
+      - &traded_with
+        name: traded_with
         description: "Who was on the other side of this executed trade"
-      - name: tx_from
+      - &tx_from
+        name: tx_from
         description: "Which address executed the transaction"
-      - name: tx_to
+      - &tx_to
+        name: tx_to
         description: "The address towards which the transaction was pointed"
-      - name: tx_hash
+      - &tx_hash
+        name: tx_hash
         description: "The hash of the transaction"
-      - name: tx_index
+      - &tx_index
+        name: tx_index
         description: "The index of the transaction in the block"
-      - name: contract_address
+      - &contract_address
+        name: contract_address
         description: "The address of the used smart contract"
-      - name: is_wash_trade
+      - &is_wash_trade
+        name: is_wash_trade
         description: "Is this trade a wash trade?"
-      - name: token_symbol
+      - &token_symbol
+        name: token_symbol
         description: "The token symbol of the used fungible"
-      - name: token_address
+      - &token_address
+        name: token_address
         description: "The address of the used token"
-      - name: token_amount
+      - &token_amount
+        name: token_amount
         description: "The amount of tokens involved in the transaction"
-      - name: price_usd
+      - &price_usd
+        name: price_usd
         description: "The USD price of the fungibles used in the transaction"
-      - name: heroes_revenue
+      - &heroes_revenue
+        name: heroes_revenue
         description: "The revenue generated for heroes"
-      - name: heroes_revenue_usd
+      - &heroes_revenue_usd
+        name: heroes_revenue_usd
         description: "The revenue generated for heroes in USD"
-      - name: to_fantasy_treasury
+      - &to_fantasy_treasury
+        name: to_fantasy_treasury
         description: "The amount going to fantasy's treasury excluding direct hero rewards"
-      - name: to_fantasy_treasury_usd
+      - &to_fantasy_treasury_usd
+        name: to_fantasy_treasury_usd
         description: "The amount in USD going to fantasy's treasury excluding direct hero rewards"
-      - name: tactics_bought
+      - &tactics_bought
+        name: tactics_bought
         description: "The amount of tactics tickets bought"
+  - name: fantasy_base_events
+    meta:
+      blockchain: base
+      project: fantasy
+      contributors: hildobby
+    config:
+      tags: ['base', 'fantasy', 'events']
+    description: >
+      All fantasy.top related events on Base
+    columns:
+      - *block_time
+      - *block_number
+      - *block_date
+      - *evt_type
+      - *block_date
+      - *evt_type
+      - *user_address
+      - *whitelist
+      - *collection
+      - *cards_minted
+      - *cards_burned
+      - *minted_ids
+      - *burned_ids
+      - *traded_ids
+      - *traded_with
+      - *tx_from
+      - *tx_to
+      - *tx_hash
+      - *tx_index
+      - *contract_address
+      - *is_wash_trade
+      - *token_symbol
+      - *token_address
+      - *token_amount
+      - *price_usd
+      - *heroes_revenue
+      - *heroes_revenue_usd
+      - *to_fantasy_treasury
+      - *to_fantasy_treasury_usd
+      - *tactics_bought
+  - name: fantasy_events
+    meta:
+      blockchain: base, blast
+      project: fantasy
+      contributors: hildobby
+    config:
+      tags: ['blast', 'base', 'fantasy', 'events']
+    description: >
+      All fantasy.top related events on Blast andBase
+    columns:
+      - *block_time
+      - *block_number
+      - *block_date
+      - *evt_type
+      - *block_date
+      - *evt_type
+      - *user_address
+      - *whitelist
+      - *collection
+      - *cards_minted
+      - *cards_burned
+      - *minted_ids
+      - *burned_ids
+      - *traded_ids
+      - *traded_with
+      - *tx_from
+      - *tx_to
+      - *tx_hash
+      - *tx_index
+      - *contract_address
+      - *is_wash_trade
+      - *token_symbol
+      - *token_address
+      - *token_amount
+      - *price_usd
+      - *heroes_revenue
+      - *heroes_revenue_usd
+      - *to_fantasy_treasury
+      - *to_fantasy_treasury_usd
+      - *tactics_bought
