@@ -16,8 +16,8 @@ WITH all_block_id AS (
         a.pool_name,
         MAX(a._inserted_timestamp) AS _inserted_timestamp
     FROM {{ ref('thorchain_silver_block_pool_depths') }} a
-    JOIN {{ ref('thorchain_core_dim_block') }} b
-        ON a.block_time = b.block_time
+    JOIN {{ ref('thorchain_silver_block_log') }} b
+        ON a.raw_block_timestamp = b.timestamp
     WHERE b.block_time >= current_date - interval '16' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('b.block_time') }}
@@ -33,8 +33,8 @@ total_pool_rewards_tbl AS (
         a.pool_name,
         SUM(a.rune_e8) AS rewards
     FROM {{ ref('thorchain_silver_rewards_event_entries') }} a
-    JOIN {{ ref('thorchain_core_dim_block') }} b
-        ON a.block_time = b.block_time
+    JOIN {{ ref('thorchain_silver_block_log') }} b
+        ON a.block_timestamp = b.timestamp
     WHERE b.block_time >= current_date - interval '16' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('b.block_time') }}
@@ -46,64 +46,70 @@ total_pool_rewards_tbl AS (
 
 total_liquidity_fees_rune_tbl AS (
     SELECT
-        date(a.block_time) AS block_date,
+        date(b.block_time) AS block_date,
         a.pool AS pool_name,
         SUM(a.liq_fee_in_rune_e8) AS total_liquidity_fees_rune
     FROM {{ ref('thorchain_silver_swap_events') }} a
-    WHERE a.block_time >= current_date - interval '16' day
+    JOIN {{ ref('thorchain_silver_block_log') }} b
+        ON a.raw_block_timestamp = b.timestamp
+    WHERE b.block_time >= current_date - interval '16' day
     {% if is_incremental() %}
-      AND {{ incremental_predicate('a.block_time') }}
+      AND {{ incremental_predicate('b.block_time') }}
     {% endif %}
     GROUP BY
-        date(a.block_time),
+        date(b.block_time),
         a.pool
 ),
 
 liquidity_fees_asset_tbl AS (
     SELECT
-        date(block_time) AS block_date,
+        date(b.block_time) AS block_date,
         pool AS pool_name,
         SUM(asset_fee) AS asset_liquidity_fees
     FROM (
         SELECT
-            a.block_time,
+            a.raw_block_timestamp,
             a.pool,
             CASE
                 WHEN a.to_asset = 'THOR.RUNE' THEN 0
                 ELSE a.liq_fee_e8
             END AS asset_fee
         FROM {{ ref('thorchain_silver_swap_events') }} a
-        WHERE a.block_time >= current_date - interval '16' day
-        {% if is_incremental() %}
-          AND {{ incremental_predicate('a.block_time') }}
-        {% endif %}
-    )
+    ) a
+    JOIN {{ ref('thorchain_silver_block_log') }} b
+        ON a.raw_block_timestamp = b.timestamp
+    WHERE b.block_time >= current_date - interval '16' day
+    {% if is_incremental() %}
+      AND {{ incremental_predicate('b.block_time') }}
+    {% endif %}
     GROUP BY
-        date(block_time),
+        date(b.block_time),
         pool
 ),
 
 liquidity_fees_rune_tbl AS (
     SELECT
-        date(block_time) AS block_date,
+        date(b.block_time) AS block_date,
         pool AS pool_name,
         SUM(asset_fee) AS rune_liquidity_fees
     FROM (
         SELECT
-            a.block_time,
+            a.raw_block_timestamp,
             a.pool,
             CASE
                 WHEN a.to_asset <> 'THOR.RUNE' THEN 0
                 ELSE a.liq_fee_e8
             END AS asset_fee
         FROM {{ ref('thorchain_silver_swap_events') }} a
-        WHERE a.block_time >= current_date - interval '16' day
-        {% if is_incremental() %}
-          AND {{ incremental_predicate('a.block_time') }}
-        {% endif %}
-    )
+    ) a
+    JOIN {{ ref('thorchain_silver_block_log') }} b
+        ON a.raw_block_timestamp = b.timestamp
+    WHERE b.block_time >= current_date - interval '16' day
+    {% if is_incremental() %}
+      AND {{ incremental_predicate('b.block_time') }}
+    {% endif %}
     GROUP BY
-        date(block_time),
+        date(b.block_time),
         pool
 ),
 
