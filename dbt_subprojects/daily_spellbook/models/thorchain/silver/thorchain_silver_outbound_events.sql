@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['event_id', 'blockchain', 'from_address', 'to_address', 'asset', 'memo', 'in_tx', 'block_timestamp'],
+    unique_key = ['block_month', 'event_id', 'blockchain', 'from_address', 'to_address', 'asset', 'memo', 'in_tx', 'block_timestamp'],
     partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     tags = ['thorchain', 'outbound_events', 'silver']
@@ -30,6 +30,9 @@ WITH deduplicated AS (
         ) AS rn
     FROM {{ source('thorchain', 'outbound_events') }}
     WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '16' day
+    {% if is_incremental() %}
+      AND {{ incremental_predicate('cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp)') }}
+    {% endif %}
 ),
 
 base AS (
@@ -56,7 +59,4 @@ base AS (
 )
 
 SELECT * FROM base
-{% if is_incremental() %}
-WHERE {{ incremental_predicate('block_time') }}
-{% endif %}
 

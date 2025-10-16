@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['_unique_key'],
+    unique_key = ['block_month', '_unique_key'],
     partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     tags = ['thorchain', 'daily_pool_stats', 'silver']
@@ -101,6 +101,3 @@ base AS (
 )
 
 SELECT * FROM base
-{% if is_incremental() %}
-WHERE {{ incremental_predicate('block_date') }}
-{% endif %}

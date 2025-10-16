@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['pool_name', 'block_time'],
+    unique_key = ['block_month', 'pool_name', 'block_time'],
     partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     tags = ['thorchain', 'pool_depths', 'silver']
@@ -38,6 +38,9 @@ with base as (
 
     FROM {{ source('thorchain', 'block_pool_depths') }}
     WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '16' day
+    {% if is_incremental() %}
+      AND {{ incremental_predicate('block_timestamp') }}
+    {% endif %}
 )
 
 SELECT 
@@ -55,7 +58,4 @@ SELECT
     raw_block_timestamp,
     _inserted_timestamp
 FROM base
-WHERE rn = 1  -- Trino equivalent of QUALIFY
-{% if is_incremental() %}
-  AND {{ incremental_predicate('base.block_time') }}
-{% endif %}
+WHERE rn = 1

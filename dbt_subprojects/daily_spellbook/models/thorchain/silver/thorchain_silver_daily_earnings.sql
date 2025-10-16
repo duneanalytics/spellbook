@@ -3,7 +3,7 @@
   alias = 'daily_earnings',
   materialized = 'incremental',
   file_format = 'delta',
-  unique_key = 'block_date',
+  unique_key = ['block_month', 'block_date'],
   incremental_strategy = 'merge',
   partition_by = ['block_month'],
   incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
@@ -41,6 +41,3 @@ FROM {{ ref('thorchain_silver_block_rewards') }} br
 JOIN daily_rune_price drp
   ON br.block_date = drp.block_date
 WHERE br.block_date >= current_date - interval '16' day
-{% if is_incremental() %}
-  AND {{ incremental_predicate('br.block_date') }}
-{% endif %}

@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['_unique_key'],
+    unique_key = ['block_month', '_unique_key'],
     partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     tags = ['thorchain', 'pool_balances', 'silver']
@@ -52,9 +52,12 @@ base as (
         AND rp.minute = date_trunc('minute', blk.block_time)
     LEFT JOIN {{ source('prices', 'usd') }} ap
         ON ap.blockchain = 'thorchain'
-        AND ap.symbol = bpd.pool_name  -- Use symbol instead of contract_address for Thorchain
+        AND ap.symbol = bpd.pool_name
         AND ap.minute = date_trunc('minute', blk.block_time)
     WHERE blk.block_time >= current_date - interval '16' day
+    {% if is_incremental() %}
+      AND {{ incremental_predicate('blk.block_time') }}
+    {% endif %}
 )
 
 SELECT 
@@ -73,6 +76,3 @@ SELECT
     block_hour,
     _inserted_timestamp
 FROM base
-{% if is_incremental() %}
-WHERE {{ incremental_predicate('base.block_time') }}
-{% endif %}

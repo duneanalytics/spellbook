@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['_unique_key'],
+    unique_key = ['block_month', '_unique_key'],
     partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     tags = ['thorchain', 'pool_statistics', 'silver']
@@ -447,6 +447,3 @@ SELECT DISTINCT
         asset
     ) AS _unique_key
 FROM with_window_calcs
-{% if is_incremental() %}
-WHERE {{ incremental_predicate('block_month') }}
-{% endif %}
