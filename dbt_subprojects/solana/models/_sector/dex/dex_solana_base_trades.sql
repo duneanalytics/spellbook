@@ -24,7 +24,7 @@
       , ref('meteora_version_amm_base_trades')
       , ref('meteora_version_dlmm_base_trades')
       , ref('meteora_version_cpamm_base_trades')
-      , ref('meteora_version_dbc_base_trades')
+      , ref('meteora_v4_solana_base_trades')
       , ref('goosefx_version_ssl_base_trades')
       , ref('pumpdotfun_version_1_base_trades')
       , ref('pumpswap_version_1_base_trades')
