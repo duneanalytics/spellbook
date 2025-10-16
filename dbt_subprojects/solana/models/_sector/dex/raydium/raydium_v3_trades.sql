@@ -14,6 +14,7 @@ select
       blockchain
       , project
       , version
+      , version_name
       , block_month
       , block_date
       , block_time

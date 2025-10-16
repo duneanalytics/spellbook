@@ -14,6 +14,7 @@
   ('bluefin',   ref('bluefin_sui_base_trades')),
   ('bluemove',  ref('bluemove_sui_base_trades')),
   ('cetus',     ref('cetus_sui_base_trades')),
+  ('deepbook',  ref('deepbook_sui_base_trades')),
   ('flowx',     ref('flowx_sui_base_trades')),
   ('kriya',     ref('kriya_sui_base_trades')),
   ('momentum',  ref('momentum_sui_base_trades')),

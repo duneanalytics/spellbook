@@ -107,3 +107,38 @@ models:
       - name: undercoins 
         description: "All of the undercoins aggregated into an array, useful for exchange_underlying trades"
       - *gauge_contract
+
+  - name: curvefi_ethereum_pools_balances
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: curvefi
+      contributors: Henrystats
+    config:
+      tags: ['ethereum', 'pools', 'liquidity', 'curevfi']
+    description: >
+      curvefi ethereum pool balances
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - token_address
+            - day
+
+  - name: curvefi_ethereum_tvl_daily
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: curvefi
+      contributors: Henrystats
+    config:
+      tags: ['ethereum', 'pools', 'liquidity', 'curevfi']
+    description: >
+      curvefi ethereum daily tvl
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - id
+            - block_date
+            - blockchain 
+            - version

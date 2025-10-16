@@ -49,6 +49,11 @@ with base_union as (
                 , token1
                 , amount0_raw
                 , amount1_raw
+                , liquidityDelta
+                , sqrtPriceX96
+                , tickLower
+                , tickUpper
+                , salt
         FROM
             {{ model }}
         {% if is_incremental() %}

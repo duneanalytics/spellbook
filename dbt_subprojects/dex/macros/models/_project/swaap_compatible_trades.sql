@@ -11,7 +11,7 @@ WITH dexs AS
         t.evt_block_number AS block_number
         , t.evt_block_time AS block_time
         , CAST(null AS VARBINARY) AS taker
-        , t.contract_address AS maker
+        , t.PoolId AS maker -- singleton dex similar to uniswap, poolid as maker allows fetching metrics at pool level
         , CASE WHEN amountIn < INT256 '0' THEN abs(amountIn) ELSE abs(amountOut) END AS token_bought_amount_raw -- when amountIn is negative it means trader_a is buying tokenIn from the pool
         , CASE WHEN amountIn < INT256 '0' THEN abs(amountOut) ELSE abs(amountIn) END AS token_sold_amount_raw
         , CASE WHEN amountIn < INT256 '0' THEN t.tokenIn ELSE t.tokenOut END AS token_bought_address

@@ -11,7 +11,7 @@
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
                                     "dex_solana",
-                                    \'["ilemi","0xRob","jeff-dude","0xBoxer","krishhh"]\') }}')
+                                    \'["ilemi","0xRob","jeff-dude","0xBoxer","krishgka"]\') }}')
 }}
 
 with base_trades as (
@@ -19,14 +19,15 @@ with base_trades as (
         *
     FROM
         {{ ref('dex_solana_base_trades')}}    
-    {% if is_incremental() %}
+    {% if is_incremental() -%}
         WHERE {{incremental_predicate('block_time')}}
-    {% endif %}
+    {% endif -%}
 )
 
 SELECT bt.blockchain
       , bt.project
       , bt.version
+      , bt.version_name
       , bt.block_month
       , cast(date_trunc('day', bt.block_time) as date) as block_date
       , bt.block_time
