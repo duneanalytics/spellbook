@@ -23,12 +23,6 @@ models:
       - &evt_type
         name: evt_type
         description: "Type of fantasy event"
-      - &block_date
-        name: block_date
-        description: "UTC date of transaction"
-      - &evt_type
-        name: evt_type
-        description: "Type of fantasy event"
       - &user_address
         name: user_address
         description: "Address of fantasy.top user"
@@ -115,8 +109,6 @@ models:
       - *block_number
       - *block_date
       - *evt_type
-      - *block_date
-      - *evt_type
       - *user_address
       - *whitelist
       - *collection
@@ -153,8 +145,6 @@ models:
     columns:
       - *block_time
       - *block_number
-      - *block_date
-      - *evt_type
       - *block_date
       - *evt_type
       - *user_address
