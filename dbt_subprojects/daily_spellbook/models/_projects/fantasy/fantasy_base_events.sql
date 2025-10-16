@@ -146,6 +146,8 @@ SELECT evt_block_time AS block_time
 , 0 AS tactics_bought
 FROM {{ source('fantasy_base', 'Minter_evt_LevelUp')}}
 
+UNION ALL
+
 -- Burns to Draw - Base
 SELECT evt_block_time AS block_time
 , evt_block_number AS block_number
@@ -176,6 +178,8 @@ SELECT evt_block_time AS block_time
 , 0 AS to_fantasy_treasury_usd
 , 0 AS tactics_bought
 FROM {{ source('fantasy_base', 'Minter_evt_BurnToDraw')}}
+
+UNION ALL
 
 -- Batch Burn - Base
 SELECT evt_block_time AS block_time
