@@ -63,7 +63,7 @@ promotions as (
 , unioned as (
     select
         blockchain
-        , coalesce(resolver_address, 0x) as resolver_address
+        , coalesce(resolver_address, 0x) as address
         , executor_address
         , promotion_mode
         , first_promoted_at
@@ -84,7 +84,7 @@ promotions as (
 select
     blockchain
     , executor_address
-    , max_by(resolver_address, last_time) as resolver_address
+    , max_by(address, last_time) as resolver_address
     , max_by(name, last_time) as resolver_name
     , array_agg(distinct name) as resolver_names
     , array_agg(distinct promotion_mode) filter(where promotion_mode is not null) as promotion_modes
@@ -97,6 +97,6 @@ select
     , min(first_access_transfer_at) as first_access_transfer_at
     , max(last_access_transfer_at) as last_access_transfer_at
 from unioned
-left join {{ ref('oneinch_intent_resolvers') }} using(resolver_address)
-where if(resolver_address = 0x, array_position(access_token_ids, token_id) > 0, true)
+left join {{ ref('oneinch_intent_resolvers') }} using(address)
+where if(address = 0x, array_position(access_token_ids, token_id) > 0, true)
 group by 1, 2

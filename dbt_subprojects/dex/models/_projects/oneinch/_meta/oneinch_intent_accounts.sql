@@ -11,7 +11,7 @@
 
 {% set meta = oneinch_meta_cfg_macro() %}
 {% set date_from = meta['streams']['lo']['start']['fusion'] %}
-{% set legacy = 'Settlement' %}
+{%- set legacy = 'Settlement' -%}
 
 
 
