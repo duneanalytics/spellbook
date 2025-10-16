@@ -1,58 +1,6 @@
 version: 2
 
 models:
-  # Core dimension table (dependency for silver models)
-  - name: thorchain_core_dim_block
-    description: "Core block dimension table for Thorchain with time-based analytics"
-    columns:
-      - name: dim_block_id
-        description: "Surrogate key for block dimension"
-        data_tests:
-          - unique
-          - not_null
-      - name: block_id
-        description: "Block height (block_id)"
-        data_tests:
-          - not_null
-      - name: block_time
-        description: "Block timestamp (Spellbook standard)"
-        data_tests:
-          - not_null
-      - name: block_timestamp
-        description: "Block timestamp (alias for compatibility)"
-      - name: block_date
-        description: "Block date for partitioning"
-      - name: block_hour
-        description: "Block hour for time-based analysis"
-      - name: block_week
-        description: "Block week for time-based analysis"
-      - name: block_month
-        description: "Block month for partitioning"
-      - name: block_quarter
-        description: "Block quarter for time-based analysis"
-      - name: block_year
-        description: "Block year for time-based analysis"
-      - name: block_dayofmonth
-        description: "Day of month (1-31)"
-      - name: block_dayofweek
-        description: "Day of week (1=Monday, 7=Sunday)"
-      - name: block_dayofyear
-        description: "Day of year (1-366)"
-      - name: timestamp
-        description: "Raw block timestamp for joins"
-      - name: hash
-        description: "Block hash"
-      - name: agg_state
-        description: "Aggregated state data"
-      - name: _inserted_timestamp
-        description: "Record insertion timestamp"
-      - name: _audit_run_id
-        description: "Audit run identifier"
-      - name: inserted_timestamp
-        description: "Record insertion timestamp"
-      - name: modified_timestamp
-        description: "Record modification timestamp"
-
   # Silver Models
   - name: thorchain_silver_rune_price
     description: "RUNE price data processed from Thorchain"
