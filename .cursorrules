@@ -1,0 +1,147 @@
+# Spellbook Cursor Rules
+
+## SQL Best Practices (Trino/DuneSQL)
+
+### Always Use Explicit Table Aliases
+- ALWAYS prefix columns with table aliases (t.column, p.column, s.column)
+- This prevents ambiguous column errors and makes queries more readable
+- Example: Use `t.tx_id` not `tx_id`, use `p.version` not `version`
+
+### Data Types
+- Check schema to determine correct data type (integer vs string)
+- `block_date` is DATE type: use `DATE '2025-10-08'` NOT `TIMESTAMP '2025-10-08'`
+- `block_time` is TIMESTAMP type: use `TIMESTAMP '2025-10-08'`
+- Example: If version is integer, use `version = 5`; if string, use `version = '5'`
+- DuneSQL support UINT256 and INT256 data types. Use it when you need to store large numbers.
+- DuneSQL support VARBINARY data type. Use it when you need to store binary data.
+ - USE 0x0000000000000000000000000000000000000000 instead of '0x0000000000000000000000000000000000000000'
+ - USE 0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38 instead of '0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38'
+
+
+
+### Performance Optimization
+- Filter on `block_date` instead of `block_time` for partitioned tables when possible
+- Always include `block_date` in join conditions for better partition pruning
+- Avoid `ORDER BY` with large result sets - it's very slow
+- Use `LIMIT` during development to test queries quickly
+
+### Partitioning
+- Use `block_month` for monthly partitioning on large tables (trades, transfers, events)
+- Use `block_date` for daily partitioning on smaller tables or when more granular control is needed
+- Always include partition columns in WHERE clauses for optimal performance
+- For incremental models, use `block_date` filters instead of `block_time` for better partition pruning
+- Example: `WHERE block_date >= DATE '{{project_start_date}}'` not `WHERE block_time >= TIMESTAMP '{{project_start_date}}'`
+- Include partition columns in JOIN conditions when joining partitioned tables
+- Use `PARTITIONED` distribution hint for large table joins: `{{ enforce_join_distribution("PARTITIONED") }}`
+- Consider partitioning strategy when designing unique keys - include partition column in unique key
+- Example: `unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month']`
+
+
+
+## Model Development Workflow
+1. **Run adhoc queries via dune_query.py utility** to test the data
+2. **Test with limited date range** 
+3. **Validate specific known transactions**
+4. **Check row counts and data quality**
+5. **Document expected differences**
+
+### Before deploying changes
+1. Create comparison queries (test schema vs prod)
+2. Validate specific known transactions
+3. Check row counts and data quality
+4. Document expected differences
+
+## DBT Model Development
+
+### Testing Requirements
+- Any model submitted as a PR will run through command interface tests triggered by GitHub action runners
+- When working with DBT models, always ask the user to provide the `test_schema` name for testing
+- The test schema name cannot be automatically determined, so it must be explicitly requested from the user
+- Use the test schema name in comparison queries to validate changes against production
+
+### Incremental Models
+- Use `block_date` filters in non-incremental mode for consistency
+- Example: `AND tr.block_date >= DATE '{{project_start_date}}'`
+- Not: `AND tr.block_time >= TIMESTAMP '{{project_start_date}}'`
+
+### Model Structure
+- Include all necessary columns in subquery SELECTs (don't rely on wildcards)
+- Use CTEs for complex logic to improve readability
+- Add comments explaining non-obvious join conditions
+
+## Code Review Checklist
+
+Before submitting changes:
+- [ ] All columns have explicit table aliases
+- [ ] Data types match schema (check integer vs string for version fields, etc.)
+- [ ] block_date used in joins and filters where appropriate
+- [ ] Pattern assumptions validated with helper queries
+- [ ] Comparison query created to test changes
+- [ ] No linter errors
+- [ ] Documentation updated if behavior changes
+
+## Common Gotcases
+
+1. **Column name typos**: Double-check column names match the schema exactly
+2. **Missing table aliases**: Causes ambiguous column errors in Trino
+3. **Wrong data types**: Check schema for correct types (integer vs string, date vs timestamp)
+4. **Pattern assumptions**: Always validate with data before implementing
+5. **Transaction uniqueness**: Consider that one transaction can have multiple events
+6. **Missing entry in schema.yml**: Add the entry to the schema.yml file
+7. **Missing partition column in unique key**: Add the partition column to the unique key
+8. **Missing partition column in WHERE clause**: Add the partition column to the WHERE clause
+
+## Helper Query Patterns
+
+### Pattern Validation Query
+```sql
+-- Check if your join/match patterns are consistent
+WITH pattern_check AS (
+    SELECT 
+        some_grouping_field,
+        some_relative_field,
+        COUNT(*) as occurrences
+    FROM table1 t1
+    JOIN table2 t2 ON ...
+    GROUP BY 1, 2
+)
+SELECT * FROM pattern_check ORDER BY some_grouping_field, some_relative_field;
+```
+
+### Row Count Comparison
+```sql
+-- Compare test vs prod
+SELECT 'test' as source, COUNT(*) as row_count 
+FROM test_schema.table_name t
+WHERE t.block_time >= TIMESTAMP '2025-10-08'
+UNION ALL
+SELECT 'prod' as source, COUNT(*) as row_count
+FROM prod_schema.table_name p
+WHERE p.block_time >= TIMESTAMP '2025-10-08';
+```
+
+### Transaction Detail Query
+```sql
+-- Examine specific transaction or event
+SELECT * FROM table_name t
+WHERE t.tx_id = 'specific-tx-id'
+    AND t.block_time = TIMESTAMP <whenever the transaction happened>
+LIMIT 100;
+```
+
+## Tools & Resources
+
+- **spice utility**: `scripts/dune_query.py` for testing queries against Dune
+- **Documentation**: `scripts/DUNE_TESTING.md` for testing guide
+- **API key**: Automatically loaded from `.env` file (you cannot see it, but it is there)
+- **Dependencies**: dune-spice, polars, python-dotenv (in Pipfile)
+
+### DBT Model Compilation & Testing
+
+- **Compile and test dbt models**: Use `@model_name` syntax to compile and run dbt models on Dune
+- **Auto-detection**: Script automatically finds the correct dbt project directory for each model
+- **Usage**: `python scripts/dune_query.py "@uniswap_v3_unichain_base_trades" --limit 5`
+- **Python API**: `run_query("@model_name")` - automatically compiles and executes
+- **Project detection**: Searches in `dbt_subprojects/dex`, `dbt_subprojects/solana`, etc.
+- **Manual override**: Use `--dbt-project-dir` to specify custom project directory
+
