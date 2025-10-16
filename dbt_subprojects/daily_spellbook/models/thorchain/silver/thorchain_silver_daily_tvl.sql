@@ -14,10 +14,9 @@
 WITH daily_rune_price AS (
     SELECT
         date(p.block_time) AS block_date,
-        AVG(p.price) AS rune_usd
+        AVG(p.rune_usd) AS rune_usd
     FROM {{ ref('thorchain_silver_prices') }} p
-    WHERE p.symbol = 'RUNE'
-      AND p.block_time >= current_date - interval '16' day
+    WHERE p.block_time >= current_date - interval '16' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('p.block_time') }}
     {% endif %}

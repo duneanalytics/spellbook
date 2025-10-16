@@ -15,7 +15,7 @@
 
 WITH blocks AS (
     SELECT
-        bpd.pool AS pool_name,
+        bpd.pool_name,
         bpd.asset_e8,
         bpd.rune_e8,
         bpd.raw_block_timestamp,

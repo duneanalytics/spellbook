@@ -300,10 +300,9 @@ asset_price_usd_tbl AS (
     SELECT
         date(p.block_time) AS block_date,
         p.symbol AS pool_name,
-        p.price AS asset_price_usd
+        p.asset_usd AS asset_price_usd
     FROM {{ ref('thorchain_silver_prices') }} p
     WHERE p.block_time >= current_date - interval '16' day
-      AND p.symbol != 'RUNE'  -- Asset prices only
 ),
 
 -- COMPLETE JOINED LOGIC - All original FlipsideCrypto CTEs now implemented

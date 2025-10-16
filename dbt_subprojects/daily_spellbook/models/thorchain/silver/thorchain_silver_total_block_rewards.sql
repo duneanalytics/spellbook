@@ -12,11 +12,10 @@
 
 WITH block_prices AS (
     SELECT
-        COALESCE(AVG(p.price), 0) AS rune_usd,
+        COALESCE(AVG(p.rune_usd), 0) AS rune_usd,
         p.block_id  -- Using block_id from prices model
     FROM {{ ref('thorchain_silver_prices') }} p
-    WHERE p.symbol = 'RUNE'
-      AND p.block_time >= current_date - interval '16' day
+    WHERE p.block_time >= current_date - interval '16' day
     GROUP BY p.block_id
 ),
 

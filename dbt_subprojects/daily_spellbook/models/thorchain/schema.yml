@@ -231,26 +231,72 @@ models:
         description: "Type of pending operation"
 
   - name: thorchain_silver_swaps
-    description: "Curated swaps rollup combining swap events with streaming swap details"
+    description: "Curated swaps from swap events (Snowflake parity)"
     columns:
-      - name: tx_hash
-        description: "Transaction hash"
-        data_tests:
-          - not_null
-      - name: event_id
-        description: "Unique event identifier"
-        data_tests:
-          - not_null
-      - name: block_time
+      - name: block_timestamp
         description: "Block timestamp"
         data_tests:
           - not_null
+      - name: block_id
+        description: "Block height"
+      - name: tx_hash
+        description: "Transaction hash (tx_id in Snowflake)"
+        data_tests:
+          - not_null
+      - name: blockchain
+        description: "Blockchain identifier"
+      - name: pool_name
+        description: "Pool name for the swap"
+      - name: from_address
+        description: "Source address"
+      - name: native_to_address
+        description: "Native destination address (parsed from memo)"
+      - name: to_pool_address
+        description: "Pool destination address"
+      - name: affiliate_address
+        description: "Affiliate address (parsed from memo)"
+      - name: affiliate_fee_basis_points
+        description: "Affiliate fee in basis points"
+      - name: from_asset
+        description: "Asset being sold"
+      - name: to_asset
+        description: "Asset being bought"
+      - name: from_amount
+        description: "Amount of asset sold"
+      - name: to_amount
+        description: "Amount of asset bought"
+      - name: min_to_amount
+        description: "Minimum amount to receive"
       - name: from_amount_usd
         description: "USD value of asset sold"
       - name: to_amount_usd
         description: "USD value of asset bought"
-      - name: involves_rune
-        description: "Whether the swap involves RUNE"
+      - name: rune_usd
+        description: "RUNE price in USD"
+      - name: asset_usd
+        description: "Pool asset price in USD"
+      - name: to_amount_min_usd
+        description: "Minimum USD value to receive"
+      - name: swap_slip_bp
+        description: "Swap slippage in basis points"
+      - name: liq_fee_rune
+        description: "Liquidity fee in RUNE"
+      - name: liq_fee_rune_usd
+        description: "Liquidity fee in USD (RUNE)"
+      - name: liq_fee_asset
+        description: "Liquidity fee in asset"
+      - name: liq_fee_asset_usd
+        description: "Liquidity fee in USD (asset)"
+      - name: streaming_count
+        description: "Number of streaming swap sub-swaps"
+      - name: streaming_quantity
+        description: "Streaming swap quantity"
+      - name: _TX_TYPE
+        description: "Transaction type"
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - not_null
 
   - name: thorchain_silver_liquidity_actions
     description: "Curated liquidity actions combining add and withdraw events"

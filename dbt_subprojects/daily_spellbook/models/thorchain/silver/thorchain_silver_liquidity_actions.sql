@@ -11,27 +11,36 @@
 ) }}
 
 -- Combine add and withdraw events into a unified liquidity actions view
-WITH add_events AS (
+WITH block_heights AS (
+    SELECT DISTINCT
+        CAST(from_unixtime(CAST(timestamp/1e9 AS bigint)) AS timestamp) AS block_time,
+        height AS block_id
+    FROM {{ source('thorchain','block_log') }}
+    WHERE CAST(from_unixtime(CAST(timestamp/1e9 AS bigint)) AS timestamp) >= current_date - interval '16' day
+),
+
+add_events AS (
     SELECT 
-        tx_hash,
-        block_time,
-        block_date,
-        block_month,
-        block_hour,
-        chain,
-        from_addr,
-        to_addr,
-        asset,
-        asset_amount,
-        asset_e8,
-        rune_amount,
-        rune_e8,
-        memo,
-        pool,
-        pool_chain,
-        pool_asset,
-        contract_address,
-        event_id,
+        ae.tx_hash,
+        ae.block_time,
+        ae.block_date,
+        ae.block_month,
+        ae.block_hour,
+        ae.chain,
+        ae.from_addr,
+        ae.to_addr,
+        ae.asset,
+        ae.asset_amount,
+        ae.asset_e8,
+        ae.rune_amount,
+        ae.rune_e8,
+        ae.memo,
+        ae.pool,
+        ae.pool_chain,
+        ae.pool_asset,
+        ae.contract_address,
+        ae.event_id,
+        bh.block_id,
         'add' as action_type,
         null as emit_asset_amount,
         null as emit_asset_e8,
@@ -42,6 +51,7 @@ WITH add_events AS (
         null as asymmetry,
         null as imp_loss_protection_amount
     FROM {{ ref('thorchain_silver_add_events') }} ae
+    LEFT JOIN block_heights bh ON ae.block_time = bh.block_time
     WHERE ae.block_time >= current_date - interval '16' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('ae.block_time') }}
@@ -50,35 +60,37 @@ WITH add_events AS (
 
 withdraw_events AS (
     SELECT 
-        tx_hash,
-        block_time,
-        block_date,
-        block_month,
-        block_hour,
-        chain,
-        from_addr,
-        to_addr,
-        asset,
-        asset_amount,
-        asset_e8,
+        we.tx_hash,
+        we.block_time,
+        we.block_date,
+        we.block_month,
+        we.block_hour,
+        we.chain,
+        we.from_addr,
+        we.to_addr,
+        we.asset,
+        we.asset_amount,
+        we.asset_e8,
         null as rune_amount,
         null as rune_e8,
-        memo,
-        pool,
-        pool_chain,
-        pool_asset,
-        contract_address,
-        event_id,
+        we.memo,
+        we.pool,
+        we.pool_chain,
+        we.pool_asset,
+        we.contract_address,
+        we.event_id,
+        bh.block_id,
         'withdraw' as action_type,
-        emit_asset_amount,
-        emit_asset_e8,
-        emit_rune_amount,
-        emit_rune_e8,
-        stake_units,
-        basis_points,
-        asymmetry,
-        imp_loss_protection_amount
+        we.emit_asset_amount,
+        we.emit_asset_e8,
+        we.emit_rune_amount,
+        we.emit_rune_e8,
+        we.stake_units,
+        we.basis_points,
+        we.asymmetry,
+        we.imp_loss_protection_amount
     FROM {{ ref('thorchain_silver_withdraw_events') }} we  
+    LEFT JOIN block_heights bh ON we.block_time = bh.block_time
     WHERE we.block_time >= current_date - interval '16' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('we.block_time') }}
@@ -117,12 +129,12 @@ SELECT
     a.imp_loss_protection_amount,
     
     -- Calculate USD values by joining with prices
-    COALESCE(p.price * COALESCE(a.asset_amount, a.emit_asset_amount), 0) as asset_amount_usd,
-    COALESCE(rp.rune_price_usd * COALESCE(a.rune_amount, a.emit_rune_amount), 0) as rune_amount_usd,
+    COALESCE(p.asset_usd * COALESCE(a.asset_amount, a.emit_asset_amount), 0) as asset_amount_usd,
+    COALESCE(p.rune_usd * COALESCE(a.rune_amount, a.emit_rune_amount), 0) as rune_amount_usd,
     
     -- Total liquidity action value in USD
-    COALESCE(p.price * COALESCE(a.asset_amount, a.emit_asset_amount), 0) + 
-    COALESCE(rp.rune_price_usd * COALESCE(a.rune_amount, a.emit_rune_amount), 0) as total_value_usd,
+    COALESCE(p.asset_usd * COALESCE(a.asset_amount, a.emit_asset_amount), 0) + 
+    COALESCE(p.rune_usd * COALESCE(a.rune_amount, a.emit_rune_amount), 0) as total_value_usd,
     
     -- Liquidity action metrics
     CASE 
@@ -137,12 +149,8 @@ SELECT
 
 FROM add_events a
 LEFT JOIN {{ ref('thorchain_silver_prices') }} p
-    ON p.contract_address = a.contract_address
-    AND p.block_time <= a.block_time
-    AND p.block_time >= a.block_time - interval '1' hour
-LEFT JOIN {{ ref('thorchain_silver_rune_price') }} rp
-    ON rp.block_time <= a.block_time
-    AND rp.block_time >= a.block_time - interval '1' hour
+    ON p.block_id = a.block_id
+    AND p.pool_name = a.pool
 
 UNION ALL
 
@@ -177,12 +185,12 @@ SELECT
     w.imp_loss_protection_amount,
     
     -- Calculate USD values
-    COALESCE(p.price * COALESCE(w.asset_amount, w.emit_asset_amount), 0) as asset_amount_usd,
-    COALESCE(rp.rune_price_usd * COALESCE(w.rune_amount, w.emit_rune_amount), 0) as rune_amount_usd,
+    COALESCE(p.asset_usd * COALESCE(w.asset_amount, w.emit_asset_amount), 0) as asset_amount_usd,
+    COALESCE(p.rune_usd * COALESCE(w.rune_amount, w.emit_rune_amount), 0) as rune_amount_usd,
     
     -- Total liquidity action value in USD
-    COALESCE(p.price * COALESCE(w.asset_amount, w.emit_asset_amount), 0) + 
-    COALESCE(rp.rune_price_usd * COALESCE(w.rune_amount, w.emit_rune_amount), 0) as total_value_usd,
+    COALESCE(p.asset_usd * COALESCE(w.asset_amount, w.emit_asset_amount), 0) + 
+    COALESCE(p.rune_usd * COALESCE(w.rune_amount, w.emit_rune_amount), 0) as total_value_usd,
     
     -- Liquidity action metrics
     CASE 
@@ -197,9 +205,5 @@ SELECT
 
 FROM withdraw_events w
 LEFT JOIN {{ ref('thorchain_silver_prices') }} p
-    ON p.contract_address = w.contract_address
-    AND p.block_time <= w.block_time
-    AND p.block_time >= w.block_time - interval '1' hour
-LEFT JOIN {{ ref('thorchain_silver_rune_price') }} rp
-    ON rp.block_time <= w.block_time
-    AND rp.block_time >= w.block_time - interval '1' hour
+    ON p.block_id = w.block_id
+    AND p.pool_name = w.pool

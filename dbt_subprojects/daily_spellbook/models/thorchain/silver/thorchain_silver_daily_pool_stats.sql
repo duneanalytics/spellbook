@@ -15,8 +15,8 @@ WITH daily_rune_price AS (
     SELECT
         symbol AS pool_name,
         date(block_time) AS block_date,
-        AVG(price) AS rune_usd,
-        AVG(price) AS asset_usd  -- Simplified - using same price for now
+        AVG(rune_usd) AS rune_usd,
+        AVG(asset_usd) AS asset_usd
     FROM {{ ref('thorchain_silver_prices') }} p
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('p.block_time') }}
