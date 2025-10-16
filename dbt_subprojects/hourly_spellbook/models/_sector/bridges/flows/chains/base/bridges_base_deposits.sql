@@ -20,6 +20,7 @@ FROM (
     SELECT deposit_chain
     , withdrawal_chain_id
     , withdrawal_chain
+    , withdrawal_chain_id
     , bridge_name
     , bridge_version
     , block_date
