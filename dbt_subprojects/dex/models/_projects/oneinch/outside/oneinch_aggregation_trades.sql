@@ -3,7 +3,6 @@
         schema = 'oneinch',
         alias = 'aggregation_trades',
         materialized = 'view',
-        unique_key = ['blockchain', 'tx_hash', 'trace_address'],
     )
 }}
 

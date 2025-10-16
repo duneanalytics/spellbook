@@ -5,7 +5,7 @@
         schema = 'oneinch_evms',
         alias = substream,
         materialized = 'view',
-        unique_key = ['blockchain', 'tx_hash', 'call_trace_address', 'transfer_trace_address', 'transfer_contract_address'],
+        unique_key = ['block_month', 'blockchain', 'tx_hash', 'call_trace_address', 'transfer_trace_address', 'transfer_contract_address'],
     )
 }}
 
