@@ -61,33 +61,32 @@ SELECT
     se.pool_name,
     se.from_address,
     
-    -- Native to address logic (Snowflake)
     CASE
         WHEN se.n_tx > 1
             AND se.rank_liq_fee = 1
-            AND LENGTH(SPLIT(se.memo, ':')[5]) = 43 THEN SPLIT(se.memo, ':')[5]
+            AND LENGTH(element_at(SPLIT(se.memo, ':'), 5)) = 43 THEN element_at(SPLIT(se.memo, ':'), 5)
         WHEN se.n_tx > 1
             AND LOWER(SUBSTR(se.memo, 1, 1)) IN ('s', '=')
-            AND LENGTH(COALESCE(SPLIT(se.memo, ':')[3], '')) = 0 THEN se.from_address
-        ELSE SPLIT(se.memo, ':')[3]
+            AND LENGTH(COALESCE(element_at(SPLIT(se.memo, ':'), 3), '')) = 0 THEN se.from_address
+        ELSE element_at(SPLIT(se.memo, ':'), 3)
     END AS native_to_address,
     
     se.to_address AS to_pool_address,
     
-    -- Affiliate fields (Trino uses 1-indexed arrays)
+    -- Affiliate fields (using element_at for safe array access)
     CASE
-        WHEN COALESCE(SPLIT(se.memo, ':')[5], '') = '' THEN NULL
-        WHEN STRPOS(SPLIT(se.memo, ':')[5], '/') > 0 THEN 
-            SPLIT(SPLIT(se.memo, ':')[5], '/')[1]
-        ELSE SPLIT(se.memo, ':')[5]
+        WHEN COALESCE(element_at(SPLIT(se.memo, ':'), 5), '') = '' THEN NULL
+        WHEN STRPOS(element_at(SPLIT(se.memo, ':'), 5), '/') > 0 THEN 
+            element_at(SPLIT(element_at(SPLIT(se.memo, ':'), 5), '/'), 1)
+        ELSE element_at(SPLIT(se.memo, ':'), 5)
     END AS affiliate_address,
     
     TRY_CAST(
         CASE
-            WHEN COALESCE(SPLIT(se.memo, ':')[6], '') = '' THEN NULL
-            WHEN STRPOS(SPLIT(se.memo, ':')[6], '/') > 0 THEN 
-                SPLIT(SPLIT(se.memo, ':')[6], '/')[1]
-            ELSE SPLIT(se.memo, ':')[6]
+            WHEN COALESCE(element_at(SPLIT(se.memo, ':'), 6), '') = '' THEN NULL
+            WHEN STRPOS(element_at(SPLIT(se.memo, ':'), 6), '/') > 0 THEN 
+                element_at(SPLIT(element_at(SPLIT(se.memo, ':'), 6), '/'), 1)
+            ELSE element_at(SPLIT(se.memo, ':'), 6)
         END AS INTEGER
     ) AS affiliate_fee_basis_points,
     
