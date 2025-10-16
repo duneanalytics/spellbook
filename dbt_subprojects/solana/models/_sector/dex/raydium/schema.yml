@@ -124,24 +124,6 @@ models:
     description: >
         raydium clmm dex base trades on Solana with version_name
 
-  - name: raydium_version_amm_base_trades
-    meta:
-      blockchain: solana
-      contributors: [krishgka]
-    config:
-      tags: ['solana','dex']
-    description: >
-        raydium amm dex base trades on Solana with version_name
-
-  - name: raydium_version_cpmm_base_trades
-    meta:
-      blockchain: solana
-      contributors: [krishgka]
-    config:
-      tags: ['solana','dex']
-    description: >
-        raydium cpmm dex base trades on Solana with version_name
-
   - name: raydium_v4_base_trades
     meta:
       blockchain: solana

@@ -22,6 +22,7 @@ all_swaps as (
         , sp.call_block_slot as block_slot
         , 'raydium' as project
         , 4 as version
+        , 'amm' as version_name
         , 'solana' as blockchain
         , case when sp.call_is_inner = False then 'direct'
             else sp.call_outer_executing_account
@@ -96,6 +97,7 @@ SELECT
     tb.blockchain
     , tb.project
     , tb.version
+    , tb.version_name
     , CAST(date_trunc('month', tb.block_time) AS DATE) as block_month
     , tb.block_time
     , tb.block_slot

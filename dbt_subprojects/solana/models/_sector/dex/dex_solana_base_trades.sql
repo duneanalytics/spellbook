@@ -13,8 +13,8 @@
 
 {% set solana_dexes = [ 
       ref('raydium_version_clmm_base_trades')
-      , ref('raydium_version_amm_base_trades')
-      , ref('raydium_version_cpmm_base_trades')
+      , ref('raydium_v4_base_trades')
+      , ref('raydium_v5_base_trades')
       , ref('raydium_launchlab_version_1_base_trades')
       , ref('orca_whirlpool_version_v1_base_trades')
       , ref('orca_whirlpool_version_v2_base_trades')
