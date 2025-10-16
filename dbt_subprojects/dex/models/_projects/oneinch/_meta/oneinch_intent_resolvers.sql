@@ -31,7 +31,7 @@ registrations as (
     )
     group by 1
 )
-0xc6093fd9cc143f9f058938868b2df2daf9a91d28
+
 , names(
     address
     , name
