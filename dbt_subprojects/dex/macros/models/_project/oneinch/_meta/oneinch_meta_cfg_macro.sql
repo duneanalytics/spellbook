@@ -3,7 +3,7 @@
 -- STREAMS CONFIG --
 -- start dates for sreams by default:
 -- for ar: 2019-06-01
--- for lo: 2021-06-01 / fusion: 2022-12-25
+-- for lo: 2021-06-01 / fusion: 2022-12-22
 -- for cc: 2024-08-20
 -- for a quick CI, change the start dates of the streams to light/easy
 {%
@@ -178,9 +178,48 @@
     }
 %}
 
+{%
+    set contracts = {
+        "AccessTokenLimitsV1": {
+            "version": "1",
+            "type": "AccessToken",
+            "mode": "limits",
+            "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "base", "zksync", "linea", "sonic", "unichain"],
+            "addresses": {
+                "0xacce5500000f71a32b5e5514d1577e14b7aacc4a": ['ethereum','bnb','polygon','arbitrum','optimism','avalanche_c','gnosis','base','linea','sonic','unichain'],
+                "0x4888651051b2dc08ac55cd0f7d671e0fcba0deed": ['zksync'],
+            },
+            "start": "2024-08-28",
+        },
+        "AccessTokenFusionV1": {
+            "version": "1",
+            "type": "AccessToken",
+            "mode": "fusion",
+            "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea", "sonic", "unichain"],
+            "addresses": {
+                "0xacce550000863572b867e661647cd7d97b72c507": ['ethereum','bnb','polygon','arbitrum','optimism','avalanche_c','gnosis','fantom','base','linea','sonic','unichain'],
+                "0x46b64318c4f764f6fe81dfd1f26282a52e0f1680": ['zksync'],
+            },
+            "start": "2024-08-28",
+        },
+        "AccessTokenCrossChainV1": {
+            "version": "1",
+            "type": "AccessToken",
+            "mode": "cross-chain",
+            "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea", "sonic", "unichain"],
+            "addresses": {
+                "0xacce550000159e70908c0499a1119d04e7039c28": ['ethereum','bnb','polygon','arbitrum','optimism','avalanche_c','gnosis','fantom','base','linea','sonic','unichain'],
+                "0xc2c4fe863ec835d7ddbfe91fe33cf1c7df45fa7c": ['zksync'],
+            },
+            "start": "2024-08-28",
+        },
+    }
+%}
+
 {% set config = {
     "streams": streams,
     "blockchains": blockchains,
+    "contracts": contracts,
 } %}
 
 {% if property is not none %}

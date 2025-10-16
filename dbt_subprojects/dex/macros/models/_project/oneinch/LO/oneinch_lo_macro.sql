@@ -25,9 +25,9 @@ raw_calls as (
 )
 
 , decoded as (
-    {% for contract, contract_data in contracts.items() if blockchain in contract_data['blockchains'] %}
+    {% for contract, contract_data in contracts.items() if blockchain in contract_data['blockchains'] if not contract_data.get('auxiliary', false) %}
         -- CONTRACT: {{ contract }} --
-        {% for method, method_data in contract_data.methods.items() %}
+        {% for method, method_data in contract_data.methods.items() if not method_data.get('auxiliary', false) %}
             select
                 call_block_number as block_number
                 , call_block_date as block_date

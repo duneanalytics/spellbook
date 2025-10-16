@@ -39,8 +39,8 @@ executions as (
 
 , resolvers as (
     select *
-        , address as tx_from
-    from {{ ref('oneinch_fusion_accounts') }}
+        , account_address as tx_from
+    from {{ ref('oneinch_intent_accounts') }}
 )
 
 -- output --

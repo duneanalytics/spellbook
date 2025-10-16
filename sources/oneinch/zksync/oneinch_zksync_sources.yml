@@ -53,5 +53,8 @@ sources:
       - name: EscrowDstV1_call_publicWithdraw
       - name: EscrowDstV1_call_cancel
       - name: EscrowDstV1_call_rescueFunds
+      - name: AccessTokenFusionV1_evt_transfer
+      - name: AccessTokenLimitsV1_evt_transfer
+      - name: AccessTokenCrossChainV1_evt_transfer
       - name: ar
       - name: lo

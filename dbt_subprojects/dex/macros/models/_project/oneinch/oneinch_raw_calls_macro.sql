@@ -25,7 +25,7 @@ payload as (
                 , timestamp '{{ [date_from, contract_data.start] | max }}' as date_from
                 , {{ method_data.get('selector', 'null') }} as selector
                 , '{{ method }}' as method
-                , {{ method_data.get('auxiliary', 'false') }} as auxiliary
+                , {{ method_data.get('auxiliary', contract_data.get('auxiliary', 'false')) }} as auxiliary
             {% if contract_data.addresses == "creations" %}from (select distinct contract_address from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}){% endif %}
             {% if not loop.last %}union{% endif %}
         {% endfor %}

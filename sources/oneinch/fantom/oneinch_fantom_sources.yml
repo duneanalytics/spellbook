@@ -58,5 +58,7 @@ sources:
       - name: AggregationRouterV6_call_fillContractOrder
       - name: AggregationRouterV6_call_fillContractOrderArgs
       - name: AggregationRouterV6_call_permitAndCall
+      - name: AccessTokenFusionV1_evt_transfer
+      - name: AccessTokenCrossChainV1_evt_transfer
       - name: ar
       - name: lo

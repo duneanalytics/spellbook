@@ -395,111 +395,89 @@ models:
         data_tests:
           - not_null
 
-  - name: oneinch_fusion_resolvers
+  - name: oneinch_intent_resolvers
     meta:
       blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
       sector: oneinch
-      contributors: ['max-morrow', 'grkhr']
+      contributors: ['max-morrow']
     config:
       tags: ['oneinch', 'metadata']
     description: >
-        fusion resolvers
+        intent resolvers
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
-            - last_changed_at
+            - name
     columns:
       - name: address
         data_tests:
           - not_null
       - name: name
+        data_tests:
+          - not_null
       - name: status
-      - name: last_changed_at
+      - name: status_at
       - name: kyc
+      - name: access_token_ids
 
-  - name: oneinch_fusion_executors
+  - name: oneinch_intent_executors
     meta:
       blockchain: ['ethereum', 'optimism', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'bnb', 'fantom', 'zksync', 'linea', 'sonic', 'unichain']
       sector: oneinch
-      contributors: ['max-morrow', 'grkhr']
+      contributors: ['max-morrow']
     config:
       tags: ['oneinch', 'metadata']
     description: >
-        fusion resolvers and executors
+        intent executors
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - chain_id
-            - resolver_address
-            - resolver_executor
-            - mode
-    columns:
-      - name: resolver_address
-        data_tests:
-          - not_null
-      - name: resolver_executor
-        data_tests:
-          - not_null
-      - name: chain_id
-        data_tests:
-          - not_null
-      - name: mode
-      - name: first_promoted_at
-      - name: last_promoted_at
-
-  - name: oneinch_fusion_farms
-    meta:
-      blockchain: ['ethereum', 'optimism', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'bnb', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
-      sector: oneinch
-      contributors: ['max-morrow', 'grkhr']
-    config:
-      tags: ['oneinch', 'metadata']
-    description: >
-        fusion farms
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - resolver_address
-            - farm_address
-    columns:
-      - name: resolver_address
-        data_tests:
-          - not_null
-      - name: resolver_name
-      - name: resolver_status
-      - name: resolver_last_changed_at
-      - name: resolver_kyc
-      - name: resolver_registered_delegatee_at
-      - name: farm_address
-        data_tests:
-          - not_null
-      - name: farm_ownership_transferred_at
-      - name: farm_last_created_at
-      - name: farm_last_default_token
-      - name: farm_last_distributor
-      - name: farm_last_distributor_set_up_at
-
-  - name: oneinch_fusion_accounts
-    meta:
-      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
-      sector: oneinch
-      contributors: ['max-morrow', 'grkhr']
-    config:
-      tags: ['oneinch', 'metadata']
-    description: >
-        fusion resolvers EOA
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
             - blockchain
+            - executor_address
     columns:
       - name: blockchain
         data_tests:
           - not_null
-      - name: address
+      - name: executor_address
         data_tests:
           - not_null
-      - name: resolver_name
       - name: resolver_address
+      - name: resolver_name
+      - name: resolver_names
+      - name: promotion_modes
+      - name: first_promoted_at
+      - name: last_promoted_at
+      - name: access_tokens
+      - name: access_modes
+      - name: access_tokens_legacy
+      - name: access_modes_legacy
+      - name: first_access_transfer_at
+      - name: last_access_transfer_at
+
+  - name: oneinch_intent_accounts
+    meta:
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
+      sector: oneinch
+      contributors: ['max-morrow']
+    config:
+      tags: ['oneinch', 'metadata']
+    description: >
+        intent resolver accounts
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - account_address
+    columns:
+      - name: blockchain
+        data_tests:
+          - not_null
+      - name: account_address
+        data_tests:
+          - not_null
+      - name: resolver_address
+      - name: resolver_name
+      - name: executors
+      - name: first_time
+      - name: last_time
