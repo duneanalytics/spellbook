@@ -44,7 +44,7 @@ all_swaps as (
         FROM {{ source('raydium_amm_solana', 'raydium_amm_call_swapBaseOut') }}
         WHERE
             1=1
-            {% if is_incremental() or true -%}
+            {% if is_incremental() -%}
             AND {{incremental_predicate('call_block_time')}}
             {% else -%}
             AND call_block_date >= DATE '{{project_start_date}}'
@@ -54,7 +54,7 @@ all_swaps as (
         FROM {{ source('raydium_amm_solana', 'raydium_amm_call_swapBaseIn') }}
         WHERE
             1=1
-            {% if is_incremental() or true -%}
+            {% if is_incremental() -%}
             AND {{incremental_predicate('call_block_time')}}
             {% else -%}
             AND call_block_date >= DATE '{{project_start_date}}'
@@ -69,7 +69,7 @@ all_swaps as (
             OR (sp.call_is_inner = true AND trs_1.inner_instruction_index = sp.call_inner_instruction_index + 1))
         AND trs_1.from_token_account = sp.account_uerSourceTokenAccount
         AND (trs_1.token_version = 'spl_token' or trs_1.token_version = 'spl_token_2022')
-        {% if is_incremental() or true %}
+        {% if is_incremental() %}
         AND {{incremental_predicate('trs_1.block_time')}}
         {% else %}
         AND trs_1.block_date >= DATE '{{project_start_date}}'
@@ -83,7 +83,7 @@ all_swaps as (
             OR (sp.call_is_inner = true AND trs_2.inner_instruction_index = sp.call_inner_instruction_index + 2))
         AND trs_2.to_token_account = sp.account_uerDestinationTokenAccount
         AND (trs_2.token_version = 'spl_token' or trs_2.token_version = 'spl_token_2022')
-        {% if is_incremental() or true %}
+        {% if is_incremental() %}
         AND {{incremental_predicate('trs_2.block_time')}}
         {% else %}
         AND trs_2.block_date >= DATE '{{project_start_date}}'
