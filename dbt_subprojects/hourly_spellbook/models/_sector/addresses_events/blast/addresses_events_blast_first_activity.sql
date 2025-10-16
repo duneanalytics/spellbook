@@ -5,6 +5,8 @@
     , file_format = 'delta'
     , incremental_strategy = 'append'
     , unique_key = ['address']
+    , tags=['static']
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 
