@@ -3,7 +3,7 @@
   alias = 'daily_earnings',
   materialized = 'incremental',
   file_format = 'delta',
-  unique_key = ['block_month', 'block_date'],
+  unique_key = 'block_date',
   incremental_strategy = 'merge',
   partition_by = ['block_month'],
   incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
