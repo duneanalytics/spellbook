@@ -78,7 +78,7 @@ SELECT
     CASE
         WHEN COALESCE(SPLIT(se.memo, ':')[4], '') = '' THEN NULL
         WHEN STRPOS(SPLIT(se.memo, ':')[4], '/') > 0 THEN 
-            SPLIT(SPLIT(se.memo, ':')[4], '/')[0]
+            SPLIT(SPLIT(se.memo, ':')[4], '/')[1]
         ELSE SPLIT(se.memo, ':')[4]
     END AS affiliate_address,
     
@@ -86,7 +86,7 @@ SELECT
         CASE
             WHEN COALESCE(SPLIT(se.memo, ':')[5], '') = '' THEN NULL
             WHEN STRPOS(SPLIT(se.memo, ':')[5], '/') > 0 THEN 
-                SPLIT(SPLIT(se.memo, ':')[5], '/')[0]
+                SPLIT(SPLIT(se.memo, ':')[5], '/')[1]
             ELSE SPLIT(se.memo, ':')[5]
         END AS INTEGER
     ) AS affiliate_fee_basis_points,
