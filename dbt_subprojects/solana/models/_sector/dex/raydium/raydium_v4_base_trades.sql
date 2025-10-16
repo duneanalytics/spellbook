@@ -29,18 +29,18 @@ all_swaps as (
         -- -- token bought is always the second instruction (transfer) in the inner instructions
         , trs_2.amount as token_bought_amount_raw
         , trs_1.amount as token_sold_amount_raw
-        , account_amm as pool_id --p.pool_id
+        , sp.account_amm as pool_id
         , sp.call_tx_signer as trader_id
         , sp.call_tx_id as tx_id
         , sp.call_outer_instruction_index as outer_instruction_index
         , COALESCE(sp.call_inner_instruction_index, 0) as inner_instruction_index
         , sp.call_tx_index as tx_index
-        , sp.account_outputTokenMint as token_bought_mint_address
-        , sp.account_inputTokenMint as token_sold_mint_address
-        , sp.account_outputVault as token_bought_vault
-        , sp.account_inputVault as token_sold_vault
+        , trs_2.token_mint_address as token_bought_mint_address
+        , trs_1.token_mint_address as token_sold_mint_address
+        , trs_2.from_token_account as token_bought_vault
+        , trs_1.to_token_account as token_sold_vault
     FROM (
-        SELECT account_serumMarket, account_amm, call_is_inner, call_outer_instruction_index, call_inner_instruction_index, call_tx_id, call_block_time, call_block_slot, call_block_date, call_outer_executing_account, call_tx_signer, call_tx_index, account_inputTokenMint, account_outputTokenMint, account_inputVault, account_outputVault
+        SELECT account_amm, call_is_inner, call_outer_instruction_index, call_inner_instruction_index, call_tx_id, call_block_time, call_block_slot, call_block_date, call_outer_executing_account, call_tx_signer, call_tx_index, account_poolCoinTokenAccount, account_poolPcTokenAccount, account_uerSourceTokenAccount, account_uerDestinationTokenAccount
         FROM {{ source('raydium_amm_solana', 'raydium_amm_call_swapBaseOut') }}
         WHERE
             1=1
@@ -50,7 +50,7 @@ all_swaps as (
             AND call_block_date >= DATE '{{project_start_date}}'
             {% endif -%}
         UNION ALL
-        SELECT account_serumMarket, account_amm, call_is_inner, call_outer_instruction_index, call_inner_instruction_index, call_tx_id, call_block_time, call_block_slot, call_block_date, call_outer_executing_account, call_tx_signer, call_tx_index, account_inputTokenMint, account_outputTokenMint, account_inputVault, account_outputVault
+        SELECT account_amm, call_is_inner, call_outer_instruction_index, call_inner_instruction_index, call_tx_id, call_block_time, call_block_slot, call_block_date, call_outer_executing_account, call_tx_signer, call_tx_index, account_poolCoinTokenAccount, account_poolPcTokenAccount, account_uerSourceTokenAccount, account_uerDestinationTokenAccount
         FROM {{ source('raydium_amm_solana', 'raydium_amm_call_swapBaseIn') }}
         WHERE
             1=1
@@ -67,8 +67,7 @@ all_swaps as (
         AND trs_1.outer_instruction_index = sp.call_outer_instruction_index
         AND ((sp.call_is_inner = false AND trs_1.inner_instruction_index = 1)
             OR (sp.call_is_inner = true AND trs_1.inner_instruction_index = sp.call_inner_instruction_index + 1))
-        AND trs_1.token_mint_address = sp.account_inputTokenMint
-        AND trs_1.to_token_account = sp.account_inputVault
+        AND trs_1.from_token_account = sp.account_uerSourceTokenAccount
         AND (trs_1.token_version = 'spl_token' or trs_1.token_version = 'spl_token_2022')
         {% if is_incremental() or true %}
         AND {{incremental_predicate('trs_1.block_time')}}
@@ -82,8 +81,7 @@ all_swaps as (
         AND trs_2.outer_instruction_index = sp.call_outer_instruction_index
         AND ((sp.call_is_inner = false AND trs_2.inner_instruction_index = 2)
             OR (sp.call_is_inner = true AND trs_2.inner_instruction_index = sp.call_inner_instruction_index + 2))
-        AND trs_2.token_mint_address = sp.account_outputTokenMint
-        AND trs_2.from_token_account = sp.account_outputVault
+        AND trs_2.to_token_account = sp.account_uerDestinationTokenAccount
         AND (trs_2.token_version = 'spl_token' or trs_2.token_version = 'spl_token_2022')
         {% if is_incremental() or true %}
         AND {{incremental_predicate('trs_2.block_time')}}
