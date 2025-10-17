@@ -275,11 +275,7 @@ unique_member_count AS (
             stake_umc.pool_name,
             stake_umc.address,
             stake_umc.liquidity_units,
-            CASE
-                WHEN unstake_umc.unstake_liquidity_units IS NOT NULL 
-                    THEN unstake_umc.unstake_liquidity_units
-                ELSE 0
-            END AS unstake_liquidity_units
+            COALESCE(unstake_umc.unstake_liquidity_units, 0) AS unstake_liquidity_units
         FROM stake_umc
         LEFT JOIN unstake_umc
             ON stake_umc.address = unstake_umc.address
@@ -376,24 +372,39 @@ joined AS (
         ON pd.pool_name = umc.pool_name AND pd.block_date = umc.block_date
 )
 
+, with_dedup_base AS (
+    SELECT
+        *,
+        ROW_NUMBER() OVER (
+            PARTITION BY block_month, block_date, asset
+            ORDER BY asset_depth DESC, rune_depth DESC
+        ) AS dedup_rank
+    FROM joined
+)
+
 , with_window_calcs AS (
     SELECT
         *,
         SUM(daily_stake_change) OVER (
             PARTITION BY asset
             ORDER BY block_date ASC
-        ) AS total_stake,
-        
-        CASE 
-            WHEN synth_depth = 0 OR (CAST(asset_depth AS DOUBLE) * 2 - CAST(synth_depth AS DOUBLE)) = 0 THEN 0
-            ELSE (SUM(daily_stake_change) OVER (PARTITION BY asset ORDER BY block_date ASC)) 
-                 * CAST(synth_depth AS DOUBLE) 
-                 / ((CAST(asset_depth AS DOUBLE) * 2) - CAST(synth_depth AS DOUBLE))
-        END AS synth_units
-    FROM joined
+        ) AS total_stake
+    FROM with_dedup_base
+    WHERE dedup_rank = 1
 )
 
 , with_derived_calcs AS (
+    SELECT
+        *,
+        CASE 
+            WHEN synth_depth = 0 OR (CAST(asset_depth AS DOUBLE) * 2 - CAST(synth_depth AS DOUBLE)) = 0 THEN 0
+            ELSE total_stake * CAST(synth_depth AS DOUBLE) 
+                 / ((CAST(asset_depth AS DOUBLE) * 2) - CAST(synth_depth AS DOUBLE))
+        END AS synth_units
+    FROM with_window_calcs
+)
+
+, with_more_calcs AS (
     SELECT
         *,
         total_stake + synth_units AS pool_units,
@@ -402,7 +413,7 @@ joined AS (
             WHEN depth_product < 0 THEN 0
             ELSE SQRT(depth_product) / (total_stake + synth_units)
         END AS liquidity_unit_value_index
-    FROM with_window_calcs
+    FROM with_derived_calcs
 )
 
 , with_lag_calcs AS (
@@ -411,12 +422,8 @@ joined AS (
         LAG(liquidity_unit_value_index, 1) OVER (
             PARTITION BY asset
             ORDER BY block_date ASC
-        ) AS prev_liquidity_unit_value_index,
-        ROW_NUMBER() OVER (
-            PARTITION BY block_month, block_date, asset
-            ORDER BY asset_depth DESC, rune_depth DESC
-        ) AS dedup_rank
-    FROM with_derived_calcs
+        ) AS prev_liquidity_unit_value_index
+    FROM with_more_calcs
 )
 
 SELECT
@@ -469,4 +476,3 @@ SELECT
         asset
     ) AS _unique_key
 FROM with_lag_calcs
-WHERE dedup_rank = 1
