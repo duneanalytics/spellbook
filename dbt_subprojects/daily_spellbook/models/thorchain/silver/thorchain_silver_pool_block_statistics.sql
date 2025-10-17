@@ -32,7 +32,7 @@ WITH pool_depth AS (
                 PARTITION BY a.pool_name, DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp))
             ) AS max_block_id
         FROM {{ ref('thorchain_silver_block_pool_depths') }} a
-        JOIN {{ source('thorchain', 'block_log') }} b
+        JOIN {{ ref('thorchain_silver_block_log') }} b
             ON a.raw_block_timestamp = b.timestamp
         WHERE a.asset_e8 > 0
           AND cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '17' day
@@ -55,7 +55,7 @@ pool_status AS (
                 ORDER BY cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) DESC, a.status
             ) AS rn
         FROM {{ ref('thorchain_silver_pool_events') }} a
-        JOIN {{ source('thorchain', 'block_log') }} b
+        JOIN {{ ref('thorchain_silver_block_log') }} b
             ON a.block_time = cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)
         WHERE cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '17' day
     )
@@ -71,7 +71,7 @@ add_liquidity_tbl AS (
         SUM(a.asset_e8) AS add_asset_liquidity_volume,
         SUM(a.stake_units) AS added_stake
     FROM {{ ref('thorchain_silver_stake_events') }} a
-    JOIN {{ source('thorchain', 'block_log') }} b
+    JOIN {{ ref('thorchain_silver_block_log') }} b
         ON a.block_time = cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)
     WHERE cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '17' day
     GROUP BY
@@ -89,7 +89,7 @@ withdraw_tbl AS (
         SUM(a.stake_units) AS withdrawn_stake,
         SUM(a.imp_loss_protection_e8) AS impermanent_loss_protection_paid
     FROM {{ ref('thorchain_silver_withdraw_events') }} a
-    JOIN {{ source('thorchain', 'block_log') }} b
+    JOIN {{ ref('thorchain_silver_block_log') }} b
         ON a.raw_block_timestamp = b.timestamp
     WHERE cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '17' day
     GROUP BY
@@ -111,7 +111,7 @@ swap_total_tbl AS (
                 ELSE a.from_e8
             END AS volume
         FROM {{ ref('thorchain_silver_swap_events') }} a
-        JOIN {{ source('thorchain', 'block_log') }} b
+        JOIN {{ ref('thorchain_silver_block_log') }} b
             ON a.raw_block_timestamp = b.timestamp
     )
     GROUP BY block_date, pool
@@ -138,7 +138,7 @@ swap_to_asset_tbl AS (
             a.from_e8,
             a.swap_slip_bp
         FROM {{ ref('thorchain_silver_swap_events') }} a
-        JOIN {{ source('thorchain', 'block_log') }} b
+        JOIN {{ ref('thorchain_silver_block_log') }} b
             ON a.raw_block_timestamp = b.timestamp
     )
     WHERE to_rune_asset = 'to_asset'
@@ -166,7 +166,7 @@ swap_to_rune_tbl AS (
             a.from_e8,
             a.swap_slip_bp
         FROM {{ ref('thorchain_silver_swap_events') }} a
-        JOIN {{ source('thorchain', 'block_log') }} b
+        JOIN {{ ref('thorchain_silver_block_log') }} b
             ON a.raw_block_timestamp = b.timestamp
     )
     WHERE to_rune_asset = 'to_rune'
@@ -179,7 +179,7 @@ average_slip_tbl AS (
         a.pool as pool_name,
         AVG(a.swap_slip_bp) AS average_slip
     FROM {{ ref('thorchain_silver_swap_events') }} a
-    JOIN {{ source('thorchain', 'block_log') }} b
+    JOIN {{ ref('thorchain_silver_block_log') }} b
         ON a.raw_block_timestamp = b.timestamp
     GROUP BY
         a.pool,
@@ -192,7 +192,7 @@ unique_swapper_tbl AS (
         a.pool as pool_name,
         COUNT(DISTINCT a.from_addr) AS unique_swapper_count
     FROM {{ ref('thorchain_silver_swap_events') }} a
-    JOIN {{ source('thorchain', 'block_log') }} b
+    JOIN {{ ref('thorchain_silver_block_log') }} b
         ON a.raw_block_timestamp = b.timestamp
     GROUP BY
         a.pool,
@@ -205,7 +205,7 @@ stake_amount AS (
         a.pool_name,
         SUM(a.stake_units) AS units
     FROM {{ ref('thorchain_silver_stake_events') }} a
-    JOIN {{ source('thorchain', 'block_log') }} b
+    JOIN {{ ref('thorchain_silver_block_log') }} b
         ON a.block_time = cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)
     WHERE cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '17' day
     GROUP BY
@@ -220,7 +220,7 @@ unstake_umc AS (
         a.pool AS pool_name,
         SUM(a.stake_units) AS unstake_liquidity_units
     FROM {{ ref('thorchain_silver_withdraw_events') }} a
-    JOIN {{ source('thorchain', 'block_log') }} b
+    JOIN {{ ref('thorchain_silver_block_log') }} b
         ON a.raw_block_timestamp = b.timestamp
     WHERE cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '17' day
     GROUP BY
@@ -236,7 +236,7 @@ stake_umc AS (
         a.pool_name,
         SUM(a.stake_units) AS liquidity_units
     FROM {{ ref('thorchain_silver_stake_events') }} a
-    JOIN {{ source('thorchain', 'block_log') }} b
+    JOIN {{ ref('thorchain_silver_block_log') }} b
         ON a.block_time = cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)
     WHERE a.rune_address IS NOT NULL
         AND cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '17' day
@@ -253,7 +253,7 @@ stake_umc AS (
         a.pool_name,
         SUM(a.stake_units) AS liquidity_units
     FROM {{ ref('thorchain_silver_stake_events') }} a
-    JOIN {{ source('thorchain', 'block_log') }} b
+    JOIN {{ ref('thorchain_silver_block_log') }} b
         ON a.block_time = cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)
     WHERE a.asset_address IS NOT NULL
         AND a.rune_address IS NULL

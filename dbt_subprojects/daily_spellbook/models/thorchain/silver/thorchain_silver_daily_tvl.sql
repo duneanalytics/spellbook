@@ -36,6 +36,9 @@ base AS (
     LEFT JOIN daily_rune_price drp
         ON br.block_date = drp.block_date
     WHERE br.block_date >= current_date - interval '17' day
+    {% if is_incremental() %}
+      AND {{ incremental_predicate('br.block_date') }}
+    {% endif %}
 )
 
 SELECT * FROM base

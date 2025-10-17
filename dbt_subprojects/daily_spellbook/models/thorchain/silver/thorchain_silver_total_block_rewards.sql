@@ -13,9 +13,12 @@
 WITH block_prices AS (
     SELECT
         COALESCE(AVG(p.rune_usd), 0) AS rune_usd,
-        p.block_id  -- Using block_id from prices model
+        p.block_id
     FROM {{ ref('thorchain_silver_prices') }} p
     WHERE p.block_time >= current_date - interval '17' day
+    {% if is_incremental() %}
+      AND {{ incremental_predicate('p.block_time') }}
+    {% endif %}
     GROUP BY p.block_id
 ),
 
@@ -35,11 +38,14 @@ pool_rewards AS (
         ) AS _unique_key,
         ree._inserted_timestamp
     FROM {{ ref('thorchain_silver_rewards_event_entries') }} ree
-    JOIN {{ source('thorchain', 'block_log') }} b
-        ON ree.block_time = cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)
+    JOIN {{ ref('thorchain_silver_block_log') }} b
+        ON ree.block_timestamp = b.timestamp
     LEFT JOIN block_prices bp
         ON b.height = bp.block_id
     WHERE ree.block_time >= current_date - interval '17' day
+    {% if is_incremental() %}
+      AND {{ incremental_predicate('ree.block_time') }}
+    {% endif %}
 ),
 
 bond_rewards AS (
@@ -48,8 +54,8 @@ bond_rewards AS (
         date(from_unixtime(cast(b.timestamp / 1e9 as bigint))) as block_date,
         date_trunc('month', from_unixtime(cast(b.timestamp / 1e9 as bigint))) as block_month,
         b.height AS block_id,
-        'bond_holders' AS reward_entity,  -- SAME AS FLIPSIDE LOGIC
-        be.e8 / power(10, 8) AS rune_amount,  -- Using bond_events.e8 instead of rewards_events.bond_e8
+        'bond_holders' AS reward_entity,
+        be.e8 / power(10, 8) AS rune_amount,
         be.e8 / power(10, 8) * COALESCE(bp.rune_usd, 0) AS rune_amount_usd,
         concat(
             cast(b.height as varchar),
@@ -58,12 +64,15 @@ bond_rewards AS (
         ) AS _unique_key,
         be._inserted_timestamp
     FROM {{ ref('thorchain_silver_bond_events') }} be
-    JOIN {{ source('thorchain', 'block_log') }} b
-        ON be.block_time = cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)
+    JOIN {{ ref('thorchain_silver_block_log') }} b
+        ON be.block_timestamp = b.timestamp
     LEFT JOIN block_prices bp
         ON b.height = bp.block_id
     WHERE be.block_time >= current_date - interval '17' day
-      AND be.bond_type IN ('bond_reward', 'reward')  -- Filter for earnings-type bonds
+      AND be.bond_type IN ('bond_reward', 'reward')
+    {% if is_incremental() %}
+      AND {{ incremental_predicate('be.block_time') }}
+    {% endif %}
 ),
 
 combined_rewards AS (

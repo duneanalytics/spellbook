@@ -59,7 +59,7 @@ SELECT
     ) AS _unique_key,
     current_timestamp AS _inserted_timestamp
 FROM switch_events se
-JOIN {{ source('thorchain', 'block_log') }} bl
+JOIN {{ ref('thorchain_silver_block_log') }} bl
     ON se.block_timestamp = bl.timestamp
 LEFT JOIN block_prices p
     ON bl.height = p.block_id

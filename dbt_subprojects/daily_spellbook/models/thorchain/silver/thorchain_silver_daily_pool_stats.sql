@@ -98,6 +98,9 @@ base AS (
     LEFT JOIN pool_fees pf
         ON pbs.block_date = pf.block_date
         AND pbs.asset = pf.pool_name
+    {% if is_incremental() %}
+    WHERE {{ incremental_predicate('pbs.block_date') }}
+    {% endif %}
 )
 
 SELECT * FROM base

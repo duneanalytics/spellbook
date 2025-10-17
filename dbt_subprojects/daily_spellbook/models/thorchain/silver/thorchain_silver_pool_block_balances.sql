@@ -15,7 +15,7 @@ with blk as (
         timestamp as raw_ts,
         cast(from_unixtime(cast(timestamp / 1e9 as bigint)) as timestamp) as block_time,
         height
-    FROM {{ source('thorchain', 'block_log') }}
+    FROM {{ ref('thorchain_silver_block_log') }}
 ),
 base as (
     SELECT

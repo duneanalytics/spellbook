@@ -17,7 +17,7 @@ WITH bond_type_day AS (
         (SUM(a.e8) / pow(10, 8)) AS rune_amount,
         MAX(a._inserted_timestamp) AS _inserted_timestamp
     FROM {{ ref('thorchain_silver_bond_events') }} a
-    JOIN {{ source('thorchain', 'block_log') }} b
+    JOIN {{ ref('thorchain_silver_block_log') }} b
         ON a.block_time = cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)
     WHERE cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '17' day
     {% if is_incremental() %}
@@ -67,7 +67,7 @@ total_pool_depth AS (
         ) AS max_block_id,
         a._inserted_timestamp
     FROM {{ ref('thorchain_silver_block_pool_depths') }} a
-    JOIN {{ source('thorchain', 'block_log') }} b
+    JOIN {{ ref('thorchain_silver_block_log') }} b
         ON a.raw_block_timestamp = b.timestamp
     WHERE LOWER(a.pool_name) NOT LIKE 'thor.%'
       AND cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '17' day

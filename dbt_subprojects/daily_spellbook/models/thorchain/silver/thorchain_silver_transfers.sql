@@ -33,7 +33,7 @@ base AS (
         b.height AS block_id,
         p.rune_usd
     FROM {{ ref('thorchain_silver_transfer_events') }} se
-    JOIN {{ source('thorchain', 'block_log') }} b
+    JOIN {{ ref('thorchain_silver_block_log') }} b
         ON se.block_timestamp = b.timestamp
     LEFT JOIN block_prices p
         ON b.height = p.block_id
