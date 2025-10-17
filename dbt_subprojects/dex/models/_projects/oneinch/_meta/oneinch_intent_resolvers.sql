@@ -39,7 +39,7 @@ registrations as (
     , access_token_ids
 ) as (values
       (0xf63392356a985ead50b767a3e97a253ff870e91a, '1inch Labs'     , true  , array[0,15,17,66,67,79,81,100])
-    , (0xa260f8b7c8f37c2f1bc11b04c19902829de6ac8a, 'Arctic Bastion' , true  , array[27,28,29,30,31,32,33,34,35,102])
+    , (0xa260f8b7c8f37c2f1bc11b04c19902829de6ac8a, 'Arctic Bastion' , true  , array[2,27,28,29,30,31,32,33,34,35,102])
     , (0xcfa62f77920d6383be12c91c71bd403599e1116f, 'The Open DAO'   , true  , array[])
     , (0xe023f53f735c196e4a028233c2ee425957812a41, 'Seawise'        , true  , array[])
     , (0x754bcbaf851f94ca0065d0d06d53b168daab17b8, 'Alpha'          , true  , array[])

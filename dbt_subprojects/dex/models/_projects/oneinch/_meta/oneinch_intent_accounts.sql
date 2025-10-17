@@ -5,7 +5,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['blockchain', 'address'],
+        unique_key = ['blockchain', 'account_address'],
     )
 }}
 
@@ -60,11 +60,12 @@ legacy as (
 select
     blockchain
     , tx_from as account_address
-    , resolver_address
-    , resolver_name
+    , min(resolver_name) as resolver_name
+    , array_agg(distinct resolver_address) as resolver_addresses
+    , array_distinct(flatten(array_agg(access_tokens))) as access_tokens
     , count(distinct executor_address) as executors
     , min(first_time) as first_time
     , max(last_time) as last_time
 from intents
 join {{ ref('oneinch_intent_executors') }} using(blockchain, executor_address)
-group by 1, 2, 3, 4
+group by 1, 2

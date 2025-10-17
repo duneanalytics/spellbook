@@ -300,7 +300,7 @@ models:
       - name: transfer_from
       - name: transfer_to
 
-  - name: oneinch_aggregation_trades
+  - name: oneinch_ar_trades
     meta:
       blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
       sector: oneinch
@@ -348,7 +348,7 @@ models:
           - not_null
       - name: evt_index
 
-  - name: oneinch_limit_trades
+  - name: oneinch_lop_own_trades
     meta:
       blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
       sector: oneinch
@@ -476,8 +476,9 @@ models:
       - name: account_address
         data_tests:
           - not_null
-      - name: resolver_address
       - name: resolver_name
+      - name: resolver_addresses
+      - name: access_tokens
       - name: executors
       - name: first_time
       - name: last_time
