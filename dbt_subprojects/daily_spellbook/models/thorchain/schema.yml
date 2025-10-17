@@ -81,9 +81,8 @@ models:
         data_tests:
           - not_null
       - name: event_id
-        description: "Unique event identifier"
+        description: "Event identifier (note: not unique - batch withdrawals share event_id)"
         data_tests:
-          - unique
           - not_null
       - name: block_time
         description: "Block timestamp"
@@ -104,9 +103,8 @@ models:
         data_tests:
           - not_null
       - name: event_id
-        description: "Unique event identifier"
+        description: "Event identifier (note: not unique - use event_id + tx_hash for uniqueness)"
         data_tests:
-          - unique
           - not_null
       - name: block_time
         description: "Block timestamp"
