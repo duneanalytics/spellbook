@@ -24,7 +24,7 @@ with all_raydium_swaps as (
 		{{ source('raydium_cp_solana', 'raydium_cp_swap_call_swapBaseOutput') }}
 	where
 		1=1
-		{% if is_incremental() or true -%}
+		{% if is_incremental() -%}
 		and {{incremental_predicate('call_block_time')}}
 		{% else -%}
 		and call_block_date >= date '{{project_start_date}}'
@@ -39,7 +39,7 @@ with all_raydium_swaps as (
 		{{ source('raydium_cp_solana', 'raydium_cp_swap_call_swapBaseInput') }}
 	where
 		1=1
-		{% if is_incremental() or true -%}
+		{% if is_incremental() -%}
 		and {{incremental_predicate('call_block_time')}}
 		{% else -%}
 		and call_block_date >= date '{{project_start_date}}'
@@ -59,7 +59,7 @@ with all_raydium_swaps as (
 	where
 		1=1
 		and token_version != 'native'
-		{% if is_incremental() or true %}
+		{% if is_incremental() %}
 		and {{ incremental_predicate('block_time') }}
 		{% else %}
 		and block_time >= timestamp '{{ project_start_date }}'
