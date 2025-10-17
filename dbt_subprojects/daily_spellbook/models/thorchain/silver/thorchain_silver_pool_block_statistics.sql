@@ -372,7 +372,90 @@ joined AS (
         ON pd.pool_name = umc.pool_name AND pd.block_date = umc.block_date
 )
 
-, final_calcs AS (
+, deduped AS (
+    SELECT
+        block_date,
+        block_month,
+        MAX(add_asset_liquidity_volume) AS add_asset_liquidity_volume,
+        MAX(add_liquidity_count) AS add_liquidity_count,
+        MAX(add_liquidity_volume) AS add_liquidity_volume,
+        MAX(add_rune_liquidity_volume) AS add_rune_liquidity_volume,
+        asset,
+        MAX(asset_depth) AS asset_depth,
+        MAX(asset_price) AS asset_price,
+        MAX(asset_price_usd) AS asset_price_usd,
+        MAX(average_slip) AS average_slip,
+        MAX(impermanent_loss_protection_paid) AS impermanent_loss_protection_paid,
+        MAX(rune_depth) AS rune_depth,
+        MAX(synth_depth) AS synth_depth,
+        MAX(status) AS status,
+        MAX(swap_count) AS swap_count,
+        MAX(swap_volume) AS swap_volume,
+        MAX(to_asset_average_slip) AS to_asset_average_slip,
+        MAX(to_asset_count) AS to_asset_count,
+        MAX(to_asset_fees) AS to_asset_fees,
+        MAX(to_asset_volume) AS to_asset_volume,
+        MAX(to_rune_average_slip) AS to_rune_average_slip,
+        MAX(to_rune_count) AS to_rune_count,
+        MAX(to_rune_fees) AS to_rune_fees,
+        MAX(to_rune_volume) AS to_rune_volume,
+        MAX(total_fees) AS total_fees,
+        MAX(unique_member_count) AS unique_member_count,
+        MAX(unique_swapper_count) AS unique_swapper_count,
+        MAX(units) AS units,
+        MAX(withdraw_asset_volume) AS withdraw_asset_volume,
+        MAX(withdraw_count) AS withdraw_count,
+        MAX(withdraw_rune_volume) AS withdraw_rune_volume,
+        MAX(withdraw_volume) AS withdraw_volume,
+        MAX(depth_product) AS depth_product,
+        MAX(daily_stake_change) AS daily_stake_change
+    FROM joined
+    GROUP BY block_month, block_date, asset
+)
+
+, with_window_calcs AS (
+    SELECT
+        *,
+        SUM(daily_stake_change) OVER (
+            PARTITION BY asset
+            ORDER BY block_date ASC
+        ) AS total_stake
+    FROM deduped
+)
+
+, with_derived_calcs AS (
+    SELECT
+        *,
+        CASE 
+            WHEN synth_depth = 0 OR (CAST(asset_depth AS DOUBLE) * 2 - CAST(synth_depth AS DOUBLE)) = 0 THEN 0
+            ELSE total_stake * CAST(synth_depth AS DOUBLE) 
+                 / ((CAST(asset_depth AS DOUBLE) * 2) - CAST(synth_depth AS DOUBLE))
+        END AS synth_units
+    FROM with_window_calcs
+)
+
+, with_more_calcs AS (
+    SELECT
+        *,
+        total_stake + synth_units AS pool_units,
+        CASE
+            WHEN total_stake = 0 THEN 0
+            WHEN depth_product < 0 THEN 0
+            ELSE SQRT(depth_product) / (total_stake + synth_units)
+        END AS liquidity_unit_value_index
+    FROM with_derived_calcs
+)
+
+, with_lag_calcs AS (
+    SELECT
+        *,
+        LAG(liquidity_unit_value_index, 1) OVER (
+            PARTITION BY asset
+            ORDER BY block_date ASC
+        ) AS prev_liquidity_unit_value_index
+    FROM with_more_calcs
+)
+
 SELECT
     block_date,
     block_month,
@@ -407,63 +490,12 @@ SELECT
     withdraw_count,
     withdraw_rune_volume,
     withdraw_volume,
-    
-    SUM(daily_stake_change) OVER (
-        PARTITION BY asset
-        ORDER BY block_date ASC
-    ) AS total_stake,
-    
+    total_stake,
     depth_product,
-    
-    CASE 
-        WHEN synth_depth = 0 OR (CAST(asset_depth AS DOUBLE) * 2 - CAST(synth_depth AS DOUBLE)) = 0 THEN 0
-        ELSE (SUM(daily_stake_change) OVER (PARTITION BY asset ORDER BY block_date ASC)) 
-             * CAST(synth_depth AS DOUBLE) 
-             / ((CAST(asset_depth AS DOUBLE) * 2) - CAST(synth_depth AS DOUBLE))
-    END AS synth_units,
-    
-    (SUM(daily_stake_change) OVER (PARTITION BY asset ORDER BY block_date ASC)) + 
-    (CASE 
-        WHEN synth_depth = 0 OR (CAST(asset_depth AS DOUBLE) * 2 - CAST(synth_depth AS DOUBLE)) = 0 THEN 0
-        ELSE (SUM(daily_stake_change) OVER (PARTITION BY asset ORDER BY block_date ASC)) 
-             * CAST(synth_depth AS DOUBLE) 
-             / ((CAST(asset_depth AS DOUBLE) * 2) - CAST(synth_depth AS DOUBLE))
-    END) AS pool_units,
-    
-    CASE
-        WHEN (SUM(daily_stake_change) OVER (PARTITION BY asset ORDER BY block_date ASC)) = 0 THEN 0
-        WHEN depth_product < 0 THEN 0
-        ELSE SQRT(depth_product) / (
-            (SUM(daily_stake_change) OVER (PARTITION BY asset ORDER BY block_date ASC)) + 
-            (CASE 
-                WHEN synth_depth = 0 OR (CAST(asset_depth AS DOUBLE) * 2 - CAST(synth_depth AS DOUBLE)) = 0 THEN 0
-                ELSE (SUM(daily_stake_change) OVER (PARTITION BY asset ORDER BY block_date ASC)) 
-                     * CAST(synth_depth AS DOUBLE) 
-                     / ((CAST(asset_depth AS DOUBLE) * 2) - CAST(synth_depth AS DOUBLE))
-            END)
-        )
-    END AS liquidity_unit_value_index,
-    
-    LAG(
-        CASE
-            WHEN (SUM(daily_stake_change) OVER (PARTITION BY asset ORDER BY block_date ASC)) = 0 THEN 0
-            WHEN depth_product < 0 THEN 0
-            ELSE SQRT(depth_product) / (
-                (SUM(daily_stake_change) OVER (PARTITION BY asset ORDER BY block_date ASC)) + 
-                (CASE 
-                    WHEN synth_depth = 0 OR (CAST(asset_depth AS DOUBLE) * 2 - CAST(synth_depth AS DOUBLE)) = 0 THEN 0
-                    ELSE (SUM(daily_stake_change) OVER (PARTITION BY asset ORDER BY block_date ASC)) 
-                         * CAST(synth_depth AS DOUBLE) 
-                         / ((CAST(asset_depth AS DOUBLE) * 2) - CAST(synth_depth AS DOUBLE))
-                END)
-            )
-        END,
-        1
-    ) OVER (
-        PARTITION BY asset
-        ORDER BY block_date ASC
-    ) AS prev_liquidity_unit_value_index,
-    
+    synth_units,
+    pool_units,
+    liquidity_unit_value_index,
+    prev_liquidity_unit_value_index,
     concat(
         cast(block_month as varchar),
         '-',
@@ -471,8 +503,4 @@ SELECT
         '-',
         asset
     ) AS _unique_key
-    
-FROM joined
-)
-
-SELECT DISTINCT * FROM final_calcs
+FROM with_lag_calcs
