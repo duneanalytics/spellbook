@@ -453,6 +453,8 @@ SELECT DISTINCT
     ) AS prev_liquidity_unit_value_index,
     
     concat(
+        cast(block_month as varchar),
+        '-',
         cast(block_date as varchar),
         '-',
         asset
