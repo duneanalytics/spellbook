@@ -22,7 +22,7 @@ WITH pool_depth AS (
     FROM (
         SELECT
             DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)) AS block_date,
-            date_trunc('month', cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)) AS block_month,
+            CAST(date_trunc('month', cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)) AS DATE) AS block_month,
             a.pool_name,
             a.rune_e8 AS rune_depth,
             a.asset_e8 AS asset_depth,
@@ -389,16 +389,11 @@ joined AS (
             ELSE (SUM(daily_stake_change) OVER (PARTITION BY asset ORDER BY block_date ASC)) 
                  * CAST(synth_depth AS DOUBLE) 
                  / ((CAST(asset_depth AS DOUBLE) * 2) - CAST(synth_depth AS DOUBLE))
-        END AS synth_units,
-        
-        ROW_NUMBER() OVER (
-            PARTITION BY block_month, block_date, asset  
-            ORDER BY asset_depth DESC, rune_depth DESC, synth_depth DESC, swap_count DESC, swap_volume DESC, total_fees DESC
-        ) AS dedup_rn
+        END AS synth_units
     FROM joined
 )
 
-SELECT
+SELECT DISTINCT
     block_date,
     block_month,
     add_asset_liquidity_volume,
@@ -463,4 +458,3 @@ SELECT
         asset
     ) AS _unique_key
 FROM with_window_calcs
-WHERE dedup_rn = 1
