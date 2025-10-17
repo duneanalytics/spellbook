@@ -294,11 +294,22 @@ unique_member_count AS (
 
 asset_price_usd_tbl AS (
     SELECT
-        date(p.block_time) AS block_date,
-        p.symbol AS pool_name,
-        p.asset_usd AS asset_price_usd
-    FROM {{ ref('thorchain_silver_prices') }} p
-    WHERE p.block_time >= current_date - interval '17' day
+        block_date,
+        pool_name,
+        asset_price_usd
+    FROM (
+        SELECT
+            date(p.block_time) AS block_date,
+            p.block_id,
+            p.symbol AS pool_name,
+            p.asset_usd AS asset_price_usd,
+            MAX(p.block_id) OVER (
+                PARTITION BY p.symbol, date(p.block_time)
+            ) AS max_block_id
+        FROM {{ ref('thorchain_silver_prices') }} p
+        WHERE p.block_time >= current_date - interval '17' day
+    )
+    WHERE block_id = max_block_id
 ),
 
 joined AS (
