@@ -9,4 +9,4 @@ sources:
   - name: somnex_somnia
     tables:
       - name: somnexammpair_evt_swap
-      - name: somnexammfactory_call_createpair 
+      - name: somnexammfactory_evt_paircreated 
