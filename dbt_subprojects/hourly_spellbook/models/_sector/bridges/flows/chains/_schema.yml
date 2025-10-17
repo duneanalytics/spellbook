@@ -73,6 +73,9 @@ models:
       - &bridge_transfer_id 
         name: bridge_transfer_id
         description: "Bridge order identifier"
+      - &withdrawal_chain_id
+        name: withdrawal_chain_id
+        description: "Blockchain ID where the tokens were received"
   - name: bridges_ethereum_withdrawals
     meta:
       blockchain: ethereum
@@ -105,6 +108,9 @@ models:
       - *evt_index  
       - *contract_address 
       - *bridge_transfer_id 
+      - &deposit_chain_id
+        name: deposit_chain_id
+        description: "Blockchain ID where the tokens were sent"
   - name: bridges_base_deposits
     meta:
       blockchain: base
@@ -137,6 +143,7 @@ models:
       - *evt_index  
       - *contract_address 
       - *bridge_transfer_id 
+      - *withdrawal_chain_id
   - name: bridges_base_withdrawals
     meta:
       blockchain: base
@@ -169,6 +176,7 @@ models:
       - *evt_index  
       - *contract_address 
       - *bridge_transfer_id 
+      - *deposit_chain_id
   - name: bridges_optimism_deposits
     meta:
       blockchain: optimism
@@ -201,6 +209,7 @@ models:
       - *evt_index  
       - *contract_address 
       - *bridge_transfer_id 
+      - *withdrawal_chain_id
   - name: bridges_optimism_withdrawals
     meta:
       blockchain: optimism
@@ -233,6 +242,7 @@ models:
       - *evt_index  
       - *contract_address 
       - *bridge_transfer_id 
+      - *deposit_chain_id
   - name: bridges_polygon_deposits
     meta:
       blockchain: polygon
@@ -265,6 +275,7 @@ models:
       - *evt_index  
       - *contract_address 
       - *bridge_transfer_id 
+      - *withdrawal_chain_id
   - name: bridges_polygon_withdrawals
     meta:
       blockchain: polygon
@@ -297,6 +308,7 @@ models:
       - *evt_index  
       - *contract_address 
       - *bridge_transfer_id 
+      - *deposit_chain_id
   - name: bridges_unichain_deposits
     meta:
       blockchain: unichain
@@ -329,6 +341,7 @@ models:
       - *evt_index  
       - *contract_address 
       - *bridge_transfer_id 
+      - *withdrawal_chain_id
   - name: bridges_unichain_withdrawals
     meta:
       blockchain: unichain
@@ -361,3 +374,4 @@ models:
       - *evt_index  
       - *contract_address 
       - *bridge_transfer_id 
+      - *deposit_chain_id

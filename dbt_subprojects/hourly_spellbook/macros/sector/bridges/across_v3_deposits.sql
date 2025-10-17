@@ -1,32 +1,7 @@
 {% macro across_v3_deposits(blockchain, events) %}
 
-WITH across_id_mapping AS (
-    SELECT id, blockchain
-    FROM (VALUES
-    (1, 'ethereum')
-    , (10, 'optimism')
-    , (137, 'polygon')
-    , (42161, 'arbitrum')
-    , (56, 'bnb')
-    , (324, 'zksync')
-    , (59144, 'linea')
-    , (8453, 'base')
-    , (7777777, 'zora')
-    , (81457, 'blast')
-    , (34443, 'mode')
-    , (232, 'lens')
-    , (57073, 'ink')
-    , (1135, 'list')
-    , (41455, 'aleph_zero')
-    , (690, 'redstone')
-    , (534352, 'scroll')
-    , (1868, 'soneium')
-    , (480, 'worldchain')
-    , (130, 'unichain')
-    ) AS x (id, blockchain)
-    )
-    
-SELECT 'arbitrum' AS deposit_chain
+SELECT '{{blockchain}}' AS deposit_chain
+, d.destinationChainId AS withdrawal_chain_id
 , m.blockchain AS withdrawal_chain
 , 'Across' AS bridge_name
 , '3' AS bridge_version
@@ -45,6 +20,6 @@ SELECT 'arbitrum' AS deposit_chain
 , contract_address
 , CAST(depositId AS varchar) AS bridge_transfer_id
 FROM ({{ events }}) d
-LEFT JOIN across_id_mapping m ON d.destinationChainId=m.id
+LEFT JOIN {{ ref('bridges_across_chain_indexes') }} m ON d.destinationChainId=m.id
 
 {% endmacro %}
