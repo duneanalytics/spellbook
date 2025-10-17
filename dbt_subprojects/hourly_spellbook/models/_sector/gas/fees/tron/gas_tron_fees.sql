@@ -27,10 +27,8 @@ WITH base_model as (
             WHEN txns.gas_limit != 0 THEN cast(txns.gas_used as double) / cast(txns.gas_limit as double)
         END AS gas_limit_usage
     FROM {{ source( 'tron', 'transactions') }} txns
-    WHERE txns.block_time >= TIMESTAMP '2025-10-15'
-        AND txns.block_time < TIMESTAMP '2025-10-16'
     {% if is_incremental() %}
-    AND {{ incremental_predicate('txns.block_time') }}
+    WHERE {{ incremental_predicate('txns.block_time') }}
     {% endif %}
    )
 
