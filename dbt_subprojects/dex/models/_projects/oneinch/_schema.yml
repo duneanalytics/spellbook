@@ -476,9 +476,10 @@ models:
       - name: account_address
         data_tests:
           - not_null
+      - name: resolver_address
       - name: resolver_name
-      - name: resolver_addresses
       - name: access_tokens
       - name: executors
       - name: first_time
       - name: last_time
+      - name: bonded_resolver_addresses

@@ -60,12 +60,13 @@ legacy as (
 select
     blockchain
     , tx_from as account_address
+    , min_by(resolver_address, resolver_name) as resolver_address
     , min(resolver_name) as resolver_name
-    , array_agg(distinct resolver_address) as resolver_addresses
     , array_distinct(flatten(array_agg(access_tokens))) as access_tokens
     , count(distinct executor_address) as executors
     , min(first_time) as first_time
     , max(last_time) as last_time
+    , array_agg(distinct resolver_address) as bonded_resolver_addresses
 from intents
 join {{ ref('oneinch_intent_executors') }} using(blockchain, executor_address)
 group by 1, 2
