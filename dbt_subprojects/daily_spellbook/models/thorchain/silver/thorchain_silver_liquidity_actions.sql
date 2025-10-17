@@ -16,6 +16,9 @@ WITH block_heights AS (
         height AS block_id
     FROM {{ source('thorchain','block_log') }}
     WHERE CAST(from_unixtime(CAST(timestamp/1e9 AS bigint)) AS timestamp) >= current_date - interval '17' day
+    {% if is_incremental() %}
+      AND {{ incremental_predicate('CAST(from_unixtime(CAST(timestamp/1e9 AS bigint)) AS timestamp)') }}
+    {% endif %}
 ),
 
 add_events AS (
@@ -146,6 +149,10 @@ FROM add_events a
 LEFT JOIN {{ ref('thorchain_silver_prices') }} p
     ON p.block_id = a.block_id
     AND p.pool_name = a.pool
+    AND p.block_time >= current_date - interval '17' day
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('p.block_time') }}
+    {% endif %}
 
 UNION ALL
 
@@ -199,3 +206,7 @@ FROM withdraw_events w
 LEFT JOIN {{ ref('thorchain_silver_prices') }} p
     ON p.block_id = w.block_id
     AND p.pool_name = w.pool
+    AND p.block_time >= current_date - interval '17' day
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('p.block_time') }}
+    {% endif %}

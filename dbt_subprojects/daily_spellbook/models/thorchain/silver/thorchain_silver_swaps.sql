@@ -44,6 +44,9 @@ WITH swaps AS (
             height AS block_id
         FROM {{ source('thorchain','block_log') }}
         WHERE CAST(from_unixtime(CAST(timestamp/1e9 AS bigint)) AS timestamp) >= current_date - interval '17' day
+        {% if is_incremental() %}
+          AND {{ incremental_predicate('CAST(from_unixtime(CAST(timestamp/1e9 AS bigint)) AS timestamp)') }}
+        {% endif %}
     ) bh ON se.block_time = bh.block_time
     WHERE se.block_time >= current_date - interval '17' day
     {% if is_incremental() %}
@@ -139,3 +142,7 @@ FROM swaps se
 LEFT JOIN {{ ref('thorchain_silver_prices') }} p
     ON se.block_id = p.block_id
     AND se.pool_name = p.pool_name
+    AND p.block_time >= current_date - interval '17' day
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('p.block_time') }}
+    {% endif %}

@@ -15,6 +15,10 @@ WITH block_prices AS (
         AVG(rune_usd) AS rune_usd,
         block_id
     FROM {{ ref('thorchain_silver_prices') }}
+    WHERE block_time >= current_date - interval '17' day
+    {% if is_incremental() %}
+      AND {{ incremental_predicate('block_time') }}
+    {% endif %}
     GROUP BY block_id
 ),
 
@@ -35,6 +39,9 @@ switch_events AS (
         ) AS rn
     FROM {{ source('thorchain', 'switch_events') }}
     WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '17' day
+    {% if is_incremental() %}
+      AND {{ incremental_predicate('cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp)') }}
+    {% endif %}
 )
 
 SELECT
