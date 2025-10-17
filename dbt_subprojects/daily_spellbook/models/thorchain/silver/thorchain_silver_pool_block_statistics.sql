@@ -389,18 +389,13 @@ joined AS (
             ELSE (SUM(daily_stake_change) OVER (PARTITION BY asset ORDER BY block_date ASC)) 
                  * CAST(synth_depth AS DOUBLE) 
                  / ((CAST(asset_depth AS DOUBLE) * 2) - CAST(synth_depth AS DOUBLE))
-        END AS synth_units
-    FROM joined
-)
-
-, deduplicated AS (
-    SELECT
-        *,
+        END AS synth_units,
+        
         ROW_NUMBER() OVER (
-            PARTITION BY block_month, block_date, asset
-            ORDER BY asset_depth DESC, rune_depth DESC
+            PARTITION BY block_month, block_date, asset  
+            ORDER BY asset_depth DESC, rune_depth DESC, synth_depth DESC, swap_count DESC, swap_volume DESC, total_fees DESC
         ) AS dedup_rn
-    FROM with_window_calcs
+    FROM joined
 )
 
 SELECT
@@ -467,5 +462,5 @@ SELECT
         '-',
         asset
     ) AS _unique_key
-FROM deduplicated
+FROM with_window_calcs
 WHERE dedup_rn = 1
