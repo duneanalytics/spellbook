@@ -49,8 +49,27 @@ with raydium_swaps as (
 )
 , token_transfers as (
 	select
-		coalesce(inner_instruction_index, 0) as inner_instruction_index
-		, *
+		block_time
+		, action
+		, amount
+		, from_token_account
+		, to_token_account
+		, token_mint_address
+		, symbol
+		, amount_display
+		, amount_usd
+		, from_owner
+		, to_owner
+		, token_version
+		, tx_id
+		, tx_signer
+		, outer_executing_account
+		, block_date
+		, block_slot
+		, tx_index
+		, outer_instruction_index
+		, coalesce(inner_instruction_index, 0) as inner_instruction_index
+		, unique_instruction_key
 	from
 		{{ source('tokens_solana','transfers') }}
 	where
