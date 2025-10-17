@@ -2116,6 +2116,41 @@ models:
           - unique
           - not_null
 
+  - name: thorchain_defi_fact_pool_block_fees
+    description: "DeFi fact table for Thorchain pool block fees and earnings"
+    columns:
+      - name: fact_pool_block_fees_id
+        description: "Surrogate key for pool block fees"
+        data_tests:
+          - unique
+          - not_null
+      - name: block_date
+        description: "Block date"
+        data_tests:
+          - not_null
+      - name: block_month
+        description: "Block month (for partitioning)"
+      - name: pool_name
+        description: "Pool name"
+      - name: rewards
+        description: "Pool rewards (decimal)"
+      - name: total_liquidity_fees_rune
+        description: "Total liquidity fees in RUNE (decimal)"
+      - name: asset_liquidity_fees
+        description: "Asset liquidity fees (decimal)"
+      - name: rune_liquidity_fees
+        description: "RUNE liquidity fees (decimal)"
+      - name: earnings
+        description: "Total pool earnings (decimal)"
+      - name: _inserted_timestamp
+        description: "Record insertion timestamp"
+      - name: _audit_run_id
+        description: "Audit run identifier"
+      - name: inserted_timestamp
+        description: "Record creation timestamp"
+      - name: modified_timestamp
+        description: "Record modification timestamp"
+
   - name: thorchain_defi_fact_rewards_events
     description: "DeFi fact table for Thorchain rewards events"
     columns:
