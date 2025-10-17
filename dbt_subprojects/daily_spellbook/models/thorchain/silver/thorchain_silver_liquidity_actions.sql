@@ -16,7 +16,7 @@ WITH block_heights AS (
         height AS block_id
     FROM {{ source('thorchain','block_log') }}
     {% if is_incremental() %}
-      AND {{ incremental_predicate('CAST(from_unixtime(CAST(timestamp/1e9 AS bigint)) AS timestamp)') }}
+    WHERE {{ incremental_predicate('CAST(from_unixtime(CAST(timestamp/1e9 AS bigint)) AS timestamp)') }}
     {% endif %}
 ),
 
@@ -54,7 +54,7 @@ add_events AS (
     FROM {{ ref('thorchain_silver_add_events') }} ae
     LEFT JOIN block_heights bh ON ae.block_time = bh.block_time
     {% if is_incremental() %}
-      AND {{ incremental_predicate('ae.block_time') }}
+    WHERE {{ incremental_predicate('ae.block_time') }}
     {% endif %}
 ),
 
@@ -92,7 +92,7 @@ withdraw_events AS (
     FROM {{ ref('thorchain_silver_withdraw_events') }} we  
     LEFT JOIN block_heights bh ON we.block_time = bh.block_time
     {% if is_incremental() %}
-      AND {{ incremental_predicate('we.block_time') }}
+    WHERE {{ incremental_predicate('we.block_time') }}
     {% endif %}
 )
 

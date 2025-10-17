@@ -16,7 +16,7 @@ WITH block_prices AS (
         block_id
     FROM {{ ref('thorchain_silver_prices') }}
     {% if is_incremental() %}
-      AND {{ incremental_predicate('block_time') }}
+    WHERE {{ incremental_predicate('block_time') }}
     {% endif %}
     GROUP BY block_id
 ),
@@ -41,7 +41,7 @@ base AS (
     LEFT JOIN block_prices p
         ON b.height = p.block_id
     {% if is_incremental() %}
-      AND {{ incremental_predicate('se.block_time') }}
+    WHERE {{ incremental_predicate('se.block_time') }}
     {% endif %}
 )
 

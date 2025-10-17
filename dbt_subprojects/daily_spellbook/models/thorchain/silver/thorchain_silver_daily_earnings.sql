@@ -16,7 +16,7 @@ WITH daily_rune_price AS (
     AVG(p.rune_usd)           AS rune_usd
   FROM {{ ref('thorchain_silver_prices') }} p
   {% if is_incremental() %}
-    AND {{ incremental_predicate('p.block_time') }}
+  WHERE {{ incremental_predicate('p.block_time') }}
   {% endif %}
   GROUP BY DATE(p.block_time)
 )

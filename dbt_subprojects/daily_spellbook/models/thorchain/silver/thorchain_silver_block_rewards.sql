@@ -16,7 +16,7 @@ WITH all_block_id AS (
         MAX(_inserted_timestamp) AS _inserted_timestamp
     FROM {{ ref('thorchain_silver_block_pool_depths') }}
     {% if is_incremental() %}
-      AND {{ incremental_predicate('block_time') }}
+    WHERE {{ incremental_predicate('block_time') }}
     {% endif %}
     GROUP BY block_time
 ),
@@ -33,7 +33,7 @@ avg_nodes_tbl AS (
         ) AS delta
     FROM {{ ref('thorchain_silver_update_node_account_status_events') }} a
     {% if is_incremental() %}
-      AND {{ incremental_predicate('a.block_time') }}
+    WHERE {{ incremental_predicate('a.block_time') }}
     {% endif %}
     GROUP BY a.block_time
 ),
@@ -58,7 +58,7 @@ all_block_with_nodes_date AS (
         MAX(abwn._inserted_timestamp) AS _inserted_timestamp
     FROM all_block_with_nodes abwn
     {% if is_incremental() %}
-      AND {{ incremental_predicate('abwn.block_time') }}
+    WHERE {{ incremental_predicate('abwn.block_time') }}
     {% endif %}
     GROUP BY DATE(abwn.block_time)
 ),
@@ -69,7 +69,7 @@ liquidity_fee_tbl AS (
         COALESCE(SUM(a.liq_fee_in_rune_e8), 0) AS liquidity_fee
     FROM {{ ref('thorchain_silver_swap_events') }} a
     {% if is_incremental() %}
-      AND {{ incremental_predicate('a.block_time') }}
+    WHERE {{ incremental_predicate('a.block_time') }}
     {% endif %}
     GROUP BY DATE(a.block_time)
 ),
@@ -91,7 +91,7 @@ rewards_summary AS (
         ) AS total_pool_rewards
     FROM {{ ref('thorchain_silver_total_block_rewards') }} tbr
     {% if is_incremental() %}
-      AND {{ incremental_predicate('tbr.block_time') }}
+    WHERE {{ incremental_predicate('tbr.block_time') }}
     {% endif %}
     GROUP BY date(tbr.block_time)
 ),

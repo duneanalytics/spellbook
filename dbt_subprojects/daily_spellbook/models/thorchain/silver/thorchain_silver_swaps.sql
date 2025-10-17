@@ -44,11 +44,11 @@ WITH swaps AS (
             height AS block_id
         FROM {{ source('thorchain','block_log') }}
         {% if is_incremental() %}
-          AND {{ incremental_predicate('CAST(from_unixtime(CAST(timestamp/1e9 AS bigint)) AS timestamp)') }}
+        WHERE {{ incremental_predicate('CAST(from_unixtime(CAST(timestamp/1e9 AS bigint)) AS timestamp)') }}
         {% endif %}
     ) bh ON se.block_time = bh.block_time
     {% if is_incremental() %}
-      AND {{ incremental_predicate('se.block_time') }}
+    WHERE {{ incremental_predicate('se.block_time') }}
     {% endif %}
 )
 
