@@ -10,7 +10,7 @@
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         partition_by = ['block_month'],
-        unique_key = ['unique_key'],
+        unique_key = ['block_month', 'blockchain', 'tx_hash', 'call_trace_address'],
     )
 }}
 
@@ -26,7 +26,7 @@ iterations as (
         select * from {{ ref('oneinch_' + blockchain + '_' + stream + '_' + substream) }}
         where true
             and block_date >= date('{{ date_from }}')
-            {% if is_incremental() %}and hashlock in (select hashlock from {{ ref('oneinch_cc') }} where {{ incremental_predicate('block_time') }} group by 1){% endif %} -- e.g. if "cancel" happens a week later, update the whole trade
+            {% if is_incremental() %}and hashlock in (select hashlock from {{ ref('oneinch_' + stream) }} where {{ incremental_predicate('block_time') }} group by 1){% endif %} -- e.g. if "cancel" happens a week later, update the whole trade
         {% if not loop.last %}union all{% endif %}
     {% endfor %}
 )
