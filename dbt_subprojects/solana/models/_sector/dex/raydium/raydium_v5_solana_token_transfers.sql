@@ -14,7 +14,7 @@
 {% set project_start_date = '2024-05-16' %}
 
 -- Base swaps from raydium v5
-with raydium_swaps as (
+with all_raydium_swaps as (
 	select distinct
 		date_trunc('day', call_block_time) as block_date
 		, call_block_slot as block_slot
@@ -44,6 +44,12 @@ with raydium_swaps as (
 		{% else -%}
 		and call_block_date >= date '{{project_start_date}}'
 		{% endif -%}
+)
+, raydium_swaps as (
+	select
+		distinct *
+	from
+		all_raydium_swaps
 )
 , token_transfers as (
 	select
