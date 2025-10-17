@@ -78,12 +78,3 @@ models:
       tags: ['solana','dex']
     description: >
         meteora cpamm dex base trades on Solana with version_name
-
-  - name: meteora_version_dbc_base_trades
-    meta:
-      blockchain: solana
-      contributors: [krishgka]
-    config:
-      tags: ['solana','dex']
-    description: >
-        meteora dbc dex base trades on Solana with version_name
