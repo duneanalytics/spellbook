@@ -23,21 +23,21 @@ WITH pool_depth AS (
         SELECT
             DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)) AS block_date,
             date_trunc('month', cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)) AS block_month,
-            b.height AS block_id,
             a.pool_name,
             a.rune_e8 AS rune_depth,
             a.asset_e8 AS asset_depth,
             a.synth_e8 AS synth_depth,
-            MAX(b.height) OVER (
+            ROW_NUMBER() OVER (
                 PARTITION BY a.pool_name, DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp))
-            ) AS max_block_id
+                ORDER BY b.height DESC, a.rune_e8 DESC, a.asset_e8 DESC
+            ) AS rn
         FROM {{ ref('thorchain_silver_block_pool_depths') }} a
         JOIN {{ ref('thorchain_silver_block_log') }} b
             ON a.raw_block_timestamp = b.timestamp
         WHERE a.asset_e8 > 0
           AND cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '17' day
     )
-    WHERE block_id = max_block_id
+    WHERE rn = 1
 ),
 
 pool_status AS (
@@ -300,16 +300,16 @@ asset_price_usd_tbl AS (
     FROM (
         SELECT
             date(p.block_time) AS block_date,
-            p.block_id,
             p.symbol AS pool_name,
             p.asset_usd AS asset_price_usd,
-            MAX(p.block_id) OVER (
+            ROW_NUMBER() OVER (
                 PARTITION BY p.symbol, date(p.block_time)
-            ) AS max_block_id
+                ORDER BY p.block_id DESC, p.block_time DESC, p.asset_usd DESC
+            ) AS rn
         FROM {{ ref('thorchain_silver_prices') }} p
         WHERE p.block_time >= current_date - interval '17' day
     )
-    WHERE block_id = max_block_id
+    WHERE rn = 1
 ),
 
 joined AS (
