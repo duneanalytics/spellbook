@@ -393,7 +393,33 @@ joined AS (
     FROM joined
 )
 
-SELECT DISTINCT
+, with_derived_calcs AS (
+    SELECT
+        *,
+        total_stake + synth_units AS pool_units,
+        CASE
+            WHEN total_stake = 0 THEN 0
+            WHEN depth_product < 0 THEN 0
+            ELSE SQRT(depth_product) / (total_stake + synth_units)
+        END AS liquidity_unit_value_index
+    FROM with_window_calcs
+)
+
+, with_lag_calcs AS (
+    SELECT
+        *,
+        LAG(liquidity_unit_value_index, 1) OVER (
+            PARTITION BY asset
+            ORDER BY block_date ASC
+        ) AS prev_liquidity_unit_value_index,
+        ROW_NUMBER() OVER (
+            PARTITION BY block_month, block_date, asset
+            ORDER BY asset_depth DESC, rune_depth DESC
+        ) AS dedup_rank
+    FROM with_derived_calcs
+)
+
+SELECT
     block_date,
     block_month,
     add_asset_liquidity_volume,
@@ -431,26 +457,9 @@ SELECT DISTINCT
     total_stake,
     depth_product,
     synth_units,
-    
-    total_stake + synth_units AS pool_units,
-    
-    CASE
-        WHEN total_stake = 0 THEN 0
-        WHEN depth_product < 0 THEN 0
-        ELSE SQRT(depth_product) / (total_stake + synth_units)
-    END AS liquidity_unit_value_index,
-    
-    LAG(
-        CASE
-            WHEN total_stake = 0 THEN 0
-            WHEN depth_product < 0 THEN 0
-            ELSE SQRT(depth_product) / (total_stake + synth_units)
-        END,
-        1
-    ) OVER (
-        PARTITION BY asset
-        ORDER BY block_date ASC
-    ) AS prev_liquidity_unit_value_index,
+    pool_units,
+    liquidity_unit_value_index,
+    prev_liquidity_unit_value_index,
     
     concat(
         cast(block_month as varchar),
@@ -459,4 +468,5 @@ SELECT DISTINCT
         '-',
         asset
     ) AS _unique_key
-FROM with_window_calcs
+FROM with_lag_calcs
+WHERE dedup_rank = 1
