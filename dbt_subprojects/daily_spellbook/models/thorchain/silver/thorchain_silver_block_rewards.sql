@@ -15,7 +15,6 @@ WITH all_block_id AS (
         block_time,
         MAX(_inserted_timestamp) AS _inserted_timestamp
     FROM {{ ref('thorchain_silver_block_pool_depths') }}
-    WHERE block_time >= current_date - interval '17' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('block_time') }}
     {% endif %}
@@ -33,7 +32,6 @@ avg_nodes_tbl AS (
             END
         ) AS delta
     FROM {{ ref('thorchain_silver_update_node_account_status_events') }} a
-    WHERE a.block_time >= current_date - interval '17' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('a.block_time') }}
     {% endif %}
@@ -59,7 +57,6 @@ all_block_with_nodes_date AS (
         AVG(abwn.avg_nodes) AS avg_nodes,
         MAX(abwn._inserted_timestamp) AS _inserted_timestamp
     FROM all_block_with_nodes abwn
-    WHERE abwn.block_time >= current_date - interval '17' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('abwn.block_time') }}
     {% endif %}
@@ -71,7 +68,6 @@ liquidity_fee_tbl AS (
         DATE(a.block_time) AS block_date,
         COALESCE(SUM(a.liq_fee_in_rune_e8), 0) AS liquidity_fee
     FROM {{ ref('thorchain_silver_swap_events') }} a
-    WHERE a.block_time >= current_date - interval '17' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('a.block_time') }}
     {% endif %}
@@ -94,7 +90,6 @@ rewards_summary AS (
             END
         ) AS total_pool_rewards
     FROM {{ ref('thorchain_silver_total_block_rewards') }} tbr
-    WHERE tbr.block_time >= current_date - interval '17' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('tbr.block_time') }}
     {% endif %}

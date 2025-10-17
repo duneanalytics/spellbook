@@ -24,9 +24,8 @@ WITH deduplicated AS (
             ORDER BY _updated_at DESC
         ) AS rn
     FROM {{ source('thorchain', 'gas_events') }}
-    WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '17' day
     {% if is_incremental() %}
-      AND {{ incremental_predicate('cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp)') }}
+    WHERE {{ incremental_predicate('cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp)') }}
     {% endif %}
 ),
 

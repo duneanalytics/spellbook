@@ -15,7 +15,6 @@ WITH block_prices AS (
         AVG(rune_usd) AS rune_usd,
         block_id
     FROM {{ ref('thorchain_silver_prices') }}
-    WHERE block_time >= current_date - interval '17' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('block_time') }}
     {% endif %}
@@ -41,7 +40,6 @@ base AS (
         ON se.block_timestamp = b.timestamp
     LEFT JOIN block_prices p
         ON b.height = p.block_id
-    WHERE se.block_time >= current_date - interval '17' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('se.block_time') }}
     {% endif %}

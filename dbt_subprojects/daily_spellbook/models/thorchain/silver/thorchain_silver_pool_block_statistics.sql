@@ -10,8 +10,6 @@
     tags = ['thorchain', 'pool_statistics', 'silver']
 ) }}
 
-{% set lookback_days = 17 %}
-
 -- Base CTE: Compute timestamp conversions once to avoid repeated calculations
 WITH block_log_base AS (
     SELECT 
@@ -21,13 +19,11 @@ WITH block_log_base AS (
         CAST(date_trunc('month', cast(from_unixtime(cast(timestamp / 1e9 as bigint)) as timestamp)) AS DATE) AS block_month,
         cast(from_unixtime(cast(timestamp / 1e9 as bigint)) as timestamp) AS block_time
     FROM {{ ref('thorchain_silver_block_log') }}
-    WHERE cast(from_unixtime(cast(timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '{{ lookback_days }}' day
     {% if is_incremental() %}
-        -- On incremental runs, only process new data plus a 3-day lookback window
-        AND cast(from_unixtime(cast(timestamp / 1e9 as bigint)) as timestamp) >= (
-            SELECT COALESCE(MAX(block_date), current_date - interval '{{ lookback_days }}' day) - interval '3' day 
-            FROM {{ this }}
-        )
+    WHERE cast(from_unixtime(cast(timestamp / 1e9 as bigint)) as timestamp) >= (
+        SELECT MAX(block_date) - interval '3' day 
+        FROM {{ this }}
+    )
     {% endif %}
 ),
 
@@ -316,12 +312,11 @@ asset_price_usd_tbl AS (
                 ORDER BY p.block_id DESC, p.block_time DESC, p.asset_usd DESC
             ) AS rn
         FROM {{ ref('thorchain_silver_prices') }} p
-        WHERE p.block_time >= current_date - interval '{{ lookback_days }}' day
         {% if is_incremental() %}
-            AND date(p.block_time) >= (
-                SELECT COALESCE(MAX(block_date), current_date - interval '{{ lookback_days }}' day) - interval '3' day 
-                FROM {{ this }}
-            )
+        WHERE date(p.block_time) >= (
+            SELECT MAX(block_date) - interval '3' day 
+            FROM {{ this }}
+        )
         {% endif %}
     )
     WHERE rn = 1

@@ -54,7 +54,6 @@ base as (
         ON ap.blockchain = 'thorchain'
         AND ap.symbol = bpd.pool_name
         AND ap.minute = date_trunc('minute', blk.block_time)
-    WHERE blk.block_time >= current_date - interval '17' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('blk.block_time') }}
     {% endif %}

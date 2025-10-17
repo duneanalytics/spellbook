@@ -24,7 +24,6 @@ WITH blocks AS (
     FROM {{ ref('thorchain_silver_block_pool_depths') }} bpd
     JOIN {{ source('thorchain','block_log') }} bl
         ON bpd.raw_block_timestamp = bl.timestamp
-    WHERE CAST(from_unixtime(CAST(bpd.raw_block_timestamp / 1e9 AS bigint)) AS timestamp) >= current_date - interval '17' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('CAST(from_unixtime(CAST(bpd.raw_block_timestamp / 1e9 AS bigint)) AS timestamp)') }}
     {% endif %}
@@ -38,7 +37,6 @@ rune_price AS (
     FROM {{ ref('thorchain_silver_rune_price') }} rp
     JOIN {{ source('thorchain','block_log') }} bl
         ON CAST(from_unixtime(CAST(rp.raw_block_timestamp / 1e9 AS bigint)) AS timestamp) = CAST(from_unixtime(CAST(bl.timestamp / 1e9 AS bigint)) AS timestamp)
-    WHERE rp.block_time >= current_date - interval '17' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('rp.block_time') }}
     {% endif %}

@@ -18,7 +18,6 @@ WITH all_block_id AS (
     FROM {{ ref('thorchain_silver_block_pool_depths') }} a
     JOIN {{ ref('thorchain_silver_block_log') }} b
         ON a.raw_block_timestamp = b.timestamp
-    WHERE b.block_time >= current_date - interval '17' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('b.block_time') }}
     {% endif %}
@@ -35,7 +34,6 @@ total_pool_rewards_tbl AS (
     FROM {{ ref('thorchain_silver_rewards_event_entries') }} a
     JOIN {{ ref('thorchain_silver_block_log') }} b
         ON a.block_timestamp = b.timestamp
-    WHERE b.block_time >= current_date - interval '17' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('b.block_time') }}
     {% endif %}
@@ -52,7 +50,6 @@ total_liquidity_fees_rune_tbl AS (
     FROM {{ ref('thorchain_silver_swap_events') }} a
     JOIN {{ ref('thorchain_silver_block_log') }} b
         ON a.raw_block_timestamp = b.timestamp
-    WHERE b.block_time >= current_date - interval '17' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('b.block_time') }}
     {% endif %}
@@ -78,7 +75,6 @@ liquidity_fees_asset_tbl AS (
     ) a
     JOIN {{ ref('thorchain_silver_block_log') }} b
         ON a.raw_block_timestamp = b.timestamp
-    WHERE b.block_time >= current_date - interval '17' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('b.block_time') }}
     {% endif %}
@@ -104,7 +100,6 @@ liquidity_fees_rune_tbl AS (
     ) a
     JOIN {{ ref('thorchain_silver_block_log') }} b
         ON a.raw_block_timestamp = b.timestamp
-    WHERE b.block_time >= current_date - interval '17' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('b.block_time') }}
     {% endif %}

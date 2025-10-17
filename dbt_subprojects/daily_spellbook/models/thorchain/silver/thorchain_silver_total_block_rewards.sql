@@ -15,7 +15,6 @@ WITH block_prices AS (
         COALESCE(AVG(p.rune_usd), 0) AS rune_usd,
         p.block_id
     FROM {{ ref('thorchain_silver_prices') }} p
-    WHERE p.block_time >= current_date - interval '17' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('p.block_time') }}
     {% endif %}
@@ -42,7 +41,6 @@ pool_rewards AS (
         ON ree.block_timestamp = b.timestamp
     LEFT JOIN block_prices bp
         ON b.height = bp.block_id
-    WHERE ree.block_time >= current_date - interval '17' day
     {% if is_incremental() %}
       AND {{ incremental_predicate('ree.block_time') }}
     {% endif %}
@@ -68,7 +66,6 @@ bond_rewards AS (
         ON be.block_timestamp = b.timestamp
     LEFT JOIN block_prices bp
         ON b.height = bp.block_id
-    WHERE be.block_time >= current_date - interval '17' day
       AND be.bond_type IN ('bond_reward', 'reward')
     {% if is_incremental() %}
       AND {{ incremental_predicate('be.block_time') }}
