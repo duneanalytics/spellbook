@@ -20,7 +20,6 @@ with raydium_swaps as (
 		, call_block_slot as block_slot
 		, call_tx_index as tx_index
 		, call_outer_instruction_index as outer_instruction_index
-		, coalesce(call_inner_instruction_index, 0) as inner_instruction_index
 	from
 		{{ source('raydium_cp_solana', 'raydium_cp_swap_call_swapBaseOutput') }}
 	where
@@ -36,7 +35,6 @@ with raydium_swaps as (
 		, call_block_slot as block_slot
 		, call_tx_index as tx_index
 		, call_outer_instruction_index as outer_instruction_index
-		, coalesce(call_inner_instruction_index, 0) as inner_instruction_index
 	from
 		{{ source('raydium_cp_solana', 'raydium_cp_swap_call_swapBaseInput') }}
 	where
@@ -49,8 +47,7 @@ with raydium_swaps as (
 )
 , token_transfers as (
 	select
-		coalesce(call_inner_instruction_index, 0) as inner_instruction_index
-		, *
+		*
 	from
 		{{ source('tokens_solana','transfers') }}
 	where
@@ -67,4 +64,4 @@ select
 	*
 from
 	token_transfers
-inner join raydium_swaps using (block_date, block_slot, tx_index, outer_instruction_index, inner_instruction_index)
+inner join raydium_swaps using (block_date, block_slot, tx_index, outer_instruction_index)
