@@ -56,11 +56,11 @@ SELECT
     se.mint_e8 / power(10, 8) AS mint_amount,
     (se.mint_e8 / power(10, 8)) * COALESCE(p.rune_usd, 0) AS mint_amount_usd,
     CONCAT(
-        se.tx_id, '-',
+        COALESCE(se.tx_id, 'NULL'), '-',
         CAST(se.block_timestamp AS VARCHAR), '-',
-        se.from_address, '-',
-        se.to_address, '-',
-        se.burn_asset
+        COALESCE(se.from_address, 'NULL'), '-',
+        COALESCE(se.to_address, 'NULL'), '-',
+        COALESCE(se.burn_asset, 'NULL')
     ) AS _unique_key,
     current_timestamp AS _inserted_timestamp
 FROM switch_events se
