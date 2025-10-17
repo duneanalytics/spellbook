@@ -42,7 +42,7 @@ pool_rewards AS (
     LEFT JOIN block_prices bp
         ON b.height = bp.block_id
     {% if is_incremental() %}
-      AND {{ incremental_predicate('ree.block_time') }}
+    WHERE {{ incremental_predicate('ree.block_time') }}
     {% endif %}
 ),
 
@@ -66,7 +66,7 @@ bond_rewards AS (
         ON be.block_timestamp = b.timestamp
     LEFT JOIN block_prices bp
         ON b.height = bp.block_id
-      AND be.bond_type IN ('bond_reward', 'reward')
+    WHERE be.bond_type IN ('bond_reward', 'reward')
     {% if is_incremental() %}
       AND {{ incremental_predicate('be.block_time') }}
     {% endif %}

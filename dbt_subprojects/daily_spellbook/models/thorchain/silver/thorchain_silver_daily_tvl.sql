@@ -35,7 +35,7 @@ base AS (
     LEFT JOIN daily_rune_price drp
         ON br.block_date = drp.block_date
     {% if is_incremental() %}
-      AND {{ incremental_predicate('br.block_date') }}
+    WHERE {{ incremental_predicate('br.block_date') }}
     {% endif %}
 )
 

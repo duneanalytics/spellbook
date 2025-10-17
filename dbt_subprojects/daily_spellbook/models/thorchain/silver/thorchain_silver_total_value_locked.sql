@@ -20,7 +20,7 @@ WITH bond_type_day AS (
     JOIN {{ ref('thorchain_silver_block_log') }} b
         ON a.block_time = cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)
     {% if is_incremental() %}
-      AND {{ incremental_predicate('a.block_time') }}
+    WHERE {{ incremental_predicate('a.block_time') }}
     {% endif %}
     GROUP BY
         DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)),
