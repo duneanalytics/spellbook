@@ -49,7 +49,7 @@ with raydium_swaps as (
 )
 , token_transfers as (
 	select
-		coalesce(call_inner_instruction_index, 0) as inner_instruction_index
+		coalesce(inner_instruction_index, 0) as inner_instruction_index
 		, *
 	from
 		{{ source('tokens_solana','transfers') }}
