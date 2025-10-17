@@ -3,6 +3,7 @@
         schema = 'oneinch',
         alias = 'ar_trades',
         materialized = 'view',
+        unique_key = ['block_month', 'blockchain', 'tx_hash', 'trace_address', 'evt_index']
     )
 }}
 
@@ -38,7 +39,7 @@ select
     , tx_from
     , tx_to
     , call_trace_address as trace_address
-    , -1 as evt_index
+    , if(element_at(flags, 'second_side'), -1, -2) as evt_index
 from {{ ref('oneinch_executions') }}
 where true
     and mode in ('classic', 'fusion')
