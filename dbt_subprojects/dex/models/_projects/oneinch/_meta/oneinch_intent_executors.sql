@@ -5,7 +5,7 @@
         schema = 'oneinch',
         alias = 'intent_executors',
         materialized = 'table',
-        unique_key = ['blockchain', 'executor_address']
+        unique_key = ['blockchain', 'executor_address'],
     )
 -}}
 

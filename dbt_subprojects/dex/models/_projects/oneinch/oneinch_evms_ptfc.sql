@@ -2,7 +2,7 @@
     config(
         schema = 'oneinch_evms',
         alias = 'ptfc',
-        materialized = 'view'
+        materialized = 'view',
     )
 }}
 

@@ -21,12 +21,21 @@
 
 with
 
-iterations as (
+incremental as (
+    select hashlock
+    from {{ ref('oneinch_' + stream) }}
+    where {{ incremental_predicate('block_time') }}
+    group by 1
+)
+
+, iterations as (
     {% for blockchain in stream_data['exposed'] %}
         select * from {{ ref('oneinch_' + blockchain + '_' + stream + '_' + substream) }}
         where true
             and block_date >= date('{{ date_from }}')
-            {% if is_incremental() %}and hashlock in (select hashlock from {{ ref('oneinch_' + stream) }} where {{ incremental_predicate('block_time') }} group by 1){% endif %} -- e.g. if "cancel" happens a week later, update the whole trade
+            {% if is_incremental() -%}
+                and hashlock in (select hashlock from incremental) -- e.g. if "cancel" happens a week later, update the whole trade
+            {%- endif %}
         {% if not loop.last %}union all{% endif %}
     {% endfor %}
 )

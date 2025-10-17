@@ -9,7 +9,7 @@
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         partition_by = ['block_month'],
-        unique_key = ['block_date', 'execution_id']
+        unique_key = ['block_date', 'execution_id'],
     )
 }}
 

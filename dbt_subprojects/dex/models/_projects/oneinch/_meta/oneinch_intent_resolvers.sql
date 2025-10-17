@@ -3,7 +3,7 @@
         schema = 'oneinch',
         alias = 'intent_resolvers',
         materialized = 'table',
-        unique_key = ['address', 'name']
+        unique_key = ['address', 'name'],
     )
 -}}
 
