@@ -393,7 +393,17 @@ joined AS (
     FROM joined
 )
 
-SELECT DISTINCT
+, deduplicated AS (
+    SELECT
+        *,
+        ROW_NUMBER() OVER (
+            PARTITION BY block_month, block_date, asset
+            ORDER BY asset_depth DESC, rune_depth DESC
+        ) AS dedup_rn
+    FROM with_window_calcs
+)
+
+SELECT
     block_date,
     block_month,
     add_asset_liquidity_volume,
@@ -457,4 +467,5 @@ SELECT DISTINCT
         '-',
         asset
     ) AS _unique_key
-FROM with_window_calcs
+FROM deduplicated
+WHERE dedup_rn = 1
