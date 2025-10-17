@@ -364,7 +364,8 @@ joined AS (
         COALESCE(wt.withdraw_rune_volume + wt.withdraw_asset_volume, 0) AS withdraw_volume,
         CAST(pd.asset_depth AS DOUBLE) * CAST(COALESCE(pd.rune_depth, 0) AS DOUBLE) AS depth_product,
         
-        COALESCE(alt.added_stake, 0) - COALESCE(wt.withdrawn_stake, 0) AS daily_stake_change
+        -- Store the stake change for this period (will use in window function later)
+        COALESCE(alt.added_stake, 0) - COALESCE(wt.withdrawn_stake, 0) AS added_minus_withdrawn_stake
         
     FROM pool_depth pd
     LEFT JOIN pool_status ps
@@ -372,7 +373,7 @@ joined AS (
     LEFT JOIN add_liquidity_tbl alt
         ON pd.pool_name = alt.pool_name AND pd.block_date = alt.block_date
     LEFT JOIN withdraw_tbl wt
-        ON pd.pool_name = wt.pool_name AND pd.block_date = wt.block_date  -- FIXED: Use pool_name consistently
+        ON pd.pool_name = wt.pool_name AND pd.block_date = wt.block_date
     LEFT JOIN swap_total_tbl stt
         ON pd.pool_name = stt.pool_name AND pd.block_date = stt.block_date
     LEFT JOIN swap_to_asset_tbl tat
@@ -432,8 +433,8 @@ joined AS (
         withdraw_count,
         withdraw_rune_volume,
         withdraw_volume,
-        daily_stake_change,
-        depth_product
+        depth_product,
+        total_stake AS added_minus_withdrawn_stake  -- Seed cumulative sum with historical total_stake
     FROM (
         SELECT
             asset,
@@ -469,8 +470,8 @@ joined AS (
             MAX_BY(withdraw_count, block_date) as withdraw_count,
             MAX_BY(withdraw_rune_volume, block_date) as withdraw_rune_volume,
             MAX_BY(withdraw_volume, block_date) as withdraw_volume,
-            MAX_BY(daily_stake_change, block_date) as daily_stake_change,
-            MAX_BY(depth_product, block_date) as depth_product
+            MAX_BY(depth_product, block_date) as depth_product,
+            MAX_BY(total_stake, block_date) as total_stake
         FROM {{ this }}
         WHERE block_date < (SELECT MIN(block_date) FROM joined)
         GROUP BY asset
@@ -513,39 +514,39 @@ SELECT
     withdraw_count,
     withdraw_rune_volume,
     withdraw_volume,
+    depth_product,
     
-    SUM(daily_stake_change) OVER (
+    -- Compute total_stake using window function (matching Snowflake pattern)
+    SUM(added_minus_withdrawn_stake) OVER (
         PARTITION BY pd.asset
         ORDER BY pd.block_date ASC
     ) AS total_stake,
     
-    depth_product,
-    
+    -- Compute synth_units based on total_stake
     CASE 
         WHEN synth_depth = 0 OR (CAST(asset_depth AS DOUBLE) * 2 - CAST(synth_depth AS DOUBLE)) = 0 THEN 0
-        ELSE (SUM(daily_stake_change) OVER (PARTITION BY pd.asset ORDER BY pd.block_date ASC)) 
-             * CAST(synth_depth AS DOUBLE) 
-             / ((CAST(asset_depth AS DOUBLE) * 2) - CAST(synth_depth AS DOUBLE))
+        ELSE (SUM(added_minus_withdrawn_stake) OVER (PARTITION BY pd.asset ORDER BY pd.block_date ASC))
+             * CAST(synth_depth AS DOUBLE) / ((CAST(asset_depth AS DOUBLE) * 2) - CAST(synth_depth AS DOUBLE))
     END AS synth_units,
     
-    (SUM(daily_stake_change) OVER (PARTITION BY pd.asset ORDER BY pd.block_date ASC)) + 
+    -- Compute pool_units
+    (SUM(added_minus_withdrawn_stake) OVER (PARTITION BY pd.asset ORDER BY pd.block_date ASC)) + 
     (CASE 
         WHEN synth_depth = 0 OR (CAST(asset_depth AS DOUBLE) * 2 - CAST(synth_depth AS DOUBLE)) = 0 THEN 0
-        ELSE (SUM(daily_stake_change) OVER (PARTITION BY pd.asset ORDER BY pd.block_date ASC)) 
-             * CAST(synth_depth AS DOUBLE) 
-             / ((CAST(asset_depth AS DOUBLE) * 2) - CAST(synth_depth AS DOUBLE))
+        ELSE (SUM(added_minus_withdrawn_stake) OVER (PARTITION BY pd.asset ORDER BY pd.block_date ASC))
+             * CAST(synth_depth AS DOUBLE) / ((CAST(asset_depth AS DOUBLE) * 2) - CAST(synth_depth AS DOUBLE))
     END) AS pool_units,
     
+    -- Compute liquidity_unit_value_index
     CASE
-        WHEN (SUM(daily_stake_change) OVER (PARTITION BY pd.asset ORDER BY pd.block_date ASC)) = 0 THEN 0
+        WHEN (SUM(added_minus_withdrawn_stake) OVER (PARTITION BY pd.asset ORDER BY pd.block_date ASC)) = 0 THEN 0
         WHEN depth_product < 0 THEN 0
         ELSE SQRT(depth_product) / (
-            (SUM(daily_stake_change) OVER (PARTITION BY pd.asset ORDER BY pd.block_date ASC)) + 
+            (SUM(added_minus_withdrawn_stake) OVER (PARTITION BY pd.asset ORDER BY pd.block_date ASC)) + 
             (CASE 
                 WHEN synth_depth = 0 OR (CAST(asset_depth AS DOUBLE) * 2 - CAST(synth_depth AS DOUBLE)) = 0 THEN 0
-                ELSE (SUM(daily_stake_change) OVER (PARTITION BY pd.asset ORDER BY pd.block_date ASC)) 
-                     * CAST(synth_depth AS DOUBLE) 
-                     / ((CAST(asset_depth AS DOUBLE) * 2) - CAST(synth_depth AS DOUBLE))
+                ELSE (SUM(added_minus_withdrawn_stake) OVER (PARTITION BY pd.asset ORDER BY pd.block_date ASC))
+                     * CAST(synth_depth AS DOUBLE) / ((CAST(asset_depth AS DOUBLE) * 2) - CAST(synth_depth AS DOUBLE))
             END)
         )
     END AS liquidity_unit_value_index
