@@ -171,7 +171,7 @@ sort_table as (
     , version = '4'
     , PoolManager_evt_ModifyLiquidity = null
     , PoolManager_evt_Swap = null
-    , PoolManager_call_Take = null 
+    , PoolManager_call_ModifyLiquidity = null
     , liquidity_pools = null
     , liquidity_sqrtpricex96 = null
     )
@@ -237,201 +237,147 @@ get_prices as (
 
 modify_liquidity_events as (
     with 
-    
-    get_events as (
+
+    get_calls as (
         select 
-            evt_tx_from as tx_from
-            , evt_block_time
-            , evt_block_number
-            , evt_block_number + evt_index/1e6 as block_index_sum
-            , id
-            , evt_tx_hash
-            , evt_index
-            , 'modify_liquidity' as event_type
-            , salt
-            , tickLower
-            , tickUpper
-            , liquidityDelta
-            , sender -- needed for fee logic
+            contract_address,
+            call_success,
+            call_tx_hash,
+            call_tx_from,
+            call_tx_to,
+            call_trace_address,
+            call_block_time,
+            call_block_number,
+            -- pool key: currency0/1 + hooks (all varbinary)
+            FROM_HEX(JSON_EXTRACT_SCALAR(JSON_PARSE("key"), '$.currency0')) AS currency0,
+            FROM_HEX(JSON_EXTRACT_SCALAR(JSON_PARSE("key"), '$.currency1')) AS currency1,
+            FROM_HEX(JSON_EXTRACT_SCALAR(JSON_PARSE("key"), '$.hooks'))     AS hooks,
+
+            -- raw packed outputs (two signed 128-bit legs inside an int256)
+            CAST(output_callerDelta   AS VARBINARY) AS callerDelta_vb,
+            CAST(output_feesAccrued   AS VARBINARY) AS feesAccrued_vb,
+
+            -- params (decoded for handy metadata)
+            CAST(JSON_EXTRACT(JSON_PARSE(params), '$.tickLower')      AS BIGINT)  AS tickLower,
+            CAST(JSON_EXTRACT(JSON_PARSE(params), '$.tickUpper')      AS BIGINT)  AS tickUpper,
+            CAST(CAST(JSON_EXTRACT(JSON_PARSE(params), '$.liquidityDelta') AS VARCHAR) AS INT256) AS params_liquidityDelta,
+
+            -- for deterministic call↔event pairing within a tx
+            ROW_NUMBER() OVER (PARTITION BY call_tx_hash ORDER BY call_trace_address) AS call_rn
         from 
-        {{ PoolManager_evt_ModifyLiquidity }}
-        {%- if is_incremental() %}
-        where {{ incremental_predicate('evt_block_time') }}
-        {%- endif %} 
-    ),
-
-    add_latest_price as (
-        select 
-            ab.*,
-            gp.sqrtpricex96
-        from (
-        select 
-            ge.*
-            , gp.previous_block_index_sum
-        from 
-        get_events ge 
-        left join 
-        get_prices gp 
-            on ge.id = gp.id 
-            and ge.block_index_sum >= gp.previous_block_index_sum
-            and ge.block_index_sum < gp.block_index_sum 
-        ) ab 
-        inner join 
-        get_prices gp 
-            on ab.id = gp.id
-            and ab.previous_block_index_sum = gp.block_index_sum 
-    ),
-
-    prep_for_calculations as (
-        select 
-            * 
-            , sqrtpricex96 / power(2, 96) AS sqrtprice
-            , sqrt(power(1.0001, tickLower)) AS sqrtRatioL
-            , sqrt(power(1.0001, tickUpper)) AS sqrtRatioU
-        from 
-        add_latest_price
-    )
-
-    select 
-        *
-        , case
-            when sqrtPrice <= sqrtRatioL then liquidityDelta * ((sqrtRatioU - sqrtRatioL)/(sqrtRatioL*sqrtRatioU))
-            when sqrtPrice >= sqrtRatioU then 0
-            else liquidityDelta * ((sqrtRatioU - sqrtPrice) / (sqrtPrice * sqrtRatioU))
-          end as amount0
-        , case
-            when sqrtPrice <= sqrtRatioL then 0
-            when sqrtPrice >= sqrtRatioU then liquidityDelta * (sqrtRatioU - sqrtRatioL)
-            else liquidityDelta * (sqrtPrice - sqrtRatioL)
-          end as amount1
-    from 
-    prep_for_calculations
-),
-
-fee_collection as (
-    with 
-
-    get_fees as (
-        select 
-            call_tx_from as tx_from
-            , call_tx_hash as tx_hash 
-            , call_block_time as block_time 
-            , call_block_number as block_number 
-            , 1 as evt_index -- we don't actually use index here for anything and some indexes are missing in the call table so hardcoding here as evt_index 
-            , amount 
-            , currency 
-        from 
-        {{ PoolManager_call_Take }}
-        where call_success
+        {{ PoolManager_call_ModifyLiquidity }}
+        where call_success 
         {%- if is_incremental() %}
         and {{ incremental_predicate('call_block_time') }}
         {%- endif %} 
     ),
 
-    agg_fees as (
-        select 
-            tx_hash
-            , tx_from
-            , block_time
-            , block_number
-            , min(evt_index) as evt_index
-            , sum(amount) as fee_amount 
-            , currency as fee_currency
-        from 
-        get_fees 
-        group by 1, 2, 3, 4, 7
+    calls_decoded as (
+        SELECT
+            c.*,
+
+            -- ---- decode callerDelta (top/bottom 16 bytes, sign-extended to int256) ----
+            CASE
+                WHEN BITWISE_AND(VARBINARY_TO_BIGINT(VARBINARY_SUBSTRING(c.callerDelta_vb, 1, 1)), FROM_BASE('80', 16)) = FROM_BASE('80', 16)
+                THEN VARBINARY_TO_INT256(VARBINARY_CONCAT(FROM_HEX('0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'), VARBINARY_SUBSTRING(c.callerDelta_vb, 1, 16)))
+                ELSE VARBINARY_TO_INT256(VARBINARY_CONCAT(FROM_HEX('0x00000000000000000000000000000000'), VARBINARY_SUBSTRING(c.callerDelta_vb, 1, 16)))
+            END AS callerDelta_token0,
+
+            CASE
+                WHEN BITWISE_AND(VARBINARY_TO_BIGINT(VARBINARY_SUBSTRING(c.callerDelta_vb, 17, 1)), FROM_BASE('80', 16)) = FROM_BASE('80', 16)
+                THEN VARBINARY_TO_INT256(VARBINARY_CONCAT(FROM_HEX('0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'), VARBINARY_SUBSTRING(c.callerDelta_vb, 17, 16)))
+                ELSE VARBINARY_TO_INT256(VARBINARY_CONCAT(FROM_HEX('0x00000000000000000000000000000000'), VARBINARY_SUBSTRING(c.callerDelta_vb, 17, 16)))
+            END AS callerDelta_token1,
+
+            -- ---- decode feesAccrued (top/bottom 16 bytes, sign-extended to int256) ----
+            CASE
+                WHEN BITWISE_AND(VARBINARY_TO_BIGINT(VARBINARY_SUBSTRING(c.feesAccrued_vb, 1, 1)), FROM_BASE('80', 16)) = FROM_BASE('80', 16)
+                THEN VARBINARY_TO_INT256(VARBINARY_CONCAT(FROM_HEX('0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'), VARBINARY_SUBSTRING(c.feesAccrued_vb, 1, 16)))
+                ELSE VARBINARY_TO_INT256(VARBINARY_CONCAT(FROM_HEX('0x00000000000000000000000000000000'), VARBINARY_SUBSTRING(c.feesAccrued_vb, 1, 16)))
+            END AS feesAccrued_token0,
+
+            CASE
+                WHEN BITWISE_AND(VARBINARY_TO_BIGINT(VARBINARY_SUBSTRING(c.feesAccrued_vb, 17, 1)), FROM_BASE('80', 16)) = FROM_BASE('80', 16)
+                THEN VARBINARY_TO_INT256(VARBINARY_CONCAT(FROM_HEX('0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'), VARBINARY_SUBSTRING(c.feesAccrued_vb, 17, 16)))
+                ELSE VARBINARY_TO_INT256(VARBINARY_CONCAT(FROM_HEX('0x00000000000000000000000000000000'), VARBINARY_SUBSTRING(c.feesAccrued_vb, 17, 16)))
+            END AS feesAccrued_token1
+        FROM 
+        get_calls c
     ),
 
-    modify_events as (
-        select 
-            evt_block_time as block_time
-            , evt_block_number as block_number 
-            , id 
-            , evt_tx_hash as tx_hash 
-            , evt_index 
-            , amount0 
-            , amount1 
-        from 
-        modify_liquidity_events
-        where liquidityDelta <= int256 '0'
-    ),
 
-    single_pools as (
-        select 
-            tx_hash 
-            , count(distinct id) as num_pools 
+    evts as (
+        select
+            contract_address,
+            evt_tx_hash,
+            evt_tx_from,
+            evt_block_time,
+            evt_block_number,
+            evt_index,
+            id,                -- pool id lives here
+            sender,            -- caller/sender (useful metadata)
+            tickLower,
+            tickUpper,
+            liquidityDelta,    -- int256 in the event log
+            salt,
+            ROW_NUMBER() OVER (PARTITION BY evt_tx_hash ORDER BY evt_index) AS evt_rn
         from 
-        modify_events 
-        group by 1 
-        having count(distinct id) = 1 -- only one pool in txn 
-    ),
-
-    agg_events as (
-        select 
-            me.tx_hash
-            , me.block_number 
-            , me.id 
-            , sum(me.amount0) as amount0
-            , sum(me.amount1) as amount1 
-        from 
-        modify_events me 
-        inner join 
-        single_pools sp 
-            on me.tx_hash = sp.tx_hash 
-        group by 1, 2, 3 
-    ),
-
-    join_with_pools as (
-        select 
-            gf.tx_from
-            , gf.tx_hash 
-            , gf.block_time 
-            , gf.block_number 
-            , gf.evt_index 
-            , 'fee_collection' as event_type
-            , ae.id 
-            , -amount0 as modify_amount0 
-            , -amount1 as modify_amount1
-            , token0 
-            , token1 
-            , sum(case when fee_currency = token0 then fee_amount else 0 end) as amount0 
-            , sum(case when fee_currency = token1 then fee_amount else 0 end) as amount1
-        from 
-        agg_fees gf 
-        inner join 
-        agg_events ae 
-            on gf.tx_hash = ae.tx_hash 
-            and gf.block_number = ae.block_number 
-        inner join 
-        get_pools gp 
-            on ae.id = gp.id 
-        group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
+        {{ PoolManager_evt_ModifyLiquidity }}
+        {%- if is_incremental() %}
+        where {{ incremental_predicate('evt_block_time') }}
+        {%- endif %} 
     )
 
-    select 
-        id
-        , tx_from 
-        , block_time 
-        , block_number 
-        , tx_hash 
-        , evt_index
-        , event_type 
-        , token0 
-        , token1 
-        , case 
-            when amount0 > modify_amount0 then amount0 - modify_amount0 else 0 
-        end as amount0 -- subtract total modify liquidity amount from total amount logged in take()
-        , case 
-            when amount1 > modify_amount1 then amount1 - modify_amount1 else 0 
-        end as amount1
-        , cast(null as int256) as liquidityDelta
-        , cast(null as uint256) as sqrtPriceX96
-        , cast(null as double) as tickLower
-        , cast(null as double) as tickUpper
-        , cast(null as varbinary) as salt 
-    from 
-    join_with_pools
+        SELECT
+            e.id 
+            , cd.call_tx_from as tx_from 
+            , e.evt_block_time as block_time 
+            , e.evt_block_number as block_number 
+            , e.evt_tx_hash as tx_hash
+            , e.evt_index
+            , e.evt_block_number + e.evt_index/1e6 as block_index_sum
+            , 'modify_liquidity' as event_type 
+            , cd.currency0 as token0 
+            , cd.currency1 as token1
+            , e.tickLower 
+            , e.tickUpper   
+            , e.liquidityDelta
+            , e.salt 
+            -- decoded outputs (signed int256, raw token units)
+            -- output_callerDelta signage is from the POV of user, so we must flip signs for pool's POV
+            , -1* cd.callerDelta_token0 as amount0
+            , -1* cd.callerDelta_token1 as amount1
+            , -1* cd.feesAccrued_token0  as fee_amount0
+            , -1* cd.feesAccrued_token1  as fee_amount1
+        FROM 
+        evts e
+        INNER JOIN 
+        calls_decoded cd
+            ON cd.call_tx_hash = e.evt_tx_hash
+            AND cd.call_rn = e.evt_rn
 ),
+
+final_liquidity_events as (
+    select 
+        ab.*,
+        gp.sqrtpricex96
+    from (
+    select 
+        ge.*
+        , gp.previous_block_index_sum
+    from 
+    modify_liquidity_events ge 
+    left join 
+    get_prices gp 
+        on ge.id = gp.id 
+        and ge.block_index_sum >= gp.previous_block_index_sum
+        and ge.block_index_sum < gp.block_index_sum 
+    ) ab 
+    inner join 
+    get_prices gp 
+        on ab.id = gp.id
+        and ab.previous_block_index_sum = gp.block_index_sum 
+), 
 
 swap_events as (
     select 
@@ -465,6 +411,11 @@ swap_fees_paid as (
         , id 
         , if (amount0 < int256 '0', abs(amount0) * fee/1e6, 0) as amount0
         , if (amount1 < int256 '0', abs(amount1) * fee/1e6, 0) as amount1
+        , cast(liquidity as int256) as liquidityDelta
+        , sqrtPriceX96
+        , cast(null as double) as tickLower
+        , cast(null as double) as tickUpper
+        , cast(null as varbinary) as salt 
     from 
     {{ PoolManager_evt_Swap }}
     {%- if is_incremental() %}
@@ -476,13 +427,13 @@ liquidity_change_base as (
     select 
         ml.id
         , ml.tx_from 
-        , ml.evt_block_time as block_time
-        , ml.evt_block_number as block_number 
-        , ml.evt_tx_hash as tx_hash 
+        , ml.block_time
+        , ml.block_number 
+        , ml.tx_hash 
         , ml.evt_index 
         , ml.event_type 
-        , gp.token0 
-        , gp.token1 
+        , ml.token0 
+        , ml.token1 
         , ml.amount0 
         , ml.amount1 
         , ml.liquidityDelta
@@ -492,9 +443,28 @@ liquidity_change_base as (
         , ml.salt
     from 
     modify_liquidity_events ml 
-    inner join 
-    get_pools gp 
-        on ml.id = gp.id 
+
+    union all 
+
+    select 
+        ml.id
+        , ml.tx_from 
+        , ml.block_time
+        , ml.block_number 
+        , ml.tx_hash 
+        , ml.evt_index 
+        , 'fees_accrued' as event_type
+        , ml.token0 
+        , ml.token1 
+        , ml.fee_amount0 
+        , ml.fee_amount1 
+        , ml.liquidityDelta
+        , ml.sqrtPriceX96
+        , ml.tickLower
+        , ml.tickUpper
+        , ml.salt
+    from 
+    modify_liquidity_events ml 
 
     union all 
 
@@ -540,29 +510,6 @@ liquidity_change_base as (
     inner join 
     get_pools gp 
         on se.id = gp.id 
-
-    union all 
-
-    select 
-        id
-        , tx_from 
-        , block_time
-        , block_number 
-        , tx_hash 
-        , evt_index 
-        , event_type 
-        , token0 
-        , token1 
-        , -amount0 as amount0
-        , -amount1 as amount1
-        , liquidityDelta
-        , sqrtPriceX96
-        , tickLower
-        , tickUpper
-        , salt
-    from 
-    fee_collection
-    where tx_hash not in (select evt_tx_hash from swap_events)
 )
     select 
           '{{blockchain}}' as blockchain
