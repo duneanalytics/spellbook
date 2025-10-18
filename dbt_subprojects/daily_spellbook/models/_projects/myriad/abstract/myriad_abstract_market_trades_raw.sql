@@ -83,5 +83,5 @@ ELSE 0 END as fee_usd,
 price as collateral_token_price,
 decimals as collateral_token_decimals
 FROM trades t
-LEFT JOIN prices.usd p ON t.collateral_token = CAST(p.contract_address AS VARCHAR) AND t.blockchain = p.blockchain AND DATE_TRUNC('minute', t.evt_block_time) = p.minute
+LEFT JOIN prices.usd p ON t.collateral_token = CAST(p.contract_address AS VARCHAR) AND t.blockchain = p.blockchain AND DATE_TRUNC('minute', t.block_time) = p.minute
 WHERE (p.blockchain = 'abstract' OR p.blockchain IS NULL)
