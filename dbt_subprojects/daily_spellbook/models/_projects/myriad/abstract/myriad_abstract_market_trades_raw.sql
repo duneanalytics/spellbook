@@ -7,13 +7,13 @@
 }}
 
 WITH market_actions as (
-SELECT *, CASE WHEN action = 0 THEN 'buy' ELSE 'sell' END as direction, 'abstract' as blockchain FROM myriad_abstract.predictionmarketv3_evt_marketactiontx
+SELECT *, CASE WHEN action = 0 THEN 'buy' ELSE 'sell' END as direction, 'abstract' as blockchain FROM {{ source('myriad_abstract', 'predictionmarketv3_evt_marketactiontx') }}
 WHERE action IN (0,1)
 UNION ALL 
-SELECT *, CASE WHEN action = 0 THEN 'buy' ELSE 'sell' END as direction, 'abstract' as blockchain FROM myriad_abstract.predictionmarketv3_3_points_evt_marketactiontx
+SELECT *, CASE WHEN action = 0 THEN 'buy' ELSE 'sell' END as direction, 'abstract' as blockchain FROM {{ source('myriad_abstract', 'predictionmarketv3_3_points_evt_marketactiontx') }}
 WHERE action IN (0,1)
 UNION ALL 
-SELECT *, CASE WHEN action = 0 THEN 'buy' ELSE 'sell' END as direction, 'abstract' as blockchain FROM myriad_abstract.predictionmarketv4_evt_marketactiontx
+SELECT *, CASE WHEN action = 0 THEN 'buy' ELSE 'sell' END as direction, 'abstract' as blockchain FROM {{ source('myriad_abstract', 'predictionmarketv4_evt_marketactiontx') }}
 WHERE action IN (0,1)
 ),
 

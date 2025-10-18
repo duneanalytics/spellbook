@@ -7,7 +7,7 @@
 }}
 
 WITH market_actions as (
-SELECT *, CASE WHEN action = 0 THEN 'buy' ELSE 'sell' END as direction, 'linea' as blockchain FROM myriad_linea.predictionmarketv3_4_evt_marketactiontx
+SELECT *, CASE WHEN action = 0 THEN 'buy' ELSE 'sell' END as direction, 'linea' as blockchain FROM {{ source('myriad_linea', 'predictionmarketv3_4_evt_marketactiontx') }}
 WHERE action IN (0,1)
 ),
 
