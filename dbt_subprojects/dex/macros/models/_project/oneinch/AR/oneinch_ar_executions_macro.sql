@@ -1,10 +1,10 @@
-{% macro oneinch_ar_executions_macro(blockchain) %}
+{%- macro oneinch_ar_executions_macro(blockchain) -%}
 
-{% set meta = oneinch_meta_cfg_macro() %}
-{% set date_from = [meta['blockchains']['start'][blockchain], meta['streams']['ar']['start']['executions']] | max %}
+{%- set meta = oneinch_meta_cfg_macro() -%}
+{%- set date_from = [meta['blockchains']['start'][blockchain], meta['streams']['ar']['start']['executions']] | max -%}
 
-{% set wrapper = meta['blockchains']['wrapped_native_token_address'][blockchain] %}
-{% set same = '0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, ' + wrapper %}
+{%- set wrapper = meta['blockchains']['wrapped_native_token_address'][blockchain] -%}
+{%- set same = '0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, ' + wrapper -%}
 
 
 
@@ -31,11 +31,11 @@ calls as (
         {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
 )
 
-{% set src_data = 'cast(row(transfer_contract_address, transfer_symbol, transfer_amount, transfer_decimals, transfer_from) as row(address varbinary, symbol varchar, amount uint256, decimals bigint, sender varbinary))' %}
-{% set dst_data = 'cast(row(transfer_contract_address, transfer_symbol, transfer_amount, transfer_decimals, transfer_to) as row(address varbinary, symbol varchar, amount uint256, decimals bigint, receiver varbinary))' %}
-{% set src_condition = 'array_position(same, src_token_address) > 0 and transfer_amount <= src_token_amount' %}
-{% set dst_condition = 'array_position(same, dst_token_address) > 0 and transfer_amount <= dst_token_amount' %}
-{% set user_condition = 'cardinality(array_intersect(array[transfer_from, transfer_to], array[tx_from, call_from, dst_receiver])) > 0' %}
+{%- set src_data = 'cast(row(transfer_contract_address, transfer_symbol, transfer_amount, transfer_decimals, transfer_from) as row(address varbinary, symbol varchar, amount uint256, decimals bigint, sender varbinary))' -%}
+{%- set dst_data = 'cast(row(transfer_contract_address, transfer_symbol, transfer_amount, transfer_decimals, transfer_to) as row(address varbinary, symbol varchar, amount uint256, decimals bigint, receiver varbinary))' -%}
+{%- set src_condition = 'array_position(same, src_token_address) > 0 and transfer_amount <= src_token_amount' -%}
+{%- set dst_condition = 'array_position(same, dst_token_address) > 0 and transfer_amount <= dst_token_amount' -%}
+{%- set user_condition = 'cardinality(array_intersect(array[transfer_from, transfer_to], array[tx_from, call_from, dst_receiver])) > 0' %}
 
 , executions as (
     select
@@ -60,6 +60,7 @@ calls as (
         , max(transfer_amount_usd) filter(where ({{ src_condition }} or {{ dst_condition }}) and trusted) as sources_trusted_executed_amount_usd
         , max(transfer_amount_usd) filter(where ({{ src_condition }} or {{ dst_condition }}) and {{ user_condition }}) as sources_user_executed_amount_usd
         , max(transfer_amount_usd) filter(where ({{ src_condition }} or {{ dst_condition }})) as sources_executed_amount_usd
+        , max(transfer_amount_usd) filter(where trusted) as trusted_executed_amount_usd
         , max(transfer_amount_usd) as executed_amount_usd
     from calls
     left join transfers using(blockchain, block_month, block_date, block_time, block_number, tx_hash, call_trace_address, call_to, protocol, contract_name, call_selector, call_method) -- even with missing transfers, as transfers may not have been parsed
@@ -98,8 +99,8 @@ select
 
     , coalesce(null
         , sources_trusted_executed_amount_usd
-        , if(sources_executed_amount_usd - least(src_executed_amount_usd, dst_executed_amount_usd) > least(src_executed_amount_usd, dst_executed_amount_usd), least(src_executed_amount_usd, dst_executed_amount_usd)) -- i.e. if the slippadge/difference > ~50% then the least of src/dst, for minimize price errors
-        , sources_executed_amount_usd -- if previous is null or false
+        , sources_executed_amount_usd
+        , trusted_executed_amount_usd
         , executed_amount_usd
     ) as amount_usd
     , native_price * tx_gas_price * if(element_at(flags, 'direct'), tx_gas_used, call_gas_used) / pow(10, native_decimals) as execution_cost
@@ -128,10 +129,10 @@ select
     , map_from_entries(array[
         ('sender', cast(coalesce(src_user_executed.sender, src_executed.sender) as varchar))
         , ('receiver', cast(coalesce(dst_user_executed.receiver, dst_executed.receiver) as varchar))
-        , ('sources_trusted_amount_usd', cast(sources_trusted_executed_amount_usd as varchar))
-        , ('sources_user_amount_usd', cast(sources_user_executed_amount_usd as varchar))
-        , ('sources_amount_usd', cast(sources_executed_amount_usd as varchar))
-        , ('amount_usd', cast(executed_amount_usd as varchar))
+        , ('sources_trusted_amount_usd', format('$%,.0f', sources_trusted_executed_amount_usd))
+        , ('sources_user_amount_usd', format('$%,.0f', sources_user_executed_amount_usd))
+        , ('sources_amount_usd', format('$%,.0f', sources_executed_amount_usd))
+        , ('amount_usd', format('$%,.0f', executed_amount_usd))
         , ('src_decimals', cast(coalesce(src_user_executed.decimals, src_executed.decimals) as varchar))
         , ('dst_decimals', cast(coalesce(dst_user_executed.decimals, dst_executed.decimals) as varchar))
     ]) as complement
@@ -146,4 +147,4 @@ select
 from calls
 join executions using(block_date, block_number, tx_hash, call_trace_address)
 
-{% endmacro %}
+{%- endmacro -%}
