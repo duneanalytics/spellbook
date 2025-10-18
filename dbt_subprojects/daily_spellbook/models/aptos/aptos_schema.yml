@@ -30,8 +30,12 @@ models:
         description: The index of the write set change
       - name: asset_type
         description: "Asset identifier"
+        tests:
+          - not_null
       - name: owner_address
         description: "creator_address is the asset address for v1 and owner for v2 (can change for v2)"
+        tests:
+          - not_null
       - name: asset_name
         description: "Asset name (parsed from metadata)"
       - name: asset_symbol
@@ -78,14 +82,22 @@ models:
         description: The hash of the transaction
       - name: write_set_change_index
         description: "Index of the write set change"
+        tests:
+          - not_null
       - name: asset_type
         description: "Asset identifier"
+        tests:
+          - not_null
       - name: owner_address
         description: "creator_address is the asset address for v1 and owner for v2 (can change for v2)"
+        tests:
+          - not_null
       - name: storage_id
         description: "NULL for v1, address of FungibleStore for v2"
       - name: amount
         description: "raw asset amount (before taking into account decimals)"
+        tests:
+          - not_null
       - name: is_frozen
         description: "If asset is frozen"
       - name: token_standard
@@ -122,12 +134,18 @@ models:
         description: The type of the event
       - name: owner_address
         description: "creator_address is the asset address for v1 and owner for v2 (can change for v2)"
+        tests:
+          - not_null
       - name: storage_id
         description: "NULL for v1, address of FungibleStore for v2"
       - name: asset_type
         description: "Asset identifier"
+        tests:
+          - not_null
       - name: amount
         description: "raw asset amount (before taking into account decimals)"
+        tests:
+          - not_null
       - name: token_standard
         description: "Coin is v1, FungibleAsset is v2"
 
@@ -147,8 +165,12 @@ models:
     columns:
       - name: asset_type_v1
         description: "Asset identifier for v1"
+        tests:
+          - not_null
       - name: asset_type_v2
         description: "Asset identifier for v2"
+        tests:
+          - not_null
 
   - name: aptos_fungible_asset_metadata_current
     meta:
