@@ -22,14 +22,14 @@ json_extract_scalar(json_parse(desc), '$.question') as question,
     CAST(json_extract_scalar(json_parse(json_extract_scalar(json_parse(desc), '$.buyFees')), '$.fee') AS double) +
     CAST(json_extract_scalar(json_parse(json_extract_scalar(json_parse(desc), '$.buyFees')), '$.treasuryFee') AS double) +
     CAST(json_extract_scalar(json_parse(json_extract_scalar(json_parse(desc), '$.buyFees')), '$.distributorFee') AS double)
-    )
+    )/1E18
 ) AS buy_fee,
 (
     (
     CAST(json_extract_scalar(json_parse(json_extract_scalar(json_parse(desc), '$.sellFees')), '$.fee') AS double) +
     CAST(json_extract_scalar(json_parse(json_extract_scalar(json_parse(desc), '$.sellFees')), '$.treasuryFee') AS double) +
     CAST(json_extract_scalar(json_parse(json_extract_scalar(json_parse(desc), '$.sellFees')), '$.distributorFee') AS double)
-    )
+    )/1E18
 ) AS sell_fee,
 CASE WHEN LOWER(json_extract_scalar(json_parse(desc), '$.token')) = LOWER('0x0b07cf011B6e2b7E0803b892d97f751659940F23') THEN true ELSE false END as points
 FROM {{ source('myriad_abstract', 'predictionmarketv3_3_points_call_createmarket') }}
@@ -53,14 +53,14 @@ json_extract_scalar(json_parse(update), '$.question') as question,
     CAST(json_extract_scalar(json_parse(json_extract_scalar(json_parse(update), '$.buyFees')), '$.fee') AS double) +
     CAST(json_extract_scalar(json_parse(json_extract_scalar(json_parse(update), '$.buyFees')), '$.treasuryFee') AS double) +
     CAST(json_extract_scalar(json_parse(json_extract_scalar(json_parse(update), '$.buyFees')), '$.distributorFee') AS double)
-    )
+    )/1E18
 ) AS buy_fee,
 (
     (
     CAST(json_extract_scalar(json_parse(json_extract_scalar(json_parse(update), '$.sellFees')), '$.fee') AS double) +
     CAST(json_extract_scalar(json_parse(json_extract_scalar(json_parse(update), '$.sellFees')), '$.treasuryFee') AS double) +
     CAST(json_extract_scalar(json_parse(json_extract_scalar(json_parse(update), '$.sellFees')), '$.distributorFee') AS double)
-    )
+    )/1E18
 ) AS sell_fee,
 CASE WHEN LOWER(json_extract_scalar(json_parse(update), '$.token')) = LOWER('0x0b07cf011B6e2b7E0803b892d97f751659940F23') THEN true ELSE false END as points
 FROM {{ source('myriad_abstract', 'predictionmarketv3_3_points_call_updatemarket') }} -- markets can be updated so let's also fetch updates
@@ -84,14 +84,14 @@ json_extract_scalar(json_parse(desc), '$.question') as question,
     CAST(json_extract_scalar(json_parse(json_extract_scalar(json_parse(desc), '$.buyFees')), '$.fee') AS double) +
     CAST(json_extract_scalar(json_parse(json_extract_scalar(json_parse(desc), '$.buyFees')), '$.treasuryFee') AS double) +
     CAST(json_extract_scalar(json_parse(json_extract_scalar(json_parse(desc), '$.buyFees')), '$.distributorFee') AS double)
-    )
+    )/1E18
 ) AS buy_fee,
 (
     (
     CAST(json_extract_scalar(json_parse(json_extract_scalar(json_parse(desc), '$.sellFees')), '$.fee') AS double) +
     CAST(json_extract_scalar(json_parse(json_extract_scalar(json_parse(desc), '$.sellFees')), '$.treasuryFee') AS double) +
     CAST(json_extract_scalar(json_parse(json_extract_scalar(json_parse(desc), '$.sellFees')), '$.distributorFee') AS double)
-    )
+    )/1E18
 ) AS sell_fee,
 CASE WHEN LOWER(json_extract_scalar(json_parse(desc), '$.token')) = LOWER('0x0b07cf011B6e2b7E0803b892d97f751659940F23') THEN true ELSE false END as points
 FROM {{ source('myriad_abstract', 'predictionmarketv4_call_createmarket') }}

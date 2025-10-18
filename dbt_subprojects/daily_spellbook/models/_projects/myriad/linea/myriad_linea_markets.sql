@@ -22,14 +22,14 @@ json_extract_scalar(json_parse(desc), '$.question') as question,
     CAST(json_extract_scalar(json_parse(json_extract_scalar(json_parse(desc), '$.buyFees')), '$.fee') AS double) +
     CAST(json_extract_scalar(json_parse(json_extract_scalar(json_parse(desc), '$.buyFees')), '$.treasuryFee') AS double) +
     CAST(json_extract_scalar(json_parse(json_extract_scalar(json_parse(desc), '$.buyFees')), '$.distributorFee') AS double)
-    )
+    )/1E18
 ) AS buy_fee,
 (
     (
     CAST(json_extract_scalar(json_parse(json_extract_scalar(json_parse(desc), '$.sellFees')), '$.fee') AS double) +
     CAST(json_extract_scalar(json_parse(json_extract_scalar(json_parse(desc), '$.sellFees')), '$.treasuryFee') AS double) +
     CAST(json_extract_scalar(json_parse(json_extract_scalar(json_parse(desc), '$.sellFees')), '$.distributorFee') AS double)
-    )
+    )/1E18
 ) AS sell_fee,
 false as points -- no points token on Linea (Only 0x176211869ca2b568f2a7d4ee941e073a821ee1ff is available)
 FROM {{ source('myriad_linea', 'predictionmarketv3_4_call_createmarket') }}
