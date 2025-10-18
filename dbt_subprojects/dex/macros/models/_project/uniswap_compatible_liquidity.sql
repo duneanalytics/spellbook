@@ -442,7 +442,7 @@ liquidity_change_base as (
         , ml.tickUpper
         , ml.salt
     from 
-    modify_liquidity_events ml 
+    final_liquidity_events ml 
 
     union all 
 
@@ -464,7 +464,7 @@ liquidity_change_base as (
         , ml.tickUpper
         , ml.salt
     from 
-    modify_liquidity_events ml 
+    final_liquidity_events ml 
 
     union all 
 
