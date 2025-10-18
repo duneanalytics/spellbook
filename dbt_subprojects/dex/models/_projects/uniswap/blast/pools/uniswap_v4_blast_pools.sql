@@ -6,6 +6,8 @@
     , incremental_strategy = 'merge'
     , unique_key = ['id']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.creation_block_time')]
+    , tags=['static']
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

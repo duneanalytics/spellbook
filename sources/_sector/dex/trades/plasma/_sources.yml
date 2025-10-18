@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: uniswap_v3_plasma
+    tables:
+      - name: UniswapV3Pool_evt_Swap
+      - name: UniswapV3Factory_evt_PoolCreated
+
+  - name: fluid_plasma
+    tables:
+      - name: FluidDexT1_evt_Swap
+      - name: fluiddexfactory_call_deploydex 

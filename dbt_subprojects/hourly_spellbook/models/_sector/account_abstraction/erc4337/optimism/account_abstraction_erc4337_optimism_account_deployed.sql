@@ -9,13 +9,14 @@
     post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "erc4337",
-                                    \'["0xbitfly"]\') }}'
+                                    \'["0xbitfly", "sofiat"]\') }}'
 )}}
 
 
 {% set erc4337_base_models = [
     ref('account_abstraction_erc4337_optimism_v0_5_account_deployed')
     , ref('account_abstraction_erc4337_optimism_v0_6_account_deployed')
+    , ref('account_abstraction_erc4337_optimism_v0_7_account_deployed')
 ] %}
 
 SELECT
