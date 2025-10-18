@@ -7,6 +7,10 @@
     unique_key = ['asset_type_v2'],
 ) }}
 
+-- coin to FA mapping is a deterministic lookup using SHA3
+-- however, SHA3 is not implemented in SQL so instead lookup using resource
+-- For python code using SHA3, see 'Finding migrated fungible assets' section of
+-- https://medium.com/aptoslabs/data-analyst-guide-to-aptos-defi-swaps-pt2-e343ac6be84e 
 SELECT
     -- latest
     tx_version,
