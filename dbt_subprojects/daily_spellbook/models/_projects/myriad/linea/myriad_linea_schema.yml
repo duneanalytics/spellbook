@@ -70,25 +70,25 @@ models:
           combination_of_columns: 
             - blockchain
             - tx_hash
-            - tx_index
+            - evt_index
     columns:
       - name: contract_address
         description: "Contract address of the prediction market contract"
-      - name: evt_tx_hash
+      - name: tx_hash
         description: "Transaction hash of the trade event"
-      - name: evt_tx_from
+      - name: tx_from
         description: "Address of the transaction sender"
-      - name: evt_tx_to
+      - name: tx_to
         description: "Address of the transaction receiver"
-      - name: evt_tx_index
+      - name: tx_index
         description: "Transaction index of the trade event"
       - name: evt_index
         description: "Event index in the transaction"
-      - name: evt_block_time
+      - name: block_time
         description: "Block time of the trade event"
-      - name: evt_block_number
+      - name: block_number
         description: "Block number of the trade event"
-      - name: evt_block_date
+      - name: block_date
         description: "Block date of the trade event"
       - name: action
         description: "Action value (0 for buy, 1 for sell)"
