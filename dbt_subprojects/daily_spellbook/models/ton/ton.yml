@@ -172,3 +172,145 @@ models:
         description: "The timestamp of the last change"
       - name: last_change_lt
         description: "The lt of the last change"
+  - name: ton_elector_new_stake
+    meta:
+      blockchain: ton
+      contributors: [pshuvalov]
+    config:
+      tags: ['ton', 'validation']
+    description: "Elector new stake events"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+    columns:
+      - name: block_date
+        description: "The date of the block"
+      - name: tx_hash
+        description: "The hash of the transaction"
+      - name: trace_id
+        description: "The trace id of the transaction"
+      - name: tx_now
+        description: "The timestamp of the transaction"
+      - name: tx_lt
+        description: "The lt of the transaction"
+      - name: wallet_address
+        description: "The address of the wallet"
+      - name: value
+        description: "The value of the transaction"
+      - name: query_id
+        description: "The query id of the transaction"
+      - name: validator_pubkey
+        description: "The validator pubkey"
+      - name: stake_at
+        description: "The stake timestamp (only for signature check)"
+      - name: max_factor
+        description: "The max_factor param for the stake"
+      - name: adnl_addr
+        description: "The adnl addr of the validator"
+  - name: ton_elector_return_stake
+    meta:
+      blockchain: ton
+      contributors: [pshuvalov]
+    config:
+      tags: ['ton', 'validation']
+    description: "Elector return stake events"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+    columns:
+      - name: block_date
+        description: "The date of the block"
+      - name: tx_hash
+        description: "The hash of the transaction"
+      - name: trace_id
+        description: "The trace id of the transaction"
+      - name: tx_now
+        description: "The timestamp of the transaction"
+      - name: tx_lt
+        description: "The lt of the transaction"
+      - name: wallet_address
+        description: "The address of the wallet"
+      - name: value
+        description: "The value to return"
+      - name: query_id
+        description: "The query id of the transaction"
+      - name: reason
+        description: "The reason of the return (see Elector code)"
+  - name: ton_elector_recover_stake
+    meta:
+      blockchain: ton
+      contributors: [pshuvalov]
+    config:
+      tags: ['ton', 'validation']
+    description: "Stake withdrawal success events from Elector"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+    columns:
+      - name: block_date
+        description: "The date of the block"
+      - name: tx_hash
+        description: "The hash of the transaction"
+      - name: trace_id
+        description: "The trace id of the transaction"
+      - name: tx_now
+        description: "The timestamp of the transaction"
+      - name: tx_lt
+        description: "The lt of the transaction"
+      - name: wallet_address
+        description: "The address of the wallet"
+      - name: value
+        description: "The value of the transaction"
+  - name: ton_nominators_cashflow
+    meta:
+      blockchain: ton
+      contributors: [pshuvalov]
+    config:
+      tags: ['ton', 'validation']
+    description: "In/out flow of funds from/to nominators"
+    columns:
+      - name: block_date
+        description: "The date of the block"
+      - name: block_time
+        description: "The time of the block"
+      - name: direction
+        description: "The direction of the transaction"
+      - name: pool_type
+        description: "The type of the pool"
+      - name: pool_address
+        description: "The address of the pool"
+      - name: user_address
+        description: "The address of the user"
+      - name: value
+        description: "The value of the transaction"
+      - name: tx_hash
+        description: "The hash of the transaction"
+  - name: ton_nominators_balances
+    meta:
+      blockchain: ton
+      contributors: [pshuvalov]
+    config:
+      tags: ['ton', 'validation']
+    description: "Balances of nominators"
+    columns:
+      - name: pool
+        description: "The pool of the nominator"
+      - name: user_address
+        description: "The address of the user"
+      - name: pool_type
+        description: "The type of the pool"
+      - name: current_balance
+        description: "The current balance of the nominator"
+      - name: first_tx
+        description: "The first transaction of the nominator"
+      - name: last_tx
+        description: "The last transaction of the nominator"
+      - name: tx_count
+        description: "The number of transactions of the nominator"
+      
