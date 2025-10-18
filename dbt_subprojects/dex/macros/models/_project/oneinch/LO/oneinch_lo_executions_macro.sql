@@ -1,10 +1,10 @@
-{% macro oneinch_lo_executions_macro(blockchain) %}
+{%- macro oneinch_lo_executions_macro(blockchain) -%}
 
-{% set meta = oneinch_meta_cfg_macro() %}
-{% set date_from = [meta['blockchains']['start'][blockchain], meta['streams']['lo']['start']['executions']] | max %}
+{%- set meta = oneinch_meta_cfg_macro() -%}
+{%- set date_from = [meta['blockchains']['start'][blockchain], meta['streams']['lo']['start']['executions']] | max -%}
 
-{% set wrapper = meta['blockchains']['wrapped_native_token_address'][blockchain] %}
-{% set same = '0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, ' + wrapper %}
+{%- set wrapper = meta['blockchains']['wrapped_native_token_address'][blockchain] -%}
+{%- set same = '0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, ' + wrapper -%}
 
 
 
@@ -31,10 +31,10 @@ calls as (
         {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
 )
 
-{% set data = 'cast(row(transfer_contract_address, transfer_symbol, transfer_amount, transfer_amount_usd, transfer_decimals) as row(address varbinary, symbol varchar, amount uint256, amount_usd double, decimals bigint))' %}
-{% set src_condition = 'array_position(same, maker_asset) > 0 and transfer_from = maker' %}
-{% set dst_condition = 'array_position(same, taker_asset) > 0 and transfer_to in (maker, receiver)' %}
-{% set user_condition = 'cardinality(array_intersect(array[transfer_from, transfer_to], array[maker, receiver])) > 0' %}
+{%- set data = 'cast(row(transfer_contract_address, transfer_symbol, transfer_amount, transfer_amount_usd, transfer_decimals) as row(address varbinary, symbol varchar, amount uint256, amount_usd double, decimals bigint))' -%}
+{%- set src_condition = 'array_position(same, maker_asset) > 0 and transfer_from = maker' -%}
+{%- set dst_condition = 'array_position(same, taker_asset) > 0 and transfer_to in (maker, receiver)' -%}
+{%- set user_condition = 'cardinality(array_intersect(array[transfer_from, transfer_to], array[maker, receiver])) > 0' %}
 
 , executions as (
     select
@@ -50,8 +50,11 @@ calls as (
         , max_by({{ data }}, transfer_amount) filter(where {{ dst_condition }}) as dst_executed -- trying to find out what the user actually received, from the related transfers with the greatest transfer amount
 
         -- general --
-        , max(transfer_amount_usd) filter(where {{ user_condition }} and trusted) as sources_executed_trusted_amount_usd
-        , max(transfer_amount_usd) filter(where {{ user_condition }}) as sources_executed_amount_usd
+        , max(transfer_amount_usd) filter(where ({{ src_condition }} or {{ dst_condition }}) and trusted) as sources_trusted_executed_amount_usd
+        , max(transfer_amount_usd) filter(where ({{ src_condition }} or {{ dst_condition }})) as sources_executed_amount_usd
+        , max(transfer_amount_usd) filter(where {{ user_condition }} and trusted) as user_trusted_executed_amount_usd
+        , max(transfer_amount_usd) filter(where {{ user_condition }}) as user_executed_amount_usd
+        , max(transfer_amount_usd) filter(where trusted) as trusted_executed_amount_usd
         , max(transfer_amount_usd) as executed_amount_usd
     from calls
     left join transfers using(blockchain, block_month, block_date, block_time, block_number, tx_hash, call_trace_address, call_to, protocol, contract_name, call_selector, call_method) -- even with missing transfers, as transfers may not have been parsed
@@ -89,9 +92,11 @@ select
     , contract_name
 
     , coalesce(null
-        , sources_executed_trusted_amount_usd
-        , if(sources_executed_amount_usd - least(src_executed.amount_usd, dst_executed.amount_usd) > least(src_executed.amount_usd, dst_executed.amount_usd), least(src_executed.amount_usd, dst_executed.amount_usd)) -- i.e. if the slippadge/difference > ~50% then the least of src/dst, for minimize price errors
-        , sources_executed_amount_usd -- if previous is null or false
+        , user_trusted_executed_amount_usd
+        , sources_trusted_executed_amount_usd
+        , user_executed_amount_usd
+        , sources_executed_amount_usd
+        , trusted_executed_amount_usd
         , executed_amount_usd
     ) as amount_usd
     , native_price * tx_gas_price * if(element_at(flags, 'direct'), tx_gas_used, call_gas_used) / pow(10, native_decimals) as execution_cost
@@ -120,9 +125,11 @@ select
     , map_from_entries(array[
         ('making_amount', cast(making_amount as varchar))
         , ('taking_amount', cast(taking_amount as varchar))
-        , ('sources_trusted_amount_usd', cast(sources_executed_trusted_amount_usd as varchar))
-        , ('sources_amount_usd', cast(sources_executed_amount_usd as varchar))
-        , ('amount_usd', cast(executed_amount_usd as varchar))
+        , ('user_trusted_amount_usd', format('$%,.0f', user_trusted_executed_amount_usd))
+        , ('user_amount_usd', format('$%,.0f', user_executed_amount_usd))
+        , ('sources_trusted_amount_usd', format('$%,.0f', sources_trusted_executed_amount_usd))
+        , ('sources_amount_usd', format('$%,.0f', sources_executed_amount_usd))
+        , ('amount_usd', format('$%,.0f', executed_amount_usd))
         , ('src_decimals', cast(src_executed.decimals as varchar))
         , ('dst_decimals', cast(dst_executed.decimals as varchar))
     ]) as complement
@@ -137,4 +144,4 @@ select
 from calls
 join executions using(block_date, block_number, tx_hash, call_trace_address)
 
-{% endmacro %}
+{%- endmacro -%}

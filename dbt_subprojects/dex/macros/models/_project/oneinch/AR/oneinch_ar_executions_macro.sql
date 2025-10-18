@@ -132,6 +132,7 @@ select
         , ('sources_trusted_amount_usd', format('$%,.0f', sources_trusted_executed_amount_usd))
         , ('sources_user_amount_usd', format('$%,.0f', sources_user_executed_amount_usd))
         , ('sources_amount_usd', format('$%,.0f', sources_executed_amount_usd))
+        , ('trusted_amount_usd', format('$%,.0f', trusted_executed_amount_usd))
         , ('amount_usd', format('$%,.0f', executed_amount_usd))
         , ('src_decimals', cast(coalesce(src_user_executed.decimals, src_executed.decimals) as varchar))
         , ('dst_decimals', cast(coalesce(dst_user_executed.decimals, dst_executed.decimals) as varchar))

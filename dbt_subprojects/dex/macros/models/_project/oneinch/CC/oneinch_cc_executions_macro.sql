@@ -1,12 +1,12 @@
-{% macro oneinch_cc_executions_macro(blockchain) %}
+{%- macro oneinch_cc_executions_macro(blockchain) -%}
 
-{% set stream = 'cc' %}
-{% set substream = 'executions' %}
-{% set meta = oneinch_meta_cfg_macro() %}
-{% set date_from = meta['streams'][stream]['start'][substream] %}
-{% set chain_id = meta['blockchains']['chain_id'][blockchain] %}
-{% set wrapper = meta['blockchains']['wrapped_native_token_address'][blockchain] %}
-{% set same = '0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, ' + wrapper %}
+{%- set stream = 'cc' -%}
+{%- set substream = 'executions' -%}
+{%- set meta = oneinch_meta_cfg_macro() -%}
+{%- set date_from = meta['streams'][stream]['start'][substream] -%}
+{%- set chain_id = meta['blockchains']['chain_id'][blockchain] -%}
+{%- set wrapper = meta['blockchains']['wrapped_native_token_address'][blockchain] -%}
+{%- set same = '0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, ' + wrapper -%}
 
 
 
@@ -32,8 +32,8 @@ calls as (
         {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
 )
 
-{% set data = 'cast(row(transfer_to, transfer_contract_address, transfer_symbol, transfer_amount, transfer_amount_usd, transfer_decimals, trusted) as row(receiver varbinary, address varbinary, symbol varchar, amount uint256, amount_usd double, decimals bigint, trusted boolean))' %}
-{% set condition = 'array_position(same, token) > 0 and call_from not in (transfer_from, transfer_to)' %}
+{%- set data = 'cast(row(transfer_to, transfer_contract_address, transfer_symbol, transfer_amount, transfer_amount_usd, transfer_decimals, trusted) as row(receiver varbinary, address varbinary, symbol varchar, amount uint256, amount_usd double, decimals bigint, trusted boolean))' -%}
+{%- set condition = 'array_position(same, token) > 0 and call_from not in (transfer_from, transfer_to)' %}
 
 , amounts as (
     select
@@ -101,4 +101,4 @@ select
 from calls
 join amounts using(block_date, block_number, tx_hash, call_trace_address)
 
-{% endmacro %}
+{%- endmacro -%}

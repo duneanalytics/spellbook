@@ -1,6 +1,6 @@
-{% set blockchain = 'gnosis' %}
+{%- set blockchain = 'gnosis' -%}
 
-{{
+{{-
     config(
         schema = 'oneinch_' + blockchain,
         alias = 'cc_executions',
@@ -11,6 +11,6 @@
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         unique_key = ['block_month', 'tx_hash', 'call_trace_address'],
     )
-}}
+-}}
 
-{{ oneinch_cc_executions_macro(blockchain = blockchain) }}
+{{- oneinch_cc_executions_macro(blockchain = blockchain) -}}
