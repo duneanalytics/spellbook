@@ -1,0 +1,45 @@
+version: 2
+
+models:
+  - name: myriad_abstract_markets
+    meta:
+      blockchain: abstract
+      sector: prediction_markets
+      project: myriad
+      contributors: datadashboards
+    config:
+      tags: ['myriad', 'abstract', 'prediction_markets']
+    description: “Myriad Market Creations and Updates on Abstract”
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: 
+            - blockchain
+            - tx_hash
+            - tx_index
+    columns:
+      - &blockchain
+        name: blockchain
+      - &block_time
+        name: block_time
+      - &block_number
+        name: block_number
+      - &tx_hash
+        name: tx_hash
+      - &tx_index
+        name: tx_index
+      - &market_creator_or_updater
+        name: market_creator_or_updater
+      - &contract_address
+        name: contract_address
+      - &marketId
+        name: marketId
+      - &collateral_token
+        name: collateral_token
+      - &question
+        name: question
+      - &buy_fee
+        name: buy_fee
+      - &sell_fee
+        name: sell_fee
+      - &points
+        name: points

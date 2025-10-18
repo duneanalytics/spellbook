@@ -1,0 +1,69 @@
+version: 2
+
+sources:
+  - name: myriad_abstract
+    description: "Myriad prediction market events on Abstract blockchain"
+    tables:
+      - name: predictionmarketv3_3_points_call_createmarket
+        description: "Market creation events from PredictionMarketV3.3 points contract"
+        columns: &create_columns
+          - name: contract_address
+            description: "Address of the prediction market contract"
+          - name: call_success
+            description: "Whether the contract call was successful"
+          - name: call_tx_hash
+            description: "Transaction hash of the call"
+          - name: call_tx_from
+            description: "Address that initiated the call"
+          - name: call_tx_to
+            description: "Address that received the call"
+          - name: call_tx_index
+            description: "Transaction index in the block"
+          - name: call_trace_address
+            description: "Trace address of the call in the transaction"
+          - name: call_block_time
+            description: "Timestamp of the block when the call was made"
+          - name: call_block_number
+            description: "Block number when the call was made"
+          - name: call_block_date
+            description: "Date of the block when the call was made"
+          - name: desc
+            description: "JSON string containing market description and parameters"
+          - name: output_0
+            description: "Market ID output from the create market call"
+
+      - name: predictionmarketv3_3_points_call_updatemarket
+        description: "Market update events from PredictionMarketV3.3 points contract"
+        columns:
+          - name: contract_address
+            description: "Address of the prediction market contract"
+          - name: call_success
+            description: "Whether the contract call was successful"
+          - name: call_tx_hash
+            description: "Transaction hash of the call"
+          - name: call_tx_from
+            description: "Address that initiated the call"
+          - name: call_tx_to
+            description: "Address that received the call"
+          - name: call_tx_index
+            description: "Transaction index in the block"
+          - name: call_trace_address
+            description: "Trace address of the call in the transaction"
+          - name: call_block_time
+            description: "Timestamp of the block when the call was made"
+          - name: call_block_number
+            description: "Block number when the call was made"
+          - name: call_block_date
+            description: "Date of the block when the call was made"
+          - name: marketId
+            description: "ID of the market being updated"
+          - name: update
+            description: "JSON string containing updated market parameters"
+
+      - name: predictionmarketv4_call_createmarket
+        description: "Market creation events from PredictionMarketV4 contract"
+        columns: *create_columns
+
+      - name: predictionmarketv3_call_createmarket
+        description: "Market creation events from PredictionMarketV3 contract"
+        columns: *create_columns
