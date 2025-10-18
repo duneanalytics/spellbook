@@ -505,6 +505,11 @@ liquidity_change_base as (
         , gp.token1 
         , se.amount0 
         , se.amount1 
+        , se.liquidityDelta
+        , se.sqrtPriceX96
+        , se.tickLower
+        , se.tickUpper
+        , se.salt
     from 
     swap_fees_paid se
     inner join 
