@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: uniswap_v4_celo
+    tables:
+      - name: PoolManager_evt_ModifyLiquidity
+      - name: poolmanager_call_take
