@@ -1,0 +1,6 @@
+version: 2
+
+sources:
+  - name: ondo_finance_ethereum
+    tables:
+      - name: GMTokenFactory_evt_NewGMTokenDeployed
