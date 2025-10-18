@@ -85,7 +85,7 @@ WITH coin_balances AS (
         WHERE 1=1
             AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
             AND move_resource_module = 'object'
-            AND move_resource_name = 'ObjectCore'
+            AND move_resource_name IN ('ObjectGroup','ObjectCore')
         {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
         {% endif %}
