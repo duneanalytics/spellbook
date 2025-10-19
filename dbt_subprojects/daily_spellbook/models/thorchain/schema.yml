@@ -1,8 +1,8 @@
 version: 2
 
 models:
-  - name: thorchain_core_dim_block
-    description: "Core block dimension table for Thorchain with time-based analytics"
+  - name: thorchain_core_block
+    description: "Core block table for Thorchain with time-based analytics"
     columns:
       - name: dim_block_id
         description: "Surrogate key for block dimension"
@@ -52,8 +52,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_core_fact_transfer_events
-    description: "Core fact table for Thorchain asset transfer events"
+  - name: thorchain_core_transfer_events
+    description: "Core table for Thorchain asset transfer events"
     columns:
       - name: fact_transfer_events_id
         description: "Surrogate key for transfer events"
@@ -85,8 +85,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_core_fact_set_mimir_events
-    description: "Core fact table for Thorchain set mimir events (configuration parameters) - combined silver+gold"
+  - name: thorchain_core_set_mimir_events
+    description: "Core table for Thorchain set mimir events (configuration parameters) - combined silver+gold"
     columns:
       - name: fact_set_mimir_events_id
         description: "Unique identifier for the set mimir event"
@@ -116,8 +116,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_core_fact_network_version_events
-    description: "Core fact table for Thorchain network version events (network-wide upgrades) - combined silver+gold"
+  - name: thorchain_core_network_version_events
+    description: "Core table for Thorchain network version events (network-wide upgrades) - combined silver+gold"
     columns:
       - name: fact_network_version_events_id
         description: "Unique identifier for the network version event"
@@ -145,8 +145,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_core_fact_instantiate_events
-    description: "Core fact table for Thorchain contract instantiate events (smart contract deployments) - combined silver+gold"
+  - name: thorchain_core_instantiate_events
+    description: "Core table for Thorchain contract instantiate events (smart contract deployments) - combined silver+gold"
     columns:
       - name: fact_instantiate_events_id
         description: "Unique identifier for the instantiate event"
@@ -188,8 +188,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_core_fact_thorname_change_events
-    description: "Core fact table for Thorchain THORName change events (naming service registrations/changes) - combined silver+gold"
+  - name: thorchain_core_thorname_change_events
+    description: "Core table for Thorchain THORName change events (naming service registrations/changes) - combined silver+gold"
     columns:
       - name: fact_thorname_change_events_id
         description: "Unique identifier for the THORName change event"
@@ -227,8 +227,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_core_fact_tss_keygen_failure_events
-    description: "Core fact table for Thorchain TSS keygen failure events (Threshold Signature Scheme key generation failures) - combined silver+gold"
+  - name: thorchain_core_tss_keygen_failure_events
+    description: "Core table for Thorchain TSS keygen failure events (Threshold Signature Scheme key generation failures) - combined silver+gold"
     columns:
       - name: fact_tss_keygen_failure_events_id
         description: "Unique identifier for the TSS keygen failure event"
@@ -264,8 +264,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_core_fact_tss_keygen_success_events
-    description: "Core fact table for Thorchain TSS keygen success events (Threshold Signature Scheme successful key generation) - combined silver+gold"
+  - name: thorchain_core_tss_keygen_success_events
+    description: "Core table for Thorchain TSS keygen success events (Threshold Signature Scheme successful key generation) - combined silver+gold"
     columns:
       - name: fact_tss_keygen_success_events_id
         description: "Unique identifier for the TSS keygen success event"
@@ -297,8 +297,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_core_fact_wasm_contracts_events
-    description: "Core fact table for Thorchain WASM contracts events (WebAssembly smart contract activity) - combined silver+gold"
+  - name: thorchain_core_wasm_contracts_events
+    description: "Core table for Thorchain WASM contracts events (WebAssembly smart contract activity) - combined silver+gold"
     columns:
       - name: fact_wasm_contracts_events_id
         description: "Unique identifier for the WASM contracts event"
@@ -334,8 +334,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_update_node_account_status_events
-    description: "DeFi fact table for Thorchain node account status updates"
+  - name: thorchain_defi_update_node_account_status_events
+    description: "DeFi table for Thorchain node account status updates"
     columns:
       - name: fact_update_node_account_status_events_id
         description: "Unique identifier for the update node account status event"
@@ -367,8 +367,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_active_vault_events
-    description: "DeFi fact table for Thorchain active vault events (Asgard vault lifecycle) - combined silver+gold"
+  - name: thorchain_defi_active_vault_events
+    description: "DeFi table for Thorchain active vault events (Asgard vault lifecycle) - combined silver+gold"
     columns:
       - name: fact_active_vault_events_id
         description: "Unique identifier for the active vault event"
@@ -396,8 +396,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_inactive_vault_events
-    description: "DeFi fact table for Thorchain inactive vault events (Asgard vault retirement) - combined silver+gold"
+  - name: thorchain_defi_inactive_vault_events
+    description: "DeFi table for Thorchain inactive vault events (Asgard vault retirement) - combined silver+gold"
     columns:
       - name: fact_inactive_vault_events_id
         description: "Unique identifier for the inactive vault event"
@@ -425,8 +425,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_affiliate_fee_events
-    description: "DeFi fact table for Thorchain affiliate fee events (affiliate revenue sharing) - combined silver+gold"
+  - name: thorchain_defi_affiliate_fee_events
+    description: "DeFi table for Thorchain affiliate fee events (affiliate revenue sharing) - combined silver+gold"
     columns:
       - name: fact_affiliate_fee_events_id
         description: "Unique identifier for the affiliate fee event"
@@ -468,8 +468,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_asgard_fund_yggdrasil_events
-    description: "DeFi fact table for Thorchain Asgard fund Yggdrasil events (vault funding operations) - combined silver+gold"
+  - name: thorchain_defi_asgard_fund_yggdrasil_events
+    description: "DeFi table for Thorchain Asgard fund Yggdrasil events (vault funding operations) - combined silver+gold"
     columns:
       - name: fact_asgard_fund_yggdrasil_events_id
         description: "Unique identifier for the Asgard fund Yggdrasil event"
@@ -503,8 +503,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_mint_burn_events
-    description: "DeFi fact table for Thorchain mint and burn events (token supply changes) - combined silver+gold"
+  - name: thorchain_defi_mint_burn_events
+    description: "DeFi table for Thorchain mint and burn events (token supply changes) - combined silver+gold"
     columns:
       - name: fact_mint_burn_events_id
         description: "Unique identifier for the mint/burn event"
@@ -538,8 +538,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_pool_balance_change_events
-    description: "DeFi fact table for Thorchain pool balance change events (liquidity changes) - combined silver+gold"
+  - name: thorchain_defi_pool_balance_change_events
+    description: "DeFi table for Thorchain pool balance change events (liquidity changes) - combined silver+gold"
     columns:
       - name: fact_pool_balance_change_events_id
         description: "Unique identifier for the pool balance change event"
@@ -577,8 +577,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_rune_pool_deposit_events
-    description: "DeFi fact table for Thorchain RUNE pool deposit events - combined silver+gold"
+  - name: thorchain_defi_rune_pool_deposit_events
+    description: "DeFi table for Thorchain RUNE pool deposit events - combined silver+gold"
     columns:
       - name: fact_rune_pool_deposit_events_id
         description: "Unique identifier for the RUNE pool deposit event"
@@ -612,8 +612,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_rune_pool_withdraw_events
-    description: "DeFi fact table for Thorchain RUNE pool withdraw events - combined silver+gold"
+  - name: thorchain_defi_rune_pool_withdraw_events
+    description: "DeFi table for Thorchain RUNE pool withdraw events - combined silver+gold"
     columns:
       - name: fact_rune_pool_withdraw_events_id
         description: "Unique identifier for the RUNE pool withdraw event"
@@ -655,8 +655,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_secure_asset_deposit_events
-    description: "DeFi fact table for Thorchain secure asset deposit events - combined silver+gold"
+  - name: thorchain_defi_secure_asset_deposit_events
+    description: "DeFi table for Thorchain secure asset deposit events - combined silver+gold"
     columns:
       - name: fact_secure_asset_deposit_events_id
         description: "Unique identifier for the secure asset deposit event"
@@ -695,8 +695,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_secure_asset_withdraw_events
-    description: "DeFi fact table for Thorchain secure asset withdraw events - combined silver+gold"
+  - name: thorchain_defi_secure_asset_withdraw_events
+    description: "DeFi table for Thorchain secure asset withdraw events - combined silver+gold"
     columns:
       - name: fact_secure_asset_withdraw_events_id
         description: "Unique identifier for the secure asset withdraw event"
@@ -735,8 +735,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_trade_account_deposit_events
-    description: "DeFi fact table for Thorchain trade account deposit events - combined silver+gold"
+  - name: thorchain_defi_trade_account_deposit_events
+    description: "DeFi table for Thorchain trade account deposit events - combined silver+gold"
     columns:
       - name: fact_trade_account_deposit_events_id
         description: "Unique identifier for the trade account deposit event"
@@ -775,8 +775,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_trade_account_withdraw_events
-    description: "DeFi fact table for Thorchain trade account withdraw events - combined silver+gold"
+  - name: thorchain_defi_trade_account_withdraw_events
+    description: "DeFi table for Thorchain trade account withdraw events - combined silver+gold"
     columns:
       - name: fact_trade_account_withdraw_events_id
         description: "Unique identifier for the trade account withdraw event"
@@ -815,8 +815,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_stake_events
-    description: "DeFi fact table for Thorchain stake events (liquidity provision)"
+  - name: thorchain_defi_stake_events
+    description: "DeFi table for Thorchain stake events (liquidity provision)"
     columns:
       - name: fact_stake_events_id
         description: "Unique identifier for the stake event"
@@ -862,8 +862,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_tcy_stake_events
-    description: "DeFi fact table for Thorchain TCY stake events (native token staking) - combined silver+gold"
+  - name: thorchain_defi_tcy_stake_events
+    description: "DeFi table for Thorchain TCY stake events (native token staking) - combined silver+gold"
     columns:
       - name: fact_tcy_stake_events_id
         description: "Unique identifier for the TCY stake event"
@@ -897,8 +897,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_tcy_unstake_events
-    description: "DeFi fact table for Thorchain TCY unstake events (native token unstaking) - combined silver+gold"
+  - name: thorchain_defi_tcy_unstake_events
+    description: "DeFi table for Thorchain TCY unstake events (native token unstaking) - combined silver+gold"
     columns:
       - name: fact_tcy_unstake_events_id
         description: "Unique identifier for the TCY unstake event"
@@ -932,8 +932,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_bond_events
-    description: "DeFi fact table for Thorchain bond events (node bonding)"
+  - name: thorchain_defi_bond_events
+    description: "DeFi table for Thorchain bond events (node bonding)"
     columns:
       - name: fact_bond_events_id
         description: "Unique identifier for the bond event"
@@ -977,8 +977,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_bond_actions
-    description: "DeFi fact table for Thorchain bond actions (node bonding with USD values)"
+  - name: thorchain_defi_bond_actions
+    description: "DeFi table for Thorchain bond actions (node bonding with USD values)"
     columns:
       - name: fact_bond_actions_id
         description: "Unique identifier for the bond action"
@@ -1024,8 +1024,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_pending_liquidity_events
-    description: "DeFi fact table for Thorchain pending liquidity events"
+  - name: thorchain_defi_pending_liquidity_events
+    description: "DeFi table for Thorchain pending liquidity events"
     columns:
       - name: fact_pending_liquidity_events_id
         description: "Unique identifier for the pending liquidity event"
@@ -1077,8 +1077,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_pool_events
-    description: "DeFi fact table for Thorchain pool events (pool status changes)"
+  - name: thorchain_defi_pool_events
+    description: "DeFi table for Thorchain pool events (pool status changes)"
     columns:
       - name: fact_pool_events_id
         description: "Unique identifier for the pool event"
@@ -1108,8 +1108,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_total_value_locked
-    description: "DeFi fact table for Thorchain total value locked (TVL) - daily aggregation"
+  - name: thorchain_defi_total_value_locked
+    description: "DeFi table for Thorchain total value locked (TVL) - daily aggregation"
     columns:
       - name: fact_total_value_locked_id
         description: "Unique identifier for the TVL record"
@@ -1139,8 +1139,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_upgrades
-    description: "DeFi fact table for Thorchain upgrades (token upgrades/switches with USD values)"
+  - name: thorchain_defi_upgrades
+    description: "DeFi table for Thorchain upgrades (token upgrades/switches with USD values)"
     columns:
       - name: fact_upgrades_id
         description: "Unique identifier for the upgrade"
@@ -1180,8 +1180,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_tcy_distribution_events
-    description: "DeFi fact table for Thorchain TCY distribution events (native token distributions) - combined silver+gold"
+  - name: thorchain_defi_tcy_distribution_events
+    description: "DeFi table for Thorchain TCY distribution events (native token distributions) - combined silver+gold"
     columns:
       - name: fact_tcy_distribution_events_id
         description: "Unique identifier for the TCY distribution event"
@@ -1211,8 +1211,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_tcy_claim_events
-    description: "DeFi fact table for Thorchain TCY claim events (native token claims) - combined silver+gold"
+  - name: thorchain_defi_tcy_claim_events
+    description: "DeFi table for Thorchain TCY claim events (native token claims) - combined silver+gold"
     columns:
       - name: fact_tcy_claim_events_id
         description: "Unique identifier for the TCY claim event"
@@ -1250,8 +1250,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_reserve_events
-    description: "DeFi fact table for Thorchain reserve events (reserve contributions/withdrawals) - combined silver+gold"
+  - name: thorchain_defi_reserve_events
+    description: "DeFi table for Thorchain reserve events (reserve contributions/withdrawals) - combined silver+gold"
     columns:
       - name: fact_reserve_events_id
         description: "Unique identifier for the reserve event"
@@ -1295,8 +1295,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_send_messages
-    description: "DeFi fact table for Thorchain send messages (transaction messages) - combined silver+gold"
+  - name: thorchain_defi_send_messages
+    description: "DeFi table for Thorchain send messages (transaction messages) - combined silver+gold"
     columns:
       - name: fact_send_messages_id
         description: "Unique identifier for the send message"
@@ -1334,8 +1334,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_switch_events
-    description: "DeFi fact table for Thorchain switch events (asset burn/mint operations) - combined silver+gold"
+  - name: thorchain_defi_switch_events
+    description: "DeFi table for Thorchain switch events (asset burn/mint operations) - combined silver+gold"
     columns:
       - name: fact_switch_events_id
         description: "Unique identifier for the switch event"
@@ -1371,8 +1371,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_swaps
-    description: "DeFi fact table for Thorchain swaps with enriched data"
+  - name: thorchain_defi_swaps
+    description: "DeFi table for Thorchain swaps with enriched data"
     columns:
       - name: block_time
         description: "Block timestamp"
@@ -1425,8 +1425,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_transfers
-    description: "DeFi fact table for Thorchain transfers with USD pricing"
+  - name: thorchain_defi_transfers
+    description: "DeFi table for Thorchain transfers with USD pricing"
     columns:
       - name: fact_transfers_id
         description: "Unique identifier for the transfer"
@@ -1460,8 +1460,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_gas_events
-    description: "DeFi fact table for Thorchain gas events"
+  - name: thorchain_defi_gas_events
+    description: "DeFi table for Thorchain gas events"
     columns:
       - name: fact_gas_events_id
         description: "Unique identifier for the gas event"
@@ -1493,8 +1493,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_loan_open_events
-    description: "DeFi fact table for Thorchain loan open events"
+  - name: thorchain_defi_loan_open_events
+    description: "DeFi table for Thorchain loan open events"
     columns:
       - name: fact_loan_open_events_id
         description: "Unique identifier for the loan open event"
@@ -1534,8 +1534,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_loan_repayment_events
-    description: "DeFi fact table for Thorchain loan repayment events"
+  - name: thorchain_defi_loan_repayment_events
+    description: "DeFi table for Thorchain loan repayment events"
     columns:
       - name: fact_loan_repayment_events_id
         description: "Unique identifier for the loan repayment event"
@@ -1571,8 +1571,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_refund_events
-    description: "DeFi fact table for Thorchain refund events"
+  - name: thorchain_defi_refund_events
+    description: "DeFi table for Thorchain refund events"
     columns:
       - name: fact_refund_events_id
         description: "Unique identifier for the refund event"
@@ -1620,8 +1620,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_errata_events
-    description: "DeFi fact table for Thorchain errata events (combined silver+gold)"
+  - name: thorchain_defi_errata_events
+    description: "DeFi table for Thorchain errata events (combined silver+gold)"
     columns:
       - name: fact_errata_events_id
         description: "Unique identifier for the errata event"
@@ -1653,8 +1653,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_failed_deposit_messages
-    description: "DeFi fact table for Thorchain failed deposit messages (combined silver+gold)"
+  - name: thorchain_defi_failed_deposit_messages
+    description: "DeFi table for Thorchain failed deposit messages (combined silver+gold)"
     columns:
       - name: fact_failed_deposit_messages_id
         description: "Unique identifier for the failed deposit message"
@@ -1694,8 +1694,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_gov_fact_new_node_events
-    description: "Governance fact table for Thorchain new node events (combined silver+gold)"
+  - name: thorchain_gov_new_node_events
+    description: "Governance table for Thorchain new node events (combined silver+gold)"
     columns:
       - name: fact_new_node_events_id
         description: "Unique identifier for the new node event"
@@ -1723,8 +1723,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_gov_fact_set_version_events
-    description: "Governance fact table for Thorchain set version events (combined silver+gold)"
+  - name: thorchain_gov_set_version_events
+    description: "Governance table for Thorchain set version events (combined silver+gold)"
     columns:
       - name: fact_set_version_events_id
         description: "Unique identifier for the set version event"
@@ -1754,8 +1754,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_gov_fact_set_node_mimir_events
-    description: "Governance fact table for Thorchain set node mimir events (node-specific configuration) - combined silver+gold"
+  - name: thorchain_gov_set_node_mimir_events
+    description: "Governance table for Thorchain set node mimir events (node-specific configuration) - combined silver+gold"
     columns:
       - name: fact_set_node_mimir_events_id
         description: "Unique identifier for the set node mimir event"
@@ -1787,8 +1787,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_gov_fact_set_node_keys_events
-    description: "Governance fact table for Thorchain set node keys events (node cryptographic keys) - combined silver+gold"
+  - name: thorchain_gov_set_node_keys_events
+    description: "Governance table for Thorchain set node keys events (node cryptographic keys) - combined silver+gold"
     columns:
       - name: fact_set_node_keys_events_id
         description: "Unique identifier for the set node keys event"
@@ -1822,8 +1822,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_gov_fact_set_ip_address_events
-    description: "Governance fact table for Thorchain set IP address events (node network configuration) - combined silver+gold"
+  - name: thorchain_gov_set_ip_address_events
+    description: "Governance table for Thorchain set IP address events (node network configuration) - combined silver+gold"
     columns:
       - name: fact_set_ip_address_events_id
         description: "Unique identifier for the set IP address event"
@@ -1853,8 +1853,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_gov_fact_validator_request_leave_events
-    description: "Governance fact table for Thorchain validator request leave events (validator lifecycle) - combined silver+gold"
+  - name: thorchain_gov_validator_request_leave_events
+    description: "Governance table for Thorchain validator request leave events (validator lifecycle) - combined silver+gold"
     columns:
       - name: fact_validator_request_leave_events_id
         description: "Unique identifier for the validator request leave event"
@@ -1886,8 +1886,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_gov_fact_slash_events
-    description: "Governance fact table for Thorchain slash events (validator penalties/slashing) - combined silver+gold"
+  - name: thorchain_gov_slash_events
+    description: "Governance table for Thorchain slash events (validator penalties/slashing) - combined silver+gold"
     columns:
       - name: fact_slash_events_id
         description: "Unique identifier for the slash event"
@@ -1917,8 +1917,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_gov_fact_slash_points_events
-    description: "Governance fact table for Thorchain slash points events (validator penalty points) - combined silver+gold"
+  - name: thorchain_gov_slash_points_events
+    description: "Governance table for Thorchain slash points events (validator penalty points) - combined silver+gold"
     columns:
       - name: fact_slash_points_id
         description: "Unique identifier for the slash points event"
@@ -1948,8 +1948,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_outbound_events
-    description: "DeFi fact table for Thorchain outbound events"
+  - name: thorchain_defi_outbound_events
+    description: "DeFi table for Thorchain outbound events"
     columns:
       - name: fact_outbound_events_id
         description: "Surrogate key for outbound events"
@@ -1989,8 +1989,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_swap_events
-    description: "DeFi fact table for raw Thorchain swap events"
+  - name: thorchain_defi_swap_events
+    description: "DeFi table for raw Thorchain swap events"
     columns:
       - name: tx_id
         description: "Transaction ID"
@@ -2007,8 +2007,8 @@ models:
       - name: project
         description: "Project name (thorchain)"
 
-  - name: thorchain_defi_fact_streaming_swap_details_events
-    description: "DeFi fact table for Thorchain streaming swap details"
+  - name: thorchain_defi_streaming_swap_details_events
+    description: "DeFi table for Thorchain streaming swap details"
     columns:
       - name: tx_id
         description: "Transaction ID"
@@ -2025,8 +2025,8 @@ models:
       - name: is_successful
         description: "Whether the streaming swap was successful"
 
-  - name: thorchain_defi_fact_liquidity_actions
-    description: "DeFi fact table for Thorchain liquidity actions"
+  - name: thorchain_defi_liquidity_actions
+    description: "DeFi table for Thorchain liquidity actions"
     columns:
       - name: tx_id
         description: "Transaction ID"
@@ -2045,8 +2045,8 @@ models:
       - name: total_value_usd
         description: "Total USD value of the liquidity action"
 
-  - name: thorchain_defi_fact_withdraw_events
-    description: "DeFi fact table for raw Thorchain withdraw events"
+  - name: thorchain_defi_withdraw_events
+    description: "DeFi table for raw Thorchain withdraw events"
     columns:
       - name: tx_id
         description: "Transaction ID"
@@ -2063,8 +2063,8 @@ models:
       - name: withdrawal_type
         description: "Type of withdrawal (symmetric/asymmetric)"
 
-  - name: thorchain_defi_fact_fee_events
-    description: "DeFi fact table for Thorchain fee events"
+  - name: thorchain_defi_fee_events
+    description: "DeFi table for Thorchain fee events"
     columns:
       - name: tx_id
         description: "Transaction ID"
@@ -2083,8 +2083,8 @@ models:
       - name: pool_deduct
         description: "Pool deduction amount"
 
-  - name: thorchain_defi_fact_add_events
-    description: "DeFi fact table for Thorchain add events"
+  - name: thorchain_defi_add_events
+    description: "DeFi table for Thorchain add events"
     columns:
       - name: tx_id
         description: "Transaction ID"
@@ -2101,8 +2101,8 @@ models:
       - name: asset
         description: "Asset identifier"
 
-  - name: thorchain_defi_fact_daily_pool_stats
-    description: "DeFi fact table for daily Thorchain pool statistics"
+  - name: thorchain_defi_daily_pool_stats
+    description: "DeFi table for daily Thorchain pool statistics"
     columns:
       - name: fact_daily_pool_stats_id
         description: "Surrogate key"
@@ -2111,8 +2111,8 @@ models:
           - not_null
 
   # MISSING MODELS - Added after source schema audit
-  - name: thorchain_defi_fact_total_block_rewards
-    description: "DeFi fact table for total Thorchain block rewards"
+  - name: thorchain_defi_total_block_rewards
+    description: "DeFi table for total Thorchain block rewards"
     columns:
       - name: fact_total_block_rewards_id
         description: "Surrogate key for total block rewards"
@@ -2126,8 +2126,8 @@ models:
       - name: reward_entity
         description: "Reward entity identifier"
 
-  - name: thorchain_defi_fact_daily_tvl
-    description: "DeFi fact table for daily Thorchain TVL"
+  - name: thorchain_defi_daily_tvl
+    description: "DeFi table for daily Thorchain TVL"
     columns:
       - name: fact_daily_tvl_id
         description: "Surrogate key for daily TVL"
@@ -2139,8 +2139,8 @@ models:
         data_tests:
           - not_null
 
-  - name: thorchain_defi_fact_pool_block_statistics
-    description: "DeFi fact table for Thorchain pool statistics"
+  - name: thorchain_defi_pool_block_statistics
+    description: "DeFi table for Thorchain pool statistics"
     columns:
       - name: fact_pool_block_statistics_id
         description: "Surrogate key for pool statistics"
@@ -2148,8 +2148,8 @@ models:
           - unique
           - not_null
 
-  - name: thorchain_defi_fact_pool_block_fees
-    description: "DeFi fact table for Thorchain pool block fees and earnings"
+  - name: thorchain_defi_pool_block_fees
+    description: "DeFi table for Thorchain pool block fees and earnings"
     columns:
       - name: fact_pool_block_fees_id
         description: "Surrogate key for pool block fees"
@@ -2183,8 +2183,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_rewards_events
-    description: "DeFi fact table for Thorchain rewards events"
+  - name: thorchain_defi_rewards_events
+    description: "DeFi table for Thorchain rewards events"
     columns:
       - name: fact_rewards_events_id
         description: "Surrogate key for rewards events"
@@ -2208,8 +2208,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_scheduled_outbound_events
-    description: "DeFi fact table for Thorchain scheduled outbound events"
+  - name: thorchain_defi_scheduled_outbound_events
+    description: "DeFi table for Thorchain scheduled outbound events"
     columns:
       - name: fact_scheduled_outbound_events_id
         description: "Unique identifier for the fact record"
@@ -2263,8 +2263,8 @@ models:
       - name: modified_timestamp
         description: "Record modification timestamp"
 
-  - name: thorchain_defi_fact_daily_earnings
-    description: "DeFi fact table for daily Thorchain earnings"
+  - name: thorchain_defi_daily_earnings
+    description: "DeFi table for daily Thorchain earnings"
     columns:
       - name: fact_daily_earnings_id
         description: "Surrogate key for daily earnings"
