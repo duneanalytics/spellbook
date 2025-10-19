@@ -21,5 +21,3 @@
         , pool_created_event = source('pancakeswap_v2_ethereum', 'PancakeFactory_evt_PairCreated')
     )
 }}
-
-            Factory_evt_PoolCreated = source('pancakeswap_v3_ethereum', 'PancakeV3Factory_evt_PoolCreated')
