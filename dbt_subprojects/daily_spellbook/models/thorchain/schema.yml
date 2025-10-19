@@ -1374,24 +1374,56 @@ models:
   - name: thorchain_defi_fact_swaps
     description: "DeFi fact table for Thorchain swaps with enriched data"
     columns:
-      - name: tx_id
-        description: "Transaction ID"
-        data_tests:
-          - not_null
-      - name: event_id
-        description: "Unique event identifier"
-        data_tests:
-          - not_null
       - name: block_time
         description: "Block timestamp"
         data_tests:
           - not_null
+      - name: block_date
+        description: "Block date"
+      - name: block_month
+        description: "Block month (for partitioning)"
+      - name: tx_id
+        description: "Transaction ID"
+        data_tests:
+          - not_null
+      - name: token_sold_symbol
+        description: "Token sold symbol"
+      - name: token_sold_amount
+        description: "Token sold amount"
+      - name: token_bought_symbol
+        description: "Token bought symbol"
+      - name: token_bought_amount
+        description: "Token bought amount"
+      - name: amount_usd_sold
+        description: "USD value of tokens sold"
+      - name: amount_usd_bought
+        description: "USD value of tokens bought"
+      - name: pool
+        description: "Pool name"
+      - name: streaming
+        description: "Streaming quantity"
+      - name: streaming_count
+        description: "Streaming count"
+      - name: liq_fee_in_rune_amount
+        description: "Liquidity fee in RUNE"
+      - name: event_id
+        description: "Unique event identifier"
+        data_tests:
+          - not_null
       - name: project
         description: "Project name (thorchain)"
+      - name: version
+        description: "Version"
+      - name: category
+        description: "Category (AMM)"
       - name: volume_usd
         description: "Swap volume in USD"
       - name: trade_direction
         description: "Trade direction relative to RUNE"
+      - name: inserted_timestamp
+        description: "Record insertion timestamp"
+      - name: modified_timestamp
+        description: "Record modification timestamp"
 
   - name: thorchain_defi_fact_transfers
     description: "DeFi fact table for Thorchain transfers with USD pricing"

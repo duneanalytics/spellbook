@@ -17,18 +17,16 @@ WITH base AS (
     to_asset,
     from_amount_usd,
     to_amount_usd,
-    involves_rune,
-    source_table,
     event_id,
     block_time,
     block_date,
     block_month,
-    from_asset_amount,
-    to_asset_amount,
-    liq_fee_in_rune_amount,
-    streaming,
+    from_amount as from_asset_amount,
+    to_amount as to_asset_amount,
+    liq_fee_rune as liq_fee_in_rune_amount,
+    streaming_quantity as streaming,
     streaming_count,
-    pool
+    pool_name as pool
   FROM
     {{ ref('thorchain_silver_swaps') }}
   WHERE block_time >= current_date - interval '16' day
@@ -49,8 +47,6 @@ SELECT
   a.streaming,
   a.streaming_count,
   a.liq_fee_in_rune_amount,
-  a.involves_rune,
-  a.source_table,
   a.event_id,
   'thorchain' as project,
   '1' as version,
