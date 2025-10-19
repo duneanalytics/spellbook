@@ -56,6 +56,7 @@ with base_union as (
                 , salt
         FROM
             {{ model }}
+        WHERE block_date >= datte '2025-10-01' -- limit data 
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('block_time') }}
         {% endif %}
