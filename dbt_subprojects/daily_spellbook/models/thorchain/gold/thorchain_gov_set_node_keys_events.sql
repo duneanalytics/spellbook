@@ -73,6 +73,6 @@ SELECT
     current_timestamp AS inserted_timestamp,
     current_timestamp AS modified_timestamp
 FROM base a
-JOIN {{ ref('thorchain_core_dim_block') }} b
+JOIN {{ ref('thorchain_core_block') }} b
     ON a.block_timestamp = b.timestamp
 

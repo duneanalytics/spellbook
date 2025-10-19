@@ -78,7 +78,7 @@ SELECT
     current_timestamp AS inserted_timestamp,
     current_timestamp AS modified_timestamp
 FROM bond_events be
-JOIN {{ ref('thorchain_core_dim_block') }} b
+JOIN {{ ref('thorchain_core_block') }} b
     ON be.block_timestamp = b.timestamp
 LEFT JOIN block_prices p
     ON b.block_id = p.block_id
