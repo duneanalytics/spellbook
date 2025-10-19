@@ -1,0 +1,1 @@
+{%- macro oneinch_solana_array_to_hex_macro(column) -%}from_hex(array_join(transform({{ column }}, x -> format('%02x', x)), '')){%- endmacro -%}
