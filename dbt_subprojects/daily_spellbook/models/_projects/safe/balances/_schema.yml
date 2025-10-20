@@ -148,3 +148,17 @@ models:
       contributors: jondar
     config:
       tags: [ 'safe', 'bnb' ]
+      
+  - name: safe_mantle_balances
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    meta:
+      blockchain: mantle
+      project: safe
+      contributors: jondar
+    config:
+      tags: [ 'safe', 'mantle' ]

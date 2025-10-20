@@ -107,6 +107,8 @@ models:
         +schema: balances_polygon
       unichain:
         +schema: balances_unichain
+      mantle:
+        +schema: balances_mantle
 
     _sector:
       labels:
