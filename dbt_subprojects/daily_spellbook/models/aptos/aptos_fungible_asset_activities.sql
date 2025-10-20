@@ -54,7 +54,7 @@ WITH coin_activities AS (
             AND move_resource_module = 'coin'
             AND move_resource_name = 'CoinStore'
             AND block_date <= DATE('2025-08-02') -- FS migration
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
             AND {{ incremental_predicate('block_time') }}
         {% endif %}
     ) mr
@@ -65,7 +65,7 @@ WITH coin_activities AS (
     WHERE 1=1
         AND event_type IN ('0x1::coin::WithdrawEvent', '0x1::coin::DepositEvent')
         AND ev.block_date <= DATE('2025-08-02') -- FS migration
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
         AND {{ incremental_predicate('block_time') }}
     {% endif %}
 ), fa_activities AS (
@@ -86,7 +86,7 @@ WITH coin_activities AS (
     ON ev.tx_version = fab.tx_version
     AND address_32_from_hex(json_extract_scalar(ev.data, '$.store')) = fab.storage_id
     AND fab.token_standard = 'v2'
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
     AND {{ incremental_predicate('fab.block_time') }}
     {% endif %}
     WHERE 1=1
@@ -99,7 +99,7 @@ WITH coin_activities AS (
             '0x1::fungible_asset::Withdraw',
             '0x1::fungible_asset::WithdrawEvent' -- legacy
         )
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
         AND {{ incremental_predicate('ev.block_time') }}
     {% endif %}
 )

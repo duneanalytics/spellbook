@@ -119,7 +119,7 @@ WITH coin_balances AS (
             AND mr.move_address = address_32_from_hex(json_extract_scalar(ev.data, '$.store'))
             AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
             AND move_resource_module = 'object'
-            AND move_resource_name = 'ObjectCore'
+            AND move_resource_name IN ('ObjectGroup','ObjectCore')
             AND mr.block_date = ev.block_date -- optimization
             AND mr.block_date >= DATE('2025-04-28') -- date enabled
             {% if is_incremental() or true %}
