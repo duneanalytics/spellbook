@@ -34,6 +34,9 @@ WITH base AS (
         _tx_type,
         _inserted_timestamp
     FROM {{ ref('thorchain_silver_refund_events') }}
+    {% if not is_incremental() %}
+        WHERE block_time >= current_date - interval '16' day
+    {% endif %}
     {% if is_incremental() %}
         WHERE {{ incremental_predicate('block_time') }}
     {% endif %}

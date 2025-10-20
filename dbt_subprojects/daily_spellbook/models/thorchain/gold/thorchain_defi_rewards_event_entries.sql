@@ -23,7 +23,9 @@ WITH base AS (
         block_time,
         _inserted_timestamp
     FROM {{ ref('thorchain_silver_rewards_event_entries') }}
+    {% if not is_incremental() %}
     WHERE block_time >= current_date - interval '16' day
+    {% endif %}
 )
 
 SELECT

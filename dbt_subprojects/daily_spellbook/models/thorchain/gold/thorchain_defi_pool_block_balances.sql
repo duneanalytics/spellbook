@@ -28,7 +28,9 @@ WITH base AS (
         _inserted_timestamp,
         block_time
     FROM {{ ref('thorchain_silver_pool_block_balances') }}
+    {% if not is_incremental() %}
     WHERE block_time >= current_date - interval '16' day
+    {% endif %}
 )
 
 SELECT
