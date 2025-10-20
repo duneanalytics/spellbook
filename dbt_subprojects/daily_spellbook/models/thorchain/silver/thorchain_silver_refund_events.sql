@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_month', 'event_id', 'tx_id', 'blockchain', 'from_address', 'to_address', 'asset', 'asset_2nd', 'memo', 'code', 'reason', 'block_timestamp'],
+    unique_key = ['_unique_key'],
     partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     tags = ['thorchain', 'refund_events', 'silver']
@@ -39,6 +39,19 @@ WITH deduplicated AS (
 
 base AS (
     SELECT
+        {{ dbt_utils.generate_surrogate_key([
+            'event_id',
+            'tx',
+            'chain',
+            'from_addr',
+            'to_addr',
+            'asset',
+            'asset_2nd',
+            'memo',
+            'code',
+            'reason',
+            'block_timestamp'
+        ]) }} AS _unique_key,
         tx AS tx_id,
         chain AS blockchain,
         from_addr AS from_address,

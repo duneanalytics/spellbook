@@ -32,7 +32,11 @@ WITH base AS (
         block_time,
         block_month,
         _tx_type,
-        _inserted_timestamp
+        _inserted_timestamp,
+        ROW_NUMBER() OVER (
+            PARTITION BY event_id, tx_id, blockchain, from_address, to_address, asset, asset_2nd, memo, code, reason, block_timestamp
+            ORDER BY _inserted_timestamp DESC
+        ) AS rn
     FROM {{ ref('thorchain_silver_refund_events') }}
     {% if not is_incremental() %}
         WHERE block_time >= current_date - interval '16' day
@@ -40,6 +44,29 @@ WITH base AS (
     {% if is_incremental() %}
         WHERE {{ incremental_predicate('block_time') }}
     {% endif %}
+),
+
+deduplicated AS (
+    SELECT
+        tx_id,
+        blockchain,
+        from_address,
+        to_address,
+        asset,
+        asset_e8,
+        asset_2nd,
+        asset_2nd_e8,
+        memo,
+        code,
+        reason,
+        event_id,
+        block_timestamp,
+        block_time,
+        block_month,
+        _tx_type,
+        _inserted_timestamp
+    FROM base
+    WHERE rn = 1
 )
 
 SELECT
@@ -76,7 +103,7 @@ SELECT
     cast('{{ invocation_id }}' as varchar) AS _audit_run_id,
     current_timestamp AS inserted_timestamp,
     current_timestamp AS modified_timestamp
-FROM base a
+FROM deduplicated a
 JOIN {{ ref('thorchain_core_block') }} b
     ON a.block_timestamp = b.timestamp
 
