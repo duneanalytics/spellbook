@@ -109,7 +109,7 @@ WITH coin_activities AS (
         --
         event_index,
         event_type,
-        '0x' || LPAD(LTRIM(json_extract_scalar(data, '$.store'), '0x'), 64, '0') AS storage_id,
+        address_32_from_hex('0x' || LPAD(LTRIM(json_extract_scalar(data, '$.store'), '0x'), 64, '0')) AS storage_id,
         CAST(json_extract_scalar(data, '$.amount') AS uint256) AS amount,
         fab.owner_address,
         fab.asset_type
@@ -142,7 +142,7 @@ SELECT
     event_index,
     event_type,
     guid_account_address AS owner_address,
-    NULL AS storage_id,
+    CAST(NULL AS varbinary) AS storage_id,
     asset_type,
     amount,
     'v1' AS token_standard
