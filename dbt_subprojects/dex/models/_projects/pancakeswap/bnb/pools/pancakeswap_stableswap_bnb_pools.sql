@@ -31,7 +31,7 @@ select
     version,
     min_by(contract_address, creation_block_number) as contract_address,
     min_by(creation_block_time, creation_block_number) as creation_block_time,
-    min(creation_block_number) as creation_block_time,
+    min(creation_block_number) as creation_block_number,
     id,
     fee,
     min_by(tx_hash, creation_block_number) as tx_hash,
