@@ -39,12 +39,13 @@ actions AS (
         receipt_predecessor_account_id,
         receipt_receiver_account_id,
         execution_status,
-        index_in_action_receipt AS action_index,
-        action_kind AS action_name,
-        CAST(json_parse(action_function_call_args_parsed) AS VARCHAR) AS action_data,
+        index_in_action_receipt,
+        action_kind,
+        action_function_call_args_parsed,
         action_function_call_call_method_name AS method_name,
         action_function_call_call_args_base64 AS args,
         receipt_id,
+        execution_gas_burnt,
         floor(block_height / 1000) * 1000 AS _partition_by_block_number
     FROM
         {{ source('near', 'actions') }}
@@ -54,6 +55,7 @@ actions AS (
             tx_to IN (SELECT contract_address FROM near_omni_contracts) 
             OR receipt_receiver_account_id IN (SELECT contract_address FROM near_omni_contracts)
             OR receipt_predecessor_account_id IN (SELECT contract_address FROM near_omni_contracts)
+            OR tx_from IN (SELECT contract_address FROM near_omni_contracts)
         )
         AND block_date >= DATE '2025-01-01'
         {% if is_incremental() %}
@@ -78,15 +80,11 @@ logs AS (
         block_time,
         block_date,
         tx_hash,
-        executor_account_id AS receiver_id,
-        executor_account_id AS predecessor_id,
-        executor_account_id AS signer_id,
-        execution_gas_burnt AS gas_burnt,
+        executor_account_id,
         COALESCE(event, log) AS clean_log,
-        execution_status = 'SUCCESS_VALUE' AS receipt_succeeded,
+        execution_status,
         receipt_id,
-        CAST(block_height AS VARCHAR) || '-' || CAST(receipt_id AS VARCHAR) || '-' || CAST(index_in_execution_outcome_logs AS VARCHAR) AS logs_id,
-        index_in_execution_outcome_logs AS log_index
+        index_in_execution_outcome_logs
     FROM
         {{ source('near', 'logs') }}
     WHERE
@@ -108,15 +106,15 @@ joined AS (
         a.tx_from AS tx_signer,
         a.receipt_predecessor_account_id,
         a.receipt_receiver_account_id,
-        a.execution_status = 'SUCCESS_VALUE' AS receipt_succeeded,
-        a.action_index,
-        a.action_name,
-        a.action_data,
+        a.execution_status NOT LIKE '%FAILURE%' AS receipt_succeeded,
+        a.index_in_action_receipt AS action_index,
+        a.action_kind AS action_name,
+        a.action_function_call_args_parsed AS action_data,
         a.method_name,
-        l.log_index,
+        l.index_in_execution_outcome_logs AS log_index,
         l.clean_log,
         a.receipt_id,
-        l.logs_id,
+        CAST(a.block_height AS VARCHAR) || '-' || a.receipt_id || '-' || CAST(l.index_in_execution_outcome_logs AS VARCHAR) AS logs_id,
         COALESCE(mb.has_mint, FALSE) AS has_mint,
         COALESCE(mb.has_burn, FALSE) AS has_burn,
         a._partition_by_block_number
@@ -124,10 +122,17 @@ joined AS (
         actions a
     JOIN logs l
         ON a.block_height = l.block_height 
-        AND a.tx_hash = l.tx_hash 
         AND a.receipt_id = l.receipt_id
     LEFT JOIN has_mint_burn mb
         ON a.tx_hash = mb.tx_hash
+),
+
+parsed_events AS (
+    SELECT
+        *,
+        TRY(CAST(json_parse(regexp_extract(clean_log, '\{.*\}')) AS MAP(VARCHAR, JSON))) AS event_json
+    FROM joined
+    WHERE clean_log LIKE '%TransferEvent%'
 ),
 
 inbound_omni AS (
@@ -149,95 +154,20 @@ inbound_omni AS (
         receipt_succeeded,
         has_mint,
         FALSE AS has_burn,
-        TRY(CAST(json_parse(regexp_extract(clean_log, '\{.*\}')) AS MAP(VARCHAR, JSON))) AS event_json,
-        TRY(json_extract(
-            CAST(json_parse(regexp_extract(clean_log, '\{.*\}')) AS MAP(VARCHAR, JSON)),
-            '$.FinTransferEvent.transfer_message'
-        )) AS transfer_data,
-        TRY(CAST(json_extract_scalar(
-            json_extract(
-                CAST(json_parse(regexp_extract(clean_log, '\{.*\}')) AS MAP(VARCHAR, JSON)),
-                '$.FinTransferEvent.transfer_message'
-            ),
-            '$.amount'
-        ) AS BIGINT)) AS amount_raw,
-        split_part(
-            json_extract_scalar(
-                json_extract(
-                    CAST(json_parse(regexp_extract(clean_log, '\{.*\}')) AS MAP(VARCHAR, JSON)),
-                    '$.FinTransferEvent.transfer_message'
-                ),
-                '$.recipient'
-            ), ':', 1
-        ) AS destination_chain,
-        split_part(
-            json_extract_scalar(
-                json_extract(
-                    CAST(json_parse(regexp_extract(clean_log, '\{.*\}')) AS MAP(VARCHAR, JSON)),
-                    '$.FinTransferEvent.transfer_message'
-                ),
-                '$.recipient'
-            ), ':', 2
-        ) AS destination_address,
-        split_part(
-            json_extract_scalar(
-                json_extract(
-                    CAST(json_parse(regexp_extract(clean_log, '\{.*\}')) AS MAP(VARCHAR, JSON)),
-                    '$.FinTransferEvent.transfer_message'
-                ),
-                '$.sender'
-            ), ':', 1
-        ) AS source_chain,
-        split_part(
-            json_extract_scalar(
-                json_extract(
-                    CAST(json_parse(regexp_extract(clean_log, '\{.*\}')) AS MAP(VARCHAR, JSON)),
-                    '$.FinTransferEvent.transfer_message'
-                ),
-                '$.sender'
-            ), ':', 2
-        ) AS source_address,
-        split_part(
-            json_extract_scalar(
-                json_extract(
-                    CAST(json_parse(regexp_extract(clean_log, '\{.*\}')) AS MAP(VARCHAR, JSON)),
-                    '$.FinTransferEvent.transfer_message'
-                ),
-                '$.token'
-            ), ':', 2
-        ) AS token_address,
-        json_extract_scalar(
-            json_extract(
-                CAST(json_parse(regexp_extract(clean_log, '\{.*\}')) AS MAP(VARCHAR, JSON)),
-                '$.FinTransferEvent.transfer_message'
-            ),
-            '$.token'
-        ) AS raw_token_id,
-        TRY(CAST(json_extract_scalar(
-            json_extract(
-                CAST(json_parse(regexp_extract(clean_log, '\{.*\}')) AS MAP(VARCHAR, JSON)),
-                '$.FinTransferEvent.transfer_message'
-            ),
-            '$.origin_nonce'
-        ) AS BIGINT)) AS origin_nonce,
-        TRY(CAST(json_extract_scalar(
-            json_extract(
-                CAST(json_parse(regexp_extract(clean_log, '\{.*\}')) AS MAP(VARCHAR, JSON)),
-                '$.FinTransferEvent.transfer_message'
-            ),
-            '$.destination_nonce'
-        ) AS BIGINT)) AS destination_nonce,
-        json_extract_scalar(
-            json_extract(
-                CAST(json_parse(regexp_extract(clean_log, '\{.*\}')) AS MAP(VARCHAR, JSON)),
-                '$.FinTransferEvent.transfer_message'
-            ),
-            '$.msg'
-        ) AS memo,
+        TRY_CAST(json_extract_scalar(event_json, '$.FinTransferEvent.transfer_message.amount') AS BIGINT) AS amount_raw,
+        split_part(json_extract_scalar(event_json, '$.FinTransferEvent.transfer_message.recipient'), ':', 1) AS destination_chain,
+        split_part(json_extract_scalar(event_json, '$.FinTransferEvent.transfer_message.recipient'), ':', 2) AS destination_address,
+        split_part(json_extract_scalar(event_json, '$.FinTransferEvent.transfer_message.sender'), ':', 1) AS source_chain,
+        split_part(json_extract_scalar(event_json, '$.FinTransferEvent.transfer_message.sender'), ':', 2) AS source_address,
+        split_part(json_extract_scalar(event_json, '$.FinTransferEvent.transfer_message.token'), ':', 2) AS token_address,
+        json_extract_scalar(event_json, '$.FinTransferEvent.transfer_message.token') AS raw_token_id,
+        TRY_CAST(json_extract_scalar(event_json, '$.FinTransferEvent.transfer_message.origin_nonce') AS BIGINT) AS origin_nonce,
+        TRY_CAST(json_extract_scalar(event_json, '$.FinTransferEvent.transfer_message.destination_nonce') AS BIGINT) AS destination_nonce,
+        json_extract_scalar(event_json, '$.FinTransferEvent.transfer_message.msg') AS memo,
         'inbound' AS direction,
         _partition_by_block_number
     FROM
-        joined
+        parsed_events
     WHERE
         clean_log LIKE '%FinTransferEvent%'
 ),
@@ -261,95 +191,20 @@ outbound_omni AS (
         receipt_succeeded,
         FALSE AS has_mint,
         has_burn,
-        TRY(CAST(json_parse(regexp_extract(clean_log, '\{.*\}')) AS MAP(VARCHAR, JSON))) AS event_json,
-        TRY(json_extract(
-            CAST(json_parse(regexp_extract(clean_log, '\{.*\}')) AS MAP(VARCHAR, JSON)),
-            '$.InitTransferEvent.transfer_message'
-        )) AS transfer_data,
-        TRY(CAST(json_extract_scalar(
-            json_extract(
-                CAST(json_parse(regexp_extract(clean_log, '\{.*\}')) AS MAP(VARCHAR, JSON)),
-                '$.InitTransferEvent.transfer_message'
-            ),
-            '$.amount'
-        ) AS BIGINT)) AS amount_raw,
-        split_part(
-            json_extract_scalar(
-                json_extract(
-                    CAST(json_parse(regexp_extract(clean_log, '\{.*\}')) AS MAP(VARCHAR, JSON)),
-                    '$.InitTransferEvent.transfer_message'
-                ),
-                '$.recipient'
-            ), ':', 1
-        ) AS destination_chain,
-        split_part(
-            json_extract_scalar(
-                json_extract(
-                    CAST(json_parse(regexp_extract(clean_log, '\{.*\}')) AS MAP(VARCHAR, JSON)),
-                    '$.InitTransferEvent.transfer_message'
-                ),
-                '$.recipient'
-            ), ':', 2
-        ) AS destination_address,
-        split_part(
-            json_extract_scalar(
-                json_extract(
-                    CAST(json_parse(regexp_extract(clean_log, '\{.*\}')) AS MAP(VARCHAR, JSON)),
-                    '$.InitTransferEvent.transfer_message'
-                ),
-                '$.sender'
-            ), ':', 1
-        ) AS source_chain,
-        split_part(
-            json_extract_scalar(
-                json_extract(
-                    CAST(json_parse(regexp_extract(clean_log, '\{.*\}')) AS MAP(VARCHAR, JSON)),
-                    '$.InitTransferEvent.transfer_message'
-                ),
-                '$.sender'
-            ), ':', 2
-        ) AS source_address,
-        split_part(
-            json_extract_scalar(
-                json_extract(
-                    CAST(json_parse(regexp_extract(clean_log, '\{.*\}')) AS MAP(VARCHAR, JSON)),
-                    '$.InitTransferEvent.transfer_message'
-                ),
-                '$.token'
-            ), ':', 2
-        ) AS token_address,
-        json_extract_scalar(
-            json_extract(
-                CAST(json_parse(regexp_extract(clean_log, '\{.*\}')) AS MAP(VARCHAR, JSON)),
-                '$.InitTransferEvent.transfer_message'
-            ),
-            '$.token'
-        ) AS raw_token_id,
-        TRY(CAST(json_extract_scalar(
-            json_extract(
-                CAST(json_parse(regexp_extract(clean_log, '\{.*\}')) AS MAP(VARCHAR, JSON)),
-                '$.InitTransferEvent.transfer_message'
-            ),
-            '$.origin_nonce'
-        ) AS BIGINT)) AS origin_nonce,
-        TRY(CAST(json_extract_scalar(
-            json_extract(
-                CAST(json_parse(regexp_extract(clean_log, '\{.*\}')) AS MAP(VARCHAR, JSON)),
-                '$.InitTransferEvent.transfer_message'
-            ),
-            '$.destination_nonce'
-        ) AS BIGINT)) AS destination_nonce,
-        json_extract_scalar(
-            json_extract(
-                CAST(json_parse(regexp_extract(clean_log, '\{.*\}')) AS MAP(VARCHAR, JSON)),
-                '$.InitTransferEvent.transfer_message'
-            ),
-            '$.msg'
-        ) AS memo,
+        TRY_CAST(json_extract_scalar(event_json, '$.InitTransferEvent.transfer_message.amount') AS BIGINT) AS amount_raw,
+        split_part(json_extract_scalar(event_json, '$.InitTransferEvent.transfer_message.recipient'), ':', 1) AS destination_chain,
+        split_part(json_extract_scalar(event_json, '$.InitTransferEvent.transfer_message.recipient'), ':', 2) AS destination_address,
+        split_part(json_extract_scalar(event_json, '$.InitTransferEvent.transfer_message.sender'), ':', 1) AS source_chain,
+        split_part(json_extract_scalar(event_json, '$.InitTransferEvent.transfer_message.sender'), ':', 2) AS source_address,
+        split_part(json_extract_scalar(event_json, '$.InitTransferEvent.transfer_message.token'), ':', 2) AS token_address,
+        json_extract_scalar(event_json, '$.InitTransferEvent.transfer_message.token') AS raw_token_id,
+        TRY_CAST(json_extract_scalar(event_json, '$.InitTransferEvent.transfer_message.origin_nonce') AS BIGINT) AS origin_nonce,
+        TRY_CAST(json_extract_scalar(event_json, '$.InitTransferEvent.transfer_message.destination_nonce') AS BIGINT) AS destination_nonce,
+        json_extract_scalar(event_json, '$.InitTransferEvent.transfer_message.msg') AS memo,
         'outbound' AS direction,
         _partition_by_block_number
     FROM
-        joined
+        parsed_events
     WHERE
         clean_log LIKE '%InitTransferEvent%'
 ), 

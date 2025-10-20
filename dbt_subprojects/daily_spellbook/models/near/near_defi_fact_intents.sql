@@ -17,30 +17,33 @@
 
 WITH logs_base AS (
     SELECT
-        block_time,
-        block_height,
-        block_date,
-        tx_hash,
-        receipt_id,
-        index_in_execution_outcome_logs AS log_index,
-        executor_account_id AS receiver_id,
-        executor_account_id AS predecessor_id,
-        executor_account_id AS signer_id,
-        execution_gas_burnt AS gas_burnt,
-        COALESCE(event, log) AS clean_log,
-        TRY(CAST(json_parse(COALESCE(event, log)) AS MAP(VARCHAR, JSON))) AS log_json,
-        json_extract_scalar(TRY(CAST(json_parse(COALESCE(event, log)) AS MAP(VARCHAR, JSON))), '$.event') AS log_event,
-        TRY(CAST(json_extract(TRY(CAST(json_parse(COALESCE(event, log)) AS MAP(VARCHAR, JSON))), '$.data') AS ARRAY(JSON))) AS log_data,
-        json_array_length(TRY(CAST(json_extract(TRY(CAST(json_parse(COALESCE(event, log)) AS MAP(VARCHAR, JSON))), '$.data') AS ARRAY(JSON)))) AS log_data_len,
-        execution_status = 'SUCCESS_VALUE' AS receipt_succeeded
+        l.block_time,
+        l.block_height,
+        l.block_date,
+        l.tx_hash,
+        l.receipt_id,
+        l.index_in_execution_outcome_logs AS log_index,
+        l.executor_account_id AS receiver_id,
+        a.receipt_predecessor_account_id AS predecessor_id,
+        a.tx_from AS signer_id,
+        a.execution_gas_burnt AS gas_burnt,
+        COALESCE(l.event, l.log) AS clean_log,
+        TRY(CAST(json_parse(COALESCE(l.event, l.log)) AS MAP(VARCHAR, JSON))) AS log_json,
+        json_extract_scalar(TRY(CAST(json_parse(COALESCE(l.event, l.log)) AS MAP(VARCHAR, JSON))), '$.event') AS log_event,
+        TRY(CAST(json_extract(TRY(CAST(json_parse(COALESCE(l.event, l.log)) AS MAP(VARCHAR, JSON))), '$.data') AS ARRAY(JSON))) AS log_data,
+        json_array_length(TRY(CAST(json_extract(TRY(CAST(json_parse(COALESCE(l.event, l.log)) AS MAP(VARCHAR, JSON))), '$.data') AS ARRAY(JSON)))) AS log_data_len,
+        l.execution_status NOT LIKE '%FAILURE%' AS receipt_succeeded
     FROM 
-        {{ source('near', 'logs') }}
+        {{ source('near', 'logs') }} l
+    LEFT JOIN {{ source('near', 'actions') }} a
+        ON l.block_height = a.block_height
+        AND l.receipt_id = a.receipt_id
     WHERE 
-        executor_account_id = 'intents.near'
-        AND block_date >= DATE '2024-11-01'
-        AND json_extract_scalar(TRY(CAST(json_parse(COALESCE(event, log)) AS MAP(VARCHAR, JSON))), '$.standard') IN ('nep245', 'dip4')
+        l.executor_account_id = 'intents.near'
+        AND l.block_date >= DATE '2024-11-01'
+        AND json_extract_scalar(TRY(CAST(json_parse(COALESCE(l.event, l.log)) AS MAP(VARCHAR, JSON))), '$.standard') IN ('nep245', 'dip4')
         {% if is_incremental() %}
-        AND {{ incremental_predicate('block_time') }}
+        AND {{ incremental_predicate('l.block_time') }}
         {% endif %}
 ),
 
@@ -72,11 +75,16 @@ dip4_logs_raw AS (
 
 dip4_logs AS (
     SELECT *
-    FROM dip4_logs_raw
-    QUALIFY row_number() OVER (
-        PARTITION BY receipt_id 
-        ORDER BY CASE WHEN referral IS NOT NULL THEN 0 ELSE 1 END
-    ) = 1
+    FROM (
+        SELECT 
+            *,
+            row_number() OVER (
+                PARTITION BY receipt_id 
+                ORDER BY CASE WHEN referral IS NOT NULL THEN 0 ELSE 1 END
+            ) AS rn
+        FROM dip4_logs_raw
+    )
+    WHERE rn = 1
 ),
 
 flatten_logs AS (
