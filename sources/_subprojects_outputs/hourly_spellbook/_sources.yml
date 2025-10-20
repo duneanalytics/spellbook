@@ -63,6 +63,12 @@ sources:
   - name: safe_scroll
     tables:
       - name: safes
+  - name: safe_bnb
+    tables:
+      - name: safes
+  - name: safe_unichain
+    tables:
+      - name: safes
 
   - name: perpetual
     tables:
