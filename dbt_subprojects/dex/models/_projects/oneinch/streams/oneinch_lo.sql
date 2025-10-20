@@ -5,7 +5,7 @@
         schema = 'oneinch',
         alias = stream,
         materialized = 'view',
-        unique_key = ['blockchain', 'tx_hash', 'call_trace_address'],
+        unique_key = ['blockchain', 'block_month', 'tx_hash', 'call_trace_address'],
     )
 }}
 
