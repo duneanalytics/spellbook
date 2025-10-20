@@ -72,9 +72,9 @@ WITH coin_activities AS (
     -- FA activities prior to Events v2 migration
     SELECT
         ev.tx_version,
-        tx_hash,
+        ev.tx_hash,
         ev.block_date,
-        block_time,
+        ev.block_time,
         --
         event_index,
         event_type,
