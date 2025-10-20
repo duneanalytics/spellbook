@@ -132,8 +132,6 @@ models:
         description: The type of the event
       - name: owner_address
         description: "creator_address is the asset address for v1 and owner for v2 (can change for v2)"
-        tests:
-          - not_null
       - name: storage_id
         description: "NULL for v1, address of FungibleStore for v2"
       - name: asset_type
