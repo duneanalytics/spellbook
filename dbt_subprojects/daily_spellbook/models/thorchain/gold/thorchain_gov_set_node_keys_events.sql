@@ -23,10 +23,10 @@ WITH deduplicated AS (
         validator_consensus,
         event_id,
         block_timestamp,
-        _updated_at,
+        COALESCE(_updated_at, _ingested_at) AS row_ts,
         ROW_NUMBER() OVER (
             PARTITION BY event_id
-            ORDER BY _updated_at DESC
+            ORDER BY COALESCE(_updated_at, _ingested_at) DESC
         ) AS rn
     FROM {{ source('thorchain', 'set_node_keys_events') }}
     WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '16' day
@@ -42,7 +42,7 @@ base AS (
         block_timestamp,
         cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) AS block_time,
         date_trunc('month', cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp)) AS block_month,
-        current_timestamp AS _inserted_timestamp
+        COALESCE(row_ts, cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp)) AS _inserted_timestamp
     FROM deduplicated
     WHERE rn = 1
       {% if is_incremental() %}
