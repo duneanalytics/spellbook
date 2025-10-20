@@ -76,7 +76,7 @@ WITH coin_balances AS (
         {% endif %}
     ) c USING (tx_version, move_address)
     LEFT JOIN (
-        -- get owner
+        -- get owner, if deleted then owner will be NULL
         SELECT
             tx_version,
             move_address,
