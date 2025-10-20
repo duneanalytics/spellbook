@@ -88,7 +88,7 @@ from {{ ref('oneinch_executions') }}
 where true
     and tx_success
     and call_success
-    {% if true -%}
+    {% if is_incremental() -%}
         and (
             order_hash is null and {{ incremental_predicate('block_time') }}
             or order_hash in (select order_hash from incremental)
