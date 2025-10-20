@@ -29,16 +29,16 @@ select
     blockchain,
     project,
     version,
-    contract_address,
-    creation_block_time,
-    creation_block_number,
+    min_by(contract_address, creation_block_number) as contract_address,
+    min_by(creation_block_time, creation_block_number) as creation_block_time,
+    min(creation_block_number) as creation_block_time,
     id,
     fee,
-    tx_hash,
-    min(evt_index) as evt_index, -- pick first
+    min_by(tx_hash, creation_block_number) as tx_hash,
+    min_by(evt_index, creation_block_number) as evt_index, -- pick first
     token0,
     token1 
 from 
 pools 
-group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12 
+group by 1, 2, 3, 7, 8, 11, 12 
 -- there's some cases where a pool has multiple newstablepair event, using this to get the distinct values 
