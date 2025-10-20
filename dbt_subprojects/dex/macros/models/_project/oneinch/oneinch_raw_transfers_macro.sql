@@ -70,7 +70,7 @@ calls as (
         , slice(trace_address, 1, cardinality(call_trace_address)) = call_trace_address as nested -- nested transfers only
         , reduce(call_trace_addresses, call_trace_address, (r, x) -> if(slice(trace_address, 1, cardinality(x)) = x and x > r, x, r), r -> r) = call_trace_address as related -- transfers related to the call only, i.e. without transfers in nested calls
     from calls
-    join {{ source('tokens', 'transfers_from_traces') }} using(block_month, block_date, block_number, tx_hash)
+    join {{ source('tokens_' + blockchain, 'transfers_from_traces') }} using(block_month, block_date, block_number, tx_hash)
     {% if blockchain in meta['blockchains']['aave'] %}left join atokens using(contract_address){% endif %}
 )
 

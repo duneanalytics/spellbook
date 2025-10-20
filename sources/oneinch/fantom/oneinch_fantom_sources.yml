@@ -62,3 +62,8 @@ sources:
       - name: AccessTokenCrossChainV1_evt_transfer
       - name: ar
       - name: lo
+
+
+  - name: tokens_fantom
+    tables:
+      - name: transfers_from_traces

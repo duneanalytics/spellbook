@@ -38,9 +38,9 @@ incremental as (
 select
     blockchain
     , mode
-    , dst_blockchain
     , coalesce(order_hash, execution_id) as swap_id
 
+    , max(dst_blockchain) as dst_blockchain
     , min_by(user, block_time) as user
     , min_by(block_number, block_time) as block_number
     , min_by(block_month, block_time) as block_month
@@ -88,10 +88,10 @@ from {{ ref('oneinch_executions') }}
 where true
     and tx_success
     and call_success
-    {% if is_incremental() -%}
+    {% if true -%}
         and (
             order_hash is null and {{ incremental_predicate('block_time') }}
             or order_hash in (select order_hash from incremental)
         ) -- e.g. if a new fill happens a week later, update the whole trade
     {%- endif %}
-group by 1, 2, 3, 4
+group by 1, 2, 3

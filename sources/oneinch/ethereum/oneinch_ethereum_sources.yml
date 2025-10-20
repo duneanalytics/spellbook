@@ -105,6 +105,11 @@ sources:
       - name: lo
 
 
+  - name: tokens_ethereum
+    tables:
+      - name: transfers_from_traces
+
+
   - name: onesplit_ethereum
     description: "decoded events and function calls for onesplit on ethereum"
     tables:

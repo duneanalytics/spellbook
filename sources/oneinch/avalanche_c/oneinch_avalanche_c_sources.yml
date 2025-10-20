@@ -76,3 +76,8 @@ sources:
       - name: AccessTokenCrossChainV1_evt_transfer
       - name: ar
       - name: lo
+
+
+  - name: tokens_avalanche_c
+    tables:
+      - name: transfers_from_traces

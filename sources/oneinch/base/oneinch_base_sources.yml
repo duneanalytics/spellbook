@@ -58,3 +58,8 @@ sources:
       - name: AccessTokenCrossChainV1_evt_transfer
       - name: ar
       - name: lo
+
+
+  - name: tokens_base
+    tables:
+      - name: transfers_from_traces
