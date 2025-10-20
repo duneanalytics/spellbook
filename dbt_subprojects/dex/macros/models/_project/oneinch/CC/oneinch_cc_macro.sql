@@ -57,7 +57,7 @@ iterations as (
         {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
 )
 
-, initial as (
+, initial as ( -- required to get the initial order data & initial call data
     select
         iterations.*
         , block_number
@@ -145,7 +145,7 @@ select
     , tx_gas_price
     , tx_priority_fee_per_gas
     , tx_index -- it is necessary to determine the order of creations in the block
-    , coalesce(initial_call_trace_address, call_trace_address) as call_trace_address
+    , coalesce(initial_call_trace_address, call_trace_address) as call_trace_address -- required for the correct joining of transfers
     , coalesce(initial_call_success, call_success) as call_success
     , coalesce(initial_call_gas_used, call_gas_used) as call_gas_used
     , coalesce(initial_call_selector, call_selector) as call_selector

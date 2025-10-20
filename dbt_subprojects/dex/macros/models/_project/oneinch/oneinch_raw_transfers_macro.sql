@@ -1,6 +1,6 @@
-{% macro oneinch_raw_transfers_macro(blockchain) %}
+{%- macro oneinch_raw_transfers_macro(blockchain) -%}
 
-{% set meta = oneinch_meta_cfg_macro() %}
+{%- set meta = oneinch_meta_cfg_macro() -%}
 
 
 
@@ -44,7 +44,7 @@ calls as (
     from {{ source('aave_v3_' + blockchain, 'AToken_evt_Initialized') }}
     where underlyingAsset is not null
     group by 1 -- take the latest event only
-){% endif %}
+){%- endif %}
 
 , merging as (
     select
@@ -151,4 +151,4 @@ left join prices using(contract_address, minute)
 left join tokens using(contract_address)
 left join trusted_tokens using(contract_address)
 
-{% endmacro %}
+{%- endmacro -%}

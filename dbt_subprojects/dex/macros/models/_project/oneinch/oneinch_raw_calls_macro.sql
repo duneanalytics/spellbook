@@ -1,15 +1,15 @@
-{% macro
+{%- macro
     oneinch_raw_calls_macro(
         blockchain,
         stream
     )
-%}
+-%}
 
-{% set substream = 'raw_calls' %}
-{% set meta = oneinch_meta_cfg_macro() %}
-{% set contracts = meta['streams'][stream]['contracts'] %}
-{% set date_from = [meta['blockchains']['start'][blockchain], meta['streams'][stream]['start'][substream]] | max %}
-{% set factories = meta['blockchains']['escrow_factory_addresses'][blockchain] %}
+{%- set substream = 'raw_calls' -%}
+{%- set meta = oneinch_meta_cfg_macro() -%}
+{%- set contracts = meta['streams'][stream]['contracts'] -%}
+{%- set date_from = [meta['blockchains']['start'][blockchain], meta['streams'][stream]['start'][substream]] | max -%}
+{%- set factories = meta['blockchains']['escrow_factory_addresses'][blockchain] -%}
 
 
 
@@ -76,4 +76,4 @@ join payload on true
     and substr(input, 1, 4) = selector
     and block_date >= date_from
 
-{% endmacro %}
+{%- endmacro -%}

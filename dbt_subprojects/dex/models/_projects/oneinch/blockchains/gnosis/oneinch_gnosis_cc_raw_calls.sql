@@ -1,7 +1,7 @@
-{% set blockchain = 'gnosis' %}
-{% set stream = 'cc' %}
+{%- set blockchain = 'gnosis' -%}
+{%- set stream = 'cc' -%}
 
-{{
+{{-
     config(
         schema = 'oneinch_' + blockchain,
         alias = stream + '_raw_calls',
@@ -12,6 +12,6 @@
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         unique_key = ['block_month', 'tx_hash', 'call_trace_address'],
     )
-}}
+-}}
 
-{{ oneinch_raw_calls_macro(blockchain = blockchain, stream = stream) }}
+{{- oneinch_raw_calls_macro(blockchain = blockchain, stream = stream) -}}

@@ -1,4 +1,5 @@
 {% set substream = 'executions' %}
+{% set exposed = oneinch_meta_cfg_macro()['blockchains']['exposed'] %}
 
 {{
     config(
@@ -10,6 +11,12 @@
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         partition_by = ['block_month'],
         unique_key = ['block_date', 'execution_id'],
+        post_hook = '{{ expose_spells(
+            blockchains = \'exposed\',
+            spell_type = "project",
+            spell_name = "oneinch",
+            contributors = \'["max-morrow", "grkhr"]\'
+        ) }}',
     )
 }}
 

@@ -1,15 +1,39 @@
-{% set exposed = oneinch_meta_cfg_macro()['blockchains']['exposed'] %}
+{%- set exposed = oneinch_meta_cfg_macro()['blockchains']['exposed'] -%}
 
-{{
+{{-
     config(
         schema = 'oneinch',
         alias = 'swaps',
-        materialized = 'view',
-        post_hook = '{{ expose_spells(\'exposed\', "project", "oneinch", \'["max-morrow", "grkhr"]\') }}',
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+        partition_by = ['block_month'],
+        unique_key = ['block_month', 'blockchain', 'mode', 'swap_id'],
+        post_hook = '{{ expose_spells(
+            blockchains = \'exposed\',
+            spell_type = "project",
+            spell_name = "oneinch",
+            contributors = \'["max-morrow"]\'
+        ) }}',
     )
-}}
+-}}
 
 
+
+with
+
+incremental as (
+    {% for stream, stream_data in oneinch_meta_cfg_macro()['streams'].items() if stream != 'ar' %}
+        select order_hash
+        from {{ ref('oneinch_' + stream) }}
+        where {{ incremental_predicate('block_time') }}
+        group by 1
+        {% if not loop.last %}union all{% endif %}
+    {% endfor %}
+)
+
+-- output --
 
 select
     blockchain
@@ -64,4 +88,10 @@ from {{ ref('oneinch_executions') }}
 where true
     and tx_success
     and call_success
+    {% if is_incremental() -%}
+        and (
+            order_hash is null and {{ incremental_predicate('block_time') }}
+            or order_hash in (select order_hash from incremental)
+        ) -- e.g. if a new fill happens a week later, update the whole trade
+    {%- endif %}
 group by 1, 2, 3, 4
