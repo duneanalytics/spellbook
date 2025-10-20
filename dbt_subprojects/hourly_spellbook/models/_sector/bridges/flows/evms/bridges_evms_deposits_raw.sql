@@ -28,7 +28,7 @@ SELECT *
         , d.bridge_name
         , d.bridge_version
         , d.block_date
-        , block_time
+        , d.block_time
         , d.block_number
         , d.deposit_amount_raw
         , d.sender
