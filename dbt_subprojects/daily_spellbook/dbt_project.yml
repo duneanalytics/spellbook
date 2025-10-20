@@ -105,6 +105,8 @@ models:
         +schema: balances_bnb
       polygon:
         +schema: balances_polygon
+      unichain:
+        +schema: balances_unichain
 
     _sector:
       labels:
