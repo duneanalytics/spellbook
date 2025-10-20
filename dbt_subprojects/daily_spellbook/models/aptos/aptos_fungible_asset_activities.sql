@@ -68,6 +68,74 @@ WITH coin_activities AS (
     {% if is_incremental() or true %}
         AND {{ incremental_predicate('block_time') }}
     {% endif %}
+), fa_activities_legacy AS (
+    -- FA activities prior to Events v2 migration
+    SELECT
+        ev.tx_version,
+        tx_hash,
+        ev.block_date,
+        block_time,
+        --
+        event_index,
+        event_type,
+        guid_account_address, -- storage_id
+        CAST(json_extract_scalar(data, '$.amount') AS uint256) AS amount
+        mr.asset_type,
+        oc.owner_address
+    FROM {{ source('aptos', 'events') }} ev
+    INNER JOIN (
+        -- FS for asset_type
+        SELECT
+            tx_version,
+            block_date,
+            move_address, -- storage_id,
+            address_32_from_hex(json_extract_scalar(move_data, '$.metadata.inner')) AS asset_type,
+            -- CAST(json_extract_scalar(move_data, '$.frozen') AS BOOLEAN) AS is_frozen
+        FROM {{ source('aptos', 'move_resources') }}
+        WHERE 1=1
+            AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
+            AND move_resource_module = 'fungible_asset'
+            AND move_resource_name = 'FungibleStore'
+            AND block_date >= DATE('2023-07-28') -- FA deployed
+            AND block_date <= DATE('2024-05-29') -- Events v2 completed
+        {% if is_incremental() or true %}
+            AND {{ incremental_predicate('block_time') }}
+        {% endif %}
+    ) mr
+        ON ev.tx_version = mr.tx_version
+        AND ev.block_date = mr.block_date -- optimization
+        AND ev.guid_account_address = mr.move_address
+    INNER JOIN (
+        -- ObjectCore for owner_address
+        SELECT
+            tx_version,
+            block_date,
+            move_address, -- storage_id,
+            address_32_from_hex(json_extract_scalar(move_data, '$.owner')) AS owner_address,
+        FROM {{ source('aptos', 'move_resources') }}
+        WHERE 1=1
+            AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
+            AND move_resource_module = 'object'
+            AND move_resource_name = 'ObjectCore'
+            AND block_date >= DATE('2023-07-28') -- FA deployed
+            AND block_date <= DATE('2024-05-29') -- Events v2 completed
+        {% if is_incremental() or true %}
+            AND {{ incremental_predicate('block_time') }}
+        {% endif %}
+    ) oc
+        ON ev.tx_version = mr.tx_version
+        AND ev.block_date = mr.block_date -- optimization
+        AND ev.guid_account_address = mr.move_address
+    WHERE 1=1
+        AND ev.block_date >= DATE('2023-07-28') -- FA deployed
+        AND ev.block_date <= DATE('2024-05-29') -- Events v2 completed
+        AND event_type IN (
+            '0x1::fungible_asset::DepositEvent',
+            '0x1::fungible_asset::WithdrawEvent'
+        )
+    {% if is_incremental() or true %}
+        AND {{ incremental_predicate('ev.block_time') }}
+    {% endif %}
 ), fa_activities AS (
     SELECT
         ev.tx_version,
@@ -90,14 +158,10 @@ WITH coin_activities AS (
     AND {{ incremental_predicate('fab.block_time') }}
     {% endif %}
     WHERE 1=1
-        AND ev.block_date >= DATE('2023-07-28') -- v2 deployed
+        AND ev.block_date >= DATE('2024-05-29') -- Events v2 start
         AND event_type IN (
-            -- prior to Events v2 migration, different event types were used
-            -- this happened between 2023-08-04 to 2024-05-29
             '0x1::fungible_asset::Deposit',
-            '0x1::fungible_asset::DepositEvent', -- legacy
-            '0x1::fungible_asset::Withdraw',
-            '0x1::fungible_asset::WithdrawEvent' -- legacy
+            '0x1::fungible_asset::Withdraw'
         )
     {% if is_incremental() or true %}
         AND {{ incremental_predicate('ev.block_time') }}
@@ -119,6 +183,24 @@ SELECT
     amount,
     'v1' AS token_standard
 FROM coin_activities
+
+UNION ALL
+
+SELECT
+    tx_version,
+    tx_hash,
+    block_date,
+    block_time,
+    date(date_trunc('month', block_time)) as block_month,
+    --
+    event_index,
+    event_type,
+    owner_address,
+    guid_account_address AS storage_id,
+    asset_type,
+    amount,
+    'v2' AS token_standard
+FROM fa_activities_legacy
 
 UNION ALL
 
