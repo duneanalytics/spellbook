@@ -22,24 +22,24 @@
 SELECT *
     FROM (
         {% for chain in chains %}
-        SELECT deposit_chain
-        , withdrawal_chain_id
-        , withdrawal_chain
-        , bridge_name
-        , bridge_version
-        , block_date
+        SELECT d.deposit_chain
+        , d.withdrawal_chain_id
+        , d.withdrawal_chain
+        , d.bridge_name
+        , d.bridge_version
+        , d.block_date
         , block_time
-        , block_number
-        , deposit_amount_raw
-        , sender
-        , recipient
-        , deposit_token_standard
-        , deposit_token_address
-        , tx_from
-        , tx_hash
-        , evt_index
-        , contract_address
-        , bridge_transfer_id
+        , d.block_number
+        , d.deposit_amount_raw
+        , d.sender
+        , d.recipient
+        , d.deposit_token_standard
+        , d.deposit_token_address
+        , d.tx_from
+        , d.tx_hash
+        , d.evt_index
+        , d.contract_address
+        , d.bridge_transfer_id
         FROM {{ ref('bridges_'~chain~'_deposits') }} d
         {% if is_incremental() %}
         LEFT JOIN {{this}} t ON d.deposit_chain = '{{chain}}'
@@ -48,7 +48,7 @@ SELECT *
             AND d.withdrawal_chain_id = t.withdrawal_chain_id
             AND d.tx_hash = t.tx_hash
             AND d.evt_index = t.evt_index
-        WHERE {{ incremental_predicate('block_time') }}
+        WHERE {{ incremental_predicate('d.block_time') }}
         AND t.bridge_transfer_id IS NULL
         {% endif %}
         {% if not loop.last %}
