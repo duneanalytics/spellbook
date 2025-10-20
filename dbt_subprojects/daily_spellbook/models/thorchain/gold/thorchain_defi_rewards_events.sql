@@ -3,7 +3,7 @@
   alias = 'defi_rewards_events',
   materialized = 'incremental',
   file_format = 'delta',
-  unique_key = ['fact_rewards_events_id'],
+  unique_key = ['block_month', 'fact_rewards_events_id'],
   incremental_strategy = 'merge',
   partition_by = ['block_month'],
   incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
@@ -24,7 +24,7 @@ WITH base AS (
     _inserted_timestamp
   FROM {{ ref('thorchain_silver_rewards_events') }}
   {% if not is_incremental() %}
-  WHERE block_time >= current_date - interval '16' day
+  WHERE block_time >= current_date - interval '18' day
   {% endif %}
 )
 

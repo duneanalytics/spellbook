@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['fact_total_block_rewards_id'],
+    unique_key = ['block_month', 'fact_total_block_rewards_id'],
     partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     tags = ['thorchain', 'defi', 'total_block_rewards', 'fact'],
@@ -25,7 +25,7 @@ WITH base AS (
         block_time
     FROM {{ ref('thorchain_silver_total_block_rewards') }}
     {% if not is_incremental() %}
-    WHERE block_time >= current_date - interval '16' day
+    WHERE block_time >= current_date - interval '18' day
     {% endif %}
 )
 

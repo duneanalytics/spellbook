@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['fact_update_node_account_status_events_id'],
+    unique_key = ['block_month', 'fact_update_node_account_status_events_id'],
     partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     tags = ['thorchain', 'defi', 'update_node_account_status_events', 'fact'],

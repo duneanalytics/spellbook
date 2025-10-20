@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['fact_tss_keygen_failure_events_id'],
+    unique_key = ['block_month', 'fact_tss_keygen_failure_events_id'],
     partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     tags = ['thorchain', 'core', 'tss_keygen_failure_events', 'fact'],
@@ -30,7 +30,9 @@ WITH deduplicated AS (
             ORDER BY block_timestamp DESC
         ) AS rn
     FROM {{ source('thorchain', 'tss_keygen_failure_events') }}
-    WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '16' day
+    {% if not is_incremental() %}
+    WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '18' day
+    {% endif %}
 ),
 
 base AS (

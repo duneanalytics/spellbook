@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['fact_daily_tvl_id'],
+    unique_key = ['block_month', 'fact_daily_tvl_id'],
     partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     tags = ['thorchain', 'defi', 'daily_tvl', 'fact'],
@@ -25,7 +25,7 @@ WITH base AS (
         total_value_locked_usd,
         block_month
     FROM {{ ref('thorchain_silver_daily_tvl') }}
-    WHERE block_date >= current_date - interval '16' day
+    WHERE block_date >= current_date - interval '18' day
 )
 
 SELECT

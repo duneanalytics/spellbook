@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['dim_block_id'],
+    unique_key = ['block_month', 'dim_block_id'],
     partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     tags = ['thorchain', 'core', 'blocks'],
@@ -38,7 +38,9 @@ WITH base AS (
         current_timestamp AS modified_timestamp
     FROM {{ source('thorchain', 'block_log') }}
     WHERE height IS NOT NULL
-      AND cast(from_unixtime(cast(timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '16' day
+    {% if not is_incremental() %}
+      AND cast(from_unixtime(cast(timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '18' day
+    {% endif %}
 )
 
 SELECT * FROM base

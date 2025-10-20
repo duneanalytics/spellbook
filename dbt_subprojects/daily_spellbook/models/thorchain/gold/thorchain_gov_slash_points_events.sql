@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['fact_slash_points_id'],
+    unique_key = ['block_month', 'fact_slash_points_id'],
     partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     tags = ['thorchain', 'gov', 'slash_points_events', 'fact', 'governance'],
@@ -28,7 +28,9 @@ WITH deduplicated AS (
             ORDER BY block_timestamp DESC
         ) AS rn
     FROM {{ source('thorchain', 'slash_points') }}
-    WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '16' day
+    {% if not is_incremental() %}
+    WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '18' day
+    {% endif %}
 ),
 
 base AS (
