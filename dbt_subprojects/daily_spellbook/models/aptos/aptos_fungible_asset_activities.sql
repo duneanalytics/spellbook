@@ -80,52 +80,16 @@ WITH coin_activities AS (
         event_type,
         guid_account_address, -- storage_id
         CAST(json_extract_scalar(data, '$.amount') AS uint256) AS amount
-        mr.asset_type,
-        oc.owner_address
+        fab.asset_type,
+        fab.owner_address
     FROM {{ source('aptos', 'events') }} ev
-    INNER JOIN (
-        -- FS for asset_type
-        SELECT
-            tx_version,
-            block_date,
-            move_address, -- storage_id,
-            address_32_from_hex(json_extract_scalar(move_data, '$.metadata.inner')) AS asset_type,
-            -- CAST(json_extract_scalar(move_data, '$.frozen') AS BOOLEAN) AS is_frozen
-        FROM {{ source('aptos', 'move_resources') }}
-        WHERE 1=1
-            AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
-            AND move_resource_module = 'fungible_asset'
-            AND move_resource_name = 'FungibleStore'
-            AND block_date >= DATE('2023-07-28') -- FA deployed
-            AND block_date <= DATE('2024-05-29') -- Events v2 completed
-        {% if is_incremental() or true %}
-            AND {{ incremental_predicate('block_time') }}
-        {% endif %}
-    ) mr
-        ON ev.tx_version = mr.tx_version
-        AND ev.block_date = mr.block_date -- optimization
-        AND ev.guid_account_address = mr.move_address
-    INNER JOIN (
-        -- ObjectCore for owner_address
-        SELECT
-            tx_version,
-            block_date,
-            move_address, -- storage_id,
-            address_32_from_hex(json_extract_scalar(move_data, '$.owner')) AS owner_address,
-        FROM {{ source('aptos', 'move_resources') }}
-        WHERE 1=1
-            AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
-            AND move_resource_module = 'object'
-            AND move_resource_name = 'ObjectCore'
-            AND block_date >= DATE('2023-07-28') -- FA deployed
-            AND block_date <= DATE('2024-05-29') -- Events v2 completed
-        {% if is_incremental() or true %}
-            AND {{ incremental_predicate('block_time') }}
-        {% endif %}
-    ) oc
-        ON ev.tx_version = mr.tx_version
-        AND ev.block_date = mr.block_date -- optimization
-        AND ev.guid_account_address = mr.move_address
+    LEFT JOIN {{ ref('aptos_fungible_asset_balances') }} fab -- TODO: edge case around deletes
+    ON ev.tx_version = fab.tx_version
+    AND ev.guid_account_address = fab.storage_id
+    AND fab.token_standard = 'v2'
+    {% if is_incremental() or true %}
+    AND {{ incremental_predicate('fab.block_time') }}
+    {% endif %}
     WHERE 1=1
         AND ev.block_date >= DATE('2023-07-28') -- FA deployed
         AND ev.block_date <= DATE('2024-05-29') -- Events v2 completed

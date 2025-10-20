@@ -77,6 +77,7 @@ WITH coin_balances AS (
     ) c USING (tx_version, move_address)
     LEFT JOIN (
         -- get owner, if deleted then owner will be NULL
+        -- to fix this, need to create an Objects table and map to previous owner
         SELECT
             tx_version,
             move_address,
