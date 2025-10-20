@@ -53,17 +53,18 @@ WITH coin_activities AS (
             AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
             AND move_resource_module = 'coin'
             AND move_resource_name = 'CoinStore'
+            AND block_date <= DATE('2025-08-02') -- FS migration
         {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
         {% endif %}
     ) mr
         ON ev.tx_version = mr.tx_version
-        AND ev.block_date = mr.block_date
+        AND ev.block_date = mr.block_date -- optimization
         AND ev.guid_account_address = mr.addr
         AND ev.guid_creation_number = mr.creation_num
     WHERE 1=1
         AND event_type IN ('0x1::coin::WithdrawEvent', '0x1::coin::DepositEvent')
-        AND block_date <= DATE('2025-08-02') -- migrated to FS
+        AND ev.block_date <= DATE('2025-08-02') -- FS migration
     {% if is_incremental() %}
         AND {{ incremental_predicate('block_time') }}
     {% endif %}
