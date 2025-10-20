@@ -57,7 +57,7 @@ calls as (
         , max(transfer_amount_usd) filter(where trusted) as trusted_executed_amount_usd
         , max(transfer_amount_usd) as executed_amount_usd
     from calls
-    left join transfers using(blockchain, block_month, block_date, block_time, block_number, tx_hash, call_trace_address, call_to, protocol, contract_name, call_selector, call_method) -- even with missing transfers, as transfers may not have been parsed
+    left join transfers using(blockchain, block_month, block_date, block_number, block_time, tx_hash, call_trace_address, call_selector, call_method, call_to, protocol, contract_name) -- even with missing transfers, as transfers may not have been parsed
     group by 1, 2, 3, 4
 )
 

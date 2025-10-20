@@ -33,7 +33,7 @@ calls as (
 )
 
 {%- set data = 'cast(row(transfer_to, transfer_contract_address, transfer_symbol, transfer_amount, transfer_amount_usd, transfer_decimals, trusted) as row(receiver varbinary, address varbinary, symbol varchar, amount uint256, amount_usd double, decimals bigint, trusted boolean))' -%}
-{%- set condition = 'array_position(same, token) > 0 and call_from not in (transfer_from, transfer_to)' %}
+{%- set condition = 'array_position(same, token) > 0' %}
 
 , amounts as (
     select
@@ -43,7 +43,7 @@ calls as (
         , call_trace_address
         , max_by({{ data }}, transfer_amount) filter(where {{ condition }}) as transfered -- trying to find out what actually transfered
     from calls
-    left join transfers using(block_date, block_number, tx_hash, call_trace_address) -- even with missing transfers, as transfers may not have been parsed
+    left join transfers using(blockchain, block_month, block_date, block_number, block_time, tx_hash, call_trace_address, call_selector, call_method, call_to, protocol, contract_name) -- even with missing transfers, as transfers may not have been parsed
     group by 1, 2, 3, 4
 )
 

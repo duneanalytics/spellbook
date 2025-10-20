@@ -148,7 +148,7 @@
                 "fillOrder":             dict(samples["v4"], selector="0x9fda64bd"),
                 "fillOrderArgs":         dict(samples["v4"], selector="0xf497df75", args="args", streams=["lo", "cc"]),
                 "fillContractOrder":     dict(samples["v4"], selector="0xcc713a04"),
-                "fillContractOrderArgs": dict(samples["v4"], selector="0x56a75868", args="args"),
+                "fillContractOrderArgs": dict(samples["v4"], selector="0x56a75868", args="args", streams=["lo", "cc"]),
             },
         },
         "Settlement": {

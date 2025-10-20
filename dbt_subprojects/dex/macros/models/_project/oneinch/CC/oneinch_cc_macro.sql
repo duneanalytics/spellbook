@@ -1,18 +1,18 @@
-{% macro oneinch_cc_macro(blockchain) %}
+{%- macro oneinch_cc_macro(blockchain) -%}
 
-{% set stream = 'cc' %}
-{% set substream = '_initial' %}
-{% set meta = oneinch_meta_cfg_macro() %}
-{% set contracts = meta['streams'][stream]['contracts'] %}
-{% set date_from = [meta['blockchains']['start'][blockchain], meta['streams'][stream]['start'][substream]] | max %}
-{% set wrapper = meta['blockchains']['wrapped_native_token_address'][blockchain] %}
-{% set chain_id = meta['blockchains']['chain_id'][blockchain] %}
+{%- set stream = 'cc' -%}
+{%- set substream = '_initial' -%}
+{%- set meta = oneinch_meta_cfg_macro() -%}
+{%- set contracts = meta['streams'][stream]['contracts'] -%}
+{%- set date_from = [meta['blockchains']['start'][blockchain], meta['streams'][stream]['start'][substream]] | max -%}
+{%- set wrapper = meta['blockchains']['wrapped_native_token_address'][blockchain] -%}
+{%- set chain_id = meta['blockchains']['chain_id'][blockchain] -%}
 
 
 
 with
 
-decoded as (
+iterations as (
     {% for contract, contract_data in contracts.items() if blockchain in contract_data.blockchains %}
         -- CONTRACT: {{ contract }} --
         {% for method, method_data in contract_data.methods.items() if blockchain in method_data.get('blockchains', contract_data.blockchains) %}{# method-level blockchains override contract-level blockchains #}
@@ -20,8 +20,7 @@ decoded as (
                 call_block_number as block_number
                 , call_block_date as block_date
                 , call_tx_hash as tx_hash
-                , call_trace_address as iteration_call_trace_address
-                , {{ contract_data['version'] }} as iteration_protocol_version
+                , call_trace_address
                 , {{ method_data.get("flow", "null") }} as flow
                 , {{ method_data.get("factory", "null") }} as factory
                 , {{ method_data.get("escrow", "null") }} as escrow
@@ -52,43 +51,69 @@ decoded as (
 
 , raw_calls as (
     select *
-    from {{ ref('oneinch_' + blockchain + '_cc_raw_calls') }}
+    from {{ ref('oneinch_' + blockchain + '_' + stream + '_raw_calls') }}
     where true
         and block_date >= timestamp '{{ date_from }}'
         {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
 )
 
 , initial as (
-    {% for contract, contract_data in meta['streams']['lo']['contracts'].items() if blockchain in contract_data.blockchains and stream in contract_data.get('streams', ['lo']) %}
-        {% for method, method_data in contract_data.methods.items() if blockchain in method_data.get('blockchains', contract_data.blockchains) and stream in method_data.get('streams', ['lo']) %}{# method-level blockchains override contract-level blockchains #}
-            select
-                call_block_number as block_number
-                , call_block_date as block_date
-                , call_tx_hash as tx_hash
-                , call_trace_address as initial_call_trace_address
-                , {{ method_data.get("maker", "cast(null as varbinary)") }} as order_maker
-                , {{ method_data.get("receiver", "cast(null as varbinary)") }} as order_receiver
-                , {{ method_data.get("maker_asset", "cast(null as varbinary)") }} as order_maker_asset
-                , {{ method_data.get("taker_asset", "cast(null as varbinary)") }} as order_taker_asset
-                , {{ method_data.get("maker_amount", "cast(null as varbinary)") }} as order_maker_amount
-                , {{ method_data.get("taker_amount", "cast(null as varbinary)") }} as order_taker_amount
-                , {{ method_data.get("making_amount", "cast(null as varbinary)") }} as order_making_amount
-                , {{ method_data.get("taking_amount", "cast(null as varbinary)") }} as order_taking_amount
-                , {{ method_data.get("order_hash", "cast(null as varbinary)") }} as order_hash
-                , {{ method_data.get("order_remains", "0x0000000000") }} as order_remains
-            from (
-                select *
-                    , cast(json_parse({{ method_data.get("order", '"order"') }}) as map(varchar, varchar)) as order_map
-                    , {{ method_data.get("args", "cast(null as varbinary)") }} as args
-                from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}
-                where true
-                    and call_block_date >= timestamp '{{ date_from }}'
-                    {% if is_incremental() %}and {{ incremental_predicate('call_block_time') }}{% endif %}
-            )
+    select
+        iterations.*
+        , block_number
+        , block_date
+        , tx_hash
+        , call_trace_address as initial_call_trace_address
+        , call_success as initial_call_success
+        , call_gas_used as initial_call_gas_used
+        , call_selector as initial_call_selector
+        , call_method as initial_call_method
+        , call_from as initial_call_from
+        , call_to as initial_call_to
+        , call_output as initial_call_output
+        , call_error as initial_call_error
+        , call_type as initial_call_type
+        , contract_name as initial_contract_name
+    from (
+        {% for contract, contract_data in meta['streams']['lo']['contracts'].items() if blockchain in contract_data.blockchains and stream in contract_data.get('streams', ['lo']) %}
+            -- CONTRACT: {{ contract }} --
+            {% for method, method_data in contract_data.methods.items() if blockchain in method_data.get('blockchains', contract_data.blockchains) and stream in method_data.get('streams', ['lo']) %}{# method-level blockchains override contract-level blockchains #}
+                select
+                    call_block_number as block_number
+                    , call_block_date as block_date
+                    , call_tx_hash as tx_hash
+                    , call_trace_address
+                    , {{ method_data.get("maker", "cast(null as varbinary)") }} as order_maker
+                    , {{ method_data.get("receiver", "cast(null as varbinary)") }} as order_receiver
+                    , {{ method_data.get("maker_asset", "cast(null as varbinary)") }} as order_maker_asset
+                    , {{ method_data.get("taker_asset", "cast(null as varbinary)") }} as order_taker_asset
+                    , {{ method_data.get("maker_amount", "cast(null as varbinary)") }} as order_maker_amount
+                    , {{ method_data.get("taker_amount", "cast(null as varbinary)") }} as order_taker_amount
+                    , {{ method_data.get("making_amount", "cast(null as varbinary)") }} as order_making_amount
+                    , {{ method_data.get("taking_amount", "cast(null as varbinary)") }} as order_taking_amount
+                    , {{ method_data.get("order_hash", "cast(null as varbinary)") }} as order_hash
+                    , {{ method_data.get("order_remains", "0x0000000000") }} as order_remains
+                from (
+                    select *
+                        , cast(json_parse({{ method_data.get("order", '"order"') }}) as map(varchar, varchar)) as order_map
+                        , {{ method_data.get("args", "cast(null as varbinary)") }} as args
+                    from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}
+                    where true
+                        and call_block_date >= timestamp '{{ date_from }}'
+                        {% if is_incremental() %}and {{ incremental_predicate('call_block_time') }}{% endif %}
+                )
+                {% if not loop.last %}union all{% endif %}
+            {% endfor %}
             {% if not loop.last %}union all{% endif %}
         {% endfor %}
-        {% if not loop.last %}union all{% endif %}
-    {% endfor %}
+    ) as iterations
+    join (
+        select *
+        from {{ ref('oneinch_' + blockchain + '_lo_raw_calls') }}
+        where true
+            and block_date >= timestamp '{{ date_from }}'
+            {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
+    ) as raw_calls using(block_date, block_number, tx_hash, call_trace_address)
 )
 
 , native_prices as ( -- joining prices at this level, not on "raw_transfers", because there could be a call without transfers for which the tx cost needs to be calculated
@@ -120,19 +145,19 @@ select
     , tx_gas_price
     , tx_priority_fee_per_gas
     , tx_index -- it is necessary to determine the order of creations in the block
-    , call_trace_address
-    , call_success
-    , call_gas_used
-    , call_selector
-    , call_method
-    , call_from
-    , call_to
-    , call_output
-    , call_error
-    , call_type
-    , 'CC' as protocol
-    , iteration_protocol_version as protocol_version -- from iteration
-    , contract_name -- from raw calls
+    , coalesce(initial_call_trace_address, call_trace_address) as call_trace_address
+    , coalesce(initial_call_success, call_success) as call_success
+    , coalesce(initial_call_gas_used, call_gas_used) as call_gas_used
+    , coalesce(initial_call_selector, call_selector) as call_selector
+    , coalesce(initial_call_method, call_method) as call_method
+    , coalesce(initial_call_from, call_from) as call_from
+    , coalesce(initial_call_to, call_to) as call_to
+    , coalesce(initial_call_output, call_output) as call_output
+    , coalesce(initial_call_error, call_error) as call_error
+    , coalesce(initial_call_type, call_type) as call_type
+    , protocol -- from iteration
+    , protocol_version -- from iteration
+    , coalesce(initial_contract_name, contract_name) as contract_name
     , order_hash
     , hashlock
     , flow
@@ -155,7 +180,7 @@ select
             , substr(keccak(concat(0xd6, 0x94, factory, nonce)), 13) -- src nonce = 2 (0x02), dst nonce = 3 (0x03)
             , 0x5af43d82803e903d91602b57fd5bf3)
         )
-    )), 13)) as escrow
+    )), 13)) as escrow -- calculations required for the createDstEscrow method
     , maker
     , receiver
     , taker
@@ -182,16 +207,13 @@ select
     , decimals as native_decimals
 from ({{
     add_tx_columns(
-        model_cte = 'decoded'
+        model_cte = 'iterations'
         , blockchain = blockchain
         , columns = ['from', 'to', 'nonce', 'gas_price', 'priority_fee_per_gas', 'gas_used', 'index']
     )
 }}) as t
+join raw_calls using(block_date, block_number, tx_hash, call_trace_address)
 left join initial using(block_date, block_number, tx_hash, order_hash)
-join raw_calls using(block_date, block_number, tx_hash)
 left join native_prices using(minute)
-where true
-    and coalesce(slice(iteration_call_trace_address, 1, cardinality(initial_call_trace_address)) = initial_call_trace_address, true) -- the iteration call nested in the initial call where initial call is
-    and call_trace_address = coalesce(initial_call_trace_address, iteration_call_trace_address) -- the raw_calls are joined to the initial_calls or to the iteration_calls in case of absence
 
-{% endmacro %}
+{%- endmacro -%}

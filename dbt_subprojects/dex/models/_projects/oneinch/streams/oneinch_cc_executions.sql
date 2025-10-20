@@ -1,7 +1,7 @@
-{% set stream = 'cc' %}
-{% set substream = 'executions' %}
+{%- set stream = 'cc' -%}
+{%- set substream = 'executions' -%}
 
-{{
+{{-
     config(
         schema = 'oneinch',
         alias = stream + '_' + substream,
@@ -12,10 +12,10 @@
         partition_by = ['block_month'],
         unique_key = ['block_month', 'blockchain', 'tx_hash', 'call_trace_address'],
     )
-}}
+-}}
 
-{% set stream_data = oneinch_meta_cfg_macro()['streams'][stream] %}
-{% set date_from = stream_data['start'][substream] %}
+{%- set stream_data = oneinch_meta_cfg_macro()['streams'][stream] -%}
+{%- set date_from = stream_data['start'][substream] -%}
 
 
 
