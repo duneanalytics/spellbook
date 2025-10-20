@@ -40,5 +40,7 @@ FROM
    , ('sui-sui','SUI', '0x2::sui::SUI', 9)
    , ('take-overtake', 'TAKE', '0x76a49ebaf991fa2d4cb6a352af14425d453fe2ba6802b5ed2361b227150b6689::take::TAKE', 9)
    , ('xo-xociety','XO', '0x90f9eb95f62d31fbe2179313547e360db86d88d2399103a94286291b63f469ba::xo::XO', 9)
+   , ('ember-basis','EBASIS', '0x65b3db01dd36de8706128d842ca3d738ed30bd72c155ea175a44aedca37d4caf::ebasis::EBASIS', 6)
+   , ('ember-btc','EBTC', '0x244b98d29bd0bba401c7cfdd89f017c51759dad615e15a872ddfe45af079bb1d::ebtc::EBTC', 8)
 ) as temp (token_id, symbol, contract_address, decimals)
 
