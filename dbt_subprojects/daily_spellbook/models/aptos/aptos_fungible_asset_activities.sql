@@ -79,7 +79,7 @@ WITH coin_activities AS (
         event_index,
         event_type,
         guid_account_address, -- storage_id
-        CAST(json_extract_scalar(data, '$.amount') AS uint256) AS amount
+        CAST(json_extract_scalar(data, '$.amount') AS uint256) AS amount,
         fab.asset_type,
         fab.owner_address
     FROM {{ source('aptos', 'events') }} ev
