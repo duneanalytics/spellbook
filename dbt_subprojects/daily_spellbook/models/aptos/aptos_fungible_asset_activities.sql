@@ -129,6 +129,7 @@ WITH coin_activities AS (
         )
     {% if is_incremental() or true %}
         AND {{ incremental_predicate('ev.block_time') }}
+        AND ev.tx_version < (SELECT MAX(tx_version) FROM {{ ref('aptos_fungible_asset_balances') }})
     {% endif %}
 )
 
