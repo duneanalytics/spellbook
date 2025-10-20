@@ -28,10 +28,10 @@ WITH deduplicated AS (
         thorname,
         event_id,
         block_timestamp,
-        _updated_at,
+        
         ROW_NUMBER() OVER (
             PARTITION BY event_id, tx_id, fee_amt, gross_amt, fee_bps, memo, asset, rune_address, thorname, block_timestamp
-            ORDER BY _updated_at DESC
+            ORDER BY block_timestamp DESC
         ) AS rn
     FROM {{ source('thorchain', 'affiliate_fee_events') }}
     WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '16' day

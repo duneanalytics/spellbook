@@ -21,10 +21,10 @@ WITH deduplicated AS (
         value,
         event_id,
         block_timestamp,
-        _ingested_at,
+        
         ROW_NUMBER() OVER (
             PARTITION BY event_id
-            ORDER BY _ingested_at DESC
+            ORDER BY block_timestamp DESC
         ) AS rn
     FROM {{ source('thorchain', 'set_mimir_events') }}
     WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '16' day

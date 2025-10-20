@@ -25,10 +25,10 @@ WITH deduplicated AS (
         mint_e8,
         event_id,
         block_timestamp,
-        _updated_at,
+        
         ROW_NUMBER() OVER (
             PARTITION BY tx, from_addr, to_addr, burn_asset, burn_e8, mint_e8, block_timestamp
-            ORDER BY _updated_at DESC
+            ORDER BY block_timestamp DESC
         ) AS rn
     FROM {{ source('thorchain', 'switch_events') }}
     WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '16' day

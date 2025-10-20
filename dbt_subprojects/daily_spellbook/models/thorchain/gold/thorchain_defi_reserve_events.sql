@@ -29,10 +29,10 @@ WITH deduplicated AS (
         event_id,
         block_timestamp,
         _tx_type,
-        _updated_at,
+        
         ROW_NUMBER() OVER (
             PARTITION BY event_id
-            ORDER BY _updated_at DESC
+            ORDER BY block_timestamp DESC
         ) AS rn
     FROM {{ source('thorchain', 'reserve_events') }}
     WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '16' day
