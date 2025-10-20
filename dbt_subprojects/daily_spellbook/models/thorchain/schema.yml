@@ -630,6 +630,11 @@ models:
   - name: thorchain_silver_refund_events
     description: "Silver table for Thorchain refund events"
     columns:
+      - name: _unique_key
+        description: "Surrogate key generated from event_id, tx_id, blockchain, from_address, to_address, asset, asset_2nd, memo, code, reason, block_timestamp"
+        data_tests:
+          - unique
+          - not_null
       - name: event_id
         description: "Unique event identifier"
         data_tests:
@@ -2344,6 +2349,7 @@ models:
       - name: fact_refund_events_id
         description: "Unique identifier for the refund event"
         data_tests:
+          - unique
           - not_null
       - name: block_time
         description: "Block timestamp"
