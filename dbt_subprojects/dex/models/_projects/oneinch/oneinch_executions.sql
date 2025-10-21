@@ -1,7 +1,7 @@
-{% set substream = 'executions' %}
-{% set exposed = oneinch_meta_cfg_macro()['blockchains']['exposed'] %}
+{%- set substream = 'executions' -%}
+{%- set exposed = oneinch_meta_cfg_macro()['blockchains']['exposed'] -%}
 
-{{
+{{-
     config(
         schema = 'oneinch',
         alias = substream,
@@ -18,7 +18,7 @@
             contributors = \'["max-morrow", "grkhr"]\'
         ) }}',
     )
-}}
+-}}
 
 
 

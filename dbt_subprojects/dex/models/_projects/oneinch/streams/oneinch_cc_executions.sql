@@ -105,8 +105,7 @@ select
 
     , coalesce(null
         , sources_executed_trusted_amount_usd
-        , if(sources_executed_amount_usd - least(src_executed.amount_usd, dst_executed.amount_usd) > least(src_executed.amount_usd, dst_executed.amount_usd), least(src_executed.amount_usd, dst_executed.amount_usd)) -- i.e. if the slippadge/difference > ~50% then the least of src/dst, for minimize price errors
-        , sources_executed_amount_usd -- if previous is null, that is false
+        , sources_executed_amount_usd
     ) as amount_usd
     , execution_cost
 
