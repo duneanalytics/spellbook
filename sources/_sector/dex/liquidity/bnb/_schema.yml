@@ -10,5 +10,5 @@ sources:
     tables:
       - name: clpoolmanager_evt_modifyliquidity
       - name: clpoolmanager_evt_initialize
-      - name: clpoolmanager_call_collectprotocolfees
+      - name: clpoolmanager_call_modifyliquidity
       - name: binpoolmanager_evt_initialize

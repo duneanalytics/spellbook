@@ -7,6 +7,7 @@
 {% set version_models = [
 ref('pancakeswap_v3_base_base_liquidity_events')
 , ref('pancakeswap_v2_base_base_liquidity_events')
+, ref('pancakeswap_infinity_cl_base_base_liquidity_events')
 ] %}
 
 

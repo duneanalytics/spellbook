@@ -8,6 +8,7 @@
 ref('pancakeswap_stableswap_bnb_base_liquidity_events')
 , ref('pancakeswap_v3_bnb_base_liquidity_events')
 , ref('pancakeswap_v2_bnb_base_liquidity_events')
+, ref('pancakeswap_infinity_cl_bnb_base_liquidity_events')
 ] %}
 
 
