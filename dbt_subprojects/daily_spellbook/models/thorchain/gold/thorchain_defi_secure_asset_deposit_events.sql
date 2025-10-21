@@ -24,10 +24,10 @@ WITH deduplicated AS (
         tx_id,
         event_id,
         block_timestamp,
-        COALESCE(_updated_at, _ingested_at) AS row_ts,
+        
         ROW_NUMBER() OVER (
             PARTITION BY event_id
-            ORDER BY COALESCE(_updated_at, _ingested_at) DESC
+            ORDER BY block_timestamp DESC
         ) AS rn
     FROM {{ source('thorchain', 'secure_asset_deposit_events') }}
     {% if not is_incremental() %}
@@ -46,7 +46,7 @@ base AS (
         block_timestamp,
         cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) AS block_time,
         date_trunc('month', cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp)) AS block_month,
-        COALESCE(row_ts, cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp)) AS _inserted_timestamp
+        current_timestamp AS _inserted_timestamp
     FROM deduplicated
     WHERE rn = 1
       {% if is_incremental() %}

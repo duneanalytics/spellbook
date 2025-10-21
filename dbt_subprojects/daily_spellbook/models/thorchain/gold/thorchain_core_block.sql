@@ -32,7 +32,7 @@ WITH base AS (
         timestamp,
         hash,
         agg_state,
-        COALESCE(_updated_at, _ingested_at, cast(from_unixtime(cast(timestamp / 1e9 as bigint)) as timestamp)) AS _inserted_timestamp,
+        current_timestamp AS _inserted_timestamp,
         cast('{{ invocation_id }}' as varchar) AS _audit_run_id,
         current_timestamp AS inserted_timestamp,
         current_timestamp AS modified_timestamp
