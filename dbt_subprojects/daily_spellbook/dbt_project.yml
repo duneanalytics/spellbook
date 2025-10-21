@@ -121,6 +121,8 @@ models:
         +schema: balances_gnosis
       zkevm:
         +schema: balances_zkevm
+      sonic:
+        +schema: balances_sonic
 
     _sector:
       labels:

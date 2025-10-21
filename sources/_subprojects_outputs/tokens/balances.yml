@@ -68,3 +68,7 @@ sources:
     tables:
       - name: balances_daily_agg
       - name: balances_daily_agg_base
+  - name: tokens_sonic
+    tables:
+      - name: balances_daily_agg
+      - name: balances_daily_agg_base
