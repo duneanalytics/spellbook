@@ -32,7 +32,7 @@ WITH deduplicated AS (
         
         ROW_NUMBER() OVER (
             PARTITION BY event_id
-            ORDER BY block_timestamp DESC
+            ORDER BY COALESCE(_updated_at, _ingested_at) DESC
         ) AS rn
     FROM {{ source('thorchain', 'reserve_events') }}
     {% if not is_incremental() %}
@@ -56,7 +56,7 @@ base AS (
         _tx_type,
         cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) AS block_time,
         date_trunc('month', cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp)) AS block_month,
-        current_timestamp AS _inserted_timestamp
+        COALESCE(row_ts, cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp)) AS _inserted_timestamp
     FROM deduplicated
     WHERE rn = 1
       {% if is_incremental() %}

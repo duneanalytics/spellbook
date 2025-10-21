@@ -26,9 +26,10 @@ WITH deduplicated AS (
         event_id,
         block_timestamp,
         _tx_type,
+        _updated_at,
         ROW_NUMBER() OVER (
             PARTITION BY event_id, tx, chain, from_addr, to_addr, asset, asset_2nd, memo, code, reason, block_timestamp
-            ORDER BY block_timestamp DESC
+            ORDER BY _updated_at DESC
         ) AS rn
     FROM {{ source('thorchain', 'refund_events') }}
     {% if is_incremental() %}
