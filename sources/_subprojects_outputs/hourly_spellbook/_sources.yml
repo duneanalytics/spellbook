@@ -75,6 +75,9 @@ sources:
   - name: safe_worldchain
     tables:
       - name: safes
+  - name: safe_fantom
+    tables:
+      - name: safes
 
   - name: perpetual
     tables:

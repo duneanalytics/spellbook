@@ -111,6 +111,8 @@ models:
         +schema: balances_mantle
       worldchain:
         +schema: balances_worldchain
+      fantom:
+        +schema: balances_fantom
 
     _sector:
       labels:
