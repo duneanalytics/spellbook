@@ -6,6 +6,9 @@
 
 {% set models = [
     ref('pancakeswap_bnb_base_liquidity_events')
+    , ref('pancakeswap_arbitrum_base_liquidity_events')
+    , ref('pancakeswap_ethereum_base_liquidity_events')
+    , ref('pancakeswap_base_base_liquidity_events')
 ] %}
 
 with base_union as (

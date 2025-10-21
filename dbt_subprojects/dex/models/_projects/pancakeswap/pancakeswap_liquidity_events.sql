@@ -8,7 +8,7 @@
     , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'event_type']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     , post_hook='{{ expose_spells(\'[
-                                      "ethereum","arbitrum","base"
+                                      "ethereum","arbitrum","base", "bnb"
                                     ]\',
                                     "project",
                                     "pancakeswap",

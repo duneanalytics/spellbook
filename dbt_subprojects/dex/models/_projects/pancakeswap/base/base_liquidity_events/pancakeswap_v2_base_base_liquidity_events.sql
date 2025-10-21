@@ -19,4 +19,4 @@
     )
 }}
 
-where block_date >= date '2025-10-01'
+where block_time >= date '2025-10-01'
