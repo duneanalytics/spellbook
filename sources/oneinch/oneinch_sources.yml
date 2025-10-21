@@ -7,6 +7,13 @@ sources:
       - name: lop
       - name: ar
       - name: parsed_transfers_from_calls
+
+
   - name: oneinch_solana
     tables:
       - name: swaps
+
+
+  - name: tokens
+    tables:
+      - name: transfers_from_traces

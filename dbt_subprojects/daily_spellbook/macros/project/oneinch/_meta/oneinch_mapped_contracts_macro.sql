@@ -1,9 +1,7 @@
--- this macro helps to optimize the etl in case of adding new contract to a certain chain so it triggers pipeline only for this chain
-{% macro oneinch_mapped_contracts_macro(blockchain) %}
+{#- this macro helps to optimize the etl in case of adding new contract to a certain chain so it triggers pipeline only for this chain -#}
+{%- macro oneinch_mapped_contracts_macro(blockchain) -%}
 
-
-
-{% set 
+{%- set 
     config = [
           ('0xc586bef4a0992c495cf22e1aeee4e446cecdee0e', 'true', '1inch'                , 'OneSplit'                , ['ethereum'])
         , ('0xe4c577bdec9ce0f6c54f2f82aed5b1913b71ae2f', 'true', '1inch'                , 'ExchangeV1'              , ['ethereum'])
@@ -506,7 +504,7 @@
         , ('0xf770c63b1764a9c8f0fa925044158b09855a7faf', 'false', 'Unknown'             , 'Unknown'                 , ['arbitrum'])
         , ('0x00000000001f8b68515efb546542397d3293ccfd', 'false', 'Unknown'             , 'ArbBot'                  , ['bnb'])
     ]
-%}
+-%}
 
 
 
@@ -608,4 +606,4 @@ from additions
 join creations using(blockchain, address)
 order by project, blockchain, last_created_at, tag, address
 
-{% endmacro %}
+{%- endmacro -%}

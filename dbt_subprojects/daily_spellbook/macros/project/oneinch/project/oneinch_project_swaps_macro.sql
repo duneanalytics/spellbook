@@ -1,13 +1,13 @@
-{% macro 
+{%- macro 
     oneinch_project_swaps_macro(
         blockchain
-        , date_from = '2019-01-01'
+        , date_from = '2025-10-01'
     ) 
-%}
+-%}
 
-{% set native_addresses = '(0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee)' %}
-{% set native_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
-{% set zero_address = '0x0000000000000000000000000000000000000000' %}
+{%- set native_addresses = '(0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee)' -%}
+{%- set native_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' -%}
+{%- set zero_address = '0x0000000000000000000000000000000000000000' -%}
 
 
 
@@ -19,7 +19,7 @@ meta as (
         , wrapped_native_token_address
         , native_token_symbol as native_symbol
     from {{ source('oneinch', 'blockchains') }}
-    where blockchain = '{{blockchain}}'
+    where blockchain = '{{ blockchain }}'
 )
 
 , orders as (
@@ -37,13 +37,10 @@ meta as (
         , taking_amount
         , flags as order_flags
     from {{ ref('oneinch_' + blockchain + '_project_orders') }}
-    where
-        {% if is_incremental() %}
-            {{ incremental_predicate('block_time') }}
-        {% else %}
-            block_time >= timestamp '{{date_from}}'
-        {% endif %}
+    where true
         and call_success
+        and block_time >= timestamp '{{ date_from }}'
+        {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
     
     union all
     
@@ -63,13 +60,10 @@ meta as (
     from (
         select *, row_number() over(partition by block_number, tx_hash order by call_trace_address) as counter
         from {{ source('oneinch_' + blockchain, 'lop') }}
-        where
-            call_success
-            {% if is_incremental() %}
-                and {{ incremental_predicate('block_time') }}
-            {% else %}
-                and block_time >= timestamp '{{date_from}}'
-            {% endif %}
+        where true
+            and call_success
+            and block_time >= timestamp '{{ date_from }}'
+            {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
     )
 )
 
@@ -106,15 +100,12 @@ meta as (
             , array_agg(call_trace_address) over(partition by block_number, tx_hash, project) as call_trace_addresses
             , row_number() over(partition by block_number, tx_hash order by call_trace_address) as counter
         from {{ ref('oneinch_' + blockchain + '_project_calls') }}
-        where
-            {% if is_incremental() %}
-                {{ incremental_predicate('block_time') }}
-            {% else %}
-                block_time >= timestamp '{{date_from}}'
-            {% endif %}
-            and (tx_success or tx_success is null)
+        where true
             and call_success
+            and (tx_success or tx_success is null)
             and (flags['cross_chain'] or not flags['cross_chain_method']) -- without cross-chain methods calls in non cross-chain protocols
+            and block_time >= timestamp '{{date_from}}'
+            {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
     )
     left join orders using(block_number, tx_hash, call_trace_address)
     join meta on true
@@ -146,13 +137,10 @@ meta as (
         , price
         , decimals
     from {{ source('prices', 'usd') }}
-    where
-        {% if is_incremental() %}
-            {{ incremental_predicate('minute') }}
-        {% else %}
-            minute >= timestamp '{{date_from}}'
-        {% endif %}
-        and blockchain = '{{blockchain}}'
+    where true
+        and blockchain = '{{ blockchain }}'
+        and minute >= timestamp '{{date_from}}'
+        {% if is_incremental() %}and {{ incremental_predicate('minute') }}{% endif %}
 )
 
 , creations as (
@@ -267,32 +255,24 @@ meta as (
                 block_number
                 , block_time
                 , tx_hash
-                , transfer_trace_address
-                , contract_address as contract_address_raw
-                , if(contract_address = {{ native_address }}, wrapped_native_token_address, contract_address) as contract_address
-                , contract_address = {{ native_address }} as native
-                , amount
+                , trace_address as transfer_trace_address
+                , contract_address as transfer_contract_address -- original
+                , if(token_standard = 'native', wrapped_native_token_address, contract_address) as contract_address
+                , token_standard = 'native' as native
+                , amount_raw as amount
                 , native_symbol
-                , transfer_from
-                , transfer_to
+                , "from" as transfer_from
+                , "to" as transfer_to
+                , block_month
+                , block_date
                 , date_trunc('minute', block_time) as minute
-            from (
-                select * from ({{ oneinch_project_ptfc_macro(blockchain) }})
-                where
-                    {% if is_incremental() %}
-                        {{ incremental_predicate('block_time') }}
-                    {% else %}
-                        block_time >= timestamp '{{date_from}}'
-                    {% endif %}
-            ), meta
-            where
-                {% if is_incremental() %}
-                    {{ incremental_predicate('block_time') }}
-                {% else %}
-                    block_time >= timestamp '{{date_from}}'
-                {% endif %}
-        ) as transfers on
-            calls.block_number = transfers.block_number
+            from {{ source('tokens', 'transfers_from_traces') }}, meta
+            where true
+                and blockchain = '{ blockchain }'
+                and block_time >= timestamp '{{ date_from }}'
+                {% if is_incremental() %}{{ incremental_predicate('block_time') }}{% endif %}
+        ) as transfers on true
+            and calls.block_number = transfers.block_number
             and calls.tx_hash = transfers.tx_hash
             and slice(transfer_trace_address, 1, cardinality(call_trace_address)) = call_trace_address -- nested transfers only
             and reduce(array_distinct(call_trace_addresses), call_trace_address, (r, x) -> if(slice(transfer_trace_address, 1, cardinality(x)) = x and x > r, x, r), r -> r) = call_trace_address -- transfers related to the call only
@@ -423,4 +403,4 @@ select
     , reduce(map_keys(modes), 'other', (r, x) -> if(r = 'other' and modes[x], x, r), r -> r) as mode
 from sides
 
-{% endmacro %}
+{%- endmacro -%}
