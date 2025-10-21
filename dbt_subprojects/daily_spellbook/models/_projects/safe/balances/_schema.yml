@@ -204,3 +204,17 @@ models:
       contributors: jondar
     config:
       tags: [ 'safe', 'blast' ]
+
+  - name: safe_celo_balances
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    meta:
+      blockchain: celo
+      project: safe
+      contributors: jondar
+    config:
+      tags: [ 'safe', 'celo' ]

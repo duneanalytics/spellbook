@@ -115,6 +115,8 @@ models:
         +schema: balances_fantom
       blast:
         +schema: balances_blast
+      celo:
+        +schema: balances_celo
 
     _sector:
       labels:
