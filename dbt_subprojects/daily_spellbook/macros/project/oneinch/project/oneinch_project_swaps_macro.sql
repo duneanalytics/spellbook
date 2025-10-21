@@ -256,7 +256,7 @@ meta as (
                 , block_time
                 , tx_hash
                 , trace_address as transfer_trace_address
-                , contract_address as transfer_contract_address -- original
+                , contract_address as contract_address_raw -- original
                 , if(token_standard = 'native', wrapped_native_token_address, contract_address) as contract_address
                 , token_standard = 'native' as native
                 , amount_raw as amount
