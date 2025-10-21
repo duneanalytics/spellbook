@@ -72,6 +72,9 @@ sources:
   - name: safe_mantle
     tables:
       - name: safes
+  - name: safe_worldchain
+    tables:
+      - name: safes
 
   - name: perpetual
     tables:

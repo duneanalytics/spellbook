@@ -109,6 +109,8 @@ models:
         +schema: balances_unichain
       mantle:
         +schema: balances_mantle
+      worldchain:
+        +schema: balances_worldchain
 
     _sector:
       labels:

@@ -148,7 +148,7 @@ models:
       contributors: jondar
     config:
       tags: [ 'safe', 'bnb' ]
-      
+
   - name: safe_mantle_balances
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -162,3 +162,17 @@ models:
       contributors: jondar
     config:
       tags: [ 'safe', 'mantle' ]
+
+  - name: safe_worldchain_balances
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    meta:
+      blockchain: worldchain
+      project: safe
+      contributors: jondar
+    config:
+      tags: [ 'safe', 'worldchain' ]
