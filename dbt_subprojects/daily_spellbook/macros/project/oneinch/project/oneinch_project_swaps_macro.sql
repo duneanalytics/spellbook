@@ -104,7 +104,7 @@ meta as (
             and call_success
             and (tx_success or tx_success is null)
             and (flags['cross_chain'] or not flags['cross_chain_method']) -- without cross-chain methods calls in non cross-chain protocols
-            and block_time >= timestamp '{{date_from}}'
+            and block_time >= timestamp '{{ date_from }}'
             {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
     )
     left join orders using(block_number, tx_hash, call_trace_address)
@@ -119,7 +119,7 @@ meta as (
         contract_address
         , symbol
     from {{ source('tokens', 'erc20') }}
-    where blockchain = '{{blockchain}}'
+    where blockchain = '{{ blockchain }}'
 )
 
 , trusted_tokens as (
@@ -127,7 +127,7 @@ meta as (
         distinct contract_address
         , true as trusted
     from {{ source('prices', 'trusted_tokens') }}
-    where blockchain = '{{blockchain}}'
+    where blockchain = '{{ blockchain }}'
 )
 
 , prices as (
@@ -139,7 +139,7 @@ meta as (
     from {{ source('prices', 'usd') }}
     where true
         and blockchain = '{{ blockchain }}'
-        and minute >= timestamp '{{date_from}}'
+        and minute >= timestamp '{{ date_from }}'
         {% if is_incremental() %}and {{ incremental_predicate('minute') }}{% endif %}
 )
 
@@ -268,7 +268,7 @@ meta as (
                 , date_trunc('minute', block_time) as minute
             from {{ source('tokens', 'transfers_from_traces') }}, meta
             where true
-                and blockchain = '{ blockchain }'
+                and blockchain = '{{ blockchain }}'
                 and block_time >= timestamp '{{ date_from }}'
                 {% if is_incremental() %}{{ incremental_predicate('block_time') }}{% endif %}
         ) as transfers on true
