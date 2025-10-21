@@ -84,6 +84,9 @@ sources:
   - name: safe_celo
     tables:
       - name: safes
+  - name: safe_gnosis
+    tables:
+      - name: safes
 
   - name: perpetual
     tables:

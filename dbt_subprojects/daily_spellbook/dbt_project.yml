@@ -117,6 +117,8 @@ models:
         +schema: balances_blast
       celo:
         +schema: balances_celo
+      gnosis:
+        +schema: balances_gnosis
 
     _sector:
       labels:

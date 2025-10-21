@@ -218,3 +218,17 @@ models:
       contributors: jondar
     config:
       tags: [ 'safe', 'celo' ]
+
+  - name: safe_gnosis_balances
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    meta:
+      blockchain: gnosis
+      project: safe
+      contributors: jondar
+    config:
+      tags: [ 'safe', 'gnosis' ]
