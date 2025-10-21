@@ -20,7 +20,7 @@ WITH logs_base AS (
         l.block_time,
         l.block_height,
         l.block_date,
-        l.tx_hash,
+        a.tx_hash,
         l.receipt_id,
         l.index_in_execution_outcome_logs AS log_index,
         l.executor_account_id AS receiver_id,
@@ -28,10 +28,10 @@ WITH logs_base AS (
         a.tx_from AS signer_id,
         a.execution_gas_burnt AS gas_burnt,
         COALESCE(l.event, l.log) AS clean_log,
-        TRY(CAST(json_parse(COALESCE(l.event, l.log)) AS MAP(VARCHAR, JSON))) AS log_json,
-        json_extract_scalar(TRY(CAST(json_parse(COALESCE(l.event, l.log)) AS MAP(VARCHAR, JSON))), '$.event') AS log_event,
-        TRY(CAST(json_extract(TRY(CAST(json_parse(COALESCE(l.event, l.log)) AS MAP(VARCHAR, JSON))), '$.data') AS ARRAY(JSON))) AS log_data,
-        json_array_length(TRY(CAST(json_extract(TRY(CAST(json_parse(COALESCE(l.event, l.log)) AS MAP(VARCHAR, JSON))), '$.data') AS ARRAY(JSON)))) AS log_data_len,
+        TRY(json_parse(COALESCE(l.event, l.log))) AS log_json,
+        json_extract_scalar(TRY(json_parse(COALESCE(l.event, l.log))), '$.event') AS log_event,
+        json_extract(TRY(json_parse(COALESCE(l.event, l.log))), '$.data') AS log_data,
+        json_array_length(json_extract(TRY(json_parse(COALESCE(l.event, l.log))), '$.data')) AS log_data_len,
         l.execution_status NOT LIKE '%FAILURE%' AS receipt_succeeded
     FROM 
         {{ source('near', 'logs') }} l
@@ -41,7 +41,7 @@ WITH logs_base AS (
     WHERE 
         l.executor_account_id = 'intents.near'
         AND l.block_date >= DATE '2024-11-01'
-        AND json_extract_scalar(TRY(CAST(json_parse(COALESCE(l.event, l.log)) AS MAP(VARCHAR, JSON))), '$.standard') IN ('nep245', 'dip4')
+        AND json_extract_scalar(TRY(json_parse(COALESCE(l.event, l.log))), '$.standard') IN ('nep245', 'dip4')
         {% if is_incremental() %}
         AND {{ incremental_predicate('l.block_time') }}
         {% endif %}
@@ -60,10 +60,7 @@ dip4_logs_raw AS (
     SELECT 
         lb.*,
         json_extract_scalar(
-            element_at(
-                TRY(CAST(json_extract(lb.log_json, '$.data') AS ARRAY(JSON))),
-                1
-            ),
+            CAST(json_array_get(lb.log_data, 0) AS JSON),
             '$.referral'
         ) AS referral,
         json_extract_scalar(lb.log_json, '$.version') AS version
@@ -112,7 +109,7 @@ flatten_logs AS (
         cardinality(TRY(CAST(json_extract(log_data_element, '$.token_ids') AS ARRAY(VARCHAR)))) AS token_ids_size
     FROM
         nep245_logs l
-    CROSS JOIN UNNEST(l.log_data) WITH ORDINALITY AS t(log_data_element, log_data_index)
+    CROSS JOIN UNNEST(CAST(l.log_data AS ARRAY(JSON))) WITH ORDINALITY AS t(log_data_element, log_data_index)
 ),
 
 flatten_arrays AS (
