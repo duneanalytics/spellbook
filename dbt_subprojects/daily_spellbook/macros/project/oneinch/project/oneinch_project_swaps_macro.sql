@@ -270,7 +270,7 @@ meta as (
             where true
                 and blockchain = '{{ blockchain }}'
                 and block_time >= timestamp '{{ date_from }}'
-                {% if is_incremental() %}{{ incremental_predicate('block_time') }}{% endif %}
+                {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
         ) as transfers on true
             and calls.block_number = transfers.block_number
             and calls.tx_hash = transfers.tx_hash
