@@ -35,7 +35,6 @@ with base_union as (
                 , amount1_raw
         FROM
             {{ model }}
-        WHERE block_time >= date '2025-09-01' -- filter 
         {% if not loop.last %}
            UNION ALL
         {% endif %}

@@ -99,7 +99,6 @@ modify_liquidity_events as (
         from 
         {{ PoolManager_call_ModifyLiquidity }}
         where call_success 
-        and call_block_time >= date '2025-10-01'
         {%- if is_incremental() %}
         and {{ incremental_predicate('call_block_time') }}
         {%- endif %} 
@@ -156,9 +155,8 @@ modify_liquidity_events as (
             ROW_NUMBER() OVER (PARTITION BY evt_tx_hash ORDER BY evt_index) AS evt_rn
         from 
         {{ PoolManager_evt_ModifyLiquidity }}
-        where evt_block_time >= date '2025-10-01'
         {%- if is_incremental() %}
-        and {{ incremental_predicate('evt_block_time') }}
+        where {{ incremental_predicate('evt_block_time') }}
         {%- endif %} 
     )
 
@@ -225,9 +223,8 @@ swap_events as (
         , -1 * amount1 as amount1
     from 
     {{ PoolManager_evt_Swap }}
-    where evt_block_time >= date '2025-10-01'
     {%- if is_incremental() %}
-    and {{ incremental_predicate('evt_block_time') }}
+    where {{ incremental_predicate('evt_block_time') }}
     {%- endif %}
 ),
 
@@ -243,9 +240,8 @@ swap_fees_paid as (
         , if (amount1 < int256 '0', abs(amount1) * fee/1e6, 0) as amount1
     from 
     {{ PoolManager_evt_Swap }}
-    where evt_block_time >= date '2025-10-01'
     {%- if is_incremental() %}
-    and {{ incremental_predicate('evt_block_time') }}
+    where {{ incremental_predicate('evt_block_time') }}
     {%- endif %}
 ),
 

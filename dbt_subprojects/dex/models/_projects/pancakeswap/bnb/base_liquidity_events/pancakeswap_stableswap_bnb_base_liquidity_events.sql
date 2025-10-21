@@ -18,5 +18,3 @@
         , liquidity_pools = ref('pancakeswap_bnb_pools')
     )
 }}
-
-where block_time >= date '2025-10-01'
