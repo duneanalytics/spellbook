@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'pancakeswap_infinity_cl'
+    schema = 'pancakeswap_infinity_cl_bnb'
     , alias = 'pools'
     , materialized = 'incremental'
     , file_format = 'delta'

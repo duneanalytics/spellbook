@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'pancakeswap_infinity_lb_bnb'
+    schema = 'pancakeswap_infinity_cl_base'
     , alias = 'pools'
     , materialized = 'incremental'
     , file_format = 'delta'
@@ -11,14 +11,14 @@
 
 {{
     uniswap_compatible_pools(
-          blockchain = 'bnb'
+          blockchain = 'base'
         , project = 'pancakeswap'
-        , version = 'infinity_lb'
+        , version = 'infinity_cl'
         , fee_column_name = 'fee'
         , pool_column_name = 'id'
         , token0_column_name = 'currency0'
         , token1_column_name = 'currency1'
-        , pool_created_event = source('pancakeswap_infinity_bnb', 'binpoolmanager_evt_initialize')
+        , pool_created_event = source('pancakeswap_infinity_base', 'clpoolmanager_evt_initialize')
         , hooks_column_name = 'hooks'
     )
 }}
