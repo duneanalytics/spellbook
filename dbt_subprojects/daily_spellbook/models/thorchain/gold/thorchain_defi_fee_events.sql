@@ -25,9 +25,6 @@ WITH base AS (
     block_time  -- Keep for incremental predicate
   FROM
     {{ ref('thorchain_silver_fee_events') }}
-  {% if not is_incremental() %}
-  WHERE block_time >= current_date - interval '18' day
-  {% endif %}
 )
 
 SELECT

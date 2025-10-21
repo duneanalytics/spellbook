@@ -58,7 +58,6 @@ WITH base AS (
         _unique_key,
         block_month
     FROM {{ ref('thorchain_silver_daily_pool_stats') }}
-    WHERE block_date >= current_date - interval '18' day
 )
 
 SELECT

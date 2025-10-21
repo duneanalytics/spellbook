@@ -38,12 +38,9 @@ WITH base AS (
         current_timestamp AS modified_timestamp
     FROM {{ source('thorchain', 'block_log') }}
     WHERE height IS NOT NULL
-    {% if not is_incremental() %}
-      AND cast(from_unixtime(cast(timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '18' day
+    {% if is_incremental() %}
+      AND {{ incremental_predicate('cast(from_unixtime(cast(timestamp / 1e9 as bigint)) as timestamp)') }}
     {% endif %}
 )
 
 SELECT * FROM base
-{% if is_incremental() %}
-WHERE {{ incremental_predicate('block_time') }}
-{% endif %}

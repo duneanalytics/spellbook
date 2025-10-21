@@ -31,8 +31,8 @@ WITH deduplicated AS (
             ORDER BY block_timestamp DESC
         ) AS rn
     FROM {{ source('thorchain', 'tcy_claim_events') }}
-    {% if not is_incremental() %}
-    WHERE cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) >= current_date - interval '18' day
+    {% if is_incremental() %}
+    WHERE {{ incremental_predicate('cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp)') }}
     {% endif %}
 ),
 
@@ -51,9 +51,6 @@ base AS (
         current_timestamp AS _inserted_timestamp
     FROM deduplicated
     WHERE rn = 1
-      {% if is_incremental() %}
-        AND {{ incremental_predicate('cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp)') }}
-      {% endif %}
 )
 
 SELECT

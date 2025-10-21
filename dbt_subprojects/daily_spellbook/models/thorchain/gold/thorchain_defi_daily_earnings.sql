@@ -31,9 +31,8 @@ WITH base AS (
     avg_node_count,
     _inserted_timestamp
   FROM {{ ref('thorchain_silver_daily_earnings') }}
-  WHERE block_date >= current_date - interval '18' day
   {% if is_incremental() %}
-    AND {{ incremental_predicate('block_date') }}
+  WHERE {{ incremental_predicate('block_date') }}
   {% endif %}
 )
 

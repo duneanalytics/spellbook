@@ -39,9 +39,6 @@ WITH base AS (
     liquidity_type
   FROM
     {{ ref('thorchain_silver_liquidity_actions') }}
-  {% if not is_incremental() %}
-  WHERE block_time >= current_date - interval '18' day
-  {% endif %}
 )
 
 SELECT

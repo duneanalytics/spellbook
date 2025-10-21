@@ -33,9 +33,6 @@ WITH base AS (
     pool_name as pool
   FROM
     {{ ref('thorchain_silver_swaps') }}
-  {% if not is_incremental() %}
-  WHERE block_time >= current_date - interval '18' day
-  {% endif %}
 )
 
 SELECT

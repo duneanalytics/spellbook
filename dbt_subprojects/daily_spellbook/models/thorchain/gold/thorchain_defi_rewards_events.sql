@@ -23,9 +23,6 @@ WITH base AS (
     block_month,
     _inserted_timestamp
   FROM {{ ref('thorchain_silver_rewards_events') }}
-  {% if not is_incremental() %}
-  WHERE block_time >= current_date - interval '18' day
-  {% endif %}
 )
 
 SELECT

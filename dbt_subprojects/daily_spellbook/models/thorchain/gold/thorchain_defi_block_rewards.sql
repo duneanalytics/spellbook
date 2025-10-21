@@ -26,7 +26,6 @@ WITH base AS (
         _inserted_timestamp,
         block_month
     FROM {{ ref('thorchain_silver_block_rewards') }}
-    WHERE block_date >= current_date - interval '18' day
 )
 
 SELECT
