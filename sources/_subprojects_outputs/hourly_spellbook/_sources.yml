@@ -87,6 +87,9 @@ sources:
   - name: safe_gnosis
     tables:
       - name: safes
+  - name: safe_zkevm
+    tables:
+      - name: safes
 
   - name: perpetual
     tables:

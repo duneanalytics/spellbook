@@ -232,3 +232,17 @@ models:
       contributors: jondar
     config:
       tags: [ 'safe', 'gnosis' ]
+
+  - name: safe_zkevm_balances
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    meta:
+      blockchain: zkevm
+      project: safe
+      contributors: jondar
+    config:
+      tags: [ 'safe', 'zkevm' ]

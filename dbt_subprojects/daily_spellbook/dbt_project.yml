@@ -119,6 +119,8 @@ models:
         +schema: balances_celo
       gnosis:
         +schema: balances_gnosis
+      zkevm:
+        +schema: balances_zkevm
 
     _sector:
       labels:

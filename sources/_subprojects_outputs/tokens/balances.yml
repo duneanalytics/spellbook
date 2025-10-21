@@ -64,3 +64,7 @@ sources:
     tables:
       - name: balances_daily_agg
       - name: balances_daily_agg_base
+  - name: tokens_zkevm
+    tables:
+      - name: balances_daily_agg
+      - name: balances_daily_agg_base
