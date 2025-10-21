@@ -190,3 +190,17 @@ models:
       contributors: jondar
     config:
       tags: [ 'safe', 'fantom' ]
+
+  - name: safe_blast_balances
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    meta:
+      blockchain: blast
+      project: safe
+      contributors: jondar
+    config:
+      tags: [ 'safe', 'blast' ]

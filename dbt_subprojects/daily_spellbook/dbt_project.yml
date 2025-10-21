@@ -113,6 +113,8 @@ models:
         +schema: balances_worldchain
       fantom:
         +schema: balances_fantom
+      blast:
+        +schema: balances_blast
 
     _sector:
       labels:

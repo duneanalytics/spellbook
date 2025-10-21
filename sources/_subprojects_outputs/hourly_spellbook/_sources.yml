@@ -78,6 +78,9 @@ sources:
   - name: safe_fantom
     tables:
       - name: safes
+  - name: safe_blast
+    tables:
+      - name: safes
 
   - name: perpetual
     tables:
