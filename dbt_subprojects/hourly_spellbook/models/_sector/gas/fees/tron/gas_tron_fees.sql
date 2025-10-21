@@ -39,8 +39,11 @@ SELECT
     ,block_time
     ,block_number
     ,tx_hash
+    ,SUBSTR(cast(tx_hash as varchar), 3) as tx_hash_varchar
     ,tx_from
+    ,to_tron_address(tx_from) as tx_from_varchar
     ,tx_to
+    ,to_tron_address(tx_to) as tx_to_varchar
     ,gas_price
     ,gas_used
     ,p.symbol as currency_symbol
