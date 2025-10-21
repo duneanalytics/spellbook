@@ -79,7 +79,6 @@ logs AS (
         block_height,
         block_time,
         block_date,
-        tx_hash,
         executor_account_id,
         COALESCE(event, log) AS clean_log,
         execution_status,
@@ -130,7 +129,7 @@ joined AS (
 parsed_events AS (
     SELECT
         *,
-        TRY(CAST(json_parse(regexp_extract(clean_log, '\{.*\}')) AS MAP(VARCHAR, JSON))) AS event_json
+        TRY(json_parse(regexp_extract(clean_log, '\{.*\}'))) AS event_json
     FROM joined
     WHERE clean_log LIKE '%TransferEvent%'
 ),
