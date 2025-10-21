@@ -93,6 +93,9 @@ sources:
   - name: safe_sonic
     tables:
       - name: safes
+  - name: safe_zksync
+    tables:
+      - name: safes
 
   - name: perpetual
     tables:

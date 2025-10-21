@@ -123,6 +123,8 @@ models:
         +schema: balances_zkevm
       sonic:
         +schema: balances_sonic
+      zksync:
+        +schema: balances_zksync
 
     _sector:
       labels:
