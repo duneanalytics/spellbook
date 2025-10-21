@@ -53,8 +53,9 @@ WITH dexes AS (
                 , amount1_usd
            FROM
                 dexes
+        WHERE block_date >= date '2025-10-01'
           {% if is_incremental() %}
-           WHERE
+           AND
                {{ incremental_predicate('block_time') }}
           {% endif %}
 
