@@ -47,7 +47,6 @@ WITH all_swaps as (
         AND trs_1.outer_instruction_index = sp.call_outer_instruction_index
         AND ((sp.call_is_inner = false AND trs_1.inner_instruction_index = 1)
             OR (sp.call_is_inner = true AND trs_1.inner_instruction_index = sp.call_inner_instruction_index + 1))
-        AND trs_1.from_token_account = sp.account_uerSourceTokenAccount
         AND (trs_1.token_version = 'spl_token' or trs_1.token_version = 'spl_token_2022')
         {% if is_incremental() %}
         AND {{incremental_predicate('trs_1.block_time')}}
@@ -61,7 +60,6 @@ WITH all_swaps as (
         AND trs_2.outer_instruction_index = sp.call_outer_instruction_index
         AND ((sp.call_is_inner = false AND trs_2.inner_instruction_index = 2)
             OR (sp.call_is_inner = true AND trs_2.inner_instruction_index = sp.call_inner_instruction_index + 2))
-        AND trs_2.to_token_account = sp.account_uerDestinationTokenAccount
         AND (trs_2.token_version = 'spl_token' or trs_2.token_version = 'spl_token_2022')
         {% if is_incremental() %}
         AND {{incremental_predicate('trs_2.block_time')}}

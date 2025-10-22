@@ -34,10 +34,10 @@ WITH all_swaps as (
         , sp.call_outer_instruction_index as outer_instruction_index
         , COALESCE(sp.call_inner_instruction_index, 0) as inner_instruction_index
         , sp.call_tx_index as tx_index
-        , sp.account_outputTokenMint as token_bought_mint_address
-        , sp.account_inputTokenMint as token_sold_mint_address
-        , sp.account_outputVault as token_bought_vault
-        , sp.account_inputVault as token_sold_vault
+        , trs_2.token_mint_address as token_bought_mint_address
+        , trs_1.token_mint_address as token_sold_mint_address
+        , trs_2.from_token_account as token_bought_vault
+        , trs_1.to_token_account as token_sold_vault
     FROM {{ ref('raydium_v5_solana_stg_decoded_swaps') }} sp
     INNER JOIN {{ source('tokens_solana','transfers') }} trs_1
         ON trs_1.tx_id = sp.call_tx_id
@@ -46,8 +46,6 @@ WITH all_swaps as (
         AND trs_1.outer_instruction_index = sp.call_outer_instruction_index
         AND ((sp.call_is_inner = false AND trs_1.inner_instruction_index = 1)
             OR (sp.call_is_inner = true AND trs_1.inner_instruction_index = sp.call_inner_instruction_index + 1))
-        AND trs_1.token_mint_address = sp.account_inputTokenMint
-        AND trs_1.to_token_account = sp.account_inputVault
         AND (trs_1.token_version = 'spl_token' or trs_1.token_version = 'spl_token_2022')
         {% if is_incremental() -%}
         AND {{incremental_predicate('trs_1.block_time')}}
@@ -61,8 +59,6 @@ WITH all_swaps as (
         AND trs_2.outer_instruction_index = sp.call_outer_instruction_index
         AND ((sp.call_is_inner = false AND trs_2.inner_instruction_index = 2)
             OR (sp.call_is_inner = true AND trs_2.inner_instruction_index = sp.call_inner_instruction_index + 2))
-        AND trs_2.token_mint_address = sp.account_outputTokenMint
-        AND trs_2.from_token_account = sp.account_outputVault
         AND (trs_2.token_version = 'spl_token' or trs_2.token_version = 'spl_token_2022')
         {% if is_incremental() -%}
         AND {{incremental_predicate('trs_2.block_time')}}
