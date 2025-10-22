@@ -48,7 +48,7 @@ WITH all_swaps as (
         AND trs_1.token_mint_address = sp.account_inputTokenMint
         AND trs_1.to_token_account = sp.account_inputVault
         AND trs_1.token_version != 'native'
-        {% if is_incremental() -%}
+        {% if is_incremental() or true -%}
         AND {{incremental_predicate('trs_1.block_time')}}
         {% else -%}
         AND trs_1.block_date >= DATE '{{project_start_date}}'
@@ -63,14 +63,14 @@ WITH all_swaps as (
         AND trs_2.token_mint_address = sp.account_outputTokenMint
         AND trs_2.from_token_account = sp.account_outputVault
         AND trs_2.token_version != 'native'
-        {% if is_incremental() -%}
+        {% if is_incremental() or true -%}
         AND {{incremental_predicate('trs_2.block_time')}}
         {% else -%}
         AND trs_2.block_date >= DATE '{{project_start_date}}'
         {% endif -%}
     where
 		1=1
-		{% if is_incremental() -%}
+		{% if is_incremental() or true -%}
 		and {{incremental_predicate('sp.call_block_time')}}
 		{% else -%}
 		and sp.call_block_date >= date '{{project_start_date}}'
