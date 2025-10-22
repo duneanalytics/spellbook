@@ -104,3 +104,19 @@ sources:
       - name: ink_spokepool_evt_filledrelay
       - name: ink_spokepool_evt_v3fundsdeposited
       - name: ink_spokepool_evt_filledv3relay
+
+  - name: across_v3_lens
+    description: "Across Protocol v2 and v3 bridge events on Lens"
+    tables:
+      - name: lens_spokepool_evt_fundsdeposited
+      - name: lens_spokepool_evt_filledrelay
+      - name: lens_spokepool_evt_v3fundsdeposited
+      - name: lens_spokepool_evt_filledv3relay
+
+  - name: across_v3_bnb
+    description: "Across Protocol v2 and v3 bridge events on BNB"
+    tables:
+      - name: universal_spokepool_evt_fundsdeposited
+      - name: universal_spokepool_evt_filledrelay
+      - name: universal_spokepool_evt_v3fundsdeposited
+      - name: universal_spokepool_evt_filledv3relay
