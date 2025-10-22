@@ -1,0 +1,39 @@
+version: 2
+
+models:
+  - name: bridges_linea_across_v2_deposits
+    meta:
+      blockchain: linea
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
+    description: "Across's v2 bridge deposits events on Linea"
+  - name: bridges_linea_across_v2_withdrawals
+    meta:
+      blockchain: linea
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Across's v3 bridge withdrawals events on Linea"
+  - name: bridges_linea_across_v3_deposits
+    meta:
+      blockchain: linea
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
+    description: "Across's v3 bridge deposits events on Linea"
+  - name: bridges_linea_across_v3_withdrawals
+    meta:
+      blockchain: linea
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Across's v3 bridge withdrawals events on Linea"

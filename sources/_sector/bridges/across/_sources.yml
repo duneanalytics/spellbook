@@ -40,3 +40,35 @@ sources:
       - name: uba_polygon_spokepool_evt_filledrelay
       - name: uba_polygon_spokepool_evt_v3fundsdeposited
       - name: uba_polygon_spokepool_evt_filledv3relay
+
+  - name: across_v3_unichain
+    description: "Across Protocol v2 and v3 bridge events on Unichain"
+    tables:
+      - name: unichain_spokepool_evt_fundsdeposited
+      - name: unichain_spokepool_evt_filledrelay
+      - name: unichain_spokepool_evt_v3fundsdeposited
+      - name: unichain_spokepool_evt_filledv3relay
+
+  - name: across_v2_linea
+    description: "Across Protocol v2 and v3 bridge events on Linea"
+    tables:
+      - name: linea_spokepool_evt_fundsdeposited
+      - name: linea_spokepool_evt_filledrelay
+      - name: linea_spokepool_evt_v3fundsdeposited
+      - name: linea_spokepool_evt_filledv3relay
+
+  - name: across_v2_zksync
+    description: "Across Protocol v2 and v3 bridge events on zkSync"
+    tables:
+      - name: zksync_spokepool_evt_fundsdeposited
+      - name: zksync_spokepool_evt_filledrelay
+      - name: zksync_spokepool_evt_v3fundsdeposited
+      - name: zksync_spokepool_evt_filledv3relay
+
+  - name: across_v3_scroll
+    description: "Across Protocol v2 and v3 bridge events on scroll"
+    tables:
+      - name: scroll_spokepool_evt_fundsdeposited
+      - name: scroll_spokepool_evt_filledrelay
+      - name: scroll_spokepool_evt_v3fundsdeposited
+      - name: scroll_spokepool_evt_filledv3relay
