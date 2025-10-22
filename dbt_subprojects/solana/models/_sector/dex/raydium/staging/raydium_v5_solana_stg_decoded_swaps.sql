@@ -2,12 +2,12 @@
   config(
     schema = 'raydium_v5_solana'
     , alias = 'stg_decoded_swaps'
-    , partition_by = ['call_block_date']
+    , partition_by = ['call_block_month']
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.call_block_time')]
-    , unique_key = ['call_block_date', 'unique_instruction_key']
+    , unique_key = ['call_block_month', 'unique_instruction_key']
   )
 }}
 
@@ -69,6 +69,7 @@ with swaps as (
 
 select
 	*
+	, cast(date_trunc('month', call_block_date) as date) as call_block_month
 	, {{ dbt_utils.generate_surrogate_key(['call_block_slot', 'call_tx_id', 'call_tx_index', 'call_outer_instruction_index', 'call_inner_instruction_index']) }} as unique_instruction_key
 from
 	swaps
