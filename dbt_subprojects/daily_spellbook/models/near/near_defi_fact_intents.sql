@@ -36,8 +36,7 @@ WITH logs_base AS (
     FROM 
         {{ source('near', 'logs') }} l
     LEFT JOIN {{ source('near', 'actions') }} a
-        ON l.block_height = a.block_height
-        AND l.receipt_id = a.receipt_id
+        ON l.receipt_id = a.receipt_id
     WHERE 
         l.executor_account_id = 'intents.near'
         AND l.block_date >= DATE '2024-11-01'
