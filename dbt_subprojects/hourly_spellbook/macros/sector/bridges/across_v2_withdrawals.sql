@@ -21,10 +21,11 @@ WITH ranked AS (
     , d.contract_address
     {% if blockchain == 'unichain' %}
     , CAST(d.depositId AS varchar) AS bridge_transfer_id
+    , ROW_NUMBER() OVER (PARTITION BY d.originChainId, d.depositId ORDER BY d.evt_block_number DESC, d.evt_index DESC) AS rn
     {% else %}
     , CAST(d.depositId_uint256 AS varchar) AS bridge_transfer_id
-    {% endif %}
     , ROW_NUMBER() OVER (PARTITION BY d.originChainId, d.depositId_uint256 ORDER BY d.evt_block_number DESC, d.evt_index DESC) AS rn
+    {% endif %}
     FROM ({{ events }}) d
     LEFT JOIN {{ ref('bridges_across_chain_indexes') }} m ON d.originChainId=m.id
     )
