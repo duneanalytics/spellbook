@@ -124,6 +124,17 @@ models:
     description: >
         raydium clmm dex base trades on Solana with version_name
 
+  - name: raydium_v4_solana_stg_decoded_swaps
+    meta:
+      blockchain: solana
+    config:
+      tags: [ 'solana','dex','raydium' ]
+    description: >
+      all decoded raydium_v4 hybrid amm swaps on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'call_block_date', 'unique_instruction_key' ]
+
   - name: raydium_v4_base_trades
     meta:
       blockchain: solana
@@ -176,6 +187,16 @@ models:
       - *inner_instruction_index
       - *tx_index
 
+  - name: raydium_v5_solana_stg_decoded_swaps
+    meta:
+      blockchain: solana
+    config:
+      tags: [ 'solana','dex','raydium' ]
+    description: >
+      all decoded raydium_v5 swaps on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'call_block_date', 'unique_instruction_key' ]
 
   - name: raydium_v5_base_trades
     meta:
