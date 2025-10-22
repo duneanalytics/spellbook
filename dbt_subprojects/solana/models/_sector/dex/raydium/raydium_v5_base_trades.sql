@@ -48,6 +48,7 @@ WITH all_swaps as (
             OR (sp.call_is_inner = true AND trs_1.inner_instruction_index = sp.call_inner_instruction_index + 1))
         AND trs_1.token_mint_address = sp.account_inputTokenMint
         AND trs_1.to_token_account = sp.account_inputVault
+        AND (trs_1.token_version = 'spl_token' or trs_1.token_version = 'spl_token_2022')
         {% if is_incremental() or true -%}
         AND {{incremental_predicate('trs_1.block_time')}}
         {% else -%}
@@ -62,6 +63,7 @@ WITH all_swaps as (
             OR (sp.call_is_inner = true AND trs_2.inner_instruction_index = sp.call_inner_instruction_index + 2))
         AND trs_2.token_mint_address = sp.account_outputTokenMint
         AND trs_2.from_token_account = sp.account_outputVault
+        AND (trs_2.token_version = 'spl_token' or trs_2.token_version = 'spl_token_2022')
         {% if is_incremental() or true -%}
         AND {{incremental_predicate('trs_2.block_time')}}
         {% else -%}
