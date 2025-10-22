@@ -1,11 +1,13 @@
-{% macro oneinch_project_orders_macro(
-    blockchain
-    , date_from = '2019-01-01'
-)%}
+{%- macro
+    oneinch_project_orders_macro(
+        blockchain
+        , date_from = '2025-10-01'
+    )
+-%}
 
 
 
-{% set wrapping = 'array[0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, wrapped_native_token_address]' %}
+{%- set wrapping = 'array[0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, wrapped_native_token_address]' -%}
 
 with
 
@@ -13,9 +15,9 @@ logs as (
 {% for event, event_data in oneinch_project_orders_cfg_events_macro().items() %}
     select
         '{{ blockchain }}' as blockchain
-        , '{{event_data["project"]}}' as project
+        , '{{ event_data["project"] }}' as project
+        , block_date
         , block_number
-        , block_time
         , tx_hash
         , tx_from
         , tx_to
@@ -51,25 +53,26 @@ logs as (
         , topic2
         , topic3
         , data
-        , row_number() over(partition by block_number, tx_hash order by index) as log_counter
+        , row_number() over(partition by block_number, tx_hash order by index) as trade_counter
     from {{ ref('oneinch_' + blockchain + '_project_orders_raw_logs') }}
-    where
-        topic0 = {{ event }}
-        and {% if is_incremental() %}{{ incremental_predicate('block_time') }}
-            {% else %}block_time >= timestamp '{{date_from}}'
-            {% endif %}
+    where true
+        and topic0 = {{ event }}
+        and block_time >= timestamp '{{ date_from }}'
+        {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
     {% if not loop.last %}union all{% endif %}
 {% endfor %}
 )
 
 , calls as (
-    select *, row_number() over(partition by block_number, tx_hash, call_to, method order by call_trace_address, call_trade) as call_trade_counter -- trade counter in the tx: there may be multiple calls and multiple trades within a call in a single transaction
+    select *
+        , row_number() over(partition by block_number, tx_hash, call_to, method order by call_trace_address, call_trade) as trade_counter -- trade counter in the tx: there may be multiple calls and multiple trades within a call in a single transaction
     from (
         select
             blockchain
             , project
             , tag
             , flags
+            , block_date
             , block_number
             , block_time
             , tx_hash
@@ -120,6 +123,7 @@ logs as (
                 , project
                 , tag
                 , flags
+                , block_date
                 , block_number
                 , block_time
                 , tx_hash
@@ -137,7 +141,7 @@ logs as (
                 , {{ item.get("event", "null") }} as topic0
                 , coalesce({{ item.get("number", "1") }}, 1) as call_trades -- total trades in the call
                 , transform(sequence(1, coalesce({{ item.get("number", "1") }}, 1)), x -> map_from_entries(array[
-                      ('trade',             try(to_big_endian_64(x)))
+                    ('trade',             try(to_big_endian_64(x)))
                     , ('maker',             {{ item.get("maker", "null") }})
                     , ('taker',             {{ item.get("taker", "null") }})
                     , ('receiver',          {{ item.get("receiver", "null") }})
@@ -167,18 +171,19 @@ logs as (
                 , output
             from {{ ref('oneinch_' + blockchain + '_project_orders_raw_traces') }}
             join (
-                select *, address as "to"
+                select *
+                    , address as "to"
                 from {{ ref('oneinch_' + blockchain + '_mapped_contracts') }}
-                where
-                    blockchain = '{{ blockchain }}'
+                where true
+                    and blockchain = '{{ blockchain }}'
                     and project = '{{ item["project"] }}'
                     and coalesce({{ item.get("tag", "null") }} = tag, true)
             ) using("to")
-            where
-                {% if is_incremental() %}{{ incremental_predicate('block_time') }}
-                {% else %}block_time > greatest(first_created_at, timestamp '{{date_from}}'){% endif %}
+            where true
                 and substr(input, 1, 4) = {{ item["selector"] }}
                 and {{ item.get("condition", "true") }}
+                and block_time > greatest(first_created_at, timestamp '{{ date_from }}')
+                {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
 
             {% if not loop.last %}union all{% endif %}
         {% endfor %}
@@ -212,15 +217,10 @@ logs as (
         , coalesce(log_fee_amount, call_fee_amount) as fee_amount
         , coalesce(log_fee_receiver, call_fee_receiver) as fee_receiver
         , coalesce(log_nonce, call_nonce) as order_nonce
-        , coalesce(log_order_hash, call_order_hash, concat(tx_hash, to_big_endian_32(cast(call_trade_counter as int))), concat(tx_hash, to_big_endian_32(cast(index as int)))) as order_hash
-        , count(*) over(partition by block_number, tx_hash, call_trace_address, call_trade) as call_trade_logs -- logs for each trade
-        , count(*) over(partition by block_number, tx_hash, index) as log_call_trades -- trades for each log
+        , coalesce(log_order_hash, call_order_hash, concat(tx_hash, to_utf8(array_join(call_trace_address, ',')), to_utf8('|'), substr(call_trade, 5))) as order_hash -- | required to eliminate duplicates: concat('0,1', '11') == concat('0,11', '1')
     from calls
-    full join logs using(blockchain, block_number, block_time, tx_hash, topic0, project)
-    join (
-        select * from {{ source('oneinch', 'blockchains') }}
-        where blockchain = '{{blockchain}}'
-    ) using(blockchain)
+    left join logs using(blockchain, block_date, block_number, tx_hash, topic0, project, trade_counter)
+    join (select * from {{ source('oneinch', 'blockchains') }} where blockchain = '{{blockchain}}') using(blockchain)
     where
             coalesce(call_maker = log_maker, true)
         and coalesce(call_taker = log_taker, true)
@@ -264,7 +264,7 @@ select
     , call_gas_used
     , call_type
     , call_error
-    , coalesce(bytearray_to_bigint(call_trade), 1) as call_trade
+    , from_big_endian_64(call_trade) as call_trade
     , call_trades
     , method
     , maker
@@ -303,9 +303,5 @@ select
     , to_unixtime(block_time) as block_unixtime
     , date(date_trunc('month', block_time)) as block_month
 from joined
-where
-    call_trade_logs = 1 -- if the log was not found or if found the only one log for a trade in the call
-    or log_call_trades = 1 -- if the call was not found or if found the only one call trade for the log
-    or call_trade_counter = log_counter -- if found several logs
 
-{% endmacro %}
+{%- endmacro -%}
