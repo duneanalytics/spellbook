@@ -24,7 +24,8 @@ meta as (
 
 , orders as (
     select
-        block_number
+        block_month
+        , block_number
         , tx_hash
         , call_trace_address
         , project as order_project
@@ -45,7 +46,8 @@ meta as (
     union all
     
     select
-        block_number
+        block_month
+        , block_number
         , tx_hash
         , call_trace_address
         , '1inch' as order_project
@@ -58,7 +60,7 @@ meta as (
         , taking_amount
         , map_concat(flags, map_from_entries(array[('cross_chain', hashlock is not null)])) as order_flags
     from (
-        select *, row_number() over(partition by block_number, tx_hash order by call_trace_address) as counter
+        select *, row_number() over(partition by block_month, block_number, tx_hash order by call_trace_address) as counter
         from {{ source('oneinch_' + blockchain, 'lop') }}
         where true
             and call_success
@@ -70,6 +72,7 @@ meta as (
 , calls as (
     select
         blockchain
+        , block_month
         , block_number
         , tx_hash
         , tx_from
@@ -90,15 +93,15 @@ meta as (
         , making_amount
         , replace(taker_asset, {{ zero_address }}, {{ native_address }}) as taker_asset
         , taking_amount
-        , array_agg(call_trace_address) over(partition by block_number, tx_hash, coalesce(order_project, project)) as call_trace_addresses -- to update the array after filtering nested calls of the project
+        , array_agg(call_trace_address) over(partition by block_month, block_number, tx_hash, coalesce(order_project, project)) as call_trace_addresses -- to update the array after filtering nested calls of the project
         , if(maker_asset in {{native_addresses}}, wrapped_native_token_address, maker_asset) as _maker_asset
         , if(taker_asset in {{native_addresses}}, wrapped_native_token_address, taker_asset) as _taker_asset
         , coalesce(order_hash, to_big_endian_64(counter)) as call_trade_id -- without call_trade for the correctness of the max transfer approach
     from (
         select
             *
-            , array_agg(call_trace_address) over(partition by block_number, tx_hash, project) as call_trace_addresses
-            , row_number() over(partition by block_number, tx_hash order by call_trace_address) as counter
+            , array_agg(call_trace_address) over(partition by block_month, block_number, tx_hash, project) as call_trace_addresses
+            , row_number() over(partition by block_month, block_number, tx_hash order by call_trace_address) as counter
         from {{ ref('oneinch_' + blockchain + '_project_calls') }}
         where true
             and call_success
@@ -107,8 +110,7 @@ meta as (
             and block_time >= timestamp '{{ date_from }}'
             {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
     )
-    left join orders using(block_number, tx_hash, call_trace_address)
-    join meta on true
+    left join orders using(block_month, block_number, tx_hash, call_trace_address), meta
     where
         reduce(call_trace_addresses, true, (r, x) -> if(r and x <> call_trace_address and slice(call_trace_address, 1, cardinality(x)) = x, false, r), r -> r) -- only not nested calls of the project in tx
         or order_hash is not null -- all orders
@@ -162,6 +164,30 @@ meta as (
     group by 1
 )
 
+, transfers as (
+    select
+        block_month
+        , block_number
+        , block_time
+        , tx_hash
+        , trace_address as transfer_trace_address
+        , contract_address as contract_address_raw -- original
+        , if(token_standard = 'native', wrapped_native_token_address, contract_address) as contract_address
+        , token_standard = 'native' as native
+        , amount_raw as amount
+        , native_symbol
+        , "from" as transfer_from
+        , "to" as transfer_to
+        , block_month
+        , block_date
+        , date_trunc('minute', block_time) as minute
+    from {{ source('tokens', 'transfers_from_traces') }}, meta
+    where true
+        and blockchain = '{{ blockchain }}'
+        and block_time >= timestamp '{{ date_from }}'
+        {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
+)
+
 , swaps as (
     select
         *
@@ -184,7 +210,7 @@ meta as (
                 , amount_usd double
                 , intent boolean
             ))
-        ) over(partition by block_number, tx_hash) as tx_swaps
+        ) over(partition by block_month, block_number, tx_hash) as tx_swaps
         , if(
             user_amount_usd_trusted is not null or caller_amount_usd_trusted is not null or contract_amount_usd_trusted is not null
             , greatest(coalesce(user_amount_usd_trusted, 0), coalesce(caller_amount_usd_trusted, 0), coalesce(contract_amount_usd_trusted, 0))
@@ -206,6 +232,7 @@ meta as (
     from (
         select
             blockchain
+            , calls.block_month
             , calls.block_number
             , calls.tx_hash
             , calls.call_trace_address
@@ -250,28 +277,8 @@ meta as (
             , array_agg(distinct transfer_from) filter(where creations_from.block_number is null) as senders
             , array_agg(distinct transfer_to) filter(where creations_to.block_number is null) as receivers
         from calls
-        join (
-            select
-                block_number
-                , block_time
-                , tx_hash
-                , trace_address as transfer_trace_address
-                , contract_address as contract_address_raw -- original
-                , if(token_standard = 'native', wrapped_native_token_address, contract_address) as contract_address
-                , token_standard = 'native' as native
-                , amount_raw as amount
-                , native_symbol
-                , "from" as transfer_from
-                , "to" as transfer_to
-                , block_month
-                , block_date
-                , date_trunc('minute', block_time) as minute
-            from {{ source('tokens', 'transfers_from_traces') }}, meta
-            where true
-                and blockchain = '{{ blockchain }}'
-                and block_time >= timestamp '{{ date_from }}'
-                {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
-        ) as transfers on true
+        join transfers on true
+            and calls.block_month = transfers.block_month
             and calls.block_number = transfers.block_number
             and calls.tx_hash = transfers.tx_hash
             and slice(transfer_trace_address, 1, cardinality(call_trace_address)) = call_trace_address -- nested transfers only
@@ -282,7 +289,7 @@ meta as (
         left join trusted_tokens using(contract_address)
         left join creations as creations_from on creations_from.address = transfers.transfer_from
         left join creations as creations_to on creations_to.address = transfers.transfer_to
-        group by 1, 2, 3, 4, 5
+        group by 1, 2, 3, 4, 5, 6
     )
 )
 
@@ -395,7 +402,7 @@ select
     , users as direct_users
     , senders
     , receivers
-    , date(date_trunc('month', block_time)) as block_month
+    , block_month
     , call_trade_id
     , second_side
     , modes
