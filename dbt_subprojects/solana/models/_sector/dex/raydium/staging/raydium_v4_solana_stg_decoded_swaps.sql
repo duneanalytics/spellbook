@@ -34,7 +34,7 @@ with swaps as (
 		{{ source('raydium_amm_solana', 'raydium_amm_call_swapBaseOut') }}
 	where
 		1=1
-		{% if is_incremental() or true -%}
+		{% if is_incremental() -%}
 		and {{incremental_predicate('call_block_time')}}
 		{% else -%}
 		and call_block_date >= date '{{project_start_date}}'
@@ -60,7 +60,7 @@ with swaps as (
 		{{ source('raydium_amm_solana', 'raydium_amm_call_swapBaseIn') }}
 	where
 		1=1
-		{% if is_incremental() or true -%}
+		{% if is_incremental() -%}
 		and {{incremental_predicate('call_block_time')}}
 		{% else -%}
 		and call_block_date >= date '{{project_start_date}}'
