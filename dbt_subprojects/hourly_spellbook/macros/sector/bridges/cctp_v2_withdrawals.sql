@@ -1,4 +1,4 @@
-{% macro cctp_v1_withdrawals(blockchain) %}
+{% macro cctp_v2_withdrawals(blockchain) %}
 
 WITH messages AS (
     SELECT evt_block_number AS block_number

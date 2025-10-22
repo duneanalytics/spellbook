@@ -1,4 +1,4 @@
-{% macro cctp_v1_deposits(blockchain) %}
+{% macro cctp_v2_deposits(blockchain) %}
 
 SELECT '{{blockchain}}' AS deposit_chain
 , d.destinationDomain AS withdrawal_chain_id
