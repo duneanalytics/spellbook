@@ -12,8 +12,7 @@ models:
     description: "Circle's CCTP v1 bridge deposits events on OP Mainnet"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          arguments:
-            combination_of_columns: ['tx_hash','evt_index']
+          combination_of_columns: ['tx_hash','evt_index']
       - equal_rowcount_with_sources:
           evt_sources:
             - source('circle_optimism','tokenmessenger_evt_depositforburn')
@@ -92,8 +91,7 @@ models:
     description: "Circle's CCTP v1 bridge withdrawals events on OP Mainnet"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          arguments:
-            combination_of_columns: ['tx_hash','evt_index']
+          combination_of_columns: ['tx_hash','evt_index']
       - equal_rowcount_with_sources:
           evt_sources:
             - source('circle_optimism','tokenmessenger_evt_mintandwithdraw')
