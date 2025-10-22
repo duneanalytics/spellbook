@@ -1,6 +1,7 @@
 {% macro celer_v1_withdrawals(blockchain) %}
 
-SELECT i.blockchain AS deposit_chain
+SELECT d.srcChainId AS deposit_chain_id
+, i.blockchain AS deposit_chain
 , '{{blockchain}}' AS withdrawal_chain
 , 'Celer' AS bridge_name
 , '1' AS bridge_version
