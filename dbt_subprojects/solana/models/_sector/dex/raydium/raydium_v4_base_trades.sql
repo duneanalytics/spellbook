@@ -13,9 +13,8 @@
 
 {% set project_start_date = '2021-03-21' %} --grabbed program deployed at time (account created at).
 
-WITH
---we aren't tracking using pool inits because there are a hundred or so pools from 2021 that did not use a consistent pattern.
-all_swaps as (
+WITH all_swaps as (
+    --we aren't tracking using pool inits because there are a hundred or so pools from 2021 that did not use a consistent pattern.
     SELECT
         sp.call_block_time as block_time
         , sp.call_block_slot as block_slot
