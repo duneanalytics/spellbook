@@ -48,7 +48,6 @@ WITH all_swaps as (
         AND ((sp.call_is_inner = false AND trs_1.inner_instruction_index = 1)
             OR (sp.call_is_inner = true AND trs_1.inner_instruction_index = sp.call_inner_instruction_index + 1))
         AND trs_1.from_token_account = sp.account_uerSourceTokenAccount
-        AND trs_1.token_version != 'native'
         {% if is_incremental() or true %}
         AND {{incremental_predicate('trs_1.block_time')}}
         {% else %}
