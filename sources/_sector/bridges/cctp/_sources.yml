@@ -7,6 +7,9 @@ sources:
       - name: tokenmessenger_evt_depositforburn
       - name: tokenmessenger_evt_mintandwithdraw
       - name: messagetransmitter_evt_messagereceived
+      - name: tokenmessengerv2_evt_depositforburn
+      - name: tokenmessengerv2_evt_mintandwithdraw
+      - name: messagetransmitterv2_evt_messagereceived
 
   - name: circle_ethereum
     description: "Circle's CCTP bridge events on Ethereum"
