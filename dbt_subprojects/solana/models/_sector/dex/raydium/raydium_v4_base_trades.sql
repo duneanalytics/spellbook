@@ -12,7 +12,7 @@
     )
 }}
 
-{% set project_start_date = '2021-03-21' %} --grabbed program deployed at time (account created at).
+{% set project_start_date = '2025-10-15' %} --'2021-03-21'
 
 WITH all_swaps as (
     --we aren't tracking using pool inits because there are a hundred or so pools from 2021 that did not use a consistent pattern.
