@@ -66,9 +66,41 @@ sources:
       - name: zksync_spokepool_evt_filledv3relay
 
   - name: across_v3_scroll
-    description: "Across Protocol v2 and v3 bridge events on scroll"
+    description: "Across Protocol v2 and v3 bridge events on Scroll"
     tables:
       - name: scroll_spokepool_evt_fundsdeposited
       - name: scroll_spokepool_evt_filledrelay
       - name: scroll_spokepool_evt_v3fundsdeposited
       - name: scroll_spokepool_evt_filledv3relay
+
+  - name: across_v3_blast
+    description: "Across Protocol v2 and v3 bridge events on Blast"
+    tables:
+      - name: blast_spokepool_evt_fundsdeposited
+      - name: blast_spokepool_evt_filledrelay
+      - name: blast_spokepool_evt_v3fundsdeposited
+      - name: blast_spokepool_evt_filledv3relay
+
+  - name: across_v3_zora
+    description: "Across Protocol v2 and v3 bridge events on Zora"
+    tables:
+      - name: zora_spokepool_evt_fundsdeposited
+      - name: zora_spokepool_evt_filledrelay
+      - name: zora_spokepool_evt_v3fundsdeposited
+      - name: zora_spokepool_evt_filledv3relay
+
+  - name: across_v3_worldchain
+    description: "Across Protocol v2 and v3 bridge events on Worldchain"
+    tables:
+      - name: worldchain_spokepool_evt_fundsdeposited
+      - name: worldchain_spokepool_evt_filledrelay
+      - name: worldchain_spokepool_evt_v3fundsdeposited
+      - name: worldchain_spokepool_evt_filledv3relay
+
+  - name: across_v3_ink
+    description: "Across Protocol v2 and v3 bridge events on Ink"
+    tables:
+      - name: ink_spokepool_evt_fundsdeposited
+      - name: ink_spokepool_evt_filledrelay
+      - name: ink_spokepool_evt_v3fundsdeposited
+      - name: ink_spokepool_evt_filledv3relay

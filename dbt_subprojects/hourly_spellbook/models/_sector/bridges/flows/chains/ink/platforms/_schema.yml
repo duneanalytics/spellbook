@@ -1,39 +1,39 @@
 version: 2
 
 models:
-  - name: bridges_scroll_across_v2_deposits
+  - name: bridges_ink_across_v2_deposits
     meta:
-      blockchain: scroll
+      blockchain: ink
       sector: bridges
       project: across
       contributors: [ 'hildobby']
     config:
       tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
-    description: "Across's v2 bridge deposits events on Scroll"
-  - name: bridges_scroll_across_v2_withdrawals
+    description: "Across's v2 bridge deposits events on Ink"
+  - name: bridges_ink_across_v2_withdrawals
     meta:
-      blockchain: scroll
+      blockchain: ink
       sector: bridges
       project: across
       contributors: [ 'hildobby']
     config:
       tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
-    description: "Across's v3 bridge withdrawals events on Scroll"
-  - name: bridges_scroll_across_v3_deposits
+    description: "Across's v3 bridge withdrawals events on Ink"
+  - name: bridges_ink_across_v3_deposits
     meta:
-      blockchain: scroll
+      blockchain: ink
       sector: bridges
       project: across
       contributors: [ 'hildobby']
     config:
       tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
-    description: "Across's v3 bridge deposits events on Scroll"
-  - name: bridges_scroll_across_v3_withdrawals
+    description: "Across's v3 bridge deposits events on Ink"
+  - name: bridges_ink_across_v3_withdrawals
     meta:
-      blockchain: scroll
+      blockchain: ink
       sector: bridges
       project: across
       contributors: [ 'hildobby']
     config:
       tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
-    description: "Across's v3 bridge withdrawals events on Scroll"
+    description: "Across's v3 bridge withdrawals events on Ink"
