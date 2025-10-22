@@ -51,7 +51,7 @@ meta as (
         , tx_hash
         , call_trace_address
         , '1inch' as order_project
-        , coalesce(order_hash, concat(tx_hash, to_big_endian_32(cast(counter as int)))) as order_hash
+        , coalesce(order_hash, concat(tx_hash, to_utf8(array_join(call_trace_address, ',')))) as order_hash
         , maker
         , receiver as taker
         , maker_asset
@@ -59,14 +59,11 @@ meta as (
         , taker_asset
         , taking_amount
         , map_concat(flags, map_from_entries(array[('cross_chain', hashlock is not null)])) as order_flags
-    from (
-        select *, row_number() over(partition by block_month, block_number, tx_hash order by call_trace_address) as counter
-        from {{ source('oneinch_' + blockchain, 'lop') }}
-        where true
-            and call_success
-            and block_time >= timestamp '{{ date_from }}'
-            {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
-    )
+    from {{ source('oneinch_' + blockchain, 'lop') }}
+    where true
+        and call_success
+        and block_time >= timestamp '{{ date_from }}'
+        {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
 )
 
 , calls as (
@@ -96,12 +93,11 @@ meta as (
         , array_agg(call_trace_address) over(partition by block_month, block_number, tx_hash, coalesce(order_project, project)) as call_trace_addresses -- to update the array after filtering nested calls of the project
         , if(maker_asset in {{native_addresses}}, wrapped_native_token_address, maker_asset) as _maker_asset
         , if(taker_asset in {{native_addresses}}, wrapped_native_token_address, taker_asset) as _taker_asset
-        , coalesce(order_hash, to_big_endian_64(counter)) as call_trade_id -- without call_trade for the correctness of the max transfer approach
+        , coalesce(order_hash, concat(tx_hash, to_utf8(array_join(call_trace_address, ',')))) as call_trade_id -- without call_trade for the correctness of the max transfer approach
     from (
         select
             *
             , array_agg(call_trace_address) over(partition by block_month, block_number, tx_hash, project) as call_trace_addresses
-            , row_number() over(partition by block_month, block_number, tx_hash order by call_trace_address) as counter
         from {{ ref('oneinch_' + blockchain + '_project_calls') }}
         where true
             and call_success
@@ -166,8 +162,7 @@ meta as (
 
 , transfers as (
     select
-        block_month
-        , block_number
+        block_number
         , block_time
         , tx_hash
         , trace_address as transfer_trace_address

@@ -1,4 +1,4 @@
--- this macro helps to optimize the etl in case of adding new contract to a certain chain so it triggers pipeline only for this chain -#}
+-- this macro helps to optimize the etl in case of adding new contract to a certain chain so it triggers pipeline only for this chain
 {% macro oneinch_mapped_contracts_macro(blockchain) %}
 
 
