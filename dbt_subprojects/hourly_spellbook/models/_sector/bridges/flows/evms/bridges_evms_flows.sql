@@ -62,9 +62,9 @@ SELECT deposit_chain
 , d.block_date AS deposit_block_date
 , d.block_time AS deposit_block_time
 , d.block_number AS deposit_block_number
-, w.block_date AS withdraw_block_date
-, w.block_time AS withdraw_block_time
-, w.block_number AS withdraw_block_number
+, w.block_date AS withdrawal_block_date
+, w.block_time AS withdrawal_block_time
+, w.block_number AS withdrawal_block_number
 , d.deposit_amount_raw
 , d.deposit_amount
 , w.withdrawal_amount_raw
@@ -78,7 +78,7 @@ SELECT deposit_chain
 , w.withdrawal_token_address
 , d.tx_from AS deposit_tx_from
 , d.tx_hash AS deposit_tx_hash
-, w.tx_hash AS withdraw_tx_hash
+, w.tx_hash AS withdrawal_tx_hash
 , bridge_transfer_id
 , d.duplicate_index
 FROM {{ ref('bridges_evms_withdrawals') }} w

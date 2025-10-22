@@ -12,7 +12,8 @@ models:
     description: "Circle's CCTP v1 bridge deposits events on Avalanche"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
+          arguments:
+            combination_of_columns: ['tx_hash','evt_index']
       - equal_rowcount_with_sources:
           evt_sources:
             - source('circle_avalanche_c','tokenmessenger_evt_depositforburn')
@@ -20,8 +21,8 @@ models:
       - &deposit_chain
         name: deposit_chain
         description: "Blockchain where the tokens were sent"
-      - &withdraw_chain
-        name: withdraw_chain
+      - &withdrawal_chain
+        name: withdrawal_chain
         description: "Blockchain where the tokens were received"
       - &bridge_name
         name: bridge_name
@@ -91,13 +92,14 @@ models:
     description: "Circle's CCTP v1 bridge withdrawals events on Avalanche"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash','evt_index']
+          arguments:
+            combination_of_columns: ['tx_hash','evt_index']
       - equal_rowcount_with_sources:
           evt_sources:
             - source('circle_avalanche_c','tokenmessenger_evt_mintandwithdraw')
     columns:
       - *deposit_chain
-      - *withdraw_chain
+      - *withdrawal_chain
       - *bridge_name
       - *bridge_version
       - *deposit_amount_raw
