@@ -120,8 +120,7 @@ joined AS (
     FROM
         actions a
     JOIN logs l
-        ON a.block_height = l.block_height 
-        AND a.receipt_id = l.receipt_id
+        ON a.receipt_id = l.receipt_id
     LEFT JOIN has_mint_burn mb
         ON a.tx_hash = mb.tx_hash
 ),
