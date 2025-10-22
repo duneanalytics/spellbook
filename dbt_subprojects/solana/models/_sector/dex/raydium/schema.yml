@@ -133,7 +133,7 @@ models:
       all decoded raydium_v4 hybrid amm swaps on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'call_block_date', 'unique_instruction_key' ]
+          combination_of_columns: [ 'call_block_month', 'unique_instruction_key' ]
 
   - name: raydium_v4_base_trades
     meta:
@@ -196,7 +196,7 @@ models:
       all decoded raydium_v5 swaps on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'call_block_date', 'unique_instruction_key' ]
+          combination_of_columns: [ 'call_block_month', 'unique_instruction_key' ]
 
   - name: raydium_v5_base_trades
     meta:
