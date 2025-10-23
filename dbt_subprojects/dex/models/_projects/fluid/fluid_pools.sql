@@ -57,7 +57,6 @@ latest_fees as (
         , evt_index 
         , fee 
         , tx_hash 
-        , fee 
         , revenue_cut 
     from 
     {{ ref('fluid_dex_initializations') }}
@@ -71,7 +70,6 @@ latest_fees as (
         , evt_index 
         , fee 
         , tx_hash 
-        , fee 
         , revenue_cut 
     from 
     {{ ref('fluid_dex_fee_updates') }}
@@ -98,6 +96,8 @@ latest_fees as (
             , bor.decimals as borrow_token_decimals 
             , fdl.isSmartCol
             , fdl.isSmartDebt
+            , lf.fee 
+            , lf.revenue_cut 
         from 
         all_pools ap 
         left join 
