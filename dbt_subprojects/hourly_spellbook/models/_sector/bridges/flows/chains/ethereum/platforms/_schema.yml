@@ -79,4 +79,13 @@ models:
     config:
       tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
     description: "Across's v2 bridge withdrawals events on Ethereum"
+  - name: bridges_ethereum_arbitrum_native_v1_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'arbitrum', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Arbitrum's v1 native bridge deposits events on Ethereum"
 
