@@ -41,6 +41,42 @@ all_pools as (
         {% endif %}
         {% endfor %}
     )
+),
+
+latest_fees as (
+    select 
+        dex 
+        , blockchain 
+        , max_by(fee, (block_number, evt_index)) as fee 
+        , max_by(revenue_cut, (block_number, evt_index)) as revenue_cut 
+    from (
+    select 
+        blockchain
+        , dex 
+        , block_number 
+        , evt_index 
+        , fee 
+        , tx_hash 
+        , fee 
+        , revenue_cut 
+    from 
+    {{ ref('fluid_dex_initializations') }}
+
+    union all 
+
+    select 
+        blockchain
+        , dex 
+        , block_number 
+        , evt_index 
+        , fee 
+        , tx_hash 
+        , fee 
+        , revenue_cut 
+    from 
+    {{ ref('fluid_dex_fee_updates') }}
+    ) x 
+    group by 1, 2 
 )
 
         select 
@@ -76,3 +112,7 @@ all_pools as (
         {{ ref('fluid_dex_initializations') }} fdl 
             on ap.dex = fdl.dex 
             and ap.blockchain = fdl.blockchain
+        left join 
+        latest_fees lf 
+            on ap.dex = lf.dex 
+            and ap.blockchain = lf.blockchain

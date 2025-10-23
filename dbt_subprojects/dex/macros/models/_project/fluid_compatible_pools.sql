@@ -99,3 +99,53 @@ from
 decoded_events
 
 {% endmacro %}
+
+{% macro fluid_liquidity_pools_fee_updates( 
+    blockchain = null
+    , project = 'fluid'
+    , version = null 
+    , liquidity_pools = null 
+    )
+%}
+with
+
+decoded_events as (
+    select 
+        bl.block_time
+        , bl.block_number
+        , bl.index as evt_index
+        , bl.tx_hash
+        , fp.dex
+        , fp.dex_id
+        , bytearray_to_uint256(bytearray_substring(data,1,32))/1e6 as fee
+        , bytearray_to_uint256(bytearray_substring(data,33,32))/1e4 as revenue_cut
+    from 
+    {{ source(blockchain, 'logs') }} bl 
+    inner join 
+    {{ liquidity_pools }} fp 
+        on fp.blockchain = '{{blockchain}}'
+        and bl.contract_address = fp.dex 
+        and bl.topic0 = 0x8708c2a2bbba04e8e9c7448cd64dc109b367341f5504a9835ffb5e7d9ae08ef6
+    where block_date >= date '2024-09-01' -- dex launch month
+    {% if is_incremental() %}
+        and {{ incremental_predicate('bl.block_date') }}
+    {% endif %}
+)
+
+select 
+    '{{blockchain}}' as blockchain
+    , '{{project}}' as project
+    , '{{version}}' as version
+    , block_time
+    , block_number
+    , evt_index
+    , tx_hash
+    , dex
+    , dex_id
+    , fee
+    , revenue_cut
+
+from 
+decoded_events
+
+{% endmacro %}
