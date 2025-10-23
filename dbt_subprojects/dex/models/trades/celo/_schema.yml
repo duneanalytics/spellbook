@@ -25,6 +25,8 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('uniswap_celo_base_trades_seed')
+          filter:
+            version: 3
 
 
   - name: mento_v1_celo_base_trades
@@ -188,3 +190,5 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('uniswap_celo_base_trades_seed')
+          filter:
+            version: 4
