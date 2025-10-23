@@ -24,5 +24,5 @@ SELECT 'ethereum' AS deposit_chain
 , evt_tx_hash AS tx_hash
 , evt_index
 , contract_address
-, _sequenceNumber AS bridge_id
+, _sequenceNumber AS bridge_transfer_id
 FROM {{ source('arbitrum_ethereum', 'l1erc20gateway_evt_depositinitiated') }}
