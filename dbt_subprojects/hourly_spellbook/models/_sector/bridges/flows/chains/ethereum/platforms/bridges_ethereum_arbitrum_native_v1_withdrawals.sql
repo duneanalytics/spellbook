@@ -2,7 +2,7 @@
 
 {{ config(
     schema = 'bridges_' + blockchain,
-    alias = 'across_v2_withdrawals',
+    alias = 'arbitrum_native_v1_withdrawals',
     materialized = 'view',
     )
 }}
@@ -21,7 +21,7 @@ SELECT 42161 AS deposit_chain_id
 , 'erc20' AS deposit_token_standard
 , l1Token AS deposit_token_address
 , evt_tx_from AS tx_from
-, evt_tx_hash AS  tx_hash
+, evt_tx_hash AS tx_hash
 , evt_index
 , contract_address
 , _exitNum AS bridge_id

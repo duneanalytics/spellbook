@@ -21,7 +21,7 @@ SELECT 'ethereum' AS deposit_chain
 , 'erc20' AS deposit_token_standard
 , l1Token AS deposit_token_address
 , evt_tx_from AS tx_from
-, evt_tx_hash AS  tx_hash
+, evt_tx_hash AS tx_hash
 , evt_index
 , contract_address
 , _sequenceNumber AS bridge_id
