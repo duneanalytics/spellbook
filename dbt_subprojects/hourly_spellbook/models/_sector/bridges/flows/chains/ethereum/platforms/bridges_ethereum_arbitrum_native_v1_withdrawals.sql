@@ -24,5 +24,5 @@ SELECT 42161 AS deposit_chain_id
 , evt_tx_hash AS tx_hash
 , evt_index
 , contract_address
-, _exitNum AS bridge_transfer_id
+, CAST(_exitNum AS varchar) AS bridge_transfer_id
 FROM {{ source('arbitrum_ethereum', 'l1erc20gateway_evt_withdrawalfinalized') }}
