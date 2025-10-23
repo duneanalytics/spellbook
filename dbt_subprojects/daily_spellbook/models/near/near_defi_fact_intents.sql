@@ -13,20 +13,15 @@
                                 \'["krishgka"]\') }}'
 ) }}
 
--- NEAR intents tracking nep245 and dip4 standards on intents.near contract
 
 WITH logs_base AS (
     SELECT
         l.block_time,
         l.block_height,
         l.block_date,
-        a.tx_hash,
         l.receipt_id,
         l.index_in_execution_outcome_logs AS log_index,
         l.executor_account_id AS receiver_id,
-        a.receipt_predecessor_account_id AS predecessor_id,
-        a.tx_from AS signer_id,
-        a.execution_gas_burnt AS gas_burnt,
         COALESCE(l.event, l.log) AS clean_log,
         TRY(json_parse(COALESCE(l.event, l.log))) AS log_json,
         json_extract_scalar(TRY(json_parse(COALESCE(l.event, l.log))), '$.event') AS log_event,
@@ -35,8 +30,6 @@ WITH logs_base AS (
         l.execution_status NOT LIKE '%FAILURE%' AS receipt_succeeded
     FROM 
         {{ source('near', 'logs') }} l
-    LEFT JOIN {{ source('near', 'actions') }} a
-        ON l.receipt_id = a.receipt_id
     WHERE 
         l.executor_account_id = 'intents.near'
         AND l.block_date >= DATE '2024-11-01'
@@ -46,11 +39,62 @@ WITH logs_base AS (
         {% endif %}
 ),
 
+logs_with_actions AS (
+    -- Join logs to actions (cartesian product possible, will deduplicate)
+    SELECT
+        l.block_time,
+        l.block_height,
+        l.block_date,
+        a.tx_hash,
+        l.receipt_id,
+        l.log_index,
+        l.receiver_id,
+        a.receipt_predecessor_account_id AS predecessor_id,
+        a.tx_from AS signer_id,
+        a.execution_gas_burnt AS gas_burnt,
+        l.clean_log,
+        l.log_json,
+        l.log_event,
+        l.log_data,
+        l.log_data_len,
+        l.receipt_succeeded,
+        a.index_in_action_receipt,
+        row_number() OVER (PARTITION BY l.receipt_id, l.log_index ORDER BY a.index_in_action_receipt) as rn
+    FROM logs_base l
+    LEFT JOIN {{ source('near', 'actions') }} a
+        ON l.block_height = a.block_height
+        AND l.receipt_id = a.receipt_id
+        AND a.tx_hash IS NOT NULL
+),
+
+logs_enriched AS (
+    -- Take first action per log to avoid cartesian product
+    SELECT
+        block_time,
+        block_height,
+        block_date,
+        tx_hash,
+        receipt_id,
+        log_index,
+        receiver_id,
+        predecessor_id,
+        signer_id,
+        gas_burnt,
+        clean_log,
+        log_json,
+        log_event,
+        log_data,
+        log_data_len,
+        receipt_succeeded
+    FROM logs_with_actions
+    WHERE rn = 1
+),
+
 nep245_logs AS (
     SELECT 
         lb.*
     FROM 
-        logs_base lb
+        logs_enriched lb
     WHERE
         json_extract_scalar(lb.log_json, '$.standard') = 'nep245'
 ),
@@ -64,7 +108,7 @@ dip4_logs_raw AS (
         ) AS referral,
         json_extract_scalar(lb.log_json, '$.version') AS version
     FROM 
-        logs_base lb
+        logs_enriched lb
     WHERE
         json_extract_scalar(lb.log_json, '$.standard') = 'dip4'
 ),
