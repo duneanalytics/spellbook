@@ -120,7 +120,8 @@ joined AS (
     FROM
         actions a
     JOIN logs l
-        ON a.receipt_id = l.receipt_id
+        ON a.block_height = l.block_height
+        AND a.receipt_id = l.receipt_id
     LEFT JOIN has_mint_burn mb
         ON a.tx_hash = mb.tx_hash
 ),
@@ -147,6 +148,7 @@ inbound_omni AS (
         action_index,
         action_data,
         method_name,
+        log_index,
         receipt_id,
         clean_log,
         receipt_succeeded,
@@ -184,6 +186,7 @@ outbound_omni AS (
         action_index,
         action_data,
         method_name,
+        log_index,
         receipt_id,
         clean_log,
         receipt_succeeded,
@@ -227,6 +230,8 @@ final AS (
         bridge_address,
         has_mint,
         has_burn,
+        log_index,
+        receipt_id,
         _partition_by_block_number
     FROM
         inbound_omni
@@ -250,6 +255,8 @@ final AS (
         bridge_address,
         has_mint,
         has_burn,
+        log_index,
+        receipt_id,
         _partition_by_block_number
     FROM
         outbound_omni
