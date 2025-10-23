@@ -9,7 +9,7 @@ SELECT d.srcEid AS deposit_chain_id
 , evt_block_time AS block_time
 , evt_block_number AS block_number
 , amountReceivedLD AS withdrawal_amount_raw
-, sender
+, CAST(NULL AS varbinary) AS sender
 , toAddress AS recipient
 , 'erc20' AS withdrawal_token_standard
 , t.usdt0_address AS withdrawal_token_address

@@ -10,7 +10,7 @@ SELECT '{{blockchain}}' AS deposit_chain
 , evt_block_number AS block_number
 , amountSentLD AS deposit_amount_raw
 , fromAddress AS sender
-, CASE WHEN varbinary_substring(mintRecipient,1, 12) = 0x000000000000000000000000 THEN varbinary_substring(mintRecipient,13) ELSE mintRecipient END AS recipient
+, CAST(NULL AS varbinary) AS recipient
 , 'erc20' AS deposit_token_standard
 , 'erc20' AS withdrawal_token_standard
 , t.usdt0_address AS deposit_token_address
