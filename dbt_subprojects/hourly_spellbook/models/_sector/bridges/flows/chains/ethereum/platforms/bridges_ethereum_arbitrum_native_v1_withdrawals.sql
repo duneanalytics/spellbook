@@ -8,8 +8,8 @@
 }}
 
 SELECT 42161 AS deposit_chain_id
-, 'ethereum' AS deposit_chain
-, NULL AS withdrawal_chain
+, 'arbitrum' AS deposit_chain
+, 'ethereum' AS withdrawal_chain
 , 'Arbitrum' AS bridge_name
 , '1' AS bridge_version
 , evt_block_date AS block_date

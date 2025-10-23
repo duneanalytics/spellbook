@@ -9,7 +9,7 @@
 
 SELECT 'ethereum' AS deposit_chain
 , 42161 AS withdrawal_chain_id
-, NULL AS withdrawal_chain
+, 'arbitrum' AS withdrawal_chain
 , 'Arbitrum' AS bridge_name
 , '1' AS bridge_version
 , evt_block_date AS block_date
