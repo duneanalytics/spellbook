@@ -76,6 +76,7 @@ with base_union as (
         , tx_index
     FROM
         {{ model }}
+    WHERE block_date >= date '2025-10-13'
     {% if not loop.last %}
     UNION ALL
     {% endif %}
