@@ -1,8 +1,13 @@
 {{ config(
         schema = 'fluid',
-        alias = 'pools'
+        alias = 'pools',
+        post_hook='{{ expose_spells(blockchains = \'["base","ethereum","polygon","arbitrum"]\',
+                                      spell_type = "project", 
+                                      spell_name = "fluid", 
+                                      contributors = \'["Henrystats","dknugo"]\') }}'
         )
 }}
+
 
 {% set fluid_models = [
 ref('fluid_v1_ethereum_pools')
