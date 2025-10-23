@@ -45,21 +45,23 @@ all_pools as (
 
         select 
             ap.blockchain
-            , project
-            , version
-            , block_time as creation_block_time
-            , block_number as creation_block_number
-            , evt_index 
-            , tx_hash 
-            , factory 
-            , dex 
-            , supply_token 
-            , borrow_token 
-            , dex_id
+            , ap.project
+            , ap.version
+            , ap.block_time as creation_block_time
+            , ap.block_number as creation_block_number
+            , ap.evt_index 
+            , ap.tx_hash 
+            , ap.factory 
+            , ap.dex 
+            , ap.supply_token 
+            , ap.borrow_token 
+            , ap.dex_id
             , sup.symbol as supply_token_symbol 
             , bor.symbol as borrow_token_symbol 
             , sup.decimals as supply_token_decimals
             , bor.decimals as borrow_token_decimals 
+            , fdl.isSmartCol
+            , fdl.isSmartDebt
         from 
         all_pools ap 
         left join 
@@ -69,4 +71,8 @@ all_pools as (
         left join 
         {{ source('tokens', 'erc20') }} bor
             on ap.borrow_token = bor.contract_address 
-            and ap.blockchain = bor.blockchain 
+            and ap.blockchain = bor.blockchain
+        left join 
+        {{ ref('fluid_dex_initializations') }} fdl 
+            on ap.dex = fdl.dex 
+            and ap.blockchain = fdl.blockchain
