@@ -1,33 +1,32 @@
-{% set blockchain = 'bnb' %}
+{% set blockchain = 'plasma' %}
 
 {{ config(
     schema = 'bridges_' + blockchain,
-    alias = 'deposits',
+    alias = 'withdrawals',
     materialized = 'view'
     )
 }}
 
 {% set bridges_platforms = [
-    'bridges_' + blockchain + '_across_v3_deposits'
+    'bridges_' + blockchain + '_across_v3_withdrawals'
 ] %}
 
 SELECT *
 FROM (
     {% for bridge_platform in bridges_platforms %}
-    SELECT deposit_chain
-    , withdrawal_chain_id
+    SELECT deposit_chain_id
+    , deposit_chain
     , withdrawal_chain
     , bridge_name
     , bridge_version
     , block_date
     , block_time
     , block_number
-    , deposit_amount_raw
+    , withdrawal_amount_raw
     , sender
     , recipient
-    , deposit_token_standard
     , withdrawal_token_standard
-    , deposit_token_address
+    , withdrawal_token_address
     , tx_from
     , tx_hash
     , evt_index

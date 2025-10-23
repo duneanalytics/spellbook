@@ -1,4 +1,4 @@
-{% set blockchain = 'bnb' %}
+{% set blockchain = 'hyperevm' %}
 
 {{ config(
     schema = 'bridges_' + blockchain,
@@ -9,5 +9,5 @@
 
 {{across_v3_deposits(
     blockchain = blockchain
-    , events = source('across_v3_bnb', 'universal_spokepool_evt_fundsdeposited')
+    , events = source('across_hyperevm', 'universal_spokepool_evt_fundsdeposited')
     )}}

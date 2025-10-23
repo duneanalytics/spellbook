@@ -9,5 +9,5 @@
 
 {{across_v3_withdrawals(
     blockchain = blockchain
-    , events = source('across_v3_bnb', 'universal_spokepool_evt_filledv3relay')
+    , events = source('across_v3_bnb', 'universal_spokepool_evt_filledrelay')
     )}}

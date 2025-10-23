@@ -19,7 +19,7 @@ WITH ranked AS (
     , d.evt_tx_hash AS tx_hash
     , d.evt_index
     , d.contract_address
-    {% if blockchain in ('unichain', 'ink', 'lens', 'bnb') %}
+    {% if blockchain in ('unichain', 'ink') %}
     , CAST(d.depositId AS varchar) AS bridge_transfer_id
     , ROW_NUMBER() OVER (PARTITION BY d.originChainId, d.depositId ORDER BY d.evt_block_number DESC, d.evt_index DESC) AS rn
     {% else %}

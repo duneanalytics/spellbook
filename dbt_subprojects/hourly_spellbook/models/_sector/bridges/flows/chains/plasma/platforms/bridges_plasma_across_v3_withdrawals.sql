@@ -1,4 +1,4 @@
-{% set blockchain = 'lens' %}
+{% set blockchain = 'plasma' %}
 
 {{ config(
     schema = 'bridges_' + blockchain,
@@ -9,5 +9,5 @@
 
 {{across_v3_withdrawals(
     blockchain = blockchain
-    , events = source('across_v3_lens', 'lens_spokepool_evt_filledrelay')
+    , events = source('across_plasma', 'universal_spokepool_evt_filledrelay')
     )}}
