@@ -20,6 +20,6 @@ SELECT d.srcEid AS deposit_chain_id
 , CAST(guid AS varchar) AS bridge_transfer_id
 FROM {{ source('tether_' + blockchain, 'oupgradeable_evt_oftreceived') }} d
 LEFT JOIN {{ ref('bridges_tether_chain_indexes') }} t ON t.blockchain='{{blockchain}}'
-LEFT JOIN {{ ref('bridges_tether_chain_indexes') }} i ON d.srcEid=i.chain_id
+LEFT JOIN {{ ref('bridges_tether_chain_indexes') }} i ON d.srcEid=i.id
 
 {% endmacro %}
