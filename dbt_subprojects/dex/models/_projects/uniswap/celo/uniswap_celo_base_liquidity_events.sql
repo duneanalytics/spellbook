@@ -63,30 +63,3 @@ FROM (
                 , cast(null as varbinary) as salt 
         FROM 
         v2_v3_models 
-
-        UNION ALL 
-
-        SELECT
-                 blockchain
-                , project
-                , version
-                , block_month
-                , block_date
-                , block_time
-                , block_number
-                , id
-                , tx_hash
-                , tx_from
-                , evt_index
-                , event_type
-                , token0
-                , token1
-                , amount0_raw
-                , amount1_raw
-                , liquidityDelta
-                , sqrtPriceX96
-                , tickLower
-                , tickUpper
-                , salt
-        FROM 
-        {{ ref('uniswap_v4_celo_base_liquidity_events') }}
