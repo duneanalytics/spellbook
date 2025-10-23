@@ -188,11 +188,11 @@ meta as (
 , joined as (
     select
         blockchain
-        , calls.block_month
-        , calls.block_number
-        , calls.tx_hash
-        , calls.call_trace_address
-        , calls.call_trade_id
+        , swaps.block_month
+        , swaps.block_number
+        , swaps.tx_hash
+        , swaps.call_trace_address
+        , swaps.call_trade_id
         , any_value(block_time) as block_time
         , any_value(tx_from) as tx_from
         , any_value(tx_to) as tx_to
@@ -234,9 +234,9 @@ meta as (
         , array_agg(distinct transfer_to) filter(where creations_to.block_number is null) as receivers
     from swaps
     join transfers on true
-        and calls.block_month = transfers.block_month
-        and calls.block_number = transfers.block_number
-        and calls.tx_hash = transfers.tx_hash
+        and swaps.block_month = transfers.block_month
+        and swaps.block_number = transfers.block_number
+        and swaps.tx_hash = transfers.tx_hash
         and slice(transfer_trace_address, 1, cardinality(call_trace_address)) = call_trace_address -- nested transfers only
         and reduce(array_distinct(call_trace_addresses), call_trace_address, (r, x) -> if(slice(transfer_trace_address, 1, cardinality(x)) = x and x > r, x, r), r -> r) = call_trace_address -- transfers related to the call only
         and (order_hash is null or contract_address in (_maker_asset, _taker_asset) and cardinality(array_intersect(array[call_from, maker, taker], array[transfer_from, transfer_to])) > 0) -- transfers related to the order only
