@@ -69,8 +69,8 @@ where true
     and flags['direct']
     and order_hash is not null -- intent
     and maker is not null
-    and not auction
-    and not cross_chain
+    and not coalesce(element_at(flags, 'auction'), true)
+    and not coalesce(element_at(flags, 'cross_chain'), true)
     {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
 
 {%- endmacro -%}
