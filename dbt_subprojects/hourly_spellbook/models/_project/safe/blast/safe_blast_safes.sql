@@ -8,11 +8,8 @@
         on_schema_change='fail',
         file_format ='delta',
         incremental_strategy='merge',
-        post_hook = '{{ expose_spells(
-                        blockchains = \'["blast"]\',
-                        spell_type = "project",
-                        spell_name = "safe",
-                        contributors = \'["danielpartida"]\') }}'
+        tags=['static'],
+        post_hook='{{ hide_spells() }}'
     )
 }}
 

@@ -10,7 +10,7 @@
     )
 }}
 
-{% set iziswap_start_date = "2024-05-27" %}  
+{% set izumi_finance_start_date = "2024-05-27" %}  
 
 WITH swaps AS (
     SELECT
@@ -28,7 +28,7 @@ WITH swaps AS (
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('evt_block_time') }}
     {% else %}
-    WHERE evt_block_time >= TIMESTAMP '{{iziswap_start_date}}'
+    WHERE evt_block_time >= TIMESTAMP '{{izumi_finance_start_date}}'
     {% endif %}
 ),
 pools AS (

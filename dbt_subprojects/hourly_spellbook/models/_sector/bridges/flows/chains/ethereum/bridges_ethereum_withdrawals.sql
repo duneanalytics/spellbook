@@ -2,19 +2,23 @@
 
 {{ config(
     schema = 'bridges_' + blockchain,
-    alias = 'witdrawals',
+    alias = 'withdrawals',
     materialized = 'view'
     )
 }}
 
 {% set bridges_platforms = [
     'bridges_' + blockchain + '_cctp_v1_withdrawals'
+    , 'bridges_' + blockchain + '_celer_v1_withdrawals'
+    , 'bridges_' + blockchain + '_across_v2_withdrawals'
+    , 'bridges_' + blockchain + '_across_v3_withdrawals'
 ] %}
 
 SELECT *
 FROM (
     {% for bridge_platform in bridges_platforms %}
-    SELECT deposit_chain
+    SELECT deposit_chain_id
+    , deposit_chain
     , withdrawal_chain
     , bridge_name
     , bridge_version

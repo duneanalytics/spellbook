@@ -12,6 +12,8 @@ sources:
     tables:
       - name: MoeFactory_evt_PairCreated
       - name: MoePair_evt_Swap
+      - name: LBPair_evt_Swap
+      - name: LBFactory_evt_LBPairCreated
   - name: agni_mantle
     tables:
       - name: AgniPool_evt_Swap
@@ -30,3 +32,6 @@ sources:
     tables:
       - name: TropicalFactory_evt_PairCreated
       - name: TropicalPair_evt_Swap
+  - name: carbon_defi_mantle
+    tables:
+      - name: CarbonController_evt_TokensTraded

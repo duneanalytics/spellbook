@@ -17,7 +17,7 @@ with raw_transfers as (
         , 'sent' as transfer_direction
         , (sum(amount_usd) * -1) as transfer_amount_usd
     from
-        {{ ref('tokens_solana_transfers') }}
+        {{ source('tokens_solana','transfers') }}
     where
         1 = 1
         and action != 'wrap'
@@ -39,7 +39,7 @@ with raw_transfers as (
         , 'received' as transfer_direction
         , sum(amount_usd) as transfer_amount_usd
     from
-        {{ ref('tokens_solana_transfers') }}
+        {{ source('tokens_solana','transfers') }}
     where
         1 = 1
         and action != 'wrap'

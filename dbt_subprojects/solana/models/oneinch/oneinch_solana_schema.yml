@@ -239,3 +239,36 @@ models:
         description: block month of the transaction
         data_tests:
         - not_null
+
+  - name: oneinch_solana_transactions
+    data_tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - id
+          - block_month
+    meta:
+      blockchain: solana
+      contributors: [grkhr]
+    config:
+      tags: ['solana','oneinch']
+    description: >
+        solana transactions for 1inch
+    columns:
+      - name: blockchain
+        description: blockchain name
+      - name: id
+        description: transaction id
+        data_tests:
+        - not_null
+      - name: block_slot
+        description: slot number of the transaction
+      - name: block_time
+        description: block time of the transaction
+      - name: signer
+        description: transaction signer
+      - name: signers
+        description: transaction signers
+      - name: fee
+        description: transaction fee
+      - name: block_month
+        description: block month of the transaction

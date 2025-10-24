@@ -3,10 +3,7 @@
         alias = 'satoshi_day',
 
         partition_by = ['day'],
-        post_hook='{{ expose_spells(\'["bitcoin"]\',
-                                        "sector",
-                                        "balances",
-                                        \'["longnhbkhn"]\') }}'
+        post_hook='{{ hide_spells() }}'
         )
 }}
 

@@ -2,26 +2,28 @@
 
 
 select 
-        tx_id
-        , block_time
-        , block_slot
-        , order_hash
-        , order_hash_base58
-        , order_id
-        , token_mint_address
-        , taker
-        , symbol 
-        , amount 
-        , amount_usd 
-        , from_owner
-        , to_owner
-        , call_trace_address
-        , array[coalesce(outer_instruction_index, -1), coalesce(inner_instruction_index, -1)] as transfer_trace_address
+    tx_id
+    , block_time
+    , block_slot
+    , order_hash
+    , order_hash_base58
+    , order_id
+    , method
+    , token_mint_address
+    , taker
+    , symbol 
+    , amount 
+    , amount_usd 
+    , from_owner
+    , to_owner
+    , call_trace_address
+    , array[coalesce(outer_instruction_index, -1), coalesce(inner_instruction_index, -1)] as transfer_trace_address
 from (
     select 
         call_tx_id as tx_id
         , call_block_time as block_time
         , call_block_slot as block_slot
+        , 'fill' as method
         , account_taker as taker
         , {{ oneinch_order_hash_macro() }} as order_hash
         , to_base58({{ oneinch_order_hash_macro() }}) as order_hash_base58
@@ -37,7 +39,7 @@ from (
         {% endif %}
 ) qf
 left join (
-        select * from {{ ref('tokens_solana_transfers') }}
+        select * from {{ source('tokens_solana','transfers') }}
         {% if is_incremental() %}
             where {{ incremental_predicate('block_time') }}
         {% else %}

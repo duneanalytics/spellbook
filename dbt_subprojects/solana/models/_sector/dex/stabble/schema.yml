@@ -32,6 +32,9 @@ models:
       - &version
         name: version
         description: "Version number of the DEX smart contract"
+      - &version_name
+        name: version_name
+        description: "Descriptive name of the DEX version (1)"
       - &block_month
         name: block_month
         description: "UTC event block month for the swap"
@@ -111,3 +114,12 @@ models:
       - &tx_index
         name: tx_index
         description: "Index of the transaction inside the block"
+
+  - name: stabble_version_1_base_trades
+    meta:
+      blockchain: solana
+      contributors: [krishgka]
+    config:
+      tags: ['solana','dex']
+    description: >
+        stabble dex base trades on Solana with version_name

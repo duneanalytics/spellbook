@@ -9,6 +9,10 @@ sources:
     tables:
       - name: DragonswapFactory_evt_PairCreated
       - name: DragonswapPair_evt_Swap
+  - name: dragon_swap_sei_v2_sei
+    tables:
+      - name: dragonswapv2pool_evt_swap
+      - name: dragonswapv2factory_evt_poolcreated
   - name: jelly_swap_sei
     tables:
       - name: WeightedPoolFactory_call_create
@@ -27,6 +31,7 @@ sources:
   - name: carbon_defi_sei
     tables:
       - name: CarbonController_evt_TokensTraded
+      - name: CarbonVortex_evt_TokenTraded
   - name: yaka_sei
     tables:
       - name: Pair_evt_Swap

@@ -38,4 +38,6 @@ sources:
       - name: Vault_evt_SwapFeePercentageChanged            
       - name: ProtocolFeeController_evt_GlobalProtocolSwapFeePercentageChanged
       - name: ProtocolFeeController_evt_PoolCreatorSwapFeePercentageChanged
-      - name: GyroECLPPoolFactory_call_create  
+      - name: GyroECLPPoolFactory_call_create
+      - name: ReClammPoolFactory_call_create
+      - name: QuantAMMWeightedPoolFactory_call_create

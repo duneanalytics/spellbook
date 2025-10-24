@@ -3,6 +3,7 @@ version: 2
 models:
   - name: dex_avalanche_c_base_trades
     data_tests:
+      - check_columns_dex_base_trades
       - check_dex_info_relationship
       - test_acceptable_usd_amount:
           column_name: amount_usd
@@ -441,3 +442,41 @@ models:
           filter:
             version: 1
 
+  - name: blackhole_v2_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: blackhole
+      contributors: abhijeetblitz
+    config:
+      tags: ['avalanche_c', 'dex', 'trades', 'blackhole', 'uniswap', 'v2']
+    description: "Blackhole avalanche_c base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('blackhole_avalanche_c_base_trades_seed')
+          filter:
+            version: 2
+            
+  - name: blackhole_v3_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: blackhole
+      contributors: abhijeetblitz
+    config:
+      tags: ['avalanche_c', 'dex', 'trades', 'blackhole', 'uniswap', 'v3']
+    description: "Blackhole avalanche_c base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('blackhole_avalanche_c_base_trades_seed')
+          filter:
+            version: 3
+            

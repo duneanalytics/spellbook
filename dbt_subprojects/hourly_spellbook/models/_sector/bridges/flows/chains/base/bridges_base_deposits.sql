@@ -9,12 +9,16 @@
 
 {% set bridges_platforms = [
     'bridges_' + blockchain + '_cctp_v1_deposits'
+    , 'bridges_' + blockchain + '_celer_v1_deposits'
+    , 'bridges_' + blockchain + '_across_v2_deposits'
+    , 'bridges_' + blockchain + '_across_v3_deposits'
 ] %}
 
 SELECT *
 FROM (
     {% for bridge_platform in bridges_platforms %}
     SELECT deposit_chain
+    , withdrawal_chain_id
     , withdrawal_chain
     , bridge_name
     , bridge_version
@@ -25,7 +29,6 @@ FROM (
     , sender
     , recipient
     , deposit_token_standard
-    , withdrawal_token_standard
     , deposit_token_address
     , tx_from
     , tx_hash

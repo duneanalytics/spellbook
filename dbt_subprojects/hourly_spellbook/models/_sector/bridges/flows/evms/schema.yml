@@ -3,7 +3,7 @@ version: 2
 models:
   - name: bridges_evms_deposits
     meta:
-      blockchain: ethereum, base
+      blockchain: ethereum, base, arbitrum, avalanche_c, optimism, polygon, unichain
       sector: bridges
       contributors: [ 'hildobby']
     config:
@@ -11,7 +11,7 @@ models:
     description: "Bridge deposits events on EVM chains"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['deposit_chain', 'tx_hash','evt_index']
+          combination_of_columns: ['deposit_chain','withdrawal_chain','withdrawal_chain_id','bridge_name','bridge_version','bridge_transfer_id', 'duplicate_index']
     columns:
       - &deposit_chain
         name: deposit_chain
@@ -70,15 +70,6 @@ models:
       - &deposit_token_symbol
         name: deposit_token_symbol
         description: "Source blockchain token symbol"
-      - &withdrawal_token_address
-        name: withdrawal_token_address
-        description: "Destination blockchain token address"
-      - &withdrawal_token_standard
-        name: withdrawal_token_standard
-        description: "Destination blockchain token standard"
-      - &withdrawal_token_symbol
-        name: withdrawal_token_symbol
-        description: "Destination blockchain token symbol"
       - &tx_from
         name: tx_from
         description: "Address that deposits the transaction"
@@ -94,9 +85,15 @@ models:
       - &bridge_transfer_id 
         name: bridge_transfer_id
         description: "Bridge order identifier"
+      - &duplicate_index 
+        name: duplicate_index
+        description: "Index across duplicates of the deposit event if there are any"
+      - &withdrawal_chain_id
+        name: withdrawal_chain_id
+        description: "Blockchain ID where the tokens were received"
   - name: bridges_evms_withdrawals
     meta:
-      blockchain: ethereum, base
+      blockchain: ethereum, base, arbitrum, avalanche_c, optimism, polygon, unichain
       sector: bridges
       contributors: [ 'hildobby']
     config:
@@ -104,7 +101,7 @@ models:
     description: "Bridge withdrawals events on EVM chains"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['withdrawal_chain', 'tx_hash', 'evt_index']
+          combination_of_columns: ['deposit_chain','deposit_chain_id','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id']
     columns:
       - *deposit_chain
       - *withdrawal_chain
@@ -122,20 +119,89 @@ models:
       - *withdrawal_amount_usd
       - *sender
       - *recipient
+      - *deposit_token_address
       - *deposit_token_standard
       - *deposit_token_symbol
-      - *withdrawal_token_standard
-      - *withdrawal_token_symbol
-      - *deposit_token_address
-      - *withdrawal_token_address
+      - &withdrawal_token_address
+        name: withdrawal_token_address
+        description: "Destination blockchain token address"
+      - &withdrawal_token_standard
+        name: withdrawal_token_standard
+        description: "Destination blockchain token standard"
+      - &withdrawal_token_symbol
+        name: withdrawal_token_symbol
+        description: "Destination blockchain token symbol"
       - *tx_from
       - *tx_hash
       - *evt_index  
       - *contract_address 
-      - *bridge_transfer_id 
+      - *bridge_transfer_id
+      - &deposit_chain_id
+        name: deposit_chain_id
+        description: "Blockchain ID where the tokens were sent"
+  - name: bridges_evms_deposits_raw
+    meta:
+      blockchain: ethereum, base, arbitrum, avalanche_c, optimism, polygon, unichain
+      sector: bridges
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bridges', 'flows', 'deposits', 'raw' ]
+    description: "Raw bridge deposits events on EVM chains (materialized view for complex UNION ALL)"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['deposit_chain','withdrawal_chain_id','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id','tx_hash','evt_index']
+    columns:
+      - *deposit_chain
+      - *withdrawal_chain
+      - *bridge_name
+      - *bridge_version
+      - *block_date
+      - *block_time
+      - *block_number
+      - *deposit_amount_raw
+      - *sender
+      - *recipient
+      - *deposit_token_standard
+      - *deposit_token_address
+      - *tx_from
+      - *tx_hash
+      - *evt_index
+      - *contract_address
+      - *bridge_transfer_id
+      - *withdrawal_chain_id
+  - name: bridges_evms_withdrawals_raw
+    meta:
+      blockchain: ethereum, base, arbitrum, avalanche_c, optimism, polygon, unichain
+      sector: bridges
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bridges', 'flows', 'withdrawals', 'raw' ]
+    description: "Raw bridge withdrawals events on EVM chains (materialized view for complex UNION ALL)"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['deposit_chain','withdrawal_chain','deposit_chain_id','bridge_name','bridge_version','bridge_transfer_id', 'tx_hash', 'evt_index']
+    columns:
+      - *deposit_chain
+      - *withdrawal_chain
+      - *bridge_name
+      - *bridge_version
+      - *block_date
+      - *block_time
+      - *block_number
+      - *withdrawal_amount_raw
+      - *sender
+      - *recipient
+      - *withdrawal_token_standard
+      - *withdrawal_token_address
+      - *tx_from
+      - *tx_hash
+      - *evt_index
+      - *contract_address
+      - *bridge_transfer_id
+      - *deposit_chain_id
   - name: bridges_evms_flows
     meta:
-      blockchain: ethereum, base
+      blockchain: ethereum, base, arbitrum, avalanche_c, optimism, polygon, unichain
       sector: bridges
       contributors: [ 'hildobby']
     config:
@@ -172,9 +238,5 @@ models:
         name: withdrawals_tx_hash
         description: "Transaction hash of withdrawals bridge transfer on destination chain"
       - *bridge_transfer_id 
-      - &bridge_miliseconds
-        name: bridge_miliseconds
-        description: "Time in miliseconds between deposits and withdrawals transactions"
-      - &bridge_miliseconds_2
-        name: bridge_miliseconds_2
-        description: "Time in miliseconds between deposits and withdrawals transactions"
+      - *deposit_chain_id
+      - *withdrawal_chain_id

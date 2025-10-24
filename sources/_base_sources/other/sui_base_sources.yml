@@ -1,0 +1,91 @@
+version: 2
+
+sources:
+  - name: sui
+    description: "Sui blockchain data"
+    tables:
+      - name: events
+        description: "Sui blockchain events"
+        columns:
+          - name: event_type
+            description: "Type of the event"
+          - name: event_json
+            description: "Event data in JSON format"
+          - name: transaction_digest
+            description: "Transaction hash"
+          - name: event_index
+            description: "Event index within transaction"
+          - name: timestamp_ms
+            description: "Event timestamp in milliseconds"
+          - name: sender
+            description: "Event sender address"
+          - name: package
+            description: "Package address"
+          - name: epoch
+            description: "Sui epoch number"
+          - name: checkpoint
+            description: "Sui checkpoint number"
+
+      - name: transactions
+        description: "Sui blockchain transactions"
+        columns:
+          - name: transaction_digest
+            description: "Transaction hash"
+          - name: timestamp_ms
+            description: "Transaction timestamp in milliseconds"
+          - name: epoch
+            description: "Sui epoch number"
+          - name: checkpoint
+            description: "Sui checkpoint number"
+
+      - name: objects
+        description: "Sui blockchain objects"
+        columns:
+          - name: object_id
+            description: "Object identifier"
+          - name: version
+            description: "Object version"
+          - name: digest
+            description: "Object digest"
+          - name: type_
+            description: "Object type"
+          - name: checkpoint
+            description: "Sui checkpoint number"
+          - name: epoch
+            description: "Sui epoch number"
+          - name: timestamp_ms
+            description: "Object timestamp in milliseconds"
+          - name: date
+            description: "Object date"
+          - name: owner_type
+            description: "Object owner type"
+          - name: owner_address
+            description: "Object owner address"
+          - name: object_status
+            description: "Object status"
+          - name: initial_shared_version
+            description: "Initial shared version"
+          - name: previous_transaction
+            description: "Previous transaction"
+          - name: has_public_transfer
+            description: "Whether object has public transfer"
+          - name: is_consensus
+            description: "Whether object is consensus"
+          - name: storage_rebate
+            description: "Storage rebate"
+          - name: bcs
+            description: "Binary Canonical Serialization data"
+          - name: coin_type
+            description: "Coin type"
+          - name: coin_balance
+            description: "Coin balance"
+          - name: struct_tag
+            description: "Struct tag"
+          - name: object_json
+            description: "Object data in JSON format"
+          - name: bcs_length
+            description: "BCS data length"
+          - name: _updated_at
+            description: "Last updated timestamp"
+          - name: _ingested_at
+            description: "Ingestion timestamp"

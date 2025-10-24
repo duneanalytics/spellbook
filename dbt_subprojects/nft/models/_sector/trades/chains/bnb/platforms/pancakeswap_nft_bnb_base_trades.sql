@@ -58,7 +58,7 @@ WITH events AS (
         events.tx_hash,
         events.block_number,
         CAST(amount_raw * platform_fee_percentage AS uint256) AS platform_fee_amount_raw,
-        CAST(amount_raw * royalty_fee_percentage AS uint256) AS royalty_fee_amount_raw,
+        CAST(amount_raw * GREATEST(DOUBLE '0', royalty_fee_percentage) AS UINT256) AS royalty_fee_amount_raw,
         cast(null as varbinary) AS royalty_fee_address,
         cast(null as varbinary) AS platform_fee_address,
         events.evt_index AS sub_tx_trade_id

@@ -3,6 +3,7 @@ version: 2
 models:
   - name: dex_linea_base_trades
     data_tests:
+      - check_columns_dex_base_trades
       - check_dex_info_relationship
       - test_acceptable_usd_amount:
           column_name: amount_usd
@@ -224,3 +225,41 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('leetswap_linea_base_trades_seed')
+
+  - name: etherex_v2_linea_base_trades
+    meta:
+      blockchain: linea
+      sector: dex
+      project: etherex
+      contributors: discochuck
+    config:
+      tags: [ 'linea', 'dex', 'trades', 'etherex', 'uniswap', 'v2' ]
+    description: "EtherEx linea v2 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('etherex_linea_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: etherex_v3_linea_base_trades
+    meta:
+      blockchain: linea
+      sector: dex
+      project: etherex
+      contributors: discochuck
+    config:
+      tags: [ 'linea', 'dex', 'trades', 'etherex', 'v3' ]
+    description: "EtherEx V3 linea base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('etherex_linea_base_trades_seed')
+          filter:
+            version: 3

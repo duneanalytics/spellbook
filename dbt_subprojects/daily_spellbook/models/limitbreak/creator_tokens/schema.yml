@@ -3,7 +3,7 @@ version: 2
 models:
  - name: limitbreak_creator_tokens
    meta:
-     blockchain: ethereum, base, optimism, arbitrum, avalanche_c, polygon, bnb
+     blockchain: ethereum, base, optimism, arbitrum, avalanche_c, polygon, bnb, apechain, berachain, abstract
      sector: limitbreak
      contributors: limitbreak
    config:
