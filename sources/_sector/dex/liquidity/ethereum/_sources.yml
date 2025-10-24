@@ -4,7 +4,7 @@ sources:
   - name: uniswap_v4_ethereum
     tables:
       - name: PoolManager_evt_ModifyLiquidity
-      - name: poolmanager_call_take
+      - name: PoolManager_call_ModifyLiquidity
 
   - name: ekubo_ethereum
     tables:
