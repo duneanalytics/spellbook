@@ -32,6 +32,9 @@ models:
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"
+      - &version_name
+        name: version_name
+        description: "Descriptive name of the DEX version"
       - &block_month
         name: block_month
         description: "UTC event block month of each DEX trade"
@@ -112,6 +115,26 @@ models:
         name: tx_index
         description: "index of the transaction in the block slot"
 
+  - name: raydium_version_clmm_base_trades
+    meta:
+      blockchain: solana
+      contributors: [krishgka]
+    config:
+      tags: ['solana','dex']
+    description: >
+        raydium clmm dex base trades on Solana with version_name
+
+  - name: raydium_v4_solana_stg_decoded_swaps
+    meta:
+      blockchain: solana
+    config:
+      tags: [ 'solana','dex','raydium' ]
+    description: >
+      all decoded raydium_v4 hybrid amm swaps on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'call_block_month', 'unique_instruction_key' ]
+
   - name: raydium_v4_base_trades
     meta:
       blockchain: solana
@@ -123,7 +146,7 @@ models:
     data_tests:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
+          combination_of_columns: [ 'block_month', 'surrogate_key' ]
 
   - name: raydium_v4_trades
     meta:
@@ -137,6 +160,7 @@ models:
       - *blockchain
       - *project
       - *version
+      - *version_name
       - *block_month
       - *block_time
       - *block_slot
@@ -163,6 +187,17 @@ models:
       - *inner_instruction_index
       - *tx_index
 
+  - name: raydium_v5_solana_stg_decoded_swaps
+    meta:
+      blockchain: solana
+    config:
+      tags: [ 'solana','dex','raydium' ]
+    description: >
+      all decoded raydium_v5 swaps on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'call_block_month', 'unique_instruction_key' ]
+
   - name: raydium_v5_base_trades
     meta:
       blockchain: solana
@@ -174,7 +209,7 @@ models:
     data_tests:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
+          combination_of_columns: [ 'block_month', 'surrogate_key' ]
 
   - name: raydium_v5_trades
     meta:
@@ -188,6 +223,7 @@ models:
       - *blockchain
       - *project
       - *version
+      - *version_name
       - *block_month
       - *block_time
       - *block_slot
@@ -213,3 +249,4 @@ models:
       - *outer_instruction_index
       - *inner_instruction_index
       - *tx_index
+
