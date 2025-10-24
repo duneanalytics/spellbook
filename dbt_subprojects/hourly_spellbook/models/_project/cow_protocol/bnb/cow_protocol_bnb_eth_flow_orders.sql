@@ -55,7 +55,7 @@ eth_flow_orders as (
         on call_block_number = evt_block_number
         and call_tx_hash = evt_tx_hash
         and call_success = true
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
     WHERE {{ incremental_predicate('evt_block_time') }}
     AND {{ incremental_predicate('call_block_time') }}
     {% endif %}
