@@ -19,6 +19,7 @@ SELECT 'arbitrum' AS deposit_chain
 , tx_from AS sender
 , tx_from AS recipient
 , 'erc20' AS deposit_token_standard
+, 'erc20' AS withdrawal_token_standard
 , 0xaf88d065e77c8cc2239327c5edb3a432268e5831 AS deposit_token_address
 , tx_from AS tx_from
 , tx_hash AS tx_hash

@@ -19,6 +19,7 @@ SELECT 'arbitrum' AS deposit_chain
 , evt_tx_from AS sender
 , from_hex(json_extract_scalar(e, '$.user')) AS recipient
 , 'erc20' AS deposit_token_standard
+, 'erc20' AS withdrawal_token_standard
 , 0xff970a61a04b1ca14834a43f5de4533ebddb5cc8 AS deposit_token_address
 , evt_tx_from AS tx_from
 , evt_tx_hash AS tx_hash
