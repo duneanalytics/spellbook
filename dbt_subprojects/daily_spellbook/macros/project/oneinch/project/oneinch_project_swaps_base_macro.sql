@@ -1,7 +1,7 @@
 {%- macro
     oneinch_project_swaps_base_macro(
         blockchain
-        , date_from = '2025-10-02'
+        , date_from = '2019-01-01'
     )
 -%}
 
