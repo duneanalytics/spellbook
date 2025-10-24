@@ -293,8 +293,7 @@ meta as (
 )
 
 , sides as (
-    select
-        *
+    select *
         , map_from_entries(array[
               ('intra-chain: classic: direct',
                 entry
@@ -302,7 +301,6 @@ meta as (
                 and not auction
                 and not cross_chain
                 and not contracts_only
-                or second_side
             )
             , ('intra-chain: classic: external',
                 not entry
@@ -320,19 +318,12 @@ meta as (
                 and not auction
                 and not cross_chain
                 and not contracts_only
-                and not second_side
             )
-            , ('intra-chain: intents: contracts only',
-                contracts_only
-                and not second_side
-            )
+            , ('intra-chain: intents: contracts only', contracts_only)
             , ('cross-chain', cross_chain)
         ]) as modes
     from (
-        select
-            *
-            , coalesce(maker, tx_from) as user
-            , false as second_side
+        select *
             , flags['direct'] or reduce(tx_swaps, false, (r, x) -> x.call_trace_address <> call_trace_address and slice(call_trace_address, 1, cardinality(x.call_trace_address)) = x.call_trace_address or r, r -> not r) as entry
         from processing
     )
@@ -358,7 +349,7 @@ select
     , method
     , call_from
     , call_to
-    , user
+    , coalesce(maker, tx_from) as user
     , order_hash
     , maker
     , maker_asset
@@ -388,7 +379,7 @@ select
     , call_trade_id
     , order_hash is not null as intent -- and not second_side
     , entry
-    , second_side
+    , false as second_side
     , contracts_only
     , modes
     , reduce(map_keys(modes), 0, (r, x) -> r + if(modes[x], 1, 0), r -> r) as modes_count
