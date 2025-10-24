@@ -94,7 +94,7 @@ logs AS (
         {% endif %}
 ),
 
-joined AS (
+joined_with_duplicates AS (
     SELECT
         a.block_height, 
         a.block_time,
@@ -116,7 +116,8 @@ joined AS (
         CAST(a.block_height AS VARCHAR) || '-' || a.receipt_id || '-' || CAST(l.index_in_execution_outcome_logs AS VARCHAR) AS logs_id,
         COALESCE(mb.has_mint, FALSE) AS has_mint,
         COALESCE(mb.has_burn, FALSE) AS has_burn,
-        a._partition_by_block_number
+        a._partition_by_block_number,
+        row_number() OVER (PARTITION BY a.tx_hash, a.receipt_id, l.index_in_execution_outcome_logs ORDER BY a.index_in_action_receipt) as rn
     FROM
         actions a
     JOIN logs l
@@ -124,6 +125,33 @@ joined AS (
         AND a.receipt_id = l.receipt_id
     LEFT JOIN has_mint_burn mb
         ON a.tx_hash = mb.tx_hash
+),
+
+joined AS (
+    SELECT
+        block_height, 
+        block_time,
+        block_date,
+        tx_hash,
+        tx_succeeded,
+        tx_receiver,
+        tx_signer,
+        receipt_predecessor_account_id,
+        receipt_receiver_account_id,
+        receipt_succeeded,
+        action_index,
+        action_name,
+        action_data,
+        method_name,
+        log_index,
+        clean_log,
+        receipt_id,
+        logs_id,
+        has_mint,
+        has_burn,
+        _partition_by_block_number
+    FROM joined_with_duplicates
+    WHERE rn = 1
 ),
 
 parsed_events AS (
