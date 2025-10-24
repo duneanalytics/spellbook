@@ -61,10 +61,9 @@ logs_with_actions AS (
         a.index_in_action_receipt,
         row_number() OVER (PARTITION BY l.receipt_id, l.log_index ORDER BY a.index_in_action_receipt) as rn
     FROM logs_base l
-    LEFT JOIN {{ source('near', 'actions') }} a
+    INNER JOIN {{ source('near', 'actions') }} a
         ON l.block_height = a.block_height
         AND l.receipt_id = a.receipt_id
-        AND a.tx_hash IS NOT NULL
 ),
 
 logs_enriched AS (
