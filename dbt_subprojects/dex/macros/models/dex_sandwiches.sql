@@ -15,7 +15,7 @@ WITH augmented_dex_trades AS (
     FROM {{ ref('dex_trades') }} dt
     INNER JOIN {{transactions}} tx ON dt.block_time=tx.block_time
         AND dt.tx_hash=tx.hash
-    WHERE blockchain='{{blockchain}}'
+    WHERE dt.blockchain='{{blockchain}}'
     AND dt.block_time > NOW() - INTERVAL '7' day
     )
 
@@ -49,7 +49,7 @@ WITH augmented_dex_trades AS (
         {% endif %}
     CROSS JOIN UNNEST(ARRAY[(front.tx_hash, front.evt_index), (back.tx_hash, back.evt_index)]) AS t(tx_hash_all, evt_index_all)
     {% if is_incremental() %}
-    AND {{ incremental_predicate('front.block_time') }}
+    WHERE {{ incremental_predicate('front.block_time') }}
     {% endif %}
     )
 
