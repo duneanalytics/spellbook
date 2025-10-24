@@ -27,7 +27,7 @@ solvers_ranked as (
     from {{ source('bnb', 'traces') }} t
         inner join {{ ref('cow_protocol_bnb_solvers') }} solvers
             on t."from" = solvers.address
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
     where {{ incremental_predicate('block_time') }}
     {% endif %}
 ),
@@ -52,7 +52,7 @@ batch_counts as (
     from {{ source('gnosis_protocol_v2_bnb', 'GPv2Settlement_evt_Settlement') }} s
         left outer join {{ source('gnosis_protocol_v2_bnb', 'GPv2Settlement_evt_Interaction') }} i
             on i.evt_tx_hash = s.evt_tx_hash
-            {% if is_incremental() or true %}
+            {% if is_incremental() %}
             and {{ incremental_predicate('i.evt_block_time') }}
             {% endif %}
         left join solvers_ranked sr
@@ -60,7 +60,7 @@ batch_counts as (
             and s.evt_block_date = sr.block_date
             and s.evt_block_number = sr.block_number
             and sr.rn = 1
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
     where {{ incremental_predicate('s.evt_block_time') }}
     {% endif %}
     group by s.evt_block_number, s.evt_block_time, s.evt_tx_hash, sr.solver, sr.name
@@ -76,12 +76,12 @@ batch_values as (
     from  {{ source('cow_protocol_bnb', 'trades') }}
         left outer join {{ source('prices', 'usd') }} as p
             on p.contract_address = 0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c
-            {% if is_incremental() or true %}
+            {% if is_incremental() %}
             and {{ incremental_predicate('minute') }}
             {% endif %}
             and p.minute = date_trunc('minute', block_time)
             and blockchain = 'bnb'
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
     where {{ incremental_predicate('block_time') }}
     {% endif %}
     group by tx_hash, price
@@ -110,7 +110,7 @@ combined_batch_info as (
         inner join {{ source('bnb', 'transactions') }} tx
             on evt_tx_hash = hash
             and evt_block_number = block_number
-            {% if is_incremental() or true %}
+            {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
             {% endif %}
     where num_trades > 0 --! Exclude Withdraw Batches
