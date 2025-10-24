@@ -1,5 +1,25 @@
 version: 2
 
+_blockchain: &blockchain
+  name: blockchain
+  description: "Blockchain name"
+
+_version: &version
+  name: version
+  description: "Schema version"
+
+_pool_id: &pool_id
+  name: pool_id
+  description: "Balancer pool ID"
+
+_token_address: &token_address
+  name: token_address
+  description: "Token address"
+
+_normalized_weight: &normalized_weight
+  name: normalized_weight
+  description: "Normalized token weight"
+
 models:
   - name: balancer_v3_plasma_pools_tokens_weights
     meta:
