@@ -1,5 +1,41 @@
 version: 3
 
+_blockchain: &blockchain
+  name: blockchain
+  description: "Layer / chain identifier (plasma)"
+
+_project: &project
+  name: project
+  description: "Project name (Balancer)"
+
+_version: &version
+  name: version
+  description: "Schema version"
+
+_block_month: &block_month
+  name: block_month
+  description: "Block month in YYYY-MM format"
+
+_block_date: &block_date
+  name: block_date
+  description: "Block date (YYYY-MM-DD)"
+
+_block_time: &block_time
+  name: block_time
+  description: "Block timestamp"
+
+_block_number: &block_number
+  name: block_number
+  description: "Block number"
+
+_token_symbol: &token_symbol
+  name: token_symbol
+  description: "Token symbol"
+
+_tx_hash: &tx_hash
+  name: tx_hash
+  description: "Transaction hash"
+
 models:
   - name: balancer_v3_plasma_trades
     meta:
