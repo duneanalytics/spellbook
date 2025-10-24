@@ -25,7 +25,6 @@ with raw_transfers as (
     where
         1 = 1
         and action != 'wrap'
-        and block_date >= current_date - interval '3' day  -- Testing: last 3 days only
         {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
@@ -54,7 +53,6 @@ with raw_transfers as (
     where
         1 = 1
         and action != 'wrap'
-        and block_date >= current_date - interval '3' day  -- Testing: last 3 days only
         {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
@@ -104,54 +102,18 @@ with raw_transfers as (
         , contract_address
         , symbol
         , address
-), symbol_ranking as (
-    -- Determine the most recent symbol for each contract on each day based on block_time
-    select
-        blockchain
-        , block_date
-        , contract_address
-        , symbol
-        , max(max_block_time) as latest_block_time
-        , row_number() over (
-            partition by blockchain, block_date, contract_address 
-            order by max(max_block_time) desc
-        ) as symbol_rank
-    from
-        net_transfers
-    group by
-        blockchain
-        , block_date
-        , contract_address
-        , symbol
-), latest_symbol as (
-    -- Pick the #1 ranked symbol for each contract
-    select
-        blockchain
-        , block_date
-        , contract_address
-        , symbol
-    from
-        symbol_ranking
-    where
-        symbol_rank = 1
 )
 select
-    nt.blockchain
-    , nt.block_date
-    , nt.contract_address
-    , ls.symbol  -- Use the latest/canonical symbol
-    , sum(nt.net_transfer_amount_usd) as net_transfer_amount_usd
+    blockchain
+    , block_date
+    , contract_address
+    , max_by(symbol, max_block_time) as symbol
+    , sum(net_transfer_amount_usd) as net_transfer_amount_usd
 from
-    net_transfers nt
-inner join
-    latest_symbol ls
-    on nt.blockchain = ls.blockchain
-    and nt.block_date = ls.block_date
-    and nt.contract_address = ls.contract_address
+    net_transfers
 where
-    nt.net_transfer_amount_usd > 0
+    net_transfer_amount_usd > 0
 group by
-    nt.blockchain
-    , nt.block_date
-    , nt.contract_address
-    , ls.symbol
+    blockchain
+    , block_date
+    , contract_address
