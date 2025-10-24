@@ -15,9 +15,9 @@ SELECT CAST(NULL AS DOUBLE) AS deposit_chain_id
 , evt_block_date AS block_date
 , evt_block_time AS block_time
 , evt_block_number AS block_number
-, json_extract_scalar(e, '$.usdc') AS withdrawal_amount_raw
-, json_extract_scalar(e, '$.user') AS sender
-, json_extract_scalar(e, '$.user') AS recipient
+, CAST(json_extract_scalar(e, '$.usdc') AS BIGINT) AS withdrawal_amount_raw
+, from_hex(json_extract_scalar(e, '$.user')) AS sender
+, from_hex(json_extract_scalar(e, '$.user')) AS recipient
 , 'erc20' AS withdrawal_token_standard
 , 0xff970a61a04b1ca14834a43f5de4533ebddb5cc8 AS withdrawal_token_address
 , evt_tx_from AS tx_from

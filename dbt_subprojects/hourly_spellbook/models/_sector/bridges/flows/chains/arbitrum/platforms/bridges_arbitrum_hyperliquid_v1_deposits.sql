@@ -15,7 +15,7 @@ SELECT 'arbitrum' AS deposit_chain
 , evt_block_date AS block_date
 , evt_block_time AS block_time
 , evt_block_number AS block_number
-, CAST(from_hex(json_extract_scalar(e, '$.usdc')) AS BIGINT) AS deposit_amount_raw
+, CAST(json_extract_scalar(e, '$.usdc') AS BIGINT) AS deposit_amount_raw
 , evt_tx_from AS sender
 , from_hex(json_extract_scalar(e, '$.user')) AS recipient
 , 'erc20' AS deposit_token_standard
