@@ -7,8 +7,8 @@
     )
 }}
 
-SELECT d.srcChainId AS deposit_chain_id
-, i.blockchain AS deposit_chain
+SELECT CAST(NULL AS DOUBLE) AS deposit_chain_id
+, 'lighter' AS deposit_chain
 , '{{blockchain}}' AS withdrawal_chain
 , 'Lighter' AS bridge_name
 , '1' AS bridge_version
