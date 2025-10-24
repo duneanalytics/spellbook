@@ -249,27 +249,33 @@ modify_liquidity_events as (
             call_block_time,
             call_block_number,
             -- pool key: currency0/1 + hooks (all varbinary)
-            FROM_HEX(JSON_EXTRACT_SCALAR(JSON_PARSE("key"), '$.currency0')) AS currency0,
-            FROM_HEX(JSON_EXTRACT_SCALAR(JSON_PARSE("key"), '$.currency1')) AS currency1,
-            FROM_HEX(JSON_EXTRACT_SCALAR(JSON_PARSE("key"), '$.hooks'))     AS hooks,
+            FROM_HEX(JSON_EXTRACT_SCALAR(key_json, '$.currency0')) AS currency0,
+            FROM_HEX(JSON_EXTRACT_SCALAR(key_json, '$.currency1')) AS currency1,
+            FROM_HEX(JSON_EXTRACT_SCALAR(key_json, '$.hooks'))     AS hooks,
 
             -- raw packed outputs (two signed 128-bit legs inside an int256)
             CAST(output_callerDelta   AS VARBINARY) AS callerDelta_vb,
             CAST(output_feesAccrued   AS VARBINARY) AS feesAccrued_vb,
 
             -- params (decoded for handy metadata)
-            CAST(JSON_EXTRACT(JSON_PARSE(params), '$.tickLower')      AS BIGINT)  AS tickLower,
-            CAST(JSON_EXTRACT(JSON_PARSE(params), '$.tickUpper')      AS BIGINT)  AS tickUpper,
-            CAST(CAST(JSON_EXTRACT(JSON_PARSE(params), '$.liquidityDelta') AS VARCHAR) AS INT256) AS params_liquidityDelta,
+            CAST(JSON_EXTRACT(params_json, '$.tickLower')      AS BIGINT)  AS tickLower,
+            CAST(JSON_EXTRACT(params_json, '$.tickUpper')      AS BIGINT)  AS tickUpper,
+            CAST(CAST(JSON_EXTRACT(params_json, '$.liquidityDelta') AS VARCHAR) AS INT256) AS params_liquidityDelta,
 
             -- for deterministic call↔event pairing within a tx
             ROW_NUMBER() OVER (PARTITION BY call_tx_hash ORDER BY call_trace_address) AS call_rn
-        from 
-        {{ PoolManager_call_ModifyLiquidity }}
-        where call_success 
-        {%- if is_incremental() %}
-        and {{ incremental_predicate('call_block_time') }}
-        {%- endif %} 
+        from (
+            select 
+                *, 
+                json_parse("key") as key_json,
+                json_parse(params) as params_json
+            from 
+            {{ PoolManager_call_ModifyLiquidity }}
+            where call_success 
+            {%- if is_incremental() %}
+            and {{ incremental_predicate('call_block_time') }}
+            {%- endif %} 
+        ) 
     ),
 
     calls_decoded as (
@@ -379,6 +385,16 @@ final_liquidity_events as (
         and ab.previous_block_index_sum = gp.block_index_sum 
 ), 
 
+get_swap_events as (
+    select 
+        * 
+    from 
+    {{ PoolManager_evt_Swap }}
+    {%- if is_incremental() %}
+    where {{ incremental_predicate('evt_block_time') }}
+    {%- endif %}
+),
+
 swap_events as (
     select 
         evt_tx_from as tx_from
@@ -395,10 +411,7 @@ swap_events as (
         , cast(null as double) as tickUpper
         , cast(null as varbinary) as salt 
     from 
-    {{ PoolManager_evt_Swap }}
-    {%- if is_incremental() %}
-    where {{ incremental_predicate('evt_block_time') }}
-    {%- endif %}
+    get_swap_events
 ),
 
 swap_fees_paid as (
@@ -417,10 +430,7 @@ swap_fees_paid as (
         , cast(null as double) as tickUpper
         , cast(null as varbinary) as salt 
     from 
-    {{ PoolManager_evt_Swap }}
-    {%- if is_incremental() %}
-    where {{ incremental_predicate('evt_block_time') }}
-    {%- endif %}
+    get_swap_events
 ),
 
 liquidity_change_base as (
