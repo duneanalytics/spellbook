@@ -16,6 +16,7 @@ WITH augmented_dex_trades AS (
     INNER JOIN {{transactions}} tx ON dt.block_time=tx.block_time
         AND dt.tx_hash=tx.hash
     WHERE blockchain='{{blockchain}}'
+    AND dt.block_time > NOW() - INTERVAL '7' day
     )
 
 -- Checking that each frontrun trade has a matching backrun and at least one victim in between
@@ -93,6 +94,7 @@ LEFT JOIN {{whitelist}} w ON w.block_number=tx.block_number
     AND w.tx_hash=tx.hash
 {% endif %}
 WHERE dt.blockchain='{{blockchain}}'
+AND dt.block_time > NOW() - INTERVAL '7' day
 {% if is_incremental() %}
 AND {{ incremental_predicate('dt.block_time') }}
 {% endif %}
