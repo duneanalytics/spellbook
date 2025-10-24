@@ -79,7 +79,7 @@ models:
     config:
       tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
     description: "Across's v2 bridge withdrawals events on Ethereum"
-  - name: bridges_ethereum_lighter_v1deposits
+  - name: bridges_ethereum_lighter_v1_deposits
     meta:
       blockchain: ethereum
       sector: bridges
