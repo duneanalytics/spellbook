@@ -4,7 +4,7 @@ sources:
   - name: uniswap_v4_bnb
     tables:
       - name: PoolManager_evt_ModifyLiquidity
-      - name: PoolManager_call_ModifyLiquidity
+      - name: poolmanager_call_take
 
   - name: pancakeswap_infinity_bnb
     tables:
