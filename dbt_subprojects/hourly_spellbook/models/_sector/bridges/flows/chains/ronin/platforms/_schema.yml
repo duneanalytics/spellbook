@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: bridges_ronin_native_v1_deposits
+    meta:
+      blockchain: ronin
+      sector: bridges
+      project: ronin
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'ronin', 'bridges', 'flows', 'deposits' ]
+    description: "Ronin's native v1 bridge deposits events on Ronin"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']
+  - name: bridges_ronin_native_v1_withdrawals
+    meta:
+      blockchain: ronin
+      sector: bridges
+      project: ronin
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'ronin', 'bridges', 'flows', 'withdrawals' ]
+    description: "Ronin's native v1 bridge withdrawals events on Ronin"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']
