@@ -1,7 +1,13 @@
 {{ config(
-        schema = 'uniswap',
-        alias = 'base_liquidity_events'
-        )
+    schema = 'uniswap'
+    , alias = 'base_liquidity_events'
+    , partition_by = ['block_month', 'blockchain', 'project']
+    , materialized = 'incremental'
+    , file_format = 'delta'
+    , incremental_strategy = 'merge'
+    , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'event_type']
+    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    )
 }}
 
 {% set models = [
@@ -50,6 +56,9 @@ with base_union as (
                 , salt
         FROM
             {{ model }}
+        {% if is_incremental() %}
+        WHERE {{ incremental_predicate('block_time') }}
+        {% endif %}
         {% if not loop.last %}
            UNION ALL
         {% endif %}
@@ -60,3 +69,4 @@ select
     *
 from
     base_union
+-- comment to refresh
