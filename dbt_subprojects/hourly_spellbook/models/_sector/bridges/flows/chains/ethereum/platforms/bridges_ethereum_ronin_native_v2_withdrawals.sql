@@ -2,7 +2,7 @@
 
 {{ config(
     schema = 'bridges_' + blockchain,
-    alias = 'ronin_native_v1_withdrawals',
+    alias = 'ronin_native_v2_withdrawals',
     materialized = 'view',
     )
 }}
