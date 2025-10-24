@@ -1,7 +1,7 @@
 {{ config(
     schema = 'balancer_v3',
     alias = 'erc4626_token_prices',
-    post_hook='{{ expose_spells(blockchains = \'["ethereum", "gnosis", "sonic", "arbitrum", "base"]\',
+    post_hook='{{ expose_spells(blockchains = \'["ethereum", "gnosis", "sonic", "arbitrum", "base", "hyperevm"]\',
                                 spell_type = "project",
                                 spell_name = "balancer",
                                 contributors = \'["viniabussafi"]\') }}'
@@ -14,7 +14,8 @@
     ref('balancer_v3_gnosis_erc4626_token_prices'),
     ref('balancer_v3_sonic_erc4626_token_prices'),
     ref('balancer_v3_arbitrum_erc4626_token_prices'),
-    ref('balancer_v3_base_erc4626_token_prices')
+    ref('balancer_v3_base_erc4626_token_prices'),
+    ref('balancer_v3_hyperevm_erc4624_token_prices')
 ] %}
 
 SELECT *
