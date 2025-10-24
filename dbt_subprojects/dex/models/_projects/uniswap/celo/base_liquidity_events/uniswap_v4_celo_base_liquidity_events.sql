@@ -9,6 +9,7 @@
     )
 }}
 
+
 {{
     uniswap_compatible_v4_base_liquidity_events(
           blockchain = 'celo'
@@ -17,7 +18,7 @@
         , PoolManager_evt_ModifyLiquidity = source ('uniswap_v4_celo', 'PoolManager_evt_ModifyLiquidity')
         , PoolManager_evt_Swap = source('uniswap_v4_celo', 'PoolManager_evt_Swap') 
         , liquidity_pools = ref('uniswap_v4_celo_pools')
-        , liquidity_sqrtpricex96 = ref('uniswap_v4_celo_sqrtpricex96')
-        , PoolManager_call_Take = source('uniswap_v4_celo', 'poolmanager_call_take')
+        , liquidity_sqrtpricex96 = ref('uniswap_v4_ethereum_sqrtpricex96')
+        , PoolManager_call_ModifyLiquidity = source ('uniswap_v4_celo', 'PoolManager_call_ModifyLiquidity')
     )
 }}
