@@ -182,5 +182,5 @@ FROM
             call_data_size,
             unwraps,
             token_approvals
-        FROM {{ ref('cow_protocol_lens_bnb') }}
+        FROM {{ ref('cow_protocol_bnb_batches') }}
 )
