@@ -25,7 +25,6 @@ with raw_transfers as (
     where
         1 = 1
         and action != 'wrap'
-        and block_date >= current_date - interval '3' day  -- Testing: last 3 days only
         {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
@@ -54,7 +53,6 @@ with raw_transfers as (
     where
         1 = 1
         and action != 'wrap'
-        and block_date >= current_date - interval '3' day  -- Testing: last 3 days only
         {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
