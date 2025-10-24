@@ -1,4 +1,4 @@
-{{  
+{{-  
     config(
         schema = 'oneinch',
         alias = 'project_orders',
@@ -7,11 +7,11 @@
         incremental_strategy = 'merge',
         partition_by = ['block_month'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['blockchain', 'block_number', 'tx_hash', 'call_trace_address', 'order_hash', 'call_trade']
+        unique_key = ['blockchain', 'block_month', 'block_number', 'tx_hash', 'call_trace_address', 'order_hash', 'call_trade']
     )
-}}
+-}}
 
-{% set
+{%- set
     orders_base_columns = [
         'blockchain',
         'block_number',
@@ -33,9 +33,9 @@
         'order_hash',
         'flags',
     ]
-%}
+-%}
 
-{% set native_addresses = '(0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee)' %}
+{%- set native_addresses = '(0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee)' -%}
 
 
 
@@ -60,7 +60,7 @@ meta as (
         , row_number() over(partition by blockchain, block_number, tx_hash order by call_trace_address, order_hash) as counter
     from (
         {% for blockchain in oneinch_project_swaps_exposed_blockchains_list() %}
-            {{ "-- depends_on: {{ ref('oneinch_' + blockchain + '_project_swaps') }}" }}
+            {{ "-- depends on: {{ ref('oneinch_' + blockchain + '_project_swaps') }}" }}
             
             select
                 {{ orders_base_columns | join(', ') }}
