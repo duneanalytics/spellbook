@@ -238,7 +238,7 @@ get_prices as (
 get_events as (
     select 
         *,
-        evt_block_number + evt_index/1e6 as block_number_index 
+        evt_block_number + evt_index/1e6 as block_index_sum
 
     from 
     {{ PoolManager_evt_ModifyLiquidity }}
