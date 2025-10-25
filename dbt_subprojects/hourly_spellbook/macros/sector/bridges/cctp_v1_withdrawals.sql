@@ -64,6 +64,6 @@ WITH messages AS (
         AND w.tx_hash = m.tx_hash
         AND w.evt_index = m.withdrawal_evt_index
         AND m.rn = 1
-    INNER JOIN {{ ref('bridges_cctp_chain_indexes') }} i ON i.id=m.sourceDomain
+    LEFT JOIN {{ ref('bridges_cctp_chain_indexes') }} i ON i.id=m.sourceDomain
 
 {% endmacro %}
