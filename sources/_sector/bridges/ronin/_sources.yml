@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: axieinfinity_ethereum
+    description: "Ronin's native bridge events on Ethereum"
+    tables:
+      - name: mainchaingatewaymanager_evt_tokendeposited
+      - name: mainchaingatewaymanager_evt_tokenwithdrew
+      - name: mainchaingatewayv2_evt_depositrequested
+      - name: mainchaingatewayv2_evt_withdrew
