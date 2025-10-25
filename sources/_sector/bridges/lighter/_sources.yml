@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: lighter_v2_ethereum
+    description: "Lighter's native bridge events on Ethereum"
+    tables:
+      - name: zklighter_evt_deposit
+      - name: zklighter_evt_withdraw
