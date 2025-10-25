@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: tether_unichain
+    description: "Tether's USDT0 bridge events on Unichain"
+    tables:
+      - name: oupgradeable_evt_oftsent
+      - name: oupgradeable_evt_oftreceived
