@@ -170,3 +170,36 @@ models:
       - *borrow_token1_balance
       - *borrow_token0_balance_usd
       - *borrow_token1_balance_usd
+
+  - name: fluid_dex_initializations
+    meta:
+      blockchain: arbitrum, base, ethereum, polygon
+      sector: dex
+      project: fluid
+      contributors: Henrystats
+    config:
+      tags: ['arbitrum', 'dex_pools', 'liquidity', 'initializations', 'ethereum', 'base', 'polygon']
+    description: >
+      Dex initialization event to query pool metadata from creation event across all chains
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - dex
+            - blockchain
+
+  - name: fluid_dex_fee_updates
+    meta:
+      blockchain: arbitrum, base, ethereum, polygon
+      sector: dex
+      project: fluid
+      contributors: Henrystats
+    config:
+      tags: ['arbitrum', 'dex_pools', 'liquidity', 'initializations', 'ethereum', 'base', 'polygon']
+    description: >
+      Dex fee updates event across all chains
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - dex
+            - blockchain
+            - tx_hash
