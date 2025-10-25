@@ -10,13 +10,24 @@
 }}
 
 {% set chains = [
-    'ethereum'
-    , 'base'
-    , 'arbitrum'
+    'arbitrum'
     , 'avalanche_c'
+    , 'base'
+    , 'blast'
+    , 'bnb'
+    , 'ethereum'
+    , 'hyperevm'
+    , 'ink'
+    , 'lens'
+    , 'linea'
     , 'optimism'
+    , 'plasma'
     , 'polygon'
+    , 'scroll'
     , 'unichain'
+    , 'worldchain'
+    , 'zksync'
+    , 'zora'
 ] %}
 
 SELECT *

@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: bridges_plasma_across_v3_deposits
+    meta:
+      blockchain: plasma
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
+    description: "Across's v3 bridge deposits events on Plasma"
+  - name: bridges_plasma_across_v3_withdrawals
+    meta:
+      blockchain: plasma
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Across's v3 bridge withdrawals events on Plasma"
