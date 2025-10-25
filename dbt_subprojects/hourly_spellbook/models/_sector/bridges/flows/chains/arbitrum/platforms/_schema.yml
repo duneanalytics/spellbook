@@ -119,3 +119,51 @@ models:
       - &deposit_chain_id
         name: deposit_chain_id
         description: "Blockchain ID where the tokens were sent"
+  - name: bridges_arbitrum_hyperliquid_v1_deposits
+    meta:
+      blockchain: arbitrum
+      sector: bridges
+      project: hyperliquid
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'arbitrum', 'bridges', 'flows', 'withdrawals' ]
+    description: "Hyperliquid's native v1 bridge deposits events on Arbitrum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']
+  - name: bridges_arbitrum_hyperliquid_v1_withdrawals
+    meta:
+      blockchain: arbitrum
+      sector: bridges
+      project: hyperliquid
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'arbitrum', 'bridges', 'flows', 'withdrawals' ]
+    description: "Hyperliquid's native v1 bridge withdrawals events on Arbitrum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']
+  - name: bridges_arbitrum_hyperliquid_v2_deposits
+    meta:
+      blockchain: arbitrum
+      sector: bridges
+      project: hyperliquid
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'arbitrum', 'bridges', 'flows', 'withdrawals' ]
+    description: "Hyperliquid's native v2 bridge deposits events on Arbitrum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']
+  - name: bridges_arbitrum_hyperliquid_v2_withdrawals
+    meta:
+      blockchain: arbitrum
+      sector: bridges
+      project: hyperliquid
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'arbitrum', 'bridges', 'flows', 'withdrawals' ]
+    description: "Hyperliquid's native v2 bridge withdrawals events on Arbitrum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']
