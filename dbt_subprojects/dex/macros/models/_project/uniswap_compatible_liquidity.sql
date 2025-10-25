@@ -235,6 +235,40 @@ get_prices as (
     get_latest_prices
 ),
 
+get_events as (
+    select 
+        *,
+        evt_block_number + evt_index/1e6 as block_number_index 
+
+    from 
+    {{ PoolManager_evt_ModifyLiquidity }}
+    {%- if is_incremental() %}
+    where {{ incremental_predicate('evt_block_time') }}
+    {%- endif %}
+),
+
+enrich_liquidity_events as (
+    select 
+        ab.*,
+        gp.sqrtpricex96
+    from (
+    select 
+        ge.*
+        , gp.previous_block_index_sum
+    from 
+    get_events ge 
+    left join 
+    get_prices gp 
+        on ge.id = gp.id 
+        and ge.block_index_sum >= gp.previous_block_index_sum
+        and ge.block_index_sum < gp.block_index_sum 
+    ) ab 
+    left join 
+    get_prices gp 
+        on ab.id = gp.id
+        and ab.previous_block_index_sum = gp.block_index_sum 
+),
+
 modify_liquidity_events as (
     with 
 
@@ -326,12 +360,10 @@ modify_liquidity_events as (
             tickUpper,
             liquidityDelta,    -- int256 in the event log
             salt,
+            sqrtpricex96,
             ROW_NUMBER() OVER (PARTITION BY evt_tx_hash ORDER BY evt_index) AS evt_rn
         from 
-        {{ PoolManager_evt_ModifyLiquidity }}
-        {%- if is_incremental() %}
-        where {{ incremental_predicate('evt_block_time') }}
-        {%- endif %} 
+        enrich_liquidity_events 
     )
 
         SELECT
@@ -349,6 +381,7 @@ modify_liquidity_events as (
             , e.tickUpper   
             , e.liquidityDelta
             , e.salt 
+            , e.sqrtpricex96
             -- decoded outputs (signed int256, raw token units)
             -- output_callerDelta signage is from the POV of user, so we must flip signs for pool's POV
             , -1* cd.callerDelta_token0 as amount0
@@ -361,28 +394,6 @@ modify_liquidity_events as (
         calls_decoded cd
             ON cd.call_tx_hash = e.evt_tx_hash
             AND cd.call_rn = e.evt_rn
-),
-
-final_liquidity_events as (
-    select 
-        ab.*,
-        gp.sqrtpricex96
-    from (
-    select 
-        ge.*
-        , gp.previous_block_index_sum
-    from 
-    modify_liquidity_events ge 
-    left join 
-    get_prices gp 
-        on ge.id = gp.id 
-        and ge.block_index_sum >= gp.previous_block_index_sum
-        and ge.block_index_sum < gp.block_index_sum 
-    ) ab 
-    left join 
-    get_prices gp 
-        on ab.id = gp.id
-        and ab.previous_block_index_sum = gp.block_index_sum 
 ), 
 
 get_swap_events as (
@@ -452,7 +463,7 @@ liquidity_change_base as (
         , ml.tickUpper
         , ml.salt
     from 
-    final_liquidity_events ml 
+    modify_liquidity_events ml 
 
     union all 
 
@@ -474,7 +485,7 @@ liquidity_change_base as (
         , ml.tickUpper
         , ml.salt
     from 
-    final_liquidity_events ml 
+    modify_liquidity_events ml 
 
     union all 
 
