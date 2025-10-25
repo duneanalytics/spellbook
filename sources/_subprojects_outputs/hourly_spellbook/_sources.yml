@@ -63,6 +63,39 @@ sources:
   - name: safe_scroll
     tables:
       - name: safes
+  - name: safe_bnb
+    tables:
+      - name: safes
+  - name: safe_unichain
+    tables:
+      - name: safes
+  - name: safe_mantle
+    tables:
+      - name: safes
+  - name: safe_worldchain
+    tables:
+      - name: safes
+  - name: safe_fantom
+    tables:
+      - name: safes
+  - name: safe_blast
+    tables:
+      - name: safes
+  - name: safe_celo
+    tables:
+      - name: safes
+  - name: safe_gnosis
+    tables:
+      - name: safes
+  - name: safe_zkevm
+    tables:
+      - name: safes
+  - name: safe_sonic
+    tables:
+      - name: safes
+  - name: safe_zksync
+    tables:
+      - name: safes
 
   - name: perpetual
     tables:

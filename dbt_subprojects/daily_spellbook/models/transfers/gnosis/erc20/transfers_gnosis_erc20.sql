@@ -6,11 +6,11 @@
     incremental_strategy = 'merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.evt_block_time')],
     unique_key = ['transfer_type', 'evt_tx_hash', 'evt_index', 'wallet_address'],
-    alias = 'erc20_arbitrum',
-    post_hook='{{ expose_spells(\'["arbitrum"]\',
+    alias = 'erc20_gnosis',
+    post_hook='{{ expose_spells(\'["gnosis"]\',
                                     "sector",
                                     "transfers",
-                                    \'["Henrystats"]\') }}') }}
+                                    \'["jondar"]\') }}') }}
 
 WITH
 
@@ -24,7 +24,7 @@ erc20_transfers  as (
             contract_address as token_address,
             CAST(value as double) as amount_raw
         FROM
-        {{ source('erc20_arbitrum', 'evt_Transfer') }}
+        {{ source('erc20_gnosis', 'evt_Transfer') }}
         {% if is_incremental() %}
             WHERE {{ incremental_predicate('evt_block_time') }}
         {% endif %}
@@ -40,14 +40,14 @@ erc20_transfers  as (
             contract_address as token_address,
             -CAST(value as double) as amount_raw
         FROM
-        {{ source('erc20_arbitrum', 'evt_Transfer') }}
+        {{ source('erc20_gnosis', 'evt_Transfer') }}
         {% if is_incremental() %}
             WHERE {{ incremental_predicate('evt_block_time') }}
         {% endif %}
 )
 
 SELECT
-    'arbitrum' as blockchain,
+    'gnosis' as blockchain,
     transfer_type,
     evt_tx_hash,
     evt_index,
