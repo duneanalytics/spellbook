@@ -53,18 +53,52 @@ WITH coin_activities AS (
             AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
             AND move_resource_module = 'coin'
             AND move_resource_name = 'CoinStore'
+            AND block_date <= DATE('2025-08-02') -- FS migration
         {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
         {% endif %}
     ) mr
         ON ev.tx_version = mr.tx_version
-        AND ev.block_date = mr.block_date
+        AND ev.block_date = mr.block_date -- optimization
         AND ev.guid_account_address = mr.addr
         AND ev.guid_creation_number = mr.creation_num
     WHERE 1=1
         AND event_type IN ('0x1::coin::WithdrawEvent', '0x1::coin::DepositEvent')
+        AND ev.block_date <= DATE('2025-08-02') -- FS migration
     {% if is_incremental() %}
         AND {{ incremental_predicate('block_time') }}
+    {% endif %}
+), fa_activities_legacy AS (
+    -- FA activities prior to Events v2 migration
+    SELECT
+        ev.tx_version,
+        ev.tx_hash,
+        ev.block_date,
+        ev.block_time,
+        --
+        event_index,
+        event_type,
+        guid_account_address, -- storage_id
+        CAST(json_extract_scalar(data, '$.amount') AS uint256) AS amount,
+        fab.asset_type,
+        fab.owner_address
+    FROM {{ source('aptos', 'events') }} ev
+    LEFT JOIN {{ ref('aptos_fungible_asset_balances') }} fab -- TODO: edge case around deletes
+    ON ev.tx_version = fab.tx_version
+    AND ev.guid_account_address = fab.storage_id
+    AND fab.token_standard = 'v2'
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('fab.block_time') }}
+    {% endif %}
+    WHERE 1=1
+        AND ev.block_date >= DATE('2023-07-28') -- FA deployed
+        AND ev.block_date <= DATE('2024-05-29') -- Events v2 completed
+        AND event_type IN (
+            '0x1::fungible_asset::DepositEvent',
+            '0x1::fungible_asset::WithdrawEvent'
+        )
+    {% if is_incremental() %}
+        AND {{ incremental_predicate('ev.block_time') }}
     {% endif %}
 ), fa_activities AS (
     SELECT
@@ -75,7 +109,7 @@ WITH coin_activities AS (
         --
         event_index,
         event_type,
-        '0x' || LPAD(LTRIM(json_extract_scalar(data, '$.store'), '0x'), 64, '0') AS storage_id,
+        address_32_from_hex('0x' || LPAD(LTRIM(json_extract_scalar(data, '$.store'), '0x'), 64, '0')) AS storage_id,
         CAST(json_extract_scalar(data, '$.amount') AS uint256) AS amount,
         fab.owner_address,
         fab.asset_type
@@ -88,17 +122,14 @@ WITH coin_activities AS (
     AND {{ incremental_predicate('fab.block_time') }}
     {% endif %}
     WHERE 1=1
-        AND ev.block_date >= DATE('2023-07-28') -- v2 deployed
+        AND ev.block_date >= DATE('2024-05-29') -- Events v2 start
         AND event_type IN (
-            -- prior to Events v2 migration, different event types were used
-            -- this happened between 2023-08-04 to 2024-05-29
             '0x1::fungible_asset::Deposit',
-            '0x1::fungible_asset::DepositEvent', -- legacy
-            '0x1::fungible_asset::Withdraw',
-            '0x1::fungible_asset::WithdrawEvent' -- legacy
+            '0x1::fungible_asset::Withdraw'
         )
     {% if is_incremental() %}
         AND {{ incremental_predicate('ev.block_time') }}
+        AND ev.tx_version < (SELECT MAX(tx_version) FROM {{ ref('aptos_fungible_asset_balances') }})
     {% endif %}
 )
 
@@ -112,11 +143,29 @@ SELECT
     event_index,
     event_type,
     guid_account_address AS owner_address,
-    NULL AS storage_id,
+    CAST(NULL AS varbinary) AS storage_id,
     asset_type,
     amount,
     'v1' AS token_standard
 FROM coin_activities
+
+UNION ALL
+
+SELECT
+    tx_version,
+    tx_hash,
+    block_date,
+    block_time,
+    date(date_trunc('month', block_time)) as block_month,
+    --
+    event_index,
+    event_type,
+    owner_address,
+    guid_account_address AS storage_id,
+    asset_type,
+    amount,
+    'v2' AS token_standard
+FROM fa_activities_legacy
 
 UNION ALL
 

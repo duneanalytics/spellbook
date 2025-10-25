@@ -37,7 +37,7 @@ WITH coin_balances AS (
         AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
         AND move_resource_module = 'coin'
         AND move_resource_name = 'CoinStore'
-        AND block_date < DATE('2025-08-05')  -- almost all migrated
+        AND block_date <= DATE('2025-09-02')  -- almost all migrated by 2025-08-05
     {% if is_incremental() %}
         AND {{ incremental_predicate('block_time') }}
     {% endif %}
@@ -76,7 +76,8 @@ WITH coin_balances AS (
         {% endif %}
     ) c USING (tx_version, move_address)
     LEFT JOIN (
-        -- get owner
+        -- get owner, if deleted then owner will be NULL
+        -- to fix this, need to create an Objects table and map to owner before delete
         SELECT
             tx_version,
             move_address,
@@ -85,7 +86,7 @@ WITH coin_balances AS (
         WHERE 1=1
             AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
             AND move_resource_module = 'object'
-            AND move_resource_name = 'ObjectCore'
+            AND move_resource_name IN ('ObjectGroup','ObjectCore')
         {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
         {% endif %}
@@ -119,10 +120,10 @@ WITH coin_balances AS (
             AND mr.move_address = address_32_from_hex(json_extract_scalar(ev.data, '$.store'))
             AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
             AND move_resource_module = 'object'
-            AND move_resource_name = 'ObjectCore'
+            AND move_resource_name IN ('ObjectGroup','ObjectCore')
             AND mr.block_date = ev.block_date -- optimization
             AND mr.block_date >= DATE('2025-04-28') -- date enabled
-            {% if is_incremental() -%}
+            {% if is_incremental() %}
             AND {{ incremental_predicate('mr.block_time') }}
             {% endif -%}
         WHERE 1=1
