@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: arbitrum_ethereum
+    description: "Arbitrum native bridge's events on Ethereum"
+    tables:
+      - name: l1erc20gateway_evt_depositinitiated
+      - name: l1erc20gateway_evt_withdrawalfinalized
