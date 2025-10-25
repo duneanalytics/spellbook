@@ -51,7 +51,6 @@ with base_union as (
         FROM
             {{ model }}
         WHERE block_date = current_date -- filtering to just current day
-        limit 100
         {% if not loop.last %}
            UNION ALL
         {% endif %}
