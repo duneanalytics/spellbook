@@ -211,9 +211,6 @@ get_prices_tmp as (
         , sqrtpricex96
     from 
     {{ liquidity_sqrtpricex96 }}
-    {%- if is_incremental() %}
-    where id in (select distinct id from get_events) -- only gets prices for pools that had events in incremental run
-    {%- endif %}
 ),
 
 get_latest_prices as (
