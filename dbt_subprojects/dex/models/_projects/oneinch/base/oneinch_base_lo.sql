@@ -10,4 +10,4 @@
 
 -- TEMP VIEW. WILL BE DELETED IN THE NEXT PR --
 
-select * from {{ source('oneinch_' + blockchain, 'lo') }}
+select * from {{ source('oneinch_' + blockchain, 'lop') }}
