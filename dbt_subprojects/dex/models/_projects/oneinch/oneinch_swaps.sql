@@ -86,8 +86,8 @@ select
     ])) as executions
 from {{ ref('oneinch_executions') }}
 where true
-    and tx_success
-    and call_success
+    and coalesce(tx_success, true) -- for solana trades // TO DO
+    and coalesce(call_success, true) -- for solana trades
     {% if is_incremental() -%}
         and (
             order_hash is null and {{ incremental_predicate('block_time') }}

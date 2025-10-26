@@ -7,12 +7,13 @@ sources:
       - name: ar
       - name: lo
       - name: cc
+
+
   - name: oneinch_evms
     tables:
       - name: ptfc
+  
+
   - name: oneinch_solana
     tables:
       - name: swaps
-  - name: tokens
-    tables:
-      - name: transfers_from_traces
