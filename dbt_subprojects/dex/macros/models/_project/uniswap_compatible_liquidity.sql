@@ -190,6 +190,18 @@ get_pools as (
     {{ liquidity_pools }}
 ),
 
+get_events as (
+    select 
+        *,
+        evt_block_number + evt_index/1e6 as block_index_sum
+
+    from 
+    {{ PoolManager_evt_ModifyLiquidity }}
+    {%- if is_incremental() %}
+    where {{ incremental_predicate('evt_block_time') }}
+    {%- endif %}
+),
+
 get_prices_tmp as (
     select
         blockchain
@@ -199,6 +211,9 @@ get_prices_tmp as (
         , sqrtpricex96
     from 
     {{ liquidity_sqrtpricex96 }}
+    {%- if is_incremental() %}
+    where id in (select distinct id from get_events) -- only gets prices for pools that had events in incremental run
+    {%- endif %}
 ),
 
 get_latest_prices as (
@@ -235,18 +250,6 @@ get_prices as (
     get_latest_prices
 ),
 
-get_events as (
-    select 
-        *,
-        evt_block_number + evt_index/1e6 as block_index_sum
-
-    from 
-    {{ PoolManager_evt_ModifyLiquidity }}
-    {%- if is_incremental() %}
-    where {{ incremental_predicate('evt_block_time') }}
-    {%- endif %}
-),
-
 enrich_liquidity_events as (
     select 
         ab.*,
@@ -281,6 +284,7 @@ modify_liquidity_events as (
             call_tx_to,
             call_trace_address,
             call_block_time,
+            call_block_date,
             call_block_number,
             -- pool key: currency0/1 + hooks (all varbinary)
             FROM_HEX(JSON_EXTRACT_SCALAR(key_json, '$.currency0')) AS currency0,
@@ -353,6 +357,7 @@ modify_liquidity_events as (
             evt_tx_from,
             evt_block_time,
             evt_block_number,
+            evt_block_date,
             evt_index,
             id,                -- pool id lives here
             sender,            -- caller/sender (useful metadata)
@@ -393,6 +398,8 @@ modify_liquidity_events as (
         INNER JOIN 
         calls_decoded cd
             ON cd.call_tx_hash = e.evt_tx_hash
+            AND cd.call_block_date = e.evt_block_date 
+            AND cd.call_block_number = e.evt_block_number
             AND cd.call_rn = e.evt_rn
 ), 
 
@@ -486,6 +493,7 @@ liquidity_change_base as (
         , ml.salt
     from 
     modify_liquidity_events ml 
+    where not (fee_amount0 = 0 and fee_amount1 = 0) -- remove events with zero fees 
 
     union all 
 
