@@ -69,3 +69,4 @@ sources:
       - name: EscrowFactoryV1_evt_SrcEscrowCreated
       - name: lop
       - name: ar
+      - name: lo
