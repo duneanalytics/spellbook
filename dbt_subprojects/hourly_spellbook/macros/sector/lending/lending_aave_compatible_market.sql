@@ -13,7 +13,7 @@ with
 reserve_data as (
   select
     r.evt_block_time as block_time,
-    date_trunc('hour', r.evt_block_time) as block_hour,
+    date_add('hour', 1, date_trunc('hour', r.evt_block_time)) as block_hour, -- take top of the hour
     r.evt_block_number as block_number,
     r.reserve as token_address,
     t.symbol,
