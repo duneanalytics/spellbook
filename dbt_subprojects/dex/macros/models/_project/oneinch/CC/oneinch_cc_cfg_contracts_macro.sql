@@ -4,14 +4,14 @@
 {%
     set samples = {
         "v1": {
-            "order_hash"    : "from_hex(creation_map['orderHash'])",
-            "hashlock"      : "from_hex(creation_map['hashlock'])",
-            "maker"         : "substr(cast(cast(creation_map['maker'] as uint256) as varbinary), 13)",
-            "taker"         : "substr(cast(cast(creation_map['taker'] as uint256) as varbinary), 13)",
-            "token"         : "substr(cast(cast(creation_map['token'] as uint256) as varbinary), 13)",
-            "amount"        : "cast(creation_map['amount'] as uint256)",
-            "safety_deposit": "cast(creation_map['safetyDeposit'] as uint256)",
-            "timelocks"     : "cast(cast(creation_map['timelocks'] as uint256) as varbinary)",
+            "order_hash"    : "from_hex(json_value(data, 'lax $.orderHash'))",
+            "hashlock"      : "from_hex(json_value(data, 'lax $.hashlock'))",
+            "maker"         : "substr(cast(cast(json_extract_scalar(data, '$.maker') as uint256) as varbinary), 13)",
+            "taker"         : "substr(cast(cast(json_extract_scalar(data, '$.taker') as uint256) as varbinary), 13)",
+            "token"         : "substr(cast(cast(json_extract_scalar(data, '$.token') as uint256) as varbinary), 13)",
+            "amount"        : "cast(json_extract_scalar(data, '$.amount') as uint256)",
+            "safety_deposit": "cast(json_extract_scalar(data, '$.safetyDeposit') as uint256)",
+            "timelocks"     : "cast(cast(json_extract_scalar(data, '$.timelocks') as uint256) as varbinary)",
             "factory"       : "cast(null as varbinary)",
             "escrow"        : "contract_address",
             "secret"        : "cast(null as varbinary)",
@@ -42,6 +42,7 @@
             "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "avalanche_c", "gnosis", "optimism", "base", "zksync", "linea", "sonic", "unichain"],
             "start": "2024-08-20",
             "addresses": "creations",
+            "initial_addresses": {"0xcd70bf33cfe59759851db21c83ea47b6b83bef6a": ["ethereum", "bnb", "polygon", "arbitrum", "avalanche_c", "gnosis", "optimism", "base", "zksync", "linea", "sonic", "unichain"]},
             "methods": {
                 "withdraw"      : dict(samples["v1"], selector="0x23305703", flow="'src_withdraw'", secret="secret"),
                 "withdrawTo"    : dict(samples["v1"], selector="0x6c10c0c8", flow="'src_withdraw'", secret="secret", receiver="target"),
@@ -56,6 +57,7 @@
             "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "avalanche_c", "gnosis", "optimism", "base", "zksync", "linea", "sonic", "unichain"],
             "start": "2024-08-20",
             "addresses": "creations",
+            "initial_addresses": {"0x9c3e06659f1c34f930ce97fcbce6e04ae88e535b": ["ethereum", "bnb", "polygon", "arbitrum", "avalanche_c", "gnosis", "optimism", "base", "zksync", "linea", "sonic", "unichain"]},
             "methods": {
                 "withdraw"      : dict(samples["v1"], selector="0x23305703", flow="'dst_withdraw'", secret="secret"),
                 "publicWithdraw": dict(samples["v1"], selector="0x0af97558", flow="'dst_withdraw'", secret="secret"),

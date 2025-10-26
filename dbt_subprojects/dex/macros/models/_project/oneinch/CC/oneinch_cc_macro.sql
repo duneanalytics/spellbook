@@ -36,8 +36,8 @@ iterations as (
                 , {{ method_data.get("receiver", "null") }} as receiver
                 , {{ method_data.get("nonce", "null") }} as nonce
             from (
-                select *
-                    , cast(json_parse({{ method_data.get("immutables", '"immutables"') }}) as map(varchar, varchar)) as creation_map
+                select {%- if contract_data.addresses == "creations" %} distinct {%- endif %} *
+                    , {{ method_data.get("immutables", '"immutables"') }} as data
                 from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}
                 where true
                     and call_block_date >= timestamp '{{ date_from }}'
