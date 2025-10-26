@@ -50,7 +50,7 @@ with base_union as (
                 , salt
         FROM
             {{ model }}
-        WHERE block_date >= date '2025-10-18'-- filtering to just current day
+        WHERE blockchain = 'ethereum' -- filtering to just current day
         {% if not loop.last %}
            UNION ALL
         {% endif %}
