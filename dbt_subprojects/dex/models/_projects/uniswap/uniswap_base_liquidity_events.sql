@@ -50,7 +50,7 @@ with base_union as (
                 , salt
         FROM
             {{ model }}
-        WHERE block_date >= date '2025-10-01'
+        WHERE block_date >= date '2025-10-19'
         {% if not loop.last %}
            UNION ALL
         {% endif %}
