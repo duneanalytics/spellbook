@@ -50,7 +50,7 @@ with base_union as (
                 , salt
         FROM
             {{ model }}
-        WHERE blockchain = 'ethereum'
+        WHERE blockchain = 'base'
         {% if not loop.last %}
            UNION ALL
         {% endif %}
