@@ -15,8 +15,8 @@ SELECT
     b.underlying AS underlying_token,
     t.symbol AS underlying_token_symbol,
     t.decimals AS decimals
-FROM {{ source('aave_plasma', 'StaticATokenLM_evt_Initialized') }} a
-JOIN {{ source('aave_plasma', 'StaticATokenFactory_evt_StaticTokenCreated') }} b
+FROM {{ source('aave_v3_plasma', 'StaticATokenLM_evt_Initialized') }} a
+JOIN {{ source('aave_v3_plasma', 'StaticATokenFactory_evt_StaticTokenCreated') }} b
 ON b.staticaToken = a.contract_address
 JOIN {{ source('aave_v3_plasma', 'VariableDebtToken_evt_Initialized') }} c
 ON a.aToken = c.contract_address
@@ -33,8 +33,8 @@ SELECT
     b.underlying AS underlying_token,
     t1.symbol AS underlying_token_symbol,
     t2.decimals AS decimals
-FROM {{ source('aave_plasma', 'StataTokenV2_evt_Initialized') }} a
-JOIN {{ source('aave_plasma', 'StataTokenFactory_evt_StataTokenCreated') }} b
+FROM {{ source('aave_v3_plasma', 'StataTokenV2_evt_Initialized') }} a
+JOIN {{ source('aave_v3_plasma', 'StataTokenFactory_evt_StataTokenCreated') }} b
 ON b.stataToken = a.contract_address
 JOIN {{ source('tokens', 'erc20') }} t1
 ON t1.blockchain = 'plasma'

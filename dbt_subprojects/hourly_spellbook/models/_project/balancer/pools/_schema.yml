@@ -3,10 +3,10 @@ version: 2
 models:
   - name: balancer_pools_tokens_weights
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, 'zkevm'
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, plasma, zkevm
       contributors: jacektrocinski, viniabussafi
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'bpt', 'transfers']
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'plasma', 'zkevm', 'bpt', 'transfers']
     description: >
       Token weights in Balancer pools.
     data_tests:
@@ -37,10 +37,10 @@ models:
 
   - name: balancer_pools_metrics_daily
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, plasma, zkevm
       contributors: viniabussafi, metacrypto
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'balancer', 'pool', 'stats', 'volume', 'tvl', 'fee']
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'plasma', 'zkevm', 'balancer', 'pool', 'stats', 'volume', 'tvl', 'fee']
     description: >
       This spell aggregates data from the trades, liquidity and protocol fees spells, by day and pool, while also displaying some basic information about the pool.
     data_tests:
@@ -124,10 +124,10 @@ models:
 
   - name: balancer_view_pools_latest
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm, plasma
       contributors: viniabussafi
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'balancer', 'pool', 'stats', 'volume', 'tvl', 'fee']
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'plasma', 'balancer', 'pool', 'stats', 'volume', 'tvl', 'fee']
     description: >
       This spell aggregates data from the trades, liquidity, and protocol fees spells, by pool, while also displaying information about the pool creation.
     data_tests:
@@ -159,11 +159,11 @@ models:
 
   - name: balancer_v3_lbps
     meta:
-      blockchain: ethereum
+      blockchain: ethereum, plasma
       project: balancer_v3
       contributors: viniabussafi
     config:
-      tags: ['ethereum', 'balancer', 'lbp']
+      tags: ['ethereum', 'plasma', 'balancer', 'lbp']
     description: >
       Record of the Liquidity Boostrapping Pools (LBP) of Balancer, an automated portfolio manager and trading platform, on Ethereum.
     columns:
