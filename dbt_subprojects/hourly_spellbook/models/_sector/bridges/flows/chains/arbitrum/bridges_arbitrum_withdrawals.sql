@@ -9,8 +9,6 @@
 
 {% set bridges_platforms = [
     'bridges_' + blockchain + '_cctp_v1_withdrawals'
-    , 'bridges_' + blockchain + '_hyperliquid_v1_withdrawals'
-    , 'bridges_' + blockchain + '_hyperliquid_v2_withdrawals'
 ] %}
 
 SELECT *
