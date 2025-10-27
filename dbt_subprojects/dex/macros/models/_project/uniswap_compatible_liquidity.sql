@@ -274,6 +274,11 @@ modify_liquidity_events as (
 
     get_calls as (
         select 
+            *,
+            -- for deterministic call↔event pairing within a tx
+            ROW_NUMBER() OVER (PARTITION BY call_tx_hash, tickLower, tickUpper, params_liquidityDelta, salt ORDER BY call_trace_address) AS call_rn
+        from (
+        select 
             contract_address,
             call_success,
             call_tx_hash,
@@ -296,9 +301,7 @@ modify_liquidity_events as (
             CAST(JSON_EXTRACT(params_json, '$.tickLower')      AS BIGINT)  AS tickLower,
             CAST(JSON_EXTRACT(params_json, '$.tickUpper')      AS BIGINT)  AS tickUpper,
             CAST(CAST(JSON_EXTRACT(params_json, '$.liquidityDelta') AS VARCHAR) AS INT256) AS params_liquidityDelta,
-
-            -- for deterministic call↔event pairing within a tx
-            ROW_NUMBER() OVER (PARTITION BY call_tx_hash ORDER BY call_trace_address) AS call_rn
+            FROM_HEX(JSON_EXTRACT_SCALAR(params_json, '$.salt'))   AS salt
         from (
             select 
                 *, 
@@ -310,6 +313,7 @@ modify_liquidity_events as (
             {%- if is_incremental() %}
             and {{ incremental_predicate('call_block_time') }}
             {%- endif %} 
+        ) 
         ) 
     ),
 
@@ -363,7 +367,7 @@ modify_liquidity_events as (
             liquidityDelta,    -- int256 in the event log
             salt,
             sqrtpricex96,
-            ROW_NUMBER() OVER (PARTITION BY evt_tx_hash ORDER BY evt_index) AS evt_rn
+            ROW_NUMBER() OVER (PARTITION BY evt_tx_hash, tickLower, tickUpper, liquidityDelta, salt ORDER BY evt_index) AS evt_rn
         from 
         enrich_liquidity_events 
     )
@@ -397,6 +401,10 @@ modify_liquidity_events as (
             ON cd.call_tx_hash = e.evt_tx_hash
             AND cd.call_block_date = e.evt_block_date 
             AND cd.call_block_number = e.evt_block_number
+            AND cd.tickLower = e.tickLower
+            AND cd.tickUpper = e.tickUpper
+            AND cd.salt = e.salt
+            AND cd.params_liquidityDelta = e.liquidityDelta
             AND cd.call_rn = e.evt_rn
 ), 
 
