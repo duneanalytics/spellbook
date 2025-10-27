@@ -14,7 +14,7 @@
     uniswap_compatible_v2_trades(
         blockchain = 'plume',
         project = 'izumi_finance',
-        version = '2',
+        version = '3',
         Pair_evt_Swap = source('izumi_finance_plume', 'iziswapclassicpair_evt_iziv2swap'),
         Factory_evt_PairCreated = source('izumi_finance_plume', 'iziswapclassicfactory_evt_paircreated')
     )

@@ -43,7 +43,7 @@ pools AS (
 SELECT
     'plume' AS blockchain,
     'izumi_finance' AS project,
-    '1' AS version,
+    '2' AS version,
     CAST(DATE_TRUNC('month', swaps.block_time) AS DATE) AS block_month,
     CAST(DATE_TRUNC('day', swaps.block_time) AS DATE) AS block_date,
     swaps.block_time,

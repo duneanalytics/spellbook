@@ -64,7 +64,7 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('izumi_finance_plume_base_trades_seed')
           filter:
-            version: 1
+            version: 2
 
 
   - name: izumi_finance_v2_plume_base_trades
@@ -84,4 +84,4 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('izumi_finance_v2_plume_base_trades_seed')
           filter:
-            version: 2
+            version: 3
