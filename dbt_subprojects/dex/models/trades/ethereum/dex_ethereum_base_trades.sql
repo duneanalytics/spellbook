@@ -77,8 +77,7 @@ with base_union as (
             , row_number() over (partition by tx_hash, evt_index order by tx_hash) as duplicates_rank
         FROM
             {{ base_model }}
-        WHERE block_date >= date '2025-10-13'
-        AND 
+        WHERE 
            token_sold_amount_raw >= 0 and token_bought_amount_raw >= 0
         {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
@@ -101,4 +100,4 @@ with base_union as (
     )
 }}
 
--- refresh modell
+-- refresh model
