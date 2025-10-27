@@ -46,5 +46,5 @@ SELECT 324 AS deposit_chain_id
 , evt_tx_hash AS tx_hash
 , evt_index
 , contract_address
-, {{ dbt_utils.generate_surrogate_key(['tx_hash', 'evt_index']) }} as bridge_transfer_id
+, {{ dbt_utils.generate_surrogate_key(['evt_tx_hash', 'evt_index']) }} as bridge_transfer_id
 FROM {{ source('zksync_v2_ethereum', 'l1erc20bridge_evt_withdrawalfinalized') }} d
