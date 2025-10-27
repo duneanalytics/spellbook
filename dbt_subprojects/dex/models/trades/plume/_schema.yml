@@ -27,5 +27,80 @@ models:
           seed_file: ref('rooster_protocol_plume_base_trades_seed')
           filter:
             version: 2
+  
+  - name: rooster_protocol_v2_plume_base_trades
+    meta:
+      blockchain: plume
+      sector: dex
+      project: rooster_protocol
+      contributors: captncrunch
+    config:
+      tags: ["plume", "dex", "trades", "algebra"]
+    description: "Rooster Protocol Plume base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('rooster_protocol_v2_plume_base_trades_seed')
+          filter:
+            version: 3
+
+  - name: izumi_finance_plume_base
+    meta:
+      blockchain: plume
+      sector: dex
+      project: rooster_protocol
+      contributors: get620v
+    config:
+      tags: ["plume", "dex", "trades", "maverick"]
+    description: "Rooster Protocol Plume base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('rooster_protocol_plume_base_trades_seed')
+          filter:
+            version: 2
 
 
+  - name: izumi_finance_v2_plume_base
+    meta:
+      blockchain: plume
+      sector: dex
+      project: izumi_finance
+      contributors: captncrunch
+    config:
+      tags: ["plume", "dex", "trades", "izumi finance"]
+    description: "Izumi Finance Plume base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('izumi_finance_v2_plume_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: izumi_finance_plume_base
+    meta:
+      blockchain: plume
+      sector: dex
+      project: izumi_finance
+      contributors: captncrunch
+    config:
+      tags: ["plume", "dex", "trades", "izumi finance"]
+    description: "Izumi Finance Plume base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('izumi_finance_plume_base_trades_seed')
+          filter:
+            version: 1
