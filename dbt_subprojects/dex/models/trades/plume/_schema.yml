@@ -47,7 +47,7 @@ models:
           filter:
             version: 3
 
-  - name: izumi_finance_plume_base
+  - name: izumi_finance_plume_base_trades
     meta:
       blockchain: plume
       sector: dex
@@ -67,7 +67,7 @@ models:
             version: 2
 
 
-  - name: izumi_finance_v2_plume_base
+  - name: izumi_finance_v2_plume_base_trades
     meta:
       blockchain: plume
       sector: dex
