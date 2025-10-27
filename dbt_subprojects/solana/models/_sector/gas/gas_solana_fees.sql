@@ -1,7 +1,11 @@
 {{ config(
     schema = 'gas_solana',
     alias = 'fees',
-    materialized = 'view'
+    materialized = 'view',
+    post_hook='{{ expose_spells(\'["solana"]\',
+                                    "sector",
+                                    "gas",
+                                    \'["0xBoxer"]\') }}'
 ) }}
 
 WITH all_fees AS (
