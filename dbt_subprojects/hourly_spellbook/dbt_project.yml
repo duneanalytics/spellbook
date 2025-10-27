@@ -94,6 +94,8 @@ models:
           +schema: safe_goerli
         base:
           +schema: safe_base
+        plasma:
+          +schema: safe_plasma
       cow_protocol:
         +schema: cow_protocol
         ethereum:

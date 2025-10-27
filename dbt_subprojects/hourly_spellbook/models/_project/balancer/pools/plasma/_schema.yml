@@ -24,7 +24,7 @@ models:
   - name: balancer_v3_plasma_pools_tokens_weights
     meta:
       blockchain: plasma
-      project: balancer
+      project: balancer_v3
       contributors: amandadalle, giovanasoldatelli, tiagoponciano
     config:
       tags: ['plasma', 'balancer', 'pools', 'tokens', 'weights']
