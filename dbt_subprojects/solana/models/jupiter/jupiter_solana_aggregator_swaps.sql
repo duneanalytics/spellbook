@@ -7,7 +7,7 @@
         file_format = 'delta',
         incremental_strategy='merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['log_index','tx_id','output_mint','input_mint'],
+        unique_key = ['block_month','amm','log_index','tx_id','output_mint','input_mint'],
         pre_hook='{{ enforce_join_distribution("PARTITIONED") }}',
         post_hook='{{ expose_spells(\'["jupiter"]\',
                                     "project",
