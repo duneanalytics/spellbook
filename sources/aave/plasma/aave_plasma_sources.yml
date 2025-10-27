@@ -3,6 +3,10 @@ version: 2
 sources:
   - name: aave_v3_plasma
     description: "Decoded contracts for aave v3 on Plasma"
+    
+    database: dune_v2_raw 
+    schema: aave_v3_plasma
+    
     tables:
       - name: StataToken_evt_Initialized
       - name: StataTokenFactory_call_createDeterministic
