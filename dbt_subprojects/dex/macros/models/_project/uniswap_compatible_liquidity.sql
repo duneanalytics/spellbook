@@ -467,8 +467,8 @@ liquidity_change_base as (
         , ml.event_type 
         , ml.token0 
         , ml.token1 
-        , ml.amount0 
-        , ml.amount1 
+        , ml.amount0 - fee_amount0 as amount0
+        , ml.amount1 - fee_amount1 as amount1
         , ml.liquidityDelta
         , ml.sqrtPriceX96
         , ml.tickLower
