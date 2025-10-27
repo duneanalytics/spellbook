@@ -1,8 +1,0 @@
-version: 2
-
-sources:
-  - name: hyperliquid_arbitrum
-    description: "Hyperliquid's native bridge events on Arbitrum"
-    tables:
-      - name: hyperliquid_bridge_evt_deposit
-      - name: hyperliquid_bridge_evt_withdraw
