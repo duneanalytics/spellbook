@@ -79,7 +79,7 @@ models:
     config:
       tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
     description: "Across's v2 bridge withdrawals events on Ethereum"
-  - name: bridges_ethereum_zksync_native_v2_deposits
+  - name: bridges_ethereum_zkync_native_v2_deposits
     meta:
       blockchain: ethereum
       sector: bridges
@@ -88,7 +88,7 @@ models:
     config:
       tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
     description: "zkSync's v2 bridge deposits events on Ethereum"
-  - name: bridges_ethereum_zksync_native_v2_withdrawals
+  - name: bridges_ethereum_zkync_native_v2_withdrawals
     meta:
       blockchain: ethereum
       sector: bridges
