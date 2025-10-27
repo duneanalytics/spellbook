@@ -4,4 +4,4 @@ sources:
   - name: butter_base
     description: "Butter Protocol v2 bridge events on Base"
     tables:
-      - name: ButterRouterV2_evt_swapandbridge
+      - name: butterrouterV2_evt_swapandbridge
