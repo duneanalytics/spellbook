@@ -51,7 +51,7 @@ models:
     meta:
       blockchain: plume
       sector: dex
-      project: rooster_protocol
+      project: izumi_finance
       contributors: get620v
     config:
       tags: ["plume", "dex", "trades", "maverick"]
