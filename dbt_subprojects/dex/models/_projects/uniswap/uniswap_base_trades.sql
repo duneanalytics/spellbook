@@ -61,13 +61,118 @@ bunni_fees as (
     from
         {{ model.source }}
     {% if is_incremental() %}
-    where
-        {{ incremental_predicate('block_time') }}
+    where {{ incremental_predicate('evt_block_time') }}
     {% endif %}
     {% if not loop.last %}
     union all 
     {% endif %}
     {% endfor %}
+),
+
+flaunch_hookswap as (
+    select 
+        * 
+    from 
+    {{ source('flaunch_base', 'positionmanager_v2_evt_hookswap') }} 
+    {% if is_incremental() %}
+    where {{ incremental_predicate('evt_block_time') }}
+    {% endif %}
+),
+
+flaunch_hookfee as (
+    select 
+        * 
+    from 
+    {{ source('flaunch_base', 'positionmanager_v2_evt_hookfee') }} 
+    {% if is_incremental() %}
+    where {{ incremental_predicate('evt_block_time') }}
+    {% endif %}
+),
+
+flaunch_poolswap as (
+    select 
+        * 
+    from 
+    {{ source('flaunch_base', 'positionmanager_v2_evt_poolswap') }} 
+    {% if is_incremental() %}
+    where {{ incremental_predicate('evt_block_time') }}
+    {% endif %}
+),
+
+univ4_base_trades as (
+    select 
+        *
+        , 'base' as blockchain 
+    from 
+    {{ source('uniswap_v4_base', 'PoolManager_evt_Swap') }} 
+    {% if is_incremental() %}
+    where {{ incremental_predicate('evt_block_time') }}
+    {% endif %}
+),
+
+flaunch_prep1 as (
+    select
+        a.evt_block_date 
+        , a.evt_tx_hash
+        , a.evt_index
+        , a.id
+        , ABS(ROUND(
+            CASE
+                WHEN b.feeAmount0 IS NOT NULL and b.feeAmount1 = 0
+                    THEN CAST(b.feeAmount0 AS DOUBLE) / CAST(a.amount0 AS DOUBLE)
+                WHEN b.feeAmount1 IS NOT NULL and b.feeAmount0 = 0
+                    THEN CAST(b.feeAmount1 AS DOUBLE) / CAST(a.amount1 AS DOUBLE)
+            END, 10)) AS fee
+        , 'base' as blockchain
+        , b.feeAmount0
+        , b.feeAmount1
+    from
+    flaunch_hookswap a
+    left join 
+    ( 
+        select 
+            * 
+            , evt_index - 1 as evt_2 
+        from 
+        flaunch_hookfee
+    ) b
+        on a.evt_tx_hash = b.evt_tx_hash
+        and a.id = b.id
+        and a.evt_index = b.evt_2
+),
+
+flaunch_fees as (
+    select 
+        distinct -- we can't join on index, for cases where there are multiple combo of uniamount0, uniamount1 choose just one to avoid duplicates, this never happens, just future proofing
+        evt_block_date 
+        , evt_tx_hash 
+        , id 
+        , fee 
+        , blockchain 
+        , uniAmount0 
+        , uniAmount1 
+        , 'flaunch' as hooks 
+    from (
+    select
+        a.*
+        , b.uniAmount0
+        , b.uniAmount1
+    from
+    flaunch_prep1 a
+    left join
+    (
+        select 
+            evt_tx_hash
+            , evt_block_number
+            , evt_index + 1 as evt_index
+            , uniAmount0
+            , uniAmount1 
+        from 
+        flaunch_base.positionmanager_v2_evt_poolswap
+    ) b
+        on a.evt_tx_hash = b.evt_tx_hash
+        and a.evt_index = b.evt_index
+    ) 
 ),
 
 get_trades as (
@@ -117,11 +222,11 @@ add_fees as (
         ) as uni_fee 
         , coalesce (
             bf.fee/1e6
-            , 0
+            , ff.fee 
         ) as hooks_fee 
-        coalesce (
+        , coalesce (
             bf.hooks 
-            , 'unlabelled'
+            , ff.hooks
         ) as hooks 
     from 
     get_trades gt 
@@ -146,6 +251,23 @@ add_fees as (
         and gt.evt_index = bf.evt_index
         and gt.maker = bf.id 
         and gt.version = '4'
+    left join 
+    univ4_base_trades uni_v4_base 
+        on gt.blockchain = uni_v4_base.blockchain 
+        and gt.block_date = uni_v4_base.evt_block_date
+        and gt.tx_hash = uni_v4_base.evt_tx_hash 
+        and gt.evt_index = uni_v4_base.evt_index 
+        and gt.version = 'base'
+    left join 
+    flaunch_fees ff 
+        on gt.blockchain = ff.blockchain 
+        and gt.blockchain = 'base'
+        and gt.block_date = ff.evt_block_date
+        and gt.tx_hash = ff.evt_tx_hash
+        and gt.maker = ff.id 
+        and gt.version = '4'
+        and uni_v4_base.amount0 = ff.uniAmount0 
+        and uni_v4_base.amount1 = ff.uniAmount1
 )
 
     select
@@ -186,4 +308,5 @@ add_fees as (
         , hooks 
     from 
     add_fees
+
 

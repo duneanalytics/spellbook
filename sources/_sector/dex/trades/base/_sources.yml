@@ -239,3 +239,8 @@ sources:
   - name: bunni_v2_base
     tables:
       - name: bunnihook_evt_swap
+  - name: flaunch_base
+    tables:
+      - name: positionmanager_v2_evt_hookswap
+      - name: positionmanager_v2_evt_hookfee
+      - name: positionmanager_v2_evt_poolswap
