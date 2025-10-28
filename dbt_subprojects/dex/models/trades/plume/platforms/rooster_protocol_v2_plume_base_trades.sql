@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'rooster_protocol_plume',
+        schema = 'rooster_protocol_v2_plume',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
