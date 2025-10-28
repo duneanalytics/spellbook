@@ -1,7 +1,7 @@
 {{ config(
         schema = 'balancer',
         alias = 'flashloans',
-        post_hook='{{ expose_spells(blockchains = \'["ethereum","arbitrum", "optimism", "polygon", "gnosis", "avalanche_c", "base", "zkevm"]\',
+        post_hook='{{ expose_spells(blockchains = \'["ethereum","arbitrum", "optimism", "polygon", "gnosis", "avalanche_c", "base", "zkevm", "plasma"]\',
                                 spell_type = "project",
                                 spell_name = "balancer",
                                 contributors = \'["hildobby", "viniabussafi"]\') }}'
@@ -17,6 +17,7 @@ ref('balancer_v2_ethereum_flashloans')
 , ref('balancer_v2_avalanche_c_flashloans')
 , ref('balancer_v2_base_flashloans')
 , ref('balancer_v2_zkevm_flashloans')
+, ref('balancer_v3_plasma_flashloans')
 ] %}
 
 SELECT *
