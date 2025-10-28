@@ -1,6 +1,7 @@
 {% macro cctp_v1_deposits(blockchain) %}
 
 SELECT '{{blockchain}}' AS deposit_chain
+, d.destinationDomain AS withdrawal_chain_id
 , i.blockchain AS withdrawal_chain
 , 'CCTP' AS bridge_name
 , '1' AS bridge_version
