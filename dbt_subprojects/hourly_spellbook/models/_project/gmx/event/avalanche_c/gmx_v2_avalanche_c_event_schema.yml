@@ -143,6 +143,8 @@ models:
         description: The timestamp when the order was last updated.
       - name: valid_from_time
         description: The time from which the order becomes valid for execution.
+      - name: src_chain_id
+        description: The identifier of the source blockchain for the multichain transaction.
       - &is_long
         name: is_long
         description: A boolean indicating whether the position is long
