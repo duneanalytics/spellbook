@@ -12,13 +12,17 @@
 
 {% set v4_models = [
     ref('uniswap_v4_arbitrum_base_trades')
-    , ref('uniswap_v4_ethereum_base_trades')
-    , ref('uniswap_v4_unichain_base_trades')
+    , ref('uniswap_v4_avalanche_c_base_trades')
     , ref('uniswap_v4_base_base_trades')
+    , ref('uniswap_v4_blast_base_trades')
+    , ref('uniswap_v4_bnb_base_trades')
+    , ref('uniswap_v4_ethereum_base_trades')
+    , ref('uniswap_v4_ink_base_trades')
+    , ref('uniswap_v4_optimism_base_trades')
+    , ref('uniswap_v4_polygon_base_trades')
+    , ref('uniswap_v4_unichain_base_trades')
     , ref('uniswap_v4_worldchain_base_trades')
     , ref('uniswap_v4_zora_base_trades')
-    , ref('uniswap_v4_blast_base_trades')
-    , ref('uniswap_v4_polygon_base_trades')
 ] %}
 
 {% set bunni_models = [
@@ -289,9 +293,11 @@ prices AS (
         , price as price_usd 
     from
     {{ source('prices','usd_with_native') }}
+    where 1 = 1 
     {% if is_incremental() %}
-    where {{ incremental_predicate('minute') }}
+    and {{ incremental_predicate('minute') }}
     {% endif %}
+    and blockchain != 'solana' -- filter solana tokens 
 )
 
     select
@@ -305,6 +311,8 @@ prices AS (
         , token_bought_symbol
         , token_sold_symbol
         , token_pair
+        , token_bought_amount * pb.price_usd as token_bought_amount_usd 
+        , token_sold_amount * pa.price_usd as token_sold_amount_usd
         , token_bought_amount
         , token_sold_amount
         , token_bought_amount_raw
@@ -320,12 +328,18 @@ prices AS (
         , tx_to
         , evt_index
         -- uni fee columns 
-        , token_sold_amount * uni_fee * pa.price_usd as uni_fee_amount_usd
+        , coalesce (
+            token_sold_amount * uni_fee * pa.price_usd
+            , ((token_bought_amount * pb.price_usd) / (1 - uni_fee)) - (token_bought_amount * pb.price_usd)
+            ) as uni_fee_amount_usd
         , token_sold_amount * uni_fee as uni_fee_amount 
         , token_sold_amount_raw * uni_fee as uni_fee_amount_raw
         , uni_fee * 1e2 as uni_fee -- convert back to correct value 
         -- hooks fee columns 
-        , token_sold_amount * hooks_fee * pa.price_usd as hooks_fee_amount_usd
+        , coalesce (
+            token_sold_amount * hooks_fee * pa.price_usd
+            , ((token_bought_amount * pb.price_usd) / (1 - hooks_fee)) - (token_bought_amount * pb.price_usd)
+            ) as hooks_fee_amount_usd
         , token_sold_amount * hooks_fee as hooks_fee_amount 
         , token_sold_amount_raw * hooks_fee as hooks_fee_amount_raw
         , hooks_fee * 1e2 as hooks_fee -- convert back to correct value 
@@ -338,4 +352,10 @@ prices AS (
         and af.block_minute = pa.price_minute 
         and af.blockchain = pa.price_blockchain 
         and af.token_sold_address = pa.price_contract_address
+    left join 
+    prices pb 
+        on af.block_date = pb.price_day 
+        and af.block_minute = pb.price_minute 
+        and af.blockchain = pb.price_blockchain 
+        and af.token_bought_address = pb.price_contract_address
 
