@@ -236,3 +236,6 @@ sources:
   - name: carbon_defi_base
     tables:
       - name: CarbonController_evt_TokensTraded
+  - name: bunni_v2_base
+    tables:
+      - name: bunnihook_evt_swap

@@ -16,6 +16,14 @@
     , ref('uniswap_v4_unichain_base_trades')
 ] %}
 
+{% set bunni_models = [
+    {"source": source('bunni_v2_base', 'bunnihook_evt_swap'), "chain": "base"}
+    , {"source": source('bunni_v2_arbitrum', 'bunnihook_evt_swap'), "chain": "arbitrum"}
+    , {"source": source('bunni_v2_ethereum', 'bunnihook_evt_swap'), "chain": "ethereum"}
+    , {"source": source('bunni_v2_unichain', 'bunnihook_evt_swap'), "chain": "unichain"}
+    , {"source": source('bunni_v2_bnb', 'bunnihook_evt_swap'), "chain": "bnb"}
+] %}
+
 with 
 
 v4_trades as (
@@ -38,6 +46,38 @@ v4_trades as (
     union all 
     {% endif %}
     {% endfor %}
+),
+
+bunni_fees_tmp as (
+    {% for model in bunni_models %}
+    select
+        '{{ model.chain }}' as blockchain
+        , evt_tx_hash  as tx_hash
+        , fee  
+        , evt_block_date as block_date
+        , id 
+    from
+        {{ model.source }}
+    {% if is_incremental() %}
+    where
+        {{ incremental_predicate('block_time') }}
+    {% endif %}
+    {% if not loop.last %}
+    union all 
+    {% endif %}
+    {% endfor %}
+),
+
+bunni_fees as (
+    select 
+        , blockchain
+        , tx_hash
+        , block_date 
+        , id 
+        , min(fee) as fee 
+    from 
+    bunni_fees_tmp
+    group by 1, 2, 3, 4 -- fees are the same across the ids in the same txn, group here to avoid duplicates
 ),
 
 get_trades as (
@@ -79,12 +119,13 @@ add_fees as (
     select 
         gt.*
         , coalesce (
-            v4.fee
+            v4.fee/1e6
             , case 
-                when gt.version = '2' then unp.fee 
+                when gt.version = '2' then unp.fee/1e2 
                 when gt.version = '3' then unp.fee/1e6 
-            end -- v2 fees are set to 0.25 while v3 fees are the raw values
+            end -- v2 fees are set to 0.3 while v3 fees are the raw values
         ) as fee 
+        , bf.fee/1e6 as bunni_fee 
     from 
     get_trades gt 
     left join 
@@ -100,6 +141,13 @@ add_fees as (
         and gt.project_contract_address = unp.pool 
         and gt.version = unp.version 
         and gt.version in ('2', '3')
+    left join 
+    bunni_fees bf 
+        on gt.blockchain = bf.blockchain 
+        and gt.block_date = bf.block_date
+        and gt.tx_hash = bf.tx_hash
+        and gt.maker = bf.id 
+        and gt.version = '4'
 )
 
     select
@@ -131,7 +179,7 @@ add_fees as (
         , token_sold_amount * fee * 1 as fee_amount_usd
         , token_sold_amount * fee as fee_amount 
         , token_sold_amount_raw * fee as fee_amount_raw
-        , fee 
+        , fee * 1e2 as fee -- convert back to correct value 
     from 
     add_fees
 
