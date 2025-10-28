@@ -5,8 +5,6 @@ sources:
     tables:
       - name: maverickv2factory_evt_poolcreated
       - name: maverickv2pool_evt_poolswap
-  - name: rooster_protocol_v2_plume
-    tables:
       - name: algebrapool_evt_swap
       - name: algebrafactory_evt_pool
   - name: izumi_finance_plume
