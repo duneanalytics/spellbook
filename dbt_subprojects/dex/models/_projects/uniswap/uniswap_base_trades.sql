@@ -142,6 +142,7 @@ flaunch_prep1 as (
         flaunch_hookfee
     ) b
         on a.evt_tx_hash = b.evt_tx_hash
+        and a.evt_block_date = b.evt_block_date 
         and a.id = b.id
         and a.evt_index = b.evt_2
 ),
@@ -168,6 +169,7 @@ flaunch_fees as (
     (
         select 
             evt_tx_hash
+            , evt_block_date 
             , evt_block_number
             , evt_index + 1 as evt_index
             , uniAmount0
@@ -176,6 +178,7 @@ flaunch_fees as (
         flaunch_poolswap
     ) b
         on a.evt_tx_hash = b.evt_tx_hash
+        and a.evt_block_date = b.evt_block_date 
         and a.evt_index = b.evt_index
     ) 
 ),
@@ -188,6 +191,7 @@ get_trades as (
         , block_month
         , block_date
         , block_time
+        , date_trunc('minute', block_time) as block_minute 
         , block_number
         , token_bought_symbol
         , token_sold_symbol
@@ -262,7 +266,8 @@ add_fees as (
         and gt.block_date = uni_v4_base.evt_block_date
         and gt.tx_hash = uni_v4_base.evt_tx_hash 
         and gt.evt_index = uni_v4_base.evt_index 
-        and gt.version = 'base'
+        and gt.version = '4'
+        and gt.blockchain = 'base'
     left join 
     flaunch_fees ff 
         on gt.blockchain = ff.blockchain 
@@ -273,6 +278,20 @@ add_fees as (
         and gt.version = '4'
         and uni_v4_base.amount0 = ff.uniAmount0 
         and uni_v4_base.amount1 = ff.uniAmount1
+),
+
+prices AS (
+    select
+        blockchain as price_blockchain
+        , contract_address as price_contract_address
+        , minute as price_minute
+        , date_trunc('day', minute) as price_day 
+        , price as price_usd 
+    from
+    {{ source('prices','usd_with_native') }}
+    {% if is_incremental() %}
+    where {{ incremental_predicate('minute') }}
+    {% endif %}
 )
 
     select
@@ -301,17 +320,22 @@ add_fees as (
         , tx_to
         , evt_index
         -- uni fee columns 
-        , token_sold_amount * uni_fee * 1 as uni_fee_amount_usd
+        , token_sold_amount * uni_fee * pa.price_usd as uni_fee_amount_usd
         , token_sold_amount * uni_fee as uni_fee_amount 
         , token_sold_amount_raw * uni_fee as uni_fee_amount_raw
         , uni_fee * 1e2 as uni_fee -- convert back to correct value 
         -- hooks fee columns 
-        , token_sold_amount * hooks_fee * 1 as hooks_fee_amount_usd
+        , token_sold_amount * hooks_fee * pa.price_usd as hooks_fee_amount_usd
         , token_sold_amount * hooks_fee as hooks_fee_amount 
         , token_sold_amount_raw * hooks_fee as hooks_fee_amount_raw
         , hooks_fee * 1e2 as hooks_fee -- convert back to correct value 
         , hooks 
     from 
-    add_fees
-
+    add_fees af 
+    left join 
+    prices pa 
+        on af.block_date = pa.price_day 
+        and af.block_minute = pa.price_minute 
+        and af.blockchain = pa.price_blockchain 
+        and af.token_sold_address = pa.price_contract_address
 
