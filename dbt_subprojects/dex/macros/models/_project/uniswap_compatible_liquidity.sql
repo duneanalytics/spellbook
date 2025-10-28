@@ -424,6 +424,11 @@ fee_collection as (
         , case 
             when amount1 > modify_amount1 then amount1 - modify_amount1 else 0 
         end as amount1
+        , cast(null as int256) as liquidityDelta
+        , cast(null as uint256) as sqrtPriceX96
+        , cast(null as double) as tickLower
+        , cast(null as double) as tickUpper
+        , cast(null as varbinary) as salt 
     from 
     join_with_pools
 ),
@@ -438,6 +443,11 @@ swap_events as (
         , id 
         , -1 * amount0 as amount0
         , -1 * amount1 as amount1
+        , cast(liquidity as int256) as liquidityDelta
+        , sqrtPriceX96
+        , cast(null as double) as tickLower
+        , cast(null as double) as tickUpper
+        , cast(null as varbinary) as salt 
     from 
     {{ PoolManager_evt_Swap }}
     {%- if is_incremental() %}
@@ -458,6 +468,11 @@ liquidity_change_base as (
         , gp.token1 
         , ml.amount0 
         , ml.amount1 
+        , ml.liquidityDelta
+        , ml.sqrtPriceX96
+        , ml.tickLower
+        , ml.tickUpper
+        , ml.salt
     from 
     modify_liquidity_events ml 
     inner join 
@@ -477,7 +492,12 @@ liquidity_change_base as (
         , gp.token0 
         , gp.token1 
         , se.amount0 
-        , se.amount1 
+        , se.amount1
+        , se.liquidityDelta
+        , se.sqrtPriceX96
+        , se.tickLower
+        , se.tickUpper
+        , se.salt
     from 
     swap_events se
     inner join 
@@ -498,6 +518,11 @@ liquidity_change_base as (
         , token1 
         , -amount0 as amount0
         , -amount1 as amount1
+        , liquidityDelta
+        , sqrtPriceX96
+        , tickLower
+        , tickUpper
+        , salt
     from 
     fee_collection
     where tx_hash not in (select evt_tx_hash from swap_events)
@@ -519,6 +544,11 @@ liquidity_change_base as (
         , token1
         , CAST(amount0 AS double) as amount0_raw
         , CAST(amount1 AS double) as amount1_raw
+        , liquidityDelta
+        , sqrtPriceX96
+        , tickLower
+        , tickUpper
+        , salt
     from 
     liquidity_change_base 
 
