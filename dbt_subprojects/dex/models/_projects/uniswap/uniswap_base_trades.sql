@@ -48,7 +48,7 @@ v4_trades as (
     {% endfor %}
 ),
 
-bunni_fees_tmp as (
+bunni_fees as (
     {% for model in bunni_models %}
     select
         '{{ model.chain }}' as blockchain
@@ -56,6 +56,8 @@ bunni_fees_tmp as (
         , fee  
         , evt_block_date as block_date
         , id 
+        , evt_index + 1 as evt_index
+        , 'bunni' as hooks 
     from
         {{ model.source }}
     {% if is_incremental() %}
@@ -66,18 +68,6 @@ bunni_fees_tmp as (
     union all 
     {% endif %}
     {% endfor %}
-),
-
-bunni_fees as (
-    select 
-        , blockchain
-        , tx_hash
-        , block_date 
-        , id 
-        , min(fee) as fee 
-    from 
-    bunni_fees_tmp
-    group by 1, 2, 3, 4 -- fees are the same across the ids in the same txn, group here to avoid duplicates
 ),
 
 get_trades as (
@@ -124,8 +114,15 @@ add_fees as (
                 when gt.version = '2' then unp.fee/1e2 
                 when gt.version = '3' then unp.fee/1e6 
             end -- v2 fees are set to 0.3 while v3 fees are the raw values
-        ) as fee 
-        , bf.fee/1e6 as bunni_fee 
+        ) as uni_fee 
+        , coalesce (
+            bf.fee/1e6
+            , 0
+        ) as hooks_fee 
+        coalesce (
+            bf.hooks 
+            , 'unlabelled'
+        ) as hooks 
     from 
     get_trades gt 
     left join 
@@ -146,6 +143,7 @@ add_fees as (
         on gt.blockchain = bf.blockchain 
         and gt.block_date = bf.block_date
         and gt.tx_hash = bf.tx_hash
+        and gt.evt_index = bf.evt_index
         and gt.maker = bf.id 
         and gt.version = '4'
 )
@@ -175,11 +173,17 @@ add_fees as (
         , tx_from
         , tx_to
         , evt_index
-        -- fee columns 
-        , token_sold_amount * fee * 1 as fee_amount_usd
-        , token_sold_amount * fee as fee_amount 
-        , token_sold_amount_raw * fee as fee_amount_raw
-        , fee * 1e2 as fee -- convert back to correct value 
+        -- uni fee columns 
+        , token_sold_amount * uni_fee * 1 as uni_fee_amount_usd
+        , token_sold_amount * uni_fee as uni_fee_amount 
+        , token_sold_amount_raw * uni_fee as uni_fee_amount_raw
+        , uni_fee * 1e2 as uni_fee -- convert back to correct value 
+        -- hooks fee columns 
+        , token_sold_amount * hooks_fee * 1 as hooks_fee_amount_usd
+        , token_sold_amount * hooks_fee as hooks_fee_amount 
+        , token_sold_amount_raw * hooks_fee as hooks_fee_amount_raw
+        , hooks_fee * 1e2 as hooks_fee -- convert back to correct value 
+        , hooks 
     from 
     add_fees
 
