@@ -11,7 +11,7 @@
 }}
 
 {{
-    uniswap_compatible_v2_trades(
+    maverick_compatible_v2_trades(
         blockchain = 'plume',
         project = 'rooster_protocol',
         version = '3',
