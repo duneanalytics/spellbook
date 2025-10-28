@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'izumi_finance_plume',
+        schema = 'izumi_finance_v2_plume',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
