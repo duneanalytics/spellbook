@@ -13,7 +13,5 @@ sources:
     tables:
       - name: iziswappool_evt_swap
       - name: iziswapfactory_evt_newpool 
-  - name: izumi_finance_v2_plume
-    tables:
       - name: iziswapclassicpair_evt_iziv2swap
       - name: iziswapclassicfactory_evt_paircreated
