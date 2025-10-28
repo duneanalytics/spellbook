@@ -5,11 +5,9 @@
     )
 }}
 
-WITH chain_ids AS (
-    SELECT id, blockchain
+SELECT id, blockchain
     FROM (VALUES
-        (1, 'ethereum')
-        , (127, 'polygon')
-        , (56, 'bnb')
-        ) AS x (id, blockchain)
-    )
+    (1, 'ethereum')
+    , (127, 'polygon')
+    , (56, 'bnb')
+    ) AS x (id, blockchain)
