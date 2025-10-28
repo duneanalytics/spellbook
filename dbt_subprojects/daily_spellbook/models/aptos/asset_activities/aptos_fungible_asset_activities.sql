@@ -20,72 +20,9 @@
 -- 2. entry_function is not included (join against user_transactions)
 -- 3. Excludes freeze events (uncommon) `0x1::fungible_asset::Frozen`
 
-{% if is_incremental() -%}
-WITH max_fab_version AS (
-    SELECT MAX(tx_version) AS max_tx_version
-    FROM {{ ref('aptos_fungible_asset_balances') }}
-)
-, fa_activities AS (
-{% else -%}
-WITH fa_activities AS (
-{% endif -%}
-    SELECT
-        ev.tx_version,
-        ev.tx_hash,
-        ev.block_date,
-        ev.block_time,
-        --
-        event_index,
-        event_type,
-        address_32_from_hex('0x' || LPAD(LTRIM(json_extract_scalar(data, '$.store'), '0x'), 64, '0')) AS storage_id,
-        CAST(json_extract_scalar(data, '$.amount') AS uint256) AS amount,
-        fab.owner_address,
-        fab.asset_type
-    FROM {{ source('aptos', 'events') }} ev
-    LEFT JOIN {{ ref('aptos_fungible_asset_balances') }} fab
-        ON ev.tx_version = fab.tx_version
-        AND address_32_from_hex(json_extract_scalar(ev.data, '$.store')) = fab.storage_id
-        AND fab.token_standard = 'v2'
-        {% if is_incremental() -%}
-        AND {{ incremental_predicate('fab.block_time') }}
-        {% endif -%}
-    {% if is_incremental() -%}
-    CROSS JOIN max_fab_version
-    {% endif -%}
-    WHERE 1=1
-        AND ev.block_date >= DATE('2024-05-29')
-        AND event_type IN (
-            '0x1::fungible_asset::Deposit',
-            '0x1::fungible_asset::Withdraw'
-        )
-        {% if is_incremental() -%}
-        AND {{ incremental_predicate('ev.block_time') }}
-        AND ev.tx_version < max_fab_version.max_tx_version
-        {% endif -%}
-)
-
-{% if is_incremental() -%}
+{% if not is_incremental() -%}
 /*
-    for incremental builds, only read from table without end date
-*/
-SELECT
-    tx_version,
-    tx_hash,
-    block_date,
-    block_time,
-    date(date_trunc('month', block_time)) as block_month,
-    --
-    event_index,
-    event_type,
-    owner_address,
-    storage_id,
-    asset_type,
-    amount,
-    'v2' AS token_standard
-FROM fa_activities
-{% else -%}
-/*
-    for historical builds, read from all tables
+    for historical builds, read from all three tables with no filters
 */
 SELECT
     tx_version,
@@ -127,7 +64,7 @@ SELECT
     tx_hash,
     block_date,
     block_time,
-    date(date_trunc('month', block_time)) as block_month,
+    block_month,
     --
     event_index,
     event_type,
@@ -135,6 +72,28 @@ SELECT
     storage_id,
     asset_type,
     amount,
-    'v2' AS token_standard
-FROM fa_activities
+    token_standard
+FROM {{ ref('aptos_fungible_asset_fa_activities') }}
+
+{% else -%}
+/*
+    for incremental builds, only read from fa_activities with block_time filter
+*/
+
+SELECT
+    tx_version,
+    tx_hash,
+    block_date,
+    block_time,
+    block_month,
+    --
+    event_index,
+    event_type,
+    owner_address,
+    storage_id,
+    asset_type,
+    amount,
+    token_standard
+FROM {{ ref('aptos_fungible_asset_fa_activities') }}
+WHERE {{ incremental_predicate('block_time') }}
 {% endif -%}
