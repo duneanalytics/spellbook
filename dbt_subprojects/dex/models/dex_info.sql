@@ -99,7 +99,7 @@ FROM (VALUES
     , ('chronos', 'Chronos', 'Direct', 'ChronosFi_')
     , ('zyberswap', 'Zyberswap', 'Direct', 'zyberswap')
     , ('solidlizard', 'SolidLizard', 'Direct', 'solidlizardfi')
-    , ('pharaoh', 'Pharaoh', 'Direct', 'pharaoh')
+    , ('pharaoh', 'Pharaoh', 'Direct', 'PharaohExchange')
     , ('ramses', 'Ramses', 'Direct', 'ramses')
     , ('scale', 'Scale', 'Direct', 'scale')
     , ('baseswap', 'Baseswap', 'Direct', 'Baseswap')
