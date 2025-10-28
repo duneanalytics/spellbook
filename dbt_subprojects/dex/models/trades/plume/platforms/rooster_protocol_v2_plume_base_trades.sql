@@ -15,7 +15,7 @@
         blockchain = 'plume',
         project = 'rooster_protocol',
         version = '3',
-        Pair_evt_Swap = source('rooster_protocol_plume', 'algebrapool_evt_swap'),
-        Factory_evt_PairCreated = source('rooster_protocol_plume', 'algebrafactory_evt_pool')
+        source_evt_swap = source('rooster_protocol_plume', 'algebrapool_evt_swap'),
+        source_evt_pool = source('rooster_protocol_plume', 'algebrafactory_evt_pool')
     )
 }}
