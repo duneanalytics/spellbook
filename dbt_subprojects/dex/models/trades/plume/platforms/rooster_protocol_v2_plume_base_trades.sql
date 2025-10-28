@@ -11,11 +11,12 @@
 }}
 
 {{
-    maverick_compatible_v2_trades(
+    uniswap_compatible_v3_trades(
         blockchain = 'plume',
         project = 'rooster_protocol',
         version = '3',
-        source_evt_swap = source('rooster_protocol_plume', 'algebrapool_evt_swap'),
-        source_evt_pool = source('rooster_protocol_plume', 'algebrafactory_evt_pool')
+        Pair_evt_Swap = source('rooster_protocol_plume', 'algebrapool_evt_swap'),
+        Factory_evt_PoolCreated = source('rooster_protocol_plume', 'algebrafactory_evt_pool')
+        ,optional_columns = []
     )
 }}

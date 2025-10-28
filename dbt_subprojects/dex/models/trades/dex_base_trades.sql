@@ -7,6 +7,7 @@
 
 {% set models = [  
     ref('dex_plume_base_trades')
+    , ref('dex_abstract_base_trades')
 ] %}
 
 with base_union as (
