@@ -19,6 +19,7 @@ with raw_transfers as (
         , 'sent' as transfer_direction
         , (sum(amount_usd) * -1) as transfer_amount_usd
         , count(*) transfer_count
+        , max(block_time) as max_block_time  -- Track most recent block_time per symbol
     from
         {{ source('tokens_solana','transfers') }}
     where
@@ -46,6 +47,7 @@ with raw_transfers as (
         , 'received' as transfer_direction
         , sum(amount_usd) as transfer_amount_usd
         , count(*) transfer_count
+        , max(block_time) as max_block_time  -- Track most recent block_time per symbol
     from
         {{ source('tokens_solana','transfers') }}
     where
@@ -71,6 +73,7 @@ with raw_transfers as (
         , sum(case when t.transfer_direction = 'sent' then t.transfer_amount_usd else 0 end) as transfer_amount_usd_sent
         , sum(case when t.transfer_direction = 'received' then t.transfer_amount_usd else 0 end) as transfer_amount_usd_received
         , sum(t.transfer_count) as transfer_count
+        , max(t.max_block_time) as max_block_time  -- Preserve max block_time
     from
         raw_transfers as t
     group by
@@ -90,6 +93,7 @@ with raw_transfers as (
         , sum(coalesce(transfer_amount_usd_received, 0)) as transfer_amount_usd_received
         , sum(coalesce(transfer_amount_usd_received, 0)) + sum(coalesce(transfer_amount_usd_sent, 0)) as net_transfer_amount_usd
         , sum(transfer_count) as transfer_count
+        , max(max_block_time) as max_block_time  -- Preserve max block_time
     from
         transfers_amount
     group by
@@ -103,7 +107,7 @@ select
     blockchain
     , block_date
     , contract_address
-    , symbol
+    , max_by(symbol, max_block_time) as symbol
     , sum(net_transfer_amount_usd) as net_transfer_amount_usd
 from
     net_transfers
@@ -113,4 +117,3 @@ group by
     blockchain
     , block_date
     , contract_address
-    , symbol
