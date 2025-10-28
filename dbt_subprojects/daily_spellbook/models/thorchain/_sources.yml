@@ -1,0 +1,1444 @@
+version: 2
+
+sources:
+  - name: thorchain
+    description: "Thorchain bronze raw tables"
+    tables:
+      - name: add_events
+        description: "Liquidity add events from Thorchain"
+        columns:
+          - name: tx
+            description: "Transaction hash"
+          - name: chain
+            description: "Source chain"
+          - name: from_addr
+            description: "From address"
+          - name: to_addr
+            description: "To address"
+          - name: asset
+            description: "Asset identifier"
+          - name: asset_e8
+            description: "Asset amount in 1e8 format"
+          - name: memo
+            description: "Transaction memo"
+          - name: rune_e8
+            description: "RUNE amount in 1e8 format"
+          - name: pool
+            description: "Pool identifier"
+          - name: _tx_type
+            description: "Transaction type"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: fee_events
+        description: "Fee events from Thorchain"
+        columns:
+          - name: tx
+            description: "Transaction hash"
+          - name: asset
+            description: "Asset identifier"
+          - name: asset_e8
+            description: "Asset amount in 1e8 format"
+          - name: pool_deduct
+            description: "Pool deduction amount"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+
+      - name: swap_events
+        description: "Swap events from Thorchain"
+        columns:
+          - name: tx
+            description: "Transaction hash"
+          - name: chain
+            description: "Source chain"
+          - name: from_addr
+            description: "From address"
+          - name: to_addr
+            description: "To address"
+          - name: from_asset
+            description: "From asset identifier"
+          - name: from_e8
+            description: "From asset amount in 1e8 format"
+          - name: to_asset
+            description: "To asset identifier"
+          - name: to_e8
+            description: "To asset amount in 1e8 format"
+          - name: memo
+            description: "Transaction memo"
+          - name: pool
+            description: "Pool identifier"
+          - name: to_e8_min
+            description: "Minimum to amount in 1e8 format"
+          - name: swap_slip_bp
+            description: "Swap slippage in basis points"
+          - name: liq_fee_e8
+            description: "Liquidity fee in 1e8 format"
+          - name: liq_fee_in_rune_e8
+            description: "Liquidity fee in RUNE (1e8 format)"
+          - name: _direction
+            description: "Swap direction indicator"
+          - name: _streaming
+            description: "Streaming swap flag"
+          - name: _tx_type
+            description: "Transaction type"
+          - name: streaming_count
+            description: "Number of streaming swaps"
+          - name: streaming_quantity
+            description: "Quantity per streaming swap"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: withdraw_events
+        description: "Liquidity withdraw events from Thorchain"
+        columns:
+          - name: tx
+            description: "Transaction hash"
+          - name: chain
+            description: "Source chain"
+          - name: from_addr
+            description: "From address"
+          - name: to_addr
+            description: "To address"
+          - name: asset
+            description: "Asset identifier"
+          - name: asset_e8
+            description: "Asset amount in 1e8 format"
+          - name: emit_asset_e8
+            description: "Emitted asset amount in 1e8 format"
+          - name: emit_rune_e8
+            description: "Emitted RUNE amount in 1e8 format"
+          - name: memo
+            description: "Transaction memo"
+          - name: pool
+            description: "Pool identifier"
+          - name: stake_units
+            description: "Stake units withdrawn"
+          - name: basis_points
+            description: "Withdrawal basis points"
+          - name: asymmetry
+            description: "Asymmetry value"
+          - name: imp_loss_protection_e8
+            description: "Impermanent loss protection in 1e8 format"
+          - name: _emit_asset_in_rune_e8
+            description: "Emitted asset value in RUNE"
+          - name: _tx_type
+            description: "Transaction type"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: streaming_swap_details_events
+        description: "Streaming swap details events from Thorchain"
+        columns:
+          - name: tx_id
+            description: "Transaction ID"
+          - name: interval
+            description: "Streaming interval"
+          - name: quantity
+            description: "Quantity per stream"
+          - name: count
+            description: "Stream count"
+          - name: last_height
+            description: "Last block height"
+          - name: deposit_asset
+            description: "Deposit asset identifier"
+          - name: deposit_e8
+            description: "Deposit amount in 1e8 format"
+          - name: in_asset
+            description: "Input asset identifier"
+          - name: in_e8
+            description: "Input amount in 1e8 format"
+          - name: out_asset
+            description: "Output asset identifier"
+          - name: out_e8
+            description: "Output amount in 1e8 format"
+          - name: failed_swaps
+            description: "Array of failed swap indices"
+          - name: failed_swap_reasons
+            description: "Array of failure reasons"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: pending_liquidity_events
+        description: "Pending liquidity events from Thorchain"
+        columns:
+          - name: pool
+            description: "Pool identifier"
+          - name: asset_tx
+            description: "Asset transaction hash"
+          - name: asset_chain
+            description: "Asset chain"
+          - name: asset_addr
+            description: "Asset address"
+          - name: asset_e8
+            description: "Asset amount in 1e8 format"
+          - name: rune_tx
+            description: "RUNE transaction hash"
+          - name: rune_addr
+            description: "RUNE address"
+          - name: rune_e8
+            description: "RUNE amount in 1e8 format"
+          - name: pending_type
+            description: "Type of pending operation"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+
+      - name: block_log
+        description: "Block log data from Thorchain"
+        columns:
+          - name: height
+            description: "Block height"
+          - name: timestamp
+            description: "Block timestamp (unix)"
+          - name: hash
+            description: "Block hash"
+          - name: agg_state
+            description: "Aggregated state data"
+
+      - name: rune_price
+        description: "RUNE price data from Thorchain"
+        columns:
+          - name: rune_price_e8
+            description: "RUNE price in USD (1e8 format)"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: block_pool_depths
+        description: "Block-level pool depth data from Thorchain"
+        columns:
+          - name: pool
+            description: "Pool identifier"
+          - name: asset_e8
+            description: "Asset amount in e8 format"
+          - name: rune_e8
+            description: "RUNE amount in e8 format"
+          - name: synth_e8
+            description: "Synthetic asset amount in e8 format"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: rewards_events
+        description: "Rewards events from Thorchain with bond amounts"
+        columns:
+          - name: bond_e8
+            description: "Bond amount in e8 format"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: rewards_event_entries
+        description: "Rewards event entries from Thorchain"
+        columns:
+          - name: pool
+            description: "Pool identifier"
+          - name: rune_e8
+            description: "RUNE amount in e8 format"
+          - name: saver_e8
+            description: "Saver amount in e8 format"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: pool_events
+        description: "Pool status events from Thorchain"
+        columns:
+          - name: asset
+            description: "Pool asset identifier"
+          - name: status
+            description: "Pool status"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: stake_events
+        description: "Stake/liquidity add events from Thorchain"
+        columns:
+          - name: pool
+            description: "Pool identifier"
+          - name: asset_tx
+            description: "Asset transaction hash"
+          - name: asset_chain
+            description: "Asset blockchain"
+          - name: asset_addr
+            description: "Asset address"
+          - name: asset_e8
+            description: "Asset amount in e8 format"
+          - name: stake_units
+            description: "Stake units"
+          - name: rune_tx
+            description: "RUNE transaction hash"
+          - name: rune_addr
+            description: "RUNE address"
+          - name: rune_e8
+            description: "RUNE amount in e8 format"
+          - name: _asset_in_rune_e8
+            description: "Asset value in RUNE"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+
+      - name: bond_events
+        description: "Bond events from Thorchain validators"
+        columns:
+          - name: tx
+            description: "Transaction hash"
+          - name: chain
+            description: "Chain identifier"
+          - name: from_addr
+            description: "From address"
+          - name: to_addr
+            description: "To address"
+          - name: asset
+            description: "Asset identifier"
+          - name: asset_e8
+            description: "Asset amount in e8 format"
+          - name: memo
+            description: "Transaction memo"
+          - name: bond_type
+            description: "Type of bond operation"
+          - name: e8
+            description: "Amount in e8 format"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _tx_type
+            description: "Transaction type"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: update_node_account_status_events
+        description: "Node account status change events from Thorchain"
+        columns:
+          - name: node_addr
+            description: "Node address"
+          - name: current
+            description: "Current status"
+          - name: former
+            description: "Former status"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: transfer_events
+        description: "Transfer events from Thorchain"
+        columns:
+          - name: from_addr
+            description: "From address"
+          - name: to_addr
+            description: "To address"
+          - name: asset
+            description: "Asset identifier"
+          - name: amount_e8
+            description: "Transfer amount in e8 format"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: outbound_events
+        description: "Outbound events from Thorchain"
+        columns:
+          - name: tx
+            description: "Transaction hash"
+          - name: chain
+            description: "Blockchain"
+          - name: from_addr
+            description: "From address"
+          - name: to_addr
+            description: "To address"
+          - name: asset
+            description: "Asset identifier"
+          - name: asset_e8
+            description: "Asset amount in e8 format"
+          - name: memo
+            description: "Transaction memo"
+          - name: in_tx
+            description: "Inbound transaction hash"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _tx_type
+            description: "Transaction type"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: scheduled_outbound_events
+        description: "Scheduled outbound events from Thorchain"
+        columns:
+          - name: chain
+            description: "Blockchain"
+          - name: to_addr
+            description: "To address"
+          - name: asset
+            description: "Asset identifier"
+          - name: asset_e8
+            description: "Asset amount in e8 format"
+          - name: asset_decimals
+            description: "Asset decimals"
+          - name: gas_rate
+            description: "Gas rate"
+          - name: memo
+            description: "Transaction memo"
+          - name: in_hash
+            description: "Inbound transaction hash"
+          - name: out_hash
+            description: "Outbound transaction hash"
+          - name: max_gas_amount
+            description: "Maximum gas amount"
+          - name: max_gas_decimals
+            description: "Maximum gas decimals"
+          - name: max_gas_asset
+            description: "Maximum gas asset"
+          - name: module_name
+            description: "Module name"
+          - name: vault_pub_key
+            description: "Vault public key"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: gas_events
+        description: "Gas events from Thorchain"
+        columns:
+          - name: asset
+            description: "Asset identifier"
+          - name: asset_e8
+            description: "Asset amount in e8 format"
+          - name: rune_e8
+            description: "RUNE amount in e8 format"
+          - name: tx_count
+            description: "Transaction count"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: loan_open_events
+        description: "Loan open events from Thorchain"
+        columns:
+          - name: owner
+            description: "Loan owner address"
+          - name: collateralization_ratio
+            description: "Collateralization ratio"
+          - name: collateral_asset
+            description: "Collateral asset identifier"
+          - name: target_asset
+            description: "Target asset identifier"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: collateral_deposited
+            description: "Collateral deposited amount"
+          - name: debt_issued
+            description: "Debt issued amount"
+          - name: tx_id
+            description: "Transaction ID"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: loan_repayment_events
+        description: "Loan repayment events from Thorchain"
+        columns:
+          - name: owner
+            description: "Loan owner address"
+          - name: collateral_asset
+            description: "Collateral asset identifier"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: collateral_withdrawn
+            description: "Collateral withdrawn amount"
+          - name: debt_repaid
+            description: "Debt repaid amount"
+          - name: tx_id
+            description: "Transaction ID"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: refund_events
+        description: "Refund events from Thorchain"
+        columns:
+          - name: tx
+            description: "Transaction hash"
+          - name: chain
+            description: "Blockchain"
+          - name: from_addr
+            description: "From address"
+          - name: to_addr
+            description: "To address"
+          - name: asset
+            description: "Primary asset identifier"
+          - name: asset_e8
+            description: "Primary asset amount in e8 format"
+          - name: asset_2nd
+            description: "Secondary asset identifier"
+          - name: asset_2nd_e8
+            description: "Secondary asset amount in e8 format"
+          - name: memo
+            description: "Transaction memo"
+          - name: code
+            description: "Refund code"
+          - name: reason
+            description: "Refund reason"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _tx_type
+            description: "Transaction type"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: errata_events
+        description: "Errata events from Thorchain"
+        columns:
+          - name: in_tx
+            description: "Inbound transaction hash"
+          - name: asset
+            description: "Asset identifier"
+          - name: asset_e8
+            description: "Asset amount in e8 format"
+          - name: rune_e8
+            description: "RUNE amount in e8 format"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: failed_deposit_messages
+        description: "Failed deposit messages from Thorchain"
+        columns:
+          - name: amount_e8
+            description: "Amount in e8 format"
+          - name: asset
+            description: "Asset identifier"
+          - name: from_addr
+            description: "From address"
+          - name: memo
+            description: "Transaction memo"
+          - name: code
+            description: "Error code"
+          - name: reason
+            description: "Failure reason"
+          - name: tx_id
+            description: "Transaction ID"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: new_node_events
+        description: "New node events from Thorchain"
+        columns:
+          - name: node_addr
+            description: "Node address"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: set_version_events
+        description: "Set version events from Thorchain"
+        columns:
+          - name: node_addr
+            description: "Node address"
+          - name: version
+            description: "Version number"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: set_mimir_events
+        description: "Set mimir events from Thorchain (configuration parameters)"
+        columns:
+          - name: key
+            description: "Configuration key"
+          - name: value
+            description: "Configuration value"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: set_node_mimir_events
+        description: "Set node mimir events from Thorchain (node-specific configuration parameters)"
+        columns:
+          - name: address
+            description: "Node address"
+          - name: key
+            description: "Configuration key"
+          - name: value
+            description: "Configuration value"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: set_node_keys_events
+        description: "Set node keys events from Thorchain (node cryptographic keys)"
+        columns:
+          - name: node_addr
+            description: "Node address"
+          - name: secp256k1
+            description: "Secp256k1 public key"
+          - name: ed25519
+            description: "Ed25519 public key"
+          - name: validator_consensus
+            description: "Validator consensus key"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: set_ip_address_events
+        description: "Set IP address events from Thorchain (node network configuration)"
+        columns:
+          - name: node_addr
+            description: "Node address"
+          - name: ip_addr
+            description: "IP address"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: validator_request_leave_events
+        description: "Validator request leave events from Thorchain (validator lifecycle)"
+        columns:
+          - name: tx
+            description: "Transaction hash"
+          - name: from_addr
+            description: "From address"
+          - name: node_addr
+            description: "Node address"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: network_version_events
+        description: "Network version events from Thorchain (network-wide version upgrades)"
+        columns:
+          - name: version
+            description: "Network version"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: active_vault_events
+        description: "Active vault events from Thorchain (Asgard vault lifecycle)"
+        columns:
+          - name: add_asgard_addr
+            description: "Asgard vault address"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: inactive_vault_events
+        description: "Inactive vault events from Thorchain (Asgard vault retirement)"
+        columns:
+          - name: add_asgard_addr
+            description: "Asgard vault address"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: affiliate_fee_events
+        description: "Affiliate fee events from Thorchain (affiliate revenue sharing)"
+        columns:
+          - name: tx_id
+            description: "Transaction ID"
+          - name: fee_amt
+            description: "Fee amount"
+          - name: gross_amt
+            description: "Gross amount"
+          - name: fee_bps
+            description: "Fee basis points"
+          - name: memo
+            description: "Transaction memo"
+          - name: asset
+            description: "Asset identifier"
+          - name: rune_address
+            description: "RUNE address"
+          - name: thorname
+            description: "THORName identifier"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: asgard_fund_yggdrasil_events
+        description: "Asgard fund Yggdrasil events from Thorchain (vault funding operations)"
+        columns:
+          - name: tx
+            description: "Transaction hash"
+          - name: asset
+            description: "Asset identifier"
+          - name: asset_e8
+            description: "Asset amount in 1e8 precision"
+          - name: vault_key
+            description: "Vault key identifier"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: instantiate_events
+        description: "Smart contract instantiate events from Thorchain (contract deployments)"
+        columns:
+          - name: tx_id
+            description: "Transaction ID"
+          - name: contract_address
+            description: "Contract address"
+          - name: admin_address
+            description: "Admin address"
+          - name: code_id
+            description: "Code ID"
+          - name: sender
+            description: "Sender address"
+          - name: label
+            description: "Contract label"
+          - name: msg
+            description: "Instantiation message"
+          - name: funds
+            description: "Funds sent with instantiation"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: mint_burn_events
+        description: "Mint and burn events from Thorchain (token supply changes)"
+        columns:
+          - name: asset
+            description: "Asset identifier"
+          - name: asset_e8
+            description: "Asset amount in 1e8 precision"
+          - name: supply
+            description: "Total supply after mint/burn"
+          - name: reason
+            description: "Reason for mint/burn action"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: pool_balance_change_events
+        description: "Pool balance change events from Thorchain (liquidity changes)"
+        columns:
+          - name: asset
+            description: "Asset identifier"
+          - name: rune_amt
+            description: "RUNE amount"
+          - name: rune_add
+            description: "RUNE add flag"
+          - name: asset_amt
+            description: "Asset amount"
+          - name: asset_add
+            description: "Asset add flag"
+          - name: reason
+            description: "Reason for balance change"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: rune_pool_deposit_events
+        description: "Rune pool deposit events from Thorchain (RUNE pool deposits)"
+        columns:
+          - name: tx_id
+            description: "Transaction ID"
+          - name: rune_addr
+            description: "RUNE address"
+          - name: amount_e8
+            description: "Amount in 1e8 precision"
+          - name: units
+            description: "Pool units received"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: rune_pool_withdraw_events
+        description: "Rune pool withdraw events from Thorchain (RUNE pool withdrawals)"
+        columns:
+          - name: tx_id
+            description: "Transaction ID"
+          - name: rune_addr
+            description: "RUNE address"
+          - name: amount_e8
+            description: "Amount in 1e8 precision"
+          - name: units
+            description: "Pool units withdrawn"
+          - name: basis_points
+            description: "Basis points"
+          - name: affiliate_basis_pts
+            description: "Affiliate basis points"
+          - name: affiliate_amount_e8
+            description: "Affiliate amount in 1e8 precision"
+          - name: affiliate_addr
+            description: "Affiliate address"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: secure_asset_deposit_events
+        description: "Secure asset deposit events from Thorchain (secured deposits)"
+        columns:
+          - name: amount_e8
+            description: "Amount in 1e8 precision"
+          - name: asset
+            description: "Asset identifier"
+          - name: asset_address
+            description: "Asset address"
+          - name: rune_address
+            description: "RUNE address"
+          - name: tx_id
+            description: "Transaction ID"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: secure_asset_withdraw_events
+        description: "Secure asset withdraw events from Thorchain (secured withdrawals)"
+        columns:
+          - name: amount_e8
+            description: "Amount in 1e8 precision"
+          - name: asset
+            description: "Asset identifier"
+          - name: asset_address
+            description: "Asset address"
+          - name: rune_address
+            description: "RUNE address"
+          - name: tx_id
+            description: "Transaction ID"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: trade_account_deposit_events
+        description: "Trade account deposit events from Thorchain (trading account deposits)"
+        columns:
+          - name: amount_e8
+            description: "Amount in 1e8 precision"
+          - name: asset
+            description: "Asset identifier"
+          - name: asset_address
+            description: "Asset address"
+          - name: rune_address
+            description: "RUNE address"
+          - name: tx_id
+            description: "Transaction ID"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: trade_account_withdraw_events
+        description: "Trade account withdraw events from Thorchain (trading account withdrawals)"
+        columns:
+          - name: amount_e8
+            description: "Amount in 1e8 precision"
+          - name: asset
+            description: "Asset identifier"
+          - name: asset_address
+            description: "Asset address"
+          - name: rune_address
+            description: "RUNE address"
+          - name: tx_id
+            description: "Transaction ID"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: tcy_stake_events
+        description: "TCY stake events from Thorchain (native token staking)"
+        columns:
+          - name: tx_id
+            description: "Transaction ID"
+          - name: amount
+            description: "Stake amount"
+          - name: rune_address
+            description: "RUNE address"
+          - name: memo
+            description: "Transaction memo"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: tcy_unstake_events
+        description: "TCY unstake events from Thorchain (native token unstaking)"
+        columns:
+          - name: tx_id
+            description: "Transaction ID"
+          - name: amount
+            description: "Unstake amount"
+          - name: rune_address
+            description: "RUNE address"
+          - name: memo
+            description: "Transaction memo"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: tcy_distribution_events
+        description: "TCY distribution events from Thorchain (native token distributions)"
+        columns:
+          - name: rune_address
+            description: "RUNE address"
+          - name: rune_amt
+            description: "Distribution amount"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: tcy_claim_events
+        description: "TCY claim events from Thorchain (native token claims)"
+        columns:
+          - name: tx_id
+            description: "Transaction ID"
+          - name: rune_address
+            description: "RUNE address"
+          - name: l1_address
+            description: "Layer 1 address"
+          - name: asset
+            description: "Asset identifier"
+          - name: tcy_amt
+            description: "TCY claim amount"
+          - name: memo
+            description: "Transaction memo"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: thorname_change_events
+        description: "THORName change events from Thorchain (naming service registrations/changes)"
+        columns:
+          - name: owner
+            description: "Owner address"
+          - name: chain
+            description: "Chain identifier"
+          - name: address
+            description: "Address"
+          - name: expire
+            description: "Expiration timestamp"
+          - name: name
+            description: "THORName"
+          - name: fund_amount_e8
+            description: "Fund amount in 1e8 precision"
+          - name: registration_fee_e8
+            description: "Registration fee in 1e8 precision"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: reserve_events
+        description: "Reserve events from Thorchain (reserve contributions/withdrawals)"
+        columns:
+          - name: tx
+            description: "Transaction ID"
+          - name: chain
+            description: "Blockchain"
+          - name: from_addr
+            description: "From address"
+          - name: to_addr
+            description: "To address"
+          - name: asset
+            description: "Asset identifier"
+          - name: asset_e8
+            description: "Asset amount in 1e8 precision"
+          - name: memo
+            description: "Transaction memo"
+          - name: addr
+            description: "Address"
+          - name: e8
+            description: "Reserve amount in 1e8 precision"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _tx_type
+            description: "Transaction type"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: constants
+        description: "Thorchain constants (key-value configuration parameters)"
+        columns:
+          - name: key
+            description: "Constant key/name"
+          - name: value
+            description: "Constant value"
+
+      - name: send_messages
+        description: "Send messages from Thorchain (transaction messages)"
+        columns:
+          - name: amount_e8
+            description: "Amount in 1e8 precision"
+          - name: asset
+            description: "Asset identifier"
+          - name: from_addr
+            description: "From address"
+          - name: to_addr
+            description: "To address"
+          - name: memo
+            description: "Transaction memo"
+          - name: tx_id
+            description: "Transaction ID"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: slash_events
+        description: "Slash amount events from Thorchain (validator penalties/slashing)"
+        columns:
+          - name: pool
+            description: "Pool name"
+          - name: asset
+            description: "Asset identifier"
+          - name: asset_e8
+            description: "Slash amount in 1e8 precision"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: slash_points
+        identifier: slash_points_events
+        description: "Slash points from Thorchain (validator penalty points)"
+        columns:
+          - name: node_address
+            description: "Node address"
+          - name: slash_points
+            description: "Slash points amount"
+          - name: reason
+            description: "Reason for slash points"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: switch_events
+        description: "Switch events from Thorchain (asset burn/mint operations)"
+        columns:
+          - name: tx
+            description: "Transaction ID"
+          - name: from_addr
+            description: "From address"
+          - name: to_addr
+            description: "To address"
+          - name: burn_asset
+            description: "Burned asset identifier"
+          - name: burn_e8
+            description: "Burn amount in 1e8 precision"
+          - name: mint_e8
+            description: "Mint amount in 1e8 precision"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: tss_keygen_failure_events
+        description: "TSS keygen failure events from Thorchain (Threshold Signature Scheme key generation failures)"
+        columns:
+          - name: fail_reason
+            description: "Failure reason"
+          - name: is_unicast
+            description: "Whether unicast"
+          - name: blame_nodes
+            description: "Nodes to blame for failure"
+          - name: round
+            description: "Round number"
+          - name: height
+            description: "Block height"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: tss_keygen_success_events
+        description: "TSS keygen success events from Thorchain (Threshold Signature Scheme successful key generation)"
+        columns:
+          - name: pub_key
+            description: "Public key"
+          - name: members
+            description: "Member addresses"
+          - name: height
+            description: "Block height"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
+
+      - name: wasm_contracts_events
+        description: "WASM contracts events from Thorchain (WebAssembly smart contract activity)"
+        columns:
+          - name: tx_id
+            description: "Transaction ID"
+          - name: contract_address
+            description: "Contract address"
+          - name: contract_type
+            description: "Contract type"
+          - name: sender
+            description: "Sender address"
+          - name: attributes
+            description: "Event attributes"
+          - name: event_id
+            description: "Unique event identifier"
+          - name: block_timestamp
+            description: "Block timestamp"
+          - name: _updated_at
+            description: "Record update timestamp"
+          - name: _ingested_at
+            description: "Record ingestion timestamp"
+          - name: _source_file_path
+            description: "Source file path"
