@@ -14,6 +14,11 @@
     ref('uniswap_v4_arbitrum_base_trades')
     , ref('uniswap_v4_ethereum_base_trades')
     , ref('uniswap_v4_unichain_base_trades')
+    , ref('uniswap_v4_base_base_trades')
+    , ref('uniswap_v4_worldchain_base_trades')
+    , ref('uniswap_v4_zora_base_trades')
+    , ref('uniswap_v4_blast_base_trades')
+    , ref('uniswap_v4_polygon_base_trades')
 ] %}
 
 {% set bunni_models = [
@@ -168,7 +173,7 @@ flaunch_fees as (
             , uniAmount0
             , uniAmount1 
         from 
-        flaunch_base.positionmanager_v2_evt_poolswap
+        flaunch_poolswap
     ) b
         on a.evt_tx_hash = b.evt_tx_hash
         and a.evt_index = b.evt_index
