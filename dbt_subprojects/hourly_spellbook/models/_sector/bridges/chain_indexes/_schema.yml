@@ -29,3 +29,18 @@ models:
     columns:
       - *id
       - *blockchain
+  - name: bridges_layerzero_chain_indexes
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: layerzero
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bridges', 'chain_indexes' ]
+    description: "LayerZero's blockchains indexes"
+    columns:
+      - *id
+      - *blockchain
+      - &endpoint_address
+        name: endpoint_address
+        description: "Address of the endpoint contract"
