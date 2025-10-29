@@ -153,11 +153,10 @@ flaunch_prep1 as (
 
 flaunch_fees as (
     select 
-        distinct -- we can't join on index, for cases where there are multiple combo of uniamount0, uniamount1 choose just one to avoid duplicates, this never happens, just future proofing
         evt_block_date 
         , evt_tx_hash 
         , id 
-        , fee 
+        , min(fee) as fee          -- we can't join on index, for cases where there are multiple combo of uniamount0, uniamount1 choose just one to avoid duplicates, this never happens, just future proofing by aggregating
         , blockchain 
         , uniAmount0 
         , uniAmount1 
@@ -185,6 +184,7 @@ flaunch_fees as (
         and a.evt_block_date = b.evt_block_date 
         and a.evt_index = b.evt_index
     ) 
+    group by 1, 2, 3, 5, 6, 7, 8 
 ),
 
 get_trades as (
