@@ -48,7 +48,7 @@ models:
       contributors: [ 'hildobby']
     config:
       tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
-    description: "Across's v3 bridge withdrawals events on Unichain"
+    description: "Across's v2 bridge withdrawals events on Unichain"
   - name: bridges_unichain_across_v3_deposits
     meta:
       blockchain: unichain
@@ -67,3 +67,27 @@ models:
     config:
       tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
     description: "Across's v3 bridge withdrawals events on Unichain"
+  - name: bridges_unichain_tether_v1_deposits
+    meta:
+      blockchain: unichain
+      sector: bridges
+      project: tether
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'unichain', 'bridges', 'flows', 'deposits' ]
+    description: "Tether's USDT0 v1 bridge deposits events on Unichain"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']
+  - name: bridges_unichain_tether_v1_withdrawals
+    meta:
+      blockchain: unichain
+      sector: bridges
+      project: tether
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'unichain', 'bridges', 'flows', 'withdrawals' ]
+    description: "Tether's USDT0 v1 bridge withdrawals events on Unichain"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']

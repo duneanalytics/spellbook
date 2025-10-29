@@ -11,7 +11,7 @@ models:
     description: "Bridge deposits events on EVM chains"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['deposit_chain','withdrawal_chain','withdrawal_chain_id','bridge_name','bridge_version','bridge_transfer_id', 'duplicate_index']
+          combination_of_columns: ['deposit_chain','withdrawal_chain','withdrawal_chain_id','bridge_name','bridge_version','bridge_transfer_id','duplicate_index']
     columns:
       - &deposit_chain
         name: deposit_chain
@@ -101,7 +101,7 @@ models:
     description: "Bridge withdrawals events on EVM chains"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['deposit_chain','deposit_chain_id','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id']
+          combination_of_columns: ['deposit_chain','deposit_chain_id','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id','duplicate_index']
     columns:
       - *deposit_chain
       - *withdrawal_chain
@@ -139,6 +139,7 @@ models:
       - &deposit_chain_id
         name: deposit_chain_id
         description: "Blockchain ID where the tokens were sent"
+      - *duplicate_index
   - name: bridges_evms_deposits_raw
     meta:
       blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora
