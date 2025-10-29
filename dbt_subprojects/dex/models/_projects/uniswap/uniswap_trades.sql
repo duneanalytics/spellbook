@@ -381,5 +381,5 @@ prices AS (
     {{ ref('uniswap_pools') }} unp 
         on af.blockchain = unp.blockchain
         and af.pool_address = unp.pool 
-        and gt.version = unp.version 
+        and af.version = unp.version 
 
