@@ -72,7 +72,7 @@ FROM (
         , hooks_fee_amount_usd
         , hooks_fee_amount 
         , hooks_fee_amount_raw
-        , hooks_fee -- convert back to correct value 
+        , hooks_fee 
         , hooks 
     FROM {{ chain_model }}
     {% if not loop.last %}
@@ -80,3 +80,5 @@ FROM (
     {% endif %}
     {% endfor %}
 )
+
+--note for future editor: angstrom hook fees are not included in the current iteration
