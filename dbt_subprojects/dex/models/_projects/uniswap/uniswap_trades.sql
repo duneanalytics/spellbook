@@ -230,6 +230,10 @@ get_trades as (
 add_fees as (
     select 
         gt.*
+        , case 
+            when gt.version = '4' then maker 
+            else project_contract_address 
+        end as pool_address 
         , coalesce (
             v4.fee/1e6
             , case 
@@ -327,6 +331,17 @@ prices AS (
         , taker
         , maker
         , project_contract_address
+        , unp.pool_address 
+        , unp.token0 as token0_address
+        , unp.token1 as token1_address
+        , case 
+            when unp.token0 = token_bought_address then token_bought_symbol 
+            else token_sold_symbol 
+        end as token0_symbol 
+        , case 
+            when unp.token1 = token_bought_address then token_bought_symbol 
+            else token_sold_symbol 
+        end as token1_symbol 
         , tx_hash
         , tx_from
         , tx_to
@@ -335,10 +350,10 @@ prices AS (
         , coalesce (
             token_sold_amount * uni_fee * pa.price_usd
             , ((token_bought_amount * pb.price_usd) / (1 - uni_fee)) - (token_bought_amount * pb.price_usd)
-            ) as uni_fee_amount_usd
-        , token_sold_amount * uni_fee as uni_fee_amount 
-        , token_sold_amount_raw * uni_fee as uni_fee_amount_raw
-        , uni_fee * 1e2 as uni_fee -- convert back to correct value 
+            ) as lp_fee_amount_usd
+        , token_sold_amount * uni_fee as lp_fee_amount 
+        , token_sold_amount_raw * uni_fee as lp_fee_amount_raw
+        , uni_fee * 1e2 as lp_fee -- convert back to correct value 
         -- hooks fee columns 
         , coalesce (
             token_sold_amount * hooks_fee * pa.price_usd
@@ -362,4 +377,9 @@ prices AS (
         and af.block_minute = pb.price_minute 
         and af.blockchain = pb.price_blockchain 
         and af.token_bought_address = pb.price_contract_address
+    left join 
+    {{ ref('uniswap_pools') }} unp 
+        on af.blockchain = unp.blockchain
+        and af.pool_address = unp.pool 
+        and gt.version = unp.version 
 
