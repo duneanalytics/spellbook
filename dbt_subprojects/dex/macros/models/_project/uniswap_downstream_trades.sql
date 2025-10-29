@@ -1,14 +1,15 @@
 {% macro uniswap_downstream_trades(
     blockchain = null
-    , has_univ4 = null 
-    , has_bunni = null 
+    , has_univ4 = true
+    , has_bunni = true
     )
 %}
 
 with 
 
+{% if has_univ4 %}
+
 v4_trades as (
-    {% if has_univ4|lower == 'yes' %}
     select
         blockchain
         , tx_hash 
@@ -23,22 +24,14 @@ v4_trades as (
     {% if is_incremental() %}
     and {{ incremental_predicate('block_time') }}
     {% endif %}
-    {% else %}
-    select 
-        cast(null as varchar) as blockchain 
-        , cast(null as varbinary) as tx_hash 
-        , cast(null as bigint) as evt_index 
-        , cast(null as double) as fee 
-        , cast(null as timestamp) as block_time 
-        , cast(null as timestamp) as block_date 
-        , cast(null as bigint) as block_number 
-    where false
-    {% endif %}
-
 ),
 
+{% endif %}
+
+
+{% if has_bunni %}
+
 bunni_fees as (
-    {% if has_bunni|lower == 'yes' %}
     select
         '{{blockchain}}' as blockchain
         , evt_tx_hash  as tx_hash
@@ -53,18 +46,11 @@ bunni_fees as (
     {% if is_incremental() %}
     and {{ incremental_predicate('evt_block_time') }}
     {% endif %}
-    {% else %}
-    select 
-        cast(null as varchar) as blockchain 
-        , cast(null as varbinary) as tx_hash 
-        , cast(null as double) as fee 
-        , cast(null as timestamp) as block_date 
-        , cast(null as varbinary) as id
-        , cast(null as bigint) as evt_index 
-        , cast(null as varchar) as hooks 
-    where false 
-    {% endif %}
 ),
+{% endif %}
+
+
+{% if blockchain == 'base' %}
 
 flaunch_hookswap as (
     select 
@@ -175,6 +161,8 @@ flaunch_fees as (
     group by 1, 2, 3, 5, 6, 7, 8 
 ),
 
+{% endif %}
+
 get_trades as (
     select
         blockchain
@@ -220,35 +208,50 @@ add_fees as (
             else project_contract_address 
         end as pool_address 
         , coalesce (
-            v4.fee/1e6
-            , case 
+            case 
                 when gt.version = '2' then unp.fee/1e2 
                 when gt.version = '3' then unp.fee/1e6 
             end -- v2 fees are set to 0.3 while v3 fees are the raw values
+            {% if has_univ4 %}
+            , v4.fee/1e6
+            {% endif %}
         ) as uni_fee 
         , coalesce (
-            bf.fee/1e6
+            cast(null as double)
+            {% if has_bunni %}
+            , bf.fee/1e6
+            {% endif %}
+            {% if blockchain == 'base' %}
             , ff.fee 
+            {% endif %}
         ) as hooks_fee 
         , coalesce (
-            bf.hooks 
-            , ff.hooks
+            cast(null as varchar)
+            {% if has_bunni %}
+            , bf.hooks
+            {% endif %}
+            {% if blockchain == 'base' %}
+            , ff.hooks 
+            {% endif %}
         ) as hooks 
     from 
     get_trades gt 
     left join 
+    {% if has_univ4 %}
     v4_trades v4 
         on gt.blockchain = v4.blockchain 
         and gt.block_date = v4.block_date 
         and gt.tx_hash = v4.tx_hash 
         and gt.evt_index = v4.evt_index
         and gt.version = '4'
+    {% endif %}
     left join 
     {{ ref('uniswap_pools') }} unp 
         on gt.blockchain = unp.blockchain
         and gt.project_contract_address = unp.pool 
         and gt.version = unp.version 
         and gt.version in ('2', '3')
+    {% if has_bunni %}
     left join 
     bunni_fees bf 
         on gt.blockchain = bf.blockchain 
@@ -257,6 +260,8 @@ add_fees as (
         and gt.evt_index = bf.evt_index
         and gt.maker = bf.id 
         and gt.version = '4'
+    {% endif %}
+    {% if blockchain == 'base' %}
     left join 
     univ4_base_trades uni_v4_base 
         on gt.blockchain = uni_v4_base.blockchain 
@@ -275,6 +280,7 @@ add_fees as (
         and gt.version = '4'
         and uni_v4_base.amount0 = ff.uniAmount0 
         and uni_v4_base.amount1 = ff.uniAmount1
+    {% endif %}
 ),
 
 prices AS (

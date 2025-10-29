@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'uniswap_celo'
+    schema = 'uniswap_base'
     , alias = 'trades'
     , partition_by = ['block_month', 'blockchain', 'project']
     , materialized = 'incremental'
@@ -12,8 +12,8 @@
 
 {{
     uniswap_downstream_trades(
-          blockchain = 'celo'
-          , has_univ4 = false
-          , has_bunni = false
+          blockchain = 'base'
+          , has_univ4 = true
+          , has_bunni = true
     )
 }}
