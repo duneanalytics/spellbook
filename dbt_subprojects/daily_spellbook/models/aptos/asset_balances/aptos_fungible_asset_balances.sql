@@ -14,11 +14,11 @@
 ) }}
 
 -- Compared to GraphQL endpoint, this table has the following differences:
--- 1. Historical balances (rather than only current balance)
--- 2. When FungibleStore and ObjectCore are desync, representation can be different GraphQL (prior to delete event)
---   a. FungibleStore when ObjectCore is deleted ex 2424873868 idx 8 has no ObjectCore -> disallowed later
+-- 1. Historical balances (rather than current balances)
+-- 2. When FungibleStore and ObjectCore are not in sync, representation can be different (prior to delete event)
+--   a. FungibleStore when ObjectCore is deleted ex 2424873868 idx 8 has no ObjectCore -> will be disallowed later
 --   b. ObjectCore when FungibleStore is deleted ex 2975888978 idx 6 has no FungibleStore -> infer from event
--- 3. If an asset has both ConcurrentFungibleBalance and FungibleStore, write_set_change_index is former for this table
+-- 3. If an asset has both ConcurrentFungibleBalance and FungibleStore, write_set_change_index is uses former
 
 {% if not is_incremental() -%}
 /*
@@ -47,6 +47,7 @@ SELECT
     block_date,
     block_time,
     block_month,
+    --
     write_set_change_index,
     asset_type,
     owner_address,
@@ -64,6 +65,7 @@ SELECT
     block_date,
     block_time,
     block_month,
+    --
     write_set_change_index,
     asset_type,
     owner_address,
@@ -83,6 +85,7 @@ SELECT
     block_date,
     block_time,
     block_month,
+    --
     write_set_change_index,
     asset_type,
     owner_address,
@@ -101,6 +104,7 @@ SELECT
     block_date,
     block_time,
     block_month,
+    --
     write_set_change_index,
     asset_type,
     owner_address,

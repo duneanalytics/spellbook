@@ -30,6 +30,7 @@ SELECT
     block_date,
     block_time,
     block_month,
+    --
     event_index,
     event_type,
     owner_address,
@@ -55,7 +56,7 @@ SELECT
     asset_type,
     amount,
     token_standard
-FROM {{ ref('aptos_fungible_asset_activities_legacy') }}
+FROM {{ ref('aptos_fungible_asset_fa_activities_events_v1') }}
 
 UNION ALL
 

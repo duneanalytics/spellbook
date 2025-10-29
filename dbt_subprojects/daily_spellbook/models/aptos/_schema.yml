@@ -187,14 +187,14 @@ models:
       tags: ['aptos','fungible_asset']
     description: Activities for legacy coins (v1) on Aptos
 
-  - name: aptos_fungible_asset_activities_legacy
+  - name: aptos_fungible_asset_fa_activities_events_v1
     meta:
       blockchain: aptos
       project: aptos_indexer
       contributors: ying-w
     config:
       tags: ['aptos','fungible_asset']
-    description: Activities for legacy fungible assets (v2) on Aptos
+    description: Activities for fungible assets (v2) using events v1on Aptos
 
   - name: aptos_fungible_asset_fa_activities
     meta:

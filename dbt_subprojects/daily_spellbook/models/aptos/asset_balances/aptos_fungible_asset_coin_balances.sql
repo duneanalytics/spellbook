@@ -8,7 +8,7 @@
 ) }}
 
 /*
-    - this model has a cutoff date of 2025-09-02 to exclude coin balances after migration
+    - this model has a cutoff date of 2025-09-02 to exclude coin balances after coinstore migration
     - leverage static tag to only run on initial build
 */
 

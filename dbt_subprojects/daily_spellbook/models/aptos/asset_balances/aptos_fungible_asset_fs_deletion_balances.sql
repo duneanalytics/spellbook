@@ -9,10 +9,11 @@
     partition_by = ['block_month']
 ) }}
 
+-- secondary (non-primary) FungibleStore can be deleted without deleting object
+-- Store needs to have 0 balance to be deleted
+-- Ex 2975888978 store 0x1198c59f6c6f84f0a52f1a8524fbaac60946c7e2ac74a87bf7632fa50e23f34d
+
 WITH fs_deletion AS (
-    -- secondary (non-primary) FA Stores can be deleted without deleting object
-    -- Store needs to have 0 balance to be deleted
-    -- Ex 2975888978 store 0x1198c59f6c6f84f0a52f1a8524fbaac60946c7e2ac74a87bf7632fa50e23f34d
     SELECT
         ev.tx_version,
         ev.tx_hash,
@@ -52,7 +53,7 @@ SELECT
     block_time,
     date(date_trunc('month', block_time)) as block_month,
     --
-    write_set_change_index, -- uses object core
+    write_set_change_index, -- uses ObjectCore change index
     asset_type,
     from_hex(owner_address) AS owner_address,
     storage_id,

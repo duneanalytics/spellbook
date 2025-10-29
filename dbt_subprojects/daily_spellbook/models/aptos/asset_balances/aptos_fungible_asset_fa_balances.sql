@@ -22,13 +22,13 @@ WITH fa_balance AS (
         fs_owner.owner_address,
         move_is_deletion,
         COALESCE(
-            c.balance, -- CFB
-            json_extract_scalar(move_data, '$.balance') -- FS
+            c.balance, -- ConcurrentFungibleBalance
+            json_extract_scalar(move_data, '$.balance') -- FungibleStore
         ) AS balance,
         CAST(json_extract_scalar(move_data, '$.frozen') AS BOOLEAN) AS is_frozen
     FROM {{ source('aptos', 'move_resources') }} mr
     LEFT JOIN (
-        -- if CFB
+        -- if Concurrent balance exists, use it
         SELECT
             tx_version,
             move_address,
@@ -44,7 +44,7 @@ WITH fa_balance AS (
             {% endif -%}
     ) c USING (tx_version, move_address)
     LEFT JOIN (
-        -- get owner, if deleted then owner will be NULL
+        -- get owner, if deleted in this tx then owner will be NULL
         -- to fix this, need to create an Objects table and map to owner before delete
         SELECT
             tx_version,
