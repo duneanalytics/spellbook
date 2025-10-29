@@ -139,6 +139,7 @@ models:
       - &deposit_chain_id
         name: deposit_chain_id
         description: "Blockchain ID where the tokens were sent"
+      - *duplicate_index
   - name: bridges_evms_deposits_raw
     meta:
       blockchain: ethereum, base, arbitrum, avalanche_c, optimism, polygon, unichain
