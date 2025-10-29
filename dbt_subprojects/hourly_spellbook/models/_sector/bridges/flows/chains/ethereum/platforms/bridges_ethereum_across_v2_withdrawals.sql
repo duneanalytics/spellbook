@@ -9,5 +9,12 @@
 
 {{across_v2_withdrawals(
     blockchain = blockchain
+    , events = source('across_v2_ethereum', 'ethereum_spokepool_evt_filledrelay')
+    )}}
+
+UNION ALL
+
+{{across_v2_withdrawals(
+    blockchain = blockchain
     , events = source('across_v2_ethereum', 'uba_ethereum_spokepool_evt_filledrelay')
     )}}

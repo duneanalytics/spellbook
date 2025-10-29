@@ -9,5 +9,12 @@
 
 {{across_v2_deposits(
     blockchain = blockchain
+    , events = source('across_v2_polygon', 'polygon_spokepool_evt_fundsdeposited')
+    )}}
+
+UNION ALL
+
+{{across_v2_deposits(
+    blockchain = blockchain
     , events = source('across_v2_polygon', 'uba_polygon_spokepool_evt_fundsdeposited')
     )}}

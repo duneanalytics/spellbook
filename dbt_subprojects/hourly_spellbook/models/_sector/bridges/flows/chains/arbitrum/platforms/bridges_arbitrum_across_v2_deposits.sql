@@ -9,5 +9,12 @@
 
 {{across_v2_deposits(
     blockchain = blockchain
+    , events = source('across_v2_arbitrum', 'arbitrum_spokepool_evt_fundsdeposited')
+    )}}
+
+UNION ALL
+
+{{across_v2_deposits(
+    blockchain = blockchain
     , events = source('across_v2_arbitrum', 'uba_arbitrum_spokepool_evt_fundsdeposited')
     )}}
