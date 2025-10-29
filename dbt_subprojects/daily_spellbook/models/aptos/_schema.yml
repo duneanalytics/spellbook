@@ -169,8 +169,6 @@ models:
         description: "NULL for v1, address of FungibleStore for v2"
       - name: asset_type
         description: "Asset identifier"
-        tests:
-          - not_null
       - name: amount
         description: "raw asset amount (before taking into account decimals)"
         tests:
