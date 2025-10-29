@@ -331,7 +331,7 @@ prices AS (
         , taker
         , maker
         , project_contract_address
-        , unp.pool_address 
+        , af.pool_address 
         , unp.token0 as token0_address
         , unp.token1 as token1_address
         , case 
