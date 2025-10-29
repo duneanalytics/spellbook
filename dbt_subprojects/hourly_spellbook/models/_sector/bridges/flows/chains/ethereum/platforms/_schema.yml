@@ -137,20 +137,20 @@ models:
     meta:
       blockchain: ethereum
       sector: bridges
-      project: across
+      project: avalanche_c_native
       contributors: [ 'hildobby']
     config:
-      tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
-    description: "Avalanche C Native's v2 bridge deposits events on Ethereum"
+      tags: [ 'avalanche_c', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Arbitrum's v1 native bridge deposits events on Ethereum"
   - name: bridges_ethereum_avalanche_c_native_v2_withdrawals
     meta:
       blockchain: ethereum
       sector: bridges
-      project: across
+      project: avalanche_c_native
       contributors: [ 'hildobby']
     config:
-      tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
-    description: "Avalanche C Native's v2 bridge withdrawals events on Ethereum"
+      tags: [ 'avalanche_c', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Arbitrum's v1 native bridge deposits events on Ethereum"
   - name: bridges_ethereum_zkync_native_v2_deposits
     meta:
       blockchain: ethereum
@@ -158,7 +158,7 @@ models:
       project: zksync
       contributors: [ 'hildobby']
     config:
-      tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
+      tags: [ 'zksync', 'bridges', 'flows' , 'deposits' ]
     description: "zkSync's v2 bridge deposits events on Ethereum"
   - name: bridges_ethereum_zkync_native_v2_withdrawals
     meta:
@@ -167,8 +167,23 @@ models:
       project: zksync
       contributors: [ 'hildobby']
     config:
-      tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
+      tags: [ 'zksync', 'bridges', 'flows' , 'withdrawals' ]
     description: "zkSync's v2 bridge withdrawals events on Ethereum"
-
-
-
+  - name: bridges_ethereum_arbitrum_native_v1_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'arbitrum', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Arbitrum's v1 native bridge deposits events on Ethereum"
+  - name: bridges_ethereum_arbitrum_native_v1_withdrawals
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'arbitrum', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Arbitrum's v1 native bridge withdrawals events on Ethereum"
