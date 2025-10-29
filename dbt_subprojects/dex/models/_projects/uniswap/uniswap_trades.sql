@@ -309,9 +309,9 @@ prices AS (
 )
 
     select
-        blockchain
-        , project
-        , version
+        af.blockchain
+        , af.project
+        , af.version
         , block_month
         , block_date
         , block_time
