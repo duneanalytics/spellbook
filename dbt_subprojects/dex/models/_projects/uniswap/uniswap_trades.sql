@@ -297,7 +297,7 @@ prices AS (
         , price as price_usd 
     from
     {{ source('prices','usd_with_native') }}
-    where block_date >= date '2025-08-01'
+    where minute >= date '2025-08-01'
     {% if is_incremental() %}
     and {{ incremental_predicate('minute') }}
     {% endif %}
