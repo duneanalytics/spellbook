@@ -13,5 +13,7 @@
 {{
     uniswap_downstream_trades(
           blockchain = 'arbitrum'
+          , has_univ4 = 'yes'
+          , has_bunni = 'yes'
     )
 }}

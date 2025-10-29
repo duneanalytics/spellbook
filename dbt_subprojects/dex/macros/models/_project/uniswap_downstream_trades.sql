@@ -1,35 +1,14 @@
 {% macro uniswap_downstream_trades(
     blockchain = null
+    , has_univ4 = null 
+    , has_bunni = null 
     )
 %}
-
-{% set v4_models = [
-    ref('uniswap_v4_arbitrum_base_trades')
-    , ref('uniswap_v4_avalanche_c_base_trades')
-    , ref('uniswap_v4_base_base_trades')
-    , ref('uniswap_v4_blast_base_trades')
-    , ref('uniswap_v4_bnb_base_trades')
-    , ref('uniswap_v4_ethereum_base_trades')
-    , ref('uniswap_v4_ink_base_trades')
-    , ref('uniswap_v4_optimism_base_trades')
-    , ref('uniswap_v4_polygon_base_trades')
-    , ref('uniswap_v4_unichain_base_trades')
-    , ref('uniswap_v4_worldchain_base_trades')
-    , ref('uniswap_v4_zora_base_trades')
-] %}
-
-{% set bunni_models = [
-    {"source": source('bunni_v2_base', 'bunnihook_evt_swap'), "chain": "base"}
-    , {"source": source('bunni_v2_arbitrum', 'bunnihook_evt_swap'), "chain": "arbitrum"}
-    , {"source": source('bunni_v2_ethereum', 'bunnihook_evt_swap'), "chain": "ethereum"}
-    , {"source": source('bunni_v2_unichain', 'bunnihook_evt_swap'), "chain": "unichain"}
-    , {"source": source('bunni_v2_bnb', 'bunnihook_evt_swap'), "chain": "bnb"}
-] %}
 
 with 
 
 v4_trades as (
-    {% for model in v4_models %}
+    {% if has_univ4 %}
     select
         blockchain
         , tx_hash 
@@ -39,23 +18,28 @@ v4_trades as (
         , block_date 
         , block_number 
     from
-        {{ model }}
+    {{ ref('uniswap_v4_' + blockchain + '_base_trades') }}
     where 1 = 1 
     {% if is_incremental() %}
-    and
-        {{ incremental_predicate('block_time') }}
+    and {{ incremental_predicate('block_time') }}
     {% endif %}
-    and blockchain = '{{blockchain}}'
-    {% if not loop.last %}
-    union all 
+    {% else %}
+    select 
+        cast(null as varchar) as blockchain 
+        , cast(null as varbinary) as tx_hash 
+        , cast(null as bigint) as evt_index 
+        , cast(null as double) as fee 
+        , cast(null as timestamp) as block_time 
+        , cast(null as timestamp) as block_date 
+        , cast(null as bigint) as block_number 
     {% endif %}
-    {% endfor %}
+
 ),
 
 bunni_fees as (
-    {% for model in bunni_models %}
+    {% if has_bunni %}
     select
-        '{{ model.chain }}' as blockchain
+        '{{blockchain}}' as blockchain
         , evt_tx_hash  as tx_hash
         , fee  
         , evt_block_date as block_date
@@ -63,16 +47,21 @@ bunni_fees as (
         , evt_index + 1 as evt_index
         , 'bunni' as hooks 
     from
-        {{ model.source }}
+    {{ source('bunni_v2_' + blockchain, 'bunnihook_evt_swap') }}
     where 1 = 1 
     {% if is_incremental() %}
     and {{ incremental_predicate('evt_block_time') }}
     {% endif %}
-    and '{{ model.chain }}' = '{{blockchain}}'
-    {% if not loop.last %}
-    union all 
+    {% else %}
+    select 
+        cast(null as varchar) as blockchain 
+        , cast(null as varbinary) as tx_hash 
+        , cast(null as double) as fee 
+        , cast(null as timestamp) as block_date 
+        , cast(null as varbinary) as id
+        , cast(null as bigint) as evt_index 
+        , cast(null as varchar) as hooks 
     {% endif %}
-    {% endfor %}
 ),
 
 flaunch_hookswap as (
