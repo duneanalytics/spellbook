@@ -4,6 +4,8 @@ sources:
   - name: across_v2_ethereum
     description: "Across Protocol v2 and v3 bridge events on Ethereum"
     tables:
+      - name: ethereum_spokepool_evt_fundsdeposited
+      - name: ethereum_spokepool_evt_filledrelay
       - name: uba_ethereum_spokepool_evt_fundsdeposited
       - name: uba_ethereum_spokepool_evt_filledrelay
       - name: uba_ethereum_spokepool_evt_v3fundsdeposited
@@ -20,6 +22,8 @@ sources:
   - name: across_v2_arbitrum
     description: "Across Protocol v2 and v3 bridge events on Arbitrum"
     tables:
+      - name: arbitrum_spokepool_evt_fundsdeposited
+      - name: arbitrum_spokepool_evt_filledrelay
       - name: uba_arbitrum_spokepool_evt_fundsdeposited
       - name: uba_arbitrum_spokepool_evt_filledrelay
       - name: uba_arbitrum_spokepool_evt_v3fundsdeposited
@@ -28,6 +32,8 @@ sources:
   - name: across_v2_optimism
     description: "Across Protocol v2 and v3 bridge events on OP Mainnet"
     tables:
+      - name: optimism_spokepool_evt_fundsdeposited
+      - name: optimism_spokepool_evt_filledrelay
       - name: uba_optimism_spokepool_evt_fundsdeposited
       - name: uba_optimism_spokepool_evt_filledrelay
       - name: uba_optimism_spokepool_evt_v3fundsdeposited
@@ -36,6 +42,8 @@ sources:
   - name: across_v2_polygon
     description: "Across Protocol v2 and v3 bridge events on Polygon"
     tables:
+      - name: polygon_spokepool_evt_fundsdeposited
+      - name: polygon_spokepool_evt_filledrelay
       - name: uba_polygon_spokepool_evt_fundsdeposited
       - name: uba_polygon_spokepool_evt_filledrelay
       - name: uba_polygon_spokepool_evt_v3fundsdeposited
