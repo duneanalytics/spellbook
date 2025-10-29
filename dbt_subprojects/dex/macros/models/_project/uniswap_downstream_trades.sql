@@ -215,6 +215,7 @@ add_fees as (
             {% if has_univ4 %}
             , v4.fee/1e6
             {% endif %}
+            , cast(null as double)
         ) as uni_fee 
         , coalesce (
             cast(null as double)
@@ -224,6 +225,7 @@ add_fees as (
             {% if blockchain == 'base' %}
             , ff.fee 
             {% endif %}
+            , cast(null as double)
         ) as hooks_fee 
         , coalesce (
             cast(null as varchar)
@@ -233,11 +235,12 @@ add_fees as (
             {% if blockchain == 'base' %}
             , ff.hooks 
             {% endif %}
+            , cast(null as varchar)
         ) as hooks 
     from 
     get_trades gt 
-    left join 
     {% if has_univ4 %}
+    left join 
     v4_trades v4 
         on gt.blockchain = v4.blockchain 
         and gt.block_date = v4.block_date 
