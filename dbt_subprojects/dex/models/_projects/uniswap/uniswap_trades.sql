@@ -220,7 +220,7 @@ get_trades as (
         , evt_index
     from
     {{ ref('dex_trades') }}
-    where 1 = 1 
+    where block_date = current_date 
     {% if is_incremental() %}
     and {{ incremental_predicate('block_time') }}
     {% endif %}
@@ -301,7 +301,7 @@ prices AS (
         , price as price_usd 
     from
     {{ source('prices','usd_with_native') }}
-    where 1 = 1 
+    where minute = current_date 
     {% if is_incremental() %}
     and {{ incremental_predicate('minute') }}
     {% endif %}
