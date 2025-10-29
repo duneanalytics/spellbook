@@ -7,7 +7,7 @@
     )
 }}
 
-{{across_v2_deposits(
+{{across_v2_old_deposits(
     blockchain = blockchain
     , events = source('across_v2_polygon', 'polygon_spokepool_evt_fundsdeposited')
     )}}

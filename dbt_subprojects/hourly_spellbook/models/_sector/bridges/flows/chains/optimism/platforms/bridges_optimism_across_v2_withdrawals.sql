@@ -7,7 +7,7 @@
     )
 }}
 
-{{across_v2_withdrawals(
+{{across_v2_old_withdrawals(
     blockchain = blockchain
     , events = source('across_v2_optimism', 'optimism_spokepool_evt_filledrelay')
     )}}
