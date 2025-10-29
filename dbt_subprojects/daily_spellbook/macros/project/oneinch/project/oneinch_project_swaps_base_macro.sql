@@ -59,7 +59,7 @@ meta as (
         , taker_asset
         , taking_amount
         , map_concat(flags, map_from_entries(array[('cross_chain', hashlock is not null)])) as order_flags
-    from {{ source('oneinch_' + blockchain, 'lo') }}
+    from {{ source('oneinch_' + blockchain, 'lop') }}
     where true
         and call_success
         and block_time >= timestamp '{{ date_from }}'
