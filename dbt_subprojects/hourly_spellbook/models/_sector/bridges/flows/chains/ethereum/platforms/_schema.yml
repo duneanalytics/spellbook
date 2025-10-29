@@ -79,6 +79,96 @@ models:
     config:
       tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
     description: "Across's v2 bridge withdrawals events on Ethereum"
+  - name: bridges_ethereum_ronin_native_v1_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: ronin
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'ronin', 'bridges', 'flows' , 'deposits' ]
+    description: "Ronin's native v1 bridge deposits events on Ethereum"
+  - name: bridges_ethereum_ronin_native_v1_withdrawals
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: ronin
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'ronin', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Ronin's native v1 bridge withdrawals events on Ethereum"
+  - name: bridges_ethereum_ronin_native_v2_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: ronin
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'ronin', 'bridges', 'flows' , 'deposits' ]
+    description: "Ronin's native v2 bridge deposits events on Ethereum"
+  - name: bridges_ethereum_ronin_native_v2_withdrawals
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: ronin
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'ronin', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Ronin's native v2 bridge withdrawals events on Ethereum"
+  - name: bridges_ethereum_lighter_v1_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: lighter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
+    description: "Lighter's v1 bridge deposits events on Ethereum"
+  - name: bridges_ethereum_lighter_v1_withdrawals
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: lighter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Lighter's v1 bridge withdrawals events on Ethereum"
+  - name: bridges_ethereum_avalanche_c_native_v2_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: avalanche_c_native
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'avalanche_c', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Arbitrum's v1 native bridge deposits events on Ethereum"
+  - name: bridges_ethereum_avalanche_c_native_v2_withdrawals
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: avalanche_c_native
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'avalanche_c', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Arbitrum's v1 native bridge deposits events on Ethereum"
+  - name: bridges_ethereum_zkync_native_v2_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: zksync
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'zksync', 'bridges', 'flows' , 'deposits' ]
+    description: "zkSync's v2 bridge deposits events on Ethereum"
+  - name: bridges_ethereum_zkync_native_v2_withdrawals
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: zksync
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'zksync', 'bridges', 'flows' , 'withdrawals' ]
+    description: "zkSync's v2 bridge withdrawals events on Ethereum"
   - name: bridges_ethereum_arbitrum_native_v1_deposits
     meta:
       blockchain: ethereum
@@ -97,4 +187,3 @@ models:
     config:
       tags: [ 'arbitrum', 'bridges', 'flows' , 'withdrawals' ]
     description: "Arbitrum's v1 native bridge withdrawals events on Ethereum"
-
