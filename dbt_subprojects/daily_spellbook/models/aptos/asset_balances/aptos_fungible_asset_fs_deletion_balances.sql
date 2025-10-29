@@ -58,6 +58,6 @@ SELECT
     from_hex(owner_address) AS owner_address,
     storage_id,
     amount,
-    NULL AS is_frozen,
+    CAST(NULL AS BOOLEAN) AS is_frozen,
     'v2' AS token_standard
 FROM fs_deletion
