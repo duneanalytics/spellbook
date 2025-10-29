@@ -46,6 +46,7 @@ WITH coin_activities AS (
             AND move_resource_module = 'coin'
             AND move_resource_name = 'CoinStore'
             AND block_date <= DATE('2025-08-02') -- FS migration
+            AND block_date >= DATE('2024-07-25') -- beginning of FA (v2) migration
     ) mr
         ON ev.tx_version = mr.tx_version
         AND ev.block_date = mr.block_date -- optimization
@@ -54,6 +55,7 @@ WITH coin_activities AS (
     WHERE 1=1
         AND event_type IN ('0x1::coin::WithdrawEvent', '0x1::coin::DepositEvent')
         AND ev.block_date <= DATE('2025-08-02') -- FS migration
+        AND ev.block_date >= DATE('2024-07-25') -- beginning of FA (v2) migration
 )
 
 SELECT

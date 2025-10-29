@@ -13,7 +13,7 @@
     - This is the current logic for fungible asset activities
 */
 
-{% if is_incremental() -%}
+{% if is_incremental() or true -%}
 WITH max_fab_version AS (
     SELECT MAX(tx_version) AS max_tx_version
     FROM {{ ref('aptos_fungible_asset_balances') }}
@@ -39,10 +39,10 @@ WITH fa_activities AS (
         ON ev.tx_version = fab.tx_version
         AND address_32_from_hex(json_extract_scalar(ev.data, '$.store')) = fab.storage_id
         AND fab.token_standard = 'v2'
-        {% if is_incremental() -%}
+        {% if is_incremental() or true -%}
         AND {{ incremental_predicate('fab.block_time') }}
         {% endif -%}
-    {% if is_incremental() -%}
+    {% if is_incremental() or true -%}
     CROSS JOIN max_fab_version
     {% endif -%}
     WHERE 1=1
@@ -51,7 +51,7 @@ WITH fa_activities AS (
             '0x1::fungible_asset::Deposit',
             '0x1::fungible_asset::Withdraw'
         )
-        {% if is_incremental() -%}
+        {% if is_incremental() or true -%}
         AND {{ incremental_predicate('ev.block_time') }}
         AND ev.tx_version < max_fab_version.max_tx_version
         {% endif -%}

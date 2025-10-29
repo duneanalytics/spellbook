@@ -30,6 +30,7 @@ WITH coin_balances AS (
         AND move_resource_module = 'coin'
         AND move_resource_name = 'CoinStore'
         AND block_date <= DATE('2025-09-02')
+        AND block_date >= DATE('2025-08-25') -- beginning of FA (v2) migration
 )
 
 SELECT

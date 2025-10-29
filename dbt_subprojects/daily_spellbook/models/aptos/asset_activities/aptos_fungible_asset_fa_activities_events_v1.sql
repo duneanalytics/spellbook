@@ -31,10 +31,10 @@ WITH fa_activities_legacy AS (
         ON ev.tx_version = fab.tx_version
         AND ev.guid_account_address = fab.storage_id
         AND fab.token_standard = 'v2'
-        AND fab.block_date >= DATE('2023-07-28')
+        AND fab.block_date >= DATE('2024-05-22')
         AND fab.block_date <= DATE('2024-05-29')
     WHERE 1=1
-        AND ev.block_date >= DATE('2023-07-28') -- FA deployed
+        AND ev.block_date >= DATE('2024-05-22') -- FA deployed
         AND ev.block_date <= DATE('2024-05-29') -- Events v2 migration completed
         AND event_type IN (
             '0x1::fungible_asset::DepositEvent',
