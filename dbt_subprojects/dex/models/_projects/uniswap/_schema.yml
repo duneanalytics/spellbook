@@ -254,7 +254,7 @@ models:
         name: token1_balance_usd
         description: "Liquidity balance of token1 in USD"
 
-  - name: uniswap_base_trades
+  - name: uniswap_trades
     meta:
       blockchain: ethereum,arbitrum,base,optimism,polygon,zora,blast,bnb,avalanche_c,worldchain,ink,unichain
       sector: dex
