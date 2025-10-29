@@ -84,8 +84,8 @@ known_solver_metadata (address, environment, name) as (
                 (0x4CdbA844CEB949567eA18b9EF185515fA626c69D, 'prod', 'Helixbox'),
                 (0x9CF49541f8b94DA501Cd16B60Fa176D856fB1e75, 'prod', 'Sector_Finance'),
                 (0xaf888d387adceed01a736aa3deae75dcf3edd8c1, 'prod', 'Copium_Capital'),
-                (0xD5a9FAE900C3FfF4145753F47Eb2E9d573b107D7, 'barn', 'Piggy'),
-                (0xFE082A5784cA28F67D1E6aB04EAe7c313c210229, 'prod', 'Piggy'),
+                (0xD5a9FAE900C3FfF4145753F47Eb2E9d573b107D7, 'barn', 'Kamaji'),
+                (0xFE082A5784cA28F67D1E6aB04EAe7c313c210229, 'prod', 'Kamaji'),
                 (0x550EC8e3944E9aF8411f32273555656977D884Ac, 'barn', 'Apollo'),
                 (0x65E80731F97b8361E77670357d287266dD0d93b6, 'prod', 'Apollo'),
                 (0xEa77cB08FBf7ef0CaF615dcE37A159D56B2B867f, 'barn', 'Wraxyn'),
@@ -108,7 +108,8 @@ known_solver_metadata (address, environment, name) as (
                 (0x9702Add8e0943Ec9a6e1e87FC612537E78d7194E, 'barn', 'MX Trading'),
                 (0x859A672a564A99CDA9BfB2c39ca80Dd9256B94d3, 'prod', 'MX Trading'),
                 (0x96B8F359f0b2067D7F7C84F55f172FF1A70ee0F4, 'barn', 'Trusted Volumes'),
-                (0xE6094DFE442F44df4cfAa21dCC054dC85Fc299DB, 'prod', 'Trusted Volumes')
+                (0xE6094DFE442F44df4cfAa21dCC054dC85Fc299DB, 'prod', 'Trusted Volumes'),
+                (0x6080cc68234c2333ef0bae42b1a217f8e5c7020b, 'prod', 'Prycto')
     ) as _
 )
 -- Combining the metadata with current activation status for final table
