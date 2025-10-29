@@ -241,7 +241,7 @@ FROM
     ('dht-dhedge', 'arbitrum', 'DHT', 0x8038f3c971414fd1fc220ba727f2d4a0fc98cb65, 18),
     ('seed-garden', 'arbitrum', 'SEED', 0x86f65121804D2Cdbef79F9f072D4e0c2eEbABC08, 18),
     ('skate-skate', 'arbitrum', 'SKATE', 0x61dbbbb552dc893ab3aad09f289f811e67cef285, 18),
-    ('aury-aurory', 'arbitrum', 'AURY', 0x11bf4f05eb28b802ed3ab672594decb20ffe2313, 18),
+    ('aury-aurory', 'arbitrum', 'AURY', 0x11bf4f05eb28b802ed3ab672594decb20ffe2313, 9),
     ('smt-swarm-markets', 'arbitrum', 'SMT', 0x2680e82fb8beb5a153a67fe687ffa67abb6b9013, 18),
     ('snsy-sensay', 'arbitrum', 'SNSY', 0x3124678d62d2aa1f615b54525310fbfda6dcf7ae, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
