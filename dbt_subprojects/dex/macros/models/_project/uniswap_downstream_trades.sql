@@ -8,7 +8,7 @@
 with 
 
 v4_trades as (
-    {% if has_univ4 %}
+    {% if has_univ4|lower == 'yes' %}
     select
         blockchain
         , tx_hash 
@@ -32,12 +32,13 @@ v4_trades as (
         , cast(null as timestamp) as block_time 
         , cast(null as timestamp) as block_date 
         , cast(null as bigint) as block_number 
+    where false
     {% endif %}
 
 ),
 
 bunni_fees as (
-    {% if has_bunni %}
+    {% if has_bunni|lower == 'yes' %}
     select
         '{{blockchain}}' as blockchain
         , evt_tx_hash  as tx_hash
@@ -61,6 +62,7 @@ bunni_fees as (
         , cast(null as varbinary) as id
         , cast(null as bigint) as evt_index 
         , cast(null as varchar) as hooks 
+    where false 
     {% endif %}
 ),
 
