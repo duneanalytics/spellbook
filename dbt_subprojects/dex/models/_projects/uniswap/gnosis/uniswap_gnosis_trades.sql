@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'uniswap_arbitrum'
+    schema = 'uniswap_gnosis'
     , alias = 'trades'
     , partition_by = ['block_month']
     , materialized = 'incremental'
@@ -12,8 +12,8 @@
 
 {{
     uniswap_downstream_trades(
-          blockchain = 'arbitrum'
-          , has_univ4 = true
-          , has_bunni = true
+          blockchain = 'gnosis'
+          , has_univ4 = false
+          , has_bunni = false
     )
 }}

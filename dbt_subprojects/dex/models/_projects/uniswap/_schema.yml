@@ -261,11 +261,3 @@ models:
       contributors: Henrystats
     config:
       tags: [ 'dex' ]
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index

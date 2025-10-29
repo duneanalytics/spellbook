@@ -173,8 +173,6 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - blockchain
-            - project
-            - version
+            - block_month
             - tx_hash
             - evt_index

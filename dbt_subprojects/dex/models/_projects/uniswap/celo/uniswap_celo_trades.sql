@@ -1,11 +1,11 @@
 {{ config(
     schema = 'uniswap_celo'
     , alias = 'trades'
-    , partition_by = ['block_month', 'blockchain', 'project']
+    , partition_by = ['block_month']
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
-    , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index']
+    , unique_key = ['block_month', 'tx_hash', 'evt_index']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
