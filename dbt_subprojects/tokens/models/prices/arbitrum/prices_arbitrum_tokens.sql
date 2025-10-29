@@ -234,5 +234,14 @@ FROM
     ('usdx-usdxmoney-usdx', 'arbitrum', 'USDX', 0xf3527ef8dE265eAa3716FB312c12847bFBA66Cef, 18),
     ('ebtc-etherfi-staked-btc', 'arbitrum', 'eBTC', 0x657e8c867d8b37dcc18fa4caead9c45eb088c642, 8),
     ('ftw-black-agnus', 'arbitrum', 'FTW', 0x306fd3e7b169aa4ee19412323e1a5995b8c1a1f4, 18),
-    ('hyper-hyperlane', 'arbitrum', 'HYPER', 0xc9d23ed2adb0f551369946bd377f8644ce1ca5c4, 18)
+    ('hyper-hyperlane', 'arbitrum', 'HYPER', 0xc9d23ed2adb0f551369946bd377f8644ce1ca5c4, 18),
+    ('xbg-xborg', 'arbitrum', 'XBG', 0x93fa0b88c0c78e45980fa74cdd87469311b7b3e4, 18),
+    ('dog-the-doge-nft', 'arbitrum', 'DOG', 0x4425742f1ec8d98779690b5a3a6276db85ddc01a, 18),
+    ('over-overtime', 'arbitrum', 'OVER', 0x5829d6fe7528bc8e92c4e81cc8f20a528820b51a, 18),
+    ('dht-dhedge', 'arbitrum', 'DHT', 0x8038f3c971414fd1fc220ba727f2d4a0fc98cb65, 18),
+    ('seed-garden', 'arbitrum', 'SEED', 0x86f65121804D2Cdbef79F9f072D4e0c2eEbABC08, 18),
+    ('skate-skate', 'arbitrum', 'SKATE', 0x61dbbbb552dc893ab3aad09f289f811e67cef285, 18),
+    ('aury-aurory', 'arbitrum', 'AURY', 0x11bf4f05eb28b802ed3ab672594decb20ffe2313, 18),
+    ('smt-swarm-markets', 'arbitrum', 'SMT', 0x2680e82fb8beb5a153a67fe687ffa67abb6b9013, 18),
+    ('snsy-sensay', 'arbitrum', 'SNSY', 0x3124678d62d2aa1f615b54525310fbfda6dcf7ae, 18),
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
