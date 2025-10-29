@@ -44,3 +44,18 @@ models:
       - &endpoint_address
         name: endpoint_address
         description: "Address of the endpoint contract"
+  - name: bridges_tether_chain_indexes
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: tether
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bridges', 'chain_indexes' ]
+    description: "Tether's blockchains indexes"
+    columns:
+      - *id
+      - *blockchain
+      - &usdt0_address
+        name: usdt0_address
+        description: "Contract address of USDT0 per chain"
