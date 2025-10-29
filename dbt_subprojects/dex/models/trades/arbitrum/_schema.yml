@@ -961,3 +961,22 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
+
+  - name: yieldbasis_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: yieldbasis
+      contributors: principatel
+    config:
+      tags: ["arbitrum", "dex", "trades", "yieldbasis"]
+    description: "yieldbasis arbitrum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('yieldbasis_arbitrum_base_trades_seed')
+          filter:
+            version: 1
