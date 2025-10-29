@@ -3,11 +3,11 @@ version: 2
 models:
   - name: balancer_flashloans
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm, plasma 
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
       sector: lending
       contributors: hildobby, viniabussafi, amandadalle
     config:
-      tags: ['ethereum', 'arbitrum', 'optimism', 'polygon', 'gnosis','avalanche_c', 'base', 'zkevm', 'plasma', 'flashloans']
+      tags: ['ethereum', 'arbitrum', 'optimism', 'polygon', 'gnosis','avalanche_c', 'base', 'zkevm', 'flashloans']
     description: >
       All Balancer flashloans
     data_tests:
