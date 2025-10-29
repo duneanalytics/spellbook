@@ -383,3 +383,4 @@ prices AS (
         and af.pool_address = unp.pool 
         and af.version = unp.version 
 
+-- trigger refresh 
