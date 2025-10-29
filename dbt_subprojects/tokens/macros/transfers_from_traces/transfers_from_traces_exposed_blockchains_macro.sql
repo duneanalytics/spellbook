@@ -29,6 +29,7 @@
     "lens",
     "linea",
     "mantle",
+    "mezo",
     "nova",
     "optimism",
     "polygon",
