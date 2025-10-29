@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: bridges_bnb_across_v3_deposits
+    meta:
+      blockchain: bnb
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
+    description: "Across's v3 bridge deposits events on bnb"
+  - name: bridges_bnb_across_v3_withdrawals
+    meta:
+      blockchain: bnb
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Across's v3 bridge withdrawals events on bnb"

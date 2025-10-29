@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: zksync_v2_ethereum
+    description: "zkSync native bridge v2 events on Ethereum"
+    tables:
+      - name: diamondproxy_evt_ethwithdrawalfinalized
+      - name: l1erc20bridge_evt_withdrawalfinalized
+      - name: l1erc20bridge_evt_depositinitiated

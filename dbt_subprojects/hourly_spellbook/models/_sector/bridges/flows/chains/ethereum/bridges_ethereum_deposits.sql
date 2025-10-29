@@ -11,12 +11,20 @@
     'bridges_' + blockchain + '_cctp_v1_deposits'
     , 'bridges_' + blockchain + '_celer_v1_deposits'
     , 'bridges_' + blockchain + '_across_v2_deposits'
+    , 'bridges_' + blockchain + '_across_v3_deposits'
+    , 'bridges_' + blockchain + '_arbitrum_native_v1_deposits'
+    , 'bridges_' + blockchain + '_ronin_native_v1_deposits'
+    , 'bridges_' + blockchain + '_ronin_native_v2_deposits'
+    , 'bridges_' + blockchain + '_lighter_v1_deposits'
+    , 'bridges_' + blockchain + '_avalanche_c_native_v2_deposits'
+    , 'bridges_' + blockchain + '_zkync_native_v2_deposits'
 ] %}
 
 SELECT *
 FROM (
     {% for bridge_platform in bridges_platforms %}
     SELECT deposit_chain
+    , withdrawal_chain_id
     , withdrawal_chain
     , bridge_name
     , bridge_version
