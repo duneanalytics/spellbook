@@ -15,6 +15,7 @@
     , 'base'
     , 'blast'
     , 'bnb'
+    , 'boba'
     , 'ethereum'
     , 'hyperevm'
     , 'ink'
