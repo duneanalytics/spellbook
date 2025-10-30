@@ -86,7 +86,7 @@ logs AS (
     FROM
         {{ source('near', 'logs') }}
     WHERE
-        AND executor_account_id IN (SELECT contract_address FROM near_omni_contracts)
+        executor_account_id IN (SELECT contract_address FROM near_omni_contracts)
         {% if is_incremental() or true %}
         AND {{ incremental_predicate('block_time') }}
         {% endif %}
