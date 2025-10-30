@@ -238,4 +238,5 @@ FROM (VALUES
     , ('somnex', 'SomneX', 'Direct', 'SomneX')
     , ('machinex', 'Machine X', 'Direct', 'machinexdotxyz')
     , ('cldex', 'CLDEX', 'Direct', 'KaiaChain')
+    , ('pharaoh_v3', 'Pharaoh', 'Direct', 'PharaohExchange')
 ) AS temp_table (project, name, marketplace_type, x_username)
