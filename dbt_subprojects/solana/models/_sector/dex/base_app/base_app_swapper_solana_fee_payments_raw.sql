@@ -44,7 +44,8 @@ with sol_payments as (
                 {% endif %} 
             )
 
-    -- From '2024-04' to '2025-10 fees are paid claimed by 6Ro...TcyB
+    -- From '2024-04' to '2025-10 fees are claimed by 6Ro...TcyB
+    -- Claiming occurs in seperate transaction to the trades
         union all
         select
             account_activity.block_time,
