@@ -9,11 +9,43 @@
    )
 }}
 
-{% set query_start_date = '2025-10-15' %}
+{% set query_start_date = '2024-04-01' %}
 {% set blockchain = 'solana' %}
 {% set wsol_token = 'So11111111111111111111111111111111111111112' %}
 
 with sol_payments as (
+    -- From '2025-10' onwards fees are paid directly to 6oo...yBd during each trade
+        select
+            account_activity.block_time,
+            cast(date_trunc('month', account_activity.block_time) as date) as block_month,
+            address as fee_receiver,
+            account_activity.balance_change / 1e9 as amount,
+            '{{wsol_token}}' token_address,
+            account_activity.tx_id
+        from {{ source('solana','account_activity') }} as account_activity
+        where
+            {% if is_incremental() %} 
+                {{ incremental_predicate('account_activity.block_time') }}
+            {% else %} 
+                account_activity.block_time >= timestamp '2025-10-16'
+            {% endif %} 
+            and tx_success
+            and address = '6ooVBXhnqAXaF91cu49YmWhoFuE6WLdZWTwNYvTuhyBd'
+            and balance_change > 0
+            and exists (
+                select 1 
+                from {{ source('dex_solana', 'trades') }} as trades
+                where trades.tx_id = account_activity.tx_id
+                and trades.block_time = account_activity.block_time
+                {% if is_incremental() %} 
+                and {{ incremental_predicate('trades.block_time') }}
+                {% else %} 
+                and trades.block_time >= timestamp '2025-10-16'
+                {% endif %} 
+            )
+
+    -- From '2024-04' to '2025-10 fees are paid claimed by 6Ro...TcyB
+        union all
         select
             account_activity.block_time,
             cast(date_trunc('month', account_activity.block_time) as date) as block_month,
@@ -29,8 +61,40 @@ with sol_payments as (
                 account_activity.block_time >= timestamp '{{query_start_date}}'
             {% endif %} 
             and tx_success
-            and address = '6ooVBXhnqAXaF91cu49YmWhoFuE6WLdZWTwNYvTuhyBd'
+            and address = '6RogbrW13c2MqdJBinNHGPucykeDPxbzYZGx1RuXTcyB'
             and balance_change > 0
+            and exists (
+                select 1 
+                from {{ source('jupiter_solana', 'referral_call_claim') }} as claims
+                where claims.call_tx_id = account_activity.tx_id
+                and claims.call_block_time = account_activity.block_time
+                and account_referralAccount = '6dKqNQ332RmucYf6cMHXfP4pcsi7wnY8XB87emdiM8QX'
+                {% if is_incremental() %} 
+                and {{ incremental_predicate('claims.call_block_time') }}
+                {% else %} 
+                and claims.call_block_time >= timestamp '{{query_start_date}}'
+                {% endif %} 
+            )
+    ),
+    token_payments as (
+    -- From '2025-10' onwards fees are paid directly to 6oo...yBd during each trade
+        select
+            account_activity.block_time,
+            cast(date_trunc('month', account_activity.block_time) as date) as block_month,
+            token_balance_owner as fee_receiver,
+            account_activity.token_balance_change as amount,
+            account_activity.token_mint_address as token_address,
+            account_activity.tx_id
+        from {{ source('solana','account_activity') }} as account_activity
+        where
+            {% if is_incremental() %} 
+                {{ incremental_predicate('account_activity.block_time') }}
+            {% else %} 
+                account_activity.block_time >= timestamp '2025-10-16'
+            {% endif %} 
+            and token_balance_owner = '6ooVBXhnqAXaF91cu49YmWhoFuE6WLdZWTwNYvTuhyBd'
+            and token_balance_change > 0
+            and tx_success
             and exists (
                 select 1 
                 from {{ source('dex_solana', 'trades') }} as trades
@@ -39,11 +103,12 @@ with sol_payments as (
                 {% if is_incremental() %} 
                 and {{ incremental_predicate('trades.block_time') }}
                 {% else %} 
-                and trades.block_time >= timestamp '{{query_start_date}}'
+                and trades.block_time >= timestamp '2025-10-16'
                 {% endif %} 
             )
-    ),
-    token_payments as (
+
+    -- From '2024-04' to '2025-10 fees are paid claimed by 6Ro...TcyB        
+        union all
         select
             account_activity.block_time,
             cast(date_trunc('month', account_activity.block_time) as date) as block_month,
@@ -58,20 +123,21 @@ with sol_payments as (
             {% else %} 
                 account_activity.block_time >= timestamp '{{query_start_date}}'
             {% endif %} 
-            and token_balance_owner = '6ooVBXhnqAXaF91cu49YmWhoFuE6WLdZWTwNYvTuhyBd'
+            and token_balance_owner = '6RogbrW13c2MqdJBinNHGPucykeDPxbzYZGx1RuXTcyB'
             and token_balance_change > 0
             and tx_success
             and exists (
                 select 1 
-                from {{ source('dex_solana', 'trades') }} as trades
-                where trades.tx_id = account_activity.tx_id
-                and trades.block_time = account_activity.block_time
+                from {{ source('jupiter_solana', 'referral_call_claim') }} as claims
+                where claims.call_tx_id = account_activity.tx_id
+                and claims.call_block_time = account_activity.block_time
+                and account_referralAccount = '6dKqNQ332RmucYf6cMHXfP4pcsi7wnY8XB87emdiM8QX'
                 {% if is_incremental() %} 
-                and {{ incremental_predicate('trades.block_time') }}
+                and {{ incremental_predicate('claims.call_block_time') }}
                 {% else %} 
-                and trades.block_time >= timestamp '{{query_start_date}}'
+                and claims.call_block_time >= timestamp '{{query_start_date}}'
                 {% endif %} 
-            )
+            )        
     ),
     fee_payments as (
         select *

@@ -58,6 +58,7 @@ with filtered_transactions as (
             {{ ref('base_app_swapper_solana_fee_payments_usd') }} as fee_payments
             on (
                 trades.tx_id = fee_payments.tx_id
+                and fee_payments.fee_receiver = '6ooVBXhnqAXaF91cu49YmWhoFuE6WLdZWTwNYvTuhyBd'
                 and fee_payments.block_time = trades.block_time
                 and fee_payments.index = 1  -- only get the first fee payment per tx
                 and trades.trader_id != fee_payments.fee_receiver
