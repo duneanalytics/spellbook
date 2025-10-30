@@ -2,12 +2,12 @@
 
 {{ config(
     schema = 'bridges_' + blockchain,
-    alias = 'across_v2_withdrawals',
+    alias = 'across_v1_withdrawals',
     materialized = 'view',
     )
 }}
 
-{{across_v2_withdrawals(
+{{across_v1_withdrawals(
     blockchain = blockchain
-    , events = source('across_v2_polygon', 'uba_polygon_spokepool_evt_filledrelay')
+    , events = source('across_v2_polygon', 'polygon_spokepool_evt_filledrelay')
     )}}

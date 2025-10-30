@@ -1,10 +1,10 @@
-{% macro across_v2_old_withdrawals(blockchain, events) %}
+{% macro across_v1_withdrawals(blockchain, events) %}
 
 SELECT d.originChainId AS deposit_chain_id
 , m.blockchain AS deposit_chain
 , '{{blockchain}}' AS withdrawal_chain
 , 'Across' AS bridge_name
-, '2' AS bridge_version
+, '1' AS bridge_version
 , d.evt_block_date AS block_date
 , d.evt_block_time AS block_time
 , d.evt_block_number AS block_number

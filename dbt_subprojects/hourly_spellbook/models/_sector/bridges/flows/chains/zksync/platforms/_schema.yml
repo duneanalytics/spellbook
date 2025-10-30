@@ -18,7 +18,7 @@ models:
       contributors: [ 'hildobby']
     config:
       tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
-    description: "Across's v3 bridge withdrawals events on zkSync"
+    description: "Across's v2 bridge withdrawals events on zkSync"
   - name: bridges_zksync_across_v3_deposits
     meta:
       blockchain: zksync
