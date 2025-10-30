@@ -86,7 +86,6 @@ logs AS (
     FROM
         {{ source('near', 'logs') }}
     WHERE
-        block_date >= DATE '2025-01-01'
         AND executor_account_id IN (SELECT contract_address FROM near_omni_contracts)
         {% if is_incremental() %}
         AND {{ incremental_predicate('block_time') }}
