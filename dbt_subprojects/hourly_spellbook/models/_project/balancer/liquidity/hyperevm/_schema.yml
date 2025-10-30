@@ -1,23 +1,21 @@
 version: 2
 
 models:
-  - name: balancer_liquidity
+  - name: balancer_v3_hyperevm_liquidity
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, plasma, polygon, zkevm, hyperevm
-      project: balancer
-      contributors: viniabussafi
+      blockchain: hyperevm
+      project: balancer_v3
+      contributors: amandadalle, giovanasoldatelli, tiagoponciano
     config:
-      tags: ['balancer', 'amm', 'dex', 'liquidity', 'ethereum', 'arbitrum', 'optimism', 'polygon', 'avalanche_c', 'base', 'plasma', 'zkevm', 'hyperevm']
+      tags: ['hyperevm', 'balancer', 'pools', 'liquidity']
     description: >
-      Liquidity by token on Balancer, an automated portfolio manager and trading platform.
+      Balancer v3 pools liquidity by token in Hyperevm.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
             - pool_id
-            - blockchain
             - token_address
-            - token_symbol
     columns:
       - &day
         name: day

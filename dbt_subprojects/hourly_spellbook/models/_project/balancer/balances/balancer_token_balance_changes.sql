@@ -1,7 +1,7 @@
 {{ config(
     schema = 'balancer',
     alias = 'token_balance_changes',
-    post_hook='{{ expose_spells(blockchains = \'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon", "zkevm"]\',
+    post_hook='{{ expose_spells(blockchains = \'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "hyperevm", "optimism", "plasma", "polygon", "zkevm"]\',
                                 spell_type = "project",
                                 spell_name = "balancer",
                                 contributors = \'["viniabussafi"]\') }}'
@@ -20,7 +20,9 @@
     ref('balancer_v3_ethereum_token_balance_changes'),
     ref('balancer_v3_gnosis_token_balance_changes'),
     ref('balancer_v3_arbitrum_token_balance_changes'),
-    ref('balancer_v3_base_token_balance_changes')        
+    ref('balancer_v3_base_token_balance_changes'),
+    ref('balancer_v3_plasma_token_balance_changes'),
+    ref('balancer_v3_hyperevm_token_balance_changes')        
 ] %}
 
 SELECT *

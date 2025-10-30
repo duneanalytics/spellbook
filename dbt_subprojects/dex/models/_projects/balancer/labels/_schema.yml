@@ -451,3 +451,28 @@ models:
       - *updated_at
       - *model_name
       - *label_type   
+
+  - name: labels_balancer_v3_pools_hyperevm
+    meta:
+      blockchain: hyperevm
+      sector: labels
+      project: balancer_v3
+      contributors: balancerlabs, giovanasoldatelli
+    config:
+      tags: ['labels', 'hyperevm', 'balancer', 'pools']
+    description: 'Balancer V3 liquidity pools created on Hyperevm.'
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type  
