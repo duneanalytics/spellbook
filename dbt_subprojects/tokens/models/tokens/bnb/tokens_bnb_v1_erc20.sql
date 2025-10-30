@@ -1,7 +1,7 @@
 {{
     config(
         schema = 'tokens_bnb_v1'
-        ,alias = 'bep20'
+        ,alias = 'erc20'
         ,tags = ['static']
         ,materialized = 'table'
     )
