@@ -46,7 +46,7 @@ SELECT d.deposit_chain
 , d.contract_address
 , d.bridge_transfer_id
 {% if is_incremental() %}
-, COALESCE(cd.duplicate_index, 0) + ROW_NUMBER() OVER (PARTITION BY d.deposit_chain, d.withdrawal_chain, d.bridge_name, d.bridge_version, d.bridge_transfer_id ORDER BY d.block_number, d.evt_index ) AS duplicate_index
+, COALESCE(cd.duplicate_index, 0)+ROW_NUMBER() OVER (PARTITION BY d.deposit_chain, d.withdrawal_chain, d.bridge_name, d.bridge_version, d.bridge_transfer_id ORDER BY d.block_number, d.evt_index ) AS duplicate_index
 {% else %}
 , ROW_NUMBER() OVER (PARTITION BY d.deposit_chain, d.withdrawal_chain, d.bridge_name, d.bridge_version, d.bridge_transfer_id ORDER BY d.block_number, d.evt_index ) AS duplicate_index
 {% endif %}
