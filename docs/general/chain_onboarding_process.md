@@ -44,8 +44,8 @@ We need to split the onboarding process into multiple PRs because of the way we 
 *Note: This step is not required for all chains. It is only required for chains we could not generate amp coverage for.*
 
     -   **What:**
-        -   Create a new `tokens_<blockchain>_erc20` model (e.g., [`tokens_lens_erc20.sql`](./dbt_subprojects/tokens/models/tokens/lens/tokens_lens_erc20.sql)) in `dbt_subprojects/tokens/models/tokens/<blockchain>/`. Add the same tokens listed in the blockchain-specific prices model.
-        -   Add this new model to the union in [`tokens_erc20.sql`](./dbt_subprojects/tokens/models/tokens/tokens_erc20.sql).
+        -   Create a new `tokens_<blockchain>_v1_erc20` model (e.g., [`tokens_lens_v1_erc20.sql`](./dbt_subprojects/tokens/models/tokens/lens/tokens_lens_v1_erc20.sql)) in `dbt_subprojects/tokens/models/tokens/<blockchain>/`. Add the same tokens listed in the blockchain-specific prices model.
+        -   Add this new model to the union in [`tokens_v1_erc20.sql`](./dbt_subprojects/tokens/models/tokens/tokens_v1_erc20.sql).
     -   **Why:** Supplements the automated `dune.definedfi.dataset_tokens` source, which often lacks full blockchain or token coverage. Ensures essential tokens have metadata (symbol, decimals) available in Spellbook.
 
 4.  **Define Raw Data Sources:**
