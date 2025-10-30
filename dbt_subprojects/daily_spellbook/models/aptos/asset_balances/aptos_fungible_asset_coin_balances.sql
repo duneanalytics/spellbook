@@ -30,6 +30,8 @@ WITH coin_balances AS (
         AND move_resource_module = 'coin'
         AND move_resource_name = 'CoinStore'
         AND block_date <= DATE('2025-09-02')
+        AND block_date >= DATE('2024-05-22')
+        AND block_date <= DATE('2024-06-07')
 )
 
 SELECT
