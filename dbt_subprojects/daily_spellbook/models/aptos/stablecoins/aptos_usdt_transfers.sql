@@ -24,7 +24,7 @@ WITH events AS (
     END AS net_amount
     FROM {{ ref('aptos_usdt_volume') }}
     WHERE 1=1
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
     AND {{ incremental_predicate('block_time') }}
     {% endif %}
 ), cumulative AS (
