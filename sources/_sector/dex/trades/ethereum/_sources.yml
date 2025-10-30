@@ -147,4 +147,7 @@ sources:
   - name: ekubo_ethereum
     tables:
       - name: ekubo_core_call_swap_611415377
+  - name: bunni_v2_ethereum
+    tables:
+      - name: bunnihook_evt_swap
       

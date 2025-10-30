@@ -18,6 +18,7 @@ SELECT
 FROM {{ source('near', 'actions') }} action
 JOIN {{ source('near', 'logs') }} log
 ON action.block_height = log.block_height
+AND action.block_date = log.block_date
 AND action.receipt_id = log.receipt_id
 WHERE
   receipt_receiver_account_id = 'v1.signer'

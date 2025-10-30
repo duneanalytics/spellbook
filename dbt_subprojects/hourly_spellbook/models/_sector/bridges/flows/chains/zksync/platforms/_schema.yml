@@ -1,0 +1,39 @@
+version: 2
+
+models:
+  - name: bridges_zksync_across_v2_deposits
+    meta:
+      blockchain: zksync
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
+    description: "Across's v2 bridge deposits events on zkSync"
+  - name: bridges_zksync_across_v2_withdrawals
+    meta:
+      blockchain: zksync
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Across's v3 bridge withdrawals events on zkSync"
+  - name: bridges_zksync_across_v3_deposits
+    meta:
+      blockchain: zksync
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
+    description: "Across's v3 bridge deposits events on zkSync"
+  - name: bridges_zksync_across_v3_withdrawals
+    meta:
+      blockchain: zksync
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Across's v3 bridge withdrawals events on zkSync"

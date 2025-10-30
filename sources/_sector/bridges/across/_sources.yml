@@ -2,7 +2,7 @@ version: 2
 
 sources:
   - name: across_v2_ethereum
-    description: "Across Protocol v2 bridge events on Ethereum"
+    description: "Across Protocol v2 and v3 bridge events on Ethereum"
     tables:
       - name: uba_ethereum_spokepool_evt_fundsdeposited
       - name: uba_ethereum_spokepool_evt_filledrelay
@@ -10,9 +10,121 @@ sources:
       - name: uba_ethereum_spokepool_evt_filledv3relay
 
   - name: across_v2_base
-    description: "Across Protocol v2 bridge events on Base"
+    description: "Across Protocol v2 and v3 bridge events on Base"
     tables:
       - name: base_spokepool_evt_fundsdeposited
       - name: base_spokepool_evt_filledrelay
       - name: base_spokepool_evt_v3fundsdeposited
       - name: base_spokepool_evt_filledv3relay
+
+  - name: across_v2_arbitrum
+    description: "Across Protocol v2 and v3 bridge events on Arbitrum"
+    tables:
+      - name: uba_arbitrum_spokepool_evt_fundsdeposited
+      - name: uba_arbitrum_spokepool_evt_filledrelay
+      - name: uba_arbitrum_spokepool_evt_v3fundsdeposited
+      - name: uba_arbitrum_spokepool_evt_filledv3relay
+
+  - name: across_v2_optimism
+    description: "Across Protocol v2 and v3 bridge events on OP Mainnet"
+    tables:
+      - name: uba_optimism_spokepool_evt_fundsdeposited
+      - name: uba_optimism_spokepool_evt_filledrelay
+      - name: uba_optimism_spokepool_evt_v3fundsdeposited
+      - name: uba_optimism_spokepool_evt_filledv3relay
+
+  - name: across_v2_polygon
+    description: "Across Protocol v2 and v3 bridge events on Polygon"
+    tables:
+      - name: uba_polygon_spokepool_evt_fundsdeposited
+      - name: uba_polygon_spokepool_evt_filledrelay
+      - name: uba_polygon_spokepool_evt_v3fundsdeposited
+      - name: uba_polygon_spokepool_evt_filledv3relay
+
+  - name: across_v3_unichain
+    description: "Across Protocol v2 and v3 bridge events on Unichain"
+    tables:
+      - name: unichain_spokepool_evt_fundsdeposited
+      - name: unichain_spokepool_evt_filledrelay
+      - name: unichain_spokepool_evt_v3fundsdeposited
+      - name: unichain_spokepool_evt_filledv3relay
+
+  - name: across_v2_linea
+    description: "Across Protocol v2 and v3 bridge events on Linea"
+    tables:
+      - name: linea_spokepool_evt_fundsdeposited
+      - name: linea_spokepool_evt_filledrelay
+      - name: linea_spokepool_evt_v3fundsdeposited
+      - name: linea_spokepool_evt_filledv3relay
+
+  - name: across_v2_zksync
+    description: "Across Protocol v2 and v3 bridge events on zkSync"
+    tables:
+      - name: zksync_spokepool_evt_fundsdeposited
+      - name: zksync_spokepool_evt_filledrelay
+      - name: zksync_spokepool_evt_v3fundsdeposited
+      - name: zksync_spokepool_evt_filledv3relay
+
+  - name: across_v3_scroll
+    description: "Across Protocol v2 and v3 bridge events on Scroll"
+    tables:
+      - name: scroll_spokepool_evt_fundsdeposited
+      - name: scroll_spokepool_evt_filledrelay
+      - name: scroll_spokepool_evt_v3fundsdeposited
+      - name: scroll_spokepool_evt_filledv3relay
+
+  - name: across_v3_blast
+    description: "Across Protocol v2 and v3 bridge events on Blast"
+    tables:
+      - name: blast_spokepool_evt_fundsdeposited
+      - name: blast_spokepool_evt_filledrelay
+      - name: blast_spokepool_evt_v3fundsdeposited
+      - name: blast_spokepool_evt_filledv3relay
+
+  - name: across_v3_zora
+    description: "Across Protocol v2 and v3 bridge events on Zora"
+    tables:
+      - name: zora_spokepool_evt_fundsdeposited
+      - name: zora_spokepool_evt_filledrelay
+      - name: zora_spokepool_evt_v3fundsdeposited
+      - name: zora_spokepool_evt_filledv3relay
+
+  - name: across_v3_worldchain
+    description: "Across Protocol v2 and v3 bridge events on Worldchain"
+    tables:
+      - name: worldchain_spokepool_evt_fundsdeposited
+      - name: worldchain_spokepool_evt_filledrelay
+      - name: worldchain_spokepool_evt_v3fundsdeposited
+      - name: worldchain_spokepool_evt_filledv3relay
+
+  - name: across_v3_ink
+    description: "Across Protocol v2 and v3 bridge events on Ink"
+    tables:
+      - name: ink_spokepool_evt_fundsdeposited
+      - name: ink_spokepool_evt_filledrelay
+      - name: ink_spokepool_evt_v3fundsdeposited
+      - name: ink_spokepool_evt_filledv3relay
+
+  - name: across_v3_lens
+    description: "Across Protocol v2 and v3 bridge events on Lens"
+    tables:
+      - name: lens_spokepool_evt_fundsdeposited
+      - name: lens_spokepool_evt_filledrelay
+
+  - name: across_v3_bnb
+    description: "Across Protocol v2 and v3 bridge events on BNB"
+    tables:
+      - name: universal_spokepool_evt_fundsdeposited
+      - name: universal_spokepool_evt_filledrelay
+
+  - name: across_hyperevm
+    description: "Across Protocol v2 and v3 bridge events on HyperEVM"
+    tables:
+      - name: universal_spokepool_evt_fundsdeposited
+      - name: universal_spokepool_evt_filledrelay
+
+  - name: across_plasma
+    description: "Across Protocol v2 and v3 bridge events on Plasma"
+    tables:
+      - name: universal_spokepool_evt_fundsdeposited
+      - name: universal_spokepool_evt_filledrelay
