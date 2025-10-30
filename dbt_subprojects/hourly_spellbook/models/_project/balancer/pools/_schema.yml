@@ -3,10 +3,10 @@ version: 2
 models:
   - name: balancer_pools_tokens_weights
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, hyperevm, optimism, polygon, plasma, zkevm
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, plasma, zkevm
       contributors: jacektrocinski, viniabussafi
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'hyperevm', 'optimism', 'polygon', 'plasma', 'zkevm', 'bpt', 'transfers']
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'plasma', 'zkevm', 'bpt', 'transfers']
     description: >
       Token weights in Balancer pools.
     data_tests:
@@ -159,11 +159,11 @@ models:
 
   - name: balancer_v3_lbps
     meta:
-      blockchain: ethereum, plasma, hyperevm
+      blockchain: ethereum, plasma
       project: balancer_v3
       contributors: viniabussafi
     config:
-      tags: ['ethereum', 'hyperevm', 'plasma', 'balancer', 'lbp']
+      tags: ['ethereum', 'plasma', 'balancer', 'lbp']
     description: >
       Record of the Liquidity Boostrapping Pools (LBP) of Balancer, an automated portfolio manager and trading platform, on Ethereum.
     columns:

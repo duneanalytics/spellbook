@@ -1,7 +1,7 @@
 {{ config(
     schema = 'balancer',
     alias = 'bpt_supply_changes',
-    post_hook='{{ expose_spells(blockchains = \'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon", "zkevm", "hyperevm"]\',
+    post_hook='{{ expose_spells(blockchains = \'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon", "zkevm"]\',
                                 spell_type = "project",
                                 spell_name = "balancer",
                                 contributors = \'["viniabussafi"]\') }}'
@@ -20,8 +20,7 @@
     ref('balancer_v3_ethereum_bpt_supply_changes'),
     ref('balancer_v3_gnosis_bpt_supply_changes'),
     ref('balancer_v3_arbitrum_bpt_supply_changes'),
-    ref('balancer_v3_base_bpt_supply_changes'),
-    ref('balancer_v3_hyperevm_bpt_supply_changes')    
+    ref('balancer_v3_base_bpt_supply_changes')    
 ] %}
 
 SELECT *
