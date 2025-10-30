@@ -57,7 +57,6 @@ actions AS (
             OR receipt_predecessor_account_id IN (SELECT contract_address FROM near_omni_contracts)
             OR tx_from IN (SELECT contract_address FROM near_omni_contracts)
         )
-        AND block_date >= DATE '2025-01-01'
         {% if is_incremental() %}
         AND {{ incremental_predicate('block_time') }}
         {% endif %}
