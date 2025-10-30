@@ -43,3 +43,5 @@ select
 from {{ ref('oneinch_executions') }}
 where true
     and mode in ('classic', 'fusion')
+    and tx_success
+    and call_success
