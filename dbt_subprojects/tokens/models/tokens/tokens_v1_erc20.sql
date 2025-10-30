@@ -20,7 +20,7 @@
     ,'tokens_base': {'blockchain': 'base', 'model': ref('tokens_base_v1_erc20')}
     ,'tokens_berachain': {'blockchain': 'berachain', 'model': ref('tokens_berachain_v1_erc20')}
     ,'tokens_blast': {'blockchain': 'blast', 'model': ref('tokens_blast_v1_erc20')}
-    ,'tokens_bnb': {'blockchain': 'bnb', 'model': ref('tokens_bnb_bep20')}
+    ,'tokens_bnb': {'blockchain': 'bnb', 'model': ref('tokens_bnb_v1_erc20')}
     ,'tokens_bob': {'blockchain': 'bob', 'model': ref('tokens_bob_v1_erc20')}
     ,'tokens_boba': {'blockchain': 'boba', 'model': ref('tokens_boba_v1_erc20')}
     ,'tokens_celo': {'blockchain': 'celo', 'model': ref('tokens_celo_v1_erc20')}
