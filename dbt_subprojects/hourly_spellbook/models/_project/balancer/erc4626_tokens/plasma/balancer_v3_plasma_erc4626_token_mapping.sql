@@ -15,7 +15,7 @@ SELECT
     BYTEARRAY_SUBSTRING(b.salt, 13, 24) AS underlying_token,
     t1.symbol AS underlying_token_symbol,
     t2.decimals AS decimals
-FROM {{ source('aave_v3_plasma', 'StataToken_evt_Initialized') }} a
+FROM {{ source('aave_v3_plasma', 'StataTokenV2_evt_Initialized') }} a
 JOIN {{ source('aave_v3_plasma', 'StataTokenFactory_call_createDeterministic') }} b
 ON b.output_0 = a.contract_address
 JOIN {{ source('tokens', 'erc20') }} t1
