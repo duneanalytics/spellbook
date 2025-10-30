@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'tokens_sophon'
+        schema = 'tokens_sophon_v1'
         ,alias = 'erc20'
         ,tags = ['static']
         ,materialized = 'table'

@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'tokens_ronin'
+        schema = 'tokens_ronin_v1'
         ,alias = 'erc20'
         ,tags = ['static']
         ,materialized = 'table'

@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'tokens_apechain'
+        schema = 'tokens_apechain_v1'
         ,alias = 'erc20'
         ,tags = ['static']
         ,materialized = 'table'

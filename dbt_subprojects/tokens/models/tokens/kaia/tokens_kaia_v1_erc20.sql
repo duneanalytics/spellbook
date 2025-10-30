@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'tokens_kaia'
+        schema = 'tokens_kaia_v1'
         ,alias = 'erc20'
         ,tags = ['static']
         ,materialized = 'table'

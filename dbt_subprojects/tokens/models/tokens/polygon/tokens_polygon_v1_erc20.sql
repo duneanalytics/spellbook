@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'tokens_polygon'
+        schema = 'tokens_polygon_v1'
         ,alias = 'erc20'
         ,tags = ['static']
         ,materialized = 'table'

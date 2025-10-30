@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'tokens_fantom'
+        schema = 'tokens_fantom_v1'
         ,alias = 'erc20'
         ,tags = ['static']
         ,materialized = 'table'

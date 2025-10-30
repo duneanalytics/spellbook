@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'tokens_lens'
+        schema = 'tokens_lens_v1'
         ,alias = 'erc20'
         ,tags = ['static']
         ,materialized = 'table'

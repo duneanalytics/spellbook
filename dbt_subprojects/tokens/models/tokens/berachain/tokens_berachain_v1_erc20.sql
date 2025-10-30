@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'tokens_berachain'
+        schema = 'tokens_berachain_v1'
         ,alias = 'erc20'
         ,tags = ['static']
         ,materialized = 'table'

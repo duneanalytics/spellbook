@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'tokens_gnosis'
+        schema = 'tokens_gnosis_v1'
         , alias = 'erc20'
         , tags = ['static']
         , materialized = 'table'

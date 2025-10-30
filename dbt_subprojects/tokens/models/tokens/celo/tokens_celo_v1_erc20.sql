@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'tokens_celo'
+        schema = 'tokens_celo_v1'
         ,alias = 'erc20'
         ,tags = ['static']
         ,materialized = 'table'

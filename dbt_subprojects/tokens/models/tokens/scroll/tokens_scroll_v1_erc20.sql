@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'tokens_scroll'
+        schema = 'tokens_scroll_v1'
         ,alias = 'erc20'
         ,tags = ['static']
         ,materialized = 'table'

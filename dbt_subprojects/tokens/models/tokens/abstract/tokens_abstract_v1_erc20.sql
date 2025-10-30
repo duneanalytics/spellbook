@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'tokens_abstract'
+        schema = 'tokens_abstract_v1'
         ,alias = 'erc20'
         ,tags = ['static']
         ,materialized = 'table'

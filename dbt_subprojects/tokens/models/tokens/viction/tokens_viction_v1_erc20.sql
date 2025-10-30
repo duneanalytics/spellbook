@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'tokens_viction'
+        schema = 'tokens_viction_v1'
         ,alias = 'erc20'
         ,tags = ['static']
         ,materialized = 'table'

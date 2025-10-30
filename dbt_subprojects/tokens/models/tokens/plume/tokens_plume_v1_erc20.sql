@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'tokens_plume'
+        schema = 'tokens_plume_v1'
         ,alias = 'erc20'
         ,tags = ['static']
         ,materialized = 'table'

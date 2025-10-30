@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'tokens_arbitrum'
+        schema = 'tokens_arbitrum_v1'
         ,alias = 'erc20'
         ,tags = ['static']
         ,materialized = 'table'

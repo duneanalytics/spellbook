@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'tokens_zkevm'
+        schema = 'tokens_zkevm_v1'
         ,alias = 'erc20'
         ,tags = ['static']
         ,materialized = 'table'

@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'tokens_sepolia'
+        schema = 'tokens_sepolia_v1'
         ,alias = 'erc20'
         ,tags = ['static']
         ,materialized = 'table'

@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'tokens_mantle'
+        schema = 'tokens_mantle_v1'
         ,alias = 'erc20'
         ,tags = ['static']
         ,materialized = 'table'

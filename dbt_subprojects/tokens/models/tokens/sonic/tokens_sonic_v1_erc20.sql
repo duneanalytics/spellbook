@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'tokens_sonic'
+        schema = 'tokens_sonic_v1'
         ,alias = 'erc20'
         ,tags = ['static']
         ,materialized = 'table'

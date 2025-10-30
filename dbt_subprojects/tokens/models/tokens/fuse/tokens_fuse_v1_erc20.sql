@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'tokens_fuse'
+        schema = 'tokens_fuse_v1'
         ,alias = 'erc20'
         ,tags = ['static']
         ,materialized = 'table'

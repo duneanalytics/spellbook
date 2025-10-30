@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'tokens_ethereum'
+        schema = 'tokens_ethereum_v1'
         ,alias = 'erc20'
         ,tags = ['static']
         ,materialized = 'table'

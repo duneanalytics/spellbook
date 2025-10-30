@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'tokens_linea'
+        schema = 'tokens_linea_v1'
         ,alias = 'erc20'
         ,tags = ['static']
         ,materialized = 'table'

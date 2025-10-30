@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'tokens_goerli'
+        schema = 'tokens_goerli_v1'
         , alias = 'erc20'
         , tags = ['static']
         , materialized = 'table'

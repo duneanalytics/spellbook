@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'tokens_flare'
+        schema = 'tokens_flare_v1'
         , alias = 'erc20'
         , tags = ['static']
         , materialized = 'table'

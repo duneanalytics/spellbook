@@ -1,5 +1,8 @@
-{{ config( alias = 'erc20', materialized = 'table',
-    post_hook='{{ expose_spells(\'["optimism"]\',
+{{ config( 
+    schema = 'tokens_optimism_v1'
+    ,alias = 'erc20'
+    ,materialized = 'table'
+    ,post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "tokens",
                                     \'["msilb7"]\') }}')}}

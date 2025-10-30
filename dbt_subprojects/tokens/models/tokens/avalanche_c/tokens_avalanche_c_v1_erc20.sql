@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'tokens_avalanche_c'
+        schema = 'tokens_avalanche_c_v1'
         ,alias = 'erc20'
         ,tags=['static']
         ,materialized = 'table'

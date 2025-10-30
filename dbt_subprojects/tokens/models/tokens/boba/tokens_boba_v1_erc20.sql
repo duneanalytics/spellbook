@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'tokens_boba'
+        schema = 'tokens_boba_v1'
         ,alias = 'erc20'
         ,tags = ['static']
         ,materialized = 'table'

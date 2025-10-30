@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'tokens_worldchain'
+        schema = 'tokens_worldchain_v1'
         ,alias = 'erc20'
         ,tags = ['static']
         ,materialized = 'table'

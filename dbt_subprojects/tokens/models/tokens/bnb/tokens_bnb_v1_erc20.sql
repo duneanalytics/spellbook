@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'tokens_bnb'
+        schema = 'tokens_bnb_v1'
         ,alias = 'bep20'
         ,tags = ['static']
         ,materialized = 'table'
