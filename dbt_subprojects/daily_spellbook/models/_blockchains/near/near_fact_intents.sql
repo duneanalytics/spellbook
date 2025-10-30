@@ -34,7 +34,7 @@ WITH logs_base AS (
         l.executor_account_id = 'intents.near'
         AND l.block_date >= DATE '2024-11-01'
         AND json_extract_scalar(TRY(json_parse(COALESCE(l.event, l.log))), '$.standard') IN ('nep245', 'dip4')
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
         AND {{ incremental_predicate('l.block_time') }}
         {% endif %}
 ),
@@ -65,7 +65,7 @@ logs_with_actions AS (
         ON l.block_height = a.block_height
         AND l.block_date = a.block_date
         AND l.receipt_id = a.receipt_id
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
         AND {{ incremental_predicate('a.block_time') }}
         {% endif %}
 ),

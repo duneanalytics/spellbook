@@ -57,7 +57,7 @@ actions AS (
             OR receipt_predecessor_account_id IN (SELECT contract_address FROM near_omni_contracts)
             OR tx_from IN (SELECT contract_address FROM near_omni_contracts)
         )
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
         AND {{ incremental_predicate('block_time') }}
         {% endif %}
 ),
@@ -87,7 +87,7 @@ logs AS (
         {{ source('near', 'logs') }}
     WHERE
         AND executor_account_id IN (SELECT contract_address FROM near_omni_contracts)
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
         AND {{ incremental_predicate('block_time') }}
         {% endif %}
 ),
