@@ -3647,6 +3647,14 @@
       "created_at": "2025-10-27T13:28:25Z",
       "repoId": 237392204,
       "pullRequestNo": 8901
+    },
+    {
+      "name": "giovanasoldatelli",
+      "id": 182699876,
+      "comment_id": 3467853798,
+      "created_at": "2025-10-30T12:55:53Z",
+      "repoId": 237392204,
+      "pullRequestNo": 8901
     }
   ]
 }
