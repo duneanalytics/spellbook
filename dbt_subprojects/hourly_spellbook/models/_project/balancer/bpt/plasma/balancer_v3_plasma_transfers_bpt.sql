@@ -2,20 +2,21 @@
 
 {{
     config(
-        schema='balancer_v3_plasma',
-        alias = 'bpt_supply',
-        materialized = 'table',
-        file_format = 'delta'
-
+       schema = 'balancer_v3_plasma',
+        alias = 'transfers_bpt',
+        partition_by = ['block_month'],
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['block_date', 'evt_tx_hash', 'evt_index'],
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.evt_block_time')]
     )
 }}
 
 {{ 
-    balancer_v3_compatible_bpt_supply_macro(
+    balancer_v3_compatible_transfers_bpt_macro(
         blockchain = blockchain,
-        version = '3',        
-        project_decoded_as = 'balancer_v3',
-        pool_labels_model = 'balancer_v3_pools_plasma',
-        transfers_spell = ref('balancer_v3_plasma_transfers_bpt')
+        version = '3',
+        project_decoded_as = 'balancer_v3'
     )
 }}

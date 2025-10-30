@@ -3,10 +3,10 @@ version: 2
 models:
   - name: balancer_token_balance_changes
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm, hyperevm
-      contributors: viniabussafi
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm, plasma, hyperevm
+      contributors: viniabussafi, amandadalle
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'bpt', 'supply', 'changes', 'hyperevm']
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'bpt', 'plasma', 'supply', 'changes', 'hyperevm']
     description: >
       Token Balance Changes on Balancer Pools.
     data_tests:
@@ -65,10 +65,10 @@ models:
 
   - name: balancer_token_balance_changes_daily
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm, hyperevm
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm, plasma, hyperevm
       contributors: viniabussafi
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'bpt', 'supply', 'changes', 'hyperevm']
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'bpt', 'plasma', 'supply', 'changes', 'hyperevm']
     description: >
       Token Balance Changes on Balancer Pools, grouped by day.
     data_tests:

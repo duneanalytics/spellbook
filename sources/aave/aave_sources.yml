@@ -194,3 +194,52 @@ sources:
         - *debtTokenDecimals
         - *debtTokenSymbol
         - *debtTokenName
+  - name: aave_v3_plasma
+    description: "Decoded contracts for Aave on Plasma (INCLUDING BALANCER V3 DEPENDENCIES)"
+    tables:
+    - name: AToken_evt_Initialized
+      description: "aToken initialization events, supply tokens."
+      columns:
+        - *contract_address      
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index 
+        - *evt_tx_hash
+        - *underlyingAsset
+        - *aTokenDecimals
+        - *aTokenSymbol
+        - *aTokenName
+
+    - name: StableDebtToken_evt_Initialized
+      description: "aToken initialization events, stable debt tokens."
+      columns:
+        - *contract_address  
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index
+        - *evt_tx_hash
+        - *underlyingAsset
+        - *debtTokenDecimals
+        - *debtTokenSymbol
+        - *debtTokenName
+      
+    - name: VariableDebtToken_evt_Initialized
+      description: "aToken initialization events, variable debt tokens."
+      columns:
+        - *contract_address  
+        - *evt_block_number
+        - *evt_block_time
+        - *evt_index
+        - *evt_tx_hash
+        - *underlyingAsset
+        - *debtTokenDecimals
+        - *debtTokenSymbol
+        - *debtTokenName
+    - name: StaticATokenLM_evt_Initialized
+      description: "Specific Aave static token deployment event needed by Balancer mapping."
+    - name: StaticATokenFactory_evt_StaticTokenCreated
+      description: "Specific Aave static token factory event needed by Balancer mapping."
+    - name: StataTokenV2_evt_Initialized
+      description: "Specific StataToken V2 initialization event needed by Balancer mapping."
+    - name: StataTokenFactory_evt_StataTokenCreated
+      description: "Specific StataToken V2 Factory event needed by Balancer mapping."

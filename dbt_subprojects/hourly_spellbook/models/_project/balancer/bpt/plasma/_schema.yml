@@ -1,5 +1,97 @@
 version: 2
 
+_blockchain: &blockchain
+  name: blockchain
+  description: "Blockchain network (e.g. plasma)"
+
+_version: &version
+  name: version
+  description: "Schema version"
+
+_contract_address: &contract_address
+  name: contract_address
+  description: "Smart contract address"
+
+_block_date: &block_date
+  name: block_date
+  description: "Block date (YYYY-MM-DD)"
+
+_block_month: &block_month
+  name: block_month
+  description: "Block month (YYYY-MM format)"
+
+_evt_tx_hash: &evt_tx_hash
+  name: evt_tx_hash
+  description: "Transaction hash"
+
+_evt_index: &evt_index
+  name: evt_index
+  description: "Event index"
+
+_evt_block_time: &evt_block_time
+  name: evt_block_time
+  description: "Block timestamp"
+
+_evt_block_number: &evt_block_number
+  name: evt_block_number
+  description: "Block number"
+
+_from: &from
+  name: from
+  description: "Sender address"
+
+_to: &to
+  name: to
+  description: "Recipient address"
+
+_value: &value
+  name: value
+  description: "Transfer value (raw amount)"
+
+_day: &day
+  name: day
+  description: "Aggregation day (YYYY-MM-DD)"
+
+_decimals: &decimals
+  name: decimals
+  description: "Token decimals"
+
+_bpt_price: &bpt_price
+  name: bpt_price
+  description: "Balancer Pool Token price (USD)"
+
+_pool_type: &pool_type
+  name: pool_type
+  description: "Pool type (weighted, stable, etc.)"
+
+_pool_symbol: &pool_symbol
+  name: pool_symbol
+  description: "Pool symbol"
+
+_token_address: &token_address
+  name: token_address
+  description: "Token address"
+
+_supply: &supply
+  name: supply
+  description: "Total supply"
+
+_label: &label
+  name: label
+  description: "Change label (mint/burn/etc.)"
+
+_delta_amount_raw: &delta_amount_raw
+  name: delta_amount_raw
+  description: "Change amount (raw integer)"
+
+_delta_amount: &delta_amount
+  name: delta_amount
+  description: "Change amount (decimal)"
+
+_daily_delta: &daily_delta
+  name: daily_delta
+  description: "Net change in supply per day"
+
 models:
   - name: balancer_v3_plasma_transfers_bpt
     meta:
