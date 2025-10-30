@@ -75,7 +75,7 @@ models:
       - name: platform
         description: "Bridge platform name (omni)"
 
-  - name: near_defi_fact_intents
+  - name: near_fact_intents
     meta:
       blockchain: near
       sector: defi

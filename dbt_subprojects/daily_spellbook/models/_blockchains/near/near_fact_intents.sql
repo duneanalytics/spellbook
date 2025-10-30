@@ -9,7 +9,7 @@
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     post_hook='{{ expose_spells(\'["near"]\',
                                 "project",
-                                "defi",
+                                "fact_intents",
                                 \'["krishgka"]\') }}'
 ) }}
 
@@ -63,7 +63,11 @@ logs_with_actions AS (
     FROM logs_base l
     INNER JOIN {{ source('near', 'actions') }} a
         ON l.block_height = a.block_height
+        AND l.block_date = a.block_date
         AND l.receipt_id = a.receipt_id
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('a.block_time') }}
+        {% endif %}
 ),
 
 logs_enriched AS (
