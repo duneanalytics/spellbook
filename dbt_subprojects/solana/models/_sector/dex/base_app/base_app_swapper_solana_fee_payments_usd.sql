@@ -10,7 +10,7 @@
     )
 }}
 
-{% set query_start_date = '2024-04-01' %}
+{% set query_start_date = '2025-09-01' %}
 
 with
     fee_payments as (
