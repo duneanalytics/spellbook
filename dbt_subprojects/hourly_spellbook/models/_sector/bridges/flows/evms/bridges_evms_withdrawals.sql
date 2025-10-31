@@ -30,7 +30,12 @@ WITH new_raw_keys AS (
     , n.bridge_transfer_id
     , MAX(t.duplicate_index) AS duplicate_index
     FROM new_raw_keys n
-    INNER JOIN {{ this }} t USING (deposit_chain, deposit_chain_id, withdrawal_chain, bridge_name, bridge_version, bridge_transfer_id)
+    INNER JOIN {{ this }} t ON n.deposit_chain=t.deposit_chain
+        AND n.deposit_chain_id=t.deposit_chain_id
+        AND n.withdrawal_chain=t.withdrawal_chain
+        AND n.bridge_name=t.bridge_name
+        AND n.bridge_version=t.bridge_version
+        AND n.bridge_transfer_id=t.bridge_transfer_id
     GROUP BY 1, 2, 3, 4, 5, 6
     )
 {% endif %}
