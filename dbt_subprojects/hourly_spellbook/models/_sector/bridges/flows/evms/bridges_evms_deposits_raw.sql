@@ -3,7 +3,7 @@
     , alias = 'deposits_raw'
     , materialized = 'incremental'
     , file_format = 'delta'
-    , incremental_strategy='append'
+    , incremental_strategy='merge'
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
 )
 }}
