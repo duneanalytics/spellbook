@@ -1,4 +1,4 @@
-{% set blockchain = 'optimism' %}
+{% set blockchain = 'boba' %}
 
 {{ config(
     schema = 'bridges_' + blockchain,
@@ -8,10 +8,7 @@
 }}
 
 {% set bridges_platforms = [
-    'bridges_' + blockchain + '_cctp_v1_deposits'
-    , 'bridges_' + blockchain + '_across_v1_deposits'
-    , 'bridges_' + blockchain + '_across_v2_deposits'
-    , 'bridges_' + blockchain + '_across_v3_deposits'
+    'bridges_' + blockchain + '_across_v1_deposits'
 ] %}
 
 SELECT *
