@@ -36,6 +36,8 @@
     , ref('elk_finance_avalanche_c_base_trades')
     , ref('blackhole_v2_avalanche_c_base_trades')
     , ref('blackhole_v3_avalanche_c_base_trades')
+    , ref('pharaoh_v3_legacy_avalanche_c_base_trades')
+	, ref('pharaoh_v3_cl_avalanche_c_base_trades')
 ] %}
 with base_union as (
     SELECT *
