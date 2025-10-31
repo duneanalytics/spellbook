@@ -10,17 +10,27 @@
 }}
 
 {% if is_incremental() %}
-WITH check_dupes AS (
-    SELECT deposit_chain
+WITH new_raw_keys AS (
+    SELECT DISTINCT deposit_chain
     , withdrawal_chain
     , withdrawal_chain_id
     , bridge_name
     , bridge_version
     , bridge_transfer_id
-    , MAX(duplicate_index) AS duplicate_index
-    FROM {{ ref('bridges_evms_deposits_raw') }} rd
+    FROM {{ ref('bridges_evms_deposits_raw') }} rw
+    WHERE {{ incremental_predicate('rw.block_time') }}
+    )
+    
+, check_dupes AS (
+    SELECT n.deposit_chain
+    , n.withdrawal_chain_id
+    , n.withdrawal_chain
+    , n.bridge_name
+    , n.bridge_version
+    , n.bridge_transfer_id
+    , MAX(t.duplicate_index) AS duplicate_index
+    FROM new_raw_keys n
     INNER JOIN {{ this }} t USING (deposit_chain, withdrawal_chain, withdrawal_chain_id, bridge_name, bridge_version, bridge_transfer_id)
-    WHERE {{ incremental_predicate('rd.block_time') }}
     GROUP BY 1, 2, 3, 4, 5, 6
     )
 {% endif %}
@@ -46,9 +56,9 @@ SELECT d.deposit_chain
 , d.contract_address
 , d.bridge_transfer_id
 {% if is_incremental() %}
-, COALESCE(cd.duplicate_index, 0)+ROW_NUMBER() OVER (PARTITION BY d.deposit_chain, d.withdrawal_chain_id, d.withdrawal_chain, d.bridge_name, d.bridge_version, d.bridge_transfer_id ORDER BY d.block_number, d.evt_index ) AS duplicate_index
+, COALESCE(cd.duplicate_index, 0)+ROW_NUMBER() OVER (PARTITION BY d.deposit_chain, d.withdrawal_chain, d.withdrawal_chain_id, d.bridge_name, d.bridge_version, d.bridge_transfer_id ORDER BY d.block_number, d.evt_index ) AS duplicate_index
 {% else %}
-, ROW_NUMBER() OVER (PARTITION BY d.deposit_chain, d.withdrawal_chain_id, d.withdrawal_chain, d.bridge_name, d.bridge_version, d.bridge_transfer_id ORDER BY d.block_number, d.evt_index ) AS duplicate_index
+, ROW_NUMBER() OVER (PARTITION BY d.deposit_chain, d.withdrawal_chain, d.withdrawal_chain_id, d.bridge_name, d.bridge_version, d.bridge_transfer_id ORDER BY d.block_number, d.evt_index ) AS duplicate_index
 {% endif %}
 FROM {{ ref('bridges_evms_deposits_raw') }} d
 INNER JOIN {{ source('prices', 'usd') }} p ON p.blockchain=d.deposit_chain
@@ -60,9 +70,9 @@ INNER JOIN {{ source('prices', 'usd') }} p ON p.blockchain=d.deposit_chain
 {% if is_incremental() %}
 LEFT JOIN check_dupes cd ON d.deposit_chain = cd.deposit_chain
     AND d.withdrawal_chain = cd.withdrawal_chain
+    AND d.withdrawal_chain_id = cd.withdrawal_chain_id
     AND d.bridge_name = cd.bridge_name
     AND d.bridge_version = cd.bridge_version
     AND d.bridge_transfer_id = cd.bridge_transfer_id
 WHERE {{ incremental_predicate('d.block_time') }}
-AND cd.duplicate_index IS NULL
 {% endif %}

@@ -10,17 +10,27 @@
 }}
 
 {% if is_incremental() %}
-WITH check_dupes AS (
-    SELECT deposit_chain
+WITH new_raw_keys AS (
+    SELECT DISTINCT deposit_chain
     , deposit_chain_id
     , withdrawal_chain
     , bridge_name
     , bridge_version
     , bridge_transfer_id
-    , MAX(t.duplicate_index) AS duplicate_index
     FROM {{ ref('bridges_evms_withdrawals_raw') }} rw
-    INNER JOIN {{ this }} t USING (deposit_chain, deposit_chain_id, withdrawal_chain, bridge_name, bridge_version, bridge_transfer_id)
     WHERE {{ incremental_predicate('rw.block_time') }}
+    )
+    
+, check_dupes AS (
+    SELECT n.deposit_chain
+    , n.deposit_chain_id
+    , n.withdrawal_chain
+    , n.bridge_name
+    , n.bridge_version
+    , n.bridge_transfer_id
+    , MAX(t.duplicate_index) AS duplicate_index
+    FROM new_raw_keys n
+    INNER JOIN {{ this }} t USING (deposit_chain, deposit_chain_id, withdrawal_chain, bridge_name, bridge_version, bridge_transfer_id)
     GROUP BY 1, 2, 3, 4, 5, 6
     )
 {% endif %}
@@ -65,6 +75,5 @@ LEFT JOIN check_dupes cd ON w.deposit_chain = cd.deposit_chain
     AND w.bridge_version = cd.bridge_version
     AND w.bridge_transfer_id = cd.bridge_transfer_id
 WHERE {{ incremental_predicate('w.block_time') }}
-AND cd.duplicate_index IS NULL
 {% endif %}
     
