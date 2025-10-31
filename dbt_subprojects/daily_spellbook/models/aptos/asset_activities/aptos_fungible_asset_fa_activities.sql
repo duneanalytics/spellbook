@@ -39,8 +39,6 @@ WITH fa_activities AS (
         ON ev.tx_version = fab.tx_version
         AND address_32_from_hex(json_extract_scalar(ev.data, '$.store')) = fab.storage_id
         AND fab.token_standard = 'v2'
-        AND fab.block_date >= DATE('2024-05-29')
-        AND fab.block_date <= DATE('2024-06-07')
         {% if is_incremental() -%}
         AND {{ incremental_predicate('fab.block_time') }}
         {% endif -%}
@@ -49,7 +47,6 @@ WITH fa_activities AS (
     {% endif -%}
     WHERE 1=1
         AND ev.block_date >= DATE('2024-05-29')
-        AND ev.block_date <= DATE('2024-06-07')
         AND event_type IN (
             '0x1::fungible_asset::Deposit',
             '0x1::fungible_asset::Withdraw'

@@ -39,8 +39,6 @@ WITH fa_balance AS (
             AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
             AND move_resource_module = 'fungible_asset'
             AND move_resource_name = 'ConcurrentFungibleBalance'
-            AND block_date >= DATE('2024-05-22')
-            AND block_date <= DATE('2024-06-07')
             {% if is_incremental() -%}
             AND {{ incremental_predicate('block_time') }}
             {% endif -%}
@@ -57,8 +55,6 @@ WITH fa_balance AS (
             AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
             AND move_resource_module = 'object'
             AND move_resource_name IN ('ObjectGroup','ObjectCore')
-            AND block_date >= DATE('2024-05-22')
-            AND block_date <= DATE('2024-06-07')
             {% if is_incremental() -%}
             AND {{ incremental_predicate('block_time') }}
             {% endif -%}
@@ -67,8 +63,6 @@ WITH fa_balance AS (
         AND move_module_address = 0x0000000000000000000000000000000000000000000000000000000000000001
         AND move_resource_module = 'fungible_asset'
         AND move_resource_name = 'FungibleStore'
-        AND block_date >= DATE('2024-05-22')
-        AND block_date <= DATE('2024-06-07')
         {% if is_incremental() -%}
         AND {{ incremental_predicate('block_time') }}
         {% endif -%}

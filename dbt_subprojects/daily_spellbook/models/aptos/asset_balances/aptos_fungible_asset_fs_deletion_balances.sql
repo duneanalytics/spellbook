@@ -35,14 +35,12 @@ WITH fs_deletion AS (
         AND move_resource_name IN ('ObjectGroup','ObjectCore')
         AND mr.block_date = ev.block_date -- optimization
         AND mr.block_date >= DATE('2025-04-28') -- date enabled
-        and mr.block_date <= DATE('2025-05-05')
         {% if is_incremental() %}
         AND {{ incremental_predicate('mr.block_time') }}
         {% endif -%}
     WHERE 1=1
     AND ev.event_type = '0x1::fungible_asset::FungibleStoreDeletion'
     AND ev.block_date >= DATE('2025-04-28') -- date enabled
-    AND ev.block_date <= DATE('2025-05-05')
     {% if is_incremental() -%}
     AND {{ incremental_predicate('ev.block_time') }}
     {% endif -%}
