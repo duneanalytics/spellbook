@@ -13,6 +13,7 @@
 {% set base_models = [
     ref('reservoir_swap_v2_abstract_base_trades')
     ,ref('reservoir_swap_v3_abstract_base_trades')
+    ,ref('aborean_abstract_base_trades')
 ] %}
 
 with base_union as (
