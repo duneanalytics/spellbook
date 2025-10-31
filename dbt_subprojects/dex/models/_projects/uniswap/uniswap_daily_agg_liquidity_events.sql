@@ -21,10 +21,10 @@ select
     , token1 
     , token0_symbol 
     , token1_symbol 
-    , sum(amount0_raw) as amount0_raw 
-    , sum(amount1_raw) as amount1_raw 
-    , sum(amount0) as amount0 
-    , sum(amount1) as amount1 
+    , sum(case when event_type = 'fees_accrued' then 0 else amount0_raw end) as amount0_raw
+    , sum(case when event_type = 'fees_accrued' then 0 else amount1_raw end) as amount1_raw
+    , sum(case when event_type = 'fees_accrued' then 0 else amount0 end) as amount0 
+    , sum(case when event_type = 'fees_accrued' then 0 else amount1 end) as amount1
 from 
 {{ ref('uniswap_liquidity_events') }}
 {% if is_incremental() %}

@@ -91,3 +91,4 @@ FROM (
                 , salt
         FROM 
         {{ ref('uniswap_v4_ethereum_base_liquidity_events') }}
+-- trigger refresh 

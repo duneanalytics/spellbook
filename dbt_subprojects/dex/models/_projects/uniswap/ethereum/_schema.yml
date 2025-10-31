@@ -185,7 +185,7 @@ models:
       - check_dex_base_liquidity_seed:
           seed_file: ref('uniswap_ethereum_base_liquidity_seed')
           filter:
-            version: 4
+            event_type: modify_liquidity
     columns:
       - *blockchain
       - *project
