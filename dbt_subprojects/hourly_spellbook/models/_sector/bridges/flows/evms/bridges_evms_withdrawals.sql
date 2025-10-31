@@ -73,6 +73,9 @@ INNER JOIN {{ source('prices', 'usd') }} p ON p.blockchain=w.withdrawal_chain
     AND {{ incremental_predicate('p.minute') }}
     {% endif %}
 {% if is_incremental() %}
+LEFT JOIN {{ this }} t ON d.withdrawal_chain = t.withdrawal_chain
+    AND d.tx_hash = t.tx_hash
+    AND d.evt_index = t.evt_index
 LEFT JOIN check_dupes cd ON w.deposit_chain = cd.deposit_chain
     AND w.deposit_chain_id = cd.deposit_chain_id
     AND w.withdrawal_chain = cd.withdrawal_chain
@@ -80,5 +83,6 @@ LEFT JOIN check_dupes cd ON w.deposit_chain = cd.deposit_chain
     AND w.bridge_version = cd.bridge_version
     AND w.bridge_transfer_id = cd.bridge_transfer_id
 WHERE {{ incremental_predicate('w.block_time') }}
+AND t.bridge_transfer_id IS NULL
 {% endif %}
     
