@@ -30,8 +30,12 @@ models:
         description: The index of the write set change
       - name: asset_type
         description: "Asset identifier"
+        tests:
+          - not_null
       - name: owner_address
         description: "creator_address is the asset address for v1 and owner for v2 (can change for v2)"
+        tests:
+          - not_null
       - name: asset_name
         description: "Asset name (parsed from metadata)"
       - name: asset_symbol
@@ -64,7 +68,7 @@ models:
         [Explainer for activity and balances](https://aptoslabs.medium.com/data-analyst-guide-to-aptos-supply-and-volume-pt-3-535e312946ad) on Aptos.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-         combination_of_columns: ['tx_hash', 'write_set_change_index']
+         combination_of_columns: ['block_month', 'tx_hash', 'write_set_change_index']
     columns:
       - name: block_date
         description: The date of the block containing the transaction
@@ -78,18 +82,57 @@ models:
         description: The hash of the transaction
       - name: write_set_change_index
         description: "Index of the write set change"
+        tests:
+          - not_null
       - name: asset_type
         description: "Asset identifier"
+        tests:
+          - not_null
       - name: owner_address
         description: "creator_address is the asset address for v1 and owner for v2 (can change for v2)"
       - name: storage_id
         description: "NULL for v1, address of FungibleStore for v2"
       - name: amount
         description: "raw asset amount (before taking into account decimals)"
+        tests:
+          - not_null
       - name: is_frozen
         description: "If asset is frozen"
       - name: token_standard
         description: "Coin is v1, FungibleAsset is v2"
+
+  - name: aptos_fungible_asset_coin_balances
+    meta:
+      blockchain: aptos
+      project: aptos_indexer
+      contributors: ying-w
+    config:
+      tags: ['aptos','fungible_asset']
+    description: Balances for legacy coins (v1) on Aptos
+
+  - name: aptos_fungible_asset_fa_balances
+    meta:
+      blockchain: aptos
+      project: aptos_indexer
+      contributors: ying-w
+    config:
+      tags: ['aptos','fungible_asset']
+    description: Balances for fungible assets (v2) on Aptos
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: ['block_month', 'tx_hash', 'write_set_change_index']
+
+  - name: aptos_fungible_asset_fs_deletion_balances
+    meta:
+      blockchain: aptos
+      project: aptos_indexer
+      contributors: ying-w
+    config:
+      tags: ['aptos','fungible_asset']
+    description: Balances for deleted FungibleStore objects on Aptos
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: ['block_month', 'tx_hash', 'write_set_change_index']
 
   - name: aptos_fungible_asset_activities
     meta:
@@ -104,7 +147,7 @@ models:
         [Explainer for activity and balances](https://aptoslabs.medium.com/data-analyst-guide-to-aptos-supply-and-volume-pt-3-535e312946ad) on Aptos.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-         combination_of_columns: ['tx_hash', 'event_index']
+         combination_of_columns: ['block_month', 'tx_hash', 'event_index']
     columns:
       - name: block_date
         description: The date of the block containing the transaction
@@ -126,10 +169,44 @@ models:
         description: "NULL for v1, address of FungibleStore for v2"
       - name: asset_type
         description: "Asset identifier"
+        tests:
+          - not_null
       - name: amount
         description: "raw asset amount (before taking into account decimals)"
+        tests:
+          - not_null
       - name: token_standard
         description: "Coin is v1, FungibleAsset is v2"
+
+  - name: aptos_fungible_asset_coin_activities
+    meta:
+      blockchain: aptos
+      project: aptos_indexer
+      contributors: ying-w
+    config:
+      tags: ['aptos','fungible_asset']
+    description: Activities for legacy coins (v1) on Aptos
+
+  - name: aptos_fungible_asset_fa_activities_events_v1
+    meta:
+      blockchain: aptos
+      project: aptos_indexer
+      contributors: ying-w
+    config:
+      tags: ['aptos','fungible_asset']
+    description: Activities for fungible assets (v2) using events v1on Aptos
+
+  - name: aptos_fungible_asset_fa_activities
+    meta:
+      blockchain: aptos
+      project: aptos_indexer
+      contributors: ying-w
+    config:
+      tags: ['aptos','fungible_asset']
+    description: Activities for fungible assets (v2) on Aptos
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: ['block_month', 'tx_hash', 'event_index']
 
   - name: aptos_fungible_asset_migration
     meta:
@@ -147,8 +224,12 @@ models:
     columns:
       - name: asset_type_v1
         description: "Asset identifier for v1"
+        tests:
+          - not_null
       - name: asset_type_v2
         description: "Asset identifier for v2"
+        tests:
+          - not_null
 
   - name: aptos_fungible_asset_metadata_current
     meta:
