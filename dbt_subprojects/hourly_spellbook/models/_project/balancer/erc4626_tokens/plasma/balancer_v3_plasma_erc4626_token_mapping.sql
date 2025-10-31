@@ -28,4 +28,4 @@ AND b.output_0 = t2.contract_address)
 SELECT 
     'plasma' AS blockchain, 
     * 
-FROM aave_tokens
+FROM aave_tokens 
