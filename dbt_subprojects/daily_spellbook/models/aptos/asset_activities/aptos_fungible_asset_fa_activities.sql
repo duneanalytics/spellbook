@@ -39,17 +39,17 @@ WITH fa_activities AS (
         ON ev.tx_version = fab.tx_version
         AND address_32_from_hex(json_extract_scalar(ev.data, '$.store')) = fab.storage_id
         AND fab.token_standard = 'v2'
-        {% if is_incremental() -%}
-        AND {{ incremental_predicate('fab.block_time') }}
-        {% else -%}
         AND fab.block_date >= DATE('2024-05-29')
         AND fab.block_date <= DATE('2024-06-07')
+        {% if is_incremental() -%}
+        AND {{ incremental_predicate('fab.block_time') }}
         {% endif -%}
     {% if is_incremental() -%}
     CROSS JOIN max_fab_version
     {% endif -%}
     WHERE 1=1
         AND ev.block_date >= DATE('2024-05-29')
+        AND ev.block_date <= DATE('2024-06-07')
         AND event_type IN (
             '0x1::fungible_asset::Deposit',
             '0x1::fungible_asset::Withdraw'
@@ -57,8 +57,6 @@ WITH fa_activities AS (
         {% if is_incremental() -%}
         AND {{ incremental_predicate('ev.block_time') }}
         AND ev.tx_version < max_fab_version.max_tx_version
-        {% else -%}
-        AND ev.block_date <= DATE('2024-06-07')
         {% endif -%}
 )
 
