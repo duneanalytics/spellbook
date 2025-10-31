@@ -3,7 +3,7 @@
     , alias = 'deposits'
     , materialized = 'incremental'
     , file_format = 'delta'
-    , incremental_strategy='merge'
+    , incremental_strategy='append'
     , unique_key = ['deposit_chain','withdrawal_chain','withdrawal_chain_id','bridge_name','bridge_version','bridge_transfer_id', 'duplicate_index']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
 )
@@ -46,9 +46,9 @@ SELECT d.deposit_chain
 , d.contract_address
 , d.bridge_transfer_id
 {% if is_incremental() %}
-, COALESCE(cd.duplicate_index, 0)+ROW_NUMBER() OVER (PARTITION BY d.deposit_chain, d.withdrawal_chain, d.bridge_name, d.bridge_version, d.bridge_transfer_id ORDER BY d.block_number, d.evt_index ) AS duplicate_index
+, COALESCE(cd.duplicate_index, 0)+ROW_NUMBER() OVER (PARTITION BY d.deposit_chain, d.withdrawal_chain_id, d.withdrawal_chain, d.bridge_name, d.bridge_version, d.bridge_transfer_id ORDER BY d.block_number, d.evt_index ) AS duplicate_index
 {% else %}
-, ROW_NUMBER() OVER (PARTITION BY d.deposit_chain, d.withdrawal_chain, d.bridge_name, d.bridge_version, d.bridge_transfer_id ORDER BY d.block_number, d.evt_index ) AS duplicate_index
+, ROW_NUMBER() OVER (PARTITION BY d.deposit_chain, d.withdrawal_chain_id, d.withdrawal_chain, d.bridge_name, d.bridge_version, d.bridge_transfer_id ORDER BY d.block_number, d.evt_index ) AS duplicate_index
 {% endif %}
 FROM {{ ref('bridges_evms_deposits_raw') }} d
 INNER JOIN {{ source('prices', 'usd') }} p ON p.blockchain=d.deposit_chain
@@ -58,12 +58,11 @@ INNER JOIN {{ source('prices', 'usd') }} p ON p.blockchain=d.deposit_chain
     AND {{ incremental_predicate('p.minute') }}
     {% endif %}
 {% if is_incremental() %}
-INNER JOIN check_dupes cd ON d.deposit_chain = cd.deposit_chain
+LEFT JOIN check_dupes cd ON d.deposit_chain = cd.deposit_chain
     AND d.withdrawal_chain = cd.withdrawal_chain
     AND d.bridge_name = cd.bridge_name
     AND d.bridge_version = cd.bridge_version
     AND d.bridge_transfer_id = cd.bridge_transfer_id
-{% endif %}
-{% if is_incremental() %}
 WHERE {{ incremental_predicate('d.block_time') }}
+AND cd.duplicate_index IS NULL
 {% endif %}

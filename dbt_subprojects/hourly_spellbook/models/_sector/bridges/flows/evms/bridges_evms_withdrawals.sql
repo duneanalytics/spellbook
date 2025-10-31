@@ -3,7 +3,7 @@
     , alias = 'withdrawals'
     , materialized = 'incremental'
     , file_format = 'delta'
-    , incremental_strategy='merge'
+    , incremental_strategy='append'
     , unique_key = ['deposit_chain','deposit_chain_id','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id','duplicate_index']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
 )
@@ -64,8 +64,7 @@ LEFT JOIN check_dupes cd ON w.deposit_chain = cd.deposit_chain
     AND w.bridge_name = cd.bridge_name
     AND w.bridge_version = cd.bridge_version
     AND w.bridge_transfer_id = cd.bridge_transfer_id
-{% endif %}
-{% if is_incremental() %}
 WHERE {{ incremental_predicate('w.block_time') }}
+AND cd.duplicate_index IS NULL
 {% endif %}
     
