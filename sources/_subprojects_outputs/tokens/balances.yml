@@ -40,3 +40,39 @@ sources:
     tables:
       - name: balances_daily_agg
       - name: balances_daily_agg_base
+  - name: tokens_bnb
+    tables:
+      - name: balances_daily_agg
+      - name: balances_daily_agg_base
+  - name: tokens_unichain
+    tables:
+      - name: balances_daily_agg
+      - name: balances_daily_agg_base
+  - name: tokens_mantle
+    tables:
+      - name: balances_daily_agg
+      - name: balances_daily_agg_base
+  - name: tokens_worldchain
+    tables:
+      - name: balances_daily_agg
+      - name: balances_daily_agg_base
+  - name: tokens_blast
+    tables:
+      - name: balances_daily_agg
+      - name: balances_daily_agg_base
+  - name: tokens_celo
+    tables:
+      - name: balances_daily_agg
+      - name: balances_daily_agg_base
+  - name: tokens_zkevm
+    tables:
+      - name: balances_daily_agg
+      - name: balances_daily_agg_base
+  - name: tokens_sonic
+    tables:
+      - name: balances_daily_agg
+      - name: balances_daily_agg_base
+  - name: tokens_zksync
+    tables:
+      - name: balances_daily_agg
+      - name: balances_daily_agg_base
