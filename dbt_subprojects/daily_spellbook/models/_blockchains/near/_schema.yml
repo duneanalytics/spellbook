@@ -1,0 +1,151 @@
+version: 2
+
+models:
+  - name: near_bridge_omni
+    meta:
+      blockchain: near
+      sector: bridge
+      project: omni_bridge
+      contributors: krishgka
+    config:
+      tags: ["near", "bridge", "cross-chain"]
+    description: >
+      This table tracks all inbound and outbound bridge transactions through the NEAR Omni Bridge.
+      The Omni Bridge enables cross-chain token transfers between NEAR and other blockchains using
+      Wormhole infrastructure. It monitors omni.bridge.near and related helper contracts
+      (omni-provider.bridge.near, vaa-prover.bridge.near, omni-relayer.bridge.near).
+      
+      Inbound transfers are identified by FinTransferEvent logs and mint method calls.
+      Outbound transfers are identified by InitTransferEvent logs and burn method calls.
+    columns:
+      - name: bridge_omni_id
+        description: "Unique identifier for each bridge transaction (surrogate key)"
+        tests:
+          - not_null
+          - unique
+      - name: block_height
+        description: "Height of the block containing the transaction"
+        tests:
+          - not_null
+      - name: block_time
+        description: "Timestamp of the block"
+        tests:
+          - not_null
+      - name: block_date
+        description: "Date of the block (used for partitioning)"
+        tests:
+          - not_null
+      - name: tx_hash
+        description: "Hash of the transaction"
+        tests:
+          - not_null
+      - name: token_address
+        description: "Address of the token being bridged (extracted from token field)"
+      - name: amount_raw
+        description: "Raw amount of tokens being transferred (before decimal adjustment)"
+      - name: amount_adj
+        description: "Adjusted amount of tokens (same as amount_raw for now)"
+      - name: memo
+        description: "Optional memo/message attached to the transfer"
+      - name: destination_address
+        description: "Address receiving the tokens on the destination chain"
+      - name: source_address
+        description: "Address sending the tokens on the source chain"
+      - name: destination_chain_id
+        description: "Identifier of the destination blockchain"
+      - name: source_chain_id
+        description: "Identifier of the source blockchain"
+      - name: raw_token_id
+        description: "Full token identifier string (format: chain:address)"
+      - name: direction
+        description: "Direction of the bridge transfer (inbound or outbound)"
+        tests:
+          - accepted_values:
+              values: ['inbound', 'outbound']
+      - name: receipt_succeeded
+        description: "Whether the receipt execution was successful"
+      - name: method_name
+        description: "Name of the contract method called"
+      - name: bridge_address
+        description: "Address of the bridge contract that processed the transfer"
+      - name: has_mint
+        description: "Whether the transaction included a mint operation"
+      - name: has_burn
+        description: "Whether the transaction included a burn operation"
+      - name: platform
+        description: "Bridge platform name (omni)"
+
+  - name: near_fact_intents
+    meta:
+      blockchain: near
+      sector: defi
+      project: intents
+      contributors: krishgka
+    config:
+      tags: ["near", "defi", "intents"]
+    description: >
+      This table tracks intent-based transactions on the intents.near contract following
+      NEP-245 (Multi Token Standard) and DIP-4 (Defuse Intent Protocol) standards.
+      
+      Intents represent user actions that can be executed through various DeFi protocols.
+      The table flattens nested arrays of token amounts and IDs from event logs to provide
+      a granular view of each token transfer within intent executions.
+    columns:
+      - name: fact_intents_id
+        description: "Unique identifier for each intent fact (surrogate key)"
+        tests:
+          - not_null
+          - unique
+      - name: block_time
+        description: "Timestamp of the block"
+        tests:
+          - not_null
+      - name: block_height
+        description: "Height of the block containing the transaction"
+        tests:
+          - not_null
+      - name: block_date
+        description: "Date of the block (used for partitioning)"
+        tests:
+          - not_null
+      - name: tx_hash
+        description: "Hash of the transaction"
+        tests:
+          - not_null
+      - name: receipt_id
+        description: "ID of the receipt containing the log"
+        tests:
+          - not_null
+      - name: receiver_id
+        description: "Account ID that received/executed the intent (intents.near)"
+      - name: predecessor_id
+        description: "Account ID that preceded in the execution chain"
+      - name: log_event
+        description: "Type of log event (e.g., ft_mint, ft_burn, ft_transfer)"
+      - name: log_index
+        description: "Index of the log within the execution outcome"
+      - name: log_event_index
+        description: "Index of the event within the log data array"
+      - name: owner_id
+        description: "Owner account ID from the event"
+      - name: old_owner_id
+        description: "Previous owner account ID (for transfer events)"
+      - name: new_owner_id
+        description: "New owner account ID (for transfer events)"
+      - name: memo
+        description: "Optional memo attached to the event"
+      - name: amount_index
+        description: "Index of the amount within the amounts array"
+      - name: amount_raw
+        description: "Raw token amount (before decimal adjustment)"
+      - name: token_id
+        description: "Token identifier from the token_ids array"
+      - name: referral
+        description: "Referral account ID from DIP-4 events"
+      - name: dip4_version
+        description: "Version of the DIP-4 protocol"
+      - name: gas_burnt
+        description: "Amount of gas burnt in the execution"
+      - name: receipt_succeeded
+        description: "Whether the receipt execution was successful"
+
