@@ -28,7 +28,7 @@ WITH swaps AS (
         , tx_id
         , tx_signer
         , tx_index
-        , null AS pool_id -- Aquifer does not use a pool system like other AMM's. Each token has it's own single vault.
+        , CAST(NULL as VARCHAR) AS pool_id -- Aquifer does not use a pool system like other AMM's. Each token has it's own single vault.
     FROM {{ source('solana','instruction_calls') }}
     WHERE 1=1
         AND executing_account = 'AQU1FRd7papthgdrwPTTq5JacJh8YtwEXaBfKU3bTz45' -- aquifer swap program id
