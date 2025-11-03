@@ -11,7 +11,7 @@
   )
 }}
 
-{% set project_start_date = '2025-10-30 %} --testing shorter timeframe window, prod: '2025-06-26'
+{% set project_start_date = '2025-10-30' %} --testing shorter timeframe window, prod: '2025-06-26'
 
 -- Aquifer swaps from instruction_calls table
 WITH swaps AS (
