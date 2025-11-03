@@ -11,7 +11,7 @@
   )
 }}
 
-{% set project_start_date = '2025-10-24' %} --testing 7-day window, prod: '2025-06-26'
+{% set project_start_date = now() - interval '7' day %} --testing 7-day window, prod: '2025-06-26'
 
 -- Aquifer swaps from instruction_calls table
 WITH swaps AS (
@@ -42,6 +42,8 @@ WITH swaps AS (
 )
 
 -- Join inner token_transfers initiated by amm swap instructions.
+-- inner_instruction_index + 1 -> token that trader bought
+-- inner_instruction_index + 2 -> token that trader sold
 , transfers AS (        
     SELECT
         s.block_date

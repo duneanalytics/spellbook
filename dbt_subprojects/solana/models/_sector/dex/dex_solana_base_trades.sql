@@ -80,7 +80,9 @@ FROM
 WHERE
       1=1
       {% if is_incremental() -%}
-      AND {{incremental_predicate('block_time')}}
+      AND {{incremental_predicate('block_time')}} AND block_time >= now() - interval '7' day
+      {% else %}  
+      AND block_time >= now() - interval '7' day
       {% endif -%}
 {% if not loop.last -%}
 UNION ALL
