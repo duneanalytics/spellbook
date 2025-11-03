@@ -26,7 +26,6 @@ FROM (
         , tx_hash
         , index
         , tx_index
-        , block_date
         , tx_from
         , tx_to
         FROM {{ source(blockchain, 'logs') }}
