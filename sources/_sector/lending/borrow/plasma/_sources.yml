@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+
+
+  - name: aave_v3_plasma
+    tables:
+      - name: poolinstance_evt_Borrow
+      - name: poolinstance_evt_Repay
+      - name: poolinstance_evt_LiquidationCall
+
