@@ -14,6 +14,7 @@ FROM (
         SELECT
         '{{ blockchain }}' AS blockchain
         , block_time
+        , block_date
         , block_number
         , block_hash
         , contract_address
