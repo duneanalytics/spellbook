@@ -782,5 +782,6 @@ FROM
         ('2z-doublezero', 'solana', '2Z', 'J6pQQ3FAcJQeWPPGppWRb4nM8jU3wLyYbRrLh7feMfvd', 8),
         ('useless-useless-coin', 'solana', 'USELESS', 'Dz9mQ9NzkBcCsuGPFJ3r1bS4wgqKMHBPiVuniW8Mbonk', 6),
         ('onyc-onyc', 'solana', 'ONyc', '5Y8NV33Vv7WbnLfq3zBcKSdYPrk7g2KoiQoe7M2tcxp5', 9),
-        ('yzy-yzy', 'solana', 'YZY', 'DrZ26cKJDksVRWib3DVVsjo9eeXccc7hKhDJviiYEEZY', 6)
+        ('yzy-yzy', 'solana', 'YZY', 'DrZ26cKJDksVRWib3DVVsjo9eeXccc7hKhDJviiYEEZY', 6),
+        ('xbtc-okx-wrapped-btc','solana','xBTC','CtzPWv73Sn1dMGVU3ZtLv9yWSyUAanBni19YWDaznnkn',8)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
