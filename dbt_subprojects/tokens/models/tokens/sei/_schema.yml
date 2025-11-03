@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: tokens_sei_erc20
+  - name: tokens_sei_v1_erc20
     meta:
       blockchain: sei
       sector: tokens
