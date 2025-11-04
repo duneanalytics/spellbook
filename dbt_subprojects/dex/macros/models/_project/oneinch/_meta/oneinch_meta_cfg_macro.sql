@@ -1,4 +1,15 @@
+-- META CONFIGURATIONS --
+
+{% macro oneinch_meta() %}
+    {{ return({
+        "exposed": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea", "sonic", "unichain", "solana"],
+        "evms": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea", "sonic", "unichain"],
+    }) }}
+{% endmacro %}
+
+
 -- STREAMS CONFIGURATIONS --
+
 -- start dates for sreams by default:
 -- for ar: 2019-06-01
 -- for lo: 2021-06-01 / fusion: 2022-12-22
@@ -10,22 +21,65 @@
 {% macro oneinch_cc_cfg_macro() %} {{ return({"name": "cc", "start": "2025-11-01", "mode": "'cross-chain'"}) }} {% endmacro %}
 
 {% macro oneinch_ar_raw_calls_cfg_macro() %} {{ return(dict(oneinch_ar_cfg_macro(), start="2025-11-01")) }} {% endmacro %}
-{% macro oneinch_lo_raw_calls_cfg_macro() %} {{ return(dict(oneinch_lo_cfg_macro(), start="2025-11-01")) }} {% endmacro %}
-{% macro oneinch_cc_raw_calls_cfg_macro() %} {{ return(dict(oneinch_cc_cfg_macro(), start="2025-11-01")) }} {% endmacro %}
-
 {% macro oneinch_ar_transfers_cfg_macro() %} {{ return(dict(oneinch_ar_cfg_macro(), start="2025-11-01")) }} {% endmacro %}
-{% macro oneinch_lo_transfers_cfg_macro() %} {{ return(dict(oneinch_lo_cfg_macro(), start="2025-11-01")) }} {% endmacro %}
-{% macro oneinch_cc_transfers_cfg_macro() %} {{ return(dict(oneinch_cc_cfg_macro(), start="2025-11-01")) }} {% endmacro %}
-
 {% macro oneinch_ar_executions_cfg_macro() %} {{ return(dict(oneinch_ar_cfg_macro(), start="2025-11-01")) }} {% endmacro %}
+
+{% macro oneinch_lo_raw_calls_cfg_macro() %} {{ return(dict(oneinch_lo_cfg_macro(), start="2025-11-01")) }} {% endmacro %}
+{% macro oneinch_lo_transfers_cfg_macro() %} {{ return(dict(oneinch_lo_cfg_macro(), start="2025-11-01")) }} {% endmacro %}
 {% macro oneinch_lo_executions_cfg_macro() %} {{ return(dict(oneinch_lo_cfg_macro(), start="2025-11-01")) }} {% endmacro %}
+{% macro oneinch_lo_fusion_cfg_macro() %} {{ return(dict(oneinch_lo_cfg_macro(), start="2025-11-01")) }} {% endmacro %}
+
+{% macro oneinch_cc_raw_calls_cfg_macro() %} {{ return(dict(oneinch_cc_cfg_macro(), start="2025-11-01")) }} {% endmacro %}
+{% macro oneinch_cc_transfers_cfg_macro() %} {{ return(dict(oneinch_cc_cfg_macro(), start="2025-11-01")) }} {% endmacro %}
 {% macro oneinch_cc_executions_cfg_macro() %} {{ return(dict(oneinch_cc_cfg_macro(), start="2025-11-01")) }} {% endmacro %}
 
 
+-- CONTRACTS CONFIGURATIONS --
+{% macro oneinch_meta_contracts_cfg_macro() %}
+    {{ return({
+        "AccessTokenLimitsV1": {
+            "version": "1",
+            "type": "AccessToken",
+            "mode": "limits",
+            "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "base", "zksync", "linea", "sonic", "unichain"],
+            "address": "0xacce5500000f71a32b5e5514d1577e14b7aacc4a",
+            "addresses": {
+                "0xacce5500000f71a32b5e5514d1577e14b7aacc4a": ['ethereum','bnb','polygon','arbitrum','optimism','avalanche_c','gnosis','base','linea','sonic','unichain'],
+                "0x4888651051b2dc08ac55cd0f7d671e0fcba0deed": ['zksync'],
+            },
+            "start": "2024-08-28",
+        },
+        "AccessTokenFusionV1": {
+            "version": "1",
+            "type": "AccessToken",
+            "mode": "fusion",
+            "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea", "sonic", "unichain"],
+            "address": "0xacce550000863572b867e661647cd7d97b72c507",
+            "addresses": {
+                "0xacce550000863572b867e661647cd7d97b72c507": ['ethereum','bnb','polygon','arbitrum','optimism','avalanche_c','gnosis','fantom','base','linea','sonic','unichain'],
+                "0x46b64318c4f764f6fe81dfd1f26282a52e0f1680": ['zksync'],
+            },
+            "start": "2024-08-28",
+        },
+        "AccessTokenCrossChainV1": {
+            "version": "1",
+            "type": "AccessToken",
+            "mode": "cross-chain",
+            "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea", "sonic", "unichain"],
+            "address": "0xacce550000159e70908c0499a1119d04e7039c28",
+            "addresses": {
+                "0xacce550000159e70908c0499a1119d04e7039c28": ['ethereum','bnb','polygon','arbitrum','optimism','avalanche_c','gnosis','fantom','base','linea','sonic','unichain'],
+                "0xc2c4fe863ec835d7ddbfe91fe33cf1c7df45fa7c": ['zksync'],
+            },
+            "start": "2024-08-28",
+        },
+    }) }}
+{% endmacro %}
 
 -- BLOCKCHAINS CONFIGURATIONS --
 
 {% macro oneinch_ethereum_cfg_macro() %}
+    {% set contracts = oneinch_meta_contracts_cfg_macro() %}
     {{ return({
         "name"                          : "ethereum",
         "start"                         : "2019-06-03",
@@ -37,9 +91,9 @@
         "escrow_factory_addresses"      : ['0xa7bcb4eac8964306f9e3764f67db6a7af6ddf99a'],
         "atokens"                       : true,
         "contracts"                     : {
-            "AccessTokenLimitsV1"       : dict(oneinch_meta_cfg_macro().contracts.AccessTokenLimitsV1),
-            "AccessTokenFusionV1"       : dict(oneinch_meta_cfg_macro().contracts.AccessTokenFusionV1),
-            "AccessTokenCrossChainV1"   : dict(oneinch_meta_cfg_macro().contracts.AccessTokenCrossChainV1),
+            "AccessTokenLimitsV1"       : dict(contracts.AccessTokenLimitsV1),
+            "AccessTokenFusionV1"       : dict(contracts.AccessTokenFusionV1),
+            "AccessTokenCrossChainV1"   : dict(contracts.AccessTokenCrossChainV1),
         },
     }) }}
 {% endmacro %}
@@ -252,22 +306,6 @@
 {% endmacro %}
 
 
--- META CONFIGURATIONS --
-
-{% macro oneinch_meta() %}
-    {{ return({
-        "exposed": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea", "sonic", "unichain", "solana"],
-        "evms": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea", "sonic", "unichain"],
-    }) }}
-{% endmacro %}
-
-{% macro oneinch_meta_contracts_cfg_macro() %}
-    {{ return({
-        "ar": oneinch_ar_cfg_macro(),
-        "lo": oneinch_lo_cfg_macro(),
-        "cc": oneinch_cc_cfg_macro(),
-    }) }}
-{% endmacro %}
 
 {% macro oneinch_meta_cfg_macro(property = none) %}
 
