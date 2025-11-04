@@ -25,6 +25,7 @@ FROM (
         , CAST(difficulty AS double) AS difficulty
         , gas_limit
         , gas_used
+        , date
         FROM {{ source(blockchain, 'blocks') }}
         {% if not loop.last %}
         UNION ALL
