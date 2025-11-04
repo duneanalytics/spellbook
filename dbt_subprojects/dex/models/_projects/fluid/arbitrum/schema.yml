@@ -83,3 +83,34 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
+
+  - name: fluid_arbitrum_dex_initializations
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: fluid
+      contributors: Henrystats
+    config:
+      tags: ['arbitrum', 'dex_pools', 'liquidity', 'initializations']
+    description: >
+      Dex initialization event to query pool metadata from creation event
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - dex
+
+  - name: fluid_arbitrum_dex_fee_updates
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: fluid
+      contributors: Henrystats
+    config:
+      tags: ['arbitrum', 'dex_pools', 'liquidity', 'fee_updates']
+    description: >
+      Dex fee updates event 
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - dex
+            - tx_hash
