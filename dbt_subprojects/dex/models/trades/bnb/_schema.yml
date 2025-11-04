@@ -164,7 +164,7 @@ models:
       blockchain: bnb
       sector: dex
       project: pancakeswap
-      contributors: hosuke, chef_seaweed, tomfutago
+      contributors: hosuke, chef_seaweed, tomfutago, chef_butterbeer
     config:
       tags: ["bnb", "dex", "trades", "pancakeswap", "uniswap", "v2"]
     description: "Pancakeswap BNB v2 base trades"
@@ -180,6 +180,7 @@ models:
               - 2
               - mmpool
               - stableswap
+              - pcsx
 
   - name: pancakeswap_v3_bnb_base_trades
     meta:
