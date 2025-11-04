@@ -24,6 +24,7 @@ with filtered_transactions as (
             {% else %} 
                 block_date >= timestamp '{{query_start_date}}'
             {% endif %} 
+        and signer != '6ooVBXhnqAXaF91cu49YmWhoFuE6WLdZWTwNYvTuhyBd'
     ),
     trades as (
         select
