@@ -76,10 +76,8 @@ with filtered_transactions as (
             trades.trader_id != '6ooVBXhnqAXaF91cu49YmWhoFuE6WLdZWTwNYvTuhyBd'
             {% if is_incremental() %}
                 and {{ incremental_predicate('trades.block_time') }}
-                and {{ incremental_predicate('fee_payments.block_time') }}
             {% else %}
                 and trades.block_time >= timestamp '{{query_start_date}}'
-                and fee_payments.block_time >= timestamp '{{query_start_date}}'
             {% endif %}
     ),
     highest_inner_instruction_index_for_each_trade as (
