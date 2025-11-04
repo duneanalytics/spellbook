@@ -78,6 +78,7 @@ modify_liquidity_events as (
             call_tx_from,
             call_tx_to,
             call_trace_address,
+            call_block_date,
             call_block_time,
             call_block_number,
             -- pool key: currency0/1 + hooks (all varbinary)
@@ -143,6 +144,7 @@ modify_liquidity_events as (
             contract_address,
             evt_tx_hash,
             evt_tx_from,
+            evt_block_date,
             evt_block_time,
             evt_block_number,
             evt_index,
@@ -186,6 +188,8 @@ modify_liquidity_events as (
         INNER JOIN 
         calls_decoded cd
             ON cd.call_tx_hash = e.evt_tx_hash
+            AND cd.call_block_date = e.evt_block_date 
+            AND cd.call_block_number = e.evt_block_number
             AND cd.call_rn = e.evt_rn
 ),
 
