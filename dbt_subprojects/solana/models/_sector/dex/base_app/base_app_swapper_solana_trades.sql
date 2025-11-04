@@ -101,8 +101,3 @@ join
         and trades.outer_instruction_index
         = highest_inner_instruction_index_for_each_trade.outer_instruction_index
     )
-order by
-    block_time desc,
-    tx_index desc,
-    outer_instruction_index desc,
-    inner_instruction_index desc
