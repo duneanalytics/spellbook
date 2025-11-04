@@ -9,7 +9,7 @@
    )
 }}
 
-{% set query_start_date = '2025-09-01' %} -- true start date is 2024-04-01. Reducing timeframe so tests dont time out
+{% set query_start_date = '2024-04-01' %}
 {% set blockchain = 'solana' %}
 {% set wsol_token = 'So11111111111111111111111111111111111111112' %}
 
