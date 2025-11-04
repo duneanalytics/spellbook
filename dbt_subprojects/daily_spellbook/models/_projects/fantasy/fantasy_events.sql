@@ -5,7 +5,7 @@
         post_hook = '{{ expose_spells(
                         blockchains = \'["blast", "base"]\',
                         spell_type = "project",
-                        spell_name = "events",
+                        spell_name = "fantasy",
                         contributors = \'["hildobby"]\') }}'
         )
 }}
