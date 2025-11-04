@@ -11,5 +11,5 @@
 }}
 
 {{contracts_base_iterated_creators(
-    chain='bnb', standard_name = 'bep', days_forward=183
+    chain='bnb', days_forward=183
 )}}
