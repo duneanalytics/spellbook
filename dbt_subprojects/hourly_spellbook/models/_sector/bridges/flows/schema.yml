@@ -3,7 +3,7 @@ version: 2
 models:
   - name: bridges_crosschain_deposits
     meta:
-      blockchain: ethereum, base, arbitrum, avalanche_c, optimism, polygon, unichain
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora
       sector: bridges
       contributors: [ 'hildobby']
     config:
@@ -11,7 +11,7 @@ models:
     description: "Bridge deposits events"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['deposit_chain', 'tx_hash','evt_index']
+          combination_of_columns: ['deposit_chain','withdrawal_chain','withdrawal_chain_id','bridge_name','bridge_version','bridge_transfer_id', 'duplicate_index']
     columns:
       - &deposit_chain
         name: deposit_chain
@@ -85,9 +85,15 @@ models:
       - &bridge_transfer_id 
         name: bridge_transfer_id
         description: "Bridge order identifier"
+      - &duplicate_index 
+        name: duplicate_index
+        description: "Index across duplicates of the deposit event if there are any"
+      - &withdrawal_chain_id
+        name: withdrawal_chain_id
+        description: "Blockchain ID where the tokens were received"
   - name: bridges_crosschain_withdrawals
     meta:
-      blockchain: ethereum, base, arbitrum, avalanche_c, optimism, polygon, unichain
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora
       sector: bridges
       contributors: [ 'hildobby']
     config:
@@ -95,7 +101,7 @@ models:
     description: "Bridge withdrawals events"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['withdrawal_chain', 'tx_hash', 'evt_index']
+          combination_of_columns: ['deposit_chain','deposit_chain_id','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id']
     columns:
       - *deposit_chain
       - *withdrawal_chain
@@ -130,14 +136,20 @@ models:
       - *evt_index  
       - *contract_address 
       - *bridge_transfer_id 
+      - &deposit_chain_id
+        name: deposit_chain_id
+        description: "Blockchain ID where the tokens were sent"
   - name: bridges_crosschain_flows
     meta:
-      blockchain: ethereum, base, arbitrum, avalanche_c, optimism, polygon, unichain
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora
       sector: bridges
       contributors: [ 'hildobby']
     config:
       tags: [ 'bridges', 'flows' ]
     description: "Bridge flows"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['deposit_chain','deposit_chain_id','withdrawal_chain','withdrawal_chain_id','bridge_name','bridge_version','bridge_transfer_id']
     columns:
       - *deposit_chain
       - *withdrawal_chain
@@ -175,9 +187,11 @@ models:
       - &bridge_miliseconds_2
         name: bridge_miliseconds_2
         description: "Time in miliseconds between deposits and withdrawals transactions"
+      - *deposit_chain_id
+      - *withdrawal_chain_id
   - name: bridges_info
     meta:
-      blockchain: ethereum, base, arbitrum, avalanche_c, optimism, polygon, unichain
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora
       sector: bridges
       contributors: [ 'hildobby']
     config:
