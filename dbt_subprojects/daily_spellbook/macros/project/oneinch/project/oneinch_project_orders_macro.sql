@@ -1,7 +1,7 @@
 {%- macro
     oneinch_project_orders_macro(
         blockchain
-        , date_from = '2025-08-13'
+        , date_from = '2025-08-14'
     )
 -%}
 
