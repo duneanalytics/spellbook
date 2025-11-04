@@ -63,7 +63,9 @@ with filtered_transactions as (
                 and fee_payments.index = 1  -- only get the first fee payment per tx
                 and trades.trader_id != fee_payments.fee_receiver
             )
-        join filtered_transactions as tx ON trades.tx_id = tx.id 
+        join filtered_transactions as tx
+            ON trades.block_date = tx.block_date
+            AND trades.tx_id = tx.id
         where
             trades.trader_id != '6ooVBXhnqAXaF91cu49YmWhoFuE6WLdZWTwNYvTuhyBd'
             and tx.signer != '6ooVBXhnqAXaF91cu49YmWhoFuE6WLdZWTwNYvTuhyBd'
