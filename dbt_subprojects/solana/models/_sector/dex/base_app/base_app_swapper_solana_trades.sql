@@ -1,6 +1,6 @@
 {{ config(
     schema = 'base_app_swapper_solana',
-    alias = 'bot_trades',
+    alias = 'trades',
     partition_by = ['block_month'],
     materialized = 'incremental',
     incremental_strategy = 'merge',
