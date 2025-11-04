@@ -63,6 +63,11 @@ with filtered_transactions as (
                 and fee_payments.block_time = trades.block_time
                 and fee_payments.index = 1  -- only get the first fee payment per tx
                 and trades.trader_id != fee_payments.fee_receiver
+                {% if is_incremental() %}
+                and {{ incremental_predicate('fee_payments.block_time') }}
+                {% else %}
+                and fee_payments.block_time >= timestamp '{{query_start_date}}'
+                {% endif %}
             )
         join filtered_transactions as tx
             ON trades.block_date = tx.block_date
