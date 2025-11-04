@@ -14,10 +14,9 @@
   )
 }}
 
--- Story mainnet launch date: 2024-11-05 (approximate)
 {{ transfers_enrich(
     base_transfers = ref('tokens_story_base_transfers'),
-    transfers_start_date = '2024-11-05',
+    transfers_start_date = '2025-01-23',
     blockchain = 'story'
   ) 
 }}
