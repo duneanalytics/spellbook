@@ -35,7 +35,6 @@ with base_union as (
                 , amount1_raw
         FROM
             {{ model }}
-        WHERE version = 'infinity_cl' -- test infinity only
         {% if not loop.last %}
            UNION ALL
         {% endif %}

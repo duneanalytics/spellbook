@@ -53,4 +53,4 @@ WITH dexes AS (
                {{ incremental_predicate('block_time') }}
           {% endif %}
 
--- refreshing
+-- refresh 
