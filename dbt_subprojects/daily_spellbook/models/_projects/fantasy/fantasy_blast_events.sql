@@ -1,12 +1,7 @@
 {{ config(
         schema = 'fantasy_blast',
         alias = 'events',
-        materialized = 'view',
-        post_hook = '{{ expose_spells(
-                        blockchains = \'["blast"]\',
-                        spell_type = "project",
-                        spell_name = "events",
-                        contributors = \'["hildobby"]\') }}'
+        materialized = 'view'
         )
 }}
 
