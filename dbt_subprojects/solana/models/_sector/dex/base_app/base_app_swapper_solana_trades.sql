@@ -69,7 +69,6 @@ with filtered_transactions as (
             AND trades.tx_id = tx.id
         where
             trades.trader_id != '6ooVBXhnqAXaF91cu49YmWhoFuE6WLdZWTwNYvTuhyBd'
-            and tx.signer != '6ooVBXhnqAXaF91cu49YmWhoFuE6WLdZWTwNYvTuhyBd'
             {% if is_incremental() %}
                 and {{ incremental_predicate('trades.block_time') }}
                 and {{ incremental_predicate('fee_payments.block_time') }}
