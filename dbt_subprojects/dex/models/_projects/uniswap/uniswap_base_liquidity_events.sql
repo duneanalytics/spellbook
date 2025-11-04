@@ -14,10 +14,16 @@
    ,ref('uniswap_ethereum_base_liquidity_events')
    ,ref('uniswap_gnosis_base_liquidity_events')
    ,ref('uniswap_ink_base_liquidity_events')
+   ,ref('uniswap_linea_base_liquidity_events')
+   ,ref('uniswap_mantle_base_liquidity_events')
    ,ref('uniswap_optimism_base_liquidity_events')
+   ,ref('uniswap_plasma_base_liquidity_events')
    ,ref('uniswap_polygon_base_liquidity_events')
+   ,ref('uniswap_scroll_base_liquidity_events')
+   ,ref('uniswap_sonic_base_liquidity_events')
    ,ref('uniswap_unichain_base_liquidity_events')
    ,ref('uniswap_worldchain_base_liquidity_events')
+   ,ref('uniswap_zksync_base_liquidity_events')
    ,ref('uniswap_zora_base_liquidity_events')
 ] %}
 
