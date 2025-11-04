@@ -83,10 +83,11 @@ with filtered_transactions as (
     highest_inner_instruction_index_for_each_trade as (
         select
             tx_id,
+            block_date,
             outer_instruction_index,
             max(inner_instruction_index) as highest_inner_instruction_index
         from trades
-        group by tx_id, outer_instruction_index
+        group by tx_id, block_date, outer_instruction_index
     )
 select
     trades.*,
@@ -97,7 +98,7 @@ from trades
 join
     highest_inner_instruction_index_for_each_trade
     on (
-        trades.tx_id = highest_inner_instruction_index_for_each_trade.tx_id
-        and trades.outer_instruction_index
-        = highest_inner_instruction_index_for_each_trade.outer_instruction_index
+        trades.block_date = highest_inner_instruction_index_for_each_trade.block_date
+        and trades.tx_id = highest_inner_instruction_index_for_each_trade.tx_id
+        and trades.outer_instruction_index = highest_inner_instruction_index_for_each_trade.outer_instruction_index
     )
