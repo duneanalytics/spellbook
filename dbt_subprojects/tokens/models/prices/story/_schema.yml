@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: story
       sector: prices
-      contributors: hosuke
+      contributors: jeff-dude
     config:
       tags: ['prices', 'tokens', 'usd', 'story']
     description: "Price tokens on Story EVM chain"
