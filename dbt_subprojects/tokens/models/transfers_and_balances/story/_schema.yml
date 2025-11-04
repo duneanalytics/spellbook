@@ -133,3 +133,40 @@ models:
             - blockchain
             - block_date
             - contract_address
+
+  - name: tokens_story_transfers_from_traces
+    meta:
+      blockchain: story
+      sector: tokens
+      contributors: cursor
+    config:
+      tags: ['tokens', 'transfers', 'story']
+    description: "Native token transfers from traces on Story"
+
+  - name: tokens_story_transfers_from_traces_base
+    meta:
+      blockchain: story
+      sector: tokens
+      contributors: cursor
+    config:
+      tags: ['tokens', 'transfers', 'story']
+    description: "Base native token transfers from traces on Story"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - unique_key
+
+  - name: tokens_story_transfers_from_traces_base_wrapper_deposits
+    meta:
+      blockchain: story
+      sector: tokens
+      contributors: cursor
+    config:
+      tags: ['tokens', 'transfers', 'story']
+    description: "Wrapper deposit transfers from traces on Story"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - unique_key
