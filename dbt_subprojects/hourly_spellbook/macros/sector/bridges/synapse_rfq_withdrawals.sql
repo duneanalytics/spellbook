@@ -18,7 +18,7 @@ SELECT w.originChainId AS deposit_chain_id
 , w.evt_index
 , w.contract_address
 , CAST(w.transactionId AS varchar) AS bridge_transfer_id
-FROM {{ source('synapse_' + blockchain, 'fastbridge_v2_evt_bridgerelayed') }} d
+FROM {{ source('synapse_' + blockchain, 'fastbridge_v2_evt_bridgerelayed') }} w
 LEFT JOIN {{ source('evms','info') }} i ON w.originChainId=i.chain_id
 
 {% endmacro %}
