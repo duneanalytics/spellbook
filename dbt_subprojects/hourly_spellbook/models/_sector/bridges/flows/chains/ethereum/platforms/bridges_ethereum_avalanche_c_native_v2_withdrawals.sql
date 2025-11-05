@@ -24,7 +24,8 @@ SELECT 'avalanche_c' AS deposit_chain
 , tx_hash AS tx_hash
 , evt_index
 , contract_address
-, {{ dbt_utils.generate_surrogate_key(['tx_hash', 'evt_index']) }} as bridge_transfer_id
+, unique_key AS bridge_transfer_id
+--, {{ dbt_utils.generate_surrogate_key(['tx_hash', 'evt_index']) }} as bridge_transfer_id
 FROM {{ source('tokens_ethereum', 'transfers') }}
 WHERE "from" = 0x8eb8a3b98659cce290402893d0123abb75e3ab28
 AND block_number >= 5096229

@@ -150,7 +150,7 @@ models:
     description: "Raw bridge deposits events on EVM chains (materialized view for complex UNION ALL)"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['deposit_chain','tx_hash','evt_index']
+          combination_of_columns: ['deposit_chain','tx_hash','evt_index','bridge_transfer_id']
     columns:
       - *deposit_chain
       - *withdrawal_chain
@@ -180,7 +180,7 @@ models:
     description: "Raw bridge withdrawals events on EVM chains (materialized view for complex UNION ALL)"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['withdrawal_chain','tx_hash','evt_index']
+          combination_of_columns: ['withdrawal_chain','tx_hash','evt_index','bridge_transfer_id']
     columns:
       - *deposit_chain
       - *withdrawal_chain
