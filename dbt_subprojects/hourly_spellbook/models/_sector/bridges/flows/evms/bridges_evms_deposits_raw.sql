@@ -73,12 +73,15 @@ FROM (
         , d.bridge_transfer_id
         FROM {{ ref('bridges_'~chain~'_deposits') }} d
         {% if is_incremental() %}
-        LEFT JOIN {{this}} t ON d.deposit_chain = '{{chain}}'
+        LEFT JOIN {{this}} t ON t.deposit_chain = '{{chain}}'
+            AND d.bridge_name = t.bridge_name
+            AND d.bridge_version = t.bridge_version
+            AND d.withdrawal_chain_id = t.withdrawal_chain_id
             AND d.tx_hash = t.tx_hash
             AND d.evt_index = t.evt_index
             AND d.bridge_transfer_id = t.bridge_transfer_id
         WHERE {{ incremental_predicate('d.block_time') }}
-        AND t.bridge_transfer_id IS NULL
+        AND t.block_time IS NULL
         {% endif %}
         {% if not loop.last %}
         UNION ALL
