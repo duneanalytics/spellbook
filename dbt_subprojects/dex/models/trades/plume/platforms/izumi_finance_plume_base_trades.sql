@@ -37,13 +37,13 @@ pools AS (
         tokenX,
         tokenY,
         fee
-    FROM {{ source('izumi_finance_multichain', 'iziswapfactory_evt_newpool') }}
+    FROM {{ source('izumi_finance_plume', 'iziswapfactory_evt_newpool') }}
     WHERE chain = 'plume'
 )
 SELECT
     'plume' AS blockchain,
     'izumi_finance' AS project,
-    '2' AS version,
+    '1' AS version,
     CAST(DATE_TRUNC('month', swaps.block_time) AS DATE) AS block_month,
     CAST(DATE_TRUNC('day', swaps.block_time) AS DATE) AS block_date,
     swaps.block_time,

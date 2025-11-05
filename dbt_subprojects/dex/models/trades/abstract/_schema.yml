@@ -43,7 +43,7 @@ models:
       project: aborean
       contributors: captncrunch
     config:
-      tags: ["plume", "dex", "trades", "aborean"]
+      tags: ["abstract", "dex", "trades", "aborean"]
     description: "Aborean abstract base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:

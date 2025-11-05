@@ -14,7 +14,7 @@
     uniswap_compatible_v2_trades(
         blockchain = 'abstract',
         project = 'aborean',
-        version = '3',
+        version = '2',
         Pair_evt_Swap = source('aborean_abstract', 'pool_evt_swap'),
         Factory_evt_PairCreated = source('aborean_abstract', 'poolfactory_evt_poolcreated')
         , pair_column_name = 'pool'

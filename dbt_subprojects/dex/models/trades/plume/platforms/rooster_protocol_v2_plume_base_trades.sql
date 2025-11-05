@@ -14,7 +14,7 @@
     uniswap_compatible_v3_trades(
         blockchain = 'plume',
         project = 'rooster_protocol',
-        version = '3',
+        version = '2',
         Pair_evt_Swap = source('rooster_protocol_plume', 'algebrapool_evt_swap'),
         Factory_evt_PoolCreated = source('rooster_protocol_plume', 'algebrafactory_evt_pool')
         ,optional_columns = []
