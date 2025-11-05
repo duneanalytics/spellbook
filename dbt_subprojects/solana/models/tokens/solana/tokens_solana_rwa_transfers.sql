@@ -15,13 +15,38 @@
 }}
 
 with rwa_tokens as (
-    -- Static list of RWA token mint addresses
-    -- Add your RWA token mint addresses here
+    -- Static list of RWA token mint addresses from rwa.xyz
     select token_mint_address from (
         values
+            -- Stablecoins
+            ('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'),  -- USDC (Circle)
+            ('Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB'),  -- USDT (Tether)
+            ('2b1kV6DkPAnxd5ixfnxCpjxmKwqjjaYmCZfHsFu24GXo'),  -- PYUSD (Paxos)
+            ('2u1tszSeqZ3qBWF3uNGPFc8TzMk2tdiwknnRMWGWjGWH'),  -- USDG (Paxos)
+            ('USD1ttGY1N17NEEHLmELoaybftRBUSErhqYiQzvEmuB'),  -- USD1 (BitGo)
+            ('9zNQRsGLjNKwCUU5Gq5LR8beUCPzQMVMqKAi3SSZh54u'),  -- FDUSD (First Digital Labs)
+            ('HzwqbKZw8HxMN6bF2yFZNrht3c2iXXzpKcFu7uBEDKtr'),  -- EURC (Circle)
+            ('USDSwr9ApdHk5bvJKMjzff41FfuX8bSxdKcR81vTwcA'),  -- USDS (Sky)
+            ('AUSD1jCcCyPLybk1YnvPWsHQSrZ46dxwoMniN4N2UEB9'),  -- AUSD (Agora Ledger)
+            ('6FrrzDk5mQARGc1TDYoyVnSyRdds1t4PbtohCD6p3tgG'),  -- USX (Solstice)
+            -- U.S. Treasuries
+            ('GyWgeqpy5GueU2YbkE8xqUeVEokCMMCEeUrfbtMw6phr'),  -- BUIDL (Securitize/BlackRock)
             ('A1KLoBrKBde8Ty9qtNQUtq3C2ortoC3u7twggz7sEto6'),  -- USDY (Ondo)
-            ('9zNQRsGLjNKwCUU5Gq5LR8beUCPzQMVMqKAi3SSZh54u'),  -- FDUSD placeholder, add actual RWA tokens
-            ('7kbnvuGBxxj8AG9qp8Scn56muWGaRaFqxg1FsRp3PaFT')   -- UXD placeholder, add actual RWA tokens
+            ('i7u4r16TcsJTgq1kAG8opmVZyVnAKBwLKu6ZPMwzxNc'),  -- OUSG (Ondo)
+            ('34mJztT9am2jybSukvjNqRjgJBZqHJsHnivArx1P4xy1'),  -- VBILL (Securitize/VanEck)
+            -- Institutional Funds
+            ('5Y8NV33Vv7WbnLfq3zBcKSdYPrk7g2KoiQoe7M2tcxp5'),  -- ONyc (OnRe)
+            ('FubtUcvhSCr3VPXEcxouoQjKQ7NWTCzXyECe76B7L3f8'),  -- ACRED (Securitize/Apollo)
+            -- Stocks (xStocks by Backed Finance)
+            ('XsDoVfqeBukxuZHWhdvWHBhgEHjGNst4MLodqsJHzoB'),  -- TSLAx (Tesla)
+            ('Xsc9qvGR1efVDFGLrVsmkzv3qi45LTBjeUKSPmx9qEh'),  -- NVDAx (NVIDIA)
+            ('XsoCS1TfEyfFhfvj8EtZ528L3CaKBDBRqRapnBbDF2W'),  -- SPYx (S&P 500)
+            ('Xs8S1uUs1zvS2p7iwtsG3b6fkhpvmwz4GYU3gWAmWHZ'),  -- QQQx (Nasdaq)
+            ('XsP7xzNPvEHS1m6qfanPUGjNmdnmsLKEoNAnHjdxxyZ'),  -- MSTRx (MicroStrategy)
+            ('XsueG8BtpquVJX9LVLLEGuViXUungE6WmK5YZ3p3bd1'),  -- CRCLx (CircleCI)
+            ('XsCPL9dNWBMvFtTmwcCA5v3xWPSMEBCszbQdiLLq6aN'),  -- GOOGLx (Alphabet)
+            ('XsbEhLAtcf6HdfpFZ5xEMdqW8nfAvcsP5bdudRLJzJp'),  -- AAPLx (Apple)
+            ('Xs7ZdzSHLU9ftNJsii5fCeJhoRWSC32SQGzGQtePxNu')   -- COINx (Coinbase)
     ) as t(token_mint_address)
 ),
 
