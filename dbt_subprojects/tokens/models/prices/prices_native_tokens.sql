@@ -68,6 +68,7 @@ with prices_native_tokens as (
         , ('sophon', 'soph-sophon')
         , ('starknet', 'strk-starknet')
         , ('stellar', 'xlm-stellar')
+        , ('story', 'ip-story')
         , ('superseed', 'eth-ethereum')
         , ('taiko', 'eth-ethereum')
         , ('ton', 'ton-toncoin')
