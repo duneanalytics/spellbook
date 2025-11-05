@@ -92,3 +92,56 @@ models:
         description: "The type of backing for the stablecoin (e.g., Fiat Stablecoin, Dollar-Pegged)"
       - name: name
         description: "The name of the issuer or protocol of the stablecoin"
+
+  - name: tokens_solana_rwa_transfers
+    meta:
+      blockchain: solana
+      sector: tokens
+      project: rwa
+      contributors: ilemi
+    config:
+      tags: ['solana', 'tokens', 'rwa', 'transfers']
+    description: "Real World Asset (RWA) token transfers on Solana, filtered from tokens_solana.transfers with optimized date-based filtering using token creation dates from tokens_solana.fungible"
+    columns:
+      - name: block_time
+        description: "Timestamp of the block containing this transfer"
+      - name: block_date
+        description: "Date of the block containing this transfer (partition key)"
+      - name: block_slot
+        description: "Slot number of the block"
+      - name: action
+        description: "Type of action (transfer, mint, burn, etc.)"
+      - name: token_mint_address
+        description: "The mint address of the RWA token"
+      - name: amount
+        description: "Raw amount transferred (before decimal adjustment)"
+      - name: fee
+        description: "Fee charged for the transfer"
+      - name: token_version
+        description: "Version of the token program (spl_token or token2022)"
+      - name: from_owner
+        description: "Owner address of the source token account"
+      - name: to_owner
+        description: "Owner address of the destination token account"
+      - name: from_token_account
+        description: "Source token account address"
+      - name: to_token_account
+        description: "Destination token account address"
+      - name: tx_signer
+        description: "Transaction signer address"
+      - name: tx_id
+        description: "Transaction ID"
+      - name: tx_index
+        description: "Index of the transaction in the block"
+      - name: outer_instruction_index
+        description: "Index of the outer instruction"
+      - name: inner_instruction_index
+        description: "Index of the inner instruction"
+      - name: outer_executing_account
+        description: "Account executing the outer instruction"
+      - name: symbol
+        description: "Token symbol from fungible dataset"
+      - name: decimals
+        description: "Number of decimals for the token"
+      - name: amount_decimal
+        description: "Amount adjusted for token decimals (human-readable)"
