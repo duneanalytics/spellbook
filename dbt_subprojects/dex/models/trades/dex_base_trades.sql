@@ -6,7 +6,7 @@
 }}
 
 {% set models = [  
-   , ref('dex_abstract_base_trades')
+   ref('dex_abstract_base_trades')
     , ref('dex_base_base_trades')
     , ref('dex_berachain_base_trades')
     , ref('dex_blast_base_trades')
