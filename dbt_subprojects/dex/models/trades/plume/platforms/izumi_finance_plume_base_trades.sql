@@ -38,7 +38,6 @@ pools AS (
         tokenY,
         fee
     FROM {{ source('izumi_finance_plume', 'iziswapfactory_evt_newpool') }}
-    WHERE chain = 'plume'
 )
 SELECT
     'plume' AS blockchain,
