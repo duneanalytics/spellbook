@@ -21,6 +21,6 @@ SELECT '{{blockchain}}' AS deposit_chain
 , d.contract_address
 , CAST(d.transactionId AS varchar) AS bridge_transfer_id
 FROM {{ source('synapse_' + blockchain, 'fastbridge_v2_evt_bridgerequested') }} d
-LEFT JOIN {{ ref('evms_info') }} i ON d.destChainId=i.chain_id
+LEFT JOIN {{ source('evms','info') }} i ON d.destChainId=i.chain_id
 
 {% endmacro %}
