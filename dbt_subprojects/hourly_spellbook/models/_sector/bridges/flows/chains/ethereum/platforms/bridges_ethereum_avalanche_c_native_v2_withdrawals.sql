@@ -8,7 +8,7 @@
 }}
 
 SELECT 'avalanche_c' AS deposit_chain
-, CAST(NULL AS DOUBLE) AS deposit_chain_id
+, CAST(43114 AS DOUBLE) AS deposit_chain_id
 , 'ethereum' AS withdrawal_chain
 , 'Avalanche' AS bridge_name
 , '2' AS bridge_version
