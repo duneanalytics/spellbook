@@ -4,7 +4,7 @@
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy='merge'
-    , unique_key = ['deposit_chain','deposit_chain_id','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id', 'tx_hash', 'evt_index']
+    , unique_key = ['withdrawal_chain','tx_hash','evt_index','bridge_transfer_id']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
 )
 }}
@@ -54,14 +54,15 @@ FROM (
         , w.bridge_transfer_id
         FROM {{ ref('bridges_'~chain~'_withdrawals') }} w
         {% if is_incremental() %}
-        LEFT JOIN {{this}} t ON w.withdrawal_chain = '{{chain}}'
+        LEFT JOIN {{this}} t ON t.withdrawal_chain = '{{chain}}'
             AND w.bridge_name = t.bridge_name
             AND w.bridge_version = t.bridge_version
             AND w.deposit_chain_id = t.deposit_chain_id
             AND w.tx_hash = t.tx_hash
             AND w.evt_index = t.evt_index
+            AND w.bridge_transfer_id = t.bridge_transfer_id
         WHERE  {{ incremental_predicate('w.block_time') }}
-        AND t.bridge_transfer_id IS NULL
+        AND t.block_time IS NULL
         {% endif %}
         {% if not loop.last %}
         UNION ALL
