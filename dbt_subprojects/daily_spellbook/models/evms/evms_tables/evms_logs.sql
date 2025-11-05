@@ -14,6 +14,7 @@ FROM (
         SELECT
         '{{ blockchain }}' AS blockchain
         , block_time
+        , block_date
         , block_number
         , block_hash
         , contract_address
@@ -25,7 +26,6 @@ FROM (
         , tx_hash
         , index
         , tx_index
-        , block_date
         , tx_from
         , tx_to
         FROM {{ source(blockchain, 'logs') }}

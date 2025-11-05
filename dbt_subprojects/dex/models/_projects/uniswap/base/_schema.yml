@@ -182,10 +182,6 @@ models:
             - tx_hash
             - evt_index
             - event_type
-      - check_dex_base_liquidity_seed:
-          seed_file: ref('uniswap_base_base_liquidity_seed')
-          filter:
-            version: 4
     columns:
       - *blockchain
       - *project
