@@ -26,7 +26,7 @@ payload as (
             {% if contract_data.address == "creations" %}from (
                 select distinct contract_address
                 from {{ source('oneinch_' + blockchain.name, contract + '_call_' + method) }}
-                where contract_address <> {{ contract_data.address }} -- to filter calls for the initial implementation of Escrow Src/Dst contracts
+                where contract_address <> {{ contract_data.initial_address }} -- to filter calls for the initial implementation of Escrow Src/Dst contracts
             ){%- endif %}
             {% if not loop.last %}union{% endif %}
         {% endfor %}
