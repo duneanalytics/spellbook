@@ -44,3 +44,15 @@ models:
       - &usdt0_address
         name: usdt0_address
         description: "Contract address of USDT0 per chain"
+  - name: bridges_symbiosis_chain_indexes
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: symbiosis
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bridges', 'chain_indexes' ]
+    description: "Symbiosis's blockchains indexes"
+    columns:
+      - *id
+      - *blockchain
