@@ -1,4 +1,4 @@
-{% macro tether_v1_deposits(blockchain) %}
+{% macro symbiosis_v1_deposits(blockchain) %}
 
 SELECT '{{blockchain}}' AS deposit_chain
 , d.chainID AS withdrawal_chain_id
