@@ -1,9 +1,9 @@
-{%- set blockchain = 'zksync' -%}
+{%- set blockchain = 'avalanche_c' -%}
 
 {{-
     config(
         schema = 'oneinch_' + blockchain,
-        alias = 'raw_transfers',
+        alias = 'transfers',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -13,10 +13,11 @@
     )
 -}}
 
-{{- oneinch_raw_transfers_macro(
-        blockchain = oneinch_zksync_cfg_macro(),
+{{- oneinch_transfers_macro(
+        blockchain = oneinch_avalanche_c_cfg_macro(),
         streams = [
             oneinch_ar_transfers_cfg_macro(),
             oneinch_lo_transfers_cfg_macro(),
+            oneinch_cc_transfers_cfg_macro(),
         ]
 ) -}}

@@ -25,7 +25,7 @@ calls as (
     select *
         , if(transfer_contract_address in ({{ same }}), array[{{ same }}], array[transfer_contract_address]) as same
         , row_number() over(partition by block_month, block_date, block_number, tx_hash order by transfer_trace_address desc) as transfer_number_desc
-    from {{ ref('oneinch_' + blockchain.name + '_raw_transfers') }}
+    from {{ ref('oneinch_' + blockchain.name + '_transfers') }}
     where true
         and nested
         and related

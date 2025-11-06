@@ -201,7 +201,7 @@ models:
       - name: native_price
       - name: native_decimals
 
-  - name: oneinch_bnb_raw_transfers
+  - name: oneinch_bnb_transfers
     meta:
       blockchain: ['bnb']
       sector: oneinch

@@ -25,7 +25,7 @@ calls as (
 , transfers as (
     select *
         , if(transfer_contract_address in ({{ same }}), array[{{ same }}], array[transfer_contract_address]) as same
-    from {{ ref('oneinch_' + blockchain.name + '_raw_transfers') }}
+    from {{ ref('oneinch_' + blockchain.name + '_transfers') }}
     where true
         and nested
         and related

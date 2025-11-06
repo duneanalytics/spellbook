@@ -1,5 +1,5 @@
 {%- macro
-    oneinch_raw_transfers_macro(
+    oneinch_transfers_macro(
         blockchain,
         streams
     )

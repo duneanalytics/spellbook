@@ -201,7 +201,7 @@ models:
       - name: native_price
       - name: native_decimals
 
-  - name: oneinch_arbitrum_raw_transfers
+  - name: oneinch_arbitrum_transfers
     meta:
       blockchain: ['arbitrum']
       sector: oneinch

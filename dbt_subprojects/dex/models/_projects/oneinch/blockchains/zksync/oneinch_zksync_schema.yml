@@ -131,7 +131,7 @@ models:
       - name: native_price
       - name: native_decimals
 
-  - name: oneinch_zksync_raw_transfers
+  - name: oneinch_zksync_transfers
     meta:
       blockchain: ['zksync']
       sector: oneinch

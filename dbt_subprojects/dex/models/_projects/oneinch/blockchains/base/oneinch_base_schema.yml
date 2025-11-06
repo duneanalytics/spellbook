@@ -201,7 +201,7 @@ models:
       - name: native_price
       - name: native_decimals
 
-  - name: oneinch_base_raw_transfers
+  - name: oneinch_base_transfers
     meta:
       blockchain: ['base']
       sector: oneinch

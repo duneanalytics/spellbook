@@ -3,7 +3,7 @@
 {{-
     config(
         schema = 'oneinch_' + blockchain,
-        alias = 'raw_transfers',
+        alias = 'transfers',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -13,7 +13,7 @@
     )
 -}}
 
-{{- oneinch_raw_transfers_macro(
+{{- oneinch_transfers_macro(
         blockchain = oneinch_unichain_cfg_macro(),
         streams = [
             oneinch_ar_transfers_cfg_macro(),

@@ -201,7 +201,7 @@ models:
       - name: native_price
       - name: native_decimals
 
-  - name: oneinch_sonic_raw_transfers
+  - name: oneinch_sonic_transfers
     meta:
       blockchain: ['sonic']
       sector: oneinch

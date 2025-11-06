@@ -201,7 +201,7 @@ models:
       - name: native_price
       - name: native_decimals
 
-  - name: oneinch_evms_raw_transfers
+  - name: oneinch_evms_transfers
     meta:
       blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'linea', 'sonic', 'unichain']
       sector: oneinch

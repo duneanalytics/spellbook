@@ -201,7 +201,7 @@ models:
       - name: native_price
       - name: native_decimals
 
-  - name: oneinch_optimism_raw_transfers
+  - name: oneinch_optimism_transfers
     meta:
       blockchain: ['optimism']
       sector: oneinch

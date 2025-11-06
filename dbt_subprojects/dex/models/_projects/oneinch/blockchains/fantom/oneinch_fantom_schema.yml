@@ -131,7 +131,7 @@ models:
       - name: native_price
       - name: native_decimals
 
-  - name: oneinch_fantom_raw_transfers
+  - name: oneinch_fantom_transfers
     meta:
       blockchain: ['fantom']
       sector: oneinch

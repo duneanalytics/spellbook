@@ -201,7 +201,7 @@ models:
       - name: native_price
       - name: native_decimals
 
-  - name: oneinch_gnosis_raw_transfers
+  - name: oneinch_gnosis_transfers
     meta:
       blockchain: ['gnosis']
       sector: oneinch

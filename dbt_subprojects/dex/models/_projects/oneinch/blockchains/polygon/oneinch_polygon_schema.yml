@@ -201,7 +201,7 @@ models:
       - name: native_price
       - name: native_decimals
 
-  - name: oneinch_polygon_raw_transfers
+  - name: oneinch_polygon_transfers
     meta:
       blockchain: ['polygon']
       sector: oneinch

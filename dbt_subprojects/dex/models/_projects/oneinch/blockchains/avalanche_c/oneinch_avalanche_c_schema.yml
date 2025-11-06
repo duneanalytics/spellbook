@@ -201,7 +201,7 @@ models:
       - name: native_price
       - name: native_decimals
 
-  - name: oneinch_avalanche_c_raw_transfers
+  - name: oneinch_avalanche_c_transfers
     meta:
       blockchain: ['avalanche_c']
       sector: oneinch
