@@ -4,7 +4,7 @@
         alias = 'erc4626_token_mapping', 
         materialized = 'table',
         file_format = 'delta'
-    )
+         )
 }}
 
 WITH aave_tokens AS(
