@@ -50,7 +50,7 @@ promotions as (
             {% for contract, contract_data in blockchain.contracts.items() if contract_data.get('type', '') == 'AccessToken' %}
                 -- {{ contract }} --
                 select *
-                    , '{{ blockchain }}' as blockchain
+                    , '{{ blockchain.name }}' as blockchain
                     , array["from", "to"] as owners
                     , '{{ contract_data.get("mode", "null") }}' as mode
                 from {{ source('oneinch_' + blockchain.name, contract + '_evt_transfer') }}
