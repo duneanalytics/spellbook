@@ -1,25 +1,22 @@
 {%- macro
     oneinch_raw_calls_macro(
         blockchain,
-        stream
+        stream,
+        contracts
     )
 -%}
 
-{%- set substream = 'raw_calls' -%}
-{%- set meta = oneinch_meta_cfg_macro() -%}
-{%- set contracts = meta['streams'][stream]['contracts'] -%}
-{%- set date_from = [meta['blockchains']['start'][blockchain], meta['streams'][stream]['start'][substream]] | max -%}
-{%- set factories = meta['blockchains']['escrow_factory_addresses'][blockchain] -%}
+{%- set date_from = [blockchain.start, stream.start] | max -%}
 
 
 
 with
 
 payload as (
-    {% for contract, contract_data in contracts.items() if blockchain in contract_data.blockchains %}
-        {% for method, method_data in contract_data.methods.items() if blockchain in method_data.get('blockchains', contract_data.blockchains) %}{# method-level blockchains override contract-level blockchains #}
+    {% for contract, contract_data in contracts.items() %}
+        {% for method, method_data in contract_data.methods.items() %}
             select
-                {% if contract_data.addresses != "creations" %}{% for address, blockchains in contract_data.addresses.items() if blockchain in blockchains %}{{ address }}{% endfor %} as {% endif %}contract_address
+                {% if contract_data.addresses != "creations" %}{{ contract_data.address }} as {% endif %}contract_address
                 , '{{ contract }}' as contract_name
                 , {{ contract_data['version'] }} as protocol_version
                 , timestamp '{{ [date_from, contract_data.start] | max }}' as date_from
@@ -28,8 +25,8 @@ payload as (
                 , {{ method_data.get('auxiliary', contract_data.get('auxiliary', 'false')) }} as auxiliary
             {% if contract_data.addresses == "creations" %}from (
                 select distinct contract_address
-                from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}
-                where contract_address <> {% for address, blockchains in contract_data.initial_addresses.items() if blockchain in blockchains %}{{ address }}{% endfor %} -- to filter calls for the initial implementation of Escrow Src/Dst contracts
+                from {{ source('oneinch_' + blockchain.name, contract + '_call_' + method) }}
+                where contract_address <> {{ contract_data.address }} -- to filter calls for the initial implementation of Escrow Src/Dst contracts
             ){%- endif %}
             {% if not loop.last %}union{% endif %}
         {% endfor %}
@@ -39,7 +36,7 @@ payload as (
 
 , traces as (
     select *
-    from {{ source(blockchain, 'traces') }}
+    from {{ source(blockchain.name, 'traces') }}
     where true
         and type = 'call'
         and block_date >= timestamp '{{ date_from }}'
@@ -49,12 +46,12 @@ payload as (
 -- output --
 
 select
-    '{{blockchain}}' as blockchain
+    '{{ blockchain.name }}' as blockchain
     , block_number
     , block_time
     , tx_hash
     , tx_success
-    , upper('{{ stream }}') as protocol
+    , upper('{{ stream.name }}') as protocol
     , protocol_version
     , contract_name
     , trace_address as call_trace_address -- the call prefix is needed for merging without renaming

@@ -1,10 +1,9 @@
-{%- set stream = 'cc' -%}
-{%- set substream = 'executions' -%}
+{%- set stream = oneinch_cc_executions_cfg_macro() -%}
 
 {{-
     config(
         schema = 'oneinch',
-        alias = stream + '_' + substream,
+        alias = stream.name + '_executions',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -14,8 +13,7 @@
     )
 -}}
 
-{%- set stream_data = oneinch_meta_cfg_macro()['streams'][stream] -%}
-{%- set date_from = stream_data['start'][substream] -%}
+{%- set date_from = stream.start -%}
 
 
 
@@ -23,14 +21,15 @@ with
 
 incremental as (
     select hashlock
-    from {{ ref('oneinch_' + stream) }}
+    from {{ ref('oneinch_' + stream.name) }}
     where {{ incremental_predicate('block_time') }}
     group by 1
 )
 
 , iterations as (
-    {% for blockchain in stream_data['exposed'] %}
-        select * from {{ ref('oneinch_' + blockchain + '_' + stream + '_' + substream) }}
+    {% for blockchain in oneinch_blockchains_cfg_macro() if stream.name in blockchain.exposed %}
+        select *
+        from {{ ref('oneinch_' + blockchain.name + '_' + stream.name + '_executions') }}
         where true
             and block_date >= date('{{ date_from }}')
             {% if is_incremental() -%}

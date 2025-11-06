@@ -1,6 +1,12 @@
-{%- macro oneinch_raw_transfers_macro(blockchain) -%}
+{%- macro
+    oneinch_raw_transfers_macro(
+        blockchain,
+        streams
+    )
+-%}
 
-{%- set meta = oneinch_meta_cfg_macro() -%}
+{%- set wrapper = blockchain.wrapped_native_token_address -%}
+{%- set nsymbol = blockchain.native_token_symbol -%}
 
 
 
@@ -10,9 +16,9 @@ calls as (
     select *
         , array_agg(call_trace_address) over(partition by block_number, tx_hash) as call_trace_addresses -- need all streams for this
     from (
-        {% for stream, stream_data in meta['streams'].items() if blockchain in stream_data['exposed'] %}
+        {% for stream in streams %}
             -- STREAM: {{ stream }} --
-            {% set date_from = stream_data['start']['transfers'] %}
+            {% set date_from = stream.start %}
             select
                 block_number
                 , block_month
@@ -24,7 +30,7 @@ calls as (
                 , contract_name
                 , call_method
                 , call_selector
-            from {{ ref('oneinch_' + blockchain + '_' + stream + '_raw_calls') }}
+            from {{ ref('oneinch_' + blockchain.name + '_' + stream.name + '_raw_calls') }}
             where true
                 and call_success
                 and block_time >= timestamp '{{ date_from }}' -- it is only needed for simple/easy dates
@@ -36,12 +42,12 @@ calls as (
     )
 )
 
-{% if blockchain in meta['blockchains']['aave'] %}, atokens as (
+{% if blockchain.atokens %}, atokens as (
     select
         contract_address -- atoken_address
         , max_by(underlyingAsset, evt_block_time) as underlying_address
         , max_by(aTokenSymbol, evt_block_time) as atoken_symbol
-    from {{ source('aave_v3_' + blockchain, 'AToken_evt_Initialized') }}
+    from {{ source('aave_v3_' + blockchain.name, 'AToken_evt_Initialized') }}
     where underlyingAsset is not null
     group by 1 -- take the latest event only
 ){%- endif %}
@@ -60,8 +66,8 @@ calls as (
         , call_selector
         , trace_address as transfer_trace_address
         , contract_address as transfer_contract_address -- original
-        , if(token_standard = 'native', {{ meta['blockchains']['wrapped_native_token_address'][blockchain] }}, {% if blockchain in meta['blockchains']['aave'] %}coalesce(underlying_address, contract_address){% else %}contract_address{% endif %}) as contract_address
-        , if(token_standard = 'native', {{ meta['blockchains']['native_token_symbol'][blockchain] }}{% if blockchain in meta['blockchains']['aave'] %}, atoken_symbol{% endif %}) as _symbol
+        , if(token_standard = 'native', {{ wrapper }}, {% if blockchain.atokens %}coalesce(underlying_address, contract_address){% else %}contract_address{% endif %}) as contract_address
+        , if(token_standard = 'native', {{ nsymbol }}{% if blockchain.atokens %}, atoken_symbol{% endif %}) as _symbol
         , amount_raw as amount
         , "from" as transfer_from
         , "to" as transfer_to
@@ -70,8 +76,8 @@ calls as (
         , slice(trace_address, 1, cardinality(call_trace_address)) = call_trace_address as nested -- nested transfers only
         , reduce(call_trace_addresses, call_trace_address, (r, x) -> if(slice(trace_address, 1, cardinality(x)) = x and x > r, x, r), r -> r) = call_trace_address as related -- transfers related to the call only, i.e. without transfers in nested calls
     from calls
-    join {{ source('tokens_' + blockchain, 'transfers_from_traces') }} using(block_month, block_date, block_number, tx_hash)
-    {% if blockchain in meta['blockchains']['aave'] %}left join atokens using(contract_address){% endif %}
+    join {{ source('tokens_' + blockchain.name, 'transfers_from_traces') }} using(block_month, block_date, block_number, tx_hash)
+    {% if blockchain.atokens %}left join atokens using(contract_address){% endif %}
 )
 
 , tokens as (
@@ -80,7 +86,7 @@ calls as (
         , symbol as token_symbol
         , decimals as token_decimals
     from {{ source('tokens', 'erc20') }}
-    where blockchain = '{{ blockchain }}'
+    where blockchain = '{{ blockchain.name }}'
 )
 
 , prices as (
@@ -92,8 +98,8 @@ calls as (
         , symbol
     from {{ source('prices', 'usd') }}
     where true
-        and blockchain = '{{ blockchain }}'
-        and minute >= least({% for stream_data in meta['streams'].values() %}date('{{ stream_data['start']['transfers'] }}'){% if not loop.last %}, {% endif %}{% endfor %})
+        and blockchain = '{{ blockchain.name }}'
+        and minute >= least({% for stream in streams %}date('{{ stream.start }}'){% if not loop.last %}, {% endif %}{% endfor %})
         {% if is_incremental() %}and {{ incremental_predicate('minute') }}{% endif %}
 )
 
@@ -102,7 +108,7 @@ calls as (
         contract_address
         , true as trusted
     from {{ source('prices', 'trusted_tokens') }}
-    where blockchain = '{{ blockchain }}'
+    where blockchain = '{{ blockchain.name }}'
     group by 1, 2
 )
 

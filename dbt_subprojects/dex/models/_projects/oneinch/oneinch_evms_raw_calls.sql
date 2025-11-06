@@ -1,17 +1,15 @@
-{% set substream = 'raw_calls' %}
-
 {{  
     config(
         schema = 'oneinch_evms',
-        alias = substream,
+        alias = 'raw_calls',
         materialized = 'view',
         unique_key = ['block_month', 'blockchain', 'tx_hash', 'call_trace_address'],
     )
 }}
 
-{% for stream, stream_data in oneinch_meta_cfg_macro()['streams'].items() %}
-    {% for blockchain in stream_data['exposed'] if blockchain in oneinch_meta_cfg_macro()['blockchains']['evms'] %}
-        select * from {{ ref('oneinch_' + blockchain + '_' + stream + '_' + substream) }}
+{% for blockchain in oneinch_blockchains_cfg_macro() if blockchain.evm %}
+    {% for stream in blockchain.exposed %}
+        select * from {{ ref('oneinch_' + blockchain.name + '_' + stream + '_raw_calls') }}
         {% if not loop.last %}union all{% endif %}
     {% endfor %}
     {% if not loop.last %}union all{% endif %}

@@ -1,14 +1,14 @@
-{%- macro oneinch_ar_macro(blockchain) -%}
+{%- macro
+    oneinch_ar_macro(
+        blockchain,
+        stream,
+        contracts
+    )
+-%}
 
-{%- set stream = 'ar' -%}
-{%- set substream = '_initial' -%}
-{%- set meta = oneinch_meta_cfg_macro() -%}
-{%- set contracts = meta['streams'][stream]['contracts'] -%}
-{%- set date_from = [meta['blockchains']['start'][blockchain], meta['streams'][stream]['start'][substream]] | max -%}
-{%- set wrapper = meta['blockchains']['wrapped_native_token_address'][blockchain] -%}
-{%- set chain_id = meta['blockchains']['chain_id'][blockchain] -%}
+{%- set date_from = [blockchain.start, stream.start] | max -%}
+{%- set wrapper = blockchain.wrapped_native_token_address -%}
 {%- set native = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' -%}
-
 
 
 with
@@ -16,16 +16,16 @@ with
 raw_calls as (
     select *
         , substr(call_input, call_input_length - mod(call_input_length - 4, 32) + 1) as call_input_remains
-    from {{ ref('oneinch_' + blockchain + '_ar_raw_calls') }}
+    from {{ ref('oneinch_' + blockchain.name + '_ar_raw_calls') }}
     where true
         and block_date >= timestamp '{{ date_from }}' -- it is only needed for simple/easy dates
         {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
 )
 
 , decoded as (
-    {% for contract, contract_data in contracts.items() if blockchain in contract_data.blockchains %}
+    {% for contract, contract_data in contracts.items() %}
         -- CONTRACT: {{ contract }} --
-        {% for method, method_data in contract_data.methods.items() if blockchain in method_data.get('blockchains', contract_data.blockchains) and not method_data.get('auxiliary', false) %}{# method-level blockchains override contract-level blockchains #}
+        {% for method, method_data in contract_data.methods.items() if not method_data.get('auxiliary', false) %}
             select
                 call_block_date as block_date
                 , call_block_number as block_number
@@ -49,7 +49,7 @@ raw_calls as (
                 , {{ method_data.get("dst_token_offset", "null") }} as dst_token_offset
                 , {{ method_data.get("router_type", "null") }} as router_type
                 , {% if method_data["src_token_amount"] == "call_value" %}true{% else %}false{% endif %} as src_token_amount_from_value
-            from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}
+            from {{ source('oneinch_' + blockchain.name, contract + '_call_' + method) }}
             where true
                 and call_block_date >= timestamp '{{ date_from }}' -- it is only needed for simple/easy dates
                 {% if is_incremental() %}and {{ incremental_predicate('call_block_time') }}{% endif %}
@@ -65,7 +65,7 @@ raw_calls as (
         , tokens
     from {{ ref('dex_raw_pools') }}
     where true
-        and blockchain = '{{ blockchain }}'
+        and blockchain = '{{ blockchain.name }}'
         and type in ('uniswap_compatible', 'curve_compatible')
     group by 1, 2
 )
@@ -126,7 +126,7 @@ raw_calls as (
         , decimals
     from {{ source('prices', 'usd') }}
     where true
-        and blockchain = '{{ blockchain }}'
+        and blockchain = '{{ blockchain.name }}'
         and contract_address = {{ wrapper }}
         and minute >= timestamp '{{ date_from }}'
         {% if is_incremental() %}and {{ incremental_predicate('minute') }}{% endif %}
@@ -136,7 +136,7 @@ raw_calls as (
 
 select
     blockchain
-    , {{ chain_id }} as chain_id
+    , {{ blockchain.chain_id }} as chain_id
     , block_number
     , block_time
     , tx_hash
@@ -183,7 +183,7 @@ select
 from ({{
     add_tx_columns(
         model_cte = 'processing'
-        , blockchain = blockchain
+        , blockchain = blockchain.name
         , columns = ['from', 'to', 'nonce', 'gas_price', 'priority_fee_per_gas', 'gas_used', 'index']
     )
 }}) as t

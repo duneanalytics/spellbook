@@ -13,4 +13,8 @@
     )
 -}}
 
-{{- oneinch_ar_macro(blockchain = blockchain) -}}
+{{- oneinch_ar_macro(
+        blockchain = oneinch_sonic_cfg_macro(),
+        stream = oneinch_ar_cfg_macro(),
+        contracts = oneinch_sonic_ar_contracts_cfg_macro()
+) -}}

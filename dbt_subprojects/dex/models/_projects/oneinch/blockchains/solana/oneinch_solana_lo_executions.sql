@@ -1,11 +1,9 @@
-{% set blockchain = 'solana' %}
-{% set stream = 'lo' %}
-{% set substream = 'executions' %}
+{%- set blockchain = oneinch_solana_cfg_macro() -%}
 
-{{  
+{{-
     config(
-        schema = 'oneinch_' + blockchain,
-        alias = stream + '_' + substream,
+        schema = 'oneinch_' + blockchain.name,
+        alias = 'lo_executions',
         materialized = 'incremental',
         partition_by = ['block_month'],
         file_format = 'delta',
@@ -13,15 +11,13 @@
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         unique_key = ['block_month', 'tx_hash', 'call_trace_address'],
     )
-}}
-
-{% set meta = oneinch_meta_cfg_macro()['blockchains'] %}
+-}}
 
 -- temporary implementation -- TO DO: redesign to streams logic
 
 select
     blockchain
-    , {{ meta['chain_id'].get('solana', 'null') }} as chain_id
+    , {{ blockchain.get('chain_id', 'null') }} as chain_id
     , block_slot as block_number
     , block_time
     , from_base58(tx_id) as tx_hash

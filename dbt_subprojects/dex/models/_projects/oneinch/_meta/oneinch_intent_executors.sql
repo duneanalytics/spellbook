@@ -44,14 +44,16 @@ promotions as (
         , min(evt_block_time) as first_access_transfer_at
         , max(evt_block_time) as last_access_transfer_at
     from (
-        {% for contract, contract_data in oneinch_meta_cfg_macro()['contracts'].items() if contract_data.get('type', '') == 'AccessToken' %}
-        -- {{ contract }} --
-            {%- for blockchain in contract_data['blockchains'] %}
+        
+        {%- for blockchain in oneinch_blockchains_cfg_macro() if blockchain.contracts %}
+            -- {{ blockchain.name }} --
+            {% for contract, contract_data in blockchain.contracts.items() if contract_data.get('type', '') == 'AccessToken' %}
+                -- {{ contract }} --
                 select *
                     , '{{ blockchain }}' as blockchain
                     , array["from", "to"] as owners
                     , '{{ contract_data.get("mode", "null") }}' as mode
-                from {{ source('oneinch_' + blockchain, contract + '_evt_transfer') }}
+                from {{ source('oneinch_' + blockchain.name, contract + '_evt_transfer') }}
                 {% if not loop.last %}union all{% endif -%}
             {%- endfor -%}
             {%- if not loop.last %}union all{% endif %}

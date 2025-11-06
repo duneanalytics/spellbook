@@ -1,4 +1,4 @@
-{% macro oneinch_ar_cfg_contracts_macro() %}
+{% macro oneinch_ar_contracts_cfg_macro() %}
 
 -- METHOD SAMPLES --
 {%
@@ -64,7 +64,6 @@
             "version": "0.1",
             "blockchains": ["ethereum"],
             "address": "0xe4c577bdec9ce0f6c54f2f82aed5b1913b71ae2f",
-            "addresses": {"0xe4c577bdec9ce0f6c54f2f82aed5b1913b71ae2f": ['ethereum']},
             "start": "2019-06-03",
             "end": "2020-09-18",
             "methods": {
@@ -75,7 +74,6 @@
             "version": "0.2",
             "blockchains": ["ethereum"],
             "address": "0x0000000006adbd7c01bc0738cdbfc3932600ad63",
-            "addresses": {"0x0000000006adbd7c01bc0738cdbfc3932600ad63": ['ethereum']},
             "start": "2019-06-10",
             "end": "2020-09-18",
             "methods": {
@@ -86,7 +84,6 @@
             "version": "0.3",
             "blockchains": ["ethereum"],
             "address": "0x0000000053d411becdb4a82d8603edc6d8b8b3bc",
-            "addresses": {"0x0000000053d411becdb4a82d8603edc6d8b8b3bc": ['ethereum']},
             "start": "2019-06-18",
             "end": "2020-09-18",
             "methods": {
@@ -97,7 +94,6 @@
             "version": "0.4",
             "blockchains": ["ethereum"],
             "address": "0x000005edbbc1f258302add96b5e20d3442e5dd89",
-            "addresses": {"0x000005edbbc1f258302add96b5e20d3442e5dd89": ['ethereum']},
             "start": "2019-07-18",
             "end": "2020-09-18",
             "methods": {
@@ -108,7 +104,6 @@
             "version": "0.5",
             "blockchains": ["ethereum"],
             "address": "0x0000000f8ef4be2b7aed6724e893c1b674b9682d",
-            "addresses": {"0x0000000f8ef4be2b7aed6724e893c1b674b9682d": ['ethereum']},
             "start": "2019-07-18",
             "end": "2020-09-18",
             "methods": {
@@ -119,7 +114,6 @@
             "version": "0.6",
             "blockchains": ["ethereum"],
             "address": "0x111112549cfedf7822eb11fbd8fd485d8a10f93f",
-            "addresses": {"0x111112549cfedf7822eb11fbd8fd485d8a10f93f": ['ethereum']},
             "start": "2019-07-19",
             "end": "2020-09-18",
             "methods": {
@@ -130,7 +124,6 @@
             "version": "0.7",
             "blockchains": ["ethereum"],
             "address": "0x111111254b08ceeee8ad6ca827de9952d2a46781",
-            "addresses": {"0x111111254b08ceeee8ad6ca827de9952d2a46781": ['ethereum']},
             "start": "2019-09-17",
             "end": "2019-09-29",
             "methods": {
@@ -141,7 +134,6 @@
             "version": "1",
             "blockchains": ["ethereum"],
             "address": "0x11111254369792b2ca5d084ab5eea397ca8fa48b",
-            "addresses": {"0x11111254369792b2ca5d084ab5eea397ca8fa48b": ['ethereum']},
             "start": "2019-09-28",
             "methods": {
                 "swap": dict(samples["aggregate"], selector='0xf88309d7', src_token_amount="fromTokenAmount", dst_token_amount_min="minReturnAmount"),
@@ -151,10 +143,6 @@
             "version": "2",
             "address": "0x111111125434b319222cdbf8c261674adb56f3ae",
             "blockchains": ["ethereum", "bnb"],
-            "addresses": {
-                "0x111111125434b319222cdbf8c261674adb56f3ae": ['ethereum'],
-                "0x111111254bf8547e7183e4bbfc36199f3cedf4a1": ['bnb'],
-            },
             "start": "2020-11-04",
             "methods": {
                 "swap":           dict(samples["swap"], selector='0x90411a32'),
@@ -165,7 +153,6 @@
             "version": "3",
             "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "optimism"],
             "address": "0x11111112542d85b3ef69ae05771c2dccff4faa26",
-            "addresses": {"0x11111112542d85b3ef69ae05771c2dccff4faa26": ['ethereum','bnb','polygon','arbitrum','optimism']},
             "start": "2021-03-14",
             "methods": {
                 "swap":              dict(samples["swap"], selector='0x7c025200'),
@@ -178,10 +165,6 @@
             "version": "4",
             "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom"],
             "address": "0x1111111254fb6c44bac0bed2854e76f90643097d",
-            "addresses": {
-                "0x1111111254fb6c44bac0bed2854e76f90643097d": ['ethereum','bnb','polygon','arbitrum','avalanche_c','gnosis','fantom'],
-                "0x1111111254760f7ab3f16433eea9304126dcd199": ['optimism'],
-            },
             "start": "2021-11-05",
             "methods": {
                 "swap":                      dict(samples["swap"], selector='0x7c025200'),
@@ -200,10 +183,6 @@
             "version": "5",
             "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync"],
             "address": "0x1111111254eeb25477b68fb85ed929f73a960582",
-            "addresses": {
-                "0x1111111254eeb25477b68fb85ed929f73a960582": ['ethereum','bnb','polygon','arbitrum','optimism','avalanche_c','gnosis','fantom','base'],
-                "0x6e2b76966cbd9cf4cc2fa0d76d24d5241e0abc2f": ['zksync'],
-            },
             "start": "2022-11-04",
             "methods": {
                 "swap":                      dict(samples["swap"], selector='0x12aa3caf'),
@@ -222,10 +201,6 @@
             "version": "6",
             "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea", "sonic", "unichain"],
             "address": "0x111111125421ca6dc452d289314280a0f8842a65",
-            "addresses": {
-                "0x111111125421ca6dc452d289314280a0f8842a65": ['ethereum','bnb','polygon','arbitrum','optimism','avalanche_c','gnosis','fantom','base','linea','sonic','unichain'],
-                "0x6fd4383cb451173d5f9304f041c7bcbf27d561ff": ['zksync'],
-            },
             "start": "2024-02-12",
             "methods": {
                 "swap":          dict(samples["swap"], selector='0x07ed2379', src_token_amount="output_spentAmount"),
@@ -255,19 +230,8 @@
 
 -- ETHEREUM AR CONFIG MACRO --
 {% macro oneinch_ethereum_ar_contracts_cfg_macro() %}
-{% set contracts = oneinch_ar_cfg_contracts_macro() %}
-{{ return({
-    "ExchangeV1": dict(contracts.ExchangeV1),
-    "ExchangeV2": dict(contracts.ExchangeV2),
-    "ExchangeV3": dict(contracts.ExchangeV3),
-    "ExchangeV4": dict(contracts.ExchangeV4),
-    "ExchangeV5": dict(contracts.ExchangeV5),
-    "ExchangeV6": dict(contracts.ExchangeV6),
-    "ExchangeV7": dict(contracts.ExchangeV7),
-    "AggregationRouterV1": dict(contracts.AggregationRouterV1),
-    "AggregationRouterV2": dict(contracts.AggregationRouterV2),
-    "AggregationRouterV3": dict(contracts.AggregationRouterV3),
-    "AggregationRouterV4": dict(contracts.AggregationRouterV4, methods={
+    {% set contracts = oneinch_ar_contracts_cfg_macro() %}
+    {{ return(dict(contracts, AggregationRouterV4=dict(contracts.AggregationRouterV4, methods={
         "swap":                      dict(contracts.AggregationRouterV4.methods.swap),
         "clipperSwap":               dict(contracts.AggregationRouterV4.methods.clipperSwap),
         "clipperSwapTo":             dict(contracts.AggregationRouterV4.methods.clipperSwapTo),
@@ -277,179 +241,170 @@
         "uniswapV3Swap":             dict(contracts.AggregationRouterV4.methods.uniswapV3Swap),
         "uniswapV3SwapTo":           dict(contracts.AggregationRouterV4.methods.uniswapV3SwapTo),
         "uniswapV3SwapToWithPermit": dict(contracts.AggregationRouterV4.methods.uniswapV3SwapToWithPermit),
-    }),
-    "AggregationRouterV5": dict(contracts.AggregationRouterV5),
-    "AggregationRouterV6": dict(contracts.AggregationRouterV6),
-}) }}
+    }))) }}
 {% endmacro %}
 
 -- BNB AR CONFIG MACRO --
 {% macro oneinch_bnb_ar_contracts_cfg_macro() %}
-{% set contracts = oneinch_ar_cfg_contracts_macro() %}
-{{ return({
-    "AggregationRouterV2": dict(contracts['AggregationRouterV2'], address="0x111111254bf8547e7183e4bbfc36199f3cedf4a1"),
-    "AggregationRouterV3": dict(contracts['AggregationRouterV3']),
-    "AggregationRouterV4": dict(contracts['AggregationRouterV4'], methods={
-        "swap":                      dict(contracts['AggregationRouterV4']['methods']['swap']),
-        "discountedSwap":            dict(contracts['AggregationRouterV4']['methods']['discountedSwap']),
-        "unoswap":                   dict(contracts['AggregationRouterV4']['methods']['unoswap']),
-        "unoswapWithPermit":         dict(contracts['AggregationRouterV4']['methods']['unoswapWithPermit']),
-        "uniswapV3Swap":             dict(contracts['AggregationRouterV4']['methods']['uniswapV3Swap']),
-        "uniswapV3SwapTo":           dict(contracts['AggregationRouterV4']['methods']['uniswapV3SwapTo']),
-        "uniswapV3SwapToWithPermit": dict(contracts['AggregationRouterV4']['methods']['uniswapV3SwapToWithPermit']),
-    }),
-    "AggregationRouterV5": dict(contracts['AggregationRouterV5']),
-    "AggregationRouterV6": dict(contracts['AggregationRouterV6']),
-}) }}
+    {% set contracts = oneinch_ar_contracts_cfg_macro() %}
+    {{ return({
+        "AggregationRouterV2": dict(contracts.AggregationRouterV2, address="0x111111254bf8547e7183e4bbfc36199f3cedf4a1"),
+        "AggregationRouterV3": dict(contracts.AggregationRouterV3),
+        "AggregationRouterV4": dict(contracts.AggregationRouterV4, methods={
+            "swap":                      dict(contracts.AggregationRouterV4.methods.swap),
+            "discountedSwap":            dict(contracts.AggregationRouterV4.methods.discountedSwap),
+            "unoswap":                   dict(contracts.AggregationRouterV4.methods.unoswap),
+            "unoswapWithPermit":         dict(contracts.AggregationRouterV4.methods.unoswapWithPermit),
+            "uniswapV3Swap":             dict(contracts.AggregationRouterV4.methods.uniswapV3Swap),
+            "uniswapV3SwapTo":           dict(contracts.AggregationRouterV4.methods.uniswapV3SwapTo),
+            "uniswapV3SwapToWithPermit": dict(contracts.AggregationRouterV4.methods.uniswapV3SwapToWithPermit),
+        }),
+        "AggregationRouterV5": dict(contracts.AggregationRouterV5),
+        "AggregationRouterV6": dict(contracts.AggregationRouterV6),
+    }) }}
 {% endmacro %}
 
 -- POLYGON AR CONFIG MACRO --
 {% macro oneinch_polygon_ar_contracts_cfg_macro() %}
-{% set contracts = oneinch_ar_cfg_contracts_macro() %}
-{{ return({
-    "AggregationRouterV3": dict(contracts['AggregationRouterV3']),
-    "AggregationRouterV4": dict(contracts['AggregationRouterV4'], methods={
-        "swap":                      dict(contracts['AggregationRouterV4']['methods']['swap']),
-        "discountedSwap":            dict(contracts['AggregationRouterV4']['methods']['discountedSwap']),
-        "unoswap":                   dict(contracts['AggregationRouterV4']['methods']['unoswap']),
-        "unoswapWithPermit":         dict(contracts['AggregationRouterV4']['methods']['unoswapWithPermit']),
-        "uniswapV3Swap":             dict(contracts['AggregationRouterV4']['methods']['uniswapV3Swap']),
-        "uniswapV3SwapTo":           dict(contracts['AggregationRouterV4']['methods']['uniswapV3SwapTo']),
-        "uniswapV3SwapToWithPermit": dict(contracts['AggregationRouterV4']['methods']['uniswapV3SwapToWithPermit']),
-    }),
-    "AggregationRouterV5": dict(contracts['AggregationRouterV5']),
-    "AggregationRouterV6": dict(contracts['AggregationRouterV6']),
-}) }}
+    {% set contracts = oneinch_ar_contracts_cfg_macro() %}
+    {{ return({
+        "AggregationRouterV3": dict(contracts.AggregationRouterV3),
+        "AggregationRouterV4": dict(contracts.AggregationRouterV4, methods={
+            "swap":                      dict(contracts.AggregationRouterV4.methods.swap),
+            "discountedSwap":            dict(contracts.AggregationRouterV4.methods.discountedSwap),
+            "unoswap":                   dict(contracts.AggregationRouterV4.methods.unoswap),
+            "unoswapWithPermit":         dict(contracts.AggregationRouterV4.methods.unoswapWithPermit),
+            "uniswapV3Swap":             dict(contracts.AggregationRouterV4.methods.uniswapV3Swap),
+            "uniswapV3SwapTo":           dict(contracts.AggregationRouterV4.methods.uniswapV3SwapTo),
+            "uniswapV3SwapToWithPermit": dict(contracts.AggregationRouterV4.methods.uniswapV3SwapToWithPermit),
+        }),
+        "AggregationRouterV5": dict(contracts.AggregationRouterV5),
+        "AggregationRouterV6": dict(contracts.AggregationRouterV6),
+    }) }}
 {% endmacro %}
 
 -- ARBITRUM AR CONFIG MACRO --
 {% macro oneinch_arbitrum_ar_contracts_cfg_macro() %}
-{% set contracts = oneinch_ar_cfg_contracts_macro() %}
-{{ return({
-    "AggregationRouterV3": dict(contracts['AggregationRouterV3']),
-    "AggregationRouterV4": dict(contracts['AggregationRouterV4'], methods={
-        "swap":                      dict(contracts['AggregationRouterV4']['methods']['swap']),
-        "unoswap":                   dict(contracts['AggregationRouterV4']['methods']['unoswap']),
-        "unoswapWithPermit":         dict(contracts['AggregationRouterV4']['methods']['unoswapWithPermit']),
-        "uniswapV3Swap":             dict(contracts['AggregationRouterV4']['methods']['uniswapV3Swap']),
-        "uniswapV3SwapTo":           dict(contracts['AggregationRouterV4']['methods']['uniswapV3SwapTo']),
-        "uniswapV3SwapToWithPermit": dict(contracts['AggregationRouterV4']['methods']['uniswapV3SwapToWithPermit']),
-    }),
-    "AggregationRouterV5": dict(contracts['AggregationRouterV5']),
-    "AggregationRouterV6": dict(contracts['AggregationRouterV6']),
-}) }}
+    {% set contracts = oneinch_ar_contracts_cfg_macro() %}
+    {{ return({
+        "AggregationRouterV3": dict(contracts.AggregationRouterV3),
+        "AggregationRouterV4": dict(contracts.AggregationRouterV4, methods={
+            "swap":                      dict(contracts.AggregationRouterV4.methods.swap),
+            "unoswap":                   dict(contracts.AggregationRouterV4.methods.unoswap),
+            "unoswapWithPermit":         dict(contracts.AggregationRouterV4.methods.unoswapWithPermit),
+            "uniswapV3Swap":             dict(contracts.AggregationRouterV4.methods.uniswapV3Swap),
+            "uniswapV3SwapTo":           dict(contracts.AggregationRouterV4.methods.uniswapV3SwapTo),
+            "uniswapV3SwapToWithPermit": dict(contracts.AggregationRouterV4.methods.uniswapV3SwapToWithPermit),
+        }),
+        "AggregationRouterV5": dict(contracts.AggregationRouterV5),
+        "AggregationRouterV6": dict(contracts.AggregationRouterV6),
+    }) }}
 {% endmacro %}
 
 -- OPTIMISM AR CONFIG MACRO --
 {% macro oneinch_optimism_ar_contracts_cfg_macro() %}
-{% set contracts = oneinch_ar_cfg_contracts_macro() %}
-{{ return({
-    "AggregationRouterV3": dict(contracts['AggregationRouterV3'], methods={
-        "swap":             dict(contracts['AggregationRouterV3']['methods']['swap']),
-        "discountedSwap":   dict(contracts['AggregationRouterV3']['methods']['discountedSwap']),
-    }),
-    "AggregationRouterV4": dict(contracts['AggregationRouterV4'], address="0x1111111254760f7ab3f16433eea9304126dcd199", methods={
-        "swap":                      dict(contracts['AggregationRouterV4']['methods']['swap']),
-        "unoswap":                   dict(contracts['AggregationRouterV4']['methods']['unoswap']),
-        "unoswapWithPermit":         dict(contracts['AggregationRouterV4']['methods']['unoswapWithPermit']),
-        "uniswapV3Swap":             dict(contracts['AggregationRouterV4']['methods']['uniswapV3Swap']),
-        "uniswapV3SwapTo":           dict(contracts['AggregationRouterV4']['methods']['uniswapV3SwapTo']),
-        "uniswapV3SwapToWithPermit": dict(contracts['AggregationRouterV4']['methods']['uniswapV3SwapToWithPermit']),
-    }),
-    "AggregationRouterV5": dict(contracts['AggregationRouterV5']),
-    "AggregationRouterV6": dict(contracts['AggregationRouterV6']),
-}) }}
+    {% set contracts = oneinch_ar_contracts_cfg_macro() %}
+    {{ return({
+        "AggregationRouterV3": dict(contracts.AggregationRouterV3, methods={
+            "swap":             dict(contracts.AggregationRouterV3.methods.swap),
+            "discountedSwap":   dict(contracts.AggregationRouterV3.methods.discountedSwap),
+        }),
+        "AggregationRouterV4": dict(contracts.AggregationRouterV4, address="0x1111111254760f7ab3f16433eea9304126dcd199", methods={
+            "swap":                      dict(contracts.AggregationRouterV4.methods.swap),
+            "unoswap":                   dict(contracts.AggregationRouterV4.methods.unoswap),
+            "unoswapWithPermit":         dict(contracts.AggregationRouterV4.methods.unoswapWithPermit),
+            "uniswapV3Swap":             dict(contracts.AggregationRouterV4.methods.uniswapV3Swap),
+            "uniswapV3SwapTo":           dict(contracts.AggregationRouterV4.methods.uniswapV3SwapTo),
+            "uniswapV3SwapToWithPermit": dict(contracts.AggregationRouterV4.methods.uniswapV3SwapToWithPermit),
+        }),
+        "AggregationRouterV5": dict(contracts.AggregationRouterV5),
+        "AggregationRouterV6": dict(contracts.AggregationRouterV6),
+    }) }}
 {% endmacro %}
 
 -- AVALANCHE AR CONFIG MACRO --
 {% macro oneinch_avalanche_c_ar_contracts_cfg_macro() %}
-{% set contracts = oneinch_ar_cfg_contracts_macro() %}
-{{ return({
-    "AggregationRouterV4": dict(contracts['AggregationRouterV4'], methods={
-        "swap":                      dict(contracts['AggregationRouterV4']['methods']['swap']),
-        "unoswap":                   dict(contracts['AggregationRouterV4']['methods']['unoswap']),
-        "unoswapWithPermit":         dict(contracts['AggregationRouterV4']['methods']['unoswapWithPermit']),
-        "uniswapV3Swap":             dict(contracts['AggregationRouterV4']['methods']['uniswapV3Swap']),
-        "uniswapV3SwapTo":           dict(contracts['AggregationRouterV4']['methods']['uniswapV3SwapTo']),
-        "uniswapV3SwapToWithPermit": dict(contracts['AggregationRouterV4']['methods']['uniswapV3SwapToWithPermit']),
-    }),
-    "AggregationRouterV5": dict(contracts['AggregationRouterV5']),
-    "AggregationRouterV6": dict(contracts['AggregationRouterV6']),
-}) }}
+    {% set contracts = oneinch_ar_contracts_cfg_macro() %}
+    {{ return({
+        "AggregationRouterV4": dict(contracts.AggregationRouterV4, methods={
+            "swap":                      dict(contracts.AggregationRouterV4.methods.swap),
+            "unoswap":                   dict(contracts.AggregationRouterV4.methods.unoswap),
+            "unoswapWithPermit":         dict(contracts.AggregationRouterV4.methods.unoswapWithPermit),
+            "uniswapV3Swap":             dict(contracts.AggregationRouterV4.methods.uniswapV3Swap),
+            "uniswapV3SwapTo":           dict(contracts.AggregationRouterV4.methods.uniswapV3SwapTo),
+            "uniswapV3SwapToWithPermit": dict(contracts.AggregationRouterV4.methods.uniswapV3SwapToWithPermit),
+        }),
+        "AggregationRouterV5": dict(contracts.AggregationRouterV5),
+        "AggregationRouterV6": dict(contracts.AggregationRouterV6),
+    }) }}
 {% endmacro %}
 
 -- GNOSIS AR CONFIG MACRO --
 {% macro oneinch_gnosis_ar_contracts_cfg_macro() %}
-{% set contracts = oneinch_ar_cfg_contracts_macro() %}
-{{ return({
-    "AggregationRouterV4": dict(contracts['AggregationRouterV4'], methods={
-        "swap":                      dict(contracts['AggregationRouterV4']['methods']['swap']),
-        "unoswap":                   dict(contracts['AggregationRouterV4']['methods']['unoswap']),
-        "unoswapWithPermit":         dict(contracts['AggregationRouterV4']['methods']['unoswapWithPermit']),
-        "uniswapV3Swap":             dict(contracts['AggregationRouterV4']['methods']['uniswapV3Swap']),
-        "uniswapV3SwapTo":           dict(contracts['AggregationRouterV4']['methods']['uniswapV3SwapTo']),
-        "uniswapV3SwapToWithPermit": dict(contracts['AggregationRouterV4']['methods']['uniswapV3SwapToWithPermit']),
-    }),
-    "AggregationRouterV5": dict(contracts['AggregationRouterV5']),
-    "AggregationRouterV6": dict(contracts['AggregationRouterV6']),
-}) }}
+    {% set contracts = oneinch_ar_contracts_cfg_macro() %}
+    {{ return({
+        "AggregationRouterV4": dict(contracts.AggregationRouterV4, methods={
+            "swap":                      dict(contracts.AggregationRouterV4.methods.swap),
+            "unoswap":                   dict(contracts.AggregationRouterV4.methods.unoswap),
+            "unoswapWithPermit":         dict(contracts.AggregationRouterV4.methods.unoswapWithPermit),
+            "uniswapV3Swap":             dict(contracts.AggregationRouterV4.methods.uniswapV3Swap),
+            "uniswapV3SwapTo":           dict(contracts.AggregationRouterV4.methods.uniswapV3SwapTo),
+            "uniswapV3SwapToWithPermit": dict(contracts.AggregationRouterV4.methods.uniswapV3SwapToWithPermit),
+        }),
+        "AggregationRouterV5": dict(contracts.AggregationRouterV5),
+        "AggregationRouterV6": dict(contracts.AggregationRouterV6),
+    }) }}
 {% endmacro %}
 
 -- FANTOM AR CONFIG MACRO --
 {% macro oneinch_fantom_ar_contracts_cfg_macro() %}
-{% set contracts = oneinch_ar_cfg_contracts_macro() %}
-{{ return({
-    "AggregationRouterV4": dict(contracts['AggregationRouterV4'], methods={
-        "swap":                      dict(contracts['AggregationRouterV4']['methods']['swap']),
-        "unoswap":                   dict(contracts['AggregationRouterV4']['methods']['unoswap']),
-        "unoswapWithPermit":         dict(contracts['AggregationRouterV4']['methods']['unoswapWithPermit']),
-        "uniswapV3Swap":             dict(contracts['AggregationRouterV4']['methods']['uniswapV3Swap']),
-        "uniswapV3SwapTo":           dict(contracts['AggregationRouterV4']['methods']['uniswapV3SwapTo']),
-        "uniswapV3SwapToWithPermit": dict(contracts['AggregationRouterV4']['methods']['uniswapV3SwapToWithPermit']),
-    }),
-    "AggregationRouterV5": dict(contracts['AggregationRouterV5']),
-    "AggregationRouterV6": dict(contracts['AggregationRouterV6']),
-}) }}
+    {% set contracts = oneinch_ar_contracts_cfg_macro() %}
+    {{ return({
+        "AggregationRouterV4": dict(contracts.AggregationRouterV4, methods={
+            "swap":                      dict(contracts.AggregationRouterV4.methods.swap),
+            "unoswap":                   dict(contracts.AggregationRouterV4.methods.unoswap),
+            "unoswapWithPermit":         dict(contracts.AggregationRouterV4.methods.unoswapWithPermit),
+            "uniswapV3Swap":             dict(contracts.AggregationRouterV4.methods.uniswapV3Swap),
+            "uniswapV3SwapTo":           dict(contracts.AggregationRouterV4.methods.uniswapV3SwapTo),
+            "uniswapV3SwapToWithPermit": dict(contracts.AggregationRouterV4.methods.uniswapV3SwapToWithPermit),
+        }),
+        "AggregationRouterV5": dict(contracts.AggregationRouterV5),
+        "AggregationRouterV6": dict(contracts.AggregationRouterV6),
+    }) }}
 {% endmacro %}
 
 -- BASE AR CONFIG MACRO --
 {% macro oneinch_base_ar_contracts_cfg_macro() %}
-{% set contracts = oneinch_ar_cfg_contracts_macro() %}
-{{ return({
-    "AggregationRouterV5": dict(contracts['AggregationRouterV5']),
-    "AggregationRouterV6": dict(contracts['AggregationRouterV6']),
-}) }}
+    {% set contracts = oneinch_ar_contracts_cfg_macro() %}
+    {{ return({
+        "AggregationRouterV5": dict(contracts.AggregationRouterV5),
+        "AggregationRouterV6": dict(contracts.AggregationRouterV6),
+    }) }}
 {% endmacro %}
 
 -- ZKSYNC AR CONFIG MACRO --
 {% macro oneinch_zksync_ar_contracts_cfg_macro() %}
-{% set contracts = oneinch_ar_cfg_contracts_macro() %}
-{{ return({
-    "AggregationRouterV5": dict(contracts['AggregationRouterV5'], address="0x6e2b76966cbd9cf4cc2fa0d76d24d5241e0abc2f"),
-    "AggregationRouterV6": dict(contracts['AggregationRouterV6'], address="0x6fd4383cb451173d5f9304f041c7bcbf27d561ff"),
-}) }}
+    {% set contracts = oneinch_ar_contracts_cfg_macro() %}
+    {{ return({
+        "AggregationRouterV5": dict(contracts.AggregationRouterV5, address="0x6e2b76966cbd9cf4cc2fa0d76d24d5241e0abc2f"),
+        "AggregationRouterV6": dict(contracts.AggregationRouterV6, address="0x6fd4383cb451173d5f9304f041c7bcbf27d561ff"),
+    }) }}
 {% endmacro %}
 
 -- LINEA AR CONFIG MACRO --
 {% macro oneinch_linea_ar_contracts_cfg_macro() %}
-{% set contracts = oneinch_ar_cfg_contracts_macro() %}
-{{ return({
-    "AggregationRouterV6": dict(contracts['AggregationRouterV6']),
-}) }}
+    {% set contracts = oneinch_ar_contracts_cfg_macro() %}
+    {{ return({ "AggregationRouterV6": dict(contracts.AggregationRouterV6) }) }}
 {% endmacro %}
 
 -- SONIC AR CONFIG MACRO --
 {% macro oneinch_sonic_ar_contracts_cfg_macro() %}
-{% set contracts = oneinch_ar_cfg_contracts_macro() %}
-{{ return({
-    "AggregationRouterV6": dict(contracts['AggregationRouterV6']),
-}) }}
+    {% set contracts = oneinch_ar_contracts_cfg_macro() %}
+    {{ return({ "AggregationRouterV6": dict(contracts.AggregationRouterV6) }) }}
 {% endmacro %}
 
 -- UNICHAIN AR CONFIG MACRO --
 {% macro oneinch_unichain_ar_contracts_cfg_macro() %}
-{% set contracts = oneinch_ar_cfg_contracts_macro() %}
-{{ return({
-    "AggregationRouterV6": dict(contracts['AggregationRouterV6']),
-}) }}
+    {% set contracts = oneinch_ar_contracts_cfg_macro() %}
+    {{ return({ "AggregationRouterV6": dict(contracts.AggregationRouterV6) }) }}
 {% endmacro %}

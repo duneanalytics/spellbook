@@ -1,4 +1,4 @@
-{{
+{{-
     config(
         schema = 'oneinch',
         alias = 'intent_accounts',
@@ -7,11 +7,9 @@
         incremental_strategy = 'merge',
         unique_key = ['blockchain', 'account_address'],
     )
-}}
+-}}
 
-{% set meta = oneinch_meta_cfg_macro() %}
-{% set date_from = meta['streams']['lo']['start']['fusion'] %}
-{%- set legacy = 'Settlement' -%}
+{%- set date_from = oneinch_lo_fusion_cfg_macro().start -%}
 
 
 
@@ -26,12 +24,12 @@ legacy as (
         , call_to as call_from
         , min_by(call_from, call_trace_address) as executor_address
     from (
-        {% for blockchain in oneinch_lo_cfg_contracts_macro()[legacy]['blockchains'] %}
+        {% for blockchain in oneinch_blockchains_cfg_macro() if blockchain.fusionV1 %}
             select *
-            from {{ ref('oneinch_' + blockchain + '_lo_raw_calls') }}
+            from {{ ref('oneinch_' + blockchain.name + '_lo_raw_calls') }}
             where true
                 and auxiliary
-                and contract_name = '{{ legacy }}'
+                and contract_name = '{{ Settlement }}'
                 and block_date >= timestamp '{{ date_from }}' -- it is only needed for simple/easy dates
                 {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
             {% if not loop.last %}union all{% endif %}

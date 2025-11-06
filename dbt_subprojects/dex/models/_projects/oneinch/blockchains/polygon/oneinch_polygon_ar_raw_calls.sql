@@ -1,10 +1,9 @@
 {%- set blockchain = 'polygon' -%}
-{%- set stream = 'ar' -%}
 
 {{-
     config(
         schema = 'oneinch_' + blockchain,
-        alias = stream + '_raw_calls',
+        alias = 'ar_raw_calls',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -14,4 +13,8 @@
     )
 -}}
 
-{{- oneinch_raw_calls_macro(blockchain = blockchain, stream = stream) -}}
+{{- oneinch_raw_calls_macro(
+        blockchain = oneinch_polygon_cfg_macro(),
+        stream = oneinch_ar_raw_calls_cfg_macro(),
+        contracts = oneinch_polygon_ar_contracts_cfg_macro()
+) -}}

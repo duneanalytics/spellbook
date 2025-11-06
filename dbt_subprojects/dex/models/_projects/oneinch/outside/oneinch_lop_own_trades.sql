@@ -40,7 +40,7 @@ select
     , tx_from
     , tx_to
     , row_number() over(partition by tx_hash order by call_trace_address) as evt_index
-from {{ ref('oneinch_executions') }}
+from {{ ref('oneinch_swaps') }}
 where true
     and mode = 'limits'
     and tx_success

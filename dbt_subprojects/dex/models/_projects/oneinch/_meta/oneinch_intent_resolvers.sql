@@ -85,10 +85,11 @@ registrations as (
         , array_except(minted, defined) as access_token_ids
     from (
         select array_agg(distinct tokenId) as minted
-        from ({% for contract, contract_data in oneinch_meta_cfg_macro()['contracts'].items() if contract_data['type'] == 'AccessToken' %}
-            -- {{ contract }} --
-            {%- for blockchain in contract_data['blockchains'] %}
-                select tokenId from {{ source('oneinch_' + blockchain, contract + '_evt_transfer') }}
+        from ({%- for blockchain in oneinch_blockchains_cfg_macro() if blockchain.contracts %}
+            -- {{ blockchain.name }} --
+            {% for contract, contract_data in blockchain.contracts.items() if contract_data.get('type', '') == 'AccessToken' %}
+                -- {{ contract }} --
+                select tokenId from {{ source('oneinch_' + blockchain.name, contract + '_evt_transfer') }}
                 {% if not loop.last %}union all{% endif -%}
             {%- endfor %}
             {% if not loop.last %}union all{% endif %}

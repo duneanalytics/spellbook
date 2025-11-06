@@ -1,9 +1,12 @@
-{%- macro oneinch_lo_executions_macro(blockchain) -%}
+{%- macro
+    oneinch_lo_executions_macro(
+        blockchain,
+        stream
+    )
+-%}
 
-{%- set meta = oneinch_meta_cfg_macro() -%}
-{%- set date_from = [meta['blockchains']['start'][blockchain], meta['streams']['lo']['start']['executions']] | max -%}
-
-{%- set wrapper = meta['blockchains']['wrapped_native_token_address'][blockchain] -%}
+{%- set date_from = [blockchain.start, stream.start] | max -%}
+{%- set wrapper = blockchain.wrapped_native_token_address -%}
 {%- set same = '0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, ' + wrapper -%}
 
 
@@ -12,7 +15,7 @@ with
 
 calls as (
     select *
-    from {{ ref('oneinch_' + blockchain + '_lo') }}
+    from {{ ref('oneinch_' + blockchain.name + '_lo') }}
     where true
         and not flags['cross_chain']
         and block_date >= timestamp '{{ date_from }}'
@@ -22,7 +25,7 @@ calls as (
 , transfers as (
     select *
         , if(transfer_contract_address in ({{ same }}), array[{{ same }}], array[transfer_contract_address]) as same
-    from {{ ref('oneinch_' + blockchain + '_raw_transfers') }}
+    from {{ ref('oneinch_' + blockchain.name + '_raw_transfers') }}
     where true
         and nested
         and related

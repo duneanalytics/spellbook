@@ -13,4 +13,9 @@
     )
 -}}
 
-{{- oneinch_cc_macro(blockchain = blockchain) -}}
+{{- oneinch_cc_macro(
+        blockchain = oneinch_linea_cfg_macro(),
+        stream = oneinch_cc_cfg_macro(),
+        contracts = oneinch_linea_cc_contracts_cfg_macro(),
+        initial = oneinch_linea_lo_contracts_cfg_macro()
+) -}}

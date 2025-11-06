@@ -40,7 +40,7 @@ select
     , tx_to
     , call_trace_address as trace_address
     , if(element_at(flags, 'second_side'), -1, -2) as evt_index
-from {{ ref('oneinch_executions') }}
+from {{ ref('oneinch_swaps') }}
 where true
     and mode in ('classic', 'fusion')
     and tx_success

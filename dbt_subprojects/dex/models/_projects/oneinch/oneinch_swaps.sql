@@ -1,4 +1,4 @@
-{%- set exposed = oneinch_meta_cfg_macro()['blockchains']['exposed'] -%}
+{%- set exposed = oneinch_blockchains_cfg_macro() | selectattr("exposed") | map(attribute="name") | list -%}
 
 {{-
     config(
@@ -9,12 +9,12 @@
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         partition_by = ['blockchain', 'block_month'],
-        unique_key = ['blockchain', 'block_month', 'mode', 'swap_id'],
+        unique_key = ['blockchain', 'block_month', 'block_date', 'execution_id'],
         post_hook = '{{ expose_spells(
             blockchains = \'exposed\',
             spell_type = "project",
             spell_name = "oneinch",
-            contributors = \'["max-morrow"]\'
+            contributors = \'["max-morrow", "grkhr"]\'
         ) }}',
     )
 -}}
@@ -23,75 +23,101 @@
 
 with
 
-incremental as (
-    {% for stream, stream_data in oneinch_meta_cfg_macro()['streams'].items() if stream != 'ar' %}
-        select order_hash
-        from {{ ref('oneinch_' + stream) }}
-        where {{ incremental_predicate('block_time') }}
-        group by 1
+executions as (
+    {% for stream in oneinch_streams_cfg_macro() %}
+        select *
+            , {{ stream.mode }} as mode
+            , false as second_side
+        from {{ ref('oneinch_' + stream.name + '_executions') }}
+        where true
+            {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
+
+    {% if stream.name == 'lo' %}
+        union all -- second side of LO calls (when a direct call LO method => users from two sides)
+        select *
+            , 'classic' as mode
+            , true as second_side
+        from {{ ref('oneinch_' + stream.name + '_executions') }}
+        where true
+            and protocol = 'LO'
+            and coalesce(element_at(flags, 'direct'), false)
+            {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
+        
+    {% endif %}
         {% if not loop.last %}union all{% endif %}
     {% endfor %}
+)
+
+, resolvers as (
+    select *
+        , account_address as tx_from
+    from {{ ref('oneinch_intent_accounts') }}
 )
 
 -- output --
 
 select
     blockchain
+    , chain_id
+    , block_number
+    , block_time
+    , tx_hash
+    , tx_success
+    , tx_from
+    , tx_to
+    , tx_nonce
+    , tx_gas_used
+    , tx_gas_price
+    , tx_priority_fee_per_gas
+    , tx_index -- it is necessary to determine the order of creations in the block
+    , call_trace_address
+    , call_success
+    , call_gas_used
+    , call_selector
+    , call_method
+    , call_from
+    , call_to
+    , call_output
+    , call_error
+    , call_type
     , mode
-    , coalesce(order_hash, execution_id) as swap_id
-
-    , max(dst_blockchain) as dst_blockchain
-    , min_by(user, block_time) as user
-    , min_by(block_number, block_time) as block_number
-    , min_by(block_month, block_time) as block_month
-    , min_by(block_date, block_time) as block_date
-    , min(block_time) as block_time
-    , min_by(tx_hash, block_time) as tx_hash
-    , min_by(tx_from, block_time) as tx_from
-    , min_by(tx_to, block_time) as tx_to
-    , min_by(call_trace_address, block_time) as call_trace_address
-    , min_by(call_from, block_time) as call_from
-    , min_by(call_to, block_time) as call_to
-    , min_by(call_selector, block_time) as call_selector
-    , min_by(call_method, block_time) as call_method
-
-    , min_by(protocol, block_time) as protocol
-    , min_by(protocol_version, block_time) as protocol_version
-    , min_by(contract_name, block_time) as contract_name
-    
-    , sum(amount_usd) as amount_usd
-    , sum(execution_cost) as execution_cost
-    
-    , max(coalesce(src_executed_address, src_token_address)) as src_token_address
-    , max(src_token_amount) as src_token_amount
-    , max(src_executed_symbol) as src_token_symbol
-    , sum(src_executed_amount) as src_executed_amount
-    , sum(src_executed_amount_usd) as src_executed_amount_usd
-    
-    , max(coalesce(dst_executed_address, dst_token_address)) as dst_token_address
-    , max(dst_token_amount) as dst_token_amount
-    , max(dst_executed_symbol) as dst_token_symbol
-    , sum(dst_executed_amount) as dst_executed_amount
-    , sum(dst_executed_amount_usd) as dst_executed_amount_usd
-
-    , min_by(remains, block_time) as remains
-    , min_by(flags, block_time) as flags
-    
-    , array_agg(map_from_entries(array[
-        ('amount', concat('$', format_number(amount_usd)))
-        , ('execution', cast(execution_id as varchar))
-        , ('resolver', resolver_name)
-        , ('hashlock', cast(hashlock as varchar))
-        , ('receiver', cast(receiver as varchar))
-    ])) as executions
-from {{ ref('oneinch_executions') }}
-where true
-    and coalesce(tx_success, true) -- for solana trades // TO DO
-    and coalesce(call_success, true) -- for solana trades
-    {% if is_incremental() -%}
-        and (
-            order_hash is null and {{ incremental_predicate('block_time') }}
-            or order_hash in (select order_hash from incremental)
-        ) -- e.g. if a new fill happens a week later, update the whole trade
-    {%- endif %}
-group by 1, 2, 3
+    , protocol
+    , protocol_version
+    , contract_name
+    , resolver_address
+    , resolver_name
+    , amount_usd
+    , execution_cost
+    , if(second_side, tx_from, user) as user
+    , if(second_side, cast(null as varbinary), receiver) as receiver
+    , if(second_side, dst_token_address, src_token_address) as src_token_address
+    , if(second_side, dst_token_amount, src_token_amount) as src_token_amount
+    , if(second_side, dst_executed_address, src_executed_address) as src_executed_address
+    , if(second_side, dst_executed_symbol, src_executed_symbol) as src_executed_symbol
+    , if(second_side, dst_executed_amount, src_executed_amount) as src_executed_amount
+    , if(second_side, dst_executed_amount_usd, src_executed_amount_usd) as src_executed_amount_usd
+    , dst_blockchain
+    , if(second_side, src_token_address, dst_token_address) as dst_token_address
+    , if(second_side, src_token_amount, dst_token_amount) as dst_token_amount
+    , if(second_side, src_executed_address, dst_executed_address) as dst_executed_address
+    , if(second_side, src_executed_symbol, dst_executed_symbol) as dst_executed_symbol
+    , if(second_side, src_executed_amount, dst_executed_amount) as dst_executed_amount
+    , if(second_side, src_executed_amount_usd, dst_executed_amount_usd) as dst_executed_amount_usd
+    , actions
+    , order_hash
+    , hashlock
+    , complement
+    , remains
+    , map_concat(flags, map_from_entries(array[('second_side', second_side)])) as flags
+    , block_date
+    , block_month
+    , native_price
+    , native_decimals
+    , sha1(to_utf8(concat_ws('|'
+        , blockchain
+        , cast(tx_hash as varchar)
+        , array_join(call_trace_address, ',') -- ',' is necessary to avoid similarities after concatenation // array_join(array[1, 0], '') = array_join(array[10], '')
+        , mode
+    ))) as execution_id -- TO DO: try to make it orderly (with block_number & tx_index)
+from executions
+left join resolvers using(blockchain, tx_from)

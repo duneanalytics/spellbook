@@ -13,4 +13,10 @@
     )
 -}}
 
-{{- oneinch_raw_transfers_macro(blockchain = blockchain) -}}
+{{- oneinch_raw_transfers_macro(
+        blockchain = oneinch_fantom_cfg_macro(),
+        streams = [
+            oneinch_ar_transfers_cfg_macro(),
+            oneinch_lo_transfers_cfg_macro(),
+        ]
+) -}}

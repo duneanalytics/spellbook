@@ -1,11 +1,12 @@
-{%- macro oneinch_cc_executions_macro(blockchain) -%}
+{%- macro
+    oneinch_cc_executions_macro(
+        blockchain,
+        stream
+    )
+-%}
 
-{%- set stream = 'cc' -%}
-{%- set substream = 'executions' -%}
-{%- set meta = oneinch_meta_cfg_macro() -%}
-{%- set date_from = meta['streams'][stream]['start'][substream] -%}
-{%- set chain_id = meta['blockchains']['chain_id'][blockchain] -%}
-{%- set wrapper = meta['blockchains']['wrapped_native_token_address'][blockchain] -%}
+{%- set date_from = [blockchain.start, stream.start] | max -%}
+{%- set wrapper = blockchain.wrapped_native_token_address -%}
 {%- set same = '0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, ' + wrapper -%}
 
 
@@ -14,7 +15,7 @@ with
 
 calls as (
     select *
-    from {{ ref('oneinch_' + blockchain + '_cc') }}
+    from {{ ref('oneinch_' + blockchain.name + '_cc') }}
     where true
         and block_date >= timestamp '{{ date_from }}'
         {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
@@ -23,7 +24,7 @@ calls as (
 , transfers as (
     select *
         , if(transfer_contract_address in ({{ same }}), array[{{ same }}], array[transfer_contract_address]) as same
-    from {{ ref('oneinch_' + blockchain + '_raw_transfers') }}
+    from {{ ref('oneinch_' + blockchain.name + '_raw_transfers') }}
     where true
         and nested
         and related
