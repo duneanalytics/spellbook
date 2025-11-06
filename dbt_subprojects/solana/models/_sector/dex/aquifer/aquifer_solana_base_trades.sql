@@ -8,6 +8,7 @@
     , incremental_strategy = 'merge'
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     , unique_key = ['block_month', 'surrogate_key']
+    , pre_hook = '{{ enforce_join_distribution("PARTITIONED") }}'
   )
 }}
 
