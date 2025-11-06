@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: bridges_berachain_tether_v1_deposits
+    meta:
+      blockchain: berachain
+      sector: bridges
+      project: tether
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'berachain', 'bridges', 'flows', 'deposits' ]
+    description: "Tether's USDT0 v1 bridge deposits events on Berachain"
+  - name: bridges_berachain_tether_v1_withdrawals
+    meta:
+      blockchain: berachain
+      sector: bridges
+      project: tether
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'berachain', 'bridges', 'flows', 'withdrawals' ]
+    description: "Tether's USDT0 v1 bridge withdrawals events on Berachain"

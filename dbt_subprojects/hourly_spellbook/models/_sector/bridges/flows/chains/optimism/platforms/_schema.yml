@@ -67,4 +67,22 @@ models:
     config:
       tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
     description: "Across's v3 bridge withdrawals events on OP Mainnet"
+  - name: bridges_optimism_tether_v1_deposits
+    meta:
+      blockchain: optimism
+      sector: bridges
+      project: tether
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'optimism', 'bridges', 'flows', 'deposits' ]
+    description: "Tether's USDT0 v1 bridge deposits events on OP Mainnet"
+  - name: bridges_optimism_tether_v1_withdrawals
+    meta:
+      blockchain: optimism
+      sector: bridges
+      project: tether
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'optimism', 'bridges', 'flows', 'withdrawals' ]
+    description: "Tether's USDT0 v1 bridge withdrawals events on OP Mainnet"
 
