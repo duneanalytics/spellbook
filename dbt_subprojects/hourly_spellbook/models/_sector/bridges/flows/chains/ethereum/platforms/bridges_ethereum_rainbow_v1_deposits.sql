@@ -17,7 +17,7 @@ SELECT 'ethereum' AS deposit_chain
 , evt_block_number AS block_number
 , amount AS deposit_amount_raw
 , sender
-, accountId AS recipient
+, CAST(accountId AS varbinary) AS recipient
 , token AS deposit_token_address
 , token AS withdrawal_token_address
 , 'erc20' AS deposit_token_standard
