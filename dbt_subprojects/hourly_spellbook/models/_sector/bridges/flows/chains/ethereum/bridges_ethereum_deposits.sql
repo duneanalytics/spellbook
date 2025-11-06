@@ -18,6 +18,7 @@
     , 'bridges_' + blockchain + '_lighter_v1_deposits'
     , 'bridges_' + blockchain + '_avalanche_c_native_v2_deposits'
     , 'bridges_' + blockchain + '_zkync_native_v2_deposits'
+    , 'bridges_' + blockchain + '_zkbridge_v1_deposits'
 ] %}
 
 SELECT *
