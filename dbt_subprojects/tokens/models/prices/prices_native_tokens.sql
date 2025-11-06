@@ -40,6 +40,7 @@ with prices_native_tokens as (
         , ('goerli', 'eth-ethereum')
         , ('hemi', 'eth-ethereum')
         , ('hyperevm', 'hype-hyperliquid')
+        , ('initia', 'init-initia')
         , ('ink', 'eth-ethereum')
         , ('kaia', 'kaia-kaia')
         , ('katana', 'eth-ethereum')
@@ -67,6 +68,7 @@ with prices_native_tokens as (
         , ('sophon', 'soph-sophon')
         , ('starknet', 'strk-starknet')
         , ('stellar', 'xlm-stellar')
+        , ('story', 'ip-story')
         , ('superseed', 'eth-ethereum')
         , ('taiko', 'eth-ethereum')
         , ('ton', 'ton-toncoin')
@@ -82,7 +84,7 @@ with prices_native_tokens as (
 select
     p.token_id
     , p.blockchain
-    , d.token_address as contract_address
+    , coalesce(d.token_address, 0x0000000000000000000000000000000000000000) as contract_address
     , d.token_symbol as symbol
     , d.token_decimals as decimals
 from prices_native_tokens as p

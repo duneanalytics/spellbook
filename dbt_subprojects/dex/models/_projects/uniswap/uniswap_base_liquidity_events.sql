@@ -1,13 +1,7 @@
 {{ config(
-    schema = 'uniswap'
-    , alias = 'base_liquidity_events'
-    , partition_by = ['block_month', 'blockchain', 'project']
-    , materialized = 'incremental'
-    , file_format = 'delta'
-    , incremental_strategy = 'merge'
-    , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'event_type']
-    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
-    )
+        schema = 'uniswap',
+        alias = 'base_liquidity_events'
+        )
 }}
 
 {% set models = [
@@ -20,10 +14,16 @@
    ,ref('uniswap_ethereum_base_liquidity_events')
    ,ref('uniswap_gnosis_base_liquidity_events')
    ,ref('uniswap_ink_base_liquidity_events')
+   ,ref('uniswap_linea_base_liquidity_events')
+   ,ref('uniswap_mantle_base_liquidity_events')
    ,ref('uniswap_optimism_base_liquidity_events')
+   ,ref('uniswap_plasma_base_liquidity_events')
    ,ref('uniswap_polygon_base_liquidity_events')
+   ,ref('uniswap_scroll_base_liquidity_events')
+   ,ref('uniswap_sonic_base_liquidity_events')
    ,ref('uniswap_unichain_base_liquidity_events')
    ,ref('uniswap_worldchain_base_liquidity_events')
+   ,ref('uniswap_zksync_base_liquidity_events')
    ,ref('uniswap_zora_base_liquidity_events')
 ] %}
 
@@ -49,11 +49,13 @@ with base_union as (
                 , token1
                 , amount0_raw
                 , amount1_raw
+                , liquidityDelta
+                , sqrtPriceX96
+                , tickLower
+                , tickUpper
+                , salt
         FROM
             {{ model }}
-        {% if is_incremental() %}
-        WHERE {{ incremental_predicate('block_time') }}
-        {% endif %}
         {% if not loop.last %}
            UNION ALL
         {% endif %}
@@ -64,4 +66,5 @@ select
     *
 from
     base_union
--- comment to refresh
+
+-- refresh 

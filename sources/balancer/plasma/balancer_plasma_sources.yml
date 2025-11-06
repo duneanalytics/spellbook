@@ -1,158 +1,52 @@
 version: 2
 
-_evt_tx_hash: &evt_tx_hash
-  name: evt_tx_hash
-  description: 'Primary key of the transaction'
-
-_evt_block_time: &evt_block_time
-  name: evt_block_time
-  description: 'Timestamp for block event time in UTC'
-
-_evt_block_number: &evt_block_number
-  name: evt_block_number
-  description: 'Block number which processed the unique transaction hash'
-
 sources:
   - name: balancer_v3_plasma
     description: >
       Decoded tables related to Balancer V3, an automated portfolio manager and trading platform, on Plasma.
-    schema: balancer_v3_plasma
     tables:
-      - name: LBPoolFactory_evt_LBPoolCreated
-        description: >
-          Decoded table of LBPool creation events on the Balancer LBPoolFactory contract on Plasma.
-        columns:
-          - *evt_tx_hash
-          - *evt_block_time
-          - *evt_block_number
-      - name: Vault_evt_FlashLoan
-        columns:
-          - *evt_tx_hash
-          - *evt_block_time
-          - *evt_block_number
       - name: Vault_evt_PoolRegistered
-        columns:
-          - *evt_tx_hash
-          - *evt_block_time
-          - *evt_block_number
+
       - name: WeightedPoolFactory_evt_PoolCreated
-        columns:
-          - *evt_tx_hash
-          - *evt_block_time
-          - *evt_block_number
+
       - name: WeightedPoolFactory_call_create
-    
+
       - name: Vault_evt_LiquidityAdded
-        columns:
-          - *evt_tx_hash
-          - *evt_block_time
-          - *evt_block_number
 
       - name: Vault_evt_LiquidityRemoved
-        columns:
-          - *evt_tx_hash
-          - *evt_block_time
-          - *evt_block_number
 
       - name: StablePoolFactory_evt_PoolCreated
-        columns:
-          - *evt_tx_hash
-          - *evt_block_time
-          - *evt_block_number
 
-      - name: StablePoolFactory_call_create  
-      - name: StableSurgePoolFactory_call_create  
+      - name: StablePoolFactory_call_create
+
+      - name: StableSurgePoolFactory_call_create
 
       - name: Vault_evt_Swap
-        columns:
-          - *evt_tx_hash
-          - *evt_block_time
-          - *evt_block_number
+
       - name: ProtocolFeeController_evt_ProtocolSwapFeeCollected
-        columns:
-          - *evt_tx_hash
-          - *evt_block_time
-          - *evt_block_number
+
       - name: ProtocolFeeController_evt_ProtocolYieldFeeCollected
-        columns:
-          - *evt_tx_hash
-          - *evt_block_time
-          - *evt_block_number
+
       - name: Vault_evt_Wrap
-        columns:
-          - *evt_tx_hash
-          - *evt_block_time
-          - *evt_block_number
-          
+
       - name: Vault_evt_Unwrap
-        columns:
-          - *evt_tx_hash
-          - *evt_block_time
-          - *evt_block_number
+
       - name: Vault_evt_LiquidityAddedToBuffer
-        columns:
-          - *evt_tx_hash
-          - *evt_block_time
-          - *evt_block_number
 
       - name: Vault_evt_LiquidityRemovedFromBuffer
-        columns:
-          - *evt_tx_hash
-          - *evt_block_time
-          - *evt_block_number
-          
+
       - name: Vault_evt_SwapFeePercentageChanged
-        columns:
-          - *evt_tx_hash
-          - *evt_block_time
-          - *evt_block_number
 
       - name: ProtocolFeeController_evt_GlobalProtocolSwapFeePercentageChanged
-        columns:
-          - *evt_tx_hash
-          - *evt_block_time
-          - *evt_block_number
+
       - name: ProtocolFeeController_evt_PoolCreatorSwapFeePercentageChanged
-        columns:
-          - *evt_tx_hash
-          - *evt_block_time
-          - *evt_block_number
-      
-      - name: LBPoolFactory_call_create  
+
+      - name: LBPoolFactory_call_create
+
+      - name: LBPoolFactory_evt_LBPoolCreated
 
       - name: LBPool_evt_GradualWeightUpdateScheduled
-        columns:
-          - *evt_tx_hash
-          - *evt_block_time
-          - *evt_block_number
+
       - name: GyroECLPPoolFactory_call_create
 
-  - name: tokens_plasma
-    description: "Source tables for token metadata and standards on Plasma, necessário para Balancer V3."
-    schema: tokens_plasma
-    tables:
-      - name: erc20
-        description: "Standard ERC20 token contract data on Plasma."
-        columns:
-          - *evt_tx_hash
-          - *evt_block_time
-          - *evt_block_number
-      - name: erc721
-        description: "Standard ERC721 token contract data on Plasma."
-      - name: erc1155
-        description: "Standard ERC1155 token contract data on Plasma."
-
-  - name: labels
-    description: "Source tables for labels and metadata used across the Spellbook."
-    schema: labels 
-    tables:
-      - name: balancer_v3_pools_plasma
-        description: "Labels for Balancer V3 pools on Plasma."
-  - name: aave_plasma
-    description: "Source tables for Aave protocol on Plasma."
-    schema: aave_plasma
-    tables:
-      - name: StaticATokenLM_evt_Initialized
-        description: "Event log for the StaticATokenLM Initialized event."
-      - name: StaticATokenFactory_evt_StaticTokenCreated
-        description: "Event log for the StaticTokenCreated event."
+      - name: ReclammPoolFactory_call_create

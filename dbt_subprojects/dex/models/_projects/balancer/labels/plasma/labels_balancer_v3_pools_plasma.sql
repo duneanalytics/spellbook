@@ -4,7 +4,7 @@
   post_hook = '{{ expose_spells(\'["plasma"]\',
                                "sector",
                                "labels",
-                                \'["amandadalle", "giovanasoldatelli", "tiagoponciano"]\') }}'
+                                \'["amandadalle", "giovanasoldatelli", "tiagoponciano", "joaobrunoah"]\') }}'
 )}}
 
 WITH token_data AS (
@@ -42,6 +42,19 @@ WITH token_data AS (
         CROSS JOIN UNNEST(c.tokens) WITH ORDINALITY t(tokens, pos)
         CROSS JOIN UNNEST(cc.normalizedWeights) WITH ORDINALITY w(weights, pos)
         WHERE t.pos = w.pos
+
+      UNION ALL
+
+      SELECT
+        c.pool AS pool_id,
+        t.tokens,
+        0 AS weights,
+        cc.symbol,
+        'reclamm' AS pool_type
+      FROM token_data c
+      INNER JOIN {{ source('balancer_v3_plasma', 'ReclammPoolFactory_call_create') }} cc
+        ON c.pool = cc.output_pool
+      CROSS JOIN UNNEST(c.tokens) AS t(tokens)
 
       UNION ALL
 

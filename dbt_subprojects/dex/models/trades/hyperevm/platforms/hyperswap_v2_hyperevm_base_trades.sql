@@ -10,12 +10,40 @@
     )
 }}
 
-{{
-    uniswap_compatible_v2_trades(
-        blockchain = 'hyperevm',
-        project = 'hyperswap',
-        version = '2',
-        Pair_evt_Swap = source('hyperswap_hyperevm', 'hyperswappair_evt_swap'),
-        Factory_evt_PairCreated = source('hyperswap_hyperevm', 'uniswapv2factory_evt_paircreated')
-    )
-}} 
+WITH base_trades AS (
+    {{
+        uniswap_compatible_v2_trades(
+            blockchain = 'hyperevm',
+            project = 'hyperswap',
+            version = '2',
+            Pair_evt_Swap = source('hyperswap_hyperevm', 'hyperswappair_evt_swap'),
+            Factory_evt_PairCreated = source('hyperswap_hyperevm', 'uniswapv2factory_evt_paircreated')
+        )
+    }}
+),
+
+deduplicated_trades AS (
+    SELECT *,
+           ROW_NUMBER() OVER (PARTITION BY tx_hash, evt_index ORDER BY block_time) as rn
+    FROM base_trades
+)
+
+SELECT 
+    blockchain,
+    project,
+    version,
+    block_month,
+    block_date,
+    block_time,
+    block_number,
+    token_bought_amount_raw,
+    token_sold_amount_raw,
+    token_bought_address,
+    token_sold_address,
+    taker,
+    maker,
+    project_contract_address,
+    tx_hash,
+    evt_index
+FROM deduplicated_trades
+WHERE rn = 1 
