@@ -67,4 +67,22 @@ models:
     config:
       tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
     description: "Across's v3 bridge withdrawals events on Polygon"
+  - name: bridges_polygon_celer_v1_deposits
+    meta:
+      blockchain: polygon
+      sector: bridges
+      project: celer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'celer', 'bridges', 'flows' , 'deposits' ]
+    description: "Celer's v1 bridge deposits events on Polygon"
+  - name: bridges_polygon_celer_v1_withdrawals
+    meta:
+      blockchain: polygon
+      sector: bridges
+      project: celer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'celer', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Celer's v1 bridge withdrawals events on Polygon"
             

@@ -116,3 +116,21 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['tx_hash','evt_index']
+  - name: bridges_arbitrum_celer_v1_deposits
+    meta:
+      blockchain: arbitrum
+      sector: bridges
+      project: celer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'celer', 'bridges', 'flows' , 'deposits' ]
+    description: "Celer's v1 bridge deposits events on Arbitrum"
+  - name: bridges_arbitrum_celer_v1_withdrawals
+    meta:
+      blockchain: arbitrum
+      sector: bridges
+      project: celer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'celer', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Celer's v1 bridge withdrawals events on Arbitrum"
