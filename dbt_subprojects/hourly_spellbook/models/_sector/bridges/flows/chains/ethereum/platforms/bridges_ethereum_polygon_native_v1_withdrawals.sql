@@ -16,8 +16,8 @@ SELECT 'polygon' AS deposit_chain
 , evt_block_time AS block_time
 , evt_block_number AS block_number
 , amount AS withdrawal_amount_raw
-, depositor AS sender
-, depositReceiver AS recipient
+, exitor AS sender
+, exitor AS recipient
 , 'native' AS withdrawal_token_standard
 , 0x0000000000000000000000000000000000000000 AS withdrawal_token_address
 , evt_tx_from AS tx_from
