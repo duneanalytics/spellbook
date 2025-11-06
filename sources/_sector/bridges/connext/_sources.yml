@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: connext_ethereum
+    description: "Connext's v1 bridge events on Ethereum"
+    tables:
+      - name: connextdiamond_evt_xcalled
