@@ -15,3 +15,5 @@
         'unichain',
     ]) }}
 {% endmacro %}
+
+{% macro oneinch_test() %} {{ return(['test']) }} {% endmacro %}
