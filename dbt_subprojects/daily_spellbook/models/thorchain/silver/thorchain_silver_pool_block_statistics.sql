@@ -47,7 +47,7 @@ pool_status AS (
             asset AS pool_name,
             status,
             ROW_NUMBER() over (
-                PARTITION BY pool_name, cast(date_trunc('day', b.block_timestamp) AS date)
+                PARTITION BY asset, cast(date_trunc('day', b.block_timestamp) AS date)
                 ORDER BY b.block_timestamp DESC, status
             ) AS rn
         FROM
