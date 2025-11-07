@@ -127,7 +127,7 @@ SELECT
     ) AS earnings,
     concat_ws(
         '-',
-        a.day,
+        cast(a.day as varchar),
         a.pool_name
     ) AS _unique_key,
     a._inserted_timestamp
