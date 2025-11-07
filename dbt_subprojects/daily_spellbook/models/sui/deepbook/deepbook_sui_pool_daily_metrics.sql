@@ -6,8 +6,8 @@
   incremental_strategy = 'merge',
   partition_by = ['metric_month'],
   unique_key = ['metric_date','pool_id'],
-  -- manual incremental window below uses metric_month; no time-based predicate column on target
 ) }}
+-- manual incremental window below uses metric_month; no time-based predicate column on target
 
 with base as (
   select *
