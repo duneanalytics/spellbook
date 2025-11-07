@@ -4,8 +4,9 @@
   materialized = 'incremental',
   file_format = 'delta',
   incremental_strategy = 'merge',
+  partition_by = ['metric_month'],
   unique_key = ['metric_date','pool_id'],
-  incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+  -- manual incremental window below uses metric_month; no time-based predicate column on target
 ) }}
 
 with base as (
@@ -71,6 +72,7 @@ with base as (
 
 select
     metric_date
+  , metric_month
   , pool_id
   , base_asset_coin_type
   , quote_asset_coin_type

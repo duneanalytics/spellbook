@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: deepbook_sui_pool_daily_metrics
+    description: Daily per-pool volumes for Sui DeepBook derived from dex_sui_trades and dex_sui_pool_map.
+    columns:
+      - name: metric_date
+        description: Date (UTC) of metrics aggregation
+        data_tests:
+          - not_null
+      - name: metric_month
+        description: Month (UTC) used for partitioning and incremental windowing
+        data_tests:
+          - not_null
+      - name: pool_id
+        description: Sui pool object id (0x...)
+        data_tests:
+          - not_null
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [metric_date, pool_id]
