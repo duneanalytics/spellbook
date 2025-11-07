@@ -4,12 +4,13 @@
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
-    , unique_key = ['block_time', 'tx_id', 'source', 'destination', 'stake', 'authority', 'outer_instruction_index', 'inner_instruction_index']
+    , unique_key = ['unique_key', 'block_date']
+    , partition_by = ['block_date', 'action']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     , post_hook='{{ expose_spells(\'["solana"]\',
                                 "sector",
                                 "staking",
-                                \'["ilemi"]\') }}')
+                                \'["ilemi", "0xRob"]\') }}')
 }}
 
 with
@@ -94,7 +95,9 @@ with
     )
 
 SELECT
-    stake
+    {{ dbt_utils.generate_surrogate_key(['call_block_slot', 'call_tx_id', 'call_outer_instruction_index', 'call_inner_instruction_index']) }} as unique_key
+    , CAST(date_trunc('day', call_block_time) AS DATE) as block_date
+    , stake
     , action
     , source
     , destination
@@ -111,4 +114,3 @@ FROM (
     UNION ALL
     SELECT * FROM split
 )
-where 1=1
