@@ -32,6 +32,12 @@ models:
       - name: outer_instruction_index
       - name: inner_instruction_index
       - name: tx_id
+      - name: unique_key
+        description: unique key for the stake action
+        data_tests:
+          - not_null
+      - name: block_date
+        description: the date of the block
   - name: staking_solana_stake_account_delegations
     meta:
       blockchain: solana
