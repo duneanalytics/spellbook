@@ -1,12 +1,6 @@
 {{ config(
     schema = 'thorchain_silver',
     alias = 'block_log',
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['block_month', 'height'],
-    partition_by = ['block_month'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     tags = ['thorchain', 'block_log', 'silver', 'dimension']
 ) }}
 
@@ -58,4 +52,3 @@ SELECT
     agg_state,
     _inserted_timestamp
 FROM base
-
