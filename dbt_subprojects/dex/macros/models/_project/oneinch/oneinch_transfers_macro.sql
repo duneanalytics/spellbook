@@ -8,7 +8,10 @@
 {%- set wrapper = blockchain.wrapped_native_token_address -%}
 {%- set nsymbol = blockchain.native_token_symbol -%}
 
+{%- set same = '0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' -%}
+, if(transfer_contract_address in ({{ same }}), array[{{ same }}], array[transfer_contract_address]) as same
 
+array[tr]
 
 with
 
@@ -68,6 +71,7 @@ calls as (
         , contract_address as transfer_contract_address -- original
         , if(token_standard = 'native', {{ wrapper }}, {% if blockchain.atokens %}coalesce(underlying_address, contract_address){% else %}contract_address{% endif %}) as contract_address
         , if(token_standard = 'native', {{ nsymbol }}{% if blockchain.atokens %}, atoken_symbol{% endif %}) as _symbol
+        , if(token_standard = 'native', array_union(array[contract_address], array[{{ same }}, {{ wrapper }}]), array[contract_address]) as same
         , amount_raw as amount
         , "from" as transfer_from
         , "to" as transfer_to
@@ -136,6 +140,7 @@ select
     , coalesce(trusted, false) as trusted
     , nested
     , related
+    , same
     , price
     , block_date
     , date(date_trunc('month', block_time)) as block_month

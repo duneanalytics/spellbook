@@ -21,7 +21,7 @@ select
     , block_slot as block_number
     , block_time
     , from_base58(tx_id) as tx_hash
-    , cast(null as boolean) as tx_success -- TO DO
+    , true as tx_success -- TO DO
     , from_base58(tx_signer) as tx_from
     , from_base58(outer_executing_account) as tx_to
     , cast(null as bigint) as tx_nonce
@@ -30,7 +30,7 @@ select
     , tx_priority_fee_per_gas
     , 1 as tx_index -- TO DO
     , call_trace_address
-    , cast(null as boolean) as call_success -- TO DO
+    , true as call_success -- TO DO
     , cast(null as bigint) as call_gas_used
     , cast(null as varbinary) as call_selector
     , method as call_method -- TO DO

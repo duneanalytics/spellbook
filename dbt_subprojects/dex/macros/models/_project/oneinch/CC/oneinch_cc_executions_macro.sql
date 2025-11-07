@@ -6,8 +6,6 @@
 -%}
 
 {%- set date_from = [blockchain.start, stream.start] | max -%}
-{%- set wrapper = blockchain.wrapped_native_token_address -%}
-{%- set same = '0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, ' + wrapper -%}
 
 
 
@@ -23,7 +21,6 @@ calls as (
 
 , transfers as (
     select *
-        , if(transfer_contract_address in ({{ same }}), array[{{ same }}], array[transfer_contract_address]) as same
     from {{ ref('oneinch_' + blockchain.name + '_transfers') }}
     where true
         and nested

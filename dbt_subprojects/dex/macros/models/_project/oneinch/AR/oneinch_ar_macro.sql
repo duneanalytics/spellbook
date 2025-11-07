@@ -9,6 +9,7 @@
 {%- set date_from = [blockchain.start, stream.start] | max -%}
 {%- set wrapper = blockchain.wrapped_native_token_address -%}
 {%- set native = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' -%}
+{%- set nullss = '0x0000000000000000000000000000000000000000' -%}
 
 
 with
@@ -161,8 +162,8 @@ select
     , protocol
     , protocol_version
     , contract_name
-    , src_receiver
-    , dst_receiver
+    , if(src_receiver = {{ nullss }}, 0x, src_receiver) as src_receiver
+    , if(dst_receiver = {{ nullss }}, 0x, dst_receiver) as dst_receiver
     , coalesce(src_token_address, if(element_at(pools[1], 'unwrap') = 0x01 and pool_src_token_address = {{ wrapper }} and call_value > uint256 '0', {{ native }}, pool_src_token_address)) as src_token_address
     , coalesce(dst_token_address, if(element_at(reverse(pools)[1], 'unwrap') = 0x01 and pool_dst_token_address = {{ wrapper }}, {{ native }}, pool_dst_token_address)) as dst_token_address
     , if(src_token_amount_from_value, call_value, src_token_amount) as src_token_amount

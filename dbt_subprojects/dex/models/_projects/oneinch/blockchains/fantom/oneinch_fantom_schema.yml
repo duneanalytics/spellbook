@@ -181,6 +181,7 @@ models:
       - name: trusted
       - name: nested
       - name: related
+      - name: same
       - name: price
       - name: block_date
       - name: block_month

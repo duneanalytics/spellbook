@@ -116,7 +116,7 @@ select
     , contract_name
     , order_hash
     , maker
-    , receiver
+    , if(receiver = 0x0000000000000000000000000000000000000000, 0x, receiver) as receiver
     , maker_asset
     , maker_amount
     , coalesce(making_amount, try(cast(maker_amount * (cast(taking_amount as double) / taker_amount) as uint256))) as making_amount
