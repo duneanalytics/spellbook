@@ -51,38 +51,34 @@ WITH all_block_id AS (
 )
 , liquidity_fee_tbl AS (
     SELECT
-        DAY(b.block_timestamp) AS day,
+        cast(date_trunc('day', b.block_timestamp) AS date) AS day,
         COALESCE(SUM(a.liq_fee_in_rune_e8), 0) AS liquidity_fee
     FROM {{ ref('thorchain_silver_swap_events') }} as a
     JOIN {{ ref('thorchain_silver_block_log') }} as b
         ON a.block_timestamp = b.timestamp
-    GROUP BY DAY(b.block_timestamp)
+    GROUP BY cast(date_trunc('day', b.block_timestamp) AS date)
 )
 , bond_earnings_tbl AS (
     SELECT
-        DAY(
-            b.block_timestamp
-        ) AS DAY,
+        cast(date_trunc('day', b.block_timestamp) AS date) AS day,
         SUM(bond_e8) AS bond_earnings
     FROM
         {{ ref('thorchain_silver_rewards_events') }} as a
         JOIN {{ ref('thorchain_silver_block_log') }} as b
         ON a.block_timestamp = b.timestamp
     GROUP BY
-        1
+        cast(date_trunc('day', b.block_timestamp) AS date)
 )
 , total_pool_rewards_tbl AS (
     SELECT
-        DAY(
-            b.block_timestamp
-        ) AS DAY,
+        cast(date_trunc('day', b.block_timestamp) AS date) AS day,
         SUM(rune_e8) AS total_pool_rewards
     FROM
         {{ ref('thorchain_silver_rewards_event_entries') }} as a
         JOIN {{ ref('thorchain_silver_block_log') }} as b
         ON a.block_timestamp = b.timestamp
     GROUP BY
-        1
+        cast(date_trunc('day', b.block_timestamp) AS date)
 )
 SELECT
     all_block_with_nodes_date.day,
