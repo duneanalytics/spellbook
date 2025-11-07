@@ -26,7 +26,7 @@ WITH block_prices AS (
         COALESCE(ree.rune_e8 / pow(10, 8) * COALESCE(p.rune_usd, 0), 0) AS rune_amount_usd,
         concat_ws(
             '-',
-            b.height,
+            cast(b.height as varchar),
             ree.pool_name
         ) AS _unique_key,
         ree._inserted_timestamp
@@ -44,7 +44,7 @@ WITH block_prices AS (
         OR
         concat_ws(
             '-',
-            b.height,
+            cast(b.height as varchar),
             ree.pool_name
         ) IN 
         (
@@ -72,7 +72,7 @@ WITH block_prices AS (
         ) * COALESCE(rune_usd, 0) AS rune_amount_usd,
         concat_ws(
             '-',
-            b.height,
+            cast(b.height as varchar),
             'bond_holders'
         ) AS _unique_key,
         re._inserted_timestamp
@@ -90,7 +90,7 @@ WITH block_prices AS (
         {{ incremental_predicate('b.block_timestamp') }}
         OR concat_ws(
             '-',
-            b.height,
+            cast(b.height as varchar),
             'bond_holders'
         ) IN 
         (

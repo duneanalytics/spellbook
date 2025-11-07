@@ -23,7 +23,7 @@ SELECT
     COALESCE(synth_e8 / pow(10, 8) * asset_usd, 0) AS synth_amount_usd,
     concat_ws(
         '-',
-        bpd.block_timestamp,
+        cast(bpd.block_timestamp as varchar),
         bpd.pool_name
     ) AS _unique_key,
     bpd._inserted_timestamp
