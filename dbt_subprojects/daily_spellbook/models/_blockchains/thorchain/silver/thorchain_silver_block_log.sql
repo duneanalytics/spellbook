@@ -16,9 +16,6 @@ WITH deduplicated AS (
             ORDER BY _updated_at DESC
         ) AS rn
     FROM {{ source('thorchain', 'block_log') }}
-    {% if is_incremental() %}
-    WHERE {{ incremental_predicate('cast(from_unixtime(cast(timestamp / 1e9 as bigint)) as timestamp)') }}
-    {% endif %}
 ),
 
 base AS (
