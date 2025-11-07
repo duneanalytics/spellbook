@@ -7,11 +7,9 @@
 
 {%- set wrapper = blockchain.wrapped_native_token_address -%}
 {%- set nsymbol = blockchain.native_token_symbol -%}
-
 {%- set same = '0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' -%}
-, if(transfer_contract_address in ({{ same }}), array[{{ same }}], array[transfer_contract_address]) as same
 
-array[tr]
+
 
 with
 
