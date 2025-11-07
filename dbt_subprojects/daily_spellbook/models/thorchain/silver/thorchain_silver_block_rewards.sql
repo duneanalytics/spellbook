@@ -3,7 +3,7 @@
     alias = 'block_rewards',
     materialized = 'table',
     file_format = 'delta',
-    partition_by = ['block_date'],
+    partition_by = ['day'],
     tags = ['thorchain', 'block_rewards', 'silver']
 ) }}
 
@@ -41,7 +41,7 @@ WITH all_block_id AS (
 )
 , all_block_with_nodes_date AS (
     SELECT
-        cast(date_trunc('day', b.block_timestamp) AS date) AS block_date,
+        cast(date_trunc('day', b.block_timestamp) AS date) AS day,
         AVG(abwn.avg_nodes) AS avg_nodes,
         MAX(abwn._inserted_timestamp) AS _inserted_timestamp
     FROM all_block_with_nodes as abwn
@@ -51,7 +51,7 @@ WITH all_block_id AS (
 )
 , liquidity_fee_tbl AS (
     SELECT
-        DAY(b.block_timestamp) AS block_date,
+        DAY(b.block_timestamp) AS day,
         COALESCE(SUM(a.liq_fee_in_rune_e8), 0) AS liquidity_fee
     FROM {{ ref('thorchain_silver_swap_events') }} as a
     JOIN {{ ref('thorchain_silver_block_log') }} as b
