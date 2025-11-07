@@ -5,30 +5,26 @@ models:
   - name: thorchain_silver_rune_price
     description: "RUNE price data processed from Thorchain"
     columns:
-      - name: block_time
+      - name: rune_price_e8
+        description: "RUNE price in e8 format"
+      - name: block_timestamp
         description: "Block timestamp"
         data_tests:
           - not_null
-      - name: rune_price_usd
-        description: "RUNE price in USD"
-      - name: symbol
-        description: "Token symbol (RUNE)"
-      - name: blockchain
-        description: "Blockchain (thorchain)"
+      - name: _inserted_timestamp
+        description: "Timestamp when data was ingested"
 
   - name: thorchain_silver_prices
-    description: "Pool-based price data calculated from ThorChain pool depths (Snowflake approach)"
+    description: "Pool-based price data calculated from ThorChain pool depths"
     columns:
       - name: block_id
         description: "Block height"
         data_tests:
           - not_null
-      - name: block_time
+      - name: block_date
+        description: "Block date"
+      - name: block_timestamp
         description: "Block timestamp"
-        data_tests:
-          - not_null
-      - name: pool_name
-        description: "Pool identifier (e.g., 'BTC.BTC', 'ETH.ETH')"
         data_tests:
           - not_null
       - name: price_rune_asset
@@ -39,16 +35,12 @@ models:
         description: "USD price of the asset (calculated from pool using rune_usd * (rune_e8 / asset_e8))"
       - name: rune_usd
         description: "USD price of RUNE"
-      - name: block_date
-        description: "Block date (for compatibility)"
-      - name: block_month
-        description: "Block month (for compatibility)"
-      - name: symbol
-        description: "Token symbol derived from pool_name (for backward compatibility)"
-      - name: contract_address
-        description: "Contract address derived from pool_name (for backward compatibility)"
-      - name: blockchain
-        description: "Blockchain identifier (thorchain)"
+      - name: pool_name
+        description: "Pool identifier (e.g., 'BTC.BTC', 'ETH.ETH')"
+        data_tests:
+          - not_null
+      - name: _unique_key
+        description: "Unique identifier (block_id + pool_name)"
 
   - name: thorchain_silver_add_events
     description: "Processed liquidity add events from Thorchain"
@@ -98,24 +90,48 @@ models:
   - name: thorchain_silver_swap_events
     description: "Processed swap events from Thorchain"
     columns:
-      - name: tx_hash
-        description: "Transaction hash"
-        data_tests:
-          - not_null
-      - name: event_id
-        description: "Event identifier (note: not unique - use event_id + tx_hash for uniqueness)"
-        data_tests:
-          - not_null
-      - name: block_time
-        description: "Block timestamp"
-        data_tests:
-          - not_null
-      - name: from_asset_amount
-        description: "Amount of asset being sold"
-      - name: to_asset_amount
-        description: "Amount of asset being bought"
-      - name: pool
+      - name: tx_id
+        description: "Transaction ID"
+      - name: blockchain
+        description: "Blockchain name"
+      - name: from_address
+        description: "From address"
+      - name: to_address
+        description: "To address"
+      - name: from_asset
+        description: "Asset being sold"
+      - name: from_e8
+        description: "Amount of asset being sold in e8 format"
+      - name: to_asset
+        description: "Asset being bought"
+      - name: to_e8
+        description: "Amount of asset being bought in e8 format"
+      - name: memo
+        description: "Transaction memo"
+      - name: pool_name
         description: "Pool identifier"
+      - name: to_e8_min
+        description: "Minimum amount to receive in e8 format"
+      - name: swap_slip_bp
+        description: "Swap slippage in basis points"
+      - name: liq_fee_e8
+        description: "Liquidity fee in e8 format"
+      - name: liq_fee_in_rune_e8
+        description: "Liquidity fee in RUNE e8 format"
+      - name: _direction
+        description: "Swap direction"
+      - name: event_id
+        description: "Unique event identifier"
+      - name: block_timestamp
+        description: "Block timestamp"
+      - name: streaming_count
+        description: "Streaming swap count"
+      - name: streaming_quantity
+        description: "Streaming swap quantity"
+      - name: _tx_type
+        description: "Transaction type"
+      - name: _inserted_timestamp
+        description: "Timestamp when data was ingested"
 
   - name: thorchain_silver_streaming_swap_details_events
     description: "Processed streaming swap details events from Thorchain"
@@ -286,8 +302,6 @@ models:
           - not_null
       - name: block_timestamp
         description: "Block timestamp"
-      - name: block_time
-        description: "Block timestamp (Spellbook standard)"
       - name: block_date
         description: "Block date"
       - name: block_hour
@@ -312,6 +326,8 @@ models:
         description: "Block hash"
       - name: agg_state
         description: "Aggregate state"
+      - name: _inserted_timestamp
+        description: "Timestamp when data was ingested"
 
   - name: thorchain_silver_constants
     description: "Silver view for Thorchain constants (key-value configuration parameters)"
@@ -375,40 +391,48 @@ models:
   - name: thorchain_silver_bond_events
     description: "Silver table for Thorchain bond events from validators"
     columns:
-      - name: event_id
-        description: "Unique event identifier"
-        data_tests:
-          - unique
-          - not_null
       - name: tx_id
         description: "Transaction ID"
+      - name: blockchain
+        description: "Blockchain name"
+      - name: from_address
+        description: "From address"
+      - name: to_address
+        description: "To address"
+      - name: asset
+        description: "Asset identifier"
+      - name: asset_e8
+        description: "Asset amount in e8 format"
+      - name: memo
+        description: "Transaction memo"
       - name: bond_type
         description: "Type of bond operation"
       - name: e8
         description: "Bond amount in e8 format"
-      - name: block_time
+      - name: event_id
+        description: "Unique event identifier"
+      - name: block_timestamp
         description: "Block timestamp"
-        data_tests:
-          - not_null
+      - name: _tx_type
+        description: "Transaction type"
+      - name: _inserted_timestamp
+        description: "Timestamp when data was ingested"
 
   - name: thorchain_silver_update_node_account_status_events
     description: "Silver table for Thorchain node status change events"
     columns:
-      - name: event_id
-        description: "Unique event identifier"
-        data_tests:
-          - unique
-          - not_null
       - name: node_address
         description: "Node address"
       - name: current_status
         description: "Current node status"
       - name: former_status
         description: "Previous node status"
-      - name: block_time
+      - name: block_timestamp
         description: "Block timestamp"
-        data_tests:
-          - not_null
+      - name: event_id
+        description: "Unique event identifier"
+      - name: _inserted_timestamp
+        description: "Timestamp when data was ingested"
 
   - name: thorchain_silver_transfer_events
     description: "Silver table for Thorchain asset transfer events"
@@ -694,7 +718,7 @@ models:
   - name: thorchain_silver_block_rewards
     description: "Silver table for daily Thorchain block rewards"
     columns:
-      - name: block_date
+      - name: day
         description: "Date"
         data_tests:
           - unique
@@ -705,27 +729,37 @@ models:
         description: "Block rewards earned"
       - name: earnings
         description: "Total earnings"
+      - name: bonding_earnings
+        description: "Bonding earnings"
+      - name: liquidity_earnings
+        description: "Liquidity earnings"
       - name: avg_node_count
         description: "Average node count"
+      - name: _inserted_timestamp
+        description: "Timestamp when data was ingested"
 
   - name: thorchain_silver_total_block_rewards
     description: "Silver table for total Thorchain block rewards by entity"
     columns:
-      - name: _unique_key
-        description: "Unique identifier (block_id + reward_entity)"
-        data_tests:
-          - unique
-          - not_null
-      - name: block_time
+      - name: block_timestamp
         description: "Block timestamp"
         data_tests:
           - not_null
+      - name: block_id
+        description: "Block height"
       - name: reward_entity
         description: "Reward entity (pool name or 'bond_holders')"
       - name: rune_amount
         description: "RUNE reward amount"
       - name: rune_amount_usd
         description: "RUNE reward amount in USD"
+      - name: _unique_key
+        description: "Unique identifier (block_id + reward_entity)"
+        data_tests:
+          - unique
+          - not_null
+      - name: _inserted_timestamp
+        description: "Timestamp when data was ingested"
 
   - name: thorchain_silver_daily_tvl
     description: "Silver table for daily Thorchain TVL with USD pricing"
@@ -752,7 +786,7 @@ models:
   - name: thorchain_silver_daily_earnings
     description: "Silver table for daily Thorchain earnings with USD pricing"
     columns:
-      - name: block_date
+      - name: day
         description: "Date"
         data_tests:
           - unique
@@ -779,6 +813,8 @@ models:
         description: "Earnings to pools in USD"
       - name: avg_node_count
         description: "Average node count"
+      - name: _inserted_timestamp
+        description: "Timestamp when data was ingested"
   - name: thorchain_core_block
     description: "Core block table for Thorchain with time-based analytics"
     columns:
@@ -3041,7 +3077,7 @@ models:
         data_tests:
           - unique
           - not_null
-      - name: block_date
+      - name: day
         description: "Date"
         data_tests:
           - not_null
@@ -3067,8 +3103,8 @@ models:
         description: "Earnings to pools in USD"
       - name: avg_node_count
         description: "Average node count"
-      - name: _audit_run_id
-        description: "Audit run identifier"
+      - name: _inserted_timestamp
+        description: "Timestamp when data was ingested"
       - name: inserted_timestamp
         description: "Record creation timestamp"
       - name: modified_timestamp
