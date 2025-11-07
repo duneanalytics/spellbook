@@ -4,9 +4,9 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_month', 'block_id', 'pool_name'],
-    partition_by = ['block_month'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    unique_key = ['block_date', '_unique_key'],
+    partition_by = ['block_date'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_timestamp')],
     tags = ['thorchain', 'prices']
 ) }}
 
@@ -14,11 +14,11 @@
 -- step 1 what is the USD pool with the highest balance (aka deepest pool)
 with blocks as (
     select
-        height as block_id,
-        b.block_timestamp,
-        pool_name,
-        rune_e8,
-        asset_e8
+        bl.height as block_id,
+        bl.block_timestamp,
+        bpd.pool_name,
+        bpd.rune_e8,
+        bpd.asset_e8
     from
         {{ ref('thorchain_silver_block_pool_depths') }} bpd
     join {{ ref('thorchain_silver_block_log') }} bl
@@ -29,9 +29,9 @@ with blocks as (
 )
 , price as (
     select
-        height as block_id,
-        b.block_timestamp,
-        rune_price_e8 as rune_usd
+        bl.height as block_id,
+        bl.block_timestamp,
+        rp.rune_price_e8 as rune_usd
     from
         {{ ref('thorchain_silver_rune_price') }} rp
     join {{ ref('thorchain_silver_block_log') }} bl
@@ -44,6 +44,7 @@ with blocks as (
 -- and in USD for both tokens
 SELECT DISTINCT 
     b.block_id,
+    cast(date_trunc('day', b.block_timestamp) as date) as block_date,
     b.block_timestamp,
     COALESCE(
         b.rune_e8 / b.asset_e8,
@@ -61,8 +62,8 @@ SELECT DISTINCT
     b.pool_name,
     concat_ws(
         '-',
-        b.block_id :: STRING,
-        b.pool_name :: STRING
+        cast(b.block_id as varchar),
+        cast(b.pool_name as varchar)
     ) AS _unique_key
 FROM
     blocks as b
