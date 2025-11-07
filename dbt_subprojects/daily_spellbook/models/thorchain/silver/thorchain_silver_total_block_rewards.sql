@@ -4,9 +4,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = '_unique_key',
-    partition_by = ['block_month'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    unique_key = ['block_timestamp', 'block_id', 'reward_entity', '_unique_key'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_timestamp')],
     tags = ['thorchain', 'total_block_rewards', 'silver']
 ) }}
 
