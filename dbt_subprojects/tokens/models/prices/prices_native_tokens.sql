@@ -49,7 +49,7 @@ with prices_native_tokens as (
         , ('linea', 'eth-ethereum')
         , ('mantle', 'mnt-mantle')
         , ('mode', 'eth-ethereum')
-        --, ('mezo', 'btc-bitcoin') -- can't support this due to using different decimals than original BTC (18 instead of 8)
+        , ('mezo', 'btc-bitcoin')
         --, ('monad', 'mon-monad') -- not on coinpaprika yet
         , ('noble', 'eth-ethereum')
         , ('nova', 'eth-ethereum')
