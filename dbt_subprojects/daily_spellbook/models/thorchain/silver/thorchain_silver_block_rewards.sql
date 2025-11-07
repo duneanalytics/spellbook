@@ -46,7 +46,7 @@ WITH all_block_id AS (
         MAX(abwn._inserted_timestamp) AS _inserted_timestamp
     FROM all_block_with_nodes as abwn
     JOIN {{ ref('thorchain_silver_block_log') }} as b
-        ON abwn.block_timestamp = b.block_timestamp
+        ON abwn.block_timestamp = b.timestamp
     GROUP BY cast(date_trunc('day', b.block_timestamp) AS date)
 )
 , liquidity_fee_tbl AS (
