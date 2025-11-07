@@ -12,13 +12,8 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_time
-            - call_tx_id
-            - source
-            - destination
-            - stake
-            - authority
-            - call_outer_instruction_index
+            - block_date
+            - unique_key
     columns:
       - name: stake
         description: amount in stake moved
