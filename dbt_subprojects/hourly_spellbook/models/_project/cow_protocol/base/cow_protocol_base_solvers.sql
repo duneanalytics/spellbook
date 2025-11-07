@@ -89,9 +89,16 @@ known_solver_metadata (address, environment, name) as (
                 (0x100bc2a159BFacaD3e7D4D8ED26Cc3B7983bade9, 'barn', 'Bebop'),
                 (0xe1B77774A2b69D74F5e93760ddC604Fabe641272, 'prod', 'Bebop'),
                 (0xb3890d27ea75b4c3b074b09c14a32a76cd73678e, 'barn', 'MXTrading'),
+                (0x69E7b05B97BF1D148c44dEAe5B1E996363f892a7, 'prod', 'MXTrading'),
                 (0xfe1f652015930724cd8d927ed1666468b2f07718, 'barn', 'Kamaji'),
                 (0xfd12ebfbab23d5f364c15f1d2962f3b19105671a, 'prod', 'Kamaji'),
-                (0x3980daa7eaad0b7e0c53cfc5c2760037270da54d, 'prod', 'Tsolver')
+                (0x3980daa7eaad0b7e0c53cfc5c2760037270da54d, 'prod', 'Tsolver'),
+                (0xFE1f652015930724cD8D927eD1666468b2F07718, 'barn', 'Piggy'),
+                (0xFd12EBFBaB23d5F364c15F1d2962f3b19105671a, 'prod', 'Piggy'),
+                (0x728a498A1Ff4c7D64f48b5b7Fefd72FdDE010613, 'barn', 'Rosato'),
+                (0x70f5474EA078a63F874695eA2Ed99AeBC4Ad4393, 'prod', 'Rosato'),
+                (0x1aA30C724aC8833D9C49853cC60991cDCf472cc7, 'barn', 'OpenOcean_Aggregator'),
+                (0x0B68006276c0D076309ED354924B7b7Af1ef3f85, 'prod', 'OpenOcean_Aggregator'),
     ) as _
 )
 -- Combining the metadata with current activation status for final table

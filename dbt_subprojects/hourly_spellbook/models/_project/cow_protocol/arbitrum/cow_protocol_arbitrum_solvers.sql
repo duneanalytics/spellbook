@@ -109,7 +109,15 @@ known_solver_metadata (address, environment, name) as (
                 (0x859A672a564A99CDA9BfB2c39ca80Dd9256B94d3, 'prod', 'MX Trading'),
                 (0x96B8F359f0b2067D7F7C84F55f172FF1A70ee0F4, 'barn', 'Trusted Volumes'),
                 (0xE6094DFE442F44df4cfAa21dCC054dC85Fc299DB, 'prod', 'Trusted Volumes'),
-                (0x6080cc68234c2333ef0bae42b1a217f8e5c7020b, 'prod', 'Prycto')
+                (0x6080cc68234c2333ef0bae42b1a217f8e5c7020b, 'prod', 'Prycto'),
+                (0xCaCb24C45D44683CCeE2BBd0319f49D87a905e4F, 'barn', 'Quasi'),
+                (0x082515526679050522DdD64bd3E95dBBbC1bE46e, 'prod', 'Quasi'),
+                (0x88EFacE1b4ED8f16Bb428D1080eFA3D8cb2f1Cb7, 'barn', 'Paradox'),
+                (0xbA3b6f5A7C238fca170Fd5dee2B735E01E3DDCE1, 'prod', 'Paradox'),
+                (0x9b95391AC6DD31f99C9e5CC9c15a107f60B0f0c6, 'barn', 'NativeFi'),
+                (0x9aCcd7f88441ae8E189CBbFFa1eF1432D7d5c27C, 'prod', 'NativeFi'),
+                (0x973818ffc2CCaBD9c2Bd1077b9413a60EAF699B5, 'barn', 'AmberGroup'),
+                (0xFde62af8639B716C5BD7aD84514b3E67fFDC6E97, 'prod', 'AmberGroup'),
     ) as _
 )
 -- Combining the metadata with current activation status for final table
