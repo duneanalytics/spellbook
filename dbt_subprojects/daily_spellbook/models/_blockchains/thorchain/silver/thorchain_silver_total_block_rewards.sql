@@ -12,91 +12,110 @@
 
 WITH block_prices AS (
     SELECT
-        COALESCE(AVG(p.rune_usd), 0) AS rune_usd,
-        p.block_id
-    FROM {{ ref('thorchain_silver_prices') }} p
-    {% if is_incremental() %}
-    WHERE {{ incremental_predicate('p.block_time') }}
-    {% endif %}
-    GROUP BY p.block_id
-),
-
-pool_rewards AS (
+        COALESCE(AVG(rune_usd), 0) AS rune_usd,
+        block_id
+    FROM {{ ref('thorchain_silver_prices') }}
+    GROUP BY block_id
+)
+, fin AS (
     SELECT
-        cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) as block_time,
-        date(from_unixtime(cast(b.timestamp / 1e9 as bigint))) as block_date,
-        date_trunc('month', from_unixtime(cast(b.timestamp / 1e9 as bigint))) as block_month,
+        b.block_timestamp,
         b.height AS block_id,
         ree.pool_name AS reward_entity,
-        COALESCE(ree.rune_e8 / power(10, 8), 0) AS rune_amount,
-        COALESCE(ree.rune_e8 / power(10, 8) * COALESCE(bp.rune_usd, 0), 0) AS rune_amount_usd,
-        concat(
-            cast(b.height as varchar),
+        COALESCE(ree.rune_e8 / pow(10, 8), 0) AS rune_amount,
+        COALESCE(ree.rune_e8 / pow(10, 8) * COALESCE(p.rune_usd, 0), 0) AS rune_amount_usd,
+        concat_ws(
             '-',
+            b.height,
             ree.pool_name
         ) AS _unique_key,
         ree._inserted_timestamp
-    FROM {{ ref('thorchain_silver_rewards_event_entries') }} ree
-    JOIN {{ ref('thorchain_silver_block_log') }} b
+    FROM
+        {{ ref('thorchain_silver_rewards_event_entries') }} as ree
+    JOIN {{ ref('thorchain_silver_block_log') }} as b
         ON ree.block_timestamp = b.timestamp
-    LEFT JOIN block_prices bp
-        ON b.height = bp.block_id
-    {% if is_incremental() %}
-    WHERE {{ incremental_predicate('ree.block_time') }}
-    {% endif %}
-),
-
-bond_rewards AS (
+    LEFT JOIN {{ ref('thorchain_silver_prices') }} as p
+        ON b.height = p.block_id
+        AND ree.pool_name = p.pool_name
+    {% if is_incremental() -%}
+    WHERE 
+    (
+        {{ incremental_predicate('b.block_timestamp') }}   
+        OR
+        concat_ws(
+            '-',
+            b.height,
+            ree.pool_name
+        ) IN 
+        (
+            SELECT
+                _unique_key
+            FROM
+                {{ this }}
+            WHERE
+                rune_amount_USD IS NULL
+        )
+    )
+    {% endif -%}
+    UNION
     SELECT
-        cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp) as block_time,
-        date(from_unixtime(cast(b.timestamp / 1e9 as bigint))) as block_date,
-        date_trunc('month', from_unixtime(cast(b.timestamp / 1e9 as bigint))) as block_month,
+        b.block_timestamp,
         b.height AS block_id,
         'bond_holders' AS reward_entity,
-        be.e8 / power(10, 8) AS rune_amount,
-        be.e8 / power(10, 8) * COALESCE(bp.rune_usd, 0) AS rune_amount_usd,
-        concat(
-            cast(b.height as varchar),
+        bond_e8 / pow(
+            10,
+            8
+        ) AS rune_amount,
+        bond_e8 / pow(
+            10,
+            8
+        ) * COALESCE(rune_usd, 0) AS rune_amount_usd,
+        concat_ws(
             '-',
+            b.height,
             'bond_holders'
         ) AS _unique_key,
-        be._inserted_timestamp
-    FROM {{ ref('thorchain_silver_bond_events') }} be
-    JOIN {{ ref('thorchain_silver_block_log') }} b
-        ON be.block_timestamp = b.timestamp
-    LEFT JOIN block_prices bp
-        ON b.height = bp.block_id
-    WHERE be.bond_type IN ('bond_reward', 'reward')
-    {% if is_incremental() %}
-      AND {{ incremental_predicate('be.block_time') }}
-    {% endif %}
-),
-
-combined_rewards AS (
-    SELECT * FROM pool_rewards
-    UNION ALL
-    SELECT * FROM bond_rewards
-),
-
-base AS (
-    SELECT
-        block_time,
-        block_date,
-        block_month,
-        block_id,
-        reward_entity,
-        SUM(rune_amount) AS rune_amount,
-        SUM(rune_amount_usd) AS rune_amount_usd,
-        _unique_key,
-        MAX(_inserted_timestamp) AS _inserted_timestamp
-    FROM combined_rewards
-    GROUP BY
-        block_time,
-        block_date,
-        block_month,
-        block_id,
-        reward_entity,
-        _unique_key
+        re._inserted_timestamp
+    FROM
+        {{ ref('thorchain_silver_rewards_events') }} as re
+    JOIN
+        {{ ref('thorchain_silver_block_log') }} as b
+        ON re.block_timestamp = b.timestamp
+    LEFT JOIN
+        block_prices as p
+        ON b.height = p.block_id
+    {% if is_incremental() -%}
+    WHERE
+    (
+        {{ incremental_predicate('b.block_timestamp') }}
+        OR concat_ws(
+            '-',
+            b.height,
+            'bond_holders'
+        ) IN 
+        (
+            SELECT
+                _unique_key
+            FROM
+                {{ this }}
+            WHERE
+                rune_amount_USD IS NULL
+        )
+    )
+    {% endif -%}
 )
-
-SELECT * FROM base
+SELECT
+    block_timestamp,
+    block_id,
+    reward_entity,
+    SUM(rune_amount) AS rune_amount,
+    SUM(rune_amount_usd) AS rune_amount_usd,
+    _unique_key,
+    MAX(_inserted_timestamp) AS _inserted_timestamp
+FROM
+    fin
+GROUP BY
+    block_timestamp,
+    block_id,
+    reward_entity,
+    _unique_key
