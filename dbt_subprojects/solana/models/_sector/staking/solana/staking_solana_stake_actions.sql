@@ -28,7 +28,7 @@ with
             and token_mint_address is null
             and tx_success
             and block_time >= TIMESTAMP '2020-11-14' --min(block_time) from stake_program_solana.stake_call_Merge, inner joined downstream
-            {% if is_incremental() %}
+            {% if is_incremental() or true %}
             and {{ incremental_predicate('block_time') }}
             {% endif %}
     )
@@ -51,7 +51,7 @@ with
             AND aa.block_slot = m.call_block_slot
             AND aa.tx_id = m.call_tx_id
         where 1=1 
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
         and {{ incremental_predicate('m.call_block_time') }}
         {% endif %}
     )
@@ -70,7 +70,7 @@ with
             , call_tx_id
         FROM {{ source('stake_program_solana', 'stake_call_Withdraw') }}
         where 1=1 
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
         and {{ incremental_predicate('call_block_time') }}
         {% endif %}
     )
@@ -89,7 +89,7 @@ with
             , call_tx_id
         FROM {{ source('stake_program_solana', 'stake_call_Split') }}
         where 1=1 
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
         and {{ incremental_predicate('call_block_time') }}
         {% endif %}
     )
