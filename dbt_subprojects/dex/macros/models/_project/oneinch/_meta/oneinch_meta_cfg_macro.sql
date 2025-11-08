@@ -37,25 +37,25 @@
 {% macro oneinch_meta_contracts_cfg_macro() %}
     {{ return({
         "AccessTokenLimitsV1": {
-            "version": "1",
-            "type": "AccessToken",
-            "mode": "limits",
-            "address": "0xacce5500000f71a32b5e5514d1577e14b7aacc4a",
-            "start": "2024-08-28",
+            "version"   : "1",
+            "type"      : "AccessToken",
+            "mode"      : "limits",
+            "address"   : "0xacce5500000f71a32b5e5514d1577e14b7aacc4a",
+            "start"     : "2024-08-28",
         },
         "AccessTokenFusionV1": {
-            "version": "1",
-            "type": "AccessToken",
-            "mode": "fusion",
-            "address": "0xacce550000863572b867e661647cd7d97b72c507",
-            "start": "2024-08-28",
+            "version"   : "1",
+            "type"      : "AccessToken",
+            "mode"      : "fusion",
+            "address"   : "0xacce550000863572b867e661647cd7d97b72c507",
+            "start"     : "2024-08-28",
         },
         "AccessTokenCrossChainV1": {
-            "version": "1",
-            "type": "AccessToken",
-            "mode": "cross-chain",
-            "address": "0xacce550000159e70908c0499a1119d04e7039c28",
-            "start": "2024-08-28",
+            "version"   : "1",
+            "type"      : "AccessToken",
+            "mode"      : "cross-chain",
+            "address"   : "0xacce550000159e70908c0499a1119d04e7039c28",
+            "start"     : "2024-08-28",
         },
     }) }}
 {% endmacro %}
