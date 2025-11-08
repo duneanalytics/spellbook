@@ -16,27 +16,29 @@
 
 WITH base AS (
   SELECT
-    day,
-    liquidity_fees,
-    liquidity_fees_usd,
-    block_rewards,
-    block_rewards_usd,
-    total_earnings,
-    total_earnings_usd,
-    earnings_to_nodes,
-    earnings_to_nodes_usd,
-    earnings_to_pools,
-    earnings_to_pools_usd,
-    avg_node_count,
-    _inserted_timestamp
-  FROM {{ ref('thorchain_silver_daily_earnings') }}
+      day,
+      liquidity_fees,
+      liquidity_fees_usd,
+      block_rewards,
+      block_rewards_usd,
+      total_earnings,
+      total_earnings_usd,
+      earnings_to_nodes,
+      earnings_to_nodes_usd,
+      earnings_to_pools,
+      earnings_to_pools_usd,
+      avg_node_count,
+      _inserted_timestamp
+  FROM
+    {{ ref('thorchain_silver_daily_earnings') }}
   {% if is_incremental() %}
   WHERE {{ incremental_predicate('day') }}
-  {% endif %}
+  {% endif -%}
 )
-
 SELECT
-  {{ dbt_utils.generate_surrogate_key(['day']) }} AS fact_daily_earnings_id,
+  {{ dbt_utils.generate_surrogate_key(
+    ['a.day']
+  ) }} AS fact_daily_earnings_id,
   day,
   liquidity_fees,
   liquidity_fees_usd,
@@ -49,7 +51,8 @@ SELECT
   earnings_to_pools,
   earnings_to_pools_usd,
   avg_node_count,
-  _inserted_timestamp,
+  a._inserted_timestamp,
   current_timestamp AS inserted_timestamp,
   current_timestamp AS modified_timestamp
-FROM base
+FROM
+  base as a
