@@ -1,118 +1,114 @@
 {{ config(
     schema = 'thorchain_silver',
     alias = 'total_value_locked',
-    materialized = 'incremental',
+    materialized = 'table',
     file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['block_month', 'block_date'],
-    partition_by = ['block_month'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
+    partition_by = ['day'],
     tags = ['thorchain', 'total_value_locked', 'silver']
 ) }}
 
 WITH bond_type_day AS (
     SELECT
-        DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)) AS block_date,
-        a.bond_type,
-        (SUM(a.e8) / pow(10, 8)) AS rune_amount,
+        cast(date_trunc('day', b.block_timestamp) AS date) AS day,
+        bond_type,
+        (SUM(e8) / pow(10, 8)) AS rune_amount,
         MAX(a._inserted_timestamp) AS _inserted_timestamp
-    FROM {{ ref('thorchain_silver_bond_events') }} a
-    JOIN {{ ref('thorchain_silver_block_log') }} b
-        ON a.block_time = cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)
-    {% if is_incremental() %}
-    WHERE {{ incremental_predicate('a.block_time') }}
-    {% endif %}
+    FROM
+        {{ ref('thorchain_silver_bond_events') }} AS a
+    JOIN {{ ref('thorchain_silver_block_log') }} AS b
+        ON a.block_timestamp = b.timestamp
     GROUP BY
-        DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)),
-        a.bond_type
+        cast(date_trunc('day', b.block_timestamp) AS date),
+        bond_type
 ),
-
 bond_type_day_direction AS (
     SELECT
-        block_date,
+        day,
         bond_type,
         CASE
-            WHEN bond_type IN ('bond_returned', 'bond_cost') THEN -1
+            WHEN bond_type IN (
+            'bond_returned',
+            'bond_cost'
+            ) THEN -1
             ELSE 1
         END AS direction,
         rune_amount,
-        rune_amount * 
-        CASE
-            WHEN bond_type IN ('bond_returned', 'bond_cost') THEN -1
-            ELSE 1
-        END AS abs_rune_amount,
+        rune_amount * direction AS abs_rune_amount,
         _inserted_timestamp
-    FROM bond_type_day
+    FROM
+        bond_type_day
 ),
-
 total_value_bonded_tbl AS (
     SELECT
-        block_date,
+        day,
         SUM(abs_rune_amount) AS total_value_bonded,
         MAX(_inserted_timestamp) AS _inserted_timestamp
-    FROM bond_type_day_direction
-    GROUP BY block_date
+    FROM
+        bond_type_day_direction
+    GROUP BY
+        day
 ),
-
 total_pool_depth AS (
-    SELECT
-        DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp)) AS block_date,
+  SELECT
+        cast(date_trunc('day', b.block_timestamp) AS date) AS day,
         b.height AS block_id,
-        a.pool_name,
-        a.rune_e8,
-        a.asset_e8,
-        MAX(b.height) OVER (
-            PARTITION BY a.pool_name, DATE(cast(from_unixtime(cast(b.timestamp / 1e9 as bigint)) as timestamp))
-        ) AS max_block_id,
+        pool_name,
+        rune_e8,
+        asset_e8,
+        MAX(height) over (PARTITION BY pool_name, cast(date_trunc('day', b.block_timestamp) AS date)) AS max_block_id,
         a._inserted_timestamp
-    FROM {{ ref('thorchain_silver_block_pool_depths') }} a
-    JOIN {{ ref('thorchain_silver_block_log') }} b
-        ON a.raw_block_timestamp = b.timestamp
-    WHERE LOWER(a.pool_name) NOT LIKE 'thor.%'
-    {% if is_incremental() %}
-      AND {{ incremental_predicate('a.block_time') }}
-    {% endif %}
+    FROM
+        {{ ref('thorchain_silver_block_pool_depths') }} AS a
+    JOIN {{ ref('thorchain_silver_block_log') }} AS b
+        ON a.block_timestamp = b.timestamp
+    WHERE LOWER(pool_name) NOT LIKE 'thor.%'
 ),
-
 total_pool_depth_max AS (
     SELECT
-        block_date,
+        day,
         rune_e8 AS rune_depth,
         asset_e8 AS asset_depth,
         _inserted_timestamp
-    FROM total_pool_depth
-    WHERE block_id = max_block_id
+    FROM
+        total_pool_depth
+    WHERE
+        block_id = max_block_id
 ),
-
 total_value_pooled_tbl AS (
-    SELECT
-        block_date,
-        SUM(rune_depth) * 2 / power(10, 8) AS total_value_pooled,
+  SELECT
+        day,
+        SUM(rune_depth) * 2 / power(
+            10,
+            8
+        ) AS total_value_pooled,
         MAX(_inserted_timestamp) AS _inserted_timestamp
-    FROM total_pool_depth_max
-    GROUP BY block_date
-),
-
-base AS (
-    SELECT
-        COALESCE(tvb.block_date, tvp.block_date) AS block_date,
-        date_trunc('month', COALESCE(tvb.block_date, tvp.block_date)) as block_month,
-        COALESCE(tvp.total_value_pooled, 0) AS total_value_pooled,
-        
-        SUM(COALESCE(tvb.total_value_bonded, 0)) OVER (
-            ORDER BY COALESCE(tvb.block_date, tvp.block_date) ASC
-        ) AS total_value_bonded,
-        
-        COALESCE(tvp.total_value_pooled, 0) + 
-        SUM(COALESCE(tvb.total_value_bonded, 0)) OVER (
-            ORDER BY COALESCE(tvb.block_date, tvp.block_date) ASC
-        ) AS total_value_locked,
-        
-        COALESCE(tvb._inserted_timestamp, tvp._inserted_timestamp) AS _inserted_timestamp
-        
-    FROM total_value_bonded_tbl tvb
-    FULL OUTER JOIN total_value_pooled_tbl tvp
-        ON tvb.block_date = tvp.block_date
+    FROM
+        total_pool_depth_max
+    GROUP BY
+        day
 )
-
-SELECT * FROM base
+SELECT
+    COALESCE(
+        total_value_bonded_tbl.day,
+        total_value_pooled_tbl.day
+    ) AS DAY,
+    COALESCE(
+        total_value_pooled,
+        0
+    ) AS total_value_pooled,
+    COALESCE(SUM(total_value_bonded) over (ORDER BY COALESCE(total_value_bonded_tbl.day, total_value_pooled_tbl.day) ASC), 0) AS total_value_bonded,
+    COALESCE(
+        total_value_pooled,
+        0
+    ) + SUM(COALESCE(total_value_bonded, 0)) over (
+        ORDER BY
+            COALESCE(
+            total_value_bonded_tbl.day,
+            total_value_pooled_tbl.day
+            ) ASC
+    ) AS total_value_locked,
+    total_value_bonded_tbl._inserted_timestamp
+FROM
+  total_value_bonded_tbl full
+JOIN total_value_pooled_tbl
+  ON total_value_bonded_tbl.day = total_value_pooled_tbl.day
