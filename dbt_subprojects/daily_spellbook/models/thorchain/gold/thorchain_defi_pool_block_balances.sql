@@ -15,50 +15,43 @@
 ) }}
 
 WITH base AS (
-    SELECT
-        block_id,
-        pool_name,
-        rune_amount,
-        rune_amount_usd,
-        asset_amount,
-        asset_amount_usd,
-        synth_amount,
-        synth_amount_usd,
-        _unique_key,
-        _inserted_timestamp,
-        block_time
-    FROM {{ ref('thorchain_silver_pool_block_balances') }}
+  SELECT
+    block_id,
+    pool_name,
+    rune_amount,
+    rune_amount_usd,
+    asset_amount,
+    asset_amount_usd,
+    synth_amount,
+    synth_amount_usd,
+    _unique_key,
+    _INSERTED_TIMESTAMP
+FROM
+    {{ ref('thorchain_silver_pool_block_balances') }}
 )
-
 SELECT
-    -- CRITICAL: Generate surrogate key (Trino equivalent of dbt_utils.generate_surrogate_key)
-    to_hex(sha256(to_utf8(cast(a._unique_key as varchar)))) AS fact_pool_block_balances_id,
-    
-    -- CRITICAL: Always include partitioning columns first
-    a.block_time,
-    date(a.block_time) as block_date,
-    date_trunc('month', a.block_time) as block_month,
-    
-    -- Block dimension reference (set directly - no JOIN needed)
-    '-1' AS dim_block_id,
-    
-    -- Pool balance data
-    a.pool_name,
-    a.rune_amount,
-    a.rune_amount_usd,
-    a.asset_amount,
-    a.asset_amount_usd,
-    a.synth_amount,
-    a.synth_amount_usd,
-    
-    -- Audit fields (Trino conversions)
-    a._inserted_timestamp                AS source_inserted_timestamp,
-    replace(cast(uuid() as varchar), '-', '') AS _audit_run_id,
-    current_timestamp AS inserted_timestamp,  -- Trino equivalent of SYSDATE()
-    current_timestamp AS modified_timestamp
-
-FROM base a
-
+  {{ dbt_utils.generate_surrogate_key(
+    ['a._unique_key']
+  ) }} AS fact_pool_block_balances_id,
+  b.block_timestamp,
+  COALESCE(
+    b.dim_block_id,
+    '-1'
+  ) AS dim_block_id,
+  pool_name,
+  rune_amount,
+  rune_amount_usd,
+  asset_amount,
+  asset_amount_usd,
+  synth_amount,
+  synth_amount_usd,
+  A._INSERTED_TIMESTAMP,
+  current_timestamp AS inserted_timestamp,
+  current_timestamp AS modified_timestamp
+FROM
+  base as a
+JOIN {{ ref('thorchain_core_block') }} as b
+  ON a.block_id = b.block_id
 {% if is_incremental() %}
-WHERE {{ incremental_predicate('a.block_time') }}
+WHERE {{ incremental_predicate('b.block_timestamp') }}
 {% endif %}
