@@ -11,135 +11,150 @@
 ) }}
 
 WITH swaps AS (
-    SELECT 
-        se.tx_hash,
-        se.chain AS blockchain,
-        se.from_addr AS from_address,
-        se.to_addr AS to_address,
-        se.from_asset,
-        se.from_e8,
-        se.to_asset,
-        se.to_e8,
-        se.memo,
-        se.pool AS pool_name,
-        se.to_e8_min_amount AS to_e8_min,
-        se.swap_slip_bp,
-        se.liq_fee_e8,
-        se.liq_fee_in_rune_e8,
-        se.direction AS _DIRECTION,
-        se.event_id,
-        se.streaming_count,
-        se.streaming_quantity,
-        se.block_time AS block_timestamp,
-        bh.block_id,
-        se.tx_type AS _TX_TYPE,
-        COUNT(1) OVER (PARTITION BY se.tx_hash) AS n_tx,
-        RANK() OVER (PARTITION BY se.tx_hash ORDER BY se.liq_fee_e8 ASC) AS rank_liq_fee,
-        se.block_date,
-        se.block_month
-    FROM {{ ref('thorchain_silver_swap_events') }} se
-    LEFT JOIN (
-        SELECT DISTINCT
-            CAST(from_unixtime(CAST(timestamp/1e9 AS bigint)) AS timestamp) AS block_time,
-            height AS block_id
-        FROM {{ source('thorchain','block_log') }}
-        {% if is_incremental() %}
-        WHERE {{ incremental_predicate('CAST(from_unixtime(CAST(timestamp/1e9 AS bigint)) AS timestamp)') }}
-        {% endif %}
-    ) bh ON se.block_time = bh.block_time
-    {% if is_incremental() %}
-    WHERE {{ incremental_predicate('se.block_time') }}
-    {% endif %}
+    SELECT
+        tx_id,
+        blockchain,
+        from_address,
+        to_address,
+        from_asset,
+        from_e8,
+        to_asset,
+        to_e8,
+        memo,
+        pool_name,
+        to_e8_min,
+        swap_slip_bp,
+        liq_fee_e8,
+        liq_fee_in_rune_e8,
+        _DIRECTION,
+        event_id,
+        streaming_count,
+        streaming_quantity,
+        b.block_timestamp,
+        b.height AS block_id,
+        _TX_TYPE,
+        a._INSERTED_TIMESTAMP,
+        COUNT(1) over (
+            PARTITION BY tx_id
+        ) AS n_tx,
+        RANK() over (
+            PARTITION BY tx_id
+            ORDER BY
+            liq_fee_e8 ASC
+        ) AS rank_liq_fee
+    FROM
+        {{ ref('thorchain_silver_swap_events') }} as a
+    JOIN {{ ref('thorchain_silver_block_log') }} as b
+        ON a.block_timestamp = b.timestamp
+    {% if is_incremental() -%}
+    WHERE {{ incremental_predicate('b.block_timestamp') }}
+    {% endif -%}
 )
-
-SELECT 
+SELECT
     se.block_timestamp,
-    se.block_timestamp AS block_time,
     se.block_id,
-    se.tx_hash,
-    se.blockchain,
+    tx_id,
+    blockchain,
     se.pool_name,
-    se.from_address,
-    
+    from_address,
     CASE
-        WHEN se.n_tx > 1
-            AND se.rank_liq_fee = 1
-            AND LENGTH(element_at(SPLIT(se.memo, ':'), 5)) = 43 THEN element_at(SPLIT(se.memo, ':'), 5)
-        WHEN se.n_tx > 1
-            AND LOWER(SUBSTR(se.memo, 1, 1)) IN ('s', '=')
-            AND LENGTH(COALESCE(element_at(SPLIT(se.memo, ':'), 3), '')) = 0 THEN se.from_address
-        ELSE element_at(SPLIT(se.memo, ':'), 3)
-    END AS native_to_address,
-    
-    se.to_address AS to_pool_address,
-    
+        WHEN n_tx > 1
+        AND rank_liq_fee = 1
+        AND length(CAST(split(memo, ':')[5] AS VARCHAR)) = 43 THEN CAST(split(
+            memo,
+            ':'
+        )[5] AS VARCHAR)
+        WHEN n_tx > 1
+        AND lower(left(memo, 1)) IN (
+            's',
+            '='
+        )
+        AND length(COALESCE(CAST(split(memo, ':')[3] AS VARCHAR), '')) = 0 THEN from_address
+        ELSE CAST(split(
+            memo,
+            ':'
+        )[3] AS VARCHAR)
+        END AS native_to_address,
+    to_address AS to_pool_address,
     CASE
-        WHEN COALESCE(element_at(SPLIT(se.memo, ':'), 5), '') = '' THEN NULL
-        WHEN STRPOS(element_at(SPLIT(se.memo, ':'), 5), '/') > 0 THEN 
-            element_at(SPLIT(element_at(SPLIT(se.memo, ':'), 5), '/'), 1)
-        ELSE element_at(SPLIT(se.memo, ':'), 5)
-    END AS affiliate_address,
-    
+        WHEN COALESCE(split(memo, ':')[5], '') = '' THEN NULL
+        WHEN contains(split(memo, ':')[5], '/') THEN split(split(memo, ':')[5], '/')[1]
+        ELSE CAST(split(
+            memo,
+            ':'
+        )[5] AS VARCHAR)
+        END AS affiliate_address,
     TRY_CAST(
         CASE
-            WHEN COALESCE(element_at(SPLIT(se.memo, ':'), 6), '') = '' THEN NULL
-            WHEN STRPOS(element_at(SPLIT(se.memo, ':'), 6), '/') > 0 THEN 
-                element_at(SPLIT(element_at(SPLIT(se.memo, ':'), 6), '/'), 1)
-            ELSE element_at(SPLIT(se.memo, ':'), 6)
+            WHEN COALESCE(split(memo, ':')[6], '') = '' THEN NULL
+            WHEN contains(split(memo, ':')[6], '/') THEN split(split(memo, ':')[6], '/')[1]
+            ELSE split(
+            memo,
+            ':'
+            )[6]
         END AS INTEGER
     ) AS affiliate_fee_basis_points,
-    
-    se.from_asset,
-    se.to_asset,
-    COALESCE(se.from_e8 / POWER(10, 8), 0) AS from_amount,
-    COALESCE(se.to_e8 / POWER(10, 8), 0) AS to_amount,
-    COALESCE(se.to_e8_min / POWER(10, 8), 0) AS min_to_amount,
-    
+    split(COALESCE(split(split(memo, '|')[1], ':')[5], ''), '/') AS affiliate_addresses_array,
+    ARRAY_AGG(TRY_CAST(TRIM(f.value) AS INTEGER) ORDER BY f.index) AS affiliate_fee_basis_points_array,
+    from_asset,
+    to_asset,
+    COALESCE(from_e8 / pow(10, 8), 0) AS from_amount,
+    COALESCE(to_e8 / pow(10, 8), 0) AS to_amount,
+    COALESCE(to_e8_min / pow(10, 8), 0) AS min_to_amount,
     CASE
-        WHEN se.from_asset = 'THOR.RUNE' THEN COALESCE(se.from_e8 * p.rune_usd / POWER(10, 8), 0)
-        ELSE COALESCE(se.from_e8 * p.asset_usd / POWER(10, 8), 0)
-    END AS from_amount_usd,
-    
+        WHEN from_asset = 'THOR.RUNE' THEN COALESCE(from_e8 * rune_usd / pow(10, 8), 0)
+        ELSE COALESCE(from_e8 * asset_usd / pow(10, 8), 0)
+        END AS from_amount_usd,
     CASE
-        WHEN se.to_asset = 'THOR.RUNE' OR se.to_asset = 'BNB.RUNE-B1A' 
-        THEN COALESCE(se.to_e8 * p.rune_usd / POWER(10, 8), 0)
-        ELSE COALESCE(se.to_e8 * p.asset_usd / POWER(10, 8), 0)
-    END AS to_amount_usd,
-    
-    p.rune_usd,
-    p.asset_usd,
-    
+        WHEN (
+            to_asset = 'THOR.RUNE'
+            OR to_asset = 'BNB.RUNE-B1A'
+        ) THEN COALESCE(to_e8 * rune_usd / pow(10, 8), 0)
+        ELSE COALESCE(to_e8 * asset_usd / pow(10, 8), 0)
+        END AS to_amount_usd,
+    rune_usd,
+    asset_usd,
     CASE
-        WHEN se.to_asset = 'THOR.RUNE' THEN COALESCE(se.to_e8_min * p.rune_usd / POWER(10, 8), 0)
-        ELSE COALESCE(se.to_e8_min * p.asset_usd / POWER(10, 8), 0)
-    END AS to_amount_min_usd,
-    
-    se.swap_slip_bp,
-    COALESCE(se.liq_fee_in_rune_e8 / POWER(10, 8), 0) AS liq_fee_rune,
-    COALESCE(se.liq_fee_in_rune_e8 / POWER(10, 8) * p.rune_usd, 0) AS liq_fee_rune_usd,
-    
+        WHEN to_asset = 'THOR.RUNE' THEN COALESCE(to_e8_min * rune_usd / pow(10, 8), 0)
+        ELSE COALESCE(to_e8_min * asset_usd / pow(10, 8), 0)
+        END AS to_amount_min_usd,
+    swap_slip_bp,
+    COALESCE(liq_fee_in_rune_e8 / pow(10, 8), 0) AS liq_fee_rune,
+    COALESCE(liq_fee_in_rune_e8 / pow(10, 8) * rune_usd, 0) AS liq_fee_rune_usd,
     CASE
-        WHEN se.to_asset = 'THOR.RUNE' THEN COALESCE(se.liq_fee_e8 / POWER(10, 8), 0)
-        ELSE COALESCE(se.liq_fee_e8 / POWER(10, 8), 0)
-    END AS liq_fee_asset,
-    
+        WHEN to_asset = 'THOR.RUNE' THEN COALESCE(liq_fee_e8 / pow(10, 8), 0)
+        ELSE COALESCE(liq_fee_e8 / pow(10, 8), 0)
+        END AS liq_fee_asset,
     CASE
-        WHEN se.to_asset = 'THOR.RUNE' THEN COALESCE(se.liq_fee_e8 * p.rune_usd / POWER(10, 8), 0)
-        ELSE COALESCE(se.liq_fee_e8 * p.asset_usd / POWER(10, 8), 0)
-    END AS liq_fee_asset_usd,
-    
-    se.streaming_count,
-    se.streaming_quantity,
-    se._TX_TYPE,
-    
-    se.block_date,
-    se.block_month,
-    se.event_id
-
-FROM swaps se
-LEFT JOIN {{ ref('thorchain_silver_prices') }} p
+        WHEN to_asset = 'THOR.RUNE' THEN COALESCE(liq_fee_e8 * rune_usd / pow(10, 8), 0)
+        ELSE COALESCE(liq_fee_e8 * asset_usd / pow(10, 8), 0)
+        END AS liq_fee_asset_usd,
+    streaming_count,
+    streaming_quantity,
+    _TX_TYPE,
+    concat_ws(
+        '-',
+        tx_id,
+        cast(se.block_id as varchar),
+        to_asset,
+        from_asset,
+        COALESCE(
+            native_to_address,
+            ''
+        ),
+        from_address,
+        se.pool_name,
+        to_pool_address,
+        event_id
+    ) AS _unique_key,
+    _INSERTED_TIMESTAMP
+FROM
+  swaps se
+LEFT JOIN {{ ref('thorchain_silver_prices') }} as p
     ON se.block_id = p.block_id
     AND se.pool_name = p.pool_name
-    {% if is_incremental() %}
-    AND {{ incremental_predicate('p.block_time') }}
-    {% endif %}
+CROSS JOIN UNNEST(
+    split(COALESCE(split(memo, ':')[6], ''), '/')
+) WITH ORDINALITY AS f(value, index)
+GROUP BY
+    ALL
