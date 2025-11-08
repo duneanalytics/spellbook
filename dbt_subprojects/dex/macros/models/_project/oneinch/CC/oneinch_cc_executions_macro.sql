@@ -24,7 +24,6 @@ calls as (
     from {{ ref('oneinch_' + blockchain.name + '_transfers') }}
     where true
         and nested
-        and related
         and block_date >= timestamp '{{ date_from }}'
         {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
 )

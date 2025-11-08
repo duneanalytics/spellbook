@@ -69,7 +69,7 @@ calls as (
         , contract_address as transfer_contract_address -- original
         , if(token_standard = 'native', {{ wrapper }}, {% if blockchain.atokens %}coalesce(underlying_address, contract_address){% else %}contract_address{% endif %}) as contract_address
         , if(token_standard = 'native', {{ nsymbol }}{% if blockchain.atokens %}, atoken_symbol{% endif %}) as _symbol
-        , if(token_standard = 'native', array_union(array[contract_address], array[{{ same }}, {{ wrapper }}]), array[contract_address]) as same
+        , if(token_standard = 'native', array_union(array[{{ same }}, {{ wrapper }}], array[contract_address]), array[contract_address]) as same
         , amount_raw as amount
         , "from" as transfer_from
         , "to" as transfer_to

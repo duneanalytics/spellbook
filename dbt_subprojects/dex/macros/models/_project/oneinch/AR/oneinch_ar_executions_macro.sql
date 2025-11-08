@@ -25,7 +25,6 @@ calls as (
     from {{ ref('oneinch_' + blockchain.name + '_transfers') }}
     where true
         and nested
-        and related
         and protocol = 'AR'
         and block_date >= timestamp '{{ date_from }}'
         {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
@@ -45,23 +44,23 @@ calls as (
         , call_trace_address
 
         -- source token data --
-        , max(transfer_amount) filter(where {{ src_condition }}) as src_executed_amount
-        , max(transfer_amount_usd) filter(where {{ src_condition }}) as src_executed_amount_usd
-        , max_by({{ src_data }}, (transfer_amount, transfer_number_desc)) filter(where {{ src_condition }} and transfer_from in (tx_from, call_from)) as src_user_executed -- trying to find out what the user actually sent, from the related transfers with the greatest transfer amount and the least trace address
-        , max_by({{ src_data }}, (transfer_amount, transfer_number_desc)) filter(where {{ src_condition }}) as src_executed -- src data from the related transfers with the greatest transfer amount and the least trace address
+        , max(transfer_amount) filter(where {{ src_condition }}) as src_amount
+        , max(transfer_amount_usd) filter(where {{ src_condition }}) as src_amount_usd
+        , max_by({{ src_data }}, (transfer_amount, transfer_number_desc)) filter(where {{ src_condition }} and transfer_from in (tx_from, call_from)) as src_user_data -- trying to find out what the user actually sent, from the related transfers with the greatest transfer amount and the least trace address
+        , max_by({{ src_data }}, (transfer_amount, transfer_number_desc)) filter(where {{ src_condition }}) as src_data -- src data from the related transfers with the greatest transfer amount and the least trace address
 
         -- destination token data --
-        , max(transfer_amount) filter(where {{ dst_condition }}) as dst_executed_amount
-        , max(transfer_amount_usd) filter(where {{ dst_condition }}) as dst_executed_amount_usd
-        , max_by({{ dst_data }}, (transfer_amount, transfer_trace_address)) filter(where {{ dst_condition }} and transfer_to in (tx_from, call_from, dst_receiver)) as dst_user_executed -- trying to find out what the user actually received, from the related transfers with the greatest transfer amount and the greatest (the last) trace address
-        , max_by({{ dst_data }}, (transfer_amount, transfer_trace_address)) filter(where {{ dst_condition }}) as dst_executed -- dst data from the related transfers with the greatest transfer amount and the greatest (the last) trace address
+        , max(transfer_amount) filter(where {{ dst_condition }}) as dst_amount
+        , max(transfer_amount_usd) filter(where {{ dst_condition }}) as dst_amount_usd
+        , max_by({{ dst_data }}, (transfer_amount, transfer_trace_address)) filter(where {{ dst_condition }} and transfer_to in (tx_from, call_from, dst_receiver)) as dst_user_data -- trying to find out what the user actually received, from the related transfers with the greatest transfer amount and the greatest (the last) trace address
+        , max_by({{ dst_data }}, (transfer_amount, transfer_trace_address)) filter(where {{ dst_condition }}) as dst_data -- dst data from the related transfers with the greatest transfer amount and the greatest (the last) trace address
 
         -- general --
-        , max(transfer_amount_usd) filter(where ({{ src_condition }} or {{ dst_condition }}) and trusted) as sources_trusted_executed_amount_usd
-        , max(transfer_amount_usd) filter(where ({{ src_condition }} or {{ dst_condition }}) and {{ user_condition }}) as sources_user_executed_amount_usd
-        , max(transfer_amount_usd) filter(where ({{ src_condition }} or {{ dst_condition }})) as sources_executed_amount_usd
-        , max(transfer_amount_usd) filter(where trusted) as trusted_executed_amount_usd
-        , max(transfer_amount_usd) as executed_amount_usd
+        , max(transfer_amount_usd) filter(where ({{ src_condition }} or {{ dst_condition }}) and trusted) as sources_trusted_amount_usd
+        , max(transfer_amount_usd) filter(where ({{ src_condition }} or {{ dst_condition }}) and {{ user_condition }}) as sources_user_amount_usd
+        , max(transfer_amount_usd) filter(where ({{ src_condition }} or {{ dst_condition }})) as sources_amount_usd
+        , max(transfer_amount_usd) filter(where trusted) as trusted_amount_usd
+        , max(transfer_amount_usd) as amount_usd
     from calls
     left join transfers using(blockchain, block_month, block_date, block_number, block_time, tx_hash, call_trace_address, call_selector, call_method, call_to, protocol, contract_name) -- even with missing transfers, as transfers may not have been parsed
     group by 1, 2, 3, 4
@@ -98,10 +97,10 @@ select
     , contract_name
 
     , coalesce(null
-        , sources_trusted_executed_amount_usd
-        , sources_executed_amount_usd
-        , trusted_executed_amount_usd
-        , executed_amount_usd
+        , sources_trusted_amount_usd
+        , sources_amount_usd
+        , trusted_amount_usd
+        , amount_usd
     ) as amount_usd
     , native_price * tx_gas_price * if(element_at(flags, 'direct'), tx_gas_used, call_gas_used) / pow(10, native_decimals) as execution_cost
 
@@ -109,33 +108,33 @@ select
     , dst_receiver as receiver
     , src_token_address
     , src_token_amount
-    , coalesce(src_user_executed.address, src_executed.address) as src_executed_address
-    , coalesce(src_user_executed.symbol, src_executed.symbol) as src_executed_symbol
-    , coalesce(src_user_executed.amount, src_executed_amount) as src_executed_amount -- first from the user, then only with the correct amount
-    , src_executed_amount_usd
+    , coalesce(src_user_data.address, src_data.address) as src_executed_address
+    , coalesce(src_user_data.symbol, src_data.symbol) as src_executed_symbol
+    , coalesce(src_user_data.amount, src_amount) as src_executed_amount -- first from the user, then only with the correct amount
+    , src_amount_usd as src_executed_amount_usd
 
     , cast(null as varchar) as dst_blockchain
     , dst_token_address
     , dst_token_amount
-    , coalesce(dst_user_executed.address, dst_executed.address) as dst_executed_address
-    , coalesce(dst_user_executed.symbol, dst_executed.symbol) as dst_executed_symbol
-    , coalesce(dst_user_executed.amount, dst_executed_amount) as dst_executed_amount -- first to the user, then only with the correct amount
-    , dst_executed_amount_usd
+    , coalesce(dst_user_data.address, dst_data.address) as dst_executed_address
+    , coalesce(dst_user_data.symbol, dst_data.symbol) as dst_executed_symbol
+    , coalesce(dst_user_data.amount, dst_amount) as dst_executed_amount -- first to the user, then only with the correct amount
+    , dst_amount_usd as dst_executed_amount_usd
     
     , cast(null as varbinary) as order_hash
     , cast(null as varbinary) as hashlock
     , cast(null as array(row(action varchar, success boolean, cost double, tx_hash varbinary, escrow varbinary, token varbinary, amount uint256))) as actions
     
     , map_from_entries(array[
-        ('sender', cast(coalesce(src_user_executed.sender, src_executed.sender) as varchar))
-        , ('receiver', cast(coalesce(dst_user_executed.receiver, dst_executed.receiver) as varchar))
-        , ('sources_trusted_amount_usd', format('$%,.0f', sources_trusted_executed_amount_usd))
-        , ('sources_user_amount_usd', format('$%,.0f', sources_user_executed_amount_usd))
-        , ('sources_amount_usd', format('$%,.0f', sources_executed_amount_usd))
-        , ('trusted_amount_usd', format('$%,.0f', trusted_executed_amount_usd))
-        , ('amount_usd', format('$%,.0f', executed_amount_usd))
-        , ('src_decimals', cast(coalesce(src_user_executed.decimals, src_executed.decimals) as varchar))
-        , ('dst_decimals', cast(coalesce(dst_user_executed.decimals, dst_executed.decimals) as varchar))
+        ('sender', cast(coalesce(src_user_data.sender, src_data.sender) as varchar))
+        , ('receiver', cast(coalesce(dst_user_data.receiver, dst_data.receiver) as varchar))
+        , ('sources_trusted_amount_usd', format('$%,.0f', sources_trusted_amount_usd))
+        , ('sources_user_amount_usd', format('$%,.0f', sources_user_amount_usd))
+        , ('sources_amount_usd', format('$%,.0f', sources_amount_usd))
+        , ('trusted_amount_usd', format('$%,.0f', trusted_amount_usd))
+        , ('amount_usd', format('$%,.0f', amount_usd))
+        , ('src_decimals', cast(coalesce(src_user_data.decimals, src_data.decimals) as varchar))
+        , ('dst_decimals', cast(coalesce(dst_user_data.decimals, dst_data.decimals) as varchar))
     ]) as complement
 
     , remains

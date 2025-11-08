@@ -6,9 +6,9 @@
 -- for cc: 2024-08-20
 -- for a quick CI, change the start dates of the streams to light/easy
 
-{% macro oneinch_ar_cfg_macro() %} {{ return({"name": "ar", "start": "2025-10-01", "mode": "'classic'"}) }} {% endmacro %}
-{% macro oneinch_lo_cfg_macro() %} {{ return({"name": "lo", "start": "2025-10-01", "mode": "if(flags['fusion'], 'fusion', 'limits')"}) }} {% endmacro %}
-{% macro oneinch_cc_cfg_macro() %} {{ return({"name": "cc", "start": "2025-10-01", "mode": "'cross-chain'"}) }} {% endmacro %}
+{% macro oneinch_ar_cfg_macro() %} {{ return({"name": "ar", "start": "2025-10-20", "mode": "'classic'"}) }} {% endmacro %}
+{% macro oneinch_lo_cfg_macro() %} {{ return({"name": "lo", "start": "2025-10-20", "mode": "if(flags['fusion'], 'fusion', 'limits')"}) }} {% endmacro %}
+{% macro oneinch_cc_cfg_macro() %} {{ return({"name": "cc", "start": "2025-10-20", "mode": "'cross-chain'"}) }} {% endmacro %}
 
 {% macro oneinch_streams_cfg_macro() %}
     {{ return([
@@ -19,18 +19,18 @@
 {% endmacro %}
 
 -- SUBSTREAMS CONFIGURATIONS --
-{% macro oneinch_ar_raw_calls_cfg_macro()   %} {{ return(dict(oneinch_ar_cfg_macro(), start="2025-10-01")) }} {% endmacro %}
-{% macro oneinch_ar_transfers_cfg_macro()   %} {{ return(dict(oneinch_ar_cfg_macro(), start="2025-10-01")) }} {% endmacro %}
-{% macro oneinch_ar_executions_cfg_macro()  %} {{ return(dict(oneinch_ar_cfg_macro(), start="2025-10-01")) }} {% endmacro %}
+{% macro oneinch_ar_raw_calls_cfg_macro()   %} {{ return(dict(oneinch_ar_cfg_macro(), start="2025-10-20")) }} {% endmacro %}
+{% macro oneinch_ar_transfers_cfg_macro()   %} {{ return(dict(oneinch_ar_cfg_macro(), start="2025-10-20")) }} {% endmacro %}
+{% macro oneinch_ar_executions_cfg_macro()  %} {{ return(dict(oneinch_ar_cfg_macro(), start="2025-10-20")) }} {% endmacro %}
 
-{% macro oneinch_lo_raw_calls_cfg_macro()   %} {{ return(dict(oneinch_lo_cfg_macro(), start="2025-10-01")) }} {% endmacro %}
-{% macro oneinch_lo_transfers_cfg_macro()   %} {{ return(dict(oneinch_lo_cfg_macro(), start="2025-10-01")) }} {% endmacro %}
-{% macro oneinch_lo_executions_cfg_macro()  %} {{ return(dict(oneinch_lo_cfg_macro(), start="2025-10-01")) }} {% endmacro %}
-{% macro oneinch_lo_fusion_cfg_macro()      %} {{ return(dict(oneinch_lo_cfg_macro(), start="2025-10-01")) }} {% endmacro %}
+{% macro oneinch_lo_raw_calls_cfg_macro()   %} {{ return(dict(oneinch_lo_cfg_macro(), start="2025-10-20")) }} {% endmacro %}
+{% macro oneinch_lo_transfers_cfg_macro()   %} {{ return(dict(oneinch_lo_cfg_macro(), start="2025-10-20")) }} {% endmacro %}
+{% macro oneinch_lo_executions_cfg_macro()  %} {{ return(dict(oneinch_lo_cfg_macro(), start="2025-10-20")) }} {% endmacro %}
+{% macro oneinch_lo_fusion_cfg_macro()      %} {{ return(dict(oneinch_lo_cfg_macro(), start="2025-10-20")) }} {% endmacro %}
 
-{% macro oneinch_cc_raw_calls_cfg_macro()   %} {{ return(dict(oneinch_cc_cfg_macro(), start="2025-10-01")) }} {% endmacro %}
-{% macro oneinch_cc_transfers_cfg_macro()   %} {{ return(dict(oneinch_cc_cfg_macro(), start="2025-10-01")) }} {% endmacro %}
-{% macro oneinch_cc_executions_cfg_macro()  %} {{ return(dict(oneinch_cc_cfg_macro(), start="2025-10-01")) }} {% endmacro %}
+{% macro oneinch_cc_raw_calls_cfg_macro()   %} {{ return(dict(oneinch_cc_cfg_macro(), start="2025-10-20")) }} {% endmacro %}
+{% macro oneinch_cc_transfers_cfg_macro()   %} {{ return(dict(oneinch_cc_cfg_macro(), start="2025-10-20")) }} {% endmacro %}
+{% macro oneinch_cc_executions_cfg_macro()  %} {{ return(dict(oneinch_cc_cfg_macro(), start="2025-10-20")) }} {% endmacro %}
 
 
 -- CONTRACTS CONFIGURATIONS --

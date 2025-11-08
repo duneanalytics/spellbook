@@ -25,7 +25,6 @@ calls as (
     from {{ ref('oneinch_' + blockchain.name + '_transfers') }}
     where true
         and nested
-        and related
         and protocol = 'LO'
         and block_date >= timestamp '{{ date_from }}'
         {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
@@ -44,18 +43,18 @@ calls as (
         , call_trace_address
 
         -- source token data --
-        , max_by({{ data }}, transfer_amount) filter(where {{ src_condition }}) as src_executed -- trying to find out what the user actually sent, from the related transfers with the greatest transfer amount
+        , max_by({{ data }}, transfer_amount) filter(where {{ src_condition }}) as src_data -- trying to find out what the user actually sent, from the related transfers with the greatest transfer amount
 
         -- destination token data --
-        , max_by({{ data }}, transfer_amount) filter(where {{ dst_condition }}) as dst_executed -- trying to find out what the user actually received, from the related transfers with the greatest transfer amount
+        , max_by({{ data }}, transfer_amount) filter(where {{ dst_condition }}) as dst_data -- trying to find out what the user actually received, from the related transfers with the greatest transfer amount
 
         -- general --
-        , max(transfer_amount_usd) filter(where ({{ src_condition }} or {{ dst_condition }}) and trusted) as sources_trusted_executed_amount_usd
-        , max(transfer_amount_usd) filter(where ({{ src_condition }} or {{ dst_condition }})) as sources_executed_amount_usd
-        , max(transfer_amount_usd) filter(where {{ user_condition }} and trusted) as user_trusted_executed_amount_usd
-        , max(transfer_amount_usd) filter(where {{ user_condition }}) as user_executed_amount_usd
-        , max(transfer_amount_usd) filter(where trusted) as trusted_executed_amount_usd
-        , max(transfer_amount_usd) as executed_amount_usd
+        , max(transfer_amount_usd) filter(where ({{ src_condition }} or {{ dst_condition }}) and trusted) as sources_trusted_amount_usd
+        , max(transfer_amount_usd) filter(where ({{ src_condition }} or {{ dst_condition }})) as sources_amount_usd
+        , max(transfer_amount_usd) filter(where {{ user_condition }} and trusted) as user_trusted_amount_usd
+        , max(transfer_amount_usd) filter(where {{ user_condition }}) as user_amount_usd
+        , max(transfer_amount_usd) filter(where trusted) as trusted_amount_usd
+        , max(transfer_amount_usd) as amount_usd
     from calls
     left join transfers using(blockchain, block_month, block_date, block_number, block_time, tx_hash, call_trace_address, call_selector, call_method, call_to, protocol, contract_name) -- even with missing transfers, as transfers may not have been parsed
     group by 1, 2, 3, 4
@@ -92,12 +91,12 @@ select
     , contract_name
 
     , coalesce(null
-        , user_trusted_executed_amount_usd
-        , sources_trusted_executed_amount_usd
-        , user_executed_amount_usd
-        , sources_executed_amount_usd
-        , trusted_executed_amount_usd
-        , executed_amount_usd
+        , user_trusted_amount_usd
+        , sources_trusted_amount_usd
+        , user_amount_usd
+        , sources_amount_usd
+        , trusted_amount_usd
+        , amount_usd
     ) as amount_usd
     , native_price * tx_gas_price * if(element_at(flags, 'direct'), tx_gas_used, call_gas_used) / pow(10, native_decimals) as execution_cost
 
@@ -105,18 +104,18 @@ select
     , receiver
     , maker_asset as src_token_address
     , maker_amount as src_token_amount
-    , src_executed.address as src_executed_address
-    , src_executed.symbol as src_executed_symbol
-    , src_executed.amount as src_executed_amount
-    , src_executed.amount_usd as src_executed_amount_usd
+    , src_data.address as src_executed_address
+    , src_data.symbol as src_executed_symbol
+    , src_data.amount as src_executed_amount
+    , src_data.amount_usd as src_executed_amount_usd
 
     , cast(null as varchar) as dst_blockchain
     , taker_asset as dst_token_address
     , taker_amount as dst_token_amount
-    , dst_executed.address as dst_executed_address
-    , dst_executed.symbol as dst_executed_symbol
-    , dst_executed.amount as dst_executed_amount
-    , dst_executed.amount_usd as dst_executed_amount_usd
+    , dst_data.address as dst_executed_address
+    , dst_data.symbol as dst_executed_symbol
+    , dst_data.amount as dst_executed_amount
+    , dst_data.amount_usd as dst_executed_amount_usd
     
     , order_hash
     , cast(null as varbinary) as hashlock
@@ -125,13 +124,14 @@ select
     , map_from_entries(array[
         ('making_amount', cast(making_amount as varchar))
         , ('taking_amount', cast(taking_amount as varchar))
-        , ('user_trusted_amount_usd', format('$%,.0f', user_trusted_executed_amount_usd))
-        , ('user_amount_usd', format('$%,.0f', user_executed_amount_usd))
-        , ('sources_trusted_amount_usd', format('$%,.0f', sources_trusted_executed_amount_usd))
-        , ('sources_amount_usd', format('$%,.0f', sources_executed_amount_usd))
-        , ('amount_usd', format('$%,.0f', executed_amount_usd))
-        , ('src_decimals', cast(src_executed.decimals as varchar))
-        , ('dst_decimals', cast(dst_executed.decimals as varchar))
+        , ('user_trusted_amount_usd', format('$%,.0f', user_trusted_amount_usd))
+        , ('user_amount_usd', format('$%,.0f', user_amount_usd))
+        , ('sources_trusted_amount_usd', format('$%,.0f', sources_trusted_amount_usd))
+        , ('sources_amount_usd', format('$%,.0f', sources_amount_usd))
+        , ('trusted_amount_usd', format('$%,.0f', trusted_amount_usd))
+        , ('amount_usd', format('$%,.0f', amount_usd))
+        , ('src_decimals', cast(src_data.decimals as varchar))
+        , ('dst_decimals', cast(dst_data.decimals as varchar))
     ]) as complement
     
     , remains
