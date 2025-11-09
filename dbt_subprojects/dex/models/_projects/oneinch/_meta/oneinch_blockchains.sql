@@ -19,5 +19,5 @@
         , {{ blockchain.get('explorer_link', 'null') }} as explorer_link
         , array[{{ blockchain.get('fusion_settlement_addresses', []) | join(', ') }}] as fusion_settlement_addresses
         , array[{{ blockchain.get('escrow_factory_addresses', []) | join(', ') }}] as escrow_factory_addresses
-    {% if not loop.last %}union{% endif %}
+    {% if not loop.last -%} union {%- endif %}
 {% endfor %}

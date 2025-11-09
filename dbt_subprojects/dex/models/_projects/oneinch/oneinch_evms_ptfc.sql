@@ -10,5 +10,5 @@
 
 {% for blockchain in oneinch_blockchains_cfg_macro() if blockchain.exposed and blockchain.evm %}
     select * from ({{ oneinch_ptfc_macro(blockchain = blockchain.name) }})
-    {% if not loop.last %}union all{% endif %}
+    {% if not loop.last -%} union all {%- endif %}
 {% endfor %}

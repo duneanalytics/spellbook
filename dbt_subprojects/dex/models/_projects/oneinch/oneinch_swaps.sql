@@ -30,7 +30,7 @@ executions as (
             , false as second_side
         from {{ ref('oneinch_' + stream.name + '_executions') }}
         where true
-            {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
+            {% if is_incremental() -%} and {{ incremental_predicate('block_time') }}{% endif %}
 
     {% if stream.name == 'lo' %}
         union all -- second side of LO calls (when a direct call LO method => users from two sides)
@@ -41,10 +41,10 @@ executions as (
         where true
             and protocol = 'LO'
             and coalesce(element_at(flags, 'direct'), false)
-            {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
+            {% if is_incremental() -%} and {{ incremental_predicate('block_time') }}{% endif %}
         
     {% endif %}
-        {% if not loop.last %}union all{% endif %}
+        {% if not loop.last -%} union all {%- endif %}
     {% endfor %}
 )
 
@@ -118,6 +118,6 @@ select
         , cast(tx_hash as varchar)
         , array_join(call_trace_address, ',') -- ',' is necessary to avoid similarities after concatenation // array_join(array[1, 0], '') = array_join(array[10], '')
         , mode
-    ))) as execution_id -- TO DO: try to make it orderly (with block_number & tx_index)
+    ))) as execution_id
 from executions
 left join resolvers using(blockchain, tx_from)

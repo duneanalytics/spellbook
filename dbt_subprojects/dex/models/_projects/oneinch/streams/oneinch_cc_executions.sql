@@ -35,7 +35,7 @@ incremental as (
             {% if is_incremental() -%}
                 and hashlock in (select hashlock from incremental) -- e.g. if "cancel" happens a week later, update the whole trade
             {%- endif %}
-        {% if not loop.last %}union all{% endif %}
+        {% if not loop.last -%} union all {%- endif %}
     {% endfor %}
 )
 
@@ -136,7 +136,7 @@ select
     ])) as complement
 
     , remains
-    , cast(null as map(varchar, boolean)) as flags
+    , map_from_entries(array[('cross_chain', true)]) as flags
     , minute
     , block_date
     , block_month

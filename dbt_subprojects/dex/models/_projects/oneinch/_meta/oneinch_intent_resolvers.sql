@@ -92,7 +92,7 @@ registrations as (
                 select tokenId from {{ source('oneinch_' + blockchain.name, contract + '_evt_transfer') }}
                 {% if not loop.last %}union all{% endif -%}
             {%- endfor %}
-            {% if not loop.last %}union all{% endif %}
+            {% if not loop.last -%} union all {%- endif %}
         {% endfor %})
     ), (select array_agg(distinct id) as defined from names, unnest(access_token_ids) as ids(id))
 )

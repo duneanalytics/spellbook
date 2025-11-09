@@ -17,7 +17,7 @@ calls as (
     where true
         and not flags['cross_chain']
         and block_date >= timestamp '{{ date_from }}'
-        {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
+        {% if is_incremental() -%} and {{ incremental_predicate('block_time') }}{% endif %}
 )
 
 , transfers as (
@@ -27,7 +27,7 @@ calls as (
         and nested
         and protocol = 'LO'
         and block_date >= timestamp '{{ date_from }}'
-        {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
+        {% if is_incremental() -%} and {{ incremental_predicate('block_time') }}{% endif %}
 )
 
 {%- set data = 'cast(row(transfer_contract_address, transfer_symbol, transfer_amount, transfer_amount_usd, transfer_decimals) as row(address varbinary, symbol varchar, amount uint256, amount_usd double, decimals bigint))' -%}

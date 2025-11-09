@@ -28,9 +28,9 @@ payload as (
                 from {{ source('oneinch_' + blockchain.name, contract + '_call_' + method) }}
                 where contract_address <> {{ contract_data.initial_address }} -- to filter calls for the initial implementation of Escrow Src/Dst contracts
             ){%- endif %}
-            {% if not loop.last %}union{% endif %}
+            {% if not loop.last -%} union all {%- endif %}
         {% endfor %}
-        {% if not loop.last %}union{% endif %}
+        {% if not loop.last -%} union all {%- endif %}
     {% endfor %}
 )
 
@@ -40,7 +40,7 @@ payload as (
     where true
         and type = 'call'
         and block_date >= timestamp '{{ date_from }}'
-        {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
+        {% if is_incremental() -%} and {{ incremental_predicate('block_time') }}{% endif %}
 )
 
 -- output --

@@ -35,9 +35,9 @@ calls as (
             where true
                 and call_success
                 and block_time >= timestamp '{{ date_from }}' -- it is only needed for simple/easy dates
-                {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
+                {% if is_incremental() -%} and {{ incremental_predicate('block_time') }}{% endif %}
             
-            {% if not loop.last %}union{% endif %}
+            {% if not loop.last -%} union all {%- endif %}
             
         {% endfor %}
     )
@@ -102,7 +102,7 @@ calls as (
     where true
         and blockchain = '{{ blockchain.name }}'
         and minute >= least({% for stream in streams %}date('{{ stream.start }}'){% if not loop.last %}, {% endif %}{% endfor %})
-        {% if is_incremental() %}and {{ incremental_predicate('minute') }}{% endif %}
+        {% if is_incremental() -%} and {{ incremental_predicate('minute') }}{% endif %}
 )
 
 , trusted_tokens as (

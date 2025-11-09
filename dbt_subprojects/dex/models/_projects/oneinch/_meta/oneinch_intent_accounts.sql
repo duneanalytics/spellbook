@@ -31,8 +31,8 @@ legacy as (
                 and auxiliary
                 and contract_name = '{{ Settlement }}'
                 and block_date >= timestamp '{{ date_from }}' -- it is only needed for simple/easy dates
-                {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
-            {% if not loop.last %}union all{% endif %}
+                {% if is_incremental() -%} and {{ incremental_predicate('block_time') }}{% endif %}
+            {% if not loop.last -%} union all {%- endif %}
         {% endfor %}
     )
     group by 1, 2, 3, 4, 5
@@ -49,7 +49,7 @@ legacy as (
     left join legacy using(blockchain, block_date, block_number, tx_hash, call_from)
     where true
         and block_date >= timestamp '{{ date_from }}' -- it is only needed for simple/easy dates
-        {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
+        {% if is_incremental() -%} and {{ incremental_predicate('block_time') }}{% endif %}
     group by 1, 2, 3
 )
 
