@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: suibridge_ethereum
+    description: "Sui's native bridge events on Ethereum"
+    tables:
+      - name: suibridge_evt_tokensdeposited
+      - name: suibridge_evt_tokensclaimed
