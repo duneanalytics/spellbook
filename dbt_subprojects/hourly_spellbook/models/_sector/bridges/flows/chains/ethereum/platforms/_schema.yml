@@ -205,3 +205,12 @@ models:
     config:
       tags: [ 'arbitrum', 'bridges', 'flows' , 'withdrawals' ]
     description: "Arbitrum's v1 native bridge withdrawals events on Ethereum"
+  - name: bridges_ethereum_blast_native_v1_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: blast
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'blast', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Blast's v1 native bridge deposits events on Ethereum"
