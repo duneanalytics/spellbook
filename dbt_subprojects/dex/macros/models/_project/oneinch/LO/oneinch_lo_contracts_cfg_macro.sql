@@ -4,30 +4,30 @@
     {%
         set samples = {
             "v2": {
-                "maker"         : "from_hex(order_map['maker'])",
-                "maker_asset"   : "from_hex(order_map['makerAsset'])",
-                "taker_asset"   : "from_hex(order_map['takerAsset'])",
-                "maker_amount"  : "cast(order_map['makingAmount'] as uint256)",
-                "taker_amount"  : "cast(order_map['takingAmount'] as uint256)",
+                "maker"         : "from_hex(json_value(data, 'lax $.maker))",
+                "maker_asset"   : "from_hex(json_value(data, 'lax $.makerAsset))",
+                "taker_asset"   : "from_hex(json_value(data, 'lax $.takerAsset))",
+                "maker_amount"  : "cast(json_extract_scalar(data, '$.makingAmount') as uint256)",
+                "taker_amount"  : "cast(json_extract_scalar(data, '$.takingAmount') as uint256)",
                 "making_amount" : "output_0",
                 "taking_amount" : "output_1",
             },
             "v4": {
-                "maker"         : "substr(cast(cast(order_map['maker'] as uint256) as varbinary), 13)",
-                "receiver"      : "substr(cast(cast(order_map['receiver'] as uint256) as varbinary), 13)",
-                "maker_asset"   : "substr(cast(cast(order_map['makerAsset'] as uint256) as varbinary), 13)",
-                "taker_asset"   : "substr(cast(cast(order_map['takerAsset'] as uint256) as varbinary), 13)",
-                "maker_amount"  : "cast(order_map['makingAmount'] as uint256)",
-                "taker_amount"  : "cast(order_map['takingAmount'] as uint256)",
+                "maker"         : "substr(cast(cast(json_extract_scalar(data, '$.maker') as uint256) as varbinary), 13)",
+                "receiver"      : "substr(cast(cast(json_extract_scalar(data, '$.receiver') as uint256) as varbinary), 13)",
+                "maker_asset"   : "substr(cast(cast(json_extract_scalar(data, '$.makerAsset') as uint256) as varbinary), 13)",
+                "taker_asset"   : "substr(cast(cast(json_extract_scalar(data, '$.takerAsset') as uint256) as varbinary), 13)",
+                "maker_amount"  : "cast(json_extract_scalar(data, '$.makingAmount') as uint256)",
+                "taker_amount"  : "cast(json_extract_scalar(data, '$.takingAmount') as uint256)",
                 "making_amount" : "output_0",
                 "taking_amount" : "output_1",
                 "order_hash"    : "output_2",
-                "order_remains" : "substr(cast(cast(order_map['salt'] as uint256) as varbinary), 1, 4)",
-                "maker_traits"  : "cast(cast(order_map['makerTraits'] as uint256) as varbinary)",
+                "order_remains" : "substr(cast(cast(json_extract_scalar(data, '$.salt') as uint256) as varbinary), 1, 4)",
+                "maker_traits"  : "cast(cast(json_extract_scalar(data, '$.makerTraits') as uint256) as varbinary)",
                 "taker_traits"  : "cast(takerTraits as varbinary)",
                 "partial_bit"   : "1",
                 "multiple_bit"  : "2",
-            }
+            },
         }
     %}
     -- partial_bit & multiple_bit: the number of the bit on the left starting from 1 to 256 in 32 bytes in MakerTraits struct

@@ -60,7 +60,7 @@ raw_calls as (
                 {% else %} null {% endif %} as multiple
             from (
                 select *
-                    , cast(json_parse({{ method_data.get("order", '"order"') }}) as map(varchar, varchar)) as order_map
+                    , {{ method_data.get("order", '"order"') }} as data
                 from {{ source('oneinch_' + blockchain.name, contract + '_call_' + method) }}
                 where true
                     and call_block_date >= timestamp '{{ date_from }}' -- there are only calls after the contract creation in the decoded table

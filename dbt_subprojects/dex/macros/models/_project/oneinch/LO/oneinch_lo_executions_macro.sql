@@ -44,9 +44,11 @@ calls as (
 
         -- source token data --
         , max_by({{ data }}, transfer_amount) filter(where {{ src_condition }}) as src_data -- trying to find out what the user actually sent, from the related transfers with the greatest transfer amount
+        , max_by({{ data }}, transfer_amount) filter(where transfer_from = maker) as src_user_data -- trying to find out what the user actually sent
 
         -- destination token data --
         , max_by({{ data }}, transfer_amount) filter(where {{ dst_condition }}) as dst_data -- trying to find out what the user actually received, from the related transfers with the greatest transfer amount
+        , max_by({{ data }}, transfer_amount) filter(where transfer_to in (maker, receiver)) as dst_user_data -- trying to find out what the user actually received
 
         -- general --
         , max(transfer_amount_usd) filter(where ({{ src_condition }} or {{ dst_condition }}) and trusted) as sources_trusted_amount_usd
@@ -104,18 +106,18 @@ select
     , receiver
     , maker_asset as src_token_address
     , maker_amount as src_token_amount
-    , src_data.address as src_executed_address
-    , src_data.symbol as src_executed_symbol
-    , src_data.amount as src_executed_amount
-    , src_data.amount_usd as src_executed_amount_usd
+    , coalesce(src_data.address, src_user_data.address) as src_executed_address
+    , coalesce(src_data.symbol, src_user_data.symbol) as src_executed_symbol
+    , coalesce(src_data.amount, src_user_data.amount) as src_executed_amount
+    , coalesce(src_data.amount_usd, src_user_data.amount_usd) as src_executed_amount_usd
 
     , cast(null as varchar) as dst_blockchain
     , taker_asset as dst_token_address
     , taker_amount as dst_token_amount
-    , dst_data.address as dst_executed_address
-    , dst_data.symbol as dst_executed_symbol
-    , dst_data.amount as dst_executed_amount
-    , dst_data.amount_usd as dst_executed_amount_usd
+    , coalesce(dst_data.address, dst_user_data.address) as dst_executed_address
+    , coalesce(dst_data.symbol, dst_user_data.symbol) as dst_executed_symbol
+    , coalesce(dst_data.amount, dst_user_data.amount) as dst_executed_amount
+    , coalesce(dst_data.amount_usd, dst_user_data.amount_usd) as dst_executed_amount_usd
     
     , order_hash
     , cast(null as varbinary) as hashlock
@@ -130,8 +132,8 @@ select
         , ('sources_amount_usd', format('$%,.0f', sources_amount_usd))
         , ('trusted_amount_usd', format('$%,.0f', trusted_amount_usd))
         , ('amount_usd', format('$%,.0f', amount_usd))
-        , ('src_decimals', cast(src_data.decimals as varchar))
-        , ('dst_decimals', cast(dst_data.decimals as varchar))
+        , ('src_decimals', cast(coalesce(src_data.decimals, src_user_data.decimals) as varchar))
+        , ('dst_decimals', cast(coalesce(dst_data.decimals, dst_user_data.decimals) as varchar))
     ]) as complement
     
     , remains
