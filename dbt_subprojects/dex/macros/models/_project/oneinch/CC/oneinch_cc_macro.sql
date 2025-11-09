@@ -97,7 +97,7 @@ iterations as (
                     , {{ method_data.get("order_remains", "0x0000000000") }} as order_remains
                 from (
                     select *
-                        , cast(json_parse({{ method_data.get("order", '"order"') }}) as map(varchar, varchar)) as order_map
+                        , {{ method_data.get("order", '"order"') }} as data
                         , {{ method_data.get("args", "cast(null as varbinary)") }} as args
                     from {{ source('oneinch_' + blockchain.name, contract + '_call_' + method) }}
                     where true
