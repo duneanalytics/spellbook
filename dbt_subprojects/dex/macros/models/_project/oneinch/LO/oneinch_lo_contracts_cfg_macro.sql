@@ -4,9 +4,9 @@
     {%
         set samples = {
             "v2": {
-                "maker"         : "from_hex(json_value(data, 'lax $.maker))",
-                "maker_asset"   : "from_hex(json_value(data, 'lax $.makerAsset))",
-                "taker_asset"   : "from_hex(json_value(data, 'lax $.takerAsset))",
+                "maker"         : "from_hex(json_value(data, 'lax $.maker'))",
+                "maker_asset"   : "from_hex(json_value(data, 'lax $.makerAsset'))",
+                "taker_asset"   : "from_hex(json_value(data, 'lax $.takerAsset'))",
                 "maker_amount"  : "cast(json_extract_scalar(data, '$.makingAmount') as uint256)",
                 "taker_amount"  : "cast(json_extract_scalar(data, '$.takingAmount') as uint256)",
                 "making_amount" : "output_0",

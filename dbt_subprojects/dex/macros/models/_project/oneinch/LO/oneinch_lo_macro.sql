@@ -46,18 +46,18 @@ raw_calls as (
                 , {{ method_data.get("order_remains", "0x0000000000") }} as order_remains
                 , {% if method_data.args %}reduce(array[{{ settlements }}], false, (r, x) -> r or coalesce(varbinary_position({{ method_data.args }}, x), 0) > 0, r -> r){% else %}false{% endif %} as settlement_in_args
                 , {% if method_data.args %}reduce(array[{{ factories }}], false, (r, x) -> r or coalesce(varbinary_position({{ method_data.args }}, x), 0) > 0, r -> r){% else %}false{% endif %} as factory_in_args
-                , {% if 'partial_bit' in method_data %}
+                , {% if 'partial_bit' in method_data -%}
                     try(bitwise_and( -- binary AND to allocate significant bit: necessary byte & mask (i.e. * bit weight)
                         bytearray_to_bigint(substr({{ method_data.maker_traits }}, {{ method_data.partial_bit }} / 8 + 1, 1)) -- current byte: partial_bit / 8 + 1 -- integer division
                         , cast(pow(2, {{ method_data.partial_bit }} - {{ method_data.partial_bit }} / 8 * 8) as bigint) -- 2 ^ (partial_bit - partial_bit / 8 * 8) -- bit_weights = array[128, 64, 32, 16, 8, 4, 2, 1]
                     ) = 0) -- if set, the order does not allow partial fills
-                {% else %} null {% endif %} as partial
-                , {% if 'multiple_bit' in method_data %}
+                {% else -%} null {%- endif %} as partial
+                , {% if 'multiple_bit' in method_data -%}
                     try(bitwise_and( -- binary AND to allocate significant bit: necessary byte & mask (i.e. * bit weight)
                         bytearray_to_bigint(substr({{ method_data.maker_traits }}, {{ method_data.multiple_bit }} / 8 + 1, 1)) -- current byte: multiple_bit / 8 + 1 -- integer division
                         , cast(pow(2, {{ method_data.multiple_bit }} - {{ method_data.multiple_bit }} / 8 * 8) as bigint) -- 2 ^ (multiple_bit - multiple_bit / 8 * 8) -- bit_weights = array[128, 64, 32, 16, 8, 4, 2, 1]
                     ) > 0) -- if set, the order permits multiple fills
-                {% else %} null {% endif %} as multiple
+                {% else -%} null {%- endif %} as multiple
             from (
                 select *
                     , {{ method_data.get("order", '"order"') }} as data
