@@ -23,7 +23,7 @@ with sol_payments as (
         tx_id
     from {{ ref('base_app_swapper_solana_stg_sol_payments') }}
     where
-        {% if is_incremental() %} 
+        {% if is_incremental() or true %} 
         {{ incremental_predicate('block_time') }}
         {% endif %}
 ),
@@ -37,7 +37,7 @@ token_payments as (
         tx_id
     from {{ ref('base_app_swapper_solana_stg_token_payments') }}
     where
-        {% if is_incremental() %} 
+        {% if is_incremental() or true %} 
         {{ incremental_predicate('block_time') }}
         {% endif %}  
 ),
@@ -55,7 +55,7 @@ fee_payments as (
             block_date
         from {{ source('solana', 'transactions') }}
         where
-            {% if is_incremental() %} 
+            {% if is_incremental() or true %} 
                 {{ incremental_predicate('block_date') }}
             {% else %} 
                 block_date >= timestamp '{{query_start_date}}'

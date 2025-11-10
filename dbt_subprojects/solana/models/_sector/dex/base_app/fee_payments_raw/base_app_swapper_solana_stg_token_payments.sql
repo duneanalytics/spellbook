@@ -19,7 +19,7 @@ with token_payments as (
         tx_id
     from {{ ref('base_app_swapper_solana_stg_token_payments_fees_paid') }}
     where
-        {% if is_incremental() %} 
+        {% if is_incremental() or true %} 
         {{ incremental_predicate('block_time') }}
         {% endif %}
     union all
@@ -32,7 +32,7 @@ with token_payments as (
         tx_id
     from {{ ref('base_app_swapper_solana_stg_token_payments_fees_claimed') }}
     where
-        {% if is_incremental() %} 
+        {% if is_incremental() or true %} 
         {{ incremental_predicate('block_time') }}
         {% endif %}    
 )
