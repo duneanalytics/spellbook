@@ -13,6 +13,7 @@
     , 'bridges_' + blockchain + '_across_v2_deposits'
     , 'bridges_' + blockchain + '_across_v3_deposits'
     , 'bridges_' + blockchain + '_butter_v2_deposits'
+    , 'bridges_' + blockchain + '_zkbridge_v1_deposits'
 ] %}
 
 SELECT *
