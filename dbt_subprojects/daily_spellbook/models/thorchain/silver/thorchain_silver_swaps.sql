@@ -4,9 +4,9 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_month', 'tx_hash', 'event_id'],
-    partition_by = ['block_month'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    unique_key = ['day', '_unique_key'],
+    partition_by = ['day'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_timestamp')],
     tags = ['thorchain', 'swaps', 'curated']
 ) }}
 
@@ -51,6 +51,7 @@ WITH swaps AS (
     {% endif -%}
 )
 SELECT
+    cast(date_trunc('day', se.block_timestamp) AS date) AS day,
     se.block_timestamp,
     se.block_id,
     tx_id,
@@ -65,7 +66,7 @@ SELECT
             ':'
         )[5] AS VARCHAR)
         WHEN n_tx > 1
-        AND lower(left(memo, 1)) IN (
+        AND lower(substr(memo, 1, 1)) IN (
             's',
             '='
         )
