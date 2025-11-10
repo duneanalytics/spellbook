@@ -3,7 +3,7 @@ version: 2
 models:
   - name: bridges_crosschain_deposits
     meta:
-      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei, abstract, katana, sonic, taiko, zkevm
       sector: bridges
       contributors: [ 'hildobby']
     config:
@@ -141,7 +141,7 @@ models:
         description: "Blockchain ID where the tokens were sent"
   - name: bridges_crosschain_flows
     meta:
-      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei, abstract, katana, sonic, taiko, zkevm
       sector: bridges
       contributors: [ 'hildobby']
     config:
@@ -191,7 +191,7 @@ models:
       - *withdrawal_chain_id
   - name: bridges_info
     meta:
-      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei, abstract, katana, sonic, taiko, zkevm
       sector: bridges
       contributors: [ 'hildobby']
     config:

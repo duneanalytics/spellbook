@@ -19,3 +19,12 @@ models:
     config:
       tags: [ 'sei', 'bridges', 'flows', 'withdrawals' ]
     description: "Tether's USDT0 v1 bridge withdrawals events on Sei"
+  - name: bridges_sei_symbiosis_v1_deposits
+    meta:
+      blockchain: sei
+      sector: bridges
+      project: symbiosis
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'sei', 'bridges', 'flows', 'withdrawals' ]
+    description: "Symbiosis's v1 bridge deposits events on Sei"

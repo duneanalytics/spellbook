@@ -55,3 +55,12 @@ models:
     config:
       tags: [ 'celer', 'bridges', 'flows' , 'withdrawals' ]
     description: "Celer's v1 bridge withdrawals events on BNB"
+  - name: bridges_bnb_symbiosis_v1_deposits
+    meta:
+      blockchain: bnb
+      sector: bridges
+      project: symbiosis
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bnb', 'bridges', 'flows', 'withdrawals' ]
+    description: "Symbiosis's v1 bridge deposits events on BNB"
