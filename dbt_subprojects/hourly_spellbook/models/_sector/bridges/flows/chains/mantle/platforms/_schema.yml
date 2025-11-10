@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: bridges_mantle_zkbridge_v1_withdrawals
+    meta:
+      blockchain: mantle
+      sector: bridges
+      project: zkbridge
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'mantle', 'bridges', 'flows', 'withdrawals' ]
+    description: "zkBridge's v1 bridge withdrawals events on Mantle"
+  - name: bridges_mantle_zkbridge_v1_deposits
+    meta:
+      blockchain: mantle
+      sector: bridges
+      project: zkbridge
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'mantle', 'bridges', 'flows', 'deposits' ]
+    description: "zkBridge's v1 bridge deposits events on Mantle"
