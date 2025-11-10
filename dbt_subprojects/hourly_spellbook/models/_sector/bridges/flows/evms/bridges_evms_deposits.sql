@@ -12,8 +12,8 @@
 {% if is_incremental() %}
 WITH new_raw_keys AS (
     SELECT DISTINCT deposit_chain
-    , withdrawal_chain
     , withdrawal_chain_id
+    , withdrawal_chain
     , bridge_name
     , bridge_version
     , bridge_transfer_id
