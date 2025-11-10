@@ -20,7 +20,7 @@ WITH all_block_id AS (
     JOIN
         {{ ref('thorchain_silver_block_log') }} as b
         ON a.block_timestamp = b.timestamp
-    {% if is_incremental() -%}
+    {% if is_incremental() or true -%}
     WHERE {{ incremental_predicate('b.block_timestamp') }}
     {% endif -%}
     GROUP BY
@@ -37,7 +37,7 @@ total_pool_rewards_tbl AS (
     JOIN
         {{ ref('thorchain_silver_block_log') }} as b
         ON a.block_timestamp = b.timestamp
-    {% if is_incremental() -%}
+    {% if is_incremental() or true -%}
     WHERE {{ incremental_predicate('b.block_timestamp') }}
     {% endif -%}
     GROUP BY
@@ -53,7 +53,7 @@ total_liquidity_fees_rune_tbl AS (
         {{ ref('thorchain_silver_swap_events') }} AS a
     JOIN {{ ref('thorchain_silver_block_log') }} as b
         ON a.block_timestamp = b.timestamp
-    {% if is_incremental() -%}
+    {% if is_incremental() or true -%}
     WHERE {{ incremental_predicate('b.block_timestamp') }}
     {% endif -%}
     GROUP BY
@@ -78,7 +78,7 @@ liquidity_fees_asset_tbl AS (
             {{ ref('thorchain_silver_swap_events') }} AS a
         JOIN {{ ref('thorchain_silver_block_log') }} as b
             ON a.block_timestamp = b.timestamp
-        {% if is_incremental() -%}
+        {% if is_incremental() or true -%}
         WHERE {{ incremental_predicate('b.block_timestamp') }}
         {% endif -%}
     )
@@ -104,7 +104,7 @@ liquidity_fees_rune_tbl AS (
             {{ ref('thorchain_silver_swap_events') }} AS a
         JOIN {{ ref('thorchain_silver_block_log') }} as b
             ON a.block_timestamp = b.timestamp
-        {% if is_incremental() -%}
+        {% if is_incremental() or true -%}
         WHERE {{ incremental_predicate('b.block_timestamp') }}
         {% endif -%}
     )

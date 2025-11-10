@@ -94,6 +94,6 @@ FROM
   base as a
 JOIN {{ ref('thorchain_core_block') }} as b
   ON a.block_id = b.block_id
-{% if is_incremental() %}
+{% if is_incremental() or true %}
 WHERE {{ incremental_predicate('b.block_timestamp') }}
 {% endif -%}

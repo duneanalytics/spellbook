@@ -36,6 +36,6 @@ LEFT JOIN
     {{ ref('thorchain_silver_prices') }} as p
     ON b.height = p.block_id
     AND bpd.pool_name = p.pool_name
-{% if is_incremental() %}
+{% if is_incremental() or true %}
 WHERE {{ incremental_predicate('bpd.block_timestamp') }}
 {% endif %}

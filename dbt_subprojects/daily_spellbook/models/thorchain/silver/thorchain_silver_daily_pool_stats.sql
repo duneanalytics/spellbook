@@ -18,7 +18,7 @@ WITH daily_rune_price AS (
         AVG(asset_usd) AS asset_usd
     FROM
         {{ ref('thorchain_silver_prices') }} as p
-    {% if is_incremental() -%}
+    {% if is_incremental() or true -%}
     WHERE {{ incremental_predicate('p.block_timestamp') }}
     {% endif -%}
     GROUP BY
@@ -40,7 +40,7 @@ pool_fees AS (
     JOIN daily_rune_price drp
         ON pbf.day = drp.day
         AND pbf.pool_name = drp.pool_name
-    {% if is_incremental() -%}
+    {% if is_incremental() or true -%}
     WHERE {{ incremental_predicate('pbf.day') }}
     {% endif -%}
 )
@@ -145,6 +145,6 @@ LEFT JOIN daily_rune_price drp
 LEFT JOIN pool_fees pf
     ON pbs.day = pf.day
     AND pbs.asset = pf.pool_name
-{% if is_incremental() -%}
+{% if is_incremental() or true -%}
 WHERE {{ incremental_predicate('pbs.day') }}
 {% endif -%}
