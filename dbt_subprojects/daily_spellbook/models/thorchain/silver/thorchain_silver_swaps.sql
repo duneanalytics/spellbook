@@ -79,7 +79,7 @@ SELECT
     to_address AS to_pool_address,
     CASE
         WHEN COALESCE(split(memo, ':')[5], '') = '' THEN NULL
-        WHEN contains(split(memo, ':')[5], '/') THEN split(split(memo, ':')[5], '/')[1]
+        WHEN strpos(split(memo, ':')[5], '/') > 0 THEN split(split(memo, ':')[5], '/')[1]
         ELSE CAST(split(
             memo,
             ':'
@@ -88,7 +88,7 @@ SELECT
     TRY_CAST(
         CASE
             WHEN COALESCE(split(memo, ':')[6], '') = '' THEN NULL
-            WHEN contains(split(memo, ':')[6], '/') THEN split(split(memo, ':')[6], '/')[1]
+            WHEN strpos(split(memo, ':')[6], '/') > 0 THEN split(split(memo, ':')[6], '/')[1]
             ELSE split(
             memo,
             ':'
