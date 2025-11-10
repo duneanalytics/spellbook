@@ -55,3 +55,21 @@ models:
     config:
       tags: [ 'synapse', 'bridges', 'flows' , 'withdrawals' ]
     description: "Synapse's RFQ bridge withdrawals events on Scroll"
+  - name: bridges_scroll_celer_v1_deposits
+    meta:
+      blockchain: scroll
+      sector: bridges
+      project: celer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'celer', 'bridges', 'flows' , 'deposits' ]
+    description: "Celer's v1 bridge deposits events on Scroll"
+  - name: bridges_scroll_celer_v1_withdrawals
+    meta:
+      blockchain: scroll
+      sector: bridges
+      project: celer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'celer', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Celer's v1 bridge withdrawals events on Scroll"
