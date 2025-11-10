@@ -25,7 +25,7 @@ with base as (
         event_id,
         block_timestamp,
         _TX_TYPE,
-        _ingested_at AS _inserted_timestamp,
+        _ingested_at AS _inserted_timestamp
     FROM {{ source('thorchain', 'withdraw_events') }}
 )
 
