@@ -214,3 +214,21 @@ models:
     config:
       tags: [ 'beamer', 'bridges', 'flows' , 'withdrawals' ]
     description: "Beamer's v2 bridge deposits events on Ethereum"
+  - name: bridges_ethereum_polygon_native_v1_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: polygon
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'polygon', 'bridges', 'flows' , 'deposits' ]
+    description: "Polygon's v1 native bridge deposits events on Ethereum"
+  - name: bridges_ethereum_polygon_native_v1_withdrawals
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: polygon
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'polygon', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Polygon's v1 native bridge withdrawals events on Ethereum"
