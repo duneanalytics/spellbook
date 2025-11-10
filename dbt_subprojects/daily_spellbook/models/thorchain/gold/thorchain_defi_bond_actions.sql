@@ -71,7 +71,7 @@ JOIN {{ ref('thorchain_core_block') }} as b
     ON be.block_timestamp = b.timestamp
 LEFT JOIN block_prices p
     ON b.block_id = p.block_id
-{% if is_incremental() or true -%}
+{% if is_incremental() -%}
 WHERE {{ incremental_predicate('b.block_timestamp') }}
 OR tx_id IN (
     SELECT
