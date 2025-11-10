@@ -74,7 +74,7 @@ SELECT
             rune_tx_id,
             ''
         ),
-        lp_action,
+        'add_liquidity',
         se.pool_name,
         COALESCE(
             rune_address,
@@ -139,7 +139,7 @@ SELECT
             tx_id,
             ''
         ),
-        lp_action,
+        'remove_liquidity',
         ue.pool_name,
         COALESCE(
             from_address,

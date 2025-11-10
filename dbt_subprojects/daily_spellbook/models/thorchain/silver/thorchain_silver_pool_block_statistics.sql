@@ -434,7 +434,9 @@ joined AS (
             withdraw_rune_volume,
             0
         ) AS withdraw_rune_volume,
-        COALESCE((withdraw_rune_volume + withdraw_asset_volume), 0) AS withdraw_volume
+        COALESCE((withdraw_rune_volume + withdraw_asset_volume), 0) AS withdraw_volume.
+        added_stake,
+        withdrawn_stake
     FROM
         pool_depth
     LEFT JOIN pool_status
@@ -485,10 +487,16 @@ joined AS (
     from
         joined
 )
-, final AS (
+, synth_units AS (
     select
         *
         , total_stake * synth_depth / ((asset_depth * 2) - synth_depth) AS synth_units
+    from
+        total_stake
+)
+, final AS (
+    select
+        *
         , CASE
             WHEN total_stake = 0 THEN 0
             WHEN depth_product < 0 THEN 0
@@ -497,7 +505,7 @@ joined AS (
                 )
         END AS liquidity_unit_value_index
     from
-        total_stake
+        synth_units
 )
 SELECT DISTINCT
     day,
