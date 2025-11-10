@@ -33,7 +33,15 @@ bond_type_day_direction AS (
             ELSE 1
         END AS direction,
         rune_amount,
-        rune_amount * direction AS abs_rune_amount,
+        rune_amount * (
+            CASE
+                WHEN bond_type IN (
+                'bond_returned',
+                'bond_cost'
+                ) THEN -1
+                ELSE 1
+            END
+        ) AS abs_rune_amount,
         _inserted_timestamp
     FROM
         bond_type_day
