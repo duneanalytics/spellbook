@@ -34,6 +34,7 @@
     , 'sei'
     , 'shape'
     , 'somnia'
+    , 'story'
     , 'superseed'
     , 'tac'
     , 'taiko'
