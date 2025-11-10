@@ -16,7 +16,7 @@ WITH max_daily_block AS (
         cast(date_trunc('day', block_timestamp) AS date) AS day
     FROM
         {{ ref('thorchain_silver_prices') }} as p
-    {% if is_incremental() -%}
+    {% if is_incremental() or true -%}
     WHERE {{ incremental_predicate('p.block_timestamp') }}
     {% endif -%}
     GROUP BY
@@ -31,7 +31,7 @@ daily_rune_price AS (
         {{ ref('thorchain_silver_prices') }} as p
     JOIN max_daily_block as mdb
         ON p.block_id = mdb.block_id
-    {% if is_incremental() -%}
+    {% if is_incremental() or true -%}
     WHERE {{ incremental_predicate('p.block_timestamp') }}
     {% endif -%}
     GROUP BY
