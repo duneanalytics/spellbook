@@ -1,15 +1,15 @@
-{{
+{{-
     config(
         schema = 'oneinch',
         alias = 'blockchains',
         materialized = 'table',
         unique_key = ['blockchain'],
     )
-}}
+-}}
 
 
 
-{% for blockchain in oneinch_blockchains_cfg_macro() %}
+{%- for blockchain in oneinch_blockchains_cfg_macro() %}
     select
         '{{ blockchain.name }}' as blockchain
         , {{ blockchain.get('chain_id', 'null') }} as chain_id
@@ -20,4 +20,4 @@
         , array[{{ blockchain.get('fusion_settlement_addresses', []) | join(', ') }}] as fusion_settlement_addresses
         , array[{{ blockchain.get('escrow_factory_addresses', []) | join(', ') }}] as escrow_factory_addresses
     {% if not loop.last -%} union {%- endif %}
-{% endfor %}
+{%- endfor -%}
