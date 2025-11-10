@@ -38,7 +38,7 @@ WITH base_transfers as (
         , symbol
         , price
     FROM
-        {{ source('prices_coinpaprika', 'hour') }}    
+        {{ source('prices_external', 'hour') }}    
     WHERE
         1=1
         {% if is_incremental() -%}
