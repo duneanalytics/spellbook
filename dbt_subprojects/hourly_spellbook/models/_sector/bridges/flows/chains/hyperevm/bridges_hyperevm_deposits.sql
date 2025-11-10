@@ -9,6 +9,7 @@
 
 {% set bridges_platforms = [
     'bridges_' + blockchain + '_across_v3_deposits'
+    , 'bridges_' + blockchain + '_tether_v1_deposits'
 ] %}
 
 SELECT *
@@ -26,7 +27,6 @@ FROM (
     , sender
     , recipient
     , deposit_token_standard
-    , withdrawal_token_standard
     , deposit_token_address
     , tx_from
     , tx_hash
