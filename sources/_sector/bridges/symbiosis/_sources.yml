@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: symbiosis_arbitrum
+    description: "Symbiosis's bridge events on Arbitrum"
+    tables:
+      - name: portal_evt_synthesizerequest
