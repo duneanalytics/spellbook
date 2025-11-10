@@ -434,24 +434,7 @@ joined AS (
             withdraw_rune_volume,
             0
         ) AS withdraw_rune_volume,
-        COALESCE((withdraw_rune_volume + withdraw_asset_volume), 0) AS withdraw_volume,
-        SUM(COALESCE(added_stake, 0) - COALESCE(withdrawn_stake, 0)) over (
-            PARTITION BY pool_depth.pool_name
-            ORDER BY
-            pool_depth.day ASC
-        ) AS total_stake,
-        asset_depth * COALESCE(
-            rune_depth,
-            0
-        ) AS depth_product,
-        total_stake * synth_depth / ((asset_depth * 2) - synth_depth) AS synth_units,
-        CASE
-            WHEN total_stake = 0 THEN 0
-            WHEN depth_product < 0 THEN 0
-            ELSE SQRT(depth_product) / (
-            total_stake + synth_units
-            )
-        END AS liquidity_unit_value_index
+        COALESCE((withdraw_rune_volume + withdraw_asset_volume), 0) AS withdraw_volume
     FROM
         pool_depth
     LEFT JOIN pool_status
@@ -487,6 +470,34 @@ joined AS (
     LEFT JOIN asset_price_usd_tbl
         ON pool_depth.pool_name = asset_price_usd_tbl.pool_name
         AND pool_depth.day = asset_price_usd_tbl.day
+)
+, total_stake AS (
+    select
+        *
+        , SUM(COALESCE(added_stake, 0) - COALESCE(withdrawn_stake, 0)) over (
+            PARTITION BY asset
+            ORDER BY  day ASC
+        ) AS total_stake
+        , asset_depth * COALESCE(
+            rune_depth,
+            0
+        ) AS depth_product
+    from
+        joined
+)
+, final AS (
+    select
+        *
+        , total_stake * synth_depth / ((asset_depth * 2) - synth_depth) AS synth_units
+        , CASE
+            WHEN total_stake = 0 THEN 0
+            WHEN depth_product < 0 THEN 0
+            ELSE SQRT(depth_product) / (
+                total_stake + synth_units
+                )
+        END AS liquidity_unit_value_index
+    from
+        total_stake
 )
 SELECT DISTINCT
     day,
@@ -532,4 +543,4 @@ SELECT DISTINCT
         asset
     ) AS _unique_key
 FROM
-    joined
+    final
