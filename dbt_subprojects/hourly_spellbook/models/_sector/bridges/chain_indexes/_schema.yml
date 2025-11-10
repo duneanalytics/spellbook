@@ -76,3 +76,15 @@ models:
       - &token_address
         name: token_address
         description: "Address of the token in the pool"
+  - name: bridges_symbiosis_chain_indexes
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: symbiosis
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bridges', 'chain_indexes' ]
+    description: "Symbiosis's blockchains indexes"
+    columns:
+      - *id
+      - *blockchain
