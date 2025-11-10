@@ -26,7 +26,7 @@ SELECT 'sui' AS deposit_chain
 , senderAddress AS sender
 , recipientAddress AS recipient
 , 'erc20' AS withdrawal_token_standard
-, tokenID AS withdrawal_token_address
+, withdrawal_token_address
 , evt_tx_from AS tx_from
 , evt_tx_hash AS tx_hash
 , evt_index
