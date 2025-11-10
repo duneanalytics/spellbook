@@ -7,4 +7,4 @@
     )
 }}
 
-{{cctp_v1_deposits(blockchain = blockchain)}}
+{{nitro_v1_deposits(blockchain = blockchain)}}
