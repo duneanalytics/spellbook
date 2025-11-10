@@ -71,17 +71,17 @@ SELECT
         event_id,
         cast(se.block_timestamp as varchar),
         COALESCE(
-            tx_id,
+            rune_tx_id,
             ''
         ),
         lp_action,
         se.pool_name,
         COALESCE(
-            from_address,
+            rune_address,
             ''
         ),
         COALESCE(
-            to_address,
+            NULL,
             ''
         ),
         COALESCE(
@@ -150,7 +150,7 @@ SELECT
             ''
         ),
         COALESCE(
-            asset_tx_id,
+            NULL,
             ''
         )
     ) AS _unique_key,
