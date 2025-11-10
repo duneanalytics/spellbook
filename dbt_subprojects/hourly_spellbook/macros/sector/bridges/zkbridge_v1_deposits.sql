@@ -17,7 +17,7 @@ SELECT '{{blockchain}}' AS deposit_chain
 , d.evt_tx_hash AS tx_hash
 , d.evt_index
 , d.contract_address
-, CAST(d.poolId AS varchar) + '-' + CAST(d.sequence AS varchar) AS bridge_transfer_id
+, CAST(d.poolId AS varchar) || '-' || CAST(d.sequence AS varchar) AS bridge_transfer_id
 FROM {{ source('zkbridge_' + blockchain, 'bridge_evt_transfertoken') }} d
 LEFT JOIN {{ ref('bridges_zkbridge_chain_indexes') }} i ON i.id=d.dstChainId
 LEFT JOIN {{ ref('bridges_zkbridge_token_indexes') }} t ON t.blockchain='{{blockchain}}'
