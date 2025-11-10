@@ -67,6 +67,24 @@ models:
     config:
       tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
     description: "Across's v3 bridge withdrawals events on OP Mainnet"
+  - name: bridges_optimism_celer_v1_deposits
+    meta:
+      blockchain: optimism
+      sector: bridges
+      project: celer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'celer', 'bridges', 'flows' , 'deposits' ]
+    description: "Celer's v1 bridge deposits events on OP Mainnet"
+  - name: bridges_optimism_celer_v1_withdrawals
+    meta:
+      blockchain: optimism
+      sector: bridges
+      project: celer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'celer', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Celer's v1 bridge withdrawals events on OP Mainnet"
   - name: bridges_optimism_tether_v1_deposits
     meta:
       blockchain: optimism

@@ -19,3 +19,21 @@ models:
     config:
       tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
     description: "Across's v3 bridge withdrawals events on bnb"
+  - name: bridges_bnb_celer_v1_deposits
+    meta:
+      blockchain: bnb
+      sector: bridges
+      project: celer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'celer', 'bridges', 'flows' , 'deposits' ]
+    description: "Celer's v1 bridge deposits events on BNB"
+  - name: bridges_bnb_celer_v1_withdrawals
+    meta:
+      blockchain: bnb
+      sector: bridges
+      project: celer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'celer', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Celer's v1 bridge withdrawals events on BNB"
