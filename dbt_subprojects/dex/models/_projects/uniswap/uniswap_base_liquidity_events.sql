@@ -67,4 +67,3 @@ select
 from
     base_union
 
--- refresh 

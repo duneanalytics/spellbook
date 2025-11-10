@@ -12,6 +12,8 @@
     , 'bridges_' + blockchain + '_across_v1_withdrawals'
     , 'bridges_' + blockchain + '_across_v2_withdrawals'
     , 'bridges_' + blockchain + '_across_v3_withdrawals'
+    , 'bridges_' + blockchain + '_celer_v1_withdrawals'
+    , 'bridges_' + blockchain + '_tether_v1_withdrawals'
 ] %}
 
 SELECT *
