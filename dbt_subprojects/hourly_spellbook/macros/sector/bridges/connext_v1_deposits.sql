@@ -1,7 +1,7 @@
 {% macro connext_v1_deposits(blockchain) %}
 
 SELECT '{{blockchain}}' AS deposit_chain
-, json_extract_scalar(params, '$.destinationDomain') AS withdrawal_chain_id
+, CAST(json_extract_scalar(params, '$.destinationDomain') AS integer) AS withdrawal_chain_id
 , i.blockchain AS withdrawal_chain
 , 'Connext' AS bridge_name
 , '1' AS bridge_version
@@ -12,7 +12,7 @@ SELECT '{{blockchain}}' AS deposit_chain
 , from_hex(json_extract_scalar(params, '$.originSender')) AS sender
 , from_hex(json_extract_scalar(params, '$.to')) AS recipient
 , CASE WHEN local=0x0000000000000000000000000000000000000000 THEN 'native' ELSE 'erc20' END AS deposit_token_standard
-, from_hex(local) AS deposit_token_address
+, local AS deposit_token_address
 , evt_tx_from AS tx_from
 , evt_tx_hash AS tx_hash
 , evt_index
@@ -20,6 +20,5 @@ SELECT '{{blockchain}}' AS deposit_chain
 , CAST(transferId AS varchar) AS bridge_transfer_id
 FROM {{ source('connext_' + blockchain, 'connextdiamond_evt_xcalled') }} d
 LEFT JOIN {{ ref('bridges_connext_chain_indexes') }} i ON CAST(json_extract_scalar(params, '$.destinationDomain') AS integer)=i.id
-LIMIT 1000
 
 {% endmacro %}

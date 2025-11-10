@@ -56,7 +56,6 @@ models:
     columns:
       - *id
       - *blockchain
-        description: "Contract address of USDT0 per chain"
   - name: bridges_zkbridge_chain_indexes
     meta:
       blockchain: ethereum
