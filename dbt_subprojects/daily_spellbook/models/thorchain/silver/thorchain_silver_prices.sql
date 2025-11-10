@@ -23,7 +23,7 @@ with blocks as (
         {{ ref('thorchain_silver_block_pool_depths') }} bpd
     join {{ ref('thorchain_silver_block_log') }} bl
         on bpd.block_timestamp = bl.timestamp
-    {% if is_incremental() or true -%}
+    {% if is_incremental() -%}
     WHERE {{ incremental_predicate('CAST(from_unixtime(CAST(bpd.block_timestamp / 1e9 AS bigint)) AS timestamp)') }}
     {% endif -%}
 )
@@ -36,7 +36,7 @@ with blocks as (
         {{ ref('thorchain_silver_rune_price') }} rp
     join {{ ref('thorchain_silver_block_log') }} bl
         on rp.block_timestamp = bl.timestamp
-    {% if is_incremental() or true -%}
+    {% if is_incremental() -%}
     WHERE {{ incremental_predicate('CAST(from_unixtime(CAST(rp.block_timestamp / 1e9 AS bigint)) AS timestamp)') }}
     {% endif -%}
 )

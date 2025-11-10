@@ -25,7 +25,7 @@ WITH base AS (
         total_value_locked_usd
     FROM
         {{ ref('thorchain_silver_daily_tvl') }}
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
     WHERE {{ incremental_predicate('day') }}
     {% endif -%}
 )

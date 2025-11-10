@@ -46,7 +46,7 @@ WITH swaps AS (
         {{ ref('thorchain_silver_swap_events') }} as a
     JOIN {{ ref('thorchain_silver_block_log') }} as b
         ON a.block_timestamp = b.timestamp
-    {% if is_incremental() or true -%}
+    {% if is_incremental() -%}
     WHERE {{ incremental_predicate('b.block_timestamp') }}
     {% endif -%}
 )

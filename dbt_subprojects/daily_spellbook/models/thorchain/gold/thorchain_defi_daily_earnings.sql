@@ -31,7 +31,7 @@ WITH base AS (
       _inserted_timestamp
   FROM
     {{ ref('thorchain_silver_daily_earnings') }}
-  {% if is_incremental() or true %}
+  {% if is_incremental() %}
   WHERE {{ incremental_predicate('day') }}
   {% endif -%}
 )
