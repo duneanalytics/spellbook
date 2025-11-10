@@ -1,21 +1,12 @@
 version: 2
 
 models:
-  - name: bridges_abstract_tether_v1_deposits
+  - name: bridges_abstract_symbiosis_v1_deposits
     meta:
       blockchain: abstract
       sector: bridges
-      project: tether
-      contributors: [ 'hildobby']
-    config:
-      tags: [ 'abstract', 'bridges', 'flows', 'deposits' ]
-    description: "Tether's USDT0 v1 bridge deposits events on Abstract"
-  - name: bridges_abstract_tether_v1_withdrawals
-    meta:
-      blockchain: abstract
-      sector: bridges
-      project: tether
+      project: symbiosis
       contributors: [ 'hildobby']
     config:
       tags: [ 'abstract', 'bridges', 'flows', 'withdrawals' ]
-    description: "Tether's USDT0 v1 bridge withdrawals events on Abstract"
+    description: "Symbiosis's v1 bridge deposits events on Abstract"
