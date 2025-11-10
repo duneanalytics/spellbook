@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: zkbridge_ethereum
+    description: "zkBridge v1 bridge events on Ethereum"
+    tables:
+      - name: bridge_evt_transfertoken
+      - name: bridge_evt_receivetoken
+  - name: zkbridge_base
+    description: "zkBridge v1 bridge events on Base"
+    tables:
+      - name: bridge_evt_transfertoken
+      - name: bridge_evt_receivetoken

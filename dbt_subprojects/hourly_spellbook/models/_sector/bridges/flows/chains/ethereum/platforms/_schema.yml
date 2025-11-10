@@ -61,6 +61,24 @@ models:
       - equal_rowcount_with_sources:
           evt_sources:
             - source('celer_ethereum','bridge_evt_relay')
+  - name: bridges_ethereum_across_v1_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
+    description: "Across's v1 bridge deposits events on Ethereum"
+  - name: bridges_ethereum_across_v1_withdrawals
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Across's v1 bridge withdrawals events on Ethereum"
   - name: bridges_ethereum_across_v2_deposits
     meta:
       blockchain: ethereum
@@ -223,3 +241,75 @@ models:
     config:
       tags: [ 'sui', 'bridges', 'flows' , 'withdrawals' ]
     description: "Sui's v1 native bridge withdrawals events on Ethereum"
+  - name: bridges_ethereum_synapse_rfq_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: synapse
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'synapse', 'bridges', 'flows' , 'deposits' ]
+    description: "Synapse's RFQ bridge deposits events on Ethereum"
+  - name: bridges_ethereum_synapse_rfq_withdrawals
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: synapse
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'synapse', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Synapse's RFQ bridge withdrawals events on Ethereum"
+  - name: bridges_ethereum_zkbridge_v1_withdrawals
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: zkbridge
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'ethereum', 'bridges', 'flows', 'withdrawals' ]
+    description: "zkBridge's v1 bridge withdrawals events on Ethereum"
+  - name: bridges_ethereum_zkbridge_v1_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: zkbridge
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'ethereum', 'bridges', 'flows', 'deposits' ]
+    description: "zkBridge's v1 bridge deposits events on Ethereum"
+  - name: bridges_ethereum_rainbow_v1_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: near
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'near', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Near's rainbow v1 bridge deposits events on Ethereum"
+  - name: bridges_ethereum_beamer_v2_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: beamer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'beamer', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Beamer's v2 bridge deposits events on Ethereum"
+  - name: bridges_ethereum_polygon_native_v1_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: polygon
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'polygon', 'bridges', 'flows' , 'deposits' ]
+    description: "Polygon's v1 native bridge deposits events on Ethereum"
+  - name: bridges_ethereum_polygon_native_v1_withdrawals
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: polygon
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'polygon', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Polygon's v1 native bridge withdrawals events on Ethereum"
