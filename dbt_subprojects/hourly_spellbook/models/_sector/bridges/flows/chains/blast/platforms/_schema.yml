@@ -37,6 +37,24 @@ models:
     config:
       tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
     description: "Across's v3 bridge withdrawals events on Blast"
+  - name: bridges_blast_synapse_rfq_deposits
+    meta:
+      blockchain: blast
+      sector: bridges
+      project: synapse
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'synapse', 'bridges', 'flows' , 'deposits' ]
+    description: "Synapse's RFQ bridge deposits events on Blast"
+  - name: bridges_blast_synapse_rfq_withdrawals
+    meta:
+      blockchain: blast
+      sector: bridges
+      project: synapse
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'synapse', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Synapse's RFQ bridge withdrawals events on Blast"
   - name: bridges_blast_celer_v1_deposits
     meta:
       blockchain: blast

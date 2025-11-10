@@ -9,6 +9,7 @@
 
 {% set bridges_platforms = [
     'bridges_' + blockchain + '_across_v3_deposits'
+    , 'bridges_' + blockchain + '_synapse_rfq_deposits'
     , 'bridges_' + blockchain + '_celer_v1_deposits'
 ] %}
 

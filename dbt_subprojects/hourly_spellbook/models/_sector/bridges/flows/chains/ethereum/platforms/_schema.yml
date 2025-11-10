@@ -205,6 +205,24 @@ models:
     config:
       tags: [ 'arbitrum', 'bridges', 'flows' , 'withdrawals' ]
     description: "Arbitrum's v1 native bridge withdrawals events on Ethereum"
+  - name: bridges_ethereum_synapse_rfq_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: synapse
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'synapse', 'bridges', 'flows' , 'deposits' ]
+    description: "Synapse's RFQ bridge deposits events on Ethereum"
+  - name: bridges_ethereum_synapse_rfq_withdrawals
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: synapse
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'synapse', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Synapse's RFQ bridge withdrawals events on Ethereum"
   - name: bridges_ethereum_zkbridge_v1_withdrawals
     meta:
       blockchain: ethereum
