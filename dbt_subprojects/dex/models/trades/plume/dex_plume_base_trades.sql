@@ -12,6 +12,9 @@
 
 {% set base_models = [
     ref('rooster_protocol_plume_base_trades')
+    , ref('rooster_protocol_v2_plume_base_trades')
+    , ref('izumi_finance_v2_plume_base_trades')
+    , ref('izumi_finance_plume_base_trades')
 ] %}
 with base_union as (
     SELECT *
