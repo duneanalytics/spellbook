@@ -1156,14 +1156,12 @@ models:
         data_tests:
           - unique
           - not_null
-      - name: block_time
+      - name: block_timestamp
         description: "Block timestamp"
-        data_tests:
-          - not_null
       - name: block_timestamp
         description: "Block timestamp (unix nanoseconds)"
-      - name: block_month
-        description: "Block month (for partitioning)"
+        data_tests:
+          - not_null
       - name: dim_block_id
         description: "Foreign key to dim_block"
       - name: former_status
@@ -1172,14 +1170,10 @@ models:
         description: "Current node account status"
       - name: node_address
         description: "Node address"
+      - name: _inserted_timestamp
+        description: "Timestamp when data was ingested"
       - name: event_id
         description: "Unique event identifier"
-      - name: _audit_run_id
-        description: "Audit run identifier"
-      - name: inserted_timestamp
-        description: "Record creation timestamp"
-      - name: modified_timestamp
-        description: "Record modification timestamp"
 
   - name: thorchain_defi_active_vault_events
     description: "DeFi table for Thorchain active vault events (Asgard vault lifecycle) - combined silver+gold"
