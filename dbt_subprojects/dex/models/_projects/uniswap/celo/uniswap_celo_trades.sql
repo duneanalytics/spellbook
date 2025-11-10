@@ -13,7 +13,7 @@
 {{
     uniswap_downstream_trades(
           blockchain = 'celo'
-          , has_univ4 = false
+          , has_univ4 = true
           , has_bunni = false
     )
 }}
