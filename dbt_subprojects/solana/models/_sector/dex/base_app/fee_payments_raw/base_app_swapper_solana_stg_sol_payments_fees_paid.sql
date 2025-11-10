@@ -21,7 +21,7 @@ select
     account_activity.tx_id
 from {{ source('solana','account_activity') }} as account_activity
 where
-    {% if is_incremental() or true %} 
+    {% if is_incremental() %} 
     {{ incremental_predicate('account_activity.block_time') }}
     {% else %} 
     account_activity.block_time >= timestamp '2025-10-16'
@@ -35,7 +35,7 @@ where
         where trades.tx_id = account_activity.tx_id
         and trades.block_time = account_activity.block_time
         and trades.block_month = cast(date_trunc('month', account_activity.block_time) as date)
-        {% if is_incremental() or true %} 
+        {% if is_incremental() %} 
         and {{ incremental_predicate('trades.block_time') }}
         {% else %} 
         and trades.block_time >= timestamp '2025-10-16'
