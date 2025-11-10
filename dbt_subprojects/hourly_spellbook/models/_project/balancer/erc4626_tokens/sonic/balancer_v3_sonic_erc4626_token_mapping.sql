@@ -38,7 +38,7 @@
       COALESCE(vault_tokens.symbol, 'Unknown') AS erc4626_token_symbol,
       ut.underlying_address as underlying_token,
       COALESCE(underlying_tokens.symbol, 'Unknown') AS underlying_token_symbol,
-      underlying_tokens.decimals AS decimals
+      vault_tokens.decimals AS decimals
     FROM underlying_tokens ut
     LEFT JOIN {{ source('tokens','erc20') }} vault_tokens ON vault_tokens.contract_address = ut.vault_address
       AND vault_tokens.blockchain = 'sonic'

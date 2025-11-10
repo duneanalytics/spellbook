@@ -7,6 +7,7 @@
 
 {% set version_models = [
 ref('uniswap_v3_celo_pools')
+, ref('uniswap_v4_celo_pools')
 ] %}
 
 

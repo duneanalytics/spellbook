@@ -20,6 +20,6 @@ SELECT '{{blockchain}}' AS deposit_chain
 , contract_address
 , CAST(nonce AS varchar) AS bridge_transfer_id
 FROM {{ source('circle_' + blockchain, 'tokenmessenger_evt_depositforburn') }} d
-INNER JOIN {{ ref('bridges_cctp_chain_indexes') }} i ON d.destinationDomain=i.id
+LEFT JOIN {{ ref('bridges_cctp_chain_indexes') }} i ON d.destinationDomain=i.id
 
 {% endmacro %}
