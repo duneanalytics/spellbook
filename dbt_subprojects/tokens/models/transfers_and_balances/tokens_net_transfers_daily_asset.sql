@@ -20,6 +20,7 @@
     , 'flow'
     , 'gnosis'
     , 'hemi'
+    , 'henesys'
     , 'hyperevm'
     , 'linea'
     , 'mantle'
