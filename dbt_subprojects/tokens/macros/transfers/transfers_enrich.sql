@@ -38,7 +38,7 @@ WITH base_transfers as (
         , symbol
         , price
     FROM
-        {{ source('prices_coinpaprika', prices_interval) }}
+        {{ source('prices_external', prices_interval) }}
     {% if is_incremental() %}
     WHERE
         {{ incremental_predicate('timestamp') }}

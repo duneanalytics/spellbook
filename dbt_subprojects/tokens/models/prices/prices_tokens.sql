@@ -44,6 +44,7 @@
     ,ref('prices_sonic_tokens')
     ,ref('prices_ink_tokens')
     ,ref('prices_sophon_tokens')
+    ,ref('prices_story_tokens')
     ,ref('prices_tac_tokens')
     ,ref('prices_opbnb_tokens')
     ,ref('prices_taiko_tokens')
@@ -63,6 +64,7 @@
     ,ref('prices_peaq_tokens')
     ,ref('prices_somnia_tokens')
     ,ref('prices_plasma_tokens')
+    ,ref('prices_mezo_tokens')
 ] %}
 
 with fungible_tokens as (

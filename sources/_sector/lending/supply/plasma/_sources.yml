@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+
+
+  - name: aave_v3_plasma
+    tables:
+      - name: poolinstance_evt_Supply
+      - name: poolinstance_evt_Withdraw
+      - name: WrappedTokenGatewayV3_call_withdrawETH

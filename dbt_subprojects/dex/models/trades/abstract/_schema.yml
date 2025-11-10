@@ -36,3 +36,21 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
+  - name: aborean_abstract_base_trades
+    meta:
+      blockchain: abstract
+      sector: dex
+      project: aborean
+      contributors: captncrunch
+    config:
+      tags: ["abstract", "dex", "trades", "aborean"]
+    description: "Aborean abstract base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('aborean_abstract_base_trades_seed')
+          filter:
+            version: 2

@@ -21,8 +21,8 @@ FROM
                 , address
                 , "from"
                 , code
-                --, tx_from
-                --, tx_to
+                , block_month
+                , cast(date_trunc('day', block_time) as date) as block_date
         FROM {{ source(blockchain, 'creation_traces') }}
         {% if not loop.last %}
         UNION ALL
