@@ -434,7 +434,7 @@ joined AS (
             withdraw_rune_volume,
             0
         ) AS withdraw_rune_volume,
-        COALESCE((withdraw_rune_volume + withdraw_asset_volume), 0) AS withdraw_volume.
+        COALESCE((withdraw_rune_volume + withdraw_asset_volume), 0) AS withdraw_volume,
         added_stake,
         withdrawn_stake
     FROM
