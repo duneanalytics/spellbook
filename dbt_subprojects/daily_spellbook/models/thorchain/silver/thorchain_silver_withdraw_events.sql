@@ -1,44 +1,35 @@
 {{ config(
     schema = 'thorchain_silver',
     alias = 'withdraw_events',
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['block_month', 'event_id', 'tx_hash', 'from_addr', 'to_addr'],
-    partition_by = ['block_month'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    materialized = 'view',
     tags = ['thorchain', 'liquidity', 'withdraw_events']  
 ) }}
 
 with base as (
     SELECT
-    tx as tx_hash,
-    chain,
-    from_addr,
-    to_addr,
+    tx AS tx_id,
+    chain AS blockchain,
+    from_addr AS from_address,
+    to_addr AS to_address,
     asset,
-    asset_e8 / 1e8 as asset_amount,
     asset_e8,
-    emit_asset_e8 / 1e8 as emit_asset_amount,
     emit_asset_e8,
-    emit_rune_e8 / 1e8 as emit_rune_amount,
     emit_rune_e8,
     memo,
-    pool,
+    pool AS pool_name,
     stake_units,
     basis_points,
     asymmetry,
-    imp_loss_protection_e8 / 1e8 as imp_loss_protection_amount,
     imp_loss_protection_e8,
-    _emit_asset_in_rune_e8 / 1e8 as emit_asset_in_rune_amount,
-    _emit_asset_in_rune_e8 as emit_asset_in_rune_e8,
-    _tx_type as tx_type,
+    _emit_asset_in_rune_e8,
     event_id,
+    block_timestamp,
+    _TX_TYPE,
+    
     cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp) as block_time,
     date(from_unixtime(cast(block_timestamp / 1e9 as bigint))) as block_date,
     date_trunc('month', from_unixtime(cast(block_timestamp / 1e9 as bigint))) as block_month,
     date_trunc('hour', from_unixtime(cast(block_timestamp / 1e9 as bigint))) as block_hour,
-    block_timestamp as raw_block_timestamp,
     
     CASE 
         WHEN asset LIKE 'THOR.%' THEN cast(null as varbinary)
@@ -56,9 +47,6 @@ with base as (
     END as pool_asset
 
     FROM {{ source('thorchain', 'withdraw_events') }}
-    {% if is_incremental() %}
-    WHERE {{ incremental_predicate('cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp)') }}
-    {% endif %}
 )
 
 SELECT * FROM base
