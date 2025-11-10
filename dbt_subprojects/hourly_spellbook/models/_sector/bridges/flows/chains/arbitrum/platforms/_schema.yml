@@ -116,6 +116,24 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['tx_hash','evt_index']
+  - name: bridges_arbitrum_tether_v1_deposits
+    meta:
+      blockchain: arbitrum
+      sector: bridges
+      project: tether
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'arbitrum', 'bridges', 'flows', 'deposits' ]
+    description: "Tether's USDT0 v1 bridge deposits events on Arbitrum"
+  - name: bridges_arbitrum_tether_v1_withdrawals
+    meta:
+      blockchain: arbitrum
+      sector: bridges
+      project: tether
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'arbitrum', 'bridges', 'flows', 'withdrawals' ]
+    description: "Tether's USDT0 v1 bridge withdrawals events on Arbitrum"
   - name: bridges_arbitrum_symbiosis_v1_deposits
     meta:
       blockchain: arbitrum
