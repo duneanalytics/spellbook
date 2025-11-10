@@ -45,6 +45,7 @@
                                         , "somnia"
                                         , "sonic"
                                         , "sophon"
+                                        , "story"
                                         , "superseed"
                                         , "taiko"
                                         , "unichain"

@@ -42,6 +42,7 @@
     , ref('dex_somnia_base_trades')
     , ref('dex_sonic_base_trades')
     , ref('dex_sophon_base_trades')
+    , ref('dex_story_base_trades')
     , ref('dex_superseed_base_trades')
     , ref('dex_taiko_base_trades')
     , ref('dex_tac_base_trades')
