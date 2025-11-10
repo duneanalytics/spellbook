@@ -36,6 +36,7 @@
       , ref('tessera_solana_base_trades')
       , ref('goonfi_solana_base_trades')
       , ref('obric_solana_base_trades')
+      , ref('aquifer_solana_base_trades')
       ]
 %}
 
