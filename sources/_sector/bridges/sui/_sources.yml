@@ -6,3 +6,4 @@ sources:
     tables:
       - name: suibridge_evt_tokensdeposited
       - name: suibridge_evt_tokensclaimed
+      - name: bridgeconfig_evt_tokensaddedv2
