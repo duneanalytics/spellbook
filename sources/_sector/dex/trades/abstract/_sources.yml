@@ -22,3 +22,8 @@ sources:
     tables:
       - name: uniswapv3factory_evt_poolcreated
         description: "PoolCreated events from AbstractSwap V3 Factory contract"
+
+  - name: aborean_abstract
+    tables:
+      - name: pool_evt_swap
+      - name: poolfactory_evt_poolcreated
