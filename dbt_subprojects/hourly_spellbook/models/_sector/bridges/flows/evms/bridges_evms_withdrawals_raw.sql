@@ -16,7 +16,6 @@
     , 'berachain'
     , 'blast'
     , 'bnb'
-    , 'boba'
     , 'corn'
     , 'ethereum'
     , 'fantom'
