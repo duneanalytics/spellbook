@@ -19,6 +19,7 @@
     , 'bridges_' + blockchain + '_lighter_v1_deposits'
     , 'bridges_' + blockchain + '_avalanche_c_native_v2_deposits'
     , 'bridges_' + blockchain + '_zkync_native_v2_deposits'
+    , 'bridges_' + blockchain + '_sui_native_v1_deposits'
     , 'bridges_' + blockchain + '_synapse_rfq_deposits'
     , 'bridges_' + blockchain + '_zkbridge_v1_deposits'
     , 'bridges_' + blockchain + '_rainbow_v1_deposits'
