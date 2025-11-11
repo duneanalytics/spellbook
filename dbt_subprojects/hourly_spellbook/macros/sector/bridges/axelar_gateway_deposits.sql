@@ -1,6 +1,6 @@
 {% macro axelar_gateway_deposits(blockchain, events) %}
 
-SELECT d.chain AS deposit_chain
+SELECT '{{blockchain}}' AS deposit_chain
 , CAST(NULL AS varchar) AS withdrawal_chain_id
 , CASE lower(d.destinationChain)
     WHEN 'secret-snip' THEN 'secret'
