@@ -11,7 +11,9 @@
 }}
 
 {% set base_models = [
-    ref('story_hunt_story_base_trades'),
+    ref('story_hunt_story_base_trades')
+    , ref('piperx_v2_story_base_trades')
+    , ref('piperx_v3_story_base_trades')
 ] %}
 with base_union as (
     SELECT *

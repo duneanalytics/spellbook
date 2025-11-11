@@ -14,7 +14,7 @@ models:
       blockchain: story
       sector: dex
       project: story_hunt
-      contributors: tiagofilipenunes
+      contributors: tomfutago
     config:
       tags: ["story", "dex", "trades", "story_hunt"]
     description: "Story Hunt story base trades"
@@ -25,3 +25,43 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('story_hunt_story_base_trades_seed')
+
+  - name: piperx_v2_story_base_trades
+    meta:
+      blockchain: story
+      sector: dex
+      project: piperx
+      version: '2'
+      contributors: tomfutago
+    config:
+      tags: ["story", "dex", "trades", "piperx"]
+    description: "Piperx v2 story base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('piperx_v2_story_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: piperx_v3_story_base_trades
+    meta:
+      blockchain: story
+      sector: dex
+      project: piperx
+      version: '3'
+      contributors: tomfutago
+    config:
+      tags: ["story", "dex", "trades", "piperx"]
+    description: "Piperx v3 story base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('piperx_v3_story_base_trades_seed')
+          filter:
+            version: 3
