@@ -44,6 +44,7 @@
     "somnia",
     "sonic",
     "sophon",
+    "story",
     "superseed",
     "tac",
     "taiko",
