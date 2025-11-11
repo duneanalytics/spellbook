@@ -25,7 +25,6 @@ sources:
     description: "zkBridge v1 bridge events on Mantle"
     tables:
       - name: bridge_evt_transfertoken
-      - name: bridge_evt_receivetoken
   - name: zkbridge_opbnb
     description: "zkBridge v1 bridge events on opBNB"
     tables:

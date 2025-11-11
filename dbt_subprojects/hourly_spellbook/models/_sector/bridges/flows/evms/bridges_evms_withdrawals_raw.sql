@@ -26,7 +26,6 @@
     , 'ink'
     , 'lens'
     , 'linea'
-    , 'mantle'
     , 'nova'
     , 'opbnb'
     , 'optimism'

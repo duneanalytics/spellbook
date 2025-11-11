@@ -241,15 +241,6 @@ models:
     config:
       tags: [ 'synapse', 'bridges', 'flows' , 'withdrawals' ]
     description: "Synapse's RFQ bridge withdrawals events on Ethereum"
-  - name: bridges_ethereum_zkbridge_v1_withdrawals
-    meta:
-      blockchain: ethereum
-      sector: bridges
-      project: zkbridge
-      contributors: [ 'hildobby']
-    config:
-      tags: [ 'ethereum', 'bridges', 'flows', 'withdrawals' ]
-    description: "zkBridge's v1 bridge withdrawals events on Ethereum"
   - name: bridges_ethereum_zkbridge_v1_deposits
     meta:
       blockchain: ethereum

@@ -3,7 +3,7 @@ version: 2
 models:
   - name: bridges_evms_deposits
     meta:
-      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei, mantle
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei
       sector: bridges
       contributors: [ 'hildobby']
     config:
@@ -142,7 +142,7 @@ models:
       - *duplicate_index
   - name: bridges_evms_deposits_raw
     meta:
-      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei, mantle
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei
       sector: bridges
       contributors: [ 'hildobby']
     config:
