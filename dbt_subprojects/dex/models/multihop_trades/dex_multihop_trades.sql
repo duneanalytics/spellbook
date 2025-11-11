@@ -11,8 +11,26 @@
 
 
 {% set dex_models = [
-ref('dex_bnb_multihop_trades')
+ref('dex_arbitrum_multihop_trades')
+, ref('dex_avalanche_c_multihop_trades')
+, ref('dex_base_multihop_trades')
+, ref('dex_blast_multihop_trades')
+, ref('dex_bnb_multihop_trades')
+, ref('dex_celo_multihop_trades')
 , ref('dex_ethereum_multihop_trades')
+, ref('dex_gnosis_multihop_trades')
+, ref('dex_ink_multihop_trades')
+, ref('dex_linea_multihop_trades')
+, ref('dex_mantle_multihop_trades')
+, ref('dex_optimism_multihop_trades')
+, ref('dex_plasma_multihop_trades')
+, ref('dex_polygon_multihop_trades')
+, ref('dex_scroll_multihop_trades')
+, ref('dex_sonic_multihop_trades')
+, ref('dex_unichain_multihop_trades')
+, ref('dex_worldchain_multihop_trades')
+, ref('dex_zksync_multihop_trades')
+, ref('dex_zora_multihop_trades')
 ] %}
 
 

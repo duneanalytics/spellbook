@@ -7,7 +7,8 @@ dex_trades as (
         * 
     from 
     {{ ref('dex_trades') }}
-    where blockchain = '{{blockchain}}'
+    where block_date >= date '2025-10-01' -- limit to since october
+    and blockchain = '{{blockchain}}'
     {% if is_incremental() %}
     and {{ incremental_predicate('block_time') }}
     {% endif %}
@@ -55,7 +56,15 @@ agg_data as (
         , block_month
         , block_date
         , block_time
-        , token_pair
+        , coalesce(
+            token_pair
+            , case 
+                when coalesce(lower(token_bought_symbol), cast(token_bought_address as varchar))
+                > coalesce(lower(token_sold_symbol), cast(token_sold_address as varchar))
+                then concat(coalesce(lower(token_sold_symbol), cast(token_sold_address as varchar)), '-', coalesce(lower(token_bought_symbol), cast(token_bought_address as varchar)))
+                else concat(coalesce(lower(token_bought_symbol), cast(token_bought_address as varchar)), '-', coalesce(lower(token_sold_symbol), cast(token_sold_address as varchar)))
+              end 
+        ) as token_pair 
         , pool_address
         , sum(case when multihop_label = 'direct' then 1 else 0 end) as direct_trade_count
         , sum(case when multihop_label = 'entry' then 1 else 0 end) as entry_trade_count
