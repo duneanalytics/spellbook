@@ -6,7 +6,7 @@ WITH events AS (
     , d.evt_block_date AS block_date
     , d.evt_block_time AS block_time
     , d.evt_block_number AS block_number
-    , d.amount AS withdrawal_amount_raw
+    , d.fillamount AS withdrawal_amount_raw
     , depositor AS sender
     , recipient AS recipient
     , destinationToken AS withdrawal_token_address
@@ -20,6 +20,7 @@ WITH events AS (
     , ROW_NUMBER() OVER (PARTITION BY d.originChainId, d.depositId ORDER BY d.evt_block_number, d.evt_index) AS rn
     FROM ({{ events }}) d
     LEFT JOIN {{ ref('bridges_across_chain_indexes') }} m ON d.originChainId=m.id
+    WHERE d.fillamount > 0.5*d.amount
     )
 
 SELECT deposit_chain_id
