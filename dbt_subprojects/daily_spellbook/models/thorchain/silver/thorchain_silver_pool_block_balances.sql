@@ -37,5 +37,5 @@ LEFT JOIN
     ON b.height = p.block_id
     AND bpd.pool_name = p.pool_name
 {% if is_incremental() or true %}
-WHERE {{ incremental_predicate('bpd.block_timestamp') }}
+WHERE {{ incremental_predicate('b.block_timestamp') }}
 {% endif %}

@@ -68,7 +68,7 @@ SELECT
     NULL AS unstake_basis_points,
     concat_ws(
         '-',
-        event_id,
+        cast(event_id as varchar),
         cast(se.block_timestamp as varchar),
         COALESCE(
             rune_tx_id,
@@ -133,7 +133,7 @@ SELECT
     basis_points AS unstake_basis_points,
     concat_ws(
         '-',
-        event_id,
+        cast(event_id as varchar),
         cast(ue.block_timestamp as varchar),
         COALESCE(
             tx_id,

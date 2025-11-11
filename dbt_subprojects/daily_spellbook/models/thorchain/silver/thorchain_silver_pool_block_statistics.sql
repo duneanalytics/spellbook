@@ -480,17 +480,17 @@ joined AS (
             PARTITION BY asset
             ORDER BY  day ASC
         ) AS total_stake
-        , asset_depth * COALESCE(
+        , CAST(asset_depth AS double) * CAST(COALESCE(
             rune_depth,
             0
-        ) AS depth_product
+        ) AS double) AS depth_product
     from
         joined
 )
 , synth_units AS (
     select
         *
-        , total_stake * synth_depth / ((asset_depth * 2) - synth_depth) AS synth_units
+        , CAST(total_stake AS double) * CAST(synth_depth AS double) / ((CAST(asset_depth AS double) * CAST(2 AS double)) - CAST(synth_depth AS double)) AS synth_units
     from
         total_stake
 )
@@ -500,8 +500,8 @@ joined AS (
         , CASE
             WHEN total_stake = 0 THEN 0
             WHEN depth_product < 0 THEN 0
-            ELSE SQRT(depth_product) / (
-                total_stake + synth_units
+            ELSE SQRT(CAST(depth_product AS double)) / (
+                CAST(total_stake AS double) + CAST(synth_units AS double)
                 )
         END AS liquidity_unit_value_index
     from

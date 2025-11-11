@@ -4,9 +4,9 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_month', 'fact_pool_block_balances_id'],
-    partition_by = ['block_month'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    unique_key = ['day', 'fact_pool_block_balances_id'],
+    partition_by = ['day'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
     tags = ['thorchain', 'defi', 'pool_balances', 'fact'],
     post_hook='{{ expose_spells(\'["thorchain"]\',
                               "defi",
@@ -33,6 +33,7 @@ SELECT
   {{ dbt_utils.generate_surrogate_key(
     ['a._unique_key']
   ) }} AS fact_pool_block_balances_id,
+  cast(date_trunc('day', b.block_timestamp) as date) as day,
   b.block_timestamp,
   COALESCE(
     b.dim_block_id,

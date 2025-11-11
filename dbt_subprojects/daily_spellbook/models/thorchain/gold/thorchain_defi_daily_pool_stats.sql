@@ -105,7 +105,6 @@ SELECT
   unique_member_count,
   unique_swapper_count,
   liquidity_units,
-  a._inserted_timestamp,
   current_timestamp AS inserted_timestamp,
   current_timestamp AS modified_timestamp
 FROM

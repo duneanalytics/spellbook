@@ -96,7 +96,6 @@ WITH swaps AS (
             END AS INTEGER
         ) AS affiliate_fee_basis_points,
         split(COALESCE(split(split(memo, '|')[1], ':')[5], ''), '/') AS affiliate_addresses_array,
-        ARRAY_AGG(TRY_CAST(TRIM(f.value) AS INTEGER) ORDER BY f.index) AS affiliate_fee_basis_points_array,
         from_asset,
         to_asset,
         COALESCE(from_e8 / pow(10, 8), 0) AS from_amount,
@@ -142,8 +141,74 @@ WITH swaps AS (
     CROSS JOIN UNNEST(
         split(COALESCE(split(memo, ':')[6], ''), '/')
     ) WITH ORDINALITY AS f(value, index)
+), final_agg as (
+    SELECT
+        day
+        , block_timestamp
+        , block_id
+        , tx_id
+        , blockchain
+        , pool_name
+        , from_address
+        , native_to_address
+        , to_pool_address
+        , affiliate_address
+        , affiliate_fee_basis_points
+        , affiliate_addresses_array
+        , from_asset
+        , to_asset
+        , from_amount
+        , to_amount
+        , min_to_amount
+        , from_amount_usd
+        , to_amount_usd
+        , rune_usd
+        , asset_usd
+        , to_amount_min_usd
+        , swap_slip_bp
+        , liq_fee_rune
+        , liq_fee_rune_usd
+        , liq_fee_asset
+        , liq_fee_asset_usd
+        , streaming_count
+        , streaming_quantity
+        , _TX_TYPE
+        , _INSERTED_TIMESTAMP
+        , ARRAY_AGG(TRY_CAST(TRIM(f.value) AS INTEGER) ORDER BY f.index) AS affiliate_fee_basis_points_array
+    FROM
+        final
     GROUP BY
-        ALL
+        day
+        , block_timestamp
+        , block_id
+        , tx_id
+        , blockchain
+        , pool_name
+        , from_address
+        , native_to_address
+        , to_pool_address
+        , affiliate_address
+        , affiliate_fee_basis_points
+        , affiliate_addresses_array
+        , from_asset
+        , to_asset
+        , from_amount
+        , to_amount
+        , min_to_amount
+        , from_amount_usd
+        , to_amount_usd
+        , rune_usd
+        , asset_usd
+        , to_amount_min_usd
+        , swap_slip_bp
+        , liq_fee_rune
+        , liq_fee_rune_usd
+        , liq_fee_asset
+        , liq_fee_asset_usd
+        , streaming_count
+        , streaming_quantity
+        , _TX_TYPE
+        , _INSERTED_TIMESTAMP
 )
 select
     *
@@ -160,6 +225,6 @@ select
         from_address,
         pool_name,
         to_pool_address,
-        event_id
+        cast(event_id as varchar)
     ) AS _unique_key
-from final
+from final_agg
