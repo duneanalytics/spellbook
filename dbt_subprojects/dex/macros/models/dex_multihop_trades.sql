@@ -7,8 +7,7 @@ dex_trades as (
         * 
     from 
     {{ ref('dex_trades') }}
-    where block_date >= date '2025-10-01' -- limit to since october
-    and blockchain = '{{blockchain}}'
+    where blockchain = '{{blockchain}}'
     {% if is_incremental() %}
     and {{ incremental_predicate('block_time') }}
     {% endif %}
