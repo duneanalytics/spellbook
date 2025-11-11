@@ -88,3 +88,12 @@ models:
     config:
       tags: [ 'base', 'bridges', 'flows', 'deposits' ]
     description: "Butter's v2 bridge deposits events on Base"
+  - name: bridges_base_axelar_gateway_deposits
+    meta:
+      blockchain: base
+      sector: bridges
+      project: axelar
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'base', 'bridges', 'flows', 'deposits' ]
+    description: "Axelar's gateway bridge deposits events on Base"
