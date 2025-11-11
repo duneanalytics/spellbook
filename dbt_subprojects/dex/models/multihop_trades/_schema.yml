@@ -1,0 +1,151 @@
+version: 2
+
+models:
+  - name: dex_multihop_trades
+    meta: 
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, polygon, base, celo, zksync, scroll, zora, sei, mantle, unichain
+      sector: dex
+      contributors: Henrystats, agaperste, hubbymatic
+    config:
+      tags: ['dex', 'multihops']
+    description: >
+      DEX Multi Hop trades
+    columns: 
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the DEX is deployed"
+      - &project
+        name: project
+        description: "Project name of the DEX"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the DEX project"
+      - &block_time
+        name: block_time
+        description: "UTC event block time of each DEX trade"
+      - &block_date
+        name: block_date
+        description: "Block date of the trade"
+      - &block_month
+        name: block_month
+        description: "Month corresponding to the prices data"
+      - &token_pair
+        name: token_pair
+        description: "Token symbol pair for each token involved in the trade"
+      - &pool_address
+        name: pool_address
+        description: "Pool address associated with the token pair"
+      - &total_trade_count
+        name: total_trade_count
+        description: "Total number of trades that happened at the same block time in the same pool and the same token pair"
+      - &multihop_trade_count_pct
+        name: multihop_trade_count_pct
+        description: "% of total number of trades that were part of the multi-hop"
+      - &direct_trade_count
+        name: direct_trade_count
+        description: "Number of trades that weren't part of the multi-hop"
+      - &entry_trade_count
+        name: entry_trade_count
+        description: "Number of trades that happened at the start of the multi-hop"
+      - &intermediate_trade_count
+        name: intermediate_trade_count
+        description: "Number of trades that happened between the start and end of the multi-hop"
+      - &end_trade_count
+        name: end_trade_count
+        description: "Number of trades that happened at the end of the multi-hop"
+      - &total_trade_vol
+        name: total_trade_vol
+        description: "Total volume of trades that happened at the same block time in the same pool and the same token pair"
+      - &multihop_trades_vol_pct
+        name: multihop_trades_vol_pct
+        description: "% of Total volume that were part of the multi-hop"
+      - &direct_trade_vol
+        name: direct_trade_vol
+        description: "Total volume of direct trades"
+      - &entry_trade_vol
+        name: entry_trade_vol
+        description: "Total volume of entry trades"
+      - &intermediate_trade_vol
+        name: intermediate_trade_vol
+        description: "Total volume of intermiediate trades"
+      - &end_trade_vol
+        name: end_trade_vol
+        description: "Total volume of end trades"
+
+  - name: dex_ethereum_multihop_trades
+    meta: 
+      blockchain: ethereum
+      sector: dex
+      contributors: Henrystats, agaperste, hubbymatic
+    config:
+      tags: ['dex', 'multihops']
+    description: >
+      DEX Multi Hop trades on ethereum
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - project
+            - version
+            - pool_address
+            - token_pair
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_date
+      - *block_month
+      - *token_pair
+      - *pool_address
+      - *total_trade_count
+      - *multihop_trade_count_pct
+      - *direct_trade_count
+      - *entry_trade_count
+      - *intermediate_trade_count
+      - *end_trade_count
+      - *total_trade_vol
+      - *multihop_trades_vol_pct
+      - *direct_trade_vol
+      - *entry_trade_vol
+      - *intermediate_trade_vol
+      - *end_trade_vol
+
+  - name: dex_bnb_multihop_trades
+    meta: 
+      blockchain: bnb
+      sector: dex
+      contributors: Henrystats, agaperste, hubbymatic
+    config:
+      tags: ['dex', 'multihops']
+    description: >
+      DEX Multi Hop trades on bnb
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - project
+            - version
+            - pool_address
+            - token_pair
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_date
+      - *block_month
+      - *token_pair
+      - *pool_address
+      - *total_trade_count
+      - *multihop_trade_count_pct
+      - *direct_trade_count
+      - *entry_trade_count
+      - *intermediate_trade_count
+      - *end_trade_count
+      - *total_trade_vol
+      - *multihop_trades_vol_pct
+      - *direct_trade_vol
+      - *entry_trade_vol
+      - *intermediate_trade_vol
+      - *end_trade_vol
