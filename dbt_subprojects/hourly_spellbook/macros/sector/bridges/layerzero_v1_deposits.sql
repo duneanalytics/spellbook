@@ -37,6 +37,6 @@ SELECT '{{blockchain}}' AS deposit_chain
 FROM send_calls sc
 LEFT JOIN {{ source('tokens_' + blockchain, 'transfers') }} t ON t.block_number=sc.call_block_number
         AND t.tx_hash=sc.call_tx_hash
-LEFT JOIN {{ ref('bridges_layerzero_chain_indexes') }} ci ON sc.withdrawal_chain_id=ci.chain_id
+LEFT JOIN {{ ref('bridges_layerzero_chain_indexes') }} ci ON sc.withdrawal_chain_id=ci.id
 
 {% endmacro %}

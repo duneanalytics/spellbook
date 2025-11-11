@@ -99,7 +99,7 @@ models:
     description: "LayerZero's blockchains indexes"
     columns:
       - *blockchain
-      - *chain_id
+      - *id
       - &endpoint_address
         name: endpoint_address
         description: "Endpoint address"

@@ -7,7 +7,7 @@
 
 -- source: https://metadata.layerzero-api.com/v1/metadata/deployments
 
-SELECT blockchain, chain_id, endpoint_address
+SELECT blockchain, id, endpoint_address
     FROM (VALUES
     ('ethereum', 101, 0x66a71dcef29a0ffbdbe3c6a460a3b5bc225cd675),
     ('bnb', 102, 0x3c2269811836af69497e5f486a85d7316753cf62),
@@ -166,4 +166,4 @@ SELECT blockchain, chain_id, endpoint_address
     ('initia', 30326, 0x81d2b534893db8745ab2b0c092ec5f88d554d54825f98fd9e8c83f9b113ee77e),
     ('ton', 30343, NULL),
     ('sui', 30378, 0x31beaef889b08b9c3b37d19280fc1f8b75bae5b2de2410fc3120f403e9a36dac)
-    ) AS x (blockchain, chain_id, endpoint_address)
+    ) AS x (blockchain, id, endpoint_address)
