@@ -20,7 +20,7 @@ SELECT d.chain AS deposit_chain
 , d.sender
 , d.destinationAddress AS recipient
 , d.symbol
-, ts.token_address AS deposit_token_address
+, ti.token_address AS deposit_token_address
 , 'erc20' AS deposit_token_standard
 , 'erc20' AS withdrawal_token_standard
 , d.evt_tx_from AS tx_from
@@ -29,6 +29,6 @@ SELECT d.chain AS deposit_chain
 , d.contract_address
 , {{ dbt_utils.generate_surrogate_key(['d.evt_tx_hash', 'd.evt_index']) }} as bridge_transfer_id
 FROM ({{ events }}) d
-LEFT JOIN {{ ref('bridges_axelar_gateway_token_indexes') }} m ON d.symbol=ts.token_symbol
+LEFT JOIN {{ ref('bridges_axelar_gateway_token_indexes') }} ti ON d.symbol=ti.token_symbol
 
 {% endmacro %}
