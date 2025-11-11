@@ -50,7 +50,7 @@ FROM (
         , w.block_date
         , w.block_time
         , w.block_number
-        , w.withdrawal_amount_raw
+        , cast(w.withdrawal_amount_raw as uint256) as withdrawal_amount_raw
         , w.sender
         , w.recipient
         , w.withdrawal_token_standard

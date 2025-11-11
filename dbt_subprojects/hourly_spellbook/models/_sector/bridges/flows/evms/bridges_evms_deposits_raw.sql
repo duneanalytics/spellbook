@@ -70,7 +70,7 @@ FROM (
         , d.block_date
         , d.block_time
         , d.block_number
-        , d.deposit_amount_raw
+        , cast(d.deposit_amount_raw as uint256) as deposit_amount_raw
         , d.sender
         , d.recipient
         , d.deposit_token_standard
