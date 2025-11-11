@@ -19,8 +19,9 @@ with sol_payments as (
         tx_id
     from {{ ref('base_app_swapper_solana_stg_sol_payments_fees_paid') }}
     where
+        1 = 1
         {% if is_incremental() %} 
-        {{ incremental_predicate('block_time') }}
+        and {{ incremental_predicate('block_time') }}
         {% endif %}
     union all
     select
@@ -32,8 +33,9 @@ with sol_payments as (
         tx_id
     from {{ ref('base_app_swapper_solana_stg_sol_payments_fees_claimed') }}
     where
+        1 = 1
         {% if is_incremental() %} 
-        {{ incremental_predicate('block_time') }}
+        and {{ incremental_predicate('block_time') }}
         {% endif %}
 )
 select *

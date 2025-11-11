@@ -23,8 +23,9 @@ with sol_payments as (
         tx_id
     from {{ ref('base_app_swapper_solana_stg_sol_payments') }}
     where
+        1 = 1
         {% if is_incremental() %} 
-        {{ incremental_predicate('block_time') }}
+        and {{ incremental_predicate('block_time') }}
         {% endif %}
 ),
 token_payments as (
@@ -37,8 +38,9 @@ token_payments as (
         tx_id
     from {{ ref('base_app_swapper_solana_stg_token_payments') }}
     where
+        1 = 1
         {% if is_incremental() %} 
-        {{ incremental_predicate('block_time') }}
+        and {{ incremental_predicate('block_time') }}
         {% endif %}  
 ),
 fee_payments as (
@@ -47,22 +49,23 @@ fee_payments as (
         union all
         select *
         from token_payments
-    ),
-    filtered_transactions as (
+),
+filtered_transactions as (
         select 
             id, 
             signer,
             block_date
         from {{ source('solana', 'transactions') }}
         where
+            1 = 1
             {% if is_incremental() %} 
-                {{ incremental_predicate('block_date') }}
+            and {{ incremental_predicate('block_date') }}
             {% else %} 
-                block_date >= timestamp '{{query_start_date}}'
+            and block_date >= timestamp '{{query_start_date}}'
             {% endif %} 
-    ),
-    -- Eliminate duplicates (e.g. both SOL + WSOL in a single transaction)
-    aggregated_fee_payments_by_token_by_tx as (
+),
+-- Eliminate duplicates (e.g. both SOL + WSOL in a single transaction)
+aggregated_fee_payments_by_token_by_tx as (
         select
             fee_payments.block_time,
             fee_payments.block_month,
@@ -74,9 +77,9 @@ fee_payments as (
         join filtered_transactions tx 
         ON fee_payments.tx_id = tx.id 
         AND tx.signer != fee_payments.fee_receiver
-        AND tx.block_date = date_trunc('day', fee_payments.block_time)
+        AND tx.block_date = cast(date_trunc('day', fee_payments.block_time) as date)
         group by 1,2,3,4,5
-    )
+)
 select
     block_time,
     block_month,
