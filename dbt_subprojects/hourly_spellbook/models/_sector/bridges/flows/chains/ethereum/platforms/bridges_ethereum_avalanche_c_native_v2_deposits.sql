@@ -8,7 +8,7 @@
 }}
 
 SELECT 'ethereum' AS deposit_chain
-, CAST(NULL AS DOUBLE) AS withdrawal_chain_id
+, CAST(43114 AS DOUBLE) AS withdrawal_chain_id
 , 'avalanche_c' AS withdrawal_chain
 , 'Avalanche' AS bridge_name
 , '2' AS bridge_version
@@ -23,9 +23,10 @@ SELECT 'ethereum' AS deposit_chain
 , contract_address AS deposit_token_address
 , tx_from AS tx_from
 , tx_hash AS tx_hash
-, evt_index
+, COALESCE(evt_index, 0) AS evt_index
 , contract_address
-, {{ dbt_utils.generate_surrogate_key(['tx_hash', 'evt_index']) }} as bridge_transfer_id
+, unique_key AS bridge_transfer_id
+--, {{ dbt_utils.generate_surrogate_key(['tx_hash', 'evt_index']) }} as bridge_transfer_id
 FROM {{ source('tokens_ethereum', 'transfers') }}
 WHERE to = 0x8eb8a3b98659cce290402893d0123abb75e3ab28
 AND block_number >= 5096229
