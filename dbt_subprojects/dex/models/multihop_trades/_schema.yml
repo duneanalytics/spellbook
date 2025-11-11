@@ -84,7 +84,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_time
+            - tx_hash
             - project
             - version
             - pool_address
@@ -123,7 +123,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_time
+            - tx_hash
             - project
             - version
             - pool_address
@@ -162,7 +162,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_time
+            - tx_hash
             - project
             - version
             - pool_address
@@ -201,7 +201,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_time
+            - tx_hash
             - project
             - version
             - pool_address
@@ -240,7 +240,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_time
+            - tx_hash
             - project
             - version
             - pool_address
@@ -279,7 +279,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_time
+            - tx_hash
             - project
             - version
             - pool_address
@@ -318,7 +318,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_time
+            - tx_hash
             - project
             - version
             - pool_address
@@ -357,7 +357,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_time
+            - tx_hash
             - project
             - version
             - pool_address
@@ -396,7 +396,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_time
+            - tx_hash
             - project
             - version
             - pool_address
@@ -435,7 +435,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_time
+            - tx_hash
             - project
             - version
             - pool_address
@@ -474,7 +474,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_time
+            - tx_hash
             - project
             - version
             - pool_address
@@ -513,7 +513,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_time
+            - tx_hash
             - project
             - version
             - pool_address
@@ -552,7 +552,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_time
+            - tx_hash
             - project
             - version
             - pool_address
@@ -591,7 +591,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_time
+            - tx_hash
             - project
             - version
             - pool_address
@@ -630,7 +630,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_time
+            - tx_hash
             - project
             - version
             - pool_address
@@ -669,7 +669,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_time
+            - tx_hash
             - project
             - version
             - pool_address
@@ -708,7 +708,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_time
+            - tx_hash
             - project
             - version
             - pool_address
@@ -747,7 +747,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_time
+            - tx_hash
             - project
             - version
             - pool_address
@@ -786,7 +786,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_time
+            - tx_hash
             - project
             - version
             - pool_address
@@ -825,7 +825,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_time
+            - tx_hash
             - project
             - version
             - pool_address

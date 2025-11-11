@@ -32,9 +32,9 @@ identify_hops as (
         , mh.first_trade
         , mh.last_trade
         , case
-            when dt.evt_index = mh.first_trade and dt.evt_index <> mh.last_trade then 'entry'
+            when dt.evt_index = mh.first_trade and dt.evt_index != mh.last_trade then 'entry'
             when dt.evt_index > mh.first_trade and dt.evt_index < mh.last_trade then 'intermediate'
-            when dt.evt_index = mh.last_trade and dt.evt_index <> mh.first_trade then 'end'
+            when dt.evt_index = mh.last_trade and dt.evt_index != mh.first_trade then 'end'
             else 'direct' 
         end as multihop_label
         , case
@@ -56,6 +56,8 @@ agg_data as (
         , block_month
         , block_date
         , block_time
+        , block_number 
+        , tx_hash 
         , coalesce(
             token_pair
             , case 
@@ -76,7 +78,7 @@ agg_data as (
         , sum(case when multihop_label = 'end' then amount_usd else 0 end) as end_trade_vol
     from 
     identify_hops
-    group by 1, 2, 3, 4, 5, 6, 7, 8
+    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 
 )
 
     select 
@@ -86,6 +88,8 @@ agg_data as (
         , block_month
         , block_date
         , block_time
+        , block_number
+        , tx_hash 
         , token_pair
         , pool_address
         , direct_trade_count + entry_trade_count + intermediate_trade_count + end_trade_count as total_trade_count
