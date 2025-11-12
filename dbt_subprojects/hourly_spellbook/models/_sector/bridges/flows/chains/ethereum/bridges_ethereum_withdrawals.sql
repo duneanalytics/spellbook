@@ -10,7 +10,6 @@
 {% set bridges_platforms = [
     'bridges_' + blockchain + '_cctp_v1_withdrawals'
     , 'bridges_' + blockchain + '_celer_v1_withdrawals'
-    , 'bridges_' + blockchain + '_across_v1_withdrawals'
     , 'bridges_' + blockchain + '_across_v2_withdrawals'
     , 'bridges_' + blockchain + '_across_v3_withdrawals'
     , 'bridges_' + blockchain + '_arbitrum_native_v1_withdrawals'
@@ -22,7 +21,6 @@
     , 'bridges_' + blockchain + '_blast_native_v1_withdrawals'
     , 'bridges_' + blockchain + '_sui_native_v1_withdrawals'
     , 'bridges_' + blockchain + '_synapse_rfq_withdrawals'
-    , 'bridges_' + blockchain + '_zkbridge_v1_withdrawals'
     , 'bridges_' + blockchain + '_polygon_native_v1_withdrawals'
 ] %}
 

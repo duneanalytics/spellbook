@@ -16,6 +16,7 @@
     , 'bridges_' + blockchain + '_celer_v1_deposits'
     , 'bridges_' + blockchain + '_tether_v1_deposits'
     , 'bridges_' + blockchain + '_beamer_v2_deposits'
+    , 'bridges_' + blockchain + '_zkbridge_v1_deposits'
 ] %}
 
 SELECT *

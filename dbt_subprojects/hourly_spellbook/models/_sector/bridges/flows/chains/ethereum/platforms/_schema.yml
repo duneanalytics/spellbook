@@ -70,15 +70,6 @@ models:
     config:
       tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
     description: "Across's v1 bridge deposits events on Ethereum"
-  - name: bridges_ethereum_across_v1_withdrawals
-    meta:
-      blockchain: ethereum
-      sector: bridges
-      project: across
-      contributors: [ 'hildobby']
-    config:
-      tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
-    description: "Across's v1 bridge withdrawals events on Ethereum"
   - name: bridges_ethereum_across_v2_deposits
     meta:
       blockchain: ethereum
@@ -277,15 +268,6 @@ models:
     config:
       tags: [ 'synapse', 'bridges', 'flows' , 'withdrawals' ]
     description: "Synapse's RFQ bridge withdrawals events on Ethereum"
-  - name: bridges_ethereum_zkbridge_v1_withdrawals
-    meta:
-      blockchain: ethereum
-      sector: bridges
-      project: zkbridge
-      contributors: [ 'hildobby']
-    config:
-      tags: [ 'ethereum', 'bridges', 'flows', 'withdrawals' ]
-    description: "zkBridge's v1 bridge withdrawals events on Ethereum"
   - name: bridges_ethereum_zkbridge_v1_deposits
     meta:
       blockchain: ethereum

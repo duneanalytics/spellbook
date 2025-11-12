@@ -16,7 +16,6 @@
     , 'berachain'
     , 'blast'
     , 'bnb'
-    , 'boba'
     , 'corn'
     , 'ethereum'
     , 'fantom'
@@ -53,8 +52,8 @@ FROM (
         , w.withdrawal_amount_raw
         , w.sender
         , w.recipient
-        , w.withdrawal_token_standard
         , w.withdrawal_token_address
+        , w.withdrawal_token_standard
         , w.tx_from
         , w.tx_hash
         , w.evt_index
