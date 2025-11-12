@@ -132,7 +132,10 @@ WITH swaps AS (
         streaming_count,
         streaming_quantity,
         _TX_TYPE,
-        _INSERTED_TIMESTAMP
+        _INSERTED_TIMESTAMP,
+        event_id,
+        value,
+        index
     FROM
     swaps se
     LEFT JOIN {{ ref('thorchain_silver_prices') }} as p
@@ -174,7 +177,7 @@ WITH swaps AS (
         , streaming_quantity
         , _TX_TYPE
         , _INSERTED_TIMESTAMP
-        , ARRAY_AGG(TRY_CAST(TRIM(f.value) AS INTEGER) ORDER BY f.index) AS affiliate_fee_basis_points_array
+        , ARRAY_AGG(TRY_CAST(TRIM(value) AS INTEGER) ORDER BY index) AS affiliate_fee_basis_points_array
     FROM
         final
     GROUP BY
