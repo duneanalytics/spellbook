@@ -63,7 +63,7 @@ SELECT '{{blockchain}}' AS deposit_chain
 FROM {{ source('tokens_' + blockchain, 'transfers') }} t
 INNER JOIN orbiter_eoas o ON t.to=o.orbiter_address
 LEFT JOIN blacklisted_addresses b ON t."from"=b.blacklisted
-LEFT JOIN {{ ref('bridges_orbiter_chain_indexes') }} ci ON ci.id=try(CAST(SUBSTRING(CAST(t.amount_raw AS VARCHAR), -4) AS bigint))
+INNER JOIN {{ ref('bridges_orbiter_chain_indexes') }} ci ON ci.id=try(CAST(SUBSTRING(CAST(t.amount_raw AS VARCHAR), -4) AS bigint))
 WHERE b.blacklisted IS NULL
 AND t.block_number >= {{first_block_number}}
 
