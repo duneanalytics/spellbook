@@ -6,4 +6,4 @@ sources:
     
     tables:
       - name: StataTokenV2_evt_Initialized
-      - name: StataTokenFactory_call_createDeterministic
+      - name: StataTokenFactory_call_createstatatokens
