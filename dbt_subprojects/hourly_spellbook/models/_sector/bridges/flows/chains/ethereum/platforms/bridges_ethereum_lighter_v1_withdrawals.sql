@@ -15,7 +15,7 @@ SELECT 'lighter' AS deposit_chain
 , block_date AS block_date
 , block_time AS block_time
 , block_number AS block_number
-, amount AS withdrawal_amount_raw
+, amount_raw AS withdrawal_amount_raw
 , "to" AS sender
 , "to" AS recipient
 , token_standard AS withdrawal_token_standard

@@ -26,6 +26,7 @@
     , 'ink'
     , 'lens'
     , 'linea'
+    , 'mantle'
     , 'nova'
     , 'opbnb'
     , 'optimism'
@@ -50,8 +51,8 @@ SELECT deposit_chain
     , deposit_amount_raw
     , sender
     , recipient
-    , deposit_token_standard
     , deposit_token_address
+    , deposit_token_standard
     , tx_from
     , tx_hash
     , evt_index
