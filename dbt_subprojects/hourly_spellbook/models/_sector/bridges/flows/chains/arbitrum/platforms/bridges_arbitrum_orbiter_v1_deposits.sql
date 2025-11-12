@@ -7,6 +7,8 @@
     )
 }}
 
-{{cctp_v1_deposits(blockchain = blockchain
-    , first_block_number = 2494021 --src: https://dune.com/queries/6197210
+{{orbiter_v1_deposits(blockchain = blockchain
+    , first_block_number = 2494021
     )}}
+
+--first_block_number src: https://dune.com/queries/6197210
