@@ -322,3 +322,21 @@ models:
     config:
       tags: [ 'nitro', 'bridges', 'flows' , 'deposits' ]
     description: "Nitro's v1 bridge deposits events on Ethereum"
+  - name: bridges_ethereum_agglayer_v1_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: agglayer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'agglayer', 'bridges', 'flows' , 'deposits' ]
+    description: "Agglayer's shared bridge deposits events on Ethereum"
+  - name: bridges_ethereum_agglayer_v1_withdrawals
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: agglayer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'agglayer', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Agglayer's shared bridge withdrawals events on Ethereum"

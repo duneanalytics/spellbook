@@ -100,3 +100,15 @@ models:
     columns:
       - *id
       - *blockchain
+  - name: bridges_agglayer_chain_indexes
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: agglayer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bridges', 'chain_indexes' ]
+    description: "Agglayer's blockchains indexes"
+    columns:
+      - *id
+      - *blockchain
