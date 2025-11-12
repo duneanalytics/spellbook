@@ -36,6 +36,7 @@
     , 'sei'
     , 'unichain'
     , 'worldchain'
+    , 'zkevm'
     , 'zksync'
     , 'zora'
 ] %}

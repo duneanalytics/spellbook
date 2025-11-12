@@ -317,7 +317,7 @@ models:
     meta:
       blockchain: ethereum
       sector: bridges
-      project: ponitrolygon
+      project: nitro
       contributors: [ 'hildobby']
     config:
       tags: [ 'nitro', 'bridges', 'flows' , 'deposits' ]
