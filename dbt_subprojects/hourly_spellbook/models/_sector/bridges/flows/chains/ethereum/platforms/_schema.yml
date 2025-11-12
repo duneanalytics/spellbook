@@ -286,15 +286,6 @@ models:
     config:
       tags: [ 'near', 'bridges', 'flows' , 'withdrawals' ]
     description: "Near's rainbow v1 bridge deposits events on Ethereum"
-  - name: bridges_ethereum_beamer_v1_deposits
-    meta:
-      blockchain: ethereum
-      sector: bridges
-      project: beamer
-      contributors: [ 'hildobby']
-    config:
-      tags: [ 'beamer', 'bridges', 'flows' , 'withdrawals' ]
-    description: "Beamer's v1 bridge deposits events on Ethereum"
   - name: bridges_ethereum_beamer_v2_deposits
     meta:
       blockchain: ethereum

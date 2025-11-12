@@ -1,10 +1,6 @@
 version: 2
 
 sources:
-  - name: beamer_bridge_v1_ethereum
-    description: "Beamer's v1 bridge events on Ethereum"
-    tables:
-      - name: requestmanager_evt_requestcreated
   - name: beamer_bridge_v2_ethereum
     description: "Beamer's v2 bridge events on Ethereum"
     tables:
