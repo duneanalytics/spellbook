@@ -5,3 +5,4 @@ sources:
     description: "Agglayer's unified bridge events on Ethereum"
     tables:
       - name: polygonzkevmbridge_evt_bridgeevent
+      - name: polygonzkevmbridge_evt_claimevent
