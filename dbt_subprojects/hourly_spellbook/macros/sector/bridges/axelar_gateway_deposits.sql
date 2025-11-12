@@ -19,7 +19,6 @@ SELECT '{{blockchain}}' AS deposit_chain
 , d.amount AS deposit_amount_raw
 , d.sender
 , d.destinationAddress AS recipient
-, d.symbol
 , ti.token_address AS deposit_token_address
 , 'erc20' AS deposit_token_standard
 , 'erc20' AS withdrawal_token_standard
