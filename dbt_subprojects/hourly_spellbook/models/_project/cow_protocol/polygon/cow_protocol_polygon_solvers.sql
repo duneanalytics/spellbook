@@ -64,7 +64,7 @@ known_solver_metadata (address, environment, name) as (
                 (0x8497B82A31DC91C274a068900f1100de243BfDf8, 'barn', 'Bebop'),
                 (0xbeE0a8F78875bd23A8b5a1D7283B163ae7dADCf5, 'prod', 'Bebop'),
                 (0x2aE77A5686115e8Cb5B8e0448D35bd46835abE9C, 'barn', 'OpenOcean_Aggregator'),
-                (0x0eA019e2B276534C2F25691902d6D6ddBCcE14Cc, 'prod', 'OpenOcean_Aggregator'),
+                (0x0eA019e2B276534C2F25691902d6D6ddBCcE14Cc, 'prod', 'OpenOcean_Aggregator')
     ) as _
 )
 -- Combining the metadata with current activation status for final table

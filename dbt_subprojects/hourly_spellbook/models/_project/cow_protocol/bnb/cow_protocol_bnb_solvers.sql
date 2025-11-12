@@ -53,7 +53,7 @@ known_solver_metadata (address, environment, name) as (
                 (0xC10484e51Ef5e69Dd0aC473A1E5310720391A174, 'prod', 'ExtQuasimodo'),
                 (0x4dd1be0Cd607E5382Dd2844fA61D3a17e3e83D56, 'prod', 'Rizzolver'),
                 (0xF49DC3F9Fd153CF8d11d38E79BEdC28C3d62bBb7, 'barn', 'OpenOcean_Aggregator'),
-                (0x784260C2664536AE5d4d92cAD886B00a532eA84C, 'prod', 'OpenOcean_Aggregator'),
+                (0x784260C2664536AE5d4d92cAD886B00a532eA84C, 'prod', 'OpenOcean_Aggregator')
     ) as _
 )
 -- Combining the metadata with current activation status for final table
