@@ -55,7 +55,6 @@ models:
     config:
       tags: [ 'celer', 'bridges', 'flows' , 'withdrawals' ]
     description: "Celer's v1 bridge withdrawals events on BNB"
-<<<<<<< HEAD
   - name: bridges_bnb_symbiosis_v1_deposits
     meta:
       blockchain: bnb
@@ -65,7 +64,6 @@ models:
     config:
       tags: [ 'bnb', 'bridges', 'flows', 'withdrawals' ]
     description: "Symbiosis's v1 bridge deposits events on BNB"
-=======
   - name: bridges_bnb_zkbridge_v1_deposits
     meta:
       blockchain: bnb
@@ -75,4 +73,3 @@ models:
     config:
       tags: [ 'bnb', 'bridges', 'flows', 'deposits' ]
     description: "zkBridge's v1 bridge deposits events on BNB"
->>>>>>> zkbridge_missing_chain

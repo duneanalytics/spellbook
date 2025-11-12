@@ -73,7 +73,6 @@ models:
     config:
       tags: [ 'celer', 'bridges', 'flows' , 'withdrawals' ]
     description: "Celer's v1 bridge withdrawals events on Linea"
-<<<<<<< HEAD
   - name: bridges_linea_symbiosis_v1_deposits
     meta:
       blockchain: linea
@@ -83,7 +82,6 @@ models:
     config:
       tags: [ 'linea', 'bridges', 'flows', 'withdrawals' ]
     description: "Symbiosis's v1 bridge deposits events on Linea"
-=======
   - name: bridges_linea_zkbridge_v1_deposits
     meta:
       blockchain: linea
@@ -93,4 +91,3 @@ models:
     config:
       tags: [ 'linea', 'bridges', 'flows', 'deposits' ]
     description: "zkBridge's v1 bridge deposits events on Linea"
->>>>>>> zkbridge_missing_chain

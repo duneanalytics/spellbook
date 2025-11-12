@@ -112,7 +112,6 @@ models:
     config:
       tags: [ 'polygon', 'bridges', 'flows', 'withdrawals' ]
     description: "Tether's USDT0 v1 bridge withdrawals events on Polygon"
-<<<<<<< HEAD
   - name: bridges_polygon_symbiosis_v1_deposits
     meta:
       blockchain: polygon
@@ -122,7 +121,6 @@ models:
     config:
       tags: [ 'polygon', 'bridges', 'flows', 'withdrawals' ]
     description: "Symbiosis's v1 bridge deposits events on Polygon"
-=======
   - name: bridges_polygon_zkbridge_v1_deposits
     meta:
       blockchain: polygon
@@ -133,7 +131,6 @@ models:
       tags: [ 'polygon', 'bridges', 'flows', 'deposits' ]
     description: "zkBridge's v1 bridge deposits events on Polygon"
 
->>>>>>> zkbridge_missing_chain
 
 
             
