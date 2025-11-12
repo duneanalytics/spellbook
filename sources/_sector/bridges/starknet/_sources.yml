@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: starknet_ethereum
+    description: "Starknet's native bridge events on Ethereum"
+    tables:
+      - name: starknetethbridge_evt_deposit
+      - name: starknettokenbridge_evt_deposit
+      - name: starknetethbridge_evt_withdrawal
+      - name: starknettokenbridge_evt_withdrawal

@@ -322,3 +322,21 @@ models:
     config:
       tags: [ 'nitro', 'bridges', 'flows' , 'deposits' ]
     description: "Nitro's v1 bridge deposits events on Ethereum"
+  - name: bridges_ethereum_starknet_native_v1_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: starknet
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'starknet', 'bridges', 'flows' , 'deposits' ]
+    description: "Starknet's v1 native bridge deposits events on Ethereum"
+  - name: bridges_ethereum_starknet_native_v1_withdrawals
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: starknet
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'starknet', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Starknet's v1 native bridge withdrawals events on Ethereum"
