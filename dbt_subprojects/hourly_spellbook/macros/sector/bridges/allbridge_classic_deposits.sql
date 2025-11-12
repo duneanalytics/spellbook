@@ -1,10 +1,10 @@
-{% macro across_v1_deposits(blockchain) %}
+{% macro allbridge_classic_deposits(blockchain) %}
 
 SELECT '{{blockchain}}' AS deposit_chain
 , i.chain_id AS withdrawal_chain_id
 , ci.blockchain AS withdrawal_chain
-, 'Across' AS bridge_name
-, '1' AS bridge_version
+, 'Allbridge' AS bridge_name
+, 'Classic' AS bridge_version
 , evt_block_date AS block_date
 , evt_block_time AS block_time
 , evt_block_number AS block_number
@@ -19,7 +19,7 @@ SELECT '{{blockchain}}' AS deposit_chain
 , evt_index
 , contract_address
 , CAST(depositId AS varchar) AS bridge_transfer_id
-FROM ({{ source('allbridge_' + blockchain, '_bridge_evt_sent') }}) d
+FROM ({{ source('allbridge_' + blockchain, 'bridge_evt_sent') }}) d
 LEFT JOIN {{ ref('bridges_allbridge_classic_chain_indexes') }} ci ON trim(from_utf8(d.destination))=ci.allbridge_slug
 LEFT JOIN {{ source('evms','info') }} i ON ci.blockchain=i.blockchain
 
