@@ -24,12 +24,7 @@
 
 {% macro create_table_properties(_properties, relation) %}
   {%- set modified_identifier = relation.identifier | replace("__dbt_tmp", "") -%}
-  {%- if target.name == 'dev-prod-s3' -%}
-    {# For local dev, use deterministic location without time salt to avoid location conflicts #}
-    {%- set unique_location = modified_identifier -%}
-  {%- else -%}
-    {%- set unique_location = modified_identifier ~ '_' ~ time_salted_md5_prefix() -%}
-  {%- endif -%}
+  {%- set unique_location = modified_identifier ~ '_' ~ time_salted_md5_prefix() -%}
   {%- set location= 's3a://%s/%s/%s' % (s3_bucket(), relation.schema, unique_location) -%}
   {%- do _properties.update({'location': "'" + location + "'"}) -%}
     {# temp fix to get latest dbt-trino version 1.8.3 working in dbt cloud #}
@@ -45,7 +40,7 @@
 
 {%- macro s3_bucket() -%}
   {%- if target.type == 'trino' and target.schema != 'wizard' -%}
-    {%- if target.name == 'prod' or target.schema.startswith('git_dunesql') or target.name == 'dev-prod-s3' -%}
+    {%- if target.name == 'prod' or target.schema.startswith('git_dunesql') -%}
       {{- return('prod-spellbook-trino-118330671040') -}}
     {%- else -%}
       {{- return('trino-dev-datasets-118330671040') }}

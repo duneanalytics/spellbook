@@ -4,6 +4,6 @@
 
 {% macro trino__create_schema(relation) -%}
   {%- call statement('create_schema') -%}
-   CREATE SCHEMA IF NOT EXISTS {{ relation }} WITH (location = 's3a://{{s3_bucket()}}/')
+   CREATE SCHEMA {{ relation }} WITH (location = 's3a://{{s3_bucket()}}/')
   {% endcall %}
 {% endmacro %}
