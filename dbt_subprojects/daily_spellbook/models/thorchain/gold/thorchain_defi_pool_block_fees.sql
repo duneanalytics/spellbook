@@ -27,7 +27,7 @@ WITH base AS (
         _INSERTED_TIMESTAMP
     FROM
     {{ ref('thorchain_silver_pool_block_fees') }}
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
     WHERE {{ incremental_predicate('day') }}
     {% endif -%}
 )

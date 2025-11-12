@@ -97,7 +97,7 @@ JOIN {{ ref('thorchain_silver_block_log') }} as b
 LEFT JOIN {{ ref('thorchain_silver_prices') }} as p
     ON b.height = p.block_id
     AND se.pool_name = p.pool_name
-{% if is_incremental() or true -%}
+{% if is_incremental() -%}
 WHERE
     {{ incremental_predicate('b.block_timestamp') }}
 {% endif -%}
@@ -162,6 +162,6 @@ JOIN {{ ref('thorchain_silver_block_log') }} as b
 LEFT JOIN {{ ref('thorchain_silver_prices') }} as p
     ON b.height = p.block_id
     AND ue.pool_name = p.pool_name
-{% if is_incremental() or true -%}
+{% if is_incremental() -%}
 WHERE {{ incremental_predicate('b.block_timestamp') }}
 {% endif -%}

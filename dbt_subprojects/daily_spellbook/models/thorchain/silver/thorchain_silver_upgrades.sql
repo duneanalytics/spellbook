@@ -78,6 +78,6 @@ LEFT JOIN block_prices as p
     ON b.height = p.block_id
 WHERE
     se.rn = 1
-    {% if is_incremental() or true -%}
+    {% if is_incremental() -%}
     and {{ incremental_predicate('b.block_timestamp') }}
     {% endif -%}

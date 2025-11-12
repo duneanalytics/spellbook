@@ -43,7 +43,7 @@ JOIN {{ ref('thorchain_silver_block_log') }} as b
     ON se.block_timestamp = b.timestamp
 LEFT JOIN block_prices as p
     ON b.height = p.block_id
-{% if is_incremental() or true %}
+{% if is_incremental() %}
 WHERE
     {{ incremental_predicate('b.block_timestamp') }}
 {% endif %}
