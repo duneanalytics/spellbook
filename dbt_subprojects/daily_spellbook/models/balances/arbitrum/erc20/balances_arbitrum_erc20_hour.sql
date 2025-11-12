@@ -1,10 +1,7 @@
 {{ config(
         
         alias = 'erc20_hour',
-        post_hook='{{ expose_spells(\'["arbitrum"]\',
-                                    "sector",
-                                    "balances",
-                                    \'["Henrystats"]\') }}'
+        post_hook='{{ hide_spells() }}'
         )
 }}
 

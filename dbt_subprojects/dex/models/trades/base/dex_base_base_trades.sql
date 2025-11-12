@@ -20,6 +20,7 @@
     , ref('aerodrome_base_base_trades')
     , ref('pancakeswap_v2_base_base_trades')
     , ref('pancakeswap_v3_base_base_trades')
+    , ref('pancakeswap_infinity_base_base_trades')
     , ref('balancer_v2_base_base_trades')
     , ref('balancer_v3_base_base_trades')
     , ref('dodo_base_base_trades')
@@ -53,6 +54,7 @@
     , ref('openocean_base_base_trades')
     , ref('rocketswap_base_base_trades')
     , ref('alienbase_base_base_trades')
+    , ref('alienbase_v3_base_base_trades')
     , ref('swapbased_base_base_trades')
     , ref('clipper_base_base_trades')
     , ref('solidly_v3_base_base_trades')
@@ -66,6 +68,7 @@
     , ref('tapio_base_base_trades')
     , ref('fluid_v1_base_base_trades')
     , ref('native_base_base_trades')
+    , ref('carbon_defi_base_base_trades')
 ] %}
 with base_union as (
     SELECT *

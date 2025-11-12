@@ -1,10 +1,7 @@
 {{ config(
         
         alias = 'matic_day',
-        post_hook='{{ expose_spells(\'["polygon"]\',
-                                    "sector",
-                                    "balances",
-                                    \'["Henrystats"]\') }}'
+        post_hook='{{ hide_spells() }}'
         )
 }}
 WITH 

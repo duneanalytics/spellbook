@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: bridges_corn_tether_v1_deposits
+    meta:
+      blockchain: corn
+      sector: bridges
+      project: tether
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'corn', 'bridges', 'flows', 'deposits' ]
+    description: "Tether's USDT0 v1 bridge deposits events on Corn"
+  - name: bridges_corn_tether_v1_withdrawals
+    meta:
+      blockchain: corn
+      sector: bridges
+      project: tether
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'corn', 'bridges', 'flows', 'withdrawals' ]
+    description: "Tether's USDT0 v1 bridge withdrawals events on Corn"

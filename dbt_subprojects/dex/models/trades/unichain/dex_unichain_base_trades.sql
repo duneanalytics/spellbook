@@ -17,6 +17,7 @@
     , ref('dyorswap_unichain_base_trades')
     , ref('unichainswap_unichain_base_trades')
     , ref('velodrome_unichain_base_trades')
+    , ref('eulerswap_unichain_base_trades')
 ] %}
 with base_union as (
     SELECT *

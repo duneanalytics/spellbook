@@ -53,10 +53,12 @@ models:
     data_tests:
     - dbt_utils.unique_combination_of_columns:
         combination_of_columns:
+          - block_month
+          - amm
           - log_index
-          - input_mint
-          - output_mint
           - tx_id
+          - output_mint
+          - input_mint
     meta:
       blockchain: solana
       contributors: [ilemi]

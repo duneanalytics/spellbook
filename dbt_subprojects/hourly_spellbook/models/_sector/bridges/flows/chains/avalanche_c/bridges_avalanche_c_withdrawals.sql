@@ -9,12 +9,14 @@
 
 {% set bridges_platforms = [
     'bridges_' + blockchain + '_cctp_v1_withdrawals'
+    , 'bridges_' + blockchain + '_celer_v1_withdrawals'
 ] %}
 
 SELECT *
 FROM (
     {% for bridge_platform in bridges_platforms %}
     SELECT deposit_chain
+    , deposit_chain_id
     , withdrawal_chain
     , bridge_name
     , bridge_version

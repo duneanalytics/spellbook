@@ -19,8 +19,8 @@ SELECT *
         , block_date
         , block_time
         , block_number
-        , deposit_amount_raw
         , deposit_amount
+        , deposit_amount_raw
         , CAST(sender AS VARCHAR) AS sender
         , CAST(recipient AS VARCHAR) AS recipient
         , deposit_token_standard
@@ -30,6 +30,8 @@ SELECT *
         , evt_index
         , CAST(contract_address AS VARCHAR) AS contract_address
         , bridge_transfer_id
+        , duplicate_index
+        , withdrawal_chain_id
         FROM {{ ref('bridges_'~vm~'_deposits') }}
         {% if not loop.last %}
         UNION ALL
