@@ -1,6 +1,6 @@
 {% macro layerzero_v1_deposits(blockchain, events) %}
 
-, send_calls AS (
+WITH send_calls AS (
     SELECT s._dstChainId AS withdrawal_chain_id
     , date_trunc('day', s.call_block_time) AS block_date
     , s.call_block_time AS block_time
