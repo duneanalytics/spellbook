@@ -16,6 +16,7 @@
     , 'bridges_' + blockchain + '_axelar_gateway_deposits'
     , 'bridges_' + blockchain + '_synapse_rfq_deposits'
     , 'bridges_' + blockchain + '_zkbridge_v1_deposits'
+    , 'bridges_' + blockchain + '_beamer_v2_deposits'
 ] %}
 
 SELECT *
