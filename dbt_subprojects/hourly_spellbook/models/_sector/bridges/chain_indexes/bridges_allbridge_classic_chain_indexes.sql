@@ -4,7 +4,6 @@
     materialized = 'view',
     )
 }}
-]
 
 SELECT blockchain, allbridge_slug
     FROM (VALUES
