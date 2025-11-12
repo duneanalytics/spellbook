@@ -50,5 +50,5 @@ LEFT JOIN {{ source('tokens_ethereum', 'transfers') }} t ON t.block_number=be.bl
     AND t.tx_hash=be.tx_hash
     AND t.to=be.contract_address
     AND t.amount_raw=be.deposit_amount_raw
-    AND deposit_token_standard='erc20'
+    AND t.token_standard='erc20'
 LEFT JOIN {{ ref('bridges_agglayer_chain_indexes') }} i ON i.id=be.withdrawal_chain_id

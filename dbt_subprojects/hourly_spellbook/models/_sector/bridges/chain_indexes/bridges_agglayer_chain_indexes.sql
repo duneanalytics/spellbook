@@ -9,7 +9,8 @@
 
 SELECT id, blockchain
     FROM (VALUES
-    (20, 'katana')
+    (0, 'ethereum')
+    , (20, 'katana')
     , (16, 'pentagon_games')
     , (10, 'silicon_network')
     , (3, 'xlayer')
