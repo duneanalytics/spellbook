@@ -3,7 +3,11 @@ version: 2
 models:
   - name: bridges_evms_deposits
     meta:
+<<<<<<< HEAD
       blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei, abstract, katana, sonic, taiko, zkevm
+=======
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei, boba
+>>>>>>> zkbridge_missing_chain
       sector: bridges
       contributors: [ 'hildobby']
     config:
@@ -93,7 +97,7 @@ models:
         description: "Blockchain ID where the tokens were received"
   - name: bridges_evms_withdrawals
     meta:
-      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei, mantle
       sector: bridges
       contributors: [ 'hildobby']
     config:
@@ -142,7 +146,11 @@ models:
       - *duplicate_index
   - name: bridges_evms_deposits_raw
     meta:
+<<<<<<< HEAD
       blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei, abstract, katana, sonic, taiko, zkevm
+=======
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei, boba
+>>>>>>> zkbridge_missing_chain
       sector: bridges
       contributors: [ 'hildobby']
     config:
@@ -172,7 +180,7 @@ models:
       - *withdrawal_chain_id
   - name: bridges_evms_withdrawals_raw
     meta:
-      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei, mantle
       sector: bridges
       contributors: [ 'hildobby']
     config:
@@ -202,7 +210,11 @@ models:
       - *deposit_chain_id
   - name: bridges_evms_flows
     meta:
+<<<<<<< HEAD
       blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei, abstract, katana, sonic, taiko, zkevm
+=======
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei, mantle, boba
+>>>>>>> zkbridge_missing_chain
       sector: bridges
       contributors: [ 'hildobby']
     config:

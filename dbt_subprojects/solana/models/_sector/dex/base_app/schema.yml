@@ -39,6 +39,38 @@ models:
         tests:
           - not_null
 
+  - name: base_app_swapper_solana_stg_sol_payments
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - tx_id
+            - token_address
+
+  - name: base_app_swapper_solana_stg_token_payments
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - tx_id
+            - token_address
+
+  - name: base_app_swapper_solana_stg_token_payments_fees_paid
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - tx_id
+            - token_address
+
+  - name: base_app_swapper_solana_stg_token_payments_fees_claimed
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - tx_id
+            - token_address
+
   - name: base_app_swapper_solana_fee_payments_raw
     description: "Raw fee payments collected by base app Swapper on Solana"
     data_tests:

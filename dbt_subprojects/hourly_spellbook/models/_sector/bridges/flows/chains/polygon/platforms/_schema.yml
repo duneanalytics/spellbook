@@ -40,15 +40,6 @@ models:
     config:
       tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
     description: "Across's v1 bridge deposits events on Polygon"
-  - name: bridges_polygon_across_v1_withdrawals
-    meta:
-      blockchain: polygon
-      sector: bridges
-      project: across
-      contributors: [ 'hildobby']
-    config:
-      tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
-    description: "Across's v1 bridge withdrawals events on Polygon"
   - name: bridges_polygon_across_v2_deposits
     meta:
       blockchain: polygon
@@ -121,6 +112,7 @@ models:
     config:
       tags: [ 'polygon', 'bridges', 'flows', 'withdrawals' ]
     description: "Tether's USDT0 v1 bridge withdrawals events on Polygon"
+<<<<<<< HEAD
   - name: bridges_polygon_symbiosis_v1_deposits
     meta:
       blockchain: polygon
@@ -130,6 +122,18 @@ models:
     config:
       tags: [ 'polygon', 'bridges', 'flows', 'withdrawals' ]
     description: "Symbiosis's v1 bridge deposits events on Polygon"
+=======
+  - name: bridges_polygon_zkbridge_v1_deposits
+    meta:
+      blockchain: polygon
+      sector: bridges
+      project: zkbridge
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'polygon', 'bridges', 'flows', 'deposits' ]
+    description: "zkBridge's v1 bridge deposits events on Polygon"
+
+>>>>>>> zkbridge_missing_chain
 
 
             
