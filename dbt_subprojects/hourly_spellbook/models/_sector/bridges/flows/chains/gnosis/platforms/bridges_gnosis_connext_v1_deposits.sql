@@ -1,4 +1,4 @@
-{% set blockchain = 'arbitrum' %}
+{% set blockchain = 'gnosis' %}
 
 {{ config(
     schema = 'bridges_' + blockchain,
