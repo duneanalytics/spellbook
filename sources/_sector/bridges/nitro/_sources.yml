@@ -1,7 +1,0 @@
-version: 2
-
-sources:
-  - name: router_ethereum
-    description: "Router's Nitro bridge events on Ethereum"
-    tables:
-      - name: assetforwarder_evt_fundsdeposited

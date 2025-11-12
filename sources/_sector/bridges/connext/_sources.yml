@@ -1,7 +1,0 @@
-version: 2
-
-sources:
-  - name: connext_arbitrum
-    description: "Connext's v1 bridge events on Arbitrum"
-    tables:
-      - name: connextdiamond_evt_xcalled

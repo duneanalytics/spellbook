@@ -15,7 +15,6 @@
     , 'bridges_' + blockchain + '_butter_v2_deposits'
     , 'bridges_' + blockchain + '_synapse_rfq_deposits'
     , 'bridges_' + blockchain + '_zkbridge_v1_deposits'
-    , 'bridges_' + blockchain + '_beamer_v2_deposits'
 ] %}
 
 SELECT *
