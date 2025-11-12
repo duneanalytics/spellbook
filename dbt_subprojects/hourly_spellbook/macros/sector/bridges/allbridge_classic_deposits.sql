@@ -9,16 +9,16 @@ SELECT '{{blockchain}}' AS deposit_chain
 , evt_block_time AS block_time
 , evt_block_number AS block_number
 , amount AS deposit_amount_raw
-, depositor AS sender
+, sender
 , recipient
-, originToken AS deposit_token_address
+, tokenSource AS deposit_token_address
 , 'erc20' AS deposit_token_standard
 , 'erc20' AS withdrawal_token_standard
 , evt_tx_from AS tx_from
 , evt_tx_hash AS tx_hash
 , evt_index
 , contract_address
-, CAST(depositId AS varchar) AS bridge_transfer_id
+, CAST(lockId AS varchar) AS bridge_transfer_id
 FROM ({{ source('allbridge_' + blockchain, 'bridge_evt_sent') }}) d
 LEFT JOIN {{ ref('bridges_allbridge_classic_chain_indexes') }} ci ON trim(from_utf8(d.destination))=ci.allbridge_slug
 LEFT JOIN {{ source('evms','info') }} i ON ci.blockchain=i.blockchain
