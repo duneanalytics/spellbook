@@ -223,24 +223,6 @@ models:
     config:
       tags: [ 'arbitrum', 'bridges', 'flows' , 'withdrawals' ]
     description: "Arbitrum's v1 native bridge withdrawals events on Ethereum"
-  - name: bridges_ethereum_blast_native_v1_deposits
-    meta:
-      blockchain: ethereum
-      sector: bridges
-      project: blast
-      contributors: [ 'hildobby']
-    config:
-      tags: [ 'blast', 'bridges', 'flows' , 'deposits' ]
-    description: "Blast's v1 native bridge deposits events on Ethereum"
-  - name: bridges_ethereum_blast_native_v1_withdrawals
-    meta:
-      blockchain: ethereum
-      sector: bridges
-      project: blast
-      contributors: [ 'hildobby']
-    config:
-      tags: [ 'blast', 'bridges', 'flows' , 'withdrawals' ]
-    description: "Blast's v1 native bridge withdrawals events on Ethereum"
   - name: bridges_ethereum_sui_native_v1_deposits
     meta:
       blockchain: ethereum
@@ -331,12 +313,3 @@ models:
     config:
       tags: [ 'polygon', 'bridges', 'flows' , 'withdrawals' ]
     description: "Polygon's v1 native bridge withdrawals events on Ethereum"
-  - name: bridges_ethereum_nitro_v1_deposits
-    meta:
-      blockchain: ethereum
-      sector: bridges
-      project: ponitrolygon
-      contributors: [ 'hildobby']
-    config:
-      tags: [ 'nitro', 'bridges', 'flows' , 'deposits' ]
-    description: "Nitro's v1 bridge deposits events on Ethereum"

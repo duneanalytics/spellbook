@@ -1,8 +1,0 @@
-version: 2
-
-sources:
-  - name: blast_ethereum
-    description: "Blast's native bridge events on Ethereum"
-    tables:
-      - name: launchbridge_evt_ethdeposited
-      - name: launchbridge_evt_usddeposited
