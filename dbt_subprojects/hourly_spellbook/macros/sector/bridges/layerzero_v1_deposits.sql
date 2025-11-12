@@ -35,8 +35,8 @@ SELECT '{{blockchain}}' AS deposit_chain
 , sc.contract_address
 , CAST(t.unique_key AS varchar) AS bridge_transfer_id
 FROM send_calls sc
-LEFT JOIN {{ source('tokens_' + blockchain, 'transfers') }} t ON t.block_number=sc.call_block_number
-        AND t.tx_hash=sc.call_tx_hash
+LEFT JOIN {{ source('tokens_' + blockchain, 'transfers') }} t ON t.block_number=sc.block_number
+        AND t.tx_hash=sc.tx_hash
 LEFT JOIN {{ ref('bridges_layerzero_chain_indexes') }} ci ON sc.withdrawal_chain_id=ci.id
 
 {% endmacro %}
