@@ -29,7 +29,7 @@ WITH send_calls AS (
     FROM (
         SELECT t.block_number
         , t.tx_hash
-        , t.from AS sender
+        , t."from" AS sender
         , t.to AS recipient
         , t.amount AS deposit_amount_raw
         , t.token_standard AS deposit_token_standard
