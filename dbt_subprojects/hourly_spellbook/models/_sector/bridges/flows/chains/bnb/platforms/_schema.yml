@@ -64,3 +64,12 @@ models:
     config:
       tags: [ 'bnb', 'bridges', 'flows', 'deposits' ]
     description: "zkBridge's v1 bridge deposits events on BNB"
+  - name: bridges_bnb_connext_v1_deposits
+    meta:
+      blockchain: bnb
+      sector: bridges
+      project: connext
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bnb', 'bridges', 'flows', 'withdrawals' ]
+    description: "Connext's v1 bridge deposits events on BNB"

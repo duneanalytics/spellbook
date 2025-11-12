@@ -322,3 +322,12 @@ models:
     config:
       tags: [ 'nitro', 'bridges', 'flows' , 'deposits' ]
     description: "Nitro's v1 bridge deposits events on Ethereum"
+  - name: bridges_ethereum_connext_v1_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: connext
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'ethereum', 'bridges', 'flows', 'withdrawals' ]
+    description: "Connext's v1 bridge deposits events on Ethereum"
