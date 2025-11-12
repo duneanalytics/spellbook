@@ -1,7 +1,6 @@
 {% macro butter_v2_deposits(blockchain) %}
 
 SELECT '{{blockchain}}' AS deposit_chain
-, d.fromChain
 , d.toChain AS withdrawal_chain_id
 , m.blockchain AS withdrawal_chain
 , 'Butter' AS bridge_name

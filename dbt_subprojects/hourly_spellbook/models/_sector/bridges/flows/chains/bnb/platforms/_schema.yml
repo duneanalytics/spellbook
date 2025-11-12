@@ -55,3 +55,12 @@ models:
     config:
       tags: [ 'celer', 'bridges', 'flows' , 'withdrawals' ]
     description: "Celer's v1 bridge withdrawals events on BNB"
+  - name: bridges_bnb_zkbridge_v1_deposits
+    meta:
+      blockchain: bnb
+      sector: bridges
+      project: zkbridge
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bnb', 'bridges', 'flows', 'deposits' ]
+    description: "zkBridge's v1 bridge deposits events on BNB"
