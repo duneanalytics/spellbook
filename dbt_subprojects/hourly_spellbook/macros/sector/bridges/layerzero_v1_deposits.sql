@@ -16,6 +16,34 @@ WITH send_calls AS (
     WHERE s.call_success
     )
 
+, transfers AS (
+    SELECT block_number
+    , tx_hash
+    , sender
+    , recipient
+    , deposit_amount_raw
+    , deposit_token_standard
+    , deposit_token_address
+    , evt_index
+    , unique_key
+    FROM (
+        SELECT t.block_number
+        , t.tx_hash
+        , t.from AS sender
+        , t.to AS recipient
+        , t.amount AS deposit_amount_raw
+        , t.token_standard AS deposit_token_standard
+        , t.contract_address AS deposit_token_address
+        , t.evt_index
+        , t.unique_key
+        , ROW_NUMBER() OVER (PARTITION BY t.tx_hash ORDER BY COALESCE(t.trace_address, ARRAY[t.evt_index])) AS rn
+        FROM {{ source('tokens_' + blockchain, 'transfers') }} t
+        LEFT JOIN send_calls sc ON t.block_number=sc.block_number
+                AND t.tx_hash=sc.tx_hash
+        )
+    WHERE rn = 1
+    )
+
 SELECT '{{blockchain}}' AS deposit_chain
 , sc.withdrawal_chain_id
 , ci.blockchain AS withdrawal_chain
@@ -24,10 +52,10 @@ SELECT '{{blockchain}}' AS deposit_chain
 , date_trunc('day', sc.block_time) AS block_date
 , sc.block_time
 , sc.block_number
-, t.amount AS deposit_amount_raw
+, t.deposit_amount_raw
 , sc.sender
 , sc.recipient
-, t.token_standard AS deposit_token_standard
+, t.deposit_token_standard
 , sc.deposit_token_address
 , sc.tx_from
 , sc.tx_hash
@@ -35,7 +63,7 @@ SELECT '{{blockchain}}' AS deposit_chain
 , sc.contract_address
 , CAST(t.unique_key AS varchar) AS bridge_transfer_id
 FROM send_calls sc
-LEFT JOIN {{ source('tokens_' + blockchain, 'transfers') }} t ON t.block_number=sc.block_number
+LEFT JOIN transfers t ON t.block_number=sc.block_number
         AND t.tx_hash=sc.tx_hash
 LEFT JOIN {{ ref('bridges_layerzero_chain_indexes') }} ci ON sc.withdrawal_chain_id=ci.id
 
