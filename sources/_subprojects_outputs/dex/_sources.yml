@@ -77,7 +77,7 @@ sources:
       - name: balancer_v3_pools_base
       - name: balancer_v3_pools_arbitrum
       - name: balancer_v3_pools
-      - name: balancer_v3_pools_plasma 
+      
   - name: uniswap_v3_optimism
     tables:
       - name: ovm1_pool_mapping
