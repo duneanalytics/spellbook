@@ -24,6 +24,7 @@
     , 'bridges_' + blockchain + '_rainbow_v1_deposits'
     , 'bridges_' + blockchain + '_beamer_v2_deposits'
     , 'bridges_' + blockchain + '_polygon_native_v1_deposits'
+    , 'bridges_' + blockchain + '_allbridge_classic_deposits'
 ] %}
 
 SELECT *

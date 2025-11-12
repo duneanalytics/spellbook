@@ -295,3 +295,12 @@ models:
     config:
       tags: [ 'polygon', 'bridges', 'flows' , 'withdrawals' ]
     description: "Polygon's v1 native bridge withdrawals events on Ethereum"
+  - name: bridges_ethereum_allbridge_classic_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: allbridge
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'allbridge', 'bridges', 'flows' , 'deposits' ]
+    description: "Allbridge's v1 classic bridge deposits events on Ethereum"
