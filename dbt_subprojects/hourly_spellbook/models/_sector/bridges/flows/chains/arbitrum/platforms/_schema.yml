@@ -217,3 +217,12 @@ models:
     config:
       tags: [ 'arbitrum', 'bridges', 'flows', 'deposits' ]
     description: "zkBridge's v1 bridge deposits events on Arbitrum"
+  - name: bridges_arbitrum_orbiter_v1_deposits
+    meta:
+      blockchain: arbitrum
+      sector: bridges
+      project: orbiter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'arbitrum', 'bridges', 'flows', 'withdrawals' ]
+    description: "Orbiter's v1 bridge deposits events on Arbitrum"
