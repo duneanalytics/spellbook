@@ -27,8 +27,7 @@ WITH base AS (
     e.from_address,
     e.asset,
     e.event_id,
-    e._TX_TYPE,
-    _inserted_timestamp
+    e._TX_TYPE
   FROM
     {{ ref('thorchain_silver_add_events') }} e
 )
@@ -52,7 +51,6 @@ SELECT
   A.from_address,
   A.asset,
   A._TX_TYPE,
-  A._inserted_timestamp,
   current_timestamp AS inserted_timestamp,
   current_timestamp AS modified_timestamp
 FROM
