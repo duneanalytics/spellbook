@@ -3,7 +3,8 @@
         blockchain,
         stream,
         contracts,
-        initial
+        initial,
+        type="decoded"
     )
 -%}
 
@@ -14,49 +15,58 @@
 
 with
 
-iterations as (
-    {% for contract, contract_data in contracts.items() %}
-        -- CONTRACT: {{ contract }} --
-        {% for method, method_data in contract_data.methods.items() %}
-            select
-                call_block_number as block_number
-                , call_block_date as block_date
-                , call_tx_hash as tx_hash
-                , call_trace_address
-                , {{ method_data.get("flow", "null") }} as flow
-                , {{ method_data.get("factory", "null") }} as factory
-                , {{ method_data.get("escrow", "null") }} as escrow
-                , {{ method_data.get("order_hash", "null") }} as order_hash
-                , {{ method_data.get("hashlock", "null") }} as hashlock
-                , {{ method_data.get("maker", "null") }} as maker
-                , {{ method_data.get("taker", "null") }} as taker
-                , {{ method_data.get("token", "null") }} as token
-                , {{ method_data.get("amount", "null") }} as amount
-                , {{ method_data.get("safety_deposit", "null") }} as safety_deposit
-                , {{ method_data.get("timelocks", "null") }} as timelocks
-                , {{ method_data.get("secret", "null") }} as secret
-                , {{ method_data.get("receiver", "null") }} as receiver
-                , {{ method_data.get("nonce", "null") }} as nonce
-            from (
-                select {%- if contract_data.address == "creations" %} distinct {%- endif %} *
-                    , {{ method_data.get("immutables", '"immutables"') }} as data
-                from {{ source('oneinch_' + blockchain.name, contract + '_call_' + method) }}
-                where true
-                    and call_block_date >= timestamp '{{ date_from }}'
-                    {% if is_incremental() -%} and {{ incremental_predicate('call_block_time') }}{% endif %}
-            )
-            {% if not loop.last -%} union all {%- endif %}
-        {% endfor %}
-        {% if not loop.last -%} union all {%- endif %}
-    {% endfor %}
-)
-
-, raw_calls as (
+raw_calls as (
     select *
     from {{ ref('oneinch_' + blockchain.name + '_cc_raw_calls') }}
     where true
         and block_date >= timestamp '{{ date_from }}'
         {% if is_incremental() -%} and {{ incremental_predicate('block_time') }}{% endif %}
+)
+
+, iterations as (
+    {% for contract, contract_data in contracts.items() %}
+        -- CONTRACT: {{ contract }} --
+        {% for method, method_data in contract_data.methods.items() %}
+            select
+                raw_calls.*
+                , {{ method_data.get("flow", "cast(null as varchar)") }} as flow
+                , {{ method_data.get("order_hash", "cast(null as varbinary)") }} as order_hash
+                , {{ method_data.get("hashlock", "cast(null as varbinary)") }} as hashlock
+                , {{ method_data.get("maker", "cast(null as varbinary)") }} as maker
+                , {{ method_data.get("taker", "cast(null as varbinary)") }} as taker
+                , {{ method_data.get("token", "cast(null as varbinary)") }} as token
+                , {{ method_data.get("amount", "cast(null as uint256)") }} as amount
+                , {{ method_data.get("safety_deposit", "cast(null as uint256)") }} as safety_deposit
+                , {{ method_data.get("timelocks", "cast(null as varbinary)") }} as timelocks
+                , {{ method_data.get("escrow", "cast(null as varbinary)") }} as escrow
+                , {{ method_data.get("factory", "cast(null as varbinary)") }} as factory
+                , {{ method_data.get("secret", "cast(null as varbinary)") }} as secret
+                , {{ method_data.get("receiver", "cast(null as varbinary)") }} as receiver
+                , {{ method_data.get("nonce", "cast(null as varbinary)") }} as nonce
+            from (
+                select *
+                from raw_calls
+                where true
+                    and contract_name = '{{ contract }}'
+                    and call_method = '{{ method }}'
+            ) as raw_calls
+            {% if type == "decoded" or contract_data.address != "creations" -%} join (
+                select {%- if contract_data.address == "creations" %} distinct {%- endif %} *
+                    , {{ method_data.get("immutables", '"immutables"') }} as data
+                from {{ source('oneinch_' + blockchain.name, contract + '_call_' + method) }}
+                where true
+                    and call_block_date >= timestamp '{{ date_from }}'
+                    {% if is_incremental() -%} and {{ incremental_predicate('call_block_time') }} {%- endif %}
+            ) as parsed on true
+                and call_block_date = block_date
+                and call_block_number = block_number
+                and call_tx_hash = tx_hash
+                and parsed.call_trace_address = raw_calls.call_trace_address
+            {% endif -%}
+            {% if not loop.last -%} union all {%- endif %}
+        {% endfor %}
+        {% if not loop.last -%} union all {%- endif %}
+    {% endfor %}
 )
 
 , initial as ( -- required to get the initial order data & initial call data
@@ -214,7 +224,6 @@ from ({{
         , columns = ['from', 'to', 'nonce', 'gas_price', 'priority_fee_per_gas', 'gas_used', 'index']
     )
 }}) as t
-join raw_calls using(block_date, block_number, tx_hash, call_trace_address)
 left join initial using(block_date, block_number, tx_hash, order_hash)
 left join native_prices using(minute)
 
