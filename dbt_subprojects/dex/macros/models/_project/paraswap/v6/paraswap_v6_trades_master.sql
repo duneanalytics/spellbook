@@ -119,7 +119,11 @@ select
   call_block_number as blockNumber,
   call_tx_hash as call_tx_hash,
   project_contract_address as projectContractAddress,
-  call_trace_address as call_trace_address,
+  CASE
+    WHEN call_trace_address IS NULL OR CARDINALITY(call_trace_address)=0
+      THEN ARRAY[-1]
+    ELSE call_trace_address
+  END AS call_trace_address,
   srcToken,
   destToken,
   fromAmount,
@@ -154,6 +158,23 @@ select
                 try_cast(partnerAndFee as uint256),
                 bitwise_left_shift(TRY_CAST(1 as uint256), 95)
               ) <> 0 AS isTakeSurplus
+  ROW_NUMBER() OVER (
+    PARTITION BY
+      call_tx_hash,
+      CASE
+        WHEN call_trace_address IS NULL OR CARDINALITY(call_trace_address)=0
+          THEN ARRAY[-1]
+        ELSE call_trace_address
+      END
+    ORDER BY
+      '{{ contract_details['version'] }}' DESC,  -- prefer newer contract version when both emit
+      side,
+      method,
+      toAmount DESC,
+      fromAmount DESC,
+      COALESCE(beneficiary,''),
+      projectContractAddress
+  ) - 1 AS evt_index
   from 
     v6_trades{% endmacro %}
 
