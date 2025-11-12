@@ -18,6 +18,7 @@
     , 'bridges_' + blockchain + '_beamer_v2_deposits'
     , 'bridges_' + blockchain + '_zkbridge_v1_deposits'
     , 'bridges_' + blockchain + '_symbiosis_v1_deposits'
+    , 'bridges_' + blockchain + '_connext_v1_deposits'
 ] %}
 
 SELECT *

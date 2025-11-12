@@ -157,4 +157,13 @@ models:
     config:
       tags: [ 'optimism', 'bridges', 'flows', 'withdrawals' ]
     description: "Symbiosis's v1 bridge deposits events on OP Mainnet"
+  - name: bridges_optimism_connext_v1_deposits
+    meta:
+      blockchain: optimism
+      sector: bridges
+      project: connext
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'optimism', 'bridges', 'flows', 'withdrawals' ]
+    description: "Connext's v1 bridge deposits events on OP Mainnet"
 
