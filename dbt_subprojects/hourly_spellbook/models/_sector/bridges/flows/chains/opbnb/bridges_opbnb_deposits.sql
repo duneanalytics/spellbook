@@ -9,12 +9,8 @@
 
 {% set bridges_platforms = [
     'bridges_' + blockchain + '_celer_v1_deposits'
-<<<<<<< HEAD
     , 'bridges_' + blockchain + '_zkbridge_v1_deposits'
-||||||| 62965d78f
-=======
     , 'bridges_' + blockchain + '_symbiosis_v1_deposits'
->>>>>>> symbiosis_more
 ] %}
 
 SELECT *
