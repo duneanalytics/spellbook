@@ -61,41 +61,41 @@ WITH swaps AS (
         CASE
             WHEN n_tx > 1
             AND rank_liq_fee = 1
-            AND length(CAST(split(memo, ':')[5] AS VARCHAR)) = 43 THEN CAST(split(
+            AND length(CAST(element_at(split(memo, ':'), 5) AS VARCHAR)) = 43 THEN CAST(element_at(split(
                 memo,
                 ':'
-            )[5] AS VARCHAR)
+            ), 5) AS VARCHAR)
             WHEN n_tx > 1
             AND lower(substr(memo, 1, 1)) IN (
                 's',
                 '='
             )
-            AND length(COALESCE(CAST(split(memo, ':')[3] AS VARCHAR), '')) = 0 THEN from_address
-            ELSE CAST(split(
+            AND length(COALESCE(CAST(element_at(split(memo, ':'), 3) AS VARCHAR), '')) = 0 THEN from_address
+            ELSE CAST(element_at(split(
                 memo,
                 ':'
-            )[3] AS VARCHAR)
+            ), 3) AS VARCHAR)
             END AS native_to_address,
         to_address AS to_pool_address,
         CASE
-            WHEN COALESCE(split(memo, ':')[5], '') = '' THEN NULL
-            WHEN strpos(split(memo, ':')[5], '/') > 0 THEN split(split(memo, ':')[5], '/')[1]
-            ELSE CAST(split(
+            WHEN COALESCE(element_at(split(memo, ':'), 5), '') = '' THEN NULL
+            WHEN strpos(element_at(split(memo, ':'), 5), '/') > 0 THEN element_at(split(element_at(split(memo, ':'), 5), '/'), 1)
+            ELSE CAST(element_at(split(
                 memo,
                 ':'
-            )[5] AS VARCHAR)
+            ), 5) AS VARCHAR)
             END AS affiliate_address,
         TRY_CAST(
             CASE
-                WHEN COALESCE(split(memo, ':')[6], '') = '' THEN NULL
-                WHEN strpos(split(memo, ':')[6], '/') > 0 THEN split(split(memo, ':')[6], '/')[1]
-                ELSE split(
+                WHEN COALESCE(element_at(split(memo, ':'), 6), '') = '' THEN NULL
+                WHEN strpos(element_at(split(memo, ':'), 6), '/') > 0 THEN element_at(split(element_at(split(memo, ':'), 6), '/'), 1)
+                ELSE element_at(split(
                 memo,
                 ':'
-                )[6]
+                ), 6)
             END AS INTEGER
         ) AS affiliate_fee_basis_points,
-        split(COALESCE(split(split(memo, '|')[1], ':')[5], ''), '/') AS affiliate_addresses_array,
+        split(COALESCE(element_at(split(element_at(split(memo, '|'), 1), ':'), 5), ''), '/') AS affiliate_addresses_array,
         from_asset,
         to_asset,
         COALESCE(from_e8 / pow(10, 8), 0) AS from_amount,
@@ -142,7 +142,7 @@ WITH swaps AS (
         ON se.block_id = p.block_id
         AND se.pool_name = p.pool_name
     CROSS JOIN UNNEST(
-        split(COALESCE(split(memo, ':')[6], ''), '/')
+        split(COALESCE(element_at(split(memo, ':'), 6), ''), '/')
     ) WITH ORDINALITY AS f(value, index)
 ), final_agg as (
     SELECT
@@ -177,6 +177,7 @@ WITH swaps AS (
         , streaming_quantity
         , _TX_TYPE
         , _INSERTED_TIMESTAMP
+        , event_id
         , ARRAY_AGG(TRY_CAST(TRIM(value) AS INTEGER) ORDER BY index) AS affiliate_fee_basis_points_array
     FROM
         final
@@ -212,6 +213,7 @@ WITH swaps AS (
         , streaming_quantity
         , _TX_TYPE
         , _INSERTED_TIMESTAMP
+        , event_id
 )
 select
     *

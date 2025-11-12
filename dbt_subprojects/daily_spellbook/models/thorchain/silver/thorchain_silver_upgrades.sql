@@ -29,10 +29,10 @@ WITH block_prices AS (
         mint_e8,
         event_id,
         block_timestamp,
-        _inserted_timestamp,
+        _updated_at,
         row_number() over(
             PARTITION BY tx, from_addr, to_addr, burn_asset, burn_e8, mint_e8, block_timestamp
-            ORDER BY _inserted_timestamp DESC
+            ORDER BY _updated_at DESC
         ) as rn
     FROM
     {{ source('thorchain', 'switch_events') }}
@@ -69,7 +69,7 @@ SELECT
         cast(to_address as varchar),
         cast(burn_asset as varchar)
     ) AS _unique_key,
-    se._inserted_timestamp
+    se._updated_at as _inserted_timestamp
 FROM
   switch_events as se
 JOIN {{ ref('thorchain_silver_block_log') }} as b
