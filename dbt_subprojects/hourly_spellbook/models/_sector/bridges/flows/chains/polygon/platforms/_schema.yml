@@ -130,6 +130,16 @@ models:
     config:
       tags: [ 'polygon', 'bridges', 'flows', 'withdrawals' ]
     description: "Connext's v1 bridge deposits events on polygon"
+  - name: bridges_polygon_nitro_v1_deposits
+    meta:
+      blockchain: polygon
+      sector: bridges
+      project: nitro
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'nitro', 'bridges', 'flows' , 'deposits' ]
+    description: "Nitro's v1 bridge deposits events on Polygon"
+
 
   - name: bridges_polygon_symbiosis_v1_deposits
     meta:

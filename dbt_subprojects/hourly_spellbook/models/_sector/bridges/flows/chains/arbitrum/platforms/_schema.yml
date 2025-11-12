@@ -226,3 +226,13 @@ models:
     config:
       tags: [ 'arbitrum', 'bridges', 'flows', 'withdrawals' ]
     description: "Orbiter's v1 bridge deposits events on Arbitrum"
+  - name: bridges_arbitrum_nitro_v1_deposits
+    meta:
+      blockchain: arbitrum
+      sector: bridges
+      project: nitro
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'nitro', 'bridges', 'flows' , 'deposits' ]
+    description: "Nitro's v1 bridge deposits events on Arbitrum"
+

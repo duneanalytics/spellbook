@@ -82,3 +82,13 @@ models:
     config:
       tags: [ 'bnb', 'bridges', 'flows', 'withdrawals' ]
     description: "Connext's v1 bridge deposits events on BNB"
+  - name: bridges_bnb_nitro_v1_deposits
+    meta:
+      blockchain: bnb
+      sector: bridges
+      project: nitro
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'nitro', 'bridges', 'flows' , 'deposits' ]
+    description: "Nitro's v1 bridge deposits events on BNB"
+

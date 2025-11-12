@@ -12,6 +12,7 @@
     , 'bridges_' + blockchain + '_across_v3_deposits'
     , 'bridges_' + blockchain + '_celer_v1_deposits'
     , 'bridges_' + blockchain + '_symbiosis_v1_deposits'
+    , 'bridges_' + blockchain + '_nitro_v1_deposits'
 ] %}
 
 SELECT *

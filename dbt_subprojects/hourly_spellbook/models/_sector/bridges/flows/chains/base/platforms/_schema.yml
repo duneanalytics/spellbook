@@ -151,3 +151,13 @@ models:
     config:
       tags: [ 'base', 'bridges', 'flows', 'withdrawals' ]
     description: "Connext's v1 bridge deposits events on Base"
+  - name: bridges_base_nitro_v1_deposits
+    meta:
+      blockchain: base
+      sector: bridges
+      project: nitro
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'nitro', 'bridges', 'flows' , 'deposits' ]
+    description: "Nitro's v1 bridge deposits events on Base"
+
