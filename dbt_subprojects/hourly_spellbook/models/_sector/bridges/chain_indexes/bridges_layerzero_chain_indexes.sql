@@ -9,161 +9,161 @@
 
 SELECT blockchain, id, endpoint_address
     FROM (VALUES
-    ('ethereum', 101, 0x66a71dcef29a0ffbdbe3c6a460a3b5bc225cd675),
-    ('bnb', 102, 0x3c2269811836af69497e5f486a85d7316753cf62),
-    ('avalanche_c', 106, 0x3c2269811836af69497e5f486a85d7316753cf62),
-    ('aptos', 108, 0x54ad3d30af77b60d939ae356e6606de9a4da67583f02b962d2d3f2e481484e90),
-    ('polygon', 109, 0x3c2269811836af69497e5f486a85d7316753cf62),
-    ('arbitrum', 110, 0x3c2269811836af69497e5f486a85d7316753cf62),
-    ('optimism', 111, 0x3c2269811836af69497e5f486a85d7316753cf62),
-    ('fantom', 112, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('swimmer', 114, 0x9740ff91f1985d8d2b71494ae1a2f723bb3ed9e4),
-    ('dfk', 115, 0x9740ff91f1985d8d2b71494ae1a2f723bb3ed9e4),
-    ('harmony', 116, 0x9740ff91f1985d8d2b71494ae1a2f723bb3ed9e4),
-    ('dexalot', 118, 0x9740ff91f1985d8d2b71494ae1a2f723bb3ed9e4),
-    ('celo', 125, 0x3a73033c0b1407574c76bdbac67f126f6b4a9aa9),
-    ('moonbeam', 126, 0x9740ff91f1985d8d2b71494ae1a2f723bb3ed9e4),
-    ('fuse', 138, 0x9740ff91f1985d8d2b71494ae1a2f723bb3ed9e4),
-    ('gnosis', 145, 0x9740ff91f1985d8d2b71494ae1a2f723bb3ed9e4),
-    ('shrapnel', 148, 0x9740ff91f1985d8d2b71494ae1a2f723bb3ed9e4),
-    ('dos', 149, 0x9740ff91f1985d8d2b71494ae1a2f723bb3ed9e4),
-    ('klaytn', 150, 0x9740ff91f1985d8d2b71494ae1a2f723bb3ed9e4),
-    ('metis', 151, 0x9740ff91f1985d8d2b71494ae1a2f723bb3ed9e4),
-    ('intain', 152, 0x9740ff91f1985d8d2b71494ae1a2f723bb3ed9e4),
-    ('coredao', 153, 0x9740ff91f1985d8d2b71494ae1a2f723bb3ed9e4),
-    ('okx', 155, 0x9740ff91f1985d8d2b71494ae1a2f723bb3ed9e4),
-    ('zkevm', 158, 0x9740ff91f1985d8d2b71494ae1a2f723bb3ed9e4),
-    ('canto', 159, 0x9740ff91f1985d8d2b71494ae1a2f723bb3ed9e4),
-    ('zksync', 165, 0x9b896c0e23220469c7ae69cb4bbae391eaa4c8da),
-    ('moonriver', 167, 0x7004396c99d5690da76a7c59057c5f3a53e01704),
-    ('tenet', 173, 0x2d61dcdd36f10b22176e0433b86f74567d529aaa),
-    ('nova', 175, 0x4ee2f9b7cf3a68966c370f3eb2c16613d3235245),
-    ('meter', 176, 0xa3a8e19253ab400acdac1cb0ea36b88664d8dedf),
-    ('kava', 177, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('mantle', 181, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('hubble', 182, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('zkconsensys', 183, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('base', 184, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('zora', 195, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('tomo', 196, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('loot', 197, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('meritcircle', 198, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('telos', 199, 0x66a71dcef29a0ffbdbe3c6a460a3b5bc225cd675),
-    ('opbnb', 202, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('astar', 210, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('aurora', 211, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('conflux', 212, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('orderly', 213, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('scroll', 214, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('eon', 215, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('xpla', 216, 0xc1b15d3b262beec0e3565c11c9e0f6134bdacb36),
-    ('manta', 217, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('pgn', 218, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('shimmer', 230, 0xc1b15d3b262beec0e3565c11c9e0f6134bdacb36),
-    ('bb1', 234, 0xc1b15d3b262beec0e3565c11c9e0f6134bdacb36),
-    ('rarible', 235, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('xai', 236, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('real', 237, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('tiltyard', 238, 0x41def8be011678c9663d850d3c89cba9450d5496),
-    ('blast', 243, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('fraxtal', 255, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('zkatana', 257, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('mode', 260, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('masa', 263, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('homeverse', 265, 0x3a73033c0b1407574c76bdbac67f126f6b4a9aa9),
-    ('merlin', 266, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('degen', 267, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('skale', 273, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('xlayer', 274, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('sanko', 278, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('bob', 279, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('sei', 280, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('ebi', 282, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('cyber', 283, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('iota', 284, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('joc', 285, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('taiko', 290, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('xchain', 291, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('etherlink', 292, 0x2d61dcdd36f10b22176e0433b86f74567d529aaa),
-    ('bouncebit', 293, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('gravity', 294, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('flare', 295, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('zklink', 301, 0x042b8289c97896529ec2fe49ba1a8b9c956a86cc),
-    ('peaq', 302, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('zircuit', 303, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('lightlink', 309, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('lyra', 311, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('ape', 312, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('reya', 313, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('bitlayer', 314, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('dm2verse', 315, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('hedera', 316, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('bevm', 317, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('plume', 318, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('worldchain', 319, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('unichain', 320, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('lisk', 321, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('morph', 322, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('codex', 323, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('abstract', 324, 0x042b8289c97896529ec2fe49ba1a8b9c956a86cc),
-    ('superposition', 327, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('edu', 328, 0x2d61dcdd36f10b22176e0433b86f74567d529aaa),
-    ('hemi', 329, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('islander', 330, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('mp1', 331, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('sonic', 332, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('rootstock', 333, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('sophon', 334, 0x042b8289c97896529ec2fe49ba1a8b9c956a86cc),
-    ('swell', 335, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('flow', 336, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('bl4', 337, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('bl5', 338, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('ink', 339, 0x6b383d6a7e5a151b189147f4c9f39bf57b29548f),
-    ('soneium', 340, 0xa34f3b68c503e04b1554bf1c98616de99f1e459d),
-    ('space', 341, 0x66a71dcef29a0ffbdbe3c6a460a3b5bc225cd675),
-    ('glue', 342, 0xc1b15d3b262beec0e3565c11c9e0f6134bdacb36),
-    ('cronosevm', 359, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('cronoszkevm', 360, 0x042b8289c97896529ec2fe49ba1a8b9c956a86cc),
-    ('goat', 361, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('bera', 362, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('bahamut', 363, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('story', 364, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('xdc', 365, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('concrete', 366, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('hyperliquid', 367, 0x2d61dcdd36f10b22176e0433b86f74567d529aaa),
-    ('nibiru', 369, 0x3ba58192097ac2b282865585a2e9afe8dc89be31),
-    ('plumephoenix', 370, 0x377530cda84dfb2673bf4d145dcf0c4d7fdcb5b6),
-    ('gunz', 371, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('animechain', 372, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('lens', 373, 0x042b8289c97896529ec2fe49ba1a8b9c956a86cc),
-    ('subtensor', 374, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('katana', 375, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('botanix', 376, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('tac', 377, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('silicon', 379, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('somnia', 380, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('camp', 381, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('humanity', 382, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('plasma', 383, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('apexfusionnexus', 384, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('dinari', 385, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('zkverify', 386, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('og', 388, 0xc1b15d3b262beec0e3565c11c9e0f6134bdacb36),
-    ('gatelayer', 389, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('monad', 390, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('ethereal', 391, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('openledger', 392, 0x2d61dcdd36f10b22176e0433b86f74567d529aaa),
-    ('doma', 393, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('injectiveevm', 394, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('nexera', 395, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('stable', 396, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('converge', 400, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7),
-    ('tron', 420, 0x3f274752b420d1e28cb5516a2b30a1fabbdab0cf),
-    ('mantle-testnet', 10181, 0x2ca20802fd1fd9649ba8aa7e50f0c82b479f35fe),
-    ('kite-testnet', 10415, 0x83c73da98cf733b03315afa8758834b36a195b87),
-    ('solana', 30168, 76y77prsicmvxmjuoz5vrrhg5qybrumyte5wghqgjen6),
-    ('movement', 30325, 0xe60045e20fc2c99e869c1c34a65b9291c020cd12a0d37a00a53ac1348af4f43c),
-    ('initia', 30326, 0x81d2b534893db8745ab2b0c092ec5f88d554d54825f98fd9e8c83f9b113ee77e),
-    ('ton', 30343, NULL),
-    ('sui', 30378, 0x31beaef889b08b9c3b37d19280fc1f8b75bae5b2de2410fc3120f403e9a36dac)
+    ('ethereum', 101, 0x66a71dcef29a0ffbdbe3c6a460a3b5bc225cd675)
+    , ('bnb', 102, 0x3c2269811836af69497e5f486a85d7316753cf62)
+    , ('avalanche_c', 106, 0x3c2269811836af69497e5f486a85d7316753cf62)
+    , ('aptos', 108, 0x54ad3d30af77b60d939ae356e6606de9a4da67583f02b962d2d3f2e481484e90)
+    , ('polygon', 109, 0x3c2269811836af69497e5f486a85d7316753cf62)
+    , ('arbitrum', 110, 0x3c2269811836af69497e5f486a85d7316753cf62)
+    , ('optimism', 111, 0x3c2269811836af69497e5f486a85d7316753cf62)
+    , ('fantom', 112, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('swimmer', 114, 0x9740ff91f1985d8d2b71494ae1a2f723bb3ed9e4)
+    , ('dfk', 115, 0x9740ff91f1985d8d2b71494ae1a2f723bb3ed9e4)
+    , ('harmony', 116, 0x9740ff91f1985d8d2b71494ae1a2f723bb3ed9e4)
+    , ('dexalot', 118, 0x9740ff91f1985d8d2b71494ae1a2f723bb3ed9e4)
+    , ('celo', 125, 0x3a73033c0b1407574c76bdbac67f126f6b4a9aa9)
+    , ('moonbeam', 126, 0x9740ff91f1985d8d2b71494ae1a2f723bb3ed9e4)
+    , ('fuse', 138, 0x9740ff91f1985d8d2b71494ae1a2f723bb3ed9e4)
+    , ('gnosis', 145, 0x9740ff91f1985d8d2b71494ae1a2f723bb3ed9e4)
+    , ('shrapnel', 148, 0x9740ff91f1985d8d2b71494ae1a2f723bb3ed9e4)
+    , ('dos', 149, 0x9740ff91f1985d8d2b71494ae1a2f723bb3ed9e4)
+    , ('klaytn', 150, 0x9740ff91f1985d8d2b71494ae1a2f723bb3ed9e4)
+    , ('metis', 151, 0x9740ff91f1985d8d2b71494ae1a2f723bb3ed9e4)
+    , ('intain', 152, 0x9740ff91f1985d8d2b71494ae1a2f723bb3ed9e4)
+    , ('coredao', 153, 0x9740ff91f1985d8d2b71494ae1a2f723bb3ed9e4)
+    , ('okx', 155, 0x9740ff91f1985d8d2b71494ae1a2f723bb3ed9e4)
+    , ('zkevm', 158, 0x9740ff91f1985d8d2b71494ae1a2f723bb3ed9e4)
+    , ('canto', 159, 0x9740ff91f1985d8d2b71494ae1a2f723bb3ed9e4)
+    , ('zksync', 165, 0x9b896c0e23220469c7ae69cb4bbae391eaa4c8da)
+    , ('moonriver', 167, 0x7004396c99d5690da76a7c59057c5f3a53e01704)
+    , ('tenet', 173, 0x2d61dcdd36f10b22176e0433b86f74567d529aaa)
+    , ('nova', 175, 0x4ee2f9b7cf3a68966c370f3eb2c16613d3235245)
+    , ('meter', 176, 0xa3a8e19253ab400acdac1cb0ea36b88664d8dedf)
+    , ('kava', 177, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('mantle', 181, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('hubble', 182, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('zkconsensys', 183, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('base', 184, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('zora', 195, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('tomo', 196, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('loot', 197, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('meritcircle', 198, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('telos', 199, 0x66a71dcef29a0ffbdbe3c6a460a3b5bc225cd675)
+    , ('opbnb', 202, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('astar', 210, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('aurora', 211, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('conflux', 212, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('orderly', 213, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('scroll', 214, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('eon', 215, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('xpla', 216, 0xc1b15d3b262beec0e3565c11c9e0f6134bdacb36)
+    , ('manta', 217, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('pgn', 218, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('shimmer', 230, 0xc1b15d3b262beec0e3565c11c9e0f6134bdacb36)
+    , ('bb1', 234, 0xc1b15d3b262beec0e3565c11c9e0f6134bdacb36)
+    , ('rarible', 235, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('xai', 236, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('real', 237, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('tiltyard', 238, 0x41def8be011678c9663d850d3c89cba9450d5496)
+    , ('blast', 243, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('fraxtal', 255, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('zkatana', 257, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('mode', 260, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('masa', 263, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('homeverse', 265, 0x3a73033c0b1407574c76bdbac67f126f6b4a9aa9)
+    , ('merlin', 266, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('degen', 267, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('skale', 273, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('xlayer', 274, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('sanko', 278, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('bob', 279, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('sei', 280, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('ebi', 282, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('cyber', 283, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('iota', 284, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('joc', 285, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('taiko', 290, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('xchain', 291, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('etherlink', 292, 0x2d61dcdd36f10b22176e0433b86f74567d529aaa)
+    , ('bouncebit', 293, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('gravity', 294, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('flare', 295, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('zklink', 301, 0x042b8289c97896529ec2fe49ba1a8b9c956a86cc)
+    , ('peaq', 302, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('zircuit', 303, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('lightlink', 309, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('lyra', 311, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('ape', 312, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('reya', 313, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('bitlayer', 314, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('dm2verse', 315, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('hedera', 316, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('bevm', 317, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('plume', 318, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('worldchain', 319, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('unichain', 320, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('lisk', 321, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('morph', 322, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('codex', 323, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('abstract', 324, 0x042b8289c97896529ec2fe49ba1a8b9c956a86cc)
+    , ('superposition', 327, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('edu', 328, 0x2d61dcdd36f10b22176e0433b86f74567d529aaa)
+    , ('hemi', 329, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('islander', 330, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('mp1', 331, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('sonic', 332, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('rootstock', 333, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('sophon', 334, 0x042b8289c97896529ec2fe49ba1a8b9c956a86cc)
+    , ('swell', 335, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('flow', 336, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('bl4', 337, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('bl5', 338, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('ink', 339, 0x6b383d6a7e5a151b189147f4c9f39bf57b29548f)
+    , ('soneium', 340, 0xa34f3b68c503e04b1554bf1c98616de99f1e459d)
+    , ('space', 341, 0x66a71dcef29a0ffbdbe3c6a460a3b5bc225cd675)
+    , ('glue', 342, 0xc1b15d3b262beec0e3565c11c9e0f6134bdacb36)
+    , ('cronosevm', 359, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('cronoszkevm', 360, 0x042b8289c97896529ec2fe49ba1a8b9c956a86cc)
+    , ('goat', 361, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('bera', 362, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('bahamut', 363, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('story', 364, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('xdc', 365, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('concrete', 366, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('hyperliquid', 367, 0x2d61dcdd36f10b22176e0433b86f74567d529aaa)
+    , ('nibiru', 369, 0x3ba58192097ac2b282865585a2e9afe8dc89be31)
+    , ('plumephoenix', 370, 0x377530cda84dfb2673bf4d145dcf0c4d7fdcb5b6)
+    , ('gunz', 371, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('animechain', 372, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('lens', 373, 0x042b8289c97896529ec2fe49ba1a8b9c956a86cc)
+    , ('subtensor', 374, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('katana', 375, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('botanix', 376, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('tac', 377, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('silicon', 379, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('somnia', 380, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('camp', 381, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('humanity', 382, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('plasma', 383, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('apexfusionnexus', 384, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('dinari', 385, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('zkverify', 386, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('og', 388, 0xc1b15d3b262beec0e3565c11c9e0f6134bdacb36)
+    , ('gatelayer', 389, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('monad', 390, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('ethereal', 391, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('openledger', 392, 0x2d61dcdd36f10b22176e0433b86f74567d529aaa)
+    , ('doma', 393, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('injectiveevm', 394, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('nexera', 395, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('stable', 396, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('converge', 400, 0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7)
+    , ('tron', 420, 0x3f274752b420d1e28cb5516a2b30a1fabbdab0cf)
+    , ('mantle-testnet', 10181, 0x2ca20802fd1fd9649ba8aa7e50f0c82b479f35fe)
+    , ('kite-testnet', 10415, 0x83c73da98cf733b03315afa8758834b36a195b87)
+    , ('solana', 30168, NULL)
+    , ('movement', 30325, 0xe60045e20fc2c99e869c1c34a65b9291c020cd12a0d37a00a53ac1348af4f43c)
+    , ('initia', 30326, 0x81d2b534893db8745ab2b0c092ec5f88d554d54825f98fd9e8c83f9b113ee77e)
+    , ('ton', 30343, NULL)
+    , ('sui', 30378, 0x31beaef889b08b9c3b37d19280fc1f8b75bae5b2de2410fc3120f403e9a36dac)
     ) AS x (blockchain, id, endpoint_address)

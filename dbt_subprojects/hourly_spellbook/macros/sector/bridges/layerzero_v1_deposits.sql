@@ -33,7 +33,7 @@ SELECT '{{blockchain}}' AS deposit_chain
 , sc.tx_hash
 , t.evt_index AS evt_index
 , sc.contract_address
-, t.unique_key AS bridge_transfer_id
+, CAST(t.unique_key AS varchar) AS bridge_transfer_id
 FROM send_calls sc
 LEFT JOIN {{ source('tokens_' + blockchain, 'transfers') }} t ON t.block_number=sc.call_block_number
         AND t.tx_hash=sc.call_tx_hash
