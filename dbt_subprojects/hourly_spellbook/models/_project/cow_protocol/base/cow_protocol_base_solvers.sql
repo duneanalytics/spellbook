@@ -93,8 +93,6 @@ known_solver_metadata (address, environment, name) as (
                 (0xfe1f652015930724cd8d927ed1666468b2f07718, 'barn', 'Kamaji'),
                 (0xfd12ebfbab23d5f364c15f1d2962f3b19105671a, 'prod', 'Kamaji'),
                 (0x3980daa7eaad0b7e0c53cfc5c2760037270da54d, 'prod', 'Tsolver'),
-                (0xFE1f652015930724cD8D927eD1666468b2F07718, 'barn', 'Piggy'),
-                (0xFd12EBFBaB23d5F364c15F1d2962f3b19105671a, 'prod', 'Piggy'),
                 (0x728a498A1Ff4c7D64f48b5b7Fefd72FdDE010613, 'barn', 'Rosato'),
                 (0x70f5474EA078a63F874695eA2Ed99AeBC4Ad4393, 'prod', 'Rosato'),
                 (0x1aA30C724aC8833D9C49853cC60991cDCf472cc7, 'barn', 'OpenOcean_Aggregator'),
