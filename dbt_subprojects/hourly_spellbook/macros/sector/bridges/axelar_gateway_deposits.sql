@@ -15,7 +15,7 @@ WITH events AS (
     , d.evt_block_number AS block_number
     , d.amount AS deposit_amount_raw
     , d.sender
-    , d.destinationAddress AS recipient
+    , try(from_hex(d.destinationAddress)) AS recipient
     , ti.token_address AS deposit_token_address
     , d.evt_tx_from AS tx_from
     , d.evt_tx_hash AS tx_hash
