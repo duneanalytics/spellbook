@@ -130,6 +130,15 @@ models:
     config:
       tags: [ 'optimism', 'bridges', 'flows', 'withdrawals' ]
     description: "Tether's USDT0 v1 bridge withdrawals events on OP Mainnet"
+  - name: bridges_optimism_beamer_v1_deposits
+    meta:
+      blockchain: optimism
+      sector: bridges
+      project: beamer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'beamer', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Beamer's v1 bridge deposits events on OP Mainnet"
   - name: bridges_optimism_beamer_v2_deposits
     meta:
       blockchain: optimism
@@ -139,6 +148,15 @@ models:
     config:
       tags: [ 'beamer', 'bridges', 'flows' , 'withdrawals' ]
     description: "Beamer's v2 bridge deposits events on OP Mainnet"
+  - name: bridges_optimism_beamer_v3_deposits
+    meta:
+      blockchain: optimism
+      sector: bridges
+      project: beamer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'beamer', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Beamer's v3 bridge deposits events on OP Mainnet"
   - name: bridges_optimism_zkbridge_v1_deposits
     meta:
       blockchain: optimism
