@@ -10,12 +10,3 @@ models:
     config:
       tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
     description: "Across's v1 bridge deposits events on boba"
-  - name: bridges_boba_across_v1_withdrawals
-    meta:
-      blockchain: boba
-      sector: bridges
-      project: across
-      contributors: [ 'hildobby']
-    config:
-      tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
-    description: "Across's v1 bridge withdrawals events on boba"

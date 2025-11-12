@@ -15,8 +15,8 @@ WITH latest_deposits AS (
     , block_date
     , block_time
     , block_number
-    , deposit_amount_raw
     , deposit_amount
+    , deposit_amount_raw
     , deposit_amount_usd
     , sender
     , recipient

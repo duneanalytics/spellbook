@@ -13,7 +13,6 @@
     , 'bridges_' + blockchain + '_across_v2_withdrawals'
     , 'bridges_' + blockchain + '_across_v3_withdrawals'
     , 'bridges_' + blockchain + '_synapse_rfq_withdrawals'
-    , 'bridges_' + blockchain + '_zkbridge_v1_withdrawals'
 ] %}
 
 SELECT *

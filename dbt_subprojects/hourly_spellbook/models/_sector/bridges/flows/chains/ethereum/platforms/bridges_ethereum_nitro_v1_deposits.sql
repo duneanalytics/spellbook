@@ -2,9 +2,9 @@
 
 {{ config(
     schema = 'bridges_' + blockchain,
-    alias = 'zkbridge_v1_withdrawals',
+    alias = 'nitro_v1_deposits',
     materialized = 'view',
     )
 }}
 
-{{zkbridge_v1_withdrawals(blockchain = blockchain)}}
+{{nitro_v1_deposits(blockchain = blockchain)}}

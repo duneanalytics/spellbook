@@ -15,7 +15,7 @@ SELECT 'ethereum' AS deposit_chain
 , block_date AS block_date
 , block_time AS block_time
 , block_number AS block_number
-, amount AS deposit_amount_raw
+, amount_raw AS deposit_amount_raw
 , tx_from AS sender
 , tx_from AS recipient
 , token_standard AS deposit_token_standard
