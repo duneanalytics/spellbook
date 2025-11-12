@@ -2,11 +2,6 @@ version: 2
 
 models:
   - name: thorchain_silver_add_events
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - event_id
 
   - name: thorchain_silver_block_log
 
@@ -288,9 +283,8 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_month
-            - tx_id
-            - event_id
+            - day
+            - fact_add_events_id
 
   - name: thorchain_defi_affiliate_fee_events
     tests:

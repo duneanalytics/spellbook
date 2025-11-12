@@ -4,9 +4,9 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_month', 'tx_id', 'event_id'],
-    partition_by = ['block_month'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    unique_key = ['day', 'fact_add_events_id'],
+    partition_by = ['day'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_timestamp')],
     tags = ['thorchain', 'defi', 'add_events', 'fact'],
     post_hook='{{ expose_spells(\'["thorchain"]\',
                               "defi",
@@ -16,47 +16,58 @@
 
 WITH base AS (
   SELECT
-    raw_block_timestamp as block_timestamp,
-    tx_hash as tx_id,
-    rune_e8,
-    chain as blockchain,
-    asset_e8,
-    pool as pool_name,
-    memo,
-    to_addr as to_address,
-    from_addr as from_address,
-    asset,
-    event_id,
-    tx_type as _tx_type,
-    block_time  -- Keep for incremental predicate
+    e.block_timestamp,
+    e.tx_id,
+    e.rune_e8,
+    e.blockchain,
+    e.asset_e8,
+    e.pool_name,
+    e.memo,
+    e.to_address,
+    e.from_address,
+    e.asset,
+    e.event_id,
+    e._TX_TYPE,
+    _inserted_timestamp
   FROM
-    {{ ref('thorchain_silver_add_events') }}
+    {{ ref('thorchain_silver_add_events') }} e
 )
-
 SELECT
-  a.block_time,
-  date(a.block_time) as block_date,
-  date_trunc('month', a.block_time) as block_month,
-  -1 AS block_height,
-  a.tx_id,
-  a.event_id,
-  a.rune_e8,
-  a.blockchain,
-  a.asset_e8,
-  a.pool_name,
-  a.memo,
-  a.to_address,
-  a.from_address,
-  a.asset,
-  a._tx_type,
+  {{ dbt_utils.generate_surrogate_key(
+    ['a.event_id','a.tx_id','a.blockchain','a.from_address','a.to_address','a.asset','a.memo','a.block_timestamp']
+  ) }} AS fact_add_events_id,
+  cast(date_trunc('day', b.block_timestamp) AS date) AS day,
+  b.block_timestamp,
+  COALESCE(
+    b.dim_block_id,
+    '-1'
+  ) AS dim_block_id,
+  A.tx_id,
+  A.rune_e8,
+  A.blockchain,
+  A.asset_e8,
+  A.pool_name,
+  A.memo,
+  A.to_address,
+  A.from_address,
+  A.asset,
+  A._TX_TYPE,
+  A._inserted_timestamp,
   current_timestamp AS inserted_timestamp,
   current_timestamp AS modified_timestamp
-
-FROM base a
-
+FROM
+  base A
+JOIN {{ ref('thorchain_core_block') }} as b
+  ON A.block_timestamp = b.timestamp
 {% if is_incremental() %}
-WHERE a.block_time >= (
-  SELECT MAX(block_time - INTERVAL '1' HOUR)
-  FROM {{ this }}
-) 
+WHERE
+  {{ incremental_predicate('b.block_timestamp') }}
+  OR tx_id IN (
+    SELECT
+      tx_id
+    FROM
+      {{ this }}
+    WHERE
+      dim_block_id = '-1'
+  )
 {% endif %}
