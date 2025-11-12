@@ -40,15 +40,6 @@ models:
     config:
       tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
     description: "Across's v1 bridge deposits events on Arbitrum"
-  - name: bridges_arbitrum_across_v1_withdrawals
-    meta:
-      blockchain: arbitrum
-      sector: bridges
-      project: across
-      contributors: [ 'hildobby']
-    config:
-      tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
-    description: "Across's v1 bridge withdrawals events on Arbitrum"
   - name: bridges_arbitrum_across_v2_deposits
     meta:
       blockchain: arbitrum
@@ -197,3 +188,12 @@ models:
     config:
       tags: [ 'arbitrum', 'bridges', 'flows', 'withdrawals' ]
     description: "Symbiosis's v1 bridge deposits events on Arbitrum"
+  - name: bridges_arbitrum_zkbridge_v1_deposits
+    meta:
+      blockchain: arbitrum
+      sector: bridges
+      project: zkbridge
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'arbitrum', 'bridges', 'flows', 'deposits' ]
+    description: "zkBridge's v1 bridge deposits events on Arbitrum"

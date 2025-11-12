@@ -19,8 +19,8 @@ SELECT *
         , block_date
         , block_time
         , block_number
-        , withdrawal_amount_raw
         , withdrawal_amount
+        , withdrawal_amount_raw
         , CAST(sender AS VARCHAR) AS sender
         , CAST(recipient AS VARCHAR) AS recipient
         , withdrawal_token_standard
@@ -37,3 +37,26 @@ SELECT *
         {% endif %}
         {% endfor %}
         )
+    
+    UNION ALL
+
+    SELECT deposit_chain
+    , withdrawal_chain
+    , bridge_name
+    , bridge_version
+    , block_date
+    , block_time
+    , block_number
+    , withdrawal_amount
+    , withdrawal_amount_raw
+    , CAST(sender AS VARCHAR) AS sender
+    , CAST(recipient AS VARCHAR) AS recipient
+    , withdrawal_token_standard
+    , CAST(withdrawal_token_address AS VARCHAR) AS withdrawal_token_address
+    , CAST(tx_from AS VARCHAR) AS tx_from
+    , CAST(tx_hash AS VARCHAR) AS tx_hash
+    , evt_index
+    , CAST(contract_address AS VARCHAR) AS contract_address
+    , bridge_transfer_id
+    , deposit_chain_id
+    FROM {{ ref('bridges_solana_withdrawals') }}

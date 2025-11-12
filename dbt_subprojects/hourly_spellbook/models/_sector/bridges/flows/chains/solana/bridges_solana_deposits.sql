@@ -1,34 +1,35 @@
-{% set blockchain = 'boba' %}
+{% set blockchain = 'solana' %}
 
 {{ config(
     schema = 'bridges_' + blockchain,
-    alias = 'withdrawals',
+    alias = 'deposits',
     materialized = 'view'
     )
 }}
 
 {% set bridges_platforms = [
-    'bridges_' + blockchain + '_across_v1_withdrawals'
+    'bridges_' + blockchain + '_across_v3_deposits'
 ] %}
 
 SELECT *
 FROM (
     {% for bridge_platform in bridges_platforms %}
-    SELECT deposit_chain_id
-    , deposit_chain
+    SELECT deposit_chain
+    , withdrawal_chain_id
     , withdrawal_chain
     , bridge_name
     , bridge_version
     , block_date
     , block_time
     , block_number
-    , withdrawal_amount_raw
+    , deposit_amount_raw
     , sender
     , recipient
-    , withdrawal_token_standard
-    , withdrawal_token_address
-    , tx_from
-    , tx_hash
+    , deposit_token_standard
+    , deposit_token_address
+    , tx_signer
+    , executing_account
+    , tx_id
     , evt_index
     , contract_address
     , bridge_transfer_id

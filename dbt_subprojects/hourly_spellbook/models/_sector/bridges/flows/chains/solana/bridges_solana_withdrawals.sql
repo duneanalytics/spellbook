@@ -1,4 +1,4 @@
-{% set blockchain = 'polygon' %}
+{% set blockchain = 'solana' %}
 
 {{ config(
     schema = 'bridges_' + blockchain,
@@ -8,11 +8,7 @@
 }}
 
 {% set bridges_platforms = [
-    'bridges_' + blockchain + '_cctp_v1_withdrawals'
-    , 'bridges_' + blockchain + '_across_v2_withdrawals'
-    , 'bridges_' + blockchain + '_across_v3_withdrawals'
-    , 'bridges_' + blockchain + '_celer_v1_withdrawals'
-    , 'bridges_' + blockchain + '_tether_v1_withdrawals'
+    'bridges_' + blockchain + '_across_v3_withdrawals'
 ] %}
 
 SELECT *
@@ -31,8 +27,9 @@ FROM (
     , recipient
     , withdrawal_token_standard
     , withdrawal_token_address
-    , tx_from
-    , tx_hash
+    , tx_signer
+    , executing_account
+    , tx_id
     , evt_index
     , contract_address
     , bridge_transfer_id
