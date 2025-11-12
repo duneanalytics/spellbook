@@ -142,3 +142,9 @@ sources:
     tables:
       - name: boba_spokepool_evt_fundsdeposited
       - name: boba_spokepool_evt_filledrelay
+
+  - name: across_v3_solana
+    description: "Across Protocol v3 bridge events on Solana"
+    tables:
+      - name: svm_spoke_evt_fundsdeposited
+      - name: svm_spoke_evt_filledrelay

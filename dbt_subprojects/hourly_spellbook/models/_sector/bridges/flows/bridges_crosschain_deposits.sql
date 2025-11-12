@@ -37,4 +37,27 @@ SELECT *
         UNION ALL
         {% endif %}
         {% endfor %} 
-        )
+    
+    UINON ALL
+
+    SELECT deposit_chain
+    , withdrawal_chain
+    , bridge_name
+    , bridge_version
+    , block_date
+    , block_time
+    , block_number
+    , deposit_amount
+    , deposit_amount_raw
+    , CAST(sender AS VARCHAR) AS sender
+    , CAST(recipient AS VARCHAR) AS recipient
+    , deposit_token_standard
+    , CAST(deposit_token_address AS VARCHAR) AS deposit_token_address
+    , CAST(tx_from AS VARCHAR) AS tx_from
+    , CAST(tx_hash AS VARCHAR) AS tx_hash
+    , evt_index
+    , CAST(contract_address AS VARCHAR) AS contract_address
+    , bridge_transfer_id
+    , duplicate_index
+    , withdrawal_chain_id
+    FROM {{ ref('bridges_solana_deposits') }}
