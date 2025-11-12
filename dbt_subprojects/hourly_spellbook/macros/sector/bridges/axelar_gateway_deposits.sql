@@ -23,7 +23,8 @@ WITH events AS (
     , d.contract_address
     , {{ dbt_utils.generate_surrogate_key(['d.evt_tx_hash', 'd.evt_index']) }} as bridge_transfer_id
     FROM ({{ events }}) d
-    LEFT JOIN {{ ref('bridges_axelar_gateway_token_indexes') }} ti ON d.symbol=ti.token_symbol
+    LEFT JOIN {{ ref('bridges_axelar_gateway_token_indexes') }} ti ON ti.blockchain='{{blockchain}}'
+        AND d.symbol=ti.token_symbol
     )
         
 SELECT '{{blockchain}}' AS deposit_chain
