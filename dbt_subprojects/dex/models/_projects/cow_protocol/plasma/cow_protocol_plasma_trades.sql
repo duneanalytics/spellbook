@@ -97,7 +97,7 @@ trades_with_token_units as (
                              ON tb.blockchain='plasma' AND tb.contract_address =
                                 (CASE
                                      WHEN buy_token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                                         THEN 0xe5D7C2a44FfDDf6b295A15c148167daaAf5Cf34f
+                                         THEN 0x6100e367285b01f48d07953803a2d8dca5d19873
                                      ELSE buy_token
                                     END)
 ),
