@@ -63,7 +63,7 @@ WITH pool_labels AS (
         WHERE (price < previous_price * 1e4 AND price > previous_price / 1e4)
     ),
 
-    bpt_prices_1 AS ( --special calculation for this spell, in order to achieve completeness without relying on prices.usd
+    bpt_prices_1 AS (
         SELECT 
             l.day,
             s.token_address AS token,
@@ -88,7 +88,6 @@ WITH pool_labels AS (
     ),
 
     daily_protocol_fee_collected AS (
-        -- flashloans are taken from the vault contract, there is no pool involved. 
         SELECT
             date_trunc('day', evt_block_time) AS day,
             0xba12222222228d8ba445958a75a0704d566bf2c8 AS pool_id,
@@ -123,15 +122,15 @@ WITH pool_labels AS (
                 CASE
                     WHEN '{{blockchain}}' = 'fantom' THEN 0xc6920d3a369e7c8bd1a22dbe385e11d1f7af948f
                     ELSE 0xce88686553686DA562CE7Cea497CE749DA109f9F
-                    END --ProtocolFeesCollector address, which is the same across all chains except for fantom   
+                    END 
         GROUP BY 1, 2, 3
     ),
 
     decorated_protocol_fee AS (
         SELECT 
-            d.day, 
-            d.pool_id, 
-            d.token_address, 
+            d.day,
+            d.pool_id,
+            d.token_address,
             MAX(t.symbol) AS token_symbol,
             SUM(d.protocol_fee_amount_raw) AS token_amount_raw, 
             SUM(d.protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals,p1.decimals, p3.decimals))) AS token_amount,
@@ -157,10 +156,10 @@ WITH pool_labels AS (
         SELECT
         day,
         CASE 
-            WHEN day < DATE '2022-07-03' THEN 0.25 -- veBAL release
-            WHEN day >= DATE '2022-07-03' AND day < DATE '2023-01-23' THEN 0.25 -- BIP 19
-            WHEN day >= DATE '2023-01-23' AND day < DATE '2023-07-24' THEN 0.35 -- BIP 161
-            WHEN day >= DATE '2023-07-24' THEN 0.175 -- BIP 371 and BIP 734
+            WHEN day < DATE '2022-07-03' THEN 0.25
+            WHEN day >= DATE '2022-07-03' AND day < DATE '2023-01-23' THEN 0.25
+            WHEN day >= DATE '2023-01-23' AND day < DATE '2023-07-24' THEN 0.35
+            WHEN day >= DATE '2023-07-24' THEN 0.175
         END AS treasury_share
     FROM UNNEST(SEQUENCE(DATE '2022-03-01', CURRENT_DATE, INTERVAL '1' DAY)) AS date(day)
     )
@@ -191,8 +190,6 @@ WITH pool_labels AS (
     GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 14
 
 {% endmacro %}
-
-{# ######################################################################### #}
 
 {% macro 
     balancer_v3_compatible_protocol_fee_macro(
@@ -258,7 +255,7 @@ WITH pool_labels AS (
         WHERE (price < previous_price * 1e4 AND price > previous_price / 1e4)
     ),
 
-    bpt_prices_1 AS ( --special calculation for this spell, in order to achieve completeness without relying on prices.usd
+    bpt_prices_1 AS (
         SELECT 
             l.day,
             s.token_address AS token,
@@ -327,10 +324,10 @@ WITH pool_labels AS (
 
     decorated_protocol_fee AS (
         SELECT 
-            d.day, 
-            d.pool_id, 
-            d.token_address, 
-            t.symbol AS token_symbol,
+            d.day,
+            d.pool_id,
+            d.token_address,
+            MAX(t.symbol) AS token_symbol,
             d.fee_type,
             SUM(d.token_amount_raw) AS token_amount_raw, 
             SUM(d.token_amount_raw / POWER(10, COALESCE(t.decimals,p1.decimals, p3.decimals, p4.decimals))) AS token_amount,
@@ -352,14 +349,14 @@ WITH pool_labels AS (
         LEFT JOIN {{ source('tokens', 'erc20') }} t 
             ON t.contract_address = d.token_address
             AND t.blockchain = '{{blockchain}}'
-        GROUP BY 1, 2, 3, 4, 5
+        GROUP BY 1, 2, 3, 5
     ),
 
     revenue_share as(
         SELECT
         day,
         CASE 
-            WHEN day >= DATE '2024-12-01' THEN 0.175 -- BIP 734
+            WHEN day >= DATE '2024-12-01' THEN 0.175
         END AS treasury_share
     FROM UNNEST(SEQUENCE(DATE '2024-12-01', CURRENT_DATE, INTERVAL '1' DAY)) AS date(day)
     )
