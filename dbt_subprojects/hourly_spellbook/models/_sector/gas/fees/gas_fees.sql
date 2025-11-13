@@ -30,6 +30,7 @@
                                     , "lens"
                                     , "linea"
                                     , "mantle"
+                                    , "mezo"
                                     , "nova"
                                     , "opbnb"
                                     , "optimism"
@@ -57,7 +58,7 @@
                                 ]\',
                                 "sector",
                                 "gas",
-                                \'["soispoke", "ilemi", "0xRob", "jeff-dude", "krishhh"]\'
+                                \'["soispoke", "ilemi", "0xRob", "jeff-dude", "krishhh", "tomfutago"]\'
                             )
                         }}'
         )
@@ -92,6 +93,7 @@
     , "linea"
     , "lens"
     , "mantle"
+    , "mezo"
     , "nova"
     , "opbnb"
     , "optimism"
