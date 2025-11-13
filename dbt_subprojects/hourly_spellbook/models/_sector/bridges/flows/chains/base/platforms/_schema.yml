@@ -170,3 +170,12 @@ models:
     config:
       tags: [ 'beamer', 'bridges', 'flows' , 'withdrawals' ]
     description: "Beamer's v3 bridge deposits events on Base"
+  - name: bridges_base_orbiter_v1_deposits
+    meta:
+      blockchain: base
+      sector: bridges
+      project: orbiter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'base', 'bridges', 'flows', 'deposits' ]
+    description: "Orbiter's v1 bridge deposits events on Base"

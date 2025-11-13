@@ -82,3 +82,12 @@ models:
     config:
       tags: [ 'blast', 'bridges', 'flows', 'withdrawals' ]
     description: "Symbiosis's v1 bridge deposits events on Blast"
+  - name: bridges_blast_orbiter_v1_deposits
+    meta:
+      blockchain: blast
+      sector: bridges
+      project: orbiter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'blast', 'bridges', 'flows', 'deposits' ]
+    description: "Orbiter's v1 bridge deposits events on Blast"

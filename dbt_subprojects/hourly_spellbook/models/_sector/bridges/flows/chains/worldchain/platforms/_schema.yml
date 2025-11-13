@@ -37,3 +37,12 @@ models:
     config:
       tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
     description: "Across's v3 bridge withdrawals events on Worldchain"
+  - name: bridges_worldchain_orbiter_v1_deposits
+    meta:
+      blockchain: worldchain
+      sector: bridges
+      project: orbiter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'worldchain', 'bridges', 'flows', 'deposits' ]
+    description: "Orbiter's v1 bridge deposits events on Worldchain"

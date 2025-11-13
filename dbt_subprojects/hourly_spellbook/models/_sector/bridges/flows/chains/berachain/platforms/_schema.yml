@@ -29,3 +29,12 @@ models:
     config:
       tags: [ 'berachain', 'bridges', 'flows', 'withdrawals' ]
     description: "Symbiosis's v1 bridge deposits events on Berachain"
+  - name: bridges_berachain_orbiter_v1_deposits
+    meta:
+      blockchain: berachain
+      sector: bridges
+      project: orbiter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'berachain', 'bridges', 'flows', 'deposits' ]
+    description: "Orbiter's v1 bridge deposits events on Berachain"

@@ -10,3 +10,12 @@ models:
     config:
       tags: [ 'sonic', 'bridges', 'flows', 'withdrawals' ]
     description: "Symbiosis's v1 bridge deposits events on Sonic"
+  - name: bridges_sonic_orbiter_v1_deposits
+    meta:
+      blockchain: sonic
+      sector: bridges
+      project: orbiter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'sonic', 'bridges', 'flows', 'deposits' ]
+    description: "Orbiter's v1 bridge deposits events on Sonic"

@@ -100,3 +100,12 @@ models:
     config:
       tags: [ 'unichain', 'bridges', 'flows', 'withdrawals' ]
     description: "Symbiosis's v1 bridge deposits events on Unichain"
+  - name: bridges_unichain_orbiter_v1_deposits
+    meta:
+      blockchain: unichain
+      sector: bridges
+      project: orbiter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'unichain', 'bridges', 'flows', 'deposits' ]
+    description: "Orbiter's v1 bridge deposits events on Unichain"

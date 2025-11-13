@@ -37,3 +37,12 @@ models:
     config:
       tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
     description: "Across's v3 bridge withdrawals events on Zora"
+  - name: bridges_zora_orbiter_v1_deposits
+    meta:
+      blockchain: zora
+      sector: bridges
+      project: orbiter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'zora', 'bridges', 'flows', 'deposits' ]
+    description: "Orbiter's v1 bridge deposits events on Zora"

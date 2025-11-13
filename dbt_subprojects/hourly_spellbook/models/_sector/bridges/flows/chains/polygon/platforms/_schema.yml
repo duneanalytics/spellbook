@@ -150,6 +150,15 @@ models:
     config:
       tags: [ 'polygon', 'bridges', 'flows', 'withdrawals' ]
     description: "Symbiosis's v1 bridge deposits events on Polygon"
+  - name: bridges_polygon_orbiter_v1_deposits
+    meta:
+      blockchain: polygon
+      sector: bridges
+      project: orbiter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'polygon', 'bridges', 'flows', 'deposits' ]
+    description: "Orbiter's v1 bridge deposits events on Polygon"
 
 
             

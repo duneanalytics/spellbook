@@ -240,7 +240,7 @@ models:
       project: orbiter
       contributors: [ 'hildobby']
     config:
-      tags: [ 'arbitrum', 'bridges', 'flows', 'withdrawals' ]
+      tags: [ 'arbitrum', 'bridges', 'flows', 'deposits' ]
     description: "Orbiter's v1 bridge deposits events on Arbitrum"
   - name: bridges_arbitrum_nitro_v1_deposits
     meta:

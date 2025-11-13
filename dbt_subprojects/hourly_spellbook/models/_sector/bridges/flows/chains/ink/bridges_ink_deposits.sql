@@ -11,6 +11,7 @@
     'bridges_' + blockchain + '_across_v2_deposits'
     , 'bridges_' + blockchain + '_across_v3_deposits'
     , 'bridges_' + blockchain + '_tether_v1_deposits'
+    , 'bridges_' + blockchain + '_orbiter_v1_deposits'
 ] %}
 
 SELECT *
