@@ -1,12 +1,7 @@
 {{ config(
     schema = 'thorchain_silver',
     alias = 'stake_events',
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['block_month', 'event_id'],
-    partition_by = ['block_month'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    materialized = 'view',
     tags = ['thorchain', 'stake_events', 'silver']
 ) }}
 
@@ -21,7 +16,7 @@ with base as (
         rune_tx AS rune_tx_id,
         rune_addr AS rune_address,
         rune_e8,
-        _asset_in_rune_e8,
+        _ASSET_IN_RUNE_E8,
         event_id,
         block_timestamp,
         
@@ -40,9 +35,6 @@ with base as (
         ) as rn
 
     FROM {{ source('thorchain', 'stake_events') }}
-    {% if is_incremental() %}
-    WHERE {{ incremental_predicate('cast(from_unixtime(cast(block_timestamp / 1e9 as bigint)) as timestamp)') }}
-    {% endif %}
 )
 
 SELECT 

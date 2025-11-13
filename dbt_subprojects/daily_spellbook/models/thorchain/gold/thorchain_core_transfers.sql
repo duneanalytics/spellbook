@@ -1,54 +1,54 @@
 {{ config(
     schema = 'thorchain',
-    alias = 'defi_pool_events',
+    alias = 'core_transfers',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['day', 'fact_pool_events_id'],
+    unique_key = ['day', 'fact_transfers_id'],
     partition_by = ['day'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_timestamp')],
-    tags = ['thorchain', 'defi', 'pool_events', 'fact', 'pools'],
+    tags = ['thorchain', 'defi', 'transfers', 'fact'],
     post_hook='{{ expose_spells(\'["thorchain"]\',
                               "defi",
-                              "defi_pool_events",
+                              "defi_transfers",
                               \'["krishhh"]\') }}'
 ) }}
 
 WITH base AS (
     SELECT
+        block_id,
+        from_address,
+        to_address,
         asset,
-        status,
-        event_id,
-        block_timestamp
+        rune_amount,
+        rune_amount_usd,
+        _unique_key,
+        _INSERTED_TIMESTAMP
     FROM
-    {{ ref('thorchain_silver_pool_events') }}
+    {{ ref('thorchain_silver_transfers') }}
+    {% if is_incremental() %}
+    WHERE {{ incremental_predicate('block_timestamp') }}
+    {% endif %}
 )
 SELECT
     {{ dbt_utils.generate_surrogate_key(
-        ['a.event_id','a.asset','a.status','a.block_timestamp']
-    ) }} AS fact_pool_events_id,
+        ['a._unique_key']
+    ) }} AS fact_transfers_id,
     cast(date_trunc('day', b.block_timestamp) AS date) AS day,
     b.block_timestamp,
     COALESCE(
         b.dim_block_id,
         '-1'
     ) AS dim_block_id,
+    from_address,
+    to_address,
     asset,
-    status,
+    rune_amount,
+    rune_amount_usd,
+    A._inserted_timestamp,
     current_timestamp AS inserted_timestamp,
     current_timestamp AS modified_timestamp
 FROM
     base A
 JOIN {{ ref('thorchain_core_block') }} as b
-    ON A.block_timestamp = b.timestamp
-{% if is_incremental() %}
-WHERE {{ incremental_predicate('b.block_timestamp') }}
-    OR asset IN (
-    SELECT
-        asset
-    FROM
-        {{ this }}
-    WHERE
-        dim_block_id = '-1'
-    )
-{% endif %}
+    ON A.block_id = b.block_id
