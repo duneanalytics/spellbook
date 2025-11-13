@@ -27,7 +27,6 @@ front_back as (
         , t.tx_hash_all AS tx_hash
         , front.project
         , front.version
-        , front.project_contract_address
         , t.evt_index_all AS evt_index
     from 
     dex_trades front 
