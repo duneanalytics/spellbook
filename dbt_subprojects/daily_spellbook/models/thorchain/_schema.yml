@@ -108,7 +108,7 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_month
+            - day
             - event_id
 
   - name: thorchain_silver_prices
@@ -131,7 +131,7 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_month
+            - day
             - event_id
 
   - name: thorchain_silver_rune_price
@@ -176,7 +176,7 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_month
+            - day
             - event_id
             - from_address
             - to_address
@@ -456,7 +456,7 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_month
+            - day
             - fact_pool_events_id
 
   - name: thorchain_defi_refund_events
@@ -483,7 +483,7 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_month
+            - day
             - fact_rewards_events_id
 
   - name: thorchain_defi_rune_pool_deposit_events
