@@ -24,9 +24,6 @@ WITH base AS (
         block_timestamp,
         _inserted_timestamp
     FROM {{ ref('thorchain_silver_transfer_events') }}
-    {% if is_incremental() %}
-        WHERE {{ incremental_predicate('block_timestamp') }}
-    {% endif %}
 )
 
 SELECT
@@ -50,3 +47,6 @@ SELECT
 FROM base a
 JOIN {{ ref('thorchain_core_block') }} b
     ON a.block_timestamp = b.timestamp
+{% if is_incremental() %}
+WHERE {{ incremental_predicate('b.block_timestamp') }}
+{% endif %}
