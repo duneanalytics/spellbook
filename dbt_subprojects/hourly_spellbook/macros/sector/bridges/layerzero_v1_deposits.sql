@@ -16,6 +16,12 @@ WITH send_calls AS (
     WHERE s.call_success
     )
 
+, distinct_calls AS (
+    SELECT DISTINCT block_number
+    , tx_hash
+    FROM send_calls
+    )
+
 , transfers AS (
     SELECT block_number
     , tx_hash
@@ -26,6 +32,7 @@ WITH send_calls AS (
     , deposit_token_address
     , evt_index
     , unique_key
+    , rn
     FROM (
         SELECT t.block_number
         , t.tx_hash
@@ -38,10 +45,11 @@ WITH send_calls AS (
         , t.unique_key
         , ROW_NUMBER() OVER (PARTITION BY t.tx_hash ORDER BY COALESCE(t.trace_address, ARRAY[t.evt_index])) AS rn
         FROM {{ source('tokens_' + blockchain, 'transfers') }} t
-        LEFT JOIN send_calls sc ON t.block_number=sc.block_number
+        INNER JOIN {{ ref('bridges_layerzero_chain_indexes') }} i ON i.blockchain='{{blockchain}}'
+        INNER JOIN distinct_calls sc ON t.block_number=sc.block_number
                 AND t.tx_hash=sc.tx_hash
+                AND t.to=i.endpoint_address
         )
-    WHERE rn = 1
     )
 
 SELECT distinct '{{blockchain}}' AS deposit_chain
@@ -65,6 +73,7 @@ SELECT distinct '{{blockchain}}' AS deposit_chain
 FROM send_calls sc
 LEFT JOIN transfers t ON t.block_number=sc.block_number
         AND t.tx_hash=sc.tx_hash
+        AND t.rn=sc.call_send_index
 LEFT JOIN {{ ref('bridges_layerzero_chain_indexes') }} ci ON sc.withdrawal_chain_id=ci.id
 
 {% endmacro %}
