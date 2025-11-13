@@ -42,7 +42,7 @@ WITH orbiter_eoas AS (
     ) AS x (blacklisted)
     )
 
-SELECT distinct '{{blockchain}}' AS deposit_chain
+SELECT '{{blockchain}}' AS deposit_chain
 , try(CAST(SUBSTRING(CAST(t.amount_raw AS VARCHAR), -4) AS bigint)) AS withdrawal_chain_id
 , ci.blockchain AS withdrawal_chain
 , 'Orbiter' AS bridge_name
