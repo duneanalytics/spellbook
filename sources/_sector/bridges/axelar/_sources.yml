@@ -5,3 +5,47 @@ sources:
     description: "Axelar bridge events on Base"
     tables:
       - name: axelargateway_evt_tokensent
+  - name: axelar_scroll
+    description: "Axelar bridge events on Scroll"
+    tables:
+      - name: axelargateway_evt_tokensent
+  - name: axelar_linea
+    description: "Axelar bridge events on Linea"
+    tables:
+      - name: axelargateway_evt_tokensent
+  - name: axelar_ethereum
+    description: "Axelar bridge events on Ethereum"
+    tables:
+      - name: axelargateway_evt_tokensent
+  - name: axelar_mantle
+    description: "Axelar bridge events on Mantle"
+    tables:
+      - name: axelargateway_evt_tokensent
+  - name: axelar_fantom
+    description: "Axelar bridge events on Fantom"
+    tables:
+      - name: axelargateway_evt_tokensent
+  - name: axelar_bnb
+    description: "Axelar bridge events on BNB"
+    tables:
+      - name: axelargateway_evt_tokensent
+  - name: axelar_arbitrum
+    description: "Axelar bridge events on Arbitrum"
+    tables:
+      - name: axelargateway_evt_tokensent
+  - name: axelar_celo
+    description: "Axelar bridge events on Celo"
+    tables:
+      - name: axelargateway_evt_tokensent
+  - name: axelar_avalanche_c
+    description: "Axelar bridge events on Avalanche"
+    tables:
+      - name: axelargateway_evt_tokensent
+  - name: axelar_optimism
+    description: "Axelar bridge events on OP Mainnet"
+    tables:
+      - name: axelargateway_evt_tokensent
+  - name: axelar_polygon
+    description: "Axelar bridge events on Polygon"
+    tables:
+      - name: axelargateway_evt_tokensent

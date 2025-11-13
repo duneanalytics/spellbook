@@ -28,3 +28,21 @@ models:
     config:
       tags: [ 'fantom', 'bridges', 'flows', 'deposits' ]
     description: "Orbiter's v1 bridge deposits events on Fantom"
+  - name: bridges_fantom_allbridge_classic_deposits
+    meta:
+      blockchain: fantom
+      sector: bridges
+      project: allbridge
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'allbridge', 'bridges', 'flows' , 'deposits' ]
+    description: "Allbridge's v1 classic bridge deposits events on Fantom"
+  - name: bridges_fantom_axelar_gateway_deposits
+    meta:
+      blockchain: fantom
+      sector: bridges
+      project: axelar
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'fantom', 'bridges', 'flows', 'deposits' ]
+    description: "Axelar's gateway bridge deposits events on Fantom"

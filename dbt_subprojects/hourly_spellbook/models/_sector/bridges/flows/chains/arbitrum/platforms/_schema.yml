@@ -251,4 +251,13 @@ models:
     config:
       tags: [ 'nitro', 'bridges', 'flows' , 'deposits' ]
     description: "Nitro's v1 bridge deposits events on Arbitrum"
+  - name: bridges_arbitrum_axelar_gateway_deposits
+    meta:
+      blockchain: arbitrum
+      sector: bridges
+      project: axelar
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'arbitrum', 'bridges', 'flows', 'deposits' ]
+    description: "Axelar's gateway bridge deposits events on Arbitrum"
 

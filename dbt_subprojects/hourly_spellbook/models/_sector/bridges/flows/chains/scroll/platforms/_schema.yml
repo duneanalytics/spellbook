@@ -111,3 +111,12 @@ models:
     config:
       tags: [ 'scroll', 'bridges', 'flows', 'deposits' ]
     description: "Orbiter's v1 bridge deposits events on Scroll"
+  - name: bridges_scroll_axelar_gateway_deposits
+    meta:
+      blockchain: scroll
+      sector: bridges
+      project: axelar
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'scroll', 'bridges', 'flows', 'deposits' ]
+    description: "Axelar's gateway bridge deposits events on Scroll"

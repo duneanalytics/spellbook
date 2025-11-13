@@ -367,3 +367,12 @@ models:
     config:
       tags: [ 'ethereum', 'bridges', 'flows', 'deposits' ]
     description: "Orbiter's v1 bridge deposits events on Ethereum"
+  - name: bridges_ethereum_axelar_gateway_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: axelar
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'ethereum', 'bridges', 'flows', 'deposits' ]
+    description: "Axelar's gateway bridge deposits events on Ethereum"
