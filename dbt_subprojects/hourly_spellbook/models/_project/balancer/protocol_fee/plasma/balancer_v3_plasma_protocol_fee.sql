@@ -9,8 +9,7 @@
     )
 }}
 
-SELECT DISTINCT *
-FROM (
+WITH base AS (
     {{
         balancer_v3_compatible_protocol_fee_macro(
             blockchain = blockchain,
@@ -20,4 +19,20 @@ FROM (
             pool_labels_model = 'balancer_v3_pools_plasma'
         )
     }}
-) base
+),
+deduplicated AS (
+    SELECT 
+        *,
+        ROW_NUMBER() OVER (
+            PARTITION BY 
+                day,
+                pool_id,
+                token_address,
+                fee_type
+            ORDER BY protocol_fee_collected_usd DESC
+        ) AS rn
+    FROM base
+)
+SELECT *
+FROM deduplicated
+WHERE rn = 1
