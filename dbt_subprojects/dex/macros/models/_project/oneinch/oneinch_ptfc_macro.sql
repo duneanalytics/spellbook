@@ -108,7 +108,7 @@ select
         , '{{ blockchain }}'
         , cast(block_number as varchar)
         , cast(tx_hash as varchar)
-        , array_join(trace_address, ',') -- ',' is necessary to avoid similarities after concatenation // array_join(array[1, 0], '') = array_join(array[10], '')
+        , array_join(transfer_trace_address, ',') -- ',' is necessary to avoid similarities after concatenation // array_join(array[1, 0], '') = array_join(array[10], '')
         , cast("to" as varchar)
     ))) as unique_key
 from transfers
