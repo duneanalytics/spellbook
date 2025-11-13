@@ -14,6 +14,7 @@
     , 'bridges_' + blockchain + '_nitro_v1_deposits'
     , 'bridges_' + blockchain + '_avalanche_c_bitcoin_v1_deposits'
     , 'bridges_' + blockchain + '_axelar_gateway_deposits'
+    , 'bridges_' + blockchain + '_allbridge_classic_deposits'
 ] %}
 
 SELECT *

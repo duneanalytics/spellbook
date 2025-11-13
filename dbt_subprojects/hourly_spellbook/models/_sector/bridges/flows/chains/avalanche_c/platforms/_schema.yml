@@ -182,3 +182,12 @@ models:
     config:
       tags: [ 'avalanche_c', 'bridges', 'flows', 'deposits' ]
     description: "Axelar's gateway bridge deposits events on Avalanche"
+  - name: bridges_avalanche_c_allbridge_classic_deposits
+    meta:
+      blockchain: avalanche_c
+      sector: bridges
+      project: allbridge
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'allbridge', 'bridges', 'flows' , 'deposits' ]
+    description: "Allbridge's v1 classic bridge deposits events on Avalanche"

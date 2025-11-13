@@ -159,6 +159,15 @@ models:
     config:
       tags: [ 'polygon', 'bridges', 'flows', 'deposits' ]
     description: "Axelar's gateway bridge deposits events on Polygon"
+  - name: bridges_polygon_allbridge_classic_deposits
+    meta:
+      blockchain: polygon
+      sector: bridges
+      project: allbridge
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'allbridge', 'bridges', 'flows' , 'deposits' ]
+    description: "Allbridge's v1 classic bridge deposits events on Polygon"
 
 
             
