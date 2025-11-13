@@ -38,3 +38,13 @@ models:
       tags: [ 'mantle', 'bridges', 'flows', 'deposits' ]
     description: "Axelar's gateway bridge deposits events on Mantle"
 
+  - name: bridges_mantle_nitro_v1_deposits
+    meta:
+      blockchain: mantle
+      sector: bridges
+      project: nitro
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'nitro', 'bridges', 'flows' , 'deposits' ]
+    description: "Nitro's v1 bridge deposits events on Mantle"
+

@@ -120,3 +120,13 @@ models:
     config:
       tags: [ 'scroll', 'bridges', 'flows', 'deposits' ]
     description: "Axelar's gateway bridge deposits events on Scroll"
+
+  - name: bridges_scroll_symbiosis_v1_deposits
+    meta:
+      blockchain: scroll
+      sector: bridges
+      project: symbiosis
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'scroll', 'bridges', 'flows', 'withdrawals' ]
+    description: "Symbiosis's v1 bridge deposits events on scroll"

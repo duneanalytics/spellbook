@@ -110,3 +110,31 @@ models:
       tags: [ 'bnb', 'bridges', 'flows', 'deposits' ]
     description: "Axelar's gateway bridge deposits events on BNB"
 
+  - name: bridges_bnb_symbiosis_v1_deposits
+    meta:
+      blockchain: bnb
+      sector: bridges
+      project: symbiosis
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bnb', 'bridges', 'flows', 'withdrawals' ]
+    description: "Symbiosis's v1 bridge deposits events on BNB"
+  - name: bridges_bnb_connext_v1_deposits
+    meta:
+      blockchain: bnb
+      sector: bridges
+      project: connext
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bnb', 'bridges', 'flows', 'withdrawals' ]
+    description: "Connext's v1 bridge deposits events on BNB"
+  - name: bridges_bnb_nitro_v1_deposits
+    meta:
+      blockchain: bnb
+      sector: bridges
+      project: nitro
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'nitro', 'bridges', 'flows' , 'deposits' ]
+    description: "Nitro's v1 bridge deposits events on BNB"
+

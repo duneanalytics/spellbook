@@ -19,3 +19,12 @@ models:
     config:
       tags: [ 'taiko', 'bridges', 'flows', 'deposits' ]
     description: "Orbiter's v1 bridge deposits events on Taiko"
+  - name: bridges_taiko_symbiosis_v1_deposits
+    meta:
+      blockchain: taiko
+      sector: bridges
+      project: symbiosis
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'taiko', 'bridges', 'flows', 'withdrawals' ]
+    description: "Symbiosis's v1 bridge deposits events on Taiko"
