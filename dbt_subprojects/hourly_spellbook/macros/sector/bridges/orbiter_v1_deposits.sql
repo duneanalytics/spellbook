@@ -57,7 +57,7 @@ SELECT '{{blockchain}}' AS deposit_chain
 , t.contract_address AS deposit_token_address
 , t.tx_from AS tx_from
 , t.tx_hash AS tx_hash
-, t.evt_index
+, COALESCE(t.evt_index, 0) AS evt_index
 , CAST(NULL AS varbinary) AS contract_address
 , CAST(t.unique_key AS varchar) AS bridge_transfer_id
 FROM {{ source('tokens_' + blockchain, 'transfers') }} t
