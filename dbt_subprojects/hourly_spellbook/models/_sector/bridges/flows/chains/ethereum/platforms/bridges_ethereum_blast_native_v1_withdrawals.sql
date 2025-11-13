@@ -22,7 +22,7 @@ SELECT CAST(NULL AS DOUBLE) AS deposit_chain_id
 , contract_address AS withdrawal_token_address
 , tx_from AS tx_from
 , tx_hash AS tx_hash
-, evt_index
+, COALESCE(evt_index, 0) AS evt_index
 , 0x5f6ae08b8aeb7078cf2f96afb089d7c9f51da47d AS contract_address
 , {{ dbt_utils.generate_surrogate_key(['tx_hash', 'evt_index']) }} as bridge_transfer_id
 FROM {{ source('tokens_ethereum', 'transfers') }}

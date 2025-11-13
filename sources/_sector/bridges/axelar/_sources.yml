@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: axelar_base
+    description: "Axelar bridge events on Base"
+    tables:
+      - name: axelargateway_evt_tokensent
