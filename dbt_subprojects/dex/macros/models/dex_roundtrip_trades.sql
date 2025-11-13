@@ -6,8 +6,8 @@ dex_trades as (
     select 
         *,
         case 
-            when maker is null then project_contract_address
-            else maker 
+            when length(maker) = 32 then maker -- univ4 virtual pool id length, also same for euler, swaap
+            else project_contract_address  
         end as pool_address -- for singletons 
     from 
     {{ ref('dex_trades') }}
