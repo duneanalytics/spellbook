@@ -40,7 +40,7 @@ with dexs AS (
             projectContractAddress as project_contract_address,
             call_tx_hash as tx_hash,
             call_trace_address AS trace_address,
-            CAST(-1 as integer) AS evt_index
+            evt_index
         FROM {{ ref('paraswap_v6_ethereum_trades_decoded') }}
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('blockTime') }}
