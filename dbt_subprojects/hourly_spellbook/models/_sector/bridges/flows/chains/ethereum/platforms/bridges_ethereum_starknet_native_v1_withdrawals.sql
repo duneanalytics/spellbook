@@ -16,7 +16,6 @@ SELECT 'ethereum' AS deposit_chain
 , evt_block_time AS block_time
 , evt_block_number AS block_number
 , amount AS deposit_amount_raw
-, sender AS sender
 , l2Recipient AS recipient
 , 'native' AS deposit_token_standard
 , 0x0000000000000000000000000000000000000000 AS deposit_token_address
