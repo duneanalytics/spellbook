@@ -150,6 +150,15 @@ models:
     config:
       tags: [ 'polygon', 'bridges', 'flows', 'withdrawals' ]
     description: "Symbiosis's v1 bridge deposits events on Polygon"
+  - name: bridges_polygon_axelar_gateway_deposits
+    meta:
+      blockchain: polygon
+      sector: bridges
+      project: axelar
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'polygon', 'bridges', 'flows', 'deposits' ]
+    description: "Axelar's gateway bridge deposits events on Polygon"
 
 
             

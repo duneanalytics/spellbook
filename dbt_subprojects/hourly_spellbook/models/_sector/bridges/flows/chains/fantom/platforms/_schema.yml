@@ -19,3 +19,12 @@ models:
     config:
       tags: [ 'celer', 'bridges', 'flows' , 'withdrawals' ]
     description: "Celer's v1 bridge withdrawals events on Fantom"
+  - name: bridges_fantom_axelar_gateway_deposits
+    meta:
+      blockchain: fantom
+      sector: bridges
+      project: axelar
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'fantom', 'bridges', 'flows', 'deposits' ]
+    description: "Axelar's gateway bridge deposits events on Fantom"

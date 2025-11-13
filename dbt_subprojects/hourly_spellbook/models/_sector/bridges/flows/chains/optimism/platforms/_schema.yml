@@ -193,5 +193,14 @@ models:
     config:
       tags: [ 'nitro', 'bridges', 'flows' , 'deposits' ]
     description: "Nitro's v1 bridge deposits events on OP Mainnet"
+  - name: bridges_optimism_axelar_gateway_deposits
+    meta:
+      blockchain: optimism
+      sector: bridges
+      project: axelar
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'optimism', 'bridges', 'flows', 'deposits' ]
+    description: "Axelar's gateway bridge deposits events on OP Mainnet"
 
 

@@ -173,3 +173,12 @@ models:
     config:
       tags: [ 'avalanche_c', 'bridges', 'flows' , 'withdrawals' ]
     description: "Avalanche's Bitcoin bridge withdrawals events on Avalanche"
+  - name: bridges_avalanche_c_axelar_gateway_deposits
+    meta:
+      blockchain: avalanche_c
+      sector: bridges
+      project: axelar
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'avalanche_c', 'bridges', 'flows', 'deposits' ]
+    description: "Axelar's gateway bridge deposits events on Avalanche"

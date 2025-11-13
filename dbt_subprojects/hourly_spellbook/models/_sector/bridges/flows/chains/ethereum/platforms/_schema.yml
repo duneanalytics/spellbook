@@ -376,3 +376,12 @@ models:
     config:
       tags: [ 'agglayer', 'bridges', 'flows' , 'withdrawals' ]
     description: "Agglayer's shared bridge withdrawals events on Ethereum"
+  - name: bridges_ethereum_axelar_gateway_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: axelar
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'ethereum', 'bridges', 'flows', 'deposits' ]
+    description: "Axelar's gateway bridge deposits events on Ethereum"

@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: bridges_celo_axelar_gateway_deposits
+    meta:
+      blockchain: celo
+      sector: bridges
+      project: axelar
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'celo', 'bridges', 'flows', 'deposits' ]
+    description: "Axelar's gateway bridge deposits events on Celo"
+
