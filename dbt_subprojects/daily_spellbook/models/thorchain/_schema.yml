@@ -221,7 +221,7 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_month
+            - day
             - fact_transfer_events_id
 
   - name: thorchain_core_transfers
