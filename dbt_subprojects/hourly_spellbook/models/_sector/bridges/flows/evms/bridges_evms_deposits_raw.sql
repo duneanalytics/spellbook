@@ -10,7 +10,8 @@
 }}
 
 {% set chains = [
-    'arbitrum'
+    'abstract'
+    , 'arbitrum'
     , 'avalanche_c'
     , 'base'
     , 'berachain'
@@ -24,6 +25,7 @@
     , 'flare'
     , 'hyperevm'
     , 'ink'
+    , 'katana'
     , 'lens'
     , 'linea'
     , 'mantle'
@@ -34,8 +36,11 @@
     , 'polygon'
     , 'scroll'
     , 'sei'
+    , 'sonic'
+    , 'taiko'
     , 'unichain'
     , 'worldchain'
+    , 'zkevm'
     , 'zksync'
     , 'zora'
 ] %}

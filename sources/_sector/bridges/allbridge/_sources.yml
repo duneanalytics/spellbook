@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: allbridge_ethereum
+    description: "Allbridge bridge events on Ethereum"
+    tables:
+      - name: bridge_evt_sent

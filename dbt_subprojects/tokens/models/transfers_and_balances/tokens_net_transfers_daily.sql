@@ -22,6 +22,7 @@
     , 'hemi'
     , 'linea'
     , 'mantle'
+    , 'mezo'
     , 'opbnb'
     , 'optimism'
     , 'plasma'
