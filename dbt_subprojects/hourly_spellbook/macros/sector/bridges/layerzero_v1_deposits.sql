@@ -44,7 +44,7 @@ WITH send_calls AS (
     WHERE rn = 1
     )
 
-SELECT '{{blockchain}}' AS deposit_chain
+SELECT distinct '{{blockchain}}' AS deposit_chain
 , sc.withdrawal_chain_id
 , ci.blockchain AS withdrawal_chain
 , 'LayerZero' AS bridge_name
