@@ -18,3 +18,6 @@
         pool_labels_model = 'balancer_v3_pools_plasma'
     )
 }}
+
+SELECT DISTINCT *
+FROM base
