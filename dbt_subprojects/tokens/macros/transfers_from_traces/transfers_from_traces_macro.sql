@@ -1,19 +1,24 @@
-{%- macro transfers_from_traces_macro(
-    blockchain
-    , transfers_start_date = '2000-01-01'
-    , easy_dates=true
-    , prices_interval='hour'
+{%- macro
+    transfers_from_traces_macro(
+        blockchain
+        , transfers_start_date='2000-01-01'
+        , easy_dates=true
+        , prices_interval='hour'
     )
 -%}
 
 {%- if blockchain is none or blockchain == '' -%}
     {{ exceptions.raise_compiler_error("blockchain parameter cannot be null or empty") }}
 {%- endif -%}
+
 /*
     - split into 2 operations and fetching from pre-materialized tables to prevent doubling full-scan of traces
 */
-WITH base_traces as (
-    SELECT
+
+with
+
+base_tft as (
+    select
         blockchain
         , block_month
         , block_date
@@ -28,45 +33,39 @@ WITH base_traces as (
         , "from"
         , "to"
         , unique_key
-    FROM
-        {{ ref('tokens_' ~ blockchain ~ '_transfers_from_traces_base') }}
-    where
-        1=1
-        {% if is_incremental() -%}
-        and {{ incremental_predicate('block_date') }}
-        {% else -%}
-        and block_date >= TIMESTAMP '{{ transfers_start_date }}'
-        {% endif -%}
+        , date_trunc('{{ prices_interval }}', block_time) as timestamp
+    from {{ ref('tokens_' ~ blockchain ~ '_transfers_from_traces_base') }}
+    where true
+        and block_date >= timestamp '{{ transfers_start_date }}'
+        {% if is_incremental() -%} and {{ incremental_predicate('block_date') }} {%- endif %}
 )
-, erc20 as (
-    SELECT
-        blockchain
-        , contract_address
-        , decimals
-        , symbol
-    FROM
-        {{ source('tokens', 'erc20') }}
-    WHERE
-        blockchain = '{{ blockchain }}'
+
+, tokens as (
+    select
+        contract_address
+        , decimals as token_decimals
+        , symbol as token_symbol
+    from {{ source('tokens', 'erc20') }}
+    where true
+        and blockchain = '{{ blockchain }}'
 )
-, prices AS (
-    SELECT
-        timestamp
-        , blockchain
-        , contract_address
+
+, prices as (
+    select
+        contract_address
+        , timestamp
         , decimals
         , symbol
         , price
-    FROM
-        {{ source('prices_external', prices_interval) }}
-    where
-        blockchain = '{{ blockchain }}'
-        {% if is_incremental() %}
-        and {{ incremental_predicate('timestamp') }}
-        {% else %}
-        and timestamp >= TIMESTAMP '{{ transfers_start_date }}'
-        {% endif %}
+    from {{ source('prices_external', prices_interval) }}
+    where true
+        and blockchain = '{{ blockchain }}'
+        and timestamp >= timestamp '{{ transfers_start_date }}'
+        {% if is_incremental() -%} and {{ incremental_predicate('timestamp') }} {%- endif %}
 )
+
+-- output --
+
 select
     blockchain
     , block_month
@@ -78,25 +77,25 @@ select
     , type
     , token_standard
     , contract_address
-    , symbol
+    , coalesce(token_symbol, symbol) as symbol
     , amount_raw
-    , amount_raw / power(10, coalesce(erc20.decimals, p.decimals)) AS amount
-    , p.price AS price_usd
-    , amount_raw / power(10, coalesce(erc20.decimals, p.decimals)) * p.price AS amount_usd
+    , amount_raw / power(10, coalesce(token_decimals, decimals)) as amount
+    , price as price_usd
+    , amount_raw / power(10, coalesce(token_decimals, decimals)) * price as amount_usd
     , "from"
     , "to"
     , unique_key
-from base_traces as bt
-left join erc20
-    on erc20.contract_address = bt.contract_address
-left join prices as p
-    on p.contract_address = bt.contract_address
-    and p.timestamp = date_trunc('{{ prices_interval }}', bt.block_time)
+from base_tft
+left join tokens using(contract_address)
+left join prices using(contract_address, timestamp)
 
 /*
---will add this after testing above
+    -- will add this after testing above
+
 union all
 -- the wrapper deposit includes two transfers: native and wrapped, so need to add second one manually reversing from/to
 select * from {{ ref('tokens_' ~ blockchain ~ '_transfers_from_traces_base_wrapper_deposits') }}
+
 */
+
 {%- endmacro -%}
