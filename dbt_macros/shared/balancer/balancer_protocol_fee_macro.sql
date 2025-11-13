@@ -132,7 +132,7 @@ WITH pool_labels AS (
             d.day, 
             d.pool_id, 
             d.token_address, 
-            t.symbol AS token_symbol,
+            MAX(t.symbol) AS token_symbol,
             SUM(d.protocol_fee_amount_raw) AS token_amount_raw, 
             SUM(d.protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals,p1.decimals, p3.decimals))) AS token_amount,
             SUM(COALESCE(p1.price, p2.price, p3.price) * protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals,p1.decimals, p3.decimals))) AS protocol_fee_collected_usd
@@ -150,7 +150,7 @@ WITH pool_labels AS (
         LEFT JOIN {{ source('tokens', 'erc20') }} t 
             ON t.contract_address = d.token_address
             AND t.blockchain = '{{blockchain}}'
-        GROUP BY 1, 2, 3, 4
+        GROUP BY 1, 2, 3
     ),
 
     revenue_share as(

@@ -21,6 +21,4 @@ WITH base AS (
     }}
 )
 
-SELECT DISTINCT *
-FROM base
 
