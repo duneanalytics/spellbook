@@ -239,4 +239,6 @@ FROM (VALUES
     , ('machinex', 'Machine X', 'Direct', 'machinexdotxyz')
     , ('cldex', 'CLDEX', 'Direct', 'KaiaChain')
     , ('pharaoh_v3', 'Pharaoh', 'Direct', 'PharaohExchange')
+    , ('aborean', 'Aborean', 'Direct', 'AboreanFi')
+
 ) AS temp_table (project, name, marketplace_type, x_username)

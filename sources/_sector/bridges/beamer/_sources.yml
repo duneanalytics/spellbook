@@ -1,0 +1,19 @@
+version: 2
+
+sources:
+  - name: beamer_bridge_v2_ethereum
+    description: "Beamer's v2 bridge events on Ethereum"
+    tables:
+      - name: requestmanager_evt_requestcreated
+  - name: beamer_bridge_v2_arbitrum
+    description: "Beamer's v2 bridge events on Arbitrum"
+    tables:
+      - name: requestmanager_evt_requestcreated
+  - name: beamer_bridge_v2_base
+    description: "Beamer's v2 bridge events on Base"
+    tables:
+      - name: requestmanager_evt_requestcreated
+  - name: beamer_bridge_v2_optimism
+    description: "Beamer's v2 bridge events on OP Mainnet"
+    tables:
+      - name: requestmanager_evt_requestcreated
