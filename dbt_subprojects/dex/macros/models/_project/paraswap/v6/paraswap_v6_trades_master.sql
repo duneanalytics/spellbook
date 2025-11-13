@@ -119,11 +119,7 @@ select
   call_block_number as blockNumber,
   call_tx_hash as call_tx_hash,
   project_contract_address as projectContractAddress,
-  CASE
-    WHEN call_trace_address IS NULL OR CARDINALITY(call_trace_address)=0
-      THEN ARRAY[-1]
-    ELSE call_trace_address
-  END AS call_trace_address,
+  call_trace_address,
   srcToken,
   destToken,
   fromAmount,
@@ -187,7 +183,6 @@ select
     ROW_NUMBER() OVER (
       PARTITION BY
         call_tx_hash,
-        call_trace_address
       ORDER BY
         side,
         method,
