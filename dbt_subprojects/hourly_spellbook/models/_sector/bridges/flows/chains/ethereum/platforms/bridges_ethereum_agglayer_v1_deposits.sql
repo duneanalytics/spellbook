@@ -8,10 +8,7 @@
 }}
 
 WITH bridge_events AS (
-    SELECT '{{blockchain}}' AS deposit_chain
-    , d.destinationNetwork AS withdrawal_chain_id
-    , 'Agglayer' AS bridge_name
-    , '1' AS bridge_version
+    SELECT d.destinationNetwork AS withdrawal_chain_id
     , evt_block_date AS block_date
     , evt_block_time AS block_time
     , evt_block_number AS block_number
@@ -29,9 +26,11 @@ WITH bridge_events AS (
     WHERE amount > 0
     )
 
-SELECT be.deposit_chain
-, be.withdrawal_chain_id
+SELECT '{{blockchain}}' AS deposit_chain
+    , be.withdrawal_chain_id
 , i.blockchain AS withdrawal_chain
+, 'Agglayer' AS bridge_name
+, '1' AS bridge_version
 , be.block_date
 , be.block_time
 , be.block_number
