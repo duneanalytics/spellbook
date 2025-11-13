@@ -2,9 +2,9 @@
 
 {{ config(
     schema = 'bridges_' + blockchain,
-    alias = 'zkbridge_v1_withdrawals',
+    alias = 'beamer_v2_deposits',
     materialized = 'view',
     )
 }}
 
-{{zkbridge_v1_withdrawals(blockchain = blockchain)}}
+{{beamer_v2_deposits(blockchain = blockchain)}}
