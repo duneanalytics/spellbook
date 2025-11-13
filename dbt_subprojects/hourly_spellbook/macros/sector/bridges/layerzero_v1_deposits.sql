@@ -11,15 +11,17 @@ WITH send_calls AS (
     , s.call_tx_from AS tx_from
     , s.call_tx_hash AS tx_hash
     , s.contract_address
-    , ROW_NUMBER() OVER(PARTITION BY s.call_block_number, s.call_tx_hash ORDER BY s.call_trace_address ASC) AS call_send_index
+    , ROW_NUMBER() OVER(PARTITION BY s.call_tx_hash ORDER BY s.call_trace_address ASC) AS call_send_index
     FROM {{ events }} s
     WHERE s.call_success
     )
 
 , distinct_calls AS (
-    SELECT DISTINCT block_number
+    SELECT block_number
     , tx_hash
+    , MAX(call_send_index) AS max_call_send_index
     FROM send_calls
+    GROUP BY 1, 2
     )
 
 , transfers AS (
@@ -41,15 +43,17 @@ WITH send_calls AS (
         , t.amount AS deposit_amount_raw
         , t.token_standard AS deposit_token_standard
         , t.contract_address AS deposit_token_address
-        , COALESCE(t.evt_index, 0) AS evt_index
+        , t.evt_index
         , t.unique_key
         , ROW_NUMBER() OVER (PARTITION BY t.tx_hash ORDER BY COALESCE(t.trace_address, ARRAY[t.evt_index])) AS rn
+        , sc.max_call_send_index
         FROM {{ source('tokens_' + blockchain, 'transfers') }} t
         INNER JOIN {{ ref('bridges_layerzero_chain_indexes') }} i ON i.blockchain='{{blockchain}}'
         INNER JOIN distinct_calls sc ON t.block_number=sc.block_number
                 AND t.tx_hash=sc.tx_hash
                 AND t.to=i.endpoint_address
         )
+    WHERE rn <= max_call_send_index
     )
 
 SELECT distinct '{{blockchain}}' AS deposit_chain
@@ -67,7 +71,7 @@ SELECT distinct '{{blockchain}}' AS deposit_chain
 , sc.deposit_token_address
 , sc.tx_from
 , sc.tx_hash
-, t.evt_index AS evt_index
+, COALESCE(t.evt_index, -rn) AS evt_index
 , sc.contract_address
 , CAST(t.unique_key AS varchar) AS bridge_transfer_id
 FROM send_calls sc
