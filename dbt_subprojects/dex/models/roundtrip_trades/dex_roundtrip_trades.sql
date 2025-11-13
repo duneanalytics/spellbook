@@ -11,8 +11,26 @@
 
 
 {% set dex_models = [
- ref('dex_bnb_roundtrip_trades')
+ref('dex_arbitrum_roundtrip_trades')
+, ref('dex_avalanche_c_roundtrip_trades')
+, ref('dex_base_roundtrip_trades')
+, ref('dex_blast_roundtrip_trades')
+, ref('dex_bnb_roundtrip_trades')
+, ref('dex_celo_roundtrip_trades')
 , ref('dex_ethereum_roundtrip_trades')
+, ref('dex_gnosis_roundtrip_trades')
+, ref('dex_ink_roundtrip_trades')
+, ref('dex_linea_roundtrip_trades')
+, ref('dex_mantle_roundtrip_trades')
+, ref('dex_optimism_roundtrip_trades')
+, ref('dex_plasma_roundtrip_trades')
+, ref('dex_polygon_roundtrip_trades')
+, ref('dex_scroll_roundtrip_trades')
+, ref('dex_sonic_roundtrip_trades')
+, ref('dex_unichain_roundtrip_trades')
+, ref('dex_worldchain_roundtrip_trades')
+, ref('dex_zksync_roundtrip_trades')
+, ref('dex_zora_roundtrip_trades')
 ] %}
 
 

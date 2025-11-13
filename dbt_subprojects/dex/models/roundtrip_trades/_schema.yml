@@ -84,6 +84,62 @@ models:
         name: evt_index
         description: "Index of the event in the transaction. Can be used to uniquely identify the order of trades within in a transaction"
 
+  - name: dex_arbitrum_roundtrip_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: [ 'dex', 'roundtrip_trades' ]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - pool_address
+
+  - name: dex_avalanche_c_roundtrip_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: [ 'dex', 'roundtrip_trades' ]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - pool_address
+
+  - name: dex_base_roundtrip_trades
+    meta:
+      blockchain: base
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: [ 'dex', 'roundtrip_trades' ]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - pool_address
+
+  - name: dex_blast_roundtrip_trades
+    meta:
+      blockchain: blast
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: [ 'dex', 'roundtrip_trades' ]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - pool_address
+
   - name: dex_bnb_roundtrip_trades
     meta:
       blockchain: bnb
@@ -98,9 +154,205 @@ models:
             - evt_index
             - pool_address
 
+  - name: dex_celo_roundtrip_trades
+    meta:
+      blockchain: celo
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: [ 'dex', 'roundtrip_trades' ]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - pool_address
+
   - name: dex_ethereum_roundtrip_trades
     meta:
       blockchain: ethereum
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: [ 'dex', 'roundtrip_trades' ]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - pool_address
+
+  - name: dex_gnosis_roundtrip_trades
+    meta:
+      blockchain: gnosis
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: [ 'dex', 'roundtrip_trades' ]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - pool_address
+
+  - name: dex_ink_roundtrip_trades
+    meta:
+      blockchain: ink
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: [ 'dex', 'roundtrip_trades' ]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - pool_address
+
+  - name: dex_linea_roundtrip_trades
+    meta:
+      blockchain: linea
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: [ 'dex', 'roundtrip_trades' ]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - pool_address
+
+  - name: dex_mantle_roundtrip_trades
+    meta:
+      blockchain: mantle
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: [ 'dex', 'roundtrip_trades' ]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - pool_address
+
+  - name: dex_optimism_roundtrip_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: [ 'dex', 'roundtrip_trades' ]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - pool_address
+
+  - name: dex_plasma_roundtrip_trades
+    meta:
+      blockchain: plasma
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: [ 'dex', 'roundtrip_trades' ]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - pool_address
+
+  - name: dex_polygon_roundtrip_trades
+    meta:
+      blockchain: polygon
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: [ 'dex', 'roundtrip_trades' ]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - pool_address
+
+  - name: dex_scroll_roundtrip_trades
+    meta:
+      blockchain: scroll
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: [ 'dex', 'roundtrip_trades' ]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - pool_address
+
+  - name: dex_sonic_roundtrip_trades
+    meta:
+      blockchain: sonic
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: [ 'dex', 'roundtrip_trades' ]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - pool_address
+
+  - name: dex_unichain_roundtrip_trades
+    meta:
+      blockchain: unichain
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: [ 'dex', 'roundtrip_trades' ]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - pool_address
+
+  - name: dex_worldchain_roundtrip_trades
+    meta:
+      blockchain: worldchain
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: [ 'dex', 'roundtrip_trades' ]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - pool_address
+
+  - name: dex_zksync_roundtrip_trades
+    meta:
+      blockchain: zksync
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: [ 'dex', 'roundtrip_trades' ]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - pool_address
+
+  - name: dex_zora_roundtrip_trades
+    meta:
+      blockchain: zora
       sector: dex
       contributors: Henrystats
     config:
