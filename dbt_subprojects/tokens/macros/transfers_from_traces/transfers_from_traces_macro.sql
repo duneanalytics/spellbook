@@ -1,5 +1,6 @@
 {%- macro transfers_from_traces_macro(
     blockchain
+    , transfers_start_date = '2000-01-01'
     , easy_dates=true
     , prices_interval='hour'
     )
