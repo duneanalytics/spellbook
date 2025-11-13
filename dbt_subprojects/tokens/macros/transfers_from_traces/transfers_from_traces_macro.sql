@@ -12,8 +12,8 @@
 /*
     - split into 2 operations and fetching from pre-materialized tables to prevent doubling full-scan of traces
 */
-WITH base_traces as (
-    SELECT
+with base_traces as (
+    select
         blockchain
         , block_month
         , block_date
@@ -28,43 +28,43 @@ WITH base_traces as (
         , "from"
         , "to"
         , unique_key
-    FROM
+    from
         {{ ref('tokens_' ~ blockchain ~ '_transfers_from_traces_base') }}
     where
         1=1
         {% if is_incremental() -%}
         and {{ incremental_predicate('block_date') }}
         {% else -%}
-        and block_date >= TIMESTAMP '{{ transfers_start_date }}'
+        and block_date >= timestamp '{{ transfers_start_date }}'
         {% endif -%}
 )
 , erc20 as (
-    SELECT
+    select
         blockchain
         , contract_address
         , decimals
         , symbol
-    FROM
+    from
         {{ source('tokens', 'erc20') }}
-    WHERE
+    where
         blockchain = '{{ blockchain }}'
 )
-, prices AS (
-    SELECT
+, prices as (
+    select
         timestamp
         , blockchain
         , contract_address
         , decimals
         , symbol
         , price
-    FROM
+    from
         {{ source('prices_external', prices_interval) }}
     where
         blockchain = '{{ blockchain }}'
         {% if is_incremental() %}
         and {{ incremental_predicate('timestamp') }}
         {% else %}
-        and timestamp >= TIMESTAMP '{{ transfers_start_date }}'
+        and timestamp >= timestamp '{{ transfers_start_date }}'
         {% endif %}
 )
 select
@@ -80,9 +80,9 @@ select
     , contract_address
     , symbol
     , amount_raw
-    , amount_raw / power(10, coalesce(erc20.decimals, p.decimals)) AS amount
-    , p.price AS price_usd
-    , amount_raw / power(10, coalesce(erc20.decimals, p.decimals)) * p.price AS amount_usd
+    , amount_raw / power(10, coalesce(erc20.decimals, p.decimals)) as amount
+    , p.price as price_usd
+    , amount_raw / power(10, coalesce(erc20.decimals, p.decimals)) * p.price as amount_usd
     , "from"
     , "to"
     , unique_key
