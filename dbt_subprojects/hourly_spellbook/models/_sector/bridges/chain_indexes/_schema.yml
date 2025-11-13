@@ -158,3 +158,15 @@ models:
       - &endpoint_address
         name: endpoint_address
         description: "Endpoint address"
+  - name: bridges_agglayer_chain_indexes
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: agglayer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bridges', 'chain_indexes' ]
+    description: "Agglayer's blockchains indexes"
+    columns:
+      - *id
+      - *blockchain
