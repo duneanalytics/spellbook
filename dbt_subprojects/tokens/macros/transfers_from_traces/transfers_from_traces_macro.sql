@@ -1,6 +1,6 @@
 {%- macro transfers_from_traces_macro(
     blockchain
-    , easy_dates=false
+    , easy_dates=true
     , prices_interval='hour'
     )
 -%}
