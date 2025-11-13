@@ -34,7 +34,7 @@ WITH send_calls AS (
         , t.amount AS deposit_amount_raw
         , t.token_standard AS deposit_token_standard
         , t.contract_address AS deposit_token_address
-        , t.evt_index
+        , COALESCE(t.evt_index, 0) AS evt_index
         , t.unique_key
         , ROW_NUMBER() OVER (PARTITION BY t.tx_hash ORDER BY COALESCE(t.trace_address, ARRAY[t.evt_index])) AS rn
         FROM {{ source('tokens_' + blockchain, 'transfers') }} t
