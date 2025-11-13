@@ -182,7 +182,7 @@ select
     *,
     ROW_NUMBER() OVER (
       PARTITION BY
-        call_tx_hash,
+        call_tx_hash
       ORDER BY
         side,
         method,
