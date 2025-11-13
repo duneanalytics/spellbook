@@ -12,12 +12,18 @@
     , 'bridges_' + blockchain + '_celer_v1_deposits'
     , 'bridges_' + blockchain + '_across_v2_deposits'
     , 'bridges_' + blockchain + '_across_v3_deposits'
+    , 'bridges_' + blockchain + '_across_v3_deposits'
+    , 'bridges_' + blockchain + '_butter_v2_deposits'
+    , 'bridges_' + blockchain + '_synapse_rfq_deposits'
+    , 'bridges_' + blockchain + '_zkbridge_v1_deposits'
+    , 'bridges_' + blockchain + '_beamer_v2_deposits'
 ] %}
 
 SELECT *
 FROM (
     {% for bridge_platform in bridges_platforms %}
     SELECT deposit_chain
+    , withdrawal_chain_id
     , withdrawal_chain
     , withdrawal_chain_id
     , bridge_name

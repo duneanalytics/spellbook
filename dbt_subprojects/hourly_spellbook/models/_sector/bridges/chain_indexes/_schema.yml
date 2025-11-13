@@ -41,3 +41,86 @@ models:
     columns:
       - *id
       - *blockchain
+  - name: bridges_across_chain_indexes
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bridges', 'chain_indexes' ]
+    description: "Across's blockchains indexes"
+    columns:
+      - *id
+      - *blockchain
+  - name: bridges_tether_chain_indexes
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: tether
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bridges', 'chain_indexes' ]
+    description: "Tether's blockchains indexes"
+    columns:
+      - *id
+      - *blockchain
+      - &usdt0_address
+        name: usdt0_address
+        description: "Contract address of USDT0 per chain"
+  - name: bridges_connext_chain_indexes
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: connext
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bridges', 'chain_indexes' ]
+    description: "Connext's blockchains indexes"
+    columns:
+      - *id
+      - *blockchain
+  - name: bridges_zkbridge_chain_indexes
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: zkbridge
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bridges', 'chain_indexes' ]
+    description: "zkBridge's blockchains indexes"
+    columns:
+      - *id
+      - *blockchain
+  - name: bridges_zkbridge_token_indexes
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: zkbridge
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bridges', 'chain_indexes' ]
+    description: "zkBridge's blockchains indexes"
+    columns:
+      - *blockchain
+      - &contract_address
+        name: contract_address
+        description: "Address of the contract used to bridge the token"
+      - &pool_id
+        name: pool_id
+        description: "ID of the pool used to bridge the token"
+      - &token_address
+        name: token_address
+        description: "Address of the token in the pool"
+  - name: bridges_symbiosis_chain_indexes
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: symbiosis
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bridges', 'chain_indexes' ]
+    description: "Symbiosis's blockchains indexes"
+    columns:
+      - *id
+      - *blockchain

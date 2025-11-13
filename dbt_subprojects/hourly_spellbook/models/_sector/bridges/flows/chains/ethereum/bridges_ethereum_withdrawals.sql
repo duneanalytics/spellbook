@@ -13,6 +13,17 @@
     , 'bridges_' + blockchain + '_across_v2_withdrawals'
     , 'bridges_' + blockchain + '_across_v3_withdrawals'
     , 'bridges_' + blockchain + '_debridge_v1_withdrawals'
+    , 'bridges_' + blockchain + '_across_v3_withdrawals'
+    , 'bridges_' + blockchain + '_arbitrum_native_v1_withdrawals'
+    , 'bridges_' + blockchain + '_ronin_native_v1_withdrawals'
+    , 'bridges_' + blockchain + '_ronin_native_v2_withdrawals'
+    , 'bridges_' + blockchain + '_lighter_v1_withdrawals'
+    , 'bridges_' + blockchain + '_avalanche_c_native_v2_withdrawals'
+    , 'bridges_' + blockchain + '_zkync_native_v2_withdrawals'
+    , 'bridges_' + blockchain + '_blast_native_v1_withdrawals'
+    , 'bridges_' + blockchain + '_sui_native_v1_withdrawals'
+    , 'bridges_' + blockchain + '_synapse_rfq_withdrawals'
+    , 'bridges_' + blockchain + '_polygon_native_v1_withdrawals'
 ] %}
 
 SELECT *

@@ -119,3 +119,21 @@ models:
       - &deposit_chain_id
         name: deposit_chain_id
         description: "Blockchain ID where the tokens were sent"
+  - name: bridges_avalanche_c_celer_v1_deposits
+    meta:
+      blockchain: avalanche_c
+      sector: bridges
+      project: celer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'celer', 'bridges', 'flows' , 'deposits' ]
+    description: "Celer's v1 bridge deposits events on Avalanche"
+  - name: bridges_avalanche_c_celer_v1_withdrawals
+    meta:
+      blockchain: avalanche_c
+      sector: bridges
+      project: celer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'celer', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Celer's v1 bridge withdrawals events on Avalanche"

@@ -119,3 +119,121 @@ models:
       - &deposit_chain_id
         name: deposit_chain_id
         description: "Blockchain ID where the tokens were sent"
+  - name: bridges_optimism_across_v1_deposits
+    meta:
+      blockchain: optimism
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
+    description: "Across's v1 bridge deposits events on OP Mainnet"
+  - name: bridges_optimism_across_v2_deposits
+    meta:
+      blockchain: optimism
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
+    description: "Across's v2 bridge deposits events on OP Mainnet"
+  - name: bridges_optimism_across_v2_withdrawals
+    meta:
+      blockchain: optimism
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Across's v2 bridge withdrawals events on OP Mainnet"
+  - name: bridges_optimism_across_v3_deposits
+    meta:
+      blockchain: optimism
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
+    description: "Across's v3 bridge deposits events on OP Mainnet"
+  - name: bridges_optimism_across_v3_withdrawals
+    meta:
+      blockchain: optimism
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Across's v3 bridge withdrawals events on OP Mainnet"
+  - name: bridges_optimism_synapse_rfq_deposits
+    meta:
+      blockchain: optimism
+      sector: bridges
+      project: synapse
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'synapse', 'bridges', 'flows' , 'deposits' ]
+    description: "Synapse's RFQ bridge deposits events on OP Mainnet"
+  - name: bridges_optimism_synapse_rfq_withdrawals
+    meta:
+      blockchain: optimism
+      sector: bridges
+      project: synapse
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'synapse', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Synapse's RFQ bridge withdrawals events on OP Mainnet"
+  - name: bridges_optimism_celer_v1_deposits
+    meta:
+      blockchain: optimism
+      sector: bridges
+      project: celer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'celer', 'bridges', 'flows' , 'deposits' ]
+    description: "Celer's v1 bridge deposits events on OP Mainnet"
+  - name: bridges_optimism_celer_v1_withdrawals
+    meta:
+      blockchain: optimism
+      sector: bridges
+      project: celer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'celer', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Celer's v1 bridge withdrawals events on OP Mainnet"
+  - name: bridges_optimism_tether_v1_deposits
+    meta:
+      blockchain: optimism
+      sector: bridges
+      project: tether
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'optimism', 'bridges', 'flows', 'deposits' ]
+    description: "Tether's USDT0 v1 bridge deposits events on OP Mainnet"
+  - name: bridges_optimism_tether_v1_withdrawals
+    meta:
+      blockchain: optimism
+      sector: bridges
+      project: tether
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'optimism', 'bridges', 'flows', 'withdrawals' ]
+    description: "Tether's USDT0 v1 bridge withdrawals events on OP Mainnet"
+  - name: bridges_optimism_beamer_v2_deposits
+    meta:
+      blockchain: optimism
+      sector: bridges
+      project: beamer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'beamer', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Beamer's v2 bridge deposits events on OP Mainnet"
+  - name: bridges_optimism_zkbridge_v1_deposits
+    meta:
+      blockchain: optimism
+      sector: bridges
+      project: zkbridge
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'optimism', 'bridges', 'flows', 'deposits' ]
+    description: "zkBridge's v1 bridge deposits events on OP Mainnet"
+
