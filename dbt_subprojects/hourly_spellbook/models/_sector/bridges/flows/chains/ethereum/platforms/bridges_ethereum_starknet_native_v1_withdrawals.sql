@@ -2,7 +2,7 @@
 
 {{ config(
     schema = 'bridges_' + blockchain,
-    alias = 'starknet_native_v1_deposits',
+    alias = 'starknet_native_v1_withdrawals',
     materialized = 'view',
     )
 }}
