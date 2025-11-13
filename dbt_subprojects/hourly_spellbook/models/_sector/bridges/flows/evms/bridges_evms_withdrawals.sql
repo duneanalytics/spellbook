@@ -6,6 +6,10 @@
     , incremental_strategy='append'
     , unique_key = ['deposit_chain','deposit_chain_id','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id','duplicate_index']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "blast", "bnb", "ethereum", "hyperevm", "ink", "lens", "linea", "optimism", "plasma", "polygon", "scroll", "unichain", "worldchain", "zksync", "zora", "fantom", "gnosis", "nova", "opbnb", "berachain", "corn", "flare", "sei", "mantle"]\',
+                                "sector",
+                                "bridges",
+                                \'["hildobby"]\') }}'
 )
 }}
 

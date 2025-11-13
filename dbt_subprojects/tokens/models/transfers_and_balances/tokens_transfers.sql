@@ -25,6 +25,7 @@
     ,'katana'
     ,'linea'
     ,'mantle'
+    ,'mezo'
     ,'nova'
     ,'opbnb'
     ,'optimism'

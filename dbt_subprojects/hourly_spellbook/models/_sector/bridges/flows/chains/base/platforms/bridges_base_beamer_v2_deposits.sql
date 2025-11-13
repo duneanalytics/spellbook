@@ -7,4 +7,6 @@
     )
 }}
 
-{{beamer_v2_deposits(blockchain = blockchain)}}
+{{beamer_deposits(blockchain = blockchain
+    , version = '2'
+    )}}
