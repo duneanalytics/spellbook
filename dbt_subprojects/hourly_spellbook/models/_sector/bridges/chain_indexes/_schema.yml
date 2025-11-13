@@ -41,18 +41,6 @@ models:
     columns:
       - *id
       - *blockchain
-  - name: bridges_across_chain_indexes
-    meta:
-      blockchain: ethereum
-      sector: bridges
-      project: across
-      contributors: [ 'hildobby']
-    config:
-      tags: [ 'bridges', 'chain_indexes' ]
-    description: "Across's blockchains indexes"
-    columns:
-      - *id
-      - *blockchain
   - name: bridges_tether_chain_indexes
     meta:
       blockchain: ethereum
