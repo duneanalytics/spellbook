@@ -17,8 +17,8 @@ select
     , 'erc20' as token_standard
     , "to" as contract_address
     , amount_raw
-    , "to" as transfer_from
-    , "from" as transfer_to
+    , "to"
+    , "from"
     , sha1(to_utf8(concat_ws('|'
         , blockchain
         , cast(block_number as varchar)
@@ -34,7 +34,7 @@ join ( -- to leave only real tokens (mostly for wrapped token, but works for rar
 ) using("to")
 where
     type = 'deposit'
-    {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
+    {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
 
 
 

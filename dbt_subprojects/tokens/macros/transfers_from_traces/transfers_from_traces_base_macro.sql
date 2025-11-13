@@ -1,15 +1,16 @@
-{%- macro transfers_from_traces_base_macro(blockchain, easy_dates=false) -%}
+{%- macro transfers_from_traces_base_macro(blockchain, easy_dates=true) -%}
 
 -- this stream process all kind of transfers from traces: native, erc20 transfer/transferFrom, mint/burn, wrapped deposit/withdrawal
 
-{%- set null_address = '0x0000000000000000000000000000000000000000' -%}
-{%- set transfer_selector = '0xa9059cbb' -%}
-{%- set transferFrom_selector = '0x23b872dd' -%}
-{%- set mint_selector = '0x40c10f19' -%}{# for DAI, etc. #}
-{%- set burn_selector = '0x9dc29fac' -%}{# for DAI, etc. #}
-{%- set deposit_selector = '0xd0e30db0' -%}{# for wrappers #}
-{%- set withdraw_selector = '0x2e1a7d4d' -%}{# for wrappers #}
-{%- set selector = 'substr(input, 1, 4)' %}
+{%- set null_address = "0x0000000000000000000000000000000000000000" -%}
+{%- set transfer_selector       = "0xa9059cbb" -%}
+{%- set transferFrom_selector   = "0x23b872dd" -%}
+{%- set mint_selector           = "0x40c10f19" -%}{# for DAI, etc. #}
+{%- set burn_selector           = "0x9dc29fac" -%}{# for DAI, etc. #}
+{%- set deposit_selector        = "0xd0e30db0" -%}{# for wrappers #}
+{%- set withdraw_selector       = "0x2e1a7d4d" -%}{# for wrappers #}
+{%- set selector = "substr(input, 1, 4)" -%}
+{%- set value = "coalesce(value, uint256 '0')" %}
 
 -- output --
 
@@ -30,13 +31,13 @@ select
         when {{ selector }} = {{ withdraw_selector }} then 'withdraw'
         else 'native'
     end as type 
-    , if(value > uint256 '0', 'native', 'erc20') as token_standard
-    , if(value > uint256 '0', native_address, "to") as contract_address 
+    , if({{ value }} > uint256 '0', 'native', 'erc20') as token_standard
+    , if({{ value }} > uint256 '0', native_address, "to") as contract_address 
     , case
         when {{ selector }} in ({{ transfer_selector }}, {{ mint_selector }}, {{ burn_selector }}) then bytearray_to_uint256(substr(input, 37, 32)) -- transfer, mint, burn
         when {{ selector }} = {{ transferFrom_selector }} then bytearray_to_uint256(substr(input, 69, 32)) -- transferFrom
         when {{ selector }} = {{ withdraw_selector }} then bytearray_to_uint256(substr(input, 5, 32)) -- withdraw
-        else value -- native, deposit
+        else {{ value }} -- native, deposit
     end as amount_raw
     , case
         when {{ selector }} in ({{ transferFrom_selector }}, {{ burn_selector }}) then substr(input, 17, 20) -- transferFrom, burn
@@ -56,7 +57,7 @@ select
         , cast(block_number as varchar)
         , cast(tx_hash as varchar)
         , array_join(trace_address, ',') -- ',' is necessary to avoid similarities after concatenation // array_join(array[1, 0], '') = array_join(array[10], '')
-        , cast(if(value > uint256 '0', native_address, "to") as varchar)
+        , cast(if({{ value }} > uint256 '0', native_address, "to") as varchar)
     ))) as unique_key
 from {{ source(blockchain, 'traces') }}, (select token_address as native_address from {{ source('dune', 'blockchains') }} where name = '{{ blockchain }}') as meta
 where
@@ -64,13 +65,13 @@ where
         length(input) >= 68 and {{ selector }} in ({{ transfer_selector }}, {{ mint_selector }}, {{ burn_selector }}) -- transfer, mint, burn
         or length(input) >= 100 and {{ selector }} = {{ transferFrom_selector }} -- transferFrom
         or length(input) >= 36 and {{ selector }} = {{ withdraw_selector }} -- withdraw
-        or value > uint256 '0' -- native, deposit
+        or {{ value }} > uint256 '0' -- native, deposit
     )
     and (call_type = 'call' or type = 'create') -- call_type should be only call if present; type = 'create' is contract creation
     and (tx_success or tx_success is null) -- tx_success is null - is for old ethereum data
     and success
-    {% if easy_dates %}and block_date > current_date - interval '10' day{% endif %} -- easy_dates mode for dev, to prevent full scan
-    {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
+    {% if easy_dates -%} and block_date > current_date - interval '10' day {%- endif %} -- easy_dates mode for dev, to prevent full scan
+    {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
 
 
 
