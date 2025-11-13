@@ -28,36 +28,36 @@ from
               *
             from
               swapExactAmountIn
-            union
+            union all
             select
               *
             from
               swapExactAmountInOnUniswapV2
-            union
+            union all
             select
               *
             from
               swapExactAmountInOnUniswapV3
-            union
+            union all
             select
               *
             from
               swapExactAmountInOnCurveV1
-            union
+            union all
             select
               *
             from
               swapExactAmountInOnCurveV2
-            union
+            union all
             select
               *
             from
               swapExactAmountInOnBalancerV2
             -- TODO: should be possible to improve this conditional code
             {% if contract_details['version'] == '6.2' %}
-            union select * from swapOnAugustusRFQTryBatchFill
+            union all select * from swapOnAugustusRFQTryBatchFill
             {% if blockchain not in exclude_maker_psm %}
-              union select * from swapExactAmountInOutOnMakerPSM
+              union all select * from swapExactAmountInOutOnMakerPSM
             {% endif %}
             {% endif %}
           )
@@ -77,17 +77,17 @@ from
               *
             from
               swapExactAmountOut
-            union
+            union all
             select
               *
             from
               swapExactAmountOutOnUniswapV2
-            union
+            union all
             select
               *
             from
               swapExactAmountOutOnUniswapV3
-            union
+            union all
             select
               *
             from
@@ -102,7 +102,7 @@ from
           *
         from
           sell_trades
-        union
+        union all
         select
           *
         from
@@ -157,22 +157,7 @@ select
               BITWISE_AND(
                 try_cast(partnerAndFee as uint256),
                 bitwise_left_shift(TRY_CAST(1 as uint256), 95)
-              ) <> 0 AS isTakeSurplus,
-  ROW_NUMBER() OVER (
-    PARTITION BY
-      call_tx_hash,
-      CASE
-        WHEN call_trace_address IS NULL OR CARDINALITY(call_trace_address)=0
-          THEN ARRAY[-1]
-        ELSE call_trace_address
-      END
-    ORDER BY
-      side,
-      method,
-      toAmount DESC,
-      fromAmount DESC,
-      COALESCE(beneficiary,'')
-  ) - 1 AS evt_index
+              ) <> 0 AS isTakeSurplus
   from 
     v6_trades{% endmacro %}
 
@@ -188,10 +173,27 @@ select
       "AugustusV6_2": {"version": "6.2"}
     } %}
   {% endif %}
-  {% for contract_name, contract_details in contracts.items() %}  
-    select * from ({{ paraswap_v6_trades_by_contract(blockchain, project, contract_name, contract_details) }})    
-    {% if not loop.last %}
-      union all
-    {% endif %}
-  {% endfor %}
+
+  with v6_trades as (
+    {% for contract_name, contract_details in contracts.items() %}
+      select * from (
+        {{ paraswap_v6_trades_by_contract(blockchain, project, contract_name, contract_details) }}
+      )
+      {% if not loop.last %} union all {% endif %}
+    {% endfor %}
+  )
+  select
+    *,
+    ROW_NUMBER() OVER (
+      PARTITION BY
+        call_tx_hash,
+        call_trace_address
+      ORDER BY
+        side,
+        method,
+        toAmount DESC,
+        fromAmount DESC,
+        COALESCE(beneficiary,'')
+    ) - 1 AS evt_index
+  from v6_trades
 {% endmacro %}
