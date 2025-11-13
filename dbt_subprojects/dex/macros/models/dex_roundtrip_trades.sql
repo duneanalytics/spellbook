@@ -87,7 +87,7 @@ front_back fb
     and t.blockchain = fb.blockchain
     and t.block_time = fb.block_time
     and t.tx_hash = fb.tx_hash
-    and t.pool_adress = fb.pool_address
+    and t.pool_acdress = fb.pool_address
     and t.evt_index = fb.evt_index
     and t.project = fb.project 
 
