@@ -30,7 +30,7 @@ select
         when {{ selector }} = {{ deposit_selector }} then 'deposit'
         when {{ selector }} = {{ withdraw_selector }} then 'withdraw'
         else 'native'
-    end as type 
+    end as type
     , if({{ value }} > uint256 '0', 'native', 'erc20') as token_standard
     , if({{ value }} > uint256 '0', native_address, "to") as contract_address 
     , case
