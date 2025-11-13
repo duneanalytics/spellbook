@@ -16,6 +16,7 @@ SELECT 'ethereum' AS withdrawal_chain
 , evt_block_time AS block_time
 , evt_block_number AS block_number
 , amount AS withdrawal_amount_raw
+, recipient AS sender
 , recipient AS recipient
 , 'native' AS withdrawal_token_standard
 , token AS withdrawal_token_address
