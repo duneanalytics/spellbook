@@ -1,10 +1,10 @@
-{{  
+{{-
     config(
         schema = 'oneinch_evms',
         alias = 'ptfc',
         materialized = 'view',
     )
-}}
+-}}
 
 -- View for all parsed transfers from calls, for internal usage. Won't be used in lineage --
 

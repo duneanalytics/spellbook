@@ -1,19 +1,20 @@
-{% macro
+{%- macro
     oneinch_ptfc_macro(
         blockchain,
-        date_from = none
+        date_from=none
     )
-%}
+-%}
 
-{% set transfer_selector = '0xa9059cbb' %}
-{% set transferFrom_selector = '0x23b872dd' %}
-{% set mint_selector = '0x40c10f19' %}
-{% set burn_selector = '0x9dc29fac' %}
-{% set deposit_selector = '0xd0e30db0' %}
-{% set withdraw_selector = '0x2e1a7d4d' %}
-{% set selector = 'substr(input, 1, 4)' %}
-{% set null_address = '0x0000000000000000000000000000000000000000' %}
-{% set native_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
+{%- set transfer_selector        = "0xa9059cbb" -%}
+{%- set transferFrom_selector    = "0x23b872dd" -%}
+{%- set mint_selector            = "0x40c10f19" -%}
+{%- set burn_selector            = "0x9dc29fac" -%}
+{%- set deposit_selector         = "0xd0e30db0" -%}
+{%- set withdraw_selector        = "0x2e1a7d4d" -%}
+{%- set selector = "substr(input, 1, 4)" -%}
+{%- set value = "coalesce(value, uint256 '0')" -%}
+{%- set null_address = "0x0000000000000000000000000000000000000000" -%}
+{%- set native_address = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" -%}
 
 
 
@@ -22,6 +23,8 @@ with
 transfers as (
     select
         '{{ blockchain }}' as blockchain
+        , cast(date_trunc('month', block_date) as date) as block_month
+        , block_date
         , block_number
         , block_time
         , tx_hash
@@ -35,8 +38,8 @@ transfers as (
             when {{ selector }} = {{ withdraw_selector }} then 'withdraw'
             else 'native'
         end as type
-        , if(value > uint256 '0', 'native', 'erc20') as token_standard
-        , if(value > uint256 '0', {{ native_address }}, "to") as contract_address
+        , if({{ value }} > uint256 '0', 'native', 'erc20') as token_standard
+        , if({{ value }} > uint256 '0', {{ native_address }}, "to") as contract_address
         , case
             when {{ selector }} in ({{ transfer_selector }}, {{ mint_selector }}, {{ burn_selector }}) then bytearray_to_uint256(substr(input, 37, 32)) -- transfer, mint, burn
             when {{ selector }} = {{ transferFrom_selector }} then bytearray_to_uint256(substr(input, 69, 32)) -- transferFrom
@@ -54,22 +57,28 @@ transfers as (
             when {{ selector }} = {{ transferFrom_selector }} then substr(input, 49, 20) -- transferFrom
             when {{ selector }} = {{ burn_selector }} then {{ null_address }} -- burn
             when {{ selector }} = {{ withdraw_selector }} then "to" -- withdraw
-            else "to" -- native, deposit
+            else coalesce("to", address) -- native, deposit (address is used in cases of contract creation with transfer where "to" is null)
         end as transfer_to
-        , date(block_time) as block_date
+        , sha1(to_utf8(concat_ws('|'
+            , '{{ blockchain }}'
+            , cast(block_number as varchar)
+            , cast(tx_hash as varchar)
+            , array_join(trace_address, ',') -- ',' is necessary to avoid similarities after concatenation // array_join(array[1, 0], '') = array_join(array[10], '')
+            , cast(if(value > uint256 '0', native_address, "to") as varchar)
+        ))) as unique_key
     from {{ source(blockchain, 'traces') }}
     where
         (
             length(input) >= 68 and {{ selector }} in ({{ transfer_selector }}, {{ mint_selector }}, {{ burn_selector }}) -- transfer, mint, burn
             or length(input) >= 100 and {{ selector }} = {{ transferFrom_selector }} -- transferFrom
-            or length(input) >= 36 and {{ selector }} = {{ withdraw_selector }}  -- withdraw
+            or length(input) >= 36 and {{ selector }} = {{ withdraw_selector }} -- withdraw
             or value > uint256 '0' -- native, deposit
         )
-        and call_type = 'call'
-        and (tx_success or tx_success is null)
+        and (call_type = 'call' or type = 'create') -- call_type should be only call if present; type = 'create' is contract creation
+        and (tx_success or tx_success is null) -- tx_success is null - is for old ethereum data
         and success
-        {% if date_from != none %}and block_date >= timestamp '{{ date_from }}'{% endif %}
-        {% if is_incremental() -%} and {{ incremental_predicate('block_time') }}{% endif %}
+        {% if date_from != none -%} and block_date >= timestamp '{{ date_from }}' {%- endif %}
+        {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
 )
 -- the wrapper deposit includes two transfers: native and wrapper
 
@@ -103,4 +112,4 @@ join (
 where
     type = 'deposit'
 
-{% endmacro %}
+{%- endmacro -%}
