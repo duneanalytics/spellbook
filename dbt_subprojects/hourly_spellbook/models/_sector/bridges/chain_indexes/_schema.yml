@@ -100,3 +100,15 @@ models:
     columns:
       - *id
       - *blockchain
+  - name: bridges_wormhole_chain_indexes
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: wormhole
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bridges', 'chain_indexes' ]
+    description: "Wormhole's blockchains indexes"
+    columns:
+      - *id
+      - *blockchain
