@@ -26,7 +26,7 @@ WITH bridge_events AS (
     WHERE amount > 0
     )
 
-SELECT '{{blockchain}}' AS deposit_chain
+SELECT distinct '{{blockchain}}' AS deposit_chain
     , be.withdrawal_chain_id
 , i.blockchain AS withdrawal_chain
 , 'Agglayer' AS bridge_name
