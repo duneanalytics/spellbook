@@ -171,8 +171,7 @@ select
       method,
       toAmount DESC,
       fromAmount DESC,
-      COALESCE(beneficiary,''),
-      projectContractAddress
+      COALESCE(beneficiary,'')
   ) - 1 AS evt_index
   from 
     v6_trades{% endmacro %}
