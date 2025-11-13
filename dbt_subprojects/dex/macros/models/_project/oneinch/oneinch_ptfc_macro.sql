@@ -64,7 +64,7 @@ transfers as (
             , cast(block_number as varchar)
             , cast(tx_hash as varchar)
             , array_join(trace_address, ',') -- ',' is necessary to avoid similarities after concatenation // array_join(array[1, 0], '') = array_join(array[10], '')
-            , cast(if(value > uint256 '0', native_address, "to") as varchar)
+            , cast(if(value > uint256 '0', {{ native_address }}, "to") as varchar)
         ))) as unique_key
     from {{ source(blockchain, 'traces') }}
     where
