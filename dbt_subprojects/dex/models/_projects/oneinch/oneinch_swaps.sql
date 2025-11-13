@@ -30,7 +30,7 @@ executions as (
             , false as second_side
         from {{ ref('oneinch_' + stream.name + '_executions') }}
         where true
-            {% if is_incremental() -%} and {{ incremental_predicate('block_time') }}{% endif %}
+            {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
 
     {% if stream.name == 'lo' %}
         union all -- second side of LO calls (when a direct call LO method => users from two sides)
@@ -41,7 +41,7 @@ executions as (
         where true
             and protocol = 'LO'
             and coalesce(element_at(flags, 'direct'), false)
-            {% if is_incremental() -%} and {{ incremental_predicate('block_time') }}{% endif %}
+            {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
         
     {% endif %}
         {% if not loop.last -%} union all {%- endif %}

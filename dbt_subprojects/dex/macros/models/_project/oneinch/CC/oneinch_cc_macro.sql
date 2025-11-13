@@ -20,7 +20,7 @@ raw_calls as (
     from {{ ref('oneinch_' + blockchain.name + '_cc_raw_calls') }}
     where true
         and block_date >= timestamp '{{ date_from }}'
-        {% if is_incremental() -%} and {{ incremental_predicate('block_time') }}{% endif %}
+        {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
 )
 
 , iterations as (
@@ -112,7 +112,7 @@ raw_calls as (
                     from {{ source('oneinch_' + blockchain.name, contract + '_call_' + method) }}
                     where true
                         and call_block_date >= timestamp '{{ date_from }}'
-                        {% if is_incremental() -%} and {{ incremental_predicate('call_block_time') }}{% endif %}
+                        {% if is_incremental() -%} and {{ incremental_predicate('call_block_time') }} {%- endif %}
                 )
                 {% if not loop.last -%} union all {%- endif %}
             {% endfor %}
@@ -124,7 +124,7 @@ raw_calls as (
         from {{ ref('oneinch_' + blockchain.name + '_lo_raw_calls') }}
         where true
             and block_date >= timestamp '{{ date_from }}'
-            {% if is_incremental() -%} and {{ incremental_predicate('block_time') }}{% endif %}
+            {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
     ) as raw_calls using(block_date, block_number, tx_hash, call_trace_address)
 )
 
@@ -138,7 +138,7 @@ raw_calls as (
         blockchain = '{{ blockchain.name }}'
         and contract_address = {{ wrapper }}
         and minute >= timestamp '{{ date_from }}'
-        {% if is_incremental() -%} and {{ incremental_predicate('minute') }}{% endif %}
+        {% if is_incremental() -%} and {{ incremental_predicate('minute') }} {%- endif %}
 )
 
 -- output --

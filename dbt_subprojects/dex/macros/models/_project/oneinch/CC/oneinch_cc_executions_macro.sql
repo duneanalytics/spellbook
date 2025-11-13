@@ -16,7 +16,7 @@ calls as (
     from {{ ref('oneinch_' + blockchain.name + '_cc') }}
     where true
         and block_date >= timestamp '{{ date_from }}'
-        {% if is_incremental() -%} and {{ incremental_predicate('block_time') }}{% endif %}
+        {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
 )
 
 , transfers as (
@@ -25,7 +25,7 @@ calls as (
     where true
         and nested
         and block_date >= timestamp '{{ date_from }}'
-        {% if is_incremental() -%} and {{ incremental_predicate('block_time') }}{% endif %}
+        {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
 )
 
 {%- set data = 'cast(row(transfer_to, transfer_contract_address, transfer_symbol, transfer_amount, transfer_amount_usd, transfer_decimals, trusted) as row(receiver varbinary, address varbinary, symbol varchar, amount uint256, amount_usd double, decimals bigint, trusted boolean))' -%}

@@ -17,8 +17,8 @@ calls as (
     select *
         , array_agg(call_trace_address) over(partition by block_number, tx_hash) as call_trace_addresses -- need all streams for this
     from (
-        {% for stream in streams %}
-            -- STREAM: {{ stream }} --
+        {%- for stream in streams %}
+        -- STREAM: {{ stream }} --
             {% set date_from = stream.start %}
             select
                 block_number
@@ -35,11 +35,10 @@ calls as (
             where true
                 and call_success
                 and block_time >= timestamp '{{ date_from }}' -- it is only needed for simple/easy dates
-                {% if is_incremental() -%} and {{ incremental_predicate('block_time') }}{% endif %}
+                {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
             
             {% if not loop.last -%} union all {%- endif %}
-            
-        {% endfor %}
+        {%- endfor %}
     )
 )
 
@@ -102,7 +101,7 @@ calls as (
     where true
         and blockchain = '{{ blockchain.name }}'
         and minute >= least({% for stream in streams %}date('{{ stream.start }}'){% if not loop.last %}, {% endif %}{% endfor %})
-        {% if is_incremental() -%} and {{ incremental_predicate('minute') }}{% endif %}
+        {% if is_incremental() -%} and {{ incremental_predicate('minute') }} {%- endif %}
 )
 
 , trusted_tokens as (
