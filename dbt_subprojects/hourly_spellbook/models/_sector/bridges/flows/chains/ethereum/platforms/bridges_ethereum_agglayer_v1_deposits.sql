@@ -26,28 +26,52 @@ WITH bridge_events AS (
     WHERE amount > 0
     )
 
-SELECT distinct '{{blockchain}}' AS deposit_chain
+, results AS (
+    SELECT '{{blockchain}}' AS deposit_chain
     , be.withdrawal_chain_id
-, i.blockchain AS withdrawal_chain
-, 'Agglayer' AS bridge_name
-, '1' AS bridge_version
-, be.block_date
-, be.block_time
-, be.block_number
-, be.deposit_amount_raw
-, COALESCE(t."from", be.sender) AS sender
-, be.recipient
-, COALESCE(t.contract_address, be.deposit_token_address) AS deposit_token_address
-, be.deposit_token_standard
-, be.tx_from
-, be.tx_hash
-, be.evt_index
-, be.contract_address
-, be.bridge_transfer_id
-FROM bridge_events be
-LEFT JOIN {{ source('tokens_ethereum', 'transfers') }} t ON t.block_number=be.block_number
-    AND t.tx_hash=be.tx_hash
-    AND t.to=be.contract_address
-    AND t.amount_raw=be.deposit_amount_raw
-    AND t.token_standard='erc20'
-LEFT JOIN {{ ref('bridges_agglayer_chain_indexes') }} i ON i.id=be.withdrawal_chain_id
+    , i.blockchain AS withdrawal_chain
+    , 'Agglayer' AS bridge_name
+    , '1' AS bridge_version
+    , be.block_date
+    , be.block_time
+    , be.block_number
+    , be.deposit_amount_raw
+    , COALESCE(t."from", be.sender) AS sender
+    , be.recipient
+    , COALESCE(t.contract_address, be.deposit_token_address) AS deposit_token_address
+    , be.deposit_token_standard
+    , be.tx_from
+    , be.tx_hash
+    , be.evt_index
+    , be.contract_address
+    , be.bridge_transfer_id
+    , ROW_NUMBER() OVER (PARTITION BY be.tx_hash, be.evt_index ORDER BY be.evt_index) AS duplicate_index
+    FROM bridge_events be
+    LEFT JOIN {{ source('tokens_ethereum', 'transfers') }} t ON t.block_number=be.block_number
+        AND t.tx_hash=be.tx_hash
+        AND t.to=be.contract_address
+        AND t.amount_raw=be.deposit_amount_raw
+        AND t.token_standard='erc20'
+    LEFT JOIN {{ ref('bridges_agglayer_chain_indexes') }} i ON i.id=be.withdrawal_chain_id
+    )
+
+SELECT deposit_chain
+, withdrawal_chain_id
+, withdrawal_chain
+, bridge_name
+, bridge_version
+, block_date
+, block_time
+, block_number
+, deposit_amount_raw
+, sender
+, recipient
+, deposit_token_address
+, deposit_token_standard
+, tx_from
+, tx_hash
+, evt_index
+, contract_address
+, bridge_transfer_id
+FROM results
+WHERE duplicate_index = 1
