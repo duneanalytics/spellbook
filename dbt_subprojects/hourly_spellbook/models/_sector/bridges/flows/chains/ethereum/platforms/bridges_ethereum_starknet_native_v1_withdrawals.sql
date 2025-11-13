@@ -7,18 +7,18 @@
     )
 }}
 
-SELECT 'ethereum' AS deposit_chain
-, CAST(NULL AS DOUBLE) AS withdrawal_chain_id
-, 'starknet' AS withdrawal_chain
+SELECT 'ethereum' AS withdrawal_chain
+, CAST(NULL AS DOUBLE) AS deposit_chain_id
+, 'starknet' AS deposit_chain
 , 'Starknet' AS bridge_name
 , '1' AS bridge_version
 , evt_block_date AS block_date
 , evt_block_time AS block_time
 , evt_block_number AS block_number
-, amount AS deposit_amount_raw
-, l2Recipient AS recipient
-, 'native' AS deposit_token_standard
-, 0x0000000000000000000000000000000000000000 AS deposit_token_address
+, amount AS withdrawal_amount_raw
+, recipient AS recipient
+, 'native' AS withdrawal_token_standard
+, token AS withdrawal_token_address
 , evt_tx_from AS tx_from
 , evt_tx_hash AS tx_hash
 , COALESCE(evt_index, 0) AS evt_index
