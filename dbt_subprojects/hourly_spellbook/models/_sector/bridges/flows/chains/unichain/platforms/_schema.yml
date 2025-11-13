@@ -91,15 +91,6 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['tx_hash','evt_index']
-  - name: bridges_unichain_symbiosis_v1_deposits
-    meta:
-      blockchain: arbitrum
-      sector: bridges
-      project: symbiosis
-      contributors: [ 'hildobby']
-    config:
-      tags: [ 'unichain', 'bridges', 'flows', 'withdrawals' ]
-    description: "Symbiosis's v1 bridge deposits events on Unichain"
   - name: bridges_unichain_orbiter_v1_deposits
     meta:
       blockchain: unichain

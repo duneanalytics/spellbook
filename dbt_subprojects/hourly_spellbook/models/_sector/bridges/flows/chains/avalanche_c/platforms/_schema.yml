@@ -146,15 +146,6 @@ models:
     config:
       tags: [ 'avalanche_c', 'bridges', 'flows', 'withdrawals' ]
     description: "Symbiosis's v1 bridge deposits events on Avalanche"
-  - name: bridges_avalanche_c_nitro_v1_deposits
-    meta:
-      blockchain: avalanche_c
-      sector: bridges
-      project: nitro
-      contributors: [ 'hildobby']
-    config:
-      tags: [ 'nitro', 'bridges', 'flows' , 'deposits' ]
-    description: "Nitro's v1 bridge deposits events on Avalanche"
   - name: bridges_avalanche_c_orbiter_v1_deposits
     meta:
       blockchain: avalanche_c
@@ -182,16 +173,6 @@ models:
     config:
       tags: [ 'avalanche_c', 'bridges', 'flows', 'deposits' ]
     description: "Axelar's gateway bridge deposits events on Avalanche"
-    description: "Celer's v1 bridge withdrawals events on Avalanche"
-  - name: bridges_avalanche_c_symbiosis_v1_deposits
-    meta:
-      blockchain: avalanche_c
-      sector: bridges
-      project: symbiosis
-      contributors: [ 'hildobby']
-    config:
-      tags: [ 'avalanche_c', 'bridges', 'flows', 'withdrawals' ]
-    description: "Symbiosis's v1 bridge deposits events on Avalanche"
   - name: bridges_avalanche_c_nitro_v1_deposits
     meta:
       blockchain: avalanche_c

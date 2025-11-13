@@ -17,7 +17,3 @@ sources:
     description: "Allbridge bridge events on Polygon"
     tables:
       - name: bridge_evt_sent
-  - name: allbridge_ethereum
-    description: "Allbridge bridge events on Ethereum"
-    tables:
-      - name: bridge_evt_sent

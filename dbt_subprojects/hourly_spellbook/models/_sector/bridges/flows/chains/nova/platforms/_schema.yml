@@ -19,15 +19,6 @@ models:
     config:
       tags: [ 'celer', 'bridges', 'flows' , 'withdrawals' ]
     description: "Celer's v1 bridge withdrawals events on Arbitrum Nova"
-  - name: bridges_nova_symbiosis_v1_deposits
-    meta:
-      blockchain: nova
-      sector: bridges
-      project: symbiosis
-      contributors: [ 'hildobby']
-    config:
-      tags: [ 'nova', 'bridges', 'flows', 'withdrawals' ]
-    description: "Symbiosis's v1 bridge deposits events on Arbitrum Nova"
   - name: bridges_nova_orbiter_v1_deposits
     meta:
       blockchain: nova
