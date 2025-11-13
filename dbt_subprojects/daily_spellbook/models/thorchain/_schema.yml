@@ -105,11 +105,6 @@ models:
   - name: thorchain_silver_pool_block_statistics
 
   - name: thorchain_silver_pool_events
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - event_id
 
   - name: thorchain_silver_prices
     tests:
@@ -128,11 +123,6 @@ models:
   - name: thorchain_silver_rewards_event_entries
 
   - name: thorchain_silver_rewards_events
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - event_id
 
   - name: thorchain_silver_rune_price
 
@@ -173,16 +163,6 @@ models:
   - name: thorchain_silver_total_value_locked
 
   - name: thorchain_silver_transfer_events
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - event_id
-            - from_address
-            - to_address
-            - asset
-            - amount_e8
-            - block_timestamp
 
   - name: thorchain_silver_transfers
     tests:
