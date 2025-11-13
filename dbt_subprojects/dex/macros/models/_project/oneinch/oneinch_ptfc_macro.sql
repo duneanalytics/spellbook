@@ -92,6 +92,8 @@ union all
 -- adding wrapper transfers when deposit
 select
     blockchain
+    , block_month
+    , block_date
     , block_number
     , block_time
     , tx_hash
@@ -102,14 +104,20 @@ select
     , amount
     , transfer_to as transfer_from
     , transfer_from as transfer_to
-    , block_date
+    , sha1(to_utf8(concat_ws('|'
+        , '{{ blockchain }}'
+        , cast(block_number as varchar)
+        , cast(tx_hash as varchar)
+        , array_join(trace_address, ',') -- ',' is necessary to avoid similarities after concatenation // array_join(array[1, 0], '') = array_join(array[10], '')
+        , cast("to" as varchar)
+    ))) as unique_key
 from transfers
 join (
     select wrapped_native_token_address as transfer_to
-    from {{ source('oneinch', 'blockchains') }}
+    from {{ source('evms', 'info') }}
     where blockchain = '{{blockchain}}'
 ) using(transfer_to)
-where
-    type = 'deposit'
+where true
+    and type = 'deposit'
 
 {%- endmacro -%}
