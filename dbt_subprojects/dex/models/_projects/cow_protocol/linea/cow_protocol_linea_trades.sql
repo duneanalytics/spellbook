@@ -78,7 +78,7 @@ trades_with_token_units as (
            buy_token                         as buy_token_address,
            (CASE
                 WHEN tb.symbol IS NULL THEN cast(buy_token as varchar)
-                WHEN buy_token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 'POL'
+                WHEN buy_token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 'ETH'
                 ELSE tb.symbol
                END)                          as buy_token,
            sell_amount / pow(10, ts.decimals) as units_sold,
