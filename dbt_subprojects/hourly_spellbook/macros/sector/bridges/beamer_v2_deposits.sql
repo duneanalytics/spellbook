@@ -1,10 +1,10 @@
-{% macro beamer_v2_deposits(blockchain) %}
+{% macro beamer_deposits(blockchain, version) %}
 
 SELECT '{{blockchain}}' AS deposit_chain
 , d.targetChainId AS withdrawal_chain_id
 , i.blockchain AS withdrawal_chain
 , 'Beamer' AS bridge_name
-, '2' AS bridge_version
+, '{{version}}' AS bridge_version
 , d.evt_block_date AS block_date
 , d.evt_block_time AS block_time
 , evt_block_number AS block_number
@@ -18,7 +18,7 @@ SELECT '{{blockchain}}' AS deposit_chain
 , d.evt_index
 , d.contract_address
 , CAST(d.requestId AS varchar) AS bridge_transfer_id
-FROM {{ source('beamer_bridge_v2_' + blockchain, 'requestmanager_evt_requestcreated') }} d
+FROM {{ source('beamer_bridge_v' + version + '_' + blockchain, 'requestmanager_evt_requestcreated') }} d
 LEFT JOIN {{ source('evms','info') }} i ON d.targetChainId=i.chain_id
 
 {% endmacro %}
