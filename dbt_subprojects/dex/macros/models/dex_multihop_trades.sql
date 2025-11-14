@@ -16,12 +16,13 @@ dex_trades as (
 multi_hops as (
     select 
         tx_hash
+        , block_date
         , count(*) as swap_count
         , min(evt_index) as first_trade
         , max(evt_index) as last_trade
     from 
     dex_trades
-    group by 1 
+    group by 1, 2 
     having count(*) >= 3 
 ),
 
@@ -36,15 +37,16 @@ identify_hops as (
             when dt.evt_index = mh.last_trade and dt.evt_index != mh.first_trade then 'end'
             else 'direct' 
         end as multihop_label
-        , case
-            when maker is null then project_contract_address
-            else maker -- singletons
-        end as pool_address
+        , case 
+            when length(maker) = 32 then maker -- univ4 virtual pool id length, also same for euler, swaap
+            else project_contract_address  
+        end as pool_address -- for singletons
     from 
     dex_trades dt 
     left join 
     multi_hops mh 
         on dt.tx_hash = mh.tx_hash 
+        and dt.block_date = mh.block_date
 ),
 
 agg_data as (
