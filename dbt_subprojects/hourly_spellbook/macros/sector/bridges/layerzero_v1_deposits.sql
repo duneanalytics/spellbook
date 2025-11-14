@@ -71,7 +71,7 @@ SELECT distinct '{{blockchain}}' AS deposit_chain
 , sc.deposit_token_address
 , sc.tx_from
 , sc.tx_hash
-, COALESCE(t.evt_index, -rn) AS evt_index
+, COALESCE(t.evt_index, -sc.call_send_index) AS evt_index
 , sc.contract_address
 , CAST(t.unique_key AS varchar) AS bridge_transfer_id
 FROM send_calls sc
