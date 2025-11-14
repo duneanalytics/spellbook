@@ -220,6 +220,7 @@ WITH pool_labels AS (
             AVG(price) AS price
         FROM {{ source('prices', 'day') }}
         WHERE blockchain = '{{blockchain}}'
+        GROUP BY 1, 2, 3
 
     ),
 
