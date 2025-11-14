@@ -29,6 +29,10 @@ sources:
     description: "Layerzero's bridge events on Fantom"
     tables:
       - name: Endpoint_call_send
+  - name: layerzero_fantom_endpoint_fantom
+    description: "Layerzero's bridge events on Fantom"
+    tables:
+      - name: Endpoint_call_send
   - name: layerzero_optimism
     description: "Layerzero's bridge events on OP Mainnet"
     tables:
@@ -37,3 +41,7 @@ sources:
     description: "Layerzero's bridge events on Polygon"
     tables:
       - name: Endpoint_call_send
+  - name: layerzero_gnosis
+    description: "Layerzero's bridge events on Gnosis"
+    tables:
+      - name: gnosisendpoint_call_send
