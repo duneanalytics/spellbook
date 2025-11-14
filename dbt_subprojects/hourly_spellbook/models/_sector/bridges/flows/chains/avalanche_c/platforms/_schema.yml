@@ -119,3 +119,39 @@ models:
       - &deposit_chain_id
         name: deposit_chain_id
         description: "Blockchain ID where the tokens were sent"
+  - name: bridges_avalanche_c_celer_v1_deposits
+    meta:
+      blockchain: avalanche_c
+      sector: bridges
+      project: celer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'celer', 'bridges', 'flows' , 'deposits' ]
+    description: "Celer's v1 bridge deposits events on Avalanche"
+  - name: bridges_avalanche_c_celer_v1_withdrawals
+    meta:
+      blockchain: avalanche_c
+      sector: bridges
+      project: celer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'celer', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Celer's v1 bridge withdrawals events on Avalanche"
+  - name: bridges_avalanche_c_symbiosis_v1_deposits
+    meta:
+      blockchain: avalanche_c
+      sector: bridges
+      project: symbiosis
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'avalanche_c', 'bridges', 'flows', 'withdrawals' ]
+    description: "Symbiosis's v1 bridge deposits events on Avalanche"
+  - name: bridges_avalanche_c_nitro_v1_deposits
+    meta:
+      blockchain: avalanche_c
+      sector: bridges
+      project: nitro
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'nitro', 'bridges', 'flows' , 'deposits' ]
+    description: "Nitro's v1 bridge deposits events on Avalanche"

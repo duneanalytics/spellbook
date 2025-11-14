@@ -4,9 +4,9 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_month', 'fact_total_value_locked_id'],
-    partition_by = ['block_month'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
+    unique_key = ['day', 'fact_total_value_locked_id'],
+    partition_by = ['day'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
     tags = ['thorchain', 'defi', 'total_value_locked', 'fact', 'tvl'],
     post_hook='{{ expose_spells(\'["thorchain"]\',
                               "defi",
@@ -16,34 +16,27 @@
 
 WITH base AS (
     SELECT
-        block_date,
-        block_month,
+        day,
         total_value_pooled,
         total_value_bonded,
         total_value_locked,
         _inserted_timestamp
-    FROM {{ ref('thorchain_silver_total_value_locked') }}
+    FROM
+        {{ ref('thorchain_silver_total_value_locked') }}
     {% if is_incremental() %}
-    WHERE block_date >= (
-        SELECT MAX(block_date - INTERVAL '2' DAY)  -- counteract clock skew
-        FROM {{ this }}
-    )
+    WHERE {{ incremental_predicate('day') }}
     {% endif %}
 )
-
 SELECT
-    {{ dbt_utils.generate_surrogate_key([
-        'block_date'
-    ]) }} AS fact_total_value_locked_id,
-    block_date AS day,  -- Alias for consistency with original naming
-    block_date,
-    block_month,
-    total_value_pooled,
-    total_value_bonded,
-    total_value_locked,
-    _inserted_timestamp,
-    cast('{{ invocation_id }}' as varchar) AS _audit_run_id,
-    current_timestamp AS inserted_timestamp,
-    current_timestamp AS modified_timestamp
-FROM base
-
+  {{ dbt_utils.generate_surrogate_key(
+    ['a.day']
+  ) }} AS fact_total_value_locked_id,
+  day,
+  total_value_pooled,
+  total_value_bonded,
+  total_value_locked,
+  A._inserted_timestamp,
+  current_timestamp AS inserted_timestamp,
+  current_timestamp AS modified_timestamp
+FROM
+  base as a

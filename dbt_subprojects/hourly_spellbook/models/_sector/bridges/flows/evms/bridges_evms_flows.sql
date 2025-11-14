@@ -2,6 +2,10 @@
     schema = 'bridges_evms'
     , alias = 'flows'
     , materialized = 'view'
+    , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "blast", "bnb", "ethereum", "hyperevm", "ink", "lens", "linea", "optimism", "plasma", "polygon", "scroll", "unichain", "worldchain", "zksync", "zora", "fantom", "gnosis", "nova", "opbnb", "berachain", "corn", "flare", "sei", "boba", "mantle"]\',
+                                "sector",
+                                "bridges",
+                                \'["hildobby"]\') }}'
     )
 }}
 
@@ -15,8 +19,8 @@ WITH latest_deposits AS (
     , block_date
     , block_time
     , block_number
-    , deposit_amount_raw
     , deposit_amount
+    , deposit_amount_raw
     , deposit_amount_usd
     , sender
     , recipient
