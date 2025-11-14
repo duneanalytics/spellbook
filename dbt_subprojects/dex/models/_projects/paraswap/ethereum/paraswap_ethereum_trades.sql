@@ -8,10 +8,14 @@
 {% set paraswap_models = [
     ref('paraswap_v4_ethereum_trades')
     ,ref('paraswap_v5_ethereum_trades')
-    ,ref('paraswap_v6_ethereum_trades')
     ,ref('paraswap_delta_v2_ethereum_trades')
-    ,ref('paraswap_delta_v1_ethereum_trades')
 ] %}
+
+/*
+    both are creating duplicate rows based on tx_hash + trace_address
+    ,ref('paraswap_delta_v1_ethereum_trades')
+    ,ref('paraswap_v6_ethereum_trades')
+*/
 
 
 SELECT *

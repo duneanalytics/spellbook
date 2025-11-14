@@ -13,6 +13,15 @@
     , 'bridges_' + blockchain + '_across_v2_deposits'
     , 'bridges_' + blockchain + '_across_v3_deposits'
     , 'bridges_' + blockchain + '_butter_v2_deposits'
+    , 'bridges_' + blockchain + '_axelar_gateway_deposits'
+    , 'bridges_' + blockchain + '_synapse_rfq_deposits'
+    , 'bridges_' + blockchain + '_zkbridge_v1_deposits'
+    , 'bridges_' + blockchain + '_layerzero_deposits'
+    , 'bridges_' + blockchain + '_beamer_v2_deposits'
+    , 'bridges_' + blockchain + '_symbiosis_v1_deposits'
+    , 'bridges_' + blockchain + '_connext_v1_deposits'
+    , 'bridges_' + blockchain + '_nitro_v1_deposits'
+    , 'bridges_' + blockchain + '_beamer_v3_deposits'
 ] %}
 
 SELECT *
