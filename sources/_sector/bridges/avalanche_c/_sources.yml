@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: btcb_avalanche_c
+    description: "Avalanche's bitcoin bridge events on Avalanche"
+    tables:
+      - name: bridgetoken_evt_mint
+      - name: bridgetoken_evt_unwrap
