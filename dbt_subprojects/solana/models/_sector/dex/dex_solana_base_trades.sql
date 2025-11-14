@@ -93,6 +93,8 @@ WHERE
       AND bt.block_slot <= tmv.max_block_slot
       {% if is_incremental() -%}
       AND {{incremental_predicate('bt.block_time')}}
+      {% else -%}
+      AND bt.block_time > now() - interval '7' day
       {% endif -%}
 {% if not loop.last -%}
 UNION ALL
