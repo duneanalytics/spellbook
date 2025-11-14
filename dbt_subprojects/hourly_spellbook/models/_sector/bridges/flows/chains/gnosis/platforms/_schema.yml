@@ -37,3 +37,12 @@ models:
     config:
       tags: [ 'gnosis', 'bridges', 'flows', 'withdrawals' ]
     description: "Connext's v1 bridge deposits events on Gnosis"
+  - name: bridges_gnosis_layerzero_deposits
+    meta:
+      blockchain: gnosis
+      sector: bridges
+      project: layerzero
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'gnosis', 'bridges', 'flows', 'deposits' ]
+    description: "LayerZero's v1 bridge deposits events on Gnosis"

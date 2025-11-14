@@ -191,3 +191,12 @@ models:
     config:
       tags: [ 'allbridge', 'bridges', 'flows' , 'deposits' ]
     description: "Allbridge's v1 classic bridge deposits events on Avalanche"
+  - name: bridges_avalanche_c_layerzero_deposits
+    meta:
+      blockchain: avalanche_c
+      sector: bridges
+      project: layerzero
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'avalanche_c', 'bridges', 'flows', 'deposits' ]
+    description: "LayerZero's v1 bridge deposits events on Avalanche"

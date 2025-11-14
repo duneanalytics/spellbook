@@ -11,6 +11,7 @@
     'bridges_' + blockchain + '_celer_v1_deposits'
     , 'bridges_' + blockchain + '_axelar_gateway_deposits'
     , 'bridges_' + blockchain + '_allbridge_classic_deposits'
+    , 'bridges_' + blockchain + '_layerzero_deposits'
 ] %}
 
 SELECT *

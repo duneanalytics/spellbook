@@ -260,4 +260,13 @@ models:
     config:
       tags: [ 'arbitrum', 'bridges', 'flows', 'deposits' ]
     description: "Axelar's gateway bridge deposits events on Arbitrum"
+  - name: bridges_arbitrum_layerzero_deposits
+    meta:
+      blockchain: arbitrum
+      sector: bridges
+      project: layerzero
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'arbitrum', 'bridges', 'flows', 'deposits' ]
+    description: "LayerZero's v1 bridge deposits events on Arbitrum"
 

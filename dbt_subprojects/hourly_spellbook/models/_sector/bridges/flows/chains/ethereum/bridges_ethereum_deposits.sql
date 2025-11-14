@@ -33,6 +33,7 @@
     , 'bridges_' + blockchain + '_connext_v1_deposits'
     , 'bridges_' + blockchain + '_agglayer_v1_deposits'
     , 'bridges_' + blockchain + '_axelar_gateway_deposits'
+    , 'bridges_' + blockchain + '_layerzero_deposits'
 ] %}
 
 SELECT *

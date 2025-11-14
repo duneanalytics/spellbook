@@ -385,3 +385,12 @@ models:
     config:
       tags: [ 'ethereum', 'bridges', 'flows', 'deposits' ]
     description: "Axelar's gateway bridge deposits events on Ethereum"
+  - name: bridges_ethereum_layerzero_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: layerzero
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'ethereum', 'bridges', 'flows', 'deposits' ]
+    description: "LayerZero's v1 bridge deposits events on Ethereum"

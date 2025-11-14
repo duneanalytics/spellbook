@@ -26,6 +26,7 @@
     , 'bridges_' + blockchain + '_orbiter_v1_deposits'
     , 'bridges_' + blockchain + '_nitro_v1_deposits'
     , 'bridges_' + blockchain + '_axelar_gateway_deposits'
+    , 'bridges_' + blockchain + '_layerzero_deposits'
 ] %}
 
 SELECT *

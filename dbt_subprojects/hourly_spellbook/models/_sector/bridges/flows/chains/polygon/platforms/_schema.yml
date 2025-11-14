@@ -168,6 +168,15 @@ models:
     config:
       tags: [ 'allbridge', 'bridges', 'flows' , 'deposits' ]
     description: "Allbridge's v1 classic bridge deposits events on Polygon"
+  - name: bridges_polygon_layerzero_deposits
+    meta:
+      blockchain: polygon
+      sector: bridges
+      project: layerzero
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'polygon', 'bridges', 'flows', 'deposits' ]
+    description: "LayerZero's v1 bridge deposits events on Polygon"
 
 
             

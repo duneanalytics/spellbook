@@ -202,5 +202,14 @@ models:
     config:
       tags: [ 'optimism', 'bridges', 'flows', 'deposits' ]
     description: "Axelar's gateway bridge deposits events on OP Mainnet"
+  - name: bridges_optimism_layerzero_deposits
+    meta:
+      blockchain: optimism
+      sector: bridges
+      project: layerzero
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'optimism', 'bridges', 'flows', 'deposits' ]
+    description: "LayerZero's v1 bridge deposits events on OP Mainnet"
 
 
