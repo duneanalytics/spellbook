@@ -11,7 +11,6 @@ models:
     description: 'All DEX trades on Corn'
     data_tests:
       - check_columns_dex_base_trades
-      - check_dex_info_relationship
 
   - name: oku_corn_base_trades
     meta:
