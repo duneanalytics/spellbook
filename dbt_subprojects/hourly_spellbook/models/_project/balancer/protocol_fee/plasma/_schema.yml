@@ -15,7 +15,9 @@ models:
           combination_of_columns:
             - day
             - pool_id
+            - blockchain
             - token_address
+            - fee_type
     columns:
       - &day
         name: day

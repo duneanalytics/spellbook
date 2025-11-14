@@ -217,7 +217,7 @@ WITH pool_labels AS (
             timestamp AS day,
             contract_address AS token,
             decimals,
-            price
+            AVG(price) AS price
         FROM {{ source('prices', 'day') }}
         WHERE blockchain = '{{blockchain}}'
 
