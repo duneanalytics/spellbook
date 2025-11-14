@@ -91,4 +91,13 @@ models:
     config:
       tags: [ 'nitro', 'bridges', 'flows' , 'deposits' ]
     description: "Nitro's v1 bridge deposits events on BNB"
+  - name: bridges_bnb_orbiter_v1_deposits
+    meta:
+      blockchain: bnb
+      sector: bridges
+      project: orbiter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bnb', 'bridges', 'flows', 'withdrawals' ]
+    description: "Orbiter's v1 bridge deposits events on BNB"
 
