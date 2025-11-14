@@ -29,10 +29,6 @@ sources:
     description: "Layerzero's bridge events on Fantom"
     tables:
       - name: Endpoint_call_send
-  - name: layerzero_gnosis
-    description: "Layerzero's bridge events on Celo"
-    tables:
-      - name: Endpoint_call_send
   - name: layerzero_optimism
     description: "Layerzero's bridge events on OP Mainnet"
     tables:
