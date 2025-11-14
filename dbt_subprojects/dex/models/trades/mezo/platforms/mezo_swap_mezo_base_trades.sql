@@ -11,11 +11,12 @@
 }}
 
 {{
-    uniswap_compatible_v3_trades(
+    uniswap_compatible_v2_trades(
         blockchain = 'mezo',
         project = 'mezo_swap',
         version = '1',
         Pair_evt_Swap = source('mezo_mezo', 'pool_evt_swap'),
-        Factory_evt_PoolCreated = source('mezo_mezo', 'poolfactory_evt_poolcreated')
+        Factory_evt_PairCreated = source('mezo_mezo', 'poolfactory_evt_poolcreated'),
+        pair_column_name = 'pool'
     )
 }}
