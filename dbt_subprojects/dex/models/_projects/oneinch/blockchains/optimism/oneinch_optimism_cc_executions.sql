@@ -1,9 +1,10 @@
-{%- set blockchain = 'optimism' -%}
+{%- set blockchain = oneinch_optimism_cfg_macro() -%}
+{%- set stream = oneinch_cc_executions_cfg_macro() -%}
 
 {{-
     config(
-        schema = 'oneinch_' + blockchain,
-        alias = 'cc_executions',
+        schema = 'oneinch_' + blockchain.name,
+        alias = stream.name + '_executions',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -13,7 +14,9 @@
     )
 -}}
 
-{{- oneinch_cc_executions_macro(
-        blockchain = oneinch_optimism_cfg_macro(),
-        stream = oneinch_cc_executions_cfg_macro()
-) -}}
+{{-
+    oneinch_cc_executions_macro(
+        blockchain = blockchain,
+        stream = stream
+    )
+-}}

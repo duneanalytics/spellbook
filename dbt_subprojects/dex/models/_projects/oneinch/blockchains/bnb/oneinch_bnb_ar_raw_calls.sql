@@ -1,9 +1,10 @@
-{%- set blockchain = 'bnb' -%}
+{%- set blockchain = oneinch_bnb_cfg_macro() -%}
+{%- set stream = oneinch_ar_raw_calls_cfg_macro() -%}
 
 {{-
     config(
-        schema = 'oneinch_' + blockchain,
-        alias = 'ar_raw_calls',
+        schema = 'oneinch_' + blockchain.name,
+        alias = stream.name + '_raw_calls',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -13,8 +14,10 @@
     )
 -}}
 
-{{- oneinch_raw_calls_macro(
-        blockchain = oneinch_bnb_cfg_macro(),
-        stream = oneinch_ar_raw_calls_cfg_macro(),
+{{-
+    oneinch_raw_calls_macro(
+        blockchain = blockchain,
+        stream = stream,
         contracts = oneinch_bnb_ar_contracts_cfg_macro()
-) -}}
+    )
+-}}

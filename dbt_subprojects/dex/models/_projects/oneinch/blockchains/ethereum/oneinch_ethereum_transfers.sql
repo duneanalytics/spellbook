@@ -1,8 +1,8 @@
-{%- set blockchain = 'ethereum' -%}
+{%- set blockchain = oneinch_ethereum_cfg_macro() -%}
 
 {{-
     config(
-        schema = 'oneinch_' + blockchain,
+        schema = 'oneinch_' + blockchain.name,
         alias = 'transfers',
         partition_by = ['block_month'],
         materialized = 'incremental',
@@ -13,11 +13,13 @@
     )
 -}}
 
-{{- oneinch_transfers_macro(
-        blockchain = oneinch_ethereum_cfg_macro(),
+{{-
+    oneinch_transfers_macro(
+        blockchain = blockchain,
         streams = [
             oneinch_ar_transfers_cfg_macro(),
             oneinch_lo_transfers_cfg_macro(),
             oneinch_cc_transfers_cfg_macro(),
         ]
-) -}}
+    )
+-}}

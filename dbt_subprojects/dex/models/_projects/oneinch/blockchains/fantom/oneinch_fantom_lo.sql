@@ -1,9 +1,10 @@
-{%- set blockchain = 'fantom' -%}
+{%- set blockchain = oneinch_fantom_cfg_macro() -%}
+{%- set stream = oneinch_lo_cfg_macro() -%}
 
 {{-
     config(
-        schema = 'oneinch_' + blockchain,
-        alias = 'lo',
+        schema = 'oneinch_' + blockchain.name,
+        alias = stream.name,
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -13,8 +14,10 @@
     )
 -}}
 
-{{- oneinch_lo_macro(
-        blockchain = oneinch_fantom_cfg_macro(),
-        stream = oneinch_lo_cfg_macro(),
+{{-
+    oneinch_lo_macro(
+        blockchain = blockchain,
+        stream = stream,
         contracts = oneinch_fantom_lo_contracts_cfg_macro()
-) -}}
+    )
+-}}

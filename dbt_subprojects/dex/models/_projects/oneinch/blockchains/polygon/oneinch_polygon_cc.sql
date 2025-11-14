@@ -1,9 +1,10 @@
-{%- set blockchain = 'polygon' -%}
+{%- set blockchain = oneinch_polygon_cfg_macro() -%}
+{%- set stream = oneinch_cc_cfg_macro() -%}
 
 {{-
     config(
-        schema = 'oneinch_' + blockchain,
-        alias = 'cc',
+        schema = 'oneinch_' + blockchain.name,
+        alias = stream.name,
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -13,9 +14,11 @@
     )
 -}}
 
-{{- oneinch_cc_macro(
-        blockchain = oneinch_polygon_cfg_macro(),
-        stream = oneinch_cc_cfg_macro(),
+{{-
+    oneinch_cc_macro(
+        blockchain = blockchain,
+        stream = stream,
         contracts = oneinch_polygon_cc_contracts_cfg_macro(),
         initial = oneinch_polygon_lo_contracts_cfg_macro()
-) -}}
+    )
+-}}

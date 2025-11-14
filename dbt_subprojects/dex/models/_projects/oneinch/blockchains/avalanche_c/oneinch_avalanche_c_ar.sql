@@ -1,9 +1,10 @@
-{%- set blockchain = 'avalanche_c' -%}
+{%- set blockchain = oneinch_avalanche_c_cfg_macro() -%}
+{%- set stream = oneinch_ar_cfg_macro() -%}
 
 {{-
     config(
-        schema = 'oneinch_' + blockchain,
-        alias = 'ar',
+        schema = 'oneinch_' + blockchain.name,
+        alias = stream.name,
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -13,8 +14,10 @@
     )
 -}}
 
-{{- oneinch_ar_macro(
-        blockchain = oneinch_avalanche_c_cfg_macro(),
-        stream = oneinch_ar_cfg_macro(),
+{{-
+    oneinch_ar_macro(
+        blockchain = blockchain,
+        stream = stream,
         contracts = oneinch_avalanche_c_ar_contracts_cfg_macro()
-) -}}
+    )
+-}}
