@@ -1,4 +1,9 @@
-{%- macro transfers_from_traces_base_wrapper_deposits_macro(blockchain, transfers_from_traces_base_table) -%}
+{%- macro
+    transfers_from_traces_base_wrapper_deposits_macro(
+        blockchain,
+        transfers_from_traces_base_table
+    )
+-%}
 
 -- the wrapper deposit includes two transfers: native and wrapped, so we should add second one manually reversing from/to
 -- it's splitted to 2 operations and fetching from pre-materialized table to prevent doubling full-scan of traces

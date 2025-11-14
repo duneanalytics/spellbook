@@ -1,4 +1,9 @@
-{%- macro transfers_from_traces_base_macro(blockchain, easy_dates=true) -%}
+{%- macro
+    transfers_from_traces_base_macro(
+        blockchain,
+        easy_dates=false
+    )
+-%}
 
 -- this stream process all kind of transfers from traces: native, erc20 transfer/transferFrom, mint/burn, wrapped deposit/withdrawal
 
