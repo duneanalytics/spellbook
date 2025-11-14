@@ -5,8 +5,9 @@
     , alias = 'deposits'
     , materialized = 'incremental'
     , file_format = 'delta'
+    , partition_by = ['block_month']
     , incremental_strategy='merge'
-    , unique_key = ['deposit_chain', 'bridge_name', 'bridge_version', 'withdrawal_chain_id', 'tx_hash', 'evt_index', 'bridge_transfer_id']
+    , unique_key = ['block_month', 'block_date', 'block_time', 'block_number', 'deposit_chain', 'bridge_name', 'bridge_version', 'withdrawal_chain_id', 'tx_hash', 'evt_index', 'bridge_transfer_id']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
@@ -24,6 +25,7 @@ SELECT deposit_chain
     , withdrawal_chain
     , bridge_name
     , bridge_version
+    , cast(date_trunc('month', block_date) as date) as block_month
     , block_date
     , block_time
     , block_number
@@ -39,7 +41,7 @@ SELECT deposit_chain
     , bridge_transfer_id
 FROM (
     SELECT *
-        , ROW_NUMBER() OVER (PARTITION BY deposit_chain, tx_hash, evt_index, bridge_transfer_id ORDER BY block_number, block_time) AS rn
+        , ROW_NUMBER() OVER (PARTITION BY block_month, block_date, block_time, block_number, deposit_chain, tx_hash, evt_index, bridge_transfer_id ORDER BY block_number, block_time) AS rn
     FROM (
         {% for bridge_platform in bridges_platforms %}
         SELECT d.deposit_chain
@@ -63,6 +65,10 @@ FROM (
         FROM {{ ref(bridge_platform) }} d
         {% if is_incremental() %}
         LEFT JOIN {{this}} t ON t.deposit_chain = '{{chain}}'
+            AND d.block_month = t.block_month
+            AND d.block_date = t.block_date
+            AND d.block_time = t.block_time
+            AND d.block_number = t.block_number
             AND d.bridge_name = t.bridge_name
             AND d.bridge_version = t.bridge_version
             AND d.withdrawal_chain_id = t.withdrawal_chain_id
