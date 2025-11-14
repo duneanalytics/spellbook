@@ -47,6 +47,7 @@
 with transfers_max_values as (
       select
             max_block_date
+            , max_block_time
             , max_block_slot
       from
             {{ ref('dex_solana_stg_max_transfer') }}
@@ -90,6 +91,7 @@ CROSS JOIN
 WHERE
       true
       AND cast(date_trunc('day', bt.block_time) as date) <= tmv.max_block_date
+      AND bt.block_time <= tmv.max_block_time
       AND bt.block_slot <= tmv.max_block_slot
       {% if is_incremental() -%}
       AND {{incremental_predicate('bt.block_time')}}
