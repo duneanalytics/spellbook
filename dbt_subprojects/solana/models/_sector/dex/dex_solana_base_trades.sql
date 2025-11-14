@@ -44,13 +44,21 @@
  intentionally excluded:    , ref('sanctum_router_base_trades')
 */
 
-{% for dex in solana_dexes %}
+with transfers_max_values as (
+      select
+            max_block_date
+            , max_block_slot
+      from
+            {{ ref('dex_solana_stg_max_transfer') }}
+)
+{% for dex in solana_dexes -%}
 SELECT
       blockchain
       , project
       , version
       , version_name
-      , CAST(date_trunc('month', block_time) AS DATE) as block_month
+      , cast(date_trunc('month', block_time) as date) as block_month
+      , cast(date_trunc('day', bt.block_time) as date) as block_date
       , block_time
       , block_slot
       , trade_source
@@ -76,11 +84,15 @@ SELECT
       , inner_instruction_index
       , tx_index
 FROM
-      {{ dex }}
+      {{ dex }} as bt
+CROSS JOIN
+      transfers_max_values as tmv
 WHERE
-      1=1
+      true
+      AND cast(date_trunc('day', bt.block_time) as date) <= tmv.max_block_date
+      AND bt.block_slot <= tmv.max_block_slot
       {% if is_incremental() -%}
-      AND {{incremental_predicate('block_time')}}
+      AND {{incremental_predicate('bt.block_time')}}
       {% endif -%}
 {% if not loop.last -%}
 UNION ALL
