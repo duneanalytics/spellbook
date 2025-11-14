@@ -12,7 +12,7 @@
 }}
 
 {% set bridges_platforms = [
-'bridges_' + blockchain + '_tether_v1_deposits'
+    'bridges_' + blockchain + '_tether_v1_deposits'
 ] %}
 
 SELECT deposit_chain

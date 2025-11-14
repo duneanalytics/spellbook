@@ -12,7 +12,7 @@
 }}
 
 {% set bridges_platforms = [
-'bridges_' + blockchain + '_axelar_gateway_deposits'
+    'bridges_' + blockchain + '_axelar_gateway_deposits'
     , 'bridges_' + blockchain + '_layerzero_deposits'
 ] %}
 
