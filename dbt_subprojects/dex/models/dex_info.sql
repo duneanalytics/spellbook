@@ -239,5 +239,7 @@ FROM (VALUES
     , ('machinex', 'Machine X', 'Direct', 'machinexdotxyz')
     , ('cldex', 'CLDEX', 'Direct', 'KaiaChain')
     , ('aborean', 'Aborean', 'Direct', 'AboreanFi')
+    , ('story_hunt', 'Story Hunt', 'Direct', 'story_hunt')
+    , ('piperx', 'PiperX', 'Direct', 'piperx')
     , ('mezo_swap', 'Mezo Swap', 'Direct', 'mezoswap')
 ) AS temp_table (project, name, marketplace_type, x_username)
