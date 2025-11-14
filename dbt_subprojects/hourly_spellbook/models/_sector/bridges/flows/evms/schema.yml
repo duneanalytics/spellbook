@@ -3,7 +3,7 @@ version: 2
 models:
   - name: bridges_evms_deposits
     meta:
-      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei, boba, abstract, katana, sonic, taiko, zkevm
       sector: bridges
       contributors: [ 'hildobby']
     config:
@@ -93,7 +93,7 @@ models:
         description: "Blockchain ID where the tokens were received"
   - name: bridges_evms_withdrawals
     meta:
-      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei, mantle
       sector: bridges
       contributors: [ 'hildobby']
     config:
@@ -142,7 +142,7 @@ models:
       - *duplicate_index
   - name: bridges_evms_deposits_raw
     meta:
-      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei, boba, abstract, katana, sonic, taiko, zkevm
       sector: bridges
       contributors: [ 'hildobby']
     config:
@@ -150,7 +150,7 @@ models:
     description: "Raw bridge deposits events on EVM chains (materialized view for complex UNION ALL)"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['deposit_chain','withdrawal_chain_id','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id','tx_hash','evt_index']
+          combination_of_columns: ['deposit_chain','tx_hash','evt_index','bridge_transfer_id']
     columns:
       - *deposit_chain
       - *withdrawal_chain
@@ -172,7 +172,7 @@ models:
       - *withdrawal_chain_id
   - name: bridges_evms_withdrawals_raw
     meta:
-      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei, mantle
       sector: bridges
       contributors: [ 'hildobby']
     config:
@@ -180,7 +180,7 @@ models:
     description: "Raw bridge withdrawals events on EVM chains (materialized view for complex UNION ALL)"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['deposit_chain','withdrawal_chain','deposit_chain_id','bridge_name','bridge_version','bridge_transfer_id', 'tx_hash', 'evt_index']
+          combination_of_columns: ['withdrawal_chain','tx_hash','evt_index','bridge_transfer_id']
     columns:
       - *deposit_chain
       - *withdrawal_chain
@@ -202,7 +202,7 @@ models:
       - *deposit_chain_id
   - name: bridges_evms_flows
     meta:
-      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei, mantle, boba, abstract, katana, sonic, taiko, zkevm
       sector: bridges
       contributors: [ 'hildobby']
     config:

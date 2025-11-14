@@ -3,24 +3,43 @@
     , alias = 'withdrawals'
     , materialized = 'incremental'
     , file_format = 'delta'
-    , incremental_strategy='merge'
+    , incremental_strategy='append'
     , unique_key = ['deposit_chain','deposit_chain_id','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id','duplicate_index']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "blast", "bnb", "ethereum", "hyperevm", "ink", "lens", "linea", "optimism", "plasma", "polygon", "scroll", "unichain", "worldchain", "zksync", "zora", "fantom", "gnosis", "nova", "opbnb", "berachain", "corn", "flare", "sei", "mantle"]\',
+                                "sector",
+                                "bridges",
+                                \'["hildobby"]\') }}'
 )
 }}
 
 {% if is_incremental() %}
-WITH check_dupes AS (
-    SELECT deposit_chain
-    , deposit_chain_id
+WITH new_raw_keys AS (
+    SELECT DISTINCT deposit_chain
     , withdrawal_chain
+    , deposit_chain_id
     , bridge_name
     , bridge_version
     , bridge_transfer_id
-    , MAX(t.duplicate_index) AS duplicate_index
     FROM {{ ref('bridges_evms_withdrawals_raw') }} rw
-    INNER JOIN {{ this }} t USING (deposit_chain, deposit_chain_id, withdrawal_chain, bridge_name, bridge_version, bridge_transfer_id)
     WHERE {{ incremental_predicate('rw.block_time') }}
+    )
+    
+, check_dupes AS (
+    SELECT n.deposit_chain
+    , n.deposit_chain_id
+    , n.withdrawal_chain
+    , n.bridge_name
+    , n.bridge_version
+    , n.bridge_transfer_id
+    , MAX(t.duplicate_index) AS duplicate_index
+    FROM new_raw_keys n
+    INNER JOIN {{ this }} t ON n.deposit_chain=t.deposit_chain
+        AND n.deposit_chain_id=t.deposit_chain_id
+        AND n.withdrawal_chain=t.withdrawal_chain
+        AND n.bridge_name=t.bridge_name
+        AND n.bridge_version=t.bridge_version
+        AND n.bridge_transfer_id=t.bridge_transfer_id
     GROUP BY 1, 2, 3, 4, 5, 6
     )
 {% endif %}
@@ -46,7 +65,7 @@ SELECT w.deposit_chain_id
 , w.contract_address
 , w.bridge_transfer_id
 {% if is_incremental() %}
-, COALESCE(cd.duplicate_index, 0) + ROW_NUMBER() OVER (PARTITION BY w.deposit_chain, w.deposit_chain_id, w.withdrawal_chain, w.bridge_name, w.bridge_version, w.bridge_transfer_id ORDER BY w.block_number, w.evt_index ) AS duplicate_index
+, COALESCE(cd.duplicate_index, 0)+ROW_NUMBER() OVER (PARTITION BY w.deposit_chain, w.deposit_chain_id, w.withdrawal_chain, w.bridge_name, w.bridge_version, w.bridge_transfer_id ORDER BY w.block_number, w.evt_index ) AS duplicate_index
 {% else %}
 , ROW_NUMBER() OVER (PARTITION BY w.deposit_chain, w.deposit_chain_id, w.withdrawal_chain, w.bridge_name, w.bridge_version, w.bridge_transfer_id ORDER BY w.block_number, w.evt_index ) AS duplicate_index
 {% endif %}
@@ -58,14 +77,16 @@ INNER JOIN {{ source('prices', 'usd') }} p ON p.blockchain=w.withdrawal_chain
     AND {{ incremental_predicate('p.minute') }}
     {% endif %}
 {% if is_incremental() %}
+LEFT JOIN {{ this }} t ON w.withdrawal_chain = t.withdrawal_chain
+    AND w.tx_hash = t.tx_hash
+    AND w.evt_index = t.evt_index
 LEFT JOIN check_dupes cd ON w.deposit_chain = cd.deposit_chain
     AND w.deposit_chain_id = cd.deposit_chain_id
     AND w.withdrawal_chain = cd.withdrawal_chain
     AND w.bridge_name = cd.bridge_name
     AND w.bridge_version = cd.bridge_version
     AND w.bridge_transfer_id = cd.bridge_transfer_id
-{% endif %}
-{% if is_incremental() %}
 WHERE {{ incremental_predicate('w.block_time') }}
+AND t.bridge_transfer_id IS NULL
 {% endif %}
     

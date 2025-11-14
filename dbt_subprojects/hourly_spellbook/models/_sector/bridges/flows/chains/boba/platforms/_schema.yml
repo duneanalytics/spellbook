@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: bridges_boba_across_v1_deposits
+    meta:
+      blockchain: boba
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
+    description: "Across's v1 bridge deposits events on boba"
