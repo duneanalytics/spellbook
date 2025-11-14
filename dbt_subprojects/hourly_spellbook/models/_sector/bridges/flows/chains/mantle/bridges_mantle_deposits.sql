@@ -39,7 +39,7 @@ SELECT deposit_chain
     , bridge_transfer_id
 FROM (
     SELECT *
-        , ROW_NUMBER() OVER (PARTITION BY block_month, block_date, block_time, block_number, deposit_chain, tx_hash, evt_index, bridge_transfer_id ORDER BY block_number, block_time) AS rn
+        , ROW_NUMBER() OVER (PARTITION BY block_date, block_time, block_number, deposit_chain, tx_hash, evt_index, bridge_transfer_id ORDER BY block_number, block_time) AS rn
     FROM (
         {% for bridge_platform in bridges_platforms %}
         SELECT d.deposit_chain
@@ -63,7 +63,6 @@ FROM (
         FROM {{ ref(bridge_platform) }} d
         {% if is_incremental() %}
         LEFT JOIN {{this}} t ON t.deposit_chain = '{{chain}}'
-            AND d.block_month = t.block_month
             AND d.block_date = t.block_date
             AND d.block_time = t.block_time
             AND d.block_number = t.block_number

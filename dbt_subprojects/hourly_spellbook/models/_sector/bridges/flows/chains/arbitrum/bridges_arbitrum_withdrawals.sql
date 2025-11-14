@@ -66,7 +66,6 @@ FROM (
         FROM {{ ref(bridge_platform) }} w
         {% if is_incremental() %}
         LEFT JOIN {{this}} t ON t.withdrawal_chain = '{{chain}}'
-            AND w.block_month = t.block_month
             AND w.block_date = t.block_date
             AND w.block_time = t.block_time
             AND w.block_number = t.block_number
