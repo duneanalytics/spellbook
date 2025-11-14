@@ -34,7 +34,7 @@ with prices_native_tokens as (
         , ('ethereum', 'eth-ethereum')
         , ('fantom', 'ftm-fantom')
         , ('flare', 'flr-flare-network')
-        , ('flow', 'eth-ethereum')
+        , ('flow', 'flow-flow')
         , ('fuel', 'eth-ethereum')
         , ('gnosis', 'dai-dai')
         , ('goerli', 'eth-ethereum')

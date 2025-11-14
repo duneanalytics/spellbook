@@ -6,14 +6,18 @@
     , incremental_strategy='append'
     , unique_key = ['deposit_chain','withdrawal_chain','withdrawal_chain_id','bridge_name','bridge_version','bridge_transfer_id', 'duplicate_index']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "blast", "bnb", "ethereum", "hyperevm", "ink", "lens", "linea", "optimism", "plasma", "polygon", "scroll", "unichain", "worldchain", "zksync", "zora", "fantom", "gnosis", "nova", "opbnb", "berachain", "corn", "flare", "sei", "boba"]\',
+                                    "sector",
+                                    "bridges",
+                                    \'["hildobby"]\') }}'
 )
 }}
 
 {% if is_incremental() %}
 WITH new_raw_keys AS (
     SELECT DISTINCT deposit_chain
-    , withdrawal_chain
     , withdrawal_chain_id
+    , withdrawal_chain
     , bridge_name
     , bridge_version
     , bridge_transfer_id

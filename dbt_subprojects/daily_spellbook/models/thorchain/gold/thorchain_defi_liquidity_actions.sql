@@ -4,9 +4,9 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_month', 'tx_id', 'event_id'],
-    partition_by = ['block_month'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    unique_key = ['day', 'fact_liquidity_actions_id'],
+    partition_by = ['day'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_timestamp')],
     tags = ['thorchain', 'defi', 'liquidity', 'fact'],
     post_hook='{{ expose_spells(\'["thorchain"]\',
                               "defi",
@@ -16,63 +16,63 @@
 
 WITH base AS (
   SELECT
-    tx_hash,
-    action_type as lp_action,
-    pool as pool_name,
-    from_addr as from_address,
-    to_addr as to_address,
+    block_id,
+    tx_id,
+    lp_action,
+    pool_name,
+    from_address,
+    to_address,
     rune_amount,
     rune_amount_usd,
     asset_amount,
     asset_amount_usd,
     stake_units,
-    cast(null as varchar) as asset_tx_id,  -- Not available in our model  
-    cast(null as varchar) as asset_address,  -- Not available in our model
-    chain as asset_blockchain,
-    imp_loss_protection_amount as il_protection,
-    cast(null as double) as il_protection_usd,  -- Will calculate if needed
-    asymmetry as unstake_asymmetry,
-    basis_points as unstake_basis_points,
-    event_id,
-    block_time,
-    total_value_usd,
-    liquidity_type
+    asset_tx_id,
+    asset_address,
+    asset_blockchain,
+    il_protection,
+    il_protection_usd,
+    unstake_asymmetry,
+    unstake_basis_points,
+    _unique_key,
+    _inserted_timestamp
   FROM
     {{ ref('thorchain_silver_liquidity_actions') }}
 )
-
 SELECT
-  a.block_time,
-  date(a.block_time) as block_date,
-  date_trunc('month', a.block_time) as block_month,
-  a.tx_hash as tx_id,
-  a.event_id,
-  a.lp_action,
-  a.pool_name,
-  a.from_address,
-  a.to_address,
-  a.rune_amount,
-  a.rune_amount_usd,
-  a.asset_amount,
-  a.asset_amount_usd,
-  a.stake_units,
-  a.asset_tx_id,
-  a.asset_address,
-  a.asset_blockchain,
-  a.il_protection,
-  a.il_protection_usd,
-  a.unstake_asymmetry,
-  a.unstake_basis_points,
-  a.total_value_usd,
-  a.liquidity_type,
+  {{ dbt_utils.generate_surrogate_key(
+    ['a._unique_key']
+  ) }} AS fact_liquidity_actions_id,
+  cast(date_trunc('day', b.block_timestamp) AS date) AS day,
+  b.block_timestamp,
+  COALESCE(
+    b.dim_block_id,
+    '-1'
+  ) AS dim_block_id,
+  tx_id,
+  lp_action,
+  pool_name,
+  from_address,
+  to_address,
+  rune_amount,
+  rune_amount_usd,
+  asset_amount,
+  asset_amount_usd,
+  stake_units,
+  asset_tx_id,
+  asset_address,
+  asset_blockchain,
+  il_protection,
+  il_protection_usd,
+  unstake_asymmetry,
+  unstake_basis_points,
+  A._INSERTED_TIMESTAMP,
   current_timestamp AS inserted_timestamp,
   current_timestamp AS modified_timestamp
-
-FROM base a
-
+FROM
+  base as a
+  JOIN {{ ref('thorchain_core_block') }} as b
+  ON a.block_id = b.block_id
 {% if is_incremental() %}
-WHERE a.block_time >= (
-  SELECT MAX(block_time - INTERVAL '1' HOUR)
-  FROM {{ this }}
-) 
-{% endif %}
+WHERE {{ incremental_predicate('b.block_timestamp') }}
+{% endif -%}
