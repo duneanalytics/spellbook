@@ -8,6 +8,7 @@
 
 select
     max(block_date) as max_block_date
+    , max(block_time) as max_block_time
     , max(block_slot) as max_block_slot
 from
     {{ source('tokens_solana', 'transfers') }}
