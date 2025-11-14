@@ -6,6 +6,7 @@
     , incremental_strategy='merge'
     , unique_key = ['deposit_chain','tx_hash','evt_index','bridge_transfer_id']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    , tags = ['prod_exclude']
 )
 }}
 
