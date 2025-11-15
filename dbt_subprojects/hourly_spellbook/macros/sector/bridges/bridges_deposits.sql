@@ -45,7 +45,7 @@ FROM (
         FROM {{ ref(bridge_platform) }} d
         {% if is_incremental() %}
         LEFT JOIN {{this}} t ON t.deposit_chain = '{{blockchain}}'
-            AND d.block_month = t.block_month
+            AND date_trunc('month', d.block_date) = t.block_month
             AND d.block_time = t.block_time
             AND d.block_number = t.block_number
             AND d.bridge_name = t.bridge_name
