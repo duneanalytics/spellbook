@@ -33,6 +33,7 @@
 {% macro oneinch_cc_executions_cfg_macro()  %} {{ return(dict(oneinch_cc_cfg_macro(), start="2025-11-01")) }} {% endmacro %}
 
 
+
 -- CONTRACTS CONFIGURATIONS --
 {% macro oneinch_meta_contracts_cfg_macro() %}
     {{ return({
@@ -59,6 +60,8 @@
         },
     }) }}
 {% endmacro %}
+
+
 
 -- BLOCKCHAINS CONFIGURATIONS --
 
@@ -282,6 +285,7 @@
         "explorer_link"                 : "'https://solscan.io'",
     }) }}
 {% endmacro %}
+
 
 
 -- EXPOSED --
