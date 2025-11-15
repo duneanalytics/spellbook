@@ -130,10 +130,10 @@
             "rescueFunds"   : dict(methodsV1.rescueFunds    , flow="'src_rescue'"),
         }),
         "EscrowDstV1": dict(contracts.EscrowDstV1, initial_address="0xdc4ccc2fc2475d0ed3fddd563c44f2bf6a3900c9", methods={
-            "withdraw"      : dict(methodsV1.withdraw       , flow="'src_withdraw'", secret="substr(call_input, 4 + 32*0 + 1, 32)"),
-            "publicWithdraw": dict(methodsV1.publicWithdraw , flow="'src_withdraw'", secret="substr(call_input, 4 + 32*0 + 1, 32)"),
-            "cancel"        : dict(methodsV1.cancel         , flow="'src_cancel'"),
-            "rescueFunds"   : dict(methodsV1.rescueFunds    , flow="'src_rescue'"),
+            "withdraw"      : dict(methodsV1.withdraw       , flow="'dst_withdraw'", secret="substr(call_input, 4 + 32*0 + 1, 32)"),
+            "publicWithdraw": dict(methodsV1.publicWithdraw , flow="'dst_withdraw'", secret="substr(call_input, 4 + 32*0 + 1, 32)"),
+            "cancel"        : dict(methodsV1.cancel         , flow="'dst_cancel'"),
+            "rescueFunds"   : dict(methodsV1.rescueFunds    , flow="'dst_rescue'"),
         }),
     }) }}
 {% endmacro %}
