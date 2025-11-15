@@ -7,7 +7,7 @@
     , file_format = 'delta'
     , partition_by = ['block_month']
     , incremental_strategy='merge'
-    , unique_key = ['block_month', 'block_date', 'block_time', 'block_number', 'withdrawal_chain', 'bridge_name', 'bridge_version', 'deposit_chain_id', 'tx_hash', 'evt_index', 'bridge_transfer_id']
+    , unique_key = ['tx_hash', 'evt_index', 'bridge_transfer_id']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
