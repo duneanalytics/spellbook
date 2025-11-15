@@ -22,7 +22,7 @@ with base_trades as (
     {% if is_incremental() -%}
         WHERE {{incremental_predicate('block_time')}}
     {% else %}
-        WHERE block_time >= now() - interval '3' day
+        WHERE block_date >= now() - interval '3' day
     {% endif -%}
 )
 , block_filters as (
