@@ -44,14 +44,13 @@
  intentionally excluded:    , ref('sanctum_router_base_trades')
 */
 
-{% for dex in solana_dexes -%}
+{% for dex in solana_dexes %}
 SELECT
       blockchain
       , project
       , version
       , version_name
-      , cast(date_trunc('month', block_time) as date) as block_month
-      , cast(date_trunc('day', block_time) as date) as block_date
+      , CAST(date_trunc('month', block_time) AS DATE) as block_month
       , block_time
       , block_slot
       , trade_source
@@ -82,8 +81,6 @@ WHERE
       1=1
       {% if is_incremental() -%}
       AND {{incremental_predicate('block_time')}}
-      {% else -%}
-      AND block_time > now() - interval '7' day
       {% endif -%}
 {% if not loop.last -%}
 UNION ALL

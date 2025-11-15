@@ -36,7 +36,7 @@ SELECT bt.blockchain
       , bt.version
       , bt.version_name
       , bt.block_month
-      , bt.block_date
+      , cast(date_trunc('day', bt.block_time) as date) as block_date
       , bt.block_time
       , bt.block_slot
       , bt.trade_source
