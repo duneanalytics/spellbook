@@ -21,6 +21,8 @@ with dex_maxes as (
         true
         -- current partition only to prevent full scan
         and block_month = date_trunc('month', now())
+        -- filter to DEXs that remain active
+        and block_date >= now() - interval '3' day
     group by
         project
         , version
