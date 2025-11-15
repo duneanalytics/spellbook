@@ -21,8 +21,6 @@ with base_trades as (
         {{ ref('dex_solana_base_trades')}}    
     {% if is_incremental() -%}
         WHERE {{incremental_predicate('block_time')}}
-    {% else %}
-        WHERE block_date >= now() - interval '3' day
     {% endif -%}
 )
 , block_filters as (

@@ -82,8 +82,6 @@ WHERE
       1=1
       {% if is_incremental() -%}
       AND {{incremental_predicate('block_time')}}
-      {% else %}
-      AND block_date >= now() - interval '3' day
       {% endif -%}
 {% if not loop.last -%}
 UNION ALL
