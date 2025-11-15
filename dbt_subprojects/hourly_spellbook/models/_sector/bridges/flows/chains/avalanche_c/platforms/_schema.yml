@@ -164,3 +164,48 @@ models:
     config:
       tags: [ 'avalanche_c', 'bridges', 'flows', 'withdrawals' ]
     description: "Orbiter's v1 bridge deposits events on Avalanche"
+  - name: bridges_avalanche_c_avalanche_c_bitcoin_v1_deposits
+    meta:
+      blockchain: avalanche_c
+      sector: bridges
+      project: avalanche
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'avalanche_c', 'bridges', 'flows' , 'deposits' ]
+    description: "Avalanche's Bitcoin bridge deposits events on Avalanche"
+  - name: bridges_avalanche_c_avalanche_c_bitcoin_v1_withdrawals
+    meta:
+      blockchain: avalanche_c
+      sector: bridges
+      project: avalanche
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'avalanche_c', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Avalanche's Bitcoin bridge withdrawals events on Avalanche"
+  - name: bridges_avalanche_c_axelar_gateway_deposits
+    meta:
+      blockchain: avalanche_c
+      sector: bridges
+      project: axelar
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'avalanche_c', 'bridges', 'flows', 'deposits' ]
+    description: "Axelar's gateway bridge deposits events on Avalanche"
+  - name: bridges_avalanche_c_allbridge_classic_deposits
+    meta:
+      blockchain: avalanche_c
+      sector: bridges
+      project: allbridge
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'allbridge', 'bridges', 'flows' , 'deposits' ]
+    description: "Allbridge's v1 classic bridge deposits events on Avalanche"
+  - name: bridges_avalanche_c_layerzero_deposits
+    meta:
+      blockchain: avalanche_c
+      sector: bridges
+      project: layerzero
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'avalanche_c', 'bridges', 'flows', 'deposits' ]
+    description: "LayerZero's v1 bridge deposits events on Avalanche"

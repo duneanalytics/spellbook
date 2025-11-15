@@ -367,3 +367,39 @@ models:
     config:
       tags: [ 'ethereum', 'bridges', 'flows', 'withdrawals' ]
     description: "Orbiter's v1 bridge deposits events on Ethereum"
+  - name: bridges_ethereum_agglayer_v1_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: agglayer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'agglayer', 'bridges', 'flows' , 'deposits' ]
+    description: "Agglayer's shared bridge deposits events on Ethereum"
+  - name: bridges_ethereum_agglayer_v1_withdrawals
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: agglayer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'agglayer', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Agglayer's shared bridge withdrawals events on Ethereum"
+  - name: bridges_ethereum_axelar_gateway_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: axelar
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'ethereum', 'bridges', 'flows', 'deposits' ]
+    description: "Axelar's gateway bridge deposits events on Ethereum"
+  - name: bridges_ethereum_layerzero_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: layerzero
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'ethereum', 'bridges', 'flows', 'deposits' ]
+    description: "LayerZero's v1 bridge deposits events on Ethereum"

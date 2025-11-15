@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: mezo_mezo
+    tables:
+      - name: poolfactory_evt_poolcreated
+      - name: pool_evt_swap

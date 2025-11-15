@@ -24,7 +24,11 @@ select
     , type
     , token_standard
     , contract_address
+    , symbol
     , amount_raw
+    , amount
+    , price_usd
+    , amount_usd
     , "from"
     , "to"
     , unique_key
