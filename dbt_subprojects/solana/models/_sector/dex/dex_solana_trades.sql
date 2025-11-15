@@ -23,7 +23,14 @@ with base_trades as (
         WHERE {{incremental_predicate('block_time')}}
     {% endif -%}
 )
-
+, block_filters as (
+    SELECT
+        block_date_filter
+        , block_time_filter
+        , block_slot_filter
+    FROM
+        {{ ref('dex_solana_stg_min_max_block_slot') }}
+)
 SELECT bt.blockchain
       , bt.project
       , bt.version
@@ -73,6 +80,8 @@ SELECT bt.blockchain
       , bt.tx_index
 FROM
     base_trades bt
+CROSS JOIN
+    block_filters bf
 LEFT JOIN
     {{ source('tokens_solana','fungible') }} token_bought
     ON token_bought.token_mint_address = bt.token_bought_mint_address
@@ -100,3 +109,7 @@ LEFT JOIN
     {{ source('prices','trusted_tokens') }} tt_bought
     ON bt.token_bought_mint_address = toBase58(tt_bought.contract_address)
     AND bt.blockchain = tt_bought.blockchain
+WHERE
+    bt.block_date <= bf.block_date_filter
+    AND bt.block_time <= bf.block_time_filter
+    AND bt.block_slot <= bf.block_slot_filter
