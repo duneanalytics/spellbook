@@ -154,7 +154,7 @@
         "native_token_symbol"           : "'xDAI'",
         "wrapped_native_token_address"  : "0xe91d153e0b41518a2ce8dd3d7944fa863463a97d",
         "explorer_link"                 : "'https://gnosisscan.io'",
-        "fusion_settlement_addresses"   : ['0x2ad5004c60e16e54d5007c80ce329adde5b51ef5', '0xabd4e5fb590aa132749bbf2a04ea57efbaac399e', '0xfb2809a5314473e1165f6b58018e20ed8f07b840', '0x6f1b8f3f6c3f0f5d5d5d5d5d5d5d5d5d5d5d5d5d'],
+        "fusion_settlement_addresses"   : ['0x2ad5004c60e16e54d5007c80ce329adde5b51ef5', '0xabd4e5fb590aa132749bbf2a04ea57efbaac399e', '0xfb2809a5314473e1165f6b58018e20ed8f07b840', '0xcbdb7490968d4dbf183c60fc899c2e9fbd445308'],
         "escrow_factory_addresses"      : ['0xa7bcb4eac8964306f9e3764f67db6a7af6ddf99a'],
         "atokens"                       : true,
     }) }}
