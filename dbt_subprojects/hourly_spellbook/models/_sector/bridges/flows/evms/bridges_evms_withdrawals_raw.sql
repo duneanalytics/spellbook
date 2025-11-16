@@ -37,8 +37,8 @@
 SELECT *
 FROM (
         {% for chain in chains %}
-        SELECT deposit_chain_id
-            , deposit_chain
+        SELECT deposit_chain
+            , deposit_chain_id
             , withdrawal_chain
             , bridge_name
             , bridge_version
