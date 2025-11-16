@@ -7,8 +7,8 @@
 -- for a quick CI, change the start dates of the streams to light/easy
 
 {% macro oneinch_ar_cfg_macro() %} {{ return({"name": "ar", "start": "2019-06-01", "mode": "'classic'"}) }} {% endmacro %}
-{% macro oneinch_lo_cfg_macro() %} {{ return({"name": "lo", "start": "2025-11-01", "mode": "if(flags['fusion'], 'fusion', 'limits')"}) }} {% endmacro %}
-{% macro oneinch_cc_cfg_macro() %} {{ return({"name": "cc", "start": "2025-11-01", "mode": "'cross-chain'"}) }} {% endmacro %}
+{% macro oneinch_lo_cfg_macro() %} {{ return({"name": "lo", "start": "2021-06-01", "mode": "if(flags['fusion'], 'fusion', 'limits')"}) }} {% endmacro %}
+{% macro oneinch_cc_cfg_macro() %} {{ return({"name": "cc", "start": "2024-08-20", "mode": "'cross-chain'"}) }} {% endmacro %}
 
 {% macro oneinch_streams_cfg_macro() %}
     {{ return([
