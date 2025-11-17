@@ -73,3 +73,39 @@ models:
     config:
       tags: [ 'celer', 'bridges', 'flows' , 'withdrawals' ]
     description: "Celer's v1 bridge withdrawals events on Linea"
+  - name: bridges_linea_zkbridge_v1_deposits
+    meta:
+      blockchain: linea
+      sector: bridges
+      project: zkbridge
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'linea', 'bridges', 'flows', 'deposits' ]
+    description: "zkBridge's v1 bridge deposits events on Linea"
+  - name: bridges_linea_symbiosis_v1_deposits
+    meta:
+      blockchain: linea
+      sector: bridges
+      project: symbiosis
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'linea', 'bridges', 'flows', 'withdrawals' ]
+    description: "Symbiosis's v1 bridge deposits events on Linea"
+  - name: bridges_linea_nitro_v1_deposits
+    meta:
+      blockchain: linea
+      sector: bridges
+      project: nitro
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'nitro', 'bridges', 'flows' , 'deposits' ]
+    description: "Nitro's v1 bridge deposits events on Linea"
+  - name: bridges_linea_axelar_gateway_deposits
+    meta:
+      blockchain: linea
+      sector: bridges
+      project: axelar
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'linea', 'bridges', 'flows', 'deposits' ]
+    description: "Axelar's gateway bridge deposits events on Linea"

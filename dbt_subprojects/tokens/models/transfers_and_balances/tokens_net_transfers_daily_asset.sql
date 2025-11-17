@@ -24,6 +24,7 @@
     , 'hyperevm'
     , 'linea'
     , 'mantle'
+    , 'mezo'
     , 'opbnb'
     , 'optimism'
     , 'peaq'

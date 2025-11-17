@@ -6,11 +6,13 @@
     , incremental_strategy='merge'
     , unique_key = ['deposit_chain','tx_hash','evt_index','bridge_transfer_id']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    , tags = ['prod_exclude']
 )
 }}
 
 {% set chains = [
-    'arbitrum'
+    'abstract'
+    , 'arbitrum'
     , 'avalanche_c'
     , 'base'
     , 'berachain'
@@ -24,8 +26,10 @@
     , 'flare'
     , 'hyperevm'
     , 'ink'
+    , 'katana'
     , 'lens'
     , 'linea'
+    , 'mantle'
     , 'nova'
     , 'opbnb'
     , 'optimism'
@@ -33,8 +37,11 @@
     , 'polygon'
     , 'scroll'
     , 'sei'
+    , 'sonic'
+    , 'taiko'
     , 'unichain'
     , 'worldchain'
+    , 'zkevm'
     , 'zksync'
     , 'zora'
 ] %}
@@ -50,8 +57,8 @@ SELECT deposit_chain
     , deposit_amount_raw
     , sender
     , recipient
-    , deposit_token_standard
     , deposit_token_address
+    , deposit_token_standard
     , tx_from
     , tx_hash
     , evt_index

@@ -6,6 +6,7 @@
     , incremental_strategy='merge'
     , unique_key = ['withdrawal_chain','tx_hash','evt_index','bridge_transfer_id']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    , tags = ['prod_exclude']
 )
 }}
 
@@ -16,7 +17,6 @@
     , 'berachain'
     , 'blast'
     , 'bnb'
-    , 'boba'
     , 'corn'
     , 'ethereum'
     , 'fantom'
@@ -43,23 +43,23 @@ SELECT *
 FROM (
         {% for chain in chains %}
         SELECT w.deposit_chain_id
-        , w.deposit_chain
-        , w.withdrawal_chain
-        , w.bridge_name
-        , w.bridge_version
-        , w.block_date
-        , w.block_time
-        , w.block_number
-        , w.withdrawal_amount_raw
-        , w.sender
-        , w.recipient
-        , w.withdrawal_token_standard
-        , w.withdrawal_token_address
-        , w.tx_from
-        , w.tx_hash
-        , w.evt_index
-        , w.contract_address
-        , w.bridge_transfer_id
+            , w.deposit_chain
+            , w.withdrawal_chain
+            , w.bridge_name
+            , w.bridge_version
+            , w.block_date
+            , w.block_time
+            , w.block_number
+            , w.withdrawal_amount_raw
+            , w.sender
+            , w.recipient
+            , w.withdrawal_token_address
+            , w.withdrawal_token_standard
+            , w.tx_from
+            , w.tx_hash
+            , w.evt_index
+            , w.contract_address
+            , w.bridge_transfer_id
         FROM {{ ref('bridges_'~chain~'_withdrawals') }} w
         {% if is_incremental() %}
         LEFT JOIN {{this}} t ON t.withdrawal_chain = '{{chain}}'

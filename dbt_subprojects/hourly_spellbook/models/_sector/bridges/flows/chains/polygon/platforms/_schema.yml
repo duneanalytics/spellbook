@@ -40,15 +40,6 @@ models:
     config:
       tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
     description: "Across's v1 bridge deposits events on Polygon"
-  - name: bridges_polygon_across_v1_withdrawals
-    meta:
-      blockchain: polygon
-      sector: bridges
-      project: across
-      contributors: [ 'hildobby']
-    config:
-      tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
-    description: "Across's v1 bridge withdrawals events on Polygon"
   - name: bridges_polygon_across_v2_deposits
     meta:
       blockchain: polygon
@@ -121,6 +112,71 @@ models:
     config:
       tags: [ 'polygon', 'bridges', 'flows', 'withdrawals' ]
     description: "Tether's USDT0 v1 bridge withdrawals events on Polygon"
+  - name: bridges_polygon_zkbridge_v1_deposits
+    meta:
+      blockchain: polygon
+      sector: bridges
+      project: zkbridge
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'polygon', 'bridges', 'flows', 'deposits' ]
+    description: "zkBridge's v1 bridge deposits events on Polygon"
+  - name: bridges_polygon_connext_v1_deposits
+    meta:
+      blockchain: polygon
+      sector: bridges
+      project: connext
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'polygon', 'bridges', 'flows', 'withdrawals' ]
+    description: "Connext's v1 bridge deposits events on polygon"
+  - name: bridges_polygon_nitro_v1_deposits
+    meta:
+      blockchain: polygon
+      sector: bridges
+      project: nitro
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'nitro', 'bridges', 'flows' , 'deposits' ]
+    description: "Nitro's v1 bridge deposits events on Polygon"
+
+
+  - name: bridges_polygon_symbiosis_v1_deposits
+    meta:
+      blockchain: polygon
+      sector: bridges
+      project: symbiosis
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'polygon', 'bridges', 'flows', 'withdrawals' ]
+    description: "Symbiosis's v1 bridge deposits events on Polygon"
+  - name: bridges_polygon_axelar_gateway_deposits
+    meta:
+      blockchain: polygon
+      sector: bridges
+      project: axelar
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'polygon', 'bridges', 'flows', 'deposits' ]
+    description: "Axelar's gateway bridge deposits events on Polygon"
+  - name: bridges_polygon_allbridge_classic_deposits
+    meta:
+      blockchain: polygon
+      sector: bridges
+      project: allbridge
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'allbridge', 'bridges', 'flows' , 'deposits' ]
+    description: "Allbridge's v1 classic bridge deposits events on Polygon"
+  - name: bridges_polygon_layerzero_deposits
+    meta:
+      blockchain: polygon
+      sector: bridges
+      project: layerzero
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'polygon', 'bridges', 'flows', 'deposits' ]
+    description: "LayerZero's v1 bridge deposits events on Polygon"
 
 
             

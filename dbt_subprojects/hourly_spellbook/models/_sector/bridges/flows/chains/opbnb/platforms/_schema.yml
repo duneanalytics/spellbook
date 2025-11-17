@@ -19,3 +19,21 @@ models:
     config:
       tags: [ 'celer', 'bridges', 'flows' , 'withdrawals' ]
     description: "Celer's v1 bridge withdrawals events on opBNB"
+  - name: bridges_opbnb_zkbridge_v1_deposits
+    meta:
+      blockchain: opbnb
+      sector: bridges
+      project: zkbridge
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'opbnb', 'bridges', 'flows', 'deposits' ]
+    description: "zkBridge's v1 bridge deposits events on opBNB"
+  - name: bridges_opbnb_symbiosis_v1_deposits
+    meta:
+      blockchain: opbnb
+      sector: bridges
+      project: symbiosis
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'opbnb', 'bridges', 'flows', 'withdrawals' ]
+    description: "Symbiosis's v1 bridge deposits events on opBNB"
