@@ -150,6 +150,33 @@ models:
     config:
       tags: [ 'polygon', 'bridges', 'flows', 'withdrawals' ]
     description: "Symbiosis's v1 bridge deposits events on Polygon"
+  - name: bridges_polygon_axelar_gateway_deposits
+    meta:
+      blockchain: polygon
+      sector: bridges
+      project: axelar
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'polygon', 'bridges', 'flows', 'deposits' ]
+    description: "Axelar's gateway bridge deposits events on Polygon"
+  - name: bridges_polygon_allbridge_classic_deposits
+    meta:
+      blockchain: polygon
+      sector: bridges
+      project: allbridge
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'allbridge', 'bridges', 'flows' , 'deposits' ]
+    description: "Allbridge's v1 classic bridge deposits events on Polygon"
+  - name: bridges_polygon_layerzero_deposits
+    meta:
+      blockchain: polygon
+      sector: bridges
+      project: layerzero
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'polygon', 'bridges', 'flows', 'deposits' ]
+    description: "LayerZero's v1 bridge deposits events on Polygon"
 
 
             
