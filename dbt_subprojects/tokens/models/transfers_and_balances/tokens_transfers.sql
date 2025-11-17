@@ -18,12 +18,14 @@
     ,'flare'
     ,'flow'
     ,'gnosis'
+    ,'henesys'
     ,'hyperevm'
     ,'ink'
     ,'kaia'
     ,'katana'
     ,'linea'
     ,'mantle'
+    ,'mezo'
     ,'nova'
     ,'opbnb'
     ,'optimism'
@@ -38,6 +40,7 @@
     ,'somnia'
     ,'sonic'
     ,'sophon'
+    ,'story'
     ,'superseed'
     ,'tac'
     ,'taiko'
@@ -57,7 +60,7 @@
         , post_hook='{{ expose_spells(blockchains = \'["' + chains | join('","') + '"]\',
                                         spell_type = "sector",
                                         spell_name = "tokens",
-                                        contributors = \'["aalan3", "jeff-dude", "0xBoxer", "hildobby", "0xRob", "hosuke"]\') }}'
+                                        contributors = \'["aalan3", "jeff-dude", "0xBoxer", "hildobby", "0xRob", "hosuke", "tomfutago"]\') }}'
         )
 }}
 

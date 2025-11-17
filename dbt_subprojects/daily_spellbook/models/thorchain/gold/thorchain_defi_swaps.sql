@@ -4,9 +4,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_month', 'tx_id', 'event_id'],
-    partition_by = ['block_month'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    unique_key = ['fact_swaps_id'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_timestamp')],
     tags = ['thorchain', 'defi', 'swaps', 'fact'],
     post_hook='{{ expose_spells(\'["thorchain"]\',
                               "defi",
@@ -16,58 +15,85 @@
 
 WITH base AS (
   SELECT
-    tx_hash as tx_id,
+    block_timestamp,
+    block_id,
+    tx_id,
+    blockchain,
+    pool_name,
+    from_address,
+    native_to_address,
+    to_pool_address,
+    affiliate_address,
+    affiliate_fee_basis_points,
+    affiliate_addresses_array,
+    affiliate_fee_basis_points_array,
     from_asset,
     to_asset,
+    from_amount,
+    to_amount,
+    min_to_amount,
     from_amount_usd,
     to_amount_usd,
-    event_id,
-    block_time,
-    block_date,
-    block_month,
-    from_amount as from_asset_amount,
-    to_amount as to_asset_amount,
-    liq_fee_rune as liq_fee_in_rune_amount,
-    streaming_quantity as streaming,
+    rune_usd,
+    asset_usd,
+    to_amount_min_usd,
+    swap_slip_bp,
+    liq_fee_rune,
+    liq_fee_rune_usd,
+    liq_fee_asset,
+    liq_fee_asset_usd,
     streaming_count,
-    pool_name as pool
+    streaming_quantity,
+    _TX_TYPE,
+    _unique_key,
+    _inserted_timestamp
   FROM
     {{ ref('thorchain_silver_swaps') }}
 )
-
 SELECT
-  a.block_time,
-  a.block_date,
-  a.block_month,
-  a.tx_id,
-  a.from_asset as token_sold_symbol,
-  a.from_asset_amount as token_sold_amount,
-  a.to_asset as token_bought_symbol,
-  a.to_asset_amount as token_bought_amount,
-  a.from_amount_usd as amount_usd_sold,
-  a.to_amount_usd as amount_usd_bought,
-  a.pool,
-  a.streaming,
-  a.streaming_count,
-  a.liq_fee_in_rune_amount,
-  a.event_id,
-  'thorchain' as project,
-  '1' as version,
-  'AMM' as category,
-  GREATEST(a.from_amount_usd, a.to_amount_usd) as volume_usd,
-  CASE
-    WHEN a.from_asset LIKE 'THOR.RUNE%' THEN 'sell_rune'
-    WHEN a.to_asset LIKE 'THOR.RUNE%' THEN 'buy_rune'
-    ELSE 'asset_to_asset'
-  END as trade_direction,
+  {{ dbt_utils.generate_surrogate_key(
+    ['a._unique_key']
+  ) }} AS fact_swaps_id,
+  b.block_timestamp,
+  COALESCE(
+    b.dim_block_id,
+    '-1'
+  ) AS dim_block_id,
+  tx_id,
+  blockchain,
+  pool_name,
+  from_address,
+  native_to_address,
+  to_pool_address,
+  affiliate_address,
+  affiliate_fee_basis_points,
+  affiliate_addresses_array,
+  affiliate_fee_basis_points_array,
+  from_asset,
+  to_asset,
+  from_amount,
+  to_amount,
+  min_to_amount,
+  from_amount_usd,
+  to_amount_usd,
+  rune_usd,
+  asset_usd,
+  to_amount_min_usd,
+  swap_slip_bp,
+  liq_fee_rune,
+  liq_fee_rune_usd,
+  liq_fee_asset,
+  liq_fee_asset_usd,
+  streaming_count,
+  streaming_quantity,
+  _TX_TYPE,
+  A._inserted_timestamp,
   current_timestamp AS inserted_timestamp,
   current_timestamp AS modified_timestamp
-
-FROM base a
-
+FROM
+  base as a
+JOIN {{ ref('thorchain_core_block') }} as b
+  ON a.block_id = b.block_id
 {% if is_incremental() %}
-WHERE a.block_time >= (
-  SELECT MAX(block_time - INTERVAL '1' HOUR)
-  FROM {{ this }}
-) 
-{% endif %}
+WHERE {{ incremental_predicate('b.block_timestamp') }}
+{% endif -%}

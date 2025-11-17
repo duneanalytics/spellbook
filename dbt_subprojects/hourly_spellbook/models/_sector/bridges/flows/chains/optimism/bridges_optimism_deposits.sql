@@ -9,8 +9,21 @@
 
 {% set bridges_platforms = [
     'bridges_' + blockchain + '_cctp_v1_deposits'
+    , 'bridges_' + blockchain + '_across_v1_deposits'
     , 'bridges_' + blockchain + '_across_v2_deposits'
     , 'bridges_' + blockchain + '_across_v3_deposits'
+    , 'bridges_' + blockchain + '_synapse_rfq_deposits'
+    , 'bridges_' + blockchain + '_celer_v1_deposits'
+    , 'bridges_' + blockchain + '_tether_v1_deposits'
+    , 'bridges_' + blockchain + '_beamer_v1_deposits'
+    , 'bridges_' + blockchain + '_beamer_v2_deposits'
+    , 'bridges_' + blockchain + '_beamer_v3_deposits'
+    , 'bridges_' + blockchain + '_zkbridge_v1_deposits'
+    , 'bridges_' + blockchain + '_symbiosis_v1_deposits'
+    , 'bridges_' + blockchain + '_connext_v1_deposits'
+    , 'bridges_' + blockchain + '_nitro_v1_deposits'
+    , 'bridges_' + blockchain + '_axelar_gateway_deposits'
+    , 'bridges_' + blockchain + '_layerzero_deposits'
 ] %}
 
 SELECT *
@@ -28,7 +41,6 @@ FROM (
     , sender
     , recipient
     , deposit_token_standard
-    , withdrawal_token_standard
     , deposit_token_address
     , tx_from
     , tx_hash
