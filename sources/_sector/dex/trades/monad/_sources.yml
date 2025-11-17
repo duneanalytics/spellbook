@@ -1,0 +1,6 @@
+version: 2
+
+sources:
+  - name: kuru_monad_testnet
+    tables:
+      - name: kuruflow_evt_kuruflowswap
