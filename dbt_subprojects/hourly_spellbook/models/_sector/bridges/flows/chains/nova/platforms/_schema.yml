@@ -28,3 +28,12 @@ models:
     config:
       tags: [ 'nova', 'bridges', 'flows', 'withdrawals' ]
     description: "Symbiosis's v1 bridge deposits events on Arbitrum Nova"
+  - name: bridges_nova_orbiter_v1_deposits
+    meta:
+      blockchain: nova
+      sector: bridges
+      project: orbiter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'nova', 'bridges', 'flows', 'withdrawals' ]
+    description: "Orbiter's v1 bridge deposits events on Arbitrum Nova"

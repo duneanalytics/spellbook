@@ -5,7 +5,7 @@ SELECT deposit_chain
     , withdrawal_chain
     , bridge_name
     , bridge_version
-    , cast(date_trunc('month', block_date) as date) as block_month
+    , CAST(date_trunc('month', block_date) as date) as block_month
     , block_date
     , block_time
     , block_number
@@ -54,6 +54,7 @@ FROM (
             AND d.tx_hash = t.tx_hash
             AND d.evt_index = t.evt_index
             AND d.bridge_transfer_id = t.bridge_transfer_id
+            AND {{ incremental_predicate('t.block_time') }}
         WHERE {{ incremental_predicate('d.block_time') }}
         AND t.block_time IS NULL
         {% endif %}
