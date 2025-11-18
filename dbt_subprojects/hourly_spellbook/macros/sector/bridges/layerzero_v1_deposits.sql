@@ -73,7 +73,7 @@ SELECT distinct '{{blockchain}}' AS deposit_chain
 , sc.tx_hash
 , COALESCE(t.evt_index, -sc.call_send_index) AS evt_index
 , sc.contract_address
-, CAST(t.unique_key AS varchar) AS bridge_transfer_id
+, {{ dbt_utils.generate_surrogate_key(['sc.tx_hash', 't.evt_index', 'sc.call_send_index']) }} as bridge_transfer_id
 FROM send_calls sc
 LEFT JOIN transfers t ON t.block_number=sc.block_number
         AND t.tx_hash=sc.tx_hash

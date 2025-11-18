@@ -19,6 +19,15 @@ models:
     config:
       tags: [ 'nitro', 'bridges', 'flows' , 'deposits' ]
     description: "Nitro's v1 bridge deposits events on Mantle"
+  - name: bridges_mantle_orbiter_v1_deposits
+    meta:
+      blockchain: mantle
+      sector: bridges
+      project: orbiter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'mantle', 'bridges', 'flows', 'withdrawals' ]
+    description: "Orbiter's v1 bridge deposits events on Mantle"
   - name: bridges_mantle_axelar_gateway_deposits
     meta:
       blockchain: mantle
