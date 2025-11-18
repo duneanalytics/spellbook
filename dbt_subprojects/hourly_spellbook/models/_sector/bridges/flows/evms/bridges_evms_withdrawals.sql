@@ -70,10 +70,10 @@ SELECT w.deposit_chain_id
 , ROW_NUMBER() OVER (PARTITION BY w.deposit_chain, w.deposit_chain_id, w.withdrawal_chain, w.bridge_name, w.bridge_version, w.bridge_transfer_id ORDER BY w.block_number, w.evt_index ) AS duplicate_index
 {% endif %}
 FROM {{ ref('bridges_evms_withdrawals_raw') }} w
-LEFT JOIN {{ source('evms', 'info') }} i ON d.withdrawal_chain=i.blockchain
+LEFT JOIN {{ source('evms', 'info') }} i ON w.withdrawal_chain=i.blockchain
 LEFT JOIN {{ source('prices', 'usd') }} p ON (
-    (p.blockchain=d.withdrawal_chain AND p.contract_address=d.withdrawal_token_address)
-    OR (p.blockchain IS NULL AND p.symbol=i.native_token_symbol AND (d.withdrawal_token_address IS NULL OR d.withdrawal_token_address = 0x0000000000000000000000000000000000000000))
+    (p.blockchain=w.withdrawal_chain AND p.contract_address=w.withdrawal_token_address)
+    OR (p.blockchain IS NULL AND p.symbol=i.native_token_symbol AND (w.withdrawal_token_address IS NULL OR w.withdrawal_token_address = 0x0000000000000000000000000000000000000000))
     )
     AND p.minute=date_trunc('minute', w.block_time)
     {% if is_incremental() %}
