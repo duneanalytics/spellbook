@@ -73,7 +73,7 @@ FROM {{ ref('bridges_evms_deposits_raw') }} d
 LEFT JOIN {{ source('evms', 'info') }} i ON d.deposit_chain=i.blockchain
 LEFT JOIN {{ source('prices', 'usd') }} p ON (
     (p.blockchain=d.deposit_chain AND p.contract_address=d.deposit_token_address)
-    OR (p.blockchain IS NULL AND p.symbol=i.native_token_symbol AND (d.deposit_token_address IS NULL OR d.deposit_token_address = 0x0000000000000000000000000000000000000000))
+    OR (p.blockchain IS NULL AND p.symbol=i.native_token_symbol AND (d.deposit_token_address IS NULL OR d.deposit_token_address = 0x0000000000000000000000000000000000000000 OR d.deposit_token_standard = 'native'))
     )
     AND p.minute=date_trunc('minute', d.block_time)
     {% if is_incremental() %}
