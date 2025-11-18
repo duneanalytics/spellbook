@@ -52,6 +52,7 @@ FROM (
             AND w.tx_hash = t.tx_hash
             AND w.evt_index = t.evt_index
             AND w.bridge_transfer_id = t.bridge_transfer_id
+            AND {{ incremental_predicate('t.block_time') }}
         WHERE  {{ incremental_predicate('w.block_time') }}
         AND t.block_time IS NULL
         {% endif %}
