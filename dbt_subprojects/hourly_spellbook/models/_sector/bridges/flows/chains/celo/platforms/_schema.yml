@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: bridges_celo_axelar_gateway_deposits
+    meta:
+      blockchain: celo
+      sector: bridges
+      project: axelar
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'celo', 'bridges', 'flows', 'deposits' ]
+    description: "Axelar's gateway bridge deposits events on Celo"
+  - name: bridges_celo_layerzero_deposits
+    meta:
+      blockchain: celo
+      sector: bridges
+      project: layerzero
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'celo', 'bridges', 'flows', 'deposits' ]
+    description: "LayerZero's v1 bridge deposits events on Celo"
+

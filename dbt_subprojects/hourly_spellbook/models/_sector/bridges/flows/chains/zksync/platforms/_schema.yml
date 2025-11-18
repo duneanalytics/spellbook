@@ -64,7 +64,6 @@ models:
     config:
       tags: [ 'zksync', 'bridges', 'flows', 'withdrawals' ]
     description: "Symbiosis's v1 bridge deposits events on zkSync"
-    description: "Celer's v1 bridge withdrawals events on zkSync"
   - name: bridges_zksync_nitro_v1_deposits
     meta:
       blockchain: zksync
