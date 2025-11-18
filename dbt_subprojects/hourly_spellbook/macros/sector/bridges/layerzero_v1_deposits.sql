@@ -68,7 +68,7 @@ SELECT distinct '{{blockchain}}' AS deposit_chain
 , sc.sender
 , sc.recipient
 , t.deposit_token_standard
-, sc.deposit_token_address
+, t.deposit_token_address
 , sc.tx_from
 , sc.tx_hash
 , COALESCE(t.evt_index, -sc.call_send_index) AS evt_index
