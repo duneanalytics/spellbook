@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: bridges_kaia_orbiter_v1_deposits
+    meta:
+      blockchain: kaia
+      sector: bridges
+      project: orbiter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'kaia', 'bridges', 'flows', 'withdrawals' ]
+    description: "Orbiter's v1 bridge deposits events on Kaia"
+

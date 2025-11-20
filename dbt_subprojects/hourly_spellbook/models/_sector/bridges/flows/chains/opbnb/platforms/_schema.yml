@@ -37,3 +37,12 @@ models:
     config:
       tags: [ 'opbnb', 'bridges', 'flows', 'withdrawals' ]
     description: "Symbiosis's v1 bridge deposits events on opBNB"
+  - name: bridges_opbnb_orbiter_v1_deposits
+    meta:
+      blockchain: opbnb
+      sector: bridges
+      project: orbiter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'opbnb', 'bridges', 'flows', 'withdrawals' ]
+    description: "Orbiter's v1 bridge deposits events on opBNB"
