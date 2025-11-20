@@ -41,15 +41,15 @@ front_back as (
         and front.tx_from = back.tx_from
         and front.token_sold_address = back.token_bought_address
         and front.token_bought_address = back.token_sold_address
-        and front.token_sold_amount / back.token_bought_amount BETWEEN 0.99 AND 1.01
-        and front.token_bought_amount / back.token_sold_amount BETWEEN 0.99 AND 1.01
 
     cross join UNNEST(ARRAY[(front.tx_hash, front.evt_index), (back.tx_hash, back.evt_index)]) AS t(tx_hash_all, evt_index_all)
     
     where front.token_sold_amount > 0 
     and front.token_bought_amount > 0 
     and back.token_sold_amount > 0 
-    and back.token_bought_amount > 0 -- sanity for divison above
+    and back.token_bought_amount > 0 -- sanity for division below
+    and front.token_sold_amount / back.token_bought_amount BETWEEN 0.99 AND 1.01
+    and front.token_bought_amount / back.token_sold_amount BETWEEN 0.99 AND 1.01
 )
 
 select
