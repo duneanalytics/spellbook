@@ -8,7 +8,6 @@ dex_trades as (
     from 
     {{ ref('dex_trades') }}
     where blockchain = '{{blockchain}}'
-    and block_date >= date '2024-01-01' -- limit to last 2 years
     {% if is_incremental() %}
     and {{ incremental_predicate('block_time') }}
     {% endif %}
