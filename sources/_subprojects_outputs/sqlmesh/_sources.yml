@@ -125,7 +125,7 @@ sources:
             description: "Source of the price data"
             type: varchar
 
-  - name: prices_coinpaprika
+  - name: prices_external
     description: "Price data from CoinPaprika API"
     tables:
       - name: minute

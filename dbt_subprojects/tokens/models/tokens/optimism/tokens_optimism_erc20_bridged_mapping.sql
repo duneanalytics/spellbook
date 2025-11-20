@@ -55,7 +55,7 @@ FROM (
 
     ) map
 
-LEFT JOIN {{ ref('tokens_ethereum_erc20') }} et
+LEFT JOIN {{ ref('tokens_ethereum_v1_erc20') }} et
     ON et.contract_address = map.l1_token
 ) fin
 WHERE rnk =1
