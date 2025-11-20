@@ -6,6 +6,10 @@
     , incremental_strategy='append'
     , unique_key = ['deposit_chain','deposit_chain_id','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id','duplicate_index']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "blast", "bnb", "ethereum", "hyperevm", "ink", "lens", "linea", "optimism", "plasma", "polygon", "scroll", "unichain", "worldchain", "zksync", "zora", "fantom", "gnosis", "nova", "opbnb", "berachain", "corn", "flare", "sei", "mantle"]\',
+                                "sector",
+                                "bridges",
+                                \'["hildobby"]\') }}'
 )
 }}
 
@@ -66,8 +70,11 @@ SELECT w.deposit_chain_id
 , ROW_NUMBER() OVER (PARTITION BY w.deposit_chain, w.deposit_chain_id, w.withdrawal_chain, w.bridge_name, w.bridge_version, w.bridge_transfer_id ORDER BY w.block_number, w.evt_index ) AS duplicate_index
 {% endif %}
 FROM {{ ref('bridges_evms_withdrawals_raw') }} w
-INNER JOIN {{ source('prices', 'usd') }} p ON p.blockchain=w.withdrawal_chain
-    AND p.contract_address=w.withdrawal_token_address
+LEFT JOIN {{ source('evms', 'info') }} i ON w.withdrawal_chain=i.blockchain
+LEFT JOIN {{ source('prices', 'usd') }} p ON (
+    (p.blockchain=w.withdrawal_chain AND p.contract_address=w.withdrawal_token_address)
+    OR (p.blockchain IS NULL AND p.symbol=i.native_token_symbol AND (w.withdrawal_token_address IS NULL OR w.withdrawal_token_address = 0x0000000000000000000000000000000000000000 OR w.withdrawal_token_standard = 'native'))
+    )
     AND p.minute=date_trunc('minute', w.block_time)
     {% if is_incremental() %}
     AND {{ incremental_predicate('p.minute') }}
