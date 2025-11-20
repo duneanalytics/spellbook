@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: butter_base
+    description: "Butter Protocol v2 bridge events on Base"
+    tables:
+      - name: butterrouterv2_evt_swapandbridge

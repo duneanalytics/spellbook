@@ -8,5 +8,5 @@
 }}
 
 {{contracts_contract_mapping(
-    chain='bnb', standard_name = 'bep'
+    chain='bnb'
 )}}
