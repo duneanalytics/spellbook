@@ -1,5 +1,5 @@
 {% macro paraswap_v6_trades_by_contract(blockchain, project, contract_name, contract_details) %}
-{% set exclude_maker_psm = ['gnosis', 'unichain'] %}
+{% set exclude_maker_psm = ['gnosis', 'unichain', 'plasma'] %}
 -- TODO: improve spacing for readability
  with v6_trades as (    
     with
@@ -136,7 +136,7 @@ select
     v6_trades{% endmacro %}
 
 {% macro paraswap_v6_trades_master(blockchain, project) %}
-  {% set exclude_6_1 = ['gnosis', 'unichain'] %}
+  {% set exclude_6_1 = ['gnosis', 'unichain', 'plasma'] %}
   {% if blockchain in exclude_6_1 %}
     {% set contracts = {
       "AugustusV6_2": {"version": "6.2"}
