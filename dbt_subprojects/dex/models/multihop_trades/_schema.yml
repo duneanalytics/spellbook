@@ -88,7 +88,8 @@ models:
             - project
             - version
             - pool_address
-            - token_pair
+            - token_bought_address
+            - token_sold_address
     columns: 
       - *blockchain
       - *project
@@ -127,7 +128,8 @@ models:
             - project
             - version
             - pool_address
-            - token_pair
+            - token_bought_address
+            - token_sold_address
     columns: 
       - *blockchain
       - *project
@@ -166,7 +168,8 @@ models:
             - project
             - version
             - pool_address
-            - token_pair
+            - token_bought_address
+            - token_sold_address
     columns: 
       - *blockchain
       - *project
@@ -205,7 +208,8 @@ models:
             - project
             - version
             - pool_address
-            - token_pair
+            - token_bought_address
+            - token_sold_address
     columns: 
       - *blockchain
       - *project
@@ -244,7 +248,8 @@ models:
             - project
             - version
             - pool_address
-            - token_pair
+            - token_bought_address
+            - token_sold_address
     columns: 
       - *blockchain
       - *project
@@ -283,7 +288,8 @@ models:
             - project
             - version
             - pool_address
-            - token_pair
+            - token_bought_address
+            - token_sold_address
     columns: 
       - *blockchain
       - *project
@@ -322,7 +328,8 @@ models:
             - project
             - version
             - pool_address
-            - token_pair
+            - token_bought_address
+            - token_sold_address
     columns: 
       - *blockchain
       - *project
@@ -361,7 +368,8 @@ models:
             - project
             - version
             - pool_address
-            - token_pair
+            - token_bought_address
+            - token_sold_address
     columns: 
       - *blockchain
       - *project
@@ -400,7 +408,8 @@ models:
             - project
             - version
             - pool_address
-            - token_pair
+            - token_bought_address
+            - token_sold_address
     columns: 
       - *blockchain
       - *project
@@ -439,7 +448,8 @@ models:
             - project
             - version
             - pool_address
-            - token_pair
+            - token_bought_address
+            - token_sold_address
     columns: 
       - *blockchain
       - *project
@@ -478,7 +488,8 @@ models:
             - project
             - version
             - pool_address
-            - token_pair
+            - token_bought_address
+            - token_sold_address
     columns: 
       - *blockchain
       - *project
@@ -517,7 +528,8 @@ models:
             - project
             - version
             - pool_address
-            - token_pair
+            - token_bought_address
+            - token_sold_address
     columns: 
       - *blockchain
       - *project
@@ -556,7 +568,8 @@ models:
             - project
             - version
             - pool_address
-            - token_pair
+            - token_bought_address
+            - token_sold_address
     columns: 
       - *blockchain
       - *project
@@ -595,7 +608,8 @@ models:
             - project
             - version
             - pool_address
-            - token_pair
+            - token_bought_address
+            - token_sold_address
     columns: 
       - *blockchain
       - *project
@@ -634,7 +648,8 @@ models:
             - project
             - version
             - pool_address
-            - token_pair
+            - token_bought_address
+            - token_sold_address
     columns: 
       - *blockchain
       - *project
@@ -673,7 +688,8 @@ models:
             - project
             - version
             - pool_address
-            - token_pair
+            - token_bought_address
+            - token_sold_address
     columns: 
       - *blockchain
       - *project
@@ -712,7 +728,8 @@ models:
             - project
             - version
             - pool_address
-            - token_pair
+            - token_bought_address
+            - token_sold_address
     columns: 
       - *blockchain
       - *project
@@ -751,7 +768,8 @@ models:
             - project
             - version
             - pool_address
-            - token_pair
+            - token_bought_address
+            - token_sold_address
     columns: 
       - *blockchain
       - *project
@@ -790,7 +808,8 @@ models:
             - project
             - version
             - pool_address
-            - token_pair
+            - token_bought_address
+            - token_sold_address
     columns: 
       - *blockchain
       - *project
@@ -829,7 +848,8 @@ models:
             - project
             - version
             - pool_address
-            - token_pair
+            - token_bought_address
+            - token_sold_address
     columns: 
       - *blockchain
       - *project

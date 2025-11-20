@@ -59,6 +59,10 @@ agg_data as (
         , block_time
         , block_number 
         , tx_hash 
+        , token_bought_symbol
+        , token_sold_symbol
+        , token_bought_address 
+        , token_sold_address
         , coalesce(
             token_pair
             , case 
@@ -79,7 +83,7 @@ agg_data as (
         , sum(case when multihop_label = 'end' then amount_usd else 0 end) as end_trade_vol
     from 
     identify_hops
-    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 
+    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
 )
 
     select 
@@ -91,6 +95,10 @@ agg_data as (
         , block_time
         , block_number
         , tx_hash 
+        , token_bought_symbol 
+        , token_sold_symbol 
+        , token_bought_address
+        , token_sold_address 
         , token_pair
         , pool_address
         , direct_trade_count + entry_trade_count + intermediate_trade_count + end_trade_count as total_trade_count

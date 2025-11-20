@@ -44,6 +44,10 @@ FROM (
         , block_month
         , block_date
         , block_time
+        , token_bought_symbol
+        , token_sold_symbol 
+        , token_bought_address 
+        , token_sold_address
         , token_pair
         , pool_address
         , total_trade_count
