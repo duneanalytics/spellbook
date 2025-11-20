@@ -44,6 +44,8 @@ FROM (
         , block_month
         , block_date
         , block_time
+        , tx_hash
+        , evt_index 
         , token_bought_symbol
         , token_sold_symbol 
         , token_bought_address 

@@ -8,6 +8,7 @@ dex_trades as (
     from 
     {{ ref('dex_trades') }}
     where blockchain = '{{blockchain}}'
+    and block_date >= date '2024-01-01' -- limit to last 2 years
     {% if is_incremental() %}
     and {{ incremental_predicate('block_time') }}
     {% endif %}
@@ -59,6 +60,7 @@ agg_data as (
         , block_time
         , block_number 
         , tx_hash 
+        , evt_index 
         , token_bought_symbol
         , token_sold_symbol
         , token_bought_address 
@@ -83,7 +85,7 @@ agg_data as (
         , sum(case when multihop_label = 'end' then amount_usd else 0 end) as end_trade_vol
     from 
     identify_hops
-    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
+    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
 )
 
     select 
@@ -95,6 +97,7 @@ agg_data as (
         , block_time
         , block_number
         , tx_hash 
+        , evt_index
         , token_bought_symbol 
         , token_sold_symbol 
         , token_bought_address
