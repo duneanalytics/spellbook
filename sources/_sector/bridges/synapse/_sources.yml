@@ -1,0 +1,43 @@
+version: 2
+
+sources:
+  - name: synapse_ethereum
+    description: "Synapse's bridge events on Ethereum"
+    tables:
+      - name: fastbridge_v2_evt_bridgerequested
+      - name: fastbridge_v2_evt_bridgerelayed
+  - name: synapse_optimism
+    description: "Synapse's bridge events on OP Mainnet"
+    tables:
+      - name: fastbridge_v2_evt_bridgerequested
+      - name: fastbridge_v2_evt_bridgerelayed
+  - name: synapse_bnb
+    description: "Synapse's bridge events on BNB"
+    tables:
+      - name: fastbridge_v2_evt_bridgerequested
+      - name: fastbridge_v2_evt_bridgerelayed
+  - name: synapse_base
+    description: "Synapse's bridge events on Base"
+    tables:
+      - name: fastbridge_v2_evt_bridgerequested
+      - name: fastbridge_v2_evt_bridgerelayed
+  - name: synapse_linea
+    description: "Synapse's bridge events on Linea"
+    tables:
+      - name: fastbridge_v2_evt_bridgerequested
+      - name: fastbridge_v2_evt_bridgerelayed
+  - name: synapse_scroll
+    description: "Synapse's bridge events on Scroll"
+    tables:
+      - name: fastbridge_v2_evt_bridgerequested
+      - name: fastbridge_v2_evt_bridgerelayed
+  - name: synapse_arbitrum
+    description: "Synapse's bridge events on Arbitrum"
+    tables:
+      - name: fastbridge_v2_evt_bridgerequested
+      - name: fastbridge_v2_evt_bridgerelayed
+  - name: synapse_blast
+    description: "Synapse's bridge events on Blast"
+    tables:
+      - name: fastbridge_v2_evt_bridgerequested
+      - name: fastbridge_v2_evt_bridgerelayed
