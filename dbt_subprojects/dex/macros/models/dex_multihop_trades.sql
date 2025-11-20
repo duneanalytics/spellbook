@@ -8,7 +8,7 @@ dex_trades as (
     from 
     {{ ref('dex_trades') }}
     where blockchain = '{{blockchain}}'
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
     and {{ incremental_predicate('block_time') }}
     {% endif %}
 ),
