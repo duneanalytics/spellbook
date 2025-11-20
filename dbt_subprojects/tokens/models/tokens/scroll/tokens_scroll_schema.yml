@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: tokens_scroll_erc20
+  - name: tokens_scroll_v1_erc20
     meta:
       blockchain: scroll
       sector: tokens

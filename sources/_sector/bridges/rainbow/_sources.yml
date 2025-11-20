@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: near_ethereum
+    description: "Near's rainbow bridge events on Ethereum"
+    tables:
+      - name: erc20locker_evt_locked

@@ -144,6 +144,8 @@ models:
         description: The timestamp when the order was last updated.
       - name: valid_from_time
         description: The time from which the order becomes valid for execution.
+      - name: src_chain_id
+        description: The identifier of the source blockchain for the multichain transaction.
       - &is_long
         name: is_long
         description: A boolean indicating whether the position is long
@@ -3047,3 +3049,409 @@ models:
         description: The configuration value after this update
       - name: update_applied
         description: Boolean flag indicating whether the update took effect
+
+  - name: gmx_v2_multichain_bridge_action_failed
+    meta:
+      blockchain: arbitrum, avalanche_c
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'bridge', 'event', 'failed']
+    description: |
+      Extracts and decodes the `BridgeActionFailed` event log data from the Arbitrum and Avalanche blockchains. 
+      This model captures instances where a multichain bridge action did not succeed, providing details on the failure,
+      including the reason for the failure.
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The type of event recorded, always 'BridgeActionFailed' for this model.
+      - *msg_sender
+      - name: provider
+        description: The address of the provider facilitating the multichain action.
+      - name: account
+        description: The user's account address involved in the transaction.
+      - name: src_chain_id
+        description: The identifier of the source blockchain for the multichain transaction.
+      - name: action_type
+        description: A numerical identifier for the type of action that failed.
+      - name: reason
+        description: A string providing the reason for the action's failure.
+
+  - name: gmx_v2_multichain_bridge_action
+    meta:
+      blockchain: arbitrum, avalanche_c
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'bridge', 'event']
+    description: |
+      Extracts and decodes the `BridgeAction` event log data from the Arbitrum and Avalanche blockchains. 
+      This model records successful multichain bridge actions initiated by users, detailing the provider,
+      account, and type of action.
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The type of event recorded, always 'BridgeAction' for this model.
+      - *msg_sender
+      - name: provider
+        description: The address of the provider facilitating the multichain action.
+      - name: account
+        description: The user's account address involved in the transaction.
+      - name: src_chain_id
+        description: The identifier of the source blockchain for the multichain transaction.
+      - name: action_type
+        description: A numerical identifier for the type of action being performed.
+
+  - name: gmx_v2_multichain_bridge_in
+    meta:
+      blockchain: arbitrum, avalanche_c
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'bridge', 'event', 'bridge_in']
+    description: |
+      Extracts and decodes the `BridgeIn` event log data from the Arbitrum and Avalanche blockchains. 
+      This model tracks tokens that have been successfully bridged into the GMX V2 ecosystem from another chain.
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The type of event recorded, always 'BridgeIn' for this model.
+      - *msg_sender
+      - name: provider
+        description: The address of the provider that facilitated the bridge-in transaction.
+      - name: token
+        description: The contract address of the token being bridged in.
+      - name: account
+        description: The user's account address receiving the bridged tokens.
+      - name: amount
+        description: The amount of the token being bridged, in its smallest unit.
+      - name: src_chain_id
+        description: The identifier of the source blockchain from which the tokens were bridged.
+
+  - name: gmx_v2_multichain_bridge_out
+    meta:
+      blockchain: arbitrum, avalanche_c
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'bridge', 'event', 'bridge_out']
+    description: |
+      Extracts and decodes the `BridgeOut` event log data from the Arbitrum and Avalanche blockchains. 
+      This model tracks tokens that have been bridged out of the GMX V2 ecosystem to another chain.
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The type of event recorded, always 'BridgeOut' for this model.
+      - *msg_sender
+      - name: provider
+        description: The address of the provider that facilitated the bridge-out transaction.
+      - name: token
+        description: The contract address of the token being bridged out.
+      - name: receiver
+        description: The address of the recipient of the bridged tokens on the destination chain.
+      - name: amount
+        description: The amount of the token being bridged, in its smallest unit.
+      - name: src_chain_id
+        description: The identifier of the destination blockchain to which the tokens were bridged.
+
+  - name: gmx_v2_multichain_transfer_in
+    meta:
+      blockchain: arbitrum, avalanche_c
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'transfer', 'event', 'transfer_in']
+    description: |
+      Extracts and decodes the `TransferIn` event log data from the Arbitrum and Avalanche blockchains. 
+      This model records multichain token transfers received by users within the GMX V2 ecosystem.
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The type of event recorded, always 'TransferIn' for this model.
+      - *msg_sender
+      - name: token
+        description: The contract address of the token being transferred in.
+      - name: account
+        description: The user's account address receiving the transferred tokens.
+      - name: amount
+        description: The amount of the token being transferred, in its smallest unit.
+      - name: src_chain_id
+        description: The identifier of the source blockchain from which the tokens were transferred.
+
+  - name: gmx_v2_multichain_transfer_out
+    meta:
+      blockchain: arbitrum, avalanche_c
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'transfer', 'event', 'transfer_out']
+    description: |
+      Extracts and decodes the `TransferOut` event log data from the Arbitrum and Avalanche blockchains. 
+      This model records multichain token transfers sent by users from the GMX V2 ecosystem to another chain.
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The type of event recorded, always 'TransferOut' for this model.
+      - *msg_sender
+      - name: token
+        description: The contract address of the token being transferred out.
+      - name: account
+        description: The user's account address initiating the transfer.
+      - name: receiver
+        description: The address of the recipient of the transferred tokens on the destination chain.
+      - name: amount
+        description: The amount of the token being transferred, in its smallest unit.
+      - name: src_chain_id
+        description: The identifier of the destination blockchain to which the tokens were transferred.
+
+  - name: gmx_v2_claim_funds_claimed
+    meta:
+      blockchain: arbitrum, avalanche_c
+      sector: dex
+      project: gmx
+      contributors: [ai_data_master, gmx-io]
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'claim_funds', 'event', 'claimed']
+    description: |
+      Extracts and decodes the `ClaimFundsClaimed` event log data from the Arbitrum and Avalanche blockchains. 
+      This model records events where users have successfully claimed their funds from a distribution.
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The type of event recorded, always 'ClaimFundsClaimed' for this model.
+      - *msg_sender
+      - name: account
+        description: The user's account address that is claiming the funds.
+      - name: token
+        description: The contract address of the token being claimed.
+      - name: receiver
+        description: The address that receives the claimed funds.
+      - name: distribution_id
+        description: The identifier for the distribution from which funds are claimed.
+      - name: amount
+        description: The amount of the token being claimed, in its smallest unit.
+
+  - name: gmx_v2_claim_funds_deposited
+    meta:
+      blockchain: arbitrum, avalanche_c
+      sector: dex
+      project: gmx
+      contributors: [ai_data_master, gmx-io]
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'claim_funds', 'event', 'deposited']
+    description: |
+      Extracts and decodes the `ClaimFundsDeposited` event log data from the Arbitrum and Avalanche blockchains. 
+      This model records funds being deposited for a specific distribution.
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The type of event recorded, always 'ClaimFundsDeposited' for this model.
+      - *msg_sender
+      - name: account
+        description: The user's account address that is depositing the funds.
+      - name: token
+        description: The contract address of the token being deposited.
+      - name: distribution_id
+        description: The identifier for the distribution.
+      - name: amount
+        description: The amount of the token being deposited, in its smallest unit.
+      - name: next_amount
+        description: The next total amount of tokens available for the distribution after the deposit.
+        
+  - name: gmx_v2_claim_funds_transferred
+    meta:
+      blockchain: arbitrum, avalanche_c
+      sector: dex
+      project: gmx
+      contributors: [ai_data_master, gmx-io]
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'claim_funds', 'event']
+    description: |
+      Extracts and decodes the `ClaimFundsTransferred` event log data from the Arbitrum and Avalanche blockchains. 
+      This model records instances where users claim funds that were previously transferred.
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The type of event recorded, always 'ClaimFundsTransferred' for this model.
+      - *msg_sender
+      - name: from_account
+        description: The account from which the funds were transferred.
+      - name: to_account
+        description: The account to which the funds were transferred.
+      - name: token
+        description: The contract address of the token being claimed.
+      - name: distribution_id
+        description: The identifier for the distribution.
+      - name: amount
+        description: The amount of the token being claimed, in its smallest unit.
+      - name: next_amount
+        description: The next amount of tokens to be distributed.
+
+  - name: gmx_v2_claim_funds_withdrawn
+    meta:
+      blockchain: arbitrum, avalanche_c
+      sector: dex
+      project: gmx
+      contributors: [ai_data_master, gmx-io]
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'claim_funds', 'event', 'withdrawn']
+    description: |
+      Extracts and decodes the `ClaimFundsWithdrawn` event log data from the Arbitrum and Avalanche blockchains. 
+      This model records events where undistributed funds are withdrawn from a distribution.
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The type of event recorded, always 'ClaimFundsWithdrawn' for this model.
+      - *msg_sender
+      - name: account
+        description: The user's account address that is withdrawing the funds.
+      - name: token
+        description: The contract address of the token being withdrawn.
+      - name: receiver
+        description: The address that receives the withdrawn funds.
+      - name: distribution_id
+        description: The identifier for the distribution from which funds are being withdrawn.
+      - name: amount
+        description: The amount of the token being withdrawn, in its smallest unit.
+
+  - name: gmx_v2_claim_terms_removed
+    meta:
+      blockchain: arbitrum, avalanche_c
+      sector: dex
+      project: gmx
+      contributors: [ai_data_master, gmx-io]
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'claim_terms', 'event', 'removed']
+    description: |
+      Extracts and decodes the `ClaimTermsRemoved` event log data from the Arbitrum and Avalanche blockchains. 
+      This model records when the terms for a specific distribution are removed.
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The type of event recorded, always 'ClaimTermsRemoved' for this model.
+      - *msg_sender
+      - name: distribution_id
+        description: The identifier for the distribution whose terms were removed.
+
+  - name: gmx_v2_claim_terms_set
+    meta:
+      blockchain: arbitrum, avalanche_c
+      sector: dex
+      project: gmx
+      contributors: [ai_data_master, gmx-io]
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'claim_terms', 'event', 'set']
+    description: |
+      Extracts and decodes the `ClaimTermsSet` event log data from the Arbitrum and Avalanche blockchains. 
+      This model records when the terms for a distribution are set or updated.
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to
+      - name: event_name
+        description: The type of event recorded, always 'ClaimTermsSet' for this model.
+      - *msg_sender
+      - name: distribution_id
+        description: The identifier for the distribution whose terms were set.
+      - name: terms_hash
+        description: The hash of the terms for the distribution.

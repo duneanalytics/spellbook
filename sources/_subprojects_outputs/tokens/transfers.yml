@@ -259,3 +259,13 @@ sources:
       - name: transfers
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
+
+  - name: tokens_story
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
+
+  - name: tokens_taiko
+    tables:
+      - name: transfers
+      - name: net_transfers_daily
