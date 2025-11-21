@@ -137,7 +137,4 @@ SELECT address
         , (0xdfd6c636dcb5a013c2431316c4a0762b84e70a5d ,'XLayer', '', 'XLayerOfficial')
         , (0x8839e742fd56ebc0d31d11dd5a2ca25aa61c54da ,'Forknet', 'forknet_io')
         , (0xae13ce4cd416cb4598865aa5ac8d13532bd3cd99 ,'Jovay', '', 'JovayNetwork')
-        , ( ,'', '')
-        , ( ,'', '')
-        , ( ,'', '')
         ) AS x(address, entity, proposer, x_username)
