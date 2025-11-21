@@ -58,8 +58,9 @@ dexs_pcsx AS (
 
     LEFT JOIN transfer AS receive 
     on a.evt_tx_hash = receive.tx_hash AND a.swapper = receive."to"
+    WHERE 1 != 1 -- TODO: remove this and fix duplicates
     {% if is_incremental() %}
-    WHERE {{ incremental_predicate('a.evt_block_time') }}
+    AND {{ incremental_predicate('a.evt_block_time') }}
     {% endif %}
 ),
 

@@ -8,57 +8,64 @@
     , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     , post_hook='{{ expose_spells(\'[
-                                        "arbitrum"
+                                        "abstract"
+                                        , "apechain"
+                                        , "arbitrum"
                                         , "avalanche_c"
                                         , "base"
+                                        , "berachain"
                                         , "blast"
                                         , "bnb"
                                         , "boba"
                                         , "celo"
+                                        , "corn"
                                         , "ethereum"
                                         , "fantom"
+                                        , "flare"
+                                        , "flow"
                                         , "gnosis"
+                                        , "hemi"
+                                        , "hyperevm"
+                                        , "ink"
                                         , "kaia"
+                                        , "katana"
                                         , "linea"
                                         , "mantle"
                                         , "nova"
+                                        , "opbnb"
                                         , "optimism"
+                                        , "peaq"
+                                        , "plasma"
+                                        , "plume"
                                         , "polygon"
                                         , "ronin"
                                         , "scroll"
                                         , "sei"
+                                        , "shape"
+                                        , "somnia"
                                         , "sonic"
                                         , "sophon"
+                                        , "superseed"
+                                        , "taiko"
+                                        , "unichain"
+                                        , "worldchain"
                                         , "zkevm"
                                         , "zksync"
-                                        , "unichain"
                                         , "zora"
                                     ]\',
                                     "sector",
                                     "dex",
-                                    \'["hosuke", "0xrob", "jeff-dude", "tomfutago", "viniabussafi"]\') }}')
+                                    \'["hosuke", "0xrob", "jeff-dude", "tomfutago", "viniabussafi", "krishhh"]\') }}')
 }}
 
--- keep existing dbt lineages for the following projects, as the team built themselves and use the spells throughout the entire lineage
+-- keep existing dbt lineages for the following projects, as the team built themselves and use the spells throughout the entire lineage.
 {% set as_is_models = [
     ref('oneinch_lop_own_trades')
     , ref('zeroex_native_trades')
 ] %}
 
-WITH curve AS (
-    -- due to curve having increased complexity to determine token_bought_amount / token_sold_amount, enrich separately
-    {{
-        enrich_curve_dex_trades(
-            base_trades = ref('dex_base_trades')
-            , filter = "project = 'curve'"
-            , curve_ethereum = ref('curve_ethereum_base_trades')
-            , curve_optimism = ref('curve_optimism_base_trades')
-            , tokens_erc20_model = source('tokens', 'erc20')
-        )
-    }}
-)
-, balancer_v3 AS (
-    -- due to Balancer V3 having trades between ERC4626 tokens, which won't be priced on prices.usd, enrich separately
+WITH balancer_v3 AS (
+    -- due to Balancer V3 having trades between ERC4626 tokens, which won't be priced on prices.usd, enrich separately.
     {{
         enrich_balancer_v3_dex_trades(
             base_trades = ref('dex_base_trades')
@@ -71,7 +78,7 @@ WITH curve AS (
     {{
         enrich_dex_trades(
             base_trades = ref('dex_base_trades')
-            , filter = "project != 'curve' AND NOT (project = 'balancer' AND version = '3')"
+            , filter = "NOT (project = 'balancer' AND version = '3')"
             , tokens_erc20_model = source('tokens', 'erc20')
         )
     }}
@@ -117,8 +124,7 @@ WITH curve AS (
 
 
 {% set cte_to_union = [
-    'curve'
-    , 'as_is_dexs'
+    'as_is_dexs'
     , 'dexs'
     , 'balancer_v3'
     ]

@@ -117,12 +117,7 @@ with
                 ON je.jetton_master = jm.address
         where
             type = 'transfer'
-            and jetton_master != upper(
-                '0:8cdc1d7640ad5ee326527fc1ad0514f468b30dc84b0173f0e155f451b4e11f7c'
-            ) -- pTON
-            and jetton_master != upper(
-                '0:671963027f7f85659ab55b821671688601cdcf1ee674fc7fbbb1a776a18d34a3'
-            ) -- pTON
+            and jetton_master not in (select * from {{ ref('ton_proxy_ton_addresses') }})
             and not tx_aborted
             {% if is_incremental() %}
             and {{ incremental_predicate('block_date') }}
@@ -140,12 +135,7 @@ with
                 ON je.jetton_master = jm.address
         where
             type = 'transfer'
-            and jetton_master != upper(
-                '0:8cdc1d7640ad5ee326527fc1ad0514f468b30dc84b0173f0e155f451b4e11f7c'
-            ) -- pTON
-            and jetton_master != upper(
-                '0:671963027f7f85659ab55b821671688601cdcf1ee674fc7fbbb1a776a18d34a3'
-            ) -- pTON
+            and jetton_master not in (select * from {{ ref('ton_proxy_ton_addresses') }})
             and not tx_aborted
             {% if is_incremental() %}
             and {{ incremental_predicate('block_date') }}

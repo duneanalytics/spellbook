@@ -1,0 +1,12 @@
+version: 3
+
+sources:
+  - name: pancakeswap_solana
+    description: "pancakeswap_clmm_solana v3 decoded tables"
+    tables:
+      - name: amm_v3_call_create_pool
+        loaded_at_field: call_block_time
+      - name: amm_v3_call_swap
+        loaded_at_field: call_block_time
+      - name: amm_v3_call_swap_v2
+        loaded_at_field: call_block_time

@@ -3,7 +3,7 @@ version: 2
 models:
   - name: cex_evms_addresses
     meta:
-      blockchain: ethereum, bnb, avalanche_c, optimism, arbitrum, polygon, fantom, base, zksync, celo, zora, worldchain, mantle, sei
+      blockchain: ethereum, bnb, avalanche_c, optimism, arbitrum, polygon, fantom, base, zksync, celo, zora, worldchain, mantle, sei, berachain, ink, katana, nova, opbnb, unichain
       sector: cex
       contributors: hildobby
     config:
@@ -26,14 +26,16 @@ models:
         description: "Who added the address"
       - name: added_date
         description: "Date the address was added on"
+      - name: is_contract
+        description: "Is the address a contract or not?"
 
   - name: cex_addresses
     meta:
-      blockchain: ethereum, bnb, avalanche_c, optimism, arbitrum, polygon, bitcoin, fantom, aptos, celo, zora, zksync, zkevm, linea, solana, scroll, tron, base
+      blockchain: ethereum, bnb, avalanche_c, optimism, arbitrum, polygon, bitcoin, fantom, aptos, celo, zora, zksync, zkevm, linea, solana, scroll, tron, base, berachain, ink, katana, nova, opbnb, unichain, sui
       sector: cex
       contributors: hildobby
     config:
-      tags: ['cex','addresses', 'deposits', 'withdrawals', 'ethereum', 'bnb', 'avalanche_c', 'optimism', 'arbitrum', 'polygon', 'bitcoin', 'fantom']
+      tags: ['cex','addresses', 'deposits', 'withdrawals', 'ethereum', 'bnb', 'avalanche_c', 'optimism', 'arbitrum', 'polygon', 'bitcoin', 'fantom', 'aptos']
     description: "All CEX-tied addresses identified"
     data_tests:
       - dbt_utils.unique_combination_of_columns:

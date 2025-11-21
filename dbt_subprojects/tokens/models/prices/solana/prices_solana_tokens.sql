@@ -767,5 +767,20 @@ FROM
         ('zeus-zeus-network1', 'solana', 'ZEUS', 'ZEUS1aR7aX8DFFJf5QjWj2ftDDdNTroMNGo8YoQm3Gq', 6),
         ('sigma3-sigma', 'solana', 'SIGMA', '5SVG3T9CNQsm2kEwzbRq6hASqh1oGfjqTtLXYUibpump', 6),
         ('troll-troll2', 'solana', 'TROLL', '5UUH9RTDiSpq6HKS6bp4NdU9PNJpXRXuiw6ShBTBhgH2', 6),
-        ('fdusd-first-digital-usd', 'solana', 'FDUSD', '9zNQRsGLjNKwCUU5Gq5LR8beUCPzQMVMqKAi3SSZh54u', 6)
+        ('fdusd-first-digital-usd', 'solana', 'FDUSD', '9zNQRsGLjNKwCUU5Gq5LR8beUCPzQMVMqKAi3SSZh54u', 6),
+        ('me-magic-eden', 'solana', 'ME', 'MEFNBXixkEbait3xn9bkm8WsJzXtVsaJEn4c8Sam21u', 6),
+        ('bbsol-bybit-staked-sol', 'solana', 'bbSOL', 'Bybit2vBJGhPF52GBdNaQfUJ6ZpThSgHBobjWZpLPb4B', 9),
+        ('pump-pumpfun', 'solana', 'PUMP', 'pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn', 6),
+        ('es-eclipse', 'solana', 'ES', 'BqPqrrQuoQXFGGEAEMnPmDgZ6RWQCajWnY3V6Yp4DZWP', 6),
+        ('dfdvx-dfdv-xstock','solana', 'DFDVx', 'Xs2yquAgsHByNzx68WJC55WHjHBvG9JsMB7CWjTLyPy', 8),
+        ('frag-fragmetric', 'solana', 'FRAG', 'FRAGMEWj2z65qM62zqKhNtwNFskdfKs4ekDUDX3b4VD5', 9),
+        ('codec-codec-flow', 'solana', 'CODEC', '69LjZUUzxj3Cb3Fxeo1X4QpYEQTboApkhXTysPpbpump', 6),
+        ('aura-auraonsol', 'solana', 'AURA', 'DtR4D9FtVoTX2569gaL837ZgrB6wNjj6tkmnX9Rdk9B2', 6),
+        ('wct-walletconnect-token', 'solana', 'WCT', 'WCTk5xWdn5SYg56twGj32sUF3W4WFQ48ogezLBuYTBY', 9),
+        ('holo-holoworld-ai', 'solana', 'HOLO', '69RX85eQoEsnZvXGmLNjYcWgVkp9r2JjahVm99KbJETU', 9),
+        ('usd1-usd1', 'solana', 'USD1', 'USD1ttGY1N17NEEHLmELoaybftRBUSErhqYiQzvEmuB', 6),
+        ('2z-doublezero', 'solana', '2Z', 'J6pQQ3FAcJQeWPPGppWRb4nM8jU3wLyYbRrLh7feMfvd', 8),
+        ('useless-useless-coin', 'solana', 'USELESS', 'Dz9mQ9NzkBcCsuGPFJ3r1bS4wgqKMHBPiVuniW8Mbonk', 6),
+        ('onyc-onyc', 'solana', 'ONyc', '5Y8NV33Vv7WbnLfq3zBcKSdYPrk7g2KoiQoe7M2tcxp5', 9),
+        ('yzy-yzy', 'solana', 'YZY', 'DrZ26cKJDksVRWib3DVVsjo9eeXccc7hKhDJviiYEEZY', 6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'beets_v3_ethereum',
+        schema = 'beets_v3_sonic',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',

@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: solfi_solana
+    description: "Decoded SolFi swap call table on Solana"
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: solfi_call_swap
+        description: "Raw swap calls from the SolFi contract"
+        loaded_at_field: call_block_time

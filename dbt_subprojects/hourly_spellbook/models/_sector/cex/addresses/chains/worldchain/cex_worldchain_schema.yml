@@ -29,3 +29,5 @@ models:
         description: "Date the address was added on"
       - name: first_used
         description: "Date of first ever token reception"
+      - name: is_contract
+        description: "Is the address a smart contract or not"

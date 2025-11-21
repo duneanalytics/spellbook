@@ -19,24 +19,37 @@
                                     , "ethereum"
                                     , "fantom"
                                     , "flare"
+                                    , "flow"
                                     , "gnosis"
+                                    , "hemi"
+                                    , "henesys"
+                                    , "hyperevm"
                                     , "ink"
                                     , "kaia"
+                                    , "katana"
                                     , "lens"
                                     , "linea"
                                     , "mantle"
+                                    , "mezo"
+                                    , "monad"
                                     , "nova"
                                     , "opbnb"
                                     , "optimism"
+                                    , "peaq"
+                                    , "plasma"
                                     , "plume"
                                     , "polygon"
                                     , "ronin"
                                     , "scroll"
                                     , "sei"
                                     , "shape"
-                                    , "solana"
+                                    , "somnia"
                                     , "sonic"
                                     , "sophon"
+                                    , "story"
+                                    , "superseed"
+                                    , "tac"
+                                    , "taiko"
                                     , "tron"
                                     , "unichain"
                                     , "worldchain"
@@ -46,7 +59,7 @@
                                 ]\',
                                 "sector",
                                 "gas",
-                                \'["soispoke", "ilemi", "0xRob", "jeff-dude", "krishhh"]\'
+                                \'["soispoke", "ilemi", "0xRob", "jeff-dude", "krishhh", "tomfutago"]\'
                             )
                         }}'
         )
@@ -70,23 +83,37 @@
     , "ethereum"
     , "fantom"
     , "flare"
+    , "flow"
     , "gnosis"
+    , "hemi"
+    , "henesys"
+    , "hyperevm"
     , "ink"
     , "kaia"
+    , "katana"
     , "linea"
     , "lens"
     , "mantle"
+    , "mezo"
+    , "monad"
     , "nova"
     , "opbnb"
     , "optimism"
+    , "peaq"
+    , "plasma"
     , "plume"
     , "polygon"
     , "ronin"
     , "scroll"
     , "sei"
     , "shape"
+    , "somnia"
     , "sonic"
     , "sophon"
+    , "story"
+    , "superseed"
+    , "tac"
+    , "taiko"
     , "tron"
     , "unichain"
     , "worldchain"
@@ -129,30 +156,4 @@ FROM
     UNION ALL
     {% endif %}
     {% endfor %}
-
-    UNION ALL
-
-    SELECT
-        blockchain
-        , block_month
-        , block_date
-        , block_time
-        , block_slot AS block_number
-        , cast(from_base58(tx_hash) as varbinary) as tx_hash
-        , cast(from_base58(signer) as varbinary) as tx_from
-        , cast (NULL AS varbinary) tx_to -- this concept doesn't exist in solana
-        , cast (NULL AS double) AS gas_price -- this concept doesn't exist in solana
-        , cast (NULL AS double) AS gas_used -- this concept doesn't exist in solana
-        , currency_symbol
-        , tx_fee
-        , tx_fee_usd
-        , tx_fee_raw
-        , tx_fee_breakdown
-        , tx_fee_breakdown_usd
-        , tx_fee_breakdown_raw
-        , cast(from_base58(tx_fee_currency) as varbinary) as tx_fee_currency
-        , cast(from_base58(leader) as varbinary) AS block_proposer
-        , cast (NULL AS double) AS gas_limit -- this concept doesn't exist in solana
-        , cast (NULL AS double) AS gas_limit_usage -- this concept doesn't exist in solana
-    FROM {{ source('gas_solana', 'fees') }}
 )

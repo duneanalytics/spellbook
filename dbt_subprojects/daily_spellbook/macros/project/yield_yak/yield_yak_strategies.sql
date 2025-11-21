@@ -28,6 +28,8 @@
         'BenqiStrategyV3',
         'BenqiStrategyV4',
         'BirdyStrategyForLP',
+        'BlackholeStableStrategy',
+        'BlackholeStrategy',
         'BlizzStrategyAvaxV1',
         'BlizzStrategyV1',
         'BoostedJoeStrategyForLP',

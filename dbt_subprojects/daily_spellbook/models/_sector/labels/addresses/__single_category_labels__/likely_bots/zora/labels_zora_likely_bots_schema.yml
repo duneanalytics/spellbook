@@ -1,0 +1,94 @@
+version: 2
+
+models:
+  - name: labels_zora_likely_bot_addresses
+    description: "Addresses that are likely bots based on transaction frequency and sender concentration"
+    columns:
+      - name: blockchain
+        description: "The blockchain this label is for"
+        tests:
+          - not_null
+      - name: address
+        description: "The address being labeled"
+        tests:
+          - not_null
+          - unique:
+              where: "blockchain = 'zora'"
+      - name: name
+        description: "The label name"
+        tests:
+          - not_null
+      - name: category
+        description: "The label category"
+        tests:
+          - not_null
+      - name: contributor
+        description: "The contributor of the label"
+        tests:
+          - not_null
+      - name: source
+        description: "The source of the label"
+        tests:
+          - not_null
+      - name: created_at
+        description: "The timestamp when the label was created"
+        tests:
+          - not_null
+      - name: updated_at
+        description: "The timestamp when the label was last updated"
+        tests:
+          - not_null
+      - name: model_name
+        description: "The name of the model"
+        tests:
+          - not_null
+      - name: label_type
+        description: "The type of label"
+        tests:
+          - not_null
+
+  - name: labels_zora_likely_bot_contracts
+    description: "Contracts that are likely bots based on transaction frequency and sender concentration"
+    columns:
+      - name: blockchain
+        description: "The blockchain this label is for"
+        tests:
+          - not_null
+      - name: address
+        description: "The address being labeled"
+        tests:
+          - not_null
+          - unique:
+              where: "blockchain = 'zora'"
+      - name: name
+        description: "The label name"
+        tests:
+          - not_null
+      - name: category
+        description: "The label category"
+        tests:
+          - not_null
+      - name: contributor
+        description: "The contributor of the label"
+        tests:
+          - not_null
+      - name: source
+        description: "The source of the label"
+        tests:
+          - not_null
+      - name: created_at
+        description: "The timestamp when the label was created"
+        tests:
+          - not_null
+      - name: updated_at
+        description: "The timestamp when the label was last updated"
+        tests:
+          - not_null
+      - name: model_name
+        description: "The name of the model"
+        tests:
+          - not_null
+      - name: label_type
+        description: "The type of label"
+        tests:
+          - not_null 

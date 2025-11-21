@@ -11,3 +11,7 @@ sources:
       - name: PoolFactory_evt_PoolCreated
       - name: CLpool_evt_Swap
       - name: CLfactory_evt_PoolCreated
+
+  - name: bunni_v2_unichain
+    tables:
+      - name: bunnihook_evt_swap

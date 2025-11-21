@@ -3,7 +3,7 @@ version: 2
 models:
   - name: dex_celo_base_trades
     data_tests:
-      - check_dex_info_relationship
+      - check_columns_dex_base_trades
       - test_acceptable_usd_amount:
           column_name: amount_usd
           max_value: 1000000000
@@ -24,6 +24,8 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('uniswap_celo_base_trades_seed')
+          filter:
+            version: 3
 
 
   - name: mento_v1_celo_base_trades
@@ -170,3 +172,22 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('gooddollar_reserve_celo_base_trades_seed')
+
+  - name: uniswap_v4_celo_base_trades
+    meta:
+      blockchain: celo
+      sector: dex
+      project: uniswap
+      contributors: Henrystats
+    config:
+      tags: ['celo', 'dex', 'trades', 'Uniswap V4']
+    description: "Uniswap V4 Trades on Celo"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_celo_base_trades_seed')
+          filter:
+            version: 4

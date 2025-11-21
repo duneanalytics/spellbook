@@ -1,0 +1,111 @@
+version: 2
+
+models:
+  - name: bridges_unichain_cctp_v1_deposits
+    meta:
+      blockchain: unichain
+      sector: bridges
+      project: cctp
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'unichain', 'bridges', 'flows', 'deposits' ]
+    description: "Circle's CCTP v1 bridge deposits events on Base"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']
+      - equal_rowcount_with_sources:
+          evt_sources:
+            - source('circle_unichain','tokenmessenger_evt_depositforburn')
+  - name: bridges_unichain_cctp_v1_withdrawals
+    meta:
+      blockchain: unichain
+      sector: bridges
+      project: cctp
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'unichain', 'bridges', 'flows', 'withdrawals' ]
+    description: "Circle's CCTP v1 bridge withdrawals events on Base"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']
+      - equal_rowcount_with_sources:
+          evt_sources:
+            - source('circle_unichain','tokenmessenger_evt_mintandwithdraw')
+  - name: bridges_unichain_across_v2_deposits
+    meta:
+      blockchain: unichain
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
+    description: "Across's v2 bridge deposits events on Unichain"
+  - name: bridges_unichain_across_v2_withdrawals
+    meta:
+      blockchain: unichain
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Across's v2 bridge withdrawals events on Unichain"
+  - name: bridges_unichain_across_v3_deposits
+    meta:
+      blockchain: unichain
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
+    description: "Across's v3 bridge deposits events on Unichain"
+  - name: bridges_unichain_across_v3_withdrawals
+    meta:
+      blockchain: unichain
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Across's v3 bridge withdrawals events on Unichain"
+  - name: bridges_unichain_tether_v1_deposits
+    meta:
+      blockchain: unichain
+      sector: bridges
+      project: tether
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'unichain', 'bridges', 'flows', 'deposits' ]
+    description: "Tether's USDT0 v1 bridge deposits events on Unichain"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']
+  - name: bridges_unichain_tether_v1_withdrawals
+    meta:
+      blockchain: unichain
+      sector: bridges
+      project: tether
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'unichain', 'bridges', 'flows', 'withdrawals' ]
+    description: "Tether's USDT0 v1 bridge withdrawals events on Unichain"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']
+  - name: bridges_unichain_symbiosis_v1_deposits
+    meta:
+      blockchain: arbitrum
+      sector: bridges
+      project: symbiosis
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'unichain', 'bridges', 'flows', 'withdrawals' ]
+    description: "Symbiosis's v1 bridge deposits events on Unichain"
+  - name: bridges_unichain_orbiter_v1_deposits
+    meta:
+      blockchain: unichain
+      sector: bridges
+      project: orbiter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'unichain', 'bridges', 'flows', 'withdrawals' ]
+    description: "Orbiter's v1 bridge deposits events on Unichain"

@@ -1,0 +1,36 @@
+version: 2
+
+models:
+  - name: lending_supply_scaled
+    meta:
+      blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom, gnosis, scroll, zksync, linea, sonic
+      sector: lending
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'supply', 'aave', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom', 'gnosis', 'scroll', 'zksync', 'linea', 'sonic']
+    description: "Hourly lending scaled supply"
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain name"
+      - &project
+        name: project
+        description: "Project name"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the lending project"
+      - &block_hour
+        name: block_hour
+        description: "Block hour"
+      - &token_address
+        name: token_address
+        description: "Token contract address"
+      - &symbol
+        name: symbol
+        description: "Token symbol"
+      - &user
+        name: user
+        description: "User wallet address"
+      - &amount
+        name: amount
+        description: "Scaled supply amount"

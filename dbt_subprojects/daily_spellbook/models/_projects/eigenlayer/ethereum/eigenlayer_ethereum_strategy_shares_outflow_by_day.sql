@@ -33,6 +33,16 @@ WITH combined_withdrawals AS (
 
     UNION ALL
 
+    -- slashing withdrawal completed events
+    SELECT
+        strategy,
+        SUM(shares) AS shares,
+        date_trunc('day', evt_block_time) AS date
+    FROM {{ ref('eigenlayer_ethereum_slashing_withdrawal_completed_enriched') }}
+    GROUP BY strategy, date_trunc('day', evt_block_time)
+
+    UNION ALL
+
     -- native ETH strategy
     SELECT
         strategy,

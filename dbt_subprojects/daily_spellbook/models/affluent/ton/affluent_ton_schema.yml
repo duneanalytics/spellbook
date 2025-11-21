@@ -1,0 +1,198 @@
+version: 2
+
+models:
+  - name: affluent_ton_supply
+    meta:
+      blockchain: ton
+      sector: lending
+      contributors: pshuvalov, okhlopkov
+    config:
+      tags: ['ton', 'affluent', 'lending', 'factorial']
+    description: >
+      Affluent protocol supply events
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - block_date
+    columns:
+      - name: block_date
+        description: "block_date of the transaction"
+      - name: tx_hash
+        description: "transaction hash"
+      - name: trace_id
+        description: "trace id"
+      - name: tx_now
+        description: "transaction timestamp"
+      - name: tx_lt
+        description: "transaction logical time"
+      - name: pool_address
+        description: "Affluent pool address"
+      - name: pool_name
+        description: "Affluent pool name"
+      - name: owner_address
+        description: "Owner address"
+      - name: asset
+        description: "Asset address"
+      - name: amount
+        description: "Amount of asset"
+      - name: share
+        description: "Share of asset"
+  - name: affluent_ton_withdraw
+    meta:
+      blockchain: ton
+      sector: lending
+      contributors: pshuvalov, okhlopkov
+    config:
+      tags: ['ton', 'affluent', 'lending', 'factorial']
+    description: >
+      Affluent protocol withdraw events
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - block_date
+    columns:
+      - name: block_date
+        description: "block_date of the transaction"
+      - name: tx_hash
+        description: "transaction hash"
+      - name: trace_id
+        description: "trace id"
+      - name: tx_now
+        description: "transaction timestamp"
+      - name: tx_lt
+        description: "transaction logical time"
+      - name: pool_address
+        description: "Affluent pool address"
+      - name: pool_name
+        description: "Affluent pool name"
+      - name: owner_address
+        description: "Owner address"
+      - name: asset
+        description: "Asset address"
+      - name: amount
+        description: "Amount of asset"
+      - name: share
+        description: "Share of asset"
+
+  - name: affluent_ton_borrow
+    meta:
+      blockchain: ton
+      sector: lending
+      contributors: pshuvalov, okhlopkov
+    config:
+      tags: ['ton', 'affluent', 'lending', 'factorial']
+    description: >
+      Affluent protocol borrow events
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - block_date
+    columns:
+      - name: block_date
+        description: "block_date of the transaction"
+      - name: tx_hash
+        description: "transaction hash"
+      - name: trace_id
+        description: "trace id"
+      - name: tx_now
+        description: "transaction timestamp"
+      - name: tx_lt
+        description: "transaction logical time"
+      - name: pool_address
+        description: "Affluent pool address"
+      - name: pool_name
+        description: "Affluent pool name"
+      - name: owner_address
+        description: "Owner address"
+      - name: asset
+        description: "Asset address"
+      - name: amount
+        description: "Amount of asset"
+      - name: share
+        description: "Share of asset"
+
+  - name: affluent_ton_repay
+    meta:
+      blockchain: ton
+      sector: lending
+      contributors: pshuvalov, okhlopkov
+    config:
+      tags: ['ton', 'affluent', 'lending', 'factorial']
+    description: >
+      Affluent protocol repay events
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - block_date
+    columns:
+      - name: block_date
+        description: "block_date of the transaction"
+      - name: tx_hash
+        description: "transaction hash"
+      - name: trace_id
+        description: "trace id"
+      - name: tx_now
+        description: "transaction timestamp"
+      - name: tx_lt
+        description: "transaction logical time"
+      - name: pool_address
+        description: "Affluent pool address"
+      - name: pool_name
+        description: "Affluent pool name"
+      - name: owner_address
+        description: "Owner address"
+      - name: asset
+        description: "Asset address"
+      - name: amount
+        description: "Amount of asset"
+      - name: share
+        description: "Share of asset"
+      - name: over_repaid_amount
+        description: "Over repaid amount"
+
+
+  - name: affluent_ton_liquidate
+    meta:
+      blockchain: ton
+      sector: lending
+      contributors: pshuvalov, okhlopkov
+    config:
+      tags: ['ton', 'affluent', 'lending', 'factorial']
+    description: >
+      Affluent protocol liquidate events
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - block_date
+    columns:
+      - name: block_date
+        description: "block_date of the transaction"
+      - name: tx_hash
+        description: "transaction hash"
+      - name: trace_id
+        description: "trace id"
+      - name: tx_now
+        description: "transaction timestamp"
+      - name: tx_lt
+        description: "transaction logical time"
+      - name: pool_address
+        description: "Affluent pool address"
+      - name: pool_name
+        description: "Affluent pool name"
+      - name: owner_address
+        description: "Owner address"
+      - name: repay_asset
+        description: "Repay asset address"
+      - name: seize_asset
+        description: "Seize asset address"
+      - name: repay_amount
+        description: "Repay amount"
+      - name: repay_share
+        description: "Repay share"
+      - name: seize_share
+        description: "Seize share"

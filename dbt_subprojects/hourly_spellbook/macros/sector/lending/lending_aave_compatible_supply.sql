@@ -393,3 +393,141 @@ select
 from base_supply
 
 {% endmacro %}
+
+{# ######################################################################### #}
+
+{%
+  macro lending_aave_v3_compatible_supply_scaled(
+    blockchain,
+    project,
+    version
+  )
+%}
+
+with
+
+hourly_market as (
+  select
+    blockchain,
+    project,
+    version,
+    block_hour,
+    token_address,
+    symbol,
+    liquidity_index,
+    variable_borrow_index
+  from {{ ref(project ~ '_v' ~ version ~ '_' ~ blockchain ~ '_base_market_hourly_agg') }}
+  {% if is_incremental() %}
+  where {{ incremental_predicate('block_hour') }}
+  {% endif %}
+),
+
+market_ordered as (
+  select
+    blockchain,
+    project,
+    version,
+    block_time,
+    block_hour,
+    block_number,
+    token_address,
+    symbol,
+    liquidity_index,
+    variable_borrow_index,
+    tx_hash,
+    row_number() over (partition by block_time, tx_hash, token_address order by evt_index) as event_order
+  from {{ ref(project ~ '_v' ~ version ~ '_' ~ blockchain ~ '_base_market') }}
+  {% if is_incremental() %}
+  where {{ incremental_predicate('block_time') }}
+  {% endif %}
+),
+
+supply_ordered as (
+  select
+    blockchain,
+    project,
+    version,
+    block_time,
+    block_number,
+    coalesce(on_behalf_of, depositor) as user,
+    token_address,
+    symbol,
+    amount,
+    tx_hash,
+    row_number() over (partition by block_time, tx_hash, token_address order by evt_index) as event_order
+  from {{ ref('aave_' ~ blockchain ~ '_supply')}}
+  where version = '3'
+  {% if is_incremental() %}
+  and {{ incremental_predicate('block_time') }}
+  {% endif %}
+),
+
+supplied as (
+  select
+    s.blockchain,
+    s.project,
+    s.version,
+    m.block_hour,
+    s.user,
+    s.token_address,
+    s.symbol,
+    sum(s.amount / m.liquidity_index * power(10, 27)) as atoken_amount
+  from supply_ordered s
+    inner join market_ordered m
+      on s.block_number = m.block_number
+      and s.block_time = m.block_time
+      and s.event_order = m.event_order
+      and s.tx_hash = m.tx_hash
+      and s.token_address = m.token_address
+  group by 1, 2, 3, 4, 5, 6, 7
+),
+
+first_supplied as (
+  select
+    blockchain,
+    project,
+    version,
+    token_address,
+    user,
+    min(block_hour) as first_block_hour
+  from supplied
+  group by 1, 2, 3, 4, 5
+),
+
+hourly_market_user as (
+  select
+    hm.blockchain,
+    hm.project,
+    hm.version,
+    hm.block_hour,
+    hm.token_address,
+    hm.symbol,
+    hm.liquidity_index,
+    hm.variable_borrow_index,
+    fs.user
+  from hourly_market hm
+    inner join first_supplied fs
+      on hm.block_hour >= fs.first_block_hour
+      and hm.token_address = fs.token_address
+)
+
+select
+  hmu.blockchain,
+  hmu.project,
+  hmu.version,
+  cast(date_trunc('month', hmu.block_hour) as date) as block_month,
+  hmu.block_hour,
+  hmu.token_address,
+  hmu.symbol,
+  hmu.user,
+  sum(s.atoken_amount) over (
+    partition by hmu.token_address, hmu.user 
+    order by hmu.block_hour
+  ) * hmu.liquidity_index / power(10, 27) as amount
+from hourly_market_user hmu
+  left join supplied s
+    on hmu.block_hour = s.block_hour
+    and hmu.token_address = s.token_address
+    and hmu.user = s.user
+
+{% endmacro %}

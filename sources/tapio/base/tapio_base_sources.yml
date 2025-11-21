@@ -1,0 +1,19 @@
+version: 1
+
+sources:
+  - name: tapio_base
+    tags: ["base", "tapio", "dex"]
+    description: "Tapio protocol on Base"
+    tables:
+      - name: selfpeggingassetfactory_call_createpool
+        description: "Calls to SelfPeggingAssetFactory.createPool on Base"
+      - name: selfpeggingassetfactory_evt_poolcreated
+        description: "Pool creation events on Base"
+      - name: selfpeggingasset_evt_minted
+        description: "Mint events on Base"
+      - name: selfpeggingasset_evt_redeemed
+        description: "Redeem events on Base"
+      - name: selfpeggingasset_evt_tokenswapped
+        description: "Swap events on Base"
+      - name: selfpeggingasset_evt_donated
+        description: "Donate events on Base"

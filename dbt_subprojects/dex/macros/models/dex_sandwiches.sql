@@ -1,4 +1,4 @@
-{% macro dex_sandwiches(blockchain, transactions) %}
+{% macro dex_sandwiches(blockchain, transactions, whitelist=none) %}
 
 -- Checking that each frontrun trade has a matching backrun and at least one victim in between
 WITH indexed_sandwich_trades AS (
@@ -73,9 +73,16 @@ INNER JOIN {{transactions}} tx ON tx.block_time=s.block_time
     {% if is_incremental() %}
     AND {{ incremental_predicate('tx.block_time') }}
     {% endif %}
+{% if whitelist is not none %}
+LEFT JOIN {{whitelist}} w ON w.block_number=tx.block_number
+    AND w.tx_hash=tx.hash
+{% endif %}
 WHERE dt.blockchain='{{blockchain}}'
 {% if is_incremental() %}
 AND {{ incremental_predicate('dt.block_time') }}
+{% endif %}
+{% if whitelist is not none %}
+AND w.entity IS NULL
 {% endif %}
 
 {% endmacro %}

@@ -40,6 +40,7 @@ FROM (VALUES
         ('arbitrum', 0x323665443cef804a3b5206103304bd4872ea4253, 'Crypto-backed stablecoin', 'USDV', 6, ''),
         ('arbitrum', 0x4cfa50b7ce747e2d61724fcac57f24b748ff2b2a, 'Crypto-backed stablecoin', 'fUSDC', 6, ''),
         ('arbitrum', 0x57f5e098cad7a3d1eed53991d4d66c45c9af7812, 'Crypto-backed stablecoin', 'sUSDM', 18, ''),
-        ('arbitrum', 0x7dff72693f6a4149b17e7c6314655f6a9f7c8b33, 'Crypto-backed stablecoin', 'GHO', 18, '')
+        ('arbitrum', 0x7dff72693f6a4149b17e7c6314655f6a9f7c8b33, 'Crypto-backed stablecoin', 'GHO', 18, ''),
+        ('arbitrum', 0xf3527ef8de265eaa3716fb312c12847bfba66cef, 'Crypto-backed stablecoin', 'USDX', 18, '')
 
      ) AS temp_table (blockchain, contract_address, backing, symbol, decimals, name)

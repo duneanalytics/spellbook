@@ -111,7 +111,9 @@ models:
       - *block_number
       - *swap_fee_percentage      
 
-  - name: beets_v2_sonic_trades
+
+models:
+  - name: beets_trades
     meta:
       blockchain: sonic
       sector: dex
@@ -119,12 +121,21 @@ models:
     config:
       tags: ['beets', 'sonic', 'amm', 'trades', 'dex']
     description: >
-      DEX trades on beets v2 on sonic
+      DEX trades on beets on sonic
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
     columns:
       - *blockchain
       - &project
         name: project
-        description: "Project name (balancer)"
+        description: "Project name (beets)"
       - *version
       - &block_month
         name: block_month
@@ -196,13 +207,52 @@ models:
         name: evt_index
         description: 'Event index'
 
+  - name: beets_v2_sonic_trades
+    meta:
+      blockchain: sonic
+      sector: dex
+      contributors: franz
+    config:
+      tags: ['beets', 'sonic', 'amm', 'trades', 'dex']
+    description: >
+      DEX trades on beets v2 on sonic
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_month
+      - *block_date
+      - *block_time
+      - *block_number
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *pool_id
+      - *swap_fee
+      - *project_contract_address
+      - *pool_symbol
+      - *pool_type
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index
+
   - name: beets_v3_sonic_trades
     meta:
       blockchain: sonic
       sector: dex
       contributors: franz
     config:
-      tags: [ 'balancer', 'sonic', 'amm', 'trades', 'dex', 'beta' ]
+      tags: [ 'beets', 'sonic', 'amm', 'trades', 'dex', 'beta' ]
     description: >
       DEX trades on beets v3 on sonic
     columns:

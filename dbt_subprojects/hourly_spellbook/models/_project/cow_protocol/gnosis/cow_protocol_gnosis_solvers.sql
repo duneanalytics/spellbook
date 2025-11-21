@@ -71,6 +71,10 @@ known_solver_metadata (address, environment, name) as (
                  (0xB073F89C5BFDdD973b42A5629ab96891fAD74118, 'barn', 'Laita'),
                  (0xF2090280361Cc0571c2817Ca7f9F3C628D2bE180, 'barn', 'ExtQuasimodo'),
                  (0x700f0d287C8471057B7856AC7099343854a06b1D, 'barn', 'Wraxyn'),
+                 (0xE17B48cC9c5330d04e08c54E40Ed8107D1E4783f, 'barn', 'Arctic'),
+                 (0x7f200e278e5C4A9E7861d9D8c73E621Fa96d7E51, 'barn', 'Helixbox'),
+                 (0x5fa8c6F28FC234D3b71f27913429b29091FE0f1D, 'prod', 'Helixbox'),
+                 (0xaf5Baa0Ac599d2CCE7C7B7D1803AbAcBd8936598, 'prod', 'Arctic'),
                  (0x4799d639954Bf7A2c420C20a72eBd7caF900bfc4, 'prod', 'Wraxyn'),
                  (0x638D7114Ced5E17bE1a935EC80B20a0A4109360c, 'prod', 'ExtQuasimodo'),
                  (0x606Ce11E72BC77363cE0Dc74A2ed2b4244968143, 'prod', 'Laita'),
@@ -101,7 +105,9 @@ known_solver_metadata (address, environment, name) as (
                  (0xfaBBDf8a77005C00edBe0000bDC000644c024322, 'prod', 'Copium_Capital'),
                  (0x68dEE65bB88d919463495E5CeA9870a81f1e9413, 'service', 'Withdraw'),
                  (0xa03be496e67ec29bc62f01a428683d7f9c204930, 'service', 'Withdraw'),
-                 (0x7524942F9283FBFa8F17b05CC0a9cBde397d25b3, 'test', 'Test 1')
+                 (0x7524942F9283FBFa8F17b05CC0a9cBde397d25b3, 'test', 'Test 1'),
+                 (0xd8d943ADbb4c77ce003a8DA94f2A9005ac62EE2f, 'barn', 'Piggy'),
+                 (0xBf12C31863CcFcefcdC084654194bB96ef4517cF, 'prod', 'Piggy')
          ) as _
 )
 -- Combining the metadata with current activation status for final table

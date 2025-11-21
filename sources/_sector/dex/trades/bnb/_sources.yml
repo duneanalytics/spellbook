@@ -136,3 +136,9 @@ sources:
     tables:
       - name: ThugswapPair_evt_Swap
       - name: ThugswapFactory_evt_PairCreated
+  - name: native_bnb
+    tables:
+      - name: NativeRFQPool_evt_RFQTrade
+  - name: bunni_v2_bnb
+    tables:
+      - name: bunnihook_evt_swap

@@ -91,25 +91,53 @@ WITH dexs AS
         AND {{ incremental_predicate('l.block_time') }}
         {% endif %}
 )
+, dexs_with_decimals AS (
+    SELECT
+        dexs.*
+        , erc20_bought.decimals as token_bought_decimals
+        , erc20_sold.decimals as token_sold_decimals
+        -- Calculate curve used decimals based on swap type
+        , case
+            when dexs.swap_type = 'underlying_exchange_base' then 18
+            else coalesce(erc20_bought.decimals, 18)
+        end as curve_decimals_bought
+        , case
+            when dexs.swap_type = 'underlying_exchange_base' then 18
+            else coalesce(erc20_sold.decimals, 18)
+        end as curve_decimals_sold
+    FROM dexs
+    LEFT JOIN {{ source('tokens', 'erc20') }} erc20_bought
+        ON erc20_bought.contract_address = dexs.token_bought_address
+        AND erc20_bought.blockchain = 'ethereum'
+    LEFT JOIN {{ source('tokens', 'erc20') }} erc20_sold
+        ON erc20_sold.contract_address = dexs.token_sold_address
+        AND erc20_sold.blockchain = 'ethereum'
+)
 
 SELECT
     'ethereum' AS blockchain
     ,'curve' AS project
-    ,dexs.version AS version
-    ,CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date
-    ,CAST(date_trunc('MONTH', dexs.block_time) AS date) AS block_month
-    ,dexs.block_time
-    ,dexs.block_number
-    ,dexs.token_bought_amount_raw
-    ,dexs.token_sold_amount_raw
-    ,dexs.token_bought_address
-    ,dexs.token_sold_address
-    ,dexs.taker
-    ,dexs.maker
-    ,dexs.project_contract_address
-    ,dexs.tx_hash
-    ,dexs.evt_index
-
-    --unique to curve in dex lineage, pull extra columns to calculate amount / amount_usd downstream in enrichment phase
-    ,dexs.swap_type
-FROM dexs
+    ,dexs_with_decimals.version AS version
+    ,CAST(date_trunc('DAY', dexs_with_decimals.block_time) AS date) AS block_date
+    ,CAST(date_trunc('MONTH', dexs_with_decimals.block_time) AS date) AS block_month
+    ,dexs_with_decimals.block_time
+    ,dexs_with_decimals.block_number
+    -- Adjust raw amounts so that generic enrichment (amount_raw / 10^token_decimals) yields correct token units
+    ,CAST(
+        dexs_with_decimals.token_bought_amount_raw * 
+        power(10, dexs_with_decimals.token_bought_decimals - dexs_with_decimals.curve_decimals_bought)
+        AS UINT256
+    ) as token_bought_amount_raw
+    ,CAST(
+        dexs_with_decimals.token_sold_amount_raw * 
+        power(10, dexs_with_decimals.token_sold_decimals - dexs_with_decimals.curve_decimals_sold)
+        AS UINT256
+    ) as token_sold_amount_raw
+    ,dexs_with_decimals.token_bought_address
+    ,dexs_with_decimals.token_sold_address
+    ,dexs_with_decimals.taker
+    ,dexs_with_decimals.maker
+    ,dexs_with_decimals.project_contract_address
+    ,dexs_with_decimals.tx_hash
+    ,dexs_with_decimals.evt_index
+FROM dexs_with_decimals

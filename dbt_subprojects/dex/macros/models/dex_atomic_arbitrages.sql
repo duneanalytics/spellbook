@@ -48,9 +48,10 @@ WITH multi_trade_txs AS (
     GROUP BY 1, 2
     )
 
--- Step 5: Filter out trades containing negative sum tokens from txs
+-- Step 5: Filter out trades containing negative sum tokens from txs and add block_number and tx_index
 , positive_sum_trades AS (
     SELECT dt.block_time
+    , txs.block_number
     , dt.tx_hash
     , dt.evt_index
     , dt.blockchain
@@ -73,11 +74,17 @@ WITH multi_trade_txs AS (
     , dt.project_contract_address
     , dt.tx_from
     , dt.tx_to
+    , txs.index AS tx_index
     FROM {{ ref('dex_trades') }} dt
     INNER JOIN whitelisted_tokens wt ON dt.block_time=wt.block_time
         AND dt.tx_hash=wt.tx_hash
         AND CONTAINS(wt.token_addresses, dt.token_sold_address)
         AND CONTAINS(wt.token_addresses, dt.token_bought_address)
+    INNER JOIN {{transactions}} txs ON dt.block_time=txs.block_time
+        AND dt.tx_hash=txs.hash
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('txs.block_time') }}
+        {% endif %}
     WHERE dt.blockchain = '{{blockchain}}'
     {% if is_incremental() %}
     AND {{ incremental_predicate('dt.block_time') }}
@@ -85,33 +92,33 @@ WITH multi_trade_txs AS (
     )
 
 -- Step 6: Only keep trades that form a loop
-SELECT pst.block_time
-, txs.block_number
-, pst.tx_hash
-, pst.evt_index
-, pst.blockchain
-, pst.project
-, pst.version
-, pst.block_month
-, pst.token_sold_symbol
-, pst.token_bought_symbol
-, pst.token_sold_address
-, pst.token_bought_address
-, pst.token_pair
-, pst.token_sold_amount
-, pst.token_bought_amount
-, pst.token_sold_amount_raw
-, pst.token_bought_amount_raw
-, pst.amount_usd
-, pst.taker
-, pst.maker
-, pst.project_contract_address
-, pst.tx_from
-, pst.tx_to
-, txs.index AS tx_index
+SELECT block_time
+, block_number
+, tx_hash
+, evt_index
+, blockchain
+, project
+, version
+, block_month
+, token_sold_symbol
+, token_bought_symbol
+, token_sold_address
+, token_bought_address
+, token_pair
+, token_sold_amount
+, token_bought_amount
+, token_sold_amount_raw
+, token_bought_amount_raw
+, amount_usd
+, taker
+, maker
+, project_contract_address
+, tx_from
+, tx_to
+, tx_index
 FROM positive_sum_trades
 MATCH_RECOGNIZE (
-    PARTITION BY block_time, tx_hash
+    PARTITION BY block_number, tx_hash
     ORDER BY evt_index
     ALL ROWS PER MATCH
     PATTERN (A B+ D+)
@@ -120,10 +127,5 @@ MATCH_RECOGNIZE (
         , B AS token_sold_address = PREV(token_bought_address)
         , D AS FIRST(token_sold_address) = LAST(token_bought_address)
     ) pst
-INNER JOIN {{transactions}} txs ON pst.block_time=txs.block_time
-    AND pst.tx_hash=txs.hash
-    {% if is_incremental() %}
-    AND {{ incremental_predicate('txs.block_time') }}
-    {% endif %}
 
 {% endmacro %}

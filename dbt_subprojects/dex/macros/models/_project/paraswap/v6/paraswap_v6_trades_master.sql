@@ -1,4 +1,5 @@
 {% macro paraswap_v6_trades_by_contract(blockchain, project, contract_name, contract_details) %}
+{% set exclude_maker_psm = ['gnosis', 'unichain'] %}
  with v6_trades as (    
     with
       sell_trades as (
@@ -9,10 +10,12 @@
           swapExactAmountInOnCurveV1 as ({{ paraswap_v6_uniswaplike_method( source(project + '_' + blockchain, contract_name + '_call_swapExactAmountInOnCurveV1'), 'swapExactAmountInOnCurveV1', 'curveV1Data') }}),
           swapExactAmountInOnCurveV2 as ({{ paraswap_v6_uniswaplike_method( source(project + '_' + blockchain, contract_name + '_call_swapExactAmountInOnCurveV2'), 'swapExactAmountInOnCurveV2', 'curveV2Data') }}),
           swapExactAmountInOnBalancerV2 as ({{ paraswap_v6_balancer_v2_method('swapExactAmountInOnBalancerV2_decoded', 'swapExactAmountInOnBalancerV2_raw', source(project + '_' + blockchain, contract_name + '_call_swapExactAmountInOnBalancerV2'), 'in', 'swapExactAmountInOnBalancerV2') }})
-          -- TODO: should be possible to improve this conditional code
+          -- TODO: should be possible to improve this conditional code by moving it to the config
           {% if contract_details['version'] == '6.2' %}
                ,swapOnAugustusRFQTryBatchFill as ({{ paraswap_v6_rfq_method( source(project + '_' + blockchain, contract_name + '_call_swapOnAugustusRFQTryBatchFill')) }}) -- RFQ - not distinguishing between buy/sell
-               ,swapExactAmountInOutOnMakerPSM as ({{ paraswap_v6_maker_psm_method( source(project + '_' + blockchain, contract_name + '_call_swapExactAmountInOutOnMakerPSM')) }}) -- Maker PSM - not distinguishing between buy/sell
+               {% if blockchain not in exclude_maker_psm %}
+                ,swapExactAmountInOutOnMakerPSM as ({{ paraswap_v6_maker_psm_method( source(project + '_' + blockchain, contract_name + '_call_swapExactAmountInOutOnMakerPSM')) }}) -- Maker PSM - not distinguishing between buy/sell
+               {% endif %}
           {% endif %}
 
 select
@@ -53,7 +56,9 @@ from
             -- TODO: should be possible to improve this conditional code
             {% if contract_details['version'] == '6.2' %}
             union select * from swapOnAugustusRFQTryBatchFill
-            union select * from swapExactAmountInOutOnMakerPSM
+            {% if blockchain not in exclude_maker_psm %}
+              union select * from swapExactAmountInOutOnMakerPSM
+            {% endif %}
             {% endif %}
           )
       ),
@@ -153,16 +158,17 @@ select
     v6_trades{% endmacro %}
 
 {% macro paraswap_v6_trades_master(blockchain, project) %}
-  {% 
-    set contracts = {
-          "AugustusV6_1": {
-              "version":    "6.1",
-          },
-          "AugustusV6_2": {
-              "version":    "6.2",              
-          }
-    } 
-  %}
+  {% set exclude_6_1 = ['gnosis', 'unichain'] %}
+  {% if blockchain in exclude_6_1 %}
+    {% set contracts = {
+      "AugustusV6_2": {"version": "6.2"}
+    } %}
+  {% else %}
+    {% set contracts = {
+      "AugustusV6_1": {"version": "6.1"},
+      "AugustusV6_2": {"version": "6.2"}
+    } %}
+  {% endif %}
   {% for contract_name, contract_details in contracts.items() %}  
     select * from ({{ paraswap_v6_trades_by_contract(blockchain, project, contract_name, contract_details) }})    
     {% if not loop.last %}
