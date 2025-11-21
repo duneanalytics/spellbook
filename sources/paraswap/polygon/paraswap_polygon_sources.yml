@@ -29,7 +29,7 @@ sources:
 
       # v6.2
       - name: AugustusV6_2_call_swapExactAmountIn
-      - name: AugustusV6_2_call_swapExactAmountPro
+      - name: AugustusV6_2_call_swapExactAmountInPro
       - name: AugustusV6_2_call_swapExactAmountInOnUniswapV2
       - name: AugustusV6_2_call_swapExactAmountInOnUniswapV3
       - name: AugustusV6_2_call_swapExactAmountInOnCurveV1
