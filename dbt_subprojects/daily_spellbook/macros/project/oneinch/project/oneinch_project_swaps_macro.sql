@@ -62,7 +62,7 @@ meta as (
         , map_concat(flags, map_from_entries(array[('cross_chain', hashlock is not null)])) as order_flags
     from (
         select *, row_number() over(partition by block_number, tx_hash order by call_trace_address) as counter
-        from {{ source('oneinch_' + blockchain, 'lop') }}
+        from {{ source('oneinch_' + blockchain, 'lo') }}
         where
             call_success
             {% if is_incremental() %}
