@@ -2,7 +2,6 @@
 
 {{-
     config(
-        tags = ['prod_exclude'],
         schema = 'oneinch_' + blockchain,
         alias = 'project_orders',
         partition_by = ['block_month'],
