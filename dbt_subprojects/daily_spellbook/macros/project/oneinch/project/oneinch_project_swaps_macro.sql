@@ -38,7 +38,7 @@ meta as (
         , flags as order_flags
     from {{ ref('oneinch_' + blockchain + '_project_orders') }}
     where
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
             {{ incremental_predicate('block_time') }}
         {% else %}
             block_time >= timestamp '{{date_from}}'
@@ -65,7 +65,7 @@ meta as (
         from {{ source('oneinch_' + blockchain, 'lo') }}
         where
             call_success
-            {% if is_incremental() %}
+            {% if is_incremental() or true %}
                 and {{ incremental_predicate('block_time') }}
             {% else %}
                 and block_time >= timestamp '{{date_from}}'
@@ -107,7 +107,7 @@ meta as (
             , row_number() over(partition by block_number, tx_hash order by call_trace_address) as counter
         from {{ ref('oneinch_' + blockchain + '_project_calls') }}
         where
-            {% if is_incremental() %}
+            {% if is_incremental() or true %}
                 {{ incremental_predicate('block_time') }}
             {% else %}
                 block_time >= timestamp '{{date_from}}'
@@ -147,7 +147,7 @@ meta as (
         , decimals
     from {{ source('prices', 'usd') }}
     where
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
             {{ incremental_predicate('minute') }}
         {% else %}
             minute >= timestamp '{{date_from}}'
@@ -279,14 +279,14 @@ meta as (
             from (
                 select * from ({{ oneinch_project_ptfc_macro(blockchain) }})
                 where
-                    {% if is_incremental() %}
+                    {% if is_incremental() or true %}
                         {{ incremental_predicate('block_time') }}
                     {% else %}
                         block_time >= timestamp '{{date_from}}'
                     {% endif %}
             ), meta
             where
-                {% if is_incremental() %}
+                {% if is_incremental() or true %}
                     {{ incremental_predicate('block_time') }}
                 {% else %}
                     block_time >= timestamp '{{date_from}}'

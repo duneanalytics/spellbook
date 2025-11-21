@@ -91,7 +91,7 @@ meta as (
         where call_success
     )
     join meta using(blockchain)
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
         where {{ incremental_predicate('block_time') }}
     {% endif %}
 )
@@ -113,7 +113,7 @@ meta as (
         , decimals
         , symbol
     from {{ source('prices', 'usd') }}
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
         where {{ incremental_predicate('minute') }}
     {% endif %}
 )
