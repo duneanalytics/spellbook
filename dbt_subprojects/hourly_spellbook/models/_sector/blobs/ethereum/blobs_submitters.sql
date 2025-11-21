@@ -135,6 +135,6 @@ SELECT address
         , (0x8b5606469e21c75edd7c74d1c7a65824675d9aff, 'Spire DA Builder', '', 'spire_labs')
         , (0xbe7f4edb6257b4d2c77293c380f19ce96a4fa41e, 'Symbiosis', '', 'symbiosis_fi')
         , (0xdfd6c636dcb5a013c2431316c4a0762b84e70a5d ,'XLayer', '', 'XLayerOfficial')
-        , (0x8839e742fd56ebc0d31d11dd5a2ca25aa61c54da ,'Forknet', 'forknet_io')
+        , (0x8839e742fd56ebc0d31d11dd5a2ca25aa61c54da ,'Forknet', '', 'forknet_io')
         , (0xae13ce4cd416cb4598865aa5ac8d13532bd3cd99 ,'Jovay', '', 'JovayNetwork')
         ) AS x(address, entity, proposer, x_username)
