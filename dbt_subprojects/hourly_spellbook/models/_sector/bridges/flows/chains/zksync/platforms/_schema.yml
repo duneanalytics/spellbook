@@ -73,3 +73,12 @@ models:
     config:
       tags: [ 'nitro', 'bridges', 'flows' , 'deposits' ]
     description: "Nitro's v1 bridge deposits events on zkSync"
+  - name: bridges_zksync_orbiter_v1_deposits
+    meta:
+      blockchain: zksync
+      sector: bridges
+      project: orbiter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'zksync', 'bridges', 'flows', 'withdrawals' ]
+    description: "Orbiter's v1 bridge deposits events on zkSync"
