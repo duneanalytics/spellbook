@@ -58,7 +58,7 @@ meta as (
         , making_amount
         , taker_asset
         , taking_amount
-        , map_concat(flags, map_from_entries(array[('cross_chain', hashlock is not null)])) as order_flags
+        , flags as order_flags
     from {{ source('oneinch_' + blockchain, 'lo') }}
     where true
         and call_success
