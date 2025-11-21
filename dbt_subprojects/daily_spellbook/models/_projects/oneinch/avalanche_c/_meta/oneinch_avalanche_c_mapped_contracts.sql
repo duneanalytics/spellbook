@@ -4,6 +4,7 @@
 
 {{
     config(
+        tags = ['prod_exclude'],
         schema = 'oneinch_' + blockchain,
         alias = 'mapped_contracts',
         materialized = 'table',

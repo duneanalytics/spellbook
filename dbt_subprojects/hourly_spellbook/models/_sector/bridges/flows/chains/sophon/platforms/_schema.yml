@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: bridges_sophon_orbiter_v1_deposits
+    meta:
+      blockchain: sophon
+      sector: bridges
+      project: orbiter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'sophon', 'bridges', 'flows', 'withdrawals' ]
+    description: "Orbiter's v1 bridge deposits events on Sophon"
+
