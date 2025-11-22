@@ -41,6 +41,12 @@ models:
     columns:
       - *id
       - *blockchain
+      - &fee
+        name: fee
+        description: "Fee per bridge"
+      - &fee_token
+        name: fee_token
+        description: "Token address of the fee per bridge"
   - name: bridges_tether_chain_indexes
     meta:
       blockchain: ethereum

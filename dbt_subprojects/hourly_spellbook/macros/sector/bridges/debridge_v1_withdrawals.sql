@@ -17,7 +17,7 @@ SELECT t.blockchain AS deposit_chain
 , evt_tx_hash AS tx_hash
 , evt_index
 , contract_address
-, CAST(orderId AS varchar) AS bridge_id
+, CAST(orderId AS varchar) AS bridge_transfer_id
 FROM {{ source('debridge_' + blockchain, 'dlndestination_evt_fulfilledorder') }} f
 LEFT JOIN {{ ref('bridges_debridge_chain_indexes') }} t ON t.id=CAST(json_extract_scalar(f."order", '$.takeChainId') AS bigint)
 

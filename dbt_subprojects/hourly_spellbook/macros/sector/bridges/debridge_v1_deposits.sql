@@ -17,7 +17,7 @@ SELECT '{{blockchain}}' AS deposit_chain
 , d.evt_tx_hash AS tx_hash
 , d.evt_index
 , d.contract_address
-, CAST(d.submissionId AS varchar) AS bridge_id
+, CAST(d.submissionId AS varchar) AS bridge_transfer_id
 FROM {{ source('debridge_' + blockchain, 'debridgegate_evt_sent') }} d
 LEFT JOIN {{ source('debridge_' + blockchain, 'debridgegate_evt_pairadded') }} t USING (debridgeId)
 LEFT JOIN {{ ref('bridges_debridge_chain_indexes') }} m ON d.chainIdTo=m.id
