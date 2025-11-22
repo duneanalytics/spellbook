@@ -40,5 +40,8 @@ FROM
    , ('sui-sui','SUI', '0x2::sui::SUI', 9)
    , ('take-overtake', 'TAKE', '0x76a49ebaf991fa2d4cb6a352af14425d453fe2ba6802b5ed2361b227150b6689::take::TAKE', 9)
    , ('xo-xociety','XO', '0x90f9eb95f62d31fbe2179313547e360db86d88d2399103a94286291b63f469ba::xo::XO', 9)
+   , ('mmt-momentum','MMT', '0x35169bc93e1fddfcf3a82a9eae726d349689ed59e4b065369af8789fe59f8608::mmt::MMT', 9)
+   , ('fdusd-first-digital-usd','FDUSD', '0xf16e6b723f242ec745dfd7634ad072c42d5c1d9ac9d62a39c381303eaa57693a::fdusd::FDUSD', 6)
+   , ('ausd-agora-dollar','AUSD', '0x2053d08c1e2bd02791056171aab0fd12bd7cd7efad2ab8f6b9c8902f14df2ff2::ausd::AUSD', 6)
 ) as temp (token_id, symbol, contract_address, decimals)
 
