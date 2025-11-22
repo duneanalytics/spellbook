@@ -8,7 +8,7 @@ SELECT t.blockchain AS deposit_chain
 , evt_block_date AS block_date
 , evt_block_time AS block_time
 , evt_block_number AS block_number
-, json_extract_scalar(f."order", '$.giveAmount') AS deposit_amount_raw
+, json_extract_scalar(f."order", '$.giveAmount') AS withdrawal_amount_raw
 , sender
 , json_extract_scalar(f."order", '$.receiverDst') AS recipient
 , 'erc20' AS withdrawal_token_standard
