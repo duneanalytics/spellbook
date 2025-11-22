@@ -326,6 +326,15 @@ models:
     config:
       tags: [ 'beamer', 'bridges', 'flows' , 'withdrawals' ]
     description: "Beamer's v2 bridge deposits events on Ethereum"
+  - name: bridges_ethereum_beamer_v3_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: beamer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'beamer', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Beamer's v3 bridge deposits events on Ethereum"
   - name: bridges_ethereum_polygon_native_v1_deposits
     meta:
       blockchain: ethereum
@@ -344,12 +353,84 @@ models:
     config:
       tags: [ 'polygon', 'bridges', 'flows' , 'withdrawals' ]
     description: "Polygon's v1 native bridge withdrawals events on Ethereum"
+  - name: bridges_ethereum_allbridge_classic_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: allbridge
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'allbridge', 'bridges', 'flows' , 'deposits' ]
+    description: "Allbridge's v1 classic bridge deposits events on Ethereum"
   - name: bridges_ethereum_nitro_v1_deposits
     meta:
       blockchain: ethereum
       sector: bridges
-      project: ponitrolygon
+      project: nitro
       contributors: [ 'hildobby']
     config:
       tags: [ 'nitro', 'bridges', 'flows' , 'deposits' ]
     description: "Nitro's v1 bridge deposits events on Ethereum"
+  - name: bridges_ethereum_symbiosis_v1_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: symbiosis
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'ethereum', 'bridges', 'flows', 'withdrawals' ]
+    description: "Symbiosis's v1 bridge deposits events on Ethereum"
+  - name: bridges_ethereum_connext_v1_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: connext
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'ethereum', 'bridges', 'flows', 'withdrawals' ]
+    description: "Connext's v1 bridge deposits events on Ethereum"
+  - name: bridges_ethereum_orbiter_v1_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: orbiter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'ethereum', 'bridges', 'flows', 'withdrawals' ]
+    description: "Orbiter's v1 bridge deposits events on Ethereum"
+  - name: bridges_ethereum_agglayer_v1_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: agglayer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'agglayer', 'bridges', 'flows' , 'deposits' ]
+    description: "Agglayer's shared bridge deposits events on Ethereum"
+  - name: bridges_ethereum_agglayer_v1_withdrawals
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: agglayer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'agglayer', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Agglayer's shared bridge withdrawals events on Ethereum"
+  - name: bridges_ethereum_axelar_gateway_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: axelar
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'ethereum', 'bridges', 'flows', 'deposits' ]
+    description: "Axelar's gateway bridge deposits events on Ethereum"
+  - name: bridges_ethereum_layerzero_deposits
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: layerzero
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'ethereum', 'bridges', 'flows', 'deposits' ]
+    description: "LayerZero's v1 bridge deposits events on Ethereum"

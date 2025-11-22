@@ -3,7 +3,7 @@ version: 2
 models:
   - name: bridges_evms_deposits
     meta:
-      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei, boba
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei, boba, abstract, apechain, bob, celo, kaia, katana, mantle, plume, ronin, sonic, sophon, story, taiko, zkevm
       sector: bridges
       contributors: [ 'hildobby']
     config:
@@ -142,7 +142,7 @@ models:
       - *duplicate_index
   - name: bridges_evms_deposits_raw
     meta:
-      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei, boba
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei, boba, abstract, apechain, bob, celo, kaia, katana, mantle, plume, ronin, sonic, sophon, story, taiko, zkevm
       sector: bridges
       contributors: [ 'hildobby']
     config:
@@ -202,7 +202,7 @@ models:
       - *deposit_chain_id
   - name: bridges_evms_flows
     meta:
-      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei, mantle, boba
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, ethereum, hyperevm, ink, lens, linea, optimism, plasma, polygon, scroll, unichain, worldchain, zksync, zora, fantom, gnosis, nova, opbnb, berachain, corn, flare, sei, mantle, boba, abstract, apechain, bob, celo, kaia, katana, plume, ronin, sonic, sophon, story, taiko, zkevm
       sector: bridges
       contributors: [ 'hildobby']
     config:

@@ -6,13 +6,16 @@
     , incremental_strategy='append'
     , unique_key = ['deposit_chain','withdrawal_chain','withdrawal_chain_id','bridge_name','bridge_version','bridge_transfer_id', 'duplicate_index']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "blast", "bnb", "ethereum", "hyperevm", "ink", "lens", "linea", "optimism", "plasma", "polygon", "scroll", "unichain", "worldchain", "zksync", "zora", "fantom", "gnosis", "nova", "opbnb", "berachain", "corn", "flare", "sei", "boba", "abstract", "apechain", "bob", "celo", "kaia", "katana", "mantle", "plume", "ronin", "sonic", "sophon", "story", "taiko", "zkevm"]\',
+                                    "sector",
+                                    "bridges",
+                                    \'["hildobby"]\') }}'
 )
 }}
 
 {% if is_incremental() %}
 WITH new_raw_keys AS (
     SELECT DISTINCT deposit_chain
-    , withdrawal_chain_id
     , withdrawal_chain
     , withdrawal_chain_id
     , bridge_name
@@ -67,8 +70,11 @@ SELECT d.deposit_chain
 , ROW_NUMBER() OVER (PARTITION BY d.deposit_chain, d.withdrawal_chain, d.withdrawal_chain_id, d.bridge_name, d.bridge_version, d.bridge_transfer_id ORDER BY d.block_number, d.evt_index ) AS duplicate_index
 {% endif %}
 FROM {{ ref('bridges_evms_deposits_raw') }} d
-INNER JOIN {{ source('prices', 'usd') }} p ON p.blockchain=d.deposit_chain
-    AND p.contract_address=d.deposit_token_address
+LEFT JOIN {{ source('evms', 'info') }} i ON d.deposit_chain=i.blockchain
+LEFT JOIN {{ source('prices', 'usd') }} p ON (
+    (p.blockchain=d.deposit_chain AND p.contract_address=d.deposit_token_address)
+    OR (p.blockchain IS NULL AND p.symbol=i.native_token_symbol AND (d.deposit_token_address IS NULL OR d.deposit_token_address = 0x0000000000000000000000000000000000000000 OR d.deposit_token_standard = 'native'))
+    )
     AND p.minute=date_trunc('minute', d.block_time)
     {% if is_incremental() %}
     AND {{ incremental_predicate('p.minute') }}

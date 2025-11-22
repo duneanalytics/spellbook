@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: bridges_plume_orbiter_v1_deposits
+    meta:
+      blockchain: plume
+      sector: bridges
+      project: orbiter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'plume', 'bridges', 'flows', 'withdrawals' ]
+    description: "Orbiter's v1 bridge deposits events on Plume"
+

@@ -1,4 +1,4 @@
-{% macro symbiosis_v1_deposits(blockchain) %}
+{% macro symbiosis_v1_deposits(blockchain, events) %}
 
 SELECT '{{blockchain}}' AS deposit_chain
 , d.chainID AS withdrawal_chain_id
@@ -18,7 +18,7 @@ SELECT '{{blockchain}}' AS deposit_chain
 , d.evt_index
 , d.contract_address
 , CAST(d.id AS varchar) AS bridge_transfer_id
-FROM {{ source('symbiosis_' + blockchain, 'portal_evt_synthesizerequest') }} d
+FROM {{ events }} d
 LEFT JOIN {{ ref('bridges_symbiosis_chain_indexes') }} i ON i.id=d.chainID
 
 {% endmacro %}
