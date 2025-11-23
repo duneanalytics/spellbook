@@ -3,11 +3,11 @@ version: 2
 sources:
   - name: compound_v3_unichain
     tables:
-      - name: cWETHv3_evt_supply
-      - name: cusdcv3_evt_supply
-      - name: cWETHv3_evt_withdraw
-      - name: cusdcv3_evt_withdraw
-      - name: cWETHv3_evt_transfer
-      - name: cusdcv3_evt_transfer
-      - name: cWETHv3_evt_absorbdebt
-      - name: cusdcv3_evt_absorbdebt
+      - name: cWETHv3_evt_Supply
+      - name: cusdcv3_evt_Supply
+      - name: cWETHv3_evt_Withdraw
+      - name: cusdcv3_evt_Withdraw
+      - name: cWETHv3_evt_Transfer
+      - name: cusdcv3_evt_Transfer
+      - name: cWETHv3_evt_AbsorbDebt
+      - name: cusdcv3_evt_AbsorbDebt
