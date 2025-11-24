@@ -234,18 +234,18 @@ FROM
     ('usdx-usdxmoney-usdx', 'arbitrum', 'USDX', 0xf3527ef8dE265eAa3716FB312c12847bFBA66Cef, 18),
     ('ebtc-etherfi-staked-btc', 'arbitrum', 'eBTC', 0x657e8c867d8b37dcc18fa4caead9c45eb088c642, 8),
     ('ftw-black-agnus', 'arbitrum', 'FTW', 0x306fd3e7b169aa4ee19412323e1a5995b8c1a1f4, 18),
-    ('hyper-hyperlane', 'arbitrum', 'HYPER', 0xc9d23ed2adb0f551369946bd377f8644ce1ca5c4, 18)
-    ('usdl-lift-dollar', 'arbitrum', 'USDL', 0x7f850b0ab1988dd17b69ac564c1e2857949e4dee, 18)
-    ('port3-port3-network', 'arbitrum', 'PORT3', 0xb4357054c3da8d46ed642383f03139ac7f090343, 18)
-    ('tarot-tarot', 'arbitrum', 'TAROT', 0x13278cd824d33a7adb9f0a9a84aca7c0d2deebf7, 18)
-    ('ryze-ryze', 'arbitrum', 'RYZE', 0x7712da72127d5dd213b621497d6e4899d5989e5c, 18)
-    ('snsy-sensay', 'arbitrum', 'SNSY', 0x3124678d62d2aa1f615b54525310fbfda6dcf7ae, 18)
-    ('wagmi5-wagmi', 'arbitrum', 'WAGMI', 0xaf20f5f19698f1D19351028cd7103B63D30DE7d7, 18)
-    ('paw-pawswap', 'arbitrum', 'PAW', 0xc11158c5da9db1d553ed28f0c2ba1cbedd42cfcb, 18)
-    ('clear-everclear', 'arbitrum', 'CLEAR', 0x58b9cb810a68a7f3e1e4f8cb45d1b9b3c79705e8, 18)
-    ('hoodx-robinhood-tokenized-stock-xstock', 'arbitrum', 'HOODX', 0xe1385fdd5ffb10081cd52c56584f25efa9084015, 18)
-    ('kima-kima', 'arbitrum', 'KIMA', 0x94fcd9c18f99538c0f7c61c5500ca79f0d5c4dab, 18)
-    ('nstr-nostra', 'arbitrum', 'NSTR', 0x6d7187220f769bde541ff51dd37ee07416f861d2, 18)
-    ('nvdax-nvidia-tokenized-stock-xstock', 'arbitrum', 'NVDAX', 0xc845b2894dbddd03858fd2d643b4ef725fe0849d, 18)
+    ('hyper-hyperlane', 'arbitrum', 'HYPER', 0xc9d23ed2adb0f551369946bd377f8644ce1ca5c4, 18),
+    ('usdl-lift-dollar', 'arbitrum', 'USDL', 0x7f850b0ab1988dd17b69ac564c1e2857949e4dee, 18),
+    ('port3-port3-network', 'arbitrum', 'PORT3', 0xb4357054c3da8d46ed642383f03139ac7f090343, 18),
+    ('tarot-tarot', 'arbitrum', 'TAROT', 0x13278cd824d33a7adb9f0a9a84aca7c0d2deebf7, 18),
+    ('ryze-ryze', 'arbitrum', 'RYZE', 0x7712da72127d5dd213b621497d6e4899d5989e5c, 18),
+    ('snsy-sensay', 'arbitrum', 'SNSY', 0x3124678d62d2aa1f615b54525310fbfda6dcf7ae, 18),
+    ('wagmi5-wagmi', 'arbitrum', 'WAGMI', 0xaf20f5f19698f1D19351028cd7103B63D30DE7d7, 18),
+    ('paw-pawswap', 'arbitrum', 'PAW', 0xc11158c5da9db1d553ed28f0c2ba1cbedd42cfcb, 18),
+    ('clear-everclear', 'arbitrum', 'CLEAR', 0x58b9cb810a68a7f3e1e4f8cb45d1b9b3c79705e8, 18),
+    ('hoodx-robinhood-tokenized-stock-xstock', 'arbitrum', 'HOODX', 0xe1385fdd5ffb10081cd52c56584f25efa9084015, 18),
+    ('kima-kima', 'arbitrum', 'KIMA', 0x94fcd9c18f99538c0f7c61c5500ca79f0d5c4dab, 18),
+    ('nstr-nostra', 'arbitrum', 'NSTR', 0x6d7187220f769bde541ff51dd37ee07416f861d2, 18),
+    ('nvdax-nvidia-tokenized-stock-xstock', 'arbitrum', 'NVDAX', 0xc845b2894dbddd03858fd2d643b4ef725fe0849d, 18),
     ('rcade-rcade-network', 'arbitrum', 'RCADE', 0x077574441C4F8763a37a2cFeE2ECb444aA60A15e, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
