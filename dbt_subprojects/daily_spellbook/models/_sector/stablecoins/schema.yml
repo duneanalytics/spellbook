@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: stablecoin_blacklist_events
+    description: >
+      Cross-chain blacklist, unblacklist, and destroy events for USDT, USDC,
+      and PYUSD on Ethereum and Arbitrum.
+    columns:
+      - name: blockchain
+        description: "Blockchain name (e.g. ethereum, arbitrum)."
+      - name: block_time
+        description: "Timestamp of the blacklist-related event."
+      - name: issuer
+        description: "Token issuer (tether, circle, paypal)."
+      - name: token
+        description: "Token symbol (USDT, USDC, PYUSD)."
+      - name: address
+        description: "Account affected by the event."
+      - name: usd_destroy
+        description: "Amount of funds destroyed for this event, in token units where applicable."
+      - name: tx_hash
+        description: "Transaction hash for the event."
+      - name: event_type
+        description: "Event type: blacklist, unblacklist, DestroyBlockedFunds."
+
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - event_type
+            - address
