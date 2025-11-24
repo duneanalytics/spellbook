@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: compound_v3_arbitrum
+  - name: compound_v3_unichain
     tables:
       - name: cWETHv3_evt_SupplyCollateral
       - name: cusdcv3_evt_SupplyCollateral
