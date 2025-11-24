@@ -1,6 +1,6 @@
 version: 2
 
 sources:
-  - name: kuru_monad_testnet
+  - name: kuru_monad
     tables:
-      - name: kuruflow_evt_kuruflowswap
+      - name: router_evt_kururouterswap
