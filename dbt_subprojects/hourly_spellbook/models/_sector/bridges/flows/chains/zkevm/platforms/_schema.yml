@@ -19,3 +19,12 @@ models:
     config:
       tags: [ 'nitro', 'bridges', 'flows' , 'deposits' ]
     description: "Nitro's v1 bridge deposits events on Polygon zkEVM"
+  - name: bridges_zkevm_orbiter_v1_deposits
+    meta:
+      blockchain: zkevm
+      sector: bridges
+      project: orbiter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'zkevm', 'bridges', 'flows', 'withdrawals' ]
+    description: "Orbiter's v1 bridge deposits events on Polygon zkEVM"

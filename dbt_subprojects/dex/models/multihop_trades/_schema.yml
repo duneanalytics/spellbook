@@ -84,11 +84,11 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
+            - block_time
             - tx_hash
-            - project
-            - version
+            - evt_index
             - pool_address
-            - token_pair
     columns: 
       - *blockchain
       - *project
@@ -123,11 +123,11 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
+            - block_time
             - tx_hash
-            - project
-            - version
+            - evt_index
             - pool_address
-            - token_pair
     columns: 
       - *blockchain
       - *project
@@ -162,11 +162,11 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
+            - block_time
             - tx_hash
-            - project
-            - version
+            - evt_index
             - pool_address
-            - token_pair
     columns: 
       - *blockchain
       - *project
@@ -201,11 +201,11 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
+            - block_time
             - tx_hash
-            - project
-            - version
+            - evt_index
             - pool_address
-            - token_pair
     columns: 
       - *blockchain
       - *project
@@ -240,11 +240,11 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
+            - block_time
             - tx_hash
-            - project
-            - version
+            - evt_index
             - pool_address
-            - token_pair
     columns: 
       - *blockchain
       - *project
@@ -279,11 +279,11 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
+            - block_time
             - tx_hash
-            - project
-            - version
+            - evt_index
             - pool_address
-            - token_pair
     columns: 
       - *blockchain
       - *project
@@ -318,11 +318,11 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
+            - block_time
             - tx_hash
-            - project
-            - version
+            - evt_index
             - pool_address
-            - token_pair
     columns: 
       - *blockchain
       - *project
@@ -357,11 +357,11 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
+            - block_time
             - tx_hash
-            - project
-            - version
+            - evt_index
             - pool_address
-            - token_pair
     columns: 
       - *blockchain
       - *project
@@ -396,11 +396,11 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
+            - block_time
             - tx_hash
-            - project
-            - version
+            - evt_index
             - pool_address
-            - token_pair
     columns: 
       - *blockchain
       - *project
@@ -435,11 +435,11 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
+            - block_time
             - tx_hash
-            - project
-            - version
+            - evt_index
             - pool_address
-            - token_pair
     columns: 
       - *blockchain
       - *project
@@ -474,11 +474,11 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
+            - block_time
             - tx_hash
-            - project
-            - version
+            - evt_index
             - pool_address
-            - token_pair
     columns: 
       - *blockchain
       - *project
@@ -513,11 +513,11 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
+            - block_time
             - tx_hash
-            - project
-            - version
+            - evt_index
             - pool_address
-            - token_pair
     columns: 
       - *blockchain
       - *project
@@ -552,11 +552,11 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
+            - block_time
             - tx_hash
-            - project
-            - version
+            - evt_index
             - pool_address
-            - token_pair
     columns: 
       - *blockchain
       - *project
@@ -591,11 +591,11 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
+            - block_time
             - tx_hash
-            - project
-            - version
+            - evt_index
             - pool_address
-            - token_pair
     columns: 
       - *blockchain
       - *project
@@ -630,11 +630,11 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
+            - block_time
             - tx_hash
-            - project
-            - version
+            - evt_index
             - pool_address
-            - token_pair
     columns: 
       - *blockchain
       - *project
@@ -669,11 +669,11 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
+            - block_time
             - tx_hash
-            - project
-            - version
+            - evt_index
             - pool_address
-            - token_pair
     columns: 
       - *blockchain
       - *project
@@ -708,11 +708,11 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
+            - block_time
             - tx_hash
-            - project
-            - version
+            - evt_index
             - pool_address
-            - token_pair
     columns: 
       - *blockchain
       - *project
@@ -747,11 +747,11 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
+            - block_time
             - tx_hash
-            - project
-            - version
+            - evt_index
             - pool_address
-            - token_pair
     columns: 
       - *blockchain
       - *project
@@ -786,11 +786,11 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
+            - block_time
             - tx_hash
-            - project
-            - version
+            - evt_index
             - pool_address
-            - token_pair
     columns: 
       - *blockchain
       - *project
@@ -825,11 +825,11 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
+            - block_time
             - tx_hash
-            - project
-            - version
+            - evt_index
             - pool_address
-            - token_pair
     columns: 
       - *blockchain
       - *project
