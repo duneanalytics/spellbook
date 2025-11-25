@@ -718,3 +718,36 @@ models:
             - block_number
             - tx_hash
             - sub_tx_trade_id
+
+  - name: spaace_v1_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      project: spaace
+      contributors: sohwak, 0xRob
+    config:
+      tags: [ 'spaace','base_trades','seaport' ]
+    description: >
+      spaace base trades from seaport (v4)
+    data_tests:
+      - check_columns_nft_base_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_number
+            - tx_hash
+            - sub_tx_trade_id
+      - check_seed:
+          seed_file: ref('spaace_seaport_trades_samples')
+          filter:
+            blockchain: ethereum
+            project: spaace
+            project_version: v1
+          check_columns:
+            - buyer
+            - seller
+            - price_raw
+            - platform_fee_amount_raw
+            - royalty_fee_amount_raw
+          match_columns:
+            - block_number
+            - tx_hash
+            - sub_tx_trade_id
