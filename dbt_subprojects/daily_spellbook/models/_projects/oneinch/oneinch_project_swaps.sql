@@ -11,5 +11,5 @@
 {%- for blockchain in oneinch_project_swaps_exposed_blockchains_list() %}
     -- depends on: {{ ref('oneinch_' + blockchain + '_project_orders') }} --
     select * from {{ ref('oneinch_' + blockchain + '_project_swaps') }}
-    {% if not loop.last %}union all{% endif %}
+    {% if not loop.last -%} union all {%- endif %}
 {%- endfor -%}
