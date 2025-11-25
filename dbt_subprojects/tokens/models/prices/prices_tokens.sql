@@ -66,6 +66,7 @@
     ,ref('prices_plasma_tokens')
     ,ref('prices_mezo_tokens')
     ,ref('prices_monad_tokens')
+    ,ref('prices_xlayer_tokens')
 ] %}
 
 with fungible_tokens as (
