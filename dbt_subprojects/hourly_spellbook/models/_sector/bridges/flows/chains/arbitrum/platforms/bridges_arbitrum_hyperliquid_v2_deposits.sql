@@ -23,7 +23,7 @@ SELECT 'arbitrum' AS deposit_chain
 , 0xaf88d065e77c8cc2239327c5edb3a432268e5831 AS deposit_token_address
 , tx_from AS tx_from
 , tx_hash AS tx_hash
-, evt_index
+, COALESCE(evt_index, 0) AS evt_index
 , contract_address
 , {{ dbt_utils.generate_surrogate_key(['tx_hash', 'evt_index']) }} as bridge_transfer_id
 FROM {{ source('tokens_arbitrum', 'transfers') }}

@@ -1,0 +1,672 @@
+version: 2
+
+models:
+  - name: thorchain_silver_add_events
+
+  - name: thorchain_silver_block_log
+
+  - name: thorchain_silver_block_pool_depths
+
+  - name: thorchain_silver_block_rewards
+
+  - name: thorchain_silver_bond_events
+
+  - name: thorchain_silver_constants
+
+  - name: thorchain_silver_daily_earnings
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+
+  - name: thorchain_silver_daily_pool_stats
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - _unique_key
+
+  - name: thorchain_silver_daily_tvl
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+
+  - name: thorchain_silver_fee_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - event_id
+
+  - name: thorchain_silver_gas_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - event_id
+
+  - name: thorchain_silver_liquidity_actions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - _unique_key
+
+  - name: thorchain_silver_loan_open_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - event_id
+
+  - name: thorchain_silver_loan_repayment_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - event_id
+
+  - name: thorchain_silver_outbound_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - event_id
+            - blockchain
+            - from_address
+            - to_address
+            - asset
+            - memo
+            - in_tx
+            - block_timestamp
+
+  - name: thorchain_silver_pending_liquidity_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - event_id
+
+  - name: thorchain_silver_pool_block_balances
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - _unique_key
+
+  - name: thorchain_silver_pool_block_fees
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - _unique_key
+
+  - name: thorchain_silver_pool_block_statistics
+
+  - name: thorchain_silver_pool_events
+
+  - name: thorchain_silver_prices
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - _unique_key
+
+  - name: thorchain_silver_refund_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - _unique_key
+
+  - name: thorchain_silver_rewards_event_entries
+
+  - name: thorchain_silver_rewards_events
+
+  - name: thorchain_silver_rune_price
+
+  - name: thorchain_silver_scheduled_outbound_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - event_id
+
+  - name: thorchain_silver_stake_events
+
+  - name: thorchain_silver_streaming_swap_details_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - event_id
+
+  - name: thorchain_silver_swap_events
+
+  - name: thorchain_silver_swaps
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - _unique_key
+
+  - name: thorchain_silver_total_block_rewards
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_timestamp
+            - block_id
+            - reward_entity
+            - _unique_key
+
+  - name: thorchain_silver_total_value_locked
+
+  - name: thorchain_silver_transfer_events
+
+  - name: thorchain_silver_transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - _unique_key
+
+  - name: thorchain_silver_update_node_account_status_events
+
+  - name: thorchain_silver_upgrades
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - _unique_key
+
+  - name: thorchain_silver_withdraw_events
+
+  - name: thorchain_core_block
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - dim_block_id
+
+  - name: thorchain_core_instantiate_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_instantiate_events_id
+
+  - name: thorchain_core_network_version_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_network_version_events_id
+
+  - name: thorchain_core_set_mimir_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_set_mimir_events_id
+
+  - name: thorchain_core_thorname_change_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_thorname_change_events_id
+
+  - name: thorchain_core_transfer_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - fact_transfer_events_id
+
+  - name: thorchain_core_transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - fact_transfers_id
+
+  - name: thorchain_core_tss_keygen_failure_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_tss_keygen_failure_events_id
+
+  - name: thorchain_core_tss_keygen_success_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_tss_keygen_success_events_id
+
+  - name: thorchain_core_wasm_contracts_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_wasm_contracts_events_id
+
+  - name: thorchain_defi_active_vault_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_active_vault_events_id
+
+  - name: thorchain_defi_add_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - fact_add_events_id
+
+  - name: thorchain_defi_affiliate_fee_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_affiliate_fee_events_id
+
+  - name: thorchain_defi_asgard_fund_yggdrasil_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_asgard_fund_yggdrasil_events_id
+
+  - name: thorchain_defi_block_pool_depths
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - fact_pool_depths_id
+
+  - name: thorchain_defi_block_rewards
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - fact_block_rewards_id
+
+  - name: thorchain_defi_bond_actions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - fact_bond_actions_id
+
+  - name: thorchain_defi_bond_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - fact_bond_events_id
+
+  - name: thorchain_defi_daily_earnings
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - fact_daily_earnings_id
+
+  - name: thorchain_defi_daily_pool_stats
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - fact_daily_pool_stats_id
+
+  - name: thorchain_defi_daily_tvl
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - fact_daily_tvl_id
+
+  - name: thorchain_defi_errata_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_errata_events_id
+
+  - name: thorchain_defi_failed_deposit_messages
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_failed_deposit_messages_id
+
+  - name: thorchain_defi_fee_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - tx_id
+            - event_id
+
+  - name: thorchain_defi_gas_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_gas_events_id
+
+  - name: thorchain_defi_inactive_vault_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_inactive_vault_events_id
+
+  - name: thorchain_defi_liquidity_actions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - fact_liquidity_actions_id
+
+  - name: thorchain_defi_loan_open_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_loan_open_events_id
+
+  - name: thorchain_defi_loan_repayment_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_loan_repayment_events_id
+
+  - name: thorchain_defi_mint_burn_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_mint_burn_events_id
+
+  - name: thorchain_defi_outbound_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_outbound_events_id
+
+  - name: thorchain_defi_pending_liquidity_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_pending_liquidity_events_id
+
+  - name: thorchain_defi_pool_balance_change_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_pool_balance_change_events_id
+
+  - name: thorchain_defi_pool_block_balances
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - fact_pool_block_balances_id
+
+  - name: thorchain_defi_pool_block_fees
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - fact_pool_block_fees_id
+
+  - name: thorchain_defi_pool_block_statistics
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - fact_pool_block_statistics_id
+
+  - name: thorchain_defi_pool_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - fact_pool_events_id
+
+  - name: thorchain_defi_refund_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_refund_events_id
+
+  - name: thorchain_defi_reserve_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_reserve_events_id
+
+  - name: thorchain_defi_rewards_event_entries
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - fact_rewards_event_entries_id
+
+  - name: thorchain_defi_rewards_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - fact_rewards_events_id
+
+  - name: thorchain_defi_rune_pool_deposit_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_rune_pool_deposit_events_id
+
+  - name: thorchain_defi_rune_pool_withdraw_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_rune_pool_withdraw_events_id
+
+  - name: thorchain_defi_scheduled_outbound_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_scheduled_outbound_events_id
+
+  - name: thorchain_defi_secure_asset_deposit_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - event_id
+
+  - name: thorchain_defi_secure_asset_withdraw_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - event_id
+
+  - name: thorchain_defi_send_messages
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_send_messages_id
+
+  - name: thorchain_defi_stake_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - fact_stake_events_id
+
+  - name: thorchain_defi_streaming_swap_details_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - tx_id
+            - event_id
+
+  - name: thorchain_defi_swap_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - fact_swap_events_id
+
+  - name: thorchain_defi_swaps
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - fact_swaps_id
+
+  - name: thorchain_defi_switch_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_switch_events_id
+
+  - name: thorchain_defi_tcy_claim_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_tcy_claim_events_id
+
+  - name: thorchain_defi_tcy_distribution_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_tcy_distribution_events_id
+
+  - name: thorchain_defi_tcy_stake_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_tcy_stake_events_id
+
+  - name: thorchain_defi_tcy_unstake_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_tcy_unstake_events_id
+
+  - name: thorchain_defi_total_block_rewards
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - fact_total_block_rewards_id
+
+  - name: thorchain_defi_total_value_locked
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - fact_total_value_locked_id
+
+  - name: thorchain_defi_trade_account_deposit_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - event_id
+
+  - name: thorchain_defi_trade_account_withdraw_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - event_id
+
+  - name: thorchain_defi_update_node_account_status_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - fact_update_node_account_status_events_id
+
+  - name: thorchain_defi_upgrades
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - fact_upgrades_id
+
+  - name: thorchain_defi_withdraw_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - fact_withdraw_events_id
+
+  - name: thorchain_gov_new_node_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_new_node_events_id
+
+  - name: thorchain_gov_set_ip_address_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_set_ip_address_events_id
+
+  - name: thorchain_gov_set_node_keys_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_set_node_keys_events_id
+
+  - name: thorchain_gov_set_node_mimir_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_set_node_mimir_events_id
+
+  - name: thorchain_gov_set_version_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_set_version_events_id
+
+  - name: thorchain_gov_slash_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_slash_events_id
+
+  - name: thorchain_gov_slash_points_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_slash_points_id
+
+  - name: thorchain_gov_validator_request_leave_events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - fact_validator_request_leave_events_id

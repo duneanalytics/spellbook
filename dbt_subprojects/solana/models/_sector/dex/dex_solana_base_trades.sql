@@ -51,6 +51,7 @@ SELECT
       , version
       , version_name
       , CAST(date_trunc('month', block_time) AS DATE) as block_month
+      , CAST(date_trunc('day', block_time) AS DATE) as block_date
       , block_time
       , block_slot
       , trade_source

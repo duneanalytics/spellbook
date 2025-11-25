@@ -197,6 +197,15 @@ models:
     config:
       tags: [ 'arbitrum', 'bridges', 'flows', 'withdrawals' ]
     description: "Symbiosis's v1 bridge deposits events on Arbitrum"
+  - name: bridges_arbitrum_beamer_v1_deposits
+    meta:
+      blockchain: arbitrum
+      sector: bridges
+      project: beamer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'beamer', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Beamer's v1 bridge deposits events on Arbitrum"
   - name: bridges_arbitrum_beamer_v2_deposits
     meta:
       blockchain: arbitrum
@@ -206,8 +215,15 @@ models:
     config:
       tags: [ 'beamer', 'bridges', 'flows' , 'withdrawals' ]
     description: "Beamer's v2 bridge deposits events on Arbitrum"
-
-
+  - name: bridges_arbitrum_beamer_v3_deposits
+    meta:
+      blockchain: arbitrum
+      sector: bridges
+      project: beamer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'beamer', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Beamer's v3 bridge deposits events on Arbitrum"
   - name: bridges_arbitrum_zkbridge_v1_deposits
     meta:
       blockchain: arbitrum
@@ -217,3 +233,40 @@ models:
     config:
       tags: [ 'arbitrum', 'bridges', 'flows', 'deposits' ]
     description: "zkBridge's v1 bridge deposits events on Arbitrum"
+  - name: bridges_arbitrum_orbiter_v1_deposits
+    meta:
+      blockchain: arbitrum
+      sector: bridges
+      project: orbiter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'arbitrum', 'bridges', 'flows', 'withdrawals' ]
+    description: "Orbiter's v1 bridge deposits events on Arbitrum"
+  - name: bridges_arbitrum_nitro_v1_deposits
+    meta:
+      blockchain: arbitrum
+      sector: bridges
+      project: nitro
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'nitro', 'bridges', 'flows' , 'deposits' ]
+    description: "Nitro's v1 bridge deposits events on Arbitrum"
+  - name: bridges_arbitrum_axelar_gateway_deposits
+    meta:
+      blockchain: arbitrum
+      sector: bridges
+      project: axelar
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'arbitrum', 'bridges', 'flows', 'deposits' ]
+    description: "Axelar's gateway bridge deposits events on Arbitrum"
+  - name: bridges_arbitrum_layerzero_deposits
+    meta:
+      blockchain: arbitrum
+      sector: bridges
+      project: layerzero
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'arbitrum', 'bridges', 'flows', 'deposits' ]
+    description: "LayerZero's v1 bridge deposits events on Arbitrum"
+

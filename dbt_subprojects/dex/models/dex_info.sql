@@ -240,5 +240,7 @@ FROM (VALUES
     , ('cldex', 'CLDEX', 'Direct', 'KaiaChain')
     , ('pharaoh_v3', 'Pharaoh', 'Direct', 'PharaohExchange')
     , ('aborean', 'Aborean', 'Direct', 'AboreanFi')
-
+    , ('story_hunt', 'Story Hunt', 'Direct', 'story_hunt')
+    , ('piperx', 'PiperX', 'Direct', 'piperx')
+    , ('mezo_swap', 'Mezo Swap', 'Direct', 'mezoswap')
 ) AS temp_table (project, name, marketplace_type, x_username)

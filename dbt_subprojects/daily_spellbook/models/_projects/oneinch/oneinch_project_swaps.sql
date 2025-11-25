@@ -1,5 +1,6 @@
 {{  
     config(
+        tags = ['prod_exclude'],
         schema = 'oneinch',
         alias = 'project_swaps',
         materialized = 'view',
