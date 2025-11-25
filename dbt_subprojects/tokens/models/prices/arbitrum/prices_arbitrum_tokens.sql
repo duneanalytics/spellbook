@@ -242,7 +242,6 @@ FROM
     ('snsy-sensay', 'arbitrum', 'SNSY', 0x3124678d62d2aa1f615b54525310fbfda6dcf7ae, 18),
     ('wagmi5-wagmi', 'arbitrum', 'WAGMI', 0xaf20f5f19698f1D19351028cd7103B63D30DE7d7, 18),
     ('paw-pawswap', 'arbitrum', 'PAW', 0xc11158c5da9db1d553ed28f0c2ba1cbedd42cfcb, 18),
-    ('clear-everclear', 'arbitrum', 'CLEAR', 0x58b9cb810a68a7f3e1e4f8cb45d1b9b3c79705e8, 18),
     ('hoodx-robinhood-tokenized-stock-xstock', 'arbitrum', 'HOODX', 0xe1385fdd5ffb10081cd52c56584f25efa9084015, 18),
     ('kima-kima', 'arbitrum', 'KIMA', 0x94fcd9c18f99538c0f7c61c5500ca79f0d5c4dab, 18),
     ('nstr-nostra', 'arbitrum', 'NSTR', 0x6d7187220f769bde541ff51dd37ee07416f861d2, 18),
