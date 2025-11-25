@@ -55,6 +55,9 @@ sources:
   - name: balancer_v3_plasma
     tables:
       - name: trades
+  - name: balancer_v3_avalanche_c
+    tables:
+      - name: trades
   - name: balancer
     tables:
       - name: trades
