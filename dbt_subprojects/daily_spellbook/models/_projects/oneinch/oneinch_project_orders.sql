@@ -1,5 +1,6 @@
 {{  
     config(
+        tags = ['prod_exclude'],
         schema = 'oneinch',
         alias = 'project_orders',
         materialized = 'incremental',
@@ -87,7 +88,7 @@ meta as (
             , null as order_deadline
             , 1 as call_trade
             , 1 as call_trades
-        from {{ source('oneinch', 'lop') }}
+        from {{ source('oneinch', 'lo') }}
         where call_success
     )
     join meta using(blockchain)
