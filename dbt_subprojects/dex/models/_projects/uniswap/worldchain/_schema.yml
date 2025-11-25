@@ -158,7 +158,7 @@ models:
       - check_dex_base_liquidity_seed:
           seed_file: ref('uniswap_worldchain_base_liquidity_seed')
           filter:
-            version: 4
+            event_type: modify_liquidity
     columns:
       - *blockchain
       - *project
@@ -264,3 +264,17 @@ models:
       - *token1
       - *amount0_raw
       - *amount1_raw
+
+  - name: uniswap_worldchain_trades
+    meta:
+      blockchain: worldchain
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: [ 'dex' ]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - tx_hash
+            - evt_index

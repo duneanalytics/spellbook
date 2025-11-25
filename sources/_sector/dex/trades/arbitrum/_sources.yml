@@ -206,3 +206,6 @@ sources:
       - name: magicelmpair_evt_swap
       - name: magicelmpair_call_token1
       - name: magicelmpair_call_token0
+  - name: bunni_v2_arbitrum
+    tables:
+      - name: bunnihook_evt_swap
