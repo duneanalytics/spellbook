@@ -1,7 +1,7 @@
 {%- macro 
     oneinch_project_calls_macro(
         blockchain,
-        date_from = '2025-11-14'
+        date_from = '2019-01-01'
     )
 -%}
 
