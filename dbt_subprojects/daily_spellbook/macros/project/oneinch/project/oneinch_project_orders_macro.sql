@@ -1,7 +1,7 @@
 {%- macro
     oneinch_project_orders_macro(
-        blockchain
-        , date_from = '2019-01-01'
+        blockchain,
+        date_from = '2019-01-01'
     )
 -%}
 
@@ -141,7 +141,7 @@ logs as (
                 , {{ item.get("event", "null") }} as topic0
                 , coalesce({{ item.get("number", "1") }}, 1) as call_trades -- total trades in the call
                 , transform(sequence(1, coalesce({{ item.get("number", "1") }}, 1)), x -> map_from_entries(array[
-                    ('trade',             try(to_big_endian_64(x)))
+                    ('trade',               try(to_big_endian_64(x)))
                     , ('maker',             {{ item.get("maker", "null") }})
                     , ('taker',             {{ item.get("taker", "null") }})
                     , ('receiver',          {{ item.get("receiver", "null") }})
@@ -192,8 +192,7 @@ logs as (
 )
 
 , joined as (
-    select
-        *
+    select *
         , coalesce(log_maker, call_maker, call_to) as maker
         , coalesce(log_taker, call_taker) as taker
         , coalesce(log_receiver, call_receiver) as receiver

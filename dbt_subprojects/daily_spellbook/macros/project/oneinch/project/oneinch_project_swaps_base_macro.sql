@@ -1,7 +1,7 @@
 {%- macro
     oneinch_project_swaps_base_macro(
-        blockchain
-        , date_from = '2019-01-01'
+        blockchain,
+        date_from = '2019-01-01'
     )
 -%}
 
@@ -14,7 +14,7 @@
 with
 
 meta as (
-    select 
+    select
         chain_id
         , wrapped_native_token_address
         , native_token_symbol as native_symbol
@@ -41,7 +41,7 @@ meta as (
     where true
         and call_success
         and block_time >= timestamp '{{ date_from }}'
-        {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
+        {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
     
     union all
     
@@ -63,7 +63,7 @@ meta as (
     where true
         and call_success
         and block_time >= timestamp '{{ date_from }}'
-        {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
+        {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
 )
 
 , calls as (
@@ -76,7 +76,7 @@ meta as (
         and (tx_success or tx_success is null)
         and (flags['cross_chain'] or not flags['cross_chain_method']) -- without cross-chain methods calls in non cross-chain protocols
         and block_time >= timestamp '{{ date_from }}'
-        {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
+        {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
 )
 
 , swaps as (
@@ -140,7 +140,7 @@ meta as (
     where true
         and blockchain = '{{ blockchain }}'
         and minute >= timestamp '{{ date_from }}'
-        {% if is_incremental() %}and {{ incremental_predicate('minute') }}{% endif %}
+        {% if is_incremental() -%} and {{ incremental_predicate('minute') }} {%- endif %}
 )
 
 , creations as (
@@ -182,7 +182,7 @@ meta as (
     where true
         and blockchain = '{{ blockchain }}'
         and block_time >= timestamp '{{ date_from }}'
-        {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
+        {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
 )
 
 , joined as (
@@ -249,8 +249,7 @@ meta as (
 )
 
 , processing as (
-    select
-        *
+    select *
         , array_union(senders, receivers) as users
         , array_agg(
             cast(row(

@@ -1,7 +1,7 @@
 {%- macro
     oneinch_project_swaps_second_side_macro(
-        blockchain
-        , project_swaps_base_table
+        blockchain,
+        project_swaps_base_table
     )
 -%}
 
