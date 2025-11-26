@@ -1,5 +1,6 @@
 {% macro paraswap_v6_trades_by_contract(blockchain, project, contract_name, contract_details) %}
 {% set exclude_maker_psm = ['gnosis', 'unichain', 'plasma'] %}
+{% set deprecated_chains = ['fantom', 'zkevm'] %}
 -- TODO: improve spacing for readability
  with v6_trades as (    
     with
@@ -14,7 +15,9 @@
               -- TODO: should be possible to improve this conditional code by moving it to the config
               {% if contract_details['version'] == '6.2' %}
                 ,swapOnAugustusRFQTryBatchFill    as ({{ paraswap_v6_rfq_method( source(project + '_' + blockchain, contract_name + '_call_swapOnAugustusRFQTryBatchFill')) }}) -- RFQ - not distinguishing between buy/sell
-                ,swapExactAmountInPro             as ({{ paraswap_v6_uniswaplike_method( source(project + '_' + blockchain, contract_name + '_call_swapExactAmountInPro'), 'swapExactAmountInPro', 'swapData') }})
+                {% if blockchain not in deprecated_chains %}
+                  ,swapExactAmountInPro           as ({{ paraswap_v6_uniswaplike_method( source(project + '_' + blockchain, contract_name + '_call_swapExactAmountInPro'), 'swapExactAmountInPro', 'swapData') }})
+                {% endif %}
                 {% if blockchain not in exclude_maker_psm %}
                   ,swapExactAmountInOutOnMakerPSM as ({{ paraswap_v6_maker_psm_method( source(project + '_' + blockchain, contract_name + '_call_swapExactAmountInOutOnMakerPSM')) }}) -- Maker PSM - not distinguishing between buy/sell
                 {% endif %}
@@ -41,8 +44,10 @@ from
             {% if contract_details['version'] == '6.2' %}
             union
             select * from swapOnAugustusRFQTryBatchFill
+            {% if blockchain not in deprecated_chains %}
             union
             select * from swapExactAmountInPro
+            {% endif %}
             {% if blockchain not in exclude_maker_psm %}
             union
             select * from swapExactAmountInOutOnMakerPSM
@@ -56,7 +61,7 @@ from
               swapExactAmountOutOnUniswapV2  as ({{ paraswap_v6_uniswaplike_method( source(project + '_' + blockchain, contract_name + '_call_swapExactAmountOutOnUniswapV2'), 'swapExactAmountOutOnUniswapV2', 'uniData', 'output_spentAmount as spentAmount' ) }}),
               swapExactAmountOutOnUniswapV3  as ({{ paraswap_v6_uniswaplike_method( source(project + '_' + blockchain, contract_name + '_call_swapExactAmountOutOnUniswapV3'), 'swapExactAmountOutOnUniswapV3', 'uniData', 'output_spentAmount as spentAmount') }}),
               swapExactAmountOutOnBalancerV2 as ({{ paraswap_v6_balancer_v2_method('swapexactAmountOutOnBalancerV2_decoded', 'swapexactAmountOutOnBalancerV2_raw', source(project + '_' + blockchain, contract_name + '_call_swapExactAmountOutOnBalancerV2'), 'out', 'swapExactAmountOutOnBalancerV2')}} )     
-              {% if contract_details['version'] == '6.2' %}
+              {% if contract_details['version'] == '6.2' and blockchain not in deprecated_chains %}
                 ,swapExactAmountOutPro       as ({{ paraswap_v6_uniswaplike_method( source(project + '_' + blockchain, contract_name + '_call_swapExactAmountOutPro'), 'swapExactAmountOutPro', 'swapData', 'output_spentAmount as spentAmount') }})
               {% endif %}         
             select
@@ -72,7 +77,7 @@ from
             union
             select * from swapExactAmountOutOnBalancerV2
             -- TODO: should be possible to improve this conditional code
-            {% if contract_details['version'] == '6.2' %}
+            {% if contract_details['version'] == '6.2' and blockchain not in deprecated_chains %}
             union
             select * from swapExactAmountOutPro
             {% endif %}
