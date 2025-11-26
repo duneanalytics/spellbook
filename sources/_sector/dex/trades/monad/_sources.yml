@@ -1,0 +1,6 @@
+version: 2
+
+sources:
+  - name: kuru_monad
+    tables:
+      - name: router_evt_kururouterswap
