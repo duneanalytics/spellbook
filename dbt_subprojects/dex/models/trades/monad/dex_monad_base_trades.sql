@@ -12,6 +12,8 @@
 
 {% set base_models = [
     ref('kuru_monad_base_trades')
+    , ref('pinot_v2_monad_base_trades')
+    , ref('pinot_v3_monad_base_trades')
 ] %}
 with base_union as (
     SELECT *
