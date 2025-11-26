@@ -1,7 +1,7 @@
 {%- macro
     oneinch_project_swaps_base_macro(
         blockchain,
-        date_from = '2019-01-01'
+        date_from = '2025-11-14'
     )
 -%}
 
@@ -383,6 +383,13 @@ select
     , modes
     , reduce(map_keys(modes), 0, (r, x) -> r + if(modes[x], 1, 0), r -> r) as modes_count
     , reduce(map_keys(modes), 'other', (r, x) -> if(r = 'other' and modes[x], x, r), r -> r) as mode
+    , sha256(to_utf8(concat_ws('|'
+        , blockchain
+        , cast(tx_hash as varchar)
+        , cast(false as varchar) -- second_side
+        , array_join(call_trace_address, ',') -- ',' is necessary to avoid similarities after concatenation // array_join(array[1, 0], '') = array_join(array[10], '')
+        , cast(call_trade_id as varchar)
+    ))) as id
 from sides
 
 {%- endmacro -%}

@@ -64,6 +64,13 @@ select
     ]) as modes
     , 1 as modes_count
     , 'intra-chain: classic: direct' as mode
+    , sha256(to_utf8(concat_ws('|'
+        , blockchain
+        , cast(tx_hash as varchar)
+        , cast(true as varchar) -- second_side
+        , array_join(call_trace_address, ',') -- ',' is necessary to avoid similarities after concatenation // array_join(array[1, 0], '') = array_join(array[10], '')
+        , cast(call_trade_id as varchar)
+    ))) as id
 from {{ project_swaps_base_table }}
 where true
     and flags['direct']
