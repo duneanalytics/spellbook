@@ -18,7 +18,7 @@
     ref('balancer_polygon_pools_tokens_weights'),
     ref('balancer_zkevm_pools_tokens_weights'),
     ref('balancer_v3_plasma_pools_tokens_weights'),
-    ref('balancer_v3_avalanche_c_pools_token_weights')
+    ref('balancer_v3_avalanche_c_pools_tokens_weights')
 ] %}
 
 

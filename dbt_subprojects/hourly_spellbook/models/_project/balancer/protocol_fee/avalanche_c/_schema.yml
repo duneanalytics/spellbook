@@ -87,12 +87,14 @@ models:
       - *version
       - *blockchain
       - *pool_type        
-      - *fee_type
+      - name: fee_type
+        description: "Type of fee collected (e.g. protocol, liquidity provider)"
       - *token_address
       - *token_symbol
       - *token_amount_raw
       - *token_amount
       - *protocol_fee_collected_usd
       - *treasury_share
-      - *treasury_fee_usd
-      - *lp_fee_collected_usd            
+      - name: treasury_fee_usd
+        description: "USD value of fee directed to Balancer DAO's treasury"
+      - *lp_fee_collected_usd

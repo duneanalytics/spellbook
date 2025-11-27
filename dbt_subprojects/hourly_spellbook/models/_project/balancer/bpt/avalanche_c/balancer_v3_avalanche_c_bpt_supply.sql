@@ -2,7 +2,7 @@
 
 {{
     config(
-        schema='avalanche_c',
+        schema='balancer_v3_avalanche_c',
         alias = 'bpt_supply',
         materialized = 'table',
         file_format = 'delta'
@@ -15,7 +15,7 @@
         blockchain = blockchain,
         version = '3',        
         project_decoded_as = 'balancer_v3',
-        pool_labels_model = 'avalanche_c',
-        transfers_spell = ref('avalanche_c_transfers_bpt')
+        pool_labels_model = 'balancer_v3_pools_avalanche_c',
+        transfers_spell = ref('balancer_v3_avalanche_c_transfers_bpt')
     )
 }}
