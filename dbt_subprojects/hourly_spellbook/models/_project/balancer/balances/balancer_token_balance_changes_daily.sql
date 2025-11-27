@@ -4,7 +4,7 @@
     post_hook='{{ expose_spells(blockchains = \'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon", "zkevm"]\',
                                 spell_type = "project",
                                 spell_name = "balancer",
-                                contributors = \'["viniabussafi"]\') }}'
+                                contributors = \'["viniabussafi", "tiagoponciano"]\') }}'
     )
 }}
 
@@ -20,7 +20,8 @@
     ref('balancer_v3_ethereum_token_balance_changes_daily'),
     ref('balancer_v3_gnosis_token_balance_changes_daily'),
     ref('balancer_v3_arbitrum_token_balance_changes_daily'),
-    ref('balancer_v3_base_token_balance_changes_daily')    
+    ref('balancer_v3_base_token_balance_changes_daily'),
+    ref('balancer_v3_avalanche_c_token_balance_changes_daily') 
 ] %}
 
 SELECT *

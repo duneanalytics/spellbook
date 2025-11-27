@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: avalanche_c
       project: balancer
-      contributors: amandadalle, giovanasoldatelli, tiagoponciano
+      contributors: tiagoponciano
     config:
       tags: ['avalanche_c', 'token', 'mapping']
     description: >
@@ -34,7 +34,7 @@ models:
     meta:
       blockchain: avalanche_c
       project: balancer
-      contributors: amandadalle, giovanasoldatelli, tiagoponciano
+      contributors: tiagoponciano
     config:
       tags: ['avalanche_c', 'token', 'prices']
     description: >

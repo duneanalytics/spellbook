@@ -67,7 +67,7 @@ models:
     meta:
       blockchain: avalanche_c
       project: balancer_v3
-      contributors: amandadalle, giovanasoldatelli, tiagoponciano
+      contributors: tiagoponciano
     config:
       tags: ['avalanche_c', 'revenue', 'fees']
     description: >

@@ -79,6 +79,7 @@ sources:
       - name: balancer_v3_pools_gnosis
       - name: balancer_v3_pools_base
       - name: balancer_v3_pools_arbitrum
+      - name: balancer_v3_pools_avalanche_c
       - name: balancer_v3_pools
       
   - name: uniswap_v3_optimism
