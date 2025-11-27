@@ -10,4 +10,9 @@ FROM (
     UNION ALL
 
     SELECT evt_tx_hash AS tx_hash, evt_block_number AS block_number, 'Taiko' AS entity FROM {{ source('taikoxyz_ethereum', 'TaikoL1_evt_BlockProposedV2')}}
+
+    UNION ALL
+
+
+    SELECT evt_tx_hash AS tx_hash, evt_block_number AS block_number, 'Aztec' AS entity FROM {{ source('aztec_ethereum', 'rollup_evt_l2blockproposed')}}
     )
