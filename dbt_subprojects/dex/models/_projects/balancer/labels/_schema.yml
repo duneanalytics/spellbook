@@ -271,7 +271,6 @@ models:
       - *model_name
       - *label_type
 
-
   - name: labels_balancer_v2_pools
     meta:
       blockchain: ethereum, polygon, arbitrum, optimism, gnosis, base, avalanche_c, zkevm
