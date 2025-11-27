@@ -4,6 +4,7 @@
 
 {{
     config(
+        tags = ['prod_exclude'],
         schema = 'oneinch_' + blockchain,
         alias = 'project_orders_raw_traces',
         partition_by = ['block_date'],
