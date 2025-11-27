@@ -4,7 +4,7 @@
     post_hook='{{ expose_spells(blockchains = \'["arbitrum", "base", "ethereum", "plasma","gnosis"]\',
                                 spell_type = "project",
                                 spell_name = "balancer_v3",
-                                contributors = \'["viniabussafi"]\') }}'
+                                contributors = \'["viniabussafi", "tiagoponciano"]\') }}'
     )
 }}
 
@@ -13,7 +13,8 @@
     ref('balancer_v3_base_lbps'),
     ref('balancer_v3_ethereum_lbps'),
     ref('balancer_v3_plasma_lbps'),
-    ref('balancer_v3_gnosis_lbps')
+    ref('balancer_v3_gnosis_lbps'),
+    ref('balancer_v3_avalanche_c_lbps')
 ] %}
 
 

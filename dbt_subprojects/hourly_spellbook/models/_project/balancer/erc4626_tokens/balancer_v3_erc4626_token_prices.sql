@@ -4,7 +4,7 @@
     post_hook='{{ expose_spells(blockchains = \'["ethereum", "gnosis", "sonic", "arbitrum", "base", "plasma"]\',
                                 spell_type = "project",
                                 spell_name = "balancer",
-                                contributors = \'["viniabussafi"]\') }}'
+                                contributors = \'["viniabussafi", "tiagoponciano"]\') }}'
     )
 }}
 
@@ -15,7 +15,8 @@
     ref('balancer_v3_sonic_erc4626_token_prices'),
     ref('balancer_v3_arbitrum_erc4626_token_prices'),
     ref('balancer_v3_base_erc4626_token_prices'),
-    ref('balancer_v3_plasma_erc4626_token_prices')
+    ref('balancer_v3_plasma_erc4626_token_prices'),
+    ref('balancer_v3_avalanche_c_erc4626_token_prices')
 ] %}
 
 SELECT *

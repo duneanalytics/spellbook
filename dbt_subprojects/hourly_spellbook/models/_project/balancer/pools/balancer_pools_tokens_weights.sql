@@ -4,7 +4,7 @@
     post_hook='{{ expose_spells(blockchains = \'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon", "plasma", "zkevm"]\',
                                 spell_type = "project",
                                 spell_name = "balancer",
-                                contributors = \'["viniabussafi"]\') }}'
+                                contributors = \'["viniabussafi", "tiagoponciano", "amandadalle"]\') }}'
     )
 }}
 
@@ -17,7 +17,8 @@
     ref('balancer_optimism_pools_tokens_weights'),
     ref('balancer_polygon_pools_tokens_weights'),
     ref('balancer_zkevm_pools_tokens_weights'),
-    ref('balancer_v3_plasma_pools_tokens_weights')
+    ref('balancer_v3_plasma_pools_tokens_weights'),
+    ref('balancer_v3_avalanche_c_pools_token_weights')
 ] %}
 
 
