@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: euler_v2_unichain
+    tables:
+      - name: EVault_evt_Deposit
+      - name: EVault_evt_Withdraw
+      - name: EVault_evt_EVaultCreated
