@@ -1,17 +1,15 @@
-{{  
+{{-
     config(
         tags = ['prod_exclude'],
         schema = 'oneinch',
         alias = 'project_swaps',
         materialized = 'view',
-        unique_key = ['blockchain', 'block_number', 'tx_hash', 'second_side', 'call_trace_address', 'call_trade_id']
+        unique_key = ['blockchain', 'block_month', 'block_number', 'tx_hash', 'second_side', 'call_trace_address', 'call_trade_id'],
     )
-}}
+-}}
 
-{% for blockchain in oneinch_project_swaps_exposed_blockchains_list() %}
-    {{ "-- depends_on: {{ ref('oneinch_' + blockchain + '_project_orders') }}" }}
-    {% if blockchain != 'bnb' %}
-        select * from {{ ref('oneinch_' + blockchain + '_project_swaps') }}
-        {% if not loop.last %} union all {% endif %}
-    {% endif %}
-{% endfor %}
+{%- for blockchain in oneinch_project_swaps_exposed_blockchains_list() %}
+    -- depends on: {{ ref('oneinch_' + blockchain + '_project_orders') }} --
+    select * from {{ ref('oneinch_' + blockchain + '_project_swaps') }}
+    {% if not loop.last -%} union all {%- endif %}
+{%- endfor -%}
