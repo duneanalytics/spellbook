@@ -1,7 +1,7 @@
 {{ config(
     schema = 'balancer_v3',
     alias = 'lbps',
-    post_hook='{{ expose_spells(blockchains = \'["arbitrum", "base", "ethereum", "plasma","gnosis"]\',
+    post_hook='{{ expose_spells(blockchains = \'["arbitrum", "base", "ethereum", "plasma","gnosis", "hyperevm"]\',
                                 spell_type = "project",
                                 spell_name = "balancer_v3",
                                 contributors = \'["viniabussafi"]\') }}'
@@ -13,7 +13,8 @@
     ref('balancer_v3_base_lbps'),
     ref('balancer_v3_ethereum_lbps'),
     ref('balancer_v3_plasma_lbps'),
-    ref('balancer_v3_gnosis_lbps')
+    ref('balancer_v3_gnosis_lbps'),
+    ref('balancer_v3_hyperevm_lbps')
 ] %}
 
 

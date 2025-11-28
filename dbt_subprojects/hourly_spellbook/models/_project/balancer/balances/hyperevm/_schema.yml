@@ -1,12 +1,13 @@
 version: 2
 
 models:
-  - name: balancer_token_balance_changes
+  - name: balancer_v3_hyperevm_token_balance_changes
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm, plasma, hyperevm
-      contributors: viniabussafi, amandadalle
+      blockchain: hyperevm
+      project: balancer_v3
+      contributors: amandadalle, giovanasoldatelli, tiagoponciano
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'bpt', 'plasma', 'supply', 'changes', 'hyperevm']
+      tags: ['hyperevm', 'bpt', 'supply', 'changes']
     description: >
       Token Balance Changes on Balancer Pools.
     data_tests:
@@ -63,12 +64,13 @@ models:
         name: delta_amount
         description: "Normalized value of the transaction at the time of execution in the original currency"
 
-  - name: balancer_token_balance_changes_daily
+  - name: balancer_v3_hyperevm_token_balance_changes_daily
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm, plasma, hyperevm
-      contributors: viniabussafi
+      blockchain: hyperevm
+      project: balancer_v3
+      contributors: amandadalle, giovanasoldatelli, tiagoponciano
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'bpt', 'plasma', 'supply', 'changes', 'hyperevm']
+      tags: ['hyperevm', 'bpt', 'supply', 'changes']
     description: >
       Token Balance Changes on Balancer Pools, grouped by day.
     data_tests:
