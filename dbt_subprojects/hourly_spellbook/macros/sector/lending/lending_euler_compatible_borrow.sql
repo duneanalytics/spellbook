@@ -1,5 +1,5 @@
 {%
-  macro lending_euler_v2_compatible_supply(
+  macro lending_euler_v2_compatible_borrow(
     blockchain,
     project,
     version,
