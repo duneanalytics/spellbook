@@ -27,7 +27,8 @@
     ref('lending_scroll_base_supply'),
     ref('lending_linea_base_supply'),
     ref('lending_sonic_base_supply'),
-    ref('lending_plasma_base_supply')
+    ref('lending_plasma_base_supply'),
+    ref('lending_unichain_base_supply')
   ]
 %}
 
