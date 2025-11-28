@@ -11,7 +11,7 @@ SELECT '{{blockchain}}' AS deposit_chain
 , amount AS deposit_amount_raw
 , sender
 , CASE WHEN substr(recipient, 21) = 0x000000000000000000000000 THEN substr(recipient, 1, 20) ELSE recipient END AS recipient
-, nativeTokenAddress AS deposit_token_address
+, substr(tokenSourceAddress, 1, 20) AS deposit_token_address
 , 'erc20' AS deposit_token_standard
 , 'erc20' AS withdrawal_token_standard
 , evt_tx_from AS tx_from
@@ -20,8 +20,8 @@ SELECT '{{blockchain}}' AS deposit_chain
 , d.contract_address
 , CAST(lockId AS varchar) AS bridge_transfer_id
 FROM ({{ source('allbridge_' + blockchain, 'bridge_evt_sent') }}) d
-LEFT JOIN {{ source('allbridge_' + blockchain, 'bridge_call_addtoken') }} at USING (tokenSource)
 LEFT JOIN {{ ref('bridges_allbridge_classic_chain_indexes') }} ci ON trim(from_utf8(d.destination))=ci.allbridge_slug
 LEFT JOIN {{ source('evms','info') }} i ON ci.blockchain=i.blockchain
+WHERE substr(tokenSourceAddress, 21) = 0x000000000000000000000000
 
 {% endmacro %}
