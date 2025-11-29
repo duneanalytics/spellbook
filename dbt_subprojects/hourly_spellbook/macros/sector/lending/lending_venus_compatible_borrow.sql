@@ -104,7 +104,7 @@ select
   bb.evt_index
 from base_borrow bb 
 inner join 
-{{ ref( decoded_project ~ '_' ~ blockchain ~ '_ctokens' ) }} vc 
+{{ ref( project_decoded_as ~ '_' ~ blockchain ~ '_ctokens' ) }} vc 
   on bb.contract_address = vc.vToken_contract_address
 
 {% endmacro %}
