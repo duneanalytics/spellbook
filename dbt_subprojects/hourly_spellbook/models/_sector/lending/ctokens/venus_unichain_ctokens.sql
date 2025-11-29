@@ -13,8 +13,7 @@ select
 	vToken_decimals,
 	underlyingToken, 
 	underlyingToken_address,
-	underlyingToken_decimals,
-	pool 
+	underlyingToken_decimals
 from (values
 	('vweETH_Core', 0x0170398083eb0d0387709523bafca6426146c218, 8,  'weETH', 0x7dcc39b4d1c53cb31e1abc0e358b43987fef80f7, 18), 
 	('vUNI_Core', 0x67716d6bf76170af816f5735e14c4d44d0b05ed2, 8,  'UNI', 0x8f187aa05619a017077f5308904739877ce9ea21, 18), 
