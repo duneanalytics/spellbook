@@ -29,7 +29,7 @@ with base_trades as (
         , block_time_filter
         , block_slot_filter
     FROM
-        {{ ref('dex_solana_stg_min_max_block_slot') }}
+        {{ ref('dex_solana_stg_max_block_slot') }}
 )
 SELECT bt.blockchain
       , bt.project
