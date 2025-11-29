@@ -86,7 +86,7 @@ select
   cast(date_trunc('month', bs.evt_block_time) as date) as block_month,
   bs.evt_block_time as block_time,
   bs.evt_block_number as block_number,
-  bs.ontract_address as project_contract_address,
+  bs.contract_address as project_contract_address,
   bs.evt_tx_hash as tx_hash,
   bs.evt_index
 from base_supply bs 

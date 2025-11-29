@@ -10,17 +10,17 @@
 
 with 
 
-src_EVault_evt_Deposit as (
+src_EVault_evt_Borrow as (
   select *
-  from {{ source(project_decoded_as ~ '_' ~ blockchain, decoded_contract_name ~ '_evt_Deposit') }}
+  from {{ source(project_decoded_as ~ '_' ~ blockchain, decoded_contract_name ~ '_evt_Borrow') }}
   {% if is_incremental() %}
   where {{ incremental_predicate('evt_block_time') }}
   {% endif %}
 ),
 
-src_EVault_evt_Withdraw as (
+src_EVault_evt_Repay as (
   select *
-  from {{ source(project_decoded_as ~ '_' ~ blockchain, decoded_contract_name ~ '_evt_Withdraw') }}
+  from {{ source(project_decoded_as ~ '_' ~ blockchain, decoded_contract_name ~ '_evt_Repay') }}
   {% if is_incremental() %}
   where {{ incremental_predicate('evt_block_time') }}
   {% endif %}
@@ -39,14 +39,14 @@ src_EVault_evt_EVaultCreated as (
   from {{ source(project_decoded_as ~ '_' ~ blockchain, decoded_contract_name ~ '_evt_EVaultCreated') }}
 ),
 
-
-base_supply as (
+base_borrow as (
   select
-    'deposit' as transaction_type,
+    'borrow' as transaction_type,
+    cast(null as varchar) loan_type,
     cast(null as varbinary) as token_address,
-    sender as depositor,
-    owner as on_behalf_of,
-    cast(null as varbinary) as withdrawn_to,
+    account as borrower,
+    account as on_behalf_of,
+    cast(null as varbinary) as repayer,
     cast(null as varbinary) as liquidator,
     cast(assets as double) as amount,
     contract_address,
@@ -54,14 +54,15 @@ base_supply as (
     evt_index,
     evt_block_time,
     evt_block_number
-  from src_EVault_evt_Deposit 
+  from src_EVault_evt_Borrow
   union all
   select
-    'withdraw' as transaction_type,
+    'repay' as transaction_type,
+    cast(null as varchar) loan_type,
     cast(null as varbinary) as token_address,
-    owner as depositor,
-    receiver as on_behalf_of,
-    receiver as withdrawn_to,
+    account as borrower,
+    cast(null as varbinary) as on_behalf_of,
+    account as repayer,
     cast(null as varbinary) as liquidator,
     -1 * cast(assets as double) as amount,
     contract_address,
@@ -69,29 +70,46 @@ base_supply as (
     evt_index,
     evt_block_time,
     evt_block_number
-  from src_EVault_evt_Withdraw
+  from src_EVault_evt_Repay
+  union all
+  select
+    'borrow_liquidation' as transaction_type,
+    cast(null as varchar) loan_type,
+    cast(null as varbinary) as token_address,
+    violator as borrower,
+    cast(null as varbinary) as on_behalf_of,
+    liquidator as repayer,
+    liquidator as liquidator,
+    -1 * cast(repayAssets as double) as amount,
+    contract_address,
+    evt_tx_hash,
+    evt_index,
+    evt_block_time,
+    evt_block_number
+  from src_EVault_evt_Liquidate
 )
 
 select
   '{{ blockchain }}' as blockchain,
   '{{ project }}' as project,
   '{{ version }}' as version,
-  bs.transaction_type,
+  bb.transaction_type,
+  bb.loan_type,
   ev.asset as token_address,
-  bs.depositor,
-  bs.on_behalf_of,
-  bs.withdrawn_to,
-  bs.liquidator,
-  bs.amount,
-  cast(date_trunc('month', bs.evt_block_time) as date) as block_month,
-  bs.evt_block_time as block_time,
-  bs.evt_block_number as block_number,
-  bs.ontract_address as project_contract_address,
-  bs.evt_tx_hash as tx_hash,
-  bs.evt_index
-from base_supply bs 
+  bb.borrower,
+  bb.on_behalf_of,
+  bb.repayer,
+  bb.liquidator,
+  bb.amount,
+  cast(date_trunc('month', bb.evt_block_time) as date) as block_month,
+  bb.evt_block_time as block_time,
+  bb.evt_block_number as block_number,
+  bb.contract_address as project_contract_address,
+  bb.evt_tx_hash as tx_hash,
+  bb.evt_index
+from base_borrow bb 
 inner join 
 src_EVault_evt_EVaultCreated ev 
-  on bs.contract_address = ev.contract_address
+  on bb.contract_address = ev.contract_address
 
 {% endmacro %}
