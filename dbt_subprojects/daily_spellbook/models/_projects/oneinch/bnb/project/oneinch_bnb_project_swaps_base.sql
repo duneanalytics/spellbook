@@ -2,6 +2,7 @@
 
 {{-
     config(
+        tags = ['prod_exclude'],
         schema = 'oneinch_' + blockchain,
         alias = 'project_swaps_base',
         partition_by = ['block_month', 'project'],
