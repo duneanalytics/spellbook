@@ -94,4 +94,25 @@ inner join
 src_EVault_evt_EVaultCreated ev 
   on bs.contract_address = ev.contract_address
 
+union all 
+
+select 
+  '{{ blockchain }}' as blockchain,
+  '{{ project }}' as project,
+  '{{ version }}' as version,
+  'deposit_liquidation' as transaction_type,
+  collateral as token_adddress,
+  violator as depositor, 
+  cast(null as varbinary) as on_behalf_of,
+  liquidator as withdrawn_to,
+  liquidator,
+  -1 * cast(yieldBalance as double) as amount, 
+  cast(date_trunc('month', evt_block_time) as date) as block_month,
+  evt_block_time as block_time,
+  evt_block_number as block_number,
+  contract_address as project_contract_address,
+  evt_tx_hash as tx_hash,
+  evt_index
+from 
+src_EVault_evt_Liquidate
 {% endmacro %}
