@@ -57,7 +57,7 @@ base_borrow as (
     cast(null as varbinary) as token_address,
     borrower,
     cast(null as varbinary) as on_behalf_of,
-    repayer as repayer,
+    payer as repayer,
     cast(null as varbinary) as liquidator,
     -1 * cast(repayAmount as double) as amount,
     contract_address,
