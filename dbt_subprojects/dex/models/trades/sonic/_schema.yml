@@ -149,3 +149,41 @@ models:
           seed_file: ref('tapio_sonic_base_trades_seed')
           filter:
             version: 1
+
+  - name: swapx_sonic_base_trades
+    meta:
+      blockchain: sonic
+      sector: dex
+      project: swapx
+      contributors: okolicodes7
+    config:
+      tags: ["sonic", "dex", "trades", "swapx"]
+    description: "Swapx sonic base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('swapx_sonic_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: metropolis_sonic_base_trades
+    meta:
+      blockchain: sonic
+      sector: dex
+      project: metropolis
+      contributors: okolicodes7
+    config:
+      tags: ["sonic", "dex", "trades", "metropolis"]
+    description: "Metropolis sonic base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('metropolis_sonic_base_trades_seed')
+          filter:
+            version: 1
