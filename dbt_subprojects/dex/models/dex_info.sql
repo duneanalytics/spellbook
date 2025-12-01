@@ -242,4 +242,6 @@ FROM (VALUES
     , ('story_hunt', 'Story Hunt', 'Direct', 'story_hunt')
     , ('piperx', 'PiperX', 'Direct', 'piperx')
     , ('mezo_swap', 'Mezo Swap', 'Direct', 'mezoswap')
+    , ('kuru', 'Kuru', 'Direct', 'kuru')
+    , ('pinot', 'Pinot', 'Direct', 'pinot')
 ) AS temp_table (project, name, marketplace_type, x_username)

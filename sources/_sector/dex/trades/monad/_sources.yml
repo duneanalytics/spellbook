@@ -12,3 +12,17 @@ sources:
     tables:
       - name: PancakeV3Pool_evt_Swap
       - name: PancakeV3Factory_evt_PoolCreated
+  - name: pinot_monad
+    tables:
+      - name: uniswapv2factory_evt_paircreated
+      - name: uniswapv2pair_evt_swap
+      - name: uniswapv3factory_evt_poolcreated
+      - name: uniswapv3pool_evt_swap
+  - name: uniswap_v2_monad
+    tables:
+      - name: uniswapv2factory_evt_paircreated
+      - name: uniswapv2pair_evt_swap
+  - name: uniswap_v3_monad
+    tables:
+      - name: uniswapv3factory_evt_poolcreated
+      - name: uniswapv3pool_evt_swap
