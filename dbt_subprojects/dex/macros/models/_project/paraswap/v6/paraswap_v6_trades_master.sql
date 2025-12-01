@@ -96,7 +96,7 @@ select
   '{{ blockchain }}' as blockchain,
   cast(date_trunc('day', call_block_time) as date) as block_date,
   cast(date_trunc('month', call_block_time) as date) as block_month,
-  'paraswap' AS project,
+  'velora' AS project,
   '{{ contract_details['version'] }}' as version,
   call_block_time as blockTime,
   call_block_number as blockNumber,
