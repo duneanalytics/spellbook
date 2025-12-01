@@ -16,8 +16,8 @@
 -- depends_on: {{ ref('oneinch_' + blockchain + '_project_orders') }}
 
 {{-
-    oneinch_project_swaps_base_macro(
-        blockchain=blockchain,
+    oneinch_project_swaps_base_macro_microbatch(
+        blockchain = blockchain,
         date_from = '2025-11-20'
     )
 -}}
