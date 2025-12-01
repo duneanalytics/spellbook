@@ -2,7 +2,6 @@
 
 {{-
     config(
-        tags = ['prod_exclude'],
         schema = 'oneinch_' + blockchain,
         alias = 'project_swaps_base',
         partition_by = ['block_month', 'project'],
@@ -17,3 +16,5 @@
 -- depends_on: {{ ref('oneinch_' + blockchain + '_project_orders') }}
 
 {{ oneinch_project_swaps_base_macro(blockchain = blockchain) }}
+where true
+    and block_time > timestamp '2025-11-20'
