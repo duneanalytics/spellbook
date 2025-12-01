@@ -3,7 +3,7 @@
 {{-
     config(
         schema = 'oneinch_' + blockchain,
-        alias = 'project_swaps_base',
+        alias = 'project_swaps_base_01',
         partition_by = ['block_month', 'project'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -18,6 +18,8 @@
 {{-
     oneinch_project_swaps_base_macro(
         blockchain=blockchain,
-        date_from = '2025-11-20'
+        date_from = '2020-08-01'
     )
 -}}
+where true
+    and block_month < timestamp '2022-01-01'
