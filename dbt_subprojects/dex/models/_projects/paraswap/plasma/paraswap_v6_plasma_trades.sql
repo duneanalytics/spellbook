@@ -19,7 +19,7 @@
 
 with dexs AS (
         SELECT
-            project
+            project,
             blockTime AS block_time,
             blockNumber AS block_number,
             from_hex(beneficiary) AS taker,
