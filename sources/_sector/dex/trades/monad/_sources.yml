@@ -4,6 +4,20 @@ sources:
   - name: kuru_monad
     tables:
       - name: router_evt_kururouterswap
+  - name: pinot_monad
+    tables:
+      - name: uniswapv2factory_evt_paircreated
+      - name: uniswapv2pair_evt_swap
+      - name: uniswapv3factory_evt_poolcreated
+      - name: uniswapv3pool_evt_swap
+  - name: uniswap_v2_monad
+    tables:
+      - name: uniswapv2factory_evt_paircreated
+      - name: uniswapv2pair_evt_swap
+  - name: uniswap_v3_monad
+    tables:
+      - name: uniswapv3factory_evt_poolcreated
+      - name: uniswapv3pool_evt_swap
   - name: pancakeswap_v2_monad
     tables:
       - name: PancakePair_evt_Swap
