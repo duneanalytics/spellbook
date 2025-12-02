@@ -4,7 +4,7 @@
     config(
         schema = 'oneinch_' + blockchain,
         alias = 'project_swaps_base',
-        partition_by = ['block_month', 'project'],
+        partition_by = ['block_month'],
         materialized = 'incremental',
         incremental_strategy = 'microbatch',
         event_time = 'block_time',
