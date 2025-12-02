@@ -178,10 +178,10 @@ meta as (
         , block_month
         , block_date
         , date_trunc('minute', block_time) as minute
-    from {{ source('tokens_' + blockchain, 'transfers_from_traces') }}, meta
+    from {{ source('tokens', 'transfers_from_traces') }}, meta
     where true
+        and blockchain = '{{ blockchain }}'
         and block_time >= timestamp '{{ date_from }}'
-        -- microbatch automatically filters by event_time, no manual filtering needed
 )
 
 , joined as (
