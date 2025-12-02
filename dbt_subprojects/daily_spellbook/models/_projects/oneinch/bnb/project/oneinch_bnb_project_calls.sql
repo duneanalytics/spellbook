@@ -18,6 +18,7 @@
 
 {{
     oneinch_project_calls_macro(
-        blockchain = blockchain
+        blockchain = blockchain,
+        date_from = '2025-10-01'
     )
 }}

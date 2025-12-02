@@ -9,9 +9,10 @@
         incremental_strategy = 'microbatch',
         event_time = 'block_time',
         batch_size = 'month',
-        begin = '2025-11-20',
+        lookback = 1,
+        begin = '2025-10-01',
         full_refresh = false,
-        unique_key = ['blockchain', 'block_month', 'block_number', 'tx_hash', 'second_side', 'call_trace_address', 'call_trade_id'],
+        unique_key = ['block_month', 'id'],
     )
 -}}
 
@@ -20,6 +21,6 @@
 {{
     oneinch_project_swaps_base_microbatch_macro(
         blockchain = blockchain,
-        date_from = '2025-11-20'
+        date_from = '2025-10-01'
     )
 }}

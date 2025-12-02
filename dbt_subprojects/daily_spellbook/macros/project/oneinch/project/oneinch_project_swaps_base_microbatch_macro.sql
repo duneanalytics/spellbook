@@ -40,6 +40,7 @@ meta as (
     from {{ ref('oneinch_' + blockchain + '_project_orders') }}
     where true
         and call_success
+        and block_time >= timestamp '{{ date_from }}' -- for easy dates
         -- microbatch automatically filters by event_time, no manual filtering needed
     
     union all
@@ -61,6 +62,7 @@ meta as (
     from {{ source('oneinch_' + blockchain, 'lo') }}
     where true
         and call_success
+        and block_time >= timestamp '{{ date_from }}' -- for easy dates
         -- microbatch automatically filters by event_time, no manual filtering needed
 )
 
@@ -72,6 +74,7 @@ meta as (
         and call_success
         and (tx_success or tx_success is null)
         and (flags['cross_chain'] or not flags['cross_chain_method']) -- without cross-chain methods calls in non cross-chain protocols
+        and block_time >= timestamp '{{ date_from }}' -- for easy dates
         -- microbatch automatically filters by event_time, no manual filtering needed
 )
 
