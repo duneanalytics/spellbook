@@ -4,23 +4,22 @@
     config(
         schema = 'oneinch_' + blockchain,
         alias = 'project_swaps_base',
-        partition_by = ['block_month'],
+        partition_by = ['block_month', 'project'],
         materialized = 'incremental',
-        incremental_strategy = 'microbatch',
-        event_time = 'block_time',
-        batch_size = 'month',
-        lookback = 1,
-        begin = '2025-12-01',
-        full_refresh = false,
-        unique_key = ['block_month', 'id'],
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+        unique_key = ['blockchain', 'block_month', 'block_number', 'tx_hash', 'second_side', 'call_trace_address', 'call_trade_id'],
     )
 -}}
 
 -- depends_on: {{ ref('oneinch_' + blockchain + '_project_orders') }}
 
-{{
-    oneinch_project_swaps_base_microbatch_macro(
+{{-
+    oneinch_project_swaps_base_macro(
         blockchain = blockchain,
-        date_from = '2025-10-01'
+        date_from = '2020-08-01'
     )
-}}
+-}}
+where true
+    and block_month < date('2020-09-01')
