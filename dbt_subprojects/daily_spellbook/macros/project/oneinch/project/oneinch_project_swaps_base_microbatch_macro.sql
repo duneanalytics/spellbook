@@ -139,7 +139,9 @@ meta as (
 )
 
 , creations as (
-    select address, max(block_number) as block_number
+    select
+        address
+        , max(block_number) as block_number
     from (
         select address, block_number
         from {{ source(blockchain, 'creation_traces') }}
@@ -285,10 +287,10 @@ meta as (
     from joined
 )
 
-, sides as (
+, modes as (
     select *
         , map_from_entries(array[
-              ('intra-chain: classic: direct',
+            ('intra-chain: classic: direct',
                 entry
                 and order_hash is null
                 and not auction
@@ -384,6 +386,6 @@ select
         , array_join(call_trace_address, ',') -- ',' is necessary to avoid similarities after concatenation // array_join(array[1, 0], '') = array_join(array[10], '')
         , cast(call_trade_id as varchar)
     ))) as id
-from sides
+from modes
 
 {%- endmacro -%}
