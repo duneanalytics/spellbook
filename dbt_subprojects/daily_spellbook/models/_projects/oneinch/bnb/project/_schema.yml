@@ -4,17 +4,14 @@ models:
   - name: oneinch_bnb_project_orders
     config:
       event_time: block_time
-    description: >
-      Project orders.
+    description: Project orders
 
   - name: oneinch_bnb_project_calls
     config:
       event_time: block_time
-    description: >
-      Project calls.
+    description: Project calls
 
   - name: oneinch_bnb_project_swaps_base
     config:
       event_time: block_time
-    description: >
-      Base part of project swaps.
+    description: Base part of project swaps

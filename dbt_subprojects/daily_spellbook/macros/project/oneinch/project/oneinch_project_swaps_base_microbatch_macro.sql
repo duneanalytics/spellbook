@@ -139,6 +139,7 @@ meta as (
     where true
         and blockchain = '{{ blockchain }}'
         and minute >= timestamp '{{ date_from }}'
+        and date_trunc('month', minute) = (select min(block_month) from calls)
 )
 
 , creations as (
@@ -182,6 +183,7 @@ meta as (
     where true
         and blockchain = '{{ blockchain }}'
         and block_time >= timestamp '{{ date_from }}'
+        and block_month = (select min(block_month) from calls)
 )
 
 , joined as (
