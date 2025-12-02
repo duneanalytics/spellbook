@@ -1,5 +1,5 @@
 {%- macro
-    oneinch_project_swaps_base_macro(
+    oneinch_project_swaps_base_microbatch_macro(
         blockchain,
         date_from = '2019-01-01'
     )
@@ -40,8 +40,7 @@ meta as (
     from {{ ref('oneinch_' + blockchain + '_project_orders') }}
     where true
         and call_success
-        and block_time >= timestamp '{{ date_from }}'
-        {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
+        -- microbatch automatically filters by event_time, no manual filtering needed
     
     union all
     
@@ -62,21 +61,18 @@ meta as (
     from {{ source('oneinch_' + blockchain, 'lo') }}
     where true
         and call_success
-        and block_time >= timestamp '{{ date_from }}'
-        {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
+        -- microbatch automatically filters by event_time, no manual filtering needed
 )
 
 , calls as (
-    select
-        *
+    select *
         , array_agg(call_trace_address) over(partition by block_month, block_number, tx_hash, project) as call_trace_addresses
     from {{ ref('oneinch_' + blockchain + '_project_calls') }}
     where true
         and call_success
         and (tx_success or tx_success is null)
         and (flags['cross_chain'] or not flags['cross_chain_method']) -- without cross-chain methods calls in non cross-chain protocols
-        and block_time >= timestamp '{{ date_from }}'
-        {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
+        -- microbatch automatically filters by event_time, no manual filtering needed
 )
 
 , swaps as (
@@ -140,7 +136,6 @@ meta as (
     where true
         and blockchain = '{{ blockchain }}'
         and minute >= timestamp '{{ date_from }}'
-        {% if is_incremental() -%} and {{ incremental_predicate('minute') }} {%- endif %}
 )
 
 , creations as (
@@ -182,7 +177,6 @@ meta as (
     where true
         and blockchain = '{{ blockchain }}'
         and block_time >= timestamp '{{ date_from }}'
-        {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
 )
 
 , joined as (
