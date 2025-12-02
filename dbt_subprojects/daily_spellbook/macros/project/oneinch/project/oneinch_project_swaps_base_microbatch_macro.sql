@@ -40,8 +40,7 @@ meta as (
     from {{ ref('oneinch_' + blockchain + '_project_orders') }}
     where true
         and call_success
-        and block_time >= timestamp '{{ date_from }}' -- for easy dates
-        -- microbatch automatically filters by event_time, no manual filtering needed
+        -- microbatch automatically filters by dates, no manual filtering needed
     
     union all
     
@@ -62,8 +61,7 @@ meta as (
     from {{ source('oneinch_' + blockchain, 'lo') }}
     where true
         and call_success
-        and block_time >= timestamp '{{ date_from }}' -- for easy dates
-        -- microbatch automatically filters by event_time, no manual filtering needed
+        -- microbatch automatically filters by dates, no manual filtering needed
 )
 
 , calls as (
@@ -74,8 +72,7 @@ meta as (
         and call_success
         and (tx_success or tx_success is null)
         and (flags['cross_chain'] or not flags['cross_chain_method']) -- without cross-chain methods calls in non cross-chain protocols
-        and block_time >= timestamp '{{ date_from }}' -- for easy dates
-        -- microbatch automatically filters by event_time, no manual filtering needed
+        -- microbatch automatically filters by dates, no manual filtering needed
 )
 
 , swaps as (
@@ -179,7 +176,7 @@ meta as (
         , block_month
         , block_date
         , date_trunc('minute', block_time) as minute
-    from {{ source('tokens', 'transfers_from_traces') }}, meta
+    from {{ source('tokens_' + blockchain, 'transfers_from_traces') }}, meta
     where true
         and blockchain = '{{ blockchain }}'
         and block_time >= timestamp '{{ date_from }}'

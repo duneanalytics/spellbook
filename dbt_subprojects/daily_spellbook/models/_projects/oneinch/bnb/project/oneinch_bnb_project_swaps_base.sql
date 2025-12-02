@@ -10,7 +10,7 @@
         event_time = 'block_time',
         batch_size = 'month',
         lookback = 1,
-        begin = '2025-10-01',
+        begin = '2025-12-01',
         full_refresh = false,
         unique_key = ['block_month', 'id'],
     )
