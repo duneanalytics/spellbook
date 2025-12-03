@@ -1,5 +1,6 @@
  {{
   config(
+        tags = ['prod_exclude'],
         schema = 'contracts_avalanche_c',
         alias = 'base_iterated_creators',
         materialized ='incremental',

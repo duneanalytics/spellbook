@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: matic_ethereum
+    description: "Polygon's native bridge events on Ethereum"
+    tables:
+      - name: erc20predicate_evt_lockederc20
+  - name: polygon_ethereum
+    description: "Polygon's native bridge events on Ethereum"
+    tables:
+      - name: etherpredicate_evt_exitedether
+      - name: etherpredicate_evt_lockedether

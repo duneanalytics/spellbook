@@ -1,0 +1,95 @@
+version: 2
+
+sources:
+  - name: symbiosis_abstract
+    description: "Symbiosis's bridge events on Abstract"
+    tables:
+      - name: portal_evt_synthesizerequest
+  - name: symbiosis_arbitrum
+    description: "Symbiosis's bridge events on Arbitrum"
+    tables:
+      - name: portal_evt_synthesizerequest
+  - name: symbiosis_avalanche_c
+    description: "Symbiosis's bridge events on Avalanche"
+    tables:
+      - name: portal_evt_synthesizerequest
+  - name: symbiosis_base
+    description: "Symbiosis's bridge events on Base"
+    tables:
+      - name: portal_evt_synthesizerequest
+  - name: symbiosis_berachain
+    description: "Symbiosis's bridge events on Berachain"
+    tables:
+      - name: portal_evt_synthesizerequest
+  - name: symbiosis_blast
+    description: "Symbiosis's bridge events on Blast"
+    tables:
+      - name: portal_evt_synthesizerequest
+  - name: symbiosis_bnb
+    description: "Symbiosis's bridge events on BNB"
+    tables:
+      - name: portal_evt_synthesizerequest
+  - name: symbiosis_ethereum
+    description: "Symbiosis's bridge events on Ethereum"
+    tables:
+      - name: portal_evt_synthesizerequest
+  - name: symbiosis_gnosis
+    description: "Symbiosis's bridge events on Gnosis"
+    tables:
+      - name: portal_evt_synthesizerequest
+  - name: symbiosis_hyperevm
+    description: "Symbiosis's bridge events on HyperEVM"
+    tables:
+      - name: portal_evt_synthesizerequest
+  - name: symbiosis_katana
+    description: "Symbiosis's bridge events on Katana"
+    tables:
+      - name: portal_evt_synthesizerequest
+  - name: symbiosis_linea
+    description: "Symbiosis's bridge events on Linea"
+    tables:
+      - name: portal_evt_synthesizerequest
+  - name: symbiosis_nova
+    description: "Symbiosis's bridge events on Nova"
+    tables:
+      - name: portal_evt_synthesizerequest
+  - name: symbiosis_opbnb
+    description: "Symbiosis's bridge events on opBNB"
+    tables:
+      - name: portal_evt_synthesizerequest
+  - name: symbiosis_optimism
+    description: "Symbiosis's bridge events on OP Mainnet"
+    tables:
+      - name: portal_evt_synthesizerequest
+  - name: symbiosis_polygon
+    description: "Symbiosis's bridge events on Polygon"
+    tables:
+      - name: portal_evt_synthesizerequest
+  - name: symbiosis_scroll
+    description: "Symbiosis's bridge events on Scroll"
+    tables:
+      - name: portal_evt_synthesizerequest
+  - name: symbiosis_sei
+    description: "Symbiosis's bridge events on Sei"
+    tables:
+      - name: portal_evt_synthesizerequest
+  - name: symbiosis_sonic
+    description: "Symbiosis's bridge events on Sonic"
+    tables:
+      - name: portal_evt_synthesizerequest
+  - name: symbiosis_taiko
+    description: "Symbiosis's bridge events on Taiko"
+    tables:
+      - name: portal_evt_synthesizerequest
+  - name: symbiosis_unichain
+    description: "Symbiosis's bridge events on Unichain"
+    tables:
+      - name: portal_evt_synthesizerequest
+  - name: symbiosis_zkevm
+    description: "Symbiosis's bridge events on Polygon zkEVM"
+    tables:
+      - name: portal_evt_synthesizerequest
+  - name: symbiosis_zksync
+    description: "Symbiosis's bridge events on zkSync"
+    tables:
+      - name: portal_evt_synthesizerequest

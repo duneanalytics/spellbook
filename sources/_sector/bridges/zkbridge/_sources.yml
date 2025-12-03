@@ -1,0 +1,52 @@
+version: 2
+
+sources:
+  - name: zkbridge_ethereum
+    description: "zkBridge v1 bridge events on Ethereum"
+    tables:
+      - name: bridge_evt_transfertoken
+      - name: bridge_evt_receivetoken
+  - name: zkbridge_base
+    description: "zkBridge v1 bridge events on Base"
+    tables:
+      - name: bridge_evt_transfertoken
+      - name: bridge_evt_receivetoken
+  - name: zkbridge_bnb
+    description: "zkBridge v1 bridge events on BNB"
+    tables:
+      - name: bridge_evt_transfertoken
+      - name: bridge_evt_receivetoken
+  - name: zkbridge_linea
+    description: "zkBridge v1 bridge events on Linea"
+    tables:
+      - name: bridge_evt_transfertoken
+      - name: bridge_evt_receivetoken
+  - name: zkbridge_mantle
+    description: "zkBridge v1 bridge events on Mantle"
+    tables:
+      - name: bridge_evt_transfertoken
+  - name: zkbridge_opbnb
+    description: "zkBridge v1 bridge events on opBNB"
+    tables:
+      - name: bridge_evt_transfertoken
+      - name: bridge_evt_receivetoken
+  - name: zkbridge_optimism
+    description: "zkBridge v1 bridge events on OP Mainnet"
+    tables:
+      - name: bridge_evt_transfertoken
+      - name: bridge_evt_receivetoken
+  - name: zkbridge_polygon
+    description: "zkBridge v1 bridge events on Polygon"
+    tables:
+      - name: bridge_evt_transfertoken
+      - name: bridge_evt_receivetoken
+  - name: zkbridge_scroll
+    description: "zkBridge v1 bridge events on Scroll"
+    tables:
+      - name: bridge_evt_transfertoken
+      - name: bridge_evt_receivetoken
+  - name: zkbridge_arbitrum
+    description: "zkBridge v1 bridge events on Arbitrum"
+    tables:
+      - name: bridge_evt_transfertoken
+      - name: bridge_evt_receivetoken

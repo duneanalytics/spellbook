@@ -1,5 +1,6 @@
  {{
   config(
+        tags = ['prod_exclude'],
         schema = 'contracts_optimism',
         alias = 'base_iterated_creators',
         materialized ='incremental',
