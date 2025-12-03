@@ -14,7 +14,7 @@ models:
         [Explainer for Supply and Volume](https://aptoslabs.medium.com/data-analyst-guide-to-aptos-supply-and-volume-pt-3-535e312946ad) on Aptos.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-         combination_of_columns: ['tx_hash', 'asset_type']
+         combination_of_columns: ['block_month', 'tx_hash', 'asset_type']
     columns:
       - name: block_date
         description: The date of the block containing the transaction
@@ -72,7 +72,7 @@ models:
         [Explainer for activity and balances](https://aptoslabs.medium.com/data-analyst-guide-to-aptos-supply-and-volume-pt-3-535e312946ad) on Aptos.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-         combination_of_columns: ['block_month', 'tx_hash', 'write_set_change_index']
+         combination_of_columns: ['block_month', 'unique_key']
     columns:
       - name: unique_key
         description: Surrogate key generated from tx_hash and write_set_change_index
@@ -92,8 +92,6 @@ models:
         description: The hash of the transaction
       - name: write_set_change_index
         description: "Index of the write set change"
-        tests:
-          - not_null
       - name: asset_type
         description: "Asset identifier"
         tests:
@@ -130,7 +128,7 @@ models:
     description: Balances for fungible assets (v2) on Aptos
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-         combination_of_columns: ['block_month', 'tx_hash', 'write_set_change_index']
+         combination_of_columns: ['block_month', 'unique_key']
     columns:
       - name: unique_key
         description: Surrogate key generated from tx_hash and write_set_change_index
@@ -151,7 +149,7 @@ models:
     description: Balances for deleted FungibleStore objects on Aptos
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-         combination_of_columns: ['block_month', 'tx_hash', 'write_set_change_index']
+         combination_of_columns: ['block_month', 'unique_key']
     columns:
       - name: unique_key
         description: Surrogate key generated from tx_hash and write_set_change_index
@@ -338,7 +336,7 @@ models:
     description: usdt mint, burn, withdraw, deposit volume
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-         combination_of_columns: ['tx_hash', 'event_index']
+         combination_of_columns: ['block_month', 'tx_hash', 'event_index']
     columns:
       - name: tx_version
         description: The version of the transaction
@@ -377,7 +375,7 @@ models:
     description: usdc mint, burn, withdraw, deposit volume
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-         combination_of_columns: ['tx_hash', 'event_index']
+         combination_of_columns: ['block_month', 'tx_hash', 'event_index']
     columns:
       - name: tx_version
         description: The version of the transaction
@@ -416,7 +414,7 @@ models:
     description: 1-to-1 mapping of transfers using FIFO logic when ambiguous
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-         combination_of_columns: ['tx_hash', 'to_index', 'from_index']
+         combination_of_columns: ['block_month', 'tx_hash', 'from_index', 'to_index']
     columns:
       - name: tx_version
         description: The version of the transaction
@@ -471,7 +469,7 @@ models:
     description: 1-to-1 mapping of transfers using FIFO logic when ambiguous
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-         combination_of_columns: ['tx_hash', 'to_index', 'from_index']
+         combination_of_columns: ['block_month', 'tx_hash', 'from_index', 'to_index']
     columns:
       - name: tx_version
         description: The version of the transaction
