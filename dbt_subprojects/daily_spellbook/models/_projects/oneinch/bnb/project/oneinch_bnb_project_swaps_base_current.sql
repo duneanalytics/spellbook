@@ -18,6 +18,6 @@
 {{
     oneinch_project_swaps_base_u_macro(
         blockchain = blockchain,
-        date_from = '2025-07-01'
+        date_from = '2025-10-01'
     )
 }}

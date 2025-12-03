@@ -3,7 +3,7 @@
 {{-
     config(
         schema = 'oneinch_' + blockchain,
-        alias = 'project_swaps_base_2021_01',
+        alias = 'project_swaps_base_2025_0406',
         materialized = 'table',
         unique_key = ['blockchain', 'id'],
     )
@@ -14,7 +14,7 @@
 {{
     oneinch_project_swaps_base_u_macro(
         blockchain = blockchain,
-        date_from = '2021-01-01',
-        date_to = '2021-07-01'
+        date_from = '2025-04-01',
+        date_to = '2025-07-01'
     )
 }}
