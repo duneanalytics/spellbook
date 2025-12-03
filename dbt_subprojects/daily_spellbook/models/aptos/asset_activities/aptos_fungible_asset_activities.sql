@@ -22,7 +22,7 @@
 
 {% if not is_incremental() -%}
 /*
-    for historical builds, read from all three tables with no filters
+    for historical builds, read from all three tables with 7-day filter
 */
 SELECT
     tx_version,
@@ -39,6 +39,7 @@ SELECT
     amount,
     token_standard
 FROM {{ ref('aptos_fungible_asset_coin_activities') }}
+WHERE block_time >= DATE('2025-08-02') - INTERVAL '7' DAY
 
 UNION ALL
 
@@ -57,6 +58,7 @@ SELECT
     amount,
     token_standard
 FROM {{ ref('aptos_fungible_asset_fa_activities_events_v1') }}
+WHERE block_time >= DATE('2024-05-29') - INTERVAL '7' DAY
 
 UNION ALL
 
@@ -75,6 +77,7 @@ SELECT
     amount,
     token_standard
 FROM {{ ref('aptos_fungible_asset_fa_activities') }}
+WHERE block_time >= NOW() - INTERVAL '7' DAY
 
 {% else -%}
 /*

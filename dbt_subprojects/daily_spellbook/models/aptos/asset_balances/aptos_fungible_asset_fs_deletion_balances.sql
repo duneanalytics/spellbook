@@ -37,12 +37,16 @@ WITH fs_deletion AS (
         AND mr.block_date >= DATE('2025-04-28') -- date enabled
         {% if is_incremental() %}
         AND {{ incremental_predicate('mr.block_time') }}
+        {% else -%}
+        AND mr.block_time >= NOW() - INTERVAL '7' DAY
         {% endif -%}
     WHERE 1=1
     AND ev.event_type = '0x1::fungible_asset::FungibleStoreDeletion'
     AND ev.block_date >= DATE('2025-04-28') -- date enabled
     {% if is_incremental() -%}
     AND {{ incremental_predicate('ev.block_time') }}
+    {% else -%}
+    AND ev.block_time >= NOW() - INTERVAL '7' DAY
     {% endif -%}
 )
 

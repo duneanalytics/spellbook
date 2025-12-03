@@ -22,7 +22,7 @@
 
 {% if not is_incremental() -%}
 /*
-    for historical builds, read from all three tables with no filters
+    for historical builds, read from all three tables with 7-day filter
 */
 SELECT
     unique_key,
@@ -39,6 +39,7 @@ SELECT
     is_frozen,
     token_standard
 FROM {{ ref('aptos_fungible_asset_coin_balances') }}
+WHERE block_time >= DATE('2025-09-02') - INTERVAL '7' DAY
 
 UNION ALL
 
@@ -58,6 +59,7 @@ SELECT
     is_frozen,
     token_standard
 FROM {{ ref('aptos_fungible_asset_fa_balances') }}
+WHERE block_time >= NOW() - INTERVAL '7' DAY
 
 UNION ALL
 
@@ -77,6 +79,7 @@ SELECT
     is_frozen,
     token_standard
 FROM {{ ref('aptos_fungible_asset_fs_deletion_balances') }}
+WHERE block_time >= NOW() - INTERVAL '7' DAY
 
 {% else -%}
 /*

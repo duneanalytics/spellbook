@@ -41,6 +41,8 @@ WITH fa_balance AS (
             AND move_resource_name = 'ConcurrentFungibleBalance'
             {% if is_incremental() -%}
             AND {{ incremental_predicate('block_time') }}
+            {% else -%}
+            AND block_time >= NOW() - INTERVAL '7' DAY
             {% endif -%}
     ) c USING (tx_version, move_address)
     LEFT JOIN (
@@ -57,6 +59,8 @@ WITH fa_balance AS (
             AND move_resource_name IN ('ObjectGroup','ObjectCore')
             {% if is_incremental() -%}
             AND {{ incremental_predicate('block_time') }}
+            {% else -%}
+            AND block_time >= NOW() - INTERVAL '7' DAY
             {% endif -%}
     ) AS fs_owner USING(tx_version, move_address)
     WHERE 1=1
@@ -65,6 +69,8 @@ WITH fa_balance AS (
         AND move_resource_name = 'FungibleStore'
         {% if is_incremental() -%}
         AND {{ incremental_predicate('block_time') }}
+        {% else -%}
+        AND block_time >= NOW() - INTERVAL '7' DAY
         {% endif -%}
 )
 

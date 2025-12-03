@@ -41,6 +41,8 @@ WITH fa_activities AS (
         AND fab.token_standard = 'v2'
         {% if is_incremental() -%}
         AND {{ incremental_predicate('fab.block_time') }}
+        {% else -%}
+        AND fab.block_time >= NOW() - INTERVAL '7' DAY
         {% endif -%}
     {% if is_incremental() -%}
     CROSS JOIN max_fab_version
@@ -54,6 +56,8 @@ WITH fa_activities AS (
         {% if is_incremental() -%}
         AND {{ incremental_predicate('ev.block_time') }}
         AND ev.tx_version < max_fab_version.max_tx_version
+        {% else -%}
+        AND ev.block_time >= NOW() - INTERVAL '7' DAY
         {% endif -%}
 )
 
