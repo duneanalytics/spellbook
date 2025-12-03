@@ -12,10 +12,9 @@
 -- depends_on: {{ ref('oneinch_' + blockchain + '_project_orders') }}
 
 {{
-    oneinch_project_swaps_base_macro(
+    oneinch_project_swaps_base_u_macro(
         blockchain = blockchain,
-        date_from = '2020-08-01'
+        date_from = '2020-08-01',
+        date_to = '2021-01-01'
     )
 }}
-where true
-    and block_month < date('2021-01-01')
