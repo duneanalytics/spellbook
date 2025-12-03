@@ -14,6 +14,8 @@ SELECT address
         values
         (0x0d3250c3d5facb74ac15834096397a3ef790ec99, 'zkSync Era', '', 'zksync')
         , (0xe1d8d4c8656949764c2c9fa9fab2c15d3f42e6c2, 'zkSync Era', '', 'zksync')
+        , (0x7d95f0b9d3383d58e39a75a67760aa2153d355a2, 'zkSync Gateway', '', 'zksync')
+        , (0xceb302741e355e7cf30b8479b7ad104d0c171ebf ,'zkSync Gateway', '', 'zksync')
         , (0x2c169dfe5fbba12957bdd0ba47d9cedbfe260ca7, 'StarkNet', '', 'Starknet')
         , (0x6887246668a3b87f54deb3b94ba47a6f63f32985, 'OP Mainnet', '', 'Optimism')
         , (0x5050f69a9786f081509234f1a7f4684b5e5b76c9, 'Base', '', 'base')
@@ -132,4 +134,7 @@ SELECT address
         , (0x583e2c664c868611a6e3f1d6dcbc8aa00de43a7f, 'Superposition', '', 'Superpositionso')
         , (0x8b5606469e21c75edd7c74d1c7a65824675d9aff, 'Spire DA Builder', '', 'spire_labs')
         , (0xbe7f4edb6257b4d2c77293c380f19ce96a4fa41e, 'Symbiosis', '', 'symbiosis_fi')
+        , (0xdfd6c636dcb5a013c2431316c4a0762b84e70a5d ,'XLayer', '', 'XLayerOfficial')
+        , (0x8839e742fd56ebc0d31d11dd5a2ca25aa61c54da ,'Forknet', '', 'forknet_io')
+        , (0xae13ce4cd416cb4598865aa5ac8d13532bd3cd99 ,'Jovay', '', 'JovayNetwork')
         ) AS x(address, entity, proposer, x_username)

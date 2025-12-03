@@ -1,5 +1,6 @@
  {{
   config(
+        tags = ['prod_exclude'],
         schema = 'contracts_bnb',
         alias = 'base_starting_level',
         materialized ='incremental',

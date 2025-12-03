@@ -1,5 +1,6 @@
  {{
   config(     
+        tags = ['prod_exclude'],
         schema = 'contracts',
         alias = 'contract_mapping',
         post_hook='{{ expose_spells(\'["ethereum", "base", "optimism", "zora", "arbitrum", "celo", "polygon", "bnb", "avalanche_c", "fantom", "gnosis","zksync"]\',
