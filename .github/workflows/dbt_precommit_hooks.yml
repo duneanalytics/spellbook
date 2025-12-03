@@ -1,5 +1,5 @@
 # .github/workflows/app.yaml
-name: dbt "pre"-commit hooks (beta)
+name: dbt "exit"-commit hooks (beta)
 
 on:
   workflow_dispatch:
