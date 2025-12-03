@@ -24,8 +24,12 @@ models:
         description: The timestamp of the block containing the transaction
       - name: block_month
         description: The month of the block containing the transaction
+        tests:
+          - not_null
       - name: tx_hash
         description: The hash of the transaction
+        tests:
+          - not_null
       - name: write_set_change_index
         description: The index of the write set change
       - name: asset_type
@@ -70,6 +74,10 @@ models:
       - dbt_utils.unique_combination_of_columns:
          combination_of_columns: ['block_month', 'tx_hash', 'write_set_change_index']
     columns:
+      - name: unique_key
+        description: Surrogate key generated from tx_hash and write_set_change_index
+        tests:
+          - not_null
       - name: block_date
         description: The date of the block containing the transaction
       - name: tx_version
@@ -78,6 +86,8 @@ models:
         description: The timestamp of the block containing the transaction
       - name: block_month
         description: The month of the block containing the transaction
+        tests:
+          - not_null
       - name: tx_hash
         description: The hash of the transaction
       - name: write_set_change_index
@@ -121,6 +131,15 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
          combination_of_columns: ['block_month', 'tx_hash', 'write_set_change_index']
+    columns:
+      - name: unique_key
+        description: Surrogate key generated from tx_hash and write_set_change_index
+        tests:
+          - not_null
+      - name: block_month
+        description: The month of the block containing the transaction
+        tests:
+          - not_null
 
   - name: aptos_fungible_asset_fs_deletion_balances
     meta:
@@ -133,6 +152,15 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
          combination_of_columns: ['block_month', 'tx_hash', 'write_set_change_index']
+    columns:
+      - name: unique_key
+        description: Surrogate key generated from tx_hash and write_set_change_index
+        tests:
+          - not_null
+      - name: block_month
+        description: The month of the block containing the transaction
+        tests:
+          - not_null
 
   - name: aptos_fungible_asset_activities
     meta:
@@ -157,10 +185,16 @@ models:
         description: The timestamp of the block containing the transaction
       - name: block_month
         description: The month of the block containing the transaction
+        tests:
+          - not_null
       - name: tx_hash
         description: The hash of the transaction
+        tests:
+          - not_null
       - name: event_index
         description: The index of the event within the transaction
+        tests:
+          - not_null
       - name: event_type
         description: The type of the event
       - name: owner_address
@@ -207,6 +241,19 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
          combination_of_columns: ['block_month', 'tx_hash', 'event_index']
+    columns:
+      - name: block_month
+        description: The month of the block containing the transaction
+        tests:
+          - not_null
+      - name: tx_hash
+        description: The hash of the transaction
+        tests:
+          - not_null
+      - name: event_index
+        description: The index of the event within the transaction
+        tests:
+          - not_null
 
   - name: aptos_fungible_asset_migration
     meta:
@@ -297,14 +344,20 @@ models:
         description: The version of the transaction
       - name: tx_hash
         description: The hash of the transaction
+        tests:
+          - not_null
       - name: block_date
         description: The date of the block containing the transaction
       - name: block_time
         description: The timestamp of the block containing the transaction
       - name: block_month
         description: The month of the block containing the transaction
+        tests:
+          - not_null
       - name: event_index
         description: The index of the event within the transaction
+        tests:
+          - not_null
       - name: activity_type
         description: Mint, Burn, Withdraw, Deposit
       - name: amount
@@ -330,14 +383,20 @@ models:
         description: The version of the transaction
       - name: tx_hash
         description: The hash of the transaction
+        tests:
+          - not_null
       - name: block_date
         description: The date of the block containing the transaction
       - name: block_time
         description: The timestamp of the block containing the transaction
       - name: block_month
         description: The month of the block containing the transaction
+        tests:
+          - not_null
       - name: event_index
         description: The index of the event within the transaction
+        tests:
+          - not_null
       - name: activity_type
         description: Mint, Burn, Withdraw, Deposit
       - name: amount
@@ -363,12 +422,16 @@ models:
         description: The version of the transaction
       - name: tx_hash
         description: The hash of the transaction
+        tests:
+          - not_null
       - name: block_date
         description: The date of the block containing the transaction
       - name: block_time
         description: The timestamp of the block containing the transaction
       - name: block_month
         description: The month of the block containing the transaction
+        tests:
+          - not_null
       - name: session_id
         description: Virtual index for transfer within transaction
       - name: from_account
@@ -383,8 +446,12 @@ models:
         description: raw asset amount (before taking into account decimals)
       - name: from_index
         description: Event index that funds originate from (Mint or Withdraw)
+        tests:
+          - not_null
       - name: to_index
         description: Event index that funds are received (Burn or Deposit)
+        tests:
+          - not_null
       - name: from_many
         description: Transfer does not take entire amount of originating event
       - name: to_many
@@ -410,12 +477,16 @@ models:
         description: The version of the transaction
       - name: tx_hash
         description: The hash of the transaction
+        tests:
+          - not_null
       - name: block_date
         description: The date of the block containing the transaction
       - name: block_time
         description: The timestamp of the block containing the transaction
       - name: block_month
         description: The month of the block containing the transaction
+        tests:
+          - not_null
       - name: session_id
         description: Virtual index for transfer within transaction
       - name: from_account
@@ -430,8 +501,12 @@ models:
         description: raw asset amount (before taking into account decimals)
       - name: from_index
         description: Event index that funds originate from (Mint or Withdraw)
+        tests:
+          - not_null
       - name: to_index
         description: Event index that funds are received (Burn or Deposit)
+        tests:
+          - not_null
       - name: from_many
         description: Transfer does not take entire amount of originating event
       - name: to_many
