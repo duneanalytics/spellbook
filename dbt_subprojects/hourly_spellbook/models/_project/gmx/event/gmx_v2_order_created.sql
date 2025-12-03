@@ -48,6 +48,7 @@ SELECT
     updated_at_block,
     updated_at_time,
     valid_from_time,
+    src_chain_id,
     is_long,
     should_unwrap_native_token,
     auto_cancel,

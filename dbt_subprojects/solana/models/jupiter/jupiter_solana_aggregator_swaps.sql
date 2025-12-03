@@ -7,7 +7,7 @@
         file_format = 'delta',
         incremental_strategy='merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['log_index','tx_id','output_mint','input_mint'],
+        unique_key = ['block_month','amm','log_index','tx_id','output_mint','input_mint'],
         pre_hook='{{ enforce_join_distribution("PARTITIONED") }}',
         post_hook='{{ expose_spells(\'["jupiter"]\',
                                     "project",
@@ -20,7 +20,7 @@ with
         SELECT
         *
         FROM (
-            --use this api https://api.jup.ag/swap/v1/program-id-to-label
+            --use this api https://quote-api.jup.ag/v6/program-id-to-label
             values
                 ('Perena', 'NUMERUNsFCP3kuNmWZuXtm1AaQCPj9uw6Guv2Ekoi5P'),
                 ('stabble Stable Swap', 'swapNyd8XiQwJ6ianp9snpu4brUqFxadzvHebnAXjJZ'),
@@ -76,7 +76,13 @@ with
                 ('Solayer', 'endoLNCKTqDn8gSVnN2hDdpgACUPWHZTwoYnnMybpAT'),
                 ('Token Mill', 'JoeaRXgtME3jAoz5WuFXGEndfv4NPH9nBxsLq44hk9J'),
                 ('Daos.fun', '5jnapfrAN47UYkLkEf7HnprPPBCQLvkYWGZDeKkaP5hv'),
-                ('ZeroFi', 'ZERor4xhbUycZ6gb9ntrhqscUcZmAbQDjEAtCf4hbZY')
+                ('ZeroFi', 'ZERor4xhbUycZ6gb9ntrhqscUcZmAbQDjEAtCf4hbZY'),
+                ('GoonFi', 'goonERTdGsjnkZqWuVjs73BZ3Pb9qoCUdBUL17BnS5j'),
+                ('HumidiFi', '9H6tua7jkLhdm3w8BvgpTn5LZNU7g4ZynDmCiNN3q6Rp'),
+                ('TesseraV', 'TessVdML9pBGgG9yGks7o4HewRaXVAMuoVj4x83GLQH'),
+                ('Woofi', 'WooFif76YGRNjk1pA8wCsN67aQsD9f9iLsz4NcJ1AVb'),
+                ('PancakeSwap', 'HpNfyc2Saw7RKkQd8nEL4khUcuPhQ7WwY1B2qjx8jxFq'),
+                ('SolFi V2', 'SV2EYYJyRz2YhfXwXnhNAevDEui5Q6yrfyo13WtupPF')
             ) as v(amm_name, amm)
     )
 
@@ -107,7 +113,6 @@ with
                 {% if is_incremental() %}
                 AND {{ incremental_predicate('block_time') }}
                 {% endif %}
-                -- and block_time >= now() - interval '7' day --shorten CI
         )
 
         SELECT
@@ -164,7 +169,6 @@ with
             {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
             {% endif %}
-            -- and block_time >= now() - interval '7' day --shorten CI
         ) l
         JOIN amms a ON a.amm = toBase58(bytearray_substring(l.data,1+16,32)) --only include amms that we are tracking.
     )

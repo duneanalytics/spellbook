@@ -1,27 +1,7 @@
 {% macro cctp_v1_deposits(blockchain) %}
 
-WITH cctp_id_mapping AS (
-    SELECT id, blockchain
-    FROM (VALUES
-    (0, 'ethereum')
-    , (1, 'avalanche_c')
-    , (2, 'optimism')
-    , (3, 'arbitrum')
-    , (4, 'noble')
-    , (5, 'solana')
-    , (6, 'base')
-    , (7, 'polygon')
-    , (8, 'sui')
-    , (9, 'aptos')
-    , (10, 'unichain')
-    , (11, 'linea')
-    , (12, 'codex')
-    , (13, 'sonic')
-    , (14, 'worldchain')
-    ) AS x (id, blockchain)
-    )
-
 SELECT '{{blockchain}}' AS deposit_chain
+, d.destinationDomain AS withdrawal_chain_id
 , i.blockchain AS withdrawal_chain
 , 'CCTP' AS bridge_name
 , '1' AS bridge_version
@@ -40,6 +20,6 @@ SELECT '{{blockchain}}' AS deposit_chain
 , contract_address
 , CAST(nonce AS varchar) AS bridge_transfer_id
 FROM {{ source('circle_' + blockchain, 'tokenmessenger_evt_depositforburn') }} d
-INNER JOIN cctp_id_mapping i ON d.destinationDomain=i.id
+LEFT JOIN {{ ref('bridges_cctp_chain_indexes') }} i ON d.destinationDomain=i.id
 
 {% endmacro %}
