@@ -4,20 +4,25 @@
     config(
         schema = 'oneinch_' + blockchain,
         alias = 'project_swaps_base',
-        partition_by = ['block_month', 'project'],
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['blockchain', 'block_month', 'block_number', 'tx_hash', 'second_side', 'call_trace_address', 'call_trade_id'],
+        materialized = 'view',
+        unique_key = ['blockchain', 'id'],
     )
 -}}
 
--- depends_on: {{ ref('oneinch_' + blockchain + '_project_orders') }}
+{%-
+    set parts = [
+        '2020',
+        '2021_01',
+        '2021_02',
+        '2022',
+        '2023',
+        '2024',
+        '2025_01',
+        'current',
+    ]
+-%}
 
-{{
-    oneinch_project_swaps_base_u_macro(
-        blockchain = blockchain,
-        date_from = '2025-11-01'
-    )
-}}
+{%- for part in parts %}
+    select * from {{ ref('oneinch_' + blockchain + '_project_swaps_base_' + part) }}
+    {% if not loop.last -%} union all {%- endif %}
+{%- endfor -%}
