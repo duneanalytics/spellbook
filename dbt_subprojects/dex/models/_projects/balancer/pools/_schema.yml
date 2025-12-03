@@ -1,5 +1,4 @@
 version: 2
-
 models:
   - name: balancer_pools_fees
     meta:
