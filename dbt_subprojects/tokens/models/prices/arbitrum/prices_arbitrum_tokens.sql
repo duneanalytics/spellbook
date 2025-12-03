@@ -235,5 +235,6 @@ FROM
     ('ebtc-etherfi-staked-btc', 'arbitrum', 'eBTC', 0x657e8c867d8b37dcc18fa4caead9c45eb088c642, 8),
     ('ftw-black-agnus', 'arbitrum', 'FTW', 0x306fd3e7b169aa4ee19412323e1a5995b8c1a1f4, 18),
     ('hyper-hyperlane', 'arbitrum', 'HYPER', 0xc9d23ed2adb0f551369946bd377f8644ce1ca5c4, 18),
+    ('usdai-usdai', 'arbitrum', 'USDai', 0x0a1a1a107e45b7ced86833863f482bc5f4ed82ef, 18),
     ('logx-logx-network', 'arbitrum', 'LOGX', 0x59062301fb510f4ea2417b67404cb16d31e604ba, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
