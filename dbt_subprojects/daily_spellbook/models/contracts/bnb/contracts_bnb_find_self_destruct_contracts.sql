@@ -1,5 +1,6 @@
  {{
   config(
+        tags = ['prod_exclude'],
         schema = 'contracts_bnb',
         alias = 'find_self_destruct_contracts',
         materialized ='incremental',
