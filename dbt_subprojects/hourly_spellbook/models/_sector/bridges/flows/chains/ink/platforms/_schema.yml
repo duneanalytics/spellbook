@@ -55,3 +55,12 @@ models:
     config:
       tags: [ 'ink', 'bridges', 'flows', 'withdrawals' ]
     description: "Tether's USDT0 v1 bridge withdrawals events on Ink"
+  - name: bridges_ink_orbiter_v1_deposits
+    meta:
+      blockchain: ink
+      sector: bridges
+      project: orbiter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'ink', 'bridges', 'flows', 'withdrawals' ]
+    description: "Orbiter's v1 bridge deposits events on Ink"
