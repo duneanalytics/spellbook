@@ -1,7 +1,7 @@
 {%- macro
     oneinch_project_swaps_base_macro(
         blockchain,
-        date_from = '2019-01-01',
+        date_from = '2025-10-01',
         date_to = '2049-01-01',
         easy_dates = true
     )
@@ -43,7 +43,7 @@ meta as (
     where true
         and call_success
         and block_time >= timestamp '{{ date_from }}'
-        and block_time < {% if easy_dates -%} date('{{ date_from }}') + interval '2' day {%- else -%} date('{{ date_to }}') {%- endif %}
+        and block_time < {% if easy_dates -%} date('{{ date_from }}') + interval '7' day {%- else -%} date('{{ date_to }}') {%- endif %}
         {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
     
     union all
@@ -66,7 +66,7 @@ meta as (
     where true
         and call_success
         and block_time >= timestamp '{{ date_from }}'
-        and block_time < {% if easy_dates -%} date('{{ date_from }}') + interval '2' day {%- else -%} date('{{ date_to }}') {%- endif %}
+        and block_time < {% if easy_dates -%} date('{{ date_from }}') + interval '7' day {%- else -%} date('{{ date_to }}') {%- endif %}
         {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
 )
 
@@ -79,7 +79,7 @@ meta as (
         and (tx_success or tx_success is null)
         and (flags['cross_chain'] or not flags['cross_chain_method']) -- without cross-chain methods calls in non cross-chain protocols
         and block_time >= timestamp '{{ date_from }}'
-        and block_time < {% if easy_dates -%} date('{{ date_from }}') + interval '2' day {%- else -%} date('{{ date_to }}') {%- endif %}
+        and block_time < {% if easy_dates -%} date('{{ date_from }}') + interval '7' day {%- else -%} date('{{ date_to }}') {%- endif %}
         {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
 )
 
@@ -165,7 +165,7 @@ meta as (
     from {{ source('tokens_' + blockchain, 'transfers_from_traces') }}, meta
     where true
         and block_time >= timestamp '{{ date_from }}'
-        and block_time < {% if easy_dates -%} date('{{ date_from }}') + interval '2' day {%- else -%} date('{{ date_to }}') {%- endif %}
+        and block_time < {% if easy_dates -%} date('{{ date_from }}') + interval '7' day {%- else -%} date('{{ date_to }}') {%- endif %}
         {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
 )
 
