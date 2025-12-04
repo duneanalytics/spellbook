@@ -16,6 +16,6 @@
         blockchain = blockchain,
         date_from = '2021-01-01',
         date_to = '2021-05-01',
-        easy_dates = false
+        easy_dates = true
     )
 }}
