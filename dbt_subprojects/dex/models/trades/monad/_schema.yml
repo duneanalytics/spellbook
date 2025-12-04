@@ -15,7 +15,7 @@ models:
       project: kuru
       contributors: tomfutago
     config:
-      tags: [ 'monad', 'dex', 'trades', 'kuru' ]
+      tags: ["monad", "dex", "trades", "kuru"]
     description: "kuru monad base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -32,7 +32,7 @@ models:
       project: pinot
       contributors: tomfutago
     config:
-      tags: [ 'monad', 'dex', 'trades', 'pinot' ]
+      tags: ["monad", "dex", "trades", "pinot"]
     description: "pinot monad base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -51,7 +51,7 @@ models:
       project: pinot
       contributors: tomfutago
     config:
-      tags: [ 'monad', 'dex', 'trades', 'pinot' ]
+      tags: ["monad", "dex", "trades", "pinot"]
     description: "pinot v3 monad base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -70,7 +70,7 @@ models:
       project: uniswap
       contributors: tomfutago
     config:
-      tags: [ 'monad', 'dex', 'trades', 'uniswap', 'v2' ]
+      tags: ["monad", "dex", "trades", "uniswap", "v2"]
     description: "uniswap monad v2 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -89,7 +89,7 @@ models:
       project: uniswap
       contributors: tomfutago
     config:
-      tags: [ 'monad', 'dex', 'trades', 'uniswap', 'v3' ]
+      tags: ["monad", "dex", "trades", "uniswap", "v3"]
     description: "uniswap monad v3 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -98,5 +98,43 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('uniswap_monad_base_trades_seed')
+          filter:
+            version: 3
+
+  - name: pancakeswap_v2_monad_base_trades
+    meta:
+      blockchain: monad
+      sector: dex
+      project: pancakeswap
+      contributors: chef_butterbeer
+    config:
+      tags: ["monad", "dex", "trades", "pancakeswap", "v2"]
+    description: "pancakeswap monad v2 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('pancakeswap_monad_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: pancakeswap_v3_monad_base_trades
+    meta:
+      blockchain: monad
+      sector: dex
+      project: pancakeswap
+      contributors: chef_butterbeer
+    config:
+      tags: ["monad", "dex", "trades", "pancakeswap", "v3"]
+    description: "pancakeswap monad v3 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('pancakeswap_monad_base_trades_seed')
           filter:
             version: 3
