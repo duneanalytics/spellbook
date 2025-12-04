@@ -16,6 +16,8 @@
     , ref('pinot_v3_monad_base_trades')
     , ref('uniswap_v2_monad_base_trades')
     , ref('uniswap_v3_monad_base_trades')
+    , ref('pancakeswap_v2_monad_base_trades')
+    , ref('pancakeswap_v3_monad_base_trades')
 ] %}
 with base_union as (
     SELECT *
