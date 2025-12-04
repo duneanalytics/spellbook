@@ -7,7 +7,7 @@ models:
       blockchain: base
       sector: stablecoin
       project: stablecoin
-      contributors: synthquest
+      contributors: synthquest, tomfutago
 
     config:
       tags: ['stablecoin', 'balances']

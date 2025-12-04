@@ -10,29 +10,10 @@
   )
 }}
 
-with
-stablecoin_tokens as (
-  select distinct
-    symbol,
-    contract_address as token_address
-  from 
-    {{ source('tokens_avalanche_c', 'erc20_stablecoins')}}
-)
-
-,balances as (
-    {{
-      balances_incremental_subset_daily(
-            blockchain = 'avalanche_c',
-            token_list = 'stablecoin_tokens',
-            start_date = '2021-01-27'
-      )
-    }}
-)
-
-select
-    t.symbol
-    ,b.*
-from balances b
-left join stablecoin_tokens t
-    on b.token_address = t.token_address
+{{
+  stablecoins_balances(
+    blockchain = 'avalanche_c',
+    start_date = '2021-01-27',
+  )
+}}
  
