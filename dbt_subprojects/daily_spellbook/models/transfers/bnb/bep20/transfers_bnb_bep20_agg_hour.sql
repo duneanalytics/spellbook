@@ -22,7 +22,9 @@ select
 FROM
 {{ ref('transfers_bnb_bep20') }} tr
 LEFT JOIN
-{{ source('tokens_bnb', 'bep20') }} t on t.contract_address = tr.token_address
+{{ source('tokens', 'erc20') }} t
+    on t.contract_address = tr.token_address
+    AND t.blockchain = 'bnb'
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
 WHERE {{ incremental_predicate('tr.evt_block_time') }}

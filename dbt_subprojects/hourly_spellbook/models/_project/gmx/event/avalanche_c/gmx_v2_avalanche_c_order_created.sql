@@ -216,6 +216,7 @@ WITH evt_data_1 AS (
         MAX(CASE WHEN key_name = 'updatedAtBlock' THEN value END) AS updated_at_block,
         MAX(CASE WHEN key_name = 'updatedAtTime' THEN value END) AS updated_at_time,
         MAX(CASE WHEN key_name = 'validFromTime' THEN value END) AS valid_from_time,
+        MAX(CASE WHEN key_name = 'srcChainId' THEN value END) AS src_chain_id,
     
         MAX(CASE WHEN key_name = 'isLong' THEN value END) AS is_long,
         MAX(CASE WHEN key_name = 'shouldUnwrapNativeToken' THEN value END) AS should_unwrap_native_token,
@@ -262,6 +263,8 @@ WITH evt_data_1 AS (
         TRY_CAST(updated_at_block AS BIGINT) AS updated_at_block,
         TRY_CAST(updated_at_time AS DOUBLE) AS updated_at_time,
         TRY_CAST(valid_from_time AS DOUBLE) AS valid_from_time,
+        TRY_CAST(src_chain_id AS BIGINT) AS src_chain_id,
+
         TRY_CAST(is_long AS BOOLEAN) AS is_long,
         TRY_CAST(should_unwrap_native_token AS BOOLEAN) AS should_unwrap_native_token,
         TRY_CAST(auto_cancel AS BOOLEAN) AS auto_cancel,
@@ -330,20 +333,21 @@ WITH evt_data_1 AS (
         execution_fee / POWER(10, 18) AS execution_fee,
         callback_gas_limit,
         min_output_amount AS min_output_amount_raw, 
-
         updated_at_block,
         CASE 
             WHEN updated_at_time = 0 THEN NULL
             ELSE updated_at_time
         END AS updated_at_time,
         valid_from_time,
+        src_chain_id,
+
         is_long,
         should_unwrap_native_token,
-
         CASE
             WHEN auto_cancel IS NULL THEN false
             ELSE auto_cancel
         END AS auto_cancel,
+        
         key,
         data_list
 
