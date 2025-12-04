@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: bridges_boba_across_v1_deposits
+    meta:
+      blockchain: boba
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
+    description: "Across's v1 bridge deposits events on boba"
+  - name: bridges_boba_orbiter_v1_deposits
+    meta:
+      blockchain: boba
+      sector: bridges
+      project: orbiter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'boba', 'bridges', 'flows', 'withdrawals' ]
+    description: "Orbiter's v1 bridge deposits events on Boba"

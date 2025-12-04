@@ -73,3 +73,8 @@ sources:
       - name: weighted_swap_call_swap
       - name: weighted_swap_call_swap_v2
 
+  - name: jupiter_solana
+    description: "Jupiter decoded tables"
+    tables:
+      - name: referral_call_claim
+

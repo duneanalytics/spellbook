@@ -1,6 +1,6 @@
 {{ 
   config(
-    tags = ['static'],
+    tags = ['static', 'prod_exclude'],
     schema = 'contracts',
     alias = 'contract_overrides',
     unique_key='contract_address',
