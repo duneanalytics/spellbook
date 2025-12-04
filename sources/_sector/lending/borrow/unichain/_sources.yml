@@ -11,3 +11,19 @@ sources:
       - name: cusdcv3_evt_Transfer
       - name: cWETHv3_evt_AbsorbDebt
       - name: cusdcv3_evt_AbsorbDebt
+  - name: morpho_blue_unichain
+    tables:
+      - name: MorphoBlue_evt_CreateMarket
+      - name: MorphoBlue_evt_Borrow
+      - name: MorphoBlue_evt_Repay
+      - name: MorphoBlue_evt_Liquidate
+  - name: euler_v2_unichain
+    tables:
+      - name: EVault_evt_Borrow
+      - name: EVault_evt_Liquidate
+      - name: EVault_evt_Repay
+  - name: venus_unichain
+    tables:
+      - name: VToken_evt_Borrow
+      - name: VToken_evt_RepayBorrow
+      - name: VToken_evt_LiquidateBorrow

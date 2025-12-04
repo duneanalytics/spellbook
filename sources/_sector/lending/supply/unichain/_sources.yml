@@ -9,3 +9,16 @@ sources:
       - name: cusdcv3_evt_WithdrawCollateral
       - name: cWETHv3_evt_AbsorbCollateral
       - name: cusdcv3_evt_AbsorbCollateral
+  - name: morpho_blue_unichain
+    tables:
+      - name: MorphoBlue_evt_Supply
+      - name: MorphoBlue_evt_Withdraw
+  - name: euler_v2_unichain
+    tables:
+      - name: EVault_evt_Deposit
+      - name: EVault_evt_Withdraw
+      - name: EVault_evt_EVaultCreated
+  - name: venus_unichain
+    tables:
+      - name: VToken_evt_Mint
+      - name: VToken_evt_Redeem

@@ -9,6 +9,9 @@
 {%
   set models = [
     ref('compound_v3_unichain_base_borrow')
+    , ref('morpho_unichain_base_borrow')
+    , ref('euler_v2_unichain_base_borrow')
+    , ref('venus_unichain_base_borrow')
   ]
 %}
 
