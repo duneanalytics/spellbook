@@ -39,6 +39,7 @@ FROM
    , ('afsui-aftermath-staked-sui', 'afSUI', '0xf325ce1300e8dac124071d3152c5c5ee6174914f8bc2161e88329cf579246efc::afsui::AFSUI', 9)
    , ('sui-sui','SUI', '0x2::sui::SUI', 9)
    , ('take-overtake', 'TAKE', '0x76a49ebaf991fa2d4cb6a352af14425d453fe2ba6802b5ed2361b227150b6689::take::TAKE', 9)
+   , ('haedal-haedal-protocol', 'HAEDAL', '0x3a304c7feba2d819ea57c3542d68439ca2c386ba02159c740f7b406e592c62ea::haedal::HAEDAL', 9)
    , ('xo-xociety','XO', '0x90f9eb95f62d31fbe2179313547e360db86d88d2399103a94286291b63f469ba::xo::XO', 9)
 ) as temp (token_id, symbol, contract_address, decimals)
 
