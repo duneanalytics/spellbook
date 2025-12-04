@@ -1889,7 +1889,35 @@ seeds:
         token_address: varbinary
         depositor: varbinary
         amount: double
+  - name: euler_unichain_base_supply_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        block_number: bigint
+        block_time: timestamp
+        tx_hash: varbinary
+        evt_index: bigint
+        transaction_type: varchar
+        token_address: varbinary
+        depositor: varbinary
+        amount: double
   - name: morpho_unichain_base_borrow_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        block_number: bigint
+        block_time: timestamp
+        tx_hash: varbinary
+        evt_index: bigint
+        transaction_type: varchar
+        token_address: varbinary
+        borrower: varbinary
+        amount: double
+  - name: venus_unichain_base_borrow_seed
     config:
       column_types:
         blockchain: varchar
@@ -1915,4 +1943,34 @@ seeds:
         evt_index: bigint
         token_address: varbinary
         recipient: varbinary
+        amount: double
+  - name: euler_unichain_base_borrow_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        block_number: bigint
+        block_time: timestamp
+        tx_hash: varbinary
+        evt_index: bigint
+        token_address: varbinary
+        recipient: varbinary
+        transaction_type: varchar
+        token_address: varbinary
+        borrower: varbinary
+        amount: double
+  - name: venus_unichain_base_supply_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        block_number: bigint
+        block_time: timestamp
+        tx_hash: varbinary
+        evt_index: bigint
+        transaction_type: varchar
+        token_address: varbinary
+        depositor: varbinary
         amount: double
