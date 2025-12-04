@@ -782,6 +782,7 @@ FROM
         ('2z-doublezero', 'solana', '2Z', 'J6pQQ3FAcJQeWPPGppWRb4nM8jU3wLyYbRrLh7feMfvd', 8),
         ('useless-useless-coin', 'solana', 'USELESS', 'Dz9mQ9NzkBcCsuGPFJ3r1bS4wgqKMHBPiVuniW8Mbonk', 6),
         ('onyc-onyc', 'solana', 'ONyc', '5Y8NV33Vv7WbnLfq3zBcKSdYPrk7g2KoiQoe7M2tcxp5', 9),
+        ('gohome-gohome', 'solana', 'GOHOME', '2Wu1g2ft7qZHfTpfzP3wLdfPeV1is4EwQ3CXBfRYAciD', 6),
         ('common-common', 'solana', 'COMMON', 'H1MHqq1dsExxeuYTd8JZzM51z33RvxjuM5sx2oB11WJ', 9),
         ('meta-metadao-new', 'solana', 'META', 'METAwkXcqyXKy1AtsSgJ8JiUHwGCafnZL38n3vYmeta', 6),
         ('umbra-umbra', 'solana', 'UMBRA', 'PRVT6TB7uss3FrUd2D9xs2zqDBsa3GbMJMwCQsgmeta', 6),
