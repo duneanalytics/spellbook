@@ -2,6 +2,10 @@
     schema = 'bridges_crosschain',
     alias = 'flows',
     materialized = 'view'
+    , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "blast", "bnb", "ethereum", "hyperevm", "ink", "lens", "linea", "optimism", "plasma", "polygon", "scroll", "unichain", "worldchain", "zksync", "zora", "fantom", "gnosis", "nova", "opbnb", "berachain", "corn", "flare", "sei", "boba", "mantle", "abstract", "apechain", "bob", "celo", "kaia", "katana", "plume", "ronin", "sonic", "sophon", "story", "taiko", "zkevm"]\',
+                                "sector",
+                                "bridges",
+                                \'["hildobby"]\') }}'
     )
 }}
 
@@ -25,8 +29,8 @@ SELECT *
         , withdrawal_block_number
         , deposit_amount_raw
         , deposit_amount
-        , withdrawal_amount_raw
         , withdrawal_amount
+        , withdrawal_amount_raw
         , amount_usd
         , CAST(sender AS VARCHAR) AS sender
         , CAST(recipient AS VARCHAR) AS recipient

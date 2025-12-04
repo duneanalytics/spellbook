@@ -15,8 +15,10 @@ FROM (
         '{{ blockchain }}' AS blockchain
         , block_time
         , block_number
+        , block_date
         , index
         , contract_address
+        , contract_name
         , event_name
         , namespace
         , signature
