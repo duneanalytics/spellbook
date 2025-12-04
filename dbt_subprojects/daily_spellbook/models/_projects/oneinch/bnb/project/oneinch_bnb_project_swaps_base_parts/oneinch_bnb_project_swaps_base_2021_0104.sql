@@ -15,7 +15,6 @@
     oneinch_project_swaps_base_macro(
         blockchain = blockchain,
         date_from = '2021-01-01',
-        date_to = '2021-05-01',
-        easy_dates = true
+        date_to = '2021-05-01'
     )
 }}
