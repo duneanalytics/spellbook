@@ -8,7 +8,8 @@
 
 {%
   set models = [
-    ref('venus_unichain_base_supply')
+    ref('euler_v2_unichain_base_supply')
+    , ref('venus_unichain_base_supply')
   ]
 %}
 
