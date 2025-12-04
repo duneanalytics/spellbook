@@ -5,7 +5,7 @@
       , post_hook='{{ expose_spells(\'["arbitrum"]\',
                                   "sector",
                                   "tokens_arbitrum",
-                                  \'["synthquest","rantum"]\') }}'
+                                  \'["synthquest","rantum","tomfutago"]\') }}'
       , unique_key = ['contract_address']
   )
 }}
@@ -41,6 +41,15 @@ FROM (VALUES
         ('arbitrum', 0x4cfa50b7ce747e2d61724fcac57f24b748ff2b2a, 'Crypto-backed stablecoin', 'fUSDC', 6, ''),
         ('arbitrum', 0x57f5e098cad7a3d1eed53991d4d66c45c9af7812, 'Crypto-backed stablecoin', 'sUSDM', 18, ''),
         ('arbitrum', 0x7dff72693f6a4149b17e7c6314655f6a9f7c8b33, 'Crypto-backed stablecoin', 'GHO', 18, ''),
-        ('arbitrum', 0xf3527ef8de265eaa3716fb312c12847bfba66cef, 'Crypto-backed stablecoin', 'USDX', 18, '')
+        ('arbitrum', 0xf3527ef8de265eaa3716fb312c12847bfba66cef, 'Crypto-backed stablecoin', 'USDX', 18, ''),
+        ('arbitrum', 0x4bdc50829003cc017443bf9bfb3ac82f3f0c4ad4, 'Fiat-backed stablecoin', 'CLPC', 18, ''),
+        ('arbitrum', 0x5e85faf503621830ca857a5f38b982e0cc57d537, 'Fiat-backed stablecoin', 'dEURO', 18, ''),
+        ('arbitrum', 0xfa5ed56a203466cbbc2430a43c66b9d8723528e7, 'Crypto-backed stablecoin', 'agEUR', 18, ''),
+        ('arbitrum', 0x0c06ccf38114ddfc35e07427b9424adcca9f44f8, 'Fiat-backed stablecoin', 'EURe', 18, ''),
+        ('arbitrum', 0xe333e7754a2dc1e020a162ecab019254b9dab653, 'Fiat-backed stablecoin', 'XSGD', 6, ''),
+        ('arbitrum', 0xf197ffc28c23e0309b5559e7a166f2c6164c80aa, 'Fiat-backed stablecoin', 'MXNB', 18, ''),
+        ('arbitrum', 0x4883c8f0529f37e40ebea870f3c13cdfad5d01f8, 'Fiat-backed stablecoin', 'VEUR', 18, ''),
+        ('arbitrum', 0x2b28e826b55e399f4d4699b85f68666ac51e6f70, 'Fiat-backed stablecoin', 'CADC', 18, ''),
+        ('arbitrum', 0x589d35656641d6ab57a545f08cf473ecd9b6d5f7, 'Fiat-backed stablecoin', 'GYEN', 6, '')
 
      ) AS temp_table (blockchain, contract_address, backing, symbol, decimals, name)

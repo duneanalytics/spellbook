@@ -5,7 +5,7 @@
       , post_hook='{{ expose_spells(\'["bnb"]\',
                                   "sector",
                                   "tokens_bnb",
-                                  \'["synthquest","rantum"]\') }}'
+                                  \'["synthquest","rantum","tomfutago"]\') }}'
       , unique_key = ['contract_address']
   )
 }}
@@ -38,9 +38,15 @@ FROM (VALUES
     ('bnb', 0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3, 'Hybrid stablecoin', 'DAI', 18, ''),
     ('bnb', 0xd17479997f34dd9156deef8f95a52d81d265be9c, 'Algorithmic stablecoin', 'USDD', 18, ''),
     ('bnb', 0x4268b8f0b87b6eae5d897996e6b845ddbd99adf3, 'Crypto-backed stablecoin', 'axlUSDC', 6, ''),
-    ('bnb', 0x8d0d000ee44948fc98c9b98a4fa4921476f08b0d, 'Fiat-backed stablecoin', 'USD1', 18, '')
-
-
-
+    ('bnb', 0x8d0d000ee44948fc98c9b98a4fa4921476f08b0d, 'Fiat-backed stablecoin', 'USD1', 18, ''),
+    ('bnb', 0x71be881e9c5d4465b3fff61e89c6f3651e69b5bb, 'Fiat-backed stablecoin', 'BRZ', 18, ''),
+    ('bnb', 0xb6bb22f4d1e58e9e43efa2ec7f572d215b3cf08a, 'Fiat-backed stablecoin', 'BBRL', 18, ''),
+    ('bnb', 0xa8aea66b361a8d53e8865c62d142167af28af058, 'Fiat-backed stablecoin', 'cNGN', 18, ''),
+    ('bnb', 0xa40640458fbc27b6eefedea1e9c9e17d4cee7a21, 'Fiat-backed stablecoin', 'AEUR', 18, ''),
+    ('bnb', 0x12f31b73d812c6bb0d735a218c086d44d5fe5f89, 'Crypto-backed stablecoin', 'agEUR', 18, ''),
+    ('bnb', 0x9d1a7a3191102e9f900faa10540837ba84dcbae7, 'Fiat-backed stablecoin', 'EURI', 18, ''),
+    ('bnb', 0x66207e39bb77e6b99aab56795c7c340c08520d83, 'Fiat-backed stablecoin', 'IDRT', 18, ''),
+    ('bnb', 0x649a2da7b28e0d54c13d5eff95d3a660652742cc, 'Fiat-backed stablecoin', 'IDRX', 18, ''),
+    ('bnb', 0x2074c8e9253cd50d3cb81deb28ae85d932d2d26b, 'Fiat-backed stablecoin', 'xZAR', 18, '')
 
      ) AS temp_table (blockchain, contract_address, backing, symbol, decimals, name)
