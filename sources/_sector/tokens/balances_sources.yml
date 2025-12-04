@@ -171,7 +171,7 @@ sources:
     description: "Prices tables across blockchains"
     tables:
       - name: balances_zksync
-        identifier: balances_zksync_0001
+        identifier: balances_zksync_0002
         description: "Raw balances data"
         columns:
           - name: block_number
