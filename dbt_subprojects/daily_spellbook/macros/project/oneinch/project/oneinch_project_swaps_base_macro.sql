@@ -1,7 +1,9 @@
 {%- macro
     oneinch_project_swaps_base_macro(
         blockchain,
-        date_from = '2019-01-01'
+        date_from = '2019-01-01',
+        date_to = '2049-01-01',
+        easy_dates = true
     )
 -%}
 
@@ -41,6 +43,7 @@ meta as (
     where true
         and call_success
         and block_time >= timestamp '{{ date_from }}'
+        and block_time < {% if easy_dates -%} date('{{ date_from }}') + interval '2' day {%- else -%} date('{{ date_to }}') {%- endif %}
         {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
     
     union all
@@ -63,12 +66,12 @@ meta as (
     where true
         and call_success
         and block_time >= timestamp '{{ date_from }}'
+        and block_time < {% if easy_dates -%} date('{{ date_from }}') + interval '2' day {%- else -%} date('{{ date_to }}') {%- endif %}
         {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
 )
 
 , calls as (
-    select
-        *
+    select *
         , array_agg(call_trace_address) over(partition by block_month, block_number, tx_hash, project) as call_trace_addresses
     from {{ ref('oneinch_' + blockchain + '_project_calls') }}
     where true
@@ -76,6 +79,7 @@ meta as (
         and (tx_success or tx_success is null)
         and (flags['cross_chain'] or not flags['cross_chain_method']) -- without cross-chain methods calls in non cross-chain protocols
         and block_time >= timestamp '{{ date_from }}'
+        and block_time < {% if easy_dates -%} date('{{ date_from }}') + interval '2' day {%- else -%} date('{{ date_to }}') {%- endif %}
         {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
 )
 
@@ -114,33 +118,12 @@ meta as (
         or order_hash is not null -- all orders
 )
 
-, tokens as (
-    select
-        contract_address
-        , symbol
-    from {{ source('tokens', 'erc20') }}
-    where blockchain = '{{ blockchain }}'
-)
-
 , trusted_tokens as (
     select
         distinct contract_address
         , true as trusted
     from {{ source('prices', 'trusted_tokens') }}
     where blockchain = '{{ blockchain }}'
-)
-
-, prices as (
-    select
-        contract_address
-        , minute
-        , price
-        , decimals
-    from {{ source('prices', 'usd') }}
-    where true
-        and blockchain = '{{ blockchain }}'
-        and minute >= timestamp '{{ date_from }}'
-        {% if is_incremental() -%} and {{ incremental_predicate('minute') }} {%- endif %}
 )
 
 , creations as (
@@ -151,13 +134,12 @@ meta as (
         
         union all
         
-        values
-            (0x0000000000000000000000000000000000000000, 0)
-
-        union all
-        
         select wrapped_native_token_address, 0
         from meta
+        
+        union all
+        
+        values (0x0000000000000000000000000000000000000000, 0)
     )
     group by 1
 )
@@ -171,17 +153,19 @@ meta as (
         , contract_address as contract_address_raw -- original
         , if(token_standard = 'native', wrapped_native_token_address, contract_address) as contract_address
         , token_standard = 'native' as native
+        , symbol
         , amount_raw as amount
+        , amount_usd
         , native_symbol
         , "from" as transfer_from
         , "to" as transfer_to
         , block_month
         , block_date
         , date_trunc('minute', block_time) as minute
-    from {{ source('tokens', 'transfers_from_traces') }}, meta
+    from {{ source('tokens_' + blockchain, 'transfers_from_traces') }}, meta
     where true
-        and blockchain = '{{ blockchain }}'
         and block_time >= timestamp '{{ date_from }}'
+        and block_time < {% if easy_dates -%} date('{{ date_from }}') + interval '2' day {%- else -%} date('{{ date_to }}') {%- endif %}
         {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
 )
 
@@ -222,14 +206,14 @@ meta as (
             cast(row(if(native, native_symbol, symbol), contract_address_raw)
                 as row(symbol varchar, contract_address_raw varbinary))
         ) filter(where transfer_from = call_from or transfer_to = call_from) as caller_tokens
-        , max(amount * price / pow(10, decimals)) as call_amount_usd
-        , max(amount * price / pow(10, decimals)) filter(where trusted) as call_amount_usd_trusted
-        , max(amount * price / pow(10, decimals)) filter(where creations_from.block_number is null or creations_to.block_number is null) as user_amount_usd
-        , max(amount * price / pow(10, decimals)) filter(where (creations_from.block_number is null or creations_to.block_number is null) and trusted) as user_amount_usd_trusted
-        , max(amount * price / pow(10, decimals)) filter(where transfer_from = call_from or transfer_to = call_from) as caller_amount_usd
-        , max(amount * price / pow(10, decimals)) filter(where (transfer_from = call_from or transfer_to = call_from) and trusted) as caller_amount_usd_trusted
-        , max(amount * price / pow(10, decimals)) filter(where transfer_from = call_to or transfer_to = call_to) as contract_amount_usd
-        , max(amount * price / pow(10, decimals)) filter(where (transfer_from = call_to or transfer_to = call_to) and trusted) as contract_amount_usd_trusted
+        , max(amount_usd) as call_amount_usd
+        , max(amount_usd) filter(where trusted) as call_amount_usd_trusted
+        , max(amount_usd) filter(where creations_from.block_number is null or creations_to.block_number is null) as user_amount_usd
+        , max(amount_usd) filter(where (creations_from.block_number is null or creations_to.block_number is null) and trusted) as user_amount_usd_trusted
+        , max(amount_usd) filter(where transfer_from = call_from or transfer_to = call_from) as caller_amount_usd
+        , max(amount_usd) filter(where (transfer_from = call_from or transfer_to = call_from) and trusted) as caller_amount_usd_trusted
+        , max(amount_usd) filter(where transfer_from = call_to or transfer_to = call_to) as contract_amount_usd
+        , max(amount_usd) filter(where (transfer_from = call_to or transfer_to = call_to) and trusted) as contract_amount_usd_trusted
         , array_agg(distinct transfer_from) filter(where creations_from.block_number is null) as senders
         , array_agg(distinct transfer_to) filter(where creations_to.block_number is null) as receivers
     from swaps
@@ -240,8 +224,6 @@ meta as (
         and slice(transfer_trace_address, 1, cardinality(call_trace_address)) = call_trace_address -- nested transfers only
         and reduce(array_distinct(call_trace_addresses), call_trace_address, (r, x) -> if(slice(transfer_trace_address, 1, cardinality(x)) = x and x > r, x, r), r -> r) = call_trace_address -- transfers related to the call only
         and (order_hash is null or contract_address in (_maker_asset, _taker_asset) and cardinality(array_intersect(array[call_from, maker, taker], array[transfer_from, transfer_to])) > 0) -- transfers related to the order only
-    left join prices using(contract_address, minute)
-    left join tokens using(contract_address)
     left join trusted_tokens using(contract_address)
     left join creations as creations_from on creations_from.address = transfers.transfer_from
     left join creations as creations_to on creations_to.address = transfers.transfer_to
