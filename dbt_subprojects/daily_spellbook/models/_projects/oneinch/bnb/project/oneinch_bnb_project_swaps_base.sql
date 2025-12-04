@@ -5,7 +5,7 @@
         schema = 'oneinch_' + blockchain,
         alias = 'project_swaps_base',
         materialized = 'view',
-        unique_key = ['blockchain', 'id'],
+        unique_key = ['block_month', 'id'],
     )
 -}}
 

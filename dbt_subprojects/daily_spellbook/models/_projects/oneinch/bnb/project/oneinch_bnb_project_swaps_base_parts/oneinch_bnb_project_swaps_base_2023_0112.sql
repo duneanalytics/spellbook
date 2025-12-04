@@ -5,7 +5,7 @@
         schema = 'oneinch_' + blockchain,
         alias = 'project_swaps_base_2023_0112',
         materialized = 'table',
-        unique_key = ['blockchain', 'id'],
+        unique_key = ['block_month', 'id'],
     )
 -}}
 
@@ -15,6 +15,7 @@
     oneinch_project_swaps_base_u_macro(
         blockchain = blockchain,
         date_from = '2023-01-01',
-        date_to = '2024-01-01'
+        date_to = '2024-01-01',
+        easy_dates = true
     )
 }}
