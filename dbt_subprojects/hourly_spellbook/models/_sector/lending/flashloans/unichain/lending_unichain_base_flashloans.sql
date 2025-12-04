@@ -1,16 +1,14 @@
 {{
   config(
     schema = 'lending_unichain',
-    alias = 'base_borrow',
+    alias = 'base_flashloans',
     materialized = 'view'
   )
 }}
 
 {%
   set models = [
-    ref('morpho_unichain_base_borrow')
-    , ref('euler_v2_unichain_base_borrow')
-    , ref('venus_unichain_base_borrow')
+    ref('morpho_unichain_base_flashloans')
   ]
 %}
 
@@ -19,18 +17,14 @@ select
   blockchain,
   project,
   version,
-  transaction_type,
-  loan_type,
-  token_address,
-  borrower,
-  on_behalf_of,
-  repayer,
-  liquidator,
+  recipient,
   amount,
+  fee,
+  token_address,
+  project_contract_address,
   block_month,
   block_time,
   block_number,
-  project_contract_address,
   tx_hash,
   evt_index
 from {{ model }}

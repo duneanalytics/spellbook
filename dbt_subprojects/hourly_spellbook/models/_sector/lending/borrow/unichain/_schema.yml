@@ -5,10 +5,10 @@ models:
     meta:
       blockchain: unichain
       sector: lending
-      project: euler, venus
+      project: euler, venus, morpho
       contributors: tomfutago, Henrystats
     config:
-      tags: ['lending', 'borrow', 'venus', 'euler', 'unichain']
+      tags: ['lending', 'borrow', 'venus', 'euler', 'morpho', 'unichain']
     description: "All lending borrow transactions on unichain"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -87,6 +87,42 @@ models:
         data_tests:
           - not_null
 
+  - name: morpho_unichain_base_borrow
+    meta:
+      blockchain: unichain
+      sector: lending
+      project: morpho
+      contributors: Henrystats, tomfutago
+    config:
+      tags: ['lending', 'borrow', 'morpho', 'unichain']
+    description: "Morpho borrow transactions on unichain"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_borrow_seed:
+          seed_file: ref('morpho_unichain_base_borrow_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *borrower
+      - *on_behalf_of
+      - *repayer
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *project_contract_address
+      - *tx_hash
+      - *evt_index
+      
   - name: euler_v2_unichain_base_borrow
     meta:
       blockchain: unichain
