@@ -167,21 +167,6 @@ sources:
           - name: amount
           - name: type
 
-  - name: tokens_bnb
-    description: "Prices tables across blockchains"
-    tables:
-      - name: balances_bnb
-        identifier: balances_bnb_0001
-        description: "Raw balances data"
-        columns:
-          - name: block_number
-          - name: block_time
-          - name: contract_address
-          - name: address
-          - name: token_id
-          - name: amount
-          - name: type
-
   - name: tokens_zksync
     description: "Prices tables across blockchains"
     tables:
