@@ -28,7 +28,8 @@
     ref('lending_zkevm_base_flashloans'),
     ref('lending_linea_base_flashloans'),
     ref('lending_sonic_base_flashloans'),
-    ref('lending_plasma_base_flashloans')
+    ref('lending_plasma_base_flashloans'),
+    ref('lending_unichain_base_flashloans')
   ]
 %}
 

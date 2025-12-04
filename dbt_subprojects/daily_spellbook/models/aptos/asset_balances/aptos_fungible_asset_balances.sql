@@ -5,7 +5,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    unique_key = ['block_month', 'tx_hash', 'write_set_change_index'],
+    unique_key = ['block_month', 'unique_key'],
     partition_by = ['block_month'],
     post_hook='{{ expose_spells(blockchains = \'["aptos"]\',
         spell_type = "project",
@@ -25,6 +25,7 @@
     for historical builds, read from all three tables with no filters
 */
 SELECT
+    unique_key,
     tx_version,
     tx_hash,
     block_date,
@@ -42,6 +43,7 @@ FROM {{ ref('aptos_fungible_asset_coin_balances') }}
 UNION ALL
 
 SELECT
+    unique_key,
     tx_version,
     tx_hash,
     block_date,
@@ -60,6 +62,7 @@ FROM {{ ref('aptos_fungible_asset_fa_balances') }}
 UNION ALL
 
 SELECT
+    unique_key,
     tx_version,
     tx_hash,
     block_date,
@@ -80,6 +83,7 @@ FROM {{ ref('aptos_fungible_asset_fs_deletion_balances') }}
     for incremental builds, only read from last two tables with block_time filters
 */
 SELECT
+    unique_key,
     tx_version,
     tx_hash,
     block_date,
@@ -99,6 +103,7 @@ WHERE {{ incremental_predicate('block_time') }}
 UNION ALL
 
 SELECT
+    unique_key,
     tx_version,
     tx_hash,
     block_date,
