@@ -1,4 +1,5 @@
 {{ config(
+    tags = ['prod_exclude'],
     schema = 'tokens_bnb',
     alias = 'balances_daily_agg_base',
     file_format = 'delta',
