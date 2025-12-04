@@ -1,5 +1,6 @@
 {{
   config(
+    tags = ['prod_exclude'],
     schema = 'stablecoins_kaia',
     alias = 'balances',
     materialized = 'incremental',

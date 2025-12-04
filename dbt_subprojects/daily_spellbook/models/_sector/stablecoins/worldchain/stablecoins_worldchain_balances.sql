@@ -1,5 +1,6 @@
 {{
   config(
+    tags = ['prod_exclude'],
     schema = 'stablecoins_worldchain',
     alias = 'balances',
     materialized = 'incremental',
