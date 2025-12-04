@@ -2,7 +2,7 @@
         tags = [ 'static'],
         schema='lending',
         alias = 'info',
-        post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "celo", "ethereum", "fantom", "gnosis", "optimism", "polygon", "scroll", "zksync"]\',
+        post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "celo", "ethereum", "fantom", "gnosis", "optimism", "polygon", "scroll", "zksync","unichain"]\',
                                     "sector",
                                     "lending",
                                     \'["hildobby"]\') }}')
