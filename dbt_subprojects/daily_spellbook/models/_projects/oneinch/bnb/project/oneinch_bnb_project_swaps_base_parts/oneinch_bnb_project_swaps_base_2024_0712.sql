@@ -12,7 +12,7 @@
 -- depends_on: {{ ref('oneinch_' + blockchain + '_project_orders') }}
 
 {{
-    oneinch_project_swaps_base_u_macro(
+    oneinch_project_swaps_base_macro(
         blockchain = blockchain,
         date_from = '2024-07-01',
         date_to = '2025-01-01',
