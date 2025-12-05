@@ -460,7 +460,7 @@ models:
       contributors: balancerlabs, tiagoponciano
     config:
       tags: ['labels', 'avalanche_c', 'balancer', 'pools']
-    description: 'Balancer V3 liquidity pools created on avalanche_c.'
+    description: 'Balancer V3 liquidity pools created on Avalanche C-Chain.'
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
