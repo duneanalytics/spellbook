@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: aave_v3_avalanche_c
+    description: "Decoded contracts for aave v3 on avalanche_c"
+    
+    tables:
+      - name: StataTokenV2_evt_Initialized
+      - name: StataTokenFactory_call_createstatatokens

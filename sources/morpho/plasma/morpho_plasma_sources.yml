@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: metamorpho_factory_plasma
+    description: "Decoded contracts for Morpho on Plasma"
+
+    tables:
+      - name: MetaMorphoFactory_evt_CreateMetaMorpho
+      - name: MetaMorphoV1_1Factory_evt_CreateMetaMorpho
