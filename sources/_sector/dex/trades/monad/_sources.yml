@@ -18,3 +18,7 @@ sources:
     tables:
       - name: uniswapv3factory_evt_poolcreated
       - name: uniswapv3pool_evt_swap
+  - name: trader_joe_v2_2_monad
+    tables:
+      - name: LBPair_evt_Swap
+      - name: LBFactory_evt_LBPairCreated
