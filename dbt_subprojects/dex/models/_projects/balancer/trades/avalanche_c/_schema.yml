@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: avalanche_c
       sector: dex
-      contributors: bizzyvinci, viniabussafi, tiagoponciano
+      contributors: bizzyvinci, viniabussafi
     config:
       tags: ['balancer', 'avalanche_c', 'amm', 'trades', 'dex']
     description: >
