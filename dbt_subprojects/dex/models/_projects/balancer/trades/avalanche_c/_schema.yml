@@ -144,7 +144,6 @@ models:
       - *tx_to
       - *evt_index
 
-models:
   - name: balancer_v3_avalanche_c_trades
     meta:
       blockchain: avalanche_c
