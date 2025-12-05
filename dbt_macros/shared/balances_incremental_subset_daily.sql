@@ -388,7 +388,7 @@ select
     e.balance * p.price as balance_usd,
     e.last_updated
 from enriched_with_tokens e
-left join {{ source('prices', 'day') }} p
+left join {{ source('prices_external', 'day') }} p
     on cast(e.day as timestamp) = p.timestamp
     {% if is_incremental() %}
     and {{ incremental_predicate('p.timestamp') }}
