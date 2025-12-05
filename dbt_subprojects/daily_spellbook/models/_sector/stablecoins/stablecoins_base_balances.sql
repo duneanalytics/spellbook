@@ -11,7 +11,6 @@
     ref('stablecoins_arbitrum_base_balances'),
     ref('stablecoins_avalanche_c_base_balances'),
     ref('stablecoins_base_base_balances'),
-    ref('stablecoins_bnb_base_balances'),
     ref('stablecoins_ethereum_base_balances'),
     ref('stablecoins_kaia_base_balances'),
     ref('stablecoins_linea_base_balances'),
@@ -19,9 +18,14 @@
     ref('stablecoins_polygon_base_balances'),
     ref('stablecoins_scroll_base_balances'),
     ref('stablecoins_worldchain_base_balances'),
-    ref('stablecoins_zksync_base_balances')
   ]
 %}
+
+/*
+temp removed:
+    --ref('stablecoins_bnb_base_balances'),
+    --ref('stablecoins_zksync_base_balances')
+*/
 
 {% for model in models %}
 select
