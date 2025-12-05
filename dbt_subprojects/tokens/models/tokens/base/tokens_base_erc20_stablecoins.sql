@@ -33,6 +33,10 @@ FROM (VALUES
     ('base', 0x4ed9df25d38795a47f52614126e47f564d37f347, 'Fiat-backed stablecoin', 'VEUR', 18, ''),
     ('base', 0xaeb4bb7debd1e5e82266f7c3b5cff56b3a7bf411, 'Fiat-backed stablecoin', 'VGBP', 18, ''),
     ('base', 0x043eb4b75d0805c43d7c834902e335621983cf03, 'Fiat-backed stablecoin', 'CADC', 18, ''),
-    ('base', 0xb755506531786c8ac63b756bab1ac387bacb0c04, 'Fiat-backed stablecoin', 'ZARP', 18, '')
+    ('base', 0xb755506531786c8ac63b756bab1ac387bacb0c04, 'Fiat-backed stablecoin', 'ZARP', 18, ''),
+    ('base', 0x50c5725949a6f0c72e6c4a641f24049a917db0cb, 'Hybrid stablecoin', 'DAI', 18, 'Sky'),
+    ('base', 0x6bb7a212910682dcfdbd5bcbb3e28fb4e8da10ee, 'Crypto-backed stablecoin', 'GHO', 18, 'Aave'),
+    ('base', 0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34, 'Crypto-backed stablecoin', 'USDe', 18, 'Ethena'),
+    ('base', 0x820c137fa70c8691f0e44dc420a5e53c168921dc, 'Hybrid stablecoin', 'USDS', 18, 'Sky')
 
-     ) AS temp_table (blockchain, contract_address, backing, symbol, decimals, name)
+) AS temp_table (blockchain, contract_address, backing, symbol, decimals, name)

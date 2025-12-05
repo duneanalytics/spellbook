@@ -50,6 +50,8 @@ FROM (VALUES
         ('arbitrum', 0xf197ffc28c23e0309b5559e7a166f2c6164c80aa, 'Fiat-backed stablecoin', 'MXNB', 18, ''),
         ('arbitrum', 0x4883c8f0529f37e40ebea870f3c13cdfad5d01f8, 'Fiat-backed stablecoin', 'VEUR', 18, ''),
         ('arbitrum', 0x2b28e826b55e399f4d4699b85f68666ac51e6f70, 'Fiat-backed stablecoin', 'CADC', 18, ''),
-        ('arbitrum', 0x589d35656641d6ab57a545f08cf473ecd9b6d5f7, 'Fiat-backed stablecoin', 'GYEN', 6, '')
+        ('arbitrum', 0x589d35656641d6ab57a545f08cf473ecd9b6d5f7, 'Fiat-backed stablecoin', 'GYEN', 6, ''),
+        ('arbitrum', 0x46850ad61c2b7d64d08c9c754f45254596696984, 'Fiat-backed stablecoin', 'PYUSD', 6, 'PayPal'),
+        ('arbitrum', 0x6491c05a82219b8d1479057361ff1654749b876b, 'Hybrid stablecoin', 'USDS', 18, 'Sky')
 
-     ) AS temp_table (blockchain, contract_address, backing, symbol, decimals, name)
+) AS temp_table (blockchain, contract_address, backing, symbol, decimals, name)

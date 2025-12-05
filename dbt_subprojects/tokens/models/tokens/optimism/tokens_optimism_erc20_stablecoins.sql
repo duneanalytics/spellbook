@@ -12,6 +12,7 @@
 
 SELECT blockchain, contract_address, backing, symbol, decimals, name
 FROM (VALUES
+
     ('optimism', 0xfb21b70922b9f6e3c6274bcd6cb1aa8a0fe20b80, 'Algorithmic stablecoin', 'UST', 6, 'Terra USD'),
     ('optimism', 0x970d50d09f3a656b43e11b0d45241a84e3a6e011, 'Crypto-backed stablecoin', 'DAI+', 18, 'DAI+'),
     ('optimism', 0xdfa46478f9e5ea86d57387849598dbfb2e964b02, 'Crypto-backed stablecoin', 'MAI', 18, 'Mai Stablecoin'),
@@ -46,6 +47,8 @@ FROM (VALUES
     ('optimism', 0xba28feb4b6a6b81e3f26f08b83a19e715c4294fd, 'Algorithmic stablecoin', 'UST', 6, 'UST (Wormhole)'),
     ('optimism', 0xeb466342c4d449bc9f53a865d5cb90586f405215, 'Crypto-backed stablecoin', 'axlUSDC', 6, 'Axelar USDC'),
     ('optimism', 0x4bdc50829003cc017443bf9bfb3ac82f3f0c4ad4, 'Fiat-backed stablecoin', 'CLPC', 18, ''),
-    ('optimism', 0x1b5f7fa46ed0f487f049c42f374ca4827d65a264, 'Fiat-backed stablecoin', 'dEURO', 18, '')
+    ('optimism', 0x1b5f7fa46ed0f487f049c42f374ca4827d65a264, 'Fiat-backed stablecoin', 'dEURO', 18, ''),
+    ('optimism', 0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34, 'Crypto-backed stablecoin', 'USDe', 18, 'Ethena'),
+    ('optimism', 0x4f13a96ec5c4cf34e442b46bbd98a0791f20edc3, 'Hybrid stablecoin', 'USDS', 18, 'Sky')
 
-     ) AS temp_table (blockchain, contract_address, backing, symbol, decimals, name)
+) AS temp_table (blockchain, contract_address, backing, symbol, decimals, name)

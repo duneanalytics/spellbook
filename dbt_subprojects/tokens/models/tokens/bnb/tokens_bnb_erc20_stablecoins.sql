@@ -47,6 +47,7 @@ FROM (VALUES
     ('bnb', 0x9d1a7a3191102e9f900faa10540837ba84dcbae7, 'Fiat-backed stablecoin', 'EURI', 18, ''),
     ('bnb', 0x66207e39bb77e6b99aab56795c7c340c08520d83, 'Fiat-backed stablecoin', 'IDRT', 18, ''),
     ('bnb', 0x649a2da7b28e0d54c13d5eff95d3a660652742cc, 'Fiat-backed stablecoin', 'IDRX', 18, ''),
-    ('bnb', 0x2074c8e9253cd50d3cb81deb28ae85d932d2d26b, 'Fiat-backed stablecoin', 'xZAR', 18, '')
+    ('bnb', 0x2074c8e9253cd50d3cb81deb28ae85d932d2d26b, 'Fiat-backed stablecoin', 'xZAR', 18, ''),
+    ('bnb', 0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34, 'Crypto-backed stablecoin', 'USDe', 18, 'Ethena')
 
-     ) AS temp_table (blockchain, contract_address, backing, symbol, decimals, name)
+) AS temp_table (blockchain, contract_address, backing, symbol, decimals, name)

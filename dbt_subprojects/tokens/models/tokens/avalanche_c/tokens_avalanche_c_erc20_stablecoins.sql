@@ -38,6 +38,7 @@ FROM (VALUES
         ('avalanche_c', 0xb2f85b7ab3c2b6f62df06de6ae7d09c010a5096e, 'Fiat-backed stablecoin', 'XSGD', 6, ''),
         ('avalanche_c', 0xf197ffc28c23e0309b5559e7a166f2c6164c80aa, 'Fiat-backed stablecoin', 'MXNB', 18, ''),
         ('avalanche_c', 0x7678e162f38ec9ef2bfd1d0aaf9fd93355e5fa0b, 'Fiat-backed stablecoin', 'VEUR', 18, ''),
-        ('avalanche_c', 0xe7c3d8c9a439fede00d2600032d5db0be71c3c29, 'Fiat-backed stablecoin', 'JPYC', 18, '')
+        ('avalanche_c', 0xe7c3d8c9a439fede00d2600032d5db0be71c3c29, 'Fiat-backed stablecoin', 'JPYC', 18, ''),
+        ('avalanche_c', 0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34, 'Crypto-backed stablecoin', 'USDe', 18, 'Ethena')
 
-     ) AS temp_table (blockchain, contract_address, backing, symbol, decimals, name)
+) AS temp_table (blockchain, contract_address, backing, symbol, decimals, name)

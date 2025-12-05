@@ -130,6 +130,7 @@ FROM (VALUES
       ('ethereum', 0xc08512927d12348f6620a698105e1baac6ecd911, 'Fiat-backed stablecoin', 'GYEN', 6, '', 'JPY'),
       ('ethereum', 0xe7c3d8c9a439fede00d2600032d5db0be71c3c29, 'Fiat-backed stablecoin', 'JPYC', 18, '', 'JPY'),
       ('ethereum', 0x48f07301e9e29c3c38a80ae8d9ae771f224f1054, 'Fiat-backed stablecoin', 'xZAR', 18, '', 'ZAR'),
-      ('ethereum', 0xb755506531786c8ac63b756bab1ac387bacb0c04, 'Fiat-backed stablecoin', 'ZARP', 18, '', 'ZAR')
+      ('ethereum', 0xb755506531786c8ac63b756bab1ac387bacb0c04, 'Fiat-backed stablecoin', 'ZARP', 18, '', 'ZAR'),
+      ('ethereum', 0xe343167631d89b6ffc58b88d6b7fb0228795491d, 'xxx stablecoin', 'USDG', 6, '', 'USD')
 
 ) AS temp_table (blockchain, contract_address, backing, symbol, decimals, name, denomination)
