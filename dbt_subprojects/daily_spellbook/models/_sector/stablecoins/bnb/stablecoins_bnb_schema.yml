@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stablecoins_bnb_balances
+  - name: stablecoins_bnb_base_balances
 
     meta:
       blockchain: bnb

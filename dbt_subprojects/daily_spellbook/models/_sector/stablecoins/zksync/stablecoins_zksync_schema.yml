@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stablecoins_zksync_balances
+  - name: stablecoins_zksync_base_balances
 
     meta:
       blockchain: zksync

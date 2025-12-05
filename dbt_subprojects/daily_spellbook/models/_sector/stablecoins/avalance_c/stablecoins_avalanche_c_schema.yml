@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stablecoins_avalanche_c_balances
+  - name: stablecoins_avalanche_c_base_balances
 
     meta:
       blockchain: avalanche_c

@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stablecoins_base_balances
+  - name: stablecoins_base_base_balances
 
     meta:
       blockchain: base

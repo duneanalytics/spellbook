@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stablecoins_optimism_balances
+  - name: stablecoins_optimism_base_balances
 
     meta:
       blockchain: optimism
