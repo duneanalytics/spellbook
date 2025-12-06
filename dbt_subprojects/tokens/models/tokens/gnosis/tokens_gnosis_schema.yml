@@ -91,7 +91,7 @@ models:
     meta:
       blockchain: gnosis
       sector: stablecoins
-      contributors: synthquest
+      contributors: synthquest, tomfutago
     config:
       tags: ['tokens', 'gnosis', 'erc20', 'stablecoins']
     description: >

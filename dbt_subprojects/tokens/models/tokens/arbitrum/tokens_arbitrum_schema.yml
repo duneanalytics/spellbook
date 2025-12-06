@@ -86,7 +86,7 @@ models:
     meta:
       blockchain: arbitrum
       sector: stablecoins
-      contributors: synthquest, rantum
+      contributors: synthquest, rantum, tomfutago
     config:
       tags: ['tokens', 'arbitrum', 'erc20', 'stablecoins']
     description: >

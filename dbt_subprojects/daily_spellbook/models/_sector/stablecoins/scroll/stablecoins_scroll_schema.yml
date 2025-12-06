@@ -1,13 +1,13 @@
 version: 2
 
 models:
-  - name: stablecoins_scroll_balances
+  - name: stablecoins_scroll_base_balances
 
     meta:
       blockchain: scroll
       sector: stablecoin
       project: stablecoin
-      contributors: synthquest
+      contributors: synthquest, tomfutago
 
     config:
       tags: ['stablecoin', 'balances']

@@ -86,7 +86,7 @@ models:
     meta:
       blockchain: polygon
       sector: stablecoins
-      contributors: synthquest, rantum
+      contributors: synthquest, rantum, tomfutago
     config:
       tags: ['tokens', 'polygon', 'erc20', 'stablecoins']
     description: >

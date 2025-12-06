@@ -1,13 +1,13 @@
 version: 2
 
 models:
-  - name: stablecoins_avalanche_c_balances
+  - name: stablecoins_zksync_base_balances
 
     meta:
-      blockchain: avalanche_c
+      blockchain: zksync
       sector: stablecoin
       project: stablecoin
-      contributors: synthquest
+      contributors: tomfutago
 
     config:
       tags: ['stablecoin', 'balances']
@@ -59,4 +59,3 @@ models:
       name: next_update
       description: "UTC timestamp when data is next updated"
 
- 

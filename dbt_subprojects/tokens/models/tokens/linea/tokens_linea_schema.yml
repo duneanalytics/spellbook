@@ -24,7 +24,7 @@ models:
     meta:
       blockchain: linea
       sector: stablecoins
-      contributors: rantum
+      contributors: rantum, tomfutago
     config:
       tags: ['tokens', 'linea', 'erc20', 'stablecoins']
     description: >

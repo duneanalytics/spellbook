@@ -5,7 +5,7 @@
       , post_hook='{{ expose_spells(\'["linea"]\',
                                   "sector",
                                   "tokens_linea",
-                                  \'["rantum"]\') }}'
+                                  \'["rantum","tomfutago"]\') }}'
       , unique_key = ['contract_address']
   )
 }}
@@ -23,5 +23,6 @@ FROM (VALUES
     ('linea', 0xa88b54e6b76fb97cdb8ecae868f1458e18a953f4, 'Fiat-backed stablecoin', 'DUSD', 18, ''),
     ('linea', 0x894134a25a5fac1c2c26f1d8fbf05111a3cb9487, 'Fiat-backed stablecoin', 'GRAI', 18, ''),
     ('linea', 0xb79dd08ea68a908a97220c76d19a6aa9cbde4376, 'Crypto-backed stablecoin', 'USD+', 6, ''),
-    ('linea', 0x1e1f509963a6d33e169d9497b11c7dbfe73b7f13, 'Crypto-backed stablecoin', 'USDT+', 18, '')
+    ('linea', 0x1e1f509963a6d33e169d9497b11c7dbfe73b7f13, 'Crypto-backed stablecoin', 'USDT+', 18, ''),
+    ('linea', 0x3ff47c5bf409c86533fe1f4907524d304062428d, 'Fiat-backed stablecoin', 'EURe', 18, '')
      ) AS temp_table (blockchain, contract_address, backing, symbol, decimals, name)

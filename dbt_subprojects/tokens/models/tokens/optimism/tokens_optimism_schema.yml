@@ -173,7 +173,7 @@ models:
     meta:
       blockchain: optimism
       sector: stablecoins
-      contributors: synthquest, rantum
+      contributors: synthquest, rantum, tomfutago
     config:
       tags: ['tokens', 'optimism', 'erc20', 'stablecoins']
     description: >
