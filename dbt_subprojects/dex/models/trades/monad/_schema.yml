@@ -101,6 +101,16 @@ models:
           filter:
             version: 3
 
+  - name: trader_joe_v2_2_monad_base_trades
+    meta:
+      blockchain: monad
+      sector: dex
+      project: trader_joe
+      contributors: tomfutago
+    config:
+      tags: ["monad", "dex", "trades", "trader_joe", "v2.2"]
+    description: "trader_joe monad v2.2 base trades"
+
   - name: pancakeswap_v2_monad_base_trades
     meta:
       blockchain: monad
@@ -116,6 +126,9 @@ models:
             - tx_hash
             - evt_index
       - check_dex_base_trades_seed:
+          seed_file: ref('trader_joe_monad_base_trades_seed')
+          filter:
+            version: 2.2
           seed_file: ref('pancakeswap_monad_base_trades_seed')
           filter:
             version: 2
