@@ -3,10 +3,10 @@ version: 2
 models:
   - name: balancer_token_whitelist
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, 'zkevm'
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, plasma, zkevm
       contributors: viniabussafi
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'zkevm']
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'plasma', 'zkevm']
     description: >
       These tokens are whitelisted to be used as pricing assets on liquidity calculations for weighted pools, due to the trustability of their data.
     data_tests:
