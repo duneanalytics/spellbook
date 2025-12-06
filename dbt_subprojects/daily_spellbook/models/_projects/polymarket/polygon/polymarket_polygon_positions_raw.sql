@@ -17,7 +17,7 @@ with token_list as (
 ), 
 balances as (
     {{
-      balances_incremental_subset_daily(
+      balances_incremental_subset_daily_legacy(
             blockchain = 'polygon',
             token_list = 'token_list',
             start_date = '2020-09-03'

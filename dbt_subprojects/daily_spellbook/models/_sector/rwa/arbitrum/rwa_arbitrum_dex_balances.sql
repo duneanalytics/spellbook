@@ -21,7 +21,7 @@ with dex_pools as (
 
 ,balances as (
     {{
-      balances_incremental_subset_daily(
+      balances_incremental_subset_daily_legacy(
             blockchain = 'arbitrum',
             address_token_list = 'dex_pools',
             start_date = '2023-11-17',

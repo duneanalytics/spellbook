@@ -21,7 +21,7 @@ stablecoin_tokens as (
 
 ,balances as (
     {{
-      balances_incremental_subset_daily(
+      balances_incremental_subset_daily_legacy(
             blockchain = 'avalanche_c',
             token_list = 'stablecoin_tokens',
             start_date = '2021-01-27'

@@ -76,7 +76,7 @@ stablecoin_tokens_total as (
 
 ,balances as (
     {{
-      balances_incremental_subset_daily(
+      balances_incremental_subset_daily_legacy(
             blockchain = 'ethereum',
             token_list = 'stablecoin_tokens',
             start_date = '2023-01-01'

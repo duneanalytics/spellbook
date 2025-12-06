@@ -20,7 +20,7 @@ with safes as (
 
 balances as (
      {{
-       balances_incremental_subset_daily(
+       balances_incremental_subset_daily_legacy(
              blockchain = 'ethereum',
              address_list  = 'safes',
              start_date = '2021-07-01'

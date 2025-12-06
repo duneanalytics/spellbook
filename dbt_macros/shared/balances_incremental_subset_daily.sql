@@ -14,7 +14,7 @@
 
 #}
 
-{%- macro balances_incremental_subset_daily(
+{%- macro balances_incremental_subset_daily_legacy(
         blockchain,
         start_date,
         address_list = none,

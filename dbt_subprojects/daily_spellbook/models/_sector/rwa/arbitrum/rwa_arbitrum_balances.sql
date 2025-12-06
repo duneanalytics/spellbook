@@ -21,7 +21,7 @@ rwa_tokens as (
 
 ,balances as (
     {{
-      balances_incremental_subset_daily(
+      balances_incremental_subset_daily_legacy(
             blockchain = 'arbitrum',
             token_list = 'rwa_tokens',
             start_date = '2023-11-17'

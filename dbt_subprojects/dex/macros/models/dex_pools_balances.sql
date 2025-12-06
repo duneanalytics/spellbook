@@ -16,7 +16,7 @@ pool_addresses as (
 ),
 
 filtered_balances AS (
-  {{ balances_incremental_subset_daily(
+  {{ balances_incremental_subset_daily_legacy(
        blockchain=blockchain,
        start_date=start_date,
        address_list='pool_addresses'
