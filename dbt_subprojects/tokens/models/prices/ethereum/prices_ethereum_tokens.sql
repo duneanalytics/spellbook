@@ -1726,6 +1726,7 @@ FROM
     ('deai-zero1-token', 'ethereum', 'DEAI',0x1495bc9e44af1f8bcb62278d2bec4540cf0c05ea,18),
     ('dsync-destra-network', 'ethereum', 'DSYNC',0xf94e7d0710709388bce3161c32b4eea56d3f91cc,18),
     ('ethfi-etherfi', 'ethereum', 'ETHFI',0xfe0c30065b384f05761f15d0cc899d4f9f9cc0eb,18),
+    ('weeth-wrapped-eeth', 'ethereum', 'weETH',0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee,18),
     ('alt-altlayer', 'ethereum', 'ALT',0x8457ca5040ad67fdebbcc8edce889a335bc0fbfb,18),
     ('aevo-aevo', 'ethereum', 'AEVO',0xb528edbef013aff855ac3c50b381f253af13b997,18),
     ('tree-tree-capital', 'ethereum', 'TREE',0xba25b2281214300e4e649fead9a6d6acd25f1c0a,18),
