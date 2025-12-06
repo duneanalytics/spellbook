@@ -1,0 +1,174 @@
+{{ config(
+    materialized = 'view'
+) }}
+
+-- Cross-chain blacklist / unblacklist / destroy events for USDT, USDC, and PYUSD on Ethereum and Arbitrum.
+
+WITH usdt_ethereum AS (
+    SELECT
+          'ethereum'                                  AS blockchain
+        , evt_block_time                              AS block_time
+        , 'tether'                                    AS issuer
+        , 'USDT'                                      AS token
+        , _user                                       AS address
+        , CAST(NULL AS double)                        AS usd_destroy
+        , evt_tx_hash                                 AS tx_hash
+        , 'blacklist'                                 AS event_type
+    FROM {{ source('tether_ethereum', 'tether_usd_evt_addedblacklist') }}
+
+    UNION ALL
+
+    SELECT
+          'ethereum'                                  AS blockchain
+        , evt_block_time                              AS block_time
+        , 'tether'                                    AS issuer
+        , 'USDT'                                      AS token
+        , _user                                       AS address
+        , CAST(NULL AS double)                        AS usd_destroy
+        , evt_tx_hash                                 AS tx_hash
+        , 'unblacklist'                               AS event_type
+    FROM {{ source('tether_ethereum', 'tether_usd_evt_removedblacklist') }}
+
+    UNION ALL
+
+    SELECT
+          'ethereum'                                  AS blockchain
+        , evt_block_time                              AS block_time
+        , 'tether'                                    AS issuer
+        , 'USDT'                                      AS token
+        , _blackListedUser                            AS address
+        , _balance / 1e6                              AS usd_destroy
+        , evt_tx_hash                                 AS tx_hash
+        , 'DestroyBlockedFunds'                       AS event_type
+    FROM {{ source('tether_ethereum', 'tether_usd_evt_destroyedblackfunds') }}
+),
+
+usdt_arbitrum AS (
+    SELECT
+          'arbitrum'                                  AS blockchain
+        , evt_block_time                              AS block_time
+        , 'tether'                                    AS issuer
+        , 'USDT'                                      AS token
+        , _user                                       AS address
+        , CAST(NULL AS double)                        AS usd_destroy
+        , evt_tx_hash                                 AS tx_hash
+        , 'blacklist'                                 AS event_type
+    FROM {{ source('tether_arbitrum', 'arbitrumextension_evt_blockplaced') }}
+
+    UNION ALL
+
+    SELECT
+          'arbitrum'                                  AS blockchain
+        , evt_block_time                              AS block_time
+        , 'tether'                                    AS issuer
+        , 'USDT'                                      AS token
+        , _blockedUser                                AS address
+        , _balance / 1e6                              AS usd_destroy
+        , evt_tx_hash                                 AS tx_hash
+        , 'DestroyBlockedFunds'                       AS event_type
+    FROM {{ source('tether_arbitrum', 'arbitrumextension_evt_destroyedblockedfunds') }}
+),
+
+usdc_ethereum AS (
+    SELECT
+          'ethereum'                                  AS blockchain
+        , evt_block_time                              AS block_time
+        , 'circle'                                    AS issuer
+        , 'USDC'                                      AS token
+        , _account                                    AS address
+        , CAST(NULL AS double)                        AS usd_destroy
+        , evt_tx_hash                                 AS tx_hash
+        , 'blacklist'                                 AS event_type
+    FROM {{ source('usdc_mk_v1_ethereum', 'fiattokenv2_1_evt_blacklisted') }}
+
+    UNION ALL
+
+    SELECT
+          'ethereum'                                  AS blockchain
+        , evt_block_time                              AS block_time
+        , 'circle'                                    AS issuer
+        , 'USDC'                                      AS token
+        , _account                                    AS address
+        , CAST(NULL AS double)                        AS usd_destroy
+        , evt_tx_hash                                 AS tx_hash
+        , 'unblacklist'                               AS event_type
+    FROM {{ source('usdc_mk_v1_ethereum', 'fiattokenv2_1_evt_unblacklisted') }}
+),
+
+usdc_arbitrum AS (
+    SELECT
+          'arbitrum'                                  AS blockchain
+        , evt_block_time                              AS block_time
+        , 'circle'                                    AS issuer
+        , 'USDC'                                      AS token
+        , _account                                    AS address
+        , CAST(NULL AS double)                        AS usd_destroy
+        , evt_tx_hash                                 AS tx_hash
+        , 'blacklist'                                 AS event_type
+    FROM {{ source('circle_arbitrum', 'fiattokenv2_2_evt_blacklisted') }}
+
+    UNION ALL
+
+    SELECT
+          'arbitrum'                                  AS blockchain
+        , evt_block_time                              AS block_time
+        , 'circle'                                    AS issuer
+        , 'USDC'                                      AS token
+        , _account                                    AS address
+        , CAST(NULL AS double)                        AS usd_destroy
+        , evt_tx_hash                                 AS tx_hash
+        , 'unblacklist'                               AS event_type
+    FROM {{ source('circle_arbitrum', 'fiattokenv2_2_evt_unblacklisted') }}
+),
+
+pyusd_ethereum AS (
+    SELECT
+          'ethereum'                                  AS blockchain
+        , evt_block_time                              AS block_time
+        , 'paypal'                                    AS issuer
+        , 'PYUSD'                                     AS token
+        , addr                                        AS address
+        , CAST(NULL AS double)                        AS usd_destroy
+        , evt_tx_hash                                 AS tx_hash
+        , 'blacklist'                                 AS event_type
+    FROM {{ source('paypal_pyusd_ethereum', 'pyusdimplementation_evt_addressfrozen') }}
+
+    UNION ALL
+
+    SELECT
+          'ethereum'                                  AS blockchain
+        , evt_block_time                              AS block_time
+        , 'paypal'                                    AS issuer
+        , 'PYUSD'                                     AS token
+        , addr                                        AS address
+        , CAST(NULL AS double)                        AS usd_destroy
+        , evt_tx_hash                                 AS tx_hash
+        , 'unblacklist'                               AS event_type
+    FROM {{ source('paypal_pyusd_ethereum', 'pyusdimplementation_evt_addressunfrozen') }}
+),
+
+pyusd_arbitrum AS (
+    SELECT
+          'arbitrum'                                  AS blockchain
+        , evt_block_time                              AS block_time
+        , 'paypal'                                    AS issuer
+        , 'PYUSD'                                     AS token
+        , addr                                        AS address
+        , CAST(NULL AS double)                        AS usd_destroy
+        , evt_tx_hash                                 AS tx_hash
+        , 'blacklist'                                 AS event_type
+    FROM {{ source('paypal_arbitrum', 'pyusd_evt_freezeaddress') }}
+)
+
+SELECT *
+FROM usdt_ethereum
+UNION ALL
+SELECT * FROM usdt_arbitrum
+UNION ALL
+SELECT * FROM usdc_ethereum
+UNION ALL
+SELECT * FROM usdc_arbitrum
+UNION ALL
+SELECT * FROM pyusd_ethereum
+UNION ALL
+SELECT * FROM pyusd_arbitrum;
