@@ -49,6 +49,7 @@
         , ('0xabd4e5fb590aa132749bbf2a04ea57efbaac399e', 'true', '1inch'                , 'SettlementV3'            , ['ethereum','bnb','polygon','arbitrum','avalanche_c','gnosis','optimism','fantom','base','linea'])
         , ('0x2ad5004c60e16e54d5007c80ce329adde5b51ef5', 'true', '1inch'                , 'SettlementV3v1'          , ['ethereum','bnb','polygon','arbitrum','avalanche_c','gnosis','optimism','base','linea','sonic','unichain'])
         , ('0x8261425bf01caf25259dabe36fd05f430b38aee0', 'true', '1inch'                , 'SettlementV3v1'          , ['zksync'])
+        , ('0x399740157391a9f1bf4e9921a8834f9bc8f2678e', 'true', '1inch'                , 'SettlementV3v2'          , ['ethereum'])
         , ('0x5c7BCd6E7De5423a257D81B442095A1a6ced35C5', 'true', 'Across'               , 'SpokePool'               , ['ethereum'])
         , ('0xe35e9842fceaCA96570B734083f4a58e8F7C5f2A', 'true', 'Across'               , 'SpokePool'               , ['arbitrum'])
         , ('0x7E63A5f1a8F0B4d0934B2f2327DAED3F6bb2ee75', 'true', 'Across'               , 'SpokePool'               , ['linea'])
