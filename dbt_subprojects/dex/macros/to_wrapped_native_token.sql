@@ -14,9 +14,14 @@ CASE
         WHEN {{from_column_name}} = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x4200000000000000000000000000000000000006 
         ELSE {{from_column_name}}
     END AS {{to_column_name}}
-    {% elif blockchain == 'gnosis' %}
+{% elif blockchain == 'gnosis' %}
 CASE 
         WHEN {{from_column_name}} = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0xe91d153e0b41518a2ce8dd3d7944fa863463a97d -- XDAI / WXDAI 
+        ELSE {{from_column_name}}
+    END AS {{to_column_name}}
+{% elif blockchain == 'plasma' %}
+CASE 
+        WHEN {{from_column_name}} = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x6100e367285b01f48d07953803a2d8dca5d19873 -- XPL / WXPL
         ELSE {{from_column_name}}
     END AS {{to_column_name}}
 {% endif %}
