@@ -27,6 +27,9 @@ sources:
       - name: FraxswapFactory_evt_PairCreated
   - name: trader_joe_v2_1_bnb
   - name: trader_joe_v2_bnb
+  - name: pancakeswap_bnb
+    tables:
+      - name: ExclusiveDutchOrderReactor_evt_Fill
   - name: pancakeswap_v2_bnb
     tables:
       - name: PancakePair_evt_Swap
