@@ -158,7 +158,7 @@ select
     v6_trades{% endmacro %}
 
 {% macro paraswap_v6_trades_master(blockchain, project) %}
-  {% set exclude_6_1 = ['gnosis', 'unichain'] %}
+  {% set exclude_6_1 = ['gnosis', 'unichain', 'sonic'] %}
   {% if blockchain in exclude_6_1 %}
     {% set contracts = {
       "AugustusV6_2": {"version": "6.2"}
