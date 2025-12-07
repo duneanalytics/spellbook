@@ -23,7 +23,8 @@ sources:
       - name: CLFactory_call_getSwapFee
       - name: CLFactory_evt_PoolCreated   
       - name: CLPool_evt_Swap     
-      - name: CLPool_evt_CollectFees       
+      - name: CLPool_evt_CollectFees     
+      - name: poolfactory_call_getfee
 
   - name: uniswap_v3_base
     description: "Base decoded tables related to Uniswap v3 contract"
