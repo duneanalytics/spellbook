@@ -15,6 +15,7 @@
     , ref('hyperswap_v2_hyperevm_base_trades')
     , ref('hyperswap_v3_hyperevm_base_trades')
     , ref('hybra_v3_hyperevm_base_trades')
+    , ref('balancer_v3_hyperevm_base_trades')
 ] %}
 with base_union as (
     SELECT *
