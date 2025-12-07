@@ -155,3 +155,44 @@ models:
         description: "The hash of the previous block"
       - name: leader
         description: "The leader of the block"
+
+  - name: solana_utils_compute_units_consumption_by_program
+    meta:
+      blockchain: solana
+      contributors: [asad.hussain]
+    config:
+      tags: ['solana','compute_units','programs']
+    description: >
+        Track compute units consumption by program on the Solana blockchain, including instruction counts,
+        success/failure rates, and estimated compute units consumed per transaction
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - program_id
+            - tx_id
+    columns:
+      - name: block_date
+        description: "The date of the block in UTC"
+      - name: block_time
+        description: "The timestamp of the block in UTC"
+      - name: block_slot
+        description: "The slot number of the block"
+      - name: tx_id
+        description: "The unique identifier of the transaction"
+      - name: program_id
+        description: "The program ID that executed the instructions"
+      - name: instruction_count
+        description: "Total number of instructions executed by this program in the transaction"
+      - name: successful_instructions
+        description: "Number of successful instructions executed by this program"
+      - name: failed_instructions
+        description: "Number of failed instructions executed by this program"
+      - name: transaction_fee
+        description: "The transaction fee in lamports"
+      - name: tx_success
+        description: "Whether the transaction was successful"
+      - name: estimated_compute_units_consumed
+        description: "Estimated compute units consumed by this program in the transaction"
+      - name: _inserted_timestamp
+        description: "Timestamp when this record was inserted"
