@@ -19,3 +19,23 @@ sources:
     tables:
       - name: uniswapv3factory_evt_poolcreated
       - name: uniswapv3pool_evt_swap
+  - name: tapio_sonic
+    tables:
+      - name: selfpeggingassetfactory_call_createpool
+      - name: selfpeggingassetfactory_evt_poolcreated
+      - name: selfpeggingasset_evt_tokenswapped
+  - name: swapx_sonic
+    tables:
+      - name: algebrafactory_evt_pool
+      - name: AlgebraPool_evt_Swap
+  - name: metropolis_sonic
+    tables:
+      - name: router_call_swapexacttokensfortokens
+      - name: router_call_swapexacttokensforeth
+      - name: router_call_swapethforexacttokens
+      - name: router_call_swaptokensforexacttokens
+      - name: router_call_swapexactethfortokens
+      - name: router_call_swapexactethfortokenssupportingfeeontransfertokens
+      - name: router_call_swapexacttokensforethsupportingfeeontransfertokens
+      - name: router_call_swapexacttokensfortokenssupportingfeeontransfertokens 
+             
