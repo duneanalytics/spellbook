@@ -1,0 +1,55 @@
+version: 2
+
+models:
+  - name: courtyard_polygon_trades
+    meta:
+      blockchain: polygon
+      sector: nft
+      project: courtyard
+      contributors: mukhtaryah
+    config:
+      tags: ['polygon', 'courtyard', 'trades', 'nft']
+    description: >
+      Courtyard trades on Polygon
+    columns:
+      - name: blockchain
+        description: "Blockchain where the trade occurred (polygon)"
+      - name: project
+        description: "Project name (courtyard)"
+      - name: version
+        description: "Project version"
+      - name: block_time
+        description: "UTC event block time"
+      - name: block_date
+        description: "UTC event block date"
+      - name: block_month
+        description: "UTC event block month"
+      - name: block_number
+        description: "Block number"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: evt_index
+        description: "Event index"
+      - name: buyer
+        description: "Buyer wallet address"
+      - name: seller
+        description: "Seller wallet address"
+      - name: nft_contract_address
+        description: "NFT contract address"
+      - name: token_id
+        description: "NFT token ID"
+      - name: amount_usd
+        description: "Trade amount in USD"
+      - name: platform_fee_usd
+        description: "Platform fee in USD"
+
+  - name: courtyard_polygon_base_trades
+    meta:
+      blockchain: polygon
+      sector: nft
+      project: courtyard
+      contributors: mukhtaryah
+    config:
+      tags: ['polygon', 'courtyard', 'base_trades', 'nft']
+    description: >
+      Courtyard base trades on Polygon
