@@ -105,6 +105,26 @@ models:
         +schema: balances_bnb
       polygon:
         +schema: balances_polygon
+      unichain:
+        +schema: balances_unichain
+      mantle:
+        +schema: balances_mantle
+      worldchain:
+        +schema: balances_worldchain
+      fantom:
+        +schema: balances_fantom
+      blast:
+        +schema: balances_blast
+      celo:
+        +schema: balances_celo
+      gnosis:
+        +schema: balances_gnosis
+      zkevm:
+        +schema: balances_zkevm
+      sonic:
+        +schema: balances_sonic
+      zksync:
+        +schema: balances_zksync
 
     _sector:
       labels:

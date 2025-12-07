@@ -121,3 +121,156 @@ models:
       tags: [ 'safe', 'scroll' ]
     description: “Safe addresses balances”
 
+  - name: safe_unichain_balances
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    meta:
+      blockchain: unichain
+      project: safe
+      contributors: jondar
+    config:
+      tags: [ 'safe', 'unichain' ]
+
+  - name: safe_bnb_balances
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    meta:
+      blockchain: bnb
+      project: safe
+      contributors: jondar
+    config:
+      tags: [ 'safe', 'bnb' ]
+
+  - name: safe_mantle_balances
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    meta:
+      blockchain: mantle
+      project: safe
+      contributors: jondar
+    config:
+      tags: [ 'safe', 'mantle' ]
+
+  - name: safe_worldchain_balances
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    meta:
+      blockchain: worldchain
+      project: safe
+      contributors: jondar
+    config:
+      tags: [ 'safe', 'worldchain' ]
+
+  - name: safe_fantom_balances
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    meta:
+      blockchain: fantom
+      project: safe
+      contributors: jondar
+    config:
+      tags: [ 'safe', 'fantom' ]
+
+  - name: safe_blast_balances
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    meta:
+      blockchain: blast
+      project: safe
+      contributors: jondar
+    config:
+      tags: [ 'safe', 'blast' ]
+
+  - name: safe_celo_balances
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    meta:
+      blockchain: celo
+      project: safe
+      contributors: jondar
+    config:
+      tags: [ 'safe', 'celo' ]
+
+  - name: safe_gnosis_balances
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    meta:
+      blockchain: gnosis
+      project: safe
+      contributors: jondar
+    config:
+      tags: [ 'safe', 'gnosis' ]
+
+  - name: safe_zkevm_balances
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    meta:
+      blockchain: zkevm
+      project: safe
+      contributors: jondar
+    config:
+      tags: [ 'safe', 'zkevm' ]
+
+  - name: safe_sonic_balances
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    meta:
+      blockchain: sonic
+      project: safe
+      contributors: jondar
+    config:
+      tags: [ 'safe', 'sonic' ]
+
+  - name: safe_zksync_balances
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    meta:
+      blockchain: zksync
+      project: safe
+      contributors: jondar
+    config:
+      tags: [ 'safe', 'zksync' ]
