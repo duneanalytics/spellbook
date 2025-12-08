@@ -115,7 +115,6 @@ FROM (
         , (728126428, 'tron', 'TRON', 'Layer 1', null, 'TRX', from_tron_address('TNUC9Qb1rRpS5CbWLmNMxXBjyFoydXjWFR'), 'https://tronscan.org/', timestamp '2024-06-25 17:14', NULL, NULL, NULL, true, NULL)
         , (1101001, 'b3', 'B3', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.b3.fun/', timestamp '2024-03-14 12:00', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, NULL)
         , (5000, 'mantle', 'Mantle', 'Layer 2', 'Optimistic Rollup', 'MNT', 0x78c1b0c915c4faa5fffa6cabf0219da63d7f4cb8, 'https://mantlescan.xyz/', timestamp '2023-07-02 18:21', 'Optimistic Virtual Machine', 'Ethereum', 'Ethereum', true, NULL)
-        , (4326, 'megaeth', 'MegaETH', 'Layer 1', NULL, 'ETH', 0x4eB2Bd7beE16F38B1F4a0A5796Fffd028b6040e9, 'https://miniblocks.io/', timestamp '2025-12-01 00:00', NULL, NULL, NULL, true, NULL)
         , (42170, 'nova', 'Arbitrum Nova', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x722e8bdd2ce80a4422e880164f2079488e115365, 'https://nova-explorer.arbitrum.io/', timestamp '2022-06-25 04:01', 'Arbitrum', 'Ethereum', 'Ethereum', true, NULL)
         , (2020, 'ronin', 'Ronin', 'Layer 1', null, 'RON', 0xe514d9deb7966c8be0ca922de8a064264ea6bcd4, 'https://app.roninchain.com/', timestamp '2021-01-25 10:49', NULL, NULL, NULL, true, NULL)
         , (14, 'flare', 'Flare', 'Layer 1', NULL, 'FLR', NULL, 'https://flare-explorer.flare.network/', timestamp '2022-07-13 15:32', NULL, NULL, NULL, true, NULL)
@@ -143,4 +142,5 @@ FROM (
         , (29590, 'henesys', 'Henesys', 'Layer 1', NULL, 'NXPC', 0x0000000000000000000000000000000000000000, 'https://subnets.avax.network/henesys/', timestamp '2025-03-26 09:55:21', 'Avalanche (AvaCloud L1)', NULL, NULL, true, 'MapleStory Universe')
         , (31612, 'mezo', 'Mezo', 'Layer 2', NULL, 'BTC', 0x7b7c000000000000000000000000000000000000, 'https://explorer.mezo.org/', timestamp '2025-05-05 00:00:00', 'Cosmos SDK + EVM (CometBFT)', NULL, 'Bitcoin', true, 'Bitcoin')
         , (143, 'monad', 'Monad', 'Layer 1', NULL, 'MON', 0x3bd359C1119dA7Da1D913D1C4D2B7c461115433A, NULL, NULL, 'Custom EVM L1 (Monad Labs)', NULL, NULL, true, NULL)
+        , (4326, 'megaeth', 'MegaETH', 'Layer 1', NULL, 'ETH', 0x4eB2Bd7beE16F38B1F4a0A5796Fffd028b6040e9, 'https://miniblocks.io/', timestamp '2025-11-10 17:50:12', NULL, NULL, NULL, true, NULL)
 ) AS temp_table (chain_id, blockchain, name, chain_type, rollup_type, native_token_symbol, wrapped_native_token_address, explorer_link, first_block_time, codebase, data_availability, settlement, is_on_dune, ecosystem)
