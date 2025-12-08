@@ -18,5 +18,5 @@ SELECT
 FROM
 (
     VALUES
-    ('weth-weth', 'WETH', 0x4eB2Bd7beE16F38B1F4a0A5796Fffd028b6040e9, 18)
+    ('weth-weth', 'WETH', 0x4200000000000000000000000000000000000006, 18)
 ) as temp (token_id, symbol, contract_address, decimals)
