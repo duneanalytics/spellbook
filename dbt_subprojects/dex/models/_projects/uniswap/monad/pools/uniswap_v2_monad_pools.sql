@@ -18,6 +18,6 @@
         , pool_column_name = 'pair'
         , token0_column_name = 'token0'
         , token1_column_name = 'token1'
-        , pool_created_event = source('uniswap_v2_monad', 'UniswapV2Factory_evt_PairCreated')
+        , pool_created_event = source('uniswap_v2_monad', 'uniswapv2factory_evt_paircreated')
     )
 }}

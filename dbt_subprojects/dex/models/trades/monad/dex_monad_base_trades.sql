@@ -16,6 +16,7 @@
     , ref('pinot_v3_monad_base_trades')
     , ref('uniswap_v2_monad_base_trades')
     , ref('uniswap_v3_monad_base_trades')
+    , ref('uniswap_v4_monad_base_trades')
     , ref('pancakeswap_v2_monad_base_trades')
     , ref('pancakeswap_v3_monad_base_trades')
 ] %}
