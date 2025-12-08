@@ -22,7 +22,7 @@ FROM
     ('okb-okb', 'OKB', 0x5831f949D6A239Cd1CDBaC652A060f0837b0CAc0, 18)
     , ('weth-weth', 'WETH', 0x5a77f1443d16ee5761d310e38b62f77f726bc71c, 18)
     , ('usdt-tether', 'USDT', 0x1e4a5963abfd975d8c9021ce480b42188849d41d, 6)
-    , ('usdt-tether', 'USDT', 0x779ded0c9e1022225f8e0630b35a9b54be713736, 6) -- USDT0
+    , ('usdt-tether', 'USDT0', 0x779ded0c9e1022225f8e0630b35a9b54be713736, 6)
     , ('usdc-usd-coin', 'USDC', 0x74b7f16337b8972027f6196a17a631ac6de26d22, 6)
     , ('usdce-usd-coine', 'USDC.e', 0xa8ce8aee21bc2a48a5ef670afcc9274c7bbbc035, 6)
     , ('wbtc-wrapped-bitcoin', 'WBTC', 0xea034fb02eb1808c2cc3adbc15f447b93cbe08e1, 8)
