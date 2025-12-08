@@ -1,6 +1,6 @@
 {{ 
   config(
-    tags = ['static'],
+    tags = ['static', 'prod_exclude'],
     schema = 'contracts',
     alias = 'project_name_mappings',
     unique_key='dune_name',
