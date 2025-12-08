@@ -52,7 +52,6 @@
     ,'tokens_unichain': {'blockchain': 'unichain', 'model': ref('tokens_unichain_v1_erc20')}
     ,'tokens_viction': {'blockchain': 'viction', 'model': ref('tokens_viction_v1_erc20')}
     ,'tokens_worldchain': {'blockchain': 'worldchain', 'model': ref('tokens_worldchain_v1_erc20')}
-    ,'tokens_xlayer': {'blockchain': 'xlayer', 'model': ref('tokens_xlayer_v1_erc20')}
     ,'tokens_zkevm': {'blockchain': 'zkevm', 'model': ref('tokens_zkevm_v1_erc20')}
     ,'tokens_zksync': {'blockchain': 'zksync', 'model': ref('tokens_zksync_v1_erc20')}
     ,'tokens_zora': {'blockchain': 'zora', 'model': ref('tokens_zora_v1_erc20')}
