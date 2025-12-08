@@ -1,13 +1,13 @@
 version: 2
 
 models:
-  - name: stablecoins_linea_base_balances
+  - name: stablecoins_linea_balances
 
     meta:
       blockchain: linea
       sector: stablecoin
       project: stablecoin
-      contributors: synthquest, tomfutago
+      contributors: synthquest
 
     config:
       tags: ['stablecoin', 'balances']

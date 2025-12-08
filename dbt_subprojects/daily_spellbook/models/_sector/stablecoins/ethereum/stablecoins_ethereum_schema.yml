@@ -1,13 +1,13 @@
 version: 2
 
 models:
-  - name: stablecoins_ethereum_base_balances
+  - name: stablecoins_ethereum_balances
 
     meta:
       blockchain: ethereum
       sector: stablecoin
       project: stablecoin
-      contributors: synthquest, tomfutago
+      contributors: synthquest
 
     config:
       tags: ['stablecoin', 'balances']
