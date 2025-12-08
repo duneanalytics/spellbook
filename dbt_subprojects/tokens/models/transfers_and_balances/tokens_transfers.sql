@@ -49,6 +49,7 @@
     ,'unichain'
     ,'viction'
     ,'worldchain'
+    ,'xlayer'
     ,'zkevm'
     ,'zksync'
     ,'zora'

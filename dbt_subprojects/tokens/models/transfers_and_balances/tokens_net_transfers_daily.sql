@@ -54,6 +54,7 @@
     , 'sophon'
     , 'viction'
     , 'worldchain'
+    , 'xlayer'
 ] %}
 
 SELECT *
