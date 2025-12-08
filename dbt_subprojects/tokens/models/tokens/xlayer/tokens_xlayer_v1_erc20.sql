@@ -15,6 +15,6 @@ FROM
 (
     VALUES
     -- placeholder rows to give example of format
-    (0x0000000000000000000000000000000000000000, 'XL', 18) -- dummy token for now
+    (0x5831f949D6A239Cd1CDBaC652A060f0837b0CAc0, 'OKB', 18)
 )
 AS temp_table (contract_address, symbol, decimals)
