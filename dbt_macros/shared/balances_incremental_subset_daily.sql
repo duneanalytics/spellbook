@@ -182,7 +182,7 @@ left join {{source('prices','usd_daily')}} p
 
 #}
 
-{%- macro balances_incremental_subset_daily_new(
+{%- macro balances_incremental_subset_daily(
         blockchain,
         start_date,
         address_list = none,
