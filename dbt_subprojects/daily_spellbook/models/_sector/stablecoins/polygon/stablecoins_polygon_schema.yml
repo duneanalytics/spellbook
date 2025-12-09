@@ -1,13 +1,13 @@
 version: 2
 
 models:
-  - name: stablecoins_polygon_balances
+  - name: stablecoins_polygon_base_balances
 
     meta:
       blockchain: polygon
       sector: stablecoin
       project: stablecoin
-      contributors: synthquest
+      contributors: synthquest, tomfutago
 
     config:
       tags: ['stablecoin', 'balances']

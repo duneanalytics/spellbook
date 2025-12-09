@@ -1,13 +1,13 @@
 version: 2
 
 models:
-  - name: stablecoins_arbitrum_balances
+  - name: stablecoins_arbitrum_base_balances
 
     meta:
       blockchain: arbitrum
       sector: stablecoin
       project: stablecoin
-      contributors: synthquest
+      contributors: synthquest, tomfutago
 
     config:
       tags: ['stablecoin', 'balances']

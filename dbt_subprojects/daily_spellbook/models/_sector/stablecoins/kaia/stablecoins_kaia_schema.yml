@@ -1,13 +1,13 @@
 version: 2
 
 models:
-  - name: stablecoins_linea_base_balances
+  - name: stablecoins_kaia_base_balances
 
     meta:
-      blockchain: linea
+      blockchain: kaia
       sector: stablecoin
       project: stablecoin
-      contributors: synthquest, tomfutago
+      contributors: tomfutago
 
     config:
       tags: ['stablecoin', 'balances']
@@ -59,4 +59,3 @@ models:
       name: next_update
       description: "UTC timestamp when data is next updated"
 
- 

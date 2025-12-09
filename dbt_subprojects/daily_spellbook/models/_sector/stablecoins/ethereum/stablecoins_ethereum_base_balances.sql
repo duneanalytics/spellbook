@@ -1,11 +1,11 @@
 {{
   config(
     schema = 'stablecoins_ethereum',
-    alias = 'balances',
+    alias = 'base_balances',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['day', 'address', 'token_address', 'blockchain'],
+    unique_key = ['day', 'address', 'token_address'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')]
   )
 }}
@@ -76,7 +76,7 @@ stablecoin_tokens_total as (
 
 ,balances as (
     {{
-      balances_incremental_subset_daily(
+      balances_incremental_subset_daily_new(
             blockchain = 'ethereum',
             token_list = 'stablecoin_tokens',
             start_date = '2023-01-01'
@@ -85,9 +85,13 @@ stablecoin_tokens_total as (
 )
 
 select
-    t.symbol
-    ,b.*
-from balances b
-left join stablecoin_tokens t
-    on b.token_address = t.token_address
+  blockchain,
+  day,
+  address,
+  token_address,
+  token_standard,
+  token_id,
+  balance_raw,
+  last_updated
+from balances
  

@@ -1,10 +1,10 @@
 version: 2
 
 models:
-  - name: stablecoins_linea_base_balances
+  - name: stablecoins_avalanche_c_base_balances
 
     meta:
-      blockchain: linea
+      blockchain: avalanche_c
       sector: stablecoin
       project: stablecoin
       contributors: synthquest, tomfutago
