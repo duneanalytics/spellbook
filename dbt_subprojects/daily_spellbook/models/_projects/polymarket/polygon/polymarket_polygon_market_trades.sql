@@ -21,6 +21,7 @@ select
   md.event_market_name,
   md.question,
   md.polymarket_link,
+  md.polymarket_link_slug,
   md.token_outcome,
   md.neg_risk,
   t.asset_id,

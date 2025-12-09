@@ -307,6 +307,8 @@ models:
         description: "Negative risk market name from on-chain data"
       - name: polymarket_link
         description: "Link to the Polymarket event page"
+      - name: polymarket_link_slug
+        description: "Slug for the Polymarket link"
       - name: market_start_time
         description: "Start time of the market"
       - name: market_end_time
