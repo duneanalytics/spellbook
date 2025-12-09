@@ -498,4 +498,64 @@ models:
       - name: tx_hash
         description: "Transaction hash of the wallet creation"
 
+  - name: polymarket_polygon_open_positions
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: hildobby
+    config:
+      tags: ['polygon','prediction_markets','polymarket','positions']
+    description: "Polymarket: open positions in markets"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - token_id
+    columns:
+      - name: address
+        description: "The address holding the position"
+      - name: unique_key
+        description: "Unique identifier for the market"
+      - name: token_id
+        description: "Token ID of the position"
+      - name: token_outcome
+        description: "Outcome represented by the token"
+      - name: token_outcome_name
+        description: "Name of the outcome represented by the token"
+      - name: balance
+        description: "Balance of the position"
+      - name: question_id
+        description: "Question ID for the market"
+      - name: market_question
+        description: "Question of the market"
+      - name: market_description
+        description: "Description of the market"
+      - name: event_market_name
+        description: "Name of the event market"
+      - name: event_market_description
+        description: "Description of the event market"
+      - name: active
+        description: "Whether the market is active"
+      - name: closed
+        description: "Whether the market is closed"
+      - name: accepting_orders
+        description: "Whether the market is accepting orders"
+      - name: latest_price
+        description: "The price of the outcome token at the end of the day"
+      - name: open_interest
+        description: "The open interest of the position"
+      - name: market_outcome
+        description: "The outcome of the market"
+      - name: resolved_on_timestamp
+        description: "Timestamp when the market was resolved"
+      - name: polymarket_link
+        description: "Link to the Polymarket event page"
+      - name: polymarket_link_slug
+        description: "Slug for the Polymarket link"
+      - name: market_start_time
+        description: "Start time of the market"
+      - name: market_end_time
+        description: "End time of the market"
+
 

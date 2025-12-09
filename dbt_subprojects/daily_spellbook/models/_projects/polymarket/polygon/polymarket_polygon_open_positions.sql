@@ -1,0 +1,71 @@
+{{
+  config(
+    schema = 'polymarket_polygon',
+    alias = 'open_positions',
+    materialized = 'view',
+    post_hook = '{{ expose_spells(blockchains = \'["polygon"]\',
+                                  spell_type = "project",
+                                  spell_name = "polymarket",
+                                  contributors = \'["hildobby"]\') }}'
+  )
+}}
+
+WITH open_positions AS (
+    SELECT 
+    p.address,
+    mm.unique_key,
+    p.token_id,
+    mm.token_outcome,
+    mm.token_outcome_name,
+    p.balance,
+    mm.question_id,
+    mm.question AS market_question,
+    mm.market_description,
+    mm.event_market_name,
+    mm.event_market_description,
+    mm.active,
+    mm.closed,
+    mm.accepting_orders,
+    mm.polymarket_link,
+    mm.polymarket_link_slug,
+    mm.market_start_time,
+    mm.market_end_time,
+    mm.outcome AS market_outcome,
+    mm.resolved_on_timestamp,
+  CASE WHEN LOWER(token_outcome)=mm.market_outcome THEN 1 ELSE 0 END AS modifier
+    FROM {{ ref('polymarket_polygon_positions_raw') }} p
+    INNER JOIN {{ ref('polymarket_polygon_market_details') }} mm ON p.token_id = mm.token_id AND mm.market_end_time_parsed > NOW()
+    )
+
+SELECT op.address,
+op.unique_key,
+token_id,
+op.token_outcome,
+op.token_outcome_name,
+op.balance,
+op.balance*(CASE WHEN mdp.market_end_ts IS NULL
+  OR pp.hour <= mdp.market_end_ts
+  THEN pp.price
+  ELSE COALESCE(modifier, 0)
+  END) AS open_interest,
+CASE WHEN mdp.market_end_ts IS NULL
+  OR pp.hour <= mdp.market_end_ts
+  THEN pp.price
+  ELSE COALESCE(modifier, 0)
+  END AS latest_price,
+op.question_id,
+op.question AS market_question,
+op.market_description,
+op.event_market_name,
+op.event_market_description,
+op.active,
+op.closed,
+op.accepting_orders,
+op.polymarket_link,
+op.polymarket_link_slug,
+op.market_start_time,
+op.market_end_time,
+op.market_outcome,
+op.resolved_on_timestamp
+FROM open_positions op
+INNER JOIN {{ ref('polymarket_polygon_market_prices_latest') }} p USING (token_id)
