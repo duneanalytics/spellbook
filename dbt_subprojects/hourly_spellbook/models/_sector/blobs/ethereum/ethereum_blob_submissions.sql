@@ -11,16 +11,73 @@
                                     \'["msilb7","lorenz234","0xRob", "hildobby"]\') }}'
 )}}
 
-with blob_transactions as (
-SELECT *
-FROM {{ source('ethereum','transactions') }}
-WHERE type = '3'
-AND block_number >= 19426587 -- dencun upgrade
-{% if is_incremental() %}
-AND {{ incremental_predicate('block_time')}}
-{% endif %}
-)
+-- EIP-7918 (Fusaka) changes how excess_blob_gas is updated, breaking the assumption
+-- that it only takes values at multiples of GAS_PER_BLOB. We must compute fake_exponential
+-- in SQL for Fusaka blocks.
 
+with blob_transactions as (
+    SELECT *
+    FROM {{ source('ethereum','transactions') }}
+    WHERE type = '3'
+    AND block_number >= 19426587 -- dencun upgrade
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('block_time')}}
+    {% endif %}
+),
+
+-- Get unique excess_blob_gas values from Fusaka blocks that need fake_exponential computed
+fusaka_excess_values as (
+    SELECT DISTINCT block.excess_blob_gas
+    FROM blob_transactions t
+    INNER JOIN {{ source('ethereum', 'blocks')}} block
+        ON t.block_number = block.number
+    WHERE block.number >= 23935694  -- Fusaka activation
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('t.block_time') }}
+    {% endif %}
+),
+
+-- Recursive CTE to compute fake_exponential for Fusaka
+-- This implements: fake_exponential(1, excess_blob_gas, 5007716)
+-- which approximates: 1 * e^(excess_blob_gas / 5007716) using Taylor expansion
+fake_exponential_calc AS (
+    -- Base case: initialize Taylor expansion for each unique excess_blob_gas
+    SELECT 
+        CAST(excess_blob_gas AS UINT256) as excess_blob_gas,
+        CAST(5007716 AS UINT256) as denominator,          -- BLOB_BASE_FEE_UPDATE_FRACTION (Pectra/Fusaka)
+        CAST(5007716 AS UINT256) as accum,                -- factor * denominator = 1 * 5007716
+        CAST(0 AS UINT256) as output,                     -- running sum (before final division)
+        1 as iteration
+    FROM fusaka_excess_values
+    
+    UNION ALL
+    
+    -- Recursive case: Taylor expansion iteration
+    -- Each step: output += accum, then accum = accum * numerator / denominator / i
+    SELECT
+        excess_blob_gas,
+        denominator,
+        (accum * excess_blob_gas / denominator) / CAST(iteration AS UINT256) as accum,
+        output + accum as output,
+        iteration + 1
+    FROM fake_exponential_calc
+    WHERE accum > CAST(0 AS UINT256) 
+        AND iteration < 300  -- Safety limit (convergence typically happens much sooner)
+),
+
+-- Get final result: the last iteration for each excess_blob_gas
+fusaka_blob_fees AS (
+    SELECT 
+        excess_blob_gas,
+        output / denominator as blob_base_fee_exp
+    FROM (
+        SELECT 
+            *,
+            ROW_NUMBER() OVER (PARTITION BY excess_blob_gas ORDER BY iteration DESC) as rn
+        FROM fake_exponential_calc
+    ) ranked
+    WHERE rn = 1
+)
 
 SELECT
      t.block_number
@@ -46,7 +103,17 @@ SELECT
     ) as blob_indexes
     , CARDINALITY(t.blob_versioned_hashes) AS blob_count
     , CARDINALITY(t.blob_versioned_hashes) * pow(2,17) as blob_gas_used -- within this tx
-    , case when t.block_number < 22431084 then fee.blob_base_fee_dencun else fee.blob_base_fee_pectra end as blob_base_fee
+    -- Blob base fee calculation:
+    -- - Dencun/Pectra: Use lookup table (excess_blob_gas moves in GAS_PER_BLOB increments)
+    -- - Fusaka: Compute fake_exponential in SQL + apply EIP-7918 reserve price
+    , case 
+        when t.block_number < 22431084 then fee.blob_base_fee_dencun  -- Dencun
+        when t.block_number < 23935694 then fee.blob_base_fee_pectra  -- Pectra
+        else GREATEST(
+            fusaka_fee.blob_base_fee_exp,  -- fake_exponential result computed above
+            block.base_fee_per_gas * CAST(8192 AS UINT256) / CAST(131072 AS UINT256)  -- EIP-7918 reserve price (base_fee / 16)
+        )
+      end as blob_base_fee
     , t.max_fee_per_blob_gas
     , coalesce(("LEFT"(from_utf8(t.data), 5)='data:'), false) as is_blobscription
 FROM blob_transactions t
@@ -62,9 +129,14 @@ INNER JOIN {{ source('beacon', 'blocks') }} beacon
     {% if is_incremental() %}
     and {{ incremental_predicate('beacon.time') }}
     {% endif %}
--- this lookup relies on the invariant that the excess blob gas is updated with fixed increment and thus only ever holds a limited set of values.
-LEFT JOIN  {{ source("resident_wizards", "blob_base_fees_lookup_v2", database="dune") }} fee
+-- Lookup table for Dencun/Pectra (only valid when excess_blob_gas is multiple of GAS_PER_BLOB)
+LEFT JOIN {{ source("resident_wizards", "blob_base_fees_lookup_v2", database="dune") }} fee
     ON fee.excess_blob_gas = block.excess_blob_gas
+    AND block.number < 23935694  -- Only use lookup for pre-Fusaka
+-- Computed fake_exponential for Fusaka blocks
+LEFT JOIN fusaka_blob_fees fusaka_fee
+    ON fusaka_fee.excess_blob_gas = CAST(block.excess_blob_gas AS UINT256)
+    AND block.number >= 23935694  -- Only use computed value for Fusaka
 LEFT JOIN {{ref('blobs_submitters')}} l
     ON t."from" = l.address
 LEFT JOIN {{ref('blobs_based_submitters')}} ls
