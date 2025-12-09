@@ -12,6 +12,7 @@ models:
   - name: camelot_trades
   - name: carbon_defi_trades
   - name: clipper_trades
+  - name: blade_trades
   - name: curve_trades
   - name: defiswap_trades
   - name: dfx_trades
@@ -51,7 +52,6 @@ models:
   - name: thena_trades
   - name: trader_joe_trades
   - name: ubeswap_trades
-  - name: uniswap_trades
   - name: velodrome_trades
   - name: verse_dex_trades
   - name: wardenswap_trades

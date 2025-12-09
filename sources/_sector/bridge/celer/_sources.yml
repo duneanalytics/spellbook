@@ -1,0 +1,92 @@
+version: 2
+
+sources:
+  - name: celer_base
+    description: "Celer bridge events on Base"
+    tables:
+      - name: bridge_evt_send
+      - name: bridge_evt_relay
+
+  - name: celer_ethereum
+    description: "Celer bridge events on Ethereum"
+    tables:
+      - name: bridge_evt_send
+      - name: bridge_evt_relay
+
+  - name: celer_arbitrum
+    description: "Celer bridge events on Arbitrum"
+    tables:
+      - name: bridge_evt_send
+      - name: bridge_evt_relay
+
+  - name: celer_avalanche_c
+    description: "Celer bridge events on Avalanche"
+    tables:
+      - name: bridge_evt_send
+      - name: bridge_evt_relay
+
+  - name: celer_blast
+    description: "Celer bridge events on Blast"
+    tables:
+      - name: bridge_evt_send
+      - name: bridge_evt_relay
+
+  - name: celer_bnb
+    description: "Celer bridge events on BNB"
+    tables:
+      - name: bridge_evt_send
+      - name: bridge_evt_relay
+
+  - name: celer_fantom
+    description: "Celer bridge events on Fantom"
+    tables:
+      - name: bridge_evt_send
+      - name: bridge_evt_relay
+
+  - name: celer_gnosis
+    description: "Celer bridge events on Gnosis"
+    tables:
+      - name: bridge_evt_send
+      - name: bridge_evt_relay
+
+  - name: celer_linea
+    description: "Celer bridge events on Linea"
+    tables:
+      - name: bridge_evt_send
+      - name: bridge_evt_relay
+
+  - name: celer_nova
+    description: "Celer bridge events on Arbitrum Nova"
+    tables:
+      - name: bridge_evt_send
+      - name: bridge_evt_relay
+
+  - name: celer_opbnb
+    description: "Celer bridge events on opBNB"
+    tables:
+      - name: bridge_evt_send
+      - name: bridge_evt_relay
+
+  - name: celer_optimism
+    description: "Celer bridge events on OP Mainnet"
+    tables:
+      - name: bridge_evt_send
+      - name: bridge_evt_relay
+
+  - name: celer_polygon
+    description: "Celer bridge events on Polygon"
+    tables:
+      - name: bridge_evt_send
+      - name: bridge_evt_relay
+
+  - name: celer_scroll
+    description: "Celer bridge events on Scroll"
+    tables:
+      - name: bridge_evt_send
+      - name: bridge_evt_relay
+
+  - name: celer_zksync
+    description: "Celer bridge events on zkSync"
+    tables:
+      - name: bridge_evt_send
+      - name: bridge_evt_relay

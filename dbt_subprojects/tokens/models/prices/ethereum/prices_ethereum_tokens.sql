@@ -129,6 +129,7 @@ FROM
     ('eng-enigma', 'ethereum', 'ENG', 0xf0ee6b27b759c9893ce4f094b49ad28fd15a23e4, 8),
     ('enj-enjin-coin', 'ethereum', 'ENJ', 0xf629cbd94d3791c9250152bd8dfbdf380e2a3b9c, 18),
     ('ens-ethereum-name-service', 'ethereum', 'ENS', 0xc18360217d8f7ab5e7c516566761ea12ce7f9d72, 18),
+    ('enso-enso', 'ethereum', 'ENSO', 0x699F088b5DddcAFB7c4824db5B10B57B37cB0C66, 18),
     ('erowan-sifchain', 'ethereum', 'EROWAN', 0x07bac35846e5ed502aa91adf6a9e7aa210f2dcbe, 18),
     ('ersdl-unfederalreserve', 'ethereum', 'ERSDL', 0x5218e472cfcfe0b64a064f055b43b4cdc9efd3a6, 18),
     ('ethplo-ethplode', 'ethereum', 'ETHPLO', 0xe0c6ce3e73029f201e5c0bedb97f67572a93711c, 6),
@@ -1903,7 +1904,8 @@ FROM
     ('prompt-wayfinder', 'ethereum', 'PROMPT', 0x28d38df637db75533bd3f71426f3410a82041544, 18),
     ('usd1-usd1', 'ethereum', 'USD1', 0x8d0d000ee44948fc98c9b98a4fa4921476f08b0d, 18),
     ('fuel-fuel-network', 'ethereum', 'FUEL', 0x675B68AA4d9c2d3BB3F0397048e62E6B7192079c, 9),
-    ('towns-towns', 'ethereum', 'TOWNS', 0x000000Fa00b200406de700041CFc6b19BbFB4d13, 18)
+    ('towns-towns', 'ethereum', 'TOWNS', 0x000000Fa00b200406de700041CFc6b19BbFB4d13, 18),
+    ('rlusd-ripple-usd', 'ethereum', 'RLUSD', 0x8292bb45bf1ee4d140127049757c2e0ff06317ed, 18)
    ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds

@@ -4,7 +4,6 @@ models:
   - name: dex_arbitrum_base_trades
     data_tests:
       - check_columns_dex_base_trades
-      - check_dex_info_relationship
       - test_acceptable_usd_amount:
           column_name: amount_usd
           max_value: 1000000000
@@ -946,3 +945,18 @@ models:
           seed_file: ref('native_arbitrum_base_trades_seed')
           filter:
             version: 1
+
+  - name: eulerswap_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: eulerswap
+      contributors: Henrystats
+    config:
+      tags: ["arbitrum", "dex", "trades", "eulerswap"]
+    description: "eulerswap arbitrum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index

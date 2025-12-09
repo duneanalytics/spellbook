@@ -238,7 +238,14 @@ known_solver_metadata (address, environment, name) as (
                  (0xc6fBb25D5d435D151a9427Bf50c3e678C5D42833, 'barn', 'JPEG'),
                  (0x06A012D7aA71236f90aAcFf738F18601a5866beD, 'prod', 'JPEG'),
                  (0xB7e46816941805a4abF488a5853B1ed0B0B39398, 'barn', 'Prycto'),
-                 (0xa97851357E99082762C972F794B2a29E629511A7, 'prod', 'Prycto')
+                 (0xa97851357E99082762C972F794B2a29E629511A7, 'prod', 'Prycto'),
+                 (0x154fb360a14c99a4bfda310c4a32bb69b259e476, 'barn', 'Tsolver'),
+                 (0x3980daa7eaad0b7e0c53cfc5c2760037270da54d, 'prod', 'Tsolver'),
+                 (0x1921E0ff550c09066eDD4Df05d304151C45E77DE, 'prod', 'Barter'),
+                 (0xf039fd228b6DD779515C30C734bD38dD0C1160F4, 'barn', 'Piggy'),
+                 (0x53040838714f31972f8114eF53915a22894f550C, 'prod', 'Piggy'),
+                 (0x6617484255584Bfe5D5B0fdDD60dc2BBD5B6020C, 'barn', 'TrustedVolumes'),
+                 (0xB1ca4a18aFF443656F407FA8bE3533ff27DDE911, 'prod', 'TrustedVolumes')
     ) as _
 )
 -- Combining the metadata with current activation status for final table

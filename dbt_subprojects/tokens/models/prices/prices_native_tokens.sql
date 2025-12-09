@@ -34,12 +34,14 @@ with prices_native_tokens as (
         , ('ethereum', 'eth-ethereum')
         , ('fantom', 'ftm-fantom')
         , ('flare', 'flr-flare-network')
-        , ('flow', 'eth-ethereum')
+        , ('flow', 'flow-flow')
         , ('fuel', 'eth-ethereum')
         , ('gnosis', 'dai-dai')
         , ('goerli', 'eth-ethereum')
         , ('hemi', 'eth-ethereum')
+        , ('henesys', 'nxpc-nexpace')
         , ('hyperevm', 'hype-hyperliquid')
+        , ('initia', 'init-initia')
         , ('ink', 'eth-ethereum')
         , ('kaia', 'kaia-kaia')
         , ('katana', 'eth-ethereum')
@@ -47,12 +49,15 @@ with prices_native_tokens as (
         , ('linea', 'eth-ethereum')
         , ('mantle', 'mnt-mantle')
         , ('mode', 'eth-ethereum')
+        , ('mezo', 'btc-bitcoin')
+        , ('monad', 'mon-monad')
         , ('noble', 'eth-ethereum')
         , ('nova', 'eth-ethereum')
         , ('opbnb', 'bnb-binance-coin')
         , ('optimism', 'eth-ethereum')
         , ('optimism_legacy_ovm1', 'eth-ethereum')
         , ('peaq', 'peaq-peaq-network')
+        , ('plasma', 'xpl-plasma')
         , ('plume', 'plume-plume')
         , ('polygon', 'matic-polygon')
         , ('ronin', 'ron-ronin-token')
@@ -66,6 +71,7 @@ with prices_native_tokens as (
         , ('sophon', 'soph-sophon')
         , ('starknet', 'strk-starknet')
         , ('stellar', 'xlm-stellar')
+        , ('story', 'ip-story')
         , ('superseed', 'eth-ethereum')
         , ('taiko', 'eth-ethereum')
         , ('ton', 'ton-toncoin')
@@ -81,7 +87,7 @@ with prices_native_tokens as (
 select
     p.token_id
     , p.blockchain
-    , d.token_address as contract_address
+    , coalesce(d.token_address, 0x0000000000000000000000000000000000000000) as contract_address
     , d.token_symbol as symbol
     , d.token_decimals as decimals
 from prices_native_tokens as p
