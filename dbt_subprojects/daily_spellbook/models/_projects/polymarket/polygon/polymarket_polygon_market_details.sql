@@ -93,6 +93,10 @@ SELECT
     WHEN neg_risk = false THEN get_href('https://polymarket.com/event/' || market_slug, market_slug)
     WHEN neg_risk = true  THEN  get_href('https://polymarket.com/event/' || replace(replace(replace(lower(neg_risk_market_name), ' ', '-'), '$', ''), '''',''), neg_risk_market_name)
   END AS polymarket_link,
+  CASE 
+    WHEN neg_risk = false THEN market_slug
+    WHEN neg_risk = true  THEN replace(replace(replace(lower(neg_risk_market_name), ' ', '-'), '$', ''), '''','')
+  END AS polymarket_link_slug,
   accepting_order_timestamp as market_start_time,
   date_parse(SUBSTRING(accepting_order_timestamp FROM 1 FOR 19), '%Y-%m-%dT%H:%i:%s') as market_start_time_parsed,
   end_date_iso as market_end_time,

@@ -160,6 +160,8 @@ models:
         description: "Concrete outcome being bet on (e.g., Trump wins 2024 election?)"
       - name: polymarket_link
         description: "Link to the Polymarket site (may be broken for archived markets)"
+      - name: polymarket_link_slug
+        description: "Slug for the Polymarket link"
       - name: token_outcome
         description: "YES or NO token outcome"
       - name: neg_risk
