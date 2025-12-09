@@ -1,5 +1,6 @@
 {{
   config(
+    tags = ['prod_exclude'],
     schema = 'stablecoins_avalanche_c',
     alias = 'base_balances',
     materialized = 'incremental',

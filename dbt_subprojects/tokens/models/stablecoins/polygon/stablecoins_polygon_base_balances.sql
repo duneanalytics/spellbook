@@ -1,5 +1,6 @@
 {{
   config(
+    tags = ['prod_exclude'],
     schema = 'stablecoins_polygon',
     alias = 'base_balances',
     materialized = 'incremental',
