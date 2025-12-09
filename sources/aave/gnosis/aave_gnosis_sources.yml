@@ -8,4 +8,5 @@ sources:
 
       - name: StataTokenV2_evt_Initialized    
 
-      - name: StataTokenV2Factory_call_createDeterministic          
+      - name: StataTokenV2Factory_call_createDeterministic         
+      - name: poolconfigurator_evt_reserveinitialized
