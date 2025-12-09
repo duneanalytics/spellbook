@@ -182,6 +182,10 @@ models:
         description: "Unique key of the event or market"
       - name: token_outcome_name
         description: "Combination of token outcome and question"
+      - name: maker_asset_id
+        description: "Maker asset ID"
+      - name: taker_asset_id
+        description: "Taker asset ID"
 
   - name: polymarket_polygon_users_capital_actions
     meta:
@@ -309,7 +313,11 @@ models:
         description: "Outcome of the market"
       - name: resolved_on_timestamp
         description: "Timestamp when the market was resolved"
-        
+      - name: market_start_time_parsed
+        description: "Start time of the market parsed as a timestamp"
+      - name: market_end_time_parsed
+        description: "End time of the market parsed as a timestamp"
+
   - name: polymarket_polygon_positions_raw
     meta:
       blockchain: polygon
