@@ -56,13 +56,6 @@ SELECT
     ) as blob_indexes
     , CARDINALITY(t.blob_versioned_hashes) AS blob_count
     , CARDINALITY(t.blob_versioned_hashes) * pow(2,17) as blob_gas_used -- within this tx
-    -- Debug: show excess_blob_gas from both current and parent block
-    , block.excess_blob_gas as excess_blob_gas_current
-    , parent_block.excess_blob_gas as excess_blob_gas_parent
-    -- Debug: base_fee_per_gas for EIP-7918 reserve price calculation
-    , block.base_fee_per_gas
-    -- EIP-7918 reserve price: BLOB_BASE_COST * base_fee_per_gas / GAS_PER_BLOB = base_fee * 8192 / 131072 = base_fee / 16
-    , block.base_fee_per_gas / CAST(16 AS UINT256) as eip7918_reserve_price
     -- Blob base fee calculation:
     -- - Dencun/Pectra: Use v2 lookup table (excess_blob_gas moves in GAS_PER_BLOB increments)
     -- - Fusaka/BPO1+: Compute fake_exponential using transform+reduce with UINT256 + EIP-7918 reserve price
@@ -111,9 +104,6 @@ INNER JOIN {{ source('beacon', 'blocks') }} beacon
     {% if is_incremental() %}
     and {{ incremental_predicate('beacon.time') }}
     {% endif %}
--- Parent block for accessing parent's excess_blob_gas (in case of off-by-one indexing)
-LEFT JOIN {{ source('ethereum', 'blocks')}} parent_block
-    ON parent_block.number = block.number - 1
 -- Lookup table for Dencun/Pectra (only valid when excess_blob_gas is multiple of GAS_PER_BLOB)
 LEFT JOIN {{ source("resident_wizards", "blob_base_fees_lookup_v2", database="dune") }} fee
     ON fee.excess_blob_gas = block.excess_blob_gas
