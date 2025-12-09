@@ -50,7 +50,7 @@ with prices_native_tokens as (
         , ('mantle', 'mnt-mantle')
         , ('mode', 'eth-ethereum')
         , ('mezo', 'btc-bitcoin')
-        --, ('monad', 'mon-monad') -- not on coinpaprika yet
+        , ('monad', 'mon-monad')
         , ('noble', 'eth-ethereum')
         , ('nova', 'eth-ethereum')
         , ('opbnb', 'bnb-binance-coin')

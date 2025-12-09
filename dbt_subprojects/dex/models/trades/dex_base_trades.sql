@@ -28,6 +28,7 @@
     , ref('dex_kaia_base_trades')
     , ref('dex_katana_base_trades')
     , ref('dex_mantle_base_trades')
+    , ref('dex_monad_base_trades')
     , ref('dex_mezo_base_trades')
     , ref('dex_nova_base_trades')
     , ref('dex_opbnb_base_trades')

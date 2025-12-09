@@ -1,11 +1,11 @@
-{% macro 
+{%- macro 
     oneinch_project_calls_macro(
-        blockchain
-        , date_from = '2019-01-01'
+        blockchain,
+        date_from = '2019-01-01'
     )
-%}
+-%}
 
-{% set native_addresses = '(0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee)' %}
+{%- set native_addresses = '(0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee)' -%}
 
 
 
@@ -26,13 +26,14 @@ static as (
         , any_value(tag) as tag
         , any_value(flags) as flags
     from {{ ref('oneinch_' + blockchain + '_mapped_contracts') }}
-    where
-        project not in ('MEVBot', 'Unknown')
+    where true
+        and project not in ('MEVBot', 'Unknown')
     group by 1, 2
 )
 
 , signatures as (
-    select *, reduce(cross_chain_suitables, false, (r, x) -> if(position(x in lower(replace(method, '_'))) > 0, true, r), r -> r) as cross_chain_method
+    select *
+        , reduce(cross_chain_suitables, false, (r, x) -> if(position(x in lower(replace(method, '_'))) > 0, true, r), r -> r) as cross_chain_method
     from (
         select
             id as selector
@@ -65,12 +66,9 @@ static as (
             , success as call_success
             , tx_success
         from {{ source(blockchain, 'traces') }}
-        where
-            {% if is_incremental() %}
-                {{ incremental_predicate('block_time') }}
-            {% else %}
-                block_time >= timestamp '{{date_from}}'
-            {% endif %}
+        where true
+            and block_time >= timestamp '{{ date_from }}'
+            {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
     )
     join contracts using(call_to)
     join signatures using(selector)
@@ -83,12 +81,9 @@ static as (
             , "to" as tx_to
             , gas_used as tx_gas_used
         from {{ source(blockchain, 'transactions') }}
-        where
-            {% if is_incremental() %}
-                {{ incremental_predicate('block_time') }}
-            {% else %}
-                block_time >= timestamp '{{date_from}}'
-            {% endif %}
+        where true
+            and block_time >= timestamp '{{ date_from }}'
+            {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
             
     ) using(block_number, block_time, tx_hash)
 )
@@ -120,4 +115,4 @@ select
     , date(date_trunc('month', block_time)) as block_month
 from calls
 
-{% endmacro %}
+{%- endmacro %}
