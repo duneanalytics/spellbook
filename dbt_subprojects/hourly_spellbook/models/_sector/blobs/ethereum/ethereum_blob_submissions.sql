@@ -15,68 +15,59 @@
 -- that it only takes values at multiples of GAS_PER_BLOB. We must compute fake_exponential
 -- in SQL for Fusaka blocks.
 
-with blob_transactions as (
-    SELECT *
+-- Recursive CTE to compute fake_exponential for Fusaka
+-- This implements: fake_exponential(1, excess_blob_gas, 5007716)
+-- which approximates: 1 * e^(excess_blob_gas / 5007716) using Taylor expansion
+WITH RECURSIVE fake_exponential_calc (
+    excess_blob_gas,
+    i,
+    accum,
+    output
+) AS (
+    -- Non-recursive term: initialize for each unique Fusaka excess_blob_gas
+    SELECT 
+        blocks.excess_blob_gas,
+        CAST(1 AS bigint) AS i,
+        CAST(1 * 5007716 AS double) AS accum,   -- factor * denominator = 1 * 5007716
+        CAST(0 AS double) AS output
+    FROM {{ source('ethereum', 'blocks') }} blocks
+    WHERE blocks.number >= 23935694  -- Fusaka activation
+        AND blocks.excess_blob_gas IS NOT NULL
+    {% if is_incremental() %}
+        AND blocks.time >= (SELECT MAX(block_time) - interval '7' day FROM {{ this }})
+    {% endif %}
+    
+    UNION ALL
+    
+    -- Recursive term: Taylor expansion iteration
+    -- Each step: output += accum, then accum = accum * numerator / denominator / i
+    SELECT
+        cte.excess_blob_gas,
+        cte.i + 1,
+        (cte.accum * cte.excess_blob_gas) / (5007716E0 * (cte.i + 1)),  -- force double arithmetic
+        cte.output + cte.accum
+    FROM fake_exponential_calc cte
+    WHERE cte.accum > 0
+        AND cte.i < 10  -- Max recursion depth
+),
+
+-- Get final blob base fee for each unique excess_blob_gas
+fusaka_blob_fees (excess_blob_gas, blob_base_fee_exp) AS (
+    SELECT 
+        excess_blob_gas,
+        GREATEST(MAX(output) / 5007716E0, 1E0)
+    FROM fake_exponential_calc
+    GROUP BY excess_blob_gas
+),
+
+blob_transactions (block_number, block_time, block_date, tx_hash, tx_from, tx_to, tx_index, tx_success, tx_data, tx_type, blob_versioned_hashes, max_fee_per_blob_gas, tx_value) AS (
+    SELECT block_number, block_time, block_date, hash, "from", "to", index, success, data, type, blob_versioned_hashes, max_fee_per_blob_gas, value
     FROM {{ source('ethereum','transactions') }}
     WHERE type = '3'
     AND block_number >= 19426587 -- dencun upgrade
     {% if is_incremental() %}
     AND {{ incremental_predicate('block_time')}}
     {% endif %}
-),
-
--- Get unique excess_blob_gas values from Fusaka blocks that need fake_exponential computed
-fusaka_excess_values as (
-    SELECT DISTINCT block.excess_blob_gas
-    FROM blob_transactions t
-    INNER JOIN {{ source('ethereum', 'blocks')}} block
-        ON t.block_number = block.number
-    WHERE block.number >= 23935694  -- Fusaka activation
-    {% if is_incremental() %}
-    AND {{ incremental_predicate('t.block_time') }}
-    {% endif %}
-),
-
--- Recursive CTE to compute fake_exponential for Fusaka
--- This implements: fake_exponential(1, excess_blob_gas, 5007716)
--- which approximates: 1 * e^(excess_blob_gas / 5007716) using Taylor expansion
-fake_exponential_calc AS (
-    -- Base case: initialize Taylor expansion for each unique excess_blob_gas
-    SELECT 
-        CAST(excess_blob_gas AS UINT256) as excess_blob_gas,
-        CAST(5007716 AS UINT256) as denominator,          -- BLOB_BASE_FEE_UPDATE_FRACTION (Pectra/Fusaka)
-        CAST(5007716 AS UINT256) as accum,                -- factor * denominator = 1 * 5007716
-        CAST(0 AS UINT256) as output,                     -- running sum (before final division)
-        1 as iteration
-    FROM fusaka_excess_values
-    
-    UNION ALL
-    
-    -- Recursive case: Taylor expansion iteration
-    -- Each step: output += accum, then accum = accum * numerator / denominator / i
-    SELECT
-        excess_blob_gas,
-        denominator,
-        (accum * excess_blob_gas / denominator) / CAST(iteration AS UINT256) as accum,
-        output + accum as output,
-        iteration + 1
-    FROM fake_exponential_calc
-    WHERE accum > CAST(0 AS UINT256) 
-        AND iteration < 300  -- Safety limit (convergence typically happens much sooner)
-),
-
--- Get final result: the last iteration for each excess_blob_gas
-fusaka_blob_fees AS (
-    SELECT 
-        excess_blob_gas,
-        output / denominator as blob_base_fee_exp
-    FROM (
-        SELECT 
-            *,
-            ROW_NUMBER() OVER (PARTITION BY excess_blob_gas ORDER BY iteration DESC) as rn
-        FROM fake_exponential_calc
-    ) ranked
-    WHERE rn = 1
 )
 
 SELECT
@@ -85,20 +76,20 @@ SELECT
     , t.block_date
     , beacon.slot as beacon_slot_number
     , beacon.epoch as beacon_epoch
-    , t.value as tx_value
-    , t.hash as tx_hash
-    , t."from" as blob_submitter
-    , t.to as blob_receiver
+    , t.tx_value as tx_value
+    , t.tx_hash as tx_hash
+    , t.tx_from as blob_submitter
+    , t.tx_to as blob_receiver
     , COALESCE(l.entity, ls.entity) as blob_submitter_label
     , l.proposer as blob_proposer_label
-    , t.index as tx_index
-    , t.success as tx_success
-    , t.data as tx_data
-    , t.type as tx_type
+    , t.tx_index as tx_index
+    , t.tx_success as tx_success
+    , t.tx_data as tx_data
+    , t.tx_type as tx_type
     , t.blob_versioned_hashes
     , sequence(
-        (sum(CARDINALITY(t.blob_versioned_hashes)) over (partition by t.block_number order by index asc)) - CARDINALITY(t.blob_versioned_hashes)
-        ,(sum(CARDINALITY(t.blob_versioned_hashes)) over (partition by t.block_number order by index asc)) - 1
+        (sum(CARDINALITY(t.blob_versioned_hashes)) over (partition by t.block_number order by t.tx_index asc)) - CARDINALITY(t.blob_versioned_hashes)
+        ,(sum(CARDINALITY(t.blob_versioned_hashes)) over (partition by t.block_number order by t.tx_index asc)) - 1
         ,1
     ) as blob_indexes
     , CARDINALITY(t.blob_versioned_hashes) AS blob_count
@@ -110,12 +101,12 @@ SELECT
         when t.block_number < 22431084 then fee.blob_base_fee_dencun  -- Dencun
         when t.block_number < 23935694 then fee.blob_base_fee_pectra  -- Pectra
         else GREATEST(
-            fusaka_fee.blob_base_fee_exp,  -- fake_exponential result computed above
-            block.base_fee_per_gas * CAST(8192 AS UINT256) / CAST(131072 AS UINT256)  -- EIP-7918 reserve price (base_fee / 16)
+            CAST(fusaka_fee.blob_base_fee_exp AS UINT256),  -- fake_exponential result computed above
+            block.base_fee_per_gas / CAST(16 AS UINT256)    -- EIP-7918 reserve price (base_fee / 16)
         )
       end as blob_base_fee
     , t.max_fee_per_blob_gas
-    , coalesce(("LEFT"(from_utf8(t.data), 5)='data:'), false) as is_blobscription
+    , coalesce(("LEFT"(from_utf8(t.tx_data), 5)='data:'), false) as is_blobscription
 FROM blob_transactions t
 INNER JOIN {{ source('ethereum', 'blocks')}} block
     ON t.block_number = block.number
@@ -135,10 +126,10 @@ LEFT JOIN {{ source("resident_wizards", "blob_base_fees_lookup_v2", database="du
     AND block.number < 23935694  -- Only use lookup for pre-Fusaka
 -- Computed fake_exponential for Fusaka blocks
 LEFT JOIN fusaka_blob_fees fusaka_fee
-    ON fusaka_fee.excess_blob_gas = CAST(block.excess_blob_gas AS UINT256)
+    ON fusaka_fee.excess_blob_gas = block.excess_blob_gas
     AND block.number >= 23935694  -- Only use computed value for Fusaka
 LEFT JOIN {{ref('blobs_submitters')}} l
-    ON t."from" = l.address
+    ON t.tx_from = l.address
 LEFT JOIN {{ref('blobs_based_submitters')}} ls
     ON t.block_number = ls.block_number
-    AND t.hash = ls.tx_hash
+    AND t.tx_hash = ls.tx_hash
