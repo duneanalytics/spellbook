@@ -15,7 +15,6 @@ WITH latest_day AS (
   FROM {{ ref('polymarket_polygon_positions_raw') }}
   )
 
-
 , open_positions AS (
     SELECT 
     p.address,
