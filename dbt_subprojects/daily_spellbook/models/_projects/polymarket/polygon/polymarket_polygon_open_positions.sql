@@ -45,13 +45,13 @@ op.token_outcome,
 op.token_outcome_name,
 op.balance,
 op.balance*(CASE WHEN op.market_end_time_parsed IS NULL
-  OR pp.hour <= op.market_end_time_parsed
-  THEN pp.price
+  OR p.last_updated <= op.market_end_time_parsed
+  THEN p.latest_price
   ELSE COALESCE(modifier, 0)
   END) AS open_interest,
 CASE WHEN op.market_end_time_parsed IS NULL
-  OR pp.hour <=op.market_end_time_parsed
-  THEN pp.price
+  OR p.last_updated <=op.market_end_time_parsed
+  THEN p.latest_price
   ELSE COALESCE(modifier, 0)
   END AS latest_price,
 op.question_id,
