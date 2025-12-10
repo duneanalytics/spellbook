@@ -5,7 +5,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_number', 'tx_index', 'evt_index', 'direction']
+    unique_key = ['block_number', 'tx_index', 'evt_index', 'direction'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
   )
 }}
 
@@ -29,7 +30,8 @@ INNER JOIN {{ ref('polymarket_polygon_users') }} a ON t.to=a.polymarket_wallet
   AND a.has_been_funded
   AND t.block_time>=a.first_funded_time
 WHERE t.contract_address = 0x2791bca1f2de4661ed88a30c99a7a9449aa84174 -- USDC.e
-AND t.block_number > 5067840
+AND t.block_number >= 5067840
+AND t.block_time > NOW() - interval '1' month
 {% if is_incremental() %}
 AND {{ incremental_predicate('t.block_time') }}
 {% endif %}
@@ -56,7 +58,8 @@ INNER JOIN {{ ref('polymarket_polygon_users') }} a ON t."from"=a.polymarket_wall
   AND a.has_been_funded
   AND t.block_time>=a.first_funded_time
 WHERE contract_address = 0x2791bca1f2de4661ed88a30c99a7a9449aa84174 -- USDC.e
-AND t.block_number > 5067840
+AND t.block_number >= 5067840
+AND t.block_time > NOW() - interval '1' month
 {% if is_incremental() %}
 AND {{ incremental_predicate('t.block_time') }}
 {% endif %}
