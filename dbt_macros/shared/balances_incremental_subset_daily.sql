@@ -342,14 +342,6 @@ tokens_metadata as (
     from {{ source('tokens', 'erc20') }}
 ),
 
-native_tokens as (
-    select
-        blockchain,
-        token_address as native_token_address,
-        token_symbol as native_token_symbol
-    from {{ source('dune', 'blockchains') }}
-),
-
 enriched_with_tokens as (
     select
         b.blockchain,
@@ -368,16 +360,12 @@ enriched_with_tokens as (
             when b.token_standard = 'erc20' then b.balance_raw / power(10, t.decimals)
             when b.token_standard = 'native' then b.balance_raw / power(10, 18)
             else b.balance_raw
-        end as balance,
-        nt.native_token_address,
-        nt.native_token_symbol
+        end as balance
     from base b
     left join tokens_metadata t
         on t.blockchain = b.blockchain
         and t.contract_address = b.token_address
         and b.token_standard = 'erc20'
-    left join native_tokens nt
-        on nt.blockchain = b.blockchain
 )
 
 select
@@ -398,14 +386,7 @@ left join {{ source('prices_external', 'day') }} p
     {% if is_incremental() %}
     and {{ incremental_predicate('p.timestamp') }}
     {% endif %}
-    and (
-        (e.token_standard = 'erc20'
-            and e.blockchain = p.blockchain
-            and e.token_address = p.contract_address)
-        or (e.token_standard = 'native'
-            and e.blockchain = p.blockchain
-            and e.native_token_address = p.contract_address
-            and e.native_token_symbol = p.symbol)
-    )
+    and e.blockchain = p.blockchain
+    and e.token_address = p.contract_address
 
 {% endmacro %}
