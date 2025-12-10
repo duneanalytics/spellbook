@@ -60,6 +60,7 @@ SELECT f.hour
 , SUM(SUM(lu.latest_tvl + f.flow)) OVER (ORDER BY f.hour) AS tvl
 FROM flows f
 INNER JOIN last_update lu ON f.hour > lu.max_hour
+GROUP BY 1
 
 {% else %}
 
@@ -67,5 +68,6 @@ SELECT hour
 , SUM(flow) AS net_flow
 , SUM(SUM(flow)) OVER (ORDER BY hour) AS tvl
 FROM flows
+GROUP BY 1
 
 {% endif %}
