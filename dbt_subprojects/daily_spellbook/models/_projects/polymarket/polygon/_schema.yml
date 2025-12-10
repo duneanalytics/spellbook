@@ -558,4 +558,23 @@ models:
       - name: market_end_time
         description: "End time of the market"
 
-
+  - name: polymarket_polygon_protocol_tvl
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: hildobby
+    config:
+      tags: ['polygon','prediction_markets','polymarket','tvl']
+    description: "Polymarket: protocol TVL"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - hour
+    columns:
+      - name: hour
+        description: "The hour for which the TVL is valid"
+      - name: tvl
+        description: "The TVL of the protocol"
+      - name: net_flow
+        description: "The net flow of the protocol"
