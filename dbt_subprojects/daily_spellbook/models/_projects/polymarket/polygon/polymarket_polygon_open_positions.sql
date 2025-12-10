@@ -54,7 +54,7 @@ CASE WHEN mdp.market_end_ts IS NULL
   ELSE COALESCE(modifier, 0)
   END AS latest_price,
 op.question_id,
-op.question AS market_question,
+op.market_question,
 op.market_description,
 op.event_market_name,
 op.event_market_description,
