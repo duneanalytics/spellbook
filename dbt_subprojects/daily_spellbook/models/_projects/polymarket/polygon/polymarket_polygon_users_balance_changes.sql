@@ -25,7 +25,7 @@ SELECT t.block_time
 , CAST(NULL AS varbinary) AS to
 , t.unique_key
 FROM {{ source('tokens_polygon', 'transfers') }} t
-INNER JOIN {{ ref('polymarket_polygon.users_address_lookup') }} a ON t.to=a.polymarket_wallet
+INNER JOIN {{ ref('polymarket_polygon_users') }} a ON t.to=a.polymarket_wallet
   AND a.has_been_funded
   AND t.block_time>=a.first_funded_time
 WHERE t.contract_address = 0x2791bca1f2de4661ed88a30c99a7a9449aa84174 -- USDC.e
@@ -52,7 +52,7 @@ SELECT t.block_time
 , to
 , t.unique_key
 FROM {{ source('tokens_polygon', 'transfers') }} t
-INNER JOIN {{ ref('polymarket_polygon.users_address_lookup') }} a ON t."from"=a.polymarket_wallet
+INNER JOIN {{ ref('polymarket_polygon_users') }} a ON t."from"=a.polymarket_wallet
   AND a.has_been_funded
   AND t.block_time>=a.first_funded_time
 WHERE contract_address = 0x2791bca1f2de4661ed88a30c99a7a9449aa84174 -- USDC.e
