@@ -22,7 +22,7 @@ stablecoin_tokens as (
 
 balances as (
   {{
-    balances_incremental_subset_daily_new(
+    balances_incremental_subset_daily(
         blockchain = 'base',
         token_list = 'stablecoin_tokens',
         start_date = '2023-07-20'
