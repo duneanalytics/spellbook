@@ -40,3 +40,19 @@ sources:
     tables:
       - name: balances_daily_agg
       - name: balances_daily_agg_base
+  - name: tokens_bnb
+    tables:
+      - name: balances_daily_agg
+      - name: balances_daily_agg_base
+  - name: tokens_zksync
+    tables:
+      - name: balances_daily_agg
+      - name: balances_daily_agg_base
+  - name: tokens_worldchain
+    tables:
+      - name: balances_daily_agg
+      - name: balances_daily_agg_base
+  - name: tokens_kaia
+    tables:
+      - name: balances_daily_agg
+      - name: balances_daily_agg_base

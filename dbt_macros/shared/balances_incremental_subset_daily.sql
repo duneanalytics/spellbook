@@ -166,3 +166,227 @@ left join {{source('prices','usd_daily')}} p
         and p.symbol = (select native_token_symbol from {{source('evms','info')}} where blockchain = '{{blockchain}}')
         and b.day = p.day))
 {% endmacro %}
+
+
+{#  @DEV here
+
+    @NOTICE this macro constructs the address level token balances table for given input table
+    @NOTICE aka, you give lists of tokens and/or address, it generates table with daily balances of the address-token pair
+    @NOTICE this is the BASE version - it outputs balance_raw only. Token symbols, decimals, and prices should be added in downstream enrichment models.
+    
+    @PARAM blockchain               -- blockchain name
+    @PARAM address_list             -- must have an address column, can be none if only filtering on tokens
+    @PARAM token_list               -- must have a token_address column, can be none if only filtering on tokens
+    @PARAM address_token_list       -- for advanced usage, must have both (address, token_address) columns, can be none
+    @PARAM start_date               -- the start_date, used to generate the daily timeseries
+
+#}
+
+{%- macro balances_incremental_subset_daily(
+        blockchain,
+        start_date,
+        address_list = none,
+        token_list = none,
+        address_token_list = none
+    )
+%}
+
+with
+
+filtered_daily_agg_balances as (
+    select
+        b.blockchain,
+        b.day,
+        b.block_number,
+        b.block_time,
+        b.address,
+        b.token_address,
+        b.token_standard,
+        b.balance_raw,
+        b.token_id
+    from {{source('tokens_'~blockchain,'balances_daily_agg_base')}} b
+    {% if address_list is not none %}
+    inner join (select distinct address from {{address_list}}) f1
+    on f1.address = b.address
+    {% endif %}
+    {% if token_list is not none %}
+    inner join (select distinct token_address from {{token_list}}) f2
+    on f2.token_address = b.token_address
+    {% endif %}
+    {% if address_token_list is not none %}
+    inner join (select distinct address, token_address from {{address_token_list}}) f3
+    on f3.token_address = b.token_address
+    and f3.address = b.address
+    {% endif %}
+    where day >= cast('{{start_date}}' as date)
+
+),
+
+changed_balances as (
+    select *
+     , lead(cast(day as timestamp)) over (partition by token_address,address,token_id order by day asc) as next_update_day
+    from (
+    select * from (
+        select
+            blockchain
+            ,day
+            ,address
+            ,token_address
+            ,token_standard
+            ,token_id
+            ,balance_raw
+        from filtered_daily_agg_balances
+        where day >= cast('{{start_date}}' as date)
+        {% if is_incremental() %}
+            and {{ incremental_predicate('day') }}
+        {% endif %}
+    )
+    -- if we're running incremental, we need to retrieve the last known balance updates from before the current window
+    -- so we can correctly populate the forward fill.
+    {% if is_incremental() %}
+    union all
+    select * from (
+        select
+            blockchain
+            ,max(day) as day
+            ,address
+            ,token_address
+            ,token_standard
+            ,token_id
+            ,max_by(balance_raw, day) as balance_raw
+        from filtered_daily_agg_balances
+        where day >= cast('{{start_date}}' as date)
+        and not {{ incremental_predicate('day') }}
+        group by 1,3,4,5,6
+        )
+    {% endif %}
+    )
+),
+
+days as (
+    select cast(timestamp as date) as day
+    from {{ source('utils', 'days') }}
+    where cast(timestamp as date) >= cast('{{start_date}}' as date)
+    and cast(timestamp as date) <= date(date_trunc('day',now()))
+),
+
+forward_fill as (
+    select
+        blockchain,
+        d.day,
+        address,
+        token_address,
+        token_standard,
+        token_id,
+        balance_raw,
+        b.day as last_updated,
+        b.next_update_day as next_update
+    from days d
+        left join changed_balances b
+            on  d.day >= b.day
+            and (b.next_update_day is null or d.day < b.next_update_day) -- perform forward fill
+)
+
+select
+    b.blockchain,
+    b.day,
+    b.address,
+    b.token_address,
+    b.token_standard,
+    b.token_id,
+    b.balance_raw,
+    b.last_updated
+from (
+    select * from forward_fill
+    where balance_raw > 0
+    {% if is_incremental() %}
+        and {{ incremental_predicate('day') }}
+    {% endif %}
+) b
+
+{% endmacro %}
+
+
+{#  @DEV here
+
+    @NOTICE this macro enriches the base balances output with token metadata (symbol, decimals) and prices
+    @NOTICE it should be used downstream of balances_incremental_subset_daily macro
+    @NOTICE calculates balance from balance_raw and balance_usd from balance * price
+    @NOTICE supports multi-chain base_balances (unioned across blockchains)
+    
+    @PARAM base_balances            -- reference to the base balances table/model (output from balances_incremental_subset_daily)
+
+#}
+
+{%- macro balances_incremental_subset_daily_enrich(
+        base_balances
+    )
+%}
+
+with
+
+base as (
+    select *
+    from {{ base_balances }}
+    {% if is_incremental() %}
+    where {{ incremental_predicate('day') }}
+    {% endif %}
+),
+
+tokens_metadata as (
+    select
+        blockchain,
+        contract_address,
+        symbol,
+        decimals
+    from {{ source('tokens', 'erc20') }}
+),
+
+enriched_with_tokens as (
+    select
+        b.blockchain,
+        b.day,
+        b.address,
+        b.token_address,
+        b.token_standard,
+        b.token_id,
+        b.balance_raw,
+        b.last_updated,
+        case
+            when b.token_standard = 'erc20' then t.symbol
+            else null
+        end as token_symbol,
+        case
+            when b.token_standard = 'erc20' then b.balance_raw / power(10, t.decimals)
+            when b.token_standard = 'native' then b.balance_raw / power(10, 18)
+            else b.balance_raw
+        end as balance
+    from base b
+    left join tokens_metadata t
+        on t.blockchain = b.blockchain
+        and t.contract_address = b.token_address
+        and b.token_standard = 'erc20'
+)
+
+select
+    e.blockchain,
+    e.day,
+    e.address,
+    e.token_symbol,
+    e.token_address,
+    e.token_standard,
+    e.token_id,
+    e.balance_raw,
+    e.balance,
+    e.balance * p.price as balance_usd,
+    e.last_updated
+from enriched_with_tokens e
+left join {{ source('prices_external', 'day') }} p
+    on cast(e.day as timestamp) = p.timestamp
+    {% if is_incremental() %}
+    and {{ incremental_predicate('p.timestamp') }}
+    {% endif %}
+    and e.blockchain = p.blockchain
+    and e.token_address = p.contract_address
+
+{% endmacro %}
