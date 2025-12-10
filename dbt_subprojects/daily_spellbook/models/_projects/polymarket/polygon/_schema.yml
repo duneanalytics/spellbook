@@ -578,3 +578,51 @@ models:
         description: "The TVL of the protocol"
       - name: net_flow
         description: "The net flow of the protocol"
+
+  - name: polymarket_polygon_users_balance_changes
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: hildobby
+    config:
+      tags: ['polygon','prediction_markets','polymarket','users']
+    description: "Polymarket: user balance changes"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_number
+            - tx_index
+            - evt_index
+            - direction
+    columns:
+      - name: block_time
+        description: "The time of the balance change"
+      - name: block_date
+        description: "The date of the balance change"
+      - name: block_month
+        description: "The month of the balance change"
+      - name: block_number
+        description: "The block number of the balance change"
+      - name: tx_hash
+        description: "The transaction hash of the balance change"
+      - name: tx_from
+        description: "The address that initiated the transaction"
+      - name: tx_to
+        description: "The address that received the transaction"
+      - name: tx_index
+        description: "The transaction index within the block"
+      - name: evt_index
+        description: "The event index of the balance change"
+      - name: direction
+        description: "The direction of the balance change"
+      - name: polymarket_wallet
+        description: "The Polymarket wallet address"
+      - name: amount
+        description: "The amount of the balance change"
+      - name: "from"
+        description: "The address from which the balance change occurred"
+      - name: to
+        description: "The address to which the balance change occurred"
+      - name: unique_key
+        description: "The unique key of the balance change"
