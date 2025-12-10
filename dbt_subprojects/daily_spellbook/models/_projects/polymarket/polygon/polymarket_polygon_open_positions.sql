@@ -10,7 +10,13 @@
   )
 }}
 
-WITH open_positions AS (
+WITH latest_day AS (
+  SELECT MAX(day) AS day
+  FROM {{ ref('polymarket_polygon_positions_raw') }}
+  )
+
+
+, open_positions AS (
     SELECT 
     p.address,
     mm.unique_key,
@@ -33,8 +39,9 @@ WITH open_positions AS (
     mm.market_end_time_parsed,
     mm.outcome AS market_outcome,
     mm.resolved_on_timestamp,
-  CASE WHEN LOWER(mm.token_outcome)=mm.outcome THEN 1 ELSE 0 END AS modifier
+    CASE WHEN LOWER(mm.token_outcome)=mm.outcome THEN 1 ELSE 0 END AS modifier
     FROM {{ ref('polymarket_polygon_positions_raw') }} p
+    INNER JOIN latest_day ld ON p.day = ld.day
     INNER JOIN {{ ref('polymarket_polygon_market_details') }} mm ON p.token_id = mm.token_id AND mm.market_end_time_parsed > NOW()
     )
 
