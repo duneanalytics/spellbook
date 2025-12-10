@@ -30,6 +30,7 @@ WITH open_positions AS (
     mm.polymarket_link_slug,
     mm.market_start_time,
     mm.market_end_time,
+    mm.market_end_time_parsed,
     mm.outcome AS market_outcome,
     mm.resolved_on_timestamp,
   CASE WHEN LOWER(mm.token_outcome)=mm.outcome THEN 1 ELSE 0 END AS modifier
@@ -43,13 +44,13 @@ token_id,
 op.token_outcome,
 op.token_outcome_name,
 op.balance,
-op.balance*(CASE WHEN mdp.market_end_ts IS NULL
-  OR pp.hour <= mdp.market_end_ts
+op.balance*(CASE WHEN op.market_end_time_parsed IS NULL
+  OR pp.hour <= op.market_end_time_parsed
   THEN pp.price
   ELSE COALESCE(modifier, 0)
   END) AS open_interest,
-CASE WHEN mdp.market_end_ts IS NULL
-  OR pp.hour <= mdp.market_end_ts
+CASE WHEN op.market_end_time_parsed IS NULL
+  OR pp.hour <=op.market_end_time_parsed
   THEN pp.price
   ELSE COALESCE(modifier, 0)
   END AS latest_price,
