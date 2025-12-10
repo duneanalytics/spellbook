@@ -34,6 +34,7 @@ WITH latest_day AS (
     mm.polymarket_link,
     mm.polymarket_link_slug,
     mm.market_start_time,
+    mm.market_start_time_parsed,
     mm.market_end_time,
     mm.market_end_time_parsed,
     mm.outcome AS market_outcome,
@@ -71,7 +72,9 @@ op.accepting_orders,
 op.polymarket_link,
 op.polymarket_link_slug,
 op.market_start_time,
+op.market_start_time_parsed,
 op.market_end_time,
+op.market_end_time_parsed,
 op.market_outcome,
 op.resolved_on_timestamp
 FROM open_positions op

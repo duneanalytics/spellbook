@@ -555,9 +555,12 @@ models:
         description: "Slug for the Polymarket link"
       - name: market_start_time
         description: "Start time of the market"
+      - name: market_start_time_parsed
+        description: "Start time of the market parsed as a timestamp"
       - name: market_end_time
         description: "End time of the market"
-
+      - name: market_end_time_parsed
+        description: "End time of the market parsed as a timestamp"
   - name: polymarket_polygon_protocol_tvl
     meta:
       blockchain: polygon
