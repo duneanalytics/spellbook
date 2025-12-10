@@ -90,7 +90,7 @@ models:
     meta:
       blockchain: avalanche_c
       sector: stablecoins
-      contributors: synthquest, rantum
+      contributors: synthquest, rantum, tomfutago
     config:
       tags: ['tokens', 'avalanche_c', 'erc20', 'stablecoins']
     description: >
