@@ -27,8 +27,8 @@ SELECT t.block_time
 , t.unique_key
 FROM {{ source('tokens_polygon', 'transfers') }} t
 INNER JOIN {{ ref('polymarket_polygon_users') }} a ON t.to=a.polymarket_wallet
-  AND a.has_been_funded
-  AND t.block_time>=a.first_funded_time
+INNER JOIN {{ ref('addresses_events_polygon_first_funded_by')}} ffb ON t.to=ffb.address
+  AND ffb.block_number<=t.block_number
 WHERE t.contract_address = 0x2791bca1f2de4661ed88a30c99a7a9449aa84174 -- USDC.e
 AND t.block_number >= 5067840
 {% if is_incremental() %}
@@ -54,8 +54,8 @@ SELECT t.block_time
 , t.unique_key
 FROM {{ source('tokens_polygon', 'transfers') }} t
 INNER JOIN {{ ref('polymarket_polygon_users') }} a ON t."from"=a.polymarket_wallet
-  AND a.has_been_funded
-  AND t.block_time>=a.first_funded_time
+INNER JOIN {{ ref('addresses_events_polygon_first_funded_by')}} ffb ON t."from"=ffb.address
+  AND ffb.block_number<=t.block_number
 WHERE contract_address = 0x2791bca1f2de4661ed88a30c99a7a9449aa84174 -- USDC.e
 AND t.block_number >= 5067840
 {% if is_incremental() %}

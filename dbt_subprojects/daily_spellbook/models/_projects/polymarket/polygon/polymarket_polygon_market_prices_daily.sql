@@ -20,30 +20,23 @@ WITH changed_prices AS (
         FROM {{ ref('polymarket_polygon_market_trades_raw') }}
     ) ranked
     WHERE rn = 1
-),
+)
 
---sequences are limited to 10k so just pulling this in from the transactions table, no other relationship
-days AS (
-    SELECT *
-    FROM UNNEST(
-        SEQUENCE(CAST('2015-01-01' AS date), DATE(DATE_TRUNC('day', NOW())), INTERVAL '1' day)
-    ) AS foo(day)
-),
-
-forward_fill AS (
-    SELECT
-        CAST(d.day AS timestamp) AS day,
+, forward_fill AS (
+    SELECT d.timestamp AS day,
         lp.condition_id,
         lp.token_id,
         lp.price
-    FROM days d
+    FROM {{ ref('utils_days') }} d
     LEFT JOIN changed_prices lp
-        ON d.day >= lp.day
-        AND (lp.next_update_day IS NULL OR d.day < lp.next_update_day)
-),
+        ON d.timestamp >= lp.timestamp
+        AND (lp.next_update_day IS NULL OR d.timestamp < lp.next_update_day)
+    WHERE d.timestamp >= CAST('2015-01-01' AS date) 
+    AND d.timestamp <= DATE(DATE_TRUNC('day', NOW()))
+    )
 
 -- Join with market details to get market end time and token outcome information
-price_correction AS (
+, price_correction AS (
     SELECT
         ff.day,
         ff.condition_id,
