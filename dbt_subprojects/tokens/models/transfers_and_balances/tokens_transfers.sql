@@ -18,6 +18,7 @@
     ,'flare'
     ,'flow'
     ,'gnosis'
+    ,'hemi'
     ,'henesys'
     ,'hyperevm'
     ,'ink'
