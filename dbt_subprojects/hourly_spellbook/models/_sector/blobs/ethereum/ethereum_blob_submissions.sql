@@ -45,7 +45,7 @@ blocks_with_blob_base_fee AS (
     SELECT
         *,
         CAST(
-            ROUND(
+            FLOOR(
                 EXP(
                     CAST(excess_blob_gas AS DOUBLE) / CAST(blob_base_fee_update_fraction AS DOUBLE)
                 )
