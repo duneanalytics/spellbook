@@ -77,8 +77,6 @@ SELECT
     ) as blob_indexes
     , CARDINALITY(t.blob_versioned_hashes) AS blob_count
     , CARDINALITY(t.blob_versioned_hashes) * pow(2,17) as blob_gas_used -- within this tx
-    , block.excess_blob_gas
-    , block.target_blob_gas
     , block.blob_base_fee
     , t.max_fee_per_blob_gas
     , coalesce(("LEFT"(from_utf8(t.data), 5)='data:'), false) as is_blobscription
