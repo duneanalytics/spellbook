@@ -73,7 +73,7 @@ FROM (
         , lp_fee_amount_usd
         , lp_fee_amount 
         , lp_fee_amount_raw
-        , lp_fee 
+        , lp_fee -- fee tier denominated in % 
         -- hooks fee columns 
         , hooks_fee_amount_usd
         , hooks_fee_amount 
