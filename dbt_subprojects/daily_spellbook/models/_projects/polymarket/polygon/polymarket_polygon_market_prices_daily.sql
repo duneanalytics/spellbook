@@ -29,7 +29,7 @@ WITH changed_prices AS (
         lp.price
     FROM {{ ref('utils_days') }} d
     LEFT JOIN changed_prices lp
-        ON d.timestamp >= lp.timestamp
+        ON d.timestamp >= lp.day
         AND (lp.next_update_day IS NULL OR d.timestamp < lp.next_update_day)
     WHERE d.timestamp >= CAST('2015-01-01' AS date) 
     AND d.timestamp <= DATE(DATE_TRUNC('day', NOW()))

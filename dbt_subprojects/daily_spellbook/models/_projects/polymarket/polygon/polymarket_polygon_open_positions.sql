@@ -42,7 +42,7 @@ WITH latest_day AS (
     CASE WHEN LOWER(mm.token_outcome)=mm.outcome THEN 1 ELSE 0 END AS modifier
     FROM {{ ref('polymarket_polygon_positions_raw') }} p
     INNER JOIN latest_day ld ON p.day = ld.day
-    INNER JOIN {{ ref('polymarket_polygon_market_details') }} mm ON p.token_id = mm.token_id AND mm.market_end_time_parsed > NOW()
+    INNER JOIN {{ ref('polymarket_polygon_market_details') }} mm ON p.token_id = mm.token_id AND (mm.market_end_time_parsed > NOW() OR mm.market_end_time_parsed IS NULL)
     )
 
 SELECT op.address,

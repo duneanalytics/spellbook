@@ -57,7 +57,7 @@ WITH latest_transfer_hour AS (
 
 SELECT f.hour
 , SUM(f.flow) AS net_flow
-, SUM(SUM(lu.latest_tvl + f.flow)) OVER (ORDER BY f.hour) AS tvl
+, SUM(lu.latest_tvl + SUM(f.flow)) OVER (ORDER BY f.hour) AS tvl
 FROM flows f
 INNER JOIN last_spell_update lu ON f.hour > lu.max_hour
 GROUP BY 1
