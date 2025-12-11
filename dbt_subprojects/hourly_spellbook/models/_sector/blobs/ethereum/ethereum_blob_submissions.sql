@@ -20,8 +20,39 @@ AND block_number >= 19426587 -- dencun upgrade
 AND {{ incremental_predicate('block_time')}}
 {% endif %}
 )
-
-
+, blocks_enriched as (
+    SELECT
+         CASE
+            --WHEN number >= ? THEN 14*128*1024 -- BPO2 Fusaka (14 blobs)
+            WHEN number >= 23975778 THEN 10*128*1024 -- BPO1 Fusaka (10 blobs)
+            WHEN number >= 22431084 THEN 6*128*1024 -- Pectra & Fusaka (6 blobs)
+            ELSE 3*128*1024 -- Dencun (3 blobs of 128kib)
+        END AS target_blob_gas,
+        CASE
+            -- WHEN number >= ? THEN 11684671 -- BPO2 Fusaka
+            WHEN number >= 23975778 THEN 8346193 -- BPO1 Fusaka
+            WHEN number >= 22431084 THEN 5007716 -- Pectra & Fusaka
+            ELSE 3338477 -- Dencun
+        END AS blob_base_fee_update_fraction,
+        b.*
+    FROM {{ source('ethereum', 'blocks') }} b
+    WHERE number >= 19426587 -- since Dencun
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('b.time') }}
+    {% endif %}
+),
+blocks_with_blob_base_fee AS (
+    SELECT
+        *,
+        CAST(
+            ROUND(
+                EXP(
+                    CAST(excess_blob_gas AS DOUBLE) / CAST(blob_base_fee_update_fraction AS DOUBLE)
+                )
+            )
+        AS BIGINT) AS blob_base_fee
+    FROM blocks_enriched
+)
 SELECT
      t.block_number
     , t.block_time
@@ -46,11 +77,13 @@ SELECT
     ) as blob_indexes
     , CARDINALITY(t.blob_versioned_hashes) AS blob_count
     , CARDINALITY(t.blob_versioned_hashes) * pow(2,17) as blob_gas_used -- within this tx
-    , case when t.block_number < 22431084 then fee.blob_base_fee_dencun else fee.blob_base_fee_pectra end as blob_base_fee
+    , block.excess_blob_gas
+    , block.target_blob_gas
+    , block.blob_base_fee
     , t.max_fee_per_blob_gas
     , coalesce(("LEFT"(from_utf8(t.data), 5)='data:'), false) as is_blobscription
 FROM blob_transactions t
-INNER JOIN {{ source('ethereum', 'blocks')}} block
+INNER JOIN blocks_with_blob_base_fee block
     ON t.block_number = block.number
     AND block.number >= 19426587    -- dencun upgrade
     {% if is_incremental() %}
@@ -62,9 +95,6 @@ INNER JOIN {{ source('beacon', 'blocks') }} beacon
     {% if is_incremental() %}
     and {{ incremental_predicate('beacon.time') }}
     {% endif %}
--- this lookup relies on the invariant that the excess blob gas is updated with fixed increment and thus only ever holds a limited set of values.
-LEFT JOIN  {{ source("resident_wizards", "blob_base_fees_lookup_v2", database="dune") }} fee
-    ON fee.excess_blob_gas = block.excess_blob_gas
 LEFT JOIN {{ref('blobs_submitters')}} l
     ON t."from" = l.address
 LEFT JOIN {{ref('blobs_based_submitters')}} ls
