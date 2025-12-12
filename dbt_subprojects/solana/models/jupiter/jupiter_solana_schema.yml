@@ -108,3 +108,53 @@ models:
         description: signer of the transactions
       - name: jup_version
         description: version of jupiter aggregator used for the swap
+
+  - name: jupiter_solana_lend_events
+    data_tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - tx_id
+          - outer_instruction_index
+          - supply_amount_nominal
+    meta:
+      blockchain: solana
+      contributors: ["osk2020"]
+    config:
+      tags: ['solana', 'jupiter', 'lend', 'lending', 'lend earn', 'juplend', 'flashloans']
+    description: >
+        Solana lending events for Jupiter Lend (supply, withdraw, borrow, repay, etc.)
+    columns:
+      - name: version
+        description: Jupiter Lend version (e.g., 0.1.0 from IDL)
+      - name: tx_type
+        description: Type of lending tx/event; Lend-Earn (Supply/Withdraw Only); Lend-Borrow(Supply/Withdraw or Borrow/Repay); Flashloans(Borrow/Repay Only)
+      - name: block_month
+        description: Block month of the transaction
+      - name: block_time
+        description: Block time of the transaction
+      - name: tx_id
+        description: ID of the transaction
+      - name: outer_instruction_index
+        description: Index of the outer instruction in the transaction
+      - name: contract_address
+        description: Contract (token mint) address involved
+      - name: symbol
+        description: Token symbol (e.g., USDC, WSOL)
+      - name: supply_amount_nominal
+        description: Nominal supplied amount (adjusted for decimals)
+      - name: borrow_amount_nominal
+        description: Nominal borrowed amount (adjusted for decimals)
+      - name: unit_price
+        description: Token unit price used for USD conversions
+      - name: supply_usd
+        description: USD value of supplied amount
+      - name: borrow_usd
+        description: USD value of borrowed amount
+      - name: withdraw_to
+        description: Destination address for withdrawals
+      - name: borrow_to
+        description: Destination address for borrows
+      - name: transfer_type
+        description: Transfer type (e.g., SKIP, DIRECT, CLAIM)
+      - name: tx_signer
+        description: Signer of the transaction, also needed for additional borrow/withdraw address
