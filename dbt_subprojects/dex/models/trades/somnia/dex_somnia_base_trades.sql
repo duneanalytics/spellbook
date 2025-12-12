@@ -32,7 +32,7 @@ with base_union as (
             maker,
             project_contract_address,
             tx_hash,
-            evt_index,
+            evt_index
         FROM {{ base_model }}
         WHERE token_sold_amount_raw >= 0 and token_bought_amount_raw >= 0
         {% if is_incremental() %}
