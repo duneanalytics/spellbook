@@ -78,4 +78,4 @@ op.market_end_time_parsed,
 op.market_outcome,
 op.resolved_on_timestamp
 FROM open_positions op
-INNER JOIN {{ ref('polymarket_polygon_market_prices_latest') }} p USING (token_id)
+LEFT JOIN {{ ref('polymarket_polygon_market_prices_latest') }} p USING (token_id)
