@@ -24,9 +24,6 @@
 ] %}
 
 with base_union as (
-    SELECT *
-    FROM
-    (
         {% for base_model in base_models %}
         SELECT
             blockchain
@@ -49,14 +46,13 @@ with base_union as (
             {{ base_model }}
         WHERE
            token_sold_amount_raw >= 0 and token_bought_amount_raw >= 0
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
             AND {{ incremental_predicate('block_time') }}
         {% endif %}
         {% if not loop.last %}
         UNION ALL
         {% endif %}
         {% endfor %}
-    )
 )
 , add_tx_columns as (
     {{

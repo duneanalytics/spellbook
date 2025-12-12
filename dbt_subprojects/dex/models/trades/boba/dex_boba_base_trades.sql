@@ -14,9 +14,6 @@
     ref('icecreamswap_boba_base_trades')
 ] %}
 with base_union as (
-    SELECT *
-    FROM
-    (
         {% for base_model in base_models %}
         SELECT
             blockchain
@@ -35,27 +32,38 @@ with base_union as (
             , project_contract_address
             , tx_hash
             , evt_index
-            , row_number() over (partition by tx_hash, evt_index order by tx_hash) as duplicates_rank
         FROM
             {{ base_model }}
         WHERE
            token_sold_amount_raw >= 0 and token_bought_amount_raw >= 0
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
             AND {{ incremental_predicate('block_time') }}
         {% endif %}
         {% if not loop.last %}
         UNION ALL
         {% endif %}
         {% endfor %}
-    )
-    WHERE
-        duplicates_rank = 1
 )
 
-{{
-    add_tx_columns(
-        model_cte = 'base_union'
-        , blockchain = 'boba'
-        , columns = ['from', 'to', 'index']
-    )
-}}
+, add_tx_columns as (
+    {{
+        add_tx_columns(
+            model_cte = 'base_union'
+            , blockchain = 'boba'
+            , columns = ['from', 'to', 'index']
+        )
+    }}
+)
+, final as (
+    select
+        *
+        , row_number() over (partition by tx_hash, evt_index order by tx_hash) as duplicates_rank
+    from
+        add_tx_columns
+)
+select
+    *
+from
+    final
+where
+    duplicates_rank = 1
