@@ -118,7 +118,7 @@ select
 from tft
 left join tokens using(contract_address)
 left join prices using(contract_address, timestamp)
-where not (blockchain = 'ethereum' and block_date = cast('2025-12-11' as date) and unique_key = 0x9927b20e013cfefe69272dddcb5e8b36972ea0f5)
+
 
 
 {%- endmacro -%}
