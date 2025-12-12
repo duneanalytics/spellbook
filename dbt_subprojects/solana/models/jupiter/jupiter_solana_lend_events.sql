@@ -6,7 +6,7 @@
         materialized='incremental',
         file_format = 'delta',
         incremental_strategy='merge',
-        unique_key = ['tx_id','outer_instruction_index','supply_amount_nominal'],
+        unique_key = ['tx_id','outer_instruction_index','supply_amount_raw'],
         post_hook='{{ expose_spells(\'["jupiter"]\',
                                     "project",
                                     "jupiter_solana",
@@ -131,7 +131,9 @@ nominal_amounts AS (
             outer_instruction_index,
             contract_address,
             symbol,
+            supply_amount_raw,
             supply_amount_raw/POW(10, decimals) AS supply_amount_nominal,
+            borrow_amount_raw,
             borrow_amount_raw/POW(10, decimals) AS borrow_amount_nominal,
             withdraw_to,
             borrow_to,
@@ -139,7 +141,7 @@ nominal_amounts AS (
             tx_signer
       FROM
             lend_events le
-      JOIN
+      LEFT JOIN
             {{ source('tokens_solana', 'fungible') }} t
       ON
             le.contract_address = t.token_mint_address
@@ -157,13 +159,13 @@ prices AS (
         outer_instruction_index,
         n.contract_address,
         symbol,
-        supply_amount_nominal,
-        borrow_amount_nominal,
-        --prices.usd table
         price AS unit_price,
+        supply_amount_raw,
+        supply_amount_nominal,
         supply_amount_nominal * price AS supply_usd,
+        borrow_amount_raw,
+        borrow_amount_nominal,
         borrow_amount_nominal * price AS borrow_usd,
-        --n table
         withdraw_to,
         borrow_to,
         transfer_type,

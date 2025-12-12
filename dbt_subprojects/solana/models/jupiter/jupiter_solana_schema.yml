@@ -115,7 +115,7 @@ models:
         combination_of_columns:
           - tx_id
           - outer_instruction_index
-          - supply_amount_nominal
+          - supply_amount_raw
     meta:
       blockchain: solana
       contributors: ["osk2020"]
@@ -140,14 +140,18 @@ models:
         description: Contract (token mint) address involved
       - name: symbol
         description: Token symbol (e.g., USDC, WSOL)
-      - name: supply_amount_nominal
-        description: Nominal supplied amount (adjusted for decimals)
-      - name: borrow_amount_nominal
-        description: Nominal borrowed amount (adjusted for decimals)
       - name: unit_price
         description: Token unit price used for USD conversions
+      - name: supply_amount_raw
+        description: Raw supplied amount (Not adjusted for decimals)
+      - name: supply_amount_nominal
+        description: Nominal supplied amount (adjusted for decimals)
       - name: supply_usd
         description: USD value of supplied amount
+      - name: borrow_amount_raw
+        description: Nominal borrowed amount (Not adjusted for decimals)
+      - name: borrow_amount_nominal
+        description: Nominal borrowed amount (adjusted for decimals)
       - name: borrow_usd
         description: USD value of borrowed amount
       - name: withdraw_to
