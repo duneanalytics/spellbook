@@ -32,7 +32,7 @@ WITH latest_transfer_hour AS (
   WHERE contract_address = 0x2791bca1f2de4661ed88a30c99a7a9449aa84174 -- USDC.e
   AND to IN (0x4d97dcd97ec945f40cf65f87097ace5ea0476045, 0x3a3bd7bb9528e159577f7c2e685cc81a765002e2)
   AND block_time < (SELECT max_hour FROM latest_transfer_hour)
-  AND block_number > 4023686
+  AND block_number >= 4023686
   {% if is_incremental() %}
   AND block_time > (SELECT max_hour FROM last_spell_update)
   {% endif %}
@@ -46,7 +46,7 @@ WITH latest_transfer_hour AS (
   WHERE contract_address = 0x2791bca1f2de4661ed88a30c99a7a9449aa84174 -- USDC.e
   AND "from" IN (0x4d97dcd97ec945f40cf65f87097ace5ea0476045, 0x3a3bd7bb9528e159577f7c2e685cc81a765002e2)
   AND block_time < (SELECT max_hour FROM latest_transfer_hour)
-  AND block_number > 4023686
+  AND block_number >= 4023686
   {% if is_incremental() %}
   AND block_time > (SELECT max_hour FROM last_spell_update)
   {% endif %}
