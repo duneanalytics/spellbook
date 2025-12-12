@@ -162,3 +162,5 @@ WITH balancer_v3 AS (
     UNION ALL
     {% endif %}
 {% endfor %}
+
+--comment for inclusion in CI run
