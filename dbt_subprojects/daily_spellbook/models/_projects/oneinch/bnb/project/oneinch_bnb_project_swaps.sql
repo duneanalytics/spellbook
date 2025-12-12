@@ -2,11 +2,10 @@
 
 {{-
     config(
-        tags = ['prod_exclude'],
         schema = 'oneinch_' + blockchain,
         alias = 'project_swaps',
         materialized = 'view',
-        unique_key = ['blockchain', 'block_month', 'block_number', 'tx_hash', 'second_side', 'call_trace_address', 'call_trade_id'],
+        unique_key = ['block_month', 'id'],
     )
 -}}
 
