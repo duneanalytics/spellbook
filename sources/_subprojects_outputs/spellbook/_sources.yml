@@ -165,6 +165,12 @@ sources:
   - name: balancer_v3_base
     tables:
       - name: bpt_prices
+  - name: balancer_v3_plasma
+    tables:
+      - name: bpt_prices
+  - name: balancer_v3_avalanche_c
+    tables:
+      - name: bpt_prices
   - name: beets
     tables:
       - name: bpt_prices

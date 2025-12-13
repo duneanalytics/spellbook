@@ -144,3 +144,70 @@ sources:
           - *tokens
           - name: assetManager
             description: 'Address of the contract which managed the asset from the vault'
+
+
+  - name: balancer_v3_avalanche_c
+    description: >
+      Decoded tables related to Balancer V3, an automated portfolio manager and trading platform, on avalanche_c.
+    tables:
+      - name: Vault_evt_PoolRegistered
+
+      - name: WeightedPoolFactory_evt_PoolCreated
+
+      - name: WeightedPoolFactory_call_create
+
+      - name: Vault_evt_LiquidityAdded
+
+      - name: Vault_evt_LiquidityRemoved
+
+      - name: StablePoolFactory_evt_PoolCreated
+
+      - name: StablePoolFactory_call_create
+
+      - name: StableSurgePoolFactory_call_create
+
+      - name: Vault_evt_Swap
+
+      - name: ProtocolFeeController_evt_ProtocolSwapFeeCollected
+
+      - name: ProtocolFeeController_evt_ProtocolYieldFeeCollected
+
+      - name: Vault_evt_Wrap
+
+      - name: Vault_evt_Unwrap
+
+      - name: Vault_evt_LiquidityAddedToBuffer
+
+      - name: Vault_evt_LiquidityRemovedFromBuffer
+
+      - name: Vault_evt_SwapFeePercentageChanged
+
+      - name: ProtocolFeeController_evt_GlobalProtocolSwapFeePercentageChanged
+
+      - name: ProtocolFeeController_evt_PoolCreatorSwapFeePercentageChanged
+
+      - name: LBPoolFactory_call_create
+
+      - name: LBPoolFactory_evt_LBPoolCreated
+
+      - name: LBPool_evt_GradualWeightUpdateScheduled
+
+      - name: GyroECLPPoolFactory_call_create
+
+      - name: ReclammPoolFactory_call_create
+
+  - name: labels
+    description: "Source tables for labels and metadata used across the Spellbook."
+    schema: labels 
+    tables:
+      - name: balancer_v3_pools_avalanche_c
+        description: "Labels for Balancer V3 pools on avalanche_c."
+      
+  - name: aave_v3_avalanche_c
+    description: "Source tables for Aave protocol on avalanche_c."
+    schema: aave_v3_avalanche_c
+    tables:
+      - name: StaticATokenLM_evt_Initialized
+        description: "Event log for the StaticATokenLM Initialized event."
+      - name: StaticATokenFactory_evt_StaticTokenCreated
+        description: "Event log for the StaticTokenCreated event."
