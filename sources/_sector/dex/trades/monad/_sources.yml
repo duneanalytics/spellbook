@@ -26,3 +26,8 @@ sources:
     tables:
       - name: PancakeV3Pool_evt_Swap
       - name: PancakeV3Factory_evt_PoolCreated
+  - name: uniswap_v4_monad
+    tables:
+      - name: PoolManager_call_Swap
+      - name: PoolManager_evt_Swap
+      - name: PoolManager_evt_Initialize

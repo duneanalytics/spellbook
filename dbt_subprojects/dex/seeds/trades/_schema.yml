@@ -6150,3 +6150,4 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
+
