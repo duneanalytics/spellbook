@@ -57,7 +57,7 @@ WITH latest_transfer_hour AS (
 {% if is_incremental() %}
 SELECT t.hour
 , t.net_flow
-, t.vl+lu.latest_tvl AS tvl
+, t.tvl+lu.latest_tvl AS tvl
 FROM (
   SELECT hour
   , SUM(flow) AS net_flow
