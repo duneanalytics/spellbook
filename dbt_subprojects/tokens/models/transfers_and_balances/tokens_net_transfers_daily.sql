@@ -22,6 +22,7 @@
     , 'hemi'
     , 'linea'
     , 'mantle'
+    , 'megaeth'
     , 'mezo'
     , 'monad'
     , 'opbnb'
