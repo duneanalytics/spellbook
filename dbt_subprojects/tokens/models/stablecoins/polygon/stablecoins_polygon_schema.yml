@@ -1,13 +1,13 @@
 version: 2
 
 models:
-  - name: stablecoins_avalanche_c_balances
+  - name: stablecoins_polygon_base_balances
 
     meta:
-      blockchain: avalanche_c
+      blockchain: polygon
       sector: stablecoin
       project: stablecoin
-      contributors: synthquest
+      contributors: synthquest, tomfutago
 
     config:
       tags: ['stablecoin', 'balances']
