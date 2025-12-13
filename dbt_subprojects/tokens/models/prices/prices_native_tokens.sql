@@ -48,6 +48,7 @@ with prices_native_tokens as (
         , ('lens', 'gho-gho')
         , ('linea', 'eth-ethereum')
         , ('mantle', 'mnt-mantle')
+        , ('megaeth', 'eth-ethereum')
         , ('mode', 'eth-ethereum')
         , ('mezo', 'btc-bitcoin')
         , ('monad', 'mon-monad')
