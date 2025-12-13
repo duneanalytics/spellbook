@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: aave_v3_avalanche_c
+    description: "Decoded contracts for Aave v3 on Avalanche"
+    tables:
+      - name: poolconfigurator_evt_reserveinitialized
+
