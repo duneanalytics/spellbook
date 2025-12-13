@@ -5,5 +5,6 @@ sources:
     description: "Decoded contracts for Aave v3 on Arbitrum"
     tables:
       - name: StataToken_evt_Initialized    
-
-      - name: StataTokenFactory_call_createDeterministic          
+      - name: StataTokenFactory_call_createDeterministic  
+      - name: poolconfigurator_evt_reserveinitialized     
+   
