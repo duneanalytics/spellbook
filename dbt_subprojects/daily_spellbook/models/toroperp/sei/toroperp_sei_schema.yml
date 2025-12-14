@@ -1,0 +1,75 @@
+version: 2
+
+models:
+  - name: toroperp_sei_deposits
+    meta:
+      blockchain: sei
+      sector: dex
+      project: toroperp
+      contributors: toroperp
+    config:
+      tags: ['sei', 'toroperp', 'orderly', 'deposits']
+    description: >
+      Deposit transactions for toroperp broker on Orderly Network (SEI chain).
+      Tracks all user deposits routed through the toroperp broker by filtering
+      the Orderly Vault contract events by toroperp's broker hash.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - evt_index
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain where the deposit occurred"
+      - &project
+        name: project
+        description: "Project name (toroperp)"
+      - &version
+        name: version
+        description: "Version of the integration"
+      - &block_time
+        name: block_time
+        description: "UTC timestamp of the block containing the deposit"
+      - &block_date
+        name: block_date
+        description: "UTC date of the block containing the deposit"
+      - &block_number
+        name: block_number
+        description: "Block number of the deposit transaction"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash of the deposit"
+        data_tests:
+          - not_null
+      - &evt_index
+        name: evt_index
+        description: "Log index of the deposit event within the transaction"
+      - &vault_contract
+        name: vault_contract
+        description: "Address of the Orderly Vault contract"
+      - &account_id
+        name: account_id
+        description: "Unique account identifier (keccak256 of user address and broker hash)"
+      - &user_address
+        name: user_address
+        description: "Address of the user making the deposit"
+      - &deposit_nonce
+        name: deposit_nonce
+        description: "Sequential nonce for the deposit"
+      - &token_hash
+        name: token_hash
+        description: "Hash identifier of the deposited token"
+      - &token_amount_raw
+        name: token_amount_raw
+        description: "Raw amount of tokens deposited (in token's smallest unit)"
+      - &tx_from
+        name: tx_from
+        description: "Address that initiated the transaction"
+      - &tx_to
+        name: tx_to
+        description: "Address that received the transaction (Vault contract)"
+      - &broker_hash
+        name: broker_hash
+        description: "Broker hash identifying toroperp as the broker"
