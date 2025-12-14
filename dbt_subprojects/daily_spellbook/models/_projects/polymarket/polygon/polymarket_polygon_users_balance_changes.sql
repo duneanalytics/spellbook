@@ -31,7 +31,6 @@ INNER JOIN {{ source('addresses_events_polygon', 'first_funded_by')}} ffb ON t.t
   AND ffb.block_number<=t.block_number
 WHERE t.contract_address = 0x2791bca1f2de4661ed88a30c99a7a9449aa84174 -- USDC.e
 AND t.block_number >= 5067840
-AND t.block_time > NOW() - interval '1' month
 {% if is_incremental() %}
 AND {{ incremental_predicate('t.block_time') }}
 {% endif %}
@@ -59,7 +58,6 @@ INNER JOIN {{ source('addresses_events_polygon', 'first_funded_by')}} ffb ON t."
   AND ffb.block_number<=t.block_number
 WHERE contract_address = 0x2791bca1f2de4661ed88a30c99a7a9449aa84174 -- USDC.e
 AND t.block_number >= 5067840
-AND t.block_time > NOW() - interval '1' month
 {% if is_incremental() %}
 AND {{ incremental_predicate('t.block_time') }}
 {% endif %}
