@@ -50,6 +50,7 @@
     , ref('dex_tac_base_trades')
     , ref('dex_unichain_base_trades')
     , ref('dex_worldchain_base_trades')
+    , ref('dex_xlayer_base_trades')
     , ref('dex_zkevm_base_trades')
     , ref('dex_zksync_base_trades')
     , ref('dex_zora_base_trades')
