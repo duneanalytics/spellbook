@@ -314,6 +314,6 @@
         dict(oneinch_unichain_cfg_macro()   , evm=true  , fusionV1=false, exposed=["ar", "lo", "cc"], contracts=oneinch_meta_contracts_cfg_macro()),
         dict(oneinch_aurora_cfg_macro()     , evm=true  , fusionV1=false),
         dict(oneinch_klaytn_cfg_macro()     , evm=true  , fusionV1=false),
-        dict(oneinch_solana_cfg_macro()     , evm=false , fusionV1=false, exposed=["lo"]),
+        dict(oneinch_solana_cfg_macro()     , evm=false , fusionV1=false),
     ]) }}
 {% endmacro %}
