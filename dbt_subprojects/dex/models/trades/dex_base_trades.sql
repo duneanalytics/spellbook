@@ -88,5 +88,3 @@ select
     *
 from
     base_union
-
---comment for inclusion in CI run
