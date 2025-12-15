@@ -1,7 +1,3 @@
-{% set chains = [
-    'gnosis'
-] %}
-
 {{ config(
     schema = 'dex'
     , alias = 'trades'
@@ -11,7 +7,52 @@
     , incremental_strategy = 'merge'
     , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
-    , post_hook='{{ expose_spells(blockchains = \'["' + chains | join('","') + '"]\',
+    , post_hook='{{ expose_spells(\'[
+                                        "abstract"
+                                        , "apechain"
+                                        , "arbitrum"
+                                        , "avalanche_c"
+                                        , "base"
+                                        , "berachain"
+                                        , "blast"
+                                        , "bnb"
+                                        , "boba"
+                                        , "celo"
+                                        , "corn"
+                                        , "ethereum"
+                                        , "fantom"
+                                        , "flare"
+                                        , "flow"
+                                        , "gnosis"
+                                        , "hemi"
+                                        , "hyperevm"
+                                        , "ink"
+                                        , "kaia"
+                                        , "katana"
+                                        , "linea"
+                                        , "mantle"
+                                        , "nova"
+                                        , "opbnb"
+                                        , "optimism"
+                                        , "peaq"
+                                        , "plasma"
+                                        , "plume"
+                                        , "polygon"
+                                        , "ronin"
+                                        , "scroll"
+                                        , "sei"
+                                        , "shape"
+                                        , "somnia"
+                                        , "sonic"
+                                        , "sophon"
+                                        , "superseed"
+                                        , "taiko"
+                                        , "unichain"
+                                        , "worldchain"
+                                        , "zkevm"
+                                        , "zksync"
+                                        , "zora"
+                                    ]\',
                                     "sector",
                                     "dex",
                                     \'["hosuke", "0xrob", "jeff-dude", "tomfutago", "viniabussafi", "krishhh"]\') }}')
@@ -23,7 +64,26 @@
     , ref('zeroex_native_trades')
 ] %}
 
-WITH as_is_dexs AS (
+WITH balancer_v3 AS (
+    -- due to Balancer V3 having trades between ERC4626 tokens, which won't be priced on prices.usd, enrich separately.
+    {{
+        enrich_balancer_v3_dex_trades(
+            base_trades = ref('dex_base_trades')
+            , filter = "(project = 'balancer' AND version = '3')"
+            , tokens_erc20_model = source('tokens', 'erc20')
+        )
+    }}
+)
+, dexs AS (
+    {{
+        enrich_dex_trades(
+            base_trades = ref('dex_base_trades')
+            , filter = "NOT (project = 'balancer' AND version = '3')"
+            , tokens_erc20_model = source('tokens', 'erc20')
+        )
+    }}
+)
+, as_is_dexs AS (
     {% for model in as_is_models %}
     SELECT
         blockchain
@@ -62,23 +122,11 @@ WITH as_is_dexs AS (
     {% endfor %}
 )
 
-, chain_dex_trades AS (
-    SELECT *
-    FROM (
-        {% for chain in chains %}
-            SELECT *
-            FROM
-                {{ ref('dex_'~chain~'_trades') }}
-            {% if not loop.last %}
-            UNION ALL
-            {% endif %}
-        {% endfor %}
-    )
-)
 
 {% set cte_to_union = [
     'as_is_dexs'
-    , 'chain_dex_trades'
+    , 'dexs'
+    , 'balancer_v3'
     ]
 %}
 
