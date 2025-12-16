@@ -1,6 +1,16 @@
 {% set chains = [
-    'linea'
+    'arbitrum'
+    ,'avalanche_c'
+    ,'base'
+    ,'bnb'
+    ,'ethereum'
+    ,'kaia'
+    ,'linea'
+    ,'optimism'
+    ,'polygon'
     ,'scroll'
+    ,'worldchain'
+    ,'zksync'
 ] %}
 
 {{

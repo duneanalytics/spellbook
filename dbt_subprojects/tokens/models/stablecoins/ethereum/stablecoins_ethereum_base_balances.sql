@@ -1,6 +1,5 @@
 {{
   config(
-    tags = ['prod_exclude'],
     schema = 'stablecoins_ethereum',
     alias = 'base_balances',
     materialized = 'incremental',
