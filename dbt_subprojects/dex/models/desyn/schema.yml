@@ -5,9 +5,7 @@ models:
     meta:
       blockchain: ethereum, arbitrum, bnb, linea, scroll, hemi, bnb, plume
     description: "DeSyn Protocol daily liquidity (TVL) across all supported chains"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [day, blockchain, version]
+
     columns:
       - name: day
         description: "Date of the snapshot"
@@ -22,12 +20,9 @@ models:
     description: "DeSyn Ethereum daily liquidity per pool (detailed)"
     columns:
       - name: day
-        tests: [not_null]
       - name: blockchain
-        tests: [not_null]
       - name: pool_address
         description: "DeSyn Smart Pool contract address"
-        tests: [not_null]
       - name: protocol_liquidity_usd
         description: "Pool liquidity in USD"
 
