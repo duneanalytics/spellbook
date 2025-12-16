@@ -5,3 +5,47 @@ sources:
     description: "Router's Nitro bridge events on Ethereum"
     tables:
       - name: assetforwarder_evt_fundsdeposited
+  - name: router_arbitrum
+    description: "Router's Nitro bridge events on Arbitrum"
+    tables:
+      - name: assetforwarder_evt_fundsdeposited
+  - name: router_base
+    description: "Router's Nitro bridge events on Base"
+    tables:
+      - name: assetforwarder_evt_fundsdeposited
+  - name: router_scroll
+    description: "Router's Nitro bridge events on Scroll"
+    tables:
+      - name: assetforwarder_evt_fundsdeposited
+  - name: router_avalanche_c
+    description: "Router's Nitro bridge events on Avalanche"
+    tables:
+      - name: assetforwarder_evt_fundsdeposited
+  - name: router_mantle
+    description: "Router's Nitro bridge events on Mantle"
+    tables:
+      - name: assetforwarder_evt_fundsdeposited
+  - name: router_zksync
+    description: "Router's Nitro bridge events on zkSync"
+    tables:
+      - name: assetforwarder_evt_fundsdeposited
+  - name: router_zkevm
+    description: "Router's Nitro bridge events on Polygon zkEVM"
+    tables:
+      - name: assetforwarder_evt_fundsdeposited
+  - name: router_linea
+    description: "Router's Nitro bridge events on Linea"
+    tables:
+      - name: assetforwarder_evt_fundsdeposited
+  - name: router_bnb
+    description: "Router's Nitro bridge events on BNB"
+    tables:
+      - name: assetforwarder_evt_fundsdeposited
+  - name: router_optimism
+    description: "Router's Nitro bridge events on OP Mainnet"
+    tables:
+      - name: assetforwarder_evt_fundsdeposited
+  - name: router_polygon
+    description: "Router's Nitro bridge events on Polygon"
+    tables:
+      - name: assetforwarder_evt_fundsdeposited

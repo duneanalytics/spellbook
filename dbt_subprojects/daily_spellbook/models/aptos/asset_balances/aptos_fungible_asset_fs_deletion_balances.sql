@@ -5,7 +5,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    unique_key = ['block_month', 'tx_hash', 'write_set_change_index'],
+    unique_key = ['block_month', 'unique_key'],
     partition_by = ['block_month']
 ) }}
 
@@ -47,6 +47,7 @@ WITH fs_deletion AS (
 )
 
 SELECT
+    {{ dbt_utils.generate_surrogate_key(['tx_hash', 'write_set_change_index']) }} AS unique_key,
     tx_version,
     tx_hash,
     block_date,

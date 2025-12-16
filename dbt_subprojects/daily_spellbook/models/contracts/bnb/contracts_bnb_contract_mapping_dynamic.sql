@@ -1,5 +1,6 @@
  {{
-  config(     
+  config(
+        tags = ['prod_exclude'],
         schema = 'contracts_bnb',
         alias = 'contract_mapping_dynamic',
         materialized ='table',

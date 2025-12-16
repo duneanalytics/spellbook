@@ -101,6 +101,12 @@ sources:
   - name: cow_protocol_bnb
     tables:
       - name: trades
+  - name: cow_protocol_linea
+    tables:
+      - name: trades
+  - name: cow_protocol_plasma
+    tables:
+      - name: trades
   - name: jelly_swap
     tables:
       - name: trades

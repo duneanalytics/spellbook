@@ -19,7 +19,6 @@
                                     , "ethereum"
                                     , "fantom"
                                     , "flare"
-                                    , "flow"
                                     , "gnosis"
                                     , "hemi"
                                     , "henesys"
@@ -30,6 +29,8 @@
                                     , "lens"
                                     , "linea"
                                     , "mantle"
+                                    , "mezo"
+                                    , "monad"
                                     , "nova"
                                     , "opbnb"
                                     , "optimism"
@@ -57,7 +58,7 @@
                                 ]\',
                                 "sector",
                                 "gas",
-                                \'["soispoke", "ilemi", "0xRob", "jeff-dude", "krishhh"]\'
+                                \'["soispoke", "ilemi", "0xRob", "jeff-dude", "krishhh", "tomfutago"]\'
                             )
                         }}'
         )
@@ -81,7 +82,6 @@
     , "ethereum"
     , "fantom"
     , "flare"
-    , "flow"
     , "gnosis"
     , "hemi"
     , "henesys"
@@ -92,6 +92,8 @@
     , "linea"
     , "lens"
     , "mantle"
+    , "mezo"
+    , "monad"
     , "nova"
     , "opbnb"
     , "optimism"

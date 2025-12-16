@@ -100,3 +100,73 @@ models:
     columns:
       - *id
       - *blockchain
+  - name: bridges_axelar_ist_token_indexes
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: axelar
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bridges', 'token_indexes' ]
+    description: "Axelar's token indexes for its ITS bridge"
+    columns:
+      - &token_id
+        name: token_id
+        description: "Token id"
+      - *blockchain
+      - *token_address
+      - &token_symbol
+        name: token_symbol
+        description: "Token symbol"
+  - name: bridges_axelar_gateway_token_indexes
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: axelar
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bridges', 'token_indexes' ]
+    description: "Axelar's token indexes for its gateway bridge"
+    columns:
+      - *blockchain
+      - *token_symbol
+      - *token_address
+  - name: bridges_orbiter_chain_indexes
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: orbiter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bridges', 'chain_indexes' ]
+    description: "Orbiter's blockchains indexes"
+    columns:
+      - *id
+      - *blockchain
+  - name: bridges_layerzero_chain_indexes
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: layerzero
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bridges', 'chain_indexes' ]
+    description: "LayerZero's blockchains indexes"
+    columns:
+      - *blockchain
+      - *id
+      - &endpoint_address
+        name: endpoint_address
+        description: "Endpoint address"
+  - name: bridges_agglayer_chain_indexes
+    meta:
+      blockchain: ethereum
+      sector: bridges
+      project: agglayer
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bridges', 'chain_indexes' ]
+    description: "Agglayer's blockchains indexes"
+    columns:
+      - *id
+      - *blockchain

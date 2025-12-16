@@ -5,8 +5,9 @@
     )
 }}
 
-{% set models = [  
-      ref('dex_arbitrum_base_trades')
+{% set models = [
+      ref('dex_apechain_base_trades')
+    , ref('dex_arbitrum_base_trades')
     , ref('dex_avalanche_c_base_trades')
     , ref('dex_abstract_base_trades')
     , ref('dex_base_base_trades')
@@ -28,6 +29,8 @@
     , ref('dex_kaia_base_trades')
     , ref('dex_katana_base_trades')
     , ref('dex_mantle_base_trades')
+    , ref('dex_monad_base_trades')
+    , ref('dex_mezo_base_trades')
     , ref('dex_nova_base_trades')
     , ref('dex_opbnb_base_trades')
     , ref('dex_optimism_base_trades')
@@ -42,6 +45,7 @@
     , ref('dex_somnia_base_trades')
     , ref('dex_sonic_base_trades')
     , ref('dex_sophon_base_trades')
+    , ref('dex_story_base_trades')
     , ref('dex_superseed_base_trades')
     , ref('dex_taiko_base_trades')
     , ref('dex_tac_base_trades')
