@@ -80,6 +80,7 @@ with prices_native_tokens as (
         , ('unichain', 'eth-ethereum')
         , ('viction', 'tomo-tomochain')
         , ('worldchain', 'eth-ethereum')
+        , ('xlayer', 'okb-okb')
         , ('zkevm', 'eth-ethereum')
         , ('zksync', 'eth-ethereum')
         , ('zora', 'eth-ethereum')

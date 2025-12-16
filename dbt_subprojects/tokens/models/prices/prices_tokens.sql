@@ -65,6 +65,7 @@
     ,ref('prices_unichain_tokens')
     ,ref('prices_viction_tokens')
     ,ref('prices_worldchain_tokens')
+    ,ref('prices_xlayer_tokens')
     ,ref('prices_zkevm_tokens')
     ,ref('prices_zksync_tokens')
     ,ref('prices_zora_tokens')
