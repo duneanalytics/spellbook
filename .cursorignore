@@ -2,7 +2,6 @@
 # Files listed here are excluded from Cursor's indexing but remain in git
 
 # Lock files (large, auto-generated)
-.cursor/scripts/uv.lock
 uv.lock
 Pipfile.lock
 

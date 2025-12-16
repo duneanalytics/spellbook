@@ -16,8 +16,7 @@ try:
     from dune_client.query import QueryBase, QueryParameter
     from dotenv import load_dotenv
 except ImportError:
-    print("ERROR: Required packages not installed.")
-    print("Install with: cd .cursor/scripts && uv sync")
+    print("ERROR: Required packages not installed. Run via: uv run dune_query.py")
     sys.exit(1)
 
 

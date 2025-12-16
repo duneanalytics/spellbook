@@ -29,10 +29,6 @@ AI-assisted development setup for spellbook.
 
 ## Setup
 
-```bash
-cd .cursor/scripts && uv sync
-```
-
 Required env vars in `.env`:
 - `DUNE_API_KEY`
 - `SIM_METADATA_API_KEY`

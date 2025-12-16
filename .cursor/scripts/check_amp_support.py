@@ -15,8 +15,7 @@ try:
     import aiohttp
     from dotenv import load_dotenv
 except ImportError:
-    print("ERROR: Required packages not installed.")
-    print("Install with: cd .cursor/scripts && uv sync")
+    print("ERROR: Required packages not installed. Run via: uv run check_amp_support.py")
     sys.exit(1)
 
 # Import run_query from dune_query.py
@@ -24,8 +23,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 try:
     from dune_query import run_query
 except ImportError as e:
-    print("ERROR: Failed to import dune_query. Make sure dependencies are installed:")
-    print("  cd .cursor/scripts && uv sync")
+    print("ERROR: Failed to import dune_query. Run via: uv run check_amp_support.py")
     sys.exit(1)
 
 API_ENDPOINT = "https://api.sim.dune.com/alpha/evm/token-metadata/amp"
