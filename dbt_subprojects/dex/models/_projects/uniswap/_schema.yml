@@ -261,7 +261,7 @@ models:
     config:
       tags: [ 'dex' ]
 
-  - name: uniswap_uniswapx_base_trades
+  - name: uniswap_uniswapx_trades
     meta:
       blockchain: ethereum,arbitrum,base,unichain
       sector: dex
