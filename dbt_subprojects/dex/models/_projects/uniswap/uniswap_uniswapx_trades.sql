@@ -29,4 +29,4 @@ dexs AS (
     }}
 )
 
-select * from fexs
+select * from dexs
