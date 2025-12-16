@@ -1,15 +1,6 @@
 {% set chains = [
-    'arbitrum'
-    ,'avalanche_c'
-    ,'base'
-    ,'bnb'
-    ,'kaia'
-    ,'linea'
-    ,'optimism'
-    ,'polygon'
+    'linea'
     ,'scroll'
-    ,'worldchain'
-    ,'zksync'
 ] %}
 
 {{
