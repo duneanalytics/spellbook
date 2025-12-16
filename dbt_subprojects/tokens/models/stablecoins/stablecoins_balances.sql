@@ -10,7 +10,6 @@
     ,'polygon'
     ,'scroll'
     ,'worldchain'
-    ,'zksync'
 ] %}
 
 {{
