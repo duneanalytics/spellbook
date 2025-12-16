@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: tokens_bob_erc20_stablecoins
+    meta:
+      blockchain: bob
+      sector: stablecoins
+      contributors: mastilver
+    config:
+      tags: ['tokens', 'bob', 'erc20', 'stablecoins']
+    description: >
+        Selection of stablecoin token addresses.
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain name"
+      - &contract_address
+        name: contract_address
+        description: "Stablecoin contract address"
+      - &backing
+        name: backing
+        description: "Stablecoin backing"
+      - &symbol
+        name: symbol
+        description: "Stablecoin symbol"
+      - &name
+        name: name
+        description: "Stablecoin project name"
+      - &decimals
+        name: decimals
+        description: "Number of decimals"

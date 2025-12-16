@@ -75,3 +75,30 @@ models:
         name: balance_usd
         description: "USD value of balance for the user"
       - *last_updated
+
+  - name: tokens_bnb_erc20_stablecoins
+    meta:
+      blockchain: bnb
+      sector: stablecoins
+      contributors: synthquest, rantum, tomfutago
+    config:
+      tags: ['tokens', 'bnb', 'erc20', 'stablecoins']
+    description: >
+        Selection of stablecoin token addresses.
+    columns:
+      - *blockchain
+      - &contract_address
+        name: contract_address
+        description: "Stablecoin contract address"
+      - &backing
+        name: backing
+        description: "Stablecoin backing"
+      - &symbol
+        name: symbol
+        description: "Stablecoin symbol"
+      - &name
+        name: name
+        description: "Stablecoin project name"
+      - &decimals
+        name: decimals
+        description: "Number of decimals"
