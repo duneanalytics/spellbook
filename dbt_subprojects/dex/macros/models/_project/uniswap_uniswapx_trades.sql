@@ -46,7 +46,7 @@ erc20_tfers as (
         on erc.evt_block_number = fve.block_number
         and erc.evt_block_date = fve.block_date
         and erc.evt_tx_hash = fve.tx_hash
-    where erc.block_date >= date '{{start_date}}'
+    where erc.evt_block_date >= date '{{start_date}}'
     {% if is_incremental() %}
     and {{ incremental_predicate('evt_block_time') }}
     {% endif %}
@@ -61,7 +61,7 @@ blockchain_traces as (
         erc."from",
         erc.to,
         erc.value,
-        {{native_token_address }} as contract_address 
+        {{ native_token_address }} as contract_address 
     from 
     {{ source(blockchain, 'traces') }} erc 
     inner join 
@@ -84,10 +84,10 @@ select
     cast(date_trunc('day', fe.block_time) as date) as block_date,
     fe.block_time, 
     fe.block_number,
-    coalesce(fe.transfer_to.value, eth_to.value) as token_bought_amount_raw, 
-    coalesce(fe.transfer_from.value, eth_from.value) as token_sold_amount_raw, 
-    coalesce(fe.transfer_to.contract_address, eth_to.contract_address) as token_bought_address,
-    coalesce(fe.transfer_from.contract_address, eth_from.contract_address) as token_sold_address,
+    coalesce(transfer_to.value, eth_out.value) as token_bought_amount_raw, 
+    coalesce(transfer_from.value, eth_in.value) as token_sold_amount_raw, 
+    coalesce(transfer_to.contract_address, eth_out.contract_address) as token_bought_address,
+    coalesce(transfer_from.contract_address, eth_in.contract_address) as token_sold_address,
     fe.swapper as taker,
     fe.filler as maker, 
     fe.contract_address as project_contract_address,
@@ -101,13 +101,13 @@ erc20_tfers transfer_from
     on fe.block_number = transfer_from.block_number 
     and fe.block_date = transfer_from.block_date 
     and fe.tx_hash = transfer_from.tx_hash 
-    and fe.swapper = transger_from."from"
+    and fe.swapper = transfer_from."from"
 left join 
 erc20_tfers transfer_to
     on fe.block_number = transfer_to.block_number 
     and fe.block_date = transfer_to.block_date 
     and fe.tx_hash = transfer_to.tx_hash 
-    and fe.swapper = transger_to."to"
+    and fe.swapper = transfer_to."to"
 left join 
 blockchain_traces eth_in
     on fe.block_number = eth_in.block_number 

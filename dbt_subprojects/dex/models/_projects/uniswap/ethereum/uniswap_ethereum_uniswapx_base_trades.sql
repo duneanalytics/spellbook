@@ -15,6 +15,6 @@
           blockchain = 'ethereum'
           , uniswapx_contract = '0x00000011F84B9aa48e5f8aA8B9897600006289Be'
           , start_date = '2024-05-01'
-          , native_token_address = 0x0000000000000000000000000000000000000000
+          , native_token_address = '0x0000000000000000000000000000000000000000'
     )
 }}
