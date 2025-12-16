@@ -1,27 +1,27 @@
+{% set chain = 'ethereum' %}
+
 {{
   config(
-    schema = 'stablecoins_ethereum',
+    schema = 'stablecoins_' ~ chain,
     alias = 'base_balances',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['day', 'address', 'token_address', 'blockchain'],
+    unique_key = ['day', 'address', 'token_address'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')]
   )
 }}
 
--- trigger CI
-
 with
-stablecoin_tokens_total as (
-  select distinct
+
+stablecoin_tokens as (
+  select
     symbol,
     contract_address as token_address
-  from 
-    {{ source('tokens_ethereum', 'erc20_stablecoins')}}
-)
+  from {{ source('tokens_' ~ chain, 'erc20_stablecoins') }}
+),
 
-, filter_tokens as (
+filter_tokens as (
   select * from (VALUES
 
     ('ethereum', 0x956f47f50a910163d8bf957cf5846d573e7f87ca, 'Algorithmic stablecoin', 'FEI', 18 ),
@@ -67,21 +67,21 @@ stablecoin_tokens_total as (
     ('ethereum', 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48, 'Fiat-backed stablecoin', 'USDC', 6 )
     ) as t(blockchain, contract_address, backing, symbol, decimal)
 
-)
+),
 
-, stablecoin_tokens as (
-  select distinct st.symbol, st.token_address from stablecoin_tokens_total st 
+stablecoin_tokens as (
+  select distinct st.symbol, st.token_address from stablecoin_tokens st 
   inner join filter_tokens ft on st.token_address = ft.contract_address
-)
+),
 
-,balances as (
-    {{
-      balances_incremental_subset_daily_legacy(
-            blockchain = 'ethereum',
-            token_list = 'stablecoin_tokens',
-            start_date = '2023-01-01'
-      )
-    }}
+balances as (
+  {{
+    balances_incremental_subset_daily(
+        blockchain = chain,
+        token_list = 'stablecoin_tokens',
+        start_date = '2023-01-01'
+    )
+  }}
 )
 
 select
