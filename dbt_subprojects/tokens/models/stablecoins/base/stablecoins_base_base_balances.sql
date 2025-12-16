@@ -1,7 +1,9 @@
+{% set chain = 'base' %}
+
 {{
   config(
     tags = ['prod_exclude'],
-    schema = 'stablecoins_base',
+    schema = 'stablecoins_' ~ chain,
     alias = 'base_balances',
     materialized = 'incremental',
     file_format = 'delta',
@@ -17,13 +19,13 @@ stablecoin_tokens as (
   select
     symbol,
     contract_address as token_address
-  from {{ source('tokens_base', 'erc20_stablecoins')}}
+  from {{ source('tokens_' ~ chain, 'erc20_stablecoins') }}
 ),
 
 balances as (
   {{
     balances_incremental_subset_daily(
-        blockchain = 'base',
+        blockchain = chain,
         token_list = 'stablecoin_tokens',
         start_date = '2023-07-20'
     )
@@ -31,12 +33,12 @@ balances as (
 )
 
 select
-    blockchain,
-    day,
-    address,
-    token_address,
-    token_standard,
-    token_id,
-    balance_raw,
-    last_updated
+  blockchain,
+  day,
+  address,
+  token_address,
+  token_standard,
+  token_id,
+  balance_raw,
+  last_updated
 from balances

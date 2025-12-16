@@ -1,7 +1,9 @@
+{% set chain = 'optimism' %}
+
 {{
   config(
     tags = ['prod_exclude'],
-    schema = 'stablecoins_optimism',
+    schema = 'stablecoins_' ~ chain,
     alias = 'base_balances',
     materialized = 'incremental',
     file_format = 'delta',
@@ -17,13 +19,13 @@ stablecoin_tokens as (
   select
     symbol,
     contract_address as token_address
-  from {{ source('tokens_optimism', 'erc20_stablecoins')}}
+  from {{ source('tokens_' ~ chain, 'erc20_stablecoins') }}
 ),
 
 balances as (
   {{
     balances_incremental_subset_daily(
-        blockchain = 'optimism',
+        blockchain = chain,
         token_list = 'stablecoin_tokens',
         start_date = '2021-11-11'
     )

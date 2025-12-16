@@ -1,7 +1,9 @@
+{% set chain = 'arbitrum' %}
+
 {{
   config(
     tags = ['prod_exclude'],
-    schema = 'stablecoins_arbitrum',
+    schema = 'stablecoins_' ~ chain,
     alias = 'base_balances',
     materialized = 'incremental',
     file_format = 'delta',
@@ -17,13 +19,13 @@ stablecoin_tokens as (
   select
     symbol,
     contract_address as token_address
-  from {{ source('tokens_arbitrum', 'erc20_stablecoins')}}
+  from {{ source('tokens_' ~ chain, 'erc20_stablecoins') }}
 ),
 
 balances as (
   {{
     balances_incremental_subset_daily(
-        blockchain = 'arbitrum',
+        blockchain = chain,
         token_list = 'stablecoin_tokens',
         start_date = '2021-05-26'
     )

@@ -2,7 +2,7 @@
   config(
     tags = ['prod_exclude'],
     schema = 'stablecoins_ethereum',
-    alias = 'balances',
+    alias = 'base_balances',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

@@ -1,0 +1,77 @@
+version: 2
+
+models:
+  - name: stablecoins_worldchain_base_balances
+    meta:
+      blockchain: worldchain
+      sector: stablecoin
+      project: stablecoin
+      contributors: synthquest, tomfutago
+    config:
+      tags: ['stablecoin', 'balances']
+    description: "Base balances of stablecoin token holders"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain for the token"
+      - &day
+        name: day
+        description: "Date on which the token balance is logged"
+      - &address
+        name: address
+        description: "Address for the token holder"
+      - &token_address
+        name: token_address
+        description: "Address for the token"
+      - &token_standard
+        name: token_standard
+        description: "Standard for the token"
+      - &token_id
+        name: token_id
+        description: "ID for the token"
+      - &balance_raw
+        name: balance_raw
+        description: "Raw balance for the user (not adjusted for decimals)"
+      - &last_updated
+        name: last_updated
+        description: "UTC timestamp when data was last updated"
+
+  - name: stablecoins_worldchain_balances
+    meta:
+      blockchain: worldchain
+      sector: stablecoin
+      project: stablecoin
+      contributors: tomfutago
+    config:
+      tags: ['stablecoin', 'balances']
+    description: "Enriched balances of stablecoin token holders with token metadata and USD prices"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    columns:
+      - *blockchain
+      - *day
+      - *address
+      - &token_symbol
+        name: token_symbol
+        description: "Symbol for the token"
+      - *token_address
+      - *token_standard
+      - *token_id
+      - *balance_raw
+      - &balance
+        name: balance
+        description: "Balance for the user (adjusted for decimals)"
+      - &balance_usd
+        name: balance_usd
+        description: "USD value of balance for the user"
+      - *last_updated
