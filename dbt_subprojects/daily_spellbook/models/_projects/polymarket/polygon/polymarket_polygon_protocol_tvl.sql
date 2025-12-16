@@ -19,7 +19,7 @@ WITH latest_transfer_hour AS (
 -- get the last computed hour in the spell
 {% if is_incremental() %}
 , last_spell_update AS (
-  SELECT MAX(hour) AS max_hour
+  SELECT MAX(hour) + interval '1' hour AS max_hour
   , MAX_BY(tvl, hour) AS latest_tvl
   FROM {{this}}
   )
@@ -34,7 +34,7 @@ WITH latest_transfer_hour AS (
   AND block_time < (SELECT max_hour FROM latest_transfer_hour)
   AND block_number >= 4023686
   {% if is_incremental() %}
-  AND block_time > (SELECT max_hour FROM last_spell_update)
+  AND block_time >= (SELECT max_hour FROM last_spell_update)
   {% endif %}
   GROUP BY 1
 
@@ -48,7 +48,7 @@ WITH latest_transfer_hour AS (
   AND block_time < (SELECT max_hour FROM latest_transfer_hour)
   AND block_number >= 4023686
   {% if is_incremental() %}
-  AND block_time > (SELECT max_hour FROM last_spell_update)
+  AND block_time >= (SELECT max_hour FROM last_spell_update)
   {% endif %}
   GROUP BY 1
   )

@@ -39,7 +39,11 @@ WITH latest_day AS (
     mm.market_end_time_parsed,
     mm.outcome AS market_outcome,
     mm.resolved_on_timestamp,
-    CASE WHEN LOWER(mm.token_outcome)=mm.outcome THEN 1 ELSE 0 END AS modifier
+    CASE 
+      WHEN mm.outcome = '50/50' THEN 0.5
+      WHEN LOWER(mm.token_outcome) = mm.outcome THEN 1
+      ELSE 0
+    END AS modifier
     FROM {{ ref('polymarket_polygon_positions_raw') }} p
     INNER JOIN latest_day ld ON p.day = ld.day
     INNER JOIN {{ ref('polymarket_polygon_market_details') }} mm ON p.token_id = mm.token_id
