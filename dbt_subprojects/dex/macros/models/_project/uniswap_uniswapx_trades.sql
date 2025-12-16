@@ -1,6 +1,6 @@
 {% macro uniswap_uniswapx_trades(
     blockchain = null
-    , uniswapx_contract = null
+    , uniswapx_contracts = []
     , start_date = '2023-07-17'
     , native_token_address = '0x0000000000000000000000000000000000000000'
     )
@@ -25,7 +25,11 @@ fill_events as (
     from 
     {{ source(blockchain, 'logs') }}
     where block_date >= date '{{start_date}}'
-    and contract_address = {{uniswapx_contract}}
+    and contract_address in (
+    {% for addr in uniswapx_contracts %}
+        {{ addr }}{% if not loop.last %}, {% endif %}
+    {% endfor %}
+    )
     {% if is_incremental() %}
     and {{ incremental_predicate('block_time') }}
     {% endif %}
