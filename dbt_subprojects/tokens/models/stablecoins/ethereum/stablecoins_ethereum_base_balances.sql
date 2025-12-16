@@ -14,7 +14,7 @@
 
 with
 
-stablecoin_tokens as (
+stablecoin_tokens_total as (
   select
     symbol,
     contract_address as token_address
@@ -70,7 +70,7 @@ filter_tokens as (
 ),
 
 stablecoin_tokens as (
-  select distinct st.symbol, st.token_address from stablecoin_tokens st 
+  select distinct st.symbol, st.token_address from stablecoin_tokens_total st 
   inner join filter_tokens ft on st.token_address = ft.contract_address
 ),
 
