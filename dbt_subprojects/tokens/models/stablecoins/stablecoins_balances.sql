@@ -2,7 +2,6 @@
     'arbitrum'
     ,'avalanche_c'
     ,'base'
-    ,'bnb'
     ,'ethereum'
     ,'kaia'
     ,'linea'
