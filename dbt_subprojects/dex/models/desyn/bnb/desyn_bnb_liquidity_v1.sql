@@ -1,6 +1,6 @@
 {{ config(
     materialized = 'incremental',
-    alias = 'desyn_bnb_liquidity_v1',
+    schema = 'desyn',
     unique_key = ['day', 'pool_address'],
     incremental_strategy = 'merge',
     file_format = 'delta',

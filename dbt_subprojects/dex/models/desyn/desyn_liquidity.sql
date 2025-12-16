@@ -1,6 +1,6 @@
 {{ config(
     materialized = 'incremental',
-    alias = 'liquidity',
+    schema = 'desyn',
     partition_by = ['day'],
     unique_key = ['day', 'blockchain', 'version'],
     incremental_strategy = 'merge',
