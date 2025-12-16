@@ -17,6 +17,7 @@ fill_events as (
         tx_to,
         tx_hash,
         index as evt_index,
+        tx_index,
         contract_address,
         topic1 as order_hash,
         bytearray_substring(topic2, 13, 20) as filler,
@@ -93,10 +94,11 @@ select
     fe.filler as maker, 
     fe.contract_address as project_contract_address,
     fe.tx_hash,
-    fe.evt_index, 
+    fe.evt_index,
     fe.swapper as sender,
     fe.tx_from,
-    fe.tx_to 
+    fe.tx_to,
+    fe.tx_index 
 from 
 fill_events fe 
 left join 
