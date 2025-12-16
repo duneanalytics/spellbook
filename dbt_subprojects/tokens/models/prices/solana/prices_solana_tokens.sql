@@ -782,5 +782,12 @@ FROM
         ('2z-doublezero', 'solana', '2Z', 'J6pQQ3FAcJQeWPPGppWRb4nM8jU3wLyYbRrLh7feMfvd', 8),
         ('useless-useless-coin', 'solana', 'USELESS', 'Dz9mQ9NzkBcCsuGPFJ3r1bS4wgqKMHBPiVuniW8Mbonk', 6),
         ('onyc-onyc', 'solana', 'ONyc', '5Y8NV33Vv7WbnLfq3zBcKSdYPrk7g2KoiQoe7M2tcxp5', 9),
-        ('yzy-yzy', 'solana', 'YZY', 'DrZ26cKJDksVRWib3DVVsjo9eeXccc7hKhDJviiYEEZY', 6)
+        ('gohome-gohome', 'solana', 'GOHOME', '2Wu1g2ft7qZHfTpfzP3wLdfPeV1is4EwQ3CXBfRYAciD', 6),
+        ('common-common', 'solana', 'COMMON', 'H1MHqq1dsExxeuYTd8JZzM51z33RvxjuM5sx2oB11WJ', 9),
+        ('meta-metadao-new', 'solana', 'META', 'METAwkXcqyXKy1AtsSgJ8JiUHwGCafnZL38n3vYmeta', 6),
+        ('umbra-umbra', 'solana', 'UMBRA', 'PRVT6TB7uss3FrUd2D9xs2zqDBsa3GbMJMwCQsgmeta', 6),
+        ('yzy-yzy', 'solana', 'YZY', 'DrZ26cKJDksVRWib3DVVsjo9eeXccc7hKhDJviiYEEZY', 6),
+        ('xbtc-okx-wrapped-btc','solana','xBTC','CtzPWv73Sn1dMGVU3ZtLv9yWSyUAanBni19YWDaznnkn',8),
+        ('lbtc-lombard-staked-btc','solana','LBTC','LBTCgU4b3wsFKsPwBn1rRZDx5DoFutM6RPiEt1TPDsY',8),
+        ('pstusdc-payfi-strategy-token-usdc','solana','PST','59obFNBzyTBGowrkif5uK7ojS58vsuWz3ZCvg6tfZAGw',6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

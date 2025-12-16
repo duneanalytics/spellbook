@@ -19,7 +19,7 @@ alchemy_addresses as (
 
 ,balances as (
     {{
-      balances_incremental_subset_daily(
+      balances_incremental_subset_daily_legacy(
             blockchain = 'ethereum',
             address_list  = 'alchemy_addresses',
             start_date = '2023-04-13'

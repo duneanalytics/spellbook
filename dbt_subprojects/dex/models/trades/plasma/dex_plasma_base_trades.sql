@@ -16,9 +16,6 @@
 ] %}
 
 with plasma_union as (
-    SELECT *
-    FROM
-    (
         {% for plasma_model in plasma_models %}
         SELECT
             blockchain
@@ -37,7 +34,6 @@ with plasma_union as (
             , project_contract_address
             , tx_hash
             , evt_index
-            , row_number() over (partition by tx_hash, evt_index order by tx_hash) as duplicates_rank
         FROM
             {{ plasma_model }}
         WHERE
@@ -49,15 +45,27 @@ with plasma_union as (
         UNION ALL
         {% endif %}
         {% endfor %}
-    )
-    WHERE
-        duplicates_rank = 1
 )
 
-{{
-    add_tx_columns(
-        model_cte = 'plasma_union'
-        , blockchain = 'plasma'
-        , columns = ['from', 'to', 'index']
-    )
-}} 
+, add_tx_columns as (
+    {{
+        add_tx_columns(
+            model_cte = 'plasma_union'
+            , blockchain = 'plasma'
+            , columns = ['from', 'to', 'index']
+        )
+    }}
+)
+, final as (
+    select
+        *
+        , row_number() over (partition by tx_hash, evt_index order by tx_hash) as duplicates_rank
+    from
+        add_tx_columns
+)
+select
+    *
+from
+    final
+where
+    duplicates_rank = 1

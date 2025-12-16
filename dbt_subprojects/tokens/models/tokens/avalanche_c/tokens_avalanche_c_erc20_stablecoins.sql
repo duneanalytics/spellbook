@@ -5,7 +5,7 @@
       , post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                   "sector",
                                   "tokens_avalanche_c",
-                                  \'["synthquest","rantum"]\') }}'
+                                  \'["synthquest","rantum","tomfutago"]\') }}'
       , unique_key = ['contract_address']
   )
 }}
@@ -30,6 +30,15 @@ FROM (VALUES
         ('avalanche_c', 0x8861f5c40a0961579689fdf6cdea2be494f9b25a, 'Hybrid stablecoin', 'iUSDS', 18, ''),
         ('avalanche_c', 0xc7198437980c041c805a1edcba50c1ce5db95118, 'Crypto-backed stablecoin', 'USDT.e', 6, ''),
         ('avalanche_c', 0xabe7a9dfda35230ff60d1590a929ae0644c47dc1, 'Crypto-backed stablecoin', 'aUSD', 18, ''),
-        ('avalanche_c', 0xfab550568c688d5d8a52c7d794cb93edc26ec0ec, 'Crypto-backed stablecoin', 'axlUSD', 6, '')
+        ('avalanche_c', 0xfab550568c688d5d8a52c7d794cb93edc26ec0ec, 'Crypto-backed stablecoin', 'axlUSD', 6, ''),
+        ('avalanche_c', 0x491a4eb4f1fc3bff8e1d2fc856a6a46663ad556f, 'Fiat-backed stablecoin', 'BRZ', 18, ''),
+        ('avalanche_c', 0x8835a2f66a7aaccb297cb985831a616b75e2e16c, 'Fiat-backed stablecoin', 'EUROP', 18, ''),
+        ('avalanche_c', 0xc891eb4cbdeff6e073e859e987815ed1505c2acd, 'Fiat-backed stablecoin', 'EURC', 6, ''),
+        ('avalanche_c', 0x228a48df6819ccc2eca01e2192ebafffdad56c19, 'Fiat-backed stablecoin', 'VCHF', 18, ''),
+        ('avalanche_c', 0xb2f85b7ab3c2b6f62df06de6ae7d09c010a5096e, 'Fiat-backed stablecoin', 'XSGD', 6, ''),
+        ('avalanche_c', 0xf197ffc28c23e0309b5559e7a166f2c6164c80aa, 'Fiat-backed stablecoin', 'MXNB', 18, ''),
+        ('avalanche_c', 0x7678e162f38ec9ef2bfd1d0aaf9fd93355e5fa0b, 'Fiat-backed stablecoin', 'VEUR', 18, ''),
+        ('avalanche_c', 0xe7c3d8c9a439fede00d2600032d5db0be71c3c29, 'Fiat-backed stablecoin', 'JPYC', 18, ''),
+        ('avalanche_c', 0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34, 'Crypto-backed stablecoin', 'USDe', 18, 'Ethena')
 
-     ) AS temp_table (blockchain, contract_address, backing, symbol, decimals, name)
+) AS temp_table (blockchain, contract_address, backing, symbol, decimals, name)
