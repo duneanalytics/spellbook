@@ -121,7 +121,7 @@ left join {{ ref('polymarket_polygon_market_outcomes') }} pm on pm.question_id =
 SELECT *,
 CASE WHEN outcome = '50/50' THEN 0.5
   WHEN LOWER(token_outcome) = outcome THEN 1
-  ELSE 0 END AS price_modifier
+  WHEN outcome != 'unresolved' THEN 0 END AS final_price
 FROM naming_things
 where token_id is not null
 and condition_id is not null

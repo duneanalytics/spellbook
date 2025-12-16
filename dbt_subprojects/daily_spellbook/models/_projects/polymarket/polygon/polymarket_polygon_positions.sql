@@ -23,7 +23,7 @@ WITH all_prices AS (
             WHEN md.market_end_time_parsed IS NULL
                 OR pp.hour <= md.market_end_time_parsed
             THEN pp.price
-            ELSE COALESCE(md.price_modifier, 0)
+            ELSE COALESCE(md.price_final_pricemodifier, 0)
         END AS price_mod
     FROM {{ ref('polymarket_polygon_market_prices_hourly') }} pp
     LEFT JOIN {{ ref('polymarket_polygon_market_details') }} md ON pp.token_id = md.token_id
