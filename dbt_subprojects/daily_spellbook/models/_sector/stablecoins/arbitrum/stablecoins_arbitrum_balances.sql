@@ -21,7 +21,7 @@ stablecoin_tokens as (
 
 ,balances as (
     {{
-      balances_incremental_subset_daily(
+      balances_incremental_subset_daily_legacy(
             blockchain = 'arbitrum',
             token_list = 'stablecoin_tokens',
             start_date = '2021-05-26'
