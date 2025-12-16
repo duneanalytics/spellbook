@@ -85,9 +85,12 @@ balances as (
 )
 
 select
-    t.symbol
-    ,b.*
-from balances b
-left join stablecoin_tokens t
-    on b.token_address = t.token_address
- 
+  blockchain,
+  day,
+  address,
+  token_address,
+  token_standard,
+  token_id,
+  balance_raw,
+  last_updated
+from balances
