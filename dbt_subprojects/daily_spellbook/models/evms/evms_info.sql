@@ -24,6 +24,7 @@
                                         , "katana"
                                         , "xlayer"
                                         , "linea"
+                                        , "megaeth"
                                         , "mezo"
                                         , "monad"
                                         , "nova"
@@ -143,4 +144,5 @@ FROM (
         , (31612, 'mezo', 'Mezo', 'Layer 2', NULL, 'BTC', 0x7b7c000000000000000000000000000000000000, 'https://explorer.mezo.org/', timestamp '2025-05-05 00:00:00', 'Cosmos SDK + EVM (CometBFT)', NULL, 'Bitcoin', true, 'Bitcoin')
         , (143, 'monad', 'Monad', 'Layer 1', NULL, 'MON', 0x3bd359C1119dA7Da1D913D1C4D2B7c461115433A, NULL, NULL, 'Custom EVM L1 (Monad Labs)', NULL, NULL, true, NULL)
         , (196, 'xlayer', 'X Layer', 'Layer 2', 'Optimistic Rollup', 'OKB', 0xe538905cf8410324e03a5a23c1c177a474d59b2b, 'https://web3.okx.com/explorer/x-layer', timestamp '2024-03-30 08:02', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, NULL)
+        , (4326, 'megaeth', 'MegaETH', 'Layer 1', NULL, 'ETH', 0x4eB2Bd7beE16F38B1F4a0A5796Fffd028b6040e9, 'https://miniblocks.io/', timestamp '2025-11-10 17:50:12', NULL, NULL, NULL, true, NULL)
 ) AS temp_table (chain_id, blockchain, name, chain_type, rollup_type, native_token_symbol, wrapped_native_token_address, explorer_link, first_block_time, codebase, data_availability, settlement, is_on_dune, ecosystem)

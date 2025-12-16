@@ -86,7 +86,7 @@ models:
     meta:
       blockchain: bnb
       sector: stablecoins
-      contributors: synthquest, rantum
+      contributors: synthquest, rantum, tomfutago
     config:
       tags: ['tokens', 'bnb', 'erc20', 'stablecoins']
     description: >
