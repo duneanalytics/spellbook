@@ -16,8 +16,7 @@ ref('balancer_v2_ethereum_flashloans')
 , ref('balancer_v2_gnosis_flashloans')
 , ref('balancer_v2_avalanche_c_flashloans')
 , ref('balancer_v2_base_flashloans')
-, ref('balancer_v2_zkevm_flashloans')
-] %}
+, ref('balancer_v2_zkevm_flashloans') ] %}
 
 SELECT *
 FROM (

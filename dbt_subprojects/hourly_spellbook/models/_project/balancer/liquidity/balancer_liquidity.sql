@@ -1,11 +1,11 @@
 {{ config(
         schema = 'balancer',
-        alias = 'liquidity', 
-        
-        post_hook='{{ expose_spells(blockchains = \'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon", "zkevm"]\',
+        alias = 'liquidity',
+
+        post_hook='{{ expose_spells(blockchains = \'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon", "zkevm", "plasma"]\',
                                 spell_type = "project",
                                 spell_name = "balancer",
-                                contributors = \'["viniabussafi"]\') }}'
+                                contributors = \'["viniabussafi", "tiagoponciano"]\') }}'
         )
 }}
 
@@ -24,6 +24,8 @@ ref('balancer_v1_ethereum_liquidity')
 , ref('balancer_v3_gnosis_liquidity')
 , ref('balancer_v3_arbitrum_liquidity')
 , ref('balancer_v3_base_liquidity')
+, ref('balancer_v3_plasma_liquidity')
+, ref('balancer_v3_avalanche_c_liquidity')
 ] %}
 
 

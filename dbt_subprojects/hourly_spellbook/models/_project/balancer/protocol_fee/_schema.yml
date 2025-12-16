@@ -3,17 +3,18 @@ version: 2
 models:
   - name: balancer_protocol_fee
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, plasma, zkevm
       project: balancer
       contributors: viniabussafi
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'fees']
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'plasma', 'zkevm', 'fees']
     description: >
       Daily Protocol Fee collected and Revenue by pool on Balancer, an automated portfolio manager and trading platform.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
+            - blockchain
             - pool_id
             - token_address
             - fee_type
