@@ -24,9 +24,6 @@
 ] %}
 
 with base_union as (
-    SELECT *
-    FROM
-    (
         {% for base_model in base_models %}
         SELECT
             blockchain
@@ -56,7 +53,6 @@ with base_union as (
         UNION ALL
         {% endif %}
         {% endfor %}
-    )
 )
 , add_tx_columns as (
     {{
