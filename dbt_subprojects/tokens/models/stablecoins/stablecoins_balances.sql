@@ -1,14 +1,10 @@
 {% set chains = [
-    'arbitrum'
-    ,'avalanche_c'
-    ,'base'
-    ,'ethereum'
-    ,'kaia'
-    ,'linea'
-    ,'optimism'
-    ,'polygon'
-    ,'scroll'
-    ,'worldchain'
+    'avalanche_c',
+    'base',
+    'kaia',
+    'linea',
+    'scroll',
+    'worldchain',
 ] %}
 
 {{
@@ -17,9 +13,9 @@
     alias = 'balances',
     materialized = 'view',
     post_hook = '{{ expose_spells(blockchains = \'["' ~ chains | join('","') ~ '"]\',
-                                 spell_type = "sector",
-                                 spell_name = "stablecoins",
-                                 contributors = \'["tomfutago"]\') }}'
+                                  spell_type = "sector",
+                                  spell_name = "stablecoins",
+                                  contributors = \'["tomfutago"]\') }}'
   )
 }}
 
