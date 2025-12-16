@@ -321,6 +321,8 @@ models:
         description: "Start time of the market parsed as a timestamp"
       - name: market_end_time_parsed
         description: "End time of the market parsed as a timestamp"
+      - name: price_modifier
+        description: "Price modifier for the market"
 
   - name: polymarket_polygon_positions_raw
     meta:

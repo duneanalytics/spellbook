@@ -39,11 +39,7 @@ WITH latest_day AS (
     mm.market_end_time_parsed,
     mm.outcome AS market_outcome,
     mm.resolved_on_timestamp,
-    CASE 
-      WHEN mm.outcome = '50/50' THEN 0.5
-      WHEN LOWER(mm.token_outcome) = mm.outcome THEN 1
-      ELSE 0
-    END AS modifier
+    mm.price_modifier
     FROM {{ ref('polymarket_polygon_positions_raw') }} p
     INNER JOIN latest_day ld ON p.day = ld.day
     INNER JOIN {{ ref('polymarket_polygon_market_details') }} mm ON p.token_id = mm.token_id
@@ -58,12 +54,12 @@ op.balance,
 op.balance*(CASE WHEN op.market_end_time_parsed IS NULL
   OR p.last_updated <= op.market_end_time_parsed
   THEN p.latest_price
-  ELSE COALESCE(modifier, 0)
+  ELSE COALESCE(price_modifier, 0)
   END) AS open_interest,
 CASE WHEN op.market_end_time_parsed IS NULL
   OR p.last_updated <=op.market_end_time_parsed
   THEN p.latest_price
-  ELSE COALESCE(modifier, 0)
+  ELSE COALESCE(price_modifier, 0)
   END AS latest_price,
 op.question_id,
 op.market_question,

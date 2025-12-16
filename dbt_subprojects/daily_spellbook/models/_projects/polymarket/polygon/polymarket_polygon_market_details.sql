@@ -118,6 +118,10 @@ left join {{ ref('polymarket_polygon_market_outcomes') }} pm on pm.question_id =
 
 --these nulls get introduced by the polymarket api responses 
 
-SELECT * FROM naming_things
+SELECT *,
+CASE WHEN outcome = '50/50' THEN 0.5
+  WHEN LOWER(token_outcome) = outcome THEN 1
+  ELSE 0 END AS price_modifier
+FROM naming_things
 where token_id is not null
 and condition_id is not null
