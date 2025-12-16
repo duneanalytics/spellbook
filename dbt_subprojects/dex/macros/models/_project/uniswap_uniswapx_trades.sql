@@ -31,6 +31,7 @@ fill_events as (
     {% endfor %}
     )
     {% if is_incremental() %}
+    and topic0 = 0x78ad7ec0e9f89e74012afa58738b6b661c024cb0fd185ee2f616c0a28924bd66 -- fill event 
     and {{ incremental_predicate('block_time') }}
     {% endif %}
 ),
@@ -53,6 +54,7 @@ erc20_tfers as (
         and erc.evt_block_date = fve.block_date
         and erc.evt_tx_hash = fve.tx_hash
     where erc.evt_block_date >= date '{{start_date}}'
+    and erc.value > uint256 '0'
     {% if is_incremental() %}
     and {{ incremental_predicate('evt_block_time') }}
     {% endif %}
