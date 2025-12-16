@@ -18,9 +18,15 @@
                                     \'["Henrystats", "agaperste"]\') }}')
 }}
 
+with 
+
+dexs AS (
     {{
         enrich_dex_trades(
             base_trades = ref('uniswap_uniswapx_base_trades')
             , tokens_erc20_model = source('tokens', 'erc20')
         )
     }}
+)
+
+select * from fexs
