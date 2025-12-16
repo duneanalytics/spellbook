@@ -13,6 +13,7 @@ fill_events as (
         block_date,
         block_number,
         block_time,
+        tx_from,
         tx_to,
         tx_hash,
         index as evt_index,
@@ -93,7 +94,9 @@ select
     fe.contract_address as project_contract_address,
     fe.tx_hash,
     fe.evt_index, 
-    fe.swapper as sender
+    fe.swapper as sender,
+    fe.tx_from,
+    fe.tx_to 
 from 
 fill_events fe 
 left join 
