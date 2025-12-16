@@ -1,6 +1,6 @@
 version: 2
 
-monadls:
+models:
   - name: zeroex_v2_monad_trades 
     meta:
       blockchain: monad
