@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'paraswap_v6_fantom',
+    schema = 'paraswap_v6_plasma',
     alias = 'trades',
 
     partition_by = ['block_month'],
@@ -8,10 +8,10 @@
     incremental_strategy = 'merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'method', 'trace_address'],
-    post_hook='{{ expose_spells(\'["fantom"]\',
+    post_hook='{{ expose_spells(\'["plasma"]\',
                                 "project",
                                 "paraswap_v6",
-                                \'["eptighte", "mwamedacen"]\') }}'
+                                \'["eptighte"]\') }}'
     )
 }}
 
@@ -27,34 +27,26 @@ with dexs AS (
             receivedAmount AS token_bought_amount_raw,
             fromAmount AS token_sold_amount_raw,
             CAST(NULL AS double) AS amount_usd,
-            method,
-            CASE
-                WHEN from_hex(destToken) = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                THEN 0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83 -- wftm
-                ELSE from_hex(destToken)
-            END AS token_bought_address,
-            CASE
-                WHEN from_hex(srcToken) = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                THEN 0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83 -- wftm
-                ELSE from_hex(srcToken)
-            END AS token_sold_address,
+            method,            
+            {{ to_wrapped_native_token('plasma', 'from_hex(destToken)', 'token_bought_address')   }},            
+            {{ to_wrapped_native_token('plasma', 'from_hex(srcToken)', 'token_sold_address')   }},            
             projectContractAddress as project_contract_address,
             call_tx_hash as tx_hash,
             call_trace_address AS trace_address,
             CAST(-1 as integer) AS evt_index
-        FROM {{ ref('paraswap_v6_fantom_trades_decoded') }}
+        FROM {{ ref('paraswap_v6_plasma_trades_decoded') }}
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('blockTime') }}
         {% endif %}
 )
 
-SELECT 'fantom' AS blockchain,
+SELECT 'plasma' AS blockchain,
     project,
     '6' AS version,
     cast(date_trunc('day', d.block_time) as date) as block_date,
     cast(date_trunc('month', d.block_time) as date) as block_month,
     d.block_time,
-method,
+    method,
     e1.symbol AS token_bought_symbol,
     e2.symbol AS token_sold_symbol,
     CASE
@@ -81,7 +73,7 @@ method,
     d.trace_address,
     d.evt_index
 FROM dexs d
-INNER JOIN {{ source('fantom', 'transactions') }} tx ON d.tx_hash = tx.hash
+INNER JOIN {{ source('plasma', 'transactions') }} tx ON d.tx_hash = tx.hash
     AND d.block_number = tx.block_number
     {% if not is_incremental() %}
     AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
@@ -90,12 +82,12 @@ INNER JOIN {{ source('fantom', 'transactions') }} tx ON d.tx_hash = tx.hash
     AND {{ incremental_predicate('tx.block_time') }}
     {% endif %}
 LEFT JOIN {{ source('tokens', 'erc20') }} e1 ON e1.contract_address = d.token_bought_address
-    AND e1.blockchain = 'fantom'
+    AND e1.blockchain = 'plasma'
 LEFT JOIN {{ source('tokens', 'erc20') }} e2 on e2.contract_address = d.token_sold_address
-    AND e2.blockchain = 'fantom'
+    AND e2.blockchain = 'plasma'
 LEFT JOIN {{ source('prices', 'usd') }} p1 ON p1.minute = date_trunc('minute', d.block_time)
     AND p1.contract_address = d.token_bought_address
-    AND p1.blockchain = 'fantom'
+    AND p1.blockchain = 'plasma'
     {% if not is_incremental() %}
     AND p1.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
@@ -104,7 +96,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p1 ON p1.minute = date_trunc('minute', d
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p2 ON p2.minute = date_trunc('minute', d.block_time)
     AND p2.contract_address = d.token_sold_address
-    AND p2.blockchain = 'fantom'
+    AND p2.blockchain = 'plasma'
     {% if not is_incremental() %}
     AND p2.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}

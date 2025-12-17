@@ -1,26 +1,10 @@
 version: 2
 
 sources: 
-  - name: paraswap_arbitrum
+  - name: paraswap_plasma
     description: >
       Decoded event table for swaps on paraswap
-    tables:
-      - name: AugustusSwapper_evt_BoughtV3
-      - name: AugustusSwapper_evt_SwappedV3
-      - name: AugustusSwapper_evt_SwappedDirect
-      # v6
-      # v6.1
-      - name: AugustusV6_1_call_swapExactAmountIn
-      - name: AugustusV6_1_call_swapExactAmountInOnUniswapV2
-      - name: AugustusV6_1_call_swapExactAmountInOnUniswapV3
-      - name: AugustusV6_1_call_swapExactAmountInOnCurveV1
-      - name: AugustusV6_1_call_swapExactAmountInOnCurveV2
-      - name: AugustusV6_1_call_swapExactAmountInOnBalancerV2
-      - name: AugustusV6_1_call_swapExactAmountOut
-      - name: AugustusV6_1_call_swapExactAmountOutOnUniswapV2
-      - name: AugustusV6_1_call_swapExactAmountOutOnUniswapV3
-      - name: AugustusV6_1_call_swapExactAmountOutOnBalancerV2
-
+    tables:      
       # v6.2
       - name: AugustusV6_2_call_swapExactAmountIn
       - name: AugustusV6_2_call_swapExactAmountInPro
