@@ -1,6 +1,4 @@
 {% set chains = [
-    'avalanche_c',
-    'base',
     'kaia',
     'linea',
     'scroll',
