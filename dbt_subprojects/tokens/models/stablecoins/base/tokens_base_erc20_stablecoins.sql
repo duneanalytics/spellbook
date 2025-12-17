@@ -11,10 +11,10 @@
 
 -- union view combining core (frozen) and extended (new additions) stablecoin lists
 
-select blockchain, contract_address, backing, symbol, decimals, name
+select blockchain, contract_address
 from {{ ref('tokens_' ~ chain ~ '_erc20_stablecoins_core') }}
 
 union all
 
-select blockchain, contract_address, backing, symbol, decimals, name
+select blockchain, contract_address
 from {{ ref('tokens_' ~ chain ~ '_erc20_stablecoins_extended') }}

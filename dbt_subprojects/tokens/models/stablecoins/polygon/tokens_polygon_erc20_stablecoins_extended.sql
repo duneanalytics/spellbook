@@ -12,10 +12,10 @@
 -- extended list: new stablecoin addresses added after the core list was frozen
 -- add new stablecoins here (not in tokens_polygon_erc20_stablecoins_core)
 
-select '{{chain}}' as blockchain, contract_address, backing, symbol, decimals, name
+select '{{chain}}' as blockchain, contract_address
 from (values
 
-     (0x0000000000000000000000000000000000000000, '', '', 0, '')
+     (0x0000000000000000000000000000000000000000)
 
-) as temp_table (contract_address, backing, symbol, decimals, name)
+) as temp_table (contract_address)
 where contract_address != 0x0000000000000000000000000000000000000000
