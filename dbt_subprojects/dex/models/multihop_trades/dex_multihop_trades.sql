@@ -2,7 +2,7 @@
     schema = 'dex'
     , alias = 'multihop_trades'
     , materialized = 'view'
-    , post_hook='{{ expose_spells(blockchains = \'["ethereum", "arbitrum", "optimism", "polygon", "bnb", "base", "celo", "avalanche_c", "unichain"]\',
+    , post_hook='{{ expose_spells(blockchains = \'["arbitrum", "avalanche_c", "base", "blast", "bnb", "celo", "ethereum", "gnosis", "ink", "linea", "mantle", "monad", "optimism", "plasma", "polygon", "scroll", "sonic", "unichain", "worldchain", "zksync", "zora"]\',
                                       spell_type = "sector", 
                                       spell_name = "dex", 
                                       contributors = \'["hubbymatic", "Henrystats", "agaperste"]\') }}'
