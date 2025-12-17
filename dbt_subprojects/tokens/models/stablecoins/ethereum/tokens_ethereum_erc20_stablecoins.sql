@@ -9,12 +9,12 @@
   )
 }}
 
--- union view combining seed (frozen) and latest (new additions) stablecoin lists
+-- union view combining core (frozen) and extended (new additions) stablecoin lists
 
 select blockchain, contract_address, backing, symbol, decimals, name, denomination
-from {{ ref('tokens_' ~ chain ~ '_erc20_stablecoins_seed') }}
+from {{ ref('tokens_' ~ chain ~ '_erc20_stablecoins_core') }}
 
 union all
 
 select blockchain, contract_address, backing, symbol, decimals, name, denomination
-from {{ ref('tokens_' ~ chain ~ '_erc20_stablecoins_latest') }}
+from {{ ref('tokens_' ~ chain ~ '_erc20_stablecoins_extended') }}

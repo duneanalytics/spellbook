@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stablecoins_kaia_seed_balances
+  - name: stablecoins_kaia_core_balances
     meta:
       blockchain: kaia
       sector: stablecoin
@@ -9,7 +9,7 @@ models:
       contributors: synthquest, tomfutago
     config:
       tags: ['stablecoin', 'balances']
-    description: "Seed balances of stablecoin token holders (frozen list)"
+    description: "Core balances of stablecoin token holders (frozen core list)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -42,7 +42,7 @@ models:
         name: last_updated
         description: "UTC timestamp when data was last updated"
 
-  - name: stablecoins_kaia_latest_balances
+  - name: stablecoins_kaia_extended_balances
     meta:
       blockchain: kaia
       sector: stablecoin
@@ -50,7 +50,7 @@ models:
       contributors: tomfutago
     config:
       tags: ['stablecoin', 'balances']
-    description: "Latest balances of newly added stablecoin token holders"
+    description: "Extended balances of newly added stablecoin token holders"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -67,7 +67,7 @@ models:
       - *balance_raw
       - *last_updated
 
-  - name: stablecoins_kaia_seed_balances_enriched
+  - name: stablecoins_kaia_core_balances_enriched
     meta:
       blockchain: kaia
       sector: stablecoin
@@ -75,7 +75,7 @@ models:
       contributors: tomfutago
     config:
       tags: ['stablecoin', 'balances']
-    description: "Seed balances enriched with token metadata and usd prices"
+    description: "Core balances enriched with token metadata and usd prices"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -101,7 +101,7 @@ models:
         description: "USD value of balance for the user"
       - *last_updated
 
-  - name: stablecoins_kaia_latest_balances_enriched
+  - name: stablecoins_kaia_extended_balances_enriched
     meta:
       blockchain: kaia
       sector: stablecoin
@@ -109,7 +109,7 @@ models:
       contributors: tomfutago
     config:
       tags: ['stablecoin', 'balances']
-    description: "Latest balances enriched with token metadata and usd prices"
+    description: "Extended balances enriched with token metadata and usd prices"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -188,7 +188,7 @@ models:
         name: decimals
         description: "Number of decimals"
 
-  - name: tokens_kaia_erc20_stablecoins_seed
+  - name: tokens_kaia_erc20_stablecoins_core
     meta:
       blockchain: kaia
       sector: stablecoins
@@ -196,7 +196,7 @@ models:
     config:
       tags: ['tokens', 'kaia', 'erc20', 'stablecoins']
     description: >
-        Seed list of stablecoin token addresses (frozen).
+        Core list of stablecoin token addresses (frozen).
     columns:
       - *blockchain
       - *contract_address
@@ -205,7 +205,7 @@ models:
       - *name
       - *decimals
 
-  - name: tokens_kaia_erc20_stablecoins_latest
+  - name: tokens_kaia_erc20_stablecoins_extended
     meta:
       blockchain: kaia
       sector: stablecoins

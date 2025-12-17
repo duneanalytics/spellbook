@@ -34,7 +34,7 @@ models:
         name: decimals
         description: "Number of decimals"
 
-  - name: tokens_celo_erc20_stablecoins_seed
+  - name: tokens_celo_erc20_stablecoins_core
     meta:
       blockchain: celo
       sector: stablecoins
@@ -42,7 +42,7 @@ models:
     config:
       tags: ['tokens', 'celo', 'erc20', 'stablecoins']
     description: >
-        Seed list of stablecoin token addresses (frozen).
+        Core list of stablecoin token addresses (frozen).
     columns:
       - *blockchain
       - *contract_address
@@ -51,7 +51,7 @@ models:
       - *name
       - *decimals
 
-  - name: tokens_celo_erc20_stablecoins_latest
+  - name: tokens_celo_erc20_stablecoins_extended
     meta:
       blockchain: celo
       sector: stablecoins

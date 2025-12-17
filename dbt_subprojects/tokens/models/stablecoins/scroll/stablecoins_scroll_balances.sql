@@ -26,7 +26,7 @@ select
   balance,
   balance_usd,
   last_updated
-from {{ ref('stablecoins_' ~ chain ~ '_seed_balances_enriched') }}
+from {{ ref('stablecoins_' ~ chain ~ '_core_balances_enriched') }}
 
 union all
 
@@ -42,4 +42,4 @@ select
   balance,
   balance_usd,
   last_updated
-from {{ ref('stablecoins_' ~ chain ~ '_latest_balances_enriched') }}
+from {{ ref('stablecoins_' ~ chain ~ '_extended_balances_enriched') }}
