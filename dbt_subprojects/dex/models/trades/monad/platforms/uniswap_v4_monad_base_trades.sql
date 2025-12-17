@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'uniswap_v4_moand'
+    schema = 'uniswap_v4_monad'
     , alias = 'base_trades'
     , materialized = 'incremental'
     , file_format = 'delta'
