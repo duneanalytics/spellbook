@@ -12,7 +12,7 @@
 -- seed list: frozen stablecoin addresses used for initial incremental balances
 -- new stablecoins should be added to tokens_arbitrum_erc20_stablecoins_latest
 
-select chain as blockchain, contract_address, backing, symbol, decimals, name
+select '{{chain}}' as blockchain, contract_address, backing, symbol, decimals, name
 from (values
 
      (0x641441c631e2f909700d2f41fd87f0aa6a6b4edb, 'Crypto-backed stablecoin', 'USX', 18, ''),

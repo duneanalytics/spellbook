@@ -12,7 +12,7 @@
 -- seed list: frozen stablecoin addresses used for initial incremental balances
 -- new stablecoins should be added to tokens_ethereum_erc20_stablecoins_latest
 
-select chain as blockchain, contract_address, backing, symbol, decimals, name, denomination
+select '{{chain}}' as blockchain, contract_address, backing, symbol, decimals, name, denomination
 from (values
 
      (0x6b175474e89094c44da98b954eedeac495271d0f, 'Hybrid stablecoin', 'DAI', 18, 'MakerDAO', 'USD'),

@@ -12,7 +12,7 @@
 -- latest list: new stablecoin addresses added after the seed list was frozen
 -- add new stablecoins here (not in tokens_ethereum_erc20_stablecoins_seed)
 
-select chain as blockchain, contract_address, backing, symbol, decimals, name, denomination
+select '{{chain}}' as blockchain, contract_address, backing, symbol, decimals, name, denomination
 from (values
 
      (0x0000000000000000000000000000000000000000, '', '', 0, '', '')
