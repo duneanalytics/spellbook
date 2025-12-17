@@ -9,9 +9,12 @@
   )
 }}
 
-select '{{chain}}' as blockchain, contract_address, backing, symbol, decimals, name
-from (values
+-- union view combining seed (frozen) and latest (new additions) stablecoin lists
 
-     (0x18bc5bcc660cf2b9ce3cd51a404afe1a0cbd3c22, 'Fiat-backed stablecoin', 'IDRX', 18, '')
+select blockchain, contract_address, backing, symbol, decimals, name
+from {{ ref('tokens_' ~ chain ~ '_erc20_stablecoins_seed') }}
 
-) as temp_table (contract_address, backing, symbol, decimals, name)
+union all
+
+select blockchain, contract_address, backing, symbol, decimals, name
+from {{ ref('tokens_' ~ chain ~ '_erc20_stablecoins_latest') }}

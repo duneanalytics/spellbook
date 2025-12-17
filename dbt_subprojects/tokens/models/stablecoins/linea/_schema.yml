@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stablecoins_linea_base_balances
+  - name: stablecoins_linea_seed_balances
     meta:
       blockchain: linea
       sector: stablecoin
@@ -9,7 +9,7 @@ models:
       contributors: synthquest, tomfutago
     config:
       tags: ['stablecoin', 'balances']
-    description: "Base balances of stablecoin token holders"
+    description: "Seed balances of stablecoin token holders (frozen list)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -42,7 +42,7 @@ models:
         name: last_updated
         description: "UTC timestamp when data was last updated"
 
-  - name: stablecoins_linea_balances
+  - name: stablecoins_linea_latest_balances
     meta:
       blockchain: linea
       sector: stablecoin
@@ -50,7 +50,32 @@ models:
       contributors: tomfutago
     config:
       tags: ['stablecoin', 'balances']
-    description: "Enriched balances of stablecoin token holders with token metadata and USD prices"
+    description: "Latest balances of newly added stablecoin token holders"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    columns:
+      - *blockchain
+      - *day
+      - *address
+      - *token_address
+      - *token_standard
+      - *token_id
+      - *balance_raw
+      - *last_updated
+
+  - name: stablecoins_linea_seed_balances_enriched
+    meta:
+      blockchain: linea
+      sector: stablecoin
+      project: stablecoin
+      contributors: tomfutago
+    config:
+      tags: ['stablecoin', 'balances']
+    description: "Seed balances enriched with token metadata and usd prices"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -76,6 +101,62 @@ models:
         description: "USD value of balance for the user"
       - *last_updated
 
+  - name: stablecoins_linea_latest_balances_enriched
+    meta:
+      blockchain: linea
+      sector: stablecoin
+      project: stablecoin
+      contributors: tomfutago
+    config:
+      tags: ['stablecoin', 'balances']
+    description: "Latest balances enriched with token metadata and usd prices"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    columns:
+      - *blockchain
+      - *day
+      - *address
+      - *token_symbol
+      - *token_address
+      - *token_standard
+      - *token_id
+      - *balance_raw
+      - *balance
+      - *balance_usd
+      - *last_updated
+
+  - name: stablecoins_linea_balances
+    meta:
+      blockchain: linea
+      sector: stablecoin
+      project: stablecoin
+      contributors: tomfutago
+    config:
+      tags: ['stablecoin', 'balances']
+    description: "Union view of seed and latest enriched balances"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    columns:
+      - *blockchain
+      - *day
+      - *address
+      - *token_symbol
+      - *token_address
+      - *token_standard
+      - *token_id
+      - *balance_raw
+      - *balance
+      - *balance_usd
+      - *last_updated
+
   - name: tokens_linea_erc20_stablecoins
     meta:
       blockchain: linea
@@ -84,7 +165,11 @@ models:
     config:
       tags: ['tokens', 'linea', 'erc20', 'stablecoins']
     description: >
-        Selection of stablecoin token addresses.
+        Union view of all stablecoin token addresses (seed + latest).
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - contract_address
     columns:
       - *blockchain
       - &contract_address
@@ -102,3 +187,37 @@ models:
       - &decimals
         name: decimals
         description: "Number of decimals"
+
+  - name: tokens_linea_erc20_stablecoins_seed
+    meta:
+      blockchain: linea
+      sector: stablecoins
+      contributors: rantum, tomfutago
+    config:
+      tags: ['tokens', 'linea', 'erc20', 'stablecoins']
+    description: >
+        Seed list of stablecoin token addresses (frozen).
+    columns:
+      - *blockchain
+      - *contract_address
+      - *backing
+      - *symbol
+      - *name
+      - *decimals
+
+  - name: tokens_linea_erc20_stablecoins_latest
+    meta:
+      blockchain: linea
+      sector: stablecoins
+      contributors: tomfutago
+    config:
+      tags: ['tokens', 'linea', 'erc20', 'stablecoins']
+    description: >
+        Latest additions to stablecoin token addresses.
+    columns:
+      - *blockchain
+      - *contract_address
+      - *backing
+      - *symbol
+      - *name
+      - *decimals

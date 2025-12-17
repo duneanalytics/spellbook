@@ -4,7 +4,7 @@
   config(
     tags = ['prod_exclude'],
     schema = 'stablecoins_' ~ chain,
-    alias = 'base_balances',
+    alias = 'seed_balances',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -13,13 +13,15 @@
   )
 }}
 
+-- seed balances: tracks balances for stablecoins in the frozen seed list
+
 with
 
 stablecoin_tokens_total as (
   select
     symbol,
     contract_address as token_address
-  from {{ source('tokens_' ~ chain, 'erc20_stablecoins') }}
+  from {{ ref('tokens_' ~ chain ~ '_erc20_stablecoins_seed') }}
 ),
 
 filter_tokens as (

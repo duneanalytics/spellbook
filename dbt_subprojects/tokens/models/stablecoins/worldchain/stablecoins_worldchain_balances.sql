@@ -4,12 +4,7 @@
   config(
     schema = 'stablecoins_' ~ chain,
     alias = 'balances',
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    partition_by = ['day'],
-    unique_key = ['day', 'address', 'token_address'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
+    materialized = 'view',
     post_hook = '{{ expose_spells(blockchains = \'["' ~ chain ~ '"]\',
                                  spell_type = "sector",
                                  spell_name = "stablecoins",
@@ -17,8 +12,34 @@
   )
 }}
 
-{{
-  balances_incremental_subset_daily_enrich(
-    base_balances = ref('stablecoins_' ~ chain ~ '_base_balances')
-  )
-}}
+-- union of seed and latest enriched balances
+
+select
+  blockchain,
+  day,
+  address,
+  token_symbol,
+  token_address,
+  token_standard,
+  token_id,
+  balance_raw,
+  balance,
+  balance_usd,
+  last_updated
+from {{ ref('stablecoins_' ~ chain ~ '_seed_balances_enriched') }}
+
+union all
+
+select
+  blockchain,
+  day,
+  address,
+  token_symbol,
+  token_address,
+  token_standard,
+  token_id,
+  balance_raw,
+  balance,
+  balance_usd,
+  last_updated
+from {{ ref('stablecoins_' ~ chain ~ '_latest_balances_enriched') }}

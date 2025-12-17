@@ -9,7 +9,11 @@ models:
     config:
       tags: ['tokens', 'gnosis', 'erc20', 'stablecoins']
     description: >
-        Selection of stablecoin token addresses.
+        Union view of all stablecoin token addresses (seed + latest).
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - contract_address
     columns:
       - &blockchain
         name: blockchain
@@ -29,3 +33,37 @@ models:
       - &decimals
         name: decimals
         description: "Number of decimals"
+
+  - name: tokens_gnosis_erc20_stablecoins_seed
+    meta:
+      blockchain: gnosis
+      sector: stablecoins
+      contributors: synthquest, tomfutago
+    config:
+      tags: ['tokens', 'gnosis', 'erc20', 'stablecoins']
+    description: >
+        Seed list of stablecoin token addresses (frozen).
+    columns:
+      - *blockchain
+      - *contract_address
+      - *backing
+      - *symbol
+      - *name
+      - *decimals
+
+  - name: tokens_gnosis_erc20_stablecoins_latest
+    meta:
+      blockchain: gnosis
+      sector: stablecoins
+      contributors: tomfutago
+    config:
+      tags: ['tokens', 'gnosis', 'erc20', 'stablecoins']
+    description: >
+        Latest additions to stablecoin token addresses.
+    columns:
+      - *blockchain
+      - *contract_address
+      - *backing
+      - *symbol
+      - *name
+      - *decimals

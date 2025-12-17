@@ -1,10 +1,9 @@
-{% set chain = 'arbitrum' %}
+{% set chain = 'worldchain' %}
 
 {{
   config(
-    tags = ['prod_exclude'],
     schema = 'stablecoins_' ~ chain,
-    alias = 'base_balances',
+    alias = 'latest_balances',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -13,21 +12,24 @@
   )
 }}
 
+-- latest balances: tracks balances for newly added stablecoins (not in seed list)
+
 with
 
 stablecoin_tokens as (
   select
     symbol,
     contract_address as token_address
-  from {{ source('tokens_' ~ chain, 'erc20_stablecoins') }}
+  from {{ ref('tokens_' ~ chain ~ '_erc20_stablecoins_latest') }}
 ),
 
+-- note: update start_date when adding new stablecoins
 balances as (
   {{
     balances_incremental_subset_daily(
         blockchain = chain,
         token_list = 'stablecoin_tokens',
-        start_date = '2021-05-26'
+        start_date = '2025-01-01'
     )
   }}
 )

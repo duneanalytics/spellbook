@@ -1,9 +1,9 @@
-{% set chain = 'avalanche_c' %}
+{% set chain = 'scroll' %}
 
 {{
   config(
     schema = 'stablecoins_' ~ chain,
-    alias = 'base_balances',
+    alias = 'seed_balances',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -12,13 +12,15 @@
   )
 }}
 
+-- seed balances: tracks balances for stablecoins in the frozen seed list
+
 with
 
 stablecoin_tokens as (
   select
     symbol,
     contract_address as token_address
-  from {{ source('tokens_' ~ chain, 'erc20_stablecoins') }}
+  from {{ ref('tokens_' ~ chain ~ '_erc20_stablecoins_seed') }}
 ),
 
 balances as (
@@ -26,7 +28,7 @@ balances as (
     balances_incremental_subset_daily(
         blockchain = chain,
         token_list = 'stablecoin_tokens',
-        start_date = '2021-01-27'
+        start_date = '2023-10-01'
     )
   }}
 )
