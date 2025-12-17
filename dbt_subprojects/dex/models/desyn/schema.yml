@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: desyn
+  - name: desyn_liquidity
     meta:
       blockchain: ethereum, arbitrum, bnb, linea, scroll, hemi, bnb, plume
     description: "DeSyn Protocol daily liquidity (TVL) across all supported chains"
