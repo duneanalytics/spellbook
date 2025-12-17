@@ -30,5 +30,5 @@ FROM
     , ('BTT', 'TAFjULxiVgT4qWk6UZwjqwZXTSaGaqnVp4', 18)
     , ('SUN', 'TSSMHYeV2uE9qYH95DqyoCuNCzEL1NvU3S', 18)
     , ('USDD', 'TPYmHEhy5n8TCEfYGqW2rPxsghSfzghPDn', 18)
-    , ('BUSD', 'TMz2SWatiAtZVVcH2ebpsbVtYwUPT9EdjH', 18)
+    , ('BUSDOLD', 'TMz2SWatiAtZVVcH2ebpsbVtYwUPT9EdjH', 18)
 ) as temp (symbol, contract_address, decimals)
