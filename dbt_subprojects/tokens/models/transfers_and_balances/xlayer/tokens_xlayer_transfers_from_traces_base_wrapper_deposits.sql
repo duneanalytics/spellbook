@@ -15,6 +15,5 @@
 
 {{ transfers_from_traces_base_wrapper_deposits_macro(
     blockchain=blockchain,
-    transfers_from_traces_base_table=ref('tokens_' ~ blockchain ~ '_transfers_from_traces_base'),
-    native_contract_address=var('ETH_ERC20_ADDRESS')
+    transfers_from_traces_base_table=ref('tokens_' ~ blockchain ~ '_transfers_from_traces_base')
 ) }}
