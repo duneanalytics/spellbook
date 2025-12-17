@@ -6,6 +6,7 @@
         alias = 'project_swaps_base_2024_0712',
         materialized = 'table',
         unique_key = ['block_month', 'id'],
+        tags = ['static'],
     )
 -}}
 

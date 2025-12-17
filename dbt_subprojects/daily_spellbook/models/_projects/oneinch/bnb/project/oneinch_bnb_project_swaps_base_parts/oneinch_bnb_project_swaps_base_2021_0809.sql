@@ -6,6 +6,7 @@
         alias = 'project_swaps_base_2021_0809',
         materialized = 'table',
         unique_key = ['block_month', 'id'],
+        tags = ['static'],
     )
 -}}
 
@@ -15,6 +16,6 @@
     oneinch_project_swaps_base_macro(
         blockchain = blockchain,
         date_from = '2021-08-01',
-        date_to = '2022-10-01'
+        date_to = '2021-10-01'
     )
 }}
