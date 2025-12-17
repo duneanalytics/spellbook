@@ -24,7 +24,7 @@ SELECT
     b.wallet_address AS pool_address,
     SUM(b.amount * COALESCE(p.price, 0)) AS protocol_liquidity_usd,
     'v1' AS version
-FROM balances.plume.erc20_day b
+FROM erc20.view_token_balances_daily b
 LEFT JOIN prices.usd p
   ON p.contract_address = b.token_address
  AND p.blockchain = 'plume'
