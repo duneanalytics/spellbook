@@ -9,7 +9,7 @@
 
 WITH pools AS (
     SELECT DISTINCT
-        '0x' || encode(bytearray_substring(topic2, 13, 20), 'hex') AS pool_address
+        '0x' || LOWER(SUBSTRING(to_hex(bytearray_substring(topic2, 13, 20)), 25, 40)) AS pool_address
     FROM {{ source('plume', 'logs') }}
     WHERE contract_address = 0x770c9d0851b21df8A84943EdE4f487D30d9741ba
       AND topic0 = 0x0ca525a414e11c32284272215f33c3c4d119f75876d0dcf9fcf573768ff4baa1

@@ -9,7 +9,7 @@
 
 WITH pools AS (
     SELECT DISTINCT
-        '0x' || encode(bytearray_substring(topic2, 13, 20), 'hex') AS pool_address
+        '0x' || LOWER(SUBSTRING(to_hex(bytearray_substring(topic2, 13, 20)), 25, 40)) AS pool_address
     FROM {{ source('linea', 'logs') }}
     WHERE contract_address = 0x5C3027D8Cb28A712413553206A094213337E88c5
       AND topic0 = 0x0ca525a414e11c32284272215f33c3c4d119f75876d0dcf9fcf573768ff4baa1
