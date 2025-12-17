@@ -1,11 +1,11 @@
 {{ config(
     materialized = 'incremental',
     schema = 'desyn',
+    tags = ['desyn'],
     partition_by = ['day'],
-    unique_key = ['day', 'blockchain', 'version'],
+    unique_key = ['day', 'pool_address'],
     incremental_strategy = 'merge',
     file_format = 'delta',
-    tags = ['desyn', 'liquidity', 'tvl']
 ) }}
 
 SELECT
@@ -20,12 +20,12 @@ FROM (
     UNION ALL
     SELECT * FROM {{ ref('desyn_ethereum_liquidity_v1') }}
     UNION ALL
-    SELECT * FROM {{ ref('desyn_hemi_liquidity_v1') }}
-    UNION ALL
     SELECT * FROM {{ ref('desyn_linea_liquidity_v1') }}
     UNION ALL
-    SELECT * FROM {{ ref('desyn_plume_liquidity_v1') }}
-    UNION ALL
+    -- SELECT * FROM {{ ref('desyn_hemi_liquidity_v1') }}
+    -- UNION ALL
+    -- SELECT * FROM {{ ref('desyn_plume_liquidity_v1') }}
+    -- UNION ALL
     SELECT * FROM {{ ref('desyn_scroll_liquidity_v1') }}
     
 ) 
