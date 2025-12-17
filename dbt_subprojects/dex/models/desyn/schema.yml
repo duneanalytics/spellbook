@@ -27,6 +27,8 @@ models:
         description: "Pool liquidity in USD"
 
   - name: desyn_arbitrum_liquidity_v1
+    meta:
+        blockchain: arbitrum
     description: "DeSyn Arbitrum chain daily liquidity v1"
 
   - name: desyn_bnb_liquidity_v1
