@@ -24,8 +24,8 @@ SELECT
     b.wallet_address AS pool_address,
     SUM(b.amount * COALESCE(p.price, 0)) AS protocol_liquidity_usd,
     'v1' AS version
-FROM erc20."view_token_balances_daily" b 
-LEFT JOIN prices.usd p
+FROM {{ ref('tokens_erc20_daily_balances') }} b
+LEFT JOIN {{ ref('prices_usd') }} p
   ON p.contract_address = b.token_address
  AND p.blockchain = 'arbitrum'
  AND date_trunc('day', p.minute) = b.day
