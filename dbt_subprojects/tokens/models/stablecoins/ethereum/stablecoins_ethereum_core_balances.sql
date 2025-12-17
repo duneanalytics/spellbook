@@ -18,9 +18,7 @@
 with
 
 stablecoin_tokens_total as (
-  select
-    symbol,
-    contract_address as token_address
+  select contract_address as token_address
   from {{ ref('tokens_' ~ chain ~ '_erc20_stablecoins_core') }}
 ),
 
@@ -73,7 +71,7 @@ filter_tokens as (
 ),
 
 stablecoin_tokens as (
-  select distinct st.symbol, st.token_address from stablecoin_tokens_total st 
+  select distinct st.token_address from stablecoin_tokens_total st 
   inner join filter_tokens ft on st.token_address = ft.contract_address
 ),
 

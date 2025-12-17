@@ -18,9 +18,7 @@
 with
 
 stablecoin_tokens as (
-  select
-    symbol,
-    contract_address as token_address
+  select contract_address as token_address
   from {{ ref('tokens_' ~ chain ~ '_erc20_stablecoins_core') }}
 ),
 
