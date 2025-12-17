@@ -10,8 +10,8 @@
 WITH pools AS (
     SELECT DISTINCT
         '0x' || LOWER(SUBSTRING(to_hex(bytearray_substring(topic2, 13, 20)), 25, 40)) AS pool_address
-    FROM {{ source('ethereum', 'logs') }}
-    WHERE contract_address = 0x01a38b39beddcd6bfeedba14057e053cbf529cd2
+    FROM {{ source('linea', 'logs') }}
+    WHERE contract_address = 0x5C3027D8Cb28A712413553206A094213337E88c5
       AND topic0 = 0x0ca525a414e11c32284272215f33c3c4d119f75876d0dcf9fcf573768ff4baa1
       {% if is_incremental() %}
       AND block_time >= date_trunc('day', now() - interval '7' day)
@@ -20,17 +20,17 @@ WITH pools AS (
 
 SELECT
     b.day,
-    'ethereum' AS blockchain,
+    'linea' AS blockchain,
     b.wallet_address AS pool_address,
     SUM(b.amount * COALESCE(p.price, 0)) AS protocol_liquidity_usd,
     'v1' AS version
-FROM {{ ref('tokens_erc20_daily_balances') }} b
-LEFT JOIN {{ ref('prices_usd') }} p
+FROM erc20.view_token_balances_daily b
+LEFT JOIN prices.usd p
   ON p.contract_address = b.token_address
- AND p.blockchain = 'ethereum'
+ AND p.blockchain = 'linea'
  AND date_trunc('day', p.minute) = b.day
 WHERE b.wallet_address IN (SELECT pool_address FROM pools)
-  AND b.blockchain = 'ethereum'
+  AND b.blockchain = 'linea'
   {% if is_incremental() %}
   AND b.day >= date_trunc('day', now() - interval '7' day)
   {% endif %}

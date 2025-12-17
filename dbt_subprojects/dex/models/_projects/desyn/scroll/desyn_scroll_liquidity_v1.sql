@@ -10,8 +10,8 @@
 WITH pools AS (
     SELECT DISTINCT
         '0x' || LOWER(SUBSTRING(to_hex(bytearray_substring(topic2, 13, 20)), 25, 40)) AS pool_address
-    FROM {{ source('bnb', 'logs') }}
-    WHERE contract_address = 0x770c9d0851b21df8A84943EdE4f487D30d9741ba
+    FROM {{ source('scroll', 'logs') }}
+    WHERE contract_address = 0x09eFC8C8F08B810F1F76B0c926D6dCeb37409665
       AND topic0 = 0x0ca525a414e11c32284272215f33c3c4d119f75876d0dcf9fcf573768ff4baa1
       {% if is_incremental() %}
       AND block_time >= date_trunc('day', now() - interval '7' day)
@@ -20,17 +20,17 @@ WITH pools AS (
 
 SELECT
     b.day,
-    'bnb' AS blockchain,
+    'scroll' AS blockchain,
     b.wallet_address AS pool_address,
     SUM(b.amount * COALESCE(p.price, 0)) AS protocol_liquidity_usd,
     'v1' AS version
-FROM {{ ref('tokens_erc20_daily_balances') }} b
-LEFT JOIN {{ ref('prices_usd') }} p
+FROM erc20.view_token_balances_daily b
+LEFT JOIN prices.usd p
   ON p.contract_address = b.token_address
- AND p.blockchain = 'bnb'
+ AND p.blockchain = 'scroll'
  AND date_trunc('day', p.minute) = b.day
 WHERE b.wallet_address IN (SELECT pool_address FROM pools)
-  AND b.blockchain = 'bnb'
+  AND b.blockchain = 'scroll'
   {% if is_incremental() %}
   AND b.day >= date_trunc('day', now() - interval '7' day)
   {% endif %}
