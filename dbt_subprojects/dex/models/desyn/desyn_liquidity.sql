@@ -1,11 +1,16 @@
 {{ config(
     materialized = 'incremental',
     schema = 'desyn',
+    alias = 'liquidity',
     tags = ['desyn'],
     partition_by = ['day'],
     unique_key = ['day', 'blockchain', 'version'],
     incremental_strategy = 'merge',
     file_format = 'delta',
+    post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "bnb", "linea", "scroll", "hemi", "plume"]\',
+                                "project",
+                                "desyn",
+                                \'["santino"]\') }}'
 ) }}
 
 SELECT
