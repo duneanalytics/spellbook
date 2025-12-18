@@ -5,7 +5,7 @@
       , post_hook='{{ expose_spells(\'["ethereum"]\',
                                   "sector",
                                   "tokens_ethereum",
-                                  \'["Henrystats", "synthquest","rantum"]\') }}'
+                                  \'["Henrystats", "synthquest","rantum","tomfutago"]\') }}'
       , unique_key = ['contract_address']
   )
 }}
@@ -108,6 +108,29 @@ FROM (VALUES
       ('ethereum', 0x7c1156e515aa1a2e851674120074968c905aaf37, 'Crypto-backed stablecoin', 'lvlUSD', 18, 'Level Finance', 'USD'),
       ('ethereum', 0xb58e61c3098d85632df34eecfb899a1ed80921cb, 'Fiat-backed stablecoin', 'ZCHF', 18, 'Frankencoin', 'CHF'),
       ('ethereum', 0x57ab1e0003f623289cd798b1824be09a793e4bec, 'Crypto-backed stablecoin', 'reUSD', 18, 'Resupply', 'USD'),
-      ('ethereum', 0x8d0d000ee44948fc98c9b98a4fa4921476f08b0d, 'Fiat-backed stablecoin', 'USD1', 18, 'World Liberty Financial USD', 'USD')
+      ('ethereum', 0x8d0d000ee44948fc98c9b98a4fa4921476f08b0d, 'Fiat-backed stablecoin', 'USD1', 18, 'World Liberty Financial USD', 'USD'),
+
+      ('ethereum', 0x01d33fd36ec67c6ada32cf36b31e88ee190b1839, 'Fiat-backed stablecoin', 'BRZ', 18, '', 'BRL'),
+      ('ethereum', 0x07a24ca74a7592c16827d186b802e004cec33bb3, 'Fiat-backed stablecoin', 'CLPC', 18, '', 'CLP'),
+      ('ethereum', 0x17cdb2a01e7a34cbb3dd4b83260b05d0274c8dab, 'Fiat-backed stablecoin', 'cNGN', 18, '', 'NGN'),
+      ('ethereum', 0xba3f535bbcccca2a154b573ca6c5a49baae0a3ea, 'Fiat-backed stablecoin', 'dEURO', 18, '', 'EUR'),
+      ('ethereum', 0x888883b5f5d21fb10dfeb70e8f9722b9fb0e5e51, 'Fiat-backed stablecoin', 'EUROP', 18, '', 'EUR'),
+      ('ethereum', 0xa40640458fbc27b6eefedea1e9c9e17d4cee7a21, 'Fiat-backed stablecoin', 'AEUR', 18, '', 'EUR'),
+      ('ethereum', 0x4933a85b5b5466fbaf179f72d3de273c287ec2c2, 'Fiat-backed stablecoin', 'EURAU', 18, '', 'EUR'),
+      ('ethereum', 0x3c89cd1884e7bef73ca3ef08d2ef6ec338fd8e49, 'Fiat-backed stablecoin', 'EUR0', 18, '', 'EUR'),
+      ('ethereum', 0x5f7827fdeb7c20b443265fc2f40845b715385ff2, 'Fiat-backed stablecoin', 'EURCV', 18, '', 'EUR'),
+      ('ethereum', 0x39b8b6385416f4ca36a20319f70d28621895279d, 'Fiat-backed stablecoin', 'EURe', 18, '', 'EUR'),
+      ('ethereum', 0x9d1a7a3191102e9f900faa10540837ba84dcbae7, 'Fiat-backed stablecoin', 'EURI', 18, '', 'EUR'),
+      ('ethereum', 0x8df723295214ea6f21026eeeb4382d475f146f9f, 'Fiat-backed stablecoin', 'EURQ', 18, '', 'EUR'),
+      ('ethereum', 0x79d4f0232a66c4c91b89c76362016a1707cfbf4f, 'Fiat-backed stablecoin', 'VCHF', 18, '', 'CHF'),
+      ('ethereum', 0x998ffe1e43facffb941dc337dd0468d52ba5b48a, 'Fiat-backed stablecoin', 'IDRT', 18, '', 'IDR'),
+      ('ethereum', 0xf197ffc28c23e0309b5559e7a166f2c6164c80aa, 'Fiat-backed stablecoin', 'MXNB', 18, '', 'MXN'),
+      ('ethereum', 0x6ba75d640bebfe5da1197bb5a2aff3327789b5d3, 'Fiat-backed stablecoin', 'VEUR', 18, '', 'EUR'),
+      ('ethereum', 0xebf2096e01455108badcbaf86ce30b6e5a72aa52, 'Fiat-backed stablecoin', 'XIDR', 18, '', 'IDR'),
+      ('ethereum', 0xc08512927d12348f6620a698105e1baac6ecd911, 'Fiat-backed stablecoin', 'GYEN', 6, '', 'JPY'),
+      ('ethereum', 0xe7c3d8c9a439fede00d2600032d5db0be71c3c29, 'Fiat-backed stablecoin', 'JPYC', 18, '', 'JPY'),
+      ('ethereum', 0x48f07301e9e29c3c38a80ae8d9ae771f224f1054, 'Fiat-backed stablecoin', 'xZAR', 18, '', 'ZAR'),
+      ('ethereum', 0xb755506531786c8ac63b756bab1ac387bacb0c04, 'Fiat-backed stablecoin', 'ZARP', 18, '', 'ZAR'),
+      ('ethereum', 0xe343167631d89b6ffc58b88d6b7fb0228795491d, 'xxx stablecoin', 'USDG', 6, '', 'USD')
 
 ) AS temp_table (blockchain, contract_address, backing, symbol, decimals, name, denomination)

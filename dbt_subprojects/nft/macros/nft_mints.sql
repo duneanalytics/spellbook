@@ -11,7 +11,7 @@ WITH namespaces AS (
 , nfts_per_tx AS (
     SELECT
         tx_hash
-        , sum(amount) AS nfts_minted_in_tx
+        , SUM(CAST(amount AS DOUBLE)) AS nfts_minted_in_tx
     FROM {{ ref('nft_transfers') }}
     WHERE
         blockchain = '{{blockchain}}'
@@ -19,7 +19,7 @@ WITH namespaces AS (
         AND {{incremental_predicate('block_time')}}
         {% endif %}
     GROUP BY tx_hash
-    HAVING sum(amount) > 0
+    HAVING SUM(CAST(amount AS DOUBLE)) > 0
     )
 
 SELECT
