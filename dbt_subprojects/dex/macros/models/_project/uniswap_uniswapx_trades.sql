@@ -121,7 +121,7 @@ transfer_to as (
 fill_events_ranked as (
     select 
         *,
-        row_number() over (partition by tx_hash order by evt_index) as rn 
+        row_number() over (partition by tx_hash, swapper order by evt_index) as rn 
     from 
     fill_events 
 ),
@@ -129,7 +129,7 @@ fill_events_ranked as (
 eth_in as (
     select 
         bt.*,
-        row_number() over (partition by bt.tx_hash order by bt.trace_address) as rn 
+        row_number() over (partition by bt.tx_hash, bt."from" order by bt.trace_address) as rn 
     from 
     blockchain_traces bt 
     inner join 
@@ -143,7 +143,7 @@ eth_in as (
 eth_out as (
     select 
         bt.*,
-        row_number() over (partition by bt.tx_hash order by bt.trace_address) as rn 
+        row_number() over (partition by bt.tx_hash, bt.to order by bt.trace_address) as rn 
     from 
     blockchain_traces bt 
     inner join 
