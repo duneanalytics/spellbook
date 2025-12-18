@@ -45,7 +45,8 @@ erc20_tfers as (
         erc."from",
         erc.to,
         erc.value,
-        erc.contract_address 
+        erc.contract_address,
+        erc.evt_index 
     from 
     {{ source('erc20_' + blockchain, 'evt_Transfer') }} erc 
     inner join 
@@ -69,7 +70,8 @@ blockchain_traces as (
         erc."from",
         erc.to,
         erc.value,
-        {{ native_token_address }} as contract_address 
+        {{ native_token_address }} as contract_address,
+        erc.trace_address
     from 
     {{ source(blockchain, 'traces') }} erc 
     inner join 
@@ -82,6 +84,74 @@ blockchain_traces as (
     {% if is_incremental() %}
     and {{ incremental_predicate('erc.block_time') }}
     {% endif %} 
+),
+
+transfer_from as (
+    select 
+        erc.*,
+        fe.evt_index as fill_index,
+        row_number() over (partition by erc.tx_hash, fe.evt_index order by erc.evt_index desc) as rn 
+    from 
+    erc20_tfers erc 
+    inner join 
+    fill_events fe 
+        on erc.block_number = fe.block_number
+        and erc.block_date =  fe.block_date
+        and erc.tx_hash = fe.tx_hash
+        and erc."from" = fe.swapper
+        and erc.evt_index < fe.evt_index
+),
+
+transfer_to as (
+    select 
+        erc.*,
+        fe.evt_index as fill_index,
+        row_number() over (partition by erc.tx_hash, fe.evt_index order by erc.evt_index desc) as rn 
+    from 
+    erc20_tfers erc 
+    inner join 
+    fill_events fe 
+        on erc.block_number = fe.block_number
+        and erc.block_date =  fe.block_date
+        and erc.tx_hash = fe.tx_hash
+        and erc.to = fe.swapper
+        and erc.evt_index < fe.evt_index
+),
+
+fill_events_ranked as (
+    select 
+        *,
+        row_number() over (partition by tx_hash order by evt_index desc) as rn 
+    from 
+    fill_events 
+),
+
+eth_in as (
+    select 
+        bt.*,
+        row_number() over (partition by bt.tx_hash order by bt.trace_address desc) as rn 
+    from 
+    blockchain_traces bt 
+    inner join 
+    fill_events fe 
+        on bt.block_number = fe.block_number
+        and bt.block_date =  fe.block_date
+        and bt.tx_hash = fe.tx_hash
+        and bt."from" = fe.swapper
+),
+
+eth_out as (
+    select 
+        bt.*,
+        row_number() over (partition by bt.tx_hash order by bt.trace_address desc) as rn 
+    from 
+    blockchain_traces bt 
+    inner join 
+    fill_events fe 
+        on bt.block_number = fe.block_number
+        and bt.block_date =  fe.block_date
+        and bt.tx_hash = fe.tx_hash
+        and bt.to = fe.swapper
 )
 
 select 
@@ -106,29 +176,33 @@ select
     fe.tx_to,
     fe.tx_index 
 from 
-fill_events fe 
+fill_events_ranked fe 
 left join 
-erc20_tfers transfer_from 
+transfer_from 
     on fe.block_number = transfer_from.block_number 
     and fe.block_date = transfer_from.block_date 
     and fe.tx_hash = transfer_from.tx_hash 
-    and fe.swapper = transfer_from."from"
+    and fe.evt_index = transfer_from.fill_index
+    and transfer_from.rn = 1 
 left join 
-erc20_tfers transfer_to
+transfer_to
     on fe.block_number = transfer_to.block_number 
     and fe.block_date = transfer_to.block_date 
     and fe.tx_hash = transfer_to.tx_hash 
-    and fe.swapper = transfer_to."to"
+    and fe.evt_index = transfer_to.fill_index
+    and transfer_to.rn = 1 
 left join 
-blockchain_traces eth_in
+eth_in
     on fe.block_number = eth_in.block_number 
     and fe.block_date = eth_in.block_date 
     and fe.tx_hash = eth_in.tx_hash 
     and fe.swapper = eth_in."from"
+    and fe.rn = eth_in.rn
 left join 
-blockchain_traces eth_out
+eth_out
     on fe.block_number = eth_out.block_number 
     and fe.block_date = eth_out.block_date 
     and fe.tx_hash = eth_out.tx_hash 
     and fe.swapper = eth_out."to"
+    and fe.rn = eth_out.rn
 {% endmacro %}
