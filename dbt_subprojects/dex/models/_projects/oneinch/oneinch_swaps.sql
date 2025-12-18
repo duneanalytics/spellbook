@@ -28,6 +28,7 @@ executions as (
         select *
             , {{ stream.mode }} as mode
             , false as second_side
+            , {% if stream.name == 'ar' -%} remains {%- else -%} slice(remains, 1, 1) {%- endif %} as updated_remains
         from {{ ref('oneinch_' + stream.name + '_executions') }}
         where true
             {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
@@ -37,6 +38,7 @@ executions as (
         select *
             , 'classic' as mode
             , true as second_side
+            , slice(remains, 2, cardinality(remains)) as updated_remains
         from {{ ref('oneinch_' + stream.name + '_executions') }}
         where true
             and protocol = 'LO'
@@ -107,7 +109,7 @@ select
     , order_hash
     , hashlock
     , complement
-    , remains
+    , updated_remains as remains
     , map_concat(flags, map_from_entries(array[('second_side', second_side)])) as flags
     , block_date
     , block_month
@@ -119,5 +121,24 @@ select
         , array_join(call_trace_address, ',') -- ',' is necessary to avoid similarities after concatenation // array_join(array[1, 0], '') = array_join(array[10], '')
         , mode
     ))) as execution_id
+    -- additional --
+    , coalesce(order_hash, sha1(to_utf8(concat_ws('|'
+        , blockchain
+        , cast(tx_hash as varchar)
+        , array_join(call_trace_address, ',') -- ',' is necessary to avoid similarities after concatenation // array_join(array[1, 0], '') = array_join(array[10], '')
+        , mode
+    )))) as swap_id
+    , to_unixtime(block_time) as unixtime
+    , get_href(get_chain_explorer_tx_hash(blockchain, if(blockchain = 'solana', to_base58(tx_hash), cast(tx_hash as varchar))), if(blockchain = 'solana', to_base58(tx_hash), cast(tx_hash as varchar))) as tx_link
+    , get_href(get_chain_explorer_address(blockchain, if(blockchain = 'solana', to_base58(user), cast(user as varchar))), if(blockchain = 'solana', to_base58(user), cast(user as varchar))) as user_link
+    , get_href(get_chain_explorer_address(blockchain, if(blockchain = 'solana', to_base58(src_token_address), cast(src_token_address as varchar))), coalesce(src_executed_symbol, format('%s…%s', if(blockchain = 'solana', substr(to_base58(src_token_address), 1, 4), cast(substr(src_token_address, 1, 2) as varchar)), if(blockchain = 'solana', substr(to_base58(src_token_address), -4), substr(cast(src_token_address as varchar), -4))))) as src_link
+    , get_href(get_chain_explorer_address(blockchain, if(blockchain = 'solana', to_base58(dst_token_address), cast(dst_token_address as varchar))), coalesce(dst_executed_symbol, format('%s…%s', if(blockchain = 'solana', substr(to_base58(dst_token_address), 1, 4), cast(substr(dst_token_address, 1, 2) as varchar)), if(blockchain = 'solana', substr(to_base58(dst_token_address), -4), substr(cast(dst_token_address as varchar), -4))))) as dst_link
+    , coalesce(src_executed_symbol, format('%s…%s', if(blockchain = 'solana', substr(to_base58(src_token_address), 1, 4), cast(substr(src_token_address, 1, 2) as varchar)), if(blockchain = 'solana', substr(to_base58(src_token_address), -4), substr(cast(src_token_address as varchar), -4)))) as src_token
+    , coalesce(dst_executed_symbol, format('%s…%s', if(blockchain = 'solana', substr(to_base58(dst_token_address), 1, 4), cast(substr(dst_token_address, 1, 2) as varchar)), if(blockchain = 'solana', substr(to_base58(dst_token_address), -4), substr(cast(dst_token_address as varchar), -4)))) as dst_token
+    , (cast(dst_executed_amount as double) / pow(10, cast(element_at(complement, 'dst_decimals') as bigint))) / (cast(src_executed_amount as double) / pow(10, cast(element_at(complement, 'src_decimals') as bigint))) between 0.99 and 1.01 as stable
+    , coalesce((cast(src_executed_amount as double) / pow(10, cast(element_at(complement, 'src_decimals') as bigint))) / src_executed_amount_usd, (cast(dst_executed_amount as double) / pow(10, cast(element_at(complement, 'dst_decimals') as bigint))) / dst_executed_amount_usd) between 0.99 and 1.01 as usd_stable
+    , element_at(updated_remains, 1) as value
+    , if(mod(length(call_output), 32) = 4, 0x) as call_output_selector
+    , if(mod(length(call_output), 32) = 4, element_at(slice(regexp_extract_all(from_utf8(call_output), '[\w\d\s\.:\(\)]+'), -1, 1), 1), cast(null as varchar)) as call_output_decoded
 from executions
 left join resolvers using(blockchain, tx_from)
