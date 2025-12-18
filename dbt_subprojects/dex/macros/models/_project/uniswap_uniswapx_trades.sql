@@ -25,13 +25,13 @@ fill_events as (
     from 
     {{ source(blockchain, 'logs') }}
     where block_date >= date '{{start_date}}'
+    and topic0 = 0x78ad7ec0e9f89e74012afa58738b6b661c024cb0fd185ee2f616c0a28924bd66 -- fill event 
     and contract_address in (
     {% for addr in uniswapx_contracts %}
         {{ addr }}{% if not loop.last %}, {% endif %}
     {% endfor %}
     )
     {% if is_incremental() %}
-    and topic0 = 0x78ad7ec0e9f89e74012afa58738b6b661c024cb0fd185ee2f616c0a28924bd66 -- fill event 
     and {{ incremental_predicate('block_time') }}
     {% endif %}
 ),
