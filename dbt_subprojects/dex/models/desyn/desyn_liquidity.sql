@@ -22,10 +22,10 @@ FROM (
     UNION ALL
     SELECT * FROM {{ ref('desyn_linea_liquidity_v1') }}
     UNION ALL
-    -- SELECT * FROM {{ ref('desyn_hemi_liquidity_v1') }}
-    -- UNION ALL
-    -- SELECT * FROM {{ ref('desyn_plume_liquidity_v1') }}
-    -- UNION ALL
+    SELECT * FROM {{ ref('desyn_hemi_liquidity_v1') }}
+    UNION ALL
+    SELECT * FROM {{ ref('desyn_plume_liquidity_v1') }}
+    UNION ALL
     SELECT * FROM {{ ref('desyn_scroll_liquidity_v1') }}
     
 ) 
