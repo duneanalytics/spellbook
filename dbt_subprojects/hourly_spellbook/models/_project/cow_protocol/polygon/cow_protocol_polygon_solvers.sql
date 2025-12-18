@@ -48,7 +48,7 @@ known_solver_metadata (address, environment, name) as (
                 (0x2E1b57EE3C5085A22e48D24E1D7b7A043fa0F9e9, 'barn', 'Wraxyn'),
                 (0xd772a0d831de079f1902fC9F708272ABEBf83220, 'barn', 'ApeOut_1inch'),
                 (0x4766647F8fC4BFE9756BFAa40cc7879cCA853Dbc, 'barn', 'Sector'),
-                (0x8687a369dcEC04077Bf97026ef01A95bA3E452a2, 'barn', 'Apollo'),
+                (0x8687a369dcEC04077Bf97026ef01A95bA3E452a2, 'barn', 'Kipseli'),
                 (0xe25E4203bb3c4881214F791d0659cd4D6a6B897A, 'prod', 'Baseline'),
                 (0x1cDe7808706dB1654644565a1039Fce1e5f9c168, 'prod', 'Gnosis_ParaSwap'),
                 (0x4b277FB0BA7aDFF366B20470096b3c4709E990A0, 'prod', 'Gnosis_0x'),
@@ -60,11 +60,12 @@ known_solver_metadata (address, environment, name) as (
                 (0x8518181b9E31C139542bdA727Ae147d7aE67F2D4, 'prod', 'Wraxyn'),
                 (0x7776c6188143C22a0805FFdF0D604146C7885027, 'prod', 'ApeOut_1inch'),
                 (0x92Af001AF846450EA5B2DFb286B5be559E741300, 'prod', 'Sector'),
-                (0x6715174ADe6ac9fB8E0d5461b8051F7DD496798B, 'prod', 'Apollo'),
+                (0x6715174ADe6ac9fB8E0d5461b8051F7DD496798B, 'prod', 'Kipseli'),
                 (0x8497B82A31DC91C274a068900f1100de243BfDf8, 'barn', 'Bebop'),
                 (0xbeE0a8F78875bd23A8b5a1D7283B163ae7dADCf5, 'prod', 'Bebop'),
                 (0x2aE77A5686115e8Cb5B8e0448D35bd46835abE9C, 'barn', 'OpenOcean_Aggregator'),
-                (0x0eA019e2B276534C2F25691902d6D6ddBCcE14Cc, 'prod', 'OpenOcean_Aggregator')
+                (0x0eA019e2B276534C2F25691902d6D6ddBCcE14Cc, 'prod', 'OpenOcean_Aggregator'),
+                (0x3980daa7eaad0b7e0c53cfc5c2760037270da54d, 'prod', 'Tsolver')
     ) as _
 )
 -- Combining the metadata with current activation status for final table
