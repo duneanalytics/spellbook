@@ -19,19 +19,19 @@ WITH pools AS (
 )
 
 SELECT
-    b.day,
+    date_trunc('day', b.block_day) AS day,
     'arbitrum' AS blockchain,
     b.wallet_address AS pool_address,
     SUM(b.amount * COALESCE(p.price, 0)) AS protocol_liquidity_usd,
     'v1' AS version
-FROM erc20.view_token_balances_daily b
-LEFT JOIN prices.usd p
+FROM {{ ref('balances_arbitrum_erc20_day') }} b
+LEFT JOIN {{ source('prices', 'usd') }} p
   ON p.contract_address = b.token_address
  AND p.blockchain = 'arbitrum'
- AND date_trunc('day', p.minute) = b.day
+ AND date_trunc('day', p.minute) = date_trunc('day', b.block_day)
 WHERE b.wallet_address IN (SELECT pool_address FROM pools)
   AND b.blockchain = 'arbitrum'
   {% if is_incremental() %}
-  AND b.day >= date_trunc('day', now() - interval '7' day)
+  AND date_trunc('day', b.block_day) >= date_trunc('day', now() - interval '7' day)
   {% endif %}
 GROUP BY 1,2,3,5
