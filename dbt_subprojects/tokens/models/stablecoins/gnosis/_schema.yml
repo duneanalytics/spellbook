@@ -9,7 +9,7 @@ models:
     config:
       tags: ['tokens', 'gnosis', 'erc20', 'stablecoins']
     description: >
-        Union view of all stablecoin token addresses (seed + latest).
+        Union view of all stablecoin token addresses (core + extended).
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -21,18 +21,6 @@ models:
       - &contract_address
         name: contract_address
         description: "Stablecoin contract address"
-      - &backing
-        name: backing
-        description: "Stablecoin backing"
-      - &symbol
-        name: symbol
-        description: "Stablecoin symbol"
-      - &name
-        name: name
-        description: "Stablecoin project name"
-      - &decimals
-        name: decimals
-        description: "Number of decimals"
 
   - name: tokens_gnosis_erc20_stablecoins_core
     meta:
@@ -46,10 +34,6 @@ models:
     columns:
       - *blockchain
       - *contract_address
-      - *backing
-      - *symbol
-      - *name
-      - *decimals
 
   - name: tokens_gnosis_erc20_stablecoins_extended
     meta:
@@ -63,7 +47,3 @@ models:
     columns:
       - *blockchain
       - *contract_address
-      - *backing
-      - *symbol
-      - *name
-      - *decimals
