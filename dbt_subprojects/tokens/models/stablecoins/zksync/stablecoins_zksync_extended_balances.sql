@@ -1,4 +1,4 @@
-{% set chain = 'scroll' %}
+{% set chain = 'zksync' %}
 
 {{
   config(

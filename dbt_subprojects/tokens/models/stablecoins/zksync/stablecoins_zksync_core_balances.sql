@@ -1,9 +1,9 @@
-{% set chain = 'scroll' %}
+{% set chain = 'zksync' %}
 
 {{
   config(
     schema = 'stablecoins_' ~ chain,
-    alias = 'extended_balances',
+    alias = 'core_balances',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -13,22 +13,21 @@
   )
 }}
 
--- extended balances: tracks balances for newly added stablecoins (not in core list)
+-- core balances: tracks balances for stablecoins in the frozen core list
 
 with
 
 stablecoin_tokens as (
   select contract_address as token_address
-  from {{ ref('tokens_' ~ chain ~ '_erc20_stablecoins_extended') }}
+  from {{ ref('tokens_' ~ chain ~ '_erc20_stablecoins_core') }}
 ),
 
--- note: update start_date when adding new stablecoins
 balances as (
   {{
     balances_incremental_subset_daily(
         blockchain = chain,
         token_list = 'stablecoin_tokens',
-        start_date = '2025-01-01'
+        start_date = '2023-03-24'
     )
   }}
 )

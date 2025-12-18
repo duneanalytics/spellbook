@@ -3,6 +3,7 @@
     'linea',
     'scroll',
     'worldchain',
+    'zksync',
 ] %}
 
 {{

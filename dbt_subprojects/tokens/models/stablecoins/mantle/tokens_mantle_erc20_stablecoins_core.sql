@@ -4,6 +4,7 @@
   config(
     schema = 'tokens_' ~ chain,
     alias = 'erc20_stablecoins_core',
+    materialized = 'table',
     tags = ['static'],
     unique_key = ['contract_address']
   )

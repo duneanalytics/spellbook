@@ -1,16 +1,17 @@
-{% set chain = 'blast' %}
+{% set chain = 'zksync' %}
 
 {{
   config(
     schema = 'tokens_' ~ chain,
     alias = 'erc20_stablecoins_extended',
+    materialized = 'table',
     tags = ['static'],
     unique_key = ['contract_address']
   )
 }}
 
 -- extended list: new stablecoin addresses added after the core list was frozen
--- add new stablecoins here (not in tokens_blast_erc20_stablecoins_core)
+-- add new stablecoins here (not in tokens_zksync_erc20_stablecoins_core)
 
 select '{{chain}}' as blockchain, contract_address
 from (values

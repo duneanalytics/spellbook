@@ -1,4 +1,4 @@
-{% set chain = 'worldchain' %}
+{% set chain = 'zksync' %}
 
 {{
   config(
@@ -11,13 +11,13 @@
 }}
 
 -- core list: frozen stablecoin addresses used for initial incremental balances
--- new stablecoins should be added to tokens_worldchain_erc20_stablecoins_extended
+-- new stablecoins should be added to tokens_zksync_erc20_stablecoins_extended
 
 select '{{chain}}' as blockchain, contract_address
 from (values
 
-     (0x18bc5bcc660cf2b9ce3cd51a404afe1a0cbd3c22), -- IDRX
-
-     (0x79a02482a880bce3f13e09da970dc34db4cd24d1)  -- USDC.e
+     (0x3355df6d4c9c3035724fd0e3914de96a5a83aaf4), -- USDC.e
+     (0x493257fd37edb34451f62edf8d2a0c418852ba4c), -- USDT
+     (0x1d17cbcf0d6d143135ae902365d2e5e2a16538d4)  -- USDC
 
 ) as temp_table (contract_address)
