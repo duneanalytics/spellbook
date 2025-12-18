@@ -6,7 +6,10 @@
 }}
 
 {% set models = [  
-      ref('uniswap_ethereum_uniswapx_base_trades')
+      ref('uniswap_arbitrum_uniswapx_base_trades')
+      , ref('uniswap_base_uniswapx_base_trades')
+      , ref('uniswap_ethereum_uniswapx_base_trades')
+      , ref('uniswap_unichain_uniswapx_base_trades')
 ] %}
 
 with base_union as (

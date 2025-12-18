@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'uniswap_ethereum'
+    schema = 'uniswap_base'
     , alias = 'uniswapx_base_trades'
     , partition_by = ['block_month']
     , materialized = 'incremental'
@@ -12,9 +12,9 @@
 
 {{
     uniswap_uniswapx_trades(
-          blockchain = 'ethereum'
-          , uniswapx_contracts = ['0x00000011F84B9aa48e5f8aA8B9897600006289Be', '0x6000da47483062A0D734Ba3dc7576Ce6A0B645C4']
-          , start_date = '2023-07-01'
+          blockchain = 'base'
+          , uniswapx_contracts = ['0x000000001Ec5656dcdB24D90DFa42742738De729']
+          , start_date = '2024-08-01'
           , native_token_address = '0x0000000000000000000000000000000000000000'
     )
 }}
