@@ -2,18 +2,40 @@
 
 {{-
     config(
-        tags = ['prod_exclude'],
         schema = 'oneinch_' + blockchain,
         alias = 'project_swaps_base',
-        partition_by = ['block_month', 'project'],
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['blockchain', 'block_month', 'block_number', 'tx_hash', 'second_side', 'call_trace_address', 'call_trade_id'],
+        materialized = 'view',
+        unique_key = ['block_month', 'id'],
     )
 -}}
 
--- depends_on: {{ ref('oneinch_' + blockchain + '_project_orders') }}
+{%-
+    set parts = [
+        '2020_0712',
+        '2021_0104',
+        '2021_0505',
+        '2021_0607',
+        '2021_0809',
+        '2021_1010',
+        '2021_1111',
+        '2021_1212',
+        '2022_0104',
+        '2022_0512',
+        '2023_0112',
+        '2024_0106',
+        '2024_0712',
+        '2025_0103',
+        '2025_0405',
+        '2025_0606',
+        '2025_0707',
+        '2025_0808',
+        '2025_0909',
+        '2025_1010',
+        'current',
+    ]
+-%}
 
-{{ oneinch_project_swaps_base_macro(blockchain = blockchain) }}
+{%- for part in parts %}
+    select * from {{ ref('oneinch_' + blockchain + '_project_swaps_base_' + part) }}
+    {% if not loop.last -%} union all {%- endif %}
+{%- endfor -%}
