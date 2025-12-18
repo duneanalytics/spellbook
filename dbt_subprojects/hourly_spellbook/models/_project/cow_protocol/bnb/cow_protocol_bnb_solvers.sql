@@ -47,13 +47,19 @@ known_solver_metadata (address, environment, name) as (
                 (0xb272C6580244F5716075C2833C0fAFe7178c22DC, 'prod', 'Unizen'),
                 (0x9D990Acb053364d5821EeEb03043712AC0cD0439, 'barn', 'Helixbox'),
                 (0x5920Fe8e1E7F0014f217d0ed3920A403659f73cd, 'prod', 'Helixbox'),
-                (0x397F0423D59fBf9Bfc2D8f3985D3e94923318200, 'barn', 'Apollo'),
-                (0x6f9a7AFe6446ABfa91f0954c3cd1677B87247FEf, 'prod', 'Apollo'),
+                (0x397F0423D59fBf9Bfc2D8f3985D3e94923318200, 'barn', 'Kipseli'),
+                (0x6f9a7AFe6446ABfa91f0954c3cd1677B87247FEf, 'prod', 'Kipseli'),
                 (0xCc5fb0080B73070994bF0438469bC708FE2ac21a, 'barn', 'ExtQuasimodo'),
                 (0xC10484e51Ef5e69Dd0aC473A1E5310720391A174, 'prod', 'ExtQuasimodo'),
                 (0x4dd1be0Cd607E5382Dd2844fA61D3a17e3e83D56, 'prod', 'Rizzolver'),
                 (0xF49DC3F9Fd153CF8d11d38E79BEdC28C3d62bBb7, 'barn', 'OpenOcean_Aggregator'),
-                (0x784260C2664536AE5d4d92cAD886B00a532eA84C, 'prod', 'OpenOcean_Aggregator')
+                (0x784260C2664536AE5d4d92cAD886B00a532eA84C, 'prod', 'OpenOcean_Aggregator'),
+                (0x18E302738f1eAec0CA96894a949b2bCCD02CDd8C, 'barn', 'Wraxyn'),
+                (0x943C94CD0374cb2Ba3C88Bab1bDC8393745c5fE9, 'prod', 'Wraxyn'),
+                (0x347120a515D640dC9ee88Ab060ae8f4f482d3D7A, 'barn', 'MXTrading'),
+                (0x8979cffddb57b0bb9f507bd99b3f98bc66e70197, 'prod', 'MXTrading'),
+                (0x3980daa7eaad0b7e0c53cfc5c2760037270da54d, 'prod', 'Tsolver'),
+                (0xBB765c920f86e2A2654c4B82deB5BC2E092fF93b, 'barn', 'Portus')
     ) as _
 )
 -- Combining the metadata with current activation status for final table
