@@ -96,7 +96,7 @@ SELECT
     SUM((b.amount_raw / POWER(10, COALESCE(t.decimals, 18))) * COALESCE(p.price, 0)) AS protocol_liquidity_usd,
     'v1' AS version
 FROM daily_balances b
-LEFT JOIN {{ ref('tokens_erc20') }} t ON t.contract_address = b.token_address AND t.blockchain = 'bnb'
+LEFT JOIN {{ ref('tokens_v1_erc20') }} t ON t.contract_address = b.token_address AND t.blockchain = 'bnb'
 LEFT JOIN {{ source('prices', 'usd') }} p
   ON p.contract_address = b.token_address
  AND p.blockchain = 'bnb'
