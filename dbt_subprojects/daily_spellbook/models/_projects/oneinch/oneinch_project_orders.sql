@@ -76,7 +76,25 @@ meta as (
         union all
 
         select
-            {{ orders_base_columns | join(', ') }}
+            blockchain
+            , block_number
+            , block_time
+            , tx_hash
+            , tx_from
+            , tx_to
+            , call_method as method
+            , call_selector
+            , call_trace_address
+            , call_from
+            , call_to
+            , call_gas_used
+            , maker
+            , maker_asset
+            , making_amount
+            , taker_asset
+            , taking_amount
+            , order_hash
+            , flags
             , contract_name as tag
             , '1inch' as project
             , null as order_start
