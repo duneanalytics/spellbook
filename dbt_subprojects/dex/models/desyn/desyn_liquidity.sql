@@ -3,7 +3,7 @@
     schema = 'desyn',
     tags = ['desyn'],
     partition_by = ['day'],
-    unique_key = ['day', 'pool_address'],
+    unique_key = ['day', 'blockchain', 'version'],
     incremental_strategy = 'merge',
     file_format = 'delta',
 ) }}
@@ -32,4 +32,4 @@ FROM (
 {% if is_incremental() %}
 WHERE day >= date_trunc('day', now() - interval '7' day)
 {% endif %}
-GROUP BY 1, 2,3
+GROUP BY 1, 2, 3
