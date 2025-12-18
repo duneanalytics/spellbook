@@ -39,8 +39,8 @@ known_solver_metadata (address, environment, name) as (
       VALUES
                 (0xeeD424986A909d3552CB6D108840E16B41DfD6ac, 'barn', 'Baseline'),
                 (0xD72728C165C2e941d41749026c41d414C6679636, 'prod', 'Baseline'),
-                (0x57dc4958b5691D3C6A5b58c71a5074eeC7eE7888, 'barn', 'Gnosis_0x'),
-                (0x920E180FbB32D2B14EA51D95630afe3F8205b278, 'prod', 'Gnosis_0x'),
+                (0x57dc4958b5691D3C6A5b58c71a5074eeC7eE7888, 'barn', 'OKX'),
+                (0x920E180FbB32D2B14EA51D95630afe3F8205b278, 'prod', 'OKX'),
                 (0xE2A37F6Bc84f01e6c28aA45738Ef72ff8c4652Bc, 'barn', 'ExtQuasiModo'),
                 (0x2B1ee79a53e3539659b30693Bb03C180487B3Ee4, 'prod', 'ExtQuasiModo'),
                 (0x975CF2c0897bf910F60b21693eD304374F79cD44, 'barn', 'Helixbox'),
