@@ -168,9 +168,6 @@ models:
     columns: *aggregator_swaps_columns
 
   - name: jupiter_solana_amms
-    data_tests:
-    - dbt_utils.unique:
-        column_name: amm
     meta:
       blockchain: solana
       contributors: [ilemi]
@@ -181,5 +178,8 @@ models:
     columns:
       - name: amm
         description: program id of amm routed through
+        tests:
+          - not_null
+          - unique
       - name: amm_name
         description: name of amm routed through
