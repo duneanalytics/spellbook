@@ -1,13 +1,10 @@
 {{
   config(
+        tags = ['static'],
         schema = 'jupiter_v5_solana',
         alias = 'aggregator_swaps',
         partition_by = ['block_month'],
-        materialized='incremental',
-        file_format = 'delta',
-        incremental_strategy='merge',
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['block_month','amm','log_index','tx_id','output_mint','input_mint'],
+        materialized='table',
         pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
     )
 }}
