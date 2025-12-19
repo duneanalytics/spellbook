@@ -10,6 +10,7 @@
 }}
 
 {% set project_start_date = '2023-05-30' %}
+{% set project_end_date = '2023-07-07' %}
 
 with
     amms as (
@@ -32,15 +33,12 @@ with
                 FROM {{ source('solana','transactions') }} t
                 LEFT JOIN unnest(log_messages) WITH ORDINALITY as l(logs, log_index_raw) ON true
                 WHERE success = True
-                AND any_match(account_keys, x->x IN ('JUP5pEAZeHdHrLxh5UCwAbpjGwYKKoquCpda2hfP4u8'))
-                AND REGEXP_LIKE(l.logs, 'Program data:.*|Program log.*')
-                AND try(from_base64(split(l.logs, ' ')[3])) is not null --valid hex
-                AND bytearray_substring(from_base64(split(l.logs, ' ')[3]), 1, 8) IN (0x516ce3becdd00ac4, 0x40c6cde8260871e2) --v4, v5 discriminator
-                {% if is_incremental() -%}
-                AND {{ incremental_predicate('block_time') }}
-                {% else -%}
-                AND block_time >= TIMESTAMP '{{ project_start_date }}'
-                {% endif -%}
+                    AND any_match(account_keys, x->x IN ('JUP5pEAZeHdHrLxh5UCwAbpjGwYKKoquCpda2hfP4u8'))
+                    AND REGEXP_LIKE(l.logs, 'Program data:.*|Program log.*')
+                    AND try(from_base64(split(l.logs, ' ')[3])) is not null --valid hex
+                    AND bytearray_substring(from_base64(split(l.logs, ' ')[3]), 1, 8) IN (0x516ce3becdd00ac4, 0x40c6cde8260871e2) --v4, v5 discriminator
+                    AND block_time >= TIMESTAMP '{{ project_start_date }}'
+                    AND block_time <= TIMESTAMP '{{ project_end_date }}'
         )
 
         SELECT
@@ -90,19 +88,13 @@ LEFT JOIN {{ source('tokens_solana','fungible') }} tk_2 ON tk_2.token_mint_addre
 LEFT JOIN {{ source('prices','usd_forward_fill') }} p_1 ON p_1.blockchain = 'solana'
     AND date_trunc('minute', l.block_time) = p_1.minute
     AND l.input_mint = toBase58(p_1.contract_address)
-    {% if is_incremental() -%}
-    AND {{ incremental_predicate('p_1.minute') }}
-    {% else -%}
     AND p_1.minute >= TIMESTAMP '{{ project_start_date }}'
-    {% endif -%}
+    AND p_1.minute <= TIMESTAMP '{{ project_end_date }}'
 LEFT JOIN {{ source('prices', 'usd_forward_fill') }}  p_2 ON p_2.blockchain = 'solana'
     AND date_trunc('minute', l.block_time) = p_2.minute
     AND l.output_mint = toBase58(p_2.contract_address)
-    {% if is_incremental() -%}
-    AND {{ incremental_predicate('p_2.minute') }}
-    {% else -%}
     AND p_2.minute >= TIMESTAMP '{{ project_start_date }}'
-    {% endif -%}
+    AND p_2.minute <= TIMESTAMP '{{ project_end_date }}'
 WHERE l.input_amount > 0
 AND l.output_amount > 0
 AND l.input_mint not in ('4PfN9GDeF9yQ37qt9xCPsQ89qktp1skXfbsZ5Azk82Xi')
