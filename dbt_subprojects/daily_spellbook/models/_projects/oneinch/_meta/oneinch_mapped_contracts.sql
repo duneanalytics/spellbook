@@ -1,6 +1,5 @@
 {{
     config(
-        tags = ['prod_exclude'],
         schema = 'oneinch',
         alias = 'mapped_contracts',
         materialized = 'table',

@@ -9,9 +9,9 @@
   incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
   tags = ['thorchain', 'defi', 'daily', 'earnings', 'fact'],
   post_hook='{{ expose_spells(\'["thorchain"]\',
-                            "defi",
-                            "defi_daily_earnings",
-                            \'["krishhh"]\') }}'
+                                "project",
+                                "thorchain",
+                                \'["jeff-dude"]\') }}'
 ) }}
 
 WITH base AS (

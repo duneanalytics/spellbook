@@ -2,7 +2,7 @@
     schema = 'dex'
     , alias = 'roundtrip_trades'
     , materialized = 'view'
-    , post_hook='{{ expose_spells(blockchains = \'["arbitrum", "avalanche_c", "base", "blast", "bnb", "celo", "ethereum", "gnosis", "ink", "linea", "mantle", "optimism", "plasma", "polygon", "scroll", "sonic", "unichain", "worldchain", "zksync", "zora"]\',
+    , post_hook='{{ expose_spells(blockchains = \'["arbitrum", "avalanche_c", "base", "blast", "bnb", "celo", "ethereum", "gnosis", "ink", "linea", "mantle", "monad", "optimism", "plasma", "polygon", "scroll", "sonic", "unichain", "worldchain", "zksync", "zora"]\',
                                       spell_type = "sector", 
                                       spell_name = "roundtrip_trades", 
                                       contributors = \'["Henrystats", "agaperste"]\') }}'
@@ -22,6 +22,7 @@ ref('dex_arbitrum_roundtrip_trades')
 , ref('dex_ink_roundtrip_trades')
 , ref('dex_linea_roundtrip_trades')
 , ref('dex_mantle_roundtrip_trades')
+, ref('dex_monad_roundtrip_trades')
 , ref('dex_optimism_roundtrip_trades')
 , ref('dex_plasma_roundtrip_trades')
 , ref('dex_polygon_roundtrip_trades')

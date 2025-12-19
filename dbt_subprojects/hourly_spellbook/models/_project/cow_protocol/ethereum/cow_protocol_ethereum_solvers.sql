@@ -109,7 +109,7 @@ known_solver_metadata (address, environment, name) as (
                  (0x8F70A86c1309d8B1F5BefC58948e7386Fd495875, 'prod', 'Tsolver'),
                  (0xbAda55BaBEE5D2B7F3B551f9da846838760E068C, 'prod', 'Project_Blanc'),
                  (0xA883710b6DBf008a1CC25722C54583E35884a209, 'prod', 'Horadrim'),
-                 (0xc10D4DfDA62227d9EC23Ab0010E2942e48338A60, 'prod', 'Apollo'),
+                 (0xc10D4DfDA62227d9EC23Ab0010E2942e48338A60, 'prod', 'Kipseli'),
                  (0x008300082C3000009e63680088f8c7f4D3ff2E87, 'prod', 'Copium_Capital'),
                  (0xC7899Ff6A3aC2FF59261bD960A8C880DF06E1041, 'prod', 'Barter'),
                  (0x8A75ee64b4A40f679aD98Bcc38312702971e07B7, 'prod', 'OneBit_Quant'),
@@ -142,7 +142,7 @@ known_solver_metadata (address, environment, name) as (
                  (0x2a2883ade8ce179265f12fc7b48a4b50b092f1fd, 'barn', 'Fractal'),
                  (0x26B5e3bF135D3Dd05A220508dD61f25BF1A47cBD, 'barn', 'Rizzolver'),
                  (0xA6A871b612bCE899b1CbBad6E545e5e47Da98b87, 'barn', 'Barter'),
-                 (0xa08B00576aeE8d8dd960E08298FAc9fD7C756e36, 'barn', 'Apollo'),
+                 (0xa08B00576aeE8d8dd960E08298FAc9fD7C756e36, 'barn', 'Kipseli'),
                  (0x2c3A1c33d96C9DcA1c34EB234B1e65F79dEaE60e, 'barn', 'Horadrim'),
                  (0xa5559C2E1302c5Ce82582A6b1E4Aec562C2FbCf4, 'barn', 'Project_Blanc'),
                  (0xa432cea087311d7cd07925d70f799eE94E7893a4, 'barn', 'Tsolver'),
@@ -225,8 +225,8 @@ known_solver_metadata (address, environment, name) as (
                  (0xa03be496e67ec29bc62f01a428683d7f9c204930, 'service', 'Withdraw'),
                  (0x2caef7f0ee82fb0abf1ab0dcd3a093803002e705, 'test', 'Test Solver 1'),
                  (0x56d4ed5e49539ebb1366c7d6b8f2530f1e4fe753, 'test', 'Test Solver 2'),
-                 (0x83919ba112Fae537d4889e7932a64bE9ECB25dF8, 'barn', 'Apollo'),
-                 (0xD2ADF24253056D45731a8561749fC9b2ffa4Fe19, 'prod', 'Apollo'),
+                 (0x83919ba112Fae537d4889e7932a64bE9ECB25dF8, 'barn', 'Kipseli'),
+                 (0xD2ADF24253056D45731a8561749fC9b2ffa4Fe19, 'prod', 'Kipseli'),
                  (0x4dd1be0Cd607E5382Dd2844fA61D3a17e3e83D56, 'prod', 'Rizzolver'),
                  (0x7f2cb2C1B2dfCc4212CBa59ef0a61d9CdE20158D, 'barn', 'PLM'),
                  (0x1b99451f62a8574f8413F5A3FC80B99b29701C16, 'prod', 'PLM'),
@@ -245,7 +245,9 @@ known_solver_metadata (address, environment, name) as (
                  (0xf039fd228b6DD779515C30C734bD38dD0C1160F4, 'barn', 'Piggy'),
                  (0x53040838714f31972f8114eF53915a22894f550C, 'prod', 'Piggy'),
                  (0x6617484255584Bfe5D5B0fdDD60dc2BBD5B6020C, 'barn', 'TrustedVolumes'),
-                 (0xB1ca4a18aFF443656F407FA8bE3533ff27DDE911, 'prod', 'TrustedVolumes')
+                 (0xB1ca4a18aFF443656F407FA8bE3533ff27DDE911, 'prod', 'TrustedVolumes'),
+                 (0x035D47f2083537523b3E04ae44fc1E9Efc43447B, 'barn', 'MXTrading'),
+                 (0x373C22A19196bD6B0F475e5D77b4eb6401B88877, 'prod', 'MXTrading')
     ) as _
 )
 -- Combining the metadata with current activation status for final table
