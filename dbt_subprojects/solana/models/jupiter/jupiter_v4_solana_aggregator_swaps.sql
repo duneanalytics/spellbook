@@ -107,5 +107,7 @@ LEFT JOIN {{ source('prices', 'usd_forward_fill') }}  p_2 ON p_2.blockchain = 's
     {% else -%}
     AND p_2.minute >= TIMESTAMP '{{ project_start_date }}'
     {% endif -%}
-WHERE l.input_mint not in ('4PfN9GDeF9yQ37qt9xCPsQ89qktp1skXfbsZ5Azk82Xi')
+WHERE l.input_amount > 0
+AND l.output_amount > 0
+AND l.input_mint not in ('4PfN9GDeF9yQ37qt9xCPsQ89qktp1skXfbsZ5Azk82Xi')
 AND l.output_mint not in ('4PfN9GDeF9yQ37qt9xCPsQ89qktp1skXfbsZ5Azk82Xi')
