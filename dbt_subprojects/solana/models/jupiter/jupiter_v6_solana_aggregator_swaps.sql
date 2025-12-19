@@ -12,7 +12,7 @@
     )
 }}
 
-{% set project_start_date = '2023-08-03' %}
+{% set project_start_date = '2025-12-01' %}
 
 with
     amms as (
