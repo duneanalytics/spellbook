@@ -37,6 +37,8 @@ with
                 WHERE
                     success = True
                     AND any_match(account_keys, x->x IN ('JUP4Fb2cqiRUcaTHdrPC8h2gNsA2ETXiPDD33WcGuJB'))
+                    -- avoid double counting when both v4 and v5 programs are present; v5 model takes precedence to write over v4 swaps
+                    AND NOT any_match(account_keys, x->x IN ('JUP5pEAZeHdHrLxh5UCwAbpjGwYKKoquCpda2hfP4u8'))
                     AND REGEXP_LIKE(l.logs, 'Program data:.*|Program log.*')
                     AND try(from_base64(split(l.logs, ' ')[3])) is not null --valid hex
                     AND bytearray_substring(from_base64(split(l.logs, ' ')[3]), 1, 8) IN (0x516ce3becdd00ac4, 0x40c6cde8260871e2) --v4, v5 discriminator
