@@ -44,6 +44,7 @@ solana_transfers AS (
                 amount AS amount_raw,
                 amount_display AS amount,
                 amount_usd
+        FROM {{ source('tokens_solana', 'transfers') }}
 )
 
 SELECT * FROM evm_transfers
