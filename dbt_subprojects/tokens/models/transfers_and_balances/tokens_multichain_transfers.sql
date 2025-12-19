@@ -25,8 +25,6 @@ evm_transfers AS (
                 amount,
                 amount_usd
         FROM {{ ref('tokens_transfers') }}
-        WHERE block_date = CURRENT_DATE - INTERVAL '1' DAY
-        AND blockchain = 'ethereum'
 ),
 
 solana_transfers AS (
@@ -46,8 +44,6 @@ solana_transfers AS (
                 amount AS amount_raw,
                 amount_display AS amount,
                 amount_usd
-        FROM {{ source('tokens_solana', 'transfers') }}
-        WHERE block_date = CURRENT_DATE - INTERVAL '1' DAY
 )
 
 SELECT * FROM evm_transfers
