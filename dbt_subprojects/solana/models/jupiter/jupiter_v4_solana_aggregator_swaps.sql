@@ -1,6 +1,5 @@
 {{
   config(
-        tags = ['prod_exclude'],
         schema = 'jupiter_v4_solana',
         alias = 'aggregator_swaps',
         partition_by = ['block_month'],
