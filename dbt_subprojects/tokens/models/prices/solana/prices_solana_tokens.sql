@@ -467,7 +467,6 @@ FROM
         ('croco-croco','solana','$CROCO','G8cEYL7MhmWAUiozQbtwrZA7N224QBXu2nDN22xfMhFA',9),
         ('cwc-catwifcoin','solana','CWC','8VwEDLbiCdfFDQhUCjLXKLw4rgv5W4MiyYYmoFj3VSyD',9),
         ('eluskmon-elusk-mon','solana','ELUSKMON','GD7GfnYStzLfX2aCrXH7PWCge3Yex9swdCbzGZYTvEpU',9),
-        ('sny-synthetify','solana','SNY','4dmKkXNHdgYsXqBHCuMikNQWwVomZURhYvkkX5c4pQ7y',6),
         ('bretta-bretta-brett39s-wife','solana','BRETTA','DXBYAw9aQheMdujaLZYnVSpKSK4n8jMS7HfLbiv5RWnS',9),
         ('cabal-cabal','solana','CABAL','F9TBTkUELa39d8mpVvJDdcE7VrAcEGgzqBy5xoregCke',9),
         ('dobo-dogebonk-on-sol','solana','DOBO','Fk4fiCavdntUSCfbzdGSeq9kvEfnXPhBoaNqgbgahovT',8),
