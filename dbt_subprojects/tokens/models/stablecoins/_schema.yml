@@ -1,0 +1,45 @@
+version: 2
+
+models:
+  - name: stablecoins_balances
+    meta:
+      sector: stablecoin
+      project: stablecoin
+      contributors: tomfutago
+    config:
+      tags: ['stablecoin', 'balances']
+    description: "Enriched balances of stablecoin token holders across all chains with token metadata and USD prices"
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain for the token"
+      - &day
+        name: day
+        description: "Date on which the token balance is logged"
+      - &address
+        name: address
+        description: "Address for the token holder"
+      - &token_symbol
+        name: token_symbol
+        description: "Symbol for the token"
+      - &token_address
+        name: token_address
+        description: "Address for the token"
+      - &token_standard
+        name: token_standard
+        description: "Standard for the token"
+      - &token_id
+        name: token_id
+        description: "ID for the token"
+      - &balance_raw
+        name: balance_raw
+        description: "Raw balance for the user (not adjusted for decimals)"
+      - &balance
+        name: balance
+        description: "Balance for the user (adjusted for decimals)"
+      - &balance_usd
+        name: balance_usd
+        description: "USD value of balance for the user"
+      - &last_updated
+        name: last_updated
+        description: "UTC timestamp when data was last updated"
