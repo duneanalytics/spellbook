@@ -92,3 +92,6 @@ LEFT JOIN check_dupes cd ON d.deposit_chain = cd.deposit_chain
 WHERE {{ incremental_predicate('d.block_time') }}
 AND t.bridge_transfer_id IS NULL
 {% endif %}
+{% if is_incremental() %}
+WHERE {{ incremental_predicate('d.block_time') }}
+{% endif %}
