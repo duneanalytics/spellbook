@@ -12,6 +12,7 @@
 
 {% set base_models = [
     ref('camelot_apechain_base_trades')
+    ,ref('saru_apechain_base_trades')
 ] %}
 with base_union as (
         {% for base_model in base_models %}
