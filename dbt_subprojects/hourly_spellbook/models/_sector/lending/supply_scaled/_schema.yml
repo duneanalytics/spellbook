@@ -19,6 +19,9 @@ models:
       - &version
         name: version
         description: "Version of the contract built and deployed by the lending project"
+      - &block_date
+        name: block_date
+        description: "Block date"
       - &block_hour
         name: block_hour
         description: "Block hour"
