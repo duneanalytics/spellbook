@@ -25,6 +25,7 @@
     ,'katana'
     ,'linea'
     ,'mantle'
+    ,'megaeth'
     ,'mezo'
     ,'monad'
     ,'nova'

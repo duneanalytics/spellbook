@@ -267,7 +267,7 @@ days as (
     select cast(timestamp as date) as day
     from {{ source('utils', 'days') }}
     where cast(timestamp as date) >= cast('{{start_date}}' as date)
-    and cast(timestamp as date) <= date(date_trunc('day',now()))
+    and cast(timestamp as date) < current_date -- exclude today to avoid mid-day stale data
 ),
 
 forward_fill as (
