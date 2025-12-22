@@ -19,9 +19,9 @@
                                     , "ethereum"
                                     , "fantom"
                                     , "flare"
-                                    , "flow"
                                     , "gnosis"
                                     , "hemi"
+                                    , "henesys"
                                     , "hyperevm"
                                     , "ink"
                                     , "kaia"
@@ -29,6 +29,9 @@
                                     , "lens"
                                     , "linea"
                                     , "mantle"
+                                    , "megaeth"
+                                    , "mezo"
+                                    , "monad"
                                     , "nova"
                                     , "opbnb"
                                     , "optimism"
@@ -43,6 +46,7 @@
                                     , "somnia"
                                     , "sonic"
                                     , "sophon"
+                                    , "story"
                                     , "superseed"
                                     , "tac"
                                     , "taiko"
@@ -55,7 +59,7 @@
                                 ]\',
                                 "sector",
                                 "gas",
-                                \'["soispoke", "ilemi", "0xRob", "jeff-dude", "krishhh"]\'
+                                \'["soispoke", "ilemi", "0xRob", "jeff-dude", "krishhh", "tomfutago"]\'
                             )
                         }}'
         )
@@ -79,9 +83,9 @@
     , "ethereum"
     , "fantom"
     , "flare"
-    , "flow"
     , "gnosis"
     , "hemi"
+    , "henesys"
     , "hyperevm"
     , "ink"
     , "kaia"
@@ -89,6 +93,9 @@
     , "linea"
     , "lens"
     , "mantle"
+    , "megaeth"
+    , "mezo"
+    , "monad"
     , "nova"
     , "opbnb"
     , "optimism"
@@ -103,6 +110,7 @@
     , "somnia"
     , "sonic"
     , "sophon"
+    , "story"
     , "superseed"
     , "tac"
     , "taiko"

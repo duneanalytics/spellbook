@@ -1,5 +1,6 @@
  {{
-  config(     
+  config(
+        tags = ['prod_exclude'],
         schema = 'contracts_bnb',
         alias = 'contract_mapping_dynamic',
         materialized ='table',
@@ -8,5 +9,5 @@
 }}
 
 {{contracts_contract_mapping(
-    chain='bnb', standard_name = 'bep'
+    chain='bnb'
 )}}

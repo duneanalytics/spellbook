@@ -6,3 +6,7 @@ sources:
     tables:
       - name: TaikoL1_evt_BlockProposed
       - name: TaikoL1_evt_BlockProposedV2
+  - name: aztec_ethereum
+    description: "Aztec smart contracts"
+    tables:
+      - name: rollup_evt_l2blockproposed

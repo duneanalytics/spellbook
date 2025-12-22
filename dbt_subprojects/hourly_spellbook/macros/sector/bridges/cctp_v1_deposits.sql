@@ -1,6 +1,7 @@
 {% macro cctp_v1_deposits(blockchain) %}
 
 SELECT '{{blockchain}}' AS deposit_chain
+, d.destinationDomain AS withdrawal_chain_id
 , i.blockchain AS withdrawal_chain
 , 'CCTP' AS bridge_name
 , '1' AS bridge_version
@@ -19,6 +20,6 @@ SELECT '{{blockchain}}' AS deposit_chain
 , contract_address
 , CAST(nonce AS varchar) AS bridge_transfer_id
 FROM {{ source('circle_' + blockchain, 'tokenmessenger_evt_depositforburn') }} d
-INNER JOIN {{ ref('bridges_cctp_chain_indexes') }} i ON d.destinationDomain=i.id
+LEFT JOIN {{ ref('bridges_cctp_chain_indexes') }} i ON d.destinationDomain=i.id
 
 {% endmacro %}

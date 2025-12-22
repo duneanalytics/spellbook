@@ -1,8 +1,11 @@
 {{ config(
     schema = 'bridges_crosschain',
     alias = 'flows',
-    materialized = 'view',
-    tags = ['prod_exclude']
+    materialized = 'view'
+    , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "blast", "bnb", "ethereum", "hyperevm", "ink", "lens", "linea", "optimism", "plasma", "polygon", "scroll", "unichain", "worldchain", "zksync", "zora", "fantom", "gnosis", "nova", "opbnb", "berachain", "corn", "flare", "sei", "boba", "mantle", "abstract", "apechain", "bob", "celo", "kaia", "katana", "plume", "ronin", "sonic", "sophon", "story", "taiko", "zkevm"]\',
+                                "sector",
+                                "bridges",
+                                \'["hildobby"]\') }}'
     )
 }}
 
@@ -21,13 +24,13 @@ SELECT *
         , deposit_block_date
         , deposit_block_time
         , deposit_block_number
-        , withdraw_block_date
-        , withdraw_block_time
-        , withdraw_block_number
+        , withdrawal_block_date
+        , withdrawal_block_time
+        , withdrawal_block_number
         , deposit_amount_raw
         , deposit_amount
-        , withdrawal_amount_raw
         , withdrawal_amount
+        , withdrawal_amount_raw
         , amount_usd
         , CAST(sender AS VARCHAR) AS sender
         , CAST(recipient AS VARCHAR) AS recipient
@@ -37,8 +40,10 @@ SELECT *
         , CAST(withdrawal_token_address AS VARCHAR) AS withdrawal_token_address
         , CAST(deposit_tx_from AS VARCHAR) AS deposit_tx_from
         , CAST(deposit_tx_hash AS VARCHAR) AS deposit_tx_hash
-        , CAST(withdraw_tx_hash AS VARCHAR) AS withdraw_tx_hash
+        , CAST(withdrawal_tx_hash AS VARCHAR) AS withdrawal_tx_hash
         , bridge_transfer_id
+        , deposit_chain_id
+        , withdrawal_chain_id
         FROM {{ ref('bridges_'~vm~'_flows') }}
         {% if not loop.last %}
         UNION ALL

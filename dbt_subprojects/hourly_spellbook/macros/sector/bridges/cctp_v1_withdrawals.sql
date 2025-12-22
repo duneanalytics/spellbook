@@ -40,7 +40,8 @@ WITH messages AS (
         AND w.evt_index < m.evt_index
     )
 
-    SELECT i.blockchain AS deposit_chain
+    SELECT m.sourceDomain AS deposit_chain_id
+    , i.blockchain AS deposit_chain
     , '{{blockchain}}' AS withdrawal_chain
     , 'CCTP' AS bridge_name
     , '1' AS bridge_version
@@ -63,6 +64,6 @@ WITH messages AS (
         AND w.tx_hash = m.tx_hash
         AND w.evt_index = m.withdrawal_evt_index
         AND m.rn = 1
-    INNER JOIN {{ ref('bridges_cctp_chain_indexes') }} i ON i.id=m.sourceDomain
+    LEFT JOIN {{ ref('bridges_cctp_chain_indexes') }} i ON i.id=m.sourceDomain
 
 {% endmacro %}
