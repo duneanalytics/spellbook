@@ -2,7 +2,7 @@
     schema = 'dex'
     , alias = 'multihop_trades'
     , materialized = 'view'
-    , post_hook='{{ expose_spells(blockchains = \'["ethereum", "arbitrum", "optimism", "polygon", "bnb", "base", "celo", "avalanche_c", "unichain"]\',
+    , post_hook='{{ expose_spells(blockchains = \'["arbitrum", "avalanche_c", "base", "blast", "bnb", "celo", "ethereum", "gnosis", "ink", "linea", "mantle", "monad", "optimism", "plasma", "polygon", "scroll", "sonic", "unichain", "worldchain", "zksync", "zora"]\',
                                       spell_type = "sector", 
                                       spell_name = "dex", 
                                       contributors = \'["hubbymatic", "Henrystats", "agaperste"]\') }}'
@@ -22,6 +22,7 @@ ref('dex_arbitrum_multihop_trades')
 , ref('dex_ink_multihop_trades')
 , ref('dex_linea_multihop_trades')
 , ref('dex_mantle_multihop_trades')
+, ref('dex_monad_multihop_trades')
 , ref('dex_optimism_multihop_trades')
 , ref('dex_plasma_multihop_trades')
 , ref('dex_polygon_multihop_trades')
@@ -44,6 +45,7 @@ FROM (
         , block_month
         , block_date
         , block_time
+        , block_number
         , tx_hash
         , evt_index 
         , token_bought_symbol

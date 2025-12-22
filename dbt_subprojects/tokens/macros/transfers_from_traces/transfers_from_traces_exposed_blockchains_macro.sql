@@ -30,6 +30,7 @@
     "lens",
     "linea",
     "mantle",
+    "megaeth",
     "mezo",
     "monad",
     "nova",

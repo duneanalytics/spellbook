@@ -52,14 +52,14 @@ known_solver_metadata (address, environment, name) as (
                 (0x0648548f891E1356f197070D009704e574182bfB, 'prod', 'Rizzolver'),
                 (0x23e868881dfe0531358B8FE0cbec43FD860cbF33, 'prod', 'Rizzolver'),
                 (0x2692F7bFCB2e1a8575434b9511804266D9aeb628, 'prod', 'Velvet'),
-                (0x1FA2FF499b327f53cD9a82BcAFE36093563E32e4, 'prod', 'Apollo'),
+                (0x1FA2FF499b327f53cD9a82BcAFE36093563E32e4, 'prod', 'Kipseli'),
                 (0x0148538e6cA813D41eA5988008Cdc9B72d4e65A7, 'prod', 'Laita'),
                 (0x9C75aae1Bd2f96D7B4E67e8C5344f3304382276E, 'prod', 'Enso'),
                 (0x5156808c3f9440191ef600587a73c87bb23c92b2, 'barn', 'Enso'),
                 (0x034F6Aca83F1900b0157b0123F514A29456eeA59, 'barn', 'Laita'),
                 (0x6bf97aFe2D2C790999cDEd2a8523009eB8a0823f, 'prod', 'Portus'),
                 (0xBB765c920f86e2A2654c4B82deB5BC2E092fF93b, 'barn', 'Portus'),
-                (0x5E06F88D28603f5bB106bD5C8AD93ce2E902d24b, 'barn', 'Apollo'),
+                (0x5E06F88D28603f5bB106bD5C8AD93ce2E902d24b, 'barn', 'Kipseli'),
                 (0x669Be18D403Be353C1B9EBC87225313Ec2560BF5, 'barn', 'Velvet'),
                 (0x20dC1014E946Cf511Ee535D908eC9a1d75Dd66ce, 'barn', 'Naive'),
                 (0x2e6822f4Ab355E386d1A4fd34947ACE0F6f344a7, 'barn', 'Baseline'),
@@ -86,8 +86,8 @@ known_solver_metadata (address, environment, name) as (
                 (0xaf888d387adceed01a736aa3deae75dcf3edd8c1, 'prod', 'Copium_Capital'),
                 (0xD5a9FAE900C3FfF4145753F47Eb2E9d573b107D7, 'barn', 'Kamaji'),
                 (0xFE082A5784cA28F67D1E6aB04EAe7c313c210229, 'prod', 'Kamaji'),
-                (0x550EC8e3944E9aF8411f32273555656977D884Ac, 'barn', 'Apollo'),
-                (0x65E80731F97b8361E77670357d287266dD0d93b6, 'prod', 'Apollo'),
+                (0x550EC8e3944E9aF8411f32273555656977D884Ac, 'barn', 'Kipseli'),
+                (0x65E80731F97b8361E77670357d287266dD0d93b6, 'prod', 'Kipseli'),
                 (0xEa77cB08FBf7ef0CaF615dcE37A159D56B2B867f, 'barn', 'Wraxyn'),
                 (0x09498CF3414616c1d58979FCE65438473C998c47, 'prod', 'Wraxyn'),
                 (0x301994d1A89578e9933E44982eb969B9f38d7097, 'barn', 'Unizen'),
@@ -117,7 +117,8 @@ known_solver_metadata (address, environment, name) as (
                 (0x9b95391AC6DD31f99C9e5CC9c15a107f60B0f0c6, 'barn', 'NativeFi'),
                 (0x9aCcd7f88441ae8E189CBbFFa1eF1432D7d5c27C, 'prod', 'NativeFi'),
                 (0x973818ffc2CCaBD9c2Bd1077b9413a60EAF699B5, 'barn', 'AmberGroup'),
-                (0xFde62af8639B716C5BD7aD84514b3E67fFDC6E97, 'prod', 'AmberGroup')
+                (0xFde62af8639B716C5BD7aD84514b3E67fFDC6E97, 'prod', 'AmberGroup'),
+                (0x3980daa7eaad0b7e0c53cfc5c2760037270da54d, 'prod', 'Tsolver')
     ) as _
 )
 -- Combining the metadata with current activation status for final table
