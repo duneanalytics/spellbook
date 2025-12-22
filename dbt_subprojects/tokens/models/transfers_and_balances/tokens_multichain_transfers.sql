@@ -24,7 +24,7 @@ evm_transfers AS (
                 amount_raw,
                 amount,
                 amount_usd
-        FROM {{ ref('tokens_transfers') }}
+        FROM {{ ref('tokens_evm_transfers') }}
 ),
 
 solana_transfers AS (
