@@ -31,3 +31,4 @@ select
 from {{ source('lending','borrow') }}
 where blockchain = 'celo'
   and project = 'moola'
+  and 1=1 -- trigger refresh

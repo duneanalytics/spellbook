@@ -18,6 +18,7 @@
 
 with dexs AS (
     SELECT
+        project,
         blockTime AS block_time,
         blockNumber AS block_number,
         from_hex(beneficiary) AS taker,
@@ -99,7 +100,7 @@ price_missed_next AS (
 )
 
 SELECT 'avalanche_c' AS blockchain,
-    'paraswap' AS project,
+    project,
     '6' AS version,
     cast(date_trunc('day', d.block_time) as date) as block_date,
     cast(date_trunc('month', d.block_time) as date) as block_month,

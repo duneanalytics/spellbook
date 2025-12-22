@@ -1,5 +1,6 @@
 {{
   config(
+    tags = ['prod_exclude'],
     schema = 'nexusmutual_ethereum',
     alias = 'swap_order_placed',
     materialized = 'incremental',

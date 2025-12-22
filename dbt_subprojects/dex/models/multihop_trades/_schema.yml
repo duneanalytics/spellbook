@@ -3,7 +3,7 @@ version: 2
 models:
   - name: dex_multihop_trades
     meta: 
-      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, polygon, base, celo, zksync, scroll, zora, sei, mantle, unichain
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, polygon, base, celo, zksync, scroll, zora, sei, mantle, unichain, monad
       sector: dex
       contributors: Henrystats, agaperste, hubbymatic
     config:
@@ -471,6 +471,45 @@ models:
       tags: ['dex', 'multihops']
     description: >
       DEX Multi Hop trades on mantle
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_time
+            - tx_hash
+            - evt_index
+            - pool_address
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_date
+      - *block_month
+      - *token_pair
+      - *pool_address
+      - *total_trade_count
+      - *multihop_trade_count_pct
+      - *direct_trade_count
+      - *entry_trade_count
+      - *intermediate_trade_count
+      - *end_trade_count
+      - *total_trade_vol
+      - *multihop_trades_vol_pct
+      - *direct_trade_vol
+      - *entry_trade_vol
+      - *intermediate_trade_vol
+      - *end_trade_vol
+
+  - name: dex_monad_multihop_trades
+    meta: 
+      blockchain: monad
+      sector: dex
+      contributors: Henrystats, agaperste, hubbymatic
+    config:
+      tags: ['dex', 'multihops']
+    description: >
+      DEX Multi Hop trades on monad
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
