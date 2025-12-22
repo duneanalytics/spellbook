@@ -344,6 +344,44 @@ models:
       - name: balance
         description: "Balance of the position"
 
+  - name: polymarket_polygon_positions_raw_test
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','positions','test']
+    description: "TEST MODEL: Polymarket raw positions using optimized incremental macro"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - month
+            - day
+            - address
+            - token_address
+            - token_id
+            - blockchain
+    columns:
+      - name: blockchain
+        description: "The blockchain the position is on"
+      - name: month
+        description: "The month of the position"
+      - name: day
+        description: "The date of the position"
+      - name: address
+        description: "The address holding the position"
+      - name: token_address
+        description: "The address of the token"
+      - name: token_standard
+        description: "Token standard (erc20, erc1155, native)"
+      - name: token_id
+        description: "Token ID of the position"
+      - name: balance_raw
+        description: "Raw balance (not adjusted for decimals)"
+      - name: balance
+        description: "Balance of the position (adjusted for 6 decimals)"
+
   - name: polymarket_polygon_positions
     meta:
       blockchain: polygon
