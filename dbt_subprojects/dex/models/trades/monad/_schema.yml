@@ -110,6 +110,15 @@ models:
     config:
       tags: ["monad", "dex", "trades", "trader_joe", "v2.2"]
     description: "trader_joe monad v2.2 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('trader_joe_monad_base_trades_seed')
+          filter:
+            version: 2.2
 
   - name: pancakeswap_v2_monad_base_trades
     meta:
@@ -126,9 +135,6 @@ models:
             - tx_hash
             - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('trader_joe_monad_base_trades_seed')
-          filter:
-            version: 2.2
           seed_file: ref('pancakeswap_monad_base_trades_seed')
           filter:
             version: 2
