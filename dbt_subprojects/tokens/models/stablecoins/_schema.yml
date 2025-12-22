@@ -1,6 +1,50 @@
 version: 2
 
 models:
+  - name: tokens_erc20_stablecoins
+    meta:
+      sector: tokens
+      project: tokens
+      contributors: tomfutago
+    config:
+      tags: ['tokens', 'stablecoins', 'erc20']
+    description: "Stablecoin ERC20 token addresses with metadata across all chains"
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain for the token"
+      - &contract_address
+        name: contract_address
+        description: "Contract address for the stablecoin token"
+      - &backing
+        name: backing
+        description: "Type of backing for the stablecoin (e.g., Fiat-backed, Crypto-backed, Algorithmic, Hybrid, RWA-backed)"
+      - &symbol
+        name: symbol
+        description: "Token symbol"
+      - &decimals
+        name: decimals
+        description: "Number of decimals for the token"
+      - &name
+        name: name
+        description: "Name or protocol of the stablecoin"
+
+  - name: tokens_erc20_stablecoins_metadata
+    meta:
+      sector: tokens
+      project: tokens
+      contributors: Henrystats, synthquest, rantum, tomfutago
+    config:
+      tags: ['tokens', 'stablecoins', 'erc20', 'metadata', 'static']
+    description: "Stablecoin ERC20 token metadata including backing type, symbol, decimals, and name across all chains"
+    columns:
+      - *blockchain
+      - *contract_address
+      - *backing
+      - *symbol
+      - *decimals
+      - *name
+
   - name: stablecoins_balances
     meta:
       sector: stablecoin
@@ -10,9 +54,7 @@ models:
       tags: ['stablecoin', 'balances']
     description: "Enriched balances of stablecoin token holders across all chains with token metadata and USD prices"
     columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain for the token"
+      - *blockchain
       - &day
         name: day
         description: "Date on which the token balance is logged"
