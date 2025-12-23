@@ -1,13 +1,9 @@
- {{
-  config(     
-        tags = ['prod_exclude'],
-        schema = 'contracts',
-        alias = 'contract_mapping',
-        post_hook='{{ expose_spells(\'["ethereum", "base", "optimism", "zora", "arbitrum", "celo", "polygon", "bnb", "avalanche_c", "fantom", "gnosis","zksync"]\',
-                                    "sector",
-                                    "contracts",
-                                    \'["msilb7", "chuxin", "tomfutago"]\') }}'
-  )
+{{
+ config(     
+       tags = ['prod_exclude'],
+       schema = 'contracts',
+       alias = 'contract_mapping'
+ )
 }}
 
 {% set chain_models = [
