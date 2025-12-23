@@ -51,6 +51,10 @@ sources:
       - name: pools_metrics_daily
       - name: trades      
 
+  - name: dex_sui
+    tables:
+      - name: trades
+
   - name: utils
     tables:
       - name: days_table
