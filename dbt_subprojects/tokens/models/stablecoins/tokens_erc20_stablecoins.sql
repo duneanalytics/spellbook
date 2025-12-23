@@ -35,8 +35,8 @@ select
   s.blockchain,
   s.contract_address,
   m.backing,
-  m.symbol,
-  m.decimals,
+  coalesce(erc20.symbol, m.symbol) as symbol,
+  coalesce(erc20.decimals, m.decimals) as decimals,
   m.name
 from (
   {% for chain in chains %}
@@ -49,6 +49,9 @@ from (
   {% endif %}
   {% endfor %}
 ) s
+left join {{ source('tokens', 'erc20') }} erc20
+  on s.blockchain = erc20.blockchain
+  and s.contract_address = erc20.contract_address
 left join {{ ref('tokens_erc20_stablecoins_metadata') }} m
   on s.blockchain = m.blockchain
   and s.contract_address = m.contract_address
