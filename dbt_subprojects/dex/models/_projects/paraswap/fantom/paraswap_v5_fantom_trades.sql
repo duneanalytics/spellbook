@@ -64,7 +64,7 @@ dexs as (
 )
 SELECT
     'fantom' as blockchain,
-    'paraswap' as project,
+    'velora' as project,
     '5' as version,
     cast(date_trunc('day', dexs.block_time) as date) as block_date,
     cast(date_trunc('month', dexs.block_time) as date) as block_month,
