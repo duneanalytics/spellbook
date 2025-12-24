@@ -83,6 +83,51 @@ dexs AS (
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('t.evt_block_time') }}
     {% endif %}
+),
+
+transfer as (
+  select
+      tx_hash,
+      "from",
+      to,
+      contract_address,
+      sum(amount_raw) as amount_raw
+  from {{ source('tokens', 'transfers') }}
+  where blockchain = 'bnb'
+  and block_date >= date '2025-10-01' 
+  and tx_hash in (select evt_tx_hash from {{ source('pancakeswap_bnb', 'ExclusiveDutchOrderReactor_evt_Fill') }})
+  {% if is_incremental() %}
+  and {{ incremental_predicate('block_time') }}
+  {% endif %}
+  group by 1,2,3,4
+),
+
+dexs_pcsx AS (
+    -- PancakeSwapX
+    SELECT
+        'pcsx' AS version,
+        a.evt_block_number AS block_number,
+        a.evt_block_time AS block_time,
+        a.swapper AS taker,
+        a.filler AS maker,
+        receive.amount_raw AS token_bought_amount_raw,
+        send.amount_raw AS token_sold_amount_raw,
+        receive.contract_address AS token_bought_address,
+        send.contract_address AS token_sold_address,     
+        a.contract_address AS project_contract_address,
+        a.evt_tx_hash AS tx_hash,
+        a.evt_index
+
+    FROM {{ source('pancakeswap_bnb', 'ExclusiveDutchOrderReactor_evt_Fill') }} a 
+
+    LEFT JOIN transfer AS send 
+    ON a.evt_tx_hash = send.tx_hash AND a.swapper = send."from"
+
+    LEFT JOIN transfer AS receive
+    on a.evt_tx_hash = receive.tx_hash AND a.swapper = receive."to"
+    {% if is_incremental() %}
+    WHERE {{ incremental_predicate('a.evt_block_time') }}
+    {% endif %}
 )
 
 SELECT
@@ -122,3 +167,25 @@ SELECT
     dexs.tx_hash,
     dexs.evt_index
 FROM dexs
+UNION ALL
+SELECT
+    'bnb' AS blockchain,
+    'pancakeswap' AS project,
+    dexs_pcsx.version,
+    CAST(date_trunc('month', dexs_pcsx.block_time) AS date) AS block_month,
+    CAST(date_trunc('day', dexs_pcsx.block_time) AS date) AS block_date,
+    dexs_pcsx.block_time,
+    dexs_pcsx.block_number,
+    dexs_pcsx.token_bought_amount_raw,
+    dexs_pcsx.token_sold_amount_raw,
+    dexs_pcsx.token_bought_address,
+    dexs_pcsx.token_sold_address,
+    dexs_pcsx.taker,
+    dexs_pcsx.maker,
+    dexs_pcsx.project_contract_address,
+    dexs_pcsx.tx_hash,
+    dexs_pcsx.evt_index
+FROM dexs_pcsx
+WHERE token_sold_amount_raw > 0
+AND token_bought_amount_raw > 0
+AND token_bought_address is not NULL
