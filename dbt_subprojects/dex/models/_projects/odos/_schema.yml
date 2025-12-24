@@ -3,7 +3,7 @@ version: 2
 models:
   - name: odos_trades
     meta:
-      blockchain: optimism, ethereum, base, arbitrum
+      blockchain: optimism, ethereum, base, arbitrum, avalanche_c
       sector: dex
       project: odos
       contributors: Henrystats
