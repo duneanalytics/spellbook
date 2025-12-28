@@ -1,19 +1,17 @@
 version: 2
 
 models:
-  - name: gas_solana_compute_limit #todo: add full metadata and tests
-  - name: gas_solana_compute_unit_price #todo: add full metadata and tests
-  - name: gas_solana_tx_fees #todo: add full metadata and tests
-  - name: gas_solana_vote_fees #todo: add full metadata and tests
-  - name: gas_solana_fees #todo: add tests
+- name: gas_solana_compute_limit
+  description: >
+    Contains per-transaction compute unit limits for Solana transactions,
+    derived from on-chain transaction metadata.
+ 
     meta:
       blockchain: solana
       sector: gas
       contributors: 0xboxer
     config:
       tags: ['solana', 'gas', 'fees']
-    description: >
-        Gas Fees on Solana, including compute unit prices and prioritization fees
     columns:
       - name: blockchain
         data_tests:
