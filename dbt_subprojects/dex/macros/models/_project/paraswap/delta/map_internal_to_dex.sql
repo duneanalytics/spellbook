@@ -34,13 +34,42 @@ select
         COALESCE(evt_index, 0) as evt_index, -- TMP: after joining envents in swapSettle can remove it
         order_index,
         method
+        {% if version == 'v2' %}
+        ,from_hex(regexp_replace(
+                try_cast(
+                  TRY_CAST(
+                    BITWISE_RIGHT_SHIFT(partnerAndFee, 96) AS VARBINARY
+                  ) as VARCHAR
+                ),
+                '0x(00){12}'
+              )) AS partnerAddress
+        ,computed_order_hash
+        ,evt_order_hash
+        ,bridgeMultiCallHandler
+        ,bridgeOutputToken
+        ,bridgeMaxRelayerFee
+        ,bridgeDestinationChainId
+        ,bridge        
+        ,"order"        
+        ,"owner"
+        ,ordersCount
+        ,call_block_number as block_number
+        ,raw_tx_gas_used
+        ,raw_tx_gas_price
+        ,{{from_alias}}.gas_fee_usd
+        ,wnt_price_usd
+        ,executor
+        ,evt_return_amount -- uint256
+        ,evt_protocol_fee -- uint256
+        ,evt_partner_fee -- uint256
+        {% endif %}
     from {{from_alias}}  
         LEFT JOIN 
         {{ source('tokens', 'erc20') }} t_src_token 
             ON t_src_token.blockchain = '{{blockchain}}'
-            AND t_src_token.contract_address = src_token
+            AND t_src_token.contract_address = src_token_for_joining
         LEFT JOIN 
         {{ source('tokens', 'erc20') }} t_dest_token
             ON t_dest_token.blockchain = '{{blockchain}}'
-            AND t_dest_token.contract_address = dest_token
+            AND t_dest_token.contract_address = dest_token_for_joining
 {% endmacro %}
