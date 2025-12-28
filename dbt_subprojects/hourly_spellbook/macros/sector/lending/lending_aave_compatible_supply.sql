@@ -412,14 +412,12 @@ hourly_market as (
     project,
     version,
     block_hour,
+    date_trunc('day', block_hour) as block_date,
     token_address,
     symbol,
     liquidity_index,
     variable_borrow_index
   from {{ ref(project ~ '_v' ~ version ~ '_' ~ blockchain ~ '_base_market_hourly_agg') }}
-  {% if is_incremental() %}
-  where {{ incremental_predicate('block_hour') }}
-  {% endif %}
 ),
 
 market_ordered as (
@@ -437,9 +435,6 @@ market_ordered as (
     tx_hash,
     row_number() over (partition by block_time, tx_hash, token_address order by evt_index) as event_order
   from {{ ref(project ~ '_v' ~ version ~ '_' ~ blockchain ~ '_base_market') }}
-  {% if is_incremental() %}
-  where {{ incremental_predicate('block_time') }}
-  {% endif %}
 ),
 
 supply_ordered as (
@@ -457,9 +452,6 @@ supply_ordered as (
     row_number() over (partition by block_time, tx_hash, token_address order by evt_index) as event_order
   from {{ ref('aave_' ~ blockchain ~ '_supply')}}
   where version = '3'
-  {% if is_incremental() %}
-  and {{ incremental_predicate('block_time') }}
-  {% endif %}
 ),
 
 supplied as (
@@ -499,6 +491,7 @@ hourly_market_user as (
     hm.blockchain,
     hm.project,
     hm.version,
+    hm.block_date,
     hm.block_hour,
     hm.token_address,
     hm.symbol,
@@ -509,25 +502,42 @@ hourly_market_user as (
     inner join first_supplied fs
       on hm.block_hour >= fs.first_block_hour
       and hm.token_address = fs.token_address
+),
+
+supply_scaled as (
+  select
+    hmu.blockchain,
+    hmu.project,
+    hmu.version,
+    hmu.block_date,
+    hmu.block_hour,
+    hmu.token_address,
+    hmu.symbol,
+    hmu.user,
+    sum(s.atoken_amount) over (
+      partition by hmu.user, hmu.token_address
+      order by hmu.block_hour
+    ) * hmu.liquidity_index / power(10, 27) as amount
+  from hourly_market_user hmu
+    left join supplied s
+      on hmu.block_hour = s.block_hour
+      and hmu.token_address = s.token_address
+      and hmu.user = s.user
 )
 
 select
-  hmu.blockchain,
-  hmu.project,
-  hmu.version,
-  cast(date_trunc('month', hmu.block_hour) as date) as block_month,
-  hmu.block_hour,
-  hmu.token_address,
-  hmu.symbol,
-  hmu.user,
-  sum(s.atoken_amount) over (
-    partition by hmu.token_address, hmu.user 
-    order by hmu.block_hour
-  ) * hmu.liquidity_index / power(10, 27) as amount
-from hourly_market_user hmu
-  left join supplied s
-    on hmu.block_hour = s.block_hour
-    and hmu.token_address = s.token_address
-    and hmu.user = s.user
+  blockchain,
+  project,
+  version,
+  block_date,
+  block_hour,
+  token_address,
+  symbol,
+  user,
+  if(amount > 1e-8, amount, 0) as amount -- account for assumed zero
+from supply_scaled
+{% if is_incremental() %}
+where {{ incremental_predicate('block_date') }}
+{% endif %}
 
 {% endmacro %}
