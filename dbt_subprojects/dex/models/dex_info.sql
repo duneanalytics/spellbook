@@ -245,4 +245,5 @@ FROM (VALUES
     , ('mezo_swap', 'Mezo Swap', 'Direct', 'mezoswap')
     , ('kuru', 'Kuru', 'Direct', 'kuru')
     , ('pinot', 'Pinot', 'Direct', 'pinot')
+    , ('elfomofi', 'ElfomoFi', 'Direct', 'elfomo_fi')
 ) AS temp_table (project, name, marketplace_type, x_username)
