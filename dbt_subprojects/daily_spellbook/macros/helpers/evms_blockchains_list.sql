@@ -54,6 +54,7 @@
         "viction",
         "worldchain",
         "zksync",
-        "zora"
+        "zora",
+        "hyperevm"
      ]) }}
 {% endmacro %} 
