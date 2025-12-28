@@ -15,8 +15,13 @@ models:
       tags: ['solana', 'gas', 'fees']
 
     columns:
-      - name: blockchain
-      - name: block_month
+  - name: tx_id
+  - name: block_date
+  - name: block_hour
+  - name: block_time
+  - name: block_slot
+  - name: tx_index
+  - name: compute_limit
 
   - name: gas_solana_compute_unit_price #todo
   - name: gas_solana_tx_fees #todo
