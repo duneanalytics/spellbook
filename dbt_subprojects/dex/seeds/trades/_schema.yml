@@ -5899,7 +5899,7 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
-  - name: kittypunch_punchswap_v2_flow_base_trades_seed
+  - name: kittypunch_punchswap_flow_base_trades_seed
     config:
       column_types:
         blockchain: varchar
@@ -5914,7 +5914,7 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
-  - name: flowswap_v3_flow_base_trades_seed
+  - name: flowswap_flow_base_trades_seed
     config:
       column_types:
         blockchain: varchar
