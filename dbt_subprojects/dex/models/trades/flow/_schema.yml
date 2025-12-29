@@ -41,6 +41,10 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('kittypunch_punchswap_flow_base_trades_seed')
+          filter:
+            version: 2
 
   - name: flowswap_v3_flow_base_trades
     meta:
@@ -56,3 +60,7 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('flowswap_flow_base_trades_seed')
+          filter:
+            version: 3
