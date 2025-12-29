@@ -1,0 +1,203 @@
+version: 2
+
+models:
+  - name: stablecoins_arbitrum_core_balances
+    meta:
+      blockchain: arbitrum
+      sector: stablecoin
+      project: stablecoin
+      contributors: synthquest, tomfutago
+    config:
+      tags: ['stablecoin', 'balances']
+    description: "Core balances of stablecoin token holders (frozen core list)"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain for the token"
+      - &day
+        name: day
+        description: "Date on which the token balance is logged"
+      - &address
+        name: address
+        description: "Address for the token holder"
+      - &token_address
+        name: token_address
+        description: "Address for the token"
+      - &token_standard
+        name: token_standard
+        description: "Standard for the token"
+      - &token_id
+        name: token_id
+        description: "ID for the token"
+      - &balance_raw
+        name: balance_raw
+        description: "Raw balance for the user (not adjusted for decimals)"
+      - &last_updated
+        name: last_updated
+        description: "UTC timestamp when data was last updated"
+
+  - name: stablecoins_arbitrum_extended_balances
+    meta:
+      blockchain: arbitrum
+      sector: stablecoin
+      project: stablecoin
+      contributors: tomfutago
+    config:
+      tags: ['stablecoin', 'balances']
+    description: "Extended balances of newly added stablecoin token holders"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    columns:
+      - *blockchain
+      - *day
+      - *address
+      - *token_address
+      - *token_standard
+      - *token_id
+      - *balance_raw
+      - *last_updated
+
+  - name: stablecoins_arbitrum_core_balances_enriched
+    meta:
+      blockchain: arbitrum
+      sector: stablecoin
+      project: stablecoin
+      contributors: tomfutago
+    config:
+      tags: ['stablecoin', 'balances']
+    description: "Core balances enriched with token metadata and usd prices"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    columns:
+      - *blockchain
+      - *day
+      - *address
+      - &token_symbol
+        name: token_symbol
+        description: "Symbol for the token"
+      - *token_address
+      - *token_standard
+      - *token_id
+      - *balance_raw
+      - &balance
+        name: balance
+        description: "Balance for the user (adjusted for decimals)"
+      - &balance_usd
+        name: balance_usd
+        description: "USD value of balance for the user"
+      - *last_updated
+
+  - name: stablecoins_arbitrum_extended_balances_enriched
+    meta:
+      blockchain: arbitrum
+      sector: stablecoin
+      project: stablecoin
+      contributors: tomfutago
+    config:
+      tags: ['stablecoin', 'balances']
+    description: "Extended balances enriched with token metadata and usd prices"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    columns:
+      - *blockchain
+      - *day
+      - *address
+      - *token_symbol
+      - *token_address
+      - *token_standard
+      - *token_id
+      - *balance_raw
+      - *balance
+      - *balance_usd
+      - *last_updated
+
+  - name: stablecoins_arbitrum_balances
+    meta:
+      blockchain: arbitrum
+      sector: stablecoin
+      project: stablecoin
+      contributors: tomfutago
+    config:
+      tags: ['stablecoin', 'balances']
+    description: "Union view of seed and latest enriched balances"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    columns:
+      - *blockchain
+      - *day
+      - *address
+      - *token_symbol
+      - *token_address
+      - *token_standard
+      - *token_id
+      - *balance_raw
+      - *balance
+      - *balance_usd
+      - *last_updated
+
+  - name: tokens_arbitrum_erc20_stablecoins
+    meta:
+      blockchain: arbitrum
+      sector: stablecoins
+      contributors: synthquest, rantum, tomfutago
+    config:
+      tags: ['tokens', 'arbitrum', 'erc20', 'stablecoins']
+    description: >
+        Union view of all stablecoin token addresses (core + extended).
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - contract_address
+    columns:
+      - *blockchain
+      - &contract_address
+        name: contract_address
+        description: "Stablecoin contract address"
+
+  - name: tokens_arbitrum_erc20_stablecoins_core
+    meta:
+      blockchain: arbitrum
+      sector: stablecoins
+      contributors: synthquest, rantum, tomfutago
+    config:
+      tags: ['tokens', 'arbitrum', 'erc20', 'stablecoins']
+    description: >
+        Core list of stablecoin token addresses (frozen).
+    columns:
+      - *blockchain
+      - *contract_address
+
+  - name: tokens_arbitrum_erc20_stablecoins_extended
+    meta:
+      blockchain: arbitrum
+      sector: stablecoins
+      contributors: tomfutago
+    config:
+      tags: ['tokens', 'arbitrum', 'erc20', 'stablecoins']
+    description: >
+        Latest additions to stablecoin token addresses.
+    columns:
+      - *blockchain
+      - *contract_address
