@@ -9,3 +9,7 @@ sources:
     tables:
       - name: punchswapv2pair_evt_Swap
       - name: punchswapv2factory_evt_paircreated
+  - name: flowswap_flow
+    tables:
+      - name: uniswapv3pool_evt_Swap
+      - name: uniswapv3factory_evt_PoolCreated
