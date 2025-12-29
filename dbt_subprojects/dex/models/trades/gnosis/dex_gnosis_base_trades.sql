@@ -45,7 +45,7 @@ with base_union as (
             {{ base_model }}
         WHERE
            token_sold_amount_raw >= 0 and token_bought_amount_raw >= 0
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
             AND {{ incremental_predicate('block_time') }}
         {% endif %}
         {% if not loop.last %}
@@ -66,7 +66,7 @@ with base_union as (
 , final as (
     select
         *
-        , row_number() over (partition by tx_hash, evt_index order by tx_hash) as duplicates_rank
+        ,row_number() over (partition by tx_hash, evt_index order by tx_hash) as duplicates_rank
     from
         add_tx_columns
 )
