@@ -25,4 +25,19 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('izumi_finance_flow_base_trades_seed')
           filter:
-            version: 3 
+            version: 3
+
+  - name: kittypunch_punchswap_v2_flow_base_trades
+    meta:
+      blockchain: flow
+      sector: dex
+      project: kittypunch
+      contributors: kryptaki
+    config:
+      tags: [ 'flow', 'dex', 'trades', 'kittypunch' ]
+    description: "Kittypunch Punchswap V2 Flow base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
