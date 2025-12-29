@@ -26,8 +26,8 @@ WITH relevant_transfers AS (
   , t.unique_key
   , to_user.polymarket_wallet AS to_polymarket_wallet
   , from_user.polymarket_wallet AS from_polymarket_wallet
-  , to_ffb.first_funded_block_number AS to_first_funded_block
-  , from_ffb.first_funded_block_number AS from_first_funded_block
+  , to_ffb.block_number AS to_first_funded_block
+  , from_ffb.block_number AS from_first_funded_block
   FROM {{ source('tokens_polygon', 'transfers') }} t
   LEFT JOIN {{ ref('polymarket_polygon_users') }} to_user ON t."to" = to_user.polymarket_wallet
   LEFT JOIN {{ ref('polymarket_polygon_users') }} from_user ON t."from" = from_user.polymarket_wallet
