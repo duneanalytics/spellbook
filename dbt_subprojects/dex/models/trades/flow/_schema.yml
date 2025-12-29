@@ -41,3 +41,18 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
+
+  - name: flowswap_v3_flow_base_trades
+    meta:
+      blockchain: flow
+      sector: dex
+      project: flowswap
+      contributors: kryptaki
+    config:
+      tags: [ 'flow', 'dex', 'trades', 'flowswap' ]
+    description: "Flowswap V3 Flow base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
