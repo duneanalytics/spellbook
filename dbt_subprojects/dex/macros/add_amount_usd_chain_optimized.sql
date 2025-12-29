@@ -12,9 +12,9 @@
     --  , token_sold_amount
     --  , block_time
 
-{%- if blockchain is none or blockchain == '' -%}
+{% if blockchain is none or blockchain == '' %}
     {{ exceptions.raise_compiler_error("blockchain parameter cannot be null or empty for chain-optimized macro") }}
-{%- endif -%}
+{% endif %}
 
 WITH trusted_tokens AS (
     SELECT contract_address
