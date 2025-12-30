@@ -75,9 +75,13 @@ with base_union as (
             {{ base_model }}
         WHERE
            token_sold_amount_raw >= 0 and token_bought_amount_raw >= 0
-        --{% if is_incremental() or true %}
-            AND block_date = date('2025-12-28') --{{ incremental_predicate('block_time') }}
-        --{% endif %}
+        {% if var('easy_dates', false) -%}
+            AND block_date > current_date - interval '3' day -- easy_dates mode for dev, to prevent full scan
+        {%- else -%}
+            {% if is_incremental() %}
+            AND {{ incremental_predicate('block_time') }}
+            {% endif %}
+        {%- endif %}
         {% if not loop.last %}
         UNION ALL
         {% endif %}

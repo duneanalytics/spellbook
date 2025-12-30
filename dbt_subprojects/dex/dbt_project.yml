@@ -21,6 +21,7 @@ vars:
   DBT_ENV_INCREMENTAL_TIME: "{{ env_var('DBT_ENV_INCREMENTAL_TIME', '3') }}"
   DBT_ENV_INCREMENTAL_TIME_UNIT: "{{ env_var('DBT_ENV_INCREMENTAL_TIME_UNIT', 'day') }}"
   ETH_ERC20_ADDRESS: '0x0000000000000000000000000000000000000000'
+  easy_dates: true  # Set to true for dev mode to limit data to last 3 days, preventing full table scans during testing
 
 # These configurations specify where dbt should look for different types of files.
 # You don't need to change these!

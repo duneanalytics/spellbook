@@ -3,6 +3,7 @@
     , filter = null
     , tokens_erc20_model = null
     , blockchain = null
+    , easy_dates = var('easy_dates', false)
     )
 %}
 
@@ -17,9 +18,13 @@ WITH base_trades as (
         {{ base_trades }}
     WHERE
         {{ filter }}
-    --{% if is_incremental() or true %}
-        AND block_date = date('2025-12-28') --{{ incremental_predicate('block_time') }}
-    --{% endif %}
+    {% if easy_dates -%}
+        AND block_date > current_date - interval '3' day -- easy_dates mode for dev, to prevent full scan
+    {%- else -%}
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('block_time') }}
+        {% endif %}
+    {%- endif %}
 )
 , tokens_metadata as (
     --erc20 tokens - filtered by blockchain for performance
@@ -77,6 +82,7 @@ WITH base_trades as (
         add_amount_usd_chain_optimized(
             trades_cte = 'enrichments'
             , blockchain = blockchain
+            , easy_dates = easy_dates
         )
     }}
 )
