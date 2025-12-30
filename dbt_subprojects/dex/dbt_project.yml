@@ -21,6 +21,7 @@ vars:
   DBT_ENV_INCREMENTAL_TIME: "{{ env_var('DBT_ENV_INCREMENTAL_TIME', '3') }}"
   DBT_ENV_INCREMENTAL_TIME_UNIT: "{{ env_var('DBT_ENV_INCREMENTAL_TIME_UNIT', 'day') }}"
   ETH_ERC20_ADDRESS: '0x0000000000000000000000000000000000000000'
+  dev_dates: false  # Default to false. Set to true when running dex_trades model for dev mode to limit data to last 3 days
 
 # These configurations specify where dbt should look for different types of files.
 # You don't need to change these!
@@ -68,8 +69,3 @@ models:
     +materialized: view
     +schema: no_schema    # this should be overriden in model specific configs
     +view_security: invoker
-    
-    trades:
-      dex_trades:
-        vars:
-          dev_dates: true  # Set to true for dev mode to limit data to last 3 days, preventing full table scans during testing
