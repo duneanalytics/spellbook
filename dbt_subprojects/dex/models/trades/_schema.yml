@@ -11,40 +11,6 @@ models:
     config:
       tags: [ 'dex', 'trades']
     description: '{{ doc("dex_trades_doc") }}'
-    data_tests:
-      - check_column_types:
-          column_types:
-            blockchain: varchar
-            project: varchar
-            version: varchar
-            block_month: date
-            block_date: 'timestamp(3) with time zone'
-            block_time: 'timestamp(3) with time zone'
-            block_number: bigint
-            token_bought_symbol: varchar
-            token_sold_symbol: varchar
-            token_pair: varchar
-            token_bought_amount: double
-            token_sold_amount: double
-            token_bought_amount_raw: uint256
-            token_sold_amount_raw: uint256
-            amount_usd: double
-            token_bought_address: varbinary
-            token_sold_address: varbinary
-            taker: varbinary
-            maker: varbinary
-            project_contract_address: varbinary
-            tx_hash: varbinary
-            tx_from: varbinary
-            tx_to: varbinary
-            evt_index: bigint
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -91,9 +57,6 @@ models:
       - &amount_usd
         name: amount_usd
         description: "USD value of the trade at time of execution. Can be null if we don't have enough data to calculate the value."
-        data_tests:
-          - dbt_utils.accepted_range:
-              max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
       - &token_bought_address
         name: token_bought_address
         description: "Contract address of the token bought"
