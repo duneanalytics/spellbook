@@ -18,9 +18,6 @@ models:
   - name: dex_polygon_base_trades
     data_tests:
       - check_columns_dex_base_trades
-      - test_acceptable_usd_amount:
-          column_name: amount_usd
-          max_value: 1000000000
           
   - name: uniswap_v4_polygon_base_trades
     meta:

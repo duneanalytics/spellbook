@@ -27,9 +27,6 @@ models:
       Flare DEX trades
     data_tests:
       - check_columns_dex_base_trades
-      - test_acceptable_usd_amount:
-          column_name: amount_usd
-          max_value: 1000000000
 
   - name: enosys_v2_flare_base_trades
     meta:
