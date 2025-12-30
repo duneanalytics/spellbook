@@ -13,7 +13,7 @@
 WITH balancer_v3 AS (
     -- due to Balancer V3 having trades between ERC4626 tokens, which won't be priced on prices.usd, enrich separately.
     {{
-        enrich_balancer_v3_dex_trades_chain_optimized(
+        enrich_balancer_v3_dex_trades(
             base_trades = ref('dex_ethereum_base_trades')
             , filter = "(project = 'balancer' AND version = '3')"
             , tokens_erc20_model = source('tokens', 'erc20')
@@ -23,7 +23,7 @@ WITH balancer_v3 AS (
 )
 , dexs AS (
     {{
-        enrich_dex_trades_chain_optimized(
+        enrich_dex_trades(
             base_trades = ref('dex_ethereum_base_trades')
             , filter = "NOT (project = 'balancer' AND version = '3')"
             , tokens_erc20_model = source('tokens', 'erc20')

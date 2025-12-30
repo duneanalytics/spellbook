@@ -2,8 +2,14 @@
     base_trades = null
     , filter = null
     , tokens_erc20_model = null
+    , blockchain = null
+    , dev_dates = var('dev_dates', false)
     )
 %}
+
+{%- if blockchain is none or blockchain == '' -%}
+    {{ exceptions.raise_compiler_error("blockchain parameter cannot be null or empty for chain-optimized macro") }}
+{%- endif -%}
 
 WITH base_trades as (
     SELECT
@@ -12,10 +18,13 @@ WITH base_trades as (
         {{ base_trades }}
     WHERE
         {{ filter }}
-    {% if is_incremental() %}
-    AND
-        {{ incremental_predicate('block_time') }}
-    {% endif %}
+    {% if dev_dates -%}
+        AND block_date > current_date - interval '3' day -- dev_dates mode for dev, to prevent full scan
+    {%- else -%}
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('block_time') }}
+        {% endif %}
+    {%- endif %}
 )
 , tokens_metadata as (
     --erc20 tokens
@@ -26,6 +35,7 @@ WITH base_trades as (
         , decimals
     from
         {{ tokens_erc20_model }}
+    WHERE blockchain = '{{ blockchain }}'
 )
 , enrichments AS (
     SELECT
@@ -69,8 +79,10 @@ WITH base_trades as (
 
 , enrichments_with_prices AS (
     {{
-        add_amount_usd(
+        add_amount_usd_dex_trades(
             trades_cte = 'enrichments'
+            , blockchain = blockchain
+            , dev_dates = dev_dates
         )
     }}
 )

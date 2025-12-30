@@ -75,8 +75,8 @@ with base_union as (
             {{ base_model }}
         WHERE
            token_sold_amount_raw >= 0 and token_bought_amount_raw >= 0
-        {% if var('easy_dates', false) -%}
-            AND block_date > current_date - interval '3' day -- easy_dates mode for dev, to prevent full scan
+        {% if var('dev_dates', false) -%}
+            AND block_date > current_date - interval '3' day -- dev_dates mode for dev, to prevent full scan
         {%- else -%}
             {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}

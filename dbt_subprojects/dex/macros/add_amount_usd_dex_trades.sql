@@ -1,7 +1,7 @@
-{% macro add_amount_usd_chain_optimized(
+{% macro add_amount_usd_dex_trades(
     trades_cte
     , blockchain = null
-    , easy_dates = var('easy_dates', false)
+    , dev_dates = var('dev_dates', false)
 ) %}
 
 -- This macro adds the amount_usd column to the trades_cte with chain-level optimizations
@@ -33,8 +33,8 @@ WITH trusted_tokens AS (
         {{ source('prices','usd_with_native') }}
     WHERE
         blockchain = '{{ blockchain }}'
-    {% if easy_dates -%}
-        AND date_trunc('day', minute) > current_date - interval '3' day -- easy_dates mode for dev, to prevent full scan
+    {% if dev_dates -%}
+        AND date_trunc('day', minute) > current_date - interval '3' day -- dev_dates mode for dev, to prevent full scan
     {%- else -%}
         {% if is_incremental() %}
         AND {{ incremental_predicate('minute') }}

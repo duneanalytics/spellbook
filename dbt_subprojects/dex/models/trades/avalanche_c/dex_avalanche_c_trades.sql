@@ -12,10 +12,10 @@
 
 WITH dexs AS (
     {{
-        enrich_dex_trades_chain_optimized(
+        enrich_dex_trades(
             base_trades = ref('dex_avalanche_c_base_trades')
             , filter = "1=1"
-            , tokens_erc20_model = source('tokens', 'erc20')
+            , tokens_erc20_model = source('tokens', 'erc20')        
             , blockchain = 'avalanche_c'
         )
     }}
