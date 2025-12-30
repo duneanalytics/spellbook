@@ -64,24 +64,94 @@
     , ref('zeroex_native_trades')
 ] %}
 
-WITH balancer_v3 AS (
-    -- due to Balancer V3 having trades between ERC4626 tokens, which won't be priced on prices.usd, enrich separately.
-    {{
-        enrich_balancer_v3_dex_trades(
-            base_trades = ref('dex_base_trades')
-            , filter = "(project = 'balancer' AND version = '3')"
-            , tokens_erc20_model = source('tokens', 'erc20')
-        )
-    }}
-)
-, dexs AS (
-    {{
-        enrich_dex_trades(
-            base_trades = ref('dex_base_trades')
-            , filter = "NOT (project = 'balancer' AND version = '3')"
-            , tokens_erc20_model = source('tokens', 'erc20')
-        )
-    }}
+{% set chain_models = [
+      ref('dex_abstract_trades')
+    , ref('dex_apechain_trades')
+    , ref('dex_arbitrum_trades')
+    , ref('dex_avalanche_c_trades')
+    , ref('dex_base_trades')
+    , ref('dex_berachain_trades')
+    , ref('dex_blast_trades')
+    , ref('dex_bnb_trades')
+    , ref('dex_boba_trades')
+    , ref('dex_celo_trades')
+    , ref('dex_corn_trades')
+    , ref('dex_ethereum_trades')
+    , ref('dex_fantom_trades')
+    , ref('dex_flare_trades')
+    , ref('dex_flow_trades')
+    , ref('dex_gnosis_trades')
+    , ref('dex_hemi_trades')
+    , ref('dex_hyperevm_trades')
+    , ref('dex_ink_trades')
+    , ref('dex_kaia_trades')
+    , ref('dex_katana_trades')
+    , ref('dex_linea_trades')
+    , ref('dex_mantle_trades')
+    , ref('dex_mezo_trades')
+    , ref('dex_monad_trades')
+    , ref('dex_nova_trades')
+    , ref('dex_opbnb_trades')
+    , ref('dex_optimism_trades')
+    , ref('dex_peaq_trades')
+    , ref('dex_plasma_trades')
+    , ref('dex_plume_trades')
+    , ref('dex_polygon_trades')
+    , ref('dex_ronin_trades')
+    , ref('dex_scroll_trades')
+    , ref('dex_sei_trades')
+    , ref('dex_shape_trades')
+    , ref('dex_somnia_trades')
+    , ref('dex_sonic_trades')
+    , ref('dex_sophon_trades')
+    , ref('dex_story_trades')
+    , ref('dex_superseed_trades')
+    , ref('dex_tac_trades')
+    , ref('dex_taiko_trades')
+    , ref('dex_unichain_trades')
+    , ref('dex_worldchain_trades')
+    , ref('dex_zkevm_trades')
+    , ref('dex_zksync_trades')
+    , ref('dex_zora_trades')
+] %}
+
+WITH chain_trades AS (
+    {% for model in chain_models %}
+    SELECT
+        blockchain
+        , project
+        , version
+        , block_month
+        , block_date
+        , block_time
+        , block_number
+        , token_bought_symbol
+        , token_sold_symbol
+        , token_pair
+        , token_bought_amount
+        , token_sold_amount
+        , token_bought_amount_raw
+        , token_sold_amount_raw
+        , amount_usd
+        , token_bought_address
+        , token_sold_address
+        , taker
+        , maker
+        , project_contract_address
+        , tx_hash
+        , tx_from
+        , tx_to
+        , evt_index
+    FROM
+        {{ model }}
+    {% if is_incremental() %}
+    WHERE
+        {{ incremental_predicate('block_time') }}
+    {% endif %}
+    {% if not loop.last %}
+    UNION ALL
+    {% endif %}
+    {% endfor %}
 )
 , as_is_dexs AS (
     {% for model in as_is_models %}
@@ -122,11 +192,9 @@ WITH balancer_v3 AS (
     {% endfor %}
 )
 
-
 {% set cte_to_union = [
-    'as_is_dexs'
-    , 'dexs'
-    , 'balancer_v3'
+    'chain_trades'
+    , 'as_is_dexs'
     ]
 %}
 
