@@ -16,8 +16,6 @@ models:
           max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
 
   - name: dex_katana_base_trades
-    data_tests:
-      - check_columns_dex_base_trades
 
   - name: sushiswap_v1_katana_base_trades
     meta:

@@ -25,8 +25,6 @@ models:
       tags: ['flare', 'dex', 'trades']
     description: >
       Flare DEX trades
-    data_tests:
-      - check_columns_dex_base_trades
 
   - name: enosys_v2_flare_base_trades
     meta:

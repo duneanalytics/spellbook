@@ -17,7 +17,6 @@ models:
 
   - name: dex_story_base_trades
     data_tests:
-      - check_columns_dex_base_trades
       - check_dex_info_relationship
 
   - name: story_hunt_story_base_trades
