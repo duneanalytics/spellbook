@@ -1,7 +1,11 @@
 {{ config(
     schema = 'balancer',
     alias = 'pools_metrics_daily',
-    materialized = 'view',
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'project_contract_address'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     post_hook='{{ expose_spells(blockchains = \'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon", "zkevm"]\',
                             spell_type = "project",
                             spell_name = "balancer",
