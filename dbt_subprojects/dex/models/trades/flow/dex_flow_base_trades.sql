@@ -13,6 +13,7 @@
 {% set base_models = [
     ref('izumi_finance_v3_flow_base_trades'),
     ref('kittypunch_punchswap_v2_flow_base_trades'),
+    ref('kittypunch_punchswap_v3_flow_base_trades'),
     ref('flowswap_v3_flow_base_trades')
 ] %}
 with base_union as (
