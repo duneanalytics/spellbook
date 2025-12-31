@@ -45,14 +45,51 @@ swap_event_details as
     , trade_direction
     , cast(json_extract(params, '$.SwapParameters.amount_in') as decimal) as token_in_amount_raw
     , cast(json_extract(swap_result, '$.SwapResult.output_amount') as decimal) as token_out_amount_raw
-    , cast(json_extract(swap_result, '$.SwapResult.lp_fee') as decimal) + cast(json_extract(swap_result, '$.SwapResult.protocol_fee') as decimal) + cast(json_extract(swap_result, '$.SwapResult.partner_fee') as decimal) + cast(json_extract(swap_result, '$.SwapResult.referral_fee') as decimal) as total_fees_raw 
+    , cast(json_extract(swap_result, '$.SwapResult.lp_fee') as decimal)
+        + cast(json_extract(swap_result, '$.SwapResult.protocol_fee') as decimal)
+        + cast(json_extract(swap_result, '$.SwapResult.partner_fee') as decimal)
+        + cast(json_extract(swap_result, '$.SwapResult.referral_fee') as decimal)
+        as total_fees_raw 
     , pool as project_program_id
     , evt_tx_id  as tx_id
     , evt_outer_instruction_index as outer_instruction_index
     , coalesce(evt_inner_instruction_index,0) as inner_instruction_index
     , evt_tx_index as tx_index
-    , row_number () over (partition by evt_tx_id, evt_tx_index, evt_outer_instruction_index order by coalesce(evt_inner_instruction_index,0) asc) as rn
+    , row_number () over (
+        partition by evt_tx_id, evt_tx_index, evt_outer_instruction_index
+        order by coalesce(evt_inner_instruction_index,0) asc
+        ) as rn
   from {{ source ('meteora_solana','cp_amm_evt_evtswap') }} es 
+  where
+    1=1
+    {% if is_incremental() %}
+    and {{incremental_predicate('evt_block_time')}}
+    {% else %}
+    and evt_block_time > timestamp '{{project_start_date}}'
+    {% endif %}
+
+  union all
+
+  select 
+    evt_block_time as block_time
+    , trade_direction
+    , cast(json_extract(params, '$.SwapParameters2.amount_0') as decimal) as token_in_amount_raw
+    , cast(json_extract(swap_result, '$.SwapResult2.output_amount') as decimal) as token_out_amount_raw
+    , cast(json_extract(swap_result, '$.SwapResult2.trading_fee') as decimal)
+        + cast(json_extract(swap_result, '$.SwapResult2.protocol_fee') as decimal)
+        + cast(json_extract(swap_result, '$.SwapResult2.partner_fee') as decimal)
+        + cast(json_extract(swap_result, '$.SwapResult2.referral_fee') as decimal)
+        as total_fees_raw 
+    , pool as project_program_id
+    , evt_tx_id  as tx_id
+    , evt_outer_instruction_index as outer_instruction_index
+    , coalesce(evt_inner_instruction_index,0) as inner_instruction_index
+    , evt_tx_index as tx_index
+    , row_number () over (
+        partition by evt_tx_id, evt_tx_index, evt_outer_instruction_index
+        order by coalesce(evt_inner_instruction_index,0) asc
+        ) as rn
+  from {{ source ('meteora_solana','cp_amm_evt_evtswap2') }} es 
   where
     1=1
     {% if is_incremental() %}
