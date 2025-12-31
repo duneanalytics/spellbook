@@ -1,4 +1,4 @@
-{% set project_start_date = var('project_start_date', '2025-12-25') %}
+{% set project_start_date = var('project_start_date', '2025-04-10') %}
 
 {{ 
   config(
@@ -38,7 +38,7 @@ with swap_calls as
     and call_block_time > timestamp '{{project_start_date}}'
     {% endif %}
 ),
-swap_event_details as 
+swap_event_details_raw as 
 (
   select 
     evt_block_time as block_time
@@ -55,10 +55,6 @@ swap_event_details as
     , evt_outer_instruction_index as outer_instruction_index
     , coalesce(evt_inner_instruction_index,0) as inner_instruction_index
     , evt_tx_index as tx_index
-    , row_number () over (
-        partition by evt_tx_id, evt_tx_index, evt_outer_instruction_index
-        order by coalesce(evt_inner_instruction_index,0) asc
-        ) as rn
   from {{ source ('meteora_solana','cp_amm_evt_evtswap') }} es 
   where
     1=1
@@ -85,10 +81,6 @@ swap_event_details as
     , evt_outer_instruction_index as outer_instruction_index
     , coalesce(evt_inner_instruction_index,0) as inner_instruction_index
     , evt_tx_index as tx_index
-    , row_number () over (
-        partition by evt_tx_id, evt_tx_index, evt_outer_instruction_index
-        order by coalesce(evt_inner_instruction_index,0) asc
-        ) as rn
   from {{ source ('meteora_solana','cp_amm_evt_evtswap2') }} es 
   where
     1=1
@@ -97,6 +89,25 @@ swap_event_details as
     {% else %}
     and evt_block_time > timestamp '{{project_start_date}}'
     {% endif %}
+),
+swap_event_details as 
+(
+  select 
+    block_time
+    , trade_direction
+    , token_in_amount_raw
+    , token_out_amount_raw
+    , total_fees_raw
+    , project_program_id
+    , tx_id
+    , outer_instruction_index
+    , inner_instruction_index
+    , tx_index
+    , row_number () over (
+        partition by tx_id, tx_index, outer_instruction_index
+        order by inner_instruction_index asc
+        ) as rn
+  from swap_event_details_raw
 ),
 swaps_data as (
   select 
