@@ -115,7 +115,7 @@ WITH chain_trades AS (
         , project
         , version
         , block_month
-        , block_date
+        , CAST(block_date AS date) AS block_date
         , block_time
         , block_number
         , token_bought_symbol
@@ -134,7 +134,7 @@ WITH chain_trades AS (
         , tx_hash
         , tx_from
         , tx_to
-        , evt_index
+        , CAST(evt_index AS bigint) AS evt_index
     FROM
         {{ model }}
     {% if not loop.last %}
@@ -155,7 +155,7 @@ WITH chain_trades AS (
         , project
         , version
         , block_month
-        , block_date
+        , CAST(block_date AS date) AS block_date
         , block_time
         , block_number
         , token_bought_symbol
@@ -174,7 +174,7 @@ WITH chain_trades AS (
         , tx_hash
         , tx_from
         , tx_to
-        , evt_index
+        , CAST(evt_index AS bigint) AS evt_index
     FROM
         {{ cte }}
     {% if not loop.last %}

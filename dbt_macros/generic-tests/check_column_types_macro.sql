@@ -120,7 +120,7 @@ select * from equality_checks where not contains(split(expected_type,'/'),actual
         'project': 'varchar',
         'version': 'varchar',
         'block_month': 'date',
-        'block_date': 'date/timestamp(3) with time zone',
+        'block_date': 'date',
         'block_time': 'timestamp(3) with time zone',
         'block_number': 'bigint',
         'token_bought_symbol': 'varchar',
@@ -139,7 +139,7 @@ select * from equality_checks where not contains(split(expected_type,'/'),actual
         'tx_hash': 'varbinary',
         'tx_from': 'varbinary',
         'tx_to': 'varbinary',
-        'evt_index': 'bigint/integer'
+        'evt_index': 'bigint'
     } -%}
    {{ check_column_types_macro(model,column_types) }}
 {% endtest %}

@@ -43,7 +43,7 @@ WITH base_trades as (
         , base_trades.project
         , base_trades.version
         , base_trades.block_month
-        , base_trades.block_date
+        , block_date
         , base_trades.block_time
         , base_trades.block_number
         , erc20_bought.symbol AS token_bought_symbol
@@ -92,7 +92,7 @@ SELECT
     , project
     , version
     , block_month
-    , block_date
+    , CAST(block_date AS date) AS block_date
     , block_time
     , block_number
     , token_bought_symbol
@@ -111,7 +111,7 @@ SELECT
     , tx_hash
     , tx_from
     , tx_to
-    , evt_index
+    , CAST(evt_index AS bigint) AS evt_index
 FROM
     enrichments_with_prices
 
