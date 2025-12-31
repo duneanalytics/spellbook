@@ -1,4 +1,4 @@
-{% set project_start_date = var('project_start_date', '2025-12-25') %}
+{% set project_start_date = var('project_start_date', '2025-04-10') %}
 
 {{ 
   config(
