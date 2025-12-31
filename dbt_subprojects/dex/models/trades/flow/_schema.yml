@@ -45,6 +45,25 @@ models:
           seed_file: ref('kittypunch_punchswap_flow_base_trades_seed')
           filter:
             version: 2
+  
+  - name: kittypunch_punchswap_v3_flow_base_trades
+    meta:
+      blockchain: flow
+      sector: dex
+      project: kittypunch
+      contributors: kryptaki
+    config:
+      tags: [ 'flow', 'dex', 'trades', 'kittypunch' ]
+    description: "Kittypunch Punchswap V3 Flow base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('kittypunch_punchswap_flow_base_trades_seed')
+          filter:
+            version: 3
 
   - name: flowswap_v3_flow_base_trades
     meta:
