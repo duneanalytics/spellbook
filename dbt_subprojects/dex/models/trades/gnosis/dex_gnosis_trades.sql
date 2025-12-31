@@ -5,7 +5,7 @@
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
-    , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index']
+    , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'block_month']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }} --CHECK: add posthook to expose spell?
