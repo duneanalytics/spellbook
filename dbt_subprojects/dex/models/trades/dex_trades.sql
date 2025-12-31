@@ -49,22 +49,14 @@
     , 'zora'
 ] %}
 
-{% set chains_to_exclude = ['mezo', 'monad', 'story', 'tac'] %}
-{% set exposed_chains = [] %}
-{% for chain in chains %}
-    {% if chain not in chains_to_exclude %}
-        {% set _ = exposed_chains.append(chain) %}
-    {% endif %}
-{% endfor %}
-
 {{ config(
     schema = 'dex'
     , alias = 'trades'
     , materialized = 'view'
-    , post_hook='{{ expose_spells(blockchains = \'["' + exposed_chains | join('","') + '"]\',
+    , post_hook='{{ expose_spells(blockchains = \'["' + chains | join('","') + '"]\',
                                     spell_type = "sector",
                                     spell_name = "dex",
-                                    contributors = \'["hosuke", "0xrob", "jeff-dude", "tomfutago", "viniabussafi", "krishhh"]\') }}'
+                                    contributors = \'["hosuke", "0xrob", "jeff-dude", "tomfutago", "viniabussafi", "krishhh", "kryptaki"]\') }}'
     )
 }}
 
