@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: odos_v2_avalanche_c
+    description: "Odos V2 decoded tables on Avalanche C-Chain"
+    tables:
+      - name: OdosRouterV2_evt_Swap
+        description: "Odos Router V2 Swap events on Avalanche C-Chain"
+        loaded_at_field: evt_block_time
