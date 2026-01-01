@@ -1,11 +1,11 @@
 {{ config(
-    schema = 'izumi_finance',
+    schema = 'kittypunch',
     alias = 'trades',
     materialized = 'view',
-    post_hook='{{ expose_spells(blockchains = \'["bnb", "flow"]\',
+    post_hook='{{ expose_spells(blockchains = \'["flow"]\',
                                   spell_type = "project", 
-                                  spell_name = "izumi_finance", 
-                                  contributors = \'["umer_h_adil"]\') }}'
+                                  spell_name = "kittypunch", 
+                                  contributors = \'["kryptaki"]\') }}'
     )
 }}
 
@@ -35,4 +35,5 @@ SELECT  blockchain
         , tx_to
         , evt_index
 FROM {{ ref('dex_trades') }}
-WHERE project = 'izumi_finance'
+WHERE project = 'kittypunch'
+
