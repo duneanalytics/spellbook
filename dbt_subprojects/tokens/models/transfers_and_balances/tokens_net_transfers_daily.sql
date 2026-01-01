@@ -62,6 +62,7 @@
     , 'story'
     , 'viction'
     , 'worldchain'
+    , 'xlayer'
 ] %}
 
 SELECT *
