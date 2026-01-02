@@ -21,7 +21,7 @@ dex_trades_filtered AS (
   FROM {{ ref('dex_abstract_trades') }} t
   {% if var('dev_dates', false) -%}
   WHERE block_date > current_date - interval '3' day -- dev_dates mode for dev, to prevent full scan
-  {%- elseif is_incremental() -%}
+  {%- elif is_incremental() -%}
   WHERE {{ incremental_predicate('block_date') }}
   {%- endif %}
 )
