@@ -5,7 +5,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['blockchain', 'project', 'trader_id', 'block_time', 'token_bought_symbol', 'token_bought_mint_address', 'token_sold_symbol', 'token_sold_mint_address', 'token_sold_amount', 'amount_usd', 'tx_id'],
+        unique_key = ['blockchain', 'project', 'trader_id', 'block_time', 'token_bought_symbol', 'token_bought_mint_address', 'token_sold_symbol', 'token_sold_mint_address', 'token_sold_amount', 'amount_usd', 'tx_id', 'inner_instruction_index', 'outer_instruction_index'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     )
 }}
@@ -33,6 +33,8 @@ SELECT
     , dst.token_sold_amount
     , dst.amount_usd
     , dst.tx_id 
+    , dst.inner_instruction_index
+    , dst.outer_instruction_index
 FROM {{ source('dex_solana', 'trades') }} dst
 INNER JOIN opensea_tx_ids oti 
     ON dst.tx_id = oti.tx_id
