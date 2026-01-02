@@ -5,7 +5,7 @@
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
-    , unique_key = ['blockchain', 'project', 'version', 'token_address', 'block_date']
+    , unique_key = ['blockchain', 'token_address', 'block_date']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
     )
 }}
@@ -15,6 +15,16 @@ WITH trusted_tokens AS (
   FROM {{ source('prices','trusted_tokens') }}
   WHERE blockchain = 'abstract'
 ),
+
+dex_trades_filtered AS (
+  SELECT *
+  FROM {{ ref('dex_abstract_trades') }} t
+  {% if var('dev_dates', false) -%}
+  WHERE block_date > current_date - interval '3' day -- dev_dates mode for dev, to prevent full scan
+  {%- elseif is_incremental() -%}
+  WHERE {{ incremental_predicate('block_date') }}
+  {%- endif %}
+)
 
 daily_flows AS (
     --volumes bought
@@ -30,14 +40,7 @@ daily_flows AS (
       , CAST(0 AS double) AS sold_volume_raw
       , CAST(0 AS double) AS sold_volume
       , CAST(0 AS double) AS sold_volume_usd
-    FROM {{ ref('dex_abstract_trades') }}
-    {% if var('dev_dates', false) -%}
-    WHERE block_date > current_date - interval '3' day -- dev_dates mode for dev, to prevent full scan
-    {%- else -%}
-        {% if is_incremental() %}
-        WHERE {{ incremental_predicate('block_date') }}
-        {% endif %}
-    {%- endif %}
+    FROM dex_trades_filtered
     GROUP BY blockchain, block_month, block_date, token_bought_address, token_bought_symbol
 
     UNION ALL
@@ -55,14 +58,7 @@ daily_flows AS (
       , SUM(token_sold_amount_raw) AS sold_volume_raw
       , SUM(token_sold_amount) AS sold_volume
       , SUM(CASE WHEN token_sold_address IN (SELECT * FROM trusted_tokens) THEN amount_usd ELSE 0 END) AS sold_volume_usd --only getting usd volume for trusted tokens
-    FROM {{ ref('dex_abstract_trades') }}
-    {% if var('dev_dates', false) -%}
-    WHERE block_date > current_date - interval '3' day -- dev_dates mode for dev, to prevent full scan
-    {%- else -%}
-        {% if is_incremental() %}
-        WHERE {{ incremental_predicate('block_date') }}
-        {% endif %}
-    {%- endif %}
+    FROM dex_trades_filtered
     GROUP BY blockchain, block_month, block_date, token_sold_address, token_sold_symbol
 )
 
