@@ -31,9 +31,13 @@ daily_flows AS (
       , CAST(0 AS double) AS sold_volume
       , CAST(0 AS double) AS sold_volume_usd
     FROM {{ ref('dex_abstract_trades') }}
-    {% if is_incremental() %}
-    WHERE {{ incremental_predicate('block_date') }}
-    {% endif %}
+    {% if var('dev_dates', false) -%}
+    WHERE block_date > current_date - interval '3' day -- dev_dates mode for dev, to prevent full scan
+    {%- else -%}
+        {% if is_incremental() %}
+        WHERE {{ incremental_predicate('block_date') }}
+        {% endif %}
+    {%- endif %}
     GROUP BY blockchain, block_month, block_date, token_bought_address, token_bought_symbol
 
     UNION ALL
@@ -52,9 +56,13 @@ daily_flows AS (
       , SUM(token_sold_amount) AS sold_volume
       , SUM(CASE WHEN token_sold_address IN (SELECT * FROM trusted_tokens) THEN amount_usd ELSE 0 END) AS sold_volume_usd --only getting usd volume for trusted tokens
     FROM {{ ref('dex_abstract_trades') }}
-    {% if is_incremental() %}
-    WHERE {{ incremental_predicate('block_date') }}
-    {% endif %}
+    {% if var('dev_dates', false) -%}
+    WHERE block_date > current_date - interval '3' day -- dev_dates mode for dev, to prevent full scan
+    {%- else -%}
+        {% if is_incremental() %}
+        WHERE {{ incremental_predicate('block_date') }}
+        {% endif %}
+    {%- endif %}
     GROUP BY blockchain, block_month, block_date, token_sold_address, token_sold_symbol
 )
 
