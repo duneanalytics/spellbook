@@ -42,3 +42,4 @@ select
   balance_raw,
   last_updated
 from balances
+where 1=1 -- trigger build
