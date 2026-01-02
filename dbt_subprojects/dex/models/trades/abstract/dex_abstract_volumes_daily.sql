@@ -24,7 +24,7 @@ dex_trades_filtered AS (
   {%- elif is_incremental() -%}
   WHERE {{ incremental_predicate('block_date') }}
   {%- endif %}
-)
+),
 
 daily_flows AS (
     --volumes bought
