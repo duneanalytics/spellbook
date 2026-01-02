@@ -60,7 +60,7 @@ daily_flows AS (
       , SUM(CASE WHEN token_sold_address IN (SELECT * FROM trusted_tokens) THEN amount_usd ELSE 0 END) AS sold_volume_usd --only getting usd volume for trusted tokens
     FROM dex_trades_filtered
     GROUP BY blockchain, block_month, block_date, token_sold_address, token_sold_symbol
-),
+)
 
 SELECT
     blockchain
