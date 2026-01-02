@@ -36,7 +36,7 @@ daily_flows AS (
       , token_bought_symbol AS symbol
       , SUM(token_bought_amount_raw) AS bought_volume_raw
       , SUM(token_bought_amount) AS bought_volume
-      , SUM(CASE WHEN token_bought_address IN (SELECT * FROM trusted_tokens) THEN amount_usd ELSE 0 END) AS bought_volume_usd --only getting usd volume for trusted tokens
+      , SUM(CASE WHEN token_bought_address IN (SELECT * FROM trusted_tokens) THEN amount_usd END) AS bought_volume_usd --only getting usd volume for trusted tokens
       , CAST(NULL AS double) AS sold_volume_raw
       , CAST(NULL AS double) AS sold_volume
       , CAST(NULL AS double) AS sold_volume_usd
@@ -57,7 +57,7 @@ daily_flows AS (
       , CAST(NULL AS double) AS bought_volume_usd
       , SUM(token_sold_amount_raw) AS sold_volume_raw
       , SUM(token_sold_amount) AS sold_volume
-      , SUM(CASE WHEN token_sold_address IN (SELECT * FROM trusted_tokens) THEN amount_usd ELSE 0 END) AS sold_volume_usd --only getting usd volume for trusted tokens
+      , SUM(CASE WHEN token_sold_address IN (SELECT * FROM trusted_tokens) THEN amount_usd END) AS sold_volume_usd --only getting usd volume for trusted tokens
     FROM dex_trades_filtered
     GROUP BY blockchain, block_month, block_date, token_sold_address, token_sold_symbol
 )
