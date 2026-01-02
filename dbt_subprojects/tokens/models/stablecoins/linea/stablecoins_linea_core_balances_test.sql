@@ -3,7 +3,7 @@
 {{
   config(
     schema = 'stablecoins_' ~ chain,
-    alias = 'core_balances',
+    alias = 'core_balances_test',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -13,7 +13,8 @@
   )
 }}
 
--- core balances: tracks balances for stablecoins in the frozen core list
+-- TEST: core balances using ASOF join implementation
+-- compare results with stablecoins_linea_core_balances
 
 with
 
@@ -24,7 +25,7 @@ stablecoin_tokens as (
 
 balances as (
   {{
-    balances_incremental_subset_daily(
+    balances_incremental_subset_daily_test(
         blockchain = chain,
         token_list = 'stablecoin_tokens',
         start_date = '2023-07-13'
@@ -42,4 +43,4 @@ select
   balance_raw,
   last_updated
 from balances
-where 1=1 -- trigger build
+

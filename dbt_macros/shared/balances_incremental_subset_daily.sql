@@ -309,6 +309,136 @@ from (
 
 {#  @DEV here
 
+    @NOTICE this macro constructs the address level token balances table for given input table
+    @NOTICE aka, you give lists of tokens and/or address, it generates table with daily balances of the address-token pair
+    @NOTICE this is the ASOF JOIN version - uses native ASOF join for forward-fill instead of LEAD() + range join
+    @NOTICE outputs balance_raw only. Token symbols, decimals, and prices should be added in downstream enrichment models.
+    
+    @PARAM blockchain               -- blockchain name
+    @PARAM address_list             -- must have an address column, can be none if only filtering on tokens
+    @PARAM token_list               -- must have a token_address column, can be none if only filtering on tokens
+    @PARAM address_token_list       -- for advanced usage, must have both (address, token_address) columns, can be none
+    @PARAM start_date               -- the start_date, used to generate the daily timeseries
+
+#}
+
+{%- macro balances_incremental_subset_daily_test(
+        blockchain,
+        start_date,
+        address_list = none,
+        token_list = none,
+        address_token_list = none
+    )
+%}
+
+with
+
+filtered_daily_agg_balances as (
+    select
+        b.blockchain,
+        b.day,
+        b.block_number,
+        b.block_time,
+        b.address,
+        b.token_address,
+        b.token_standard,
+        b.balance_raw,
+        b.token_id
+    from {{source('tokens_'~blockchain,'balances_daily_agg_base')}} b
+    {% if address_list is not none %}
+    inner join (select distinct address from {{address_list}}) f1
+    on f1.address = b.address
+    {% endif %}
+    {% if token_list is not none %}
+    inner join (select distinct token_address from {{token_list}}) f2
+    on f2.token_address = b.token_address
+    {% endif %}
+    {% if address_token_list is not none %}
+    inner join (select distinct address, token_address from {{address_token_list}}) f3
+    on f3.token_address = b.token_address
+    and f3.address = b.address
+    {% endif %}
+    where day >= cast('{{start_date}}' as date)
+    {% if is_incremental() %}
+    -- for ASOF join, we need all historical data to find the latest balance before each day
+    -- the incremental predicate will be applied after the forward-fill
+    {% endif %}
+),
+
+-- get unique address/token combinations that have balances
+address_tokens as (
+    select distinct
+        address,
+        token_address,
+        token_standard,
+        token_id
+    from filtered_daily_agg_balances
+),
+
+days as (
+    select cast(timestamp as date) as day
+    from {{ source('utils', 'days') }}
+    where cast(timestamp as date) >= cast('{{start_date}}' as date)
+    and cast(timestamp as date) < current_date -- exclude today to avoid mid-day stale data
+    {% if is_incremental() %}
+    and {{ incremental_predicate('timestamp') }}  -- only generate days within incremental window
+    {% endif %}
+),
+
+-- cross join to get all (day, address, token) combinations
+day_address_tokens as (
+    select
+        d.day,
+        at.address,
+        at.token_address,
+        at.token_standard,
+        at.token_id
+    from days d
+    cross join address_tokens at
+),
+
+-- ASOF join to get the latest balance for each day/address/token combination
+-- Note: token_id is nullable, so we use IS NOT DISTINCT FROM for null-safe comparison
+forward_fill as (
+    select
+        b.blockchain,
+        dat.day,
+        dat.address,
+        dat.token_address,
+        dat.token_standard,
+        dat.token_id,
+        b.balance_raw,
+        b.day as last_updated
+    from day_address_tokens dat
+    asof left join filtered_daily_agg_balances b
+        on  dat.address = b.address
+        and dat.token_address = b.token_address
+        and dat.token_id is not distinct from b.token_id  -- null-safe equality for nullable token_id
+        and b.day <= dat.day  -- ASOF: get latest balance as of this day
+)
+
+select
+    b.blockchain,
+    b.day,
+    b.address,
+    b.token_address,
+    b.token_standard,
+    b.token_id,
+    b.balance_raw,
+    b.last_updated
+from (
+    select * from forward_fill
+    where balance_raw > 0
+    {% if is_incremental() %}
+        and {{ incremental_predicate('day') }}
+    {% endif %}
+) b
+
+{% endmacro %}
+
+
+{#  @DEV here
+
     @NOTICE this macro enriches the base balances output with token metadata (symbol, decimals) and prices
     @NOTICE it should be used downstream of balances_incremental_subset_daily macro
     @NOTICE calculates balance from balance_raw and balance_usd from balance * price
