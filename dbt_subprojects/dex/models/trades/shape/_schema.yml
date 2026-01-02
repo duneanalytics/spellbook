@@ -51,3 +51,11 @@ models:
       - check_dex_base_trades_seed:
             seed_file: ref('swanswap_shape_base_trades_seed')
     
+
+  - name: dex_shape_token_volumes_daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - token_address
+            - block_date
