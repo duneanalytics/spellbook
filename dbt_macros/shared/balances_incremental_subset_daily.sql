@@ -361,47 +361,14 @@ filtered_daily_agg_balances as (
     where day >= cast('{{start_date}}' as date)
 ),
 
--- balance changes within window + last known balance before window
-changed_balances as (
-    select
-        blockchain,
-        day,
-        address,
-        token_address,
-        token_standard,
-        token_id,
-        balance_raw
-    from filtered_daily_agg_balances
-    where day >= cast('{{start_date}}' as date)
-    {% if is_incremental() %}
-        and {{ incremental_predicate('day') }}
-    {% endif %}
-    {% if is_incremental() %}
-    -- retrieve the last known balance updates from before the current window for forward fill
-    union all
-    select
-        blockchain,
-        max(day) as day,
-        address,
-        token_address,
-        token_standard,
-        token_id,
-        max_by(balance_raw, day) as balance_raw
-    from filtered_daily_agg_balances
-    where day >= cast('{{start_date}}' as date)
-        and not {{ incremental_predicate('day') }}
-    group by 1, 3, 4, 5, 6
-    {% endif %}
-),
-
--- get unique address/token combinations from changed_balances
 address_tokens as (
     select distinct
+        blockchain,
         address,
         token_address,
         token_standard,
         token_id
-    from changed_balances
+    from filtered_daily_agg_balances
 ),
 
 days as (
@@ -410,45 +377,54 @@ days as (
     where cast(timestamp as date) >= cast('{{start_date}}' as date)
     and cast(timestamp as date) < current_date -- exclude today to avoid mid-day stale data
     {% if is_incremental() %}
-    and {{ incremental_predicate('timestamp') }}  -- only days within incremental window
+        and {{ incremental_predicate('cast(timestamp as date)') }}
     {% endif %}
 ),
 
-forward_fill as (
+address_token_days as (
     select
-        b.blockchain,
-        d.day,
+        at.blockchain,
         at.address,
         at.token_address,
         at.token_standard,
         at.token_id,
+        d.day
+    from address_tokens at
+    cross join days d
+),
+
+forward_fill as (
+    select
+        atd.blockchain,
+        atd.day,
+        atd.address,
+        atd.token_address,
+        atd.token_standard,
+        atd.token_id,
         b.balance_raw,
         b.day as last_updated
-    from days d
-    cross join address_tokens at
-    asof left join changed_balances b
-        on  at.address = b.address
-        and at.token_address = b.token_address
-        and at.token_id is not distinct from b.token_id  -- null-safe equality for nullable token_id
-        and b.day <= d.day  -- ASOF: get latest balance as of this day
+    from address_token_days atd
+    asof left join filtered_daily_agg_balances b
+        on b.address = atd.address
+        and b.token_address = atd.token_address
+        and coalesce(cast(b.token_id as varchar), '') = coalesce(cast(atd.token_id as varchar), '')
+        and b.day <= atd.day
 )
 
 select
-    b.blockchain,
-    b.day,
-    b.address,
-    b.token_address,
-    b.token_standard,
-    b.token_id,
-    b.balance_raw,
-    b.last_updated
-from (
-    select * from forward_fill
-    where balance_raw > 0
-    {% if is_incremental() %}
-        and {{ incremental_predicate('day') }}
-    {% endif %}
-) b
+    blockchain,
+    day,
+    address,
+    token_address,
+    token_standard,
+    token_id,
+    balance_raw,
+    last_updated
+from forward_fill
+where balance_raw > 0
+{% if is_incremental() %}
+    and {{ incremental_predicate('day') }}
+{% endif %}
 
 {% endmacro %}
 
