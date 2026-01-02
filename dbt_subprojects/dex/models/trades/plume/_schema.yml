@@ -93,3 +93,10 @@ models:
           seed_file: ref('izumi_finance_v2_plume_base_trades_seed')
           filter:
             version: 2
+  - name: dex_plume_token_volumes_daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - token_address
+            - block_date

@@ -139,3 +139,10 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
+  - name: dex_zkevm_token_volumes_daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - token_address
+            - block_date
