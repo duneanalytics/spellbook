@@ -361,19 +361,47 @@ filtered_daily_agg_balances as (
     where day >= cast('{{start_date}}' as date)
 ),
 
--- get unique address/token combinations that need processing
--- in incremental mode, only process those with activity in the window
--- (others already have correct forward-filled values from previous runs)
+-- balance changes within window + last known balance before window
+changed_balances as (
+    select
+        blockchain,
+        day,
+        address,
+        token_address,
+        token_standard,
+        token_id,
+        balance_raw
+    from filtered_daily_agg_balances
+    where day >= cast('{{start_date}}' as date)
+    {% if is_incremental() %}
+        and {{ incremental_predicate('day') }}
+    {% endif %}
+    {% if is_incremental() %}
+    -- retrieve the last known balance updates from before the current window for forward fill
+    union all
+    select
+        blockchain,
+        max(day) as day,
+        address,
+        token_address,
+        token_standard,
+        token_id,
+        max_by(balance_raw, day) as balance_raw
+    from filtered_daily_agg_balances
+    where day >= cast('{{start_date}}' as date)
+        and not {{ incremental_predicate('day') }}
+    group by 1, 3, 4, 5, 6
+    {% endif %}
+),
+
+-- get unique address/token combinations from changed_balances
 address_tokens as (
     select distinct
         address,
         token_address,
         token_standard,
         token_id
-    from filtered_daily_agg_balances
-    {% if is_incremental() %}
-    where {{ incremental_predicate('day') }}  -- only address/tokens with recent activity
-    {% endif %}
+    from changed_balances
 ),
 
 days as (
@@ -386,8 +414,6 @@ days as (
     {% endif %}
 ),
 
--- ASOF join directly: for each (day, address/token), find the latest balance
--- this avoids materializing the full cross join
 forward_fill as (
     select
         b.blockchain,
@@ -400,7 +426,7 @@ forward_fill as (
         b.day as last_updated
     from days d
     cross join address_tokens at
-    asof left join filtered_daily_agg_balances b
+    asof left join changed_balances b
         on  at.address = b.address
         and at.token_address = b.token_address
         and at.token_id is not distinct from b.token_id  -- null-safe equality for nullable token_id
