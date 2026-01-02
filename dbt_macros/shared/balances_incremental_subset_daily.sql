@@ -359,13 +359,11 @@ filtered_daily_agg_balances as (
     and f3.address = b.address
     {% endif %}
     where day >= cast('{{start_date}}' as date)
-    {% if is_incremental() %}
-    -- for ASOF join, we need all historical data to find the latest balance before each day
-    -- the incremental predicate will be applied after the forward-fill
-    {% endif %}
 ),
 
--- get unique address/token combinations that have balances
+-- get unique address/token combinations that need processing
+-- in incremental mode, only process those with activity in the window
+-- (others already have correct forward-filled values from previous runs)
 address_tokens as (
     select distinct
         address,
@@ -373,6 +371,9 @@ address_tokens as (
         token_standard,
         token_id
     from filtered_daily_agg_balances
+    {% if is_incremental() %}
+    where {{ incremental_predicate('day') }}  -- only address/tokens with recent activity
+    {% endif %}
 ),
 
 days as (
@@ -381,40 +382,29 @@ days as (
     where cast(timestamp as date) >= cast('{{start_date}}' as date)
     and cast(timestamp as date) < current_date -- exclude today to avoid mid-day stale data
     {% if is_incremental() %}
-    and {{ incremental_predicate('timestamp') }}  -- only generate days within incremental window
+    and {{ incremental_predicate('timestamp') }}  -- only days within incremental window
     {% endif %}
 ),
 
--- cross join to get all (day, address, token) combinations
-day_address_tokens as (
+-- ASOF join directly: for each (day, address/token), find the latest balance
+-- this avoids materializing the full cross join
+forward_fill as (
     select
+        b.blockchain,
         d.day,
         at.address,
         at.token_address,
         at.token_standard,
-        at.token_id
-    from days d
-    cross join address_tokens at
-),
-
--- ASOF join to get the latest balance for each day/address/token combination
--- Note: token_id is nullable, so we use IS NOT DISTINCT FROM for null-safe comparison
-forward_fill as (
-    select
-        b.blockchain,
-        dat.day,
-        dat.address,
-        dat.token_address,
-        dat.token_standard,
-        dat.token_id,
+        at.token_id,
         b.balance_raw,
         b.day as last_updated
-    from day_address_tokens dat
+    from days d
+    cross join address_tokens at
     asof left join filtered_daily_agg_balances b
-        on  dat.address = b.address
-        and dat.token_address = b.token_address
-        and dat.token_id is not distinct from b.token_id  -- null-safe equality for nullable token_id
-        and b.day <= dat.day  -- ASOF: get latest balance as of this day
+        on  at.address = b.address
+        and at.token_address = b.token_address
+        and at.token_id is not distinct from b.token_id  -- null-safe equality for nullable token_id
+        and b.day <= d.day  -- ASOF: get latest balance as of this day
 )
 
 select
