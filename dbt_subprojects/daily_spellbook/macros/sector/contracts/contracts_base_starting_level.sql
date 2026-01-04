@@ -49,15 +49,13 @@ FROM (
             ON t.hash = ct.tx_hash
             AND t.block_time = ct.block_time
             AND t.block_number = ct.block_number
-
+            -- Primary filter: block_time range (preserves exact date filtering)
             AND {{ incremental_days_forward_predicate('ct.block_time', 'cd.base_time', days_forward ) }}
             AND {{ incremental_days_forward_predicate('t.block_time', 'cd.base_time', days_forward ) }}
-
-          where 
-            1=1
-
-            AND {{ incremental_days_forward_predicate('ct.block_time', 'cd.base_time', days_forward ) }}
-            AND {{ incremental_days_forward_predicate('t.block_time', 'cd.base_time', days_forward ) }}
+            -- Partition pruning: filter on block_month partition key to enable partition pruning
+            -- Includes the month containing base_time + days_forward to ensure current incomplete month is included
+            AND DATE_TRUNC('month', ct.block_time) >= DATE_TRUNC('month', cd.base_time - interval '{{var('DBT_ENV_INCREMENTAL_TIME')}}' {{var('DBT_ENV_INCREMENTAL_TIME_UNIT')}})
+            AND DATE_TRUNC('month', ct.block_time) <= DATE_TRUNC('month', cd.base_time + interval '{{days_forward}}' {{var('DBT_ENV_INCREMENTAL_TIME_UNIT')}})
         {% if chain == 'zksync' %}
           UNION ALL
           select 
@@ -80,15 +78,13 @@ FROM (
             ON t.hash = ct.evt_tx_hash
             AND t.block_time = ct.evt_block_time
             AND t.block_number = ct.evt_block_number
-
+            -- Primary filter: block_time range (preserves exact date filtering)
             AND {{ incremental_days_forward_predicate('ct.evt_block_time', 'cd.base_time', days_forward ) }}
             AND {{ incremental_days_forward_predicate('t.block_time', 'cd.base_time', days_forward ) }}
-
-          where 
-            1=1
-
-            AND {{ incremental_days_forward_predicate('ct.evt_block_time', 'cd.base_time', days_forward ) }}
-            AND {{ incremental_days_forward_predicate('t.block_time', 'cd.base_time', days_forward ) }}
+            -- Partition pruning: filter on block_month partition key to enable partition pruning
+            -- Includes the month containing base_time + days_forward to ensure current incomplete month is included
+            AND DATE_TRUNC('month', ct.evt_block_time) >= DATE_TRUNC('month', cd.base_time - interval '{{var('DBT_ENV_INCREMENTAL_TIME')}}' {{var('DBT_ENV_INCREMENTAL_TIME_UNIT')}})
+            AND DATE_TRUNC('month', ct.evt_block_time) <= DATE_TRUNC('month', cd.base_time + interval '{{days_forward}}' {{var('DBT_ENV_INCREMENTAL_TIME_UNIT')}})
         {% endif %}
         ) x
 ) y
