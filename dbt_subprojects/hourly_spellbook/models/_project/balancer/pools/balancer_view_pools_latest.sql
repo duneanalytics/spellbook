@@ -1,7 +1,7 @@
 {{ config(
         schema = 'balancer',
         alias = 'view_pools_latest', 
-        post_hook='{{ expose_spells(blockchains = \'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon", "zkevm"]\',
+        post_hook='{{ expose_spells(blockchains = \'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon","plasma", "zkevm", "hyperevm"]\',
                                 spell_type = "project",
                                 spell_name = "balancer",
                                 contributors = \'["viniabussafi"]\') }}'
