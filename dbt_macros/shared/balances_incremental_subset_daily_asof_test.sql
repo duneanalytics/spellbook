@@ -130,15 +130,16 @@ where balance_raw > 0
 
 with
 
+-- deduplicate source to one row per (day, address, token) - take latest balance_raw per day
 filtered_daily_agg_balances as (
     select
-        b.blockchain,
-        b.day,
-        b.address,
-        b.token_address,
-        b.token_standard,
-        b.token_id,
-        b.balance_raw
+        blockchain,
+        day,
+        address,
+        token_address,
+        token_standard,
+        token_id,
+        max_by(balance_raw, block_number) as balance_raw
     from {{source('tokens_'~blockchain,'balances_daily_agg_base')}} b
     {% if address_list is not none %}
     inner join (select distinct address from {{address_list}}) f1
@@ -154,6 +155,7 @@ filtered_daily_agg_balances as (
     and f3.address = b.address
     {% endif %}
     where day >= cast('{{start_date}}' as date)
+    group by 1, 2, 3, 4, 5, 6
 ),
 
 -- use ASOF to find the NEXT balance update for each record (replaces LEAD)
@@ -235,15 +237,16 @@ from forward_fill
 
 with
 
+-- deduplicate source to one row per (day, address, token) - take latest balance_raw per day
 filtered_daily_agg_balances as (
     select
-        b.blockchain,
-        b.day,
-        b.address,
-        b.token_address,
-        b.token_standard,
-        b.token_id,
-        b.balance_raw
+        blockchain,
+        day,
+        address,
+        token_address,
+        token_standard,
+        token_id,
+        max_by(balance_raw, block_number) as balance_raw
     from {{source('tokens_'~blockchain,'balances_daily_agg_base')}} b
     {% if address_list is not none %}
     inner join (select distinct address from {{address_list}}) f1
@@ -259,6 +262,7 @@ filtered_daily_agg_balances as (
     and f3.address = b.address
     {% endif %}
     where day >= cast('{{start_date}}' as date)
+    group by 1, 2, 3, 4, 5, 6
 ),
 
 -- use ASOF to compute next_update_day (replaces LEAD window function)
