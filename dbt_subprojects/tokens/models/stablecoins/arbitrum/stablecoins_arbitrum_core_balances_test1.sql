@@ -1,9 +1,9 @@
-{% set chain = 'base' %}
+{% set chain = 'arbitrum' %}
 
 {{
   config(
     schema = 'stablecoins_' ~ chain,
-    alias = 'core_balances',
+    alias = 'core_balances_test1',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -12,8 +12,6 @@
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')]
   )
 }}
-
--- core balances: tracks balances for stablecoins in the frozen core list
 
 with
 
@@ -24,10 +22,10 @@ stablecoin_tokens as (
 
 balances as (
   {{
-    balances_incremental_subset_daily(
+    balances_incremental_subset_daily_test1(
         blockchain = chain,
         token_list = 'stablecoin_tokens',
-        start_date = '2023-07-20'
+        start_date = '2021-05-26'
     )
   }}
 )
@@ -42,4 +40,4 @@ select
   balance_raw,
   last_updated
 from balances
-where 1=1 -- trigger build
+
