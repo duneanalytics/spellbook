@@ -114,8 +114,8 @@ where balance_raw > 0
 
 {#  @DEV here
 
-    @NOTICE TEST2: ASOF to compute next_update_day + sequence expansion (no cross join)
-    @NOTICE Uses ASOF self-join to find next balance, then sequence to generate all days in validity period
+    @NOTICE TEST2: ASOF to compute next_update_day + utils.days expansion
+    @NOTICE Uses ASOF self-join to find next balance, then joins utils.days to expand validity period
 
 #}
 
@@ -175,11 +175,21 @@ balance_with_validity as (
         and next_b.day > b.day  -- find FIRST balance AFTER this one
 ),
 
--- expand each balance to cover all days in its validity period using sequence
+days as (
+    select cast(timestamp as date) as day
+    from {{ source('utils', 'days') }}
+    where cast(timestamp as date) >= cast('{{start_date}}' as date)
+    and cast(timestamp as date) < current_date
+    {% if is_incremental() %}
+        and {{ incremental_predicate('cast(timestamp as date)') }}
+    {% endif %}
+),
+
+-- expand each balance to cover all days in its validity period using utils.days
 forward_fill as (
     select
         b.blockchain,
-        cast(generated_day as date) as day,
+        d.day,
         b.address,
         b.token_address,
         b.token_standard,
@@ -187,13 +197,9 @@ forward_fill as (
         b.balance_raw,
         b.day as last_updated
     from balance_with_validity b
-    cross join unnest(
-        sequence(
-            b.day,
-            coalesce(b.next_update_day - interval '1' day, current_date - interval '1' day),
-            interval '1' day
-        )
-    ) as t(generated_day)
+    inner join days d
+        on d.day >= b.day
+        and d.day < coalesce(b.next_update_day, current_date)
     where b.balance_raw > 0
 )
 
@@ -207,11 +213,6 @@ select
     balance_raw,
     last_updated
 from forward_fill
-where day >= cast('{{start_date}}' as date)
-    and day < current_date
-{% if is_incremental() %}
-    and {{ incremental_predicate('day') }}
-{% endif %}
 
 {% endmacro %}
 
