@@ -18,11 +18,12 @@ WITH trusted_tokens AS (
 
 dex_trades_filtered AS (
   SELECT *
-  FROM {{ ref('dex_sonic_trades') }} t
+  FROM {{ ref('dex_trades') }} t
+  WHERE blockchain = 'sonic'
   {% if var('dev_dates', false) -%}
-  WHERE block_date > current_date - interval '3' day -- dev_dates mode for dev, to prevent full scan
+  AND block_date > current_date - interval '3' day -- dev_dates mode for dev, to prevent full scan
   {%- elif is_incremental() -%}
-  WHERE {{ incremental_predicate('block_date') }}
+  AND {{ incremental_predicate('block_date') }}
   {%- endif %}
 ),
 
