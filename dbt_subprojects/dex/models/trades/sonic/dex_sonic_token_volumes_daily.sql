@@ -12,12 +12,11 @@
 
 WITH dex_trades_filtered AS (
   SELECT *
-  FROM {{ ref('dex_trades') }} t
-  WHERE blockchain = 'sonic'
+  FROM {{ ref('dex_sonic_trades') }} t
   {% if var('dev_dates', false) -%}
-  AND block_date > current_date - interval '3' day -- dev_dates mode for dev, to prevent full scan
+  WHERE block_date > current_date - interval '3' day -- dev_dates mode for dev, to prevent full scan
   {%- elif is_incremental() -%}
-  AND {{ incremental_predicate('block_date') }}
+  WHERE {{ incremental_predicate('block_date') }}
   {%- endif %}
 ),
 
