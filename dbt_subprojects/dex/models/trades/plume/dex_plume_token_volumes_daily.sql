@@ -28,7 +28,7 @@ daily_flows AS (
       , block_month
       , block_date
       , token_bought_address AS token_address
-      , coalesce(token_bought_symbol, '') AS symbol
+      , token_bought_symbol AS symbol
       , SUM(token_bought_amount_raw) AS bought_volume_raw
       , SUM(token_bought_amount) AS bought_volume
       , SUM(amount_usd) AS bought_volume_usd
@@ -36,7 +36,7 @@ daily_flows AS (
       , CAST(NULL AS double) AS sold_volume
       , CAST(NULL AS double) AS sold_volume_usd
     FROM dex_trades_filtered
-    GROUP BY blockchain, block_month, block_date, token_bought_address, coalesce(token_bought_symbol, '')
+    GROUP BY blockchain, block_month, block_date, token_bought_address, token_bought_symbol
 
     UNION ALL
 
@@ -46,7 +46,7 @@ daily_flows AS (
       , block_month
       , block_date
       , token_sold_address AS token_address
-      , coalesce(token_sold_symbol, '') AS symbol
+      , token_sold_symbol AS symbol
       , CAST(NULL AS double) AS bought_volume_raw
       , CAST(NULL AS double) AS bought_volume
       , CAST(NULL AS double) AS bought_volume_usd
@@ -54,7 +54,7 @@ daily_flows AS (
       , SUM(token_sold_amount) AS sold_volume
       , SUM(amount_usd) AS sold_volume_usd
     FROM dex_trades_filtered
-    GROUP BY blockchain, block_month, block_date, token_sold_address, coalesce(token_sold_symbol, '')
+    GROUP BY blockchain, block_month, block_date, token_sold_address, token_sold_symbol
 ),
 
 sums AS (
