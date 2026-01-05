@@ -55,6 +55,23 @@ daily_flows AS (
       , SUM(amount_usd) AS sold_volume_usd
     FROM dex_trades_filtered
     GROUP BY blockchain, block_month, block_date, token_sold_address, coalesce(token_sold_symbol, '')
+),
+
+sums AS (
+  SELECT
+    blockchain
+  , block_month
+  , block_date
+  , token_address
+  , symbol
+  , SUM(bought_volume_raw) AS bought_volume_raw_sum
+  , SUM(sold_volume_raw) AS sold_volume_raw_sum
+  , SUM(bought_volume) AS bought_volume_sum
+  , SUM(sold_volume) AS sold_volume_sum
+  , SUM(bought_volume_usd) AS bought_volume_usd_sum
+  , SUM(sold_volume_usd) AS sold_volume_usd_sum
+  FROM daily_flows
+  GROUP BY blockchain, block_month, block_date, token_address, symbol
 )
 
 SELECT
@@ -63,9 +80,14 @@ SELECT
   , block_date
   , token_address
   , symbol
-  , SUM(bought_volume_raw) + SUM(sold_volume_raw) AS volume_raw
-  , SUM(bought_volume) + SUM(sold_volume) AS volume
-  , SUM(bought_volume_usd) + SUM(sold_volume_usd) AS volume_usd
-FROM daily_flows
-GROUP BY blockchain, block_month, block_date, token_address, symbol
+  , CASE WHEN bought_volume_raw_sum IS NULL AND sold_volume_raw_sum IS NULL THEN NULL 
+         ELSE COALESCE(bought_volume_raw_sum, 0) + COALESCE(sold_volume_raw_sum, 0) 
+    END AS volume_raw
+  , CASE WHEN bought_volume_sum IS NULL AND sold_volume_sum IS NULL THEN NULL 
+         ELSE COALESCE(bought_volume_sum, 0) + COALESCE(sold_volume_sum, 0) 
+    END AS volume
+  , CASE WHEN bought_volume_usd_sum IS NULL AND sold_volume_usd_sum IS NULL THEN NULL 
+         ELSE COALESCE(bought_volume_usd_sum, 0) + COALESCE(sold_volume_usd_sum, 0) 
+    END AS volume_usd
+FROM sums
 
