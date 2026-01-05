@@ -133,13 +133,13 @@ with
 -- deduplicate source to one row per (day, address, token) - take latest balance_raw per day
 filtered_daily_agg_balances as (
     select
-        blockchain,
-        day,
-        address,
-        token_address,
-        token_standard,
-        token_id,
-        max_by(balance_raw, block_number) as balance_raw
+        b.blockchain,
+        b.day,
+        b.address,
+        b.token_address,
+        b.token_standard,
+        b.token_id,
+        max_by(b.balance_raw, b.block_number) as balance_raw
     from {{source('tokens_'~blockchain,'balances_daily_agg_base')}} b
     {% if address_list is not none %}
     inner join (select distinct address from {{address_list}}) f1
@@ -154,7 +154,7 @@ filtered_daily_agg_balances as (
     on f3.token_address = b.token_address
     and f3.address = b.address
     {% endif %}
-    where day >= cast('{{start_date}}' as date)
+    where b.day >= cast('{{start_date}}' as date)
     group by 1, 2, 3, 4, 5, 6
 ),
 
@@ -240,13 +240,13 @@ with
 -- deduplicate source to one row per (day, address, token) - take latest balance_raw per day
 filtered_daily_agg_balances as (
     select
-        blockchain,
-        day,
-        address,
-        token_address,
-        token_standard,
-        token_id,
-        max_by(balance_raw, block_number) as balance_raw
+        b.blockchain,
+        b.day,
+        b.address,
+        b.token_address,
+        b.token_standard,
+        b.token_id,
+        max_by(b.balance_raw, b.block_number) as balance_raw
     from {{source('tokens_'~blockchain,'balances_daily_agg_base')}} b
     {% if address_list is not none %}
     inner join (select distinct address from {{address_list}}) f1
@@ -261,7 +261,7 @@ filtered_daily_agg_balances as (
     on f3.token_address = b.token_address
     and f3.address = b.address
     {% endif %}
-    where day >= cast('{{start_date}}' as date)
+    where b.day >= cast('{{start_date}}' as date)
     group by 1, 2, 3, 4, 5, 6
 ),
 
