@@ -1,9 +1,9 @@
-{% set chain = 'base' %}
+{% set chain = 'linea' %}
 
 {{
   config(
     schema = 'stablecoins_' ~ chain,
-    alias = 'core_balances_test',
+    alias = 'core_balances_test1',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -12,9 +12,6 @@
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')]
   )
 }}
-
--- TEST: core balances using ASOF join implementation
--- compare results with stablecoins_base_core_balances
 
 with
 
@@ -25,10 +22,10 @@ stablecoin_tokens as (
 
 balances as (
   {{
-    balances_incremental_subset_daily_test(
+    balances_incremental_subset_daily_test1(
         blockchain = chain,
         token_list = 'stablecoin_tokens',
-        start_date = '2023-07-20'
+        start_date = '2023-07-13'
     )
   }}
 )
