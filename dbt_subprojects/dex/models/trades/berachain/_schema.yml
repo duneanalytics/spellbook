@@ -80,4 +80,5 @@ models:
           combination_of_columns:
             - blockchain
             - token_address
+            - symbol
             - block_date
