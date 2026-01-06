@@ -48,4 +48,3 @@ SELECT
     , evt_index
 FROM
     dexs
-

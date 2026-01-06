@@ -22,3 +22,4 @@ WITH daily_token_volumes AS (
 
 SELECT *
 FROM daily_token_volumes
+

@@ -79,3 +79,4 @@ from
     final
 where
     duplicates_rank = 1
+
