@@ -40,3 +40,41 @@ models:
           seed_file: ref('uniswap_xlayer_base_trades_seed')
           filter:
             version: 3
+
+  - name: potatoswap_v2_xlayer_base_trades
+    meta:
+      blockchain: xlayer
+      sector: dex
+      project: potatoswap
+      contributors: tomfutago
+    config:
+      tags: ["xlayer", "dex", "trades", "potatoswap", "v2"]
+    description: "potatoswap xlayer v2 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('potatoswap_xlayer_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: potatoswap_v3_xlayer_base_trades
+    meta:
+      blockchain: xlayer
+      sector: dex
+      project: potatoswap
+      contributors: tomfutago
+    config:
+      tags: ["xlayer", "dex", "trades", "potatoswap", "v3"]
+    description: "potatoswap xlayer v3 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('potatoswap_xlayer_base_trades_seed')
+          filter:
+            version: 3

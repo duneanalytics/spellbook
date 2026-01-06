@@ -13,6 +13,8 @@
 {% set base_models = [
     ref('uniswap_v2_xlayer_base_trades')
     , ref('uniswap_v3_xlayer_base_trades')
+    , ref('potatoswap_v2_xlayer_base_trades')
+    , ref('potatoswap_v3_xlayer_base_trades')
 ] %}
 with base_union as (
         {% for base_model in base_models %}
