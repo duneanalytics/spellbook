@@ -45,7 +45,8 @@ additional prep:
 
 4. **create/update schema file**
   - create `dbt_subprojects/dex/models/trades/<chain>/_schema.yml` (new chain)
-  - or append platform model definition to existing schema
+    - include `dex_<chain>_trades`, `dex_<chain>_base_trades`, `dex_<chain>_token_volumes_daily`
+  - append platform model definition to existing schema
 
 5. **create seed file**
   - append `<project>_<chain>_base_trades_seed` to `dbt_subprojects/dex/seeds/trades/_schema.yml`
