@@ -44,6 +44,7 @@
     , 'taiko'
     , 'unichain'
     , 'worldchain'
+    , 'xlayer'
     , 'zkevm'
     , 'zksync'
     , 'zora'
