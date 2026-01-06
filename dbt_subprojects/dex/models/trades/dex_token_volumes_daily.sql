@@ -53,10 +53,7 @@
     schema = 'dex'
     , alias = 'token_volumes_daily'
     , materialized = 'view'
-    , post_hook='{{ expose_spells(blockchains = \'["' + chains | join('","') + '"]\',
-                                    spell_type = "sector",
-                                    spell_name = "dex",
-                                    contributors = \'["kryptaki"]\') }}'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 
