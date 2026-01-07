@@ -6,7 +6,8 @@
         incremental_strategy = 'merge',
         unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'block_month'],
         partition_by = ['blockchain', 'block_month'],
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+)
 }}
 
 -- sample dune query for this model
