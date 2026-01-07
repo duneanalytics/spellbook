@@ -1,5 +1,4 @@
 {{ config(
-    tags = ['prod_exclude'],
     schema = 'phantom_swapper_solana',
     alias = 'bot_trades',
     partition_by = ['block_month'],
@@ -69,7 +68,7 @@ with filtered_transactions as (
         where
             fa1.fee_receiver IS NULL -- Exclude trades where FeeWallet is trader
             and fa2.fee_receiver IS NULL -- Exclude transactions signed by FeeWallet 
-            and trades.trade_source IN ('JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4','6m2CDdhRgxpH4WjvdzxAYbGxwdGUz5MziiL5jek2kBma', 'JUPSjgjMFjU4453KMgxhqVmzep6W352bQpE4RsNqXAx')
+            and trades.trade_source IN ('JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4','6m2CDdhRgxpH4WjvdzxAYbGxwdGUz5MziiL5jek2kBma', 'JUPSjgjMFjU4453KMgxhqVmzep6W352bQpE4RsNqXAx','proVF4pMXVaYqmy4NjniPh4pqKNfMmsihgd4wdkCX3u','DF1ow4tspfHX9JwWJsAb9epbkA8hmpSEAtxXy1V27QBH')
             {% if is_incremental() %}
                 and {{ incremental_predicate('trades.block_time') }}
                 and {{ incremental_predicate('fee_payments.block_time') }}

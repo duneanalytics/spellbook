@@ -13,6 +13,7 @@ sources:
   - name: carbon_defi_ethereum
     tables:
       - name: CarbonController_evt_TokensTraded
+      - name: CarbonVortex_evt_TokenTraded
   - name: airswap_ethereum
     tables:
       - name: Light_evt_Swap
@@ -143,3 +144,10 @@ sources:
   - name: native_ethereum
     tables:
       - name: NativeRFQPool_evt_RFQTrade
+  - name: ekubo_ethereum
+    tables:
+      - name: ekubo_core_call_swap_611415377
+  - name: bunni_v2_ethereum
+    tables:
+      - name: bunnihook_evt_swap
+      

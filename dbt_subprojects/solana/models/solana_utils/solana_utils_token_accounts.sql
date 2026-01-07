@@ -2,33 +2,22 @@
   config(
         schema = 'solana_utils',
         alias = 'token_accounts',
-        materialized = 'incremental',
+        materialized = 'view',
         file_format = 'delta',
-        incremental_strategy = 'merge',
-        unique_key = ['address'],
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
                                     "solana_utils",
                                     \'["ilemi"]\') }}')
 }}
 
-WITH
-      distinct_accounts as (
-            SELECT
-                  aa.address
-                  , max_by(aa.token_balance_owner, aa.block_time) as token_balance_owner
-                  , max_by(aa.token_mint_address, aa.block_time) as token_mint_address
-            FROM {{ source('solana','account_activity') }} aa
-            WHERE aa.token_mint_address is not null
-            {% if is_incremental() %}
-            AND {{incremental_predicate('aa.block_time')}}
-            {% endif %}
-            group by 1
-      )
-SELECT
-da.*
-, case when nft.account_mint is not null then 'nft'
-      else 'fungible'
-      end as account_type
-FROM distinct_accounts da
-LEFT JOIN (select * from {{ ref('tokens_solana_nft')}} where account_mint is not null) nft ON da.token_mint_address = nft.account_mint
+
+-- backwards compatible view
+-- the preferred model is the state_history table for full correctness
+select
+      address
+      ,address_prefix
+      ,token_mint_address
+      ,token_balance_owner
+      ,token_version as account_type
+from {{ source('token_accounts_solana','state_history') }}
+where is_active = true

@@ -5,10 +5,11 @@ models:
     meta:
       blockchain: unichain
       sector: lending
-      contributors: tomfutago
+      project: morpho
+      contributors: tomfutago, Henrystats
     config:
-      tags: ['lending', 'flashloans', 'aave', 'unichain']
-    description: "All lending flashloans transactions on Unichain"
+      tags: ['lending', 'flashloans', 'morpho', 'unichain']
+    description: "All lending flashloans transactions on unichain"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -77,15 +78,17 @@ models:
       blockchain: unichain
       sector: lending
       project: morpho
-      contributors: tomfutago
+      contributors: Henrystats, tomfutago
     config:
       tags: ['lending', 'flashloans', 'morpho', 'unichain']
-    description: "Morpho flashloans transactions on Unichain"
+    description: "Morpho flashloans transactions on unichain"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
             - evt_index
+      - check_lending_base_flashloans_seed:
+          seed_file: ref('morpho_unichain_base_flashloans_seed')
     columns:
       - *blockchain
       - *project

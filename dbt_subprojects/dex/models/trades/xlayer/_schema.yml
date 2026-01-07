@@ -1,0 +1,42 @@
+version: 2
+
+models:
+  - name: dex_xlayer_base_trades
+
+  - name: uniswap_v2_xlayer_base_trades
+    meta:
+      blockchain: xlayer
+      sector: dex
+      project: uniswap
+      contributors: tomfutago
+    config:
+      tags: ["xlayer", "dex", "trades", "uniswap", "v2"]
+    description: "uniswap xlayer v2 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_xlayer_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: uniswap_v3_xlayer_base_trades
+    meta:
+      blockchain: xlayer
+      sector: dex
+      project: uniswap
+      contributors: tomfutago
+    config:
+      tags: ["xlayer", "dex", "trades", "uniswap", "v3"]
+    description: "uniswap xlayer v3 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_xlayer_base_trades_seed')
+          filter:
+            version: 3

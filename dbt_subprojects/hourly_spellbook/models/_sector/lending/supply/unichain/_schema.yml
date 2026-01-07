@@ -5,11 +5,11 @@ models:
     meta:
       blockchain: unichain
       sector: lending
-      project: aave, compound, morpho
-      contributors: tomfutago
+      project: euler, venus, morpho, compound
+      contributors: tomfutago, Henrystats
     config:
-      tags: ['lending', 'supply', 'aave', 'compound', 'morpho', 'unichain']
-    description: "All lending supply transactions on Unichain"
+      tags: ['lending', 'supply', 'venus', 'euler', 'morpho', 'compound', 'unichain']
+    description: "All lending supply transactions on unichain"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -87,15 +87,15 @@ models:
         data_tests:
           - not_null
 
-  - name: morpho_unichain_base_supply
+  - name: compound_v3_unichain_base_supply
     meta:
       blockchain: unichain
       sector: lending
-      project: morpho
-      contributors: tomfutago
+      project: compound
+      contributors: Henrystats, tomfutago
     config:
-      tags: ["lending", "supply", "morpho", "unichain"]
-    description: "Morpho supply transactions on Unichain"
+      tags: ['lending', 'supply', 'compound', 'unichain']
+    description: "Compound v3 supply transactions on unichain"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -103,6 +103,118 @@ models:
             - token_address
             - tx_hash
             - evt_index
+      - check_lending_base_supply_seed:
+          seed_file: ref('compound_unichain_base_supply_seed')
+          filter:
+            version: 3
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *depositor
+      - *on_behalf_of
+      - *withdrawn_to
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *project_contract_address
+      - *tx_hash
+      - *evt_index
+      
+  - name: morpho_unichain_base_supply
+    meta:
+      blockchain: unichain
+      sector: lending
+      project: morpho
+      contributors: Henrystats, tomfutago
+    config:
+      tags: ['lending', 'supply', 'morpho', 'unichain']
+    description: "Morpho supply transactions on unichain"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_supply_seed:
+          seed_file: ref('morpho_unichain_base_supply_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *depositor
+      - *on_behalf_of
+      - *withdrawn_to
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *project_contract_address
+      - *tx_hash
+      - *evt_index
+      
+  - name: euler_v2_unichain_base_supply
+    meta:
+      blockchain: unichain
+      sector: lending
+      project: aave
+      contributors: Henrystats, tomfutago
+    config:
+      tags: ['lending', 'supply', 'euler', 'unichain']
+    description: "Euler v2 supply transactions on unichain"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_supply_seed:
+          seed_file: ref('euler_unichain_base_supply_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *depositor
+      - *on_behalf_of
+      - *withdrawn_to
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *project_contract_address
+      - *tx_hash
+      - *evt_index
+      
+  - name: venus_unichain_base_supply
+    meta:
+      blockchain: unichain
+      sector: lending
+      project: venus
+      contributors: Henrystats, tomfutago
+    config:
+      tags: ['lending', 'supply', 'venus', 'unichain']
+    description: "Venus supply transactions on unichain"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_supply_seed:
+          seed_file: ref('venus_unichain_base_supply_seed')
     columns:
       - *blockchain
       - *project

@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: oku_hemi
+    tables:
+      - name: v3pool_evt_swap
+      - name: v3factory_evt_poolcreated
+  - name: izumi_finance_hemi
+    tables:
+      - name: iziswappool_evt_swap
+  - name: sushiswap_hemi
+    tables:
+      - name: v2pair_evt_swap
+      - name: v2factory_evt_paircreated
+      - name: v3pool_evt_swap
+      - name: v3factory_evt_poolcreated
+

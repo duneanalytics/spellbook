@@ -1,6 +1,6 @@
  {{
   config(
-	tags = ['static'],
+	tags = ['static', 'prod_exclude'],
 	schema = 'contracts',
         alias = 'system_predeploys',
         post_hook='{{ expose_spells(\'["ethereum", "base", "optimism", "zora"]\',

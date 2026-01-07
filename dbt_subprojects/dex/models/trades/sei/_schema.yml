@@ -1,13 +1,21 @@
 version: 2
 
 models:
-  - name: dex_sei_base_trades
+  - name: dex_sei_trades
     data_tests:
-      - check_columns_dex_base_trades
-      - check_dex_info_relationship
-      - test_acceptable_usd_amount:
+      - check_columns_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+      - dbt_utils.accepted_range:
           column_name: amount_usd
-          max_value: 1000000000
+          max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+
+  - name: dex_sei_base_trades
 
   - name: jelly_swap_sei_base_trades
     meta:
@@ -61,6 +69,21 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('dragon_swap_sei_base_trades_seed')
+
+  - name: dragon_swap_v3_sei_base_trades
+    meta:
+      blockchain: sei
+      sector: dex
+      project: dragon_swap
+      contributors: hosuke
+    config:
+      tags: [ 'sei', 'dex', 'trades', 'dragon_swap', 'v3' ]
+    description: "DragonSwap v3 sei base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
 
   - name: xei_finance_sei_base_trades
     meta:
@@ -146,3 +169,11 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('yeiswap_sei_base_trades_seed')
+
+  - name: dex_sei_token_volumes_daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - token_address
+            - block_date

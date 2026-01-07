@@ -1,0 +1,48 @@
+version: 2
+
+models:
+  - name: bridges_zora_across_v2_deposits
+    meta:
+      blockchain: zora
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
+    description: "Across's v2 bridge deposits events on Zora"
+  - name: bridges_zora_across_v2_withdrawals
+    meta:
+      blockchain: zora
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Across's v3 bridge withdrawals events on Zora"
+  - name: bridges_zora_across_v3_deposits
+    meta:
+      blockchain: zora
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'across', 'bridges', 'flows' , 'deposits' ]
+    description: "Across's v3 bridge deposits events on Zora"
+  - name: bridges_zora_across_v3_withdrawals
+    meta:
+      blockchain: zora
+      sector: bridges
+      project: across
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'across', 'bridges', 'flows' , 'withdrawals' ]
+    description: "Across's v3 bridge withdrawals events on Zora"
+  - name: bridges_zora_orbiter_v1_deposits
+    meta:
+      blockchain: zora
+      sector: bridges
+      project: orbiter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'zora', 'bridges', 'flows', 'withdrawals' ]
+    description: "Orbiter's v1 bridge deposits events on Zora"

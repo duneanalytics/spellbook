@@ -1,7 +1,6 @@
 {{ config(
     schema = 'paraswap_v6_base',
     alias = 'trades',
-
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -19,6 +18,7 @@
 
 with dexs AS (
         SELECT
+            project,
             blockTime AS block_time,
             blockNumber AS block_number,
             from_hex(beneficiary) AS taker,
@@ -48,7 +48,7 @@ with dexs AS (
 )
 
 SELECT 'base' AS blockchain,
-    'paraswap' AS project,
+    project,
     '6' AS version,
     cast(date_trunc('day', d.block_time) as date) as block_date,
     cast(date_trunc('month', d.block_time) as date) as block_month,

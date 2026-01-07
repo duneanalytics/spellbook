@@ -8,7 +8,10 @@
 
 {%
   set models = [
-    ref('morpho_unichain_base_supply')
+    ref('compound_v3_unichain_base_supply')
+    , ref('morpho_unichain_base_supply')
+    , ref('euler_v2_unichain_base_supply')
+    , ref('venus_unichain_base_supply')
   ]
 %}
 

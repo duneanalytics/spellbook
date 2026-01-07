@@ -1,58 +1,3 @@
-{{ config(
-        schema = 'tokens'
-        , alias = 'transfers'
-        , post_hook='{{ expose_spells(blockchains = \'[
-                                            "abstract"
-                                            ,"apechain"
-                                            ,"arbitrum"
-                                            ,"avalanche_c"
-                                            ,"b3"
-                                            ,"base"
-                                            ,"berachain"
-                                            ,"blast"
-                                            ,"bnb"
-                                            ,"bob"
-                                            ,"boba"
-                                            ,"celo"
-                                            ,"corn"
-                                            ,"degen"
-                                            ,"ethereum"
-                                            ,"fantom"
-                                            ,"flare"
-                                            ,"gnosis"
-                                            ,"ink"
-                                            ,"kaia"
-                                            ."katana"
-                                            ,"linea"
-                                            ,"mantle"
-                                            ,"nova"
-                                            ,"opbnb"
-                                            ,"optimism"
-                                            ,"plume"
-                                            ,"polygon"
-                                            ,"ronin"
-                                            ,"scroll"
-                                            ,"sei"
-                                            ,"shape"
-                                            ,"sonic"
-                                            ,"sophon"
-                                            ,"superseed"
-                                            ,"taiko"
-                                            ,"tron"
-                                            ,"unichain"
-                                            ,"viction"
-                                            ,"worldchain"
-                                            ,"zkevm"
-                                            ,"zksync"
-                                            ,"zora"
-                                            ,"lens"
-                                        ]\',
-                                        spell_type = "sector",
-                                        spell_name = "tokens",
-                                        contributors = \'["aalan3", "jeff-dude", "0xBoxer", "hildobby", "0xRob", "hosuke"]\') }}'
-        )
-}}
-
 {% set chains = [
     'abstract'
     ,'apechain'
@@ -72,33 +17,55 @@
     ,'fantom'
     ,'flare'
     ,'gnosis'
+    ,'hemi'
+    ,'henesys'
+    ,'hyperevm'
     ,'ink'
     ,'kaia'
     ,'katana'
     ,'linea'
     ,'mantle'
+    ,'megaeth'
+    ,'mezo'
+    ,'monad'
     ,'nova'
     ,'opbnb'
     ,'optimism'
+    ,'peaq'
+    ,'plasma'
     ,'plume'
     ,'polygon'
     ,'ronin'
     ,'scroll'
     ,'sei'
     ,'shape'
+    ,'somnia'
     ,'sonic'
     ,'sophon'
+    ,'story'
     ,'superseed'
+    ,'tac'
     ,'taiko'
     ,'tron'
     ,'unichain'
     ,'viction'
     ,'worldchain'
+    ,'xlayer'
     ,'zkevm'
     ,'zksync'
     ,'zora'
     ,'lens'
 ] %}
+
+{{ config(
+        schema = 'tokens'
+        , alias = 'transfers'
+        , post_hook='{{ expose_spells(blockchains = \'["' + chains | join('","') + '"]\',
+                                        spell_type = "sector",
+                                        spell_name = "tokens",
+                                        contributors = \'["aalan3", "jeff-dude", "0xBoxer", "hildobby", "0xRob", "hosuke", "tomfutago"]\') }}'
+        )
+}}
 
 SELECT *
 FROM (

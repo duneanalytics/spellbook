@@ -1,0 +1,92 @@
+version: 2
+
+models:
+  - name: dex_hemi_trades
+    data_tests:
+      - check_columns_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+      - dbt_utils.accepted_range:
+          column_name: amount_usd
+          max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+
+  - name: dex_hemi_base_trades
+    meta:
+      blockchain: hemi
+      sector: dex
+      contributors: krishhh
+    config:
+      tags: ['hemi', 'dex', 'trades']
+    description: 'All DEX trades on Hemi'
+  - name: oku_v3_hemi_base_trades
+    meta:
+      blockchain: hemi
+      sector: dex
+      project: oku
+      contributors: krishhh
+    config:
+      tags: ['hemi', 'dex', 'trades', 'oku', 'v3']
+    description: 'Oku V3 DEX trades on Hemi'
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+
+  - name: izumi_finance_hemi_base_trades
+    meta:
+      blockchain: hemi
+      sector: dex
+      project: izumi
+      contributors: krishhh
+    config:
+      tags: ['hemi', 'dex', 'trades', 'izumi']
+    description: 'Izumi DEX trades on Hemi'
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+
+  - name: sushiswap_v2_hemi_base_trades
+    meta:
+      blockchain: hemi
+      sector: dex
+      project: sushiswap
+      contributors: krishhh
+    config:
+      tags: ['hemi', 'dex', 'trades', 'sushiswap', 'v2']
+    description: 'Sushiswap V2 DEX trades on Hemi'
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            
+  - name: sushiswap_v3_hemi_base_trades
+    meta:
+      blockchain: hemi
+      sector: dex
+      project: sushiswap
+      contributors: krishhh
+    config:
+      tags: ['hemi', 'dex', 'trades', 'sushiswap', 'v3']
+    description: 'Sushiswap V3 DEX trades on Hemi'
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+
+  - name: dex_hemi_token_volumes_daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - token_address
+            - block_date

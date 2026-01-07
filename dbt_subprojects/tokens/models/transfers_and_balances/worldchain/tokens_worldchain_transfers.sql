@@ -17,10 +17,7 @@
 {{
     transfers_enrich(
         base_transfers = ref('tokens_worldchain_base_transfers')
-        , tokens_erc20_model = source('tokens', 'erc20')
-        , prices_model = source('prices', 'usd')
-        , evms_info_model = source('evms','info')
-        , transfers_start_date = '2024-12-06'
+        , transfers_start_date = '2024-06-25'
         , blockchain = 'worldchain'
     )
 }} 

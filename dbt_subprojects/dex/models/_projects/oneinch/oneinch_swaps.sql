@@ -1,4 +1,6 @@
-{{
+{%- set exposed = oneinch_blockchains_cfg_macro() | selectattr("exposed") | map(attribute="name") | list -%}
+
+{{-
     config(
         schema = 'oneinch',
         alias = 'swaps',
@@ -6,252 +8,137 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        partition_by = ['block_month'],
-        unique_key = ['unique_key'],
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "polygon", "arbitrum", "avalanche_c", "gnosis", "fantom", "optimism", "base", "zksync", "linea", "sonic", "unichain"]\',
-                                "project",
-                                "oneinch",
-                                \'["max-morrow", "grkhr"]\') }}'
+        partition_by = ['blockchain', 'block_month'],
+        unique_key = ['blockchain', 'block_month', 'block_date', 'execution_id'],
+        post_hook = '{{ expose_spells(
+            blockchains = \'exposed\',
+            spell_type = "project",
+            spell_name = "oneinch",
+            contributors = \'["max-morrow", "grkhr"]\'
+        ) }}',
     )
-}}
-
-
-
-{% set native_addresses = '(0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee)' %}
-{% set true_native_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
-
--- base columns to not to duplicate in the union
-{% set
-    calls_base_columns = [
-        'blockchain',
-        'block_number',
-        'block_time',
-        'tx_hash',
-        'tx_from',
-        'tx_to',
-        'tx_nonce',
-        'maker',
-        'tx_gas_used',
-        'tx_gas_price',
-        'tx_priority_fee_per_gas',
-        'call_trace_address',
-        'call_from',
-        'call_to',
-        'call_gas_used',
-        'call_type',
-        'contract_name',
-        'protocol',
-        'protocol_version',
-        'method',
-        'order_hash',
-        'flags',
-        'remains',
-        'native_token_symbol',
-        '_call_trace_address',
-        'src_escrow',
-        'hashlock',
-        'dst_blockchain',
-        'dst_block_number',
-        'dst_block_time',
-        'dst_tx_hash',
-        'dst_escrow',
-    ]
-%}
+-}}
 
 
 
 with
 
-calls as (
-    select
-        *
-        , if(src_token_address in {{native_addresses}}, wrapped_native_token_address, src_token_address) as _src_token_address
-        , if(src_token_address in {{native_addresses}}, true, false) as _src_token_native
-        , if(dst_token_address in {{native_addresses}}, coalesce(dst_wrapper, wrapped_native_token_address), dst_token_address) as _dst_token_address
-        , if(dst_token_address in {{native_addresses}}, true, false) as _dst_token_native
-        , array_join(call_trace_address, '') as _call_trace_address
-    from {{ ref('oneinch_calls') }}
-    join {{ ref('oneinch_blockchains') }} using(blockchain)
-    where
-        tx_success
-        and call_success
-        {% if is_incremental() %}
-            and {{ incremental_predicate('block_time') }}
-        {% endif %}
+executions as (
+    {% for stream in oneinch_streams_cfg_macro() %}
+        select *
+            , {{ stream.mode }} as mode
+            , false as second_side
+            , {% if stream.name == 'ar' -%} remains {%- else -%} slice(remains, 1, 1) {%- endif %} as updated_remains
+        from {{ ref('oneinch_' + stream.name + '_executions') }}
+        where true
+            {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
+
+    {% if stream.name == 'lo' %}
+        union all -- second side of LO calls (when a direct call LO method => users from two sides)
+        select *
+            , 'classic' as mode
+            , true as second_side
+            , slice(remains, 2, cardinality(remains)) as updated_remains
+        from {{ ref('oneinch_' + stream.name + '_executions') }}
+        where true
+            and protocol = 'LO'
+            and coalesce(element_at(flags, 'direct'), false)
+            {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
+        
+    {% endif %}
+        {% if not loop.last -%} union all {%- endif %}
+    {% endfor %}
 )
 
-, swaps as (
-    -- AR & LOP calls
-    select
-        {{ calls_base_columns | join(', ') }}
-        , if(protocol = 'AR', tx_from, maker) as user
-        , receiver
-        , _src_token_address
-        , _src_token_native
-        , src_token_amount
-        , _dst_token_address
-        , _dst_token_native
-        , dst_token_amount
-        , false as second_side
-        , protocol = 'LOP' and (
-            position('RFQ' in method) > 0
-            or coalesce(element_at(flags, 'partial') and not element_at(flags, 'multiple'), false)
-        ) as contracts_only
-    from calls
-
-    union all
-
-    -- second side of LOP calls (when a direct call LOP method => users from two sides)
-    select
-        {{ calls_base_columns | join(', ') }}
-        , tx_from as user
-        , null as receiver
-        , _dst_token_address as _src_token_address
-        , _dst_token_native as _src_token_native
-        , dst_token_amount as src_token_amount
-        , _src_token_address as _dst_token_address
-        , _src_token_native as _dst_token_native
-        , src_token_amount as dst_token_amount
-        , true as second_side
-        , false as contracts_only
-    from calls
-    where
-        protocol = 'LOP'
-        and flags['direct']
-)
-
-{% set src_condition = 'contract_address = _src_token_address' %}
-{% set dst_condition = 'contract_address = _dst_token_address' %}
-
-, amounts as (
-    select
-        blockchain
-        , block_number
-        , tx_hash
-        , call_trace_address
-        , second_side
-
-        -- what the user actually gave and received, judging by the transfers
-        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ src_condition }} and transfer_from = user) as _src_token_address_from_user
-        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ src_condition }} and transfer_from = call_from) as _src_token_address_from_caller -- when there were no transfers inside the AR indirect call from the user (tx_from <> caller), but there were from the caller
-        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ dst_condition }} and transfer_to = user) as _dst_token_address_to_user
-        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ dst_condition }} and transfer_to = receiver) as _dst_token_address_to_receiver
-        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ dst_condition }} and transfer_to = call_from) as _dst_token_address_to_caller  -- when there were no transfers inside the AR indirect call to the user (tx_from <> caller), but there were to the caller
-        , any_value(if(transfer_native, native_token_symbol, symbol)) filter(where {{ src_condition }} and transfer_from = user) as _src_token_symbol_from_user
-        , any_value(if(transfer_native, native_token_symbol, symbol)) filter(where {{ src_condition }} and transfer_from = call_from) as _src_token_symbol_from_caller
-        , any_value(if(transfer_native, native_token_symbol, symbol)) filter(where {{ dst_condition }} and transfer_to = user) as _dst_token_symbol_to_user
-        , any_value(if(transfer_native, native_token_symbol, symbol)) filter(where {{ dst_condition }} and transfer_to = receiver) as _dst_token_symbol_to_receiver
-        , any_value(if(transfer_native, native_token_symbol, symbol)) filter(where {{ dst_condition }} and transfer_to = call_from) as _dst_token_symbol_to_caller
-        , any_value(decimals) filter(where {{ src_condition }}) as src_token_decimals
-        , any_value(decimals) filter(where {{ dst_condition }}) as dst_token_decimals
-
-        -- reinsurance for symbols (when transfers from/to user are not found)
-        , any_value(if(transfer_native, native_token_symbol, symbol)) filter(where {{ src_condition }}) as _src_token_symbol
-        , any_value(if(transfer_native, native_token_symbol, symbol)) filter(where {{ dst_condition }}) as _dst_token_symbol
-
-        , max(amount) filter(where {{ src_condition }} and amount <= src_token_amount) as _src_token_amount_true -- take only src token amounts less than in the call
-        , max(amount) filter(where {{ dst_condition }} and amount <= dst_token_amount) as _dst_token_amount_true -- take only dst token amounts less than in the call
-        , max(amount_usd) filter(where {{ src_condition }} and amount <= src_token_amount or {{ dst_condition }} and amount <= dst_token_amount) as sources_amount_usd
-        , max(amount_usd) filter(where {{ src_condition }} and amount <= src_token_amount) as src_token_amount_usd
-        , max(amount_usd) filter(where {{ dst_condition }} and amount <= dst_token_amount) as dst_token_amount_usd
-        , max(amount_usd) filter(where ({{ src_condition }} and amount <= src_token_amount or {{ dst_condition }} and amount <= dst_token_amount) and trusted) as sources_amount_usd_trusted
-        , max(amount_usd) as transfers_amount_usd
-        , max(amount_usd) filter(where trusted) as transfers_amount_usd_trusted
-
-        -- src $ amount from user
-        , sum(amount_usd * if(user = transfer_from, 1, -1)) filter(where {{ src_condition }} and user in (transfer_from, transfer_to)) as _amount_usd_from_user
-        -- dst $ amount to user
-        , sum(amount_usd * if(user = transfer_to, 1, -1)) filter(where {{ dst_condition }} and user in (transfer_from, transfer_to)) as _amount_usd_to_user
-        -- dst $ amount to receiver
-        , sum(amount_usd * if(receiver = transfer_to, 1, -1)) filter(where {{ dst_condition }} and receiver in (transfer_from, transfer_to)) as _amount_usd_to_receiver
-
-        -- escrow results
-        , sum(amount) filter(where result_escrow = src_escrow and result_method = 'withdraw') as src_withdraw_amount
-        , sum(amount) filter(where result_escrow = src_escrow and result_method = 'cancel') as src_cancel_amount
-        , sum(amount) filter(where result_escrow = src_escrow and result_method = 'rescueFunds') as src_rescue_amount
-        , sum(amount_usd) filter(where result_escrow = src_escrow and result_method = 'withdraw') as src_withdraw_amount_usd
-        , sum(amount_usd) filter(where result_escrow = src_escrow and result_method = 'cancel') as src_cancel_amount_usd
-        , sum(amount_usd) filter(where result_escrow = src_escrow and result_method = 'rescueFunds') as src_rescue_amount_usd
-        , sum(amount) filter(where result_escrow = dst_escrow and result_method = 'withdraw') as dst_withdraw_amount
-        , sum(amount) filter(where result_escrow = dst_escrow and result_method = 'cancel') as dst_cancel_amount
-        , sum(amount) filter(where result_escrow = dst_escrow and result_method = 'rescueFunds') as dst_rescue_amount
-        , sum(amount_usd) filter(where result_escrow = dst_escrow and result_method = 'withdraw') as dst_withdraw_amount_usd
-        , sum(amount_usd) filter(where result_escrow = dst_escrow and result_method = 'cancel') as dst_cancel_amount_usd
-        , sum(amount_usd) filter(where result_escrow = dst_escrow and result_method = 'rescueFunds') as dst_rescue_amount_usd
-
-        , count(distinct (contract_address, transfer_native)) as tokens -- count distinct tokens in transfers
-        , count(*) as transfers -- count transfers
-    from swaps
-    join (
-        select * from {{ ref('oneinch_call_transfers') }}
-        {% if is_incremental() %}
-            where {{ incremental_predicate('block_time') }}
-        {% endif %}
-    ) using(blockchain, block_number, tx_hash, call_trace_address) -- block_number is needed for performance
-    group by 1, 2, 3, 4, 5
+, resolvers as (
+    select *
+        , account_address as tx_from
+    from {{ ref('oneinch_intent_accounts') }}
 )
 
 -- output --
 
 select
     blockchain
+    , chain_id
     , block_number
     , block_time
     , tx_hash
+    , tx_success
     , tx_from
     , tx_to
     , tx_nonce
     , tx_gas_used
     , tx_gas_price
     , tx_priority_fee_per_gas
-    , contract_name
-    , protocol
-    , protocol_version
-    , method
+    , tx_index -- it is necessary to determine the order of creations in the block
     , call_trace_address
+    , call_success
+    , call_gas_used
+    , call_selector
+    , call_method
     , call_from
     , call_to
-    , call_gas_used
+    , call_output
+    , call_error
     , call_type
-    , user
-    , receiver
-    , order_hash
-    , map_concat(flags, map_from_entries(array[
-        ('second_side', second_side)
-        , ('contracts_only', contracts_only)
-        , ('cross_chain', hashlock is not null)
-    ])) as flags
-    , remains
-    , coalesce(_src_token_address_from_user, _src_token_address_from_caller, if(_src_token_native, {{ true_native_address }}, _src_token_address)) as src_token_address
-    , coalesce(_src_token_symbol_from_user, _src_token_symbol_from_caller, _src_token_symbol) as src_token_symbol
-    , src_token_decimals
-    , coalesce(_src_token_amount_true, src_token_amount) as src_token_amount
-    , src_escrow
-    , hashlock
+    , mode
+    , protocol
+    , protocol_version
+    , contract_name
+    , resolver_address
+    , resolver_name
+    , amount_usd
+    , execution_cost
+    , if(second_side, tx_from, user) as user
+    , if(second_side, cast(null as varbinary), receiver) as receiver
+    , if(second_side, dst_token_address, src_token_address) as src_token_address
+    , if(second_side, dst_token_amount, src_token_amount) as src_token_amount
+    , if(second_side, dst_executed_address, src_executed_address) as src_executed_address
+    , if(second_side, dst_executed_symbol, src_executed_symbol) as src_executed_symbol
+    , if(second_side, dst_executed_amount, src_executed_amount) as src_executed_amount
+    , if(second_side, dst_executed_amount_usd, src_executed_amount_usd) as src_executed_amount_usd
     , dst_blockchain
-    , dst_block_number
-    , dst_block_time
-    , dst_tx_hash
-    , coalesce(_dst_token_address_to_user, _dst_token_address_to_receiver, _dst_token_address_to_caller, if(_dst_token_native, {{ true_native_address }}, _dst_token_address)) as dst_token_address
-    , coalesce(_dst_token_symbol_to_user, _dst_token_symbol_to_receiver, _dst_token_symbol_to_caller, _dst_token_symbol) as dst_token_symbol
-    , dst_token_decimals
-    , coalesce(_dst_token_amount_true, dst_token_amount) as dst_token_amount
-    , coalesce(sources_amount_usd_trusted, sources_amount_usd, transfers_amount_usd_trusted, transfers_amount_usd) as amount_usd -- sources $ amount first if found prices, then $ amount of connector tokens
-    , sources_amount_usd
-    , src_token_amount_usd
-    , dst_token_amount_usd
-    , transfers_amount_usd
-    , greatest(coalesce(_amount_usd_from_user, 0), coalesce(_amount_usd_to_user, _amount_usd_to_receiver, 0)) as user_amount_usd -- actual user $ amount
-    , tokens
-    , transfers
-    , map_from_entries(array[
-        ('withdraw', cast(row(src_withdraw_amount, src_withdraw_amount_usd, dst_withdraw_amount, dst_withdraw_amount_usd) as row(src_amount uint256, src_amount_usd double, dst_amount uint256, dst_amount_usd double)))
-        , ('cancel', cast(row(src_cancel_amount, src_cancel_amount_usd, dst_cancel_amount, dst_cancel_amount_usd) as row(src_amount uint256, src_amount_usd double, dst_amount uint256, dst_amount_usd double)))
-        , ('rescue', cast(row(src_rescue_amount, src_rescue_amount_usd, dst_rescue_amount, dst_rescue_amount_usd) as row(src_amount uint256, src_amount_usd double, dst_amount uint256, dst_amount_usd double)))
-    ]) as escrow_results
-    , date_trunc('minute', block_time) as minute
-    , date(date_trunc('month', block_time)) as block_month
-    , coalesce(order_hash, tx_hash || from_hex(if(mod(length(_call_trace_address), 2) = 1, '0' || _call_trace_address, _call_trace_address) || '0' || cast(cast(second_side as int) as varchar))) as swap_id
-    , {{dbt_utils.generate_surrogate_key(["blockchain", "tx_hash", "array_join(call_trace_address, ',')", "second_side"])}} as unique_key
-from swaps
-join amounts using(blockchain, block_number, tx_hash, call_trace_address, second_side)
+    , if(second_side, src_token_address, dst_token_address) as dst_token_address
+    , if(second_side, src_token_amount, dst_token_amount) as dst_token_amount
+    , if(second_side, src_executed_address, dst_executed_address) as dst_executed_address
+    , if(second_side, src_executed_symbol, dst_executed_symbol) as dst_executed_symbol
+    , if(second_side, src_executed_amount, dst_executed_amount) as dst_executed_amount
+    , if(second_side, src_executed_amount_usd, dst_executed_amount_usd) as dst_executed_amount_usd
+    , actions
+    , order_hash
+    , hashlock
+    , complement
+    , updated_remains as remains
+    , map_concat(flags, map_from_entries(array[('second_side', second_side)])) as flags
+    , block_date
+    , block_month
+    , native_price
+    , native_decimals
+    , sha1(to_utf8(concat_ws('|'
+        , blockchain
+        , cast(tx_hash as varchar)
+        , array_join(call_trace_address, ',') -- ',' is necessary to avoid similarities after concatenation // array_join(array[1, 0], '') = array_join(array[10], '')
+        , mode
+    ))) as execution_id
+    -- additional --
+    , coalesce(order_hash, sha1(to_utf8(concat_ws('|'
+        , blockchain
+        , cast(tx_hash as varchar)
+        , array_join(call_trace_address, ',') -- ',' is necessary to avoid similarities after concatenation // array_join(array[1, 0], '') = array_join(array[10], '')
+        , mode
+    )))) as swap_id
+    , to_unixtime(block_time) as unixtime
+    , get_href(get_chain_explorer_tx_hash(blockchain, if(blockchain = 'solana', to_base58(tx_hash), cast(tx_hash as varchar))), if(blockchain = 'solana', to_base58(tx_hash), cast(tx_hash as varchar))) as tx_link
+    , get_href(get_chain_explorer_address(blockchain, if(blockchain = 'solana', to_base58(user), cast(user as varchar))), if(blockchain = 'solana', to_base58(user), cast(user as varchar))) as user_link
+    , get_href(get_chain_explorer_address(blockchain, if(blockchain = 'solana', to_base58(src_token_address), cast(src_token_address as varchar))), coalesce(src_executed_symbol, format('%s…%s', if(blockchain = 'solana', substr(to_base58(src_token_address), 1, 4), cast(substr(src_token_address, 1, 2) as varchar)), if(blockchain = 'solana', substr(to_base58(src_token_address), -4), substr(cast(src_token_address as varchar), -4))))) as src_link
+    , get_href(get_chain_explorer_address(blockchain, if(blockchain = 'solana', to_base58(dst_token_address), cast(dst_token_address as varchar))), coalesce(dst_executed_symbol, format('%s…%s', if(blockchain = 'solana', substr(to_base58(dst_token_address), 1, 4), cast(substr(dst_token_address, 1, 2) as varchar)), if(blockchain = 'solana', substr(to_base58(dst_token_address), -4), substr(cast(dst_token_address as varchar), -4))))) as dst_link
+    , coalesce(src_executed_symbol, format('%s…%s', if(blockchain = 'solana', substr(to_base58(src_token_address), 1, 4), cast(substr(src_token_address, 1, 2) as varchar)), if(blockchain = 'solana', substr(to_base58(src_token_address), -4), substr(cast(src_token_address as varchar), -4)))) as src_token
+    , coalesce(dst_executed_symbol, format('%s…%s', if(blockchain = 'solana', substr(to_base58(dst_token_address), 1, 4), cast(substr(dst_token_address, 1, 2) as varchar)), if(blockchain = 'solana', substr(to_base58(dst_token_address), -4), substr(cast(dst_token_address as varchar), -4)))) as dst_token
+    , (cast(dst_executed_amount as double) / pow(10, cast(element_at(complement, 'dst_decimals') as bigint))) / (cast(src_executed_amount as double) / pow(10, cast(element_at(complement, 'src_decimals') as bigint))) between 0.99 and 1.01 as stable
+    , coalesce((cast(src_executed_amount as double) / pow(10, cast(element_at(complement, 'src_decimals') as bigint))) / src_executed_amount_usd, (cast(dst_executed_amount as double) / pow(10, cast(element_at(complement, 'dst_decimals') as bigint))) / dst_executed_amount_usd) between 0.99 and 1.01 as usd_stable
+    , element_at(updated_remains, 1) as value
+    , if(mod(length(call_output), 32) = 4, 0x) as call_output_selector
+    , if(mod(length(call_output), 32) = 4, element_at(slice(regexp_extract_all(from_utf8(call_output), '[\w\d\s\.:\(\)]+'), -1, 1), 1), cast(null as varchar)) as call_output_decoded
+from executions
+left join resolvers using(blockchain, tx_from)

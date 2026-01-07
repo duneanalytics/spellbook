@@ -1,16 +1,21 @@
- {{
+{{
   config(
         schema = 'stabble_solana',
         alias = 'trades',
-        materialized = 'view')
+        materialized = 'view',
+        post_hook='{{ expose_spells(\'["solana"]\',
+                                    "project",
+                                    "stabble",
+                                    \'[]\') }}')
 }}
 
 
 select
-  blockchain
-  , project
-  , version
-  , block_month
+   blockchain
+   , project
+   , version
+   , version_name
+   , block_month
   , block_date
   , block_time
   , block_slot

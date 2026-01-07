@@ -1,0 +1,19 @@
+version: 2
+
+sources:
+  - name: prjx_hyperevm
+    tables:
+      - name: uniswapv3pool_evt_swap
+      - name: uniswapv3factory_evt_poolcreated
+      
+  - name: hyperswap_hyperevm
+    tables:
+      - name: hyperswappair_evt_swap
+      - name: uniswapv2factory_evt_paircreated
+      - name: hyperswapv3pool_evt_swap
+      - name: hyperswapv3factory_evt_poolcreated
+      
+  - name: hybra_hyperevm
+    tables:
+      - name: uniswapv3pool_evt_swap
+      - name: uniswapv3factory_evt_poolcreated 

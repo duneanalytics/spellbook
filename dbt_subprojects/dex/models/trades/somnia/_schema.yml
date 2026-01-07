@@ -1,0 +1,57 @@
+version: 2
+
+models:
+  - name: dex_somnia_trades
+    data_tests:
+      - check_columns_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+      - dbt_utils.accepted_range:
+          column_name: amount_usd
+          max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+
+  - name: dex_somnia_base_trades
+
+  - name: somnex_v2_somnia_base_trades
+    meta:
+      blockchain: somnia
+      sector: dex
+      project: somnex
+      contributors: krishg
+    config:
+      tags: [ 'somnia', 'dex', 'trades', 'somnex', 'v2' ]
+    description: "Somnex V2 somnia base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('somnex_somnia_base_trades_seed')
+
+  - name: quickswap_v3_somnia_base_trades
+    meta:
+      blockchain: somnia
+      sector: dex
+      project: quickswap
+      contributors: krishg
+    config:
+      tags: [ 'somnia', 'dex', 'trades', 'quickswap', 'v3' ]
+    description: "QuickSwap V3 somnia base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index 
+  - name: dex_somnia_token_volumes_daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - token_address
+            - block_date
