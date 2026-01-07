@@ -1,15 +1,16 @@
 {{
     config(
         schema = 'dex',
-        alias = 'test_run1_materialized_only',
-        materialized = 'view',
+        alias = 'test_run2_view_table',
+        materialized = 'table',
         tags = ['performance_test']
     )
 }}
 
--- Run 1: Materialized dex.trades only
--- Query Structure: FROM dex.trades → JOIN dex.trades
--- Expected: 63 stages, 52.51s elapsed, 10.01m CPU, 9.53GB memory
+-- Run 2: View + Table (hybrid) - BEST OVERALL
+-- Query Structure: FROM dex.trades_view_test → JOIN dex.trades
+-- Expected: 815 stages, 45.09s elapsed, 6.17m CPU, 4.49GB memory
+-- Best balance: Cheapest for Dune (38% less CPU, 53% less memory) AND better for users (14% faster)
 
 WITH trades AS (
     SELECT
@@ -37,7 +38,7 @@ WITH trades AS (
         , tx_from
         , tx_to
         , evt_index
-    FROM {{ ref('dex_trades') }}
+    FROM {{ ref('dex_trades_view_test') }}
     WHERE blockchain = 'ethereum'
         AND amount_usd > 0
         AND project_contract_address != 0x000000000004444c5dc75cb358380d2e3de08a90
@@ -45,6 +46,8 @@ WITH trades AS (
         AND project != '0x-API'
         AND token_bought_amount > 0
         AND token_sold_amount > 0
+        AND block_time >= CURRENT_DATE - INTERVAL '24' HOUR
+        AND block_time <= CURRENT_DATE
 )
 
 , pool_details AS (

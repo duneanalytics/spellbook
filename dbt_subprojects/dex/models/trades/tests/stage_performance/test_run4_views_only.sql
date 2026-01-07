@@ -1,17 +1,16 @@
 {{
     config(
         schema = 'dex',
-        alias = 'test_run5_views_with_mat',
-        materialized = 'view',
+        alias = 'test_run4_views_only',
+        materialized = 'table',
         tags = ['performance_test']
     )
 }}
 
--- Run 5: Views only (2x, with as_is materialized) - FAILS
--- Query Structure: FROM dex.trades_view_test_with_mat_only → JOIN dex.trades_view_test_with_mat_only
--- Expected: 1,239 estimated stages - EXCEEDS 1,000 STAGE LIMIT (same as Run 4!)
+-- Run 4: Views only (2x) - FAILS
+-- Query Structure: FROM dex.trades_view_test → JOIN dex.trades_view_test
+-- Expected: 1,239 estimated stages - EXCEEDS 1,000 STAGE LIMIT
 -- Status: Query fails during planning phase
--- Key Finding: Materializing as_is DEXes does NOT reduce stage count
 -- Error: "Number of stages in the query (1239) exceeds the allowed maximum (1000)"
 
 WITH trades AS (
@@ -40,7 +39,7 @@ WITH trades AS (
         , tx_from
         , tx_to
         , evt_index
-    FROM {{ ref('dex_trades_view_test_with_mat_only') }}
+    FROM {{ ref('dex_trades_view_test') }}
     WHERE blockchain = 'ethereum'
         AND amount_usd > 0
         AND project_contract_address != 0x000000000004444c5dc75cb358380d2e3de08a90
@@ -48,6 +47,8 @@ WITH trades AS (
         AND project != '0x-API'
         AND token_bought_amount > 0
         AND token_sold_amount > 0
+        AND block_time >= CURRENT_DATE - INTERVAL '24' HOUR
+        AND block_time <= CURRENT_DATE
 )
 
 , pool_details AS (
@@ -55,7 +56,7 @@ WITH trades AS (
         l.*
         , SUM(dt.amount_usd) AS trade_volume_usd_24h
     FROM trades l
-    JOIN {{ ref('dex_trades_view_test_with_mat_only') }} dt
+    JOIN {{ ref('dex_trades_view_test') }} dt
         ON l.project_contract_address = dt.project_contract_address
     WHERE dt.block_time >= CURRENT_DATE - INTERVAL '24' HOUR
         AND dt.block_time <= CURRENT_DATE

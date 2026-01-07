@@ -7,3 +7,9 @@ sources:
   - name: "gmx-io"
     tables:
       - name: result_gmx_v_2_erc_20_from_api
+  - name: ether_fi
+    description: >
+      Ether.Fi data sources from dune.ether_fi schema
+    tables:
+      - name: result_traits_staking_assets
+        description: "Staking asset traits and metadata from Ether.Fi"

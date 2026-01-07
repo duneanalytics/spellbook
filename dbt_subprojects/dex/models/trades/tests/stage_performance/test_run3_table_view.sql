@@ -1,16 +1,16 @@
 {{
     config(
         schema = 'dex',
-        alias = 'test_run2_view_table',
-        materialized = 'view',
+        alias = 'test_run3_table_view',
+        materialized = 'table',
         tags = ['performance_test']
     )
 }}
 
--- Run 2: View + Table (hybrid) - BEST OVERALL
--- Query Structure: FROM dex.trades_view_test → JOIN dex.trades
--- Expected: 815 stages, 45.09s elapsed, 6.17m CPU, 4.49GB memory
--- Best balance: Cheapest for Dune (38% less CPU, 53% less memory) AND better for users (14% faster)
+-- Run 3: Table + View (reverse) - FASTEST
+-- Query Structure: FROM dex.trades → JOIN dex.trades_view_test
+-- Expected: 487 stages, 39.69s elapsed, 9.49m CPU, 9.75GB memory
+-- Trade-off: Fastest for users (24% faster) but more expensive (5% more CPU, 2% more memory)
 
 WITH trades AS (
     SELECT
@@ -38,7 +38,7 @@ WITH trades AS (
         , tx_from
         , tx_to
         , evt_index
-    FROM {{ ref('dex_trades_view_test') }}
+    FROM {{ ref('dex_trades') }}
     WHERE blockchain = 'ethereum'
         AND amount_usd > 0
         AND project_contract_address != 0x000000000004444c5dc75cb358380d2e3de08a90
@@ -46,6 +46,8 @@ WITH trades AS (
         AND project != '0x-API'
         AND token_bought_amount > 0
         AND token_sold_amount > 0
+        AND block_time >= CURRENT_DATE - INTERVAL '24' HOUR
+        AND block_time <= CURRENT_DATE
 )
 
 , pool_details AS (
@@ -53,7 +55,7 @@ WITH trades AS (
         l.*
         , SUM(dt.amount_usd) AS trade_volume_usd_24h
     FROM trades l
-    JOIN {{ ref('dex_trades') }} dt
+    JOIN {{ ref('dex_trades_view_test') }} dt
         ON l.project_contract_address = dt.project_contract_address
     WHERE dt.block_time >= CURRENT_DATE - INTERVAL '24' HOUR
         AND dt.block_time <= CURRENT_DATE
