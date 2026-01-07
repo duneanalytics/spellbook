@@ -1901,6 +1901,8 @@ seeds:
         evt_index: bigint
         transaction_type: varchar
         token_address: varbinary
+        borrower: varbinary
+        amount: double
   - name: compound_unichain_base_supply_seed
     config:
       column_types:
