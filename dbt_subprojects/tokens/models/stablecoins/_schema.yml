@@ -85,3 +85,65 @@ models:
       - &last_updated
         name: last_updated
         description: "UTC timestamp when data was last updated"
+
+  - name: stablecoins_transfers
+    meta:
+      sector: stablecoin
+      project: stablecoin
+      contributors: tomfutago
+    config:
+      tags: ['stablecoin', 'transfers']
+    description: "Stablecoin token transfers across all chains with token metadata"
+    columns:
+      - *blockchain
+      - &block_month
+        name: block_month
+        description: "Month of the block (partition column)"
+      - &block_date
+        name: block_date
+        description: "Date of the block"
+      - &block_time
+        name: block_time
+        description: "Timestamp of the block"
+      - &block_number
+        name: block_number
+        description: "Block number"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
+      - &trace_address
+        name: trace_address
+        description: "Trace address"
+      - *token_standard
+      - *token_address
+      - *token_symbol
+      - &token_backing
+        name: token_backing
+        description: "Stablecoin backing type"
+      - &token_name
+        name: token_name
+        description: "Stablecoin name"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw transfer amount"
+      - &amount
+        name: amount
+        description: "Transfer amount (adjusted for decimals)"
+      - &price_usd
+        name: price_usd
+        description: "USD price at time of transfer"
+      - &amount_usd
+        name: amount_usd
+        description: "USD value of transfer"
+      - &from
+        name: from
+        description: "Sender address"
+      - &to
+        name: to
+        description: "Receiver address"
+      - &unique_key
+        name: unique_key
+        description: "Unique identifier for this transfer"

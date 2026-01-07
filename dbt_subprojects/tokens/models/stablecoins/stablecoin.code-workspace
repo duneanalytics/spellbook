@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../../../.."
+		},
+		{
+			"path": "../../../../../../../spellbook-stablecoins/spellbook-stablecoins"
+		}
+	],
+	"settings": {
+		"dbt.enableNewLineagePanel": true,
+		"dbt.lineage.defaultExpansion": 2
+	}
+}
