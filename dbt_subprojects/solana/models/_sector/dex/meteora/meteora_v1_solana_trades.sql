@@ -5,13 +5,14 @@
         materialized = 'view',
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "project",
-                                    "meteroa",
+                                    "meteora",
                                     \'["ilemi"]\') }}')
 }}
 select
       blockchain
       , project
       , version
+      , version_name
       , block_month
       , block_date
       , block_time

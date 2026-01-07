@@ -25,3 +25,9 @@ sources:
   - name: carbon_defi_celo
     tables:
       - name: CarbonController_evt_TokensTraded
+      - name: CarbonVortex_evt_TokenTraded
+  - name: uniswap_v4_celo
+    tables:
+      - name: PoolManager_evt_Swap
+      - name: PoolManager_evt_Initialize
+      - name: PoolManager_call_Swap

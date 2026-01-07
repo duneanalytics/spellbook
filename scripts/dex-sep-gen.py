@@ -8,7 +8,7 @@ model_names = [
     'pancakeswap_trades', 'velodrome_optimism_trades', 'woofi_trades',
     'bancor_ethereum_trades', 'platypus_finance_avalanche_c_trades', 'trader_joe_trades',
     'mstable_ethereum_trades', 'zigzag_trades', 'gmx_trades',
-    'biswap_bnb_trades', 'wombat_bnb_trades', 'iziswap_bnb_trades', 'babyswap_bnb_trades',
+    'biswap_bnb_trades', 'wombat_bnb_trades', 'izumi_finance_bnb_trades', 'babyswap_bnb_trades',
     'apeswap_trades', 'spartacus_exchange_fantom_trades', 'spookyswap_fantom_trades',
     'beethoven_x_trades', 'rubicon_trades', 'equalizer_fantom_trades',
     'wigoswap_fantom_trades', 'arbswap_trades', 'spiritswap_fantom_trades',

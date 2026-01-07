@@ -1,0 +1,53 @@
+version: 2
+
+sources:
+  - name: tether_unichain
+    description: "Tether's USDT0 bridge events on Unichain"
+    tables:
+      - name: oupgradeable_evt_oftsent
+      - name: oupgradeable_evt_oftreceived
+  - name: tether_flare
+    description: "Tether's USDT0 bridge events on Flare"
+    tables:
+      - name: oupgradeable_evt_oftsent
+      - name: oupgradeable_evt_oftreceived
+  - name: tether_sei
+    description: "Tether's USDT0 bridge events on Sei"
+    tables:
+      - name: oupgradeable_evt_oftsent
+      - name: oupgradeable_evt_oftreceived
+  - name: tether_arbitrum
+    description: "Tether's USDT0 bridge events on Arbitrum"
+    tables:
+      - name: oupgradeable_evt_oftsent
+      - name: oupgradeable_evt_oftreceived
+  - name: tether_ink
+    description: "Tether's USDT0 bridge events on Ink"
+    tables:
+      - name: oupgradeable_evt_oftsent
+      - name: oupgradeable_evt_oftreceived
+  - name: tether_optimism
+    description: "Tether's USDT0 bridge events on OP Mainnet"
+    tables:
+      - name: oupgradeable_evt_oftsent
+      - name: oupgradeable_evt_oftreceived
+  - name: tether_corn
+    description: "Tether's USDT0 bridge events on Corn"
+    tables:
+      - name: oupgradeable_evt_oftsent
+      - name: oupgradeable_evt_oftreceived
+  - name: tether_berachain
+    description: "Tether's USDT0 bridge events on Berachain"
+    tables:
+      - name: oupgradeable_evt_oftsent
+      - name: oupgradeable_evt_oftreceived
+  - name: tether_hyperevm
+    description: "Tether's USDT0 bridge events on HyperEVM"
+    tables:
+      - name: oupgradeable_evt_oftsent
+      - name: oupgradeable_evt_oftreceived
+  - name: tether_polygon
+    description: "Tether's USDT0 bridge events on Polygon"
+    tables:
+      - name: oupgradeable_evt_oftsent
+      - name: oupgradeable_evt_oftreceived

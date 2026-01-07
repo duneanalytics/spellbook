@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: tokens_arbitrum_erc20
+  - name: tokens_arbitrum_v1_erc20
     meta:
       blockchain: arbitrum
       sector: tokens
@@ -82,25 +82,3 @@ models:
       - name: standard
         description: "The NFT standard erc721/erc1155/..."
   
-  - name: tokens_arbitrum_erc20_stablecoins
-    meta:
-      blockchain: arbitrum
-      sector: stablecoins
-      contributors: synthquest, rantum
-    config:
-      tags: ['tokens', 'arbitrum', 'erc20', 'stablecoins']
-    description: >
-        Selection of stablecoin token addresses.
-    columns:
-      - name: blockchain
-        description: "Blockchain name"
-      - name: contract_address
-        description: "Stablecoin contract address"
-      - name: backing
-        description: "Stablecoin backing"
-      - name: symbol
-        description: "Stablecoin symbol"
-      - name: name
-        description: "Stablecoin project name"
-      - name: decimals
-        description: "Number of decimals"

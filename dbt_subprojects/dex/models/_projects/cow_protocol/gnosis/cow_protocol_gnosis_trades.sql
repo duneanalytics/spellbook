@@ -17,6 +17,31 @@
 
 -- Find the PoC Query here: https://dune.com/queries/2720387
 WITH
+
+atokens_mapping as (
+    SELECT
+        DISTINCT 'gnosis' as blockchain,
+        aToken as atoken_address,
+        asset as underlying_address
+    FROM {{source('aave_v3_gnosis','poolconfigurator_evt_reserveinitialized')}} 
+),
+
+atoken_prices as (
+    SELECT
+        atkm.atoken_address as contract_address,
+        prc.price,
+        prc.minute,
+        prc.blockchain
+    FROM atokens_mapping as atkm
+    INNER JOIN {{ source('prices', 'usd') }} as prc
+    ON atkm.underlying_address = prc.contract_address
+    WHERE atkm.blockchain = 'gnosis'
+    and prc.blockchain = 'gnosis'
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('minute') }}
+    {% endif %}
+
+),
 -- First subquery joins buy and sell token prices from prices.usd.
 -- Also deducts fee from sell amount.
 trades_with_prices AS (
@@ -34,8 +59,8 @@ trades_with_prices AS (
            sellAmount - feeAmount    as sell_amount,
            buyAmount                 as buy_amount,
            feeAmount                 as fee_amount,
-           ps.price                  as sell_price,
-           pb.price                  as buy_price
+           coalesce(ps.price, atoken_ps.price) as sell_price,
+           coalesce(pb.price, atoken_pb.price) as buy_price
     FROM {{ source('gnosis_protocol_v2_gnosis', 'GPv2Settlement_evt_Trade') }} trade
              LEFT OUTER JOIN {{ source('prices', 'usd') }} as ps
                              ON sellToken = ps.contract_address
@@ -56,6 +81,18 @@ trades_with_prices AS (
                                  {% if is_incremental() %}
                                  AND {{ incremental_predicate('pb.minute') }}
                                  {% endif %}
+             LEFT OUTER JOIN atoken_prices as atoken_pb
+                 ON atoken_pb.contract_address = (
+                        CASE
+                            WHEN buyToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                                THEN 0xe91d153e0b41518a2ce8dd3d7944fa863463a97d
+                            ELSE buyToken
+                        END
+                    )
+                    AND atoken_pb.minute = date_trunc('minute', evt_block_time)
+             LEFT OUTER JOIN atoken_prices as atoken_ps
+                 ON atoken_ps.contract_address = sellToken
+                    AND atoken_ps.minute = date_trunc('minute', evt_block_time)
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}

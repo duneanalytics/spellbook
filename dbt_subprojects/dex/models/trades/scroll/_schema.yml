@@ -1,13 +1,21 @@
 version: 2
 
 models:
-  - name: dex_scroll_base_trades
+  - name: dex_scroll_trades
     data_tests:
-      - check_columns_dex_base_trades
-      - check_dex_info_relationship
-      - test_acceptable_usd_amount:
+      - check_columns_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+      - dbt_utils.accepted_range:
           column_name: amount_usd
-          max_value: 1000000000
+          max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+
+  - name: dex_scroll_base_trades
 
   - name: uniswap_v3_scroll_base_trades
     meta:
@@ -111,22 +119,22 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('nuri_scroll_base_trades_seed')
 
-  - name: iziswap_scroll_base_trades
+  - name: izumi_finance_scroll_base_trades
     meta:
       blockchain: scroll
       sector: dex
-      project: iziswap
+      project: izumi_finance
       contributors: niftytable
     config:
-      tags: [ 'scroll', 'dex', 'trades', 'iziswap' ]
-    description: "Iziswap scroll base trades"
+      tags: [ 'scroll', 'dex', 'trades', 'izumi_finance' ]
+    description: "izumi_finance scroll base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
             - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('iziswap_scroll_base_trades_seed')
+          seed_file: ref('izumi_finance_scroll_base_trades_seed')
 
   - name: icecreamswap_v2_scroll_base_trades
     meta:
@@ -233,3 +241,11 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('punkswap_scroll_base_trades_seed')
+
+  - name: dex_scroll_token_volumes_daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - token_address
+            - block_date

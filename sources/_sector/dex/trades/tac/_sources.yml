@@ -1,0 +1,6 @@
+version: 2
+
+sources:
+  - name: carbon_defi_tac
+    tables:
+      - name: CarbonController_evt_TokensTraded

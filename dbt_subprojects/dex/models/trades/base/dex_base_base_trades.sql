@@ -20,6 +20,7 @@
     , ref('aerodrome_base_base_trades')
     , ref('pancakeswap_v2_base_base_trades')
     , ref('pancakeswap_v3_base_base_trades')
+    , ref('pancakeswap_infinity_base_base_trades')
     , ref('balancer_v2_base_base_trades')
     , ref('balancer_v3_base_base_trades')
     , ref('dodo_base_base_trades')
@@ -53,6 +54,7 @@
     , ref('openocean_base_base_trades')
     , ref('rocketswap_base_base_trades')
     , ref('alienbase_base_base_trades')
+    , ref('alienbase_v3_base_base_trades')
     , ref('swapbased_base_base_trades')
     , ref('clipper_base_base_trades')
     , ref('solidly_v3_base_base_trades')
@@ -66,11 +68,9 @@
     , ref('tapio_base_base_trades')
     , ref('fluid_v1_base_base_trades')
     , ref('native_base_base_trades')
+    , ref('carbon_defi_base_base_trades')
 ] %}
 with base_union as (
-    SELECT *
-    FROM
-    (
         {% for base_model in base_models %}
         SELECT
             blockchain
@@ -89,27 +89,42 @@ with base_union as (
             , project_contract_address
             , tx_hash
             , evt_index
-            , row_number() over (partition by tx_hash, evt_index order by tx_hash) as duplicates_rank
         FROM
             {{ base_model }}
         WHERE
            token_sold_amount_raw >= 0 and token_bought_amount_raw >= 0
-        {% if is_incremental() %}
+        {% if var('dev_dates', false) -%}
+            AND block_date > current_date - interval '3' day -- dev_dates mode for dev, to prevent full scan
+        {%- else -%}
+            {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
-        {% endif %}
+            {% endif %}
+        {%- endif %}
         {% if not loop.last %}
         UNION ALL
         {% endif %}
         {% endfor %}
-    )
-    WHERE
-        duplicates_rank = 1
 )
 
-{{
-    add_tx_columns(
-        model_cte = 'base_union'
-        , blockchain = 'base'
-        , columns = ['from', 'to', 'index']
-    )
-}}
+, add_tx_columns as (
+    {{
+        add_tx_columns(
+            model_cte = 'base_union'
+            , blockchain = 'base'
+            , columns = ['from', 'to', 'index']
+        )
+    }}
+)
+, final as (
+    select
+        *
+        , row_number() over (partition by tx_hash, evt_index order by tx_hash) as duplicates_rank
+    from
+        add_tx_columns
+)
+select
+    *
+from
+    final
+where
+    duplicates_rank = 1

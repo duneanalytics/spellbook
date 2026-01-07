@@ -1,14 +1,21 @@
 version: 2
 
 models:
-  - name: dex_ethereum_base_trades
+  - name: dex_ethereum_trades
     data_tests:
-      - check_columns_dex_base_trades
-      - check_dex_info_relationship
-      - test_acceptable_usd_amount:
+      - check_columns_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+      - dbt_utils.accepted_range:
           column_name: amount_usd
-          max_value: 1000000000
+          max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
 
+  - name: dex_ethereum_base_trades
   - name: uniswap_v1_ethereum_base_trades
     meta:
       blockchain: ethereum
@@ -707,3 +714,69 @@ models:
           seed_file: ref('native_ethereum_base_trades_seed')
           filter:
             version: 1
+
+  - name: angstrom_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: angstrom
+      contributors: jnoorchashm37
+    config:
+      tags: ["ethereum", "dex", "trades", "native"]
+    description: "angstrom ethereum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('angstrom_ethereum_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: eulerswap_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: eulerswap
+      contributors: Henrystats
+    config:
+      tags: ["ethereum", "dex", "trades", "eulerswap"]
+    description: "eulerswap ethereum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('eulerswap_ethereum_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: ekubo_v1_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: ekubo
+      contributors: 0xsandeshk
+    config:
+      tags: ["ethereum", "dex", "trades", "ekubo"]
+    description: "ekubo ethereum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('ekubo_v1_ethereum_base_trades_seed')
+          filter:
+            version: 1
+
+
+  - name: dex_ethereum_token_volumes_daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - token_address
+            - block_date
