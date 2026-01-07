@@ -16,17 +16,15 @@
 
 with
 
-filtered_daily_agg_balances as (
+source_balances as (
     select
         b.blockchain,
         b.day,
-        b.block_number,
-        b.block_time,
         b.address,
         b.token_address,
         b.token_standard,
-        b.balance_raw,
-        b.token_id
+        b.token_id,
+        b.balance_raw
     from {{source('tokens_'~blockchain,'balances_daily_agg_base')}} b
     {% if address_list is not none %}
     inner join (select distinct address from {{address_list}}) f1
@@ -41,7 +39,37 @@ filtered_daily_agg_balances as (
     on f3.token_address = b.token_address
     and f3.address = b.address
     {% endif %}
-    where day >= cast('{{start_date}}' as date)
+    where b.day >= cast('{{start_date}}' as date)
+),
+
+filtered_daily_agg_balances as (
+    select
+        blockchain,
+        day,
+        address,
+        token_address,
+        token_standard,
+        token_id,
+        balance_raw
+    from source_balances
+    {% if is_incremental() %}
+    where {{ incremental_predicate('day') }}
+    {% endif %}
+    {% if is_incremental() %}
+    union all
+    -- last known balance per (address, token) from before incremental window
+    select
+        blockchain,
+        max(day) as day,
+        address,
+        token_address,
+        token_standard,
+        token_id,
+        max_by(balance_raw, day) as balance_raw
+    from source_balances
+    where not {{ incremental_predicate('day') }}
+    group by 1, 3, 4, 5, 6
+    {% endif %}
 ),
 
 address_tokens as (
@@ -130,8 +158,7 @@ where balance_raw > 0
 
 with
 
--- deduplicate source to one row per (day, address, token) - take latest balance_raw per day
-filtered_daily_agg_balances as (
+source_balances as (
     select
         b.blockchain,
         b.day,
@@ -156,6 +183,28 @@ filtered_daily_agg_balances as (
     {% endif %}
     where b.day >= cast('{{start_date}}' as date)
     group by 1, 2, 3, 4, 5, 6
+),
+
+filtered_daily_agg_balances as (
+    select * from source_balances
+    {% if is_incremental() %}
+    where {{ incremental_predicate('day') }}
+    {% endif %}
+    {% if is_incremental() %}
+    union all
+    -- last known balance per (address, token) from before incremental window
+    select
+        blockchain,
+        max(day) as day,
+        address,
+        token_address,
+        token_standard,
+        token_id,
+        max_by(balance_raw, day) as balance_raw
+    from source_balances
+    where not {{ incremental_predicate('day') }}
+    group by 1, 3, 4, 5, 6
+    {% endif %}
 ),
 
 -- use ASOF to find the NEXT balance update for each record (replaces LEAD)
@@ -181,7 +230,7 @@ days as (
     select cast(timestamp as date) as day
     from {{ source('utils', 'days') }}
     where cast(timestamp as date) >= cast('{{start_date}}' as date)
-    and cast(timestamp as date) < current_date
+    and cast(timestamp as date) < current_date -- exclude today to avoid mid-day stale data
     {% if is_incremental() %}
         and {{ incremental_predicate('cast(timestamp as date)') }}
     {% endif %}
@@ -202,7 +251,6 @@ forward_fill as (
     inner join days d
         on d.day >= b.day
         and d.day < coalesce(b.next_update_day, current_date)
-    where b.balance_raw > 0
 )
 
 select
@@ -215,6 +263,10 @@ select
     balance_raw,
     last_updated
 from forward_fill
+where balance_raw > 0
+{% if is_incremental() %}
+    and {{ incremental_predicate('day') }}
+{% endif %}
 
 {% endmacro %}
 
@@ -237,8 +289,7 @@ from forward_fill
 
 with
 
--- deduplicate source to one row per (day, address, token) - take latest balance_raw per day
-filtered_daily_agg_balances as (
+source_balances as (
     select
         b.blockchain,
         b.day,
@@ -265,6 +316,28 @@ filtered_daily_agg_balances as (
     group by 1, 2, 3, 4, 5, 6
 ),
 
+filtered_daily_agg_balances as (
+    select * from source_balances
+    {% if is_incremental() %}
+    where {{ incremental_predicate('day') }}
+    {% endif %}
+    {% if is_incremental() %}
+    union all
+    -- last known balance per (address, token) from before incremental window
+    select
+        blockchain,
+        max(day) as day,
+        address,
+        token_address,
+        token_standard,
+        token_id,
+        max_by(balance_raw, day) as balance_raw
+    from source_balances
+    where not {{ incremental_predicate('day') }}
+    group by 1, 3, 4, 5, 6
+    {% endif %}
+),
+
 -- use ASOF to compute next_update_day (replaces LEAD window function)
 changed_balances as (
     select
@@ -288,7 +361,7 @@ days as (
     select cast(timestamp as date) as day
     from {{ source('utils', 'days') }}
     where cast(timestamp as date) >= cast('{{start_date}}' as date)
-    and cast(timestamp as date) < current_date
+    and cast(timestamp as date) < current_date -- exclude today to avoid mid-day stale data
     {% if is_incremental() %}
         and {{ incremental_predicate('cast(timestamp as date)') }}
     {% endif %}
