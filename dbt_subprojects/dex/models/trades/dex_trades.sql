@@ -44,6 +44,7 @@
     , 'taiko'
     , 'unichain'
     , 'worldchain'
+    , 'xlayer'
     , 'zkevm'
     , 'zksync'
     , 'zora'
@@ -52,7 +53,12 @@
 {{ config(
     schema = 'dex'
     , alias = 'trades'
-    , materialized = 'view'
+    , partition_by = ['block_month', 'blockchain', 'project']
+    , materialized = 'incremental'
+    , file_format = 'delta'
+    , incremental_strategy = 'merge'
+    , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'block_month']
+    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     , post_hook='{{ expose_spells(blockchains = \'["' + chains | join('","') + '"]\',
                                     spell_type = "sector",
                                     spell_name = "dex",
@@ -95,6 +101,13 @@ WITH chain_trades AS (
         , evt_index
     FROM
         {{ ref('dex_'~chain~'_trades') }}
+    {% if var('dev_dates', false) -%}
+    WHERE block_date > current_date - interval '3' day -- dev_dates mode for dev, to prevent full scan
+    {%- else -%}
+    {% if is_incremental() %}
+    WHERE {{ incremental_predicate('block_time') }}
+    {% endif %}
+    {%- endif %}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
@@ -129,6 +142,13 @@ WITH chain_trades AS (
         , CAST(evt_index AS bigint) AS evt_index
     FROM
         {{ model }}
+    {% if var('dev_dates', false) -%}
+    WHERE block_date > current_date - interval '3' day -- dev_dates mode for dev, to prevent full scan
+    {%- else -%}
+    {% if is_incremental() %}
+    WHERE {{ incremental_predicate('block_time') }}
+    {% endif %}
+    {%- endif %}
     {% if not loop.last %}
     UNION ALL
     {% endif %}

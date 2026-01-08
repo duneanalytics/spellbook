@@ -9,7 +9,8 @@
 {%
   set models = [
     ref('aave_v3_scroll_base_supply'),
-    ref('layer_bank_scroll_base_supply')
+    ref('layer_bank_scroll_base_supply'),
+    ref('morpho_scroll_base_supply')
   ]
 %}
 
