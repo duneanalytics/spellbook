@@ -310,7 +310,7 @@ models:
       blockchain: base
       sector: lending
       project: Morpho
-      contributors: 0xDataWolf
+      contributors: 0xDataWolf, tomfutago
     config:
       tags: ["lending", "supply", "morpho", "base"]
     description: "Morpho supply transactions on Base"
