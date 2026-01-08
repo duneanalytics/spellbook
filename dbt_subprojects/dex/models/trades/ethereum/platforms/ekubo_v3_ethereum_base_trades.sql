@@ -20,8 +20,8 @@ SELECT
     , t.block_number AS block_number
     , abs(case when t.amount0_raw < 0 then t.amount0_raw else t.amount1_raw end) as token_bought_amount_raw
     , abs(case when t.amount0_raw > 0 then t.amount0_raw else t.amount1_raw end) as token_sold_amount_raw
-    , token_bought_address
-    , token_sold_address
+    , case when t.amount0_raw < 0 then token0 else token1 END as token_bought_address
+    , case when t.amount0_raw > 0 then token0 else token1 END as token_sold_address
     , t.tx_from AS taker
     , t.id AS maker
     , 0x00000000000014aA86C5d3c41765bb24e11bd701 as project_contract_address
