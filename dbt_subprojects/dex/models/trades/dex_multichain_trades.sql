@@ -15,7 +15,6 @@ evm_trades AS (
                 block_number, --not very chain agnostic
                 CONCAT('0x', LOWER(TO_HEX(tx_hash))) AS tx_id,
                 CONCAT('0x', LOWER(TO_HEX(taker))) AS trader_id,
-                CONCAT('0x', LOWER(TO_HEX(tx_from))) AS tx_signer,
                 project,
                 CONCAT('0x', LOWER(TO_HEX(project_contract_address))) AS pool_id,
                 token_pair,
@@ -39,7 +38,6 @@ solana_trades AS (
                 block_slot AS block_number,
                 tx_id,
                 trader_id,
-                trader_id AS tx_signer,
                 project,
                 project_program_id AS pool_id,
                 token_pair,
