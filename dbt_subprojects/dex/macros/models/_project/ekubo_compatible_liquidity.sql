@@ -41,8 +41,8 @@ liquidity_events as (
         evt_block_number as block_number,
         evt_tx_from as tx_from,
         poolId as id,
-        delta0 as amount0,
-        delta1 as amount1,
+        CASE WHEN contract_address = 0x00000000000014aa86c5d3c41765bb24e11bd701 THEN varbinary_to_decimal(substr(balanceUpdate, 1, 16)) ELSE delta0 END as amount0,
+        CASE WHEN contract_address = 0x00000000000014aa86c5d3c41765bb24e11bd701 THEN varbinary_to_decimal(substr(balanceUpdate, 1+16, 16)) ELSE delta1 END as amount1,
         evt_tx_hash as tx_hash,
         evt_index,
         'modify_liquidity' as event_type 
