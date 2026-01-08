@@ -20,3 +20,8 @@ sources:
       - name: cUSDCv3Polygon_evt_SupplyCollateral
       - name: cUSDCv3Polygon_evt_WithdrawCollateral
       - name: cUSDCv3Polygon_evt_AbsorbCollateral
+
+  - name: morpho_blue_polygon
+    tables:
+      - name: MorphoBlue_evt_Supply
+      - name: MorphoBlue_evt_Withdraw
