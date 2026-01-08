@@ -13,6 +13,7 @@
 
 -- celo doesn't have a raw balances source like other chains
 -- this is a temp solution to get balances for celo
+-- note: celo allows paying gas fees in stablecoins, which is reflected in this model
 
 with transfers_in as (
     select
@@ -25,8 +26,7 @@ with transfers_in as (
         token_standard,
         amount
     from {{ ref('tokens_celo_transfers') }}
-    where "to" is not null
-        and "to" != 0x0000000000000000000000000000000000000000
+    where "to" != 0x0000000000000000000000000000000000000000
     {% if is_incremental() %}
         and {{ incremental_predicate('block_time') }}
     {% endif %}
@@ -43,8 +43,29 @@ transfers_out as (
         token_standard,
         -1 * amount as amount
     from {{ ref('tokens_celo_transfers') }}
-    where "from" is not null
-        and "from" != 0x0000000000000000000000000000000000000000
+    where "from" != 0x0000000000000000000000000000000000000000
+    {% if is_incremental() %}
+        and {{ incremental_predicate('block_time') }}
+    {% endif %}
+),
+
+-- celo-specific: gas fees can be paid in stablecoins (USDT, USDC) or native CELO
+gas_fees as (
+    select
+        blockchain,
+        block_date as day,
+        block_number,
+        block_time,
+        tx_from as address,
+        tx_fee_currency as token_address,
+        case 
+            when tx_fee_currency = {{var('ETH_ERC20_ADDRESS')}} then 'native'
+            else 'erc20'
+        end as token_standard,
+        -1 * tx_fee as amount
+    from {{ source('gas_celo', 'fees') }}
+    where tx_from is not null
+        and tx_fee > 0
     {% if is_incremental() %}
         and {{ incremental_predicate('block_time') }}
     {% endif %}
@@ -54,6 +75,8 @@ all_transfers as (
     select * from transfers_in
     union all
     select * from transfers_out
+    union all
+    select * from gas_fees
 ),
 
 daily_aggregated as (
