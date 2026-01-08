@@ -57,7 +57,7 @@
 
 {{
   config(
-    schema = 'stablecoins',
+    schema = 'stablecoins_evm',
     alias = 'transfers',
     materialized = 'view',
     post_hook = '{{ expose_spells(blockchains = \'["' ~ chains | join('","') ~ '"]\',
