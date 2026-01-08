@@ -51,34 +51,8 @@ solana_trades AS (
                 token_bought_mint_address AS token_bought_id,
                 token_sold_mint_address AS token_sold_id
         FROM {{ source('dex_solana', 'trades') }}
-),
-
-sui_trades AS (
-        SELECT
-                'sui' AS blockchain,
-                block_time AS timestamp,
-                block_date AS date,
-                CAST(checkpoint AS BIGINT) AS block_number,
-                transaction_digest AS tx_id,
-                CONCAT('0x', LOWER(TO_HEX(sender))) AS trader_id,
-                CONCAT('0x', LOWER(TO_HEX(sender))) AS tx_signer,
-                project,
-                pool_id,
-                token_pair,
-                token_bought_symbol,
-                token_sold_symbol,
-                CAST(token_bought_amount AS DOUBLE) AS token_bought_amount,
-                CAST(token_sold_amount AS DOUBLE) AS token_sold_amount,
-                CAST(token_bought_amount_raw AS DOUBLE) AS token_bought_amount_raw,
-                CAST(token_sold_amount_raw AS DOUBLE) AS token_sold_amount_raw,
-                CAST(amount_usd AS DOUBLE) AS amount_usd,
-                token_bought_address AS token_bought_id,
-                token_sold_address AS token_sold_id
-        FROM {{ source('dex_sui', 'trades') }}
 )
 
 SELECT * FROM evm_trades
 UNION ALL
-SELECT * FROM solana_trades
-UNION ALL
-SELECT * FROM sui_trades;
+SELECT * FROM solana_trades;
