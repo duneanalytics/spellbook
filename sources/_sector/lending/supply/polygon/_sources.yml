@@ -14,6 +14,7 @@ sources:
       - name: Pool_evt_Withdraw
       - name: Pool_evt_RedeemUnderlying
       - name: WrappedTokenGatewayV3_call_withdrawETH
+      - name: WETHGateway_call_withdrawETH
 
   - name: compound_v3_polygon
     tables:
