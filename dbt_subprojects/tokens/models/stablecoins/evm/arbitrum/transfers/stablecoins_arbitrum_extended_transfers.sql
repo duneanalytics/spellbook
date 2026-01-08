@@ -13,11 +13,9 @@
 }}
 
 -- extended transfers: tracks transfers for newly added stablecoins (not in core list)
--- note: update start_date when adding new stablecoins
 
 {{ stablecoins_transfers(
     blockchain = chain,
-    token_list = 'extended',
-    start_date = '2025-01-01'
+    token_list = 'extended'
 ) }}
 

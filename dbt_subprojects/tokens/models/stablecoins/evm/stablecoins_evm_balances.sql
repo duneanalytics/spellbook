@@ -27,4 +27,3 @@
 
 select *
 from {{ ref('stablecoins_balances') }}
-

@@ -69,6 +69,4 @@
 
 select *
 from {{ ref('stablecoins_transfers') }}
-    
-)
 

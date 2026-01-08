@@ -1,7 +1,6 @@
 {%- macro stablecoins_transfers(
     blockchain,
-    token_list,
-    start_date
+    token_list
 ) %}
 
 with stablecoin_tokens as (
@@ -31,9 +30,8 @@ select
 from {{ ref('tokens_' ~ blockchain ~ '_transfers') }} t
 inner join stablecoin_tokens s
     on t.contract_address = s.token_address
-where t.block_date >= DATE '{{ start_date }}'
 {% if is_incremental() %}
-    and {{ incremental_predicate('t.block_date') }}
+where {{ incremental_predicate('t.block_date') }}
 {% endif %}
 
 {% endmacro %}

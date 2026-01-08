@@ -16,7 +16,6 @@
 
 {{ stablecoins_transfers(
     blockchain = chain,
-    token_list = 'core',
-    start_date = '2021-05-26'
+    token_list = 'core'
 ) }}
 
