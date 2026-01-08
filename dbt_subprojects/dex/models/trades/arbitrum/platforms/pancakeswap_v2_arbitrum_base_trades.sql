@@ -1,5 +1,6 @@
 {{
     config(
+        tags = ['prod_exclude'],
         schema = 'pancakeswap_v2_arbitrum',
         alias = 'base_trades',
         materialized = 'incremental',
