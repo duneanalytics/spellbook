@@ -13,6 +13,7 @@
   )
 }}
 
+-- depends_on: {{ ref('tokens_unichain_balances_daily_agg_base') }}
 -- core balances: tracks balances for stablecoins in the frozen core list
 
 with

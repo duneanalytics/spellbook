@@ -13,6 +13,7 @@
   )
 }}
 
+-- depends_on: {{ ref('tokens_unichain_balances_daily_agg_base') }}
 -- extended balances: tracks balances for newly added stablecoins (not in core list)
 
 with
