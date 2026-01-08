@@ -1,6 +1,6 @@
 {{ 
     config (
-        schema = 'tokens_celo',
+        schema = 'tokens_unichain',
         alias = 'balances_daily_agg_base',
         file_format = 'delta',
         materialized = 'incremental',
@@ -11,13 +11,11 @@
     )
 }}
 
--- celo doesn't have a raw balances source like other chains
+-- unichain doesn't have a raw balances source like other chains
 -- this uses the transfer-based balance calculation macro
--- note: celo allows paying gas fees in stablecoins, which is included via gas_fees_source
 
 {{
     balances_daily_agg_from_transfers(
-        transfers = ref('tokens_celo_transfers'),
-        gas_fees_source = source('gas_celo', 'fees')
+        transfers = ref('tokens_unichain_transfers')
     )
 }}
