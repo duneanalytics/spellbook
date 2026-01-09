@@ -54,7 +54,8 @@ transfer as (
       "from",
       to,
       contract_address,
-      sum(amount_raw) as amount_raw
+      sum(amount_raw) as amount_raw,
+      max(evt_index) as evt_index
   from {{ source('tokens', 'transfers') }}
   where blockchain = 'arbitrum'
   and block_date >= date '2024-08-01' 
@@ -65,15 +66,18 @@ transfer as (
   group by 1,2,3,4
 ),
 
--- rank transfers by amount to pick the largest one per (tx_hash, from/to)
+-- rank transfers by evt_index to pick the most recent one per (tx_hash, from/to)
 -- this handles cases where a swapper sends/receives multiple tokens in a single Fill
+-- using evt_index (not amount_raw) because comparing amounts across different token decimals is invalid
+-- similar pattern in uniswap_uniswapx_trades
+
 transfer_send as (
   select
       tx_hash,
       "from",
       contract_address,
       amount_raw,
-      row_number() over (partition by tx_hash, "from" order by amount_raw desc) as rn
+      row_number() over (partition by tx_hash, "from" order by evt_index desc) as rn
   from transfer
 ),
 
@@ -83,7 +87,7 @@ transfer_receive as (
       to,
       contract_address,
       amount_raw,
-      row_number() over (partition by tx_hash, to order by amount_raw desc) as rn
+      row_number() over (partition by tx_hash, to order by evt_index desc) as rn
   from transfer
 ),
 
