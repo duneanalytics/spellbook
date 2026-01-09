@@ -487,7 +487,6 @@ FROM
     ('bb-a-usd-balancer-boosted-aave-usd', 'ethereum', 'bb-a-USD', 0x7b50775383d3d6f0215a8f290f2c9e2eebbeceb2, 18),
     ('mir-mirror-protocol', 'ethereum', 'MIR', 0x09a3ecafa817268f77be1283176b946c4ff2e608, 18),
     ('oja-ojamu', 'ethereum', 'OJA', 0x0aa7efe4945db24d95ca6e117bba65ed326e291a, 18),
-    ('tru-truebit-protocol', 'ethereum', 'TRU', 0xf65b5c5104c4fafd4b709d9d60a185eae063276c, 18),
     ('radar-dappradar', 'ethereum', 'RADAR', 0x44709a920fccf795fbc57baa433cc3dd53c44dbe, 18),
     ('uncl-uncl', 'ethereum', 'UNCL', 0x2f4eb47a1b1f4488c71fc10e39a4aa56af33dd49, 18),
     ('xcad-xcad-network', 'ethereum', 'XCAD', 0x7659ce147d0e714454073a5dd7003544234b6aa0, 18),

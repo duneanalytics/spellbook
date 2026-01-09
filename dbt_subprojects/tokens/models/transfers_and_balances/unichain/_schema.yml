@@ -133,3 +133,38 @@ models:
             - blockchain
             - block_date
             - contract_address
+
+  - name: tokens_unichain_balances_daily_agg_base
+    meta:
+      blockchain: unichain
+      sector: tokens
+      contributors: tomfutago
+    config:
+      tags: ['tokens', 'balances', 'unichain']
+    description: "Token balances daily base - computed from transfers"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - unique_key
+    columns:
+      - name: blockchain
+        description: "The blockchain"
+      - name: day
+        description: "The date of the balance snapshot"
+      - name: block_number
+        description: "The last block number of the day with activity"
+      - name: block_time
+        description: "The last block time of the day with activity"
+      - name: address
+        description: "The wallet address"
+      - name: token_address
+        description: "The token contract address"
+      - name: token_standard
+        description: "The token standard (erc20, native)"
+      - name: token_id
+        description: "The token ID for NFTs (null for fungible tokens)"
+      - name: balance
+        description: "The token balance (decimal adjusted)"
+      - name: unique_key
+        description: "Surrogate key for unique identification"
