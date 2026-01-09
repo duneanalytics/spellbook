@@ -98,20 +98,22 @@ models:
     columns:
       - name: blockchain
         description: "Blockchain on which this trade occurred"
-      - name: timestamp
+      - name: block_time
         description: "UTC event block time"
-      - name: date
+      - name: block_date
         description: "UTC event block date"
+      - name: block_month
+        description: "UTC event block month"
       - name: block_number
         description: "Block number in which the trade occurred. On Solana, this is the block slot."
       - name: tx_id
-        description: "The hash of the transaction that this trade was included in. On Solana, this is the tx_id."
+        description: "The hash of the transaction that this trade was included in (VARCHAR). On Solana, this is the tx_id."
       - name: trader_id
-        description: "Address of the account which purchased tokens. On EVM chains, this is the taker address."
+        description: "Address of the account which purchased tokens (VARCHAR). On EVM chains, this is the taker address."
       - name: project
         description: "Name of the dex on which the trade occurred"
       - name: executing_contract_address
-        description: "Address of the contract or program that executed the swap. On Solana, this is the program_main_id. On EVM chains this is the project_contract_address (which can be a pool contract, router/aggregator contract, singleton manager, or other contract associated with the DEX."
+        description: "Address of the contract or program that executed the swap (VARCHAR). On Solana, this is the project_main_id. On EVM chains this is the project_contract_address (which can be a pool contract, router/aggregator contract, singleton manager, or other contract associated with the DEX)."
       - name: token_pair
         description: "Symbol pair for the tokens involved in the trade. e.g. 'ETH/USDC'. Always alphabetical order, not trade order."
       - name: token_bought_symbol
@@ -129,6 +131,6 @@ models:
       - name: amount_usd
         description: "USD value of the trade at time of execution. Can be null if we don't have enough data to calculate the value."
       - name: token_bought_id
-        description: "Contract address of the token bought. For EVM chains, this is token_bought_address. For Solana, this is token_bought_mint_address."
+        description: "Contract address of the token bought (VARCHAR). For EVM chains, this is token_bought_address. For Solana, this is token_bought_mint_address."
       - name: token_sold_id
-        description: "Contract address of the token sold. For EVM chains, this is token_sold_address. For Solana, this is token_sold_mint_address."
+        description: "Contract address of the token sold (VARCHAR). For EVM chains, this is token_sold_address. For Solana, this is token_sold_mint_address."
