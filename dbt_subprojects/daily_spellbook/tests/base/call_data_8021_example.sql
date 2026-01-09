@@ -2,8 +2,9 @@
 -- This test verifies that the macro runs correctly and parses the example calldata
 
 WITH sample_calldata AS (
-    -- Example from the Linear issue
-    SELECT 0x722c6182000000000000000000000000000000000000000000000000000000000000000163625f77616c6c6574090080218021802180218021802180218021802180218021 AS calldata
+    -- Example from the Linear issue (corrected: 63 bytes total)
+    -- Structure: original_data (36 bytes) + codes (9 bytes) + codes_length (1 byte) + schema (1 byte) + magic (16 bytes)
+    SELECT 0x722c6182000000000000000000000000000000000000000000000000000000000000000163625f77616c6c6574090080218021802180218021802180218021 AS calldata
 ),
 
 parsed AS (

@@ -3,9 +3,9 @@
 
 WITH test_data AS (
     -- Test case: Schema 0 (Canonical Registry) with codes "cb_wallet" (example from issue)
-    -- Structure: original_data (36 bytes) + codes (9 bytes) + codes_length (1 byte) + schema (1 byte) + magic (16 bytes)
+    -- Structure: original_data (36 bytes) + codes (9 bytes) + codes_length (1 byte) + schema (1 byte) + magic (16 bytes) = 63 bytes
     SELECT 
-        0x722c6182000000000000000000000000000000000000000000000000000000000000000163625f77616c6c6574090080218021802180218021802180218021802180218021 AS calldata,
+        0x722c6182000000000000000000000000000000000000000000000000000000000000000163625f77616c6c6574090080218021802180218021802180218021 AS calldata,
         0x722c61820000000000000000000000000000000000000000000000000000000000000001 AS expected_original,
         'Schema 0: Canonical Registry' AS expected_schema_type,
         'cb_wallet' AS expected_codes_readable,
