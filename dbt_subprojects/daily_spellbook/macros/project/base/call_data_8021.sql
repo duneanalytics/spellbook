@@ -12,18 +12,18 @@
                 - 1   -- schema_id (1 byte)
                 - 1   -- codes_length (1 byte)
                 - CASE 
-                    WHEN bytearray_to_integer(bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 16, 1)) = 1 
+                    WHEN bytearray_to_bigint(bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 16, 1)) = 1 
                     THEN 20  -- registry address for Schema 1 (20 bytes)
                     ELSE 0 
                   END
-                - bytearray_to_integer(bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 17, 1))  -- codes_length bytes
+                - bytearray_to_bigint(bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 17, 1))  -- codes_length bytes
             ),
 
             -- 2) schema_type: Decode schema ID
             CASE
-                WHEN bytearray_to_integer(bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 16, 1)) = 0 
+                WHEN bytearray_to_bigint(bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 16, 1)) = 0 
                     THEN 'Schema 0: Canonical Registry'
-                WHEN bytearray_to_integer(bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 16, 1)) = 1 
+                WHEN bytearray_to_bigint(bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 16, 1)) = 1 
                     THEN 'Schema 1: Custom Registry'
                 ELSE 'Unknown Schema'
             END,
@@ -37,13 +37,13 @@
                         - 1   -- schema_id
                         - 1   -- codes_length
                         - CASE 
-                            WHEN bytearray_to_integer(bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 16, 1)) = 1 
+                            WHEN bytearray_to_bigint(bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 16, 1)) = 1 
                             THEN 20  -- registry address for Schema 1
                             ELSE 0 
                           END
-                        - bytearray_to_integer(bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 17, 1))  -- codes
+                        - bytearray_to_bigint(bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 17, 1))  -- codes
                         + 1,  -- start position (1-indexed)
-                    bytearray_to_integer(bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 17, 1))  -- length
+                    bytearray_to_bigint(bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 17, 1))  -- length
                 )
             ),
 
@@ -51,7 +51,7 @@
             -- Registry is located between codes and codes_length byte
             -- Position: len - 16 (magic) - 1 (schema) - 1 (codes_length) - 20 (registry) + 1 = len - 37
             CASE
-                WHEN bytearray_to_integer(bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 16, 1)) = 1 
+                WHEN bytearray_to_bigint(bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 16, 1)) = 1 
                 THEN bytearray_substring(
                     {{ calldata_field }},
                     bytearray_length({{ calldata_field }}) - 16 - 1 - 1 - 20 + 1,  -- start of registry
@@ -69,13 +69,13 @@
                         - 1   -- schema_id
                         - 1   -- codes_length
                         - CASE 
-                            WHEN bytearray_to_integer(bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 16, 1)) = 1 
+                            WHEN bytearray_to_bigint(bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 16, 1)) = 1 
                             THEN 20  -- registry address for Schema 1
                             ELSE 0 
                           END
-                        - bytearray_to_integer(bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 17, 1))  -- codes
+                        - bytearray_to_bigint(bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 17, 1))  -- codes
                         + 1,  -- start position (1-indexed)
-                    bytearray_to_integer(bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 17, 1))  -- length
+                    bytearray_to_bigint(bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 17, 1))  -- length
                 )
             )),
 
@@ -89,13 +89,13 @@
                             - 1   -- schema_id
                             - 1   -- codes_length
                             - CASE 
-                                WHEN bytearray_to_integer(bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 16, 1)) = 1 
+                                WHEN bytearray_to_bigint(bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 16, 1)) = 1 
                                 THEN 20  -- registry address for Schema 1
                                 ELSE 0 
                               END
-                            - bytearray_to_integer(bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 17, 1))  -- codes
+                            - bytearray_to_bigint(bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 17, 1))  -- codes
                             + 1,  -- start position (1-indexed)
-                        bytearray_to_integer(bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 17, 1))  -- length
+                        bytearray_to_bigint(bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 17, 1))  -- length
                     )
                 )),
                 ','
