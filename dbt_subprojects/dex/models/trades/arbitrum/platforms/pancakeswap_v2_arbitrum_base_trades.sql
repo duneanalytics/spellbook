@@ -1,6 +1,5 @@
 {{
     config(
-        tags = ['prod_exclude'],
         schema = 'pancakeswap_v2_arbitrum',
         alias = 'base_trades',
         materialized = 'incremental',
@@ -66,6 +65,28 @@ transfer as (
   group by 1,2,3,4
 ),
 
+-- rank transfers by amount to pick the largest one per (tx_hash, from/to)
+-- this handles cases where a swapper sends/receives multiple tokens in a single Fill
+transfer_send as (
+  select
+      tx_hash,
+      "from",
+      contract_address,
+      amount_raw,
+      row_number() over (partition by tx_hash, "from" order by amount_raw desc) as rn
+  from transfer
+),
+
+transfer_receive as (
+  select
+      tx_hash,
+      to,
+      contract_address,
+      amount_raw,
+      row_number() over (partition by tx_hash, to order by amount_raw desc) as rn
+  from transfer
+),
+
 dexs_pcsx AS (
     -- PancakeSwapX
     SELECT
@@ -84,11 +105,11 @@ dexs_pcsx AS (
 
     FROM {{ source('pancakeswap_arbitrum', 'ExclusiveDutchOrderReactor_evt_Fill') }} a 
 
-    LEFT JOIN transfer AS send 
-    ON a.evt_tx_hash = send.tx_hash AND a.swapper = send."from"
+    LEFT JOIN transfer_send AS send 
+    ON a.evt_tx_hash = send.tx_hash AND a.swapper = send."from" AND send.rn = 1
 
-    LEFT JOIN transfer AS receive 
-    on a.evt_tx_hash = receive.tx_hash AND a.swapper = receive."to"
+    LEFT JOIN transfer_receive AS receive 
+    ON a.evt_tx_hash = receive.tx_hash AND a.swapper = receive."to" AND receive.rn = 1
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('a.evt_block_time') }}
     {% endif %}
