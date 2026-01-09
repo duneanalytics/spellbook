@@ -7,7 +7,7 @@
         post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "avalanche_c", "bnb", "fantom", "optimism", "polygon", "zksync", "zora", "celo", "base"]\',
                                     "sector",
                                     "cex",
-                                    \'["hildobby", "soispoke", "web3_data", "msilb7", "Henrystats", "sankinyue", "synthquest"]\') }}')}}
+                                    \'["hildobby", "soispoke", "web3_data", "msilb7", "Henrystats", "sankinyue", "synthquest", "petertherock"]\') }}')}}
 
 SELECT address, cex_name, distinct_name, added_by, added_date
 FROM (VALUES
@@ -1317,6 +1317,7 @@ FROM (VALUES
     , (0x4a5b84fb4c7666692c49f2e11664710aa4d0d2a0, 'Robinhood', 'Robinhood Deprecated 1', 'hildobby', date '2023-11-16')
     , (0xa0116a92a032d17a9ce431eabe75c5b5f29e2d5e, 'Robinhood', 'Robinhood Deprecated 2', 'hildobby', date '2023-11-24')
     , (0x0716a17fbaee714f1e6ab0f9d59edbc5f09815c0, 'Robinhood', 'Robinhood Deprecated 3', 'hildobby', date '2025-05-02')
+    , (0xde82d270b47c02c8aa84f557db72ac7aca4e4dfe, 'Robinhood', 'Robinhood 8', 'petertherock', date '2025-11-15')
     -- CoinList
     , (0xd1669ac6044269b59fa12c5822439f609ca54f41, 'CoinList', 'CoinList 1', 'hildobby', date '2023-09-08')
     , (0x8d1f2ebfaccf1136db76fdd1b86f1dede2d23852, 'CoinList', 'CoinList 2', 'hildobby', date '2023-09-08')
@@ -5234,6 +5235,8 @@ FROM (VALUES
     , (0xa2201234a4652a704f5539058ccb9ab6ebcd486b, 'Ripio', 'Ripio 2', 'hildobby', date '2025-08-19')
     , (0x98329910449586ba244d9edea97496f8ccf1c6be, 'Ripio', 'Ripio 3', 'hildobby', date '2025-08-19')
     , (0x4905288e14f8f8ad21fa1662943475ccd2072651, 'Ripio', 'Ripio 4', 'hildobby', date '2025-08-19')
+
+        
     -- Brasil Bitcoin
     , (0x04c079bb31deed8391015eed8d6b625a40957058, 'Brasil Bitcoin', 'Brasil Bitcoin 1', 'hildobby', date '2025-08-19')
     ) AS x (address, cex_name, distinct_name, added_by, added_date)
