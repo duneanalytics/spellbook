@@ -13,10 +13,10 @@ evm_trades AS (
                 block_time AS timestamp,
                 block_date AS date,
                 block_number, --not very chain agnostic
-                CONCAT('0x', LOWER(TO_HEX(tx_hash))) AS tx_id,
-                CONCAT('0x', LOWER(TO_HEX(taker))) AS trader_id,
+                CAST(tx_hash AS VARCHAR) AS tx_id,
+                CAST(taker AS VARCHAR) AS trader_id,
                 project,
-                CONCAT('0x', LOWER(TO_HEX(project_contract_address))) AS pool_id,
+                CAST(project_contract_address AS VARCHAR) AS executing_contract_address,
                 token_pair,
                 token_bought_symbol,
                 token_sold_symbol,
@@ -25,8 +25,8 @@ evm_trades AS (
                 token_bought_amount_raw,
                 token_sold_amount_raw,
                 amount_usd,
-                CONCAT('0x', LOWER(TO_HEX(token_bought_address))) AS token_bought_id,
-                CONCAT('0x', LOWER(TO_HEX(token_sold_address))) AS token_sold_id
+                CAST(token_bought_address AS VARCHAR) AS token_bought_id,
+                CAST(token_sold_address AS VARCHAR) AS token_sold_id
         FROM {{ ref('dex_evm_trades') }}
 ),
 
@@ -39,7 +39,7 @@ solana_trades AS (
                 tx_id,
                 trader_id,
                 project,
-                project_program_id AS pool_id,
+                project_main_id AS executing_contract_address,
                 token_pair,
                 token_bought_symbol,
                 token_sold_symbol,

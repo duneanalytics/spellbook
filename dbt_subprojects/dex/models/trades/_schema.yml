@@ -6,7 +6,7 @@ models:
       docs_slug: /curated/trading/DEX/dex-trades
       blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, kaia, optimism, polygon, scroll, zksync, linea, blast, sei, ronin, flare, boba, sonic, corn, berachain, sophon
       sector: dex
-      short_description: The `dex.trades` table captures detailed data on trades executed via decentralized exchanges (DEXs). This table contains a detailed breakdown of trade execution containing one or many trades per transaction. 
+      short_description: The `dex.trades` table captures detailed data on trades executed via decentralized exchanges (DEXs) on EVM chains. This table contains a detailed breakdown of trade execution containing one or many trades per transaction. 
       contributors: 0xRob, hosuke, jeff-dude, tomfutago, viniabussafi
     config:
       tags: [ 'dex', 'trades']
@@ -84,3 +84,51 @@ models:
       - &evt_index
         name: evt_index
         description: "Index of the event in the transaction. Can be used to uniquely identify the order of trades within in a transaction"
+
+  - name: dex_multichain_trades
+    meta:
+      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, kaia, optimism, polygon, scroll, zksync, linea, blast, sei, ronin, flare, boba, sonic, corn, berachain, sophon, solana
+      sector: dex
+      short_description: Unified view of trades executed via decentralized exchanges (DEXs) across EVM-compatible chains and Solana. This table contains detailed data on trade execution with standardized column names.
+      contributors: kryptaki
+    config:
+      tags: [ 'dex', 'trades', 'multichain']
+    description: >
+      Chain-agnostic DEX trades table combining EVM and Solana trades with standardized column names for cross-chain analysis.
+    columns:
+      - name: blockchain
+        description: "Blockchain on which this trade occurred"
+      - name: timestamp
+        description: "UTC event block time"
+      - name: date
+        description: "UTC event block date"
+      - name: block_number
+        description: "Block number in which the trade occurred. On Solana, this is the block slot."
+      - name: tx_id
+        description: "The hash of the transaction that this trade was included in. On Solana, this is the tx_id."
+      - name: trader_id
+        description: "Address of the account which purchased tokens. On EVM chains, this is the taker address."
+      - name: project
+        description: "Name of the dex on which the trade occurred"
+      - name: executing_contract_address
+        description: "Address of the contract or program that executed the swap. On Solana, this is the program_main_id. On EVM chains this is the project_contract_address (which can be a pool contract, router/aggregator contract, singleton manager, or other contract associated with the DEX."
+      - name: token_pair
+        description: "Symbol pair for the tokens involved in the trade. e.g. 'ETH/USDC'. Always alphabetical order, not trade order."
+      - name: token_bought_symbol
+        description: "Symbol of the token bought in the trade"
+      - name: token_sold_symbol
+        description: "Symbol of the token sold in the trade"
+      - name: token_bought_amount
+        description: "Amount of the token bought in the display unit"
+      - name: token_sold_amount
+        description: "Amount of the token sold in the display unit"
+      - name: token_bought_amount_raw
+        description: "Amount of the token bought in the base unit"
+      - name: token_sold_amount_raw
+        description: "Amount of the token sold in the base unit"
+      - name: amount_usd
+        description: "USD value of the trade at time of execution. Can be null if we don't have enough data to calculate the value."
+      - name: token_bought_id
+        description: "Contract address of the token bought. For EVM chains, this is token_bought_address. For Solana, this is token_bought_mint_address."
+      - name: token_sold_id
+        description: "Contract address of the token sold. For EVM chains, this is token_sold_address. For Solana, this is token_sold_mint_address."
