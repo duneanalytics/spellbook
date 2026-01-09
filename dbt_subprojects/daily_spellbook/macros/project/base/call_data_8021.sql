@@ -20,8 +20,7 @@
         WHERE bytearray_substring(data, bytearray_length(data) - 15, 16) = 0x80218021802180218021802180218021
 
     Reference: EIP-8021 specification
-#}
-CASE
+#}CASE
     -- Only process calldata that ends with the EIP-8021 magic bytes
     WHEN bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 15, 16) = 0x80218021802180218021802180218021
     THEN CAST(
@@ -138,8 +137,7 @@ CASE
         )
     )
     ELSE NULL
-END
-{% endmacro %}
+END{% endmacro %}
 
 
 {% macro has_eip_8021_suffix(calldata_field) %}
@@ -150,6 +148,4 @@ END
         SELECT *
         FROM table
         WHERE {{ has_eip_8021_suffix('data') }}
-#}
-bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 15, 16) = 0x80218021802180218021802180218021
-{% endmacro %}
+#}bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 15, 16) = 0x80218021802180218021802180218021{% endmacro %}

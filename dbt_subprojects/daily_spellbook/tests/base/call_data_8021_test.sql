@@ -23,7 +23,7 @@ WITH test_data AS (
                 0x722c61820000000000000000000000000000000000000000000000000000000000000001,  -- original tx data (36 bytes)
                 'Schema 0: Canonical Registry',
                 '63625f77616c6c6574',  -- codes_hex ("cb_wallet" in hex = 9 bytes)
-                NULL,  -- no registry for Schema 0
+                CAST(NULL AS varbinary),  -- no registry for Schema 0
                 'cb_wallet',  -- codes_readable
                 ARRAY['cb_wallet'],  -- codes_array
                 0x80218021802180218021802180218021  -- magic suffix (16 bytes)
@@ -37,7 +37,7 @@ WITH test_data AS (
                 0xabcdef,  -- original tx data (3 bytes)
                 'Schema 0: Canonical Registry',
                 '74657374',  -- codes_hex ("test" in hex)
-                NULL,  -- no registry for Schema 0
+                CAST(NULL AS varbinary),  -- no registry for Schema 0
                 'test',
                 ARRAY['test'],
                 0x80218021802180218021802180218021  -- magic suffix
@@ -51,7 +51,7 @@ WITH test_data AS (
                 0x1234,  -- original tx data (2 bytes)
                 'Schema 0: Canonical Registry',
                 '6f6e652c74776f',  -- codes_hex ("one,two" in hex)
-                NULL,  -- no registry for Schema 0
+                CAST(NULL AS varbinary),  -- no registry for Schema 0
                 'one,two',
                 ARRAY['one', 'two'],
                 0x80218021802180218021802180218021  -- magic suffix
@@ -82,6 +82,7 @@ test_results AS (
 )
 
 -- Return only failing test cases (rows where result != expected)
+-- Use explicit null-safe comparisons
 SELECT 
     to_hex(result.original_tx_data) AS result_original_tx_data,
     to_hex(expected.original_tx_data) AS expected_original_tx_data,
@@ -90,13 +91,11 @@ SELECT
     result.codes_hex AS result_codes_hex,
     expected.codes_hex AS expected_codes_hex,
     result.codes_readable AS result_codes_readable,
-    expected.codes_readable AS expected_codes_readable,
-    COALESCE(to_hex(result.custom_registry_address), 'NULL') AS result_registry,
-    COALESCE(to_hex(expected.custom_registry_address), 'NULL') AS expected_registry
+    expected.codes_readable AS expected_codes_readable
 FROM test_results
-WHERE result.original_tx_data != expected.original_tx_data
-   OR result.schema_type != expected.schema_type
-   OR result.codes_hex != expected.codes_hex
-   OR COALESCE(result.codes_readable, '') != COALESCE(expected.codes_readable, '')
-   OR result.erc_8021_suffix != expected.erc_8021_suffix
-   OR COALESCE(result.custom_registry_address, 0x00) != COALESCE(expected.custom_registry_address, 0x00)
+WHERE NOT (result.original_tx_data = expected.original_tx_data)
+   OR NOT (result.schema_type = expected.schema_type)
+   OR NOT (result.codes_hex = expected.codes_hex)
+   OR NOT (COALESCE(result.codes_readable, '') = COALESCE(expected.codes_readable, ''))
+   OR NOT (result.erc_8021_suffix = expected.erc_8021_suffix)
+   OR NOT (result.custom_registry_address IS NOT DISTINCT FROM expected.custom_registry_address)
