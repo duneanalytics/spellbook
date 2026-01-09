@@ -1,7 +1,7 @@
 -- Example usage of the EIP-8021 calldata parser macro
 -- This demonstrates how to extract builder codes from transaction calldata
---
--- The macro {{ call_data_8021('calldata_column') }} returns a ROW with:
+-- 
+-- The macro call_data_8021('calldata_column') returns a ROW with:
 -- - original_tx_data: Original calldata without EIP-8021 suffix (varbinary)
 -- - schema_type: 'Schema 0: Canonical Registry' or 'Schema 1: Custom Registry'
 -- - codes_hex: Raw hex codes (varchar)
