@@ -34,7 +34,7 @@ solana_transfers AS (
                 'solana' AS blockchain,
                 block_time,
                 block_date,
-                block_month,
+                DATE_TRUNC('month', block_date) AS block_month,
                 block_slot AS block_number,
                 tx_id,
                 from_owner AS from_address,
