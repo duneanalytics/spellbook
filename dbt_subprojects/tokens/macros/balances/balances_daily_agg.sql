@@ -39,7 +39,8 @@ with transfers_in as (
         "to" as address,
         contract_address as token_address,
         token_standard,
-        amount
+        amount_raw as inflow,
+        uint256 '0' as outflow
     from {{ transfers }}
     where "to" != 0x0000000000000000000000000000000000000000
     {% if is_incremental() %}
@@ -56,7 +57,8 @@ transfers_out as (
         "from" as address,
         contract_address as token_address,
         token_standard,
-        -1 * amount as amount
+        uint256 '0' as inflow,
+        amount_raw as outflow
     from {{ transfers }}
     where "from" != 0x0000000000000000000000000000000000000000
     {% if is_incremental() %}
@@ -78,17 +80,18 @@ gas_fees as (
             when tx_fee_currency = {{ native_token_address }} then 'native'
             else 'erc20'
         end as token_standard,
-        -1 * tx_fee as amount
+        uint256 '0' as inflow,
+        tx_fee_raw as outflow
     from {{ gas_fees_source }}
     where tx_from is not null
-        and tx_fee > 0
+        and tx_fee_raw > uint256 '0'
     {% if is_incremental() %}
         and {{ incremental_predicate('block_time') }}
     {% endif %}
 ),
 {% endif %}
 
-all_transfers as (
+all_flows as (
     select * from transfers_in
     union all
     select * from transfers_out
@@ -107,8 +110,9 @@ daily_aggregated as (
         address,
         token_address,
         token_standard,
-        sum(amount) as daily_net_transfer
-    from all_transfers
+        sum(inflow) as daily_inflow,
+        sum(outflow) as daily_outflow
+    from all_flows
     group by 1, 2, 5, 6, 7
 ),
 
@@ -125,7 +129,7 @@ prior_balances as (
 ),
 {% endif %}
 
-cumulative_balances as (
+cumulative_flows as (
     select
         d.blockchain,
         d.day,
@@ -134,21 +138,17 @@ cumulative_balances as (
         d.address,
         d.token_address,
         d.token_standard,
-        {% if is_incremental() %}
-        coalesce(p.prior_balance, 0) +
-        {% endif %}
-        sum(d.daily_net_transfer) over (
+        sum(d.daily_inflow) over (
             partition by d.address, d.token_address
             order by d.day
             rows between unbounded preceding and current row
-        ) as balance_raw
+        ) as cumulative_inflow,
+        sum(d.daily_outflow) over (
+            partition by d.address, d.token_address
+            order by d.day
+            rows between unbounded preceding and current row
+        ) as cumulative_outflow
     from daily_aggregated d
-    {% if is_incremental() %}
-    left join prior_balances p
-        on d.address = p.address
-        and d.token_address = p.token_address
-        and d.token_standard = p.token_standard
-    {% endif %}
 )
 
 select
@@ -160,11 +160,21 @@ select
     token_address,
     token_standard,
     cast(null as uint256) as token_id,
-    balance_raw,
+    -- use greatest to ensure non-negative before casting to uint256
+    cast(greatest(0e0,
+        {% if is_incremental() %}
+        coalesce(cast(p.prior_balance as double), 0e0) +
+        {% endif %}
+        (cast(c.cumulative_inflow as double) - cast(c.cumulative_outflow as double))
+    ) as uint256) as balance_raw,
     {{ dbt_utils.generate_surrogate_key(['day', 'address', 'token_address', 'token_standard']) }} as unique_key
-from cumulative_balances
+from cumulative_flows c
 {% if is_incremental() %}
-where {{ incremental_predicate('block_time') }}
+left join prior_balances p
+    on c.address = p.address
+    and c.token_address = p.token_address
+    and c.token_standard = p.token_standard
+where {{ incremental_predicate('c.block_time') }}
 {% endif %}
 
 {% endmacro %}
