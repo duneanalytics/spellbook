@@ -190,3 +190,4 @@ sources:
   - name: token_accounts_solana
     tables:
       - name: state_history
+        identifier: state_history_002
