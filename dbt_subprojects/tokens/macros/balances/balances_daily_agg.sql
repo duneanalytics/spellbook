@@ -155,13 +155,13 @@ cumulative_flows as (
 {% set uint256_max_double = '1.0e77' %}
 
 select
-    blockchain,
-    day,
-    block_number,
-    block_time,
-    address,
-    token_address,
-    token_standard,
+    c.blockchain,
+    c.day,
+    c.block_number,
+    c.block_time,
+    c.address,
+    c.token_address,
+    c.token_standard,
     cast(null as uint256) as token_id,
     -- clamp to [0, uint256_max] to safely cast to uint256
     cast(greatest(0e0, least({{ uint256_max_double }},
@@ -170,7 +170,7 @@ select
         {% endif %}
         (cast(c.cumulative_inflow as double) - cast(c.cumulative_outflow as double))
     )) as uint256) as balance_raw,
-    {{ dbt_utils.generate_surrogate_key(['day', 'address', 'token_address', 'token_standard']) }} as unique_key
+    {{ dbt_utils.generate_surrogate_key(['c.day', 'c.address', 'c.token_address', 'c.token_standard']) }} as unique_key
 from cumulative_flows c
 {% if is_incremental() %}
 left join prior_balances p
