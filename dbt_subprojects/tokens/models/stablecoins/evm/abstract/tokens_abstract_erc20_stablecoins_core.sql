@@ -16,7 +16,7 @@
 select '{{chain}}' as blockchain, contract_address
 from (values
 
-     (0x0000000000000000000000000000000000000000)
+     (0x84a71ccd554cc1b02749b35d22f684cc8ec987e1), -- USDC.e
+     (0x0709f39376deee2a2dfc94a58edeb2eb9df012bd)  -- USDT
 
 ) as temp_table (contract_address)
-where contract_address != 0x0000000000000000000000000000000000000000
