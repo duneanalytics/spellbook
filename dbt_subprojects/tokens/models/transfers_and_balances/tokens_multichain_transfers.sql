@@ -9,12 +9,11 @@ WITH
 
 evm_transfers AS (
         SELECT 
-                unique_key, --pending confirmation
                 blockchain,
                 block_time,
                 block_date,
                 block_month,
-                block_number, --not very chain agnostic
+                block_number,
                 CAST(tx_hash AS VARCHAR) AS tx_id,
                 CAST("from" AS VARCHAR) AS from_address,
                 CAST("to" AS VARCHAR) AS to_address,
@@ -30,7 +29,6 @@ evm_transfers AS (
 
 solana_transfers AS (
         SELECT
-                unique_instruction_key AS unique_key, --pending confirmation
                 'solana' AS blockchain,
                 block_time,
                 block_date,
