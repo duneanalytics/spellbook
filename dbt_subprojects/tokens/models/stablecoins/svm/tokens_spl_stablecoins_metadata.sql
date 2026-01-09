@@ -4,10 +4,6 @@
     alias = 'spl_stablecoins_metadata',
     materialized = 'table',
     tags = ['static'],
-    post_hook = '{{ expose_spells(blockchains = \'["solana"]\',
-                                  spell_type = "sector",
-                                  spell_name = "tokens",
-                                  contributors = \'["tomfutago"]\') }}'
   )
 }}
 
