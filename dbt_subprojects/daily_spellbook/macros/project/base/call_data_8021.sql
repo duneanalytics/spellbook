@@ -1,26 +1,6 @@
-{% macro call_data_8021(calldata_field) %}
-{#
-    Extracts EIP-8021 builder code label from the end of transaction/UserOperation calldata.
-    This standard allows transactions to embed builder identification codes in calldata.
-    
-    Only processes transactions where calldata ends with magic bytes: 0x80218021802180218021802180218021
-    
-    Returns a ROW with:
-    - original_tx_data: Original calldata without EIP-8021 suffix (varbinary)
-    - schema_type: 'Schema 0: Canonical Registry', 'Schema 1: Custom Registry', or 'Unknown Schema'
-    - codes_hex: Raw hex codes (varchar)
-    - custom_registry_address: Registry address for Schema 1 only (varbinary)
-    - codes_readable: Human-readable codes (varchar)
-    - codes_array: Codes split by comma (array of varchar)
-    - erc_8021_suffix: The EIP-8021 magic bytes suffix (varbinary)
-    
-    Usage:
-        SELECT {{ call_data_8021('data') }}.*
-        FROM table
-        WHERE bytearray_substring(data, bytearray_length(data) - 15, 16) = 0x80218021802180218021802180218021
-
-    Reference: EIP-8021 specification
-#}CASE
+{%- macro call_data_8021(calldata_field) -%}
+{# Extracts EIP-8021 builder code label from calldata. Returns NULL if not an EIP-8021 transaction. #}
+CASE
     -- Only process calldata that ends with the EIP-8021 magic bytes
     WHEN bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 15, 16) = 0x80218021802180218021802180218021
     THEN CAST(
@@ -137,15 +117,11 @@
         )
     )
     ELSE NULL
-END{% endmacro %}
+END
+{%- endmacro -%}
 
 
-{% macro has_eip_8021_suffix(calldata_field) %}
-{#
-    Check if calldata ends with EIP-8021 magic bytes.
-    
-    Usage:
-        SELECT *
-        FROM table
-        WHERE {{ has_eip_8021_suffix('data') }}
-#}bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 15, 16) = 0x80218021802180218021802180218021{% endmacro %}
+{%- macro has_eip_8021_suffix(calldata_field) -%}
+{# Check if calldata ends with EIP-8021 magic bytes #}
+bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 15, 16) = 0x80218021802180218021802180218021
+{%- endmacro -%}
