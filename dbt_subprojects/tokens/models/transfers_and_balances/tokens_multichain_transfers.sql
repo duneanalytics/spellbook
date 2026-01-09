@@ -11,8 +11,9 @@ evm_transfers AS (
         SELECT 
                 unique_key, --pending confirmation
                 blockchain,
-                block_time AS timestamp,
-                block_date AS date,
+                block_time,
+                block_date,
+                block_month,
                 block_number, --not very chain agnostic
                 CAST(tx_hash AS VARCHAR) AS tx_id,
                 CAST("from" AS VARCHAR) AS from_address,
@@ -31,8 +32,9 @@ solana_transfers AS (
         SELECT
                 unique_instruction_key AS unique_key, --pending confirmation
                 'solana' AS blockchain,
-                block_time AS timestamp,
-                block_date AS date,
+                block_time,
+                block_date,
+                block_month,
                 block_slot AS block_number,
                 tx_id,
                 from_owner AS from_address,
