@@ -3,7 +3,7 @@
         alias = 'trades',
         materialized = 'view',
         post_hook='{{ expose_spells (
-            blockchains = \'["bnb","base","polygon"]\',
+            blockchains = \'["arbitrum","base","bnb","ethereum","polygon"]\',
             spell_type = "project", 
             spell_name = "bwaggregator", 
             contributors = \'["kunwh"]\'
@@ -17,10 +17,10 @@ WITH paymaster_tx AS (
     SELECT DISTINCT 
         blockchain, 
         tx_hash,
-        CASE 
+        MAX(CASE 
             WHEN contract_address = 0xbc1d9760bd6ca468ca9fb5ff2cfbeac35d86c973 THEN 2 
             WHEN contract_address = 0xE17162B840cb9A8f6D9920E5832D58f6461caCe8 THEN 1 
-        END AS version
+        END) AS version
 
     FROM evms.logs
     
@@ -30,6 +30,9 @@ WITH paymaster_tx AS (
             0xE17162B840cb9A8f6D9920E5832D58f6461caCe8
         )
         AND topic0 = 0x89a885b6900024aaed2c0845aad74f2204445bf00ac135917c70f57540e557b3
+    GROUP BY
+        blockchain,
+        tx_hash
 )
 
 SELECT
@@ -60,11 +63,13 @@ SELECT
     trade.tx_hash,
     tx_from,
     tx_to,
+    CAST(ARRAY[-1] as array<bigint>) AS trace_address,
     evt_index
 FROM dex.trades trade
 LEFT JOIN paymaster_tx ON trade.tx_hash = paymaster_tx.tx_hash AND trade.blockchain = paymaster_tx.blockchain
 
 WHERE trade.block_date >= DATE('2025-07-01')
+    AND blockchain
     AND (
     -- By aggregator contracts
         tx_to in (
