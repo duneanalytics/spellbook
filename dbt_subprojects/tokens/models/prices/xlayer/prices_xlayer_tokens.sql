@@ -19,7 +19,7 @@ FROM
 (
     VALUES
     -- placeholder rows, add actual tokens as needed
-    ('okb-okb', 'OKB', 0x5831f949D6A239Cd1CDBaC652A060f0837b0CAc0, 18)
+    ('okb-okb', 'WOKB', 0xe538905cf8410324e03a5a23c1c177a474d59b2b, 18)
     , ('weth-weth', 'WETH', 0x5a77f1443d16ee5761d310e38b62f77f726bc71c, 18)
     , ('usdt-tether', 'USDT', 0x1e4a5963abfd975d8c9021ce480b42188849d41d, 6)
     , ('usdt-tether', 'USDT0', 0x779ded0c9e1022225f8e0630b35a9b54be713736, 6)

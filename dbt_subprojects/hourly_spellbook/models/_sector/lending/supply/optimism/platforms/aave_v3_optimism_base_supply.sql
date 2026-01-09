@@ -14,6 +14,7 @@
   lending_aave_v3_compatible_supply(
     blockchain = 'optimism',
     project = 'aave',
-    version = '3'
+    version = '3',
+    wethgateway_available = true
   )
 }}

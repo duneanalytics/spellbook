@@ -147,3 +147,10 @@ models:
           seed_file: ref('eulerswap_unichain_base_trades_seed')
           filter:
             version: 1
+  - name: dex_unichain_token_volumes_daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - token_address
+            - block_date
