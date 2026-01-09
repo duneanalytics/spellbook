@@ -124,12 +124,12 @@ models:
     meta:
       blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, kaia, optimism, polygon, scroll, zksync, linea, blast, sei, ronin, flare, boba, sonic, corn, berachain, sophon, solana
       sector: dex
-      short_description: Detailed data on trades executed via decentralized exchanges (DEXs) across EVM-compatible chains and Solana. For EVM-only transfers, use tokens_evm.transfers, and for Solana-only transfers, use tokens_solana.transfers.
+      short_description: Detailed data on trades executed via decentralized exchanges (DEXs) across EVM-compatible chains and Solana. For EVM-only trades, use dex_evm.trades, and for Solana-only trades, use dex_solana.trades.
       contributors: kryptaki
     config:
       tags: [ 'dex', 'trades', 'multichain']
     description: >
-      Chain-agnostic DEX trades table combining EVM and Solana trades with standardized column names for cross-chain analysis.
+      Multichain DEX trades table combining EVM and Solana trades with standardized column names for cross-chain analysis.
     columns:
       - <<: *blockchain
       - <<: *block_time
@@ -143,7 +143,7 @@ models:
         description: "Address of the account which purchased tokens (VARCHAR). On EVM chains, this is the taker address."
       - <<: *project
       - name: executing_contract_address
-        description: "Address of the contract or program that executed the swap (VARCHAR). On Solana, this is the project_main_id. On EVM chains this is the project_contract_address (which can be a pool contract, router/aggregator contract, singleton manager, or other contract associated with the DEX)."
+        description: "Address of the contract or program that executed the swap (VARCHAR). On Solana, this is the program_main_id (e.g. Pump.fun AMM or Raydium Liquidity Pool V4). On EVM chains this is the project_contract_address (which can be a pool contract, router/aggregator contract, singleton manager, or other contract associated with the DEX)."
       - <<: *token_pair
       - <<: *token_bought_symbol
       - <<: *token_sold_symbol
