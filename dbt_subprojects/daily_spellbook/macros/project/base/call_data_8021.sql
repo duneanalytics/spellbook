@@ -1,6 +1,4 @@
-{%- macro call_data_8021(calldata_field) -%}
-{# Extracts EIP-8021 builder code label from calldata. Returns NULL if not an EIP-8021 transaction. #}
-CASE
+{%- macro call_data_8021(calldata_field) %}CASE
     -- Only process calldata that ends with the EIP-8021 magic bytes
     WHEN bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 15, 16) = 0x80218021802180218021802180218021
     THEN CAST(
@@ -121,7 +119,4 @@ END
 {%- endmacro -%}
 
 
-{%- macro has_eip_8021_suffix(calldata_field) -%}
-{# Check if calldata ends with EIP-8021 magic bytes #}
-bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 15, 16) = 0x80218021802180218021802180218021
-{%- endmacro -%}
+{%- macro has_eip_8021_suffix(calldata_field) %}bytearray_substring({{ calldata_field }}, bytearray_length({{ calldata_field }}) - 15, 16) = 0x80218021802180218021802180218021{% endmacro -%}
