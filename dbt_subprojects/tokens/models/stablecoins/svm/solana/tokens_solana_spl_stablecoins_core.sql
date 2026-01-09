@@ -30,5 +30,11 @@ from (values
     ('star9agSpjiFe3M49B3RniVU4CMBBEK3Qnaqn3RGiFM'),   -- USD*
     ('4FVaHEubcqws8hKwJSiW8f8CmKGUyMsBxTKUytcGdRvd'),  -- HSUSD
     ('9ckR7pPPvyPadACDTzLwK2ZAEeUJ3qGSnzPs8bVaHrSy'),  -- USDu
-    ('Ex5DaKYMCN6QWFA4n67TmMwsH8MJV68RX6YXTmVM532C')   -- USDv
+    ('Ex5DaKYMCN6QWFA4n67TmMwsH8MJV68RX6YXTmVM532C'),  -- USDv
+    ('USDH1SM1ojwWUga67PGrgFWUHibbjqMvuMaDkRJTgkX'),   -- USDH
+    ('7kbnvuGBxxj8AG9qp8Scn56muWGaRaFqxg1FsRp3PaFT'),  -- UXD
+    ('Eh6XEPhSwoLv5wFApukmnaVSHQ6sAnoD9BmgmwQoN2sN'),  -- sUSDe
+    ('A1KLoBrKBde8Ty9qtNQUtq3C2ortoC3u7twggz7sEto6'),  -- USDY
+    ('FrBfWJ4qE5sCzKm3k3JaAtqZcXUh4LvJygDeketsrsH4'),  -- ZUSD
+    ('Ea5SjE2Y6yvCeW5dYTn7PYMuW5ikXkvbGdcmSnXeaLjS')   -- PAI
 ) as temp_table (token_mint_address)
