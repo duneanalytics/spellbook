@@ -1,9 +1,9 @@
-version: 1
+version: 2
 
 models:
   - name: bwaggregator_trades
     meta:
-      blockchain: bnbchain, polygon, base
+      blockchain: arbitrum, base, bnbchain, ethereum, polygon
       sector: dex
       project: bwaggregator
       contributors: kunwh

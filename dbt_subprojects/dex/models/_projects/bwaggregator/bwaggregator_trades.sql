@@ -18,13 +18,13 @@ WITH paymaster_tx AS (
         blockchain, 
         tx_hash,
         MAX(CASE 
-            WHEN contract_address = 0xbc1d9760bd6ca468ca9fb5ff2cfbeac35d86c973 THEN 2 
-            WHEN contract_address = 0xE17162B840cb9A8f6D9920E5832D58f6461caCe8 THEN 1 
+            WHEN contract_address = 0xbc1d9760bd6ca468ca9fb5ff2cfbeac35d86c973 THEN '2' 
+            WHEN contract_address = 0xE17162B840cb9A8f6D9920E5832D58f6461caCe8 THEN '1' 
         END) AS version
 
     FROM evms.logs
     
-    WHERE block_date >= date('2025-07-01')
+    WHERE block_date >= date('2025-10-01')
         AND contract_address IN (
             0xbc1d9760bd6ca468ca9fb5ff2cfbeac35d86c973,
             0xE17162B840cb9A8f6D9920E5832D58f6461caCe8
@@ -40,8 +40,8 @@ SELECT
     'bwaggregator' project,
     CASE 
         WHEN paymaster_tx.version IS NOT NULL THEN paymaster_tx.version
-        WHEN tx_to = 0xE17162B840cb9A8f6D9920E5832D58f6461caCe8 THEN 1 
-        ELSE 2
+        WHEN tx_to = 0xE17162B840cb9A8f6D9920E5832D58f6461caCe8 THEN '1' 
+        ELSE '2'
     END as version,
     block_month,
     block_date,
@@ -68,7 +68,7 @@ SELECT
 FROM dex.trades trade
 LEFT JOIN paymaster_tx ON trade.tx_hash = paymaster_tx.tx_hash AND trade.blockchain = paymaster_tx.blockchain
 
-WHERE trade.block_date >= DATE('2025-07-01')
+WHERE trade.block_date >= DATE('2025-10-01')
     AND (
     -- By aggregator contracts
         tx_to in (
