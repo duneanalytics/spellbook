@@ -164,7 +164,7 @@ models:
         description: "The token standard (erc20, native)"
       - name: token_id
         description: "The token ID for NFTs (null for fungible tokens)"
-      - name: balance
-        description: "The token balance (decimal adjusted)"
+      - name: balance_raw
+        description: "The raw token balance (decimal adjusted from transfers)"
       - name: unique_key
         description: "Surrogate key for unique identification"

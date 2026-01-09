@@ -118,7 +118,7 @@ prior_balances as (
         address,
         token_address,
         token_standard,
-        max_by(balance, day) as prior_balance
+        max_by(balance_raw, day) as prior_balance
     from {{ this }}
     where not {{ incremental_predicate('block_time') }}
     group by 1, 2, 3
@@ -141,7 +141,7 @@ cumulative_balances as (
             partition by d.address, d.token_address
             order by d.day
             rows between unbounded preceding and current row
-        ) as balance
+        ) as balance_raw
     from daily_aggregated d
     {% if is_incremental() %}
     left join prior_balances p
@@ -160,7 +160,7 @@ select
     token_address,
     token_standard,
     cast(null as uint256) as token_id,
-    balance,
+    balance_raw,
     {{ dbt_utils.generate_surrogate_key(['day', 'address', 'token_address', 'token_standard']) }} as unique_key
 from cumulative_balances
 {% if is_incremental() %}
