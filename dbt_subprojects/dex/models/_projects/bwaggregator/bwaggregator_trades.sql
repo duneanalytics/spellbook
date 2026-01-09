@@ -69,7 +69,6 @@ FROM dex.trades trade
 LEFT JOIN paymaster_tx ON trade.tx_hash = paymaster_tx.tx_hash AND trade.blockchain = paymaster_tx.blockchain
 
 WHERE trade.block_date >= DATE('2025-07-01')
-    AND blockchain
     AND (
     -- By aggregator contracts
         tx_to in (
