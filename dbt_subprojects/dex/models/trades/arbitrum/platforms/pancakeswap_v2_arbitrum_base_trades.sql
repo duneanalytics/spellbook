@@ -1,6 +1,5 @@
 {{
     config(
-        tags = ['prod_exclude'],
         schema = 'pancakeswap_v2_arbitrum',
         alias = 'base_trades',
         materialized = 'incremental',
@@ -55,7 +54,8 @@ transfer as (
       "from",
       to,
       contract_address,
-      sum(amount_raw) as amount_raw
+      sum(amount_raw) as amount_raw,
+      max(evt_index) as evt_index
   from {{ source('tokens', 'transfers') }}
   where blockchain = 'arbitrum'
   and block_date >= date '2024-08-01' 
@@ -64,6 +64,31 @@ transfer as (
   and {{ incremental_predicate('block_time') }}
   {% endif %}
   group by 1,2,3,4
+),
+
+-- rank transfers by evt_index to pick the most recent one per (tx_hash, from/to)
+-- this handles cases where a swapper sends/receives multiple tokens in a single Fill
+-- using evt_index (not amount_raw) because comparing amounts across different token decimals is invalid
+-- similar pattern in uniswap_uniswapx_trades
+
+transfer_send as (
+  select
+      tx_hash,
+      "from",
+      contract_address,
+      amount_raw,
+      row_number() over (partition by tx_hash, "from" order by evt_index desc) as rn
+  from transfer
+),
+
+transfer_receive as (
+  select
+      tx_hash,
+      to,
+      contract_address,
+      amount_raw,
+      row_number() over (partition by tx_hash, to order by evt_index desc) as rn
+  from transfer
 ),
 
 dexs_pcsx AS (
@@ -84,11 +109,11 @@ dexs_pcsx AS (
 
     FROM {{ source('pancakeswap_arbitrum', 'ExclusiveDutchOrderReactor_evt_Fill') }} a 
 
-    LEFT JOIN transfer AS send 
-    ON a.evt_tx_hash = send.tx_hash AND a.swapper = send."from"
+    LEFT JOIN transfer_send AS send 
+    ON a.evt_tx_hash = send.tx_hash AND a.swapper = send."from" AND send.rn = 1
 
-    LEFT JOIN transfer AS receive 
-    on a.evt_tx_hash = receive.tx_hash AND a.swapper = receive."to"
+    LEFT JOIN transfer_receive AS receive 
+    ON a.evt_tx_hash = receive.tx_hash AND a.swapper = receive."to" AND receive.rn = 1
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('a.evt_block_time') }}
     {% endif %}
