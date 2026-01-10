@@ -246,4 +246,5 @@ FROM (VALUES
     , ('kuru', 'Kuru', 'Direct', 'kuru')
     , ('pinot', 'Pinot', 'Direct', 'pinot')
     , ('potatoswap', 'PotatoSwap', 'Direct', 'potatoswap')
+    , ('elfomofi', 'ElfomoFi', 'Direct', 'elfomo_fi')
 ) AS temp_table (project, name, marketplace_type, x_username)
