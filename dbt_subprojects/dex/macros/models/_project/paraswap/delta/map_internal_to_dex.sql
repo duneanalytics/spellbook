@@ -1,7 +1,7 @@
 {% macro map_internal_to_dex(blockchain, version, from_alias) %}
 select 
         {{from_alias}}.blockchain,
-        'velora_delta' as project,
+        'velora' as project,
         '{{version}}' as version,
         date_trunc('month', call_block_time) AS block_month,
         DATE_TRUNC('day', call_block_time) as block_date,
