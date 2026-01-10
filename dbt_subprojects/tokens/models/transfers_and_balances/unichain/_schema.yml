@@ -165,6 +165,6 @@ models:
       - name: token_id
         description: "The token ID for NFTs (null for fungible tokens)"
       - name: balance_raw
-        description: "The raw token balance"
+        description: "The token balance (note: for chains without raw balances, this is computed from transfers)"
       - name: unique_key
         description: "Surrogate key for unique identification"
