@@ -4,7 +4,7 @@
     schema = 'kyberswap_aggregator',
     alias = 'trades',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    post_hook='{{ expose_spells(\'["avalanche_c", "base", "berachain", "bnb", "ethereum", "linea", "mantle", "optimism", "polygon", "ronin", "sonic", "unichain"]\',
+    post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "berachain", "bnb", "ethereum", "linea", "mantle", "optimism", "polygon", "ronin", "sonic", "unichain"]\',
                             "project",
                             "kyberswap",
                             \'["nhd98z", "Henrystats", "phu_ngo"]\') }}'

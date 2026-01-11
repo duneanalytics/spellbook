@@ -3,12 +3,12 @@ version: 2
 models:
   - name: kyberswap_aggregator_trades
     meta:
-      blockchain: avalanche_c, base, berachain, bnb, ethereum, linea, mantle, optimism, polygon, ronin, sonic, unichain
+      blockchain: arbitrum, avalanche_c, base, berachain, bnb, ethereum, linea, mantle, optimism, polygon, ronin, sonic, unichain
       sector: dex_aggregator
       project: kyberswap
       contributors: nhd98z, Henrystats, phu_ngo
     config:
-      tags:  ['avalanche_c', 'base', 'berachain', 'bnb', 'ethereum', 'linea', 'mantle', 'optimism', 'polygon', 'ronin', 'sonic', 'unichain', 'dex', 'aggregator', 'trades', 'kyberswap', 'nhd98z', 'Henrystats', 'phu_ngo']
+      tags: ['arbitrum', 'avalanche_c', 'base', 'berachain', 'bnb', 'ethereum', 'linea', 'mantle', 'optimism', 'polygon', 'ronin', 'sonic', 'unichain', 'dex', 'aggregator', 'trades', 'kyberswap', 'nhd98z', 'Henrystats', 'phu_ngo']
     description: >
       Kyberswap Aggregator. This table will load dex_aggregator trades downstream.
     columns:
