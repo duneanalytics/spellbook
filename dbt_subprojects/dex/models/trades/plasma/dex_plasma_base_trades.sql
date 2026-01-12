@@ -16,9 +16,6 @@
 ] %}
 
 with plasma_union as (
-    SELECT *
-    FROM
-    (
         {% for plasma_model in plasma_models %}
         SELECT
             blockchain
@@ -37,27 +34,42 @@ with plasma_union as (
             , project_contract_address
             , tx_hash
             , evt_index
-            , row_number() over (partition by tx_hash, evt_index order by tx_hash) as duplicates_rank
         FROM
             {{ plasma_model }}
         WHERE
            token_sold_amount_raw >= 0 and token_bought_amount_raw >= 0
-        {% if is_incremental() %}
+        {% if var('dev_dates', false) -%}
+            AND block_date > current_date - interval '3' day -- dev_dates mode for dev, to prevent full scan
+        {%- else -%}
+            {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
-        {% endif %}
+            {% endif %}
+        {%- endif %}
         {% if not loop.last %}
         UNION ALL
         {% endif %}
         {% endfor %}
-    )
-    WHERE
-        duplicates_rank = 1
 )
 
-{{
-    add_tx_columns(
-        model_cte = 'plasma_union'
-        , blockchain = 'plasma'
-        , columns = ['from', 'to', 'index']
-    )
-}} 
+, add_tx_columns as (
+    {{
+        add_tx_columns(
+            model_cte = 'plasma_union'
+            , blockchain = 'plasma'
+            , columns = ['from', 'to', 'index']
+        )
+    }}
+)
+, final as (
+    select
+        *
+        , row_number() over (partition by tx_hash, evt_index order by tx_hash) as duplicates_rank
+    from
+        add_tx_columns
+)
+select
+    *
+from
+    final
+where
+    duplicates_rank = 1

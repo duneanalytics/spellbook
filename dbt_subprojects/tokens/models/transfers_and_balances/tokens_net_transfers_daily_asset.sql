@@ -24,6 +24,7 @@
     , 'hyperevm'
     , 'linea'
     , 'mantle'
+    , 'megaeth'
     , 'mezo'
     , 'monad'
     , 'opbnb'
@@ -61,6 +62,7 @@
     , 'sophon'
     , 'viction'
     , 'worldchain'
+    , 'xlayer'
 ] %}
 
 SELECT *
