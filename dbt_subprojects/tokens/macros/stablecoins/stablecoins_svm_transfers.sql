@@ -31,7 +31,7 @@ select
   t.block_slot as block_number,
   t.tx_id as tx_hash,
   t.outer_instruction_index as evt_index,
-  cast(coalesce(t.inner_instruction_index, 0) as array(bigint)) as trace_address,
+  array[cast(coalesce(t.inner_instruction_index, 0) as bigint)] as trace_address,
   t.token_version as token_standard,
   t.token_mint_address as token_address,
   p.symbol as token_symbol,
