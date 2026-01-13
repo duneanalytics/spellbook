@@ -192,6 +192,7 @@ WITH pool_labels AS (
         AND p1.token = b.token
         LEFT JOIN prices.day p2 ON p2.timestamp <= c.day
         AND p2.contract_address = b.token
+        AND p2.blockchain = '{{blockchain}}'
         LEFT JOIN bpt_prices p3 ON p3.day = b.day
         AND p3.token = b.token
         LEFT JOIN gyro_prices p4 ON p4.token_address = b.token
@@ -507,6 +508,7 @@ WITH pool_labels AS (
         AND p1.token = b.token
         LEFT JOIN prices.day p2 ON p2.timestamp <= c.day
         AND p2.contract_address = b.token
+        AND p2.blockchain = '{{blockchain}}'
         LEFT JOIN bpt_prices p3 ON p3.day = b.day
         AND p3.token = b.token
         LEFT JOIN erc4626_prices p4 ON p4.day <= c.day
