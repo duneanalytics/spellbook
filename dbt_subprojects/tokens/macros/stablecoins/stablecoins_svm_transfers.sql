@@ -1,6 +1,7 @@
 {%- macro stablecoins_svm_transfers(
   blockchain,
-  token_list
+  token_list,
+  start_date=none
 ) %}
 
 with stablecoin_tokens as (
@@ -17,9 +18,12 @@ prices as (
     symbol
   from {{ source('prices', 'usd_forward_fill') }}
   where blockchain = '{{blockchain}}'
-  and minute >= timestamp '2020-10-02 00:00' -- solana start date
+    and minute >= timestamp '2020-10-02 00:00' -- solana start date
+  {% if start_date is not none %}
+    and minute >= timestamp '{{ start_date }}'
+  {% endif %}
   {% if is_incremental() %}
-  and {{ incremental_predicate('minute') }}
+    and {{ incremental_predicate('minute') }}
   {% endif %}
 )
 
@@ -50,13 +54,16 @@ select
   t.from_owner as "from",
   t.to_owner as "to",
   {{ dbt_utils.generate_surrogate_key(['t.tx_id', 't.outer_instruction_index', 't.inner_instruction_index', 't.token_mint_address']) }} as unique_key
-from {{ source('tokens_solana', 'transfers') }} t
+from {{ source('tokens_' ~ blockchain, 'transfers') }} t
 inner join stablecoin_tokens s
   on t.token_mint_address = s.token_mint_address
 left join prices p
   on p.contract_address = from_base58(t.token_mint_address)
   and p.minute = date_trunc('minute', t.block_time)
 where t.action = 'transfer'
+{% if start_date is not none %}
+  and t.block_date >= {{ start_date }}
+{% endif %}
 {% if is_incremental() %}
   and {{ incremental_predicate('t.block_date') }}
 {% endif %}

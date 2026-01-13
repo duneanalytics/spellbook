@@ -16,5 +16,6 @@
 
 {{ stablecoins_svm_transfers(
     blockchain = chain,
-    token_list = 'core'
+    token_list = 'core',
+    start_date = '2026-01-01' -- TEST
 ) }}
