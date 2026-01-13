@@ -62,7 +62,7 @@ left join prices p
   and p.minute = date_trunc('minute', t.block_time)
 where t.action = 'transfer'
 {% if start_date is not none %}
-  and t.block_date >= {{ start_date }}
+  and t.block_date >= date '{{ start_date }}'
 {% endif %}
 {% if is_incremental() %}
   and {{ incremental_predicate('t.block_date') }}
