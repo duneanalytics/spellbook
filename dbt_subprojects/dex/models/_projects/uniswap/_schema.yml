@@ -272,5 +272,6 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
+            - block_month
             - tx_hash
             - evt_index
