@@ -93,3 +93,11 @@ models:
           seed_file: ref('camelot_corn_base_trades_seed')
           filter:
             version: yak
+
+  - name: dex_corn_token_volumes_daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - token_address
+            - block_date

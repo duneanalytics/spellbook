@@ -1,6 +1,20 @@
 version: 2
 
 models:
+  - name: dex_xlayer_trades
+    data_tests:
+      - check_columns_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+      - dbt_utils.accepted_range:
+          column_name: amount_usd
+          max_value: 1000000000
+
   - name: dex_xlayer_base_trades
 
   - name: uniswap_v2_xlayer_base_trades
@@ -40,3 +54,49 @@ models:
           seed_file: ref('uniswap_xlayer_base_trades_seed')
           filter:
             version: 3
+
+  - name: potatoswap_v2_xlayer_base_trades
+    meta:
+      blockchain: xlayer
+      sector: dex
+      project: potatoswap
+      contributors: tomfutago
+    config:
+      tags: ["xlayer", "dex", "trades", "potatoswap", "v2"]
+    description: "potatoswap xlayer v2 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('potatoswap_xlayer_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: potatoswap_v3_xlayer_base_trades
+    meta:
+      blockchain: xlayer
+      sector: dex
+      project: potatoswap
+      contributors: tomfutago
+    config:
+      tags: ["xlayer", "dex", "trades", "potatoswap", "v3"]
+    description: "potatoswap xlayer v3 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('potatoswap_xlayer_base_trades_seed')
+          filter:
+            version: 3
+
+  - name: dex_xlayer_token_volumes_daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - token_address
+            - block_date
