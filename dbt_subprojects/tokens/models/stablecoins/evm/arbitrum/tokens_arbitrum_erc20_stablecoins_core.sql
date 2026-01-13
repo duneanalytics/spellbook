@@ -30,16 +30,13 @@ from (values
      (0xd74f5255d557944cf7dd0e45ff521520002d5748), -- USDs
      (0x3f56e0c36d275367b8c502090edf38289b3dea0d), -- MAI
      (0xb1084db8d3c05cebd5fa9335df95ee4b8a0edc30), -- USDT+
-     (0x3509f19581afedeff07c53592bc0ca84e4855475), -- xUSD
      (0x59d9356e565ab3a36dd77763fc0d87feaf85508c), -- USDM
      (0xff970a61a04b1ca14834a43f5de4533ebddb5cc8), -- USDC.e
      (0x4d15a3a2286d883af0aa1b3f21367843fac63e07), -- TUSD
      (0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34), -- USDe
      (0xeb466342c4d449bc9f53a865d5cb90586f405215), -- axlUDC
      (0xd3443ee1e91af28e5fb858fbd0d72a63ba8046e0), -- gUSDC
-     (0x7cfadfd5645b50be87d546f42699d863648251ad), -- stataArbUSDCn
      (0x12275dcb9048680c4be40942ea4d92c74c63b844), -- eUSD
-     (0xb165a74407fe1e519d6bcbdec1ed3202b35a4140), -- stataArbUSDT
      (0x323665443cef804a3b5206103304bd4872ea4253), -- USDV
      (0x4cfa50b7ce747e2d61724fcac57f24b748ff2b2a), -- fUSDC
      (0x57f5e098cad7a3d1eed53991d4d66c45c9af7812), -- sUSDM
@@ -58,8 +55,6 @@ from (values
      (0x6491c05a82219b8d1479057361ff1654749b876b), -- USDS
 
      (0x0a1a1a107e45b7ced86833863f482bc5f4ed82ef), -- USDai
-     (0xbe00f3db78688d9704bcb4e0a827aea3a9cc0d62), -- USD24
-     (0x724dc807b04555b71ed48a6896b6f41593b8c637), -- aArbUSDCn
-     (0x0b2b2b2076d95dda7817e785989fe353fe955ef9)  -- sUSDai
+     (0xbe00f3db78688d9704bcb4e0a827aea3a9cc0d62)  -- USD24
 
 ) as temp_table (contract_address)
