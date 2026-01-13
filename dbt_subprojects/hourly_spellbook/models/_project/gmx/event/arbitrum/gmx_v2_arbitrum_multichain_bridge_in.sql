@@ -154,7 +154,11 @@ WITH evt_data_1 AS (
         from_hex(EDP.provider) AS provider,
         from_hex(EDP.token) AS token,
         from_hex(EDP.account) AS account,
-        TRY_CAST(EDP.amount AS DOUBLE) / POWER(10, ERC20.decimals) AS amount,
+        TRY_CAST(EDP.amount AS DOUBLE) / POWER(10, COALESCE(
+            ERC20.decimals,
+            MD.market_token_decimals,
+            GLV.glv_token_decimals
+            )) AS amount,
         TRY_CAST(EDP.src_chain_id AS DOUBLE) AS src_chain_id
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
@@ -162,6 +166,10 @@ WITH evt_data_1 AS (
             AND ED.index = EDP.index
     LEFT JOIN {{ ref('gmx_v2_arbitrum_erc20') }} AS ERC20
         ON from_hex(EDP.token) = ERC20.contract_address
+    LEFT JOIN {{ ref('gmx_v2_arbitrum_markets_data') }} AS MD
+        ON from_hex(EDP.token) = MD.market
+    LEFT JOIN {{ ref('gmx_v2_arbitrum_glvs_data') }} AS GLV
+        ON from_hex(EDP.token) = GLV.glv
 )
 
 --can be removed once decoded tables are fully denormalized
