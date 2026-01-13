@@ -38,11 +38,15 @@ additional prep:
 
 3. **chain-level setup** (new chain only)
   - create `dbt_subprojects/dex/models/trades/<chain>/dex_<chain>_base_trades.sql`
-  - add `ref('dex_<chain>_base_trades')` to `dbt_subprojects/dex/models/trades/dex_base_trades.sql`
+  - create `dbt_subprojects/dex/models/trades/<chain>/dex_<chain>_trades.sql`
+  - create `dbt_subprojects/dex/models/trades/<chain>/dex_<chain>_token_volumes_daily.sql`
+  - add `<chain>` to chains list in `dbt_subprojects/dex/models/trades/dex_trades.sql`
+  - add `<chain>` to chains list in `dbt_subprojects/dex/models/trades/dex_token_volumes_daily.sql`
 
 4. **create/update schema file**
   - create `dbt_subprojects/dex/models/trades/<chain>/_schema.yml` (new chain)
-  - or append platform model definition to existing schema
+    - include `dex_<chain>_trades`, `dex_<chain>_base_trades`, `dex_<chain>_token_volumes_daily`
+  - append platform model definition to existing schema
 
 5. **create seed file**
   - append `<project>_<chain>_base_trades_seed` to `dbt_subprojects/dex/seeds/trades/_schema.yml`
