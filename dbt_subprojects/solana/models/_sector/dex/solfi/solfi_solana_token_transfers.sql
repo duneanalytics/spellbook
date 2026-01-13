@@ -16,7 +16,7 @@
 -- Base swaps from solfi_call_swap table
 WITH solfi_swaps AS (
     SELECT distinct
-        date_trunc('day', call_block_time) as block_date
+        cast(date_trunc('day', call_block_time) as date) as block_date
         , call_block_slot as block_slot
         , call_tx_index as tx_index
         , call_outer_instruction_index as outer_instruction_index

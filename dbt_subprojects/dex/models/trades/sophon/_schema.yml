@@ -35,3 +35,10 @@ models:
           seed_file: ref('syncswap_sophon_base_trades_seed')
           filter:
             version: 2
+  - name: dex_sophon_token_volumes_daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - token_address
+            - block_date
