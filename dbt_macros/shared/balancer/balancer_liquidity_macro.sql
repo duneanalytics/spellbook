@@ -190,7 +190,7 @@ WITH pool_labels AS (
         AND blockchain = '{{blockchain}}'
         LEFT JOIN prices p1 ON p1.day = b.day
         AND p1.token = b.token
-        LEFT JOIN prices.day p2 ON p2.timestamp <= c.day
+        LEFT JOIN prices.day p2 ON p2.timestamp = c.day
         AND p2.contract_address = b.token
         AND p2.blockchain = '{{blockchain}}'
         LEFT JOIN bpt_prices p3 ON p3.day = b.day
@@ -506,7 +506,7 @@ WITH pool_labels AS (
         AND blockchain = '{{blockchain}}'
         LEFT JOIN prices p1 ON p1.day = b.day
         AND p1.token = b.token
-        LEFT JOIN prices.day p2 ON p2.timestamp <= c.day
+        LEFT JOIN prices.day p2 ON p2.timestamp = c.day
         AND p2.contract_address = b.token
         AND p2.blockchain = '{{blockchain}}'
         LEFT JOIN bpt_prices p3 ON p3.day = b.day
