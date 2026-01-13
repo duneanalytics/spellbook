@@ -1,9 +1,10 @@
 {{
  config(     
-       tags = ['prod_exclude'],
-       schema = 'contracts',
-       alias = 'contract_mapping'
- )
+      tags = ['prod_exclude'],
+      schema = 'contracts',
+      alias = 'contract_mapping',
+      post_hook = '{{ hide_spells() }}'
+)
 }}
 
 {% set chain_models = [
