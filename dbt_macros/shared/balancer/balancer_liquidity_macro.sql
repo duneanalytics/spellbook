@@ -26,6 +26,37 @@ WITH pool_labels AS (
         GROUP BY 1, 2, 3
     ),
 
+    dex_prices_1 AS (
+        SELECT
+            date_trunc('day', HOUR) AS DAY,
+            contract_address AS token,
+            approx_percentile(median_price, 0.5) AS price,
+            sum(sample_size) AS sample_size
+        FROM {{ source('dex', 'prices') }}
+        WHERE blockchain = '{{blockchain}}'
+        AND contract_address NOT IN (0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38, 0xde1e704dae0b4051e80dabb26ab6ad6c12262da0, 0x5ddb92a5340fd0ead3987d3661afcd6104c3b757) 
+        GROUP BY 1, 2
+        HAVING sum(sample_size) > 3
+    ),
+
+    dex_prices_2 AS(
+        SELECT
+            day,
+            token,
+            price,
+            lag(price) OVER(PARTITION BY token ORDER BY day) AS previous_price
+        FROM dex_prices_1
+    ),
+
+    dex_prices AS (
+        SELECT
+            day,
+            token,
+            price,
+            LEAD(DAY, 1, NOW()) OVER (PARTITION BY token ORDER BY DAY) AS day_of_next_change
+        FROM dex_prices_2
+        WHERE (price < previous_price * 1e4 AND price > previous_price / 1e4)
+    ),
 
     bpt_prices AS(
         SELECT DISTINCT
@@ -190,9 +221,9 @@ WITH pool_labels AS (
         AND blockchain = '{{blockchain}}'
         LEFT JOIN prices p1 ON p1.day = b.day
         AND p1.token = b.token
-        LEFT JOIN prices.day p2 ON p2.timestamp <= c.day
-        AND p2.contract_address = b.token
-        AND p2.blockchain = '{{blockchain}}'
+        LEFT JOIN dex_prices p2 ON p2.day <= c.day
+        AND c.day < p2.day_of_next_change
+        AND p2.token = b.token
         LEFT JOIN bpt_prices p3 ON p3.day = b.day
         AND p3.token = b.token
         LEFT JOIN gyro_prices p4 ON p4.token_address = b.token
@@ -301,6 +332,35 @@ WITH pool_labels AS (
         FROM {{ source('prices', 'usd') }}
         WHERE blockchain = '{{blockchain}}'
         GROUP BY 1, 2, 3
+    ),
+
+    dex_prices_1 AS (
+        SELECT
+            date_trunc('day', timestamp) AS DAY,
+            contract_address AS token,
+            approx_percentile(price, 0.5) AS price
+        FROM {{ source('prices', 'hour') }}
+        WHERE blockchain = '{{blockchain}}'
+        GROUP BY 1, 2
+    ),
+
+    dex_prices_2 AS(
+        SELECT
+            day,
+            token,
+            price,
+            lag(price) OVER(PARTITION BY token ORDER BY day) AS previous_price
+        FROM dex_prices_1
+    ),
+
+    dex_prices AS (
+        SELECT
+            day,
+            token,
+            price,
+            LEAD(DAY, 1, NOW()) OVER (PARTITION BY token ORDER BY DAY) AS day_of_next_change
+        FROM dex_prices_2
+        WHERE (price < previous_price * 1e4 AND price > previous_price / 1e4)
     ),
 
     bpt_prices AS(
@@ -506,9 +566,9 @@ WITH pool_labels AS (
         AND blockchain = '{{blockchain}}'
         LEFT JOIN prices p1 ON p1.day = b.day
         AND p1.token = b.token
-        LEFT JOIN prices.day p2 ON p2.timestamp <= c.day
-        AND p2.contract_address = b.token
-        AND p2.blockchain = '{{blockchain}}'
+        LEFT JOIN dex_prices p2 ON p2.day <= c.day
+        AND c.day < p2.day_of_next_change
+        AND p2.token = b.token
         LEFT JOIN bpt_prices p3 ON p3.day = b.day
         AND p3.token = b.token
         LEFT JOIN erc4626_prices p4 ON p4.day <= c.day
