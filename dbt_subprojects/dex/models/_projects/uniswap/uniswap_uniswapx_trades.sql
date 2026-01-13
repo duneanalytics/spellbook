@@ -13,8 +13,8 @@
                                         , "unichain"
                                         , "base"
                                     ]\',
-                                    "sector",
-                                    "dex",
+                                    "project",
+                                    "uniswap",
                                     \'["Henrystats", "agaperste"]\') }}')
 }}
 
@@ -26,3 +26,6 @@
             , tokens_erc20_model = source('tokens', 'erc20')
         )
     }}
+
+
+-- refresh
