@@ -9,7 +9,7 @@ globs: ["dbt_subprojects/**"]
 
 ## code patterns
 - use existing chain patterns as reference (e.g., `kaia`, `mezo`)
-- ordering: mimic existing; if unclear, append alphabetically
+- ordering: mimic existing; if unclear, append
 - swap chain name in: file paths, model names, schema entries, `blockchain` values
 
 ## contributors
