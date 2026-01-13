@@ -23,13 +23,13 @@ AND {{ incremental_predicate('block_time')}}
 , blocks_enriched as (
     SELECT
          CASE
-            --WHEN number >= ? THEN 14*128*1024 -- BPO2 Fusaka (14 blobs)
+            WHEN number >= 24179383 THEN 14*128*1024 -- BPO2 Fusaka (14 blobs)
             WHEN number >= 23975778 THEN 10*128*1024 -- BPO1 Fusaka (10 blobs)
             WHEN number >= 22431084 THEN 6*128*1024 -- Pectra & Fusaka (6 blobs)
             ELSE 3*128*1024 -- Dencun (3 blobs of 128kib)
         END AS target_blob_gas,
         CASE
-            -- WHEN number >= ? THEN 11684671 -- BPO2 Fusaka
+            WHEN number >= 24179383 THEN 11684671 -- BPO2 Fusaka
             WHEN number >= 23975778 THEN 8346193 -- BPO1 Fusaka
             WHEN number >= 22431084 THEN 5007716 -- Pectra & Fusaka
             ELSE 3338477 -- Dencun
