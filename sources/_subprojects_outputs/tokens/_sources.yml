@@ -560,6 +560,20 @@ sources:
           - name: decimals
             data_type: integer
       - name: nft
+      - name: erc20_stablecoins
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: backing
+            data_type: varchar
+          - name: symbol
+            data_type: varchar
+          - name: decimals
+            data_type: integer
+          - name: name
+            data_type: varchar
 
   - name: tokens_zora
     tables:
@@ -572,6 +586,23 @@ sources:
           - name: decimals
             data_type: integer
       - name: nft
+
+  - name: tokens_worldchain
+    tables:
+      - name: erc20_stablecoins
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: backing
+            data_type: varchar
+          - name: symbol
+            data_type: varchar
+          - name: decimals
+            data_type: integer
+          - name: name
+            data_type: varchar
 
   - name: tokens_yearn
     tables:
@@ -630,3 +661,20 @@ sources:
   - name: prices_native
     tables:
       - name: tokens
+
+  - name: tokens_kaia
+    tables:
+      - name: erc20_stablecoins
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: backing
+            data_type: varchar
+          - name: symbol
+            data_type: varchar
+          - name: decimals
+            data_type: integer
+          - name: name
+            data_type: varchar

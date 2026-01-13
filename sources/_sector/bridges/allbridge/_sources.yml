@@ -5,3 +5,15 @@ sources:
     description: "Allbridge bridge events on Ethereum"
     tables:
       - name: bridge_evt_sent
+  - name: allbridge_fantom
+    description: "Allbridge bridge events on Fantom"
+    tables:
+      - name: bridge_evt_sent
+  - name: allbridge_polygon
+    description: "Allbridge bridge events on Polygon"
+    tables:
+      - name: bridge_evt_sent
+  - name: allbridge_avalanche_c
+    description: "Allbridge bridge events on Avalanche"
+    tables:
+      - name: bridge_evt_sent

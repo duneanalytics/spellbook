@@ -19,3 +19,12 @@ models:
     config:
       tags: [ 'corn', 'bridges', 'flows', 'withdrawals' ]
     description: "Tether's USDT0 v1 bridge withdrawals events on Corn"
+  - name: bridges_corn_orbiter_v1_deposits
+    meta:
+      blockchain: corn
+      sector: bridges
+      project: orbiter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'corn', 'bridges', 'flows', 'withdrawals' ]
+    description: "Orbiter's v1 bridge deposits events on Corn"

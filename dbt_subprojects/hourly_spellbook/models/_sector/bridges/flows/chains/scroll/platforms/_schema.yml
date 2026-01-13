@@ -102,3 +102,21 @@ models:
     config:
       tags: [ 'scroll', 'bridges', 'flows', 'withdrawals' ]
     description: "Symbiosis's v1 bridge deposits events on scroll"
+  - name: bridges_scroll_orbiter_v1_deposits
+    meta:
+      blockchain: scroll
+      sector: bridges
+      project: orbiter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'scroll', 'bridges', 'flows', 'withdrawals' ]
+    description: "Orbiter's v1 bridge deposits events on Scroll"
+  - name: bridges_scroll_axelar_gateway_deposits
+    meta:
+      blockchain: scroll
+      sector: bridges
+      project: axelar
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'scroll', 'bridges', 'flows', 'deposits' ]
+    description: "Axelar's gateway bridge deposits events on Scroll"

@@ -1,5 +1,6 @@
  {{
-  config(     
+  config(
+        tags = ['prod_exclude'],
         schema = 'contracts_polygon',
         alias = 'contract_mapping',
         materialized ='table',

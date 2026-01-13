@@ -118,4 +118,10 @@ sources:
       - name: pair_evt_swap
       - name: algebrafactory_evt_custompool
       - name: algebrapool_evt_swap
+  - name: pharaoh_v3_avalanche_c
+    tables:
+      - name: Pair_evt_Swap
+      - name: PairFactory_evt_PairCreated
+      - name: RamsesV3Pool_evt_Swap
+      - name: RamsesV3Factory_evt_PoolCreated
 

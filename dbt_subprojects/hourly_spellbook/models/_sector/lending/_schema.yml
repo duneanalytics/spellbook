@@ -3,7 +3,7 @@ version: 2
 models:
   - name: lending_info
     meta:
-      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, optimism, polygon, scroll, zksync
+      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, optimism, polygon, scroll, zksync, unichain
       sector: dex
       contributors: hildobby
     config:

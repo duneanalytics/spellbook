@@ -1,4 +1,9 @@
-{%- macro transfers_from_traces_base_wrapper_deposits_macro(blockchain, transfers_from_traces_base_table) -%}
+{%- macro
+    transfers_from_traces_base_wrapper_deposits_macro(
+        blockchain,
+        transfers_from_traces_base_table
+    )
+-%}
 
 -- the wrapper deposit includes two transfers: native and wrapped, so we should add second one manually reversing from/to
 -- it's splitted to 2 operations and fetching from pre-materialized table to prevent doubling full-scan of traces
@@ -17,8 +22,8 @@ select
     , 'erc20' as token_standard
     , "to" as contract_address
     , amount_raw
-    , "to" as transfer_from
-    , "from" as transfer_to
+    , "to"
+    , "from"
     , sha1(to_utf8(concat_ws('|'
         , blockchain
         , cast(block_number as varchar)
@@ -32,9 +37,10 @@ join ( -- to leave only real tokens (mostly for wrapped token, but works for rar
     from {{ source('tokens', 'erc20') }}
     where blockchain = '{{ blockchain }}'
 ) using("to")
-where
-    type = 'deposit'
-    {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
+where true
+    and type = 'deposit'
+    and contract_address <> "to" -- due to inconsistency in dune.blockchains & tokens.erc20
+    {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
 
 
 

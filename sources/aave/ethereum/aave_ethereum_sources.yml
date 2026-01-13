@@ -124,14 +124,7 @@ sources:
 
       - name: StataTokenV2_evt_Initialized
 
-      - name: StataTokenFactory_evt_StataTokenCreated      
-
-  - name: aave_v3_ethereum
-    description: "Decoded contracts for Aave v3 on Ethereum"
-    tables:
-      - name: VariableDebtToken_evt_Initialized
-      - name: poolconfigurator_evt_reserveinitialized      
-      - name: etherfipoolconfiguratorinstance_evt_reserveinitialized
+      - name: StataTokenFactory_evt_StataTokenCreated
   
   - name: aave_v3_lido_ethereum
     description: "Decoded contracts for Aave v3 on Lido"
