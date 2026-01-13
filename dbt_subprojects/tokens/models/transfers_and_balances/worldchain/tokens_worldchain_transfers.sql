@@ -17,7 +17,7 @@
 {{
     transfers_enrich(
         base_transfers = ref('tokens_worldchain_base_transfers')
-        , transfers_start_date = '2024-12-06'
+        , transfers_start_date = '2024-06-25'
         , blockchain = 'worldchain'
     )
 }} 

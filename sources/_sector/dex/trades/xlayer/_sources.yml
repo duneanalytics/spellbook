@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: uniswap_v2_xlayer
+    tables:
+      - name: UniswapV2Factory_evt_PairCreated
+      - name: UniswapV2Pair_evt_Swap
+  - name: uniswap_v3_xlayer
+    tables:
+      - name: UniswapV3Factory_evt_PoolCreated
+      - name: UniswapV3Pool_evt_Swap
+  - name: potatoswap_xlayer
+    tables:
+      - name: PotatoFactory_evt_PairCreated
+      - name: PotatoPair_evt_Swap
+      - name: HyperindexV3Factory_evt_PoolCreated
+      - name: HyperindexV3Pool_evt_Swap
