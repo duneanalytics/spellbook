@@ -29,4 +29,6 @@ SELECT
     , t.evt_index AS evt_index 
 FROM {{ ref('ekubo_v3_ethereum_base_liquidity_events') }} t
 WHERE event_type = 'swap'
+{% if is_incremental() %}
 AND {{ incremental_predicate('block_time') }}
+{% endif %}
