@@ -30,7 +30,7 @@ from (
     balance_raw,
     balance,
     balance_usd,
-    last_updated,
+    last_updated
   from {{ ref('stablecoins_' ~ chain ~ '_balances') }}
   {% if not loop.last %}
   union all

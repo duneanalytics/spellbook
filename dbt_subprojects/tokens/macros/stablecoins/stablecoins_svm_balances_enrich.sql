@@ -13,7 +13,7 @@ select
   cast(b.token_balance * power(10, p.decimals) as uint256) as balance_raw,
   b.token_balance as balance,
   b.token_balance * p.price as balance_usd,
-  b.last_updated,
+  b.last_updated
 from {{ base_balances }} b
 left join {{ source('prices_external', 'day') }} p
   on cast(b.day as timestamp) = p.timestamp

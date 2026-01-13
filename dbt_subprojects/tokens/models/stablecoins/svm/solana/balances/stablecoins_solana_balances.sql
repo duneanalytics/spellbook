@@ -25,7 +25,7 @@ with enriched_balances as (
     balance_raw,
     balance,
     balance_usd,
-    last_updated,
+    last_updated
   from {{ ref('stablecoins_' ~ chain ~ '_core_balances_enriched') }}
   union all
   select
@@ -38,7 +38,7 @@ with enriched_balances as (
     balance_raw,
     balance,
     balance_usd,
-    last_updated,
+    last_updated
   from {{ ref('stablecoins_' ~ chain ~ '_extended_balances_enriched') }}
 )
 
@@ -55,7 +55,7 @@ select
   b.balance_raw,
   b.balance,
   b.balance_usd,
-  b.last_updated,
+  b.last_updated
 from enriched_balances b
 left join {{ ref('tokens_spl_stablecoins_metadata') }} m
   on b.blockchain = m.blockchain

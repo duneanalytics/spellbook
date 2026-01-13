@@ -13,7 +13,7 @@ with stablecoin_tokens as (
 address_tokens as (
   select distinct
     b.token_balance_owner as address,
-    b.token_mint_address,
+    b.token_mint_address
   from {{ source('solana_utils', 'daily_balances') }} b
   inner join stablecoin_tokens t on b.token_mint_address = t.token_mint_address
   where b.token_balance_owner is not null
@@ -35,7 +35,7 @@ address_token_days as (
   select
     d.day,
     at.address,
-    at.token_mint_address,
+    at.token_mint_address
   from days d
   cross join address_tokens at
 ),
@@ -47,7 +47,7 @@ forward_fill as (
     atd.address,
     atd.token_mint_address,
     b.token_balance,
-    b.day as last_updated,
+    b.day as last_updated
   from address_token_days atd
   asof join {{ source('solana_utils', 'daily_balances') }} b
     on atd.address = b.token_balance_owner
@@ -61,7 +61,7 @@ select
   address,
   token_mint_address,
   token_balance,
-  last_updated,
+  last_updated
 from forward_fill
 where token_balance > 0
 {% if is_incremental() %}
