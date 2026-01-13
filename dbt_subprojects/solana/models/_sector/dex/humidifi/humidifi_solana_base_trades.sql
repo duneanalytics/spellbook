@@ -78,9 +78,9 @@ WITH swaps AS (
 		, s.block_time
 		, s.block_slot
 		, CASE
-        WHEN s.is_inner = false THEN 'direct'
-        ELSE s.outer_executing_account
-    END AS trade_source
+			WHEN s.is_inner = false THEN 'direct'
+			ELSE s.outer_executing_account
+    	END AS trade_source
 		, max(CASE WHEN tf.inner_instruction_index = s.inner_instruction_index + 1 THEN tf.amount END) AS token_bought_amount_raw
 		, max(CASE WHEN tf.inner_instruction_index = s.inner_instruction_index + 2 THEN tf.amount END) AS token_sold_amount_raw
 		, max(CASE WHEN tf.inner_instruction_index = s.inner_instruction_index + 1 THEN tf.from_token_account END) AS token_bought_vault
@@ -106,17 +106,18 @@ WITH swaps AS (
 		, s.block_time
 		, s.block_slot
 		, CASE
-        WHEN s.is_inner = false THEN 'direct'
-        ELSE s.outer_executing_account
-    END
+			WHEN s.is_inner = false THEN 'direct'
+			ELSE s.outer_executing_account
+    	END
 		, s.pool_id
 		, s.tx_signer
 		, s.tx_id
 		, s.outer_instruction_index
 		, s.inner_instruction_index
 		, s.tx_index
+		, s.surrogate_key
 	HAVING
-    1=1
+    	1=1
 		AND count_if(tf.inner_instruction_index = s.inner_instruction_index + 1) = 1
 		AND count_if(tf.inner_instruction_index = s.inner_instruction_index + 2) = 1
 )
