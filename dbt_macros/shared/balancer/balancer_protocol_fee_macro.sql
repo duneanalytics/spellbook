@@ -31,38 +31,6 @@ WITH pool_labels AS (
 
     ),
 
-    dex_prices_1 AS (
-        SELECT
-            date_trunc('day', HOUR) AS DAY,
-            contract_address AS token,
-            approx_percentile(median_price, 0.5) AS price,
-            sum(sample_size) AS sample_size
-        FROM {{ source('dex', 'prices') }}
-        WHERE blockchain = '{{blockchain}}'
-        AND contract_address NOT IN (0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38, 0xde1e704dae0b4051e80dabb26ab6ad6c12262da0, 0x5ddb92a5340fd0ead3987d3661afcd6104c3b757) 
-        GROUP BY 1, 2
-        HAVING sum(sample_size) > 3
-    ),
- 
-    dex_prices_2 AS(
-        SELECT 
-            day,
-            token,
-            price,
-            lag(price) OVER(PARTITION BY token ORDER BY day) AS previous_price
-        FROM dex_prices_1
-    ),    
-
-    dex_prices AS (
-        SELECT
-            day,
-            token,
-            price,
-            LEAD(DAY, 1, NOW()) OVER (PARTITION BY token ORDER BY DAY) AS day_of_next_change
-        FROM dex_prices_2
-        WHERE (price < previous_price * 1e4 AND price > previous_price / 1e4)
-    ),
-
     bpt_prices_1 AS (
         SELECT 
             l.day,
@@ -139,9 +107,9 @@ WITH pool_labels AS (
         LEFT JOIN prices p1
             ON p1.token = d.token_address
             AND p1.day = d.day
-        LEFT JOIN dex_prices p2
-            ON p2.token = d.token_address
-            AND p2.day = d.day
+        LEFT JOIN prices.day p2
+            ON p2.contract_address = d.token_address
+            AND p2.timestamp = d.day
         LEFT JOIN bpt_prices p3
             ON p3.token = d.token_address
             AND p3.day <= d.day
@@ -224,37 +192,6 @@ WITH pool_labels AS (
 
     ),
 
-    dex_prices_1 AS (
-        SELECT
-            date_trunc('day', HOUR) AS DAY,
-            contract_address AS token,
-            approx_percentile(median_price, 0.5) AS price,
-            sum(sample_size) AS sample_size
-        FROM {{ source('dex', 'prices') }}
-        WHERE blockchain = '{{blockchain}}'
-        AND contract_address NOT IN (0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38, 0xde1e704dae0b4051e80dabb26ab6ad6c12262da0, 0x5ddb92a5340fd0ead3987d3661afcd6104c3b757) 
-        GROUP BY 1, 2
-        HAVING sum(sample_size) > 3
-    ),
- 
-    dex_prices_2 AS(
-        SELECT 
-            day,
-            token,
-            price,
-            lag(price) OVER(PARTITION BY token ORDER BY day) AS previous_price
-        FROM dex_prices_1
-    ),    
-
-    dex_prices AS (
-        SELECT
-            day,
-            token,
-            price,
-            LEAD(DAY, 1, NOW()) OVER (PARTITION BY token ORDER BY DAY) AS day_of_next_change
-        FROM dex_prices_2
-        WHERE (price < previous_price * 1e4 AND price > previous_price / 1e4)
-    ),
 
     bpt_prices_1 AS (
         SELECT 
@@ -337,9 +274,9 @@ WITH pool_labels AS (
         LEFT JOIN prices p1
             ON p1.token = d.token_address
             AND p1.day = d.day
-        LEFT JOIN dex_prices p2
-            ON p2.token = d.token_address
-            AND p2.day = d.day
+        LEFT JOIN prices.day p2
+            ON p2.contract_address = d.token_address
+            AND p2.timestamp = d.day
         LEFT JOIN bpt_prices p3
             ON p3.token = d.token_address
             AND p3.day <= d.day
