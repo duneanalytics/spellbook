@@ -18,5 +18,11 @@ from (values
 
      (0x0000000000000000000000000000000000000000)
 
+     /* rebasing / interest accruing tokens
+     (0x8ba9da757d1d66c58b1ae7e2ed6c04087348a82d), -- sUSDD (staked USDD)
+     (0x64748ea3e31d0b7916f0ff91b017b9f404ded8ef), -- cUSDO (lending)
+     (0x6458df5d764284346c19d88a104fd3d692471499)  -- iUSDS (iron bank)
+     */
+
 ) as temp_table (contract_address)
 where contract_address != 0x0000000000000000000000000000000000000000

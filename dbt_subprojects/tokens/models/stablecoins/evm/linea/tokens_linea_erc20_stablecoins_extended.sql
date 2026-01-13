@@ -18,5 +18,9 @@ from (values
 
      (0x0000000000000000000000000000000000000000)
 
+     /* rebasing / interest accruing tokens
+     (0xaca92e438df0b2401ff60da7e4337b687a2435da)  -- mUSD (morpho)
+     */
+
 ) as temp_table (contract_address)
 where contract_address != 0x0000000000000000000000000000000000000000
