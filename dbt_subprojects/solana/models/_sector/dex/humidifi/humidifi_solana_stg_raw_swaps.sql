@@ -16,7 +16,8 @@
 -- humidifi swap data from instruction_calls table
 WITH swaps AS (
   SELECT
-      block_slot
+    block_slot
+    , cast(date_trunc('month', block_date) AS DATE) AS block_month
     , block_date
     , block_time
     , COALESCE(inner_instruction_index,0) as inner_instruction_index -- adjust to index 0 for direct trades
