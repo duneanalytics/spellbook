@@ -3,7 +3,6 @@
         schema = 'solana_utils',
         alias = 'token_accounts',
         materialized = 'view',
-        file_format = 'delta',
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
                                     "solana_utils",
