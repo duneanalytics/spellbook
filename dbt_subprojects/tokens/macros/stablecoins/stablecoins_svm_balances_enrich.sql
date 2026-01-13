@@ -10,7 +10,7 @@ select
   b.token_mint_address as token_address,
   'spl_token' as token_standard,
   cast(null as uint256) as token_id,
-  cast(b.token_balance * power(10, coalesce(p.decimals, 0)) as uint256) as balance_raw,
+  cast(b.token_balance * power(10, p.decimals) as uint256) as balance_raw,
   b.token_balance as balance,
   b.token_balance * p.price as balance_usd,
   b.last_updated,

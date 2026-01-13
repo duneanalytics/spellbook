@@ -18,5 +18,5 @@
 {{ stablecoins_svm_balances(
   blockchain = chain,
   token_list = 'core',
-  start_date = '2020-10-02'
+  start_date = '2026-01-01' -- TEST -> revert to: '2020-10-02'
 ) }}
