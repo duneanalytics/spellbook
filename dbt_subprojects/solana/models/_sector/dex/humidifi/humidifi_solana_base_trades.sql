@@ -28,7 +28,8 @@ WITH swaps AS (
 		, pool_id
 		, surrogate_key
 	FROM {{ ref('humidifi_solana_stg_raw_swaps') }}
-	WHERE 1=1
+	WHERE
+		1=1
 		{% if is_incremental() -%}
 		AND {{ incremental_predicate('block_date') }}
 		{% else -%}
@@ -36,12 +37,23 @@ WITH swaps AS (
 		{% endif -%}
 )
 
-, swaps_keys AS (
+, swap_transfer_keys AS (
 	SELECT DISTINCT
 		  tx_id
 		, block_date
 		, block_slot
 		, outer_instruction_index
+		, inner_instruction_index + 1 AS transfer_inner_instruction_index
+	FROM swaps
+
+	UNION ALL
+
+	SELECT DISTINCT
+		  tx_id
+		, block_date
+		, block_slot
+		, outer_instruction_index
+		, inner_instruction_index + 2 AS transfer_inner_instruction_index
 	FROM swaps
 )
 
@@ -57,11 +69,6 @@ WITH swaps AS (
 		, tf.to_token_account
 		, tf.token_mint_address
 	FROM {{ source('tokens_solana', 'transfers') }} tf
-	INNER JOIN swaps_keys sk
-		ON  tf.tx_id = sk.tx_id
-		AND tf.block_date = sk.block_date
-		AND tf.block_slot = sk.block_slot
-		AND tf.outer_instruction_index = sk.outer_instruction_index
 	WHERE 1=1
 		AND tf.token_version IN ('spl_token', 'spl_token_2022')
 		-- keep this for partition pruning on transfers
@@ -70,6 +77,16 @@ WITH swaps AS (
 		{% else -%}
 		AND tf.block_date >= DATE '{{ project_start_date }}'
 		{% endif -%}
+		AND EXISTS (
+			SELECT 1
+			FROM swap_transfer_keys sk
+			WHERE 1=1
+				AND sk.tx_id = tf.tx_id
+				AND sk.block_date = tf.block_date
+				AND sk.block_slot = tf.block_slot
+				AND sk.outer_instruction_index = tf.outer_instruction_index
+				AND sk.transfer_inner_instruction_index = tf.inner_instruction_index
+		)
 )
 
 , transfers AS (
