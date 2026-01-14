@@ -28,7 +28,6 @@ from (values
      (0x2952beb1326accbb5243725bd4da2fc937bca087), -- wUSDR
      (0x1d6cbdc6b29c6afbae65444a1f65ba9252b8ca83), -- TOR
      (0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b), -- BOB
-     (0x6458df5d764284346c19d88a104fd3d692471499), -- iUSDS
      (0x2f29bc0ffaf9bff337b31cbe6cb5fb3bf12e5840), -- DOLA
      (0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d), -- USDC
      (0x3f56e0c36d275367b8c502090edf38289b3dea0d), -- MAI
@@ -61,10 +60,8 @@ from (values
      (0x40af3827f39d0eacbf4a168f8d4ee67c121d11c9), -- TUSD
      (0x2492d0006411af6c8bbb1c8afc1b0197350a79e9), -- USR
      (0xffffff9936bd58a008855b0812b44d2c8dffe2aa), -- GGUSD
-     (0x8ba9da757d1d66c58b1ae7e2ed6c04087348a82d), -- sUSDD
      (0xb4818bb69478730ef4e33cc068dd94278e2766cb), -- satUSD
      (0x45e51bc23d592eb2dba86da3985299f7895d66ba), -- USDD
-     (0xa228d4546eebafd9808ede3f4b490fd4ae83fb74), -- USDA
-     (0x64748ea3e31d0b7916f0ff91b017b9f404ded8ef)  -- cUSDO
+     (0xa228d4546eebafd9808ede3f4b490fd4ae83fb74)  -- USDA
 
 ) as temp_table (contract_address)
