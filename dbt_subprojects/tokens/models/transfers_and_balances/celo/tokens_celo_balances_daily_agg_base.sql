@@ -13,7 +13,6 @@
 
 -- celo doesn't have a raw balances source like other chains
 -- this uses the transfer-based balance calculation macro
--- note: celo allows paying gas fees in stablecoins, which is included via gas_fees_source
 
 {{
     balances_daily_agg_from_transfers(

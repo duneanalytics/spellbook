@@ -24,11 +24,7 @@ from (
 {% endmacro %}
 
 
-{%- macro balances_daily_agg_from_transfers(
-    transfers,
-    gas_fees_source = none,
-    native_token_address = var('ETH_ERC20_ADDRESS')
-) %}
+{%- macro balances_daily_agg_from_transfers(transfers) %}
 
 with transfers_in as (
     select
@@ -66,39 +62,10 @@ transfers_out as (
     {% endif %}
 ),
 
-{% if gas_fees_source is not none %}
--- gas fees can be paid in stablecoins or native token (e.g., celo allows USDT, USDC)
-gas_fees as (
-    select
-        blockchain,
-        block_date as day,
-        block_number,
-        block_time,
-        tx_from as address,
-        tx_fee_currency as token_address,
-        case 
-            when tx_fee_currency = {{ native_token_address }} then 'native'
-            else 'erc20'
-        end as token_standard,
-        uint256 '0' as inflow,
-        tx_fee_raw as outflow
-    from {{ gas_fees_source }}
-    where tx_from is not null
-        and tx_fee_raw > uint256 '0'
-    {% if is_incremental() %}
-        and {{ incremental_predicate('block_time') }}
-    {% endif %}
-),
-{% endif %}
-
 all_flows as (
     select * from transfers_in
     union all
     select * from transfers_out
-    {% if gas_fees_source is not none %}
-    union all
-    select * from gas_fees
-    {% endif %}
 ),
 
 daily_aggregated as (
