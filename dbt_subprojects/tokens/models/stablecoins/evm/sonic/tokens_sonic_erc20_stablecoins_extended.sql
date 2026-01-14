@@ -18,5 +18,9 @@ from (values
 
      (0x0000000000000000000000000000000000000000)
 
+     /* rebasing / interest accruing tokens
+     (0x6646248971427b80ce531bdd793e2eb859347e55)  -- waSonUSDC (wrapped aave)
+     */
+
 ) as temp_table (contract_address)
 where contract_address != 0x0000000000000000000000000000000000000000
