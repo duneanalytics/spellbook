@@ -11,7 +11,7 @@
   )
 }}
 
-{% set project_start_date = '2024-12-12' %}
+{% set project_start_date = '2026-01-01' %}
 
 -- zerofi swap data from instruction_calls table
 WITH swaps AS (

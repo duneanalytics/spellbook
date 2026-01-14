@@ -11,7 +11,7 @@
   )
 }}
 
-{% set project_start_date = '2024-06-04' %}
+{% set project_start_date = '2026-01-01' %}
 
 -- obric swap data from instruction_calls table. Filtered by program id & swap discriminator.
 WITH swaps AS (

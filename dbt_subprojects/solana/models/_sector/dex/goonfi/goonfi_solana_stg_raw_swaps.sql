@@ -11,7 +11,7 @@
   )
 }}
 
-{% set project_start_date = '2025-05-26' %}
+{% set project_start_date = '2026-01-01' %}
 
 -- goonfi swap data from instruction_calls table with filter for program and discriminator
 WITH swaps AS (
