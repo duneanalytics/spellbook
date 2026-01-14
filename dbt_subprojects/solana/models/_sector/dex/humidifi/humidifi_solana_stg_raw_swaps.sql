@@ -28,7 +28,12 @@ WITH swaps AS (
     , tx_signer
     , tx_index
     , account_arguments[2] AS pool_id
-    , {{ dbt_utils.generate_surrogate_key(['tx_id', 'tx_index', 'outer_instruction_index', 'inner_instruction_index']) }} as surrogate_key
+    , {{ dbt_utils.generate_surrogate_key([
+        'tx_id'
+        , 'tx_index'
+        , 'outer_instruction_index'
+        , 'COALESCE(inner_instruction_index,0)'
+      ]) }} as surrogate_key
   FROM {{ source('solana','instruction_calls') }}
   WHERE
     1=1
