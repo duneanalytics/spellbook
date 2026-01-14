@@ -96,7 +96,10 @@ known_solver_metadata (address, environment, name) as (
                 (0x728a498A1Ff4c7D64f48b5b7Fefd72FdDE010613, 'barn', 'Rosato'),
                 (0x70f5474EA078a63F874695eA2Ed99AeBC4Ad4393, 'prod', 'Rosato'),
                 (0x1aA30C724aC8833D9C49853cC60991cDCf472cc7, 'barn', 'OpenOcean_Aggregator'),
-                (0x0B68006276c0D076309ED354924B7b7Af1ef3f85, 'prod', 'OpenOcean_Aggregator')
+                (0x0B68006276c0D076309ED354924B7b7Af1ef3f85, 'prod', 'OpenOcean_Aggregator'),
+                (0x59019a97f9eea41385c476a954a30e3dacc25249, 'prod', 'Prycto'),
+                (0x8f5835e9d756c9bd934bce527157a4b0ef3c5cb7, 'prod', 'Rizzolver'),
+                (0xea270e6cad15c5bafa35b9019bec7087ff82d8e8, 'prod', 'Horadrim')
     ) as _
 )
 -- Combining the metadata with current activation status for final table
