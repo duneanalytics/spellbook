@@ -298,8 +298,8 @@ select
     b.last_updated
 from (
     select * from forward_fill
-    where balance_raw > 0
-       or (balance_raw = 0 and last_updated = day)  -- include actual 0-balance changes, not forward-fills
+    where (balance_raw > 0
+       or (balance_raw = 0 and last_updated = day))  -- include actual 0-balance changes, not forward-fills
     {% if is_incremental() %}
         and {{ incremental_predicate('day') }}
     {% endif %}
