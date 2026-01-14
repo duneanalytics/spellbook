@@ -43,20 +43,29 @@ WITH swaps AS (
 		, block_date
 		, block_slot
 		, outer_instruction_index
-		, inner_instruction_index + 1 AS transfer_inner_instruction_index
-		, 1 AS transfer_side
-	FROM swaps
+		, transfer_inner_instruction_index
+		, transfer_side
+	FROM (
+		SELECT
+			  tx_id
+			, block_date
+			, block_slot
+			, outer_instruction_index
+			, inner_instruction_index + 1 AS transfer_inner_instruction_index
+			, 1 AS transfer_side
+		FROM swaps
 
-	UNION ALL
+		UNION ALL
 
-	SELECT DISTINCT
-		  tx_id
-		, block_date
-		, block_slot
-		, outer_instruction_index
-		, inner_instruction_index + 2 AS transfer_inner_instruction_index
-		, 2 AS transfer_side
-	FROM swaps
+		SELECT
+			  tx_id
+			, block_date
+			, block_slot
+			, outer_instruction_index
+			, inner_instruction_index + 2 AS transfer_inner_instruction_index
+			, 2 AS transfer_side
+		FROM swaps
+	)
 )
 
 -- Step 1: filter transfers using a SEMI join (EXISTS) so the hash build is on swap_transfer_keys, not transfers
