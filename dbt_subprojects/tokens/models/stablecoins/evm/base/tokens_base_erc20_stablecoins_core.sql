@@ -42,10 +42,8 @@ from (values
      (0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34), -- USDe
      (0x820c137fa70c8691f0e44dc420a5e53c168921dc), -- USDS
 
-     (0x526728dbc96689597f85ae4cd716d4f7fccbae9d), -- msUSD
      (0x1217bfe6c773eec6cc4a38b5dc45b92292b6e189), -- oUSDT
      (0x102d758f688a4c1c5a80b116bd945d4455460282), -- USD₮0
-     (0x4e65fe4dba92790696d040ac24aa414708f5c0ab), -- aBasUSDC
      (0x0a1a1a107e45b7ced86833863f482bc5f4ed82ef), -- USDai
      (0x35e5db674d8e93a03d814fa0ada70731efe8a4b9), -- USR
      (0xe4b20925d9e9a62f1e492e15a81dc0de62804dd4), -- BtcUSD
