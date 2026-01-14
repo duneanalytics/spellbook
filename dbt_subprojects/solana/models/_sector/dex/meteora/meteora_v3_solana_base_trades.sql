@@ -13,7 +13,7 @@
   ) 
 }}
 
-with swap_calls as
+with swap_calls_raw as
 (
   select 
       call_block_time as block_time
@@ -28,7 +28,6 @@ with swap_calls as
     , call_outer_instruction_index as outer_instruction_index
     , coalesce(call_inner_instruction_index,0) as inner_instruction_index
     , call_tx_index as tx_index
-    , row_number () over (partition by call_tx_id, call_tx_index, call_outer_instruction_index order by coalesce(call_inner_instruction_index,0) asc) as rn
   from {{ source ('meteora_solana','cp_amm_call_swap') }} cs
   where
     1=1
@@ -37,6 +36,48 @@ with swap_calls as
     {% else %}
     and call_block_time > timestamp '{{project_start_date}}'
     {% endif %}
+
+  union all
+
+  select 
+      call_block_time as block_time
+    , call_block_slot as block_slot
+    , call_outer_executing_account as trade_source
+    , account_token_a_mint as token_a
+    , account_token_b_mint as token_b
+    , account_token_a_vault as token_a_vault
+    , account_token_b_vault as token_b_vault
+    , call_tx_signer as trader_id
+    , call_tx_id  as tx_id
+    , call_outer_instruction_index as outer_instruction_index
+    , coalesce(call_inner_instruction_index,0) as inner_instruction_index
+    , call_tx_index as tx_index
+  from {{ source ('meteora_solana','cp_amm_call_swap2') }} cs
+  where
+    1=1
+    {% if is_incremental() %}
+    and {{incremental_predicate('call_block_time')}}
+    {% else %}
+    and call_block_time > timestamp '{{project_start_date}}'
+    {% endif %}
+),
+swap_calls as
+(
+  select 
+      block_time
+    , block_slot
+    , trade_source
+    , token_a
+    , token_b
+    , token_a_vault
+    , token_b_vault
+    , trader_id
+    , tx_id
+    , outer_instruction_index
+    , inner_instruction_index
+    , tx_index
+    , row_number () over (partition by tx_id, tx_index, outer_instruction_index order by inner_instruction_index asc) as rn
+  from swap_calls_raw
 ),
 swap_event_details_raw as 
 (

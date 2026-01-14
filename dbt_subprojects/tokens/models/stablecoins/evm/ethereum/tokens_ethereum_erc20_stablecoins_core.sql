@@ -66,7 +66,6 @@ from (values
      (0x15f74458ae0bfdaa1a96ca1aa779d715cc1eefe4), -- GRAI
      (0xf939e0a03fb07f59a73314e73794be0e57ac1b4e), -- crvUSD
      (0xab5eb14c09d416f0ac63661e57edb7aecdb9befa), -- msUSD
-     (0x9d39a5de30e57443bff2a8307a4256c8797a3497), -- sUSDe
      (0x15700b564ca08d9439c58ca5053166e8317aa138), -- deUSD
      (0x085780639cc2cacd35e474e71f4d000e2405d8f6), -- fxUSD
      (0x00000000efe302beaa2b3e6e1b18d08d69a9012a), -- AUSD
@@ -89,7 +88,6 @@ from (values
      (0x50753CfAf86c094925Bf976f218D043f8791e408), -- EURR
      (0x2c537e5624e4af88a7ae4060c022609376c8d0eb), -- TRYb
      (0x4cCe605eD955295432958d8951D0B176C10720d5), -- AUDD
-     (0x9EEAD9ce15383CaEED975427340b3A369410CFBF), -- aUSDT
      (0x7751e2f4b8ae93ef6b79d86419d42fe3295a4559), -- wUSDL
      (0xbdc7c08592ee4aa51d06c27ee23d5087d65adbcd), -- USDL
      (0xcacd6fd266af91b8aed52accc382b4e165586e29), -- frxUSD
@@ -137,19 +135,12 @@ from (values
      (0xaca92e438df0b2401ff60da7e4337b687a2435da), -- mUSD
      (0xc139190f447e929f090edeb554d95abb8b18ac1c), -- USDtb
      (0xfa2b947eec368f42195f24f36d2af29f7c24cec2), -- USDf
-     (0x98c23e9d8f34fefb1b7bd6a91b7ff122f4e16f5c), -- aEthUSDC
      (0x4f8e5de400de08b164e7421b3ee387f461becd1a), -- USDD
      (0xc08e7e23c235073c6807c2efe7021304cb7c2815), -- XUSD
      (0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186), -- MUSD
-     (0x23878914efe38d27c4d67ab83ed1b93a74d4086a), -- aEthUSDT
-     (0xad55aebc9b8c03fc43cd9f62260391c13c23e7c0), -- cUSDO
-     (0xdcd0f5ab30856f28385f641580bbd85f88349124), -- alUSD
      (0xe556aba6fe6036275ec1f87eda296be72c811bce), -- NUSD
      (0xcccc62962d17b8914c62d74ffb843d73b2a3cccc), -- cUSD
-     (0x3d7d6fdf07ee548b939a80edbc9b2256d0cdc003), -- srUSDe
      (0x1e33e98af620f1d563fcd3cfd3c75ace841204ef), -- DUSD
-     (0xa3931d71877c0e7a3148cb7eb4463524fec27fbd), -- sUSDS
-     (0x48f9e38f3070ad8945dfeae3fa70987722e3d89c), -- iUSD
      (0x5422374b27757da72d5265cc745ea906e0446634), -- USDCV
      (0x4274cd7277c7bb0806bd5fe84b9adae466a8da0a), -- YUSD
      (0xde17a000ba631c5d7c2bd9fb692efea52d90dee2), -- USDN

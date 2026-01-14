@@ -789,5 +789,7 @@ FROM
         ('xbtc-okx-wrapped-btc','solana','xBTC','CtzPWv73Sn1dMGVU3ZtLv9yWSyUAanBni19YWDaznnkn',8),
         ('lbtc-lombard-staked-btc','solana','LBTC','LBTCgU4b3wsFKsPwBn1rRZDx5DoFutM6RPiEt1TPDsY',8),
         ('pstusdc-payfi-strategy-token-usdc','solana','PST','59obFNBzyTBGowrkif5uK7ojS58vsuWz3ZCvg6tfZAGw',6),
-        ('wet-humidifi','solana','WET','WETZjtprkDMCcUxPi9PfWnowMRZkiGGHDb9rABuRZ2U',6)        
+        ('wet-humidifi','solana','WET','WETZjtprkDMCcUxPi9PfWnowMRZkiGGHDb9rABuRZ2U',6),
+        ('zec-omnibridge-bridged-zcash-solana','solana','ZEC','A7bdiYdS5GjqGFtxf17ppRHtDKPkkRqbKtR27dxvQXaS',8),
+        ('elizaos-elizaos','solana','elizaOS','DuMbhu7mvQvqQHGcnikDgb4XegXJRyhUBfdU22uELiZA',9)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
