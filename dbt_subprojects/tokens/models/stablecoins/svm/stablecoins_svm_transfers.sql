@@ -33,7 +33,6 @@ from (
     token_name,
     amount_raw,
     amount,
-    price_usd,
     amount_usd,
     "from",
     "to",

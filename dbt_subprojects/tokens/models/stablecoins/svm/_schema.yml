@@ -109,9 +109,6 @@ models:
       - &amount
         name: amount
         description: "Transfer amount (adjusted for decimals)"
-      - &price_usd
-        name: price_usd
-        description: "USD price at time of transfer"
       - &amount_usd
         name: amount_usd
         description: "USD value of transfer"

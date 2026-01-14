@@ -4,29 +4,6 @@
   start_date=none
 ) %}
 
-with stablecoin_tokens as (
-  select token_mint_address
-  from {{ ref('tokens_' ~ blockchain ~ '_spl_stablecoins_' ~ token_list) }}
-),
-
-prices as (
-  select
-    contract_address,
-    minute,
-    price,
-    decimals,
-    symbol
-  from {{ source('prices', 'usd_forward_fill') }}
-  where blockchain = '{{blockchain}}'
-    and minute >= timestamp '2020-10-02 00:00' -- solana start date
-  {% if start_date is not none %}
-    and minute >= timestamp '{{ start_date }}'
-  {% endif %}
-  {% if is_incremental() %}
-    and {{ incremental_predicate('minute') }}
-  {% endif %}
-)
-
 select
   '{{blockchain}}' as blockchain,
   cast(date_trunc('month', t.block_date) as date) as block_month,
@@ -38,19 +15,10 @@ select
   array[cast(coalesce(t.inner_instruction_index, 0) as bigint)] as trace_address,
   t.token_version as token_standard,
   t.token_mint_address as token_address,
-  p.symbol as token_symbol,
+  t.symbol as token_symbol,
   t.amount as amount_raw,
-  case
-    when p.decimals is null then null
-    when p.decimals = 0 then cast(t.amount as double)
-    else cast(t.amount as double) / power(10, p.decimals)
-  end as amount,
-  p.price as price_usd,
-  case
-    when p.decimals is null then null
-    when p.decimals = 0 then p.price * cast(t.amount as double)
-    else p.price * cast(t.amount as double) / power(10, p.decimals)
-  end as amount_usd,
+  t.amount_display as amount,
+  t.amount_usd,
   t.from_owner as "from",
   t.to_owner as "to",
   (
@@ -60,12 +28,12 @@ select
     + cast(coalesce(t.inner_instruction_index, 0) as decimal(38,0))
   ) as unique_key
 from {{ source('tokens_' ~ blockchain, 'transfers') }} t
-inner join stablecoin_tokens s
-  on t.token_mint_address = s.token_mint_address
-left join prices p
-  on p.contract_address = from_base58(t.token_mint_address)
-  and p.minute = date_trunc('minute', t.block_time)
 where t.action = 'transfer'
+  and exists (
+    select 1
+    from {{ ref('tokens_' ~ blockchain ~ '_spl_stablecoins_' ~ token_list) }} s
+    where s.token_mint_address = t.token_mint_address
+  )
 {% if start_date is not none %}
   and t.block_date >= date '{{ start_date }}'
 {% endif %}
