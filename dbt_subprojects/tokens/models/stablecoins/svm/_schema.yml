@@ -1,0 +1,59 @@
+version: 2
+
+models:
+  - name: tokens_spl_stablecoins
+    meta:
+      blockchain: solana
+      sector: stablecoins
+      contributors: tomfutago
+    config:
+      tags: ['tokens', 'solana', 'spl', 'stablecoins']
+    description: >
+        Union view of all SPL stablecoin token addresses across SVM chains with metadata.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - token_mint_address
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain name"
+      - &token_mint_address
+        name: token_mint_address
+        description: "Stablecoin token mint address"
+      - &backing
+        name: backing
+        description: "Type of backing for the stablecoin"
+      - &symbol
+        name: symbol
+        description: "Token symbol"
+      - &decimals
+        name: decimals
+        description: "Token decimals"
+      - &name
+        name: name
+        description: "Token name or issuer"
+
+  - name: tokens_spl_stablecoins_metadata
+    meta:
+      blockchain: solana
+      sector: stablecoins
+      contributors: tomfutago
+    config:
+      tags: ['tokens', 'solana', 'spl', 'stablecoins']
+    description: >
+        Metadata for SPL stablecoins including backing type, symbol, decimals, and name.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - token_mint_address
+    columns:
+      - *blockchain
+      - *token_mint_address
+      - *backing
+      - *symbol
+      - *decimals
+      - *name
+
