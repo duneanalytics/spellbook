@@ -11,7 +11,7 @@
   )
 }}
 
-{% set project_start_date = '2026-01-01' %}
+{% set project_start_date = '2025-06-12' %}
 
 -- tessera swap data from instruction_calls table
 WITH swaps AS (
