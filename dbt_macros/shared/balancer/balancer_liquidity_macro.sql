@@ -263,7 +263,7 @@ WITH pool_labels AS (
             FROM {{ source('prices', 'day') }} 
             WHERE blockchain = 'ethereum' 
             GROUP BY 1 
-            HAVING AVG(volume) > 650000))
+            HAVING AVG(volume) > 600000))
     {% endmacro %}
 
 {# ######################################################################### #}
