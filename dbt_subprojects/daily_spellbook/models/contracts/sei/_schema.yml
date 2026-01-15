@@ -1,0 +1,34 @@
+version: 2
+
+models:
+
+  - name: contracts_sei_deployments
+    meta:
+      blockchain: sei
+      sector: contracts
+      contributors: kryptaki
+    config:
+      tags: ['sei', 'contracts', 'addresses']
+    description: "Contract information including function selectors, ERC20/ERC721 flags, and bytecode for all contracts on Sei."
+
+    columns:
+      - name: blockchain
+        description: "Name of chain in Dune database"
+      - name: contract_address
+        description: "Address of the contract"
+      - name: creation_block_time
+        description: "Block timestamp when the contract was created"
+      - name: creation_block_month
+        description: "Monthly partition, when the contract was created"
+      - name: creation_block_number
+        description: "Block number when the contract was created"
+      - name: creation_tx_hash
+        description: "Transaction hash of the contract creation"
+      - name: function_selectors
+        description: "Array of 4-byte function selectors extracted from the contract bytecode"
+      - name: erc20_flag
+        description: "Boolean flag indicating if the contract is an ERC20 token (based on event tables or function selector detection)"
+      - name: erc721_flag
+        description: "Boolean flag indicating if the contract is an ERC721 token (based on event tables or function selector detection)"
+      - name: bytecode
+        description: "Runtime bytecode of the contract"
