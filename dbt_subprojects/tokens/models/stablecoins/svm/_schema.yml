@@ -76,24 +76,25 @@ models:
       - &block_time
         name: block_time
         description: "Timestamp of the block"
-      - &block_number
-        name: block_number
-        description: "Block slot"
-      - &tx_hash
-        name: tx_hash
+      - &block_slot
+        name: block_slot
+        description: "Block slot number"
+      - &tx_id
+        name: tx_id
         description: "Transaction ID"
-      - &evt_index
-        name: evt_index
+      - &tx_index
+        name: tx_index
+        description: "Transaction index within the block"
+      - &outer_instruction_index
+        name: outer_instruction_index
         description: "Outer instruction index"
-      - &trace_address
-        name: trace_address
-        description: "Inner instruction index"
-      - &token_standard
-        name: token_standard
-        description: "Token version (spl_token, token2022)"
-      - &token_address
-        name: token_address
-        description: "Token mint address"
+      - &inner_instruction_index
+        name: inner_instruction_index
+        description: "Inner instruction index (for CPI calls)"
+      - &token_version
+        name: token_version
+        description: "Token program version (spl_token, token2022)"
+      - *token_mint_address
       - &token_symbol
         name: token_symbol
         description: "Token symbol"
@@ -112,12 +113,12 @@ models:
       - &amount_usd
         name: amount_usd
         description: "USD value of transfer"
-      - &from
-        name: from
-        description: "Sender address (from_owner)"
-      - &to
-        name: to
-        description: "Receiver address (to_owner)"
+      - &from_owner
+        name: from_owner
+        description: "Sender wallet address"
+      - &to_owner
+        name: to_owner
+        description: "Receiver wallet address"
       - &unique_key
         name: unique_key
         description: "Unique identifier for this transfer"

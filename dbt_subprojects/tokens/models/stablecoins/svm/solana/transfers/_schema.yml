@@ -19,7 +19,7 @@ models:
     columns:
       - &blockchain
         name: blockchain
-        description: "Blockchain for the token"
+        description: "Blockchain name"
       - &block_month
         name: block_month
         description: "Month of the block (partition column)"
@@ -31,23 +31,26 @@ models:
       - &block_time
         name: block_time
         description: "Timestamp of the block"
-      - &block_number
-        name: block_number
-        description: "Block slot"
-      - &tx_hash
-        name: tx_hash
+      - &block_slot
+        name: block_slot
+        description: "Block slot number"
+      - &tx_id
+        name: tx_id
         description: "Transaction ID"
-      - &evt_index
-        name: evt_index
+      - &tx_index
+        name: tx_index
+        description: "Transaction index within the block"
+      - &outer_instruction_index
+        name: outer_instruction_index
         description: "Outer instruction index"
-      - &trace_address
-        name: trace_address
-        description: "Inner instruction index"
-      - &token_standard
-        name: token_standard
-        description: "Token version (spl_token, token2022)"
-      - &token_address
-        name: token_address
+      - &inner_instruction_index
+        name: inner_instruction_index
+        description: "Inner instruction index (for CPI calls)"
+      - &token_version
+        name: token_version
+        description: "Token program version (spl_token, token2022)"
+      - &token_mint_address
+        name: token_mint_address
         description: "Token mint address"
       - &token_symbol
         name: token_symbol
@@ -61,12 +64,12 @@ models:
       - &amount_usd
         name: amount_usd
         description: "USD value of transfer"
-      - &from
-        name: from
-        description: "Sender address (from_owner)"
-      - &to
-        name: to
-        description: "Receiver address (to_owner)"
+      - &from_owner
+        name: from_owner
+        description: "Sender wallet address"
+      - &to_owner
+        name: to_owner
+        description: "Receiver wallet address"
       - &unique_key
         name: unique_key
         description: "Unique identifier for this transfer"
@@ -93,18 +96,19 @@ models:
       - *block_month
       - *block_date
       - *block_time
-      - *block_number
-      - *tx_hash
-      - *evt_index
-      - *trace_address
-      - *token_standard
-      - *token_address
+      - *block_slot
+      - *tx_id
+      - *tx_index
+      - *outer_instruction_index
+      - *inner_instruction_index
+      - *token_version
+      - *token_mint_address
       - *token_symbol
       - *amount_raw
       - *amount
       - *amount_usd
-      - *from
-      - *to
+      - *from_owner
+      - *to_owner
       - *unique_key
 
   - name: stablecoins_solana_transfers
@@ -121,12 +125,13 @@ models:
       - *block_month
       - *block_date
       - *block_time
-      - *block_number
-      - *tx_hash
-      - *evt_index
-      - *trace_address
-      - *token_standard
-      - *token_address
+      - *block_slot
+      - *tx_id
+      - *tx_index
+      - *outer_instruction_index
+      - *inner_instruction_index
+      - *token_version
+      - *token_mint_address
       - *token_symbol
       - &token_backing
         name: token_backing
@@ -137,6 +142,6 @@ models:
       - *amount_raw
       - *amount
       - *amount_usd
-      - *from
-      - *to
+      - *from_owner
+      - *to_owner
       - *unique_key
