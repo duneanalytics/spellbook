@@ -215,12 +215,6 @@ WITH pool_labels AS (
         LEFT JOIN {{ source('balancer', 'token_whitelist') }} q ON b.token = q.address
         AND b.blockchain = q.chain
         LEFT JOIN pool_labels p ON p.pool_id = BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
-        WHERE c.token IN (
-        SELECT contract_address 
-        FROM {{ source('prices', 'day') }} 
-        WHERE blockchain = '{{blockchain}}' 
-        GROUP BY 1 
-        HAVING AVG(volume) > 600000)
         WHERE q.name IS NOT NULL
         AND p.pool_type IN ('weighted') -- filters for weighted pools with pricing assets
         AND w.blockchain = '{{blockchain}}'
