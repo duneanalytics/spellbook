@@ -29,7 +29,7 @@ function_selectors AS (
         )
     ) AS t(m)
     GROUP BY contract_address, creation_tx_hash
-),
+)
 
 /*
 Regex explanation:
