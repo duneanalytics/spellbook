@@ -197,6 +197,14 @@ WITH pool_labels AS (
         AND p3.token = b.token
         LEFT JOIN gyro_prices p4 ON p4.token_address = b.token
         WHERE b.token != BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
+        WHERE (
+        '{{blockchain}}' != 'ethereum' 
+        OR b.token IN (
+            SELECT contract_address 
+            FROM {{ source('prices', 'day') }} 
+            WHERE blockchain = 'ethereum' 
+            GROUP BY 1 
+            HAVING AVG(volume) > 650000))
     ),
 
     weighted_pool_liquidity_estimates AS (
@@ -256,14 +264,6 @@ WITH pool_labels AS (
     AND w.token_address = c.token
     LEFT JOIN eth_prices e ON e.day = c.day
     LEFT JOIN pool_labels p ON p.pool_id = BYTEARRAY_SUBSTRING(c.pool_id, 1, 20)
-    WHERE (
-        '{{blockchain}}' != 'ethereum' 
-        OR c.token IN (
-            SELECT contract_address 
-            FROM {{ source('prices', 'day') }} 
-            WHERE blockchain = 'ethereum' 
-            GROUP BY 1 
-            HAVING AVG(volume) > 600000))
     {% endmacro %}
 
 {# ######################################################################### #}
