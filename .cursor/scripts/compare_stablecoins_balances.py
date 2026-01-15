@@ -81,15 +81,23 @@ def get_dune_balances_query(
     """
     # Use test schema for chains not yet in production
     test_schema_tables = {
-        "unichain": "test_schema.git_dunesql_b442112_stablecoins_unichain_balances",
-        "celo": "test_schema.git_dunesql_b442112_stablecoins_celo_balances",
+        "unichain": "test_schema.git_dunesql_3da2d5f_stablecoins_unichain_balances",
+        "celo": "test_schema.git_dunesql_3da2d5f_stablecoins_celo_balances",
     }
     table_name = test_schema_tables.get(chain, f"stablecoins_{chain}.balances")
+    is_test_table = chain in test_schema_tables
+
+    # For test tables, use max available day; for production, use yesterday
+    day_filter = (
+        f"day = (SELECT max(day) FROM {table_name})"
+        if is_test_table
+        else "day = current_date - interval '1' day"
+    )
 
     base_query = f"""
 SELECT blockchain, address, token_address, token_symbol, balance
 FROM {table_name}
-WHERE day = current_date - interval '1' day
+WHERE {day_filter}
 -- Exclude wrapped/derivative tokens from lending protocols
 AND NOT (
     -- Aave: aTokens (aUSDC, aUSDT, aDAI, etc.)
