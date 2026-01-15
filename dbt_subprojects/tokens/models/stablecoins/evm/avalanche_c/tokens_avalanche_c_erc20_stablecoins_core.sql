@@ -30,9 +30,7 @@ from (values
      (0x1c20e891bab6b1727d14da358fae2984ed9b59eb), -- TUSD
      (0xdacde03d7ab4d81feddc3a20faa89abac9072ce2), -- USP
      (0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664), -- USDC.e
-     (0x8861f5c40a0961579689fdf6cdea2be494f9b25a), -- iUSDS
      (0xc7198437980c041c805a1edcba50c1ce5db95118), -- USDT.e
-     (0xabe7a9dfda35230ff60d1590a929ae0644c47dc1), -- aUSD
      (0xfab550568c688d5d8a52c7d794cb93edc26ec0ec), -- axlUSD
      (0x491a4eb4f1fc3bff8e1d2fc856a6a46663ad556f), -- BRZ
      (0x8835a2f66a7aaccb297cb985831a616b75e2e16c), -- EUROP

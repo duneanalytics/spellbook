@@ -29,12 +29,10 @@ from (values
      (0x2f1b1662a895c6ba01a99dcaf56778e7d77e5609), -- USDS
      (0xaf0d9d65fc54de245cda37af3d18cbec860a4d4b), -- wUSDR
      (0x45c32fa6df82ead1e2ef74d17b76547eddfaff89), -- FRAX
-     (0x66f31345cb9477b427a1036d43f923a557c432a4), -- iUSDS
      (0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b), -- BOB
      (0xc2132d05d31c914a87c6611c10748aeb04b58e8f), -- USDT
      (0xa3fa99a148fa48d14ed51d610c367c61876997f1), -- miMATIC
      (0xdab529f40e671a1d4bf91361c21bf9f0c9712ab7), -- BUSD
-     (0x3a3e7650f8b9f667da98f236010fbf44ee4b2975), -- xUSD
      (0x23001f892c0c82b79303edc9b9033cd190bb21c7), -- LUSD
      (0x750e4c4984a9e0f12978ea6742bc1c5d248f40ed), -- axlUSDC
      (0x2893Ef551B6dD69F661Ac00F11D93E5Dc5Dc0e99), -- BUIDL

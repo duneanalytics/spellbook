@@ -28,7 +28,6 @@ from (values
      (0xfbc4198702e81ae77c06d58f81b629bdf36f0a71), -- sEUR
      (0xcb59a0a753fdb7491d5f3d794316f1ade197b21e), -- TUSD
      (0x7fb688ccf682d58f86d7e38e03f9d22e7705448b), -- RAI
-     (0xcb8fa9a76b8e203d8c3797bf438d8fb81ea3326a), -- alUSD
      (0x340fe1d898eccaad394e2ba0fc1f93d27c7b717a), -- wUSDR
      (0x2e3d870790dc77a83dd1d18184acc7439a53f475), -- FRAX
      (0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b), -- BOB
@@ -55,8 +54,6 @@ from (values
      (0x4f13a96ec5c4cf34e442b46bbd98a0791f20edc3), -- USDS
 
      (0x01bff41798a0bcf287b996046ca68b395dbc1071), -- USD₮0
-     (0x625e7708f30ca75bfd92586e17077590c60eb4cd), -- aOptUSDC
-     (0x1217bfe6c773eec6cc4a38b5dc45b92292b6e189), -- oUSDT
-     (0x9dabae7274d28a45f0b65bf8ed201a5731492ca0)  -- msUSD
+     (0x1217bfe6c773eec6cc4a38b5dc45b92292b6e189)  -- oUSDT
 
 ) as temp_table (contract_address)
