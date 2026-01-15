@@ -27,6 +27,7 @@ WITH pool_labels AS (
             AVG(price) AS price
         FROM {{ source('prices', 'hour') }}
         WHERE blockchain = '{{blockchain}}'
+        AND timestamp < CAST('2025-11-03' AS TIMESTAMP)
         GROUP BY 1, 2, 3
     ),
 
@@ -38,6 +39,7 @@ WITH pool_labels AS (
             sum(volume) AS sample_size
         FROM {{ source('prices', 'hour') }}
         WHERE blockchain = '{{blockchain}}'
+        AND timestamp < CAST('2025-11-03' AS TIMESTAMP)
         AND contract_address NOT IN (0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38, 0xde1e704dae0b4051e80dabb26ab6ad6c12262da0, 0x5ddb92a5340fd0ead3987d3661afcd6104c3b757) 
         GROUP BY 1, 2
         HAVING sum(volume) > 3
@@ -62,7 +64,7 @@ WITH pool_labels AS (
         WHERE (price < previous_price * 1e4 AND price > previous_price / 1e4)
     ),
 
-    bpt_prices_1 AS (
+    bpt_prices_1 AS ( 
         SELECT 
             l.day,
             s.token_address AS token,
@@ -73,6 +75,7 @@ WITH pool_labels AS (
         AND l.blockchain = s.blockchain AND s.day = l.day AND s.supply > 1e-4
         WHERE l.blockchain = '{{blockchain}}'
         AND l.version = '{{version}}'
+        AND l.day < DATE '2025-11-03'
         GROUP BY 1, 2, 3
     ),
 
@@ -87,8 +90,6 @@ WITH pool_labels AS (
     ),
 
     daily_protocol_fee_collected AS (
-        -- Flashloans are typically not bb-pool specific; excluded per your bb-pool filter requirement
-        
         SELECT
             date_trunc('day', evt_block_time) AS day,
             poolId AS pool_id,
@@ -96,7 +97,7 @@ WITH pool_labels AS (
             SUM(protocol_fees) AS protocol_fee_amount_raw
         FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_PoolBalanceChanged') }} b
         CROSS JOIN unnest("protocolFeeAmounts", "tokens") AS t(protocol_fees, token)   
-        WHERE evt_block_time < CAST('2025-03-11' AS TIMESTAMP)
+        WHERE evt_block_time < CAST('2025-11-03' AS TIMESTAMP)
         AND token = BYTEARRAY_SUBSTRING(poolId, 1, 20) -- Filter for bb-pools
         GROUP BY 1, 2, 3 
 
@@ -116,7 +117,7 @@ WITH pool_labels AS (
                     WHEN '{{blockchain}}' = 'fantom' THEN 0xc6920d3a369e7c8bd1a22dbe385e11d1f7af948f
                     ELSE 0xce88686553686DA562CE7Cea497CE749DA109f9F
                 END
-        WHERE t.evt_block_time < CAST('2025-03-11' AS TIMESTAMP)
+        WHERE t.evt_block_time < CAST('2025-11-03' AS TIMESTAMP)
         AND b.poolAddress = BYTEARRAY_SUBSTRING(poolId, 1, 20) -- Filter for bb-pools
         GROUP BY 1, 2, 3
     ),
@@ -157,7 +158,7 @@ WITH pool_labels AS (
             WHEN day >= DATE '2023-01-23' AND day < DATE '2023-07-24' THEN 0.35 
             WHEN day >= DATE '2023-07-24' THEN 0.175 
         END AS treasury_share
-    FROM UNNEST(SEQUENCE(DATE '2022-03-01', CURRENT_DATE, INTERVAL '1' DAY)) AS date(day)
+    FROM UNNEST(SEQUENCE(DATE '2022-03-01', DATE '2025-03-10', INTERVAL '1' DAY)) AS date(day)
     )
 
     SELECT
