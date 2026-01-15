@@ -1,7 +1,6 @@
 {%- macro stablecoins_svm_transfers(
   blockchain,
-  token_list,
-  start_date = none
+  token_list
 ) %}
 
 select
@@ -24,17 +23,11 @@ select
   t.to_owner,
   {{ solana_instruction_key('t.block_slot', 't.tx_index', 't.outer_instruction_index', 't.inner_instruction_index') }} as unique_key
 from {{ source('tokens_' ~ blockchain, 'transfers') }} t
-where 1 = 1
-{% if start_date is not none %}
-  and t.block_date >= date '{{ start_date }}'
-{% endif %}
-  and exists (
+where exists (
     select 1
     from {{ ref('tokens_' ~ blockchain ~ '_spl_stablecoins_' ~ token_list) }} s
     where s.token_mint_address = t.token_mint_address
   )
-{% if is_incremental() %}
-  and {{ incremental_predicate('t.block_date') }}
-{% endif %}
+{# microbatch auto-filters via event_time; no is_incremental() block needed #}
 
 {% endmacro %}
