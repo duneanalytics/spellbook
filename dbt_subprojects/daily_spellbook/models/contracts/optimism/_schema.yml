@@ -290,13 +290,13 @@ models:
     columns:
       - *blockchain
       - *contract_address
-      - name: creation_block_time
+      - name: deployment_block_time
         description: "Block timestamp when the contract was created"
-      - name: creation_block_month
+      - name: deployment_block_month
         description: "Monthly partition, when the contract was created"
-      - name: creation_block_number
+      - name: deployment_block_number
         description: "Block number when the contract was created"
-      - name: creation_tx_hash
+      - name: deployment_tx_hash
         description: "Transaction hash of the contract creation"
       - name: function_selectors
         description: "Array of 4-byte function selectors extracted from the contract bytecode"
