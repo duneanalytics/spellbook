@@ -65,33 +65,3 @@ The `erc20_tron.evt_approval` table contains Approval events for ERC20 tokens on
 This table is used for analyzing ERC20 token approvals and spending permissions on the tron network.
 
 {% enddocs %}
-
-{% docs tron_creation_traces_doc %}
-
-The `tron.creation_traces` table contains data about contract creation events on the tron blockchain. It includes:
-
-- Block information: block_time, block_number, block_month
-- Transaction details: tx_hash
-- Contract details: address, from, code
-
-This table is used for:
-- Analyzing contract deployment patterns
-- Tracking smart contract origins
-- Monitoring protocol deployments
-- Understanding contract creation
-
-{% enddocs %}
-
-{% docs erc721_tron_evt_transfer_doc %}
-
-The `erc721_tron.evt_transfer` table contains Transfer events for ERC721 tokens (NFTs) on the tron blockchain. It includes:
-
-- Block number and timestamp
-- Transaction hash
-- Contract address
-- From and to addresses
-- Token ID
-
-This table is used for tracking ERC721 token (NFT) transfers on the tron network.
-
-{% enddocs %}
