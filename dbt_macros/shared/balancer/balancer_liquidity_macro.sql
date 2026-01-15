@@ -21,7 +21,7 @@ WITH pool_labels AS (
             contract_address AS token,
             decimals,
             APPROX_PERCENTILE(price, 0.5) AS price
-        FROM {{ source('prices', 'usd') }}
+        FROM {{ source('prices', 'day') }}
         WHERE blockchain = '{{blockchain}}'
         GROUP BY 1, 2, 3
     ),
@@ -298,7 +298,7 @@ WITH pool_labels AS (
             contract_address AS token,
             decimals,
             APPROX_PERCENTILE(price, 0.5) AS price
-        FROM {{ source('prices', 'usd') }}
+        FROM {{ source('prices', 'day') }}
         WHERE blockchain = '{{blockchain}}'
         GROUP BY 1, 2, 3
     ),
