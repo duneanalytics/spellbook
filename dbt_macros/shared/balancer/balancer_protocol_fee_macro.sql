@@ -21,27 +21,26 @@ WITH pool_labels AS (
 
     prices AS (
         SELECT
-            date_trunc('day', minute) AS day,
+            date_trunc('day', timestamp) AS day,
             contract_address AS token,
             decimals,
             AVG(price) AS price
-        FROM {{ source('prices', 'usd') }}
+        FROM {{ source('prices', 'hour') }}
         WHERE blockchain = '{{blockchain}}'
         GROUP BY 1, 2, 3
-
     ),
 
     dex_prices_1 AS (
         SELECT
-            date_trunc('day', HOUR) AS DAY,
+            date_trunc('day', timestamp) AS DAY,
             contract_address AS token,
-            approx_percentile(median_price, 0.5) AS price,
-            sum(sample_size) AS sample_size
+            approx_percentile(price, 0.5) AS price,
+            sum(volume) AS sample_size
         FROM {{ source('prices', 'hour') }}
         WHERE blockchain = '{{blockchain}}'
         AND contract_address NOT IN (0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38, 0xde1e704dae0b4051e80dabb26ab6ad6c12262da0, 0x5ddb92a5340fd0ead3987d3661afcd6104c3b757) 
         GROUP BY 1, 2
-        HAVING sum(sample_size) > 3
+        HAVING sum(volume) > 3
     ),
  
     dex_prices_2 AS(
@@ -88,7 +87,7 @@ WITH pool_labels AS (
     ),
 
     daily_protocol_fee_collected AS (
-        -- Flashloans are excluded as they never match the bb-pool address logic
+        -- Flashloans are typically not bb-pool specific; excluded per your bb-pool filter requirement
         
         SELECT
             date_trunc('day', evt_block_time) AS day,
@@ -130,8 +129,8 @@ WITH pool_labels AS (
             t.symbol AS token_symbol,
             BYTEARRAY_SUBSTRING(d.pool_id, 1, 20) AS pool_address,
             SUM(d.protocol_fee_amount_raw) AS token_amount_raw, 
-            SUM(d.protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals,p1.decimals, p3.decimals))) AS token_amount,
-            SUM(COALESCE(p1.price, p2.price, p3.price) * protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals,p1.decimals, p3.decimals))) AS protocol_fee_collected_usd
+            SUM(d.protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals, p1.decimals, p3.decimals))) AS token_amount,
+            SUM(COALESCE(p1.price, p2.price, p3.price) * d.protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals, p1.decimals, p3.decimals))) AS protocol_fee_collected_usd
         FROM daily_protocol_fee_collected d
         LEFT JOIN prices p1
             ON p1.token = d.token_address
