@@ -155,6 +155,11 @@ WITH pool_labels AS (
         ON r.day = f.day
     LEFT JOIN pool_labels l
         ON BYTEARRAY_SUBSTRING(f.pool_id,1,20) = l.address
+    WHERE CASE 
+        WHEN '{{blockchain}}' = 'gnosis' 
+        THEN (f.protocol_fee_collected_usd > 0 AND f.protocol_fee_collected_usd < 100000)
+        ELSE TRUE 
+    END
     GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 14
 
 {% endmacro %}
