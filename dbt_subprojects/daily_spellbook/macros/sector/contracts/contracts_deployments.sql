@@ -18,6 +18,7 @@ WITH contracts AS (
 function_selectors AS (
     SELECT
         contract_address,
+        creation_tx_hash,
         ARRAY_AGG(DISTINCT concat('0x', substr(m, 3, 8))) AS function_selectors
     FROM contracts
     CROSS JOIN UNNEST(
@@ -27,7 +28,7 @@ function_selectors AS (
             '63[0-9a-f]{8}14(?:60[0-9a-f]{2}|61[0-9a-f]{4}|62[0-9a-f]{6}|63[0-9a-f]{8})57'
         )
     ) AS t(m)
-    GROUP BY contract_address
+    GROUP BY contract_address, creation_tx_hash
 ),
 
 /*
@@ -70,7 +71,7 @@ SELECT
     ELSE FALSE END AS erc721_flag,
     c.bytecode
 FROM contracts c
-LEFT JOIN function_selectors fs USING(contract_address)
+LEFT JOIN function_selectors fs USING(contract_address, creation_tx_hash)
 
 {% endmacro %}
 
