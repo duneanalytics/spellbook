@@ -27,7 +27,7 @@ WITH pool_labels AS (
             AVG(price) AS price
         FROM {{ source('prices', 'hour') }}
         WHERE blockchain = '{{blockchain}}'
-        AND timestamp < CAST('2025-11-03' AS TIMESTAMP) -- Nov 3rd Cutoff
+        -- AND timestamp < CAST('2025-11-03' AS TIMESTAMP) -- Nov 3rd Cutoff
         GROUP BY 1, 2, 3
     ),
 
@@ -39,7 +39,7 @@ WITH pool_labels AS (
             sum(volume) AS sample_size -- Corrected from 'sample_size'
         FROM {{ source('prices', 'hour') }}
         WHERE blockchain = '{{blockchain}}'
-        AND timestamp < CAST('2025-11-03' AS TIMESTAMP)
+        -- AND timestamp < CAST('2025-11-03' AS TIMESTAMP)
         AND contract_address NOT IN (0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38, 0xde1e704dae0b4051e80dabb26ab6ad6c12262da0, 0x5ddb92a5340fd0ead3987d3661afcd6104c3b757) 
         GROUP BY 1, 2
         HAVING sum(volume) > 3
@@ -75,7 +75,7 @@ WITH pool_labels AS (
         AND l.blockchain = s.blockchain AND s.day = l.day AND s.supply > 1e-4
         WHERE l.blockchain = '{{blockchain}}'
         AND l.version = '{{version}}'
-        AND l.day < DATE '2025-11-03'
+        -- AND l.day < DATE '2025-11-03'
         GROUP BY 1, 2, 3
     ),
 
@@ -97,13 +97,13 @@ daily_protocol_fee_collected AS (
             SUM(protocol_fees) AS protocol_fee_amount_raw
         FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_PoolBalanceChanged') }} b
         CROSS JOIN unnest("protocolFeeAmounts", "tokens") AS t(protocol_fees, token)   
-        WHERE (
-            -- Logical OR: Either it's a standard pool (no cutoff) 
-            -- OR it's a bb-pool and must be before Nov 3rd
-            (token != BYTEARRAY_SUBSTRING(poolId, 1, 20)) 
-            OR 
-            (token = BYTEARRAY_SUBSTRING(poolId, 1, 20) AND evt_block_time < CAST('2025-11-03' AS TIMESTAMP))
-        )
+        -- WHERE (
+        --     -- Logical OR: Either it's a standard pool (no cutoff) 
+        --     -- OR it's a bb-pool and must be before Nov 3rd
+        --     (token != BYTEARRAY_SUBSTRING(poolId, 1, 20)) 
+        --     OR 
+        --     (token = BYTEARRAY_SUBSTRING(poolId, 1, 20) AND evt_block_time < CAST('2025-11-03' AS TIMESTAMP))
+        -- )
         GROUP BY 1, 2, 3 
 
         UNION ALL          
@@ -122,11 +122,11 @@ daily_protocol_fee_collected AS (
                     WHEN '{{blockchain}}' = 'fantom' THEN 0xc6920d3a369e7c8bd1a22dbe385e11d1f7af948f
                     ELSE 0xce88686553686DA562CE7Cea497CE749DA109f9F
                 END
-        WHERE (
-            (b.poolAddress != BYTEARRAY_SUBSTRING(poolId, 1, 20))
-            OR
-            (b.poolAddress = BYTEARRAY_SUBSTRING(poolId, 1, 20) AND t.evt_block_time < CAST('2025-11-03' AS TIMESTAMP))
-        )
+        -- WHERE (
+        --     (b.poolAddress != BYTEARRAY_SUBSTRING(poolId, 1, 20))
+        --     OR
+        --     (b.poolAddress = BYTEARRAY_SUBSTRING(poolId, 1, 20) AND t.evt_block_time < CAST('2025-11-03' AS TIMESTAMP))
+        -- )
         GROUP BY 1, 2, 3
     ),
 
@@ -139,10 +139,10 @@ daily_protocol_fee_collected AS (
             BYTEARRAY_SUBSTRING(d.pool_id, 1, 20) AS pool_address,
             SUM(d.protocol_fee_amount_raw) AS token_amount_raw, 
             SUM(d.protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals, p1.decimals, p3.decimals))) AS token_amount,
-            SUM(COALESCE(p1.price, p2.price, p3.price) * d.protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals, p1.decimals, p3.decimals))) AS protocol_fee_collected_usd
+            SUM(COALESCE(p3.price, p1.price, p2.price) * d.protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals, p1.decimals, p3.decimals))) AS protocol_fee_collected_usd
         FROM daily_protocol_fee_collected d
         LEFT JOIN prices p1 ON p1.token = d.token_address AND p1.day = d.day
-        LEFT JOIN dex_prices p2 ON p2.token = d.token_address AND p2.day = d.day
+        LEFT JOIN dex_prices p2 ON p2.token = d.token_address AND p2.day = d.day AND (p2.token != BYTEARRAY_SUBSTRING(poolId, 1, 20))
         LEFT JOIN bpt_prices p3 ON p3.token = d.token_address AND p3.day <= d.day AND d.day < p3.day_of_next_change     
         LEFT JOIN {{ source('tokens', 'erc20') }} t ON t.contract_address = d.token_address AND t.blockchain = '{{blockchain}}'
         GROUP BY 1, 2, 3, 4, 5
