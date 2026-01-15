@@ -3,6 +3,7 @@
         blockchain, version, project_decoded_as, base_spells_namespace, pool_labels_model
     ) 
 %}
+
 WITH pool_labels AS (
         SELECT * FROM (
             SELECT
@@ -17,6 +18,7 @@ WITH pool_labels AS (
             GROUP BY 1, 2, 3) 
         WHERE num = 1
     ),
+
     prices AS (
         SELECT
             date_trunc('day', timestamp) AS day, -- Corrected from 'minute'
@@ -28,6 +30,7 @@ WITH pool_labels AS (
         AND timestamp < CAST('2025-11-03' AS TIMESTAMP) -- Nov 3rd Cutoff
         GROUP BY 1, 2, 3
     ),
+
     dex_prices_1 AS (
         SELECT
             date_trunc('day', timestamp) AS DAY,
@@ -50,6 +53,7 @@ WITH pool_labels AS (
             lag(price) OVER(PARTITION BY token ORDER BY day) AS previous_price
         FROM dex_prices_1
     ),    
+
     dex_prices AS (
         SELECT
             day,
@@ -59,6 +63,7 @@ WITH pool_labels AS (
         FROM dex_prices_2
         WHERE (price < previous_price * 1e4 AND price > previous_price / 1e4)
     ),
+
     bpt_prices_1 AS ( 
         SELECT 
             l.day,
@@ -73,6 +78,7 @@ WITH pool_labels AS (
         AND l.day < DATE '2025-11-03'
         GROUP BY 1, 2, 3
     ),
+
     bpt_prices AS (
         SELECT  
             day,
@@ -82,6 +88,7 @@ WITH pool_labels AS (
             LEAD(DAY, 1, NOW()) OVER (PARTITION BY token ORDER BY DAY) AS day_of_next_change
         FROM bpt_prices_1
     ),
+
 daily_protocol_fee_collected AS (
         SELECT
             date_trunc('day', evt_block_time) AS day,
@@ -98,7 +105,9 @@ daily_protocol_fee_collected AS (
             (token = BYTEARRAY_SUBSTRING(poolId, 1, 20) AND evt_block_time < CAST('2025-11-03' AS TIMESTAMP))
         )
         GROUP BY 1, 2, 3 
+
         UNION ALL          
+
         SELECT
             date_trunc('day', t.evt_block_time) AS day,
             poolId AS pool_id,
@@ -120,6 +129,7 @@ daily_protocol_fee_collected AS (
         )
         GROUP BY 1, 2, 3
     ),
+
     decorated_protocol_fee AS (
         SELECT 
             d.day, 
@@ -127,7 +137,7 @@ daily_protocol_fee_collected AS (
             d.token_address, 
             t.symbol AS token_symbol,
             BYTEARRAY_SUBSTRING(d.pool_id, 1, 20) AS pool_address,
-            SUM(d.protocol_fee_amount_raw) AS token_amount_raw,
+            SUM(d.protocol_fee_amount_raw) AS token_amount_raw, 
             SUM(d.protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals, p1.decimals, p3.decimals))) AS token_amount,
             SUM(COALESCE(p1.price, p2.price, p3.price) * d.protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals, p1.decimals, p3.decimals))) AS protocol_fee_collected_usd
         FROM daily_protocol_fee_collected d
@@ -137,6 +147,7 @@ daily_protocol_fee_collected AS (
         LEFT JOIN {{ source('tokens', 'erc20') }} t ON t.contract_address = d.token_address AND t.blockchain = '{{blockchain}}'
         GROUP BY 1, 2, 3, 4, 5
     ),
+
     revenue_share as(
         SELECT
         day,
@@ -148,6 +159,7 @@ daily_protocol_fee_collected AS (
         END AS treasury_share
     FROM UNNEST(SEQUENCE(DATE '2022-03-01', CURRENT_DATE, INTERVAL '1' DAY)) AS date(day)
     )
+
     SELECT
         f.day,
         f.pool_id,
@@ -169,6 +181,7 @@ daily_protocol_fee_collected AS (
     INNER JOIN revenue_share r ON r.day = f.day
     LEFT JOIN pool_labels l ON f.pool_address = l.address
     GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 14
+
 {% endmacro %}
 
 {# ######################################################################### #}
