@@ -142,7 +142,7 @@ daily_protocol_fee_collected AS (
             SUM(COALESCE(p3.price, p1.price, p2.price) * d.protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals, p1.decimals, p3.decimals))) AS protocol_fee_collected_usd
         FROM daily_protocol_fee_collected d
         LEFT JOIN prices p1 ON p1.token = d.token_address AND p1.day = d.day
-        LEFT JOIN dex_prices p2 ON p2.token = d.token_address AND p2.day = d.day AND (p2.token != BYTEARRAY_SUBSTRING(poolId, 1, 20))
+        LEFT JOIN dex_prices p2 ON p2.token = d.token_address AND p2.day = d.day AND (p2.token != BYTEARRAY_SUBSTRING(d.poolId, 1, 20))
         LEFT JOIN bpt_prices p3 ON p3.token = d.token_address AND p3.day <= d.day AND d.day < p3.day_of_next_change     
         LEFT JOIN {{ source('tokens', 'erc20') }} t ON t.contract_address = d.token_address AND t.blockchain = '{{blockchain}}'
         GROUP BY 1, 2, 3, 4, 5
