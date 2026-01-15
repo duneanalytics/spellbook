@@ -2,7 +2,7 @@ version: 2
 
 models:
 
-  - name: contracts_tron_info
+  - name: contracts_tron_deployments
     meta:
       blockchain: tron
       sector: contracts
@@ -10,11 +10,6 @@ models:
     config:
       tags: ['tron', 'contracts', 'addresses']
     description: "Contract information including function selectors, ERC20/ERC721 flags, and bytecode for all contracts on Tron."
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
 
     columns:
       - name: blockchain

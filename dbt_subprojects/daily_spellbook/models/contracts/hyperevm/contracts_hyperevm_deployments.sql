@@ -1,16 +1,15 @@
 {{
   config(
-        schema = 'contracts_arbitrum',
-        alias = 'info',
+        schema = 'contracts_hyperevm',
+        alias = 'deployments',
         materialized = 'incremental',
         file_format = 'delta',
         partition_by = ['creation_block_month'],
-        unique_key = ['blockchain', 'contract_address'],
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.creation_block_time')]
   )
 }}
 
 {{
-    contracts_info(blockchain='arbitrum')
+    contracts_deployments(blockchain='hyperevm')
 }}

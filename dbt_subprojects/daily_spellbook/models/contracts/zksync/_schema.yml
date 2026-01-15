@@ -226,7 +226,7 @@ models:
         name: token_standard_erc20
         description: "Token Standard ERC20 Only"
 
-  - name: contracts_zksync_info
+  - name: contracts_zksync_deployments
     meta:
       blockchain: zksync
       sector: contracts
@@ -234,11 +234,6 @@ models:
     config:
       tags: ['zksync', 'contracts', 'addresses']
     description: "Contract information including function selectors, ERC20/ERC721 flags, and bytecode for all contracts on zkSync."
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
 
     columns:
       - *blockchain

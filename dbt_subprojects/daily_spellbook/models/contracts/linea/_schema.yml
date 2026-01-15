@@ -2,7 +2,7 @@ version: 2
 
 models:
 
-  - name: contracts_linea_info
+  - name: contracts_linea_deployments
     meta:
       blockchain: linea
       sector: contracts
@@ -10,11 +10,6 @@ models:
     config:
       tags: ['linea', 'contracts', 'addresses']
     description: "Contract information including function selectors, ERC20/ERC721 flags, and bytecode for all contracts on Linea."
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
 
     columns:
       - name: blockchain

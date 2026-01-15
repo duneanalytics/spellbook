@@ -229,7 +229,7 @@ models:
         name: token_standard_erc20
         description: "Token Standard ERC20 Only"
 
-  - name: contracts_base_info
+  - name: contracts_base_deployments
     meta:
       blockchain: base
       sector: contracts
@@ -237,11 +237,6 @@ models:
     config:
       tags: ['base', 'contracts', 'addresses']
     description: "Contract information including function selectors, ERC20/ERC721 flags, and bytecode for all contracts on Base."
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
 
     columns:
       - *blockchain

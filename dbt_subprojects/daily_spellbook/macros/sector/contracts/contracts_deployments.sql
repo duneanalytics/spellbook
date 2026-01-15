@@ -1,4 +1,4 @@
-{% macro contracts_info(blockchain) %}
+{% macro contracts_deployments(blockchain) %}
 
 WITH contracts AS (
     SELECT

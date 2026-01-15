@@ -2,14 +2,14 @@ version: 2
 
 models:
 
-  - name: contracts_sei_deployments
+  - name: contracts_monad_deployments
     meta:
-      blockchain: sei
+      blockchain: monad
       sector: contracts
       contributors: kryptaki
     config:
-      tags: ['sei', 'contracts', 'addresses']
-    description: "Contract information including function selectors, ERC20/ERC721 flags, and bytecode for all contracts on Sei."
+      tags: ['monad', 'contracts', 'addresses']
+    description: "Contract information including function selectors, ERC20/ERC721 flags, and bytecode for all contracts on Monad."
 
     columns:
       - name: blockchain

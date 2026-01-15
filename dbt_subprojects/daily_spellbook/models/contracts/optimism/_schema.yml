@@ -278,7 +278,7 @@ models:
       - *contract_address
       - *contract_name
 
-  - name: contracts_optimism_info
+  - name: contracts_optimism_deployments
     meta:
       blockchain: optimism
       sector: contracts
@@ -286,11 +286,6 @@ models:
     config:
       tags: ['optimism', 'contracts', 'addresses']
     description: "Contract information including function selectors, ERC20/ERC721 flags, and bytecode for all contracts on Optimism."
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
 
     columns:
       - *blockchain

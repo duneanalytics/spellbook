@@ -229,7 +229,7 @@ models:
         name: token_standard_erc20
         description: "Token Standard ERC20 Only"
 
-  - name: contracts_polygon_info
+  - name: contracts_polygon_deployments
     meta:
       blockchain: polygon
       sector: contracts
@@ -237,11 +237,6 @@ models:
     config:
       tags: ['polygon', 'contracts', 'addresses']
     description: "Contract information including function selectors, ERC20/ERC721 flags, and bytecode for all contracts on Polygon."
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
 
     columns:
       - *blockchain

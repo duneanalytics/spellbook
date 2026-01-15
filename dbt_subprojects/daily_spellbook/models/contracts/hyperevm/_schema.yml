@@ -2,7 +2,7 @@ version: 2
 
 models:
 
-  - name: contracts_hyperevm_info
+  - name: contracts_hyperevm_deployments
     meta:
       blockchain: hyperevm
       sector: contracts
@@ -10,11 +10,6 @@ models:
     config:
       tags: ['hyperevm', 'contracts', 'addresses']
     description: "Contract information including function selectors, ERC20/ERC721 flags, and bytecode for all contracts on HyperEVM."
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
 
     columns:
       - name: blockchain

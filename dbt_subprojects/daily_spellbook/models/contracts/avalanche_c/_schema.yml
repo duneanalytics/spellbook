@@ -229,7 +229,7 @@ models:
         name: token_standard_erc20
         description: "Token Standard ERC20 Only"
 
-  - name: contracts_avalanche_c_info
+  - name: contracts_avalanche_c_deployments
     meta:
       blockchain: avalanche_c
       sector: contracts
@@ -237,11 +237,6 @@ models:
     config:
       tags: ['avalanche_c', 'contracts', 'addresses']
     description: "Contract information including function selectors, ERC20/ERC721 flags, and bytecode for all contracts on Avalanche C-Chain."
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
 
     columns:
       - *blockchain
