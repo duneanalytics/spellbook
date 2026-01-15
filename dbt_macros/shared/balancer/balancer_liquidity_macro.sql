@@ -256,6 +256,14 @@ WITH pool_labels AS (
     AND w.token_address = c.token
     LEFT JOIN eth_prices e ON e.day = c.day
     LEFT JOIN pool_labels p ON p.pool_id = BYTEARRAY_SUBSTRING(c.pool_id, 1, 20)
+    WHERE (
+        '{{blockchain}}' != 'ethereum' 
+        OR c.token IN (
+            SELECT contract_address 
+            FROM {{ source('prices', 'day') }} 
+            WHERE blockchain = 'ethereum' 
+            GROUP BY 1 
+            HAVING AVG(volume) > 1000000))
     {% endmacro %}
 
 {# ######################################################################### #}
