@@ -138,8 +138,8 @@ daily_protocol_fee_collected AS (
             t.symbol AS token_symbol,
             BYTEARRAY_SUBSTRING(d.pool_id, 1, 20) AS pool_address,
             SUM(d.protocol_fee_amount_raw) AS token_amount_raw, 
-            SUM(d.protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals, p1.decimals, p3.decimals, 18))) AS token_amount,
-            SUM(COALESCE(p1.price, p2.price, p3.price, 0) * d.protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals, p1.decimals, p3.decimals, 18))) AS protocol_fee_collected_usd
+            SUM(d.protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals, p1.decimals, p3.decimals))) AS token_amount,
+            SUM(COALESCE(p1.price, p2.price, p3.price) * d.protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals, p1.decimals, p3.decimals))) AS protocol_fee_collected_usd
         FROM daily_protocol_fee_collected d
         LEFT JOIN prices p1 ON p1.token = d.token_address AND p1.day = d.day
         LEFT JOIN dex_prices p2 ON p2.token = d.token_address AND p2.day = d.day
