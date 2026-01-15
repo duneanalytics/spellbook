@@ -157,7 +157,7 @@ WITH pool_labels AS (
         ON BYTEARRAY_SUBSTRING(f.pool_id,1,20) = l.address
     WHERE CASE 
         WHEN '{{blockchain}}' = 'gnosis' 
-        THEN (f.protocol_fee_collected_usd > 0 AND f.protocol_fee_collected_usd < 100000)
+        THEN (f.protocol_fee_collected_usd > 0 AND f.protocol_fee_collected_usd < 1000000)
         ELSE TRUE 
     END
     GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 14
