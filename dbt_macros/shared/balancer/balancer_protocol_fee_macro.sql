@@ -165,7 +165,7 @@ WITH pool_labels AS (
                 ELSE TRUE 
             END
         )
-    AND (f.protocol_fee_amount_raw > 0)
+    AND (f.token_amount_raw > 0)
     GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 14
 
 {% endmacro %}
