@@ -45,33 +45,33 @@ Regex explanation:
 
 SELECT
     '{{ blockchain }}' AS blockchain,
-    c.contract_address,
-    c.creation_block_time,
-    c.creation_block_month,
-    c.creation_block_number,
-    c.creation_tx_hash,
-    fs.function_selectors,
+    contract_address,
+    creation_block_time,
+    creation_block_month,
+    creation_block_number,
+    creation_tx_hash,
+    function_selectors,
     CASE
-        WHEN c.contract_address IN (SELECT DISTINCT contract_address FROM {{ source('tokens_' ~ blockchain, 'erc20') }}) THEN TRUE
+        WHEN contract_address IN (SELECT DISTINCT contract_address FROM {{ source('tokens_' ~ blockchain, 'erc20') }}) THEN TRUE
         WHEN
-            contains(fs.function_selectors, '0xa9059cbb') -- transfer(address,uint256)
-            AND contains(fs.function_selectors, '0x70a08231') -- balanceOf(address)
+            contains(function_selectors, '0xa9059cbb') -- transfer(address,uint256)
+            AND contains(function_selectors, '0x70a08231') -- balanceOf(address)
         THEN TRUE
     ELSE FALSE END AS erc20_flag,
     
     CASE
-        WHEN c.contract_address IN (SELECT DISTINCT contract_address FROM {{ source('erc721_' ~ blockchain, 'evt_Transfer') }}) THEN TRUE
+        WHEN contract_address IN (SELECT DISTINCT contract_address FROM {{ source('erc721_' ~ blockchain, 'evt_Transfer') }}) THEN TRUE
         WHEN 
-            contains(fs.function_selectors, '0x6352211e') -- ownerOf(uint256)
+            contains(function_selectors, '0x6352211e') -- ownerOf(uint256)
             AND (
-                contains(fs.function_selectors, '0x23b872dd') -- transferFrom(address,address,uint256)
-                OR contains(fs.function_selectors, '0x42842e0e') -- safeTransferFrom(address,address,uint256)
-                OR contains(fs.function_selectors, '0xb88d4fde') -- safeTransferFrom(address,address,uint256,bytes)
+                contains(function_selectors, '0x23b872dd') -- transferFrom(address,address,uint256)
+                OR contains(function_selectors, '0x42842e0e') -- safeTransferFrom(address,address,uint256)
+                OR contains(function_selectors, '0xb88d4fde') -- safeTransferFrom(address,address,uint256,bytes)
             ) THEN TRUE
     ELSE FALSE END AS erc721_flag,
-    c.bytecode
-FROM contracts c
-LEFT JOIN function_selectors fs USING(contract_address, creation_tx_hash)
+    bytecode
+FROM contracts
+LEFT JOIN function_selectors USING(contract_address, creation_tx_hash)
 
 {% endmacro %}
 
