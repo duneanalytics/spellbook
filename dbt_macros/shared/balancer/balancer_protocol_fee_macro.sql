@@ -118,7 +118,7 @@ WITH pool_labels AS (
                     ELSE 0xce88686553686DA562CE7Cea497CE749DA109f9F
                 END
         WHERE t.evt_block_time < CAST('2025-11-03' AS TIMESTAMP)
-        AND b.poolAddress = BYTEARRAY_SUBSTRING(poolId, 1, 20) -- Filter for bb-pools
+        AND b.poolAddress = BYTEARRAY_SUBSTRING(poolId, 1, 20) -- Filter for bb-poolss
         GROUP BY 1, 2, 3
     ),
 
