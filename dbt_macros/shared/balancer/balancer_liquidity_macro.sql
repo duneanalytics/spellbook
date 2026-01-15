@@ -202,7 +202,7 @@ WITH pool_labels AS (
             FROM {{ source('prices', 'day') }} 
             WHERE blockchain = '{{blockchain}}' 
             GROUP BY 1 
-            HAVING AVG(volume) > 600000
+            HAVING AVG(volume) > 500000
         )
     ),
 
