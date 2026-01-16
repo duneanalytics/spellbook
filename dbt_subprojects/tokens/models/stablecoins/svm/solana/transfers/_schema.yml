@@ -1,0 +1,147 @@
+version: 2
+
+models:
+  - name: stablecoins_solana_core_transfers
+    meta:
+      blockchain: solana
+      sector: stablecoin
+      project: stablecoin
+      contributors: tomfutago
+    config:
+      tags: ['stablecoin', 'transfers']
+    description: "Core transfers of stablecoins (frozen core list)"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_date
+            - unique_key
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain name"
+      - &block_month
+        name: block_month
+        description: "Month of the block (partition column)"
+      - &block_date
+        name: block_date
+        description: "Date of the block"
+        data_tests:
+          - not_null
+      - &block_time
+        name: block_time
+        description: "Timestamp of the block"
+      - &block_slot
+        name: block_slot
+        description: "Block slot number"
+      - &tx_id
+        name: tx_id
+        description: "Transaction ID"
+      - &tx_index
+        name: tx_index
+        description: "Transaction index within the block"
+      - &outer_instruction_index
+        name: outer_instruction_index
+        description: "Outer instruction index"
+      - &inner_instruction_index
+        name: inner_instruction_index
+        description: "Inner instruction index (for CPI calls)"
+      - &token_version
+        name: token_version
+        description: "Token program version (spl_token, token2022)"
+      - &token_mint_address
+        name: token_mint_address
+        description: "Token mint address"
+      - &token_symbol
+        name: token_symbol
+        description: "Token symbol"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw transfer amount"
+      - &amount
+        name: amount
+        description: "Transfer amount (adjusted for decimals)"
+      - &amount_usd
+        name: amount_usd
+        description: "USD value of transfer"
+      - &from_owner
+        name: from_owner
+        description: "Sender wallet address"
+      - &to_owner
+        name: to_owner
+        description: "Receiver wallet address"
+      - &unique_key
+        name: unique_key
+        description: "Unique identifier for this transfer"
+        data_tests:
+          - not_null
+
+  - name: stablecoins_solana_extended_transfers
+    meta:
+      blockchain: solana
+      sector: stablecoin
+      project: stablecoin
+      contributors: tomfutago
+    config:
+      tags: ['stablecoin', 'transfers']
+    description: "Extended transfers of newly added stablecoins"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_date
+            - unique_key
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_date
+      - *block_time
+      - *block_slot
+      - *tx_id
+      - *tx_index
+      - *outer_instruction_index
+      - *inner_instruction_index
+      - *token_version
+      - *token_mint_address
+      - *token_symbol
+      - *amount_raw
+      - *amount
+      - *amount_usd
+      - *from_owner
+      - *to_owner
+      - *unique_key
+
+  - name: stablecoins_solana_transfers
+    meta:
+      blockchain: solana
+      sector: stablecoin
+      project: stablecoin
+      contributors: tomfutago
+    config:
+      tags: ['stablecoin', 'transfers']
+    description: "Union view of core and extended stablecoin transfers with metadata"
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_date
+      - *block_time
+      - *block_slot
+      - *tx_id
+      - *tx_index
+      - *outer_instruction_index
+      - *inner_instruction_index
+      - *token_version
+      - *token_mint_address
+      - *token_symbol
+      - &token_backing
+        name: token_backing
+        description: "Stablecoin backing type"
+      - &token_name
+        name: token_name
+        description: "Stablecoin name"
+      - *amount_raw
+      - *amount
+      - *amount_usd
+      - *from_owner
+      - *to_owner
+      - *unique_key

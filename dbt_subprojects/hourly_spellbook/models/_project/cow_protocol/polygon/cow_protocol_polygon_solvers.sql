@@ -65,7 +65,8 @@ known_solver_metadata (address, environment, name) as (
                 (0xbeE0a8F78875bd23A8b5a1D7283B163ae7dADCf5, 'prod', 'Bebop'),
                 (0x2aE77A5686115e8Cb5B8e0448D35bd46835abE9C, 'barn', 'OpenOcean_Aggregator'),
                 (0x0eA019e2B276534C2F25691902d6D6ddBCcE14Cc, 'prod', 'OpenOcean_Aggregator'),
-                (0x3980daa7eaad0b7e0c53cfc5c2760037270da54d, 'prod', 'Tsolver')
+                (0x3980daa7eaad0b7e0c53cfc5c2760037270da54d, 'prod', 'Tsolver'),
+                (0xbee162fa5ae892be74f3f3e01c23da89adbccccc, 'prod', 'Kipseli')
     ) as _
 )
 -- Combining the metadata with current activation status for final table

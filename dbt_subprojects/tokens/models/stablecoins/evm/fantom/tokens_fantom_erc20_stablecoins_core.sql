@@ -28,7 +28,6 @@ from (values
      (0x04068da6c83afcfa0e13ba15a6696662335d5b75), -- USDC
      (0x82f0b8b456c1a451378467398982d4834b6829c1), -- MIM
      (0xdc301622e621166bd8e82f2ca0a26c13ad0be355), -- FRAX
-     (0xb67fa6defce4042070eb1ae1511dcd6dcc6a532e), -- alUSD
      (0x846e4d51d7e2043c1a87e0ab7490b93fb940357b), -- UST
      (0xad84341756bf337f5a0164515b1f6f993d194e1f), -- FUSD
      (0x049d68029688eabf473097a2fc38ef61633a3c7a), -- fUSDT
@@ -36,7 +35,6 @@ from (values
      (0x8d11ec38a3eb5e956b052f67da8bdc9bef8abf3e), -- DAI
      (0x6fc9383486c163fa48becdec79d6058f984f62ca), -- USDB
      (0xc54a1684fd1bef1f077a336e6be4bd9a3096a6ca), -- 2SHARES
-     (0x1d3918043d22de2d799a4d80f72efd50db90b5af), -- sPDO
 
      (0x1b6382dbdea11d97f24495c9a90b7c88469134a4)  -- axlUSDC
 

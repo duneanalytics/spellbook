@@ -28,8 +28,7 @@ from (values
      (0x894134a25a5fac1c2c26f1d8fbf05111a3cb9487), -- GRAI
      (0xb79dd08ea68a908a97220c76d19a6aa9cbde4376), -- USD+
      (0x1e1f509963a6d33e169d9497b11c7dbfe73b7f13), -- USDT+
-     (0x3ff47c5bf409c86533fe1f4907524d304062428d), -- EURe
+     (0x3ff47c5bf409c86533fe1f4907524d304062428d)  -- EURe
 
-     (0xaca92e438df0b2401ff60da7e4337b687a2435da)  -- mUSD
 
 ) as temp_table (contract_address)
