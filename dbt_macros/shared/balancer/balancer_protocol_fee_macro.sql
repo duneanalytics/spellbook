@@ -97,7 +97,7 @@ WITH pool_labels AS (
         LEFT JOIN prices p1
             ON p1.token = d.token_address
             AND p1.day = d.day
-        LEFT JOIN prices.day p2
+                    LEFT JOIN prices.day p2
             ON p2.contract_address = d.token_address
             AND p2.timestamp = d.day
         LEFT JOIN bpt_prices p3
@@ -272,8 +272,6 @@ WITH pool_labels AS (
         END AS treasury_share
     FROM UNNEST(SEQUENCE(DATE '2024-12-01', CURRENT_DATE, INTERVAL '1' DAY)) AS date(day)
     )
-
-
     SELECT
         f.day,
         f.pool_id,
@@ -299,5 +297,4 @@ WITH pool_labels AS (
     LEFT JOIN pool_labels l
         ON BYTEARRAY_SUBSTRING(f.pool_id,1,20) = l.address
     GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 14
-    
 {% endmacro %}
