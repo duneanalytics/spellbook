@@ -21,11 +21,11 @@ WITH pool_labels AS (
 
     prices AS (
         SELECT
-            date_trunc('day', minute) AS day,
+            date_trunc('day', timestamp) AS day,
             contract_address AS token,
             decimals,
             AVG(price) AS price
-        FROM {{ source('prices', 'usd') }}
+        FROM {{ source('prices', 'hour') }}
         WHERE blockchain = '{{blockchain}}'
         GROUP BY 1, 2, 3
     ),
