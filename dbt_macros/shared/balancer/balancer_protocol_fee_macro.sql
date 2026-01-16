@@ -272,3 +272,32 @@ WITH pool_labels AS (
         END AS treasury_share
     FROM UNNEST(SEQUENCE(DATE '2024-12-01', CURRENT_DATE, INTERVAL '1' DAY)) AS date(day)
     )
+
+
+    SELECT
+        f.day,
+        f.pool_id,
+        BYTEARRAY_SUBSTRING(f.pool_id,1,20) as pool_address,
+        l.name AS pool_symbol,
+        '{{version}}' as version,
+        '{{blockchain}}' as blockchain,
+        l.pool_type,
+        f.fee_type,        
+        f.token_address,
+        f.token_symbol,
+        SUM(f.token_amount_raw) as token_amount_raw,
+        SUM(f.token_amount) as token_amount,
+        SUM(f.protocol_fee_collected_usd) as protocol_fee_collected_usd, 
+        r.treasury_share,
+        SUM(f.protocol_fee_collected_usd) * r.treasury_share as treasury_fee_usd,
+        SUM(CASE WHEN f.fee_type = 'swap_fee' THEN f.protocol_fee_collected_usd
+        WHEN f.fee_type = 'yield_fee' THEN f.protocol_fee_collected_usd * 9 END) 
+            AS lp_fee_collected_usd
+    FROM decorated_protocol_fee f
+    INNER JOIN revenue_share r 
+        ON r.day = f.day
+    LEFT JOIN pool_labels l
+        ON BYTEARRAY_SUBSTRING(f.pool_id,1,20) = l.address
+    GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 14
+    
+{% endmacro %}
