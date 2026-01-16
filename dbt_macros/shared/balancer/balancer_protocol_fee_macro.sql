@@ -21,7 +21,7 @@ WITH pool_labels AS (
 
     prices AS (
         SELECT
-            date_trunc('day', timestamp) AS day,
+            date_trunc('day', minute) AS day,
             contract_address AS token,
             decimals,
             AVG(price) AS price
