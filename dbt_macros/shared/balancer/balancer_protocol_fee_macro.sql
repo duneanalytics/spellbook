@@ -130,24 +130,35 @@ WITH pool_labels AS (
     ),
 
     decorated_protocol_fee AS (
-        SELECT 
-            d.day, 
-            d.pool_id, 
-            d.token_address, 
-            t.symbol AS token_symbol,
-            BYTEARRAY_SUBSTRING(d.pool_id, 1, 20) AS pool_address,
-            SUM(d.protocol_fee_amount_raw) AS token_amount_raw, 
-            SUM(d.protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals, p1.decimals, p3.decimals, 18))) AS token_amount,
-            SUM(COALESCE(p3.price, p1.price, p2.price, 0) * d.protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals, p1.decimals, p3.decimals, 18))) AS protocol_fee_collected_usd
-        FROM daily_protocol_fee_collected d
-        LEFT JOIN prices p1 ON p1.token = d.token_address AND p1.day = d.day
-        LEFT JOIN dex_prices p2 ON p2.token = d.token_address AND p2.day = d.day 
-            -- FIX: Changed 'd.poolId' to 'd.pool_id' to match the alias in 'daily_protocol_fee_collected'
-            -- AND (p2.token != BYTEARRAY_SUBSTRING(d.pool_id, 1, 20))
-        LEFT JOIN bpt_prices p3 ON p3.token = d.token_address AND p3.day <= d.day AND d.day < p3.day_of_next_change     
-        LEFT JOIN {{ source('tokens', 'erc20') }} t ON t.contract_address = d.token_address AND t.blockchain = '{{blockchain}}'
-        GROUP BY 1, 2, 3, 4, 5
-    ),
+            SELECT 
+                d.day, 
+                d.pool_id, 
+                d.token_address, 
+                t.symbol AS token_symbol,
+                BYTEARRAY_SUBSTRING(d.pool_id, 1, 20) AS pool_address,
+                SUM(d.protocol_fee_amount_raw) AS token_amount_raw, 
+                -- Calculate token amount (defaulting to 18 decimals for BPTs)
+                SUM(d.protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals, p1.decimals, p3.decimals, 18))) AS token_amount,
+                -- PRICE LOGIC:
+                SUM(
+                    CASE 
+                        -- If it's a bb-pool and it's Nov 3rd or later, force price to 0 or NULL to stop processing
+                        WHEN (d.token_address = BYTEARRAY_SUBSTRING(d.pool_id, 1, 20)) AND d.day >= DATE '2025-11-03' THEN 0
+                        -- Otherwise, use our prioritized price sources
+                        ELSE COALESCE(p3.price, p1.price, p2.price, 0) 
+                    END 
+                    * d.protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals, p1.decimals, p3.decimals, 18))
+                ) AS protocol_fee_collected_usd
+            FROM daily_protocol_fee_collected d
+            LEFT JOIN prices p1 ON p1.token = d.token_address AND p1.day = d.day
+            LEFT JOIN dex_prices p2 ON p2.token = d.token_address AND p2.day = d.day 
+            -- Ensure BPT prices (p3) are only joined for valid dates
+            LEFT JOIN bpt_prices p3 ON p3.token = d.token_address 
+                AND p3.day <= d.day 
+                AND d.day < p3.day_of_next_change     
+            LEFT JOIN {{ source('tokens', 'erc20') }} t ON t.contract_address = d.token_address AND t.blockchain = '{{blockchain}}'
+            GROUP BY 1, 2, 3, 4, 5
+        ),
 
     revenue_share as(
         SELECT
