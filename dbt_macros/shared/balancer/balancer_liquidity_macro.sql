@@ -197,6 +197,14 @@ WITH pool_labels AS (
         AND p3.token = b.token
         LEFT JOIN gyro_prices p4 ON p4.token_address = b.token
         WHERE b.token != BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
+        AND b.token NOT IN (
+            0x1e6fcb0c88add2fef7e2753cfade6db390581cfb, -- Specter
+            0xf3b9569f82b18aef890de263b84189bd33ebe452, -- CAW
+            0xd8f260fd067fcd9fa69015e6034bf4dfe1b2982a, -- Bermuda
+            0x02a739710d5e469ffca483f898ee9aea27b8bb8f, -- BPEPE
+            0x93ef1ea305d11a9b2a3ebb9bb4fcc34695292e7d, -- qETH
+            0x9559aaa82d9649c7a7b220e7c461d2e74c9a3593  -- rETH
+        )
     ),
 
     weighted_pool_liquidity_estimates AS (
