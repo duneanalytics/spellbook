@@ -36,6 +36,9 @@ swap_events as (
 ),
 
 liquidity_events as (
+
+    {%-if version == '1' %}
+
     select 
         evt_block_time as block_time,
         evt_block_number as block_number,
@@ -51,6 +54,25 @@ liquidity_events as (
     {%- if is_incremental() %}
     where {{ incremental_predicate('evt_block_time') }}
     {%- endif %} 
+
+    {%-else %}
+    select 
+        evt_block_time as block_time,
+        evt_block_number as block_number,
+        evt_tx_from as tx_from,
+        poolId as id,
+        varbinary_to_decimal(substr(balanceUpdate, 1, 16)) as amount0,
+        varbinary_to_decimal(substr(balanceUpdate, 1+16, 16)) as amount1,
+        evt_tx_hash as tx_hash,
+        evt_index,
+        'modify_liquidity' as event_type 
+    from 
+    {{ position_updated }}
+    {%- if is_incremental() %}
+    where {{ incremental_predicate('evt_block_time') }}
+    {%- endif %} 
+    {%- endif %} 
+
 
     union all 
 
