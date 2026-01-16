@@ -57,3 +57,68 @@ models:
       - *decimals
       - *name
 
+  - name: stablecoins_svm_transfers
+    meta:
+      sector: stablecoin
+      project: stablecoin
+      contributors: tomfutago
+    config:
+      tags: ['stablecoin', 'transfers']
+    description: "Stablecoin token transfers across all SVM chains with token metadata"
+    columns:
+      - *blockchain
+      - &block_month
+        name: block_month
+        description: "Month of the block (partition column)"
+      - &block_date
+        name: block_date
+        description: "Date of the block"
+      - &block_time
+        name: block_time
+        description: "Timestamp of the block"
+      - &block_slot
+        name: block_slot
+        description: "Block slot number"
+      - &tx_id
+        name: tx_id
+        description: "Transaction ID"
+      - &tx_index
+        name: tx_index
+        description: "Transaction index within the block"
+      - &outer_instruction_index
+        name: outer_instruction_index
+        description: "Outer instruction index"
+      - &inner_instruction_index
+        name: inner_instruction_index
+        description: "Inner instruction index (for CPI calls)"
+      - &token_version
+        name: token_version
+        description: "Token program version (spl_token, token2022)"
+      - *token_mint_address
+      - &token_symbol
+        name: token_symbol
+        description: "Token symbol"
+      - &token_backing
+        name: token_backing
+        description: "Stablecoin backing type"
+      - &token_name
+        name: token_name
+        description: "Stablecoin name"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw transfer amount"
+      - &amount
+        name: amount
+        description: "Transfer amount (adjusted for decimals)"
+      - &amount_usd
+        name: amount_usd
+        description: "USD value of transfer"
+      - &from_owner
+        name: from_owner
+        description: "Sender wallet address"
+      - &to_owner
+        name: to_owner
+        description: "Receiver wallet address"
+      - &unique_key
+        name: unique_key
+        description: "Unique identifier for this transfer"

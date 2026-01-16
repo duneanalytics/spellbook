@@ -6,7 +6,8 @@
 }}
 
 {% set models = [
-    ref('ekubo_ethereum_base_liquidity_events')
+    ref('ekubo_ethereum_base_liquidity_events'),
+    ref('ekubo_v3_ethereum_base_liquidity_events')
 ] %}
 
 with base_union as (
