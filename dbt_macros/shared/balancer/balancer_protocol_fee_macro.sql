@@ -21,17 +21,48 @@ WITH pool_labels AS (
 
     prices AS (
         SELECT
-            date_trunc('day', minute) AS day,
+            date_trunc('day', timestamp) AS day,
             contract_address AS token,
             decimals,
             AVG(price) AS price
-        FROM {{ source('prices', 'usd') }}
+        FROM {{ source('prices', 'hour') }}
         WHERE blockchain = '{{blockchain}}'
         GROUP BY 1, 2, 3
-
     ),
 
-    bpt_prices_1 AS (
+    dex_prices_1 AS (
+        SELECT
+            date_trunc('day', timestamp) AS DAY,
+            contract_address AS token,
+            approx_percentile(price, 0.5) AS price,
+            sum(volume) AS sample_size
+        FROM {{ source('prices', 'hour') }}
+        WHERE blockchain = '{{blockchain}}'
+        AND contract_address NOT IN (0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38, 0xde1e704dae0b4051e80dabb26ab6ad6c12262da0, 0x5ddb92a5340fd0ead3987d3661afcd6104c3b757) 
+        GROUP BY 1, 2
+        HAVING sum(volume) > 3
+    ),
+ 
+    dex_prices_2 AS(
+        SELECT 
+            day,
+            token,
+            price,
+            lag(price) OVER(PARTITION BY token ORDER BY day) AS previous_price
+        FROM dex_prices_1
+    ),    
+
+    dex_prices AS (
+        SELECT
+            day,
+            token,
+            price,
+            LEAD(DAY, 1, NOW()) OVER (PARTITION BY token ORDER BY DAY) AS day_of_next_change
+        FROM dex_prices_2
+        WHERE (price < previous_price * 1e4 AND price > previous_price / 1e4)
+    ),
+
+    bpt_prices_1 AS ( 
         SELECT 
             l.day,
             s.token_address AS token,
@@ -58,21 +89,18 @@ WITH pool_labels AS (
     daily_protocol_fee_collected AS (
         SELECT
             date_trunc('day', evt_block_time) AS day,
-            0xba12222222228d8ba445958a75a0704d566bf2c8 AS pool_id,
-            token AS token_address,
-            SUM(feeAmount) AS protocol_fee_amount_raw
-        FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_FlashLoan') }} b
-        GROUP BY 1, 2, 3 
-
-        UNION ALL      
-
-        SELECT
-            date_trunc('day', evt_block_time) AS day,
             poolId AS pool_id,
             token AS token_address,
             SUM(protocol_fees) AS protocol_fee_amount_raw
         FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_PoolBalanceChanged') }} b
         CROSS JOIN unnest("protocolFeeAmounts", "tokens") AS t(protocol_fees, token)   
+        WHERE (
+            -- Standard tokens: No cutoff
+            (token != BYTEARRAY_SUBSTRING(poolId, 1, 20)) 
+            OR 
+            -- bb-pool tokens: Only before Nov 3rd, 2025
+            (token = BYTEARRAY_SUBSTRING(poolId, 1, 20) AND evt_block_time < CAST('2025-11-03' AS TIMESTAMP))
+        )
         GROUP BY 1, 2, 3 
 
         UNION ALL          
@@ -90,58 +118,69 @@ WITH pool_labels AS (
                 CASE
                     WHEN '{{blockchain}}' = 'fantom' THEN 0xc6920d3a369e7c8bd1a22dbe385e11d1f7af948f
                     ELSE 0xce88686553686DA562CE7Cea497CE749DA109f9F
-                    END 
+                END
+        WHERE (
+            -- Standard tokens: No cutoff
+            (b.poolAddress != BYTEARRAY_SUBSTRING(poolId, 1, 20))
+            OR
+            -- bb-pool tokens: Only before Nov 3rd, 2025
+            (b.poolAddress = BYTEARRAY_SUBSTRING(poolId, 1, 20) AND t.evt_block_time < CAST('2025-11-03' AS TIMESTAMP))
+        )
         GROUP BY 1, 2, 3
     ),
 
     decorated_protocol_fee AS (
-        SELECT 
-            d.day,
-            d.pool_id,
-            d.token_address,
-            MAX(t.symbol) AS token_symbol,
-            SUM(d.protocol_fee_amount_raw) AS token_amount_raw, 
-            SUM(d.protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals,p1.decimals, p3.decimals))) AS token_amount,
-            SUM(COALESCE(p1.price, p2.price, p3.price) * protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals,p1.decimals, p3.decimals))) AS protocol_fee_collected_usd
-        FROM daily_protocol_fee_collected d
-        LEFT JOIN prices p1
-            ON p1.token = d.token_address
-            AND p1.day = d.day
-        LEFT JOIN prices.day p2
-            ON p2.contract_address = d.token_address
-            AND p2.timestamp = d.day
-        LEFT JOIN bpt_prices p3
-            ON p3.token = d.token_address
-            AND p3.day <= d.day
-            AND d.day < p3.day_of_next_change     
-        LEFT JOIN {{ source('tokens', 'erc20') }} t 
-            ON t.contract_address = d.token_address
-            AND t.blockchain = '{{blockchain}}'
-        GROUP BY 1, 2, 3
-    ),
+            SELECT 
+                d.day, 
+                d.pool_id, 
+                d.token_address, 
+                t.symbol AS token_symbol,
+                BYTEARRAY_SUBSTRING(d.pool_id, 1, 20) AS pool_address,
+                SUM(d.protocol_fee_amount_raw) AS token_amount_raw, 
+                -- Calculate token amount (defaulting to 18 decimals for BPTs)
+                SUM(d.protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals, p1.decimals, p3.decimals, 18))) AS token_amount,
+                -- PRICE LOGIC:
+                SUM(
+                    CASE 
+                        -- If it's a bb-pool and it's Nov 3rd or later, force price to 0 or NULL to stop processing
+                        WHEN (d.token_address = BYTEARRAY_SUBSTRING(d.pool_id, 1, 20)) AND d.day >= DATE '2025-11-03' THEN 0
+                        -- Otherwise, use our prioritized price sources
+                        ELSE COALESCE(p3.price, p1.price, p2.price, 0) 
+                    END 
+                    * d.protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals, p1.decimals, p3.decimals, 18))
+                ) AS protocol_fee_collected_usd
+            FROM daily_protocol_fee_collected d
+            LEFT JOIN prices p1 ON p1.token = d.token_address AND p1.day = d.day
+            LEFT JOIN dex_prices p2 ON p2.token = d.token_address AND p2.day = d.day 
+            -- Ensure BPT prices (p3) are only joined for valid dates
+            LEFT JOIN bpt_prices p3 ON p3.token = d.token_address 
+                AND p3.day <= d.day 
+                AND d.day < p3.day_of_next_change     
+            LEFT JOIN {{ source('tokens', 'erc20') }} t ON t.contract_address = d.token_address AND t.blockchain = '{{blockchain}}'
+            GROUP BY 1, 2, 3, 4, 5
+        ),
 
     revenue_share as(
         SELECT
         day,
         CASE 
-            WHEN day < DATE '2022-07-03' THEN 0.25
-            WHEN day >= DATE '2022-07-03' AND day < DATE '2023-01-23' THEN 0.25
-            WHEN day >= DATE '2023-01-23' AND day < DATE '2023-07-24' THEN 0.35
-            WHEN day >= DATE '2023-07-24' THEN 0.175
+            WHEN day < DATE '2022-07-03' THEN 0.25 
+            WHEN day >= DATE '2022-07-03' AND day < DATE '2023-01-23' THEN 0.25 
+            WHEN day >= DATE '2023-01-23' AND day < DATE '2023-07-24' THEN 0.35 
+            WHEN day >= DATE '2023-07-24' THEN 0.175 
         END AS treasury_share
     FROM UNNEST(SEQUENCE(DATE '2022-03-01', CURRENT_DATE, INTERVAL '1' DAY)) AS date(day)
     )
 
-
     SELECT
         f.day,
         f.pool_id,
-        BYTEARRAY_SUBSTRING(f.pool_id,1,20) AS pool_address,
-        CASE WHEN f.pool_id = 0xba12222222228d8ba445958a75a0704d566bf2c8 THEN 'flashloan' ELSE l.name END AS pool_symbol,
+        f.pool_address,
+        l.name AS pool_symbol,
         '{{version}}' AS version,
         '{{blockchain}}' AS blockchain,
         l.pool_type,
-        CASE WHEN f.pool_id = 0xba12222222228d8ba445958a75a0704d566bf2c8 THEN 'flashloan' ELSE 'v2' END AS fee_type,
+        'v2' AS fee_type,
         f.token_address,
         f.token_symbol,
         SUM(f.token_amount_raw) AS token_amount_raw,
@@ -151,13 +190,13 @@ WITH pool_labels AS (
         SUM(f.protocol_fee_collected_usd) * r.treasury_share AS treasury_fee_usd,
         SUM(f.protocol_fee_collected_usd) AS lp_fee_collected_usd
     FROM decorated_protocol_fee f
-    INNER JOIN revenue_share r 
-        ON r.day = f.day
-    LEFT JOIN pool_labels l
-        ON BYTEARRAY_SUBSTRING(f.pool_id,1,20) = l.address
+    INNER JOIN revenue_share r ON r.day = f.day
+    LEFT JOIN pool_labels l ON f.pool_address = l.address
     GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 14
 
 {% endmacro %}
+
+{# ######################################################################### #}
 
 {% macro 
     balancer_v3_compatible_protocol_fee_macro(
@@ -185,15 +224,45 @@ WITH pool_labels AS (
             timestamp AS day,
             contract_address AS token,
             decimals,
-            AVG(price) AS price
+            price
         FROM {{ source('prices', 'day') }}
         WHERE blockchain = '{{blockchain}}'
-        GROUP BY 1, 2, 3
 
     ),
 
+    dex_prices_1 AS (
+        SELECT
+            date_trunc('day', HOUR) AS DAY,
+            contract_address AS token,
+            approx_percentile(median_price, 0.5) AS price,
+            sum(sample_size) AS sample_size
+        FROM {{ source('dex', 'prices') }}
+        WHERE blockchain = '{{blockchain}}'
+        AND contract_address NOT IN (0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38, 0xde1e704dae0b4051e80dabb26ab6ad6c12262da0, 0x5ddb92a5340fd0ead3987d3661afcd6104c3b757) 
+        GROUP BY 1, 2
+        HAVING sum(sample_size) > 3
+    ),
+ 
+    dex_prices_2 AS(
+        SELECT 
+            day,
+            token,
+            price,
+            lag(price) OVER(PARTITION BY token ORDER BY day) AS previous_price
+        FROM dex_prices_1
+    ),    
 
-    bpt_prices_1 AS (
+    dex_prices AS (
+        SELECT
+            day,
+            token,
+            price,
+            LEAD(DAY, 1, NOW()) OVER (PARTITION BY token ORDER BY DAY) AS day_of_next_change
+        FROM dex_prices_2
+        WHERE (price < previous_price * 1e4 AND price > previous_price / 1e4)
+    ),
+
+    bpt_prices_1 AS ( --special calculation for this spell, in order to achieve completeness without relying on prices.usd
         SELECT 
             l.day,
             s.token_address AS token,
@@ -262,10 +331,10 @@ WITH pool_labels AS (
 
     decorated_protocol_fee AS (
         SELECT 
-            d.day,
-            d.pool_id,
-            d.token_address,
-            MAX(t.symbol) AS token_symbol,
+            d.day, 
+            d.pool_id, 
+            d.token_address, 
+            t.symbol AS token_symbol,
             d.fee_type,
             SUM(d.token_amount_raw) AS token_amount_raw, 
             SUM(d.token_amount_raw / POWER(10, COALESCE(t.decimals,p1.decimals, p3.decimals, p4.decimals))) AS token_amount,
@@ -274,9 +343,9 @@ WITH pool_labels AS (
         LEFT JOIN prices p1
             ON p1.token = d.token_address
             AND p1.day = d.day
-        LEFT JOIN prices.day p2
-            ON p2.contract_address = d.token_address
-            AND p2.timestamp = d.day
+        LEFT JOIN dex_prices p2
+            ON p2.token = d.token_address
+            AND p2.day = d.day
         LEFT JOIN bpt_prices p3
             ON p3.token = d.token_address
             AND p3.day <= d.day
@@ -287,14 +356,14 @@ WITH pool_labels AS (
         LEFT JOIN {{ source('tokens', 'erc20') }} t 
             ON t.contract_address = d.token_address
             AND t.blockchain = '{{blockchain}}'
-        GROUP BY 1, 2, 3, 5
+        GROUP BY 1, 2, 3, 4, 5
     ),
 
     revenue_share as(
         SELECT
         day,
         CASE 
-            WHEN day >= DATE '2024-12-01' THEN 0.175
+            WHEN day >= DATE '2024-12-01' THEN 0.175 -- BIP 734
         END AS treasury_share
     FROM UNNEST(SEQUENCE(DATE '2024-12-01', CURRENT_DATE, INTERVAL '1' DAY)) AS date(day)
     )
