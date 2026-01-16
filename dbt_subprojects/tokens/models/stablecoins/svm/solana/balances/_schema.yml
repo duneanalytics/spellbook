@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: stablecoins_solana_core_balances
+  - name: stablecoins_solana_core_balances_lead
     meta:
       blockchain: solana
       sector: stablecoin
       project: stablecoin
       contributors: tomfutago
     config:
-      tags: ['stablecoin', 'balances']
-    description: "Core balances of stablecoin token holders (frozen core list)"
+      tags: ['stablecoin', 'balances', 'benchmark']
+    description: "Core balances using LEAD/forward-fill pattern (benchmark)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -29,22 +29,28 @@ models:
       - &token_mint_address
         name: token_mint_address
         description: "Token mint address"
-      - &token_balance
-        name: token_balance
-        description: "Token balance (adjusted for decimals)"
+      - &cumulative_inflow
+        name: cumulative_inflow
+        description: "Cumulative inflow (raw, not adjusted for decimals)"
+      - &cumulative_outflow
+        name: cumulative_outflow
+        description: "Cumulative outflow (raw, not adjusted for decimals)"
+      - &balance_raw
+        name: balance_raw
+        description: "Raw balance (not adjusted for decimals)"
       - &last_updated
         name: last_updated
         description: "Date when balance was last updated"
 
-  - name: stablecoins_solana_extended_balances
+  - name: stablecoins_solana_core_balances_asof
     meta:
       blockchain: solana
       sector: stablecoin
       project: stablecoin
       contributors: tomfutago
     config:
-      tags: ['stablecoin', 'balances']
-    description: "Extended balances of newly added stablecoin token holders"
+      tags: ['stablecoin', 'balances', 'benchmark']
+    description: "Core balances using optimized ASOF join pattern (benchmark)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -56,84 +62,20 @@ models:
       - *day
       - *address
       - *token_mint_address
-      - *token_balance
-      - *last_updated
-
-  - name: stablecoins_solana_core_balances_enriched
-    meta:
-      blockchain: solana
-      sector: stablecoin
-      project: stablecoin
-      contributors: tomfutago
-    config:
-      tags: ['stablecoin', 'balances']
-    description: "Core balances enriched with usd prices"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - address
-            - token_address
-    columns:
-      - *blockchain
-      - *day
-      - *address
-      - &token_address
-        name: token_address
-        description: "Token mint address"
-      - &token_standard
-        name: token_standard
-        description: "Token standard (spl_token)"
-      - &token_id
-        name: token_id
-        description: "Token id (null for spl tokens)"
-      - &balance_raw
-        name: balance_raw
-        description: "Raw balance (not adjusted for decimals)"
-      - &balance
-        name: balance
-        description: "Balance (adjusted for decimals)"
-      - &balance_usd
-        name: balance_usd
-        description: "USD value of balance"
-      - *last_updated
-
-  - name: stablecoins_solana_extended_balances_enriched
-    meta:
-      blockchain: solana
-      sector: stablecoin
-      project: stablecoin
-      contributors: tomfutago
-    config:
-      tags: ['stablecoin', 'balances']
-    description: "Extended balances enriched with usd prices"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - address
-            - token_address
-    columns:
-      - *blockchain
-      - *day
-      - *address
-      - *token_address
-      - *token_standard
-      - *token_id
+      - *cumulative_inflow
+      - *cumulative_outflow
       - *balance_raw
-      - *balance
-      - *balance_usd
       - *last_updated
 
-  - name: stablecoins_solana_balances
+  - name: stablecoins_solana_balances_lead
     meta:
       blockchain: solana
       sector: stablecoin
       project: stablecoin
       contributors: tomfutago
     config:
-      tags: ['stablecoin', 'balances']
-    description: "Union view of core and extended balances with token metadata"
+      tags: ['stablecoin', 'balances', 'benchmark']
+    description: "Stablecoin balances using LEAD pattern (benchmark)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -147,15 +89,55 @@ models:
       - &token_symbol
         name: token_symbol
         description: "Token symbol"
-      - *token_address
-      - *token_standard
-      - *token_id
+      - &token_address
+        name: token_address
+        description: "Token mint address"
+      - &token_standard
+        name: token_standard
+        description: "Token standard (spl_token)"
+      - &token_id
+        name: token_id
+        description: "Token id (null for spl tokens)"
       - &token_backing
         name: token_backing
         description: "Stablecoin backing type"
       - &token_name
         name: token_name
         description: "Stablecoin name"
+      - *balance_raw
+      - &balance
+        name: balance
+        description: "Balance (adjusted for decimals)"
+      - &balance_usd
+        name: balance_usd
+        description: "USD value of balance"
+      - *last_updated
+
+  - name: stablecoins_solana_balances_asof
+    meta:
+      blockchain: solana
+      sector: stablecoin
+      project: stablecoin
+      contributors: tomfutago
+    config:
+      tags: ['stablecoin', 'balances', 'benchmark']
+    description: "Stablecoin balances using ASOF pattern (benchmark)"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    columns:
+      - *blockchain
+      - *day
+      - *address
+      - *token_symbol
+      - *token_address
+      - *token_standard
+      - *token_id
+      - *token_backing
+      - *token_name
       - *balance_raw
       - *balance
       - *balance_usd

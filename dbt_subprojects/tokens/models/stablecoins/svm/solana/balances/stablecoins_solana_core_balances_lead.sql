@@ -3,7 +3,7 @@
 {{
   config(
     schema = 'stablecoins_' ~ chain,
-    alias = 'extended_balances',
+    alias = 'core_balances_lead',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -13,10 +13,11 @@
   )
 }}
 
--- extended balances: tracks balances for newly added stablecoins (not in core list)
+-- core balances using LEAD/forward-fill pattern (benchmark)
 
-{{ stablecoins_svm_balances(
+-- TEST -> revert to: '2020-10-02' for production
+{{ stablecoins_svm_balances_lead(
   blockchain = chain,
-  token_list = 'extended',
-  start_date = '2020-10-02'
+  token_list = 'core',
+  start_date = '2026-01-11'
 ) }}

@@ -10,9 +10,9 @@ select
   b.token_mint_address as token_address,
   'spl_token' as token_standard,
   cast(null as uint256) as token_id,
-  cast(b.token_balance * power(10, p.decimals) as uint256) as balance_raw,
-  b.token_balance as balance,
-  b.token_balance * p.price as balance_usd,
+  b.balance_raw,
+  cast(b.balance_raw as double) / power(10, coalesce(p.decimals, 0)) as balance,
+  cast(b.balance_raw as double) / power(10, coalesce(p.decimals, 0)) * p.price as balance_usd,
   b.last_updated
 from {{ base_balances }} b
 left join {{ source('prices_external', 'day') }} p

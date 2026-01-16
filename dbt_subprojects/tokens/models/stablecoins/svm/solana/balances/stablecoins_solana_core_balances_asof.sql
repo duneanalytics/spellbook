@@ -3,7 +3,7 @@
 {{
   config(
     schema = 'stablecoins_' ~ chain,
-    alias = 'core_balances',
+    alias = 'core_balances_asof',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -13,10 +13,10 @@
   )
 }}
 
--- core balances: tracks balances for stablecoins in the frozen core list
+-- core balances using optimized ASOF join pattern (benchmark)
 
 -- TEST -> revert to: '2020-10-02' for production
-{{ stablecoins_svm_balances(
+{{ stablecoins_svm_balances_asof(
   blockchain = chain,
   token_list = 'core',
   start_date = '2026-01-11'
