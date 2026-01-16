@@ -143,7 +143,7 @@ WITH pool_labels AS (
         LEFT JOIN prices p1 ON p1.token = d.token_address AND p1.day = d.day
         LEFT JOIN dex_prices p2 ON p2.token = d.token_address AND p2.day = d.day 
             -- FIX: Changed 'd.poolId' to 'd.pool_id' to match the alias in 'daily_protocol_fee_collected'
-            AND (p2.token != BYTEARRAY_SUBSTRING(d.pool_id, 1, 20))
+            -- AND (p2.token != BYTEARRAY_SUBSTRING(d.pool_id, 1, 20))
         LEFT JOIN bpt_prices p3 ON p3.token = d.token_address AND p3.day <= d.day AND d.day < p3.day_of_next_change     
         LEFT JOIN {{ source('tokens', 'erc20') }} t ON t.contract_address = d.token_address AND t.blockchain = '{{blockchain}}'
         GROUP BY 1, 2, 3, 4, 5
