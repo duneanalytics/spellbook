@@ -247,7 +247,12 @@ known_solver_metadata (address, environment, name) as (
                  (0x6617484255584Bfe5D5B0fdDD60dc2BBD5B6020C, 'barn', 'TrustedVolumes'),
                  (0xB1ca4a18aFF443656F407FA8bE3533ff27DDE911, 'prod', 'TrustedVolumes'),
                  (0x035D47f2083537523b3E04ae44fc1E9Efc43447B, 'barn', 'MXTrading'),
-                 (0x373C22A19196bD6B0F475e5D77b4eb6401B88877, 'prod', 'MXTrading')
+                 (0x373C22A19196bD6B0F475e5D77b4eb6401B88877, 'prod', 'MXTrading'),
+                 (0xff17f83dba42f9006806496b3eddae39e42b4d00, 'barn', 'Rizzolver'),
+                 (0x8f5835e9d756c9bd934bce527157a4b0ef3c5cb7, 'prod', 'Rizzolver'),
+                 (0x3c13def5a0b3488cc0e3e09df01603bb8cc2fd9c, 'barn', 'NativeFi'),
+                 (0x5aaba56b29bf785cd71d8d9d3f729f4f459f9e2b, 'prod', 'NativeFi'),
+                 (0xd3b6a67865c5873cf05b8fc5ce7a688918d6f237, 'barn', 'Kipseli')
     ) as _
 )
 -- Combining the metadata with current activation status for final table
