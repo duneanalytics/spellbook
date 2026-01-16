@@ -79,7 +79,7 @@ price_missed_next AS (
 )
 
 SELECT 'polygon' AS blockchain,
-    'paraswap' AS project,
+    'velora' AS project,
     '5' AS version,
     cast(date_trunc('day', d.block_time) as date) as block_date,
     cast(date_trunc('month', d.block_time) as date) as block_month,
