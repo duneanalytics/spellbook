@@ -25,7 +25,7 @@ WITH pool_labels AS (
             contract_address AS token,
             decimals,
             AVG(price) AS price
-        FROM {{ source('prices', 'hour') }}
+        FROM {{ source('prices', 'usd') }}
         WHERE blockchain = '{{blockchain}}'
         GROUP BY 1, 2, 3
     ),
