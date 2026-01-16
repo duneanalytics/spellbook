@@ -4,6 +4,9 @@
   start_date
 ) %}
 
+-- use slightly smaller value for safe double comparison
+{% set uint256_max_double = '1.0e77' %}
+
 with transfers_in as (
   select
     block_date as day,
@@ -96,6 +99,15 @@ days as (
   {% endif %}
 ),
 
+-- filter out zero balances early before the expensive cross join expansion
+cumulative_flows_nonzero as (
+  select *
+  from cumulative_flows
+  where cast(greatest(0e0, least({{ uint256_max_double }},
+    (cast(cumulative_inflow as double) - cast(cumulative_outflow as double))
+  )) as uint256) > uint256 '0'
+),
+
 forward_fill as (
   select
     d.day,
@@ -105,13 +117,10 @@ forward_fill as (
     c.cumulative_outflow,
     c.day as last_updated
   from days d
-  inner join cumulative_flows c
+  inner join cumulative_flows_nonzero c
     on d.day >= c.day
     and (c.next_update_day is null or d.day < c.next_update_day)
 )
-
--- use slightly smaller value for safe double comparison
-{% set uint256_max_double = '1.0e77' %}
 
 select
   '{{blockchain}}' as blockchain,
@@ -137,10 +146,6 @@ where {{ incremental_predicate('f.day') }}
     coalesce(cast(p.prior_inflow as double), 0e0) - coalesce(cast(p.prior_outflow as double), 0e0) +
     (cast(f.cumulative_inflow as double) - cast(f.cumulative_outflow as double))
   )) as uint256) > uint256 '0'
-{% else %}
-where cast(greatest(0e0, least({{ uint256_max_double }},
-  (cast(f.cumulative_inflow as double) - cast(f.cumulative_outflow as double))
-)) as uint256) > uint256 '0'
 {% endif %}
 
 {% endmacro %}

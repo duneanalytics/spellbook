@@ -19,5 +19,5 @@
 {{ stablecoins_svm_balances_asof(
   blockchain = chain,
   token_list = 'core',
-  start_date = '2026-01-11'
+  start_date = '2025-01-01'
 ) }}

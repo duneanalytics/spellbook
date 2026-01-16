@@ -85,7 +85,7 @@ cumulative_flows as (
 -- get unique address/token combinations from current batch only
 address_tokens as (
   select distinct address, token_mint_address
-  from cumulative_flows
+  from daily_aggregated
 ),
 
 days as (
