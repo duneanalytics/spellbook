@@ -29,12 +29,6 @@ models:
       - &token_mint_address
         name: token_mint_address
         description: "Token mint address"
-      - &cumulative_inflow
-        name: cumulative_inflow
-        description: "Cumulative inflow (raw, not adjusted for decimals)"
-      - &cumulative_outflow
-        name: cumulative_outflow
-        description: "Cumulative outflow (raw, not adjusted for decimals)"
       - &balance_raw
         name: balance_raw
         description: "Raw balance (not adjusted for decimals)"
@@ -62,8 +56,6 @@ models:
       - *day
       - *address
       - *token_mint_address
-      - *cumulative_inflow
-      - *cumulative_outflow
       - *balance_raw
       - *last_updated
 
