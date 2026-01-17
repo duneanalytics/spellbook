@@ -1,8 +1,11 @@
-{%- macro stablecoins_svm_balances_asof(
+{%- macro stablecoins_svm_balances(
   blockchain,
   token_list,
   start_date
 ) %}
+
+-- use slightly smaller value for safe double comparison
+{% set uint256_max_double = '1.0e77' %}
 
 with transfers_in as (
   select
@@ -78,14 +81,12 @@ cumulative_flows as (
       partition by d.address, d.token_mint_address
       order by d.day
       rows between unbounded preceding and current row
-    ) as cumulative_outflow
+    ) as cumulative_outflow,
+    lead(d.day) over (
+      partition by d.address, d.token_mint_address
+      order by d.day
+    ) as next_update_day
   from daily_aggregated d
-),
-
--- get unique address/token combinations from current batch only
-address_tokens as (
-  select distinct address, token_mint_address
-  from daily_aggregated
 ),
 
 days as (
@@ -98,33 +99,28 @@ days as (
   {% endif %}
 ),
 
-address_token_days as (
-  select
-    d.day,
-    at.address,
-    at.token_mint_address
-  from days d
-  cross join address_tokens at
+-- filter out zero balances early before the expensive cross join expansion
+cumulative_flows_nonzero as (
+  select *
+  from cumulative_flows
+  where cast(greatest(0e0, least({{ uint256_max_double }},
+    (cast(cumulative_inflow as double) - cast(cumulative_outflow as double))
+  )) as uint256) > uint256 '0'
 ),
 
--- asof join for forward fill
 forward_fill as (
   select
-    atd.day,
-    atd.address,
-    atd.token_mint_address,
+    d.day,
+    c.address,
+    c.token_mint_address,
     c.cumulative_inflow,
     c.cumulative_outflow,
     c.day as last_updated
-  from address_token_days atd
-  asof join cumulative_flows c
-    on atd.address = c.address
-    and atd.token_mint_address = c.token_mint_address
-    and c.day <= atd.day
+  from days d
+  inner join cumulative_flows_nonzero c
+    on d.day >= c.day
+    and (c.next_update_day is null or d.day < c.next_update_day)
 )
-
--- use slightly smaller value for safe double comparison
-{% set uint256_max_double = '1.0e77' %}
 
 select
   '{{blockchain}}' as blockchain,
@@ -150,10 +146,6 @@ where {{ incremental_predicate('f.day') }}
     coalesce(cast(p.prior_inflow as double), 0e0) - coalesce(cast(p.prior_outflow as double), 0e0) +
     (cast(f.cumulative_inflow as double) - cast(f.cumulative_outflow as double))
   )) as uint256) > uint256 '0'
-{% else %}
-where cast(greatest(0e0, least({{ uint256_max_double }},
-  (cast(f.cumulative_inflow as double) - cast(f.cumulative_outflow as double))
-)) as uint256) > uint256 '0'
 {% endif %}
 
 {% endmacro %}

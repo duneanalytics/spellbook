@@ -5,12 +5,10 @@
 {{
   config(
     schema = 'stablecoins_svm',
-    alias = 'balances_asof',
+    alias = 'balances',
     materialized = 'view'
   )
 }}
-
--- SVM stablecoin balances using ASOF pattern (benchmark)
 
 select *
 from (
@@ -29,7 +27,7 @@ from (
     balance,
     balance_usd,
     last_updated
-  from {{ ref('stablecoins_' ~ chain ~ '_balances_asof') }}
+  from {{ ref('stablecoins_' ~ chain ~ '_balances') }}
   {% if not loop.last %}
   union all
   {% endif %}

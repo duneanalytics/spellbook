@@ -3,7 +3,7 @@
 {{
   config(
     schema = 'stablecoins_' ~ chain,
-    alias = 'core_balances_asof',
+    alias = 'extended_balances',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -13,11 +13,11 @@
   )
 }}
 
--- core balances using optimized ASOF join pattern (benchmark)
+-- extended balances: tracks balances for newly added stablecoins (not in core list)
+-- update start_date when adding new stablecoins
 
--- TEST -> revert to: '2020-10-02' for production
-{{ stablecoins_svm_balances_asof(
+{{ stablecoins_svm_balances(
   blockchain = chain,
-  token_list = 'core',
-  start_date = '2025-01-01'
+  token_list = 'extended',
+  start_date = '2026-01-01'
 ) }}

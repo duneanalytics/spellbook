@@ -57,14 +57,14 @@ models:
       - *decimals
       - *name
 
-  - name: stablecoins_svm_balances_lead
+  - name: stablecoins_svm_balances
     meta:
       sector: stablecoin
       project: stablecoin
       contributors: tomfutago
     config:
-      tags: ['stablecoin', 'balances', 'benchmark']
-    description: "Stablecoin balances across all SVM chains using LEAD pattern (benchmark)"
+      tags: ['stablecoin', 'balances']
+    description: "Stablecoin balances across all SVM chains with token metadata and USD prices"
     columns:
       - *blockchain
       - &day
@@ -103,29 +103,6 @@ models:
       - &last_updated
         name: last_updated
         description: "Date when balance was last updated"
-
-  - name: stablecoins_svm_balances_asof
-    meta:
-      sector: stablecoin
-      project: stablecoin
-      contributors: tomfutago
-    config:
-      tags: ['stablecoin', 'balances', 'benchmark']
-    description: "Stablecoin balances across all SVM chains using ASOF pattern (benchmark)"
-    columns:
-      - *blockchain
-      - *day
-      - *address
-      - *token_symbol
-      - *token_address
-      - *token_standard
-      - *token_id
-      - *token_backing
-      - *token_name
-      - *balance_raw
-      - *balance
-      - *balance_usd
-      - *last_updated
 
   - name: stablecoins_svm_transfers
     meta:

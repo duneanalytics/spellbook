@@ -7,6 +7,7 @@ select
   b.blockchain,
   b.day,
   b.address,
+  p.symbol as token_symbol,
   b.token_mint_address as token_address,
   'spl_token' as token_standard,
   cast(null as uint256) as token_id,

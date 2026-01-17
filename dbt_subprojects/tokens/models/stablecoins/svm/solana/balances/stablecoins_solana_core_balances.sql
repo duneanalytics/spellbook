@@ -3,7 +3,7 @@
 {{
   config(
     schema = 'stablecoins_' ~ chain,
-    alias = 'core_balances_lead',
+    alias = 'core_balances',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -13,10 +13,10 @@
   )
 }}
 
--- core balances using LEAD/forward-fill pattern (benchmark)
+-- core balances using lead/forward-fill pattern
 
 -- TEST -> revert to: '2020-10-02' for production
-{{ stablecoins_svm_balances_lead(
+{{ stablecoins_svm_balances(
   blockchain = chain,
   token_list = 'core',
   start_date = '2025-01-01'
