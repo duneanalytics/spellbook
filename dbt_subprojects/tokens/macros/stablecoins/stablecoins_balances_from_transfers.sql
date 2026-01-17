@@ -9,7 +9,7 @@ with
 celo_l1_validators as (
   select distinct
     bytearray_substring(l.topic1, 13, 20) as validator_address
-  from celo.logs l
+  from {{ source('celo', 'logs') }} l
   where l.contract_address = 0xaeb865bca93ddc8f47b8e29f40c5399ce34d0c58  -- validators contract
     and l.topic0 = 0xd09501348473474a20c772c79c653e1fd7e8b437e418fe235d277d2c88853251  -- ValidatorRegistered
     and l.block_time < timestamp '2025-03-26'  -- before L2 migration
