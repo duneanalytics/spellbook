@@ -14,6 +14,7 @@
 }}
 
 -- core balances: tracks balances for stablecoins in the frozen core list
+-- trigger rebuild
 
 with
 
