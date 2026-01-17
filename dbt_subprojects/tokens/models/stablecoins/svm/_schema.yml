@@ -85,12 +85,6 @@ models:
       - &token_id
         name: token_id
         description: "Token id (null for spl tokens)"
-      - &token_backing
-        name: token_backing
-        description: "Stablecoin backing type"
-      - &token_name
-        name: token_name
-        description: "Stablecoin name"
       - &balance_raw
         name: balance_raw
         description: "Raw balance (not adjusted for decimals)"
@@ -143,8 +137,12 @@ models:
         description: "Token program version (spl_token, token2022)"
       - *token_mint_address
       - *token_symbol
-      - *token_backing
-      - *token_name
+      - &token_backing
+        name: token_backing
+        description: "Stablecoin backing type"
+      - &token_name
+        name: token_name
+        description: "Stablecoin name"
       - &amount_raw
         name: amount_raw
         description: "Raw transfer amount"
