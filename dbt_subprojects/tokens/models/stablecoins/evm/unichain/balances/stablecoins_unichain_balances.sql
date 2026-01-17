@@ -1,9 +1,9 @@
-{% set chain = 'arbitrum' %}
+{% set chain = 'unichain' %}
 
 {{
   config(
     schema = 'stablecoins_' ~ chain,
-    alias = 'balances_test',
+    alias = 'balances',
     materialized = 'view',
     post_hook = '{{ expose_spells(blockchains = \'["' ~ chain ~ '"]\',
                                  spell_type = "sector",
@@ -12,7 +12,7 @@
   )
 }}
 
--- union of core and extended enriched balances (test)
+-- union of core and extended enriched balances
 
 select
   blockchain,
@@ -26,7 +26,7 @@ select
   balance,
   balance_usd,
   last_updated
-from {{ ref('stablecoins_' ~ chain ~ '_core_balances_enriched_test') }}
+from {{ ref('stablecoins_' ~ chain ~ '_core_balances_enriched') }}
 
 union all
 
@@ -42,4 +42,4 @@ select
   balance,
   balance_usd,
   last_updated
-from {{ ref('stablecoins_' ~ chain ~ '_extended_balances_enriched_test') }}
+from {{ ref('stablecoins_' ~ chain ~ '_extended_balances_enriched') }}
