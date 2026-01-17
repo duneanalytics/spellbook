@@ -16,6 +16,8 @@ models:
             - day
             - address
             - token_mint_address
+          config:
+            where: "day >= current_date - interval '30' day"
     columns:
       - &blockchain
         name: blockchain
@@ -74,6 +76,8 @@ models:
             - day
             - address
             - token_address
+          config:
+            where: "day >= current_date - interval '30' day"
     columns:
       - *blockchain
       - *day
@@ -142,6 +146,8 @@ models:
             - day
             - address
             - token_address
+          config:
+            where: "day >= current_date - interval '30' day"
     columns:
       - *blockchain
       - *day
