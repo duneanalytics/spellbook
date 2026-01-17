@@ -1,32 +1,56 @@
 {%- macro stablecoins_balances_from_transfers(transfers, start_date) %}
 
-with transfers_in as (
+{% set is_celo = 'celo' in (transfers | string | lower) %}
+
+with
+{% if is_celo %}
+-- Celo L1-era validators received epoch rewards without transfer events
+-- these addresses must be excluded from transfer-based balance tracking
+celo_l1_validators as (
+  select distinct
+    bytearray_substring(l.topic1, 13, 20) as validator_address
+  from celo.logs l
+  where l.contract_address = 0xaeb865bca93ddc8f47b8e29f40c5399ce34d0c58  -- validators contract
+    and l.topic0 = 0xd09501348473474a20c772c79c653e1fd7e8b437e418fe235d277d2c88853251  -- ValidatorRegistered
+    and l.block_time < timestamp '2025-03-26'  -- before L2 migration
+),
+{% endif %}
+
+transfers_in as (
   select
-    blockchain,
-    block_date as day,
-    block_time,
-    "to" as address,
-    token_address,
-    amount_raw as inflow,
+    t.blockchain,
+    t.block_date as day,
+    t.block_time,
+    t."to" as address,
+    t.token_address,
+    t.amount_raw as inflow,
     uint256 '0' as outflow
-  from {{ transfers }}
+  from {{ transfers }} t
+  {% if is_celo %}
+  left join celo_l1_validators v on t."to" = v.validator_address
+  where v.validator_address is null  -- exclude L1 validators
+  {% endif %}
   {% if is_incremental() %}
-  where {{ incremental_predicate('block_time') }}
+  {% if is_celo %}and{% else %}where{% endif %} {{ incremental_predicate('t.block_time') }}
   {% endif %}
 ),
 
 transfers_out as (
   select
-    blockchain,
-    block_date as day,
-    block_time,
-    "from" as address,
-    token_address,
+    t.blockchain,
+    t.block_date as day,
+    t.block_time,
+    t."from" as address,
+    t.token_address,
     uint256 '0' as inflow,
-    amount_raw as outflow
-  from {{ transfers }}
+    t.amount_raw as outflow
+  from {{ transfers }} t
+  {% if is_celo %}
+  left join celo_l1_validators v on t."from" = v.validator_address
+  where v.validator_address is null  -- exclude L1 validators
+  {% endif %}
   {% if is_incremental() %}
-  where {{ incremental_predicate('block_time') }}
+  {% if is_celo %}and{% else %}where{% endif %} {{ incremental_predicate('t.block_time') }}
   {% endif %}
 ),
 
