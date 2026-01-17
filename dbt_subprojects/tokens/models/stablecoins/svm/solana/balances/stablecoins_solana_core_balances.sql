@@ -13,11 +13,10 @@
   )
 }}
 
--- core balances using lead/forward-fill pattern
+-- core balances: tracks balances for stablecoins in the frozen core list
 
--- TEST -> revert to: '2020-10-02' for production
 {{ stablecoins_svm_balances(
   blockchain = chain,
   token_list = 'core',
-  start_date = '2025-01-01'
+  start_date = '2020-10-02'
 ) }}
