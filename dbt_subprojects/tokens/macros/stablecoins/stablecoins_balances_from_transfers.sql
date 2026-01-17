@@ -1,4 +1,4 @@
-{%- macro stablecoins_balances_from_transfers(transfers) %}
+{%- macro stablecoins_balances_from_transfers(transfers, start_date) %}
 
 with transfers_in as (
   select
@@ -61,50 +61,73 @@ prior_balances as (
 ),
 {% endif %}
 
-cumulative_flows as (
+-- use slightly smaller value for safe double comparison
+{% set uint256_max_double = '1.0e77' %}
+
+changed_balances as (
   select
     d.blockchain,
     d.day,
     d.last_updated,
     d.address,
     d.token_address,
-    sum(d.daily_inflow) over (
+    cast(greatest(0e0, least({{ uint256_max_double }},
+      {% if is_incremental() %}
+      coalesce(cast(p.prior_balance as double), 0e0) +
+      {% endif %}
+      sum(cast(d.daily_inflow as double) - cast(d.daily_outflow as double)) over (
+        partition by d.address, d.token_address
+        order by d.day
+        rows between unbounded preceding and current row
+      )
+    )) as uint256) as balance_raw,
+    lead(cast(d.day as timestamp)) over (
       partition by d.address, d.token_address
       order by d.day
-      rows between unbounded preceding and current row
-    ) as cumulative_inflow,
-    sum(d.daily_outflow) over (
-      partition by d.address, d.token_address
-      order by d.day
-      rows between unbounded preceding and current row
-    ) as cumulative_outflow
+    ) as next_update_day
   from daily_aggregated d
+  {% if is_incremental() %}
+  left join prior_balances p
+    on d.address = p.address
+    and d.token_address = p.token_address
+  {% endif %}
+),
+
+days as (
+  select cast(timestamp as date) as day
+  from {{ source('utils', 'days') }}
+  where cast(timestamp as date) >= cast('{{ start_date }}' as date)
+    and cast(timestamp as date) < current_date
+),
+
+forward_fill as (
+  select
+    b.blockchain,
+    d.day,
+    b.address,
+    b.token_address,
+    b.balance_raw,
+    b.day as last_updated
+  from days d
+  left join changed_balances b
+    on d.day >= b.day
+    and (b.next_update_day is null or cast(d.day as timestamp) < b.next_update_day)
 )
 
--- use slightly smaller value for safe double comparison
-{% set uint256_max_double = '1.0e77' %}
-
 select
-  c.blockchain,
-  c.day,
-  c.address,
-  c.token_address,
+  blockchain,
+  day,
+  address,
+  token_address,
   'erc20' as token_standard,
   cast(null as uint256) as token_id,
-  -- clamp to [0, uint256_max] to safely cast to uint256
-  cast(greatest(0e0, least({{ uint256_max_double }},
-    {% if is_incremental() %}
-    coalesce(cast(p.prior_balance as double), 0e0) +
-    {% endif %}
-    (cast(c.cumulative_inflow as double) - cast(c.cumulative_outflow as double))
-  )) as uint256) as balance_raw,
-  c.last_updated
-from cumulative_flows c
+  balance_raw,
+  last_updated
+from forward_fill
+where balance_raw > uint256 '0'
+  or (balance_raw = uint256 '0' and last_updated = day)  -- include actual 0-balance changes, not forward-fills
 {% if is_incremental() %}
-left join prior_balances p
-  on c.address = p.address
-  and c.token_address = p.token_address
-where {{ incremental_predicate('c.last_updated') }}
+  and {{ incremental_predicate('day') }}
 {% endif %}
 
 {% endmacro %}
