@@ -11,20 +11,26 @@ celo_l1_validators as (
   select validator_address
   from (
     select
-      validator as validator_address,
-      evt_block_time,
-      'register' as action
-    from {{ source('celo_core_celo', 'validators_evt_validatorregistered') }}
-    where evt_block_time < timestamp '2025-03-26'
-    union all
-    select
-      validator as validator_address,
-      evt_block_time,
-      'deregister' as action
-    from {{ source('celo_core_celo', 'validators_evt_validatorderegistered') }}
-    where evt_block_time < timestamp '2025-03-26'
+      validator_address,
+      action,
+      max_by(action, evt_block_time) over (partition by validator_address) as last_action
+    from (
+      select
+        validator as validator_address,
+        evt_block_time,
+        'register' as action
+      from {{ source('celo_core_celo', 'validators_evt_validatorregistered') }}
+      where evt_block_time < timestamp '2025-03-26'
+      union all
+      select
+        validator as validator_address,
+        evt_block_time,
+        'deregister' as action
+      from {{ source('celo_core_celo', 'validators_evt_validatorderegistered') }}
+      where evt_block_time < timestamp '2025-03-26'
+    )
   )
-  where action = max_by(action, evt_block_time) over (partition by validator_address)
+  where action = last_action
     and action = 'register'
 ),
 {% endif %}
