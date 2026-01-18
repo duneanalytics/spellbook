@@ -5,6 +5,7 @@
     schema = 'stablecoins_' ~ chain,
     alias = 'core_balances',
     materialized = 'incremental',
+    tags = ['prod_exclude'],
     file_format = 'delta',
     incremental_strategy = 'merge',
     partition_by = ['day'],
@@ -13,32 +14,9 @@
   )
 }}
 
--- core balances: tracks balances for stablecoins in the frozen core list
+-- core balances: tracks balances (from transfers) for stablecoins in the frozen core list
 
-with
-
-stablecoin_tokens as (
-  select contract_address as token_address
-  from {{ ref('tokens_' ~ chain ~ '_erc20_stablecoins_core') }}
-),
-
-balances as (
-  {{
-    balances_incremental_subset_daily(
-        blockchain = chain,
-        token_list = 'stablecoin_tokens',
-        start_date = '2023-01-01'
-    )
-  }}
-)
-
-select
-  blockchain,
-  day,
-  address,
-  token_address,
-  token_standard,
-  token_id,
-  balance_raw,
-  last_updated
-from balances
+{{ stablecoins_balances_from_transfers(
+    transfers = ref('stablecoins_' ~ chain ~ '_core_transfers'),
+    start_date = '2023-01-01'
+) }}
