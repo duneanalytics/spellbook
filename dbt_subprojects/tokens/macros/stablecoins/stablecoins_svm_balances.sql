@@ -55,10 +55,12 @@ daily_aggregated as (
 ),
 
 {% if is_incremental() %}
+-- get last known balance for each address/token from before the incremental window
 prior_balances as (
   select
     address,
     token_mint_address,
+    max(day) as last_day,
     max_by(balance_raw, day) as prior_balance
   from {{ this }}
   where not {{ incremental_predicate('day') }}
@@ -66,8 +68,8 @@ prior_balances as (
 ),
 {% endif %}
 
--- compute balance early (before cross-join) for better filtering
-changed_balances as (
+-- compute balances for addresses with new transfers
+new_transfer_balances as (
   select
     d.day,
     d.address,
@@ -81,17 +83,44 @@ changed_balances as (
         order by d.day
         rows between unbounded preceding and current row
       )
-    )) as uint256) as balance_raw,
-    lead(d.day) over (
-      partition by d.address, d.token_mint_address
-      order by d.day
-    ) as next_update_day
+    )) as uint256) as balance_raw
   from daily_aggregated d
   {% if is_incremental() %}
   left join prior_balances p
     on d.address = p.address
     and d.token_mint_address = p.token_mint_address
   {% endif %}
+),
+
+-- combine new transfer balances with prior balances (for addresses without new transfers)
+changed_balances as (
+  select
+    day,
+    address,
+    token_mint_address,
+    balance_raw,
+    lead(day) over (
+      partition by address, token_mint_address
+      order by day
+    ) as next_update_day
+  from (
+    select day, address, token_mint_address, balance_raw
+    from new_transfer_balances
+    {% if is_incremental() %}
+    union all
+    -- include prior balances for addresses without new transfers (for forward-fill)
+    select
+      p.last_day as day,
+      p.address,
+      p.token_mint_address,
+      p.prior_balance as balance_raw
+    from prior_balances p
+    left join daily_aggregated d
+      on p.address = d.address
+      and p.token_mint_address = d.token_mint_address
+    where d.address is null  -- no new transfers for this address/token
+    {% endif %}
+  )
 ),
 
 days as (
