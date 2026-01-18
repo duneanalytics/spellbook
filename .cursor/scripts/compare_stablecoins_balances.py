@@ -81,8 +81,9 @@ def get_dune_balances_query(
     """
     # Use test schema for chains not yet in production
     test_schema_tables = {
-        "unichain": "test_schema.git_dunesql_3da2d5f_stablecoins_unichain_balances",
-        "celo": "test_schema.git_dunesql_3da2d5f_stablecoins_celo_balances",
+        "unichain": "test_schema.git_dunesql_0ba1276_stablecoins_unichain_balances",
+        "celo": "test_schema.git_dunesql_0ba1276_stablecoins_celo_balances",
+        "arbitrum": "test_schema.git_dunesql_0ba1276_stablecoins_arbitrum_balances_test",
     }
     table_name = test_schema_tables.get(chain, f"stablecoins_{chain}.balances")
     is_test_table = chain in test_schema_tables
@@ -233,11 +234,36 @@ async def fetch_sim_balances(
         return {}
 
 
+def _classify_balance(
+    dune_balance: Decimal, sim_balance: Decimal | None
+) -> tuple[str, float | None]:
+    """Classify balance comparison and return (status, diff_percent)."""
+    if sim_balance is None:
+        return "not_found", None
+    elif dune_balance == 0 and sim_balance == 0:
+        return "exact_match", 0.0
+    elif dune_balance == 0:
+        return "large_diff", 100.0
+    elif sim_balance == dune_balance:
+        return "exact_match", 0.0
+    else:
+        diff = abs(dune_balance - sim_balance)
+        diff_percent = float(diff / dune_balance * 100)
+        if diff_percent < 0.0001:  # Floating point tolerance
+            return "exact_match", 0.0
+        elif diff_percent < 1.0:
+            return "small_diff", diff_percent
+        else:
+            return "large_diff", diff_percent
+
+
 async def compare_balances(
     dune_rows: list[dict[str, Any]],
     chain: str,
     api_key: str,
     request_delay: float = 0.5,
+    retry_not_found: bool = True,
+    retry_delay: float = 5.0,
 ) -> list[BalanceComparison]:
     """Compare Dune balances with SIM API balances.
 
@@ -246,6 +272,8 @@ async def compare_balances(
         chain: Chain name
         api_key: SIM API key
         request_delay: Delay in seconds between API requests (rate limiting)
+        retry_not_found: If True, retry fetching balances for "not found" entries after retry_delay
+        retry_delay: Delay in seconds before retrying "not found" entries (default: 5.0)
 
     Returns:
         List of BalanceComparison results
@@ -270,6 +298,9 @@ async def compare_balances(
         addresses = list(addresses_tokens.keys())
         total = len(addresses)
 
+        # Track not_found entries for retry: list of (result_index, addr, row)
+        not_found_entries: list[tuple[int, str, dict]] = []
+
         for idx, addr in enumerate(addresses):
             # Fetch balances with rate limiting delay
             sim_balances = await fetch_sim_balances(
@@ -281,29 +312,9 @@ async def compare_balances(
                 dune_balance = Decimal(str(row.get("balance", 0)))
                 sim_balance = sim_balances.get(token_addr)
 
-                if sim_balance is None:
-                    status = "not_found"
-                    diff_percent = None
-                elif dune_balance == 0 and sim_balance == 0:
-                    status = "exact_match"
-                    diff_percent = 0.0
-                elif dune_balance == 0:
-                    status = "large_diff"
-                    diff_percent = 100.0
-                elif sim_balance == dune_balance:
-                    status = "exact_match"
-                    diff_percent = 0.0
-                else:
-                    diff = abs(dune_balance - sim_balance)
-                    diff_percent = float(diff / dune_balance * 100)
-                    if diff_percent < 0.0001:  # Floating point tolerance
-                        status = "exact_match"
-                        diff_percent = 0.0
-                    elif diff_percent < 1.0:
-                        status = "small_diff"
-                    else:
-                        status = "large_diff"
+                status, diff_percent = _classify_balance(dune_balance, sim_balance)
 
+                result_index = len(results)
                 results.append(
                     BalanceComparison(
                         blockchain=str(row.get("blockchain", chain)),
@@ -316,9 +327,59 @@ async def compare_balances(
                     )
                 )
 
+                if status == "not_found":
+                    not_found_entries.append((result_index, addr, row))
+
             # Progress indicator for longer runs
             if total > 10 and (idx + 1) % 10 == 0:
                 print(f"  Progress: {idx + 1}/{total} addresses...")
+
+        # Retry not_found entries with delay before each retry
+        if retry_not_found and not_found_entries:
+            print(f"\n  {len(not_found_entries)} entries not found. Retrying each with {retry_delay}s delay...")
+
+            # Group by address for efficient retries
+            retry_addresses: dict[str, list[tuple[int, dict]]] = {}
+            for result_idx, addr, row in not_found_entries:
+                if addr not in retry_addresses:
+                    retry_addresses[addr] = []
+                retry_addresses[addr].append((result_idx, row))
+
+            retry_addr_list = list(retry_addresses.keys())
+            resolved_count = 0
+
+            for idx, addr in enumerate(retry_addr_list):
+                # Wait retry_delay before each retry request
+                await asyncio.sleep(retry_delay)
+
+                sim_balances = await fetch_sim_balances(
+                    session, api_key, chain_id, addr, delay=0  # delay already applied above
+                )
+
+                for result_idx, row in retry_addresses[addr]:
+                    token_addr = str(row.get("token_address", "")).lower()
+                    dune_balance = Decimal(str(row.get("balance", 0)))
+                    sim_balance = sim_balances.get(token_addr)
+
+                    if sim_balance is not None:
+                        # Update the result with new data
+                        status, diff_percent = _classify_balance(dune_balance, sim_balance)
+                        results[result_idx] = BalanceComparison(
+                            blockchain=str(row.get("blockchain", chain)),
+                            address=addr,
+                            token_address=token_addr,
+                            dune_balance=dune_balance,
+                            sim_balance=sim_balance,
+                            diff_percent=diff_percent,
+                            status=status,
+                        )
+                        resolved_count += 1
+
+                # Progress for retries
+                if len(retry_addr_list) > 5:
+                    print(f"    Retry progress: {idx + 1}/{len(retry_addr_list)} addresses...")
+
+            print(f"  Retry resolved {resolved_count}/{len(not_found_entries)} entries")
 
     return results
 
