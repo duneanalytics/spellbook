@@ -5,7 +5,6 @@
     schema = 'stablecoins_' ~ chain,
     alias = 'core_balances',
     materialized = 'incremental',
-    tags = ['prod_exclude'],
     file_format = 'delta',
     incremental_strategy = 'merge',
     partition_by = ['day'],

@@ -5,16 +5,13 @@
     schema = 'stablecoins_' ~ chain,
     alias = 'balances',
     materialized = 'view',
-    tags = ['prod_exclude'],
     post_hook = '{{ expose_spells(blockchains = \'["' ~ chain ~ '"]\',
                                  spell_type = "sector",
                                  spell_name = "stablecoins",
                                  contributors = \'["tomfutago"]\') }}'
   )
 }}
-
 -- union of seed and latest enriched balances
-
 select
   blockchain,
   day,
@@ -28,9 +25,7 @@ select
   balance_usd,
   last_updated
 from {{ ref('stablecoins_' ~ chain ~ '_core_balances_enriched') }}
-
 union all
-
 select
   blockchain,
   day,
