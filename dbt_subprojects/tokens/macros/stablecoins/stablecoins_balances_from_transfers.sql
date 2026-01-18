@@ -6,13 +6,26 @@ with
 {% if is_celo %}
 -- Celo L1-era validators received epoch rewards without transfer events
 -- these addresses must be excluded from transfer-based balance tracking
+-- uses last action before L2 migration to handle register/deregister/re-register cases
 celo_l1_validators as (
-  select distinct
-    bytearray_substring(l.topic1, 13, 20) as validator_address
-  from {{ source('celo', 'logs') }} l
-  where l.contract_address = 0xaeb865bca93ddc8f47b8e29f40c5399ce34d0c58  -- validators contract
-    and l.topic0 = 0xd09501348473474a20c772c79c653e1fd7e8b437e418fe235d277d2c88853251  -- ValidatorRegistered
-    and l.block_time < timestamp '2025-03-26'  -- before L2 migration
+  select validator_address
+  from (
+    select
+      validator as validator_address,
+      evt_block_time,
+      'register' as action
+    from {{ source('celo_core_celo', 'validators_evt_validatorregistered') }}
+    where evt_block_time < timestamp '2025-03-26'
+    union all
+    select
+      validator as validator_address,
+      evt_block_time,
+      'deregister' as action
+    from {{ source('celo_core_celo', 'validators_evt_validatorderegistered') }}
+    where evt_block_time < timestamp '2025-03-26'
+  )
+  where action = max_by(action, evt_block_time) over (partition by validator_address)
+    and action = 'register'
 ),
 {% endif %}
 
@@ -148,8 +161,8 @@ select
   balance_raw,
   last_updated
 from forward_fill
-where balance_raw > uint256 '0'
-  or (balance_raw = uint256 '0' and last_updated = day)  -- include actual 0-balance changes, not forward-fills
+where (balance_raw > uint256 '0'
+  or (balance_raw = uint256 '0' and last_updated = day))  -- include actual 0-balance changes, not forward-fills
 {% if is_incremental() %}
   and {{ incremental_predicate('day') }}
 {% endif %}

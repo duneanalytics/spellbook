@@ -13,7 +13,7 @@
   )
 }}
 
--- extended balances: tracks balances for newly added stablecoins (from transfers)
+-- extended balances: tracks balances (from transfers) for newly added stablecoins
 
 {{ stablecoins_balances_from_transfers(
     transfers = ref('stablecoins_' ~ chain ~ '_extended_transfers'),

@@ -6,7 +6,7 @@ models:
       blockchain: arbitrum
       sector: stablecoin
       project: stablecoin
-      contributors: synthquest, tomfutago
+      contributors: tomfutago
     config:
       tags: ['stablecoin', 'balances']
     description: "Core balances of stablecoin token holders (frozen core list)"
@@ -16,6 +16,8 @@ models:
             - day
             - address
             - token_address
+          config:
+            where: "day >= current_date - interval '30' day"
     columns:
       - &blockchain
         name: blockchain
@@ -50,13 +52,15 @@ models:
       contributors: tomfutago
     config:
       tags: ['stablecoin', 'balances']
-    description: "Extended balances of newly added stablecoin token holders"
+    description: "Extended balances of newly added stablecoin token holders (from transfers)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
             - address
             - token_address
+          config:
+            where: "day >= current_date - interval '30' day"
     columns:
       - *blockchain
       - *day
@@ -75,13 +79,15 @@ models:
       contributors: tomfutago
     config:
       tags: ['stablecoin', 'balances']
-    description: "Core balances enriched with token metadata and usd prices"
+    description: "Core balances enriched with usd prices"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
             - address
             - token_address
+          config:
+            where: "day >= current_date - interval '30' day"
     columns:
       - *blockchain
       - *day
@@ -109,13 +115,15 @@ models:
       contributors: tomfutago
     config:
       tags: ['stablecoin', 'balances']
-    description: "Extended balances enriched with token metadata and usd prices"
+    description: "Extended balances enriched with token metadata and usd prices (from transfers)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
             - address
             - token_address
+          config:
+            where: "day >= current_date - interval '30' day"
     columns:
       - *blockchain
       - *day
@@ -137,147 +145,15 @@ models:
       contributors: tomfutago
     config:
       tags: ['stablecoin', 'balances']
-    description: "Union view of seed and latest enriched balances"
+    description: "Union view of core and extended enriched balances (from transfers)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
             - address
             - token_address
-    columns:
-      - *blockchain
-      - *day
-      - *address
-      - *token_symbol
-      - *token_address
-      - *token_standard
-      - *token_id
-      - *balance_raw
-      - *balance
-      - *balance_usd
-      - *last_updated
-
-  - name: stablecoins_arbitrum_core_balances_test
-    meta:
-      blockchain: arbitrum
-      sector: stablecoin
-      project: stablecoin
-      contributors: tomfutago
-    config:
-      tags: ['stablecoin', 'balances', 'test']
-    description: "Core balances of stablecoin token holders (from transfers, test)"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - address
-            - token_address
-    columns:
-      - *blockchain
-      - *day
-      - *address
-      - *token_address
-      - *token_standard
-      - *token_id
-      - *balance_raw
-      - *last_updated
-
-  - name: stablecoins_arbitrum_extended_balances_test
-    meta:
-      blockchain: arbitrum
-      sector: stablecoin
-      project: stablecoin
-      contributors: tomfutago
-    config:
-      tags: ['stablecoin', 'balances', 'test']
-    description: "Extended balances of newly added stablecoin token holders (from transfers, test)"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - address
-            - token_address
-    columns:
-      - *blockchain
-      - *day
-      - *address
-      - *token_address
-      - *token_standard
-      - *token_id
-      - *balance_raw
-      - *last_updated
-
-  - name: stablecoins_arbitrum_core_balances_enriched_test
-    meta:
-      blockchain: arbitrum
-      sector: stablecoin
-      project: stablecoin
-      contributors: tomfutago
-    config:
-      tags: ['stablecoin', 'balances', 'test']
-    description: "Core balances enriched with token metadata and usd prices (from transfers, test)"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - address
-            - token_address
-    columns:
-      - *blockchain
-      - *day
-      - *address
-      - *token_symbol
-      - *token_address
-      - *token_standard
-      - *token_id
-      - *balance_raw
-      - *balance
-      - *balance_usd
-      - *last_updated
-
-  - name: stablecoins_arbitrum_extended_balances_enriched_test
-    meta:
-      blockchain: arbitrum
-      sector: stablecoin
-      project: stablecoin
-      contributors: tomfutago
-    config:
-      tags: ['stablecoin', 'balances', 'test']
-    description: "Extended balances enriched with token metadata and usd prices (from transfers, test)"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - address
-            - token_address
-    columns:
-      - *blockchain
-      - *day
-      - *address
-      - *token_symbol
-      - *token_address
-      - *token_standard
-      - *token_id
-      - *balance_raw
-      - *balance
-      - *balance_usd
-      - *last_updated
-
-  - name: stablecoins_arbitrum_balances_test
-    meta:
-      blockchain: arbitrum
-      sector: stablecoin
-      project: stablecoin
-      contributors: tomfutago
-    config:
-      tags: ['stablecoin', 'balances', 'test']
-    description: "Union view of core and extended enriched balances (from transfers, test)"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - address
-            - token_address
+          config:
+            where: "day >= current_date - interval '30' day"
     columns:
       - *blockchain
       - *day

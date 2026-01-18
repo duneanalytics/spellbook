@@ -13,7 +13,7 @@
   )
 }}
 
--- core balances: tracks balances for stablecoins in the frozen core list (from transfers)
+-- core balances: tracks balances (from transfers) for stablecoins in the frozen core list
 
 {{ stablecoins_balances_from_transfers(
     transfers = ref('stablecoins_' ~ chain ~ '_core_transfers'),

@@ -6,7 +6,7 @@ models:
       blockchain: ethereum
       sector: stablecoin
       project: stablecoin
-      contributors: synthquest, tomfutago
+      contributors: tomfutago
     config:
       tags: ['stablecoin', 'balances']
     description: "Core balances of stablecoin token holders (frozen core list)"
@@ -75,7 +75,7 @@ models:
       contributors: tomfutago
     config:
       tags: ['stablecoin', 'balances']
-    description: "Core balances enriched with token metadata and usd prices"
+    description: "Core balances enriched with usd prices"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

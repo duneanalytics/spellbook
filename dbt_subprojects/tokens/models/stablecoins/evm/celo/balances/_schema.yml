@@ -9,13 +9,15 @@ models:
       contributors: tomfutago
     config:
       tags: ['stablecoin', 'balances']
-    description: "Core balances of stablecoin token holders (from transfers)"
+    description: "Core balances of stablecoin token holders (frozen core list)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
             - address
             - token_address
+          config:
+            where: "day >= current_date - interval '30' day"
     columns:
       - &blockchain
         name: blockchain
@@ -50,13 +52,15 @@ models:
       contributors: tomfutago
     config:
       tags: ['stablecoin', 'balances']
-    description: "Extended balances of newly added stablecoin token holders (from transfers)"
+    description: "Extended balances of newly added stablecoin token holders"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
             - address
             - token_address
+          config:
+            where: "day >= current_date - interval '30' day"
     columns:
       - *blockchain
       - *day
@@ -75,13 +79,15 @@ models:
       contributors: tomfutago
     config:
       tags: ['stablecoin', 'balances']
-    description: "Core balances enriched with token metadata and usd prices (from transfers)"
+    description: "Core balances enriched with usd prices"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
             - address
             - token_address
+          config:
+            where: "day >= current_date - interval '30' day"
     columns:
       - *blockchain
       - *day
@@ -109,13 +115,15 @@ models:
       contributors: tomfutago
     config:
       tags: ['stablecoin', 'balances']
-    description: "Extended balances enriched with token metadata and usd prices (from transfers)"
+    description: "Extended balances enriched with token metadata and usd prices"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
             - address
             - token_address
+          config:
+            where: "day >= current_date - interval '30' day"
     columns:
       - *blockchain
       - *day
@@ -137,13 +145,15 @@ models:
       contributors: tomfutago
     config:
       tags: ['stablecoin', 'balances']
-    description: "Union view of core and extended enriched balances (from transfers)"
+    description: "Union view of core and extended enriched balances"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
             - address
             - token_address
+          config:
+            where: "day >= current_date - interval '30' day"
     columns:
       - *blockchain
       - *day
