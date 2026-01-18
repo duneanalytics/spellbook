@@ -19,6 +19,7 @@ from {{ base_balances }} b
 left join {{ source('prices_external', 'day') }} p
   on cast(b.day as timestamp) = p.timestamp
   and from_base58(b.token_mint_address) = p.contract_address
+  and p.blockchain = '{{ blockchain }}'
   {% if is_incremental() %}
   and {{ incremental_predicate('p.timestamp') }}
   {% endif %}
