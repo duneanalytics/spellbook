@@ -95,12 +95,20 @@ daily_aggregated as (
 {% if is_incremental() %}
 prior_balances as (
   select
+    blockchain,
     address,
     token_address,
-    max_by(balance_raw, day) as prior_balance
+    max(day) as day,
+    max_by(last_updated, day) as last_updated,
+    max_by(balance_raw, day) as balance_raw
   from {{ this }}
   where not {{ incremental_predicate('last_updated') }}
-  group by 1, 2
+  group by 1, 2, 3
+),
+
+addresses_with_activity as (
+  select distinct address, token_address
+  from daily_aggregated
 ),
 {% endif %}
 
@@ -109,31 +117,58 @@ prior_balances as (
 
 changed_balances as (
   select
-    d.blockchain,
-    d.day,
-    d.last_updated,
-    d.address,
-    d.token_address,
-    cast(greatest(0e0, least({{ uint256_max_double }},
-      {% if is_incremental() %}
-      coalesce(cast(p.prior_balance as double), 0e0) +
-      {% endif %}
-      sum(cast(d.daily_inflow as double) - cast(d.daily_outflow as double)) over (
-        partition by d.address, d.token_address
-        order by d.day
-        rows between unbounded preceding and current row
-      )
-    )) as uint256) as balance_raw,
-    lead(cast(d.day as timestamp)) over (
-      partition by d.address, d.token_address
-      order by d.day
+    blockchain,
+    day,
+    last_updated,
+    address,
+    token_address,
+    balance_raw,
+    lead(cast(day as timestamp)) over (
+      partition by address, token_address
+      order by day
     ) as next_update_day
-  from daily_aggregated d
-  {% if is_incremental() %}
-  left join prior_balances p
-    on d.address = p.address
-    and d.token_address = p.token_address
-  {% endif %}
+  from (
+    -- addresses with transfers in the incremental window: calculate running balance
+    select
+      d.blockchain,
+      d.day,
+      d.last_updated,
+      d.address,
+      d.token_address,
+      cast(greatest(0e0, least({{ uint256_max_double }},
+        {% if is_incremental() %}
+        coalesce(cast(p.balance_raw as double), 0e0) +
+        {% endif %}
+        sum(cast(d.daily_inflow as double) - cast(d.daily_outflow as double)) over (
+          partition by d.address, d.token_address
+          order by d.day
+          rows between unbounded preceding and current row
+        )
+      )) as uint256) as balance_raw
+    from daily_aggregated d
+    {% if is_incremental() %}
+    left join prior_balances p
+      on d.address = p.address
+      and d.token_address = p.token_address
+    {% endif %}
+    {% if is_incremental() %}
+    union all
+    -- addresses WITHOUT transfers in the incremental window: carry forward prior balance
+    -- this ensures all addresses are forward-filled, not just those with new activity
+    select
+      p.blockchain,
+      p.day,
+      p.last_updated,
+      p.address,
+      p.token_address,
+      p.balance_raw
+    from prior_balances p
+    left join addresses_with_activity a
+      on p.address = a.address
+      and p.token_address = a.token_address
+    where a.address is null
+    {% endif %}
+  )
 ),
 
 days as (

@@ -5,6 +5,7 @@
     schema = 'stablecoins_' ~ chain,
     alias = 'balances',
     materialized = 'view',
+    tags = ['prod_exclude'],
     post_hook = '{{ expose_spells(blockchains = \'["' ~ chain ~ '"]\',
                                  spell_type = "sector",
                                  spell_name = "stablecoins",
