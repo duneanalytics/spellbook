@@ -81,9 +81,9 @@ def get_dune_balances_query(
     """
     # Use test schema for chains not yet in production
     test_schema_tables = {
-        "unichain": "test_schema.git_dunesql_0ba1276_stablecoins_unichain_balances",
-        "celo": "test_schema.git_dunesql_0ba1276_stablecoins_celo_balances",
-        "arbitrum": "test_schema.git_dunesql_0ba1276_stablecoins_arbitrum_balances_test",
+        "unichain": "test_schema.git_dunesql_4f56406_stablecoins_unichain_balances",
+        "celo": "test_schema.git_dunesql_4f56406_stablecoins_celo_balances",
+        "arbitrum": "test_schema.git_dunesql_4f56406_stablecoins_arbitrum_balances_test",
     }
     table_name = test_schema_tables.get(chain, f"stablecoins_{chain}.balances")
     is_test_table = chain in test_schema_tables
