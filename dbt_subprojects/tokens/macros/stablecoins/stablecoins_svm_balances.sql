@@ -125,8 +125,8 @@ select
   balance_raw,
   last_updated
 from forward_fill
-where balance_raw > uint256 '0'
-  or (balance_raw = uint256 '0' and last_updated = day)  -- keep actual zero-balance changes, not forward-fills
+where (balance_raw > uint256 '0'
+  or (balance_raw = uint256 '0' and last_updated = day))  -- keep actual zero-balance changes, not forward-fills
 {% if is_incremental() %}
   and {{ incremental_predicate('day') }}
 {% endif %}
