@@ -106,10 +106,6 @@ prior_balances as (
   group by 1, 2, 3
 ),
 
-addresses_with_activity as (
-  select distinct address, token_address
-  from daily_aggregated
-),
 {% endif %}
 
 -- use slightly smaller value for safe double comparison
@@ -153,8 +149,9 @@ changed_balances as (
     {% endif %}
     {% if is_incremental() %}
     union all
-    -- addresses WITHOUT transfers in the incremental window: carry forward prior balance
-    -- this ensures all addresses are forward-filled, not just those with new activity
+    -- include ALL prior balances to anchor forward_fill properly
+    -- for addresses WITH activity: bridges gap between prior balance and first activity day
+    -- for addresses WITHOUT activity: ensures they're forward-filled through the window
     select
       p.blockchain,
       p.day,
@@ -163,10 +160,6 @@ changed_balances as (
       p.token_address,
       p.balance_raw
     from prior_balances p
-    left join addresses_with_activity a
-      on p.address = a.address
-      and p.token_address = a.token_address
-    where a.address is null
     {% endif %}
   )
 ),
@@ -185,7 +178,7 @@ forward_fill as (
     b.address,
     b.token_address,
     b.balance_raw,
-    b.day as last_updated
+    b.last_updated
   from days d
   left join changed_balances b
     on d.day >= b.day
@@ -203,7 +196,7 @@ select
   last_updated
 from forward_fill
 where (balance_raw > uint256 '0'
-  or (balance_raw = uint256 '0' and last_updated = day))  -- include actual 0-balance changes, not forward-fills
+  or (balance_raw = uint256 '0' and cast(last_updated as date) = day))  -- include actual 0-balance changes, not forward-fills
 {% if is_incremental() %}
   and {{ incremental_predicate('day') }}
 {% endif %}
