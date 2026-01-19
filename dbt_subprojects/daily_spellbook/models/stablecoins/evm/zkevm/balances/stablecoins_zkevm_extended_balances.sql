@@ -16,6 +16,6 @@
 -- extended balances: tracks balances (from transfers) for newly added stablecoins
 
 {{ stablecoins_balances_from_transfers(
-    transfers = ref('stablecoins_' ~ chain ~ '_extended_transfers'),
+    transfers = source('stablecoins_' ~ chain, 'extended_transfers'),
     start_date = '2026-01-01'
 ) }}
