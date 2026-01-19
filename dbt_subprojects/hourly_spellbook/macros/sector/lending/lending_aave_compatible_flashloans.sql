@@ -24,6 +24,7 @@ base_flashloans as (
   select
     _target as recipient,
     cast(_amount as double) as amount,
+    _amount as amount_raw,
     cast(_totalFee as double) as fee,
     case when _reserve = {{ aave_mock_address }} then {{ native_token_address }} else _reserve end as token_address,
     contract_address,
@@ -40,6 +41,7 @@ select
   '{{ version }}' as version,
   recipient,
   amount,
+  amount_raw,
   fee,
   token_address,
   contract_address as project_contract_address,
@@ -80,6 +82,7 @@ base_flashloans as (
   select
     target as recipient,
     cast(amount as double) as amount,
+    amount as amount_raw,
     cast(premium as double) as fee,
     case when asset = {{ aave_mock_address }} then {{ native_token_address }} else asset end as token_address,
     contract_address,
@@ -96,6 +99,7 @@ select
   '{{ version }}' as version,
   recipient,
   amount,
+  amount_raw,
   fee,
   token_address,
   contract_address as project_contract_address,
@@ -137,6 +141,7 @@ base_flashloans as (
   select
     target as recipient,
     cast(amount as double) as amount,
+    amount as amount_raw,
     cast(premium as double) as fee,
     case when asset = {{ aave_mock_address }} then {{ native_token_address }} else asset end as token_address,
     contract_address,
@@ -153,6 +158,7 @@ select
   '{{ version }}' as version,
   recipient,
   amount,
+  amount_raw,
   fee,
   token_address,
   contract_address as project_contract_address,
