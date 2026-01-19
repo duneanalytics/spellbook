@@ -8,6 +8,7 @@ select
   erc20.symbol,
   flashloans.recipient,
   flashloans.amount / power(10, coalesce(erc20.decimals, 18)) as amount,
+  flashloans.amount_raw,
   flashloans.amount / power(10, coalesce(p.decimals, erc20.decimals, 18)) * p.price as amount_usd,
   flashloans.fee / power(10, coalesce(erc20.decimals, 18)) as fee,
   flashloans.project_contract_address,
