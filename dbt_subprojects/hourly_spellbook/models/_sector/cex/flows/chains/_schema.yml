@@ -673,6 +673,41 @@ models:
       - *evt_index
       - *unique_key
 
+  - name: cex_kaia_flows
+    meta:
+      blockchain: kaia
+      sector: cex
+      contributors: anton
+    config:
+      tags: ['cex','flows', 'kaia']
+    description: "All CEX-tied flows identified on Kaia"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - unique_key
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_time
+      - *block_number
+      - *cex_name
+      - *distinct_name
+      - *token_address
+      - *token_symbol
+      - *token_standard
+      - *flow_type
+      - *amount
+      - *amount_raw
+      - *amount_usd
+      - *from
+      - *to
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *tx_hash
+      - *evt_index
+      - *unique_key
+
   - name: cex_nova_flows
     meta:
       blockchain: nova

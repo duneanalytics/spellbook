@@ -1,4 +1,5 @@
 {{ config(
+    tags = ['prod_exclude'],
     schema = 'balancer',
     alias = 'pools_metrics_daily',
     materialized = 'incremental',
