@@ -12,8 +12,6 @@
   )
 }}
 
--- union of seed and latest enriched balances
-
 select
   blockchain,
   day,
@@ -27,9 +25,7 @@ select
   balance_usd,
   last_updated
 from {{ ref('stablecoins_' ~ chain ~ '_core_balances_enriched') }}
-
 union all
-
 select
   blockchain,
   day,

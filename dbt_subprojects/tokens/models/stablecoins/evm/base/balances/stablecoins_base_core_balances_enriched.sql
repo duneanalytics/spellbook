@@ -12,9 +12,7 @@
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')]
   )
 }}
-
 -- core balances enriched with token metadata and usd prices
-
 {{
   balances_incremental_subset_daily_enrich(
     base_balances = ref('stablecoins_' ~ chain ~ '_core_balances')

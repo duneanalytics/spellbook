@@ -13,33 +13,9 @@
   )
 }}
 
--- extended balances: tracks balances for newly added stablecoins (not in core list)
+-- extended balances: tracks balances (from transfers) for newly added stablecoins
 
-with
-
-stablecoin_tokens as (
-  select contract_address as token_address
-  from {{ ref('tokens_' ~ chain ~ '_erc20_stablecoins_extended') }}
-),
-
--- note: update start_date when adding new stablecoins
-balances as (
-  {{
-    balances_incremental_subset_daily(
-        blockchain = chain,
-        token_list = 'stablecoin_tokens',
-        start_date = '2025-01-01'
-    )
-  }}
-)
-
-select
-  blockchain,
-  day,
-  address,
-  token_address,
-  token_standard,
-  token_id,
-  balance_raw,
-  last_updated
-from balances
+{{ stablecoins_balances_from_transfers(
+    transfers = ref('stablecoins_' ~ chain ~ '_extended_transfers'),
+    start_date = '2026-01-01'
+) }}
