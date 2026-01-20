@@ -59,7 +59,12 @@
   config(
     schema = 'stablecoins',
     alias = 'transfers',
-    materialized = 'view',
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    partition_by = ['block_month'],
+    unique_key = ['blockchain', 'block_month', 'block_date', 'unique_key'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     post_hook = '{{ expose_spells(blockchains = \'["' ~ chains | join('","') ~ '"]\',
                                   spell_type = "sector",
                                   spell_name = "stablecoins",
@@ -92,9 +97,11 @@ from (
         , "to"
         , unique_key
     from {{ ref('stablecoins_' ~ chain ~ '_transfers') }}
+    {% if is_incremental() %}
+    where {{ incremental_predicate('block_date') }}
+    {% endif %}
     {% if not loop.last %}
     union all
     {% endif %}
     {% endfor %}
 )
-

@@ -59,7 +59,12 @@
   config(
     schema = 'stablecoins',
     alias = 'balances',
-    materialized = 'view',
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    partition_by = ['day'],
+    unique_key = ['blockchain', 'day', 'address', 'token_address'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
     post_hook = '{{ expose_spells(blockchains = \'["' ~ chains | join('","') ~ '"]\',
                                   spell_type = "sector",
                                   spell_name = "stablecoins",
@@ -83,6 +88,9 @@ from (
         balance_usd,
         last_updated
     from {{ ref('stablecoins_' ~ chain ~ '_balances') }}
+    {% if is_incremental() %}
+    where {{ incremental_predicate('day') }}
+    {% endif %}
     {% if not loop.last %}
     union all
     {% endif %}
