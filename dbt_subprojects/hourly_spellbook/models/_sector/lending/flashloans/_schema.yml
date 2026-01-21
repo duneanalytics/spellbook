@@ -44,6 +44,9 @@ models:
         description: "Token amount present in the transaction"
         data_tests:
           - not_null
+      - &amount_raw
+        name: amount_raw
+        description: "Raw token amount (uint256, always positive)"
       - &usd_amount
         name: usd_amount
         description: "Token amount in USD"

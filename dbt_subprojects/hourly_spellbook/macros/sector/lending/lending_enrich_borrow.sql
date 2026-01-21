@@ -13,6 +13,7 @@ select
   borrow.repayer,
   borrow.liquidator,
   borrow.amount / power(10, coalesce(erc20.decimals, 18)) as amount,
+  borrow.amount_raw,
   borrow.amount / power(10, coalesce(p.decimals, erc20.decimals, 18)) * p.price as amount_usd,
   borrow.block_month,
   borrow.block_time,

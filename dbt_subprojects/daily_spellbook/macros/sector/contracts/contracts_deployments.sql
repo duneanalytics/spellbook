@@ -3,10 +3,10 @@
 WITH contracts AS (
     SELECT
         address AS contract_address,
-        block_time AS creation_block_time,
-        block_month AS creation_block_month,
-        block_number AS creation_block_number,
-        tx_hash AS creation_tx_hash,
+        block_time AS deployment_block_time,
+        block_month AS deployment_block_month,
+        block_number AS deployment_block_number,
+        tx_hash AS deployment_tx_hash,
         code AS bytecode
     FROM {{ source(blockchain, 'creation_traces') }}
     {% if is_incremental() %}
@@ -18,7 +18,7 @@ WITH contracts AS (
 function_selectors AS (
     SELECT
         contract_address,
-        creation_tx_hash,
+        deployment_tx_hash,
         ARRAY_AGG(DISTINCT concat('0x', substr(m, 3, 8))) AS function_selectors
     FROM contracts
     CROSS JOIN UNNEST(
@@ -28,7 +28,7 @@ function_selectors AS (
             '63[0-9a-f]{8}14(?:60[0-9a-f]{2}|61[0-9a-f]{4}|62[0-9a-f]{6}|63[0-9a-f]{8})57'
         )
     ) AS t(m)
-    GROUP BY contract_address, creation_tx_hash
+    GROUP BY contract_address, deployment_tx_hash
 )
 
 /*
@@ -46,10 +46,10 @@ Regex explanation:
 SELECT
     '{{ blockchain }}' AS blockchain,
     contract_address,
-    creation_block_time,
-    creation_block_month,
-    creation_block_number,
-    creation_tx_hash,
+    deployment_block_time,
+    deployment_block_month,
+    deployment_block_number,
+    deployment_tx_hash,
     function_selectors,
     CASE
         WHEN contract_address IN (SELECT DISTINCT contract_address FROM {{ source('tokens_' ~ blockchain, 'erc20') }}) THEN TRUE
@@ -71,7 +71,7 @@ SELECT
     ELSE FALSE END AS erc721_flag,
     bytecode
 FROM contracts
-LEFT JOIN function_selectors USING(contract_address, creation_tx_hash)
+LEFT JOIN function_selectors USING(contract_address, deployment_tx_hash)
 
 {% endmacro %}
 
