@@ -791,5 +791,7 @@ FROM
         ('pstusdc-payfi-strategy-token-usdc','solana','PST','59obFNBzyTBGowrkif5uK7ojS58vsuWz3ZCvg6tfZAGw',6),
         ('wet-humidifi','solana','WET','WETZjtprkDMCcUxPi9PfWnowMRZkiGGHDb9rABuRZ2U',6),
         ('zec-omnibridge-bridged-zcash-solana','solana','ZEC','A7bdiYdS5GjqGFtxf17ppRHtDKPkkRqbKtR27dxvQXaS',8),
-        ('elizaos-elizaos','solana','elizaOS','DuMbhu7mvQvqQHGcnikDgb4XegXJRyhUBfdU22uELiZA',9)
+        ('elizaos-elizaos','solana','elizaOS','DuMbhu7mvQvqQHGcnikDgb4XegXJRyhUBfdU22uELiZA',9),
+        ('jupusd-jupiter-usd','solana','JupUSD','JuprjznTrTSp2UFa3ZBUFgwdAmtZCq4MQCwysN55USD',6),
+        ('jljupusd-jupiter-lend-jupusd','solana','jlJupUSD','7GxATsNMnaC88vdwd2t3mwrFuQwwGvmYPrUQ4D6FotXk',6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
