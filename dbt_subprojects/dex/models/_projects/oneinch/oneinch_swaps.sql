@@ -2,6 +2,7 @@
 
 {{-
     config(
+        tags = ['prod_exclude'],
         schema = 'oneinch',
         alias = 'swaps',
         materialized = 'incremental',
