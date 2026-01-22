@@ -42,7 +42,7 @@ WITH onchain_metadata AS (
       try_cast(substring(token_1_id, 5) AS UINT256) AS token_id,
       token_1_outcome AS token_outcome,
       *
-    FROM {{ source('dune', 'dataset_polymarket_markets', database="dune") }}
+    FROM {{ source('dune', 'polymarket_markets', database="dune") }}
     UNION ALL 
     SELECT
       CASE 
