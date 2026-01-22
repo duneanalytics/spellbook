@@ -275,7 +275,8 @@ base_borrow as (
     evt_block_number
   from base_withdraw_actions
   where amount_borrowed is not null
-    and amount_borrowed> 0
+    and amount_borrowed > 0
+    and action in ('borrow', 'borrow + withdraw')
   union all
   select
     'repay' as transaction_type,
@@ -292,7 +293,8 @@ base_borrow as (
     evt_block_number
   from base_supply_actions
   where amount_repaid is not null
-    and amount_repaid> 0
+    and amount_repaid > 0
+    and action in ('repay', 'repay + supply')
   union all
   select
     'borrow_liquidation' as transaction_type,
