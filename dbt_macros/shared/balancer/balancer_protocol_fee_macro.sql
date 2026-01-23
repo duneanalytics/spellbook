@@ -3,7 +3,7 @@
         blockchain, version, project_decoded_as, base_spells_namespace, pool_labels_model
     ) 
 %}
-
+-- test
 WITH pool_labels AS (
         SELECT * FROM (
             SELECT
