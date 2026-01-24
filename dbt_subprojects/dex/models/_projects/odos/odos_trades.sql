@@ -4,7 +4,7 @@
         post_hook='{{ expose_spells(\'["optimism", "ethereum", "base", "arbitrum"]\',
                                 "project",
                                 "odos",
-                                \'["Henrystats", "amalashkevich","lequangphu"]\') }}'
+                                \'["Henrystats", "amalashkevich","lequangphu","couchdicks"]\') }}'
         )
 }}
 
@@ -12,6 +12,7 @@
   ref('odos_ethereum_trades'),
   ref('odos_optimism_trades'),
   ref('odos_arbitrum_trades'),
+  ref('odos_avalanche_c_trades'),
   ref('odos_base_trades')
 ] %}
 
