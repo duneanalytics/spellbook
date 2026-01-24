@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: aave_v3_plasma
+    description: "Decoded contracts for aave v3 on Plasma"
+    
+    tables:
+      - name: StataTokenV2_evt_Initialized
+      - name: StataTokenFactory_call_createstatatokens

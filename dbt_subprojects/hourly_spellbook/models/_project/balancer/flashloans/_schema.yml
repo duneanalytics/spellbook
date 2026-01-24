@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
       sector: lending
-      contributors: hildobby, viniabussafi
+      contributors: hildobby, viniabussafi, amandadalle
     config:
       tags: ['ethereum', 'arbitrum', 'optimism', 'polygon', 'gnosis','avalanche_c', 'base', 'zkevm', 'flashloans']
     description: >

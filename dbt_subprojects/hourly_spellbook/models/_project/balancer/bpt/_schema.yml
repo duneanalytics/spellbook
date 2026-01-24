@@ -3,10 +3,10 @@ version: 2
 models:
   - name: balancer_transfers_bpt
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevmn
-      contributors: victorstefenon, thetroyharris, viniabussafi
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevmn, plasma, hyperevm
+      contributors: victorstefenon, thetroyharris, viniabussafi, amandadalle
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'bpt', 'transfers']
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'bpt', 'plasma', 'hyperevm', 'transfers']
     description: >
       Balancer Pool Token (BPT) transfer logs on Balancer, an automated portfolio manager and trading platform.
     data_tests:
@@ -55,11 +55,11 @@ models:
 
   - name: balancer_bpt_prices
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, plasma, polygon, zkevm, hyperevm
       sector: dex
       contributors: thetroyharris, victorstefenon, viniabussafi
     config:
-      tags: ['balancer', 'amm', 'dex', 'bpt', 'prices', 'ethereum', 'arbitrum', 'optimism', 'polygon', 'gnosis', 'avalanche_c', 'base', 'zkevm']
+      tags: ['balancer', 'amm', 'dex', 'bpt', 'prices', 'ethereum', 'arbitrum', 'optimism', 'polygon', 'gnosis', 'avalanche_c', 'base','plasma', 'zkevm', 'hyperevm']
     description: >
       Balancer Pool Token (BPT) hourly median price by pool on Balancer, an automated portfolio manager and trading platform.
     data_tests:
@@ -85,10 +85,10 @@ models:
 
   - name: balancer_bpt_supply
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
-      contributors: thetroyharris, viniabussafi
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm, plasma, hyperevm
+      contributors: thetroyharris, viniabussafi, amandadalle
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm',  'bpt']
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'plasma', 'polygon', 'zkevm',  'bpt', 'hyperevm']
     description: >
       The Balancer Pool Token (BPT) supply over time of ComposableStablePools versions 4+
     data_tests:
@@ -113,10 +113,10 @@ models:
 
   - name: balancer_bpt_supply_changes
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm, plasma, hyperevm
       contributors: viniabussafi
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'bpt', 'supply', 'changes']
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'plasma', 'bpt', 'supply', 'changes', 'hyperevm']
     description: >
       Balancer Pool Token (BPT) supply change events.
     data_tests:
@@ -152,10 +152,10 @@ models:
 
   - name: balancer_bpt_supply_changes_daily
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm, plasma, hyperevm
       contributors: viniabussafi
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'bpt', 'supply', 'changes']
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'bpt', 'supply', 'plasma', 'changes', 'hyperevm']
     description: >
       Balancer Pool Token (BPT) supply change events. grouped by day
     data_tests:

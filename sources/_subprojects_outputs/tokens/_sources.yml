@@ -630,6 +630,58 @@ sources:
             data_type: varchar
           - name: vault_token
             data_type: varbinary
+  
+  - name: tokens_hyperevm
+    tables:
+      - name: erc20
+        columns:
+          - name: contract_address
+            data_type: varbinary
+          - name: symbol
+            data_type: varchar
+          - name: decimals
+            data_type: integer
+      - name: nft
+      - name: erc20_stablecoins
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: backing
+            data_type: varchar
+          - name: symbol
+            data_type: varchar
+          - name: decimals
+            data_type: integer
+          - name: name
+            data_type: varchar
+
+  - name: tokens_plasma
+    tables:
+      - name: erc20
+        columns:
+          - name: contract_address
+            data_type: varbinary
+          - name: symbol
+            data_type: varchar
+          - name: decimals
+            data_type: integer
+      - name: nft
+      - name: erc20_stablecoins
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: backing
+            data_type: varchar
+          - name: symbol
+            data_type: varchar
+          - name: decimals
+            data_type: integer
+          - name: name
+            data_type: varchar
 
   - name: prices
     tables:
