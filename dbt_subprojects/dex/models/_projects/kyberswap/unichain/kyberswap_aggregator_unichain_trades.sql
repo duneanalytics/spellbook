@@ -1,21 +1,21 @@
 {{ config
 (
     
-    schema = 'kyberswap_aggregator_polygon',
+    schema = 'kyberswap_aggregator_unichain',
     alias = 'trades',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
-    post_hook='{{ expose_spells(\'["polygon"]\',
+    post_hook='{{ expose_spells(\'["unichain"]\',
                                     "project",
                                     "kyberswap",
-                                    \'["nhd98z"]\') }}'
+                                    \'["nhd98z", "phu_ngo"]\') }}'
 )
 }}
 
-{% set project_start_date = '2023-01-01' %}
+{% set project_start_date = '2025-04-16' %}
 
 WITH meta_router AS
 (
@@ -35,15 +35,13 @@ WITH meta_router AS
             ,evt_index              AS evt_index
             ,ARRAY[-1]              AS trace_address
         FROM
-            {{ source('kyber_polygon', 'MetaAggregationRouterV2_evt_Swapped') }}
-        WHERE
-            dstToken != 0xd848db988b477efe60ee2ff99f9898990c6fb0cd -- bug with MTK token
-            {% if is_incremental() %}
-            AND {{incremental_predicate('evt_block_time')}}
-            {% endif %}
+            {{ source('kyber_unichain', 'MetaAggregationRouterV2_evt_Swapped') }}
+        {% if is_incremental() %}
+        WHERE {{incremental_predicate('evt_block_time')}}
+        {% endif %}
 )
 SELECT
-    'polygon'                                                           AS blockchain
+    'unichain'                                                          AS blockchain
     ,project                                                            AS project
     ,meta_router.version                                                AS version
     ,CAST(date_trunc('day', meta_router.block_time) AS DATE)            AS block_date
@@ -62,8 +60,8 @@ SELECT
     ,CAST(meta_router.token_sold_amount_raw AS UINT256)                 AS token_sold_amount_raw
     ,COALESCE(
         meta_router.amount_usd
-        ,(meta_router.token_bought_amount_raw / power(10, (CASE meta_router.token_bought_address WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 18 ELSE p_bought.decimals END))) * (CASE meta_router.token_bought_address WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN  p_matic.price ELSE p_bought.price END)
-        ,(meta_router.token_sold_amount_raw / power(10, (CASE meta_router.token_sold_address WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 18 ELSE p_sold.decimals END))) * (CASE meta_router.token_sold_address WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN  p_matic.price ELSE p_sold.price END)
+        ,(meta_router.token_bought_amount_raw / power(10, (CASE meta_router.token_bought_address WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 18 ELSE p_bought.decimals END))) * (CASE meta_router.token_bought_address WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN  p_eth.price ELSE p_bought.price END)
+        ,(meta_router.token_sold_amount_raw / power(10, (CASE meta_router.token_sold_address WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 18 ELSE p_sold.decimals END))) * (CASE meta_router.token_sold_address WHEN 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN  p_eth.price ELSE p_sold.price END)
         )                                                               AS amount_usd
     ,meta_router.token_bought_address                                   AS token_bought_address
     ,meta_router.token_sold_address                                     AS token_sold_address
@@ -76,7 +74,7 @@ SELECT
     ,meta_router.evt_index                                              AS evt_index
     ,meta_router.trace_address                                          AS trace_address
 FROM meta_router
-INNER JOIN {{ source('polygon', 'transactions')}} tx
+INNER JOIN {{ source('unichain', 'transactions')}} tx
     ON meta_router.tx_hash = tx.hash
     {% if is_incremental() %}
     AND {{incremental_predicate('tx.block_time')}}
@@ -85,14 +83,14 @@ INNER JOIN {{ source('polygon', 'transactions')}} tx
     {% endif %}
 LEFT JOIN {{ source('tokens', 'erc20') }} erc20a
     ON erc20a.contract_address = meta_router.token_bought_address
-    AND erc20a.blockchain = 'polygon'
+    AND erc20a.blockchain = 'unichain'
 LEFT JOIN {{ source('tokens', 'erc20') }} erc20b
     ON erc20b.contract_address = meta_router.token_sold_address
-    AND erc20b.blockchain = 'polygon'
+    AND erc20b.blockchain = 'unichain'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought
     ON p_bought.minute = date_trunc('minute', meta_router.block_time)
     AND p_bought.contract_address = meta_router.token_bought_address
-    AND p_bought.blockchain = 'polygon'
+    AND p_bought.blockchain = 'unichain'
     {% if is_incremental() %}
     AND {{incremental_predicate('p_bought.minute')}}
     {% else %}
@@ -101,18 +99,18 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', meta_router.block_time)
     AND p_sold.contract_address = meta_router.token_sold_address
-    AND p_sold.blockchain = 'polygon'
+    AND p_sold.blockchain = 'unichain'
     {% if is_incremental() %}
     AND {{incremental_predicate('p_sold.minute')}}
     {% else %}
     AND p_sold.minute >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
-LEFT JOIN {{ source('prices', 'usd') }} p_matic
-    ON p_matic.minute = date_trunc('minute', meta_router.block_time)
-    AND p_matic.blockchain IS NULL
-    AND p_matic.symbol = 'MATIC'
+LEFT JOIN {{ source('prices', 'usd') }} p_eth
+    ON p_eth.minute = date_trunc('minute', meta_router.block_time)
+    AND p_eth.blockchain IS NULL
+    AND p_eth.symbol = 'ETH'
     {% if is_incremental() %}
-    AND {{incremental_predicate('p_matic.minute')}}
+    AND {{incremental_predicate('p_eth.minute')}}
     {% else %}
-    AND p_matic.minute >= TIMESTAMP '{{ project_start_date }}'
+    AND p_eth.minute >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}

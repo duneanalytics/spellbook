@@ -41,7 +41,7 @@ WITH meta_router AS
         {% endif %}
 )
 SELECT
-    'bnb'                                                          AS blockchain
+    'bnb'                                                               AS blockchain
     ,project                                                            AS project
     ,meta_router.version                                                AS version
     ,CAST(date_trunc('day', meta_router.block_time) AS DATE)            AS block_date

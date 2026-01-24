@@ -1,16 +1,30 @@
 version: 2
 
 models:
-  - name: kyberswap_aggregator_trades
+  - name: kyberswap_aggregator_linea_trades
     meta:
-      blockchain: arbitrum, avalanche_c, base, berachain, bnb, ethereum, linea, mantle, optimism, polygon, ronin, sonic, unichain
+      blockchain: linea
       sector: dex_aggregator
       project: kyberswap
-      contributors: nhd98z, Henrystats, phu_ngo
+      contributors: nhd98z, phu_ngo
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'berachain', 'bnb', 'ethereum', 'linea', 'mantle', 'optimism', 'polygon', 'ronin', 'sonic', 'unichain', 'dex', 'aggregator', 'trades', 'kyberswap', 'nhd98z', 'Henrystats', 'phu_ngo']
+      tags: ['linea', 'kyberswap', 'aggregator', 'trades', 'dex']
     description: >
-      Kyberswap Aggregator. This table will load dex_aggregator trades downstream.
+      Kyberswap Aggregator on linea.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+      - check_dex_aggregator_seed:
+          blockchain: linea
+          project: kyberswap
+          version: meta_2
     columns:
       - name: blockchain
       - name: project
