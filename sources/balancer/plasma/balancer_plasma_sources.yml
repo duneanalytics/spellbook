@@ -50,3 +50,19 @@ sources:
       - name: GyroECLPPoolFactory_call_create
 
       - name: ReclammPoolFactory_call_create
+
+  - name: labels
+    description: "Source tables for labels and metadata used across the Spellbook."
+    schema: labels 
+    tables:
+      - name: balancer_v3_pools_plasma
+        description: "Labels for Balancer V3 pools on Plasma."
+      
+  - name: aave_v3_plasma
+    description: "Source tables for Aave protocol on Plasma."
+    schema: aave_v3_plasma
+    tables:
+      - name: StaticATokenLM_evt_Initialized
+        description: "Event log for the StaticATokenLM Initialized event."
+      - name: StaticATokenFactory_evt_StaticTokenCreated
+        description: "Event log for the StaticTokenCreated event."

@@ -110,9 +110,6 @@ models:
       - *block_time
       - *block_number
       - *swap_fee_percentage      
-
-
-models:
   - name: beets_trades
     meta:
       blockchain: sonic
