@@ -4,7 +4,7 @@ models:
   - name: bisonfi_solana_stg_raw_swaps
     meta:
       blockchain: solana
-      contributors: [ Sector920 ]
+      contributors: [ Eekeguy ]
     config:
       tags: [ 'solana','dex', 'bisonfi' ]
     description: >
