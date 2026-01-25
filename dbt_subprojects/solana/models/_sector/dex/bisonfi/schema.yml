@@ -16,7 +16,7 @@ models:
   - name: bisonfi_solana_base_trades
     meta:
       blockchain: solana
-      contributors: [ Sector920 ]
+      contributors: [ Eekeguy ]
     config:
       tags: [ 'solana','dex', 'bisonfi' ]
     description: >
@@ -29,7 +29,7 @@ models:
   - name: bisonfi_solana_trades
     meta:
       blockchain: solana
-      contributors: [Sector920]
+      contributors: [Eekeguy]
     config:
       tags: ['solana','dex', 'bisonfi']
     description: >
