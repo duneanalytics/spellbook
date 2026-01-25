@@ -11,7 +11,7 @@
   )
 }}
 
-{% set project_start_date = '2025-06-13' %}
+{% set project_start_date = '2025-11-05' %}
 
 -- bisonfi swap data from instruction_calls table
 WITH swaps AS (
@@ -37,12 +37,10 @@ WITH swaps AS (
   FROM {{ source('solana','instruction_calls') }}
   WHERE
     1=1
-    AND executing_account = '9H6tua7jkLhdm3w8BvgpTn5LZNU7g4ZynDmCiNN3q6Rp'
+    AND executing_account = 'BiSoNHVpsVZW2F7rx2eQ59yQwKxzU5NvBcmKshCSUypi'
     AND tx_success = true
-    --AND BYTEARRAY_SUBSTRING(data, 1, 1) = '0xXX'
-        -- No distinct SWAP discriminator, unreliable method of isolate BisonFi swap instructions. See: https://dune.com/queries/5857394
-        -- Alternative method: arguments = 9 for swaps, join on inner_insturction_index +1 & +2 on token transfers.
-    AND cardinality(account_arguments) = 9 -- 9 arguments for all swap instructions. 3 arguments for all quote update instructions. No change in this pattern since deployment
+    AND BYTEARRAY_SUBSTRING(data, 1, 1) in (0x02,0x07)
+    AND cardinality(account_arguments) = 9 -- 9 arguments for all swap instructions
     {% if is_incremental() -%}
     AND {{ incremental_predicate('block_date') }}
     {% else -%}
