@@ -192,7 +192,7 @@ SELECT
 	, s.token_bought_vault
 	, s.token_sold_vault
 	, s.project_program_id
-	, '9H6tua7jkLhdm3w8BvgpTn5LZNU7g4ZynDmCiNN3q6Rp' AS project_main_id
+	, 'BiSoNHVpsVZW2F7rx2eQ59yQwKxzU5NvBcmKshCSUypi' AS project_main_id
 	, s.trader_id
 	, s.tx_id
 	, s.outer_instruction_index
