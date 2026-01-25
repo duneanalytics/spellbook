@@ -83,7 +83,6 @@ WITH swaps AS (
 	FROM {{ source('tokens_solana', 'transfers') }} tf
 	WHERE
 		1=1
-		AND tf.token_version IN ('spl_token', 'spl_token_2022')
 		-- keep this for partition pruning on transfers
 		{% if is_incremental() -%}
 		AND {{ incremental_predicate('tf.block_date') }}
