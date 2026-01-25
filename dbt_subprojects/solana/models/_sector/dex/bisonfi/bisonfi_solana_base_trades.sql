@@ -11,7 +11,7 @@
   )
 }}
 
-{% set project_start_date = '2025-11-05' %}
+{% set project_start_date = '2025-06-13' %}
 
 WITH swaps AS (
 	SELECT
@@ -52,7 +52,7 @@ WITH swaps AS (
 			, block_slot
 			, outer_instruction_index
 			, inner_instruction_index + 1 AS transfer_inner_instruction_index
-			, 2 AS transfer_side
+			, 1 AS transfer_side
 		FROM swaps
 
 		UNION ALL
@@ -63,7 +63,7 @@ WITH swaps AS (
 			, block_slot
 			, outer_instruction_index
 			, inner_instruction_index + 2 AS transfer_inner_instruction_index
-			, 1 AS transfer_side
+			, 2 AS transfer_side
 		FROM swaps
 	)
 )
@@ -83,6 +83,8 @@ WITH swaps AS (
 	FROM {{ source('tokens_solana', 'transfers') }} tf
 	WHERE
 		1=1
+		AND tf.token_version IN ('spl_token', 'spl_token_2022')
+		-- keep this for partition pruning on transfers
 		{% if is_incremental() -%}
 		AND {{ incremental_predicate('tf.block_date') }}
 		{% else -%}
