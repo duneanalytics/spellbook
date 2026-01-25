@@ -52,6 +52,9 @@ sources:
   - name: balancer_v3_base
     tables:
       - name: trades
+  - name: balancer_v3_avalanche_c
+    tables:
+      - name: trades
   - name: balancer
     tables:
       - name: trades
@@ -73,6 +76,7 @@ sources:
       - name: balancer_v3_pools_gnosis
       - name: balancer_v3_pools_base
       - name: balancer_v3_pools_arbitrum
+      - name: balancer_v3_pools_avalanche_c
       - name: balancer_v3_pools
   - name: uniswap_v3_optimism
     tables:
