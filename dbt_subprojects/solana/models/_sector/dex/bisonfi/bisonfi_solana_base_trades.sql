@@ -131,12 +131,12 @@ WITH swaps AS (
 			WHEN s.is_inner = false THEN 'direct'
 			ELSE s.outer_executing_account
 		  END AS trade_source
-		, max(CASE WHEN tf.transfer_side = 1 THEN tf.amount END) AS token_bought_amount_raw
-		, max(CASE WHEN tf.transfer_side = 2 THEN tf.amount END) AS token_sold_amount_raw
-		, max(CASE WHEN tf.transfer_side = 1 THEN tf.from_token_account END) AS token_bought_vault
-		, max(CASE WHEN tf.transfer_side = 2 THEN tf.to_token_account END) AS token_sold_vault
-		, max(CASE WHEN tf.transfer_side = 1 THEN tf.token_mint_address END) AS token_bought_mint_address
-		, max(CASE WHEN tf.transfer_side = 2 THEN tf.token_mint_address END) AS token_sold_mint_address
+		, max(CASE WHEN tf.transfer_side = 2 THEN tf.amount END) AS token_bought_amount_raw
+		, max(CASE WHEN tf.transfer_side = 1 THEN tf.amount END) AS token_sold_amount_raw
+		, max(CASE WHEN tf.transfer_side = 2 THEN tf.from_token_account END) AS token_bought_vault
+		, max(CASE WHEN tf.transfer_side = 1 THEN tf.to_token_account END) AS token_sold_vault
+		, max(CASE WHEN tf.transfer_side = 2 THEN tf.token_mint_address END) AS token_bought_mint_address
+		, max(CASE WHEN tf.transfer_side = 1 THEN tf.token_mint_address END) AS token_sold_mint_address
 		, s.pool_id AS project_program_id
 		, s.tx_signer AS trader_id
 		, s.tx_id
