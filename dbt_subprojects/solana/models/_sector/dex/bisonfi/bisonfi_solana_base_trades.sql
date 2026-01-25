@@ -52,7 +52,7 @@ WITH swaps AS (
 			, block_slot
 			, outer_instruction_index
 			, inner_instruction_index + 1 AS transfer_inner_instruction_index
-			, 1 AS transfer_side
+			, 2 AS transfer_side
 		FROM swaps
 
 		UNION ALL
@@ -63,7 +63,7 @@ WITH swaps AS (
 			, block_slot
 			, outer_instruction_index
 			, inner_instruction_index + 2 AS transfer_inner_instruction_index
-			, 2 AS transfer_side
+			, 1 AS transfer_side
 		FROM swaps
 	)
 )
