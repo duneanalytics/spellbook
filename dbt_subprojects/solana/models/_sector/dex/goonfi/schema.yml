@@ -126,6 +126,18 @@ models:
         name: tx_index
         description: "index of the transaction in the block slot"
 
+  - name: goonfi_v2_solana_stg_raw_swaps
+    meta:
+      blockchain: solana
+      contributors: [ Eekeguy ]
+    config:
+      tags: [ 'solana','dex', 'goonfi', 'goonfi_v2' ]
+    description: >
+      staging model for goonfi v2 swap data from instruction_calls
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['block_month', 'block_date', 'surrogate_key']
+
   - name: goonfi_v2_solana_base_trades
     meta:
       blockchain: solana
