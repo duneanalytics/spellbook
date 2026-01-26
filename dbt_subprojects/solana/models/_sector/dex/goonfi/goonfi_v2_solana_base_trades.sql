@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'goonfi_solana_v2'
+    schema = 'goonfi_v2_solana'
     , alias = 'base_trades'
     , partition_by = ['block_month']
     , materialized = 'incremental'
