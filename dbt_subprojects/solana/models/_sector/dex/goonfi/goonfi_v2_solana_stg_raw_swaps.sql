@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'goonfi_solana'
+    schema = 'goonfi_solana_v2'
     , alias = 'v2_stg_raw_swaps'
     , partition_by = ['block_month']
     , materialized = 'incremental'
