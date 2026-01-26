@@ -11,7 +11,7 @@
   )
 }}
 
-{% set project_start_date = '2025-05-26' %}
+{% set project_start_date = '2025-12-12' %}
 
 -- goonfi v2 swap data from instruction_calls table with filter for program and discriminator
 WITH swaps AS (
@@ -37,8 +37,8 @@ WITH swaps AS (
   FROM {{ source('solana','instruction_calls') }}
   WHERE
     1=1
-    AND executing_account = 'goonERTdGsjnkZqWuVjs73BZ3Pb9qoCUdBUL17BnS5j'
-    AND BYTEARRAY_SUBSTRING(data, 1, 1) = 0x02 -- Swap tag/discriminator. See: https://dune.com/queries/5839638
+    AND executing_account = 'goonuddtQRrWqqn5nFyczVKaie28f3kDkHWkHtURSLE'
+    AND BYTEARRAY_SUBSTRING(data, 1, 1) = 0x01
     AND tx_success = true
     {% if is_incremental() -%}
     AND {{ incremental_predicate('block_date') }}
