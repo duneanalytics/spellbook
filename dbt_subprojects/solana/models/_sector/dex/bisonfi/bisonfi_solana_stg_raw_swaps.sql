@@ -22,7 +22,9 @@ WITH swaps AS (
     , block_time
     , COALESCE(inner_instruction_index,0) as inner_instruction_index -- adjust to index 0 for direct trades
     , outer_instruction_index
+    , inner_executing_account
     , outer_executing_account
+    , executing_account
     , is_inner
     , tx_id
     , tx_signer
