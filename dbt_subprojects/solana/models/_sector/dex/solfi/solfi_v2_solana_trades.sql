@@ -1,6 +1,6 @@
 {{
   config(
-        schema = 'solfi_solana_v2',
+        schema = 'solfi_v2_solana',
         alias = 'trades',
         materialized = 'view',
         post_hook='{{ expose_spells(\'["solana"]\',
