@@ -27,7 +27,7 @@ WITH swaps AS (
     , tx_id
     , tx_signer
     , tx_index
-    , account_arguments[2] AS pool_id
+    , CAST(NULL as VARCHAR) AS pool_id -- AlphaQ does not use a pool system like other AMM's. Each token has it's own single vault.
     , {{ solana_instruction_key(
           'block_slot'
         , 'tx_index'
