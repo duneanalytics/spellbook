@@ -11,7 +11,7 @@
   )
 }}
 
-{% set project_start_date = '2025-11-05' %}
+{% set project_start_date = '2025-08-29' %}
 
 -- alphaq swap data from instruction_calls table
 WITH swaps AS (
@@ -37,10 +37,9 @@ WITH swaps AS (
   FROM {{ source('solana','instruction_calls') }}
   WHERE
     1=1
-    AND executing_account = 'BiSoNHVpsVZW2F7rx2eQ59yQwKxzU5NvBcmKshCSUypi'
+    AND executing_account = 'ALPHAQmeA7bjrVuccPsYPiCvsi428SNwte66Srvs4pHA'
     AND tx_success = true
-    AND BYTEARRAY_SUBSTRING(data, 1, 1) in (0x02,0x07)
-    AND cardinality(account_arguments) = 9 -- 9 arguments for all swap instructions
+    AND BYTEARRAY_SUBSTRING(data, 1, 1) = 0x0c
     {% if is_incremental() -%}
     AND {{ incremental_predicate('block_date') }}
     {% else -%}
