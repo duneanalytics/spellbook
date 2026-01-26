@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'solfi_v2'
+    schema = 'solfi_solana_v2'
     , alias = 'base_trades'
     , partition_by = ['block_month']
     , materialized = 'incremental'
