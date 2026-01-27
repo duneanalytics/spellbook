@@ -11,7 +11,7 @@
   )
 }}
 
-{% set project_start_date = '2025-11-05' %}
+{% set project_start_date = '2025-07-31' %}
 
 -- manifest swap data from instruction_calls table
 WITH swaps AS (
@@ -29,7 +29,7 @@ WITH swaps AS (
     , tx_id
     , tx_signer
     , tx_index
-    , account_arguments[2] AS pool_id
+    , CAST(NULL as VARCHAR) AS pool_id -- Manifest does not use a pool system like other AMM's
     , {{ solana_instruction_key(
           'block_slot'
         , 'tx_index'
@@ -39,10 +39,9 @@ WITH swaps AS (
   FROM {{ source('solana','instruction_calls') }}
   WHERE
     1=1
-    AND executing_account = 'BiSoNHVpsVZW2F7rx2eQ59yQwKxzU5NvBcmKshCSUypi'
+    AND executing_account = 'MNFSTqtC93rEfYHB6hF82sKdZpUDFWkViLByLd1k1Ms'
     AND tx_success = true
-    AND BYTEARRAY_SUBSTRING(data, 1, 1) in (0x02,0x07)
-    AND cardinality(account_arguments) = 9 -- 9 arguments for all swap instructions
+    AND BYTEARRAY_SUBSTRING(data, 1, 1) in (0x0d,0x04) --swap v2,swap
     {% if is_incremental() -%}
     AND {{ incremental_predicate('block_date') }}
     {% else -%}
