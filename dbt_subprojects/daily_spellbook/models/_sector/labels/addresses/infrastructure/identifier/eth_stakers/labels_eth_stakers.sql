@@ -1,9 +1,8 @@
 {{config(
-        alias = 'eth_stakers',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["hildobby"]\') }}')}}
+        alias = 'eth_stakers'
+        , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 WITH identified_stakers AS (
     SELECT 'ethereum' AS blockchain

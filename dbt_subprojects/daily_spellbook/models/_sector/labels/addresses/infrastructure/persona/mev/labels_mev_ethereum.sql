@@ -1,9 +1,8 @@
 {{config(
-    alias = 'mev_ethereum',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["hildobby"]\') }}')}}
+    alias = 'mev_ethereum'
+    , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 -- Source: https://etherscan.io/accounts/label/mev-bot
 

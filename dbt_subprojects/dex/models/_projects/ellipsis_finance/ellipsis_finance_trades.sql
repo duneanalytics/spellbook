@@ -1,11 +1,8 @@
 {{ config(
         schema = 'ellipsis_finance',
         alias = 'trades',
-        materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'["bnb"]\',
-                                      spell_type = "project", 
-                                      spell_name = "ellipsis_finance", 
-                                      contributors = \'["Henrystats", "0xRob"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

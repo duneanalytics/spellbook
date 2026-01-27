@@ -6,11 +6,8 @@
   incremental_strategy = 'merge',
   unique_key = ['project','transaction_digest','event_index'],
   partition_by = ['block_month'],
-  incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-  post_hook='{{ expose_spells(\'["sui"]\',
-                              "sector",
-                              "dex_trades",
-                              \'["krishhh"]\') }}'
+  incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+  , post_hook='{{ hide_spells() }}'
 ) }}
 
 -- 0) Base (pure pass-through union)

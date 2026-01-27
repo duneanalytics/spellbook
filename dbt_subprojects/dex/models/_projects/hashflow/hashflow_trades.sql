@@ -1,11 +1,8 @@
 {{ config(
         schema = 'hashflow',
         alias = 'trades',
-        materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'["ethereum", "avalanche_c", "bnb", "optimism"]\',
-                                      spell_type = "project", 
-                                      spell_name = "hashflow", 
-                                      contributors = \'["justabi", "jeff-dude", "hosuke", "Henrystats", "ARDev097"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

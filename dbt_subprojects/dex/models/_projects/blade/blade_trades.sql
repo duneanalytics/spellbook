@@ -1,11 +1,8 @@
 {{ config(
         schema = 'blade',
         alias = 'trades',
-        materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'["katana"]\',
-                                      spell_type = "project", 
-                                      spell_name = "blade", 
-                                      contributors = \'["0xTemo"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

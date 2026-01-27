@@ -1,11 +1,8 @@
 {{ config(
     schema = 'izumi_finance',
     alias = 'trades',
-    materialized = 'view',
-    post_hook='{{ expose_spells(blockchains = \'["bnb"]\',
-                                  spell_type = "project", 
-                                  spell_name = "izumi_finance", 
-                                  contributors = \'["umer_h_adil"]\') }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

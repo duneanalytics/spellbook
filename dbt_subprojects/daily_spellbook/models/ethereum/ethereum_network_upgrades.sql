@@ -1,13 +1,9 @@
 {{ config(
         schema = 'ethereum',
         tags = ['static'],
-        alias = 'network_upgrades',
-        post_hook = '{{ expose_spells(\'[
-                                        "ethereum"
-                                        ]\',
-                                        "sector",
-                                        "ethereum",
-                                        \'["hildobby"]\') }}')
+        alias = 'network_upgrades'
+        , post_hook='{{ hide_spells() }}'
+)
 }}
 
 WITH upgrades AS (

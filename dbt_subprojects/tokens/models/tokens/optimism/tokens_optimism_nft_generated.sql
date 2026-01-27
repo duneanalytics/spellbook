@@ -1,11 +1,8 @@
  {{
   config(
     
-    alias= 'tokens_optimism_nft_generated',
-        post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "sector",
-                                    "tokens",
-                                    \'["msilb7"]\') }}'
+    alias= 'tokens_optimism_nft_generated'
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 select

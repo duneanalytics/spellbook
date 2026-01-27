@@ -7,11 +7,8 @@
         materialized='incremental',
         file_format ='delta',
         incremental_strategy='merge',
-        unique_key = ['block_date', 'address', 'tx_hash', 'trace_address'],
-        post_hook='{{ expose_spells(blockchains = \'["avalanche_c"]\',
-                                    spell_type = "project",
-                                    spell_name = "safe",
-                                    contributors = \'["tschubotz", "hosuke"]\') }}'
+        unique_key = ['block_date', 'address', 'tx_hash', 'trace_address']
+        , post_hook='{{ hide_spells() }}'
     ) 
 }}
 

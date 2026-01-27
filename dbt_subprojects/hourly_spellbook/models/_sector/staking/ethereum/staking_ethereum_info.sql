@@ -1,11 +1,9 @@
 {{ config(
         tags = [ 'static'],
         schema='staking_ethereum',
-        alias = 'info',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "sector",
-                                    "staking",
-                                    \'["hildobby"]\') }}')
+        alias = 'info'
+        , post_hook='{{ hide_spells() }}'
+)
 }}
 
 SELECT entity, x_username

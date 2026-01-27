@@ -6,11 +6,8 @@
     incremental_strategy = 'merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['block_month', 'tx_hash', 'from_index', 'to_index'],
-    partition_by = ['block_month'],
-    post_hook='{{ expose_spells(blockchains = \'["aptos"]\',
-        spell_type = "project",
-        spell_name = "stablecoins",
-        contributors = \'["ying-w"]\') }}'
+    partition_by = ['block_month']
+    , post_hook='{{ hide_spells() }}'
 ) }}
 WITH events AS (
     SELECT

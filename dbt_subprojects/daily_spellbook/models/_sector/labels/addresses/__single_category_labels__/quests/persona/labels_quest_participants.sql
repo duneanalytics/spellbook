@@ -1,11 +1,7 @@
 {{
     config(
-        alias='quest_participants',
-        
-        post_hook='{{ expose_spells(\'["optimism"]\', 
-        "sector", 
-        "labels", 
-        \'["msilb7"]\') }}'
+        alias='quest_participants'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

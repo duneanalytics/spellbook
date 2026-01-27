@@ -1,11 +1,7 @@
 {{config(
         schema = 'ens',
-        alias = 'view_registrations',
-        
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "ens",
-                                    \'["antonio-mendes","mewwts"]\') }}'
+        alias = 'view_registrations'
+        , post_hook='{{ hide_spells() }}'
 )}}
 
 

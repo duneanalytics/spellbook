@@ -1,9 +1,8 @@
 {{config(
-        alias = 'balancer_gauges_polygon',
-        post_hook='{{ expose_spells(\'["polygon"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["jacektrocinski", "viniabussafi"]\') }}')}}
+        alias = 'balancer_gauges_polygon'
+        , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 WITH reward_gauges AS(
 SELECT

@@ -2,11 +2,8 @@
   config(
         schema = 'jupiter_solana',
         alias = 'aggregator_swaps',
-        materialized='view',
-        post_hook='{{ expose_spells(\'["jupiter"]\',
-                                    "project",
-                                    "jupiter_solana",
-                                    \'["ilemi"]\') }}'
+        materialized='view'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

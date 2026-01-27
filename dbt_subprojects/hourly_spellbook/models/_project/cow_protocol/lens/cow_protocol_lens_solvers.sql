@@ -1,10 +1,7 @@
 {{ config(
         schema = 'cow_protocol_lens',
-        alias='solvers',
-        post_hook='{{ expose_spells(blockchains = \'["lens"]\',
-                                    spell_type = "project",
-                                    spell_name = "cow_protocol",
-                                    contributors = \'["harisang"]\') }}'
+        alias='solvers'
+        , post_hook='{{ hide_spells() }}'
 )}}
 
 WITH

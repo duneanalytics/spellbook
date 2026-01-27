@@ -6,11 +6,8 @@
     incremental_strategy = 'merge',
     unique_key = ['fact_pool_depths_id'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_timestamp')],
-    tags = ['thorchain', 'defi', 'pool_depths', 'fact'],
-    post_hook='{{ expose_spells(\'["thorchain"]\',
-                                  "project",
-                                  "thorchain",
-                                  \'["jeff-dude"]\') }}'
+    tags = ['thorchain', 'defi', 'pool_depths', 'fact']
+    , post_hook='{{ hide_spells() }}'
 ) }}
 
 WITH base AS (

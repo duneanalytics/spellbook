@@ -2,11 +2,8 @@
   config(
     
     alias='ocr_reward_transmission_logs',
-    materialized='view',
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "chainlink",
-                                \'["linkpool_ryan"]\') }}'
+    materialized='view'
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 
