@@ -29,7 +29,7 @@ WITH swaps AS (
     , tx_id
     , tx_signer
     , tx_index
-    , CAST(NULL as VARCHAR) AS pool_id -- AlphaQ does not use a pool system like other AMM's
+    , CAST(NULL as VARCHAR) AS pool_id -- Whale Street does not use a pool system like other AMM's
     , {{ solana_instruction_key(
           'block_slot'
         , 'tx_index'
