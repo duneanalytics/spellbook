@@ -110,7 +110,13 @@ swap_event_details_raw as
   select 
     evt_block_time as block_time
     , trade_direction
-    , cast(json_extract(params, '$.SwapParameters2.amount_0') as decimal) as token_in_amount_raw
+    -- swap_mode=2 is ExactOut: amount_0 is output, use included_fee_input_amount for input
+    -- swap_mode=0/1 is ExactIn: amount_0 is input
+    , case
+        when json_extract_scalar(params, '$.SwapParameters2.swap_mode') = '2'
+        then cast(json_extract(swap_result, '$.SwapResult2.included_fee_input_amount') as decimal)
+        else cast(json_extract(params, '$.SwapParameters2.amount_0') as decimal)
+      end as token_in_amount_raw
     , cast(json_extract(swap_result, '$.SwapResult2.output_amount') as decimal) as token_out_amount_raw
     , cast(json_extract(swap_result, '$.SwapResult2.trading_fee') as decimal)
         + cast(json_extract(swap_result, '$.SwapResult2.protocol_fee') as decimal)
