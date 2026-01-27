@@ -2,13 +2,11 @@
 
 {{
   config(
+    tags = ['prod_exclude'],
     schema = 'stablecoins_' ~ chain,
     alias = 'transfers',
     materialized = 'view',
-    post_hook = '{{ expose_spells(blockchains = \'["' ~ chain ~ '"]\',
-                                 spell_type = "sector",
-                                 spell_name = "stablecoins",
-                                 contributors = \'["tomfutago"]\') }}'
+    post_hook = '{{ hide_spells() }}'
   )
 }}
 
