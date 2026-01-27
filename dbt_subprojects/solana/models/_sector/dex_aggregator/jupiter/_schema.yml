@@ -1,0 +1,137 @@
+version: 2
+
+models:
+  - name: jupiter_v4_solana_aggregator_swaps
+    data_tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - block_month
+          - amm
+          - log_index
+          - tx_id
+          - output_mint
+          - input_mint
+    meta:
+      blockchain: solana
+      contributors: [ilemi]
+    config:
+      tags: ['solana','jupiter','swaps']
+    description: >
+        solana aggregator swaps for jup v4
+    columns: &aggregator_swaps_columns
+      - name: amm
+        description: program id of amm routed through
+      - name: amm_name
+        description: name of amm routed through
+      - name: token_pair
+        description: token pair routed through
+      - name: input_symbol
+        description: symbol of token sold
+      - name: input_mint
+        description: token mint address of token sold
+      - name: input_amount
+        description: amount of token sold raw
+      - name: input_decimals
+        description: decimals of token sold
+      - name: input_usd
+        description: usd value of token sold
+      - name: output_symbol
+        description: symbol of token bought
+      - name: output_mint
+        description: token mint address of token bought
+      - name: output_amount
+        description: amount of token bought raw
+      - name: output_usd
+        description: usd value of token bought
+      - name: output_decimals
+        description: decimals of token bought
+      - name: log_index
+        description: ordering of the swap in the tx
+      - name: tx_id
+        description: id of the transaction
+      - name: block_slot
+        description: slot number of the transaction
+      - name: block_time
+        description: block time of the transaction
+      - name: block_month
+        description: block month of the transaction
+      - name: tx_signer
+        description: signer of the transactions
+      - name: jup_version
+        description: version of jupiter aggregator used for the swap
+
+  - name: jupiter_v5_solana_aggregator_swaps
+    data_tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - block_month
+          - amm
+          - log_index
+          - tx_id
+          - output_mint
+          - input_mint
+    meta:
+      blockchain: solana
+      contributors: [ilemi]
+    config:
+      tags: ['solana','jupiter','swaps']
+    description: >
+        solana aggregator swaps for jup v5
+    columns: *aggregator_swaps_columns
+
+  - name: jupiter_v6_solana_aggregator_swaps
+    data_tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - block_month
+          - amm
+          - log_index
+          - tx_id
+          - output_mint
+          - input_mint
+    meta:
+      blockchain: solana
+      contributors: [ilemi]
+    config:
+      tags: ['solana','jupiter','swaps']
+    description: >
+        solana aggregator swaps for jup v6
+    columns: *aggregator_swaps_columns
+
+  - name: jupiter_solana_aggregator_swaps
+    data_tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - block_month
+          - amm
+          - log_index
+          - tx_id
+          - output_mint
+          - input_mint
+          - jup_version
+    meta:
+      blockchain: solana
+      contributors: [ilemi]
+      docs_slug: /trading/solana/jupiter-aggregator-trades
+    config:
+      tags: ['solana','jupiter','swaps']
+    description: >
+        solana aggregator swaps for jup v4, v5, and v6
+    columns: *aggregator_swaps_columns
+
+  - name: jupiter_solana_amms
+    meta:
+      blockchain: solana
+      contributors: [ilemi]
+    config:
+      tags: ['static']
+    description: >
+        mapping of tracked AMM program ids to names for jupiter solana
+    columns:
+      - name: amm
+        description: program id of amm routed through
+        tests:
+          - not_null
+          - unique
+      - name: amm_name
+        description: name of amm routed through
