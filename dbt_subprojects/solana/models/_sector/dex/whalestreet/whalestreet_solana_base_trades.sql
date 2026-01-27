@@ -12,7 +12,7 @@
   )
 }}
 
-{% set project_start_date = '2025-11-05' %}
+{% set project_start_date = '2025-11-20' %}
 
 WITH swaps AS (
     SELECT
@@ -103,7 +103,7 @@ SELECT
     , token_bought_vault
     , token_sold_vault
     , project_program_id
-    , 'BiSoNHVpsVZW2F7rx2eQ59yQwKxzU5NvBcmKshCSUypi' AS project_main_id
+    , 'FW6zUqn4iKRaeopwwhwsquTY6ABWLLgjxtrC3VPnaWBf' AS project_main_id
     , trader_id
     , tx_id
     , outer_instruction_index
