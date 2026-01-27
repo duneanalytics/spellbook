@@ -43,6 +43,7 @@
       , ref('solfi_v2_solana_base_trades')
       , ref('whalestreet_solana_base_trades')
       , ref('manifest_solana_base_trades')
+      , ref('byreal_solana_base_trades')
       ]
 %}
 
