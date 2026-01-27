@@ -103,7 +103,7 @@ SELECT
     , token_bought_vault
     , token_sold_vault
     , project_program_id
-    , 'BiSoNHVpsVZW2F7rx2eQ59yQwKxzU5NvBcmKshCSUypi' AS project_main_id
+    , 'MNFSTqtC93rEfYHB6hF82sKdZpUDFWkViLByLd1k1Ms' AS project_main_id
     , trader_id
     , tx_id
     , outer_instruction_index
