@@ -11,7 +11,7 @@
   )
 }}
 
-{% set project_start_date = '2025-11-05' %}
+{% set project_start_date = '2025-06-26' %}
 
 -- byreal swap data from instruction_calls table
 WITH swaps AS (
@@ -29,7 +29,7 @@ WITH swaps AS (
     , tx_id
     , tx_signer
     , tx_index
-    , account_arguments[2] AS pool_id
+    , account_arguments[3] AS pool_id
     , {{ solana_instruction_key(
           'block_slot'
         , 'tx_index'
@@ -39,10 +39,9 @@ WITH swaps AS (
   FROM {{ source('solana','instruction_calls') }}
   WHERE
     1=1
-    AND executing_account = 'BiSoNHVpsVZW2F7rx2eQ59yQwKxzU5NvBcmKshCSUypi'
+    AND executing_account = 'REALQqNEomY6cQGZJUGwywTBD2UmDT32rZcNnfxQ5N2' -- Byreal CLMM
     AND tx_success = true
-    AND BYTEARRAY_SUBSTRING(data, 1, 1) in (0x02,0x07)
-    AND cardinality(account_arguments) = 9 -- 9 arguments for all swap instructions
+    AND BYTEARRAY_SUBSTRING(data, 1, 8) in (0x2b04ed0b1ac91e62,0xf8c69e91e17587c8) -- swap_v2,swap
     {% if is_incremental() -%}
     AND {{ incremental_predicate('block_date') }}
     {% else -%}
