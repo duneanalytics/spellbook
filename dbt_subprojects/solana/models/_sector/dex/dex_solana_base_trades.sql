@@ -41,6 +41,7 @@
       , ref('bisonfi_solana_base_trades')
       , ref('goonfi_v2_solana_base_trades')
       , ref('solfi_v2_solana_base_trades')
+      , ref('whalestreet_solana_base_trades')
       ]
 %}
 
