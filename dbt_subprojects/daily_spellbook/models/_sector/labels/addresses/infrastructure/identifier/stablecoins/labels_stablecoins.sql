@@ -1,9 +1,6 @@
 {{config(
-    alias = 'stablecoins',
-    post_hook='{{ expose_spells(\'["ethereum", "bnb", "polygon", "solana", "arbitrum", "optimism", "fantom", "avalanche_c", "gnosis"]\',
-                                "sector",
-                                "labels",
-                                \'["hildobby"]\') }}'
+    alias = 'stablecoins'
+    , post_hook='{{ hide_spells() }}'
 )}}
 
 SELECT blockchain, address as address, name, category, contributor, source, created_at, updated_at, model_name, label_type

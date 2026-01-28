@@ -1,11 +1,8 @@
 {{ config(
         schema = 'zipswap',
         alias = 'trades',
-        materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'["optimism"]\',
-                                      spell_type = "project", 
-                                      spell_name = "zipswap", 
-                                      contributors = \'["msilb7"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

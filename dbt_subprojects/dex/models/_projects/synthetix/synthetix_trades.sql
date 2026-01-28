@@ -1,11 +1,8 @@
 {{ config(
         schema = 'synthetix',
         alias = 'trades',
-        materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'["optimism"]\',
-                                      spell_type = "project", 
-                                      spell_name = "synthetix",
-                                      contributors = \'["msilb7"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

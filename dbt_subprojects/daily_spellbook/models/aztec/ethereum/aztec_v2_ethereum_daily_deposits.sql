@@ -1,11 +1,8 @@
 {{ config(
     
     schema = 'aztec_v2_ethereum',
-    alias = 'daily_deposits',
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "aztec_v2",
-                                \'["Henrystats"]\') }}'
+    alias = 'daily_deposits'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

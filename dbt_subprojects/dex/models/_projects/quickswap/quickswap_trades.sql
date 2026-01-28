@@ -1,11 +1,8 @@
 {{ config(
         schema = 'quickswap',
         alias = 'trades',
-        materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'["polygon"]\',
-                                      spell_type = "project", 
-                                      spell_name = "quickswap", 
-                                      contributors = \'["sameepsi", "tarusinghania123", "maybeYonas"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

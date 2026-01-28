@@ -42,11 +42,8 @@
     schema = 'tokens',
     alias = 'erc20_stablecoins',
     materialized = 'view',
-    tags = ['static'],
-    post_hook = '{{ expose_spells(blockchains = \'["' ~ chains | join('","') ~ '"]\',
-                                  spell_type = "sector",
-                                  spell_name = "tokens",
-                                  contributors = \'["tomfutago"]\') }}'
+    tags = ['static']
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

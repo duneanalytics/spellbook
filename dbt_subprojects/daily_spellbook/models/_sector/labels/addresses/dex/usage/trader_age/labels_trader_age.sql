@@ -1,11 +1,8 @@
 {{
     config(
         
-        alias = 'trader_age',
-        post_hook='{{ expose_spells(\'["ethereum", "fantom", "arbitrum", "avalanche_c", "gnosis", "bnb", "optimism", "polygon"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["gentrexha", "Henrystats"]\') }}'
+        alias = 'trader_age'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

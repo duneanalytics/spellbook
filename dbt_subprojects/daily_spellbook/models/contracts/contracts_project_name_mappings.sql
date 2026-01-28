@@ -3,11 +3,8 @@
     tags = ['static', 'prod_exclude'],
     schema = 'contracts',
     alias = 'project_name_mappings',
-    unique_key='dune_name',
-    post_hook='{{ expose_spells(\'["ethereum", "base", "optimism", "zora"]\',
-                              "sector",
-                              "contracts",
-                              \'["msilb7", "chuxin"]\') }}'
+    unique_key='dune_name'
+    , post_hook='{{ hide_spells() }}'
     )  
 }}
 

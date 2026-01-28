@@ -1,11 +1,10 @@
 {{config(
         schema='optimism_quests_optimism',
         
-        alias='nft_id_mapping',
-        post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "project",
-                                    "optimism_quests",
-                                    \'["msilb7"]\') }}')}}
+        alias='nft_id_mapping'
+        , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 
 

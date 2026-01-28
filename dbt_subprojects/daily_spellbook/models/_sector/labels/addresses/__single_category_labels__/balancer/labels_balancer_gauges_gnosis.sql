@@ -1,9 +1,8 @@
 {{config(
-        alias = 'balancer_gauges_gnosis',
-        post_hook='{{ expose_spells(\'["gnosis"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["viniabussafi"]\') }}')}}
+        alias = 'balancer_gauges_gnosis'
+        , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 WITH gauges AS(
 SELECT distinct

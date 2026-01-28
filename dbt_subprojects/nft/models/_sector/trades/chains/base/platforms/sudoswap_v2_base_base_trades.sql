@@ -4,11 +4,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_number','tx_hash','sub_tx_trade_id'],
-    post_hook='{{ expose_spells(\'["base"]\',
-                            "project",
-                            "sudoswap",
-                            \'["ilemi"]\') }}'
+    unique_key = ['block_number','tx_hash','sub_tx_trade_id']
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

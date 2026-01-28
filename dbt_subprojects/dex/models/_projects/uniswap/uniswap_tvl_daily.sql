@@ -7,12 +7,7 @@
     , incremental_strategy = 'merge'
     , unique_key = ['blockchain', 'project', 'version', 'id', 'block_date']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
-    , post_hook='{{ expose_spells(\'[
-                                      "ethereum","arbitrum","base","ink","blast","optimism","blast","bnb","zora","avalanche_c","unichain","worldchain"
-                                    ]\',
-                                    "project",
-                                    "uniswap",
-                                    \'["Henrystats"]\') }}')
+    , post_hook='{{ hide_spells() }}')
 }}
 
 {% if is_incremental() %}

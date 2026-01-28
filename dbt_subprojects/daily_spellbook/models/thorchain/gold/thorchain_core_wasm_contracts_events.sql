@@ -7,11 +7,8 @@
     unique_key = ['block_month', 'fact_wasm_contracts_events_id'],
     partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    tags = ['thorchain', 'core', 'wasm_contracts_events', 'fact', 'smart_contracts'],
-    post_hook='{{ expose_spells(\'["thorchain"]\',
-                                  "project",
-                                  "thorchain",
-                                  \'["jeff-dude"]\') }}'
+    tags = ['thorchain', 'core', 'wasm_contracts_events', 'fact', 'smart_contracts']
+    , post_hook='{{ hide_spells() }}'
 ) }}
 
 -- Deduplication and gold layer combined (no silver layer needed)

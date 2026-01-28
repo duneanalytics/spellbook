@@ -41,11 +41,8 @@
   config(
     schema = 'stablecoins_evm',
     alias = 'transfers',
-    materialized = 'view',
-    post_hook = '{{ expose_spells(blockchains = \'["' ~ chains | join('","') ~ '"]\',
-                                  spell_type = "sector",
-                                  spell_name = "stablecoins",
-                                  contributors = \'["tomfutago"]\') }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

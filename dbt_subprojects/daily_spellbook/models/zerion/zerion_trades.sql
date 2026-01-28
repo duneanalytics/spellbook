@@ -1,10 +1,7 @@
 {{ config(
         schema = 'zerion',
-        alias = 'trades',
-        post_hook='{{ expose_spells(\'["bnb", "gnosis", "avalanche_c", "arbitrum", "optimism", "polygon"]\',
-                        "project",
-                        "zerion",
-                        \'["hildobby"]\') }}'
+        alias = 'trades'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

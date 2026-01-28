@@ -4,11 +4,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['beacon_slot_number','blob_index'],
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "blobs",
-                                    \'["msilb7","lorenz234","0xRob", "hildobby"]\') }}'
+    unique_key = ['beacon_slot_number','blob_index']
+    , post_hook='{{ hide_spells() }}'
 )}}
 
 WITH blobs as (

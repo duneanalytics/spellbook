@@ -1,12 +1,9 @@
 {{ 
     config(
         schema = 'eigenlayer_ethereum',
-        alias = 'rewards_v1_by_day',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "eigenlayer",
-                                    \'["bowenli"]\') }}',
-        unique_key = ['token', 'date']
+        alias = 'rewards_v1_by_day'
+        , post_hook='{{ hide_spells() }}'
+        , unique_key = ['token', 'date']
     )
 }}
 
