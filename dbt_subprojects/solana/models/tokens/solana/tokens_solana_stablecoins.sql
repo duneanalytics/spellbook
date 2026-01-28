@@ -20,4 +20,5 @@ from (Values
     , ('solana', 'ZUSD','FrBfWJ4qE5sCzKm3k3JaAtqZcXUh4LvJygDeketsrsH4', 6,'Dollar-Pegged','GMO-Z')
     , ('solana', 'PAI', 'Ea5SjE2Y6yvCeW5dYTn7PYMuW5ikXkvbGdcmSnXeaLjS', 6,'Crypto Stablecoin', 'Parrot')
     , ('solana', 'FDUSD', '9zNQRsGLjNKwCUU5Gq5LR8beUCPzQMVMqKAi3SSZh54u', 6,'Fiat Stablecoin', 'First Digital Labs')
+    , ('solana', 'CASH', 'CASHx9KJUStyftLFWGvEVf59SGeG9sh5FfcnZMVPCASH', 6,'Fiat Stablecoin', 'CASH')
 ) as t(blockchain, symbol, address, decimals, backing, name)
