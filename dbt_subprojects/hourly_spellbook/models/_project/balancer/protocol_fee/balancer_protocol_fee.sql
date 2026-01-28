@@ -1,7 +1,7 @@
 {{ config(
     schema = 'balancer',
     alias = 'protocol_fee',
-    post_hook='{{ expose_spells(blockchains = \'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon", "zkevm"]\',
+    post_hook='{{ expose_spells(blockchains = \'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon", "plasma", "zkevm"]\',
                             spell_type = "project",
                             spell_name = "balancer",
                             contributors = \'["viniabussafi"]\') }}'
@@ -20,6 +20,7 @@
     ref('balancer_v3_ethereum_protocol_fee'),
     ref('balancer_v3_gnosis_protocol_fee'),
     ref('balancer_v3_arbitrum_protocol_fee'),
+    ref('balancer_v3_plasma_protocol_fee'),
     ref('balancer_v3_base_protocol_fee')  
 ] %}
 

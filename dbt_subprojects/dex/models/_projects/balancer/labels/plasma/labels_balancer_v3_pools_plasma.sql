@@ -4,7 +4,7 @@
   post_hook = '{{ expose_spells(\'["plasma"]\',
                                "sector",
                                "labels",
-                               \'["joaobrunoah"]\') }}'
+                                \'["amandadalle", "giovanasoldatelli", "tiagoponciano", "joaobrunoah"]\') }}'
 )}}
 
 WITH token_data AS (
