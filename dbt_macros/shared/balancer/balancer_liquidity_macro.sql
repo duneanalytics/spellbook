@@ -206,7 +206,7 @@ WITH pool_labels AS (
             0x9559aaa82d9649c7a7b220e7c461d2e74c9a3593  -- rETH
         )
     ),
-
+--a 
     weighted_pool_liquidity_estimates AS (
         SELECT
             b.day,

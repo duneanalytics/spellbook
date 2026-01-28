@@ -18,7 +18,7 @@ WITH pool_labels AS (
             GROUP BY 1, 2, 3) 
         WHERE num = 1
     ),
-
+--a 
     prices AS (
         SELECT
             date_trunc('day', minute) AS day,
