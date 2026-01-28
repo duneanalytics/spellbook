@@ -4,4 +4,14 @@ sources:
   - name: izumi_finance_flow
     tables:
       - name: iziswappool_evt_swap
-      - name: iziswapfactory_evt_newpool 
+      - name: iziswapfactory_evt_newpool
+  - name: kittypunch_flow
+    tables:
+      - name: punchswapv2pair_evt_Swap
+      - name: punchswapv2factory_evt_paircreated
+      - name: punchswapv3pool_evt_swap
+      - name: punchswapv3factory_evt_poolcreated
+  - name: flowswap_flow
+    tables:
+      - name: uniswapv3pool_evt_Swap
+      - name: uniswapv3factory_evt_PoolCreated
