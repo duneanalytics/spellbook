@@ -24,7 +24,7 @@ SELECT 'arbitrum' AS deposit_chain
 , tx_from AS tx_from
 , tx_hash AS tx_hash
 , COALESCE(evt_index, 0) AS evt_index
-, contract_address
+, to AS contract_address
 , {{ dbt_utils.generate_surrogate_key(['tx_hash', 'evt_index']) }} as bridge_transfer_id
 FROM {{ source('tokens_arbitrum', 'transfers') }}
 WHERE to = 0x2df1c51e09aecf9cacb7bc98cb1742757f163df7

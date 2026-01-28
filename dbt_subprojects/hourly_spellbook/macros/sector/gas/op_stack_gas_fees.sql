@@ -41,13 +41,28 @@ WITH native_token_prices as (
     INNER JOIN {{ source(blockchain, 'blocks') }} blocks
         ON txns.block_number = blocks.number
         {% if is_incremental() %}
-        AND {{ incremental_predicate('blocks.time') }}
+        AND
+            {%- if blockchain == 'megaeth' %}
+        blocks.time >= now() - interval '4' hour
+            {%- else %}
+        {{ incremental_predicate('blocks.time') }}
+            {%- endif %}
         {% endif %}
     {% if test_short_ci %}
-    WHERE {{ incremental_predicate('txns.block_time') }}
+    WHERE
+        {%- if blockchain == 'megaeth' %}
+        txns.block_time >= now() - interval '4' hour
+        {%- else %}
+        {{ incremental_predicate('txns.block_time') }}
+        {%- endif %}
     OR txns.hash in (select tx_hash from {{ref('evm_gas_fees')}})
     {% elif is_incremental() %}
-    WHERE {{ incremental_predicate('txns.block_time') }}
+    WHERE
+        {%- if blockchain == 'megaeth' %}
+        txns.block_time >= now() - interval '4' hour
+        {%- else %}
+        {{ incremental_predicate('txns.block_time') }}
+        {%- endif %}
     {% endif %}
     )
 
