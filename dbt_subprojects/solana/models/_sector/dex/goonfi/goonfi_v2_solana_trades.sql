@@ -1,12 +1,12 @@
 {{
   config(
-        schema = 'goonfi_solana',
+        schema = 'goonfi_v2_solana',
         alias = 'trades',
         materialized = 'view',
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "project",
                                     "goonfi",
-                                    \'["Sector920"]\') }}')
+                                    \'["Eekeguy"]\') }}')
 }}
 
 select
@@ -42,4 +42,4 @@ select
       , tx_index
 from {{ref('dex_solana_trades')}}
 where project = 'goonfi'
-
+  and version = 2
