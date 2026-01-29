@@ -37,7 +37,7 @@
       , ref('goonfi_solana_base_trades')
       , ref('obric_solana_base_trades')
       , ref('aquifer_solana_base_trades')
-      , ref('alphaq_solana_base_trades')--
+      , ref('alphaq_solana_base_trades')
       , ref('bisonfi_solana_base_trades')
       , ref('goonfi_v2_solana_base_trades')
       , ref('solfi_v2_solana_base_trades')

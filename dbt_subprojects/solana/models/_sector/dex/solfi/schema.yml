@@ -127,7 +127,7 @@ models:
     description: >
         solfi dex base trades on Solana with version_name
 
-   - name: solfi_v2_solana_stg_raw_swaps
+  - name: solfi_v2_solana_stg_raw_swaps
     meta:
       blockchain: solana
       contributors: [ Eekeguy ]
