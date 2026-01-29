@@ -2,11 +2,8 @@
   config(
         schema = 'contracts_fantom',
         alias = 'contract_mapping',
-        tags=[ 'static'],
-        post_hook='{{ expose_spells(\'["fantom"]\',
-                                    "sector",
-                                    "contracts",
-                                    \'["Henrystats"]\') }}'
+        tags=[ 'static']
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

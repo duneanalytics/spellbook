@@ -6,11 +6,8 @@
     incremental_strategy = 'merge',
     unique_key = ['fact_intents_id'],
     partition_by = ['block_date'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    post_hook='{{ expose_spells(\'["near"]\',
-                                "project",
-                                "fact_intents",
-                                \'["krishgka"]\') }}'
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    , post_hook='{{ hide_spells() }}'
 ) }}
 
 

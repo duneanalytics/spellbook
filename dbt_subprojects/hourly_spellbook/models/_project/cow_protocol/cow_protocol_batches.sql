@@ -1,10 +1,6 @@
 {{ config(
-        alias = 'batches',
-        
-        post_hook='{{ expose_spells(\'["ethereum", "gnosis"]\',
-                                    "project",
-                                    "cow_protocol",
-                                    \'["bh2smith", "gentrexha", "olgafetisova"]\') }}'
+        alias = 'batches'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 SELECT *

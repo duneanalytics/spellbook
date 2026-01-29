@@ -21,6 +21,7 @@ base_flashloans as (
   select
     caller as recipient,
     assets as amount,
+    assets as amount_raw,
     cast(0 as uint256) as fee,
     token as token_address,
     contract_address as project_contract_address,
@@ -37,6 +38,7 @@ select
   '{{ version }}' as version,
   recipient,
   amount,
+  amount_raw,
   fee,
   token_address,
   project_contract_address,

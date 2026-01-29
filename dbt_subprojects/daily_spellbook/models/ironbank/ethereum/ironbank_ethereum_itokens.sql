@@ -1,10 +1,7 @@
 {{ config(
     
-    alias = 'itokens',
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "ironbank",
-                                \'["michael-ironbank"]\') }}'
+    alias = 'itokens'
+    , post_hook='{{ hide_spells() }}'
 ) }}
 
 SELECT

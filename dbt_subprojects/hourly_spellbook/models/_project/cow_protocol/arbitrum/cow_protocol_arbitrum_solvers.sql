@@ -1,10 +1,7 @@
 {{ config(
         schema = 'cow_protocol_arbitrum',
-        alias='solvers',
-        post_hook='{{ expose_spells(blockchains = \'["arbitrum"]\',
-                                    spell_type = "project",
-                                    spell_name = "cow_protocol",
-                                    contributors = \'["olgafetisova"]\') }}'
+        alias='solvers'
+        , post_hook='{{ hide_spells() }}'
 )}}
 
 -- Find the PoC Query here: https://dune.com/queries/3840597
@@ -118,7 +115,8 @@ known_solver_metadata (address, environment, name) as (
                 (0x9aCcd7f88441ae8E189CBbFFa1eF1432D7d5c27C, 'prod', 'NativeFi'),
                 (0x973818ffc2CCaBD9c2Bd1077b9413a60EAF699B5, 'barn', 'AmberGroup'),
                 (0xFde62af8639B716C5BD7aD84514b3E67fFDC6E97, 'prod', 'AmberGroup'),
-                (0x3980daa7eaad0b7e0c53cfc5c2760037270da54d, 'prod', 'Tsolver')
+                (0x3980daa7eaad0b7e0c53cfc5c2760037270da54d, 'prod', 'Tsolver'),
+                (0x8f5835e9d756c9bd934bce527157a4b0ef3c5cb7, 'prod', 'Rizzolver')
     ) as _
 )
 -- Combining the metadata with current activation status for final table

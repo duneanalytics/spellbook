@@ -1,10 +1,6 @@
 {{ config(
-        alias='referrals',
-        
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "cow_protocol",
-                                    \'["bh2smith"]\') }}'
+        alias='referrals'
+        , post_hook='{{ hide_spells() }}'
 )}}
 
 -- PoC Query: https://dune.com/queries/1789628?d=1

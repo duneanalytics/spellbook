@@ -4,11 +4,8 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['address'],
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "base", "celo", "scroll", "zora", "blast", "fantom", "linea", "zkevm", "zksync"]\',
-                                    "sector",
-                                    "addresses",
-                                    \'["hildobby"]\') }}'
+        unique_key = ['address']
+        , post_hook='{{ hide_spells() }}'
 )
 }}
 

@@ -4,10 +4,7 @@
         schema = 'rwa_arbitrum'
         ,alias = 'dex_pools'
         ,materialized = 'table'
-        ,post_hook='{{ expose_spells(\'["arbitrum"]\',
-                        "sector",
-                        "rwa",
-                        \'["maybeYonas", "pyor_xyz"]\') }}'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

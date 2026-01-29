@@ -36,23 +36,23 @@ WITH onchain_metadata AS (
 (
     SELECT
       CASE 
-        WHEN neg_risk = true THEN neg_risk_market_id
-        WHEN neg_risk = false THEN cast(condition_id AS varchar)
+        WHEN lower(neg_risk) = 'true' THEN neg_risk_market_id
+        WHEN lower(neg_risk) = 'false' THEN cast(condition_id AS varchar)
       END AS unique_key,
       try_cast(substring(token_1_id, 5) AS UINT256) AS token_id,
       token_1_outcome AS token_outcome,
       *
-    FROM {{ source('dune', 'dataset_polymarket_markets', database="dune") }}
+    FROM {{ source('dune', 'polymarket_markets', database="dune") }}
     UNION ALL 
     SELECT
       CASE 
-        WHEN neg_risk = true THEN neg_risk_market_id
-        WHEN neg_risk = false THEN cast(condition_id AS varchar)
+        WHEN lower(neg_risk) = 'true' THEN neg_risk_market_id
+        WHEN lower(neg_risk) = 'false' THEN cast(condition_id AS varchar)
       END AS unique_key,
       try_cast(substring(token_2_id, 5) AS UINT256) AS token_id,
       token_2_outcome AS token_outcome,
       *
-    FROM {{ source('dune', 'dataset_polymarket_markets', database="dune") }}
+    FROM {{ source('dune', 'polymarket_markets', database="dune") }}
 ),
 
 combine as 
@@ -90,8 +90,8 @@ SELECT
   enable_order_book,
   neg_risk AS neg_risk,
   CASE 
-    WHEN neg_risk = false THEN get_href('https://polymarket.com/event/' || market_slug, market_slug)
-    WHEN neg_risk = true  THEN  get_href('https://polymarket.com/event/' || replace(replace(replace(lower(neg_risk_market_name), ' ', '-'), '$', ''), '''',''), neg_risk_market_name)
+    WHEN lower(neg_risk) = 'false' THEN get_href('https://polymarket.com/event/' || market_slug, market_slug)
+    WHEN lower(neg_risk) = 'true'  THEN  get_href('https://polymarket.com/event/' || replace(replace(replace(lower(neg_risk_market_name), ' ', '-'), '$', ''), '''',''), neg_risk_market_name)
   END AS polymarket_link,
   CASE 
     WHEN neg_risk = false THEN market_slug
@@ -113,7 +113,8 @@ SELECT
   pm.block_time as resolved_on_timestamp,
   last_updated_at as last_uploaded_at
 FROM combine c
-left join {{ ref('polymarket_polygon_market_outcomes') }} pm on pm.question_id = c.question_id
+left join {{ ref('polymarket_polygon_market_outcomes') }} pm
+  on pm.question_id = try(from_hex(substring(c.question_id, 3)))
 )
 
 --these nulls get introduced by the polymarket api responses 

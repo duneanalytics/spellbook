@@ -2,11 +2,8 @@
     config(
         schema = 'balancer_v3_ethereum',
         alias = 'trades',
-        materialized = 'view',
-        post_hook = '{{ expose_spells(\'["ethereum"]\',
-                                spell_type = "project",
-                                spell_name = "balancer",
-                                contributors = \'["viniabussafi"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

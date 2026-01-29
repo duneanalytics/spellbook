@@ -3,11 +3,9 @@
         schema = 'tofu',
         alias = 'trades',
         
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["optimism", "arbitrum", "polygon", "bnb"]\',
-                                    "project",
-                                    "tofu",
-                                    \'["0xRob"]\') }}')
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
+)
 }}
 
 SELECT *

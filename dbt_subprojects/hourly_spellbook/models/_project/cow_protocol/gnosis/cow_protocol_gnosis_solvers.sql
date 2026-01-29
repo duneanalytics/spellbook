@@ -1,10 +1,6 @@
 {{ config(
-        alias='solvers',
-        
-        post_hook='{{ expose_spells(\'["gnosis"]\',
-                                    "project",
-                                    "cow_protocol",
-                                    \'["bh2smith", "gentrexha"]\') }}'
+        alias='solvers'
+        , post_hook='{{ hide_spells() }}'
 )}}
 
 -- Find the PoC Query here: https://dune.com/queries/1399494

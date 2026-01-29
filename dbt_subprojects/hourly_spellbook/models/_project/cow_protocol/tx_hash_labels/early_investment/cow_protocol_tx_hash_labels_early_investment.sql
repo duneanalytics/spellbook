@@ -1,7 +1,7 @@
 {{
     config(
-        alias = 'tx_hash_labels_early_investment',
-        post_hook='{{ expose_spells(\'["ethereum"]\', "sector", "tx_hash_labels", \'["gentrexha"]\') }}',
+        alias = 'tx_hash_labels_early_investment'
+        , post_hook='{{ hide_spells() }}'
         
     )
 }}
