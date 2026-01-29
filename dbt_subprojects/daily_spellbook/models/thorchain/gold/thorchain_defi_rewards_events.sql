@@ -7,11 +7,8 @@
     unique_key = ['day', 'fact_rewards_events_id'],
     partition_by = ['day'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_timestamp')],
-    tags = ['thorchain', 'defi', 'rewards', 'fact'],
-    post_hook='{{ expose_spells(\'["thorchain"]\',
-                              "defi",
-                              "defi_rewards_events",
-                              \'["krishhh"]\') }}'
+    tags = ['thorchain', 'defi', 'rewards', 'fact']
+    , post_hook='{{ hide_spells() }}'
 ) }}
 
 WITH base AS (

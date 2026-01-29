@@ -7,11 +7,8 @@
     unique_key = ['block_month', 'fact_validator_request_leave_events_id'],
     partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    tags = ['thorchain', 'gov', 'validator_request_leave_events', 'fact'],
-    post_hook='{{ expose_spells(\'["thorchain"]\',
-                              "governance",
-                              "gov_validator_request_leave_events",
-                              \'["krishhh"]\') }}'
+    tags = ['thorchain', 'gov', 'validator_request_leave_events', 'fact']
+    , post_hook='{{ hide_spells() }}'
 ) }}
 
 -- Deduplication and gold layer combined (no silver layer needed)

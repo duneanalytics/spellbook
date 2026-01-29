@@ -6,11 +6,8 @@
     incremental_strategy = 'merge',
     unique_key = ['fact_bond_actions_id'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_timestamp')],
-    tags = ['thorchain', 'defi', 'bond_actions', 'fact'],
-    post_hook='{{ expose_spells(\'["thorchain"]\',
-                              "defi",
-                              "defi_bond_actions",
-                              \'["krishhh"]\') }}'
+    tags = ['thorchain', 'defi', 'bond_actions', 'fact']
+    , post_hook='{{ hide_spells() }}'
 ) }}
 
 WITH block_prices AS (

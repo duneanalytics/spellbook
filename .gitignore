@@ -151,4 +151,7 @@ logs/
 
 dbt_subprojects/dex/spellbook-env/
 
-.cursor/
+# Cursor IDE - track commands/rules/scripts, ignore generated files
+.cursor/scripts/__pycache__/
+
+agents.md

@@ -2,11 +2,8 @@
   config(
     schema = 'aave_optimism',
     alias = 'flashloans',
-    materialized = 'view',
-    post_hook = '{{ expose_spells(blockchains = \'["optimism"]\',
-                                  spell_type = "project",
-                                  spell_name = "aave",
-                                  contributors = \'["tomfutago"]\') }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

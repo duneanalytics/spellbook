@@ -7,11 +7,8 @@
   incremental_strategy = 'merge',
   partition_by = ['day'],
   incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
-  tags = ['thorchain', 'defi', 'daily', 'earnings', 'fact'],
-  post_hook='{{ expose_spells(\'["thorchain"]\',
-                            "defi",
-                            "defi_daily_earnings",
-                            \'["krishhh"]\') }}'
+  tags = ['thorchain', 'defi', 'daily', 'earnings', 'fact']
+  , post_hook='{{ hide_spells() }}'
 ) }}
 
 WITH base AS (

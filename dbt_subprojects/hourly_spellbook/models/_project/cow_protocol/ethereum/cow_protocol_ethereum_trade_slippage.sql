@@ -1,10 +1,6 @@
 {{ config(
-        alias='trade_slippage',
-        
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "cow_protocol",
-                                    \'["bh2smith", "gentrexha", "josojo"]\') }}'
+        alias='trade_slippage'
+        , post_hook='{{ hide_spells() }}'
 )}}
 
 -- PoC Query: https://dune.com/queries/2279196

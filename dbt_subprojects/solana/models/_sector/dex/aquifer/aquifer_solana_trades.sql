@@ -2,11 +2,9 @@
   config(
         schema = 'aquifer_solana',
         alias = 'trades',
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["solana"]\',
-                                    "project",
-                                    "aquifer",
-                                    \'["flyingfish"]\') }}')
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
+)
 }}
 
 select

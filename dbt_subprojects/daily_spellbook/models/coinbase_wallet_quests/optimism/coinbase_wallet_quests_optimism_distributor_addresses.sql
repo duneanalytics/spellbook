@@ -1,11 +1,10 @@
 {{config(
         schema='coinbase_wallet_quests_optimism',
         alias='distributor_addresses',
-        tags=['static'],
-        post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "project",
-                                    "coinbase_wallet_quests",
-                                    \'["msilb7"]\') }}')}}
+        tags=['static']
+        , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 
 {% set op_token = '0x4200000000000000000000000000000000000042' %}

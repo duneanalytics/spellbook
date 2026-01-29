@@ -7,11 +7,8 @@
     unique_key = ['block_month', 'fact_slash_events_id'],
     partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    tags = ['thorchain', 'gov', 'slash_events', 'fact', 'governance'],
-    post_hook='{{ expose_spells(\'["thorchain"]\',
-                              "governance",
-                              "gov_slash_events",
-                              \'["krishhh"]\') }}'
+    tags = ['thorchain', 'gov', 'slash_events', 'fact', 'governance']
+    , post_hook='{{ hide_spells() }}'
 ) }}
 
 WITH deduplicated AS (

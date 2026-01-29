@@ -5,10 +5,7 @@
     , file_format = 'delta'
     , incremental_strategy = 'merge'
     , unique_key = ['block_time', 'block_slot', 'stake_account', 'vote_account']
-    , post_hook='{{ expose_spells(\'["solana"]\',
-                                "sector",
-                                "staking",
-                                \'["ilemi"]\') }}')
+    , post_hook='{{ hide_spells() }}')
 }}
 
 with 

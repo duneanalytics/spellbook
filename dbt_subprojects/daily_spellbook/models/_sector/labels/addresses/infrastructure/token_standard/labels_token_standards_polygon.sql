@@ -1,9 +1,8 @@
 {{config(
-    alias = 'token_standards_polygon',
-        post_hook='{{ expose_spells(\'["polygon"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["hildobby"]\') }}')}}
+    alias = 'token_standards_polygon'
+    , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 SELECT distinct 'polygon' AS blockchain
 , erc20.contract_address AS address

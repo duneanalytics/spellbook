@@ -1,11 +1,8 @@
 {{ config(
     schema = 'carbon_defi',
     alias = 'trades',
-    materialized = 'view',
-    post_hook='{{ expose_spells(blockchains = \'["ethereum", "sei", "celo", "tac", "base", "mantle"]\',
-                                  spell_type = "project", 
-                                  spell_name = "carbon_defi", 
-                                  contributors = \'["tiagofilipenunes", "NIXBNT"]\') }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

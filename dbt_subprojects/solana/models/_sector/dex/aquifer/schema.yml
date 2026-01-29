@@ -1,6 +1,18 @@
 version: 2
 
 models:
+  - name: aquifer_solana_stg_raw_swaps
+    meta:
+      blockchain: solana
+      contributors: [ flyingfish ]
+    config:
+      tags: [ 'solana','dex', 'aquifer' ]
+    description: >
+      staging model for aquifer swap data from instruction_calls
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['block_month', 'block_date', 'surrogate_key']
+
   - name: aquifer_solana_base_trades
     meta:
       blockchain: solana
@@ -12,7 +24,7 @@ models:
     data_tests:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['block_month', 'surrogate_key']
+          combination_of_columns: ['block_month', 'block_date', 'surrogate_key']
 
   - name: aquifer_solana_trades
     meta:

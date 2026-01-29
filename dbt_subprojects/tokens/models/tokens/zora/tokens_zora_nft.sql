@@ -2,10 +2,7 @@
         schema = 'tokens_zora'
         , alias = 'nft'
         , materialized = 'table'
-        , post_hook='{{ expose_spells(\'["zora"]\',
-                                "sector",
-                                "tokens",
-                                \'["msilb7"]\') }}'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

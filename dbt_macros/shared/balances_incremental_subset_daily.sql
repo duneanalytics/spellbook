@@ -267,7 +267,7 @@ days as (
     select cast(timestamp as date) as day
     from {{ source('utils', 'days') }}
     where cast(timestamp as date) >= cast('{{start_date}}' as date)
-    and cast(timestamp as date) <= date(date_trunc('day',now()))
+    and cast(timestamp as date) < current_date -- exclude today to avoid mid-day stale data
 ),
 
 forward_fill as (
@@ -298,7 +298,8 @@ select
     b.last_updated
 from (
     select * from forward_fill
-    where balance_raw > 0
+    where (balance_raw > 0
+       or (balance_raw = 0 and last_updated = day))  -- include actual 0-balance changes, not forward-fills
     {% if is_incremental() %}
         and {{ incremental_predicate('day') }}
     {% endif %}

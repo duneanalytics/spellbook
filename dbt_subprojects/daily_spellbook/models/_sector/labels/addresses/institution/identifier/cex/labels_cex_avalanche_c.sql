@@ -1,10 +1,9 @@
 {{config(
 
-        alias = 'cex_avalanche_c',
-        post_hook='{{ expose_spells(\'["avalanche_c"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["hildobby"]\') }}')}}
+        alias = 'cex_avalanche_c'
+        , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 SELECT blockchain
 , address

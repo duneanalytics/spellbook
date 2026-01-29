@@ -9,13 +9,8 @@
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         partition_by = ['blockchain', 'block_month'],
-        unique_key = ['blockchain', 'block_month', 'block_date', 'execution_id'],
-        post_hook = '{{ expose_spells(
-            blockchains = \'exposed\',
-            spell_type = "project",
-            spell_name = "oneinch",
-            contributors = \'["max-morrow", "grkhr"]\'
-        ) }}',
+        unique_key = ['blockchain', 'block_month', 'block_date', 'execution_id']
+        , post_hook='{{ hide_spells() }}'
     )
 -}}
 

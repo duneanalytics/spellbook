@@ -1,11 +1,8 @@
 {{ config(
         
         schema = 'hop_protocol',
-        alias = 'flows',
-        post_hook='{{ expose_spells(\'["optimism"]\',
-                                "project",
-                                "hop_protocol",
-                                \'["msilb7","soispoke"]\') }}'
+        alias = 'flows'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

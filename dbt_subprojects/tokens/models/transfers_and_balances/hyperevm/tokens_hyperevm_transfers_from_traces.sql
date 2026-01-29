@@ -2,7 +2,6 @@
 
 {{
     config(
-        tags = ['prod_exclude'],
         schema = 'tokens_' ~ blockchain,
         alias = 'transfers_from_traces',
         partition_by = ['block_month'],

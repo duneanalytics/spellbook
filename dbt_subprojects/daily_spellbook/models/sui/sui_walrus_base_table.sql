@@ -7,11 +7,8 @@
   incremental_strategy = 'merge',
   unique_key = ['tx_register','evt_index_register'],
   incremental_predicates = [ incremental_predicate('DBT_INTERNAL_DEST.block_date') ],
-  tags=['walrus'],
-  post_hook='{{ expose_spells(\'["sui"]\',
-                              "sector",
-                              "walrus",
-                              \'["krishhh"]\') }}'
+  tags=['walrus']
+  , post_hook='{{ hide_spells() }}'
 ) }}
 
 {% set walrus_start_date = var('walrus_start_date', '2023-04-12') %}

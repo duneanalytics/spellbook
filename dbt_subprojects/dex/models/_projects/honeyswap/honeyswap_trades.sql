@@ -1,11 +1,8 @@
 {{ config(
         schema = 'honeyswap',
         alias = 'trades',
-        materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'["gnosis", "polygon"]\',
-                                      spell_type = "project", 
-                                      spell_name = "honeyswap", 
-                                      contributors = \'["0xr3x"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

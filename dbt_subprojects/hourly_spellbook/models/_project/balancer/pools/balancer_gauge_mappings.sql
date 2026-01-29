@@ -1,10 +1,7 @@
 {{ config(
     schema = 'balancer',
-    alias = 'gauge_mappings',
-    post_hook='{{ expose_spells(\'["optimism"]\',
-                                spell_type = "project",
-                                spell_name = "balancer",
-                                contributors = \'["msilb7"]\') }}'
+    alias = 'gauge_mappings'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

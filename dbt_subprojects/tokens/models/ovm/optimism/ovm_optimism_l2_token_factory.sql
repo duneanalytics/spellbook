@@ -5,12 +5,9 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['l1_token', 'l2_token'],
-    post_hook='{{ expose_spells(\'["optimism"]\',
-                              "project",
-                              "ovm_optimism",
-                              \'["msilb7"]\') }}',
-    depends_on=['tokens_optimism_v1_erc20','tokens_erc20']
+    unique_key = ['l1_token', 'l2_token']
+    , post_hook='{{ hide_spells() }}'
+    , depends_on=['tokens_optimism_v1_erc20','tokens_erc20']
 )
 }}
 

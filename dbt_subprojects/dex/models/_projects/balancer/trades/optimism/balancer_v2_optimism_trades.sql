@@ -2,11 +2,8 @@
     config(
         schema = 'balancer_v2_optimism',
         alias = 'trades',
-        materialized = 'view',
-        post_hook = '{{ expose_spells(\'["optimism"]\',
-                                spell_type = "project",
-                                spell_name = "balancer",
-                                contributors = \'["mendesfabio", "jacektrocinski", "thetroyharris", "tomfutago", "viniabussafi"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

@@ -1,11 +1,8 @@
 {{ config
 (
     alias = 'first_activity',
-    schema = 'addresses_events',
-    post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "gnosis", "optimism", "polygon", "celo", "zksync", "zora", "base", "scroll", "sei", "mantle", "blast", "ronin", "nova", "abstract", "apechain", "berachain", "katana", "ink", "opbnb"]\',
-                                    "sector",
-                                    "addresses_events",
-                                    \'["Henrystats", "hildobby", "0xr3x"]\') }}'
+    schema = 'addresses_events'
+    , post_hook='{{ hide_spells() }}'
 )
 }}
 

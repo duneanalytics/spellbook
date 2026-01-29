@@ -10,7 +10,8 @@
   set models = [
     ref('aave_v3_optimism_base_supply'),
     ref('sonne_finance_optimism_base_supply'),
-    ref('granary_optimism_base_supply')
+    ref('granary_optimism_base_supply'),
+    ref('morpho_optimism_base_supply')
   ]
 %}
 
@@ -26,6 +27,7 @@ select
   withdrawn_to,
   liquidator,
   amount,
+  amount_raw,
   block_month,
   block_time,
   block_number,

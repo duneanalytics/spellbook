@@ -1,10 +1,7 @@
 {{ config(
 	    schema='paraswap',
-        alias = 'trades',
-        post_hook='{{ expose_spells(\'["avalanche_c","fantom","arbitrum","bnb","ethereum","optimism","polygon","base"]\',
-                                "project",
-                                "paraswap",
-                                \'["Henrystats","springzh"]\') }}'
+        alias = 'trades'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 
@@ -19,6 +16,7 @@ ref('paraswap_avalanche_c_trades')
 ,ref('paraswap_base_trades')
 ,ref('paraswap_gnosis_trades')
 ,ref('paraswap_unichain_trades')
+,ref('paraswap_plasma_trades')
 ] %}
 
 

@@ -3,11 +3,9 @@
         schema = 'cryptopunks',
         alias = 'trades',
         
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "cryptopunks",
-                                    \'["0xRob"]\') }}')
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
+)
 }}
 
 SELECT *

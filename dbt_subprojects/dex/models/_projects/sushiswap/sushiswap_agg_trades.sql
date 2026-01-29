@@ -1,13 +1,8 @@
 {{ config(
     schema = 'sushiswap_agg',
     alias = 'trades',
-    materialized = 'view',
-    post_hook='{{ expose_spells(
-        blockchains   = \'["arbitrum","avalanche_c","apechain","base","blast","bnb","celo","ethereum","fantom","gnosis","hemi","katana","linea","mantle","nova","optimism","polygon","scroll","sonic","zkevm","zksync"]\',
-        spell_type    = "project",
-        spell_name    = "sushiswap_agg",
-        contributors  = \'["olastenberg"]\'
-    ) }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
 ) }}
 
 
@@ -16,6 +11,7 @@
     ref('sushiswap_agg_avalanche_c_trades'),
     ref('sushiswap_agg_apechain_trades'),
     ref('sushiswap_agg_base_trades'),
+    ref('sushiswap_agg_berachain_trades'),
     ref('sushiswap_agg_blast_trades'),
     ref('sushiswap_agg_bnb_trades'),
     ref('sushiswap_agg_celo_trades'),
@@ -23,9 +19,11 @@
     ref('sushiswap_agg_fantom_trades'),
     ref('sushiswap_agg_gnosis_trades'),
     ref('sushiswap_agg_hemi_trades'),
+    ref('sushiswap_agg_hyperevm_trades'),
     ref('sushiswap_agg_katana_trades'),
     ref('sushiswap_agg_linea_trades'),
     ref('sushiswap_agg_mantle_trades'),
+    ref('sushiswap_agg_monad_trades'),
     ref('sushiswap_agg_nova_trades'),
     ref('sushiswap_agg_optimism_trades'),
     ref('sushiswap_agg_polygon_trades'),

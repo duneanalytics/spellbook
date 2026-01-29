@@ -1,11 +1,8 @@
 {{
   config(
     
-    alias='ocr_gas_transmission_logs',
-    post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","fantom","gnosis","optimism","polygon"]\',
-                            "project",
-                            "chainlink",
-                            \'["linkpool_ryan"]\') }}'
+    alias='ocr_gas_transmission_logs'
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

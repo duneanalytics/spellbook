@@ -1,11 +1,10 @@
 {{config(
       tags = ['static'],
       schema = 'addresses_optimism',
-      alias = 'fee_vaults',
-      post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "sector",
-                                    "addresses",
-                                    \'["msilb7"]\') }}')}}
+      alias = 'fee_vaults'
+      , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 -- https://github.com/ethereum-optimism/optimism/blob/develop/op-bindings/predeploys/addresses.go
 SELECT  address, vault_name
