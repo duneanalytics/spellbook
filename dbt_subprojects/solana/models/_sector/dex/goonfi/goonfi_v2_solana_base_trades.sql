@@ -27,6 +27,7 @@ WITH swaps AS (
         , tx_signer
         , tx_index
         , pool_id
+        ,surrogate_key
     FROM {{ ref('goonfi_v2_solana_stg_raw_swaps') }}
     WHERE 1=1
         {% if is_incremental() -%}
