@@ -6,7 +6,7 @@
 -- for cc: 2024-08-20
 -- for a quick CI, change the start dates of the streams to light/easy
 
-{% macro oneinch_ar_cfg_macro() %} {{ return({"name": "ar", "start": "2026-01-10", "mode": "'classic'"}) }} {% endmacro %}
+{% macro oneinch_ar_cfg_macro() %} {{ return({"name": "ar", "start": "2026-01-01", "mode": "'classic'"}) }} {% endmacro %}
 {% macro oneinch_lo_cfg_macro() %} {{ return({"name": "lo", "start": "2021-06-01", "mode": "if(flags['fusion'], 'fusion', 'limits')"}) }} {% endmacro %}
 {% macro oneinch_cc_cfg_macro() %} {{ return({"name": "cc", "start": "2024-08-20", "mode": "'cross-chain'"}) }} {% endmacro %}
 
@@ -19,9 +19,9 @@
 {% endmacro %}
 
 -- SUBSTREAMS CONFIGURATIONS --
-{% macro oneinch_ar_raw_calls_cfg_macro()   %} {{ return(dict(oneinch_ar_cfg_macro(), start="2026-01-10")) }} {% endmacro %}
-{% macro oneinch_ar_transfers_cfg_macro()   %} {{ return(dict(oneinch_ar_cfg_macro(), start="2026-01-10")) }} {% endmacro %}
-{% macro oneinch_ar_executions_cfg_macro()  %} {{ return(dict(oneinch_ar_cfg_macro(), start="2026-01-10")) }} {% endmacro %}
+{% macro oneinch_ar_raw_calls_cfg_macro()   %} {{ return(dict(oneinch_ar_cfg_macro(), start="2026-01-01")) }} {% endmacro %}
+{% macro oneinch_ar_transfers_cfg_macro()   %} {{ return(dict(oneinch_ar_cfg_macro(), start="2026-01-01")) }} {% endmacro %}
+{% macro oneinch_ar_executions_cfg_macro()  %} {{ return(dict(oneinch_ar_cfg_macro(), start="2026-01-01")) }} {% endmacro %}
 
 {% macro oneinch_lo_raw_calls_cfg_macro()   %} {{ return(dict(oneinch_lo_cfg_macro(), start="2021-06-01")) }} {% endmacro %}
 {% macro oneinch_lo_transfers_cfg_macro()   %} {{ return(dict(oneinch_lo_cfg_macro(), start="2021-06-01")) }} {% endmacro %}
