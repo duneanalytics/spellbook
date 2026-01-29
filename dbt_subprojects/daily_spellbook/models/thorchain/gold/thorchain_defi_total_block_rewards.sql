@@ -6,8 +6,11 @@
     incremental_strategy = 'merge',
     unique_key = ['fact_total_block_rewards_id'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_timestamp')],
-    tags = ['thorchain', 'defi', 'total_block_rewards', 'fact']
-    , post_hook='{{ hide_spells() }}'
+    tags = ['thorchain', 'defi', 'total_block_rewards', 'fact'],
+    post_hook='{{ expose_spells(\'["thorchain"]\',
+                                  "project",
+                                  "thorchain",
+                                  \'["jeff-dude"]\') }}'
 ) }}
 
 WITH base AS (

@@ -6,8 +6,11 @@
     incremental_strategy = 'merge',
     unique_key = ['bridge_omni_id'],
     partition_by = ['block_date'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
-    , post_hook='{{ hide_spells() }}'
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    post_hook='{{ expose_spells(\'["near"]\',
+                                "project",
+                                "bridge_omni",
+                                \'["krishgka"]\') }}'
 )}}
 
 -- NEAR Omni Bridge transactions tracking inbound and outbound transfers
