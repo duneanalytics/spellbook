@@ -102,6 +102,7 @@ daily_aggregated as (
 ),
 
 {% if is_incremental() %}
+-- get last known balance for each address/token from before the incremental window
 prior_balances as (
   select
     blockchain,
@@ -111,7 +112,7 @@ prior_balances as (
     max_by(last_updated, day) as last_updated,
     max_by(balance_raw, day) as balance_raw
   from {{ this }}
-  where not {{ incremental_predicate('last_updated') }}
+  where not {{ incremental_predicate('day') }}
   group by 1, 2, 3
 ),
 
@@ -178,6 +179,9 @@ days as (
   from {{ source('utils', 'days') }}
   where cast(timestamp as date) >= cast('{{ start_date }}' as date)
     and cast(timestamp as date) < current_date
+  {% if is_incremental() %}
+    and {{ incremental_predicate('cast(timestamp as date)') }}
+  {% endif %}
 ),
 
 forward_fill as (
