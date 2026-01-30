@@ -1,10 +1,7 @@
 {{config(
 
-        alias = 'cex_users',
-        post_hook='{{ expose_spells(\'["optimism","ethereum"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["msilb7"]\') }}'
+        alias = 'cex_users'
+        , post_hook='{{ hide_spells() }}'
 )}}
 
 {% set chains = [

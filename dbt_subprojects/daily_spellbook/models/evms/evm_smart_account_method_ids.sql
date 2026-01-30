@@ -2,11 +2,8 @@
 {{ config(
         schema = 'evms',
         tags = ['static'],
-        alias = 'evm_smart_account_method_ids',
-        post_hook='{{ expose_spells(\'["ethereum","optimism","arbitrum","polygon","gnosis","avalanche_c","fantom","goerli","bnb","base","celo","zora", "ink", "unichain"]\',
-                                "sector",
-                                "method_ids",
-                                \'["msilb7"]\') }}'
+        alias = 'evm_smart_account_method_ids'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

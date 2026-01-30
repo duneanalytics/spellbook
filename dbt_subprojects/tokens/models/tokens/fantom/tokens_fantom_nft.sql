@@ -1,10 +1,7 @@
 {{ config(
         alias = 'nft'
         , materialized = 'table'
-        , post_hook='{{ expose_spells(\'["fantom"]\',
-                                "sector",
-                                "tokens",
-                                \'["0xRob"]\') }}'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

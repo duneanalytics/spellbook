@@ -4,11 +4,8 @@
         alias='bribe_mappings',
         
         materialized = 'table',
-        unique_key = ['pool_contract', 'incentives_contract', 'allowed_rewards'],
-        post_hook='{{ expose_spells(\'["base"]\',
-                                    "project",
-                                    "aerodrome",
-                                    \'["msilb7"]\') }}'
+        unique_key = ['pool_contract', 'incentives_contract', 'allowed_rewards']
+        , post_hook='{{ hide_spells() }}'
     ) 
 }}
 

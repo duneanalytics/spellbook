@@ -4,11 +4,8 @@
         schema='uniswap_v3_optimism',
         alias='pools',
         materialized='table',
-        file_format = 'delta',
-        post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "project",
-                                    "uniswap_v3",
-                                    \'["msilb7", "chuxin","Henrystats"]\') }}'
+        file_format = 'delta'
+        , post_hook='{{ hide_spells() }}'
   )
 }}
 

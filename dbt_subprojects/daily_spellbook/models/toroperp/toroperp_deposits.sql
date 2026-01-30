@@ -1,10 +1,7 @@
 {{ config(
     schema = 'toroperp',
-    alias = 'deposits',
-    post_hook='{{ expose_spells(blockchains = \'["sei"]\',
-                                spell_type = "project",
-                                spell_name = "toroperp",
-                                contributors = \'["toroperp"]\') }}'
+    alias = 'deposits'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

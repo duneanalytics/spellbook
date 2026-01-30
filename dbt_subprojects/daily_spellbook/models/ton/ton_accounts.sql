@@ -4,11 +4,8 @@
         alias='accounts',
         
         materialized = 'table',
-        unique_key = ['address'],
-        post_hook='{{ expose_spells(\'["ton"]\',
-                                    "sector",
-                                    "ton",
-                                    \'["pshuvalov"]\') }}'
+        unique_key = ['address']
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

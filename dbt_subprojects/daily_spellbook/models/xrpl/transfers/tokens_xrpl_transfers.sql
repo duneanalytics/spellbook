@@ -2,11 +2,8 @@
     config(
         schema = 'tokens_xrpl',
         alias = 'transfers',
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["xrpl"]\',
-                                    "sector",
-                                    "tokens",
-                                    \'["krishhh"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

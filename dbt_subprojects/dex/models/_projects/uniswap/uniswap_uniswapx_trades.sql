@@ -2,15 +2,7 @@
     schema = 'uniswap'
     , alias = 'uniswapx_trades'
     , materialized = 'view'
-    , post_hook='{{ expose_spells(\'[
-                                        "ethereum"
-                                        , "arbitrum"
-                                        , "unichain"
-                                        , "base"
-                                    ]\',
-                                    "project",
-                                    "uniswap",
-                                    \'["Henrystats", "agaperste"]\') }}')
+    , post_hook='{{ hide_spells() }}')
 }}
 
 

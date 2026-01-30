@@ -5,11 +5,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_time', 'tx_hash', 'evt_index'],
-    post_hook='{{ expose_spells(\'["optimism"]\',
-                                "project",
-                                "coinbase_wallet_quests",
-                                \'["msilb7"]\') }}'
+    unique_key = ['block_time', 'tx_hash', 'evt_index']
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 --quests started soft-launching in feb 2023, so set a buffer

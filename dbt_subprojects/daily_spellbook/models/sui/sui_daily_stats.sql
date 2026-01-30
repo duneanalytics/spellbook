@@ -6,11 +6,8 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date'],
-    incremental_predicates = [ incremental_predicate('DBT_INTERNAL_DEST.block_date') ],
-    post_hook='{{ expose_spells(\'["sui"]\',
-                                "sector",
-                                "daily_stats",
-                                \'["krishhh"]\') }}'
+    incremental_predicates = [ incremental_predicate('DBT_INTERNAL_DEST.block_date') ]
+    , post_hook='{{ hide_spells() }}'
 ) }}
 
 {% set sui_project_start_date = var('sui_project_start_date', '2023-04-12') %}

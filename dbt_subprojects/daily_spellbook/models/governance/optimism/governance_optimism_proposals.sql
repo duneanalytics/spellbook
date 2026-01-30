@@ -5,10 +5,7 @@
     ,file_format = 'delta'
     ,schema = 'governance_optimism'
     ,unique_key = ['proposal_id']
-    ,post_hook='{{ expose_spells(\'["optimism"]\',
-                                      "sector",
-                                      "governance",
-                                    \'["chain_l", "chuxin"]\') }}'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

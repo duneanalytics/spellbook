@@ -1,11 +1,8 @@
 {{ config(
     schema = 'verse_dex',
     alias = 'trades',
-    materialized = 'view',
-    post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
-                                  spell_type = "project", 
-                                  spell_name = "verse_dex", 
-                                  contributors = \'["Henrystats"]\') }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

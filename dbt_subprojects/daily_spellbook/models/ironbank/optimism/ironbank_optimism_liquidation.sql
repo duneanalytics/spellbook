@@ -1,10 +1,7 @@
 {{ config(
     
-    alias = 'liquidation',
-    post_hook='{{ expose_spells(\'["optimism"]\',
-                                "project",
-                                "ironbank",
-                                \'["michael-ironbank"]\') }}'
+    alias = 'liquidation'
+    , post_hook='{{ hide_spells() }}'
 ) }}
 
 SELECT

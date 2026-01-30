@@ -1,11 +1,8 @@
 {{ config(
     schema = 'mummy_finance',
     alias = 'trades',
-    materialized = 'view',
-    post_hook='{{ expose_spells(blockchains = \'["optimism"]\',
-                                  spell_type = "project", 
-                                  spell_name = "mummy_finance", 
-                                  contributors = \'["ARDev097"]\') }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 
