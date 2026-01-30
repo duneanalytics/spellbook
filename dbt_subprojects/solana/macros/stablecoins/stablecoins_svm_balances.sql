@@ -139,7 +139,7 @@ forward_fill as (
     b.address,
     b.token_mint_address,
     b.balance_raw,
-    b.day as last_updated
+    b.last_updated
   from days d
   inner join changed_balances b
     on d.day >= b.day
