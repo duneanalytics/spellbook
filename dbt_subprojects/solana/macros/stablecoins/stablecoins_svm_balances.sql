@@ -67,7 +67,7 @@ prior_balances as (
     max_by(last_updated, day) as last_updated,
     max_by(balance_raw, day) as prior_balance
   from {{ this }}
-  where not {{ incremental_predicate('last_updated') }}
+  where not {{ incremental_predicate('day') }}
   group by 1, 2
 ),
 {% endif %}
