@@ -1,6 +1,7 @@
 {%- macro stablecoins_balances_from_transfers(transfers, start_date) %}
 
 {% set is_celo = 'celo' in (transfers | string | lower) %}
+{% set is_polygon = 'polygon' in (transfers | string | lower) %}
 
 with
 {% if is_celo %}
@@ -45,12 +46,16 @@ transfers_in as (
     t.amount_raw as inflow,
     uint256 '0' as outflow
   from {{ transfers }} t
+  where t."from" != t."to"  -- exclude self-transfers (they cancel out but add unnecessary rows)
   {% if is_celo %}
-  left join celo_l1_validators v on t."to" = v.validator_address
-  where v.validator_address is null  -- exclude L1 validators
+  and not exists (
+    select 1
+    from celo_l1_validators v
+    where t."to" = v.validator_address
+  )
   {% endif %}
   {% if is_incremental() %}
-  {% if is_celo %}and{% else %}where{% endif %} {{ incremental_predicate('t.block_time') }}
+  and {{ incremental_predicate('t.block_time') }}
   {% endif %}
 ),
 
@@ -64,12 +69,16 @@ transfers_out as (
     uint256 '0' as inflow,
     t.amount_raw as outflow
   from {{ transfers }} t
+  where t."from" != t."to"  -- exclude self-transfers (they cancel out but add unnecessary rows)
   {% if is_celo %}
-  left join celo_l1_validators v on t."from" = v.validator_address
-  where v.validator_address is null  -- exclude L1 validators
+  and not exists (
+    select 1
+    from celo_l1_validators v
+    where t."from" = v.validator_address
+  )
   {% endif %}
   {% if is_incremental() %}
-  {% if is_celo %}and{% else %}where{% endif %} {{ incremental_predicate('t.block_time') }}
+  and {{ incremental_predicate('t.block_time') }}
   {% endif %}
 ),
 
@@ -197,6 +206,12 @@ select
 from forward_fill
 where (balance_raw > uint256 '0'
   or (balance_raw = uint256 '0' and cast(last_updated as date) = day))  -- include actual 0-balance changes, not forward-fills
+{% if is_polygon %}
+  -- exclude self-holdings on agEUR token contract
+  and not (blockchain = 'polygon'
+    and token_address = 0xe0b52e49357fd4daf2c15e02058dce6bc0057db4
+    and address = token_address)
+{% endif %}
 {% if is_incremental() %}
   and {{ incremental_predicate('day') }}
 {% endif %}
