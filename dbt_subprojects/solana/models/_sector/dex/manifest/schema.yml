@@ -1,39 +1,39 @@
 version: 2
 
 models:
-  - name: goonfi_solana_stg_raw_swaps
+  - name: manifest_solana_stg_raw_swaps
     meta:
       blockchain: solana
-      contributors: [ Sector920 ]
+      contributors: [ Eekeguy ]
     config:
-      tags: [ 'solana','dex', 'goonfi' ]
+      tags: [ 'solana','dex', 'manifest' ]
     description: >
-      staging model for goonfi swap data from instruction_calls
+      staging model for manifest swap data from instruction_calls
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['block_month', 'block_date', 'surrogate_key']
 
-  - name: goonfi_solana_base_trades
+  - name: manifest_solana_base_trades
     meta:
       blockchain: solana
-      contributors: [ Sector920 ]
+      contributors: [ Eekeguy ]
     config:
-      tags: [ 'solana','dex', 'goonfi' ]
+      tags: [ 'solana','dex', 'manifest' ]
     description: >
-      all raw goonfi dex trades on Solana
+      all raw manifest dex trades on Solana
     data_tests:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['block_month', 'block_date', 'surrogate_key']
 
-  - name: goonfi_solana_trades
+  - name: manifest_solana_trades
     meta:
       blockchain: solana
-      contributors: [Sector920]
+      contributors: [Eekeguy]
     config:
-      tags: ['solana','dex', 'goonfi']
+      tags: ['solana','dex', 'manifest']
     description: >
-        all goonfi dex trades on Solana
+        all manifest dex trades on Solana
     columns:
       - &blockchain
         name: blockchain
@@ -44,9 +44,6 @@ models:
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"
-      - &version_name
-        name: version_name
-        description: "Descriptive name of the DEX version (1)"
       - &block_month
         name: block_month
         description: "UTC event block month of each DEX trade"
@@ -61,7 +58,7 @@ models:
         description: "block slot of each DEX trade"
       - &trade_source
         name: trade_source
-        description: "Was the trade a direct call to the goonfi or did it go through another program like Jupiter (Dex Aggregator)"
+        description: "Was the trade a direct call to the manifest or did it go through another program like Jupiter (Dex Aggregator)"
       - &token_bought_symbol
         name: token_bought_symbol
         description: "Token symbol for token bought in the trade"
@@ -88,10 +85,10 @@ models:
         description: "USD value of the trade at time of execution"
       - &fee_tier
         name: fee_tier
-        description: "goonfi fee tier (fee %)"
+        description: "manifest fee tier (fee %)"
       - &fee_usd
         name: fee_usd
-        description: "goonfi fee usd paid on swap"
+        description: "manifest fee usd paid on swap"
       - &token_bought_mint_address
         name: token_bought_mint_address
         description: "token mint address of the token bought"
@@ -100,10 +97,10 @@ models:
         description: "token mint address of the token sold"
       - &token_bought_vault
         name: token_bought_vault
-        description: "token associated address for the goonfi, of the token bought"
+        description: "token associated address for the manifest, of the token bought"
       - &token_sold_vault
         name: token_sold_vault
-        description: "token associated address for the goonfi, of the token sold"
+        description: "token associated address for the manifest, of the token sold"
       - &project_program_id
         name: project_program_id
         description: "pool program id of the project"
@@ -125,37 +122,3 @@ models:
       - &tx_index
         name: tx_index
         description: "index of the transaction in the block slot"
-
-  - name: goonfi_v2_solana_stg_raw_swaps
-    meta:
-      blockchain: solana
-      contributors: [ Eekeguy ]
-    config:
-      tags: [ 'solana','dex', 'goonfi', 'goonfi_v2' ]
-    description: >
-      staging model for goonfi v2 swap data from instruction_calls
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['block_month', 'block_date', 'surrogate_key']
-
-  - name: goonfi_v2_solana_base_trades
-    meta:
-      blockchain: solana
-      contributors: [ Eekeguy ]
-    config:
-      tags: [ 'solana','dex', 'goonfi', 'goonfi_v2' ]
-    description: >
-      all raw goonfi v2 dex trades on Solana
-    data_tests:
-      - check_columns_solana_dex_trades
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['block_month', 'surrogate_key']
-
-  - name: goonfi_v2_solana_trades
-    meta:
-      blockchain: solana
-      contributors: [Eekeguy]
-    config:
-      tags: ['solana','dex', 'goonfi', 'goonfi_v2']
-    description: >
-        all goonfi v2 dex trades on Solana
