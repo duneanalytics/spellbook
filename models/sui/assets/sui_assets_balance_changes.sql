@@ -6,7 +6,7 @@
     unique_key = ['checkpoint','transaction_digest','owner_address','coin_type']
 ) }}
 
-with cutoff as (
+with bounds as (
     select
         {% if is_incremental() %}
           coalesce(max(checkpoint), 0) - 2000
@@ -21,11 +21,13 @@ txo as (
         checkpoint,
         transaction_digest,
         object_id,
-        input_kind
+        input_kind,
+        case when input_kind is null then 'out' else 'in' end as io_flag
     from sui.transaction_objects
-    where checkpoint >= (select min_checkpoint from cutoff)
+    where checkpoint >= (select min_checkpoint from bounds)
 ),
 
+-- IMPORTANT: objects must include older checkpoints so inputs can find a pre-tx snapshot
 obj as (
     select
         checkpoint,
@@ -35,18 +37,16 @@ obj as (
         cast(coin_balance as decimal(38,0)) as coin_balance
     from sui.objects
     where coin_type is not null
-      and checkpoint >= (select min_checkpoint from cutoff)
+      and checkpoint >= (select greatest((select min_checkpoint from bounds) - 20000, 0))
 ),
 
--- Join rule:
--- - outputs (input_kind is null): join to obj at same checkpoint
--- - inputs  (input_kind is not null): join to latest obj checkpoint < tx checkpoint
 txo_with_obj as (
     select
         txo.checkpoint as tx_checkpoint,
         txo.transaction_digest,
         txo.object_id,
         txo.input_kind,
+        txo.io_flag,
 
         obj.owner_address,
         obj.coin_type,
@@ -54,19 +54,17 @@ txo_with_obj as (
         obj.checkpoint as obj_checkpoint,
 
         row_number() over (
-            partition by txo.transaction_digest, txo.object_id
-            order by
-                case
-                    when txo.input_kind is null then obj.checkpoint            -- outputs: same checkpoint (only one)
-                    else obj.checkpoint                                       -- inputs: choose latest before tx
-                end desc
+            partition by txo.transaction_digest, txo.object_id, txo.io_flag
+            order by obj.checkpoint desc
         ) as rn
     from txo
     join obj
       on txo.object_id = obj.object_id
      and (
-          (txo.input_kind is null and obj.checkpoint = txo.checkpoint)
-       or (txo.input_kind is not null and obj.checkpoint < txo.checkpoint)
+          -- outputs: same checkpoint
+          (txo.io_flag = 'out' and obj.checkpoint = txo.checkpoint)
+          -- inputs: latest snapshot strictly before tx
+       or (txo.io_flag = 'in' and obj.checkpoint < txo.checkpoint)
      )
 ),
 
@@ -78,7 +76,7 @@ deltas as (
         coin_type,
         sum(
             case
-                when input_kind is not null then -coin_balance
+                when io_flag = 'in' then -coin_balance
                 else coin_balance
             end
         ) as amount
@@ -90,5 +88,6 @@ deltas as (
 select *
 from deltas
 where amount <> 0;
+
 
 
