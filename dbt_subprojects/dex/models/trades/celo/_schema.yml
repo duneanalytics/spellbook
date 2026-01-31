@@ -61,10 +61,10 @@ models:
       blockchain: celo
       sector: dex
       project: mento
-      contributors: tomfutago
+      contributors: tomfutago, karimhass
     config:
       tags: ['celo', 'dex', 'trades', 'mento']
-    description: "Mento trades on Celo"
+    description: "Mento V2 trades on Celo. Excludes mint/burn operations (cUSD minting/redeeming via USDC) which are not price-discovery swaps."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
