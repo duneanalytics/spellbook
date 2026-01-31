@@ -2,8 +2,11 @@
        schema = 'evaa_ton'
        , alias = 'assets'
        , materialized = 'view'
-       , unique_key = ['asset_id']
-       , post_hook='{{ hide_spells() }}'
+       , unique_key = ['asset_id'],
+    post_hook='{{ expose_spells(\'["ton"]\',
+                                   "project",
+                                   "evaa",
+                                   \'["pshuvalov"]\') }}'
    )
  }}
 

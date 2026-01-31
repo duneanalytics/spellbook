@@ -7,8 +7,11 @@
     unique_key = ['block_month', 'event_id'],
     partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    tags = ['thorchain', 'defi', 'secure_asset_withdraw_events', 'fact']
-    , post_hook='{{ hide_spells() }}'
+    tags = ['thorchain', 'defi', 'secure_asset_withdraw_events', 'fact'],
+    post_hook='{{ expose_spells(\'["thorchain"]\',
+                                  "project",
+                                  "thorchain",
+                                  \'["jeff-dude"]\') }}'
 ) }}
 
 -- Deduplication and gold layer combined (no silver layer needed)

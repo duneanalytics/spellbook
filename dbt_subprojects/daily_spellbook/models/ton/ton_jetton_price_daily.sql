@@ -4,8 +4,11 @@
         alias='prices_daily',
         
         materialized = 'table',
-        unique_key = ['blockchain', 'token_address', 'timestamp']
-        , post_hook='{{ hide_spells() }}'
+        unique_key = ['blockchain', 'token_address', 'timestamp'],
+    post_hook='{{ expose_spells(\'["ton"]\',
+                                    "sector",
+                                    "ton",
+                                    \'["pshuvalov", "okhlopkov"]\') }}'
     )
 }}
 

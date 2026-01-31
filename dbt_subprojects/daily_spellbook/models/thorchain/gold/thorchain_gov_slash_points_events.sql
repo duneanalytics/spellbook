@@ -7,8 +7,11 @@
     unique_key = ['block_month', 'fact_slash_points_id'],
     partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    tags = ['thorchain', 'gov', 'slash_points_events', 'fact', 'governance']
-    , post_hook='{{ hide_spells() }}'
+    tags = ['thorchain', 'gov', 'slash_points_events', 'fact', 'governance'],
+    post_hook='{{ expose_spells(\'["thorchain"]\',
+                                  "project",
+                                  "thorchain",
+                                  \'["jeff-dude"]\') }}'
 ) }}
 
 -- Deduplication and gold layer combined (no silver layer needed)

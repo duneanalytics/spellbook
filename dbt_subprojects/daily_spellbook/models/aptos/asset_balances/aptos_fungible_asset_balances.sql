@@ -6,8 +6,11 @@
     incremental_strategy = 'merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['block_month', 'unique_key'],
-    partition_by = ['block_month']
-    , post_hook='{{ hide_spells() }}'
+    partition_by = ['block_month'],
+    post_hook='{{ expose_spells(blockchains = \'["aptos"]\',
+        spell_type = "project",
+        spell_name = "fungible_asset",
+        contributors = \'["ying-w"]\') }}'
 ) }}
 
 -- Compared to GraphQL endpoint, this table has the following differences:
