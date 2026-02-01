@@ -1,11 +1,8 @@
 {{
   config(
     
-    alias='ocr_reward_evt_transfer_daily',
-    post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","fantom","gnosis","optimism","polygon"]\',
-                            "project",
-                            "chainlink",
-                            \'["linkpool_ryan"]\') }}'
+    alias='ocr_reward_evt_transfer_daily'
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

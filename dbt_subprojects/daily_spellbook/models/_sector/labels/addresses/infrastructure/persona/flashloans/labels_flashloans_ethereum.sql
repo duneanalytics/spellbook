@@ -1,9 +1,6 @@
 {{config(
-    alias = 'flashloans_ethereum',
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["niftytable", "hildobby"]\') }}'
+    alias = 'flashloans_ethereum'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

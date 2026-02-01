@@ -1,11 +1,8 @@
 {{ config(
         schema = 'apeswap',
         alias = 'trades',
-        materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'["bnb", "ethereum", "polygon"]\',
-                                      spell_type = "project", 
-                                      spell_name = "apeswap", 
-                                      contributors = \'["codingsh", "zhongyiio"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

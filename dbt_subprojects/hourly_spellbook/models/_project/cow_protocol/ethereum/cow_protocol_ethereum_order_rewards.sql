@@ -1,9 +1,5 @@
-{{ config(alias='order_rewards',
-        
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "cow_protocol",
-                                    \'["bh2smith"]\') }}'
+{{ config(alias='order_rewards'
+, post_hook='{{ hide_spells() }}'
 )}}
 
 -- PoC Query here - https://dune.com/queries/1752782

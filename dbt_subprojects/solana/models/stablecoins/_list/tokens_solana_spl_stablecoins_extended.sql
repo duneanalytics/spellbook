@@ -15,8 +15,15 @@
 
 select '{{chain}}' as blockchain, token_mint_address
 from (values
-
-     ('11111111111111111111111111111111')
-
+    ('FtgGSFADXBtroxq8VCausXRr2of47QBf5AS1NtZCu4GD'),  -- BRZ
+    ('Copm5KwCLXDTWYgXJYmo6ixmMZrxd1wabkujkcuaK47C'),  -- COPM
+    ('HzwqbKZw8HxMN6bF2yFZNrht3c2iXXzpKcFu7uBEDKtr'),  -- EURC
+    ('DghpMkatCiUsofbTmid3M3kAbDTPqDwKiYHnudXeGG52'),  -- EURCV
+    ('6zYgzrT7X2wi9a9NeMtUvUWLLmf2a8vBsbYkocYdB9wa'),  -- MXNE
+    ('idrxTdNftk6tYedPv2M7tCFHBVCpk5rkiNRd8yUArhr'),   -- IDRX
+    ('Crn4x1Y2HUKko7ox2EZMT6N2t2ZyH7eKtwkBGVnhEq1g'),  -- GYEN
+    ('C4Kkr9NZU3VbyedcgutU6LKmi6MKz81sx6gRmk5pX519'),  -- VEUR
+    ('5H4voZhzySsVvwVYDAKku8MZGuYBC7cXaBKDPW4YHWW1'),  -- VGBP
+    ('dngKhBQM3BGvsDHKhrLnjvRKfY5Q7gEnYGToj9Lk8rk'),   -- ZARP
+    ('AhhdRu5YZdjVkKR3wbnUDaymVQL2ucjMQ63sZ3LFHsch')   -- VCHF
 ) as temp_table (token_mint_address)
-where token_mint_address != '11111111111111111111111111111111'

@@ -4,11 +4,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_day', 'tx_hash', 'evt_index','outcomeslot'],
-    post_hook='{{ expose_spells(blockchains  = \'["gnosis"]\',
-                                spell_type   = "project",
-                                spell_name   = "omen",
-                                contributors = \'["hdser"]\') }}'
+    unique_key = ['block_day', 'tx_hash', 'evt_index','outcomeslot']
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

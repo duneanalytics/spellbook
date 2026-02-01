@@ -3,11 +3,8 @@
         alias = 'likely_bot_contracts_zora',
         materialized = 'incremental',
         unique_key = ['blockchain', 'address'],
-        incremental_strategy = 'merge',
-        post_hook = '{{ expose_spells(\'["zora"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["msilb7"]\') }}'
+        incremental_strategy = 'merge'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

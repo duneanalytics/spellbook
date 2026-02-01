@@ -5,11 +5,8 @@ tags=['prod_exclude'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['tx_hash', 'network'],
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "pooltogether_v4",
-                                \'["bronder"]\') }}'
+    unique_key = ['tx_hash', 'network']
+    , post_hook='{{ hide_spells() }}'
 )}}
 
 /*

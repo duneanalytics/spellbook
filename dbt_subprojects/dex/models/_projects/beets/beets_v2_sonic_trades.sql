@@ -2,11 +2,8 @@
     config(
         schema = 'beets_v2_sonic',
         alias = 'trades',
-        materialized = 'view',
-        post_hook = '{{ expose_spells(\'["sonic"]\',
-                                spell_type = "project",
-                                spell_name = "beets",
-                                contributors = \'["franz"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

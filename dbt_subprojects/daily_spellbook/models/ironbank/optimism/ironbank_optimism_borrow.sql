@@ -1,10 +1,7 @@
 {{ config(
     
-    alias = 'borrow',
-    post_hook='{{ expose_spells(\'["optimism"]\',
-                                "project",
-                                "ironbank",
-                                \'["michael-ironbank"]\') }}'
+    alias = 'borrow'
+    , post_hook='{{ hide_spells() }}'
 ) }}
 
 SELECT

@@ -8,11 +8,8 @@
         on_schema_change='sync_all_columns',
         file_format ='delta',
         incremental_strategy='merge',
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        post_hook='{{ expose_spells(\'["polygon"]\',
-                                "project",
-                                "zeroex",
-                                \'["rantum","bakabhai993", "danning.sui"]\') }}'
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

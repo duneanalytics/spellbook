@@ -1,11 +1,8 @@
 {{ config
 (
     alias = 'first_funded_by',
-    schema = 'addresses_events',
-    post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "gnosis", "optimism", "polygon", "celo", "zora", "base", "scroll", "zksync", "sei", "mantle", "blast", "ronin", "nova", "abstract", "berachain", "katana", "ink", "opbnb"]\',
-                                    "sector",
-                                    "addresses_events",
-                                    \'["hildobby"]\') }}'
+    schema = 'addresses_events'
+    , post_hook='{{ hide_spells() }}'
 )
 }}
 

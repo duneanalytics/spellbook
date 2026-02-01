@@ -5,11 +5,8 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.creation_block_time')],
-        unique_key = ['blockchain', 'pool'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "zksync", "zora"]\',
-                        "sector",
-                        "dex",
-                        \'["grkhr"]\') }}'
+        unique_key = ['blockchain', 'pool']
+        , post_hook='{{ hide_spells() }}'
 )
 }}
 

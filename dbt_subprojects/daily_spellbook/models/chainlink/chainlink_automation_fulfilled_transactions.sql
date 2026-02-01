@@ -1,11 +1,8 @@
 {{
   config(
     
-    alias='automation_fulfilled_transactions',
-    post_hook='{{ expose_spells(\'["ethereum", "avalanche_c", "bnb", "fantom", "polygon"]\',
-                            "project",
-                            "chainlink",
-                            \'["linkpool_jon"]\') }}'
+    alias='automation_fulfilled_transactions'
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

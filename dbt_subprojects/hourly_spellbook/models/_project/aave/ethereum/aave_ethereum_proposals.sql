@@ -3,11 +3,8 @@
     schema = 'aave_ethereum',
     alias = 'proposals',
     materialized = 'table',
-    file_format = 'delta',
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "aave",
-                                \'["soispoke","pandajackson42"]\') }}'
+    file_format = 'delta'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

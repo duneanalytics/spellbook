@@ -1,11 +1,8 @@
 {{ config(
     schema = 'platypus_finance',
     alias = 'trades',
-    materialized = 'view',
-    post_hook='{{ expose_spells(blockchains = \'["avalanche_c"]\',
-                                  spell_type = "project", 
-                                  spell_name = "platypus_finance",
-                                  contributors = \'["umer_h_adil"]\') }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 
