@@ -1,11 +1,8 @@
 {{ config(
     schema = 'openxswap',
     alias = 'trades',
-    materialized = 'view',
-    post_hook='{{ expose_spells(blockchains = \'["optimism"]\',
-                                  spell_type = "project", 
-                                  spell_name = "openxswap", 
-                                  contributors = \'["ARDev097"]\') }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

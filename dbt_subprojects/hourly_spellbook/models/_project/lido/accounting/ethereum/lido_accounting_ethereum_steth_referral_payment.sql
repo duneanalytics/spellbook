@@ -3,11 +3,8 @@
         alias = 'steth_referral_payment',
 
         materialized = 'table',
-        file_format = 'delta',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "lido_accounting",
-                                \'["pipistrella"]\') }}'
+        file_format = 'delta'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

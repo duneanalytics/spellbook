@@ -1,10 +1,7 @@
 {{
     config(
-        alias = 'likely_bot_labels',
-        post_hook='{{ expose_spells(\'["optimism","base","zora","bob","ink","worldchain","shape","mode","unichain"]\',
-        "sector",
-        "labels",
-        \'["msilb7"]\') }}'
+        alias = 'likely_bot_labels'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

@@ -1,10 +1,7 @@
 {{config(
   schema = 'labels',
-  alias = 'balancer_v2_pools_zkevm',
-  post_hook = '{{ expose_spells(\'["zkevm"]\',
-                               "sector",
-                               "labels",
-                               \'["balancerlabs", "viniabussafi"]\') }}'
+  alias = 'balancer_v2_pools_zkevm'
+  , post_hook='{{ hide_spells() }}'
 )}}
 
 WITH pools AS (

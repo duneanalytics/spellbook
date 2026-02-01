@@ -1,10 +1,7 @@
 {{
     config(
-        alias = 'contract_deployers_gnosis',
-        post_hook='{{ expose_spells(\'["gnosis"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["hildobby", "hosuke"]\') }}'
+        alias = 'contract_deployers_gnosis'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

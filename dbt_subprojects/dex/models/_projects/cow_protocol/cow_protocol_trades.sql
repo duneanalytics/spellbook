@@ -1,10 +1,7 @@
 {{ config(
         schema = 'cow_protocol',
-        alias='trades',
-        post_hook='{{ expose_spells(\'["ethereum", "gnosis", "arbitrum", "base", "avalanche_c", "polygon", "lens", "bnb", "linea", "plasma"]\',
-                                    "project",
-                                    "cow_protocol",
-                                    \'["bh2smith", "gentrexha", "olgafetisova"]\') }}'
+        alias='trades'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 SELECT *

@@ -1,12 +1,9 @@
 {{ 
     config(
         schema = 'eigenlayer_ethereum',
-        alias = 'avs_paid_rewards',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "eigenlayer",
-                                    \'["bowenli"]\') }}',
-        materialized = 'table',
+        alias = 'avs_paid_rewards'
+        , post_hook='{{ hide_spells() }}'
+        , materialized = 'table',
         unique_key = ['avs']
     )
 }}

@@ -2,11 +2,8 @@
     config(
         tags = ['static'],
         alias = 'nft_curated',
-        materialized = 'table',
-        post_hook = '{{ expose_spells(\'["celo"]\',
-                                    "sector",
-                                    "tokens",
-                                    \'["tomfutago"]\') }}'
+        materialized = 'table'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

@@ -6,11 +6,8 @@
     materialized = 'incremental',
     incremental_strategy = 'merge',
     unique_key = ['blockchain','tx_hash','evt_index'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    post_hook='{{ expose_spells(\'["base", "avalanche_c", "arbitrum", "bnb"]\',
-                                "sector",
-                                "social",
-                                \'["hildobby"]\') }}'
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

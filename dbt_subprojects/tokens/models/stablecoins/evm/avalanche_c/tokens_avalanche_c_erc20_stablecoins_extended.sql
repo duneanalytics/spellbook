@@ -16,7 +16,11 @@
 select '{{chain}}' as blockchain, contract_address
 from (values
 
-     (0x0000000000000000000000000000000000000000)
+     (0x564a341df6c126f90cf3ecb92120fd7190acb401)  -- TRYB
+
+     /* rebasing / interest accruing tokens
+     (0xabe7a9dfda35230ff60d1590a929ae0644c47dc1), -- aUSD (aave)
+     (0x8861f5c40a0961579689fdf6cdea2be494f9b25a)  -- iUSDS (iron bank)
+     */
 
 ) as temp_table (contract_address)
-where contract_address != 0x0000000000000000000000000000000000000000

@@ -9,11 +9,8 @@
         'delta': {
             'Z-ORDER BY': ['address']
         },
-    },
-    post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "fantom", "polygon", "base", "celo", "zora", "zksync", "scroll", "linea", "zkevm"]\',
-                        "sector",
-                        "gas",
-                        \'["gashawk", "zohjag"]\') }}'
+    }
+    , post_hook='{{ hide_spells() }}'
 ) }}
 
 WITH 
