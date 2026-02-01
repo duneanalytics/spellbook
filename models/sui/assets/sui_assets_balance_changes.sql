@@ -16,7 +16,7 @@ with cutoff as (
     from {{ this }}
 ),
 
--- transactions touching coin objects
+-- Transactions touching coin objects only
 txo as (
     select
         checkpoint,
@@ -31,9 +31,10 @@ txo as (
         end as io_flag
     from {{ ref('sui__transaction_objects') }}
     where checkpoint >= (select min_checkpoint from cutoff)
+      and coin_type is not null
 ),
 
--- object snapshots (multiple versions per object)
+-- Object snapshots for coin objects only
 obj_versions as (
     select
         object_id,
@@ -43,9 +44,10 @@ obj_versions as (
         checkpoint,
         version
     from {{ ref('sui__objects') }}
+    where coin_type is not null
 ),
 
--- match each tx object to the correct object snapshot
+-- Match each tx object to the correct object snapshot
 matched as (
     select
         txo.checkpoint,
@@ -68,13 +70,13 @@ matched as (
     from txo
     join obj_versions obj
         on txo.object_id = obj.object_id
-        and (
+       and (
             -- outputs: exact snapshot at tx checkpoint
             (txo.io_flag = 'out' and obj.checkpoint = txo.checkpoint)
             or
-            -- inputs: latest snapshot at or before tx checkpoint
+            -- inputs: latest snapshot at or before tx checkpoint (handles same-checkpoint create+spend)
             (txo.io_flag = 'in' and obj.checkpoint <= txo.checkpoint)
-        )
+       )
 )
 
 select
@@ -90,4 +92,5 @@ group by
     transaction_digest,
     owner_address,
     coin_type
+having sum(amount) != 0
 
