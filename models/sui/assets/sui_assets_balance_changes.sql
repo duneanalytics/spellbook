@@ -21,6 +21,7 @@ txo as (
         checkpoint,
         transaction_digest,
         object_id,
+        version,
         input_kind,
         case when input_kind is null then 'out' else 'in' end as io_flag
     from sui.transaction_objects
@@ -32,6 +33,7 @@ obj as (
     select
         checkpoint,
         object_id,
+        version,
         owner_address,
         coin_type,
         cast(coin_balance as decimal(38,0)) as coin_balance
@@ -45,6 +47,7 @@ txo_with_obj as (
         txo.checkpoint as tx_checkpoint,
         txo.transaction_digest,
         txo.object_id,
+        txo.version as txo_version,
         txo.input_kind,
         txo.io_flag,
 
@@ -52,10 +55,11 @@ txo_with_obj as (
         obj.coin_type,
         obj.coin_balance,
         obj.checkpoint as obj_checkpoint,
+        obj.version as obj_version,
 
         row_number() over (
             partition by txo.transaction_digest, txo.object_id, txo.io_flag
-            order by obj.checkpoint desc
+            order by obj.checkpoint desc, obj.version desc
         ) as rn
     from txo
     join obj
@@ -63,8 +67,8 @@ txo_with_obj as (
      and (
           -- outputs: same checkpoint
           (txo.io_flag = 'out' and obj.checkpoint = txo.checkpoint)
-          -- inputs: latest snapshot strictly before tx
-       or (txo.io_flag = 'in' and obj.checkpoint < txo.checkpoint)
+          -- inputs: latest snapshot at or before tx checkpoint (handles same-checkpoint create+spend)
+       or (txo.io_flag = 'in' and obj.checkpoint <= txo.checkpoint)
      )
 ),
 
@@ -88,6 +92,7 @@ deltas as (
 select *
 from deltas
 where amount <> 0;
+
 
 
 
