@@ -1,63 +1,78 @@
-{{ config(
+{{ 
+  config(
     schema = 'sui',
     alias = 'assets_balance_changes',
     materialized = 'incremental',
     incremental_strategy = 'merge',
     unique_key = ['checkpoint', 'transaction_digest', 'owner_address', 'coin_type']
-) }}
+  ) 
+}}
 
+-- ----------------------------------------------------
+-- Determine incremental cutoff safely
+-- ----------------------------------------------------
 with cutoff as (
-    select
-        {% if is_incremental() %}
-            coalesce(max(checkpoint), 0) - 2000
-        {% else %}
-            0
-        {% endif %} as min_checkpoint
-    from {{ this }}
+    {% if is_incremental() %}
+        select max(checkpoint) - 2000 as min_checkpoint
+        from {{ this }}
+    {% else %}
+        select 0 as min_checkpoint
+    {% endif %}
 ),
 
--- Transactions touching coin objects only
+-- ----------------------------------------------------
+-- Transaction objects touched in recent checkpoints
+-- ----------------------------------------------------
 txo as (
     select
         checkpoint,
         transaction_digest,
         object_id,
         owner_address,
-        coin_type,
-        version,
-        case
-            when input_kind is null then 'out'
-            else 'in'
+        input_kind,
+        case 
+            when input_kind is not null then 'in'
+            else 'out'
         end as io_flag
-    from {{ ref('sui__transaction_objects') }}
+    from {{ ref('sui_transaction_objects') }}
     where checkpoint >= (select min_checkpoint from cutoff)
-      and coin_type is not null
 ),
 
--- Object snapshots for coin objects only
+-- ----------------------------------------------------
+-- Object versions (coin objects only)
+-- ----------------------------------------------------
 obj_versions as (
     select
         object_id,
         owner_address,
         coin_type,
-        coin_balance,
+        cast(coin_balance as decimal(38,0)) as coin_balance,
         checkpoint,
         version
-    from {{ ref('sui__objects') }}
+    from {{ ref('sui_objects') }}
     where coin_type is not null
 ),
 
--- Match each tx object to the correct object snapshot
-matched as (
+-- ----------------------------------------------------
+-- Join tx objects to correct object snapshot
+-- ----------------------------------------------------
+joined as (
     select
         txo.checkpoint,
         txo.transaction_digest,
-        obj.owner_address,
+        txo.owner_address,
         obj.coin_type,
+
         case
-            when txo.io_flag = 'out' then obj.coin_balance
-            else -obj.coin_balance
+            -- Outputs: same-checkpoint snapshot
+            when txo.io_flag = 'out'
+                then obj.coin_balance
+
+            -- Inputs: latest snapshot at or before tx checkpoint
+            when txo.io_flag = 'in'
+                then -obj.coin_balance
         end as amount,
+
         row_number() over (
             partition by
                 txo.transaction_digest,
@@ -67,30 +82,30 @@ matched as (
                 obj.checkpoint desc,
                 obj.version desc
         ) as rn
+
     from txo
     join obj_versions obj
         on txo.object_id = obj.object_id
        and (
-            -- outputs: exact snapshot at tx checkpoint
             (txo.io_flag = 'out' and obj.checkpoint = txo.checkpoint)
-            or
-            -- inputs: latest snapshot at or before tx checkpoint (handles same-checkpoint create+spend)
-            (txo.io_flag = 'in' and obj.checkpoint <= txo.checkpoint)
+         or (txo.io_flag = 'in'  and obj.checkpoint <= txo.checkpoint)
        )
 )
 
+-- ----------------------------------------------------
+-- Final aggregation
+-- ----------------------------------------------------
 select
     checkpoint,
     transaction_digest,
     owner_address,
     coin_type,
     sum(amount) as amount
-from matched
+from joined
 where rn = 1
 group by
     checkpoint,
     transaction_digest,
     owner_address,
     coin_type
-having sum(amount) != 0
 
