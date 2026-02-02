@@ -151,7 +151,7 @@ WITH to_update AS (
         , last_seen
         , '{{ addresses_model[0] }}' AS blockchain
         FROM {{ addresses_model[1] }}
-        WHERE ({{incremental_predicate('last_seen')}} OR 1=1)
+        WHERE {{incremental_predicate('last_seen')}}
         )
         {% if not loop.last %}
         UNION ALL

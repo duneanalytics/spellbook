@@ -126,7 +126,7 @@ WITH executed_txs AS (
     FROM {{transactions}} txs
     LEFT JOIN {{this}} t ON txs."from"=t.address
     WHERE (t.address IS NULL OR txs.block_number > t.last_tx_block_number)
-    AND ({{ incremental_predicate('txs.block_time') }} OR 1=1)
+    AND {{ incremental_predicate('txs.block_time') }}
     GROUP BY 1
     )
 
@@ -162,7 +162,7 @@ WITH executed_txs AS (
         FROM {{token_transfers}} tt
         LEFT JOIN {{this}} t ON tt."from"=t.address
         WHERE (t.address IS NULL OR tt.block_time > t.last_transfer_block_time)
-        AND ({{ incremental_predicate('tt.block_time') }} OR 1=1)
+        AND {{ incremental_predicate('tt.block_time') }}
         GROUP BY tt."from"
 
         UNION ALL
@@ -183,7 +183,7 @@ WITH executed_txs AS (
         FROM {{token_transfers}} tt
         LEFT JOIN {{this}} t ON tt."to"=t.address
         WHERE (t.address IS NULL OR tt.block_time > t.last_transfer_block_time)
-        AND ({{ incremental_predicate('tt.block_time') }} OR 1=1)
+        AND {{ incremental_predicate('tt.block_time') }}
         GROUP BY "to"
         )
     GROUP BY 1
@@ -198,7 +198,7 @@ WITH executed_txs AS (
     LEFT JOIN {{this}} t ON ct.address=t.address
     LEFT JOIN {{contracts}} c ON ct.address=c.address
     WHERE (t.address IS NULL OR ct.block_number > t.last_tx_block_number)
-    AND ({{ incremental_predicate('ct.block_time') }} OR 1=1)
+    AND {{ incremental_predicate('ct.block_time') }}
     GROUP BY 1
     )
 

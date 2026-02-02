@@ -12,10 +12,7 @@ SELECT
 FROM {{ ref('addresses_' + blockchain + '_info') }} i
 LEFT JOIN {{ source('dune', 'blockchains') }} b ON b.name = '{{ blockchain }}'
 {% if is_incremental() %}
-WHERE (NOT EXISTS (
-    SELECT 1 FROM {{ this }} t
-    WHERE t.address = i.address AND t.first_funded_at IS NOT NULL
-) OR 1=1)
+WHERE {{ incremental_predicate('i.last_seen') }}
 {% endif %}
 
 {% endmacro %}
