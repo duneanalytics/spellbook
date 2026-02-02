@@ -31,6 +31,9 @@
     , ('zksync', ref('addresses_zksync_info'))
 ] %}
 
+{# Restrict to last 14 days in dev for faster test runs #}
+{% set dev_filter_sql = "AND last_seen >= current_timestamp - interval '14' day" if target.name == 'dev' else "" %}
+
 {% if not is_incremental() %}
 
 WITH data AS (
@@ -101,6 +104,7 @@ WITH data AS (
         , last_seen
         , last_seen_block
         FROM {{ addresses_model[1] }}
+        WHERE 1=1 {{ dev_filter_sql }}
         {% if not loop.last %}
         UNION ALL
         {% endif %}
@@ -154,7 +158,7 @@ WITH to_update AS (
         , last_seen
         , '{{ addresses_model[0] }}' AS blockchain
         FROM {{ addresses_model[1] }}
-        WHERE {{incremental_predicate('last_seen')}}
+        WHERE {{incremental_predicate('last_seen')}} {{ dev_filter_sql }}
         )
         {% if not loop.last %}
         UNION ALL
@@ -237,6 +241,7 @@ FROM (
     , last_seen_block
     FROM {{ addresses_model[1] }}
     INNER JOIN to_update USING (address)
+    WHERE 1=1 {{ dev_filter_sql }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
