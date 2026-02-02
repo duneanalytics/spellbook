@@ -111,12 +111,6 @@ sources:
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
 
-  - name: tokens_hyperevm
-    tables:
-      - name: transfers
-      - name: net_transfers_daily
-      - name: net_transfers_daily_asset
-
   - name: tokens_goerli
     tables:
       - name: transfers
@@ -143,12 +137,6 @@ sources:
       - name: net_transfers_daily_asset
 
   - name: tokens_mantle
-    tables:
-      - name: transfers
-      - name: net_transfers_daily
-      - name: net_transfers_daily_asset
-
-  - name: tokens_monad
     tables:
       - name: transfers
       - name: net_transfers_daily
