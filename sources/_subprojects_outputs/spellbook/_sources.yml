@@ -108,6 +108,14 @@ sources:
     tables:
       - name: first_funded_by
       - name: first_token_received
+  - name: addresses_events_hyperevm
+    tables:
+      - name: first_funded_by
+      - name: first_token_received
+  - name: addresses_events_monad
+    tables:
+      - name: first_funded_by
+      - name: first_token_received
   - name: bridge_optimism
     tables:
       - name: standard_bridge_flows
