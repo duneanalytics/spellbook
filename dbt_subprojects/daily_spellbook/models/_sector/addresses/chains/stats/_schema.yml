@@ -1,0 +1,282 @@
+version: 2
+
+models:
+  - name: addresses_ethereum_stats
+    meta:
+      blockchain: ethereum
+      sector: addresses
+      contributors: kryptaki
+    config:
+      tags: ['address', 'stats']
+    description: "Per-address stats for Ethereum (first funded, contract flag). Use _updated_at for incremental reads."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - &address
+        name: address
+        description: "Address"
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &chain_id
+        name: chain_id
+        description: "Chain ID from blockchains source"
+      - &first_funded_by
+        name: first_funded_by
+        description: "Address that first funded this address with this chain's native token"
+      - &first_funded_at
+        name: first_funded_at
+        description: "Block time at which the address was first funded with this chain's native token"
+      - &is_smart_contract
+        name: is_smart_contract
+        description: "True if the address is a smart contract"
+      - &is_eoa
+        name: is_eoa
+        description: "True if the address is an externally owned account (EOA)"
+      - &_updated_at
+        name: _updated_at
+        description: "When this row was last written; use for incremental sync (e.g. WHERE _updated_at > :last_sync)"
+
+  - name: addresses_arbitrum_stats
+    meta:
+      blockchain: arbitrum
+      sector: addresses
+      contributors: kryptaki
+    config:
+      tags: ['address', 'stats']
+    description: "Per-address stats for Arbitrum"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *address
+      - *blockchain
+      - *chain_id
+      - *first_funded_by
+      - *first_funded_at
+      - *is_smart_contract
+      - *is_eoa
+      - *_updated_at
+
+  - name: addresses_avalanche_c_stats
+    meta:
+      blockchain: avalanche_c
+      sector: addresses 
+      contributors: kryptaki
+    config:
+      tags: ['address', 'stats']
+    description: "Per-address stats for Avalanche"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *address
+      - *blockchain
+      - *chain_id
+      - *first_funded_by
+      - *first_funded_at
+      - *is_smart_contract
+      - *is_eoa
+      - *_updated_at
+
+  - name: addresses_base_stats
+    meta:
+      blockchain: base
+      sector: addresses   
+      contributors: kryptaki
+    config:
+      tags: ['address', 'stats']
+    description: "Per-address stats for Base"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *address
+      - *blockchain
+      - *chain_id
+      - *first_funded_by
+      - *first_funded_at
+      - *is_smart_contract
+      - *is_eoa
+      - *_updated_at
+
+  - name: addresses_bnb_stats
+    meta:
+      blockchain: bnb
+      sector: addresses 
+      contributors: kryptaki
+    config:
+      tags: ['address', 'stats']
+    description: "Per-address stats for BNB"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *address
+      - *blockchain
+      - *chain_id
+      - *first_funded_by
+      - *first_funded_at
+      - *is_smart_contract
+      - *is_eoa
+      - *_updated_at
+
+  - name: addresses_hyperevm_stats
+    meta:
+      blockchain: hyperevm
+      sector: addresses   
+      contributors: kryptaki
+    config:
+      tags: ['address', 'stats']
+    description: "Per-address stats for HyperEVM"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *address
+      - *blockchain
+      - *chain_id
+      - *first_funded_by
+      - *first_funded_at
+      - *is_smart_contract
+      - *is_eoa
+      - *_updated_at
+
+  - name: addresses_linea_stats
+    meta:
+      blockchain: linea
+      sector: addresses   
+      contributors: kryptaki  
+    config:
+      tags: ['address', 'stats']
+    description: "Per-address stats for Linea"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *address
+      - *blockchain
+      - *chain_id
+      - *first_funded_by
+      - *first_funded_at
+      - *is_smart_contract
+      - *is_eoa
+      - *_updated_at
+
+  - name: addresses_monad_stats
+    meta:
+      blockchain: monad
+      sector: addresses   
+      contributors: kryptaki
+    config:
+      tags: ['address', 'stats']
+    description: "Per-address stats for Monad"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *address
+      - *blockchain
+      - *chain_id
+      - *first_funded_by
+      - *first_funded_at
+      - *is_smart_contract
+      - *is_eoa
+      - *_updated_at
+
+  - name: addresses_optimism_stats
+    meta:
+      blockchain: optimism
+      sector: addresses   
+      contributors: kryptaki
+    config:
+      tags: ['address', 'stats']
+    description: "Per-address stats for Optimism"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *address
+      - *blockchain
+      - *chain_id
+      - *first_funded_by
+      - *first_funded_at
+      - *is_smart_contract
+      - *is_eoa
+      - *_updated_at
+
+  - name: addresses_polygon_stats
+    meta:
+      blockchain: polygon
+      sector: addresses   
+      contributors: kryptaki
+    config:
+      tags: ['address', 'stats']
+    description: "Per-address stats for Polygon"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *address
+      - *blockchain
+      - *chain_id
+      - *first_funded_by
+      - *first_funded_at
+      - *is_smart_contract
+      - *is_eoa
+      - *_updated_at
+
+  - name: addresses_sei_stats
+    meta:
+      blockchain: sei
+      sector: addresses     
+      contributors: kryptaki
+    config:
+      tags: ['address', 'stats']
+    description: "Per-address stats for Sei"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *address
+      - *blockchain
+      - *chain_id
+      - *first_funded_by
+      - *first_funded_at
+      - *is_smart_contract
+      - *is_eoa
+      - *_updated_at
+
+  - name: addresses_zksync_stats
+    meta:
+      blockchain: zksync
+      sector: addresses   
+      contributors: kryptaki
+    config:
+      tags: ['address', 'stats']
+    description: "Per-address stats for zkSync"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *address
+      - *blockchain
+      - *chain_id
+      - *first_funded_by
+      - *first_funded_at
+      - *is_smart_contract
+      - *is_eoa
+      - *_updated_at
