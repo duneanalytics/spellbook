@@ -127,28 +127,6 @@ models:
       - *is_eoa
       - *_updated_at
 
-  - name: addresses_hyperevm_stats
-    meta:
-      blockchain: hyperevm
-      sector: addresses   
-      contributors: kryptaki
-    config:
-      tags: ['address', 'stats']
-    description: "Per-address stats for HyperEVM"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
-    columns:
-      - *address
-      - *blockchain
-      - *chain_id
-      - *first_funded_by
-      - *first_funded_at
-      - *is_smart_contract
-      - *is_eoa
-      - *_updated_at
-
   - name: addresses_linea_stats
     meta:
       blockchain: linea
@@ -157,28 +135,6 @@ models:
     config:
       tags: ['address', 'stats']
     description: "Per-address stats for Linea"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
-    columns:
-      - *address
-      - *blockchain
-      - *chain_id
-      - *first_funded_by
-      - *first_funded_at
-      - *is_smart_contract
-      - *is_eoa
-      - *_updated_at
-
-  - name: addresses_monad_stats
-    meta:
-      blockchain: monad
-      sector: addresses   
-      contributors: kryptaki
-    config:
-      tags: ['address', 'stats']
-    description: "Per-address stats for Monad"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -223,28 +179,6 @@ models:
     config:
       tags: ['address', 'stats']
     description: "Per-address stats for Polygon"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
-    columns:
-      - *address
-      - *blockchain
-      - *chain_id
-      - *first_funded_by
-      - *first_funded_at
-      - *is_smart_contract
-      - *is_eoa
-      - *_updated_at
-
-  - name: addresses_sei_stats
-    meta:
-      blockchain: sei
-      sector: addresses     
-      contributors: kryptaki
-    config:
-      tags: ['address', 'stats']
-    description: "Per-address stats for Sei"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
