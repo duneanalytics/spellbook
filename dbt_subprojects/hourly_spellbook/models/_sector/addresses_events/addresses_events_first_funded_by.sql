@@ -33,6 +33,8 @@
 , (ref('addresses_events_katana_first_funded_by'), 'ETH')
 , (ref('addresses_events_ink_first_funded_by'), 'ETH')
 , (ref('addresses_events_opbnb_first_funded_by'), 'BNB')
+, (ref('addresses_events_hyperevm_first_funded_by'), 'HYPE')
+, (ref('addresses_events_monad_first_funded_by'), 'MON')
 ] %}
 
 WITH joined_data AS (
