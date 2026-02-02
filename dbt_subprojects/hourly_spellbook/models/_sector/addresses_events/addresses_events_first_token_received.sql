@@ -33,6 +33,8 @@
 , (ref('addresses_events_katana_first_token_received'))
 , (ref('addresses_events_ink_first_token_received'))
 , (ref('addresses_events_opbnb_first_token_received'))
+, (ref('addresses_events_hyperevm_first_token_received'))
+, (ref('addresses_events_monad_first_token_received'))
 ] %}
 
 WITH joined_data AS (
