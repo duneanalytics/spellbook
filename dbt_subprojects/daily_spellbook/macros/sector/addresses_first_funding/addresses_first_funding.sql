@@ -1,4 +1,4 @@
-{% macro addresses_stats(blockchain) %}
+{% macro addresses_first_funding(blockchain) %}
 
 SELECT 
     i.address
