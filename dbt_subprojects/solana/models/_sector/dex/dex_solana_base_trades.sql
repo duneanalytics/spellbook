@@ -37,7 +37,6 @@
       , ref('goonfi_solana_base_trades')
       , ref('obric_solana_base_trades')
       , ref('aquifer_solana_base_trades')
-      -- alphaq_solana_base_trades will be added in follow-up PR after CI verification
       ]
 %}
 
