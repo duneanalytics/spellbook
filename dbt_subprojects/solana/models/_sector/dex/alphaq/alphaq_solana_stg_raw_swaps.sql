@@ -11,7 +11,7 @@
   )
 }}
 
-{% set project_start_date = '2026-02-02' %}
+{% set project_start_date = '2026-02-03' %}
 
 -- alphaq swap data from instruction_calls table
 WITH swaps AS (
