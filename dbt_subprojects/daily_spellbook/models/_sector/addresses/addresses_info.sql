@@ -221,6 +221,8 @@ FROM (
     , is_smart_contract
     , namespace
     , name
+    , first_deployment_block_time
+    , first_deployment_from
     , first_funded_by
     , first_funded_by_block_time
     , tokens_received_count
