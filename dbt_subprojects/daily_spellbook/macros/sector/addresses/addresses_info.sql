@@ -1,9 +1,5 @@
 {% macro addresses_info(blockchain, transactions, token_transfers, creation_traces, first_funded_by, contracts) %}
 
-{# Restrict to last 14 days in dev for faster test runs #}
-{% set dev_filter_sql = "AND block_time >= current_timestamp - interval '7' day" if target.name == 'dev' else "" %}
-{% set dev_filter_sql_ct = "AND ct.block_time >= current_timestamp - interval '7' day" if target.name == 'dev' else "" %}
-
 {% if not is_incremental() %}
 
 WITH executed_txs AS (
@@ -15,7 +11,7 @@ WITH executed_txs AS (
     , MIN(block_number) AS first_tx_block_number
     , MAX(block_number) AS last_tx_block_number
     FROM {{transactions}}
-    WHERE 1=1 {{ dev_filter_sql }}
+    WHERE 1=1
     GROUP BY 1
     )
 
@@ -48,7 +44,7 @@ WITH executed_txs AS (
         , 0 AS received_volume_usd
         , SUM(amount_usd) AS sent_volume_usd
         FROM {{token_transfers}}
-        WHERE 1=1 {{ dev_filter_sql }}
+        WHERE 1=1
         GROUP BY "from"
 
         UNION ALL
@@ -67,7 +63,7 @@ WITH executed_txs AS (
         , SUM(amount_usd) AS received_volume_usd
         , 0 AS sent_volume_usd
         FROM {{token_transfers}}
-        WHERE 1=1 {{ dev_filter_sql }}
+        WHERE 1=1
         GROUP BY "to"
         )
     GROUP BY 1
@@ -82,7 +78,7 @@ WITH executed_txs AS (
     , MAX_BY(c.name, c.created_at) AS name
     FROM {{creation_traces}} ct
     LEFT JOIN {{contracts}} c ON ct.address=c.address
-    WHERE 1=1 {{ dev_filter_sql_ct }}
+    WHERE 1=1
     GROUP BY 1
     )
 
