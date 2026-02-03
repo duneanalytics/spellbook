@@ -17,7 +17,8 @@ select '{{chain}}' as blockchain, contract_address
 from (values
 
      (0x337e7456b420bd3481e7fa61fa9850343d610d34), -- wMXN
-     (0xd76f5faf6888e24d9f04bf92a0c8b921fe4390e0)  -- wBRL
+     (0xd76f5faf6888e24d9f04bf92a0c8b921fe4390e0), -- wBRL
+     (0x07041776f5007ACa2A54844F50503a18A72A8b68)  -- USAT
 
      /* rebasing / interest accruing tokens
      (0x9EEAD9ce15383CaEED975427340b3A369410CFBF), -- aUSDT (aave)
