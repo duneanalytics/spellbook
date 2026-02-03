@@ -4,7 +4,7 @@ models:
   - name: alphaq_solana_stg_raw_swaps
     meta:
       blockchain: solana
-      contributors: [ Eekeguy ]
+      contributors: [ Eekeyguy ]
     config:
       tags: [ 'solana','dex', 'alphaq' ]
     description: >
@@ -16,7 +16,7 @@ models:
   - name: alphaq_solana_base_trades
     meta:
       blockchain: solana
-      contributors: [ Eekeguy ]
+      contributors: [ Eekeyguy ]
     config:
       tags: [ 'solana','dex', 'alphaq' ]
     description: >
