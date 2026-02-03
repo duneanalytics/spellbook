@@ -43,6 +43,8 @@ WITH data AS (
     , array_agg(blockchain) FILTER (WHERE is_smart_contract) AS smart_contract_blockchains
     , MAX(namespace) AS namespace
     , MAX(name) AS name
+    , MIN(first_deployment_block_time) AS first_deployment_block_time
+    , MIN_BY(first_deployment_from, first_deployment_block_time) AS first_deployment_from
     , MIN_BY(first_funded_by, first_funded_by_block_time) AS first_funded_by
     , MIN_BY(blockchain, first_funded_by_block_time) AS first_funded_blockchain
     , MIN(first_funded_by_block_time) AS first_funded_by_block_time
@@ -74,6 +76,8 @@ WITH data AS (
         , is_smart_contract
         , namespace
         , name
+        , first_deployment_block_time
+        , first_deployment_from
         , first_funded_by
         , first_funded_by_block_time
         , tokens_received_count
@@ -119,6 +123,8 @@ SELECT address
 , smart_contract_blockchains
 , namespace
 , name
+, first_deployment_block_time
+, first_deployment_from
 , first_funded_by
 , first_funded_blockchain
 , first_funded_by_block_time
@@ -179,6 +185,8 @@ SELECT address
 , array_agg(blockchain) FILTER (WHERE is_smart_contract) AS smart_contract_blockchains
 , MAX(namespace) AS namespace
 , MAX(name) AS name
+, MIN(first_deployment_block_time) AS first_deployment_block_time
+, MIN_BY(first_deployment_from, first_deployment_block_time) AS first_deployment_from
 , MIN_BY(first_funded_by, first_funded_by_block_time) AS first_funded_by
 , MIN_BY(blockchain, first_funded_by_block_time) AS first_funded_blockchain
 , MIN(first_funded_by_block_time) AS first_funded_by_block_time
