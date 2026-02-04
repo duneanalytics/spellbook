@@ -8,5 +8,6 @@ SELECT
     , CASE WHEN i.is_smart_contract THEN true ELSE false END AS is_smart_contract
     , CASE WHEN i.is_smart_contract THEN false ELSE true END AS is_eoa
 FROM {{ ref('addresses_' + blockchain + '_info') }} i
+WHERE i.first_funded_by_block_time IS NOT NULL
 
 {% endmacro %}
