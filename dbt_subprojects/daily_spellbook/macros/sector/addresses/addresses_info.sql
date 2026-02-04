@@ -11,7 +11,6 @@ WITH executed_txs AS (
     , MIN(block_number) AS first_tx_block_number
     , MAX(block_number) AS last_tx_block_number
     FROM {{transactions}}
-    WHERE 1=1
     GROUP BY 1
     )
 
@@ -44,7 +43,6 @@ WITH executed_txs AS (
         , 0 AS received_volume_usd
         , SUM(amount_usd) AS sent_volume_usd
         FROM {{token_transfers}}
-        WHERE 1=1
         GROUP BY "from"
 
         UNION ALL
@@ -63,7 +61,6 @@ WITH executed_txs AS (
         , SUM(amount_usd) AS received_volume_usd
         , 0 AS sent_volume_usd
         FROM {{token_transfers}}
-        WHERE 1=1
         GROUP BY "to"
         )
     GROUP BY 1
@@ -72,13 +69,10 @@ WITH executed_txs AS (
 , is_contract AS (
     SELECT ct.address
     , true AS is_smart_contract
-    , MIN(ct.block_time) AS first_deployment_block_time
-    , MIN_BY(ct."from", ct.block_time) AS first_deployment_from
     , MAX_BY(c.namespace, c.created_at) AS namespace
     , MAX_BY(c.name, c.created_at) AS name
     FROM {{creation_traces}} ct
     LEFT JOIN {{contracts}} c ON ct.address=c.address
-    WHERE 1=1
     GROUP BY 1
     )
 
@@ -89,8 +83,6 @@ SELECT '{{blockchain}}' AS blockchain
 , COALESCE(is_smart_contract, false) AS is_smart_contract
 , namespace
 , name
-, ic.first_deployment_block_time
-, ic.first_deployment_from
 , first_funded_by
 , ffb.block_time AS first_funded_by_block_time
 , tokens_received_count
@@ -120,6 +112,8 @@ WHERE address IS NOT NULL
 
 
 {% else %}
+
+
 
 WITH executed_txs AS (
     SELECT txs."from" AS address
@@ -198,8 +192,6 @@ WITH executed_txs AS (
 , is_contract AS (
     SELECT ct.address
     , true AS is_smart_contract
-    , MIN(ct.block_time) AS first_deployment_block_time
-    , MIN_BY(ct."from", ct.block_time) AS first_deployment_from
     , MAX_BY(c.namespace, c.created_at) AS namespace
     , MAX_BY(c.name, c.created_at) AS name
     FROM {{creation_traces}} ct
@@ -217,8 +209,6 @@ WITH executed_txs AS (
     , is_smart_contract
     , namespace
     , name
-    , first_deployment_block_time
-    , first_deployment_from
     , first_funded_by
     , ffb.block_time AS first_funded_by_block_time
     , tokens_received_count
@@ -251,8 +241,6 @@ SELECT '{{blockchain}}' AS blockchain
 , COALESCE(nd.is_smart_contract, t.is_smart_contract) AS is_smart_contract
 , COALESCE(nd.namespace, t.namespace) AS namespace
 , COALESCE(nd.name, t.name) AS name
-, COALESCE(t.first_deployment_block_time, nd.first_deployment_block_time) AS first_deployment_block_time
-, COALESCE(t.first_deployment_from, nd.first_deployment_from) AS first_deployment_from
 , COALESCE(t.first_funded_by, nd.first_funded_by) AS first_funded_by
 , COALESCE(t.first_funded_by_block_time, nd.first_funded_by_block_time) AS first_funded_by_block_time
 , COALESCE(nd.tokens_received_count, 0)+COALESCE(t.tokens_received_count, 0) AS tokens_received_count
