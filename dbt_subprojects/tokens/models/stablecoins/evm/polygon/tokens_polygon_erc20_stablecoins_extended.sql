@@ -16,7 +16,9 @@
 select '{{chain}}' as blockchain, contract_address
 from (values
 
-     (0x4fb71290ac171e1d144f7221d882becac7196eb5)  -- TRYB
+     (0x4fb71290ac171e1d144f7221d882becac7196eb5), -- TRYB
+     (0xd687759f35bb747a29246a4b9495c8f52c49e00c), -- AUDX
+     (0xd4dd9e2f021bb459d5a5f6c24c12fe09c5d45553)  -- ZCHF
 
      /* rebasing / interest accruing tokens
      (0x3a3e7650f8b9f667da98f236010fbf44ee4b2975), -- xUSD (synthetic)
