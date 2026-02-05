@@ -25,5 +25,6 @@ from (values
     ('C4Kkr9NZU3VbyedcgutU6LKmi6MKz81sx6gRmk5pX519'),  -- VEUR
     ('5H4voZhzySsVvwVYDAKku8MZGuYBC7cXaBKDPW4YHWW1'),  -- VGBP
     ('dngKhBQM3BGvsDHKhrLnjvRKfY5Q7gEnYGToj9Lk8rk'),   -- ZARP
-    ('AhhdRu5YZdjVkKR3wbnUDaymVQL2ucjMQ63sZ3LFHsch')   -- VCHF
+    ('AhhdRu5YZdjVkKR3wbnUDaymVQL2ucjMQ63sZ3LFHsch'),  -- VCHF
+    ('A94X2fRy3wydNShU4dRaDyap2UuoeWJGWyATtyp61WZf')   -- TRYB
 ) as temp_table (token_mint_address)
