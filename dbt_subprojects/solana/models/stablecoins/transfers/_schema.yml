@@ -70,6 +70,21 @@ models:
       - &to_owner
         name: to_owner
         description: "Receiver wallet address"
+      - &from_token_account
+        name: from_token_account
+        description: "Source token account address"
+      - &to_token_account
+        name: to_token_account
+        description: "Destination token account address"
+      - &tx_signer
+        name: tx_signer
+        description: "Transaction signer wallet address"
+      - &outer_executing_account
+        name: outer_executing_account
+        description: "Outer instruction executing program/account"
+      - &action
+        name: action
+        description: "Transfer action type"
       - &unique_key
         name: unique_key
         description: "Unique identifier for this transfer"
@@ -109,6 +124,11 @@ models:
       - *amount_usd
       - *from_owner
       - *to_owner
+      - *from_token_account
+      - *to_token_account
+      - *tx_signer
+      - *outer_executing_account
+      - *action
       - *unique_key
 
   - name: stablecoins_solana_transfers
@@ -144,4 +164,9 @@ models:
       - *amount_usd
       - *from_owner
       - *to_owner
+      - *from_token_account
+      - *to_token_account
+      - *tx_signer
+      - *outer_executing_account
+      - *action
       - *unique_key
