@@ -3,7 +3,11 @@
 # requires-python = ">=3.12"
 # dependencies = ["aiohttp", "dune-client", "python-dotenv"]
 # ///
-"""Compare stablecoins balances from Dune with SIM API."""
+"""Compare stablecoins balances from Dune with SIM API.
+
+Dune = yesterday's snapshot; SIM = live. Requires DUNE_API_KEY and SIM_METADATA_API_KEY.
+Example: uv run .cursor/scripts/compare_stablecoins_balances.py ethereum --limit 50
+"""
 
 import argparse
 import asyncio
@@ -25,15 +29,14 @@ except ImportError:
 sys.path.insert(0, str(Path(__file__).parent))
 try:
     from dune_query import run_query
-except ImportError as e:
+except ImportError:
     print("ERROR: Failed to import dune_query. Run via: uv run compare_stablecoins_balances.py")
     sys.exit(1)
 
 
-# SIM API endpoint for EVM balances
-SIM_BALANCES_API = "https://api.sim.dune.com/v1/evm/balances"
+SIM_EVM_BALANCES_API = "https://api.sim.dune.com/v1/evm/balances"
+SIM_SVM_BALANCES_API = "https://api.sim.dune.com/beta/svm/balances"
 
-# Chain name to chain_id mapping for supported chains
 CHAIN_ID_MAP = {
     "arbitrum": 42161,
     "avalanche_c": 43114,
@@ -50,12 +53,11 @@ CHAIN_ID_MAP = {
     "worldchain": 480,
     "zksync": 324,
 }
+SVM_CHAINS = {"solana"}
 
 
 @dataclass
 class BalanceComparison:
-    """Result of comparing a single balance entry."""
-
     blockchain: str
     address: str
     token_address: str
@@ -71,15 +73,9 @@ def get_dune_balances_query(
     include_transfer_check: bool = False,
     include_gas_check: bool = False,
 ) -> str:
-    """Build the Dune SQL query for stablecoin balances.
-
-    Args:
-        chain: Chain name (e.g., 'arbitrum', 'ethereum')
-        limit: Maximum number of rows to return
-        include_transfer_check: If True, exclude addresses with any transfers in last 48h
-        include_gas_check: If True (Celo only), only include addresses that paid gas with stablecoins
-    """
-    # Use test schema for chains not yet in production
+    """Build Dune SQL for stablecoin balances (limit, optional transfer/gas filters)."""
+    if chain == "solana":
+        return get_solana_balances_query(limit, include_transfer_check)
     test_schema_tables = {
         "unichain": "test_schema.git_dunesql_4f56406_stablecoins_unichain_balances",
         "celo": "test_schema.git_dunesql_4f56406_stablecoins_celo_balances",
@@ -87,8 +83,6 @@ def get_dune_balances_query(
     }
     table_name = test_schema_tables.get(chain, f"stablecoins_{chain}.balances")
     is_test_table = chain in test_schema_tables
-
-    # For test tables, use max available day; for production, use yesterday
     day_filter = (
         f"day = (SELECT max(day) FROM {table_name})"
         if is_test_table
@@ -128,8 +122,6 @@ AND NOT (
 """
 
     if include_transfer_check:
-        # Exclude addresses that have had any ERC20 transfers within the last 48h
-        # Using raw evt_Transfer table for more real-time data (vs stablecoins transfers which has ~2h delay)
         base_query += f"""
 AND address NOT IN (
     SELECT DISTINCT "to" as addr FROM erc20_{chain}.evt_Transfer
@@ -141,7 +133,6 @@ AND address NOT IN (
 """
 
     if include_gas_check and chain == "celo":
-        # Add check to only include addresses that paid gas fees with stablecoins
         base_query += """
 AND address IN (
     SELECT DISTINCT tx_from FROM gas_celo.fees
@@ -156,47 +147,52 @@ LIMIT {limit}
     return base_query
 
 
-async def fetch_sim_balances(
+def get_solana_balances_query(limit: int = 100, include_transfer_check: bool = False) -> str:
+    """Build Dune SQL for Solana stablecoin balances."""
+    table_name = "stablecoins_solana.balances"
+    base_query = f"""
+SELECT blockchain, address, token_address, token_symbol, balance
+FROM {table_name}
+WHERE day = current_date - interval '1' day
+"""
+    if include_transfer_check:
+        base_query += """
+AND address NOT IN (
+    SELECT DISTINCT from_owner FROM tokens_solana.transfers
+    WHERE block_time >= now() - interval '48' hour
+    UNION
+    SELECT DISTINCT to_owner FROM tokens_solana.transfers
+    WHERE block_time >= now() - interval '48' hour
+)
+"""
+    base_query += f"""
+ORDER BY balance DESC
+LIMIT {limit}
+"""
+    return base_query
+
+
+async def fetch_sim_evm_balances(
     session: aiohttp.ClientSession,
     api_key: str,
     chain_id: int,
     address: str,
     delay: float = 0.5,
 ) -> dict[str, Decimal]:
-    """Fetch token balances from SIM API for a given address.
-
-    Args:
-        session: aiohttp session
-        api_key: SIM API key
-        chain_id: Chain ID
-        address: Wallet address
-        delay: Delay in seconds before making the request (rate limiting)
-
-    Returns:
-        Dictionary mapping token_address -> balance
-    """
-    # Delay before request to respect rate limits
+    """Fetch SIM EVM balances for one address. Returns token_address -> balance."""
     if delay > 0:
         await asyncio.sleep(delay)
-
     try:
-        url = f"{SIM_BALANCES_API}/{address}"
+        url = f"{SIM_EVM_BALANCES_API}/{address}"
         headers = {"X-Sim-Api-Key": api_key, "Content-Type": "application/json"}
         params = {"chain_ids": chain_id}
 
         async with session.get(url, headers=headers, params=params) as response:
             if response.status == 200:
                 result = await response.json()
-                # Parse the response - actual structure:
-                # {"wallet_address": "...", "balances": [
-                #   {"chain": "arbitrum", "chain_id": 42161, "address": "0x...", "amount": "...", "decimals": 18, ...}
-                # ]}
                 balances: dict[str, Decimal] = {}
-
-                # Handle dict response with "balances" key
                 if isinstance(result, dict) and "balances" in result:
                     for bal in result["balances"]:
-                        # Filter by chain_id if present
                         if bal.get("chain_id") != chain_id:
                             continue
                         token_addr = bal.get("address", "").lower()
@@ -207,8 +203,6 @@ async def fetch_sim_balances(
                             balances[token_addr] = balance
                         except (ValueError, TypeError):
                             pass
-
-                # Handle list response (alternative format)
                 elif isinstance(result, list):
                     for item in result:
                         if "balances" in item:
@@ -230,14 +224,57 @@ async def fetch_sim_balances(
             else:
                 return {}
     except Exception as e:
-        print(f"WARNING: Error fetching SIM balances for {address}: {e}")
+        print(f"WARNING: Error fetching SIM EVM balances for {address}: {e}")
         return {}
 
 
-def _classify_balance(
-    dune_balance: Decimal, sim_balance: Decimal | None
-) -> tuple[str, float | None]:
-    """Classify balance comparison and return (status, diff_percent)."""
+async def fetch_sim_svm_balances(
+    session: aiohttp.ClientSession,
+    api_key: str,
+    address: str,
+    delay: float = 0.5,
+) -> dict[str, Decimal]:
+    """Fetch SIM Solana balances for one address. Returns token_address -> balance."""
+    if delay > 0:
+        await asyncio.sleep(delay)
+    try:
+        url = f"{SIM_SVM_BALANCES_API}/{address}"
+        headers = {"X-Sim-Api-Key": api_key, "Content-Type": "application/json"}
+        params = {"chains": "solana"}
+        async with session.get(url, headers=headers, params=params) as response:
+            if response.status == 200:
+                result = await response.json()
+                balances: dict[str, Decimal] = {}
+                if isinstance(result, dict) and "balances" in result:
+                    for bal in result["balances"]:
+                        if bal.get("chain") != "solana":
+                            continue
+                        token_addr = bal.get("address", "")
+                        balance_str = bal.get("balance")
+                        if balance_str is not None:
+                            try:
+                                balances[token_addr] = Decimal(str(balance_str))
+                            except (ValueError, TypeError):
+                                pass
+                        else:
+                            amount_raw = bal.get("amount", "0")
+                            decimals = bal.get("decimals", 9)
+                            try:
+                                balance = Decimal(str(amount_raw)) / Decimal(10**decimals)
+                                balances[token_addr] = balance
+                            except (ValueError, TypeError):
+                                pass
+                return balances
+            elif response.status == 404:
+                return {}
+            else:
+                return {}
+    except Exception as e:
+        print(f"WARNING: Error fetching SIM SVM balances for {address}: {e}")
+        return {}
+
+
+def _classify_balance(dune_balance: Decimal, sim_balance: Decimal | None) -> tuple[str, float | None]:
     if sim_balance is None:
         return "not_found", None
     elif dune_balance == 0 and sim_balance == 0:
@@ -249,7 +286,7 @@ def _classify_balance(
     else:
         diff = abs(dune_balance - sim_balance)
         diff_percent = float(diff / dune_balance * 100)
-        if diff_percent < 0.0001:  # Floating point tolerance
+        if diff_percent < 0.0001:
             return "exact_match", 0.0
         elif diff_percent < 1.0:
             return "small_diff", diff_percent
@@ -265,30 +302,19 @@ async def compare_balances(
     retry_not_found: bool = True,
     retry_delay: float = 5.0,
 ) -> list[BalanceComparison]:
-    """Compare Dune balances with SIM API balances.
-
-    Args:
-        dune_rows: Rows from Dune query with blockchain, address, token_address, balance
-        chain: Chain name
-        api_key: SIM API key
-        request_delay: Delay in seconds between API requests (rate limiting)
-        retry_not_found: If True, retry fetching balances for "not found" entries after retry_delay
-        retry_delay: Delay in seconds before retrying "not found" entries (default: 5.0)
-
-    Returns:
-        List of BalanceComparison results
-    """
-    chain_id = CHAIN_ID_MAP.get(chain)
-    if not chain_id:
-        print(f"ERROR: Unknown chain '{chain}'. Supported: {list(CHAIN_ID_MAP.keys())}")
+    """Compare Dune balance rows with SIM API; optional retry for not-found entries."""
+    is_svm = chain in SVM_CHAINS
+    chain_id = None if is_svm else CHAIN_ID_MAP.get(chain)
+    if not is_svm and not chain_id:
+        print(f"ERROR: Unknown chain '{chain}'. Supported: {list(CHAIN_ID_MAP.keys()) + list(SVM_CHAINS)}")
         return []
 
     results: list[BalanceComparison] = []
-
-    # Group by address to minimize API calls
     addresses_tokens: dict[str, list[dict]] = {}
     for row in dune_rows:
-        addr = str(row.get("address", "")).lower()
+        addr = str(row.get("address", ""))
+        if not is_svm:
+            addr = addr.lower()
         if addr not in addresses_tokens:
             addresses_tokens[addr] = []
         addresses_tokens[addr].append(row)
@@ -297,18 +323,22 @@ async def compare_balances(
     async with aiohttp.ClientSession(timeout=timeout) as session:
         addresses = list(addresses_tokens.keys())
         total = len(addresses)
-
-        # Track not_found entries for retry: list of (result_index, addr, row)
         not_found_entries: list[tuple[int, str, dict]] = []
 
         for idx, addr in enumerate(addresses):
-            # Fetch balances with rate limiting delay
-            sim_balances = await fetch_sim_balances(
-                session, api_key, chain_id, addr, delay=request_delay if idx > 0 else 0
-            )
+            if is_svm:
+                sim_balances = await fetch_sim_svm_balances(
+                    session, api_key, addr, delay=request_delay if idx > 0 else 0
+                )
+            else:
+                sim_balances = await fetch_sim_evm_balances(
+                    session, api_key, chain_id, addr, delay=request_delay if idx > 0 else 0
+                )
 
             for row in addresses_tokens[addr]:
-                token_addr = str(row.get("token_address", "")).lower()
+                token_addr = str(row.get("token_address", ""))
+                if not is_svm:
+                    token_addr = token_addr.lower()
                 dune_balance = Decimal(str(row.get("balance", 0)))
                 sim_balance = sim_balances.get(token_addr)
 
@@ -329,16 +359,11 @@ async def compare_balances(
 
                 if status == "not_found":
                     not_found_entries.append((result_index, addr, row))
-
-            # Progress indicator for longer runs
             if total > 10 and (idx + 1) % 10 == 0:
                 print(f"  Progress: {idx + 1}/{total} addresses...")
 
-        # Retry not_found entries with delay before each retry
         if retry_not_found and not_found_entries:
             print(f"\n  {len(not_found_entries)} entries not found. Retrying each with {retry_delay}s delay...")
-
-            # Group by address for efficient retries
             retry_addresses: dict[str, list[tuple[int, dict]]] = {}
             for result_idx, addr, row in not_found_entries:
                 if addr not in retry_addresses:
@@ -349,20 +374,24 @@ async def compare_balances(
             resolved_count = 0
 
             for idx, addr in enumerate(retry_addr_list):
-                # Wait retry_delay before each retry request
                 await asyncio.sleep(retry_delay)
-
-                sim_balances = await fetch_sim_balances(
-                    session, api_key, chain_id, addr, delay=0  # delay already applied above
-                )
+                if is_svm:
+                    sim_balances = await fetch_sim_svm_balances(
+                        session, api_key, addr, delay=0
+                    )
+                else:
+                    sim_balances = await fetch_sim_evm_balances(
+                        session, api_key, chain_id, addr, delay=0
+                    )
 
                 for result_idx, row in retry_addresses[addr]:
-                    token_addr = str(row.get("token_address", "")).lower()
+                    token_addr = str(row.get("token_address", ""))
+                    if not is_svm:
+                        token_addr = token_addr.lower()
                     dune_balance = Decimal(str(row.get("balance", 0)))
                     sim_balance = sim_balances.get(token_addr)
 
                     if sim_balance is not None:
-                        # Update the result with new data
                         status, diff_percent = _classify_balance(dune_balance, sim_balance)
                         results[result_idx] = BalanceComparison(
                             blockchain=str(row.get("blockchain", chain)),
@@ -374,8 +403,6 @@ async def compare_balances(
                             status=status,
                         )
                         resolved_count += 1
-
-                # Progress for retries
                 if len(retry_addr_list) > 5:
                     print(f"    Retry progress: {idx + 1}/{len(retry_addr_list)} addresses...")
 
@@ -385,7 +412,6 @@ async def compare_balances(
 
 
 def print_summary(comparisons: list[BalanceComparison], show_not_found: bool = False) -> None:
-    """Print comparison summary."""
     exact_matches = sum(1 for c in comparisons if c.status == "exact_match")
     small_diffs = sum(1 for c in comparisons if c.status == "small_diff")
     large_diffs = sum(1 for c in comparisons if c.status == "large_diff")
@@ -395,6 +421,7 @@ def print_summary(comparisons: list[BalanceComparison], show_not_found: bool = F
     print("\n" + "=" * 60)
     print("SUMMARY")
     print("=" * 60)
+    print("Dune = yesterday's snapshot; SIM = live.")
     print(f"Total entries compared: {total}")
     print(f"  ✓ Exact matches (100%):  {exact_matches}")
     print(f"  ~ Small diff (<1%):       {small_diffs}")
@@ -405,7 +432,6 @@ def print_summary(comparisons: list[BalanceComparison], show_not_found: bool = F
 
 
 def format_balance(value: Decimal | float | None) -> str:
-    """Format balance with commas and 2 decimal places."""
     if value is None:
         return "N/A"
     return f"{float(value):,.2f}"
@@ -417,7 +443,6 @@ def print_differences(
     show_large: bool = True,
     show_not_found: bool = False,
 ) -> None:
-    """Print list of differences sorted by status."""
     diffs = [
         c
         for c in comparisons
@@ -429,8 +454,6 @@ def print_differences(
     if not diffs:
         print("\nNo differences to show.")
         return
-
-    # Sort by status: small_diff → large_diff → not_found
     status_order = {"small_diff": 0, "large_diff": 1, "not_found": 2}
     diffs.sort(key=lambda c: (status_order.get(c.status, 99), -(c.diff_percent or 0)))
 
@@ -458,8 +481,12 @@ def print_differences(
         )
 
 
+def get_all_supported_chains() -> list[str]:
+    return sorted(list(CHAIN_ID_MAP.keys()) + list(SVM_CHAINS))
+
+
 def parse_args() -> argparse.Namespace:
-    """Parse command line arguments."""
+    all_chains = get_all_supported_chains()
     parser = argparse.ArgumentParser(
         description="Compare stablecoins balances from Dune with SIM API",
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -467,6 +494,7 @@ def parse_args() -> argparse.Namespace:
 Examples:
   %(prog)s arbitrum
   %(prog)s ethereum --summary-only
+  %(prog)s solana --limit 50
   %(prog)s celo --check-gas
   %(prog)s base --diffs-only --large-only
   %(prog)s polygon --transfer-check --limit 50
@@ -483,7 +511,7 @@ Rate limit guidelines (--delay):
     parser.add_argument(
         "chain",
         type=str,
-        help=f"Chain name to compare. Supported: {list(CHAIN_ID_MAP.keys())}",
+        help=f"Chain name to compare. Supported: {all_chains}",
     )
 
     parser.add_argument(
@@ -546,31 +574,26 @@ Rate limit guidelines (--delay):
 
 
 def main() -> None:
-    """Main entry point."""
-    # Load .env file from project root
     env_path = Path(__file__).parent.parent.parent / ".env"
     load_dotenv(env_path)
 
     args = parse_args()
     chain = args.chain.lower()
-
-    # Validate chain
-    if chain not in CHAIN_ID_MAP:
-        print(f"ERROR: Unknown chain '{chain}'. Supported chains: {list(CHAIN_ID_MAP.keys())}")
+    all_chains = get_all_supported_chains()
+    if chain not in CHAIN_ID_MAP and chain not in SVM_CHAINS:
+        print(f"ERROR: Unknown chain '{chain}'. Supported chains: {all_chains}")
         sys.exit(1)
 
-    # Check for SIM API key
+    is_svm = chain in SVM_CHAINS
     api_key = os.environ.get("SIM_METADATA_API_KEY")
     if not api_key:
         print("ERROR: SIM_METADATA_API_KEY not found in environment or .env file")
         sys.exit(1)
 
-    # Validate gas check is only for Celo
     if args.check_gas and chain != "celo":
         print("WARNING: --check-gas is only applicable to the 'celo' chain, ignoring")
         args.check_gas = False
 
-    # Build and run Dune query
     query = get_dune_balances_query(
         chain,
         limit=args.limit,
@@ -580,7 +603,8 @@ def main() -> None:
 
     print(f"Fetching stablecoin balances from Dune for {chain} (limit={args.limit})...")
     if args.transfer_check:
-        print("  (Excluding addresses with transfers in the last 48h)")
+        transfer_window = "3h" if is_svm else "48h"
+        print(f"  (Excluding addresses with transfers in the last {transfer_window})")
     if args.check_gas:
         print("  (Only including addresses that paid gas with stablecoins)")
 
@@ -595,15 +619,16 @@ def main() -> None:
     if not rows:
         print("No balance entries found. Nothing to compare.")
         sys.exit(0)
-
-    # Compare with SIM API
-    unique_addresses = len(set(str(r.get("address", "")).lower() for r in rows))
+    if is_svm:
+        unique_addresses = len(set(str(r.get("address", "")) for r in rows))
+        api_info = "SVM beta API"
+    else:
+        unique_addresses = len(set(str(r.get("address", "")).lower() for r in rows))
+        api_info = f"chain_id={CHAIN_ID_MAP[chain]}"
     est_time = unique_addresses * args.delay
-    print(f"\nComparing with SIM API (chain_id={CHAIN_ID_MAP[chain]})...")
+    print(f"\nComparing with SIM API ({api_info})...")
     print(f"  {unique_addresses} unique addresses, ~{est_time:.0f}s estimated (delay={args.delay}s)")
     comparisons = asyncio.run(compare_balances(rows, chain, api_key, request_delay=args.delay))
-
-    # Determine what to show
     show_small = not args.large_only
     show_large = not args.small_only
 
