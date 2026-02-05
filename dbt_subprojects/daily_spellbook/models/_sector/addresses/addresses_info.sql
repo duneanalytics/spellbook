@@ -4,11 +4,8 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['address'],
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "base", "celo", "scroll", "zora", "blast", "fantom", "linea", "zkevm", "zksync"]\',
-                                    "sector",
-                                    "addresses",
-                                    \'["hildobby"]\') }}'
+        unique_key = ['address']
+        , post_hook='{{ hide_spells() }}'
 )
 }}
 
@@ -21,12 +18,15 @@
     , ('celo', ref('addresses_celo_info'))
     , ('ethereum', ref('addresses_ethereum_info'))
     , ('gnosis', ref('addresses_gnosis_info'))
+    , ('hyperevm', ref('addresses_hyperevm_info'))
+    , ('linea', ref('addresses_linea_info'))
+    , ('monad', ref('addresses_monad_info'))
     , ('optimism', ref('addresses_optimism_info'))
     , ('polygon', ref('addresses_polygon_info'))
     , ('scroll', ref('addresses_scroll_info'))
+    , ('sei', ref('addresses_sei_info'))
     , ('zora', ref('addresses_zora_info'))
     , ('fantom', ref('addresses_fantom_info'))
-    , ('linea', ref('addresses_linea_info'))
     , ('zkevm', ref('addresses_zkevm_info'))
     , ('zksync', ref('addresses_zksync_info'))
 ] %}
@@ -101,6 +101,7 @@ WITH data AS (
         , last_seen
         , last_seen_block
         FROM {{ addresses_model[1] }}
+        WHERE 1=1
         {% if not loop.last %}
         UNION ALL
         {% endif %}
@@ -237,6 +238,7 @@ FROM (
     , last_seen_block
     FROM {{ addresses_model[1] }}
     INNER JOIN to_update USING (address)
+    WHERE 1=1
     {% if not loop.last %}
     UNION ALL
     {% endif %}

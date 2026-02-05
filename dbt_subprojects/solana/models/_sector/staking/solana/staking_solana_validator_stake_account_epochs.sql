@@ -2,10 +2,7 @@
     schema = 'staking_solana'
     , alias = 'validator_stake_account_epochs'
     , materialized = 'table'
-    , post_hook='{{ expose_spells(\'["solana"]\',
-                                "sector",
-                                "staking",
-                                \'["ilemi"]\') }}')
+    , post_hook='{{ hide_spells() }}')
 }}
 
 SELECT

@@ -1,11 +1,8 @@
 {{ config(
 	
     schema = 'compound_v2_ethereum',
-    alias = 'ctokens',
-    post_hook = '{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "compound_v2",
-                                    \'["bizzyvinci"]\') }}'
+    alias = 'ctokens'
+    , post_hook='{{ hide_spells() }}'
 )}}
 
 select asset_symbol, ctoken_address, asset_address, decimals_mantissa

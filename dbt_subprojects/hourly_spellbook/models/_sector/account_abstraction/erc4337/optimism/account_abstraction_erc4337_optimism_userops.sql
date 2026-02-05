@@ -5,11 +5,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['userop_hash', 'tx_hash'],
-    post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "project",
-                                    "erc4337",
-                                    \'["0xbitfly", "hosuke", "sofiat"]\') }}'
+    unique_key = ['userop_hash', 'tx_hash']
+    , post_hook='{{ hide_spells() }}'
 )}}
 
 -- min deployed_date on chain

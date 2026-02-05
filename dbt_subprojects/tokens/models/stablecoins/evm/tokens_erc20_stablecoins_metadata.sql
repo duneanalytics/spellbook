@@ -3,11 +3,8 @@
     schema = 'tokens',
     alias = 'erc20_stablecoins_metadata',
     materialized = 'table',
-    tags = ['static'],
-    post_hook = '{{ expose_spells(blockchains = \'["arbitrum","avalanche_c","base","bnb","bob","celo","ethereum","fantom","gnosis","kaia","linea","mantle","optimism","polygon","scroll","worldchain"]\',
-                                  spell_type = "sector",
-                                  spell_name = "tokens",
-                                  contributors = \'["Henrystats","synthquest","rantum","tomfutago"]\') }}'
+    tags = ['static']
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

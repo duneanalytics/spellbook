@@ -1,11 +1,8 @@
 {{ config(
     schema = 'wigoswap',
     alias = 'trades',
-    materialized = 'view',
-    post_hook='{{ expose_spells(blockchains = \'["fantom"]\',
-                                  spell_type = "project", 
-                                  spell_name = "wigoswap", 
-                                  contributors = \'["Henrystats"]\') }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

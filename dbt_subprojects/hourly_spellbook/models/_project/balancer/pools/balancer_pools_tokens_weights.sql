@@ -1,10 +1,7 @@
 {{ config(
     schema = 'balancer',
-    alias = 'pools_tokens_weights',
-    post_hook='{{ expose_spells(blockchains = \'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon", "zkevm"]\',
-                                spell_type = "project",
-                                spell_name = "balancer",
-                                contributors = \'["viniabussafi"]\') }}'
+    alias = 'pools_tokens_weights'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

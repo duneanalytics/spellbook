@@ -313,6 +313,7 @@ base_supply as (
     ) ctokens on base_supply_actions.contract_address = ctokens.comet_contract_address
   where amount_supplied is not null 
     and amount_supplied > 0
+    and action in ('supply', 'repay + supply')
 
   union all
   select
@@ -335,6 +336,7 @@ base_supply as (
     ) ctokens on base_withdraw_actions.contract_address = ctokens.comet_contract_address
   where amount_withdrawn is not null 
     and amount_withdrawn > 0
+    and action in ('withdraw', 'borrow + withdraw')
 )
 
 select

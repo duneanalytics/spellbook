@@ -6,11 +6,8 @@
         partition_by = ['block_month'],
         file_format ='delta',
         incremental_strategy='merge',
-        unique_key = ['unique_key'],
-        post_hook='{{ expose_spells(blockchains = \'["zksync"]\',
-                                    spell_type = "project",
-                                    spell_name = "safe",
-                                    contributors = \'["kryptaki"]\') }}'
+        unique_key = ['unique_key']
+        , post_hook='{{ hide_spells() }}'
     ) 
 }}
 

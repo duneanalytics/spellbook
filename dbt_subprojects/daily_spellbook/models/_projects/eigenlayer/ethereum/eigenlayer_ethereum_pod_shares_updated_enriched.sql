@@ -1,11 +1,8 @@
 {{ 
     config(
         schema = 'eigenlayer_ethereum',
-        alias = 'pod_shares_updated_enriched',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "eigenlayer",
-                                    \'["bowenli"]\') }}'
+        alias = 'pod_shares_updated_enriched'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

@@ -5,11 +5,8 @@
         partition_by=['block_date'],
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['blockchain', 'block_date', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon"]\',
-                                    "project",
-                                    "tornado_cash",
-                                    \'["hildobby", "dot2dotseurat"]\') }}'
+        unique_key = ['blockchain', 'block_date', 'tx_hash', 'evt_index']
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

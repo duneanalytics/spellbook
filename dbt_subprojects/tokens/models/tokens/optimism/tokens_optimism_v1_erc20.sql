@@ -2,10 +2,7 @@
     schema = 'tokens_optimism_v1'
     ,alias = 'erc20'
     ,materialized = 'table'
-    ,post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "sector",
-                                    "tokens",
-                                    \'["msilb7"]\') }}')}}
+    , post_hook='{{ hide_spells() }}')}}
 
 SELECT contract_address
       , symbol

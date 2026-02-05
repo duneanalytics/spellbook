@@ -17,5 +17,5 @@
 
 {{ stablecoins_balances_from_transfers(
     transfers = source('stablecoins_' ~ chain, 'core_transfers'),
-    start_date = '2019-12-27'
+    start_date = '2020-09-18'
 ) }}

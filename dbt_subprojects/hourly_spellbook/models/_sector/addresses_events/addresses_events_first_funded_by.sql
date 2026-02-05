@@ -1,11 +1,8 @@
 {{ config
 (
     alias = 'first_funded_by',
-    schema = 'addresses_events',
-    post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "gnosis", "optimism", "polygon", "celo", "zora", "base", "scroll", "zksync", "sei", "mantle", "blast", "ronin", "nova", "abstract", "berachain", "katana", "ink", "opbnb"]\',
-                                    "sector",
-                                    "addresses_events",
-                                    \'["hildobby"]\') }}'
+    schema = 'addresses_events'
+    , post_hook='{{ hide_spells() }}'
 )
 }}
 
@@ -36,6 +33,8 @@
 , (ref('addresses_events_katana_first_funded_by'), 'ETH')
 , (ref('addresses_events_ink_first_funded_by'), 'ETH')
 , (ref('addresses_events_opbnb_first_funded_by'), 'BNB')
+, (ref('addresses_events_hyperevm_first_funded_by'), 'HYPE')
+, (ref('addresses_events_monad_first_funded_by'), 'MON')
 ] %}
 
 WITH joined_data AS (
