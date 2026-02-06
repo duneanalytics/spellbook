@@ -199,34 +199,34 @@ forward_fill as (
 )
 
 select
-  blockchain,
-  day,
-  address,
-  token_address,
+  f.blockchain,
+  f.day,
+  f.address,
+  f.token_address,
   'erc20' as token_standard,
   cast(null as uint256) as token_id,
-  balance_raw,
-  last_updated
-from forward_fill
-where (balance_raw > uint256 '0'
-  or (balance_raw = uint256 '0' and cast(last_updated as date) = day))  -- include actual 0-balance changes, not forward-fills
+  f.balance_raw,
+  f.last_updated
+from forward_fill f
+where (f.balance_raw > uint256 '0'
+  or (f.balance_raw = uint256 '0' and cast(f.last_updated as date) = f.day))  -- include actual 0-balance changes, not forward-fills
 {% if is_polygon %}
   -- exclude self-holdings on agEUR token contract
-  and not (blockchain = 'polygon'
-    and token_address = 0xe0b52e49357fd4daf2c15e02058dce6bc0057db4
-    and address = token_address)
+  and not (f.blockchain = 'polygon'
+    and f.token_address = 0xe0b52e49357fd4daf2c15e02058dce6bc0057db4
+    and f.address = f.token_address)
 {% endif %}
   and not (
-    (blockchain = 'ethereum'
+    (f.blockchain = 'ethereum'
       and exists (
         select 1
         from {{ ref('labels_burn_addresses') }} b
-        where b.blockchain = blockchain and b.address = address
+        where b.blockchain = f.blockchain and b.address = f.address
       ))
-    or (blockchain != 'ethereum' and address = 0x0000000000000000000000000000000000000000)
+    or (f.blockchain != 'ethereum' and f.address = 0x0000000000000000000000000000000000000000)
   )
 {% if is_incremental() %}
-  and {{ incremental_predicate('day') }}
+  and {{ incremental_predicate('f.day') }}
 {% endif %}
 
 {% endmacro %}
