@@ -3,10 +3,7 @@
         schema = 'manifest_solana',
         alias = 'trades',
         materialized = 'view',
-        post_hook='{{ expose_spells(\'["solana"]\',
-                                    "project",
-                                    "manifest",
-                                    \'["Eekeyguy"]\') }}')
+        post_hook='{{ hide_spells() }}')
 }}
 
 select
