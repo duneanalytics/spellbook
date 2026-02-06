@@ -244,4 +244,6 @@ FROM (VALUES
     , ('kuru', 'Kuru', 'Direct', 'kuru')
     , ('pinot', 'Pinot', 'Direct', 'pinot')
     , ('potatoswap', 'PotatoSwap', 'Direct', 'potatoswap')
+    , ('kumbaya', 'Kumbaya', 'Direct', 'kumbaya')
+    , ('prismfi', 'PrismFI', 'Direct', 'PrismFI')
 ) AS temp_table (project, name, marketplace_type, x_username)
