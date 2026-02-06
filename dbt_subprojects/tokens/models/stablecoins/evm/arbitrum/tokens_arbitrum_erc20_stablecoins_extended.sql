@@ -16,7 +16,8 @@
 select '{{chain}}' as blockchain, contract_address
 from (values
 
-     (0x0000000000000000000000000000000000000000)
+     (0x4933a85b5b5466fbaf179f72d3de273c287ec2c2), -- EURAU
+     (0xd4dd9e2f021bb459d5a5f6c24c12fe09c5d45553)  -- ZCHF
 
      /* rebasing / interest accruing tokens
      (0x7cfadfd5645b50be87d546f42699d863648251ad), -- stataArbUSDCn (static aave)
@@ -27,4 +28,3 @@ from (values
      */
 
 ) as temp_table (contract_address)
-where contract_address != 0x0000000000000000000000000000000000000000
