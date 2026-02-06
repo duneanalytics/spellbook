@@ -3,10 +3,7 @@
         schema = 'bisonfi_solana',
         alias = 'trades',
         materialized = 'view',
-        post_hook='{{ expose_spells(\'["solana"]\',
-                                    "project",
-                                    "bisonfi",
-                                    \'["Eekeyguy"]\') }}')
+        post_hook='{{ hide_spells() }}')
 }}
 
 select
