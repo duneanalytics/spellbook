@@ -216,6 +216,15 @@ where (balance_raw > uint256 '0'
     and token_address = 0xe0b52e49357fd4daf2c15e02058dce6bc0057db4
     and address = token_address)
 {% endif %}
+  and not (
+    (blockchain = 'ethereum'
+      and exists (
+        select 1
+        from {{ ref('labels_burn_addresses') }} b
+        where b.blockchain = blockchain and b.address = address
+      ))
+    or (blockchain != 'ethereum' and address = 0x0000000000000000000000000000000000000000)
+  )
 {% if is_incremental() %}
   and {{ incremental_predicate('day') }}
 {% endif %}
