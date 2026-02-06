@@ -161,8 +161,14 @@ select
   balance_raw,
   last_updated
 from forward_fill
-where (balance_raw > uint256 '0'
-  or (balance_raw = uint256 '0' and cast(last_updated as date) = day))  -- keep actual zero-balance changes, not forward-fills
+where 1=1
+  and (balance_raw > uint256 '0'
+    or (balance_raw = uint256 '0' and cast(last_updated as date) = day))  -- keep actual zero-balance changes, not forward-fills
+  -- exclude anomalous balances
+  and not (address in (
+    'BQhyvitcaYRYuyrkSacfP2aixjPsDqmhrt7uANjPcqZR',
+    '5BpFBfXx5srPGtg3JGsumWARNh4UVagANgf7dGb1MYY1'
+  ))
 {% if is_incremental() %}
   and {{ incremental_predicate('day') }}
 {% endif %}
