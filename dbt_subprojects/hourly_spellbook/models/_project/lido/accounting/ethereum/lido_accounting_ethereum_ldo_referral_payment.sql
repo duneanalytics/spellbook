@@ -22,7 +22,15 @@ with multisigs_list AS (
     (0x87D93d9B2C672bf9c9642d853a8682546a5012B5,  'Polygon',  'LiquidityRewardsMsig'),
     (0x9cd7477521B7d7E7F9e2F091D2eA0084e8AaA290,  'Ethereum', 'PolygonTeamRewardsMsig'),
     (0x5033823f27c5f977707b58f0351adcd732c955dd,  'Optimism', 'LiquidityRewardsMsig'),
+    (0x5A9d695c518e95CD6Ea101f2f25fC2AE18486A61,  'Optimism', 'LiquidityRewardsMsig'),
     (0x8c2b8595ea1b627427efe4f29a64b145df439d16,  'Arbitrum', 'LiquidityRewardsMsig'),
+    (0x5A9d695c518e95CD6Ea101f2f25fC2AE18486A61,  'Arbitrum', 'LiquidityRewardsMsig'),
+    (0x5A9d695c518e95CD6Ea101f2f25fC2AE18486A61,  'Base',     'LiquidityRewardsMsig'),
+    (0x65B05f4fCa066316383b0FE196C76C873a4dFD02,  'zkSync',   'LiquidityRewardsMsig'),
+    (0x5A9d695c518e95CD6Ea101f2f25fC2AE18486A61,  'bnb',      'LiquidityRewardsMsig'),
+    (0xA8ef4Db842D95DE72433a8b5b8FF40CB7C74C1b6,  'Linea',    'LiquidityRewardsMsig'),
+    (0x6Ef6cd595b775B9752df83C8b1700235b21FE2f6,  'Mantle',   'LiquidityRewardsMsig'),
+    (0x7bA516FB4512877C016907D6e70FAE96fbbdf8cD,  'Scroll',   'LiquidityRewardsMsig'),
     (0x13c6ef8d45afbccf15ec0701567cc9fad2b63ce8,  'Ethereum',  'ReferralRewardsMsig'),--Solana Ref Prog Msig
     (0x12a43b049A7D330cB8aEAB5113032D18AE9a9030,  'Ethereum',  'LegoMsig'),
     (0x9B1cebF7616f2BC73b47D226f90b01a7c9F86956,  'Ethereum',  'ATCMsig'),
@@ -49,11 +57,11 @@ ldo_referral_payments_addr AS (
     (0x9e2b6378ee8ad2A4A95Fe481d63CAba8FB0EBBF9),
     (0xaf8aE6955d07776aB690e565Ba6Fbc79B8dE3a5d) --rhino
     ) as list(address)
-),
+)
 
 
 
-ldo_referral_payment_txns AS ( --only LDO referral program, need to add DAI referrals
+, ldo_referral_payment_txns AS ( --only LDO referral program, need to add DAI referrals
    SELECT evt_block_time, CAST(_amount AS DOUBLE) AS amnt, evt_tx_hash, _to, _from, contract_address
     FROM {{source('lido_ethereum','LDO_evt_Transfer')}}
     WHERE _from IN (
