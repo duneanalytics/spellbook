@@ -12,7 +12,7 @@
   )
 }}
 
-{% set project_start_date = '2026-02-03' %}
+{% set project_start_date = '2025-08-07' %}
 
 WITH swaps AS (
     SELECT
