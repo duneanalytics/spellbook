@@ -1,10 +1,8 @@
 {{config(
   schema = 'labels',
   alias = 'balancer_v3_pools_avalanche_c',
-  post_hook = '{{ expose_spells(\'["plasma"]\',
-                               "sector",
-                               "labels",
-                               \'["gustavobftorres"]\') }}'
+  post_hook='{{ hide_spells() }}'
+
 )}}
 
 WITH token_data AS (
