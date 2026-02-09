@@ -37,6 +37,7 @@
       , ref('goonfi_solana_base_trades')
       , ref('obric_solana_base_trades')
       , ref('aquifer_solana_base_trades')
+      , ref('scorch_solana_base_trades')
       ]
 %}
 
