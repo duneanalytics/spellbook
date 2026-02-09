@@ -17,6 +17,7 @@
     ref('balancer_v3_ethereum_transfers_bpt'),
     ref('balancer_v3_gnosis_transfers_bpt'),
     ref('balancer_v3_arbitrum_transfers_bpt'),
+    ref('balancer_v3_avalanche_c_transfers_bpt'),
     ref('balancer_v3_base_transfers_bpt')   
 ] %}
 
