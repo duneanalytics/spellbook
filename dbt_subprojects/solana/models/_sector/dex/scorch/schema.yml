@@ -4,7 +4,7 @@ models:
   - name: scorch_solana_stg_raw_swaps
     meta:
       blockchain: solana
-      contributors: [ Eekeguy ]
+      contributors: [ Eekeyguy ]
     config:
       tags: [ 'solana','dex', 'scorch' ]
     description: >
@@ -16,7 +16,7 @@ models:
   - name: scorch_solana_base_trades
     meta:
       blockchain: solana
-      contributors: [ Eekeguy ]
+      contributors: [ Eekeyguy ]
     config:
       tags: [ 'solana','dex', 'scorch' ]
     description: >
@@ -29,7 +29,7 @@ models:
   - name: scorch_solana_trades
     meta:
       blockchain: solana
-      contributors: [Eekeguy]
+      contributors: [Eekeyguy]
     config:
       tags: ['solana','dex', 'scorch']
     description: >

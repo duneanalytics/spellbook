@@ -47,6 +47,7 @@ WITH swaps AS (
     AND {{ incremental_predicate('block_date') }}
     {% else -%}
     AND block_date >= DATE '{{ project_start_date }}'
+    AND block_date < DATE '{{ project_start_date }}' + INTERVAL '1' DAY
     {% endif -%}
 )
 select *

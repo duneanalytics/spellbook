@@ -34,21 +34,86 @@ WITH swaps AS (
         AND {{ incremental_predicate('block_date') }}
         {% else -%}
         AND block_date >= DATE '{{ project_start_date }}'
+        AND block_date < DATE '{{ project_start_date }}' + INTERVAL '1' DAY
         {% endif -%}
 )
 
+-- Step 1: compute expected transfer positions for semi-join pruning
+, swap_transfer_keys AS (
+    SELECT DISTINCT
+          tx_id
+        , block_date
+        , block_slot
+        , outer_instruction_index
+        , transfer_inner_instruction_index
+    FROM (
+        SELECT
+              tx_id
+            , block_date
+            , block_slot
+            , outer_instruction_index
+            , inner_instruction_index + 2 AS transfer_inner_instruction_index
+        FROM swaps
+
+        UNION ALL
+
+        SELECT
+              tx_id
+            , block_date
+            , block_slot
+            , outer_instruction_index
+            , inner_instruction_index + 3 AS transfer_inner_instruction_index
+        FROM swaps
+    )
+)
+
+-- Step 2: filter transfers using a SEMI join (EXISTS) so the hash build is on swap_transfer_keys, not transfers
+, transfers_pruned AS (
+    SELECT
+          tf.tx_id
+        , tf.block_date
+        , tf.block_slot
+        , tf.outer_instruction_index
+        , tf.inner_instruction_index
+        , tf.amount
+        , tf.from_token_account
+        , tf.to_token_account
+        , tf.token_mint_address
+    FROM {{ source('tokens_solana', 'transfers') }} tf
+    WHERE
+        1=1
+        AND tf.token_version IN ('spl_token', 'spl_token_2022')
+        {% if is_incremental() -%}
+        AND {{ incremental_predicate('tf.block_date') }}
+        {% else -%}
+        AND tf.block_date >= DATE '{{ project_start_date }}'
+        AND tf.block_date < DATE '{{ project_start_date }}' + INTERVAL '1' DAY
+        {% endif -%}
+        AND EXISTS (
+            SELECT 1
+            FROM swap_transfer_keys sk
+            WHERE
+                sk.tx_id = tf.tx_id
+                AND sk.block_date = tf.block_date
+                AND sk.block_slot = tf.block_slot
+                AND sk.outer_instruction_index = tf.outer_instruction_index
+                AND sk.transfer_inner_instruction_index = tf.inner_instruction_index
+        )
+)
+
+-- Step 3: join pruned transfers with swaps
 , transfers AS (
     SELECT
           s.block_date
         , s.block_time
         , s.block_slot
         , CASE WHEN s.is_inner = false THEN 'direct' ELSE s.outer_executing_account END AS trade_source
-        , MAX(CASE WHEN tf.inner_instruction_index = s.inner_instruction_index + 3 THEN tf.amount END) AS token_bought_amount_raw
-        , MAX(CASE WHEN tf.inner_instruction_index = s.inner_instruction_index + 2 THEN tf.amount END) AS token_sold_amount_raw
-        , MAX(CASE WHEN tf.inner_instruction_index = s.inner_instruction_index + 3 THEN tf.from_token_account END) AS token_bought_vault
-        , MAX(CASE WHEN tf.inner_instruction_index = s.inner_instruction_index + 2 THEN tf.to_token_account END) AS token_sold_vault
-        , MAX(CASE WHEN tf.inner_instruction_index = s.inner_instruction_index + 3 THEN tf.token_mint_address END) AS token_bought_mint_address
-        , MAX(CASE WHEN tf.inner_instruction_index = s.inner_instruction_index + 2 THEN tf.token_mint_address END) AS token_sold_mint_address
+        , MAX(CASE WHEN tp.inner_instruction_index = s.inner_instruction_index + 3 THEN tp.amount END) AS token_bought_amount_raw
+        , MAX(CASE WHEN tp.inner_instruction_index = s.inner_instruction_index + 2 THEN tp.amount END) AS token_sold_amount_raw
+        , MAX(CASE WHEN tp.inner_instruction_index = s.inner_instruction_index + 3 THEN tp.from_token_account END) AS token_bought_vault
+        , MAX(CASE WHEN tp.inner_instruction_index = s.inner_instruction_index + 2 THEN tp.to_token_account END) AS token_sold_vault
+        , MAX(CASE WHEN tp.inner_instruction_index = s.inner_instruction_index + 3 THEN tp.token_mint_address END) AS token_bought_mint_address
+        , MAX(CASE WHEN tp.inner_instruction_index = s.inner_instruction_index + 2 THEN tp.token_mint_address END) AS token_sold_mint_address
         , s.pool_id AS project_program_id
         , s.tx_signer AS trader_id
         , s.tx_id
@@ -57,18 +122,12 @@ WITH swaps AS (
         , s.tx_index
         , s.surrogate_key
     FROM swaps s
-    INNER JOIN {{ source('tokens_solana', 'transfers') }} tf
-        ON  tf.tx_id = s.tx_id
-        AND tf.block_date = s.block_date
-        AND tf.block_slot = s.block_slot
-        AND tf.outer_instruction_index = s.outer_instruction_index
-        AND tf.inner_instruction_index IN (s.inner_instruction_index + 2, s.inner_instruction_index + 3)
-    WHERE tf.token_version IN ('spl_token', 'spl_token_2022')
-        {% if is_incremental() -%}
-        AND {{ incremental_predicate('tf.block_date') }}
-        {% else -%}
-        AND tf.block_date >= DATE '{{ project_start_date }}'
-        {% endif -%}
+    INNER JOIN transfers_pruned tp
+        ON  tp.tx_id = s.tx_id
+        AND tp.block_date = s.block_date
+        AND tp.block_slot = s.block_slot
+        AND tp.outer_instruction_index = s.outer_instruction_index
+        AND tp.inner_instruction_index IN (s.inner_instruction_index + 2, s.inner_instruction_index + 3)
     GROUP BY
           s.block_date
         , s.block_time
@@ -81,8 +140,8 @@ WITH swaps AS (
         , s.inner_instruction_index
         , s.tx_index
         , s.surrogate_key
-    HAVING COUNT_IF(tf.inner_instruction_index = s.inner_instruction_index + 3) = 1
-       AND COUNT_IF(tf.inner_instruction_index = s.inner_instruction_index + 2) = 1
+    HAVING COUNT_IF(tp.inner_instruction_index = s.inner_instruction_index + 3) = 1
+       AND COUNT_IF(tp.inner_instruction_index = s.inner_instruction_index + 2) = 1
 )
 
 SELECT
