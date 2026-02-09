@@ -17,7 +17,8 @@
     ref('balancer_v3_ethereum_bpt_prices'),
     ref('balancer_v3_gnosis_bpt_prices'),
     ref('balancer_v3_arbitrum_bpt_prices'),
-    ref('balancer_v3_base_bpt_prices')      
+    ref('balancer_v3_avalanche_c_bpt_prices'),
+    ref('balancer_v3_base_bpt_prices')
 ] %}
 
 SELECT *
