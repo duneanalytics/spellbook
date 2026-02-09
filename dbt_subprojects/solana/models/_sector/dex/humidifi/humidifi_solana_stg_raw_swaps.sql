@@ -16,18 +16,22 @@
 -- humidifi swap data from instruction_calls table
 WITH swaps AS (
   SELECT
-    block_slot
+  block_slot
     , cast(date_trunc('month', block_date) AS DATE) AS block_month
     , block_date
     , block_time
     , COALESCE(inner_instruction_index,0) as inner_instruction_index -- adjust to index 0 for direct trades
     , outer_instruction_index
+    , inner_executing_account
     , outer_executing_account
+    , executing_account
     , is_inner
     , tx_id
     , tx_signer
     , tx_index
     , account_arguments[2] AS pool_id
+    , account_arguments[3] AS vault_a
+    , account_arguments[4] AS vault_b
     , {{ solana_instruction_key(
           'block_slot'
         , 'tx_index'
@@ -39,10 +43,7 @@ WITH swaps AS (
     1=1
     AND executing_account = '9H6tua7jkLhdm3w8BvgpTn5LZNU7g4ZynDmCiNN3q6Rp'
     AND tx_success = true
-    --AND BYTEARRAY_SUBSTRING(data, 1, 1) = '0xXX' 
-        -- No distinct SWAP discriminator, unreliable method of isolate Humidifi swap instructions. See: https://dune.com/queries/5857394 
-        -- Alternative method: arguments = 9 for swaps, join on inner_insturction_index +1 & +2 on token transfers.
-    AND cardinality(account_arguments) = 9 -- 9 arguments for all swap instructions. 3 arguments for all quote update instructions. No change in this pattern since deployment
+    AND cardinality(account_arguments) > 8 
     {% if is_incremental() -%}
     AND {{ incremental_predicate('block_date') }}
     {% else -%}
