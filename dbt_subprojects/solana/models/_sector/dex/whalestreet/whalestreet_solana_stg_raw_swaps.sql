@@ -11,7 +11,7 @@
   )
 }}
 
-{% set project_start_date = '2026-02-03' %}
+{% set project_start_date = '2025-11-20' %}
 
 -- whalestreet swap data from instruction_calls table
 WITH swaps AS (
