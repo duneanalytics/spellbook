@@ -102,7 +102,7 @@ WITH token_data AS (
         cc.symbol,
         'ECLP' AS pool_type
       FROM token_data c
-      INNER JOIN {{ source('balancer_v3_avalanche_c', 'GyroECLPPoolFactory_call_create') }} cc
+      INNER JOIN {{ source('gyroscope_avalanche_c', 'newer_gyroeclppoolfactory_call_create') }} cc
           ON c.pool = cc.output_pool
       CROSS JOIN UNNEST(c.tokens) AS t(tokens)
     ) zip 
