@@ -11,7 +11,7 @@
   )
 }}
 
-{% set project_start_date = '2026-02-03' %}
+{% set project_start_date = '2025-06-26' %}
 
 -- byreal swap data from instruction_calls table
 WITH swaps AS (
