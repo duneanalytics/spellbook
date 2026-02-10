@@ -6,7 +6,6 @@
 
 {% set balancer_models = [
     ref('balancer_v2_avalanche_c_pools_tokens_weights'),
-    ref('balancer_v3_avalanche_c_pools_tokens_weights')
 ] %}
 
 SELECT *
