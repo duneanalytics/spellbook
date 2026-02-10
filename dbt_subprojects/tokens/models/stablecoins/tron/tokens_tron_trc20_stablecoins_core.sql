@@ -19,7 +19,6 @@ from (values
      ('TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t'), -- USDT
      ('TEkxiTehnzSmSe2XqrBj4w32RUN966rdz8'), -- USDCOLD
      ('TPYmHEhy5n8TCEfYGqW2rPxsghSfzghPDn'), -- USDDOLD
-     ('TXDk8mbtRbXeYuMNS83CfKPaYYT8XWv9Hz'), -- USDD
      ('TUpMhErZL2fhh4sVNULAbNKLokS4GjC1F4'), -- TUSD
      ('TPFqcBAaaUMCSVRCqPaQ9QnzKhmuoLR6Rc')  -- USD1
 
