@@ -95,7 +95,6 @@
     'bnb' : '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
     'boba' : '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000',
     'celo' : '0x471EcE3750Da237f93B8E339c536989b8978a438',
-    'ethereum' : '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
     'fantom' : '0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83',
     'gnosis' : '0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d',
     'hemi' : '0x4200000000000000000000000000000000000006',
