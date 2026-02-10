@@ -13,13 +13,13 @@
 -- extended list: new stablecoin addresses added after the core list was frozen
 -- add new stablecoins here (not in tokens_ethereum_erc20_stablecoins_core)
 
-select '{{chain}}' as blockchain, contract_address
+select '{{chain}}' as blockchain, contract_address, currency
 from (values
 
-     (0x337e7456b420bd3481e7fa61fa9850343d610d34), -- wMXN
-     (0xd76f5faf6888e24d9f04bf92a0c8b921fe4390e0), -- wBRL
-     (0x07041776f5007ACa2A54844F50503a18A72A8b68), -- USAT
-     (0xd687759f35bb747a29246a4b9495c8f52c49e00c)  -- AUDX
+     (0x337e7456b420bd3481e7fa61fa9850343d610d34, 'MXN'), -- wMXN
+     (0xd76f5faf6888e24d9f04bf92a0c8b921fe4390e0, 'BRL'), -- wBRL
+     (0x07041776f5007ACa2A54844F50503a18A72A8b68, 'USD'), -- USAT
+     (0xd687759f35bb747a29246a4b9495c8f52c49e00c, 'AUD')  -- AUDX
 
      /* rebasing / interest accruing tokens
      (0x9EEAD9ce15383CaEED975427340b3A369410CFBF), -- aUSDT (aave)
@@ -33,4 +33,4 @@ from (values
      (0xdcd0f5ab30856f28385f641580bbd85f88349124)  -- alUSD (alchemix)
      */
 
-) as temp_table (contract_address)
+) as temp_table (contract_address, currency)

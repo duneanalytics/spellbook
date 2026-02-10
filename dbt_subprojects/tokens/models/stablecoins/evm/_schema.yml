@@ -16,6 +16,9 @@ models:
       - &contract_address
         name: contract_address
         description: "Contract address for the stablecoin token"
+      - &currency
+        name: currency
+        description: "ISO 4217 currency code the stablecoin is pegged to (e.g., USD, EUR, BRL)"
       - &backing
         name: backing
         description: "Type of backing for the stablecoin (e.g., Fiat-backed, Crypto-backed, Algorithmic, Hybrid, RWA-backed)"
@@ -28,21 +31,6 @@ models:
       - &name
         name: name
         description: "Name or protocol of the stablecoin"
-
-  - name: stablecoins_currency_mapping
-    meta:
-      sector: stablecoin
-      project: stablecoin
-      contributors: tomfutago
-    config:
-      tags: ['stablecoin', 'static']
-    description: "Mapping of stablecoin tokens to their pegged fiat currency code for FX rate fallback pricing"
-    columns:
-      - *blockchain
-      - *contract_address
-      - *symbol
-      - name: currency
-        description: "ISO 4217 currency code the stablecoin is pegged to (e.g., USD, EUR, BRL)"
 
   - name: tokens_erc20_stablecoins_metadata
     meta:

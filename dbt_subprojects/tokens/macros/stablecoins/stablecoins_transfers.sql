@@ -4,7 +4,7 @@
 ) %}
 
 with stablecoin_tokens as (
-    select contract_address as token_address
+    select contract_address as token_address, currency
     from {{ ref('tokens_' ~ blockchain ~ '_erc20_stablecoins_' ~ token_list) }}
 )
 
@@ -30,11 +30,8 @@ select
 from {{ ref('tokens_' ~ blockchain ~ '_transfers') }} t
 inner join stablecoin_tokens s
     on t.contract_address = s.token_address
-left join {{ ref('stablecoins_currency_mapping') }} cm
-    on t.blockchain = cm.blockchain
-    and t.contract_address = cm.contract_address
 left join {{ source('prices', 'fx_exchange_rates') }} fx
-    on cm.currency = fx.base_currency
+    on s.currency = fx.base_currency
     and fx.target_currency = 'USD'
     and t.block_date = fx.date
 {% if is_incremental() %}
