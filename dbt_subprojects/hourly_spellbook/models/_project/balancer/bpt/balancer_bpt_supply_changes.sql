@@ -17,7 +17,6 @@
     ref('balancer_v3_ethereum_bpt_supply_changes'),
     ref('balancer_v3_gnosis_bpt_supply_changes'),
     ref('balancer_v3_arbitrum_bpt_supply_changes'),
-    ref('balancer_v3_avalanche_c_bpt_supply_changes'),
     ref('balancer_v3_base_bpt_supply_changes')    
 ] %}
 
