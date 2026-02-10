@@ -5,7 +5,6 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_number','tx_index']
-    , post_hook='{{ hide_spells() }}'
 )}}
 
 with blob_transactions as (
