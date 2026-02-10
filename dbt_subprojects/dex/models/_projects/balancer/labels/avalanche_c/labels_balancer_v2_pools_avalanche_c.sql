@@ -133,9 +133,9 @@ WITH pools AS (
     cc.symbol,
     'ECLP' AS pool_type
   FROM {{ source('balancer_v2_avalanche_c', 'Vault_evt_PoolRegistered') }} c
-  INNER JOIN {{ source('gyroscope_avalanche_c', 'GyroECLPPoolFactory_call_create') }} cc
+  INNER JOIN {{ source('gyroscope_avalanche_c', 'newer_gyroeclppoolfactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
-    AND bytearray_substring(c.poolId, 1, 20) = coalesce(cc.output_0, 0x)
+    AND bytearray_substring(c.poolId, 1, 20) = cc.output_pool
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
 ),
 
