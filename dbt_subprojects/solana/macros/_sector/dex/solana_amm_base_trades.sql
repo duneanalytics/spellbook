@@ -68,6 +68,12 @@ WITH swaps AS (
     )
 )
 
+-- Restrict transfers to (block_date, block_slot) pairs we care about so the scan is on a small key set, not full history
+, swap_slots AS (
+    SELECT DISTINCT block_date, block_slot
+    FROM swap_transfer_keys
+)
+
 -- Filter transfers using a SEMI join (EXISTS) so the hash build is on swap_transfer_keys, not transfers
 , transfers_pruned AS (
     SELECT
@@ -81,6 +87,9 @@ WITH swaps AS (
         , tf.to_token_account
         , tf.token_mint_address
     FROM {{ source('tokens_solana', 'transfers') }} tf
+    INNER JOIN swap_slots ss
+        ON  ss.block_date = tf.block_date
+        AND ss.block_slot = tf.block_slot
     WHERE 1=1
         AND tf.token_version IN ('spl_token', 'spl_token_2022')
         {% if is_incremental() -%}
