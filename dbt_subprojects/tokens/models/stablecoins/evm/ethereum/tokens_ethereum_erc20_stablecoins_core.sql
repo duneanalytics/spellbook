@@ -55,7 +55,6 @@ from (values
      (0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b), -- BOB
      (0x956f47f50a910163d8bf957cf5846d573e7f87ca), -- FEI
      (0x9a1997c130f4b2997166975d9aff92797d5134c2), -- USDap
-     (0xd46ba6d942050d489dbd938a2c909a5d5039a161), -- AMPL
      (0x03ab458634910aad20ef5f1c8ee96f1d6ac54919), -- RAI
      (0x674c6ad92fd080e4004b2312b45f796a192d27a0), -- USDN
      (0x866a2bf4e572cbcf37d5071a7a58503bfb36be1b), -- M
