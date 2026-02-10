@@ -75,25 +75,35 @@ models:
         description: "Unique identifier for this transfer"
         data_tests:
           - not_null
-      - name: tx_from
+      - &tx_from
+        name: tx_from
         description: "Transaction sender address"
-      - name: tx_to
+      - &tx_to
+        name: tx_to
         description: "Transaction receiver address"
-      - name: tx_index
+      - &tx_index
+        name: tx_index
         description: "Transaction index in block"
-      - name: contract_address
+      - &contract_address
+        name: contract_address
         description: "Token contract address"
-      - name: tx_hash_varchar
+      - &tx_hash_varchar
+        name: tx_hash_varchar
         description: "Transaction hash (varchar)"
-      - name: contract_address_varchar
+      - &contract_address_varchar
+        name: contract_address_varchar
         description: "Contract address (varchar)"
-      - name: from_varchar
+      - &from_varchar
+        name: from_varchar
         description: "Sender address (varchar)"
-      - name: to_varchar
+      - &to_varchar
+        name: to_varchar
         description: "Receiver address (varchar)"
-      - name: tx_from_varchar
+      - &tx_from_varchar
+        name: tx_from_varchar
         description: "Transaction sender address (varchar)"
-      - name: tx_to_varchar
+      - &tx_to_varchar
+        name: tx_to_varchar
         description: "Transaction receiver address (varchar)"
 
   - name: stablecoins_tron_extended_transfers
@@ -130,16 +140,16 @@ models:
       - *from
       - *to
       - *unique_key
-      - name: tx_from
-      - name: tx_to
-      - name: tx_index
-      - name: contract_address
-      - name: tx_hash_varchar
-      - name: contract_address_varchar
-      - name: from_varchar
-      - name: to_varchar
-      - name: tx_from_varchar
-      - name: tx_to_varchar
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *contract_address
+      - *tx_hash_varchar
+      - *contract_address_varchar
+      - *from_varchar
+      - *to_varchar
+      - *tx_from_varchar
+      - *tx_to_varchar
 
   - name: stablecoins_tron_transfers
     meta:
@@ -149,7 +159,7 @@ models:
       contributors: tomfutago
     config:
       tags: ['stablecoin', 'transfers']
-    description: "Union view of core and extended stablecoin transfers (EVM macro columns + tron extras + metadata)"
+    description: "Union view of core and extended stablecoin transfers (EVM macro columns + tron extras)"
     columns:
       - *blockchain
       - *block_month
@@ -162,12 +172,6 @@ models:
       - *token_standard
       - *token_address
       - *token_symbol
-      - &token_backing
-        name: token_backing
-        description: "Stablecoin backing type"
-      - &token_name
-        name: token_name
-        description: "Stablecoin name"
       - *amount_raw
       - *amount
       - *price_usd
@@ -175,23 +179,13 @@ models:
       - *from
       - *to
       - *unique_key
-      - name: tx_from
-        description: "Transaction sender address"
-      - name: tx_to
-        description: "Transaction receiver address"
-      - name: tx_index
-        description: "Transaction index in block"
-      - name: contract_address
-        description: "Token contract address"
-      - name: tx_hash_varchar
-        description: "Transaction hash (varchar)"
-      - name: contract_address_varchar
-        description: "Contract address (varchar)"
-      - name: from_varchar
-        description: "Sender address (varchar)"
-      - name: to_varchar
-        description: "Receiver address (varchar)"
-      - name: tx_from_varchar
-        description: "Transaction sender address (varchar)"
-      - name: tx_to_varchar
-        description: "Transaction receiver address (varchar)"
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *contract_address
+      - *tx_hash_varchar
+      - *contract_address_varchar
+      - *from_varchar
+      - *to_varchar
+      - *tx_from_varchar
+      - *tx_to_varchar
