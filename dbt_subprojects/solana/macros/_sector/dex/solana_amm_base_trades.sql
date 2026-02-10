@@ -153,7 +153,7 @@ WITH swaps AS (
         AND tf.block_date = s.block_date
         AND tf.block_slot = s.block_slot
         AND tf.outer_instruction_index = s.outer_instruction_index
-        AND tf.inner_instruction_index IN (s.inner_instruction_index + 1, s.inner_instruction_index + 2)
+        AND tf.inner_instruction_index IN (s.inner_instruction_index + {{ token_bought_offset }}, s.inner_instruction_index + {{ token_sold_offset }})
     GROUP BY
           s.block_date
         , s.block_time
