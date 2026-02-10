@@ -12,10 +12,11 @@ models:
     description: "Core transfers of stablecoins (frozen core list)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_date
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_date
+              - unique_key
     columns:
       - &blockchain
         name: blockchain
@@ -75,6 +76,26 @@ models:
         description: "Unique identifier for this transfer"
         data_tests:
           - not_null
+      - name: tx_from
+        description: "Transaction sender address"
+      - name: tx_to
+        description: "Transaction receiver address"
+      - name: tx_index
+        description: "Transaction index in block"
+      - name: contract_address
+        description: "Token contract address"
+      - name: tx_hash_varchar
+        description: "Transaction hash (varchar)"
+      - name: contract_address_varchar
+        description: "Contract address (varchar)"
+      - name: from_varchar
+        description: "Sender address (varchar)"
+      - name: to_varchar
+        description: "Receiver address (varchar)"
+      - name: tx_from_varchar
+        description: "Transaction sender address (varchar)"
+      - name: tx_to_varchar
+        description: "Transaction receiver address (varchar)"
 
   - name: stablecoins_tron_extended_transfers
     meta:
@@ -87,10 +108,11 @@ models:
     description: "Extended transfers of newly added stablecoins"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_date
-            - unique_key
+          arguments:
+            combination_of_columns:
+              - block_month
+              - block_date
+              - unique_key
     columns:
       - *blockchain
       - *block_month
@@ -110,6 +132,16 @@ models:
       - *from
       - *to
       - *unique_key
+      - name: tx_from
+      - name: tx_to
+      - name: tx_index
+      - name: contract_address
+      - name: tx_hash_varchar
+      - name: contract_address_varchar
+      - name: from_varchar
+      - name: to_varchar
+      - name: tx_from_varchar
+      - name: tx_to_varchar
 
   - name: stablecoins_tron_transfers
     meta:
@@ -119,7 +151,7 @@ models:
       contributors: tomfutago
     config:
       tags: ['stablecoin', 'transfers']
-    description: "Union view of core and extended stablecoin transfers with metadata"
+    description: "Union view of core and extended stablecoin transfers (EVM macro columns + tron extras + metadata)"
     columns:
       - *blockchain
       - *block_month
@@ -145,3 +177,23 @@ models:
       - *from
       - *to
       - *unique_key
+      - name: tx_from
+        description: "Transaction sender address"
+      - name: tx_to
+        description: "Transaction receiver address"
+      - name: tx_index
+        description: "Transaction index in block"
+      - name: contract_address
+        description: "Token contract address"
+      - name: tx_hash_varchar
+        description: "Transaction hash (varchar)"
+      - name: contract_address_varchar
+        description: "Contract address (varchar)"
+      - name: from_varchar
+        description: "Sender address (varchar)"
+      - name: to_varchar
+        description: "Receiver address (varchar)"
+      - name: tx_from_varchar
+        description: "Transaction sender address (varchar)"
+      - name: tx_to_varchar
+        description: "Transaction receiver address (varchar)"
