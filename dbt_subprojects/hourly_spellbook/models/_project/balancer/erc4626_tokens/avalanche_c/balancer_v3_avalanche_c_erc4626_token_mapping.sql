@@ -8,22 +8,16 @@
 }}
 
 WITH aave_tokens AS (
-    SELECT 
-        b.output_0[1] AS erc4626_token,
-        t2.symbol AS erc4626_token_name,
-        t2.symbol AS erc4626_token_symbol,
-        b.underlyings[1] AS underlying_token,
-        t1.symbol AS underlying_token_symbol,
-        t2.decimals AS decimals
-    FROM {{ source('aave_v3_avalanche_c', 'StataTokenV2_evt_Initialized') }} a
-    JOIN {{ source('aave_v3_avalanche_c', 'StataTokenFactory_call_createstatatokens') }} b
-        ON b.output_0[1] = a.contract_address
-    JOIN {{ source('tokens', 'erc20') }} t1
-        ON t1.blockchain = 'avalanche_c'
-        AND b.underlyings[1] = t1.contract_address
-    JOIN {{ source('tokens', 'erc20') }} t2
-        ON t2.blockchain = 'avalanche_c'
-        AND b.output_0[1] = t2.contract_address
+    -- No Aave ERC4626 tokens are currently modeled on Avalanche C.
+    -- This CTE is kept for schema compatibility and returns no rows.
+    SELECT
+        CAST(NULL AS VARBINARY) AS erc4626_token,
+        CAST(NULL AS VARCHAR) AS erc4626_token_name,
+        CAST(NULL AS VARCHAR) AS erc4626_token_symbol,
+        CAST(NULL AS VARBINARY) AS underlying_token,
+        CAST(NULL AS VARCHAR) AS underlying_token_symbol,
+        CAST(NULL AS INTEGER) AS decimals
+    WHERE 1 = 0
 )
 
 SELECT 
