@@ -22,14 +22,21 @@ select
     , t.symbol as token_symbol
     , t.amount_raw
     , t.amount
-    , t.price_usd
-    , t.amount_usd
+    , coalesce(t.price_usd, fx.exchange_rate) as price_usd
+    , coalesce(t.amount_usd, t.amount * fx.exchange_rate) as amount_usd
     , t."from"
     , t."to"
     , t.unique_key
 from {{ ref('tokens_' ~ blockchain ~ '_transfers') }} t
 inner join stablecoin_tokens s
     on t.contract_address = s.token_address
+left join {{ ref('stablecoins_currency_mapping') }} cm
+    on t.blockchain = cm.blockchain
+    and t.contract_address = cm.contract_address
+left join {{ source('prices', 'fx_exchange_rates') }} fx
+    on cm.currency = fx.base_currency
+    and fx.target_currency = 'USD'
+    and t.block_date = fx.date
 {% if is_incremental() %}
 where {{ incremental_predicate('t.block_date') }}
 {% endif %}
