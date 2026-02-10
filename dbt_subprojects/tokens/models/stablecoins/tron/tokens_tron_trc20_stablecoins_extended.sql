@@ -5,7 +5,7 @@
     schema = 'tokens_' ~ chain,
     alias = 'trc20_stablecoins_extended',
     materialized = 'table',
-    tags = ['prod_exclude', 'static'],
+    tags = ['static'],
     unique_key = ['contract_address']
   )
 }}
