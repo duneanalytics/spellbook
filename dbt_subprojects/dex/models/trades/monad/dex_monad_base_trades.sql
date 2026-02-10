@@ -20,6 +20,7 @@
     , ref('uniswap_v4_monad_base_trades')
     , ref('pancakeswap_v2_monad_base_trades')
     , ref('pancakeswap_v3_monad_base_trades')
+    , ref('balancer_v3_monad_base_trades')
 ] %}
 with base_union as (
         {% for base_model in base_models %}

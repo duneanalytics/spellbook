@@ -186,6 +186,25 @@ models:
           filter:
             version: 4
 
+  - name: balancer_v3_monad_base_trades
+    meta:
+      blockchain: monad
+      sector: dex
+      project: balancer
+      contributors: Henrystats
+    config:
+      tags: ["monad", "dex", "trades", "balancer", "v3"]
+    description: "balancer monad v3 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('balancer_monad_base_trades_seed')
+          filter:
+            version: 3
+
   - name: dex_monad_token_volumes_daily
     data_tests:
       - dbt_utils.unique_combination_of_columns:
