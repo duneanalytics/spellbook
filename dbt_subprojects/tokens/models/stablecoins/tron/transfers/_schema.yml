@@ -12,11 +12,10 @@ models:
     description: "Core transfers of stablecoins (frozen core list)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          arguments:
-            combination_of_columns:
-              - block_month
-              - block_date
-              - unique_key
+          combination_of_columns:
+            - block_month
+            - block_date
+            - unique_key
     columns:
       - &blockchain
         name: blockchain
@@ -108,11 +107,10 @@ models:
     description: "Extended transfers of newly added stablecoins"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          arguments:
-            combination_of_columns:
-              - block_month
-              - block_date
-              - unique_key
+          combination_of_columns:
+            - block_month
+            - block_date
+            - unique_key
     columns:
       - *blockchain
       - *block_month
