@@ -122,6 +122,7 @@ SELECT
   now() AS updated_at,
   'balancer_v3_pools_monad' AS model_name,
   'identifier' AS label_type
+  
 FROM (
   SELECT
     s1.pool_id,
