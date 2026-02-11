@@ -1,13 +1,13 @@
 version: 2
 
 models:
-  - name: tokens_tron_erc20_stablecoins
+  - name: tokens_tron_trc20_stablecoins
     meta:
       blockchain: tron
       sector: stablecoins
       contributors: tomfutago
     config:
-      tags: ['tokens', 'tron', 'erc20', 'stablecoins']
+      tags: ['tokens', 'tron', 'trc20', 'stablecoins']
     description: >
         Union view of all stablecoin token addresses (core + extended).
     data_tests:
@@ -21,29 +21,34 @@ models:
       - &contract_address
         name: contract_address
         description: "Stablecoin contract address"
+      - &currency
+        name: currency
+        description: "ISO 4217 currency code the stablecoin is pegged to (e.g. USD, EUR)"
 
-  - name: tokens_tron_erc20_stablecoins_core
+  - name: tokens_tron_trc20_stablecoins_core
     meta:
       blockchain: tron
       sector: stablecoins
       contributors: tomfutago
     config:
-      tags: ['tokens', 'tron', 'erc20', 'stablecoins']
+      tags: ['tokens', 'tron', 'trc20', 'stablecoins']
     description: >
         Core list of stablecoin token addresses (frozen).
     columns:
       - *blockchain
       - *contract_address
+      - *currency
 
-  - name: tokens_tron_erc20_stablecoins_extended
+  - name: tokens_tron_trc20_stablecoins_extended
     meta:
       blockchain: tron
       sector: stablecoins
       contributors: tomfutago
     config:
-      tags: ['tokens', 'tron', 'erc20', 'stablecoins']
+      tags: ['tokens', 'tron', 'trc20', 'stablecoins']
     description: >
         Latest additions to stablecoin token addresses.
     columns:
       - *blockchain
       - *contract_address
+      - *currency
