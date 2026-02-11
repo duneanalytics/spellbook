@@ -7,8 +7,11 @@
     unique_key = ['day', 'fact_total_value_locked_id'],
     partition_by = ['day'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
-    tags = ['thorchain', 'defi', 'total_value_locked', 'fact', 'tvl']
-    , post_hook='{{ hide_spells() }}'
+    tags = ['thorchain', 'defi', 'total_value_locked', 'fact', 'tvl'],
+    post_hook='{{ expose_spells(\'["thorchain"]\',
+                                  "project",
+                                  "thorchain",
+                                  \'["jeff-dude"]\') }}'
 ) }}
 
 WITH base AS (

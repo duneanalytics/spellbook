@@ -151,7 +151,7 @@ logs/
 
 dbt_subprojects/dex/spellbook-env/
 
-# Cursor IDE - track commands/rules/scripts, ignore generated files
-.cursor/scripts/__pycache__/
+# cursor - track skills, ignore personal preferences
+.cursor/skills/sql-style-guide
 
 agents.md

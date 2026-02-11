@@ -18,6 +18,7 @@ from (values
 
      (0xb8ce59fc3717ada4c02eadf9682a9e934f625ebb), -- USDT0
      (0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34), -- USDe
-     (0x0a1a1a107e45b7ced86833863f482bc5f4ed82ef)  -- USDai
+     (0x0a1a1a107e45b7ced86833863f482bc5f4ed82ef), -- USDai
+     (0x90729a45948c3078890bc80f2a4e7870a2ea4c5e)  -- TRYB
 
 ) as temp_table (contract_address)

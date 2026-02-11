@@ -1,6 +1,7 @@
 {%- macro stablecoins_balances_from_transfers(transfers, start_date) %}
 
 {% set is_celo = 'celo' in (transfers | string | lower) %}
+{% set is_polygon = 'polygon' in (transfers | string | lower) %}
 
 with
 {% if is_celo %}
@@ -45,12 +46,16 @@ transfers_in as (
     t.amount_raw as inflow,
     uint256 '0' as outflow
   from {{ transfers }} t
+  where t."from" != t."to"  -- exclude self-transfers (they cancel out but add unnecessary rows)
   {% if is_celo %}
-  left join celo_l1_validators v on t."to" = v.validator_address
-  where v.validator_address is null  -- exclude L1 validators
+  and not exists (
+    select 1
+    from celo_l1_validators v
+    where t."to" = v.validator_address
+  )
   {% endif %}
   {% if is_incremental() %}
-  {% if is_celo %}and{% else %}where{% endif %} {{ incremental_predicate('t.block_time') }}
+  and {{ incremental_predicate('t.block_time') }}
   {% endif %}
 ),
 
@@ -64,12 +69,16 @@ transfers_out as (
     uint256 '0' as inflow,
     t.amount_raw as outflow
   from {{ transfers }} t
+  where t."from" != t."to"  -- exclude self-transfers (they cancel out but add unnecessary rows)
   {% if is_celo %}
-  left join celo_l1_validators v on t."from" = v.validator_address
-  where v.validator_address is null  -- exclude L1 validators
+  and not exists (
+    select 1
+    from celo_l1_validators v
+    where t."from" = v.validator_address
+  )
   {% endif %}
   {% if is_incremental() %}
-  {% if is_celo %}and{% else %}where{% endif %} {{ incremental_predicate('t.block_time') }}
+  and {{ incremental_predicate('t.block_time') }}
   {% endif %}
 ),
 
@@ -93,6 +102,7 @@ daily_aggregated as (
 ),
 
 {% if is_incremental() %}
+-- get last known balance for each address/token from before the incremental window
 prior_balances as (
   select
     blockchain,
@@ -102,7 +112,7 @@ prior_balances as (
     max_by(last_updated, day) as last_updated,
     max_by(balance_raw, day) as balance_raw
   from {{ this }}
-  where not {{ incremental_predicate('last_updated') }}
+  where not {{ incremental_predicate('day') }}
   group by 1, 2, 3
 ),
 
@@ -169,6 +179,9 @@ days as (
   from {{ source('utils', 'days') }}
   where cast(timestamp as date) >= cast('{{ start_date }}' as date)
     and cast(timestamp as date) < current_date
+  {% if is_incremental() %}
+    and {{ incremental_predicate('cast(timestamp as date)') }}
+  {% endif %}
 ),
 
 forward_fill as (
@@ -186,19 +199,34 @@ forward_fill as (
 )
 
 select
-  blockchain,
-  day,
-  address,
-  token_address,
+  f.blockchain,
+  f.day,
+  f.address,
+  f.token_address,
   'erc20' as token_standard,
   cast(null as uint256) as token_id,
-  balance_raw,
-  last_updated
-from forward_fill
-where (balance_raw > uint256 '0'
-  or (balance_raw = uint256 '0' and cast(last_updated as date) = day))  -- include actual 0-balance changes, not forward-fills
+  f.balance_raw,
+  f.last_updated
+from forward_fill f
+where (f.balance_raw > uint256 '0'
+  or (f.balance_raw = uint256 '0' and cast(f.last_updated as date) = f.day))  -- include actual 0-balance changes, not forward-fills
+{% if is_polygon %}
+  -- exclude self-holdings on agEUR token contract
+  and not (f.blockchain = 'polygon'
+    and f.token_address = 0xe0b52e49357fd4daf2c15e02058dce6bc0057db4
+    and f.address = f.token_address)
+{% endif %}
+  and not (
+    (f.blockchain = 'ethereum'
+      and exists (
+        select 1
+        from {{ ref('labels_burn_addresses') }} b
+        where b.blockchain = f.blockchain and b.address = f.address
+      ))
+    or (f.blockchain != 'ethereum' and f.address = 0x0000000000000000000000000000000000000000)
+  )
 {% if is_incremental() %}
-  and {{ incremental_predicate('day') }}
+  and {{ incremental_predicate('f.day') }}
 {% endif %}
 
 {% endmacro %}

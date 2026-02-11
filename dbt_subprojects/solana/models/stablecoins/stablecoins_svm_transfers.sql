@@ -34,6 +34,11 @@ from (
     amount_usd,
     from_owner,
     to_owner,
+    from_token_account,
+    to_token_account,
+    tx_signer,
+    outer_executing_account,
+    action,
     unique_key
   from {{ ref('stablecoins_' ~ chain ~ '_transfers') }}
   {% if not loop.last %}

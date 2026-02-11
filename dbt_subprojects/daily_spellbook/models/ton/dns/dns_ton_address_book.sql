@@ -2,7 +2,11 @@
        schema = 'dns_ton'
        , alias = 'address_book'
        , materialized = 'view'
-       , post_hook='{{ hide_spells() }}'
+       ,
+    post_hook='{{ expose_spells(\'["ton"]\',
+                                   "project",
+                                   "dns_ton",
+                                   \'["pshuvalov"]\') }}'
    )
  }}
 
