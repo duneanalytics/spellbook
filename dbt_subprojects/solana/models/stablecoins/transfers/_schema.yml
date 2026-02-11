@@ -55,6 +55,9 @@ models:
       - &token_symbol
         name: token_symbol
         description: "Token symbol"
+      - &currency
+        name: currency
+        description: "ISO 4217 currency code the stablecoin is pegged to (e.g. USD, EUR)"
       - &amount_raw
         name: amount_raw
         description: "Raw transfer amount"
@@ -64,6 +67,9 @@ models:
       - &amount_usd
         name: amount_usd
         description: "USD value of transfer"
+      - &price_usd
+        name: price_usd
+        description: "FX exchange rate used for USD conversion"
       - &from_owner
         name: from_owner
         description: "Sender wallet address"
@@ -119,9 +125,11 @@ models:
       - *token_version
       - *token_mint_address
       - *token_symbol
+      - *currency
       - *amount_raw
       - *amount
       - *amount_usd
+      - *price_usd
       - *from_owner
       - *to_owner
       - *from_token_account
@@ -159,9 +167,11 @@ models:
       - &token_name
         name: token_name
         description: "Stablecoin name"
+      - *currency
       - *amount_raw
       - *amount
       - *amount_usd
+      - *price_usd
       - *from_owner
       - *to_owner
       - *from_token_account

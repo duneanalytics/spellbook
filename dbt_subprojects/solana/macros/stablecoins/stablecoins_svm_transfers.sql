@@ -16,9 +16,11 @@ select
   t.token_version,
   t.token_mint_address,
   t.symbol as token_symbol,
+  s.currency,
   t.amount as amount_raw,
   t.amount_display as amount,
-  t.amount_usd,
+  t.amount_display * fx.exchange_rate as amount_usd,
+  fx.exchange_rate as price_usd,
   t.from_owner,
   t.to_owner,
   t.from_token_account,
@@ -28,11 +30,12 @@ select
   t.action,
   {{ solana_instruction_key('t.block_slot', 't.tx_index', 't.outer_instruction_index', 't.inner_instruction_index') }} as unique_key
 from {{ source('tokens_' ~ blockchain, 'transfers') }} t
-where exists (
-    select 1
-    from {{ ref('tokens_' ~ blockchain ~ '_spl_stablecoins_' ~ token_list) }} s
-    where s.token_mint_address = t.token_mint_address
-  )
+inner join {{ ref('tokens_' ~ blockchain ~ '_spl_stablecoins_' ~ token_list) }} s
+  on s.token_mint_address = t.token_mint_address
+left join {{ source('prices', 'fx_exchange_rates') }} fx
+  on fx.base_currency = s.currency
+  and fx.target_currency = 'USD'
+  and fx.date = t.block_date
 {# microbatch auto-filters via event_time; no is_incremental() block needed #}
 
 {% endmacro %}
