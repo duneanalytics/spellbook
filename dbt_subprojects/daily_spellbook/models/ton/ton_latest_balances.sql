@@ -4,8 +4,11 @@
         alias='latest_balances',
         
         materialized = 'table',
-        unique_key = ['address', 'asset']
-        , post_hook='{{ hide_spells() }}'
+        unique_key = ['address', 'asset'],
+    post_hook='{{ expose_spells(\'["ton"]\',
+                                    "sector",
+                                    "ton",
+                                    \'["pshuvalov"]\') }}'
     )
 }}
 

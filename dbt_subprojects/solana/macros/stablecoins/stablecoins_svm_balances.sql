@@ -10,6 +10,7 @@
 with transfers_in as (
   select
     block_date as day,
+    block_time,
     to_owner as address,
     token_mint_address,
     amount_raw as inflow,
@@ -25,6 +26,7 @@ with transfers_in as (
 transfers_out as (
   select
     block_date as day,
+    block_time,
     from_owner as address,
     token_mint_address,
     uint256 '0' as inflow,
@@ -49,7 +51,8 @@ daily_aggregated as (
     address,
     token_mint_address,
     sum(inflow) as daily_inflow,
-    sum(outflow) as daily_outflow
+    sum(outflow) as daily_outflow,
+    max(block_time) as last_updated
   from all_flows
   group by 1, 2, 3
 ),
@@ -61,6 +64,7 @@ prior_balances as (
     address,
     token_mint_address,
     max(day) as last_day,
+    max_by(last_updated, day) as last_updated,
     max_by(balance_raw, day) as prior_balance
   from {{ this }}
   where not {{ incremental_predicate('day') }}
@@ -72,6 +76,7 @@ prior_balances as (
 new_transfer_balances as (
   select
     d.day,
+    d.last_updated,
     d.address,
     d.token_mint_address,
     cast(greatest(0e0, least({{ uint256_max_double }},
@@ -96,6 +101,7 @@ new_transfer_balances as (
 changed_balances as (
   select
     day,
+    last_updated,
     address,
     token_mint_address,
     balance_raw,
@@ -104,13 +110,14 @@ changed_balances as (
       order by day
     ) as next_update_day
   from (
-    select day, address, token_mint_address, balance_raw
+    select day, last_updated, address, token_mint_address, balance_raw
     from new_transfer_balances
     {% if is_incremental() %}
     union all
     -- include prior balances for addresses without new transfers (for forward-fill)
     select
       p.last_day as day,
+      p.last_updated,
       p.address,
       p.token_mint_address,
       p.prior_balance as balance_raw
@@ -139,7 +146,7 @@ forward_fill as (
     b.address,
     b.token_mint_address,
     b.balance_raw,
-    b.day as last_updated
+    b.last_updated
   from days d
   inner join changed_balances b
     on d.day >= b.day
@@ -154,8 +161,14 @@ select
   balance_raw,
   last_updated
 from forward_fill
-where (balance_raw > uint256 '0'
-  or (balance_raw = uint256 '0' and last_updated = day))  -- keep actual zero-balance changes, not forward-fills
+where 1=1
+  and (balance_raw > uint256 '0'
+    or (balance_raw = uint256 '0' and cast(last_updated as date) = day))  -- keep actual zero-balance changes, not forward-fills
+  -- exclude anomalous balances
+  and not (address in (
+    'BQhyvitcaYRYuyrkSacfP2aixjPsDqmhrt7uANjPcqZR',
+    '5BpFBfXx5srPGtg3JGsumWARNh4UVagANgf7dGb1MYY1'
+  ))
 {% if is_incremental() %}
   and {{ incremental_predicate('day') }}
 {% endif %}

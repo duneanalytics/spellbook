@@ -7,8 +7,11 @@
     unique_key = ['block_month', 'fact_scheduled_outbound_events_id'],
     partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    tags = ['thorchain', 'defi', 'scheduled_outbound_events', 'fact']
-    , post_hook='{{ hide_spells() }}'
+    tags = ['thorchain', 'defi', 'scheduled_outbound_events', 'fact'],
+    post_hook='{{ expose_spells(\'["thorchain"]\',
+                                  "project",
+                                  "thorchain",
+                                  \'["jeff-dude"]\') }}'
 ) }}
 
 WITH base AS (

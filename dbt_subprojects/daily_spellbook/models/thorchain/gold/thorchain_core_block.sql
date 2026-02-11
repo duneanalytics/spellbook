@@ -7,8 +7,11 @@
     unique_key = ['block_month', 'dim_block_id'],
     partition_by = ['block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    tags = ['thorchain', 'core', 'blocks']
-    , post_hook='{{ hide_spells() }}'
+    tags = ['thorchain', 'core', 'blocks'],
+    post_hook='{{ expose_spells(\'["thorchain"]\',
+                                  "project",
+                                  "thorchain",
+                                  \'["jeff-dude"]\') }}'
 ) }}
 
 WITH base AS (

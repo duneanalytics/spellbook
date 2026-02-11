@@ -21,6 +21,11 @@ select
   t.amount_usd,
   t.from_owner,
   t.to_owner,
+  t.from_token_account,
+  t.to_token_account,
+  t.tx_signer,
+  t.outer_executing_account,
+  t.action,
   {{ solana_instruction_key('t.block_slot', 't.tx_index', 't.outer_instruction_index', 't.inner_instruction_index') }} as unique_key
 from {{ source('tokens_' ~ blockchain, 'transfers') }} t
 where exists (
