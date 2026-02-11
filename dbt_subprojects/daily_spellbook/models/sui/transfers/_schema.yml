@@ -1,0 +1,35 @@
+version: 2
+
+models:
+  - name: sui_coin_transfers_first_attempt
+    meta:
+      blockchain: sui
+      sector: tokens
+    config:
+      tags: ['sui', 'tokens', 'transfers']
+    description: >
+      First attempt at deriving Sui coin transfer-like flows from object ownership and balance deltas.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - unique_key
+    columns:
+      - name: unique_key
+        description: "Surrogate key for each object-version transfer row"
+      - name: block_date
+        description: "Date of the transfer effect"
+      - name: tx_hash
+        description: "Sui transaction digest"
+      - name: from
+        description: "Sender inferred from previous owner or transaction sender"
+      - name: to
+        description: "Receiver address (current owner)"
+      - name: contract_address_full
+        description: "Full Sui coin type string"
+      - name: symbol
+        description: "Token symbol from Sui coin metadata when available"
+      - name: decimals
+        description: "Token decimals from Sui coin metadata when available"
+      - name: amount_raw
+        description: "Raw token amount derived from object balance deltas"
