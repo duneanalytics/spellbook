@@ -9,7 +9,7 @@
     version_name = 'v1',
     first_day_only = false
 ) %}
-{# In GitHub Actions CI, cap to first 7 days per protocol to avoid spill; each protocol uses its own project_start_date. Else use var (default 0 = no cap). #}
+{# In GitHub Actions CI, limit to last 7 days from today to avoid spill and ensure recent activity; still bounded by project_start_date. Else use var (default 0 = no cap). #}
 {% set initial_run_days = (7 if env_var('GITHUB_ACTIONS', '') == 'true' else (var('solana_amm_initial_run_days', 0) | int)) %}
 
 WITH swaps AS (
@@ -35,7 +35,7 @@ WITH swaps AS (
         {% if first_day_only -%}
         AND block_date < DATE '{{ project_start_date }}' + INTERVAL '1' DAY
         {% elif initial_run_days > 0 -%}
-        AND block_date < DATE '{{ project_start_date }}' + INTERVAL '1' DAY * {{ initial_run_days }}
+        AND block_date > current_date - INTERVAL '1' DAY * {{ initial_run_days }}
         {% endif -%}
         {% endif -%}
 )
@@ -103,7 +103,7 @@ WITH swaps AS (
         {% if first_day_only -%}
         AND tf.block_date < DATE '{{ project_start_date }}' + INTERVAL '1' DAY
         {% elif initial_run_days > 0 -%}
-        AND tf.block_date < DATE '{{ project_start_date }}' + INTERVAL '1' DAY * {{ initial_run_days }}
+        AND tf.block_date > current_date - INTERVAL '1' DAY * {{ initial_run_days }}
         {% endif -%}
         {% endif -%}
         AND EXISTS (
