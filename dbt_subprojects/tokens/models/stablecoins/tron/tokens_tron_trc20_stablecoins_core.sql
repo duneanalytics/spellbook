@@ -20,6 +20,8 @@ from (values
      ('TEkxiTehnzSmSe2XqrBj4w32RUN966rdz8'), -- USDCOLD
      ('TPYmHEhy5n8TCEfYGqW2rPxsghSfzghPDn'), -- USDDOLD
      ('TUpMhErZL2fhh4sVNULAbNKLokS4GjC1F4'), -- TUSD
-     ('TPFqcBAaaUMCSVRCqPaQ9QnzKhmuoLR6Rc')  -- USD1
+     ('TPFqcBAaaUMCSVRCqPaQ9QnzKhmuoLR6Rc'), -- USD1
+     ('TXDk8mbtRbXeYuMNS83CfKPaYYT8XWv9Hz'), -- USDD
+     ('TLeVfrdym8RoJreJ23dAGyfJDygRtiWKBZ')  -- A7A5
 
 ) as temp_table (contract_address)
