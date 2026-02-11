@@ -397,5 +397,8 @@ left join {{ source('prices', 'fx_exchange_rates') }} fx
     on e.currency = fx.base_currency
     and fx.target_currency = 'USD'
     and e.day = fx.date
+    {% if is_incremental() %}
+    and {{ incremental_predicate('fx.date') }}
+    {% endif %}
 
 {% endmacro %}
