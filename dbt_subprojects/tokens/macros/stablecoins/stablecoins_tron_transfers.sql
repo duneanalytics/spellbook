@@ -16,7 +16,6 @@ select
   t.trace_address,
   t.token_standard,
   t.contract_address as token_address,
-  s.token_address as token_address_varchar,
   t.symbol as token_symbol,
   t.amount_raw,
   t.amount,
