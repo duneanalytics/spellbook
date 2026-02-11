@@ -55,9 +55,6 @@ models:
       - &token_symbol
         name: token_symbol
         description: "Token symbol"
-      - &currency
-        name: currency
-        description: "ISO 4217 currency code the stablecoin is pegged to (e.g. USD, EUR)"
       - &amount_raw
         name: amount_raw
         description: "Raw transfer amount"
@@ -67,9 +64,6 @@ models:
       - &amount_usd
         name: amount_usd
         description: "USD value of transfer"
-      - &price_usd
-        name: price_usd
-        description: "FX exchange rate used for USD conversion"
       - &from_owner
         name: from_owner
         description: "Sender wallet address"
@@ -125,11 +119,9 @@ models:
       - *token_version
       - *token_mint_address
       - *token_symbol
-      - *currency
       - *amount_raw
       - *amount
       - *amount_usd
-      - *price_usd
       - *from_owner
       - *to_owner
       - *from_token_account
@@ -139,7 +131,7 @@ models:
       - *action
       - *unique_key
 
-  - name: stablecoins_solana_transfers
+  - name: stablecoins_solana_core_transfers_enriched
     meta:
       blockchain: solana
       sector: stablecoin
@@ -147,7 +139,7 @@ models:
       contributors: tomfutago
     config:
       tags: ['stablecoin', 'transfers']
-    description: "Union view of core and extended stablecoin transfers with metadata"
+    description: "Core stablecoin transfers enriched with metadata and FX rate pricing"
     columns:
       - *blockchain
       - *block_month
@@ -167,11 +159,102 @@ models:
       - &token_name
         name: token_name
         description: "Stablecoin name"
+      - &currency
+        name: currency
+        description: "ISO 4217 currency code the stablecoin is pegged to (e.g. USD, EUR)"
+      - *amount_raw
+      - *amount
+      - name: amount_usd
+        description: "USD value of transfer (FX rate × amount)"
+      - &price_usd
+        name: price_usd
+        description: "FX exchange rate used for USD conversion"
+      - *from_owner
+      - *to_owner
+      - *from_token_account
+      - *to_token_account
+      - *tx_signer
+      - *outer_executing_account
+      - *action
+      - *unique_key
+
+  - name: stablecoins_solana_extended_transfers_enriched
+    meta:
+      blockchain: solana
+      sector: stablecoin
+      project: stablecoin
+      contributors: tomfutago
+    config:
+      tags: ['stablecoin', 'transfers']
+    description: "Extended stablecoin transfers enriched with metadata and FX rate pricing"
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_date
+      - *block_time
+      - *block_slot
+      - *tx_id
+      - *tx_index
+      - *outer_instruction_index
+      - *inner_instruction_index
+      - *token_version
+      - *token_mint_address
+      - *token_symbol
+      - *token_backing
+      - *token_name
       - *currency
       - *amount_raw
       - *amount
-      - *amount_usd
+      - name: amount_usd
+        description: "USD value of transfer (FX rate × amount)"
       - *price_usd
+      - *from_owner
+      - *to_owner
+      - *from_token_account
+      - *to_token_account
+      - *tx_signer
+      - *outer_executing_account
+      - *action
+      - *unique_key
+
+  - name: stablecoins_solana_transfers
+    meta:
+      blockchain: solana
+      sector: stablecoin
+      project: stablecoin
+      contributors: tomfutago
+    config:
+      tags: ['stablecoin', 'transfers']
+    description: "Union view of core and extended stablecoin transfers with metadata and FX rate pricing"
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_date
+      - *block_time
+      - *block_slot
+      - *tx_id
+      - *tx_index
+      - *outer_instruction_index
+      - *inner_instruction_index
+      - *token_version
+      - *token_mint_address
+      - *token_symbol
+      - &token_backing
+        name: token_backing
+        description: "Stablecoin backing type"
+      - &token_name
+        name: token_name
+        description: "Stablecoin name"
+      - &currency
+        name: currency
+        description: "ISO 4217 currency code the stablecoin is pegged to (e.g. USD, EUR)"
+      - *amount_raw
+      - *amount
+      - name: amount_usd
+        description: "USD value of transfer (FX rate × amount)"
+      - &price_usd
+        name: price_usd
+        description: "FX exchange rate used for USD conversion"
       - *from_owner
       - *to_owner
       - *from_token_account
