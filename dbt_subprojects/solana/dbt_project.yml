@@ -20,6 +20,8 @@ vars:
   DBT_ENV_CUSTOM_ENV_S3_BUCKET: "{{ env_var('DBT_ENV_CUSTOM_ENV_S3_BUCKET', 'local') }}"
   DBT_ENV_INCREMENTAL_TIME: "{{ env_var('DBT_ENV_INCREMENTAL_TIME', '1') }}"
   DBT_ENV_INCREMENTAL_TIME_UNIT: "{{ env_var('DBT_ENV_INCREMENTAL_TIME_UNIT', 'day') }}"
+  # When not in CI: limit initial run to first N days per protocol (0 = no limit). In GitHub Actions, 7 days is used automatically to avoid spill; each protocol uses its own project_start_date.
+  solana_amm_initial_run_days: 0
 
 # These configurations specify where dbt should look for different types of files.
 # You don't need to change these!

@@ -5,6 +5,8 @@
     pool_id_expression = "CAST(NULL AS VARCHAR)",
     first_day_only = false
 ) %}
+{# In GitHub Actions CI, cap to first 7 days per protocol to avoid spill; each protocol uses its own project_start_date. Else use var (default 0 = no cap). #}
+{% set initial_run_days = (7 if env_var('GITHUB_ACTIONS', '') == 'true' else (var('solana_amm_initial_run_days', 0) | int)) %}
 
 WITH swaps AS (
     SELECT
@@ -37,6 +39,8 @@ WITH swaps AS (
         AND block_date >= DATE '{{ project_start_date }}'
         {% if first_day_only -%}
         AND block_date < DATE '{{ project_start_date }}' + INTERVAL '1' DAY
+        {% elif initial_run_days > 0 -%}
+        AND block_date < DATE '{{ project_start_date }}' + INTERVAL '1' DAY * {{ initial_run_days }}
         {% endif -%}
         {% endif -%}
 )
