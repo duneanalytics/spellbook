@@ -313,8 +313,9 @@ from (
     @NOTICE this macro enriches the base balances output with token metadata (symbol, decimals) and prices
     @NOTICE it should be used downstream of balances_incremental_subset_daily macro
     @NOTICE calculates balance from balance_raw and balance_usd from balance * price
+    @NOTICE for stablecoins with missing prices, falls back to FX exchange rates based on the token's pegged currency
     @NOTICE supports multi-chain base_balances (unioned across blockchains)
-    
+
     @PARAM base_balances            -- reference to the base balances table/model (output from balances_incremental_subset_daily)
 
 #}
@@ -343,6 +344,11 @@ tokens_metadata as (
     from {{ source('tokens', 'erc20') }}
 ),
 
+stablecoin_tokens as (
+    select blockchain, contract_address, currency
+    from {{ source('tokens', 'erc20_stablecoins') }}
+),
+
 enriched_with_tokens as (
     select
         b.blockchain,
@@ -361,12 +367,16 @@ enriched_with_tokens as (
             when b.token_standard = 'erc20' then b.balance_raw / power(10, t.decimals)
             when b.token_standard = 'native' then b.balance_raw / power(10, 18)
             else b.balance_raw
-        end as balance
+        end as balance,
+        s.currency
     from base b
     left join tokens_metadata t
         on t.blockchain = b.blockchain
         and t.contract_address = b.token_address
         and b.token_standard = 'erc20'
+    left join stablecoin_tokens s
+        on s.blockchain = b.blockchain
+        and s.contract_address = b.token_address
 )
 
 select
@@ -379,7 +389,8 @@ select
     e.token_id,
     e.balance_raw,
     e.balance,
-    e.balance * p.price as balance_usd,
+    e.balance * coalesce(p.price, fx.exchange_rate) as balance_usd,
+    e.currency,
     e.last_updated
 from enriched_with_tokens e
 left join {{ source('prices_external', 'day') }} p
@@ -389,5 +400,9 @@ left join {{ source('prices_external', 'day') }} p
     {% endif %}
     and e.blockchain = p.blockchain
     and e.token_address = p.contract_address
+left join {{ source('prices', 'fx_exchange_rates') }} fx
+    on e.currency = fx.base_currency
+    and fx.target_currency = 'USD'
+    and e.day = fx.date
 
 {% endmacro %}
