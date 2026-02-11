@@ -22,8 +22,8 @@ select
     , t.symbol as token_symbol
     , t.amount_raw
     , t.amount
-    , coalesce(t.price_usd, fx.exchange_rate) as price_usd
-    , coalesce(t.amount_usd, t.amount * fx.exchange_rate) as amount_usd
+    , fx.exchange_rate as price_usd
+    , t.amount * fx.exchange_rate as amount_usd
     , t."from"
     , t."to"
     , t.unique_key

@@ -389,17 +389,10 @@ select
     e.token_id,
     e.balance_raw,
     e.balance,
-    e.balance * coalesce(p.price, fx.exchange_rate) as balance_usd,
+    e.balance * fx.exchange_rate as balance_usd,
     e.currency,
     e.last_updated
 from enriched_with_tokens e
-left join {{ source('prices_external', 'day') }} p
-    on cast(e.day as timestamp) = p.timestamp
-    {% if is_incremental() %}
-    and {{ incremental_predicate('p.timestamp') }}
-    {% endif %}
-    and e.blockchain = p.blockchain
-    and e.token_address = p.contract_address
 left join {{ source('prices', 'fx_exchange_rates') }} fx
     on e.currency = fx.base_currency
     and fx.target_currency = 'USD'
