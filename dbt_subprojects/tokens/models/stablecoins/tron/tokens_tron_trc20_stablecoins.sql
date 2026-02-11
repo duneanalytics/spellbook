@@ -12,10 +12,10 @@
 
 -- union view combining core (frozen) and extended (new additions) stablecoin lists
 
-select blockchain, contract_address
+select blockchain, contract_address, currency
 from {{ ref('tokens_' ~ chain ~ '_trc20_stablecoins_core') }}
 
 union all
 
-select blockchain, contract_address
+select blockchain, contract_address, currency
 from {{ ref('tokens_' ~ chain ~ '_trc20_stablecoins_extended') }}
