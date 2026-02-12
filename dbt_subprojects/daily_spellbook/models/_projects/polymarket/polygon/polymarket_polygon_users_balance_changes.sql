@@ -10,7 +10,18 @@
   )
 }}
 
-WITH relevant_transfers AS (
+WITH
+-- Pre-filter: only polymarket addresses with first_funded_by (reduces join from billions to ~100k rows)
+polymarket_first_funded AS (
+  SELECT
+    u.polymarket_wallet AS address,
+    ffb.block_number AS first_funded_block
+  FROM {{ ref('polymarket_polygon_users') }} u
+  LEFT JOIN {{ source('addresses_events_polygon', 'first_funded_by')}} ffb
+    ON u.polymarket_wallet = ffb.address
+)
+
+, relevant_transfers AS (
   SELECT t.block_time
   , t.block_date
   , t.block_month
@@ -26,15 +37,17 @@ WITH relevant_transfers AS (
   , t.unique_key
   , to_user.polymarket_wallet AS to_polymarket_wallet
   , from_user.polymarket_wallet AS from_polymarket_wallet
-  , to_ffb.block_number AS to_first_funded_block
-  , from_ffb.block_number AS from_first_funded_block
+  , to_ffb.first_funded_block AS to_first_funded_block
+  , from_ffb.first_funded_block AS from_first_funded_block
   FROM {{ source('tokens_polygon', 'transfers') }} t
   LEFT JOIN {{ ref('polymarket_polygon_users') }} to_user ON t."to" = to_user.polymarket_wallet
   LEFT JOIN {{ ref('polymarket_polygon_users') }} from_user ON t."from" = from_user.polymarket_wallet
-  INNER JOIN {{ source('addresses_events_polygon', 'first_funded_by')}} to_ffb ON t."to" = to_ffb.address
-  INNER JOIN {{ source('addresses_events_polygon', 'first_funded_by')}} from_ffb ON t."from" = from_ffb.address
+  LEFT JOIN polymarket_first_funded to_ffb ON t."to" = to_ffb.address
+  LEFT JOIN polymarket_first_funded from_ffb ON t."from" = from_ffb.address
   WHERE t.contract_address = 0x2791bca1f2de4661ed88a30c99a7a9449aa84174 -- USDC.e
   AND t.block_number >= 5067840
+  AND (t."to" IN (SELECT polymarket_wallet FROM {{ ref('polymarket_polygon_users') }})
+       OR t."from" IN (SELECT polymarket_wallet FROM {{ ref('polymarket_polygon_users') }}))
   AND (to_user.polymarket_wallet IS NOT NULL OR from_user.polymarket_wallet IS NOT NULL)
   {% if is_incremental() %}
   AND {{ incremental_predicate('t.block_time') }}
