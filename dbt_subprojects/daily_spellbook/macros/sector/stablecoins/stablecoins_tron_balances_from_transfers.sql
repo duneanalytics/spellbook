@@ -11,6 +11,7 @@ transfers_in as (
     t."to" as address,
     t.to_varchar as address_varchar,
     t.token_address,
+    t.contract_address, -- token 0x contract address
     t.amount_raw as inflow,
     uint256 '0' as outflow
   from {{ transfers }} t
@@ -28,6 +29,7 @@ transfers_out as (
     t."from" as address,
     t.from_varchar as address_varchar,
     t.token_address,
+    t.contract_address, -- token 0x contract address
     uint256 '0' as inflow,
     t.amount_raw as outflow
   from {{ transfers }} t
@@ -51,10 +53,11 @@ daily_aggregated as (
     address,
     max(address_varchar) as address_varchar,
     token_address,
+    contract_address,
     sum(inflow) as daily_inflow,
     sum(outflow) as daily_outflow
   from all_flows
-  group by 1, 2, 4, 6
+  group by 1, 2, 4, 6, 7
 ),
 
 {% if is_incremental() %}
@@ -64,12 +67,13 @@ prior_balances as (
     address,
     address_varchar,
     token_address,
+    contract_address,
     max(day) as day,
     max_by(last_updated, day) as last_updated,
     max_by(balance_raw, day) as balance_raw
   from {{ this }}
   where not {{ incremental_predicate('day') }}
-  group by 1, 2, 3, 4
+  group by 1, 2, 3, 4, 5
 ),
 
 {% endif %}
@@ -84,6 +88,7 @@ changed_balances as (
     address,
     address_varchar,
     token_address,
+    contract_address,
     balance_raw,
     lead(cast(day as timestamp)) over (
       partition by address, token_address
@@ -97,6 +102,7 @@ changed_balances as (
       d.address,
       d.address_varchar,
       d.token_address,
+      d.contract_address,
       cast(greatest(0e0, least({{ uint256_max_double }},
         {% if is_incremental() %}
         coalesce(cast(p.balance_raw as double), 0e0) +
@@ -122,6 +128,7 @@ changed_balances as (
       p.address,
       p.address_varchar,
       p.token_address,
+      p.contract_address,
       p.balance_raw
     from prior_balances p
     {% endif %}
@@ -145,6 +152,7 @@ forward_fill as (
     b.address,
     b.address_varchar,
     b.token_address,
+    b.contract_address,
     b.balance_raw,
     b.last_updated
   from days d
@@ -160,6 +168,7 @@ select
   f.address_varchar,
   f.token_address,
   f.token_address as token_address_varchar,
+  f.contract_address,
   'erc20' as token_standard,
   cast(null as uint256) as token_id,
   f.balance_raw,
