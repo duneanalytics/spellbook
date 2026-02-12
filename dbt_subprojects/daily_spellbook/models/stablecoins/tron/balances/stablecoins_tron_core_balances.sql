@@ -17,6 +17,6 @@
 -- core balances: tracks balances (from transfers) for stablecoins in the frozen core list
 
 {{ stablecoins_tron_balances_from_transfers(
-    transfers = ref('stablecoins_' ~ chain ~ '_core_transfers'),
+    transfers = source('stablecoins_' ~ chain, 'core_transfers'),
     start_date = '2018-06-25'
 ) }}
