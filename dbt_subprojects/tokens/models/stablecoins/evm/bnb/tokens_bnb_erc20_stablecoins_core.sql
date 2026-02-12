@@ -25,7 +25,6 @@ from (values
      (0xde7d1ce109236b12809c45b23d22f30dba0ef424, 'USD'), -- USDS
      (0xfa4ba88cf97e282c505bea095297786c16070129, 'USD'), -- CUSD
      (0xc5f0f7b66764f6ec8c8dff7ba683102295e16409, 'USD'), -- FDUSD
-     (0x2952beb1326accbb5243725bd4da2fc937bca087, 'USD'), -- wUSDR
      (0x1d6cbdc6b29c6afbae65444a1f65ba9252b8ca83, 'USD'), -- TOR
      (0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b, 'USD'), -- BOB
      (0x2f29bc0ffaf9bff337b31cbe6cb5fb3bf12e5840, 'USD'), -- DOLA

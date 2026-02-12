@@ -17,8 +17,6 @@ select '{{chain}}' as blockchain, contract_address, currency
 from (values
 
      (0x60a3e35cc302bfa44cb288bc5a4f316fdb1adb42, 'EUR'), -- EURC
-     (0xb79dd08ea68a908a97220c76d19a6aa9cbde4376, 'USD'), -- USD+
-     (0xcc7ff230365bd730ee4b352cc2492cedac49383e, 'USD'), -- hyUSD
      (0xcfa3ef56d303ae4faaba0592388f19d7c3399fb4, 'USD'), -- eUSD
      (0x833589fcd6edb6e08f4c7c32d4f71b54bda02913, 'USD'), -- USDC
      (0x04d5ddf5f3a8939889f11e97f8c4bb48317f1938, 'USD'), -- USDz

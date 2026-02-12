@@ -27,7 +27,6 @@ from (values
      (0x9c9e5fd8bbc25984b178fdce6117defa39d2db39, 'USD'), -- BUSD
      (0x49a0400587a7f65072c87c4910449fdcc5c47242, 'USD'), -- MIM
      (0x2f1b1662a895c6ba01a99dcaf56778e7d77e5609, 'USD'), -- USDS
-     (0xaf0d9d65fc54de245cda37af3d18cbec860a4d4b, 'USD'), -- wUSDR
      (0x45c32fa6df82ead1e2ef74d17b76547eddfaff89, 'USD'), -- FRAX
      (0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b, 'USD'), -- BOB
      (0xc2132d05d31c914a87c6611c10748aeb04b58e8f, 'USD'), -- USDT
@@ -35,7 +34,6 @@ from (values
      (0xdab529f40e671a1d4bf91361c21bf9f0c9712ab7, 'USD'), -- BUSD
      (0x23001f892c0c82b79303edc9b9033cd190bb21c7, 'USD'), -- LUSD
      (0x750e4c4984a9e0f12978ea6742bc1c5d248f40ed, 'USD'), -- axlUSDC
-     (0x2893Ef551B6dD69F661Ac00F11D93E5Dc5Dc0e99, 'USD'), -- BUIDL
      (0x00000000eFE302BEAA2b3e6e1b18d08D69a9012a, 'USD'), -- AUSD
      (0x5c067c80c00ecd2345b05e83a3e758ef799c40b5, 'BRL'), -- BRL1
      (0xe6a537a407488807f0bbeb0038b79004f19dddfb, 'BRL'), -- BRLA

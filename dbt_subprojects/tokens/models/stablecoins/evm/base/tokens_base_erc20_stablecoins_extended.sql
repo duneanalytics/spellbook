@@ -25,6 +25,11 @@ from (values
      (0x0a4c9cb2778ab3302996a34befcf9a8bc288c33b, 'SGD'), -- XSGD
      (0xd4dd9e2f021bb459d5a5f6c24c12fe09c5d45553, 'CHF')  -- ZCHF
 
+     /* yield-bearing / rebasing tokens
+     (0xb79dd08ea68a908a97220c76d19a6aa9cbde4376, 'USD'), -- USD+
+     (0xcc7ff230365bd730ee4b352cc2492cedac49383e, 'USD'), -- hyUSD
+     */
+
      /* rebasing / interest accruing tokens
      (0x526728dbc96689597f85ae4cd716d4f7fccbae9d), -- msUSD (morpho)
      (0x4e65fe4dba92790696d040ac24aa414708f5c0ab)  -- aBasUSDC (aave)

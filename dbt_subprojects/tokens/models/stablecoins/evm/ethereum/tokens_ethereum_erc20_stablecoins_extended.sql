@@ -21,6 +21,22 @@ from (values
      (0x07041776f5007ACa2A54844F50503a18A72A8b68, 'USD'), -- USAT
      (0xd687759f35bb747a29246a4b9495c8f52c49e00c, 'AUD')  -- AUDX
 
+     /* yield-bearing / rebasing tokens
+     (0x96f6ef951840721adbf46ac996b59e0235cb985c, 'USD'), -- USDY
+     (0xd46ba6d942050d489dbd938a2c909a5d5039a161, 'USD'), -- AMPL
+     (0x7712c34205737192402172409a8f7ccef8aa2aec, 'USD'), -- BUIDL
+     (0x2a8e1e676ec238d8a992307b495b45b3feaa5e86, 'USD'), -- OUSD
+     (0xa774ffb4af6b0a91331c084e1aebae6ad535e6f3, 'USD'), -- FLEXUSD (list: flexUSD)
+     (0x15700b564ca08d9439c58ca5053166e8317aa138, 'USD'), -- deUSD
+     (0x79c58f70905f734641735bc61e45c19dd9ad60bc, 'USD'), -- usdc-dai-usdt (list: USDC-DAI-USDT)
+     (0x59d9356e565ab3a36dd77763fc0d87feaf85508c, 'USD'), -- USDM
+     (0xbbaec992fc2d637151daf40451f160bf85f3c8c1, 'USD'), -- USDM
+     (0x7751e2f4b8ae93ef6b79d86419d42fe3295a4559, 'USD'), -- wUSDL
+     (0xbdc7c08592ee4aa51d06c27ee23d5087d65adbcd, 'USD'), -- USDL
+     (0x57f5e098cad7a3d1eed53991d4d66c45c9af7812, 'USD'), -- wUSDM
+     (0x7c1156e515aa1a2e851674120074968c905aaf37, 'USD'), -- lvlUSD
+     */
+
      /* rebasing / interest accruing tokens
      (0x9EEAD9ce15383CaEED975427340b3A369410CFBF), -- aUSDT (aave)
      (0x9d39a5de30e57443bff2a8307a4256c8797a3497), -- sUSDe (staked USDe)
