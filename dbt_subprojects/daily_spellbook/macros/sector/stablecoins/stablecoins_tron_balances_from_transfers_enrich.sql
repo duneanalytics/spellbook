@@ -1,4 +1,4 @@
-{%- macro balances_tron_incremental_subset_daily_enrich(
+{%- macro stablecoins_tron_balances_from_transfers_enrich(
         base_balances,
         chain,
         token_list
@@ -54,11 +54,11 @@ enriched_with_tokens as (
   from base b
   left join tokens_metadata t
     on t.blockchain = b.blockchain
-    and t.contract_address = b.token_address
+    and t.contract_address = b.contract_address
     and b.token_standard = 'erc20'
   left join stablecoin_tokens s
     on s.blockchain = b.blockchain
-    and s.contract_address = b.token_address
+    and s.contract_address = b.contract_address
 )
 
 select
