@@ -24,6 +24,7 @@ from (values
      (0xfecb3f7c54e2caae9dc6ac9060a822d47e053760), -- BRLA
      (0x4b1e2c2762667331bc91648052f646d1b0d35984), -- agEUR
      (0x420ca0f9b9b604ce0fd9c18ef134c705e5fa3430), -- EURe
-     (0x2a22f9c3b484c3629090feed35f17ff8f88f76f0)  -- USDC
+     (0x2a22f9c3b484c3629090feed35f17ff8f88f76f0), -- USDC
+     (0xd4dd9e2f021bb459d5a5f6c24c12fe09c5d45553)  -- ZCHF
 
 ) as temp_table (contract_address)

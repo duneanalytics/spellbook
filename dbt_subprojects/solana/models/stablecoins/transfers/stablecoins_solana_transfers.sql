@@ -31,6 +31,11 @@ select
   t.amount_usd,
   t.from_owner,
   t.to_owner,
+  t.from_token_account,
+  t.to_token_account,
+  t.tx_signer,
+  t.outer_executing_account,
+  t.action,
   t.unique_key
 from {{ ref('stablecoins_' ~ chain ~ '_core_transfers') }} t
 left join {{ ref('tokens_spl_stablecoins_metadata') }} m
@@ -57,6 +62,11 @@ select
   t.amount_usd,
   t.from_owner,
   t.to_owner,
+  t.from_token_account,
+  t.to_token_account,
+  t.tx_signer,
+  t.outer_executing_account,
+  t.action,
   t.unique_key
 from {{ ref('stablecoins_' ~ chain ~ '_extended_transfers') }} t
 left join {{ ref('tokens_spl_stablecoins_metadata') }} m

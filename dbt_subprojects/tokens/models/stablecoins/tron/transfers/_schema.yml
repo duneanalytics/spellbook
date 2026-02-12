@@ -1,0 +1,196 @@
+version: 2
+
+models:
+  - name: stablecoins_tron_core_transfers
+    meta:
+      blockchain: tron
+      sector: stablecoin
+      project: stablecoin
+      contributors: tomfutago
+    config:
+      tags: ['stablecoin', 'transfers']
+    description: "Core transfers of stablecoins (frozen core list)"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_date
+            - unique_key
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain for the token"
+      - &block_month
+        name: block_month
+        description: "Month of the block (partition column)"
+      - &block_date
+        name: block_date
+        description: "Date of the block"
+        data_tests:
+          - not_null
+      - &block_time
+        name: block_time
+        description: "Timestamp of the block"
+      - &block_number
+        name: block_number
+        description: "Block number"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
+      - &trace_address
+        name: trace_address
+        description: "Trace address"
+      - &token_standard
+        name: token_standard
+        description: "Token standard"
+      - &token_address
+        name: token_address
+        description: "Token contract address"
+      - &token_symbol
+        name: token_symbol
+        description: "Token symbol"
+      - &currency
+        name: currency
+        description: "ISO 4217 currency code the stablecoin is pegged to (e.g. USD, EUR)"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw transfer amount"
+      - &amount
+        name: amount
+        description: "Transfer amount (adjusted for decimals)"
+      - &price_usd
+        name: price_usd
+        description: "USD price at time of transfer"
+      - &amount_usd
+        name: amount_usd
+        description: "USD value of transfer"
+      - &from
+        name: from
+        description: "Sender address"
+      - &to
+        name: to
+        description: "Receiver address"
+      - &unique_key
+        name: unique_key
+        description: "Unique identifier for this transfer"
+        data_tests:
+          - not_null
+      - &tx_from
+        name: tx_from
+        description: "Transaction sender address"
+      - &tx_to
+        name: tx_to
+        description: "Transaction receiver address"
+      - &tx_index
+        name: tx_index
+        description: "Transaction index in block"
+      - &contract_address
+        name: contract_address
+        description: "Token contract address"
+      - &tx_hash_varchar
+        name: tx_hash_varchar
+        description: "Transaction hash (varchar)"
+      - &contract_address_varchar
+        name: contract_address_varchar
+        description: "Contract address (varchar)"
+      - &from_varchar
+        name: from_varchar
+        description: "Sender address (varchar)"
+      - &to_varchar
+        name: to_varchar
+        description: "Receiver address (varchar)"
+      - &tx_from_varchar
+        name: tx_from_varchar
+        description: "Transaction sender address (varchar)"
+      - &tx_to_varchar
+        name: tx_to_varchar
+        description: "Transaction receiver address (varchar)"
+
+  - name: stablecoins_tron_extended_transfers
+    meta:
+      blockchain: tron
+      sector: stablecoin
+      project: stablecoin
+      contributors: tomfutago
+    config:
+      tags: ['stablecoin', 'transfers']
+    description: "Extended transfers of newly added stablecoins"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_date
+            - unique_key
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_date
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+      - *trace_address
+      - *token_standard
+      - *token_address
+      - *token_symbol
+      - *currency
+      - *amount_raw
+      - *amount
+      - *amount_usd
+      - *price_usd
+      - *from
+      - *to
+      - *unique_key
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *contract_address
+      - *tx_hash_varchar
+      - *contract_address_varchar
+      - *from_varchar
+      - *to_varchar
+      - *tx_from_varchar
+      - *tx_to_varchar
+
+  - name: stablecoins_tron_transfers
+    meta:
+      blockchain: tron
+      sector: stablecoin
+      project: stablecoin
+      contributors: tomfutago
+    config:
+      tags: ['stablecoin', 'transfers']
+    description: "Union view of core and extended stablecoin transfers (EVM macro columns + tron extras)"
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_date
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+      - *trace_address
+      - *token_standard
+      - *token_address
+      - *token_symbol
+      - *currency
+      - *amount_raw
+      - *amount
+      - *amount_usd
+      - *price_usd
+      - *from
+      - *to
+      - *unique_key
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *contract_address
+      - *tx_hash_varchar
+      - *contract_address_varchar
+      - *from_varchar
+      - *to_varchar
+      - *tx_from_varchar
+      - *tx_to_varchar

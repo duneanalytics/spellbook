@@ -21,3 +21,14 @@ sources:
             description: "Token symbol"
           - name: price
             description: "USD price of a token"
+      - name: fx_exchange_rates
+        description: "Daily FX exchange rates converting foreign currencies to USD"
+        columns:
+          - name: date
+            description: "Date of the exchange rate"
+          - name: base_currency
+            description: "ISO 4217 currency code (e.g. EUR, GBP)"
+          - name: target_currency
+            description: "Target currency code (e.g. USD)"
+          - name: exchange_rate
+            description: "Exchange rate (1 unit of base_currency = exchange_rate target_currency)"
