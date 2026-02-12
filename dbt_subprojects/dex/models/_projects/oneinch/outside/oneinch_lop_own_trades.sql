@@ -1,5 +1,6 @@
 {{  
     config(
+        tags = ['prod_exclude'],
         schema = 'oneinch',
         alias = 'lop_own_trades',
         materialized = 'view',
