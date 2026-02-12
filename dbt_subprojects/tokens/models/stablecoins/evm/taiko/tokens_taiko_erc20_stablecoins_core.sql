@@ -13,9 +13,9 @@
 -- core list: frozen stablecoin addresses used for initial incremental transfers
 -- new stablecoins should be added to tokens_taiko_erc20_stablecoins_extended
 
-select '{{chain}}' as blockchain, contract_address
+select '{{chain}}' as blockchain, contract_address, currency
 from (values
 
-     (0x07d83526730c7438048d55a4fc0b850e2aab6f0b)  -- USDC
+     (0x07d83526730c7438048d55a4fc0b850e2aab6f0b, 'USD')  -- USDC
 
-) as temp_table (contract_address)
+) as temp_table (contract_address, currency)

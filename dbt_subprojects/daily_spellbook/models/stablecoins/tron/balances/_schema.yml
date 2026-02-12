@@ -113,6 +113,9 @@ models:
       - &balance_usd
         name: balance_usd
         description: "USD value of balance for the user"
+      - &currency
+        name: currency
+        description: "ISO 4217 currency code for the stablecoin's pegged currency"
       - *last_updated
 
   - name: stablecoins_tron_extended_balances_enriched
@@ -143,6 +146,7 @@ models:
       - *balance_raw
       - *balance
       - *balance_usd
+      - *currency
       - *last_updated
 
   - name: stablecoins_tron_balances
@@ -173,4 +177,5 @@ models:
       - *balance_raw
       - *balance
       - *balance_usd
+      - *currency
       - *last_updated
