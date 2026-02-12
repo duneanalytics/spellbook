@@ -13,11 +13,11 @@
 -- extended list: new stablecoin addresses added after the core list was frozen
 -- add new stablecoins here (not in tokens_arbitrum_erc20_stablecoins_core)
 
-select '{{chain}}' as blockchain, contract_address
+select '{{chain}}' as blockchain, contract_address, currency
 from (values
 
-     (0x4933a85b5b5466fbaf179f72d3de273c287ec2c2), -- EURAU
-     (0xd4dd9e2f021bb459d5a5f6c24c12fe09c5d45553)  -- ZCHF
+     (0x4933a85b5b5466fbaf179f72d3de273c287ec2c2, 'EUR'), -- EURAU
+     (0xd4dd9e2f021bb459d5a5f6c24c12fe09c5d45553, 'CHF')  -- ZCHF
 
      /* rebasing / interest accruing tokens
      (0x7cfadfd5645b50be87d546f42699d863648251ad), -- stataArbUSDCn (static aave)
@@ -27,4 +27,4 @@ from (values
      (0x3509f19581afedeff07c53592bc0ca84e4855475)  -- xUSD (synthetic)
      */
 
-) as temp_table (contract_address)
+) as temp_table (contract_address, currency)

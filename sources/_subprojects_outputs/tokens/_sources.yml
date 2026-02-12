@@ -121,6 +121,8 @@ sources:
             data_type: integer
           - name: name
             data_type: varchar
+          - name: currency
+            data_type: varchar
       - name: rwa
         columns:
           - name: blockchain
