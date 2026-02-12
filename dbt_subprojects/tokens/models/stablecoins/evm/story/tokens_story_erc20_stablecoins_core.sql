@@ -13,9 +13,9 @@
 -- core list: frozen stablecoin addresses used for initial incremental transfers
 -- new stablecoins should be added to tokens_story_erc20_stablecoins_extended
 
-select '{{chain}}' as blockchain, contract_address
+select '{{chain}}' as blockchain, contract_address, currency
 from (values
 
-     (0xf1815bd50389c46847f0bda824ec8da914045d14)  -- USDC.e
+     (0xf1815bd50389c46847f0bda824ec8da914045d14, 'USD')  -- USDC.e
 
-) as temp_table (contract_address)
+) as temp_table (contract_address, currency)
