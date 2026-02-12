@@ -164,8 +164,7 @@ models:
         description: "ISO 4217 currency code the stablecoin is pegged to (e.g. USD, EUR)"
       - *amount_raw
       - *amount
-      - name: amount_usd
-        description: "USD value of transfer (FX rate × amount)"
+      - *amount_usd
       - &price_usd
         name: price_usd
         description: "FX exchange rate used for USD conversion"
@@ -205,8 +204,7 @@ models:
       - *currency
       - *amount_raw
       - *amount
-      - name: amount_usd
-        description: "USD value of transfer (FX rate × amount)"
+      - *amount_usd
       - *price_usd
       - *from_owner
       - *to_owner
@@ -239,22 +237,13 @@ models:
       - *token_version
       - *token_mint_address
       - *token_symbol
-      - &token_backing
-        name: token_backing
-        description: "Stablecoin backing type"
-      - &token_name
-        name: token_name
-        description: "Stablecoin name"
-      - &currency
-        name: currency
-        description: "ISO 4217 currency code the stablecoin is pegged to (e.g. USD, EUR)"
+      - *token_backing
+      - *token_name
+      - *currency
       - *amount_raw
       - *amount
-      - name: amount_usd
-        description: "USD value of transfer (FX rate × amount)"
-      - &price_usd
-        name: price_usd
-        description: "FX exchange rate used for USD conversion"
+      - *amount_usd
+      - *price_usd
       - *from_owner
       - *to_owner
       - *from_token_account
