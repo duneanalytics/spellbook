@@ -350,8 +350,8 @@ sources:
       - name: transfers
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
-      - name: erc20_stablecoins_core
-      - name: erc20_stablecoins_extended
+      - name: trc20_stablecoins_core
+      - name: trc20_stablecoins_extended
 
   - name: tokens_unichain
     tables:

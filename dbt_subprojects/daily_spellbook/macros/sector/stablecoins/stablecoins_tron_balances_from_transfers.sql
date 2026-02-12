@@ -175,7 +175,8 @@ select
   f.last_updated
 from forward_fill f
 where (f.balance_raw > uint256 '0'
-  or (f.balance_raw = uint256 '0' and cast(f.last_updated as date) = f.day))
+    or (f.balance_raw = uint256 '0' and cast(f.last_updated as date) = f.day))
+  and f.address != 0x0000000000000000000000000000000000000000
 {% if is_incremental() %}
   and {{ incremental_predicate('f.day') }}
 {% endif %}

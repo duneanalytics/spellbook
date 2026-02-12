@@ -27,7 +27,7 @@ tokens_metadata as (
 
 stablecoin_tokens as (
   select blockchain, contract_address, currency
-  from {{ source('tokens_' ~ chain, 'erc20_stablecoins_' ~ token_list) }}
+  from {{ source('tokens_' ~ chain, 'trc20_stablecoins_' ~ token_list) }}
 ),
 
 enriched_with_tokens as (
@@ -58,7 +58,7 @@ enriched_with_tokens as (
     and b.token_standard = 'erc20'
   left join stablecoin_tokens s
     on s.blockchain = b.blockchain
-    and s.contract_address = b.contract_address
+    and s.contract_address = b.token_address
 )
 
 select
