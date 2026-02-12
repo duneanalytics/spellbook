@@ -22,24 +22,18 @@ from (values
      (0xaf88d065e77c8cc2239327c5edb3a432268e5831, 'USD'), -- USDC
      (0xfea7a6a0b346362bf88a9e4a88416b77a57d6c2a, 'USD'), -- MIM
      (0xa970af1a584579b618be4d69ad6f73459d112f95, 'USD'), -- sUSD
-     (0xddc0385169797937066bbd8ef409b5b3c0dfeb52, 'USD'), -- wUSDR
      (0xe80772eaf6e2e18b651f160bc9158b2a5cafca65, 'USD'), -- USD+
      (0x17fc002b466eec40dae837fc4be5c67993ddbd6f, 'USD'), -- FRAX
      (0xda10009cbd5d07dd0cecc66161fc93d7c9000da1, 'USD'), -- DAI
      (0x64343594ab9b56e99087bfa6f2335db24c2d1f17, 'USD'), -- VST
-     (0xd74f5255d557944cf7dd0e45ff521520002d5748, 'USD'), -- USDs
      (0x3f56e0c36d275367b8c502090edf38289b3dea0d, 'USD'), -- MAI
-     (0xb1084db8d3c05cebd5fa9335df95ee4b8a0edc30, 'USD'), -- USDT+
-     (0x59d9356e565ab3a36dd77763fc0d87feaf85508c, 'USD'), -- USDM
      (0xff970a61a04b1ca14834a43f5de4533ebddb5cc8, 'USD'), -- USDC.e
      (0x4d15a3a2286d883af0aa1b3f21367843fac63e07, 'USD'), -- TUSD
      (0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34, 'USD'), -- USDe
      (0xeb466342c4d449bc9f53a865d5cb90586f405215, 'USD'), -- axlUDC
-     (0xd3443ee1e91af28e5fb858fbd0d72a63ba8046e0, 'USD'), -- gUSDC
      (0x12275dcb9048680c4be40942ea4d92c74c63b844, 'USD'), -- eUSD
      (0x323665443cef804a3b5206103304bd4872ea4253, 'USD'), -- USDV
      (0x4cfa50b7ce747e2d61724fcac57f24b748ff2b2a, 'USD'), -- fUSDC
-     (0x57f5e098cad7a3d1eed53991d4d66c45c9af7812, 'USD'), -- sUSDM
      (0x7dff72693f6a4149b17e7c6314655f6a9f7c8b33, 'USD'), -- GHO
      (0xf3527ef8de265eaa3716fb312c12847bfba66cef, 'USD'), -- USDX
      (0x4bdc50829003cc017443bf9bfb3ac82f3f0c4ad4, 'CLP'), -- CLPC

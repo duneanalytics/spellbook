@@ -2,7 +2,6 @@
 
 {{
   config(
-    tags = ['prod_exclude'],
     schema = 'stablecoins_' ~ chain,
     alias = 'extended_transfers',
     materialized = 'incremental',
@@ -15,7 +14,4 @@
 
 -- extended transfers: tracks transfers for newly added stablecoins (not in core list)
 
-{{ stablecoins_transfers(
-    blockchain = chain,
-    token_list = 'extended'
-) }}
+{{ stablecoins_tron_transfers(token_list = 'extended') }}

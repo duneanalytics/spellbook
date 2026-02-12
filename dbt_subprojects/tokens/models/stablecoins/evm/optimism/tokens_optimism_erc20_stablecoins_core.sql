@@ -17,7 +17,6 @@ select '{{chain}}' as blockchain, contract_address, currency
 from (values
 
      (0xfb21b70922b9f6e3c6274bcd6cb1aa8a0fe20b80, 'USD'), -- UST
-     (0x970d50d09f3a656b43e11b0d45241a84e3a6e011, 'USD'), -- DAI+
      (0xdfa46478f9e5ea86d57387849598dbfb2e964b02, 'USD'), -- MAI
      (0x3666f603cc164936c1b87e207f36beba4ac5f18a, 'USD'), -- hUSD
      (0x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9, 'USD'), -- sUSD
@@ -28,15 +27,12 @@ from (values
      (0xfbc4198702e81ae77c06d58f81b629bdf36f0a71, 'EUR'), -- sEUR
      (0xcb59a0a753fdb7491d5f3d794316f1ade197b21e, 'USD'), -- TUSD
      (0x7fb688ccf682d58f86d7e38e03f9d22e7705448b, 'USD'), -- RAI
-     (0x340fe1d898eccaad394e2ba0fc1f93d27c7b717a, 'USD'), -- wUSDR
      (0x2e3d870790dc77a83dd1d18184acc7439a53f475, 'USD'), -- FRAX
      (0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b, 'USD'), -- BOB
      (0x8ae125e8653821e851f12a49f7765db9a9ce7384, 'USD'), -- DOLA
      (0x0b2c639c533813f4aa9d7837caf62653d097ff85, 'USD'), -- USDC
      (0x67c10c397dd0ba417329543c1a40eb48aaa7cd00, 'USD'), -- nUSD
      (0x56900d66d74cb14e3c86895789901c9135c95b16, 'USD'), -- hDAI
-     (0x73cb180bf0521828d8849bc8cf2b920918e23032, 'USD'), -- USD+
-     (0x59d9356e565ab3a36dd77763fc0d87feaf85508c, 'USD'), -- USDM
      (0xb153fb3d196a8eb25522705560ac152eeec57901, 'USD'), -- MIM
      (0x94b008aa00579c1307b0ef2c499ad98a8ce58e58, 'USD'), -- USDT
      (0x7f5c764cbc14f9669b88837ca1490cca17c31607, 'USD'), -- USDC.e

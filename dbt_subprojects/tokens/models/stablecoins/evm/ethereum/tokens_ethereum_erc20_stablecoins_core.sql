@@ -17,7 +17,6 @@ select '{{chain}}' as blockchain, contract_address, currency
 from (values
 
      (0x6b175474e89094c44da98b954eedeac495271d0f, 'USD'), -- DAI
-     (0x96f6ef951840721adbf46ac996b59e0235cb985c, 'USD'), -- USDY
      (0xc5f0f7b66764f6ec8c8dff7ba683102295e16409, 'USD'), -- FDUSD
      (0x8d6cebd76f18e1558d4db88138e2defb3909fad6, 'USD'), -- MAI
      (0x5f98805a4e8be255a32880fdec7f6728c6568ba0, 'USD'), -- LUSD
@@ -26,10 +25,8 @@ from (values
      (0xdac17f958d2ee523a2206206994597c13d831ec7, 'USD'), -- USDT
      (0xbea0000029ad1c77d3d5d23ba2d8893db9d1efab, 'USD'), -- BEAN
      (0xe2f2a5c287993345a840db3b0845fbc70f5935a5, 'USD'), -- mUSD
-     (0x7712c34205737192402172409a8f7ccef8aa2aec, 'USD'), -- BUIDL
      (0x4fabb145d64652a948d72533023f6e7a623c7c53, 'USD'), -- BUSD
      (0x1456688345527be1f37e9e627da0837d6f08c925, 'USD'), -- USDP
-     (0x2a8e1e676ec238d8a992307b495b45b3feaa5e86, 'USD'), -- OUSD
      (0x0c10bf8fcb7bf5412187a595ab97a3609160b5c6, 'USD'), -- USDD (old)
      (0x3D7975EcCFc61a2102b08925CbBa0a4D4dBB6555, 'USD'), -- USDD
      (0x8e870d67f660d95d5be530380d0ec0bd388289e1, 'USD'), -- USDP
@@ -38,7 +35,6 @@ from (values
      (0xdf574c24545e5ffecb9a659c229253d4111d87e1, 'USD'), -- HUSD
      (0xc285b7e09a4584d027e5bc36571785b515898246, 'USD'), -- CUSD
      (0xdc59ac4fefa32293a95889dc396682858d52e5db, 'USD'), -- BEAN
-     (0xa774ffb4af6b0a91331c084e1aebae6ad535e6f3, 'USD'), -- FLEXUSD
      (0xa47c8bf37f92abed4a126bda807a7b7498661acd, 'USD'), -- USTC
      (0x0000000000085d4780b73119b644ae5ecd22b376, 'USD'), -- TUSD
      (0x4c9edd5852cd905f086c759e8383e09bff1e68b3, 'USD'), -- USDe
@@ -55,7 +51,6 @@ from (values
      (0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b, 'USD'), -- BOB
      (0x956f47f50a910163d8bf957cf5846d573e7f87ca, 'USD'), -- FEI
      (0x9a1997c130f4b2997166975d9aff92797d5134c2, 'USD'), -- USDap
-     (0xd46ba6d942050d489dbd938a2c909a5d5039a161, 'USD'), -- AMPL
      (0x03ab458634910aad20ef5f1c8ee96f1d6ac54919, 'USD'), -- RAI
      (0x674c6ad92fd080e4004b2312b45f796a192d27a0, 'USD'), -- USDN
      (0x866a2bf4e572cbcf37d5071a7a58503bfb36be1b, 'USD'), -- M
@@ -66,20 +61,16 @@ from (values
      (0x15f74458ae0bfdaa1a96ca1aa779d715cc1eefe4, 'USD'), -- GRAI
      (0xf939e0a03fb07f59a73314e73794be0e57ac1b4e, 'USD'), -- crvUSD
      (0xab5eb14c09d416f0ac63661e57edb7aecdb9befa, 'USD'), -- msUSD
-     (0x15700b564ca08d9439c58ca5053166e8317aa138, 'USD'), -- deUSD
      (0x085780639cc2cacd35e474e71f4d000e2405d8f6, 'USD'), -- fxUSD
      (0x00000000efe302beaa2b3e6e1b18d08d69a9012a, 'USD'), -- AUSD
      (0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f, 'USD'), -- eUSD
      (0xa469b7ee9ee773642b3e93e842e5d9b5baa10067, 'USD'), -- USDz
-     (0x59d9356e565ab3a36dd77763fc0d87feaf85508c, 'USD'), -- USDM
-     (0x79c58f70905f734641735bc61e45c19dd9ad60bc, 'USD'), -- usdc-dai-usdt
      (0x0000206329b97db379d5e1bf586bbdb969c63274, 'USD'), -- USDA
      (0x35d8949372d46b7a3d5a56006ae77b215fc69bc0, 'USD'), -- USD0++
      (0x4591dbff62656e7859afe5e45f6f47d3669fbb28, 'USD'), -- mkUSD
      (0x0bffdd787c83235f6f0afa0faed42061a4619b7a, 'USD'), -- VUSD
      (0xcfc5bd99915aaa815401c5a41a927ab7a38d29cf, 'USD'), -- thUSD
      (0xdf3ac4f479375802a821f7b7b46cd7eb5e4262cc, 'USD'), -- eUSD
-     (0xbbaec992fc2d637151daf40451f160bf85f3c8c1, 'USD'), -- USDM
      (0x7945b0a6674b175695e5d1d08ae1e6f13744abb0, 'USD'), -- BaoUSD
      (0x40d16fc0246ad3160ccc09b8d0d3a2cd28ae6c2f, 'USD'), -- GHO
      (0xfd03723a9a3abe0562451496a9a394d2c4bad4ab, 'USD'), -- DYAD
@@ -88,8 +79,6 @@ from (values
      (0x50753CfAf86c094925Bf976f218D043f8791e408, 'EUR'), -- EURR
      (0x2c537e5624e4af88a7ae4060c022609376c8d0eb, 'TRY'), -- TRYb
      (0x4cCe605eD955295432958d8951D0B176C10720d5, 'AUD'), -- AUDD
-     (0x7751e2f4b8ae93ef6b79d86419d42fe3295a4559, 'USD'), -- wUSDL
-     (0xbdc7c08592ee4aa51d06c27ee23d5087d65adbcd, 'USD'), -- USDL
      (0xcacd6fd266af91b8aed52accc382b4e165586e29, 'USD'), -- frxUSD
      (0xc581b735a1688071a1746c968e0798d642ede491, 'EUR'), -- EURT
      (0x70e8de73ce538da2beed35d14187f6959a8eca96, 'SGD'), -- XSGD
@@ -104,8 +93,6 @@ from (values
      (0x6e109e9dd7fa1a58bc3eff667e8e41fc3cc07aef, 'CNY'), -- CNHT
      (0x4a16baf414b8e637ed12019fad5dd705735db2e0, 'CAD'), -- QCAD
      (0xcadc0acd4b445166f12d2c07eac6e2544fbe2eef, 'CAD'), -- CADC
-     (0x57f5e098cad7a3d1eed53991d4d66c45c9af7812, 'USD'), -- wUSDM
-     (0x7c1156e515aa1a2e851674120074968c905aaf37, 'USD'), -- lvlUSD
      (0xb58e61c3098d85632df34eecfb899a1ed80921cb, 'CHF'), -- ZCHF
      (0x57ab1e0003f623289cd798b1824be09a793e4bec, 'USD'), -- reUSD
      (0x8d0d000ee44948fc98c9b98a4fa4921476f08b0d, 'USD'), -- USD1

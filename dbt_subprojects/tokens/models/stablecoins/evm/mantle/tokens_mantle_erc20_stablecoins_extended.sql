@@ -18,5 +18,9 @@ from (values
 
      (0x0000000000000000000000000000000000000000, 'USD')
 
+     /* yield-bearing / rebasing tokens
+     (0x5be26527e817998a7206475496fde1e68957c5a6, 'USD'), -- USDY
+     */
+
 ) as temp_table (contract_address, currency)
 where contract_address != 0x0000000000000000000000000000000000000000

@@ -2,9 +2,9 @@
 
 {{
   config(
-    tags = ['prod_exclude', 'static'],
+    tags = ['static'],
     schema = 'tokens_' ~ chain,
-    alias = 'erc20_stablecoins',
+    alias = 'trc20_stablecoins',
     materialized = 'view',
     unique_key = ['contract_address']
   )
@@ -13,9 +13,9 @@
 -- union view combining core (frozen) and extended (new additions) stablecoin lists
 
 select blockchain, contract_address, currency
-from {{ ref('tokens_' ~ chain ~ '_erc20_stablecoins_core') }}
+from {{ ref('tokens_' ~ chain ~ '_trc20_stablecoins_core') }}
 
 union all
 
 select blockchain, contract_address, currency
-from {{ ref('tokens_' ~ chain ~ '_erc20_stablecoins_extended') }}
+from {{ ref('tokens_' ~ chain ~ '_trc20_stablecoins_extended') }}

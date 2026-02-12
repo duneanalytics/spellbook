@@ -2,7 +2,6 @@
 
 {{
   config(
-    tags = ['prod_exclude'],
     schema = 'stablecoins_' ~ chain,
     alias = 'core_transfers',
     materialized = 'incremental',
@@ -15,7 +14,4 @@
 
 -- core transfers: tracks transfers for stablecoins in the frozen core list
 
-{{ stablecoins_transfers(
-    blockchain = chain,
-    token_list = 'core'
-) }}
+{{ stablecoins_tron_transfers(token_list = 'core') }}

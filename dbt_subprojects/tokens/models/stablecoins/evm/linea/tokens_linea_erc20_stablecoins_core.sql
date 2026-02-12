@@ -26,8 +26,6 @@ from (values
      (0xc608dfb90a430df79a8a1edbc8be7f1a0eb4e763, 'USD'), -- arUSD
      (0xa88b54e6b76fb97cdb8ecae868f1458e18a953f4, 'USD'), -- DUSD
      (0x894134a25a5fac1c2c26f1d8fbf05111a3cb9487, 'USD'), -- GRAI
-     (0xb79dd08ea68a908a97220c76d19a6aa9cbde4376, 'USD'), -- USD+
-     (0x1e1f509963a6d33e169d9497b11c7dbfe73b7f13, 'USD'), -- USDT+
      (0x3ff47c5bf409c86533fe1f4907524d304062428d, 'EUR')  -- EURe
 
 
