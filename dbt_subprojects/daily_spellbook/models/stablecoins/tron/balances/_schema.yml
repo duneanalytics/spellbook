@@ -30,7 +30,13 @@ models:
         description: "Address for the token holder"
       - &token_address
         name: token_address
-        description: "Address for the token"
+        description: "Address for the token (varchar for Tron)"
+      - &address_varchar
+        name: address_varchar
+        description: "Token holder address as varchar (Tron base58)"
+      - &token_address_varchar
+        name: token_address_varchar
+        description: "Token contract address as varchar (Tron base58)"
       - &token_standard
         name: token_standard
         description: "Standard for the token"
@@ -66,6 +72,8 @@ models:
       - *day
       - *address
       - *token_address
+      - *address_varchar
+      - *token_address_varchar
       - *token_standard
       - *token_id
       - *balance_raw
