@@ -67,7 +67,6 @@
     )
 }}
 
--- full-refresh 1
 -- keep existing dbt lineages for the following projects, as the team built themselves and use the spells throughout the entire lineage.
 {% set as_is_models = [
     ref('oneinch_lop_own_trades')
