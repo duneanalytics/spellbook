@@ -42,11 +42,11 @@ enriched_with_tokens as (
     b.balance_raw,
     b.last_updated,
     case
-      when b.token_standard = 'erc20' then t.symbol
+      when b.token_standard = 'trc20' then t.symbol
       else null
     end as token_symbol,
     case
-      when b.token_standard = 'erc20' then b.balance_raw / power(10, t.decimals)
+      when b.token_standard = 'trc20' then b.balance_raw / power(10, t.decimals)
       when b.token_standard = 'native' then b.balance_raw / power(10, 18)
       else b.balance_raw
     end as balance,
@@ -55,7 +55,7 @@ enriched_with_tokens as (
   left join tokens_metadata t
     on t.blockchain = b.blockchain
     and t.contract_address = b.contract_address
-    and b.token_standard = 'erc20'
+    and b.token_standard = 'trc20'
   left join stablecoin_tokens s
     on s.blockchain = b.blockchain
     and s.contract_address = b.token_address
