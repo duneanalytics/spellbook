@@ -96,6 +96,7 @@ recent_addresses as (
 
 final as (
     select
+        '{{ blockchain }}' as blockchain,
         a.address,
         coalesce(t.first_funded_by, f.first_funded_by) as first_funded_by,
         coalesce(t.first_funded_at, f.first_funded_at) as first_funded_at,
