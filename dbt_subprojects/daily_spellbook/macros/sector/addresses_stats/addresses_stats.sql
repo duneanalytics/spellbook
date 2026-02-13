@@ -37,7 +37,8 @@ final as (
         f.first_funded_at,
         coalesce(c.is_smart_contract, false) as is_smart_contract,
         not coalesce(c.is_smart_contract, false) as is_eoa,
-        c.first_deployment_date
+        c.first_deployment_date,
+        current_timestamp as _updated_at
     from addresses a
     left join first_funded f
       on f.address = a.address
@@ -54,7 +55,8 @@ final_deduped as (
         first_funded_at,
         is_eoa,
         is_smart_contract,
-        first_deployment_date
+        first_deployment_date,
+        _updated_at -- NEW
     from (
         select
             f.*,
@@ -78,7 +80,6 @@ contract_addresses_recent as (
     group by 1
 ),
 
--- allow flipping is_smart_contract false -> true, but ignore already-true rows (avoids redeploy churn)
 contract_updates as (
     select
         c.address,
@@ -92,7 +93,6 @@ contract_updates as (
         or t.is_smart_contract = false
 ),
 
--- fill funding for new addresses OR existing addresses missing first_funded_at
 funding_updates as (
     select
         f.address,
@@ -128,7 +128,8 @@ final as (
             when t.is_smart_contract = true then false
             when c.is_smart_contract = true then false
             else true
-        end as is_eoa
+        end as is_eoa,
+        current_timestamp as _updated_at
     from recent_addresses a
     left join {{ this }} t
       on t.address = a.address
@@ -147,7 +148,8 @@ final_deduped as (
         first_funded_at,
         is_eoa,
         is_smart_contract,
-        first_deployment_date
+        first_deployment_date,
+        _updated_at
     from (
         select
             f.*,
