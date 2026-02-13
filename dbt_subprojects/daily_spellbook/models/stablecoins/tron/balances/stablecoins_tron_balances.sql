@@ -2,7 +2,6 @@
 
 {{
   config(
-    tags = ['prod_exclude'],
     schema = 'stablecoins_' ~ chain,
     alias = 'balances',
     materialized = 'view',
@@ -16,6 +15,7 @@ select
   address,
   token_symbol,
   token_address,
+  contract_address,
   token_standard,
   token_id,
   balance_raw,
@@ -31,6 +31,7 @@ select
   address,
   token_symbol,
   token_address,
+  contract_address,
   token_standard,
   token_id,
   balance_raw,

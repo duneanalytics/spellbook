@@ -2,9 +2,8 @@
 
 {{
   config(
-    tags = ['prod_exclude'],
     schema = 'stablecoins_' ~ chain,
-    alias = 'core_balances',
+    alias = 'extended_balances_enriched',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -14,9 +13,10 @@
   )
 }}
 
--- core balances: tracks balances (from transfers) for stablecoins in the frozen core list
-
-{{ stablecoins_balances_from_transfers(
-    transfers = source('stablecoins_' ~ chain, 'core_transfers'),
-    start_date = '2018-06-25'
-) }}
+{{
+  stablecoins_tron_balances_from_transfers_enrich(
+    base_balances = ref('stablecoins_' ~ chain ~ '_extended_balances'),
+    chain = chain,
+    token_list = 'extended'
+  )
+}}

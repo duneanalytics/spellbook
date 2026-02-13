@@ -2,9 +2,8 @@
 
 {{
   config(
-    tags = ['prod_exclude'],
     schema = 'stablecoins_' ~ chain,
-    alias = 'extended_balances_enriched',
+    alias = 'extended_balances',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -14,10 +13,9 @@
   )
 }}
 
-{{
-  balances_incremental_subset_daily_enrich(
-    base_balances = ref('stablecoins_' ~ chain ~ '_extended_balances'),
-    chain = chain,
-    token_list = 'extended'
-  )
-}}
+-- extended balances: tracks balances (from transfers) for newly added stablecoins
+
+{{ stablecoins_tron_balances_from_transfers(
+    transfers = source('stablecoins_' ~ chain, 'extended_transfers'),
+    start_date = '2026-01-01'
+) }}

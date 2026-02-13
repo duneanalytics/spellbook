@@ -2,7 +2,6 @@
 
 {{
   config(
-    tags = ['prod_exclude'],
     schema = 'stablecoins_' ~ chain,
     alias = 'core_balances_enriched',
     materialized = 'incremental',
@@ -15,7 +14,7 @@
 }}
 
 {{
-  balances_incremental_subset_daily_enrich(
+  stablecoins_tron_balances_from_transfers_enrich(
     base_balances = ref('stablecoins_' ~ chain ~ '_core_balances'),
     chain = chain,
     token_list = 'core'
