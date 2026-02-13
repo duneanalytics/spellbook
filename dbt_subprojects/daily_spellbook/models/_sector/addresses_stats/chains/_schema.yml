@@ -1,14 +1,14 @@
 version: 2
 
 models:
-  - name: addresses_ethereum_first_funding
+  - name: addresses_ethereum_stats
     meta:
       blockchain: ethereum
       sector: addresses
       contributors: kryptaki
     config:
-      tags: ['address', 'first_funding']
-    description: "Per-address first funding for Ethereum (first funded, contract flag). Use _updated_at for incremental reads."
+      tags: ['address', 'stats']
+    description: "Per-address stats for Ethereum (first funded, contract flag). Use _updated_at for incremental reads."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -39,14 +39,14 @@ models:
         name: _updated_at
         description: "When this row was last written; use for incremental sync (e.g. WHERE _updated_at > :last_sync)"
 
-  - name: addresses_arbitrum_first_funding
+  - name: addresses_arbitrum_stats
     meta:
       blockchain: arbitrum
       sector: addresses
       contributors: kryptaki
     config:
-      tags: ['address', 'first_funding']
-    description: "Per-address first funding for Arbitrum"
+      tags: ['address', 'stats']
+    description: "Per-address stats for Arbitrum"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -61,14 +61,14 @@ models:
       - *is_eoa
       - *_updated_at
 
-  - name: addresses_avalanche_c_first_funding
+  - name: addresses_avalanche_c_stats
     meta:
       blockchain: avalanche_c
-      sector: addresses 
+      sector: addresses
       contributors: kryptaki
     config:
-      tags: ['address', 'first_funding']
-    description: "Per-address first funding for Avalanche"
+      tags: ['address', 'stats']
+    description: "Per-address stats for Avalanche"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -83,14 +83,14 @@ models:
       - *is_eoa
       - *_updated_at
 
-  - name: addresses_base_first_funding
+  - name: addresses_base_stats
     meta:
       blockchain: base
-      sector: addresses   
+      sector: addresses
       contributors: kryptaki
     config:
-      tags: ['address', 'first_funding']
-    description: "Per-address first funding for Base"
+      tags: ['address', 'stats']
+    description: "Per-address stats for Base"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -105,14 +105,14 @@ models:
       - *is_eoa
       - *_updated_at
 
-  - name: addresses_bnb_first_funding
+  - name: addresses_bnb_stats
     meta:
       blockchain: bnb
-      sector: addresses 
+      sector: addresses
       contributors: kryptaki
     config:
-      tags: ['address', 'first_funding']
-    description: "Per-address first funding for BNB"
+      tags: ['address', 'stats']
+    description: "Per-address stats for BNB"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -127,14 +127,14 @@ models:
       - *is_eoa
       - *_updated_at
 
-  - name: addresses_linea_first_funding
+  - name: addresses_linea_stats
     meta:
       blockchain: linea
-      sector: addresses   
-      contributors: kryptaki  
+      sector: addresses
+      contributors: kryptaki
     config:
-      tags: ['address', 'first_funding']
-    description: "Per-address first funding for Linea"
+      tags: ['address', 'stats']
+    description: "Per-address stats for Linea"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -149,14 +149,14 @@ models:
       - *is_eoa
       - *_updated_at
 
-  - name: addresses_optimism_first_funding
+  - name: addresses_optimism_stats
     meta:
       blockchain: optimism
-      sector: addresses   
+      sector: addresses
       contributors: kryptaki
     config:
-      tags: ['address', 'first_funding']
-    description: "Per-address first funding for Optimism"
+      tags: ['address', 'stats']
+    description: "Per-address stats for Optimism"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -171,14 +171,14 @@ models:
       - *is_eoa
       - *_updated_at
 
-  - name: addresses_polygon_first_funding
+  - name: addresses_polygon_stats
     meta:
       blockchain: polygon
-      sector: addresses   
+      sector: addresses
       contributors: kryptaki
     config:
-      tags: ['address', 'first_funding']
-    description: "Per-address first funding for Polygon"
+      tags: ['address', 'stats']
+    description: "Per-address stats for Polygon"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -193,14 +193,14 @@ models:
       - *is_eoa
       - *_updated_at
 
-  - name: addresses_zksync_first_funding
+  - name: addresses_zksync_stats
     meta:
       blockchain: zksync
-      sector: addresses   
+      sector: addresses
       contributors: kryptaki
     config:
-      tags: ['address', 'first_funding']
-    description: "Per-address first funding for zkSync"
+      tags: ['address', 'stats']
+    description: "Per-address stats for zkSync"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -215,14 +215,14 @@ models:
       - *is_eoa
       - *_updated_at
 
-  - name: addresses_monad_first_funding
+  - name: addresses_monad_stats
     meta:
       blockchain: monad
       sector: addresses
       contributors: kryptaki
     config:
-      tags: ['address', 'first_funding']
-    description: "Per-address first funding for Monad"
+      tags: ['address', 'stats']
+    description: "Per-address stats for Monad"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -237,14 +237,14 @@ models:
       - *is_eoa
       - *_updated_at
 
-  - name: addresses_hyperevm_first_funding
+  - name: addresses_hyperevm_stats
     meta:
       blockchain: hyperevm
       sector: addresses
       contributors: kryptaki
     config:
-      tags: ['address', 'first_funding']
-    description: "Per-address first funding for HyperEVM"
+      tags: ['address', 'stats']
+    description: "Per-address stats for HyperEVM"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -259,14 +259,14 @@ models:
       - *is_eoa
       - *_updated_at
 
-  - name: addresses_sei_first_funding
+  - name: addresses_sei_stats
     meta:
       blockchain: sei
       sector: addresses
       contributors: kryptaki
     config:
-      tags: ['address', 'first_funding']
-    description: "Per-address first funding for Sei"
+      tags: ['address', 'stats']
+    description: "Per-address stats for Sei"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
