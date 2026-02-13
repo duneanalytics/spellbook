@@ -41,10 +41,22 @@
   config(
     schema = 'stablecoins_evm',
     alias = 'balances',
-    materialized = 'view'
-    , post_hook='{{ hide_spells() }}'
+    materialized = 'view',
+    post_hook = '{{ hide_spells() }}'
   )
 }}
 
-select *
+select
+  blockchain,
+  day,
+  address,
+  token_symbol,
+  token_address,
+  token_standard,
+  token_id,
+  balance_raw,
+  balance,
+  balance_usd,
+  currency,
+  last_updated
 from {{ ref('stablecoins_balances') }}

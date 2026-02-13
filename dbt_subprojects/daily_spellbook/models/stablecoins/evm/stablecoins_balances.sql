@@ -41,8 +41,8 @@
   config(
     schema = 'stablecoins',
     alias = 'balances',
-    materialized = 'view'
-    , post_hook='{{ hide_spells() }}'
+    materialized = 'view',
+    post_hook = '{{ hide_spells() }}'
   )
 }}
 
@@ -60,6 +60,7 @@ from (
         balance_raw,
         balance,
         balance_usd,
+        currency,
         last_updated
     from {{ ref('stablecoins_' ~ chain ~ '_balances') }}
     {% if not loop.last %}
