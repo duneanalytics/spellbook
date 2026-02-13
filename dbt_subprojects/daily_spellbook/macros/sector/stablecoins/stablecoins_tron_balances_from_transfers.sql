@@ -167,9 +167,8 @@ select
   f.address,
   f.address_varchar,
   f.token_address,
-  f.token_address as token_address_varchar,
   f.contract_address,
-  'erc20' as token_standard,
+  'trc20' as token_standard,
   cast(null as uint256) as token_id,
   f.balance_raw,
   f.last_updated
