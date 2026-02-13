@@ -88,6 +88,7 @@ models:
       - &token_symbol
         name: token_symbol
         description: "Symbol for the token"
+      - *currency
       - &token_backing
         name: token_backing
         description: "Stablecoin backing type"

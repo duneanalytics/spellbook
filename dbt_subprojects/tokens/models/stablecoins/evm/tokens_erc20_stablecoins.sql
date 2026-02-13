@@ -42,8 +42,8 @@
     schema = 'tokens',
     alias = 'erc20_stablecoins',
     materialized = 'view',
-    tags = ['static']
-    , post_hook='{{ hide_spells() }}'
+    tags = ['static'],
+    post_hook = '{{ hide_spells() }}'
   )
 }}
 
