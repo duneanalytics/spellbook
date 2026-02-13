@@ -46,4 +46,4 @@ SELECT
     dexs.project_contract_address,
     dexs.tx_hash,
     dexs.evt_index
-FROM dexs WHERE CAST(date_trunc('day', dexs.block_time) AS date) >= DATE '2026-01-11’ 
+FROM dexs WHERE CAST(date_trunc('day', dexs.block_time) AS date) >= DATE '2026-01-11' 
