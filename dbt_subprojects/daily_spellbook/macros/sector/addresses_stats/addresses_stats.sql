@@ -33,6 +33,7 @@ addresses as (
 
 final as (
     select
+        '{{ blockchain }}' as blockchain,
         a.address,
         f.first_funded_by,
         f.first_funded_at,
@@ -43,8 +44,25 @@ final as (
       on f.address = a.address
     left join contract_addresses c
       on c.address = a.address
-)
+),
 
+-- Safety: ensure 1 row per address
+final_deduped as (
+    select
+        blockchain,
+        address,
+        first_funded_by,
+        first_funded_at,
+        is_smart_contract,
+        first_deployment_date
+    from (
+        select
+            f.*,
+            row_number() over (partition by address) as rn
+        from final f
+    )
+    where rn = 1
+)
 
 {% else %}
 
@@ -113,10 +131,28 @@ final as (
       on f.address = a.address
     left join contract_updates c
       on c.address = a.address
+),
+
+-- Safety: ensure 1 row per (blockchain, address) for MERGE
+final_deduped as (
+    select
+        blockchain,
+        address,
+        first_funded_by,
+        first_funded_at,
+        first_deployment_date,
+        is_smart_contract
+    from (
+        select
+            f.*,
+            row_number() over (partition by blockchain, address) as rn
+        from final f
+    )
+    where rn = 1
 )
 
 {% endif %}
 
-select * from final
+select * from final_deduped
 
 {% endmacro %}
