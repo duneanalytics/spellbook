@@ -52,8 +52,8 @@ final_deduped as (
         address,
         first_funded_by,
         first_funded_at,
-        is_smart_contract,
         is_eoa,
+        is_smart_contract,
         first_deployment_date
     from (
         select
@@ -145,9 +145,9 @@ final_deduped as (
         address,
         first_funded_by,
         first_funded_at,
-        first_deployment_date,
+        is_eoa,
         is_smart_contract,
-        is_eoa
+        first_deployment_date
     from (
         select
             f.*,
