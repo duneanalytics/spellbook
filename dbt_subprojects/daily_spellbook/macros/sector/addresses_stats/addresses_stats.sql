@@ -12,7 +12,6 @@ first_funded as (
         first_funded_by,
         block_time as first_funded_at
     from {{ source('addresses_events_' ~ blockchain, 'first_funded_by') }}
-    where block_time >= timestamp '2026-01-01' -- testing: restrict range (remove when done)
 ),
 
 contract_addresses as (
@@ -21,7 +20,6 @@ contract_addresses as (
         min(block_time) as first_deployment_date,
         true as is_smart_contract
     from {{ source(blockchain, 'creation_traces') }}
-    where block_time >= timestamp '2026-01-01' -- testing: restrict range (remove when done)
     group by 1
 ),
 
