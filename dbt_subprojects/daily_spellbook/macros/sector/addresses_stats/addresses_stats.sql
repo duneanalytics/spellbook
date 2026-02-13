@@ -36,6 +36,7 @@ final as (
         f.first_funded_by,
         f.first_funded_at,
         coalesce(c.is_smart_contract, false) as is_smart_contract,
+        not coalesce(c.is_smart_contract, false) as is_eoa,
         c.first_deployment_date
     from addresses a
     left join first_funded f
@@ -52,6 +53,7 @@ final_deduped as (
         first_funded_by,
         first_funded_at,
         is_smart_contract,
+        is_eoa,
         first_deployment_date
     from (
         select
@@ -121,7 +123,12 @@ final as (
             when t.is_smart_contract = true then true
             when c.is_smart_contract = true then true
             else false
-        end as is_smart_contract
+        end as is_smart_contract,
+        case
+            when t.is_smart_contract = true then false
+            when c.is_smart_contract = true then false
+            else true
+        end as is_eoa
     from recent_addresses a
     left join {{ this }} t
       on t.address = a.address
@@ -139,7 +146,8 @@ final_deduped as (
         first_funded_by,
         first_funded_at,
         first_deployment_date,
-        is_smart_contract
+        is_smart_contract,
+        is_eoa
     from (
         select
             f.*,
