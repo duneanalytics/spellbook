@@ -6,11 +6,8 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['userop_hash', 'tx_hash'],
-        post_hook = '{{ expose_spells(\'["celo"]\',
-                                        "project",
-                                        "erc4337",
-                                        \'["0xbitfly", "tomfutago"]\') }}'
+        unique_key = ['userop_hash', 'tx_hash']
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

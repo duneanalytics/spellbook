@@ -2,11 +2,8 @@
     config(
         schema = 'balancer_v3_arbitrum',
         alias = 'trades',
-        materialized = 'view',
-        post_hook = '{{ expose_spells(\'["arbitrum"]\',
-                                spell_type = "project",
-                                spell_name = "balancer",
-                                contributors = \'["viniabussafi"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

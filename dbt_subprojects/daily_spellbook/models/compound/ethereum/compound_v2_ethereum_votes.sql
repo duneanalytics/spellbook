@@ -3,11 +3,8 @@
     schema = 'compound_v2_ethereum',
     alias = 'votes',
     materialized = 'table',
-    file_format = 'delta',
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "compound_v2",
-                                \'["soispoke"]\') }}'
+    file_format = 'delta'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

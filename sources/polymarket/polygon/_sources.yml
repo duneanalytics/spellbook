@@ -30,4 +30,4 @@ sources:
 
   - name: dune
     tables:
-      - name: dataset_polymarket_markets
+      - name: polymarket_markets

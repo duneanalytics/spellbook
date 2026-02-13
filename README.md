@@ -28,7 +28,7 @@ Welcome to [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation
 - **Keep it private** – Your logic and data stay within your org, giving you full autonomy
 - **Full dbt compatibility** – Use your existing dbt workflows and tooling
 
-📖 **[Read the dbt Connector documentation](https://docs.dune.com/api-reference/connectors/dbt-connector)** to get started.
+📖 **[Read the dbt Connector documentation](https://docs.dune.com/api-reference/connectors/dbt/overview#dbt-connector-overview)** to get started.
 
 👉 **[Contact us](https://dune.com/enterprise)** for a demo and to get set up with your own dbt project.
 

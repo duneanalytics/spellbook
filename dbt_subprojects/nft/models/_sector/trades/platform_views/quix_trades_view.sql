@@ -3,11 +3,9 @@
         schema = 'quix',
         alias = 'trades',
         
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "project",
-                                    "quix",
-                                    \'["0xRob"]\') }}')
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
+)
 }}
 
 SELECT *

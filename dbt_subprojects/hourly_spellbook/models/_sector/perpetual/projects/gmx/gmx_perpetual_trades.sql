@@ -1,10 +1,7 @@
 {{ config(
 		schema = 'gmx',
-        alias = 'perpetual_trades',
-        post_hook='{{ expose_spells(\'["avalanche_c","arbitrum"]\',
-                                "project",
-                                "gmx",
-                                \'["Henrystats"]\') }}'
+        alias = 'perpetual_trades'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

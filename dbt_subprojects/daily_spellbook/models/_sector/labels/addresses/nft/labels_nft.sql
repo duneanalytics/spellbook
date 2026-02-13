@@ -1,10 +1,7 @@
 {{config(
         
-        alias = 'nft',
-        post_hook='{{ expose_spells(\'["ethereum","solana"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["soispoke", "NazihKalo", "kaiblade"]\') }}'
+        alias = 'nft'
+        , post_hook='{{ hide_spells() }}'
 )}}
 
 {% set nft_labels_models = [

@@ -1,11 +1,8 @@
 {{ config(
         schema = 'bebop_scroll',
         alias = 'trades',
-        materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'["scroll"]\',
-                                    spell_type = "project",
-                                    spell_name = "bebop",
-                                    contributors = \'["alekss"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
 )}}
 
 

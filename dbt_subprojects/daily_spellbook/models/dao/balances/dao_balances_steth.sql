@@ -2,11 +2,9 @@
     tags = ['prod_exclude'],    
     alias = 'balances_steth',
     materialized = 'table',
-    file_format = 'delta',
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "sector",
-                                "dao",
-                                \'["Henrystats"]\') }}')
+    file_format = 'delta'
+    , post_hook='{{ hide_spells() }}'
+)
 }}
 
 WITH 

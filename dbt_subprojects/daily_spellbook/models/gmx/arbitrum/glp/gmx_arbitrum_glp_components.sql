@@ -6,11 +6,8 @@ tags=['prod_exclude'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['block_date', 'minute'],
-        post_hook='{{ expose_spells(\'["arbitrum"]\',
-                                        "project",
-                                        "gmx",
-                                        \'["1chioku"]\') }}'
+        unique_key = ['block_date', 'minute']
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 /*

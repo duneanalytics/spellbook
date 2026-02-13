@@ -2,11 +2,8 @@
         schema = 'seaport',
         tags = [ 'static'],
         alias = 'tagging',
-        unique_key = ['blockchain', 'tagging_method', 'identifier'],
-        post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "ethereum", "optimism", "polygon"]\',
-                                    "project",
-                                    "seaport",
-                                    \'["hildobby"]\') }}'
+        unique_key = ['blockchain', 'tagging_method', 'identifier']
+        , post_hook='{{ hide_spells() }}'
 )
 }}
 

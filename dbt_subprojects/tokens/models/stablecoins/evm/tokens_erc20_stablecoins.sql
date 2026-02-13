@@ -1,57 +1,39 @@
 {% set chains = [
     'abstract',
-    'apechain',
     'arbitrum',
     'avalanche_c',
-    'b3',
     'base',
     'berachain',
     'bnb',
     'bob',
-    'boba',
     'celo',
-    'corn',
-    'degen',
     'ethereum',
     'fantom',
     'flare',
-    'flow',
     'gnosis',
     'hemi',
-    'henesys',
     'hyperevm',
     'ink',
     'kaia',
     'katana',
     'linea',
     'mantle',
-    'megaeth',
     'monad',
-    'nova',
     'opbnb',
     'optimism',
-    'peaq',
     'plasma',
     'plume',
     'polygon',
     'ronin',
     'scroll',
     'sei',
-    'sepolia',
-    'shape',
     'somnia',
     'sonic',
-    'sophon',
     'story',
-    'superseed',
-    'tac',
     'taiko',
-    'tron',
     'unichain',
-    'viction',
     'worldchain',
     'xlayer',
-    'zkevm',
     'zksync',
 ] %}
 
@@ -60,17 +42,15 @@
     schema = 'tokens',
     alias = 'erc20_stablecoins',
     materialized = 'view',
-    tags = ['static'],
-    post_hook = '{{ expose_spells(blockchains = \'["' ~ chains | join('","') ~ '"]\',
-                                  spell_type = "sector",
-                                  spell_name = "tokens",
-                                  contributors = \'["tomfutago"]\') }}'
+    tags = ['static']
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 
 select
   s.blockchain,
   s.contract_address,
+  s.currency,
   m.backing,
   coalesce(erc20.symbol, m.symbol) as symbol,
   coalesce(erc20.decimals, m.decimals) as decimals,
@@ -79,7 +59,8 @@ from (
   {% for chain in chains %}
   select
     blockchain,
-    contract_address
+    contract_address,
+    currency
   from {{ ref('tokens_' ~ chain ~ '_erc20_stablecoins') }}
   {% if not loop.last %}
   union all

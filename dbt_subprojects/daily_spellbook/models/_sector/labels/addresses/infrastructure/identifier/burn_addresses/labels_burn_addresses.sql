@@ -1,10 +1,7 @@
 {{config(
     alias = 'burn_addresses',
-    tags=['static'],
-    post_hook='{{ expose_spells(\'["ethereum", "bnb", "polygon", "arbitrum", "optimism", "fantom", "avalanche_c", "gnosis"]\',
-                                "sector",
-                                "labels",
-                                \'["hildobby"]\') }}'
+    tags=['static']
+    , post_hook='{{ hide_spells() }}'
 )}}
 
 SELECT blockchain, address as address, name, category, contributor, source, created_at, updated_at, model_name, label_type

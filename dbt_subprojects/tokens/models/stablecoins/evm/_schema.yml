@@ -16,6 +16,9 @@ models:
       - &contract_address
         name: contract_address
         description: "Contract address for the stablecoin token"
+      - &currency
+        name: currency
+        description: "ISO 4217 currency code the stablecoin is pegged to (e.g., USD, EUR, BRL)"
       - &backing
         name: backing
         description: "Type of backing for the stablecoin (e.g., Fiat-backed, Crypto-backed, Algorithmic, Hybrid, RWA-backed)"
@@ -44,47 +47,6 @@ models:
       - *symbol
       - *decimals
       - *name
-
-  - name: stablecoins_balances
-    meta:
-      sector: stablecoin
-      project: stablecoin
-      contributors: tomfutago
-    config:
-      tags: ['stablecoin', 'balances']
-    description: "Enriched balances of stablecoin token holders across all chains with token metadata and USD prices"
-    columns:
-      - *blockchain
-      - &day
-        name: day
-        description: "Date on which the token balance is logged"
-      - &address
-        name: address
-        description: "Address for the token holder"
-      - &token_symbol
-        name: token_symbol
-        description: "Symbol for the token"
-      - &token_address
-        name: token_address
-        description: "Address for the token"
-      - &token_standard
-        name: token_standard
-        description: "Standard for the token"
-      - &token_id
-        name: token_id
-        description: "ID for the token"
-      - &balance_raw
-        name: balance_raw
-        description: "Raw balance for the user (not adjusted for decimals)"
-      - &balance
-        name: balance
-        description: "Balance for the user (adjusted for decimals)"
-      - &balance_usd
-        name: balance_usd
-        description: "USD value of balance for the user"
-      - &last_updated
-        name: last_updated
-        description: "UTC timestamp when data was last updated"
 
   - name: stablecoins_transfers
     meta:
@@ -117,9 +79,15 @@ models:
       - &trace_address
         name: trace_address
         description: "Trace address"
-      - *token_standard
-      - *token_address
-      - *token_symbol
+      - &token_standard
+        name: token_standard
+        description: "Standard for the token"
+      - &token_address
+        name: token_address
+        description: "Address for the token"
+      - &token_symbol
+        name: token_symbol
+        description: "Symbol for the token"
       - &token_backing
         name: token_backing
         description: "Stablecoin backing type"

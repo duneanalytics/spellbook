@@ -1,11 +1,9 @@
 {{ config(
         tags = [ 'static'],
         schema='dex',
-        alias = 'info',
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "solana", "zksync", "boba"]\',
-                                    "sector",
-                                    "dex",
-                                    \'["hildobby"]\') }}')
+        alias = 'info'
+        , post_hook='{{ hide_spells() }}'
+)
 }}
 
 SELECT project, name, marketplace_type, x_username
@@ -247,4 +245,6 @@ FROM (VALUES
     , ('pinot', 'Pinot', 'Direct', 'pinot')
     , ('potatoswap', 'PotatoSwap', 'Direct', 'potatoswap')
     , ('elfomofi', 'ElfomoFi', 'Direct', 'elfomo_fi')
+    , ('kumbaya', 'Kumbaya', 'Direct', 'kumbaya')
+    , ('prismfi', 'PrismFI', 'Direct', 'PrismFI')
 ) AS temp_table (project, name, marketplace_type, x_username)
