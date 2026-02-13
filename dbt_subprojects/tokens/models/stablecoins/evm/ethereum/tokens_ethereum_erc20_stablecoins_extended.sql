@@ -19,7 +19,9 @@ from (values
      (0x337e7456b420bd3481e7fa61fa9850343d610d34, 'MXN'), -- wMXN
      (0xd76f5faf6888e24d9f04bf92a0c8b921fe4390e0, 'BRL'), -- wBRL
      (0x07041776f5007ACa2A54844F50503a18A72A8b68, 'USD'), -- USAT
-     (0xd687759f35bb747a29246a4b9495c8f52c49e00c, 'AUD')  -- AUDX
+     (0xd687759f35bb747a29246a4b9495c8f52c49e00c, 'AUD'), -- AUDX
+     (0x6fA0BE17e4beA2fCfA22ef89BF8ac9aab0AB0fc9, 'RUB'), -- A7A5
+     (0xF442fF10b8deF89514560A66C0AD28777094636a, 'RUB')  -- wA7A5
 
      /* yield-bearing / rebasing tokens
      (0x96f6ef951840721adbf46ac996b59e0235cb985c, 'USD'), -- USDY
