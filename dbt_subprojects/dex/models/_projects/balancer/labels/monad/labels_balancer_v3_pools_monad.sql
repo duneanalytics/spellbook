@@ -32,7 +32,7 @@ WITH token_data AS (
           c.pool AS pool_id,
           t.tokens,
           w.weights,
-          cc.symbol,
+          cc.name AS symbol,
           'weighted' AS pool_type
         FROM token_data c
         INNER JOIN {{ source('balancer_v3_monad', 'WeightedPoolFactory_call_create') }} cc
@@ -47,7 +47,7 @@ WITH token_data AS (
         c.pool AS pool_id,
         t.tokens,
         0 AS weights,
-        cc.symbol,
+        cc.name AS symbol,
         'stable' AS pool_type
       FROM token_data c
       INNER JOIN {{ source('balancer_v3_monad', 'StablePoolFactory_call_create') }} cc
@@ -60,7 +60,7 @@ WITH token_data AS (
         c.pool AS pool_id,
         t.tokens,
         0 AS weights,
-        cc.symbol,
+        cc.name AS symbol,
         'stable' AS pool_type
       FROM token_data c
       INNER JOIN {{ source('balancer_v3_monad', 'StableSurgePoolFactory_call_create') }} cc
@@ -73,7 +73,7 @@ WITH token_data AS (
         c.pool AS pool_id,
         t.tokens,
         0 AS weights,
-        cc.symbol,
+        cc.name AS symbol,
         'LBP' AS pool_type
       FROM token_data c
       INNER JOIN {{ source('balancer_v3_monad', 'LBPoolFactory_call_create') }} cc
@@ -86,7 +86,7 @@ WITH token_data AS (
         c.pool AS pool_id,
         t.tokens AS token_address,
         0 AS normalized_weight,
-        cc.symbol,
+        cc.name AS symbol,
         'ECLP' AS pool_type
       FROM token_data c
       INNER JOIN {{ source('balancer_v3_monad', 'GyroECLPPoolFactory_call_create') }} cc
@@ -104,7 +104,7 @@ WITH token_data AS (
         p.pool_type
       FROM pools p
       LEFT JOIN {{ source('tokens', 'erc20') }} t ON p.token_address = t.contract_address
-      AND t.blockchain = 'gnosis'
+      AND t.blockchain = 'monad'
     )
 
 SELECT 
