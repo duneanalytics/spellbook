@@ -4,6 +4,7 @@
   , post_hook='{{ hide_spells() }}'
 )}}
 
+
 WITH token_data AS (
         SELECT
             pool,
