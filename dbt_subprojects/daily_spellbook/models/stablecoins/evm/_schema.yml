@@ -66,4 +66,5 @@ models:
       - *balance_raw
       - *balance
       - *balance_usd
+      - *currency
       - *last_updated
