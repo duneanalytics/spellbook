@@ -15,6 +15,8 @@
 -- extended balances enriched with token metadata and usd prices
 {{
   balances_incremental_subset_daily_enrich(
-    base_balances = ref('stablecoins_' ~ chain ~ '_extended_balances')
+    base_balances = ref('stablecoins_' ~ chain ~ '_extended_balances'),
+    chain = chain,
+    token_list = 'extended'
   )
 }}
