@@ -19,9 +19,18 @@ WITH first_capital_action AS (
         MIN_BY(from_address, block_time) as first_funded_by
     FROM {{ ref('polymarket_polygon_users_capital_actions') }}
     GROUP BY to_address  -- Remove tx_hash from GROUP BY
-),
+)
 
-wallet_addresses AS (
+{% if is_incremental() %}
+-- get wallets with new capital actions that might need updating
+, new_capital_actions AS (
+    SELECT DISTINCT to_address as proxy
+    FROM {{ ref('polymarket_polygon_users_capital_actions') }}
+    WHERE {{ incremental_predicate('block_time') }}
+    )
+{% endif %}
+
+, wallet_addresses AS (
     SELECT 
         block_time as created_time,
         block_number,
@@ -46,6 +55,22 @@ wallet_addresses AS (
     FROM {{ ref('polymarket_polygon_users_magic_wallet_proxies') }}
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('block_time') }}
+    {% endif %}
+    
+    {% if is_incremental() %}
+    -- Also include existing unfunded wallets that now have new capital actions
+    UNION ALL
+    
+    SELECT 
+        created_time,
+        block_number,
+        wallet_type as type_of_wallet,
+        owner,
+        polymarket_wallet as proxy,
+        created_tx_hash as tx_hash
+    FROM {{ this }}
+    WHERE polymarket_wallet IN (SELECT proxy FROM new_capital_actions)
+    AND has_been_funded = false
     {% endif %}
 )
 
