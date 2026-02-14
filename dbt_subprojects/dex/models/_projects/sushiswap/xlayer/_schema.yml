@@ -1,20 +1,20 @@
 version: 2
 
 models:
-  - name: sushiswap_agg_zkevm_trades
+  - name: sushiswap_agg_xlayer_trades
     meta:
-      blockchain: zkevm
+      blockchain: xlayer
       sector: dex
       project: sushiswap
       contributors: olastenberg
     config:
-      tags: [ 'zkevm','sushiswap','trades','dex','aggregator' ]
-    description: Sushiswap Route Aggregator contract on zkevm - formatted for dex.trades
+      tags: [ 'xlayer','sushiswap','trades','dex','aggregator' ]
+    description: Sushiswap Route Aggregator contract on xlayer - formatted for dex.trades
     data_tests:
       - dbt_utils.unique_combination_of_columns:
             combination_of_columns: ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'method', 'trace_address']
       - check_dex_aggregator_seed:
-          blockchain: zkevm
+          blockchain: xlayer
           project: sushiswap
           version: 2
     columns:

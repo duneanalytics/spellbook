@@ -1,4 +1,4 @@
-{% set chain = 'zkevm' %}
+{% set chain = 'xlayer' %}
 
 {{ config(
   schema = 'sushiswap_agg_' + chain,
