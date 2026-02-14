@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: sui_assets_balance_changes
+    description: "Per-transaction balance deltas by owner and coin_type derived from Sui object snapshots joined to transaction object participation at the checkpoint level."
+    columns:
+      - name: checkpoint
+        description: "Sui checkpoint sequence number"
+        tests: [not_null]
+      - name: transaction_digest
+        description: "Transaction digest"
+        tests: [not_null]
+      - name: owner_address
+        description: "Owner address of the coin object"
+        tests: [not_null]
+      - name: coin_type
+        description: "Coin type (Move struct tag)"
+        tests: [not_null]
+      - name: amount
+        description: "Signed balance delta for the owner and coin_type within the transaction"
+        tests: [not_null]
+
