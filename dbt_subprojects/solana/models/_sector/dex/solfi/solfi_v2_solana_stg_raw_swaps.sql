@@ -1,7 +1,7 @@
 {{
   config(
-    schema = 'goonfi_solana'
-    , alias = 'stg_raw_swaps'
+    schema = 'solfi_solana'
+    , alias = 'v2_stg_raw_swaps'
     , partition_by = ['block_month']
     , materialized = 'incremental'
     , file_format = 'delta'
@@ -12,8 +12,8 @@
 }}
 
 {{ solana_amm_stg_raw_swaps(
-    program_id = 'goonERTdGsjnkZqWuVjs73BZ3Pb9qoCUdBUL17BnS5j'
-    , discriminator_filter = "BYTEARRAY_SUBSTRING(data, 1, 1) = 0x02"
-    , project_start_date = '2025-05-26'
+    program_id = 'SV2EYYJyRz2YhfXwXnhNAevDEui5Q6yrfyo13WtupPF'
+    , discriminator_filter = "BYTEARRAY_SUBSTRING(data, 1, 1) = 0x07"
+    , project_start_date = '2025-08-07'
     , pool_id_expression = "account_arguments[2]"
 ) }}
