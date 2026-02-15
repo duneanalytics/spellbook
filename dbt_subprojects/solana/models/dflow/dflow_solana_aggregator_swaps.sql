@@ -28,9 +28,9 @@ with
             e.amm,
             a.amm_name,
             e.input_mint,
-            CAST(e.input_amount AS BIGINT) as input_amount,
+            CAST(e.input_amount AS DOUBLE) as input_amount,
             e.output_mint,
-            CAST(e.output_amount AS BIGINT) as output_amount,
+            CAST(e.output_amount AS DOUBLE) as output_amount,
             e.evt_inner_instruction_index,
             e.evt_outer_instruction_index
         FROM {{ source('dflow_solana', 'swap_orchestrator_evt_swapevent') }} e
