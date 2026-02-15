@@ -46,25 +46,3 @@ models:
       - &last_updated
         name: last_updated
         description: "UTC timestamp when data was last updated"
-
-  - name: stablecoins_balances
-    meta:
-      sector: stablecoin
-      project: stablecoin
-      contributors: tomfutago
-    config:
-      tags: ['stablecoin', 'balances']
-    description: "Enriched balances of stablecoin token holders across all chains with token metadata and USD prices"
-    columns:
-      - *blockchain
-      - *day
-      - *address
-      - *token_symbol
-      - *token_address
-      - *token_standard
-      - *token_id
-      - *balance_raw
-      - *balance
-      - *balance_usd
-      - *currency
-      - *last_updated

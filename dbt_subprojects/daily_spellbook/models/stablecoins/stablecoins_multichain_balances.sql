@@ -35,12 +35,12 @@ select
   balance_usd,
   currency,
   last_updated
-from {{ ref('stablecoins_svm_balances') }}
+from {{ source('stablecoins_svm', 'balances') }}
 union all
 select
   blockchain,
   day,
-  cast(address as varchar) as address,
+  address_varchar as address,
   token_symbol,
   cast(token_address as varchar) as token_address,
   token_standard,
