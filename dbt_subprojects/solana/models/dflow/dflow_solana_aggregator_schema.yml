@@ -9,8 +9,8 @@ models:
           - tx_id
           - input_mint
           - output_mint
-          - input_amount
-          - output_amount
+          - evt_outer_instruction_index
+          - evt_inner_instruction_index
     meta:
       blockchain: solana
       contributors: [sofiat]
