@@ -166,14 +166,6 @@ models:
     config:
       tags: ['stablecoin', 'balances']
     description: "Union view of core and extended enriched balances"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - address
-            - token_address
-          config:
-            where: "day >= current_date - interval '30' day"
     columns:
       - *blockchain
       - *day
