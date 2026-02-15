@@ -243,4 +243,3 @@ FROM
     ('superoeth-super-oeth', 'base', 'superOETHb', 0xDBFeFD2e8460a6Ee4955A68582F85708BAEA60A3, 18),
     ('phnm-phenom', 'base', 'PHNM', 0x3fda9cc61b1fef8b2ffd715f0a9eef7182e48f37, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
-) as temp (token_id, blockchain, symbol, contract_address, decimals)
