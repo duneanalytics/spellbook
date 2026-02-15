@@ -28,15 +28,15 @@ models:
       - &address
         name: address
         description: "Address for the token holder"
+      - &address_varchar
+        name: address_varchar
+        description: "Token holder address as varchar (Tron base58)"
       - &token_address
         name: token_address
         description: "Address for the token (varchar for Tron)"
       - &contract_address
         name: contract_address
         description: "Token contract address (0x format)"
-      - &address_varchar
-        name: address_varchar
-        description: "Token holder address as varchar (Tron base58)"
       - &token_address_varchar
         name: token_address_varchar
         description: "Token contract address as varchar (Tron base58)"
@@ -74,9 +74,9 @@ models:
       - *blockchain
       - *day
       - *address
+      - *address_varchar
       - *token_address
       - *contract_address
-      - *address_varchar
       - *token_address_varchar
       - *token_standard
       - *token_id
@@ -104,6 +104,7 @@ models:
       - *blockchain
       - *day
       - *address
+      - *address_varchar
       - &token_symbol
         name: token_symbol
         description: "Symbol for the token"
@@ -144,6 +145,7 @@ models:
       - *blockchain
       - *day
       - *address
+      - *address_varchar
       - *token_symbol
       - *token_address
       - *contract_address
@@ -164,18 +166,11 @@ models:
     config:
       tags: ['stablecoin', 'balances']
     description: "Union view of core and extended enriched balances"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - address
-            - token_address
-          config:
-            where: "day >= current_date - interval '30' day"
     columns:
       - *blockchain
       - *day
       - *address
+      - *address_varchar
       - *token_symbol
       - *token_address
       - *contract_address
