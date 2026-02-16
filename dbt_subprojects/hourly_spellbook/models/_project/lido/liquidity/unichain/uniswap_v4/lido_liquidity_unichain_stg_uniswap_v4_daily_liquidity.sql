@@ -58,8 +58,7 @@ with pools as (
 		ml_batch
 	asof left join swaps_all as sw
 		on sw.pool_id = ml_batch.pool_id
-		and sw.evt_block_number <= ml_batch.evt_block_number
-        and sw.evt_block_time < ml_batch.evt_block_time
+		and sw.evt_block_time <= ml_batch.evt_block_time
 )
 , ml_amounts as (
 	select
