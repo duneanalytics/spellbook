@@ -173,15 +173,25 @@ models:
     config:
       tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
     description: "Operating expenses"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - evt_tx_hash
+            - evt_index
     columns:
       - name: period
         description: "Timestamp of the accounting entry"
+      - name: evt_tx_hash
+        description: "Transaction hash"
+      - name: evt_index
+        description: "Event index within the transaction"
+      - name: blockchain
+        description: "Blockchain where the transfer occurred"
       - name: token
         description: "Token name"
       - name: amount_token
         description: "Token amount"
-      - name: evt_tx_hash,
-        description: "Transaction hash"
 
   - name: lido_accounting_ethereum_other_expenses
     meta:
@@ -192,15 +202,25 @@ models:
     config:
       tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
     description: "Other expenses"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - evt_tx_hash
+            - evt_index
     columns:
       - name: period
         description: "Timestamp of the accounting entry"
+      - name: evt_tx_hash
+        description: "Transaction hash"
+      - name: evt_index
+        description: "Event index within the transaction"
+      - name: blockchain
+        description: "Blockchain where the transfer occurred"
       - name: token
         description: "Token name"
       - name: amount_token
         description: "Token amount"
-      - name: evt_tx_hash,
-        description: "Transaction hash"
 
   - name: lido_accounting_ethereum_other_income
     meta:
@@ -211,15 +231,25 @@ models:
     config:
       tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
     description: "Other income"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - evt_tx_hash
+            - evt_index
     columns:
       - name: period
         description: "Timestamp of the accounting entry"
+      - name: evt_tx_hash
+        description: "Transaction hash"
+      - name: evt_index
+        description: "Event index within the transaction"
+      - name: blockchain
+        description: "Blockchain where the transfer occurred"
       - name: token
         description: "Token name"
       - name: amount_token
         description: "Token amount"
-      - name: evt_tx_hash,
-        description: "Transaction hash"
 
   - name: lido_accounting_ethereum_revenue
     meta:
