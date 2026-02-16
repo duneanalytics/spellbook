@@ -16,28 +16,37 @@
 
 WITH swaps AS (
     SELECT
-          block_slot
-        , block_date
-        , block_time
-        , inner_instruction_index
-        , outer_instruction_index
-        , outer_executing_account
-        , is_inner
-        , tx_id
-        , tx_signer
-        , tx_index
-        , pool_id
-        , vault_a
-        , vault_b
-        , surrogate_key
-    FROM {{ ref('humidifi_solana_stg_raw_swaps') }}
+          s.block_slot
+        , s.block_date
+        , s.block_time
+        , s.inner_instruction_index
+        , s.outer_instruction_index
+        , s.outer_executing_account
+        , s.is_inner
+        , s.tx_id
+        , s.tx_signer
+        , s.tx_index
+        , s.pool_id
+        , ic.account_arguments[3] AS vault_a
+        , ic.account_arguments[4] AS vault_b
+        , s.surrogate_key
+    FROM {{ ref('humidifi_solana_stg_raw_swaps') }} s
+    INNER JOIN {{ source('solana', 'instruction_calls') }} ic
+        ON  ic.tx_id = s.tx_id
+        AND ic.block_date = s.block_date
+        AND ic.block_slot = s.block_slot
+        AND ic.outer_instruction_index = s.outer_instruction_index
+        AND COALESCE(ic.inner_instruction_index, 0) = s.inner_instruction_index
+        AND ic.executing_account = '9H6tua7jkLhdm3w8BvgpTn5LZNU7g4ZynDmCiNN3q6Rp'
+        AND ic.tx_success = true
+        AND cardinality(ic.account_arguments) > 8
     WHERE 1=1
         {% if is_incremental() -%}
-        AND {{ incremental_predicate('block_date') }}
+        AND {{ incremental_predicate('s.block_date') }}
         {% else -%}
-        AND block_date >= DATE '2025-06-13'
+        AND s.block_date >= DATE '2025-06-13'
         {% if initial_run_days > 0 -%}
-        AND block_date > current_date - INTERVAL '1' DAY * {{ initial_run_days }}
+        AND s.block_date > current_date - INTERVAL '1' DAY * {{ initial_run_days }}
         {% endif -%}
         {% endif -%}
 )
