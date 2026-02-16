@@ -73,12 +73,14 @@ with pools as (
 	select
 		sw.evt_block_time as time
 		, sw.pool_id as pool
-		, sw.token0
-		, sw.token1
+		, p.token0
+		, p.token1
 		, coalesce(sum(cast(abs(sw.amount0) as double)), 0) as amount0
 		, coalesce(sum(cast(abs(sw.amount1) as double)), 0) as amount1
 	from
 		{{ ref('lido_liquidity_unichain_stg_uniswap_v4_swaps') }} as sw
+    inner join pools as p
+        on sw.pool_id = p.pool_id
 	{% if not is_incremental() -%}
 	where sw.evt_block_date >= date '{{ project_start_date }}'
 	{% else -%}
