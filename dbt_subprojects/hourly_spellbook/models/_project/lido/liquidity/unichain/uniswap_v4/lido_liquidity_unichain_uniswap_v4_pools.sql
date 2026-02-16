@@ -33,7 +33,7 @@ with pools as (
 , tokens_prices_daily as (
 	select
 		p.timestamp as time
-		, if(p.contract_address = 0x4200000000000000000000000000000000000006, 0x0000000000000000000000000000000000000000, p.contract_address) as token
+		, p.contract_address as token
 		, p.decimals
 		, if(p.symbol = 'WETH', 'ETH', p.symbol) as symbol
 		, p.price
@@ -53,7 +53,7 @@ with pools as (
 	select
 		p.timestamp as time
 		, p.timestamp + interval '1' hour as next_time
-		, if(p.contract_address = 0x4200000000000000000000000000000000000006, 0x0000000000000000000000000000000000000000, p.contract_address) as token
+		, p.contract_address as token
 		, p.decimals
 		, if(p.symbol = 'WETH', 'ETH', p.symbol) as symbol
 		, p.price
