@@ -19,6 +19,8 @@ with pools as (
 		, currency0 as token0
 		, currency1 as token1
 		, cast(fee as double)/10000 as fee
+		, evt_block_time as init_evt_block_time
+		, sqrtPriceX96 as init_sqrtPriceX96
 	from
 		{{ source('uniswap_v4_unichain','PoolManager_evt_Initialize') }}
 	where
@@ -40,57 +42,55 @@ with pools as (
 		) as t
 )
 , tokens_prices_daily as (
-	select distinct
-		date_trunc('day', minute) as time
-		, if(contract_address = 0x4200000000000000000000000000000000000006, 0x0000000000000000000000000000000000000000, contract_address) as token
-		, decimals
-		, if(symbol = 'WETH', 'ETH', symbol) as symbol
-		, avg(price) as price
+	select
+		p.timestamp as time
+		, if(p.contract_address = 0x4200000000000000000000000000000000000006, 0x0000000000000000000000000000000000000000, p.contract_address) as token
+		, p.decimals
+		, if(p.symbol = 'WETH', 'ETH', p.symbol) as symbol
+		, p.price
 	from
-		{{ source('prices','usd') }}
-	{% if not is_incremental() %}
-	where date_trunc('day', minute) >= date '{{ project_start_date }}'
-	{% else %}
-	where {{ incremental_predicate('minute') }}
-	{% endif %}
-		and date_trunc('day', minute) < current_date
-		and blockchain = 'unichain'
-		and contract_address in (select address from tokens)
-	group by
-		1, 2, 3, 4
-
-	union all
-
-	select distinct
-		date_trunc('day', minute)
-		, if(contract_address = 0x4200000000000000000000000000000000000006, 0x0000000000000000000000000000000000000000, contract_address) as token
-		, decimals
-		, if(symbol = 'WETH', 'ETH', symbol) as symbol
-		, last_value(price) over (partition by date_trunc('day', minute), contract_address order by minute nulls first range between unbounded preceding and unbounded following) as price
-	from
-		{{ source('prices','usd') }}
+		{{ source('prices','day') }} as p
+	inner join tokens as t
+		on p.contract_address = t.address
 	where
-		date_trunc('day', minute) = current_date
-		and blockchain = 'unichain'
-		and contract_address in (select address from tokens)
+		p.blockchain = 'unichain'
+		{% if not is_incremental() -%}
+		and p.timestamp >= date '{{ project_start_date }}'
+		{% else -%}
+		and {{ incremental_predicate('p.timestamp') }}
+		{% endif -%}
 )
 , tokens_prices_hourly as (
-	select distinct
-		date_trunc('hour', minute) as time
-		, lead(date_trunc('hour', minute), 1, date_trunc('hour', now() + interval '1' hour)) over (partition by contract_address order by date_trunc('hour', minute) nulls first) as next_time
-		, if(contract_address = 0x4200000000000000000000000000000000000006, 0x0000000000000000000000000000000000000000, contract_address) as token
-		, decimals
-		, if(symbol = 'WETH', 'ETH', symbol) as symbol
-		, last_value(price) over (partition by date_trunc('hour', minute), contract_address order by minute nulls first range between unbounded preceding and unbounded following) as price
+	select
+		p.timestamp as time
+		, p.timestamp + interval '1' hour as next_time
+		, if(p.contract_address = 0x4200000000000000000000000000000000000006, 0x0000000000000000000000000000000000000000, p.contract_address) as token
+		, p.decimals
+		, if(p.symbol = 'WETH', 'ETH', p.symbol) as symbol
+		, p.price
 	from
-		{{ source('prices','usd') }}
-	{% if not is_incremental() %}
-	where date_trunc('day', minute) >= date '{{ project_start_date }}'
-	{% else %}
-	where {{ incremental_predicate('minute') }}
-	{% endif %}
-		and blockchain = 'unichain'
-		and contract_address in (select address from tokens)
+		{{ source('prices','hour') }} as p
+	inner join tokens as t
+		on p.contract_address = t.address
+	where
+		p.blockchain = 'unichain'
+		{% if not is_incremental() -%}
+		and p.timestamp >= timestamp '{{ project_start_date }}'
+		{% else -%}
+		and {{ incremental_predicate('p.timestamp') }}
+		{% endif -%}
+)
+, swaps_filtered as (
+	select
+		s.id
+		, s.evt_block_time
+		, s.sqrtPriceX96
+	from
+		{{ source('uniswap_v4_unichain','PoolManager_evt_Swap') }} as s
+	inner join pools as p
+		on s.id = p.pool_id
+	where
+		s.evt_block_time >= timestamp '{{ project_start_date }}'
 )
 , get_recent_sqrtPriceX96 as (
 	select
@@ -98,22 +98,31 @@ with pools as (
 	from
 		(
 			select
-				ml.*
-				, i.currency0 as token0
-				, i.currency1 as token1
-				, coalesce(s.evt_block_time, i.evt_block_time) as most_recent_time
-				, coalesce(s.sqrtPriceX96, i.sqrtPriceX96) as sqrtPriceX96
-				, row_number() over (partition by ml.id, ml.evt_block_time, ml.evt_index order by case when s.sqrtPriceX96 is not null then s.evt_block_time else i.evt_block_time end desc) as rn
+				mlp.*
+				, coalesce(s.evt_block_time, mlp.init_evt_block_time) as most_recent_time
+				, coalesce(s.sqrtPriceX96, mlp.init_sqrtPriceX96) as sqrtPriceX96
+				, row_number() over (partition by mlp.id, mlp.evt_block_time, mlp.evt_index order by case when s.sqrtPriceX96 is not null then s.evt_block_time else mlp.init_evt_block_time end desc) as rn
 			from
-				{{ source('uniswap_v4_unichain','PoolManager_evt_ModifyLiquidity') }} as ml
-			join pools as p
-				on ml.id = p.pool_id
-			left join {{ source('uniswap_v4_unichain','PoolManager_evt_Swap') }} as s
-				on ml.evt_block_time > s.evt_block_time
-				and ml.id = s.id
-			left join {{ source('uniswap_v4_unichain','PoolManager_evt_Initialize') }} as i
-				on ml.evt_block_time >= i.evt_block_time
-				and i.id = ml.id
+				swaps_filtered as s
+			right join (
+				select
+					ml.*
+					, p.token0
+					, p.token1
+					, p.init_evt_block_time
+					, p.init_sqrtPriceX96
+				from
+					{{ source('uniswap_v4_unichain','PoolManager_evt_ModifyLiquidity') }} as ml
+				inner join pools as p
+					on ml.id = p.pool_id
+				{% if not is_incremental() -%}
+				where ml.evt_block_time >= timestamp '{{ project_start_date }}'
+				{% else -%}
+				where {{ incremental_predicate('ml.evt_block_time') }}
+				{% endif -%}
+			) as mlp
+				on mlp.evt_block_time > s.evt_block_time
+				and mlp.id = s.id
 		) as tbl
 	where
 		tbl.rn = 1
@@ -188,8 +197,13 @@ with pools as (
 		, -1 * s.amount1
 	from
 		{{ source('uniswap_v4_unichain','PoolManager_evt_Swap') }} as s
-	join pools as p
+	inner join pools as p
 		on p.pool_id = s.id
+	{% if not is_incremental() -%}
+	where date_trunc('day', s.evt_block_time) >= date '{{ project_start_date }}'
+	{% else -%}
+	where {{ incremental_predicate('s.evt_block_time') }}
+	{% endif -%}
 )
 
 , pools_liquidity as (
@@ -218,11 +232,11 @@ with pools as (
 		{{ source('uniswap_v4_unichain','PoolManager_evt_Swap') }} as sw
 	inner join pools as p
 		on sw.id = p.pool_id
-	{% if not is_incremental() %}
+	{% if not is_incremental() -%}
 	where date_trunc('day', sw.evt_block_time) >= date '{{ project_start_date }}'
-	{% else %}
+	{% else -%}
 	where {{ incremental_predicate('sw.evt_block_time') }}
-	{% endif %}
+	{% endif -%}
 	group by
 		1, 2, 3, 4
 )
