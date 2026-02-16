@@ -71,7 +71,7 @@ with pools as (
 )
 , swap_events_hourly as (
 	select
-		date_trunc('hour', sw.evt_block_time) as time
+		sw.evt_block_time as time
 		, sw.pool_id as pool
 		, sw.token0
 		, sw.token1
@@ -98,10 +98,12 @@ with pools as (
 	from
 		swap_events_hourly as s
 	left join tokens_prices_hourly as p0
-		on p0.time = s.time
+        on date_trunc('hour', s.time) >= p0.time
+        and date_trunc('hour', s.time) <  p0.next_time
 		and p0.token = s.token0
 	left join tokens_prices_hourly as p1
-		on p1.time = s.time
+        on date_trunc('hour', s.time) >= p1.time
+        and date_trunc('hour', s.time) <  p1.next_time
 		and p1.token = s.token1
 	group by
 		1, 2

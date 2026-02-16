@@ -12,15 +12,20 @@
 
 select
 	s.id as pool_id
-	, s.evt_block_date
+	, s.contract_address
+	, s.evt_tx_hash
+	, s.evt_tx_from
+	, s.evt_tx_to
+	, s.evt_tx_index
+	, s.evt_index
 	, s.evt_block_time
 	, s.evt_block_number
-	, s.evt_tx_hash
-	, s.evt_index
-    , p.token0
-    , p.token1
+	, s.evt_block_date
 	, s.amount0
 	, s.amount1
+	, s.fee
+	, s.liquidity
+	, s.sender
 	, s.sqrtPriceX96
 	, s.tick
 from

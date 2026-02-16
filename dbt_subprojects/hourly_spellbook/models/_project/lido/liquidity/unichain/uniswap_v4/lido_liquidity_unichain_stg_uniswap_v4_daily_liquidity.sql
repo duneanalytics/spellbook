@@ -16,7 +16,7 @@ with pools as (
 	from
 		{{ ref('lido_liquidity_unichain_stg_uniswap_v4_pools') }}
 )
-, ml_batch as (
+, ml as (
 	select
 		ml.*
 		, p.token0
@@ -35,7 +35,7 @@ with pools as (
 		and {{ incremental_predicate('ml.evt_block_date') }}
 		{% endif -%}
 )
-, swaps_all as (
+, swaps as (
 	select
 		swaps.pool_id
 		, swaps.evt_block_number
@@ -50,46 +50,73 @@ with pools as (
 	where
 		swaps.evt_block_date >= timestamp '{{ project_start_date }}'
 )
-, ml_enriched as (
+, ml_with_price as (
 	select
-		ml_batch.*
-		, coalesce(sw.sqrtPriceX96, ml_batch.init_sqrtPriceX96) as sqrtPriceX96
+		ml.*
+		, coalesce(s.evt_block_time, ml.init_evt_block_time) as most_recent_time
+		, coalesce(s.sqrtPriceX96, ml.init_sqrtPriceX96) as sqrtPriceX96
 	from
-		ml_batch
-	asof left join swaps_all as sw
-		on sw.pool_id = ml_batch.pool_id
-		and sw.evt_block_time <= ml_batch.evt_block_time
+		ml as ml
+	asof left join swaps as s
+		on s.pool_id = ml.pool_id
+		and s.evt_block_time <= ml.evt_block_time
 )
-, ml_amounts as (
+, prep_for_calculations as (
 	select
-		me.evt_block_time
-		, me.evt_block_number
-		, me.pool_id
-		, me.evt_tx_hash
-		, me.evt_index
-		, me.salt
-		, me.token0
-		, me.token1
-		, me.tickLower
-		, me.tickUpper
-		, me.liquidityDelta
-		, me.amount0
-		, me.amount1
+		mwp.evt_block_time
+		, mwp.evt_block_number
+		, mwp.pool_id as id
+		, mwp.evt_tx_hash
+		, mwp.evt_index
+		, mwp.salt
+		, mwp.token0
+		, mwp.token1
+		, log(mwp.sqrtPriceX96/power(2, 96), 10)/log(1.0001, 10) as tickCurrent
+		, mwp.tickLower
+		, mwp.tickUpper
+		, sqrt(power(1.0001, mwp.tickLower)) as sqrtRatioL
+		, sqrt(power(1.0001, mwp.tickUpper)) as sqrtRatioU
+		, mwp.sqrtPriceX96/power(2, 96) as sqrtPrice
+		, mwp.sqrtPriceX96
+		, mwp.liquidityDelta
 	from
-		ml_enriched as me
+		ml_with_price as mwp
 )
-, minute_changes as (
+, base_liquidity_amounts as (
 	select
-		ma.pool_id as pool
-		, date_trunc('minute', ma.evt_block_time) as minute
-		, ma.evt_tx_hash
-		, ma.evt_index
-		, ma.token0
-		, ma.token1
-		, ma.amount0
-		, ma.amount1
+		pfc.evt_block_time
+		, pfc.evt_block_number
+		, pfc.id
+		, pfc.evt_tx_hash
+		, pfc.evt_index
+		, pfc.salt
+		, pfc.token0
+		, pfc.token1
+		, case
+			when pfc.sqrtPrice <= pfc.sqrtRatioL then pfc.liquidityDelta * ((pfc.sqrtRatioU - pfc.sqrtRatioL)/(pfc.sqrtRatioL*pfc.sqrtRatioU))
+			when pfc.sqrtPrice >= pfc.sqrtRatioU then 0
+			else pfc.liquidityDelta * ((pfc.sqrtRatioU - pfc.sqrtPrice)/(pfc.sqrtPrice*pfc.sqrtRatioU))
+			end as amount0
+		, case
+			when pfc.sqrtPrice <= pfc.sqrtRatioL then 0
+			when pfc.sqrtPrice >= pfc.sqrtRatioU then pfc.liquidityDelta*(pfc.sqrtRatioU - pfc.sqrtRatioL)
+			else pfc.liquidityDelta*(pfc.sqrtPrice - pfc.sqrtRatioL)
+			end as amount1
 	from
-		ml_amounts as ma
+		prep_for_calculations as pfc
+)
+, liquidity_change_base as (
+	select
+		b.id as pool
+		, date_trunc('minute', b.evt_block_time) as minute
+		, b.evt_tx_hash
+		, b.evt_index
+		, b.token0
+		, b.token1
+		, b.amount0
+		, b.amount1
+	from
+		base_liquidity_amounts as b
 
 	union all
 
@@ -114,14 +141,20 @@ with pools as (
 		and {{ incremental_predicate('s.evt_block_date') }}
 		{% endif -%}
 )
+, pools_liquidity as (
+	select
+		date_trunc('day', lcb.minute) as time
+		, lcb.pool
+		, lcb.token0
+		, lcb.token1
+		, sum(lcb.amount0) as amount0
+		, sum(lcb.amount1) as amount1
+	from
+		liquidity_change_base as lcb
+	group by
+		1, 2, 3, 4
+)
 select
-	date_trunc('day', mc.minute) as time
-	, mc.pool
-	, mc.token0
-	, mc.token1
-	, sum(mc.amount0) as amount0
-	, sum(mc.amount1) as amount1
+	pl.*
 from
-	minute_changes as mc
-group by
-	1, 2, 3, 4
+	pools_liquidity as pl
