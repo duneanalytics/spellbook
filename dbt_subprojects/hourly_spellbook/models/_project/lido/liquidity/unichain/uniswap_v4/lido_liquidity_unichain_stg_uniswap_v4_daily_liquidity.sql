@@ -1,3 +1,13 @@
+{{ config(
+	schema='lido_liquidity_unichain',
+	alias='stg_uniswap_v4_daily_liquidity',
+	materialized='incremental',
+	file_format='delta',
+	incremental_strategy='merge',
+	unique_key=['pool', 'time'],
+	incremental_predicates=[incremental_predicate('DBT_INTERNAL_DEST.time')],
+) }}
+
 {% set project_start_date = '2025-04-01' %}
 
 with pools as (
