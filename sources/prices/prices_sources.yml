@@ -10,8 +10,6 @@ sources:
         description: "Daily FX exchange rates between currency pairs"
       - name: usd
         description: "USD prices across blockchains"
-        meta:
-          docs_slug: /curated/asset-tracking/prices/prices
         columns:
           - name: minute
             description: "UTC event block time truncated to the minute mark"
