@@ -13,11 +13,11 @@
 -- core list: frozen stablecoin addresses used for initial incremental transfers
 -- new stablecoins should be added to tokens_xlayer_erc20_stablecoins_extended
 
-select '{{chain}}' as blockchain, contract_address
+select '{{chain}}' as blockchain, contract_address, currency
 from (values
 
-     (0x1e4a5963abfd975d8c9021ce480b42188849d41d), -- USDT
-     (0x779ded0c9e1022225f8e0630b35a9b54be713736), -- USD₮0
-     (0x4ae46a509f6b1d9056937ba4500cb143933d2dc8)  -- USDG
+     (0x1e4a5963abfd975d8c9021ce480b42188849d41d, 'USD'), -- USDT
+     (0x779ded0c9e1022225f8e0630b35a9b54be713736, 'USD'), -- USD₮0
+     (0x4ae46a509f6b1d9056937ba4500cb143933d2dc8, 'USD')  -- USDG
 
-) as temp_table (contract_address)
+) as temp_table (contract_address, currency)

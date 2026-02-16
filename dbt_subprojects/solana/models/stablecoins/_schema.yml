@@ -22,6 +22,9 @@ models:
       - &token_mint_address
         name: token_mint_address
         description: "Stablecoin token mint address"
+      - &currency
+        name: currency
+        description: "ISO 4217 currency code the stablecoin is pegged to (e.g. USD, EUR)"
       - &backing
         name: backing
         description: "Type of backing for the stablecoin"
@@ -85,6 +88,7 @@ models:
       - &token_id
         name: token_id
         description: "Token id (null for spl tokens)"
+      - *currency
       - &balance_raw
         name: balance_raw
         description: "Raw balance (not adjusted for decimals)"
@@ -143,6 +147,7 @@ models:
       - &token_name
         name: token_name
         description: "Stablecoin name"
+      - *currency
       - &amount_raw
         name: amount_raw
         description: "Raw transfer amount"
@@ -152,6 +157,9 @@ models:
       - &amount_usd
         name: amount_usd
         description: "USD value of transfer"
+      - &price_usd
+        name: price_usd
+        description: "FX exchange rate used for USD conversion"
       - &from_owner
         name: from_owner
         description: "Sender wallet address"
