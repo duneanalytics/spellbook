@@ -1,10 +1,14 @@
 {{ config(
 	schema='lido_accounting_ethereum',
 	alias='liquidity_incentives',
-	materialized='table',
+	materialized='incremental',
 	file_format='delta',
-	post_hook='{{ hide_spells() }}',
+	incremental_strategy='merge',
+	unique_key=['blockchain', 'evt_tx_hash', 'evt_index'],
+	incremental_predicates=[incremental_predicate('DBT_INTERNAL_DEST.period')],
 ) }}
+
+{% set project_start_date = '2021-01-13' %}
 
 with tokens as (
 	select
@@ -106,6 +110,7 @@ with tokens as (
 		t.evt_block_time
 		, cast(t.value as double) as value
 		, t.evt_tx_hash
+		, t.evt_index
 		, t.to
 		, t."from"
 		, t.contract_address
@@ -113,22 +118,24 @@ with tokens as (
 	from
 		{{ source('erc20_ethereum', 'evt_Transfer') }} as t
 	where
-		t."from" in (
+		{% if not is_incremental() -%}
+		t.evt_block_time >= timestamp '{{ project_start_date }}'
+		{% else -%}
+		{{ incremental_predicate('t.evt_block_time') }}
+		{% endif -%}
+		and exists (
 			select
-				m.address
+				1
 			from
 				multisigs_list as m
 			where
-				m.name in ('LiquidityRewardsMsig', 'LiquidityRewardMngr')
+				m.address = t."from"
+				and m.name in ('LiquidityRewardsMsig', 'LiquidityRewardMngr')
 				and m.chain = 'Ethereum'
 		)
-		and t.to not in (
-			select m.address from multisigs_list as m
-			union all
-			select i.address from intermediate_addresses as i
-			union all
-			select d.address from diversifications_addresses as d
-		)
+		and not exists (select 1 from multisigs_list as m where m.address = t.to)
+		and not exists (select 1 from intermediate_addresses as i where i.address = t.to)
+		and not exists (select 1 from diversifications_addresses as d where d.address = t.to)
 
 	union all
 
@@ -136,6 +143,7 @@ with tokens as (
 		t.evt_block_time
 		, -cast(t.value as double) as value
 		, t.evt_tx_hash
+		, t.evt_index
 		, t.to
 		, t."from"
 		, t.contract_address
@@ -143,22 +151,24 @@ with tokens as (
 	from
 		{{ source('erc20_ethereum', 'evt_Transfer') }} as t
 	where
-		t.to in (
+		{% if not is_incremental() -%}
+		t.evt_block_time >= timestamp '{{ project_start_date }}'
+		{% else -%}
+		{{ incremental_predicate('t.evt_block_time') }}
+		{% endif -%}
+		and exists (
 			select
-				m.address
+				1
 			from
 				multisigs_list as m
 			where
-				m.name in ('LiquidityRewardsMsig', 'LiquidityRewardMngr')
+				m.address = t.to
+				and m.name in ('LiquidityRewardsMsig', 'LiquidityRewardMngr')
 				and m.chain = 'Ethereum'
 		)
-		and t."from" not in (
-			select m.address from multisigs_list as m
-			union all
-			select i.address from intermediate_addresses as i
-			union all
-			select d.address from diversifications_addresses as d
-		)
+		and not exists (select 1 from multisigs_list as m where m.address = t."from")
+		and not exists (select 1 from intermediate_addresses as i where i.address = t."from")
+		and not exists (select 1 from diversifications_addresses as d where d.address = t."from")
 
 	union all
 
@@ -167,6 +177,7 @@ with tokens as (
 		t.evt_block_time
 		, cast(t.value as double) as value
 		, t.evt_tx_hash
+		, t.evt_index
 		, t.to
 		, t."from"
 		, t.contract_address
@@ -174,13 +185,19 @@ with tokens as (
 	from
 		{{ source('erc20_optimism', 'evt_Transfer') }} as t
 	where
-		t."from" in (
+		{% if not is_incremental() -%}
+		t.evt_block_time >= timestamp '{{ project_start_date }}'
+		{% else -%}
+		{{ incremental_predicate('t.evt_block_time') }}
+		{% endif -%}
+		and exists (
 			select
-				m.address
+				1
 			from
 				multisigs_list as m
 			where
-				m.name in ('LiquidityRewardsMsig')
+				m.address = t."from"
+				and m.name in ('LiquidityRewardsMsig')
 				and m.chain = 'Optimism'
 		)
 		and t.to != 0x0000000000000000000000000000000000000000
@@ -189,6 +206,7 @@ with tokens as (
 		t.evt_block_time
 		, -cast(t.value as double) as value
 		, t.evt_tx_hash
+		, t.evt_index
 		, t.to
 		, t."from"
 		, t.contract_address
@@ -196,13 +214,19 @@ with tokens as (
 	from
 		{{ source('erc20_optimism', 'evt_Transfer') }} as t
 	where
-		t.to in (
+		{% if not is_incremental() -%}
+		t.evt_block_time >= timestamp '{{ project_start_date }}'
+		{% else -%}
+		{{ incremental_predicate('t.evt_block_time') }}
+		{% endif -%}
+		and exists (
 			select
-				m.address
+				1
 			from
 				multisigs_list as m
 			where
-				m.name in ('LiquidityRewardsMsig')
+				m.address = t.to
+				and m.name in ('LiquidityRewardsMsig')
 				and m.chain = 'Optimism'
 		)
 		and t."from" != 0x0000000000000000000000000000000000000000
@@ -214,6 +238,7 @@ with tokens as (
 		t.evt_block_time
 		, cast(t.value as double) as value
 		, t.evt_tx_hash
+		, t.evt_index
 		, t.to
 		, t."from"
 		, t.contract_address
@@ -221,13 +246,19 @@ with tokens as (
 	from
 		{{ source('erc20_arbitrum', 'evt_Transfer') }} as t
 	where
-		t."from" in (
+		{% if not is_incremental() -%}
+		t.evt_block_time >= timestamp '{{ project_start_date }}'
+		{% else -%}
+		{{ incremental_predicate('t.evt_block_time') }}
+		{% endif -%}
+		and exists (
 			select
-				m.address
+				1
 			from
 				multisigs_list as m
 			where
-				m.name in ('LiquidityRewardsMsig')
+				m.address = t."from"
+				and m.name in ('LiquidityRewardsMsig')
 				and m.chain = 'Arbitrum'
 		)
 		and t.to != 0x0000000000000000000000000000000000000000
@@ -236,6 +267,7 @@ with tokens as (
 		t.evt_block_time
 		, -cast(t.value as double) as value
 		, t.evt_tx_hash
+		, t.evt_index
 		, t.to
 		, t."from"
 		, t.contract_address
@@ -243,13 +275,19 @@ with tokens as (
 	from
 		{{ source('erc20_arbitrum', 'evt_Transfer') }} as t
 	where
-		t.to in (
+		{% if not is_incremental() -%}
+		t.evt_block_time >= timestamp '{{ project_start_date }}'
+		{% else -%}
+		{{ incremental_predicate('t.evt_block_time') }}
+		{% endif -%}
+		and exists (
 			select
-				m.address
+				1
 			from
 				multisigs_list as m
 			where
-				m.name in ('LiquidityRewardsMsig')
+				m.address = t.to
+				and m.name in ('LiquidityRewardsMsig')
 				and m.chain = 'Arbitrum'
 		)
 		and t."from" != 0x0000000000000000000000000000000000000000
@@ -260,6 +298,7 @@ with tokens as (
 		t.evt_block_time
 		, cast(t.value as double) as value
 		, t.evt_tx_hash
+		, t.evt_index
 		, t.to
 		, t."from"
 		, t.contract_address
@@ -267,13 +306,19 @@ with tokens as (
 	from
 		{{ source('erc20_base', 'evt_Transfer') }} as t
 	where
-		t."from" in (
+		{% if not is_incremental() -%}
+		t.evt_block_time >= timestamp '{{ project_start_date }}'
+		{% else -%}
+		{{ incremental_predicate('t.evt_block_time') }}
+		{% endif -%}
+		and exists (
 			select
-				m.address
+				1
 			from
 				multisigs_list as m
 			where
-				m.name in ('LiquidityRewardsMsig')
+				m.address = t."from"
+				and m.name in ('LiquidityRewardsMsig')
 				and m.chain = 'Base'
 		)
 		and t.to != 0x0000000000000000000000000000000000000000
@@ -282,6 +327,7 @@ with tokens as (
 		t.evt_block_time
 		, -cast(t.value as double) as value
 		, t.evt_tx_hash
+		, t.evt_index
 		, t.to
 		, t."from"
 		, t.contract_address
@@ -289,13 +335,19 @@ with tokens as (
 	from
 		{{ source('erc20_base', 'evt_Transfer') }} as t
 	where
-		t.to in (
+		{% if not is_incremental() -%}
+		t.evt_block_time >= timestamp '{{ project_start_date }}'
+		{% else -%}
+		{{ incremental_predicate('t.evt_block_time') }}
+		{% endif -%}
+		and exists (
 			select
-				m.address
+				1
 			from
 				multisigs_list as m
 			where
-				m.name in ('LiquidityRewardsMsig')
+				m.address = t.to
+				and m.name in ('LiquidityRewardsMsig')
 				and m.chain = 'Base'
 		)
 		and t."from" != 0x0000000000000000000000000000000000000000
@@ -306,6 +358,7 @@ with tokens as (
 		t.evt_block_time
 		, cast(t.value as double) as value
 		, t.evt_tx_hash
+		, t.evt_index
 		, t.to
 		, t."from"
 		, t.contract_address
@@ -313,13 +366,19 @@ with tokens as (
 	from
 		{{ source('erc20_zksync', 'evt_Transfer') }} as t
 	where
-		t."from" in (
+		{% if not is_incremental() -%}
+		t.evt_block_time >= timestamp '{{ project_start_date }}'
+		{% else -%}
+		{{ incremental_predicate('t.evt_block_time') }}
+		{% endif -%}
+		and exists (
 			select
-				m.address
+				1
 			from
 				multisigs_list as m
 			where
-				m.name in ('LiquidityRewardsMsig')
+				m.address = t."from"
+				and m.name in ('LiquidityRewardsMsig')
 				and m.chain = 'zkSync'
 		)
 		and t.to != 0x0000000000000000000000000000000000000000
@@ -328,6 +387,7 @@ with tokens as (
 		t.evt_block_time
 		, -cast(t.value as double) as value
 		, t.evt_tx_hash
+		, t.evt_index
 		, t.to
 		, t."from"
 		, t.contract_address
@@ -335,13 +395,19 @@ with tokens as (
 	from
 		{{ source('erc20_zksync', 'evt_Transfer') }} as t
 	where
-		t.to in (
+		{% if not is_incremental() -%}
+		t.evt_block_time >= timestamp '{{ project_start_date }}'
+		{% else -%}
+		{{ incremental_predicate('t.evt_block_time') }}
+		{% endif -%}
+		and exists (
 			select
-				m.address
+				1
 			from
 				multisigs_list as m
 			where
-				m.name in ('LiquidityRewardsMsig')
+				m.address = t.to
+				and m.name in ('LiquidityRewardsMsig')
 				and m.chain = 'zkSync'
 		)
 		and t."from" != 0x0000000000000000000000000000000000000000
@@ -352,6 +418,7 @@ with tokens as (
 		t.evt_block_time
 		, cast(t.value as double) as value
 		, t.evt_tx_hash
+		, t.evt_index
 		, t.to
 		, t."from"
 		, t.contract_address
@@ -359,13 +426,19 @@ with tokens as (
 	from
 		{{ source('erc20_bnb', 'evt_Transfer') }} as t
 	where
-		t."from" in (
+		{% if not is_incremental() -%}
+		t.evt_block_time >= timestamp '{{ project_start_date }}'
+		{% else -%}
+		{{ incremental_predicate('t.evt_block_time') }}
+		{% endif -%}
+		and exists (
 			select
-				m.address
+				1
 			from
 				multisigs_list as m
 			where
-				m.name in ('LiquidityRewardsMsig')
+				m.address = t."from"
+				and m.name in ('LiquidityRewardsMsig')
 				and m.chain = 'bnb'
 		)
 		and t.to != 0x0000000000000000000000000000000000000000
@@ -374,6 +447,7 @@ with tokens as (
 		t.evt_block_time
 		, -cast(t.value as double) as value
 		, t.evt_tx_hash
+		, t.evt_index
 		, t.to
 		, t."from"
 		, t.contract_address
@@ -381,13 +455,19 @@ with tokens as (
 	from
 		{{ source('erc20_bnb', 'evt_Transfer') }} as t
 	where
-		t.to in (
+		{% if not is_incremental() -%}
+		t.evt_block_time >= timestamp '{{ project_start_date }}'
+		{% else -%}
+		{{ incremental_predicate('t.evt_block_time') }}
+		{% endif -%}
+		and exists (
 			select
-				m.address
+				1
 			from
 				multisigs_list as m
 			where
-				m.name in ('LiquidityRewardsMsig')
+				m.address = t.to
+				and m.name in ('LiquidityRewardsMsig')
 				and m.chain = 'bnb'
 		)
 		and t."from" != 0x0000000000000000000000000000000000000000
@@ -398,6 +478,7 @@ with tokens as (
 		t.evt_block_time
 		, cast(t.value as double) as value
 		, t.evt_tx_hash
+		, t.evt_index
 		, t.to
 		, t."from"
 		, t.contract_address
@@ -405,13 +486,19 @@ with tokens as (
 	from
 		{{ source('erc20_linea', 'evt_Transfer') }} as t
 	where
-		t."from" in (
+		{% if not is_incremental() -%}
+		t.evt_block_time >= timestamp '{{ project_start_date }}'
+		{% else -%}
+		{{ incremental_predicate('t.evt_block_time') }}
+		{% endif -%}
+		and exists (
 			select
-				m.address
+				1
 			from
 				multisigs_list as m
 			where
-				m.name in ('LiquidityRewardsMsig')
+				m.address = t."from"
+				and m.name in ('LiquidityRewardsMsig')
 				and m.chain = 'Linea'
 		)
 		and t.to != 0x0000000000000000000000000000000000000000
@@ -420,6 +507,7 @@ with tokens as (
 		t.evt_block_time
 		, -cast(t.value as double) as value
 		, t.evt_tx_hash
+		, t.evt_index
 		, t.to
 		, t."from"
 		, t.contract_address
@@ -427,13 +515,19 @@ with tokens as (
 	from
 		{{ source('erc20_linea', 'evt_Transfer') }} as t
 	where
-		t.to in (
+		{% if not is_incremental() -%}
+		t.evt_block_time >= timestamp '{{ project_start_date }}'
+		{% else -%}
+		{{ incremental_predicate('t.evt_block_time') }}
+		{% endif -%}
+		and exists (
 			select
-				m.address
+				1
 			from
 				multisigs_list as m
 			where
-				m.name in ('LiquidityRewardsMsig')
+				m.address = t.to
+				and m.name in ('LiquidityRewardsMsig')
 				and m.chain = 'Linea'
 		)
 		and t."from" != 0x0000000000000000000000000000000000000000
@@ -444,6 +538,7 @@ with tokens as (
 		t.evt_block_time
 		, cast(t.value as double) as value
 		, t.evt_tx_hash
+		, t.evt_index
 		, t.to
 		, t."from"
 		, t.contract_address
@@ -451,13 +546,19 @@ with tokens as (
 	from
 		{{ source('erc20_mantle', 'evt_Transfer') }} as t
 	where
-		t."from" in (
+		{% if not is_incremental() -%}
+		t.evt_block_time >= timestamp '{{ project_start_date }}'
+		{% else -%}
+		{{ incremental_predicate('t.evt_block_time') }}
+		{% endif -%}
+		and exists (
 			select
-				m.address
+				1
 			from
 				multisigs_list as m
 			where
-				m.name in ('LiquidityRewardsMsig')
+				m.address = t."from"
+				and m.name in ('LiquidityRewardsMsig')
 				and m.chain = 'Mantle'
 		)
 		and t.to != 0x0000000000000000000000000000000000000000
@@ -466,6 +567,7 @@ with tokens as (
 		t.evt_block_time
 		, -cast(t.value as double) as value
 		, t.evt_tx_hash
+		, t.evt_index
 		, t.to
 		, t."from"
 		, t.contract_address
@@ -473,13 +575,19 @@ with tokens as (
 	from
 		{{ source('erc20_mantle', 'evt_Transfer') }} as t
 	where
-		t.to in (
+		{% if not is_incremental() -%}
+		t.evt_block_time >= timestamp '{{ project_start_date }}'
+		{% else -%}
+		{{ incremental_predicate('t.evt_block_time') }}
+		{% endif -%}
+		and exists (
 			select
-				m.address
+				1
 			from
 				multisigs_list as m
 			where
-				m.name in ('LiquidityRewardsMsig')
+				m.address = t.to
+				and m.name in ('LiquidityRewardsMsig')
 				and m.chain = 'Mantle'
 		)
 		and t."from" != 0x0000000000000000000000000000000000000000
@@ -490,6 +598,7 @@ with tokens as (
 		t.evt_block_time
 		, cast(t.value as double) as value
 		, t.evt_tx_hash
+		, t.evt_index
 		, t.to
 		, t."from"
 		, t.contract_address
@@ -497,13 +606,19 @@ with tokens as (
 	from
 		{{ source('erc20_scroll', 'evt_Transfer') }} as t
 	where
-		t."from" in (
+		{% if not is_incremental() -%}
+		t.evt_block_time >= timestamp '{{ project_start_date }}'
+		{% else -%}
+		{{ incremental_predicate('t.evt_block_time') }}
+		{% endif -%}
+		and exists (
 			select
-				m.address
+				1
 			from
 				multisigs_list as m
 			where
-				m.name in ('LiquidityRewardsMsig')
+				m.address = t."from"
+				and m.name in ('LiquidityRewardsMsig')
 				and m.chain = 'Scroll'
 		)
 		and t.to != 0x0000000000000000000000000000000000000000
@@ -512,6 +627,7 @@ with tokens as (
 		t.evt_block_time
 		, -cast(t.value as double) as value
 		, t.evt_tx_hash
+		, t.evt_index
 		, t.to
 		, t."from"
 		, t.contract_address
@@ -519,13 +635,19 @@ with tokens as (
 	from
 		{{ source('erc20_scroll', 'evt_Transfer') }} as t
 	where
-		t.to in (
+		{% if not is_incremental() -%}
+		t.evt_block_time >= timestamp '{{ project_start_date }}'
+		{% else -%}
+		{{ incremental_predicate('t.evt_block_time') }}
+		{% endif -%}
+		and exists (
 			select
-				m.address
+				1
 			from
 				multisigs_list as m
 			where
-				m.name in ('LiquidityRewardsMsig')
+				m.address = t.to
+				and m.name in ('LiquidityRewardsMsig')
 				and m.chain = 'Scroll'
 		)
 		and t."from" != 0x0000000000000000000000000000000000000000
@@ -534,6 +656,7 @@ with tokens as (
 select
 	m.evt_block_time as period
 	, m.evt_tx_hash
+	, m.evt_index
 	, m.blockchain
 	, m.value as amount_token
 	, case
@@ -553,5 +676,5 @@ select
 from
 	multichain_liquidity_incentives_txns as m
 where
-	m.contract_address in (select tok.address from tokens as tok)
+	exists (select 1 from tokens as tok where tok.address = m.contract_address)
 	and m.value != 0

@@ -115,11 +115,21 @@ models:
     config:
       tags: [ 'ethereum', 'lido', 'staking', 'accounting' ]
     description: "Amount of tokens spent on incentives"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - evt_tx_hash
+            - evt_index
     columns:
       - name: period
         description: "Timestamp of the accounting entry"
-      - name: evt_tx_hash,
+      - name: evt_tx_hash
         description: "Transaction hash"
+      - name: evt_index
+        description: "Event index within the transaction"
+      - name: blockchain
+        description: "Blockchain where the transfer occurred"
       - name: amount_token
         description: "Token amount"
       - name: token
