@@ -18,6 +18,15 @@ sources:
     tables:
       - name: CamelotPair_evt_Mint
       - name: CamelotPair_evt_Burn
+  
+  - name: camelot_v3_arbitrum
+    description: "Arbitrum decoded tables related to Camelot v3 pools contracts"
+    tables:
+      - name: AlgebraFactory_call_createPool
+      - name: Algebrapool_evt_Swap
+      - name: Algebrapool_evt_Mint
+      - name: Algebrapool_evt_Collect
+    
 
   - name: uniswap_v3_arbitrum
     description: "Arbitrum decoded tables related to Uniswap v3 pools contracts"
