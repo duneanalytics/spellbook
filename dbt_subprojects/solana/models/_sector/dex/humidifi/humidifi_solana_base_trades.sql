@@ -14,7 +14,7 @@
 {# In GitHub Actions CI, limit to last 7 days from today; else use var (default 0 = no cap). #}
 {% set initial_run_days = (7 if env_var('GITHUB_ACTIONS', '') == 'true' else (var('solana_amm_initial_run_days', 0) | int)) %}
 
-WITH swaps AS (
+WITH raw_swaps AS (
     SELECT
           block_slot
         , block_date
@@ -29,12 +29,6 @@ WITH swaps AS (
         , account_arguments[2] AS pool_id
         , account_arguments[3] AS vault_a
         , account_arguments[4] AS vault_b
-        , {{ solana_instruction_key(
-              'block_slot'
-            , 'tx_index'
-            , 'outer_instruction_index'
-            , 'inner_instruction_index'
-          ) }} AS surrogate_key
     FROM {{ source('solana', 'instruction_calls') }}
     WHERE 1=1
         AND executing_account = '9H6tua7jkLhdm3w8BvgpTn5LZNU7g4ZynDmCiNN3q6Rp'
@@ -48,6 +42,41 @@ WITH swaps AS (
         AND block_date > current_date - INTERVAL '1' DAY * {{ initial_run_days }}
         {% endif -%}
         {% endif -%}
+)
+
+, swaps AS (
+    SELECT
+          block_slot
+        , block_date
+        , block_time
+        , inner_instruction_index
+        , outer_instruction_index
+        , outer_executing_account
+        , is_inner
+        , tx_id
+        , tx_signer
+        , tx_index
+        , max(pool_id) AS pool_id
+        , max(vault_a) AS vault_a
+        , max(vault_b) AS vault_b
+        , {{ solana_instruction_key(
+              'block_slot'
+            , 'tx_index'
+            , 'outer_instruction_index'
+            , 'inner_instruction_index'
+          ) }} AS surrogate_key
+    FROM raw_swaps
+    GROUP BY
+          block_slot
+        , block_date
+        , block_time
+        , inner_instruction_index
+        , outer_instruction_index
+        , outer_executing_account
+        , is_inner
+        , tx_id
+        , tx_signer
+        , tx_index
 )
 
 , swap_slots AS (
@@ -96,6 +125,7 @@ WITH swaps AS (
         , s.is_inner
         , s.pool_id
         , s.tx_signer
+        , s.tx_index
         , s.surrogate_key
         , tf.amount
         , tf.from_token_account
