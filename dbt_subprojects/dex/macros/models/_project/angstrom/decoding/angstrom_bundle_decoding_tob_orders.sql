@@ -254,7 +254,13 @@ FROM (
                     if(bitmap[1] = 0, varbinary_substring(buf, pointer, 20), NULL) AS signature_contract_from,
                     if(bitmap[1] = 0, varbinary_substring(buf, pointer + 23, varbinary_to_integer(varbinary_substring(buf, pointer + 20, 3))), NULL) AS signature_contract_signature,
                     if(bitmap[1] = 1, 
-                        varbinary_concat(varbinary_concat(varbinary_substring(buf, pointer, 1)), varbinary_substring(buf, pointer + 1, 32),varbinary_substring(buf, pointer + 33, 32)),
+                        varbinary_concat(
+                            varbinary_concat(
+                                varbinary_substring(buf, pointer, 1),
+                                varbinary_substring(buf, pointer + 1, 32)
+                            ),
+                            varbinary_substring(buf, pointer + 33, 32)
+                        ),
                         varbinary_substring(buf, pointer + 23, varbinary_to_integer(varbinary_substring(buf, pointer + 20, 3)))
                     ) AS signature_raw,
                     bitmap,

@@ -7,7 +7,7 @@
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     , pre_hook = [
         "SET SESSION query_max_stage_count = 1000",
-        "SET SESSION max_recursion_depth = 20",
+        "SET SESSION max_recursion_depth = 35",
         "SET SESSION distinct_aggregations_strategy = 'single_step'"
       ]
     )
