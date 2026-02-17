@@ -10,7 +10,6 @@
         PoolManager_call_Swap = null,
         PoolManager_evt_Swap = null,
         taker_column_name = null,
-        bundle_orders_table = none,
         bundle_tob_orders_table = none,
         bundle_user_orders_table = none,
         composable_orders_table = none
@@ -20,10 +19,7 @@
 
 WITH
     bundle_orders AS (
-        {% if bundle_orders_table is not none %}
-        SELECT *
-        FROM {{ bundle_orders_table }}
-        {% elif bundle_tob_orders_table is not none and bundle_user_orders_table is not none %}
+        {% if bundle_tob_orders_table is not none and bundle_user_orders_table is not none %}
         SELECT *
         FROM {{ bundle_tob_orders_table }}
         UNION ALL
