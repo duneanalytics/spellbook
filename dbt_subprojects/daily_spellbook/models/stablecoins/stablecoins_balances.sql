@@ -20,4 +20,4 @@ select
   balance_usd,
   currency,
   last_updated
-from {{ ref('stablecoins_multichain_balances') }}
+from {{ ref('stablecoins_evm_balances') }}
