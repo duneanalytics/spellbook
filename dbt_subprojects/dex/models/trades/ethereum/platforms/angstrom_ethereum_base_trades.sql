@@ -1,5 +1,6 @@
 {{ config(
     schema = 'angstrom_ethereum'
+    , pre_hook = "SET SESSION max_recursion_depth = 100"
     , alias = 'base_trades'
     , materialized = 'incremental'
     , file_format = 'delta'
