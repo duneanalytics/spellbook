@@ -54,7 +54,7 @@ models:
       contributors: tomfutago
     config:
       tags: ['stablecoin', 'balances']
-    description: "Enriched balances of stablecoin token holders across all chains (EVM, SVM, Tron) with token metadata and USD prices"
+    description: "Enriched balances of stablecoin token holders on EVM chains with token metadata and USD prices"
     columns:
       - *blockchain
       - *day
