@@ -4,7 +4,7 @@
 	materialized='incremental',
 	file_format='delta',
 	incremental_strategy='merge',
-	unique_key=['blockchain', 'period', 'evt_tx_hash'],
+	unique_key=['blockchain', 'period', 'evt_tx_hash', 'token', 'amount_token'],
 	incremental_predicates=[incremental_predicate('DBT_INTERNAL_DEST.period')],
 ) }}
 
