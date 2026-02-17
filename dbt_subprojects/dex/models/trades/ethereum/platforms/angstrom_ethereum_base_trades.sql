@@ -1,7 +1,7 @@
 {{ config(
     schema = 'angstrom_ethereum'
     , pre_hook = [
-        "SET SESSION max_recursion_depth = 13",
+        "SET SESSION max_recursion_depth = 20",
         "SET SESSION distinct_aggregations_strategy = 'single_step'"
       ]
     , alias = 'base_trades'
