@@ -4,7 +4,7 @@
 	materialized='incremental',
 	file_format='delta',
 	incremental_strategy='merge',
-	unique_key=['blockchain', 'evt_tx_hash', 'evt_index'],
+	unique_key=['blockchain', 'period', 'evt_tx_hash'],
 	incremental_predicates=[incremental_predicate('DBT_INTERNAL_DEST.period')],
 ) }}
 
@@ -218,7 +218,6 @@ with tokens as (
 		t.evt_block_time
 		, cast(t.value as double) as value
 		, t.evt_tx_hash
-		, t.evt_index
 		, t.contract_address
 		, 'ethereum' as blockchain
 	from
@@ -255,20 +254,14 @@ with tokens as (
 		t.evt_block_time
 		, cast(t.value as double) as value
 		, t.evt_tx_hash
-		, t.evt_index
 		, t.contract_address
 		, 'ethereum' as blockchain
 	from
 		{{ source('erc20_ethereum', 'evt_Transfer') }} as t
 	inner join {{ source('lido_ethereum', 'steth_evt_Submitted') }} as s
 		on t.evt_tx_hash = s.evt_tx_hash
-        and t.evt_block_time = s.evt_block_time
-        and t.evt_block_number = s.evt_block_number
-		{% if not is_incremental() -%}
-		and s.evt_block_time >= timestamp '{{ project_start_date }}'
-		{% else -%}
-		and {{ incremental_predicate('s.evt_block_time') }}
-		{% endif -%}
+		and t.evt_block_time = s.evt_block_time
+		and t.evt_block_number = s.evt_block_number
 	where
 		{% if not is_incremental() -%}
 		t.evt_block_time >= timestamp '{{ project_start_date }}'
@@ -309,17 +302,15 @@ with tokens as (
 		, '7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj' as token
 		, coalesce(i.delta, 0) as amount_token
 		, i.tx_id as evt_tx_hash
-		, 0 as evt_index
 		, 'solana' as blockchain
 	from
 		stsol_income_txs as i
 )
 
 select
-	base.period
+	base.blockchain
+	, base.period
 	, base.evt_tx_hash
-	, base.evt_index
-	, base.blockchain
 	, base.token
 	, base.amount_token
 from
@@ -327,7 +318,6 @@ from
 		select
 			o.evt_block_time as period
 			, o.evt_tx_hash
-			, o.evt_index
 			, o.blockchain
 			, o.contract_address as token
 			, o.value as amount_token
@@ -340,7 +330,6 @@ from
 		select
 			tr.block_time as period
 			, tr.tx_hash as evt_tx_hash
-			, coalesce(tr.trace_address[1], 0) * 1000000 + coalesce(tr.trace_address[2], 0) * 1000 + coalesce(tr.trace_address[3], 0) as evt_index
 			, 'ethereum' as blockchain
 			, 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 as token
 			, cast(tr.value as double) as amount_token
@@ -374,7 +363,6 @@ from
 		select
 			s.period
 			, from_base64(s.evt_tx_hash) as evt_tx_hash
-			, s.evt_index
 			, s.blockchain
 			, from_base64('7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj') as token
 			, s.amount_token

@@ -4,7 +4,7 @@
 	materialized='incremental',
 	file_format='delta',
 	incremental_strategy='merge',
-	unique_key=['blockchain', 'evt_tx_hash', 'evt_index'],
+	unique_key=['blockchain', 'period', 'evt_tx_hash'],
 	incremental_predicates=[incremental_predicate('DBT_INTERNAL_DEST.period')],
 ) }}
 
@@ -144,7 +144,6 @@ with tokens as (
 		t.evt_block_time
 		, cast(t.value as double) as value
 		, t.evt_tx_hash
-		, t.evt_index
 		, t.contract_address
 		, 'ethereum' as blockchain
 	from
@@ -182,7 +181,6 @@ with tokens as (
 		tr.block_time as evt_block_time
 		, cast(tr.value as double) as value
 		, tr.tx_hash as evt_tx_hash
-		, coalesce(tr.trace_address[1], 0) * 1000000 + coalesce(tr.trace_address[2], 0) * 1000 + coalesce(tr.trace_address[3], 0) as evt_index
 		, 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 as contract_address
 		, 'ethereum' as blockchain
 	from
@@ -212,10 +210,9 @@ with tokens as (
 
 
 select
-	o.evt_block_time as period
+	o.blockchain
+	, o.evt_block_time as period
 	, o.evt_tx_hash
-	, o.evt_index
-	, o.blockchain
 	, o.contract_address as token
 	, o.value as amount_token
 from
