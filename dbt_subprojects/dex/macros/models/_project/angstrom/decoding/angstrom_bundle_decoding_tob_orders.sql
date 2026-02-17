@@ -30,7 +30,8 @@ SELECT
     signature_ecdsa_r,
     signature_ecdsa_s,
     signature_contract_from,
-    signature_contract_signature
+    signature_contract_signature,
+    signature_raw
 FROM (
     WITH RECURSIVE decode_tob_order (
         tx_hash,
@@ -51,7 +52,8 @@ FROM (
         signature_ecdsa_r,
         signature_ecdsa_s,
         signature_contract_from,
-        signature_contract_signature
+        signature_contract_signature,
+        signature_raw
     ) AS (
         SELECT
             tx_hash,
@@ -69,6 +71,7 @@ FROM (
             CAST(NULL AS varbinary),
             CAST(NULL AS varchar),
             CAST(NULL AS bigint),
+            CAST(NULL AS varbinary),
             CAST(NULL AS varbinary),
             CAST(NULL AS varbinary),
             CAST(NULL AS varbinary),
@@ -96,7 +99,8 @@ FROM (
             signature_ecdsa_r,
             signature_ecdsa_s,
             signature_contract_from,
-            signature_contract_signature
+            signature_contract_signature,
+            signature_raw
         FROM (
             WITH 
             trimmed_as_fields AS (
@@ -249,6 +253,10 @@ FROM (
                     if(bitmap[1] = 1, varbinary_substring(buf, pointer + 33, 32), NULL) AS signature_ecdsa_s,
                     if(bitmap[1] = 0, varbinary_substring(buf, pointer, 20), NULL) AS signature_contract_from,
                     if(bitmap[1] = 0, varbinary_substring(buf, pointer + 23, varbinary_to_integer(varbinary_substring(buf, pointer + 20, 3))), NULL) AS signature_contract_signature,
+                    if(bitmap[1] = 1, 
+                        varbinary_concat(varbinary_concat(varbinary_substring(buf, pointer, 1)), varbinary_substring(buf, pointer + 1, 32),varbinary_substring(buf, pointer + 33, 32)),
+                        varbinary_substring(buf, pointer + 23, varbinary_to_integer(varbinary_substring(buf, pointer + 20, 3)))
+                    ) AS signature_raw,
                     bitmap,
                     if(bitmap[1] = 1, pointer + 65, pointer + 23 + varbinary_to_integer(varbinary_substring(buf, pointer + 20, 3))) AS pointer,
                     buf
@@ -274,7 +282,8 @@ FROM (
                     signature_ecdsa_r,
                     signature_ecdsa_s,
                     signature_contract_from,
-                    signature_contract_signature
+                    signature_contract_signature,
+                    signature_raw
                 FROM signature_field
             )
             SELECT 
@@ -296,7 +305,8 @@ FROM (
                 signature_ecdsa_r,
                 signature_ecdsa_s,
                 signature_contract_from,
-                signature_contract_signature
+                signature_contract_signature,
+                signature_raw
             FROM all_fields_collapsed
             WHERE varbinary_length(buf) != 0
         )

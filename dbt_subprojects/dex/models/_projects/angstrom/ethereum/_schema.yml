@@ -1,6 +1,56 @@
 version: 2
 
 models:
+  - name: angstrom_ethereum_bundle_assets_decoding
+    meta:
+      blockchain: ethereum
+      sector: dex
+      contributors: jnoorchashm37
+    config:
+      tags: ['ethereum', 'ansgtrom', 'decoding']
+    description: >
+      Decoded Angstrom bundle assets payload on ethereum.
+
+  - name: angstrom_ethereum_bundle_pairs_decoding
+    meta:
+      blockchain: ethereum
+      sector: dex
+      contributors: jnoorchashm37
+    config:
+      tags: ['ethereum', 'ansgtrom', 'decoding']
+    description: >
+      Decoded Angstrom bundle pairs payload on ethereum.
+
+  - name: angstrom_ethereum_bundle_pool_updates_decoding
+    meta:
+      blockchain: ethereum
+      sector: dex
+      contributors: jnoorchashm37
+    config:
+      tags: ['ethereum', 'ansgtrom', 'decoding']
+    description: >
+      Decoded Angstrom bundle pool updates payload on ethereum.
+
+  - name: angstrom_ethereum_bundle_tob_orders_decoding
+    meta:
+      blockchain: ethereum
+      sector: dex
+      contributors: jnoorchashm37
+    config:
+      tags: ['ethereum', 'ansgtrom', 'decoding']
+    description: >
+      Decoded Angstrom top-of-block bundle orders payload on ethereum.
+
+  - name: angstrom_ethereum_bundle_user_orders_decoding
+    meta:
+      blockchain: ethereum
+      sector: dex
+      contributors: jnoorchashm37
+    config:
+      tags: ['ethereum', 'ansgtrom', 'decoding']
+    description: >
+      Decoded Angstrom user bundle orders payload on ethereum.
+
   - name: angstrom_ethereum_bundle_tob_orders
     meta:
       blockchain: ethereum

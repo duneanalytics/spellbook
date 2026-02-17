@@ -4,7 +4,11 @@
         controller_v1_contract_addr,
         earliest_block,
         blockchain,
-        controller_pool_configured_log_topic0
+        controller_pool_configured_log_topic0,
+        pool_updates_decoding_table = none,
+        user_orders_decoding_table = none,
+        assets_decoding_table = none,
+        pairs_decoding_table = none
     )
 %}
 
@@ -15,7 +19,20 @@ WITH
             tx_hash,
             pair_index,
             SUM(lp_fees_paid_asset_in + lp_fees_paid_asset_out) AS total_fees_paid_t0
-        FROM ({{ angstrom_bundle_user_order_volume(angstrom_contract_addr, controller_v1_contract_addr, earliest_block, blockchain, controller_pool_configured_log_topic0) }})
+        FROM (
+            {{
+                angstrom_bundle_user_order_volume(
+                    angstrom_contract_addr,
+                    controller_v1_contract_addr,
+                    earliest_block,
+                    blockchain,
+                    controller_pool_configured_log_topic0,
+                    user_orders_decoding_table,
+                    assets_decoding_table,
+                    pairs_decoding_table
+                )
+            }}
+        )
         GROUP BY tx_hash, pair_index
     ),
     donated_amounts_by_pool_all AS (
@@ -23,7 +40,13 @@ WITH
             tx_hash,
             pair_index,
             if(kind = 'MultiTick', reduce(quantities, 0, (s, x) -> s + x, s -> s), amount) AS amt_donated
-        FROM ({{ angstrom_decoding_pool_updates(angstrom_contract_addr, earliest_block, blockchain) }})
+        FROM (
+            {% if pool_updates_decoding_table is not none %}
+            SELECT * FROM {{ pool_updates_decoding_table }}
+            {% else %}
+            {{ angstrom_decoding_pool_updates(angstrom_contract_addr, earliest_block, blockchain) }}
+            {% endif %}
+        )
     )
 SELECT
     d.tx_hash AS tx_hash,

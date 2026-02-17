@@ -2,7 +2,9 @@
     angstrom_bundle_indexes_to_assets(
         angstrom_contract_addr, 
         earliest_block,
-        blockchain
+        blockchain,
+        assets_decoding_table = none,
+        pairs_decoding_table = none
     )
 %}
 
@@ -13,7 +15,13 @@ WITH
             block_number,
             bundle_idx - 1 AS bundle_idx,
             token_address
-        FROM ({{angstrom_decoding_assets(angstrom_contract_addr, earliest_block, blockchain)}})
+        FROM (
+            {% if assets_decoding_table is not none %}
+            SELECT * FROM {{ assets_decoding_table }}
+            {% else %}
+            {{ angstrom_decoding_assets(angstrom_contract_addr, earliest_block, blockchain) }}
+            {% endif %}
+        )
     ),
     pairs AS (
         SELECT 
@@ -23,7 +31,13 @@ WITH
             index0,
             index1,
             price_1over0
-        FROM ({{angstrom_decoding_pairs(angstrom_contract_addr, earliest_block, blockchain)}})
+        FROM (
+            {% if pairs_decoding_table is not none %}
+            SELECT * FROM {{ pairs_decoding_table }}
+            {% else %}
+            {{ angstrom_decoding_pairs(angstrom_contract_addr, earliest_block, blockchain) }}
+            {% endif %}
+        )
     ),
     _asset_in AS (
         SELECT

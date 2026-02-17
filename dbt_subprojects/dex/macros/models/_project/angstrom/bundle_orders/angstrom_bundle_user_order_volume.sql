@@ -4,7 +4,10 @@
         controller_v1_contract_addr,
         earliest_block,
         blockchain,
-        controller_pool_configured_log_topic0
+        controller_pool_configured_log_topic0,
+        user_orders_decoding_table = none,
+        assets_decoding_table = none,
+        pairs_decoding_table = none
     )
 %}
 
@@ -18,8 +21,24 @@ WITH
             if(ab.zero_for_one, asts.asset_in, asts.asset_out) AS asset_in,
             if(ab.zero_for_one, asts.asset_out, asts.asset_in) AS asset_out,
             asts.price_1over0
-        FROM ({{angstrom_decoding_user_orders(angstrom_contract_addr, earliest_block, blockchain)}}) AS ab
-        INNER JOIN ({{ angstrom_bundle_indexes_to_assets(angstrom_contract_addr, earliest_block, blockchain) }}) AS asts
+        FROM (
+            {% if user_orders_decoding_table is not none %}
+            SELECT * FROM {{ user_orders_decoding_table }}
+            {% else %}
+            {{ angstrom_decoding_user_orders(angstrom_contract_addr, earliest_block, blockchain) }}
+            {% endif %}
+        ) AS ab
+        INNER JOIN (
+            {{
+                angstrom_bundle_indexes_to_assets(
+                    angstrom_contract_addr,
+                    earliest_block,
+                    blockchain,
+                    assets_decoding_table,
+                    pairs_decoding_table
+                )
+            }}
+        ) AS asts
             ON asts.bundle_pair_index = ab.pair_index AND ab.block_number = asts.block_number AND ab.tx_hash = asts.tx_hash
     ),
     user_orders_with_pool AS (
@@ -54,5 +73,4 @@ FROM user_orders_with_priced_assets
 
 
 {% endmacro %}
-
 

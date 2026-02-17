@@ -5,7 +5,12 @@
         earliest_block,
         blockchain,
         controller_pool_configured_log_topic0,
-        bundle_tob_orders_table = none
+        bundle_tob_orders_table = none,
+        user_orders_decoding_table = none,
+        tob_orders_decoding_table = none,
+        pool_updates_decoding_table = none,
+        assets_decoding_table = none,
+        pairs_decoding_table = none
     )
 %}
 
@@ -32,7 +37,12 @@ WITH
                     controller_v1_contract_addr,
                     earliest_block,
                     blockchain,
-                    controller_pool_configured_log_topic0
+                    controller_pool_configured_log_topic0,
+                    tob_orders_decoding_table,
+                    pool_updates_decoding_table,
+                    user_orders_decoding_table,
+                    assets_decoding_table,
+                    pairs_decoding_table
                 )
             }}
             {% endif %}
@@ -59,7 +69,20 @@ WITH
             t.tx_hash AS tx_hash,
             ROW_NUMBER(*) over (partition by t.tx_hash order by p.pool_id, p.recipient, p.asset_in, p.asset_out, p.token_sold_amt, p.token_bought_amt, p.lp_fees_paid_asset_in, p.lp_fees_paid_asset_out, p.protocol_fees_paid_asset_in, p.protocol_fees_paid_asset_out) as evt_index
         FROM tx_data_cte t
-        INNER JOIN ({{ angstrom_bundle_user_order_volume(angstrom_contract_addr, controller_v1_contract_addr, earliest_block, blockchain, controller_pool_configured_log_topic0) }}) AS p 
+        INNER JOIN (
+            {{
+                angstrom_bundle_user_order_volume(
+                    angstrom_contract_addr,
+                    controller_v1_contract_addr,
+                    earliest_block,
+                    blockchain,
+                    controller_pool_configured_log_topic0,
+                    user_orders_decoding_table,
+                    assets_decoding_table,
+                    pairs_decoding_table
+                )
+            }}
+        ) AS p 
             ON t.tx_hash = p.tx_hash AND t.block_number = p.block_number
     ),
     user_orders AS (
