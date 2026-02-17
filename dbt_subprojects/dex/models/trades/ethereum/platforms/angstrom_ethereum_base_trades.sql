@@ -29,5 +29,3 @@ WITH dexs AS
 )
 
 SELECT * FROM dexs
-
--- refresh 
