@@ -263,6 +263,7 @@ models:
             - period
             - evt_tx_hash
             - token
+            - amount_token
     columns:
       - name: blockchain
         description: "Blockchain where the transfer occurred"

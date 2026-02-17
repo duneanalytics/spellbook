@@ -4,7 +4,7 @@
 	materialized='incremental',
 	file_format='delta',
 	incremental_strategy='merge',
-	unique_key=['blockchain', 'period', 'evt_tx_hash', 'token'],
+	unique_key=['blockchain', 'period', 'evt_tx_hash', 'token', 'amount_token'],
 	incremental_predicates=[incremental_predicate('DBT_INTERNAL_DEST.period')],
 ) }}
 
@@ -312,7 +312,7 @@ select
 	, base.period
 	, base.evt_tx_hash
 	, base.token
-	, max(base.amount_token) as amount_token
+	, base.amount_token
 from
 	(
 		select
@@ -376,4 +376,4 @@ group by
 	, base.period
 	, base.evt_tx_hash
 	, base.token
-
+    , base.amount_token
