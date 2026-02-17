@@ -13,14 +13,14 @@
 -- extended list: new stablecoin addresses added after the core list was frozen
 -- add new stablecoins here (not in tokens_sonic_erc20_stablecoins_core)
 
-select '{{chain}}' as blockchain, contract_address
+select '{{chain}}' as blockchain, contract_address, currency
 from (values
 
-     (0x0000000000000000000000000000000000000000)
+     (0x0000000000000000000000000000000000000000, 'USD')
 
      /* rebasing / interest accruing tokens
      (0x6646248971427b80ce531bdd793e2eb859347e55)  -- waSonUSDC (wrapped aave)
      */
 
-) as temp_table (contract_address)
+) as temp_table (contract_address, currency)
 where contract_address != 0x0000000000000000000000000000000000000000

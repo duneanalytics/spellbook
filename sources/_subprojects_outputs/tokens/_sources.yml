@@ -121,6 +121,8 @@ sources:
             data_type: integer
           - name: name
             data_type: varchar
+          - name: currency
+            data_type: varchar
       - name: rwa
         columns:
           - name: blockchain
@@ -162,6 +164,22 @@ sources:
             data_type: integer
           - name: name
             data_type: varchar
+      - name: erc20_stablecoins_core
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: currency
+            data_type: varchar
+      - name: erc20_stablecoins_extended
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: currency
+            data_type: varchar
 
   - name: tokens_avalanche_c
     tables:
@@ -187,6 +205,22 @@ sources:
           - name: decimals
             data_type: integer
           - name: name
+            data_type: varchar
+      - name: erc20_stablecoins_core
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: currency
+            data_type: varchar
+      - name: erc20_stablecoins_extended
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: currency
             data_type: varchar
       
 
@@ -216,6 +250,22 @@ sources:
             data_type: integer
           - name: name
             data_type: varchar
+      - name: erc20_stablecoins_core
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: currency
+            data_type: varchar
+      - name: erc20_stablecoins_extended
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: currency
+            data_type: varchar
 
   - name: tokens_bnb
     tables:
@@ -243,6 +293,22 @@ sources:
             data_type: integer
           - name: name
             data_type: varchar
+      - name: erc20_stablecoins_core
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: currency
+            data_type: varchar
+      - name: erc20_stablecoins_extended
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: currency
+            data_type: varchar
 
   - name: tokens_blast
     tables:
@@ -259,6 +325,22 @@ sources:
           - name: decimals
             data_type: integer
           - name: name
+            data_type: varchar
+      - name: erc20_stablecoins_core
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: currency
+            data_type: varchar
+      - name: erc20_stablecoins_extended
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: currency
             data_type: varchar
 
   - name: tokens_celo
@@ -305,6 +387,22 @@ sources:
             data_type: integer
           - name: name
             data_type: varchar
+      - name: erc20_stablecoins_core
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: currency
+            data_type: varchar
+      - name: erc20_stablecoins_extended
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: currency
+            data_type: varchar
       - name: rwa
         columns:
           - name: blockchain
@@ -346,6 +444,22 @@ sources:
             data_type: integer
           - name: name
             data_type: varchar
+      - name: erc20_stablecoins_core
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: currency
+            data_type: varchar
+      - name: erc20_stablecoins_extended
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: currency
+            data_type: varchar
 
   - name: tokens_goerli
     tables:
@@ -384,6 +498,22 @@ sources:
             data_type: integer
           - name: name
             data_type: varchar
+      - name: erc20_stablecoins_core
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: currency
+            data_type: varchar
+      - name: erc20_stablecoins_extended
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: currency
+            data_type: varchar
 
   - name: tokens_linea
     tables:
@@ -409,6 +539,22 @@ sources:
             data_type: integer
           - name: name
             data_type: varchar
+      - name: erc20_stablecoins_core
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: currency
+            data_type: varchar
+      - name: erc20_stablecoins_extended
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: currency
+            data_type: varchar
 
   - name: tokens_mantle
     tables:
@@ -425,6 +571,22 @@ sources:
           - name: decimals
             data_type: integer
           - name: name
+            data_type: varchar
+      - name: erc20_stablecoins_core
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: currency
+            data_type: varchar
+      - name: erc20_stablecoins_extended
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: currency
             data_type: varchar
 
   - name: tokens_optimism
@@ -503,6 +665,22 @@ sources:
             data_type: integer
           - name: name
             data_type: varchar
+      - name: erc20_stablecoins_core
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: currency
+            data_type: varchar
+      - name: erc20_stablecoins_extended
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: currency
+            data_type: varchar
 
 
   - name: tokens_polygon
@@ -529,6 +707,22 @@ sources:
           - name: decimals
             data_type: integer
           - name: name
+            data_type: varchar
+      - name: erc20_stablecoins_core
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: currency
+            data_type: varchar
+      - name: erc20_stablecoins_extended
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: currency
             data_type: varchar
 
   - name: tokens_scroll
@@ -582,6 +776,22 @@ sources:
             data_type: integer
           - name: name
             data_type: varchar
+      - name: erc20_stablecoins_core
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: currency
+            data_type: varchar
+      - name: erc20_stablecoins_extended
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: currency
+            data_type: varchar
 
   - name: tokens_zora
     tables:
@@ -610,6 +820,22 @@ sources:
           - name: decimals
             data_type: integer
           - name: name
+            data_type: varchar
+      - name: erc20_stablecoins_core
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: currency
+            data_type: varchar
+      - name: erc20_stablecoins_extended
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: currency
             data_type: varchar
 
   - name: tokens_yearn
@@ -659,6 +885,22 @@ sources:
           - name: decimals
             data_type: integer
           - name: name
+            data_type: varchar
+      - name: erc20_stablecoins_core
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: currency
+            data_type: varchar
+      - name: erc20_stablecoins_extended
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: currency
             data_type: varchar
 
   - name: tokens_hyperevm
