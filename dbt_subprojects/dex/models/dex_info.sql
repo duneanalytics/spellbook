@@ -246,4 +246,5 @@ FROM (VALUES
     , ('potatoswap', 'PotatoSwap', 'Direct', 'potatoswap')
     , ('kumbaya', 'Kumbaya', 'Direct', 'kumbaya')
     , ('prismfi', 'PrismFI', 'Direct', 'PrismFI')
+    , ('supernova', 'Supernova', 'Direct', 'SupernovaDEX')
 ) AS temp_table (project, name, marketplace_type, x_username)
