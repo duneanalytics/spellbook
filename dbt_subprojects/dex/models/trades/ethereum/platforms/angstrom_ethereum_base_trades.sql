@@ -18,7 +18,8 @@
         project = 'uniswap',
         version = '4',
         controller_pool_configured_log_topic0 = '0xf325a037d71efc98bc41dc5257edefd43a1d1162e206373e53af271a7a3224e9',
-        bundle_orders_table = ref('angstrom_ethereum_bundle_orders'),
+        bundle_tob_orders_table = ref('angstrom_ethereum_bundle_tob_orders'),
+        bundle_user_orders_table = ref('angstrom_ethereum_bundle_user_orders'),
         composable_orders_table = ref('angstrom_ethereum_composable_orders')
     )
 }}

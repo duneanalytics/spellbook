@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: angstrom_ethereum_bundle_orders
+  - name: angstrom_ethereum_bundle_tob_orders
     meta:
       blockchain: ethereum
       sector: dex
@@ -9,7 +9,22 @@ models:
     config:
       tags: ['ethereum', 'ansgtrom', 'trades']
     description: >
-      Persistent intermediate table with decoded Angstrom bundle orders on ethereum.
+      Persistent intermediate table with decoded Angstrom top-of-block bundle orders on ethereum.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+
+  - name: angstrom_ethereum_bundle_user_orders
+    meta:
+      blockchain: ethereum
+      sector: dex
+      contributors: jnoorchashm37
+    config:
+      tags: ['ethereum', 'ansgtrom', 'trades']
+    description: >
+      Persistent intermediate table with decoded Angstrom user bundle orders on ethereum.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

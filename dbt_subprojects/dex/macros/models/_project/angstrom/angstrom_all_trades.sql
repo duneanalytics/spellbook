@@ -10,8 +10,10 @@
         PoolManager_call_Swap = null,
         PoolManager_evt_Swap = null,
         taker_column_name = null,
-        bundle_orders_table = null,
-        composable_orders_table = null
+        bundle_orders_table = none,
+        bundle_tob_orders_table = none,
+        bundle_user_orders_table = none,
+        composable_orders_table = none
     )
 %}
 
@@ -21,6 +23,12 @@ WITH
         {% if bundle_orders_table is not none %}
         SELECT *
         FROM {{ bundle_orders_table }}
+        {% elif bundle_tob_orders_table is not none and bundle_user_orders_table is not none %}
+        SELECT *
+        FROM {{ bundle_tob_orders_table }}
+        UNION ALL
+        SELECT *
+        FROM {{ bundle_user_orders_table }}
         {% else %}
         SELECT * 
         FROM ({{ angstrom_bundle_orders(angstrom_contract_addr, controller_v1_contract_addr, earliest_block, blockchain, controller_pool_configured_log_topic0) }})
