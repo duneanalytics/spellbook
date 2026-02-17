@@ -8,7 +8,7 @@
 	incremental_predicates=[incremental_predicate('DBT_INTERNAL_DEST.period')],
 ) }}
 
-{% set project_start_date = '2026-01-01' %}
+{% set project_start_date = '2020-12-17' %}
 
 with tokens as (
 	select
