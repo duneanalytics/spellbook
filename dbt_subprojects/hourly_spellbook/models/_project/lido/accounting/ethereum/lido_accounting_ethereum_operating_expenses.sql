@@ -4,7 +4,7 @@
 	materialized='incremental',
 	file_format='delta',
 	incremental_strategy='merge',
-	unique_key=['blockchain', 'period', 'evt_tx_hash', 'token'],
+	unique_key=['blockchain', 'period', 'evt_tx_hash', 'token', 'amount_token'],
 	incremental_predicates=[incremental_predicate('DBT_INTERNAL_DEST.period')],
 ) }}
 
@@ -251,7 +251,7 @@ select
 	, o.evt_block_time as period
 	, o.evt_tx_hash
 	, o.contract_address as token
-	, max(o.value) as amount_token
+	, o.value as amount_token
 from
 	operating_expenses_txns as o
 where
@@ -262,3 +262,4 @@ group by
 	, o.evt_block_time
 	, o.evt_tx_hash
 	, o.contract_address
+    , o.value
