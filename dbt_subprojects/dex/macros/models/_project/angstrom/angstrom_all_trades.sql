@@ -9,19 +9,31 @@
         version = null,
         PoolManager_call_Swap = null,
         PoolManager_evt_Swap = null,
-        taker_column_name = null
+        taker_column_name = null,
+        bundle_orders_table = null,
+        composable_orders_table = null
     )
 %}
 
 
 WITH
     bundle_orders AS (
+        {% if bundle_orders_table is not none %}
+        SELECT *
+        FROM {{ bundle_orders_table }}
+        {% else %}
         SELECT * 
         FROM ({{ angstrom_bundle_orders(angstrom_contract_addr, controller_v1_contract_addr, earliest_block, blockchain, controller_pool_configured_log_topic0) }})
+        {% endif %}
     ),
     composable_orders AS (
+        {% if composable_orders_table is not none %}
+        SELECT *
+        FROM {{ composable_orders_table }}
+        {% else %}
         SELECT *
         FROM ({{ angstrom_composable_trades(angstrom_contract_addr, controller_v1_contract_addr, earliest_block, blockchain, controller_pool_configured_log_topic0, PoolManager_call_Swap, PoolManager_evt_Swap, taker_column_name) }})
+        {% endif %}
     )
 SELECT
     '{{ blockchain }}' AS blockchain,
@@ -45,4 +57,3 @@ FROM bundle_orders
 
 
 {% endmacro %}
-

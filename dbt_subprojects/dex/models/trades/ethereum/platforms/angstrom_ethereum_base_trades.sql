@@ -1,10 +1,5 @@
 {{ config(
     schema = 'angstrom_ethereum'
-    , pre_hook = [
-        "SET SESSION query_max_stage_count = 1000",
-        "SET SESSION max_recursion_depth = 35",
-        "SET SESSION distinct_aggregations_strategy = 'single_step'"
-      ]
     , alias = 'base_trades'
     , materialized = 'incremental'
     , file_format = 'delta'
@@ -14,10 +9,7 @@
     )
 }}
 
-
-WITH dexs AS
-(
-    {{
+{{
     angstrom_all_trades(
         angstrom_contract_addr = '0x0000000aa232009084Bd71A5797d089AA4Edfad4',
         controller_v1_contract_addr = '0x1746484EA5e11C75e009252c102C8C33e0315fD4',
@@ -26,10 +18,7 @@ WITH dexs AS
         project = 'uniswap',
         version = '4',
         controller_pool_configured_log_topic0 = '0xf325a037d71efc98bc41dc5257edefd43a1d1162e206373e53af271a7a3224e9',
-        PoolManager_call_Swap = source('uniswap_v4_ethereum', 'PoolManager_call_Swap'),
-        PoolManager_evt_Swap = source('uniswap_v4_ethereum', 'PoolManager_evt_Swap')
+        bundle_orders_table = ref('angstrom_ethereum_bundle_orders'),
+        composable_orders_table = ref('angstrom_ethereum_composable_orders')
     )
-    }}
-)
-
-SELECT * FROM dexs
+}}
