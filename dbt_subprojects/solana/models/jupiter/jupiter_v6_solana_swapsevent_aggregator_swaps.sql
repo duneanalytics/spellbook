@@ -135,22 +135,47 @@ WITH route_calls AS (
         {% endif %}
 )
 
+, joined AS (
+    SELECT
+          a.block_time
+        , CAST(date_trunc('month', a.block_time) AS DATE) AS block_month
+        , a.block_slot
+        , a.tx_index
+        , a.tx_id
+        , b.amm
+        , b.outer_instruction_index
+        , b.inner_instruction_index
+        , a.input_mint
+        , a.input_amount
+        , a.output_mint
+        , a.output_amount
+    FROM swap_amounts a
+    INNER JOIN amms_involved b
+        ON  a.block_slot = b.block_slot
+        AND a.tx_index = b.tx_index
+        AND a.outer_instruction_index = b.outer_instruction_index
+        AND a.swap_order = b.rnk
+)
+
 SELECT
-      a.block_time
-    , CAST(date_trunc('month', a.block_time) AS DATE) AS block_month
-    , a.block_slot
-    , a.tx_index
-    , a.tx_id
-    , b.amm
-    , b.outer_instruction_index
-    , b.inner_instruction_index
-    , a.input_mint
-    , a.input_amount
-    , a.output_mint
-    , a.output_amount
-FROM swap_amounts a
-INNER JOIN amms_involved b
-    ON  a.block_slot = b.block_slot
-    AND a.tx_index = b.tx_index
-    AND a.outer_instruction_index = b.outer_instruction_index
-    AND a.swap_order = b.rnk
+      max(block_time) AS block_time
+    , block_month
+    , max(block_slot) AS block_slot
+    , max(tx_index) AS tx_index
+    , tx_id
+    , amm
+    , outer_instruction_index
+    , inner_instruction_index
+    , input_mint
+    , max(input_amount) AS input_amount
+    , output_mint
+    , max(output_amount) AS output_amount
+FROM joined
+GROUP BY
+      block_month
+    , amm
+    , outer_instruction_index
+    , inner_instruction_index
+    , tx_id
+    , input_mint
+    , output_mint
