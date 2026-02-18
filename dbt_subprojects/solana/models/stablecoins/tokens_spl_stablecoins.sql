@@ -14,6 +14,7 @@
 select
   s.blockchain,
   s.token_mint_address,
+  s.currency,
   m.backing,
   coalesce(fungible.symbol, m.symbol) as symbol,
   coalesce(fungible.decimals, m.decimals) as decimals,
@@ -22,7 +23,8 @@ from (
   {% for chain in chains %}
   select
     blockchain,
-    token_mint_address
+    token_mint_address,
+    currency
   from {{ ref('tokens_' ~ chain ~ '_spl_stablecoins') }}
   {% if not loop.last %}
   union all
