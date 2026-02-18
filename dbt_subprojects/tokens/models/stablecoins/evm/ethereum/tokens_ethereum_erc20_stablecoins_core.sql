@@ -50,7 +50,6 @@ from (values
      (0x865377367054516e17014ccded1e7d814edc9ce4, 'USD'), -- DOLA
      (0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b, 'USD'), -- BOB
      (0x956f47f50a910163d8bf957cf5846d573e7f87ca, 'USD'), -- FEI
-     (0x9a1997c130f4b2997166975d9aff92797d5134c2, 'USD'), -- USDap
      (0x03ab458634910aad20ef5f1c8ee96f1d6ac54919, 'USD'), -- RAI
      (0x674c6ad92fd080e4004b2312b45f796a192d27a0, 'USD'), -- USDN
      (0x866a2bf4e572cbcf37d5071a7a58503bfb36be1b, 'USD'), -- M
@@ -132,6 +131,7 @@ from (values
      (0x4274cd7277c7bb0806bd5fe84b9adae466a8da0a, 'USD'), -- YUSD
      (0xde17a000ba631c5d7c2bd9fb692efea52d90dee2, 'USD'), -- USDN
      (0xc83e27f270cce0a3a3a29521173a83f402c1768b, 'USD'), -- USDQ
-     (0x9cf12ccd6020b6888e4d4c4e4c7aca33c1eb91f8, 'USD')  -- USDaf
+     (0x9cf12ccd6020b6888e4d4c4e4c7aca33c1eb91f8, 'USD'), -- USDaf
+     (0x7c135549504245b5eae64fc0e99fa5ebabb8e35d, 'USD')  -- FIDD
 
 ) as temp_table (contract_address, currency)
