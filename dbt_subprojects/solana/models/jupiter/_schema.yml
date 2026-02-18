@@ -146,6 +146,66 @@ models:
         solana aggregator swaps for jup v6
     columns: *aggregator_swaps_columns
 
+  - name: jupiter_v6_solana_swapsevent_aggregator_swaps
+    data_tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - block_month
+          - amm
+          - outer_instruction_index
+          - inner_instruction_index
+          - tx_id
+          - output_mint
+          - input_mint
+    meta:
+      blockchain: solana
+      contributors: [Eekeguy]
+    config:
+      tags: ['solana','jupiter','swaps']
+    description: >
+        solana aggregator swaps for jup v6 using SwapsEvent decoder (SwapEventV2)
+    columns:
+      - name: amm
+        description: program id of amm routed through
+      - name: amm_name
+        description: name of amm routed through
+      - name: token_pair
+        description: token pair routed through
+      - name: input_symbol
+        description: symbol of token sold
+      - name: input_mint
+        description: token mint address of token sold
+      - name: input_amount
+        description: amount of token sold raw
+      - name: input_decimals
+        description: decimals of token sold
+      - name: input_usd
+        description: usd value of token sold
+      - name: output_symbol
+        description: symbol of token bought
+      - name: output_mint
+        description: token mint address of token bought
+      - name: output_amount
+        description: amount of token bought raw
+      - name: output_usd
+        description: usd value of token bought
+      - name: output_decimals
+        description: decimals of token bought
+      - name: outer_instruction_index
+        description: outer instruction index of the swap
+      - name: inner_instruction_index
+        description: inner instruction index of the swap
+      - name: tx_id
+        description: id of the transaction
+      - name: block_slot
+        description: slot number of the transaction
+      - name: block_time
+        description: block time of the transaction
+      - name: block_month
+        description: block month of the transaction
+      - name: jup_version
+        description: version of jupiter aggregator used for the swap
+
   - name: jupiter_solana_aggregator_swaps
     data_tests:
     - dbt_utils.unique_combination_of_columns:
