@@ -244,6 +244,7 @@ FROM (VALUES
     , ('kuru', 'Kuru', 'Direct', 'kuru')
     , ('pinot', 'Pinot', 'Direct', 'pinot')
     , ('potatoswap', 'PotatoSwap', 'Direct', 'potatoswap')
+    , ('elfomofi', 'ElfomoFi', 'Direct', 'elfomo_fi')
     , ('kumbaya', 'Kumbaya', 'Direct', 'kumbaya')
     , ('prismfi', 'PrismFI', 'Direct', 'PrismFI')
     , ('supernova', 'Supernova', 'Direct', 'SupernovaDEX')
