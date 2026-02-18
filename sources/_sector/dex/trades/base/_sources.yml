@@ -244,3 +244,6 @@ sources:
       - name: positionmanager_v2_evt_hookswap
       - name: positionmanager_v2_evt_hookfee
       - name: positionmanager_v2_evt_poolswap
+  - name: elfomofi_base
+    tables:
+      - name: ElfomoFi_evt_ElfomoTrade
