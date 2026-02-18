@@ -10,7 +10,7 @@ select
   t.evt_index,
   t.trace_address,
   t.token_standard,
-  t.contract_address as token_address,
+  t.contract_address_varchar as token_address,
   t.symbol as token_symbol,
   s.currency,
   t.amount_raw,
