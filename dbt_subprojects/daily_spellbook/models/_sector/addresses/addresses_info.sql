@@ -149,36 +149,26 @@ FROM data
 
 {% else %}
 
+with addresses_in_delta as (
+	select distinct
+		address
+		, address_prefix
+	from (
+		{% for addresses_model in addresses_models %}
+		select
+			address
+			, address_prefix
+		from {{ addresses_model[1] }}
+		where {{ incremental_predicate('last_seen') }}
+		{% if not loop.last %}
+		union all
+		{% endif %}
+		{% endfor %}
+	)
+)
 
-
-WITH to_update AS (
-    SELECT DISTINCT am.address
-    , am.address_prefix
-    FROM (
-        {% for addresses_model in addresses_models %}
-        (SELECT address
-        , address_prefix
-        , last_seen
-        , '{{ addresses_model[0] }}' AS blockchain
-        FROM {{ addresses_model[1] }}
-        WHERE {{ incremental_predicate('last_seen') }}
-        )
-        {% if not loop.last %}
-        UNION ALL
-        {% endif %}
-        {% endfor %}
-        ) am
-    LEFT JOIN {{ this }} t
-        ON am.address = t.address
-        AND am.address_prefix = t.address_prefix
-    WHERE t.address IS NULL
-        OR ((contains(t.blockchains, am.blockchain) = FALSE))
-        OR (CAST(t.chain_stats[am.blockchain]['last_seen'] AS timestamp) <= am.last_seen)
-    GROUP BY 1, 2
-    )
-
-
-SELECT address
+select
+	address
 , address_prefix
 , array_agg(blockchain) AS blockchains
 , SUM(executed_tx_count) AS executed_tx_count
@@ -247,7 +237,7 @@ FROM (
     , last_seen
     , last_seen_block
     FROM {{ addresses_model[1] }}
-    INNER JOIN to_update USING (address, address_prefix)
+	inner join addresses_in_delta using (address, address_prefix)
     WHERE 1=1
     {% if not loop.last %}
     UNION ALL
