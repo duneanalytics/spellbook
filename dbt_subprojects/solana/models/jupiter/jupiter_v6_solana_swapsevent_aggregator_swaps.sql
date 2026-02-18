@@ -78,15 +78,10 @@ WITH route_calls AS (
         {% endif %}
 ),
 
-amm_list AS (
-    SELECT DISTINCT amm
-    FROM {{ source('jupiter_v6_solana', 'jupiter_evt_swapevent') }}
-    WHERE
-        {% if is_incremental() %}
-        {{ incremental_predicate('evt_block_time') }}
-        {% else %}
-        evt_block_time >= TIMESTAMP '{{ project_start_date }}'
-        {% endif %}
+amm_list AS ( ---this seems like the only reliable way to track all AMMs routing through Jupiter — new ones keep getting added and old ones can reappear
+    select DISTINCT amm
+from {{ source('jupiter_v6_solana', 'jupiter_evt_swapevent') }}
+where evt_block_date >= date('2025-09-17')
 ),
 
 amms_involved AS (
