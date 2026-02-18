@@ -1,6 +1,14 @@
 version: 2
 
 models:
+  - name: addresses_ethereum_stg_info
+    meta:
+      blockchain: ethereum
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for Ethereum. No target join - feeds addresses_ethereum_info merge."
+
   - name: addresses_ethereum_info
     meta:
       blockchain: ethereum
@@ -100,6 +108,14 @@ models:
         name: last_seen_block
         description: "The last block number this address was seen on"
 
+  - name: addresses_arbitrum_stg_info
+    meta:
+      blockchain: arbitrum
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for Arbitrum. No target join."
+
   - name: addresses_arbitrum_info
     meta:
       blockchain: arbitrum
@@ -142,6 +158,14 @@ models:
       - *last_tx_block_number
       - *last_seen
       - *last_seen_block
+
+  - name: addresses_avalanche_c_stg_info
+    meta:
+      blockchain: avalanche_c
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for Avalanche. No target join."
 
   - name: addresses_avalanche_c_info
     meta:
@@ -186,6 +210,14 @@ models:
       - *last_seen
       - *last_seen_block
 
+  - name: addresses_base_stg_info
+    meta:
+      blockchain: base
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for Base. No target join."
+
   - name: addresses_base_info
     meta:
       blockchain: base
@@ -228,6 +260,14 @@ models:
       - *last_tx_block_number
       - *last_seen
       - *last_seen_block
+
+  - name: addresses_blast_stg_info
+    meta:
+      blockchain: blast
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for Blast. No target join."
 
   - name: addresses_blast_info
     meta:
@@ -272,6 +312,14 @@ models:
       - *last_seen
       - *last_seen_block
 
+  - name: addresses_bnb_stg_info
+    meta:
+      blockchain: bnb
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for BNB. No target join."
+
   - name: addresses_bnb_info
     meta:
       blockchain: bnb
@@ -314,6 +362,14 @@ models:
       - *last_tx_block_number
       - *last_seen
       - *last_seen_block
+
+  - name: addresses_celo_stg_info
+    meta:
+      blockchain: celo
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for Celo. No target join."
 
   - name: addresses_celo_info
     meta:
@@ -358,6 +414,14 @@ models:
       - *last_seen
       - *last_seen_block
       
+  - name: addresses_gnosis_stg_info
+    meta:
+      blockchain: gnosis
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for Gnosis. No target join."
+
   - name: addresses_gnosis_info
     meta:
       blockchain: gnosis
@@ -400,6 +464,14 @@ models:
       - *last_tx_block_number
       - *last_seen
       - *last_seen_block
+
+  - name: addresses_optimism_stg_info
+    meta:
+      blockchain: optimism
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for Optimism. No target join."
 
   - name: addresses_optimism_info
     meta:
@@ -444,6 +516,14 @@ models:
       - *last_seen
       - *last_seen_block
 
+  - name: addresses_polygon_stg_info
+    meta:
+      blockchain: polygon
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for Polygon. No target join."
+
   - name: addresses_polygon_info
     meta:
       blockchain: polygon
@@ -486,6 +566,14 @@ models:
       - *last_tx_block_number
       - *last_seen
       - *last_seen_block
+
+  - name: addresses_scroll_stg_info
+    meta:
+      blockchain: scroll
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for Scroll. No target join."
 
   - name: addresses_scroll_info
     meta:
@@ -530,6 +618,14 @@ models:
       - *last_seen
       - *last_seen_block
 
+  - name: addresses_zora_stg_info
+    meta:
+      blockchain: zora
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for Zora. No target join."
+
   - name: addresses_zora_info
     meta:
       blockchain: zora
@@ -572,6 +668,14 @@ models:
       - *last_tx_block_number
       - *last_seen
       - *last_seen_block
+
+  - name: addresses_hyperevm_stg_info
+    meta:
+      blockchain: hyperevm
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for HyperEVM. No target join."
 
   - name: addresses_hyperevm_info
     meta:
@@ -616,6 +720,14 @@ models:
       - *last_seen
       - *last_seen_block
 
+  - name: addresses_monad_stg_info
+    meta:
+      blockchain: monad
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for Monad. No target join."
+
   - name: addresses_monad_info
     meta:
       blockchain: monad
@@ -658,6 +770,14 @@ models:
       - *last_tx_block_number
       - *last_seen
       - *last_seen_block
+
+  - name: addresses_sei_stg_info
+    meta:
+      blockchain: sei
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for Sei. No target join."
 
   - name: addresses_sei_info
     meta:
