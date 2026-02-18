@@ -7,7 +7,8 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['address']
+        partition_by = ['address_prefix'],
+        unique_key = ['address_prefix', 'address']
         )
 }}
 

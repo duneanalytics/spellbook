@@ -12,6 +12,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - address_prefix
             - address
     columns:
       - &blockchain
@@ -20,6 +21,9 @@ models:
       - &address
         name: address
         description: "Address"
+      - &address_prefix
+        name: address_prefix
+        description: "First byte of address as integer (0-255), for partitioning and join optimization"
       - &executed_tx_count
         name: executed_tx_count
         description: "The number of transactions executed by the address"
@@ -107,10 +111,12 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - address_prefix
             - address
     columns:
       - *blockchain
       - *address
+      - *address_prefix
       - *executed_tx_count
       - *max_nonce
       - *is_smart_contract
@@ -148,10 +154,12 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - address_prefix
             - address
     columns:
       - *blockchain
       - *address
+      - *address_prefix
       - *executed_tx_count
       - *max_nonce
       - *is_smart_contract
@@ -189,10 +197,12 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - address_prefix
             - address
     columns:
       - *blockchain
       - *address
+      - *address_prefix
       - *executed_tx_count
       - *max_nonce
       - *is_smart_contract
@@ -230,10 +240,12 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - address_prefix
             - address
     columns:
       - *blockchain
       - *address
+      - *address_prefix
       - *executed_tx_count
       - *max_nonce
       - *is_smart_contract
@@ -271,10 +283,12 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - address_prefix
             - address
     columns:
       - *blockchain
       - *address
+      - *address_prefix
       - *executed_tx_count
       - *max_nonce
       - *is_smart_contract
@@ -312,10 +326,12 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - address_prefix
             - address
     columns:
       - *blockchain
       - *address
+      - *address_prefix
       - *executed_tx_count
       - *max_nonce
       - *is_smart_contract
@@ -353,10 +369,12 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - address_prefix
             - address
     columns:
       - *blockchain
       - *address
+      - *address_prefix
       - *executed_tx_count
       - *max_nonce
       - *is_smart_contract
@@ -394,10 +412,12 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - address_prefix
             - address
     columns:
       - *blockchain
       - *address
+      - *address_prefix
       - *executed_tx_count
       - *max_nonce
       - *is_smart_contract
@@ -435,10 +455,12 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - address_prefix
             - address
     columns:
       - *blockchain
       - *address
+      - *address_prefix
       - *executed_tx_count
       - *max_nonce
       - *is_smart_contract
@@ -476,10 +498,12 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - address_prefix
             - address
     columns:
       - *blockchain
       - *address
+      - *address_prefix
       - *executed_tx_count
       - *max_nonce
       - *is_smart_contract
@@ -517,10 +541,12 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - address_prefix
             - address
     columns:
       - *blockchain
       - *address
+      - *address_prefix
       - *executed_tx_count
       - *max_nonce
       - *is_smart_contract
@@ -558,10 +584,12 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - address_prefix
             - address
     columns:
       - *blockchain
       - *address
+      - *address_prefix
       - *executed_tx_count
       - *max_nonce
       - *is_smart_contract
@@ -599,10 +627,12 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - address_prefix
             - address
     columns:
       - *blockchain
       - *address
+      - *address_prefix
       - *executed_tx_count
       - *max_nonce
       - *is_smart_contract
@@ -640,10 +670,12 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - address_prefix
             - address
     columns:
       - *blockchain
       - *address
+      - *address_prefix
       - *executed_tx_count
       - *max_nonce
       - *is_smart_contract

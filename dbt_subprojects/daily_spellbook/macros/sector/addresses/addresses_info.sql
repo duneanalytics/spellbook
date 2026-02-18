@@ -4,6 +4,7 @@
 
 WITH executed_txs AS (
     SELECT "from" AS address
+    , varbinary_to_integer(varbinary_substring("from", 1, 1)) AS address_prefix
     , COUNT(*) AS executed_tx_count
     , COALESCE(MAX(nonce), 0) AS max_nonce
     , MIN(block_time) AS first_tx_block_time
@@ -11,11 +12,12 @@ WITH executed_txs AS (
     , MIN(block_number) AS first_tx_block_number
     , MAX(block_number) AS last_tx_block_number
     FROM {{transactions}}
-    GROUP BY 1
+    GROUP BY 1, 2
     )
 
 , transfers AS (
     SELECT address
+    , address_prefix
     , SUM(COALESCE(tokens_received_count, 0)) AS tokens_received_count
     , SUM(COALESCE(tokens_received_tx_count, 0)) AS tokens_received_tx_count
     , SUM(COALESCE(tokens_sent_count, 0)) AS tokens_sent_count
@@ -30,6 +32,7 @@ WITH executed_txs AS (
     , SUM(sent_volume_usd) AS sent_volume_usd
     FROM (
         SELECT "from" AS address
+        , varbinary_to_integer(varbinary_substring("from", 1, 1)) AS address_prefix
         , 0 AS tokens_received_count
         , 0 AS tokens_received_tx_count
         , COUNT(*) AS tokens_sent_count
@@ -43,11 +46,12 @@ WITH executed_txs AS (
         , 0 AS received_volume_usd
         , SUM(amount_usd) AS sent_volume_usd
         FROM {{token_transfers}}
-        GROUP BY "from"
+        GROUP BY "from", 2
 
         UNION ALL
 
         SELECT "to" AS address
+        , varbinary_to_integer(varbinary_substring("to", 1, 1)) AS address_prefix
         , COUNT(*) AS tokens_received_count
         , COUNT(DISTINCT tx_hash) AS tokens_received_tx_count
         , 0 AS tokens_sent_count
@@ -61,23 +65,25 @@ WITH executed_txs AS (
         , SUM(amount_usd) AS received_volume_usd
         , 0 AS sent_volume_usd
         FROM {{token_transfers}}
-        GROUP BY "to"
+        GROUP BY "to", 2
         )
-    GROUP BY 1
+    GROUP BY 1, 2
     )
 
 , is_contract AS (
     SELECT ct.address
+    , varbinary_to_integer(varbinary_substring(ct.address, 1, 1)) AS address_prefix
     , true AS is_smart_contract
     , MAX_BY(c.namespace, c.created_at) AS namespace
     , MAX_BY(c.name, c.created_at) AS name
     FROM {{creation_traces}} ct
-    LEFT JOIN {{contracts}} c ON ct.address=c.address
-    GROUP BY 1
+    LEFT JOIN {{contracts}} c ON ct.address = c.address
+    GROUP BY 1, 2
     )
 
 SELECT '{{blockchain}}' AS blockchain
 , address
+, address_prefix
 , COALESCE(executed_tx_count, 0) AS executed_tx_count
 , max_nonce AS max_nonce
 , COALESCE(is_smart_contract, false) AS is_smart_contract
@@ -104,9 +110,13 @@ SELECT '{{blockchain}}' AS blockchain
 , ARRAY_MAX(FILTER(ARRAY[last_tx_block_time, last_transfer_block_time], x -> x IS NOT NULL)) AS last_seen
 , ARRAY_MAX(FILTER(ARRAY[last_tx_block_number, last_received_block_number, last_sent_block_number], x -> x IS NOT NULL)) AS last_seen_block
 FROM transfers
-FULL OUTER JOIN executed_txs USING (address)
-FULL OUTER JOIN {{ source('addresses_events_'~blockchain, 'first_funded_by')}} ffb USING (address)
-FULL OUTER JOIN is_contract ic USING (address)
+FULL OUTER JOIN executed_txs USING (address, address_prefix)
+FULL OUTER JOIN (
+    SELECT *
+    , varbinary_to_integer(varbinary_substring(address, 1, 1)) AS address_prefix
+    FROM {{ source('addresses_events_'~blockchain, 'first_funded_by') }}
+) AS ffb USING (address, address_prefix)
+FULL OUTER JOIN is_contract ic USING (address, address_prefix)
 WHERE address IS NOT NULL
 
 
@@ -117,6 +127,7 @@ WHERE address IS NOT NULL
 
 WITH executed_txs AS (
     SELECT txs."from" AS address
+    , varbinary_to_integer(varbinary_substring(txs."from", 1, 1)) AS address_prefix
     , COUNT(*) AS executed_tx_count
     , MAX(txs.nonce) AS max_nonce
     , MIN(txs.block_time) AS first_tx_block_time
@@ -124,15 +135,18 @@ WITH executed_txs AS (
     , MIN(txs.block_number) AS first_tx_block_number
     , MAX(txs.block_number) AS last_tx_block_number
     FROM {{transactions}} txs
-    LEFT JOIN {{this}} t ON txs."from"=t.address
+    LEFT JOIN {{this}} t
+        ON txs."from" = t.address
+        AND varbinary_to_integer(varbinary_substring(txs."from", 1, 1)) = t.address_prefix
     WHERE (t.address IS NULL OR txs.block_number > t.last_tx_block_number)
     AND {{ incremental_predicate('txs.block_time') }}
-    GROUP BY 1
+    GROUP BY 1, 2
     )
 
 
 , transfers AS (
     SELECT address
+    , address_prefix
     , SUM(COALESCE(tokens_received_count, 0)) AS tokens_received_count
     , SUM(COALESCE(tokens_received_tx_count, 0)) AS tokens_received_tx_count
     , SUM(COALESCE(tokens_sent_count, 0)) AS tokens_sent_count
@@ -147,6 +161,7 @@ WITH executed_txs AS (
     , SUM(sent_volume_usd) AS sent_volume_usd
     FROM (
         SELECT tt."from" AS address
+        , varbinary_to_integer(varbinary_substring(tt."from", 1, 1)) AS address_prefix
         , 0 AS tokens_received_count
         , 0 AS tokens_received_tx_count
         , COUNT(*) AS tokens_sent_count
@@ -160,14 +175,17 @@ WITH executed_txs AS (
         , 0 AS received_volume_usd
         , SUM(tt.amount_usd) AS sent_volume_usd
         FROM {{token_transfers}} tt
-        LEFT JOIN {{this}} t ON tt."from"=t.address
+        LEFT JOIN {{this}} t
+            ON tt."from" = t.address
+            AND varbinary_to_integer(varbinary_substring(tt."from", 1, 1)) = t.address_prefix
         WHERE (t.address IS NULL OR tt.block_time > t.last_transfer_block_time)
         AND {{ incremental_predicate('tt.block_time') }}
-        GROUP BY tt."from"
+        GROUP BY tt."from", 2
 
         UNION ALL
 
         SELECT tt."to" AS address
+        , varbinary_to_integer(varbinary_substring(tt."to", 1, 1)) AS address_prefix
         , COUNT(*) AS tokens_received_count
         , COUNT(DISTINCT tx_hash) AS tokens_received_tx_count
         , 0 AS tokens_sent_count
@@ -181,29 +199,35 @@ WITH executed_txs AS (
         , SUM(tt.amount_usd) AS received_volume_usd
         , 0 AS sent_volume_usd
         FROM {{token_transfers}} tt
-        LEFT JOIN {{this}} t ON tt."to"=t.address
+        LEFT JOIN {{this}} t
+            ON tt."to" = t.address
+            AND varbinary_to_integer(varbinary_substring(tt."to", 1, 1)) = t.address_prefix
         WHERE (t.address IS NULL OR tt.block_time > t.last_transfer_block_time)
         AND {{ incremental_predicate('tt.block_time') }}
-        GROUP BY "to"
+        GROUP BY "to", 2
         )
-    GROUP BY 1
+    GROUP BY 1, 2
     )
 
 , is_contract AS (
     SELECT ct.address
+    , varbinary_to_integer(varbinary_substring(ct.address, 1, 1)) AS address_prefix
     , true AS is_smart_contract
     , MAX_BY(c.namespace, c.created_at) AS namespace
     , MAX_BY(c.name, c.created_at) AS name
     FROM {{creation_traces}} ct
-    LEFT JOIN {{this}} t ON ct.address=t.address
-    LEFT JOIN {{contracts}} c ON ct.address=c.address
+    LEFT JOIN {{this}} t
+        ON ct.address = t.address
+        AND varbinary_to_integer(varbinary_substring(ct.address, 1, 1)) = t.address_prefix
+    LEFT JOIN {{contracts}} c ON ct.address = c.address
     WHERE (t.address IS NULL OR ct.block_number > t.last_tx_block_number)
     AND {{ incremental_predicate('ct.block_time') }}
-    GROUP BY 1
+    GROUP BY 1, 2
     )
 
 , new_data AS (
     SELECT address
+    , address_prefix
     , COALESCE(executed_tx_count, 0) AS executed_tx_count
     , max_nonce AS max_nonce
     , is_smart_contract
@@ -228,14 +252,19 @@ WITH executed_txs AS (
     , first_tx_block_number
     , last_tx_block_number
     FROM transfers t
-    FULL OUTER JOIN executed_txs USING (address)
-    LEFT JOIN {{ source('addresses_events_'~blockchain, 'first_funded_by')}} ffb USING (address)
-    LEFT JOIN is_contract  USING (address)
+    FULL OUTER JOIN executed_txs USING (address, address_prefix)
+    LEFT JOIN (
+        SELECT *
+        , varbinary_to_integer(varbinary_substring(address, 1, 1)) AS address_prefix
+        FROM {{ source('addresses_events_'~blockchain, 'first_funded_by') }}
+    ) AS ffb USING (address, address_prefix)
+    LEFT JOIN is_contract ic USING (address, address_prefix)
     WHERE address IS NOT NULL
     )
 
 SELECT '{{blockchain}}' AS blockchain
 , nd.address
+, nd.address_prefix
 , nd.executed_tx_count + t.executed_tx_count AS executed_tx_count
 , COALESCE(nd.max_nonce, t.max_nonce) AS max_nonce
 , COALESCE(nd.is_smart_contract, t.is_smart_contract) AS is_smart_contract
@@ -262,7 +291,9 @@ SELECT '{{blockchain}}' AS blockchain
 , ARRAY_MAX(FILTER(ARRAY[nd.last_tx_block_time, nd.last_transfer_block_time, t.last_seen], x -> x IS NOT NULL)) AS last_seen
 , ARRAY_MAX(FILTER(ARRAY[nd.last_tx_block_number, nd.last_received_block_number, nd.last_sent_block_number, t.last_seen_block], x -> x IS NOT NULL)) AS last_seen_block
 FROM new_data nd
-LEFT JOIN {{this}} t ON t.address=nd.address
+LEFT JOIN {{this}} t
+    ON t.address_prefix = nd.address_prefix
+    AND t.address = nd.address
 
 {% endif %}
 
