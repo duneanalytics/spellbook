@@ -78,3 +78,13 @@ sources:
     tables:
       - name: referral_call_claim
 
+  - name: jupiter_v6_solana
+    description: "Jupiter v6 decoded tables"
+    tables:
+      - name: jupiter_call_exact_out_route_v2
+      - name: jupiter_call_route_v2
+      - name: jupiter_call_shared_accounts_exact_out_route_v2
+      - name: jupiter_call_shared_accounts_route_v2
+      - name: jupiter_evt_swapevent
+      - name: jupiter_evt_swapsevent
+
