@@ -12,7 +12,7 @@
     )
 }}
 
-{% set project_start_date = '2024-10-01' %}
+{% set project_start_date = '2025-09-17' %}
 
 WITH route_calls AS (
     SELECT
