@@ -10,7 +10,7 @@ WITH executed_txs AS (
 	, MIN(txs.block_number) AS first_tx_block_number
 	, MAX(txs.block_number) AS last_tx_block_number
 	FROM {{ transactions }} AS txs
-	{% if is_incremental() -%}
+	{% if is_incremental() or true -%}
 	WHERE {{ incremental_predicate('txs.block_time') }}
 	{% endif -%}
 	GROUP BY 1, 2
@@ -47,7 +47,7 @@ WITH executed_txs AS (
 		, 0 AS received_volume_usd
 		, SUM(tt.amount_usd) AS sent_volume_usd
 		FROM {{ token_transfers }} AS tt
-		{% if is_incremental() -%}
+		{% if is_incremental() or true -%}
 		WHERE {{ incremental_predicate('tt.block_time') }}
 		{% endif -%}
 		GROUP BY tt."from", 2
@@ -69,7 +69,7 @@ WITH executed_txs AS (
 		, SUM(tt.amount_usd) AS received_volume_usd
 		, 0 AS sent_volume_usd
 		FROM {{ token_transfers }} AS tt
-		{% if is_incremental() -%}
+		{% if is_incremental() or true -%}
 		WHERE {{ incremental_predicate('tt.block_time') }}
 		{% endif -%}
 		GROUP BY tt."to", 2
@@ -85,7 +85,7 @@ WITH executed_txs AS (
 	, MAX_BY(c.name, c.created_at) AS name
 	FROM {{ creation_traces }} AS ct
 	LEFT JOIN {{ contracts }} AS c ON ct.address = c.address
-	{% if is_incremental() -%}
+	{% if is_incremental() or true -%}
 	WHERE {{ incremental_predicate('ct.block_time') }}
 	{% endif -%}
 	GROUP BY 1, 2
