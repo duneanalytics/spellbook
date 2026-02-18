@@ -54,7 +54,6 @@ from (values
      (0xaf44a1e76f56ee12adbb7ba8acd3cbd474888122, 'USD'), -- DUSD
      (0x17eafd08994305d8ace37efb82f1523177ec70ee, 'USD'), -- USDA
      (0x5a110fc00474038f6c02e89c707d638602ea44b5, 'USD'), -- USDF
-     (0xc4a1cc5ca8955a4650bdc109bddf110e33a1e344, 'USD'), -- RZUSD
      (0xb3b02e4a9fb2bd28cc2ff97b0ab3f6b3ec1ee9d2, 'USD'), -- USDf
      (0x40af3827f39d0eacbf4a168f8d4ee67c121d11c9, 'USD'), -- TUSD
      (0x2492d0006411af6c8bbb1c8afc1b0197350a79e9, 'USD'), -- USR
