@@ -165,46 +165,30 @@ models:
     description: >
         solana aggregator swaps for jup v6 using SwapsEvent decoder (SwapEventV2)
     columns:
-      - name: amm
-        description: program id of amm routed through
-      - name: amm_name
-        description: name of amm routed through
-      - name: token_pair
-        description: token pair routed through
-      - name: input_symbol
-        description: symbol of token sold
-      - name: input_mint
-        description: token mint address of token sold
-      - name: input_amount
-        description: amount of token sold raw
-      - name: input_decimals
-        description: decimals of token sold
-      - name: input_usd
-        description: usd value of token sold
-      - name: output_symbol
-        description: symbol of token bought
-      - name: output_mint
-        description: token mint address of token bought
-      - name: output_amount
-        description: amount of token bought raw
-      - name: output_usd
-        description: usd value of token bought
-      - name: output_decimals
-        description: decimals of token bought
-      - name: outer_instruction_index
-        description: outer instruction index of the swap
-      - name: inner_instruction_index
-        description: inner instruction index of the swap
-      - name: tx_id
-        description: id of the transaction
-      - name: block_slot
-        description: slot number of the transaction
       - name: block_time
         description: block time of the transaction
       - name: block_month
         description: block month of the transaction
-      - name: jup_version
-        description: version of jupiter aggregator used for the swap
+      - name: block_slot
+        description: slot number of the transaction
+      - name: tx_index
+        description: index of the transaction in the block
+      - name: tx_id
+        description: id of the transaction
+      - name: amm
+        description: program id of amm routed through
+      - name: outer_instruction_index
+        description: outer instruction index of the swap
+      - name: inner_instruction_index
+        description: inner instruction index of the swap
+      - name: input_mint
+        description: token mint address of token sold
+      - name: input_amount
+        description: amount of token sold raw
+      - name: output_mint
+        description: token mint address of token bought
+      - name: output_amount
+        description: amount of token bought raw
 
   - name: jupiter_solana_aggregator_swaps
     data_tests:

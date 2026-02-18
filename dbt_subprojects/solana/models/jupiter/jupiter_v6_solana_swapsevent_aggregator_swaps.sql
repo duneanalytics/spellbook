@@ -138,78 +138,24 @@ swap_amounts AS (
         {% else %}
         evt_block_time >= TIMESTAMP '{{ project_start_date }}'
         {% endif %}
-),
-
-swaps_with_amm AS (
-    SELECT
-        a.block_time,
-        a.block_slot,
-        a.tx_index,
-        a.tx_id,
-        b.amm,
-        b.outer_instruction_index,
-        b.inner_instruction_index,
-        a.input_mint,
-        a.input_amount,
-        a.output_mint,
-        a.output_amount
-    FROM swap_amounts a
-    INNER JOIN amms_involved b
-        ON a.block_slot = b.block_slot
-        AND a.tx_index = b.tx_index
-        AND a.outer_instruction_index = b.outer_instruction_index
-        AND a.swap_order = b.rnk
-),
-
-amms AS (
-    SELECT * FROM {{ ref('jupiter_solana_amms') }}
 )
 
 SELECT
-    l.amm,
-    am.amm_name,
-    CASE
-        WHEN l.input_mint > l.output_mint THEN tk_1.symbol || '-' || tk_2.symbol
-        ELSE tk_2.symbol || '-' || tk_1.symbol
-    END AS token_pair,
-    tk_1.symbol AS input_symbol,
-    l.input_mint,
-    l.input_amount,
-    tk_1.decimals AS input_decimals,
-    l.input_amount / pow(10, p_1.decimals) * p_1.price AS input_usd,
-    tk_2.symbol AS output_symbol,
-    l.output_mint,
-    l.output_amount,
-    l.output_amount / pow(10, p_2.decimals) * p_2.price AS output_usd,
-    tk_2.decimals AS output_decimals,
-    l.outer_instruction_index,
-    l.inner_instruction_index,
-    l.tx_id,
-    l.block_slot,
-    l.block_time,
-    CAST(date_trunc('month', l.block_time) AS DATE) AS block_month,
-    6 AS jup_version
-FROM swaps_with_amm l
-LEFT JOIN amms am ON am.amm = l.amm
-LEFT JOIN {{ source('tokens_solana', 'fungible') }} tk_1 ON tk_1.token_mint_address = l.input_mint
-LEFT JOIN {{ source('tokens_solana', 'fungible') }} tk_2 ON tk_2.token_mint_address = l.output_mint
-LEFT JOIN {{ source('prices', 'usd_forward_fill') }} p_1
-    ON p_1.blockchain = 'solana'
-    AND date_trunc('minute', l.block_time) = p_1.minute
-    AND l.input_mint = toBase58(p_1.contract_address)
-    {% if is_incremental() %}
-    AND {{ incremental_predicate('p_1.minute') }}
-    {% else %}
-    AND p_1.minute >= TIMESTAMP '{{ project_start_date }}'
-    {% endif %}
-LEFT JOIN {{ source('prices', 'usd_forward_fill') }} p_2
-    ON p_2.blockchain = 'solana'
-    AND date_trunc('minute', l.block_time) = p_2.minute
-    AND l.output_mint = toBase58(p_2.contract_address)
-    {% if is_incremental() %}
-    AND {{ incremental_predicate('p_2.minute') }}
-    {% else %}
-    AND p_2.minute >= TIMESTAMP '{{ project_start_date }}'
-    {% endif %}
-WHERE l.input_mint NOT IN ('4PfN9GDeF9yQ37qt9xCPsQ89qktp1skXfbsZ5Azk82Xi')
-    AND l.output_mint NOT IN ('4PfN9GDeF9yQ37qt9xCPsQ89qktp1skXfbsZ5Azk82Xi')
+    a.block_time,
+    CAST(date_trunc('month', a.block_time) AS DATE) AS block_month,
+    a.block_slot,
+    a.tx_index,
+    a.tx_id,
+    b.amm,
+    b.outer_instruction_index,
+    b.inner_instruction_index,
+    a.input_mint,
+    a.input_amount,
+    a.output_mint,
+    a.output_amount
+FROM swap_amounts a
+INNER JOIN amms_involved b
+    ON a.block_slot = b.block_slot
+    AND a.tx_index = b.tx_index
+    AND a.outer_instruction_index = b.outer_instruction_index
+    AND a.swap_order = b.rnk
