@@ -13,12 +13,10 @@
 }}
 
 {{
-	addresses_info(
+	addresses_info_join(
 		blockchain = blockchain,
-		transactions = source(blockchain, 'transactions'),
-		token_transfers = source('tokens_' + blockchain, 'transfers'),
-		creation_traces = source(blockchain, 'creation_traces'),
-		first_funded_by = source('addresses_events_' + blockchain, 'first_funded_by'),
-		contracts = source(blockchain, 'contracts'),
+		executed_txs_model = ref('addresses_linea_stg_info_executed_txs'),
+		transfers_model = ref('addresses_linea_stg_info_transfers'),
+		is_contract_model = ref('addresses_linea_stg_info_is_contract'),
 	)
 }}
