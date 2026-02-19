@@ -821,3 +821,203 @@ models:
       - *last_tx_block_number
       - *last_seen
       - *last_seen_block
+
+  - name: addresses_fantom_stg_info
+    meta:
+      blockchain: fantom
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for Fantom. No target join."
+
+  - name: addresses_fantom_info
+    meta:
+      blockchain: fantom
+      sector: addresses
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Fantom"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address_prefix
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *address_prefix
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *first_funded_by_block_time
+      - *tokens_received_count
+      - *tokens_received_tx_count
+      - *tokens_sent_count
+      - *tokens_sent_tx_count
+      - *first_transfer_block_time
+      - *last_transfer_block_time
+      - *first_received_block_number
+      - *last_received_block_number
+      - *first_sent_block_number
+      - *last_sent_block_number
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
+      - *last_seen_block
+
+  - name: addresses_linea_stg_info
+    meta:
+      blockchain: linea
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for Linea. No target join."
+
+  - name: addresses_linea_info
+    meta:
+      blockchain: linea
+      sector: addresses
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Linea"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address_prefix
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *address_prefix
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *first_funded_by_block_time
+      - *tokens_received_count
+      - *tokens_received_tx_count
+      - *tokens_sent_count
+      - *tokens_sent_tx_count
+      - *first_transfer_block_time
+      - *last_transfer_block_time
+      - *first_received_block_number
+      - *last_received_block_number
+      - *first_sent_block_number
+      - *last_sent_block_number
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
+      - *last_seen_block
+
+  - name: addresses_zkevm_stg_info
+    meta:
+      blockchain: zkevm
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for zkEVM. No target join."
+
+  - name: addresses_zkevm_info
+    meta:
+      blockchain: zkevm
+      sector: addresses
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on zkEVM"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address_prefix
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *address_prefix
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *first_funded_by_block_time
+      - *tokens_received_count
+      - *tokens_received_tx_count
+      - *tokens_sent_count
+      - *tokens_sent_tx_count
+      - *first_transfer_block_time
+      - *last_transfer_block_time
+      - *first_received_block_number
+      - *last_received_block_number
+      - *first_sent_block_number
+      - *last_sent_block_number
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
+      - *last_seen_block
+
+  - name: addresses_zksync_stg_info
+    meta:
+      blockchain: zksync
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for zkSync. No target join."
+
+  - name: addresses_zksync_info
+    meta:
+      blockchain: zksync
+      sector: addresses
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on zkSync"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address_prefix
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *address_prefix
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *first_funded_by_block_time
+      - *tokens_received_count
+      - *tokens_received_tx_count
+      - *tokens_sent_count
+      - *tokens_sent_tx_count
+      - *first_transfer_block_time
+      - *last_transfer_block_time
+      - *first_received_block_number
+      - *last_received_block_number
+      - *first_sent_block_number
+      - *last_sent_block_number
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
+      - *last_seen_block
