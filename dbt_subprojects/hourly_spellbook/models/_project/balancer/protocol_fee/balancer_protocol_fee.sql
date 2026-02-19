@@ -1,6 +1,8 @@
 {{ config(
     schema = 'balancer',
-    alias = 'protocol_fee'
+    alias = 'protocol_fee',
+    materialized = 'table',
+    file_format = 'delta'
     , post_hook='{{ hide_spells() }}'
     )
 }}
