@@ -33,6 +33,9 @@ from
 full outer join {{ executed_txs_model }} as et
 	on tr.address = et.address
 	and tr.address_prefix = et.address_prefix
+	{% if is_incremental() -%}
+	and {{ incremental_predicate('et.last_tx_block_time') }}
+	{% endif -%}
 left join (
 	select
 		*
@@ -45,6 +48,12 @@ left join (
 left join {{ is_contract_model }} as ic
 	on coalesce(tr.address, et.address) = ic.address
 	and coalesce(tr.address_prefix, et.address_prefix) = ic.address_prefix
+	{% if is_incremental() -%}
+	and {{ incremental_predicate('ic.block_time') }}
+	{% endif -%}
 where
 	coalesce(tr.address, et.address) is not null
+	{% if is_incremental() -%}
+	and {{ incremental_predicate('tr.last_transfer_block_time') }}
+	{% endif -%}
 {% endmacro %}
