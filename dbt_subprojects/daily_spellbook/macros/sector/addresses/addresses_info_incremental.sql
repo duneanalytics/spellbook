@@ -31,10 +31,10 @@ select
 	, array_max(filter(array[nd.last_tx_block_number, nd.last_received_block_number, nd.last_sent_block_number{% if is_incremental() %}, t.last_seen_block{% endif %}], x -> x is not null)) as last_seen_block
 from
 	{{ staging_model }} as nd
-	{% if is_incremental() -%}
+{% if is_incremental() -%}
 left join {{ this }} as t
 	on t.address_prefix = nd.address_prefix
 	and t.address = nd.address
 where {{ incremental_predicate('nd.last_seen') }}
-	{% endif -%}
+{% endif -%}
 {% endmacro %}
