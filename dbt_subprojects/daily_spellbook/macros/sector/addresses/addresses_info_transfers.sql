@@ -32,7 +32,7 @@ from (
 		, sum(tt.amount_usd) as sent_volume_usd
 	from
 		{{ token_transfers }} as tt
-	{% if is_incremental() -%}
+	{% if is_incremental() or true -%}
 	where {{ incremental_predicate('tt.block_time') }}
 	{% endif -%}
 	group by
@@ -58,7 +58,7 @@ from (
 		, 0 as sent_volume_usd
 	from
 		{{ token_transfers }} as tt
-	{% if is_incremental() -%}
+	{% if is_incremental() or true -%}
 	where {{ incremental_predicate('tt.block_time') }}
 	{% endif -%}
 	group by

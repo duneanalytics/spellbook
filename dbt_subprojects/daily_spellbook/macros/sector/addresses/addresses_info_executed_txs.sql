@@ -10,7 +10,7 @@ select
 	, max(txs.block_number) as last_tx_block_number
 from
 	{{ transactions }} as txs
-{% if is_incremental() -%}
+{% if is_incremental() or true -%}
 where {{ incremental_predicate('txs.block_time') }}
 {% endif -%}
 group by
