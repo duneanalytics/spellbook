@@ -1,6 +1,14 @@
 version: 2
 
 models:
+  - name: addresses_ethereum_stg_info
+    meta:
+      blockchain: ethereum
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for Ethereum. No target join - feeds addresses_ethereum_info merge."
+
   - name: addresses_ethereum_info
     meta:
       blockchain: ethereum
@@ -12,6 +20,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - address_prefix
             - address
     columns:
       - &blockchain
@@ -20,6 +29,9 @@ models:
       - &address
         name: address
         description: "Address"
+      - &address_prefix
+        name: address_prefix
+        description: "First byte of address as integer (0-255), for partitioning and join optimization"
       - &executed_tx_count
         name: executed_tx_count
         description: "The number of transactions executed by the address"
@@ -96,6 +108,14 @@ models:
         name: last_seen_block
         description: "The last block number this address was seen on"
 
+  - name: addresses_arbitrum_stg_info
+    meta:
+      blockchain: arbitrum
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for Arbitrum. No target join."
+
   - name: addresses_arbitrum_info
     meta:
       blockchain: arbitrum
@@ -107,10 +127,12 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - address_prefix
             - address
     columns:
       - *blockchain
       - *address
+      - *address_prefix
       - *executed_tx_count
       - *max_nonce
       - *is_smart_contract
@@ -136,6 +158,14 @@ models:
       - *last_tx_block_number
       - *last_seen
       - *last_seen_block
+
+  - name: addresses_avalanche_c_stg_info
+    meta:
+      blockchain: avalanche_c
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for Avalanche. No target join."
 
   - name: addresses_avalanche_c_info
     meta:
@@ -148,10 +178,12 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - address_prefix
             - address
     columns:
       - *blockchain
       - *address
+      - *address_prefix
       - *executed_tx_count
       - *max_nonce
       - *is_smart_contract
@@ -177,6 +209,14 @@ models:
       - *last_tx_block_number
       - *last_seen
       - *last_seen_block
+
+  - name: addresses_base_stg_info
+    meta:
+      blockchain: base
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for Base. No target join."
 
   - name: addresses_base_info
     meta:
@@ -189,10 +229,12 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - address_prefix
             - address
     columns:
       - *blockchain
       - *address
+      - *address_prefix
       - *executed_tx_count
       - *max_nonce
       - *is_smart_contract
@@ -218,6 +260,14 @@ models:
       - *last_tx_block_number
       - *last_seen
       - *last_seen_block
+
+  - name: addresses_blast_stg_info
+    meta:
+      blockchain: blast
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for Blast. No target join."
 
   - name: addresses_blast_info
     meta:
@@ -230,10 +280,12 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - address_prefix
             - address
     columns:
       - *blockchain
       - *address
+      - *address_prefix
       - *executed_tx_count
       - *max_nonce
       - *is_smart_contract
@@ -259,6 +311,14 @@ models:
       - *last_tx_block_number
       - *last_seen
       - *last_seen_block
+
+  - name: addresses_bnb_stg_info
+    meta:
+      blockchain: bnb
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for BNB. No target join."
 
   - name: addresses_bnb_info
     meta:
@@ -271,10 +331,12 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - address_prefix
             - address
     columns:
       - *blockchain
       - *address
+      - *address_prefix
       - *executed_tx_count
       - *max_nonce
       - *is_smart_contract
@@ -301,6 +363,14 @@ models:
       - *last_seen
       - *last_seen_block
 
+  - name: addresses_celo_stg_info
+    meta:
+      blockchain: celo
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for Celo. No target join."
+
   - name: addresses_celo_info
     meta:
       blockchain: celo
@@ -312,10 +382,12 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - address_prefix
             - address
     columns:
       - *blockchain
       - *address
+      - *address_prefix
       - *executed_tx_count
       - *max_nonce
       - *is_smart_contract
@@ -342,6 +414,14 @@ models:
       - *last_seen
       - *last_seen_block
       
+  - name: addresses_gnosis_stg_info
+    meta:
+      blockchain: gnosis
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for Gnosis. No target join."
+
   - name: addresses_gnosis_info
     meta:
       blockchain: gnosis
@@ -353,10 +433,12 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - address_prefix
             - address
     columns:
       - *blockchain
       - *address
+      - *address_prefix
       - *executed_tx_count
       - *max_nonce
       - *is_smart_contract
@@ -382,6 +464,14 @@ models:
       - *last_tx_block_number
       - *last_seen
       - *last_seen_block
+
+  - name: addresses_optimism_stg_info
+    meta:
+      blockchain: optimism
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for Optimism. No target join."
 
   - name: addresses_optimism_info
     meta:
@@ -394,10 +484,12 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - address_prefix
             - address
     columns:
       - *blockchain
       - *address
+      - *address_prefix
       - *executed_tx_count
       - *max_nonce
       - *is_smart_contract
@@ -423,6 +515,14 @@ models:
       - *last_tx_block_number
       - *last_seen
       - *last_seen_block
+
+  - name: addresses_polygon_stg_info
+    meta:
+      blockchain: polygon
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for Polygon. No target join."
 
   - name: addresses_polygon_info
     meta:
@@ -435,10 +535,12 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - address_prefix
             - address
     columns:
       - *blockchain
       - *address
+      - *address_prefix
       - *executed_tx_count
       - *max_nonce
       - *is_smart_contract
@@ -464,6 +566,14 @@ models:
       - *last_tx_block_number
       - *last_seen
       - *last_seen_block
+
+  - name: addresses_scroll_stg_info
+    meta:
+      blockchain: scroll
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for Scroll. No target join."
 
   - name: addresses_scroll_info
     meta:
@@ -476,10 +586,12 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - address_prefix
             - address
     columns:
       - *blockchain
       - *address
+      - *address_prefix
       - *executed_tx_count
       - *max_nonce
       - *is_smart_contract
@@ -505,6 +617,14 @@ models:
       - *last_tx_block_number
       - *last_seen
       - *last_seen_block
+
+  - name: addresses_zora_stg_info
+    meta:
+      blockchain: zora
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for Zora. No target join."
 
   - name: addresses_zora_info
     meta:
@@ -517,10 +637,12 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - address_prefix
             - address
     columns:
       - *blockchain
       - *address
+      - *address_prefix
       - *executed_tx_count
       - *max_nonce
       - *is_smart_contract
@@ -546,6 +668,14 @@ models:
       - *last_tx_block_number
       - *last_seen
       - *last_seen_block
+
+  - name: addresses_hyperevm_stg_info
+    meta:
+      blockchain: hyperevm
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for HyperEVM. No target join."
 
   - name: addresses_hyperevm_info
     meta:
@@ -558,10 +688,12 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - address_prefix
             - address
     columns:
       - *blockchain
       - *address
+      - *address_prefix
       - *executed_tx_count
       - *max_nonce
       - *is_smart_contract
@@ -587,6 +719,14 @@ models:
       - *last_tx_block_number
       - *last_seen
       - *last_seen_block
+
+  - name: addresses_monad_stg_info
+    meta:
+      blockchain: monad
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for Monad. No target join."
 
   - name: addresses_monad_info
     meta:
@@ -599,10 +739,12 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - address_prefix
             - address
     columns:
       - *blockchain
       - *address
+      - *address_prefix
       - *executed_tx_count
       - *max_nonce
       - *is_smart_contract
@@ -629,6 +771,14 @@ models:
       - *last_seen
       - *last_seen_block
 
+  - name: addresses_sei_stg_info
+    meta:
+      blockchain: sei
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for Sei. No target join."
+
   - name: addresses_sei_info
     meta:
       blockchain: sei
@@ -640,10 +790,212 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - address_prefix
             - address
     columns:
       - *blockchain
       - *address
+      - *address_prefix
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *first_funded_by_block_time
+      - *tokens_received_count
+      - *tokens_received_tx_count
+      - *tokens_sent_count
+      - *tokens_sent_tx_count
+      - *first_transfer_block_time
+      - *last_transfer_block_time
+      - *first_received_block_number
+      - *last_received_block_number
+      - *first_sent_block_number
+      - *last_sent_block_number
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
+      - *last_seen_block
+
+  - name: addresses_fantom_stg_info
+    meta:
+      blockchain: fantom
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for Fantom. No target join."
+
+  - name: addresses_fantom_info
+    meta:
+      blockchain: fantom
+      sector: addresses
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Fantom"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address_prefix
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *address_prefix
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *first_funded_by_block_time
+      - *tokens_received_count
+      - *tokens_received_tx_count
+      - *tokens_sent_count
+      - *tokens_sent_tx_count
+      - *first_transfer_block_time
+      - *last_transfer_block_time
+      - *first_received_block_number
+      - *last_received_block_number
+      - *first_sent_block_number
+      - *last_sent_block_number
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
+      - *last_seen_block
+
+  - name: addresses_linea_stg_info
+    meta:
+      blockchain: linea
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for Linea. No target join."
+
+  - name: addresses_linea_info
+    meta:
+      blockchain: linea
+      sector: addresses
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Linea"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address_prefix
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *address_prefix
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *first_funded_by_block_time
+      - *tokens_received_count
+      - *tokens_received_tx_count
+      - *tokens_sent_count
+      - *tokens_sent_tx_count
+      - *first_transfer_block_time
+      - *last_transfer_block_time
+      - *first_received_block_number
+      - *last_received_block_number
+      - *first_sent_block_number
+      - *last_sent_block_number
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
+      - *last_seen_block
+
+  - name: addresses_zkevm_stg_info
+    meta:
+      blockchain: zkevm
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for zkEVM. No target join."
+
+  - name: addresses_zkevm_info
+    meta:
+      blockchain: zkevm
+      sector: addresses
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on zkEVM"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address_prefix
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *address_prefix
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *first_funded_by_block_time
+      - *tokens_received_count
+      - *tokens_received_tx_count
+      - *tokens_sent_count
+      - *tokens_sent_tx_count
+      - *first_transfer_block_time
+      - *last_transfer_block_time
+      - *first_received_block_number
+      - *last_received_block_number
+      - *first_sent_block_number
+      - *last_sent_block_number
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
+      - *last_seen_block
+
+  - name: addresses_zksync_stg_info
+    meta:
+      blockchain: zksync
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Staging: address activity in incremental window for zkSync. No target join."
+
+  - name: addresses_zksync_info
+    meta:
+      blockchain: zksync
+      sector: addresses
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on zkSync"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address_prefix
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *address_prefix
       - *executed_tx_count
       - *max_nonce
       - *is_smart_contract
