@@ -1,5 +1,6 @@
 {% macro addresses_info_incremental(blockchain, staging_model) %}
 -- When incremental: merge staging (incremental window only) with target. When not: staging is full history, no target yet.
+-- comment to trigger build
 select
 	'{{ blockchain }}' as blockchain
 	, nd.address
