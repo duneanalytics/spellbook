@@ -37,7 +37,7 @@ from (
 	from
 		{{ token_transfers }} as tt
 	where cast(tt.block_time as date) < cast(now() as date)
-	{% if is_incremental() or true -%}
+	{% if is_incremental() -%}
 	and {{ incremental_predicate('cast(tt.block_time as date)') }}
 	{% endif -%}
 	group by
@@ -66,7 +66,7 @@ from (
 	from
 		{{ token_transfers }} as tt
 	where cast(tt.block_time as date) < cast(now() as date)
-	{% if is_incremental() or true -%}
+	{% if is_incremental() -%}
 	and {{ incremental_predicate('cast(tt.block_time as date)') }}
 	{% endif -%}
 	group by

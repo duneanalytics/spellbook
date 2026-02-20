@@ -14,7 +14,7 @@ select
 from
 	{{ transactions }} as txs
 where txs.block_date < cast(now() as date)
-{% if is_incremental() or true -%}
+{% if is_incremental() -%}
 and {{ incremental_predicate('txs.block_date') }}
 {% endif -%}
 group by

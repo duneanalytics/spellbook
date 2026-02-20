@@ -10,7 +10,7 @@ from
 	{{ creation_traces }} as ct
 left join {{ contracts }} as c
 	on ct.address = c.address
-{% if is_incremental() or true -%}
+{% if is_incremental() -%}
 where {{ incremental_predicate('ct.block_time') }}
 {% endif -%}
 group by
