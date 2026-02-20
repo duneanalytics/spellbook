@@ -146,3 +146,5 @@ models:
       tags: ['solana','dex']
     description: >
         pumpswap dex base trades on Solana with version_name
+  
+  - name: test_pumpswap_trades
