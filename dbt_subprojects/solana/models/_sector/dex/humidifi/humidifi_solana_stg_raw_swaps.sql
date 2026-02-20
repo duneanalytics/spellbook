@@ -11,9 +11,6 @@
   )
 }}
 
-{# In GitHub Actions CI, limit to last 7 days from today; else use var (default 0 = no cap). #}
-{% set initial_run_days = (7 if env_var('GITHUB_ACTIONS', '') == 'true' else (var('solana_amm_initial_run_days', 0) | int)) %}
-
 WITH swaps AS (
     SELECT
           block_slot
@@ -45,9 +42,6 @@ WITH swaps AS (
         AND {{ incremental_predicate('block_date') }}
         {% else -%}
         AND block_date >= DATE '2025-06-13'
-        {% if initial_run_days > 0 -%}
-        AND block_date > current_date - INTERVAL '1' DAY * {{ initial_run_days }}
-        {% endif -%}
         {% endif -%}
 )
 
