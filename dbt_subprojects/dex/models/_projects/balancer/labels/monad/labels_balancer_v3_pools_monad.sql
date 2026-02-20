@@ -73,7 +73,7 @@ WITH token_data AS (
         c.pool AS pool_id,
         t.tokens,
         0 AS weights,
-        cc.symbol,
+        cast(null as varchar) AS symbol,
         'LBP' AS pool_type
       FROM token_data c
       INNER JOIN {{ source('balancer_v3_monad', 'LBPoolFactory_call_create') }} cc
@@ -95,16 +95,37 @@ WITH token_data AS (
     ) zip 
           ),
 
-    settings AS (
+    pool_token_symbols AS (
+      SELECT
+        p.pool_id,
+        p.pool_type,
+        coalesce(t.symbol, '?') AS token_symbol
+      FROM pools p
+      LEFT JOIN {{ source('tokens', 'erc20') }} t ON p.token_address = t.contract_address
+        AND t.blockchain = 'monad'
+    ),
+
+    pool_symbols_derived AS (
       SELECT
         pool_id,
+        pool_type,
+        lower(array_join(array_agg(token_symbol ORDER BY token_symbol), '/')) AS derived_pool_symbol
+      FROM pool_token_symbols
+      WHERE pool_type = 'LBP'
+      GROUP BY pool_id, pool_type
+    ),
+
+    settings AS (
+      SELECT
+        p.pool_id,
         coalesce(t.symbol, '?') AS token_symbol,
-        normalized_weight,
-        p.symbol AS pool_symbol,
+        p.normalized_weight,
+        coalesce(p.symbol, ps.derived_pool_symbol) AS pool_symbol,
         p.pool_type
       FROM pools p
       LEFT JOIN {{ source('tokens', 'erc20') }} t ON p.token_address = t.contract_address
-      AND t.blockchain = 'monad'
+        AND t.blockchain = 'monad'
+      LEFT JOIN pool_symbols_derived ps ON p.pool_id = ps.pool_id AND p.pool_type = ps.pool_type
     )
 
 SELECT 
