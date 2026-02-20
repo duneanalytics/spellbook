@@ -1,7 +1,7 @@
 {{
   config(
-    schema = 'solfi_solana'
-    , alias = 'v2_base_trades'
+    schema = 'solfi_v2_solana'
+    , alias = 'base_trades'
     , partition_by = ['block_month']
     , materialized = 'incremental'
     , file_format = 'delta'

@@ -1,7 +1,7 @@
 {{
   config(
-    schema = 'goonfi_solana'
-    , alias = 'v2_stg_raw_swaps'
+    schema = 'goonfi_v2_solana'
+    , alias = 'stg_raw_swaps'
     , partition_by = ['block_month']
     , materialized = 'incremental'
     , file_format = 'delta'

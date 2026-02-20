@@ -1,7 +1,7 @@
 {{
   config(
-    schema = 'solfi_solana'
-    , alias = 'v2_trades'
+    schema = 'solfi_v2_solana'
+    , alias = 'trades'
     , materialized = 'view'
     , post_hook = '{{ hide_spells() }}'
   )
