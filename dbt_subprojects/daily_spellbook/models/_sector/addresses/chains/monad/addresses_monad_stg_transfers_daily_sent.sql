@@ -1,9 +1,9 @@
-{% set blockchain = 'bnb' %}
+{% set blockchain = 'monad' %}
 
 {{
 	config(
 		schema = 'addresses_' + blockchain,
-		alias = 'stg_transfers_daily',
+		alias = 'stg_transfers_daily_sent',
 		materialized = 'incremental',
 		file_format = 'delta',
 		incremental_strategy = 'merge',
@@ -14,8 +14,7 @@
 }}
 
 {{
-	addresses_stg_transfers_daily_union(
-		received_model = ref('addresses_' + blockchain + '_stg_transfers_daily_received'),
-		sent_model = ref('addresses_' + blockchain + '_stg_transfers_daily_sent'),
+	addresses_stg_transfers_daily_sent(
+		token_transfers = source('tokens_' + blockchain, 'transfers'),
 	)
 }}
