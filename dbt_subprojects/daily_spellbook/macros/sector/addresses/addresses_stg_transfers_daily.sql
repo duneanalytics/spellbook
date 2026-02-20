@@ -11,10 +11,10 @@ select
 	, 0 as tokens_sent_tx_count
 	, min(tt.block_time) as first_transfer_block_time
 	, max(tt.block_time) as last_transfer_block_time
-	, cast(null as bigint) as first_received_block_number
-	, cast(null as bigint) as last_received_block_number
-	, min(tt.block_number) as first_sent_block_number
-	, max(tt.block_number) as last_sent_block_number
+	, min(tt.block_number) as first_received_block_number
+	, max(tt.block_number) as last_received_block_number
+	, cast(null as bigint) as first_sent_block_number
+	, cast(null as bigint) as last_sent_block_number
 	, sum(tt.amount_usd) as received_volume_usd
 	, 0 as sent_volume_usd
 from
@@ -43,10 +43,10 @@ select
 	, count(distinct tt.tx_hash) as tokens_sent_tx_count
 	, min(tt.block_time) as first_transfer_block_time
 	, max(tt.block_time) as last_transfer_block_time
-	, min(tt.block_number) as first_received_block_number
-	, max(tt.block_number) as last_received_block_number
-	, cast(null as bigint) as first_sent_block_number
-	, cast(null as bigint) as last_sent_block_number
+	, cast(null as bigint) as first_received_block_number
+	, cast(null as bigint) as last_received_block_number
+	, min(tt.block_number) as first_sent_block_number
+	, max(tt.block_number) as last_sent_block_number
 	, 0 as received_volume_usd
 	, sum(tt.amount_usd) as sent_volume_usd
 from
