@@ -146,6 +146,50 @@ models:
         solana aggregator swaps for jup v6
     columns: *aggregator_swaps_columns
 
+  - name: jupiter_v6_solana_swapsevent_aggregator_swaps
+    data_tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - block_month
+          - amm
+          - outer_instruction_index
+          - inner_instruction_index
+          - tx_id
+          - output_mint
+          - input_mint
+    meta:
+      blockchain: solana
+      contributors: [Eekeguy]
+    config:
+      tags: ['solana','jupiter','swaps']
+    description: >
+        solana aggregator swaps for jup v6 using SwapsEvent decoder (SwapEventV2)
+    columns:
+      - name: block_time
+        description: block time of the transaction
+      - name: block_month
+        description: block month of the transaction
+      - name: block_slot
+        description: slot number of the transaction
+      - name: tx_index
+        description: index of the transaction in the block
+      - name: tx_id
+        description: id of the transaction
+      - name: amm
+        description: program id of amm routed through
+      - name: outer_instruction_index
+        description: outer instruction index of the swap
+      - name: inner_instruction_index
+        description: inner instruction index of the swap
+      - name: input_mint
+        description: token mint address of token sold
+      - name: input_amount
+        description: amount of token sold raw
+      - name: output_mint
+        description: token mint address of token bought
+      - name: output_amount
+        description: amount of token bought raw
+
   - name: jupiter_solana_aggregator_swaps
     data_tests:
     - dbt_utils.unique_combination_of_columns:
