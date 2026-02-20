@@ -20,7 +20,7 @@ select
 from
 	{{ token_transfers }} as tt
 where tt.block_date < cast(now() as date)
-{% if is_incremental() -%}
+{% if is_incremental() or true -%}
 and {{ incremental_predicate('tt.block_date') }}
 {% endif -%}
 group by
@@ -52,7 +52,7 @@ select
 from
 	{{ token_transfers }} as tt
 where tt.block_date < cast(now() as date)
-{% if is_incremental() -%}
+{% if is_incremental() or true -%}
 and {{ incremental_predicate('tt.block_date') }}
 {% endif -%}
 group by
@@ -101,7 +101,7 @@ from (
 		, r.sent_volume_usd
 	from
 		{{ received_model }} as r
-	{% if is_incremental() -%}
+	{% if is_incremental() or true -%}
 	where {{ incremental_predicate('r.block_date') }}
 	{% endif -%}
 	union all
@@ -124,7 +124,7 @@ from (
 		, s.sent_volume_usd
 	from
 		{{ sent_model }} as s
-	{% if is_incremental() -%}
+	{% if is_incremental() or true -%}
 	where {{ incremental_predicate('s.block_date') }}
 	{% endif -%}
 )
