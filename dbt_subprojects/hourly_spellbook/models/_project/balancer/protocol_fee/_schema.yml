@@ -14,6 +14,8 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
+            - blockchain
+            - version
             - pool_id
             - token_address
             - fee_type
