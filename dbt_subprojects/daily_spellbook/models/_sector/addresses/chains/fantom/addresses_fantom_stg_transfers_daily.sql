@@ -14,7 +14,8 @@
 }}
 
 {{
-	addresses_stg_transfers_daily(
-		token_transfers = source('tokens_' + blockchain, 'transfers'),
+	addresses_stg_transfers_daily_union(
+		received_model = ref('addresses_' + blockchain + '_stg_transfers_daily_received'),
+		sent_model = ref('addresses_' + blockchain + '_stg_transfers_daily_sent'),
 	)
 }}
