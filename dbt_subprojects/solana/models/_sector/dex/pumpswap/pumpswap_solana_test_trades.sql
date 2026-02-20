@@ -1,7 +1,7 @@
 {{
   config(
     schema = 'pumpswap_solana'
-    , alias = 'base_trades'
+    , alias = 'test_trades'
     , partition_by = ['block_month']
     , materialized = 'incremental'
     , file_format = 'delta'
