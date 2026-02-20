@@ -1,21 +1,36 @@
 {% macro addresses_info_join(blockchain, executed_txs_model, transfers_model, is_contract_model) %}
+{# Joins full-history aggregates (stg_transfers, stg_executed_txs) with is_contract and first_funded_by. No _dbt_updated_at — upstream is daily-then-agg full tables. #}
 with transfers as (
 	select
-		*
+		tr.address
+		, tr.address_prefix
+		, tr.tokens_received_count
+		, tr.tokens_received_tx_count
+		, tr.tokens_sent_count
+		, tr.tokens_sent_tx_count
+		, tr.first_transfer_block_time
+		, tr.last_transfer_block_time
+		, tr.first_received_block_number
+		, tr.last_received_block_number
+		, tr.first_sent_block_number
+		, tr.last_sent_block_number
+		, tr.received_volume_usd
+		, tr.sent_volume_usd
 	from
-		{{ transfers_model }}
-	{% if is_incremental() -%}
-	where {{ incremental_predicate('last_transfer_block_time') }}
-	{% endif -%}
+		{{ transfers_model }} as tr
 )
 , executed_txs as (
 	select
-		*
+		et.address
+		, et.address_prefix
+		, et.executed_tx_count
+		, et.max_nonce
+		, et.first_tx_block_time
+		, et.last_tx_block_time
+		, et.first_tx_block_number
+		, et.last_tx_block_number
 	from
-		{{ executed_txs_model }}
-	{% if is_incremental() -%}
-	where {{ incremental_predicate('last_tx_block_time') }}
-	{% endif -%}
+		{{ executed_txs_model }} as et
 )
 , ffb as (
 	select
@@ -29,9 +44,6 @@ with transfers as (
 		*
 	from
 		{{ is_contract_model }}
-	{% if is_incremental() -%}
-	where {{ incremental_predicate('block_time') }}
-	{% endif -%}
 )
 
 select
@@ -40,7 +52,7 @@ select
 	, coalesce(tr.address_prefix, et.address_prefix) as address_prefix
 	, coalesce(et.executed_tx_count, 0) as executed_tx_count
 	, et.max_nonce as max_nonce
-	, {% if is_incremental() %}ic.is_smart_contract{% else %}coalesce(ic.is_smart_contract, false){% endif %} as is_smart_contract
+	, coalesce(ic.is_smart_contract, false) as is_smart_contract
 	, ic.namespace as namespace
 	, ic.name as name
 	, ffb.first_funded_by as first_funded_by

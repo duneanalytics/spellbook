@@ -7,23 +7,39 @@ models:
       sector: addresses
     config:
       tags: ['staging', 'address']
-    description: "Staging: address activity in incremental window for Ethereum. Joins executed_txs, transfers, is_contract."
+    description: "View: join of stg_transfers, stg_executed_txs, is_contract, first_funded_by for Ethereum."
 
-  - name: addresses_ethereum_stg_info_executed_txs
+  - name: addresses_ethereum_stg_transfers_daily
     meta:
       blockchain: ethereum
       sector: addresses
     config:
       tags: ['staging', 'address']
-    description: "Staging: executed tx aggregation for Ethereum. Feeds stg_info."
+    description: "Incremental by block_date (full days only). Feeds stg_transfers."
 
-  - name: addresses_ethereum_stg_info_transfers
+  - name: addresses_ethereum_stg_executed_txs_daily
     meta:
       blockchain: ethereum
       sector: addresses
     config:
       tags: ['staging', 'address']
-    description: "Staging: token transfers aggregation for Ethereum. Feeds stg_info."
+    description: "Incremental by block_date (full days only). Feeds stg_executed_txs."
+
+  - name: addresses_ethereum_stg_transfers
+    meta:
+      blockchain: ethereum
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Full table: aggregate of stg_transfers_daily. Feeds stg_info."
+
+  - name: addresses_ethereum_stg_executed_txs
+    meta:
+      blockchain: ethereum
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Full table: aggregate of stg_executed_txs_daily. Feeds stg_info."
 
   - name: addresses_ethereum_stg_info_is_contract
     meta:
@@ -138,23 +154,39 @@ models:
       sector: addresses
     config:
       tags: ['staging', 'address']
-    description: "Staging: address activity in incremental window for Arbitrum. Joins executed_txs, transfers, is_contract."
+    description: "View: join of stg_transfers, stg_executed_txs, is_contract, first_funded_by for Arbitrum."
 
-  - name: addresses_arbitrum_stg_info_executed_txs
+  - name: addresses_arbitrum_stg_transfers_daily
     meta:
       blockchain: arbitrum
       sector: addresses
     config:
       tags: ['staging', 'address']
-    description: "Staging: executed tx aggregation for Arbitrum. Feeds stg_info."
+    description: "Incremental by block_date (full days only). Grain address, address_prefix, block_date. Feeds stg_transfers."
 
-  - name: addresses_arbitrum_stg_info_transfers
+  - name: addresses_arbitrum_stg_executed_txs_daily
     meta:
       blockchain: arbitrum
       sector: addresses
     config:
       tags: ['staging', 'address']
-    description: "Staging: token transfers aggregation for Arbitrum. Feeds stg_info."
+    description: "Incremental by block_date (full days only). Grain address, address_prefix, block_date. Feeds stg_executed_txs."
+
+  - name: addresses_arbitrum_stg_transfers
+    meta:
+      blockchain: arbitrum
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Full table: aggregate of stg_transfers_daily to address, address_prefix. Feeds stg_info."
+
+  - name: addresses_arbitrum_stg_executed_txs
+    meta:
+      blockchain: arbitrum
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Full table: aggregate of stg_executed_txs_daily to address, address_prefix. Feeds stg_info."
 
   - name: addresses_arbitrum_stg_info_is_contract
     meta:
@@ -215,22 +247,6 @@ models:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for Avalanche. Joins executed_txs, transfers, is_contract."
 
-  - name: addresses_avalanche_c_stg_info_executed_txs
-    meta:
-      blockchain: avalanche_c
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: executed tx aggregation for Avalanche. Feeds stg_info."
-
-  - name: addresses_avalanche_c_stg_info_transfers
-    meta:
-      blockchain: avalanche_c
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: token transfers aggregation for Avalanche. Feeds stg_info."
-
   - name: addresses_avalanche_c_stg_info_is_contract
     meta:
       blockchain: avalanche_c
@@ -289,22 +305,6 @@ models:
     config:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for Base. Joins executed_txs, transfers, is_contract."
-
-  - name: addresses_base_stg_info_executed_txs
-    meta:
-      blockchain: base
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: executed tx aggregation for Base. Feeds stg_info."
-
-  - name: addresses_base_stg_info_transfers
-    meta:
-      blockchain: base
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: token transfers aggregation for Base. Feeds stg_info."
 
   - name: addresses_base_stg_info_is_contract
     meta:
@@ -365,22 +365,6 @@ models:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for Blast. Joins executed_txs, transfers, is_contract."
 
-  - name: addresses_blast_stg_info_executed_txs
-    meta:
-      blockchain: blast
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: executed tx aggregation for Blast. Feeds stg_info."
-
-  - name: addresses_blast_stg_info_transfers
-    meta:
-      blockchain: blast
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: token transfers aggregation for Blast. Feeds stg_info."
-
   - name: addresses_blast_stg_info_is_contract
     meta:
       blockchain: blast
@@ -439,22 +423,6 @@ models:
     config:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for BNB. Joins executed_txs, transfers, is_contract."
-
-  - name: addresses_bnb_stg_info_executed_txs
-    meta:
-      blockchain: bnb
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: executed tx aggregation for BNB. Feeds stg_info."
-
-  - name: addresses_bnb_stg_info_transfers
-    meta:
-      blockchain: bnb
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: token transfers aggregation for BNB. Feeds stg_info."
 
   - name: addresses_bnb_stg_info_is_contract
     meta:
@@ -515,22 +483,6 @@ models:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for Celo. Joins executed_txs, transfers, is_contract."
 
-  - name: addresses_celo_stg_info_executed_txs
-    meta:
-      blockchain: celo
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: executed tx aggregation for Celo. Feeds stg_info."
-
-  - name: addresses_celo_stg_info_transfers
-    meta:
-      blockchain: celo
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: token transfers aggregation for Celo. Feeds stg_info."
-
   - name: addresses_celo_stg_info_is_contract
     meta:
       blockchain: celo
@@ -589,22 +541,6 @@ models:
     config:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for Gnosis. Joins executed_txs, transfers, is_contract."
-
-  - name: addresses_gnosis_stg_info_executed_txs
-    meta:
-      blockchain: gnosis
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: executed tx aggregation for Gnosis. Feeds stg_info."
-
-  - name: addresses_gnosis_stg_info_transfers
-    meta:
-      blockchain: gnosis
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: token transfers aggregation for Gnosis. Feeds stg_info."
 
   - name: addresses_gnosis_stg_info_is_contract
     meta:
@@ -665,22 +601,6 @@ models:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for Optimism. Joins executed_txs, transfers, is_contract."
 
-  - name: addresses_optimism_stg_info_executed_txs
-    meta:
-      blockchain: optimism
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: executed tx aggregation for Optimism. Feeds stg_info."
-
-  - name: addresses_optimism_stg_info_transfers
-    meta:
-      blockchain: optimism
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: token transfers aggregation for Optimism. Feeds stg_info."
-
   - name: addresses_optimism_stg_info_is_contract
     meta:
       blockchain: optimism
@@ -739,22 +659,6 @@ models:
     config:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for Polygon. Joins executed_txs, transfers, is_contract."
-
-  - name: addresses_polygon_stg_info_executed_txs
-    meta:
-      blockchain: polygon
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: executed tx aggregation for Polygon. Feeds stg_info."
-
-  - name: addresses_polygon_stg_info_transfers
-    meta:
-      blockchain: polygon
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: token transfers aggregation for Polygon. Feeds stg_info."
 
   - name: addresses_polygon_stg_info_is_contract
     meta:
@@ -815,22 +719,6 @@ models:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for Scroll. Joins executed_txs, transfers, is_contract."
 
-  - name: addresses_scroll_stg_info_executed_txs
-    meta:
-      blockchain: scroll
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: executed tx aggregation for Scroll. Feeds stg_info."
-
-  - name: addresses_scroll_stg_info_transfers
-    meta:
-      blockchain: scroll
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: token transfers aggregation for Scroll. Feeds stg_info."
-
   - name: addresses_scroll_stg_info_is_contract
     meta:
       blockchain: scroll
@@ -889,22 +777,6 @@ models:
     config:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for Zora. Joins executed_txs, transfers, is_contract."
-
-  - name: addresses_zora_stg_info_executed_txs
-    meta:
-      blockchain: zora
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: executed tx aggregation for Zora. Feeds stg_info."
-
-  - name: addresses_zora_stg_info_transfers
-    meta:
-      blockchain: zora
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: token transfers aggregation for Zora. Feeds stg_info."
 
   - name: addresses_zora_stg_info_is_contract
     meta:
@@ -965,22 +837,6 @@ models:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for HyperEVM. Joins executed_txs, transfers, is_contract."
 
-  - name: addresses_hyperevm_stg_info_executed_txs
-    meta:
-      blockchain: hyperevm
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: executed tx aggregation for HyperEVM. Feeds stg_info."
-
-  - name: addresses_hyperevm_stg_info_transfers
-    meta:
-      blockchain: hyperevm
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: token transfers aggregation for HyperEVM. Feeds stg_info."
-
   - name: addresses_hyperevm_stg_info_is_contract
     meta:
       blockchain: hyperevm
@@ -1039,22 +895,6 @@ models:
     config:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for Monad. Joins executed_txs, transfers, is_contract."
-
-  - name: addresses_monad_stg_info_executed_txs
-    meta:
-      blockchain: monad
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: executed tx aggregation for Monad. Feeds stg_info."
-
-  - name: addresses_monad_stg_info_transfers
-    meta:
-      blockchain: monad
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: token transfers aggregation for Monad. Feeds stg_info."
 
   - name: addresses_monad_stg_info_is_contract
     meta:
@@ -1115,22 +955,6 @@ models:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for Sei. Joins executed_txs, transfers, is_contract."
 
-  - name: addresses_sei_stg_info_executed_txs
-    meta:
-      blockchain: sei
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: executed tx aggregation for Sei. Feeds stg_info."
-
-  - name: addresses_sei_stg_info_transfers
-    meta:
-      blockchain: sei
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: token transfers aggregation for Sei. Feeds stg_info."
-
   - name: addresses_sei_stg_info_is_contract
     meta:
       blockchain: sei
@@ -1190,22 +1014,6 @@ models:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for Fantom. Joins executed_txs, transfers, is_contract."
 
-  - name: addresses_fantom_stg_info_executed_txs
-    meta:
-      blockchain: fantom
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: executed tx aggregation for Fantom. Feeds stg_info."
-
-  - name: addresses_fantom_stg_info_transfers
-    meta:
-      blockchain: fantom
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: token transfers aggregation for Fantom. Feeds stg_info."
-
   - name: addresses_fantom_stg_info_is_contract
     meta:
       blockchain: fantom
@@ -1263,22 +1071,6 @@ models:
     config:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for Linea. Joins executed_txs, transfers, is_contract."
-
-  - name: addresses_linea_stg_info_executed_txs
-    meta:
-      blockchain: linea
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: executed tx aggregation for Linea. Feeds stg_info."
-
-  - name: addresses_linea_stg_info_transfers
-    meta:
-      blockchain: linea
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: token transfers aggregation for Linea. Feeds stg_info."
 
   - name: addresses_linea_stg_info_is_contract
     meta:
@@ -1338,22 +1130,6 @@ models:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for zkEVM. Joins executed_txs, transfers, is_contract."
 
-  - name: addresses_zkevm_stg_info_executed_txs
-    meta:
-      blockchain: zkevm
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: executed tx aggregation for zkEVM. Feeds stg_info."
-
-  - name: addresses_zkevm_stg_info_transfers
-    meta:
-      blockchain: zkevm
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: token transfers aggregation for zkEVM. Feeds stg_info."
-
   - name: addresses_zkevm_stg_info_is_contract
     meta:
       blockchain: zkevm
@@ -1411,22 +1187,6 @@ models:
     config:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for zkSync. Joins executed_txs, transfers, is_contract."
-
-  - name: addresses_zksync_stg_info_executed_txs
-    meta:
-      blockchain: zksync
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: executed tx aggregation for zkSync. Feeds stg_info."
-
-  - name: addresses_zksync_stg_info_transfers
-    meta:
-      blockchain: zksync
-      sector: addresses
-    config:
-      tags: ['staging', 'address']
-    description: "Staging: token transfers aggregation for zkSync. Feeds stg_info."
 
   - name: addresses_zksync_stg_info_is_contract
     meta:
