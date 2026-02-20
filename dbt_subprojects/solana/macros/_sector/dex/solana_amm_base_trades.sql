@@ -34,7 +34,7 @@ WITH swaps AS (
 
 -- Create a smaller set of just the transfer keys we need to look up
 , swap_transfer_keys AS (
-    SELECT
+    SELECT DISTINCT
           tx_id
         , block_date
         , block_slot
