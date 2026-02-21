@@ -88,7 +88,7 @@ FROM
       {{ dex }}
 WHERE
       1=1
-      {% if is_incremental() or true -%}
+      {% if is_incremental() -%}
       AND {{incremental_predicate('block_time')}}
       {% endif -%}
 {% if not loop.last -%}
