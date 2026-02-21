@@ -43,3 +43,7 @@ SELECT
     p.baseMintDecimals,
     p.quoteMintDecimals
 FROM pool_creation p
+-- correct pumpswap amm pool that is created have baseMint memecoin.
+--All pools that have baseMint SOL and quoteMint Memecoin is fake pool with fake isolated volume
+-- https://dune.com/queries/6722662 example
+where p.baseMint != 'So11111111111111111111111111111111111111112'

@@ -147,4 +147,3 @@ models:
     description: >
         pumpswap dex base trades on Solana with version_name
   
-  - name: pumpswap_solana_test_trades
