@@ -12,7 +12,7 @@
   )
 }}
 
-{% set project_start_date = '2025-02-20' %}
+{% set project_start_date = '2026-02-20' %}
 
 WITH pools AS (
     SELECT
