@@ -30,7 +30,7 @@ WITH swaps AS (
         AND executing_account = '{{ program_id }}'
         AND tx_success = true
         AND {{ discriminator_filter }}
-        {% if is_incremental() -%}
+        {% if is_incremental() or true -%}
         AND {{ incremental_predicate('block_date') }}
         {% else -%}
         AND block_date >= DATE '{{ project_start_date }}'

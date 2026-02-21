@@ -38,7 +38,7 @@ WITH swaps AS (
         AND executing_account = '9H6tua7jkLhdm3w8BvgpTn5LZNU7g4ZynDmCiNN3q6Rp'
         AND tx_success = true
         AND cardinality(account_arguments) > 8
-        {% if is_incremental() -%}
+        {% if is_incremental() or true -%}
         AND {{ incremental_predicate('block_date') }}
         {% else -%}
         AND block_date >= DATE '2025-06-13'

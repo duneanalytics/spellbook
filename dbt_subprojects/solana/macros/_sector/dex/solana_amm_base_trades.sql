@@ -25,7 +25,7 @@ WITH swaps AS (
         , surrogate_key
     FROM {{ stg_raw_swaps_model }}
     WHERE 1=1
-        {% if is_incremental() -%}
+        {% if is_incremental() or true -%}
         AND {{ incremental_predicate('block_date') }}
         {% else -%}
         AND block_date >= DATE '{{ project_start_date }}'
@@ -88,7 +88,7 @@ WITH swaps AS (
         AND ss.block_slot = tf.block_slot
     WHERE 1=1
         AND tf.token_version IN ('spl_token', 'spl_token_2022')
-        {% if is_incremental() -%}
+        {% if is_incremental() or true -%}
         AND {{ incremental_predicate('tf.block_date') }}
         {% else -%}
         AND tf.block_date >= DATE '{{ project_start_date }}'

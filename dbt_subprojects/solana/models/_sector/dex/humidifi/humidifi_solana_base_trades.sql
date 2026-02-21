@@ -31,7 +31,7 @@ WITH raw_swaps AS (
         AND executing_account = '9H6tua7jkLhdm3w8BvgpTn5LZNU7g4ZynDmCiNN3q6Rp'
         AND tx_success = true
         AND cardinality(account_arguments) > 8
-        {% if is_incremental() -%}
+        {% if is_incremental() or true -%}
         AND {{ incremental_predicate('block_date') }}
         {% else -%}
         AND block_date >= DATE '2025-06-13'
@@ -95,7 +95,7 @@ WITH raw_swaps AS (
         AND ss.block_slot = tf.block_slot
     WHERE 1=1
         AND tf.token_version IN ('spl_token', 'spl_token_2022')
-        {% if is_incremental() -%}
+        {% if is_incremental() or true -%}
         AND {{ incremental_predicate('tf.block_date') }}
         {% else -%}
         AND tf.block_date >= DATE '2025-06-13'
