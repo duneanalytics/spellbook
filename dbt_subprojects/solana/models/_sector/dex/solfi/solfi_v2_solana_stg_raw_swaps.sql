@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'zerofi_solana'
+    schema = 'solfi_v2_solana'
     , alias = 'stg_raw_swaps'
     , partition_by = ['block_month']
     , materialized = 'incremental'
@@ -12,8 +12,8 @@
 }}
 
 {{ solana_amm_stg_raw_swaps(
-    program_id = 'ZERor4xhbUycZ6gb9ntrhqscUcZmAbQDjEAtCf4hbZY'
-    , discriminator_filter = "BYTEARRAY_SUBSTRING(data, 1, 1) = 0x06"
-    , project_start_date = '2024-12-12'
-    , pool_id_expression = "account_arguments[1]"
+    program_id = 'SV2EYYJyRz2YhfXwXnhNAevDEui5Q6yrfyo13WtupPF'
+    , discriminator_filter = "BYTEARRAY_SUBSTRING(data, 1, 1) = 0x07"
+    , project_start_date = '2025-08-07'
+    , pool_id_expression = "account_arguments[2]"
 ) }}

@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'obric_solana'
+    schema = 'goonfi_v2_solana'
     , alias = 'base_trades'
     , partition_by = ['block_month']
     , materialized = 'incremental'
@@ -12,10 +12,12 @@
 }}
 
 {{ solana_amm_base_trades(
-    project = 'obric'
-    , project_main_id = 'obriQD1zbpyLz95G5n7nJe6a4DPjpFwa5XYPoNm113y'
-    , project_start_date = '2024-06-04'
-    , stg_raw_swaps_model = ref('obric_solana_stg_raw_swaps')
+    project = 'goonfi'
+    , project_main_id = 'goonuddtQRrWqqn5nFyczVKaie28f3kDkHWkHtURSLE'
+    , project_start_date = '2025-12-12'
+    , stg_raw_swaps_model = ref('goonfi_v2_solana_stg_raw_swaps')
     , token_bought_offset = 2
     , token_sold_offset = 1
+    , version = 2
+    , version_name = 'v2'
 ) }}
