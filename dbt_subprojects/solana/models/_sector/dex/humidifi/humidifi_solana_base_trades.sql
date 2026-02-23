@@ -12,66 +12,30 @@
   )
 }}
 
-WITH raw_swaps AS (
+WITH swaps AS (
     SELECT
           block_slot
+        , block_month
         , block_date
         , block_time
-        , COALESCE(inner_instruction_index, 0) AS inner_instruction_index
+        , inner_instruction_index
         , outer_instruction_index
         , outer_executing_account
         , is_inner
         , tx_id
         , tx_signer
         , tx_index
-        , account_arguments[2] AS pool_id
-        , account_arguments[3] AS vault_a
-        , account_arguments[4] AS vault_b
-    FROM {{ source('solana', 'instruction_calls') }}
+        , pool_id
+        , vault_a
+        , vault_b
+        , surrogate_key
+    FROM {{ ref('humidifi_solana_stg_raw_swaps') }}
     WHERE 1=1
-        AND executing_account = '9H6tua7jkLhdm3w8BvgpTn5LZNU7g4ZynDmCiNN3q6Rp'
-        AND tx_success = true
-        AND cardinality(account_arguments) > 8
         {% if is_incremental() -%}
         AND {{ incremental_predicate('block_date') }}
         {% else -%}
         AND block_date >= DATE '2025-06-13'
         {% endif -%}
-)
-
-, swaps AS (
-    SELECT
-          block_slot
-        , block_date
-        , block_time
-        , inner_instruction_index
-        , outer_instruction_index
-        , outer_executing_account
-        , is_inner
-        , tx_id
-        , tx_signer
-        , tx_index
-        , max(pool_id) AS pool_id
-        , max(vault_a) AS vault_a
-        , max(vault_b) AS vault_b
-        , {{ solana_instruction_key(
-              'block_slot'
-            , 'tx_index'
-            , 'outer_instruction_index'
-            , 'inner_instruction_index'
-          ) }} AS surrogate_key
-    FROM raw_swaps
-    GROUP BY
-          block_slot
-        , block_date
-        , block_time
-        , inner_instruction_index
-        , outer_instruction_index
-        , outer_executing_account
-        , is_inner
-        , tx_id
-        , tx_signer
-        , tx_index
 )
 
 , swap_slots AS (
@@ -106,6 +70,7 @@ WITH raw_swaps AS (
 , transfers_labeled AS (
     SELECT
           s.tx_id
+        , s.block_month
         , s.block_date
         , s.block_slot
         , s.outer_instruction_index
@@ -139,7 +104,8 @@ WITH raw_swaps AS (
 
 , transfers AS (
     SELECT
-          block_date
+          block_month
+        , block_date
         , block_time
         , block_slot
         , CASE
@@ -161,7 +127,8 @@ WITH raw_swaps AS (
         , surrogate_key
     FROM transfers_labeled
     GROUP BY
-          block_date
+          block_month
+        , block_date
         , block_time
         , block_slot
         , CASE
@@ -185,7 +152,7 @@ SELECT
     , 'humidifi' AS project
     , 1 AS version
     , 'v1' AS version_name
-    , CAST(date_trunc('month', block_date) AS DATE) AS block_month
+    , block_month
     , block_time
     , block_slot
     , block_date
