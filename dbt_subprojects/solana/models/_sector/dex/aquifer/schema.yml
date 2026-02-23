@@ -56,9 +56,9 @@ models:
       blockchain: solana
       contributors: [flyingfish]
     config:
-      tags: ['solana', 'dex', 'aquifer', 'prod_exclude']
+      tags: ['solana', 'dex', 'aquifer']
     description: >
-      all aquifer v2 dex trades on Solana (excluded from prod until dex_solana_base_trades updated)
+      all aquifer v2 dex trades on Solana
     columns:
       - name: blockchain
       - name: project
