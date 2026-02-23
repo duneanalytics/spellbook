@@ -24,6 +24,7 @@
     ,ref('oneinch_ar_trades')
     ,ref('odos_trades')
     ,ref('sushiswap_agg_trades')
+    ,ref('chimpx_bnb_trades')
 ] %}
 
 WITH enriched_aggregator_base_trades AS (
