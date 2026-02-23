@@ -4,7 +4,7 @@ models:
   - name: humidifi_solana_stg_raw_swaps
     meta:
       blockchain: solana
-      contributors: [ Sector920, Eekeyguy ]
+      contributors: [ Sector920 ]
     config:
       tags: [ 'solana','dex', 'humidifi' ]
     description: >
@@ -16,7 +16,7 @@ models:
   - name: humidifi_solana_base_trades
     meta:
       blockchain: solana
-      contributors: [ Sector920, Eekeyguy ]
+      contributors: [ Sector920 ]
     config:
       tags: [ 'solana','dex', 'humidifi' ]
     description: >
@@ -29,7 +29,7 @@ models:
   - name: humidifi_solana_trades
     meta:
       blockchain: solana
-      contributors: [Sector920, Eekeyguy]
+      contributors: [Sector920]
     config:
       tags: ['solana','dex', 'humidifi']
     description: >
