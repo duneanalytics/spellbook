@@ -1,7 +1,7 @@
 {{
   config(
     schema = 'aquifer_v2_solana'
-    , alias = 'v2_base_trades'
+    , alias = 'base_trades'
     , partition_by = ['block_month']
     , materialized = 'incremental'
     , file_format = 'delta'
