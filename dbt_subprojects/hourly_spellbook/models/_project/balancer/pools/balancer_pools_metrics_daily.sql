@@ -18,13 +18,14 @@ trades AS(
         block_date,
         version,
         blockchain,
+        pool_id,
         project_contract_address,
         sum(amount_usd) AS swap_amount_usd
     FROM {{ source('balancer', 'trades') }}
     {% if is_incremental() %}
     WHERE {{incremental_predicate('block_date')}}
     {% endif %}
-    GROUP BY 1, 2, 3, 4
+    GROUP BY 1, 2, 3, 4, 5
 ),
 
 liquidity AS(
@@ -32,6 +33,7 @@ liquidity AS(
         day AS block_date,
         blockchain,
         version,
+        pool_id,
         pool_address AS project_contract_address,
         pool_type,
         pool_symbol,
@@ -41,7 +43,7 @@ liquidity AS(
     {% if is_incremental() %}
     WHERE {{incremental_predicate('day')}}
     {% endif %}
-    GROUP BY 1, 2, 3, 4, 5, 6
+    GROUP BY 1, 2, 3, 4, 5, 6, 7
 ),
 
 fees AS(
@@ -72,9 +74,21 @@ SELECT
     f.fee_amount_usd
 FROM liquidity l
 LEFT JOIN trades t ON l.block_date = t.block_date
-AND l.project_contract_address = t.project_contract_address 
 AND l.blockchain = t.blockchain
+AND l.version = t.version
+-- v2/v3 use pool_id as the canonical join key across liquidity/trades
+AND (
+    l.pool_id = t.pool_id
+    -- v1 trades do not always carry pool_id; fallback to address matching
+    OR (l.pool_id IS NULL AND l.project_contract_address = t.project_contract_address)
+)
 LEFT JOIN fees f ON l.block_date = f.day
-AND l.project_contract_address = f.pool_address 
 AND l.blockchain = f.blockchain
+AND l.version = f.version
+-- v2/v3 use pool_id as the canonical join key across liquidity/fees
+AND (
+    l.pool_id = f.pool_id
+    -- v1 fees may only map by pool address
+    OR (l.pool_id IS NULL AND l.project_contract_address = f.pool_address)
+)
 ORDER BY 1 DESC, 7 DESC
