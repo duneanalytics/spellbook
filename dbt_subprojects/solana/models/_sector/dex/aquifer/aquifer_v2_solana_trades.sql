@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'aquifer_solana'
+    schema = 'aquifer_v2_solana'
     , alias = 'v2_trades'
     , materialized = 'view'
     , post_hook = '{{ hide_spells() }}'
