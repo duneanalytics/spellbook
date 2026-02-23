@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'byreal_solana'
+    schema = 'aquifer_v2_solana'
     , alias = 'stg_raw_swaps'
     , partition_by = ['block_month']
     , materialized = 'incremental'
@@ -12,8 +12,8 @@
 }}
 
 {{ solana_amm_stg_raw_swaps(
-    program_id = 'REALQqNEomY6cQGZJUGwywTBD2UmDT32rZcNnfxQ5N2'
-    , discriminator_filter = "BYTEARRAY_SUBSTRING(data, 1, 8) IN (0x2b04ed0b1ac91e62, 0xf8c69e91e17587c8)"
-    , project_start_date = '2025-06-26'
-    , pool_id_expression = "account_arguments[3]"
+    program_id = 'AQU1FRd7papthgdrwPTTq5JacJh8YtwEXaBfKU3bTz45'
+    , discriminator_filter = "BYTEARRAY_SUBSTRING(data, 1, 1) = 0x13"
+    , project_start_date = '2026-01-30'
+    , pool_id_expression = "CAST(NULL AS VARCHAR)"
 ) }}

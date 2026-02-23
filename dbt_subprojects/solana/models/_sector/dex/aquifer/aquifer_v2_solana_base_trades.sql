@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'byreal_solana'
+    schema = 'aquifer_v2_solana'
     , alias = 'base_trades'
     , partition_by = ['block_month']
     , materialized = 'incremental'
@@ -12,10 +12,12 @@
 }}
 
 {{ solana_amm_base_trades(
-    project = 'byreal'
-    , project_main_id = 'REALQqNEomY6cQGZJUGwywTBD2UmDT32rZcNnfxQ5N2'
-    , project_start_date = '2025-06-26'
-    , stg_raw_swaps_model = ref('byreal_solana_stg_raw_swaps')
-    , token_bought_offset = 2
-    , token_sold_offset = 1
+    project = 'aquifer'
+    , project_main_id = 'AQU1FRd7papthgdrwPTTq5JacJh8YtwEXaBfKU3bTz45'
+    , project_start_date = '2026-01-30'
+    , stg_raw_swaps_model = ref('aquifer_v2_solana_stg_raw_swaps')
+    , token_bought_offset = 1
+    , token_sold_offset = 2
+    , version = 2
+    , version_name = 'v2'
 ) }}

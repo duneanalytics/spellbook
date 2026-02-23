@@ -26,6 +26,71 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['block_month', 'block_date', 'surrogate_key']
 
+  - name: aquifer_v2_solana_stg_raw_swaps
+    meta:
+      blockchain: solana
+      contributors: [flyingfish]
+    config:
+      tags: ['solana', 'dex', 'aquifer']
+    description: >
+      staging model for aquifer v2 swap data from instruction_calls (discriminator 0x13)
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['block_month', 'block_date', 'surrogate_key']
+
+  - name: aquifer_v2_solana_base_trades
+    meta:
+      blockchain: solana
+      contributors: [flyingfish]
+    config:
+      tags: ['solana', 'dex', 'aquifer']
+    description: >
+      all raw aquifer v2 dex trades on Solana
+    data_tests:
+      - check_columns_solana_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['block_month', 'block_date', 'surrogate_key']
+
+  - name: aquifer_v2_solana_trades
+    meta:
+      blockchain: solana
+      contributors: [flyingfish]
+    config:
+      tags: ['solana', 'dex', 'aquifer', 'prod_exclude']
+    description: >
+      all aquifer v2 dex trades on Solana (excluded from prod until dex_solana_base_trades updated)
+    columns:
+      - name: blockchain
+      - name: project
+      - name: version
+      - name: version_name
+      - name: block_month
+      - name: block_date
+      - name: block_time
+      - name: block_slot
+      - name: trade_source
+      - name: token_bought_symbol
+      - name: token_sold_symbol
+      - name: token_pair
+      - name: token_bought_amount
+      - name: token_sold_amount
+      - name: token_bought_amount_raw
+      - name: token_sold_amount_raw
+      - name: amount_usd
+      - name: fee_tier
+      - name: fee_usd
+      - name: token_bought_mint_address
+      - name: token_sold_mint_address
+      - name: token_bought_vault
+      - name: token_sold_vault
+      - name: project_program_id
+      - name: project_main_id
+      - name: trader_id
+      - name: tx_id
+      - name: outer_instruction_index
+      - name: inner_instruction_index
+      - name: tx_index
+
   - name: aquifer_solana_trades
     meta:
       blockchain: solana
