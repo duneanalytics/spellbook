@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'aquifer_solana'
+    schema = 'aquifer_v2_solana'
     , alias = 'v2_stg_raw_swaps'
     , partition_by = ['block_month']
     , materialized = 'incremental'
