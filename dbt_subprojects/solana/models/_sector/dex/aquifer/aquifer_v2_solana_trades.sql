@@ -1,7 +1,7 @@
 {{
   config(
     schema = 'aquifer_v2_solana'
-    , alias = 'v2_trades'
+    , alias = 'trades'
     , materialized = 'view'
     , post_hook = '{{ hide_spells() }}'
     , tags = ['prod_exclude']
