@@ -1,10 +1,9 @@
 {{config(
 
-        alias = 'cex_fantom',
-        post_hook='{{ expose_spells(\'["fantom"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["Henrystats"]\') }}')}}
+        alias = 'cex_fantom'
+        , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 SELECT blockchain
 , address

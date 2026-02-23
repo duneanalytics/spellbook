@@ -1,9 +1,8 @@
 {{config(
-    alias = 'token_standards_goerli',
-        post_hook='{{ expose_spells(\'["goerli"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["hildobby"]\') }}')}}
+    alias = 'token_standards_goerli'
+    , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 SELECT distinct 'goerli' AS blockchain
 , erc20.contract_address AS address

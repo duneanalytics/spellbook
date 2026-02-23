@@ -1,11 +1,8 @@
 {{
     config(
         schema = 'balancer_ethereum',
-        alias = 'balances',
-        post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
-                                    spell_type = "project",
-                                    spell_name = "balancer",
-                                    contributors = \'["metacrypto", "jacektrocinski", "viniabussafi"]\') }}'
+        alias = 'balances'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

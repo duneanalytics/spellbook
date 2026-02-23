@@ -9,9 +9,9 @@
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     tags = ['thorchain', 'gov', 'slash_points_events', 'fact', 'governance'],
     post_hook='{{ expose_spells(\'["thorchain"]\',
-                              "governance",
-                              "gov_slash_points_events",
-                              \'["krishhh"]\') }}'
+                                  "project",
+                                  "thorchain",
+                                  \'["jeff-dude"]\') }}'
 ) }}
 
 -- Deduplication and gold layer combined (no silver layer needed)

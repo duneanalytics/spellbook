@@ -3,11 +3,9 @@
     alias = 'mints',
     materialized='incremental',
     file_format = 'delta',
-    incremental_strategy = 'merge',
-    post_hook='{{ expose_spells(\'["ethereum","optimism","base","zora","goerli"]\',
-                    "project",
-                    "zora",
-                    \'["hildobby", "jeff-dude"]\') }}')
+    incremental_strategy = 'merge'
+    , post_hook='{{ hide_spells() }}'
+)
 }}
 
 {% set zora_mints_models = [

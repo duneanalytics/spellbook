@@ -1,11 +1,8 @@
 {{ config(
     schema = 'ubeswap',
     alias = 'trades',
-    materialized = 'view',
-    post_hook='{{ expose_spells(blockchains = \'["celo"]\',
-                                  spell_type = "project", 
-                                  spell_name = "ubeswap", 
-                                  contributors = \'["tomfutago"]\') }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

@@ -6,6 +6,8 @@ sources:
     tables:
       - name: usd_0003
         description: "raw, versioned USD prices table"
+      - name: fx_exchange_rates
+        description: "Daily FX exchange rates between currency pairs"
       - name: usd
         description: "USD prices across blockchains"
         meta:

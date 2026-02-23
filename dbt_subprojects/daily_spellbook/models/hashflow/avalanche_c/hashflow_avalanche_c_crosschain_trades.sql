@@ -4,10 +4,7 @@
         ,materialized='incremental'
         ,incremental_strategy = 'merge'
         ,unique_key = ['block_date', 'source_chain', 'tx_hash']
-        ,post_hook='{{ expose_spells(\'["avalanche_c"]\',
-                                        "project",
-                                        "hashflow",
-                                        \'["BroderickBonelli"]\') }}'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

@@ -7,11 +7,7 @@
         ,incremental_strategy = 'merge'
         ,file_format = 'delta'
         ,unique_key = ['address', 'name']
-        ,post_hook='{{ expose_spells(
-                             blockchains = \'["ethereum"]\',
-                             spell_type = "project",
-                             spell_name = "ens",
-                             contributors = \'["sankinyue", "hosuke"]\') }}'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

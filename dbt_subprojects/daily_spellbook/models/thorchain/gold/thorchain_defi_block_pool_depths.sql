@@ -4,14 +4,13 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_month', 'fact_pool_depths_id'],
-    partition_by = ['block_month'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    unique_key = ['fact_pool_depths_id'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_timestamp')],
     tags = ['thorchain', 'defi', 'pool_depths', 'fact'],
     post_hook='{{ expose_spells(\'["thorchain"]\',
-                              "defi",
-                              "defi_block_pool_depths",
-                              \'["krishhh"]\') }}'
+                                  "project",
+                                  "thorchain",
+                                  \'["jeff-dude"]\') }}'
 ) }}
 
 WITH base AS (
@@ -20,43 +19,37 @@ WITH base AS (
         asset_e8,
         rune_e8,
         synth_e8,
-        block_time,
-        raw_block_timestamp,
+        block_timestamp,
         _inserted_timestamp
-    FROM {{ ref('thorchain_silver_block_pool_depths') }}
+    FROM
+        {{ ref('thorchain_silver_block_pool_depths') }}
 )
-
 SELECT
-    -- CRITICAL: Generate surrogate key (Trino equivalent of dbt_utils.generate_surrogate_key)
-    to_hex(sha256(to_utf8(concat(
-        COALESCE(a.pool_name, ''),
-        '|',
-        COALESCE(cast(a.block_time as varchar), '')
-    )))) AS fact_pool_depths_id,
-    
-    -- CRITICAL: Always include partitioning columns first
-    a.block_time,
-    date(a.block_time) as block_date,
-    date_trunc('month', a.block_time) as block_month,
-    a.raw_block_timestamp,
-    
-    -- Block dimension reference (set directly - no JOIN needed)
-    '-1' AS dim_block_id,
-    
-    -- Pool depth data
-    a.rune_e8,
-    a.asset_e8,
-    a.synth_e8,
-    a.pool_name,
-    
-    -- Audit fields (Trino conversions)
+    {{ dbt_utils.generate_surrogate_key(['a.pool_name','a.block_timestamp']) }} AS fact_pool_depths_id,
+    b.block_timestamp,
+    COALESCE(
+        b.dim_block_id,
+        '-1'
+    ) AS dim_block_id,
+    rune_e8,
+    asset_e8,
+    synth_e8,
+    pool_name,
     a._inserted_timestamp,
-    cast(from_hex(replace(cast(uuid() as varchar), '-', '')) as varchar) AS _audit_run_id,  -- Trino equivalent of invocation_id
-    current_timestamp AS inserted_timestamp,  -- Trino equivalent of SYSDATE()
+    current_timestamp AS inserted_timestamp,
     current_timestamp AS modified_timestamp
-
-FROM base a
-
+FROM
+    base as a
+JOIN {{ ref('thorchain_core_block') }} as b
+    ON a.block_timestamp = b.timestamp
 {% if is_incremental() %}
-WHERE {{ incremental_predicate('a.block_time') }}
+WHERE {{ incremental_predicate('b.block_timestamp') }}
+OR pool_name IN (
+    SELECT
+        pool_name
+    FROM
+        {{ this }}
+    WHERE
+        dim_block_id = '-1'
+)
 {% endif %}

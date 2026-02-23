@@ -2,6 +2,7 @@
     schema = 'bridges_crosschain',
     alias = 'flows',
     materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 
@@ -25,8 +26,8 @@ SELECT *
         , withdrawal_block_number
         , deposit_amount_raw
         , deposit_amount
-        , withdrawal_amount_raw
         , withdrawal_amount
+        , withdrawal_amount_raw
         , amount_usd
         , CAST(sender AS VARCHAR) AS sender
         , CAST(recipient AS VARCHAR) AS recipient

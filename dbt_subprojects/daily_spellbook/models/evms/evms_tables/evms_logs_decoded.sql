@@ -1,8 +1,8 @@
 {{ config(
         schema='evms',
         alias = 'logs_decoded',
-        materialized = 'view',
-        post_hook='{{ expose_spells(evms_structured_blockchains_list() | tojson, "sector", "evms", \'[]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 
@@ -15,8 +15,10 @@ FROM (
         '{{ blockchain }}' AS blockchain
         , block_time
         , block_number
+        , block_date
         , index
         , contract_address
+        , contract_name
         , event_name
         , namespace
         , signature

@@ -1,12 +1,10 @@
- {{
-  config(     
-        schema = 'contracts',
-        alias = 'contract_mapping',
-        post_hook='{{ expose_spells(\'["ethereum", "base", "optimism", "zora", "arbitrum", "celo", "polygon", "bnb", "avalanche_c", "fantom", "gnosis", "goerli","zksync"]\',
-                                    "sector",
-                                    "contracts",
-                                    \'["msilb7", "chuxin", "tomfutago"]\') }}'
-  )
+{{
+ config(     
+      tags = ['prod_exclude'],
+      schema = 'contracts',
+      alias = 'contract_mapping',
+      post_hook = '{{ hide_spells() }}'
+)
 }}
 
 {% set chain_models = [
@@ -22,7 +20,6 @@
  , ref('contracts_avalanche_c_contract_mapping')
  , ref('contracts_fantom_contract_mapping_dynamic')
  , ref('contracts_gnosis_contract_mapping')
- , ref('contracts_goerli_contract_mapping')
  , ref('contracts_zksync_contract_mapping')
 ] %}
 -- todo: add chains for all EVMs in Dune

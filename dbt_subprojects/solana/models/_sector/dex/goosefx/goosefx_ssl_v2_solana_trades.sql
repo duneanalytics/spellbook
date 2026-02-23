@@ -2,11 +2,9 @@
   config(
         schema = 'goosefx_ssl_v2_solana',
         alias = 'trades',
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["solana"]\',
-                                    "project",
-                                    "goosefx",
-                                    \'["ilemi"]\') }}')
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
+)
 }}
 select
       blockchain

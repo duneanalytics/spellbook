@@ -2,19 +2,8 @@
     config(
         schema = 'lifi',
         alias = 'transfers',
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'[
-                                        "arbitrum"
-                                        , "avalanche_c"
-                                        , "bnb"
-                                        , "ethereum"
-                                        , "fantom"
-                                        , "gnosis"
-                                        , "zksync"
-                                    ]\',
-                                    "project",
-                                    "lifi",
-                                    \'["lequangphu"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

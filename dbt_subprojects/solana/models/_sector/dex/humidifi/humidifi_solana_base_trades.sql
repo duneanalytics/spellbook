@@ -6,115 +6,170 @@
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
-    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
-    , unique_key = ['block_month', 'surrogate_key']
+    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
+    , unique_key = ['block_month', 'block_date', 'surrogate_key']
+    , tags = ['prod_exclude']
   )
 }}
 
-{% set project_start_date = '2025-06-13' %}
-
--- humidifi swap data from instruction_calls table
 WITH swaps AS (
     SELECT
           block_slot
+        , block_month
         , block_date
         , block_time
-        , COALESCE(inner_instruction_index,0) as inner_instruction_index -- adjust to index 0 for direct trades
+        , inner_instruction_index
         , outer_instruction_index
         , outer_executing_account
         , is_inner
         , tx_id
         , tx_signer
         , tx_index
-        , account_arguments[2] AS pool_id
-    FROM {{ source('solana','instruction_calls') }}
+        , pool_id
+        , vault_a
+        , vault_b
+        , surrogate_key
+    FROM {{ ref('humidifi_solana_stg_raw_swaps') }}
     WHERE 1=1
-        AND executing_account = '9H6tua7jkLhdm3w8BvgpTn5LZNU7g4ZynDmCiNN3q6Rp'
-        AND tx_success = true
-        --AND BYTEARRAY_SUBSTRING(data, 1, 1) = '0xXX' 
-            -- No distinct SWAP discriminator, unreliable method of isolate Humidifi swap instructions. See: https://dune.com/queries/5857394 
-            -- Alternative method: arguments = 9 for swaps, join on inner_insturction_index +1 & +2 on token transfers.
-        AND cardinality(account_arguments) = 9 -- 9 arguments for all swap instructions. 3 arguments for all quote update instructions. No change in this pattern since deployment
         {% if is_incremental() -%}
-        AND {{ incremental_predicate('block_time') }}
+        AND {{ incremental_predicate('block_date') }}
         {% else -%}
-        AND block_time >= TIMESTAMP '{{ project_start_date }}'
+        AND block_date >= DATE '2025-06-13'
         {% endif -%}
 )
 
--- INNER JOIN token_transfers initiated by amm swap instructions.
-, transfers AS (        
+, swap_slots AS (
+    SELECT DISTINCT block_date, block_slot
+    FROM swaps
+)
+
+, transfers_raw AS (
     SELECT
-        s.block_date
-      , s.block_time
-      , s.block_slot
-      , CASE 
-          WHEN s.is_inner = false THEN 'direct'
-          ELSE s.outer_executing_account
-        END as trade_source
-      , t.amount as token_bought_amount_raw
-      , t1.amount as token_sold_amount_raw
-      , t.from_token_account as token_bought_vault
-      , t1.to_token_account as token_sold_vault
-      , t.token_mint_address as token_bought_mint_address
-      , t1.token_mint_address as token_sold_mint_address
-      , s.pool_id AS project_program_id
-      , s.tx_signer as trader_id --s.trader_id
-      , s.tx_id
-      , s.outer_instruction_index
-      , s.inner_instruction_index 
-      , s.tx_index
-    FROM swaps s
-    INNER JOIN {{ source('tokens_solana','transfers') }} t  ON t.tx_id = s.tx_id --buy 
-        AND t.block_date = s.block_date
-        AND t.block_slot = s.block_slot
-        AND t.outer_instruction_index = s.outer_instruction_index
-        AND t.inner_instruction_index = s.inner_instruction_index + 1
-        AND (t.token_version = 'spl_token' or t.token_version = 'spl_token_2022')
+          tf.tx_id
+        , tf.block_date
+        , tf.block_slot
+        , tf.outer_instruction_index
+        , tf.inner_instruction_index
+        , tf.amount
+        , tf.from_token_account
+        , tf.to_token_account
+        , tf.token_mint_address
+    FROM {{ source('tokens_solana', 'transfers') }} tf
+    INNER JOIN swap_slots ss
+        ON  ss.block_date = tf.block_date
+        AND ss.block_slot = tf.block_slot
+    WHERE 1=1
+        AND tf.token_version IN ('spl_token', 'spl_token_2022')
         {% if is_incremental() -%}
-        AND {{ incremental_predicate('t.block_time') }}
+        AND {{ incremental_predicate('tf.block_date') }}
         {% else -%}
-        AND t.block_time >= TIMESTAMP '{{ project_start_date }}'
+        AND tf.block_date >= DATE '2025-06-13'
         {% endif -%}
-    INNER JOIN {{ source('tokens_solana','transfers') }} t1  ON t1.tx_id = s.tx_id --sell 
-        AND t1.block_date = s.block_date
-        AND t1.block_slot = s.block_slot
-        AND t1.outer_instruction_index = s.outer_instruction_index
-        AND t1.inner_instruction_index = s.inner_instruction_index + 2
-        AND (t1.token_version = 'spl_token' or t1.token_version = 'spl_token_2022')
-        {% if is_incremental() -%}
-        AND {{ incremental_predicate('t1.block_time') }}
-        {% else -%}
-        AND t1.block_time >= TIMESTAMP '{{ project_start_date }}'
-        {% endif -%}
-
 )
 
+, transfers_labeled AS (
+    SELECT
+          s.tx_id
+        , s.block_month
+        , s.block_date
+        , s.block_slot
+        , s.outer_instruction_index
+        , s.inner_instruction_index
+        , s.vault_a
+        , s.vault_b
+        , s.block_time
+        , s.outer_executing_account
+        , s.is_inner
+        , s.pool_id
+        , s.tx_signer
+        , s.tx_index
+        , s.surrogate_key
+        , tf.amount
+        , tf.from_token_account
+        , tf.to_token_account
+        , tf.token_mint_address
+        , CASE
+            WHEN tf.from_token_account IN (s.vault_a, s.vault_b) THEN 'buy'
+            WHEN tf.to_token_account IN (s.vault_a, s.vault_b) THEN 'sell'
+          END AS transfer_type
+    FROM swaps s
+    INNER JOIN transfers_raw tf
+        ON  tf.tx_id = s.tx_id
+        AND tf.block_date = s.block_date
+        AND tf.block_slot = s.block_slot
+        AND tf.outer_instruction_index = s.outer_instruction_index
+        AND tf.inner_instruction_index IN (s.inner_instruction_index + 1, s.inner_instruction_index + 2, s.inner_instruction_index + 3)
+    WHERE (tf.from_token_account IN (s.vault_a, s.vault_b) OR tf.to_token_account IN (s.vault_a, s.vault_b))
+)
 
---add pertinent info in prep for union on solana_base_trades
+, transfers AS (
+    SELECT
+          block_month
+        , block_date
+        , block_time
+        , block_slot
+        , CASE
+            WHEN is_inner = false THEN 'direct'
+            ELSE outer_executing_account
+          END AS trade_source
+        , max(CASE WHEN transfer_type = 'buy' THEN amount END) AS token_bought_amount_raw
+        , max(CASE WHEN transfer_type = 'sell' THEN amount END) AS token_sold_amount_raw
+        , max(CASE WHEN transfer_type = 'buy' THEN from_token_account END) AS token_bought_vault
+        , max(CASE WHEN transfer_type = 'sell' THEN to_token_account END) AS token_sold_vault
+        , max(CASE WHEN transfer_type = 'buy' THEN token_mint_address END) AS token_bought_mint_address
+        , max(CASE WHEN transfer_type = 'sell' THEN token_mint_address END) AS token_sold_mint_address
+        , pool_id AS project_program_id
+        , tx_signer AS trader_id
+        , tx_id
+        , outer_instruction_index
+        , inner_instruction_index
+        , tx_index
+        , surrogate_key
+    FROM transfers_labeled
+    GROUP BY
+          block_month
+        , block_date
+        , block_time
+        , block_slot
+        , CASE
+            WHEN is_inner = false THEN 'direct'
+            ELSE outer_executing_account
+          END
+        , pool_id
+        , tx_signer
+        , tx_id
+        , outer_instruction_index
+        , inner_instruction_index
+        , tx_index
+        , surrogate_key
+    HAVING 1=1
+        AND count_if(transfer_type = 'buy') BETWEEN 1 AND 2
+        AND count_if(transfer_type = 'sell') BETWEEN 1 AND 2
+)
+
 SELECT
-      'solana' as blockchain
+      'solana' AS blockchain
     , 'humidifi' AS project
     , 1 AS version
-    , 'v1' as version_name
-    , date_trunc('month',s.block_date) as block_month
-    , s.block_time
-    , s.block_slot
-    , s.block_date
-    , s.trade_source
-    , s.token_bought_amount_raw
-    , s.token_sold_amount_raw
-    , CAST(NULL AS DOUBLE) as fee_tier
-    , s.token_bought_mint_address  
-    , s.token_sold_mint_address
-    , s.token_bought_vault
-    , s.token_sold_vault
-    , s.project_program_id
+    , 'v1' AS version_name
+    , block_month
+    , block_time
+    , block_slot
+    , block_date
+    , trade_source
+    , token_bought_amount_raw
+    , token_sold_amount_raw
+    , CAST(NULL AS DOUBLE) AS fee_tier
+    , token_bought_mint_address
+    , token_sold_mint_address
+    , token_bought_vault
+    , token_sold_vault
+    , project_program_id
     , '9H6tua7jkLhdm3w8BvgpTn5LZNU7g4ZynDmCiNN3q6Rp' AS project_main_id
-    , s.trader_id 
-    , s.tx_id
-    , s.outer_instruction_index
-    , s.inner_instruction_index
-    , s.tx_index
-    , {{ dbt_utils.generate_surrogate_key(['tx_id', 'tx_index', 'outer_instruction_index', 'inner_instruction_index']) }} as surrogate_key
-FROM transfers s
+    , trader_id
+    , tx_id
+    , outer_instruction_index
+    , inner_instruction_index
+    , tx_index
+    , surrogate_key
+FROM transfers

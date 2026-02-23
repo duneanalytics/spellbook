@@ -1,11 +1,8 @@
 {{ config(
     schema = 'shibaswap',
     alias = 'trades',
-    materialized = 'view',
-    post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
-                                  spell_type = "project", 
-                                  spell_name = "shibaswap", 
-                                  contributors = \'["0xRob"]\') }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

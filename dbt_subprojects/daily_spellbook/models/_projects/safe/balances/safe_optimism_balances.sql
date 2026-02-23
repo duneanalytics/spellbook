@@ -7,11 +7,8 @@
         incremental_strategy = 'merge',
         file_format = 'delta',
         unique_key = ['day', 'blockchain', 'address', 'token_address'],
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
-        post_hook = '{{ expose_spells(\'["optimism"]\',
-                                    "project",
-                                    "safe",
-                                    \'["safeintern"]\') }}'
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')]
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 
@@ -25,7 +22,7 @@ with safes as (
 ),
 balances as (
      {{
-       balances_incremental_subset_daily(
+       balances_incremental_subset_daily_legacy(
              blockchain = 'optimism',
              address_list  = 'safes',
              start_date = '2021-07-01'

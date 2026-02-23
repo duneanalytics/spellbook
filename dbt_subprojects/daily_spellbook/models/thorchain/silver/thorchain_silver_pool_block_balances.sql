@@ -4,74 +4,38 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_month', '_unique_key'],
-    partition_by = ['block_month'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    unique_key = ['day', '_unique_key'],
+    partition_by = ['day'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
     tags = ['thorchain', 'pool_balances', 'silver']
 ) }}
 
-with blk as (
-    SELECT
-        timestamp as raw_ts,
-        cast(from_unixtime(cast(timestamp / 1e9 as bigint)) as timestamp) as block_time,
-        height
-    FROM {{ ref('thorchain_silver_block_log') }}
-),
-base as (
-    SELECT
-        blk.block_time,
-        blk.height AS block_id,
-        bpd.pool_name,
-        
-        COALESCE(cast(bpd.rune_e8 as double) / 1e8, 0.0) AS rune_amount,
-        COALESCE(cast(bpd.rune_e8 as double) / 1e8 * COALESCE(rp.price, 0.0), 0.0) AS rune_amount_usd,
-        
-        COALESCE(cast(bpd.asset_e8 as double) / 1e8, 0.0) AS asset_amount,
-        COALESCE(cast(bpd.asset_e8 as double) / 1e8 * COALESCE(ap.price, 0.0), 0.0) AS asset_amount_usd,
-        
-        COALESCE(cast(bpd.synth_e8 as double) / 1e8, 0.0) AS synth_amount,
-        COALESCE(cast(bpd.synth_e8 as double) / 1e8 * COALESCE(ap.price, 0.0), 0.0) AS synth_amount_usd,
-        
-        concat(
-            cast(bpd.raw_block_timestamp as varchar),
-            '-',
-            bpd.pool_name
-        ) AS _unique_key,
-        
-        date(blk.block_time) as block_date,
-        date_trunc('month', blk.block_time) as block_month,
-        date_trunc('hour', blk.block_time) as block_hour,
-        
-        bpd._inserted_timestamp
-
-    FROM {{ ref('thorchain_silver_block_pool_depths') }} bpd
-    JOIN blk ON bpd.raw_block_timestamp = blk.raw_ts
-    LEFT JOIN {{ source('prices', 'usd') }} rp
-        ON rp.blockchain = 'thorchain'
-        AND rp.symbol = 'RUNE'
-        AND rp.minute = date_trunc('minute', blk.block_time)
-    LEFT JOIN {{ source('prices', 'usd') }} ap
-        ON ap.blockchain = 'thorchain'
-        AND ap.symbol = bpd.pool_name
-        AND ap.minute = date_trunc('minute', blk.block_time)
-    {% if is_incremental() %}
-      AND {{ incremental_predicate('blk.block_time') }}
-    {% endif %}
-)
-
-SELECT 
-    block_time,
-    block_id,
-    pool_name,
-    rune_amount,
-    rune_amount_usd,
-    asset_amount,
-    asset_amount_usd,
-    synth_amount,
-    synth_amount_usd,
-    _unique_key,
-    block_date,
-    block_month,
-    block_hour,
-    _inserted_timestamp
-FROM base
+SELECT
+    b.block_timestamp,
+    cast(date_trunc('day', b.block_timestamp) as date) as day,
+    b.height AS block_id,
+    bpd.pool_name,
+    COALESCE(rune_e8 / pow(10, 8), 0) AS rune_amount,
+    COALESCE(rune_e8 / pow(10, 8) * rune_usd, 0) AS rune_amount_usd,
+    COALESCE(asset_e8 / pow(10, 8), 0) AS asset_amount,
+    COALESCE(asset_e8 / pow(10, 8) * asset_usd, 0) AS asset_amount_usd,
+    COALESCE(synth_e8 / pow(10, 8), 0) AS synth_amount,
+    COALESCE(synth_e8 / pow(10, 8) * asset_usd, 0) AS synth_amount_usd,
+    concat_ws(
+        '-',
+        cast(bpd.block_timestamp as varchar),
+        bpd.pool_name
+    ) AS _unique_key,
+    bpd._inserted_timestamp
+FROM
+    {{ ref('thorchain_silver_block_pool_depths') }} as bpd
+JOIN
+    {{ ref('thorchain_silver_block_log') }} as b
+    ON bpd.block_timestamp = b.timestamp
+LEFT JOIN
+    {{ ref('thorchain_silver_prices') }} as p
+    ON b.height = p.block_id
+    AND bpd.pool_name = p.pool_name
+{% if is_incremental() %}
+WHERE {{ incremental_predicate('b.block_timestamp') }}
+{% endif %}

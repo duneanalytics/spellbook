@@ -7,11 +7,8 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_hour')],
-        unique_key = ['wallet_address', 'token_address', 'block_hour', 'token_id'],
-        post_hook='{{ expose_spells(\'["celo"]\',
-                                    "sector",
-                                    "transfers",
-                                    \'["tomfutago"]\') }}'
+        unique_key = ['wallet_address', 'token_address', 'block_hour', 'token_id']
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

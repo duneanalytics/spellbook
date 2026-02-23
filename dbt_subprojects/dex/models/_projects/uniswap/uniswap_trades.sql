@@ -2,10 +2,7 @@
     schema = 'uniswap'
     , alias = 'trades'
     , materialized = 'view'
-    , post_hook='{{ expose_spells(blockchains = \'["ethereum", "arbitrum", "optimism", "polygon", "bnb", "base", "celo", "avalanche_c", "unichain"]\',
-                                      spell_type = "project", 
-                                      spell_name = "uniswap", 
-                                      contributors = \'["jeff-dude", "mtitus6", "Henrystats", "chrispearcx", "wuligy", "tomfutago", "phu"]\') }}'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 
@@ -20,10 +17,17 @@ ref('uniswap_arbitrum_trades')
 , ref('uniswap_ethereum_trades')
 , ref('uniswap_gnosis_trades')
 , ref('uniswap_ink_trades')
+, ref('uniswap_linea_trades')
+, ref('uniswap_mantle_trades')
+, ref('uniswap_monad_trades')
 , ref('uniswap_optimism_trades')
+, ref('uniswap_plasma_trades')
 , ref('uniswap_polygon_trades')
+, ref('uniswap_scroll_trades')
+, ref('uniswap_sonic_trades')
 , ref('uniswap_unichain_trades')
 , ref('uniswap_worldchain_trades')
+, ref('uniswap_zksync_trades')
 , ref('uniswap_zora_trades')
 ] %}
 
@@ -67,7 +71,7 @@ FROM (
         , lp_fee_amount_usd
         , lp_fee_amount 
         , lp_fee_amount_raw
-        , lp_fee 
+        , lp_fee -- fee tier denominated in % 
         -- hooks fee columns 
         , hooks_fee_amount_usd
         , hooks_fee_amount 

@@ -8,10 +8,7 @@
         ,incremental_strategy = 'merge'
         ,incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
         ,unique_key = ['instruction','account_merkle_tree','leaf_id','tx_id']
-        ,post_hook='{{ expose_spells(\'["solana"]\',
-                                    "project",
-                                    "magiceden",
-                                    \'["tsekityam"]\') }}'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

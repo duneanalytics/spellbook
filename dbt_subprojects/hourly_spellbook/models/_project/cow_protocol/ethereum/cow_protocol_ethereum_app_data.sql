@@ -1,9 +1,5 @@
-{{ config(alias='app_data',
-        
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "cow_protocol",
-                                    \'["bh2smith"]\') }}'
+{{ config(alias='app_data'
+, post_hook='{{ hide_spells() }}'
 )}}
 
 -- Find the PoC Query here: https://dune.com/queries/1751965

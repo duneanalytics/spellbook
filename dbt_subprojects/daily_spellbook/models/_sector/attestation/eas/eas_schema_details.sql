@@ -3,11 +3,8 @@
     schema = 'eas',
     alias = 'schema_details',
     materialized = 'view',
-    unique_key = ['blockchain', 'project', 'version', 'schema_uid', 'ordinality'],
-    post_hook = '{{ expose_spells(\'["arbitrum", "base", "celo", "ethereum", "linea", "nova", "optimism", "polygon", "scroll", "zksync"]\',
-                                "sector",
-                                "attestation",
-                                \'["tomfutago"]\') }}'
+    unique_key = ['blockchain', 'project', 'version', 'schema_uid', 'ordinality']
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

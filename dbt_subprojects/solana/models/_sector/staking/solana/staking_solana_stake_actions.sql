@@ -4,12 +4,10 @@
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
-    , unique_key = ['block_time', 'tx_id', 'source', 'destination', 'stake', 'authority', 'outer_instruction_index', 'inner_instruction_index']
+    , unique_key = ['unique_key', 'block_date']
+    , partition_by = ['block_date', 'action']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
-    , post_hook='{{ expose_spells(\'["solana"]\',
-                                "sector",
-                                "staking",
-                                \'["ilemi"]\') }}')
+    , post_hook='{{ hide_spells() }}')
 }}
 
 with
@@ -27,7 +25,7 @@ with
             and token_mint_address is null
             and tx_success
             and block_time >= TIMESTAMP '2020-11-14' --min(block_time) from stake_program_solana.stake_call_Merge, inner joined downstream
-            {% if is_incremental() %}
+            {% if is_incremental()  %}
             and {{ incremental_predicate('block_time') }}
             {% endif %}
     )
@@ -50,7 +48,7 @@ with
             AND aa.block_slot = m.call_block_slot
             AND aa.tx_id = m.call_tx_id
         where 1=1 
-        {% if is_incremental() %}
+        {% if is_incremental()  %}
         and {{ incremental_predicate('m.call_block_time') }}
         {% endif %}
     )
@@ -69,7 +67,7 @@ with
             , call_tx_id
         FROM {{ source('stake_program_solana', 'stake_call_Withdraw') }}
         where 1=1 
-        {% if is_incremental() %}
+        {% if is_incremental()  %}
         and {{ incremental_predicate('call_block_time') }}
         {% endif %}
     )
@@ -88,13 +86,15 @@ with
             , call_tx_id
         FROM {{ source('stake_program_solana', 'stake_call_Split') }}
         where 1=1 
-        {% if is_incremental() %}
+        {% if is_incremental()  %}
         and {{ incremental_predicate('call_block_time') }}
         {% endif %}
     )
 
 SELECT
-    stake
+    {{ dbt_utils.generate_surrogate_key(['call_block_slot', 'call_tx_id', 'call_outer_instruction_index', 'call_inner_instruction_index']) }} as unique_key
+    , CAST(date_trunc('day', call_block_time) AS DATE) as block_date
+    , stake
     , action
     , source
     , destination
@@ -111,4 +111,3 @@ FROM (
     UNION ALL
     SELECT * FROM split
 )
-where 1=1

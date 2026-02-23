@@ -147,7 +147,19 @@ sources:
   - name: ekubo_ethereum
     tables:
       - name: ekubo_core_call_swap_611415377
+  - name: ekubo_v3_ethereum
+    tables:
+      - name: core_evt_positionupdated
+      - name: core_evt_poolinitialized
+      - name: core_evt_positionfeescollected
+      - name: core_evt_feesaccumulated
   - name: bunni_v2_ethereum
     tables:
       - name: bunnihook_evt_swap
       
+  - name: supernova_ethereum
+    tables:
+      - name: pairgenerator_evt_paircreated
+      - name: pair_evt_swap
+      - name: algebrafactory_evt_custompool
+      - name: algebrapool_evt_swap

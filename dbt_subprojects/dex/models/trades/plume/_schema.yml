@@ -1,13 +1,21 @@
 version: 2
 
 models:
-  - name: dex_plume_base_trades
+  - name: dex_plume_trades
     data_tests:
-      - check_columns_dex_base_trades
-      - check_dex_info_relationship
-      - test_acceptable_usd_amount:
+      - check_columns_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+      - dbt_utils.accepted_range:
           column_name: amount_usd
-          max_value: 1000000000
+          max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+
+  - name: dex_plume_base_trades
 
   - name: rooster_protocol_plume_base_trades
     meta:
@@ -27,5 +35,68 @@ models:
           seed_file: ref('rooster_protocol_plume_base_trades_seed')
           filter:
             version: 2
+  
+  - name: rooster_protocol_v2_plume_base_trades
+    meta:
+      blockchain: plume
+      sector: dex
+      project: rooster_protocol
+      contributors: captncrunch
+    config:
+      tags: ["plume", "dex", "trades", "algebra"]
+    description: "Rooster Protocol Plume base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('rooster_protocol_v2_plume_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: izumi_finance_plume_base_trades
+    meta:
+      blockchain: plume
+      sector: dex
+      project: izumi_finance
+      contributors: captncrunch
+    config:
+      tags: ["plume", "dex", "trades", "izumi finance"]
+    description: "Izumi Finance Plume base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('izumi_finance_plume_base_trades_seed')
+          filter:
+            version: 1
 
 
+  - name: izumi_finance_v2_plume_base_trades
+    meta:
+      blockchain: plume
+      sector: dex
+      project: izumi_finance
+      contributors: captncrunch
+    config:
+      tags: ["plume", "dex", "trades", "izumi finance"]
+    description: "Izumi Finance Classic Plume base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('izumi_finance_v2_plume_base_trades_seed')
+          filter:
+            version: 2
+  - name: dex_plume_token_volumes_daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - token_address
+            - block_date

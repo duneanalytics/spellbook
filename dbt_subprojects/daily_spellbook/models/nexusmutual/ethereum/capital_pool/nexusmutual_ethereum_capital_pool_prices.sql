@@ -2,11 +2,8 @@
   config(
     schema = 'nexusmutual_ethereum',
     alias = 'capital_pool_prices',
-    materialized = 'view',
-    post_hook = '{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "nexusmutual",
-                                \'["tomfutago"]\') }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

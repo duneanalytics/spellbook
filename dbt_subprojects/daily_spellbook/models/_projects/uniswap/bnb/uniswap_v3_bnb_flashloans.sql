@@ -6,10 +6,7 @@
       , file_format = 'delta'
       , incremental_strategy = 'merge'
       , unique_key = ['tx_hash', 'evt_index']
-      , post_hook='{{ expose_spells(\'["bnb"]\',
-                                  "project",
-                                  "uniswap_v3",
-                                  \'["hildobby"]\') }}'
+      , post_hook='{{ hide_spells() }}'
   )
 }}
 
@@ -25,9 +22,13 @@ WITH flashloans AS (
     , CASE WHEN f.amount0 = UINT256 '0' THEN bep20b.decimals ELSE bep20a.decimals END AS currency_decimals
     , f.contract_address
     FROM {{ source('uniswap_v3_bnb','Pair_evt_Flash') }} f
-        INNER JOIN {{ source('uniswap_v3_bnb','Factory_evt_PoolCreated') }} p ON f.contract_address = p.pool
-    LEFT JOIN {{ source('tokens_bnb', 'bep20') }} bep20a ON p.token0 = bep20a.contract_address
-    LEFT JOIN {{ source('tokens_bnb', 'bep20') }} bep20b ON p.token1 = bep20b.contract_address
+    INNER JOIN {{ source('uniswap_v3_bnb','Factory_evt_PoolCreated') }} p ON f.contract_address = p.pool
+    LEFT JOIN {{ source('tokens', 'erc20') }} bep20a
+        ON p.token0 = bep20a.contract_address
+        AND bep20a.blockchain = 'bnb'
+    LEFT JOIN {{ source('tokens', 'erc20') }} bep20b
+        ON p.token1 = bep20b.contract_address
+        AND bep20b.blockchain = 'bnb'
     WHERE f.evt_block_time > NOW() - interval '1' month
         {% if is_incremental() %}
         AND f.evt_block_time >= date_trunc('day', now() - interval '7' Day)

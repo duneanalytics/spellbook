@@ -3,11 +3,9 @@
         schema = 'pancakeswap_nft',
         alias = 'trades',
         
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["bnb"]\',
-                                    "project",
-                                    "pancakeswap_nft",
-                                    \'["0xRob"]\') }}')
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
+)
 }}
 
 SELECT *

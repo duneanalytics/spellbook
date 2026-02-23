@@ -41,7 +41,7 @@ We need to split the onboarding process into multiple PRs because of the way we 
 
 3.  **Configure ERC20 Metadata (`tokens` project) (not always required):**
 
-*Note: This step is not required for all chains. It is only required for chains we could not generate amp coverage for.*
+    *Note: This step is not required for all chains. It is only required for chains we could not generate amp coverage for.*
 
     -   **What:**
         -   Create a new `tokens_<blockchain>_v1_erc20` model (e.g., [`tokens_lens_v1_erc20.sql`](./dbt_subprojects/tokens/models/tokens/lens/tokens_lens_v1_erc20.sql)) in `dbt_subprojects/tokens/models/tokens/<blockchain>/`. Add the same tokens listed in the blockchain-specific prices model.
@@ -112,24 +112,6 @@ We need to split the onboarding process into multiple PRs because of the way we 
     -   **Why:** Includes the new chain\'s DEX activity in the top-level `dex.trades` table used by many dashboards and queries.
 
 - **Example PR:** [Sonic DEX PR](https://github.com/duneanalytics/spellbook/pull/7510/files)
-
-## Post-Merge: Metrics Pipeline Integration
-
-**Goal:** Integrate the new blockchain into the main Dune metrics pipeline, feeding the core Dune app dashboards.
-
-**Prerequisites:** PR 2 ([`tokens.transfers`](./dbt_subprojects/tokens/models/transfers_and_balances/tokens_transfers.sql) and [`gas.fees`](./dbt_subprojects/hourly_spellbook/models/_sector/gas/fees/gas_fees.sql)) must be merged and live in production.
-
-**Steps:**
-
-1.  **Update Metrics Models (`hourly_spellbook` project):**
-    -   **What:** Add logic for the new blockchain into the relevant metrics models within [`dbt_subprojects/hourly_spellbook/models/_sector/metrics/`](./dbt_subprojects/hourly_spellbook/models/_sector/metrics/). Mimic the patterns used for existing EVM chains.
-    -   **Why:** Calculates standardized metrics (e.g., active users, transaction counts) based on the newly created [`tokens.transfers`](./dbt_subprojects/tokens/models/transfers_and_balances/tokens_transfers.sql) and [`gas.fees`](./dbt_subprojects/hourly_spellbook/models/_sector/gas/fees/gas_fees.sql) tables.
-    -   *Example PR:* [zkSync Metrics PR](https://github.com/duneanalytics/spellbook/pull/7227/files)
-
-2.  **Update Dune Materialized Views:**
-    -   **What:** Manually edit the queries that generate the materialized views powering the Dune frontend metrics pages to include the new blockchain. These queries typically live in a specific Dune workspace folder. Refresh the materialized views.
-    -   **Why:** The frontend application reads from these specific materialized views. They need to be explicitly updated to include the new chain's data after the underlying Spellbook models are live.
-    -   *Location:* [Dune Prod Metrics Queries](https://dune.com/workspace/t/dune/library/folders/(PROD)%20Metrics%20pages) (Internal Link)
 
 ## Key Considerations
 

@@ -1,11 +1,9 @@
 {{ config(
     alias = 'bridge',
     materialized = 'table',
-    file_format = 'delta',
-    post_hook='{{ expose_spells(\'["ethereum", "fantom","base","arbitrum","polygon","optimism","bnb"]\',
-                                "sector",
-                                "labels",
-                                \'["ilemi","rantum", "kaiblade", "Sector920"]\') }}')
+    file_format = 'delta'
+    , post_hook='{{ hide_spells() }}'
+)
 
 }}
 

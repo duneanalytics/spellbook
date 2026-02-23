@@ -6,11 +6,8 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date','unique_key'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
-    post_hook='{{ expose_spells(\'["tron"]\',
-                                "sector",
-                                "tokens",
-                                \'["0xRob"]\') }}'
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
+    , post_hook='{{ hide_spells() }}'
 )
 }}
 
@@ -38,7 +35,7 @@ WITH base_transfers as (
         , symbol
         , price
     FROM
-        {{ source('prices_coinpaprika', 'hour') }}    
+        {{ source('prices_external', 'hour') }}    
     WHERE
         1=1
         {% if is_incremental() -%}

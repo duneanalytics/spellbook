@@ -1,8 +1,8 @@
 {{ config(
         schema='evms',
         alias = 'blocks',
-        materialized = 'view',
-        post_hook='{{ expose_spells(evms_structured_blockchains_list() | tojson, "sector", "evms", \'[]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 
@@ -25,6 +25,7 @@ FROM (
         , CAST(difficulty AS double) AS difficulty
         , gas_limit
         , gas_used
+        , date
         FROM {{ source(blockchain, 'blocks') }}
         {% if not loop.last %}
         UNION ALL

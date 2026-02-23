@@ -16,14 +16,18 @@
     ,'ethereum'
     ,'fantom'
     ,'flare'
-    ,'flow'
     ,'gnosis'
+    ,'hemi'
+    ,'henesys'
     ,'hyperevm'
     ,'ink'
     ,'kaia'
     ,'katana'
     ,'linea'
     ,'mantle'
+    ,'megaeth'
+    ,'mezo'
+    ,'monad'
     ,'nova'
     ,'opbnb'
     ,'optimism'
@@ -38,6 +42,7 @@
     ,'somnia'
     ,'sonic'
     ,'sophon'
+    ,'story'
     ,'superseed'
     ,'tac'
     ,'taiko'
@@ -45,6 +50,7 @@
     ,'unichain'
     ,'viction'
     ,'worldchain'
+    ,'xlayer'
     ,'zkevm'
     ,'zksync'
     ,'zora'
@@ -57,7 +63,7 @@
         , post_hook='{{ expose_spells(blockchains = \'["' + chains | join('","') + '"]\',
                                         spell_type = "sector",
                                         spell_name = "tokens",
-                                        contributors = \'["aalan3", "jeff-dude", "0xBoxer", "hildobby", "0xRob", "hosuke"]\') }}'
+                                        contributors = \'["aalan3", "jeff-dude", "0xBoxer", "hildobby", "0xRob", "hosuke", "tomfutago"]\') }}'
         )
 }}
 

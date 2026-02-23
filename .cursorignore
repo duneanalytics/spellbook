@@ -1,0 +1,26 @@
+# Cursor ignore patterns
+# Files listed here are excluded from Cursor's indexing but remain in git
+
+# Lock files (large, auto-generated)
+uv.lock
+Pipfile.lock
+
+# Virtual environments
+.venv/
+**/venv/
+**/.venv/
+
+# Cache directories
+__pycache__/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# dbt artifacts (large, auto-generated)
+dbt_packages/
+target/
+logs/
+
+# Large generated manifests
+**/manifest.json
+**/run_results.json

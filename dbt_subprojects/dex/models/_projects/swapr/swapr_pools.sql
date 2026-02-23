@@ -1,7 +1,7 @@
 {{ config(
     schema = 'swapr',
-    alias = 'pools',
-    post_hook='{{ expose_spells(\'["gnosis"]\', "project", "swapr", \'["mlaegn"]\') }}'
+    alias = 'pools'
+    , post_hook='{{ hide_spells() }}'
 ) }}
 
 {% set swapr_models = [

@@ -182,10 +182,6 @@ models:
             - tx_hash
             - evt_index
             - event_type
-      - check_dex_base_liquidity_seed:
-          seed_file: ref('uniswap_base_base_liquidity_seed')
-          filter:
-            version: 4
     columns:
       - *blockchain
       - *project
@@ -327,6 +323,34 @@ models:
       - *amount1_raw
 
   - name: uniswap_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: [ 'dex' ]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - tx_hash
+            - evt_index
+
+  - name: uniswap_base_uniswapx_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: [ 'dex' ]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - tx_hash
+            - evt_index
+
+  - name: uniswap_base_uniswapx_trades
     meta:
       blockchain: base
       sector: dex
