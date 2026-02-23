@@ -9,7 +9,6 @@
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
     , unique_key = ['block_month', 'block_date', 'surrogate_key']
     , pre_hook = '{{ enforce_join_distribution("PARTITIONED") }}'
-    , tags = ['prod_exclude']
   )
 }}
 
