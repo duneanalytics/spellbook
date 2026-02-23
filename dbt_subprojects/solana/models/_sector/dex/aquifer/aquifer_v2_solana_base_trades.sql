@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'aquifer_solana'
+    schema = 'aquifer_v2_solana'
     , alias = 'v2_base_trades'
     , partition_by = ['block_month']
     , materialized = 'incremental'
