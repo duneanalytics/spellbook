@@ -1,16 +1,9 @@
-{{
-  config(
-    schema = 'humidifi_solana'
-    , alias = 'stg_raw_swaps'
-    , partition_by = ['block_month']
-    , materialized = 'incremental'
-    , file_format = 'delta'
-    , incremental_strategy = 'merge'
-    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
-    , unique_key = ['block_month', 'block_date', 'surrogate_key']
-    , tags = ['prod_exclude']
-  )
-}}
+{% macro solana_amm_stg_raw_swaps(
+    program_id,
+    discriminator_filter,
+    project_start_date,
+    pool_id_expression = "CAST(NULL AS VARCHAR)"
+) %}
 
 WITH swaps AS (
     SELECT
@@ -25,9 +18,7 @@ WITH swaps AS (
         , tx_id
         , tx_signer
         , tx_index
-        , account_arguments[2] AS pool_id
-        , account_arguments[3] AS vault_a
-        , account_arguments[4] AS vault_b
+        , {{ pool_id_expression }} AS pool_id
         , {{ solana_instruction_key(
               'block_slot'
             , 'tx_index'
@@ -36,14 +27,16 @@ WITH swaps AS (
           ) }} AS surrogate_key
     FROM {{ source('solana', 'instruction_calls') }}
     WHERE 1=1
-        AND executing_account = '9H6tua7jkLhdm3w8BvgpTn5LZNU7g4ZynDmCiNN3q6Rp'
+        AND executing_account = '{{ program_id }}'
         AND tx_success = true
-        AND cardinality(account_arguments) > 8
+        AND {{ discriminator_filter }}
         {% if is_incremental() -%}
         AND {{ incremental_predicate('block_date') }}
         {% else -%}
-        AND block_date >= DATE '2025-06-13'
+        AND block_date >= DATE '{{ project_start_date }}'
         {% endif -%}
 )
 
 SELECT * FROM swaps
+
+{% endmacro %}

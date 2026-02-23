@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'obric_solana'
+    schema = 'bisonfi_solana'
     , alias = 'base_trades'
     , partition_by = ['block_month']
     , materialized = 'incremental'
@@ -8,14 +8,15 @@
     , incremental_strategy = 'merge'
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
     , unique_key = ['block_month', 'block_date', 'surrogate_key']
+    , tags = ['prod_exclude']
   )
 }}
 
 {{ solana_amm_base_trades(
-    project = 'obric'
-    , project_main_id = 'obriQD1zbpyLz95G5n7nJe6a4DPjpFwa5XYPoNm113y'
-    , project_start_date = '2024-06-04'
-    , stg_raw_swaps_model = ref('obric_solana_stg_raw_swaps')
+    project = 'bisonfi'
+    , project_main_id = 'BiSoNHVpsVZW2F7rx2eQ59yQwKxzU5NvBcmKshCSUypi'
+    , project_start_date = '2025-11-05'
+    , stg_raw_swaps_model = ref('bisonfi_solana_stg_raw_swaps')
     , token_bought_offset = 2
     , token_sold_offset = 1
 ) }}

@@ -41,7 +41,17 @@
 %}
 
 /*
- intentionally excluded:    , ref('sanctum_router_base_trades')
+intentionally excluded:
+    , ref('sanctum_router_base_trades')
+
+    , ref('alphaq_solana_base_trades')
+    , ref('bisonfi_solana_base_trades')
+    , ref('goonfi_v2_solana_base_trades')
+    , ref('solfi_v2_solana_base_trades')
+    , ref('whalestreet_solana_base_trades')
+    , ref('manifest_solana_base_trades')
+    , ref('byreal_solana_base_trades')
+    , ref('scorch_solana_base_trades')
 */
 
 {% for dex in solana_dexes %}

@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'obric_solana'
+    schema = 'scorch_solana'
     , alias = 'base_trades'
     , partition_by = ['block_month']
     , materialized = 'incremental'
@@ -8,14 +8,15 @@
     , incremental_strategy = 'merge'
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
     , unique_key = ['block_month', 'block_date', 'surrogate_key']
+    , tags = ['prod_exclude']
   )
 }}
 
 {{ solana_amm_base_trades(
-    project = 'obric'
-    , project_main_id = 'obriQD1zbpyLz95G5n7nJe6a4DPjpFwa5XYPoNm113y'
-    , project_start_date = '2024-06-04'
-    , stg_raw_swaps_model = ref('obric_solana_stg_raw_swaps')
-    , token_bought_offset = 2
-    , token_sold_offset = 1
+    project = 'scorch'
+    , project_main_id = 'SCoRcH8c2dpjvcJD6FiPbCSQyQgu3PcUAWj2Xxx3mqn'
+    , project_start_date = '2025-11-28'
+    , stg_raw_swaps_model = ref('scorch_solana_stg_raw_swaps')
+    , token_bought_offset = 3
+    , token_sold_offset = 2
 ) }}

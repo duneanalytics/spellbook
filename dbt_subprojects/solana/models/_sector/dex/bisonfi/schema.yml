@@ -1,0 +1,33 @@
+version: 2
+
+models:
+  - name: bisonfi_solana_stg_raw_swaps
+    meta:
+      blockchain: solana
+      contributors: [ Eekeyguy ]
+    config:
+      tags: [ 'solana', 'dex', 'bisonfi' ]
+    description: Staging model for BisonFi swap data from instruction_calls.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'block_month', 'block_date', 'surrogate_key' ]
+
+  - name: bisonfi_solana_base_trades
+    meta:
+      blockchain: solana
+      contributors: [ Eekeyguy ]
+    config:
+      tags: [ 'solana', 'dex', 'bisonfi' ]
+    description: BisonFi DEX base trades on Solana.
+    data_tests:
+      - check_columns_solana_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'block_month', 'block_date', 'surrogate_key' ]
+
+  - name: bisonfi_solana_trades
+    meta:
+      blockchain: solana
+      contributors: [ Eekeyguy ]
+    config:
+      tags: [ 'solana', 'dex', 'bisonfi' ]
+    description: BisonFi DEX trades on Solana (from dex_solana_trades).
