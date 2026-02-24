@@ -7,6 +7,9 @@ WITH native_token_prices as (
         txns.block_time
         ,txns.block_number
         ,txns.hash AS tx_hash
+        {% if blockchain == 'megaeth' -%}
+        ,txns."index" AS tx_index
+        {%- endif %}
         ,txns."from" AS tx_from
         ,txns.to AS tx_to
         ,cast(gas_price as uint256) as gas_price
@@ -41,28 +44,20 @@ WITH native_token_prices as (
     INNER JOIN {{ source(blockchain, 'blocks') }} blocks
         ON txns.block_number = blocks.number
         {% if is_incremental() %}
-        AND
-            {%- if blockchain == 'megaeth' %}
-        blocks.time >= now() - interval '4' hour
-            {%- else %}
-        {{ incremental_predicate('blocks.time') }}
-            {%- endif %}
+        AND {{ incremental_predicate('blocks.time') }}
+        {% elif blockchain == 'megaeth' %}
+        AND blocks.time >= timestamp '2026-01-30'
         {% endif %}
     {% if test_short_ci %}
     WHERE
-        {%- if blockchain == 'megaeth' %}
-        txns.block_time >= now() - interval '4' hour
-        {%- else %}
         {{ incremental_predicate('txns.block_time') }}
-        {%- endif %}
     OR txns.hash in (select tx_hash from {{ref('evm_gas_fees')}})
     {% elif is_incremental() %}
     WHERE
-        {%- if blockchain == 'megaeth' %}
-        txns.block_time >= now() - interval '4' hour
-        {%- else %}
         {{ incremental_predicate('txns.block_time') }}
-        {%- endif %}
+    {% elif blockchain == 'megaeth' %}
+    WHERE
+        txns.block_time >= timestamp '2026-01-30'
     {% endif %}
     )
 
@@ -73,6 +68,9 @@ SELECT
     ,b.block_time
     ,b.block_number
     ,b.tx_hash
+    {% if blockchain == 'megaeth' -%}
+    ,b.tx_index
+    {%- endif %}
     ,b.tx_from
     ,b.tx_to
     ,b.gas_price
