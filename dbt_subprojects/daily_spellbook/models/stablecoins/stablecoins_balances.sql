@@ -1,5 +1,6 @@
 {{
   config(
+    tags = ['stablecoins'],
     schema = 'stablecoins',
     alias = 'balances',
     materialized = 'view',

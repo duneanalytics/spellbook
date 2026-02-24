@@ -39,6 +39,7 @@
 
 {{
   config(
+    tags = ['stablecoins'],
     schema = 'stablecoins_evm',
     alias = 'balances',
     materialized = 'view',
