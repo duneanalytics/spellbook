@@ -17,7 +17,7 @@ with raw as (
             project = 'prismfi',
             version = '1',
             Pair_evt_Swap = source('prism_megaeth', 'v3pool_evt_swap'),
-            Factory_evt_PoolCreated = source('prism_megaeth', 'factory_evt_poolcreated')
+            Factory_evt_PoolCreated = source('prism_megaeth', 'v3factory_evt_poolcreated')
         )
     }}
 )
