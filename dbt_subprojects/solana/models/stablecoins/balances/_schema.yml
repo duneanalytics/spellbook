@@ -1,0 +1,167 @@
+version: 2
+
+models:
+  - name: stablecoins_solana_core_balances
+    meta:
+      blockchain: solana
+      sector: stablecoin
+      project: stablecoin
+      contributors: tomfutago
+    config:
+      tags: ['stablecoin', 'balances']
+    description: "Core stablecoin balances with cumulative inflow/outflow tracking"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_mint_address
+          config:
+            where: "day >= current_date - interval '30' day"
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain name"
+      - &day
+        name: day
+        description: "Date on which the token balance is logged"
+      - &address
+        name: address
+        description: "Address for the token holder (token_balance_owner)"
+      - &token_mint_address
+        name: token_mint_address
+        description: "Token mint address"
+      - &balance_raw
+        name: balance_raw
+        description: "Raw balance (not adjusted for decimals)"
+      - &last_updated
+        name: last_updated
+        description: "Date when balance was last updated"
+
+  - name: stablecoins_solana_extended_balances
+    meta:
+      blockchain: solana
+      sector: stablecoin
+      project: stablecoin
+      contributors: tomfutago
+    config:
+      tags: ['stablecoin', 'balances']
+    description: "Extended stablecoin balances for newly added stablecoins"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_mint_address
+    columns:
+      - *blockchain
+      - *day
+      - *address
+      - *token_mint_address
+      - *balance_raw
+      - *last_updated
+
+  - name: stablecoins_solana_core_balances_enriched
+    meta:
+      blockchain: solana
+      sector: stablecoin
+      project: stablecoin
+      contributors: tomfutago
+    config:
+      tags: ['stablecoin', 'balances']
+    description: "Core stablecoin balances enriched with token metadata and USD prices"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+          config:
+            where: "day >= current_date - interval '30' day"
+    columns:
+      - *blockchain
+      - *day
+      - *address
+      - &token_symbol
+        name: token_symbol
+        description: "Token symbol"
+      - &token_address
+        name: token_address
+        description: "Token mint address"
+      - &token_standard
+        name: token_standard
+        description: "Token standard (spl_token)"
+      - &token_id
+        name: token_id
+        description: "Token id (null for spl tokens)"
+      - &currency
+        name: currency
+        description: "ISO 4217 currency code the stablecoin is pegged to (e.g. USD, EUR)"
+      - *balance_raw
+      - &balance
+        name: balance
+        description: "Balance (adjusted for decimals)"
+      - &balance_usd
+        name: balance_usd
+        description: "USD value of balance"
+      - *last_updated
+
+  - name: stablecoins_solana_extended_balances_enriched
+    meta:
+      blockchain: solana
+      sector: stablecoin
+      project: stablecoin
+      contributors: tomfutago
+    config:
+      tags: ['stablecoin', 'balances']
+    description: "Extended stablecoin balances enriched with token metadata and USD prices"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    columns:
+      - *blockchain
+      - *day
+      - *address
+      - *token_symbol
+      - *token_address
+      - *token_standard
+      - *token_id
+      - *currency
+      - *balance_raw
+      - *balance
+      - *balance_usd
+      - *last_updated
+
+  - name: stablecoins_solana_balances
+    meta:
+      blockchain: solana
+      sector: stablecoin
+      project: stablecoin
+      contributors: tomfutago
+    config:
+      tags: ['stablecoin', 'balances']
+    description: "Union of core and extended stablecoin balances with token metadata and USD prices"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+          config:
+            where: "day >= current_date - interval '30' day"
+    columns:
+      - *blockchain
+      - *day
+      - *address
+      - *token_symbol
+      - *token_address
+      - *token_standard
+      - *token_id
+      - *currency
+      - *balance_raw
+      - *balance
+      - *balance_usd
+      - *last_updated

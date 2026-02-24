@@ -50,7 +50,10 @@
     , ref('native_ethereum_base_trades')
     , ref('eulerswap_ethereum_base_trades')
     , ref('ekubo_v1_ethereum_base_trades')
+    , ref('ekubo_v3_ethereum_base_trades')
     , ref('angstrom_ethereum_base_trades')
+    , ref('supernova_v2_ethereum_base_trades')
+    , ref('supernova_v3_ethereum_base_trades')
 ] %}
 with base_union as (
         {% for base_model in base_models %}

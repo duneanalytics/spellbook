@@ -6,10 +6,7 @@
         ,incremental_strategy = 'merge'
         ,file_format = 'delta'
         ,unique_key = ['block_date', 'source_chain', 'tx_hash']
-        ,post_hook='{{ expose_spells(\'["bnb"]\',
-                                        "project",
-                                        "hashflow",
-                                        \'["BroderickBonelli"]\') }}'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

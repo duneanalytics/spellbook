@@ -1,10 +1,7 @@
 {{ config(
     schema = 'tokenlon_ethereum',
-    alias = 'trades',
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "tokenlon",
-                                \'["izayl"]\') }}'
+    alias = 'trades'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

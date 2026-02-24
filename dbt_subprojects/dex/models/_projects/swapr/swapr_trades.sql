@@ -1,11 +1,8 @@
 {{ config(
     schema = 'swapr',
     alias = 'trades',
-    materialized = 'view',
-    post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
-                                  spell_type = "project", 
-                                  spell_name = "swapr", 
-                                  contributors = \'["cryptoleishen"]\') }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

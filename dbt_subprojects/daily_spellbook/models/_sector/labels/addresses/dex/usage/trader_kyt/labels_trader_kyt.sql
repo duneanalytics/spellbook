@@ -1,11 +1,8 @@
 {{
     config(
         
-        alias = 'kyt',
-        post_hook='{{ expose_spells(\'["ethereum", "fantom", "arbitrum", "avalanche_c", "gnosis", "bnb", "optimism", "polygon"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["whiskey"]\') }}'
+        alias = 'kyt'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

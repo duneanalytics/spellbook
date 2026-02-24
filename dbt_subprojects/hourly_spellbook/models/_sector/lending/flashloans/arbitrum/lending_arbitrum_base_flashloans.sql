@@ -23,6 +23,7 @@ select
   version,
   recipient,
   amount,
+  amount_raw,
   fee,
   token_address,
   project_contract_address,

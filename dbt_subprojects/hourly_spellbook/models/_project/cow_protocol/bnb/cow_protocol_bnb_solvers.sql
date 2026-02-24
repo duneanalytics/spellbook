@@ -1,10 +1,7 @@
 {{ config(
         schema = 'cow_protocol_bnb',
-        alias='solvers',
-        post_hook='{{ expose_spells(blockchains = \'["bnb"]\',
-                                    spell_type = "project",
-                                    spell_name = "cow_protocol",
-                                    contributors = \'["harisang"]\') }}'
+        alias='solvers'
+        , post_hook='{{ hide_spells() }}'
 )}}
 
 WITH
@@ -59,7 +56,10 @@ known_solver_metadata (address, environment, name) as (
                 (0x347120a515D640dC9ee88Ab060ae8f4f482d3D7A, 'barn', 'MXTrading'),
                 (0x8979cffddb57b0bb9f507bd99b3f98bc66e70197, 'prod', 'MXTrading'),
                 (0x3980daa7eaad0b7e0c53cfc5c2760037270da54d, 'prod', 'Tsolver'),
-                (0xBB765c920f86e2A2654c4B82deB5BC2E092fF93b, 'barn', 'Portus')
+                (0xBB765c920f86e2A2654c4B82deB5BC2E092fF93b, 'barn', 'Portus'),
+                (0x42a5d9858910b0445a2a59cdfaee2f4287608dbc, 'prod', 'Rosato'),
+                (0x6bf97afe2d2c790999cded2a8523009eb8a0823f, 'prod', 'Portus'),
+                (0x8f5835e9d756c9bd934bce527157a4b0ef3c5cb7, 'prod', 'Rizzolver')
     ) as _
 )
 -- Combining the metadata with current activation status for final table

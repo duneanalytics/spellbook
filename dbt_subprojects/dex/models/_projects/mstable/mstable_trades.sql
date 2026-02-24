@@ -1,11 +1,8 @@
 {{ config(
     schema = 'mstable',
     alias = 'trades',
-    materialized = 'view',
-    post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
-                                  spell_type = "project", 
-                                  spell_name = "mstable", 
-                                  contributors = \'["dbustos20"]\') }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

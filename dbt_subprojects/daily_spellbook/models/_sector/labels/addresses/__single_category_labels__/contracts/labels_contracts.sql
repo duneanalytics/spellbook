@@ -1,10 +1,8 @@
 {{config(
         
-        alias = 'contracts',
-        post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "fantom", "polygon","base","linea","scroll","mantle","blast"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["soispoke"]\') }}')
+        alias = 'contracts'
+        , post_hook='{{ hide_spells() }}'
+)
 }}
 
 SELECT 'ethereum' as blockchain,

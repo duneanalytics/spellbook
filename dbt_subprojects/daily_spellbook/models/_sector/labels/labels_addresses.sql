@@ -2,11 +2,9 @@
 
     alias = 'addresses',
     materialized = 'table',
-    file_format = 'delta',
-    post_hook='{{ expose_spells(\'["bitcoin", "ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "fantom"]\',
-                                "sector",
-                                "labels",
-                                \'["soispoke", "hildobby", "ilemi", "hosuke", "kaiblade", "viniabussafi"]\') }}')
+    file_format = 'delta'
+    , post_hook='{{ hide_spells() }}'
+)
 }}
 
 -- single category labels (no subsets), needs label_type and model_name added still.
@@ -23,7 +21,6 @@
     , ref('labels_project_wallets')
     , ref('labels_safe_ethereum')
     , ref('labels_tornado_cash')
-    , ref('labels_likely_bot_labels')
     , ref('labels_quest_participants')
     , ref('labels_cex_users')
     , ref('labels_op_retropgf')

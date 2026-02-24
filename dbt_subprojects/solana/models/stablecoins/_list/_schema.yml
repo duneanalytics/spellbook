@@ -1,0 +1,54 @@
+version: 2
+
+models:
+  - name: tokens_solana_spl_stablecoins
+    meta:
+      blockchain: solana
+      sector: stablecoins
+      contributors: tomfutago
+    config:
+      tags: ['tokens', 'solana', 'spl', 'stablecoins']
+    description: >
+        Union view of all stablecoin token addresses (core + extended).
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - token_mint_address
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain name"
+      - &token_mint_address
+        name: token_mint_address
+        description: "Stablecoin token mint address"
+      - &currency
+        name: currency
+        description: "ISO 4217 currency code the stablecoin is pegged to (e.g. USD, EUR)"
+
+  - name: tokens_solana_spl_stablecoins_core
+    meta:
+      blockchain: solana
+      sector: stablecoins
+      contributors: tomfutago
+    config:
+      tags: ['tokens', 'solana', 'spl', 'stablecoins']
+    description: >
+        Core list of stablecoin token addresses (frozen).
+    columns:
+      - *blockchain
+      - *token_mint_address
+      - *currency
+
+  - name: tokens_solana_spl_stablecoins_extended
+    meta:
+      blockchain: solana
+      sector: stablecoins
+      contributors: tomfutago
+    config:
+      tags: ['tokens', 'solana', 'spl', 'stablecoins']
+    description: >
+        Latest additions to stablecoin token addresses.
+    columns:
+      - *blockchain
+      - *token_mint_address
+      - *currency

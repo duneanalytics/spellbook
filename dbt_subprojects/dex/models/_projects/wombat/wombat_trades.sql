@@ -1,11 +1,8 @@
 {{ config(
     schema = 'wombat',
     alias = 'trades',
-    materialized = 'view',
-    post_hook='{{ expose_spells(blockchains = \'["bnb"]\',
-                                  spell_type = "project", 
-                                  spell_name = "wombat", 
-                                  contributors = \'["umer_h_adil", "hosuke"]\') }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

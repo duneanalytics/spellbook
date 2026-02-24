@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: kumbaya_megaeth
+    tables:
+      - name: v3factory_evt_poolcreated
+      - name: v3pool_evt_swap
+  - name: prism_megaeth
+    tables:
+      - name: factory_evt_poolcreated
+      - name: v3pool_evt_swap

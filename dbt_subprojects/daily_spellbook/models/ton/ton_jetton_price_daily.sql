@@ -5,7 +5,7 @@
         
         materialized = 'table',
         unique_key = ['blockchain', 'token_address', 'timestamp'],
-        post_hook='{{ expose_spells(\'["ton"]\',
+    post_hook='{{ expose_spells(\'["ton"]\',
                                     "sector",
                                     "ton",
                                     \'["pshuvalov", "okhlopkov"]\') }}'
@@ -30,6 +30,7 @@ ALL_TRADES AS (
       ROW(token_sold_address, amount_sold_raw)
       ]) AS T(token_address, amount_raw)
     WHERE token_address NOT IN (SELECT * FROM {{ ref('ton_proxy_ton_addresses') }})
+    AND project_type != 'launchpad'
 )
 
 , LIQUID_TOKENS AS (

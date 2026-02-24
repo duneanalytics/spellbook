@@ -1,9 +1,6 @@
 {{config(
-    alias = 'safe',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["soispoke"]\') }}'
+    alias = 'safe'
+    , post_hook='{{ hide_spells() }}'
 )}}
 
 SELECT * FROM {{ ref('labels_safe_ethereum') }}

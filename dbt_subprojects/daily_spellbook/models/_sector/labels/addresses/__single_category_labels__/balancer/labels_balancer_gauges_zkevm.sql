@@ -1,9 +1,8 @@
 {{config(
-        alias = 'balancer_gauges_zkevm',
-        post_hook='{{ expose_spells(\'["zkevm"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["jacektrocinski", "viniabussafi"]\') }}')}}
+        alias = 'balancer_gauges_zkevm'
+        , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 WITH gauges AS(
 SELECT distinct

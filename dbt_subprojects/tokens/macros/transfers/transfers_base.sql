@@ -20,7 +20,11 @@ WITH transfers AS (
         AND (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS null)
         AND value > UINT256 '0'
         {%- if is_incremental() %}
+            {%- if blockchain == 'megaeth' %}
+        AND block_time >= now() - interval '4' hour
+            {%- else %}
         AND {{incremental_predicate('block_time')}}
+            {%- endif %}
         {%- endif %}
         {%- if blockchain == 'polygon' %}
         -- ✅ Optimized CASE statement for filtering out POL ERC-20 contract transfers
@@ -54,7 +58,11 @@ WITH transfers AS (
     FROM {{ erc20_transfers }} t
     LEFT JOIN ({{source('dune','blockchains')}}) d on d.name = '{{blockchain}}' and d.token_address = t.contract_address
     {%- if is_incremental() %}
+        {%- if blockchain == 'megaeth' %}
+    WHERE evt_block_time >= now() - interval '4' hour
+        {%- else %}
     WHERE {{incremental_predicate('evt_block_time')}}
+        {%- endif %}
     {%- endif %}
 )
 
@@ -87,6 +95,10 @@ INNER JOIN {{ transactions }} tx ON
     AND tx.block_number = t.block_number
     AND tx.hash = t.tx_hash
     {%- if is_incremental() %}
+        {%- if blockchain == 'megaeth' %}
+    AND tx.block_time >= now() - interval '4' hour
+        {%- else %}
     AND {{incremental_predicate('tx.block_time')}}
+        {%- endif %}
     {%- endif %}
 {%- endmacro -%}

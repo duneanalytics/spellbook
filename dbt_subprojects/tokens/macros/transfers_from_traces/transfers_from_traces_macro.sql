@@ -36,7 +36,13 @@ base_tft as (
     where true
         and block_date >= timestamp '{{ transfers_start_date }}'
         {% if easy_dates -%} and block_date > current_date - interval '10' day {%- endif %} -- easy_dates mode for dev, to prevent full scan
-        {% if is_incremental() -%} and {{ incremental_predicate('block_date') }} {%- endif %}
+        {% if is_incremental() -%}
+            {%- if blockchain == 'megaeth' %}
+        and block_date >= cast(now() - interval '4' hour as date)
+            {%- else %}
+        and {{ incremental_predicate('block_date') }}
+            {%- endif %}
+        {%- endif %}
 )
 
 , base_tft_wrapper_deposits as (
@@ -60,7 +66,13 @@ base_tft as (
     where true
         and block_date >= timestamp '{{ transfers_start_date }}'
         {% if easy_dates -%} and block_date > current_date - interval '10' day {%- endif %} -- easy_dates mode for dev, to prevent full scan
-        {% if is_incremental() -%} and {{ incremental_predicate('block_date') }} {%- endif %}
+        {% if is_incremental() -%}
+            {%- if blockchain == 'megaeth' %}
+        and block_date >= cast(now() - interval '4' hour as date)
+            {%- else %}
+        and {{ incremental_predicate('block_date') }}
+            {%- endif %}
+        {%- endif %}
 )
 
 , tft as (
@@ -91,7 +103,13 @@ base_tft as (
         and blockchain = '{{ blockchain }}'
         and timestamp >= timestamp '{{ transfers_start_date }}'
         {% if easy_dates -%} and timestamp > current_date - interval '10' day {%- endif %} -- easy_dates mode for dev, to prevent full scan
-        {% if is_incremental() -%} and {{ incremental_predicate('timestamp') }} {%- endif %}
+        {% if is_incremental() -%}
+            {%- if blockchain == 'megaeth' %}
+        and timestamp >= now() - interval '4' hour
+            {%- else %}
+        and {{ incremental_predicate('timestamp') }}
+            {%- endif %}
+        {%- endif %}
 )
 
 -- output --

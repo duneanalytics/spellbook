@@ -1,11 +1,8 @@
 {{
     config(
         schema='pyth_entropy',
-        alias='pyth_entropy_request',
-        post_hook='{{ expose_spells(\'["abstract", "apechain", "arbitrum", "b3", "base", "berachain", "blast", "kaia", "mode", "optimism", "sei", "sonic"]\',
-                                  "project",
-                                  "pyth",
-                                  \'["gunboats"]\') }}'
+        alias='pyth_entropy_request'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 {% set pyth_entropy_models = [

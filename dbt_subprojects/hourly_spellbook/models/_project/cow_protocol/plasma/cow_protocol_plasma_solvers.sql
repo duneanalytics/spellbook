@@ -1,10 +1,7 @@
 {{ config(
         schema = 'cow_protocol_plasma',
-        alias='solvers',
-        post_hook='{{ expose_spells(blockchains = \'["plasma"]\',
-                                    spell_type = "project",
-                                    spell_name = "cow_protocol",
-                                    contributors = \'["harisang"]\') }}'
+        alias='solvers'
+        , post_hook='{{ hide_spells() }}'
 )}}
 
 WITH
@@ -45,8 +42,8 @@ known_solver_metadata (address, environment, name) as (
                 (0x7DC32b11E9E3444ce0fdcC60B3042375E41e15d7, 'prod', 'Gnosis_BalancerSOR'),
                 (0x93cF5BF9F3FEB7F382b9f1EfFc6afdC5976CdDb9, 'barn', 'Helixbox'),
                 (0x66ed980bb4E0d3a896a60a46396b636BE80657B9, 'prod', 'Helixbox'),
-                (0xA3Df1497044486E09d4EB10892a07825A47427b4, 'barn', 'TSolver'),
-                (0x14d6a82B819D3341D8024936a2E8B985A80B2c64, 'prod', 'TSolver'),
+                (0xA3Df1497044486E09d4EB10892a07825A47427b4, 'barn', 'Tsolver'),
+                (0x14d6a82B819D3341D8024936a2E8B985A80B2c64, 'prod', 'Tsolver'),
                 (0xBC2204A90b0320183232F9D1379fEB28A9e54c60, 'barn', 'Wraxyn'),
                 (0x2Cbf4401D37489C081C9E58c2d348BA5bE225135, 'prod', 'Wraxyn')
     ) as _

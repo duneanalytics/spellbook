@@ -1,11 +1,8 @@
 {{ config(
         schema = 'zigzag',
         alias = 'trades',
-        materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'["arbitrum"]\',
-                                      spell_type = "project", 
-                                      spell_name = "zigzag", 
-                                      contributors = \'["jeff-dude","mtitus6"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

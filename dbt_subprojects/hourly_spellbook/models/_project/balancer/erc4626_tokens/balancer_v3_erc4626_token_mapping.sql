@@ -1,10 +1,7 @@
 {{ config(
     schema = 'balancer_v3',
-    alias = 'erc4626_token_mapping',
-    post_hook='{{ expose_spells(blockchains = \'["ethereum", "gnosis", "sonic", "arbitrum", "base"]\',
-                                spell_type = "project",
-                                spell_name = "balancer",
-                                contributors = \'["viniabussafi"]\') }}'
+    alias = 'erc4626_token_mapping'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

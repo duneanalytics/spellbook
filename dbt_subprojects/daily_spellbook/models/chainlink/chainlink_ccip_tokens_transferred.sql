@@ -1,11 +1,8 @@
 {{
   config(
     schema='chainlink',
-    alias='ccip_tokens_transferred',
-    post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "ethereum", "optimism", "polygon"]\',
-                            "project",
-                            "chainlink",
-                            \'["linkpool_jon"]\') }}'
+    alias='ccip_tokens_transferred'
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

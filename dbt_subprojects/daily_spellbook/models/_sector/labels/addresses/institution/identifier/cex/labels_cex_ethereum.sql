@@ -1,10 +1,9 @@
 {{config(
 
-        alias = 'cex_ethereum',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["hildobby", "soispoke", "ilemi", "web3_data"]\') }}')}}
+        alias = 'cex_ethereum'
+        , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 SELECT blockchain
 , address

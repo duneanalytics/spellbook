@@ -3,10 +3,7 @@
         ,schema = 'nft_ethereum_metadata'
         ,alias = 'xcopy_collections'
         ,materialized = 'table'
-        ,post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
-                                    spell_type = "sector",
-                                    spell_name = "nft_ethereum_metadata",
-                                    contributors = \'["cat"]\') }}'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

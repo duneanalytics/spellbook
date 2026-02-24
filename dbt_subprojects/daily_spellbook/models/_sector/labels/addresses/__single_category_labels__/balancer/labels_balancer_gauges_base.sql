@@ -1,9 +1,8 @@
 {{config(
-        alias = 'balancer_gauges_base',
-        post_hook='{{ expose_spells(\'["base"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["viniabussafi"]\') }}')}}
+        alias = 'balancer_gauges_base'
+        , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 WITH gauges AS(
 SELECT distinct

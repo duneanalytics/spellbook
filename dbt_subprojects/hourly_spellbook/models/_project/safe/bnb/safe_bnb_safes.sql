@@ -7,11 +7,8 @@
         materialized='incremental',
         file_format ='delta',
         incremental_strategy='merge',
-        unique_key = ['block_date', 'address'],
-        post_hook='{{ expose_spells(\'["bnb"]\',
-                                    "project",
-                                    "safe",
-                                    \'["tschubotz", "hosuke", "danielpartida"]\') }}'
+        unique_key = ['block_date', 'address']
+        , post_hook='{{ hide_spells() }}'
     ) 
 }}
 

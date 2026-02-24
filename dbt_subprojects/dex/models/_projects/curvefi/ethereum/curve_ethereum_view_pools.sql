@@ -2,11 +2,8 @@
     schema = 'curve_ethereum',
     alias = 'view_pools',
     materialized='table',
-    file_format = 'delta',
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "curve",
-                                \'["yulesa", "agaperste", "ilemi", "viniabussafi"]\') }}'
+    file_format = 'delta'
+    , post_hook='{{ hide_spells() }}'
     )
  }}
 

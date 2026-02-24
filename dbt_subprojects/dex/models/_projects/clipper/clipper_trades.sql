@@ -1,11 +1,8 @@
 {{ config(
         schema = 'clipper',
         alias = 'trades',
-        materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'["arbitrum", "ethereum", "polygon", "optimism", "zkevm", "mantle"]\',
-                                      spell_type = "project", 
-                                      spell_name = "clipper", 
-                                      contributors = \'["0xRob", "amalashkevich", "0xTemo"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

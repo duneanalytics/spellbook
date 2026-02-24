@@ -1,10 +1,7 @@
 {{ config(
         
-        alias = 'bnb_day',
-        post_hook='{{ expose_spells(\'["bnb"]\',
-                                    "sector",
-                                    "balances",
-                                    \'["Henrystats"]\') }}'
+        alias = 'bnb_day'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 WITH 

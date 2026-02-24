@@ -1,11 +1,8 @@
 {{ config(
         schema = 'kyberswap',
         alias = 'trades',
-        materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'["avalanche_c","optimism","ethereum","arbitrum","bnb","polygon"]\',
-                                      spell_type = "project", 
-                                      spell_name = "kyberswap", 
-                                      contributors = \'["zhongyiio", "hosuke", "ppclunghe", "gregshestakovlido", "nhd98z"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

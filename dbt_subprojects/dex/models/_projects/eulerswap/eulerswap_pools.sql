@@ -1,10 +1,7 @@
 {{ config(
         schema = 'eulerswap',
-        alias = 'pools',
-        post_hook='{{ expose_spells(blockchains = \'["bnb","ethereum","unichain","arbitrum"]\',
-                                      spell_type = "project", 
-                                      spell_name = "eulerswap", 
-                                      contributors = \'["Henrystats"]\') }}'
+        alias = 'pools'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

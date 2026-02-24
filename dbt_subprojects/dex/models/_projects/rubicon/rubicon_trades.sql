@@ -1,11 +1,8 @@
 {{ config(
         schema = 'rubicon',
         alias = 'trades',
-        materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'["arbitrum", "base", "optimism"]\',
-                                      spell_type = "project", 
-                                      spell_name = "rubicon", 
-                                      contributors = \'["msilb7, denver"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

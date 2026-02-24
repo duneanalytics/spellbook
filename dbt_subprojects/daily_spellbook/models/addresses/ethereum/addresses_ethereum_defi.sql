@@ -1,9 +1,8 @@
 {{config(alias = 'defi',
-        tags=['static'],
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "sector",
-                                    "addresses",
-                                    \'["umer_h_adil"]\') }}')}}
+        tags=['static']
+        , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 SELECT address, project, project_type
 FROM (VALUES

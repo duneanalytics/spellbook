@@ -1,11 +1,8 @@
 {{ config(
     schema = 'wardenswap',
     alias = 'trades',
-    materialized = 'view',
-    post_hook='{{ expose_spells(blockchains = \'["optimism"]\',
-                                  spell_type = "project", 
-                                  spell_name = "wardenswap", 
-                                  contributors = \'["Chain_L"]\') }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

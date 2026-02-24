@@ -789,5 +789,14 @@ FROM
         ('xbtc-okx-wrapped-btc','solana','xBTC','CtzPWv73Sn1dMGVU3ZtLv9yWSyUAanBni19YWDaznnkn',8),
         ('lbtc-lombard-staked-btc','solana','LBTC','LBTCgU4b3wsFKsPwBn1rRZDx5DoFutM6RPiEt1TPDsY',8),
         ('pstusdc-payfi-strategy-token-usdc','solana','PST','59obFNBzyTBGowrkif5uK7ojS58vsuWz3ZCvg6tfZAGw',6),
-        ('wet-humidifi','solana','WET','WETZjtprkDMCcUxPi9PfWnowMRZkiGGHDb9rABuRZ2U',6)        
+        ('wet-humidifi','solana','WET','WETZjtprkDMCcUxPi9PfWnowMRZkiGGHDb9rABuRZ2U',6),
+        ('zec-omnibridge-bridged-zcash-solana','solana','ZEC','A7bdiYdS5GjqGFtxf17ppRHtDKPkkRqbKtR27dxvQXaS',8),
+        ('elizaos-elizaos','solana','elizaOS','DuMbhu7mvQvqQHGcnikDgb4XegXJRyhUBfdU22uELiZA',9),
+        ('jupusd-jupiter-usd','solana','JupUSD','JuprjznTrTSp2UFa3ZBUFgwdAmtZCq4MQCwysN55USD',6),
+        ('jljupusd-jupiter-lend-jupusd','solana','jlJupUSD','7GxATsNMnaC88vdwd2t3mwrFuQwwGvmYPrUQ4D6FotXk',6),
+        ('usx-usx','solana','USX','6FrrzDk5mQARGc1TDYoyVnSyRdds1t4PbtohCD6p3tgG',6),
+        ('eusx-solstice-eusx','solana','eUSX','3ThdFZQKM6kRyVGLG48kaPg5TRMhYMKY1iCRa9xop1WC',6),
+        ('mon-monad','solana','MON','CrAr4RRJMBVwRsZtT62pEhfA9H5utymC2mVx8e7FreP2',8),
+        ('skr-seeker','solana','SKR','SKRbvo6Gf7GondiT3BbTfuRDPqLWei4j2Qy2NPGZhW3',6),
+        ('met-meteora','solana','MET','METvsvVRapdj9cFLzq4Tr43xK4tAjQfwX76z3n6mWQL',6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

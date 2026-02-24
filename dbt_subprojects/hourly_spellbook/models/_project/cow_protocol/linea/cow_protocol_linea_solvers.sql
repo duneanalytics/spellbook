@@ -1,10 +1,7 @@
 {{ config(
         schema = 'cow_protocol_linea',
-        alias='solvers',
-        post_hook='{{ expose_spells(blockchains = \'["linea"]\',
-                                    spell_type = "project",
-                                    spell_name = "cow_protocol",
-                                    contributors = \'["harisang"]\') }}'
+        alias='solvers'
+        , post_hook='{{ hide_spells() }}'
 )}}
 
 WITH
@@ -49,8 +46,8 @@ known_solver_metadata (address, environment, name) as (
                 (0xaf900C9e0b8d8664D683c282Fd88923809a41f17, 'prod', 'Kipseli'),
                 (0xBfd885cC9b21e8a167eC41577520ef133d4aF36B, 'barn', 'Wraxyn'),
                 (0x2bE0F2E120938DB793764D9e9Ee123c3CF21FEdc, 'prod', 'Wraxyn'),
-                (0x674325BbAdBb66e06A674Fd69f7b40fE01aB1De5, 'barn', 'TSolver'),
-                (0x13C8360b175C1eB7cbA7d11DD91aEF0a1A79ab08, 'prod', 'TSolver'),
+                (0x674325BbAdBb66e06A674Fd69f7b40fE01aB1De5, 'barn', 'Tsolver'),
+                (0x13C8360b175C1eB7cbA7d11DD91aEF0a1A79ab08, 'prod', 'Tsolver'),
                 (0x2de8e2B69e05A3A58E29646363A5Ef284884d64d, 'barn', 'ApeOut_1inch'),
                 (0xC103B939e69959a0cD079e54Bc2F0CC352bF3F9E, 'prod', 'ApeOut_1inch')
     ) as _

@@ -1,10 +1,9 @@
 {{config(
     schema='ens',
-    alias = 'view_expirations',
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                            "project",
-                            "ens",
-                            \'["antonio-mendes","mewwts"]\') }}')}}
+    alias = 'view_expirations'
+    , post_hook='{{ hide_spells() }}'
+    )
+}}
 SELECT
     label,
     from_unixtime(min(cast(expires as double))) AS min_expires,

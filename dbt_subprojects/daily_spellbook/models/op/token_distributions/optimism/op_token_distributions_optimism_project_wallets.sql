@@ -1,10 +1,7 @@
 {{ config(
     schema = 'op_token_distributions_optimism',
-    alias = 'project_wallets',
-    post_hook='{{ expose_spells(\'["optimism"]\',
-                                "project",
-                                "op_token_distributions",
-                                \'["msilb7", "chuxin"]\') }}'
+    alias = 'project_wallets'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 -- Derived from: https://dune.com/queries/1857798

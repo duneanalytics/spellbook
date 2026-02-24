@@ -2,12 +2,9 @@
   config(
         schema = 'solana_utils',
         alias = 'total_rewards',
-        materialized='table',
-        
-        post_hook='{{ expose_spells(\'["solana"]\',
-                                    "sector",
-                                    "solana_utils",
-                                    \'["ilemi"]\') }}')
+        materialized='table'
+        , post_hook='{{ hide_spells() }}'
+)
 }}
 
 SELECT

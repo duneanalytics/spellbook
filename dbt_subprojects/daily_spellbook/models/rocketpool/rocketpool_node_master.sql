@@ -1,11 +1,8 @@
 {{ config(
     schema = 'rocketpool_ethereum',
     alias = 'node_master',
-    materialized = 'table',
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "rocketpool",
-                                \'["mtitus6"]\') }}'
+    materialized = 'table'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

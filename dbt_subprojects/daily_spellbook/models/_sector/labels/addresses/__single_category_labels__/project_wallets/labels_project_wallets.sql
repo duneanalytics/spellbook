@@ -1,10 +1,7 @@
 {{config(
 
-        alias = 'project_wallets',
-        post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["msilb7"]\') }}'
+        alias = 'project_wallets'
+        , post_hook='{{ hide_spells() }}'
 )}}
 
 SELECT

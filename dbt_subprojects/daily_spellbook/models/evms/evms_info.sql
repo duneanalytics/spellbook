@@ -1,59 +1,9 @@
 {{ config(
         schema = 'evms',
         tags = ['static'],
-        alias = 'info',
-        post_hook = '{{ expose_spells(\'[
-                                        "arbitrum"
-                                        , "avalanche_c"
-                                        , "base"
-                                        , "blast"
-                                        , "bnb"
-                                        , "boba"
-                                        , "celo"
-                                        , "corn"
-                                        , "ethereum"
-                                        , "fantom"
-                                        , "flare"
-                                        , "flow"
-                                        , "gnosis"
-                                        , "hemi"
-                                        , "henesys"
-                                        , "hyperevm"
-                                        , "ink"
-                                        , "kaia"
-                                        , "katana"
-                                        , "xlayer"
-                                        , "linea"
-                                        , "megaeth"
-                                        , "mezo"
-                                        , "monad"
-                                        , "nova"
-                                        , "optimism"
-                                        , "peaq"
-                                        , "plasma"
-                                        , "polygon"
-                                        , "ronin"
-                                        , "scroll"
-                                        , "sei"
-                                        , "shape"
-                                        , "somnia"
-                                        , "sonic"
-                                        , "story"
-                                        , "superseed"
-                                        , "opbnb"
-                                        , "tac"
-                                        , "taiko"
-                                        , "unichain"
-                                        , "viction"
-                                        , "worldchain"
-                                        , "zksync"
-                                        , "zkevm"
-                                        , "zora"
-                                        , "plume"
-                                        ]\',
-                                        "sector",
-                                        "evms",
-                                        \'["hildobby", "hosuke", "jeff-dude", "agaperste", "krishhh", "tomfutago"]\') }}')
+        alias = 'info'
+        , post_hook='{{ hide_spells() }}'
+)
 }}
 
 SELECT chain_id

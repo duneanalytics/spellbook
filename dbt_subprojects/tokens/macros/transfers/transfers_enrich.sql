@@ -23,7 +23,11 @@ WITH base_transfers as (
         {{ base_transfers }}
     {% if is_incremental() %}
     WHERE
+        {%- if blockchain == 'megaeth' %}
+        block_date >= cast(now() - interval '4' hour as date)
+        {%- else %}
         {{ incremental_predicate('block_date') }}
+        {%- endif %}
     {% else %}
     WHERE
         block_date >= TIMESTAMP '{{ transfers_start_date }}'
@@ -41,7 +45,11 @@ WITH base_transfers as (
         {{ source('prices_external', prices_interval) }}
     {% if is_incremental() %}
     WHERE
+        {%- if blockchain == 'megaeth' %}
+        timestamp >= now() - interval '4' hour
+        {%- else %}
         {{ incremental_predicate('timestamp') }}
+        {%- endif %}
     {% else %}
     WHERE
         timestamp >= TIMESTAMP '{{ transfers_start_date }}'

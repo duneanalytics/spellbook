@@ -1,11 +1,8 @@
 {{
   config(
         
-        alias = 'jfiat_address_mapping',
-        post_hook='{{ expose_spells(\'["polygon"]\',
-                                    "project",
-                                    "jarvis_network",
-                                    \'["0xroll"]\') }}'
+        alias = 'jfiat_address_mapping'
+        , post_hook='{{ hide_spells() }}'
   )
 }}
 

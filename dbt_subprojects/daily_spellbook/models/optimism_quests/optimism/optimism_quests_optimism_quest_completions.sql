@@ -5,11 +5,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_time', 'tx_hash', 'nft_id'],
-    post_hook='{{ expose_spells(\'["optimism"]\',
-                                "project",
-                                "optimism_quests",
-                                \'["msilb7"]\') }}'
+    unique_key = ['block_time', 'tx_hash', 'nft_id']
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 --SELECT MIN(call_block_time) FROM optimism_quest_optimism.StarNFTV4_call_mint m

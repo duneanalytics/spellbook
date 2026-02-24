@@ -2,11 +2,9 @@
     schema = 'aragon',
     alias = 'dao_addresses',
     materialized = 'view',
-    file_format = 'delta',
-    post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon", "base", "arbitrum","zksync"]\',
-                                "project",
-                                "aragon",
-                                \'["Henrystats"]\') }}')
+    file_format = 'delta'
+    , post_hook='{{ hide_spells() }}'
+)
 }}
 
 {% set aragon_models = [

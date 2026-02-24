@@ -3,11 +3,8 @@
     schema = 'nexusmutual_ethereum',
     alias = 'product_types_v2',
     materialized = 'view',
-    unique_key = ['product_type_id'],
-    post_hook = '{{ expose_spells(blockchains = \'["ethereum"]\',
-                                  spell_type = "project",
-                                  spell_name = "nexusmutual",
-                                  contributors = \'["tomfutago"]\') }}'
+    unique_key = ['product_type_id']
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

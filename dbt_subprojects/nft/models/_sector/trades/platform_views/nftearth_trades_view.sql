@@ -3,11 +3,9 @@
         schema = 'nftearth',
         alias = 'trades',
         
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "project",
-                                    "nftearth",
-                                    \'["0xRob"]\') }}')
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
+)
 }}
 
 SELECT *

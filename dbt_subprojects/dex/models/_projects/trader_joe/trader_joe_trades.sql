@@ -1,11 +1,8 @@
 {{ config(
         schema = 'trader_joe',
         alias = 'trades',
-        materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'["avalanche_c","bnb","arbitrum"]\',
-                                      spell_type = "project", 
-                                      spell_name = "trader_joe", 
-                                      contributors = \'["jeff-dude","mtitus6","Henrystats","hsrvc"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

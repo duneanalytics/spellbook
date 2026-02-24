@@ -3,11 +3,8 @@
     schema = 'nexusmutual_ethereum',
     alias = 'covers_daily_agg',
     materialized = 'view',
-    unique_key = ['block_date'],
-    post_hook = '{{ expose_spells(blockchains = \'["ethereum"]\',
-                                  spell_type = "project",
-                                  spell_name = "nexusmutual",
-                                  contributors = \'["tomfutago"]\') }}'
+    unique_key = ['block_date']
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

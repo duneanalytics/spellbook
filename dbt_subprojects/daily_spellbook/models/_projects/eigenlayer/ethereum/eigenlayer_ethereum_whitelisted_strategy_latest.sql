@@ -1,12 +1,9 @@
 {{
     config(
         schema = 'eigenlayer_ethereum',
-        alias = 'whitelisted_strategy_latest',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "eigenlayer",
-                                    \'["bowenli"]\') }}',
-        materialized = 'table',
+        alias = 'whitelisted_strategy_latest'
+        , post_hook='{{ hide_spells() }}'
+        , materialized = 'table',
         unique_key = ['strategy']
     )
 }}
