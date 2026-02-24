@@ -2,7 +2,7 @@
 
 {{
   config(
-    tags = ['prod_exclude'],
+    tags = ['prod_exclude', 'stablecoins'],
     schema = 'stablecoins_' ~ chain,
     alias = 'extended_balances_enriched',
     materialized = 'incremental',

@@ -2,6 +2,7 @@
 
 {{
   config(
+    tags = ['stablecoins'],
     schema = 'stablecoins_' ~ chain,
     alias = 'core_balances',
     materialized = 'incremental',
