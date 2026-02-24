@@ -48,6 +48,11 @@ WITH volume_events AS (
         ,CAST(evt_index AS BIGINT)                        AS evt_index
         ,ARRAY[-1]                                         AS trace_address
         ,evt_block_number                                  AS block_number
+        -- Deduplicate rows arising from Dune's BSC chain reorg handling
+        ,ROW_NUMBER() OVER (
+            PARTITION BY evt_tx_hash, evt_index
+            ORDER BY evt_block_number
+        )                                                  AS rn
     FROM {{ source('chimpx_bnb', 'ChimpXVolumeRegistry_evt_VolumeRegistered') }}
     WHERE evt_block_number >= 82131810
     {% if is_incremental() %}
@@ -83,3 +88,4 @@ SELECT
     ,evt_index
     ,trace_address
 FROM volume_events
+WHERE rn = 1
