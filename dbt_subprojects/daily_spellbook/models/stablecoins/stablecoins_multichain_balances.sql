@@ -41,6 +41,7 @@
 
 {{
   config(
+    tags = ['stablecoins'],
     schema = 'stablecoins_multichain',
     alias = 'balances',
     materialized = 'view',
