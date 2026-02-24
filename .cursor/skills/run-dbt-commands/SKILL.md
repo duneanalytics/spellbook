@@ -40,16 +40,32 @@ The repo has six sub-projects under `dbt_subprojects/`:
 
 ## Running Commands
 
-All dbt commands must be run from inside a sub-project directory (`dbt_subprojects/<project_name>/`), inside an active pipenv shell.
+All dbt commands must be run from inside a sub-project directory (`dbt_subprojects/<project_name>/`).
+
+### Using `pipenv run` from the Shell tool
+
+The Shell tool starts a fresh shell without the user's active `pipenv shell` session. Use `pipenv run` to execute dbt commands without needing to enter the shell first:
+
+```bash
+pipenv run dbt compile -s model_name --project-dir dbt_subprojects/<project_name>/
+```
+
+Or navigate first, then use `pipenv run`:
+
+```bash
+cd dbt_subprojects/<project_name>/ && pipenv run dbt compile -s model_name
+```
+
+**Important**: Always use `pipenv run` when executing via the Shell tool. Do NOT use bare `dbt` commands — they will fail with "dbt: command not found" since the pipenv shell is not active in the tool's session. Also request `required_permissions: ["all"]` since dbt needs to write log files.
 
 ### Common commands
 
 ```bash
-dbt deps                        # install dbt package dependencies (run once per sub-project)
-dbt compile                     # compile all models to target/
-dbt compile -s model_name       # compile a single model
-dbt ls -s model_name            # list/check model selection
-dbt test -s model_name          # run tests for a model
+pipenv run dbt deps                        # install dbt package dependencies (run once per sub-project)
+pipenv run dbt compile                     # compile all models to target/
+pipenv run dbt compile -s model_name       # compile a single model
+pipenv run dbt ls -s model_name            # list/check model selection
+pipenv run dbt test -s model_name          # run tests for a model
 ```
 
 ### First time in a sub-project
@@ -67,21 +83,19 @@ dbt_subprojects/<project_name>/target/compiled/<project_name>/models/.../model_n
 ## Workflow Example
 
 ```bash
-# 1. From repo root, enter pipenv (if not already active)
-pipenv shell
+# From repo root — compile a specific model in daily_spellbook
+cd dbt_subprojects/daily_spellbook/ && pipenv run dbt compile -s stablecoins_balances
+```
 
-# 2. Navigate to the sub-project
-cd dbt_subprojects/daily_spellbook/
+Or using --project-dir without changing directory:
 
-# 3. Install deps (first time only)
-dbt deps
-
-# 4. Compile a specific model
-dbt compile -s stablecoins_balances
+```bash
+pipenv run dbt compile -s stablecoins_balances --project-dir dbt_subprojects/daily_spellbook/
 ```
 
 ## Troubleshooting
 
-- **"dbt: command not found"** — You're not inside the pipenv shell. Run `pipenv shell` from repo root.
+- **"dbt: command not found"** — Use `pipenv run dbt ...` instead of bare `dbt`. The Shell tool does not share the user's `pipenv shell` session.
+- **Permission errors on log files** — Request `required_permissions: ["all"]` on the Shell tool call so dbt can write to its logs directory.
 - **Compilation errors about missing refs** — You may be in the wrong sub-project. Check where the model file lives.
-- **"Could not find profile"** — Make sure you're inside a sub-project directory, not the repo root.
+- **"Could not find profile"** — Make sure you're targeting a sub-project directory, not the repo root.
