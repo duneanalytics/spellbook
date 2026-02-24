@@ -10,12 +10,21 @@
     )
 }}
 
-{{
-    uniswap_compatible_v3_trades(
-        blockchain = 'megaeth',
-        project = 'prismfi',
-        version = '1',
-        Pair_evt_Swap = source('prism_megaeth', 'v3pool_evt_swap'),
-        Factory_evt_PoolCreated = source('prism_megaeth', 'factory_evt_poolcreated')
-    )
-}}
+with raw as (
+    {{
+        uniswap_compatible_v3_trades(
+            blockchain = 'megaeth',
+            project = 'prismfi',
+            version = '1',
+            Pair_evt_Swap = source('prism_megaeth', 'v3pool_evt_swap'),
+            Factory_evt_PoolCreated = source('prism_megaeth', 'factory_evt_poolcreated')
+        )
+    }}
+)
+
+select
+    *
+from
+    raw
+where
+    block_time >= timestamp '2026-01-30'

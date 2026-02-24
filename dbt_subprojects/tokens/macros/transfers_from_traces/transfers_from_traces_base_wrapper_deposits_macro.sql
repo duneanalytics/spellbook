@@ -41,11 +41,9 @@ where true
     and type = 'deposit'
     and contract_address <> "to" -- due to inconsistency in dune.blockchains & tokens.erc20
     {% if is_incremental() -%}
-        {%- if blockchain == 'megaeth' %}
-    and block_time >= now() - interval '4' hour
-        {%- else %}
     and {{ incremental_predicate('block_time') }}
-        {%- endif %}
+    {%- elif blockchain == 'megaeth' %}
+    and block_time >= timestamp '2026-01-30'
     {%- endif %}
 
 

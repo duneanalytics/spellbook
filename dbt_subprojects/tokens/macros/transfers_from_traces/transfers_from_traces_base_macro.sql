@@ -77,11 +77,9 @@ where
     and success
     {% if easy_dates -%} and block_date > current_date - interval '10' day {%- endif %} -- easy_dates mode for dev, to prevent full scan
     {% if is_incremental() -%}
-        {%- if blockchain == 'megaeth' %}
-    and block_time >= now() - interval '4' hour
-        {%- else %}
     and {{ incremental_predicate('block_time') }}
-        {%- endif %}
+    {%- elif blockchain == 'megaeth' %}
+    and block_time >= timestamp '2026-01-30'
     {%- endif %}
 
 
