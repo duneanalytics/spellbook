@@ -10,6 +10,8 @@ models:
    config:
      tags: [ 'ronin', 'nft', 'trades', 'mavis' ]
    description: "mavis marketplace base trades"
+   data_tests:
+    - check_columns_nft_base_trades
 
  - name: opensea_v4_ronin_base_trades
    meta:
