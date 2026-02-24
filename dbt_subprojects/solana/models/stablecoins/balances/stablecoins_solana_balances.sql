@@ -4,8 +4,11 @@
   config(
     schema = 'stablecoins_' ~ chain,
     alias = 'balances',
-    materialized = 'view'
-    , post_hook='{{ hide_spells() }}'
+    materialized = 'view',
+    post_hook = '{{ expose_spells(\'["solana"]\',
+                                    "sector",
+                                    "stablecoins",
+                                    \'["tomfutago"]\') }}'
   )
 }}
 
