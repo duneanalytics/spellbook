@@ -46,7 +46,7 @@ WITH volume_events AS (
         ,evt_tx_from                                       AS tx_from
         ,evt_tx_to                                         AS tx_to
         ,CAST(evt_index AS BIGINT)                        AS evt_index
-        ,CAST(NULL AS VARCHAR)                              AS trace_address
+        ,ARRAY[-1]                                         AS trace_address
         ,evt_block_number                                  AS block_number
     FROM {{ source('chimpx_bnb', 'ChimpXVolumeRegistry_evt_VolumeRegistered') }}
     WHERE evt_block_number >= 82131810
