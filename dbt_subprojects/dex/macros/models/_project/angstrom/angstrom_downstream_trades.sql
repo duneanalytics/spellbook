@@ -48,6 +48,8 @@ base_trades as (
     where dexs.blockchain = '{{blockchain}}'
     and dexs.project = '{{dex_project}}'
     and dexs.version = '{{dex_version}}'
+    and dexs.block_date >= (select min(date_trunc('day', block_time)) from base_trades)
+    and dexs.block_date <= (select max(date_trunc('day', block_time)) from base_trades)
     {%- if is_incremental() %}
     and {{ incremental_predicate('dexs.block_time') }}
     {%- endif %}
