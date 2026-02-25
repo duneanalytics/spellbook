@@ -1,9 +1,9 @@
- {{
-  config(
-        schema = 'solana_utils',
-        alias = 'sns_domains',
-        materialized='table'
-        , post_hook='{{ hide_spells() }}'
+{{
+ config(
+       schema = 'solana_utils',
+       alias = 'sns_domains',
+       materialized='view'
+       , post_hook='{{ hide_spells() }}'
 )
 }}
 
