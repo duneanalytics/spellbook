@@ -45,7 +45,7 @@
     materialized = 'view',
     post_hook = '{{ expose_spells(blockchains = \'["' ~ chains | join('","') ~ '"]\',
         spell_type = "sector",
-        spell_name = "stablecoins",
+        spell_name = "stablecoins_evm",
         contributors = \'["tomfutago"]\') }}'
   )
 }}
