@@ -107,6 +107,9 @@ sources:
   - name: cow_protocol_plasma
     tables:
       - name: trades
+  - name: cow_protocol_ink
+    tables:
+      - name: trades
   - name: jelly_swap
     tables:
       - name: trades
