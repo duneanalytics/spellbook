@@ -65,6 +65,39 @@ models:
       - *total_asset
       - *updated_at
 
+  - name: balances_bitcoin_daily
+    meta:
+      blockchain: bitcoin
+      sector: balances
+      contributors: florianklages
+    config:
+      tags: ['balances', 'bitcoin', 'daily']
+    description: >
+      Daily cumulative Bitcoin balance per wallet address, forward-filled across
+      inactive days. Follows the stablecoin balance pattern: outputs = deposits,
+      inputs = withdrawals. Properly converts satoshis to BTC and prices in USD.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - wallet_address
+    columns:
+      - *blockchain
+      - *day
+      - *wallet_address
+      - name: balance_satoshi
+        description: "Cumulative balance in satoshis (forward-filled)"
+        tests:
+          - not_null
+      - name: balance_btc
+        description: "Cumulative balance in BTC (balance_satoshi / 1e8)"
+      - name: btc_price_usd
+        description: "BTC price in USD on this day"
+      - name: balance_usd
+        description: "Balance valued in USD (balance_btc * btc_price_usd)"
+      - name: last_updated
+        description: "Block time of the most recent transaction affecting this balance"
+
   - name: tokens_bitcoin_net_transfers_daily
     meta:
       blockchain: bitcoin
