@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: lending_tron_base_borrow
+    meta:
+      blockchain: tron
+      sector: lending
+      project: justlend
+      contributors: tomfutago, codex
+    config:
+      tags: ['lending', 'borrow', 'justlend', 'tron']
+    description: "All lending borrow transactions on tron"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
