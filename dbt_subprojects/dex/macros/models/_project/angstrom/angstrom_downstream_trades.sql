@@ -3,6 +3,8 @@
     , trades_table = null
     , version = null 
     , project = null 
+    , dex_project = 'uniswap'
+    , dex_version = '4'
     )
 %}
 
@@ -44,8 +46,8 @@ base_trades as (
         and dexs.tx_hash = bt.tx_hash 
         and dexs.evt_index = bt.evt_index 
     where dexs.blockchain = '{{blockchain}}'
-    and dexs.project = 'uniswap'
-    and dexs.version = '4'
+    and dexs.project = '{{dex_project}}'
+    and dexs.version = '{{dex_version}}'
     {%- if is_incremental() %}
     and {{ incremental_predicate('dexs.block_time') }}
     {%- endif %}
