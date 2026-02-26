@@ -15,7 +15,7 @@
         blockchain = 'xlayer',
         project = 'dyorswap',
         version = '3',
-        Pair_evt_Swap = source('dyorswap_v3_xlayer', 'DYORV3Pool_evt_Swap'),
-        Factory_evt_PoolCreated = source('dyorswap_v3_xlayer', 'DYORV3Factory_evt_PoolCreated')
+        Pair_evt_Swap = source('dyorswap_xlayer', 'DYORV3Pool_evt_Swap'),
+        Factory_evt_PoolCreated = source('dyorswap_xlayer', 'DYORV3Factory_evt_PoolCreated')
     )
 }}
