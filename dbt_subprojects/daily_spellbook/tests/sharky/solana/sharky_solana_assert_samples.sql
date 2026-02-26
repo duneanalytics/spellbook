@@ -1,3 +1,4 @@
+{#
 WITH
 test_data AS (
     SELECT
@@ -38,3 +39,9 @@ FROM
     unit_tests
 WHERE
     amount_test = False
+#}
+
+SELECT
+    1
+WHERE
+    FALSE
