@@ -19,6 +19,9 @@
 -- Microbatch used for backfills only; static tag prevents ongoing prod runs.
 -- Program inactive since 2024-09-09; cutoff covers through last active month.
 {% set cutoff_date = '2024-10-01' %}
+{% set begin = '2023-08-01' %}
+{% set batch_start = model.batch.event_time_start if model.batch is defined else begin %}
+{% set batch_end = model.batch.event_time_end if model.batch is defined else cutoff_date %}
 
 with swaps as (
 	select
@@ -36,8 +39,8 @@ with swaps as (
 	from
 		{{ source('goosefx_solana', 'gfx_ssl_v2_call_swap') }}
 	where
-		call_block_time >= timestamp '{{ model.batch.event_time_start }}'
-		and call_block_time < least(timestamp '{{cutoff_date}}', timestamp '{{ model.batch.event_time_end }}')
+		call_block_time >= timestamp '{{batch_start}}'
+		and call_block_time < least(timestamp '{{cutoff_date}}', timestamp '{{batch_end}}')
 )
 , transfers as (
 	select
@@ -53,8 +56,8 @@ with swaps as (
 	from
 		{{ source('tokens_solana', 'transfers') }}
 	where
-		block_time >= timestamp '{{ model.batch.event_time_start }}'
-		and block_time < least(timestamp '{{cutoff_date}}', timestamp '{{ model.batch.event_time_end }}')
+		block_time >= timestamp '{{batch_start}}'
+		and block_time < least(timestamp '{{cutoff_date}}', timestamp '{{batch_end}}')
 )
 , all_swaps as (
 	select
