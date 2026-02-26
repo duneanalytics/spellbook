@@ -9,7 +9,7 @@
        incremental_strategy = 'microbatch',
        event_time = 'block_time',
        begin = '2023-08-01',
-       batch_size = 'month',
+       batch_size = 'day',
        lookback = 1,
        unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index','block_month'],
        pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
