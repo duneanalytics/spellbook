@@ -2,9 +2,13 @@ WITH
 test_data AS (
     SELECT
         CAST(block_time AS TIMESTAMP) AS block_time,
+        CAST(block_time AS DATE) AS block_date,
         tx_hash,
         amount
     FROM {{ ref('sharky_solana_loans_solscan') }}
+    WHERE
+        block_time >= TIMESTAMP '2023-01-01'
+        AND block_time < TIMESTAMP '2023-01-05'
 ),
 unit_tests AS
 (
@@ -19,10 +23,11 @@ unit_tests AS
         ON (
             test_data.tx_hash = sharky_events.tx_hash
             AND test_data.block_time = sharky_events.block_time
+            AND test_data.block_date = sharky_events.block_date
         )
     WHERE
-        sharky_events.block_time > TIMESTAMP '2023-01-01'
-        and sharky_events.block_time < TIMESTAMP '2023-01-05'
+        sharky_events.block_date >= DATE '2023-01-01'
+        and sharky_events.block_date < DATE '2023-01-05'
         and sharky_events.project = 'sharky'
         and sharky_events.blockchain = 'solana'
 )
