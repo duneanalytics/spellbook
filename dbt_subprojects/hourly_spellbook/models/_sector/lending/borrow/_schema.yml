@@ -3,7 +3,7 @@ version: 2
 models:
   - name: lending_borrow
     meta:
-      blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom, gnosis, scroll, zksync, linea, sonic
+      blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom, gnosis, scroll, zksync, linea, sonic, unichain
       sector: lending
       project: aave, compound
       contributors: tomfutago, hildobby
@@ -64,6 +64,9 @@ models:
       - &amount
         name: amount
         description: "Token amount present in the transaction"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw token amount (uint256, always positive)"
       - &usd_amount
         name: usd_amount
         description: "Token amount in USD"

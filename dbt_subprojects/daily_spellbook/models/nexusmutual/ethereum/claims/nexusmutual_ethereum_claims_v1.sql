@@ -4,11 +4,8 @@
     alias = 'claims_v1',
     materialized = 'table',
     tags = ['static'],
-    unique_key = ['claim_id'],
-    post_hook = '{{ expose_spells(blockchains = \'["ethereum"]\',
-                                  spell_type = "project",
-                                  spell_name = "nexusmutual",
-                                  contributors = \'["tomfutago"]\') }}'
+    unique_key = ['claim_id']
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

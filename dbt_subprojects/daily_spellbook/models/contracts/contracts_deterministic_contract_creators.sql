@@ -1,13 +1,10 @@
 {{ 
   config(
-    tags = ['static'],
+    tags = ['static', 'prod_exclude'],
     schema = 'contracts',
     alias = 'deterministic_contract_creators',
-    unique_key='creator_address',
-    post_hook='{{ expose_spells(\'["ethereum", "base", "optimism", "zora"]\',
-                              "sector",
-                              "contracts",
-                              \'["msilb7"]\') }}'
+    unique_key='creator_address'
+    , post_hook='{{ hide_spells() }}'
     )  
 }}
 

@@ -5,11 +5,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['userop_hash', 'tx_hash'],
-    post_hook='{{ expose_spells(\'["arbitrum"]\',
-                                    "project",
-                                    "erc4337",
-                                    \'["0xbitfly", "hosuke"]\') }}'
+    unique_key = ['userop_hash', 'tx_hash']
+    , post_hook='{{ hide_spells() }}'
 )}}
 
 -- min deployed_date on chain
@@ -21,6 +18,8 @@
 {% set erc4337_models = [
     ref('account_abstraction_erc4337_arbitrum_v0_5_userops_basics')
     , ref('account_abstraction_erc4337_arbitrum_v0_6_userops_basics')
+    , ref('account_abstraction_erc4337_arbitrum_v0_7_userops_basics')
+    , ref('account_abstraction_erc4337_arbitrum_v0_8_userops_basics')
 ] %}
 
 with userop as(

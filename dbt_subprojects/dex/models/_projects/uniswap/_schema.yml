@@ -151,15 +151,6 @@ models:
       contributors: irishLatte19, Henrystats
     config:
       tags: [ 'dex' ]
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - event_type
     columns:
       - *blockchain
       - *project
@@ -253,3 +244,26 @@ models:
       - &token1_balance_usd
         name: token1_balance_usd
         description: "Liquidity balance of token1 in USD"
+
+  - name: uniswap_trades
+    meta:
+      blockchain: ethereum,arbitrum,base,optimism,polygon,zora,blast,bnb,avalanche_c,worldchain,ink,unichain
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: [ 'dex' ]
+
+  - name: uniswap_uniswapx_trades
+    meta:
+      blockchain: ethereum,arbitrum,base,unichain
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: [ 'dex' ]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_month
+            - tx_hash
+            - evt_index

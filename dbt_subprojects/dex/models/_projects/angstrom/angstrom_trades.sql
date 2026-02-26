@@ -1,10 +1,7 @@
 {{ config(
         schema = 'angstrom',
-        alias = 'trades',
-        post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
-                                      spell_type = "project", 
-                                      spell_name = "angstrom", 
-                                      contributors = \'["jnoorchashm37"]\') }}'
+        alias = 'trades'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 
@@ -24,6 +21,7 @@ from (
         , block_date
         , block_time
         , block_number
+        , trade_type
         , token_bought_symbol
         , token_sold_symbol
         , token_pair

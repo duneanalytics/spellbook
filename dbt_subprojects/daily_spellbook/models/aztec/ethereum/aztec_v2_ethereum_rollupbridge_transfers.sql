@@ -5,11 +5,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['evt_tx_hash', 'evt_index', 'trace_address'],
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "aztec_v2",
-                                \'["Henrystats"]\') }}'
+    unique_key = ['evt_tx_hash', 'evt_index', 'trace_address']
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

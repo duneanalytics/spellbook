@@ -5,11 +5,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['userop_hash', 'tx_hash'],
-    post_hook='{{ expose_spells(\'["base"]\',
-                                    "project",
-                                    "erc4337",
-                                    \'["0xbitfly", "hosuke", "peterrliem"]\') }}'
+    unique_key = ['userop_hash', 'tx_hash']
+    , post_hook='{{ hide_spells() }}'
 )}}
 
 -- min deployed_date on chain
@@ -22,6 +19,7 @@
 {% set erc4337_models = [
     ref('account_abstraction_erc4337_base_v0_6_userops_basics')
     , ref('account_abstraction_erc4337_base_v0_7_userops_basics')
+    , ref('account_abstraction_erc4337_base_v0_8_userops_basics')
 ] %}
 
 with userop as(

@@ -2,11 +2,8 @@
     config(
         materialized='table',
         
-        alias = 'singletons',
-        post_hook='{{ expose_spells(\'["arbitrum"]\',
-                                    "project",
-                                    "safe",
-                                    \'["tschubotz", "peterrliem"]\') }}'
+        alias = 'singletons'
+        , post_hook='{{ hide_spells() }}'
     ) 
 }}
 

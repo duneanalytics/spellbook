@@ -2,10 +2,9 @@
     schema = 'bridges_crosschain'
     , alias = 'withdrawals'
     , materialized = 'view'
-    , tags = ['prod_exclude']
+    , post_hook='{{ hide_spells() }}'
 )
 }}
-
 {% set vms = [
     'evms'
 ] %}
@@ -20,8 +19,8 @@ SELECT *
         , block_date
         , block_time
         , block_number
-        , withdrawal_amount_raw
         , withdrawal_amount
+        , withdrawal_amount_raw
         , CAST(sender AS VARCHAR) AS sender
         , CAST(recipient AS VARCHAR) AS recipient
         , withdrawal_token_standard
@@ -31,6 +30,7 @@ SELECT *
         , evt_index
         , CAST(contract_address AS VARCHAR) AS contract_address
         , bridge_transfer_id
+        , deposit_chain_id
         FROM {{ ref('bridges_'~vm~'_withdrawals') }}
         {% if not loop.last %}
         UNION ALL

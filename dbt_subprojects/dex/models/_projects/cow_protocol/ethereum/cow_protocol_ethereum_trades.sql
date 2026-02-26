@@ -7,16 +7,34 @@
     on_schema_change='sync_all_columns',
     file_format ='delta',
     incremental_strategy='merge',
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "cow_protocol",
-                                \'["bh2smith", "gentrexha", "olgafetisova"]\') }}'
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 
 -- Find the PoC Query here: https://dune.com/queries/2360196
 WITH
+atokens_mapping as (
+    SELECT DISTINCT 'ethereum' as blockchain,      aToken as atoken_address, asset as underlying_address FROM {{source('aave_v3_ethereum','poolconfigurator_evt_reserveinitialized')}} 
+    UNION 
+    SELECT DISTINCT 'ethereum' as blockchain, aToken as atoken_address, asset as underlying_address FROM {{source('aave_v3_lido_ethereum','poolconfigurator_evt_reserveinitialized')}}
+    UNION 
+    SELECT DISTINCT 'ethereum' as blockchain, aToken as atoken_address, asset as underlying_address FROM {{source('aave_v3_ethereum','etherfipoolconfiguratorinstance_evt_reserveinitialized')}}
+),
+atoken_prices 
+as 
+(
+    SELECT atkm.atoken_address as contract_address  , prc.price  , prc.minute, prc.blockchain
+    FROM atokens_mapping  atkm
+    INNER JOIN {{ source('prices', 'usd') }} prc
+    ON atkm.underlying_address = prc.contract_address
+    WHERE atkm.blockchain = 'ethereum'
+    and prc.blockchain = 'ethereum'
+    {% if is_incremental() %}
+                AND {{ incremental_predicate('minute') }}
+    {% endif %}
+
+),
 -- First subquery joins buy and sell token prices from prices.usd.
 -- Also deducts fee from sell amount.
 trades_with_prices AS (
@@ -34,8 +52,8 @@ trades_with_prices AS (
            sellAmount - feeAmount    as sell_amount,
            buyAmount                 as buy_amount,
            feeAmount                 as fee_amount,
-           ps.price                  as sell_price,
-           pb.price                  as buy_price
+           coalesce(ps.price, atoken_ps.price)                  as sell_price,
+           coalesce(pb.price, atoken_pb.price)                  as buy_price
     FROM {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Trade') }} trade
              LEFT OUTER JOIN {{ source('prices', 'usd') }} as ps
                              ON sellToken = ps.contract_address
@@ -56,6 +74,18 @@ trades_with_prices AS (
                                  {% if is_incremental() %}
                                  AND {{ incremental_predicate('pb.minute') }}
                                  {% endif %}
+            LEFT OUTER JOIN atoken_prices as atoken_pb
+                             ON atoken_pb.contract_address = (
+                                 CASE
+                                     WHEN buyToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                                         THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                                     ELSE buyToken
+                                     END)
+                                 AND atoken_pb.minute = date_trunc('minute', evt_block_time)
+            LEFT OUTER JOIN atoken_prices as atoken_ps
+                             ON atoken_ps.contract_address = sellToken
+                                 AND atoken_ps.minute = date_trunc('minute', evt_block_time)
+                                 
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}

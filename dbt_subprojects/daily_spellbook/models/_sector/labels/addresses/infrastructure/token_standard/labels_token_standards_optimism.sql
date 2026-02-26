@@ -1,9 +1,8 @@
 {{config(
-    alias = 'token_standards_optimism',
-        post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["hildobby"]\') }}')}}
+    alias = 'token_standards_optimism'
+    , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 SELECT distinct 'optimism' AS blockchain
 , erc20.contract_address AS address

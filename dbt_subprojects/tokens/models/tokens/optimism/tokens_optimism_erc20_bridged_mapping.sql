@@ -6,10 +6,7 @@
     , file_format = 'delta'
     , incremental_strategy = 'merge'
     , unique_key = ['l1_token', 'l2_token']
-    , post_hook='{{ expose_spells(\'["optimism"]\',
-                                "sector",
-                                "tokens",
-                                \'["msilb7"]\') }}'
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 
@@ -55,7 +52,7 @@ FROM (
 
     ) map
 
-LEFT JOIN {{ ref('tokens_ethereum_erc20') }} et
+LEFT JOIN {{ ref('tokens_ethereum_v1_erc20') }} et
     ON et.contract_address = map.l1_token
 ) fin
 WHERE rnk =1

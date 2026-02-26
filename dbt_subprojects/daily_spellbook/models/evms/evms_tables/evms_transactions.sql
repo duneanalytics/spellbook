@@ -1,8 +1,8 @@
 {{ config(
         schema='evms',
         alias = 'transactions',
-        materialized = 'view',
-        post_hook='{{ expose_spells(evms_structured_blockchains_list() | tojson, "sector", "evms", \'[]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 
@@ -22,6 +22,7 @@ FROM (
         , to
         , block_number
         , block_time
+        , block_date
         , gas_limit
         , CAST(gas_price AS double) AS gas_price
         , gas_used

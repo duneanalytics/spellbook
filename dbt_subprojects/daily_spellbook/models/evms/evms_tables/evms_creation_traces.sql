@@ -1,8 +1,8 @@
 {{ config(
         schema='evms',
         alias = 'creation_traces',
-        materialized = 'view',
-        post_hook='{{ expose_spells(evms_structured_blockchains_list() | tojson, "sector", "evms", \'[]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 
@@ -21,8 +21,8 @@ FROM
                 , address
                 , "from"
                 , code
-                --, tx_from
-                --, tx_to
+                , block_month
+                , cast(date_trunc('day', block_time) as date) as block_date
         FROM {{ source(blockchain, 'creation_traces') }}
         {% if not loop.last %}
         UNION ALL

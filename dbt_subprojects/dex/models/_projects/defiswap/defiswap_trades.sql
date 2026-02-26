@@ -1,11 +1,8 @@
 {{ config(
     schema = 'defiswap',
     alias = 'trades',
-    materialized = 'view',
-    post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
-                                  spell_type = "project", 
-                                  spell_name = "defiswap", 
-                                  contributors = \'["pandajackson42"]\') }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

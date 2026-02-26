@@ -1,11 +1,8 @@
 {{
   config(
     
-    alias='price_feeds_oracle_addresses',
-    post_hook='{{ expose_spells(\'["bnb"]\',
-                                "project",
-                                "chainlink",
-                                \'["msilb7","0xroll","linkpool_ryan","linkpool_jon"]\') }}'
+    alias='price_feeds_oracle_addresses'
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

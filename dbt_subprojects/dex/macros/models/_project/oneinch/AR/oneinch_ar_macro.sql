@@ -1,145 +1,194 @@
-{% macro
+{%- macro
     oneinch_ar_macro(
-        blockchain
+        blockchain,
+        stream,
+        contracts
     )
-%}
+-%}
 
-
-
-{% set native = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
+{%- set date_from = [blockchain.start, stream.start] | max -%}
+{%- set wrapper = blockchain.wrapped_native_token_address -%}
+{%- set native = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' -%}
+{%- set nullss = '0x0000000000000000000000000000000000000000' -%}
 
 
 with
--- pools tokens for unoswap lineage tokens parsing
-pools_list as (
-    select
-        pool as pool_address
-        , tokens
-    from {{ ref('dex_raw_pools') }}
-    where
-        type in ('uniswap_compatible', 'curve_compatible')
-        and blockchain = '{{ blockchain }}'
-    group by 1, 2
+
+raw_calls as (
+    select *
+    from {{ ref('oneinch_' + blockchain.name + '_ar_raw_calls') }}
+    where true
+        and block_date >= timestamp '{{ date_from }}' -- it is only needed for simple/easy dates
+        {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
 )
 
-
-, calls as (
-    {% for contract, contract_data in oneinch_ar_cfg_contracts_macro().items() if blockchain in contract_data.blockchains %}
-
-    select * from (
-        with traces_cte as (
+, decoded as (
+    {% for contract, contract_data in contracts.items() %}
+        -- CONTRACT: {{ contract }} --
+        {% for method, method_data in contract_data.methods.items() if not method_data.get('auxiliary', false) %}
             select
-                block_number as call_block_number
-                , tx_hash as call_tx_hash
-                , trace_address as call_trace_address
-                , "from" as call_from
-                , selector as call_selector
-                , gas_used as call_gas_used
-                , input as call_input
-                , input_length as call_input_length
-                , substr(input, input_length - mod(input_length - 4, 32) + 1) as remains
-                , output as call_output
-                , error as call_error
-                , value as call_value
-                , call_type
-            from {{ ref('oneinch_' + blockchain + '_ar_raw_traces') }}
-            where
-                {% if is_incremental() %}
-                    {{ incremental_predicate('block_time') }}
-                {% else %}
-                    block_time >= greatest(timestamp '{{ contract_data['start'] }}', timestamp {{ oneinch_easy_date() }})
-                {% endif %}
-        )
-
-
-        {% for method, method_data in contract_data.methods.items() if blockchain in method_data.get('blockchains', contract_data.blockchains) %} -- method-level blockchains override contract-level blockchains
-            {% if method_data.router_type in ['generic', 'clipper'] %}
-                {{
-                    oneinch_ar_handle_generic(
-                        contract=contract,
-                        contract_data=contract_data,
-                        method=method,
-                        method_data=method_data,
-                        blockchain=blockchain,
-                        traces_cte=traces_cte,
-                        start_date=contract_data['start'],
-                    )
-                }}
-            {% elif method_data.router_type in ['unoswap'] %}
-                {{
-                    oneinch_ar_handle_unoswap(
-                        contract=contract,
-                        contract_data=contract_data,
-                        method=method,
-                        method_data=method_data,
-                        blockchain=blockchain,
-                        traces_cte=traces_cte,
-                        pools_list=pools_list,
-                        start_date=contract_data['start'],
-                    )
-                }}
-            {% endif %}
-        {% if not loop.last %} union all {% endif %}
+                call_block_date as block_date
+                , call_block_number as block_number
+                , call_tx_hash as tx_hash
+                , call_trace_address
+                , {{ method_data.get("src_token_address", "null") }} as src_token_address
+                , {{ method_data.get("dst_token_address", "null") }} as dst_token_address
+                , {{ method_data.get("src_receiver", "null") }} as src_receiver
+                , {{ method_data.get("dst_receiver", "null") }} as dst_receiver
+                , {% if method_data["src_token_amount"] == "call_value" %}null{% else %}{{ method_data.get("src_token_amount", "null") }} {%- endif %} as src_token_amount
+                , {{ method_data.get("dst_token_amount", "null") }} as dst_token_amount
+                , {{ method_data.get("dst_token_amount_min", "null") }} as dst_token_amount_min
+                , {{ method_data.get("pools", "null") }} as raw_pools
+                , {{ method_data.get("pool_type_mask", "null") }} as pool_type_mask
+                , {{ method_data.get("pool_type_offset", "null") }} as pool_type_offset
+                , {{ method_data.get("direction_mask", "null") }} as direction_mask
+                , {{ method_data.get("unwrap_mask", "null") }} as unwrap_mask
+                , {{ method_data.get("src_token_mask", "null") }} as src_token_mask
+                , {{ method_data.get("src_token_offset", "null") }} as src_token_offset
+                , {{ method_data.get("dst_token_mask", "null") }} as dst_token_mask
+                , {{ method_data.get("dst_token_offset", "null") }} as dst_token_offset
+                , {{ method_data.get("router_type", "null") }} as router_type
+                , {{ method_data.get("useful", "null") }} as useful
+                , {% if method_data["src_token_amount"] == "call_value" %}true{% else %}false{% endif %} as src_token_amount_from_value
+            from {{ source('oneinch_' + blockchain.name, contract + '_call_' + method) }}
+            where true
+                and call_block_date >= timestamp '{{ date_from }}' -- it is only needed for simple/easy dates
+                {% if is_incremental() -%} and {{ incremental_predicate('call_block_time') }} {%- endif %}
+            {% if not loop.last -%} union all {%- endif %}
         {% endfor %}
-    )
-    {% if not loop.last %} union all {% endif %}
+        {% if not loop.last -%} union all {%- endif %}
     {% endfor %}
 )
 
+, pools_list as (
+    select
+        pool
+        , tokens
+    from {{ ref('dex_raw_pools') }}
+    where true
+        and blockchain = '{{ blockchain.name }}'
+        and type in ('uniswap_compatible', 'curve_compatible')
+    group by 1, 2
+)
+
+, processing as (
+    select *
+        , coalesce(
+            src_token_address -- src_token_address from params
+            , try(case -- try to get src_token_address from first pool: parsed_pools[1]
+                when parsed_pools[1]['pool_type'] = 2 then first_pool_tokens[cast(parsed_pools[1]['src_token_index'] as int) + 1] -- when pool type = 2, i.e Curve pool, than get src token address from first_pool_tokens by src token index
+                else first_pool_tokens[cast(parsed_pools[1]['direction'] as int) + 1] -- when other cases, i.e. Uniswap compatible pool, than get src token address from first_pool_tokens by direction
+            end)
+        ) as pool_src_token_address
+        , coalesce(
+            dst_token_address -- dst_token_address from params
+            , try(case -- try to get dst_token_address from last pool: reverse(parsed_pools)[1]
+                when reverse(parsed_pools)[1]['pool_type'] = 2 then last_pool_tokens[cast(reverse(parsed_pools)[1]['dst_token_index'] as int) + 1] -- when pool type = 2, i.e Curve pool, than get dst token address from last_pool_tokens by dst token index
+                else last_pool_tokens[cast(bitwise_xor(reverse(parsed_pools)[1]['direction'], 1) as int) + 1] -- when other cases, i.e. Uniswap compatible pool, than get dst token address from last_pool_tokens by direction
+            end)
+        ) as pool_dst_token_address
+        , transform(parsed_pools, x -> map_from_entries(array[
+            ('type', substr(cast(x['pool_type'] as varbinary), 32))
+            , ('info', substr(cast(x['pool'] as varbinary), 1, 12))
+            , ('unwrap', substr(reverse(cast(x['unwrap'] as varbinary)), 1, 1))
+            , ('address', substr(cast(x['pool'] as varbinary), 13))
+        ])) as pools
+    from (
+        select *
+            , try(substr(cast(call_pools[1] as varbinary), 13)) as first_pool
+            , try(substr(cast(reverse(call_pools)[1] as varbinary), 13)) as last_pool
+            , transform(call_pools, x -> map_from_entries(array[
+                ('pool', x) -- raw pool data in uint256
+                , ('pool_type', bitwise_right_shift(bitwise_and(x, pool_type_mask), pool_type_offset))
+                , ('direction', bitwise_xor(bit_count(bitwise_and(x, direction_mask), 256), if(protocol_version < 6, 0, 1))) -- until v6, the set direction bit meant the reverse direction, starting from v6, the set direction bit means the ordinary direction
+                , ('unwrap', bit_count(bitwise_and(x, unwrap_mask), 256))
+                , ('src_token_index', bitwise_right_shift(bitwise_and(x, src_token_mask), src_token_offset))
+                , ('dst_token_index', bitwise_right_shift(bitwise_and(x, dst_token_mask), dst_token_offset))
+            ])) as parsed_pools
+        from (
+            select *
+                , if(router_type = 'unoswap' and cardinality(raw_pools) = 0
+                    , array[bytearray_to_uint256(substr(call_input, call_input_length - 32 - mod(call_input_length - 4, 32) + 1, 32))] -- last 32 bytes of input without remains
+                    , raw_pools
+                ) as call_pools
+                , if(router_type = 'unoswap', cardinality(raw_pools) > 0) as ordinary -- true if call pools is not empty, null for generic
+                , substr(call_input, coalesce(useful, call_input_length - mod(call_input_length - 4, 32)) + 1) as call_input_remains
+            from decoded
+            join raw_calls using(block_date, block_number, tx_hash, call_trace_address)
+        )
+    )
+    left join (select pool as first_pool, tokens as first_pool_tokens from pools_list) using(first_pool)
+    left join (select pool as last_pool, tokens as last_pool_tokens from pools_list) using(last_pool)
+)
+
+, native_prices as ( -- joining prices at this level, not on "raw_transfers", because there could be a call without transfers for which the tx cost needs to be calculated
+    select
+        minute
+        , price
+        , decimals
+    from {{ source('prices', 'usd') }}
+    where true
+        and blockchain = '{{ blockchain.name }}'
+        and contract_address = {{ wrapper }}
+        and minute >= timestamp '{{ date_from }}'
+        {% if is_incremental() -%} and {{ incremental_predicate('minute') }} {%- endif %}
+)
+
+-- output --
+
 select
     blockchain
+    , {{ blockchain.chain_id }} as chain_id
     , block_number
     , block_time
-    , block_date
     , tx_hash
+    , tx_success
     , tx_from
     , tx_to
-    , tx_success
     , tx_nonce
     , tx_gas_used
     , tx_gas_price
     , tx_priority_fee_per_gas
-    , contract_name
-    , 'AR' as protocol
-    , protocol_version
-    , method
-    , call_selector
+    , tx_index -- it is necessary to determine the order in the block
     , call_trace_address
-    , call_from
-    , call_to
     , call_success
     , call_gas_used
+    , call_selector
+    , call_method
+    , call_from
+    , call_to
     , call_output
     , call_error
     , call_type
-    , src_receiver
-    , dst_receiver
-    , if(element_at(pools[1], 'unwrap') = 0x01 and src_token_address = wrapped_native_token_address and call_value > uint256 '0', {{native}}, src_token_address) as src_token_address
-    , if(element_at(reverse(pools)[1], 'unwrap') = 0x01 and dst_token_address = wrapped_native_token_address, {{native}}, dst_token_address) as dst_token_address
-    , src_token_amount
+    , protocol
+    , protocol_version
+    , contract_name
+    , if(src_receiver = {{ nullss }}, 0x, src_receiver) as src_receiver
+    , if(dst_receiver = {{ nullss }}, 0x, dst_receiver) as dst_receiver
+    , coalesce(src_token_address, if(element_at(pools[1], 'unwrap') = 0x01 and pool_src_token_address = {{ wrapper }} and call_value > uint256 '0', {{ native }}, pool_src_token_address)) as src_token_address
+    , coalesce(dst_token_address, if(element_at(reverse(pools)[1], 'unwrap') = 0x01 and pool_dst_token_address = {{ wrapper }}, {{ native }}, pool_dst_token_address)) as dst_token_address
+    , if(src_token_amount_from_value, call_value, src_token_amount) as src_token_amount
     , dst_token_amount
     , dst_token_amount_min
+    , router_type
+    , pools
+    , coalesce(try(filter(transform(sequence(1, length(call_input_remains), 4), x -> bytearray_to_bigint(reverse(substr(reverse(call_input_remains), x, 4)))), y -> y <> 0)), array[]) as remains
     , map_from_entries(array[
         ('ordinary', ordinary)
-        , ('direct', call_from = tx_from and call_to = tx_to) -- == cardinality(call_trace_address) = 0, but because of zksync trace structure we switched to this
+        , ('direct', call_from = tx_from and call_to = tx_to) -- == cardinality(call_trace_address) = 0, but due to zksync trace structure, it is necessary to switch to this
     ]) as flags
-    , pools
-    , router_type
-    , concat(cast(length(remains) as bigint), if(length(remains) > 0
-        , transform(sequence(1, length(remains), 4), x -> bytearray_to_bigint(reverse(substr(reverse(remains), x, 4))))
-        , array[bigint '0']
-    )) as remains
-    , date_trunc('minute', block_time) as minute
-    , date(date_trunc('month', block_time)) as block_month
-from (
-    {{
-        add_tx_columns(
-            model_cte = 'calls'
-            , blockchain = blockchain
-            , columns = ['from', 'to', 'success', 'nonce', 'gas_price', 'priority_fee_per_gas', 'gas_used']
-        )
-    }}
-)
-join ({{ oneinch_blockchain_macro(blockchain) }}) on true
+    , minute
+    , block_date
+    , block_month
+    , price as native_price
+    , decimals as native_decimals
+from ({{
+    add_tx_columns(
+        model_cte = 'processing'
+        , blockchain = blockchain.name
+        , columns = ['from', 'to', 'nonce', 'gas_price', 'priority_fee_per_gas', 'gas_used', 'index']
+    )
+}}) as t
+left join native_prices using(minute)
 
-{% endmacro %}
+{%- endmacro -%}

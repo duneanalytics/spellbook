@@ -5,16 +5,14 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['userop_hash', 'tx_hash'],
-    post_hook='{{ expose_spells(\'["bnb"]\',
-                                    "project",
-                                    "erc4337",
-                                    \'["0xbitfly"]\') }}'
+    unique_key = ['userop_hash', 'tx_hash']
+    , post_hook='{{ hide_spells() }}'
 )}}
 
 
 {% set erc4337_bnb_models = [
     ref('account_abstraction_erc4337_bnb_v0_6_account_deployed')
+    , ref('account_abstraction_erc4337_bnb_v0_7_account_deployed')
 ] %}
 
 SELECT

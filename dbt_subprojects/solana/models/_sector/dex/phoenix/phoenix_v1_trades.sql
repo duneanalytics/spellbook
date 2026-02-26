@@ -1,11 +1,8 @@
  {{
   config(
         schema = 'phoenix_v1',
-        alias = 'trades',
-        post_hook='{{ expose_spells(\'["solana"]\',
-                                    "project",
-                                    "phoenix",
-                                    \'["ilemi","jarryx"]\') }}'
+        alias = 'trades'
+        , post_hook='{{ hide_spells() }}'
       )
 }}
 
@@ -14,6 +11,7 @@ select
       blockchain
       , project
       , version
+      , version_name
       , block_month
       , block_date
       , block_time

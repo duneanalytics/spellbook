@@ -2,17 +2,16 @@
   config(
         schema = 'raydium_launchlab_v1',
         alias = 'trades',
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["solana"]\',
-                                    "project",
-                                    "raydium_launchlab_v1",
-                                    \'["krishhh"]\') }}')
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
+)
 }}
 
 select
       dex_trades.blockchain
       , dex_trades.project
       , dex_trades.version
+      , dex_trades.version_name
       , dex_trades.block_month
       , dex_trades.block_date
       , dex_trades.block_time

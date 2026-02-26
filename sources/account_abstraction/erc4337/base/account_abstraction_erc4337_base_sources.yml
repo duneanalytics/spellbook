@@ -28,5 +28,15 @@ sources:
       - name: EntryPoint_v0_7_evt_AccountDeployed
         description: >
           Decoded table related to the erc4337 account deployed events, version v0.7.
+      - name: entrypoint_evt_useroperationevent
+        description: >
+          Decoded table related to the erc4337 user operation events version v0.8
 
+      - name: entrypoint_call_handleops
+        description: >
+          Decoded table related to the erc4337 handle operation calls, version v0.8.
+
+      - name: entrypoint_evt_accountdeployed
+        description: >
+          Decoded table related to the erc4337 account deployed events, version v0.8.
       

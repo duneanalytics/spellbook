@@ -3,16 +3,15 @@
 
         schema = 'orca_whirlpool',
         alias = 'trades',
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["solana"]\',
-                                    "project",
-                                    "orca_whirlpool",
-                                    \'["ilemi"]\') }}')
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
+)
 }}
 select
       blockchain
       , project
       , version
+      , version_name
       , block_month
       , block_date
       , block_time

@@ -1,10 +1,7 @@
 {{ config(
         schema='gmx_v2',
-        alias = 'order_created',
-        post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c"]\',
-                                    "project",
-                                    "gmx",
-                                    \'["ai_data_master","gmx-io"]\') }}'
+        alias = 'order_created'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 
@@ -48,6 +45,7 @@ SELECT
     updated_at_block,
     updated_at_time,
     valid_from_time,
+    src_chain_id,
     is_long,
     should_unwrap_native_token,
     auto_cancel,

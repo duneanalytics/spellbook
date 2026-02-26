@@ -1,6 +1,19 @@
 version: 2
 
 models:
+  - name: goosefx_ssl_v2_solana_base_trades_backfill
+    meta:
+      blockchain: solana
+      contributors: [ ilemi ]
+    config:
+      tags: [ 'solana','dex','static','microbatch' ]
+    description: >
+        goosefx ssl v2 dex trades on Solana - static microbatch backfill (program inactive since 2024-09-09)
+    data_tests:
+      - check_columns_solana_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
+
   - name: goosefx_ssl_v2_solana_base_trades
     meta:
       blockchain: solana
@@ -8,7 +21,7 @@ models:
     config:
       tags: [ 'solana','dex' ]
     description: >
-        all goosefx ssl v2 dex trades on Solana
+        all goosefx ssl v2 dex trades on Solana (view over backfill model; program inactive since 2024-09-09)
     data_tests:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
@@ -32,6 +45,9 @@ models:
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"
+      - &version_name
+        name: version_name
+        description: "Descriptive name of the DEX version (ssl)"
       - &block_month
         name: block_month
         description: "UTC event block month of each DEX trade"
@@ -107,3 +123,35 @@ models:
       - &tx_index
         name: tx_index
         description: "index of the transaction in the block slot"
+
+  - name: goosefx_version_ssl_base_trades
+    meta:
+      blockchain: solana
+      contributors: [krishgka]
+    config:
+      tags: ['solana','dex']
+    description: >
+        goosefx ssl dex base trades on Solana with version_name
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *version_name
+      - *block_month
+      - *block_time
+      - *block_slot
+      - *trade_source
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *fee_tier
+      - *token_bought_mint_address
+      - *token_sold_mint_address
+      - *token_bought_vault
+      - *token_sold_vault
+      - *project_program_id
+      - *project_main_id
+      - *trader_id
+      - *tx_id
+      - *outer_instruction_index
+      - *inner_instruction_index
+      - *tx_index

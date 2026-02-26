@@ -2,11 +2,8 @@
   config(
         schema = 'pancakeswap_v3_solana',
         alias = 'trades',
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["solana"]\',
-                                    "project",
-                                    "pancakeswap",
-                                    \'["chef_butterbeer"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 
@@ -14,6 +11,7 @@ select
       blockchain
       , project
       , version
+      , version_name
       , block_month
       , block_date
       , block_time

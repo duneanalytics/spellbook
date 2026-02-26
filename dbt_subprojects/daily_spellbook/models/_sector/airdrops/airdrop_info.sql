@@ -1,11 +1,9 @@
 {{ config(
         tags = [ 'static'],
         schema='airdrop',
-        alias = 'info',
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "lgingerich"]\',
-                                    "sector",
-                                    "airdrop",
-                                    \'["hildobby", "lgingerich"]\') }}')
+        alias = 'info'
+        , post_hook='{{ hide_spells() }}'
+)
 }}
 
 SELECT project, name, eligible_addresses, airdropped_total, circulating_supply_on_drop, max_supply, token_issued_by_protocol, x_username, CAST(airdrop_start AS TIMESTAMP) AS airdrop_start, CAST(airdrop_end AS TIMESTAMP) AS airdrop_end

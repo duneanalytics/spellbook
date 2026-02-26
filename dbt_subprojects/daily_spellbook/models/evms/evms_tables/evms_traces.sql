@@ -1,8 +1,8 @@
 {{ config(
         schema='evms',
         alias = 'traces',
-        materialized = 'view',
-        post_hook='{{ expose_spells(evms_structured_blockchains_list() | tojson, "sector", "evms", \'[]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 
@@ -14,6 +14,7 @@ FROM (
         SELECT
         '{{ blockchain }}' AS blockchain
         , block_time
+        , block_date
         , block_number
         , value
         , gas

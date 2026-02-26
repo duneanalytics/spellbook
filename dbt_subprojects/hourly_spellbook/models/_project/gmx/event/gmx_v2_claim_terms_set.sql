@@ -1,0 +1,33 @@
+{{ config(
+        schema='gmx_v2',
+        alias = 'claim_terms_set'
+        , post_hook='{{ hide_spells() }}'
+        )
+}}
+
+{%- set chains = [
+    'arbitrum',
+    'avalanche_c',
+] -%}
+
+{%- for chain in chains -%}
+SELECT 
+    blockchain,
+    block_time,
+    block_date,
+    block_number,
+    tx_hash,
+    index,
+    contract_address,
+    tx_from,
+    tx_to,
+    event_name,
+    msg_sender,
+
+    distribution_id,
+    terms_hash
+FROM {{ ref('gmx_v2_' ~ chain ~ '_claim_terms_set') }}
+{% if not loop.last %}
+UNION ALL
+{% endif %}
+{%- endfor -%}

@@ -1,9 +1,8 @@
 {{config(
-    alias = 'validators',
-        post_hook='{{ expose_spells(\'["ethereum","bnb","solana"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["soispoke"]\') }}')}}
+    alias = 'validators'
+    , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 SELECT * FROM  {{ ref('labels_validators_ethereum') }}
 UNION

@@ -1,11 +1,9 @@
 {{ config(
         tags = [ 'static'],
         schema='dex',
-        alias = 'info',
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "solana", "zksync", "boba"]\',
-                                    "sector",
-                                    "dex",
-                                    \'["hildobby"]\') }}')
+        alias = 'info'
+        , post_hook='{{ hide_spells() }}'
+)
 }}
 
 SELECT project, name, marketplace_type, x_username
@@ -99,7 +97,7 @@ FROM (VALUES
     , ('chronos', 'Chronos', 'Direct', 'ChronosFi_')
     , ('zyberswap', 'Zyberswap', 'Direct', 'zyberswap')
     , ('solidlizard', 'SolidLizard', 'Direct', 'solidlizardfi')
-    , ('pharaoh', 'Pharaoh', 'Direct', 'pharaoh')
+    , ('pharaoh', 'Pharaoh', 'Direct', 'PharaohExchange')
     , ('ramses', 'Ramses', 'Direct', 'ramses')
     , ('scale', 'Scale', 'Direct', 'scale')
     , ('baseswap', 'Baseswap', 'Direct', 'Baseswap')
@@ -231,9 +229,23 @@ FROM (VALUES
     , ('ekubo', 'Ekubo', 'Direct', 'EkuboProtocol')
     , ('etherex', 'EtherEx', 'Direct', 'etherexfi')
     , ('angstrom', 'Angstrom', 'Direct', 'angstromxyz')
+    , ('blade', 'Blade', 'Direct', 'SushiSwap')
     , ('hyperswap', 'HyperSwap', 'Direct', 'HyperSwap')
     , ('hybra', 'Hybra', 'Direct', 'Hybra')
     , ('prjx', 'PRJX', 'Direct', 'PRJX')
     , ('somnex', 'SomneX', 'Direct', 'SomneX')
     , ('machinex', 'Machine X', 'Direct', 'machinexdotxyz')
+    , ('cldex', 'CLDEX', 'Direct', 'KaiaChain')
+    , ('pharaoh_v3', 'Pharaoh', 'Direct', 'PharaohExchange')
+    , ('aborean', 'Aborean', 'Direct', 'AboreanFi')
+    , ('story_hunt', 'Story Hunt', 'Direct', 'story_hunt')
+    , ('piperx', 'PiperX', 'Direct', 'piperx')
+    , ('mezo_swap', 'Mezo Swap', 'Direct', 'mezoswap')
+    , ('kuru', 'Kuru', 'Direct', 'kuru')
+    , ('pinot', 'Pinot', 'Direct', 'pinot')
+    , ('potatoswap', 'PotatoSwap', 'Direct', 'potatoswap')
+    , ('elfomofi', 'ElfomoFi', 'Direct', 'elfomo_fi')
+    , ('kumbaya', 'Kumbaya', 'Direct', 'kumbaya')
+    , ('prismfi', 'PrismFI', 'Direct', 'PrismFI')
+    , ('supernova', 'Supernova', 'Direct', 'SupernovaDEX')
 ) AS temp_table (project, name, marketplace_type, x_username)

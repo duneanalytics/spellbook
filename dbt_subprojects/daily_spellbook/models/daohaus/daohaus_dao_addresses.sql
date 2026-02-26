@@ -2,11 +2,9 @@
     schema = 'daohaus',
     alias = 'dao_addresses',
     materialized = 'view',
-    file_format = 'delta',
-    post_hook='{{ expose_spells(\'["ethereum", "gnosis"]\',
-                                "project",
-                                "daohaus",
-                                \'["Henrystats"]\') }}')
+    file_format = 'delta'
+    , post_hook='{{ hide_spells() }}'
+)
 }}
 
 {% set daohaus_models = [

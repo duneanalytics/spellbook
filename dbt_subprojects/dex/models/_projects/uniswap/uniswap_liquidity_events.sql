@@ -7,12 +7,7 @@
     , incremental_strategy = 'merge'
     , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'event_type']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
-    , post_hook='{{ expose_spells(\'[
-                                      "ethereum","arbitrum","base","ink","blast","optimism","blast","bnb","zora","avalanche_c","unichain","worldchain"
-                                    ]\',
-                                    "project",
-                                    "uniswap",
-                                    \'["irishlatte19", "Henrystats"]\') }}')
+    , post_hook='{{ hide_spells() }}')
 }}
 
 WITH dexes AS (
@@ -36,6 +31,11 @@ WITH dexes AS (
                 , tx_from
                 , evt_index
                 , event_type
+                , liquidityDelta
+                , sqrtPriceX96
+                , tickLower
+                , tickUpper
+                , salt
                 , token0
                 , token1
                 , token0_symbol 
@@ -53,4 +53,4 @@ WITH dexes AS (
                {{ incremental_predicate('block_time') }}
           {% endif %}
 
--- refresh 
+-- refreshing

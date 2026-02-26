@@ -3,11 +3,9 @@
         schema = 'stealcam',
         alias = 'trades',
         
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["arbitrum"]\',
-                                    "project",
-                                    "stealcam",
-                                    \'["0xRob"]\') }}')
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
+)
 }}
 
 SELECT *

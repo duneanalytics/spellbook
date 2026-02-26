@@ -5,7 +5,7 @@
         
         materialized = 'table',
         unique_key = ['address', 'asset'],
-        post_hook='{{ expose_spells(\'["ton"]\',
+    post_hook='{{ expose_spells(\'["ton"]\',
                                     "sector",
                                     "ton",
                                     \'["pshuvalov"]\') }}'

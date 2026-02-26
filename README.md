@@ -5,197 +5,152 @@ Welcome to [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation
 
 ## TL;DR
 
-- Have a question on how something works in Spellbook, or why we design spells in a particular way?
-  - Please visit the [docs](docs/) directory to find various topics & ideally answers to any question about Spellbook
-- Spellbook has [introduced sub-projects](#sub-projects), with the intention to build a path forward for scaling Spellbook
-- Are you building something new? **Please make sure to open a Draft PR**, so we minimize duplicated work, and other wizards can help you if you need
-- Don't know where to start? The docs below will guide you, but as a summary:
-  - Want to make an incremental improvement to one of our spells? (add a new project, fix a bug you found), simply open a PR with your changes.
-    - Follow the guide for [Submitting a PR](#submitting-a-pr), [Setting up your dev environment](#setting-up-your-local-dev-environment) and [Using dbt to write spells](#how-to-use-dbt-to-create-spells) if you find yourself lost.
-    - Not sure how to start? Follow the walkthrough [here](#introduction).
-    - Make sure to open a draft PR if you will work on your spell for longer than a few days, to avoid duplicated work
-  - Do you want to get started building spells and you don't know what to build? Check [Issues](https://github.com/duneanalytics/spellbook/issues) to see what the community needs.
-  - Check the Discussions section to see what problems the community is trying to solve (i.e. non-incremental changes) or propose your own!
-- Have questions? Head over to #spellbook on our [discord](https://discord.com/channels/757637422384283659/999683200563564655) and the community will be happy to help out!
-- Like with most OSS projects, your contributions to Spellbook are your own IP, you can find more details in the [Contributor License Agreement](CLA.md)
+- **Before contributing:** Spellbook accepts selective contributions. To avoid wasted effort, please [raise a GitHub issue](#submitting-a-contribution) with the title prefix `[CONTRIBUTION]` describing your proposed changes before writing code. The Dune team will review and confirm if we'll accept the contribution.
+  - **Exception:** Small bug fixes can be submitted directly as PRs without prior approval.
+  - **Priority:** PRs from Dune enterprise customers receive priority review. 
+  
+  PRs from contributors who aren't customers are accepted on a case by case basis, depending on whether datasets benefit the broader community (as an example, contributions to `dex.trades` are welcome)
+
+- Questions about how Spellbook works? Check the [docs](docs/) directory.
+- Spellbook uses [sub-projects](#sub-projects) to organize different datasets (dex, nft, solana, etc.).
+- Setup: Follow [dev environment setup](#setting-up-your-local-dev-environment) to get started with dbt locally.
+- Questions? Join #spellbook on [Discord](https://discord.com/channels/757637422384283659/999683200563564655).
+- Your spellbook contributions are your own IP. See [Contributor License Agreement](CLA.md) for details.
+
+## 🚀 Enterprise Customers: Use Your Own dbt Project
+
+**If you're a Dune enterprise customer, you don't need to contribute to Spellbook.** Instead, you can run your own data transformation projects directly on DuneSQL using the **dbt Connector**.
+
+**What it is:** Run dbt projects on top of DuneSQL—read from any Dune dataset and write results into managed tables within your org namespace. All writes are metered and private by default, stored securely by Dune.
+
+**Why it matters:**
+- **No PR bottlenecks** – Ship on your own schedule without waiting for Spellbook reviews
+- **Keep it private** – Your logic and data stay within your org, giving you full autonomy
+- **Full dbt compatibility** – Use your existing dbt workflows and tooling
+
+📖 **[Read the dbt Connector documentation](https://docs.dune.com/api-reference/connectors/dbt/overview#dbt-connector-overview)** to get started.
+
+👉 **[Contact us](https://dune.com/enterprise)** for a demo and to get set up with your own dbt project.
 
 ## Table of Contents
 
+- [Enterprise Customers: Use Your Own dbt Project](#-enterprise-customers-use-your-own-dbt-project)
 - [Introduction](#introduction)
-- [Docs](#docs)
 - [Sub-projects](#sub-projects)
-- [How to contribute](#ways-to-contribute-to-spellbook)
-  - [Submitting a PR](#submitting-a-pr)
-  - [Testing your Spell](#testing-your-spell)
-  - [Connecting with other wizards](#connecting-with-other-wizards)
+- [How to contribute](#how-to-contribute)
+  - [Submitting a contribution](#submitting-a-contribution)
+  - [Testing your spell](#testing-your-spell)
 - [Setting up your dev environment](#setting-up-your-local-dev-environment)
-  - [Prerequisites](#prerequisites)
-  - [Initial Installation](#initial-installation)
-  - [Coming back](#coming-back)
-  - [What did I just do?](#what-did-i-just-do)
 - [Using dbt to write spells](#how-to-use-dbt-to-create-spells)
-  - [Generating and serving documentation:](#generating-and-serving-documentation)
-  - [DBT Resources:](#dbt-resources)
         
 ## Introduction
 
-Spellbook is Dune's interpretation layer, built for and by the community.
+Spellbook is Dune's interpretation layer, transforming raw blockchain data into clean, usable datasets. It's a [dbt](https://docs.getdbt.com/docs/introduction) project where each model is a SQL query that handles dependencies and builds tables from raw and decoded tables.
 
-Spellbook is a [dbt](https://docs.getdbt.com/docs/introduction) project. Each model is a simple SQL query with minor syntactic sugar (meant to capture dependencies and help build the resulting tables), and does a small part of the task of turning raw and decoded records into interpretable blockchain data.
-
-Spellbook is built for and by the community, you are welcome to close any gaps that you find by sending a PR, creating issues to propose small changes or track bugs, or participate in discussions to help steer the future of this project.
-
-## Docs
-
-Spellbook has a lot of moving parts & specific design principles for contributing to Dune's interpretation layer of data. In order to prepare contributors to participate most efficiently, the [docs](docs/) directory contains a wide ranging set of topics to answer common questions & provide info on why the repo is setup as it is. Please read & refer to this section when developing in Spellbook and questions arise. The Dune team will also link back to these docs to answer questions often, to help grow awareness and keep communications clean.
+While historically community-driven, Spellbook now accepts selective contributions. The [docs](docs/) directory contains design principles and best practices for contributors.
 
 ## Sub-projects
 
-In order to scale Spellbook, the repo has introduced sub-projects to break out complex DBT lineages a bit & keep focus areas clean. This will also help downstream orchestration to keep spells fresh in production. DBT sub-projects in Spellbook are simply multiple DBT projects within one repo. The current structure for projects:
-- `dbt_subprojects`
-  - `daily_spellbook`
-    - *note*: new spells will live here, unless otherwise directed by Dune team
-    - all "other" spells which don't feed into larger sector-wide spells, refreshed on a daily basis
-    - example: project specific, standalone spells
-  - `hourly_spellbook`
-    - "other" spells which have been promoted from daily to hourly, allowing for more frequent refreshes
-    - feed into sector-level spells, with potential to be promoted into it's own project
-    - required to fit latest spellbook best practices
-    - requires approval from Dune team to be hourly
-  - `dex`
-    - all spells which live in the `dex` or `dex_aggregator` schemas, including upstream spells to help build the final sector-level spells
-  - `nft`
-    - all spells which live in the `nft` schema, including upstream spells to help build the final sector-level spells
-  - `solana`
-    - solana specific spells, don't fit into EVM code structure as easily
-  - `tokens`
-    - token metadata, transfers, balances
+Spellbook is organized into multiple dbt sub-projects within `dbt_subprojects/`:
 
-For further information on sub-projects, please visit [this discussion](https://github.com/duneanalytics/spellbook/discussions/6037) and ask any questions there.
+- **`daily_spellbook`** - Default location for new spells, refreshed daily. Project-specific, standalone spells.
+- **`hourly_spellbook`** - Promoted spells with more frequent refreshes. Requires Dune team approval.
+- **`dex`** - DEX and DEX aggregator spells, including `dex.trades`.
+- **`nft`** - NFT-related spells.
+- **`solana`** - Solana-specific spells.
+- **`tokens`** - Token metadata, transfers, and balances.
 
-## Ways to contribute to Spellbook
+See [this discussion](https://github.com/duneanalytics/spellbook/discussions/6037) for more details.
 
-- **Build** spells - if you want to write code, simply clone the repo, write your code, and open a PR
-  - If you already know what to build, there's no red tape to skip around, simply open a PR when you're ready. We advise opening draft PRs early, so we avoid duplication of efforts and you can get help from other wizards
-  - If you don't know where to start, check out Issues for ideas. We're always looking for help fixing small bugs or implementing spells for small projects
-- **Flag** gaps in spellbook - have you found a bug, or is there a project missing from one of the sectors that you'd like to add? You can create an [issue](https://github.com/duneanalytics/spellbook/issues) and bring other wizards to your aid.
-  - **Bugs**: Found a record on a Spell that doesn't reflect chain data correctly? Please make sure you link to a block explorer showing the expected value, and a dune query showing the wrong value. If there's multiple records affected, any sense of scale (how many rows, affected USD volume) will also be very helpful.
-- **Propose** changes to spellbook - [Discussions](https://github.com/duneanalytics/spellbook/discussions) are where we bring up, challenge and develop ideas to continue building spellbook. If you want to make a major change to a spell (e.g. major overhaul to a sector, launching a new sector, designing a new organic volume filter, etc.).
+## How to contribute
 
-### Submitting a PR
+### Submitting a contribution
 
-Want to get right to work? Follow the guide [here](https://dune.com/docs/spellbook/?h=7+steps+adding+a+spell) to get started.
+**Before writing code**, please create a [GitHub issue](https://github.com/duneanalytics/spellbook/issues) with the title prefix `[CONTRIBUTION]` describing your proposed changes. Include:
+- High-level description of what you want to add/change
+- Which sub-project(s) it affects (dex, nft, etc.)
+- Why it would benefit the community
+
+The Dune team will review and respond with whether we'll accept the contribution. This saves you from investing time in code that may not be merged.
+
+**Exception:** Bug fixes can be submitted directly as PRs without prior approval. When reporting bugs, include:
+- Link to block explorer showing expected value
+- Dune query showing incorrect value
+- Scale of impact (number of rows, affected USD volume)
+
+**Priority:** Dune enterprise customers receive priority review.
 
 ### Testing your spell
 
-You don't need a complex local setup to test spells against Dune's engine. Once you send a PR, our CI pipeline will run and test it, and, if the job finishes successfully, you'll be able to query the data your PR created directly from dune.com.
-
-Simply write a query like you would for any of our live tables, and use the test schema to fetch the tables your PR created.
+Once you submit a PR, our CI pipeline tests it against Dune's engine. Query your test data using:
 
 `test_schema.git_dunesql_{{commit_hash}}_{{table_name}}`
 
-You can find the exact names easily by looking at the logs from the `dbt slim ci` action, under `dbt run initial model(s)`.
+Find exact table names in the `dbt slim ci` action logs under `dbt run initial model(s)`. 
 
-Please note: the test tables built in the CI pipeline will exist for ~24 hours. If your table doesn't exist, trigger the pipeline to run again and recreate the test table.
+Test tables exist for ~24 hours. If your table doesn't exist, trigger the pipeline to run again.
 
-### Connecting with other wizards
-
-We use Discord to connect with our community. Head over to spellbook channel on [Dune's Discord](https://discord.com/invite/ErrzwBz) for questions or to ask for help with a particular PR. We encourage you to learn by doing, and leverage our vibrant community to help you get going.
+Join #spellbook on [Discord](https://discord.com/invite/ErrzwBz) for help.
 
 ## Setting up your Local Dev Environment
 
-### Prerequisites
+**Prerequisites:**
+- Fork and clone the repo ([GitHub guide](https://docs.github.com/en/get-started/quickstart/contributing-to-projects))
+- Python 3.9+ ([installation guide](https://docs.python-guide.org/starting/installation/))
+- [pip](https://pip.pypa.io/en/stable/installation/) and [pipenv](https://pypi.org/project/pipenv/)
+- Windows users: Set `git config --global core.autocrlf true` for unix line endings
 
-- Fork this repo and clone your fork locally. See Github's [guide](https://docs.github.com/en/get-started/quickstart/contributing-to-projects) on contributing to projects.
-- We default to use unix (LF) line endings, windows users please set: `git config --global core.autocrlf true`. [more info](https://docs.github.com/en/get-started/getting-started-with-git/configuring-git-to-handle-line-endings)
-- python 3.9 installed. Our recommendation is to follow the [Hitchhiker's Guide to Python](https://docs.python-guide.org/starting/installation/)
-- [pip](https://pip.pypa.io/en/stable/installation/) installed
-- [pipenv](https://pypi.org/project/pipenv/) installed
-- paths for both pip and pipenv are set (this should happen automatically but sometimes does not). If you run into issues like "pipenv: command not found", try troubleshooting with the pip or pipenv documentation.
+**Initial Installation:**
 
-### Initial Installation
-
-You can watch the video version of this if you scroll down a bit.
-
-Navigate to the spellbook repo within your CLI (Command line interface).
+Navigate to the spellbook repo in your CLI:
 
 ```console
-cd user\directory\github\spellbook
+cd user/directory/github/spellbook
 # Change this to wherever spellbook is stored locally on your machine.
 ```
 
-Using the pipfile located in the spellbook repo, run the below install command to create a pipenv.
+Run the install command to create a pipenv:
 
 ```console
 pipenv install
 ```
 
-If the install fails, one likely reason is our script looks for a static python version and the likelihood of an error for a wrong python version is pretty high. If that error occurs, check your python version with:
+If the install fails due to Python version mismatch, check your version with `python --version`, then update the Python version in the Pipfile to match (must be at least 3.9). Run `pipenv install` again.
 
-```console
-python --version
-```
-
-Now use any text editor program to change the python version in the pipfile within the spellbook directory to your python version. You need to have at least python 3.9.
-If you have changed the python version in the pipfile, run `pipenv install` again.
-
-You are now ready to activate this project's virtual environment. Run the following command to enter the environment:
+Activate the virtual environment:
 
 ```console
 pipenv shell
 ```
 
-You have now created a virtual environment for this project. You can read more about virtual environments [here](https://realpython.com/pipenv-guide/).
-
-Within the Spellbook repo, there are multiple dbt projects, located in the root directory. Navigate to the correct project, depending on your use case.
+Navigate to the appropriate sub-project:
 
 ```console
-cd ../spellbook/dbt_subprojects/<subproject_name>/
+cd dbt_subprojects/<subproject_name>/
 ```
 
-Each subproject has it's own dbt project file with varying configs. Once your CLI has navigated to the correct project directory, follow the below steps:
-- To clean up the dbt project
-  ```console
-  dbt clean
-  ```
+Each subproject has its own dbt project file with varying configs. Run the following commands:
 
-- To pull the dbt project dependencies run:
-  ```console
-  dbt deps
-  ```
+```console
+dbt clean # cleans up the project
+dbt deps # pull the dependencies
+dbt compile
+```
 
-- To compile models into raw SQL, to run on the dune app and validate:
-  ```console
-  dbt compile
-  ```
+`dbt compile` converts JINJA/SQL templates into plain SQL in the `target/` folder, which you can test on dune.com.
 
-Each Spellbook subproject includes a `profiles.yml` file, which helps tell dbt how to run commands. The profile is located in each subproject directory, such as [here](./dbt_subprojects/dex/profiles.yml). This should never need modified, unless done intentionally by the Dune team.  
-Due to the `profiles.yml` file being stored in the root directory of each subproject, this is why users **must** be in the root directory per subproject on the command line to run `dbt compile` as expected.
-
-dbt compile will compile the JINJA and SQL templated SQL into plain SQL which can be executed in the Dune UI. Your spellbook directory now has a folder named `target` containing plain SQL versions of all models in Dune. If you have made changes to the repo before completing all these actions, you can now be certain that at least the compile process works correctly, if there are big errors the compile process will not complete.
-If you haven't made changes to the directory beforehand, you can now start adding, editing, or deleting files within the repository.
-Afterwards, simply run `dbt compile` again once you are finished with your work in the directory and test the plain language sql queries on dune.com.
-
-### Coming back
-
-If you have done this installation on your machine once, to get back into dbt, simply navigate to the spellbook repo, run `pipenv shell`, and you can run `dbt compile` again.
-
-### What did I just do?
-
-You now have the ability to compile your dbt model statements and test statements into plain SQL. This allows you to test those queries on the usual dune.com environment and should therefore lead to a better experience while developing spells. Running the queries will immediately give you feedback on typos, logical errors, or mismatches.
-This in turn will help us deploy these spells faster and avoid any potential mistakes.
+Each subproject includes a `profiles.yml` file that tells dbt how to run commands. You **must** be in the subproject root directory to run `dbt compile` correctly.
 
 ## How to use dbt to create spells
 
-There are a couple of new concepts to consider when making spells in dbt. The most common ones wizards will encounter are refs, sources, freshness, and tests.
+**Key concepts:**
 
-In the body of each query, tables are referred to either as refs, ex `{{ ref('1inch_ethereum') }}` or sources, ex `{{ source('ethereum', 'traces') }}`. Refs refer to other dbt models and they should refer to the file name like `1inch_ethereum.sql`, even if the model itself is aliased. Sources refer to "raw" data or tables/views not generated by dbt. Using refs and sources allows us to automatically build dependency trees.
+- **Refs:** Reference other dbt models using `{{ ref('model_name') }}` (use filename without .sql)
+- **Sources:** Reference raw data using `{{ source('schema', 'table') }}`
+- **Tests:** Add `unique` and `not_null` tests to primary keys in `schema.yml` files
+- **Descriptions:** Document tables and columns in `schema.yml` to help others
 
-Sources and models are defined in schema.yml files where tests and other attributes are defined.
-
-The best practice is to add tests unique and non_null tests to the primary key for every new model. Similarly, a freshness check should be added to every new source (although we will try not to re-test freshness if the source is used elsewhere).
-
-Adding descriptions to tables and columns will help people find and use your tables.
+**Example schema.yml:**
 
 ```yaml
 models:
@@ -203,45 +158,19 @@ models:
     description: "Trades on 1inch, a DEX aggregator"
     columns:
       - name: tx_hash
-        description: "Table primary key: a transaction hash (tx_hash) is a unique identifier for a transaction."
+        description: "Table primary key"
         data_tests:
           - unique
           - not_null
 
-  sources:
+sources:
   - name: ethereum
     freshness:
       warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     tables:
       - name: traces
 ```
-
-See links to more docs on dbt below.
-
-### Generating and serving documentation:
-
-To generate documentation and view it as a website, run the following commands:
-
-- `dbt docs generate`
-- `dbt docs serve`
-  You must have set up dbt with `dbt init` but you don't need database credentials to run these commands.
-
-See [dbt docs documentation](https://docs.getdbt.com/docs/building-a-dbt-project/documentation) for more information on
-how to contribute to documentation.
-
-As a preview, you can do [things](https://docs.getdbt.com/reference/resource-properties/description) like:
-
-- Write simple one or many line descriptions of models or columns.
-- Write longer descriptions as code blocks using markdown.
-- Link to other models in your descriptions.
-- Add images / project logos from the repo into descriptions.
-- Use HTML in your description.
-
-### DBT Resources:
-
-- Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
-- Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers
-- Join the [chat](https://getdbt.com/community/join-the-community/) on Slack for live discussions and support
-- Find [dbt events](https://getdbt.com/events/) near you
-- Check out [the blog](https://getdbt.com/blog/) for the latest news on dbt's development and best practices
+**dbt Resources:**
+- [dbt docs](https://docs.getdbt.com/docs/introduction)
+- [dbt Discourse](https://discourse.getdbt.com/)
+- [dbt Slack](https://getdbt.com/community/join-the-community/)
