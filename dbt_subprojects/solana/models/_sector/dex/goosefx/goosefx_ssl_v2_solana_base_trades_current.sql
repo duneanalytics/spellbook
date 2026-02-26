@@ -12,7 +12,8 @@
        )
 }}
 
-{% set project_start_date = '2025-01-01' %}
+-- Must match cutoff_date in the _backfill model to avoid gaps/overlaps.
+{% set project_start_date = '2026-02-01' %}
 
 WITH
     all_swaps as (

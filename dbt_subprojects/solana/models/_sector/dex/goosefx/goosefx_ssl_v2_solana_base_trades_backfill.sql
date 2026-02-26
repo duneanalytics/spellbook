@@ -2,7 +2,7 @@
  config(
        schema = 'goosefx_ssl_v2_solana',
        alias = 'stg_base_trades_backfill',
-       tags = ['static'],
+       tags = ['static', 'microbatch'],
        partition_by = ['block_month'],
        materialized = 'incremental',
        file_format = 'delta',
@@ -10,13 +10,16 @@
        event_time = 'block_time',
        begin = '2023-08-01',
        batch_size = 'month',
+       lookback = 1,
        unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index','block_month'],
        pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
        )
 }}
 
 {% set project_start_date = '2023-08-01' %}
-{% set cutoff_date = '2025-01-01' %}
+-- Microbatch used for backfills only; static tag prevents ongoing prod runs.
+-- If modifying model lineage, update cutoff_date here AND project_start_date in the _current model.
+{% set cutoff_date = '2026-02-01' %}
 
 WITH
     all_swaps as (
