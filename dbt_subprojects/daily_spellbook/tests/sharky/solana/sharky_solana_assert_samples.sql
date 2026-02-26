@@ -42,6 +42,6 @@ WHERE
 #}
 
 SELECT
-    1
+    1 AS disabled_test
 WHERE
     FALSE
