@@ -1,0 +1,52 @@
+version: 2
+
+models:
+  - name: lido_liquidity_unichain_stg_uniswap_v4_pools
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_id
+
+  - name: lido_liquidity_unichain_stg_uniswap_v4_swaps
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_id
+            - evt_block_date
+            - evt_block_time
+            - evt_block_number
+            - evt_tx_hash
+            - evt_index
+
+  - name: lido_liquidity_unichain_stg_uniswap_v4_modify_liquidity
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_id
+            - evt_block_date
+            - evt_block_time
+            - evt_block_number
+            - evt_tx_hash
+            - evt_index
+
+  - name: lido_liquidity_unichain_stg_uniswap_v4_daily_liquidity
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool
+            - time
+
+  - name: lido_liquidity_unichain_uniswap_v4_pools
+    meta:
+      blockchain: unichain
+      project: lido
+      contributors: pipistrella
+    config:
+      tags: ['unichain', 'lido', 'liquidity']
+    description: Lido wstETH liquidity pools on Uniswap v4 Unichain
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool
+            - blockchain
+            - time

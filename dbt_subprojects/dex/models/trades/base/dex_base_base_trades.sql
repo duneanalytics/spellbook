@@ -69,6 +69,7 @@
     , ref('fluid_v1_base_base_trades')
     , ref('native_base_base_trades')
     , ref('carbon_defi_base_base_trades')
+    , ref('elfomofi_base_base_trades')
 ] %}
 with base_union as (
         {% for base_model in base_models %}

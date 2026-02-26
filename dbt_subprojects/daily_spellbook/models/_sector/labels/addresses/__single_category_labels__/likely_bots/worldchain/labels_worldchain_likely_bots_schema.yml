@@ -2,6 +2,8 @@ version: 2
 
 models:
   - name: labels_worldchain_likely_bot_addresses
+    config:
+      tags: ['labels', 'worldchain','bots','prod_exclude']
     description: "Addresses that are likely bots based on transaction frequency and sender concentration"
     columns:
       - name: blockchain
@@ -48,6 +50,8 @@ models:
           - not_null
 
   - name: labels_worldchain_likely_bot_contracts
+    config:
+      tags: ['labels', 'worldchain','bots','prod_exclude']
     description: "Contracts that are likely bots based on transaction frequency and sender concentration"
     columns:
       - name: blockchain

@@ -25,17 +25,17 @@ select
   json_extract_scalar(json_parse(json_extract_scalar("order", '$.info')), '$.kind') as kind,
   cast(json_extract_scalar(replace(json_extract_scalar(json_parse(json_extract_scalar("order", '$.info')),'$.assets[0]'),'\\', ''),'$.erc') as double) as erc,
   FROM_HEX(json_extract_scalar(replace(json_extract_scalar(json_parse(json_extract_scalar("order", '$.info')),'$.assets[0]'),'\\', ''),'$.addr')) as nft_contract_address,
-  cast(json_extract_scalar(replace(json_extract_scalar(json_parse(json_extract_scalar("order", '$.info')),'$.assets[0]'),'\\', ''),'$.id') as double) as nft_token_id,
+  cast(json_extract_scalar(replace(json_extract_scalar(json_parse(json_extract_scalar("order", '$.info')),'$.assets[0]'),'\\', ''),'$.id') as uint256) as nft_token_id,
   case 
-    when cast(json_extract_scalar(replace(json_extract_scalar(json_parse(json_extract_scalar("order", '$.info')),'$.assets[0]'),'\\', ''),'$.quantity') as double) = 0 then 1
-    else cast(json_extract_scalar(replace(json_extract_scalar(json_parse(json_extract_scalar("order", '$.info')),'$.assets[0]'),'\\', ''),'$.quantity') as double)
+    when cast(json_extract_scalar(replace(json_extract_scalar(json_parse(json_extract_scalar("order", '$.info')),'$.assets[0]'),'\\', ''),'$.quantity') as uint256) = uint256 '0' then uint256 '1'
+    else cast(json_extract_scalar(replace(json_extract_scalar(json_parse(json_extract_scalar("order", '$.info')),'$.assets[0]'),'\\', ''),'$.quantity') as uint256)
     end as quantity,
   FROM_HEX(json_extract_scalar(json_parse(json_extract_scalar("order", '$.info')), '$.paymentToken')) as currency_address,
-  CAST(json_extract_scalar("order", '$.realPrice') AS DOUBLE) as price_raw,
+  CAST(json_extract_scalar("order", '$.realPrice') AS uint256) as price_raw,
   CAST(json_extract_scalar(json_parse(json_extract_scalar("order", '$.info')), '$.baseUnitPrice') AS DOUBLE) as base_unit_price_raw,
   FROM_HEX(json_extract_scalar("order", '$.refunder')) as refunder,
   FROM_HEX(json_extract_scalar(json_parse(cast(concat('[', array_join(receivedAllocs, ','), ']') as varchar)),'$[1].recipient')) as platform_address,
-  CAST(json_extract_scalar(json_parse(cast(concat('[', array_join(receivedAllocs, ','), ']') as varchar)),'$[1].value') AS DOUBLE) as platform_fee_amount_raw,
+  CAST(json_extract_scalar(json_parse(cast(concat('[', array_join(receivedAllocs, ','), ']') as varchar)),'$[1].value') AS uint256) as platform_fee_amount_raw,
   FROM_HEX(json_extract_scalar(json_parse(cast(concat('[', array_join(receivedAllocs, ','), ']') as varchar)),'$[2].recipient')) as axie_treasury_address,
   CAST(json_extract_scalar(json_parse(cast(concat('[', array_join(receivedAllocs, ','), ']') as varchar)),'$[2].ratio') AS DOUBLE) as axie_fee_raw,
   CAST(json_extract_scalar(json_parse(cast(concat('[', array_join(receivedAllocs, ','), ']') as varchar)),'$[2].value') AS DOUBLE) as axie_fee_amount_raw,
@@ -44,7 +44,7 @@ select
   CAST(json_extract_scalar(json_parse(cast(concat('[', array_join(receivedAllocs, ','), ']') as varchar)),'$[3].value') AS DOUBLE) as ronin_treasury_fee_amount_raw,
   FROM_HEX(json_extract_scalar(json_parse(cast(concat('[', array_join(receivedAllocs, ','), ']') as varchar)),'$[4].recipient')) as creator_royalty_address,
   CAST(json_extract_scalar(json_parse(cast(concat('[', array_join(receivedAllocs, ','), ']') as varchar)),'$[4].ratio') AS DOUBLE) as creator_royalty_fee,
-  CAST(json_extract_scalar(json_parse(cast(concat('[', array_join(receivedAllocs, ','), ']') as varchar)),'$[4].value') AS DOUBLE) as creator_royalty_fee_amount_raw,
+  CAST(json_extract_scalar(json_parse(cast(concat('[', array_join(receivedAllocs, ','), ']') as varchar)),'$[4].value') AS uint256) as creator_royalty_fee_amount_raw,
   CAST(json_extract_scalar(json_parse(cast(concat('[', array_join(receivedAllocs, ','), ']') as varchar)),'$[5].ratio')AS DOUBLE) AS seller_percentage_fee,
   CAST(json_extract_scalar(json_parse(cast(concat('[', array_join(receivedAllocs, ','), ']') as varchar)),'$[5].value')AS DOUBLE) AS seller_amount_raw
   FROM

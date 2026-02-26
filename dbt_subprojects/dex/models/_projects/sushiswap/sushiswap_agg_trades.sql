@@ -14,6 +14,7 @@
     ref('sushiswap_agg_berachain_trades'),
     ref('sushiswap_agg_blast_trades'),
     ref('sushiswap_agg_bnb_trades'),
+    ref('sushiswap_agg_boba_trades'),
     ref('sushiswap_agg_celo_trades'),
     ref('sushiswap_agg_ethereum_trades'),
     ref('sushiswap_agg_fantom_trades'),
@@ -23,13 +24,16 @@
     ref('sushiswap_agg_katana_trades'),
     ref('sushiswap_agg_linea_trades'),
     ref('sushiswap_agg_mantle_trades'),
+    ref('sushiswap_agg_megaeth_trades'),
     ref('sushiswap_agg_monad_trades'),
     ref('sushiswap_agg_nova_trades'),
     ref('sushiswap_agg_optimism_trades'),
+    ref('sushiswap_agg_plasma_trades'),
     ref('sushiswap_agg_polygon_trades'),
     ref('sushiswap_agg_scroll_trades'),
     ref('sushiswap_agg_sonic_trades'),
-    ref('sushiswap_agg_zkevm_trades'),
+    ref('sushiswap_agg_taiko_trades'),
+    ref('sushiswap_agg_xlayer_trades'),
     ref('sushiswap_agg_zksync_trades')
 ] %}
 

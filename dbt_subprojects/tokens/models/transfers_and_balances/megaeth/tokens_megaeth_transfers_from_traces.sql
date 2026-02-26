@@ -13,4 +13,4 @@
     )
 }}
 
-{{ transfers_from_traces_macro(blockchain=blockchain, transfers_start_date='2025-11-10')}}
+{{ transfers_from_traces_macro(blockchain=blockchain, transfers_start_date='2026-01-30')}}

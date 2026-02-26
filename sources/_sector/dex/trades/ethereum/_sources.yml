@@ -157,3 +157,9 @@ sources:
     tables:
       - name: bunnihook_evt_swap
       
+  - name: supernova_ethereum
+    tables:
+      - name: pairgenerator_evt_paircreated
+      - name: pair_evt_swap
+      - name: algebrafactory_evt_custompool
+      - name: algebrapool_evt_swap

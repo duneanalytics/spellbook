@@ -15,6 +15,7 @@ models:
           combination_of_columns:
             - block_month
             - tx_hash
+            - tx_index
       - check_seed:
           seed_file: ref('evm_gas_fees')
           filter:
