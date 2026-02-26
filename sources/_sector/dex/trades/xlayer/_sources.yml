@@ -15,11 +15,9 @@ sources:
       - name: PotatoPair_evt_Swap
       - name: HyperindexV3Factory_evt_PoolCreated
       - name: HyperindexV3Pool_evt_Swap
-  - name: dyorswap_v2_xlayer
+  - name: dyorswap_xlayer
     tables:
       - name: DYORFactory_evt_PairCreated
       - name: DYORPair_evt_Swap
-  - name: dyorswap_v3_xlayer
-    tables:
       - name: DYORV3Factory_evt_PoolCreated
       - name: DYORV3Pool_evt_Swap
