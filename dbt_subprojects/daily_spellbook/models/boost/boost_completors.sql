@@ -3,6 +3,7 @@
         schema='boost',
         alias='completors',
         materialized='table',
+        tags=['static'],
     )
 }}
 
