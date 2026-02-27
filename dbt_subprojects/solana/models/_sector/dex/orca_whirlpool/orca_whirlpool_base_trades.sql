@@ -92,13 +92,12 @@ WITH swaps AS (
         ON  ss.block_date = tf.block_date
         AND ss.block_slot = tf.block_slot
     WHERE 1=1
-        AND tf.action = 'transfer'
         AND tf.token_version = 'spl_token'
         {% if is_incremental() %}
         AND {{ incremental_predicate('tf.block_date') }}
         {% else %}
         AND tf.block_date >= DATE '{{ project_start_date }}'
-        AND tf.block_date < DATE '2022-03-17'
+        AND tf.block_date < DATE '2022-04-13'
         {% endif %}
         AND EXISTS (
             SELECT 1
