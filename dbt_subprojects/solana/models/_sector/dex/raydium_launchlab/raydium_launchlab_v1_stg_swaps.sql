@@ -39,6 +39,7 @@ WITH calls AS (
         AND {{ incremental_predicate('sp.call_block_time') }}
         {% else %}
         AND sp.call_block_time >= TIMESTAMP '{{ project_start_date }}'
+        AND sp.call_block_time < TIMESTAMP '2025-03-24'
         {% endif %}
 
     UNION ALL
@@ -68,6 +69,7 @@ WITH calls AS (
         AND {{ incremental_predicate('sp.call_block_time') }}
         {% else %}
         AND sp.call_block_time >= TIMESTAMP '{{ project_start_date }}'
+        AND sp.call_block_time < TIMESTAMP '2025-03-24'
         {% endif %}
 
     UNION ALL
@@ -97,6 +99,7 @@ WITH calls AS (
         AND {{ incremental_predicate('sp.call_block_time') }}
         {% else %}
         AND sp.call_block_time >= TIMESTAMP '{{ project_start_date }}'
+        AND sp.call_block_time < TIMESTAMP '2025-03-24'
         {% endif %}
 
     UNION ALL
@@ -126,6 +129,7 @@ WITH calls AS (
         AND {{ incremental_predicate('sp.call_block_time') }}
         {% else %}
         AND sp.call_block_time >= TIMESTAMP '{{ project_start_date }}'
+        AND sp.call_block_time < TIMESTAMP '2025-03-24'
         {% endif %}
 )
 
