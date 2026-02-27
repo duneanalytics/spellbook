@@ -32,7 +32,6 @@ WITH swaps AS (
         AND {{ incremental_predicate('call_block_time') }}
         {% else %}
         AND call_block_date >= DATE '{{ project_start_date }}'
-        AND call_block_date < DATE '{{ project_start_date }}' + INTERVAL '7' DAY
         {% endif %}
 
     UNION ALL
@@ -55,7 +54,6 @@ WITH swaps AS (
         AND {{ incremental_predicate('call_block_time') }}
         {% else %}
         AND call_block_date >= DATE '{{ project_start_date }}'
-        AND call_block_date < DATE '{{ project_start_date }}' + INTERVAL '7' DAY
         {% endif %}
 )
 
