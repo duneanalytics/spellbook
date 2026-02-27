@@ -31,9 +31,10 @@ WITH polymarket_first_funded AS (
   , t."from" AS from_address
   , t."to" AS to_address
   , t.unique_key
-  , to_user.polymarket_wallet AS to_polymarket_wallet
+  , to_user.address AS to_polymarket_wallet
+  , to_user.first_funded_block AS to_first_funded_block
   FROM {{ source('tokens_polygon', 'transfers') }} t
-  INNER JOIN {{ ref('polymarket_polygon_users') }} to_user ON t."to" = to_user.polymarket_wallet
+  INNER JOIN polymarket_first_funded to_user ON t."to" = to_user.address
   WHERE t.contract_address = 0x2791bca1f2de4661ed88a30c99a7a9449aa84174 -- USDC.e
   AND t.block_number >= 5067840
   {% if is_incremental() %}
@@ -55,9 +56,10 @@ WITH polymarket_first_funded AS (
   , t."from" AS from_address
   , t."to" AS to_address
   , t.unique_key
-  , from_user.polymarket_wallet AS from_polymarket_wallet
+  , from_user.address AS from_polymarket_wallet
+  , from_user.first_funded_block AS from_first_funded_block
   FROM {{ source('tokens_polygon', 'transfers') }} t
-  INNER JOIN {{ ref('polymarket_polygon_users') }} from_user ON t."from" = from_user.polymarket_wallet
+  INNER JOIN polymarket_first_funded from_user ON t."from" = from_user.address
   WHERE t.contract_address = 0x2791bca1f2de4661ed88a30c99a7a9449aa84174 -- USDC.e
   AND t.block_number >= 5067840
   {% if is_incremental() %}
@@ -81,6 +83,8 @@ WITH polymarket_first_funded AS (
   , unique_key
   , CAST(NULL AS VARBINARY) AS from_polymarket_wallet
   , to_polymarket_wallet
+  , CAST(NULL AS DOUBLE) AS from_first_funded_block
+  , to_first_funded_block
   FROM relevant_transfers_in
 
   UNION ALL
@@ -100,6 +104,8 @@ WITH polymarket_first_funded AS (
   , unique_key
   , from_polymarket_wallet
   , CAST(NULL AS VARBINARY) AS to_polymarket_wallet
+  , from_first_funded_block
+  , CAST(NULL AS DOUBLE) AS to_first_funded_block
   FROM relevant_transfers_out
   )
 
