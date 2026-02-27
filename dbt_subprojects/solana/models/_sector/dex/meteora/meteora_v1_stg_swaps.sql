@@ -11,7 +11,8 @@
   )
 }}
 
-{% set project_start_date = '2021-03-21' %}
+{% set project_start_date = '2022-07-27' %}
+{% set project_end_date = '2022-08-03' %}
 
 SELECT
       r.block_slot
@@ -63,12 +64,14 @@ FROM (
         AND {{ incremental_predicate('dp.call_block_time') }}
         {% else %}
         AND dp.call_block_time >= TIMESTAMP '{{ project_start_date }}'
+        AND dp.call_block_time < TIMESTAMP '{{ project_end_date }}'
         {% endif %}
     WHERE 1=1
         {% if is_incremental() %}
         AND {{ incremental_predicate('sp.call_block_time') }}
         {% else %}
         AND sp.call_block_time >= TIMESTAMP '{{ project_start_date }}'
+        AND sp.call_block_time < TIMESTAMP '{{ project_end_date }}'
         {% endif %}
 ) r
 WHERE r.first_deposit = 1

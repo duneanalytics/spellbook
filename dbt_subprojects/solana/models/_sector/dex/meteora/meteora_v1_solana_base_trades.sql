@@ -12,7 +12,8 @@
   )
 }}
 
-{% set project_start_date = '2021-03-21' %}
+{% set project_start_date = '2022-07-27' %}
+{% set project_end_date = '2022-08-03' %}
 
 WITH swaps AS (
     SELECT
@@ -34,6 +35,7 @@ WITH swaps AS (
         AND {{ incremental_predicate('block_date') }}
         {% else %}
         AND block_date >= DATE '{{ project_start_date }}'
+        AND block_date < DATE '{{ project_end_date }}'
         {% endif %}
 )
 
@@ -96,6 +98,7 @@ WITH swaps AS (
         AND {{ incremental_predicate('tf.block_date') }}
         {% else %}
         AND tf.block_date >= DATE '{{ project_start_date }}'
+        AND tf.block_date < DATE '{{ project_end_date }}'
         {% endif %}
         AND EXISTS (
             SELECT 1
