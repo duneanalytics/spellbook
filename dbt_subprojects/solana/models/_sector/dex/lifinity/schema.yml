@@ -141,6 +141,18 @@ models:
     description: >
         lifinity v2 dex base trades on Solana with version_name
 
+  - name: lifinity_v2_stg_swaps
+    meta:
+      blockchain: solana
+      contributors: [ ilemi ]
+    config:
+      tags: [ 'solana','dex' ]
+    description: >
+      staging model for lifinity v2 swap data from decoded tables
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['block_month', 'block_date', 'surrogate_key']
+
   - name: lifinity_v2_base_trades
     meta:
       blockchain: solana

@@ -1,102 +1,230 @@
- {{
+{{
   config(
-
-        schema = 'lifinity_v2',
-        alias = 'base_trades',
-        partition_by = ['block_month'],
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index','block_month'],
-        pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
-        )
+    schema = 'lifinity_v2'
+    , alias = 'base_trades'
+    , partition_by = ['block_month']
+    , materialized = 'incremental'
+    , file_format = 'delta'
+    , incremental_strategy = 'merge'
+    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    , unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month']
+    , pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
+  )
 }}
 
-{% set project_start_date = '2022-09-13' %} --grabbed program deployed at time (account created at)
+{% set project_start_date = '2022-09-13' %}
 
-WITH
-    all_swaps as (
-        SELECT
-            sp.call_block_time as block_time
-            , sp.call_block_slot as block_slot
-            , 'lifinity' as project
-            , 2 as version
-            , 'solana' as blockchain
-            , case when sp.call_is_inner = False then 'direct'
-                else sp.call_outer_executing_account
-                end as trade_source
-            -- token bought is always the second instruction (transfer) in the inner instructions
-            , tr_2.amount as token_bought_amount_raw
-            , tr_1.amount as token_sold_amount_raw
-            , sp.account_amm as pool_id
-            , sp.call_tx_signer as trader_id
-            , sp.call_tx_id as tx_id
-            , sp.call_outer_instruction_index as outer_instruction_index
-            , COALESCE(sp.call_inner_instruction_index, 0) as inner_instruction_index
-            , sp.call_tx_index as tx_index
-            , COALESCE(tr_2.token_mint_address, cast(null as varchar)) as token_bought_mint_address
-            , COALESCE(tr_1.token_mint_address, cast(null as varchar)) as token_sold_mint_address
-            , tr_2.from_token_account as token_bought_vault
-            , tr_1.to_token_account as token_sold_vault
-            --swap out can be either 2nd or 3rd transfer, we need to filter for the first transfer out.
-            , tr_2.inner_instruction_index as transfer_out_index
-            , row_number() over (partition by sp.call_tx_id, sp.call_outer_instruction_index, sp.call_inner_instruction_index
-                                order by COALESCE(tr_2.inner_instruction_index, 0) asc) as first_transfer_out
-        FROM {{ source('lifinity_amm_v2_solana', 'lifinity_amm_v2_call_swap') }} sp
-        INNER JOIN {{ source('tokens_solana','transfers') }} tr_1
-            ON tr_1.tx_id = sp.call_tx_id AND tr_1.action = 'transfer'
-            AND tr_1.outer_instruction_index = sp.call_outer_instruction_index
-            AND ((sp.call_is_inner = false AND tr_1.inner_instruction_index = 1)
-                OR (sp.call_is_inner = true AND tr_1.inner_instruction_index = sp.call_inner_instruction_index + 1))
-            AND tr_1.token_version = 'spl_token'
-            {% if is_incremental() %}
-            AND {{incremental_predicate('tr_1.block_time')}}
-            {% else %}
-            AND tr_1.block_time >= TIMESTAMP '{{project_start_date}}'
-            {% endif %}
-        --swap out can be either 2nd or 3rd transfer.
-        INNER JOIN {{ source('tokens_solana','transfers') }} tr_2
-            ON tr_2.tx_id = sp.call_tx_id AND tr_2.action = 'transfer'
-            AND tr_2.outer_instruction_index = sp.call_outer_instruction_index
-            AND ((sp.call_is_inner = false AND (tr_2.inner_instruction_index = 2 OR tr_2.inner_instruction_index = 3))
-                OR (sp.call_is_inner = true AND (tr_2.inner_instruction_index = sp.call_inner_instruction_index + 2 OR tr_2.inner_instruction_index = sp.call_inner_instruction_index + 3))
-                )
-            AND tr_2.token_version = 'spl_token'
-            {% if is_incremental() %}
-            AND {{incremental_predicate('tr_2.block_time')}}
-            {% else %}
-            AND tr_2.block_time >= TIMESTAMP '{{project_start_date}}'
-            {% endif %}
-        WHERE 1=1
+WITH swaps AS (
+    SELECT
+          block_slot
+        , block_date
+        , block_time
+        , inner_instruction_index
+        , outer_instruction_index
+        , outer_executing_account
+        , is_inner
+        , tx_id
+        , tx_signer
+        , tx_index
+        , pool_id
+    FROM {{ ref('lifinity_v2_stg_swaps') }}
+    WHERE 1=1
         {% if is_incremental() %}
-        AND {{incremental_predicate('sp.call_block_time')}}
+        AND {{ incremental_predicate('block_date') }}
         {% else %}
-        AND sp.call_block_time >= TIMESTAMP '{{project_start_date}}'
+        AND block_date >= DATE '{{ project_start_date }}'
         {% endif %}
+)
+
+, swap_transfer_keys AS (
+    SELECT DISTINCT
+          tx_id
+        , block_date
+        , block_slot
+        , outer_instruction_index
+        , inner_instruction_index AS swap_inner_instruction_index
+        , transfer_inner_instruction_index
+        , transfer_side
+    FROM (
+        SELECT
+              tx_id
+            , block_date
+            , block_slot
+            , outer_instruction_index
+            , inner_instruction_index
+            , inner_instruction_index + 2 AS transfer_inner_instruction_index
+            , 1 AS transfer_side
+        FROM swaps
+
+        UNION ALL
+
+        SELECT
+              tx_id
+            , block_date
+            , block_slot
+            , outer_instruction_index
+            , inner_instruction_index
+            , inner_instruction_index + 3 AS transfer_inner_instruction_index
+            , 1 AS transfer_side
+        FROM swaps
+
+        UNION ALL
+
+        SELECT
+              tx_id
+            , block_date
+            , block_slot
+            , outer_instruction_index
+            , inner_instruction_index
+            , inner_instruction_index + 1 AS transfer_inner_instruction_index
+            , 2 AS transfer_side
+        FROM swaps
     )
+)
+
+, swap_slots AS (
+    SELECT DISTINCT block_date, block_slot
+    FROM swap_transfer_keys
+)
+
+, transfers_pruned AS (
+    SELECT
+          tf.tx_id
+        , tf.block_date
+        , tf.block_slot
+        , tf.outer_instruction_index
+        , tf.inner_instruction_index
+        , tf.amount
+        , tf.from_token_account
+        , tf.to_token_account
+        , tf.token_mint_address
+    FROM {{ source('tokens_solana', 'transfers') }} tf
+    INNER JOIN swap_slots ss
+        ON  ss.block_date = tf.block_date
+        AND ss.block_slot = tf.block_slot
+    WHERE 1=1
+        AND tf.action = 'transfer'
+        AND tf.token_version = 'spl_token'
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('tf.block_date') }}
+        {% else %}
+        AND tf.block_date >= DATE '{{ project_start_date }}'
+        {% endif %}
+        AND EXISTS (
+            SELECT 1
+            FROM swap_transfer_keys sk
+            WHERE
+                sk.tx_id = tf.tx_id
+                AND sk.block_date = tf.block_date
+                AND sk.block_slot = tf.block_slot
+                AND sk.outer_instruction_index = tf.outer_instruction_index
+                AND sk.transfer_inner_instruction_index = tf.inner_instruction_index
+        )
+)
+
+, transfers_filtered AS (
+    SELECT
+          sk.tx_id
+        , sk.block_date
+        , sk.block_slot
+        , sk.outer_instruction_index
+        , sk.swap_inner_instruction_index
+        , sk.transfer_inner_instruction_index AS inner_instruction_index
+        , sk.transfer_side
+        , tp.amount
+        , tp.from_token_account
+        , tp.to_token_account
+        , tp.token_mint_address
+    FROM swap_transfer_keys sk
+    INNER JOIN transfers_pruned tp
+        ON  tp.tx_id = sk.tx_id
+        AND tp.block_date = sk.block_date
+        AND tp.block_slot = sk.block_slot
+        AND tp.outer_instruction_index = sk.outer_instruction_index
+        AND tp.inner_instruction_index = sk.transfer_inner_instruction_index
+)
+
+-- Bought side (transfer_side=1) may match at both offset +2 and +3; keep the lowest index
+, transfers_ranked AS (
+    SELECT *
+    FROM (
+        SELECT *
+            , row_number() OVER (
+                PARTITION BY tx_id, block_date, block_slot, outer_instruction_index, swap_inner_instruction_index, transfer_side
+                ORDER BY inner_instruction_index ASC
+              ) AS rn
+        FROM transfers_filtered
+    )
+    WHERE rn = 1
+)
+
+, transfers AS (
+    SELECT
+          s.block_date
+        , s.block_time
+        , s.block_slot
+        , CASE
+            WHEN s.is_inner = false THEN 'direct'
+            ELSE s.outer_executing_account
+          END AS trade_source
+        , max(CASE WHEN tf.transfer_side = 1 THEN tf.amount END) AS token_bought_amount_raw
+        , max(CASE WHEN tf.transfer_side = 2 THEN tf.amount END) AS token_sold_amount_raw
+        , max(CASE WHEN tf.transfer_side = 1 THEN tf.from_token_account END) AS token_bought_vault
+        , max(CASE WHEN tf.transfer_side = 2 THEN tf.to_token_account END) AS token_sold_vault
+        , max(CASE WHEN tf.transfer_side = 1 THEN tf.token_mint_address END) AS token_bought_mint_address
+        , max(CASE WHEN tf.transfer_side = 2 THEN tf.token_mint_address END) AS token_sold_mint_address
+        , s.pool_id AS project_program_id
+        , s.tx_signer AS trader_id
+        , s.tx_id
+        , s.outer_instruction_index
+        , s.inner_instruction_index
+        , s.tx_index
+    FROM swaps s
+    INNER JOIN transfers_ranked tf
+        ON  tf.tx_id = s.tx_id
+        AND tf.block_date = s.block_date
+        AND tf.block_slot = s.block_slot
+        AND tf.outer_instruction_index = s.outer_instruction_index
+        AND tf.swap_inner_instruction_index = s.inner_instruction_index
+    GROUP BY
+          s.block_date
+        , s.block_time
+        , s.block_slot
+        , CASE
+            WHEN s.is_inner = false THEN 'direct'
+            ELSE s.outer_executing_account
+          END
+        , s.pool_id
+        , s.tx_signer
+        , s.tx_id
+        , s.outer_instruction_index
+        , s.inner_instruction_index
+        , s.tx_index
+    HAVING 1=1
+        AND count_if(tf.transfer_side = 1) = 1
+        AND count_if(tf.transfer_side = 2) = 1
+)
 
 SELECT
-    tb.blockchain
-    , tb.project
-    , tb.version
-    , CAST(date_trunc('month', tb.block_time) AS DATE) as block_month
-    , tb.block_time
-    , tb.block_slot
-    , tb.trade_source
-    , tb.token_bought_amount_raw
-    , tb.token_sold_amount_raw
-    , cast(null as double) as fee_tier
-    , tb.token_sold_mint_address
-    , tb.token_bought_mint_address
-    , tb.token_sold_vault
-    , tb.token_bought_vault
-    , tb.pool_id as project_program_id
-    , '2wT8Yq49kHgDzXuPxZSaeLaH1qbmGXtEyPy64bL7aD3c' as project_main_id
-    , tb.trader_id
-    , tb.tx_id
-    , tb.outer_instruction_index
-    , tb.inner_instruction_index
-    , tb.tx_index
-FROM all_swaps tb
-WHERE first_transfer_out = 1
+      'solana' AS blockchain
+    , 'lifinity' AS project
+    , 2 AS version
+    , CAST(date_trunc('month', block_time) AS DATE) AS block_month
+    , block_time
+    , block_slot
+    , trade_source
+    , token_bought_amount_raw
+    , token_sold_amount_raw
+    , CAST(NULL AS DOUBLE) AS fee_tier
+    , token_sold_mint_address
+    , token_bought_mint_address
+    , token_sold_vault
+    , token_bought_vault
+    , project_program_id
+    , '2wT8Yq49kHgDzXuPxZSaeLaH1qbmGXtEyPy64bL7aD3c' AS project_main_id
+    , trader_id
+    , tx_id
+    , outer_instruction_index
+    , inner_instruction_index
+    , tx_index
+FROM transfers
