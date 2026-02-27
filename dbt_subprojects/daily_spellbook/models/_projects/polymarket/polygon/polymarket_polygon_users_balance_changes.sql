@@ -100,7 +100,7 @@ WITH polymarket_first_funded AS (
   , unique_key
   , from_polymarket_wallet
   , CAST(NULL AS VARBINARY) AS to_polymarket_wallet
-  FROM relevant_transfers_in
+  FROM relevant_transfers_out
   )
 
 , relevant_transfers AS (
