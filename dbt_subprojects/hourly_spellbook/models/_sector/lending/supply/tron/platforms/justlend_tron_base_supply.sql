@@ -20,7 +20,7 @@
   lending_compound_v2_compatible_supply(
     blockchain = 'tron',
     project = 'justlend',
-    version = '2',
+    version = '1',
     decoded_project = 'justlend',
     sources = config_sources
   )
