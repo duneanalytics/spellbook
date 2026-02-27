@@ -2,12 +2,7 @@
 
     schema = 'sharky_solana',
     alias = 'events',
-    partition_by = ['block_month'],
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    unique_key = ['block_month', 'evt_type', 'loan_id', 'id'],
+    materialized = 'view',
     pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
     , post_hook='{{ hide_spells() }}'
     )
@@ -24,11 +19,7 @@ WITH
         WHERE
             blockchain IS NULL
             AND symbol = 'SOL'
-            {% if not is_incremental() %}
             AND minute >= TIMESTAMP '{{ project_start_date }}'
-            {% else %}
-            AND {{ incremental_predicate('minute') }}
-            {% endif %}
     ),
     offers AS (
         SELECT
@@ -46,11 +37,7 @@ WITH
             CAST(principalLamports AS BIGINT) AS amount_raw
         FROM {{ source('sharky_solana', 'sharky_call_offerLoan') }}
         WHERE
-            {% if is_incremental() %}
-            {{ incremental_predicate('call_block_time') }}
-            {% else %}
             True
-            {% endif %}
     ), rescind AS (
         SELECT
             call_block_date,
@@ -66,11 +53,7 @@ WITH
             ARRAY[CAST(ROW(call_data, call_account_arguments) AS ROW(data VARBINARY, account_arguments ARRAY<VARCHAR>))] AS sharky_instructions
         FROM {{ source('sharky_solana', 'sharky_call_rescindLoan') }}
         WHERE
-            {% if is_incremental() %}
-            {{ incremental_predicate('call_block_time') }}
-            {% else %}
             True
-            {% endif %}
     ),
     take AS (
         SELECT
@@ -87,11 +70,7 @@ WITH
             ARRAY[CAST(ROW(call_data, call_account_arguments) AS ROW(data VARBINARY, account_arguments ARRAY<VARCHAR>))] AS sharky_instructions
         FROM {{ source('sharky_solana', 'sharky_call_takeLoan') }}
         WHERE
-            {% if is_incremental() %}
-            {{ incremental_predicate('call_block_time') }}
-            {% else %}
             True
-            {% endif %}
 
         UNION ALL
         SELECT
@@ -108,11 +87,7 @@ WITH
             ARRAY[CAST(ROW(call_data, call_account_arguments) AS ROW(data VARBINARY, account_arguments ARRAY<VARCHAR>))] AS sharky_instructions
         FROM {{ source('sharky_solana', 'sharky_call_takeLoanV3') }}
         WHERE
-            {% if is_incremental() %}
-            {{ incremental_predicate('call_block_time') }}
-            {% else %}
             True
-            {% endif %}
 
         UNION ALL
         SELECT
@@ -129,11 +104,7 @@ WITH
             ARRAY[CAST(ROW(call_data, call_account_arguments) AS ROW(data VARBINARY, account_arguments ARRAY<VARCHAR>))] AS sharky_instructions
         FROM {{ source('sharky_solana', 'sharky_call_takeLoanV3Compressed') }}
         WHERE
-            {% if is_incremental() %}
-            {{ incremental_predicate('call_block_time') }}
-            {% else %}
             True
-            {% endif %}
     ), repay AS (
         SELECT
             call_block_date,
@@ -149,11 +120,7 @@ WITH
             ARRAY[CAST(ROW(call_data, call_account_arguments) AS ROW(data VARBINARY, account_arguments ARRAY<VARCHAR>))] AS sharky_instructions
         FROM {{ source('sharky_solana', 'sharky_call_repayLoan') }}
         WHERE
-            {% if is_incremental() %}
-            {{ incremental_predicate('call_block_time') }}
-            {% else %}
             True
-            {% endif %}
 
         UNION ALL
         SELECT
@@ -170,11 +137,7 @@ WITH
             ARRAY[CAST(ROW(call_data, call_account_arguments) AS ROW(data VARBINARY, account_arguments ARRAY<VARCHAR>))] AS sharky_instructions
         FROM {{ source('sharky_solana', 'sharky_call_repayLoanEscrow') }}
         WHERE
-            {% if is_incremental() %}
-            {{ incremental_predicate('call_block_time') }}
-            {% else %}
             True
-            {% endif %}
 
         UNION ALL
         SELECT
@@ -191,11 +154,7 @@ WITH
             ARRAY[CAST(ROW(call_data, call_account_arguments) AS ROW(data VARBINARY, account_arguments ARRAY<VARCHAR>))] AS sharky_instructions
         FROM {{ source('sharky_solana', 'sharky_call_repayLoanV3') }}
         WHERE
-            {% if is_incremental() %}
-            {{ incremental_predicate('call_block_time') }}
-            {% else %}
             True
-            {% endif %}
 
         UNION ALL
         SELECT
@@ -212,11 +171,7 @@ WITH
             ARRAY[CAST(ROW(call_data, call_account_arguments) AS ROW(data VARBINARY, account_arguments ARRAY<VARCHAR>))] AS sharky_instructions
         FROM {{ source('sharky_solana', 'sharky_call_repayLoanV3Compressed') }}
         WHERE
-            {% if is_incremental() %}
-            {{ incremental_predicate('call_block_time') }}
-            {% else %}
             True
-            {% endif %}
     ), foreclose AS (
         SELECT
             call_block_date,
@@ -232,11 +187,7 @@ WITH
             ARRAY[CAST(ROW(call_data, call_account_arguments) AS ROW(data VARBINARY, account_arguments ARRAY<VARCHAR>))] AS sharky_instructions
         FROM {{ source('sharky_solana', 'sharky_call_forecloseLoan') }}
         WHERE
-            {% if is_incremental() %}
-            {{ incremental_predicate('call_block_time') }}
-            {% else %}
             True
-            {% endif %}
 
         UNION ALL
         SELECT
@@ -253,11 +204,7 @@ WITH
             ARRAY[CAST(ROW(call_data, call_account_arguments) AS ROW(data VARBINARY, account_arguments ARRAY<VARCHAR>))] AS sharky_instructions
         FROM {{ source('sharky_solana', 'sharky_call_forecloseLoanEscrow') }}
         WHERE
-            {% if is_incremental() %}
-            {{ incremental_predicate('call_block_time') }}
-            {% else %}
             True
-            {% endif %}
 
         UNION ALL
         SELECT
@@ -274,11 +221,7 @@ WITH
             ARRAY[CAST(ROW(call_data, call_account_arguments) AS ROW(data VARBINARY, account_arguments ARRAY<VARCHAR>))] AS sharky_instructions
         FROM {{ source('sharky_solana', 'sharky_call_forecloseLoanV3') }}
         WHERE
-            {% if is_incremental() %}
-            {{ incremental_predicate('call_block_time') }}
-            {% else %}
             True
-            {% endif %}
 
         UNION ALL
         SELECT
@@ -295,11 +238,7 @@ WITH
             ARRAY[CAST(ROW(call_data, call_account_arguments) AS ROW(data VARBINARY, account_arguments ARRAY<VARCHAR>))] AS sharky_instructions
         FROM {{ source('sharky_solana', 'sharky_call_forecloseLoanV3Compressed') }}
         WHERE
-            {% if is_incremental() %}
-            {{ incremental_predicate('call_block_time') }}
-            {% else %}
             True
-            {% endif %}
     ), extend AS (
         SELECT
             call_block_date,
@@ -315,11 +254,7 @@ WITH
             ARRAY[CAST(ROW(call_data, call_account_arguments) AS ROW(data VARBINARY, account_arguments ARRAY<VARCHAR>))] AS sharky_instructions
         FROM {{ source('sharky_solana', 'sharky_call_extendLoan') }}
         WHERE
-            {% if is_incremental() %}
-            {{ incremental_predicate('call_block_time') }}
-            {% else %}
             True
-            {% endif %}
 
         UNION ALL
         SELECT
@@ -336,11 +271,7 @@ WITH
             ARRAY[CAST(ROW(call_data, call_account_arguments) AS ROW(data VARBINARY, account_arguments ARRAY<VARCHAR>))] AS sharky_instructions
         FROM {{ source('sharky_solana', 'sharky_call_extendLoanEscrow') }}
         WHERE
-            {% if is_incremental() %}
-            {{ incremental_predicate('call_block_time') }}
-            {% else %}
             True
-            {% endif %}
 
         UNION ALL
         SELECT
@@ -357,11 +288,7 @@ WITH
             ARRAY[CAST(ROW(call_data, call_account_arguments) AS ROW(data VARBINARY, account_arguments ARRAY<VARCHAR>))] AS sharky_instructions
         FROM {{ source('sharky_solana', 'sharky_call_extendLoanV3') }}
         WHERE
-            {% if is_incremental() %}
-            {{ incremental_predicate('call_block_time') }}
-            {% else %}
             True
-            {% endif %}
 
         UNION ALL
         SELECT
@@ -378,11 +305,7 @@ WITH
             ARRAY[CAST(ROW(call_data, call_account_arguments) AS ROW(data VARBINARY, account_arguments ARRAY<VARCHAR>))] AS sharky_instructions
         FROM {{ source('sharky_solana', 'sharky_call_extendLoanV3Compressed') }}
         WHERE
-            {% if is_incremental() %}
-            {{ incremental_predicate('call_block_time') }}
-            {% else %}
             True
-            {% endif %}
 ), with_amount AS (
     SELECT
        events.*,
@@ -405,14 +328,10 @@ WITH
         SELECT * FROM extend
         UNION ALL
         SELECT * FROM foreclose
-    ) events ON (events.call_block_time = st.block_time AND events.call_tx_id = st.id)
+    ) events ON (events.call_block_date = st.block_date AND events.call_block_time = st.block_time AND events.call_tx_id = st.id)
     WHERE
         True
-        {% if not is_incremental() %}
-        AND st.block_time >= TIMESTAMP '{{ project_start_date }}'
-        {% else %}
-        AND {{ incremental_predicate('st.block_time') }}
-        {% endif %}
+        AND st.block_date >= DATE '{{ project_start_date }}'
 ), final_event AS (
     SELECT * FROM offers
     UNION ALL

@@ -41,12 +41,13 @@
 
 {{
   config(
+    tags = ['stablecoins'],
     schema = 'stablecoins_multichain',
     alias = 'balances',
     materialized = 'view',
     post_hook = '{{ expose_spells(blockchains = \'["' ~ chains | join('","') ~ '"]\',
         spell_type = "sector",
-        spell_name = "stablecoins",
+        spell_name = "stablecoins_multichain",
         contributors = \'["tomfutago"]\') }}'
   )
 }}

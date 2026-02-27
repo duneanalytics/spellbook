@@ -7,7 +7,7 @@ SELECT
     block_date,
     block_month,
     block_time,
-    nft_token_id as token_id,
+    CAST(nft_token_id as uint256) as token_id,
     nft_collection as collection,
     price_usd as amount_usd,
     nft_standard as token_standard,

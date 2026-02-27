@@ -14,4 +14,13 @@
   ]
 ) }}
 
-{{ generate_sushiswap_trades(chain) }}
+with raw as (
+    {{ generate_sushiswap_trades(chain) }}
+)
+
+select
+    *
+from
+    raw
+where
+    block_time >= timestamp '2026-01-30'
