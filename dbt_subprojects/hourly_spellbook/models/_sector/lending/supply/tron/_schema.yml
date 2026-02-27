@@ -1,21 +1,17 @@
 version: 2
 
 models:
-  - name: lending_supply
+  - name: lending_tron_base_supply
     meta:
-      blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom, gnosis, scroll, zksync, linea, sonic, unichain
+      blockchain: tron
       sector: lending
-      project: aave, compound
-      contributors: tomfutago, hildobby
+      contributors: tomfutago
     config:
-      tags: ['lending', 'supply', 'aave', 'compound', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom', 'gnosis', 'scroll', 'zksync', 'linea', 'sonic']
-    description: "All lending transactions involving supply transactions"
+      tags: ['lending', 'supply', 'tron']
+    description: "All lending supply transactions on Tron"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - blockchain
-            - project
-            - version
             - transaction_type
             - token_address
             - tx_hash
@@ -41,9 +37,6 @@ models:
         description: "Transaction type"
         data_tests:
           - not_null
-      - &symbol
-        name: symbol
-        description: "Token symbol"
       - &token_address
         name: token_address
         description: "Token contract address"
@@ -67,12 +60,9 @@ models:
       - &amount_raw
         name: amount_raw
         description: "Raw token amount (uint256, always positive)"
-      - &amount_usd
-        name: amount_usd
-        description: "Token amount in USD"
       - &block_month
         name: block_month
-        description: "Block Month column used to partition data in this table"
+        description: "Block month column used to partition data in this table"
       - &block_time
         name: block_time
         description: "Timestamp for block event time in UTC"
@@ -99,7 +89,7 @@ models:
         data_tests:
           - not_null
 
-  - name: lending_tron_supply
+  - name: justlend_tron_base_supply
     meta:
       blockchain: tron
       sector: lending
@@ -107,7 +97,7 @@ models:
       contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'justlend', 'tron']
-    description: "All lending transactions involving supply transactions on Tron"
+    description: "JustLend supply transactions on Tron"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -115,12 +105,13 @@ models:
             - token_address
             - tx_hash
             - evt_index
+      - check_lending_base_supply_seed:
+          seed_file: ref('justlend_tron_base_supply_seed')
     columns:
       - *blockchain
       - *project
       - *version
       - *transaction_type
-      - *symbol
       - *token_address
       - *depositor
       - *on_behalf_of
@@ -128,7 +119,6 @@ models:
       - *liquidator
       - *amount
       - *amount_raw
-      - *amount_usd
       - *block_month
       - *block_time
       - *block_number
