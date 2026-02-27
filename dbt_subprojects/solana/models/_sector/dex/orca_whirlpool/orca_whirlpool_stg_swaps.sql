@@ -113,6 +113,7 @@ WITH fee_tiers_defaults AS (
         AND {{ incremental_predicate('call_block_time') }}
         {% else %}
         AND call_block_time >= TIMESTAMP '{{ project_start_date }}'
+        AND call_block_time < TIMESTAMP '2022-03-17'
         {% endif %}
 
     UNION ALL
@@ -134,6 +135,7 @@ WITH fee_tiers_defaults AS (
         AND {{ incremental_predicate('call_block_time') }}
         {% else %}
         AND call_block_time >= TIMESTAMP '{{ project_start_date }}'
+        AND call_block_time < TIMESTAMP '2022-03-17'
         {% endif %}
 )
 
@@ -176,6 +178,7 @@ WITH fee_tiers_defaults AS (
             AND {{ incremental_predicate('call_block_time') }}
             {% else %}
             AND call_block_time >= TIMESTAMP '{{ project_start_date }}'
+            AND call_block_time < TIMESTAMP '2022-03-17'
             {% endif %}
 
         UNION ALL
