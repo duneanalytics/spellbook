@@ -125,6 +125,8 @@ WITH polymarket_first_funded AS (
   , unique_key
   , MAX(from_polymarket_wallet) AS from_polymarket_wallet
   , MAX(to_polymarket_wallet) AS to_polymarket_wallet
+  , MAX(from_first_funded_block) AS from_first_funded_block
+  , MAX(to_first_funded_block) AS to_first_funded_block
   FROM relevant_transfers_all
   GROUP BY unique_key
   )
@@ -162,7 +164,7 @@ FROM (
   , from_address as "from"
   , cast(NULL AS varbinary) AS "to"
   , unique_key
-  FROM relevant_transfers_with_ffb
+  FROM relevant_transfers
   WHERE to_polymarket_wallet IS NOT NULL
     AND (to_first_funded_block IS NULL OR to_first_funded_block <= block_number)
   
@@ -183,7 +185,7 @@ FROM (
   , cast(NULL AS varbinary) AS "from"
   , to_address AS "to"
   , unique_key
-  FROM relevant_transfers_with_ffb
+  FROM relevant_transfers
   WHERE from_polymarket_wallet IS NOT NULL
   AND (from_first_funded_block IS NULL OR from_first_funded_block <= block_number)
   
@@ -204,7 +206,7 @@ FROM (
   , cast(NULL AS varbinary) AS "from"
   , to_address AS "to"
   , unique_key
-  FROM relevant_transfers_with_ffb
+  FROM relevant_transfers
   WHERE from_polymarket_wallet IS NOT NULL AND to_polymarket_wallet IS NOT NULL
   AND (from_first_funded_block IS NULL OR from_first_funded_block <= block_number)
 ) t
