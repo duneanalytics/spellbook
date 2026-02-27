@@ -11,7 +11,7 @@
   )
 }}
 
-{% set project_start_date = '2022-03-10' %}
+{% set project_start_date = '2022-04-06' %}
 
 WITH fee_tiers_defaults AS (
     SELECT
@@ -113,7 +113,7 @@ WITH fee_tiers_defaults AS (
         AND {{ incremental_predicate('call_block_time') }}
         {% else %}
         AND call_block_time >= TIMESTAMP '{{ project_start_date }}'
-        AND call_block_time < TIMESTAMP '2022-03-17'
+        AND call_block_time < TIMESTAMP '2022-04-13'
         {% endif %}
 
     UNION ALL
@@ -135,7 +135,7 @@ WITH fee_tiers_defaults AS (
         AND {{ incremental_predicate('call_block_time') }}
         {% else %}
         AND call_block_time >= TIMESTAMP '{{ project_start_date }}'
-        AND call_block_time < TIMESTAMP '2022-03-17'
+        AND call_block_time < TIMESTAMP '2022-04-13'
         {% endif %}
 )
 
@@ -178,7 +178,7 @@ WITH fee_tiers_defaults AS (
             AND {{ incremental_predicate('call_block_time') }}
             {% else %}
             AND call_block_time >= TIMESTAMP '{{ project_start_date }}'
-            AND call_block_time < TIMESTAMP '2022-03-17'
+            AND call_block_time < TIMESTAMP '2022-04-13'
             {% endif %}
 
         UNION ALL

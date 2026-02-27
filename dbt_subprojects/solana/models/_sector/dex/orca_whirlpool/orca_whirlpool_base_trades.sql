@@ -12,7 +12,7 @@
   )
 }}
 
-{% set project_start_date = '2022-03-10' %}
+{% set project_start_date = '2022-04-06' %}
 
 WITH swaps AS (
     SELECT
@@ -33,7 +33,7 @@ WITH swaps AS (
         AND {{ incremental_predicate('block_date') }}
         {% else %}
         AND block_date >= DATE '{{ project_start_date }}'
-        AND block_date < DATE '2022-03-17'
+        AND block_date < DATE '2022-04-13'
         {% endif %}
 )
 
