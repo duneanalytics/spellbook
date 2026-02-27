@@ -38,5 +38,5 @@ WHERE 1=1
     AND {{ incremental_predicate('sp.call_block_time') }}
     {% else %}
     AND sp.call_block_time >= TIMESTAMP '{{ project_start_date }}'
-    AND sp.call_block_time < TIMESTAMP '2024-08-12'
+    AND sp.call_block_time < TIMESTAMP '2022-02-02'
     {% endif %}
