@@ -12,7 +12,7 @@
   )
 }}
 
-{% set project_start_date = '2025-03-17' %}
+{% set project_start_date = '2025-04-15' %}
 
 WITH swaps AS (
     SELECT
@@ -41,7 +41,7 @@ WITH swaps AS (
         AND {{ incremental_predicate('block_date') }}
         {% else %}
         AND block_date >= DATE '{{ project_start_date }}'
-        AND block_date < DATE '2025-03-24'
+        AND block_date < DATE '2025-04-22'
         {% endif %}
 )
 
@@ -112,7 +112,7 @@ WITH swaps AS (
         AND {{ incremental_predicate('tf.block_date') }}
         {% else %}
         AND tf.block_date >= DATE '{{ project_start_date }}'
-        AND tf.block_date < DATE '2025-03-24'
+        AND tf.block_date < DATE '2025-04-22'
         {% endif %}
         AND EXISTS (
             SELECT 1

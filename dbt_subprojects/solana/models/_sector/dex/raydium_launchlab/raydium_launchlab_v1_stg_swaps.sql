@@ -11,7 +11,7 @@
   )
 }}
 
-{% set project_start_date = '2025-03-17' %}
+{% set project_start_date = '2025-04-15' %}
 
 WITH calls AS (
     SELECT
@@ -39,7 +39,7 @@ WITH calls AS (
         AND {{ incremental_predicate('sp.call_block_time') }}
         {% else %}
         AND sp.call_block_time >= TIMESTAMP '{{ project_start_date }}'
-        AND sp.call_block_time < TIMESTAMP '2025-03-24'
+        AND sp.call_block_time < TIMESTAMP '2025-04-22'
         {% endif %}
 
     UNION ALL
@@ -69,7 +69,7 @@ WITH calls AS (
         AND {{ incremental_predicate('sp.call_block_time') }}
         {% else %}
         AND sp.call_block_time >= TIMESTAMP '{{ project_start_date }}'
-        AND sp.call_block_time < TIMESTAMP '2025-03-24'
+        AND sp.call_block_time < TIMESTAMP '2025-04-22'
         {% endif %}
 
     UNION ALL
@@ -99,7 +99,7 @@ WITH calls AS (
         AND {{ incremental_predicate('sp.call_block_time') }}
         {% else %}
         AND sp.call_block_time >= TIMESTAMP '{{ project_start_date }}'
-        AND sp.call_block_time < TIMESTAMP '2025-03-24'
+        AND sp.call_block_time < TIMESTAMP '2025-04-22'
         {% endif %}
 
     UNION ALL
@@ -129,7 +129,7 @@ WITH calls AS (
         AND {{ incremental_predicate('sp.call_block_time') }}
         {% else %}
         AND sp.call_block_time >= TIMESTAMP '{{ project_start_date }}'
-        AND sp.call_block_time < TIMESTAMP '2025-03-24'
+        AND sp.call_block_time < TIMESTAMP '2025-04-22'
         {% endif %}
 )
 
