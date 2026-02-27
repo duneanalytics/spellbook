@@ -2,8 +2,7 @@
     config(
         schema='boost',
         alias='completors',
-        materialized='table',
-        tags=['static'],
+        materialized='view'
     )
 }}
 
