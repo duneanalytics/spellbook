@@ -62,7 +62,6 @@ FROM (
         AND {{ incremental_predicate('call_block_time') }}
         {% else %}
         AND call_block_time >= TIMESTAMP '{{ project_start_date }}'
-        AND call_block_time < TIMESTAMP '2022-08-24'
         {% endif %}
 
     UNION ALL
@@ -84,7 +83,6 @@ FROM (
         AND {{ incremental_predicate('call_block_time') }}
         {% else %}
         AND call_block_time >= TIMESTAMP '{{ project_start_date }}'
-        AND call_block_time < TIMESTAMP '2022-08-24'
         {% endif %}
 ) sp
 INNER JOIN pools p
