@@ -28,6 +28,5 @@ SELECT
     tx_id,
     outer_instruction_index,
     inner_instruction_index,
-    tx_index,
-    recent_update
+    tx_index
 FROM {{ ref('orca_whirlpool_base_trades') }}
