@@ -3,6 +3,7 @@
         alias = 'op_chains_likely_bot_contracts',
         materialized ='table',
         partition_by = ['blockchain']
+        , tags = ['prod_exclude']
         , post_hook='{{ hide_spells() }}'
     )
 }}

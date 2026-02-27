@@ -9,13 +9,29 @@ models:
       tags: ['staging', 'address']
     description: "View: join of stg_transfers, stg_executed_txs, is_contract, first_funded_by for Ethereum."
 
+  - name: addresses_ethereum_stg_transfers_daily_received
+    meta:
+      blockchain: ethereum
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers received; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_ethereum_stg_transfers_daily_sent
+    meta:
+      blockchain: ethereum
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers sent; single read from transfers. Feeds stg_transfers_daily."
+
   - name: addresses_ethereum_stg_transfers_daily
     meta:
       blockchain: ethereum
       sector: addresses
     config:
       tags: ['staging', 'address']
-    description: "Incremental by block_date (full days only). Feeds stg_transfers."
+    description: "Union of received + sent daily. Feeds stg_transfers."
 
   - name: addresses_ethereum_stg_executed_txs_daily
     meta:
@@ -31,7 +47,7 @@ models:
       sector: addresses
     config:
       tags: ['staging', 'address']
-    description: "Full table: aggregate of stg_transfers_daily. Feeds stg_info."
+    description: "Aggregate of stg_transfers_daily. Feeds stg_info."
 
   - name: addresses_ethereum_stg_executed_txs
     meta:
@@ -156,13 +172,29 @@ models:
       tags: ['staging', 'address']
     description: "View: join of stg_transfers, stg_executed_txs, is_contract, first_funded_by for Arbitrum."
 
+  - name: addresses_arbitrum_stg_transfers_daily_received
+    meta:
+      blockchain: arbitrum
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers received; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_arbitrum_stg_transfers_daily_sent
+    meta:
+      blockchain: arbitrum
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers sent; single read from transfers. Feeds stg_transfers_daily."
+
   - name: addresses_arbitrum_stg_transfers_daily
     meta:
       blockchain: arbitrum
       sector: addresses
     config:
       tags: ['staging', 'address']
-    description: "Incremental by block_date (full days only). Grain address, address_prefix, block_date. Feeds stg_transfers."
+    description: "Union of received + sent daily. Feeds stg_transfers."
 
   - name: addresses_arbitrum_stg_executed_txs_daily
     meta:
@@ -178,7 +210,7 @@ models:
       sector: addresses
     config:
       tags: ['staging', 'address']
-    description: "Full table: aggregate of stg_transfers_daily to address, address_prefix. Feeds stg_info."
+    description: "Aggregate of stg_transfers_daily. Feeds stg_info."
 
   - name: addresses_arbitrum_stg_executed_txs
     meta:
@@ -247,6 +279,38 @@ models:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for Avalanche. Joins executed_txs, transfers, is_contract."
 
+  - name: addresses_avalanche_c_stg_transfers_daily_received
+    meta:
+      blockchain: avalanche_c
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers received; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_avalanche_c_stg_transfers_daily_sent
+    meta:
+      blockchain: avalanche_c
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers sent; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_avalanche_c_stg_transfers_daily
+    meta:
+      blockchain: avalanche_c
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Union of received + sent daily. Feeds stg_transfers."
+
+  - name: addresses_avalanche_c_stg_transfers
+    meta:
+      blockchain: avalanche_c
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Aggregate of stg_transfers_daily. Feeds stg_info."
+
   - name: addresses_avalanche_c_stg_info_is_contract
     meta:
       blockchain: avalanche_c
@@ -305,6 +369,38 @@ models:
     config:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for Base. Joins executed_txs, transfers, is_contract."
+
+  - name: addresses_base_stg_transfers_daily_received
+    meta:
+      blockchain: base
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers received; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_base_stg_transfers_daily_sent
+    meta:
+      blockchain: base
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers sent; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_base_stg_transfers_daily
+    meta:
+      blockchain: base
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Union of received + sent daily. Feeds stg_transfers."
+
+  - name: addresses_base_stg_transfers
+    meta:
+      blockchain: base
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Aggregate of stg_transfers_daily. Feeds stg_info."
 
   - name: addresses_base_stg_info_is_contract
     meta:
@@ -365,6 +461,38 @@ models:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for Blast. Joins executed_txs, transfers, is_contract."
 
+  - name: addresses_blast_stg_transfers_daily_received
+    meta:
+      blockchain: blast
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers received; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_blast_stg_transfers_daily_sent
+    meta:
+      blockchain: blast
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers sent; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_blast_stg_transfers_daily
+    meta:
+      blockchain: blast
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Union of received + sent daily. Feeds stg_transfers."
+
+  - name: addresses_blast_stg_transfers
+    meta:
+      blockchain: blast
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Aggregate of stg_transfers_daily. Feeds stg_info."
+
   - name: addresses_blast_stg_info_is_contract
     meta:
       blockchain: blast
@@ -423,6 +551,38 @@ models:
     config:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for BNB. Joins executed_txs, transfers, is_contract."
+
+  - name: addresses_bnb_stg_transfers_daily_received
+    meta:
+      blockchain: bnb
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers received; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_bnb_stg_transfers_daily_sent
+    meta:
+      blockchain: bnb
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers sent; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_bnb_stg_transfers_daily
+    meta:
+      blockchain: bnb
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Union of received + sent daily. Feeds stg_transfers."
+
+  - name: addresses_bnb_stg_transfers
+    meta:
+      blockchain: bnb
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Aggregate of stg_transfers_daily. Feeds stg_info."
 
   - name: addresses_bnb_stg_info_is_contract
     meta:
@@ -483,6 +643,38 @@ models:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for Celo. Joins executed_txs, transfers, is_contract."
 
+  - name: addresses_celo_stg_transfers_daily_received
+    meta:
+      blockchain: celo
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers received; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_celo_stg_transfers_daily_sent
+    meta:
+      blockchain: celo
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers sent; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_celo_stg_transfers_daily
+    meta:
+      blockchain: celo
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Union of received + sent daily. Feeds stg_transfers."
+
+  - name: addresses_celo_stg_transfers
+    meta:
+      blockchain: celo
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Aggregate of stg_transfers_daily. Feeds stg_info."
+
   - name: addresses_celo_stg_info_is_contract
     meta:
       blockchain: celo
@@ -541,6 +733,38 @@ models:
     config:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for Gnosis. Joins executed_txs, transfers, is_contract."
+
+  - name: addresses_gnosis_stg_transfers_daily_received
+    meta:
+      blockchain: gnosis
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers received; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_gnosis_stg_transfers_daily_sent
+    meta:
+      blockchain: gnosis
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers sent; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_gnosis_stg_transfers_daily
+    meta:
+      blockchain: gnosis
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Union of received + sent daily. Feeds stg_transfers."
+
+  - name: addresses_gnosis_stg_transfers
+    meta:
+      blockchain: gnosis
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Aggregate of stg_transfers_daily. Feeds stg_info."
 
   - name: addresses_gnosis_stg_info_is_contract
     meta:
@@ -601,6 +825,38 @@ models:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for Optimism. Joins executed_txs, transfers, is_contract."
 
+  - name: addresses_optimism_stg_transfers_daily_received
+    meta:
+      blockchain: optimism
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers received; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_optimism_stg_transfers_daily_sent
+    meta:
+      blockchain: optimism
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers sent; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_optimism_stg_transfers_daily
+    meta:
+      blockchain: optimism
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Union of received + sent daily. Feeds stg_transfers."
+
+  - name: addresses_optimism_stg_transfers
+    meta:
+      blockchain: optimism
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Aggregate of stg_transfers_daily. Feeds stg_info."
+
   - name: addresses_optimism_stg_info_is_contract
     meta:
       blockchain: optimism
@@ -659,6 +915,38 @@ models:
     config:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for Polygon. Joins executed_txs, transfers, is_contract."
+
+  - name: addresses_polygon_stg_transfers_daily_received
+    meta:
+      blockchain: polygon
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers received; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_polygon_stg_transfers_daily_sent
+    meta:
+      blockchain: polygon
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers sent; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_polygon_stg_transfers_daily
+    meta:
+      blockchain: polygon
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Union of received + sent daily. Feeds stg_transfers."
+
+  - name: addresses_polygon_stg_transfers
+    meta:
+      blockchain: polygon
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Aggregate of stg_transfers_daily. Feeds stg_info."
 
   - name: addresses_polygon_stg_info_is_contract
     meta:
@@ -719,6 +1007,38 @@ models:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for Scroll. Joins executed_txs, transfers, is_contract."
 
+  - name: addresses_scroll_stg_transfers_daily_received
+    meta:
+      blockchain: scroll
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers received; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_scroll_stg_transfers_daily_sent
+    meta:
+      blockchain: scroll
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers sent; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_scroll_stg_transfers_daily
+    meta:
+      blockchain: scroll
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Union of received + sent daily. Feeds stg_transfers."
+
+  - name: addresses_scroll_stg_transfers
+    meta:
+      blockchain: scroll
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Aggregate of stg_transfers_daily. Feeds stg_info."
+
   - name: addresses_scroll_stg_info_is_contract
     meta:
       blockchain: scroll
@@ -777,6 +1097,38 @@ models:
     config:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for Zora. Joins executed_txs, transfers, is_contract."
+
+  - name: addresses_zora_stg_transfers_daily_received
+    meta:
+      blockchain: zora
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers received; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_zora_stg_transfers_daily_sent
+    meta:
+      blockchain: zora
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers sent; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_zora_stg_transfers_daily
+    meta:
+      blockchain: zora
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Union of received + sent daily. Feeds stg_transfers."
+
+  - name: addresses_zora_stg_transfers
+    meta:
+      blockchain: zora
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Aggregate of stg_transfers_daily. Feeds stg_info."
 
   - name: addresses_zora_stg_info_is_contract
     meta:
@@ -837,6 +1189,38 @@ models:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for HyperEVM. Joins executed_txs, transfers, is_contract."
 
+  - name: addresses_hyperevm_stg_transfers_daily_received
+    meta:
+      blockchain: hyperevm
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers received; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_hyperevm_stg_transfers_daily_sent
+    meta:
+      blockchain: hyperevm
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers sent; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_hyperevm_stg_transfers_daily
+    meta:
+      blockchain: hyperevm
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Union of received + sent daily. Feeds stg_transfers."
+
+  - name: addresses_hyperevm_stg_transfers
+    meta:
+      blockchain: hyperevm
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Aggregate of stg_transfers_daily. Feeds stg_info."
+
   - name: addresses_hyperevm_stg_info_is_contract
     meta:
       blockchain: hyperevm
@@ -895,6 +1279,38 @@ models:
     config:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for Monad. Joins executed_txs, transfers, is_contract."
+
+  - name: addresses_monad_stg_transfers_daily_received
+    meta:
+      blockchain: monad
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers received; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_monad_stg_transfers_daily_sent
+    meta:
+      blockchain: monad
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers sent; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_monad_stg_transfers_daily
+    meta:
+      blockchain: monad
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Union of received + sent daily. Feeds stg_transfers."
+
+  - name: addresses_monad_stg_transfers
+    meta:
+      blockchain: monad
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Aggregate of stg_transfers_daily. Feeds stg_info."
 
   - name: addresses_monad_stg_info_is_contract
     meta:
@@ -955,6 +1371,38 @@ models:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for Sei. Joins executed_txs, transfers, is_contract."
 
+  - name: addresses_sei_stg_transfers_daily_received
+    meta:
+      blockchain: sei
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers received; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_sei_stg_transfers_daily_sent
+    meta:
+      blockchain: sei
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers sent; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_sei_stg_transfers_daily
+    meta:
+      blockchain: sei
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Union of received + sent daily. Feeds stg_transfers."
+
+  - name: addresses_sei_stg_transfers
+    meta:
+      blockchain: sei
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Aggregate of stg_transfers_daily. Feeds stg_info."
+
   - name: addresses_sei_stg_info_is_contract
     meta:
       blockchain: sei
@@ -1014,6 +1462,38 @@ models:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for Fantom. Joins executed_txs, transfers, is_contract."
 
+  - name: addresses_fantom_stg_transfers_daily_received
+    meta:
+      blockchain: fantom
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers received; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_fantom_stg_transfers_daily_sent
+    meta:
+      blockchain: fantom
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers sent; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_fantom_stg_transfers_daily
+    meta:
+      blockchain: fantom
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Union of received + sent daily. Feeds stg_transfers."
+
+  - name: addresses_fantom_stg_transfers
+    meta:
+      blockchain: fantom
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Aggregate of stg_transfers_daily. Feeds stg_info."
+
   - name: addresses_fantom_stg_info_is_contract
     meta:
       blockchain: fantom
@@ -1071,6 +1551,38 @@ models:
     config:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for Linea. Joins executed_txs, transfers, is_contract."
+
+  - name: addresses_linea_stg_transfers_daily_received
+    meta:
+      blockchain: linea
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers received; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_linea_stg_transfers_daily_sent
+    meta:
+      blockchain: linea
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers sent; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_linea_stg_transfers_daily
+    meta:
+      blockchain: linea
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Union of received + sent daily. Feeds stg_transfers."
+
+  - name: addresses_linea_stg_transfers
+    meta:
+      blockchain: linea
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Aggregate of stg_transfers_daily. Feeds stg_info."
 
   - name: addresses_linea_stg_info_is_contract
     meta:
@@ -1130,6 +1642,38 @@ models:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for zkEVM. Joins executed_txs, transfers, is_contract."
 
+  - name: addresses_zkevm_stg_transfers_daily_received
+    meta:
+      blockchain: zkevm
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers received; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_zkevm_stg_transfers_daily_sent
+    meta:
+      blockchain: zkevm
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers sent; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_zkevm_stg_transfers_daily
+    meta:
+      blockchain: zkevm
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Union of received + sent daily. Feeds stg_transfers."
+
+  - name: addresses_zkevm_stg_transfers
+    meta:
+      blockchain: zkevm
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Aggregate of stg_transfers_daily. Feeds stg_info."
+
   - name: addresses_zkevm_stg_info_is_contract
     meta:
       blockchain: zkevm
@@ -1187,6 +1731,38 @@ models:
     config:
       tags: ['staging', 'address']
     description: "Staging: address activity in incremental window for zkSync. Joins executed_txs, transfers, is_contract."
+
+  - name: addresses_zksync_stg_transfers_daily_received
+    meta:
+      blockchain: zksync
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers received; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_zksync_stg_transfers_daily_sent
+    meta:
+      blockchain: zksync
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Daily transfers sent; single read from transfers. Feeds stg_transfers_daily."
+
+  - name: addresses_zksync_stg_transfers_daily
+    meta:
+      blockchain: zksync
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Union of received + sent daily. Feeds stg_transfers."
+
+  - name: addresses_zksync_stg_transfers
+    meta:
+      blockchain: zksync
+      sector: addresses
+    config:
+      tags: ['staging', 'address']
+    description: "Aggregate of stg_transfers_daily. Feeds stg_info."
 
   - name: addresses_zksync_stg_info_is_contract
     meta:

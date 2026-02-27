@@ -2,10 +2,14 @@
 
 {{
   config(
+    tags = ['stablecoins'],
     schema = 'stablecoins_' ~ chain,
     alias = 'balances',
     materialized = 'view',
-    post_hook = '{{ hide_spells() }}'
+    post_hook = '{{ expose_spells(\'["tron"]\',
+        "sector",
+        "stablecoins_tron",
+        \'["tomfutago"]\') }}'
   )
 }}
 

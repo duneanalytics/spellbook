@@ -2,7 +2,7 @@
 
 {{
   config(
-    tags = ['prod_exclude'],
+    tags = ['prod_exclude', 'stablecoins'],
     schema = 'stablecoins_' ~ chain,
     alias = 'extended_balances',
     materialized = 'incremental',
@@ -18,5 +18,5 @@
 
 {{ stablecoins_balances_from_transfers(
     transfers = source('stablecoins_' ~ chain, 'extended_transfers'),
-    start_date = '2026-01-01'
+    start_date = '2026-01-30'
 ) }}
