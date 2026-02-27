@@ -1,0 +1,3 @@
+blockchain,project,version,block_number,block_time,tx_hash,evt_index,transaction_type,token_address,depositor,amount
+tron,justlend,1,80510954,2026-02-27 13:16:54.000 UTC,0xfc256a1a8e03ccbfcd51e41a65fadd509a233803b4eba3fba11a1e197de7892f,24,deposit,0xa614f803b6fd780986a42c78ec9c7f77e6ded13c,0xe1a5baf2ca43d6f555fd309605310fb5efb8fb0b,189861000000
+tron,justlend,1,80511147,2026-02-27 13:26:42.000 UTC,0x3c723d4f9da4fd9ab6925f7c51ee456fad0e4006d55372fd520f2860b2708774,42,withdraw,0xa614f803b6fd780986a42c78ec9c7f77e6ded13c,0x03181a0a3de8d2881346808f1211674727d84607,-1001507000
