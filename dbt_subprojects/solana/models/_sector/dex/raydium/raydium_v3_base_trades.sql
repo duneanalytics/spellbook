@@ -91,8 +91,6 @@ WITH swaps AS (
         ON  ss.block_date = tf.block_date
         AND ss.block_slot = tf.block_slot
     WHERE 1=1
-        AND tf.action = 'transfer'
-        AND tf.token_version = 'spl_token'
         {% if is_incremental() %}
         AND {{ incremental_predicate('tf.block_date') }}
         {% else %}
