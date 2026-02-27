@@ -223,12 +223,18 @@ FROM (
     INNER JOIN whirlpools wp
         ON sp.account_whirlpool = wp.whirlpool_id
         AND sp.call_block_time >= wp.update_time
-    LEFT JOIN {{ ref('orca_whirlpool_v2_stg_memo') }} memo
-        ON memo.block_date = CAST(date_trunc('day', sp.call_block_time) AS DATE)
+    LEFT JOIN {{ source('solana', 'instruction_calls') }} memo
+        ON memo.tx_id = sp.call_tx_id
         AND memo.block_slot = sp.call_block_slot
-        AND memo.tx_id = sp.call_tx_id
         AND memo.outer_instruction_index = sp.call_outer_instruction_index
         AND ((sp.call_is_inner = false AND memo.inner_instruction_index = 1)
             OR (sp.call_is_inner = true AND memo.inner_instruction_index = sp.call_inner_instruction_index + 1))
+        AND memo.executing_account = 'MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr'
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('memo.block_time') }}
+        {% else %}
+        AND memo.block_time >= TIMESTAMP '{{ project_start_date }}'
+        AND memo.block_time < TIMESTAMP '2024-06-12'
+        {% endif %}
 )
 WHERE fee_rank = 1

@@ -1,18 +1,6 @@
 version: 2
 
 models:
-  - name: orca_whirlpool_v2_stg_memo
-    meta:
-      blockchain: solana
-      contributors: [ ilemi ]
-    config:
-      tags: [ 'solana','dex' ]
-    description: >
-      staging model for memo program instruction calls used by orca whirlpool v2 to detect token extension memo offsets
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['block_month', 'block_date', 'surrogate_key']
-
   - name: orca_whirlpool_v2_stg_swaps
     meta:
       blockchain: solana
