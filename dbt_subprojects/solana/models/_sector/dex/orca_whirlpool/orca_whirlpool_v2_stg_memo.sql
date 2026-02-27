@@ -11,7 +11,7 @@
   )
 }}
 
-{% set project_start_date = '2024-05-27' %}
+{% set project_start_date = '2024-06-05' %}
 
 SELECT
       ic.block_slot
@@ -35,5 +35,5 @@ WHERE 1=1
     AND {{ incremental_predicate('ic.block_time') }}
     {% else %}
     AND ic.block_time >= TIMESTAMP '{{ project_start_date }}'
-    AND ic.block_time < TIMESTAMP '2024-06-03'
+    AND ic.block_time < TIMESTAMP '2024-06-12'
     {% endif %}
