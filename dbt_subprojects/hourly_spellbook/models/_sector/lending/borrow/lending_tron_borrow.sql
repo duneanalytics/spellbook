@@ -6,7 +6,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['blockchain', 'project', 'version', 'transaction_type', 'token_address', 'tx_hash', 'evt_index'],
+    unique_key = ['blockchain', 'project', 'version', 'transaction_type', 'token_address', 'tx_hash', 'evt_index', 'block_month'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
   )
 }}
@@ -22,24 +22,24 @@ borrow_enriched as (
 )
 
 select
-  blockchain,
-  project,
-  version,
-  transaction_type,
-  loan_type,
-  symbol,
-  to_tron_address(token_address) as token_address,
-  to_tron_address(borrower) as borrower,
-  to_tron_address(on_behalf_of) as on_behalf_of,
-  to_tron_address(repayer) as repayer,
-  to_tron_address(liquidator) as liquidator,
-  amount,
-  amount_raw,
-  amount_usd,
-  block_month,
-  block_time,
-  block_number,
-  to_tron_address(project_contract_address) as project_contract_address,
-  lower(to_hex(tx_hash)) as tx_hash,
-  evt_index
-from borrow_enriched
+  be.blockchain,
+  be.project,
+  be.version,
+  be.transaction_type,
+  be.loan_type,
+  be.symbol,
+  to_tron_address(be.token_address) as token_address,
+  to_tron_address(be.borrower) as borrower,
+  to_tron_address(be.on_behalf_of) as on_behalf_of,
+  to_tron_address(be.repayer) as repayer,
+  to_tron_address(be.liquidator) as liquidator,
+  be.amount,
+  be.amount_raw,
+  be.amount_usd,
+  be.block_month,
+  be.block_time,
+  be.block_number,
+  to_tron_address(be.project_contract_address) as project_contract_address,
+  lower(to_hex(be.tx_hash)) as tx_hash,
+  be.evt_index
+from borrow_enriched as be

@@ -37,6 +37,9 @@ models:
         description: "Transaction type"
         data_tests:
           - not_null
+      - &loan_type
+        name: loan_type
+        description: "Loan type"
       - &token_address
         name: token_address
         description: "Token contract address"
@@ -57,6 +60,9 @@ models:
       - &amount
         name: amount
         description: "Token amount present in the transaction"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw token amount (uint256, always positive)"
       - &block_month
         name: block_month
         description: "Block month column used to partition data in this table"
@@ -109,12 +115,14 @@ models:
       - *project
       - *version
       - *transaction_type
+      - *loan_type
       - *token_address
       - *borrower
       - *on_behalf_of
       - *repayer
       - *liquidator
       - *amount
+      - *amount_raw
       - *block_month
       - *block_time
       - *block_number

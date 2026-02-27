@@ -57,6 +57,9 @@ models:
       - &amount
         name: amount
         description: "Token amount present in the transaction"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw token amount (uint256, always positive)"
       - &block_month
         name: block_month
         description: "Block month column used to partition data in this table"
@@ -115,6 +118,7 @@ models:
       - *withdrawn_to
       - *liquidator
       - *amount
+      - *amount_raw
       - *block_month
       - *block_time
       - *block_number
