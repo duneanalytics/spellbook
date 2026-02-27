@@ -127,13 +127,14 @@ models:
   - name: raydium_v4_solana_stg_decoded_swaps
     meta:
       blockchain: solana
+      contributors: [ ilemi ]
     config:
       tags: [ 'solana','dex','raydium' ]
     description: >
-      all decoded raydium_v4 hybrid amm swaps on Solana
+      staging model for raydium v4 swap data from decoded tables
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'call_block_month', 'unique_instruction_key' ]
+          combination_of_columns: [ 'block_month', 'block_date', 'surrogate_key' ]
 
   - name: raydium_v4_base_trades
     meta:
