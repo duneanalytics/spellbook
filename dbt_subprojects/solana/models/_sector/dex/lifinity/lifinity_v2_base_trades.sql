@@ -33,6 +33,7 @@ WITH swaps AS (
         AND {{ incremental_predicate('block_date') }}
         {% else %}
         AND block_date >= DATE '{{ project_start_date }}'
+        AND block_date < DATE '{{ project_start_date }}' + interval '7' day
         {% endif %}
 )
 
@@ -109,6 +110,7 @@ WITH swaps AS (
         AND {{ incremental_predicate('tf.block_date') }}
         {% else %}
         AND tf.block_date >= DATE '{{ project_start_date }}'
+        AND tf.block_date < DATE '{{ project_start_date }}' + interval '7' day
         {% endif %}
         AND EXISTS (
             SELECT 1
