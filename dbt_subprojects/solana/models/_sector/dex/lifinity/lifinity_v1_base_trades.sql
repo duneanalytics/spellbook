@@ -29,7 +29,7 @@ WITH swaps AS (
         , pool_id
     FROM {{ ref('lifinity_v1_stg_swaps') }}
     WHERE 1=1
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
         AND {{ incremental_predicate('block_date') }}
         {% else %}
         AND block_date >= DATE '{{ project_start_date }}'
@@ -105,7 +105,7 @@ WITH swaps AS (
     WHERE 1=1
         AND tf.action = 'transfer'
         AND tf.token_version = 'spl_token'
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
         AND {{ incremental_predicate('tf.block_date') }}
         {% else %}
         AND tf.block_date >= DATE '{{ project_start_date }}'

@@ -34,7 +34,7 @@ SELECT
       ) }} AS surrogate_key
 FROM {{ source('lifinity_amm_solana', 'lifinity_amm_call_swap') }} sp
 WHERE 1=1
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
     AND {{ incremental_predicate('sp.call_block_time') }}
     {% else %}
     AND sp.call_block_time >= TIMESTAMP '{{ project_start_date }}'
