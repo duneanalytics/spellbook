@@ -30,21 +30,24 @@ registered_solvers as (
     where rk = 1
 ),
 -- Manually inserting environment and name for each "known" solver
--- TODO: Get correct Ink solver addresses from solver team
 known_solver_metadata (address, environment, name) as (
     select *
     from (
       VALUES
-                (0xeeD424986A909d3552CB6D108840E16B41DfD6ac, 'barn', 'Baseline'),
-                (0xD72728C165C2e941d41749026c41d414C6679636, 'prod', 'Baseline'),
-                (0x57dc4958b5691D3C6A5b58c71a5074eeC7eE7888, 'barn', 'OKX'),
-                (0x920E180FbB32D2B14EA51D95630afe3F8205b278, 'prod', 'OKX'),
-                (0x975CF2c0897bf910F60b21693eD304374F79cD44, 'barn', 'Helixbox'),
-                (0x6a18b02a1E4530886842DC1D0c41869F5819c98a, 'prod', 'Helixbox'),
-                (0xBfd885cC9b21e8a167eC41577520ef133d4aF36B, 'barn', 'Wraxyn'),
-                (0x2bE0F2E120938DB793764D9e9Ee123c3CF21FEdc, 'prod', 'Wraxyn'),
-                (0x674325BbAdBb66e06A674Fd69f7b40fE01aB1De5, 'barn', 'Tsolver'),
-                (0x13C8360b175C1eB7cbA7d11DD91aEF0a1A79ab08, 'prod', 'Tsolver')
+                (0x5004BD66C0804C7794e826B6DeE9Cc83754224E8, 'barn', 'Baseline'),
+                (0x8b2202E91Afa5ad33DC04Caabd34191b6400E6a6, 'prod', 'Baseline'),
+                (0x7Fab5B9D65ae105Cf524BCF8F37cDeAaE1F37096, 'barn', '0x API'),
+                (0xC290cDE37b5d35FDC92BFd71310ce6327666F97f, 'prod', '0x API'),
+                (0x29625eC643F13dA0b20Fff8BB757fCc3768a55fc, 'barn', 'Helixbox'),
+                (0x539A8cAFD0698dDD2E833121E3dff977dBE76bF6, 'prod', 'Helixbox'),
+                (0xB3b5041C8200d2dA875610189437213CE7f6f759, 'barn', 'Tsolver'),
+                (0x22478dCFb16f496Fd3C11080C95818DcEbA3dC43, 'prod', 'Tsolver'),
+                (0xDBb5E06bB7353Ef0499d875fdD5C779d4f4358dA, 'barn', 'Paradox'),
+                (0xB0e2D501Fc499A4b4E2540adE38fEA2A29Cc157e, 'prod', 'Paradox'),
+                (0xc89a922687B120210b7E8b0f448AB3F90Ae123E5, 'barn', 'Rosato'),
+                (0x9458ab3878E7f120e548FA65EBcC7fF61E771E0C, 'prod', 'Rosato'),
+                (0x40D743DE406898A94fD64a6A0AFd833371f721F2, 'barn', 'ExtQuasimodo'),
+                (0xda7e3EF012AC3F2DeC899269950947061c2B0134, 'prod', 'ExtQuasimodo')
     ) as _
 )
 -- Combining the metadata with current activation status for final table
