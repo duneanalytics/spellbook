@@ -51,6 +51,7 @@ FROM (
         AND {{ incremental_predicate('call_block_time') }}
         {% else %}
         AND call_block_date >= DATE '{{ project_start_date }}'
+        AND call_block_date < DATE_ADD('day', 7, DATE '{{ project_start_date }}')
         {% endif %}
 
     UNION ALL
@@ -73,5 +74,6 @@ FROM (
         AND {{ incremental_predicate('call_block_time') }}
         {% else %}
         AND call_block_date >= DATE '{{ project_start_date }}'
+        AND call_block_date < DATE_ADD('day', 7, DATE '{{ project_start_date }}')
         {% endif %}
 ) sp
