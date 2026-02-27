@@ -1,6 +1,18 @@
 version: 3
 
 models:
+  - name: pancakeswap_v3_solana_stg_swaps
+    meta:
+      blockchain: solana
+      contributors: [chef_butterbeer]
+    config:
+      tags: ['solana', 'dex']
+    description: >
+      staging model for pancakeswap v3 swap data from decoded tables
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['block_month', 'block_date', 'surrogate_key']
+
   - name: pancakeswap_v3_solana_base_trades
     meta:
       blockchain: solana
