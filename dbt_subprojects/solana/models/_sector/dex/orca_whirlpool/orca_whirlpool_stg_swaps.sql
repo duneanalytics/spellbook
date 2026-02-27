@@ -108,6 +108,12 @@ WITH fee_tiers_defaults AS (
         , call_block_slot
         , call_outer_executing_account
     FROM {{ source('whirlpool_solana', 'whirlpool_call_twoHopSwap') }}
+    WHERE 1=1
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('call_block_time') }}
+        {% else %}
+        AND call_block_time >= TIMESTAMP '{{ project_start_date }}'
+        {% endif %}
 
     UNION ALL
 
@@ -123,6 +129,12 @@ WITH fee_tiers_defaults AS (
         , call_block_slot
         , call_outer_executing_account
     FROM {{ source('whirlpool_solana', 'whirlpool_call_twoHopSwap') }}
+    WHERE 1=1
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('call_block_time') }}
+        {% else %}
+        AND call_block_time >= TIMESTAMP '{{ project_start_date }}'
+        {% endif %}
 )
 
 , all_swaps AS (
@@ -169,12 +181,6 @@ WITH fee_tiers_defaults AS (
         UNION ALL
 
         SELECT * FROM two_hop
-        WHERE 1=1
-            {% if is_incremental() %}
-            AND {{ incremental_predicate('call_block_time') }}
-            {% else %}
-            AND call_block_time >= TIMESTAMP '{{ project_start_date }}'
-            {% endif %}
     ) sp
     INNER JOIN whirlpools wp
         ON sp.account_whirlpool = wp.whirlpool_id
