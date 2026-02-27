@@ -11,7 +11,7 @@
   )
 }}
 
-{% set project_start_date = '2025-06-30' %}
+{% set project_start_date = '2025-06-26' %}
 
 WITH pools AS (
     SELECT
@@ -38,6 +38,7 @@ WITH pools AS (
         AND {{ incremental_predicate('call_block_time') }}
         {% else %}
         AND call_block_time >= TIMESTAMP '{{ project_start_date }}'
+        AND call_block_time < TIMESTAMP '2025-07-03'
         {% endif %}
 
     UNION ALL
@@ -59,6 +60,7 @@ WITH pools AS (
         AND {{ incremental_predicate('call_block_time') }}
         {% else %}
         AND call_block_time >= TIMESTAMP '{{ project_start_date }}'
+        AND call_block_time < TIMESTAMP '2025-07-03'
         {% endif %}
 )
 
