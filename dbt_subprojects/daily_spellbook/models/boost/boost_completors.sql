@@ -2,10 +2,7 @@
     config(
         schema='boost',
         alias='completors',
-        materialized='incremental',
-        file_format='delta',
-        incremental_strategy='merge',
-        unique_key=['claimer_address']
+        materialized='view'
     )
 }}
 
@@ -18,37 +15,7 @@
     'zora': 'sum(t.gas_used * t.gas_price) / 1e18 as zora_fee_eth',
 } %}
 
-with
-{% if is_incremental() %}
-existing_completors as (
-    select
-        c.claimer_address
-    from {{ this }} c
-),
-
-changed_claimers as (
-    select distinct
-        bc.claimer_address
-    from {{ ref("boost_claimed") }} bc
-    where {{ incremental_predicate('bc.block_time') }}
-
-    union
-
-    {% for network in network_to_fees_logic.keys() %}
-    select distinct
-        t."from" as claimer_address
-    from {{ source(network, 'transactions') }} t
-    inner join existing_completors ec
-        on ec.claimer_address = t."from"
-    where {{ incremental_predicate('t.block_time') }}
-    {% if not loop.last %}
-    union
-    {% endif %}
-    {% endfor %}
-),
-{% endif %}
-
-boost_completors as (
+with boost_completors as (
     select
         bc.claimer_address,
         min(bc.block_time) as first_time_on_boost,
@@ -56,10 +23,6 @@ boost_completors as (
         count(distinct bc.claim_tx_hash) as total_boost_completed,
         sum(bc.reward_usd) as total_reward_earned_usd
     from {{ ref("boost_claimed") }} bc
-    {% if is_incremental() %}
-    inner join changed_claimers cc
-        on bc.claimer_address = cc.claimer_address
-    {% endif %}
     group by bc.claimer_address
 ),
 {% for network, fee_logic in network_to_fees_logic.items() %}
