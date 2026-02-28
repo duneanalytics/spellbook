@@ -7,12 +7,25 @@ models:
       project: balancer
       contributors: viniabussafi
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'fees']
+      tags:
+        [
+          "arbitrum",
+          "avalanche_c",
+          "base",
+          "ethereum",
+          "gnosis",
+          "optimism",
+          "polygon",
+          "zkevm",
+          "fees",
+        ]
     description: >
       Daily Protocol Fee collected and Revenue by pool on Balancer, an automated portfolio manager and trading platform.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - blockchain
+            - version
             - day
             - pool_id
             - token_address
@@ -38,10 +51,10 @@ models:
         description: "Blockchain"
       - &pool_type
         name: pool_type
-        description: "Pool attributes, determined by the pool's factory"     
+        description: "Pool attributes, determined by the pool's factory"
       - &fee_type
         name: fee_type
-        description: "Labels whether fee comes from swaps or yield for V3. V2 fees are labeled as 'v2'."                          
+        description: "Labels whether fee comes from swaps or yield for V3. V2 fees are labeled as 'v2'."
       - &token_address
         name: token_address
         description: "Contract address of the token in which protocol fees were collected"
@@ -65,4 +78,4 @@ models:
         description: "USD value of fee directed to Balancer DAO's treasury"
       - &lp_fee_collected_usd
         name: lp_fee_collected_usd
-        description: "USD value of the fee returned to liquidity providers" 
+        description: "USD value of the fee returned to liquidity providers"
