@@ -84,3 +84,75 @@ models:
       - &evt_index
         name: evt_index
         description: "Index of the event in the transaction. Can be used to uniquely identify the order of trades within in a transaction"
+
+  - name: dex_evm_trades
+    meta:
+      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, kaia, optimism, polygon, scroll, zksync, linea, blast, sei, ronin, flare, boba, sonic, corn, berachain, sophon
+      sector: dex
+      short_description: DEX trades data across all EVM-compatible networks. Use this model when you need to query EVM DEX trades specifically, or use dex_multichain.trades if you need data from both EVM and non-EVM chains. This model contains the same data as dex.trades
+      contributors: kryptaki
+    config:
+      tags: [ 'dex', 'trades', 'evm']
+    description: '{{ doc("dex_trades_doc") }}'
+    columns:
+      - <<: *blockchain
+      - <<: *project
+      - <<: *version
+      - <<: *block_month
+      - <<: *block_date
+      - <<: *block_time
+      - <<: *block_number
+      - <<: *token_bought_symbol
+      - <<: *token_sold_symbol
+      - <<: *token_pair
+      - <<: *token_bought_amount
+      - <<: *token_sold_amount
+      - <<: *token_bought_amount_raw
+      - <<: *token_sold_amount_raw
+      - <<: *amount_usd
+      - <<: *token_bought_address
+      - <<: *token_sold_address
+      - <<: *taker
+      - <<: *maker
+      - <<: *project_contract_address
+      - <<: *tx_hash
+      - <<: *tx_from
+      - <<: *tx_to
+      - <<: *evt_index
+
+  - name: dex_multichain_trades
+    meta:
+      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, kaia, optimism, polygon, scroll, zksync, linea, blast, sei, ronin, flare, boba, sonic, corn, berachain, sophon, solana
+      sector: dex
+      short_description: Detailed data on trades executed via decentralized exchanges (DEXs) across EVM-compatible chains and Solana. For EVM-only trades, use dex_evm.trades, and for Solana-only trades, use dex_solana.trades.
+      contributors: kryptaki
+    config:
+      tags: [ 'dex', 'trades', 'multichain']
+    description: >
+      Multichain DEX trades table combining EVM and Solana trades with standardized column names for cross-chain analysis.
+    columns:
+      - <<: *blockchain
+      - <<: *block_time
+      - <<: *block_date
+      - <<: *block_month
+      - name: block_number
+        description: "Block number in which the trade occurred. On Solana, this is the block slot."
+      - name: tx_id
+        description: "The hash of the transaction that this trade was included in (VARCHAR). On Solana, this is the tx_id."
+      - name: trader_id
+        description: "Address of the account which purchased tokens (VARCHAR). On EVM chains, this is the taker address."
+      - <<: *project
+      - name: executing_contract_address
+        description: "Address of the contract or program that executed the swap (VARCHAR). On Solana, this is the program_main_id (e.g. Pump.fun AMM or Raydium Liquidity Pool V4). On EVM chains this is the project_contract_address (which can be a pool contract, router/aggregator contract, singleton manager, or other contract associated with the DEX)."
+      - <<: *token_pair
+      - <<: *token_bought_symbol
+      - <<: *token_sold_symbol
+      - <<: *token_bought_amount
+      - <<: *token_sold_amount
+      - <<: *token_bought_amount_raw
+      - <<: *token_sold_amount_raw
+      - <<: *amount_usd
+      - name: token_bought_id
+        description: "Contract address of the token bought (VARCHAR). For EVM chains, this is token_bought_address. For Solana, this is token_bought_mint_address."
+      - name: token_sold_id
+        description: "Contract address of the token sold (VARCHAR). For EVM chains, this is token_sold_address. For Solana, this is token_sold_mint_address."
