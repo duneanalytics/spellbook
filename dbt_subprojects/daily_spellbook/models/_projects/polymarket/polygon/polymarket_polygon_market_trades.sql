@@ -21,6 +21,7 @@ select
   md.event_market_name,
   md.question,
   md.polymarket_link,
+  md.polymarket_link_slug,
   md.token_outcome,
   md.neg_risk,
   t.asset_id,
@@ -31,6 +32,8 @@ select
   t.maker,
   t.taker,
   md.unique_key,
-  md.token_outcome_name
+  md.token_outcome_name,
+  t.maker_asset_id,
+  t.taker_asset_id
 from {{ ref('polymarket_polygon_market_trades_raw') }} t
 left join {{ ref('polymarket_polygon_market_details') }} md on t.asset_id = md.token_id

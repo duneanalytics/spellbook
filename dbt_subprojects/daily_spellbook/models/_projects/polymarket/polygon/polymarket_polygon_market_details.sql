@@ -93,8 +93,14 @@ SELECT
     WHEN lower(neg_risk) = 'false' THEN get_href('https://polymarket.com/event/' || market_slug, market_slug)
     WHEN lower(neg_risk) = 'true'  THEN  get_href('https://polymarket.com/event/' || replace(replace(replace(lower(neg_risk_market_name), ' ', '-'), '$', ''), '''',''), neg_risk_market_name)
   END AS polymarket_link,
+  CASE 
+    WHEN lower(neg_risk) = 'false' THEN market_slug
+    WHEN lower(neg_risk) = 'true'  THEN replace(replace(replace(lower(neg_risk_market_name), ' ', '-'), '$', ''), '''','')
+  END AS polymarket_link_slug,
   accepting_order_timestamp as market_start_time,
+  date_parse(SUBSTRING(accepting_order_timestamp FROM 1 FOR 19), '%Y-%m-%dT%H:%i:%s') as market_start_time_parsed,
   end_date_iso as market_end_time,
+  date_parse(SUBSTRING(end_date_iso FROM 1 FOR 19), '%Y-%m-%dT%H:%i:%s') as market_end_time_parsed,
   game_start_time,
   seconds_delay,
   fpmm,
@@ -113,6 +119,10 @@ left join {{ ref('polymarket_polygon_market_outcomes') }} pm
 
 --these nulls get introduced by the polymarket api responses 
 
-SELECT * FROM naming_things
+SELECT *,
+CASE WHEN outcome = '50/50' THEN 0.5
+  WHEN LOWER(token_outcome) = outcome THEN 1
+  WHEN outcome != 'unresolved' THEN 0 END AS final_price
+FROM naming_things
 where token_id is not null
 and condition_id is not null

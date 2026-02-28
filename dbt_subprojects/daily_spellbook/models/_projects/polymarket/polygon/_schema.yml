@@ -160,6 +160,8 @@ models:
         description: "Concrete outcome being bet on (e.g., Trump wins 2024 election?)"
       - name: polymarket_link
         description: "Link to the Polymarket site (may be broken for archived markets)"
+      - name: polymarket_link_slug
+        description: "Slug for the Polymarket link"
       - name: token_outcome
         description: "YES or NO token outcome"
       - name: neg_risk
@@ -182,6 +184,10 @@ models:
         description: "Unique key of the event or market"
       - name: token_outcome_name
         description: "Combination of token outcome and question"
+      - name: maker_asset_id
+        description: "Maker asset ID"
+      - name: taker_asset_id
+        description: "Taker asset ID"
 
   - name: polymarket_polygon_users_capital_actions
     meta:
@@ -301,6 +307,8 @@ models:
         description: "Negative risk market name from on-chain data"
       - name: polymarket_link
         description: "Link to the Polymarket event page"
+      - name: polymarket_link_slug
+        description: "Slug for the Polymarket link"
       - name: market_start_time
         description: "Start time of the market"
       - name: market_end_time
@@ -309,7 +317,13 @@ models:
         description: "Outcome of the market"
       - name: resolved_on_timestamp
         description: "Timestamp when the market was resolved"
-        
+      - name: market_start_time_parsed
+        description: "Start time of the market parsed as a timestamp"
+      - name: market_end_time_parsed
+        description: "End time of the market parsed as a timestamp"
+      - name: final_price
+        description: "Final price of the market"
+
   - name: polymarket_polygon_positions_raw
     meta:
       blockchain: polygon
@@ -486,4 +500,134 @@ models:
       - name: tx_hash
         description: "Transaction hash of the wallet creation"
 
+  - name: polymarket_polygon_open_positions
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: hildobby
+    config:
+      tags: ['polygon','prediction_markets','polymarket','positions']
+    description: "Polymarket: open positions in markets"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - token_id
+    columns:
+      - name: address
+        description: "The address holding the position"
+      - name: unique_key
+        description: "Unique identifier for the market"
+      - name: token_id
+        description: "Token ID of the position"
+      - name: token_outcome
+        description: "Outcome represented by the token"
+      - name: token_outcome_name
+        description: "Name of the outcome represented by the token"
+      - name: balance
+        description: "Balance of the position"
+      - name: question_id
+        description: "Question ID for the market"
+      - name: market_question
+        description: "Question of the market"
+      - name: market_description
+        description: "Description of the market"
+      - name: event_market_name
+        description: "Name of the event market"
+      - name: event_market_description
+        description: "Description of the event market"
+      - name: active
+        description: "Whether the market is active"
+      - name: closed
+        description: "Whether the market is closed"
+      - name: accepting_orders
+        description: "Whether the market is accepting orders"
+      - name: latest_price
+        description: "The price of the outcome token at the end of the day"
+      - name: open_interest
+        description: "The open interest of the position"
+      - name: market_outcome
+        description: "The outcome of the market"
+      - name: resolved_on_timestamp
+        description: "Timestamp when the market was resolved"
+      - name: polymarket_link
+        description: "Link to the Polymarket event page"
+      - name: polymarket_link_slug
+        description: "Slug for the Polymarket link"
+      - name: market_start_time
+        description: "Start time of the market"
+      - name: market_start_time_parsed
+        description: "Start time of the market parsed as a timestamp"
+      - name: market_end_time
+        description: "End time of the market"
+      - name: market_end_time_parsed
+        description: "End time of the market parsed as a timestamp"
+  - name: polymarket_polygon_protocol_tvl
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: hildobby
+    config:
+      tags: ['polygon','prediction_markets','polymarket','tvl']
+    description: "Polymarket: protocol TVL"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - hour
+    columns:
+      - name: hour
+        description: "The hour for which the TVL is valid"
+      - name: tvl
+        description: "The TVL of the protocol"
+      - name: net_flow
+        description: "The net flow of the protocol"
 
+  - name: polymarket_polygon_users_balance_changes
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: hildobby
+    config:
+      tags: ['polygon','prediction_markets','polymarket','users']
+    description: "Polymarket: user balance changes"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_number
+            - tx_index
+            - evt_index
+            - direction
+    columns:
+      - name: block_time
+        description: "The time of the balance change"
+      - name: block_date
+        description: "The date of the balance change"
+      - name: block_month
+        description: "The month of the balance change"
+      - name: block_number
+        description: "The block number of the balance change"
+      - name: tx_hash
+        description: "The transaction hash of the balance change"
+      - name: tx_from
+        description: "The address that initiated the transaction"
+      - name: tx_to
+        description: "The address that received the transaction"
+      - name: tx_index
+        description: "The transaction index within the block"
+      - name: evt_index
+        description: "The event index of the balance change"
+      - name: direction
+        description: "The direction of the balance change"
+      - name: polymarket_wallet
+        description: "The Polymarket wallet address"
+      - name: amount
+        description: "The amount of the balance change"
+      - name: "from"
+        description: "The address from which the balance change occurred"
+      - name: to
+        description: "The address to which the balance change occurred"
+      - name: unique_key
+        description: "The unique key of the balance change"
