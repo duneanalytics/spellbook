@@ -1,0 +1,110 @@
+version: 2
+
+models:
+  - name: chimpx_bnb_trades
+    meta:
+      blockchain: bnb
+      project: chimpx
+      contributors: chimpx-ai
+    config:
+      tags: ['bnb', 'chimpx', 'dex_aggregator', 'trades']
+    description: >
+      ChimpX AI-powered DeFi aggregator trades on BNB Chain.
+      Volume is sourced from on-chain VolumeRegistered events emitted by the
+      ChimpXVolumeRegistry contract (0x8327839597934e1490f90D06F2b0A549dFC7edeB),
+      deployed at block 82131810. Covers USD notional volume across swaps, bridges,
+      lending, borrowing, staking, and perpetuals executed through the ChimpX AI agent.
+    columns:
+      - name: blockchain
+        description: "Blockchain name: bnb"
+      - name: project
+        description: "Project name: chimpx"
+      - name: version
+        description: "Contract version: 1"
+      - name: block_date
+        description: "UTC event block date"
+      - name: block_month
+        description: "UTC event block month (first day of month)"
+      - name: block_time
+        description: "UTC timestamp of the block"
+      - name: token_bought_symbol
+        description: "Token symbol bought — NULL (registry tracks aggregated USD volume, not individual token pairs)"
+      - name: token_sold_symbol
+        description: "Token symbol sold — NULL (registry tracks aggregated USD volume)"
+      - name: token_pair
+        description: "Token pair — NULL"
+      - name: token_bought_amount
+        description: "Decimal-adjusted token amount bought — NULL"
+      - name: token_sold_amount
+        description: "Decimal-adjusted token amount sold — NULL"
+      - name: token_bought_amount_raw
+        description: "Raw token amount bought — NULL"
+      - name: token_sold_amount_raw
+        description: "Raw token amount sold — NULL"
+      - name: amount_usd
+        description: "USD notional value of the DeFi action (volumeUsd / 1e18)"
+      - name: token_bought_address
+        description: "Token contract address bought — NULL"
+      - name: token_sold_address
+        description: "Token contract address sold — NULL"
+      - name: taker
+        description: "User wallet address that initiated the action"
+      - name: maker
+        description: "Maker address — NULL (not applicable)"
+      - name: project_contract_address
+        description: "ChimpXVolumeRegistry contract address"
+        tests:
+          - not_null
+      - name: tx_hash
+        description: "Transaction hash of the VolumeRegistered event"
+        tests:
+          - not_null
+      - name: tx_from
+        description: "Transaction sender (relayer)"
+      - name: tx_to
+        description: "Transaction recipient (registry contract)"
+      - name: evt_index
+        description: "Log index of the VolumeRegistered event"
+        tests:
+          - not_null
+      - name: trace_address
+        description: "Trace address — [-1] for event-based models"
+
+sources:
+  - name: chimpx_bnb
+    description: "Decoded ChimpXVolumeRegistry contract events on BNB Chain"
+    tables:
+      - name: ChimpXVolumeRegistry_evt_VolumeRegistered
+        description: >
+          VolumeRegistered events from the ChimpXVolumeRegistry contract
+          (0x8327839597934e1490f90D06F2b0A549dFC7edeB) on BNB Chain.
+          Emitted by the ChimpX backend relayer after each successful user action.
+        loaded_at_field: evt_block_time
+        freshness:
+          warn_after: { count: 24, period: hour }
+          error_after: { count: 48, period: hour }
+        columns:
+          - name: evt_block_time
+            description: "Block timestamp"
+          - name: evt_block_number
+            description: "Block number"
+          - name: evt_tx_hash
+            description: "Transaction hash"
+          - name: evt_tx_from
+            description: "Transaction sender (relayer)"
+          - name: evt_tx_to
+            description: "Transaction recipient (registry contract)"
+          - name: evt_index
+            description: "Log index"
+          - name: contract_address
+            description: "ChimpXVolumeRegistry contract address"
+          - name: user
+            description: "User wallet address (indexed)"
+          - name: actionType
+            description: "Action type enum (indexed): 0=Swap,1=Bridge,2=Lend,3=Borrow,4=Stake,5=Unstake,6=PerpsLong,7=PerpsShort"
+          - name: volumeUsd
+            description: "USD volume with 18 decimals (e.g. 100 USD = 100e18)"
+          - name: txRef
+            description: "Reference hash of the original cross-chain transaction"
+          - name: timestamp
+            description: "Unix timestamp recorded by the relayer in the event"
