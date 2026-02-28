@@ -1,0 +1,61 @@
+version: 2
+
+models:
+  - name: dflow_solana_aggregator_swaps
+    data_tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - block_month
+          - tx_id
+          - input_mint
+          - output_mint
+          - evt_outer_instruction_index
+          - evt_inner_instruction_index
+    meta:
+      blockchain: solana
+      contributors: [sofiat]
+    config:
+      tags: ['solana','dflow','swaps']
+    description: >
+        solana aggregator swaps routed through DFlow aggregator
+    columns:
+      - name: block_time
+        description: block time of the transaction
+      - name: block_slot
+        description: slot number of the transaction
+      - name: tx_id
+        description: id of the transaction
+      - name: tx_signer
+        description: signer of the transaction
+      - name: aggregator
+        description: name of the aggregator (DFlow)
+      - name: amm
+        description: program id of amm routed through
+      - name: amm_name
+        description: name of amm routed through
+      - name: input_mint
+        description: token mint address of token sold
+      - name: input_symbol
+        description: symbol of token sold
+      - name: input_decimals
+        description: decimals of token sold
+      - name: input_amount
+        description: amount of token sold raw
+      - name: input_amount_decimal
+        description: amount of token sold adjusted for decimals
+      - name: input_usd
+        description: usd value of token sold
+      - name: output_mint
+        description: token mint address of token bought
+      - name: output_symbol
+        description: symbol of token bought
+      - name: output_decimals
+        description: decimals of token bought
+      - name: output_amount
+        description: amount of token bought raw
+      - name: output_amount_decimal
+        description: amount of token bought adjusted for decimals
+      - name: output_usd
+        description: usd value of token bought
+      - name: block_month
+        description: block month of the transaction
