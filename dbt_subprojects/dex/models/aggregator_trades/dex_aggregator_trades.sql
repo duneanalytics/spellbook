@@ -112,3 +112,4 @@ WITH enriched_aggregator_base_trades AS (
     UNION ALL
     {% endif %}
 {% endfor %}
+
