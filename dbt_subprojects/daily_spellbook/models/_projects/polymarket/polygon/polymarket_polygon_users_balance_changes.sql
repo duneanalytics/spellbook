@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'block_number', 'tx_index', 'evt_index', 'direction'],
+    unique_key = ['block_date', 'block_hour', 'polymarket_wallet'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     post_hook = '{{ expose_spells(blockchains = \'["polygon"]\',
                                   spell_type = "project",
@@ -17,202 +17,65 @@
 WITH polymarket_first_funded AS (
   SELECT u.polymarket_wallet AS address
   , ffb.block_number AS first_funded_block
-  FROM  {{ ref('polymarket_polygon_users') }} u
+  FROM {{ ref('polymarket_polygon_users') }} u
   LEFT JOIN {{ source('addresses_events_polygon', 'first_funded_by')}} ffb ON u.polymarket_wallet = ffb.address
 )
 
 , relevant_transfers_in AS (
-  SELECT t.block_time
+  SELECT date_trunc('hour', t.block_time) AS block_hour
   , t.block_date
   , t.block_month
-  , t.block_number
-  , t.tx_hash
-  , t.tx_from
-  , t.tx_to
-  , t.tx_index
-  , t.evt_index
-  , t.amount
-  , t."from" AS from_address
-  , t."to" AS to_address
-  , t.unique_key
-  , to_user.address AS to_polymarket_wallet
-  , to_user.first_funded_block AS to_first_funded_block
+  , to_user.address AS polymarket_wallet
+  , SUM(t.amount) AS amount
   FROM {{ source('tokens_polygon', 'transfers') }} t
   INNER JOIN polymarket_first_funded to_user ON t."to" = to_user.address
   WHERE t.contract_address = 0x2791bca1f2de4661ed88a30c99a7a9449aa84174 -- USDC.e
   AND t.block_number >= 5067840
   {% if is_incremental() %}
-  AND {{ incremental_predicate('t.block_time') }}
+  AND {{ incremental_predicate('t.block_date') }}
   {% endif %}
+  GROUP BY 1, 2, 3, 4
   )
 
 , relevant_transfers_out AS (
-  SELECT t.block_time
+  SELECT date_trunc('hour', t.block_time) AS block_hour
   , t.block_date
   , t.block_month
-  , t.block_number
-  , t.tx_hash
-  , t.tx_from
-  , t.tx_to
-  , t.tx_index
-  , t.evt_index
-  , t.amount
-  , t."from" AS from_address
-  , t."to" AS to_address
-  , t.unique_key
-  , from_user.address AS from_polymarket_wallet
-  , from_user.first_funded_block AS from_first_funded_block
+  , from_user.address AS polymarket_wallet
+  , -SUM(t.amount) AS amount
   FROM {{ source('tokens_polygon', 'transfers') }} t
   INNER JOIN polymarket_first_funded from_user ON t."from" = from_user.address
   WHERE t.contract_address = 0x2791bca1f2de4661ed88a30c99a7a9449aa84174 -- USDC.e
   AND t.block_number >= 5067840
   {% if is_incremental() %}
-  AND {{ incremental_predicate('t.block_time') }}
+  AND {{ incremental_predicate('t.block_date') }}
   {% endif %}
+  GROUP BY 1, 2, 3, 4
 )
 
-, relevant_transfers_all AS (
-  SELECT block_time
+, all_relevant_transfers AS (
+    SELECT block_hour
   , block_date
   , block_month
-  , block_number
-  , tx_hash
-  , tx_from
-  , tx_to
-  , tx_index
-  , evt_index
+  , polymarket_wallet
   , amount
-  , from_address
-  , to_address
-  , unique_key
-  , CAST(NULL AS VARBINARY) AS from_polymarket_wallet
-  , to_polymarket_wallet
-  , CAST(NULL AS DOUBLE) AS from_first_funded_block
-  , to_first_funded_block
   FROM relevant_transfers_in
 
   UNION ALL
 
-  SELECT block_time
+  SELECT block_hour
   , block_date
   , block_month
-  , block_number
-  , tx_hash
-  , tx_from
-  , tx_to
-  , tx_index
-  , evt_index
+  , polymarket_wallet
   , amount
-  , from_address
-  , to_address
-  , unique_key
-  , from_polymarket_wallet
-  , CAST(NULL AS VARBINARY) AS to_polymarket_wallet
-  , from_first_funded_block
-  , CAST(NULL AS DOUBLE) AS to_first_funded_block
   FROM relevant_transfers_out
   )
 
-, relevant_transfers AS (
-  SELECT MAX(block_time) AS block_time
-  , MAX(block_date) AS block_date
-  , MAX(block_month) AS block_month
-  , MAX(block_number) AS block_number
-  , MAX(tx_hash) AS tx_hash
-  , MAX(tx_from) AS tx_from
-  , MAX(tx_to) AS tx_to
-  , MAX(tx_index) AS tx_index
-  , MAX(evt_index) AS evt_index
-  , MAX(amount) AS amount
-  , MAX(from_address) AS from_address
-  , MAX(to_address) AS to_address
-  , unique_key
-  , MAX(from_polymarket_wallet) AS from_polymarket_wallet
-  , MAX(to_polymarket_wallet) AS to_polymarket_wallet
-  , MAX(from_first_funded_block) AS from_first_funded_block
-  , MAX(to_first_funded_block) AS to_first_funded_block
-  FROM relevant_transfers_all
-  GROUP BY unique_key
-  )
-
-
-
-SELECT block_time
+SELECT block_hour
 , block_date
 , block_month
-, block_number
-, tx_hash
-, tx_from
-, tx_to
-, tx_index
-, evt_index
-, direction
 , polymarket_wallet
-, amount
-, "from"
-, "to"
-, unique_key
-FROM (
-  SELECT block_time
-  , block_date
-  , block_month
-  , block_number
-  , tx_hash
-  , tx_from
-  , tx_to
-  , tx_index
-  , evt_index
-  , 'inflow' AS direction
-  , to_polymarket_wallet AS polymarket_wallet
-  , amount
-  , from_address as "from"
-  , cast(NULL AS varbinary) AS "to"
-  , unique_key
-  FROM relevant_transfers
-  WHERE to_polymarket_wallet IS NOT NULL
-    AND from_polymarket_wallet IS NULL
-    AND (to_first_funded_block IS NULL OR to_first_funded_block <= block_number)
-  
-  UNION ALL
-  
-  SELECT block_time
-  , block_date
-  , block_month
-  , block_number
-  , tx_hash
-  , tx_from
-  , tx_to
-  , tx_index
-  , evt_index
-  , 'outflow' AS direction
-  , from_polymarket_wallet AS polymarket_wallet
-  , amount
-  , cast(NULL AS varbinary) AS "from"
-  , to_address AS "to"
-  , unique_key
-  FROM relevant_transfers
-  WHERE from_polymarket_wallet IS NOT NULL
-    AND to_polymarket_wallet IS NULL
-  AND (from_first_funded_block IS NULL OR from_first_funded_block <= block_number)
-  
-  UNION ALL
-  
-  SELECT block_time
-  , block_date
-  , block_month
-  , block_number
-  , tx_hash
-  , tx_from
-  , tx_to
-  , tx_index
-  , evt_index
-  , 'internal' AS direction
-  , from_polymarket_wallet AS polymarket_wallet
-  , amount
-  , cast(NULL AS varbinary) AS "from"
-  , to_address AS "to"
-  , unique_key
-  FROM relevant_transfers
-  WHERE from_polymarket_wallet IS NOT NULL AND to_polymarket_wallet IS NOT NULL
-  AND (from_first_funded_block IS NULL OR from_first_funded_block <= block_number)
-) t
+, SUM(amount) AS holding_change
+, SUM(SUM(amount)) OVER (PARTITION BY polymarket_wallet ORDER BY block_hour) AS amount_held
+FROM all_relevant_transfers
+GROUP BY 1, 2, 3, 4
