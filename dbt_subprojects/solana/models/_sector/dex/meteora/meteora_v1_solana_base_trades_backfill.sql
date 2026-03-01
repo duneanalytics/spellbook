@@ -8,7 +8,7 @@
        file_format = 'delta',
        incremental_strategy = 'microbatch',
        event_time = 'block_time',
-       begin = '2021-03-21',
+       begin = '2022-07-27',
        batch_size = var('meteora_v1_batch_size', 'day'),
        lookback = 3,
        unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index','block_month'],
@@ -16,7 +16,7 @@
        )
 }}
 
-{% set begin = '2021-03-21' %}
+{% set begin = '2022-07-27' %}
 {% set batch_start = model.batch.event_time_start if model.batch else begin %}
 {% set batch_end = model.batch.event_time_end if model.batch else '2099-01-01' %}
 
