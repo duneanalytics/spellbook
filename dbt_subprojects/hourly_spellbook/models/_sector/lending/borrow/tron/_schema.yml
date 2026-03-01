@@ -1,21 +1,17 @@
 version: 2
 
 models:
-  - name: lending_supply
+  - name: lending_tron_base_borrow
     meta:
-      blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom, gnosis, scroll, zksync, linea, sonic, unichain
+      blockchain: tron
       sector: lending
-      project: aave, compound
-      contributors: tomfutago, hildobby
+      contributors: tomfutago
     config:
-      tags: ['lending', 'supply', 'aave', 'compound', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom', 'gnosis', 'scroll', 'zksync', 'linea', 'sonic']
-    description: "All lending transactions involving supply transactions"
+      tags: ['lending', 'borrow', 'tron']
+    description: "All lending borrow transactions on Tron"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - blockchain
-            - project
-            - version
             - transaction_type
             - token_address
             - tx_hash
@@ -41,23 +37,23 @@ models:
         description: "Transaction type"
         data_tests:
           - not_null
-      - &symbol
-        name: symbol
-        description: "Token symbol"
+      - &loan_type
+        name: loan_type
+        description: "Loan type"
       - &token_address
         name: token_address
         description: "Token contract address"
         data_tests:
           - not_null
-      - &depositor
-        name: depositor
-        description: "Depositor wallet address"
+      - &borrower
+        name: borrower
+        description: "Borrower wallet address"
       - &on_behalf_of
         name: on_behalf_of
         description: "Wallet address tx was executed on behalf of"
-      - &withdrawn_to
-        name: withdrawn_to
-        description: "Withdrawn to wallet address"
+      - &repayer
+        name: repayer
+        description: "Repayer wallet address"
       - &liquidator
         name: liquidator
         description: "Liquidator wallet address"
@@ -67,12 +63,9 @@ models:
       - &amount_raw
         name: amount_raw
         description: "Raw token amount (uint256, always positive)"
-      - &amount_usd
-        name: amount_usd
-        description: "Token amount in USD"
       - &block_month
         name: block_month
-        description: "Block Month column used to partition data in this table"
+        description: "Block month column used to partition data in this table"
       - &block_time
         name: block_time
         description: "Timestamp for block event time in UTC"
@@ -99,15 +92,15 @@ models:
         data_tests:
           - not_null
 
-  - name: lending_tron_supply
+  - name: justlend_tron_base_borrow
     meta:
       blockchain: tron
       sector: lending
       project: justlend
       contributors: tomfutago
     config:
-      tags: ['lending', 'supply', 'justlend', 'tron']
-    description: "All lending transactions involving supply transactions on Tron"
+      tags: ['lending', 'borrow', 'justlend', 'tron']
+    description: "JustLend borrow transactions on Tron"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -115,20 +108,21 @@ models:
             - token_address
             - tx_hash
             - evt_index
+      - check_lending_base_borrow_seed:
+          seed_file: ref('justlend_tron_base_borrow_seed')
     columns:
       - *blockchain
       - *project
       - *version
       - *transaction_type
-      - *symbol
+      - *loan_type
       - *token_address
-      - *depositor
+      - *borrower
       - *on_behalf_of
-      - *withdrawn_to
+      - *repayer
       - *liquidator
       - *amount
       - *amount_raw
-      - *amount_usd
       - *block_month
       - *block_time
       - *block_number
