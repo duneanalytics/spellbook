@@ -27,6 +27,9 @@ WITH all_prices AS (
         END AS price_mod
     FROM {{ ref('polymarket_polygon_market_prices_hourly') }} pp
     LEFT JOIN {{ ref('polymarket_polygon_market_details') }} md ON pp.token_id = md.token_id
+    {% if is_incremental() %}
+    WHERE date_trunc('day', pp.hour) > (SELECT MAX(day) FROM {{ this }})
+    {% endif %}
 ),
 
 daily_prices AS (
