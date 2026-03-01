@@ -99,9 +99,10 @@ WITH compute_until AS (
 
 , backfilled_balances AS (
   SELECT polymarket_wallet
-  , COALESCE(SUM(amount), 0) AS backfilled_amount
-  FROM {{this}}
-  LEFT JOIN wallets_to_compute USING (polymarket_wallet)
+  , COALESCE(MAX_BY(amount_held, block_hour), 0) AS backfilled_amount
+  FROM wallets_to_compute
+  LEFT JOIN {{this}} USING (polymarket_wallet)
+  GROUP BY 1
   )
 
 {% endif %}
