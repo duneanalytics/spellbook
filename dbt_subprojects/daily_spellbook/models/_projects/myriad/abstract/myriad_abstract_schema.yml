@@ -1,0 +1,131 @@
+version: 2
+
+models:
+  - name: myriad_abstract_markets
+    meta:
+      blockchain: abstract
+      sector: prediction_markets
+      project: myriad
+      contributors: datadashboards
+    config:
+      tags: ['myriad', 'abstract', 'prediction_markets']
+    description: “Myriad Market Creations and Updates on Abstract”
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: 
+            - blockchain
+            - tx_hash
+            - tx_index
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain of the market"
+      - &block_time
+        name: block_time
+        description: "Block time of market creation/update"
+      - &block_number
+        name: block_number
+        description: "Block number of market creation/update"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash of market creation/update"
+      - &tx_index
+        name: tx_index
+        description: "Transaction index of market creation/update"
+      - &market_creator_or_updater
+        name: market_creator_or_updater
+        description: "Address of market creator or updater"
+      - &contract_address
+        name: contract_address
+        description: "Contract address of the market"
+      - &marketId
+        name: marketId
+        description: "Market ID"
+      - &collateral_token
+        name: collateral_token
+        description: "Collateral token address"
+      - &question
+        name: question
+        description: "Market question"
+      - &buy_fee
+        name: buy_fee
+        description: "Buy fee for the market"
+      - &sell_fee
+        name: sell_fee
+        description: "Sell fee for the market"
+      - &points
+        name: points
+        description: "Whether the market uses points token"
+
+  - name: myriad_abstract_market_trades_raw
+    meta:
+      blockchain: abstract
+      sector: prediction_markets
+      project: myriad
+      contributors: datadashboards
+    config:
+      tags: ['myriad', 'abstract', 'prediction_markets']
+    description: "Myriad Market Trades on Abstract"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: 
+            - blockchain
+            - tx_hash
+            - evt_index
+    columns:
+      - name: contract_address
+        description: "Contract address of the prediction market contract"
+      - name: tx_hash
+        description: "Transaction hash of the trade event"
+      - name: tx_from
+        description: "Address of the transaction sender"
+      - name: tx_to
+        description: "Address of the transaction receiver"
+      - name: tx_index
+        description: "Transaction index of the trade event"
+      - name: evt_index
+        description: "Event index in the transaction"
+      - name: block_time
+        description: "Block time of the trade event"
+      - name: block_number
+        description: "Block number of the trade event"
+      - name: block_date
+        description: "Block date of the trade event"
+      - name: action
+        description: "Action value (0 for buy, 1 for sell)"
+      - name: marketId
+        description: "ID of the market being traded"
+      - name: outcomeId
+        description: "ID of the outcome being traded"
+      - name: shares
+        description: "Number of shares bought or sold"
+      - name: timestamp
+        description: "Timestamp of the trade event"
+      - name: user
+        description: "Address of the trader"
+      - name: value
+        description: "Raw value of the trade in collateral token (not adjusted for decimals)"
+      - name: direction
+        description: "Trade direction ('buy' or 'sell')"
+      - name: blockchain
+        description: "Blockchain where the trade occurred"
+      - name: collateral_token
+        description: "Address of the token used as collateral"
+      - name: question
+        description: "Question text of the market being traded"
+      - name: buy_fee
+        description: "Buy fee rate for the market"
+      - name: sell_fee
+        description: "Sell fee rate for the market"
+      - name: points
+        description: "Whether the market uses points token as collateral"
+      - name: amount_usd
+        description: "USD value of the trade"
+      - name: fee
+        description: "Fee amount in collateral token (adjusted for decimals)"
+      - name: fee_usd
+        description: "USD value of the fee"
+      - name: collateral_token_price
+        description: "USD price of one unit of collateral token"
+      - name: collateral_token_decimals
+        description: "Number of decimals in the collateral token"
