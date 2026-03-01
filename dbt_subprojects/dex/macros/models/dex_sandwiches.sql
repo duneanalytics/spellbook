@@ -1,16 +1,34 @@
 {% macro dex_sandwiches(blockchain, transactions, whitelist=none) %}
 
+-- Adding block_number and tx_index to the dataset, can be removed once those are in dex.trades
+WITH augmented_dex_trades AS (
+    SELECT dt.project_contract_address
+    , dt.tx_from
+    , dt.tx_hash
+    , dt.block_time
+    , tx.block_number
+    , dt.token_sold_address
+    , dt.token_bought_address
+    , dt.evt_index
+    , dt.project
+    , dt.version
+    FROM {{ ref('dex_trades') }} dt
+    INNER JOIN {{transactions}} tx ON dt.block_time=tx.block_time
+        AND dt.tx_hash=tx.hash
+    WHERE dt.blockchain='{{blockchain}}'
+    AND dt.block_time > NOW() - INTERVAL '1' day
+    )
+
 -- Checking that each frontrun trade has a matching backrun and at least one victim in between
-WITH indexed_sandwich_trades AS (
+, indexed_sandwich_trades AS (
     SELECT DISTINCT front.block_time
     , t.tx_hash_all AS tx_hash
     , front.project
     , front.version
     , front.project_contract_address
     , t.evt_index_all AS evt_index
-    FROM {{ ref('dex_trades') }} front
-    INNER JOIN {{ ref('dex_trades') }} back ON back.blockchain='{{blockchain}}'
-        AND front.block_time=back.block_time
+    FROM augmented_dex_trades front
+    INNER JOIN augmented_dex_trades back ON front.block_number=back.block_number
         AND front.project_contract_address=back.project_contract_address
         AND front.tx_from=back.tx_from
         AND front.tx_hash!=back.tx_hash
@@ -20,8 +38,7 @@ WITH indexed_sandwich_trades AS (
         {% if is_incremental() %}
         AND {{ incremental_predicate('back.block_time') }}
         {% endif %}
-    INNER JOIN {{ ref('dex_trades') }} victim ON victim.blockchain='{{blockchain}}'
-        AND front.block_time=victim.block_time
+    INNER JOIN augmented_dex_trades victim ON front.block_number=victim.block_number
         AND front.project_contract_address=victim.project_contract_address
         AND front.tx_from!=victim.tx_from
         AND front.token_bought_address=victim.token_bought_address
@@ -31,9 +48,8 @@ WITH indexed_sandwich_trades AS (
         AND {{ incremental_predicate('victim.block_time') }}
         {% endif %}
     CROSS JOIN UNNEST(ARRAY[(front.tx_hash, front.evt_index), (back.tx_hash, back.evt_index)]) AS t(tx_hash_all, evt_index_all)
-    WHERE front.blockchain='{{blockchain}}'
     {% if is_incremental() %}
-    AND {{ incremental_predicate('front.block_time') }}
+    WHERE {{ incremental_predicate('front.block_time') }}
     {% endif %}
     )
 
@@ -78,6 +94,7 @@ LEFT JOIN {{whitelist}} w ON w.block_number=tx.block_number
     AND w.tx_hash=tx.hash
 {% endif %}
 WHERE dt.blockchain='{{blockchain}}'
+AND dt.block_time > NOW() - INTERVAL '1' day
 {% if is_incremental() %}
 AND {{ incremental_predicate('dt.block_time') }}
 {% endif %}
