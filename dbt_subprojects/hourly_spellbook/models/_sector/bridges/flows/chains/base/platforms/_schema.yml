@@ -31,6 +31,36 @@ models:
       - equal_rowcount_with_sources:
           evt_sources:
             - source('circle_base','tokenmessenger_evt_mintandwithdraw')
+  - name: bridges_base_cctp_v2_deposits
+    meta:
+      blockchain: base
+      sector: bridges
+      project: cctp
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'base', 'bridges', 'flows', 'deposits' ]
+    description: "Circle's CCTP v2 bridge deposits events on Base"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']
+      - equal_rowcount_with_sources:
+          evt_sources:
+            - source('circle_base','tokenmessenger_evt_depositforburn')
+  - name: bridges_base_cctp_v2_withdrawals
+    meta:
+      blockchain: base
+      sector: bridges
+      project: cctp
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'base', 'bridges', 'flows', 'withdrawals' ]
+    description: "Circle's CCTP v2 bridge withdrawals events on Base"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['tx_hash','evt_index']
+      - equal_rowcount_with_sources:
+          evt_sources:
+            - source('circle_base','tokenmessenger_evt_mintandwithdraw')
   - name: bridges_base_celer_v1_deposits
     meta:
       blockchain: base

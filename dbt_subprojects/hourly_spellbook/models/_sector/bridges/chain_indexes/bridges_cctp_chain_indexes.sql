@@ -26,4 +26,8 @@ SELECT id, blockchain
     , (14, 'worldchain')
     , (16, 'sei')
     , (17, 'bnb')
+    , (18, 'xdc')
+    , (19, 'hyperevm')
+    , (21, 'ink')
+    , (22, 'plume')
     ) AS x (id, blockchain)
