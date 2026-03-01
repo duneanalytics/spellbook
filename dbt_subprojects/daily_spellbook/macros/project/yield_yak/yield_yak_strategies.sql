@@ -109,6 +109,7 @@
         'PenguinStrategyForLP',
         'PenguinStrategyForLPb',
         'PharaohStrategy',
+        'PharStrategy',
         'PlatypusStrategy',
         'SonicStrategyForSA',
         'StableJackStrategy',
