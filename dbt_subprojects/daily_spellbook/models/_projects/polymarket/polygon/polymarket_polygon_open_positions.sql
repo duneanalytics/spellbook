@@ -43,6 +43,7 @@ WITH latest_day AS (
     FROM {{ ref('polymarket_polygon_positions_raw') }} p
     INNER JOIN latest_day ld ON p.day = ld.day
     INNER JOIN {{ ref('polymarket_polygon_market_details') }} mm ON p.token_id = mm.token_id
+    WHERE p.balance > 0
     )
 
 SELECT op.address,

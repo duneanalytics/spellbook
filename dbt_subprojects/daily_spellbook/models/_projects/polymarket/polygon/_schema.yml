@@ -596,6 +596,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_date
             - block_number
             - tx_index
             - evt_index
@@ -625,9 +626,9 @@ models:
         description: "The Polymarket wallet address"
       - name: amount
         description: "The amount of the balance change"
-      - name: "from"
+      - name: from_address
         description: "The address from which the balance change occurred"
-      - name: to
+      - name: to_address
         description: "The address to which the balance change occurred"
       - name: unique_key
         description: "The unique key of the balance change"

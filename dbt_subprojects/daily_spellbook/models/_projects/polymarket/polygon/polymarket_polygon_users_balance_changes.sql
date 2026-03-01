@@ -42,7 +42,7 @@ WITH polymarket_first_funded AS (
   WHERE t.contract_address = 0x2791bca1f2de4661ed88a30c99a7a9449aa84174 -- USDC.e
   AND t.block_number >= 5067840
   {% if is_incremental() %}
-  AND {{ incremental_predicate('t.block_date') }}
+  AND {{ incremental_predicate('t.block_time') }}
   {% endif %}
   )
 
@@ -67,7 +67,7 @@ WITH polymarket_first_funded AS (
   WHERE t.contract_address = 0x2791bca1f2de4661ed88a30c99a7a9449aa84174 -- USDC.e
   AND t.block_number >= 5067840
   {% if is_incremental() %}
-  AND {{ incremental_predicate('t.block_date') }}
+  AND {{ incremental_predicate('t.block_time') }}
   {% endif %}
 )
 

@@ -5,7 +5,11 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['hour']
+    unique_key = ['hour'],
+    post_hook = '{{ expose_spells(blockchains = \'["polygon"]\',
+                                  spell_type = "project",
+                                  spell_name = "polymarket",
+                                  contributors = \'["hildobby"]\') }}'
   )
 }}
 
