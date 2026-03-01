@@ -5,8 +5,12 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_number', 'tx_index', 'evt_index', 'direction'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    unique_key = ['block_date', 'block_number', 'tx_index', 'evt_index', 'direction'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
+    post_hook = '{{ expose_spells(blockchains = \'["polygon"]\',
+                                  spell_type = "project",
+                                  spell_name = "polymarket",
+                                  contributors = \'["hildobby"]\') }}'
   )
 }}
 
@@ -38,7 +42,7 @@ WITH polymarket_first_funded AS (
   WHERE t.contract_address = 0x2791bca1f2de4661ed88a30c99a7a9449aa84174 -- USDC.e
   AND t.block_number >= 5067840
   {% if is_incremental() %}
-  AND {{ incremental_predicate('t.block_time') }}
+  AND {{ incremental_predicate('t.block_date') }}
   {% endif %}
   )
 
@@ -63,7 +67,7 @@ WITH polymarket_first_funded AS (
   WHERE t.contract_address = 0x2791bca1f2de4661ed88a30c99a7a9449aa84174 -- USDC.e
   AND t.block_number >= 5067840
   {% if is_incremental() %}
-  AND {{ incremental_predicate('t.block_time') }}
+  AND {{ incremental_predicate('t.block_date') }}
   {% endif %}
 )
 
@@ -166,6 +170,7 @@ FROM (
   , unique_key
   FROM relevant_transfers
   WHERE to_polymarket_wallet IS NOT NULL
+    AND from_polymarket_wallet IS NULL
     AND (to_first_funded_block IS NULL OR to_first_funded_block <= block_number)
   
   UNION ALL
@@ -187,6 +192,7 @@ FROM (
   , unique_key
   FROM relevant_transfers
   WHERE from_polymarket_wallet IS NOT NULL
+    AND to_polymarket_wallet IS NULL
   AND (from_first_funded_block IS NULL OR from_first_funded_block <= block_number)
   
   UNION ALL
