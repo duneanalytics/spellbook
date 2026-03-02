@@ -35,6 +35,22 @@ models:
           filter:
             version: 3
 
+  - name: sunswap_v3_tron_swap_events
+    meta:
+      blockchain: tron
+      sector: dex
+      project: sunswap
+      contributors: tomfutago
+    config:
+      tags: ["tron", "dex", "trades", "sunswap", "v3"]
+    description: "sunswap tron v3 swap events decoded from tron.logs"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_tx_hash
+            - evt_index
+            - contract_address
+
   - name: dex_tron_token_volumes_daily
     data_tests:
       - dbt_utils.unique_combination_of_columns:
