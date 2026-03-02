@@ -23,6 +23,7 @@
 WITH swaps AS (
     SELECT
           block_slot
+        , block_date
         , block_month
         , block_time
         , inner_instruction_index
@@ -43,6 +44,8 @@ WITH swaps AS (
 , transfers AS (
     SELECT
           tx_id
+        , block_date
+        , block_slot
         , outer_instruction_index
         , inner_instruction_index
         , amount
@@ -80,10 +83,14 @@ WITH swaps AS (
     FROM swaps sp
     INNER JOIN transfers trs_1
         ON trs_1.tx_id = sp.tx_id
+        AND trs_1.block_date = sp.block_date
+        AND trs_1.block_slot = sp.block_slot
         AND trs_1.outer_instruction_index = sp.outer_instruction_index
         AND trs_1.inner_instruction_index = sp.inner_instruction_index + 1
     INNER JOIN transfers trs_2
         ON trs_2.tx_id = sp.tx_id
+        AND trs_2.block_date = sp.block_date
+        AND trs_2.block_slot = sp.block_slot
         AND trs_2.outer_instruction_index = sp.outer_instruction_index
         AND trs_2.inner_instruction_index = sp.inner_instruction_index + 2
 )
