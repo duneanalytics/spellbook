@@ -34,6 +34,59 @@ with pools as (
   select
     f.pool
   from {{ source('sunswap_tron', 'v3factory_evt_poolcreated') }} f
+),
+
+raw_decoded as (
+  select
+    *
+  from table(
+    decode_evm_event(
+      abi => '{{ swap_event_abi | trim }}',
+      input => table(
+        select
+          l.topic0,
+          l.topic1,
+          l.topic2,
+          l.topic3,
+          l.data,
+          l.contract_address,
+          l.tx_hash,
+          l.tx_from,
+          l.tx_to,
+          l.index,
+          l.block_time,
+          l.block_number,
+          l.block_date
+        from {{ source('tron', 'logs') }} l
+        inner join pools p on p.pool = l.contract_address
+        where l.topic0 = {{ swap_topic0 }}
+        {% if is_incremental() %}
+          and {{ incremental_predicate('l.block_time') }}
+        {% endif %}
+      )
+    )
+  ) r
+),
+
+decoded as (
+  select
+    r.contract_address,
+    r.tx_hash as evt_tx_hash,
+    r.tx_from as evt_tx_from,
+    r.tx_to as evt_tx_to,
+    cast(r.index as integer) as evt_tx_index,
+    cast(r.index as bigint) as evt_index,
+    r.block_time as evt_block_time,
+    cast(r.block_number as bigint) as evt_block_number,
+    cast(r.block_date as date) as evt_block_date,
+    r.amount0,
+    r.amount1,
+    cast(r.liquidity as uint256) as liquidity,
+    r.recipient,
+    r.sender,
+    cast(r.sqrtPriceX96 as uint256) as sqrtPriceX96,
+    cast(r.tick as integer) as tick
+  from raw_decoded r
 )
 
 select
@@ -41,43 +94,16 @@ select
   d.evt_tx_hash,
   d.evt_tx_from,
   d.evt_tx_to,
-  cast(d.evt_tx_index as integer) as evt_tx_index,
-  cast(d.evt_index as bigint) as evt_index,
+  d.evt_tx_index,
+  d.evt_index,
   d.evt_block_time,
-  cast(d.evt_block_number as bigint) as evt_block_number,
-  cast(d.evt_block_date as date) as evt_block_date,
+  d.evt_block_number,
+  d.evt_block_date,
   d.amount0,
   d.amount1,
-  cast(d.liquidity as uint256) as liquidity,
+  d.liquidity,
   d.recipient,
   d.sender,
-  cast(d.sqrtPriceX96 as uint256) as sqrtPriceX96,
-  cast(d.tick as integer) as tick
-from table(
-  decode_evm_event(
-    abi => '{{ swap_event_abi | trim }}',
-    input => table(
-      select
-        l.topic0,
-        l.topic1,
-        l.topic2,
-        l.topic3,
-        l.data,
-        l.contract_address,
-        l.tx_hash as evt_tx_hash,
-        l.tx_from as evt_tx_from,
-        l.tx_to as evt_tx_to,
-        l.index as evt_tx_index,
-        l.index as evt_index,
-        l.block_time as evt_block_time,
-        l.block_number as evt_block_number,
-        l.block_date as evt_block_date
-      from {{ source('tron', 'logs') }} l
-      inner join pools p on p.pool = l.contract_address
-      where l.topic0 = {{ swap_topic0 }}
-      {% if is_incremental() %}
-        and {{ incremental_predicate('l.block_time') }}
-      {% endif %}
-    )
-  )
-) d
+  d.sqrtPriceX96,
+  d.tick
+from decoded d
