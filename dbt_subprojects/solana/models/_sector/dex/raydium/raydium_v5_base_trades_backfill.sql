@@ -11,7 +11,7 @@
     , begin = '2024-05-16'
     , batch_size = var('raydium_v5_batch_size', 'day')
     , lookback = 3
-    , unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month']
+    , unique_key = ['block_month', 'block_date', 'surrogate_key']
     , pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
   )
 }}
@@ -23,6 +23,7 @@
 with swaps as (
     select
           block_slot
+        , block_month
         , block_date
         , block_time
         , inner_instruction_index
@@ -33,9 +34,12 @@ with swaps as (
         , tx_signer
         , tx_index
         , pool_id
+        , surrogate_key
     from {{ ref('raydium_v5_solana_stg_decoded_swaps') }}
     where
-        block_time >= timestamp '{{batch_start}}'
+        block_date >= cast(timestamp '{{batch_start}}' as date)
+        and block_date < cast(timestamp '{{batch_end}}' as date)
+        and block_time >= timestamp '{{batch_start}}'
         and block_time < timestamp '{{batch_end}}'
 )
 , transfers as (
@@ -49,13 +53,17 @@ with swaps as (
         , to_token_account
     from {{ source('tokens_solana', 'transfers') }}
     where
-        block_time >= timestamp '{{batch_start}}'
+        block_date >= cast(timestamp '{{batch_start}}' as date)
+        and block_date < cast(timestamp '{{batch_end}}' as date)
+        and block_time >= timestamp '{{batch_start}}'
         and block_time < timestamp '{{batch_end}}'
         and (token_version = 'spl_token' or token_version = 'spl_token_2022')
 )
 , all_swaps as (
     select
           sp.block_time
+        , sp.block_month
+        , sp.block_date
         , sp.block_slot
         , case when sp.is_inner = false then 'direct'
             else sp.outer_executing_account
@@ -72,6 +80,7 @@ with swaps as (
         , trs_1.token_mint_address as token_sold_mint_address
         , trs_2.from_token_account as token_bought_vault
         , trs_1.to_token_account as token_sold_vault
+        , sp.surrogate_key
     from swaps as sp
     inner join transfers as trs_1
         on trs_1.tx_id = sp.tx_id
@@ -88,7 +97,8 @@ select
     , 'raydium' as project
     , 5 as version
     , 'cpmm' as version_name
-    , cast(date_trunc('month', tb.block_time) as date) as block_month
+    , tb.block_month
+    , tb.block_date
     , tb.block_time
     , tb.block_slot
     , tb.trade_source
@@ -106,4 +116,5 @@ select
     , tb.outer_instruction_index
     , tb.inner_instruction_index
     , tb.tx_index
+    , tb.surrogate_key
 from all_swaps as tb

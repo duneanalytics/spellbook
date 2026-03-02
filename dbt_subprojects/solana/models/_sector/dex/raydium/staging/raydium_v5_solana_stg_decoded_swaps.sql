@@ -48,7 +48,7 @@ FROM (
     FROM {{ source('raydium_cp_solana', 'raydium_cp_swap_call_swapBaseOutput') }}
     WHERE 1=1
         {% if is_incremental() %}
-        AND {{ incremental_predicate('call_block_time') }}
+        AND {{ incremental_predicate('call_block_date') }}
         {% else %}
         AND call_block_date >= DATE '{{ project_start_date }}'
         {% endif %}
@@ -70,7 +70,7 @@ FROM (
     FROM {{ source('raydium_cp_solana', 'raydium_cp_swap_call_swapBaseInput') }}
     WHERE 1=1
         {% if is_incremental() %}
-        AND {{ incremental_predicate('call_block_time') }}
+        AND {{ incremental_predicate('call_block_date') }}
         {% else %}
         AND call_block_date >= DATE '{{ project_start_date }}'
         {% endif %}
