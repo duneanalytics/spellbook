@@ -16,5 +16,6 @@
         , version = '4'
         , PoolManager_call_Swap = source('uniswap_v4_unichain', 'PoolManager_call_Swap') 
         , PoolManager_evt_Swap = source('uniswap_v4_unichain', 'PoolManager_evt_Swap') 
+        , pool_manager_addr = '0x1F98400000000000000000000000000000000004'
     )
 }}

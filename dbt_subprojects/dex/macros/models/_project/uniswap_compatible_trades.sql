@@ -129,7 +129,7 @@ FROM
     , taker_column_name = null
     , maker_column_name = null
     , filter_angstrom_addr = null
-    , pool_manager_addr = null 
+    , pool_manager_addr = '0x' 
     )
 %}
 WITH dexs AS
@@ -272,7 +272,7 @@ WITH dexs AS
 
 , token_transfers as (
     SELECT 
-        , tx_hash
+        tx_hash
         , evt_index
         , trace_address
         , block_date
@@ -282,7 +282,7 @@ WITH dexs AS
         , amount_raw as amount 
         , case 
             when token_standard = 'erc20' then array[evt_index]
-            when token_standrd = 'native' then trace_address 
+            when token_standard = 'native' then trace_address 
         end as token_index 
     FROM {{ source('tokens', 'transfers') }}
     WHERE block_time >= date '2026-02-01'
