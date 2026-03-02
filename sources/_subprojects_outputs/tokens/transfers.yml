@@ -298,6 +298,7 @@ sources:
     tables:
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
+      - name: spl_stablecoins
 
   - name: tokens_shape
     tables:
@@ -350,6 +351,7 @@ sources:
       - name: transfers
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
+      - name: trc20_stablecoins
       - name: trc20_stablecoins_core
       - name: trc20_stablecoins_extended
 

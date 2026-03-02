@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: stablecoins_multichain_tokens
+    meta:
+      sector: stablecoins
+      contributors: tomfutago
+    config:
+      tags: ['tokens', 'stablecoins', 'multichain']
+    description: >
+      Unified stablecoin token list across EVM, Solana, and Tron. The model stitches the
+      source schemas into a superset and normalizes all address-like columns to varchar.
+    columns:
+      - name: blockchain
+        description: "Blockchain name"
+      - name: contract_address
+        description: "Stablecoin contract address for EVM/Tron chains (varchar)"
+      - name: token_mint_address
+        description: "Stablecoin token mint address for Solana chains (varchar)"
+      - name: currency
+        description: "ISO 4217 currency code the stablecoin is pegged to (e.g. USD, EUR)"
+      - name: backing
+        description: "Type of backing for the stablecoin"
+      - name: symbol
+        description: "Token symbol"
+      - name: decimals
+        description: "Token decimals"
+      - name: name
+        description: "Token name or issuer"
