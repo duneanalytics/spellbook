@@ -44,8 +44,8 @@ WITH changed_prices AS (
     SELECT ff.day
     , ff.condition_id
     , ff.token_id
-    , CASE WHEN ff.hour <= md.market_end_time_parsed THEN ff.price
-        WHEN ff.hour > md.market_end_time_parsed
+    , CASE WHEN ff.day <= md.market_end_time_parsed THEN ff.price
+        WHEN ff.day > md.market_end_time_parsed
             THEN CASE 
                 WHEN md.token_outcome = 'Yes' AND md.outcome = 'yes' THEN 1
                 WHEN md.token_outcome = 'Yes' AND md.outcome = 'no' THEN 0

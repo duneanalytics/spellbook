@@ -21,7 +21,7 @@ WITH changed_prices AS (
             , condition_id
             , asset_id AS token_id
             , price
-            , ROW_NUMBER() OVER (PARTITION BY date_trunc('hour', block_time), token_id ORDER BY block_time DESC) as rn
+            , ROW_NUMBER() OVER (PARTITION BY date_trunc('hour', block_time), asset_id ORDER BY block_time DESC) as rn
             FROM {{ ref('polymarket_polygon_market_trades_raw') }}
             ) ranked
     WHERE rn = 1
