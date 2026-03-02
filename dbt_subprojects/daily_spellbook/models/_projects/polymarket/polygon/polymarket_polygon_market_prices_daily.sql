@@ -36,8 +36,8 @@ WITH changed_prices AS (
     , lp.price
     FROM days d
     LEFT JOIN changed_prices lp
-        ON h.day >= lp.day
-        AND (lp.next_update_day IS NULL OR h.day < lp.next_update_day)
+        ON d.day >= lp.day
+        AND (lp.next_update_day IS NULL OR d.day < lp.next_update_day)
     )
 
 , price_correction AS (
