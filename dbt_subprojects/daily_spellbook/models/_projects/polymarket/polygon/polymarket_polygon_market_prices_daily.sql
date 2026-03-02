@@ -30,7 +30,7 @@ WITH changed_prices AS (
     )
 
 , forward_fill AS (
-    SELECT CAST(d.day AS timestamp) AS hour
+    SELECT d.day
     , lp.condition_id
     , lp.token_id
     , lp.price
