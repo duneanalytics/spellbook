@@ -11,7 +11,7 @@ WITH changed_prices AS (
     , condition_id
     , token_id
     , price
-    , LEAD(date_trunc('day', block_time)) OVER (PARTITION BY asset_id ORDER BY block_time ASC) AS next_update_day
+    , LEAD(date_trunc('day', block_time)) OVER (PARTITION BY token_id ORDER BY block_time ASC) AS next_update_day
     FROM (
         SELECT block_time
         , condition_id
