@@ -8,7 +8,7 @@
     , file_format = 'delta'
     , incremental_strategy = 'microbatch'
     , event_time = 'block_time'
-    , begin = '2024-04-01'
+    , begin = '2024-06-05'
     , batch_size = var('stabble_batch_size', 'day')
     , lookback = 3
     , unique_key = ['block_month', 'surrogate_key']
@@ -16,7 +16,7 @@
   )
 }}
 
-{% set begin = '2024-04-01' %}
+{% set begin = '2024-06-05' %}
 {% set batch_start = model.batch.event_time_start if model.batch else begin %}
 {% set batch_end = model.batch.event_time_end if model.batch else '2099-01-01' %}
 
