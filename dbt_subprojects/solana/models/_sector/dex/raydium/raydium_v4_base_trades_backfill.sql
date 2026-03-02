@@ -23,6 +23,7 @@
 WITH swaps AS (
     SELECT
           block_slot
+        , block_month
         , block_time
         , inner_instruction_index
         , outer_instruction_index
@@ -32,6 +33,7 @@ WITH swaps AS (
         , tx_signer
         , tx_index
         , pool_id
+        , surrogate_key
     FROM {{ ref('raydium_v4_solana_stg_decoded_swaps') }}
     WHERE
         block_time >= timestamp '{{ batch_start }}'
@@ -58,6 +60,8 @@ WITH swaps AS (
     SELECT
           sp.block_time
         , sp.block_slot
+        , sp.block_month
+        , sp.surrogate_key
         , CASE WHEN sp.is_inner = false THEN 'direct'
             ELSE sp.outer_executing_account
           END AS trade_source
@@ -89,7 +93,7 @@ SELECT
     , 'raydium' AS project
     , 4 AS version
     , 'amm' AS version_name
-    , CAST(date_trunc('month', tb.block_time) AS DATE) AS block_month
+    , tb.block_month
     , tb.block_time
     , tb.block_slot
     , tb.trade_source
@@ -107,5 +111,5 @@ SELECT
     , tb.outer_instruction_index
     , tb.inner_instruction_index
     , tb.tx_index
-    , {{ dbt_utils.generate_surrogate_key(['tb.block_slot', 'tb.tx_id', 'tb.tx_index', 'tb.outer_instruction_index', 'tb.inner_instruction_index']) }} AS surrogate_key
+    , tb.surrogate_key
 FROM all_swaps tb
