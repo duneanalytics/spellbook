@@ -17,8 +17,7 @@ WITH changed_prices AS (
         , price
         , LEAD(date_trunc('hour', block_time)) OVER (PARTITION BY token_id ORDER BY block_time ASC) AS next_update_hour
         FROM (
-            SELECT hour
-            , block_time
+            SELECT block_time
             , condition_id
             , asset_id AS token_id
             , price
@@ -29,12 +28,13 @@ WITH changed_prices AS (
     )
 
 , hours AS (
-   Select distinct date_trunc('hour', block_time) as hour
-   from {{ source('polygon', 'transactions') }}
+    SELECT timestamp AS hour
+    FROM {{ ref('utils_hours') }}
+    WHERE timestamp >= CAST('2022-11-21 19:00' AS timestamp)
     )
 
 , forward_fill AS (
-    SELECT CAST(h.hour AS timestamp) AS hour
+    SELECT h.hour
     , lp.condition_id
     , lp.token_id
     , lp.price
