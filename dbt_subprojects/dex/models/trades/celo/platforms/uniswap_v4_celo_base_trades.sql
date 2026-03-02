@@ -16,5 +16,6 @@
         , version = '4'
         , PoolManager_call_Swap = source('uniswap_v4_celo', 'PoolManager_call_Swap') 
         , PoolManager_evt_Swap = source('uniswap_v4_celo', 'PoolManager_evt_Swap')
+        , pool_manager_addr = '0x288dc841a52fca2707c6947b3a777c5e56cd87bc'
     )
 }}

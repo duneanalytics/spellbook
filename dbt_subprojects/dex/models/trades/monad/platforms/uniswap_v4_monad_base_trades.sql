@@ -16,5 +16,6 @@
         , version = '4'
         , PoolManager_call_Swap = source('uniswap_v4_monad', 'PoolManager_call_Swap') 
         , PoolManager_evt_Swap = source('uniswap_v4_monad', 'PoolManager_evt_Swap') 
+        , pool_manager_addr = '0x188d586ddcf52439676ca21a244753fa19f9ea8e'
     )
 }}

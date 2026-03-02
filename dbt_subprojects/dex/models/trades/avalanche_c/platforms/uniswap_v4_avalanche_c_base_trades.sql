@@ -16,5 +16,6 @@
         , version = '4'
         , PoolManager_call_Swap = source('uniswap_v4_avalanche_c', 'PoolManager_call_Swap') 
         , PoolManager_evt_Swap = source('uniswap_v4_avalanche_c', 'PoolManager_evt_Swap') 
+        , pool_manager_addr = '0x06380c0e0912312b5150364b9dc4542ba0dbbc85'
     )
 }}
