@@ -23,7 +23,6 @@
 WITH swaps AS (
     SELECT
           block_slot
-        , block_date
         , block_time
         , inner_instruction_index
         , outer_instruction_index
@@ -39,144 +38,50 @@ WITH swaps AS (
         AND block_time < timestamp '{{ batch_end }}'
 )
 
-, swap_transfer_keys AS (
-    SELECT DISTINCT
-          tx_id
-        , block_date
-        , block_slot
-        , outer_instruction_index
-        , inner_instruction_index AS swap_inner_instruction_index
-        , transfer_inner_instruction_index
-        , transfer_side
-    FROM (
-        SELECT
-              tx_id
-            , block_date
-            , block_slot
-            , outer_instruction_index
-            , inner_instruction_index
-            , inner_instruction_index + 2 AS transfer_inner_instruction_index
-            , 1 AS transfer_side
-        FROM swaps
-
-        UNION ALL
-
-        SELECT
-              tx_id
-            , block_date
-            , block_slot
-            , outer_instruction_index
-            , inner_instruction_index
-            , inner_instruction_index + 1 AS transfer_inner_instruction_index
-            , 2 AS transfer_side
-        FROM swaps
-    )
-)
-
-, swap_slots AS (
-    SELECT DISTINCT block_date, block_slot
-    FROM swap_transfer_keys
-)
-
-, transfers_pruned AS (
-    SELECT
-          tf.tx_id
-        , tf.block_date
-        , tf.block_slot
-        , tf.outer_instruction_index
-        , tf.inner_instruction_index
-        , tf.amount
-        , tf.from_token_account
-        , tf.to_token_account
-        , tf.token_mint_address
-    FROM {{ source('tokens_solana', 'transfers') }} tf
-    INNER JOIN swap_slots ss
-        ON  ss.block_date = tf.block_date
-        AND ss.block_slot = tf.block_slot
-    WHERE 1=1
-        AND tf.action = 'transfer'
-        AND (tf.token_version = 'spl_token' OR tf.token_version = 'spl_token_2022')
-        AND tf.block_time >= timestamp '{{ batch_start }}'
-        AND tf.block_time < timestamp '{{ batch_end }}'
-        AND EXISTS (
-            SELECT 1
-            FROM swap_transfer_keys sk
-            WHERE
-                sk.tx_id = tf.tx_id
-                AND sk.block_date = tf.block_date
-                AND sk.block_slot = tf.block_slot
-                AND sk.outer_instruction_index = tf.outer_instruction_index
-                AND sk.transfer_inner_instruction_index = tf.inner_instruction_index
-        )
-)
-
-, transfers_filtered AS (
-    SELECT
-          sk.tx_id
-        , sk.block_date
-        , sk.block_slot
-        , sk.outer_instruction_index
-        , sk.swap_inner_instruction_index
-        , sk.transfer_inner_instruction_index AS inner_instruction_index
-        , sk.transfer_side
-        , tp.amount
-        , tp.from_token_account
-        , tp.to_token_account
-        , tp.token_mint_address
-    FROM swap_transfer_keys sk
-    INNER JOIN transfers_pruned tp
-        ON  tp.tx_id = sk.tx_id
-        AND tp.block_date = sk.block_date
-        AND tp.block_slot = sk.block_slot
-        AND tp.outer_instruction_index = sk.outer_instruction_index
-        AND tp.inner_instruction_index = sk.transfer_inner_instruction_index
-)
-
 , transfers AS (
     SELECT
-          s.block_date
-        , s.block_time
-        , s.block_slot
-        , CASE
-            WHEN s.is_inner = false THEN 'direct'
-            ELSE s.outer_executing_account
+          tx_id
+        , outer_instruction_index
+        , inner_instruction_index
+        , amount
+        , token_mint_address
+        , from_token_account
+        , to_token_account
+    FROM {{ source('tokens_solana', 'transfers') }}
+    WHERE
+        block_time >= timestamp '{{ batch_start }}'
+        AND block_time < timestamp '{{ batch_end }}'
+        AND (token_version = 'spl_token' OR token_version = 'spl_token_2022')
+)
+
+, all_swaps AS (
+    SELECT
+          sp.block_time
+        , sp.block_slot
+        , CASE WHEN sp.is_inner = false THEN 'direct'
+            ELSE sp.outer_executing_account
           END AS trade_source
-        , max(CASE WHEN tf.transfer_side = 1 THEN tf.amount END) AS token_bought_amount_raw
-        , max(CASE WHEN tf.transfer_side = 2 THEN tf.amount END) AS token_sold_amount_raw
-        , max(CASE WHEN tf.transfer_side = 1 THEN tf.from_token_account END) AS token_bought_vault
-        , max(CASE WHEN tf.transfer_side = 2 THEN tf.to_token_account END) AS token_sold_vault
-        , max(CASE WHEN tf.transfer_side = 1 THEN tf.token_mint_address END) AS token_bought_mint_address
-        , max(CASE WHEN tf.transfer_side = 2 THEN tf.token_mint_address END) AS token_sold_mint_address
-        , s.pool_id AS project_program_id
-        , s.tx_signer AS trader_id
-        , s.tx_id
-        , s.outer_instruction_index
-        , s.inner_instruction_index
-        , s.tx_index
-    FROM swaps s
-    INNER JOIN transfers_filtered tf
-        ON  tf.tx_id = s.tx_id
-        AND tf.block_date = s.block_date
-        AND tf.block_slot = s.block_slot
-        AND tf.outer_instruction_index = s.outer_instruction_index
-        AND tf.swap_inner_instruction_index = s.inner_instruction_index
-    GROUP BY
-          s.block_date
-        , s.block_time
-        , s.block_slot
-        , CASE
-            WHEN s.is_inner = false THEN 'direct'
-            ELSE s.outer_executing_account
-          END
-        , s.pool_id
-        , s.tx_signer
-        , s.tx_id
-        , s.outer_instruction_index
-        , s.inner_instruction_index
-        , s.tx_index
-    HAVING 1=1
-        AND count_if(tf.transfer_side = 1) = 1
-        AND count_if(tf.transfer_side = 2) = 1
+        , trs_2.amount AS token_bought_amount_raw
+        , trs_1.amount AS token_sold_amount_raw
+        , sp.pool_id
+        , sp.tx_signer AS trader_id
+        , sp.tx_id
+        , sp.outer_instruction_index
+        , sp.inner_instruction_index
+        , sp.tx_index
+        , trs_2.token_mint_address AS token_bought_mint_address
+        , trs_1.token_mint_address AS token_sold_mint_address
+        , trs_2.from_token_account AS token_bought_vault
+        , trs_1.to_token_account AS token_sold_vault
+    FROM swaps sp
+    INNER JOIN transfers trs_1
+        ON trs_1.tx_id = sp.tx_id
+        AND trs_1.outer_instruction_index = sp.outer_instruction_index
+        AND trs_1.inner_instruction_index = sp.inner_instruction_index + 1
+    INNER JOIN transfers trs_2
+        ON trs_2.tx_id = sp.tx_id
+        AND trs_2.outer_instruction_index = sp.outer_instruction_index
+        AND trs_2.inner_instruction_index = sp.inner_instruction_index + 2
 )
 
 SELECT
@@ -184,23 +89,23 @@ SELECT
     , 'raydium' AS project
     , 4 AS version
     , 'amm' AS version_name
-    , CAST(date_trunc('month', block_time) AS DATE) AS block_month
-    , block_time
-    , block_slot
-    , trade_source
-    , token_bought_amount_raw
-    , token_sold_amount_raw
+    , CAST(date_trunc('month', tb.block_time) AS DATE) AS block_month
+    , tb.block_time
+    , tb.block_slot
+    , tb.trade_source
+    , tb.token_bought_amount_raw
+    , tb.token_sold_amount_raw
     , CAST(NULL AS DOUBLE) AS fee_tier
-    , token_sold_mint_address
-    , token_bought_mint_address
-    , token_sold_vault
-    , token_bought_vault
-    , project_program_id
+    , tb.token_sold_mint_address
+    , tb.token_bought_mint_address
+    , tb.token_sold_vault
+    , tb.token_bought_vault
+    , tb.pool_id AS project_program_id
     , '675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8' AS project_main_id
-    , trader_id
-    , tx_id
-    , outer_instruction_index
-    , inner_instruction_index
-    , tx_index
-    , {{ dbt_utils.generate_surrogate_key(['block_slot', 'tx_id', 'tx_index', 'outer_instruction_index', 'inner_instruction_index']) }} AS surrogate_key
-FROM transfers
+    , tb.trader_id
+    , tb.tx_id
+    , tb.outer_instruction_index
+    , tb.inner_instruction_index
+    , tb.tx_index
+    , {{ dbt_utils.generate_surrogate_key(['tb.block_slot', 'tb.tx_id', 'tb.tx_index', 'tb.outer_instruction_index', 'tb.inner_instruction_index']) }} AS surrogate_key
+FROM all_swaps tb
