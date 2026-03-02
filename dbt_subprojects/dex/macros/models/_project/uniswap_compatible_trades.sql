@@ -232,7 +232,7 @@ WITH dexs AS
         , sqrtPriceX96
         , tick
     FROM {{ PoolManager_evt_Swap }}
-    WHERE evt_block_time >= date '2026-02-01'
+    WHERE 1 = 1
         {%- if is_incremental() %}
         AND {{ incremental_predicate('evt_block_time') }}
         {%- endif %}
@@ -285,7 +285,7 @@ WITH dexs AS
             when token_standard = 'native' then trace_address 
         end as token_index 
     FROM {{ source('tokens', 'transfers') }}
-    WHERE block_time >= date '2026-02-01'
+    WHERE 1 = 1 
     AND "from" = {{ pool_manager_addr }}
     AND blockchain = '{{blockchain}}'
         {%- if is_incremental() %}
