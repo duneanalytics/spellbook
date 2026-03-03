@@ -129,13 +129,13 @@ WITH token_data AS (
 
 SELECT 
   'monad' AS blockchain,
-  bytearray_substring(pool_id, 1, 20) AS address,
-  CASE WHEN pool_type IN ('stable', 'LBP', 'ECLP') 
-  THEN lower(pool_symbol)
-    ELSE lower(concat(array_join(array_agg(token_symbol ORDER BY token_symbol), '/'), ' ', 
-    array_join(array_agg(cast(norm_weight AS varchar) ORDER BY token_symbol), '/')))
+  s.address,
+  CASE WHEN s.pool_type IN ('stable', 'LBP', 'ECLP') 
+  THEN lower(s.pool_symbol)
+    ELSE lower(concat(array_join(array_agg(s.token_symbol ORDER BY s.token_symbol), '/'), ' ', 
+    array_join(array_agg(cast(s.norm_weight AS varchar) ORDER BY s.token_symbol), '/')))
   END AS name,
-  pool_type,
+  s.pool_type,
   'balancer_v3_pool' AS category,
   'balancerlabs' AS contributor,
   'query' AS source,
@@ -147,12 +147,13 @@ SELECT
 FROM (
   SELECT
     s1.pool_id,
-    token_symbol,
-    pool_symbol,
-    cast(100 * normalized_weight AS integer) AS norm_weight,
-    pool_type
+    bytearray_substring(s1.pool_id, 1, 20) AS address,
+    s1.token_symbol,
+    s1.pool_symbol,
+    cast(100 * s1.normalized_weight AS integer) AS norm_weight,
+    s1.pool_type
   FROM settings s1
-  GROUP BY s1.pool_id, token_symbol, pool_symbol, normalized_weight, pool_type
+  GROUP BY s1.pool_id, s1.token_symbol, s1.pool_symbol, s1.normalized_weight, s1.pool_type
 ) s
-GROUP BY pool_id, pool_symbol, pool_type
+GROUP BY s.pool_id, s.address, s.pool_symbol, s.pool_type
 ORDER BY 1
