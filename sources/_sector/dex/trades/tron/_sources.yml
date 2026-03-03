@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: sunswap_tron
+    tables:
+      - name: v3factory_evt_poolcreated
+      - name: v3pool_evt_swap

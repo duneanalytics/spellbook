@@ -1,6 +1,28 @@
 version: 1
 
 models:
+  - name: stabble_solana_stg_decoded_swaps
+    meta:
+      blockchain: solana
+      contributors: []
+    config:
+      tags: ['solana', 'dex', 'stabble']
+    description: >
+      staging model for stabble swap data from decoded tables
+
+  - name: stabble_solana_base_trades_backfill
+    meta:
+      blockchain: solana
+      contributors: []
+    config:
+      tags: ['solana', 'dex', 'microbatch']
+    description: >
+      stabble DEX base trades on Solana - microbatch backfill
+    data_tests:
+      - check_columns_solana_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['block_month', 'surrogate_key']
+
   - name: stabble_solana_base_trades
     meta:
       blockchain: solana
@@ -8,11 +30,11 @@ models:
     config:
       tags: ['solana', 'dex']
     description: >
-      All raw stabble DEX trades on Solana, including stable swap and weighted swap.
+      All raw stabble DEX trades on Solana (view over backfill model)
     data_tests:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month']
+          combination_of_columns: ['block_month', 'surrogate_key']
 
   - name: stabble_solana_trades
     meta:
