@@ -130,6 +130,7 @@ FROM
     , maker_column_name = null
     , filter_angstrom_addr = null
     , pool_manager_addr = '0x' 
+    , start_date = '2024-12-01'
     )
 %}
 WITH dexs AS
@@ -285,7 +286,7 @@ WITH dexs AS
             when token_standard = 'native' then trace_address 
         end as token_index 
     FROM {{ source('tokens', 'transfers') }}
-    WHERE 1 = 1 
+    WHERE block_date >= date '{{start_date}}'
     AND "from" = {{ pool_manager_addr }}
     AND blockchain = '{{blockchain}}'
         {%- if is_incremental() %}

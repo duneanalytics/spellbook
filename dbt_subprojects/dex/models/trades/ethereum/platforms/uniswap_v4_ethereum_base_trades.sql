@@ -18,5 +18,6 @@
         , PoolManager_evt_Swap = source('uniswap_v4_ethereum', 'PoolManager_evt_Swap')
         , filter_angstrom_addr = '0x0000000aa232009084Bd71A5797d089AA4Edfad4'
         , pool_manager_addr = '0x000000000004444c5dc75cb358380d2e3de08a90'
+        , start_date = '2025-01-23'
     )
 }}
