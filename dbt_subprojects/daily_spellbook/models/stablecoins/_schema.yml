@@ -74,10 +74,6 @@ models:
       - *token_address
       - *token_symbol
       - *currency
-      - name: token_backing
-        description: "Backing type for the stablecoin (null for Tron)"
-      - name: token_name
-        description: "Name of the stablecoin token (null for Tron)"
       - name: amount_raw
         description: "Raw transfer amount (not adjusted for decimals)"
       - name: amount
