@@ -19,7 +19,8 @@ Sets up gas fees and token transfers for a new chain.
 /catalyst-gas-and-transfers CUR2-547 monad
 ```
 
-Dune MCP: server `user-dune-mcp`; tools `query_sql`, `run_query_by_id`. Use parameters as shown.
+Dune MCP: server `user-dune-mcp`; tools `createDuneQuery`, `executeQueryById`, `getExecutionResults`.
+For ad-hoc SQL, use this sequence: create query with `createDuneQuery` (pass SQL in `query`) -> run with `executeQueryById` (using returned `query_id`) -> fetch rows with `getExecutionResults` (using returned `execution_id`).
 
 ## conventions
 - **Execution order:** Numbered items = execute sequentially. Any step that says "run" or "execute" is blocking; complete it before proceeding.
@@ -27,15 +28,15 @@ Dune MCP: server `user-dune-mcp`; tools `query_sql`, `run_query_by_id`. Use para
 - **Contributors:** New files: set git username only. Existing files: append git username.
 
 ## prep vars
-- Retrieve chain metadata: use Dune MCP **query_sql** with query: `select * from dune.blockchains where name = '<chain>'` (substitute `<chain>` with the chain name). Extract: `chain_id`, `name` (display name), `token_address` (native token).
-- Retrieve first_block_time: use Dune MCP **query_sql** with query: `select min(time) from <chain>.blocks where number <> 0` (substitute `<chain>`).
+- Retrieve chain metadata: run this SQL via the ad-hoc SQL sequence above: `select * from dune.blockchains where name = '<chain>'` (substitute `<chain>` with the chain name). Extract: `chain_id`, `name` (display name), `token_address` (native token).
+- Retrieve first_block_time: run this SQL via the ad-hoc SQL sequence above: `select min(time) from <chain>.blocks where number <> 0` (substitute `<chain>`).
 
 ## git workflow
 1. **Verify main is up to date:** fetch latest, pull if behind, exit if diverged.
 2. **Create branch:** name `<issue_id>-<chain>-gas-and-transfers`, create off `main`, checkout, warn if exists. Don't commit/push anything.
 
 ## additional prep
-- Identify native `token_address`: use Dune MCP **query_sql** with query: `select * from dune.blockchains where name = '<chain>'` (substitute `<chain>`).
+- Identify native `token_address`: run this SQL via the ad-hoc SQL sequence above: `select * from dune.blockchains where name = '<chain>'` (substitute `<chain>`).
 
 ## steps
 1. **add gas fees model**
@@ -51,7 +52,7 @@ Dune MCP: server `user-dune-mcp`; tools `query_sql`, `run_query_by_id`. Use para
 
 3. **add gas seed data**
    - edit `dbt_subprojects/hourly_spellbook/seeds/_sector/gas/evm_gas_fees.csv`
-   - use Dune MCP **run_query_by_id** with `query_id: 6162940`, `query_parameters: '{"chain":"<chain>"}'` (substitute `<chain>`) for test entries
+   - use Dune MCP **executeQueryById** with `query_id: 6162940`, `query_parameters: [{"key":"chain","value":"<chain>","type":"text"}]` (substitute `<chain>`) for test entries
 
 4. **add to gas fees union**
    - edit `dbt_subprojects/hourly_spellbook/models/_sector/gas/fees/gas_fees.sql`
