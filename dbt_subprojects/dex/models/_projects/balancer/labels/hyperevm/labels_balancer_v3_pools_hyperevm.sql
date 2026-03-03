@@ -1,7 +1,6 @@
 {{config(
   schema = 'labels',
   alias = 'balancer_v3_pools_hyperevm'
-  , post_hook='{{ hide_spells() }}'
 )}}
 
 WITH token_data AS (
