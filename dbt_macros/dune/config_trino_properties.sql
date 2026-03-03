@@ -7,7 +7,7 @@
   ])
 {%- endmacro -%}
 
-{% macro expose_spells(blockchains, spell_type, spell_name, contributors) %}
+{% macro expose_spells(blockchains, spell_type, spell_name, contributors, deprecated=false) %}
   {%- set validated_contributors = tojson(fromjson(contributors | as_text)) -%}
   {%- if ("%s" % validated_contributors) == "null" -%}
     {%- do exceptions.raise_compiler_error("Invalid contributors '%s'. The list of contributors must be valid JSON." % contributors) -%}
@@ -22,6 +22,9 @@
             'dune.data_explorer.contributors': validated_contributors,
             'dune.vacuum': '{"enabled":true}'
           } -%}
+    {%- if deprecated -%}
+      {%- do properties.update({'dune.data_explorer.deprecated': 'true'}) -%}
+    {%- endif -%}
     {%- if model.config.materialized == "view" -%}
       CALL {{ model.database }}._internal.alter_view_properties('{{ model.schema }}', '{{ model.alias }}',
         {{ trino_properties(properties) }}
