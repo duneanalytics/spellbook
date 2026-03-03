@@ -3,7 +3,7 @@
         alias = 'batches',
         materialized='incremental',
         partition_by = ['block_date'],
-        unique_key = ['tx_hash'],
+        unique_key = ['block_date', 'tx_hash'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
         incremental_strategy='merge',
