@@ -1,7 +1,6 @@
 {{config(
   schema = 'labels',
-  alias = 'balancer_v3_pools_avalanche_c',
-  post_hook='{{ hide_spells() }}'
+  alias = 'balancer_v3_pools_avalanche_c'
 
 )}}
 
