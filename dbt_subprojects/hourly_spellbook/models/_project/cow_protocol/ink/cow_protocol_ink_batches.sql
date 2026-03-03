@@ -48,6 +48,8 @@ batch_counts as (
     from {{ source('gnosis_protocol_v2_ink', 'GPv2Settlement_evt_Settlement') }} s
         left outer join {{ source('gnosis_protocol_v2_ink', 'GPv2Settlement_evt_Interaction') }} i
             on i.evt_tx_hash = s.evt_tx_hash
+            and i.evt_block_number = s.evt_block_number
+            and i.evt_block_date = s.evt_block_date
             {% if is_incremental() %}
             and {{ incremental_predicate('i.evt_block_time') }}
             {% endif %}
@@ -64,6 +66,7 @@ batch_counts as (
 
 batch_values as (
     select
+        try_cast(date_trunc('day', block_time) as date) as block_date,
         tx_hash,
         count(*)        as num_trades,
         sum(usd_value)  as batch_value,
@@ -80,7 +83,7 @@ batch_values as (
     {% if is_incremental() %}
     where {{ incremental_predicate('block_time') }}
     {% endif %}
-    group by tx_hash, price
+    group by block_date, tx_hash, price
 ),
 
 combined_batch_info as (
@@ -103,9 +106,11 @@ combined_batch_info as (
     from batch_counts b
         join batch_values t
             on b.evt_tx_hash = t.tx_hash
+            and b.block_date = t.block_date
         inner join {{ source('ink', 'transactions') }} tx
-            on evt_tx_hash = hash
-            and evt_block_number = block_number
+            on b.evt_tx_hash = tx.hash
+            and b.evt_block_number = tx.block_number
+            and b.block_date = tx.block_date
             {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
             {% endif %}
