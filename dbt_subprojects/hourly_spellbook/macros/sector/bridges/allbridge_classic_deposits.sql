@@ -23,7 +23,7 @@ select
   evt_index,
   d.contract_address,
   cast(lockId as varchar) as bridge_transfer_id
-from {{ events }} as d
+from ( {{ events }} ) as d
 left join {{ ref('bridges_allbridge_classic_chain_indexes') }} as ci on trim(from_utf8(d.destination)) = ci.allbridge_slug
 left join {{ source('evms', 'info') }} as i on ci.blockchain = i.blockchain
 where substr(tokenSourceAddress, 21) = 0x000000000000000000000000
