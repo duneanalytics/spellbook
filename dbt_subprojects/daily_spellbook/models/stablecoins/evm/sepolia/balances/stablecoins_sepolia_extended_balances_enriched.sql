@@ -2,7 +2,7 @@
 
 {{
   config(
-    tags = ['prod_exclude'],
+    tags = ['prod_exclude', 'stablecoins'],
     schema = 'stablecoins_' ~ chain,
     alias = 'extended_balances_enriched',
     materialized = 'incremental',
@@ -16,6 +16,8 @@
 
 {{
   balances_incremental_subset_daily_enrich(
-    base_balances = ref('stablecoins_' ~ chain ~ '_extended_balances')
+    base_balances = ref('stablecoins_' ~ chain ~ '_extended_balances'),
+    chain = chain,
+    token_list = 'extended'
   )
 }}

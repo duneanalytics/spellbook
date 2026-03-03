@@ -8,3 +8,6 @@ sources:
   - name: dex_solana
     tables:
       - name: trades
+  - name: stablecoins_svm
+    tables:
+      - name: balances

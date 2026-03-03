@@ -50,7 +50,7 @@ SELECT * FROM  (
         buyer,
         seller,
         nft_contract_address,
-        nft_token_id,
+        CAST(nft_token_id as uint256) as nft_token_id,
         nft_amount,
         price_raw,
         currency_contract,

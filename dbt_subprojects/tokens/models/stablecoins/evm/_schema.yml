@@ -16,6 +16,9 @@ models:
       - &contract_address
         name: contract_address
         description: "Contract address for the stablecoin token"
+      - &currency
+        name: currency
+        description: "ISO 4217 currency code the stablecoin is pegged to (e.g., USD, EUR, BRL)"
       - &backing
         name: backing
         description: "Type of backing for the stablecoin (e.g., Fiat-backed, Crypto-backed, Algorithmic, Hybrid, RWA-backed)"
@@ -85,6 +88,7 @@ models:
       - &token_symbol
         name: token_symbol
         description: "Symbol for the token"
+      - *currency
       - &token_backing
         name: token_backing
         description: "Stablecoin backing type"

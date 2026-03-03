@@ -126,3 +126,37 @@ models:
       tags: ['solana','dex']
     description: >
         solfi dex base trades on Solana with version_name
+
+  - name: solfi_v2_solana_stg_raw_swaps
+    meta:
+      blockchain: solana
+      contributors: [ Eekeyguy ]
+    config:
+      tags: [ 'solana','dex', 'solfi', 'solfi_v2' ]
+    description: >
+      staging model for solfi v2 swap data from instruction_calls
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['block_month', 'block_date', 'surrogate_key']
+
+  - name: solfi_v2_solana_base_trades
+    meta:
+      blockchain: solana
+      contributors: [ Eekeyguy ]
+    config:
+      tags: [ 'solana','dex', 'solfi', 'solfi_v2' ]
+    description: >
+      all raw solfi v2 dex trades on Solana
+    data_tests:
+      - check_columns_solana_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['block_month', 'block_date', 'surrogate_key']
+
+  - name: solfi_v2_solana_trades
+    meta:
+      blockchain: solana
+      contributors: [Eekeyguy]
+    config:
+      tags: ['solana','dex', 'solfi', 'solfi_v2']
+    description: >
+        all solfi v2 dex trades on Solana

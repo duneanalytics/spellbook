@@ -8,7 +8,7 @@ models:
       category: bot_labels
       contributors: msilb7
     config:
-      tags: ['labels', 'optimism','bots']
+      tags: ['labels', 'optimism','bots','prod_exclude']
     description: "Likely bot labels"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
