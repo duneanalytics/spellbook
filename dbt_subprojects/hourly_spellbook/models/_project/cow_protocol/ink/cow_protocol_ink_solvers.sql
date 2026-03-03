@@ -1,7 +1,6 @@
 {{ config(
         schema = 'cow_protocol_ink',
         alias='solvers'
-        , post_hook='{{ hide_spells() }}'
 )}}
 
 WITH
