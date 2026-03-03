@@ -72,7 +72,7 @@ select
   amount_usd,
   cast("from" as varchar) as "from",
   cast("to" as varchar) as "to",
-  cast(unique_key as varchar) as unique_key
+  unique_key
 from {{ source('stablecoins_evm', 'transfers') }}
 union all
 select
@@ -80,7 +80,7 @@ select
   block_month,
   block_date,
   block_time,
-  cast(null as bigint) as block_number,
+  block_slot as block_number,
   tx_id as tx_hash,
   cast(null as bigint) as evt_index,
   token_version as token_standard,
@@ -118,5 +118,5 @@ select
   amount_usd,
   from_varchar as "from",
   to_varchar as "to",
-  cast(unique_key as varchar) as unique_key
+  unique_key
 from {{ source('stablecoins_tron', 'transfers') }}
