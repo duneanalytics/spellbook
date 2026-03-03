@@ -1,7 +1,6 @@
 {{config(
   schema = 'labels',
   alias = 'balancer_v3_pools_monad'
-  , post_hook='{{ hide_spells() }}'
 )}}
 
 
