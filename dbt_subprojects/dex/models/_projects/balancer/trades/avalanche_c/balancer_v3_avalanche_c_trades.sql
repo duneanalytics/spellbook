@@ -3,7 +3,6 @@
         schema = 'balancer_v3_avalanche_c',
         alias = 'trades',
         materialized = 'view'
-        , post_hook='{{ hide_spells() }}'
     )
 }}
 
