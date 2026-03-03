@@ -19,7 +19,8 @@ Sets up foundational metadata for a new chain.
 /catalyst-foundational-metadata CUR2-554 xlayer
 ```
 
-Dune MCP: server `user-dune-mcp`; tools `query_sql`, `run_query_by_id`. Use parameters as shown.
+Dune MCP: server `user-dune-mcp`; tools `createDuneQuery`, `executeQueryById`, `getExecutionResults`.
+For ad-hoc SQL, use this sequence: create query with `createDuneQuery` (pass SQL in `query`) -> run with `executeQueryById` (using returned `query_id`) -> fetch rows with `getExecutionResults` (using returned `execution_id`).
 
 ## conventions
 - **Execution order:** Numbered items = execute sequentially. Any step that says "run" or "execute" is blocking; complete it before proceeding.
@@ -27,8 +28,8 @@ Dune MCP: server `user-dune-mcp`; tools `query_sql`, `run_query_by_id`. Use para
 - **Contributors:** New files: set git username only. Existing files: append git username.
 
 ## prep vars
-- Retrieve chain metadata: use Dune MCP **query_sql** with query: `select * from dune.blockchains where name = '<chain>'` (substitute `<chain>` with the chain name). Extract: `chain_id`, `name` (display name), `token_address` (native token).
-- Retrieve first_block_time: use Dune MCP **query_sql** with query: `select min(time) from <chain>.blocks where number <> 0` (substitute `<chain>`).
+- Retrieve chain metadata: run this SQL via the ad-hoc SQL sequence above: `select * from dune.blockchains where name = '<chain>'` (substitute `<chain>` with the chain name). Extract: `chain_id`, `name` (display name), `token_address` (native token).
+- Retrieve first_block_time: run this SQL via the ad-hoc SQL sequence above: `select min(time) from <chain>.blocks where number <> 0` (substitute `<chain>`).
 
 ## git workflow
 1. **Verify main is up to date:** fetch latest, pull if behind, exit if diverged.
@@ -37,7 +38,6 @@ Dune MCP: server `user-dune-mcp`; tools `query_sql`, `run_query_by_id`. Use para
 ## steps
 1. **add EVM chain info**
    - edit `dbt_subprojects/daily_spellbook/models/evms/evms_info.sql`
-   - add `<chain>` to `expose_spells` list
    - add VALUES row: `(chain_id, '<chain>', 'Name', 'Layer 1/2', ...)`
    - use prep vars: chain_id, name, first_block_time, token_address
    - find: explorer, wrapped_native_token_address
@@ -49,7 +49,7 @@ Dune MCP: server `user-dune-mcp`; tools `query_sql`, `run_query_by_id`. Use para
 3. **create prices tokens model**
    - create `dbt_subprojects/tokens/models/prices/<chain>/prices_<chain>_tokens.sql`
    - check chain docs for token addresses & symbols
-   - if not found: use Dune MCP **run_query_by_id** with `query_id: 6293737`, `query_parameters: '{"chain":"<chain>"}'` (substitute `<chain>`)
+   - if not found: use Dune MCP **executeQueryById** with `query_id: 6293737`, `query_parameters: [{"key":"chain","value":"<chain>","type":"text"}]` (substitute `<chain>`)
    - identify key tokens (top 5 transferred, stables, WETH)
    - find ids on coinpaprika, add to VALUES
 

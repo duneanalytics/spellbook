@@ -23,7 +23,8 @@ From the invocation or user message: 1st = issue_id, 2nd = chain, 3rd = project,
 /catalyst-dex-integration CUR2-548 monad kuru kuru
 ```
 
-Dune MCP: server `user-dune-mcp`; tools `query_sql`, `run_query_by_id`. Use parameters as shown.
+Dune MCP: server `user-dune-mcp`; tools `createDuneQuery`, `executeQueryById`, `getExecutionResults`.
+For ad-hoc SQL, use this sequence: create query with `createDuneQuery` (pass SQL in `query`) -> run with `executeQueryById` (using returned `query_id`) -> fetch rows with `getExecutionResults` (using returned `execution_id`).
 
 ## conventions
 - **Execution order:** Numbered items = execute sequentially. Any step that says "run" or "execute" is blocking; complete it before proceeding.
@@ -31,15 +32,15 @@ Dune MCP: server `user-dune-mcp`; tools `query_sql`, `run_query_by_id`. Use para
 - **Contributors:** New files: set git username only. Existing files: append git username.
 
 ## prep vars
-- Retrieve chain metadata: use Dune MCP **query_sql** with query: `select * from dune.blockchains where name = '<chain>'` (substitute `<chain>` with the chain name). Extract: `chain_id`, `name` (display name), `token_address` (native token).
-- Retrieve first_block_time: use Dune MCP **query_sql** with query: `select min(time) from <chain>.blocks where number <> 0` (substitute `<chain>`).
+- Retrieve chain metadata: run this SQL via the ad-hoc SQL sequence above: `select * from dune.blockchains where name = '<chain>'` (substitute `<chain>` with the chain name). Extract: `chain_id`, `name` (display name), `token_address` (native token).
+- Retrieve first_block_time: run this SQL via the ad-hoc SQL sequence above: `select min(time) from <chain>.blocks where number <> 0` (substitute `<chain>`).
 
 ## git workflow
 1. **Verify main is up to date:** fetch latest, pull if behind, exit if diverged.
 2. **Create branch:** name `<issue_id>-<chain>-dex-integration`, create off `main`, checkout, warn if exists. Don't commit/push anything.
 
 ## additional prep
-- Verify decoded DEX tables exist: use Dune MCP **run_query_by_id** with `query_id: 6318398`, `query_parameters: '{"chain":"<chain>","namespace":"<namespace>"}'` (substitute `<chain>` and `<namespace>`). Retrieve from query results: `namespace`, `name` and `abi`.
+- Verify decoded DEX tables exist: use Dune MCP **executeQueryById** with `query_id: 6318398`, `query_parameters: [{"key":"chain","value":"<chain>","type":"text"},{"key":"namespace","value":"<namespace>","type":"text"}]` (substitute `<chain>` and `<namespace>`). Retrieve from query results: `namespace`, `name` and `abi`.
 - Find common events in `abi` following patterns like: Swap, PairCreated, PoolCreated, etc. If not found, query `<chain>.logs_decoded`.
 - Identify DEX type: uniswap v2 fork, v3 fork, or custom.
 
@@ -74,7 +75,7 @@ Dune MCP: server `user-dune-mcp`; tools `query_sql`, `run_query_by_id`. Use para
 
 7. **final checks**
    - From repo root: run `pipenv shell`, then `cd dbt_subprojects/dex` and `dbt compile` (or `dbt compile --select <project>_<chain>_base_trades`). Fix any errors.
-   - **Populate seed csv:** Replace `<COMPILED_BASE_TRADES_SQL>` in the query below with the exact compiled SQL for the model `<project>_<chain>_base_trades` (from `dbt compile` output). Use it as a subquery, not a table name. Run the full query via Dune MCP **query_sql** and paste the 2–3 rows into the seed CSV.
+   - **Populate seed csv:** Replace `<COMPILED_BASE_TRADES_SQL>` in the query below with the exact compiled SQL for the model `<project>_<chain>_base_trades` (from `dbt compile` output). Use it as a subquery, not a table name. Run the full query via the ad-hoc SQL sequence above and paste the 2–3 rows into the seed CSV.
    ```sql
    with base_trades as (
      select
