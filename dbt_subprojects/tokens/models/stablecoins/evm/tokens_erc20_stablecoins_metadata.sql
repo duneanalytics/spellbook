@@ -428,6 +428,9 @@ from (values
 ('scroll', 0xedeabc3a1e7d21fe835ffa6f83a710c70bb1a051, 'Crypto-backed stablecoin', 'LUSD', 18, ''),
 
 -- worldchain
-('worldchain', 0x18bc5bcc660cf2b9ce3cd51a404afe1a0cbd3c22, 'Fiat-backed stablecoin', 'IDRX', 18, '')
+('worldchain', 0x18bc5bcc660cf2b9ce3cd51a404afe1a0cbd3c22, 'Fiat-backed stablecoin', 'IDRX', 18, ''),
+
+-- xlayer
+('xlayer', 0x74b7f16337b8972027f6196a17a631ac6de26d22, 'Fiat-backed stablecoin', 'USDC', 6, '')
 
 ) as temp_table (blockchain, contract_address, backing, symbol, decimals, name)

@@ -26,5 +26,6 @@ from (values
     ('5H4voZhzySsVvwVYDAKku8MZGuYBC7cXaBKDPW4YHWW1', 'GBP'),  -- VGBP
     ('dngKhBQM3BGvsDHKhrLnjvRKfY5Q7gEnYGToj9Lk8rk', 'ZAR'),   -- ZARP
     ('AhhdRu5YZdjVkKR3wbnUDaymVQL2ucjMQ63sZ3LFHsch', 'CHF'),  -- VCHF
-    ('A94X2fRy3wydNShU4dRaDyap2UuoeWJGWyATtyp61WZf', 'TRY')   -- TRYB
+    ('A94X2fRy3wydNShU4dRaDyap2UuoeWJGWyATtyp61WZf', 'TRY'),  -- TRYB
+    ('A9mUU4qviSctJVPJdBJWkb28deg915LYJKrzQ19ji3FM', 'USD')   -- USDC (Wormhole from Ethereum)
 ) as temp_table (token_mint_address, currency)
