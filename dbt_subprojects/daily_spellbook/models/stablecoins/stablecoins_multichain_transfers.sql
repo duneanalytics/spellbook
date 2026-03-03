@@ -72,7 +72,7 @@ select
   amount_usd,
   cast("from" as varchar) as "from",
   cast("to" as varchar) as "to",
-  unique_key
+  cast(unique_key as varchar) as unique_key
 from {{ source('stablecoins_evm', 'transfers') }}
 union all
 select
@@ -95,7 +95,7 @@ select
   amount_usd,
   from_owner as "from",
   to_owner as "to",
-  unique_key
+  cast(unique_key as varchar) as unique_key
 from {{ source('stablecoins_svm', 'transfers') }}
 union all
 select
@@ -118,5 +118,5 @@ select
   amount_usd,
   from_varchar as "from",
   to_varchar as "to",
-  unique_key
+  cast(unique_key as varchar) as unique_key
 from {{ source('stablecoins_tron', 'transfers') }}
