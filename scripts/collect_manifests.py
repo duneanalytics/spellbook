@@ -8,7 +8,7 @@ import shutil
 base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'dbt_subprojects'))
 
 # Define the list of subprojects to compile
-subprojects = ['daily_spellbook', 'dex', 'hourly_spellbook', 'nft', 'solana', 'tokens']
+subprojects = ['daily_spellbook', 'dex', 'hourly_spellbook', 'solana', 'tokens']
 
 # Directory to store the collected manifest.json files
 output_dir = os.path.join(base_dir, 'manifests')
