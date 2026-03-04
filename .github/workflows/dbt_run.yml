@@ -52,7 +52,7 @@ jobs:
         run: "./scripts/list_modified_downstream.sh"
 
       - name: dbt run initial model(s)
-        run: "dbt -x run $PROFILE --vars '{force-incremental: True}' --select state:modified --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
+        run: "dbt -x run --empty $PROFILE --select state:modified --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
 
       - name: dbt test initial model(s)
         run: "dbt test $PROFILE --select state:new state:modified --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
