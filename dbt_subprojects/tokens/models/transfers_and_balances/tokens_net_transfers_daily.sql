@@ -30,6 +30,7 @@
     , 'plasma'
     , 'polygon'
     , 'ronin'
+    , 'rise'
     , 'scroll'
     , 'sei'
     , 'shape'

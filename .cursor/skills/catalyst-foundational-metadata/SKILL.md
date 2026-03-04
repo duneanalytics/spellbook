@@ -6,9 +6,9 @@ disable-model-invocation: true
 # catalyst foundational metadata
 
 ## overview
-Sets up foundational metadata for a new chain.
+sets up foundational metadata for a new chain.
 
-**When to use:** Use when adding a new chain's foundational metadata (evms_info, native/prices tokens, base sources, evms_blockchains_list).
+**when to use:** use when adding a new chain's foundational metadata (`evms_info`, native/prices tokens, base sources, and `evms_blockchains_list`).
 
 ## parameters
 - `<issue_id>`: linear issue id (e.g., CUR2-554)
@@ -19,27 +19,28 @@ Sets up foundational metadata for a new chain.
 /catalyst-foundational-metadata CUR2-554 xlayer
 ```
 
-Dune MCP: server `user-dune-mcp`; tools `query_sql`, `run_query_by_id`. Use parameters as shown.
+dune mcp server: `user-dune-mcp`.
+for ad-hoc sql, prefer temporary execution if the dune mcp supports it in-session. only create saved/throwaway queries with `createDuneQuery` when temporary execution is not available or when a later step explicitly needs a `query_id`.
+fallback sequence when `query_id` is required: create query with `createDuneQuery` (pass sql in `query`) -> run with `executeQueryById` (using returned `query_id`) -> fetch rows with `getExecutionResults` (using returned `execution_id`).
 
 ## conventions
-- **Execution order:** Numbered items = execute sequentially. Any step that says "run" or "execute" is blocking; complete it before proceeding.
-- **Code patterns:** Use existing chain patterns as reference (e.g. `dbt_subprojects/dex/models/trades/kaia/`, `.../mezo/`). Ordering: mimic existing; if unclear, append. Swap chain name in: file paths, model names, schema entries, `blockchain` values.
-- **Contributors:** New files: set git username only. Existing files: append git username.
+- **execution order:** numbered items = execute sequentially. any step that says "run" or "execute" is blocking; complete it before proceeding.
+- **code patterns:** use existing chain patterns as reference (e.g. `dbt_subprojects/dex/models/trades/kaia/`, `.../mezo/`). ordering: mimic existing; if unclear, append. swap chain name in: file paths, model names, schema entries, `blockchain` values.
+- **contributors:** new files: set git username only. existing files: append git username.
 
 ## prep vars
-- Retrieve chain metadata: use Dune MCP **query_sql** with query: `select * from dune.blockchains where name = '<chain>'` (substitute `<chain>` with the chain name). Extract: `chain_id`, `name` (display name), `token_address` (native token).
-- Retrieve first_block_time: use Dune MCP **query_sql** with query: `select min(time) from <chain>.blocks where number <> 0` (substitute `<chain>`).
+- retrieve chain metadata: run this sql via the ad-hoc sql sequence above: `select * from dune.blockchains where name = '<chain>'` (substitute `<chain>` with the chain name). extract: `chain_id`, `name` (display name), `token_address` (native token).
+- retrieve first_block_time: run this sql via the ad-hoc sql sequence above: `select min(time) from <chain>.blocks where number <> 0` (substitute `<chain>`).
 
 ## git workflow
-1. **Verify main is up to date:** fetch latest, pull if behind, exit if diverged.
-2. **Create branch:** name `<issue_id>-<chain>-foundational-metadata`, create off `main`, checkout, warn if exists. Don't commit/push anything.
+1. **verify `main` is up to date:** fetch latest, pull if behind, exit if diverged.
+2. **create branch:** name `<issue_id>-<chain>-foundational-metadata`, create off `main`, checkout, warn if exists. don't commit/push anything.
 
 ## steps
-1. **add EVM chain info**
+1. **add evm chain info**
    - edit `dbt_subprojects/daily_spellbook/models/evms/evms_info.sql`
-   - add `<chain>` to `expose_spells` list
-   - add VALUES row: `(chain_id, '<chain>', 'Name', 'Layer 1/2', ...)`
-   - use prep vars: chain_id, name, first_block_time, token_address
+   - append VALUES row: `(chain_id, '<chain>', 'Name', 'Layer 1/2', ...)`
+   - use prep vars: `chain_id`, `name`, `first_block_time`, `token_address`
    - find: explorer, wrapped_native_token_address
 
 2. **add native token**
@@ -49,7 +50,7 @@ Dune MCP: server `user-dune-mcp`; tools `query_sql`, `run_query_by_id`. Use para
 3. **create prices tokens model**
    - create `dbt_subprojects/tokens/models/prices/<chain>/prices_<chain>_tokens.sql`
    - check chain docs for token addresses & symbols
-   - if not found: use Dune MCP **run_query_by_id** with `query_id: 6293737`, `query_parameters: '{"chain":"<chain>"}'` (substitute `<chain>`)
+   - if not found: use dune mcp **executeQueryById** with `query_id: 6293737`, `query_parameters: [{"key":"chain","value":"<chain>","type":"text"}]` (substitute `<chain>`)
    - identify key tokens (top 5 transferred, stables, WETH)
    - find ids on coinpaprika, add to VALUES
 

@@ -62,6 +62,7 @@ with prices_native_tokens as (
         , ('plume', 'plume-plume')
         , ('polygon', 'matic-polygon')
         , ('ronin', 'ron-ronin-token')
+        , ('rise', 'eth-ethereum')
         , ('scroll', 'eth-ethereum')
         , ('sei', 'sei-sei')
         , ('sepolia', 'eth-ethereum')

@@ -40,6 +40,7 @@
         "polygon",
         "zkevm",
         "ronin",
+        "rise",
         "scroll",
         "sei",
         "shape",
