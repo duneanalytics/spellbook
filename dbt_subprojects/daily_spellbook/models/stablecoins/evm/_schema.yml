@@ -10,57 +10,39 @@ models:
       tags: ['stablecoin', 'balances']
     description: "Enriched balances of stablecoin token holders across all EVM chains with token metadata and USD prices"
     columns:
-      - name: blockchain
+      - &blockchain
+        name: blockchain
         description: "Blockchain for the token"
-      - name: day
+      - &day
+        name: day
         description: "Date on which the token balance is logged"
-      - name: address
+      - &address
+        name: address
         description: "Address for the token holder"
-      - name: token_symbol
+      - &token_symbol
+        name: token_symbol
         description: "Symbol for the token"
-      - name: token_address
+      - &token_address
+        name: token_address
         description: "Address for the token"
-      - name: token_standard
+      - &token_standard
+        name: token_standard
         description: "Standard for the token"
-      - name: token_id
+      - &token_id
+        name: token_id
         description: "ID for the token"
-      - name: balance_raw
+      - &balance_raw
+        name: balance_raw
         description: "Raw balance for the user (not adjusted for decimals)"
-      - name: balance
+      - &balance
+        name: balance
         description: "Balance for the user (adjusted for decimals)"
-      - name: balance_usd
+      - &balance_usd
+        name: balance_usd
         description: "USD value of balance for the user"
-      - name: last_updated
-        description: "UTC timestamp when data was last updated"
-
-  - name: stablecoins_balances
-    meta:
-      sector: stablecoin
-      project: stablecoin
-      contributors: tomfutago
-    config:
-      tags: ['stablecoin', 'balances']
-    description: "Enriched balances of stablecoin token holders across all chains with token metadata and USD prices"
-    columns:
-      - name: blockchain
-        description: "Blockchain for the token"
-      - name: day
-        description: "Date on which the token balance is logged"
-      - name: address
-        description: "Address for the token holder"
-      - name: token_symbol
-        description: "Symbol for the token"
-      - name: token_address
-        description: "Address for the token"
-      - name: token_standard
-        description: "Standard for the token"
-      - name: token_id
-        description: "ID for the token"
-      - name: balance_raw
-        description: "Raw balance for the user (not adjusted for decimals)"
-      - name: balance
-        description: "Balance for the user (adjusted for decimals)"
-      - name: balance_usd
-        description: "USD value of balance for the user"
-      - name: last_updated
+      - &currency
+        name: currency
+        description: "ISO 4217 currency code for the stablecoin's pegged currency"
+      - &last_updated
+        name: last_updated
         description: "UTC timestamp when data was last updated"

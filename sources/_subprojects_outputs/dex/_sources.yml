@@ -55,6 +55,9 @@ sources:
   - name: balancer_v3_hyperevm
     tables:
       - name: trades
+  - name: balancer_v3_monad
+    tables:
+      - name: trades
   - name: balancer
     tables:
       - name: trades
@@ -77,6 +80,7 @@ sources:
       - name: balancer_v3_pools_base
       - name: balancer_v3_pools_arbitrum
       - name: balancer_v3_pools_hyperevm
+      - name: balancer_v3_pools_monad
       - name: balancer_v3_pools
   - name: uniswap_v3_optimism
     tables:

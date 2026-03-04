@@ -2,7 +2,7 @@
 
 {{
   config(
-    tags = ['prod_exclude'],
+    tags = ['prod_exclude', 'stablecoins'],
     schema = 'stablecoins_' ~ chain,
     alias = 'balances',
     materialized = 'view',
@@ -21,6 +21,7 @@ select
   balance_raw,
   balance,
   balance_usd,
+  currency,
   last_updated
 from {{ ref('stablecoins_' ~ chain ~ '_core_balances_enriched') }}
 union all
@@ -35,5 +36,6 @@ select
   balance_raw,
   balance,
   balance_usd,
+  currency,
   last_updated
 from {{ ref('stablecoins_' ~ chain ~ '_extended_balances_enriched') }}

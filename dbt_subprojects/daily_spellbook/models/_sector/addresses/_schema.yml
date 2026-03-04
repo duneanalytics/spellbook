@@ -12,11 +12,15 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - address_prefix
             - address
     columns:
       - &address
         name: address
         description: "Address"
+      - &address_prefix
+        name: address_prefix
+        description: "First byte of address as integer (0-255), for partitioning and join optimization"
       - &blockchains
         name: blockchains
         description: ""

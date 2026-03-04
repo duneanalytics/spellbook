@@ -5,7 +5,10 @@
     schema = 'stablecoins_' ~ chain,
     alias = 'balances',
     materialized = 'view'
-    , post_hook='{{ hide_spells() }}'
+    , post_hook='{{ expose_spells(\'["solana"]\',
+        "sector",
+        "stablecoins_solana",
+        \'["tomfutago"]\') }}'
   )
 }}
 
@@ -17,6 +20,7 @@ select
   token_address,
   token_standard,
   token_id,
+  currency,
   balance_raw,
   balance,
   balance_usd,
@@ -31,6 +35,7 @@ select
   token_address,
   token_standard,
   token_id,
+  currency,
   balance_raw,
   balance,
   balance_usd,

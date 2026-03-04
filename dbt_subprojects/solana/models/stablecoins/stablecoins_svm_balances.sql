@@ -19,6 +19,7 @@ select
   token_address,
   token_standard,
   token_id,
+  currency,
   balance_raw,
   balance,
   balance_usd,

@@ -94,6 +94,9 @@ models:
       - &token_id
         name: token_id
         description: "Token id (null for spl tokens)"
+      - &currency
+        name: currency
+        description: "ISO 4217 currency code the stablecoin is pegged to (e.g. USD, EUR)"
       - *balance_raw
       - &balance
         name: balance
@@ -126,6 +129,7 @@ models:
       - *token_address
       - *token_standard
       - *token_id
+      - *currency
       - *balance_raw
       - *balance
       - *balance_usd
@@ -156,6 +160,7 @@ models:
       - *token_address
       - *token_standard
       - *token_id
+      - *currency
       - *balance_raw
       - *balance
       - *balance_usd

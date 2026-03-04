@@ -14,3 +14,5 @@ UNION
 SELECT * FROM  {{ ref('labels_balancer_v3_pools_base') }}
 UNION
 SELECT * FROM {{ ref('labels_balancer_v3_pools_hyperevm') }}
+UNION
+SELECT * FROM  {{ ref('labels_balancer_v3_pools_monad') }}
