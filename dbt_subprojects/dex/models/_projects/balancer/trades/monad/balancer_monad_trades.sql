@@ -1,13 +1,12 @@
 {{ config(
-    schema = 'balancer_avalanche_c',
+    schema = 'balancer_monad',
     alias = 'trades'
     )
 }}
 
 
 {% set balancer_models = [
-    ref('balancer_v2_avalanche_c_trades'),
-    ref('balancer_v3_avalanche_c_trades')
+    ref('balancer_v3_monad_trades')
 ] %}
 
 SELECT *
@@ -48,3 +47,4 @@ FROM (
     {% endif %}
     {% endfor %}
 )
+

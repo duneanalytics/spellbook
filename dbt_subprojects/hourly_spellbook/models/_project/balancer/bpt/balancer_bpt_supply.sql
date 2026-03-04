@@ -16,7 +16,7 @@
     ref('balancer_v2_zkevm_bpt_supply'), 
     ref('balancer_v3_gnosis_bpt_supply'),    
     ref('balancer_v3_ethereum_bpt_supply'),
-    ref('balancer_v3_arbitrum_bpt_supply'),    
+    ref('balancer_v3_arbitrum_bpt_supply'), 
     ref('balancer_v3_base_bpt_supply')  
 ] %}
 
