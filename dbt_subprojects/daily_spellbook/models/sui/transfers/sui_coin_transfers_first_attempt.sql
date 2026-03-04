@@ -108,19 +108,22 @@ with day_rows as (
 )
 , tx_senders as (
     select
-        e.transaction_digest as tx_digest
-        , max_by(e.sender, e.event_index) as tx_sender
-    from {{ source('sui', 'events') }} e
+        t.transaction_digest as tx_digest
+        , t.sender as tx_sender
+    from {{ source('sui', 'transactions') }} t
     inner join (
         select distinct
             c.tx_digest
         from calc c
         where c.tx_digest is not null
     ) d
-        on e.transaction_digest = d.tx_digest
-    group by e.transaction_digest
+        on t.transaction_digest = d.tx_digest
+    where t.date >= date '{{ sui_transfer_start_date }}'
+        {% if is_incremental() %}
+        and {{ incremental_predicate('t.date') }}
+        {% endif %}
 )
-, calc_with_sender as (
+, enriched as (
     select
         c.object_id
         , c.version
@@ -136,38 +139,25 @@ with day_rows as (
         , c.prev_owner
         , c.prev_balance
         , s.tx_sender
+        , c.coin_balance - coalesce(c.prev_balance, 0) as balance_delta
+        , case
+            when c.object_status = 'Created' then false
+            when c.object_status = 'Mutated'
+                and c.prev_owner is not null
+                and c.prev_owner != c.receiver then true
+            else false
+        end as has_ownership_change
     from calc c
     left join tx_senders s
         on c.tx_digest = s.tx_digest
+    where c.object_status != 'ANCHOR'
 )
-, outs as (
+, filtered as (
     select
-        c.tx_digest
-        , c.receiver
-        , c.coin_type
-        , sum(
-            case
-                when c.object_status = 'Created' then c.coin_balance
-                when c.object_status = 'Mutated' then greatest(c.coin_balance - coalesce(c.prev_balance, 0), 0)
-                else 0
-            end
-        ) as amount_raw
-    from calc_with_sender c
-    where (
-            c.object_status = 'Created'
-            and c.coin_balance > 0
-        ) or (
-            c.object_status = 'Mutated'
-            and (c.coin_balance - coalesce(c.prev_balance, 0)) > 0
-        )
-    group by c.tx_digest, c.receiver, c.coin_type
-)
-, tx_stats as (
-    select
-        o.tx_digest
-        , count(*) as receiver_cnt
-    from outs o
-    group by o.tx_digest
+        e.*
+    from enriched e
+    where e.balance_delta != 0
+        or e.has_ownership_change
 )
 , coin_metadata as (
     select
@@ -176,56 +166,69 @@ with day_rows as (
         , m.coin_decimals
     from {{ ref('dex_sui_coin_info') }} m
 )
+, tx_reconciliation as (
+    select
+        f.tx_digest
+        , f.coin_type
+        , sum(f.balance_delta) as tx_net_delta
+        , count(distinct f.receiver) as tx_distinct_receivers
+        , count(distinct f.prev_owner) filter (where f.prev_owner is not null) as tx_distinct_senders
+        , bool_or(f.balance_delta > 0) and bool_or(f.balance_delta < 0) as tx_has_bidirectional_deltas
+    from filtered f
+    group by f.tx_digest, f.coin_type
+)
 
 select
-    {{ dbt_utils.generate_surrogate_key(['c.tx_digest', 'c.object_id', 'c.version']) }} as unique_key
+    {{ dbt_utils.generate_surrogate_key(['f.tx_digest', 'f.object_id', 'f.version']) }} as unique_key
     , 'sui' as blockchain
-    , c.block_month
-    , c.block_date
-    , from_unixtime(c.timestamp_ms / 1000) as block_time
-    , c.checkpoint as block_number
-    , c.tx_digest as tx_hash
+    , f.block_month
+    , f.block_date
+    , from_unixtime(f.timestamp_ms / 1000) as block_time
+    , f.checkpoint as block_number
+    , f.tx_digest as tx_hash
     , cast(null as bigint) as evt_index
     , cast(null as array(bigint)) as trace_address
     , 'sui_coin' as token_standard
-    , c.tx_sender as tx_from
+    , f.tx_sender as tx_from
     , cast(null as varbinary) as tx_to
     , cast(null as bigint) as tx_index
     , case
-        when c.object_status = 'Created' then c.tx_sender
-        else c.prev_owner
+        when f.object_status = 'Created' then f.tx_sender
+        else coalesce(f.prev_owner, f.tx_sender)
     end as "from"
-    , c.receiver as to
-    , cast(split_part(c.coin_type, '::', 1) as varchar) as contract_address
-    , c.coin_type as contract_address_full
+    , f.receiver as to
+    , cast(split_part(f.coin_type, '::', 1) as varchar) as contract_address
+    , f.coin_type as contract_address_full
     , m.coin_symbol as symbol
     , m.coin_decimals as decimals
     , case
-        when c.object_status = 'Created' then c.coin_balance
-        else greatest(c.coin_balance - coalesce(c.prev_balance, 0), 0)
+        when f.object_status = 'Created' then f.coin_balance
+        when f.has_ownership_change and f.balance_delta = 0 then f.coin_balance
+        else abs(f.balance_delta)
     end as amount_raw
-    , c.object_id
-    , c.version
-    , c.object_status
-    , c.coin_balance
-    , c.prev_balance
+    , f.balance_delta
+    , f.object_id
+    , f.version
+    , f.object_status
+    , f.coin_balance
+    , f.prev_balance
+    , f.prev_owner
+    , f.has_ownership_change
     , case
-        when ts.receiver_cnt = 1 then 'transfer'
+        when f.object_status = 'Created' then 'mint'
+        when f.has_ownership_change and f.balance_delta != 0 then 'transfer_with_balance_change'
+        when f.has_ownership_change then 'ownership_transfer'
+        when f.balance_delta > 0 then 'balance_increase'
+        when f.balance_delta < 0 then 'balance_decrease'
         else 'other'
-    end as classification
-    , case
-        when ts.receiver_cnt = 1 then true
-        else false
-    end as is_transfer
-from calc_with_sender c
-left join tx_stats ts
-    on c.tx_digest = ts.tx_digest
+    end as transfer_type
+    , r.tx_net_delta
+    , r.tx_distinct_receivers
+    , r.tx_distinct_senders
+    , r.tx_has_bidirectional_deltas
+from filtered f
+left join tx_reconciliation r
+    on f.tx_digest = r.tx_digest
+    and f.coin_type = r.coin_type
 left join coin_metadata m
-    on lower(c.coin_type) = m.coin_type
-where (
-        c.object_status = 'Created'
-        and c.coin_balance > 0
-    ) or (
-        c.object_status = 'Mutated'
-        and (c.coin_balance - coalesce(c.prev_balance, 0)) > 0
-    )
+    on lower(f.coin_type) = m.coin_type

@@ -8,7 +8,10 @@ models:
     config:
       tags: ['sui', 'tokens', 'transfers']
     description: >
-      First attempt at deriving Sui coin transfer-like flows from object ownership and balance deltas.
+      Sui coin transfer model derived from object ownership and balance deltas.
+      Tracks coin objects through their version lineage to detect ownership transfers,
+      balance changes, and mints. Includes signed balance deltas and per-transaction
+      reconciliation columns for validation.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -16,20 +19,63 @@ models:
             - unique_key
     columns:
       - name: unique_key
-        description: "Surrogate key for each object-version transfer row"
+        description: "Surrogate key (tx_digest, object_id, version)"
+      - name: blockchain
+        description: "Always 'sui'"
+      - name: block_month
+        description: "Partition column (month)"
       - name: block_date
-        description: "Date of the transfer effect"
+        description: "Date of the object mutation"
+      - name: block_time
+        description: "Timestamp of the object mutation"
+      - name: block_number
+        description: "Sui checkpoint number"
       - name: tx_hash
         description: "Sui transaction digest"
+      - name: token_standard
+        description: "Always 'sui_coin'"
+      - name: tx_from
+        description: "Transaction sender from sui.transactions"
       - name: from
-        description: "Sender inferred from previous owner or transaction sender"
+        description: "Sender: prev_owner for Mutated objects, tx_sender for Created. Falls back to tx_sender when prev_owner is null."
       - name: to
-        description: "Receiver address (current owner)"
+        description: "Receiver address (current object owner)"
+      - name: contract_address
+        description: "Coin package address (first segment of coin_type)"
       - name: contract_address_full
         description: "Full Sui coin type string"
       - name: symbol
-        description: "Token symbol from Sui coin metadata when available"
+        description: "Token symbol from coin metadata"
       - name: decimals
-        description: "Token decimals from Sui coin metadata when available"
+        description: "Token decimals from coin metadata"
       - name: amount_raw
-        description: "Raw token amount derived from object balance deltas"
+        description: "Transfer amount: coin_balance for mints and ownership-only transfers, abs(balance_delta) for balance changes"
+      - name: balance_delta
+        description: "Signed balance change for the object (positive = increase, negative = decrease)"
+      - name: object_id
+        description: "Sui object ID for the coin"
+      - name: version
+        description: "Object version at this mutation"
+      - name: object_status
+        description: "Created or Mutated"
+      - name: coin_balance
+        description: "Object balance at this version"
+      - name: prev_balance
+        description: "Object balance at previous version (null for first seen)"
+      - name: prev_owner
+        description: "Object owner at previous version (null for Created)"
+      - name: has_ownership_change
+        description: "True when a Mutated object changed owner (prev_owner != receiver)"
+      - name: transfer_type
+        description: >
+          Object-level classification: mint (Created), ownership_transfer (owner changed, delta=0),
+          transfer_with_balance_change (owner changed and delta!=0), balance_increase (same owner, delta>0),
+          balance_decrease (same owner, delta<0)
+      - name: tx_net_delta
+        description: "Sum of all balance_deltas for this (tx, coin_type). Non-zero indicates gas cost or untracked movements."
+      - name: tx_distinct_receivers
+        description: "Count of distinct receivers in this transaction for this coin type"
+      - name: tx_distinct_senders
+        description: "Count of distinct previous owners in this transaction for this coin type"
+      - name: tx_has_bidirectional_deltas
+        description: "True when the transaction has both positive and negative deltas for this coin type"
