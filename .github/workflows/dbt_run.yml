@@ -55,7 +55,7 @@ jobs:
         run: "dbt -x run --empty $PROFILE --select state:modified --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
 
       - name: dbt test initial model(s)
-        run: "dbt test $PROFILE --select state:new state:modified --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
+        run: "dbt test $PROFILE --select state:new state:modified --exclude tag:prod_exclude tag:remove test_name:check_seed test_name:check_seaport_seed nft_ethereum_native_mints_test --defer --state . --project-dir ${PROJECT_DIR}"
 
       - name: Set environment variable for incremental model count
         run: |
@@ -67,4 +67,4 @@ jobs:
 
       - name: dbt test incremental model(s) if applicable
         if: env.INC_MODEL_COUNT > 0
-        run: "dbt test $PROFILE --select state:modified,config.materialized:incremental --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
+        run: "dbt test $PROFILE --select state:modified,config.materialized:incremental --exclude tag:prod_exclude tag:remove test_name:check_seed test_name:check_seaport_seed nft_ethereum_native_mints_test --defer --state . --project-dir ${PROJECT_DIR}"
