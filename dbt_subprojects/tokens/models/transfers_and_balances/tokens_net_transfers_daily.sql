@@ -22,6 +22,7 @@
     , 'hemi'
     , 'linea'
     , 'mantle'
+    , 'megaeth'
     , 'mezo'
     , 'monad'
     , 'opbnb'
@@ -29,6 +30,7 @@
     , 'plasma'
     , 'polygon'
     , 'ronin'
+    , 'rise'
     , 'scroll'
     , 'sei'
     , 'shape'
@@ -61,6 +63,7 @@
     , 'story'
     , 'viction'
     , 'worldchain'
+    , 'xlayer'
 ] %}
 
 SELECT *

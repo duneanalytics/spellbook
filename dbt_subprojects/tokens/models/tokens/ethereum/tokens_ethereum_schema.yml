@@ -85,29 +85,6 @@ models:
             to be compatible with the common standards. Accepted values are presently standards represented.
             If you are adding a token with a new standard, remember to add it the accepted values list.
 
-  - name: tokens_ethereum_erc20_stablecoins
-    meta:
-      blockchain: ethereum
-      sector: stablecoins
-      contributors: synthquest, rantum, tomfutago
-    config:
-      tags: ['tokens', 'ethereum', 'erc20', 'stablecoins']
-    description: >
-        Selection of stablecoin token addresses.
-    columns:
-      - name: blockchain
-        description: "Blockchain name"
-      - name: contract_address
-        description: "Stablecoin contract address"
-      - name: backing
-        description: "Stablecoin backing"
-      - name: symbol
-        description: "Stablecoin symbol"
-      - name: name
-        description: "Stablecoin project name"
-      - name: decimals
-        description: "Number of decimals"
-
   - name: tokens_ethereum_nft_standards
     meta:
       blockchain: ethereum

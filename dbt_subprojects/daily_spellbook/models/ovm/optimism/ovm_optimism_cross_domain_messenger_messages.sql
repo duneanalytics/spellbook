@@ -5,11 +5,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['msg_type','l2_block_date', 'l2_tx_hash', 'evt_index','msg_index'],
-    post_hook='{{ expose_spells(\'["optimism"]\',
-                                "project",
-                                "ovm_optimism",
-                                \'["msilb7"]\') }}'
+    unique_key = ['msg_type','l2_block_date', 'l2_tx_hash', 'evt_index','msg_index']
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

@@ -4,6 +4,7 @@ sources:
   - name: aave_v3_gnosis
     description: "Decoded contracts for Aave v3 on Gnosis"
     tables:
-      - name: StataTokenV2_evt_Initialized
+      - name: StataTokenV2_evt_Initialized    
 
-      - name: StataTokenV2Factory_call_createDeterministic
+      - name: StataTokenV2Factory_call_createDeterministic         
+      - name: poolconfigurator_evt_reserveinitialized

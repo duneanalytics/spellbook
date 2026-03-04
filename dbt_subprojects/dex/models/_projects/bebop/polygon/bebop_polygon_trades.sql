@@ -1,11 +1,8 @@
 {{ config(
         schema = 'bebop_polygon',
         alias = 'trades',
-        materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'["polygon"]\',
-                                    spell_type = "project",
-                                    spell_name = "bebop",
-                                    contributors = \'["alekss"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
 )}}
 
 

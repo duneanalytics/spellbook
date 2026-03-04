@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: uniswap_v4_monad
+    tables:
+      - name: PoolManager_evt_ModifyLiquidity
+      - name: PoolManager_call_ModifyLiquidity

@@ -36,7 +36,9 @@ base_tft as (
     where true
         and block_date >= timestamp '{{ transfers_start_date }}'
         {% if easy_dates -%} and block_date > current_date - interval '10' day {%- endif %} -- easy_dates mode for dev, to prevent full scan
-        {% if is_incremental() -%} and {{ incremental_predicate('block_date') }} {%- endif %}
+        {% if is_incremental() -%}
+        and {{ incremental_predicate('block_date') }}
+        {%- endif %}
 )
 
 , base_tft_wrapper_deposits as (
@@ -60,7 +62,9 @@ base_tft as (
     where true
         and block_date >= timestamp '{{ transfers_start_date }}'
         {% if easy_dates -%} and block_date > current_date - interval '10' day {%- endif %} -- easy_dates mode for dev, to prevent full scan
-        {% if is_incremental() -%} and {{ incremental_predicate('block_date') }} {%- endif %}
+        {% if is_incremental() -%}
+        and {{ incremental_predicate('block_date') }}
+        {%- endif %}
 )
 
 , tft as (
@@ -91,7 +95,9 @@ base_tft as (
         and blockchain = '{{ blockchain }}'
         and timestamp >= timestamp '{{ transfers_start_date }}'
         {% if easy_dates -%} and timestamp > current_date - interval '10' day {%- endif %} -- easy_dates mode for dev, to prevent full scan
-        {% if is_incremental() -%} and {{ incremental_predicate('timestamp') }} {%- endif %}
+        {% if is_incremental() -%}
+        and {{ incremental_predicate('timestamp') }}
+        {%- endif %}
 )
 
 -- output --
@@ -118,7 +124,7 @@ select
 from tft
 left join tokens using(contract_address)
 left join prices using(contract_address, timestamp)
-where not (blockchain = 'ethereum' and block_date = cast('2025-12-11' as date) and unique_key = 0x9927b20e013cfefe69272dddcb5e8b36972ea0f5)
+
 
 
 {%- endmacro -%}

@@ -1,11 +1,8 @@
 {{
     config(
         schema="balancer_ethereum",     
-        alias = 'vebal_slopes',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    spell_type = "project",
-                                    spell_name = "balancer",
-                                    contributors = \'["markusbkoch", "mendesfabio", "stefenon", "viniabussafi"]\') }}'
+        alias = 'vebal_slopes'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

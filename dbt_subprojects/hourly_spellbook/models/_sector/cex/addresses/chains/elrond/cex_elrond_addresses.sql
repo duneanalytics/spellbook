@@ -1,11 +1,10 @@
 {{config(
         tags = ['static'],
         schema = 'cex_elrond',
-        alias = 'addresses',
-        post_hook='{{ expose_spells(\'["elrond"]\',
-                                    "sector",
-                                    "cex",
-                                    \'["hildobby"]\') }}')}}
+        alias = 'addresses'
+        , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 SELECT blockchain, address, cex_name, distinct_name, added_by, added_date
 FROM (VALUES

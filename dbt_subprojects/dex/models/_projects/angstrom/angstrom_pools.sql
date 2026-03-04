@@ -1,10 +1,7 @@
 {{ config(
         schema = 'angstrom',
-        alias = 'pools',
-        post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
-                                      spell_type = "project", 
-                                      spell_name = "angstrom", 
-                                      contributors = \'["jnoorchashm37", "Henrystats"]\') }}'
+        alias = 'pools'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

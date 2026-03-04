@@ -3,7 +3,7 @@ version: 2
 models:
   - name: dex_roundtrip_trades
     meta:
-      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zksync, scroll, zora, mantle, unichain
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zksync, scroll, zora, mantle, unichain, monad
       sector: dex
       contributors: Henrystats, agaperste
     config:
@@ -247,6 +247,22 @@ models:
   - name: dex_mantle_roundtrip_trades
     meta:
       blockchain: mantle
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: [ 'dex', 'roundtrip_trades' ]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_time
+            - tx_hash
+            - evt_index
+            - pool_address
+
+  - name: dex_monad_roundtrip_trades
+    meta:
+      blockchain: monad
       sector: dex
       contributors: Henrystats
     config:

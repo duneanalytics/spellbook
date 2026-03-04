@@ -6,11 +6,8 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['created_at', 'unique_signature_id'],
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.created_at')],
-        post_hook='{{ expose_spells(\'["ethereum","bnb","avalanche_c","optimism","arbitrum","gnosis","polygon","fantom","celo","base"]\',
-                        "sector",
-                        "abi",
-                        \'["ilemi","tomfutago"]\') }}'
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.created_at')]
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

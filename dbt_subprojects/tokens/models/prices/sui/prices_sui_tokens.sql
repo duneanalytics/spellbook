@@ -42,5 +42,6 @@ FROM
    , ('haedal-haedal-protocol', 'HAEDAL', '0x3a304c7feba2d819ea57c3542d68439ca2c386ba02159c740f7b406e592c62ea::haedal::HAEDAL', 9)
    , ('xo-xociety','XO', '0x90f9eb95f62d31fbe2179313547e360db86d88d2399103a94286291b63f469ba::xo::XO', 9)
    , ('mmt-momentum','MMT', '0x35169bc93e1fddfcf3a82a9eae726d349689ed59e4b065369af8789fe59f8608::mmt::MMT', 9)
+   , ('truth-swarm-network','TRUTH', '0x0a48f85a3905cfa49a652bdb074d9e9fabad27892d54afaa5c9e0adeb7ac3cdf::swarm_network_token::SWARM_NETWORK_TOKEN', 8)
 ) as temp (token_id, symbol, contract_address, decimals)
 

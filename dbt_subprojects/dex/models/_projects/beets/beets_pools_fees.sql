@@ -1,10 +1,7 @@
 {{ config(
     schema = 'beets',
-    alias = 'pools_fees',
-    post_hook='{{ expose_spells(blockchains = \'["sonic"]\',
-                                spell_type = "project",
-                                spell_name = "beets",
-                                contributors = \'["viniabussafi"]\') }}'
+    alias = 'pools_fees'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

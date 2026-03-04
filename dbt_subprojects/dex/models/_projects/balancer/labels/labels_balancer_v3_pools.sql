@@ -1,10 +1,9 @@
 {{config(
         schema = 'labels',
-        alias = 'balancer_v3_pools',        
-        post_hook='{{ expose_spells(\'["arbitrum", "base", "ethereum", "gnosis"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["balancerlabs", "viniabussafi"]\') }}')}}
+        alias = 'balancer_v3_pools'
+        , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 SELECT * FROM  {{ ref('labels_balancer_v3_pools_ethereum') }}
 UNION
@@ -13,3 +12,9 @@ UNION
 SELECT * FROM  {{ ref('labels_balancer_v3_pools_arbitrum') }}
 UNION
 SELECT * FROM  {{ ref('labels_balancer_v3_pools_base') }}
+UNION
+SELECT * FROM {{ ref('labels_balancer_v3_pools_avalanche_c')}}
+UNION
+SELECT * FROM {{ ref('labels_balancer_v3_pools_hyperevm') }}
+UNION
+SELECT * FROM  {{ ref('labels_balancer_v3_pools_monad') }}

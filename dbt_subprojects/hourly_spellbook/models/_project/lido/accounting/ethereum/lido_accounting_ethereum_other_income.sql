@@ -1,68 +1,73 @@
 {{ config(
-        schema='lido_accounting_ethereum',
-        alias = 'other_income',
+	schema='lido_accounting_ethereum',
+	alias='other_income',
+	materialized='incremental',
+	file_format='delta',
+	incremental_strategy='merge',
+	unique_key=['blockchain', 'period', 'evt_tx_hash', 'token', 'amount_token'],
+	incremental_predicates=[incremental_predicate('DBT_INTERNAL_DEST.period')],
+) }}
 
-        materialized = 'table',
-        file_format = 'delta',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "lido_accounting",
-                                \'["pipistrella", "adcv", "zergil1397"]\') }}'
-        )
-}}
+{% set project_start_date = '2020-12-17' %}
 
-with tokens AS (
-    select * from (values
-    (0x5A98FcBEA516Cf06857215779Fd812CA3beF1B32), --LDO
-    (0x6B175474E89094C44Da98b954EedeAC495271d0F), --DAI
-    (0xdC035D45d973E3EC169d2276DDab16f1e407384F), --USDS
-    (0xa3931d71877C0E7a3148CB7Eb4463524FEc27fbD), --Savings USDS (sUSDS)
-    (0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48), --USDC
-    (0xdAC17F958D2ee523a2206206994597C13D831ec7), -- USDT
-    (0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2), --WETH
-    (0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0), --MATIC
-    (0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84), --stETH
-    (0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0)  --wstETH
-    ) as tokens(address))
-
-
-, multisigs_list AS (
-    select * from (values
-    (0x3e40d73eb977dc6a537af587d48316fee66e9c8c, 'Ethereum', 'Aragon'),
-    (0x48F300bD3C52c7dA6aAbDE4B683dEB27d38B9ABb, 'Ethereum', 'FinanceOpsMsig'),
-    (0x87D93d9B2C672bf9c9642d853a8682546a5012B5, 'Ethereum', 'LiquidityRewardsMsig'),
-    (0x753D5167C31fBEB5b49624314d74A957Eb271709, 'Ethereum', 'LiquidityRewardMngr'),--Curve Rewards Manager
-    (0x1dD909cDdF3dbe61aC08112dC0Fdf2Ab949f79D8, 'Ethereum', 'LiquidityRewardMngr'), --Balancer Rewards Manager V1
-    (0x55c8De1Ac17C1A937293416C9BCe5789CbBf61d1, 'Ethereum', 'LiquidityRewardMngr'), --Balancer Rewards Manager V2
-    (0x86F6c353A0965eB069cD7f4f91C1aFEf8C725551, 'Ethereum', 'LiquidityRewardMngr'), --Balancer Rewards Manager V3
-    (0xf5436129Cf9d8fa2a1cb6e591347155276550635,  'Ethereum', 'LiquidityRewardMngr'),--1inch Reward Manager
-    (0xE5576eB1dD4aA524D67Cf9a32C8742540252b6F4,  'Ethereum', 'LiquidityRewardMngr'), --Sushi Reward Manager
-    (0x87D93d9B2C672bf9c9642d853a8682546a5012B5,  'Polygon',  'LiquidityRewardsMsig'),
-    (0x9cd7477521B7d7E7F9e2F091D2eA0084e8AaA290,  'Ethereum', 'PolygonTeamRewardsMsig'),
-    (0x5033823f27c5f977707b58f0351adcd732c955dd,  'Optimism', 'LiquidityRewardsMsig'),
-    (0x8c2b8595ea1b627427efe4f29a64b145df439d16,  'Arbitrum', 'LiquidityRewardsMsig'),
-    (0x13c6ef8d45afbccf15ec0701567cc9fad2b63ce8,  'Ethereum',  'ReferralRewardsMsig'),--Solana Ref Prog Msig
-    (0x12a43b049A7D330cB8aEAB5113032D18AE9a9030,  'Ethereum',  'LegoMsig'),
-    (0x9B1cebF7616f2BC73b47D226f90b01a7c9F86956,  'Ethereum',  'ATCMsig'),
-    (0x17F6b2C738a63a8D3A113a228cfd0b373244633D,  'Ethereum',  'PMLMsig'),
-    (0xde06d17db9295fa8c4082d4f73ff81592a3ac437,  'Ethereum',  'RCCMsig'),
-    (0x834560f580764bc2e0b16925f8bf229bb00cb759,  'Ethereum',  'TRPMsig'),
-    (0x606f77BF3dd6Ed9790D9771C7003f269a385D942,  'Ethereum',  'AllianceMsig'),
-    (0x55897893c19e4B0c52731a3b7C689eC417005Ad6,  'Ethereum',  'EcosystemBORGMsig'),
-    (0x95B521B4F55a447DB89f6a27f951713fC2035f3F,  'Ethereum',  'LabsBORGMsig')
-    ) as list(address, chain, name)
-
+with tokens as (
+	select
+		*
+	from
+		(values
+		(0x5A98FcBEA516Cf06857215779Fd812CA3beF1B32)--LDO
+		, (0x6B175474E89094C44Da98b954EedeAC495271d0F)--DAI
+		, (0xdC035D45d973E3EC169d2276DDab16f1e407384F)--USDS
+		, (0xa3931d71877C0E7a3148CB7Eb4463524FEc27fbD)--Savings USDS (sUSDS)
+		, (0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48)--USDC
+		, (0xdAC17F958D2ee523a2206206994597C13D831ec7)--USDT
+		, (0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2)--WETH
+		, (0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0)--MATIC
+		, (0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84)--stETH
+		, (0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0)--wstETH
+		) as tokens(address)
 )
-
-, diversifications_addresses AS (
-    select * from  (values
+, multisigs_list as (
+	select
+		*
+	from
+		(values
+		(0x3e40d73eb977dc6a537af587d48316fee66e9c8c, 'Ethereum', 'Aragon')
+		, (0x48F300bD3C52c7dA6aAbDE4B683dEB27d38B9ABb, 'Ethereum', 'FinanceOpsMsig')
+		, (0x87D93d9B2C672bf9c9642d853a8682546a5012B5, 'Ethereum', 'LiquidityRewardsMsig')
+		, (0x753D5167C31fBEB5b49624314d74A957Eb271709, 'Ethereum', 'LiquidityRewardMngr')--Curve Rewards Manager
+		, (0x1dD909cDdF3dbe61aC08112dC0Fdf2Ab949f79D8, 'Ethereum', 'LiquidityRewardMngr')--Balancer Rewards Manager V1
+		, (0x55c8De1Ac17C1A937293416C9BCe5789CbBf61d1, 'Ethereum', 'LiquidityRewardMngr')--Balancer Rewards Manager V2
+		, (0x86F6c353A0965eB069cD7f4f91C1aFEf8C725551, 'Ethereum', 'LiquidityRewardMngr')--Balancer Rewards Manager V3
+		, (0xf5436129Cf9d8fa2a1cb6e591347155276550635, 'Ethereum', 'LiquidityRewardMngr')--1inch Reward Manager
+		, (0xE5576eB1dD4aA524D67Cf9a32C8742540252b6F4, 'Ethereum', 'LiquidityRewardMngr')--Sushi Reward Manager
+		, (0x87D93d9B2C672bf9c9642d853a8682546a5012B5, 'Polygon', 'LiquidityRewardsMsig')
+		, (0x9cd7477521B7d7E7F9e2F091D2eA0084e8AaA290, 'Ethereum', 'PolygonTeamRewardsMsig')
+		, (0x5033823f27c5f977707b58f0351adcd732c955dd, 'Optimism', 'LiquidityRewardsMsig')
+		, (0x8c2b8595ea1b627427efe4f29a64b145df439d16, 'Arbitrum', 'LiquidityRewardsMsig')
+		, (0x13c6ef8d45afbccf15ec0701567cc9fad2b63ce8, 'Ethereum', 'ReferralRewardsMsig')--Solana Ref Prog Msig
+		, (0x12a43b049A7D330cB8aEAB5113032D18AE9a9030, 'Ethereum', 'LegoMsig')
+		, (0x9B1cebF7616f2BC73b47D226f90b01a7c9F86956, 'Ethereum', 'ATCMsig')
+		, (0x17F6b2C738a63a8D3A113a228cfd0b373244633D, 'Ethereum', 'PMLMsig')
+		, (0xde06d17db9295fa8c4082d4f73ff81592a3ac437, 'Ethereum', 'RCCMsig')
+		, (0x834560f580764bc2e0b16925f8bf229bb00cb759, 'Ethereum', 'TRPMsig')
+		, (0x606f77BF3dd6Ed9790D9771C7003f269a385D942, 'Ethereum', 'AllianceMsig')
+		, (0x55897893c19e4B0c52731a3b7C689eC417005Ad6, 'Ethereum', 'EcosystemBORGMsig')
+		, (0x95B521B4F55a447DB89f6a27f951713fC2035f3F, 'Ethereum', 'LabsBORGMsig')
+		) as list(address, chain, name)
+)
+, diversifications_addresses as (
+	select
+		*
+	from
+		(values
     (0x489f04eeff0ba8441d42736549a1f1d6cca74775, '1round_1'),
     (0x689e03565e36b034eccf12d182c3dc38b2bb7d33, '1round_2'),
     (0xA9b2F5ce3aAE7374a62313473a74C98baa7fa70E, '2round')
     ) as list(address, name)
 )
 
-, intermediate_addresses AS (
+, intermediate_addresses as (
     select * from  (values
     (0xe3224542066d3bbc02bc3d70b641be4bc6f40e36, 'Jumpgate(Solana)'),
     (0x40ec5b33f54e0e8a33a975908c5ba1c14e5bbbdf, 'Polygon bridge'),
@@ -84,7 +89,7 @@ with tokens AS (
     ) as list(address, name)
 )
 
-, ldo_referral_payments_addr AS (
+, ldo_referral_payments_addr as (
     select * from  (values
     (0x558247e365be655f9144e1a0140d793984372ef3),
     (0x6DC9657C2D90D57cADfFB64239242d06e6103E43),
@@ -102,14 +107,21 @@ with tokens AS (
 )
 
 
-, dai_referral_payments_addr AS (
-    SELECT _recipient AS address FROM  {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientAdded')}}
-    UNION ALL
-    SELECT 0xaf8aE6955d07776aB690e565Ba6Fbc79B8dE3a5d --rhino
+, dai_referral_payments_addr as (
+	select
+		_recipient as address
+	from
+		{{ source('lido_ethereum', 'AllowedRecipientsRegistry_evt_RecipientAdded') }}
+	union all
+	select
+		0xaf8aE6955d07776aB690e565Ba6Fbc79B8dE3a5d
 )
 
-, steth_referral_payments_addr AS (
-    SELECT _recipient AS address FROM {{source('lido_ethereum','AllowedRecipientsRegistry_RevShare_evt_RecipientAdded')}}
+, steth_referral_payments_addr as (
+	select
+		_recipient as address
+	from
+		{{ source('lido_ethereum', 'AllowedRecipientsRegistry_RevShare_evt_RecipientAdded') }}
 )
 
 , stonks as (
@@ -134,153 +146,234 @@ with tokens AS (
 )
 
 , stonks_orders as (
-    select cast(replace(topic1, 0x000000000000000000000000, 0x) as varbinary) as order_addr, s.token_out, s.token_in, s.namespace, s.address as stonk_contract
-    from {{source('ethereum', 'logs')}} l
-    join stonks s on l.contract_address = s.address 
-    and l.topic0 = 0x96a6d5477fba36522dca4102be8b3785435baf902ef6c4edebcb99850630c75f -- Stonks Deployed
-
+	select
+		cast(replace(l.topic1, 0x000000000000000000000000, 0x) as varbinary) as order_addr
+		, s.token_out
+		, s.token_in
+		, s.namespace
+		, s.address as stonk_contract
+	from
+		{{ source('ethereum', 'logs') }} as l
+	inner join stonks as s
+		on l.contract_address = s.address
+		and l.topic0 = 0x96a6d5477fba36522dca4102be8b3785435baf902ef6c4edebcb99850630c75f
+	where
+		l.block_time >= timestamp '{{ project_start_date }}'
 )
 
 , stonks_orders_txns as (
-    select tr.evt_block_time, tr.evt_tx_hash, s.token_out, s.token_in, s.namespace, s.stonk_contract
-    from {{ source('erc20_ethereum', 'evt_Transfer') }} tr
-    join stonks_orders s on tr."from" = s.order_addr and tr.contract_address = s.token_out
-    and to in (select address from cow_settlement)
-    order by 1 desc
+	select
+		tr.evt_block_time
+		, tr.evt_tx_hash
+		, s.token_out
+		, s.token_in
+		, s.namespace
+		, s.stonk_contract
+	from
+		{{ source('erc20_ethereum', 'evt_Transfer') }} as tr
+	inner join stonks_orders as s
+		on tr."from" = s.order_addr
+		and tr.contract_address = s.token_out
+	where
+		{% if not is_incremental() -%}
+		tr.evt_block_time >= timestamp '{{ project_start_date }}'
+		{% else -%}
+		{{ incremental_predicate('tr.evt_block_time') }}
+		{% endif -%}
+		and exists (select 1 from cow_settlement as c where c.address = tr.to)
 )
 
 , stonks_to_treasury as (
-    SELECT tr.evt_tx_hash
-    FROM {{ source('erc20_ethereum', 'evt_Transfer') }} tr
-    JOIN stonks_orders_txns s on tr.evt_tx_hash = s.evt_tx_hash and tr.contract_address = s.token_in and tr.contract_address IN (SELECT address FROM tokens)
-    WHERE 
-     to IN ( SELECT address
-                FROM multisigs_list
-                WHERE name IN ('Aragon') AND chain = 'Ethereum' )
-    AND "from"  IN (SELECT address FROM cow_settlement)
-    ORDER BY 1 desc
-  )
-
-
-, other_income_txns AS (
-    SELECT
-        evt_block_time,
-        CAST(value AS DOUBLE) AS value,
-        evt_tx_hash,
-        contract_address,
-        'ethereum' as blockchain
-
-    FROM  {{source('erc20_ethereum','evt_Transfer')}}
-
-    WHERE contract_address IN (SELECT address FROM tokens)
-    AND to IN (
-        SELECT
-            address
-        FROM multisigs_list
-        WHERE name IN ('Aragon','FinanceOpsMsig') AND chain = 'Ethereum'
-    )
-    AND "from" NOT IN (
-        SELECT address FROM multisigs_list
-        UNION ALL
-        SELECT address FROM ldo_referral_payments_addr
-        UNION ALL
-        SELECT address FROM dai_referral_payments_addr
-        UNION ALL
-        SELECT address FROM steth_referral_payments_addr
-        UNION ALL
-        select 0x0000000000000000000000000000000000000000
-        UNION ALL
-        SELECT address FROM diversifications_addresses    
-    )    
-    AND evt_tx_hash NOT IN (select evt_tx_hash from stonks_to_treasury)   
-    
-    UNION ALL
-    --ETH staked by DAO
-    SELECT
-        t.evt_block_time as period,
-        CAST(t.value AS DOUBLE) AS token_amount,
-        t.evt_tx_hash,
-        t.contract_address,
-        'ethereum' as blockchain
-
-    FROM  {{source('erc20_ethereum','evt_Transfer')}} t
-
-    join  {{source('lido_ethereum','steth_evt_Submitted')}} s on t.evt_tx_hash = s.evt_tx_hash
-    WHERE t.contract_address = 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84
-    AND t.to in (select address from multisigs_list where chain = 'Ethereum' and name ='Aragon')
-    AND t."from" = 0x0000000000000000000000000000000000000000
+	select
+		tr.evt_tx_hash
+	from
+		{{ source('erc20_ethereum', 'evt_Transfer') }} as tr
+	inner join stonks_orders_txns as s
+		on tr.evt_tx_hash = s.evt_tx_hash
+		and tr.contract_address = s.token_in
+		and exists (select 1 from tokens as tok where tok.address = tr.contract_address)
+	where
+		{% if not is_incremental() -%}
+		tr.evt_block_time >= timestamp '{{ project_start_date }}'
+		{% else -%}
+		{{ incremental_predicate('tr.evt_block_time') }}
+		{% endif -%}
+		and exists (
+			select
+				1
+			from
+				multisigs_list as m
+			where
+				m.address = tr.to
+				and m.name = 'Aragon'
+				and m.chain = 'Ethereum'
+		)
+		and exists (select 1 from cow_settlement as c where c.address = tr."from")
 )
 
---Solana stSOL income--
 
-, stsol_income_txs AS (
-    select
-        tx_id,
-        block_time AS period,
-        block_slot,
-        pre_token_balance,
-        post_token_balance,
-        token_balance_change AS delta
-    FROM {{source('solana','account_activity')}}
-    WHERE  block_time >= CAST('2021-11-01' AS TIMESTAMP)
-    AND pre_token_balance IS NOT NULL
-    AND token_mint_address =  '7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj'
-    AND address =  'CYpYPtwY9QVmZsjCmguAud1ctQjXWKpWD7xeL5mnpcXk'
-    AND token_balance_change > 0
-    ORDER BY block_time DESC
+, other_income_txns as (
+	-- ERC20 inflows to Aragon/FinanceOpsMsig (excl. stonks)
+	select
+		t.evt_block_time
+		, cast(t.value as double) as value
+		, t.evt_tx_hash
+		, t.contract_address
+		, 'ethereum' as blockchain
+	from
+		{{ source('erc20_ethereum', 'evt_Transfer') }} as t
+	where
+		{% if not is_incremental() -%}
+		t.evt_block_time >= timestamp '{{ project_start_date }}'
+		{% else -%}
+		{{ incremental_predicate('t.evt_block_time') }}
+		{% endif -%}
+		and exists (select 1 from tokens as tok where tok.address = t.contract_address)
+		and exists (
+			select
+				1
+			from
+				multisigs_list as m
+			where
+				m.address = t.to
+				and m.name in ('Aragon', 'FinanceOpsMsig')
+				and m.chain = 'Ethereum'
+		)
+		and not exists (select 1 from multisigs_list as m where m.address = t."from")
+		and not exists (select 1 from ldo_referral_payments_addr as l where l.address = t."from")
+		and not exists (select 1 from dai_referral_payments_addr as d where d.address = t."from")
+		and not exists (select 1 from steth_referral_payments_addr as s where s.address = t."from")
+		and t."from" != 0x0000000000000000000000000000000000000000
+		and not exists (select 1 from diversifications_addresses as d where d.address = t."from")
+		and not exists (select 1 from stonks_to_treasury as st where st.evt_tx_hash = t.evt_tx_hash)
+
+	union all
+
+	-- stETH staked by DAO (from null address)
+	select
+		t.evt_block_time
+		, cast(t.value as double) as value
+		, t.evt_tx_hash
+		, t.contract_address
+		, 'ethereum' as blockchain
+	from
+		{{ source('erc20_ethereum', 'evt_Transfer') }} as t
+	inner join {{ source('lido_ethereum', 'steth_evt_Submitted') }} as s
+		on t.evt_tx_hash = s.evt_tx_hash
+		and t.evt_block_time = s.evt_block_time
+		and t.evt_block_number = s.evt_block_number
+	where
+		{% if not is_incremental() -%}
+		t.evt_block_time >= timestamp '{{ project_start_date }}'
+		{% else -%}
+		{{ incremental_predicate('t.evt_block_time') }}
+		{% endif -%}
+		and t.contract_address = 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84
+		and exists (select 1 from multisigs_list as m where m.address = t.to and m.chain = 'Ethereum' and m.name = 'Aragon')
+		and t."from" = 0x0000000000000000000000000000000000000000
 )
 
-, stsol_income AS (
-    SELECT
-            i.period AS period,
-            '7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj' AS token,
-            COALESCE(delta,0) AS amount_token,
-            tx_id as evt_tx_hash,
-            'solana' as blockchain
-    FROM  stsol_income_txs i
-
+-- Solana stSOL income
+, stsol_income_txs as (
+	select
+		i.tx_id
+		, i.block_time as period
+		, i.block_slot
+		, i.pre_token_balance
+		, i.post_token_balance
+		, i.token_balance_change as delta
+	from
+		{{ source('solana', 'account_activity') }} as i
+	where
+		{% if not is_incremental() -%}
+		i.block_time >= timestamp '2021-11-01'
+		{% else -%}
+		{{ incremental_predicate('i.block_time') }}
+		{% endif -%}
+		and i.pre_token_balance is not null
+		and i.token_mint_address = '7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj'
+		and i.address = 'CYpYPtwY9QVmZsjCmguAud1ctQjXWKpWD7xeL5mnpcXk'
+		and i.token_balance_change > 0
 )
 
-SELECT * from (
-    SELECT
-        evt_block_time AS period,
-        contract_address AS token,
-        value AS amount_token,
-        evt_tx_hash,
-        blockchain
-    FROM other_income_txns
+, stsol_income as (
+	select
+		i.period
+		, '7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj' as token
+		, coalesce(i.delta, 0) as amount_token
+		, i.tx_id as evt_tx_hash
+		, 'solana' as blockchain
+	from
+		stsol_income_txs as i
+)
 
-    UNION ALL
-    --ETH inflow
-    SELECT
-        block_time AS time,
-        0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 AS token,
-        CAST(tr.value AS DOUBLE),
-        tx_hash,
-        'ethereum' as blockchain
-    FROM {{source('ethereum','traces')}} tr
-    WHERE tr.success = True
-    AND tr.to in (
-        SELECT
-            address
-        FROM multisigs_list
-        WHERE name IN ('Aragon','FinanceOpsMsig') AND chain = 'Ethereum'
-    )
-    AND tr."from" NOT IN (
-        SELECT address FROM multisigs_list
-        UNION ALL
-        SELECT address FROM diversifications_addresses
-    )
-    AND tr.type='call'
-    AND (tr.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR tr.call_type IS NULL)
+select
+	base.blockchain
+	, base.period
+	, base.evt_tx_hash
+	, base.token
+	, base.amount_token
+from
+	(
+		select
+			o.evt_block_time as period
+			, o.evt_tx_hash
+			, o.blockchain
+			, o.contract_address as token
+			, o.value as amount_token
+		from
+			other_income_txns as o
 
-    UNION --stSOL to solana treasury
-    SELECT
-        period,
-        from_base64('7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj') AS token,
-        amount_token,
-        from_base64(evt_tx_hash),
-        blockchain
-    FROM stsol_income
-) WHERE amount_token != 0
+		union all
 
+		-- ETH inflow
+		select
+			tr.block_time as period
+			, tr.tx_hash as evt_tx_hash
+			, 'ethereum' as blockchain
+			, 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 as token
+			, cast(tr.value as double) as amount_token
+		from
+			{{ source('ethereum', 'traces') }} as tr
+		where
+			{% if not is_incremental() -%}
+			tr.block_time >= timestamp '{{ project_start_date }}'
+			{% else -%}
+			{{ incremental_predicate('tr.block_time') }}
+			{% endif -%}
+			and tr.success = true
+			and exists (
+				select
+					1
+				from
+					multisigs_list as m
+				where
+					m.address = tr.to
+					and m.name in ('Aragon', 'FinanceOpsMsig')
+					and m.chain = 'Ethereum'
+			)
+			and not exists (select 1 from multisigs_list as m where m.address = tr."from")
+			and not exists (select 1 from diversifications_addresses as d where d.address = tr."from")
+			and tr.type = 'call'
+			and (tr.call_type not in ('delegatecall', 'callcode', 'staticcall') or tr.call_type is null)
+
+		union all
+
+		-- stSOL to Solana treasury
+		select
+			s.period
+			, from_base64(s.evt_tx_hash) as evt_tx_hash
+			, s.blockchain
+			, from_base64('7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj') as token
+			, s.amount_token
+		from
+			stsol_income as s
+	) as base
+where
+	base.amount_token != 0
+group by
+	base.blockchain
+	, base.period
+	, base.evt_tx_hash
+	, base.token
+    , base.amount_token

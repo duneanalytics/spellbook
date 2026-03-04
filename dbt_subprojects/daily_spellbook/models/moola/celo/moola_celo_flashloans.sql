@@ -2,11 +2,8 @@
   config(
     schema = 'moola_celo',
     alias = 'flashloans',
-    materialized = 'view',
-    post_hook = '{{ expose_spells(\'["celo"]\',
-                                    "project",
-                                    "moola",
-                                    \'["tomfutago"]\') }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

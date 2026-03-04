@@ -151,4 +151,8 @@ logs/
 
 dbt_subprojects/dex/spellbook-env/
 
-.cursor/
+# cursor - track skills, ignore personal preferences
+.cursor/skills/sql-style-guide
+.cursor/rules
+
+agents.md

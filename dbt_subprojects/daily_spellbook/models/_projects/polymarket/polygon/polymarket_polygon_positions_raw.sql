@@ -14,10 +14,11 @@
 with token_list as (
     select
         0x4D97DCd97eC945f40cF65F87097ACe5EA0476045 as token_address
-), 
+),
+
 balances as (
     {{
-      balances_incremental_subset_daily_legacy(
+      balances_incremental_subset_daily(
             blockchain = 'polygon',
             token_list = 'token_list',
             start_date = '2020-09-03'
@@ -26,11 +27,11 @@ balances as (
 )
 
 select
-    'polygon' as blockchain
+    blockchain
     , cast(date_trunc('month', day) as date) as month
     , day
     , address
     , token_address
     , token_id
-    , balance / 1e6 AS balance
+    , balance_raw / 1e6 as balance
 from balances

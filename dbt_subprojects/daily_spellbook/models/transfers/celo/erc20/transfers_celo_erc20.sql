@@ -6,11 +6,8 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['tx_hash', 'transfer_type', 'evt_index', 'wallet_address'],
-        post_hook='{{ expose_spells(\'["celo"]\',
-                                    "sector",
-                                    "transfers",
-                                    \'["soispoke", "dot2dotseurat", "tschubotz", "tomfutago"]\') }}'
+        unique_key = ['tx_hash', 'transfer_type', 'evt_index', 'wallet_address']
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

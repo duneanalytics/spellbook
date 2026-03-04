@@ -1,9 +1,8 @@
 {{config(alias = 'ofac_sanctioned',
-        tags=['static'],
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "sector",
-                                    "addresses",
-                                    \'["hildobby"]\') }}')}}
+        tags=['static']
+        , post_hook='{{ hide_spells() }}'
+    )
+}}
     
     SELECT address, protocol, description, blockchain, currency_contract, currency_symbol
     FROM (VALUES

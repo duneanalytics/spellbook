@@ -1,11 +1,8 @@
 {{ config(
     schema = 'openocean',
     alias = 'trades',
-    materialized = 'view',
-    post_hook='{{ expose_spells(blockchains = \'["fantom", "avalanche_c", "optimism"]\',
-                                  spell_type = "project", 
-                                  spell_name = "openocean", 
-                                  contributors = \'["Henrystats", "ARDev097"]\') }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

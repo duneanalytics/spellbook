@@ -8,8 +8,9 @@
 
 {%
   set models = [
-    ref('aave_v3_sonic_base_supply')
-    , ref('pike_sonic_base_supply')
+    ref('aave_v3_sonic_base_supply'),
+    ref('pike_sonic_base_supply'),
+    ref('morpho_sonic_base_supply')
   ]
 %}
 
@@ -25,6 +26,7 @@ select
   withdrawn_to,
   liquidator,
   amount,
+  amount_raw,
   block_month,
   block_time,
   block_number,

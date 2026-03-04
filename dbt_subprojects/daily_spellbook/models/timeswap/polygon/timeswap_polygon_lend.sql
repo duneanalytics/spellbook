@@ -5,10 +5,7 @@
     ,file_format = 'delta'
     ,incremental_strategy = 'merge'
     ,unique_key = ['transaction_hash', 'pool_pair', 'maturity', 'strike']
-    ,post_hook='{{ expose_spells(\'["polygon"]\',
-                                "project",
-                                "timeswap",
-                                \'["raveena15, varunhawk19"]\') }}'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

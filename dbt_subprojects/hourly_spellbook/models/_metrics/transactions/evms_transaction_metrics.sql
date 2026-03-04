@@ -1,10 +1,7 @@
 {{ config(
         schema='evms',
-        alias = 'transaction_metrics',
-        post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "blast", "bnb", "celo", "ethereum", "fantom", "gnosis", "linea", "mantle", "optimism", "polygon", "scroll", "sei", "zkevm", "zksync", "zora"]\',
-                                    "sector",
-                                    "metrics",
-                                    \'["0xRob"]\') }}'
+        alias = 'transaction_metrics'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

@@ -1,9 +1,8 @@
 {{config(
-    alias = 'token_standards_gnosis',
-        post_hook='{{ expose_spells(\'["gnosis"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["hildobby"]\') }}')}}
+    alias = 'token_standards_gnosis'
+    , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 SELECT distinct 'gnosis' AS blockchain
 , erc20.contract_address AS address

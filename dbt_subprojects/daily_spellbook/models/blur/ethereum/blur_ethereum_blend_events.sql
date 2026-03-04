@@ -2,11 +2,8 @@
     config(
 
         schema = 'blur_ethereum',
-        alias = 'blend_events',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "blur",
-                                \'["hildobby"]\') }}'
+        alias = 'blend_events'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

@@ -6,11 +6,8 @@
         file_format ='delta',
         incremental_strategy='merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.tx_block_time')],
-        unique_key='unique_transfer_id',
-        post_hook='{{ expose_spells(\'["base"]\',
-                                    "sector",
-                                    "transfers",
-                                    \'["msilb7", "chuxin"]\') }}'
+        unique_key='unique_transfer_id'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 with eth_transfers as (

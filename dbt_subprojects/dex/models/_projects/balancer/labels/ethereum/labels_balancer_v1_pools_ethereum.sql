@@ -4,11 +4,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['address'],
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                     "sector",
-                                    "labels",
-                                    \'["balancerlabs"]\') }}'
+    unique_key = ['address']
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

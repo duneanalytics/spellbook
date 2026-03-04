@@ -24,7 +24,7 @@ SELECT 'ethereum' AS deposit_chain
 , tx_from AS tx_from
 , tx_hash AS tx_hash
 , COALESCE(evt_index, 0) AS evt_index
-, contract_address
+, to AS contract_address 
 , {{ dbt_utils.generate_surrogate_key(['tx_hash', 'evt_index']) }} as bridge_transfer_id
 FROM {{ source('tokens_ethereum', 'transfers') }}
 WHERE to = 0x3b4d794a66304f130a4db8f2551b0070dfcf5ca7

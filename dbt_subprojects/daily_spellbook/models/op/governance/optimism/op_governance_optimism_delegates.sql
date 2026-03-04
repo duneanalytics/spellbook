@@ -1,10 +1,7 @@
 {{ config(
      schema = 'op_governance_optimism'
         , alias = 'delegates'
-        , post_hook='{{ expose_spells(\'["optimism"]\',
-                                  "project",
-                                  "op_governance",
-                                  \'["kaiblade"]\') }}'
+        , post_hook='{{ hide_spells() }}'
   )
 }}
 

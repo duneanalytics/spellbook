@@ -252,3 +252,18 @@ models:
       contributors: Henrystats
     config:
       tags: [ 'dex' ]
+
+  - name: uniswap_uniswapx_trades
+    meta:
+      blockchain: ethereum,arbitrum,base,unichain
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: [ 'dex' ]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_month
+            - tx_hash
+            - evt_index

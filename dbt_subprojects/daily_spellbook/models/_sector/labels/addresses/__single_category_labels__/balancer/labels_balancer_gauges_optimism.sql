@@ -1,9 +1,8 @@
 {{config(
-        alias = 'balancer_gauges_optimism',
-        post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["jacektrocinski", "viniabusafi"]\') }}')}}
+        alias = 'balancer_gauges_optimism'
+        , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 WITH reward_gauges AS(
 SELECT

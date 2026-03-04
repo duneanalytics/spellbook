@@ -1,12 +1,9 @@
 {{ 
     config(
         schema = 'eigenlayer_ethereum',
-        alias = 'operator_shares_cumulative_by_day',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "eigenlayer",
-                                    \'["bowenli"]\') }}',
-        unique_key = ['operator', 'strategy', 'date']
+        alias = 'operator_shares_cumulative_by_day'
+        , post_hook='{{ hide_spells() }}'
+        , unique_key = ['operator', 'strategy', 'date']
     )
 }}
 

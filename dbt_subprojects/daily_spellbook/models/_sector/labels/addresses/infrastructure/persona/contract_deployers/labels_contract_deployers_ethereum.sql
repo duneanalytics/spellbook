@@ -1,10 +1,7 @@
 {{
     config(
-        alias = 'contract_deployers_ethereum',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["hildobby", "hosuke"]\') }}'
+        alias = 'contract_deployers_ethereum'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

@@ -1,10 +1,7 @@
 {{config(
   schema = 'labels',
-  alias = 'balancer_v2_pools_arbitrum',
-  post_hook = '{{ expose_spells(\'["arbitrum"]\',
-                               "sector",
-                               "labels",
-                               \'["balancerlabs"]\') }}'
+  alias = 'balancer_v2_pools_arbitrum'
+  , post_hook='{{ hide_spells() }}'
 )}}
 
 WITH pools AS (

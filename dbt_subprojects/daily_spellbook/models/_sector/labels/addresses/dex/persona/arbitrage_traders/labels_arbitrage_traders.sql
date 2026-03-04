@@ -1,6 +1,6 @@
 {{config(
      alias = 'arbitrage_traders'
-    , post_hook='{{ expose_spells(\'["ethereum"]\', "sector", "labels", \'["alexth", "hosuke"]\') }}'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

@@ -5,11 +5,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['tx_hash', 'evt_index'],
-    post_hook='{{ expose_spells(blockchains = \'["optimism"]\',
-                               spell_type = "project",
-                               spell_name = "pika",
-                               contributors = \'["principatel"]\') }}'                  
+    unique_key = ['tx_hash', 'evt_index']                  
+    , post_hook='{{ hide_spells() }}'
 )}}
 
 {% set project_start_date = '2021-11-22' %}

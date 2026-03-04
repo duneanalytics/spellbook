@@ -1,11 +1,8 @@
 {{
     config(
         
-        alias = 'dex_pools',
-        post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "polygon"]\', 
-                    "sector",
-                    "labels",
-                    \'["hildobby"]\') }}'
+        alias = 'dex_pools'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

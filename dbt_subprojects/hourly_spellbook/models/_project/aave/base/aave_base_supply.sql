@@ -2,11 +2,8 @@
   config(
     schema = 'aave_base',
     alias = 'supply',
-    materialized = 'view',
-    post_hook = '{{ expose_spells(blockchains = \'["base"]\',
-                                  spell_type = "project",
-                                  spell_name = "aave",
-                                  contributors = \'["tomfutago"]\') }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

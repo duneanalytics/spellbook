@@ -65,4 +65,3 @@ The `erc20_tron.evt_approval` table contains Approval events for ERC20 tokens on
 This table is used for analyzing ERC20 token approvals and spending permissions on the tron network.
 
 {% enddocs %}
-

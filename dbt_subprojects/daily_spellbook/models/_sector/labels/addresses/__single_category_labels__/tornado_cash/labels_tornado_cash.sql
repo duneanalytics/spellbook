@@ -1,10 +1,7 @@
 {{config(
         
-        alias = 'tornado_cash',
-        post_hook='{{ expose_spells(\'["ethereum", "arbitrum","bnb","avalanche_c","optimism","gnosis"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["soispoke"]\') }}'
+        alias = 'tornado_cash'
+        , post_hook='{{ hide_spells() }}'
 )}}
 
 WITH tornado_addresses AS (

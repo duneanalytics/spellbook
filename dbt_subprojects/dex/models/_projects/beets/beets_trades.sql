@@ -1,11 +1,8 @@
 {{ config(
         schema = 'beets',
         alias = 'trades',
-        materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'["sonic"]\',
-                                      spell_type = "project", 
-                                      spell_name = "beets", 
-                                      contributors = \'["franz"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

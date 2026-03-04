@@ -6,11 +6,9 @@
         materialized='incremental',
         file_format = 'delta',
         incremental_strategy='merge',
-        unique_key = ['position_change','position_key','tx_id'],
-        post_hook='{{ expose_spells(\'["jupiter"]\',
-                                    "project",
-                                    "jupiter_solana",
-                                    \'["ilemi"]\') }}')
+        unique_key = ['position_change','position_key','tx_id']
+        , post_hook='{{ hide_spells() }}'
+)
 }}
 
 -- IncreasePositionEvent

@@ -1,10 +1,7 @@
 {{ config(
         schema='gmx_v2',
-        alias = 'swap_fees_collected',
-        post_hook='{{ expose_spells(blockchains = \'["arbitrum", "avalanche_c"]\',
-                                    spell_type = "project",
-                                    spell_name = "gmx",
-                                    contributors = \'["ai_data_master","gmx-io"]\') }}'
+        alias = 'swap_fees_collected'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

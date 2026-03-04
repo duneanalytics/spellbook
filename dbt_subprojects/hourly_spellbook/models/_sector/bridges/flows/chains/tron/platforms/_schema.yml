@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: bridges_tron_allbridge_classic_deposits
+    meta:
+      blockchain: tron
+      sector: bridges
+      project: allbridge
+      contributors: tomfutago
+    config:
+      tags: [ 'tron', 'bridges', 'flows', 'deposits' ]
+    description: "Allbridge Classic bridge deposits events on Tron"
+  - name: bridges_tron_symbiosis_v1_deposits
+    meta:
+      blockchain: tron
+      sector: bridges
+      project: symbiosis
+      contributors: tomfutago
+    config:
+      tags: [ 'tron', 'bridges', 'flows', 'withdrawals' ]
+    description: "Symbiosis's v1 bridge deposits events on Tron"

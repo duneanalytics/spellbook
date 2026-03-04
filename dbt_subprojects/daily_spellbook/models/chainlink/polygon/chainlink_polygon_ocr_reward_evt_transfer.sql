@@ -2,11 +2,8 @@
   config(
     
     alias='ocr_reward_evt_transfer',
-    materialized='view',
-    post_hook='{{ expose_spells(\'["polygon"]\',
-                                "project",
-                                "chainlink",
-                                \'["linkpool_ryan"]\') }}'
+    materialized='view'
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

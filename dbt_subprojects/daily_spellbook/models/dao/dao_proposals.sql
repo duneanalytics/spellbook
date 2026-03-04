@@ -1,10 +1,6 @@
 {{ config(
-        alias = 'proposals',
-        
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "sector",
-                                "dao",
-                                \'["soispoke"]\') }}'
+        alias = 'proposals'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

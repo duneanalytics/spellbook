@@ -2,12 +2,8 @@
     config(
         schema = 'ape_store',
         alias = 'trades',
-        materialized = 'view',
-        post_hook = '{{ expose_spells(
-                        blockchains = \'["base", "ethereum"]\',
-                        spell_type = "project",
-                        spell_name = "ape_store",
-                        contributors = \'["whale_hunter"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 
