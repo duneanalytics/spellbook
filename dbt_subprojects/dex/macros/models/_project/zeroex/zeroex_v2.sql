@@ -339,7 +339,8 @@ select  distinct block_time,
         settler_address,
         zid,
         tag,
-        settler_address as contract_address 
+        settler_address as contract_address,
+        date_trunc('minute', block_time) as block_minute 
     from maker_logs
     join zeroex_tx st using (block_time, block_number, tx_hash, rn, settler_address) 
     {% if blockchain not in ['mode'] %}
@@ -366,7 +367,7 @@ token_prices AS (
     SELECT
         blockchain,
         contract_address,
-        date_trunc('minute', timestamp) as minute,
+        "timestamp" as minute,
         price,
         symbol,
         decimals 
@@ -416,9 +417,9 @@ results AS (
     LEFT JOIN
         token_metadata tm ON tm.contract_address = maker_token
     LEFT JOIN
-        token_prices pt ON pt.contract_address = taker_token AND pt.minute = DATE_TRUNC('minute', trades.block_time)
+        token_prices pt ON pt.contract_address = taker_token AND pt.minute = trades.block_minute
     LEFT JOIN
-        token_prices pm ON pm.contract_address = maker_token AND pm.minute = DATE_TRUNC('minute', trades.block_time)
+        token_prices pm ON pm.contract_address = maker_token AND pm.minute = trades.block_minute
 ),
 
 results_usd AS (
