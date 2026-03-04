@@ -370,7 +370,7 @@ token_prices AS (
         price,
         symbol,
         decimals 
-    FROM {{ source('prices', 'usd') }}
+    FROM {{ source('prices', 'minute') }}
     WHERE 
         blockchain = '{{blockchain}}'
         {% if is_incremental() %}
