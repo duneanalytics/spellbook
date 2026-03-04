@@ -24,6 +24,7 @@
     , 'hyperevm'
     , 'linea'
     , 'mantle'
+    , 'megaeth'
     , 'mezo'
     , 'monad'
     , 'opbnb'
@@ -32,6 +33,7 @@
     , 'plasma'
     , 'polygon'
     , 'ronin'
+    , 'rise'
     , 'scroll'
     , 'sei'
     , 'shape'
@@ -61,6 +63,7 @@
     , 'sophon'
     , 'viction'
     , 'worldchain'
+    , 'xlayer'
 ] %}
 
 SELECT *

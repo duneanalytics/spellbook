@@ -3,11 +3,9 @@
         schema = 'magiceden',
         alias = 'trades',
         
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["solana", "polygon"]\',
-                                    "project",
-                                    "magiceden",
-                                    \'["0xRob"]\') }}')
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
+)
 }}
 
 SELECT *

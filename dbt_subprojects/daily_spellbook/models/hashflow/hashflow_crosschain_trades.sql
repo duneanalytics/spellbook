@@ -2,10 +2,7 @@
     config(
         
         alias = 'crosschain_trades'
-        ,post_hook='{{ expose_spells(\'["ethereum", "avalanche_c", "bnb", "optimism"]\',
-                        "project",
-                        "hashflow",
-                        \'["BroderickBonelli", "ARDev097"]\') }}'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

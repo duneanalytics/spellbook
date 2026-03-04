@@ -1,9 +1,8 @@
 {{config(
-        alias = 'balancer_gauges_ethereum',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["jacektrocinski", "viniabussafi"]\') }}')}}
+        alias = 'balancer_gauges_ethereum'
+        , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 WITH gauges AS(
 SELECT

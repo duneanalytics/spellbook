@@ -2,11 +2,8 @@
   config(
           schema = 'contracts_bnb',
         alias = 'contract_mapping',
-        tags=[ 'static'],
-        post_hook='{{ expose_spells(\'["bnb"]\',
-                                    "sector",
-                                    "contracts",
-                                    \'["davidcheongyl", "ronaldkohhh"]\') }}'
+        tags=[ 'static']
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

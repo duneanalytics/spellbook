@@ -1,10 +1,7 @@
 {{ config(
         schema = 'airdrop_bnb',
-        alias = 'claims',
-        post_hook='{{ expose_spells(\'["bnb"]\',
-                                      "sector",
-                                      "airdrop",
-                                    \'["hildobby"]\') }}'
+        alias = 'claims'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

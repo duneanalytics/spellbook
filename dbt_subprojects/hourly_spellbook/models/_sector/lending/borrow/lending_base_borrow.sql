@@ -14,21 +14,27 @@
 {%
   set models = [
     ref('lending_arbitrum_base_borrow'),
+    ref('lending_avalanche_c_base_borrow'),
     ref('lending_base_base_borrow'),
     ref('lending_bnb_base_borrow'),
     ref('lending_celo_base_borrow'),
+    ref('lending_corn_base_borrow'),
     ref('lending_ethereum_base_borrow'),
-    ref('lending_optimism_base_borrow'),
-    ref('lending_polygon_base_borrow'),
-    ref('lending_avalanche_c_base_borrow'),
     ref('lending_fantom_base_borrow'),
     ref('lending_gnosis_base_borrow'),
-    ref('lending_zksync_base_borrow'),
-    ref('lending_scroll_base_borrow'),
+    ref('lending_ink_base_borrow'),
+    ref('lending_katana_base_borrow'),
     ref('lending_linea_base_borrow'),
-    ref('lending_sonic_base_borrow'),
+    ref('lending_optimism_base_borrow'),
     ref('lending_plasma_base_borrow'),
-    ref('lending_unichain_base_borrow')
+    ref('lending_plume_base_borrow'),
+    ref('lending_polygon_base_borrow'),
+    ref('lending_scroll_base_borrow'),
+    ref('lending_sonic_base_borrow'),
+    ref('lending_tac_base_borrow'),
+    ref('lending_unichain_base_borrow'),
+    ref('lending_worldchain_base_borrow'),
+    ref('lending_zksync_base_borrow')
   ]
 %}
 
@@ -45,6 +51,7 @@ select
   repayer,
   liquidator,
   amount,
+  amount_raw,
   block_month,
   block_time,
   block_number,

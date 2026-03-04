@@ -1,11 +1,8 @@
 {{ config(
         
         schema = 'fungible',
-        alias ='transfers',
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "fantom", "base"]\',
-                                    "sector",
-                                    "fungible",
-                                    \'["hildobby"]\') }}'
+        alias ='transfers'
+        , post_hook='{{ hide_spells() }}'
 )
 }}
 

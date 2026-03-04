@@ -1,0 +1,21 @@
+{% set chain = 'taiko' %}
+
+{{
+  config(
+    schema = 'tokens_' ~ chain,
+    alias = 'erc20_stablecoins_core',
+    materialized = 'table',
+    tags = ['static'],
+    unique_key = ['contract_address']
+  )
+}}
+
+-- core list: frozen stablecoin addresses used for initial incremental transfers
+-- new stablecoins should be added to tokens_taiko_erc20_stablecoins_extended
+
+select '{{chain}}' as blockchain, contract_address, currency
+from (values
+
+     (0x07d83526730c7438048d55a4fc0b850e2aab6f0b, 'USD')  -- USDC
+
+) as temp_table (contract_address, currency)

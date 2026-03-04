@@ -4,11 +4,10 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['account_address'],
-    post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "project",
-                                    "worldcoin",
-                                    \'["msilb7"]\') }}')}}
+    unique_key = ['account_address']
+    , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 -- Addresses Sourced from https://dune.com/queries/2456211
 

@@ -6,4 +6,5 @@ sources:
     tables:
       - name: StataToken_evt_Initialized    
 
-      - name: StataTokenFactory_call_createDeterministic          
+      - name: StataTokenFactory_call_createDeterministic      
+      - name: poolconfigurator_evt_reserveinitialized    

@@ -3,11 +3,8 @@
         schema = 'balancer_ethereum',
         alias = 'vebal_votes',
         materialized = 'table',
-        file_format = 'delta',
-        post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
-                                    spell_type = "project",
-                                    spell_name = "balancer",
-                                    contributors = \'["markusbkoch", "mendesfabio", "stefenon", "viniabussafi"]\') }}'
+        file_format = 'delta'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

@@ -1,11 +1,8 @@
 {{
   config(
     
-    alias='fm_gas_daily',
-    post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","fantom","gnosis","optimism","polygon"]\',
-                            "project",
-                            "chainlink",
-                            \'["linkpool_jon"]\') }}'
+    alias='fm_gas_daily'
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

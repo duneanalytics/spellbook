@@ -1,11 +1,8 @@
 {{ config(
     schema = 'tapio',
     alias = 'trades',
-    materialized = 'view',
-    post_hook='{{ expose_spells(blockchains = \'["base", "sonic"]\',
-                                  spell_type = "project",
-                                  spell_name = "tapio",
-                                  contributors = \'["brunota20"]\') }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
 ) }}
 
 SELECT  

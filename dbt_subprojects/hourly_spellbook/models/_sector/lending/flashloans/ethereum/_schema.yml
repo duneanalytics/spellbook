@@ -396,7 +396,7 @@ models:
       blockchain: ethereum
       sector: lending
       project: morpho
-      contributors: hildobby
+      contributors: hildobby, tomfutago
     config:
       tags: ['lending', 'flashloans', 'morpho', 'ethereum']
     description: "Morpho flashloans transactions on Ethereum"

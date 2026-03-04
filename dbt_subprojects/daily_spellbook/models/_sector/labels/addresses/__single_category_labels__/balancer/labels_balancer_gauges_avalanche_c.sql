@@ -1,9 +1,8 @@
 {{config(
-        alias = 'balancer_gauges_avalanche_c',
-        post_hook='{{ expose_spells(\'["avalanche_c"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["viniabussafi"]\') }}')}}
+        alias = 'balancer_gauges_avalanche_c'
+        , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 WITH gauges AS(
 SELECT distinct

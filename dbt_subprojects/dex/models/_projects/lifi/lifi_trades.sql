@@ -1,10 +1,7 @@
 {{ config(
         schema = 'lifi',
-        alias = 'trades',
-        post_hook='{{ expose_spells(blockchains = \'["fantom", "optimism"]\',
-                                    spell_type = "project",
-                                    spell_name = "lifi",
-                                    contributors = \'["Henrystats", "hosuke"]\') }}'
+        alias = 'trades'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

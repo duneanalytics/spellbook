@@ -6,10 +6,7 @@ tags=['prod_exclude'],
         ,file_format = 'delta'
         ,incremental_strategy = 'merge'
         ,unique_key = ['name']
-        ,post_hook='{{ expose_spells(\'["bnb"]\',
-                                    "project",
-                                    "spaceid",
-                                    \'["springzh"]\') }}'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

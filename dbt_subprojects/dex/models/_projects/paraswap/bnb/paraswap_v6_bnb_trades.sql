@@ -7,11 +7,8 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'method', 'trace_address'],
-    post_hook='{{ expose_spells(\'["bnb"]\',
-                                "project",
-                                "paraswap_v6",
-                                \'["eptighte", "mwamedacen"]\') }}'
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'method', 'trace_address']
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 
@@ -19,6 +16,7 @@
 
 with dexs AS (
         SELECT
+            project,
             blockTime AS block_time,
             blockNumber AS block_number,
             from_hex(beneficiary) AS taker,
@@ -48,7 +46,7 @@ with dexs AS (
 )
 
 SELECT 'bnb' AS blockchain,
-    'paraswap' AS project,
+    project,
     '6' AS version,
     cast(date_trunc('day', d.block_time) as date) as block_date,
     cast(date_trunc('month', d.block_time) as date) as block_month,

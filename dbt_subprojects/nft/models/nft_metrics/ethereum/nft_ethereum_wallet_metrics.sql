@@ -2,11 +2,8 @@
     schema = 'nft_ethereum',
     alias = 'wallet_metrics',
     materialized='table',
-    file_format = 'delta',
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "sector",
-                                "nft",
-                                \'["NazihKalo", "hosuke"]\') }}'
+    file_format = 'delta'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

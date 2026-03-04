@@ -6,10 +6,7 @@
         ,materialized='incremental'
         ,incremental_strategy = 'merge'
         ,unique_key = ['block_date', 'source_chain', 'tx_hash']
-        ,post_hook='{{ expose_spells(\'["optimism"]\',
-                                        "project",
-                                        "hashflow",
-                                        \'["ARDev097"]\') }}'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

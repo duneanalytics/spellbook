@@ -1,11 +1,8 @@
 {{ config(
     schema = 'spookyswap',
     alias = 'trades',
-    materialized = 'view',
-    post_hook='{{ expose_spells(blockchains = \'["fantom"]\',
-                                  spell_type = "project", 
-                                  spell_name = "spookyswap", 
-                                  contributors = \'["Henrystats"]\') }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

@@ -3,11 +3,8 @@
     schema = 'nexusmutual_ethereum',
     alias = 'staking_pools',
     materialized = 'view',
-    unique_key = ['pool_id', 'product_id'],
-    post_hook = '{{ expose_spells(blockchains = \'["ethereum"]\',
-                                  spell_type = "project",
-                                  spell_name = "nexusmutual",
-                                  contributors = \'["tomfutago"]\') }}'
+    unique_key = ['pool_id', 'product_id']
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

@@ -1,11 +1,7 @@
 {{
     config(
-        alias='completions',
-        
-        post_hook='{{ expose_spells(\'["optimism"]\', 
-        "sector", 
-        "labels", 
-        \'["msilb7"]\') }}'
+        alias='completions'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

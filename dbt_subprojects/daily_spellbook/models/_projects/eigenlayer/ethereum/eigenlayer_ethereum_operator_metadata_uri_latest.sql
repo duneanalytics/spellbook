@@ -1,12 +1,9 @@
 {{ 
     config(
         schema = 'eigenlayer_ethereum',
-        alias = 'operator_metadata_uri_latest',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "eigenlayer",
-                                    \'["bowenli"]\') }}',
-        unique_key = ['operator']
+        alias = 'operator_metadata_uri_latest'
+        , post_hook='{{ hide_spells() }}'
+        , unique_key = ['operator']
     )
 }}
 

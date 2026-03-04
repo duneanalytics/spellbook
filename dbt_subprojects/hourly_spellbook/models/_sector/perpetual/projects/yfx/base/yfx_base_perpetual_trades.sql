@@ -1,10 +1,7 @@
 {{ config(
     schema = 'yfx_base',
-    alias = 'perpetual_trades',
-    post_hook='{{ expose_spells(\'["base"]\',
-                                    "project",
-                                    "yfx",
-                                    \'["principatel"]\') }}'
+    alias = 'perpetual_trades'
+    , post_hook='{{ hide_spells() }}'
         )
 }}
 

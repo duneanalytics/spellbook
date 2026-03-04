@@ -1,9 +1,6 @@
 {{config(
-  alias = 'beets_pools_sonic',
-  post_hook = '{{ expose_spells(\'["sonic"]\',
-                               "sector",
-                               "labels",
-                               \'["viniabussafi"]\') }}'
+  alias = 'beets_pools_sonic'
+  , post_hook='{{ hide_spells() }}'
 )}}
 
 WITH v2_pools AS(

@@ -1901,6 +1901,8 @@ seeds:
         evt_index: bigint
         transaction_type: varchar
         token_address: varbinary
+        depositor: varbinary
+        amount: double
   - name: compound_unichain_base_supply_seed
     config:
       column_types:
@@ -1999,4 +2001,32 @@ seeds:
         transaction_type: varchar
         token_address: varbinary
         depositor: varbinary
+        amount: double
+  - name: justlend_tron_base_supply_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        block_number: bigint
+        block_time: timestamp
+        tx_hash: varbinary
+        evt_index: bigint
+        transaction_type: varchar
+        token_address: varbinary
+        depositor: varbinary
+        amount: double
+  - name: justlend_tron_base_borrow_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        block_number: bigint
+        block_time: timestamp
+        tx_hash: varbinary
+        evt_index: bigint
+        transaction_type: varchar
+        token_address: varbinary
+        borrower: varbinary
         amount: double

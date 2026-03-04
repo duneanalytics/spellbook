@@ -2,11 +2,9 @@
     
     alias = 'dao',
     materialized = 'table',
-    file_format = 'delta',
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "sector",
-                                "labels",
-                                \'["ilemi"]\') }}')
+    file_format = 'delta'
+    , post_hook='{{ hide_spells() }}'
+)
 }}
 
 {% set dao_models = [

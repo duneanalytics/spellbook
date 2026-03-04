@@ -1,0 +1,118 @@
+version: 2
+
+models:
+  - name: tokens_erc20_stablecoins
+    meta:
+      sector: tokens
+      project: tokens
+      contributors: tomfutago
+    config:
+      tags: ['tokens', 'stablecoins', 'erc20']
+    description: "Stablecoin ERC20 token addresses with metadata across all chains"
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain for the token"
+      - &contract_address
+        name: contract_address
+        description: "Contract address for the stablecoin token"
+      - &currency
+        name: currency
+        description: "ISO 4217 currency code the stablecoin is pegged to (e.g., USD, EUR, BRL)"
+      - &backing
+        name: backing
+        description: "Type of backing for the stablecoin (e.g., Fiat-backed, Crypto-backed, Algorithmic, Hybrid, RWA-backed)"
+      - &symbol
+        name: symbol
+        description: "Token symbol"
+      - &decimals
+        name: decimals
+        description: "Number of decimals for the token"
+      - &name
+        name: name
+        description: "Name or protocol of the stablecoin"
+
+  - name: tokens_erc20_stablecoins_metadata
+    meta:
+      sector: tokens
+      project: tokens
+      contributors: Henrystats, synthquest, rantum, tomfutago
+    config:
+      tags: ['tokens', 'stablecoins', 'erc20', 'metadata', 'static']
+    description: "Stablecoin ERC20 token metadata including backing type, symbol, decimals, and name across all chains"
+    columns:
+      - *blockchain
+      - *contract_address
+      - *backing
+      - *symbol
+      - *decimals
+      - *name
+
+  - name: stablecoins_transfers
+    meta:
+      sector: stablecoin
+      project: stablecoin
+      contributors: tomfutago
+    config:
+      tags: ['stablecoin', 'transfers']
+    description: "Stablecoin token transfers across all chains with token metadata"
+    columns:
+      - *blockchain
+      - &block_month
+        name: block_month
+        description: "Month of the block (partition column)"
+      - &block_date
+        name: block_date
+        description: "Date of the block"
+      - &block_time
+        name: block_time
+        description: "Timestamp of the block"
+      - &block_number
+        name: block_number
+        description: "Block number"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
+      - &trace_address
+        name: trace_address
+        description: "Trace address"
+      - &token_standard
+        name: token_standard
+        description: "Standard for the token"
+      - &token_address
+        name: token_address
+        description: "Address for the token"
+      - &token_symbol
+        name: token_symbol
+        description: "Symbol for the token"
+      - *currency
+      - &token_backing
+        name: token_backing
+        description: "Stablecoin backing type"
+      - &token_name
+        name: token_name
+        description: "Stablecoin name"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw transfer amount"
+      - &amount
+        name: amount
+        description: "Transfer amount (adjusted for decimals)"
+      - &price_usd
+        name: price_usd
+        description: "USD price at time of transfer"
+      - &amount_usd
+        name: amount_usd
+        description: "USD value of transfer"
+      - &from
+        name: from
+        description: "Sender address"
+      - &to
+        name: to
+        description: "Receiver address"
+      - &unique_key
+        name: unique_key
+        description: "Unique identifier for this transfer"

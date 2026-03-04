@@ -4,11 +4,8 @@
         alias = 'airdrop_claims',
         materialized = 'incremental',
         file_format = 'delta',
-        unique_key = ['tx_hash', 'evt_index', 'recipient'],
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "etherfi",
-                                \'["hildobby"]\') }}'
+        unique_key = ['tx_hash', 'evt_index', 'recipient']
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

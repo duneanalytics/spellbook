@@ -8,8 +8,9 @@
 
 {%
   set models = [
-    ref('aave_v3_sonic_base_borrow')
-    , ref('pike_sonic_base_borrow')
+    ref('aave_v3_sonic_base_borrow'),
+    ref('pike_sonic_base_borrow'),
+    ref('morpho_sonic_base_borrow')
   ]
 %}
 
@@ -26,6 +27,7 @@ select
   repayer,
   liquidator,
   amount,
+  amount_raw,
   block_month,
   block_time,
   block_number,

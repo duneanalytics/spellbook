@@ -1,11 +1,8 @@
 {{
     config(
 
-        alias = 'erc20_rolling_day',
-        post_hook='{{ expose_spells(\'["celo"]\',
-                                    "sector",
-                                    "transfers",
-                                    \'["tomfutago"]\') }}'
+        alias = 'erc20_rolling_day'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

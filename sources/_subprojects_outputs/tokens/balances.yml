@@ -44,6 +44,12 @@ sources:
     tables:
       - name: balances_daily_agg
       - name: balances_daily_agg_base
+  - name: tokens_celo
+    tables:
+      - name: balances_daily_agg_base
+  - name: tokens_unichain
+    tables:
+      - name: balances_daily_agg_base
   - name: tokens_zksync
     tables:
       - name: balances_daily_agg

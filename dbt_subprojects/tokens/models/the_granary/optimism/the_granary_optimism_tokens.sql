@@ -4,11 +4,7 @@
     , file_format = 'delta'
     , incremental_strategy = 'merge'
     , unique_key = ['blockchain', 'atoken_address']
-    , post_hook='{{ expose_spells(\'["optimism"]\',
-                                  "project",
-                                  "the_granary",
-                                  \'["msilb7"]\') 
-    }}'
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

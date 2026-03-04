@@ -13,7 +13,8 @@
     ref('radiant_arbitrum_base_supply'),
     ref('lodestar_v0_arbitrum_base_supply'),
     ref('lodestar_v1_arbitrum_base_supply'),
-    ref('granary_arbitrum_base_supply')
+    ref('granary_arbitrum_base_supply'),
+    ref('morpho_arbitrum_base_supply')
   ]
 %}
 
@@ -29,6 +30,7 @@ select
   withdrawn_to,
   liquidator,
   amount,
+  amount_raw,
   block_month,
   block_time,
   block_number,
