@@ -366,7 +366,7 @@ token_prices AS (
     SELECT
         blockchain,
         contract_address,
-        minute,
+        date_trunc('minute', timestamp) as minute,
         price,
         symbol,
         decimals 
@@ -374,9 +374,9 @@ token_prices AS (
     WHERE 
         blockchain = '{{blockchain}}'
         {% if is_incremental() %}
-        AND {{ incremental_predicate('minute') }}
+        AND {{ incremental_predicate('timestamp') }}
         {% else %}
-        AND minute >= DATE '{{start_date}}'
+        AND timestamp >= DATE '{{start_date}}'
         {% endif %}
 ), 
 
