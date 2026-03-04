@@ -1903,6 +1903,7 @@ FROM
     ('usd1-usd1', 'ethereum', 'USD1', 0x8d0d000ee44948fc98c9b98a4fa4921476f08b0d, 18),
     ('fuel-fuel-network', 'ethereum', 'FUEL', 0x675B68AA4d9c2d3BB3F0397048e62E6B7192079c, 9),
     ('towns-towns', 'ethereum', 'TOWNS', 0x000000Fa00b200406de700041CFc6b19BbFB4d13, 18),
+    ('shu-shutter', 'ethereum', 'SHU', 0xe485e2f1bab389c08721b291f6b59780fec83fd7, 18),
     ('rlusd-ripple-usd', 'ethereum', 'RLUSD', 0x8292bb45bf1ee4d140127049757c2e0ff06317ed, 18)
    ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (

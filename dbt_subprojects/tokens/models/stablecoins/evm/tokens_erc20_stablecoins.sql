@@ -42,14 +42,15 @@
     schema = 'tokens',
     alias = 'erc20_stablecoins',
     materialized = 'view',
-    tags = ['static']
-    , post_hook='{{ hide_spells() }}'
+    tags = ['static'],
+    post_hook = '{{ hide_spells() }}'
   )
 }}
 
 select
   s.blockchain,
   s.contract_address,
+  s.currency,
   m.backing,
   coalesce(erc20.symbol, m.symbol) as symbol,
   coalesce(erc20.decimals, m.decimals) as decimals,
@@ -58,7 +59,8 @@ from (
   {% for chain in chains %}
   select
     blockchain,
-    contract_address
+    contract_address,
+    currency
   from {{ ref('tokens_' ~ chain ~ '_erc20_stablecoins') }}
   {% if not loop.last %}
   union all

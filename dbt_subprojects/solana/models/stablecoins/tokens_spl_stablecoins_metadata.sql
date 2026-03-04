@@ -6,6 +6,7 @@
     tags = ['static'],
   )
 }}
+-- note: currency now lives in the per-chain token lists (tokens_<chain>_spl_stablecoins_*), not here
 
 select blockchain, token_mint_address, backing, symbol, decimals, name
 from (values

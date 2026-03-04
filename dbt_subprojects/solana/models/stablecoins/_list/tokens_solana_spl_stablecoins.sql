@@ -12,10 +12,10 @@
 
 -- union view combining core (frozen) and extended (new additions) stablecoin lists
 
-select blockchain, token_mint_address
+select blockchain, token_mint_address, currency
 from {{ ref('tokens_' ~ chain ~ '_spl_stablecoins_core') }}
 
 union all
 
-select blockchain, token_mint_address
+select blockchain, token_mint_address, currency
 from {{ ref('tokens_' ~ chain ~ '_spl_stablecoins_extended') }}

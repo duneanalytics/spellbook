@@ -8,7 +8,7 @@ models:
       category: bot_contracts
       contributors: msilb7
     config:
-      tags: ['labels', 'base','bots']
+      tags: ['labels', 'base','bots','prod_exclude']
     description: "Likely bot contract labels"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -57,7 +57,7 @@ models:
       category: bot_addresses
       contributors: msilb7
     config:
-      tags: ['labels', 'base','bots']
+      tags: ['labels', 'base','bots','prod_exclude']
     description: "Likely bot address labels"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
