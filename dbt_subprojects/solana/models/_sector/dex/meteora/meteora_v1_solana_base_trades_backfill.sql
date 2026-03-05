@@ -10,7 +10,7 @@
        event_time = 'block_time',
        begin = '2022-07-27',
        batch_size = var('meteora_v1_batch_size', 'day'),
-       lookback = 3,
+       lookback = 1,
        unique_key = ['block_month', 'surrogate_key'],
        pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
        )

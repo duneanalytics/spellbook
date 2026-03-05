@@ -10,7 +10,7 @@
     , event_time = 'block_time'
     , begin = '2024-05-16'
     , batch_size = var('raydium_v5_batch_size', 'day')
-    , lookback = 3
+    , lookback = 1
     , unique_key = ['block_month', 'block_date', 'surrogate_key']
     , pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
   )
