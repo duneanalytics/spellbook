@@ -10,15 +10,11 @@
     , event_time = 'block_time'
     , begin = '2024-05-16'
     , batch_size = var('raydium_v5_batch_size', 'day')
-    , lookback = 3
+    , lookback = 1
     , unique_key = ['block_month', 'block_date', 'surrogate_key']
     , pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
   )
 }}
-
-{% set begin = '2024-05-16' %}
-{% set batch_start = model.batch.event_time_start if model.batch else begin %}
-{% set batch_end = model.batch.event_time_end if model.batch else '2099-01-01' %}
 
 with swaps as (
     select
@@ -36,11 +32,6 @@ with swaps as (
         , pool_id
         , surrogate_key
     from {{ ref('raydium_v5_solana_stg_decoded_swaps') }}
-    where
-        block_date >= cast(timestamp '{{batch_start}}' as date)
-        and block_date < cast(timestamp '{{batch_end}}' as date)
-        and block_time >= timestamp '{{batch_start}}'
-        and block_time < timestamp '{{batch_end}}'
 )
 , transfers as (
     select
@@ -53,11 +44,7 @@ with swaps as (
         , to_token_account
     from {{ source('tokens_solana', 'transfers') }}
     where
-        block_date >= cast(timestamp '{{batch_start}}' as date)
-        and block_date < cast(timestamp '{{batch_end}}' as date)
-        and block_time >= timestamp '{{batch_start}}'
-        and block_time < timestamp '{{batch_end}}'
-        and (token_version = 'spl_token' or token_version = 'spl_token_2022')
+        token_version = 'spl_token' or token_version = 'spl_token_2022'
 )
 , all_swaps as (
     select

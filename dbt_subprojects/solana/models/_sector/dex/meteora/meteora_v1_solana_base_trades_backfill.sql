@@ -10,15 +10,11 @@
        event_time = 'block_time',
        begin = '2022-07-27',
        batch_size = var('meteora_v1_batch_size', 'day'),
-       lookback = 3,
+       lookback = 1,
        unique_key = ['block_month', 'surrogate_key'],
        pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
        )
 }}
-
-{% set begin = '2022-07-27' %}
-{% set batch_start = model.batch.event_time_start if model.batch else begin %}
-{% set batch_end = model.batch.event_time_end if model.batch else '2099-01-01' %}
 
 WITH swaps AS (
     SELECT
@@ -37,9 +33,6 @@ WITH swaps AS (
         , deposit_index
         , surrogate_key
     FROM {{ ref('meteora_v1_solana_stg_swaps') }}
-    WHERE
-        block_time >= TIMESTAMP '{{ batch_start }}'
-        AND block_time < TIMESTAMP '{{ batch_end }}'
 )
 
 , transfers AS (
@@ -54,9 +47,6 @@ WITH swaps AS (
         , from_token_account
         , to_token_account
     FROM {{ source('tokens_solana', 'transfers') }}
-    WHERE
-        block_time >= TIMESTAMP '{{ batch_start }}'
-        AND block_time < TIMESTAMP '{{ batch_end }}'
 )
 
 , all_swaps AS (
