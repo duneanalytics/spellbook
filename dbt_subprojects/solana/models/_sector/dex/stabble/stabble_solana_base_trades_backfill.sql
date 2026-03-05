@@ -7,18 +7,14 @@
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'microbatch'
-    , event_time = 'block_time'
+    , event_time = 'block_date'
     , begin = '2024-06-05'
     , batch_size = var('stabble_batch_size', 'day')
-    , lookback = 3
+    , lookback = 1
     , unique_key = ['block_month', 'surrogate_key']
     , pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
   )
 }}
-
-{% set begin = '2024-06-05' %}
-{% set batch_start = model.batch.event_time_start if model.batch else begin %}
-{% set batch_end = model.batch.event_time_end if model.batch else '2099-01-01' %}
 
 WITH swaps AS (
     SELECT
@@ -43,9 +39,6 @@ WITH swaps AS (
         , token_bought_vault
         , surrogate_key
     FROM {{ ref('stabble_solana_stg_decoded_swaps') }}
-    WHERE
-        block_time >= timestamp '{{ batch_start }}'
-        AND block_time < timestamp '{{ batch_end }}'
 )
 
 , transfers AS (
@@ -60,9 +53,6 @@ WITH swaps AS (
         , from_token_account
         , to_token_account
     FROM {{ source('tokens_solana', 'transfers') }}
-    WHERE
-        block_time >= timestamp '{{ batch_start }}'
-        AND block_time < timestamp '{{ batch_end }}'
 )
 
 , joined AS (

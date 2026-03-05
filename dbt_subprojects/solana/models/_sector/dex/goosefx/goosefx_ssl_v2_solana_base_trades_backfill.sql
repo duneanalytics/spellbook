@@ -7,9 +7,9 @@
        materialized = 'incremental',
        file_format = 'delta',
        incremental_strategy = 'microbatch',
-       event_time = 'block_time',
+       event_time = 'block_date',
        begin = '2023-08-01',
-       batch_size = 'day',
+       batch_size = var('goosefx_ssl_v2_batch_size', 'day'),
        lookback = 1,
        unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index','block_month'],
        pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
@@ -18,10 +18,6 @@
 
 -- Microbatch used for backfills only; static tag prevents ongoing prod runs.
 -- Program inactive since 2024-09-09; cutoff covers through last active month.
-{% set cutoff_date = '2024-10-01' %}
-{% set begin = '2023-08-01' %}
-{% set batch_start = model.batch.event_time_start if model.batch else begin %}
-{% set batch_end = model.batch.event_time_end if model.batch else cutoff_date %}
 
 with swaps as (
 	select
@@ -38,9 +34,6 @@ with swaps as (
 		, call_tx_index
 	from
 		{{ source('goosefx_solana', 'gfx_ssl_v2_call_swap') }}
-	where
-		call_block_time >= timestamp '{{batch_start}}'
-		and call_block_time < least(timestamp '{{cutoff_date}}', timestamp '{{batch_end}}')
 )
 , transfers as (
 	select
@@ -55,9 +48,6 @@ with swaps as (
 		, to_token_account
 	from
 		{{ source('tokens_solana', 'transfers') }}
-	where
-		block_time >= timestamp '{{batch_start}}'
-		and block_time < least(timestamp '{{cutoff_date}}', timestamp '{{batch_end}}')
 )
 , all_swaps as (
 	select

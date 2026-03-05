@@ -7,18 +7,14 @@
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'microbatch'
-    , event_time = 'block_time'
+    , event_time = 'block_date'
     , begin = '2021-03-21'
     , batch_size = var('raydium_v4_batch_size', 'day')
-    , lookback = 3
+    , lookback = 1
     , unique_key = ['block_month', 'surrogate_key']
     , pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
   )
 }}
-
-{% set begin = '2021-03-21' %}
-{% set batch_start = model.batch.event_time_start if model.batch else begin %}
-{% set batch_end = model.batch.event_time_end if model.batch else '2099-01-01' %}
 
 WITH swaps AS (
     SELECT
@@ -36,9 +32,6 @@ WITH swaps AS (
         , pool_id
         , surrogate_key
     FROM {{ ref('raydium_v4_solana_stg_decoded_swaps') }}
-    WHERE
-        block_time >= timestamp '{{ batch_start }}'
-        AND block_time < timestamp '{{ batch_end }}'
 )
 
 , transfers AS (
@@ -54,9 +47,7 @@ WITH swaps AS (
         , to_token_account
     FROM {{ source('tokens_solana', 'transfers') }}
     WHERE
-        block_time >= timestamp '{{ batch_start }}'
-        AND block_time < timestamp '{{ batch_end }}'
-        AND (token_version = 'spl_token' OR token_version = 'spl_token_2022')
+        token_version = 'spl_token' OR token_version = 'spl_token_2022'
 )
 
 , all_swaps AS (
