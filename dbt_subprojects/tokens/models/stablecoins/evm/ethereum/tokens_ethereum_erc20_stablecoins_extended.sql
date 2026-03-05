@@ -27,13 +27,13 @@ from (values
      (0x4f34c8b3b5fb6d98da888f0fea543d4d9c9f2ebe, 'PEN'), -- wPEN
      (0x0dc4f92879b7670e5f4e4e6e3c801d229129d90d, 'ARS'), -- wARS
      (0xd3fd63209fa2d55b07a0f6db36c2f43900be3094, 'USD'), -- wsrUSD
-     (0x098697ba3fee4ea76294c5d6a466a4e3b3e95fe6, 'USD')  -- USP
+     (0x098697ba3fee4ea76294c5d6a466a4e3b3e95fe6, 'USD'),  -- USP
+     (0x2A8e1E676Ec238d8A992307B495b45B3fEAa5e86, 'USD')  -- OUSD
 
      /* yield-bearing / rebasing tokens
      (0x96f6ef951840721adbf46ac996b59e0235cb985c, 'USD'), -- USDY
      (0xd46ba6d942050d489dbd938a2c909a5d5039a161, 'USD'), -- AMPL
      (0x7712c34205737192402172409a8f7ccef8aa2aec, 'USD'), -- BUIDL
-     (0x2a8e1e676ec238d8a992307b495b45b3feaa5e86, 'USD'), -- OUSD
      (0xa774ffb4af6b0a91331c084e1aebae6ad535e6f3, 'USD'), -- FLEXUSD (list: flexUSD)
      (0x15700b564ca08d9439c58ca5053166e8317aa138, 'USD'), -- deUSD
      (0x79c58f70905f734641735bc61e45c19dd9ad60bc, 'USD'), -- usdc-dai-usdt (list: USDC-DAI-USDT)
