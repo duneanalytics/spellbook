@@ -159,3 +159,22 @@ sources:
   - name: dune
     tables:
       - name: blockchains
+
+  - name: nft
+    description: "output models of the NFT sector"
+    tables:
+      - name: trades
+      - name: aggregators
+      - name: base_trades
+
+  - name: nft_optimism
+    tables:
+      - name: wash_trades
+
+  - name: nft_blast
+    tables:
+      - name: wash_trades
+
+  - name: nft_ethereum
+    tables:
+      - name: wallet_metrics
