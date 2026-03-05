@@ -353,17 +353,7 @@ select * from tbl_trades
 {% endmacro %}
 
 {% macro zeroex_v2_trades_detail(blockchain, start_date) %}
-WITH token_metadata AS (
-    SELECT 
-        blockchain, 
-        contract_address, 
-        symbol, 
-        decimals 
-    FROM {{ source('tokens', 'erc20') }}
-    WHERE blockchain = '{{blockchain}}'
-),
-
-token_prices AS (
+WITH token_prices AS (
     SELECT
         blockchain,
         contract_address,
@@ -397,25 +387,21 @@ results AS (
         taker_token,
         taker_token AS token_sold_address,
         pt.price,
-        COALESCE(tt.symbol, pt.symbol) AS taker_symbol,
+        pt.symbol AS taker_symbol,
         taker_amount AS taker_token_amount_raw,
-        taker_amount / POW(10,COALESCE(tt.decimals,pt.decimals)) AS taker_token_amount,
-        taker_amount / POW(10,COALESCE(tt.decimals,pt.decimals)) AS token_sold_amount,
-        taker_amount / POW(10,COALESCE(tt.decimals,pt.decimals)) * pt.price AS taker_amount,
+        taker_amount / POW(10,pt.decimals) AS taker_token_amount,
+        taker_amount / POW(10,pt.decimals) AS token_sold_amount,
+        taker_amount / POW(10,pt.decimals) * pt.price AS taker_amount,
         maker_token,
         maker_token AS token_bought_address,
-        COALESCE(tm.symbol, pm.symbol) AS maker_symbol,
+        pm.symbol AS maker_symbol,
         maker_amount AS maker_token_amount_raw,
-        maker_amount / POW(10,COALESCE(tm.decimals,pm.decimals)) AS maker_token_amount,
-        maker_amount / POW(10,COALESCE(tm.decimals,pm.decimals)) AS token_bought_amount,
-        maker_amount / POW(10,COALESCE(tm.decimals,pm.decimals)) * pm.price AS maker_amount,
+        maker_amount / POW(10,pm.decimals) AS maker_token_amount,
+        maker_amount / POW(10,pm.decimals) AS token_bought_amount,
+        maker_amount / POW(10,pm.decimals) * pm.price AS maker_amount,
         tag
     FROM
         zeroex_v2_trades trades
-    LEFT JOIN
-         token_metadata tt ON tt.contract_address = taker_token
-    LEFT JOIN
-        token_metadata tm ON tm.contract_address = maker_token
     LEFT JOIN
         token_prices pt ON pt.contract_address = taker_token AND pt.minute = trades.block_minute
     LEFT JOIN
