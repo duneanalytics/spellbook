@@ -58,6 +58,8 @@ models:
         description: "Object version at this mutation"
       - name: object_status
         description: "Created or Mutated"
+      - name: owner_type
+        description: "Sui object owner type: AddressOwner (wallet), Shared (protocol/pool), ObjectOwner (wrapped)"
       - name: coin_balance
         description: "Object balance at this version"
       - name: prev_balance

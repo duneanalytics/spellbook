@@ -22,13 +22,13 @@ with day_rows as (
         , o.date as block_date
         , cast(date_trunc('month', o.date) as date) as block_month
         , o.checkpoint
+        , o.owner_type
         , o.owner_address as receiver
         , o.coin_type
         , o.object_status
         , try_cast(o.coin_balance as bigint) as coin_balance
     from {{ source('sui', 'objects') }} o
     where o.object_status in ('Created', 'Mutated')
-        and o.owner_type = 'AddressOwner'
         and o.coin_type is not null
         and o.coin_type = '{{ sui_transfer_coin_type }}'
         and o.date >= date '{{ sui_transfer_start_date }}'
@@ -45,13 +45,13 @@ with day_rows as (
         , cast(date '{{ sui_transfer_start_date }}' as date) as block_date
         , cast(date_trunc('month', date '{{ sui_transfer_start_date }}') as date) as block_month
         , max_by(p.checkpoint, p.version) as checkpoint
+        , max_by(p.owner_type, p.version) as owner_type
         , max_by(p.owner_address, p.version) as receiver
         , p.coin_type
         , cast('ANCHOR' as varchar) as object_status
         , max_by(try_cast(p.coin_balance as bigint), p.version) as coin_balance
     from {{ source('sui', 'objects') }} p
     where p.object_status in ('Created', 'Mutated')
-        and p.owner_type = 'AddressOwner'
         and p.coin_type is not null
         and p.coin_type = '{{ sui_transfer_coin_type }}'
         and p.date < date '{{ sui_transfer_start_date }}'
@@ -67,6 +67,7 @@ with day_rows as (
         , a.block_date
         , a.block_month
         , a.checkpoint
+        , a.owner_type
         , a.receiver
         , a.coin_type
         , a.object_status
@@ -83,6 +84,7 @@ with day_rows as (
         , d.block_date
         , d.block_month
         , d.checkpoint
+        , d.owner_type
         , d.receiver
         , d.coin_type
         , d.object_status
@@ -98,6 +100,7 @@ with day_rows as (
         , u.block_date
         , u.block_month
         , u.checkpoint
+        , u.owner_type
         , u.receiver
         , u.coin_type
         , u.object_status
@@ -132,6 +135,7 @@ with day_rows as (
         , c.block_date
         , c.block_month
         , c.checkpoint
+        , c.owner_type
         , c.receiver
         , c.coin_type
         , c.object_status
@@ -210,6 +214,7 @@ select
     , f.object_id
     , f.version
     , f.object_status
+    , f.owner_type
     , f.coin_balance
     , f.prev_balance
     , f.prev_owner
