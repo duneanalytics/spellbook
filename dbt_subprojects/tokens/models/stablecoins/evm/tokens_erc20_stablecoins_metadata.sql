@@ -127,6 +127,12 @@ from (values
 ('ethereum', 0xc08512927d12348f6620a698105e1baac6ecd911, 'Fiat-backed stablecoin', 'GYEN', 6, ''),
 ('ethereum', 0xe7c3d8c9a439fede00d2600032d5db0be71c3c29, 'Fiat-backed stablecoin', 'JPYC', 18, ''),
 ('ethereum', 0xb755506531786c8ac63b756bab1ac387bacb0c04, 'Fiat-backed stablecoin', 'ZARP', 18, ''),
+('ethereum', 0x8a1d45e102e886510e891d2ec656a708991e2d76, 'Fiat-backed stablecoin', 'wCOP', 18, 'Ripio'),
+('ethereum', 0x61d450a098b6a7f69fc4b98ce68198fe59768651, 'Fiat-backed stablecoin', 'wCLP', 18, 'Ripio'),
+('ethereum', 0x4f34c8b3b5fb6d98da888f0fea543d4d9c9f2ebe, 'Fiat-backed stablecoin', 'wPEN', 18, 'Ripio'),
+('ethereum', 0x0dc4f92879b7670e5f4e4e6e3c801d229129d90d, 'Fiat-backed stablecoin', 'wARS', 18, 'Ripio'),
+('ethereum', 0xd3fd63209fa2d55b07a0f6db36c2f43900be3094, 'Crypto-backed stablecoin', 'wsrUSD', 18, 'Reservoir'),
+('ethereum', 0x098697ba3fee4ea76294c5d6a466a4e3b3e95fe6, 'Crypto-backed stablecoin', 'USP', 18, 'Piku'),
 
 -- arbitrum
 ('arbitrum', 0x641441c631e2f909700d2f41fd87f0aa6a6b4edb, 'Crypto-backed stablecoin', 'USX', 18, ''),
@@ -167,6 +173,7 @@ from (values
 ('arbitrum', 0x4883c8f0529f37e40ebea870f3c13cdfad5d01f8, 'Fiat-backed stablecoin', 'VEUR', 18, ''),
 ('arbitrum', 0x2b28e826b55e399f4d4699b85f68666ac51e6f70, 'Fiat-backed stablecoin', 'CADC', 18, ''),
 ('arbitrum', 0x589d35656641d6ab57a545f08cf473ecd9b6d5f7, 'Fiat-backed stablecoin', 'GYEN', 6, ''),
+('arbitrum', 0xd3fd63209fa2d55b07a0f6db36c2f43900be3094, 'Crypto-backed stablecoin', 'wsrUSD', 18, 'Reservoir'),
 
 -- avalanche_c
 ('avalanche_c', 0x111111111111ed1d73f860f57b2798b683f2d325, 'Crypto-backed stablecoin', 'YUSD', 18, ''),
@@ -195,6 +202,7 @@ from (values
 ('avalanche_c', 0xf197ffc28c23e0309b5559e7a166f2c6164c80aa, 'Fiat-backed stablecoin', 'MXNB', 18, ''),
 ('avalanche_c', 0x7678e162f38ec9ef2bfd1d0aaf9fd93355e5fa0b, 'Fiat-backed stablecoin', 'VEUR', 18, ''),
 ('avalanche_c', 0xe7c3d8c9a439fede00d2600032d5db0be71c3c29, 'Fiat-backed stablecoin', 'JPYC', 18, ''),
+('avalanche_c', 0xd3fd63209fa2d55b07a0f6db36c2f43900be3094, 'Crypto-backed stablecoin', 'wsrUSD', 18, 'Reservoir'),
 
 -- base
 ('base', 0x60a3e35cc302bfa44cb288bc5a4f316fdb1adb42, 'Fiat-backed stablecoin', 'EURC', 6, ''),
@@ -218,6 +226,10 @@ from (values
 ('base', 0xaeb4bb7debd1e5e82266f7c3b5cff56b3a7bf411, 'Fiat-backed stablecoin', 'VGBP', 18, ''),
 ('base', 0x043eb4b75d0805c43d7c834902e335621983cf03, 'Fiat-backed stablecoin', 'CADC', 18, ''),
 ('base', 0xb755506531786c8ac63b756bab1ac387bacb0c04, 'Fiat-backed stablecoin', 'ZARP', 18, ''),
+('base', 0x8a1d45e102e886510e891d2ec656a708991e2d76, 'Fiat-backed stablecoin', 'wCOP', 18, 'Ripio'),
+('base', 0x61d450a098b6a7f69fc4b98ce68198fe59768651, 'Fiat-backed stablecoin', 'wCLP', 18, 'Ripio'),
+('base', 0x4f34c8b3b5fb6d98da888f0fea543d4d9c9f2ebe, 'Fiat-backed stablecoin', 'wPEN', 18, 'Ripio'),
+('base', 0xd3fd63209fa2d55b07a0f6db36c2f43900be3094, 'Crypto-backed stablecoin', 'wsrUSD', 18, 'Reservoir'),
 
 -- bnb
 ('bnb', 0x14016e85a25aeb13065688cafb43044c2ef86784, 'Fiat-backed stablecoin', 'TUSD', 18, ''),
@@ -429,6 +441,10 @@ from (values
 
 -- worldchain
 ('worldchain', 0x18bc5bcc660cf2b9ce3cd51a404afe1a0cbd3c22, 'Fiat-backed stablecoin', 'IDRX', 18, ''),
+('worldchain', 0x8a1d45e102e886510e891d2ec656a708991e2d76, 'Fiat-backed stablecoin', 'wCOP', 18, 'Ripio'),
+('worldchain', 0x61d450a098b6a7f69fc4b98ce68198fe59768651, 'Fiat-backed stablecoin', 'wCLP', 18, 'Ripio'),
+('worldchain', 0x4f34c8b3b5fb6d98da888f0fea543d4d9c9f2ebe, 'Fiat-backed stablecoin', 'wPEN', 18, 'Ripio'),
+('worldchain', 0xd3fd63209fa2d55b07a0f6db36c2f43900be3094, 'Crypto-backed stablecoin', 'wsrUSD', 18, 'Reservoir'),
 
 -- xlayer
 ('xlayer', 0x74b7f16337b8972027f6196a17a631ac6de26d22, 'Fiat-backed stablecoin', 'USDC', 6, 'Circle')

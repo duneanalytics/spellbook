@@ -23,7 +23,11 @@ from (values
      (0x4933a85b5b5466fbaf179f72d3de273c287ec2c2, 'EUR'), -- EURAU
      (0xfb8718a69aed7726afb3f04d2bd4bfde1bdcb294, 'TRY'), -- TRYB
      (0x0a4c9cb2778ab3302996a34befcf9a8bc288c33b, 'SGD'), -- XSGD
-     (0xd4dd9e2f021bb459d5a5f6c24c12fe09c5d45553, 'CHF')  -- ZCHF
+     (0xd4dd9e2f021bb459d5a5f6c24c12fe09c5d45553, 'CHF'), -- ZCHF
+     (0x8a1d45e102e886510e891d2ec656a708991e2d76, 'COP'), -- wCOP
+     (0x61d450a098b6a7f69fc4b98ce68198fe59768651, 'CLP'), -- wCLP
+     (0x4f34c8b3b5fb6d98da888f0fea543d4d9c9f2ebe, 'PEN'), -- wPEN
+     (0xd3fd63209fa2d55b07a0f6db36c2f43900be3094, 'USD')  -- wsrUSD
 
      /* yield-bearing / rebasing tokens
      (0xb79dd08ea68a908a97220c76d19a6aa9cbde4376, 'USD'), -- USD+
