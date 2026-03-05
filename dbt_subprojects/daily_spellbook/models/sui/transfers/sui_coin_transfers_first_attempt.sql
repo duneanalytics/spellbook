@@ -36,6 +36,39 @@ with day_rows as (
         and {{ incremental_predicate('o.date') }}
         {% endif %}
 )
+, pre_range_usdc_ids as (
+    select distinct p.object_id
+    from {{ source('sui', 'objects') }} p
+    where p.coin_type = '{{ sui_transfer_coin_type }}'
+        and p.object_status in ('Created', 'Mutated')
+        and p.date < date '{{ sui_transfer_start_date }}'
+)
+, deleted_rows as (
+    select
+        o.object_id
+        , o.version
+        , o.previous_transaction as tx_digest
+        , o.timestamp_ms
+        , o.date as block_date
+        , cast(date_trunc('month', o.date) as date) as block_month
+        , o.checkpoint
+        , cast(null as varchar) as owner_type
+        , cast(null as varbinary) as receiver
+        , cast(null as varchar) as coin_type
+        , o.object_status
+        , cast(0 as bigint) as coin_balance
+    from {{ source('sui', 'objects') }} o
+    where o.object_status = 'Deleted'
+        and o.date >= date '{{ sui_transfer_start_date }}'
+        {% if is_incremental() %}
+        and {{ incremental_predicate('o.date') }}
+        {% endif %}
+        and o.object_id in (
+            select d.object_id from day_rows d
+            union
+            select p.object_id from pre_range_usdc_ids p
+        )
+)
 , anchors as (
     select
         p.object_id
@@ -55,7 +88,11 @@ with day_rows as (
         and p.coin_type is not null
         and p.coin_type = '{{ sui_transfer_coin_type }}'
         and p.date < date '{{ sui_transfer_start_date }}'
-        and p.object_id in (select distinct d.object_id from day_rows d)
+        and p.object_id in (
+            select distinct d.object_id from day_rows d
+            union
+            select distinct dr.object_id from deleted_rows dr
+        )
     group by p.object_id, p.coin_type
 )
 , unioned as (
@@ -90,6 +127,23 @@ with day_rows as (
         , d.object_status
         , d.coin_balance
     from day_rows d
+
+    union all
+
+    select
+        dr.object_id
+        , dr.version
+        , dr.tx_digest
+        , dr.timestamp_ms
+        , dr.block_date
+        , dr.block_month
+        , dr.checkpoint
+        , dr.owner_type
+        , dr.receiver
+        , dr.coin_type
+        , dr.object_status
+        , dr.coin_balance
+    from deleted_rows dr
 )
 , calc as (
     select
@@ -100,14 +154,15 @@ with day_rows as (
         , u.block_date
         , u.block_month
         , u.checkpoint
-        , u.owner_type
-        , u.receiver
-        , u.coin_type
+        , coalesce(u.owner_type, lag(u.owner_type) over w) as owner_type
+        , coalesce(u.receiver, lag(u.receiver) over w) as receiver
+        , coalesce(u.coin_type, lag(u.coin_type) over w) as coin_type
         , u.object_status
         , u.coin_balance
-        , lag(u.receiver) over (partition by u.object_id order by u.version) as prev_owner
-        , lag(u.coin_balance) over (partition by u.object_id order by u.version) as prev_balance
+        , lag(u.receiver) over w as prev_owner
+        , lag(u.coin_balance) over w as prev_balance
     from unioned u
+    window w as (partition by u.object_id order by u.version)
 )
 , tx_senders as (
     select
@@ -145,7 +200,7 @@ with day_rows as (
         , s.tx_sender
         , c.coin_balance - coalesce(c.prev_balance, 0) as balance_delta
         , case
-            when c.object_status = 'Created' then false
+            when c.object_status in ('Created', 'Deleted') then false
             when c.object_status = 'Mutated'
                 and c.prev_owner is not null
                 and c.prev_owner != c.receiver then true
@@ -221,6 +276,7 @@ select
     , f.has_ownership_change
     , case
         when f.object_status = 'Created' then 'mint'
+        when f.object_status = 'Deleted' then 'coin_consumed'
         when f.has_ownership_change and f.balance_delta != 0 then 'transfer_with_balance_change'
         when f.has_ownership_change then 'ownership_transfer'
         when f.balance_delta > 0 then 'balance_increase'

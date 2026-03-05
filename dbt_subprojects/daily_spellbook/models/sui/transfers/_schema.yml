@@ -70,9 +70,9 @@ models:
         description: "True when a Mutated object changed owner (prev_owner != receiver)"
       - name: transfer_type
         description: >
-          Object-level classification: mint (Created), ownership_transfer (owner changed, delta=0),
-          transfer_with_balance_change (owner changed and delta!=0), balance_increase (same owner, delta>0),
-          balance_decrease (same owner, delta<0)
+          Object-level classification: mint (Created), coin_consumed (Deleted via merge),
+          ownership_transfer (owner changed, delta=0), transfer_with_balance_change (owner changed
+          and delta!=0), balance_increase (same owner, delta>0), balance_decrease (same owner, delta<0)
       - name: tx_net_delta
         description: "Sum of all balance_deltas for this (tx, coin_type). Non-zero indicates gas cost or untracked movements."
       - name: tx_distinct_receivers
