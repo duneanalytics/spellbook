@@ -7,7 +7,7 @@
        materialized = 'incremental',
        file_format = 'delta',
        incremental_strategy = 'microbatch',
-       event_time = 'block_date',
+       event_time = 'block_time',
        begin = '2022-07-27',
        batch_size = var('meteora_v1_batch_size', 'day'),
        lookback = 1,

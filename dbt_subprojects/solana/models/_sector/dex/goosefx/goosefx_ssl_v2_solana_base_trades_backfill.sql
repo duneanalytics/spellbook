@@ -7,7 +7,7 @@
        materialized = 'incremental',
        file_format = 'delta',
        incremental_strategy = 'microbatch',
-       event_time = 'block_date',
+       event_time = 'block_time',
        begin = '2023-08-01',
        batch_size = var('goosefx_ssl_v2_batch_size', 'day'),
        lookback = 1,

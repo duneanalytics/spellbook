@@ -7,7 +7,7 @@
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'microbatch'
-    , event_time = 'block_date'
+    , event_time = 'block_time'
     , begin = '2024-06-05'
     , batch_size = var('stabble_batch_size', 'day')
     , lookback = 1

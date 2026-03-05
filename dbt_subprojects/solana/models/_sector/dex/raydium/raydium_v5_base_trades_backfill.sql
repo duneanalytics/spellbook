@@ -7,7 +7,7 @@
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'microbatch'
-    , event_time = 'block_date'
+    , event_time = 'block_time'
     , begin = '2024-05-16'
     , batch_size = var('raydium_v5_batch_size', 'day')
     , lookback = 1
