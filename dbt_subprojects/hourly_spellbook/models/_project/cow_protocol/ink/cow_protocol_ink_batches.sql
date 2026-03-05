@@ -61,7 +61,7 @@ batch_counts as (
     {% if is_incremental() %}
     where {{ incremental_predicate('s.evt_block_time') }}
     {% endif %}
-    group by s.evt_block_number, s.evt_block_time, s.evt_tx_hash, sr.solver, sr.name
+    group by block_date, s.evt_block_number, s.evt_block_time, s.evt_tx_hash, sr.solver, sr.name
 ),
 
 batch_values as (
