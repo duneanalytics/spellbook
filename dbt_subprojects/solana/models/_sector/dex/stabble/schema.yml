@@ -7,6 +7,7 @@ models:
       contributors: []
     config:
       tags: ['solana', 'dex', 'stabble']
+      event_time: block_date
     description: >
       staging model for stabble swap data from decoded tables
 

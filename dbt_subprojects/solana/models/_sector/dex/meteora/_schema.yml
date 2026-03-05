@@ -7,6 +7,7 @@ models:
       contributors: [ ilemi ]
     config:
       tags: [ 'solana','dex' ]
+      event_time: block_date
     description: >
         staging model for meteora v1 swap data from decoded tables (swap + vault deposit join)
     data_tests:
