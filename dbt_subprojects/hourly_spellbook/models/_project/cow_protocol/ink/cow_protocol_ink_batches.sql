@@ -61,7 +61,7 @@ batch_counts as (
     {% if is_incremental() %}
     where {{ incremental_predicate('s.evt_block_time') }}
     {% endif %}
-    group by block_date, s.evt_block_number, s.evt_block_time, s.evt_tx_hash, sr.solver, sr.name
+    group by try_cast(date_trunc('day', s.evt_block_time) as date), s.evt_block_number, s.evt_block_time, s.evt_tx_hash, sr.solver, sr.name
 ),
 
 batch_values as (
@@ -83,7 +83,7 @@ batch_values as (
     {% if is_incremental() %}
     where {{ incremental_predicate('block_time') }}
     {% endif %}
-    group by block_date, tx_hash, price
+    group by try_cast(date_trunc('day', block_time) as date), tx_hash, price
 ),
 
 combined_batch_info as (
