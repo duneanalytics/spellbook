@@ -25,6 +25,25 @@ models:
       - &decimals
         name: decimals
         description: "Number of decimals for the token"
+
+  - name: tokens_erc20_stablecoins_metadata
+    meta:
+      sector: tokens
+      project: tokens
+      contributors: Henrystats, synthquest, rantum, tomfutago
+    config:
+      tags: ['tokens', 'stablecoins', 'erc20', 'metadata', 'static']
+    description: "Stablecoin ERC20 token metadata including backing type, symbol, decimals, and name across all chains"
+    columns:
+      - *blockchain
+      - *contract_address
+      - name: backing
+        description: "Type of backing for the stablecoin (e.g., Fiat-backed, Crypto-backed, Algorithmic, Hybrid, RWA-backed)"
+      - *symbol
+      - *decimals
+      - name: name
+        description: "Name or protocol of the stablecoin"
+
   - name: stablecoins_transfers
     meta:
       sector: stablecoin
