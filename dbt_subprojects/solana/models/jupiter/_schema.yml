@@ -162,10 +162,12 @@ models:
     description: >
         solana aggregator swaps for jup v6 using SwapsEvent decoder (SwapEventV2)
     columns:
-      - name: block_time
-        description: block time of the transaction
       - name: block_month
         description: block month of the transaction
+      - name: block_date
+        description: block date of the transaction
+      - name: block_time
+        description: block time of the transaction
       - name: block_slot
         description: slot number of the transaction
       - name: tx_index

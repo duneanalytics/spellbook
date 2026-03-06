@@ -20,14 +20,15 @@ WITH amms AS (
 
 , route_calls AS (
     SELECT
-          call_block_slot
+          call_block_date
+        , call_block_slot
         , call_tx_index
         , call_outer_instruction_index
         , COALESCE(call_inner_instruction_index, 0) AS call_inner_instruction_index
     FROM {{ source('jupiter_v6_solana', 'jupiter_call_exact_out_route_v2') }}
     WHERE
         {% if is_incremental() %}
-        {{ incremental_predicate('call_block_time') }}
+        {{ incremental_predicate('call_block_date') }}
         {% else %}
         call_block_date >= DATE '{{ project_start_date }}'
         {% endif %}
@@ -35,14 +36,15 @@ WITH amms AS (
     UNION ALL
 
     SELECT
-          call_block_slot
+          call_block_date
+        , call_block_slot
         , call_tx_index
         , call_outer_instruction_index
         , COALESCE(call_inner_instruction_index, 0) AS call_inner_instruction_index
     FROM {{ source('jupiter_v6_solana', 'jupiter_call_route_v2') }}
     WHERE
         {% if is_incremental() %}
-        {{ incremental_predicate('call_block_time') }}
+        {{ incremental_predicate('call_block_date') }}
         {% else %}
         call_block_date >= DATE '{{ project_start_date }}'
         {% endif %}
@@ -50,14 +52,15 @@ WITH amms AS (
     UNION ALL
 
     SELECT
-          call_block_slot
+          call_block_date
+        , call_block_slot
         , call_tx_index
         , call_outer_instruction_index
         , COALESCE(call_inner_instruction_index, 0) AS call_inner_instruction_index
     FROM {{ source('jupiter_v6_solana', 'jupiter_call_shared_accounts_exact_out_route_v2') }}
     WHERE
         {% if is_incremental() %}
-        {{ incremental_predicate('call_block_time') }}
+        {{ incremental_predicate('call_block_date') }}
         {% else %}
         call_block_date >= DATE '{{ project_start_date }}'
         {% endif %}
@@ -65,37 +68,32 @@ WITH amms AS (
     UNION ALL
 
     SELECT
-          call_block_slot
+          call_block_date
+        , call_block_slot
         , call_tx_index
         , call_outer_instruction_index
         , COALESCE(call_inner_instruction_index, 0) AS call_inner_instruction_index
     FROM {{ source('jupiter_v6_solana', 'jupiter_call_shared_accounts_route_v2') }}
     WHERE
         {% if is_incremental() %}
-        {{ incremental_predicate('call_block_time') }}
+        {{ incremental_predicate('call_block_date') }}
         {% else %}
         call_block_date >= DATE '{{ project_start_date }}'
         {% endif %}
 )
 
 , amm_list AS (
-    {% if is_incremental() %}
-    SELECT DISTINCT amm AS amm
-    FROM {{ this }}
-    UNION
-    SELECT DISTINCT amm
+    SELECT
+        amm
     FROM {{ source('jupiter_v6_solana', 'jupiter_evt_swapevent') }}
-    WHERE {{ incremental_predicate('evt_block_time') }}
-    {% else %}
-    SELECT DISTINCT amm
-    FROM {{ source('jupiter_v6_solana', 'jupiter_evt_swapevent') }}
-    WHERE evt_block_date >= DATE '{{ project_start_date }}'
-    {% endif %}
+    GROUP BY
+        amm
 )
 
 , amms_involved AS (
     SELECT
-          a.block_slot
+          a.block_date
+        , a.block_slot
         , a.tx_index
         , a.executing_account AS amm
         , a.outer_instruction_index
@@ -106,14 +104,16 @@ WITH amms AS (
           ) AS rnk
     FROM {{ source('solana', 'instruction_calls') }} a
     INNER JOIN route_calls b
-        ON  a.block_slot = b.call_block_slot
+        ON  a.block_date = b.call_block_date
+        AND a.block_slot = b.call_block_slot
         AND a.tx_index = b.call_tx_index
         AND a.outer_instruction_index = b.call_outer_instruction_index
         AND a.inner_instruction_index > b.call_inner_instruction_index
-    WHERE a.executing_account IN (SELECT amm FROM amm_list)
-      AND cardinality(a.account_arguments) >= 5
+    INNER JOIN amm_list AS amm
+        ON a.executing_account = amm.amm
+    WHERE cardinality(a.account_arguments) >= 5
       {% if is_incremental() %}
-      AND {{ incremental_predicate('a.block_time') }}
+      AND {{ incremental_predicate('a.block_date') }}
       {% else %}
       AND a.block_date >= DATE '{{ project_start_date }}'
       {% endif %}
@@ -121,7 +121,8 @@ WITH amms AS (
 
 , swap_amounts AS (
     SELECT
-          evt_block_slot AS block_slot
+          evt_block_date AS block_date
+        , evt_block_slot AS block_slot
         , evt_tx_index AS tx_index
         , evt_block_time AS block_time
         , evt_tx_id AS tx_id
@@ -139,7 +140,7 @@ WITH amms AS (
     CROSS JOIN UNNEST(swap_events) WITH ORDINALITY AS s(evt, ord)
     WHERE
         {% if is_incremental() %}
-        {{ incremental_predicate('evt_block_time') }}
+        {{ incremental_predicate('evt_block_date') }}
         {% else %}
         evt_block_date >= DATE '{{ project_start_date }}'
         {% endif %}
@@ -149,6 +150,7 @@ WITH amms AS (
     SELECT
           a.block_time
         , CAST(date_trunc('month', a.block_time) AS DATE) AS block_month
+        , a.block_date
         , a.block_slot
         , a.tx_index
         , a.tx_id
@@ -163,15 +165,17 @@ WITH amms AS (
         , a.output_amount
     FROM swap_amounts a
     INNER JOIN amms_involved b
-        ON  a.block_slot = b.block_slot
+        ON  a.block_date = b.block_date
+        AND a.block_slot = b.block_slot
         AND a.tx_index = b.tx_index
         AND a.outer_instruction_index = b.outer_instruction_index
         AND a.swap_order = b.rnk
 )
 
 SELECT
-      j.block_time
-    , j.block_month
+      j.block_month
+    , j.block_date
+    , j.block_time
     , j.block_slot
     , j.tx_index
     , j.tx_id
