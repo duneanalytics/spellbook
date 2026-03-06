@@ -84,11 +84,11 @@ WITH amms AS (
     FROM {{ this }}
     UNION
     SELECT DISTINCT amm
-    FROM {{ source('jupiter_v6_solana', 'jupiter_evt_swapsevent') }}
+    FROM {{ source('jupiter_v6_solana', 'jupiter_evt_swapevent') }}
     WHERE {{ incremental_predicate('evt_block_time') }}
     {% else %}
     SELECT DISTINCT amm
-    FROM {{ source('jupiter_v6_solana', 'jupiter_evt_swapsevent') }}
+    FROM {{ source('jupiter_v6_solana', 'jupiter_evt_swapevent') }}
     WHERE evt_block_date >= DATE '{{ project_start_date }}'
     {% endif %}
 )
@@ -101,8 +101,8 @@ WITH amms AS (
         , a.outer_instruction_index
         , a.inner_instruction_index
         , ROW_NUMBER() OVER (
-            PARTITION BY a.block_slot, a.tx_index, b.call_outer_instruction_index
-            ORDER BY a.outer_instruction_index ASC, a.inner_instruction_index ASC
+            PARTITION BY a.block_date, a.tx_id, a.outer_instruction_index
+            ORDER BY a.inner_instruction_index ASC
           ) AS rnk
     FROM {{ source('solana', 'instruction_calls') }} a
     INNER JOIN route_calls b
