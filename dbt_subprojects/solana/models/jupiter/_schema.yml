@@ -151,12 +151,9 @@ models:
     - dbt_utils.unique_combination_of_columns:
         combination_of_columns:
           - block_month
-          - amm
+          - tx_id
           - outer_instruction_index
           - inner_instruction_index
-          - tx_id
-          - output_mint
-          - input_mint
     meta:
       blockchain: solana
       contributors: [Eekeyguy]
@@ -175,20 +172,42 @@ models:
         description: index of the transaction in the block
       - name: tx_id
         description: id of the transaction
+      - name: tx_signer
+        description: signer of the transaction
       - name: amm
         description: program id of amm routed through
+      - name: amm_name
+        description: name of amm routed through
+      - name: token_pair
+        description: token pair routed through
       - name: outer_instruction_index
         description: outer instruction index of the swap
       - name: inner_instruction_index
         description: inner instruction index of the swap
+      - name: log_index
+        description: ordering of the swap in the tx
+      - name: input_symbol
+        description: symbol of token sold
       - name: input_mint
         description: token mint address of token sold
       - name: input_amount
         description: amount of token sold raw
+      - name: input_decimals
+        description: decimals of token sold
+      - name: input_usd
+        description: usd value of token sold
+      - name: output_symbol
+        description: symbol of token bought
       - name: output_mint
         description: token mint address of token bought
       - name: output_amount
         description: amount of token bought raw
+      - name: output_decimals
+        description: decimals of token bought
+      - name: output_usd
+        description: usd value of token bought
+      - name: jup_version
+        description: version of jupiter aggregator used for the swap
 
   - name: jupiter_solana_aggregator_swaps
     data_tests:

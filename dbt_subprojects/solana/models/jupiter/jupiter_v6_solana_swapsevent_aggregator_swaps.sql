@@ -7,17 +7,20 @@
     , file_format = 'delta'
     , incremental_strategy = 'merge'
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
-    , unique_key = ['block_month', 'amm', 'outer_instruction_index', 'inner_instruction_index', 'tx_id', 'output_mint', 'input_mint']
+    , unique_key = ['block_month', 'tx_id', 'outer_instruction_index', 'inner_instruction_index']
     , pre_hook = '{{ enforce_join_distribution("PARTITIONED") }}'
   )
 }}
 
 {% set project_start_date = '2025-09-17' %}
 
-WITH route_calls AS (
+WITH amms AS (
+    SELECT * FROM {{ ref('jupiter_solana_amms') }}
+)
+
+, route_calls AS (
     SELECT
-          call_block_time
-        , call_block_slot
+          call_block_slot
         , call_tx_index
         , call_outer_instruction_index
         , COALESCE(call_inner_instruction_index, 0) AS call_inner_instruction_index
@@ -26,14 +29,13 @@ WITH route_calls AS (
         {% if is_incremental() %}
         {{ incremental_predicate('call_block_time') }}
         {% else %}
-        call_block_time >= TIMESTAMP '{{ project_start_date }}'
+        call_block_date >= DATE '{{ project_start_date }}'
         {% endif %}
 
     UNION ALL
 
     SELECT
-          call_block_time
-        , call_block_slot
+          call_block_slot
         , call_tx_index
         , call_outer_instruction_index
         , COALESCE(call_inner_instruction_index, 0) AS call_inner_instruction_index
@@ -42,14 +44,13 @@ WITH route_calls AS (
         {% if is_incremental() %}
         {{ incremental_predicate('call_block_time') }}
         {% else %}
-        call_block_time >= TIMESTAMP '{{ project_start_date }}'
+        call_block_date >= DATE '{{ project_start_date }}'
         {% endif %}
 
     UNION ALL
 
     SELECT
-          call_block_time
-        , call_block_slot
+          call_block_slot
         , call_tx_index
         , call_outer_instruction_index
         , COALESCE(call_inner_instruction_index, 0) AS call_inner_instruction_index
@@ -58,14 +59,13 @@ WITH route_calls AS (
         {% if is_incremental() %}
         {{ incremental_predicate('call_block_time') }}
         {% else %}
-        call_block_time >= TIMESTAMP '{{ project_start_date }}'
+        call_block_date >= DATE '{{ project_start_date }}'
         {% endif %}
 
     UNION ALL
 
     SELECT
-          call_block_time
-        , call_block_slot
+          call_block_slot
         , call_tx_index
         , call_outer_instruction_index
         , COALESCE(call_inner_instruction_index, 0) AS call_inner_instruction_index
@@ -74,14 +74,23 @@ WITH route_calls AS (
         {% if is_incremental() %}
         {{ incremental_predicate('call_block_time') }}
         {% else %}
-        call_block_time >= TIMESTAMP '{{ project_start_date }}'
+        call_block_date >= DATE '{{ project_start_date }}'
         {% endif %}
 )
 
 , amm_list AS (
+    {% if is_incremental() %}
+    SELECT DISTINCT amm AS amm
+    FROM {{ this }}
+    UNION
     SELECT DISTINCT amm
-    FROM {{ source('jupiter_v6_solana', 'jupiter_evt_swapevent') }}
-    WHERE evt_block_date >= DATE '2025-09-17'
+    FROM {{ source('jupiter_v6_solana', 'jupiter_evt_swapsevent') }}
+    WHERE {{ incremental_predicate('evt_block_time') }}
+    {% else %}
+    SELECT DISTINCT amm
+    FROM {{ source('jupiter_v6_solana', 'jupiter_evt_swapsevent') }}
+    WHERE evt_block_date >= DATE '{{ project_start_date }}'
+    {% endif %}
 )
 
 , amms_involved AS (
@@ -91,7 +100,7 @@ WITH route_calls AS (
         , a.executing_account AS amm
         , a.outer_instruction_index
         , a.inner_instruction_index
-        , RANK() OVER (
+        , ROW_NUMBER() OVER (
             PARTITION BY a.block_slot, a.tx_index, b.call_outer_instruction_index
             ORDER BY a.outer_instruction_index ASC, a.inner_instruction_index ASC
           ) AS rnk
@@ -106,7 +115,7 @@ WITH route_calls AS (
       {% if is_incremental() %}
       AND {{ incremental_predicate('a.block_time') }}
       {% else %}
-      AND a.block_time >= TIMESTAMP '{{ project_start_date }}'
+      AND a.block_date >= DATE '{{ project_start_date }}'
       {% endif %}
 )
 
@@ -116,6 +125,7 @@ WITH route_calls AS (
         , evt_tx_index AS tx_index
         , evt_block_time AS block_time
         , evt_tx_id AS tx_id
+        , evt_tx_signer AS tx_signer
         , evt_outer_instruction_index AS outer_instruction_index
         , ROW_NUMBER() OVER (
             PARTITION BY evt_block_slot, evt_tx_index, evt_outer_instruction_index
@@ -131,7 +141,7 @@ WITH route_calls AS (
         {% if is_incremental() %}
         {{ incremental_predicate('evt_block_time') }}
         {% else %}
-        evt_block_time >= TIMESTAMP '{{ project_start_date }}'
+        evt_block_date >= DATE '{{ project_start_date }}'
         {% endif %}
 )
 
@@ -142,9 +152,11 @@ WITH route_calls AS (
         , a.block_slot
         , a.tx_index
         , a.tx_id
+        , a.tx_signer
         , b.amm
         , b.outer_instruction_index
         , b.inner_instruction_index
+        , a.swap_order AS log_index
         , a.input_mint
         , a.input_amount
         , a.output_mint
@@ -158,24 +170,48 @@ WITH route_calls AS (
 )
 
 SELECT
-      max(block_time) AS block_time
-    , block_month
-    , max(block_slot) AS block_slot
-    , max(tx_index) AS tx_index
-    , tx_id
-    , amm
-    , outer_instruction_index
-    , inner_instruction_index
-    , input_mint
-    , max(input_amount) AS input_amount
-    , output_mint
-    , max(output_amount) AS output_amount
-FROM joined
-GROUP BY
-      block_month
-    , amm
-    , outer_instruction_index
-    , inner_instruction_index
-    , tx_id
-    , input_mint
-    , output_mint
+      j.block_time
+    , j.block_month
+    , j.block_slot
+    , j.tx_index
+    , j.tx_id
+    , j.tx_signer
+    , j.amm
+    , amms.amm_name
+    , CASE WHEN j.input_mint > j.output_mint THEN tk_1.symbol || '-' || tk_2.symbol
+        ELSE tk_2.symbol || '-' || tk_1.symbol
+        END AS token_pair
+    , j.outer_instruction_index
+    , j.inner_instruction_index
+    , j.log_index
+    , tk_1.symbol AS input_symbol
+    , j.input_mint
+    , j.input_amount
+    , tk_1.decimals AS input_decimals
+    , j.input_amount / pow(10, p_1.decimals) * p_1.price AS input_usd
+    , tk_2.symbol AS output_symbol
+    , j.output_mint
+    , j.output_amount
+    , tk_2.decimals AS output_decimals
+    , j.output_amount / pow(10, p_2.decimals) * p_2.price AS output_usd
+    , 6 AS jup_version
+FROM joined j
+LEFT JOIN amms ON amms.amm = j.amm
+LEFT JOIN {{ source('tokens_solana', 'fungible') }} tk_1 ON tk_1.token_mint_address = j.input_mint
+LEFT JOIN {{ source('tokens_solana', 'fungible') }} tk_2 ON tk_2.token_mint_address = j.output_mint
+LEFT JOIN {{ source('prices', 'usd_forward_fill') }} p_1 ON p_1.blockchain = 'solana'
+    AND date_trunc('minute', j.block_time) = p_1.minute
+    AND j.input_mint = toBase58(p_1.contract_address)
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('p_1.minute') }}
+    {% else %}
+    AND p_1.minute >= TIMESTAMP '{{ project_start_date }}'
+    {% endif %}
+LEFT JOIN {{ source('prices', 'usd_forward_fill') }} p_2 ON p_2.blockchain = 'solana'
+    AND date_trunc('minute', j.block_time) = p_2.minute
+    AND j.output_mint = toBase58(p_2.contract_address)
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('p_2.minute') }}
+    {% else %}
+    AND p_2.minute >= TIMESTAMP '{{ project_start_date }}'
+    {% endif %}
