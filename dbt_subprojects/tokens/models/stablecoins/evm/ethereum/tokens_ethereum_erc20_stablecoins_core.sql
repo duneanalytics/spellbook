@@ -114,7 +114,6 @@ from (values
      (0xebf2096e01455108badcbaf86ce30b6e5a72aa52, 'IDR'), -- XIDR
      (0xc08512927d12348f6620a698105e1baac6ecd911, 'JPY'), -- GYEN
      (0xe7c3d8c9a439fede00d2600032d5db0be71c3c29, 'JPY'), -- JPYC
-     (0x48f07301e9e29c3c38a80ae8d9ae771f224f1054, 'ZAR'), -- xZAR
      (0xb755506531786c8ac63b756bab1ac387bacb0c04, 'ZAR'), -- ZARP
      (0xe343167631d89b6ffc58b88d6b7fb0228795491d, 'USD'), -- USDG
 

@@ -126,7 +126,6 @@ from (values
 ('ethereum', 0xebf2096e01455108badcbaf86ce30b6e5a72aa52, 'Fiat-backed stablecoin', 'XIDR', 18, ''),
 ('ethereum', 0xc08512927d12348f6620a698105e1baac6ecd911, 'Fiat-backed stablecoin', 'GYEN', 6, ''),
 ('ethereum', 0xe7c3d8c9a439fede00d2600032d5db0be71c3c29, 'Fiat-backed stablecoin', 'JPYC', 18, ''),
-('ethereum', 0x48f07301e9e29c3c38a80ae8d9ae771f224f1054, 'Fiat-backed stablecoin', 'xZAR', 18, ''),
 ('ethereum', 0xb755506531786c8ac63b756bab1ac387bacb0c04, 'Fiat-backed stablecoin', 'ZARP', 18, ''),
 
 -- arbitrum
