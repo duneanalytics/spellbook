@@ -11,7 +11,8 @@
     ref('balancer_v3_gnosis_erc4626_token_prices'),
     ref('balancer_v3_sonic_erc4626_token_prices'),
     ref('balancer_v3_arbitrum_erc4626_token_prices'),
-    ref('balancer_v3_base_erc4626_token_prices')
+    ref('balancer_v3_base_erc4626_token_prices'),
+    ref('balancer_v3_monad_erc4626_token_prices')
 ] %}
 
 SELECT *

@@ -17,7 +17,8 @@
     ref('balancer_v3_ethereum_token_balance_changes_daily'),
     ref('balancer_v3_gnosis_token_balance_changes_daily'),
     ref('balancer_v3_arbitrum_token_balance_changes_daily'),
-    ref('balancer_v3_base_token_balance_changes_daily')    
+    ref('balancer_v3_base_token_balance_changes_daily'),
+    ref('balancer_v3_monad_token_balance_changes_daily')
 ] %}
 
 SELECT *
