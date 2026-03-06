@@ -10,7 +10,7 @@
     , event_time = 'block_time'
     , begin = '2025-02-20'
     , batch_size = var('pumpswap_batch_size', 'day')
-    , lookback = 3
+    , lookback = 1
     , unique_key = ['block_month', 'surrogate_key']
     , pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
   )
