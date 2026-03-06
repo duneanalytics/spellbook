@@ -10,7 +10,7 @@
     , event_time = 'block_time'
     , begin = '2025-02-20'
     , batch_size = var('pumpswap_batch_size', 'day')
-    , lookback = 3
+    , lookback = 1
     , unique_key = ['block_month', 'surrogate_key']
     , pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
   )
@@ -54,6 +54,8 @@ WITH pools AS (
     WHERE
         block_time >= TIMESTAMP '{{ batch_start }}'
         AND block_time < TIMESTAMP '{{ batch_end }}'
+        AND block_date >= CAST(TIMESTAMP '{{ batch_start }}' AS DATE)
+        AND block_date < CAST(TIMESTAMP '{{ batch_end }}' AS DATE)
 )
 
 , fee_configs_with_time_ranges AS (
@@ -75,6 +77,7 @@ WITH pools AS (
 , transfers AS (
     SELECT
           tx_id
+        , block_date
         , block_slot
         , outer_instruction_index
         , inner_instruction_index
@@ -85,6 +88,8 @@ WITH pools AS (
     WHERE
         block_time >= TIMESTAMP '{{ batch_start }}'
         AND block_time < TIMESTAMP '{{ batch_end }}'
+        AND block_date >= CAST(TIMESTAMP '{{ batch_start }}' AS DATE)
+        AND block_date < CAST(TIMESTAMP '{{ batch_end }}' AS DATE)
 )
 
 , swaps_with_fees AS (
@@ -109,6 +114,7 @@ WITH pools AS (
     FROM swaps_with_fees sf
     INNER JOIN transfers t
         ON t.tx_id = sf.tx_id
+        AND t.block_date = sf.block_date
         AND t.block_slot = sf.block_slot
         AND t.outer_instruction_index = sf.outer_instruction_index
         AND t.to_token_account != sf.account_protocol_fee_recipient_token_account

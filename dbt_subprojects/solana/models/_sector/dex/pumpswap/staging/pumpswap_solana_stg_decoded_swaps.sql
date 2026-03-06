@@ -35,9 +35,9 @@ WITH swaps AS (
     FROM {{ source('pumpdotfun_solana', 'pump_amm_call_buy') }}
     WHERE 1=1
         {% if is_incremental() %}
-        AND {{ incremental_predicate('call_block_time') }}
+        AND {{ incremental_predicate('call_block_date') }}
         {% else %}
-        AND call_block_time >= TIMESTAMP '{{ project_start_date }}'
+        AND call_block_date >= DATE '{{ project_start_date }}'
         {% endif %}
 
     UNION ALL
@@ -63,9 +63,9 @@ WITH swaps AS (
     FROM {{ source('pumpdotfun_solana', 'pump_amm_call_sell') }}
     WHERE 1=1
         {% if is_incremental() %}
-        AND {{ incremental_predicate('call_block_time') }}
+        AND {{ incremental_predicate('call_block_date') }}
         {% else %}
-        AND call_block_time >= TIMESTAMP '{{ project_start_date }}'
+        AND call_block_date >= DATE '{{ project_start_date }}'
         {% endif %}
 )
 
