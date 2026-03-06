@@ -2,12 +2,8 @@
     config(
         materialized='table',
         schema = 'safe_mantle',
-        alias= 'singletons',
-        post_hook = '{{ expose_spells(
-                        blockchains = \'["mantle"]\',
-                        spell_type = "project",
-                        spell_name = "safe",
-                        contributors = \'["danielpartida"]\') }}'
+        alias= 'singletons'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

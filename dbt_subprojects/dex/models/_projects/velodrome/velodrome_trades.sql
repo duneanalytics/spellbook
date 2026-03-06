@@ -1,11 +1,8 @@
 {{ config(
     schema = 'velodrome',
     alias = 'trades',
-    materialized = 'view',
-    post_hook='{{ expose_spells(blockchains = \'["optimism"]\',
-                                  spell_type = "project", 
-                                  spell_name = "velodrome", 
-                                  contributors = \'["msilb7"]\') }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

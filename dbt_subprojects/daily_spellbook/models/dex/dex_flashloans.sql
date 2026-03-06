@@ -2,11 +2,8 @@
         schema = 'dex',
         alias = 'flashloans',
         partition_by = ['block_month'],
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "optimism", "arbitrum", "fantom", "polygon"]\',
-                                "sector",
-                                "dex",
-                                \'["hildobby"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

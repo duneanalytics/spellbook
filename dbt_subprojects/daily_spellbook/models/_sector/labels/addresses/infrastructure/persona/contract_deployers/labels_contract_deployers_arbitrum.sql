@@ -1,10 +1,7 @@
 {{
     config(
-        alias = 'contract_deployers_arbitrum',
-        post_hook='{{ expose_spells(\'["arbitrum"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["hildobby", "hosuke"]\') }}'
+        alias = 'contract_deployers_arbitrum'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

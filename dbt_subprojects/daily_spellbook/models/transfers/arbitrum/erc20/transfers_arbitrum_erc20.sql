@@ -6,11 +6,10 @@
     incremental_strategy = 'merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.evt_block_time')],
     unique_key = ['transfer_type', 'evt_tx_hash', 'evt_index', 'wallet_address'],
-    alias = 'erc20',
-    post_hook='{{ expose_spells(\'["arbitrum"]\',
-                                    "sector",
-                                    "transfers",
-                                    \'["Henrystats"]\') }}') }}
+    alias = 'erc20'
+    , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 WITH
 

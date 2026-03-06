@@ -1,11 +1,8 @@
 {{ config(
     
     schema='layerzero',
-    alias = 'send',
-    post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "arbitrum", "fantom", "optimism", "bnb", "polygon", "celo", "base"]\',
-                              "project",
-                              "layerzero",
-                              \'["bennyfeng"]\') }}'
+    alias = 'send'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

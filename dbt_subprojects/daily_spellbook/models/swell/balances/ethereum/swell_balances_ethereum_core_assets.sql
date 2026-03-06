@@ -6,11 +6,8 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['day', 'wallet_address', 'token_address'],
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "swell",
-                                \'["maybeYonas"]\') }}'
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')]
+        , post_hook='{{ hide_spells() }}'
   )
 }}
 

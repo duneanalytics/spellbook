@@ -7,11 +7,8 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.evt_block_time')],
-    unique_key = ['evt_block_time', 'evt_tx_hash', 'position_id', 'trade_type', 'positions_contract', 'protocol_version'],
-    post_hook='{{ expose_spells(\'["arbitrum", "polygon"]\',
-                                "project",
-                                "tigris",
-                                \'["Henrystats"]\') }}'
+    unique_key = ['evt_block_time', 'evt_tx_hash', 'position_id', 'trade_type', 'positions_contract', 'protocol_version']
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

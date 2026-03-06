@@ -6,11 +6,8 @@ tags=['prod_exclude'],
         partition_by = ['block_date'],
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['block_date', 'minute'],
-        post_hook='{{ expose_spells(\'["avalanche_c"]\',
-                                    "project",
-                                    "gmx",
-                                    \'["theachenyj"]\') }}'
+        unique_key = ['block_date', 'minute']
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 /*

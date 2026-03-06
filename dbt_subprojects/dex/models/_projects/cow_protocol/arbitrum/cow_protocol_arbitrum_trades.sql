@@ -7,11 +7,8 @@
     on_schema_change='sync_all_columns',
     file_format ='delta',
     incremental_strategy='merge',
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    post_hook='{{ expose_spells(\'["arbitrum"]\',
-                                "project",
-                                "cow_protocol",
-                                \'["olgafetisova"]\') }}'
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

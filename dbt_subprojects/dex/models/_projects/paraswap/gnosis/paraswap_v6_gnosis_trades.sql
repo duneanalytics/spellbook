@@ -7,11 +7,8 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'method', 'trace_address'],
-    post_hook='{{ expose_spells(\'["gnosis"]\',
-                                "project",
-                                "paraswap_v6",
-                                \'["eptighte"]\') }}'
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'method', 'trace_address']
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

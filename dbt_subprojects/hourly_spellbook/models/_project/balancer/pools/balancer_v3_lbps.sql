@@ -1,10 +1,7 @@
 {{ config(
     schema = 'balancer_v3',
-    alias = 'lbps',
-    post_hook='{{ expose_spells(blockchains = \'["arbitrum", "base", "ethereum", "gnosis"]\',
-                                spell_type = "project",
-                                spell_name = "balancer_v3",
-                                contributors = \'["viniabussafi"]\') }}'
+    alias = 'lbps'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

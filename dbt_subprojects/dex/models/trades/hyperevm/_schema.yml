@@ -100,3 +100,22 @@ models:
             - blockchain
             - token_address
             - block_date
+
+  - name: balancer_v3_hyperevm_base_trades
+    meta:
+      blockchain: hyperevm
+      sector: dex
+      project: balancer
+      contributors: krishg
+    config:
+      tags: [ 'hyperevm', 'dex', 'trades', 'balancer' ]
+    description: "Balancer V3 HyperEVM base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('balancer_hyperevm_base_trades_seed')
+          filter:
+            version: 3

@@ -2,11 +2,9 @@
   config(
         schema = 'meteora_v1_solana',
         alias = 'trades',
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["solana"]\',
-                                    "project",
-                                    "meteora",
-                                    \'["ilemi"]\') }}')
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
+)
 }}
 select
       blockchain

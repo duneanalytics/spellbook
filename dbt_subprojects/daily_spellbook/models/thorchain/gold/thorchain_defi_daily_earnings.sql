@@ -8,7 +8,7 @@
   partition_by = ['day'],
   incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
   tags = ['thorchain', 'defi', 'daily', 'earnings', 'fact'],
-  post_hook='{{ expose_spells(\'["thorchain"]\',
+    post_hook='{{ expose_spells(\'["thorchain"]\',
                                 "project",
                                 "thorchain",
                                 \'["jeff-dude"]\') }}'

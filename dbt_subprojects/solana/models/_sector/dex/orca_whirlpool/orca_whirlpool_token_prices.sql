@@ -8,11 +8,9 @@
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.minute')],
         unique_key = ['blockchain', 'contract_address', 'minute'],
-        pre_hook='{{ enforce_join_distribution("PARTITIONED") }}',
-        post_hook='{{ expose_spells(\'["solana"]\',
-                                    "project",
-                                    "orca_whirlpool",
-                                    \'["get_nimbus"]\') }}')
+        pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
+        , post_hook='{{ hide_spells() }}'
+)
 }}
 
 {# { % set project_start_date = '2022-03-10' % } --grabbed min block time from whirlpool_solana.whirlpool_call_swap #}

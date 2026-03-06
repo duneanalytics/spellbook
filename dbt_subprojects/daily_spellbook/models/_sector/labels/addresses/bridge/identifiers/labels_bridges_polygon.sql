@@ -1,9 +1,8 @@
 {{config(
-        alias = 'bridges_polygon',
-        post_hook='{{ expose_spells(\'["polygon"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["rantum"]\') }}')}}
+        alias = 'bridges_polygon'
+        , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 SELECT blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type
 FROM (VALUES

@@ -1,12 +1,9 @@
 {{
 config(
       alias = 'pools',
-      schema = 'sudoswap_ethereum',
-      
-      post_hook='{{ expose_spells(\'["ethereum"]\',
-                                  "project",
-                                  "sudoswap",
-                                  \'["niftytable", "0xRob"]\') }}')
+      schema = 'sudoswap_ethereum'
+      , post_hook='{{ hide_spells() }}'
+)
 }}
 
 WITH

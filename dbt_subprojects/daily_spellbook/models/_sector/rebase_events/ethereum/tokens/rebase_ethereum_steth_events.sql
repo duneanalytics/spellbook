@@ -1,9 +1,7 @@
 {{ config(
         schema = 'rebase_ethereum',
-        alias ='steth_events',post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
-                                    spell_type = "sector",
-                                    spell_name = "rebase",
-                                    contributors = \'["hildobby"]\') }}'
+        alias ='steth_events'
+        , post_hook='{{ hide_spells() }}'
 )
 }}
 

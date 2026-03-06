@@ -1,9 +1,8 @@
 {{config(
-        alias = 'balancer_gauges_arbitrum',
-        post_hook='{{ expose_spells(\'["arbitrum"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["jacektrocinski", "viniabussafi"]\') }}')}}
+        alias = 'balancer_gauges_arbitrum'
+        , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 WITH reward_gauges AS(
 SELECT distinct

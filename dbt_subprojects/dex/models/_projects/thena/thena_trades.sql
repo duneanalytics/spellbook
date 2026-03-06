@@ -1,11 +1,8 @@
 {{ config(
         schema = 'thena',
         alias = 'trades',
-        materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'["bnb"]\',
-                                      spell_type = "project", 
-                                      spell_name = "thena", 
-                                      contributors = \'["hsrvc"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

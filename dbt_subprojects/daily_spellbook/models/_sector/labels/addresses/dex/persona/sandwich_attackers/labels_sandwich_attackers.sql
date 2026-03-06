@@ -1,8 +1,8 @@
 {{
     config(
         
-        alias = 'sandwich_attackers', 
-        post_hook='{{ expose_spells(\'["ethereum"]\', "sector", "labels", \'["alexth"]\') }}'
+        alias = 'sandwich_attackers'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

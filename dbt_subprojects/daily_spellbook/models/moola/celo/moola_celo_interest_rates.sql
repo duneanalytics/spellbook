@@ -3,11 +3,8 @@
         
         schema = 'moola_celo',
         alias = 'interest',
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["celo"]\',
-                                    "sector",
-                                    "moola",
-                                    \'["tomfutago"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

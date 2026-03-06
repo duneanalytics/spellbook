@@ -4,11 +4,9 @@
         alias = 'epochs',
         materialized='table',
         file_format = 'delta',
-        unique_key = ['block_slot'],
-        post_hook='{{ expose_spells(\'["solana"]\',
-                                    "sector",
-                                    "solana_utils",
-                                    \'["ilemi"]\') }}')
+        unique_key = ['block_slot']
+        , post_hook='{{ hide_spells() }}'
+)
 }}
 
 with 

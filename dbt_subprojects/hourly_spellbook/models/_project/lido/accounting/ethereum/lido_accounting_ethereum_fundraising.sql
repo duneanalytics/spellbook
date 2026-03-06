@@ -4,11 +4,8 @@
         materialized = 'incremental',
         incremental_strategy = 'merge',
         file_format = 'delta',
-        unique_key= ['token', 'evt_tx_hash'],
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "lido_accounting",
-                                \'["pipistrella", "adcv", "zergil1397", "hosuke"]\') }}'
+        unique_key= ['token', 'evt_tx_hash']
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

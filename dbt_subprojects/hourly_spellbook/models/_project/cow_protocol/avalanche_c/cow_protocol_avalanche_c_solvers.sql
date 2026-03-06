@@ -1,10 +1,7 @@
 {{ config(
         schema = 'cow_protocol_avalanche_c',
-        alias='solvers',
-        post_hook='{{ expose_spells(blockchains = \'["avalanche_c"]\',
-                                    spell_type = "project",
-                                    spell_name = "cow_protocol",
-                                    contributors = \'["felix"]\') }}'
+        alias='solvers'
+        , post_hook='{{ hide_spells() }}'
 )}}
 
 WITH

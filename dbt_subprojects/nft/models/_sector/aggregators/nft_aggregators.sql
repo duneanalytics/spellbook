@@ -1,11 +1,9 @@
 {{ config(
         
         schema = 'nft',
-        alias = 'aggregators',
-        post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","base","blast","bnb","celo","ethereum","linea","mantle","optimism","polygon","scroll","zksync"]\',
-                                    "sector",
-                                    "nft",
-                                    \'["soispoke","hildobby", "chuxin"]\') }}')
+        alias = 'aggregators'
+        , post_hook='{{ hide_spells() }}'
+)
 }}
 
 

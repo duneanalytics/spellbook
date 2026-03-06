@@ -1,10 +1,7 @@
 {{config(
         tags = ['static'],
-        alias = 'ofac_sanctioned_ethereum',
-        post_hook = '{{ expose_spells(\'["ethereum"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["hildobby"]\') }}'
+        alias = 'ofac_sanctioned_ethereum'
+        , post_hook='{{ hide_spells() }}'
 )}}
 
 SELECT blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type

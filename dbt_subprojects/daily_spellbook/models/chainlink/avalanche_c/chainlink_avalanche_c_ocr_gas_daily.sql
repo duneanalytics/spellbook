@@ -6,11 +6,8 @@
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
-    unique_key=['date_start', 'node_address'],
-    post_hook='{{ expose_spells(\'["avalanche_c"]\',
-                                "project",
-                                "chainlink",
-                                \'["linkpool_ryan"]\') }}'
+    unique_key=['date_start', 'node_address']
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

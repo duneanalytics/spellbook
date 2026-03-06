@@ -40,7 +40,11 @@ join ( -- to leave only real tokens (mostly for wrapped token, but works for rar
 where true
     and type = 'deposit'
     and contract_address <> "to" -- due to inconsistency in dune.blockchains & tokens.erc20
-    {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
+    {% if is_incremental() -%}
+    and {{ incremental_predicate('block_time') }}
+    {%- elif blockchain == 'megaeth' %}
+    and block_time >= timestamp '2026-01-30'
+    {%- endif %}
 
 
 

@@ -20,6 +20,7 @@ FROM
     VALUES
     ('usdt-tether', 'USDT', 0x5c13e303a62fc5dedf5b52d66873f2e59fedadc2, 6)
     , ('usdt-tether', 'oUSDT', 0xcee8faf64bb97a73bb51e115aa89c17ffa8dd167, 6)
+    , ('usdt-tether', 'USD₮', 0xd077a400968890eacc75cdc901f0356c943e4fdb, 6)
     , ('usdc-usd-coin', 'USDC', 0x608792deb376cce1c9fa4d0e6b7b44f507cffa6a, 6)
     , ('usdc-usd-coin', 'oUSDC', 0x754288077d0ff82af7a5317c7cb8c444d421d103, 6)
     , ('kaia-kaia', 'WKLAY', 0x19aac5f612f524b754ca7e7c41cbfa2e981a4432, 18)

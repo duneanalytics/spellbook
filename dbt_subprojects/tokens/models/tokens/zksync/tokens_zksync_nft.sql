@@ -2,10 +2,7 @@
      schema = 'tokens_zksync'
     , alias = 'nft'
     , materialized = 'table'
-    , post_hook='{{ expose_spells(\'["zksync"]\',
-                                "sector",
-                                "tokens",
-                                \'["lgingerich"]\') }}'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

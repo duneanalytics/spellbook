@@ -21,10 +21,6 @@ dbt_packages/
 target/
 logs/
 
-# Environment files (secrets - shouldn't be indexed)
-.env
-.env.*
-
 # Large generated manifests
 **/manifest.json
 **/run_results.json

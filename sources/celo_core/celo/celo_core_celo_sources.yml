@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: celo_core_celo
+    tables:
+      - name: validators_evt_validatorregistered
+      - name: validators_evt_validatorderegistered

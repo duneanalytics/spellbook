@@ -3,10 +3,7 @@
         schema = 'alchemy'
         ,alias = 'smart_account_addresses'
         ,materialized = 'table'
-        ,post_hook='{{ expose_spells(\'["arbitrum","ethereum","bnb","arbitrum","avalanche_c","celo","gnosis","zora","polygon","base","optimism" ]\',
-                        "project",
-                        "alchemy",
-                        \'["sofiat"]\') }}'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

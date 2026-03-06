@@ -1,11 +1,9 @@
 {{ config(
         tags = [ 'static'],
         schema='cex',
-        alias = 'info',
-        post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "avalanche_c", "bnb", "fantom", "optimism", "polygon", "zksync", "zora", "celo", "base", "aptos"]\',
-                                    "sector",
-                                    "cex",
-                                    \'["hildobby"]\') }}')
+        alias = 'info'
+        , post_hook='{{ hide_spells() }}'
+)
 }}
 
 SELECT cex_name, x_username, cex, payment_infra

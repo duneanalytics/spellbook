@@ -5,11 +5,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
-    post_hook='{{ expose_spells(\'["base"]\',
-                                spell_type = "project",
-                                spell_name = "yfx_v4",
-                                contributors = \'["princi"]\') }}'
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index']
+    , post_hook='{{ hide_spells() }}'
 )
 }}
 
