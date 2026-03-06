@@ -5,9 +5,10 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['minute', 'wrapped_token'],
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.minute')]
+        incremental_predicates = ["DBT_INTERNAL_DEST.minute >= date_trunc('day', now() - interval '4' day)"]
     )
 }}
+-- 1-day lookback ensures the prior terminal row per wrapped_token is reprocessed so next_change is updated when new data arrives
 
         
 WITH wrap_unwrap AS(
@@ -17,7 +18,7 @@ WITH wrap_unwrap AS(
             CAST(depositedUnderlying AS DOUBLE) / CAST(mintedShares AS DOUBLE) AS ratio
         FROM {{ source('balancer_v3_plasma', 'Vault_evt_Wrap') }}
         {% if is_incremental() %}
-        WHERE {{ incremental_predicate('evt_block_time') }}
+        WHERE evt_block_time >= date_trunc('day', now() - interval '4' day)
         {% endif %}      
 
         UNION ALL
@@ -28,7 +29,7 @@ WITH wrap_unwrap AS(
             CAST(withdrawnUnderlying AS DOUBLE) / CAST(burnedShares AS DOUBLE) AS ratio
         FROM {{ source('balancer_v3_plasma', 'Vault_evt_Unwrap') }}    
         {% if is_incremental() %}
-        WHERE {{ incremental_predicate('evt_block_time') }}
+        WHERE evt_block_time >= date_trunc('day', now() - interval '4' day)
         {% endif %}      
     ),
 
@@ -48,7 +49,7 @@ WITH wrap_unwrap AS(
     AND p.blockchain = 'plasma'
     AND DATE_TRUNC('minute', w.evt_block_time) = DATE_TRUNC('minute', p.minute)
     {% if is_incremental() %}
-    AND {{ incremental_predicate('p.minute') }}
+    AND p.minute >= date_trunc('day', now() - interval '4' day)
     {% endif %}            
     )
 

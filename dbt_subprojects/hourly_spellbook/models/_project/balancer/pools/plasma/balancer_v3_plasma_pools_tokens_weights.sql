@@ -15,16 +15,21 @@
 WITH token_data AS (
         SELECT
             pool,
-            ARRAY_AGG(FROM_HEX(json_extract_scalar(token, '$.token')) ORDER BY token_index) AS tokens 
+            block_date,
+            ARRAY_AGG(FROM_HEX(json_extract_scalar(token, '$.token')) ORDER BY token_index) AS tokens
         FROM (
             SELECT
                 pool,
                 tokenConfig,
-                SEQUENCE(1, CARDINALITY(tokenConfig)) AS token_index_array
+                SEQUENCE(1, CARDINALITY(tokenConfig)) AS token_index_array,
+                DATE_TRUNC('day', evt_block_time) AS block_date
             FROM {{ source('balancer_v3_plasma', 'Vault_evt_PoolRegistered') }}
+            {% if is_incremental() %}
+            WHERE DATE_TRUNC('day', evt_block_time) >= date_trunc('day', now() - interval '7' day)
+            {% endif %}
         ) AS pool_data
         CROSS JOIN UNNEST(tokenConfig, token_index_array) AS t(token, token_index)
-        GROUP BY 1
+        GROUP BY 1, 2
     ),
 
 weighted_pool_factory AS (
@@ -35,11 +40,12 @@ weighted_pool_factory AS (
         t2.normalized_weight AS normalized_weight
     FROM {{ source('balancer_v3_plasma', 'WeightedPoolFactory_call_create') }} AS call_create
     JOIN token_data td ON td.pool = call_create.output_pool
+        AND td.block_date = DATE_TRUNC('day', call_create.call_block_time)
     CROSS JOIN UNNEST(td.tokens) WITH ORDINALITY t(token_address, pos)
     CROSS JOIN UNNEST(call_create.normalizedWeights) WITH ORDINALITY t2(normalized_weight, pos)
     WHERE t.pos = t2.pos
     {% if is_incremental() %}
-    AND call_create.call_block_time >= date_trunc('day', now() - interval '7' day)
+    AND DATE_TRUNC('day', call_create.call_block_time) >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 ),
 
