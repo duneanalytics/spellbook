@@ -11,3 +11,4 @@ sources:
   - name: stablecoins_svm
     tables:
       - name: balances
+      - name: transfers
