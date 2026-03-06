@@ -35,7 +35,7 @@ WITH wrap_unwrap AS(
 
     price_join AS(
     SELECT 
-        w.evt_block_time,
+        DATE_TRUNC('minute', w.evt_block_time) AS minute,
         m.underlying_token,
         w.wrappedToken,
         m.erc4626_token_symbol,
@@ -53,7 +53,7 @@ WITH wrap_unwrap AS(
     )
 
 SELECT
-    p.evt_block_time AS minute,
+    p.minute,
     'avalanche_c' AS blockchain,
     wrappedToken AS wrapped_token,
     underlying_token,
@@ -61,6 +61,6 @@ SELECT
     underlying_token_symbol,
     decimals,
     APPROX_PERCENTILE(adjusted_price, 0.5) AS median_price,
-    LEAD(p.evt_block_time, 1, CURRENT_DATE + INTERVAL '1' day) OVER (PARTITION BY wrappedToken ORDER BY p.evt_block_time) AS next_change
+    LEAD(p.minute, 1, TIMESTAMP '9999-12-31 23:59:59') OVER (PARTITION BY wrappedToken ORDER BY p.minute) AS next_change
 FROM price_join p
 GROUP BY 1, 2, 3, 4, 5, 6, 7
