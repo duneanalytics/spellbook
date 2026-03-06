@@ -19,35 +19,12 @@ models:
       - &currency
         name: currency
         description: "ISO 4217 currency code the stablecoin is pegged to (e.g., USD, EUR, BRL)"
-      - &backing
-        name: backing
-        description: "Type of backing for the stablecoin (e.g., Fiat-backed, Crypto-backed, Algorithmic, Hybrid, RWA-backed)"
       - &symbol
         name: symbol
         description: "Token symbol"
       - &decimals
         name: decimals
         description: "Number of decimals for the token"
-      - &name
-        name: name
-        description: "Name or protocol of the stablecoin"
-
-  - name: tokens_erc20_stablecoins_metadata
-    meta:
-      sector: tokens
-      project: tokens
-      contributors: Henrystats, synthquest, rantum, tomfutago
-    config:
-      tags: ['tokens', 'stablecoins', 'erc20', 'metadata', 'static']
-    description: "Stablecoin ERC20 token metadata including backing type, symbol, decimals, and name across all chains"
-    columns:
-      - *blockchain
-      - *contract_address
-      - *backing
-      - *symbol
-      - *decimals
-      - *name
-
   - name: stablecoins_transfers
     meta:
       sector: stablecoin
@@ -89,12 +66,6 @@ models:
         name: token_symbol
         description: "Symbol for the token"
       - *currency
-      - &token_backing
-        name: token_backing
-        description: "Stablecoin backing type"
-      - &token_name
-        name: token_name
-        description: "Stablecoin name"
       - &amount_raw
         name: amount_raw
         description: "Raw transfer amount"
