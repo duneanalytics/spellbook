@@ -26,7 +26,6 @@ from (values
      (0x61d450a098b6a7f69fc4b98ce68198fe59768651, 'CLP'), -- wCLP
      (0x4f34c8b3b5fb6d98da888f0fea543d4d9c9f2ebe, 'PEN'), -- wPEN
      (0x0dc4f92879b7670e5f4e4e6e3c801d229129d90d, 'ARS'), -- wARS
-     (0xd3fd63209fa2d55b07a0f6db36c2f43900be3094, 'USD'), -- wsrUSD
      (0x098697ba3fee4ea76294c5d6a466a4e3b3e95fe6, 'USD'),  -- USP
      (0x2A8e1E676Ec238d8A992307B495b45B3fEAa5e86, 'USD')  -- OUSD
 

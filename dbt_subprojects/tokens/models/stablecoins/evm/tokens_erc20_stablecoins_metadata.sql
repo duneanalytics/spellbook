@@ -131,7 +131,6 @@ from (values
 ('ethereum', 0x61d450a098b6a7f69fc4b98ce68198fe59768651, '', 'wCLP', 18, ''),
 ('ethereum', 0x4f34c8b3b5fb6d98da888f0fea543d4d9c9f2ebe, '', 'wPEN', 18, ''),
 ('ethereum', 0x0dc4f92879b7670e5f4e4e6e3c801d229129d90d, '', 'wARS', 18, ''),
-('ethereum', 0xd3fd63209fa2d55b07a0f6db36c2f43900be3094, '', 'wsrUSD', 18, ''),
 ('ethereum', 0x098697ba3fee4ea76294c5d6a466a4e3b3e95fe6, '', 'USP', 18, ''),
 ('ethereum', 0x07041776f5007aca2a54844f50503a18a72a8b68, '', 'USAT', 18, ''),
 ('ethereum', 0x337e7456b420bd3481e7fa61fa9850343d610d34, '', 'wMXN', 18, ''),
@@ -179,9 +178,9 @@ from (values
 ('arbitrum', 0x4883c8f0529f37e40ebea870f3c13cdfad5d01f8, 'Fiat-backed stablecoin', 'VEUR', 18, ''),
 ('arbitrum', 0x2b28e826b55e399f4d4699b85f68666ac51e6f70, 'Fiat-backed stablecoin', 'CADC', 18, ''),
 ('arbitrum', 0x589d35656641d6ab57a545f08cf473ecd9b6d5f7, 'Fiat-backed stablecoin', 'GYEN', 6, ''),
-('arbitrum', 0xd3fd63209fa2d55b07a0f6db36c2f43900be3094, '', 'wsrUSD', 18, ''),
 ('arbitrum', 0x4933a85b5b5466fbaf179f72d3de273c287ec2c2, '', 'EURAU', 18, ''),
 ('arbitrum', 0xd4dd9e2f021bb459d5a5f6c24c12fe09c5d45553, '', 'ZCHF', 18, ''),
+('arbitrum', 0x09d4214c03d01f49544c0448dbe3a27f768f2b34, '', 'rUSD', 18, ''),
 
 -- avalanche_c
 ('avalanche_c', 0x111111111111ed1d73f860f57b2798b683f2d325, 'Crypto-backed stablecoin', 'YUSD', 18, ''),
@@ -210,9 +209,9 @@ from (values
 ('avalanche_c', 0xf197ffc28c23e0309b5559e7a166f2c6164c80aa, 'Fiat-backed stablecoin', 'MXNB', 18, ''),
 ('avalanche_c', 0x7678e162f38ec9ef2bfd1d0aaf9fd93355e5fa0b, 'Fiat-backed stablecoin', 'VEUR', 18, ''),
 ('avalanche_c', 0xe7c3d8c9a439fede00d2600032d5db0be71c3c29, 'Fiat-backed stablecoin', 'JPYC', 18, ''),
-('avalanche_c', 0xd3fd63209fa2d55b07a0f6db36c2f43900be3094, '', 'wsrUSD', 18, ''),
 ('avalanche_c', 0x564a341df6c126f90cf3ecb92120fd7190acb401, '', 'TRYB', 18, ''),
 ('avalanche_c', 0xd4dd9e2f021bb459d5a5f6c24c12fe09c5d45553, '', 'ZCHF', 18, ''),
+('avalanche_c', 0x09d4214c03d01f49544c0448dbe3a27f768f2b34, '', 'rUSD', 18, ''),
 
 -- base
 ('base', 0x60a3e35cc302bfa44cb288bc5a4f316fdb1adb42, 'Fiat-backed stablecoin', 'EURC', 6, ''),
@@ -239,7 +238,6 @@ from (values
 ('base', 0x8a1d45e102e886510e891d2ec656a708991e2d76, '', 'wCOP', 18, ''),
 ('base', 0x61d450a098b6a7f69fc4b98ce68198fe59768651, '', 'wCLP', 18, ''),
 ('base', 0x4f34c8b3b5fb6d98da888f0fea543d4d9c9f2ebe, '', 'wPEN', 18, ''),
-('base', 0xd3fd63209fa2d55b07a0f6db36c2f43900be3094, '', 'wsrUSD', 18, ''),
 ('base', 0x0a4c9cb2778ab3302996a34befcf9a8bc288c33b, '', 'XSGD', 6, ''),
 ('base', 0x0dc4f92879b7670e5f4e4e6e3c801d229129d90d, '', 'wARS', 18, ''),
 ('base', 0x337e7456b420bd3481e7fa61fa9850343d610d34, '', 'wMXN', 18, ''),
@@ -248,6 +246,7 @@ from (values
 ('base', 0xd4dd9e2f021bb459d5a5f6c24c12fe09c5d45553, '', 'ZCHF', 18, ''),
 ('base', 0xd76f5faf6888e24d9f04bf92a0c8b921fe4390e0, '', 'wBRL', 18, ''),
 ('base', 0xfb8718a69aed7726afb3f04d2bd4bfde1bdcb294, '', 'TRYB', 18, ''),
+('base', 0x09d4214c03d01f49544c0448dbe3a27f768f2b34, '', 'rUSD', 18, ''),
 
 -- bnb
 ('bnb', 0x14016e85a25aeb13065688cafb43044c2ef86784, 'Fiat-backed stablecoin', 'TUSD', 18, ''),
@@ -462,30 +461,43 @@ from (values
 ('worldchain', 0x8a1d45e102e886510e891d2ec656a708991e2d76, '', 'wCOP', 18, ''),
 ('worldchain', 0x61d450a098b6a7f69fc4b98ce68198fe59768651, '', 'wCLP', 18, ''),
 ('worldchain', 0x4f34c8b3b5fb6d98da888f0fea543d4d9c9f2ebe, '', 'wPEN', 18, ''),
-('worldchain', 0xd3fd63209fa2d55b07a0f6db36c2f43900be3094, '', 'wsrUSD', 18, ''),
+('worldchain', 0x09d4214c03d01f49544c0448dbe3a27f768f2b34, '', 'rUSD', 18, ''),
 
 -- xlayer
 ('xlayer', 0x74b7f16337b8972027f6196a17a631ac6de26d22, '', 'USDC', 6, ''),
 
 -- berachain
-('berachain', 0xd3fd63209fa2d55b07a0f6db36c2f43900be3094, '', 'wsrUSD', 18, ''),
+('berachain', 0x09d4214c03d01f49544c0448dbe3a27f768f2b34, '', 'rUSD', 18, ''),
 
 -- hyperevm
-('hyperevm', 0xd3fd63209fa2d55b07a0f6db36c2f43900be3094, '', 'wsrUSD', 18, ''),
+('hyperevm', 0x866d66f64fb81461903e1e38d998e747ecf35e78, '', 'rUSD', 18, ''),
 
 -- katana
-('katana', 0xd3fd63209fa2d55b07a0f6db36c2f43900be3094, '', 'wsrUSD', 18, ''),
+('katana', 0x09d4214c03d01f49544c0448dbe3a27f768f2b34, '', 'rUSD', 18, ''),
 
 -- megaeth
-('megaeth', 0xd3fd63209fa2d55b07a0f6db36c2f43900be3094, '', 'wsrUSD', 18, ''),
 
 -- monad
-('monad', 0xd3fd63209fa2d55b07a0f6db36c2f43900be3094, '', 'wsrUSD', 18, ''),
+('monad', 0x09d4214c03d01f49544c0448dbe3a27f768f2b34, '', 'rUSD', 18, ''),
 
 -- plasma
-('plasma', 0xd3fd63209fa2d55b07a0f6db36c2f43900be3094, '', 'wsrUSD', 18, ''),
 
 -- plume
-('plume', 0xd3fd63209fa2d55b07a0f6db36c2f43900be3094, '', 'wsrUSD', 18, '')
+('plume', 0x09d4214c03d01f49544c0448dbe3a27f768f2b34, '', 'rUSD', 18, ''),
+
+-- bnb_chain
+('bnb', 0x09d4214c03d01f49544c0448dbe3a27f768f2b34, '', 'rUSD', 18, ''),
+
+-- linea
+('linea', 0x09d4214c03d01f49544c0448dbe3a27f768f2b34, '', 'rUSD', 18, ''),
+
+-- sei
+('sei', 0x09d4214c03d01f49544c0448dbe3a27f768f2b34, '', 'rUSD', 18, ''),
+
+-- sonic
+('sonic', 0x09d4214c03d01f49544c0448dbe3a27f768f2b34, '', 'rUSD', 18, ''),
+
+-- unichain
+('unichain', 0x09d4214c03d01f49544c0448dbe3a27f768f2b34, '', 'rUSD', 18, '')
 
 ) as temp_table (blockchain, contract_address, backing, symbol, decimals, name)

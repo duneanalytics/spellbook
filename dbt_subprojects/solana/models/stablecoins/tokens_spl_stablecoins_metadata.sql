@@ -33,7 +33,8 @@ from (values
 ('solana', 'A1KLoBrKBde8Ty9qtNQUtq3C2ortoC3u7twggz7sEto6', 'RWA-backed stablecoin', 'USDY', 6, 'Ondo'),
 ('solana', 'FrBfWJ4qE5sCzKm3k3JaAtqZcXUh4LvJygDeketsrsH4', 'Fiat-backed stablecoin', 'ZUSD', 6, 'GMO-Z'),
 ('solana', 'Ea5SjE2Y6yvCeW5dYTn7PYMuW5ikXkvbGdcmSnXeaLjS', 'Crypto-backed stablecoin', 'PAI', 6, 'Parrot'),
-('solana', 'A9mUU4qviSctJVPJdBJWkb28deg915LYJKrzQ19ji3FM', 'Fiat-backed stablecoin', 'USDC', 6, 'USD Coin (Wormhole)')
+('solana', 'A9mUU4qviSctJVPJdBJWkb28deg915LYJKrzQ19ji3FM', 'Fiat-backed stablecoin', 'USDC', 6, 'USD Coin (Wormhole)'),
+('solana', 'Ejqkht2dyN1BaaEtK92zBKY6S8HbVH8APB5sDK9Rmokt', '', 'rUSD', 18, '')
 
 ) as temp_table (blockchain, token_mint_address, backing, symbol, decimals, name)
 
