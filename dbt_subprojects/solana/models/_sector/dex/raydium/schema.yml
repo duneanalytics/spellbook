@@ -143,6 +143,7 @@ models:
       contributors: [ ilemi ]
     config:
       tags: [ 'solana','dex','raydium' ]
+      event_time: block_date
     description: >
       staging model for raydium v4 swap data from decoded tables
     data_tests:
@@ -217,13 +218,28 @@ models:
   - name: raydium_v5_solana_stg_decoded_swaps
     meta:
       blockchain: solana
+      contributors: [ ilemi ]
     config:
       tags: [ 'solana','dex','raydium' ]
+      event_time: block_date
     description: >
-      all decoded raydium_v5 swaps on Solana
+      staging model for raydium v5 swap data from decoded tables
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'call_block_month', 'unique_instruction_key' ]
+          combination_of_columns: [ 'block_month', 'block_date', 'surrogate_key' ]
+
+  - name: raydium_v5_base_trades_backfill
+    meta:
+      blockchain: solana
+      contributors: [ 0xsharples ]
+    config:
+      tags: [ 'solana','dex','microbatch' ]
+    description: >
+      raydium v5 constant product amm dex trades on Solana - microbatch backfill
+    data_tests:
+      - check_columns_solana_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'block_month', 'block_date', 'surrogate_key' ]
 
   - name: raydium_v5_base_trades
     meta:
@@ -232,11 +248,11 @@ models:
     config:
       tags: [ 'solana','dex' ]
     description: >
-      all raw raydium_v5 constant product amm dex trades on Solana
+      all raw raydium_v5 constant product amm dex trades on Solana (view over backfill model)
     data_tests:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'block_month', 'surrogate_key' ]
+          combination_of_columns: [ 'block_month', 'block_date', 'surrogate_key' ]
 
   - name: raydium_v5_trades
     meta:

@@ -10,15 +10,11 @@
        event_time = 'block_time',
        begin = '2022-08-17',
        batch_size = var('raydium_v3_batch_size', 'day'),
-       lookback = 3,
+       lookback = 1,
        unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index','block_month'],
        pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
        )
 }}
-
-{% set begin = '2022-08-17' %}
-{% set batch_start = model.batch.event_time_start if model.batch else begin %}
-{% set batch_end = model.batch.event_time_end if model.batch else '2099-01-01' %}
 
 with pools as (
     select
@@ -46,9 +42,6 @@ with pools as (
         , call_tx_signer
         , call_tx_index
     from {{ source('raydium_clmm_solana', 'amm_v3_call_swap') }}
-    where
-        call_block_time >= timestamp '{{batch_start}}'
-        and call_block_time < timestamp '{{batch_end}}'
     union all
     select
         account_poolState
@@ -62,9 +55,6 @@ with pools as (
         , call_tx_signer
         , call_tx_index
     from {{ source('raydium_clmm_solana', 'amm_v3_call_swapV2') }}
-    where
-        call_block_time >= timestamp '{{batch_start}}'
-        and call_block_time < timestamp '{{batch_end}}'
 )
 , transfers as (
     select
@@ -76,9 +66,6 @@ with pools as (
         , from_token_account
         , to_token_account
     from {{ source('tokens_solana','transfers') }}
-    where
-        block_time >= timestamp '{{batch_start}}'
-        and block_time < timestamp '{{batch_end}}'
 )
 , all_swaps as (
     select
