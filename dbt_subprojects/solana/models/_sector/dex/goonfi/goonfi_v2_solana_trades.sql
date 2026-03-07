@@ -4,7 +4,6 @@
     , alias = 'trades'
     , materialized = 'view'
     , post_hook = '{{ hide_spells() }}'
-    , tags = ['prod_exclude']
   )
 }}
 

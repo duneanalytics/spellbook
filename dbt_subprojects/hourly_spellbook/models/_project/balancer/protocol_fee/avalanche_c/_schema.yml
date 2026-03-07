@@ -7,7 +7,7 @@ models:
       project: balancer_v2
       contributors: viniabussafi
     config:
-      tags: ['avalanche_c', 'revenue', 'fees']
+      tags: ["avalanche_c", "revenue", "fees"]
     description: >
       Daily Protocol Fee collected and Revenue by pool on Balancer, an automated portfolio manager and trading platform.
     data_tests:
@@ -37,13 +37,16 @@ models:
         description: "Blockchain"
       - &pool_type
         name: pool_type
-        description: "Pool attributes, determined by the pool's factory"              
+        description: "Pool attributes, determined by the pool's factory"
+      - &fee_type
+        name: fee_type
+        description: "Type of fee (e.g. swap, yield)"
       - &token_address
         name: token_address
         description: "Contract address of the token in which protocol fees were collected"
       - &token_symbol
         name: token_symbol
-        description: Token symbol of the token in which protocol fees were collected"
+        description: "Token symbol of the token in which protocol fees were collected"
       - &token_amount_raw
         name: token_amount_raw
         description: "Raw amount of fees of the token in the pool at time of execution in the original currency"
@@ -59,6 +62,9 @@ models:
       - &treasury_revenue_usd
         name: treasury_revenue_usd
         description: "USD value of fee directed to Balancer DAO's treasury"
+      - &treasury_fee_usd
+        name: treasury_fee_usd
+        description: "USD value of fee directed to Balancer DAO's treasury"
       - &lp_fee_collected_usd
         name: lp_fee_collected_usd
-        description: "USD value of the fee returned to liquidity providers"        
+        description: "USD value of the fee returned to liquidity providers"
