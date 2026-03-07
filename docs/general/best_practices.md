@@ -1,82 +1,85 @@
-# Best practices
+# Best Practices
 
-## To speed up your development process in PRs, keep these tips in mind:
+## Development Workflow
 
-- Each commit to your feature branch will rerun CI tests ([see example](https://github.com/duneanalytics/spellbook/actions/runs/8202519819/job/22433451880?pr=5519))
-    - This includes *all* modified models on your branch
-    - This includes *all* history of the data
-- Two tips for faster development iteration:
-    - Ensure dbt is installed locally (refer to main `readme`) and run `dbt compile`
-        - This will output raw SQL in `target/` directory to copy/paste and run on Dune directly for initial query testing
-    - Hardcode a `WHERE` filter for only ~7 days of history on large source tables, i.e. `ethereum.transactions`
-        - This will speed up the CI tests and output results quicker -- whether that's an error or fully successful run
-        - Once comfortable with small timeframe, remove filter and let full history run
+### 1. Start in the Dune App
+Always begin with a working query in the Dune web application before creating a dbt model. The Dune app provides immediate feedback and is easier to debug than CI runs.
 
-## Incremental model setup
-- Make sure your unique key columns are *exactly* the same in the model config block, schema yml file, and seed match columns (where applicable)
-- There cannot be nulls in the unique key columns
-    - Be sure to double check key columns are correct or `COALESCE()` as needed on key column(s), otherwise the tests may fail on duplicates
+### 2. Convert to a dbt Model
+Once your query is working correctly, convert it to a dbt model with the appropriate materialization:
+- **`view`** – No data stored, query runs each execution. Best for lightweight transformations.
+- **`table`** – Full refresh every run (frequency depends on sub-project). Best for medium-sized datasets and dimension tables.
+- **`incremental`** – Only adds/updates recent rows. Best for large fact tables and event streams. Requires `incremental_strategy`, `file_format='delta'`, and `unique_key`.
 
-## 🪄 Use the built CI tables for testing 🪄
+Always use `source()` and `ref()` — never hardcode table names.
 
-Once CI completes, you can query the CI tables and errors in dune when it finishes running.
-- For example:
-    - In the `run initial models` and `test initial models`, there will be a schema that looks like this: `test_schema.git_dunesql_4da8bae_sudoswap_v2_base_pool_creations`
-    - This can be temporarily queried in Dune for ~24 hours
-
-Leverage these tables to perform QA testing on Dune query editor -- or even full test dashboards!
-
-## How to efficiently join tables
-The DuneSQL query planner can reveal a lot of helpful information to efficiently write certain logic within queries. One takeaway is how the planner interprets joins. The order of the tables or subqueries within the joins can improve efficiency of the query, resulting in better performance.
-
-In general, in order to consume less memory and run faster, larger tables should be written first – as in the left side of the join. A common query example:
-```sql
-select *
-from decoded d
-join transactions t
-on d.tx_hash = t.hash
+### 3. Compile and Test Locally
+Run `dbt compile` in the relevant sub-project directory (e.g., `dbt_subprojects/dex/`). This outputs raw SQL in the `target/` directory to copy/paste into Dune, or use the `dune_query.py` script:
+```bash
+python scripts/dune_query.py "@model_name" --limit 100
 ```
 
-The decoded source tables are smaller than the base transactions tables. For a more efficient output, the query could be tweaked to:
-```sql
-select *
-from transactions t
-join decoded d
-on d.tx_hash = t.hash
-```
-If it is a left or right join, the join type must be switched as well:
-```sql
-select * 
-from decoded d
-left join transactions t
-on d.tx_hash = t.hash
-```
-For a more efficient output, the query could be tweaked to:
-```sql
-select *
-from transactions t
-right join decoded d
-on d.tx_hash = t.hash
-```
-With that said, this is more important to keep in mind when seeing spells are taking longer than anticipated to run rather than retroactively fixing older spells which don’t have the correct order in joins. The Dune team has taken some time to fix existing spells which ran longer than expected, by tweaking joins within. One example is PR [here](https://github.com/duneanalytics/spellbook/pull/4003/files). In most cases, the query planner will figure out the optimal join on its own. This is recommended when the planner gets it incorrect, resulting in poor performance.
+### 4. Use Short Date Filters During Development
+Hardcode a short date filter (e.g., last 3-7 days) on large source tables during initial development. This speeds up CI runs significantly. Once comfortable with the small timeframe, expand to full history.
 
-## How to efficiently use UNION statements
-In general, the query planner shows it’s most efficient to use UNION ALL or UNION DISTINCT, rather than simply UNION. If there are duplicates in the data being unioned, use UNION DISTINCT, otherwise use UNION ALL. This is a good general rule of thumb to follow for all spells.
+### 5. Submit PR and Use CI
+Each commit to your feature branch triggers CI, which builds and tests all modified models. CI tables can be queried on Dune for ~24 hours (format: `test_schema.git_dunesql_<hash>_<table>`). Leverage these tables for QA testing — or even full test dashboards.
 
-## Leverage DuneSQL data types & functions
-For best performance, maintain the DuneSQL data types from the source tables or explicitly cast to these types as necessary. Basic SQL operations on these types will be more efficient. The main data types in consideration:
-- `varbinary`
-- `uint256 / int256`
+### 6. Expand Date Ranges (When Ready)
+Only expand date filters when CI runs are passing and data quality is verified on the limited dataset.
 
-When working with these data types, rather than cast to other types to meet requirements for a certain function, it’s best to leverage the new functions for these types. The main functions in consideration:
-- `bytearray_substring()`
-- `bytearray_to_uint256()`
-- `bytearray_length()`
-- …many more of this type
+## Incremental Model Setup
 
-## Leverage Jinja syntax & functionality
-Where possible, apply Jinja syntax as much as possible:
-- source & refs
-- for loops
-- variables
-- for more information: https://docs.getdbt.com/docs/build/jinja-macros#jinja
+- Unique key columns must be *exactly* the same in the model config block, schema yml file, and seed match columns (where applicable)
+- There cannot be NULLs in the unique key columns — in Trino, NULLs cause merge lookups to fail, leading to duplicates
+    - Use `coalesce()` on key columns, or `dbt_utils.generate_surrogate_key()` if columns may contain NULLs
+- Always use the `incremental_predicate()` macro for `incremental_predicates` rather than hardcoding:
+    ```sql
+    incremental_predicates=[incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    ```
+- Only use `incremental_predicates` for time-series data — do NOT use when you need to check against full history (e.g., pool creation events)
+
+## Performance Tips
+
+### Join Ordering
+Larger tables should be on the left side of joins. The DuneSQL query planner usually handles this, but when spells run longer than expected, check join order.
+
+When joining on partition columns, include time filters in **both** the ON clause and the WHERE clause to enable partition pruning on both sides.
+
+### Time-Based Filtering
+Always filter by partition columns (`block_date`, `block_time`, `evt_block_time`) to enable partition pruning. Cross-chain tables (like `dex.trades`, `tokens.transfers`) are partitioned by **both** `blockchain` and time — always specify both filters.
+
+### Select Only Required Columns
+Never use `SELECT *` on large tables. Dune's columnar storage makes column selection especially effective for transaction, log, and trace tables.
+
+### UNION Statements
+Use `UNION ALL` when there are no duplicates, `UNION DISTINCT` when deduplication is needed. Avoid bare `UNION`.
+
+### ORDER BY
+Never use `ORDER BY` without `LIMIT` on large result sets. Sorting is expensive — only use it when you need top-N results.
+
+## DuneSQL Data Types & Functions
+For best performance, maintain native DuneSQL data types rather than casting:
+- `varbinary` — addresses, hashes. Use hex literals without quotes: `0x039e...` not `'0x039e...'`
+- `uint256 / int256` — large numbers
+
+When working with these types, leverage the native functions rather than casting:
+- `bytearray_substring()`, `bytearray_to_uint256()`, `bytearray_length()`, etc.
+
+## Partitioning
+
+Partitioning is NOT always beneficial — only use it for large tables where each partition contains 1M+ rows.
+
+Common patterns:
+- `partition_by=['block_month']` — most common (trades, transfers, swaps)
+- `partition_by=['block_date']` — very high-volume tables
+- `partition_by=['blockchain', 'project', 'block_month']` — cross-chain sector spells
+
+**If a table is partitioned, always include the partition column(s) in `unique_key`** — this enables Trino to prune partitions during merge lookups, dramatically improving performance.
+
+## Leverage Jinja Syntax
+Where possible, apply Jinja syntax:
+- `source()` & `ref()` for all table references
+- For loops to iterate through chains or project versions in union models
+- Variables and macros for reusable logic
+- For more information: https://docs.getdbt.com/docs/build/jinja-macros#jinja
