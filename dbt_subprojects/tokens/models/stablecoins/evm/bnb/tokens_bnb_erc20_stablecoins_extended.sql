@@ -16,7 +16,8 @@
 select '{{chain}}' as blockchain, contract_address, currency
 from (values
 
-     (0xc1fdbed7dac39cae2ccc0748f7a80dc446f6a594, 'TRY')  -- TRYB
+     (0xc1fdbed7dac39cae2ccc0748f7a80dc446f6a594, 'TRY'), -- TRYB
+     (0x09d4214c03d01f49544c0448dbe3a27f768f2b34, 'USD')  -- rUSD
 
      /* yield-bearing / rebasing tokens
      (0x2952beb1326accbb5243725bd4da2fc937bca087, 'USD'), -- wUSDR
