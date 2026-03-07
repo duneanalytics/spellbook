@@ -89,6 +89,23 @@ models:
       - name: unique_key
         description: "Unique identifier for the transfer"
 
+  - name: stablecoins_multichain_tokens
+    meta:
+      sector: stablecoin
+      project: stablecoin
+      contributors: tomfutago
+    config:
+      tags: ['stablecoin', 'tokens']
+    description: "Union of EVM, SVM (Solana), and Tron stablecoin token lists with enriched symbol/decimals metadata"
+    columns:
+      - *blockchain
+      - *token_address
+      - *currency
+      - name: symbol
+        description: "Token symbol"
+      - name: decimals
+        description: "Token decimals"
+
   - name: stablecoins_balances
     meta:
       sector: stablecoin
