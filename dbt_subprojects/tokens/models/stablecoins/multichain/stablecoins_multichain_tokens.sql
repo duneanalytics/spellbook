@@ -12,8 +12,8 @@ select
     cast(null as varchar) as contract_address,
     cast(s.token_mint_address as varchar) as token_mint_address,
     s.currency,
-    s.symbol,
-    s.decimals
+    cast(null as varchar) as symbol,
+    cast(null as integer) as decimals
 from {{ source('tokens_solana', 'spl_stablecoins') }} s
 
 union all
