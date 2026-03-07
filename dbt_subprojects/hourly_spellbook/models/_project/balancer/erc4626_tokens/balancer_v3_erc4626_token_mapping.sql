@@ -11,7 +11,8 @@
     ref('balancer_v3_sonic_erc4626_token_mapping'),
     ref('balancer_v3_arbitrum_erc4626_token_mapping'),
 
-    ref('balancer_v3_base_erc4626_token_mapping')
+    ref('balancer_v3_base_erc4626_token_mapping'),
+    ref('balancer_v3_hyperevm_erc4626_token_mapping')
 ] %}
 
 SELECT *

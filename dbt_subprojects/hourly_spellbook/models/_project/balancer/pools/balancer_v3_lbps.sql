@@ -9,7 +9,8 @@
     ref('balancer_v3_arbitrum_lbps'),
     ref('balancer_v3_base_lbps'),
     ref('balancer_v3_ethereum_lbps'),
-    ref('balancer_v3_gnosis_lbps')
+    ref('balancer_v3_gnosis_lbps'),
+    ref('balancer_v3_hyperevm_lbps')
 ] %}
 
 
