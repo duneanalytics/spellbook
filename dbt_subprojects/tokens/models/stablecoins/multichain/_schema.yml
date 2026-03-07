@@ -19,11 +19,7 @@ models:
         description: "Stablecoin token mint address for Solana chains (varchar)"
       - name: currency
         description: "ISO 4217 currency code the stablecoin is pegged to (e.g. USD, EUR)"
-      - name: backing
-        description: "Type of backing for the stablecoin"
       - name: symbol
         description: "Token symbol"
       - name: decimals
         description: "Token decimals"
-      - name: name
-        description: "Token name or issuer"
