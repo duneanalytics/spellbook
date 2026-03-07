@@ -9,19 +9,20 @@
 
 select
     s.blockchain,
-    cast(null as varchar) as contract_address,
-    cast(s.token_mint_address as varchar) as token_mint_address,
+    s.token_mint_address as token_address,
     s.currency,
-    cast(null as varchar) as symbol,
-    cast(null as integer) as decimals
+    metadata.symbol,
+    metadata.decimals
 from {{ source('tokens_solana', 'spl_stablecoins') }} s
+left join {{ source('tokens_solana', 'fungible') }} as metadata
+    on metadata.token_mint_address = s.token_mint_address
+    and metadata.address_prefix = lower(substring(s.token_mint_address, 1, 1))
 
 union all
 
 select
     e.blockchain,
-    cast(e.contract_address as varchar) as contract_address,
-    cast(null as varchar) as token_mint_address,
+    cast(e.contract_address as varchar) as token_address,
     e.currency,
     e.symbol,
     e.decimals
@@ -31,9 +32,11 @@ union all
 
 select
     t.blockchain,
-    cast(t.contract_address as varchar) as contract_address,
-    cast(null as varchar) as token_mint_address,
+    cast(t.contract_address as varchar) as token_address,
     t.currency,
-    cast(null as varchar) as symbol,
-    cast(null as integer) as decimals
+    tokens_erc20.symbol,
+    tokens_erc20.decimals
 from {{ source('tokens_tron', 'trc20_stablecoins') }} t
+left join {{ source('tokens', 'erc20') }} as tokens_erc20
+    on tokens_erc20.blockchain = t.blockchain
+    and tokens_erc20.contract_address = t.contract_address

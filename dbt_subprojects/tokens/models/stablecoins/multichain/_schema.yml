@@ -13,10 +13,8 @@ models:
     columns:
       - name: blockchain
         description: "Blockchain name"
-      - name: contract_address
-        description: "Stablecoin contract address for EVM/Tron chains (varchar)"
-      - name: token_mint_address
-        description: "Stablecoin token mint address for Solana chains (varchar)"
+      - name: token_address
+        description: "Stablecoin token address or mint address in varchar format"
       - name: currency
         description: "ISO 4217 currency code the stablecoin is pegged to (e.g. USD, EUR)"
       - name: symbol
