@@ -1,0 +1,152 @@
+version: 2
+
+models:
+  - name: stablecoins_kaia_core_transfers
+    meta:
+      blockchain: kaia
+      sector: stablecoin
+      project: stablecoin
+      contributors: tomfutago
+    config:
+      tags: ['stablecoin', 'transfers']
+    description: "Core transfers of stablecoins (frozen core list)"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_date
+            - unique_key
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain for the token"
+      - &block_month
+        name: block_month
+        description: "Month of the block (partition column)"
+      - &block_date
+        name: block_date
+        description: "Date of the block"
+        data_tests:
+          - not_null
+      - &block_time
+        name: block_time
+        description: "Timestamp of the block"
+      - &block_number
+        name: block_number
+        description: "Block number"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
+      - &trace_address
+        name: trace_address
+        description: "Trace address"
+      - &token_standard
+        name: token_standard
+        description: "Token standard"
+      - &token_address
+        name: token_address
+        description: "Token contract address"
+      - &token_symbol
+        name: token_symbol
+        description: "Token symbol"
+      - &currency
+        name: currency
+        description: "ISO 4217 currency code the stablecoin is pegged to (e.g., USD, EUR)"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw transfer amount"
+      - &amount
+        name: amount
+        description: "Transfer amount (adjusted for decimals)"
+      - &price_usd
+        name: price_usd
+        description: "USD price at time of transfer"
+      - &amount_usd
+        name: amount_usd
+        description: "USD value of transfer"
+      - &from
+        name: from
+        description: "Sender address"
+      - &to
+        name: to
+        description: "Receiver address"
+      - &unique_key
+        name: unique_key
+        description: "Unique identifier for this transfer"
+        data_tests:
+          - not_null
+
+  - name: stablecoins_kaia_extended_transfers
+    meta:
+      blockchain: kaia
+      sector: stablecoin
+      project: stablecoin
+      contributors: tomfutago
+    config:
+      tags: ['stablecoin', 'transfers']
+    description: "Extended transfers of newly added stablecoins"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_date
+            - unique_key
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_date
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+      - *trace_address
+      - *token_standard
+      - *token_address
+      - *token_symbol
+      - *currency
+      - *amount_raw
+      - *amount
+      - *price_usd
+      - *amount_usd
+      - *from
+      - *to
+      - *unique_key
+
+  - name: stablecoins_kaia_transfers
+    meta:
+      blockchain: kaia
+      sector: stablecoin
+      project: stablecoin
+      contributors: tomfutago
+    config:
+      tags: ['stablecoin', 'transfers']
+    description: "Union view of core and extended stablecoin transfers with metadata"
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_date
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+      - *trace_address
+      - *token_standard
+      - *token_address
+      - *token_symbol
+      - *currency
+      - &token_backing
+        name: token_backing
+        description: "Stablecoin backing type"
+      - &token_name
+        name: token_name
+        description: "Stablecoin name"
+      - *amount_raw
+      - *amount
+      - *price_usd
+      - *amount_usd
+      - *from
+      - *to
+      - *unique_key

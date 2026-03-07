@@ -1,9 +1,8 @@
 {{config(
-    alias = 'token_standards_arbitrum',
-        post_hook='{{ expose_spells(\'["arbitrum"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["hildobby"]\') }}')}}
+    alias = 'token_standards_arbitrum'
+    , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 SELECT distinct 'arbitrum' AS blockchain
 , erc20.contract_address AS address

@@ -57,5 +57,13 @@ sources:
       - name: AggregationRouterV6_call_fillOrderArgs
       - name: AggregationRouterV6_call_fillContractOrder
       - name: AggregationRouterV6_call_fillContractOrderArgs
-      - name: lop
+      - name: AggregationRouterV6_call_permitAndCall
+      - name: AccessTokenFusionV1_evt_transfer
+      - name: AccessTokenCrossChainV1_evt_transfer
       - name: ar
+      - name: lo
+
+
+  - name: tokens_fantom
+    tables:
+      - name: transfers_from_traces

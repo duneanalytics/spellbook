@@ -1,5 +1,6 @@
  {{
-  config(     
+  config(
+        tags = ['prod_exclude'],
         schema = 'contracts_avalanche_c',
         alias = 'contract_mapping',
         materialized ='table',

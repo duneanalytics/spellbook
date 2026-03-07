@@ -1,11 +1,8 @@
 {{ config(
         schema = 'pancakeswap',
         alias = 'trades',
-        materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'["bnb","ethereum","arbitrum","base"]\',
-                                      spell_type = "project", 
-                                      spell_name = "pancakeswap", 
-                                      contributors = \'["hosuke", "chef_seaweed"]\') }}'
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

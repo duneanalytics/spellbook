@@ -1,5 +1,6 @@
  {{
   config(
+        tags = ['prod_exclude'],
         schema = 'contracts_avalanche_c',
         alias = 'find_self_destruct_contracts',
         materialized ='incremental',

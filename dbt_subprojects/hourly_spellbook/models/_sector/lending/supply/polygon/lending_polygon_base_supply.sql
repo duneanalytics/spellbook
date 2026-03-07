@@ -10,7 +10,8 @@
   set models = [
     ref('aave_v2_polygon_base_supply'),
     ref('aave_v3_polygon_base_supply'),
-    ref('compound_v3_polygon_base_supply')
+    ref('compound_v3_polygon_base_supply'),
+    ref('morpho_polygon_base_supply')
   ]
 %}
 
@@ -26,6 +27,7 @@ select
   withdrawn_to,
   liquidator,
   amount,
+  amount_raw,
   block_month,
   block_time,
   block_number,

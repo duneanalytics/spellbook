@@ -3,13 +3,8 @@
 {{-
     config(
         schema = 'tokens',
-        alias = 'transfers_from_traces',
-        post_hook = '{{ expose_spells(
-            blockchains = \'exposed\', 
-            spell_type = "sector",
-            spell_name = "tokens",
-            contributors = \'["max-morrow", "grkhr"]\'
-        ) }}'
+        alias = 'transfers_from_traces'
+        , post_hook='{{ hide_spells() }}'
     )
 -}}
 
@@ -24,7 +19,11 @@ select
     , type
     , token_standard
     , contract_address
+    , symbol
     , amount_raw
+    , amount
+    , price_usd
+    , amount_usd
     , "from"
     , "to"
     , unique_key

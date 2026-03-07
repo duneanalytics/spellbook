@@ -2,10 +2,7 @@
         schema = 'op_retropgf_optimism'
         
         , alias = 'recipients'
-        , post_hook='{{ expose_spells(\'["optimism"]\',
-                                  "project",
-                                  "op_retropgf",
-                                  \'["msilb7", "chuxin"]\') }}'
+        , post_hook='{{ hide_spells() }}'
   )
 }}
 {% set sources = [

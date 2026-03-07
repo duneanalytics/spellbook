@@ -9,7 +9,7 @@ WITH ranked AS (
     , d.evt_block_date AS block_date
     , d.evt_block_time AS block_time
     , d.evt_block_number AS block_number
-    , d.outputAmount AS withdrawal_amount_raw
+    , COALESCE(CAST(json_extract_scalar(d.relayExecutionInfo, '$.updatedOutputAmount') AS UINT256), d.outputAmount) AS withdrawal_amount_raw
     , CASE WHEN varbinary_substring(d.depositor,1, 12) = 0x000000000000000000000000 THEN varbinary_substring(depositor,13) ELSE depositor END AS sender
     , CASE WHEN varbinary_substring(d.recipient,1, 12) = 0x000000000000000000000000 THEN varbinary_substring(recipient,13) ELSE recipient END AS recipient
     , CASE WHEN varbinary_substring(d.outputToken,1, 12) = 0x000000000000000000000000 THEN varbinary_substring(outputToken,13) ELSE outputToken END AS withdrawal_token_address

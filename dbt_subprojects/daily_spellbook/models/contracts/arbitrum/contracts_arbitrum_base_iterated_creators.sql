@@ -1,5 +1,6 @@
  {{
   config(
+        tags = ['prod_exclude'],
         schema = 'contracts_arbitrum',
         alias = 'base_iterated_creators',
         materialized ='incremental',

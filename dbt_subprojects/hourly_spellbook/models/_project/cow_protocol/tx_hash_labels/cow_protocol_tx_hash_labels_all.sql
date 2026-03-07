@@ -2,11 +2,9 @@
     tags = ['prod_exclude'],
     alias = 'tx_hash_labels_all',
     materialized = 'table',
-    file_format = 'delta',
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "sector",
-                                "tx_hash_labels",
-                                \'["gentrexha"]\') }}')
+    file_format = 'delta'
+    , post_hook='{{ hide_spells() }}'
+)
 }}
 
 -- Query Labels

@@ -5,3 +5,39 @@ sources:
     description: "Beamer's v2 bridge events on Ethereum"
     tables:
       - name: requestmanager_evt_requestcreated
+  - name: beamer_bridge_v3_ethereum
+    description: "Beamer's v3 bridge events on Ethereum"
+    tables:
+      - name: requestmanager_evt_requestcreated
+  - name: beamer_bridge_v1_arbitrum
+    description: "Beamer's v1 bridge events on Arbitrum"
+    tables:
+      - name: requestmanager_evt_requestcreated
+  - name: beamer_bridge_v2_arbitrum
+    description: "Beamer's v2 bridge events on Arbitrum"
+    tables:
+      - name: requestmanager_evt_requestcreated
+  - name: beamer_bridge_v3_arbitrum
+    description: "Beamer's v3 bridge events on Arbitrum"
+    tables:
+      - name: requestmanager_evt_requestcreated
+  - name: beamer_bridge_v2_base
+    description: "Beamer's v2 bridge events on Base"
+    tables:
+      - name: requestmanager_evt_requestcreated
+  - name: beamer_bridge_v3_base
+    description: "Beamer's v3 bridge events on Base"
+    tables:
+      - name: requestmanager_evt_requestcreated
+  - name: beamer_bridge_v1_optimism
+    description: "Beamer's v1 bridge events on OP Mainnet"
+    tables:
+      - name: requestmanager_evt_requestcreated
+  - name: beamer_bridge_v2_optimism
+    description: "Beamer's v2 bridge events on OP Mainnet"
+    tables:
+      - name: requestmanager_evt_requestcreated
+  - name: beamer_bridge_v3_optimism
+    description: "Beamer's v3 bridge events on OP Mainnet"
+    tables:
+      - name: requestmanager_evt_requestcreated

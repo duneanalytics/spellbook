@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: bridges_bob_orbiter_v1_deposits
+    meta:
+      blockchain: bob
+      sector: bridges
+      project: orbiter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'bob', 'bridges', 'flows', 'withdrawals' ]
+    description: "Orbiter's v1 bridge deposits events on Bob"
+

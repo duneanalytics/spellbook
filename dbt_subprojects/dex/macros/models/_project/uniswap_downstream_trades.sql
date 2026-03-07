@@ -300,6 +300,15 @@ prices AS (
     and {{ incremental_predicate('minute') }}
     {% endif %}
     and blockchain = '{{blockchain}}' 
+),
+
+trusted_tokens AS (
+    select 
+        contract_address
+        , blockchain
+    from 
+    {{ source('prices', 'trusted_tokens') }}
+    where blockchain = '{{blockchain}}' 
 )
 
     select
@@ -342,7 +351,15 @@ prices AS (
         , evt_index
         -- uni fee columns 
         , coalesce (
-            token_sold_amount * uni_fee * pa.price_usd
+            case 
+                when tt_sold.contract_address is not null 
+                then token_sold_amount * uni_fee * pa.price_usd
+            end 
+            , case
+                when tt_bought.contract_address is not null 
+                then ((token_bought_amount * pb.price_usd) / (1 - uni_fee)) - (token_bought_amount * pb.price_usd)
+            end 
+            , token_sold_amount * uni_fee * pa.price_usd
             , ((token_bought_amount * pb.price_usd) / (1 - uni_fee)) - (token_bought_amount * pb.price_usd)
             ) as lp_fee_amount_usd
         , token_sold_amount * uni_fee as lp_fee_amount 
@@ -350,7 +367,15 @@ prices AS (
         , uni_fee * 1e2 as lp_fee -- convert back to correct value 
         -- hooks fee columns 
         , coalesce (
-            token_sold_amount * hooks_fee * pa.price_usd
+            case 
+                when tt_sold.contract_address is not null 
+                then token_sold_amount * hooks_fee * pa.price_usd
+            end 
+            , case
+                when tt_bought.contract_address is not null 
+                then ((token_bought_amount * pb.price_usd) / (1 - hooks_fee)) - (token_bought_amount * pb.price_usd)
+            end 
+            , token_sold_amount * hooks_fee * pa.price_usd
             , ((token_bought_amount * pb.price_usd) / (1 - hooks_fee)) - (token_bought_amount * pb.price_usd)
             ) as hooks_fee_amount_usd
         , token_sold_amount * hooks_fee as hooks_fee_amount 
@@ -371,6 +396,14 @@ prices AS (
         and af.block_minute = pb.price_minute 
         and af.blockchain = pb.price_blockchain 
         and af.token_bought_address = pb.price_contract_address
+    left join 
+    trusted_tokens tt_sold
+        on af.token_sold_address = tt_sold.contract_address 
+        and af.blockchain = tt_sold.blockchain
+    left join 
+    trusted_tokens tt_bought 
+        on af.token_bought_address = tt_bought.contract_address 
+        and af.blockchain = tt_bought.blockchain
     left join 
     {{ ref('uniswap_pools') }} unp 
         on af.blockchain = unp.blockchain

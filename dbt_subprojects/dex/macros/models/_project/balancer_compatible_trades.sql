@@ -177,6 +177,8 @@ SELECT
     dexs.pool_symbol,
     dexs.pool_type
 FROM dexs
+/* hardcoded filter for inflated volumes on whitehat effort to recover funds */
+WHERE CAST(date_trunc('day', dexs.block_time) AS date) != date '2025-11-12'
 
 {% endmacro %}
 

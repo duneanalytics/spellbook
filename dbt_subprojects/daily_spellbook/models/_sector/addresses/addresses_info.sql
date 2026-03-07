@@ -4,11 +4,9 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['address'],
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "base", "celo", "scroll", "zora", "blast", "fantom", "linea", "zkevm", "zksync"]\',
-                                    "sector",
-                                    "addresses",
-                                    \'["hildobby"]\') }}'
+        partition_by = ['address_prefix'],
+        unique_key = ['address_prefix', 'address'],
+        post_hook='{{ hide_spells() }}'
 )
 }}
 
@@ -21,12 +19,15 @@
     , ('celo', ref('addresses_celo_info'))
     , ('ethereum', ref('addresses_ethereum_info'))
     , ('gnosis', ref('addresses_gnosis_info'))
+    , ('hyperevm', ref('addresses_hyperevm_info'))
+    , ('linea', ref('addresses_linea_info'))
+    , ('monad', ref('addresses_monad_info'))
     , ('optimism', ref('addresses_optimism_info'))
     , ('polygon', ref('addresses_polygon_info'))
     , ('scroll', ref('addresses_scroll_info'))
+    , ('sei', ref('addresses_sei_info'))
     , ('zora', ref('addresses_zora_info'))
     , ('fantom', ref('addresses_fantom_info'))
-    , ('linea', ref('addresses_linea_info'))
     , ('zkevm', ref('addresses_zkevm_info'))
     , ('zksync', ref('addresses_zksync_info'))
 ] %}
@@ -35,6 +36,7 @@
 
 WITH data AS (
     SELECT address
+    , MAX(address_prefix) AS address_prefix
     , array_agg(blockchain) AS blockchains
     , SUM(executed_tx_count) AS executed_tx_count
     , MAX(max_nonce) AS max_nonce
@@ -69,6 +71,7 @@ WITH data AS (
         {% for addresses_model in addresses_models %}
         SELECT '{{ addresses_model[0] }}' AS blockchain
         , address
+        , address_prefix
         , executed_tx_count
         , max_nonce
         , is_smart_contract
@@ -101,6 +104,7 @@ WITH data AS (
         , last_seen
         , last_seen_block
         FROM {{ addresses_model[1] }}
+        WHERE 1=1
         {% if not loop.last %}
         UNION ALL
         {% endif %}
@@ -110,6 +114,7 @@ WITH data AS (
     )
 
 SELECT address
+, address_prefix
 , blockchains
 , executed_tx_count
 , max_nonce
@@ -144,32 +149,27 @@ FROM data
 
 {% else %}
 
+with addresses_in_delta as (
+	select distinct
+		address
+		, address_prefix
+	from (
+		{% for addresses_model in addresses_models %}
+		select
+			address
+			, address_prefix
+		from {{ addresses_model[1] }}
+		where {{ incremental_predicate('last_seen') }}
+		{% if not loop.last %}
+		union all
+		{% endif %}
+		{% endfor %}
+	)
+)
 
-
-WITH to_update AS (
-    SELECT DISTINCT am.address
-    FROM (
-        {% for addresses_model in addresses_models %}
-        (SELECT address
-        , last_seen
-        , '{{ addresses_model[0] }}' AS blockchain
-        FROM {{ addresses_model[1] }}
-        WHERE {{incremental_predicate('last_seen')}}
-        )
-        {% if not loop.last %}
-        UNION ALL
-        {% endif %}
-        {% endfor %}
-        ) am
-    LEFT JOIN {{ this }} t ON am.address = t.address
-    WHERE t.address IS NULL
-        OR ((contains(t.blockchains, am.blockchain) = FALSE))
-        OR (CAST(t.chain_stats[am.blockchain]['last_seen'] AS timestamp) <= am.last_seen)
-    GROUP BY 1
-    )
-
-
-SELECT address
+select
+	address
+, address_prefix
 , array_agg(blockchain) AS blockchains
 , SUM(executed_tx_count) AS executed_tx_count
 , MAX(max_nonce) AS max_nonce
@@ -204,6 +204,7 @@ FROM (
     {% for addresses_model in addresses_models %}
     SELECT '{{ addresses_model[0] }}' AS blockchain
     , address
+    , address_prefix
     , executed_tx_count
     , max_nonce
     , is_smart_contract
@@ -236,12 +237,14 @@ FROM (
     , last_seen
     , last_seen_block
     FROM {{ addresses_model[1] }}
-    INNER JOIN to_update USING (address)
+	inner join addresses_in_delta using (address, address_prefix)
+    WHERE 1=1
     {% if not loop.last %}
     UNION ALL
     {% endif %}
     {% endfor %}
     )
 GROUP BY address
+, address_prefix
 
 {% endif %}

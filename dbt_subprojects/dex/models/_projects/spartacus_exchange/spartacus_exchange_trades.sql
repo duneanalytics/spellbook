@@ -1,11 +1,8 @@
 {{ config(
     schema = 'spartacus_exchange',
     alias = 'trades',
-    materialized = 'view',
-    post_hook='{{ expose_spells(blockchains = \'["fantom"]\',
-                                  spell_type = "project", 
-                                  spell_name = "spartacus_exchange", 
-                                  contributors = \'["Henrystats"]\') }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

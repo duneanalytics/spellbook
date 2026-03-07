@@ -8,7 +8,8 @@
 
 {%
   set models = [
-    ref('aave_v3_sonic_base_flashloans')
+    ref('aave_v3_sonic_base_flashloans'),
+    ref('morpho_sonic_base_flashloans')
   ]
 %}
 
@@ -19,6 +20,7 @@ select
   version,
   recipient,
   amount,
+  amount_raw,
   fee,
   token_address,
   project_contract_address,

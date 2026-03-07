@@ -2,12 +2,8 @@
     config(
         materialized='table',
         schema = 'safe_ronin',
-        alias= 'singletons',
-        post_hook = '{{ expose_spells(
-                        blockchains = \'["ronin"]\',
-                        spell_type = "project",
-                        spell_name = "safe",
-                        contributors = \'["petertherock"]\') }}'
+        alias= 'singletons'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

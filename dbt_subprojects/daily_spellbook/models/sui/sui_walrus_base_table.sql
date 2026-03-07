@@ -8,7 +8,7 @@
   unique_key = ['tx_register','evt_index_register'],
   incremental_predicates = [ incremental_predicate('DBT_INTERNAL_DEST.block_date') ],
   tags=['walrus'],
-  post_hook='{{ expose_spells(\'["sui"]\',
+    post_hook='{{ expose_spells(\'["sui"]\',
                               "sector",
                               "walrus",
                               \'["krishhh"]\') }}'

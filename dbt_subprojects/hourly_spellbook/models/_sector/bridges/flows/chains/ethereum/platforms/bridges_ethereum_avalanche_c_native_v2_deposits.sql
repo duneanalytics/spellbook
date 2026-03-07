@@ -15,7 +15,7 @@ SELECT 'ethereum' AS deposit_chain
 , block_date AS block_date
 , block_time AS block_time
 , block_number AS block_number
-, amount AS deposit_amount_raw
+, amount_raw AS deposit_amount_raw
 , tx_from AS sender
 , tx_from AS recipient
 , token_standard AS deposit_token_standard
@@ -24,7 +24,7 @@ SELECT 'ethereum' AS deposit_chain
 , tx_from AS tx_from
 , tx_hash AS tx_hash
 , COALESCE(evt_index, 0) AS evt_index
-, contract_address
+, to AS contract_address
 , unique_key AS bridge_transfer_id
 --, {{ dbt_utils.generate_surrogate_key(['tx_hash', 'evt_index']) }} as bridge_transfer_id
 FROM {{ source('tokens_ethereum', 'transfers') }}

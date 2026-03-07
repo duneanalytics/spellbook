@@ -3,11 +3,8 @@
         alias = 'accounting',
 
         materialized = 'table',
-        file_format = 'delta',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "lido_accounting",
-                                \'["ppclunghe", "gregshestakovlido "]\') }}'
+        file_format = 'delta'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

@@ -1,13 +1,21 @@
 version: 2
 
 models:
-  - name: dex_avalanche_c_base_trades
+  - name: dex_avalanche_c_trades
     data_tests:
-      - check_columns_dex_base_trades
-      - check_dex_info_relationship
-      - test_acceptable_usd_amount:
+      - check_columns_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+      - dbt_utils.accepted_range:
           column_name: amount_usd
-          max_value: 1000000000
+          max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+
+  - name: dex_avalanche_c_base_trades
 
   - name: uniswap_v4_avalanche_c_base_trades
     meta:
@@ -479,4 +487,49 @@ models:
           seed_file: ref('blackhole_avalanche_c_base_trades_seed')
           filter:
             version: 3
-            
+
+  - name: pharaoh_v3_legacy_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: pharaoh_v3
+      contributors: discochuck
+    config:
+      tags: [ 'avalanche_c', 'dex', 'trades', 'pharaoh_v3', 'uniswap', 'v2' ]
+    description: "Pharaoh V3 legacy (uni v2) base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('pharaoh_v3_avalanche_c_base_trades_seed')
+          filter:
+            version: legacy
+
+  - name: pharaoh_v3_cl_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: pharaoh_v3
+      contributors: discochuck
+    config:
+      tags: [ 'avalanche_c', 'dex', 'trades', 'pharaoh_v3', 'uniswap', 'v3' ]
+    description: "Pharaoh V3 cl (uni v3) base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('pharaoh_v3_avalanche_c_base_trades_seed')
+          filter:
+            version: cl
+
+  - name: dex_avalanche_c_token_volumes_daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - token_address
+            - block_date

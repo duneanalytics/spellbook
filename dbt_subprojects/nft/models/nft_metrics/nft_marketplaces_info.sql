@@ -2,11 +2,9 @@
         tags = [ 'static'],
         schema='nft',
         alias = 'marketplaces_info',
-        unique_key = ['codename'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base"]\',
-                                    "sector",
-                                    "nft",
-                                    \'["hildobby"]\') }}')
+        unique_key = ['codename']
+        , post_hook='{{ hide_spells() }}'
+)
 }}
 
 SELECT project, name, marketplace_type, x_username

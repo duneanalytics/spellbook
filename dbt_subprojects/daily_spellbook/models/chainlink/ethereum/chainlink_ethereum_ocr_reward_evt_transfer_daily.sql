@@ -7,11 +7,8 @@
     file_format='delta',
     incremental_strategy='merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.date_start')],
-    unique_key=['date_start', 'admin_address'],
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "chainlink",
-                                \'["linkpool_ryan"]\') }}'
+    unique_key=['date_start', 'admin_address']
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

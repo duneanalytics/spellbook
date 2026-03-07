@@ -2,11 +2,8 @@
   config(
     schema = 'near_v1_signer',
     alias = 'users',
-    materialized = 'table',
-    post_hook = '{{ expose_spells(\'["near"]\',
-                                    "project",
-                                    "v1_signer",
-                                    \'["bh2smith"]\') }}'
+    materialized = 'table'
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

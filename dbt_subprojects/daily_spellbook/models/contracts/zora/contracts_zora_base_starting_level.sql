@@ -1,5 +1,6 @@
  {{
   config(
+        tags = ['prod_exclude'],
         schema = 'contracts_zora',
         alias = 'base_starting_level',
         materialized ='incremental',

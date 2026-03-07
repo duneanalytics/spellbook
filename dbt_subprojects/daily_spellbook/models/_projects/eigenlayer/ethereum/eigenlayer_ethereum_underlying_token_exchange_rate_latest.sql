@@ -2,12 +2,9 @@
     config(
         schema = 'eigenlayer_ethereum',
         alias = 'underlying_token_exchange_rate_latest',
-        materialized = 'table',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "eigenlayer",
-                                    \'["bowenli"]\') }}',
-        unique_key = ['strategy']
+        materialized = 'table'
+        , post_hook='{{ hide_spells() }}'
+        , unique_key = ['strategy']
     )
 }}
 

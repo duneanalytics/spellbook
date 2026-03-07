@@ -1,11 +1,9 @@
 {{ config(
     
     schema = 'aztec_v2_ethereum',
-    alias = 'bridges',
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "aztec_v2",
-                                \'["Henrystats"]\') }}')
+    alias = 'bridges'
+    , post_hook='{{ hide_spells() }}'
+)
 }}
 
 WITH  

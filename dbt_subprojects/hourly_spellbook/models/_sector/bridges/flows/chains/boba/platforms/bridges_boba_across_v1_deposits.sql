@@ -8,6 +8,6 @@
 }}
 
 {{across_v1_deposits(
-    blockchain = blockchain
-    , events = source('across_v2_boba', 'boba_spokepool_evt_fundsdeposited')
+    events = source('across_v2_boba', 'boba_spokepool_evt_fundsdeposited')
+    , blockchain = blockchain
     )}}

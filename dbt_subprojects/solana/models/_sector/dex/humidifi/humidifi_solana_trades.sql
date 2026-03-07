@@ -2,11 +2,9 @@
   config(
         schema = 'humidifi_solana',
         alias = 'trades',
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["solana"]\',
-                                    "project",
-                                    "humidifi",
-                                    \'["Sector920"]\') }}')
+        materialized = 'view'
+        , post_hook='{{ hide_spells() }}'
+)
 }}
 
 select

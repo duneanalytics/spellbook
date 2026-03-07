@@ -1,5 +1,6 @@
  {{
-  config(     
+  config(
+        tags = ['prod_exclude'],
         schema = 'contracts_arbitrum',
         alias = 'contract_mapping',
         materialized ='table',

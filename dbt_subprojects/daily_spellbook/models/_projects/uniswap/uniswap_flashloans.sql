@@ -1,10 +1,7 @@
 {{ config(
         schema = 'uniswap',
-        alias = 'flashloans',
-        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon", "bnb"]\',
-                                "project",
-                                "uniswap",
-                                \'["hildobby"]\') }}'
+        alias = 'flashloans'
+        , post_hook='{{ hide_spells() }}'
         )
 }}
 

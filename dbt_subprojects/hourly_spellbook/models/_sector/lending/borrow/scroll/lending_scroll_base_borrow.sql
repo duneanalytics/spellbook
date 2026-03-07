@@ -9,7 +9,8 @@
 {%
   set models = [
     ref('aave_v3_scroll_base_borrow'),
-    ref('layer_bank_scroll_base_borrow')
+    ref('layer_bank_scroll_base_borrow'),
+    ref('morpho_scroll_base_borrow')
   ]
 %}
 
@@ -26,6 +27,7 @@ select
   repayer,
   liquidator,
   amount,
+  amount_raw,
   block_month,
   block_time,
   block_number,

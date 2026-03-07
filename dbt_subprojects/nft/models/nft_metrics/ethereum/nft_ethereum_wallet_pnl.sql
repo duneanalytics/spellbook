@@ -5,11 +5,8 @@
     materialized='incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['wallet', 'nft_contract_address'],
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "sector",
-                                "nft",
-                                \'["Henrystats"]\') }}'
+    unique_key = ['wallet', 'nft_contract_address']
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

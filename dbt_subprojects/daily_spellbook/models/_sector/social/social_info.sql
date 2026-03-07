@@ -1,11 +1,9 @@
 {{ config(
         tags = ['static'],
         schema='social',
-        alias = 'info',
-        post_hook='{{ expose_spells(\'["bnb", "avalanche_c", "arbitrum", "base"]\',
-                                    "sector",
-                                    "social",
-                                    \'["hildobby"]\') }}')
+        alias = 'info'
+        , post_hook='{{ hide_spells() }}'
+)
 }}
 
 SELECT project, name, blockchain, share_name, x_username

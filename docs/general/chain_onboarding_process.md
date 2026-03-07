@@ -41,7 +41,7 @@ We need to split the onboarding process into multiple PRs because of the way we 
 
 3.  **Configure ERC20 Metadata (`tokens` project) (not always required):**
 
-*Note: This step is not required for all chains. It is only required for chains we could not generate amp coverage for.*
+    *Note: This step is not required for all chains. It is only required for chains we could not generate amp coverage for.*
 
     -   **What:**
         -   Create a new `tokens_<blockchain>_v1_erc20` model (e.g., [`tokens_lens_v1_erc20.sql`](./dbt_subprojects/tokens/models/tokens/lens/tokens_lens_v1_erc20.sql)) in `dbt_subprojects/tokens/models/tokens/<blockchain>/`. Add the same tokens listed in the blockchain-specific prices model.

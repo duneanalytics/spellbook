@@ -1,9 +1,8 @@
 {{config(
-        alias = 'balancer_gauges',
-        post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "optimism", "polygon", "avalanche_c", "base", "gnosis", "zkevm"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["jacektrocinski", "viniabussafi"]\') }}')}}
+        alias = 'balancer_gauges'
+        , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 {% set gauges_models = [
     ref('labels_balancer_gauges_ethereum')

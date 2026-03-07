@@ -19,7 +19,6 @@
                                     , "ethereum"
                                     , "fantom"
                                     , "flare"
-                                    , "flow"
                                     , "gnosis"
                                     , "hemi"
                                     , "henesys"
@@ -30,6 +29,9 @@
                                     , "lens"
                                     , "linea"
                                     , "mantle"
+                                    , "megaeth"
+                                    , "mezo"
+                                    , "monad"
                                     , "nova"
                                     , "opbnb"
                                     , "optimism"
@@ -38,6 +40,7 @@
                                     , "plume"
                                     , "polygon"
                                     , "ronin"
+                                    , "rise"
                                     , "scroll"
                                     , "sei"
                                     , "shape"
@@ -51,13 +54,14 @@
                                     , "tron"
                                     , "unichain"
                                     , "worldchain"
+                                    , "xlayer"
                                     , "zkevm"
                                     , "zksync"
                                     , "zora"
                                 ]\',
                                 "sector",
                                 "gas",
-                                \'["soispoke", "ilemi", "0xRob", "jeff-dude", "krishhh"]\'
+                                \'["soispoke", "ilemi", "0xRob", "jeff-dude", "krishhh", "tomfutago"]\'
                             )
                         }}'
         )
@@ -81,7 +85,6 @@
     , "ethereum"
     , "fantom"
     , "flare"
-    , "flow"
     , "gnosis"
     , "hemi"
     , "henesys"
@@ -92,6 +95,9 @@
     , "linea"
     , "lens"
     , "mantle"
+    , "megaeth"
+    , "mezo"
+    , "monad"
     , "nova"
     , "opbnb"
     , "optimism"
@@ -100,6 +106,7 @@
     , "plume"
     , "polygon"
     , "ronin"
+    , "rise"
     , "scroll"
     , "sei"
     , "shape"
@@ -113,6 +120,7 @@
     , "tron"
     , "unichain"
     , "worldchain"
+    , "xlayer"
     , "zkevm"
     , "zksync"
     , "zora"

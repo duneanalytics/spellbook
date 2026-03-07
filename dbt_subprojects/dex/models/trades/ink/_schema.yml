@@ -1,13 +1,21 @@
 version: 2
 
 models:
-  - name: dex_ink_base_trades
+  - name: dex_ink_trades
     data_tests:
-      - check_columns_dex_base_trades
-      - check_dex_info_relationship
-      - test_acceptable_usd_amount:
+      - check_columns_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+      - dbt_utils.accepted_range:
           column_name: amount_usd
-          max_value: 1000000000
+          max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+
+  - name: dex_ink_base_trades
 
   - name: uniswap_v4_ink_base_trades
     meta:
@@ -152,3 +160,11 @@ models:
           seed_file: ref('velodrome_ink_base_trades_seed')
           filter:
             version: 3
+
+  - name: dex_ink_token_volumes_daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - token_address
+            - block_date

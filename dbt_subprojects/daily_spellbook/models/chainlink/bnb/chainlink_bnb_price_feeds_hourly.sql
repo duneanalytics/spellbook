@@ -6,8 +6,8 @@
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
-    unique_key=['blockchain', 'hour', 'proxy_address', 'aggregator_address'],
-    post_hook='{{ expose_spells(\'["bnb"]\', "project", "chainlink", \'["linkpool_ryan", "linkpool_jon"]\') }}'
+    unique_key=['blockchain', 'hour', 'proxy_address', 'aggregator_address']
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

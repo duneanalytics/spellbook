@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: bridges_story_orbiter_v1_deposits
+    meta:
+      blockchain: story
+      sector: bridges
+      project: orbiter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'story', 'bridges', 'flows', 'withdrawals' ]
+    description: "Orbiter's v1 bridge deposits events on Story"
+

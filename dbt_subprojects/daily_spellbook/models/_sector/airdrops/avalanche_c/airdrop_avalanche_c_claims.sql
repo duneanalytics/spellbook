@@ -1,10 +1,7 @@
 {{ config(
         schema = 'airdrop_avalanche_c',
-        alias = 'claims',
-        post_hook='{{ expose_spells(\'["avalanche_c"]\',
-                                      "sector",
-                                      "airdrop",
-                                    \'["hildobby"]\') }}'
+        alias = 'claims'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

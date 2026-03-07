@@ -1,10 +1,7 @@
 {{config(
   schema = 'labels',
-  alias = 'balancer_v2_pools_avalanche_c',
-  post_hook = '{{ expose_spells(\'["avalanche_c"]\',
-                               "sector",
-                               "labels",
-                               \'["balancerlabs"]\') }}'
+  alias = 'balancer_v2_pools_avalanche_c'
+  , post_hook='{{ hide_spells() }}'
 )}}
 
 WITH pools AS (

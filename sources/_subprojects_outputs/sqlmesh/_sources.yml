@@ -164,6 +164,8 @@ sources:
             description: "transaction that initialized the mint"
       - name: transfers
         description: "Solana token transfers"
+        config:
+          event_time: block_date
         columns:
           - name: block_time
           - name: block_date
@@ -190,3 +192,4 @@ sources:
   - name: token_accounts_solana
     tables:
       - name: state_history
+        identifier: state_history_002

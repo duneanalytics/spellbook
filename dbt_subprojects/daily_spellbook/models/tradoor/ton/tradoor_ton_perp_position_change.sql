@@ -5,8 +5,8 @@
        , file_format = 'delta'
        , incremental_strategy = 'merge'
        , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
-       , unique_key = ['tx_hash', 'block_date']
-       , post_hook='{{ expose_spells(\'["ton"]\',
+       , unique_key = ['tx_hash', 'block_date'],
+    post_hook='{{ expose_spells(\'["ton"]\',
                                    "project",
                                    "tradoor",
                                    \'["pshuvalov"]\') }}'

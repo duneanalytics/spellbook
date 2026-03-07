@@ -7,6 +7,7 @@ sources:
       - name: Pool_evt_Withdraw
       - name: Pool_evt_RedeemUnderlying
       - name: WrappedTokenGatewayV3_call_withdrawETH
+      - name: WETHGateway_call_withdrawETH
 
   - name: sonne_finance_optimism
     tables:
@@ -35,3 +36,8 @@ sources:
     tables:
       - name: LendingPool_evt_Deposit
       - name: LendingPool_evt_Withdraw
+
+  - name: morpho_blue_optimism
+    tables:
+      - name: MorphoBlue_evt_Supply
+      - name: MorphoBlue_evt_Withdraw

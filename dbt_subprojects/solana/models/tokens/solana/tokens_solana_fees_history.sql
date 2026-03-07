@@ -7,11 +7,9 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.fee_time')],
-        unique_key = ['account_mint','fee_time'],
-        post_hook='{{ expose_spells(\'["solana"]\',
-                                    "sector",
-                                    "tokens_solana",
-                                    \'["ilemi"]\') }}')
+        unique_key = ['account_mint','fee_time']
+        , post_hook='{{ hide_spells() }}'
+)
 }}
 --we need the fee basis points and maximum fee for token2022 transfers because the fee amount is not emitted in transferChecked
 SELECT

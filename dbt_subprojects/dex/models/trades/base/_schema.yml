@@ -1,13 +1,21 @@
 version: 2
 
 models:
-  - name: dex_base_base_trades
+  - name: dex_base_trades
     data_tests:
-      - check_columns_dex_base_trades
-      - check_dex_info_relationship
-      - test_acceptable_usd_amount:
+      - check_columns_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+      - dbt_utils.accepted_range:
           column_name: amount_usd
-          max_value: 1000000000
+          max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+
+  - name: dex_base_base_trades
 
   - name: uniswap_v4_base_base_trades
     meta:
@@ -1230,3 +1238,27 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('carbon_defi_base_base_trades_seed')
+
+  - name: dex_base_token_volumes_daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - token_address
+            - block_date
+  - name: elfomofi_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: elfomofi
+      contributors: olegggatttor
+    config:
+      tags: ["base", "dex", "trades", "elfomofi"]
+    description: "ElfomoFi base base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('elfomofi_base_base_trades_seed')

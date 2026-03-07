@@ -33,6 +33,7 @@ WITH coin_balances AS (
 )
 
 SELECT
+    {{ dbt_utils.generate_surrogate_key(['tx_hash', 'write_set_change_index']) }} AS unique_key,
     tx_version,
     tx_hash,
     block_date,

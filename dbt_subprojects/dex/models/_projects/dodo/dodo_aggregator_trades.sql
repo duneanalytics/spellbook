@@ -1,10 +1,7 @@
 {{ config(
     schema = 'dodo',        
-    alias = 'aggregator_trades',
-    post_hook='{{ expose_spells(\'["ethereum","bnb","polygon","arbitrum","optimism","base"]\',
-                            "project",
-                            "dodo",
-                            \'["owen05"]\') }}'
+    alias = 'aggregator_trades'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

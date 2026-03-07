@@ -1,10 +1,7 @@
 {{
     config(
-        alias = 'contract_deployers_goerli',
-        post_hook='{{ expose_spells(\'["goerli"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["hildobby", "hosuke"]\') }}'
+        alias = 'contract_deployers_goerli'
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

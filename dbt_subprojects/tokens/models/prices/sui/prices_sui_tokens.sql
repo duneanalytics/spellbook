@@ -39,6 +39,9 @@ FROM
    , ('afsui-aftermath-staked-sui', 'afSUI', '0xf325ce1300e8dac124071d3152c5c5ee6174914f8bc2161e88329cf579246efc::afsui::AFSUI', 9)
    , ('sui-sui','SUI', '0x2::sui::SUI', 9)
    , ('take-overtake', 'TAKE', '0x76a49ebaf991fa2d4cb6a352af14425d453fe2ba6802b5ed2361b227150b6689::take::TAKE', 9)
+   , ('haedal-haedal-protocol', 'HAEDAL', '0x3a304c7feba2d819ea57c3542d68439ca2c386ba02159c740f7b406e592c62ea::haedal::HAEDAL', 9)
    , ('xo-xociety','XO', '0x90f9eb95f62d31fbe2179313547e360db86d88d2399103a94286291b63f469ba::xo::XO', 9)
+   , ('mmt-momentum','MMT', '0x35169bc93e1fddfcf3a82a9eae726d349689ed59e4b065369af8789fe59f8608::mmt::MMT', 9)
+   , ('truth-swarm-network','TRUTH', '0x0a48f85a3905cfa49a652bdb074d9e9fabad27892d54afaa5c9e0adeb7ac3cdf::swarm_network_token::SWARM_NETWORK_TOKEN', 8)
 ) as temp (token_id, symbol, contract_address, decimals)
 

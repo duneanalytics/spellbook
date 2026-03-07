@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: bridges_zkevm_symbiosis_v1_deposits
+    meta:
+      blockchain: arbitrum
+      sector: bridges
+      project: symbiosis
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'zkevm', 'bridges', 'flows', 'deposits' ]
+    description: "Symbiosis's v1 bridge deposits events on Polygon zkEVM"
+  - name: bridges_zkevm_nitro_v1_deposits
+    meta:
+      blockchain: zkevm
+      sector: bridges
+      project: nitro
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'nitro', 'bridges', 'flows' , 'deposits' ]
+    description: "Nitro's v1 bridge deposits events on Polygon zkEVM"
+  - name: bridges_zkevm_orbiter_v1_deposits
+    meta:
+      blockchain: zkevm
+      sector: bridges
+      project: orbiter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'zkevm', 'bridges', 'flows', 'withdrawals' ]
+    description: "Orbiter's v1 bridge deposits events on Polygon zkEVM"

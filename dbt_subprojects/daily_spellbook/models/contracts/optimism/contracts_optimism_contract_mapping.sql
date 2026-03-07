@@ -1,5 +1,6 @@
  {{
-  config(     
+  config(
+        tags = ['prod_exclude'],
         schema = 'contracts_optimism',
         alias = 'contract_creator_project_mapping',
         materialized ='table',

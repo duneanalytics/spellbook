@@ -1,7 +1,9 @@
-{% macro oneinch_project_orders_raw_logs_macro(
-    blockchain
-    , date_from = '2019-01-01'
-)%}
+{%- macro
+    oneinch_project_orders_raw_logs_macro(
+        blockchain,
+        date_from = '2019-01-01'
+    )
+-%}
 
 select 
     block_number
@@ -19,15 +21,9 @@ select
     , row_number() over(partition by block_number, tx_hash order by index) as log_counter
     , date(block_time) as block_date
 from {{ source(blockchain, 'logs') }}
-where
-    {% if is_incremental() %}
-        {{ incremental_predicate('block_time') }}
-    {% else %}
-        block_time >= timestamp '{{date_from}}'
-    {% endif %}
+where true
+    and block_time >= timestamp '{{ date_from }}'
+    and topic0 in ({{ oneinch_project_orders_cfg_events_macro().keys() | join(', ') }})
+    {% if is_incremental() -%} and {{ incremental_predicate('block_time') }} {%- endif %}
 
-    and topic0 in (
-        {{ oneinch_project_orders_cfg_events_macro().keys() | join(', ') }}
-    )
-
-{% endmacro %}
+{%- endmacro -%}

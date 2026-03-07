@@ -9,7 +9,8 @@
 {%
   set models = [
     ref('aave_v3_scroll_base_supply'),
-    ref('layer_bank_scroll_base_supply')
+    ref('layer_bank_scroll_base_supply'),
+    ref('morpho_scroll_base_supply')
   ]
 %}
 
@@ -25,6 +26,7 @@ select
   withdrawn_to,
   liquidator,
   amount,
+  amount_raw,
   block_month,
   block_time,
   block_number,

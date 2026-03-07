@@ -1,11 +1,8 @@
 {{ config(
     alias = 'trades',
     schema = 'unidex_optimism',
-    materialized = 'view',
-    post_hook = '{{ expose_spells(blockchains = \'["optimism"]\',
-                                spell_type = "project",
-                                spell_name = "unidex",
-                                contributors = \'["ARDev097", "hosuke"]\') }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
     )
 }}
 

@@ -17,8 +17,24 @@ Welcome to [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation
 - Questions? Join #spellbook on [Discord](https://discord.com/channels/757637422384283659/999683200563564655).
 - Your spellbook contributions are your own IP. See [Contributor License Agreement](CLA.md) for details.
 
+## 🚀 Enterprise Customers: Use Your Own dbt Project
+
+**If you're a Dune enterprise customer, you don't need to contribute to Spellbook.** Instead, you can run your own data transformation projects directly on DuneSQL using the **dbt Connector**.
+
+**What it is:** Run dbt projects on top of DuneSQL—read from any Dune dataset and write results into managed tables within your org namespace. All writes are metered and private by default, stored securely by Dune.
+
+**Why it matters:**
+- **No PR bottlenecks** – Ship on your own schedule without waiting for Spellbook reviews
+- **Keep it private** – Your logic and data stay within your org, giving you full autonomy
+- **Full dbt compatibility** – Use your existing dbt workflows and tooling
+
+📖 **[Read the dbt Connector documentation](https://docs.dune.com/api-reference/connectors/dbt/overview#dbt-connector-overview)** to get started.
+
+👉 **[Contact us](https://dune.com/enterprise)** for a demo and to get set up with your own dbt project.
+
 ## Table of Contents
 
+- [Enterprise Customers: Use Your Own dbt Project](#-enterprise-customers-use-your-own-dbt-project)
 - [Introduction](#introduction)
 - [Sub-projects](#sub-projects)
 - [How to contribute](#how-to-contribute)

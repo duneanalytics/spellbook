@@ -73,3 +73,21 @@ models:
     config:
       tags: [ 'celer', 'bridges', 'flows' , 'withdrawals' ]
     description: "Celer's v1 bridge withdrawals events on Blast"
+  - name: bridges_blast_symbiosis_v1_deposits
+    meta:
+      blockchain: blast
+      sector: bridges
+      project: symbiosis
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'blast', 'bridges', 'flows', 'withdrawals' ]
+    description: "Symbiosis's v1 bridge deposits events on Blast"
+  - name: bridges_blast_orbiter_v1_deposits
+    meta:
+      blockchain: blast
+      sector: bridges
+      project: orbiter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'blast', 'bridges', 'flows', 'withdrawals' ]
+    description: "Orbiter's v1 bridge deposits events on Blast"

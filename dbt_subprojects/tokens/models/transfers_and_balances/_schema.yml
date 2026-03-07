@@ -5,59 +5,82 @@ models:
     meta:
       docs_slug: /curated/asset-tracking/evm/token-transfers
       sector: tokens
-      contributors: aalan3, jeff-dude, 0xBoxer, hildobby, hosuke
+      contributors: aalan3, jeff-dude, 0xBoxer, hildobby, hosuke, tomfutago
     config:
-      tags: ['tokens','transfers']
+      tags: ['tokens','transfers','evm']
     description: >
-      Transfers of all kinds of fungible tokens across all evm networks on dune
+      Transfers of all kinds of fungible tokens across all EVM-compatible networks on Dune. This model contains
+      EVM-only data. For a unified view that includes both EVM and non-EVM chains, use
+      tokens_multichain.transfers instead.
     columns:
-      - name: unique_key
+      - &unique_key
+        name: unique_key
         description: "Surrogate key to identify unique row"
-      - name: blockchain
+      - &blockchain_transfer
+        name: blockchain
         description: "The blockchain of the transfer"
-      - name: block_month
+      - &block_month_transfer
+        name: block_month
         description: "The month of the block"
-      - name: block_date
+      - &block_date_transfer
+        name: block_date
         description: "The date of the block"
-      - name: block_time
+      - &block_time_transfer
+        name: block_time
         description: "The time of the block"
-      - name: block_number
+      - &block_number_transfer
+        name: block_number
         description: "The block number"
-      - name: tx_hash
+      - &tx_hash_transfer
+        name: tx_hash
         description: "The transaction hash"
-      - name: evt_index
+      - &evt_index_transfer
+        name: evt_index
         description: "The log event index of the transfer"
-      - name: trace_address
+      - &trace_address_transfer
+        name: trace_address
         description: "The trace address of the transfer"
-      - name: token_standard
+      - &token_standard_transfer
+        name: token_standard
         description: "The token standard of the transfer"
-      - name: tx_from
+      - &tx_from_transfer
+        name: tx_from
         description: "The transaction sender"
-      - name: tx_to
+      - &tx_to_transfer
+        name: tx_to
         description: "The transaction receiver"
-      - name: tx_index
+      - &tx_index_transfer
+        name: tx_index
         description: "The transaction index"
-      - name: from
+      - &from_transfer
+        name: from
         description: "The sender of the transfer"
-      - name: to
+      - &to_transfer
+        name: to
         description: "The receiver of the transfer"
-      - name: contract_address
+      - &contract_address_transfer
+        name: contract_address
         description: "The contract address of the transfer"
-      - name: symbol
+      - &symbol_transfer
+        name: symbol
         description: "The token symbol transferred"
-      - name: amount_raw
+      - &amount_raw_transfer
+        name: amount_raw
         description: "The raw amount of the transfer"
-      - name: amount
+      - &amount_transfer
+        name: amount
         description: "The display amount of the transfer"
-      - name: price_usd
+      - &price_usd_transfer
+        name: price_usd
         description: "The USD price used to calculate the amount_usd"
-      - name: amount_usd
+      - &amount_usd_transfer
+        name: amount_usd
         description: "The USD amount of the transfer"
 
   - name: tokens_net_transfers_daily
     meta:
       sector: tokens
-      contributors: jeff-dude, krishhh
+      contributors: jeff-dude, krishhh, tomfutago
     config:
       tags: ['tokens', 'net_transfers']
     description: &net_transfers_description |
@@ -72,12 +95,79 @@ models:
       For example, if I give you $1 that's -1 sent (from me) and +1 received (by you) which adds to 0. 
       This query counts the received to show that $1 was effectively transfered."
 
-
   - name: tokens_net_transfers_daily_asset
     meta:
       sector: tokens
-      contributors: jeff-dude, krishhh
+      contributors: jeff-dude, krishhh, tomfutago
     config:
       tags: ['tokens', 'net_transfers']
     description: "Total transfer amount per day per asset across chains"
+
+  - name: tokens_evm_transfers
+    meta:
+      sector: tokens
+      contributors: kryptaki
+    config:
+      tags: ['tokens','transfers', 'evm']
+    description: >
+      Fungible token transfers across all EVM-compatible networks only. This model contains the same data as tokens.transfers
+      but is located in the tokens_evm schema to explicitly indicate it contains EVM-only data. Use this model when
+      you need to query EVM transfers specifically, or use tokens_multichain.transfers if you need transfers from
+      both EVM and non-EVM chains.
+    columns:
+      - <<: *unique_key
+      - <<: *blockchain_transfer
+      - <<: *block_month_transfer
+      - <<: *block_date_transfer
+      - <<: *block_time_transfer
+      - <<: *block_number_transfer
+      - <<: *tx_hash_transfer
+      - <<: *evt_index_transfer
+      - <<: *trace_address_transfer
+      - <<: *token_standard_transfer
+      - <<: *tx_from_transfer
+      - <<: *tx_to_transfer
+      - <<: *tx_index_transfer
+      - <<: *from_transfer
+      - <<: *to_transfer
+      - <<: *contract_address_transfer
+      - <<: *symbol_transfer
+      - <<: *amount_raw_transfer
+      - <<: *amount_transfer
+      - <<: *price_usd_transfer
+      - <<: *amount_usd_transfer
+
+  - name: tokens_multichain_transfers
+    meta:
+      sector: tokens
+      contributors: kryptaki
+    config:
+      tags: ['tokens','transfers', 'multichain']
+    description: >
+      Unified view of fungible token transfers across EVM-compatible chains and Solana with a chain-agnostic schema.
+      For EVM-only transfers, use tokens_evm.transfers, and for Solana-only transfers, use tokens_solana.transfers.
+    columns:
+      - <<: *unique_key
+      - <<: *blockchain_transfer
+      - <<: *block_time_transfer
+      - <<: *block_date_transfer
+      - <<: *block_month_transfer
+      - name: block_number
+        description: "The block number or slot number"
+      - name: tx_id
+        description: "The transaction identifier (hash or id), stored as string"
+      - name: from_address
+        description: "The sender of the transfer, stored as string"
+      - name: to_address
+        description: "The receiver of the transfer, stored as string"
+      - name: tx_signer
+        description: "The address that signed the transaction, stored as string"
+      - name: token_address
+        description: "The token address of the transfer, stored as string"
+      - name: token_symbol
+        description: "The token symbol transferred"
+      - <<: *token_standard_transfer
+      - <<: *amount_raw_transfer
+      - <<: *amount_transfer
+      - <<: *amount_usd_transfer
     

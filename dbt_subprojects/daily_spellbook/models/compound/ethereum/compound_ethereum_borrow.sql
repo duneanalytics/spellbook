@@ -2,11 +2,8 @@
   config(
     schema = 'compound_ethereum',
     alias = 'borrow',
-    materialized = 'view',
-    post_hook = '{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "compound",
-                                    \'["bizzyvinci", "hosuke", "tomfutago"]\') }}'
+    materialized = 'view'
+    , post_hook='{{ hide_spells() }}'
   )
 }}
 

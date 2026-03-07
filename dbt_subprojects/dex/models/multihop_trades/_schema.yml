@@ -1,0 +1,892 @@
+version: 2
+
+models:
+  - name: dex_multihop_trades
+    meta: 
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, polygon, base, celo, zksync, scroll, zora, sei, mantle, unichain, monad
+      sector: dex
+      contributors: Henrystats, agaperste, hubbymatic
+    config:
+      tags: ['dex', 'multihops']
+    description: >
+      DEX Multi Hop trades
+    columns: 
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the DEX is deployed"
+      - &project
+        name: project
+        description: "Project name of the DEX"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the DEX project"
+      - &block_time
+        name: block_time
+        description: "UTC event block time of each DEX trade"
+      - &block_date
+        name: block_date
+        description: "Block date of the trade"
+      - &block_month
+        name: block_month
+        description: "Month corresponding to the prices data"
+      - &token_pair
+        name: token_pair
+        description: "Token symbol pair for each token involved in the trade"
+      - &pool_address
+        name: pool_address
+        description: "Pool address associated with the token pair"
+      - &total_trade_count
+        name: total_trade_count
+        description: "Total number of trades that happened at the same block time in the same pool and the same token pair"
+      - &multihop_trade_count_pct
+        name: multihop_trade_count_pct
+        description: "% of total number of trades that were part of the multi-hop"
+      - &direct_trade_count
+        name: direct_trade_count
+        description: "Number of trades that weren't part of the multi-hop"
+      - &entry_trade_count
+        name: entry_trade_count
+        description: "Number of trades that happened at the start of the multi-hop"
+      - &intermediate_trade_count
+        name: intermediate_trade_count
+        description: "Number of trades that happened between the start and end of the multi-hop"
+      - &end_trade_count
+        name: end_trade_count
+        description: "Number of trades that happened at the end of the multi-hop"
+      - &total_trade_vol
+        name: total_trade_vol
+        description: "Total volume of trades that happened at the same block time in the same pool and the same token pair"
+      - &multihop_trades_vol_pct
+        name: multihop_trades_vol_pct
+        description: "% of Total volume that were part of the multi-hop"
+      - &direct_trade_vol
+        name: direct_trade_vol
+        description: "Total volume of direct trades"
+      - &entry_trade_vol
+        name: entry_trade_vol
+        description: "Total volume of entry trades"
+      - &intermediate_trade_vol
+        name: intermediate_trade_vol
+        description: "Total volume of intermiediate trades"
+      - &end_trade_vol
+        name: end_trade_vol
+        description: "Total volume of end trades"
+
+  - name: dex_arbitrum_multihop_trades
+    meta: 
+      blockchain: arbitrum
+      sector: dex
+      contributors: Henrystats, agaperste, hubbymatic
+    config:
+      tags: ['dex', 'multihops']
+    description: >
+      DEX Multi Hop trades on arbitrum
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_time
+            - tx_hash
+            - evt_index
+            - pool_address
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_date
+      - *block_month
+      - *token_pair
+      - *pool_address
+      - *total_trade_count
+      - *multihop_trade_count_pct
+      - *direct_trade_count
+      - *entry_trade_count
+      - *intermediate_trade_count
+      - *end_trade_count
+      - *total_trade_vol
+      - *multihop_trades_vol_pct
+      - *direct_trade_vol
+      - *entry_trade_vol
+      - *intermediate_trade_vol
+      - *end_trade_vol
+
+  - name: dex_avalanche_c_multihop_trades
+    meta: 
+      blockchain: avalanche_c
+      sector: dex
+      contributors: Henrystats, agaperste, hubbymatic
+    config:
+      tags: ['dex', 'multihops']
+    description: >
+      DEX Multi Hop trades on avalanche_c
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_time
+            - tx_hash
+            - evt_index
+            - pool_address
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_date
+      - *block_month
+      - *token_pair
+      - *pool_address
+      - *total_trade_count
+      - *multihop_trade_count_pct
+      - *direct_trade_count
+      - *entry_trade_count
+      - *intermediate_trade_count
+      - *end_trade_count
+      - *total_trade_vol
+      - *multihop_trades_vol_pct
+      - *direct_trade_vol
+      - *entry_trade_vol
+      - *intermediate_trade_vol
+      - *end_trade_vol
+
+  - name: dex_base_multihop_trades
+    meta: 
+      blockchain: base
+      sector: dex
+      contributors: Henrystats, agaperste, hubbymatic
+    config:
+      tags: ['dex', 'multihops']
+    description: >
+      DEX Multi Hop trades on base
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_time
+            - tx_hash
+            - evt_index
+            - pool_address
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_date
+      - *block_month
+      - *token_pair
+      - *pool_address
+      - *total_trade_count
+      - *multihop_trade_count_pct
+      - *direct_trade_count
+      - *entry_trade_count
+      - *intermediate_trade_count
+      - *end_trade_count
+      - *total_trade_vol
+      - *multihop_trades_vol_pct
+      - *direct_trade_vol
+      - *entry_trade_vol
+      - *intermediate_trade_vol
+      - *end_trade_vol
+
+  - name: dex_blast_multihop_trades
+    meta: 
+      blockchain: blast
+      sector: dex
+      contributors: Henrystats, agaperste, hubbymatic
+    config:
+      tags: ['dex', 'multihops']
+    description: >
+      DEX Multi Hop trades on blast
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_time
+            - tx_hash
+            - evt_index
+            - pool_address
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_date
+      - *block_month
+      - *token_pair
+      - *pool_address
+      - *total_trade_count
+      - *multihop_trade_count_pct
+      - *direct_trade_count
+      - *entry_trade_count
+      - *intermediate_trade_count
+      - *end_trade_count
+      - *total_trade_vol
+      - *multihop_trades_vol_pct
+      - *direct_trade_vol
+      - *entry_trade_vol
+      - *intermediate_trade_vol
+      - *end_trade_vol
+
+  - name: dex_bnb_multihop_trades
+    meta: 
+      blockchain: bnb
+      sector: dex
+      contributors: Henrystats, agaperste, hubbymatic
+    config:
+      tags: ['dex', 'multihops']
+    description: >
+      DEX Multi Hop trades on bnb
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_time
+            - tx_hash
+            - evt_index
+            - pool_address
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_date
+      - *block_month
+      - *token_pair
+      - *pool_address
+      - *total_trade_count
+      - *multihop_trade_count_pct
+      - *direct_trade_count
+      - *entry_trade_count
+      - *intermediate_trade_count
+      - *end_trade_count
+      - *total_trade_vol
+      - *multihop_trades_vol_pct
+      - *direct_trade_vol
+      - *entry_trade_vol
+      - *intermediate_trade_vol
+      - *end_trade_vol
+
+  - name: dex_celo_multihop_trades
+    meta: 
+      blockchain: celo
+      sector: dex
+      contributors: Henrystats, agaperste, hubbymatic
+    config:
+      tags: ['dex', 'multihops']
+    description: >
+      DEX Multi Hop trades on celo
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_time
+            - tx_hash
+            - evt_index
+            - pool_address
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_date
+      - *block_month
+      - *token_pair
+      - *pool_address
+      - *total_trade_count
+      - *multihop_trade_count_pct
+      - *direct_trade_count
+      - *entry_trade_count
+      - *intermediate_trade_count
+      - *end_trade_count
+      - *total_trade_vol
+      - *multihop_trades_vol_pct
+      - *direct_trade_vol
+      - *entry_trade_vol
+      - *intermediate_trade_vol
+      - *end_trade_vol
+
+  - name: dex_ethereum_multihop_trades
+    meta: 
+      blockchain: ethereum
+      sector: dex
+      contributors: Henrystats, agaperste, hubbymatic
+    config:
+      tags: ['dex', 'multihops']
+    description: >
+      DEX Multi Hop trades on ethereum
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_time
+            - tx_hash
+            - evt_index
+            - pool_address
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_date
+      - *block_month
+      - *token_pair
+      - *pool_address
+      - *total_trade_count
+      - *multihop_trade_count_pct
+      - *direct_trade_count
+      - *entry_trade_count
+      - *intermediate_trade_count
+      - *end_trade_count
+      - *total_trade_vol
+      - *multihop_trades_vol_pct
+      - *direct_trade_vol
+      - *entry_trade_vol
+      - *intermediate_trade_vol
+      - *end_trade_vol
+
+  - name: dex_gnosis_multihop_trades
+    meta: 
+      blockchain: gnosis
+      sector: dex
+      contributors: Henrystats, agaperste, hubbymatic
+    config:
+      tags: ['dex', 'multihops']
+    description: >
+      DEX Multi Hop trades on gnosis
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_time
+            - tx_hash
+            - evt_index
+            - pool_address
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_date
+      - *block_month
+      - *token_pair
+      - *pool_address
+      - *total_trade_count
+      - *multihop_trade_count_pct
+      - *direct_trade_count
+      - *entry_trade_count
+      - *intermediate_trade_count
+      - *end_trade_count
+      - *total_trade_vol
+      - *multihop_trades_vol_pct
+      - *direct_trade_vol
+      - *entry_trade_vol
+      - *intermediate_trade_vol
+      - *end_trade_vol
+
+  - name: dex_ink_multihop_trades
+    meta: 
+      blockchain: ink
+      sector: dex
+      contributors: Henrystats, agaperste, hubbymatic
+    config:
+      tags: ['dex', 'multihops']
+    description: >
+      DEX Multi Hop trades on ink
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_time
+            - tx_hash
+            - evt_index
+            - pool_address
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_date
+      - *block_month
+      - *token_pair
+      - *pool_address
+      - *total_trade_count
+      - *multihop_trade_count_pct
+      - *direct_trade_count
+      - *entry_trade_count
+      - *intermediate_trade_count
+      - *end_trade_count
+      - *total_trade_vol
+      - *multihop_trades_vol_pct
+      - *direct_trade_vol
+      - *entry_trade_vol
+      - *intermediate_trade_vol
+      - *end_trade_vol
+
+  - name: dex_linea_multihop_trades
+    meta: 
+      blockchain: linea
+      sector: dex
+      contributors: Henrystats, agaperste, hubbymatic
+    config:
+      tags: ['dex', 'multihops']
+    description: >
+      DEX Multi Hop trades on linea
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_time
+            - tx_hash
+            - evt_index
+            - pool_address
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_date
+      - *block_month
+      - *token_pair
+      - *pool_address
+      - *total_trade_count
+      - *multihop_trade_count_pct
+      - *direct_trade_count
+      - *entry_trade_count
+      - *intermediate_trade_count
+      - *end_trade_count
+      - *total_trade_vol
+      - *multihop_trades_vol_pct
+      - *direct_trade_vol
+      - *entry_trade_vol
+      - *intermediate_trade_vol
+      - *end_trade_vol
+
+  - name: dex_mantle_multihop_trades
+    meta: 
+      blockchain: mantle
+      sector: dex
+      contributors: Henrystats, agaperste, hubbymatic
+    config:
+      tags: ['dex', 'multihops']
+    description: >
+      DEX Multi Hop trades on mantle
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_time
+            - tx_hash
+            - evt_index
+            - pool_address
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_date
+      - *block_month
+      - *token_pair
+      - *pool_address
+      - *total_trade_count
+      - *multihop_trade_count_pct
+      - *direct_trade_count
+      - *entry_trade_count
+      - *intermediate_trade_count
+      - *end_trade_count
+      - *total_trade_vol
+      - *multihop_trades_vol_pct
+      - *direct_trade_vol
+      - *entry_trade_vol
+      - *intermediate_trade_vol
+      - *end_trade_vol
+
+  - name: dex_monad_multihop_trades
+    meta: 
+      blockchain: monad
+      sector: dex
+      contributors: Henrystats, agaperste, hubbymatic
+    config:
+      tags: ['dex', 'multihops']
+    description: >
+      DEX Multi Hop trades on monad
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_time
+            - tx_hash
+            - evt_index
+            - pool_address
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_date
+      - *block_month
+      - *token_pair
+      - *pool_address
+      - *total_trade_count
+      - *multihop_trade_count_pct
+      - *direct_trade_count
+      - *entry_trade_count
+      - *intermediate_trade_count
+      - *end_trade_count
+      - *total_trade_vol
+      - *multihop_trades_vol_pct
+      - *direct_trade_vol
+      - *entry_trade_vol
+      - *intermediate_trade_vol
+      - *end_trade_vol
+
+  - name: dex_optimism_multihop_trades
+    meta: 
+      blockchain: optimism
+      sector: dex
+      contributors: Henrystats, agaperste, hubbymatic
+    config:
+      tags: ['dex', 'multihops']
+    description: >
+      DEX Multi Hop trades on optimism
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_time
+            - tx_hash
+            - evt_index
+            - pool_address
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_date
+      - *block_month
+      - *token_pair
+      - *pool_address
+      - *total_trade_count
+      - *multihop_trade_count_pct
+      - *direct_trade_count
+      - *entry_trade_count
+      - *intermediate_trade_count
+      - *end_trade_count
+      - *total_trade_vol
+      - *multihop_trades_vol_pct
+      - *direct_trade_vol
+      - *entry_trade_vol
+      - *intermediate_trade_vol
+      - *end_trade_vol
+
+  - name: dex_plasma_multihop_trades
+    meta: 
+      blockchain: plasma
+      sector: dex
+      contributors: Henrystats, agaperste, hubbymatic
+    config:
+      tags: ['dex', 'multihops']
+    description: >
+      DEX Multi Hop trades on plasma
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_time
+            - tx_hash
+            - evt_index
+            - pool_address
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_date
+      - *block_month
+      - *token_pair
+      - *pool_address
+      - *total_trade_count
+      - *multihop_trade_count_pct
+      - *direct_trade_count
+      - *entry_trade_count
+      - *intermediate_trade_count
+      - *end_trade_count
+      - *total_trade_vol
+      - *multihop_trades_vol_pct
+      - *direct_trade_vol
+      - *entry_trade_vol
+      - *intermediate_trade_vol
+      - *end_trade_vol
+
+  - name: dex_polygon_multihop_trades
+    meta: 
+      blockchain: polygon
+      sector: dex
+      contributors: Henrystats, agaperste, hubbymatic
+    config:
+      tags: ['dex', 'multihops']
+    description: >
+      DEX Multi Hop trades on polygon
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_time
+            - tx_hash
+            - evt_index
+            - pool_address
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_date
+      - *block_month
+      - *token_pair
+      - *pool_address
+      - *total_trade_count
+      - *multihop_trade_count_pct
+      - *direct_trade_count
+      - *entry_trade_count
+      - *intermediate_trade_count
+      - *end_trade_count
+      - *total_trade_vol
+      - *multihop_trades_vol_pct
+      - *direct_trade_vol
+      - *entry_trade_vol
+      - *intermediate_trade_vol
+      - *end_trade_vol
+
+  - name: dex_scroll_multihop_trades
+    meta: 
+      blockchain: scroll
+      sector: dex
+      contributors: Henrystats, agaperste, hubbymatic
+    config:
+      tags: ['dex', 'multihops']
+    description: >
+      DEX Multi Hop trades on scroll
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_time
+            - tx_hash
+            - evt_index
+            - pool_address
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_date
+      - *block_month
+      - *token_pair
+      - *pool_address
+      - *total_trade_count
+      - *multihop_trade_count_pct
+      - *direct_trade_count
+      - *entry_trade_count
+      - *intermediate_trade_count
+      - *end_trade_count
+      - *total_trade_vol
+      - *multihop_trades_vol_pct
+      - *direct_trade_vol
+      - *entry_trade_vol
+      - *intermediate_trade_vol
+      - *end_trade_vol
+
+  - name: dex_sonic_multihop_trades
+    meta: 
+      blockchain: sonic
+      sector: dex
+      contributors: Henrystats, agaperste, hubbymatic
+    config:
+      tags: ['dex', 'multihops']
+    description: >
+      DEX Multi Hop trades on sonic
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_time
+            - tx_hash
+            - evt_index
+            - pool_address
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_date
+      - *block_month
+      - *token_pair
+      - *pool_address
+      - *total_trade_count
+      - *multihop_trade_count_pct
+      - *direct_trade_count
+      - *entry_trade_count
+      - *intermediate_trade_count
+      - *end_trade_count
+      - *total_trade_vol
+      - *multihop_trades_vol_pct
+      - *direct_trade_vol
+      - *entry_trade_vol
+      - *intermediate_trade_vol
+      - *end_trade_vol
+
+  - name: dex_unichain_multihop_trades
+    meta: 
+      blockchain: unichain
+      sector: dex
+      contributors: Henrystats, agaperste, hubbymatic
+    config:
+      tags: ['dex', 'multihops']
+    description: >
+      DEX Multi Hop trades on unichain
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_time
+            - tx_hash
+            - evt_index
+            - pool_address
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_date
+      - *block_month
+      - *token_pair
+      - *pool_address
+      - *total_trade_count
+      - *multihop_trade_count_pct
+      - *direct_trade_count
+      - *entry_trade_count
+      - *intermediate_trade_count
+      - *end_trade_count
+      - *total_trade_vol
+      - *multihop_trades_vol_pct
+      - *direct_trade_vol
+      - *entry_trade_vol
+      - *intermediate_trade_vol
+      - *end_trade_vol
+
+  - name: dex_worldchain_multihop_trades
+    meta: 
+      blockchain: worldchain
+      sector: dex
+      contributors: Henrystats, agaperste, hubbymatic
+    config:
+      tags: ['dex', 'multihops']
+    description: >
+      DEX Multi Hop trades on worldchain
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_time
+            - tx_hash
+            - evt_index
+            - pool_address
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_date
+      - *block_month
+      - *token_pair
+      - *pool_address
+      - *total_trade_count
+      - *multihop_trade_count_pct
+      - *direct_trade_count
+      - *entry_trade_count
+      - *intermediate_trade_count
+      - *end_trade_count
+      - *total_trade_vol
+      - *multihop_trades_vol_pct
+      - *direct_trade_vol
+      - *entry_trade_vol
+      - *intermediate_trade_vol
+      - *end_trade_vol
+
+  - name: dex_zksync_multihop_trades
+    meta: 
+      blockchain: zksync
+      sector: dex
+      contributors: Henrystats, agaperste, hubbymatic
+    config:
+      tags: ['dex', 'multihops']
+    description: >
+      DEX Multi Hop trades on zksync
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_time
+            - tx_hash
+            - evt_index
+            - pool_address
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_date
+      - *block_month
+      - *token_pair
+      - *pool_address
+      - *total_trade_count
+      - *multihop_trade_count_pct
+      - *direct_trade_count
+      - *entry_trade_count
+      - *intermediate_trade_count
+      - *end_trade_count
+      - *total_trade_vol
+      - *multihop_trades_vol_pct
+      - *direct_trade_vol
+      - *entry_trade_vol
+      - *intermediate_trade_vol
+      - *end_trade_vol
+
+  - name: dex_zora_multihop_trades
+    meta: 
+      blockchain: zora
+      sector: dex
+      contributors: Henrystats, agaperste, hubbymatic
+    config:
+      tags: ['dex', 'multihops']
+    description: >
+      DEX Multi Hop trades on zora
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_time
+            - tx_hash
+            - evt_index
+            - pool_address
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_date
+      - *block_month
+      - *token_pair
+      - *pool_address
+      - *total_trade_count
+      - *multihop_trade_count_pct
+      - *direct_trade_count
+      - *entry_trade_count
+      - *intermediate_trade_count
+      - *end_trade_count
+      - *total_trade_vol
+      - *multihop_trades_vol_pct
+      - *direct_trade_vol
+      - *entry_trade_vol
+      - *intermediate_trade_vol
+      - *end_trade_vol

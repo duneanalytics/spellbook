@@ -2,8 +2,14 @@
     base_trades = null
     , filter = null
     , tokens_erc20_model = null
+    , blockchain = null
+    , dev_dates = var('dev_dates', false)
     )
 %}
+
+{%- if blockchain is none or blockchain == '' -%}
+    {{ exceptions.raise_compiler_error("blockchain parameter cannot be null or empty for chain-optimized macro") }}
+{%- endif -%}
 
 WITH base_trades as (
     SELECT
@@ -12,10 +18,13 @@ WITH base_trades as (
         {{ base_trades }}
     WHERE
         {{ filter }}
-    {% if is_incremental() %}
-    AND
-        {{ incremental_predicate('block_time') }}
-    {% endif %}
+    {% if dev_dates -%}
+        AND block_date > current_date - interval '3' day -- dev_dates mode for dev, to prevent full scan
+    {%- else -%}
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('block_time') }}
+        {% endif %}
+    {%- endif %}
 )
 , tokens_metadata as (
     --erc20 tokens
@@ -26,6 +35,7 @@ WITH base_trades as (
         , decimals
     from
         {{ tokens_erc20_model }}
+    WHERE blockchain = '{{ blockchain }}'
 )
 , enrichments AS (
     SELECT
@@ -33,7 +43,7 @@ WITH base_trades as (
         , base_trades.project
         , base_trades.version
         , base_trades.block_month
-        , base_trades.block_date
+        , block_date
         , base_trades.block_time
         , base_trades.block_number
         , erc20_bought.symbol AS token_bought_symbol
@@ -69,8 +79,10 @@ WITH base_trades as (
 
 , enrichments_with_prices AS (
     {{
-        add_amount_usd(
+        add_amount_usd_dex_trades(
             trades_cte = 'enrichments'
+            , blockchain = blockchain
+            , dev_dates = dev_dates
         )
     }}
 )
@@ -86,6 +98,7 @@ WITH base_trades as (
             APPROX_PERCENTILE(median_price, 0.5) AS price,
             LEAD(minute, 1, NOW()) OVER (PARTITION BY wrapped_token ORDER BY minute) AS time_of_next_change
         FROM {{ source('balancer_v3', 'erc4626_token_prices') }}
+        WHERE blockchain = '{{ blockchain }}'
         GROUP BY 1, 2, 3, 4, 5, 6
 )
 
@@ -94,7 +107,7 @@ SELECT
     , project
     , version
     , block_month
-    , block_date
+    , CAST(block_date AS date) AS block_date
     , block_time
     , block_number
     , COALESCE(erc4626a.underlying_token_symbol,
@@ -125,7 +138,7 @@ SELECT
     , tx_hash
     , tx_from
     , tx_to
-    , evt_index
+    , CAST(evt_index AS bigint) AS evt_index
 FROM
     enrichments_with_prices dexs
 LEFT JOIN erc4626_prices erc4626a

@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: story_hunt_story
+    tables:
+      - name: storyhuntv3factory_evt_poolcreated
+      - name: storyhuntv3pool_evt_swap
+  
+  - name: piperx_story
+    tables:
+      - name: piperxswapv2factory_evt_paircreated
+      - name: uniswapv2pool_evt_swap
+      - name: piperxswapv3factory_evt_poolcreated
+      - name: uniswapv3pool_evt_swap

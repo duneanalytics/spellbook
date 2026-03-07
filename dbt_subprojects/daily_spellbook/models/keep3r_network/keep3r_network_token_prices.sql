@@ -1,10 +1,7 @@
 {{ config(
     schema = 'keep3r_network'
     , alias = 'token_prices'
-    , post_hook = '{{ expose_spells(\'["ethereum", "optimism", "polygon"]\',
-                                "project", 
-                                "keep3r",
-                                 \'["0xr3x"]\') }}'
+    , post_hook='{{ hide_spells() }}'
 ) }}
 
 

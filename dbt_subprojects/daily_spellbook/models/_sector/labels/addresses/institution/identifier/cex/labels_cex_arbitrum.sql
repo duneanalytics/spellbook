@@ -1,10 +1,9 @@
 {{config(
 
-        alias = 'cex_arbitrum',
-        post_hook='{{ expose_spells(\'["arbitrum"]\',
-                                    "sector",
-                                    "labels",
-                                    \'["hildobby"]\') }}')}}
+        alias = 'cex_arbitrum'
+        , post_hook='{{ hide_spells() }}'
+    )
+}}
 
 SELECT blockchain
 , address

@@ -7,11 +7,8 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['recipient', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "oneinch",
-                                \'["hildobby"]\') }}'
+        unique_key = ['recipient', 'tx_hash', 'evt_index']
+        , post_hook='{{ hide_spells() }}'
     )
 }}
 

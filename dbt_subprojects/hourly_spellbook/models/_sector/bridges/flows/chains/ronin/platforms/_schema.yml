@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: bridges_ronin_orbiter_v1_deposits
+    meta:
+      blockchain: ronin
+      sector: bridges
+      project: orbiter
+      contributors: [ 'hildobby']
+    config:
+      tags: [ 'ronin', 'bridges', 'flows', 'withdrawals' ]
+    description: "Orbiter's v1 bridge deposits events on Ronin"
+
