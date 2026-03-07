@@ -62,6 +62,6 @@ Granularity pattern: `project (version) -> blockchain -> cross-chain -> sector s
 1. Start with a working query in the Dune app
 2. Convert to dbt model with correct materialization
 3. `dbt compile` locally, test compiled SQL on Dune or via `dune_query.py`
-4. Use short date filters (3-7 days) during dev to speed up CI
+4. Use temporary hardcoded short date filters (3-7 days) for initial CI GitHub Action runs to verify end-to-end success
 5. Submit PR — CI builds and tests all modified models
-6. Expand date filters only after CI passes and data quality is verified
+6. **Always revert hardcoded date filters before merge** — the final model must use `incremental_predicate()` (not hardcoded dates). Historical backfill is handled via `--full-refresh` post-merge, not by widening filters in model logic
