@@ -39,4 +39,4 @@ select
 from {{ source('tokens_tron', 'trc20_stablecoins') }} t
 left join {{ source('tokens', 'erc20') }} as tokens_erc20
     on tokens_erc20.blockchain = t.blockchain
-    and tokens_erc20.contract_address = t.contract_address
+    and cast(tokens_erc20.contract_address as varchar) = cast(t.contract_address as varchar)
