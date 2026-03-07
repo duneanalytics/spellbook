@@ -78,3 +78,7 @@ sources:
     tables:
       - name: referral_call_claim
 
+  - name: dflow_solana
+    description: "DFlow aggregator decoded tables"
+    tables:
+      - name: swap_orchestrator_evt_swapevent
