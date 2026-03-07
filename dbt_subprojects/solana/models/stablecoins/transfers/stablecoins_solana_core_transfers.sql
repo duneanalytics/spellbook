@@ -7,7 +7,7 @@
     materialized = 'incremental',
     incremental_strategy = 'microbatch',
     event_time = 'block_date',
-    begin = '2020-10-02',
+    begin = '2020-10-16',
     batch_size = var('stablecoins_solana_batch_size', 'day'),
     partition_by = ['block_month'],
     unique_key = ['block_month', 'block_date', 'unique_key'],
