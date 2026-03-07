@@ -59,24 +59,43 @@ models:
       tags: ['hyperevm', 'balancer', 'lbp']
     description: >
       Record of the Liquidity Bootstrapping Pools (LBP) of Balancer, an automated portfolio manager and trading platform, on hyperevm.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_address
     columns:
       - *blockchain
       - name: pool_symbol
         description: "Name of the LBP"
       - name: pool_address
         description: "ID of the LBP"
+        data_tests:
+          - unique
+          - not_null
       - name: start_time
         description: "LBP start time"
+        data_tests:
+          - not_null
       - name: end_time
         description: "LBP end time"
+        data_tests:
+          - not_null
       - name: project_token
         description: "Contract address of the token sold by the LBP"
+        data_tests:
+          - not_null
       - name: reserve_token
         description: "Contract address of the token bought by the LBP"
+        data_tests:
+          - not_null
       - name: project_token_symbol
         description: "Symbol of the token sold by the LBP"
+        data_tests:
+          - not_null
       - name: reserve_token_symbol
         description: "Symbol of the token bought by the LBP"
+        data_tests:
+          - not_null
       - name: project_token_start_weight
         description: "Start Weight of the token sold by the LBP"
       - name: reserve_token_start_weight

@@ -15,7 +15,7 @@ WITH wrap_unwrap AS(
         SELECT 
             evt_block_time,
             wrappedToken,
-            CAST(depositedUnderlying AS DOUBLE) / CAST(mintedShares AS DOUBLE) AS ratio
+            CAST(depositedUnderlying AS DOUBLE) / NULLIF(CAST(mintedShares AS DOUBLE), 0) AS ratio
         FROM {{ source('balancer_v3_hyperevm', 'Vault_evt_Wrap') }}
         {% if is_incremental() %}
         WHERE evt_block_time >= date_trunc('day', now() - interval '4' day)
@@ -26,7 +26,7 @@ WITH wrap_unwrap AS(
         SELECT 
             evt_block_time,
             wrappedToken, 
-            CAST(withdrawnUnderlying AS DOUBLE) / CAST(burnedShares AS DOUBLE) AS ratio
+            CAST(withdrawnUnderlying AS DOUBLE) / NULLIF(CAST(burnedShares AS DOUBLE), 0) AS ratio
         FROM {{ source('balancer_v3_hyperevm', 'Vault_evt_Unwrap') }}    
         {% if is_incremental() %}
         WHERE evt_block_time >= date_trunc('day', now() - interval '4' day)

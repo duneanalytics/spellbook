@@ -5,7 +5,11 @@
         schema = 'balancer_v3_hyperevm',
         alias = 'token_balance_changes_daily', 
         materialized = 'table',
-        file_format = 'delta'
+        file_format = 'delta',
+        post_hook = '{{ expose_spells(\'["hyperevm"]\',
+                                    "project",
+                                    "balancer_v3_hyperevm",
+                                    \'["balancerlabs"]\') }}'
     )
 }}
 
