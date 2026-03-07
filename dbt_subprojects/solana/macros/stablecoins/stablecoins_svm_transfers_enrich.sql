@@ -16,8 +16,6 @@ select
   t.token_version,
   t.token_mint_address,
   t.token_symbol,
-  m.backing as token_backing,
-  m.name as token_name,
   s.currency,
   t.amount_raw,
   t.amount,
@@ -34,9 +32,6 @@ select
 from {{ base_transfers }} t
 inner join {{ ref('tokens_' ~ blockchain ~ '_spl_stablecoins') }} s
   on s.token_mint_address = t.token_mint_address
-left join {{ ref('tokens_spl_stablecoins_metadata') }} m
-  on t.blockchain = m.blockchain
-  and t.token_mint_address = m.token_mint_address
 left join {{ source('prices', 'fx_exchange_rates') }} fx
   on fx.base_currency = s.currency
   and fx.target_currency = 'USD'
