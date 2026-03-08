@@ -67,51 +67,6 @@ WITH swaps AS (
         {% else %}
         AND call_block_time >= TIMESTAMP '{{ project_start_date }}'
         {% endif %}
-
-    UNION ALL
-
-  
-  -- New buy event decoded from raw instruction_calls (discriminator: 0xe445a52e51cb9a1d67f4521f2cf57777) 
- 
- SELECT
-          g.block_time AS call_block_time
-        , g.block_slot AS call_block_slot
-        , CAST(g.block_date AS DATE) AS call_block_date
-        , g.outer_instruction_index AS call_outer_instruction_index
-        , g.inner_instruction_index AS call_inner_instruction_index
-        , g.tx_id AS call_tx_id
-        , g.tx_index AS call_tx_index
-        , g.outer_executing_account AS call_outer_executing_account
-        , to_base58(bytearray_substring(g.data, 129, 32)) AS account_pool
-        , to_base58(bytearray_substring(g.data, 161, 32)) AS account_user
-        , to_base58(bytearray_substring(g.data, 193, 32)) AS account_user_base_token_account
-        , to_base58(bytearray_substring(g.data, 225, 32)) AS account_user_quote_token_account
-        , f.account_arguments[8] AS account_pool_base_token_account  
-        , f.account_arguments[9] AS account_pool_quote_token_account  
-        , to_base58(bytearray_substring(g.data, 289, 32)) AS account_protocol_fee_recipient_token_account
-        , bytearray_to_uint256(bytearray_reverse(bytearray_substring(g.data, 25, 8))) AS base_amount
-        , 1 AS is_buy
-    FROM {{ source('solana', 'instruction_calls') }} g
-    JOIN {{ source('solana', 'instruction_calls') }} f 
-        ON g.tx_id = f.tx_id
-        AND bytearray_substring(f.data, 1, 8) = 0xc62e1552b4d9e870
-        AND f.executing_account = 'pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA'
-        AND f.tx_success = true
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('f.block_time') }}
-        {% else %}
-        AND f.block_time >= TIMESTAMP '{{ project_start_date }}'
-        {% endif %}
-    WHERE bytearray_substring(g.data, 1, 16) = 0xe445a52e51cb9a1d67f4521f2cf57777
-        AND g.executing_account = 'pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA'
-        AND g.is_inner = true
-        AND g.tx_success = true
-        AND length(g.data) = 447
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('g.block_time') }}
-        {% else %}
-        AND g.block_time >= TIMESTAMP '{{ project_start_date }}'
-        {% endif %}
 )
 
 SELECT

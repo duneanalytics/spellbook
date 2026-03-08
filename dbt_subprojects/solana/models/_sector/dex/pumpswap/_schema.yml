@@ -13,6 +13,30 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_month', 'block_date', 'surrogate_key' ]
 
+  - name: pumpswap_solana_stg_decoded_newevent
+    meta:
+      blockchain: solana
+      contributors: [ stilldasmainaem ]
+    config:
+      tags: [ 'solana','dex','pumpswap' ]
+    description: >
+      staging model for pumpswap new buy event decoded from raw instruction_calls
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'block_month', 'block_date', 'surrogate_key' ]
+
+  - name: pumpswap_solana_int_all_swaps
+    meta:
+      blockchain: solana
+      contributors: [ krishhh, stilldasmainaem]
+    config:
+      tags: [ 'solana','dex','pumpswap' ]
+    description: >
+      intermediate model that unions old and new pumpswap swap events
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'block_month', 'block_date', 'surrogate_key' ]
+
   - name: pumpswap_solana_base_trades_backfill
     meta:
       blockchain: solana

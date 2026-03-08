@@ -50,7 +50,7 @@ WITH pools AS (
         , base_amount
         , is_buy
         , surrogate_key
-    FROM {{ ref('pumpswap_solana_stg_decoded_swaps') }}
+    FROM {{ ref('pumpswap_solana_int_all_swaps') }}
     WHERE
         block_time >= TIMESTAMP '{{ batch_start }}'
         AND block_time < TIMESTAMP '{{ batch_end }}'
