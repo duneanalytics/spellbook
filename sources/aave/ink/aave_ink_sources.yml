@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: aave_v3_ink
+    description: "Decoded contracts for Aave v3 on Ink"
+    tables:
+      - name: poolconfigurator_evt_reserveinitialized
