@@ -5,16 +5,13 @@ There are various use cases for macros in DBT, but the main focus for wizards in
 ## Directory Path for Macros
 
 Path: `dbt_subprojects/<project>/macros/` <br>
-Within this path, there are two main subdirectories, replicating the structure in `models/`:
+Within this path, macros are organized under `models/`, replicating the structure in the models directory:
 
-  1. **\project**
-     - For standalone project spell lineages.
-  2. **\sector**
-     - For sector-level spell lineages, e.g., `dex.trades` lineage.
+  1. **`_project`** — For standalone project spell lineages.
+  2. **`_sector`** — For sector-level spell lineages, e.g., `dex.trades` lineage.
 
-Some exceptions to the project specific path are listed in [other macro use cases](#other-macro-use-cases)
+Some exceptions to the project-specific path are listed in [other macro use cases](#other-macro-use-cases).
 
-### My Multi Word Header
 ## Design Principles for Macros
 
 Following [this](/dbt_subprojects/dex/macros/models/_project/uniswap_compatible_trades.sql) example, where uniswap compatible projects code lives, the key design principles include:

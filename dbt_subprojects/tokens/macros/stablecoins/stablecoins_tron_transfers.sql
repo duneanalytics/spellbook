@@ -37,8 +37,9 @@ left join {{ source('prices', 'fx_exchange_rates') }} fx
   on fx.base_currency = s.currency
   and fx.target_currency = 'USD'
   and fx.date = t.block_date
+where t.amount_raw > UINT256 '0'
 {% if is_incremental() %}
-where {{ incremental_predicate('t.block_date') }}
+  and {{ incremental_predicate('t.block_date') }}
 {% endif %}
 
 {%- endmacro -%}

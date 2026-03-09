@@ -27,8 +27,6 @@ from (
     token_version,
     token_mint_address,
     token_symbol,
-    token_backing,
-    token_name,
     currency,
     amount_raw,
     amount,
