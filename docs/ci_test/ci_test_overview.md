@@ -19,11 +19,11 @@ Any time a PR is opened in Spellbook, there are a few GH workflows which automat
 - Run `dbt run` again, for incremental models only, to ensure incremental logic runs as expected.
 - Run `dbt test` again, to test the data again post-incremental run.
 
-## CI Tests workflow matrix
+## CI Tests per Sub-Project
 
-To handle the dbt sub-project separation within Spellbook, there are two projects which run separately in CI: `tokens` & `spellbook`. Within the PR, you will likely see two CI test workflows running, one for each project. As sub-projects grow, this matrix could also grow. If sub-projects grow much larger, the matrix will be replaced with a cleaner solution.
+To handle the dbt sub-project separation within Spellbook, each sub-project has its own CI workflow file (e.g., `daily_spellbook.yml`, `dex.yml`, `hourly_spellbook.yml`, `nft.yml`, `solana.yml`, `tokens.yml`), all calling the shared reusable workflow in `dbt_run.yml`. Within a PR, you will see CI workflows triggered for the sub-projects affected by your changes.
 
-- Expect to see two CI workflows, but each workflow will be able to automatically detect which spells to run
+- Each workflow automatically detects which spells to run based on modified files
 
 ## CI Tests Leverage Prod Data
 
