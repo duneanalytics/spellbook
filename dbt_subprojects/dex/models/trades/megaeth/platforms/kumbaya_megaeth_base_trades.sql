@@ -28,10 +28,9 @@ dexs as (
         t.evt_index
     from {{ source('kumbaya_megaeth', 'v3pool_evt_swap') }} as t
     inner join {{ source('kumbaya_megaeth', 'v3factory_evt_poolcreated') }} as f on f.pool = t.contract_address
-    where t.evt_block_time >= timestamp '2026-01-30' -- exclude stress test trades (3B+ rows)
-        {% if is_incremental() %}
-        and {{ incremental_predicate('t.evt_block_time') }}
-        {% endif %}
+    {% if is_incremental() %}
+    where {{ incremental_predicate('t.evt_block_time') }}
+    {% endif %}
 )
 
 select

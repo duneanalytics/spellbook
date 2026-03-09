@@ -26,5 +26,3 @@ select
     *
 from
     raw
-where
-    block_time >= timestamp '2026-01-30'
