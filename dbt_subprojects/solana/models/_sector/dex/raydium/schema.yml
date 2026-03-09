@@ -143,6 +143,7 @@ models:
       contributors: [ ilemi ]
     config:
       tags: [ 'solana','dex','raydium' ]
+      event_time: block_date
     description: >
       staging model for raydium v4 swap data from decoded tables
     data_tests:
@@ -220,6 +221,7 @@ models:
       contributors: [ ilemi ]
     config:
       tags: [ 'solana','dex','raydium' ]
+      event_time: block_date
     description: >
       staging model for raydium v5 swap data from decoded tables
     data_tests:

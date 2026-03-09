@@ -11,8 +11,12 @@ sources:
         loaded_at_field: call_block_time
       - name: amm_v3_call_swap
         loaded_at_field: call_block_time
+        config:
+          event_time: call_block_date
       - name: amm_v3_call_swapV2
         loaded_at_field: call_block_time
+        config:
+          event_time: call_block_date
   - name: raydium_amm_solana
     description: "raydium_amm_solana v4 decoded tables"
     freshness: # default freshness
