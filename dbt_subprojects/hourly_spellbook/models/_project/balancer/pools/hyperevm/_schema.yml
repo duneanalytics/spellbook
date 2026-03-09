@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: hyperevm
       project: balancer
-      contributors: viniabussafi
+      contributors: gustavobftorres
     config:
       tags: ['hyperevm', 'balancer', 'pools', 'tokens', 'weights']
     description: >
@@ -33,7 +33,7 @@ models:
     meta:
       blockchain: hyperevm
       project: balancer
-      contributors: viniabussafi
+      contributors: gustavobftorres
     config:
       tags: ['hyperevm', 'balancer', 'pools', 'tokens', 'weights']
     description: >

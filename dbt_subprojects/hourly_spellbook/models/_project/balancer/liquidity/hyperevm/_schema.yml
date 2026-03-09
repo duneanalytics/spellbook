@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: hyperevm
       project: balancer_v3
-      contributors: viniabussafi
+      contributors: gustavobftorres
     config:
       tags: ['hyperevm', 'balancer', 'pools', 'liquidity']
     description: >

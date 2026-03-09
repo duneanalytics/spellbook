@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: hyperevm
       project: balancer_v3
-      contributors: viniabussafi
+      contributors: gustavobftorres
     config:
       tags: ['hyperevm', 'bpt', 'transfers']
     description: >
@@ -58,7 +58,7 @@ models:
     meta:
       blockchain: hyperevm
       project: balancer_v3
-      contributors: viniabussafi
+      contributors: gustavobftorres
     config:
       tags: ['hyperevm', 'bpt', 'prices']
     description: >
@@ -87,7 +87,7 @@ models:
     meta:
       blockchain: hyperevm
       project: balancer_v3
-      contributors: viniabussafi
+      contributors: gustavobftorres
     config:
       tags: ['hyperevm', 'bpt', 'supply']
     description: >
@@ -116,7 +116,7 @@ models:
     meta:
       blockchain: hyperevm
       project: balancer_v3
-      contributors: viniabussafi
+      contributors: gustavobftorres
     config:
       tags: ['hyperevm', 'bpt', 'supply', 'changes']
     description: >
@@ -155,7 +155,7 @@ models:
     meta:
       blockchain: hyperevm
       project: balancer_v3
-      contributors: viniabussafi
+      contributors: gustavobftorres
     config:
       tags: ['hyperevm', 'bpt', 'supply', 'changes']
     description: >
