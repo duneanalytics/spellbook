@@ -1,0 +1,73 @@
+---
+description: Config block and model structure checklist. Auto-loads when editing SQL model files.
+globs:
+  - "**/models/**/*.sql"
+---
+
+# Model Config Block Checklist
+
+## Required Config Properties (All Models)
+
+- [ ] `schema` — matches the Dune app schema name
+- [ ] `alias` — matches the Dune app table/view name
+- [ ] `materialized` — explicitly declared (`view`, `table`, or `incremental`)
+
+## Additional Requirements by Materialization
+
+### `table`
+- [ ] `file_format='delta'`
+
+### `incremental`
+- [ ] `file_format='delta'`
+- [ ] `incremental_strategy` — `merge` (standard), `append` (rare), or `delete+insert` (rare)
+- [ ] `unique_key` — single column or list. No NULLs allowed in these columns.
+- [ ] `incremental_predicates` — use the macro: `[incremental_predicate('DBT_INTERNAL_DEST.block_time')]`
+  - Only for time-series data. Omit when full-history lookups are needed (e.g., pool creation).
+- [ ] If partitioned: partition column(s) included in `unique_key`
+
+## Partition Patterns
+
+- `partition_by=['block_month']` — most common (trades, transfers, swaps)
+- `partition_by=['block_date']` — very high-volume tables
+- `partition_by=['blockchain', 'project', 'block_month']` — cross-chain sector spells
+- Only partition if each partition will have 1M+ rows
+
+## Optional Properties
+
+- `post_hook` — for `expose_spells` / `optimize_spell` on final lineage models
+- `tags` — `'prod_exclude'` for failing/excluded models, `'static'` for hardcoded data tables
+- `on_table_exists` — rare, usually applied by the Dune team
+
+## Config Block Format
+
+```sql
+{{ config(
+	schema='my_schema',
+	alias='my_alias',
+	materialized='incremental',
+	file_format='delta',
+	incremental_strategy='merge',
+	unique_key=['block_date', 'tx_hash', 'evt_index'],
+	incremental_predicates=[incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+	post_hook='{{ expose_spells(\'["ethereum"]\', "project", "my_project", \'["contributor"]\') }}',
+) }}
+```
+
+## Incremental Model Body
+
+- Use `{% if is_incremental() -%}` (trailing `-` only) to split logic:
+  - **Incremental path**: Apply `{{ incremental_predicate('source.block_time') }}` on sources
+  - **Non-incremental path**: Filter from earliest date of activity (`block_date >= timestamp '2020-01-01'`)
+- Apply incremental filters on ALL time-series sources in the query
+
+## Directory Conventions
+
+- **Sector-level** (dedicated sub-project): `dbt_subprojects/<project>/models/<alias>/<blockchain>/platforms/`
+- **Sector-level** (daily/hourly): `dbt_subprojects/<project>/models/_sector/<sector>/<alias>/<blockchain>/`
+- **Project-level**: `dbt_subprojects/<project>/models/_project/<project_name>/<blockchain>/`
+
+## File Naming
+
+- Format: `<project_version_blockchain_alias.sql>` (e.g., `uniswap_v3_arbitrum_base_trades.sql`)
+- File name = model name in dbt
+- One model per file
