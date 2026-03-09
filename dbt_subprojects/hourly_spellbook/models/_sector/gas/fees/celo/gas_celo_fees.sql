@@ -12,7 +12,7 @@
     )
 }}
 
-{% set test_short_ci=false %}
+{% set test_short_ci=true %}
 
 WITH fee_currency_wrapper_map (fee_currency_wrapper_contract, wrapped_token_contract, symbol, decimals) AS (
     values
