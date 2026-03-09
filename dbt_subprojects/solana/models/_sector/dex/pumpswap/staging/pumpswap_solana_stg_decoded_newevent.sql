@@ -11,36 +11,36 @@
   )
 }}
 
-{% set project_start_date = '2026-03-08' %}
+{% set project_start_date = '2026-03-06' %}
 
-    -- New buy event decoded from raw instruction_calls (discriminator: 0xe445a52e51cb9a1d67f4521f2cf57777)
+    -- New buy event decoded from decoded table 
     WITH new_buy_events_raw AS (
         SELECT
-              g.block_time
-            , g.block_slot
-            , g.block_date
-            , g.outer_instruction_index
-            , f.inner_instruction_index
-            , g.tx_id
-            , g.tx_index
-            , g.outer_executing_account
-            , to_base58(bytearray_substring(g.data, 129, 32)) AS account_pool
-            , to_base58(bytearray_substring(g.data, 161, 32)) AS account_user
-            , to_base58(bytearray_substring(g.data, 193, 32)) AS account_user_base_token_account
-            , to_base58(bytearray_substring(g.data, 225, 32)) AS account_user_quote_token_account
+              g.evt_block_time
+            , g.evt_block_slot
+            , g.evt_block_date
+            , g.evt_outer_instruction_index
+            , g.evt_inner_instruction_index
+            , g.evt_tx_id
+            , g.evt_tx_index
+            , g.evt_outer_executing_account
+            , g.pool
+            , g.user 
+            , g.user_base_token_account AS account_user_base_token_account
+            , g.user_quote_token_account AS account_user_quote_token_account
             , f.account_arguments[8] AS account_pool_base_token_account  
             , f.account_arguments[9] AS account_pool_quote_token_account  
-            , to_base58(bytearray_substring(g.data, 289, 32)) AS account_protocol_fee_recipient_token_account
-            , bytearray_to_uint256(bytearray_reverse(bytearray_substring(g.data, 25, 8))) AS base_amount
+            , g.protocol_fee_recipient_token_account AS account_protocol_fee_recipient_token_account
+            , base_amount_out AS base_amount          
             , ROW_NUMBER() OVER (
-                PARTITION BY g.tx_id, g.outer_instruction_index, g.inner_instruction_index 
+                PARTITION BY g.evt_tx_id, g.evt_outer_instruction_index, g.evt_inner_instruction_index 
                 ORDER BY f.inner_instruction_index
               ) AS rn    -- To avoid potential duplicate rows rom the join
-        FROM {{ source('solana', 'instruction_calls') }} g
-        JOIN {{ source('solana', 'instruction_calls') }} f 
-            ON g.tx_id = f.tx_id
-            AND g.block_date = f.block_date
-            AND g.outer_instruction_index = f.outer_instruction_index
+        FROM {{ source('pumpdotfun_solana', 'pump_amm_evt_buyevent') }} g
+        INNER JOIN {{ source('solana', 'instruction_calls') }} f 
+            ON g.evt_tx_id = f.tx_id
+            AND g.evt_block_date = f.block_date
+            AND g.evt_outer_instruction_index = f.outer_instruction_index
             AND bytearray_substring(f.data, 1, 8) = 0xc62e1552b4d9e870
             AND f.executing_account = 'pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA'
             AND f.tx_success = true
@@ -48,30 +48,29 @@
             {% if is_incremental() %}
             AND {{ incremental_predicate('f.block_time') }}
             {% endif %}
-        WHERE bytearray_substring(g.data, 1, 16) = 0xe445a52e51cb9a1d67f4521f2cf57777
-            AND g.executing_account = 'pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA'
-            AND g.is_inner = true
-            AND g.tx_success = true
-            AND length(g.data) = 447
-            AND g.block_time >= TIMESTAMP '{{ project_start_date }}'
+        WHERE 1=1
             {% if is_incremental() %}
-            AND {{ incremental_predicate('g.block_time') }}
+            AND {{ incremental_predicate('g.evt_block_time') }}
+            {% else %}
+            AND g.evt_block_time >= TIMESTAMP '{{ project_start_date }}'
             {% endif %}
+
+
     )
 
     SELECT
-          block_slot
-        , CAST(date_trunc('month', block_date) AS DATE) AS block_month
-        , block_date
-        , block_time
-        , COALESCE(inner_instruction_index, 0) AS inner_instruction_index
-        , inner_instruction_index AS swap_inner_index
-        , outer_instruction_index
-        , outer_executing_account
-        , tx_id
-        , tx_index
-        , account_pool as pool
-        , account_user as user_account
+          evt_block_slot AS block_slot
+        , CAST(date_trunc('month', evt_block_date) AS DATE) AS block_month
+        , evt_block_date AS block_date
+        , evt_block_time as block_time
+        , COALESCE(evt_inner_instruction_index, 0) AS inner_instruction_index
+        , evt_inner_instruction_index AS swap_inner_index
+        , evt_outer_instruction_index AS outer_instruction_index
+        , evt_outer_executing_account AS outer_executing_account
+        , evt_tx_id AS tx_id
+        , evt_tx_index AS tx_index
+        , pool
+        , user as user_account
         , account_user_base_token_account
         , account_user_quote_token_account
         , account_pool_base_token_account
@@ -80,10 +79,10 @@
         , base_amount
         , 1 AS is_buy
         , {{ solana_instruction_key(
-          'block_slot'
-        , 'tx_index'
-        , 'outer_instruction_index'
-        , 'COALESCE(inner_instruction_index, 0)'
+          'evt_block_slot'
+        , 'evt_tx_index'
+        , 'evt_outer_instruction_index'
+        , 'COALESCE(evt_inner_instruction_index, 0)'
       ) }} AS surrogate_key
     FROM new_buy_events_raw
     WHERE rn = 1

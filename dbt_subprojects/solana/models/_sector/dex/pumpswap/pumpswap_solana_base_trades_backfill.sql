@@ -16,7 +16,7 @@
   )
 }}
 
-{% set begin = '2025-02-20' %}
+{% set begin = '2026-03-06' %}
 {% set batch_start = model.batch.event_time_start if model.batch else begin %}
 {% set batch_end = model.batch.event_time_end if model.batch else '2099-01-01' %}
 

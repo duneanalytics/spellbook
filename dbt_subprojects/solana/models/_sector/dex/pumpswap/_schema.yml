@@ -16,11 +16,11 @@ models:
   - name: pumpswap_solana_stg_decoded_newevent
     meta:
       blockchain: solana
-      contributors: [ stilldasmainaem ]
+      contributors: [ dev2020 ]
     config:
       tags: [ 'solana','dex','pumpswap' ]
     description: >
-      staging model for pumpswap new buy event decoded from raw instruction_calls
+      staging model for pumpswap new buy event from decoded table
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_month', 'block_date', 'surrogate_key' ]
@@ -28,7 +28,7 @@ models:
   - name: pumpswap_solana_int_all_swaps
     meta:
       blockchain: solana
-      contributors: [ krishhh, stilldasmainaem]
+      contributors: [ krishhh, dev2020]
     config:
       tags: [ 'solana','dex','pumpswap' ]
     description: >
