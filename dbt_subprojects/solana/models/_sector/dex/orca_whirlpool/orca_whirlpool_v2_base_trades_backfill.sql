@@ -102,6 +102,7 @@ WITH swaps AS (
         AND trs_2.block_slot = sp.block_slot
         AND trs_2.outer_instruction_index = sp.outer_instruction_index
         AND trs_2.inner_instruction_index >= CASE WHEN sp.has_memo THEN sp.inner_instruction_index + 3 ELSE sp.inner_instruction_index + 2 END
+        AND trs_2.token_mint_address = CASE WHEN trs_1.token_mint_address = sp.tokenA THEN sp.tokenB ELSE sp.tokenA END
 )
 
 SELECT
