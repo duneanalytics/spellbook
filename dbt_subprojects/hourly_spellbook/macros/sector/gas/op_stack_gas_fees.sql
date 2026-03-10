@@ -45,8 +45,6 @@ WITH native_token_prices as (
         ON txns.block_number = blocks.number
         {% if is_incremental() %}
         AND {{ incremental_predicate('blocks.time') }}
-        {% elif blockchain == 'megaeth' %}
-        AND blocks.time >= timestamp '2026-01-30'
         {% endif %}
     {% if test_short_ci %}
     WHERE
@@ -55,9 +53,6 @@ WITH native_token_prices as (
     {% elif is_incremental() %}
     WHERE
         {{ incremental_predicate('txns.block_time') }}
-    {% elif blockchain == 'megaeth' %}
-    WHERE
-        txns.block_time >= timestamp '2026-01-30'
     {% endif %}
     )
 
