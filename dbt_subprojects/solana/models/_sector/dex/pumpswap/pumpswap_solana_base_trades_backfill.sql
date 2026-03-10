@@ -98,7 +98,7 @@ WITH pools AS (
         AND s.block_time < f.end_time
 )
 
-, , swaps_with_transfers AS (
+, swaps_with_transfers AS (
     -- Old events: require transfer match
     SELECT
           sf.*
