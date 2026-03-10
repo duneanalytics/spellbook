@@ -88,6 +88,7 @@ SELECT
     , sp.account_pool_quote_token_account
     , sp.account_protocol_fee_recipient_token_account
     , sp.base_amount
+    , CAST(NULL AS BIGINT) AS quote_token_amount
     , sp.is_buy
     , {{ solana_instruction_key(
           'sp.call_block_slot'

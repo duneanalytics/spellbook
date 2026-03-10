@@ -31,7 +31,8 @@
             , f.account_arguments[8] AS account_pool_base_token_account  
             , f.account_arguments[9] AS account_pool_quote_token_account  
             , g.protocol_fee_recipient_token_account AS account_protocol_fee_recipient_token_account
-            , base_amount_out AS base_amount          
+            , g.base_amount_out AS base_amount
+            , g.quote_amount_in  AS quote_amount
             , ROW_NUMBER() OVER (
                 PARTITION BY g.evt_tx_id, g.evt_outer_instruction_index, g.evt_inner_instruction_index 
                 ORDER BY f.inner_instruction_index
@@ -77,6 +78,7 @@
         , account_pool_quote_token_account
         , account_protocol_fee_recipient_token_account
         , base_amount
+        , quote_amount
         , 1 AS is_buy
         , {{ solana_instruction_key(
           'evt_block_slot'

@@ -48,6 +48,7 @@ WITH pools AS (
         , account_pool_quote_token_account
         , account_protocol_fee_recipient_token_account
         , base_amount
+        , quote_token_amount  
         , is_buy
         , surrogate_key
     FROM {{ ref('pumpswap_solana_int_all_swaps') }}
@@ -101,16 +102,17 @@ WITH pools AS (
     SELECT
           sf.*
         , sf.base_amount AS base_token_amount
-        , t.amount AS quote_token_amount
+        , COALESCE(sf.quote_token_amount, t.amount) AS quote_token_amount
         , ROW_NUMBER() OVER (
             PARTITION BY sf.tx_id, sf.outer_instruction_index, sf.swap_inner_index
             ORDER BY t.inner_instruction_index ASC
           ) AS rn
     FROM swaps_with_fees sf
-    INNER JOIN transfers t
+    LEFT JOIN transfers t
         ON t.tx_id = sf.tx_id
         AND t.block_slot = sf.block_slot
         AND t.outer_instruction_index = sf.outer_instruction_index
+        AND sf.quote_token_amount IS NULL
         AND t.to_token_account != sf.account_protocol_fee_recipient_token_account
         AND (
             (sf.swap_inner_index IS NULL

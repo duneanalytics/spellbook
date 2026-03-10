@@ -25,6 +25,7 @@ SELECT
     , account_pool_quote_token_account
     , account_protocol_fee_recipient_token_account
     , base_amount
+    , quote_token_amount  
     , is_buy
     , surrogate_key
 FROM {{ ref('pumpswap_solana_stg_decoded_swaps')}}
@@ -50,6 +51,7 @@ SELECT
     , account_pool_quote_token_account
     , account_protocol_fee_recipient_token_account
     , base_amount
+    , quote_token_amount  
     , is_buy
     , surrogate_key
 FROM {{ref('pumpswap_solana_stg_decoded_newevent')}}
