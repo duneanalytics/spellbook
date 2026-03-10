@@ -98,21 +98,21 @@ WITH pools AS (
         AND s.block_time < f.end_time
 )
 
-, swaps_with_transfers AS (
+, , swaps_with_transfers AS (
+    -- Old events: require transfer match
     SELECT
           sf.*
         , sf.base_amount AS base_token_amount
-        , COALESCE(sf.quote_amount, t.amount) AS quote_token_amount
+        , t.amount AS quote_token_amount
         , ROW_NUMBER() OVER (
             PARTITION BY sf.tx_id, sf.outer_instruction_index, sf.swap_inner_index
             ORDER BY t.inner_instruction_index ASC
           ) AS rn
     FROM swaps_with_fees sf
-    LEFT JOIN transfers t
+    INNER JOIN transfers t
         ON t.tx_id = sf.tx_id
         AND t.block_slot = sf.block_slot
         AND t.outer_instruction_index = sf.outer_instruction_index
-        AND sf.quote_amount IS NULL
         AND t.to_token_account != sf.account_protocol_fee_recipient_token_account
         AND (
             (sf.swap_inner_index IS NULL
@@ -131,6 +131,18 @@ WITH pools AS (
                     END
             )
         )
+         WHERE sf.quote_amount IS NULL  -- Only old events need transfer lookup
+
+            UNION ALL
+
+            -- New events: already have quote_token_amount
+            SELECT
+                sf.*
+                , sf.base_amount AS base_token_amount
+                , sf.quote_amount  AS quote_token_amount
+                , 1 AS rn 
+            FROM swaps_with_fees sf
+         WHERE sf.quote_amount IS NOT NULL  
 )
 
 , trades AS (
