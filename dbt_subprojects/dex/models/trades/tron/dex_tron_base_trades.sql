@@ -12,6 +12,8 @@
 }}
 
 {% set base_models = [
+  ref('sunswap_v1_tron_base_trades'),
+  ref('sunswap_v2_tron_base_trades'),
   ref('sunswap_v3_tron_base_trades')
 ] %}
 
@@ -47,9 +49,9 @@ with base_union as (
   union all
   {% endif %}
   {% endfor %}
-)
+),
 
-, add_tx_columns as (
+add_tx_columns as (
   {{
     add_tx_columns(
       model_cte = 'base_union',
@@ -57,9 +59,9 @@ with base_union as (
       columns = ['from', 'to', 'index']
     )
   }}
-)
+),
 
-, final as (
+final as (
   select
     *,
     row_number() over (
