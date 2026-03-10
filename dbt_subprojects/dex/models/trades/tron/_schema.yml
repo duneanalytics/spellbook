@@ -16,6 +16,76 @@ models:
 
   - name: dex_tron_base_trades
 
+  - name: sunswap_v1_tron_base_trades
+    meta:
+      blockchain: tron
+      sector: dex
+      project: sunswap
+      contributors: tomfutago
+    config:
+      tags: ["tron", "dex", "trades", "sunswap", "v1"]
+    description: "sunswap tron v1 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sunswap_tron_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: sunswap_v1_tron_swap_events
+    meta:
+      blockchain: tron
+      sector: dex
+      project: sunswap
+      contributors: tomfutago
+    config:
+      tags: ["tron", "dex", "trades", "sunswap", "v1"]
+    description: "sunswap tron v1 swap events decoded from tron.logs"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_tx_hash
+            - evt_index
+            - contract_address
+
+  - name: sunswap_v2_tron_base_trades
+    meta:
+      blockchain: tron
+      sector: dex
+      project: sunswap
+      contributors: tomfutago
+    config:
+      tags: ["tron", "dex", "trades", "sunswap", "v2"]
+    description: "sunswap tron v2 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sunswap_tron_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: sunswap_v2_tron_swap_events
+    meta:
+      blockchain: tron
+      sector: dex
+      project: sunswap
+      contributors: tomfutago
+    config:
+      tags: ["tron", "dex", "trades", "sunswap", "v2"]
+    description: "sunswap tron v2 swap events decoded from tron.logs"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_tx_hash
+            - evt_index
+            - contract_address
+
   - name: sunswap_v3_tron_base_trades
     meta:
       blockchain: tron

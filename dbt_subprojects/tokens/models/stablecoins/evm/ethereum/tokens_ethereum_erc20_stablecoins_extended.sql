@@ -21,13 +21,16 @@ from (values
      (0x07041776f5007ACa2A54844F50503a18A72A8b68, 'USD'), -- USAT
      (0xd687759f35bb747a29246a4b9495c8f52c49e00c, 'AUD'), -- AUDX
      (0x6fA0BE17e4beA2fCfA22ef89BF8ac9aab0AB0fc9, 'RUB'), -- A7A5
-     (0xF442fF10b8deF89514560A66C0AD28777094636a, 'RUB')  -- wA7A5
+     (0xF442fF10b8deF89514560A66C0AD28777094636a, 'RUB'), -- wA7A5
+     (0x8a1d45e102e886510e891d2ec656a708991e2d76, 'COP'), -- wCOP
+     (0x61d450a098b6a7f69fc4b98ce68198fe59768651, 'CLP'), -- wCLP
+     (0x4f34c8b3b5fb6d98da888f0fea543d4d9c9f2ebe, 'PEN'), -- wPEN
+     (0x0dc4f92879b7670e5f4e4e6e3c801d229129d90d, 'ARS') -- wARS
 
      /* yield-bearing / rebasing tokens
      (0x96f6ef951840721adbf46ac996b59e0235cb985c, 'USD'), -- USDY
      (0xd46ba6d942050d489dbd938a2c909a5d5039a161, 'USD'), -- AMPL
      (0x7712c34205737192402172409a8f7ccef8aa2aec, 'USD'), -- BUIDL
-     (0x2a8e1e676ec238d8a992307b495b45b3feaa5e86, 'USD'), -- OUSD
      (0xa774ffb4af6b0a91331c084e1aebae6ad535e6f3, 'USD'), -- FLEXUSD (list: flexUSD)
      (0x15700b564ca08d9439c58ca5053166e8317aa138, 'USD'), -- deUSD
      (0x79c58f70905f734641735bc61e45c19dd9ad60bc, 'USD'), -- usdc-dai-usdt (list: USDC-DAI-USDT)
