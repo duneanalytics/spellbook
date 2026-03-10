@@ -22,7 +22,7 @@ WITH transfers AS (
         {%- if is_incremental() %}
         AND {{incremental_predicate('block_time')}}
         {%- elif blockchain == 'megaeth' %}
-        AND block_time >= timestamp '2026-01-30'
+        AND block_time >= timestamp '2025-11-01'
         {%- endif %}
         {%- if blockchain == 'polygon' %}
         -- ✅ Optimized CASE statement for filtering out POL ERC-20 contract transfers
@@ -58,7 +58,7 @@ WITH transfers AS (
     {%- if is_incremental() %}
     WHERE {{incremental_predicate('evt_block_time')}}
     {%- elif blockchain == 'megaeth' %}
-    WHERE evt_block_time >= timestamp '2026-01-30'
+    WHERE evt_block_time >= timestamp '2025-11-01'
     {%- endif %}
 )
 
@@ -93,6 +93,6 @@ INNER JOIN {{ transactions }} tx ON
     {%- if is_incremental() %}
     AND {{incremental_predicate('tx.block_time')}}
     {%- elif blockchain == 'megaeth' %}
-    AND tx.block_time >= timestamp '2026-01-30'
+    AND tx.block_time >= timestamp '2025-11-01'
     {%- endif %}
 {%- endmacro -%}
