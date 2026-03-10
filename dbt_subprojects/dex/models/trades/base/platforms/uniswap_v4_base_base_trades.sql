@@ -16,5 +16,7 @@
         , version = '4'
         , PoolManager_call_Swap = source('uniswap_v4_base', 'PoolManager_call_Swap') 
         , PoolManager_evt_Swap = source('uniswap_v4_base', 'PoolManager_evt_Swap') 
+        , pool_manager_addr = '0x498581ff718922c3f8e6a244956af099b2652b2b'
+        , start_date = '2025-01-23'
     )
 }}

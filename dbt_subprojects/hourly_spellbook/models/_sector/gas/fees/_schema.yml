@@ -26,6 +26,9 @@ models:
       - &tx_hash
         name: tx_hash
         description: "Primary key of the transaction"
+      - &tx_index
+        name: tx_index
+        description: "Index position of the transaction within its block"
       - &tx_sender
         name: tx_sender
         description: "Initiated the transaction"
