@@ -78,7 +78,7 @@
         , account_pool_quote_token_account
         , account_protocol_fee_recipient_token_account
         , base_amount
-        , quote_amount
+        , quote_amount AS quote_token_amount
         , 1 AS is_buy
         , {{ solana_instruction_key(
           'evt_block_slot'

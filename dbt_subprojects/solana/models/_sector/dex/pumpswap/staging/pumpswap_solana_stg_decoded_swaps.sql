@@ -31,6 +31,7 @@ WITH swaps AS (
         , account_pool_quote_token_account
         , account_protocol_fee_recipient_token_account
         , base_amount_out AS base_amount
+        , CAST(NULL AS BIGINT) AS quote_token_amount
         , 1 AS is_buy
     FROM {{ source('pumpdotfun_solana', 'pump_amm_call_buy') }}
     WHERE 1=1
@@ -59,6 +60,7 @@ WITH swaps AS (
         , account_pool_quote_token_account
         , account_protocol_fee_recipient_token_account
         , base_amount_in AS base_amount
+        , CAST(NULL AS BIGINT) AS quote_token_amount
         , 0 AS is_buy
     FROM {{ source('pumpdotfun_solana', 'pump_amm_call_sell') }}
     WHERE 1=1
@@ -88,7 +90,7 @@ SELECT
     , sp.account_pool_quote_token_account
     , sp.account_protocol_fee_recipient_token_account
     , sp.base_amount
-    , CAST(NULL AS BIGINT) AS quote_token_amount
+    , sp.quote_token_amount
     , sp.is_buy
     , {{ solana_instruction_key(
           'sp.call_block_slot'
