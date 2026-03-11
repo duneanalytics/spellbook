@@ -10,8 +10,7 @@ models:
     config:
       tags: ['tokens','erc20', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'gnosis', 'mantle', 'optimism', 'fantom', 'base', 'blast', 'sei', 'nova', 'linea', 'worldchain', 'kaia', 'ronin', 'boba', 'flare', 'viction', 'sonic', 'ink', 'abstract', 'sophon', 'shape']
 
-    description: >
-        Crosschain ERC20 tokens
+    description: "ERC20 token metadata (symbol, decimals, contract address) across all EVM-compatible chains."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

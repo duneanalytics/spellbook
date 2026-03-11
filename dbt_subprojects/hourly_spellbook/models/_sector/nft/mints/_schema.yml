@@ -12,7 +12,7 @@ models:
     config:
       tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'solana', 'events', 'polygon', 'optimism', 'arbitrum', 'rarible', 'aavegotchi', 'oneplanet', 'fractal', 'zksync']
     description: >
-        NFT mints
+        NFT minting events across supported chains, including mint price, platform fees, royalty fees, and aggregator details.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

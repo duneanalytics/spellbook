@@ -13,8 +13,7 @@ models:
       contributors: 0xboxer
     config:
       tags: ['solana', 'gas', 'fees']
-    description: >
-        Gas Fees on Solana, including compute unit prices and prioritization fees
+    description: "Transaction fees paid on the Solana blockchain, including base fees and priority fees per transaction."
     columns:
       - name: blockchain
         data_tests:

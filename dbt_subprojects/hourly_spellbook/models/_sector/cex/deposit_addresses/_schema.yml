@@ -9,7 +9,7 @@ models:
       contributors: hildobby
     config:
       tags: ['cex','deposit']
-    description: "All identified CEX deposit addresses across EVM chains"
+    description: "Identified user deposit addresses for centralized exchanges, with deposit/consolidation counts, amounts, and first-seen timestamps."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

@@ -6,8 +6,7 @@ models:
       sector: dune
       short_description: "Reference table of all blockchains available on Dune, including chain metadata and identifiers."
       contributors: 0xRob
-    description: >
-        Core table listing blockchains on Dune with meta info
+    description: "Reference table of all blockchains available on Dune, including chain metadata and identifiers."
     columns:
       - name: name
         description: "The namespaces of the blockchain as used on Dune"

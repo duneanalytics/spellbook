@@ -144,7 +144,7 @@ models:
       contributors: tomfutago
     config:
       tags: ['stablecoin', 'balances']
-    description: "Union of core and extended stablecoin balances with token metadata and USD prices"
+    description: "Stablecoin balances on Solana, with daily balance snapshots per holder in USD."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

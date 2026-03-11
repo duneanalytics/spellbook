@@ -22,8 +22,7 @@ models:
       short_description: "Detailed data on trades executed via decentralized exchanges (DEXs) on Solana, containing one or many trades per transaction with Solana-specific fields like block_slot, fee_tier, and token vaults."
     config:
       tags: ['solana','dex']
-    description: >
-        The dex_solana.trades table captures detailed data on decentralized exchange (DEX) trades on the Solana blockchain, recording all trade events across various protocols.
+    description: "Detailed data on trades executed via decentralized exchanges (DEXs) on Solana, containing one or many trades per transaction with Solana-specific fields like block_slot, fee_tier, and token vaults."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month']

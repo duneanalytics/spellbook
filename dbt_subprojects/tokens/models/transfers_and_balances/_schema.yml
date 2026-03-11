@@ -9,10 +9,7 @@ models:
       contributors: aalan3, jeff-dude, 0xBoxer, hildobby, hosuke, tomfutago
     config:
       tags: ['tokens','transfers','evm']
-    description: >
-      Transfers of all kinds of fungible tokens across all EVM-compatible networks on Dune. This model contains
-      EVM-only data. For a unified view that includes both EVM and non-EVM chains, use
-      tokens_multichain.transfers instead.
+    description: "All fungible token transfers (native and ERC20) across all EVM-compatible chains, including sender, receiver, amount, and token metadata."
     columns:
       - &unique_key
         name: unique_key

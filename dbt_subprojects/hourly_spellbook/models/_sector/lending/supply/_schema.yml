@@ -10,7 +10,7 @@ models:
       short_description: "Token supply (deposit) events across lending protocols (Aave, Compound, etc.), tracking assets deposited as collateral or for yield."
     config:
       tags: ['lending', 'supply', 'aave', 'compound', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom', 'gnosis', 'scroll', 'zksync', 'linea', 'sonic']
-    description: "All lending transactions involving supply transactions"
+    description: "Token supply (deposit) events across lending protocols (Aave, Compound, etc.), tracking assets deposited as collateral or for yield."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

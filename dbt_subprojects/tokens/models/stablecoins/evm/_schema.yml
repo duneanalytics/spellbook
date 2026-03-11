@@ -52,7 +52,7 @@ models:
       contributors: tomfutago
     config:
       tags: ['stablecoin', 'transfers']
-    description: "Stablecoin token transfers across all chains with token metadata"
+    description: "Stablecoin transfers across all EVM chains, enriched with token metadata and USD prices using FX rate conversion when required."
     columns:
       - *blockchain
       - &block_month

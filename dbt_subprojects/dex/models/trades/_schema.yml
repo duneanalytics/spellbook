@@ -10,7 +10,7 @@ models:
       contributors: 0xRob, hosuke, jeff-dude, tomfutago, viniabussafi
     config:
       tags: [ 'dex', 'trades']
-    description: '{{ doc("dex_trades_doc") }}'
+    description: "Detailed data on trades executed via decentralized exchanges (DEXs), containing one or many trades per transaction across all EVM chains."
     columns:
       - &blockchain
         name: blockchain

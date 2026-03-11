@@ -11,7 +11,7 @@ models:
       contributors: hildobby, sankinyue
     config:
       tags: ['ethereum', 'staking', 'entities']
-    description: Ethereum staking identified depositor entities
+    description: "Identified Ethereum staking entities (Lido, Coinbase, etc.), mapping validators and depositors to known organizations."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -71,7 +71,7 @@ models:
       contributors: hildobby
     config:
       tags: ['ethereum', 'staking', 'deposits']
-    description: Ethereum staking deposits
+    description: "Ethereum Beacon Chain staking deposit events, including validator pubkey, amount, and depositor address."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -125,7 +125,7 @@ models:
       contributors: hildobby, 0xBoxer
     config:
       tags: ['ethereum', 'staking', 'deposits', 'withdrawals']
-    description: Ethereum staking deposits & withdrawals
+    description: "Combined Ethereum staking deposits and withdrawals, providing a unified view of ETH flowing into and out of the Beacon Chain."
     columns:
       - name: block_time
         description: "Block time of deposit transaction"

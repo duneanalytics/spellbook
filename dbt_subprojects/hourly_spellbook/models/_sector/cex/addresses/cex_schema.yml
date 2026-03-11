@@ -37,7 +37,7 @@ models:
       contributors: hildobby
     config:
       tags: ['cex','addresses', 'deposits', 'withdrawals', 'ethereum', 'bnb', 'avalanche_c', 'optimism', 'arbitrum', 'polygon', 'bitcoin', 'fantom', 'aptos']
-    description: "All CEX-tied addresses identified"
+    description: "Known centralized exchange wallet addresses across chains, labeled by exchange name."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

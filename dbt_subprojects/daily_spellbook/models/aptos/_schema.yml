@@ -9,10 +9,7 @@ models:
       contributors: ying-w
     config:
       tags: ['aptos','fungible_asset']
-    description: >
-        Metadata for [fungible assets](https://aptos.dev/concepts/fungible-assets)
-        and [legacy coins](https://aptos.dev/build/smart-contracts/aptos-coin) on Aptos.
-        [Explainer for Supply and Volume](https://aptoslabs.medium.com/data-analyst-guide-to-aptos-supply-and-volume-pt-3-535e312946ad) on Aptos.
+    description: "Full metadata history for fungible assets on Aptos, including name, symbol, and decimals."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
          combination_of_columns: ['block_month', 'tx_hash', 'asset_type']
@@ -66,10 +63,7 @@ models:
       contributors: ying-w
     config:
       tags: ['aptos','fungible_asset']
-    description: >
-        Balances for [fungible assets](https://aptos.dev/concepts/fungible-assets)
-        and [legacy coins](https://aptos.dev/build/smart-contracts/aptos-coin) on Aptos.
-        [Explainer for activity and balances](https://aptoslabs.medium.com/data-analyst-guide-to-aptos-supply-and-volume-pt-3-535e312946ad) on Aptos.
+    description: "Historical fungible asset balances per address on Aptos."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
          combination_of_columns: ['block_month', 'unique_key']
@@ -164,10 +158,7 @@ models:
       contributors: ying-w
     config:
       tags: ['aptos','fungible_asset']
-    description: >
-        Activities for [fungible assets](https://aptos.dev/concepts/fungible-assets)
-        and [legacy coins](https://aptos.dev/build/smart-contracts/aptos-coin) on Aptos.
-        [Explainer for activity and balances](https://aptoslabs.medium.com/data-analyst-guide-to-aptos-supply-and-volume-pt-3-535e312946ad) on Aptos.
+    description: "Token activity events (transfers, mints, burns) for fungible assets on the Aptos blockchain."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
          combination_of_columns: ['block_month', 'tx_hash', 'event_index']
@@ -275,10 +266,7 @@ models:
       contributors: ying-w
     config:
       tags: ['aptos','fungible_asset']
-    description: >
-        Latest metadata for [fungible assets](https://aptos.dev/concepts/fungible-assets)
-        and [legacy coins](https://aptos.dev/build/smart-contracts/aptos-coin) on Aptos.
-        [Explainer for Supply and Volume](https://aptoslabs.medium.com/data-analyst-guide-to-aptos-supply-and-volume-pt-3-535e312946ad) on Aptos.
+    description: "Current metadata snapshot for fungible assets on Aptos, providing the latest name, symbol, and decimals."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
          combination_of_columns: ['asset_type']
@@ -404,7 +392,7 @@ models:
       contributors: ying-w
     config:
       tags: ['aptos','stablecoins']
-    description: 1-to-1 mapping of transfers using FIFO logic when ambiguous
+    description: "USDT stablecoin transfers on Aptos, with session tracking and mint/burn flags for each transfer."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
          combination_of_columns: ['block_month', 'tx_hash', 'from_index', 'to_index']
@@ -460,7 +448,7 @@ models:
       contributors: ying-w
     config:
       tags: ['aptos','stablecoins']
-    description: 1-to-1 mapping of transfers using FIFO logic when ambiguous
+    description: "USDC stablecoin transfers on Aptos, with session tracking and mint/burn flags for each transfer."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
          combination_of_columns: ['block_month', 'tx_hash', 'from_index', 'to_index']

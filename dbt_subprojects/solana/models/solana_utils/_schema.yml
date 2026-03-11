@@ -45,8 +45,7 @@ models:
       contributors: [ilemi]
     config:
       tags: ['solana','balances']
-    description: >
-        get the daily balances for each address, from which we can materialize a latest balance later on.
+    description: "Daily SOL and SPL token balances for each Solana address, tracking how holdings change over time."
     columns:
       - &day
         name: day
@@ -67,8 +66,7 @@ models:
       contributors: [ilemi]
     config:
       tags: ['solana','balances']
-    description: >
-        get the latest balances for each address
+    description: "Latest SOL and SPL token balances for each Solana address, including token_balance_owner for delegated accounts."
     columns:
       - *address
       - *sol_balance

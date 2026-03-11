@@ -164,7 +164,7 @@ models:
       contributors: tomfutago
     config:
       tags: ['stablecoin', 'transfers']
-    description: "Union view of core and extended stablecoin transfers (EVM macro columns + tron extras)"
+    description: "Stablecoin transfers on the Tron blockchain, enriched with token metadata."
     columns:
       - *blockchain
       - *block_month

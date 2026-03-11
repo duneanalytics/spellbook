@@ -10,7 +10,7 @@ models:
       contributors:  0xRob
     config:
       tags: ['query','labels', 'ethereum', 'ens', 'ENS resolver', 'ENS reverse']
-    description: "ENS labels"
+    description: "ENS (Ethereum Name Service) name-to-address mappings, providing human-readable labels for Ethereum addresses."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

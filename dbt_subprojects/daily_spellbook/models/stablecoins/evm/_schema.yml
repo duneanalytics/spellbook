@@ -9,7 +9,7 @@ models:
       contributors: tomfutago
     config:
       tags: ['stablecoin', 'balances']
-    description: "Enriched balances of stablecoin token holders across all EVM chains with token metadata and USD prices"
+    description: "Daily stablecoin balances per holder across all EVM chains, enriched with token metadata and USD prices using FX rate conversion when required."
     columns:
       - &blockchain
         name: blockchain
