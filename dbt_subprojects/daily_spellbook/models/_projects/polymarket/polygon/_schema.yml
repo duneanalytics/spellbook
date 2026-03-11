@@ -253,7 +253,7 @@ models:
       - name: proxy
       - *tx_hash
 
-  - name: polymarket_polygon_market_details 
+  - name: polymarket_polygon_market_details
     meta:
       blockchain: polygon
       sector: prediction_markets
@@ -362,12 +362,18 @@ models:
     columns:
       - name: day
         description: "The date of the position"
+        data_tests:
+          - not_null
       - name: address
         description: "The address holding the position"
+        data_tests:
+          - not_null
       - name: unique_key
         description: "Unique identifier for the market"
       - name: token_id
         description: "Token ID of the position"
+        data_tests:
+          - not_null
       - name: token_outcome
         description: "Outcome represented by the token"
       - name: token_outcome_name
