@@ -5,6 +5,7 @@ models:
     meta:
       sector: stablecoin
       project: stablecoin
+      short_description: "Daily stablecoin balances per holder across all EVM chains, enriched with token metadata and USD prices using FX rate conversion when required."
       contributors: tomfutago
     config:
       tags: ['stablecoin', 'balances']

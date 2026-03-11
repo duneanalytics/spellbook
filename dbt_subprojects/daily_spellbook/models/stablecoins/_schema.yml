@@ -5,6 +5,7 @@ models:
     meta:
       sector: stablecoin
       project: stablecoin
+      short_description: "Unified stablecoin balances across all supported chains (EVM, Solana, Tron), providing a single cross-chain view of stablecoin holdings."
       contributors: tomfutago
     config:
       tags: ['stablecoin', 'balances']
@@ -51,6 +52,7 @@ models:
     meta:
       sector: stablecoin
       project: stablecoin
+      short_description: "Unified stablecoin transfers across all supported chains (EVM, Solana, Tron), providing a single cross-chain view of stablecoin movement."
       contributors: tomfutago
     config:
       tags: ['stablecoin', 'transfers']
