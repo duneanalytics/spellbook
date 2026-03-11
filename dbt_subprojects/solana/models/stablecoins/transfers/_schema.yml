@@ -212,6 +212,7 @@ models:
       blockchain: solana
       sector: stablecoin
       project: stablecoin
+      short_description: "Stablecoin transfers on Solana, enriched with token metadata and FX rate pricing."
       contributors: tomfutago
     config:
       tags: ['stablecoin', 'transfers']

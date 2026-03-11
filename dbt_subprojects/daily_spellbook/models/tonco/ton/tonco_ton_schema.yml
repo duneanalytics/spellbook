@@ -8,8 +8,7 @@ models:
       contributors: markfromton
     config:
       tags: ['ton', 'tonco', 'dex']
-    description: >
-      Tonco protocol pool initialization events.
+    description: "Pool creation events on TONCO DEX on TON, including initial price, tick spacing, fee settings, and jetton minters."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -73,8 +72,7 @@ models:
       contributors: markfromton
     config:
       tags: ['ton', 'tonco', 'dex']
-    description: >
-      Tonco protocol pool mint events.
+    description: "Liquidity provision (mint) events on TONCO pools on TON."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -117,9 +115,7 @@ models:
       contributors: markfromton
     config:
       tags: ['ton', 'tonco', 'dex']
-    description: >
-      Tonco protocol pool burn events. This message is sent by the Position NFT itself to the pool contract
-      to burn liquidity or withdraw collected fees.
+    description: "Liquidity removal (burn) events on TONCO pools on TON."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -170,9 +166,7 @@ models:
       contributors: markfromton
     config:
       tags: ['ton', 'tonco', 'dex']
-    description: >
-      Tonco protocol pool burn events. This message is sent by the Position NFT itself to the pool contract
-      to burn liquidity or withdraw collected fees.
+    description: "Concentrated liquidity NFT position creation events on TONCO DEX on TON, with tick range and liquidity amount."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

@@ -11,6 +11,8 @@ These tests are expected on all materialized models (incremental and table):
 
 These tests are defined in the model's `_schema.yml` file.
 
+- Validate column data types, as built [here](https://github.com/duneanalytics/spellbook/blob/d6b5acc1dbd01e67e6cb23d96da6f3fc3ec7d268/tests/generic/check_column_types.sql#L6) and called like [this](/dbt_subprojects/hourly_spellbook/models/_sector/nft/trades/chains/arbitrum/platforms/_schema.yml#L14).
+
 ## Seed Tests (Sector-Level Spells)
 
 For sector-level spells, seed tests are **required** to maintain data quality across contributions. The pattern:
