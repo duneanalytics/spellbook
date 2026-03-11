@@ -132,7 +132,7 @@ models:
       contributors: tomfutago
     config:
       tags: ['polygon','prediction_markets','polymarket','markets']
-    description: "Trades on Polymarket prediction markets on Polygon, including outcome token, price, shares, fees, and maker/taker addresses."
+    description: "All market activity including complementary matching (A buys shares from B), MINT matching (A wants to buy, but not enough sell orders in book, system mints shares if conditions are right), and MERGE matching (A wants to sell shares, but not enough buy orders in book, system matches yes and no shares to unlock collateral). Technically correct volume, but not directly comparable to dex volume or similar. The internal operations increase volume significantly."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -263,7 +263,7 @@ models:
       contributors: tomfutago, 0xboxer
     config:
       tags: ['polygon','prediction_markets','polymarket','markets']
-    description: "Metadata for Polymarket prediction markets, including event/market names, questions, outcome tokens, resolution status, and oracle details."
+    description: "Polymarket: combined market data from on-chain and API sources"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -355,7 +355,7 @@ models:
       contributors: tomfutago
     config:
       tags: ['polygon','prediction_markets','polymarket','positions']
-    description: "Daily snapshots of user positions on Polymarket, tracking outcome token balances per market with resolution status."
+    description: "Polymarket: user positions in markets with market details"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -437,7 +437,7 @@ models:
       contributors: 0xboxer
     config:
       tags: ['polygon','prediction_markets','polymarket','prices']
-    description: "Hourly price snapshots for Polymarket outcome tokens, tracking how market odds evolve over time."
+    description: "Hourly market prices for Polymarket on Polygon"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -462,7 +462,7 @@ models:
       contributors: 0xRob
     config:
       tags: ['polygon','prediction_markets','polymarket','users']
-    description: "Mapping of Polymarket proxy wallets to owner addresses, with wallet type and initial funding details."
+    description: "Comprehensive lookup table for Polymarket user addresses, including both Safe and Magic wallet proxies with funding information"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

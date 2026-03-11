@@ -10,7 +10,14 @@ models:
       contributors: krishgka
     config:
       tags: ["near", "bridge", "cross-chain"]
-    description: "Omni Bridge transactions on NEAR with inbound/outbound direction, source/destination chain IDs, and mint/burn flags."
+    description: >
+      This table tracks all inbound and outbound bridge transactions through the NEAR Omni Bridge.
+      The Omni Bridge enables cross-chain token transfers between NEAR and other blockchains using
+      Wormhole infrastructure. It monitors omni.bridge.near and related helper contracts
+      (omni-provider.bridge.near, vaa-prover.bridge.near, omni-relayer.bridge.near).
+      
+      Inbound transfers are identified by FinTransferEvent logs and mint method calls.
+      Outbound transfers are identified by InitTransferEvent logs and burn method calls.
     columns:
       - name: bridge_omni_id
         description: "Unique identifier for each bridge transaction (surrogate key)"
@@ -78,7 +85,13 @@ models:
       contributors: krishgka
     config:
       tags: ["near", "defi", "intents"]
-    description: "Intent-based token transfer events on NEAR, capturing owner changes, amounts, referrals, and DIP-4 versioning."
+    description: >
+      This table tracks intent-based transactions on the intents.near contract following
+      NEP-245 (Multi Token Standard) and DIP-4 (Defuse Intent Protocol) standards.
+      
+      Intents represent user actions that can be executed through various DeFi protocols.
+      The table flattens nested arrays of token amounts and IDs from event logs to provide
+      a granular view of each token transfer within intent executions.
     columns:
       - name: fact_intents_id
         description: "Unique identifier for each intent fact (surrogate key)"

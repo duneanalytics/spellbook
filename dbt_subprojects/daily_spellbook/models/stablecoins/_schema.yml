@@ -9,7 +9,7 @@ models:
       contributors: tomfutago
     config:
       tags: ['stablecoin', 'balances']
-    description: "Unified stablecoin balances across all supported chains (EVM, Solana, Tron), providing a single cross-chain view of stablecoin holdings."
+    description: "Union of EVM, SVM (Solana) and Tron stablecoin balances with normalized address/token_address types"
     columns:
       - &blockchain
         name: blockchain
@@ -56,7 +56,7 @@ models:
       contributors: tomfutago
     config:
       tags: ['stablecoin', 'transfers']
-    description: "Unified stablecoin transfers across all supported chains (EVM, Solana, Tron), providing a single cross-chain view of stablecoin movement."
+    description: "Union of EVM, SVM (Solana) and Tron stablecoin transfers with normalized address/token_address/tx_hash types"
     columns:
       - *blockchain
       - name: block_month

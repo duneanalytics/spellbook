@@ -216,7 +216,7 @@ models:
       contributors: tomfutago
     config:
       tags: ['stablecoin', 'transfers']
-    description: "Stablecoin transfers on Solana, enriched with token metadata and FX rate pricing."
+    description: "Union view of core and extended stablecoin transfers with metadata and FX rate pricing"
     columns:
       - *blockchain
       - *block_month

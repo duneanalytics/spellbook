@@ -10,7 +10,8 @@ models:
       short_description: "Trades routed through DEX aggregators (e.g. 1inch, CowSwap, Paraswap), recording swap execution details across various aggregators and blockchains."
     config:
       tags: ['ethereum', 'gnosis', 'avalanche_c', 'fantom', 'aggregator', 'dex', 'trades', 'cross-chain']
-    description: "Trades routed through DEX aggregators (e.g. 1inch, CowSwap, Paraswap), recording swap execution details across various aggregators and blockchains."
+    description: >
+      The dex_aggregator.trades table captures data on actions taken on aggregators - recording all events across various aggregators and blockchains.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

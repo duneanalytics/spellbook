@@ -11,7 +11,7 @@ models:
     config:
       tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'gnosis', 'optimism', 'polygon', 'wash_trades', 'zksync', 'base', 'scroll', 'zora']
     description: >
-        Identified potential wash trading activity in NFT transactions, flagging suspicious trades across marketplaces and blockchains.
+        Dataset for identifying and analyzing potential wash trading activities in NFT transactions across various marketplaces and blockchains
     columns:
       - &blockchain
         name: blockchain

@@ -9,7 +9,7 @@ models:
       short_description: "Bridge deposit events on EVM chains, capturing assets sent from a source chain to be bridged to a destination chain."
     config:
       tags: [ 'bridges', 'flows', 'deposits' ]
-    description: "Bridge deposit events on EVM chains, capturing assets sent from a source chain to be bridged to a destination chain."
+    description: "Bridge deposits events on EVM chains"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['deposit_chain','withdrawal_chain','withdrawal_chain_id','bridge_name','bridge_version','bridge_transfer_id','duplicate_index']
@@ -100,7 +100,7 @@ models:
       short_description: "Bridge withdrawal events on EVM chains, capturing assets received on a destination chain after being bridged."
     config:
       tags: [ 'bridges', 'flows', 'withdrawals' ]
-    description: "Bridge withdrawal events on EVM chains, capturing assets received on a destination chain after being bridged."
+    description: "Bridge withdrawals events on EVM chains"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['deposit_chain','deposit_chain_id','withdrawal_chain','bridge_name','bridge_version','bridge_transfer_id','duplicate_index']
@@ -210,7 +210,7 @@ models:
       short_description: "Matched bridge deposit-withdrawal pairs across EVM chains, linking source and destination chain details for each cross-chain transfer."
     config:
       tags: [ 'bridges', 'flows' ]
-    description: "Matched bridge deposit-withdrawal pairs across EVM chains, linking source and destination chain details for each cross-chain transfer."
+    description: "Bridge flows on EVM chains"
     columns:
       - *deposit_chain
       - *withdrawal_chain

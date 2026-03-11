@@ -10,7 +10,7 @@ models:
     config:
       tags: ['nft', 'ethereum', 'base', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'celo', 'zksync', 'zora', 'scroll', 'mantle', 'blast', 'sei', 'transfers']
     description: >
-        All NFT token transfers (ERC721 and ERC1155) across supported chains, including sender, receiver, and token ID.
+        NFT transfers
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

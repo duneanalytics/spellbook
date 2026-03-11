@@ -9,7 +9,8 @@ models:
       contributors: tschubotz, danielpartida, kryptaki
     config:
       tags: ['arbitrum', 'avalanche_c', 'base', 'blast', 'bnb', 'celo','ethereum', 'fantom', 'gnosis', 'goerli', 'linea', 'mantle', 'optimism', 'polygon', 'safe', 'scroll', 'sonic', 'unichain', 'worldchain', 'zkevm', 'zksync']
-    description: "All Safe (formerly Gnosis Safe) multisig wallet addresses across supported chains, with creation version and creation time."
+    description: >
+        Lists all Safes across chains.
     columns:
       - &blockchain
         name: blockchain

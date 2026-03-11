@@ -10,7 +10,7 @@ models:
       short_description: "Token borrow events across lending protocols, tracking assets borrowed against deposited collateral."
     config:
       tags: ['lending', 'borrow', 'aave', 'compound', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom', 'gnosis', 'scroll', 'zksync', 'linea', 'sonic']
-    description: "Token borrow events across lending protocols, tracking assets borrowed against deposited collateral."
+    description: "All lending transactions involving borrow transactions"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

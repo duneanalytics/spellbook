@@ -10,7 +10,7 @@ models:
       contributors: hildobby, soispoke, Henrystats, msilb7
     config:
       tags: ['labels', 'ethereum', 'fantom', 'bnb', 'optimism', 'avalanche_c', 'bitcoin', 'polygon', 'arbitrum', 'cex']
-    description: "Known centralized exchange wallet addresses across chains, labeled by exchange name."
+    description: "Known centralised exchange addresses across chains"
     columns:
       - &blockchain
         name: blockchain
