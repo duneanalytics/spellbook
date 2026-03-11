@@ -13,18 +13,6 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['block_month', 'block_date', 'surrogate_key']
           
-  - name: orca_whirlpool_v2_stg_swaps
-    meta:
-      blockchain: solana
-      contributors: [ ilemi ]
-    config:
-      tags: [ 'solana','dex' ]
-    description: >
-      staging model for orca whirlpool v2 swap data from decoded tables
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['block_month', 'block_date', 'surrogate_key']
-
   - name: orca_whirlpool_base_trades_backfill
     meta:
       blockchain: solana
@@ -47,14 +35,26 @@ models:
     description: >
       view over orca_whirlpool_base_trades_backfill for all raw whirlpool dex trades on Solana
 
+  - name: orca_whirlpool_v2_token_transfers
+    meta:
+      blockchain: solana
+      contributors: [ ilemi ]
+    config:
+      tags: [ 'solana','dex' ]
+    description: >
+      pre-materialized token transfers for orca whirlpool v2 swaps on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['block_date', 'unique_instruction_key']
+
   - name: orca_whirlpool_v2_base_trades_backfill
     meta:
       blockchain: solana
       contributors: [ ilemi ]
     config:
-      tags: [ 'solana','dex','microbatch' ]
+      tags: [ 'solana','dex' ]
     description: >
-      microbatch backfill model for orca whirlpool v2 base trades with transfer join logic
+      incremental model for orca whirlpool v2 base trades joining swaps to pre-materialized transfers
     data_tests:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
