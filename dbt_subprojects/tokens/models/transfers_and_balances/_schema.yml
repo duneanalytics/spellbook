@@ -5,11 +5,11 @@ models:
     meta:
       docs_slug: /curated/asset-tracking/evm/token-transfers
       sector: tokens
-      short_description: "All fungible token transfers (native and ERC20) across all EVM-compatible chains, including sender, receiver, amount, and token metadata."
+      short_description: "All fungible token transfers (native and ERC20) across all EVM-compatible chains, including sender, receiver, amount, and token metadata. For a unified view that includes both EVM and non-EVM chains, use tokens_multichain.transfers instead."
       contributors: aalan3, jeff-dude, 0xBoxer, hildobby, hosuke, tomfutago
     config:
       tags: ['tokens','transfers','evm']
-    description: "All fungible token transfers (native and ERC20) across all EVM-compatible chains, including sender, receiver, amount, and token metadata."
+    description: "All fungible token transfers (native and ERC20) across all EVM-compatible chains, including sender, receiver, amount, and token metadata. For a unified view that includes both EVM and non-EVM chains, use tokens_multichain.transfers instead."
     columns:
       - &unique_key
         name: unique_key
