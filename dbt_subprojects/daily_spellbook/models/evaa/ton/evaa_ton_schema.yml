@@ -8,8 +8,7 @@ models:
       contributors: pshuvalov
     config:
       tags: ['ton', 'evaa', 'lending']
-    description: >
-      EVAA protocol withdraw events
+    description: "Withdrawal events on the EVAA lending protocol on TON."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -57,8 +56,7 @@ models:
       contributors: pshuvalov
     config:
       tags: ['ton', 'evaa', 'lending']
-    description: >
-      EVAA protocol supply events
+    description: "Supply (deposit) events on the EVAA lending protocol on TON."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -104,8 +102,7 @@ models:
       contributors: pshuvalov
     config:
       tags: ['ton', 'evaa', 'lending']
-    description: >
-      EVAA protocol liquidate events
+    description: "Liquidation events on the EVAA lending protocol on TON."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -167,8 +164,7 @@ models:
       contributors: pshuvalov
     config:
       tags: ['ton', 'evaa', 'lending']
-    description: >
-      EVAA protocol assets mapping
+    description: "EVAA lending protocol asset mapping on TON: asset_id, asset_name, jetton_master address, and decimals."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

@@ -5,6 +5,7 @@ models:
     meta:
       blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, linea, optimism, polygon, scroll, zkevm, zksync, zora, berachain, ink, katana, nova, opbnb, unichain
       sector: cex
+      short_description: "Token flows into and out of centralized exchange wallets, tracking deposits and withdrawals from CEX-labeled addresses."
       contributors: hildobby
     config:
       tags: ['cex','flows']
