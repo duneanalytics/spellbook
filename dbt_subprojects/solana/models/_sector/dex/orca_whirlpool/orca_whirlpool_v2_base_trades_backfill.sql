@@ -2,23 +2,17 @@
   config(
     schema = 'orca_whirlpool_v2'
     , alias = 'base_trades_backfill'
-    , tags = ['microbatch']
     , partition_by = ['block_month']
     , materialized = 'incremental'
     , file_format = 'delta'
-    , incremental_strategy = 'microbatch'
-    , event_time = 'block_time'
-    , begin = '2024-06-05'
-    , batch_size = var('orca_whirlpool_v2_batch_size', 'day')
-    , lookback = 1
+    , incremental_strategy = 'merge'
+    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     , unique_key = ['block_month', 'surrogate_key']
     , pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
   )
 }}
 
-{% set begin = '2024-06-05' %}
-{% set batch_start = model.batch.event_time_start if model.batch else begin %}
-{% set batch_end = model.batch.event_time_end if model.batch else '2099-01-01' %}
+{% set project_start_date = '2024-06-05' %}
 
 WITH swaps AS (
     SELECT
@@ -41,9 +35,12 @@ WITH swaps AS (
         , sp.has_memo
         , sp.surrogate_key
     FROM {{ ref('orca_whirlpool_v2_stg_swaps') }} sp
-    WHERE
-        sp.block_time >= TIMESTAMP '{{ batch_start }}'
-        AND sp.block_time < TIMESTAMP '{{ batch_end }}'
+    WHERE 1=1
+    {% if is_incremental() -%}
+        AND {{ incremental_predicate('sp.block_time') }}
+    {% else -%}
+        AND sp.block_time >= TIMESTAMP '{{ project_start_date }}'
+    {% endif -%}
 )
 
 , transfers AS (
@@ -55,10 +52,13 @@ WITH swaps AS (
         , tf.inner_instruction_index
         , tf.amount
         , tf.token_mint_address
-    FROM {{ source('tokens_solana', 'transfers') }} tf
-    WHERE
-        tf.block_time >= TIMESTAMP '{{ batch_start }}'
-        AND tf.block_time < TIMESTAMP '{{ batch_end }}'
+    FROM {{ ref('orca_whirlpool_v2_token_transfers') }} tf
+    WHERE 1=1
+    {% if is_incremental() -%}
+        AND {{ incremental_predicate('tf.block_time') }}
+    {% else -%}
+        AND tf.block_time >= TIMESTAMP '{{ project_start_date }}'
+    {% endif -%}
 )
 
 , all_swaps AS (
