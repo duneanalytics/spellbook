@@ -47,7 +47,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['block_date', 'unique_instruction_key']
 
-  - name: orca_whirlpool_v2_base_trades_backfill
+  - name: orca_whirlpool_v2_base_trades
     meta:
       blockchain: solana
       contributors: [ ilemi ]
@@ -59,15 +59,6 @@ models:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_month', 'surrogate_key' ]
-
-  - name: orca_whirlpool_v2_base_trades
-    meta:
-      blockchain: solana
-      contributors: [ ilemi ]
-    config:
-      tags: [ 'solana','dex' ]
-    description: >
-      view over orca_whirlpool_v2_base_trades_backfill for downstream compatibility
 
   - name: orca_whirlpool_trades
     meta:
