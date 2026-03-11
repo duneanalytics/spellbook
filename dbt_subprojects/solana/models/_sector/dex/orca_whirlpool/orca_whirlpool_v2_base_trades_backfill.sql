@@ -12,7 +12,7 @@
   )
 }}
 
-{% set project_start_date = '2026-03-04' %}
+{% set project_start_date = '2024-06-05' %}
 
 WITH fee_tiers_defaults AS (
     SELECT
