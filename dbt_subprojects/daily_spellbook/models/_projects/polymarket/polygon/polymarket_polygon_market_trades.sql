@@ -78,7 +78,7 @@ source_trades as (
     ) t
   ) deduped
   where rn = 1
-),
+)
 
 {% else -%}
 
