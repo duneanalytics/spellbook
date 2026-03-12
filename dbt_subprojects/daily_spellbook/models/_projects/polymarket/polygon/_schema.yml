@@ -136,11 +136,16 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
             - block_time
             - asset_id
             - evt_index
             - tx_hash
     columns:
+      - name: block_month
+        description: "UTC month of the event block time used for partitioning"
+        tests:
+          - not_null
       - name: block_number
         description: "Block number in which the transaction was executed"
       - name: block_time

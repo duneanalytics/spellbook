@@ -5,7 +5,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_time', 'asset_id', 'evt_index', 'tx_hash'],
+    partition_by = ['block_month'],
+    unique_key = ['block_month', 'block_time', 'asset_id', 'evt_index', 'tx_hash'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     post_hook = '{{ expose_spells(blockchains = \'["polygon"]\',
                                   spell_type = "project",
@@ -46,6 +47,7 @@ changed_tokens as (
 
 source_trades as (
   select
+    block_month,
     block_number,
     block_time,
     tx_hash,
@@ -84,6 +86,7 @@ source_trades as (
 
 source_trades as (
   select
+    block_month,
     block_number,
     block_time,
     tx_hash,
@@ -104,6 +107,7 @@ source_trades as (
 {% endif -%}
 
 select
+  t.block_month,
   t.block_number,
   t.block_time,
   t.tx_hash,
