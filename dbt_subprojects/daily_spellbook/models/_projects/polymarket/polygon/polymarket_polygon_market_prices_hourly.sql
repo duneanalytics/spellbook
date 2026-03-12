@@ -155,6 +155,6 @@ select
   pc.price
 from price_correction pc
 cross join params p
-where pc.price > 0
+where pc.price is not null
   and pc.hour >= p.start_hour
   and pc.hour < p.end_hour
