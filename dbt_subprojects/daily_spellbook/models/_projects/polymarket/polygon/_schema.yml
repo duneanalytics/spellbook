@@ -441,15 +441,24 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
             - hour
             - token_id
     columns:
+      - name: block_month
+        description: "Month partition derived from hour"
+        tests:
+          - not_null
       - name: hour
         description: "The hour for which the price is valid"
+        tests:
+          - not_null
       - name: condition_id
         description: "The unique identifier for the market condition"
       - name: token_id
         description: "The token ID associated with the outcome"
+        tests:
+          - not_null
       - name: price
         description: "The price of the outcome token at the end of the hour"
 
