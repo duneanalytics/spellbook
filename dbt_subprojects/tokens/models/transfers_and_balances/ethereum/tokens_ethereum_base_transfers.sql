@@ -72,7 +72,7 @@ SELECT
     {{ dbt_utils.generate_surrogate_key(['b.number', "'miner_reward'"]) }} AS unique_key
     , 'ethereum' AS blockchain
     , cast(date_trunc('month', b.time) as date) AS block_month
-    , cast(date_trunc('day', b.time) as date) AS block_date
+    , b.date AS block_date
     , b.time AS block_time
     , b.number AS block_number
     , cast(NULL as varbinary) AS tx_hash
@@ -89,7 +89,8 @@ SELECT
 FROM {{ source('ethereum', 'blocks') }} b
 INNER JOIN (
     SELECT
-        block_number
+        block_date
+        , block_number
         , max(value) AS amount_raw -- use max reward trace per block for miner payout; sum(value) would include uncle rewards and overstate miner amount
     FROM {{ source('ethereum', 'traces') }}
     WHERE type = 'reward'
@@ -98,9 +99,10 @@ INNER JOIN (
         {% if is_incremental() %}
         AND {{ incremental_predicate('block_time') }}
         {% endif %}
-    GROUP BY 1
+    GROUP BY 1, 2
 ) r
-    ON r.block_number = b.number
+    ON r.block_date = b.date
+    AND r.block_number = b.number
 WHERE b.number <= 15537393
 {% if is_incremental() %}
     AND {{ incremental_predicate('b.time') }}
