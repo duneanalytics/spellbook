@@ -6,6 +6,7 @@ models:
       blockchain: ton
       sector: dex
       contributors: pshuvalov
+      short_description: "Perpetual futures orders on the Tradoor protocol on TON."
     config:
       tags: ['ton', 'tradoor', 'perpetual']
     description: "Perpetual futures orders on the Tradoor protocol on TON."
@@ -55,6 +56,7 @@ models:
       blockchain: ton
       sector: dex
       contributors: pshuvalov
+      short_description: "Perpetual futures position changes on the Tradoor protocol on TON, tracking opens, closes, and modifications."
     config:
       tags: ['ton', 'tradoor', 'perpetual']
     description: "Perpetual futures position changes on the Tradoor protocol on TON, tracking opens, closes, and modifications."
