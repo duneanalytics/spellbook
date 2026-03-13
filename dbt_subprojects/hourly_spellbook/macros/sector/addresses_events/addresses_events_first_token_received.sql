@@ -1,31 +1,29 @@
 {% macro addresses_events_first_token_received(blockchain, token_transfers) %}
 
-WITH token_transfers_with_sort_keys AS (
+WITH filtered_transfers AS (
     SELECT tt.*
-    , COALESCE(CAST(tt.block_number AS bigint), 9223372036854775807) AS sort_block_number
-    , COALESCE(CAST(tt.tx_index AS bigint), 9223372036854775807) AS sort_tx_index
-    , TRANSFORM(
-        COALESCE(
-            CAST(tt.trace_address AS array(bigint)),
-            ARRAY[COALESCE(CAST(tt.evt_index AS bigint), -1)]
-        ),
-        x -> COALESCE(x, -1)
-    ) AS sort_trace_address
     FROM {{token_transfers}} tt
-)
-, finding_transfer AS (
-    SELECT tt.to
-    , MIN_BY(tt.unique_key, (tt.sort_block_number, tt.sort_tx_index, tt.sort_trace_address)) AS unique_key
-    FROM token_transfers_with_sort_keys tt
     {% if is_incremental() %}
-    LEFT JOIN {{this}} t
-        ON t.address=tt.to
-    WHERE t.address IS NULL
-    -- Temporary CI throttle: limit scan to recent activity for incremental runs.
-    AND tt.block_time >= now() - interval '14' day
+    WHERE tt.to NOT IN (SELECT address FROM {{this}})
     AND {{ incremental_predicate('tt.block_time') }}
     {% endif %}
-    GROUP BY 1
+)
+, ranked_transfers AS (
+    SELECT tt.*
+    , ROW_NUMBER() OVER (
+        PARTITION BY tt.to
+        ORDER BY
+            COALESCE(CAST(tt.block_number AS bigint), 9223372036854775807),
+            COALESCE(CAST(tt.tx_index AS bigint), 9223372036854775807),
+            TRANSFORM(
+                COALESCE(
+                    CAST(tt.trace_address AS array(bigint)),
+                    ARRAY[COALESCE(CAST(tt.evt_index AS bigint), -1)]
+                ),
+                x -> COALESCE(x, -1)
+            )
+    ) AS rn
+    FROM filtered_transfers tt
 )
 
 SELECT '{{blockchain}}' as blockchain
@@ -42,11 +40,7 @@ SELECT '{{blockchain}}' as blockchain
 , tt.tx_index AS tx_index
 , tt.trace_address AS trace_address
 , tt.block_month AS block_month
-, unique_key
-FROM {{token_transfers}} tt
-INNER JOIN finding_transfer ft USING (unique_key)
-{% if is_incremental() %}
-WHERE {{ incremental_predicate('tt.block_time') }}
-AND tt.block_time >= now() - interval '14' day -- Temporary CI throttle: limit scan to recent activity for incremental runs.
-{% endif %}
+, tt.unique_key AS unique_key
+FROM ranked_transfers tt
+WHERE tt.rn = 1
 {% endmacro %}
