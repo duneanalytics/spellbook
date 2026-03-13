@@ -6,7 +6,6 @@
     incremental_strategy = 'merge',
     partition_by = ['block_month'],
     unique_key = ['block_month', 'hour', 'token_id'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.hour')],
     post_hook = '{{ expose_spells(blockchains = \'["polygon"]\',
                                   spell_type = "project",
                                   spell_name = "polymarket",
@@ -14,19 +13,42 @@
   )
 }}
 
-with params as (
+-- no incremental_predicates: resolution-driven recomputes can target old hours, and
+-- filtering DBT_INTERNAL_DEST by recent time would miss matches and create duplicates.
+
+-- derive the trade-driven processing window for incremental and full-refresh runs
+with trade_bounds as (
   select
     {% if is_incremental() -%}
     coalesce(
       (select date_add('day', -2, max(hour)) from {{ this }}),
       (select cast(date_trunc('hour', min(block_time)) as timestamp) from {{ ref('polymarket_polygon_market_trades_raw') }})
-    ) as start_hour,
+    ) as trade_start_hour,
     {% else -%}
-    (select cast(date_trunc('hour', min(block_time)) as timestamp) from {{ ref('polymarket_polygon_market_trades_raw') }}) as start_hour,
+    (select cast(date_trunc('hour', min(block_time)) as timestamp) from {{ ref('polymarket_polygon_market_trades_raw') }}) as trade_start_hour,
     {% endif -%}
     cast(date_trunc('hour', current_timestamp) as timestamp) as end_hour
 ),
 
+-- find the earliest historical hour that must be recomputed from recent market metadata changes
+resolution_bounds as (
+  select
+    min(rt.recompute_from_hour) as resolution_start_hour
+  from {{ ref('polymarket_polygon_market_price_recompute_tokens') }} rt
+  cross join trade_bounds tb
+  where rt.change_detected_at >= tb.trade_start_hour
+),
+
+-- combine trade and resolution windows into the final start/end bounds for this run
+params as (
+  select
+    coalesce(least(tb.trade_start_hour, rb.resolution_start_hour), tb.trade_start_hour) as start_hour,
+    tb.end_hour
+  from trade_bounds tb
+  cross join resolution_bounds rb
+),
+
+-- keep raw trade updates that occur inside the selected processing window
 window_updates as (
   select
     t.block_time,
@@ -39,6 +61,7 @@ window_updates as (
     and t.block_time < p.end_hour
 ),
 
+-- carry forward the last pre-window update per token so forward-fill has an anchor point
 pre_window_latest as (
   {% if is_incremental() -%}
   select
@@ -68,6 +91,7 @@ pre_window_latest as (
   {% endif -%}
 ),
 
+-- merge in-window updates with pre-window anchors into one update stream
 all_updates as (
   select
     block_time,
@@ -84,6 +108,7 @@ all_updates as (
   from pre_window_latest
 ),
 
+-- keep the last update per token/hour and compute the next update boundary for interval filling
 changed_prices as (
   select
     cast(date_trunc('hour', block_time) as timestamp) as hour,
@@ -104,6 +129,7 @@ changed_prices as (
   where rn = 1
 ),
 
+-- enumerate every hour inside the processing window
 hours as (
   select
     h.timestamp as hour
@@ -113,6 +139,7 @@ hours as (
     and h.timestamp < p.end_hour
 ),
 
+-- forward-fill each token price across hours until its next observed update
 forward_fill as (
   select
     cast(h.hour as timestamp) as hour,
@@ -125,6 +152,17 @@ forward_fill as (
     and (lp.next_update_hour is null or h.hour < lp.next_update_hour)
 ),
 
+-- parse market end timestamps and resolution metadata used for post-resolution price correction
+market_details_enriched as (
+  select
+    md.token_id,
+    cast(try(from_iso8601_timestamp(md.market_end_time)) as timestamp) as market_end_time_ts,
+    md.token_outcome,
+    md.outcome
+  from {{ ref('polymarket_polygon_market_details') }} md
+),
+
+-- enforce resolved market terminal prices after market end while preserving live pricing before end
 price_correction as (
   select
     cast(date_trunc('month', ff.hour) as date) as block_month,
@@ -132,8 +170,8 @@ price_correction as (
     ff.condition_id,
     ff.token_id,
     case
-      when ff.hour <= try_cast(substring(md.market_end_time from 1 for 19) as timestamp) then ff.price
-      when ff.hour > try_cast(substring(md.market_end_time from 1 for 19) as timestamp) then
+      when ff.hour <= md.market_end_time_ts then ff.price
+      when ff.hour > md.market_end_time_ts then
         case
           when md.token_outcome = 'Yes' and md.outcome = 'yes' then 1
           when md.token_outcome = 'Yes' and md.outcome = 'no' then 0
@@ -144,7 +182,7 @@ price_correction as (
       else ff.price
     end as price
   from forward_fill ff
-  left join {{ ref('polymarket_polygon_market_details') }} md on ff.token_id = md.token_id
+  left join market_details_enriched md on ff.token_id = md.token_id
 )
 
 select

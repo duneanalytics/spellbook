@@ -462,6 +462,33 @@ models:
       - name: price
         description: "The price of the outcome token at the end of the hour"
 
+  - name: polymarket_polygon_market_price_recompute_tokens
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','prices']
+    description: "Incremental helper table tracking tokens requiring historical price recomputation after market metadata or resolution updates"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - token_id
+    columns:
+      - name: token_id
+        description: "Outcome token ID that needs recomputation"
+        tests:
+          - not_null
+      - name: recompute_from_hour
+        description: "Earliest hour that must be recomputed for this token (market end hour)"
+        tests:
+          - not_null
+      - name: change_detected_at
+        description: "Latest detected metadata/resolution update timestamp for this token"
+        tests:
+          - not_null
+
   - name: polymarket_polygon_users
     meta:
       blockchain: polygon
