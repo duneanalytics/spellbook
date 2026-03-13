@@ -29,10 +29,12 @@ SELECT '{{blockchain}}' as blockchain
 FROM token_transfers_with_sort_keys tt
 {% if is_incremental() %}
 WHERE {{ incremental_predicate('tt.block_time') }}
+AND tt.block_time >= now() - interval '14' day -- Temporary CI throttle: limit scan to recent activity.
 AND tt.token_standard = 'native'
 AND tt.to NOT IN (SELECT address FROM {{this}})
 {% else %}
 WHERE tt.token_standard = 'native'
+AND tt.block_time >= now() - interval '14' day -- Temporary CI throttle: limit scan to recent activity.
 {% endif %}
 GROUP BY tt.to
 

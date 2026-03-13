@@ -21,7 +21,12 @@ WITH token_transfers_with_sort_keys AS (
     LEFT JOIN {{this}} t
         ON t.address=tt.to
     WHERE t.address IS NULL
+    -- Temporary CI throttle: limit scan to recent activity.
+    AND tt.block_time >= now() - interval '14' day
     AND {{ incremental_predicate('tt.block_time') }}
+    {% else %}
+    -- Temporary CI throttle: limit scan to recent activity.
+    WHERE tt.block_time >= now() - interval '14' day
     {% endif %}
     GROUP BY 1
 )
