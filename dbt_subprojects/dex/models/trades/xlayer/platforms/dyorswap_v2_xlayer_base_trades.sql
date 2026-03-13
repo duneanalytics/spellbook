@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'dyorswap_v3_xlayer',
+        schema = 'dyorswap_v2_xlayer',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -11,11 +11,11 @@
 }}
 
 {{
-    uniswap_compatible_v3_trades(
+    uniswap_compatible_v2_trades(
         blockchain = 'xlayer',
         project = 'dyorswap',
-        version = '3',
-        Pair_evt_Swap = source('dyorswap_xlayer', 'v3pool_evt_swap'),
-        Factory_evt_PoolCreated = source('dyorswap_xlayer', 'v3factory_evt_poolcreated')
+        version = '2',
+        Pair_evt_Swap = source('dyorswap_xlayer', 'v2pair_evt_swap'),
+        Factory_evt_PairCreated = source('dyorswap_xlayer', 'v2factorycontract_evt_paircreated')
     )
 }}

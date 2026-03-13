@@ -108,6 +108,21 @@ models:
             - tx_hash
             - evt_index
 
+  - name: dyorswap_v2_xlayer_base_trades
+    meta:
+      blockchain: xlayer
+      sector: dex
+      project: dyorswap
+      contributors: tomfutago
+    config:
+      tags: ["xlayer", "dex", "trades", "dyorswap", "v2"]
+    description: "dyorswap xlayer v2 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+
   - name: dex_xlayer_token_volumes_daily
     data_tests:
       - dbt_utils.unique_combination_of_columns:
