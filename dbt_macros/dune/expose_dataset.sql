@@ -5,6 +5,7 @@
             'dune.data_explorer.blockchains':  blockchains | as_text,
             'dune.data_explorer.category': 'third_party_data',
             'dune.data_explorer.contributors': contributors | as_text,
+            'dune.data_explorer.freshness': var('freshness'),
           } -%}
     {%- if model.config.materialized == "view" -%}
       CALL {{ model.database }}._internal.alter_view_properties('{{ model.schema }}', '{{ model.alias }}',
