@@ -50,5 +50,8 @@ FROM {{token_transfers}} tt
 INNER JOIN finding_transfer ft USING (unique_key)
 {% if is_incremental() %}
 WHERE {{ incremental_predicate('tt.block_time') }}
+AND tt.block_time >= now() - interval '14' day -- Temporary CI throttle: limit scan to recent activity.
+{% else %}
+WHERE tt.block_time >= now() - interval '14' day -- Temporary CI throttle: limit scan to recent activity.
 {% endif %}
 {% endmacro %}
