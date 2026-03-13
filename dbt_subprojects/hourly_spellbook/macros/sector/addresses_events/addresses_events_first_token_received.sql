@@ -21,12 +21,9 @@ WITH token_transfers_with_sort_keys AS (
     LEFT JOIN {{this}} t
         ON t.address=tt.to
     WHERE t.address IS NULL
-    -- Temporary CI throttle: limit scan to recent activity.
+    -- Temporary CI throttle: limit scan to recent activity for incremental runs.
     AND tt.block_time >= now() - interval '14' day
     AND {{ incremental_predicate('tt.block_time') }}
-    {% else %}
-    -- Temporary CI throttle: limit scan to recent activity.
-    WHERE tt.block_time >= now() - interval '14' day
     {% endif %}
     GROUP BY 1
 )
@@ -50,8 +47,6 @@ FROM {{token_transfers}} tt
 INNER JOIN finding_transfer ft USING (unique_key)
 {% if is_incremental() %}
 WHERE {{ incremental_predicate('tt.block_time') }}
-AND tt.block_time >= now() - interval '14' day -- Temporary CI throttle: limit scan to recent activity.
-{% else %}
-WHERE tt.block_time >= now() - interval '14' day -- Temporary CI throttle: limit scan to recent activity.
+AND tt.block_time >= now() - interval '14' day -- Temporary CI throttle: limit scan to recent activity for incremental runs.
 {% endif %}
 {% endmacro %}

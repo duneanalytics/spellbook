@@ -34,7 +34,6 @@ AND tt.token_standard = 'native'
 AND tt.to NOT IN (SELECT address FROM {{this}})
 {% else %}
 WHERE tt.token_standard = 'native'
-AND tt.block_time >= now() - interval '14' day -- Temporary CI throttle: limit scan to recent activity.
 {% endif %}
 GROUP BY tt.to
 
