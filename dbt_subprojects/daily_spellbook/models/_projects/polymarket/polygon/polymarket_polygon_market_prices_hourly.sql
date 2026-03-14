@@ -201,7 +201,7 @@ forward_fill as (
 market_details_enriched as (
   select
     md.token_id,
-    cast(try(from_iso8601_timestamp(md.market_end_time)) as timestamp) as market_end_time_ts,
+    try_cast(substring(md.market_end_time from 1 for 19) as timestamp) as market_end_time_ts,
     md.token_outcome,
     md.outcome
   from {{ ref('polymarket_polygon_market_details') }} md
@@ -237,4 +237,4 @@ select
   pc.token_id,
   pc.price
 from price_correction pc
-where pc.price > 0
+where pc.price is not null

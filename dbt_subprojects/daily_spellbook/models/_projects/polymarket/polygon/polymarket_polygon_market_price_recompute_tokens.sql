@@ -12,12 +12,12 @@
 with market_details as (
   select
     md.token_id,
-    cast(date_trunc('hour', try(from_iso8601_timestamp(md.market_end_time))) as timestamp) as recompute_from_hour,
+    cast(date_trunc('hour', try_cast(substring(md.market_end_time from 1 for 19) as timestamp)) as timestamp) as recompute_from_hour,
     md.resolved_on_timestamp
   from {{ ref('polymarket_polygon_market_details') }} md
   where md.token_id is not null
     and md.outcome in ('yes', 'no')
-    and try(from_iso8601_timestamp(md.market_end_time)) is not null
+    and try_cast(substring(md.market_end_time from 1 for 19) as timestamp) is not null
 ),
 
 -- de-duplicate metadata state to one row per token for deterministic merge keys
