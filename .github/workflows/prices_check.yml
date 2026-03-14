@@ -22,15 +22,22 @@ jobs:
 
 
       - name: Fetch base commit
-        run: git fetch origin ${{ github.event.pull_request.base.sha }}
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: git fetch origin "$BASE_SHA"
 
       - name: Fetch head commit
-        run: git fetch origin ${{ github.event.pull_request.head.sha }}
+        env:
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: git fetch origin "$HEAD_SHA"
 
       - name: Get prices diff
         shell: bash
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
-          git diff ${{ github.event.pull_request.base.sha}}..${{ github.event.pull_request.head.sha }} dbt_subprojects/tokens/models/prices/**/*.sql | grep '^\+ ' > scripts/new_lines.txt
+          git diff "${BASE_SHA}..${HEAD_SHA}" dbt_subprojects/tokens/models/prices/**/*.sql | grep '^\+ ' > scripts/new_lines.txt
 
       - name: Run validations
         id: validations

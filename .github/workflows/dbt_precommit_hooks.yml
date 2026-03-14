@@ -30,8 +30,10 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
         continue-on-error: true
       - name: Set modfied and added files as arg
+        env:
+          CHANGED_FILES: ${{ steps.abc.outputs.added_modified }}
         run: |
-          echo "FILES=$(echo ${{ steps.abc.outputs.added_modified }})" >> $GITHUB_ENV
+          echo "FILES=${CHANGED_FILES}" >> $GITHUB_ENV
       - name: dbt dependencies
         run: "dbt deps"
       - name: dbt compile

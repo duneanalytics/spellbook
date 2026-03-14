@@ -18,8 +18,10 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Setup variables
+        env:
+          COMMIT_SHA: ${{ github.sha }}
         run: | # Spellbook is a special case because it's not a subdirectory
-          echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-7)" >> $GITHUB_ENV
+          echo "GIT_SHA=$(echo "$COMMIT_SHA" | tr - _ | cut -c1-7)" >> $GITHUB_ENV
           echo "PROFILE=--profiles-dir $HOME/.dbt --profile dunesql" >> $GITHUB_ENV
           echo "S3_LOCATION=s3://manifest-spellbook-dunesql/${{inputs.project}}" >> $GITHUB_ENV
           PROJECT_DIR=dbt_subprojects/${{ inputs.project }}

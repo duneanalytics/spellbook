@@ -1,7 +1,5 @@
 import json
-import os
 import subprocess
-from string import Template
 
 
 def get_all_pages(endpoint_slug):
@@ -11,9 +9,11 @@ def get_all_pages(endpoint_slug):
     while condition:
         print(f"page: {page}")
         old_num_items = len(items)
-        resp = json.loads(os.popen(f"""gh api \
-          -H "Accept: application/vnd.github+json" \
-          {endpoint_slug}{page}""").read())
+        result = subprocess.run(
+            ['gh', 'api', '-H', 'Accept: application/vnd.github+json',
+             f'{endpoint_slug}{page}'],
+            capture_output=True, text=True)
+        resp = json.loads(result.stdout)
         items = items + resp
         num_items = len(items)
         if num_items == old_num_items:
@@ -36,29 +36,27 @@ class TestPRs():
         self.shas = [{'base': pull['base']['sha'], 'head': pull['head']['sha']} for pull in pulls]
 
     def generate_test_files(self):
-        fetch_command = Template("git fetch origin $SHA")
-        diff_command = Template('git diff $BASE_SHA..$HEAD_SHA -- ../../models/prices/prices_tokens.sql | grep "^\+ "')
-        diff_file_command = Template('git diff $BASE_SHA..$HEAD_SHA -- ../../models/prices/prices_tokens.sql | grep "^\+ " > $FILE')
-
         for i, shas in enumerate(self.shas):
             # Get base
-            fetch = fetch_command.substitute(SHA=shas['base'])
-            os.system(fetch)
+            subprocess.run(['git', 'fetch', 'origin', shas['base']])
 
             # Get head
-            fetch = fetch_command.substitute(SHA=shas['head'])
-            os.system(fetch)
+            subprocess.run(['git', 'fetch', 'origin', shas['head']])
 
-            # Get diff file
-            cmd = diff_command.substitute(BASE_SHA=shas['base'], HEAD_SHA=shas['head'])
-            res = subprocess.run(cmd, capture_output=True, shell=True).stdout.decode("utf-8")
-            if res != '':
+            # Get diff
+            diff_result = subprocess.run(
+                ['git', 'diff', f"{shas['base']}..{shas['head']}", '--',
+                 '../../models/prices/prices_tokens.sql'],
+                capture_output=True, text=True)
+            # Filter lines starting with '+ '
+            diff_lines = [line for line in diff_result.stdout.splitlines() if line.startswith('+ ')]
+            if diff_lines:
                 print('hit')
-                write_command = diff_file_command.substitute(BASE_SHA=shas['base'], HEAD_SHA=shas['head'], FILE=f"test_diffs_tokens/new_lines_{i}.txt")
-                os.system(write_command)
+                with open(f"test_diffs_tokens/new_lines_{i}.txt", 'w') as f:
+                    f.write('\n'.join(diff_lines) + '\n')
             else:
                 print('empty')
-            os.system('git prune')
+            subprocess.run(['git', 'prune'])
 
     def main(self):
         self.get_shas()

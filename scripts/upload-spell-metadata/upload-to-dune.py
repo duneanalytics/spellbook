@@ -14,6 +14,8 @@ project_root = os.path.dirname(os.path.dirname(script_dir))
 
 # Get API key from environment variable
 api_key = os.getenv("DUNE_API_KEY")
+if not api_key:
+    raise ValueError("DUNE_API_KEY environment variable is not set")
 
 # Directory containing the manifest files
 manifests_dir = os.path.join(project_root, 'dbt_subprojects', 'manifests')
@@ -117,7 +119,7 @@ with open(csv_file_path, 'r') as file:
     print('CSV file size:', file_size/1000, 'kilobytes')
 
     # Set the headers and metadata for the CSV data
-    headers = {'X-Dune-Api-Key': api_key}
+    headers = {'X-Dune-Api-Key': api_key, 'Content-Type': 'application/json'}
 
     # Construct the payload for the API
     payload = {

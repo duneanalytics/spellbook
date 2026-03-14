@@ -6,7 +6,8 @@ from pathlib import Path
 
 class ManifestEditor:
     def __init__(self):
-        self.manifest_dict = json.load(open(Path('../target/manifest.json')))
+        with open(Path('../target/manifest.json')) as f:
+            self.manifest_dict = json.load(f)
 
     @staticmethod
     def filter_large_raw_sql(node, max_lines=500):
@@ -30,9 +31,8 @@ class ManifestEditor:
         self.manifest_dict["nodes"] = new_nodes
 
     def write_new_manifest(self):
-        f = open('../target/manifest.json', 'w')
-        f.write(json.dumps(self.manifest_dict))
-        f.close()
+        with open('../target/manifest.json', 'w') as f:
+            f.write(json.dumps(self.manifest_dict))
 
     def main(self):
         self.slim_manifest()
