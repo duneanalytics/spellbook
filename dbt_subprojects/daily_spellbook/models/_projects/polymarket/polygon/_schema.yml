@@ -485,7 +485,7 @@ models:
         tests:
           - not_null
       - name: change_detected_at
-        description: "Latest detected metadata/resolution update timestamp for this token"
+        description: "Timestamp used to trigger downstream recompute when token resolution metadata state changes"
         tests:
           - not_null
 

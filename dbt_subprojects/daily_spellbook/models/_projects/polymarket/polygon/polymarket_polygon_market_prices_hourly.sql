@@ -16,7 +16,7 @@
 -- no incremental_predicates: resolution-driven recomputes can target old hours, and
 -- filtering DBT_INTERNAL_DEST by recent time would miss matches and create duplicates.
 
--- derive the trade-driven processing window for incremental and full-refresh runs
+-- derive the global run boundaries (recent trade window and current end hour)
 with trade_bounds as (
   select
     {% if is_incremental() -%}
@@ -30,25 +30,71 @@ with trade_bounds as (
     cast(date_trunc('hour', current_timestamp) as timestamp) as end_hour
 ),
 
--- find the earliest historical hour that must be recomputed from recent market metadata changes
-resolution_bounds as (
+-- build token-specific windows so one old recompute token does not force a global backfill
+{% if is_incremental() -%}
+recent_tokens_from_this as (
   select
-    min(rt.recompute_from_hour) as resolution_start_hour
+    t.token_id,
+    min(tb.trade_start_hour) as start_hour
+  from {{ this }} t
+  cross join trade_bounds tb
+  where t.hour = (select max(hour) from {{ this }})
+    and t.token_id is not null
+  group by 1
+),
+
+recent_trade_tokens as (
+  select
+    t.asset_id as token_id,
+    min(tb.trade_start_hour) as start_hour
+  from {{ ref('polymarket_polygon_market_trades_raw') }} t
+  cross join trade_bounds tb
+  where t.block_time >= tb.trade_start_hour
+    and t.block_time < tb.end_hour
+  group by 1
+),
+
+resolution_tokens as (
+  select
+    rt.token_id,
+    rt.recompute_from_hour as start_hour
   from {{ ref('polymarket_polygon_market_price_recompute_tokens') }} rt
   cross join trade_bounds tb
   where rt.change_detected_at >= tb.trade_start_hour
 ),
 
--- combine trade and resolution windows into the final start/end bounds for this run
+token_windows as (
+  select
+    token_id,
+    min(start_hour) as start_hour
+  from (
+    select token_id, start_hour from recent_tokens_from_this
+    union all
+    select token_id, start_hour from recent_trade_tokens
+    union all
+    select token_id, start_hour from resolution_tokens
+  ) token_inputs
+  where token_id is not null
+  group by 1
+),
+{% else -%}
+token_windows as (
+  select
+    t.asset_id as token_id,
+    cast(date_trunc('hour', min(t.block_time)) as timestamp) as start_hour
+  from {{ ref('polymarket_polygon_market_trades_raw') }} t
+  where t.asset_id is not null
+  group by 1
+),
+{% endif -%}
+
 params as (
   select
-    coalesce(least(tb.trade_start_hour, rb.resolution_start_hour), tb.trade_start_hour) as start_hour,
     tb.end_hour
   from trade_bounds tb
-  cross join resolution_bounds rb
 ),
 
--- keep raw trade updates that occur inside the selected processing window
+-- keep raw trade updates for each token only inside that token's window
 window_updates as (
   select
     t.block_time,
@@ -56,31 +102,25 @@ window_updates as (
     t.asset_id as token_id,
     t.price
   from {{ ref('polymarket_polygon_market_trades_raw') }} t
+  inner join token_windows tw
+    on tw.token_id = t.asset_id
   cross join params p
-  where t.block_time >= p.start_hour
+  where t.block_time >= tw.start_hour
     and t.block_time < p.end_hour
 ),
 
--- carry forward the last pre-window update per token so forward-fill has an anchor point
+-- carry forward the last pre-window hourly value per token to anchor forward-fill
 pre_window_latest as (
   {% if is_incremental() -%}
   select
-    block_time,
-    condition_id,
-    token_id,
-    price
-  from (
-    select
-      t.block_time,
-      t.condition_id,
-      t.asset_id as token_id,
-      t.price,
-      row_number() over (partition by t.asset_id order by t.block_time desc) as rn
-    from {{ ref('polymarket_polygon_market_trades_raw') }} t
-    cross join params p
-    where t.block_time < p.start_hour
-  ) ranked
-  where rn = 1
+    t.hour as block_time,
+    t.condition_id,
+    t.token_id,
+    t.price
+  from {{ this }} t
+  inner join token_windows tw
+    on tw.token_id = t.token_id
+    and t.hour = date_add('hour', -1, tw.start_hour)
   {% else -%}
   select
     cast(null as timestamp) as block_time,
@@ -129,27 +169,30 @@ changed_prices as (
   where rn = 1
 ),
 
--- enumerate every hour inside the processing window
-hours as (
+-- enumerate each token-hour in scope from token start through run end
+token_hours as (
   select
+    tw.token_id,
     h.timestamp as hour
-  from {{ source('utils', 'hours') }} h
+  from token_windows tw
+  inner join {{ source('utils', 'hours') }} h
+    on h.timestamp >= tw.start_hour
   cross join params p
-  where h.timestamp >= p.start_hour
-    and h.timestamp < p.end_hour
+  where h.timestamp < p.end_hour
 ),
 
--- forward-fill each token price across hours until its next observed update
+-- forward-fill each token price across its own hour window until next observed update
 forward_fill as (
   select
-    cast(h.hour as timestamp) as hour,
+    cast(th.hour as timestamp) as hour,
     lp.condition_id,
-    lp.token_id,
+    th.token_id,
     lp.price
-  from hours h
-  left join changed_prices lp
-    on h.hour >= lp.hour
-    and (lp.next_update_hour is null or h.hour < lp.next_update_hour)
+  from token_hours th
+  inner join changed_prices lp
+    on th.token_id = lp.token_id
+    and th.hour >= lp.hour
+    and (lp.next_update_hour is null or th.hour < lp.next_update_hour)
 ),
 
 -- parse market end timestamps and resolution metadata used for post-resolution price correction
@@ -192,7 +235,4 @@ select
   pc.token_id,
   pc.price
 from price_correction pc
-cross join params p
-where pc.price is not null
-  and pc.hour >= p.start_hour
-  and pc.hour < p.end_hour
+where pc.price > 0
