@@ -1,3 +1,5 @@
+-- depends_on: {{ ref('polymarket_polygon_market_price_recompute_tokens') }}
+
 {{ config(
     schema = 'polymarket_polygon',
     alias = 'market_prices_hourly',
