@@ -10,58 +10,63 @@
 }}
 
 WITH changed_prices AS (
-    SELECT
-        date_trunc('hour', block_time) AS hour,
-        block_time,
-        condition_id,
-        asset_id AS token_id,
-        price,
-        LEAD(CAST(date_trunc('hour', block_time) AS timestamp)) OVER (PARTITION BY asset_id ORDER BY block_time ASC) AS next_update_hour
-    FROM (
-        SELECT *,
-               ROW_NUMBER() OVER (PARTITION BY DATE_TRUNC('hour', block_time), asset_id ORDER BY block_time DESC) as rn
-        FROM {{ ref('polymarket_polygon_market_trades_raw') }}
-    ) ranked
+    SELECT date_trunc('hour', block_time) AS hour
+        , block_time
+        , condition_id
+        , token_id
+        , price
+        , LEAD(date_trunc('hour', block_time)) OVER (PARTITION BY token_id ORDER BY block_time ASC) AS next_update_hour
+        FROM (
+            SELECT block_time
+            , condition_id
+            , asset_id AS token_id
+            , price
+            , ROW_NUMBER() OVER (PARTITION BY date_trunc('hour', block_time), asset_id ORDER BY block_time DESC) as rn
+            FROM {{ ref('polymarket_polygon_market_trades_raw') }}
+            ) ranked
     WHERE rn = 1
-),
+    )
 
-hours AS (
-   Select distinct date_trunc('hour', block_time) as hour
-   from {{ source('polygon', 'transactions') }}
-),
+, hours AS (
+    SELECT timestamp AS hour
+    FROM {{ ref('utils_hours') }}
+    WHERE timestamp >= CAST('2022-11-21 19:00' AS timestamp)
+    )
 
-forward_fill AS (
-    SELECT
-        CAST(h.hour AS timestamp) AS hour,
-        lp.condition_id,
-        lp.token_id,
-        lp.price
+, forward_fill AS (
+    SELECT h.hour
+    , lp.condition_id
+    , lp.token_id
+    , lp.price
     FROM hours h
     LEFT JOIN changed_prices lp
         ON h.hour >= lp.hour
         AND (lp.next_update_hour IS NULL OR h.hour < lp.next_update_hour)
-),
+    )
 
-price_correction AS (
-    SELECT
-        ff.hour,
-        ff.condition_id,
-        ff.token_id,
-        CASE 
-            WHEN ff.hour <= TRY_CAST(SUBSTRING(md.market_end_time FROM 1 FOR 19) AS timestamp) THEN ff.price
-            WHEN ff.hour > TRY_CAST(SUBSTRING(md.market_end_time FROM 1 FOR 19) AS timestamp) THEN
-                CASE 
-                    WHEN md.token_outcome = 'Yes' AND md.outcome = 'yes' THEN 1
-                    WHEN md.token_outcome = 'Yes' AND md.outcome = 'no' THEN 0
-                    WHEN md.token_outcome = 'No' AND md.outcome = 'yes' THEN 0
-                    WHEN md.token_outcome = 'No' AND md.outcome = 'no' THEN 1
-                    ELSE ff.price
-                END
-            ELSE ff.price
+, price_correction AS (
+    SELECT ff.hour
+    , ff.condition_id
+    , ff.token_id
+    , CASE 
+        WHEN ff.hour <= md.market_end_time_parsed THEN ff.price
+        WHEN ff.hour > md.market_end_time_parsed THEN
+            CASE 
+                WHEN md.token_outcome = 'Yes' AND md.outcome = 'yes' THEN 1
+                WHEN md.token_outcome = 'Yes' AND md.outcome = 'no' THEN 0
+                WHEN md.token_outcome = 'No' AND md.outcome = 'yes' THEN 0
+                WHEN md.token_outcome = 'No' AND md.outcome = 'no' THEN 1
+                ELSE ff.price
+            END
+        ELSE ff.price
         END AS price
     FROM forward_fill ff
     LEFT JOIN {{ ref('polymarket_polygon_market_details') }} md ON ff.token_id = md.token_id
-)
+    )
 
-SELECT * FROM price_correction
+SELECT hour
+, condition_id
+, token_id
+, price
+FROM price_correction
 WHERE price > 0
