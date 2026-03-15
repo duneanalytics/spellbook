@@ -102,7 +102,9 @@ window_updates as (
     t.block_time,
     t.condition_id,
     t.asset_id as token_id,
-    t.price
+    t.price,
+    t.evt_index,
+    t.tx_hash
   from {{ ref('polymarket_polygon_market_trades_raw') }} t
   inner join token_windows tw
     on tw.token_id = t.asset_id
@@ -118,7 +120,9 @@ pre_window_latest as (
     t.hour as block_time,
     t.condition_id,
     t.token_id,
-    t.price
+    t.price,
+    cast(null as bigint) as evt_index,
+    cast(null as varbinary) as tx_hash
   from {{ this }} t
   inner join token_windows tw
     on tw.token_id = t.token_id
@@ -128,7 +132,9 @@ pre_window_latest as (
     cast(null as timestamp) as block_time,
     cast(null as varbinary) as condition_id,
     cast(null as uint256) as token_id,
-    cast(null as double) as price
+    cast(null as double) as price,
+    cast(null as bigint) as evt_index,
+    cast(null as varbinary) as tx_hash
   where 1 = 0
   {% endif -%}
 ),
@@ -139,21 +145,25 @@ all_updates as (
     block_time,
     condition_id,
     token_id,
-    price
+    price,
+    evt_index,
+    tx_hash
   from window_updates
   union all
   select
     block_time,
     condition_id,
     token_id,
-    price
+    price,
+    evt_index,
+    tx_hash
   from pre_window_latest
 ),
 
 -- keep the last update per token/hour and compute the next update boundary for interval filling
 changed_prices as (
   select
-    cast(date_trunc('hour', block_time) as timestamp) as hour,
+    date_trunc('hour', block_time) as hour,
     block_time,
     condition_id,
     token_id,
@@ -165,7 +175,12 @@ changed_prices as (
       condition_id,
       token_id,
       price,
-      row_number() over (partition by date_trunc('hour', block_time), token_id order by block_time desc) as rn
+      evt_index,
+      tx_hash,
+      row_number() over (
+        partition by date_trunc('hour', block_time), token_id
+        order by block_time desc, evt_index desc nulls last, tx_hash desc nulls last
+      ) as rn
     from all_updates
   ) ranked
   where rn = 1
