@@ -128,6 +128,7 @@ models:
       blockchain: polygon
       sector: prediction_markets
       project: polymarket
+      short_description: "Trades on Polymarket prediction markets on Polygon, including outcome token, price, shares, fees, and maker/taker addresses."
       contributors: tomfutago
     config:
       tags: ['polygon','prediction_markets','polymarket','markets']
@@ -135,19 +136,30 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
             - block_time
             - asset_id
             - evt_index
             - tx_hash
     columns:
+      - name: block_month
+        description: "UTC month of the event block time used for partitioning"
+        tests:
+          - not_null
       - name: block_number
         description: "Block number in which the transaction was executed"
       - name: block_time
         description: "UTC event block time"
+        tests:
+          - not_null
       - name: tx_hash
         description: "Transaction hash"
+        tests:
+          - not_null
       - name: evt_index
         description: "Index of the event within the transaction"
+        tests:
+          - not_null
       - name: action
         description: "Type of trade (clob or AMM trade)"
       - name: contract_address
@@ -166,6 +178,8 @@ models:
         description: "Boolean indicating whether this is a neg_risk market"
       - name: asset_id
         description: "Token ID of the ERC1155"
+        tests:
+          - not_null
       - name: price
         description: "Price for the token being bought"
       - name: amount
@@ -258,6 +272,7 @@ models:
       blockchain: polygon
       sector: prediction_markets
       project: polymarket
+      short_description: "Metadata for Polymarket prediction markets, including event/market names, questions, outcome tokens, resolution status, and oracle details."
       contributors: tomfutago, 0xboxer
     config:
       tags: ['polygon','prediction_markets','polymarket','markets']
@@ -349,6 +364,7 @@ models:
       blockchain: polygon
       sector: prediction_markets
       project: polymarket
+      short_description: "Daily snapshots of user positions on Polymarket, tracking outcome token balances per market with resolution status."
       contributors: tomfutago
     config:
       tags: ['polygon','prediction_markets','polymarket','positions']
@@ -436,6 +452,7 @@ models:
       blockchain: polygon
       sector: prediction_markets
       project: polymarket
+      short_description: "Hourly price snapshots for Polymarket outcome tokens, tracking how market odds evolve over time."
       contributors: 0xboxer
     config:
       tags: ['polygon','prediction_markets','polymarket','prices']
@@ -443,23 +460,60 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
             - hour
             - token_id
     columns:
+      - name: block_month
+        description: "Month partition derived from hour"
+        tests:
+          - not_null
       - name: hour
         description: "The hour for which the price is valid"
+        tests:
+          - not_null
       - name: condition_id
         description: "The unique identifier for the market condition"
       - name: token_id
         description: "The token ID associated with the outcome"
+        tests:
+          - not_null
       - name: price
         description: "The price of the outcome token at the end of the hour"
+
+  - name: polymarket_polygon_market_price_recompute_tokens
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','prices']
+    description: "Incremental helper table tracking tokens requiring historical price recomputation after market metadata or resolution updates"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - token_id
+    columns:
+      - name: token_id
+        description: "Outcome token ID that needs recomputation"
+        tests:
+          - not_null
+      - name: recompute_from_hour
+        description: "Earliest hour that must be recomputed for this token (market end hour)"
+        tests:
+          - not_null
+      - name: change_detected_at
+        description: "Timestamp used to trigger downstream recompute when token resolution metadata state changes"
+        tests:
+          - not_null
 
   - name: polymarket_polygon_users
     meta:
       blockchain: polygon
       sector: prediction_markets
       project: polymarket
+      short_description: "Mapping of Polymarket proxy wallets to owner addresses, with wallet type and initial funding details."
       contributors: 0xRob
     config:
       tags: ['polygon','prediction_markets','polymarket','users']

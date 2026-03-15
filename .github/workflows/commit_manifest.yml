@@ -15,7 +15,7 @@ jobs:
     runs-on: [ self-hosted, linux, spellbook-trino-ci ]
     strategy:
       matrix:
-        project: [ 'tokens', 'daily_spellbook', 'nft', 'dex', 'solana', 'hourly_spellbook']
+        project: [ 'tokens', 'daily_spellbook', 'dex', 'solana', 'hourly_spellbook']
       max-parallel: 1
 
     steps:

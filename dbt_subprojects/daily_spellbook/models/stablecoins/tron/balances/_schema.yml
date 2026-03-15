@@ -162,6 +162,7 @@ models:
       blockchain: tron
       sector: stablecoin
       project: stablecoin
+      short_description: "Daily stablecoin balances per holder on Tron, enriched with token metadata and USD prices."
       contributors: tomfutago
     config:
       tags: ['stablecoin', 'balances']

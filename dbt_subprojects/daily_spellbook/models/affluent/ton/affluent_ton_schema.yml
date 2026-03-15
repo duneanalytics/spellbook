@@ -6,10 +6,10 @@ models:
       blockchain: ton
       sector: lending
       contributors: pshuvalov, okhlopkov
+      short_description: "Supply (deposit) events on the Affluent lending protocol on TON."
     config:
       tags: ['ton', 'affluent', 'lending', 'factorial']
-    description: >
-      Affluent protocol supply events
+    description: "Supply (deposit) events on the Affluent lending protocol on TON."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -43,10 +43,10 @@ models:
       blockchain: ton
       sector: lending
       contributors: pshuvalov, okhlopkov
+      short_description: "Withdrawal events on the Affluent lending protocol on TON."
     config:
       tags: ['ton', 'affluent', 'lending', 'factorial']
-    description: >
-      Affluent protocol withdraw events
+    description: "Withdrawal events on the Affluent lending protocol on TON."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -81,10 +81,10 @@ models:
       blockchain: ton
       sector: lending
       contributors: pshuvalov, okhlopkov
+      short_description: "Borrow events on the Affluent lending protocol on TON."
     config:
       tags: ['ton', 'affluent', 'lending', 'factorial']
-    description: >
-      Affluent protocol borrow events
+    description: "Borrow events on the Affluent lending protocol on TON."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -119,10 +119,10 @@ models:
       blockchain: ton
       sector: lending
       contributors: pshuvalov, okhlopkov
+      short_description: "Repayment events on the Affluent lending protocol on TON."
     config:
       tags: ['ton', 'affluent', 'lending', 'factorial']
-    description: >
-      Affluent protocol repay events
+    description: "Repayment events on the Affluent lending protocol on TON."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -160,10 +160,10 @@ models:
       blockchain: ton
       sector: lending
       contributors: pshuvalov, okhlopkov
+      short_description: "Liquidation events on the Affluent lending protocol on TON."
     config:
       tags: ['ton', 'affluent', 'lending', 'factorial']
-    description: >
-      Affluent protocol liquidate events
+    description: "Liquidation events on the Affluent lending protocol on TON."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

@@ -160,6 +160,7 @@ models:
       blockchain: tron
       sector: stablecoin
       project: stablecoin
+      short_description: "Stablecoin transfers on the Tron blockchain, enriched with token metadata."
       contributors: tomfutago
     config:
       tags: ['stablecoin', 'transfers']
