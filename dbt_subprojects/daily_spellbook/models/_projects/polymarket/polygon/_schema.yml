@@ -337,17 +337,13 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - month
             - day
             - address
             - token_address
             - token_id
-            - blockchain
     columns:
       - name: blockchain
         description: "The blockchain the position is on"
-      - name: month
-        description: "The month of the position"
       - name: day
         description: "The date of the position"
       - name: address
@@ -356,8 +352,12 @@ models:
         description: "The address of the token"
       - name: token_id
         description: "Token ID of the position"
+      - name: balance_raw
+        description: "Raw balance of the position (uint256)"
       - name: balance
-        description: "Balance of the position"
+        description: "Balance of the position (balance_raw / 1e6)"
+      - name: last_updated
+        description: "Timestamp of the last balance update"
 
   - name: polymarket_polygon_positions
     meta:
@@ -372,18 +372,24 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - day
             - address
             - token_id
-            - day
     columns:
       - name: day
         description: "The date of the position"
+        data_tests:
+          - not_null
       - name: address
         description: "The address holding the position"
+        data_tests:
+          - not_null
       - name: unique_key
         description: "Unique identifier for the market"
       - name: token_id
         description: "Token ID of the position"
+        data_tests:
+          - not_null
       - name: token_outcome
         description: "Outcome represented by the token"
       - name: token_outcome_name
