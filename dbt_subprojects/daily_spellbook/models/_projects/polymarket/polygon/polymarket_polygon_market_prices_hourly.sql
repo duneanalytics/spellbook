@@ -177,9 +177,10 @@ changed_prices as (
       price,
       evt_index,
       tx_hash,
+      -- deterministic tie-break for rows sharing the same block_time within one token-hour
       row_number() over (
         partition by date_trunc('hour', block_time), token_id
-        order by block_time desc, evt_index desc nulls last, tx_hash desc nulls last
+        order by block_time desc, evt_index asc nulls last, tx_hash asc nulls last
       ) as rn
     from all_updates
   ) ranked
