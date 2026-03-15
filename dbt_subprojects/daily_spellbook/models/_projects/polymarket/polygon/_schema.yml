@@ -136,19 +136,30 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
             - block_time
             - asset_id
             - evt_index
             - tx_hash
     columns:
+      - name: block_month
+        description: "UTC month of the event block time used for partitioning"
+        tests:
+          - not_null
       - name: block_number
         description: "Block number in which the transaction was executed"
       - name: block_time
         description: "UTC event block time"
+        tests:
+          - not_null
       - name: tx_hash
         description: "Transaction hash"
+        tests:
+          - not_null
       - name: evt_index
         description: "Index of the event within the transaction"
+        tests:
+          - not_null
       - name: action
         description: "Type of trade (clob or AMM trade)"
       - name: contract_address
@@ -167,6 +178,8 @@ models:
         description: "Boolean indicating whether this is a neg_risk market"
       - name: asset_id
         description: "Token ID of the ERC1155"
+        tests:
+          - not_null
       - name: price
         description: "Price for the token being bought"
       - name: amount
