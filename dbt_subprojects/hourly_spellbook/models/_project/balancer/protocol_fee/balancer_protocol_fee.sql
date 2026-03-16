@@ -1,8 +1,6 @@
 {{ config(
     schema = 'balancer',
-    alias = 'protocol_fee',
-    materialized = 'table',
-    file_format = 'delta'
+    alias = 'protocol_fee'
     , post_hook='{{ hide_spells() }}'
     )
 }}
@@ -48,4 +46,4 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-
+;
