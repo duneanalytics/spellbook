@@ -6,10 +6,10 @@ models:
       blockchain: ton
       sector: dex
       contributors: pshuvalov
+      short_description: "Trade notification events from Storm Trade on TON, capturing vault fund flows, fees, referrals, and executor rewards."
     config:
       tags: ['ton', 'stormtrade', 'perpetual']
-    description: >
-      StormTrade trade notification events
+    description: "Trade notification events from Storm Trade on TON, capturing vault fund flows, fees, referrals, and executor rewards."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -65,10 +65,10 @@ models:
       blockchain: ton
       sector: dex
       contributors: pshuvalov
+      short_description: "Executed perpetual trading orders on Storm Trade on TON."
     config:
       tags: ['ton', 'stormtrade', 'perpetual']
-    description: >
-      StormTrade execute order events
+    description: "Executed perpetual trading orders on Storm Trade on TON."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -168,10 +168,10 @@ models:
       blockchain: ton
       sector: dex
       contributors: pshuvalov
+      short_description: "Completed perpetual trading orders on Storm Trade on TON."
     config:
       tags: ['ton', 'stormtrade', 'perpetual']
-    description: >
-      StormTrade complete order events
+    description: "Completed perpetual trading orders on Storm Trade on TON."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -245,10 +245,10 @@ models:
       blockchain: ton
       sector: dex
       contributors: pshuvalov
+      short_description: "Position update events on Storm Trade on TON, tracking changes to open perpetual positions."
     config:
       tags: ['ton', 'stormtrade', 'perpetual']
-    description: >
-      StormTrade update position events
+    description: "Position update events on Storm Trade on TON, tracking changes to open perpetual positions."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

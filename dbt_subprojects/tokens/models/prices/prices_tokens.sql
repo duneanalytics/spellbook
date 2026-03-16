@@ -48,6 +48,7 @@
     ,ref('prices_plume_tokens')
     ,ref('prices_polygon_tokens')
     ,ref('prices_ronin_tokens')
+    ,ref('prices_rise_tokens')
     ,ref('prices_scroll_tokens')
     ,ref('prices_sei_tokens')
     ,ref('prices_shape_tokens')
