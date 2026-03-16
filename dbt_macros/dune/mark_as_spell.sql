@@ -1,9 +1,9 @@
 {% macro mark_as_spell(this, materialization) %}
   {%- if target.name == 'prod' -%}
     {%- if model.config.materialized == "view" -%}
-      {%- set properties = { 'dune.data_explorer.category': 'abstraction', 'dune.data_explorer.freshness': var('freshness') } -%}
+      {%- set properties = { 'dune.data_explorer.category': 'abstraction' } -%}
     {%- else -%}
-      {%- set properties = { 'dune.data_explorer.category': 'abstraction', 'dune.data_explorer.freshness': var('freshness'), 'dune.vacuum': '{"enabled":true}' } -%}
+      {%- set properties = { 'dune.data_explorer.category': 'abstraction', 'dune.vacuum': '{"enabled":true}' } -%}
     {%- endif -%}
     {%- set deprecated_at = model.config.get('deprecated_at', none) -%}
     {%- if deprecated_at -%}
